@@ -62,9 +62,19 @@ $inputBorderColor: #CCCCCC;
 				margin-bottom: 10px;
 			}
 
-			div {
+			> div {
 				display: block;
 				text-align: right;
+
+				.button-primary {
+					background: $customizerPrimaryColor;
+					border-color: $customizerPrimaryColor;
+					transition: all .3s;
+
+					&:hover {
+						background: darken($color: $customizerPrimaryColor, $amount: 8);
+					}
+				}
 			}
 		}
 
@@ -381,7 +391,6 @@ $inputBorderColor: #CCCCCC;
 	.dimension-units {
 		display: flex;
 		margin-left: auto;
-		margin-right: 7px;
 		align-items: center;
 
 		li {
@@ -772,152 +781,406 @@ $inputBorderColor: #CCCCCC;
 -----------------------------------------------------------------
 ---------------------------------------------------------------*/
 
-#customize-controls {
-	#customize-theme-controls {
-		.customize-control {
-			padding: 16px;
-			margin-top: 12px;
-			margin-bottom: 0;
-			box-sizing: border-box;
-			background: $whiteColor;
-			position: relative;
+.wpeverest-customizer-style {
+	&#customize-controls {
+		#customize-theme-controls {
+			.accordion-section {
+				&::-webkit-scrollbar {
+					width: 7px !important;
+				}
 
-			&:last-child {
-				margin-bottom: 0;
+				&::-webkit-scrollbar-track {
+					border-radius: 10px !important;
+				}
+				
+				&::-webkit-scrollbar-thumb {
+					background: #b0b0b0 !important;
+					border-radius: 10px !important;
+				}
+				
+				&::-webkit-scrollbar-thumb:hover {
+					background: #7a7a7a !important;
+				}
 			}
 
-			.customize-control-title {
-				margin-bottom: 8px;
-				color: #222222;
-				font-size: 14px;
-				font-weight: 600;
-				line-height: 18px;
-				text-transform: capitalize;
-			}
+			.customize-panel-back,
+			.customize-section-back {
+				&:hover,
+				&:focus {
+					border-left-color: $customizerPrimaryColor !important;
 
-			label {
-				justify-content: space-between;
-				align-items: center;
-
-				.switch {
-					width: 30px;
-					height: 16px;
-					top: 0;
-					border: 0;
-					background: $toggleDefaultColor;
-
-					&::after {
-						width: 12px;
-						height: 12px;
-						left: 2px;
-						background: $whiteColor;
+					&::before {
+						color: $customizerPrimaryColor !important;
 					}
+				}
+			}
 
-					&-content {
-						&::before,
+			.accordion-section {
+				h3.accordion-section-title {
+					background: $whiteColor !important;
+					border-bottom: 1px solid #dcdcde !important;
+					border-left: 4px solid #fff !important;
+					transition: .15s color ease-in-out, .15s background-color ease-in-out, .15s border-color ease-in-out !important;
+					padding: 10px 30px 10px 14px !important;
+					border-right: none !important;
+					line-height: 1.55 !important;
+
+					&:hover,
+					&:focus {
+						color: $customizerPrimaryColor !important;
+						background: #F6F7F7 !important;
+						border-left-color: $customizerPrimaryColor !important;
+					}
+				}
+			}
+
+			.customize-control {
+				padding: 16px;
+				margin-top: 12px;
+				margin-bottom: 0;
+				box-sizing: border-box;
+				background: $whiteColor;
+				position: relative;
+
+				&:last-child {
+					margin-bottom: 0;
+				}
+
+				.customize-control-title {
+					margin-bottom: 8px;
+					color: #222222;
+					font-size: 14px;
+					font-weight: 600;
+					line-height: 18px;
+					text-transform: capitalize;
+				}
+
+				label {
+					justify-content: space-between;
+					align-items: center;
+
+					.switch {
+						width: 30px;
+						height: 16px;
+						top: 0;
+						border: 0;
+						background: $toggleDefaultColor;
+
 						&::after {
-							content: none;
+							width: 12px;
+							height: 12px;
+							left: 2px;
+							background: $whiteColor;
+						}
+
+						&-content {
+							&::before,
+							&::after {
+								content: none;
+							}
 						}
 					}
 				}
-			}
 
-			input:checked {
-				+ .switch {
-					background: $customizerPrimaryColor;
-					border-color: $customizerPrimaryColor;
-
-					&::after {
-						right: 14px;
-						left: unset;
-					}
-				}
-			}  
-			
-			&.customize-control-evf-select2 {
-				.customize-control-title {
-					margin-bottom: 8px;
-				}
-				
-				select {
-					height: 38px;
-					border-radius: 2px;
-					border-color: $inputBorderColor;
-					
-					&:focus {
+				input:checked {
+					+ .switch {
+						background: $customizerPrimaryColor;
 						border-color: $customizerPrimaryColor;
-					}
-				}
 
-				.select2 {
-					&-selection {
+						&::after {
+							right: 14px;
+							left: unset;
+						}
+					}
+				}  
+				
+				&.customize-control-evf-select2 {
+					.customize-control-title {
+						margin-bottom: 8px;
+					}
+					
+					select {
 						height: 38px;
 						border-radius: 2px;
-
+						border-color: $inputBorderColor;
+						
 						&:focus {
 							border-color: $customizerPrimaryColor;
 						}
+					}
 
-						&__rendered {
-							line-height: 36px;
+					.select2 {
+						&-selection {
+							height: 38px;
+							border-radius: 2px;
+
+							&:focus {
+								border-color: $customizerPrimaryColor;
+							}
+
+							&__rendered {
+								line-height: 36px;
+							}
+
+							&__arrow {
+								height: 36px;
+							}
+
+							&__clear {
+								line-height: 36px;
+							}
+						}
+					}
+				}
+
+				// Margin and Padding Option CSS
+				&-evf-dimension {
+					position: relative;
+					
+					> label {
+						.customize-control-title {
+							margin-right: 0;
 						}
 
-						&__arrow {
-							height: 36px;
-						}
+						.responsive-tabs {
+							display: none;
+							margin-right: 0;
+							gap: 4px;
 
-						&__clear {
-							line-height: 36px;
+							li {
+								margin: 0;
+							}
+						}
+					}
+
+					.dimension {
+						&-inputs {
+							gap: 8px;
+
+							li {
+								margin-bottom: 0;							
+
+								input[type="number"] {
+									width: 100%;
+									height: 2.1vw;
+									padding: 0;
+									text-align: center;
+									border: 1px solid $inputBorderColor;
+									border-radius: 3px;
+									transition: all .3s;
+
+									&::-webkit-inner-spin-button,
+									&::-webkit-outer-spin-button {
+										-webkit-appearance: none;
+										margin: 0;
+									}
+
+									&:hover {
+										border-color: #848484;
+									}
+
+									&:focus {
+										box-shadow: none;
+										outline: none;
+										border-color: $customizerPrimaryColor;
+									}
+								}
+
+								> label {
+									justify-content: center;
+								}
+
+								> label {
+									&.dimension-anchor-wrapper {
+										width: 100%;
+										height: 2.1vw;
+										box-sizing: border-box;
+										justify-content: center;
+										border-radius: 3px;
+										cursor: pointer;
+										border: 0;
+										background: transparent;
+									}
+								}
+
+								&:has(.dimension-anchor-wrapper) {
+									flex: unset;
+
+									.dimension-anchor-wrapper {
+										.linked-icon {
+											svg {
+												fill: $customizerPrimaryColor;
+											}
+										}
+									}
+								}
+
+								&:has(.customize-control-content) {
+									position: absolute;
+									top: 16px;
+									right: 16px;
+								}
+
+								.customize-control-content {
+									.everest-forms-dimension-reset {
+										.reset {
+											position: absolute;
+											top: 0;
+											right: 0;
+											padding: 0;
+											margin-left: 0;
+										}
+									}
+								}
+							}
 						}
 					}
 				}
 			}
 
-			// Margin and Padding Option CSS
-			&-evf-dimension {
-				position: relative;
-				
-				> label {
-					.customize-control-title {
-						margin-right: 0;
+			.customize-pane-child {
+				margin-bottom: 0;
+			}
+			
+			#sub-accordion-section-everest_forms {
+				&_templates {
+					background: #f0f0f1 !important;
+
+					#everest-forms-save-template-container {
+						background: $whiteColor;
+						padding: 16px;
+						margin-top: 12px;
+
+						.customize-control-title {
+							margin-top: 0;
+						}
+
+						.customize-control-description {
+							padding: 0;
+						}
 					}
 
-					.responsive-tabs {
-						display: none;
-						margin-right: 0;
-						gap: 4px;
+					.customize-control-evf-image_radio {
+						.image-radio-wrapper {
+							margin-top: 0;
+							gap: 16px;
 
-						li {
-							margin: 0;
+							> li {
+								margin: 0;
+
+								.image-radio-item {
+									background: $whiteColor;
+									border: 1px solid $inputBorderColor;
+									padding: 8px;
+									transition: all .3s;
+
+									&:hover {
+										background: #F5F5F5 !important;
+										color: $customizerPrimaryColor;
+										border-color: $customizerPrimaryColor;
+
+										img {
+											box-shadow: none;
+										}
+									}
+
+									img {
+										border: 1px solid $inputBorderColor;
+										border-radius: 3px;
+									}
+
+									.image-radio-label {
+										font-size: 14px;
+										line-height: 20px;
+									}
+								}
+
+								input[type="radio"] {
+									&:checked + label {
+										color: $customizerPrimaryColor;
+										border-color: $customizerPrimaryColor;
+
+										img {
+											box-shadow: none;
+										}
+									}
+								}
+
+								.evf-delete-template-btn {
+									color: #EA4741;
+								}
+							}
 						}
 					}
 				}
 
-				.dimension {
-					&-inputs {
-						gap: 8px;
+				// Color Palettes Part CSS
+				&_color_palette {
+					.customize-control {
+						> label {
+							display: block;
+							margin-bottom: 12px;
 
-						li {
-							margin-bottom: 0;							
+							.customize-control-title {
+								display: flex;
+								align-items: center;
+								justify-content: space-between;
 
-							input[type="number"] {
-								width: 100%;
-								height: 2.1vw;
-								padding: 0;
-								text-align: center;
-								border: 1px solid $inputBorderColor;
-								border-radius: 3px;
-								transition: all .3s;
+								.color-palette-edit-icon {
+									border-radius: 2px;
+									border: 1px solid #F4F4F4;
+									width: 20px;
+									height: 20px;
+									display: flex;
+									align-items: center;
+									justify-content: center;
+									background: #f4f4f4;
+								}
+							}
+						}
 
-								&::-webkit-inner-spin-button,
-								&::-webkit-outer-spin-button {
-									-webkit-appearance: none;
-									margin: 0;
+						.color-palette {
+							gap: 8px;
+
+							&-item {
+								margin: 0;
+
+								input[type="checkbox"] {
+									&:checked + .color-palette-color {
+										border-color: $inputBorderColor;
+									}
 								}
 
-								&:hover {
-									border-color: #848484;
+								label {
+									.color-palette-color {
+										margin-bottom: 0;
+										border-radius: 50%;
+									}
 								}
+							}
+						}
+
+						.color-palette-edit-interface {
+							display: flex;
+							flex-direction: column;
+							gap: 16px;
+							margin-top: 16px;
+
+							.color-palette-items {
+								display: flex;
+								flex-direction: column;
+								gap: 16px;
+							}
+
+							.color-palette-save-button {
+								width: max-content;
+								padding: 4px 10px;
+								cursor: pointer;
+							}
+
+							input[type="text"] {
+								height: 34px;
+								border-color: $inputBorderColor;
 
 								&:focus {
 									box-shadow: none;
@@ -926,293 +1189,146 @@ $inputBorderColor: #CCCCCC;
 								}
 							}
 
-							> label {
-								justify-content: center;
-							}
+							.color-palette-edit-item {
+								display: flex;
+								justify-content: space-between;
+								align-items: center;
+								position: relative;
+								height: 24px;
 
-							> label {
-								&.dimension-anchor-wrapper {
-									width: 100%;
-									height: 2.1vw;
-									box-sizing: border-box;
-									justify-content: center;
-									border-radius: 3px;
-									cursor: pointer;
-									border: 0;
-									background: transparent;
-								}
-							}
+								.wp-picker-container {
+									width: 24px;
+									height: 24px;
 
-							&:has(.dimension-anchor-wrapper) {
-								flex: unset;
+									.wp-color-result {
+										width: 24px !important;
+										height: 24px !important;
+										padding: 0 !important;
+										margin: 0;
+										min-height: unset;
+										border-radius: 50%;
+										border-color: $inputBorderColor;
 
-								.dimension-anchor-wrapper {
-									.linked-icon {
-										svg {
-											fill: $customizerPrimaryColor;
+										&::after {
+											content: none !important;
+										}
+
+										.wp-color-result-text {
+											display: none;
+										}
+									}
+
+									&.wp-picker-active {
+										height: auto;
+										background-color: #fff;
+										border-radius: 5px;
+										-webkit-box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+										box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+										top: 30px;
+										left: 50%;
+										position: absolute;
+										z-index: 9999;
+										padding-top: 16px;
+										// width: 100%;
+										width: 270px;
+										padding: 12px;
+										transform: translateX(-50%);
+						
+										.wp-picker-open {
+											margin: 0 12px 0 0 !important;
+										}
+
+										.wp-picker-holder {
+											padding: 0 8px 8px;
 										}
 									}
 								}
 							}
-
-							&:has(.customize-control-content) {
-								position: absolute;
-								top: 16px;
-								right: 16px;
-							}
-
-							.customize-control-content {
-								.everest-forms-dimension-reset {
-									.reset {
-										padding: 0;
-										margin-left: 0;
-									}
-								}
-							}
-						}
+						}					
 					}
 				}
-			}
-		}
 
-		.customize-pane-child {
-			margin-bottom: 0;
-		}
-		
-		#sub-accordion-section-everest_forms {
-			// Color Palettes Part CSS
-			&_color_palette {
-				.customize-control {
-					// margin-bottom: 0;
-
-					> label {
-						display: block;
-						margin-bottom: 12px;
-
-						.customize-control-title {
-							display: flex;
-							align-items: center;
-							justify-content: space-between;
-
-							.color-palette-edit-icon {
-								border-radius: 2px;
-								border: 1px solid #F4F4F4;
-								width: 20px;
-								height: 20px;
-								display: flex;
-								align-items: center;
-								justify-content: center;
-								background: #f4f4f4;
-							}
-						}
-					}
-
-					.color-palette {
-						gap: 8px;
-
-						&-item {
-							margin: 0;
-
-							input[type="checkbox"] {
-								&:checked + .color-palette-color {
-									border-color: $inputBorderColor;
-								}
-							}
-
-							label {
-								.color-palette-color {
-									margin-bottom: 0;
-									border-radius: 50%;
-								}
-							}
-						}
-					}
-
-					.color-palette-edit-interface {
-						display: flex;
-						flex-direction: column;
-						gap: 16px;
-						margin-top: 16px;
-
-						.color-palette-items {
-							display: flex;
-							flex-direction: column;
-							gap: 16px;
-						}
-
-						.color-palette-save-button {
-							width: max-content;
-							padding: 4px 10px;
-							cursor: pointer;
-						}
-
-						input[type="text"] {
-							height: 34px;
-							border-color: $inputBorderColor;
-
-							&:focus {
-								box-shadow: none;
-								outline: none;
-								border-color: $customizerPrimaryColor;
-							}
-						}
-
-						.color-palette-edit-item {
-							display: flex;
-							justify-content: space-between;
-							align-items: center;
-							position: relative;
-							height: 24px;
-
-							.wp-picker-container {
-								.wp-color-result {
-									width: 24px;
-									height: 24px;
-									padding: 0;
-									margin: 0;
-									min-height: unset;
-									border-radius: 50%;
-									border-color: $inputBorderColor;
-
-									.wp-color-result-text {
-										display: none;
-									}
-								}
-
-								&.wp-picker-active {
-									background-color: #fff;
-									border-radius: 5px;
-									-webkit-box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-									box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-									top: 30px;
-									// left: -15px;
-									left: 50%;
-									position: absolute;
-									z-index: 9999;
-									padding-top: 16px;
-									width: 100%;
-									transform: translateX(-50%);
-					
-									.wp-picker-open {
-										margin: 0 12px !important;
-									}
-
-									.wp-picker-holder {
-										padding: 0 8px 8px;
-									}
-								}
-							}
-						}
-					}					
-				}
-			}
-
-			// General > Typography Part CSS
-			&_general_typography {
-				padding: 0;
-
-				.customize-section-description-container {
-					padding: 12px 12px 0;
-					margin-bottom: 0;
-				}
-	
-				.customize-control {
-					margin-bottom: 0;
-					border-bottom: 1px solid #dcdcde;
-				}
-			}
-
-			&_general_form_container {
-				// .customize-control-evf-color {
-				// 	display: flex;
-				// 	align-items: center;
-				// 	justify-content: space-between;
-				// 	position: relative;
-
-				// 	.customize-control-title {
-				// 		margin-bottom: 0;
-				// 	}
-
-				// 	.customize-control-content {
-				// 		.wp-color-result {
-				// 			margin: 0;
-				// 			padding: 0;
-				// 			width: 24px;
-				// 			height: 24px;
-				// 			max-height: unset;
-				// 			min-height: unset;
-				// 			border-radius: 50%;
-				// 			border-color: $inputBorderColor;
-
-				// 			.wp-color-result-text {
-				// 				display: none;
-				// 			}
-				// 		}
-				// 	}
-
-				// 	.customize-control-description {
-				// 		display: none;
-				// 	}
-				// }
-			}
-		}
-
-		.wp-picker-container {
-			&.wp-picker-active {
-				background-color: #fff;
-				border-radius: 5px;
-				-webkit-box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-				box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-				// top: 30px;
-				// left: -15px;
-				top: 50px;
-				left: 50%;
-				position: absolute;
-				z-index: 9999;
-				padding-top: 16px;
-				transform: translateX(-50%);
-
-				.wp-picker-open {
-					margin: 0 12px !important;
-				}				
-			}
-		}
-
-		.customize-control-evf-color {
-			display: flex;
-			align-items: center;
-			justify-content: space-between;
-			position: relative;
-
-			.customize-control-title {
-				margin-bottom: 0;
-			}
-
-			.customize-control-content {				
-				.wp-color-result {
-					margin: 0;
+				// General > Typography Part CSS
+				&_general_typography {
 					padding: 0;
-					width: 24px;
-					height: 24px;
-					max-height: unset;
-					min-height: unset;
-					border-radius: 50%;
-					border-color: $inputBorderColor;
 
-					.wp-color-result-text {
-						display: none;
+					.customize-section-description-container {
+						padding: 12px 12px 0;
+						margin-bottom: 0;
+					}
+		
+					.customize-control {
+						margin-bottom: 0;
+						border-bottom: 1px solid #dcdcde;
 					}
 				}
 			}
 
-			.customize-control-description {
-				display: none;
+			.wp-picker-container {
+				&.wp-picker-active {
+					background-color: $whiteColor;
+					border-radius: 5px;
+					-webkit-box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+					box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+					top: 50px;
+					left: 50%;
+					position: absolute;
+					z-index: 9999;
+					padding-top: 16px;
+					width: 270px;
+					padding: 12px;
+					transform: translateX(-50%);
+
+					.wp-picker-open {
+						margin: 0 12px 0 0 !important;
+					}				
+				}
+			}
+
+			.customize-control-evf-color {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				position: relative;
+
+				.customize-control-title {
+					margin-bottom: 0;
+				}
+
+				.customize-control-content {				
+					.wp-color-result {
+						margin: 0;
+						padding: 0;
+						width: 24px;
+						height: 24px;
+						max-height: unset;
+						min-height: unset;
+						border-radius: 50%;
+						border-color: $inputBorderColor;
+
+						.wp-color-result-text {
+							display: none;
+						}
+					}
+				}
+
+				.customize-control-description {
+					display: none;
+				}
+
+				.wp-picker-active {
+					.wp-picker-holder {
+						width: 245px !important;
+
+						.iris-picker {
+							width: 245px !important;
+						}
+					}
+				}
 			}
 		}
 	}
-}
 
-.wpeverest-customizer-style {
 	#customize-theme-controls {
 		.customize-pane-child.accordion-section-content {
 			padding: 12px;
@@ -1225,13 +1341,99 @@ $inputBorderColor: #CCCCCC;
 				margin: -12px -12px 0 !important;
 			}
 		}
+
+		#sub-accordion-section-everest_forms {
+			&_general_font,
+			&_submission_success_message,
+			&_submission_error_message,
+			&_submission_validation_message {
+				.customize-control-evf-toggle {
+					margin-top: 12px !important;
+				}
+			}
+
+			&_color_palette,
+			&_general_font,
+			&_general_form_container,
+			&_general_field_styles,
+			&_file_upload_styles,
+			&_general_typography,
+			&_general_buttons,
+			&_submission_success_message,
+			&_submission_error_message,
+			&_submission_validation_message {
+				height: 100%;
+				background: #F0F0F1 !important;
+			}
+
+			&_general_typography {
+				padding: 12px !important;
+
+				.customize-section-description-container.customize-info {
+					margin: -12px -12px 0;
+				}
+
+				.customize-control {
+					border-bottom: 0 !important;
+
+					&-evf-toggle {
+						margin-top: 12px !important;
+					}
+				}
+			}
+		}
 	}
 
 	.customize-control {
 		border-top: 0 !important;
 
+		&-select {
+			select {
+				&:hover,
+				&:active {
+					color: $customizerPrimaryColor;
+				}
+				
+				&:focus {
+					border-color: $customizerPrimaryColor;
+					box-shadow: none;
+					outline: none;
+				}
+			}
+		}
+
 		.customize-control-title {
 			margin-top: 0;
+			line-height: 24px !important;
+		}
+
+		&-evf-dimension {
+			> label {
+				align-items: flex-start !important;
+			}
+
+			.dimension-units {
+				// display: none !important;
+				margin-right: 28px;
+
+				> li {
+					.dimension-unit-item {
+						cursor: pointer;
+
+						input[type="radio"] {
+							&:checked + .unit-switcher {
+								color: $customizerPrimaryColor;
+							}
+						}
+					}
+				}
+			}
+		}
+
+		> label {
+			.customize-control-title {
+				margin-top: 0;
+			}
 		}
 
 		&-evf-color {
@@ -1241,13 +1443,27 @@ $inputBorderColor: #CCCCCC;
 				width: 24px;
 				height: 24px;
 
-				.wp-color-result {
-					.color-alpha {
-						top: 0 !important;
-						left: 0 !important;
-						border: 0;
+				.wp-picker-container {
+					width: 24px;
+					height: 24px;
+
+					&.wp-picker-active {
+						width: 100%;
+						height: auto;
 					}
-				}				
+
+					.wp-color-result {
+						width: 24px;
+						height: 24px !important;
+						padding: 0 !important;
+						
+						.color-alpha {
+							top: 0 !important;
+							left: 0 !important;
+							border: 0;
+						}
+					}
+				}							
 			}
 		}
 
@@ -1277,6 +1493,64 @@ $inputBorderColor: #CCCCCC;
 			margin-top: 0 !important;
 		}
 
+		&-evf-image_checkbox,
+		&-evf-image_radio {
+			.image-checkbox,
+			.image-radio {
+				&-item {
+					justify-content: center !important;
+					cursor: pointer;
+					transition: all .3s;
+
+					&:hover {
+						background: #e5e7e9 !important;
+					}
+				}
+
+				&-wrapper {
+					> li {
+						margin-bottom: 0;
+					}
+				}
+			}
+		}
+
+		&.everest-forms {
+			&-border_option,
+			&-background_image_option,
+			&-typography_font_option {
+				margin-top: 0 !important;
+				border-top: 1px dashed #E0E0E0 !important;
+			}
+
+			&-border_type_option {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+
+				.customize-control-title {
+					margin-bottom: 0 !important;
+				}
+
+				.customize-control-description {
+					display: none;
+				}
+
+				select {
+					width: 100%;
+					min-width: 100px;
+					max-width: 100px;
+					-webkit-appearance: none;
+					-moz-appearance: none;
+					appearance: none;
+					border: 1px solid #DADADA;
+					text-align: center;
+					padding: 0 12px;
+					background: #F4F4F4;
+				}
+			}
+		}
+
 		.customize-control-description {
 			padding: 0 !important;
 		}
@@ -1285,6 +1559,14 @@ $inputBorderColor: #CCCCCC;
 		.zakra-control-tooltip {
 			&.dashicons-editor-help {
 				display: none;
+			}
+		}		
+
+		.customize-control-content {
+			.reset {
+				position: absolute;
+				top: 16px;
+				right: 16px;
 			}
 		}
 	}

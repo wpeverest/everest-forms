@@ -16,23 +16,177 @@
 
 
 		var formId = getQueryParam('form_id');
+		var fieldLabelSelectorStart = '#customize-control-everest_forms_styles-' + formId + '-typography-field_labels_font_size';
+		var fieldLabelSelectorEnd = '#customize-control-everest_forms_styles-' + formId + '-typography-field_labels_padding';
+		var subfieldLabelSelectorStart = '#customize-control-everest_forms_styles-' + formId + '-typography-field_sublabels_font_size';
+		var subfieldLabelSelectorEnd = '#customize-control-everest_forms_styles-' + formId + '-typography-field_sublabels_padding';
+		var fontColorTypography = '#customize-control-everest_forms_styles-' + formId + '-typography-field_labels_font_color';
+		var targetSelector = fontColorTypography + ' .wp-color-result';
+		var currentStyle = $(targetSelector).attr('style');
+		 if (currentStyle) {
+        var styleArray = currentStyle.split(';');
 
+        var updatedStyleArray = styleArray.map(function(style) {
+            if (style.trim() !== '') { // Check if the style is not empty
+                var [property, value] = style.split(':');
+                return `${property.trim()}: ${value.trim()} !important`;
+            }
+            return '';
+        });
+
+        var updatedStyle = updatedStyleArray.join('; ');
+		$(targetSelector).removeAttr('style');
+        $(targetSelector).attr('style', updatedStyle);
+    }
 		if (formId) {
-
-			var marginSelector = '#customize-control-everest_forms_styles-' + formId + '-form_container-margin';
-			var paddingSelector = '#customize-control-everest_forms_styles-' + formId + '-form_container-padding';
-			var boderSelector =  '#customize-control-everest_forms_styles-' + formId + '-form_container-border_type';
-			var fieldLabelSelectorstart =  '#customize-control-everest_forms_styles-' + formId + '-typography-field_labels_font_size';
-			var fieldLabelSelectorend =  '#customize-control-everest_forms_styles-' + formId + '-typography-field_labels_padding';
-
 			setTimeout(function() {
-				$( marginSelector ).addClass('everest-forms-customize-option-wrapper everest-forms-margin_option');
-				$( paddingSelector ).addClass('everest-forms-customize-option-wrapper everest-forms-padding_option');
-				$( boderSelector ).addClass('everest-forms-customize-option-wrapper everest-forms-border_option');
-				$(fieldLabelSelectorstart + ', ' + fieldLabelSelectorend).wrapAll('<ul class="everest-forms-customize-option-wrapper everest-forms-margin_padding_option"></ul>');
-				console.log($(fieldLabelSelectorstart + ', ' + fieldLabelSelectorend));
-			}, 300);
-			
+
+				var globalSelectors = [
+					{
+						className: 'everest-forms-border_type_option',
+						selectors: [
+						  '-form_container-border_type',
+						  '-field_styles-border_type',
+						  '-file_upload_styles-border_type',
+						  '-button-border_type',
+						  '-success_message-border_type',
+						  '-error_message-border_type',
+						  '-validation_message-border_type'
+						]
+					},
+					{
+					  className: 'everest-forms-padding_option',
+					  selectors: [
+						'-form_container-padding',
+						'-typography-field_labels_padding',
+						'-typography-field_sublabels_padding',
+						'-typography-field_styles_padding',
+						'-typography-section_title_padding',
+						'-typography-file_upload_padding',
+						'-typography-button_padding'
+					  ]
+					},
+					{
+					  className: 'everest-forms-border_option',
+					  selectors: [
+						'-form_container-border_width',
+						'-form_container-border_color',
+						'-form_container-border_radius',
+						'-field_styles-border_width',
+						'-field_styles-border_radius',
+						'-file_upload_styles-border_width',
+						'-file_upload_styles-border_radius',
+						'-button-border_width',
+						'-button-border_radius',
+						'-success_message-border_width',
+						'-success_message-border_color',
+						'-success_message-border_radius',
+						'-error_message-border_width',
+						'-error_message-border_color',
+						'-error_message-border_radius',
+						'-validation_message-border_width',
+						'-validation_message-border_color',
+						'-validation_message-border_radius'
+					  ]
+					},
+					{
+					  className: 'everest-forms-background_image_option',
+					  selectors: [
+						'-form_container-background_preset',
+						'-form_container-background_position',
+						'-form_container-background_size',
+						'-form_container-background_repeat',
+						'-form_container-background_attachment',
+						'-form_container-opacity'
+					  ]
+					},
+					{
+						className: 'everest-forms-typography_font_option',
+						selectors: [
+							'-typography-field_labels_font_size',
+							'-typography-field_labels_font_color',
+							'-typography-field_labels_font_style',
+							'-typography-field_labels_text_alignment',
+							'-typography-field_labels_line_height',
+							'-typography-field_labels_margin',
+							'-typography-field_sublabels_font_size',
+							'-typography-field_sublabels_font_color',
+							'-typography-field_sublabels_font_style',
+							'-typography-field_sublabels_text_alignment',
+							'-typography-field_sublabels_line_height',
+							'-typography-field_sublabels_margin',
+							'-typography-field_sublabels_font_size',
+							'-typography-field_styles_font_size',
+							'-typography-field_styles_font_color',
+							'-typography-field_styles_font_size',
+							'-typography-field_styles_placeholder_font_color',
+							'-typography-field_styles_font_style',
+							'-typography-field_styles_alignment',
+							'-typography-field_styles_border_color',
+							'-typography-field_styles_border_focus_color',
+							'-typography-field_styles_background_color',
+							'-typography-field_styles_margin',
+							'-typography-field_description_font_size',
+							'-typography-field_description_font_color',
+							'-typography-field_description_font_style',
+							'-typography-field_description_text_alignment',
+							'-typography-field_description_line_height',
+							'-typography-field_description_margin',
+							'-typography-section_title_font_size',
+							'-typography-section_title_font_color',
+							'-typography-section_title_font_style',
+							'-typography-section_title_text_alignment',
+							'-typography-section_title_line_height',
+							'-typography-section_title_margin',
+							'-typography-file_upload_font_size',
+							'-typography-file_upload_font_color',
+							'-typography-file_upload_background_color',
+							'-typography-file_upload_icon_background_color',
+							'-typography-file_upload_icon_color',
+							'-typography-file_upload_border_color',
+							'-typography-file_upload_margin',
+							'-typography-checkbox_radio_font_size',
+							'-typography-checkbox_radio_font_color',
+							'-typography-checkbox_radio_font_style',
+							'-typography-checkbox_radio_alignment',
+							'-typography-checkbox_radio_size',
+							'-typography-checkbox_radio_color',
+							'-typography-checkbox_radio_checked_color',
+							'-typography-checkbox_radio_margin',
+							'-typography-button_font_size',
+							'-typography-button_font_style',
+							'-typography-button_font_color',
+							'-typography-button_hover_font_color',
+							'-typography-button_background_color',
+							'-typography-button_hover_background_color',
+							'-typography-button_alignment',
+							'-typography-button_border_color',
+							'-typography-button_border_hover_color',
+							'-typography-button_line_height',
+							'-typography-button_margin',
+							'-success_message-font_size',
+							'-success_message-font_style',
+							'-success_message-text_alignment',
+							'-error_message-font_size',
+							'-error_message-font_style',
+							'-error_message-text_alignment',
+							'-validation_message-font_size',
+							'-validation_message-font_style',
+							'-validation_message-text_alignment'
+						]
+					}
+				  ];
+				  
+				  globalSelectors.forEach(function(group) {
+					group.selectors.forEach(function(selector) {
+					  var allSelector = '#customize-control-everest_forms_styles-' + formId + selector;
+					  $(allSelector).addClass(group.className);
+					});
+				  });
+				  $(fieldLabelSelectorStart).nextUntil(fieldLabelSelectorEnd).addBack().add(fieldLabelSelectorEnd).wrapAll('<ul class="wpeverest-typography-wrapper "></ul>');
+				  $(subfieldLabelSelectorStart).nextUntil(subfieldLabelSelectorEnd).addBack().add(subfieldLabelSelectorEnd).wrapAll('<ul class="wpeverest-typography-wrapper "></ul>');
+				
+			}, 3000);
 		}
 
 	} );
@@ -532,8 +686,6 @@
 					$.each( o.controls, function( i, controlId ) {
 						api.control( 'everest_forms_styles[' + data.form_id + '][' + type + '][' + controlId + ']', function( control ) {
 							var visibility = function( to ) {
-								console.log();
-								control.container.wrapAll("<ul class='test'></ul>");
 								control.container.toggle( o.callback( to ) );
 							};
 
