@@ -308,7 +308,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 == Changelog ==
 
-= 3.0.3        - 12-09-2024
+= 3.0.3        - 16-09-2024
 * Feature      - Add new templates.
 * Feature      - Entry submission RestApi.
 * Enhancement  - Send file directly as an attachment.
@@ -319,6 +319,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 * Tweak        - Catch mail send error.
 * Tweak        - Filter added to state default value.
 * Tweak        - Background color of dashboard.
+* Tweak        - Format likert field data in seperate column wise while exporting entry.
 * Dev          - Aweber integration.
 * Dev          - Calculation Module.
 * Dev          - Feature api log table.
