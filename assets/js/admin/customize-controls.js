@@ -865,7 +865,7 @@
 						}
 
 						$input.val( new_value ).trigger("change");
-			
+
 						$.each(values, function (index, value) {
 							$container
 								.find(
