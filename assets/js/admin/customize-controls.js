@@ -71,22 +71,15 @@
 					  selectors: [
 						'-form_container-border_width',
 						'-form_container-border_color',
-						'-form_container-border_radius',
 						'-field_styles-border_width',
-						'-field_styles-border_radius',
 						'-file_upload_styles-border_width',
-						'-file_upload_styles-border_radius',
 						'-button-border_width',
-						'-button-border_radius',
 						'-success_message-border_width',
 						'-success_message-border_color',
-						'-success_message-border_radius',
 						'-error_message-border_width',
 						'-error_message-border_color',
-						'-error_message-border_radius',
 						'-validation_message-border_width',
-						'-validation_message-border_color',
-						'-validation_message-border_radius'
+						'-validation_message-border_color'
 					  ]
 					},
 					{
@@ -634,7 +627,7 @@
 		$.each( ['font','form_container','field_styles', 'checkbox_radio_styles', 'button', 'success_message', 'error_message', 'validation_message','typography'], function( i, type ) {
 			$.each( {
 				'border_type': {
-					controls: [ 'border_width', 'border_radius','border_color' ],
+					controls: [ 'border_width', 'border_color' ],
 					callback: function( to ) { return 'none' !== to; }
 				},
 				'style_variation': {
