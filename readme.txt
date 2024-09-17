@@ -309,11 +309,11 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 == Changelog ==
 
 = 3.0.3.1       - 17-09-2024
-* Fix           - Issue with new template designs.
+* Fix           - Issue with add new form template designs.
 * Fix           - Copy/Paste not in word limit.
 
 = 3.0.3        - 16-09-2024
-* Feature      - Added new template designs.
+* Feature      - Add new form page design.
 * Feature      - Entry submission RestApi.
 * Enhancement  - Send file directly as an attachment.
 * Fix          - Premium sidebar design issue.
