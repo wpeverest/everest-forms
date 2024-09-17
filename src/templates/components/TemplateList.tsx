@@ -31,8 +31,12 @@ import { FaHeart } from "react-icons/fa";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { __, sprintf } from '@wordpress/i18n';
 import notFoundImage from "../images/not-found-image.png";
-import { CiPlay1 } from "react-icons/ci";
-import { IoEyeOutline } from "react-icons/io5";
+import { IoPlayOutline } from "react-icons/io5";
+import { FaRegHeart } from "react-icons/fa";
+import { MdOutlineRemoveRedEye } from "react-icons/md";
+
+
+
 
 interface Template {
   id: number;
@@ -254,7 +258,7 @@ const TemplateList: React.FC<TemplateListProps> = ({ selectedCategory, templates
         {selectedCategory}
       </Heading>
       {templates?.length ? (
-        <SimpleGrid columns={[1, 2, 3, 4]} spacing={6}>
+  		<SimpleGrid columns={{ base: 1, md: 2, lg: 3, xl: 4 }} spacing={6}>
           {templates.map((template) => (
             <Box
               key={template.slug}
@@ -269,7 +273,22 @@ const TemplateList: React.FC<TemplateListProps> = ({ selectedCategory, templates
               bg="white"
               p={0}
               transition="all .3s"
-              _hover={{ boxShadow: "0px 5px 24px rgba(58, 34, 93, 0.12)" }}
+			  _hover={{
+				boxShadow: "0px 5px 24px rgba(58, 34, 93, 0.12)",
+				"::before": {
+				  content: '""',
+				  position: "absolute",
+				  top: 0,
+				  left: 0,
+				  width: "100%",
+				  height: "250px",
+				  bg: "rgba(0, 0, 0, 0.4)",
+				  zIndex: 1,
+				},
+				"& > div > .template-title": {
+				  color: "#7545BB",
+				},
+			  }}
             >
               <Center mb={0}>
                 <Box
@@ -284,19 +303,6 @@ const TemplateList: React.FC<TemplateListProps> = ({ selectedCategory, templates
                   borderRadius="4px 4px 0px 0px"
                   overflow="hidden"
                   transition="all .3s"
-                  _hover={{
-                    "::before": {
-                      content: '""',
-                      position: "absolute",
-                      width: "100%",
-                      height: "100%",
-                      bg: "rgba(0, 0, 0, 0.5)",
-                      top: "50%",
-                      left: "50%",
-                      transform: "translate(-50%, -50%)",
-                      zIndex: 1,
-                    },
-                  }}
                 >
                   <Image
                     boxShadow="0px 3px 12px rgba(58, 34, 93, 0.12)"
@@ -332,12 +338,13 @@ const TemplateList: React.FC<TemplateListProps> = ({ selectedCategory, templates
                       transform="translate(-50%, -50%)"
                       zIndex={2}
                     >
-                      <Button leftIcon={<CiPlay1 />} colorScheme="purple" onClick={() => handleTemplateClick(template)}>
+                      <Button borderRadius="50px" leftIcon={<IoPlayOutline />} colorScheme="purple" onClick={() => handleTemplateClick(template)}>
                         {__("Get Started", "everest-forms")}
                       </Button>
                       {template.preview_link && (
                         <Button
-                          leftIcon={<IoEyeOutline />}
+						  borderRadius="50px"
+                          leftIcon={<MdOutlineRemoveRedEye />}
                           color="white"
                           variant="outline"
                           onClick={() => window.open(template.preview_link, "_blank")}
@@ -364,16 +371,16 @@ const TemplateList: React.FC<TemplateListProps> = ({ selectedCategory, templates
                   border="none"
                   _hover={{ color: "red.600" }}
                 >
-                  <Icon
-                    as={FaHeart}
-                    boxSize={6}
-                    color={favorites.includes(template.slug) ? "red" : "gray"}
-                  />
+                 <Icon
+				as={favorites.includes(template.slug) ? FaHeart : FaRegHeart}
+				boxSize={6}
+				color={favorites.includes(template.slug) ? "red" : "white"}
+/>
                 </Box>
               )}
 
               <VStack padding="16px">
-                <Heading width="100%" textAlign="left" fontWeight="bold" fontSize="16px" margin="0px">
+                <Heading className="template-title" width="100%" textAlign="left" fontWeight="bold" fontSize="16px" margin="0px">
                   {template.title}
                 </Heading>
                 <Text textAlign="left" margin="0px" fontSize="14px" fontWeight="400" color="gray.600">
@@ -456,6 +463,11 @@ const TemplateList: React.FC<TemplateListProps> = ({ selectedCategory, templates
                 onChange={(e) => setFormTemplateName(e.target.value)}
                 placeholder="Give it a name."
                 size="md"
+				_focus={{
+					borderColor: "#7545BB",
+					outline: "none",
+					boxShadow: "none"
+					}}
               />
             </Box>
 

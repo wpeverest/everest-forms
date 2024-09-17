@@ -1,7 +1,10 @@
 == Changelog ==
 
+= 3.0.3.1       - 17-09-2024
+* Fix           -  Issue with new template designs.
+
 = 3.0.3        - 16-09-2024
-* Feature      - Add new templates.
+* Feature      - Added new template designs.
 * Feature      - Entry submission RestApi.
 * Enhancement  - Send file directly as an attachment.
 * Fix          - Premium sidebar design issue.

@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from "react";
 import { Box, VStack, HStack, Text, Spacer, Input, InputLeftElement, InputGroup, Badge, CardHeader,CardFooter,Button,Card,Heading } from "@chakra-ui/react";
-import { FaSearch } from 'react-icons/fa';
+import { IoSearchOutline } from "react-icons/io5";
 import debounce from "lodash.debounce";
 import { __ } from '@wordpress/i18n';
 interface SidebarProps {
@@ -34,16 +34,22 @@ const Sidebar: React.FC<SidebarProps> = React.memo(({ categories, selectedCatego
 
   return (
     <Box>
-      <InputGroup mb="26px">
-        <InputLeftElement pointerEvents="none" padding="15px 10px" borderRadius="8px" borderColor="#B0B0B0">
-          <FaSearch width="16px" height="16px" color="#737373" />
-        </InputLeftElement>
-        <Input
-          placeholder={__("Search Templates", "everest-forms")}
-          value={searchTerm}
-          onChange={handleSearchChange}
-        />
-      </InputGroup>
+     <InputGroup mb="26px">
+		<InputLeftElement pointerEvents="none" padding="0px 0px 0px 8px" borderRadius="8px" borderColor="#B0B0B0">
+		<IoSearchOutline style={{ width: "18px", height: "18px" }} color="#737373" />
+		</InputLeftElement>
+		<Input
+			placeholder={__("Search Templates", "everest-forms")}
+			value={searchTerm}
+			onChange={handleSearchChange}
+			_focus={{
+			borderColor: "#7545BB",
+			outline: "none",
+			boxShadow: "none"
+			}}
+		/>
+		</InputGroup>
+
       <VStack align="stretch" gap="2px">
         {orderedCategories.map((category) => (
           <HStack
