@@ -310,7 +310,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 = 3.0.3.1       - 17-09-2024
 * Fix           - Issue with add new form template designs.
-* Fix           - Copy/Paste not in word limit.
+* Fix           - Copy/Paste not working in word limit.
 
 = 3.0.3        - 16-09-2024
 * Feature      - Add new form page design.
