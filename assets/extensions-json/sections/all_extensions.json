@@ -407,23 +407,6 @@
       "demo_video_url": "BCT7c8EmQfg"
     },
     {
-      "title": "Campaign Monitor",
-      "slug": "everest-forms-campaign-monitor",
-      "name": "Everest Forms Campaign Monitor",
-      "image": "extensions-json/sections/images/campaign-monitor.png",
-      "excerpt": "Allows your users to subscribe to Campaign Monitor through form submission via Everest Forms.",
-      "link": "https://docs.everestforms.net/docs/campaign-monitor/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
-      "released_date": "16/10/2020",
-      "plan": [
-        "personal",
-        "agency",
-        "themegrill agency"
-      ],
-      "setting_url": "admin.php?page=evf-settings&tab=integration&section=campaign_monitor",
-      "demo_video_url": "GBJMxmCurzw",
-      "popular_rank": 29
-    },
-    {
       "title": "Hubspot",
       "slug": "everest-forms-hubspot",
       "name": "Everest Forms Hubspot",
@@ -869,6 +852,23 @@
       "setting_url": "",
       "demo_video_url": "WCsHC7NQ2QQ",
       "popular_rank": 16
+    },
+    {
+      "title": "Campaign Monitor",
+      "slug": "everest-forms-campaign-monitor",
+      "name": "Everest Forms Campaign Monitor",
+      "image": "extensions-json/sections/images/campaign-monitor.png",
+      "excerpt": "Allows your users to subscribe to Campaign Monitor through form submission via Everest Forms.",
+      "link": "https://docs.everestforms.net/docs/campaign-monitor/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "released_date": "16/10/2020",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=campaign_monitor",
+      "demo_video_url": "GBJMxmCurzw",
+      "popular_rank": 29
     }
   ]
 }
