@@ -14,9 +14,22 @@ import {
 	Button,
 	Divider,
 	HStack,
+	Switch,
+	IconButton,
+	Modal,
+	Tooltip,
+	ModalCloseButton,
+	ModalContent,
+	ModalOverlay,
+	ModalHeader,
+	Spinner,
+	useDisclosure,
 } from "@chakra-ui/react";
+import { SettingsIcon } from "@chakra-ui/icons";
 import { __ } from "@wordpress/i18n";
 import React, { useState, useEffect, useContext } from "react";
+import YouTubePlayer from 'react-player/youtube';
+import { FaInfoCircle, FaPlayCircle } from 'react-icons/fa';
 
 /**
  *  Internal Dependencies
@@ -27,12 +40,19 @@ import { actionTypes } from "./../../../reducers/DashboardReducer";
 
 const ModuleItem = (props) => {
 	/* global _EVF_DASHBOARD_ */
-	const { assetsURL, liveDemoURL, isPro, licensePlan } =
+	const { assetsURL, liveDemoURL, isPro, licensePlan, adminURL, upgradeURL } =
 		typeof _EVF_DASHBOARD_ !== "undefined" && _EVF_DASHBOARD_;
 	const [{ upgradeModal }, dispatch] = useContext(DashboardContext);
 	const [requirementFulfilled, setRequirementFulfilled] = useState(false);
 	const [licenseActivated, setLicenseActivated] = useState(false);
 	const [moduleEnabled, setModuleEnabled] = useState(false);
+
+	const [showPlayVideoButton, setShowPlayVideoButton] = useState(false);
+	const [thumbnailVideoPlaying, setThumbnailVideoPlaying] = useState(false);
+
+	const [thumbnailVideoLoading, setThumbnailVideoLoading] = useState(true);
+	const { isOpen, onOpen, onClose } = useDisclosure();
+	const [isAddonActivating, setAddonActivated] = useState(false);
 
 	const {
 		data,
@@ -40,6 +60,7 @@ const ModuleItem = (props) => {
 		onCheckedChange,
 		isPerformingBulkAction,
 		selectedModuleData,
+
 	} = props;
 	const toast = useToast();
 	const {
@@ -53,11 +74,15 @@ const ModuleItem = (props) => {
 		status,
 		required_plan,
 		type,
+		demo_video_url,
+		setting_url
 	} = data;
 	const [moduleStatus, setModuleStatus] = useState(status);
 	const [isPerformingAction, setIsPerformingAction] = useState(false);
+	const [moduleSettingsURL, setModuleSettingsURL] = useState('');
 
 	const handleModuleAction = () => {
+		setAddonActivated(true);
 		setIsPerformingAction(true);
 
 		if (moduleEnabled) {
@@ -67,6 +92,7 @@ const ModuleItem = (props) => {
 			) {
 				activateModule(slug, name, type)
 					.then((data) => {
+
 						if (data.success) {
 							toast({
 								title: data.message,
@@ -74,6 +100,7 @@ const ModuleItem = (props) => {
 								duration: 3000,
 							});
 							// window.location.reload();
+							setAddonActivated(false);
 							setModuleStatus("active");
 						} else {
 							toast({
@@ -81,6 +108,7 @@ const ModuleItem = (props) => {
 								status: "error",
 								duration: 3000,
 							});
+							setAddonActivated(false);
 							setModuleStatus("not-installed");
 						}
 					})
@@ -94,6 +122,7 @@ const ModuleItem = (props) => {
 					})
 					.finally(() => {
 						setIsPerformingAction(false);
+						setAddonActivated(false);
 					});
 			} else {
 				deactivateModule(slug, type)
@@ -116,6 +145,7 @@ const ModuleItem = (props) => {
 						}
 					})
 					.finally(() => {
+						setAddonActivated(false);
 						setIsPerformingAction(false);
 					});
 			}
@@ -166,14 +196,20 @@ const ModuleItem = (props) => {
 		}
 	}, [data, upgradeModal]);
 
+	useEffect(() => {
+		if (thumbnailVideoPlaying) {
+			setShowPlayVideoButton(false);
+		}
+	}, [thumbnailVideoPlaying]);
+
 	const handleBoxClick = () => {
 		const upgradeModalRef = { ...upgradeModal };
 		upgradeModalRef.moduleType = data.type;
 		upgradeModalRef.moduleName = data.name;
 
 		if (!isPro) {
-			upgradeModalRef.type = "pro";
-			upgradeModalRef.enable = true;
+			const plan_upgrade_url = upgradeURL + '&utm_source=dashboard-all-feature&utm_medium=dashboard-upgrade-plan'
+			window.open(plan_upgrade_url,'_blank');
 		} else if (isPro && !licenseActivated) {
 			upgradeModalRef.type = "license";
 			upgradeModalRef.enable = true;
@@ -189,6 +225,11 @@ const ModuleItem = (props) => {
 			upgradeModal: upgradeModalRef,
 		});
 	};
+
+	const handleModuleSettingsURL = () => {
+		var settingsURL = adminURL + setting_url
+		window.open(settingsURL, '_blank');
+	}
 
 	return (
 		<Box
@@ -207,16 +248,93 @@ const ModuleItem = (props) => {
 				position="relative"
 				overflow="visible"
 				opacity={moduleEnabled ? 1 : 0.7}
-				onClick={() => {
-					!moduleEnabled && handleBoxClick();
-				}}
 			>
+
+			<Box
+				position="relative"
+				borderTopRightRadius="sm"
+				borderTopLeftRadius="sm"
+				overflow="hidden"
+				onMouseLeave={() => demo_video_url && setShowPlayVideoButton(false)}
+			>
+
+			{((demo_video_url && !thumbnailVideoPlaying) || !demo_video_url) && (
 				<Image
 					src={assetsURL + image}
 					borderTopRightRadius="sm"
 					borderTopLeftRadius="sm"
 					w="full"
+					onMouseOver={() =>
+							{if (demo_video_url) {
+								setShowPlayVideoButton(true);
+							}
+						}
+					}
 				/>
+			)}
+
+
+			{thumbnailVideoPlaying && (
+				<Modal isOpen={true} onClose={() => setThumbnailVideoPlaying(false)} size="3xl">
+				<ModalOverlay />
+				<ModalContent px={4} pb={4}>
+				<ModalHeader textAlign="center">{title}</ModalHeader>
+				<ModalCloseButton/>
+				<YouTubePlayer
+					url={'https://www.youtube.com/embed/'+demo_video_url}
+					playing={true}
+					width={'100%'}
+					controls
+					onReady={() => setThumbnailVideoLoading(false)}
+					onBufferEnd={() => setThumbnailVideoLoading(false)}
+				/>
+
+				{thumbnailVideoLoading && (
+					<Box
+						position={'absolute'}
+						top={'50%'}
+						left={'50%'}
+						transform={'translate(-50%, -50%)'}
+					>
+						<Spinner size={'lg'} />
+					</Box>
+				)}
+				</ModalContent>
+				</Modal>
+			)}
+
+			{showPlayVideoButton && (
+				<Box
+					pos="absolute"
+					top={0}
+					left={0}
+					right={0}
+					bottom={0}
+					bg="black"
+					opacity={0.7}
+					display="flex"
+					alignItems="center"
+					justifyContent="center"
+					borderTopStartRadius={10}
+					borderTopEndRadius={10}
+				>
+					<Tooltip label={__('Play Video', 'everest-forms')}>
+						<span>
+							<FaPlayCircle
+								color="white"
+								size={50}
+								cursor={'pointer'}
+								onClick={() => {
+									setThumbnailVideoPlaying(true);
+									setThumbnailVideoLoading(true);
+								}}
+							/>
+						</span>
+					</Tooltip>
+				</Box>
+			)}
+
+			</Box>
 				<Badge
 					backgroundColor="black"
 					color="white"
@@ -302,14 +420,40 @@ const ModuleItem = (props) => {
 						{__("Live Demo", "everest-forms")}
 					</Link>
 				</HStack>
-				<Button
-					colorScheme={
-						moduleEnabled
-							? "active" === moduleStatus
-								? "red"
-								: "green"
-							: "primary"
-					}
+
+				{moduleEnabled && (
+					((setting_url !== "" && moduleStatus === "active") && (
+					  <IconButton
+						size='sm'
+						icon={<SettingsIcon />}
+						onClick={handleModuleSettingsURL}
+					  />
+					))
+				  )}
+
+			{moduleEnabled && (
+			<>
+				{isAddonActivating ? (
+					<Spinner
+					speed='0.50s'
+					emptyColor='gray.200'
+					color='blue.500'
+					size='md'
+				  />
+				) : (
+				<Switch
+					isChecked={moduleStatus === 'active'}
+					onChange={moduleEnabled ? handleModuleAction : handleBoxClick}
+					colorScheme="green"
+				/>
+				)}
+			</>
+			)}
+
+
+				{(!moduleEnabled) &&(
+					<Button
+					colorScheme={"primary"}
 					size="sm"
 					fontSize="xs"
 					borderRadius="base"
@@ -329,12 +473,9 @@ const ModuleItem = (props) => {
 							isPerformingBulkAction)
 					}
 				>
-					{moduleEnabled
-						? "active" === moduleStatus
-							? __("Deactivate", "everest-forms")
-							: __("Activate", "everest-forms")
-						: __("Upgrade Plan", "everest-forms")}
+					{__("Upgrade Plan", "everest-forms")}
 				</Button>
+			)}
 			</Box>
 		</Box>
 	);

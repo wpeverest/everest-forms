@@ -23,8 +23,6 @@
 					var $value =  $(this).val();
 					$(this).val($value.replace(/<\s*script/gi, '').replace(/\s+on\w+\s*=/gi, ' '));
 				});
-
-
 		 	});
 
 			$( document ).ready( function( $ ) {
@@ -203,16 +201,18 @@
 			});
 
 			// Live effect for Rating field icon color option.
-			$( '.everest-forms-field-option-row-icon_color input.colorpicker' ).wpColorPicker({
-				change: function( event ) {
-					var $this     = $( this ),
-						value     = $this.val(),
-						id        = $this.closest( '.everest-forms-field-option-row' ).data( 'field-id' ),
-						$icons    = $( '#everest-forms-field-'+id +' .rating-icon svg' );
+			$( document ).ready( function( $ ) {
+				$( '.everest-forms-field-option-row-icon_color input.colorpicker' ).wpColorPicker({
+					change: function( event ) {
+						var $this     = $( this ),
+							value     = $this.val(),
+							id        = $this.closest( '.everest-forms-field-option-row' ).data( 'field-id' ),
+							$icons    = $( '#everest-forms-field-'+id +' .rating-icon svg' );
 
-					$icons.css( 'fill', value );
-				}
-			});
+						$icons.css( 'fill', value );
+					}
+				});
+		});
 		},
 
 		/**
@@ -542,6 +542,7 @@
 			EVFPanelBuilder.init_datepickers();
 			EVFPanelBuilder.bindBulkOptionActions();
 			EVFPanelBuilder.bindAkismetInit();
+			EVFPanelBuilder.bindFormSubmissionMinWaitingTime();
 
 			// Fields Panel.
 			EVFPanelBuilder.bindUIActionsFields();
@@ -3204,6 +3205,32 @@
 				$(document).find('.everest-forms-akismet-protection-type').hide();
 			}
 		},
+
+		/**
+		 * Form Submission minimum waiting time.
+		 *
+		 * @since 3.0.2
+		 */
+		bindFormSubmissionMinWaitingTime:function(){
+			var submissionWaitingTimeEnabler = $(document).find('#everest-forms-panel-field-settings-form_submission_min_waiting_time');
+			EVFPanelBuilder.formSubmissionMinTimeToggler(submissionWaitingTimeEnabler);
+			$(document).on('change', '#everest-forms-panel-field-settings-form_submission_min_waiting_time', function(){
+				EVFPanelBuilder.formSubmissionMinTimeToggler($(this));
+			})
+		},
+		/**
+		 * Form Submission waiting time Toggler.
+		 *
+		 * @param {object} submissionWaitingTimeEnabler
+		 */
+		formSubmissionMinTimeToggler:function(submissionWaitingTimeEnabler){
+			if($(submissionWaitingTimeEnabler).is(':checked')){
+				$(document).find('.everest-forms-form-submission-minimum-waiting-time').show();
+			}else{
+				$(document).find('.everest-forms-form-submission-minimum-waiting-time').hide();
+			}
+		},
+
 		bindPrivacyPolicyActions: function() {
 			// Consent message change handler.
 			$( document.body ).on( 'input', '.everest-forms-field-option .evf-privacy-policy-consent-message', function ( e ) {
@@ -3591,12 +3618,19 @@ jQuery( function ( $ ) {
 
 	$( document.body ).on('click', '.smart-tag-field', function(e) {
 
-		var field_id    = $( this ).data('field_id'),
-            field_label = $( this ).text(),
-            type        = $( this ).data('type'),
-			$parent     = $ ( this ).parent().parent().parent(),
-			$input      = $parent.find('input[type=text]'),
-			$textarea   = $parent.find('textarea');
+		var field_id    			= $( this ).data('field_id'),
+            field_label 			= $( this ).text(),
+            type        			= $( this ).data('type'),
+			$parent     			= $ ( this ).parent().parent().parent(),
+			$input      			= $parent.find('input[type=text]'),
+			$textarea   			= $parent.find('textarea'),
+			$calculationCodeMirror	= $parent.find( '.CodeMirror');
+
+		//Return when calculation smart tag is clicked because we use codeMirror
+		if( 0 != $calculationCodeMirror.length ){
+			return;
+		}
+
 		if ( field_id !== 'fullname' && field_id !== 'email' && field_id !== 'subject' && field_id !== 'message' && 'other' !== type ) {
 			field_label = field_label.split(/[\s-_]/);
 		    for(var i = 0 ; i < field_label.length ; i++){
@@ -3852,10 +3886,19 @@ jQuery( function ( $ ) {
 				"range-slider",
 				"payment-checkbox",
 				"payment-multiple",
+				"select",
+				"payment-total",
+				"radio",
+				'first-name',
+				'text',
+				'last-name',
+				'email',
+				'url'
 			];
 			$(document).find('.everest-forms-field').each(function() {
+				$fieldId = $(this).attr('data-field-id').split("-");
 				if( calculations.includes($(this).attr('data-field-type')) && $(el).parents('.everest-forms-field-option-row-calculation_field').attr('data-field-id') !== $(this).attr('data-field-id')) {
-					$(el).parent().find('.evf-smart-tag-lists .calculations').append('<li class = "smart-tag-field" data-type="field" data-field_id="'+$(this).attr('data-field-id')+'">'+$(this).find('.label-title .text').text()+'</li>');
+					$(el).parent().find('.evf-smart-tag-lists .calculations').append('<li class = "smart-tag-field" data-type="field" data-field_id="'+ $fieldId[1] +'">'+$(this).find('.label-title .text').text()+'</li>');
 				}
 			})
 		}
@@ -3877,13 +3920,10 @@ jQuery( function ( $ ) {
 
 jQuery(function ($) {
 	$(document).ready(function () {
-
-		/**
-		 * Custom CSS
-		 */
+		// Custom CSS
 		const customCssElement = $('#everest-forms-panel-field-settings-evf-custom-css');
-		var cssEditor = wp.CodeMirror.fromTextArea(customCssElement[0],
-			{
+		if (customCssElement.length && typeof wp.CodeMirror !== 'undefined') {
+			var cssEditor = wp.CodeMirror.fromTextArea(customCssElement[0], {
 				"indentUnit": 2,
 				"indentWithTabs": true,
 				"inputStyle": "contenteditable",
@@ -3916,14 +3956,12 @@ jQuery(function ($) {
 			cssEditor.on('change', function () {
 				customCssElement.html(cssEditor.getValue().replace(/<\s*script/gi, '').replace(/\s+on\w+\s*=/gi, ' '));
 			});
+		}
 
-
-		/**
-		 * Custom JS
-		 */
+		// Custom JS
 		const customJsElement = $('#everest-forms-panel-field-settings-evf-custom-js');
-		var jsEditor = wp.CodeMirror.fromTextArea(customJsElement[0],
-			{
+		if (customJsElement.length && typeof wp.CodeMirror !== 'undefined') {
+			var jsEditor = wp.CodeMirror.fromTextArea(customJsElement[0], {
 				"indentUnit": 2,
 				"indentWithTabs": true,
 				"inputStyle": "contenteditable",
@@ -3955,6 +3993,7 @@ jQuery(function ($) {
 			jsEditor.on('change', function () {
 				customJsElement.html(jsEditor.getValue().replace(/<\s*script/gi, '').replace(/\s+on\w+\s*=/gi, ' '));
 			});
+		}
 
 		$('#everest-forms-panel-field-settings-evf-enable-custom-css, #everest-forms-panel-field-settings-evf-enable-custom-js').on('change', e => {
 			showHideEditors();
@@ -3962,9 +4001,7 @@ jQuery(function ($) {
 
 		showHideEditors();
 
-		/**
-		 * Show/Hide the custom css and js input boxes based on the enabled/disabled state.
-		 */
+		// Show/Hide the custom CSS and JS input boxes based on the enabled/disabled state.
 		function showHideEditors() {
 			if ($('#everest-forms-panel-field-settings-evf-enable-custom-css').is(':checked')) {
 				$('#everest-forms-panel-field-settings-evf-custom-css-wrap').show(500);
@@ -3979,4 +4016,5 @@ jQuery(function ($) {
 			}
 		}
 	});
+
 });

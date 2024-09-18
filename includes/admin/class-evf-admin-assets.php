@@ -44,6 +44,10 @@ class EVF_Admin_Assets {
 		wp_style_add_data( 'everest-forms-admin', 'rtl', 'replace' );
 		wp_style_add_data( 'everest-forms-admin-menu', 'rtl', 'replace' );
 
+		// Show hint in codemirror.
+		wp_enqueue_style( 'wp-codemirror' );
+		wp_enqueue_style( 'codemirror-hint-css', evf()->plugin_url() . '/assets/css/code-mirror/show-hint.min.css', array( 'wp-codemirror' ), EVF_VERSION );
+
 		// Sitewide menu CSS.
 		wp_enqueue_style( 'everest-forms-admin-menu' );
 
@@ -72,7 +76,7 @@ class EVF_Admin_Assets {
 		$suffix    = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
 		// Register scripts.
-		wp_register_script( 'everest-forms-admin', evf()->plugin_url() . '/assets/js/admin/admin' . $suffix . '.js', array( 'jquery', 'jquery-blockui', 'jquery-ui-sortable', 'jquery-ui-widget', 'jquery-ui-core', 'tooltipster', 'wp-color-picker', 'perfect-scrollbar' ), EVF_VERSION, true );
+		wp_register_script( 'everest-forms-admin', evf()->plugin_url() . '/assets/js/admin/admin' . $suffix . '.js', array( 'jquery', 'jquery-blockui', 'jquery-ui-sortable', 'jquery-ui-widget', 'jquery-ui-core', 'tooltipster', 'wp-color-picker', 'perfect-scrollbar', 'evf-clipboard' ), EVF_VERSION, true );
 		wp_register_script( 'everest-forms-extensions', evf()->plugin_url() . '/assets/js/admin/extensions' . $suffix . '.js', array( 'jquery', 'updates', 'wp-i18n' ), EVF_VERSION, true );
 		wp_register_script( 'everest-forms-email-admin', evf()->plugin_url() . '/assets/js/admin/evf-admin-email' . $suffix . '.js', array( 'jquery', 'jquery-blockui', 'jquery-ui-sortable', 'jquery-ui-widget', 'jquery-ui-core', 'tooltipster', 'wp-color-picker', 'perfect-scrollbar' ), EVF_VERSION, true );
 		wp_register_script( 'everest-forms-editor', evf()->plugin_url() . '/assets/js/admin/editor' . $suffix . '.js', array( 'jquery' ), EVF_VERSION, true );
@@ -93,6 +97,7 @@ class EVF_Admin_Assets {
 		wp_register_script( 'chart', evf()->plugin_url() . "/assets/js/admin/chart{$suffix}.js", array(), EVF_VERSION, true );
 		wp_register_script( 'print_this', evf()->plugin_url() . "/assets/js/admin/printThis{$suffix}.min.js", array(), EVF_VERSION, true );
 		wp_register_script( 'progress_bar', evf()->plugin_url() . "/assets/js/admin/progressbar{$suffix}.js", array(), EVF_VERSION, true );
+		wp_register_script( 'evf-import-entries-form-csv', evf()->plugin_url() . '/assets/js/admin/tool-import-entries' . $suffix . '.js', array( 'jquery' ), EVF_VERSION, true );
 		wp_localize_script(
 			'evf-file-uploader',
 			'evf_file_uploader',
@@ -216,18 +221,21 @@ class EVF_Admin_Assets {
 				'upgrade_integration_url'        => apply_filters( 'everest_forms_upgrade_integration_url', 'https://everestforms.net/pricing/?utm_source=builder-settings&utm_medium=premium-form-settings-popup&utm_campaign=' . evf()->utm_campaign ),
 				'enable_stripe_title'            => esc_html__( 'Please enable Stripe', 'everest-forms' ),
 				'recaptcha_title'                => esc_html__( 'reCaptcha', 'everest-forms' ),
-				'recaptcha_api_key_message'      => esc_html__( 'Please enter a reCaptcha key on Everest Forms>Captcha>reCaptcha.', 'everest-forms' ),
+				'recaptcha_api_key_message'      => esc_html__( 'Please enter a reCaptcha key on Everest Forms>Settings>Captcha>reCaptcha.', 'everest-forms' ),
 				'hcaptcha_title'                 => esc_html__( 'hCaptcha', 'everest-forms' ),
-				'hcaptcha_api_key_message'       => esc_html__( 'Please enter a hCaptcha key on Everest Forms>Captcha>hCaptcha.', 'everest-forms' ),
+				'hcaptcha_api_key_message'       => esc_html__( 'Please enter a hCaptcha key on Everest Forms>Settings>Captcha>hCaptcha.', 'everest-forms' ),
 				'turnstile_title'                => esc_html__( ' Cloudflare Turnstile', 'everest-forms' ),
-				'turnstile_api_key_message'      => esc_html__( 'Please enter a  Cloudflare Turnstile key on Everest Forms>Captcha>Cloudflare Turnstile.', 'everest-forms' ),
+				'turnstile_api_key_message'      => esc_html__( 'Please enter a  Cloudflare Turnstile key on Everest Forms>Settings>Captcha>Cloudflare Turnstile.', 'everest-forms' ),
 				'enable_stripe_message'          => esc_html__( 'Enable Stripe Payment gateway in payments section to use this field.', 'everest-forms' ),
 				'enable_authorize_net_title'     => esc_html__( 'Please enable Authorize.Net', 'everest-forms' ),
 				'enable_authorize_net_message'   => esc_html__( 'Enable Authorize.Net Payment gateway in payments section to use this field.', 'everest-forms' ),
+				'enable_square_title'            => esc_html( 'Please enable Square', 'everest-forms' ),
+				'enable_square_message'          => esc_html__( 'Enable Square Payment gateway in payments section to use this field.', 'everest-forms' ),
 				'evf_install_and_active_nonce'   => wp_create_nonce( 'install_and_active_nonce' ),
 				'upgrade_plan_title'             => esc_html__( 'is a Premium Addon', 'everest-forms' ),
 				'upgrade_plan_message'           => esc_html__( 'This addon requires premium plan. Please upgrade to the Premium plan to unlock all these awesome field.', 'everest-forms' ),
 				'upgrade_plan_button'            => esc_html__( 'Upgrade Plan', 'everest-forms' ),
+				'admin_url'                      => admin_url(),
 				'vedio_links'                    => array(
 					'dropdown' => 'kDYAKElqNtM',
 				),
@@ -280,6 +288,15 @@ class EVF_Admin_Assets {
 			);
 
 			wp_localize_script(
+				'evf-import-entries-form-csv',
+				'evf_import_entries_obj ',
+				array(
+					'ajax_url' => admin_url( 'admin-ajax.php' ),
+					'nonce'    => wp_create_nonce( 'evf-import-entries' ),
+				)
+			);
+
+			wp_localize_script(
 				'everest-forms-admin',
 				'everest_forms_admin_locate',
 				array(
@@ -287,6 +304,15 @@ class EVF_Admin_Assets {
 					'ajax_url'          => admin_url( 'admin-ajax.php', 'relative' ),
 					'form_found_error'  => esc_html__( 'Form not found in content', 'everest-forms' ),
 					'form_found'        => esc_html__( 'Form found in page:', 'everest-forms' ),
+				)
+			);
+
+			wp_localize_script(
+				'everest-forms-admin',
+				'everest_forms_admin_generate_restapi_key',
+				array(
+					'ajax_restapi_key_nonce' => wp_create_nonce( 'process-restapi-api-ajax-nonce' ),
+					'ajax_url'               => admin_url( 'admin-ajax.php', 'relative' ),
 				)
 			);
 
@@ -307,7 +333,8 @@ class EVF_Admin_Assets {
 			wp_enqueue_script( 'evf-form-builder' );
 
 			wp_enqueue_script( 'wp-codemirror' );
-			wp_enqueue_style( 'wp-codemirror' );
+			// Enqueue additional scripts for hints if not included by default
+			wp_enqueue_script( 'codemirror-hint', evf()->plugin_url() . '/assets/js/code-mirror/show-hint' . $suffix . '.js', array( 'wp-codemirror' ), EVF_VERSION, true );
 
 			// De-register scripts.
 			wp_dequeue_script( 'colorpick' );
@@ -356,6 +383,7 @@ class EVF_Admin_Assets {
 			wp_enqueue_script( 'random-color' );
 			// wp_enqueue_script( 'chart' ); //for future use.
 			wp_enqueue_script( 'progress_bar' );
+			wp_enqueue_script( 'evf-import-entries-form-csv' );
 			wp_enqueue_script( 'print_this' );
 			wp_localize_script(
 				'everest-forms-survey-polls-quiz-builder',

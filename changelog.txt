@@ -1,5 +1,60 @@
 == Changelog ==
 
+= 3.0.3.1       - 17-09-2024
+* Fix           - Issue with add new form template designs.
+* Fix           - Copy/Paste not working in word limit.
+
+= 3.0.3        - 16-09-2024
+* Feature      - Add new form page design.
+* Feature      - Entry submission RestApi.
+* Enhancement  - Send file directly as an attachment.
+* Fix          - Premium sidebar design issue.
+* Fix          - Escaping issue in Yes/No field.
+* Dev 		   - Calculation module.
+* Tweak        - Hidden field editable compatibility.
+* Tweak        - Catch mail send error.
+* Tweak        - Filter added to state default value.
+* Tweak        - Background color of dashboard.
+* Tweak        - Format likert field data in seperate column wise while exporting entry.
+* Dev          - Aweber integration.
+* Dev          - Calculation Module.
+* Dev          - Feature api log table.
+
+= 3.0.2        - 07-08-2024
+* Feature 	   - Enable minimum time for form submission.
+* Feature      - Delete option in Header logo in PDF Submission.
+* Enhancement  - Custom file name field settings.
+* Fix		   - Escaping issue in Yes/No Field.
+* Dev          - Mollie Payment.
+* Dev          - Square Payment.
+* Dev          - Transaction Table.
+* Dev          - Airtable Compatibility.
+* Dev 		   - Salesflare into Module.
+* Dev 		   - ConvertKit Compatibility.
+* Dev          - GetResponse compatibility.
+* Dev 	       - Brevo module compatibility.
+* Dev 	       - Drip module  compatibility.
+* Dev          - Telegram integration compatibility.
+* Dev          - Constant contact and PipeDrive compatibility.
+* Dev          - Mailchimp and Mailerlite compatibility.
+
+= 3.0.1        - 03-07-2024
+* Feature 	   - Import entries in our form using csv file.
+* Enhancement  - Global Setting Premium Sidebar.
+* Enhancement  - Dashboard page.
+* Fix          - Block design all messed up when viewed in block editor.
+* Fix          - Wrong instruction on captcha.
+* Fix          - Email template on email clone, save and continue forms.
+* Fix 		   - Post Meta Smart tag not working.
+* Fix          - Duplicate entries showing in entry preview.
+* Tweak        - Test email input and button design.
+* Tweak        - Added function to get next key in array.
+
+= 3.0.0.1      - 27-05-2024
+* Fix          - Form builder loading when recaptcha is enabled.
+* Tweak        - Captcha name change to math captcha.
+
+
 = 3.0.0       - 23-05-2024
 * Feature     - Dashboard page.​
 * Feature     - Email scheduling in daily, weekly or monthly for the progress data of form.​

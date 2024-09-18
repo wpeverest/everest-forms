@@ -17,19 +17,29 @@ const webpackConfig = {
 			process.cwd(),
 			'./src/blocks/index.js',
 		),
+		"templates": resolve(
+			process.cwd(),
+			'./src/templates/index.tsx',
+		),
 	},
 	output: {
 		path: resolve(process.cwd(), 'dist'),
 		filename: "[name].min.js",
 		libraryTarget: "this"
 	},
+	devtool: NODE_ENV ? false: "source-map",
 	module: {
 		rules: [
 			{
-				test: /.js$/,
-				loader: "babel-loader",
-				exclude: /node_modules/
-			},
+				test: /\.(js|jsx|ts|tsx)$/,
+				exclude: /node_modules/,
+				use: {
+				  loader: 'babel-loader',
+				  options: {
+					presets: ['@babel/preset-env', '@babel/preset-react','@babel/preset-typescript']
+				  }
+				},
+			  },
 			{
 				test: /\.(png|svg|jpg|jpeg|gif|webp)$/i,
 				use: [
@@ -64,6 +74,10 @@ const webpackConfig = {
 		"@wordpress/server-side-render": ["wp", "serverSideRender"],
 		react: ["React"],
 	},
+	resolve: {
+		extensions: ['.js', '.jsx', '.ts', '.tsx'],
+	  },
+
 };
 
 if (webpackConfig.mode !== "production") {

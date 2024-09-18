@@ -191,6 +191,7 @@ const Header = () => {
 				placement="right"
 				onClose={onClose}
 				finalFocusRef={ref}
+				size="md"
 			>
 				<DrawerOverlay
 					bgColor="rgb(0,0,0,0.05)"

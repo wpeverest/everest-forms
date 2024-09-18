@@ -35,7 +35,7 @@ jQuery( function ( $ ) {
 			this.loadPhoneField();
 			this.loadCountryFlags();
 			this.ratingInit();
-
+			this.FormSubmissionWaitingTime();
 
 			// Inline validation.
 			this.$everest_form.on( 'input validate change', '.input-text, select, input:checkbox, input:radio', this.validate_field );
@@ -46,6 +46,8 @@ jQuery( function ( $ ) {
 			}).on('focusout', '.input-text, select, input[type="checkbox"], input[type="radio"]', function() {
 				$(this).removeClass('everest-forms-field-active');
 			});
+
+	;
 
 
 
@@ -405,7 +407,7 @@ jQuery( function ( $ ) {
 				return $checked.length <= choiceLimit;
 			}, function( params, element ) {
 				var	choiceLimit = parseInt( $( element ).closest( 'ul' ).attr( 'data-choice-limit' ) || 0, 10 );
-				return everest_forms.i18n_messages_check_limit.replace( '{#}', choiceLimit );
+				return everest_forms_params.i18n_messages_check_limit.replace( '{#}', choiceLimit );
 			} );
 
 			$.validator.addMethod( 'phone-field', function( value, element ) {
@@ -597,6 +599,7 @@ jQuery( function ( $ ) {
 							var	recaptchaID = $submit.get( 0 ).recaptchaID;
 							var  razorpayForms = $form.find( "[data-gateway='razorpay']" );
 							var stripeForms = $form.find( "[data-gateway*='stripe']" );
+
 						// Process form.
 						if ( processText ) {
 							$submit.text( processText ).prop( 'disabled', true );
@@ -948,6 +951,84 @@ jQuery( function ( $ ) {
 			}
 			return $( '<div class="iti__flag-box"><div class="iti__flag iti__' + country.id.toLowerCase() + '"></div></div><span class="iti__country-name">' + country.text + '</span>' );
 		},
+
+		FormSubmissionWaitingTime: function() {
+			$(document).ready(function() {
+				var ajax_submission = $('.everest-form').data('ajax_submission');
+
+				if ($('#evf_submission_start_time').length<0) {
+					return '';
+				}
+
+				$('#evf_submission_start_time').val(Date.now());
+
+				var startTimer = function() {
+					var display = $('#evf_submission_duration');
+					if (display.length) {
+						var duration = parseInt(display.data('duration'), 10);
+						var timer = duration;
+						var interval = setInterval(function() {
+							display.text(timer);
+							if (--timer < 0) {
+								clearInterval(interval);
+								display.parent().remove();
+							}
+						}, 1000);
+					}
+				};
+
+				if (ajax_submission === 1) {
+					// Create a MutationObserver to handle dynamic content.
+					var observer = new MutationObserver(function(mutations) {
+						mutations.forEach(function(mutation) {
+							if (mutation.addedNodes.length > 0) {
+								$(mutation.addedNodes).each(function() {
+									if ($('#evf_submission_duration').length) {
+										startTimer();
+										observer.disconnect();
+									}
+								});
+							}
+						});
+					});
+
+					var targetNode = document.body;
+					var config = { childList: true, subtree: true };
+					observer.observe(targetNode, config);
+				} else {
+					startTimer();
+				}
+			});
+		},
+
+
+		getFirstBrowserLanguage: function() {
+			var nav = window.navigator,
+				browserLanguagePropertyKeys = [ 'language', 'browserLanguage', 'systemLanguage', 'userLanguage' ],
+				i,
+				language;
+
+			// Support for HTML 5.1 "navigator.languages".
+			if ( Array.isArray( nav.languages ) ) {
+				for ( i = 0; i < nav.languages.length; i++ ) {
+					language = nav.languages[ i ];
+					if ( language && language.length ) {
+						return language;
+					}
+				}
+			}
+
+			// Support for other well known properties in browsers.
+			for ( i = 0; i < browserLanguagePropertyKeys.length; i++ ) {
+				language = nav[ browserLanguagePropertyKeys[ i ] ];
+				if ( language && language.length ) {
+					return language;
+				}
+			}
+
+			return '';
+		},
+
 		ratingInit:function(){
 			// Rating field: hover effect.
 			$( '.everest-forms-field-rating' ).hover(

@@ -188,7 +188,8 @@ class EVF_Field_Country extends EVF_Form_Fields {
 	 */
 	public function field_preview( $field ) {
 		$countries = evf_get_countries();
-		$default   = isset( $field['default'] ) && ! empty( $field['default'] ) ? reset( $field['default'] ) : '';
+
+		$default = isset( $field['default'] ) && ! empty( $field['default'] ) ? ( is_array( $field['default'] ) ? reset( $field['default'] ) : $field['default'] ) : '';
 
 		// Label.
 		$this->field_preview_option( 'label', $field );

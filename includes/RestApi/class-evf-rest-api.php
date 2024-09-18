@@ -33,9 +33,14 @@ class EVF_REST_API {
 	 * @since 2.0.8.1
 	 */
 	public static function init() {
+		// For Internal.
 		include __DIR__ . '/controllers/version1/class-evf-modules.php';
 		include __DIR__ . '/controllers/version1/class-evf-changelog.php';
 		include __DIR__ . '/controllers/version1/class-evf-gutenberg-blocks.php';
+		include __DIR__ . '/controllers/version1/class-evf-templates.php';
+		include __DIR__ . '/controllers/version1/class-evf-plugin-status.php';
+		// For external.
+		include __DIR__ . '/controllers/version1/class-evf-entry-submission.php';
 
 		add_action( 'rest_api_init', array( __CLASS__, 'register_rest_routes' ) );
 	}
@@ -90,6 +95,9 @@ class EVF_REST_API {
 			'modules'          => 'EVF_Modules',
 			'changelog'        => 'EVF_Changelog',
 			'gutenberg-blocks' => 'EVF_Gutenberg_Blocks',
+			'templates'        => 'Everest_Forms_Template_Section_Data',
+			'plugin'           => 'Everest_Forms_Plugin_Status',
+			'entry-submission' => 'EVF_Entry_Submission',
 		);
 	}
 }
