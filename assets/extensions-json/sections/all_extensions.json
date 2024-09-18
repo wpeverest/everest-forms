@@ -374,23 +374,6 @@
       "popular_rank": 24
     },
     {
-      "title": "ActiveCampaign",
-      "slug": "everest-forms-activecampaign",
-      "name": "Everest Forms ActiveCampaign",
-      "image": "extensions-json/sections/images/activecampaign.png",
-      "excerpt": "Allows your users to subscribe to ActiveCampaign through form submission via Everest Forms.",
-      "link": "https://docs.everestforms.net/docs/activecampaign/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
-      "released_date": "15/07/2020",
-      "plan": [
-        "personal",
-        "agency",
-        "themegrill agency"
-      ],
-      "setting_url": "admin.php?page=evf-settings&tab=integration&section=activecampaign",
-      "demo_video_url": "6b9q89cUMzE",
-      "popular_rank": 25
-    },
-    {
       "title": "Advanced Form Analytics",
       "slug": "everest-forms-form-analytics",
       "name": "Everest Forms Advanced Form Analytics",
@@ -869,6 +852,23 @@
       "setting_url": "",
       "demo_video_url": "WCsHC7NQ2QQ",
       "popular_rank": 16
+    },
+    {
+      "title": "ActiveCampaign",
+      "slug": "everest-forms-activecampaign",
+      "name": "Everest Forms ActiveCampaign",
+      "image": "extensions-json/sections/images/activecampaign.png",
+      "excerpt": "Allows your users to subscribe to ActiveCampaign through form submission via Everest Forms.",
+      "link": "https://docs.everestforms.net/docs/activecampaign/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "released_date": "15/07/2020",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=activecampaign",
+      "demo_video_url": "6b9q89cUMzE",
+      "popular_rank": 25
     }
   ]
 }
