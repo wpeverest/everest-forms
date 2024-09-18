@@ -441,7 +441,7 @@
 	/* Field Labels Start */
 
 	// Field Labels: font_size
-	wp.customize( settings + '[field_label][font_size]', function( value ) {
+	wp.customize( settings + '[typography][field_labels_font_size]', function( value ) {
 		var default_unit = 'px';
 		value.bind( function( newval ) {
 			field_label.css( 'font-size', newval + default_unit );
@@ -449,14 +449,14 @@
 	} );
 
 	// Field Labels: font_color
-	wp.customize( settings + '[field_label][font_color]', function( value ) {
+	wp.customize( settings + '[typography][field_labels_font_color]', function( value ) {
 		value.bind( function( newval ) {
 			field_label.css( 'color', newval );
 		} );
 	} );
 
 	// Field Labels: font_style
-	wp.customize( settings + '[field_label][font_style]', function( value ) {
+	wp.customize( settings + '[typography][field_labels_font_style]', function( value ) {
 		value.bind( function( newval ) {
 			if ( typeof newval != 'object' ) {
 				newval = JSON.parse( newval );
@@ -482,21 +482,21 @@
 	} );
 
 	// Field Labels: text_alignment
-	wp.customize( settings + '[field_label][text_alignment]', function( value ) {
+	wp.customize( settings + '[typography][field_labels_text_alignment]', function( value ) {
 		value.bind( function( newval ) {
 			field_label.css( 'text-align', newval );
 		} );
 	} );
 
 	// Field Labels: line_height
-	wp.customize( settings + '[field_label][line_height]', function( value ) {
+	wp.customize( settings + '[typography][field_labels_line_height]', function( value ) {
 		value.bind( function( newval ) {
 			field_label.css( 'line-height', newval );
 		} );
 	} );
 
 	// Field Labels: margin
-	wp.customize( settings + '[field_label][margin]', function( value ) {
+	wp.customize( settings + '[typography][margin]', function( value ) {
 		preview_buttons.on( 'click', function() {
 			var control_value = value.get();
 			var active_responsive_device = $(this).data('device');
@@ -525,7 +525,7 @@
 	} );
 
 	// Field Labels: padding
-	wp.customize( settings + '[field_label][padding]', function( value ) {
+	wp.customize( settings + '[typography][field_labels_padding]', function( value ) {
 		preview_buttons.on( 'click', function() {
 			var control_value = value.get();
 			var active_responsive_device = $(this).data('device');
@@ -558,7 +558,7 @@
 	/* Field Sublabels Start */
 
 	// Field Sublabels: font_size
-	wp.customize( settings + '[field_sublabel][font_size]', function( value ) {
+	wp.customize( settings + '[typography][field_sublabels_font_size]', function( value ) {
 		var default_unit = 'px';
 		value.bind( function( newval ) {
 			field_sub_label.css( 'font-size', newval + default_unit );
@@ -566,14 +566,14 @@
 	} );
 
 	// Field Sublabels: font_color
-	wp.customize( settings + '[field_sublabel][font_color]', function( value ) {
+	wp.customize( settings + '[typography][field_sublabels_font_color]', function( value ) {
 		value.bind( function( newval ) {
 			field_sub_label.css( 'color', newval );
 		} );
 	} );
 
 	// Field Sublabels: font_style
-	wp.customize( settings + '[field_sublabel][font_style]', function( value ) {
+	wp.customize( settings + '[typography][field_sublabels_font_style]', function( value ) {
 		value.bind( function( newval ) {
 			if ( typeof newval != 'object' ) {
 				newval = JSON.parse( newval );
@@ -599,21 +599,21 @@
 	} );
 
 	// Field Sublabels: text_alignment
-	wp.customize( settings + '[field_sublabel][text_alignment]', function( value ) {
+	wp.customize( settings + '[typography][field_sublabels_text_alignment]', function( value ) {
 		value.bind( function( newval ) {
 			field_sub_label.css( 'text-align', newval );
 		} );
 	} );
 
 	// Field Sublabels: line_height
-	wp.customize( settings + '[field_sublabel][line_height]', function( value ) {
+	wp.customize( settings + '[typography][field_sublabels_line_height]', function( value ) {
 		value.bind( function( newval ) {
 			field_sub_label.css( 'line-height', newval );
 		} );
 	} );
 
 	// Field Sublabels: margin
-	wp.customize( settings + '[field_sublabel][margin]', function( value ) {
+	wp.customize( settings + '[typography][field_sublabels_margin]', function( value ) {
 		preview_buttons.on( 'click', function() {
 			var control_value = value.get();
 			var active_responsive_device = $(this).data('device');
@@ -642,7 +642,7 @@
 	} );
 
 	// Field Sublabels: padding
-	wp.customize( settings + '[field_sublabel][padding]', function( value ) {
+	wp.customize( settings + '[typography][field_sublabels_padding]', function( value ) {
 		preview_buttons.on( 'click', function() {
 			var control_value = value.get();
 			var active_responsive_device = $(this).data('device');
@@ -673,7 +673,7 @@
 	/* Field Description Start */
 
 	// Field Descriptin: font_size
-	wp.customize( settings + '[field_description][font_size]', function( value ) {
+	wp.customize( settings + '[typography][field_description_font_size]', function( value ) {
 		var default_unit = 'px';
 		value.bind( function( newval ) {
 			field_description.css( 'font-size', newval + default_unit );
@@ -681,14 +681,14 @@
 	} );
 
 	// Field Description: font_color
-	wp.customize( settings + '[field_description][font_color]', function( value ) {
+	wp.customize( settings + '[typography][field_description_font_color]', function( value ) {
 		value.bind( function( newval ) {
 			field_description.css( 'color', newval );
 		} );
 	} );
 
 	// Field Description: font_style
-	wp.customize( settings + '[field_description][font_style]', function( value ) {
+	wp.customize( settings + '[typography][field_description_font_style]', function( value ) {
 		value.bind( function( newval ) {
 			if ( typeof newval != 'object' ) {
 				newval = JSON.parse( newval );
@@ -714,21 +714,21 @@
 	} );
 
 	// Field Description: text_alignment
-	wp.customize( settings + '[field_description][text_alignment]', function( value ) {
+	wp.customize( settings + '[typography][field_description_text_alignment]', function( value ) {
 		value.bind( function( newval ) {
 			field_description.css( 'text-align', newval );
 		} );
 	} );
 
 	// Field Description: line_height
-	wp.customize( settings + '[field_description][line_height]', function( value ) {
+	wp.customize( settings + '[typography][field_description_line_height]', function( value ) {
 		value.bind( function( newval ) {
 			field_description.css( 'line-height', newval );
 		} );
 	} );
 
 	// Field Description: margin
-	wp.customize( settings + '[field_description][margin]', function( value ) {
+	wp.customize( settings + '[typography][field_description_margin]', function( value ) {
 		preview_buttons.on( 'click', function() {
 			var control_value = value.get();
 			var active_responsive_device = $(this).data('device');
@@ -757,7 +757,7 @@
 	} );
 
 	// Field Description: padding
-	wp.customize( settings + '[field_description][padding]', function( value ) {
+	wp.customize( settings + '[typography][field_description_padding]', function( value ) {
 		preview_buttons.on( 'click', function() {
 			var control_value = value.get();
 			var active_responsive_device = $(this).data('device');
@@ -789,7 +789,7 @@
 	/* Field Styles Start */
 
 	// Field Styles: font_size
-	wp.customize( settings + '[field_styles][font_size]', function( value ) {
+	wp.customize( settings + '[typography][field_styles_font_size]', function( value ) {
 		var default_unit = 'px';
 		value.bind( function( newval ) {
 			container.find('input, textarea, select, .evf-payment-total, .evf-single-item-price, .StripeElement').css( 'font-size', newval + default_unit );
@@ -798,7 +798,7 @@
 
 	// Field Styles: font_color
 	var prev_field_style_font_color = '';
-	wp.customize( settings + '[field_styles][font_color]', function( value ) {
+	wp.customize( settings + '[typography][field_styles_font_color]', function( value ) {
 		value.bind( function( newval ) {
 			prev_field_style_font_color = newval;
 			container.find('input, textarea, select, .evf-payment-total, .evf-single-item-price, .StripeElement').css( 'color', newval );
@@ -806,7 +806,7 @@
 	} );
 
 	// Field Styles: placeholder_font_color
-	wp.customize( settings + '[field_styles][placeholder_font_color]', function( value ) {
+	wp.customize( settings + '[typography][field_styles_placeholder_font_color]', function( value ) {
 		var id = container.attr('id');
 		value.bind( function( newval ) {
 			container.find('style#placeholder-'+id).html( addPlaceholderStyles( id, newval ) );
@@ -814,7 +814,7 @@
 	} );
 
 	// Field Styles: font_style
-	wp.customize( settings + '[field_styles][font_style]', function( value ) {
+	wp.customize( settings + '[typography][field_styles_font_style]', function( value ) {
 		value.bind( function( newval ) {
 			var id = container.attr('id');
 			if ( typeof newval != 'object' ) {
@@ -842,7 +842,7 @@
 	} );
 
 	// Field Styles: alignment
-	wp.customize( settings + '[field_styles][alignment]', function( value ) {
+	wp.customize( settings + '[typography][field_styles_alignment]', function( value ) {
 		value.bind( function( newval ) {
 			container.find('input, textarea, .evf-payment-total, .evf-single-item-price').css( 'text-align', newval );
 			container.find('select').css( 'text-align-last', newval );
@@ -857,14 +857,14 @@
 	} );
 
 	// Field Styles: border_type
-	wp.customize( settings + '[field_styles][border_type]', function( value ) {
+	wp.customize( settings + '[typography][field_styles_border_type]', function( value ) {
 		value.bind( function( newval ) {
 			container.find('input, textarea, select, canvas.evf-signature-canvas, .StripeElement').css( 'border-style', newval );
 		} );
 	} );
 
 	// Field Styles: border_width
-	wp.customize( settings + '[field_styles][border_width]', function( value ) {
+	wp.customize( settings + '[typography][field_styles_border_width]', function( value ) {
 		value.bind( function( newval ) {
 			var default_unit = 'px';
 
@@ -882,7 +882,7 @@
 
 	// Field Styles: border_color
 	var prev_border_color='';
-	wp.customize( settings + '[field_styles][border_color]', function( value ) {
+	wp.customize( settings + '[typography][field_styles_border_color]', function( value ) {
 		value.bind( function( newval ) {
 			prev_border_color = newval;
 			container.find('input, textarea, select, canvas.evf-signature-canvas, .StripeElement').css( 'border-color', newval );
@@ -890,7 +890,7 @@
 	} );
 
 	// Field Styles: border_focus_color
-	wp.customize( settings + '[field_styles][border_focus_color]', function( value ) {
+	wp.customize( settings + '[typography][field_styles_border_focus_color]', function( value ) {
 		container.find('input, textarea, select, canvas.evf-signature-canvas, .StripeElement ').on('focus blur', function(e) {
 			if ( 'focus' == e.type ) {
 				var control_value = value.get();
@@ -902,7 +902,7 @@
 	} );
 
 	// Field Styles: border_radius
-	wp.customize( settings + '[field_styles][border_radius]', function( value ) {
+	wp.customize( settings + '[typography][field_styles_border_radius]', function( value ) {
 		value.bind( function( newval ) {
 			if ( typeof newval != 'object' ) {
 				newval = JSON.parse( newval );
@@ -930,14 +930,14 @@
 	} );
 
 	// Field Styles: background_color
-	wp.customize( settings + '[field_styles][background_color]', function( value ) {
+	wp.customize( settings + '[typography][field_styles_background_color]', function( value ) {
 		value.bind( function( newval ) {
 			container.find( 'input, textarea, select, canvas.evf-signature-canvas, .StripeElement' ).css( 'background-color', newval );
 		} );
 	} );
 
 	// Field Styles: margin
-	wp.customize( settings + '[field_styles][margin]', function( value ) {
+	wp.customize( settings + '[typography][field_styles_margin]', function( value ) {
 		preview_buttons.on( 'click', function() {
 			var control_value = value.get();
 			var active_responsive_device = $(this).data('device');
@@ -966,7 +966,7 @@
 	} );
 
 	// Field Styles: padding
-	wp.customize( settings + '[field_styles][padding]', function( value ) {
+	wp.customize( settings + '[typography][field_styles_padding]', function( value ) {
 		preview_buttons.on( 'click', function() {
 			var control_value = value.get();
 			var active_responsive_device = $(this).data('device');
@@ -997,7 +997,7 @@
 	/* File Upload Styles Start */
 
 	// File Upload Styles: font_size
-	wp.customize( settings + '[file_upload_styles][font_size]', function( value ) {
+	wp.customize( settings + '[typography][file_upload_font_size]', function( value ) {
 		var default_unit = 'px';
 		value.bind( function( newval ) {
 			container.find('.everest-forms-uploader .everest-forms-upload-title, .everest-forms-uploader .everest-forms-upload-hint, .everest-forms-uploader .dz-details, .everest-forms-uploader .dz-error-message').css( 'font-size', newval + default_unit );
@@ -1006,7 +1006,7 @@
 
 	// File Upload Styles: font_color
 	var prev_file_upload_style_font_color = '';
-	wp.customize( settings + '[file_upload_styles][font_color]', function( value ) {
+	wp.customize( settings + '[typography][file_upload_font_color]', function( value ) {
 		value.bind( function( newval ) {
 			prev_file_upload_style_font_color = newval;
 			container.find('.everest-forms-uploader .everest-forms-upload-title, .everest-forms-uploader .everest-forms-upload-hint, .everest-forms-uploader .dz-details').css( 'color', newval );
@@ -1014,14 +1014,14 @@
 	} );
 
 	// File Upload Styles: background_color
-	wp.customize( settings + '[file_upload_styles][background_color]', function( value ) {
+	wp.customize( settings + '[typography][file_upload_background_color]', function( value ) {
 		value.bind( function( newval ) {
 			container.find( '.everest-forms-uploader' ).css( 'background-color', newval );
 		} );
 	} );
 
 	// File Upload Icon Styles: background_color
-	wp.customize( settings + '[file_upload_styles][icon_background_color]', function( value ) {
+	wp.customize( settings + '[typography][file_upload_icon_background_color]', function( value ) {
 		value.bind( function( newval ) {
 			container.find( '.everest-forms-uploader .dz-message > svg' ).css( 'background-color', newval );
 		} );
@@ -1029,7 +1029,7 @@
 
 	// File Upload Icon Styles: fill_color
 	var prev_file_upload_style_icon_fill_color = '';
-	wp.customize( settings + '[file_upload_styles][icon_color]', function( value ) {
+	wp.customize( settings + '[typography][file_upload_icon_color]', function( value ) {
 		value.bind( function( newval ) {
 			prev_file_upload_style_icon_fill_color = newval;
 			container.find('.everest-forms-uploader .dz-message > svg').css( 'fill', newval );
@@ -1037,14 +1037,14 @@
 	} );
 
 	// File Upload Styles: border_type
-	wp.customize( settings + '[file_upload_styles][border_type]', function( value ) {
+	wp.customize( settings + '[typography][file_upload_border_type]', function( value ) {
 		value.bind( function( newval ) {
 			container.find('.everest-forms-uploader').css( 'border-style', newval );
 		} );
 	} );
 
 	// File Upload Styles: border_width
-	wp.customize( settings + '[file_upload_styles][border_width]', function( value ) {
+	wp.customize( settings + '[typography][file_upload_border_width]', function( value ) {
 		value.bind( function( newval ) {
 			var default_unit = 'px';
 
@@ -1062,7 +1062,7 @@
 
 	// File Upload Styles: border_color
 	var prev_border_color='';
-	wp.customize( settings + '[file_upload_styles][border_color]', function( value ) {
+	wp.customize( settings + '[typography][file_upload_border_color]', function( value ) {
 		value.bind( function( newval ) {
 			prev_border_color = newval;
 			container.find('.everest-forms-uploader').css( 'border-color', newval );
@@ -1070,7 +1070,7 @@
 	} );
 
 	// File Upload Styles: border_radius
-	wp.customize( settings + '[file_upload_styles][border_radius]', function( value ) {
+	wp.customize( settings + '[typography][file_upload_border_radius]', function( value ) {
 		value.bind( function( newval ) {
 			if ( typeof newval != 'object' ) {
 				newval = JSON.parse( newval );
@@ -1098,7 +1098,7 @@
 	} );
 
 	// File Upload Styles: margin
-	wp.customize( settings + '[file_upload_styles][margin]', function( value ) {
+	wp.customize( settings + '[typography][file_upload_margin]', function( value ) {
 		preview_buttons.on( 'click', function() {
 			var control_value = value.get();
 			var active_responsive_device = $(this).data('device');
@@ -1127,7 +1127,7 @@
 	} );
 
 	// File Upload Styles: padding
-	wp.customize( settings + '[file_upload_styles][padding]', function( value ) {
+	wp.customize( settings + '[typography][file_upload_padding]', function( value ) {
 		preview_buttons.on( 'click', function() {
 			var control_value = value.get();
 			var active_responsive_device = $(this).data('device');
@@ -1156,7 +1156,7 @@
 	/* Checkbox and Radio Styles Starts */
 
 	// Checkbox and Radio: font_size
-	wp.customize( settings + '[checkbox_radio_styles][font_size]', function( value ) {
+	wp.customize( settings + '[checkbox_radio_styles][checkbox_radio_font_size]', function( value ) {
 		var default_unit = 'px';
 		value.bind( function( newval ) {
 			container.find('input[type="radio"] + label, input[type="checkbox"] + label').css( 'font-size', newval + default_unit );
@@ -1164,7 +1164,7 @@
 	} );
 
 	// Checkbox and Radio: font_style
-	wp.customize( settings + '[checkbox_radio_styles][font_style]', function( value ) {
+	wp.customize( settings + '[checkbox_radio_styles][checkbox_radio_font_style]', function( value ) {
 		value.bind( function( newval ) {
 			if ( typeof newval != 'object' ) {
 				newval = JSON.parse( newval );
@@ -1190,14 +1190,14 @@
 	} );
 
 	// Checkbox and Radio: font_color
-	wp.customize( settings + '[checkbox_radio_styles][font_color]', function( value ) {
+	wp.customize( settings + '[typography][checkbox_radio_font_color]', function( value ) {
 		value.bind( function( newval ) {
 			container.find('input[type="radio"] + label, input[type="checkbox"] + label').css( 'color', newval );
 		} );
 	} );
 
 	// Checkbox and Radio Styles: alignment
-	wp.customize( settings + '[checkbox_radio_styles][alignment]', function( value ) {
+	wp.customize( settings + '[typography][checkbox_radio_alignment]', function( value ) {
 		value.bind( function( newval ) {
 			container.find('.evf-field-checkbox ul li, .evf-field-radio ul li, .evf-field-payment-multiple ul li, .evf-field-payment-checkbox ul li').css( 'text-align', newval );
 
@@ -1211,13 +1211,13 @@
 	} );
 
 	// Checkbox and Radio Styles: margin
-	wp.customize( settings + '[checkbox_radio_styles][margin]', function( value ) {
+	wp.customize( settings + '[typography][checkbox_radio_margin]', function( value ) {
 		var inline_style = 'default';
 		preview_buttons.on( 'click', function() {
 			var control_value = value.get();
 			var active_responsive_device = $(this).data('device');
 			var default_unit = 'px';
-			wp.customize( settings + '[checkbox_radio_styles][inline_style]', function( value ) {
+			wp.customize( settings + '[typography][inline_style]', function( value ) {
 				inline_style = value.get();
 			});
 
@@ -1235,7 +1235,7 @@
 		value.bind( function( newval ) {
 			var default_unit = 'px';
 			var active_responsive_device = controls_wrapper.find( '#customize-footer-actions .devices button.active' ).data('device');
-			wp.customize( settings + '[checkbox_radio_styles][inline_style]', function( value ) {
+			wp.customize( settings + '[typography][inline_style]', function( value ) {
 				inline_style = value.get();
 			});
 
@@ -1253,7 +1253,7 @@
 	} );
 
 	// Checkbox and Radio Styles: padding
-	wp.customize( settings + '[checkbox_radio_styles][padding]', function( value ) {
+	wp.customize( settings + '[typography][checkbox_radio_padding]', function( value ) {
 		preview_buttons.on( 'click', function() {
 			var control_value = value.get();
 			var active_responsive_device = $(this).data('device');
@@ -1280,7 +1280,7 @@
 	} );
 
 	// Checkbox and Radio Styles: default_style, inline_style, two_columns_style
-	wp.customize( settings + '[checkbox_radio_styles][inline_style]', function( value ) {
+	wp.customize( settings + '[typography][checkbox_radio_inline_style]', function( value ) {
 		value.bind( function( newval ) {
 			var ul = container.find('.evf-field-checkbox ul, .evf-field-radio ul, .evf-field-payment-multiple ul, .evf-field-payment-checkbox ul');
 			ul.addClass(newval);
@@ -1329,20 +1329,20 @@
 	} );
 
 	// Checkbox and Radio Styles: design_style
-	wp.customize( settings + '[checkbox_radio_styles][style_variation]', function( value ) {
+	wp.customize( settings + '[typography][checkbox_radio_style_variation]', function( value ) {
 		var id = container.attr('id');
 		value.bind( function( newval ) {
 			var size = 0;
 			var color = '';
 			var checked_color = '';
-			wp.customize( settings + '[checkbox_radio_styles][size]', function( value ) {
+			wp.customize( settings + '[typography][checkbox_radio_size]', function( value ) {
 				var default_unit = 'px';
 				size = value.get() + default_unit;
 			} );
-			wp.customize( settings + '[checkbox_radio_styles][color]', function( value ) {
+			wp.customize( settings + '[typography][checkbox_radio_color]', function( value ) {
 				color = value.get();
 			});
-			wp.customize( settings + '[checkbox_radio_styles][checked_color]', function( value ) {
+			wp.customize( settings + '[typography][checkbox_radio_checked_color]', function( value ) {
 				checked_color = value.get();
 			});
 			var input = container.find('input[type="radio"], input[type="checkbox"]');
@@ -1422,7 +1422,7 @@
 	} );
 
 	// Checkbox and Radio: size
-	wp.customize( settings + '[checkbox_radio_styles][size]', function( value ) {
+	wp.customize( settings + '[typography][checkbox_radio_size]', function( value ) {
 		var default_unit = 'px';
 		value.bind( function( newval ) {
 			container.find('input[type="radio"], input[type="checkbox"]').css( {'width': newval + default_unit, 'height': newval + default_unit });
@@ -1430,10 +1430,10 @@
 	} );
 
 	// Checkbox and Radio: color
-	wp.customize( settings + '[checkbox_radio_styles][color]', function( value ) {
+	wp.customize( settings + '[typography][checkbox_radio_color]', function( value ) {
 		var style_variation = 'default';
 		value.bind( function( newval ) {
-			wp.customize( settings + '[checkbox_radio_styles][style_variation]', function( value ) {
+			wp.customize( settings + '[checkbox_radio_styles][checkbox_radio_style_variation]', function( value ) {
 				style_variation = value.get();
 			});
 			if( 'outline' === style_variation ){
@@ -1447,15 +1447,15 @@
 	} );
 
 	// Checkbox and Radio: checked_color
-	wp.customize( settings + '[checkbox_radio_styles][checked_color]', function( value ) {
+	wp.customize( settings + '[typography][checkbox_radio_checked_color]', function( value ) {
 		var id = container.attr('id');
 		var style_variation = 'default';
 		var color = '';
 		value.bind( function( newval ) {
-			wp.customize( settings + '[checkbox_radio_styles][color]', function( value ) {
+			wp.customize( settings + '[typography][checkbox_radio_color]', function( value ) {
 				color = value.get();
 			});
-			wp.customize( settings + '[checkbox_radio_styles][style_variation]', function( value ) {
+			wp.customize( settings + '[typography][checkbox_radio_style_variation]', function( value ) {
 				style_variation = value.get();
 			});
 			if( 'outline' === style_variation ){
@@ -1473,7 +1473,7 @@
 	/* Section Title Start */
 
 	// Section Title: font_size
-	wp.customize( settings + '[section_title][font_size]', function( value ) {
+	wp.customize( settings + '[typography][section_title_font_size]', function( value ) {
 		var default_unit = 'px';
 		value.bind( function( newval ) {
 			section_title.css( 'font-size', newval + default_unit );
@@ -1481,14 +1481,14 @@
 	} );
 
 	// Section Title: font_color
-	wp.customize( settings + '[section_title][font_color]', function( value ) {
+	wp.customize( settings + '[typography][section_title_font_color]', function( value ) {
 		value.bind( function( newval ) {
 			section_title.css( 'color', newval );
 		} );
 	} );
 
 	// Section Title: font_style
-	wp.customize( settings + '[section_title][font_style]', function( value ) {
+	wp.customize( settings + '[typography][section_title_font_style]', function( value ) {
 		value.bind( function( newval ) {
 			var id = container.attr('id');
 			if ( typeof newval != 'object' ) {
@@ -1516,21 +1516,21 @@
 	} );
 
 	// Section Title: text_alignment
-	wp.customize( settings + '[section_title][text_alignment]', function(value) {
+	wp.customize( settings + '[typography][section_title_text_alignment]', function(value) {
 		value.bind( function ( newval ) {
 			section_title.css( 'text-align', newval );
 		} );
 	} );
 
 	// Section Title: line_height
-	wp.customize( settings + '[section_title][line_height]', function(value) {
+	wp.customize( settings + '[typography][section_title_line_height]', function(value) {
 		value.bind( function ( newval ) {
 			section_title.css( 'line-height', newval );
 		} );
 	} );
 
 	// Section Title: margin
-	wp.customize( settings + '[section_title][margin]', function(value) {
+	wp.customize( settings + '[typography][section_title_margin]', function(value) {
 		preview_buttons.on( 'click', function () {
 			var control_value = value.get();
 			var active_responsive_device = $( this ).data( 'device' );
@@ -1558,7 +1558,7 @@
 	} );
 
 	// Section Title: padding
-	wp.customize( settings + '[section_title][padding]', function( value ) {
+	wp.customize( settings + '[typography][section_title_padding]', function( value ) {
 		preview_buttons.on( 'click', function() {
 			var control_value = value.get();
 			var active_responsive_device = $(this).data('device');
@@ -1590,7 +1590,7 @@
 	/* Button Styles Start */
 
 	// Button Styles: font_size
-	wp.customize( settings + '[button][font_size]', function( value ) {
+	wp.customize( settings + '[typography][button_font_size]', function( value ) {
 		var default_unit = 'px';
 		value.bind( function( newval ) {
 			button.css( 'font-size', newval + default_unit );
@@ -1598,7 +1598,7 @@
 	} );
 
 	// Button Styles: font_style
-	wp.customize( settings + '[button][font_style]', function( value ) {
+	wp.customize( settings + '[typography][button_font_style]', function( value ) {
 		value.bind( function( newval ) {
 			if ( typeof newval != 'object' ) {
 				newval = JSON.parse( newval );
@@ -1625,7 +1625,7 @@
 
 	// Button Styles: font_color
 	var button_pev_hover_font_color = '';
-	wp.customize( settings + '[button][font_color]', function( value ) {
+	wp.customize( settings + '[typography][button_font_color]', function( value ) {
 		value.bind( function( newval ) {
 			button_pev_hover_font_color = newval;
 			button.css( 'color', newval );
@@ -1633,7 +1633,7 @@
 	} );
 
 	// Button Styles: hover_font_color
-	wp.customize( settings + '[button][hover_font_color]', function( value ) {
+	wp.customize( settings + '[typography][button_hover_font_color]', function( value ) {
 		button.on( 'mouseover mouseleave', function(e) {
 			if ( 'mouseover' == e.type ) {
 				var control_value = value.get();
@@ -1646,7 +1646,7 @@
 
 	// Button Styles: background_color
 	var button_pev_color = '';
-	wp.customize( settings + '[button][background_color]', function( value ) {
+	wp.customize( settings + '[typography][button_background_color]', function( value ) {
 		value.bind( function( newval ) {
 			button_pev_color = newval;
 			button.css( 'background-color', newval );
@@ -1654,7 +1654,7 @@
 	} );
 
 	// Button Styles: hover_background_color
-	wp.customize( settings + '[button][hover_background_color]', function( value ) {
+	wp.customize( settings + '[typography][button_hover_background_color]', function( value ) {
 		button.on( 'mouseover mouseleave', function(e) {
 			if ( 'mouseover' == e.type ) {
 				var control_value = value.get();
@@ -1666,21 +1666,21 @@
 	} );
 
 	// Button Styles: alignment
-	wp.customize( settings + '[button][alignment]', function( value ) {
+	wp.customize( settings + '[typography][button_alignment]', function( value ) {
 		value.bind( function( newval ) {
 			container.find('.evf-submit-container:not(.everest-forms-multi-part-actions)').css( 'text-align', newval );
 		} );
 	} );
 
 	// Button Styles: border_type
-	wp.customize( settings + '[button][border_type]', function( value ) {
+	wp.customize( settings + '[typography][button_border_type]', function( value ) {
 		value.bind( function( newval ) {
 			button.css( 'border-style', newval );
 		} );
 	} );
 
 	// Button Styles: border_width
-	wp.customize( settings + '[button][border_width]', function( value ) {
+	wp.customize( settings + '[typography][button_border_width]', function( value ) {
 		value.bind( function( newval ) {
 			var default_unit = 'px';
 			if ( typeof newval != 'object' ) {
@@ -1696,7 +1696,7 @@
 
 	// Button Styles: border_color
 	var button_pev_border_hover_color = '';
-	wp.customize( settings + '[button][border_color]', function( value ) {
+	wp.customize( settings + '[typography][button_border_color]', function( value ) {
 		value.bind( function( newval ) {
 			button_pev_border_hover_color = newval;
 			button.css( 'border-color', newval );
@@ -1704,7 +1704,7 @@
 	} );
 
 	// Button Styles: border_hover_color
-	wp.customize( settings + '[button][border_hover_color]', function( value ) {
+	wp.customize( settings + '[typography][button_border_hover_color]', function( value ) {
 		button.on( 'mouseover mouseleave', function(e) {
 			if ( 'mouseover' == e.type ) {
 				var control_value = value.get();
@@ -1716,7 +1716,7 @@
 	} );
 
 	// Button Styles: border_radius
-	wp.customize( settings + '[button][border_radius]', function( value ) {
+	wp.customize( settings + '[typography][button_border_radius]', function( value ) {
 		value.bind( function( newval ) {
 			if ( typeof newval != 'object' ) {
 				newval = JSON.parse( newval );
@@ -1744,14 +1744,14 @@
 	} );
 
 	// Button Styles: line_height
-	wp.customize( settings + '[button][line_height]', function( value ) {
+	wp.customize( settings + '[typography][button_line_height]', function( value ) {
 		value.bind( function( newval ) {
 			button.css( 'line-height', newval );
 		} );
 	} );
 
 	// Button Styles: margin
-	wp.customize( settings + '[button][margin]', function( value ) {
+	wp.customize( settings + '[typography][button_margin]', function( value ) {
 		preview_buttons.on( 'click', function() {
 			var control_value = value.get();
 			var active_responsive_device = $(this).data('device');
@@ -1783,7 +1783,7 @@
 	} );
 
 	// Button Styles: padding
-	wp.customize( settings + '[button][padding]', function( value ) {
+	wp.customize( settings + '[typography][button_padding]', function( value ) {
 		preview_buttons.on( 'click', function() {
 			var control_value = value.get();
 			var active_responsive_device = $(this).data('device');
@@ -2222,18 +2222,5 @@
 				});
 			});
 		});
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 } )( jQuery, _evfCustomizePreviewL10n );

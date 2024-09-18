@@ -169,7 +169,7 @@
 						]
 					}
 				  ];
-				  
+
 				  globalSelectors.forEach(function(group) {
 					group.selectors.forEach(function(selector) {
 					  var allSelector = '#customize-control-everest_forms_styles-' + formId + selector;
@@ -178,7 +178,7 @@
 				  });
 				  $(fieldLabelSelectorStart).nextUntil(fieldLabelSelectorEnd).addBack().add(fieldLabelSelectorEnd).wrapAll('<ul class="wpeverest-typography-wrapper "></ul>');
 				  $(subfieldLabelSelectorStart).nextUntil(subfieldLabelSelectorEnd).addBack().add(subfieldLabelSelectorEnd).wrapAll('<ul class="wpeverest-typography-wrapper "></ul>');
-				
+
 			}, 3000);
 		}
 
@@ -530,41 +530,44 @@
             control.setting.set(val);
         },
 
-        showEditInterface: function () {
-            var control = this;
-            var editInterfaceHtml = `
-                <div class="color-palette-edit-interface">
-                    <input type="text" class="color-palette-name-input" value="${control.params.label}" />
-                    <div class="color-palette-items">
-                        ${Object.keys(control.params.choices).map(key => `
-                            <div class="color-palette-edit-item">
-                                <label for="color-edit-${control.params.id}-${key}">${control.params.choices[key].name}</label>
-                                <input id="color-edit-${control.params.id}-${key}" type="text" value="${control.params.choices[key].color}" class="color-picker"/>
-                            </div>
-                        `).join('')}
-                    </div>
-                    <button class="color-palette-save-button">Save</button>
-                </div>
-            `;
+		showEditInterface: function () {
+			var control = this;
+			console.log(control);
+			var editInterfaceHtml = `
+				<div class="color-palette-edit-interface">
+					<input type="text" class="color-palette-name-input" value="${control.params.label}" />
+					<div class="color-palette-items">
+						${Object.keys(control.params.choices).map(key => `
+							<div class="color-palette-edit-item">
+								<label for="color-edit-${control.params.id}-${key}">
+									${control.params.choices[key].name.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+								</label>
+								<input id="color-edit-${control.params.id}-${key}" type="text" value="${control.params.choices[key].color}" class="color-picker"/>
+							</div>
+						`).join('')}
+					</div>
+					<button class="color-palette-save-button">Save</button>
+				</div>
+			`;
 
-            // Append the edit interface to the control container
-            control.container.find('.color-palette-edit-interface').remove(); // Remove any existing edit interface
-            control.container.append(editInterfaceHtml);
+			control.container.find('.color-palette-edit-interface').remove();
+			control.container.append(editInterfaceHtml);
 
-            // Initialize color pickers
-            control.container.find('.color-picker').wpColorPicker();
+			// Initialize color pickers
+			control.container.find('.color-picker').wpColorPicker();
 
-            // Handle save button click
-            control.container.on('click', '.color-palette-save-button', function () {
-                control.saveEditedColors();
-            });
+			// Handle save button click
+			control.container.on('click', '.color-palette-save-button', function () {
+				control.saveEditedColors();
+			});
 
-            // Handle palette name change
-            control.container.find('.color-palette-name-input').on('change', function () {
-                control.params.label = $(this).val();
-                control.showEditInterface();
-            });
-        },
+			// Handle palette name change
+			control.container.find('.color-palette-name-input').on('change', function () {
+				control.params.label = $(this).val();
+				control.showEditInterface();
+			});
+		},
+
 
         saveEditedColors: function () {
             var control = this;
