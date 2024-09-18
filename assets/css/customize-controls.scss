@@ -1037,6 +1037,16 @@ $inputBorderColor: #CCCCCC;
 					}
 				}
 
+				&-evf-color_palette {
+					.color-palette-edit-interface {
+						.color-palette-edit-item {
+							> label {
+								font-weight: 500;
+							}
+						}
+					}
+				}
+
 				select {
 					border: 1px solid $inputBorderColor;
 				}
