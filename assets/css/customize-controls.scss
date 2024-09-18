@@ -892,7 +892,7 @@ $inputBorderColor: #CCCCCC;
 							left: unset;
 						}
 					}
-				}  
+				}
 				
 				&.customize-control-evf-select2 {
 					.customize-control-title {
@@ -1035,6 +1035,10 @@ $inputBorderColor: #CCCCCC;
 							}
 						}
 					}
+				}
+
+				select {
+					border: 1px solid $inputBorderColor;
 				}
 			}
 
