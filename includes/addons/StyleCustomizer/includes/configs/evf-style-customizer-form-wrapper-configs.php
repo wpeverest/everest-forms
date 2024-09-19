@@ -1436,15 +1436,15 @@ function evf_style_customizer_wrapper_controls( $controls, $customize ) {
 				'choices'     => array(
 					'left'   => array(
 						'name'  => esc_html__( 'Left', 'everest-forms-style-customizer' ),
-						'image' => plugins_url( 'assets/images/align-left.svg', EVF_PLUGIN_FILE ),
+						'image' => plugins_url( 'includes/addons/StyleCustomizer/assets/images/align-left.svg', EVF_PLUGIN_FILE ),
 					),
 					'center' => array(
 						'name'  => esc_html__( 'Center', 'everest-forms-style-customizer' ),
-						'image' => plugins_url( 'assets/images/align-center.svg', EVF_PLUGIN_FILE ),
+						'image' => plugins_url( 'includes/addons/StyleCustomizer/assets/images/align-center.svg', EVF_PLUGIN_FILE ),
 					),
 					'right'  => array(
 						'name'  => esc_html__( 'Right', 'everest-forms-style-customizer' ),
-						'image' => plugins_url( 'assets/images/align-right.svg', EVF_PLUGIN_FILE ),
+						'image' => plugins_url( 'includes/addons/StyleCustomizer/assets/images/align-right.svg', EVF_PLUGIN_FILE ),
 					),
 				),
 			),
