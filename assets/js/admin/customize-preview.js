@@ -18,8 +18,8 @@
             var parentLi = $(this).closest('.customize-control-evf-color_palette');
             parentLi.find('input[type="checkbox"]:checked').each(function() {
                 var color = $(this).val();
-                var dataKey = $(this).data('key');
-				switch (dataKey) {
+                var colorElements = $(this).data('title');
+				switch (colorElements) {
                     case 'form_background':
 						container.css( 'background-color', color );
                         break;
