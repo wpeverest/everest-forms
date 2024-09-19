@@ -864,7 +864,7 @@
 	} );
 
 	// Field Styles: border_width
-	wp.customize( settings + '[typography][field_styles_border_width]', function( value ) {
+	wp.customize( settings + '[field_styles][border_width]', function( value ) {
 		value.bind( function( newval ) {
 			var default_unit = 'px';
 
@@ -902,7 +902,7 @@
 	} );
 
 	// Field Styles: border_radius
-	wp.customize( settings + '[typography][field_styles_border_radius]', function( value ) {
+	wp.customize( settings + '[field_styles][border_radius]', function( value ) {
 		value.bind( function( newval ) {
 			if ( typeof newval != 'object' ) {
 				newval = JSON.parse( newval );
@@ -1044,7 +1044,7 @@
 	} );
 
 	// File Upload Styles: border_width
-	wp.customize( settings + '[typography][file_upload_border_width]', function( value ) {
+	wp.customize( settings + '[file_upload_styles][border_width]', function( value ) {
 		value.bind( function( newval ) {
 			var default_unit = 'px';
 
@@ -1070,7 +1070,7 @@
 	} );
 
 	// File Upload Styles: border_radius
-	wp.customize( settings + '[typography][file_upload_border_radius]', function( value ) {
+	wp.customize( settings + '[file_upload_styles][border_radius]', function( value ) {
 		value.bind( function( newval ) {
 			if ( typeof newval != 'object' ) {
 				newval = JSON.parse( newval );
@@ -1716,7 +1716,7 @@
 	} );
 
 	// Button Styles: border_radius
-	wp.customize( settings + '[typography][button_border_radius]', function( value ) {
+	wp.customize( settings + '[button][border_radius]', function( value ) {
 		value.bind( function( newval ) {
 			if ( typeof newval != 'object' ) {
 				newval = JSON.parse( newval );
@@ -1742,6 +1742,24 @@
 			} );
 		} );
 	} );
+
+		// Button Styles: border_width
+		wp.customize( settings + '[button][border_width]', function( value ) {
+			value.bind( function( newval ) {
+				var default_unit = 'px';
+
+				if ( typeof newval != 'object' ) {
+					newval = JSON.parse( newval );
+				}
+
+				$.each( newval, function( prop, val ) {
+					if ( dimension_directions.indexOf( prop ) != -1 ) {
+						button.css( 'border-' + prop + '-width', val + default_unit );
+					}
+				} );
+			} );
+		} );
+
 
 	// Button Styles: line_height
 	wp.customize( settings + '[typography][button_line_height]', function( value ) {

@@ -182,7 +182,7 @@ function evf_style_customizer_wrapper_controls( $controls, $customize ) {
 				),
 			),
 		),
-		'border_width'  => array(
+		'border_width'          => array(
 			'setting' => array(
 				'default' => array(
 					'top'    => 1,
@@ -1406,19 +1406,19 @@ function evf_style_customizer_wrapper_controls( $controls, $customize ) {
 				'choices'     => array(
 					'bold'      => array(
 						'name'  => esc_html__( 'Bold', 'everest-forms-style-customizer' ),
-						'image' => plugins_url( 'assets/images/bold.svg', EVF_PLUGIN_FILE ),
+						'image' => plugins_url( 'includes/addons/StyleCustomizer/assets/images/bold.svg', EVF_PLUGIN_FILE ),
 					),
 					'italic'    => array(
 						'name'  => esc_html__( 'Italic', 'everest-forms-style-customizer' ),
-						'image' => plugins_url( 'assets/images/italic.svg', EVF_PLUGIN_FILE ),
+						'image' => plugins_url( 'includes/addons/StyleCustomizer/assets/images/italic.svg', EVF_PLUGIN_FILE ),
 					),
 					'underline' => array(
 						'name'  => esc_html__( 'Underline', 'everest-forms-style-customizer' ),
-						'image' => plugins_url( 'assets/images/underline.svg', EVF_PLUGIN_FILE ),
+						'image' => plugins_url( 'includes/addons/StyleCustomizer/assets/images/underline.svg', EVF_PLUGIN_FILE ),
 					),
 					'uppercase' => array(
 						'name'  => esc_html__( 'Uppercase', 'everest-forms-style-customizer' ),
-						'image' => plugins_url( 'assets/images/uppercase.svg', EVF_PLUGIN_FILE ),
+						'image' => plugins_url( 'includes/addons/StyleCustomizer/assets/images/uppercase.svg', EVF_PLUGIN_FILE ),
 					),
 				),
 			),
