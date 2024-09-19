@@ -825,8 +825,6 @@
     "data": {
       "wrapper": {
         "border_type": "none",
-        "background_color": "#ffff",
-        "background_image": "",
         "border_radius": {
           "top": "20",
           "right": "20",
@@ -1072,8 +1070,6 @@
     "data": {
       "wrapper": {
         "border_type": "none",
-        "background_color": "#ffff",
-        "background_image": "",
         "border_radius": {
           "top": "20",
           "right": "20",
@@ -1192,8 +1188,6 @@
     "data": {
       "wrapper": {
         "border_type": "none",
-        "background_color": "#ffff",
-        "background_image": "",
         "border_radius": {
           "top": "20",
           "right": "20",
@@ -1312,8 +1306,6 @@
     "data": {
       "wrapper": {
         "border_type": "none",
-        "background_color": "#ffff",
-        "background_image": "",
         "border_radius": {
           "top": "20",
           "right": "20",
@@ -1436,12 +1428,10 @@
   },
   "layout-nine": {
     "name": "In-Line Flair",
-    "image": "https://raw.githubusercontent.com/wpeverest/everest-forms-style-templates/main/images/in-line-flair.png",
+    "image": "https://raw.githubusercontent.com/wpeverest/everest-forms-style-templates/main/images/ln-line-flair.png",
     "data": {
       "wrapper": {
         "border_type": "none",
-        "background_color": "#ffff",
-        "background_image": "",
         "border_radius": {
           "top": "20",
           "right": "20",
@@ -1568,8 +1558,6 @@
     "data": {
       "wrapper": {
         "border_type": "none",
-        "background_color": "#ffff",
-        "background_image": "",
         "border_radius": {
           "top": "20",
           "right": "20",
@@ -1684,7 +1672,7 @@
   },
   "layout-twelve": {
     "name": "Curved Canvas",
-    "image": "https://raw.githubusercontent.com/wpeverest/everest-forms-style-templates/main/images/curved_canvas.png",
+    "image": "https://raw.githubusercontent.com/wpeverest/everest-forms-style-templates/main/images/curved-canvas.png",
     "data": {
       "wrapper": {
         "border_type": "none",
