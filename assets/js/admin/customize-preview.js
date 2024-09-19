@@ -184,9 +184,6 @@
 	wp.customize( settings + '[template]', function( value ) {
 		value.bind( function( newval ) {
 			controls_wrapper.find( '.control-section-evf-templates' ).find( '.customize-template-name' ).text( data.templates[ newval ] );
-			// controls_wrapper.find('input[name="image-radio-everest_forms_styles[563][template]"]').parent().hover(function() {
-
-			// });
 		} );
 	} );
 

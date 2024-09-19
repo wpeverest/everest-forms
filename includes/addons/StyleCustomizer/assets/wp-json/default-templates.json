@@ -1230,6 +1230,8 @@
         "font_size": "16",
         "border_color": "#edeef5",
         "background_color": "#edeef5",
+        "width" :"290",
+        "height":"50px",
         "border_width": {
           "top": "2",
           "right": "2",
