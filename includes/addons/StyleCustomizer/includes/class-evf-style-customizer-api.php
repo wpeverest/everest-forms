@@ -232,15 +232,11 @@ class EVF_Style_Customizer_API {
 	 */
 	public static function get_templates() {
 
-		$styles = get_option( 'evf_style_templates' );
+		$styles_raw = evf_file_get_contents( '/includes/addons/StyleCustomizer/assets/wp-json/default-templates.json' );
 
-		if ( empty( $styles ) ) {
-			$styles_raw = evf_file_get_contents( '/includes/addons/StyleCustomizer/assets/wp-json/default-templates.json' );
-
-			if ( $styles_raw ) {
-				update_option( 'evf_style_templates', $styles_raw );
-				$styles = $styles_raw;
-			}
+		if ( $styles_raw ) {
+			update_option( 'evf_style_templates', $styles_raw );
+			$styles = $styles_raw;
 		}
 
 		return apply_filters( 'evf_style_templates', json_decode( $styles ) );
