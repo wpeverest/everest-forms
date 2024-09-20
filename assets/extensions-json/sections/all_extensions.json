@@ -80,7 +80,7 @@
         "agency",
         "themegrill agency"
       ],
-      "setting_url" : "admin.php?page=evf-settings&tab=pdf-submission",
+      "setting_url": "admin.php?page=evf-settings&tab=pdf-submission",
       "demo_video_url": "37CtaxJzYis",
       "popular_rank": 4
     },
@@ -835,7 +835,7 @@
         "themegrill agency"
       ],
       "setting_url": "",
-       "demo_video_url": ""
+      "demo_video_url": ""
     },
     {
       "title": "Aweber",
@@ -851,7 +851,7 @@
         "themegrill agency"
       ],
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=aweber",
-       "demo_video_url": ""
+      "demo_video_url": ""
     },
     {
       "title": "Calculations",
@@ -869,6 +869,23 @@
       "setting_url": "",
       "demo_video_url": "WCsHC7NQ2QQ",
       "popular_rank": 16
+    },
+    {
+      "title": "GetGist",
+      "slug": "everest-forms-getgist",
+      "name": "Everest Forms GetGist",
+      "image": "extensions-json/sections/images/brevo.webp",
+      "excerpt": "Connect newsletters, SMTP, marketing automation, and all your CRM tools in one place with GetGist integration (formerly Sendinblue) for Everest Forms.",
+      "link": "https://docs.everestforms.net/docs/getgist/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "released_date": "xx/xx/2024",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=getgist",
+      "demo_video_url": "d2Ujl82OJuA",
+      "popular_rank": "xx"
     }
   ]
 }
