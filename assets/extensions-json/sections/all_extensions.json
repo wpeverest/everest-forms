@@ -874,8 +874,8 @@
       "title": "GetGist",
       "slug": "everest-forms-getgist",
       "name": "Everest Forms GetGist",
-      "image": "extensions-json/sections/images/brevo.webp",
-      "excerpt": "Connect newsletters, SMTP, marketing automation, and all your CRM tools in one place with GetGist integration (formerly Sendinblue) for Everest Forms.",
+      "image": "extensions-json/sections/images/getgist.png",
+      "excerpt": "GetGist is a marketing platform that combines email marketing, SMS campaigns, marketing automation, and CRM tools. It helps businesses streamline their marketing efforts, automate workflows, and analyze performance in one place.",
       "link": "https://docs.everestforms.net/docs/getgist/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
       "released_date": "xx/xx/2024",
       "plan": [
