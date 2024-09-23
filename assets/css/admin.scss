@@ -9610,6 +9610,7 @@ img.ui-datepicker-trigger {
 					display: flex;
 					align-items: center;
 					gap: 6px;
+					// float: right;
 
 					.evf-toggle-section {
 						.everest-forms-toggle-form {
@@ -9628,6 +9629,9 @@ img.ui-datepicker-trigger {
 
 			.everest-forms-options-header {
 				margin-bottom: 32px;
+				// float: left;
+				// width: 100%;
+				// margin-top: -28px;
 
 				&--top {
 					display: flex;
@@ -9673,6 +9677,7 @@ img.ui-datepicker-trigger {
 				flex-direction: column;
 				gap: 24px;
 				margin-bottom: 40px;
+				// width: 100%;
 
 				.everest-forms-global-settings {
 					margin-bottom: 0;
@@ -10183,13 +10188,101 @@ body {
 	&.evf-premium-sidebar-show {
 		.everest-forms-settings-premium-sidebar {
 			display: block;
-			width: 300px;
-			max-width: 100%;
-			padding: 18px 10px 26px 10px;
+			width: 100%;
+			max-width: 300px;
+			padding: 24px 8px 26px;
 			transition: all 0.3s;
 
 			@media screen and (max-width: 1180px) {
-				width: 100%;
+				max-width: 100%;
+			}
+
+			> {
+				h2 {
+					margin-top: 0;
+					color: #222222;
+					font-size: 20px;
+					font-weight: 600;
+					line-height: 28px;
+					padding-bottom: 16px;
+					margin-bottom: 20px;
+					border-bottom: 1px solid #dbdbdb;
+				}
+
+				p {
+					margin-top: 0;
+					color: #383838;
+					font-size: 15px;
+					font-weight: 400;
+					line-height: 25px;
+					margin-bottom: 20px;
+				}
+
+				h3 {
+					margin-top: 0;
+					color: #383838;
+					font-size: 18px;
+					font-weight: 600;
+					line-height: 28px;
+					margin-bottom: 16px;
+				}
+
+				ul {
+					margin-top: 0;
+					margin-bottom: 28px;
+					display: flex;
+					flex-direction: column;
+					gap: 12px;
+
+					li {
+						color: #383838;
+						font-size: 15px;
+						font-weight: 400;
+						line-height: 25px;
+						margin-bottom: 0;
+						padding-left: 28px;
+						position: relative;
+
+						&::before {
+							content: "";
+							background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24'%3E%3Cpath stroke='%234CC741' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M20 7 9 18l-5-5'/%3E%3C/svg%3E%0A");
+							background-repeat: no-repeat;
+							background-position: center;
+							background-size: 100%;
+							width: 18px;
+							height: 18px;
+							position: absolute;
+							top: 3px;
+							left: 0;
+						}
+					}
+				}
+
+				a {
+					border-radius: 4px;
+					border: 1px solid #7545BB;
+					background: #7545BB;
+					padding: 8px 16px;
+					text-decoration: none;
+					color: #FFFFFF;
+					font-size: 14px;
+					font-weight: 500;
+					line-height: 22px;
+					display: inline-block;
+					margin-bottom: 20px;
+					transition: all .3s;
+
+					&:hover {
+						background: #9159e3;
+						border-color: #9159e3;
+					}
+
+					&:focus {
+						border: 0;
+						box-shadow: none;
+						outline: none;
+					}
+				}
 			}
 		}
 	}
