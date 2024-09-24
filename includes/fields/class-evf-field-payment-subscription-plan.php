@@ -25,7 +25,7 @@ class EVF_Field_Payment_Subscription_Plan extends EVF_Form_Fields {
 		$this->name   = esc_html__( 'Subscription Plan', 'everest-forms' );
 		$this->type   = 'payment-subscription-plan';
 		$this->icon   = 'evf-icon evf-icon-subscription-plan';
-		$this->order  = 235;
+		$this->order  = 12;
 		$this->group  = 'payment';
 		$this->is_pro = true;
 		$this->links  = array(
