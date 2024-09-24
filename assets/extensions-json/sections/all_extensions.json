@@ -874,7 +874,7 @@
       "title": "amoCRM",
       "slug": "everest-forms-amocrm",
       "name": "Everest Forms amoCRM",
-      "image": "extensions-json/sections/images/calculations.png",
+      "image": "extensions-json/sections/images/amoCRM.png",
       "excerpt": "Test.",
       "link": "https://docs.everestforms.net/docs/amocrm/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
       "released_date": "xx/xx/xx",
@@ -883,7 +883,7 @@
         "agency",
         "themegrill agency"
       ],
-      "setting_url": "",
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=amocrm",
       "demo_video_url": ""
     }
   ]
