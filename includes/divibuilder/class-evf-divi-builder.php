@@ -65,27 +65,6 @@ class EVF_Divi_Builder extends \ET_Builder_Module {
 	}
 
 	/**
-	 * Add a computed control.
-	 *
-	 * @since 1.6.13
-	 * @param string $name
-	 * @param string $callback_static_method
-	 * @param array  $dependency_props
-	 */
-	public function add_computed_control( $name, $callback_static_method, $dependency_props = array() ) {
-		if ( empty( $name ) || empty( $callback_static_method ) || ! is_string( $callback_static_method ) ) {
-			return;
-		}
-
-		$this->setting_controls[ $name ] = array(
-			'type'                => 'computed',
-			'computed_callback'   => array( static::class, $callback_static_method ),
-			'computed_depends_on' => $dependency_props,
-			'computed_minimum'    => $dependency_props,
-		);
-	}
-
-	/**
 	 * Displays the Module setting fields.
 	 *
 	 * @since xx.xx.xx
@@ -98,32 +77,25 @@ class EVF_Divi_Builder extends \ET_Builder_Module {
 		$forms        = $default_form + $forms;
 
 		$fields = array(
-			'form_id'    => array(
-				'label'           => esc_html__( 'Select Form', 'everest-forms' ),
-				'type'            => 'select',
-				'option_category' => 'basic_option',
-				'toggle_slug'     => 'main_content',
-				'options'         => $forms,
-				'default'         => '5',
-			),
-			'show_title' => array(
-				'label'           => esc_html__( 'Show Title', 'everest-forms' ),
-				'type'            => 'yes_no_button',
-				'option_category' => 'basic_option',
-				'toggle_slug'     => 'main_content',
-				'options'         => array(
-					'off' => esc_html__( 'Off', 'everest-forms' ),
-					'on'  => esc_html__( 'On', 'everest-forms' ),
+			'form_id'              => array(
+				'label'            => esc_html__( 'Select Form', 'everest-forms' ),
+				'type'             => 'select',
+				'option_category'  => 'basic_option',
+				'toggle_slug'      => 'main_content',
+				'options'          => $forms,
+				'default'          => '5',
+				'computed_affects' => array(
+					'__rendered_evf_forms',
 				),
 			),
-			'show_desc'  => array(
-				'label'           => esc_html__( 'Show Description', 'everest-forms' ),
-				'option_category' => 'basic_option',
-				'type'            => 'yes_no_button',
-				'toggle_slug'     => 'main_content',
-				'options'         => array(
-					'off' => esc_html__( 'Off', 'everest-forms' ),
-					'on'  => esc_html__( 'On', 'everest-forms' ),
+			'__rendered_evf_forms' => array(
+				'type'                => 'computed',
+				'computed_callback'   => array( 'EVF_Divi_Builder', 'rendered_evf_forms' ),
+				'computed_depends_on' => array(
+					'form_id',
+				),
+				'computed_minimum'    => array(
+					'form_id',
 				),
 			),
 		);

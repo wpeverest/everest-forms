@@ -5,7 +5,6 @@ class EverestFormsModule extends Component {
 
 
 	render() {
-		console.log('test');
 		if (this.props.__rendered_evf_forms) {
 			return (
 				<div
