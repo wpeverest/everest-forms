@@ -1333,7 +1333,7 @@ abstract class EVF_Form_Fields {
 					$field_content .= '<span class="slider round"></span>';
 					$field_content .= '</div>';
 					$field_content .= '<div class="ur-subscription-expiry-date-field ur-subscription-expiry-option"  >';
-					$field_content .= '<input type="text"  value="' . esc_attr( $subscription_expiry_date ) . '" data-field="options" class="ur-general-setting-field ur-radio-subscription-expiry-input ur-subscription-expiry-date ur-flatpickr-field regular-text without_icon flatpickr-input" data-date-format="Y-m-d" data-locale="en" readonly="readonly" />';
+					$field_content .= '<input type="text"  value="' . esc_attr( $subscription_expiry_date ) . '"   name="' . sprintf( 'form_fields[%s][choices][%s][%s]', $field['id'], $key, 'subscription_expiry_date' ) . '" data-field="options" class="ur-general-setting-field evf-radio-subscription-expiry-input ur-subscription-expiry-date ur-flatpickr-field regular-text without_icon flatpickr-input" data-date-format="Y-m-d" data-locale="en" readonly="readonly" />';
 					$field_content .= '</div>';
 
 					$field_content .= '<div class="everest-forms-attachment-media-view">';

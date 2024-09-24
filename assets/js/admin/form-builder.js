@@ -540,6 +540,7 @@
 			EVFPanelBuilder.bindLabelEditInputActions();
 			EVFPanelBuilder.bindSyncedInputActions();
 			EVFPanelBuilder.init_datepickers();
+			EVFPanelBuilder.init_payment_subscription_plan_field();
 			EVFPanelBuilder.bindBulkOptionActions();
 			EVFPanelBuilder.bindAkismetInit();
 			EVFPanelBuilder.bindFormSubmissionMinWaitingTime();
@@ -676,6 +677,19 @@
 				required.prop("checked", true);
 				disable_past_date.parent().parent().parent().hide();
 			}
+		},
+		/**
+		 * For the subscription plan field.
+		 *
+		 * @since xx.xx.xx
+		 */
+		init_payment_subscription_plan_field:function(){
+			// Initialize option's date pickers on the expiry date input.
+			$( '.evf-radio-subscription-expiry-input' ).each( function() {
+				if ( ! $( this ).get(0)._flatpickr ) {
+					$( this ).flatpickr();
+				}
+			})
 		},
 
 		/**
@@ -2850,6 +2864,7 @@
 
 					// Initialization Datepickers.
 					EVFPanelBuilder.init_datepickers();
+					EVFPanelBuilder.init_payment_subscription_plan_field();
 
 					// Hiding time min max options in setting for Datepickers.
 					$('#everest-forms-field-option-' + dragged_field_id + '-enable_min_max_time').hide();
