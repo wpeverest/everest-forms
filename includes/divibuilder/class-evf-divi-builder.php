@@ -55,13 +55,6 @@ class EVF_Divi_Builder extends \ET_Builder_Module {
 		);
 
 		add_action( 'wp_enqueue_scripts', array( $this, 'load_divi_builder_scripts' ) );
-
-		// Computed controls.
-		$this->add_computed_control(
-			'__rendered_evf_forms',
-			'rendered_evf_forms',
-			array( 'form_id' )
-		);
 	}
 
 	/**
