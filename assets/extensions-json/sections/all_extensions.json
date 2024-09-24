@@ -357,23 +357,6 @@
       "popular_rank": 23
     },
     {
-      "title": "Coupons",
-      "slug": "everest-forms-coupons",
-      "name": "Everest Forms Coupons",
-      "image": "extensions-json/sections/images/coupons.png",
-      "excerpt": "With the Everest Forms Coupon add-on, you can quickly create or add a coupon code on a form to encourage users to purchase the products.",
-      "link": "https://docs.everestforms.net/docs/coupons/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
-      "released_date": "23/09/2020",
-      "plan": [
-        "personal",
-        "agency",
-        "themegrill agency"
-      ],
-      "setting_url": "",
-      "demo_video_url": "GSYQIiyntW0",
-      "popular_rank": 24
-    },
-    {
       "title": "ActiveCampaign",
       "slug": "everest-forms-activecampaign",
       "name": "Everest Forms ActiveCampaign",
@@ -510,6 +493,23 @@
     }
   ],
   "features": [
+	{
+		"title": "Coupons",
+		"slug": "everest-forms-coupons",
+		"name": "Everest Forms Coupons",
+		"image": "extensions-json/sections/images/coupons.png",
+		"excerpt": "With the Everest Forms Coupon add-on, you can quickly create or add a coupon code on a form to encourage users to purchase the products.",
+		"link": "https://docs.everestforms.net/docs/coupons/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+		"released_date": "23/09/2020",
+		"plan": [
+		  "personal",
+		  "agency",
+		  "themegrill agency"
+		],
+		"setting_url": "",
+		"demo_video_url": "GSYQIiyntW0",
+		"popular_rank": 24
+	  },
     {
       "title": "Trello",
       "slug": "everest-forms-trello",
