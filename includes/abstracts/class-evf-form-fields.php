@@ -1288,7 +1288,7 @@ abstract class EVF_Form_Fields {
 
 					$field_content .= '<div class="ur-toggle-section ur-form-builder-toggle">';
 					$field_content .= '<label for="ur-toggle-type-trail-period">Enable Trial Period</label>';
-					$field_content .= '<span class="user-registration-toggle-form">';
+					$field_content .= sprintf( '<span class="everest-forms-toggle-form">' );
 					$field_content .= '<input type="checkbox" value="' . esc_attr( $trail_period_enable ) . '"  name="' . sprintf( 'form_fields[%s][choices][%s][%s]', $field['id'], $key, 'trail_period_enable' ) . '"';
 
 					$checked = '';
@@ -1328,7 +1328,7 @@ abstract class EVF_Form_Fields {
 
 					$field_content .= '<div class="ur-toggle-section ur-form-builder-toggle">';
 					$field_content .= '<label for="ur-toggle-type-expiry-date">Enable Expiry Date</label>';
-					$field_content .= '<span class="user-registration-toggle-form">';
+					$field_content .= sprintf( '<span class="everest-forms-toggle-form">' );
 					$field_content .= '<input type="checkbox"  value="' . esc_attr( $subscription_expiry_enable ) . '"  name="' . sprintf( 'form_fields[%s][choices][%s][%s]', $field['id'], $key, 'subscription_expiry_enable' ) . '"';
 					$expiry_checked = '';
 					if ( $subscription_expiry_enable ) {
