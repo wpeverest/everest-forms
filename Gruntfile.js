@@ -176,9 +176,7 @@ module.exports = function( grunt ){
 		// Autoprefixer.
 		postcss: {
 			options: {
-				map: true,
 				processors: [
-					require('cssnano')(),
 					require( 'autoprefixer' )({
 						overrideBrowserslist: [
 							'> 0.1%',
