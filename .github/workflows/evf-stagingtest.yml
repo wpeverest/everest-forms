@@ -42,7 +42,7 @@ jobs:
                 npm install --force
                 composer install
                 chmod +x ./bin/build-zip.sh
-                npm run build
+                npm run build:core
                 composer install --no-dev
                 mkdir everest-forms
                 rsync -rc --exclude-from="./.distignore" "./" "./everest-forms" --delete --delete-excluded
