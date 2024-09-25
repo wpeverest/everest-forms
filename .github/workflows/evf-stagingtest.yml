@@ -3,7 +3,7 @@ name: EVF Staging Test
 on:
     push:
         branches:
-            - develop
+            - staging
 jobs:
     deploy:
         runs-on: ubuntu-latest
