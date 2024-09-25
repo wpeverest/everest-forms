@@ -40,6 +40,7 @@ jobs:
               run: |
                 npm install
                 composer install
+                chmod +x ./bin/build-zip.sh
                 npm run build
                 composer install --no-dev
                 mkdir everest-forms
