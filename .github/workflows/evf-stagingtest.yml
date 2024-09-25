@@ -82,8 +82,8 @@ jobs:
               uses: actions/upload-artifact@v4
               if: success() || failure()
               with:
-                name: Report                # Name of the folder
-                path: ./results
+                name: Report                
+                path: results
 
             - name: Find Test Report Url Below
               if: success() || failure()
@@ -93,6 +93,7 @@ jobs:
                 Server_PASS: ${{ secrets.QA_AUTOMATION_SERVER_PASS }}
               run: |
                 sshpass -p "$Server_PASS" ssh -o StrictHostKeyChecking=no $Srv_UsrName@$Srv_IP 'rm -rf /home/master/applications/ycrdmckpsu/public_html/evfqatest/reports/*'
+                echo pwd
                 sshpass -p "$Server_PASS" scp -o StrictHostKeyChecking=no -r ./results/* $Srv_UsrName@$Srv_IP:/home/master/applications/ycrdmckpsu/public_html/evfqatest/reports/
                 echo "https://qatest.wptests.net/evfqatest/reports/report.html"
                 echo "https://qatest.wptests.net/evfqatest/reports/test_report.html"
