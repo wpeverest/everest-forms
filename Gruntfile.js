@@ -178,8 +178,15 @@ module.exports = function( grunt ){
 			options: {
 				map: true,
 				processors: [
-					require('autoprefixer')(), 
-      				require('cssnano')()
+					require('cssnano')()
+					require( 'autoprefixer' )({
+						overrideBrowserslist: [
+							'> 0.1%',
+							'ie 8',
+							'ie 9'
+						]
+					})
+					
 				]
 			},
 			dist: {
