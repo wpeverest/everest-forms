@@ -92,8 +92,9 @@ jobs:
                 Srv_UsrName: ${{ secrets.QA_AUTOMATION_SERVER_USERNAME }}
                 Server_PASS: ${{ secrets.QA_AUTOMATION_SERVER_PASS }}
               run: |
-                sshpass -p "$Server_PASS" ssh -o StrictHostKeyChecking=no $Srv_UsrName@$Srv_IP 'pwd \ ls /home/master/applications/ycrdmckpsu/public_html/evfqatest/ \ rm -rf /home/master/applications/ycrdmckpsu/public_html/evfqatest/reports/*'
+                sshpass -p "$Server_PASS" ssh -o StrictHostKeyChecking=no $Srv_UsrName@$Srv_IP 'mkdir -p /home/master/applications/ycrdmckpsu/public_html/evfqatest/reports/ \ rm -rf /home/master/applications/ycrdmckpsu/public_html/evfqatest/reports/*'
                 sshpass -p "$Server_PASS" scp -o StrictHostKeyChecking=no -r /home/runner/work/everest-forms/everest-forms/python-code/results/* $Srv_UsrName@$Srv_IP:/home/master/applications/ycrdmckpsu/public_html/evfqatest/reports/
                 echo "https://qatest.wptests.net/evfqatest/reports/report.html"
-                echo "https://qatest.wptests.net/evfqatest/reports/test_report.html"
+                echo "https://qatest.wptests.net/evfqatest/reports/output.xml"
+                echo "https://qatest.wptests.net/evfqatest/reports/log.html"
               continue-on-error: true
