@@ -38,6 +38,7 @@ jobs:
 
             - name: NPM, Composer Install & NPM Build
               run: |
+                npm install postcss autoprefixer cssnano --save-dev
                 npm install
                 composer install
                 chmod +x ./bin/build-zip.sh
