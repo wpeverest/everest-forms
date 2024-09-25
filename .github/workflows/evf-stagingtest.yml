@@ -38,11 +38,10 @@ jobs:
 
             - name: NPM, Composer Install & NPM Build
               run: |
-                npm install postcss autoprefixer cssnano --save-dev
-                npm install
+                npm install --force
                 composer install
                 chmod +x ./bin/build-zip.sh
-                npm run build -- --force
+                npm run build
                 composer install --no-dev
                 mkdir everest-forms
                 rsync -rc --exclude-from="./.distignore" "./" "./everest-forms" --delete --delete-excluded
