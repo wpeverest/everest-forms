@@ -178,7 +178,7 @@ module.exports = function( grunt ){
 			options: {
 				map: true,
 				processors: [
-					require('cssnano')()
+					require('cssnano')(),
 					require( 'autoprefixer' )({
 						overrideBrowserslist: [
 							'> 0.1%',
