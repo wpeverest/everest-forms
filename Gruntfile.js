@@ -89,7 +89,7 @@ module.exports = function( grunt ){
 		sass: {
 			options: {
 				sourcemap: 'none',
-				implementation: require( 'sass' )
+				implementation: require( 'node-sass' )
 			},
 			compile: {
 				files: [{
