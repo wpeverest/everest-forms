@@ -56,9 +56,9 @@ jobs:
                 sshpass -p "$Server_PASS" ssh -o StrictHostKeyChecking=no $Srv_UsrName@$Srv_IP 'mkdir -p /home/master/applications/ycrdmckpsu/public_html/evftest/wp-content/plugins'
                 sshpass -p "$Server_PASS" rsync -ahPz -e "ssh -o StrictHostKeyChecking=no" everest-forms $Srv_UsrName@$Srv_IP:/home/master/applications/ycrdmckpsu/public_html/evftest/wp-content/plugins
                
-            - name: Setup Chrome
-              uses: browser-actions/setup-chrome@v1
-            - run: chrome --version
+            - name: Setup Firefox
+              uses: browser-actions/setup-firefox@v1
+            - run: firefox --version
 
             - name: Set up Python 3.12.1
               uses: actions/setup-python@v3
