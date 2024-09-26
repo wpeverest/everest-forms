@@ -71,7 +71,7 @@ class EVF_Customize_Color_Palette_Control extends WP_Customize_Control {
 					<input id="color-palette-{{{data.id}}}-{{{key}}}" type="checkbox" name="color-palette-{{{data.id}}}" value={{{data.choices[key].color}}} data-key="{{{key}}}" data-title="{{{data.choices[key].name}}}" class="color-group-{{{key.charAt(0)}}}" {{{ ( data.value[key]!=undefined && data.value[key] == true ) ? 'checked="checked"' : '' }}}/>
 					<span class="color-palette-color" style="background-color:{{{data.choices[key].color}}};"></span>
 				</label>
-				<span class="tooltip">{{{data.choices[key].name}}}</span>
+				<span class="tooltip">{{{data.choices[key].label}}}</span>
 			</li>
 		<# } ); #>
 		</ul>

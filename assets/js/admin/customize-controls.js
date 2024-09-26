@@ -491,51 +491,62 @@
 
 
 	api.ColorPaletteControl = api.Control.extend({
-        ready: function () {
-            var control = this;
+		ready: function () {
+			var control = this;
 
-            // Event listener for checkbox
-            control.container.on('change', 'input[type="checkbox"]', function () {
-                var key = $(this).data('key');
-                var value = $(this).is(':checked');
-                control.saveValue(key, value);
-            });
+			control.container.on('change', 'input[type="checkbox"]', function () {
+				var key = $(this).data('key');
+				var value = $(this).is(':checked');
+				control.saveValue(key, value);
+			});
 
-			   control.container.on('click', '.color-palette-label', function() {
-                control.container.find('input[type="checkbox"]').each(function() {
-                    if (!$(this).is(':checked')) {
-                        $(this).prop('checked', true).change();
-                    }
-                });
-            });
 
-            // Event listener for edit icon
-            control.container.on('click', '.color-palette-edit-icon', function () {
-                control.showEditInterface();
-            });
-        },
+			control.container.on('click', '.color-palette-label', function () {
+				control.container.find('input[type="checkbox"]').each(function () {
+					if (!$(this).is(':checked')) {
+						$(this).prop('checked', true).change();
+					}
+				});
+			});
 
-        saveValue: function (property, value) {
-            var control = this;
-            var input = control.container.find('.color-palette-hidden-value');
-            var val = control.setting.get();
 
-            if (typeof val !== 'object') {
-                val = {};
-            }
+			control.container.on('click', '.color-palette-edit-icon', function () {
+				control.toggleEditInterface();
+			});
+		},
 
-            val[property] = value;
-            $(input).val(JSON.stringify(val)).trigger('change');
+		saveValue: function (property, value) {
+			var control = this;
+			var input = control.container.find('.color-palette-hidden-value');
+			var val = control.setting.get();
+
+			if (typeof val !== 'object') {
+				val = {};
+			}
+
+			val[property] = value;
+			$(input).val(JSON.stringify(val)).trigger('change');
 			$.each(val, (key, value) => { if (value === true || value === false) delete val[key]; });
-            control.setting.set(val);
-        },
+			control.setting.set(val);
+		},
+
+
+		toggleEditInterface: function () {
+			var control = this;
+			var editInterface = control.container.find('.color-palette-edit-interface');
+
+			if (editInterface.length) {
+				editInterface.remove();
+			} else {
+				control.showEditInterface();
+			}
+		},
 
 		showEditInterface: function () {
 			var control = this;
-			console.log(control);
 			var editInterfaceHtml = `
 				<div class="color-palette-edit-interface">
-					<input type="text" class="color-palette-name-input" value="${control.params.label}" />
+					<input type="text" class="color-palette-name-input" value="${control.params.label}-${Math.floor(10 + Math.random() * 90)}" />
 					<div class="color-palette-items">
 						${Object.keys(control.params.choices).map(key => `
 							<div class="color-palette-edit-item">
@@ -550,7 +561,6 @@
 				</div>
 			`;
 
-			control.container.find('.color-palette-edit-interface').remove();
 			control.container.append(editInterfaceHtml);
 
 			// Initialize color pickers
@@ -564,46 +574,43 @@
 			// Handle palette name change
 			control.container.find('.color-palette-name-input').on('change', function () {
 				control.params.label = $(this).val();
-				control.showEditInterface();
 			});
 		},
 
+		saveEditedColors: function () {
+			var control = this;
+			var editedColors = {};
 
-        saveEditedColors: function () {
-            var control = this;
-            var editedColors = {};
+			// Loop through edit items to collect colors
+			control.container.find('.color-palette-edit-item').each(function () {
+				var key = $(this).find('label').text().trim().toLowerCase().replace(/color\s+.*/, '');
+				var color = $(this).find('.color-picker').val();
+				editedColors[key] = color;
+			});
 
-            // Loop through edit items to collect colors
-            control.container.find('.color-palette-edit-item').each(function () {
-                var key = $(this).find('label').text().trim().toLowerCase().replace(/color\s+.*/, ''); // Convert label text to key format
-                var color = $(this).find('.color-picker').val();
-                editedColors[key] = color;
-            });
+			// Update the control's value
+			control.setting.set(editedColors);
+			control.container.find('.color-palette-hidden-value').val(JSON.stringify(editedColors)).trigger('change');
 
-            // Update the control's value
+			// AJAX request to save custom colors
+			$.post(_evfCustomizeControlsL10n.ajax_url, {
+				action: 'save_custom_color_palette',
+				form_id: _evfCustomizeControlsL10n.form_id,
+				_nonce: _evfCustomizeControlsL10n.color_palette_nonce,
+				colors: editedColors,
+				label: control.params.label
+			})
+				.done(function (response) {
+					console.log('Colors saved successfully:', response);
+				})
+				.fail(function (error) {
+					console.error('Error saving colors:', error);
+				});
 
-            control.setting.set(editedColors);
-            control.container.find('.color-palette-hidden-value').val(JSON.stringify(editedColors)).trigger('change');
-
-            // AJAX request to save custom colors
-            $.post(_evfCustomizeControlsL10n.ajax_url, {
-                action: 'save_custom_color_palette',
-                form_id: _evfCustomizeControlsL10n.form_id,
-                _nonce: _evfCustomizeControlsL10n.color_palette_nonce,
-                colors: editedColors,
-                label: control.params.label
-            })
-                .done(function (response) {
-                    console.log('Colors saved successfully:', response);
-                })
-                .fail(function (error) {
-                    console.error('Error saving colors:', error);
-                });
-
-            // Remove the edit interface after saving
-            control.container.find('.color-palette-edit-interface').remove();
-        }
-    });
+			// Remove the edit interface after saving
+			control.container.find('.color-palette-edit-interface').remove();
+		}
+	});
 
 
 

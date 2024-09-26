@@ -42,8 +42,8 @@ function evf_style_customizer_color_palette_controls( $controls, $customize ) {
 			'colors' => array(
 				'form_background'   => '#ffffff',
 				'field_background'  => '#ffffff',
-				'field_sublabel'    => '#0f3a57',
 				'field_label'       => '#0c2e45',
+				'field_sublabel'    => '#0f3a57',
 				'button_text'       => '#ffffff',
 				'button_background' => '#3951a5',
 			),
@@ -53,8 +53,8 @@ function evf_style_customizer_color_palette_controls( $controls, $customize ) {
 			'colors' => array(
 				'form_background'   => '#f7f7f7',
 				'field_background'  => '#ffffff',
-				'field_sublabel'    => '#666666',
 				'field_label'       => '#262626',
+				'field_sublabel'    => '#666666',
 				'button_text'       => '#ffffff',
 				'button_background' => '#1a1a1a',
 			),
@@ -63,91 +63,14 @@ function evf_style_customizer_color_palette_controls( $controls, $customize ) {
 
 	$pro_palette = array(
 		array(
-			'label'  => esc_html__( 'Fresh Greenery', 'everest-forms' ),
-			'colors' => array(
-				'form_background'   => '#f9fdf6',
-				'field_background'  => '#e9f6ea',
-				'field_sublabel'    => '#557773',
-				'field_label'       => '#405956',
-				'button_text'       => '#ffffff',
-				'button_background' => '#405956',
-			),
-		),
-		array(
-			'label'  => esc_html__( 'Earthy Warm', 'everest-forms' ),
-			'colors' => array(
-				'form_background'   => '#f7f6f0',
-				'field_background'  => '#f1efe4',
-				'field_sublabel'    => '#616062',
-				'field_label'       => '#474648',
-				'button_text'       => '#ffffff',
-				'button_background' => '#463700',
-			),
-		),
-		array(
-			'label'  => esc_html__( 'Midnight Charm', 'everest-forms' ),
-			'colors' => array(
-				'form_background'   => '#363636',
-				'field_background'  => '#3d3d3d',
-				'field_sublabel'    => '#999999',
-				'field_label'       => '#ffffff',
-				'button_text'       => '#1a1a1a',
-				'button_background' => '#ffffff',
-			),
-		),
-		array(
-			'label'  => esc_html__( 'Midnight Charm', 'everest-forms' ),
-			'colors' => array(
-				'form_background'   => '#363636',
-				'field_background'  => '#3d3d3d',
-				'field_sublabel'    => '#999999',
-				'field_label'       => '#ffffff',
-				'button_text'       => '#1a1a1a',
-				'button_background' => '#ffffff',
-			),
-		),
-		array(
-			'label'  => esc_html__( 'Cloudy Sky', 'everest-forms' ),
-			'colors' => array(
-				'form_background'   => '#f2f3f8',
-				'field_background'  => '#445079',
-				'field_sublabel'    => '#2e3651',
-				'field_label'       => '#252b41',
-				'button_text'       => '#ffffff',
-				'button_background' => '#445079',
-			),
-		),
-		array(
-			'label'  => esc_html__( 'Blushing Blossom', 'everest-forms' ),
-			'colors' => array(
-				'form_background'   => '#fdf2f1',
-				'field_background'  => '#fbeff5',
-				'field_sublabel'    => '#824a68',
-				'field_label'       => '#532f42',
-				'button_text'       => '#ffffff',
-				'button_background' => '#46102c',
-			),
-		),
-		array(
-			'label'  => esc_html__( 'Majestic', 'everest-forms' ),
-			'colors' => array(
-				'form_background'   => '#fcfbfe',
-				'field_background'  => '#f7f4fb',
-				'field_sublabel'    => '#5d3795',
-				'field_label'       => '#3a225d',
-				'button_text'       => '#ffffff',
-				'button_background' => '#7545bb',
-			),
-		),
-		array(
 			'label'  => esc_html__( 'Autumn Blaze', 'everest-forms' ),
 			'colors' => array(
 				'form_background'   => '#ffafa',
 				'field_background'  => '#fff5f5',
-				'field_sublabel'    => '#4d0500',
 				'field_label'       => '#330300',
+				'field_sublabel'    => '#4d0500',
 				'button_text'       => '#ffffff',
-				'button_background' => '#ffsd52',
+				'button_background' => '#ff5d52',
 			),
 		),
 		array(
@@ -155,10 +78,66 @@ function evf_style_customizer_color_palette_controls( $controls, $customize ) {
 			'colors' => array(
 				'form_background'   => '#fffdfa',
 				'field_background'  => '#fff9f0',
-				'field_sublabel'    => '#805100',
 				'field_label'       => '#664000',
+				'field_sublabel'    => '#805100',
 				'button_text'       => '#ffffff',
 				'button_background' => '#ffa305',
+			),
+		),
+		array(
+			'label'  => esc_html__( 'Majestic', 'everest-forms' ),
+			'colors' => array(
+				'form_background'   => '#fcfbfe',
+				'field_background'  => '#f7f4fb',
+				'field_label'       => '#3a225d',
+				'field_sublabel'    => '#5d3795',
+				'button_text'       => '#ffffff',
+				'button_background' => '#7545bb',
+			),
+		),
+		array(
+			'label'  => esc_html__( 'Fresh Greenery', 'everest-forms' ),
+			'colors' => array(
+				'form_background'   => '#f9fdf6',
+				'field_background'  => '#e9f6ea',
+				'field_label'       => '#405956',
+				'field_sublabel'    => '#557773',
+				'button_text'       => '#ffffff',
+				'button_background' => '#405956',
+			),
+		),
+		array(
+			'label'  => esc_html__( 'Cloudy Sky', 'everest-forms' ),
+			'colors' => array(
+				'form_background'   => '#f2f3f8',
+				'field_background'  => '#445079',
+				'field_label'       => '#252b41',
+				'field_sublabel'    => '#2e3651',
+				'button_text'       => '#ffffff',
+				'button_background' => '#445079',
+			),
+		),
+		array(
+			'label'  => esc_html__( 'Earthy Warm', 'everest-forms' ),
+			'colors' => array(
+				'form_background'   => '#f7f6f0',
+				'field_background'  => '#f1efe4',
+				'field_label'       => '#474648',
+				'field_sublabel'    => '#616062',
+				'button_text'       => '#ffffff',
+				'button_background' => '#463700',
+			),
+		),
+
+		array(
+			'label'  => esc_html__( 'Blushing Blossom', 'everest-forms' ),
+			'colors' => array(
+				'form_background'   => '#fdf2f1',
+				'field_background'  => '#fbeff5',
+				'field_label'       => '#532f42',
+				'field_sublabel'    => '#824a68',
+				'button_text'       => '#ffffff',
+				'button_background' => '#46102c',
 			),
 		),
 		array(
@@ -166,15 +145,25 @@ function evf_style_customizer_color_palette_controls( $controls, $customize ) {
 			'colors' => array(
 				'form_background'   => '#ededed',
 				'field_background'  => '#f7f7f7',
-				'field_sublabel'    => '#595959',
 				'field_label'       => '#333333',
+				'field_sublabel'    => '#595959',
 				'button_text'       => '#ffffff',
 				'button_background' => '#1a1a1a',
 			),
 		),
-
+		array(
+			'label'  => esc_html__( 'Midnight Charm', 'everest-forms' ),
+			'colors' => array(
+				'form_background'   => '#363636',
+				'field_background'  => '#3d3d3d',
+				'field_label'       => '#ffffff',
+				'field_sublabel'    => '#999999',
+				'button_text'       => '#1a1a1a',
+				'button_background' => '#ffffff',
+			),
+		),
 	);
-	$custom_palette = get_option( 'custom_color_palettes', array() );
+	$custom_palette = get_option( 'evf_custom_color_palettes', array() );
 
 	$custom_palette = array_filter(
 		$custom_palette,
