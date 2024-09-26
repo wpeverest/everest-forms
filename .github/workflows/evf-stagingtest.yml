@@ -1,4 +1,4 @@
-name: EVF Staging QA Test Final 
+name: EVF Staging QA Automation Test Final 
 
 on:
     push:
