@@ -869,6 +869,22 @@
       "setting_url": "",
       "demo_video_url": "WCsHC7NQ2QQ",
       "popular_rank": 16
+    },
+    {
+      "title": "Slack",
+      "slug": "everest-forms-slack",
+      "name": "Everest Forms Slack",
+      "image": "extensions-json/sections/images/slack.png",
+      "excerpt": "Calculations add-on allows you to perform calculations on the number/range fields within the form.",
+      "link": "https://docs.everestforms.net/docs/slack/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "released_date": "xx/xx/xx",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=slack",
+      "demo_video_url": ""
     }
   ]
 }
