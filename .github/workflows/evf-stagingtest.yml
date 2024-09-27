@@ -39,10 +39,10 @@ jobs:
             - name: NPM, Composer Install & NPM Build
               run: |
                 rm -rf node_modules
-                npm install --legacy-peer-deps
+                npm install --legacy-peer-deps --force
                 composer install
                 chmod +x ./bin/build-zip.sh
-                npm run build --legacy-peer-deps
+                npm run build --legacy-peer-deps --force
                 composer install --no-dev
                 mkdir everest-forms
                 rsync -rc --exclude-from="./.distignore" "./" "./everest-forms" --delete --delete-excluded
