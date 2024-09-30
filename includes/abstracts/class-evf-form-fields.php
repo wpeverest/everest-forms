@@ -1289,7 +1289,7 @@ abstract class EVF_Form_Fields {
 					$field_content .= '<div class="evf-toggle-section evf-form-builder-toggle evf-trail-period-wrapper">';
 					$field_content .= sprintf( '<label for="evf-toggle-type-trail-period">%s</label>', __( 'Enable Trial Period', 'everest-forms' ) );
 					$field_content .= sprintf( '<div><span class="everest-forms-toggle-form">' );
-					$field_content .= '<input type="checkbox" value="1"  name="' . sprintf( 'form_fields[%s][choices][%s][%s]', $field['id'], $key, 'trail_period_enable' ) . '"';
+					$field_content .= '<input class="evf-enable-trial-period" type="checkbox" value="1"  name="' . sprintf( 'form_fields[%s][choices][%s][%s]', $field['id'], $key, 'trail_period_enable' ) . '"';
 
 					$checked = checked( '1', $trail_period_enable, false );
 
@@ -1326,14 +1326,14 @@ abstract class EVF_Form_Fields {
 					$field_content .= '<div class="evf-toggle-section evf-form-builder-toggle evf-expiry-date-wrapper">';
 					$field_content .= sprintf( '<label for="evf-toggle-type-expiry-date">%s</label>', __( 'Enable Expiry Date', 'everest-forms' ) );
 					$field_content .= sprintf( '<span class="everest-forms-toggle-form">' );
-					$field_content .= '<input type="checkbox"  value="1"  name="' . sprintf( 'form_fields[%s][choices][%s][%s]', $field['id'], $key, 'subscription_expiry_enable' ) . '"';
+					$field_content .= '<input class="evf-enable-expiry-date" type="checkbox"  value="1"  name="' . sprintf( 'form_fields[%s][choices][%s][%s]', $field['id'], $key, 'subscription_expiry_enable' ) . '"';
 					$expiry_checked = checked( '1', $subscription_expiry_enable, false );
 
 					$field_content .= '' . $expiry_checked . '/>';
 					$field_content .= '<span class="slider round"></span>';
 					$field_content .= '</div>';
 					$field_content .= '<div class="evf-subscription-expiry-date-field evf-subscription-expiry-option"  >';
-					$field_content .= '<input type="text"  value="' . esc_attr( $subscription_expiry_date ) . '"   name="' . sprintf( 'form_fields[%s][choices][%s][%s]', $field['id'], $key, 'subscription_expiry_date' ) . '" data-field="options" class="ur-general-setting-field evf-radio-subscription-expiry-input ur-subscription-expiry-date ur-flatpickr-field regular-text without_icon flatpickr-input" data-date-format="Y-m-d" data-locale="en" readonly="readonly" />';
+					$field_content .= '<input type="text"  value="' . esc_attr( $subscription_expiry_date ) . '"   name="' . sprintf( 'form_fields[%s][choices][%s][%s]', $field['id'], $key, 'subscription_expiry_date' ) . '" data-field="options" class="evf-general-setting-field evf-radio-subscription-expiry-input evf-subscription-expiry-date evf-flatpickr-field regular-text without_icon flatpickr-input" data-date-format="Y-m-d" data-locale="en" readonly="readonly" />';
 					$field_content .= '</div>';
 
 					$field_content .= '<div class="everest-forms-attachment-media-view">';
