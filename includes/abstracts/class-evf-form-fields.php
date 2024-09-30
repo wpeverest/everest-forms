@@ -1264,9 +1264,9 @@ abstract class EVF_Form_Fields {
 					$field_content .= '<a class="add" href="#"><i class="dashicons dashicons-plus-alt"></i></a>';
 					$field_content .= '<a class="remove" href="#"><i class="dashicons dashicons-dismiss"></i></a>';
 					$field_content .= '<div class="evf-subscription-plan-sub-details">';
-					// Recurring.
+					// Recurring Details.
 					$field_content .= sprintf( '<h2>%s</h2>', __( 'Recurring Details', 'everest-forms-pro' ) );
-					$field_content .= '<p><input value="' . esc_attr( $interval_count ) . '" type="number" name="' . sprintf( 'form_fields[%s][choices][%s][%s]', $field['id'], $key, 'interval_count' ) . '" >';
+					$field_content .= '<input value="' . esc_attr( $interval_count ) . '" type="number" name="' . sprintf( 'form_fields[%s][choices][%s][%s]', $field['id'], $key, 'interval_count' ) . '" >';
 					$field_content .= '<select  name="' . sprintf( 'form_fields[%s][choices][%s][%s]', $field['id'], $key, 'recurring_period' ) . '">';
 					$periods        = array(
 						'day'   => __( 'Day(s)', 'user-registration' ),
@@ -1286,21 +1286,21 @@ abstract class EVF_Form_Fields {
 					// EnableTrail period.
 					$trail_period_enable = isset( $choice['trail_period_enable'] ) ? $choice['trail_period_enable'] : false;
 
-					$field_content .= '<div class="ur-toggle-section ur-form-builder-toggle">';
-					$field_content .= '<label for="ur-toggle-type-trail-period">Enable Trial Period</label>';
-					$field_content .= sprintf( '<span class="everest-forms-toggle-form">' );
+					$field_content .= '<div class="evf-toggle-section evf-form-builder-toggle evf-trail-period-wrapper">';
+					$field_content .= sprintf( '<label for="evf-toggle-type-trail-period">%s</label>', __( 'Enable Trial Period', 'everest-forms' ) );
+					$field_content .= sprintf( '<div><span class="everest-forms-toggle-form">' );
 					$field_content .= '<input type="checkbox" value="1"  name="' . sprintf( 'form_fields[%s][choices][%s][%s]', $field['id'], $key, 'trail_period_enable' ) . '"';
 
 					$checked = checked( '1', $trail_period_enable, false );
 
 					$field_content .= '' . $checked . '/>';
 					$field_content .= '<span class="slider round"></span>';
-					$field_content .= '</span>';
+					$field_content .= '</span></div>';
 					$field_content .= '</div>';
-					// Trail period details.
-					$field_content .= '<div class="ur-subscription-plan-sub-details ur-subscription-trail-period-option" style="display:none;">';
-					$field_content .= '<h2>Trail Period Details</h2>';
-					$field_content .= '<p><input value="' . esc_attr( $trail_interval_count ) . '" type="number" name="' . sprintf( 'form_fields[%s][choices][%s][%s]', $field['id'], $key, 'trail_interval_count' ) . '" >';
+					// Trial period details.
+					$field_content .= '<div class="evf-subscription-plan-sub-details evf-subscription-trail-period-option" style="display:none;">';
+					$field_content .= sprintf( '<h2>%s</h2>', __( 'Trial Period Details', 'everest-forms' ) );
+					$field_content .= '<input value="' . esc_attr( $trail_interval_count ) . '" type="number" name="' . sprintf( 'form_fields[%s][choices][%s][%s]', $field['id'], $key, 'trail_interval_count' ) . '" >';
 
 					$field_content .= '<select  name="' . sprintf( 'form_fields[%s][choices][%s][%s]', $field['id'], $key, 'trail_recurring_period' ) . '">';
 					$periods        = array(
@@ -1323,8 +1323,8 @@ abstract class EVF_Form_Fields {
 					$subscription_expiry_enable = isset( $choice['subscription_expiry_enable'] ) ? $choice['subscription_expiry_enable'] : false;
 					$subscription_expiry_date   = isset( $choice['subscription_expiry_date'] ) ? $choice['subscription_expiry_date'] : '';
 
-					$field_content .= '<div class="ur-toggle-section ur-form-builder-toggle">';
-					$field_content .= '<label for="ur-toggle-type-expiry-date">Enable Expiry Date</label>';
+					$field_content .= '<div class="evf-toggle-section evf-form-builder-toggle evf-expiry-date-wrapper">';
+					$field_content .= sprintf( '<label for="evf-toggle-type-expiry-date">%s</label>', __( 'Enable Expiry Date', 'everest-forms' ) );
 					$field_content .= sprintf( '<span class="everest-forms-toggle-form">' );
 					$field_content .= '<input type="checkbox"  value="1"  name="' . sprintf( 'form_fields[%s][choices][%s][%s]', $field['id'], $key, 'subscription_expiry_enable' ) . '"';
 					$expiry_checked = checked( '1', $subscription_expiry_enable, false );
@@ -1332,7 +1332,7 @@ abstract class EVF_Form_Fields {
 					$field_content .= '' . $expiry_checked . '/>';
 					$field_content .= '<span class="slider round"></span>';
 					$field_content .= '</div>';
-					$field_content .= '<div class="ur-subscription-expiry-date-field ur-subscription-expiry-option"  >';
+					$field_content .= '<div class="evf-subscription-expiry-date-field evf-subscription-expiry-option"  >';
 					$field_content .= '<input type="text"  value="' . esc_attr( $subscription_expiry_date ) . '"   name="' . sprintf( 'form_fields[%s][choices][%s][%s]', $field['id'], $key, 'subscription_expiry_date' ) . '" data-field="options" class="ur-general-setting-field evf-radio-subscription-expiry-input ur-subscription-expiry-date ur-flatpickr-field regular-text without_icon flatpickr-input" data-date-format="Y-m-d" data-locale="en" readonly="readonly" />';
 					$field_content .= '</div>';
 
@@ -1340,9 +1340,11 @@ abstract class EVF_Form_Fields {
 					$field_content .= sprintf( '<input type="hidden" class="source" name="%s[image]" value="%s">', $name, esc_url_raw( $image ) );
 					$field_content .= sprintf( '<button type="button" class="upload-button button-add-media"%s>%s</button>', ! empty( $image ) ? ' style="display:none;"' : '', esc_html__( 'Upload Image', 'everest-forms' ) );
 					$field_content .= '<div class="thumbnail thumbnail-image">';
+
 					if ( ! empty( $image ) ) {
 						$field_content .= sprintf( '<img class="attachment-thumb" src="%1$s">', esc_url_raw( $image ) );
 					}
+
 					$field_content .= '</div>';
 					$field_content .= sprintf( '<div class="actions"%s>', empty( $image ) ? ' style="display:none;"' : '' );
 					$field_content .= sprintf( '<button type="button" class="button remove-button">%1$s</button>', esc_html__( 'Remove', 'everest-forms' ) );
