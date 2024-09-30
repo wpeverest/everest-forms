@@ -163,7 +163,8 @@ function evf_style_customizer_color_palette_controls( $controls, $customize ) {
 			),
 		),
 	);
-	$custom_palette = get_option( 'evf_custom_color_palettes', array() );
+	$custom_palette = get_option( 'everest_forms_custom_color_palettes', array() );
+	delete_option( 'everest_forms_custom_color_palettes' );
 
 	$custom_palette = array_filter(
 		$custom_palette,

@@ -67,11 +67,10 @@ class EVF_Customize_Color_Palette_Control extends WP_Customize_Control {
 		<ul class="color-palette">
 		<# Object.keys( data.choices ).forEach( function( key ) { #>
 			<li class="color-palette-item">
-				<label class="color-palette-label" title="{{{data.choices[key].name}}}" for="color-palette-{{{data.id}}}-{{{key}}}">
-					<input id="color-palette-{{{data.id}}}-{{{key}}}" type="checkbox" name="color-palette-{{{data.id}}}" value={{{data.choices[key].color}}} data-key="{{{key}}}" data-title="{{{data.choices[key].name}}}" class="color-group-{{{key.charAt(0)}}}" {{{ ( data.value[key]!=undefined && data.value[key] == true ) ? 'checked="checked"' : '' }}}/>
+				<label class="color-palette-label" title="{{{data.choices[key].name.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}}}" for="color-palette-{{{data.id}}}-{{{key}}}">
+					<input class="" id="color-palette-{{{data.id}}}-{{{key}}}" type="checkbox" name="color-palette-{{{data.id}}}" value={{{data.choices[key].color}}} data-key="{{{key}}}" data-title="{{{data.choices[key].name.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}}}" class="color-group-{{{key.charAt(0)}}}" {{{ ( data.value[key]!=undefined && data.value[key] == true ) ? 'checked="checked"' : '' }}}/>
 					<span class="color-palette-color" style="background-color:{{{data.choices[key].color}}};"></span>
 				</label>
-				<span class="tooltip">{{{data.choices[key].label}}}</span>
 			</li>
 		<# } ); #>
 		</ul>

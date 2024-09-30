@@ -44,7 +44,7 @@ final class EVF_Style_Customizer_Ajax {
 			exit;
 		}
 
-		$color_palettes = get_option( 'custom_color_palettes', array() );
+		$color_palettes = get_option( 'everest_forms_custom_color_palettes', array() );
 
 		$color_palettes = array_filter(
 			$color_palettes,
@@ -58,7 +58,7 @@ final class EVF_Style_Customizer_Ajax {
 			'colors' => $colors,
 		);
 
-		update_option( 'custom_color_palettes', $color_palettes );
+		update_option( 'everest_forms_custom_color_palettes', $color_palettes );
 
 		wp_send_json_success( 'Color palette saved successfully!' );
 	}

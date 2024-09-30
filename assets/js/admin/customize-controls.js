@@ -176,9 +176,6 @@
 					  $(allSelector).addClass(group.className);
 					});
 				  });
-				  $(fieldLabelSelectorStart).nextUntil(fieldLabelSelectorEnd).addBack().add(fieldLabelSelectorEnd).wrapAll('<ul class="wpeverest-typography-wrapper "></ul>');
-				  $(subfieldLabelSelectorStart).nextUntil(subfieldLabelSelectorEnd).addBack().add(subfieldLabelSelectorEnd).wrapAll('<ul class="wpeverest-typography-wrapper "></ul>');
-
 			}, 3000);
 		}
 
@@ -494,11 +491,12 @@
 		ready: function () {
 			var control = this;
 
-			control.container.on('change', 'input[type="checkbox"]', function () {
+			control.container.on('change', '.color-palette-label input[type="checkbox"]', function () {
 				var key = $(this).data('key');
 				var value = $(this).is(':checked');
 				control.saveValue(key, value);
 			});
+
 
 
 			control.container.on('click', '.color-palette-label', function () {
@@ -562,16 +560,20 @@
 			`;
 
 			control.container.append(editInterfaceHtml);
-
-			// Initialize color pickers
 			control.container.find('.color-picker').wpColorPicker();
-
-			// Handle save button click
 			control.container.on('click', '.color-palette-save-button', function () {
-				control.saveEditedColors();
+				e.preventDefault();
+				e.stopPropagation();
+				if ("disabled" === $("#save.save").attr("disabled")) {
+					control.saveEditedColors();
+				} else {
+					alert(
+						"Please save the unsaved changes to create the template."
+					);
+				}
+
 			});
 
-			// Handle palette name change
 			control.container.find('.color-palette-name-input').on('change', function () {
 				control.params.label = $(this).val();
 			});
@@ -581,18 +583,13 @@
 			var control = this;
 			var editedColors = {};
 
-			// Loop through edit items to collect colors
 			control.container.find('.color-palette-edit-item').each(function () {
 				var key = $(this).find('label').text().trim().toLowerCase().replace(/color\s+.*/, '');
 				var color = $(this).find('.color-picker').val();
 				editedColors[key] = color;
 			});
-
-			// Update the control's value
 			control.setting.set(editedColors);
 			control.container.find('.color-palette-hidden-value').val(JSON.stringify(editedColors)).trigger('change');
-
-			// AJAX request to save custom colors
 			$.post(_evfCustomizeControlsL10n.ajax_url, {
 				action: 'save_custom_color_palette',
 				form_id: _evfCustomizeControlsL10n.form_id,
@@ -601,13 +598,11 @@
 				label: control.params.label
 			})
 				.done(function (response) {
-					console.log('Colors saved successfully:', response);
+
 				})
 				.fail(function (error) {
-					console.error('Error saving colors:', error);
 				});
 
-			// Remove the edit interface after saving
 			control.container.find('.color-palette-edit-interface').remove();
 		}
 	});
@@ -988,8 +983,6 @@
 							form_id: _evfCustomizeControlsL10n.form_id,
 							_nonce: _evfCustomizeControlsL10n.save_nonce,
 						}).done(function (response) {
-
-
 							if ( response.success ) {
 								api.control(
 									"everest_forms_styles[" + data.form_id + "][template]",
