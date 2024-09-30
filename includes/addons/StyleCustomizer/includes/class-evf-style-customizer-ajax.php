@@ -54,8 +54,10 @@ final class EVF_Style_Customizer_Ajax {
 		);
 
 		$color_palettes[] = array(
-			'label'  => $label,
-			'colors' => $colors,
+			'label'     => $label,
+			'colors'    => $colors,
+			'is_pro'    => true,
+			'is_custom' => true,
 		);
 
 		update_option( 'everest_forms_custom_color_palettes', $color_palettes );

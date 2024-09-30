@@ -60,7 +60,7 @@ class EVF_Customize_Color_Palette_Control extends WP_Customize_Control {
 	 */
 	protected function content_template() {
 		?>
-		<label>
+		<label {{{data.inputAttrs}}}>
 			<# if ( data.label ) { #><span class="customize-control-title">{{{ data.label }}} <span class="color-palette-edit-icon" style="cursor:pointer;">&#9998;</span></span><# } #>
 			<# if ( data.description ) { #><span class="description customize-control-description">{{{ data.description }}}</span><# } #>
 		</label>

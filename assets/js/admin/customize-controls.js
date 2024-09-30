@@ -548,7 +548,7 @@
 					<div class="color-palette-items">
 						${Object.keys(control.params.choices).map(key => `
 							<div class="color-palette-edit-item">
-								<label for="color-edit-${control.params.id}-${key}">
+								<label for="color-edit-${control.params.id}-${key}" data-key="${control.params.choices[key].name}">
 									${control.params.choices[key].name.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
 								</label>
 								<input id="color-edit-${control.params.id}-${key}" type="text" value="${control.params.choices[key].color}" class="color-picker"/>
@@ -562,13 +562,11 @@
 			control.container.append(editInterfaceHtml);
 			control.container.find('.color-picker').wpColorPicker();
 			control.container.on('click', '.color-palette-save-button', function () {
-				e.preventDefault();
-				e.stopPropagation();
 				if ("disabled" === $("#save.save").attr("disabled")) {
 					control.saveEditedColors();
 				} else {
 					alert(
-						"Please save the unsaved changes to create the template."
+						"Please save the unsaved changes to create the color palettes."
 					);
 				}
 
@@ -584,10 +582,11 @@
 			var editedColors = {};
 
 			control.container.find('.color-palette-edit-item').each(function () {
-				var key = $(this).find('label').text().trim().toLowerCase().replace(/color\s+.*/, '');
+				var key = $(this).find('label').data('key').trim().toLowerCase().replace(/color\s+.*/, '');
 				var color = $(this).find('.color-picker').val();
 				editedColors[key] = color;
 			});
+
 			control.setting.set(editedColors);
 			control.container.find('.color-palette-hidden-value').val(JSON.stringify(editedColors)).trigger('change');
 			$.post(_evfCustomizeControlsL10n.ajax_url, {
@@ -598,6 +597,57 @@
 				label: control.params.label
 			})
 				.done(function (response) {
+				if(response.success){
+					$.alert({
+						title: '<span style="color: #28a745; font-weight: bold;"><span class="dashicons dashicons-yes"></span> Success!</span>',
+						content: response.data,
+						icon: '',
+						theme: 'modern',
+						type: 'green',
+						boxWidth: '20%',
+						useBootstrap: false,
+						backgroundDismiss: true,
+						buttons: {
+							OK: {
+								text: 'OK',
+								btnClass: 'btn-green',
+								action: function() {
+								}
+							}
+						},
+						onOpenBefore: function() {
+							this.$jconfirmBox.css({
+								'background': '#ffffff',
+								'border-top': '6px solid #198754',
+								'border-radius': '10px',
+								'box-shadow': '0px 4px 8px rgba(0, 0, 0, 0.1)',
+								'padding': '20px',
+							});
+
+							this.$content.css({
+								'color': '#383838',
+								'font-size': '16px',
+								'line-height': '24px',
+								'text-align': 'center',
+							});
+
+							this.$title.css({
+								'text-align': 'center',
+								'margin-bottom': '10px',
+								'color': '#222222'
+							});
+
+							this.$btnc.find('.btn-green').css({
+								'background': '#2271b1',
+								'color': '#fff',
+								'border': '1px solid #2271b1',
+								'padding': '10px 20px',
+								'border-radius': '5px',
+								'font-weight': 'bold'
+							});
+						}
+					});
+				}
 
 				})
 				.fail(function (error) {
