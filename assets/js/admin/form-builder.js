@@ -690,6 +690,49 @@
 					$( this ).flatpickr();
 				}
 			})
+
+			var enableTrialPeriods = $('.evf-enable-trial-period');
+			var enableExpiryDates = $('.evf-enable-expiry-date');
+
+			$.each(enableTrialPeriods, function(index,enableTrailPeriod){
+				if($(enableTrailPeriod).is(':checked')) {
+					var trialPeriod = enableTrailPeriod.closest('li');
+					$(trialPeriod).find('.evf-subscription-trail-period-option').show();
+				}else{
+					var trialPeriod = enableTrailPeriod.closest('li');
+
+					$(trialPeriod).find('.evf-subscription-trail-period-option').hide();
+				}
+
+				$(enableTrailPeriod).on('click', function(e){
+					var expriyDate = $(this).closest('li');
+					if($(this).is(':checked')) {
+						$(expriyDate).find('.evf-subscription-trail-period-option').show();
+					}else{
+						$(expriyDate).find('.evf-subscription-trail-period-option').hide();
+					}
+				} )
+			});
+
+			$.each(enableExpiryDates, function(index,enableExpiryDate){
+				if($(enableExpiryDate).is(':checked')) {
+					var expriyDate = enableExpiryDate.closest('li');
+					$(expriyDate).find('.evf-subscription-expiry-date').show();
+				}else {
+					var expriyDate = enableExpiryDate.closest('li');
+					$(expriyDate).find('.evf-subscription-expiry-date').hide();
+				}
+
+				$(enableExpiryDate).on('click', function(e){
+					var expriyDate = $(this).closest('li');
+					if($(this).is(':checked')) {
+						$(expriyDate).find('.evf-subscription-expiry-date').show();
+					}else{
+						$(expriyDate).find('.evf-subscription-expiry-date').hide();
+					}
+				} )
+			});
+
 		},
 
 		/**
