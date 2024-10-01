@@ -6,6 +6,12 @@
   "license": "GPL-3.0-or-later",
   "minimum-stability": "dev",
   "prefer-stable": true,
+  "autoload": {
+    "psr-4": {
+      "EverestForms\\Addons\\": "addons/",
+      "EverestForms\\Traits\\": "traits/"
+    }
+  },
   "authors": [
     {
       "name": "wpeverest",
