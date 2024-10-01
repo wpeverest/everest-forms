@@ -180,6 +180,10 @@ if ( ! class_exists( 'EVF_Builder_Page', false ) ) :
 						'id'   => '',
 						'name' => esc_html__( 'Telegram', 'everest-forms' ),
 					),
+					'qr_generator'       => array(
+						'id'   => '',
+						'name' => esc_html__( 'QR Generator', 'everest-forms' ),
+					),
 				);
 
 			} else {
