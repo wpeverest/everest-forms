@@ -9,6 +9,7 @@
 namespace EverestForms\Addons;
 
 use EverestForms\Addons\OxygenBuilder\OxygenBuilder;
+use EverestForms\Addons\WPBakeryBuilder\WPBakeryBuilder;
 use EverestForms\Traits\Singleton;
 
 /**
@@ -44,7 +45,8 @@ class Addons {
 		return apply_filters(
 			'everest_forms_addon_list',
 			array(
-				'oxygen-builder' => OxygenBuilder::class,
+				'oxygen-builder'   => OxygenBuilder::class,
+				'wpbakery-builder' => WPBakeryBuilder::class,
 			)
 		);
 	}
@@ -75,7 +77,6 @@ class Addons {
 		foreach ( $classes as $key => $class_name ) {
 			$key = 'everest-forms-' . $key;
 			if ( in_array( $key, $enabled_features, true ) ) {
-
 				if ( class_exists( $class_name ) ) {
 					$class_name::init();
 				}
