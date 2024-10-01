@@ -4353,6 +4353,7 @@ p.search-box {
 			}
 
 			.everest-forms-field-option-payment-multiple,
+			.everest-forms-field-option-payment-subscription-plan,
 			.everest-forms-field-option-payment-checkbox {
 				.everest-forms-field-option-row {
 					li {
@@ -4366,6 +4367,14 @@ p.search-box {
 								margin: 0 0 0 auto;
 								flex: 0 0 23%;
 							}
+						}
+						.evf-trail-period-wrapper,
+						.evf-expiry-date-wrapper {
+							margin-top: 10px;
+							width: 100%;
+							display: flex;
+							justify-content: space-between;
+							align-content: center;
 						}
 					}
 				}
@@ -4642,7 +4651,7 @@ p.search-box {
 				}
 
 				.evf-content-post-submissions-settings,
-				.evf-content-user-registration-settings {
+				everest-forms-settings {
 					.everest-forms-panel-field {
 						max-width: 500px;
 					}

@@ -540,6 +540,7 @@
 			EVFPanelBuilder.bindLabelEditInputActions();
 			EVFPanelBuilder.bindSyncedInputActions();
 			EVFPanelBuilder.init_datepickers();
+			EVFPanelBuilder.init_payment_subscription_plan_field();
 			EVFPanelBuilder.bindBulkOptionActions();
 			EVFPanelBuilder.bindAkismetInit();
 			EVFPanelBuilder.bindFormSubmissionMinWaitingTime();
@@ -676,6 +677,99 @@
 				required.prop("checked", true);
 				disable_past_date.parent().parent().parent().hide();
 			}
+		},
+		/**
+		 * For the subscription plan field.
+		 *
+		 * @since xx.xx.xx
+		 */
+		init_payment_subscription_plan_field:function(){
+			// Initialize option's date pickers on the expiry date input.
+			$( '.evf-radio-subscription-expiry-input' ).each( function() {
+				if ( ! $( this ).get(0)._flatpickr ) {
+					$( this ).flatpickr();
+				}
+			})
+
+			var enableTrialPeriods = $('.evf-enable-trial-period');
+			var enableExpiryDates = $('.evf-enable-expiry-date');
+
+			$.each(enableTrialPeriods, function(index,enableTrailPeriod){
+				if($(enableTrailPeriod).is(':checked')) {
+					var trialPeriod = enableTrailPeriod.closest('li');
+					$(trialPeriod).find('.evf-subscription-trail-period-option').show();
+				}else{
+					var trialPeriod = enableTrailPeriod.closest('li');
+
+					$(trialPeriod).find('.evf-subscription-trail-period-option').hide();
+				}
+
+				$(enableTrailPeriod).on('click', function(e){
+					var expriyDate = $(this).closest('li');
+					if($(this).is(':checked')) {
+						$(expriyDate).find('.evf-subscription-trail-period-option').show();
+					}else{
+						$(expriyDate).find('.evf-subscription-trail-period-option').hide();
+					}
+				} )
+			});
+
+			$.each(enableExpiryDates, function(index,enableExpiryDate){
+				if($(enableExpiryDate).is(':checked')) {
+					var expriyDate = enableExpiryDate.closest('li');
+					$(expriyDate).find('.evf-subscription-expiry-date').show();
+				}else {
+					var expriyDate = enableExpiryDate.closest('li');
+					$(expriyDate).find('.evf-subscription-expiry-date').hide();
+				}
+
+				$(enableExpiryDate).on('click', function(e){
+					var expriyDate = $(this).closest('li');
+					if($(this).is(':checked')) {
+						$(expriyDate).find('.evf-subscription-expiry-date').show();
+					}else{
+						$(expriyDate).find('.evf-subscription-expiry-date').hide();
+					}
+				} )
+			});
+
+			$( document.body ).on( 'evf_after_field_append',function(e, element_id){
+				var $field = $("#" + element_id);
+				var field_type = $field.attr("data-field-type");
+
+				if('payment-subscription-plan' === field_type ) {
+					var isRecurringEnable = $('#everest-forms-panel-field-paypal-recurring');
+					$("#everest-forms-panel-field-paypal-interval_count-wrap").hide();
+					$("#everest-forms-panel-field-paypal-period-wrap").hide();
+				}
+			});
+
+			$( document.body ).on( 'evf_before_field_deleted',function(e, element_id){
+				var $field = $("#everest-forms-field-" + element_id);
+				var field_type = $field.attr("data-field-type");
+				if('payment-subscription-plan' === field_type ) {
+					$("#everest-forms-panel-field-paypal-interval_count-wrap").show();
+					$("#everest-forms-panel-field-paypal-period-wrap").show();
+				}
+			});
+
+			var isRecurringEnable = $('#everest-forms-panel-field-paypal-recurring');
+
+			var wrapper = $('.everest-forms-field-wrap');
+
+			if($(wrapper).find('.everest-forms-field-payment-subscription-plan').length > 0) {
+				if($(isRecurringEnable).is(':checked')) {
+					$("#everest-forms-panel-field-paypal-interval_count-wrap").hide();
+					$("#everest-forms-panel-field-paypal-period-wrap").hide();
+				}
+
+				$(isRecurringEnable).on('click', function(e){
+
+					$("#everest-forms-panel-field-paypal-interval_count-wrap").hide();
+					$("#everest-forms-panel-field-paypal-period-wrap").hide();
+				});
+			}
+
 		},
 
 		/**
@@ -2850,6 +2944,7 @@
 
 					// Initialization Datepickers.
 					EVFPanelBuilder.init_datepickers();
+					EVFPanelBuilder.init_payment_subscription_plan_field();
 
 					// Hiding time min max options in setting for Datepickers.
 					$('#everest-forms-field-option-' + dragged_field_id + '-enable_min_max_time').hide();
