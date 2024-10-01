@@ -44,7 +44,7 @@ class Helper {
 	 *
 	 * @since xx.xx.xx
 	 */
-	public function print_admin_notice() {
+	public static function print_admin_notice() {
 
 		add_action(
 			'admin_notices',
