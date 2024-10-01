@@ -39,7 +39,19 @@ class OxygenFormWidget extends OxygenElement {
 	public function accordion_button_place() {
 		return 'form';
 	}
+	/**
+	 * Enqueue the styles.
+	 *
+	 * @since xx.xx.xx
+	 */
+	public function custom_init() {
+		wp_register_style( 'everest-forms-admin', evf()->plugin_url() . '/assets/css/admin.css', array(), EVF_VERSION );
+		wp_register_style( 'everest-forms-general', evf()->plugin_url() . '/assets/css/everest-forms.css', array(), EVF_VERSION );
 
+		wp_enqueue_style( 'everest-forms-admin' );
+		wp_enqueue_style( 'everest-forms-general' );
+
+	}
 	/**
 	 * Icon.
 	 *
@@ -105,7 +117,7 @@ class OxygenFormWidget extends OxygenElement {
 			array(
 				'id' => $form_id,
 			),
-			array( 'class' => 'evf-oxygen-builder' )
+			array( 'class' => 'everest-forms' )
 		);
 
 		echo $content;
