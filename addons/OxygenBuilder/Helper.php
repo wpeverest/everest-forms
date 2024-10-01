@@ -60,4 +60,21 @@ class Helper {
 
 		return;
 	}
+
+	/**
+	 * Get the form list.
+	 *
+	 * @since xx.xx.xx
+	 */
+	public static function get_form_list() {
+		$forms = evf_get_all_forms();
+
+		if ( empty( $forms ) ) {
+			return $forms;
+		}
+
+		$forms[0] = esc_html__( 'Select a Form', 'everest-forms' );
+
+		return $forms;
+	}
 }

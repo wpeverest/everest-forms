@@ -72,7 +72,7 @@ class OxygenFormWidget extends OxygenElement {
 				'type'    => 'dropdown',
 				'name'    => __( 'Select a Form', 'everest-forms' ),
 				'slug'    => 'evf_form',
-				'value'   => evf_get_all_forms(),
+				'value'   => Helper::get_form_list(),
 				'default' => 'no',
 				'css'     => false,
 			)
