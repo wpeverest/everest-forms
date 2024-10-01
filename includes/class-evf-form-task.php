@@ -669,6 +669,7 @@ class EVF_Form_Task {
 		);
 
 		do_action( 'everest_forms_after_success_message', $this->form_data, $entry );
+		delete_option( 'everest_forms_overall_feedback_is_called' );
 		$this->entry_confirmation_redirect( $this->form_data );
 	}
 
