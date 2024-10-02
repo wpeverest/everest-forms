@@ -52,7 +52,6 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 				$settings[] = include 'settings/class-evf-settings-misc.php';
 				$settings[] = include 'settings/class-evf-settings-integrations.php';
 				$settings[] = include 'settings/class-evf-settings-reporting.php';
-				$settings[] = include 'settings/class-evf-settings-license.php';
 
 				self::$settings = apply_filters( 'everest_forms_get_settings_pages', $settings );
 			}
