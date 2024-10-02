@@ -87,8 +87,11 @@ if ( ! $tab_exists ) {
 					do_action( 'everest_forms_settings_' . $current_tab );
 				?>
 				<p class="submit">
-					<?php if ( empty( $GLOBALS['hide_save_button'] ) ) : ?>
-						<button name="save" class="everest-forms-btn everest-forms-btn-primary everest-forms-save-button" type="submit" value="<?php esc_attr_e( 'Save Changes', 'everest-forms' ); ?>"><?php esc_html_e( 'Save Changes', 'everest-forms' ); ?></button>
+					<?php
+					if ( empty( $GLOBALS['hide_save_button'] ) ) :
+						$everest_forms_setting_save_label = apply_filters( 'everest_forms_setting_save_label', esc_attr__( 'Save Changes', 'everest-forms' ) );
+						?>
+						<button name="save" class="everest-forms-btn everest-forms-btn-primary everest-forms-save-button" type="submit" value="<?php echo esc_attr( $everest_forms_setting_save_label ); ?>"><?php esc_html_e( $everest_forms_setting_save_label, 'everest-forms' ); ?></button>
 					<?php endif; ?>
 					<?php wp_nonce_field( 'everest-forms-settings' ); ?>
 				</p>
