@@ -857,7 +857,7 @@ class EVF_Shortcode_Form {
 
 		$atts = shortcode_atts(
 			array(
-				'id'          => '',
+				'id'          => false,
 				'type'        => false,
 				'size'        => false,
 				'text'        => false,
