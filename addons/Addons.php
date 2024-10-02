@@ -62,10 +62,6 @@ class Addons {
 			return;
 		}
 
-		if ( ! function_exists( 'evf_get_license_plan' ) || ! evf_get_license_plan() ) {
-			return;
-		}
-
 		$enabled_features = get_option( 'everest_forms_enabled_features', array() );
 
 		if ( empty( $enabled_features ) ) {
