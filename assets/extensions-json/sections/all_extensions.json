@@ -869,6 +869,22 @@
       "setting_url": "",
       "demo_video_url": "WCsHC7NQ2QQ",
       "popular_rank": 16
+    },
+    {
+      "title": "QR Generator",
+      "slug": "everest-forms-qr-generator",
+      "name": "Everest Forms QR Generator",
+      "image": "extensions-json/sections/images/qr-generator.png",
+      "excerpt": "QR Generator",
+      "link": "https://docs.everestforms.net/docs/qr-generator/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "released_date": "xx/xx/xx",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "setting_url": "",
+      "demo_video_url": ""
     }
   ]
 }
