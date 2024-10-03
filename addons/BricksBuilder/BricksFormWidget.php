@@ -13,10 +13,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class BricksFormWidget extends \Bricks\Element {
 
-	  public $category     = 'everest-forms';
-	  public $name         = 'everest-forms';
-	  public $icon         = 'ti-bolt-alt';
-	  public $css_selector = '.everest-forms';
+	  public $category = 'everest-forms';
+	  public $name     = 'everest-forms';
+	  public $icon     = 'ti-bolt-alt';
 
 	// Return localized element label
 	public function get_label() {
@@ -25,7 +24,7 @@ class BricksFormWidget extends \Bricks\Element {
 
 	// Set builder control groups
 	public function set_control_groups() {
-		$this->control_groups['evf_form_groups'] = array(
+		$this->control_groups['general'] = array(
 			'title' => esc_html__( 'Everest Forms', 'everest-forms' ),
 			'tab'   => 'content',
 		);
@@ -34,7 +33,7 @@ class BricksFormWidget extends \Bricks\Element {
 	public function set_controls() {
 			$this->controls['everest_forms_control'] = array(
 				'tab'       => 'content',
-				'group'     => 'evf_form_groups',
+				'group'     => 'general',
 				'label'     => esc_html__( 'Everest Forms', 'everest-forms' ),
 				'default'   => 'block',
 				'options'   => Helper::get_form_list(),
@@ -50,7 +49,7 @@ class BricksFormWidget extends \Bricks\Element {
 	}
 
 	/**
-	 * Render the element output for the frontend of Single Course Categories Element
+	 * Render the element output for the frontend of Everest Forms Form Element
 	 *
 	 * Includes border, color, and background color etc. options for the
 	 * element reflected based on components controls.
@@ -58,11 +57,23 @@ class BricksFormWidget extends \Bricks\Element {
 	 * @since xx.xx.xx
 	 */
 	public function render() {
+		$form_id = ! empty( $this->settings['everest_forms_control'] ) ? $this->settings['everest_forms_control'] : null;
 
-		//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		if ( empty( $form_id ) ) {
+			echo esc_html__( 'No form selected.', 'everest-forms' );
+			return;
+		}
 
-			echo "<div {$this->render_attributes( '_root' )}>";
-			echo 'hello there';
-			echo '</div>';
+		$content = \EVF_Shortcodes::shortcode_wrapper(
+			array( 'EVF_Shortcode_Form', 'output' ),
+			array(
+				'id' => $form_id,
+			),
+			array( 'class' => 'everest-forms' )
+		);
+
+		echo "<div {$this->render_attributes( '_root' )}>";
+		echo $content;
+		echo '</div>';
 	}
 }
