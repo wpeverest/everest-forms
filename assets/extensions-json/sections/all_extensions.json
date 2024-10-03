@@ -885,6 +885,22 @@
       ],
       "setting_url": "",
       "demo_video_url": ""
+    },
+    {
+      "title": "Beaver Builder",
+      "slug": "everest-forms-beaver-builder",
+      "name": "Everest Forms Beaver Builder",
+      "image": "extensions-json/sections/images/beaver.png",
+      "excerpt": "Get the widget of everest forms in the beaver builder which helps to integrate the form easily.",
+      "link": "https://docs.everestforms.net/docs/beaver-builder/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "released_date": "xx/xx/xxxx",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "setting_url": "",
+      "demo_video_url": ""
     }
   ]
 }

@@ -9,6 +9,7 @@
 namespace EverestForms\Addons;
 
 use EverestForms\Addons\OxygenBuilder\OxygenBuilder;
+use EverestForms\Addons\BeaverBuilder\BeaverBuilder;
 use EverestForms\Traits\Singleton;
 
 /**
@@ -45,6 +46,7 @@ class Addons {
 			'everest_forms_addon_list',
 			array(
 				'oxygen-builder' => OxygenBuilder::class,
+				'beaver-builder' => BeaverBuilder::class,
 			)
 		);
 	}
