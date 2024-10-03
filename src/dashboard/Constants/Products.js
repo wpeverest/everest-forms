@@ -114,5 +114,6 @@ export const THEMES = [
 
 export const FreeModules = [
 	'ai-contact-form',
-	'everest-forms-oxygen-builder'
+	'everest-forms-oxygen-builder',
+	'everest-forms-bricks-builder'
 ]

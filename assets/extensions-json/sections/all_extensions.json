@@ -885,6 +885,22 @@
       ],
       "setting_url": "",
       "demo_video_url": ""
+    },
+    {
+      "title": "Bricks Builder",
+      "slug": "everest-forms-bricks-builder",
+      "name": "Everest Forms Bricks Builder",
+      "image": "extensions-json/sections/images/calculations.png",
+      "excerpt": "test",
+      "link": "https://docs.everestforms.net/docs/bricks-builder/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "released_date": "xx/xx/xxxx",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "setting_url": "",
+      "demo_video_url": ""
     }
   ]
 }
