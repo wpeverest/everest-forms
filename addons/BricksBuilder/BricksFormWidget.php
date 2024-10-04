@@ -53,13 +53,6 @@ class BricksFormWidget extends \Bricks\Element {
 			'clearable'  => false,
 			'default'    => '',
 			'searchable' => true,
-			'on_change'  => 'bricksTriggersEverestFormRender',
-			'css'        => array(
-				array(
-					'property' => 'display',
-					'selector' => '.everest-forms-selector',
-				),
-			),
 		);
 	}
 
