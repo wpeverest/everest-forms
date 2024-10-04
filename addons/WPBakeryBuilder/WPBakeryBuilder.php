@@ -8,6 +8,7 @@
 namespace EverestForms\Addons\WPBakeryBuilder;
 
 use EverestForms\Traits\Singleton;
+use EverestForms\Addons\WPBakeryBuilder\Helper;
 
 /**
  * WPBakeryBuilder.
@@ -19,14 +20,23 @@ class WPBakeryBuilder {
 	use Singleton;
 
 	public function __construct() {
-		$this->init_hooks();
+		$this->setup();
 	}
 
-	public static function init() {
-		return new WPBakeryBuilder();
-	}
+	/**
+	 * Init.
+	 *
+	 * @since xx.xx.xx
+	 */
+	public function setup() {
 
-	public function init_hooks() {
+		if ( ! Helper::is_wpbakery_active() ) {
+
+			Helper::print_admin_notice();
+
+			return;
+		}
+
 		/**
 		 * Action to create WPBakery Widget for Everest Forms.
 		 *
@@ -40,7 +50,7 @@ class WPBakeryBuilder {
 	 *
 	 * @since xx.xx.xx
 	 */
-	function evf_create_wpbakery_widget_category() {
+	public function evf_create_wpbakery_widget_category() {
 		$evf_get_all_forms = evf_get_all_forms();
 		$evf_all_forms     = array_flip( $evf_get_all_forms );
 
