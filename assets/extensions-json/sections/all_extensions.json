@@ -872,11 +872,11 @@
     },
     {
       "title": "CleverReach",
-      "slug": "everest-forms-clever-reach",
+      "slug": "everest-forms-cleverreach",
       "name": "Everest Forms CleverReach",
-      "image": "extensions-json/sections/images/calculations.png",
+      "image": "extensions-json/sections/images/cleverreach.png",
       "excerpt": "Connect Everest Forms with CleverReach to grow your CleverReach subscriber list.",
-      "link": "https://docs.everestforms.net/docs/clever-reach/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "link": "https://docs.everestforms.net/docs/cleverreach/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
       "released_date": "xx/xx/xxxx",
       "plan": [
         "personal",
