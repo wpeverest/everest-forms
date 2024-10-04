@@ -17,12 +17,20 @@ class BricksFormWidget extends \Bricks\Element {
 	  public $name     = 'everest-forms';
 	  public $icon     = 'ti-bolt-alt';
 
-	// Return localized element label
+	/**
+	 * Get label.
+	 *
+	 * @since xx.xx.xx
+	 */
 	public function get_label() {
 		return esc_html__( 'Everest Forms', 'everest-forms' );
 	}
 
-	// Set builder control groups
+	/**
+	 * Set control groups.
+	 *
+	 * @since xx.xx.xx
+	 */
 	public function set_control_groups() {
 		$this->control_groups['general'] = array(
 			'title' => esc_html__( 'Everest Forms', 'everest-forms' ),
@@ -30,22 +38,29 @@ class BricksFormWidget extends \Bricks\Element {
 		);
 	}
 
+	/**
+	 * Set controls function.
+	 *
+	 * @since xx.xx.xx
+	 */
 	public function set_controls() {
-			$this->controls['everest_forms_control'] = array(
-				'tab'       => 'content',
-				'group'     => 'general',
-				'label'     => esc_html__( 'Everest Forms', 'everest-forms' ),
-				'default'   => 'block',
-				'options'   => Helper::get_form_list(),
-				'type'      => 'select',
-				'clearable' => false,
-				'css'       => array(
-					array(
-						'property' => 'display',
-						'selector' => '.everest-forms',
-					),
+		$this->controls['everest_forms_control'] = array(
+			'tab'        => 'content',
+			'group'      => 'general',
+			'label'      => esc_html__( 'Select Form', 'everest-forms' ),
+			'type'       => 'select',
+			'options'    => Helper::get_form_list(),
+			'clearable'  => false,
+			'default'    => '',
+			'searchable' => true,
+			'on_change'  => 'bricksTriggersEverestFormRender',
+			'css'        => array(
+				array(
+					'property' => 'display',
+					'selector' => '.everest-forms-selector',
 				),
-			);
+			),
+		);
 	}
 
 	/**

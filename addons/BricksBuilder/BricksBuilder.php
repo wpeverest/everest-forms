@@ -17,6 +17,7 @@ use EverestForms\Traits\Singleton;
 class BricksBuilder {
 
 	use Singleton;
+
 	/**
 	 * Constructor.
 	 *
@@ -47,6 +48,11 @@ class BricksBuilder {
 		);
 	}
 
+	/**
+	 * Register bricks elements.
+	 *
+	 * @since xx.xx.xx
+	 */
 	public function register_bricks_elements() {
 		$element_files = array(
 			__DIR__ . '/BricksFormWidget.php',

@@ -67,9 +67,6 @@ class Helper {
 		if ( empty( $forms ) ) {
 			return $forms;
 		}
-
-		$forms[0] = esc_html__( 'Select a Form', 'everest-forms' );
-
 		return $forms;
 	}
 }
