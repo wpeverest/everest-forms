@@ -25,9 +25,9 @@ class Helper {
 	 * @return boolean
 	 */
 	public static function is_bricks_active() {
-		$all_themes = wp_get_themes();
+		$active_theme = wp_get_theme();
 
-		if ( isset( $all_themes['bricks'] ) ) {
+		if ( $active_theme->stylesheet === 'bricks' && $active_theme->template === 'bricks' ) {
 			return true;
 		} else {
 			return false;
