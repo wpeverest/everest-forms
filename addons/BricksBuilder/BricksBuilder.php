@@ -41,6 +41,10 @@ class BricksBuilder {
 			return;
 		}
 
+		if ( ! class_exists( '\Bricks\Elements' ) ) {
+			return;
+		}
+
 		add_action(
 			'init',
 			array( $this, 'register_bricks_elements' ),
