@@ -19,7 +19,10 @@ const webpackConfig = {
 		),
 		"divibuilder": resolve(
 			process.cwd(),
-			'./src/divibuilder/index.jsx',
+			'./src/divibuilder/index.jsx'),
+		"templates": resolve(
+			process.cwd(),
+			'./src/templates/index.tsx',
 		),
 	},
 	output: {
@@ -32,9 +35,14 @@ const webpackConfig = {
 		rules: [
 			{
 				test: /\.(js|jsx|ts|tsx)$/,
-				loader: "babel-loader",
-				exclude: /node_modules/
-			},
+				exclude: /node_modules/,
+				use: {
+				  loader: 'babel-loader',
+				  options: {
+					presets: ['@babel/preset-env', '@babel/preset-react','@babel/preset-typescript']
+				  }
+				},
+			  },
 			{
 				test: /\.(png|svg|jpg|jpeg|gif|webp)$/i,
 				use: [
@@ -71,7 +79,8 @@ const webpackConfig = {
 	},
 	resolve: {
 		extensions: ['.js', '.jsx', '.ts', '.tsx'],
-	},
+	  },
+
 };
 
 if (webpackConfig.mode !== "production") {
