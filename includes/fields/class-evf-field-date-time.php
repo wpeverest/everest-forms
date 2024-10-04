@@ -1090,11 +1090,11 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 	 */
 	public function entry_html( $value, $entry_meta, $entry, $type, $meta_key = '' ) {
 
-		$field_metas  = isset( $entry->meta ) ? $entry->meta : array();
+		$field_metas = isset( $entry->meta ) ? $entry->meta : array();
 
-		$timezone_key = isset($meta_key['meta_key']) ? $meta_key['meta_key']. '_timezone':$meta_key.'_timezone';
+		$timezone_key = isset( $meta_key['meta_key'] ) ? $meta_key['meta_key'] . '_timezone' : $meta_key . '_timezone';
 
-		if ( isset($meta_key['meta_key']) && ! empty( $meta_key['meta_key'] ) && isset( $field_metas[ $timezone_key ] ) ) {
+		if ( isset( $meta_key['meta_key'], $field_metas[ $timezone_key ] ) && ! empty( $meta_key['meta_key'] ) ) {
 			$timezone_value = $field_metas[ $timezone_key ];
 			$all_timezones  = $this->get_timezones();
 
