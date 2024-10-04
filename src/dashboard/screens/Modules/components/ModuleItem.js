@@ -37,6 +37,7 @@ import { FaInfoCircle, FaPlayCircle } from 'react-icons/fa';
 import { activateModule, deactivateModule } from "./modules-api";
 import DashboardContext from "./../../../context/DashboardContext";
 import { actionTypes } from "./../../../reducers/DashboardReducer";
+import { FreeModules } from "../../../Constants/Products";
 
 const ModuleItem = (props) => {
 	/* global _EVF_DASHBOARD_ */
@@ -80,6 +81,7 @@ const ModuleItem = (props) => {
 	const [moduleStatus, setModuleStatus] = useState(status);
 	const [isPerformingAction, setIsPerformingAction] = useState(false);
 	const [moduleSettingsURL, setModuleSettingsURL] = useState('');
+console.log(data);
 
 	const handleModuleAction = () => {
 		setAddonActivated(true);
@@ -181,14 +183,14 @@ const ModuleItem = (props) => {
 			} else {
 				setLicenseActivated(false);
 				setModuleEnabled(false);
-				if(data.slug=='ai-contact-form'){
+				if(FreeModules.includes(data.slug)){
 					setModuleEnabled(true);
 				}else{
 					setModuleEnabled(false);
 				}
 			}
 		} else {
-			if(data.slug=='ai-contact-form'){
+			if(FreeModules.includes(data.slug)){
 				setModuleEnabled(true);
 			}else{
 				setModuleEnabled(false);
@@ -347,7 +349,7 @@ const ModuleItem = (props) => {
 					p="5px"
 					m="5px"
 				>
-					{data.required_plan ? data.slug === 'ai-contact-form' ? 'Free' : data.required_plan  : "Pro"}
+					{data.required_plan ? FreeModules.includes(data.slug) ? 'Free' : data.required_plan  : "Pro"}
 				</Badge>
 				<Box p="6">
 					<Stack direction="column" spacing="4">

@@ -80,7 +80,7 @@
         "agency",
         "themegrill agency"
       ],
-      "setting_url" : "admin.php?page=evf-settings&tab=pdf-submission",
+      "setting_url": "admin.php?page=evf-settings&tab=pdf-submission",
       "demo_video_url": "37CtaxJzYis",
       "popular_rank": 4
     },
@@ -835,7 +835,7 @@
         "themegrill agency"
       ],
       "setting_url": "",
-       "demo_video_url": ""
+      "demo_video_url": ""
     },
     {
       "title": "Aweber",
@@ -851,7 +851,7 @@
         "themegrill agency"
       ],
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=aweber",
-       "demo_video_url": ""
+      "demo_video_url": ""
     },
     {
       "title": "Calculations",
@@ -869,6 +869,22 @@
       "setting_url": "",
       "demo_video_url": "WCsHC7NQ2QQ",
       "popular_rank": 16
+    },
+    {
+      "title": "Oxygen Builder",
+      "slug": "everest-forms-oxygen-builder",
+      "name": "Everest Forms Oxygen Builder",
+      "image": "extensions-json/sections/images/calculations.png",
+      "excerpt": "Get the widget of everest forms in the oxygen builder which helps to integrate the form easily.",
+      "link": "https://docs.everestforms.net/docs/oxygen-builder/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "released_date": "xx/xx/xxxx",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "setting_url": "",
+      "demo_video_url": ""
     }
   ]
 }
