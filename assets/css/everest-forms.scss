@@ -1959,3 +1959,17 @@ $background-color_1: #f9f9f9;
 	background: #f6f7f8;
     border-bottom: 1px solid #ced4da !important;
 }
+
+/** CSS for Beaver builder*/
+.everest-forms-beaver__container {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+
+    img.everest-forms-logo__beaver {
+		background: #7545BB;
+		padding: 1rem;
+		border-radius: 14px;
+    }
+}
