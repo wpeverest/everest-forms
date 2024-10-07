@@ -2,14 +2,12 @@
 /**
  * Everest Forms Divi Module File.
  *
- * @package EverestForms\Addons\DiviBuilder
+ * @package EverestForms\Divi
  * @since xx.xx.xx
  */
-
 namespace EverestForms\Addons\DiviBuilder;
 
 defined( 'ABSPATH' ) || exit;
-
 
 /**
  * Everest Forms Divi module class.
@@ -86,7 +84,7 @@ class EverestFormsModule extends \ET_Builder_Module {
 			),
 			'__rendered_evf_forms' => array(
 				'type'                => 'computed',
-				'computed_callback'   => array( 'EVF_Divi_Builder', 'rendered_evf_forms' ),
+				'computed_callback'   => 'EverestForms\Addons\DiviBuilder\EverestFormsModule::rendered_evf_forms',
 				'computed_depends_on' => array(
 					'form_id',
 				),
@@ -94,6 +92,7 @@ class EverestFormsModule extends \ET_Builder_Module {
 					'form_id',
 				),
 			),
+
 		);
 		return $fields;
 	}
