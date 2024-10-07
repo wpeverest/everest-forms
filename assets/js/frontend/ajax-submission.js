@@ -50,6 +50,13 @@ jQuery( function( $ ) {
 						return false;
 					}
 
+					// Let other plugins or integrations stop the submit process and do other things if needed.
+					var beforeSubmitEvent = $.Event( 'evf-frontend-ajax-submission-before-submit' );
+					formTuple.trigger( beforeSubmitEvent );
+					if ( beforeSubmitEvent.isDefaultPrevented() ) {
+						return false;
+					}
+
 					var data = formTuple.serializeArray();
 					e.preventDefault();
 					// We let the bubbling events in form play itself out.
