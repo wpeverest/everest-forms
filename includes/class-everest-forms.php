@@ -6,6 +6,8 @@
  * @since   1.0.0
  */
 
+use EverestForms\Addons\Addons as Addons;
+
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -21,7 +23,7 @@ final class EverestForms {
 	 *
 	 * @var string
 	 */
-	public $version = '3.0.2';
+	public $version = '3.0.3.1';
 
 	/**
 	 * The single instance of the class.
@@ -161,6 +163,7 @@ final class EverestForms {
 		$this->define_constants();
 		$this->define_tables();
 		$this->includes();
+		$this->init_addons();
 		$this->init_hooks();
 		add_action( 'plugins_loaded', array( $this, 'objects' ), 1 );
 
@@ -180,7 +183,6 @@ final class EverestForms {
 		add_action( 'init', array( $this, 'form_fields' ), 0 );
 		add_action( 'init', array( 'EVF_Shortcodes', 'init' ), 0 );
 		add_action( 'switch_blog', array( $this, 'wpdb_table_fix' ), 0 );
-		add_action( 'et_builder_ready', array( $this, 'everest_form_register_divi_builder' ) );
 	}
 
 	/**
@@ -352,6 +354,15 @@ final class EverestForms {
 	}
 
 	/**
+	 * Loaded the addons.
+	 *
+	 * @since xx.xx.xx
+	 */
+	public function init_addons() {
+		\Addons::init();
+	}
+
+	/**
 	 * Include required frontend files.
 	 */
 	public function frontend_includes() {
@@ -486,18 +497,5 @@ final class EverestForms {
 	 */
 	public function form_fields() {
 		return EVF_Fields::instance();
-	}
-
-	/**
-	 * Function to check whether the divi module is loaded or not.
-	 *
-	 * @since xx.xx.xx
-	 */
-	public function everest_form_register_divi_builder() {
-		if ( ! class_exists( 'ET_Builder_Module' ) ) {
-			return;
-		}
-
-		include_once EVF_ABSPATH . 'includes/divibuilder/class-evf-divi-builder.php';
 	}
 }
