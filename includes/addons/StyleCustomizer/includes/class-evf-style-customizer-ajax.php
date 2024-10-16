@@ -46,6 +46,8 @@ final class EVF_Style_Customizer_Ajax {
 
 		$color_palettes = get_option( 'everest_forms_custom_color_palettes', array() );
 
+		lg( $_POST );
+		die;
 		$color_palettes = array_filter(
 			$color_palettes,
 			function( $palette ) {

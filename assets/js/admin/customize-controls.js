@@ -509,7 +509,71 @@
 
 
 			control.container.on('click', '.color-palette-edit-icon', function () {
-				control.toggleEditInterface();
+				var labelElement = $(this).closest('label');
+				var dataCustom = labelElement.attr('data-custom');
+
+				if (dataCustom === 'evf-custom-color-palette') {
+					control.toggleEditInterface();
+				} else {
+					$.confirm({
+						title: '<span style="color: #28a745; font-weight: bold;"><span class="dashicons dashicons-yes"></span> Edit Color Palette</span>',
+						content: 'Are you sure you want to edit this color palette?<br><div style="color: red; padding-top: 10px;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Your other customized palette will be lost!</div>',
+						theme: 'modern',
+						type: 'red',
+						boxWidth: '20%',
+						useBootstrap: false,
+						backgroundDismiss: true,
+						buttons: {
+							cancel: {
+								text: 'Cancel',
+								action: function () {}
+							},
+							confirm: {
+								text: 'Confirm',
+								btnClass: 'btn-green',
+								action: function () {
+									console.log('Palette editing confirmed');
+								}
+							}
+						},
+						onOpenBefore: function() {
+							this.$jconfirmBox.css({
+								'background': '#ffffff',
+								'border-top': '6px solid #198754',
+								'border-radius': '10px',
+								'box-shadow': '0px 4px 8px rgba(0, 0, 0, 0.1)',
+								'padding': '20px',
+								'position': 'fixed', // Fixed positioning
+								'top': '50%', // Center vertically
+								'left': '50%', // Center horizontally
+								'transform': 'translate(-50%, -50%)' // Adjust for its own width/height
+							});
+
+							this.$content.css({
+								'color': '#383838',
+								'font-size': '16px',
+								'line-height': '24px',
+								'text-align': 'center',
+							});
+
+							this.$title.css({
+								'text-align': 'center',
+								'margin-bottom': '10px',
+								'color': '#222222'
+							});
+
+							this.$btnc.find('.btn-green').css({
+								'background': '#2271b1',
+								'color': '#fff',
+								'border': '1px solid #2271b1',
+								'padding': '10px 20px',
+								'border-radius': '5px',
+								'font-weight': 'bold'
+							});
+						}
+					});
+
+				}
 			});
 		},
 
@@ -580,6 +644,16 @@
 		saveEditedColors: function () {
 			var control = this;
 			var editedColors = {};
+			var inputAttrs = control.params.inputAttrs;
+
+			var inputAttrs = control.params.inputAttrs;
+			var is_custom = false;
+			var match = inputAttrs.match(/data-custom="([^"]*)"/);
+
+			if (match && match[1] === 'evf-custom-color-palette') {
+				is_custom = true;
+			}
+
 
 			control.container.find('.color-palette-edit-item').each(function () {
 				var key = $(this).find('label').data('key').trim().toLowerCase().replace(/color\s+.*/, '');
@@ -594,7 +668,9 @@
 				form_id: _evfCustomizeControlsL10n.form_id,
 				_nonce: _evfCustomizeControlsL10n.color_palette_nonce,
 				colors: editedColors,
-				label: control.params.label
+				label: control.params.label,
+				is_custom:is_custom
+
 			})
 				.done(function (response) {
 				if(response.success){
