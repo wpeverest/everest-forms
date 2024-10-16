@@ -186,9 +186,7 @@ function evf_style_customizer_color_palette_controls( $controls, $customize ) {
 		),
 	);
 	$custom_palette = get_option( 'everest_forms_custom_color_palettes', array() );
-	// lg( $custom_palette );
-	//   delete_option( 'everest_forms_custom_color_palettes' );
-
+	// delete_option( 'everest_forms_custom_color_palettes' );
 	$custom_palette = array_filter(
 		$custom_palette,
 		function( $palette ) {
@@ -196,19 +194,39 @@ function evf_style_customizer_color_palette_controls( $controls, $customize ) {
 		}
 	);
 
-	$color_palettes = array_merge( $custom_palette, $color_palettes, $pro_palette );
+	$color_palettes   = array_merge( $custom_palette, $color_palettes, $pro_palette );
+	$has_custom_field = false; // Initialize the variable to track custom fields
+
+	// Check if any palette has is_custom set to true
+	foreach ( $color_palettes as $palette ) {
+		if ( $palette['is_custom'] ) {
+			$has_custom_field = true;
+			break;
+		}
+	}
+
 	foreach ( $color_palettes as $index => $palette ) {
 		$colors_with_values = array();
 		foreach ( $palette['colors'] as $color_name => $color_value ) {
-
 			$colors_with_values[] = array(
 				'name'       => $color_name,
 				'color'      => $color_value,
 				'color_name' => $color_name,
 			);
 		}
-		$class                = $palette['is_pro'] ? 'evf-pro-palette' : 'evf-free-palette';
-		$custom_palette_class = $palette['is_custom'] ? 'evf-custom-color-palette' : '';
+		$class       = $palette['is_pro'] ? 'evf-pro-palette' : 'evf-free-palette';
+		$input_attrs = array(
+			'class' => $class,
+		);
+
+		if ( $palette['is_custom'] === true ) {
+			$input_attrs['data-custom'] = 'evf-custom-color-palette';
+		} else {
+			if ( count( get_option( 'everest_forms_custom_color_palettes', array() ) ) > 0 ) {
+				$input_attrs['data-custom'] = '';
+			}
+		}
+
 		$controls['color_palette'][ 'color_' . $index ] = array(
 			'setting' => array(
 				'default'           => $palette['colors'],
@@ -220,10 +238,7 @@ function evf_style_customizer_color_palette_controls( $controls, $customize ) {
 				'section'     => 'everest_forms_color_palette',
 				'type'        => 'EVF_Customize_Color_Palette_Control',
 				'choices'     => $colors_with_values,
-				'input_attrs' => array(
-					'class'       => $class,
-					'data-custom' => $custom_palette_class,
-				),
+				'input_attrs' => $input_attrs,
 			),
 		);
 	}

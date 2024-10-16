@@ -511,70 +511,96 @@
 			control.container.on('click', '.color-palette-edit-icon', function () {
 				var labelElement = $(this).closest('label');
 				var dataCustom = labelElement.attr('data-custom');
+				var iconElement = $(this);
+				var editInterface = control.container.find('.color-palette-edit-interface');
+				if (editInterface.length) {
+					editInterface.remove();
+				} else {
+					control.showEditInterface();
+				}
 
 				if (dataCustom === 'evf-custom-color-palette') {
-					control.toggleEditInterface();
-				} else {
+					if (iconElement.html() === '✎') {
+						iconElement.html('✖');
+					} else {
+						iconElement.html('✎');
+					}
+				} else if (dataCustom === '') {
 					$.confirm({
-						title: '<span style="color: #28a745; font-weight: bold;"><span class="dashicons dashicons-yes"></span> Edit Color Palette</span>',
-						content: 'Are you sure you want to edit this color palette?<br><div style="color: red; padding-top: 10px;"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Your other customized palette will be lost!</div>',
+						title: 'Edit Color Palette',
+						content: 'Are you sure you want to edit this color palette?<br><div style="color: #ff4d4f; padding-top: 10px;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="margin-right: 5px;"></i>Your other customized palette will be lost!</div>',
 						theme: 'modern',
 						type: 'red',
-						boxWidth: '20%',
+						boxWidth: '30%',
 						useBootstrap: false,
 						backgroundDismiss: true,
 						buttons: {
 							cancel: {
 								text: 'Cancel',
-								action: function () {}
+								btnClass: 'btn-light',
+								action: function () {
+									// Do nothing on cancel
+								}
 							},
 							confirm: {
 								text: 'Confirm',
-								btnClass: 'btn-green',
+								btnClass: 'btn-primary',
 								action: function () {
-									console.log('Palette editing confirmed');
+									if (iconElement.html() === '✎') {
+										iconElement.html('✖');
+									} else {
+										iconElement.html('✎');
+									}
 								}
 							}
 						},
 						onOpenBefore: function() {
 							this.$jconfirmBox.css({
 								'background': '#ffffff',
-								'border-top': '6px solid #198754',
-								'border-radius': '10px',
-								'box-shadow': '0px 4px 8px rgba(0, 0, 0, 0.1)',
+								'border-radius': '8px',
+								'box-shadow': '0px 4px 16px rgba(0, 0, 0, 0.1)',
 								'padding': '20px',
-								'position': 'fixed', // Fixed positioning
-								'top': '50%', // Center vertically
-								'left': '50%', // Center horizontally
-								'transform': 'translate(-50%, -50%)' // Adjust for its own width/height
+								'border': '1px solid #d9d9d9',
 							});
 
 							this.$content.css({
 								'color': '#383838',
-								'font-size': '16px',
-								'line-height': '24px',
+								'font-size': '14px',
+								'line-height': '20px',
 								'text-align': 'center',
+								'padding-bottom': '10px'
 							});
 
 							this.$title.css({
 								'text-align': 'center',
 								'margin-bottom': '10px',
-								'color': '#222222'
+								'color': '#222222',
+								'font-size': '16px',
+								'font-weight': '500'
 							});
 
-							this.$btnc.find('.btn-green').css({
-								'background': '#2271b1',
+							this.$btnc.find('.btn-light').css({
+								'background': '#f5f5f5',
+								'color': '#595959',
+								'border': '1px solid #d9d9d9',
+								'padding': '8px 20px',
+								'border-radius': '4px',
+								'font-weight': '500'
+							});
+
+							this.$btnc.find('.btn-primary').css({
+								'background': '#2f54eb',
 								'color': '#fff',
-								'border': '1px solid #2271b1',
-								'padding': '10px 20px',
-								'border-radius': '5px',
-								'font-weight': 'bold'
+								'border': '1px solid #2f54eb',
+								'padding': '8px 20px',
+								'border-radius': '4px',
+								'font-weight': '500'
 							});
 						}
 					});
-
 				}
 			});
+
 		},
 
 		saveValue: function (property, value) {
@@ -590,18 +616,6 @@
 			$(input).val(JSON.stringify(val)).trigger('change');
 			$.each(val, (key, value) => { if (value === true || value === false) delete val[key]; });
 			control.setting.set(val);
-		},
-
-
-		toggleEditInterface: function () {
-			var control = this;
-			var editInterface = control.container.find('.color-palette-edit-interface');
-
-			if (editInterface.length) {
-				editInterface.remove();
-			} else {
-				control.showEditInterface();
-			}
 		},
 
 		showEditInterface: function () {
