@@ -4558,7 +4558,10 @@ function evf_sanitize_builder( $post_data = array() ) {
 			$value = wp_kses_post( $data->value );
 		} elseif ( preg_match('/calculation_field/', $data->name) ) {
 			$value = wp_kses_post( $data->value );
-		} else {
+		} elseif (preg_match('/successful_form_submission_message/', $data->name)) {
+			$value = wp_kses_post( $data->value );
+		}
+		else {
 			$value = sanitize_text_field( $data->value );
 		}
 
