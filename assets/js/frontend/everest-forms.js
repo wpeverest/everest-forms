@@ -47,6 +47,14 @@ jQuery( function ( $ ) {
 				$(this).removeClass('everest-forms-field-active');
 			});
 
+			/**
+			 * Focus on first error on submit.
+			 *
+			 * @since xx.xx.xx
+			 */
+			this.$everest_form.on( 'submit', function(){
+				everest_forms.onSubmitErrorScroll();
+			})
 	;
 
 
@@ -728,6 +736,18 @@ jQuery( function ( $ ) {
 			if ( $( 'div.everest-forms-submission-scroll' ).length ) {
 				$( 'html,body' ).animate( {
 					scrollTop: ( $( 'div.everest-forms-submission-scroll' ).offset().top ) - 100
+				}, 1000 );
+			}
+		},
+		/**
+		 * Focus on first error on submit.
+		 *
+		 * @since xx.xx.xx
+		 */
+		onSubmitErrorScroll: function(){
+			if ( $( '.everest-forms-invalid' ).length ) {
+				$( 'html,body' ).animate( {
+					scrollTop: ( $( '.everest-forms-invalid' )[0].offset().top ) - 100
 				}, 1000 );
 			}
 		},
