@@ -1183,8 +1183,8 @@
     }
   },
   "layout-seven": {
-    "name": "Big Daddy",
-    "image": "https://raw.githubusercontent.com/wpeverest/everest-forms-style-templates/main/images/big-daddy.png",
+    "name": "Royal Giant",
+    "image": "https://raw.githubusercontent.com/wpeverest/everest-forms-style-templates/main/images/royal-giant.png",
     "data": {
       "wrapper": {
         "border_type": "none",
@@ -1230,8 +1230,6 @@
         "font_size": "16",
         "border_color": "#edeef5",
         "background_color": "#edeef5",
-        "width" :"290",
-        "height":"50px",
         "border_width": {
           "top": "2",
           "right": "2",

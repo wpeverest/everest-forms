@@ -514,13 +514,17 @@
 				var iconElement = $(this);
 				var editInterface = control.container.find('.color-palette-edit-interface');
 				if (editInterface.length) {
-					editInterface.remove();
-				} else {
-					control.showEditInterface();
-				}
+						editInterface.remove();
+					} else {
+					if (dataCustom === undefined) {
+						control.showEditInterface();
+						}
+					}
+
 
 				if (dataCustom === 'evf-custom-color-palette') {
 					if (iconElement.html() === '✎') {
+						control.showEditInterface();
 						iconElement.html('✖');
 					} else {
 						iconElement.html('✎');
@@ -539,7 +543,11 @@
 								text: 'Cancel',
 								btnClass: 'btn-light',
 								action: function () {
-									// Do nothing on cancel
+									if (iconElement.html() === '✎') {
+										iconElement.html('✎');
+									} else {
+										iconElement.html('✎');
+									}
 								}
 							},
 							confirm: {
@@ -547,6 +555,7 @@
 								btnClass: 'btn-primary',
 								action: function () {
 									if (iconElement.html() === '✎') {
+										control.showEditInterface();
 										iconElement.html('✖');
 									} else {
 										iconElement.html('✎');
