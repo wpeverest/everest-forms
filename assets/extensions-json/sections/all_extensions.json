@@ -323,23 +323,6 @@
       "popular_rank": 19
     },
     {
-      "title": "SMS Notifications",
-      "slug": "everest-forms-sms-notifications",
-      "name": "Everest Forms SMS Notifications",
-      "image": "extensions-json/sections/images/sms-notifications.png",
-      "excerpt": "Using the Everest Forms SMS Notifications Add-on, you can now easily configure any online form to receive an SMS notification when a form is being submitted.",
-      "link": "https://docs.everestforms.net/docs/sms-notification/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
-      "released_date": "19/05/2022",
-      "plan": [
-        "personal",
-        "agency",
-        "themegrill agency"
-      ],
-      "setting_url": "admin.php?page=evf-settings&tab=integration&section=sms_notifications",
-      "demo_video_url": "tz4UKBX9WxM",
-      "popular_rank": 22
-    },
-    {
       "title": "Cloud Storage",
       "slug": "everest-forms-cloud-storage",
       "name": "Everest Forms Cloud Storage",
@@ -869,6 +852,23 @@
       "setting_url": "",
       "demo_video_url": "WCsHC7NQ2QQ",
       "popular_rank": 16
+    },
+    {
+      "title": "SMS Notifications",
+      "slug": "everest-forms-sms-notifications",
+      "name": "Everest Forms SMS Notifications",
+      "image": "extensions-json/sections/images/sms-notifications.png",
+      "excerpt": "Using the Everest Forms SMS Notifications Add-on, you can now easily configure any online form to receive an SMS notification when a form is being submitted.",
+      "link": "https://docs.everestforms.net/docs/sms-notification/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "released_date": "19/05/2022",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=sms_notifications",
+      "demo_video_url": "tz4UKBX9WxM",
+      "popular_rank": 22
     }
   ]
 }
