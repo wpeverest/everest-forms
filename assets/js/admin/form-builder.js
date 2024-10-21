@@ -1,6 +1,5 @@
 /* global evf_data, jconfirm, PerfectScrollbar, evfSetClipboard, evfClearClipboard */
 (function ( $, evf_data ) {
-
 	var $builder;
 
 	var EVFPanelBuilder = {
@@ -19,10 +18,25 @@
 		 		}
 
 				//To remove script tag.
-				$(document).on('input','.everest-forms-field-option-row-choices input[name$="[label]"]',function (e) {
+				$(document).on('input change','.everest-forms-field-option-row-choices input[name$="[label]"]',function (e) {
 					var $value =  $(this).val();
 					$(this).val($value.replace(/<\s*script/gi, '').replace(/\s+on\w+\s*=/gi, ' '));
 				});
+
+				$(document).on('input change', 'input[name$="[required-field-message]"]', function (e) {
+					var $value = $(this).val();
+
+					const htmlTagPattern = /<[^>]*>/;
+					const htmlEntityPattern = /&[a-zA-Z0-9#]+;/;
+
+					if (htmlTagPattern.test($value) || htmlEntityPattern.test($value)) {
+						$(this).val('');
+					} else {
+						$(this).val($value.replace(/<\s*script/gi, '').replace(/\s+on\w+\s*=/gi, ' '));
+					}
+
+				});
+
 		 	});
 
 			$( document ).ready( function( $ ) {
