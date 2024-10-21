@@ -761,9 +761,11 @@ class EVF_Shortcode_Form {
 					$container_data['required-field-message'] = $required_validation;
 				} elseif ( isset( $field['required-field-message'] ) && '' !== $field['required-field-message'] ) {
 					$required_data = evf_string_translation( $form_data['id'], $field['id'], $field['required-field-message'], '-required-field-message' );
-					$container_data['required-field-message'] = esc_js($required_data);
+					if (preg_match('/<[^>]+>/', $required_data) || preg_match('/&[a-zA-Z0-9#]+;/', $required_data)) {
+						$container_data['required-field-message'] = esc_js(__( 'This field is required.', 'everest-forms-pro' ) );
+					}
 				} else {
-					$container_data['required-field-message'] = $required_validation;
+					$container_data['required-field-message'] = esc_js( $required_validation );
 				}
 			}
 		}
