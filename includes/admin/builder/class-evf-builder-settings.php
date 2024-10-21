@@ -857,6 +857,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				'conversation_forms' => esc_html__( 'Conversation Forms', 'everest-forms' ),
 				'sms_notifications'  => esc_html__( 'SMS Notifications', 'everest-forms' ),
 				'telegram'           => esc_html__( 'Telegram', 'everest-forms' ),
+				'qr_generator'       => esc_html__( 'QR Generator', 'everest-forms' ),
 			);
 			$arr        = array_merge( $arr, $pro_addons );
 		}
