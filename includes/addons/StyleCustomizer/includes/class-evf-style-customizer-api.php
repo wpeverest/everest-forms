@@ -70,7 +70,7 @@ class EVF_Style_Customizer_API {
 
 			// Compile SASS to load on frontend.
 			add_action( 'customize_save_after', array( $this, 'save_after' ) );
-			// add_filter( 'customize_save_response', array( $this, 'modify_customized_data' ), 10, 2 );
+			add_filter( 'customize_save_response', array( $this, 'modify_customized_data' ), 10, 2 );
 		}
 
 		// Delete specific styles on form delete.
@@ -544,48 +544,26 @@ class EVF_Style_Customizer_API {
 
 		$customized_data = get_option( 'everest_forms_styles', array() );
 
-		$highest_color_key  = '';
-		$highest_number     = -1;
-		$highest_identifier = '';
+		$matched_color_key = null;
 
-		foreach ( $customized_data as $identifier => $settings ) {
-			if ( isset( $settings['color_palette'] ) && is_array( $settings['color_palette'] ) ) {
-				foreach ( $settings['color_palette'] as $color_key => $color_value ) {
-					if ( preg_match( '/^color_(\d+)$/', $color_key, $matches ) ) {
-						$number = intval( $matches[1] );
-
-						if ( $number > $highest_number ) {
-							$highest_number     = $number;
-							$highest_color_key  = $color_key;
-							$highest_identifier = $identifier;
-						}
-					}
-				}
+		foreach ( $response['setting_validities'] as $key => $validity ) {
+			if ( preg_match( '/everest_forms_styles\[(\d+)\]\[color_palette\]\[(color_\d+)\]/', $key, $matches ) ) {
+				$matched_color_key = $matches[2];
+				$form_id           = $matches[1];
+				break;
 			}
 		}
 
-		$new_customized_data = array();
-		foreach ( $customized_data as $identifier => $settings ) {
-			if ( isset( $settings['color_palette'] ) && is_array( $settings['color_palette'] ) ) {
-				$new_customized_data[ $identifier ] = array(
-					'color_palette' => array(),
-				);
-
-				foreach ( $settings['color_palette'] as $color_key => $color_value ) {
-					if ( $color_key === $highest_color_key ) {
-						$new_customized_data[ $identifier ]['color_palette'][ $color_key ] = $color_value;
-					}
-				}
-			} else {
-
-				$new_customized_data[ $identifier ] = $settings;
-			}
+		if ( $matched_color_key !== null && isset( $customized_data[ $form_id ]['color_palette'][ $matched_color_key ] ) ) {
+			$customized_data[ $form_id ]['color_palette'] = array(
+				$matched_color_key => $customized_data[ $form_id ]['color_palette'][ $matched_color_key ],
+			);
+			update_option( 'everest_forms_styles', $customized_data );
 		}
-
-		update_option( 'everest_forms_styles', $new_customized_data );
 
 		return $response;
 	}
+
 
 
 	/**

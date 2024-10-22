@@ -186,7 +186,7 @@ function evf_style_customizer_color_palette_controls( $controls, $customize ) {
 		),
 	);
 	$custom_palette = get_option( 'everest_forms_custom_color_palettes', array() );
-	// delete_option( 'everest_forms_custom_color_palettes' );
+
 	$custom_palette = array_filter(
 		$custom_palette,
 		function( $palette ) {
@@ -195,9 +195,8 @@ function evf_style_customizer_color_palette_controls( $controls, $customize ) {
 	);
 
 	$color_palettes   = array_merge( $custom_palette, $color_palettes, $pro_palette );
-	$has_custom_field = false; // Initialize the variable to track custom fields
+	$has_custom_field = false;
 
-	// Check if any palette has is_custom set to true
 	foreach ( $color_palettes as $palette ) {
 		if ( $palette['is_custom'] ) {
 			$has_custom_field = true;

@@ -70,9 +70,11 @@ class EVF_Customize_Image_Checkbox_Control extends WP_Customize_Control {
 			<# if ( data.label ) { #><span class="customize-control-title">{{{ data.label }}}</span><# } #>
 			<# if ( data.description ) { #><span class="description customize-control-description">{{{ data.description }}}</span><#
 			} #>
+
 		</label>
 		<ul class="image-checkbox-wrapper">
 			<# Object.keys( data.choices ).forEach( function( key ) { #>
+
 			<li>
 				<input id="image-checkbox-{{{data.id}}}-{{{key}}}" type="checkbox" name="image-checkbox-{{{data.id}}}" value = "{{{key}}}" {{{ ( data.value[key]!=undefined && data.value[key] == true ) ? 'checked="checked"' : '' }}}/>
 				<label class="image-checkbox-item" title="{{{data.choices[key].name}}}" for="image-checkbox-{{{data.id}}}-{{{key}}}">

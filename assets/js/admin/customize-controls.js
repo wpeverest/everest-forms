@@ -487,40 +487,44 @@
 	} );
 
 
+
+
 	api.ColorPaletteControl = api.Control.extend({
 		ready: function () {
 			var control = this;
 
-			control.container.on('change', '.color-palette-label input[type="checkbox"]', function () {
+			// Handle checkbox change event
+			control.container.on('change', 'input[type="checkbox"]', function () {
 				var key = $(this).data('key');
-				var value = $(this).is(':checked');
+				var value = $(this).val();
 				control.saveValue(key, value);
 			});
 
+			// Handle color palette click
+			control.container.on('click', '.color-palette', function () {
+				var $currentGroup = $(this).closest('.customize-control-evf-color_palette');
 
+				$currentGroup.find('input[type="checkbox"]').each(function () {
+					$(this).prop('checked', false);
+					$('.customize-control-evf-color_palette').not($currentGroup).not(this).prop('checked', false);
 
-			control.container.on('click', '.color-palette-label', function () {
-				control.container.find('input[type="checkbox"]').each(function () {
-					if (!$(this).is(':checked')) {
-						$(this).prop('checked', true).change();
-					}
 				});
+
+				$(this).find('input[type="checkbox"]').prop('checked', true).change();
 			});
 
-
+			// Handle edit icon click for the color palette
 			control.container.on('click', '.color-palette-edit-icon', function () {
 				var labelElement = $(this).closest('label');
 				var dataCustom = labelElement.attr('data-custom');
 				var iconElement = $(this);
 				var editInterface = control.container.find('.color-palette-edit-interface');
-				if (editInterface.length) {
-						editInterface.remove();
-					} else {
-					if (dataCustom === undefined) {
-						control.showEditInterface();
-						}
-					}
 
+				if (editInterface.length) {
+					editInterface.remove();
+				} else if (dataCustom === undefined) {
+					control.showEditInterface();
+				}
 
 				if (dataCustom === 'evf-custom-color-palette') {
 					if (iconElement.html() === '✎') {
@@ -543,23 +547,15 @@
 								text: 'Cancel',
 								btnClass: 'btn-light',
 								action: function () {
-									if (iconElement.html() === '✎') {
-										iconElement.html('✎');
-									} else {
-										iconElement.html('✎');
-									}
+									iconElement.html('✎');
 								}
 							},
 							confirm: {
 								text: 'Confirm',
 								btnClass: 'btn-primary',
 								action: function () {
-									if (iconElement.html() === '✎') {
-										control.showEditInterface();
-										iconElement.html('✖');
-									} else {
-										iconElement.html('✎');
-									}
+									control.showEditInterface();
+									iconElement.html('✖');
 								}
 							}
 						},
@@ -609,7 +605,6 @@
 					});
 				}
 			});
-
 		},
 
 		saveValue: function (property, value) {
@@ -617,13 +612,30 @@
 			var input = control.container.find('.color-palette-hidden-value');
 			var val = control.setting.get();
 
+			// Ensure val is an object
 			if (typeof val !== 'object') {
 				val = {};
 			}
 
-			val[property] = value;
+
+			if (value) {
+				val[property] = value;
+			}
+
 			$(input).val(JSON.stringify(val)).trigger('change');
-			$.each(val, (key, value) => { if (value === true || value === false) delete val[key]; });
+
+			// Remove specified keys
+			$.each(val, (key, value) => {
+				// Check if the key is a string representation of a number
+				if (['0', '1', '2', '3', '4', '5'].includes(key) || value === true || value === false) {
+					delete val[key];
+				}
+			});
+
+			// Log the updated val object
+			console.log(val);
+
+			// Set the updated val object
 			control.setting.set(val);
 		},
 
@@ -652,11 +664,8 @@
 				if ("disabled" === $("#save.save").attr("disabled")) {
 					control.saveEditedColors();
 				} else {
-					alert(
-						"Please save the unsaved changes to create the color palettes."
-					);
+					alert("Please save the unsaved changes to create the color palettes.");
 				}
-
 			});
 
 			control.container.find('.color-palette-name-input').on('change', function () {
@@ -667,16 +676,6 @@
 		saveEditedColors: function () {
 			var control = this;
 			var editedColors = {};
-			var inputAttrs = control.params.inputAttrs;
-
-			var inputAttrs = control.params.inputAttrs;
-			var is_custom = false;
-			var match = inputAttrs.match(/data-custom="([^"]*)"/);
-
-			if (match && match[1] === 'evf-custom-color-palette') {
-				is_custom = true;
-			}
-
 
 			control.container.find('.color-palette-edit-item').each(function () {
 				var key = $(this).find('label').data('key').trim().toLowerCase().replace(/color\s+.*/, '');
@@ -691,12 +690,9 @@
 				form_id: _evfCustomizeControlsL10n.form_id,
 				_nonce: _evfCustomizeControlsL10n.color_palette_nonce,
 				colors: editedColors,
-				label: control.params.label,
-				is_custom:is_custom
-
-			})
-				.done(function (response) {
-				if(response.success){
+				label: control.params.label
+			}).done(function (response) {
+				if (response.success) {
 					$.alert({
 						title: '<span style="color: #28a745; font-weight: bold;"><span class="dashicons dashicons-yes"></span> Success!</span>',
 						content: response.data,
@@ -711,6 +707,7 @@
 								text: 'OK',
 								btnClass: 'btn-green',
 								action: function() {
+									window.location.reload();
 								}
 							}
 						},
@@ -747,15 +744,10 @@
 						}
 					});
 				}
-
-				})
-				.fail(function (error) {
-				});
-
+			}).fail(function (error) {});
 			control.container.find('.color-palette-edit-interface').remove();
 		}
 	});
-
 
 
 
