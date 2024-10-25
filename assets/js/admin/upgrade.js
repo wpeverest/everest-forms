@@ -176,19 +176,24 @@ jQuery( function( $ ) {
 		},
 		enable_stripe_model: function( e ) {
 			e.preventDefault();
-			$.alert({
-				title: evf_upgrade.enable_stripe_title,
-				content: evf_upgrade.enable_stripe_message,
-				icon: 'dashicons dashicons-info',
-				type: 'blue',
-				buttons : {
-					confirm : {
-						text: evf_data.i18n_close,
-						btnClass: 'btn-confirm',
-						keys: ['enter']
+			var $button = $('#everest-forms-add-fields-credit-card')
+			if($button.hasClass('recurring-payment')){
+				return
+			}else{
+				$.alert({
+					title: evf_upgrade.enable_stripe_title,
+					content: evf_upgrade.enable_stripe_message,
+					icon: 'dashicons dashicons-info',
+					type: 'blue',
+					buttons : {
+						confirm : {
+							text: evf_data.i18n_close,
+							btnClass: 'btn-confirm',
+							keys: ['enter']
+						}
 					}
-				}
-			});
+				});
+			}
 		},
 		enable_authorize_net_model: function( e ) {
 			e.preventDefault();
