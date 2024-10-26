@@ -509,7 +509,7 @@
 					$('.customize-control-evf-color_palette').not($currentGroup).not(this).prop('checked', false);
 
 				});
-
+				$('.customize-control-evf-color_palette').not($currentGroup).find('input[type="checkbox"]').prop('checked', false);
 				$(this).find('input[type="checkbox"]').prop('checked', true).change();
 			});
 

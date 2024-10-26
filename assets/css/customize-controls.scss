@@ -698,7 +698,7 @@ $inputBorderColor: #CCCCCC;
         cursor: pointer;
 
         input[type="checkbox"] {
-            display: none;
+            // display: none;
         }
 
         .color-palette-color {
@@ -794,7 +794,7 @@ $inputBorderColor: #CCCCCC;
 						display: list-item !important;
 					}
 				}
-			}			
+			}
 
 			.accordion-section {
 				&::-webkit-scrollbar {
@@ -804,12 +804,12 @@ $inputBorderColor: #CCCCCC;
 				&::-webkit-scrollbar-track {
 					border-radius: 10px !important;
 				}
-				
+
 				&::-webkit-scrollbar-thumb {
 					background: #b0b0b0 !important;
 					border-radius: 10px !important;
 				}
-				
+
 				&::-webkit-scrollbar-thumb:hover {
 					background: #7a7a7a !important;
 				}
@@ -905,17 +905,17 @@ $inputBorderColor: #CCCCCC;
 						}
 					}
 				}
-				
+
 				&.customize-control-evf-select2 {
 					.customize-control-title {
 						margin-bottom: 8px;
 					}
-					
+
 					select {
 						height: 38px;
 						border-radius: 2px;
 						border-color: $inputBorderColor;
-						
+
 						&:focus {
 							border-color: $customizerPrimaryColor;
 						}
@@ -948,7 +948,7 @@ $inputBorderColor: #CCCCCC;
 				// Margin and Padding Option CSS
 				&-evf-dimension {
 					position: relative;
-					
+
 					> label {
 						.customize-control-title {
 							margin-right: 0;
@@ -970,7 +970,7 @@ $inputBorderColor: #CCCCCC;
 							gap: 8px;
 
 							li {
-								margin-bottom: 0;							
+								margin-bottom: 0;
 
 								input[type="number"] {
 									width: 100%;
@@ -1067,7 +1067,7 @@ $inputBorderColor: #CCCCCC;
 			.customize-pane-child {
 				margin-bottom: 0;
 			}
-			
+
 			#sub-accordion-section-everest_forms {
 				&_templates {
 					background: #f0f0f1 !important;
@@ -1259,7 +1259,7 @@ $inputBorderColor: #CCCCCC;
 										width: 270px;
 										padding: 12px;
 										transform: translateX(-50%);
-						
+
 										.wp-picker-open {
 											margin: 0 12px 0 0 !important;
 										}
@@ -1270,7 +1270,7 @@ $inputBorderColor: #CCCCCC;
 									}
 								}
 							}
-						}					
+						}
 					}
 				}
 
@@ -1282,7 +1282,7 @@ $inputBorderColor: #CCCCCC;
 						padding: 12px 12px 0;
 						margin-bottom: 0;
 					}
-		
+
 					.customize-control {
 						margin-bottom: 0;
 						border-bottom: 1px solid #dcdcde;
@@ -1307,7 +1307,7 @@ $inputBorderColor: #CCCCCC;
 
 					.wp-picker-open {
 						margin: 0 12px 0 0 !important;
-					}				
+					}
 				}
 			}
 
@@ -1321,7 +1321,7 @@ $inputBorderColor: #CCCCCC;
 					margin-bottom: 0;
 				}
 
-				.customize-control-content {				
+				.customize-control-content {
 					.wp-color-result {
 						margin: 0;
 						padding: 0;
@@ -1419,7 +1419,7 @@ $inputBorderColor: #CCCCCC;
 				&:active {
 					color: $customizerPrimaryColor;
 				}
-				
+
 				&:focus {
 					border-color: $customizerPrimaryColor;
 					box-shadow: none;
@@ -1482,14 +1482,14 @@ $inputBorderColor: #CCCCCC;
 						width: 24px;
 						height: 24px !important;
 						padding: 0 !important;
-						
+
 						.color-alpha {
 							top: 0 !important;
 							left: 0 !important;
 							border: 0;
 						}
 					}
-				}							
+				}
 			}
 		}
 
@@ -1591,7 +1591,7 @@ $inputBorderColor: #CCCCCC;
 			&.dashicons-editor-help {
 				display: none;
 			}
-		}		
+		}
 
 		.customize-control-content {
 			.reset {

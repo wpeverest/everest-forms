@@ -143,19 +143,19 @@ function evf_style_customizer_wrapper_controls( $controls, $customize ) {
 				),
 			),
 		),
-		'background_color'      => array(
-			'setting' => array(
-				'default' => '#ffffff',
-			),
-			'control' => array(
-				'label'       => esc_html__( 'Background Color', 'everest-forms-style-customizer' ),
-				'section'     => 'everest_forms_general_form_container',
-				'type'        => 'EVF_Customize_Color_Control',
-				'custom_args' => array(
-					'alpha' => true,
-				),
-			),
-		),
+		// 'background_color'      => array(
+		// 'setting' => array(
+		// 'default' => '#ffffff',
+		// ),
+		// 'control' => array(
+		// 'label'       => esc_html__( 'Background Color', 'everest-forms-style-customizer' ),
+		// 'section'     => 'everest_forms_general_form_container',
+		// 'type'        => 'EVF_Customize_Color_Control',
+		// 'custom_args' => array(
+		// 'alpha' => true,
+		// ),
+		// ),
+		// ),
 		'border_type'           => array(
 			'setting' => array(
 				'default'           => 'none',
@@ -665,17 +665,17 @@ function evf_style_customizer_wrapper_controls( $controls, $customize ) {
 				),
 			),
 		),
-		'field_labels_font_color'             => array(
-			'setting' => array(
-				'default' => '#575757',
-			),
-			'control' => array(
-				'label'       => esc_html__( 'Font Color', 'everest-forms' ),
-				'description' => esc_html__( 'This is a form field label font color.', 'everest-forms' ),
-				'section'     => 'everest_forms_general_typography',
-				'type'        => 'EVF_Customize_Color_Control',
-			),
-		),
+		// 'field_labels_font_color'             => array(
+		// 'setting' => array(
+		// 'default' => '#575757',
+		// ),
+		// 'control' => array(
+		// 'label'       => esc_html__( 'Font Color', 'everest-forms' ),
+		// 'description' => esc_html__( 'This is a form field label font color.', 'everest-forms' ),
+		// 'section'     => 'everest_forms_general_typography',
+		// 'type'        => 'EVF_Customize_Color_Control',
+		// ),
+		// ),
 		'field_labels_font_style'             => array(
 			'setting' => array(
 				'default' => array(
@@ -833,17 +833,17 @@ function evf_style_customizer_wrapper_controls( $controls, $customize ) {
 				),
 			),
 		),
-		'field_sublabels_font_color'          => array(
-			'setting' => array(
-				'default' => '#575757',
-			),
-			'control' => array(
-				'label'       => esc_html__( 'Font Color', 'everest-forms' ),
-				'description' => esc_html__( 'This is a form field sublabel font color.', 'everest-forms' ),
-				'section'     => 'everest_forms_general_typography',
-				'type'        => 'EVF_Customize_Color_Control',
-			),
-		),
+		// 'field_sublabels_font_color'          => array(
+		// 'setting' => array(
+		// 'default' => '#575757',
+		// ),
+		// 'control' => array(
+		// 'label'       => esc_html__( 'Font Color', 'everest-forms' ),
+		// 'description' => esc_html__( 'This is a form field sublabel font color.', 'everest-forms' ),
+		// 'section'     => 'everest_forms_general_typography',
+		// 'type'        => 'EVF_Customize_Color_Control',
+		// ),
+		// ),
 		'field_sublabels_font_style'          => array(
 			'setting' => array(
 				'default' => array(
@@ -1001,17 +1001,17 @@ function evf_style_customizer_wrapper_controls( $controls, $customize ) {
 				),
 			),
 		),
-		'field_styles_font_color'             => array(
-			'setting' => array(
-				'default' => '#575757',
-			),
-			'control' => array(
-				'label'       => esc_html__( 'Font Color', 'everest-forms' ),
-				'description' => esc_html__( 'This is a form field style font color.', 'everest-forms' ),
-				'section'     => 'everest_forms_general_typography',
-				'type'        => 'EVF_Customize_Color_Control',
-			),
-		),
+		// 'field_styles_font_color'             => array(
+		// 'setting' => array(
+		// 'default' => '#575757',
+		// ),
+		// 'control' => array(
+		// 'label'       => esc_html__( 'Font Color', 'everest-forms' ),
+		// 'description' => esc_html__( 'This is a form field style font color.', 'everest-forms' ),
+		// 'section'     => 'everest_forms_general_typography',
+		// 'type'        => 'EVF_Customize_Color_Control',
+		// ),
+		// ),
 		'field_styles_placeholder_font_color' => array(
 			'setting' => array(
 				'default' => '#c6ccd7',
@@ -1113,20 +1113,20 @@ function evf_style_customizer_wrapper_controls( $controls, $customize ) {
 			),
 		),
 
-		'field_styles_background_color'       => array(
-			'setting' => array(
-				'default' => 'rgba(255,255,255,0.99)',
-			),
-			'control' => array(
-				'label'       => esc_html__( 'Background Color', 'everest-forms' ),
-				'description' => esc_html__( 'This is a form field style background color.', 'everest-forms' ),
-				'section'     => 'everest_forms_general_typography',
-				'type'        => 'EVF_Customize_Color_Control',
-				'custom_args' => array(
-					'alpha' => true,
-				),
-			),
-		),
+		// 'field_styles_background_color'       => array(
+		// 'setting' => array(
+		// 'default' => 'rgba(255,255,255,0.99)',
+		// ),
+		// 'control' => array(
+		// 'label'       => esc_html__( 'Background Color', 'everest-forms' ),
+		// 'description' => esc_html__( 'This is a form field style background color.', 'everest-forms' ),
+		// 'section'     => 'everest_forms_general_typography',
+		// 'type'        => 'EVF_Customize_Color_Control',
+		// 'custom_args' => array(
+		// 'alpha' => true,
+		// ),
+		// ),
+		// ),
 		'field_styles_margin'                 => array(
 			'setting' => array(
 				'default' => array(
@@ -1207,17 +1207,17 @@ function evf_style_customizer_wrapper_controls( $controls, $customize ) {
 				),
 			),
 		),
-		'field_description_font_color'        => array(
-			'setting' => array(
-				'default' => '#575757',
-			),
-			'control' => array(
-				'label'       => esc_html__( 'Font Color', 'everest-forms' ),
-				'description' => esc_html__( 'This is a form field description font color.', 'everest-forms' ),
-				'section'     => 'everest_forms_general_typography',
-				'type'        => 'EVF_Customize_Color_Control',
-			),
-		),
+		// 'field_description_font_color'        => array(
+		// 'setting' => array(
+		// 'default' => '#575757',
+		// ),
+		// 'control' => array(
+		// 'label'       => esc_html__( 'Font Color', 'everest-forms' ),
+		// 'description' => esc_html__( 'This is a form field description font color.', 'everest-forms' ),
+		// 'section'     => 'everest_forms_general_typography',
+		// 'type'        => 'EVF_Customize_Color_Control',
+		// ),
+		// ),
 		'field_description_font_style'        => array(
 			'setting' => array(
 				'default' => array(
@@ -1332,7 +1332,7 @@ function evf_style_customizer_wrapper_controls( $controls, $customize ) {
 			'control' => array(
 				'label'       => esc_html__( 'Padding', 'everest-forms' ),
 				'description' => esc_html__( 'This is a form field description padding.', 'everest-forms' ),
-				'section'     => 'file_upload_',
+				'section'     => 'everest_forms_general_typography',
 				'type'        => 'EVF_Customize_Dimension_Control',
 				'input_attrs' => array(
 					'min' => 0,
@@ -1375,20 +1375,20 @@ function evf_style_customizer_wrapper_controls( $controls, $customize ) {
 				),
 			),
 		),
-		'section_title_font_color'            => array(
-			'setting' => array(
-				'default' => '#575757',
-			),
-			'control' => array(
-				'label'       => esc_html__( 'Font Color', 'everest-forms-style-customizer' ),
-				'description' => esc_html__( 'This is a section title font color.', 'everest-forms-style-customizer' ),
-				'section'     => 'everest_forms_general_typography',
-				'type'        => 'EVF_Customize_Color_Control',
-				'custom_args' => array(
-					'alpha' => true,
-				),
-			),
-		),
+		// 'section_title_font_color'            => array(
+		// 'setting' => array(
+		// 'default' => '#575757',
+		// ),
+		// 'control' => array(
+		// 'label'       => esc_html__( 'Font Color', 'everest-forms-style-customizer' ),
+		// 'description' => esc_html__( 'This is a section title font color.', 'everest-forms-style-customizer' ),
+		// 'section'     => 'everest_forms_general_typography',
+		// 'type'        => 'EVF_Customize_Color_Control',
+		// 'custom_args' => array(
+		// 'alpha' => true,
+		// ),
+		// ),
+		// ),
 		'section_title_font_style'            => array(
 			'setting' => array(
 				'default' => array(
@@ -1546,17 +1546,17 @@ function evf_style_customizer_wrapper_controls( $controls, $customize ) {
 				),
 			),
 		),
-		'file_upload_font_color'              => array(
-			'setting' => array(
-				'default' => '#494d50',
-			),
-			'control' => array(
-				'label'       => esc_html__( 'Font Color', 'everest-forms' ),
-				'description' => esc_html__( 'Select the font color for file upload fields.', 'everest-forms' ),
-				'section'     => 'everest_forms_general_typography',
-				'type'        => 'EVF_Customize_Color_Control',
-			),
-		),
+		// 'file_upload_font_color'              => array(
+		// 'setting' => array(
+		// 'default' => '#494d50',
+		// ),
+		// 'control' => array(
+		// 'label'       => esc_html__( 'Font Color', 'everest-forms' ),
+		// 'description' => esc_html__( 'Select the font color for file upload fields.', 'everest-forms' ),
+		// 'section'     => 'everest_forms_general_typography',
+		// 'type'        => 'EVF_Customize_Color_Control',
+		// ),
+		// ),
 		'file_upload_background_color'        => array(
 			'setting' => array(
 				'default' => 'rgba(255,255,255,0.99)',
@@ -1690,17 +1690,17 @@ function evf_style_customizer_wrapper_controls( $controls, $customize ) {
 				),
 			),
 		),
-		'checkbox_radio_font_color'           => array(
-			'setting' => array(
-				'default' => '#575757',
-			),
-			'control' => array(
-				'label'       => esc_html__( 'Font Color', 'everest-forms' ),
-				'description' => esc_html__( 'This is a form checkbox/radio font color.', 'everest-forms' ),
-				'section'     => 'everest_forms_general_typography',
-				'type'        => 'EVF_Customize_Color_Control',
-			),
-		),
+		// 'checkbox_radio_font_color'           => array(
+		// 'setting' => array(
+		// 'default' => '#575757',
+		// ),
+		// 'control' => array(
+		// 'label'       => esc_html__( 'Font Color', 'everest-forms' ),
+		// 'description' => esc_html__( 'This is a form checkbox/radio font color.', 'everest-forms' ),
+		// 'section'     => 'everest_forms_general_typography',
+		// 'type'        => 'EVF_Customize_Color_Control',
+		// ),
+		// ),
 		'checkbox_radio_font_style'           => array(
 			'setting' => array(
 				'default' => array(
@@ -1888,18 +1888,18 @@ function evf_style_customizer_wrapper_controls( $controls, $customize ) {
 				),
 			),
 		),
-		'button_font_color'                   => array(
-			'setting' => array(
-				'default'           => '#555555',
-				'sanitize_callback' => 'sanitize_text_field',
-			),
-			'control' => array(
-				'label'       => esc_html__( 'Font Color', 'everest-forms' ),
-				'description' => esc_html__( 'This is a form button font color.', 'everest-forms' ),
-				'section'     => 'everest_forms_general_typography',
-				'type'        => 'EVF_Customize_Color_Control',
-			),
-		),
+		// 'button_font_color'                   => array(
+		// 'setting' => array(
+		// 'default'           => '#555555',
+		// 'sanitize_callback' => 'sanitize_text_field',
+		// ),
+		// 'control' => array(
+		// 'label'       => esc_html__( 'Font Color', 'everest-forms' ),
+		// 'description' => esc_html__( 'This is a form button font color.', 'everest-forms' ),
+		// 'section'     => 'everest_forms_general_typography',
+		// 'type'        => 'EVF_Customize_Color_Control',
+		// ),
+		// ),
 		'button_hover_font_color'             => array(
 			'setting' => array(
 				'default'           => '#23282d',
@@ -1912,18 +1912,18 @@ function evf_style_customizer_wrapper_controls( $controls, $customize ) {
 				'type'        => 'EVF_Customize_Color_Control',
 			),
 		),
-		'button_background_color'             => array(
-			'setting' => array(
-				'default'           => '#f7f7f7',
-				'sanitize_callback' => 'sanitize_text_field',
-			),
-			'control' => array(
-				'label'       => esc_html__( 'Button Color', 'everest-forms' ),
-				'description' => esc_html__( 'This is a form button color.', 'everest-forms' ),
-				'section'     => 'everest_forms_general_typography',
-				'type'        => 'EVF_Customize_Color_Control',
-			),
-		),
+		// 'button_background_color'             => array(
+		// 'setting' => array(
+		// 'default'           => '#f7f7f7',
+		// 'sanitize_callback' => 'sanitize_text_field',
+		// ),
+		// 'control' => array(
+		// 'label'       => esc_html__( 'Button Color', 'everest-forms' ),
+		// 'description' => esc_html__( 'This is a form button color.', 'everest-forms' ),
+		// 'section'     => 'everest_forms_general_typography',
+		// 'type'        => 'EVF_Customize_Color_Control',
+		// ),
+		// ),
 		'button_hover_background_color'       => array(
 			'setting' => array(
 				'default'           => '#eeeeee',

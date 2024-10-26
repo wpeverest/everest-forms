@@ -204,6 +204,18 @@ function evf_style_customizer_color_palette_controls( $controls, $customize ) {
 		}
 	}
 
+	$selected_color_key = '';
+	$test               = get_option( 'everest_forms_styles', array() );
+
+	if ( ! empty( $test ) ) {
+		foreach ( $test as $dynamic_key => $value ) {
+			if ( isset( $value['color_palette'] ) ) {
+				$selected_color_key = key( $value['color_palette'] );
+				break;
+			}
+		}
+	}
+
 	foreach ( $color_palettes as $index => $palette ) {
 		$colors_with_values = array();
 		foreach ( $palette['colors'] as $color_name => $color_value ) {
@@ -213,6 +225,7 @@ function evf_style_customizer_color_palette_controls( $controls, $customize ) {
 				'color_name' => $color_name,
 			);
 		}
+
 		$class       = $palette['is_pro'] ? 'evf-pro-palette' : 'evf-free-palette';
 		$input_attrs = array(
 			'class' => $class,
@@ -224,6 +237,10 @@ function evf_style_customizer_color_palette_controls( $controls, $customize ) {
 			if ( count( get_option( 'everest_forms_custom_color_palettes', array() ) ) > 0 ) {
 				$input_attrs['data-custom'] = '';
 			}
+		}
+
+		if ( 'color_' . $index === $selected_color_key ) {
+			$input_attrs['checked'] = 'checked';
 		}
 
 		$controls['color_palette'][ 'color_' . $index ] = array(
@@ -241,7 +258,6 @@ function evf_style_customizer_color_palette_controls( $controls, $customize ) {
 			),
 		);
 	}
-
 	return $controls;
 }
 add_filter( 'everest_forms_style_customizer_controls', 'evf_style_customizer_color_palette_controls', 10, 2 );

@@ -9,7 +9,26 @@
 defined( 'ABSPATH' ) || exit;
 
 // Get values.
-$styles = get_option( 'everest_forms_styles' );
+$styles                = get_option( 'everest_forms_styles' );
+$current_color_palette = json_decode( wp_unslash( $_REQUEST['customized'] ), true );
+$palette_key           = null;
+
+foreach ( $current_color_palette as $key => $value ) {
+	if ( preg_match( '/everest_forms_styles\[(\d+)\]\[color_palette\]\[(color_\d+)\]/', $key, $matches ) ) {
+		$form_id     = $matches[1];
+		$palette_key = $matches[2];
+		break;
+	}
+}
+
+if ( $form_id && $palette_key && isset( $current_color_palette[ "everest_forms_styles[$form_id][color_palette][$palette_key]" ] ) ) {
+	$new_palette = $current_color_palette[ "everest_forms_styles[$form_id][color_palette][$palette_key]" ];
+
+	$styles[ $form_id ]['color_palette'] = array(
+		$palette_key => $new_palette,
+	);
+}
+
 
 if ( isset( $styles[ $form_id ] ) && is_array( $styles[ $form_id ] ) ) {
 	$styles[ $form_id ] = array_map(
@@ -28,6 +47,7 @@ $styles[ $form_id ] = is_array( $styles[ $form_id ] ) ? array_filter( $styles[ $
 $values             = array_replace_recursive( $defaults, $styles[ $form_id ] ); // phpcs:ignore PHPCompatibility.PHP.NewFunctions.array_replace_recursiveFound
 // Search for JSON formatted values and convert it to array format.
 foreach ( $values as $key => $styles ) {
+
 	if ( is_array( $styles ) ) {
 		foreach ( $styles as $style => $value ) {
 			if ( is_string( $value ) && evf_is_json( $value ) ) {
@@ -36,6 +56,8 @@ foreach ( $values as $key => $styles ) {
 		}
 	}
 }
+
+
 
 // Form data.
 $form_data = EVF()->form->get( $form_id, array( 'content_only' => true ) );
@@ -55,71 +77,72 @@ $font_styles_default = array(
 );
 
 // Radio/checkbox separator type.
-$radio_checkbox_seperator_type = defined( 'EVF_VERSION' ) && version_compare( EVF_VERSION, '1.6.0', '<' ) ? array( 'field_styles_margin', 'field_styles_padding' ) : array( 'field_styles_margin' );
+$radio_checkbox_seperator_type = defined( 'EVF_VERSION' ) && version_compare( EVF_VERSION, '1.6.0', '<' ) ? array( 'checkbox_radio_margin', 'checkbox_radio_padding' ) : array( 'checkbox_radio_margin' );
 ?>
 
-// Form Wrapper variables.
-$wrapper_width: <?php echo absint( $values['form_container']['width'] ); ?>;
-$wrapper_border_type: <?php echo evf_clean( $values['form_container']['border_type'] ); ?>;
-$wrapper_border_color: <?php echo evf_clean( $values['form_container']['border_color'] ); ?>;
+// Form Container variables.
+$container_width: <?php echo absint( $values['form_container']['width'] ); ?>;
+$container_border_type: <?php echo evf_clean( $values['form_container']['border_type'] ); ?>;
+$container__border_color: <?php echo evf_clean( $values['form_container']['border_color'] ); ?>;
 
-// Field label variables.
-$field_label_font_color: <?php echo evf_clean( $values['typography']['field_labels_font_color'] ); ?>;
+
+//Field Labels Variables.
+// font color missing.
 $field_label_font_size: <?php echo evf_clean( $values['typography']['field_labels_font_size'] ); ?>;
 $field_label_line_height: <?php echo evf_clean( $values['typography']['field_labels_line_height'] ); ?>;
 $field_label_text_alignment: <?php echo evf_clean( $values['typography']['field_labels_text_alignment'] ); ?>;
 
-// Field sublabel variables.
-$field_sublabel_font_color: <?php echo evf_clean( $values['typography']['field_sublabels_font_color'] ); ?>;
+// Field Sublabels Variables.
+//font color missing.
 $field_sublabel_font_size: <?php echo evf_clean( $values['typography']['field_sublabels_font_size'] ); ?>;
 $field_sublabel_line_height: <?php echo evf_clean( $values['typography']['field_sublabels_line_height'] ); ?>;
 $field_sublabel_text_alignment: <?php echo evf_clean( $values['typography']['field_sublabels_text_alignment'] ); ?>;
 
-// Field description variables.
-$field_description_font_color: <?php echo evf_clean( $values['typography']['field_description_font_color'] ); ?>;
-$field_description_font_size: <?php echo evf_clean( $values['typography']['field_description_font_size'] ); ?>;
-$field_description_line_height: <?php echo evf_clean( $values['typography']['field_description_line_height'] ); ?>;
-$field_description_text_alignment: <?php echo evf_clean( $values['typography']['field_description_text_alignment'] ); ?>;
-
-// Field styles variables.
-$field_styles_font_color: <?php echo evf_clean( $values['typography']['field_styles_font_color'] ); ?>;
+// Field Styles Typography.
+//  Font color missing
+$field_styles_border_type: <?php echo evf_clean( $values['field_styles']['border_type'] ); ?>;
 $field_styles_placeholder_font_color: <?php echo evf_clean( $values['typography']['field_styles_placeholder_font_color'] ); ?>;
 $field_styles_font_size: <?php echo evf_clean( $values['typography']['field_styles_font_size'] ); ?>;
 $field_styles_alignment: <?php echo evf_clean( $values['typography']['field_styles_alignment'] ); ?>;
-$field_styles_border_type: <?php echo evf_clean( $values['field_styles']['border_type'] ); ?>;
 $field_styles_border_color: <?php echo evf_clean( $values['typography']['field_styles_border_color'] ); ?>;
 $field_styles_border_focus_color: <?php echo evf_clean( $values['typography']['field_styles_border_focus_color'] ); ?>;
 
 // File Uploads styles variables.
-$file_upload_styles_font_color: <?php echo evf_clean( $values['typography']['file_upload_font_color'] ); ?>;
+// font color missing.
 $file_upload_styles_font_size: <?php echo evf_clean( $values['typography']['file_upload_font_size'] ); ?>;
 $file_upload_styles_border_type: <?php echo evf_clean( $values['file_upload_styles']['border_type'] ); ?>;
 $file_upload_styles_border_color: <?php echo evf_clean( $values['typography']['file_upload_border_color'] ); ?>;
 $file_upload_styles_icon_color: <?php echo evf_clean( $values['typography']['file_upload_icon_color'] ); ?>;
 
 // Field Checkbox and Radio variables.
+// font color missing.
 $radio_checkbox_styles_alignment: <?php echo evf_clean( $values['typography']['checkbox_radio_alignment'] ); ?>;
 $radio_checkbox_styles__font_size: <?php echo evf_clean( $values['typography']['checkbox_radio_font_size'] ); ?>;
-$radio_checkbox_styles__font_color: <?php echo evf_clean( $values['typography']['checkbox_radio_font_color'] ); ?>;
-$radio_checkbox_styles__size: <?php echo evf_clean( $values['typography']['checkbox_radio_font_size'] ); ?>;
+$radio_checkbox_styles__size: <?php echo evf_clean( $values['typography']['checkbox_radio_size'] ); ?>;
 $radio_checkbox_styles_color: <?php echo evf_clean( $values['typography']['checkbox_radio_color'] ); ?>;
 $radio_checkbox_styles_checked_color: <?php echo evf_clean( $values['typography']['checkbox_radio_checked_color'] ); ?>;
 
+// Field description variables.
+// Font color Missing.
+$field_description_font_size: <?php echo evf_clean( $values['typography']['field_description_font_size'] ); ?>;
+$field_description_line_height: <?php echo evf_clean( $values['typography']['field_description_line_height'] ); ?>;
+$field_description_text_alignment: <?php echo evf_clean( $values['typography']['field_description_text_alignment'] ); ?>;
+
 // Section Title styles variables.
+// font color missing.
 $section_title_font_size: <?php echo evf_clean( $values['typography']['section_title_font_size'] ); ?>;
-$section_title_font_color: <?php echo evf_clean( $values['typography']['section_title_font_color'] ); ?>;
 $section_title_alignment: <?php echo evf_clean( $values['typography']['section_title_text_alignment'] ); ?>;
 $section_title_line_height: <?php echo evf_clean( $values['typography']['section_title_line_height'] ); ?>;
 
 // Button styles variables.
-$button_font_color: <?php echo evf_clean( $values['typography']['button_font_color'] ); ?>;
+// font color missing.
 $button_hover_font_color: <?php echo evf_clean( $values['typography']['button_hover_font_color'] ); ?>;
 $button_font_size: <?php echo evf_clean( $values['typography']['button_font_size'] ); ?>;
 $button_line_height: <?php echo evf_clean( $values['typography']['button_line_height'] ); ?>;
 $button_border_type: <?php echo evf_clean( $values['button']['border_type'] ); ?>;
-$button_border_color: <?php echo evf_clean( $values['typography']['button_border_hover_color'] ); ?>;
+$button_border_color: <?php echo evf_clean( $values['typography']['button_border_color'] ); ?>;
 $button_border_hover_color: <?php echo evf_clean( $values['typography']['button_border_hover_color'] ); ?>;
-$button_background_color: <?php echo evf_clean( $values['typography']['button_background_color'] ); ?>;
+// Button Background Color Missing.
 $button_hover_background_color: <?php echo evf_clean( $values['typography']['button_hover_background_color'] ); ?>;
 
 // Success Message styles variables.
@@ -145,6 +168,8 @@ $validation_message_font_color: <?php echo evf_clean( $values['validation_messag
 $validation_message_background_color: <?php echo evf_clean( $values['validation_message']['background_color'] ); ?>;
 $validation_message_border_type: <?php echo evf_clean( $values['validation_message']['border_type'] ); ?>;
 $validation_message_border_color: <?php echo evf_clean( $values['validation_message']['border_color'] ); ?>;
+
+
 
 /**
  * Imports.
@@ -173,19 +198,12 @@ $validation_message_border_color: <?php echo evf_clean( $values['validation_mess
  */
 .everest-forms {
 	#evf-#{$form_id} {
-
 		&.evf-container {
-			width: $wrapper_width + '%';
+			width: $container_width + '%';
 			<?php if ( '' !== $values['font']['font_family'] ) : ?>
-				font-family:
-				<?php
-					echo evf_clean( $values['font']['font_family'] );
-				?>
-					;
+				font-family: <?php echo evf_clean( $values['font']['font_family'] ); ?>;
 			<?php endif; ?>
-			<?php if ( '#ffffff' !== $values['form_container']['background_color'] ) : ?>
-				background-color: <?php echo evf_clean( $values['form_container']['background_color'] ); ?>;
-			<?php endif; ?>
+			// Background color for future.
 			<?php if ( ! empty( $values['form_container']['background_image'] ) ) : ?>
 				<?php printf( "background-image: url('%s');", esc_url( $values['form_container']['background_image'] ) ); ?>
 				<?php if ( '' !== $values['form_container']['background_size'] ) : ?>
@@ -204,9 +222,9 @@ $validation_message_border_color: <?php echo evf_clean( $values['validation_mess
 				<?php endforeach; ?>
 			<?php endif; ?>
 			<?php if ( isset( $values['form_container']['border_type'] ) ) : ?>
-				border-style: $wrapper_border_type;
+				border-style: $container_border_type;
 				<?php if ( 'none' !== $values['form_container']['border_type'] ) : ?>
-					border-color: $wrapper_border_color;
+					border-color: $container__border_color;
 					<?php printf( '@include border-width(%s);', evf_sanitize_dimension_unit( $values['form_container']['border_width'], 'px' ) ); ?>
 				<?php endif; ?>
 			<?php endif; ?>
@@ -223,9 +241,10 @@ $validation_message_border_color: <?php echo evf_clean( $values['validation_mess
 				<?php endforeach; ?>
 			<?php endforeach; ?>
 
+
 			label {
 				&.evf-field-label {
-					color: $field_label_font_color;
+					// font color missing.
 					font-size: $field_label_font_size + 'px';
 					line-height: $field_label_line_height;
 					text-align: $field_label_text_alignment;
@@ -249,7 +268,7 @@ $validation_message_border_color: <?php echo evf_clean( $values['validation_mess
 				}
 
 				&.everest-forms-field-sublabel {
-					color: $field_sublabel_font_color;
+					// field Sublabels font color missing.
 					font-size: $field_sublabel_font_size + 'px';
 					line-height: $field_sublabel_line_height;
 					text-align: $field_sublabel_text_alignment;
@@ -268,6 +287,7 @@ $validation_message_border_color: <?php echo evf_clean( $values['validation_mess
 				}
 			}
 
+
 			input[type='text'],
 			input[type='email'],
 			input[type='number'],
@@ -284,12 +304,10 @@ $validation_message_border_color: <?php echo evf_clean( $values['validation_mess
 			select,
 			canvas.evf-signature-canvas,
 			.StripeElement {
-				color: $field_styles_font_color;
+				// Font color Missing.
 				text-align: $field_styles_alignment;
 				font-size: $field_styles_font_size + 'px';
-				<?php if ( '' !== $values['typography']['field_styles_background_color'] ) : ?>
-					background-color: <?php echo evf_clean( $values['typography']['field_styles_background_color'] ); ?>;
-				<?php endif; ?>
+				//Background color missing.
 				<?php foreach ( $font_styles as $prop => $value ) : ?>
 					<?php if ( 'yes' === evf_bool_to_string( $values['typography']['field_styles_font_style'][ $value ] ) ) : ?>
 						<?php printf( '%s: %s;', $prop, evf_clean( $value ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
@@ -331,10 +349,9 @@ $validation_message_border_color: <?php echo evf_clean( $values['validation_mess
 				}
 			}
 
+
 			.everest-forms-uploader {
-				<?php if ( '#ffffff' !== $values['typography']['file_upload_background_color'] ) : ?>
-					background-color: <?php echo evf_clean( $values['typography']['file_upload_background_color'] ); ?>;
-				<?php endif; ?>
+				// Background color missing.
 				<?php if ( isset( $values['file_upload_styles']['border_type'] ) ) : ?>
 					border-style: $file_upload_styles_border_type;
 					<?php if ( 'none' !== $values['file_upload_styles']['border_type'] ) : ?>
@@ -365,7 +382,7 @@ $validation_message_border_color: <?php echo evf_clean( $values['validation_mess
 				.everest-forms-upload-title,
 				.everest-forms-upload-hint,
 				.dz-details span {
-					color: $file_upload_styles_font_color;
+					// font color missing.
 				}
 
 				.dz-message {
@@ -378,9 +395,10 @@ $validation_message_border_color: <?php echo evf_clean( $values['validation_mess
 				}
 			}
 
+
 			.evf-payment-total,
 			.evf-single-item-price {
-				color: $field_styles_font_color;
+			// font color missing.
 				text-align: $field_styles_alignment;
 				font-size: $field_styles_font_size + 'px';
 				<?php foreach ( $font_styles as $prop => $value ) : ?>
@@ -388,7 +406,7 @@ $validation_message_border_color: <?php echo evf_clean( $values['validation_mess
 						<?php printf( '%s: %s;', $prop, evf_clean( $value ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 					<?php endif; ?>
 				<?php endforeach; ?>
-				<?php foreach ( array( 'field_styles_margin', 'field_styles_padding' ) as $separator_type ) : ?>
+				<?php foreach ( array( 'field_styles_margin' ) as $separator_type ) : ?>
 					<?php foreach ( $values['typography'][ $separator_type ] as $device => $value ) : ?>
 						<?php if ( in_array( $device, array( 'desktop', 'tablet', 'mobille' ), true ) ) : ?>
 							<?php printf( '@include responsive-media(%s, %s, %s);', $separator_type, $device, evf_sanitize_dimension_unit( $value, 'px' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
@@ -397,162 +415,10 @@ $validation_message_border_color: <?php echo evf_clean( $values['validation_mess
 				<?php endforeach; ?>
 			}
 
-			.evf-field-radio,
-			.evf-field-checkbox,
-			.evf-field-payment-multiple,
-			.evf-field-payment-checkbox,
-			.evf-field-privacy-policy {
+		// checkbox remaining.
 
-				ul {
-					<?php if ( defined( 'EVF_VERSION' ) && version_compare( EVF_VERSION, '1.6.0', '<' ) ) : // Everest Forms 1.6.0, deprecates the inline styles control. ?>
-						<?php if ( 'default' === $values['checkbox_radio_styles']['inline_style'] ) { ?>
-							li {
-								display: flex;
-							}
-						<?php } elseif ( 'inline' === $values['checkbox_radio_styles']['inline_style'] ) { ?>
-							display : flex;
-							flex-wrap : wrap;
-							li {
-								display: flex;
-								label {
-									flex: 1;
-								}
-							}
-						<?php } elseif ( 'two_columns' === $values['checkbox_radio_styles']['inline_style'] ) { ?>
-							display : flex;
-							flex-wrap : wrap;
-							li {
-								display: flex;
-								flex : 0 50%;
-							}
-						<?php } ?>
-					<?php endif; ?>
-
-					li {
-						text-align: $radio_checkbox_styles_alignment;
-						<?php foreach ( $radio_checkbox_seperator_type as $separator_type ) : ?>
-							<?php foreach ( $values['typography'][ $separator_type ] as $device => $value ) : ?>
-								<?php if ( in_array( $device, array( 'desktop', 'tablet', 'mobille' ), true ) ) : ?>
-									<?php
-									if ( 'margin' === $separator_type && ( isset( $values['checkbox_radio_styles']['inline_style'] ) && 'two_columns' === $values['checkbox_radio_styles']['inline_style'] ) ) {
-										$value['right'] = 0;
-										$value['left']  = 0;
-									}
-									?>
-									<?php printf( '@include responsive-media(%s, %s, %s);', $separator_type, $device, evf_sanitize_dimension_unit( $value, 'px' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-								<?php endif; ?>
-							<?php endforeach; ?>
-						<?php endforeach; ?>
-
-						<!-- input[type="radio"] {
-							border-radius: 50%;
-							<?php // if ( 'default' === $values['checkbox_radio_styles']['style_variation'] ) { ?>
-							<?php // } elseif ( 'outline' === $values['checkbox_radio_styles']['style_variation'] ) { ?>
-								&:checked {
-									&::before {
-										width: 50%;
-										border-radius: 50%;
-										background: $radio_checkbox_styles_checked_color;
-									}
-								}
-							<?php // } elseif ( 'filled' === $values['checkbox_radio_styles']['style_variation'] ) { ?>
-								&:checked {
-									&::before {
-										width: 50%;
-										border-radius: 50%;
-										background: #fff;
-									}
-								}
-							<?php // } ?>
-						} -->
-
-						label {
-							flex: 1;
-						}
-					}
-				}
-				<!-- input[type='checkbox'],
-				input[type='radio'] {
-					<?php // if ( 'default' === $values['checkbox_radio_styles']['style_variation'] ) { ?>
-					<?php // } elseif ( 'outline' === $values['checkbox_radio_styles']['style_variation'] ) { ?>
-						width : $radio_checkbox_styles__size + 'px';
-						height : $radio_checkbox_styles__size + 'px';
-						display : inline-flex;
-						align-items : center;
-						justify-content : center;
-						-webkit-appearance : none;
-						border: 1px solid $radio_checkbox_styles_color;
-
-						&:checked {
-							border-color: $radio_checkbox_styles_checked_color;
-
-							&::before {
-								content: '';
-								height: 50%;
-							}
-						}
-
-					<?php // } elseif ( 'filled' === $values['checkbox_radio_styles']['style_variation'] ) { ?>
-						width : $radio_checkbox_styles__size + 'px';
-						height : $radio_checkbox_styles__size + 'px';
-						display : inline-flex;
-						align-items : center;
-						justify-content : center;
-						-webkit-appearance : none;
-						background-color : $radio_checkbox_styles_color;
-
-						&:checked {
-							background-color: $radio_checkbox_styles_checked_color;
-
-							&::before {
-								content: '';
-								height: 50%;
-							}
-						}
-					<?php // } ?> -->
-
-					+ label {
-						font-size: $radio_checkbox_styles__font_size + 'px';
-						color: $radio_checkbox_styles__font_color;
-						<?php // foreach ( $font_styles as $prop => $value ) : ?>
-							<?php // if ( 'yes' === evf_bool_to_string( $values['typography']['checkbox_radio_font_style'][ $value ] ) ) : ?>
-								<?php // printf( '%s: %s;', $prop, evf_clean( $value ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-							<?php // endif; ?>
-						<?php // endforeach; ?>
-					}
-				}
-
-				<!-- input[type="checkbox"] {
-					<?php // if ( 'default' === $values['checkbox_radio_styles']['style_variation'] ) { ?>
-					<?php // } elseif ( 'outline' === $values['checkbox_radio_styles']['style_variation'] ) { ?>
-						&:checked {
-
-							&::before {
-								width: 25%;
-								border: solid $radio_checkbox_styles_checked_color;
-								border-width: 0 2px 2px 0;
-								transform: rotate(45deg);
-								margin-top: -12%;
-							}
-						}
-					<?php // } elseif ( 'filled' === $values['checkbox_radio_styles']['style_variation'] ) { ?>
-						&:checked {
-
-							&::before {
-								width: 25%;
-								border: solid #fff;
-								border-width: 0 2px 2px 0;
-								transform: rotate(45deg);
-								margin-top: -12%;
-							}
-						}
-					<?php // } ?>
-				} -->
-
-			}
-
-			.evf-field-description {
-				color: $field_description_font_color;
+		.evf-field-description {
+				// font color missing.
 				font-size: $field_description_font_size + 'px';
 				<?php foreach ( $font_styles as $prop => $value ) : ?>
 					<?php if ( 'yes' === evf_bool_to_string( $values['typography']['field_description_font_style'][ $value ] ) ) : ?>
@@ -570,12 +436,15 @@ $validation_message_border_color: <?php echo evf_clean( $values['validation_mess
 				<?php endforeach; ?>
 			}
 
-			.evf-field-title h3 {
+
+		}
+
+		.evf-field-title h3 {
 				<?php if ( '' !== $values['font']['font_family'] ) : ?>
 					font-family: <?php echo evf_clean( $values['font']['font_family'] ); ?>;
 				<?php endif; ?>
 				font-size: $section_title_font_size + 'px';
-				color: $section_title_font_color;
+				// font color missing.
 				text-align: $section_title_alignment;
 				line-height: $section_title_line_height;
 				<?php foreach ( $font_styles as $prop => $value ) : ?>
@@ -590,135 +459,127 @@ $validation_message_border_color: <?php echo evf_clean( $values['validation_mess
 						<?php endif; ?>
 					<?php endforeach; ?>
 				<?php endforeach; ?>
-			}
+		}
 
-			.evf-submit-container,
-			.everest-forms-multi-part-actions {
-				input[type='submit'],
-				button[type='submit'],
-				.everest-forms-part-button {
-					color: $button_font_color;
-					font-size: $button_font_size + 'px';
-					line-height: $button_line_height;
-					background-color: $button_background_color;
-					<?php foreach ( $font_styles as $prop => $value ) : ?>
-						<?php if ( 'yes' === evf_bool_to_string( $values['typography']['button_font_style'][ $value ] ) ) : ?>
-							<?php printf( '%s: %s;', $prop, evf_clean( $value ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-						<?php endif; ?>
-					<?php endforeach; ?>
-					<?php if ( isset( $values['button']['border_type'] ) ) : ?>
-						border-style: $button_border_type;
-						<?php if ( 'none' !== $values['button']['border_type'] ) : ?>
-							border-color: $button_border_color;
-							<?php printf( '@include border-width(%s);', evf_sanitize_dimension_unit( $values['button']['border_width'], 'px' ) ); ?>
-						<?php endif; ?>
-					<?php endif; ?>
-					<?php foreach ( $values['button']['border_radius'] as $prop => $value ) : ?>
-						<?php if ( 'unit' !== $prop && ! empty( $value ) ) : ?>
-							<?php printf( '@include border-%s-radius(%s);', $prop, evf_clean( $value . $values['button']['border_radius']['unit'] ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-						<?php endif; ?>
-					<?php endforeach; ?>
-					<?php foreach ( array( 'button_margin', 'button_padding' ) as $type ) : // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited ?>
-						<?php foreach ( $values['typography'][ $type ] as $device => $value ) : ?>
-							<?php if ( in_array( $device, array( 'desktop', 'tablet', 'mobille' ), true ) ) : ?>
-								<?php printf( '@include responsive-media(%s, %s, %s);', $type, $device, evf_sanitize_dimension_unit( $value, 'px' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-							<?php endif; ?>
-						<?php endforeach; ?>
-					<?php endforeach; ?>
 
-					&:hover,
-					&:active {
-						color: $button_hover_font_color;
-						background-color: $button_hover_background_color;
-						<?php if ( 'none' !== $values['button']['border_type'] ) : ?>
-							border-color: $button_border_hover_color;
-						<?php endif; ?>
-					}
-				}
-			}
-
-			.evf-submit-container {
-				&:not(.everest-forms-multi-part-actions) {
-					display: block;
-					<?php if ( isset( $values['typography']['button_alignment'] ) && ! ( isset( $form_data['settings']['enable_multi_part'] ) && evf_string_to_bool( $form_data['settings']['enable_multi_part'] ) ) ) : ?>
-					text-align: <?php echo evf_clean( $values['typography']['button_alignment'] ); ?>;
-					<?php endif; ?>
-				}
-			}
-
-			.evf-error {
-				background-color: $validation_message_background_color;
-				color: $validation_message_font_color;
-				font-size: $validation_message_font_size + 'px';
+		.evf-submit-container,
+		.everest-forms-multi-part-actions {
+			input[type='submit'],
+			button[type='submit'],
+			.everest-forms-part-button {
+				// font color missing.
+				font-size: $button_font_size + 'px';
+				line-height: $button_line_height;
+				// Button Background color Missing.
 				<?php foreach ( $font_styles as $prop => $value ) : ?>
-					<?php if ( 'yes' === evf_bool_to_string( $values['validation_message']['font_style'][ $value ] ) ) : ?>
-						<?php printf( '%s: %s;', $prop, evf_clean( $value ) ); ?>
-					<?php else : ?>
-						<?php printf( '%s: %s;', $prop, evf_clean( $font_styles_default[ $prop ] ) ); ?>
+					<?php if ( 'yes' === evf_bool_to_string( $values['typography']['button_font_style'][ $value ] ) ) : ?>
+						<?php printf( '%s: %s;', $prop, evf_clean( $value ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 					<?php endif; ?>
 				<?php endforeach; ?>
-				text-align: $validation_message_text_alignment;
-
-				<?php if ( isset( $values['validation_message']['border_type'] ) ) : ?>
-					border-style: $validation_message_border_type;
-					<?php if ( 'none' !== $values['validation_message']['border_type'] ) : ?>
-						border-color: $validation_message_border_color;
-						<?php printf( '@include border-width(%s);', evf_sanitize_dimension_unit( $values['validation_message']['border_width'], 'px' ) ); ?>
+				<?php if ( isset( $values['button']['border_type'] ) ) : ?>
+					border-style: $button_border_type;
+					<?php if ( 'none' !== $values['button']['border_type'] ) : ?>
+						border-color: $button_border_color;
+						<?php printf( '@include border-width(%s);', evf_sanitize_dimension_unit( $values['button']['border_width'], 'px' ) ); ?>
 					<?php endif; ?>
 				<?php endif; ?>
-				<?php foreach ( $values['validation_message']['border_radius'] as $prop => $value ) : ?>
+				<?php foreach ( $values['button']['border_radius'] as $prop => $value ) : ?>
 					<?php if ( 'unit' !== $prop && ! empty( $value ) ) : ?>
-						<?php printf( '@include border-%s-radius(%s);', $prop, evf_clean( $value . $values['validation_message']['border_radius']['unit'] ) ); ?>
+						<?php printf( '@include border-%s-radius(%s);', $prop, evf_clean( $value . $values['button']['border_radius']['unit'] ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 					<?php endif; ?>
 				<?php endforeach; ?>
-			}
-
-			&.layout-two,
-			&.layout-three,
-			&.layout-four,
-			&.layout-five,
-			&.layout-six,
-			&.layout-seven,
-			&.layout-eight,
-			&.layout-nine,
-			&.layout-ten,
-			&.layout-eleven {
-				input[type='text'],
-				input[type='email'],
-				input[type='number'],
-				input[type='password'],
-				input[type='datetime'],
-				input[type='datetime-local'],
-				input[type='date'],
-				input[type='time'],
-				input[type='week'],
-				input[type='url'],
-				input[type='tel'],
-				input[type='file'],
-				textarea,
-				select,
-				canvas.evf-signature-canvas {
-					border-top: transparent;
-					border-left: transparent;
-					border-right: transparent;
-					border-radius: 0;
-				}
-			}
-
-			&.evf-gutenberg-form-selector {
-				.evf-submit-container {
-					button,
-					input[type=submit],
-					input[type="reset"] {
-						color: $button_font_color !important;
-						background-color: $button_background_color !important;
-						<?php if ( 'none' !== $values['button']['border_type'] ) : ?>
-							border-color: $button_border_color !important;
+				<?php foreach ( array( 'button_margin', 'button_padding' ) as $type ) : // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited ?>
+					<?php foreach ( $values['typography'][ $type ] as $device => $value ) : ?>
+						<?php if ( in_array( $device, array( 'desktop', 'tablet', 'mobille' ), true ) ) : ?>
+							<?php printf( '@include responsive-media(%s, %s, %s);', $type, $device, evf_sanitize_dimension_unit( $value, 'px' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 						<?php endif; ?>
-					}
+					<?php endforeach; ?>
+				<?php endforeach; ?>
+
+				&:hover,
+				&:active {
+					color: $button_hover_font_color;
+					background-color: $button_hover_background_color;
+					<?php if ( 'none' !== $values['button']['border_type'] ) : ?>
+						border-color: $button_border_hover_color;
+					<?php endif; ?>
 				}
 			}
 		}
+
+		.evf-submit-container {
+			&:not(.everest-forms-multi-part-actions) {
+				display: block;
+				<?php if ( isset( $values['typography']['button_alignment'] ) && ! ( isset( $form_data['settings']['enable_multi_part'] ) && evf_string_to_bool( $form_data['settings']['enable_multi_part'] ) ) ) : ?>
+				text-align: <?php echo evf_clean( $values['typography']['button_alignment'] ); ?>;
+				<?php endif; ?>
+			}
+		}
+
+		.evf-error {
+			background-color: $validation_message_background_color;
+			color: $validation_message_font_color;
+			font-size: $validation_message_font_size + 'px';
+			<?php foreach ( $font_styles as $prop => $value ) : ?>
+				<?php if ( 'yes' === evf_bool_to_string( $values['validation_message']['font_style'][ $value ] ) ) : ?>
+					<?php printf( '%s: %s;', $prop, evf_clean( $value ) ); ?>
+				<?php else : ?>
+					<?php printf( '%s: %s;', $prop, evf_clean( $font_styles_default[ $prop ] ) ); ?>
+				<?php endif; ?>
+			<?php endforeach; ?>
+			text-align: $validation_message_text_alignment;
+
+			<?php if ( isset( $values['validation_message']['border_type'] ) ) : ?>
+				border-style: $validation_message_border_type;
+				<?php if ( 'none' !== $values['validation_message']['border_type'] ) : ?>
+					border-color: $validation_message_border_color;
+					<?php printf( '@include border-width(%s);', evf_sanitize_dimension_unit( $values['validation_message']['border_width'], 'px' ) ); ?>
+				<?php endif; ?>
+			<?php endif; ?>
+			<?php foreach ( $values['validation_message']['border_radius'] as $prop => $value ) : ?>
+				<?php if ( 'unit' !== $prop && ! empty( $value ) ) : ?>
+					<?php printf( '@include border-%s-radius(%s);', $prop, evf_clean( $value . $values['validation_message']['border_radius']['unit'] ) ); ?>
+				<?php endif; ?>
+			<?php endforeach; ?>
+		}
+
+		&.layout-two {
+			input[type='text'],
+			input[type='email'],
+			input[type='number'],
+			input[type='password'],
+			input[type='datetime'],
+			input[type='datetime-local'],
+			input[type='date'],
+			input[type='time'],
+			input[type='week'],
+			input[type='url'],
+			input[type='tel'],
+			input[type='file'],
+			textarea,
+			select,
+			canvas.evf-signature-canvas {
+				border-top: transparent;
+				border-left: transparent;
+				border-right: transparent;
+				border-radius: 0;
+			}
+		}
+
+		&.evf-gutenberg-form-selector {
+			.evf-submit-container {
+				button,
+				input[type=submit],
+				input[type="reset"] {
+					// font colot missing.
+					// button background color missing.
+					<?php if ( 'none' !== $values['button']['border_type'] ) : ?>
+						border-color: $button_border_color !important;
+					<?php endif; ?>
+				}
+			}
+		}
+
 	}
 
 	.everest-forms-notice {
@@ -776,4 +637,5 @@ $validation_message_border_color: <?php echo evf_clean( $values['validation_mess
 			<?php endforeach; ?>
 		}
 	}
+
 }

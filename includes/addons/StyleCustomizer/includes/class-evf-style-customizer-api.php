@@ -429,6 +429,7 @@ class EVF_Style_Customizer_API {
 	 * @return string|WP_Error Background value or validation error.
 	 */
 	public function _sanitize_background_setting( $value, $setting ) {
+
 		if ( 'everest_forms_styles[' . $this->form_id . '][form_container][background_repeat]' === $setting->id ) {
 			if ( ! in_array( $value, array( 'repeat-x', 'repeat-y', 'repeat', 'no-repeat' ), true ) ) {
 				return new WP_Error( 'invalid_value', esc_html__( 'Invalid value for background repeat.', 'everest-forms' ) );
@@ -697,6 +698,7 @@ class EVF_Style_Customizer_API {
 
 		try {
 			$compiler = new ScssPhp\ScssPhp\Compiler(); // phpcs:ignore PHPCompatibility.LanguageConstructs.NewLanguageConstructs.t_ns_separatorFound
+			lg( $compiler );
 			$compiler->setVariables( array( 'form_id' => $form_id ) );
 			$compiler->setFormatter( 'ScssPhp\ScssPhp\Formatter\Compressed' );
 			$compiler->addImportPath( plugin_dir_path( EVF_PLUGIN_FILE ) . '/assets/css/bourbon/' );
