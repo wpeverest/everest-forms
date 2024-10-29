@@ -698,7 +698,7 @@ class EVF_Style_Customizer_API {
 
 		try {
 			$compiler = new ScssPhp\ScssPhp\Compiler(); // phpcs:ignore PHPCompatibility.LanguageConstructs.NewLanguageConstructs.t_ns_separatorFound
-			lg( $compiler );
+
 			$compiler->setVariables( array( 'form_id' => $form_id ) );
 			$compiler->setFormatter( 'ScssPhp\ScssPhp\Formatter\Compressed' );
 			$compiler->addImportPath( plugin_dir_path( EVF_PLUGIN_FILE ) . '/assets/css/bourbon/' );
