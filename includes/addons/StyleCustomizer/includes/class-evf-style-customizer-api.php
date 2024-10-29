@@ -698,11 +698,11 @@ class EVF_Style_Customizer_API {
 
 		try {
 			$compiler = new ScssPhp\ScssPhp\Compiler(); // phpcs:ignore PHPCompatibility.LanguageConstructs.NewLanguageConstructs.t_ns_separatorFound
-
 			$compiler->setVariables( array( 'form_id' => $form_id ) );
 			$compiler->setFormatter( 'ScssPhp\ScssPhp\Formatter\Compressed' );
 			$compiler->addImportPath( plugin_dir_path( EVF_PLUGIN_FILE ) . '/assets/css/bourbon/' );
 			$compiled_css = $compiler->compile( trim( $scss ) );
+			// lg( $compiled_css );
 			return $compiled_css;
 		} catch ( Exception $e ) {
 			$logger = evf_get_logger();
