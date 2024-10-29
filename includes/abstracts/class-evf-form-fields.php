@@ -2766,7 +2766,7 @@ abstract class EVF_Form_Fields {
 				if ( $filtered_choice ) {
 					$value = ! empty( $field['value']['label'] ) ? $field['value']['label'] : '';
 				} else {
-					$value = ! empty( $field['value']['label'] ) ? $image . $field['value']['label'] : '';
+					$value = ! empty( $field['value_raw'] ) ? $field['value_raw'] : ( ! empty( $field['value']['label'] ) ? $image . $field['value']['label'] : '' );
 				}
 				$export = array(
 					'label' => ! empty( $field['value']['name'] ) ? $field['value']['name'] : ucfirst( str_replace( '_', ' ', $field['type'] ) ) . " - {$field['id']}",
