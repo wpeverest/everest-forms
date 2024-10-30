@@ -1816,5 +1816,6 @@ if ( ! class_exists( 'EverestForms_Style_Customizer' ) ) {
 
 			$widget->end_controls_section();
 		}
+
 	}
 }
