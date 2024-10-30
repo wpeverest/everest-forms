@@ -875,7 +875,7 @@
       "slug": "everest-forms-qr-generator",
       "name": "Everest Forms QR Generator",
       "image": "extensions-json/sections/images/qr-generator.png",
-      "excerpt": "QR Generator",
+      "excerpt": "Create instant QR codes for easy access to your forms.",
       "link": "https://docs.everestforms.net/docs/qr-generator/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
       "released_date": "xx/xx/xx",
       "plan": [
