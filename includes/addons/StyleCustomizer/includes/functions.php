@@ -76,7 +76,7 @@ function evfsc_migration() {
 
 		foreach ( $field_styles_keys as $field_styles_key => $field_styles_container_key ) {
 			if ( isset( $settings['field_styles'][ $field_styles_key ] ) ) {
-				$new_structure[ $key ]['field_styles'][ $field_styles_container_key ] = $settings['wrapper'][ $field_styles_key ];
+				$new_structure[ $key ]['field_styles'][ $field_styles_container_key ] = $settings['field_styles'][ $field_styles_key ];
 			}
 		}
 
@@ -90,7 +90,7 @@ function evfsc_migration() {
 
 		foreach ( $file_upload_keys as $file_upload_key => $file_upload_container_key ) {
 			if ( isset( $settings['file_upload'][ $file_upload_key ] ) ) {
-				$new_structure[ $key ]['file_upload_styles'][ $file_upload_container_key ] = $settings['wrapper'][ $file_upload_key ];
+				$new_structure[ $key ]['file_upload_styles'][ $file_upload_container_key ] = $settings['file_upload'][ $file_upload_key ];
 			}
 		}
 
@@ -104,8 +104,142 @@ function evfsc_migration() {
 
 		foreach ( $button_keys as $button_key => $button_container_key ) {
 			if ( isset( $settings['button'][ $button_key ] ) ) {
-				$new_structure[ $key ]['button'][ $button_container_key ] = $settings['wrapper'][ $button_key ];
+				$new_structure[ $key ]['button'][ $button_container_key ] = $settings['button'][ $button_key ];
 			}
+		}
+	}
+
+	// field label typography.
+	$field_label_typography_keys = array(
+		'font_size'      => 'field_labels_font_size',
+		'font_style'     => 'field_labels_font_style',
+		'text_alignment' => 'field_labels_text_alignment',
+		'line_height'    => 'field_labels_line_height',
+		'margin'         => 'field_labels_margin',
+		'padding'        => 'field_labels_padding',
+	);
+	foreach ( $field_label_typography_keys as $field_label_typography_key => $field_label_typography_container_key ) {
+		if ( isset( $settings['field_label'][ $field_label_typography_key ] ) ) {
+			$new_structure[ $key ]['typography'][ $field_label_typography_container_key ] = $settings['field_label'][ $field_label_typography_key ];
+		}
+	}
+
+	// field Sublabel typography.
+	$field_sublabels_typography_keys = array(
+		'font_size'      => 'field_sublabels_font_size',
+		'font_style'     => 'field_sublabels_font_style',
+		'text_alignment' => 'field_sublabels_text_alignment',
+		'line_height'    => 'field_sublabels_line_height',
+		'margin'         => 'field_sublabels_margin',
+		'padding'        => 'field_sublabels_padding',
+	);
+	foreach ( $field_sublabels_typography_keys as $field_sublabels_typography_key => $field_sublabels_typography_container_key ) {
+		if ( isset( $settings['field_sublabel'][ $field_sublabels_typography_key ] ) ) {
+			$new_structure[ $key ]['typography'][ $field_sublabels_typography_container_key ] = $settings['field_sublabel'][ $field_sublabels_typography_key ];
+		}
+	}
+
+	// field style typography
+	$field_styles_typography_keys = array(
+		'font_size'              => 'field_styles_font_size',
+		'font_color '            => 'field_styles_font_color',
+		'placeholder_font_color' => 'field_styles_placeholder_font_color',
+		'font_style'             => 'field_styles_font_style',
+		'alignment'              => 'field_styles_alignment',
+		'border_color'           => 'field_styles_border_color',
+		'border_focus_color'     => 'field_styles_border_focus_color',
+		'margin'                 => 'field_styles_margin',
+		'padding'                => 'field_styles_padding',
+	);
+	foreach ( $field_styles_typography_keys as $field_styles_typography_key => $field_styles_typography_container_key ) {
+		if ( isset( $settings['field_styles'][ $field_styles_typography_key ] ) ) {
+			$new_structure[ $key ]['typography'][ $field_styles_typography_container_key ] = $settings['field_styles'][ $field_styles_typography_key ];
+		}
+	}
+
+	// Field Description typography.
+	$field_description_typography_keys = array(
+		'font_size'      => 'field_description_font_size',
+		'font_color '    => 'field_description_font_color',
+		'font_style'     => 'field_description_font_style',
+		'text_alignment' => 'field_description_text_alignment',
+		'line_height'    => 'field_description_line_height',
+		'margin'         => 'field_description_margin',
+		'padding'        => 'field_description_padding',
+	);
+	foreach ( $field_description_typography_keys as $field_description_typography_key => $field_description_typography_container_key ) {
+		if ( isset( $settings['field_description'][ $field_description_typography_key ] ) ) {
+			$new_structure[ $key ]['typography'][ $field_description_typography_container_key ] = $settings['field_description'][ $field_description_typography_key ];
+		}
+	}
+
+	// Section Title Typography.
+	$section_title_typography_keys = array(
+		'font_size'      => 'section_title_font_size',
+		'font_color '    => 'section_title_font_color',
+		'font_style'     => 'section_title_font_style',
+		'text_alignment' => 'section_title_text_alignment',
+		'line_height'    => 'section_title_line_height',
+		'margin'         => 'section_title_margin',
+		'padding'        => 'section_title_padding',
+	);
+	foreach ( $section_title_typography_keys as $section_title_typography_key => $section_title_typography_container_key ) {
+		if ( isset( $settings['section_title'][ $section_title_typography_key ] ) ) {
+			$new_structure[ $key ]['typography'][ $section_title_typography_container_key ] = $settings['section_title'][ $section_title_typography_key ];
+		}
+	}
+
+	// File Upload Typography.
+	$file_upload_typography_keys = array(
+		'font_size'             => 'file_upload_font_size',
+		'font_color '           => 'file_upload_font_color',
+		'background_color'      => 'file_upload_background_color',
+		'icon_background_color' => 'file_upload_icon_background_color',
+		'icon_color'            => 'file_upload_icon_color',
+		'border_color'          => 'file_upload_border_color',
+		'margin'                => 'file_upload_margin',
+		'padding'               => 'file_upload_padding',
+	);
+	foreach ( $file_upload_typography_keys as $file_upload_typography_key => $file_upload_typography_container_key ) {
+		if ( isset( $settings['file_upload_styles'][ $file_upload_typography_key ] ) ) {
+			$new_structure[ $key ]['typography'][ $file_upload_typography_container_key ] = $settings['file_upload_styles'][ $file_upload_typography_key ];
+		}
+	}
+
+	// Radio Checkbox Typography.
+	$checkbox_radio_typography_keys = array(
+		'font_size'     => 'checkbox_radio_font_size',
+		'font_color '   => 'checkbox_radio_font_color',
+		'font_style'    => 'checkbox_radio_font_style',
+		'alignment'     => 'checkbox_radio_alignment',
+		'size'          => 'checkbox_radio_size',
+		'color'         => 'checkbox_radio_color',
+		'checked_color' => 'checkbox_radio_checked_color',
+		'margin'        => 'checkbox_radio_margin',
+		'padding'       => 'checkbox_radio_padding',
+	);
+	foreach ( $checkbox_radio_typography_keys as $checkbox_radio_typography_key => $checkbox_radio_typography_container_key ) {
+		if ( isset( $settings['checkbox_radio_styles'][ $checkbox_radio_typography_key ] ) ) {
+			$new_structure[ $key ]['typography'][ $checkbox_radio_typography_container_key ] = $settings['checkbox_radio_styles'][ $file_upload_typography_key ];
+		}
+	}
+
+	// Button Typography
+	$button_typography_keys = array(
+		'font_size'              => 'button_font_size',
+		'font_style'             => 'button_font_style',
+		'hover_font_color'       => 'button_hover_font_color',
+		'hover_background_color' => 'button_hover_background_color',
+		'border_color'           => 'button_border_color',
+		'alignment'              => 'button_button_alignment',
+		'border_hover_color'     => 'button_border_hover_color',
+		'line_height'            => 'button_line_height',
+		'margin'                 => 'button_margin',
+		'padding'                => 'button_padding',
+	);
+	foreach ( $button_typography_keys as $button_typography_key => $button_typography_container_key ) {
+		if ( isset( $settings['button'][ $button_typography_key ] ) ) {
+			$new_structure[ $key ]['typography'][ $button_typography_container_key ] = $settings['button'][ $file_upload_typography_key ];
 		}
 	}
 
