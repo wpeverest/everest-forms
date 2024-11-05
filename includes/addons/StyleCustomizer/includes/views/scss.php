@@ -9,9 +9,11 @@
 defined( 'ABSPATH' ) || exit;
 
 // Get values.
-$styles                = get_option( 'everest_forms_styles' );
+$styles = get_option( 'everest_forms_styles' );
+lg( $styles );
 $current_color_palette = json_decode( wp_unslash( $_REQUEST['customized'] ), true );
-$palette_key           = null;
+
+$palette_key = null;
 
 foreach ( $current_color_palette as $key => $value ) {
 	if ( preg_match( '/everest_forms_styles\[(\d+)\]\[color_palette\]\[(color_\d+)\]/', $key, $matches ) ) {
@@ -22,12 +24,12 @@ foreach ( $current_color_palette as $key => $value ) {
 }
 
 if ( $form_id && $palette_key && isset( $current_color_palette[ "everest_forms_styles[$form_id][color_palette][$palette_key]" ] ) ) {
-	$new_palette = $current_color_palette[ "everest_forms_styles[$form_id][color_palette][$palette_key]" ];
-
+	$new_palette                         = $current_color_palette[ "everest_forms_styles[$form_id][color_palette][$palette_key]" ];
 	$styles[ $form_id ]['color_palette'] = array(
 		$palette_key => $new_palette,
 	);
 }
+
 
 if ( isset( $styles[ $form_id ] ) && is_array( $styles[ $form_id ] ) ) {
 	$styles[ $form_id ] = array_map(
@@ -42,17 +44,46 @@ if ( isset( $styles[ $form_id ] ) && is_array( $styles[ $form_id ] ) ) {
 	);
 }
 
+
 $styles[ $form_id ] = is_array( $styles[ $form_id ] ) ? array_filter( $styles[ $form_id ] ) : array();
 $values             = array_replace_recursive( $defaults, $styles[ $form_id ] ); // phpcs:ignore PHPCompatibility.PHP.NewFunctions.array_replace_recursiveFound
 // Search for JSON formatted values and convert it to array format.
 foreach ( $values as $key => $styles ) {
-
 	if ( is_array( $styles ) ) {
 		foreach ( $styles as $style => $value ) {
 			if ( is_string( $value ) && evf_is_json( $value ) ) {
 				$values[ $key ][ $style ] = (array) json_decode( $value );
 			}
 		}
+	}
+}
+
+if ( $palette_key === 'color_0' ) {
+	$custom_color_palette = get_option( 'everest_forms_custom_color_palettes' );
+	foreach ( $custom_color_palette[0]['colors'] as $color_key => $color_value ) {
+		$values['color_palette'][ $palette_key ][ $color_key ] = $color_value;
+	}
+}
+
+$backward_compatibility_color     = get_option( 'everest_forms_styles' );
+$backward_compatibility_color_key = isset( $backward_compatibility_color[ $form_id ]['color_palette']['color_12'] ) ? $backward_compatibility_color[ $form_id ]['color_palette']['color_12'] : '';
+if ( ! empty( $backward_compatibility_color_key ) ) {
+	$palette_key                         = 'color_12';
+	$values['color_palette']['color_12'] = $backward_compatibility_color_key;
+} elseif ( ! $palette_key ) {
+	if ( isset( $backward_compatibility_color[ $form_id ]['color_palette'] ) && is_array( $backward_compatibility_color[ $form_id ]['color_palette'] ) ) {
+		$colorPaletteKeys = array_keys( $backward_compatibility_color[ $form_id ]['color_palette'] );
+		$colorPaletteKey  = $colorPaletteKeys[0];
+		$palette_key      = $colorPaletteKey;
+	} else {
+		$values[ $form_id ]['color_palette']['color_13'] = array(
+			'form_background'   => '',
+			'field_background'  => '',
+			'field_label'       => '',
+			'field_sublabel'    => '',
+			'button_text'       => '',
+			'button_background' => '',
+		);
 	}
 }
 

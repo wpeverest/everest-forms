@@ -232,13 +232,15 @@ class EVF_Style_Customizer_API {
 	 */
 	public static function get_templates() {
 
-		$styles_raw = evf_file_get_contents( '/includes/addons/StyleCustomizer/assets/wp-json/default-templates.json' );
+		$styles = get_option( 'evf_style_templates' );
+		if ( empty( $styles ) ) {
+			$styles_raw = evf_file_get_contents( '/includes/addons/StyleCustomizer/assets/wp-json/default-templates.json' );
 
-		if ( $styles_raw ) {
-			update_option( 'evf_style_templates', $styles_raw );
-			$styles = $styles_raw;
+			if ( $styles_raw ) {
+				update_option( 'evf_style_templates', $styles_raw );
+				$styles = $styles_raw;
+			}
 		}
-
 		return apply_filters( 'evf_style_templates', json_decode( $styles ) );
 	}
 
@@ -546,7 +548,6 @@ class EVF_Style_Customizer_API {
 		$customized_data = get_option( 'everest_forms_styles', array() );
 
 		$matched_color_key = null;
-
 		foreach ( $response['setting_validities'] as $key => $validity ) {
 			if ( preg_match( '/everest_forms_styles\[(\d+)\]\[color_palette\]\[(color_\d+)\]/', $key, $matches ) ) {
 				$matched_color_key = $matches[2];
@@ -702,7 +703,6 @@ class EVF_Style_Customizer_API {
 			$compiler->setFormatter( 'ScssPhp\ScssPhp\Formatter\Compressed' );
 			$compiler->addImportPath( plugin_dir_path( EVF_PLUGIN_FILE ) . '/assets/css/bourbon/' );
 			$compiled_css = $compiler->compile( trim( $scss ) );
-			// lg( $compiled_css );
 			return $compiled_css;
 		} catch ( Exception $e ) {
 			$logger = evf_get_logger();
