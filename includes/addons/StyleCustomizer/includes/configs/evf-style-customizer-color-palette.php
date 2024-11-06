@@ -205,10 +205,10 @@ function evf_style_customizer_color_palette_controls( $controls, $customize ) {
 	}
 
 	$selected_color_key = '';
-	$test               = get_option( 'everest_forms_styles', array() );
+	$styles             = get_option( 'everest_forms_styles', array() );
 
-	if ( ! empty( $test ) ) {
-		foreach ( $test as $dynamic_key => $value ) {
+	if ( ! empty( $styles ) ) {
+		foreach ( $styles as $dynamic_key => $value ) {
 			if ( isset( $value['color_palette'] ) ) {
 				$selected_color_key = key( $value['color_palette'] );
 				break;
@@ -226,7 +226,7 @@ function evf_style_customizer_color_palette_controls( $controls, $customize ) {
 			);
 		}
 
-		$class       = $palette['is_pro'] ? 'evf-pro-palette' : 'evf-free-palette';
+		$class       = $palette['is_pro'] && defined( 'EFP_PLUGIN_FILE' ) ? 'evf-pro-palette' : 'evf-free-palette';
 		$input_attrs = array(
 			'class' => $class,
 		);
@@ -241,6 +241,7 @@ function evf_style_customizer_color_palette_controls( $controls, $customize ) {
 
 		if ( 'color_' . $index === $selected_color_key ) {
 			$input_attrs['checked'] = 'checked';
+			$input_attrs['class']  .= ' evf-active-color-palette';
 		}
 
 		$controls['color_palette'][ 'color_' . $index ] = array(
