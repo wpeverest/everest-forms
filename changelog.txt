@@ -1,5 +1,8 @@
 == Changelog ==
 
+= 3.0.4.2        - 03-11-2024
+* Fix            - Escaping issue in required field.
+
 = 3.0.4.1        - 30-10-2024
 * Fix            - Remove unnecessary source map from build.
 

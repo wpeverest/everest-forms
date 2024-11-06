@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the Everest Forms plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Everest Forms 3.0.4.1\n"
+"Project-Id-Version: Everest Forms 3.0.4.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/everest-forms\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-10-30T08:10:01+05:45\n"
+"POT-Creation-Date: 2024-11-03T16:56:00+05:45\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.10.0\n"
 "X-Domain: everest-forms\n"
@@ -1140,7 +1140,7 @@ msgstr ""
 #: includes/admin/form-migrator/class-evf-fm-contactform7.php:401
 #: includes/admin/form-migrator/class-evf-fm-wpforms.php:206
 #: includes/class-evf-form-task.php:163
-#: includes/shortcodes/class-evf-shortcode-form.php:911
+#: includes/shortcodes/class-evf-shortcode-form.php:910
 msgid "This form is disabled."
 msgstr ""
 
@@ -4110,7 +4110,7 @@ msgstr ""
 
 #: includes/class-evf-form-task.php:95
 #: includes/class-evf-form-task.php:576
-#: includes/shortcodes/class-evf-shortcode-form.php:979
+#: includes/shortcodes/class-evf-shortcode-form.php:978
 #: includes/templates/contact.php:61
 msgid "Thanks for contacting us! We will be in touch with you shortly."
 msgstr ""
@@ -14502,7 +14502,7 @@ msgid "Something went wrong, please try again later."
 msgstr ""
 
 #. translators: %s - URL to a non-amp version of a page with the form.
-#: includes/shortcodes/class-evf-shortcode-form.php:952
+#: includes/shortcodes/class-evf-shortcode-form.php:951
 msgid "<a href=\"%s\">Go to the full page</a> to view and submit the form."
 msgstr ""
 
