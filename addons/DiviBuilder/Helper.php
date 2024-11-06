@@ -34,12 +34,11 @@ class Helper {
 	}
 
 	/**
-	 * Notice if the oxygen is not installed.
+	 * Notice if the divi is not installed.
 	 *
 	 * @since xx.xx.xx
 	 */
 	public static function print_admin_notice() {
-
 		add_action(
 			'admin_notices',
 			function() {
