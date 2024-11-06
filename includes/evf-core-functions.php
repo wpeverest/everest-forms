@@ -5622,6 +5622,13 @@ function generate_api_key( $string = 'evf_restapi', $length = 32 ) {
 }
 
 if ( !function_exists( 'evf_hex_to_rgb' ) ) {
+	/**
+	 * Converts a hex color code to an RGB array.
+	 *
+	 * @since x.x.x
+	 * @param string $hexcolor Hex color code, with or without '#'.
+	 * @return array RGB values as [red, green, blue].
+	 */
 	function evf_hex_to_rgb( $hexcolor ) {
 		$hexcolor = ltrim( $hexcolor, '#' );
 
