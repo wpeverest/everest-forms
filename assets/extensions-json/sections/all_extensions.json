@@ -890,8 +890,8 @@
       "title": "Beaver Builder",
       "slug": "everest-forms-beaver-builder",
       "name": "Everest Forms Beaver Builder",
-      "image": "extensions-json/sections/images/beaver.png",
-      "excerpt": "Get the widget of everest forms in the beaver builder which helps to integrate the form easily.",
+      "image": "extensions-json/sections/images/beaver-builder.png",
+      "excerpt": "Using Beaver Builder's page editor, add your forms from Everest Forms to your website and customize them as needed.",
       "link": "https://docs.everestforms.net/docs/beaver-builder/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
       "released_date": "xx/xx/xxxx",
       "plan": [
