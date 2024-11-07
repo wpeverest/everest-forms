@@ -260,9 +260,23 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 
 							echo '<div class="everest-forms-options-header">
 							<div class="everest-forms-options-header--top">';
-							foreach ( $tabs_array as $icon_key => $icon_value ) {
-								echo '<span class="evf-forms-options-header-header--top-icon">' . evf_file_get_contents( '/assets/images/settings-icons/' . $icon_key . '.svg' ) . '</span>'; //phpcs:ignore
+
+							// For now icon is ignored.
+							if( isset( $value['image_name'] ) && ! empty( $value['image_name'] ) ) {
+
+								/**
+								 * Icon for Settings tab with different icon.
+								 *
+								 * @since xx.xx.xx
+								 */
+
+								// echo '<span class="evf-forms-options-header-header--top-icon">' . evf_file_get_contents( '/assets/images/settings-icons/' . $value['image_name'] . '.svg' ) . '</span>';
+							}else{
+								foreach ( $tabs_array as $icon_key => $icon_value ) {
+									echo '<span class="evf-forms-options-header-header--top-icon">' . evf_file_get_contents( '/assets/images/settings-icons/' . $icon_key . '.svg' ) . '</span>'; //phpcs:ignore
+								}
 							}
+
 							echo '<h3>' . esc_html( $value['title'] ) . '</h3>
 						  </div>
 						</div>';
