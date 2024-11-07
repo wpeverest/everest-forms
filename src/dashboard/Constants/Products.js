@@ -111,3 +111,7 @@ export const THEMES = [
 		liveDemoURL: "https://themegrilldemos.com/colormag-demos/#/",
 	},
 ];
+
+export const FreeModules = [
+	'everest-forms-wpbakery-builder'
+]
