@@ -190,7 +190,7 @@ class OxygenFormWidget extends OxygenElement {
 	public function submit_btn_style() {
 		$section_submit_btn = $this->addControlSection(
 			'evf-submit-button',
-			__( 'Submit Button', 'fluentform' ),
+			__( 'Submit Button', 'everest-forms' ),
 			'assets/icon.png',
 			$this
 		);
@@ -199,29 +199,29 @@ class OxygenFormWidget extends OxygenElement {
 		$section_submit_btn->addStyleControls(
 			array(
 				array(
-					'name'     => __( 'Color', 'fluentform' ),
+					'name'     => __( 'Color', 'everest-forms' ),
 					'selector' => $selector_submit_bttn,
 					'property' => 'color',
 				),
 				array(
-					'name'     => __( 'Background Color', 'fluentform' ),
+					'name'     => __( 'Background Color', 'everest-forms' ),
 					'selector' => $selector_submit_bttn,
 					'property' => 'background-color',
 				),
 				array(
-					'name'     => __( 'Hover Color', 'fluentform' ),
+					'name'     => __( 'Hover Color', 'everest-forms' ),
 					'selector' => '.ff-btn-submit:hover',
 					'property' => 'background-color',
 				),
 				array(
-					'name'         => __( 'Width', 'fluentform' ),
+					'name'         => __( 'Width', 'everest-forms' ),
 					'selector'     => $selector_submit_bttn,
 					'property'     => 'width',
 					'control_type' => 'slider-measurebox',
 					'unit'         => 'px',
 				),
 				array(
-					'name'         => __( 'Margin Top', 'fluentform' ),
+					'name'         => __( 'Margin Top', 'everest-forms' ),
 					'selector'     => $selector_submit_bttn,
 					'property'     => 'margin-top',
 					'control_type' => 'slider-measurebox',
@@ -233,22 +233,22 @@ class OxygenFormWidget extends OxygenElement {
 		$section_submit_btn->addPreset(
 			'padding',
 			'evf_submit_bttn_padding',
-			__( 'Padding', 'fluentform' ),
+			__( 'Padding', 'everest-forms' ),
 			$selector_submit_bttn
 		)->whiteList();
 
 		$section_submit_btn->addPreset(
 			'margin',
 			'evf_submit_bttn_margin',
-			__( 'Margin', 'fluentform' ),
+			__( 'Margin', 'everest-forms' ),
 			$selector_submit_bttn
 		)->whiteList();
 
-		$section_submit_btn->typographySection( __( 'Typography', 'fluentform' ), $selector_submit_bttn, $this );
-		$section_submit_btn->borderSection( __( 'Border', 'fluentform' ), $selector_submit_bttn, $this );
-		$section_submit_btn->borderSection( __( 'Hover Border', 'fluentform' ), $selector_submit_bttn . ':hover', $this );
-		$section_submit_btn->boxShadowSection( __( 'Box Shadow', 'fluentform' ), $selector_submit_bttn, $this );
-		$section_submit_btn->boxShadowSection( __( 'Hover Box Shadow', 'fluentform' ), $selector_submit_bttn . ':hover', $this );
+		$section_submit_btn->typographySection( __( 'Typography', 'everest-forms' ), $selector_submit_bttn, $this );
+		$section_submit_btn->borderSection( __( 'Border', 'everest-forms' ), $selector_submit_bttn, $this );
+		$section_submit_btn->borderSection( __( 'Hover Border', 'everest-forms' ), $selector_submit_bttn . ':hover', $this );
+		$section_submit_btn->boxShadowSection( __( 'Box Shadow', 'everest-forms' ), $selector_submit_bttn, $this );
+		$section_submit_btn->boxShadowSection( __( 'Hover Box Shadow', 'everest-forms' ), $selector_submit_bttn . ':hover', $this );
 	}
 
 	/**
