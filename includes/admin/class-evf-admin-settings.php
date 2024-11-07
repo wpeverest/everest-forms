@@ -258,7 +258,9 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 								$tabs_array[ $current_tab ] = isset( $tabs_array[ $current_tab ] ) ? $tabs_array[ $current_tab ] : array();
 							}
 
-							echo '<div class="everest-forms-options-header">
+							$class_for_title = isset( $value['id'] ) && ! empty( $value['id'] ) ? 'everest-forms-settings-title_' . $value['id'] : '';
+
+							echo '<div class="everest-forms-options-header ' . $class_for_title . '">
 							<div class="everest-forms-options-header--top">';
 
 							// For now icon is ignored.
