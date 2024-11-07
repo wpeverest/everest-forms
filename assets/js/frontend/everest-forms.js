@@ -49,7 +49,14 @@ jQuery( function ( $ ) {
 
 	;
 
-
+			/**
+			 * Focus on first error on submit.
+			 *
+			 * @since xx.xx.xx
+			 */
+			this.$everest_form.on( 'submit', function(){
+				everest_forms.onSubmitErrorScroll();
+			})
 
 			$( document.body ).trigger( 'everest_forms_loaded' );
 		},
@@ -731,6 +738,20 @@ jQuery( function ( $ ) {
 				}, 1000 );
 			}
 		},
+		
+		/**
+		 * Focus on first error on submit.
+		 *
+		 * @since xx.xx.xx
+		 */
+		onSubmitErrorScroll: function(){
+			if ( $( '.everest-forms-invalid' ).length ) {
+				$( 'html,body' ).animate( {
+					scrollTop: ( $( '.everest-forms-invalid' )[0].offset().top ) - 100
+				}, 1000 );
+			}
+		},
+
 		randomize_elements: function() {
 			$( '.everest-forms-randomize' ).each( function() {
 				var $list      = $( this ),
