@@ -15,7 +15,7 @@ class BricksFormWidget extends \Bricks\Element {
 
 	  public $category = 'everest-forms';
 	  public $name     = 'everest-forms';
-	  public $icon     = 'evf-icon-coupon';
+	  public $icon     = 'ti-bolt-alt';
 
 	/**
 	 * Get label.
