@@ -546,7 +546,7 @@ class EVF_Style_Customizer_API {
 	public function modify_customized_data( $response, $wp_customize ) {
 
 		$customized_data = get_option( 'everest_forms_styles', array() );
-
+		error_log(print_r($customized_data,true));
 		$matched_color_key = null;
 		foreach ( $response['setting_validities'] as $key => $validity ) {
 			if ( preg_match( '/everest_forms_styles\[(\d+)\]\[color_palette\]\[(color_\d+)\]/', $key, $matches ) ) {

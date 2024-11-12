@@ -10,7 +10,6 @@ defined( 'ABSPATH' ) || exit;
 
 // Get values.
 $styles = get_option( 'everest_forms_styles' );
-lg( $styles );
 $current_color_palette = json_decode( wp_unslash( $_REQUEST['customized'] ), true );
 
 $palette_key = null;
