@@ -356,7 +356,7 @@ final class EverestForms {
 	/**
 	 * Loaded the addons.
 	 *
-	 * @since xx.xx.xx
+	 * @since 3.0.5
 	 */
 	public function init_addons() {
 		Addons::init();

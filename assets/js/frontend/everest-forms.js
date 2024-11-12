@@ -52,7 +52,7 @@ jQuery( function ( $ ) {
 			/**
 			 * Focus on first error on submit.
 			 *
-			 * @since xx.xx.xx
+			 * @since 3.0.5
 			 */
 			this.$everest_form.on( 'submit', function(){
 				everest_forms.onSubmitErrorScroll();
@@ -738,11 +738,11 @@ jQuery( function ( $ ) {
 				}, 1000 );
 			}
 		},
-		
+
 		/**
 		 * Focus on first error on submit.
 		 *
-		 * @since xx.xx.xx
+		 * @since 3.0.5
 		 */
 		onSubmitErrorScroll: function(){
 			if ( $( '.everest-forms-invalid' ).length ) {

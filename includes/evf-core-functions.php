@@ -5612,7 +5612,7 @@ function evf_get_next_key_array( $arr, $key ) {
 /**
  * Function to generate the api key base on the string.
  *
- * @since xx.xx.xx
+ * @since 3.0.5
  * @param $string The string value.
  */
 function generate_api_key( $string = 'evf_restapi', $length = 32 ) {

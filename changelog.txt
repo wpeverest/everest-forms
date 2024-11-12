@@ -1,5 +1,8 @@
 == Changelog ==
 
+= 3.0.5          - xx-xx-2024
+* Feature        - Oxygen builder integration.
+
 = 3.0.4.2        - 03-11-2024
 * Fix            - Escaping issue in required field.
 
