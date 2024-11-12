@@ -61,6 +61,11 @@ abstract class EVF_Blocks_Abstract {
 	 * @return void
 	 */
 	protected function register() {
+
+		if ( version_compare( get_bloginfo( 'version' ), '5.5', '<' ) ) {
+			return;
+		}
+
 		if ( empty( $this->block_name ) ) {
 			_doing_it_wrong( __CLASS__, esc_html__( 'Block name is not set.', 'everest-forms' ), '2.0.9' );
 			return;

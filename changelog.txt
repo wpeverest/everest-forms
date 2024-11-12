@@ -1,5 +1,18 @@
 == Changelog ==
 
+= 3.0.5          - xx-xx-2024
+* Feature        - Oxygen builder integration.
+
+= 3.0.4.2        - 03-11-2024
+* Fix            - Escaping issue in required field.
+
+= 3.0.4.1        - 30-10-2024
+* Fix            - Remove unnecessary source map from build.
+
+= 3.0.4         - 28-10-2024
+* Fix           - Escaping issue.
+* Fix           - Line break in the confirmation message.
+
 = 3.0.3.1       - 17-09-2024
 * Fix           - Issue with add new form template designs.
 * Fix           - Copy/Paste not working in word limit.

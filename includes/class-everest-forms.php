@@ -6,6 +6,8 @@
  * @since   1.0.0
  */
 
+use EverestForms\Addons\Addons;
+
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -21,7 +23,7 @@ final class EverestForms {
 	 *
 	 * @var string
 	 */
-	public $version = '3.0.3.1';
+	public $version = '3.0.4.2';
 
 	/**
 	 * The single instance of the class.
@@ -161,6 +163,7 @@ final class EverestForms {
 		$this->define_constants();
 		$this->define_tables();
 		$this->includes();
+		$this->init_addons();
 		$this->init_hooks();
 		add_action( 'plugins_loaded', array( $this, 'objects' ), 1 );
 
@@ -348,6 +351,15 @@ final class EverestForms {
 		 * @return void
 		 */
 		include_once EVF_ABSPATH . 'includes/libraries/wptt-webfont-loader.php';
+	}
+
+	/**
+	 * Loaded the addons.
+	 *
+	 * @since 3.0.5
+	 */
+	public function init_addons() {
+		Addons::init();
 	}
 
 	/**
