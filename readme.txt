@@ -310,6 +310,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 = 3.0.5          - xx-xx-2024
 * Feature        - Oxygen builder integration.
+* Fix            - Tooltips does not work on mobile.
 
 = 3.0.4.2        - 03-11-2024
 * Fix            - Escaping issue in required field.
