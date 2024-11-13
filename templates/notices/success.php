@@ -34,7 +34,7 @@ global $__everest_form_entry_id;
 		<div class="everest-forms-notice <?php echo esc_attr( implode( ' ', $classes ) ); ?>" role="alert">
 		<?php
 			echo wp_kses(
-				$message,
+				nl2br( $message ),
 				array(
 					'div'   => array(
 						'class' => true,
@@ -53,6 +53,7 @@ global $__everest_form_entry_id;
 					'li'    => array(
 						'class' => true,
 					),
+					'br'   => array(),
 				)
 			);
 
