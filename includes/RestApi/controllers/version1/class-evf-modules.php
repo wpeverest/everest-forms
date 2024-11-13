@@ -255,7 +255,7 @@ class EVF_Modules {
 		/**
 		 * Track module installation.
 		 *
-		 * @since xx.xx.xx
+		 * @since 3.0.5
 		 */
 		do_action( 'evf_feature_track_data_for_tg_user_tracking', $slug );
 
