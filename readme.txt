@@ -310,6 +310,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 = 3.0.5          - xx-xx-2024
 * Feature        - Oxygen builder integration.
+* Feature        - Bricks builder integration.
 * Tweak          - Track module activation in TG User Tracking.
 * Fix            - Tooltips does not work on mobile.
 * Dev            - Slack Integration Module.
