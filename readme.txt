@@ -309,12 +309,13 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 == Changelog ==
 
 = 3.0.5          - xx-xx-2024
-* Feature        - Beaver Builder Compatibility.
 * Feature        - Bricks builder integration.
 * Feature        - Divi Builder Compatibility.
 * Feature        - Oxygen builder integration.
+* Feature        - Beaver Builder Compatibility.
 * Tweak          - Track module activation in TG User Tracking.
 * Fix            - Tooltips does not work on mobile.
+* Fix            - Background color for PDF submission.
 * Dev            - Slack Integration Module.
 
 = 3.0.4.2        - 03-11-2024

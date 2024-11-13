@@ -7,6 +7,7 @@
 * Feature        - Oxygen builder integration.
 * Tweak          - Track module activation in TG User Tracking.
 * Fix            - Tooltips does not work on mobile.
+* Fix            - Background color for PDF submission.
 * Dev            - Slack Integration Module.
 
 
