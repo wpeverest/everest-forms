@@ -113,6 +113,9 @@ class EVF_Modules {
 			$feature->link          = $feature->link . '&utm_campaign=' . EVF()->utm_campaign;
 			$feature->type          = 'feature';
 			$features_lists[ $key ] = $feature;
+			if ( in_array( $feature->slug, array( 'everest-forms-oxygen-builder' ), true ) ) {
+				$feature->required_plan = esc_html__( 'Free', 'everest-forms' );
+			}
 		}
 
 		// Get Addons Lists.
