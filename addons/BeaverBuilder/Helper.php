@@ -2,7 +2,7 @@
 /**
  * Beaver Integration helper functions.
  *
- * @since xx.xx.xx
+ * @since 3.0.5
  * @package EverestForms\Addons\BeaverBuilder
  */
 
@@ -13,14 +13,14 @@ namespace EverestForms\Addons\BeaverBuilder;
  *
  * @package EverestForms\Addons\BeaverBuilder
  *
- * @since xx.xx.xx
+ * @since 3.0.5
  */
 class Helper {
 
 	/**
 	 * Return if Beaver is active.
 	 *
-	 * @since xx.xx.xx
+	 * @since 3.0.5
 	 *
 	 * @return boolean
 	 */
@@ -31,7 +31,7 @@ class Helper {
 	/**
 	 * Check if the current request is for beaver editor.
 	 *
-	 * @since xx.xx.xx
+	 * @since 3.0.5
 	 *
 	 * @return boolean
 	 */
@@ -43,13 +43,13 @@ class Helper {
 	/**
 	 * Notice if the beaver is not installed.
 	 *
-	 * @since xx.xx.xx
+	 * @since 3.0.5
 	 */
 	public static function print_admin_notice() {
 
 		add_action(
 			'admin_notices',
-			function() {
+			function () {
 				printf(
 					'<div class="notice notice-warning is-dismissible"><p><strong>%s </strong>%s</p><button type="button" class="notice-dismiss"><span class="screen-reader-text">%s</span></button></div>',
 					esc_html( 'Everest Forms:' ),
@@ -65,7 +65,7 @@ class Helper {
 	/**
 	 * Get the form list.
 	 *
-	 * @since xx.xx.xx
+	 * @since 3.0.5
 	 */
 	public static function get_form_list() {
 		$forms = evf_get_all_forms();
@@ -106,5 +106,4 @@ class Helper {
 			),
 		);
 	}
-
 }

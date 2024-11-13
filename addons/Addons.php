@@ -2,20 +2,22 @@
 /**
  * Addons main files.
  *
- * @since xx.xx.xx
+ * @since 3.0.5
  * @package EverestForms\Addons\Addons
  */
 
 namespace EverestForms\Addons;
 
+use EverestForms\Addons\BricksBuilder\BricksBuilder;
 use EverestForms\Addons\OxygenBuilder\OxygenBuilder;
+use EverestForms\Addons\DiviBuilder\DiviBuilder;
 use EverestForms\Addons\BeaverBuilder\BeaverBuilder;
 use EverestForms\Traits\Singleton;
 
 /**
  * Addon class.
  *
- * @since xx.xx.xx
+ * @since 3.0.5
  */
 class Addons {
 
@@ -24,7 +26,7 @@ class Addons {
 	/**
 	 * Class constructor.
 	 *
-	 * @since xx.xx.xx
+	 * @since 3.0.5
 	 */
 	public function __construct() {
 		add_action( 'init', array( $this, 'addons_init' ) );
@@ -33,19 +35,21 @@ class Addons {
 	/**
 	 * Get addon list.
 	 *
-	 * @since xx.xx.xx
+	 * @since 3.0.5
 	 */
 	public function get_addon_list() {
 		/**
 		 * Everest forms addon list.
 		 *
-		 * @since xx.xx.xx
+		 * @since 3.0.5
 		 * @return array List of addon class.
 		 */
 		return apply_filters(
 			'everest_forms_addon_list',
 			array(
 				'oxygen-builder' => OxygenBuilder::class,
+				'bricks-builder' => BricksBuilder::class,
+				'divi-builder'   => DiviBuilder::class,
 				'beaver-builder' => BeaverBuilder::class,
 			)
 		);
@@ -54,7 +58,7 @@ class Addons {
 	/**
 	 * Initializes the Everest Forms addons.
 	 *
-	 * @since xx.xx.xx
+	 * @since 3.0.5
 	 */
 	public function addons_init() {
 

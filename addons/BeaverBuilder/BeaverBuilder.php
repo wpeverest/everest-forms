@@ -2,7 +2,7 @@
 /**
  * Beaver builder integration.
  *
- * @since xx.xx.xx
+ * @since 3.0.5
  * @package EverestForms\Addons\BeaverBuilder\BeaverBuilder
  */
 namespace EverestForms\Addons\BeaverBuilder;
@@ -14,7 +14,7 @@ use EverestForms\Addons\BeaverBuilder\EverestFormModule;
 /**
  * BeaverBuilder.
  *
- * @since xx.xx.xx
+ * @since 3.0.5
  */
 class BeaverBuilder {
 
@@ -23,7 +23,7 @@ class BeaverBuilder {
 	/**
 	 * Constructor.
 	 *
-	 * @since xx.xx.xx
+	 * @since 3.0.5
 	 */
 	public function __construct() {
 		$this->setup();
@@ -32,7 +32,7 @@ class BeaverBuilder {
 	/**
 	 * Init.
 	 *
-	 * @since xx.xx.xx
+	 * @since 3.0.5
 	 */
 	public function setup() {
 		if ( ! Helper::is_beaver_active() ) {

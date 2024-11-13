@@ -2,7 +2,7 @@
 /**
  * Oxygen form widget.
  *
- * @since xx.xx.xx
+ * @since 3.0.5
  * @package  EverestForms\Addons\OxygenBuilder\OxygenFormWidget
  */
 namespace EverestForms\Addons\OxygenBuilder;
@@ -16,7 +16,7 @@ class OxygenFormWidget extends OxygenElement {
 	/**
 	 * Name.
 	 *
-	 * @since xx.xx.xx
+	 * @since 3.0.5
 	 */
 	public function name() {
 		return __( 'Forms', 'everest-forms' );
@@ -25,7 +25,7 @@ class OxygenFormWidget extends OxygenElement {
 	/**
 	 * Slug.
 	 *
-	 * @since xx.xx.xx
+	 * @since 3.0.5
 	 */
 	public function slug() {
 		return 'evf_form_widget';
@@ -34,7 +34,7 @@ class OxygenFormWidget extends OxygenElement {
 	/**
 	 * Accordion place.
 	 *
-	 * @since xx.xx.xx
+	 * @since 3.0.5
 	 */
 	public function accordion_button_place() {
 		return 'form';
@@ -42,7 +42,7 @@ class OxygenFormWidget extends OxygenElement {
 	/**
 	 * Enqueue the styles.
 	 *
-	 * @since xx.xx.xx
+	 * @since 3.0.5
 	 */
 	public function custom_init() {
 		wp_register_style( 'everest-forms-admin', evf()->plugin_url() . '/assets/css/admin.css', array(), EVF_VERSION );
@@ -50,12 +50,11 @@ class OxygenFormWidget extends OxygenElement {
 
 		wp_enqueue_style( 'everest-forms-admin' );
 		wp_enqueue_style( 'everest-forms-general' );
-
 	}
 	/**
 	 * Icon.
 	 *
-	 * @since xx.xx.xx
+	 * @since 3.0.5
 	 */
 	public function icon() {
 		return \EVF_Admin_Menus::get_icon_svg();
@@ -64,7 +63,7 @@ class OxygenFormWidget extends OxygenElement {
 	/**
 	 * Add controls.
 	 *
-	 * @since xx.xx.xx
+	 * @since 3.0.5
 	 */
 	public function controls() {
 		$templates_control = $this->addOptionControl(
@@ -83,13 +82,12 @@ class OxygenFormWidget extends OxygenElement {
 		$this->form_container_style_controls();
 		$this->form_input_labels_style();
 		$this->submit_btn_style();
-
 	}
 
 	/**
 	 * Form contrainer style controls.
 	 *
-	 * @since xx.xx.xx
+	 * @since 3.0.5
 	 */
 	public function form_container_style_controls() {
 		$section_container = $this->addControlSection(
@@ -152,7 +150,7 @@ class OxygenFormWidget extends OxygenElement {
 	/**
 	 * Field input label styles.
 	 *
-	 * @since xx.xx.xx
+	 * @since 3.0.5
 	 */
 	public function form_input_labels_style() {
 		$section_label = $this->addControlSection(
@@ -185,12 +183,12 @@ class OxygenFormWidget extends OxygenElement {
 	/**
 	 * Submit button style.
 	 *
-	 * @since xx.xx.xx
+	 * @since 3.0.5
 	 */
 	public function submit_btn_style() {
 		$section_submit_btn = $this->addControlSection(
 			'evf-submit-button',
-			__( 'Submit Button', 'fluentform' ),
+			__( 'Submit Button', 'everest-forms' ),
 			'assets/icon.png',
 			$this
 		);
@@ -199,29 +197,29 @@ class OxygenFormWidget extends OxygenElement {
 		$section_submit_btn->addStyleControls(
 			array(
 				array(
-					'name'     => __( 'Color', 'fluentform' ),
+					'name'     => __( 'Color', 'everest-forms' ),
 					'selector' => $selector_submit_bttn,
 					'property' => 'color',
 				),
 				array(
-					'name'     => __( 'Background Color', 'fluentform' ),
+					'name'     => __( 'Background Color', 'everest-forms' ),
 					'selector' => $selector_submit_bttn,
 					'property' => 'background-color',
 				),
 				array(
-					'name'     => __( 'Hover Color', 'fluentform' ),
+					'name'     => __( 'Hover Color', 'everest-forms' ),
 					'selector' => '.ff-btn-submit:hover',
 					'property' => 'background-color',
 				),
 				array(
-					'name'         => __( 'Width', 'fluentform' ),
+					'name'         => __( 'Width', 'everest-forms' ),
 					'selector'     => $selector_submit_bttn,
 					'property'     => 'width',
 					'control_type' => 'slider-measurebox',
 					'unit'         => 'px',
 				),
 				array(
-					'name'         => __( 'Margin Top', 'fluentform' ),
+					'name'         => __( 'Margin Top', 'everest-forms' ),
 					'selector'     => $selector_submit_bttn,
 					'property'     => 'margin-top',
 					'control_type' => 'slider-measurebox',
@@ -233,28 +231,28 @@ class OxygenFormWidget extends OxygenElement {
 		$section_submit_btn->addPreset(
 			'padding',
 			'evf_submit_bttn_padding',
-			__( 'Padding', 'fluentform' ),
+			__( 'Padding', 'everest-forms' ),
 			$selector_submit_bttn
 		)->whiteList();
 
 		$section_submit_btn->addPreset(
 			'margin',
 			'evf_submit_bttn_margin',
-			__( 'Margin', 'fluentform' ),
+			__( 'Margin', 'everest-forms' ),
 			$selector_submit_bttn
 		)->whiteList();
 
-		$section_submit_btn->typographySection( __( 'Typography', 'fluentform' ), $selector_submit_bttn, $this );
-		$section_submit_btn->borderSection( __( 'Border', 'fluentform' ), $selector_submit_bttn, $this );
-		$section_submit_btn->borderSection( __( 'Hover Border', 'fluentform' ), $selector_submit_bttn . ':hover', $this );
-		$section_submit_btn->boxShadowSection( __( 'Box Shadow', 'fluentform' ), $selector_submit_bttn, $this );
-		$section_submit_btn->boxShadowSection( __( 'Hover Box Shadow', 'fluentform' ), $selector_submit_bttn . ':hover', $this );
+		$section_submit_btn->typographySection( __( 'Typography', 'everest-forms' ), $selector_submit_bttn, $this );
+		$section_submit_btn->borderSection( __( 'Border', 'everest-forms' ), $selector_submit_bttn, $this );
+		$section_submit_btn->borderSection( __( 'Hover Border', 'everest-forms' ), $selector_submit_bttn . ':hover', $this );
+		$section_submit_btn->boxShadowSection( __( 'Box Shadow', 'everest-forms' ), $selector_submit_bttn, $this );
+		$section_submit_btn->boxShadowSection( __( 'Hover Box Shadow', 'everest-forms' ), $selector_submit_bttn . ':hover', $this );
 	}
 
 	/**
 	 * Render the element's UI by outputting HTML.
 	 *
-	 * @since xx.xx.xx
+	 * @since 3.0.5
 	 *
 	 * @param array $options
 	 * @param array $defaults

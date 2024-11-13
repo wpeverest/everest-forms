@@ -3,7 +3,7 @@
  * Frontend section for the Everest Forms.
  *
  * @package EverestForms\Addons\BeaverBuilder\Includes
- * @since xx.xx.xx
+ * @since 3.0.5
  */
 use EverestForms\Addons\BeaverBuilder\Helper;
 

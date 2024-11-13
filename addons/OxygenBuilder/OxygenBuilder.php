@@ -2,7 +2,7 @@
 /**
  * Oxygen builder integration.
  *
- * @since xx.xx.xx
+ * @since 3.0.5
  * @package EverestForms\Addons\OxygenBuilder\OxygenBuilder
  */
 namespace EverestForms\Addons\OxygenBuilder;
@@ -13,7 +13,7 @@ use EverestForms\Addons\OxygenBuilder\Helper;
 /**
  * OxygenBuilder.
  *
- * @since xx.xx.xx
+ * @since 3.0.5
  */
 class OxygenBuilder {
 
@@ -22,7 +22,7 @@ class OxygenBuilder {
 	/**
 	 * Constructor.
 	 *
-	 * @since xx.xx.xx
+	 * @since 3.0.5
 	 */
 	public function __construct() {
 		$this->setup();
@@ -30,7 +30,7 @@ class OxygenBuilder {
 	/**
 	 * Init.
 	 *
-	 * @since xx.xx.xx
+	 * @since 3.0.5
 	 */
 	public function setup() {
 
@@ -49,13 +49,12 @@ class OxygenBuilder {
 		add_action( 'oxygen_add_plus_everest-forms_section_content', array( $this, 'register_add_plus_subsections' ) );
 
 		new OxygenFormWidget();
-
 	}
 
 	/**
-	 * Add accordin section in the elements.
+	 * Add accordion section in the elements.
 	 *
-	 * @since xx.xx.xx
+	 * @since 3.0.5
 	 */
 	public function add_accordion_section() {
 		$brand_name = __( 'Everest Forms', 'everest-forms' );
@@ -65,10 +64,9 @@ class OxygenBuilder {
 	/**
 	 * Add subsection.
 	 *
-	 * @since xx.xx.xx
+	 * @since 3.0.5
 	 */
 	public function register_add_plus_subsections() {
 		do_action( 'oxygen_add_plus_everest-forms_form' );
 	}
-
 }
