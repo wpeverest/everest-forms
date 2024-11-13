@@ -312,6 +312,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 * Feature        - Oxygen builder integration.
 * Tweak          - Track module activation in TG User Tracking.
 * Fix            - Tooltips does not work on mobile.
+* Dev            - Slack Integration Module.
 
 = 3.0.4.2        - 03-11-2024
 * Fix            - Escaping issue in required field.
