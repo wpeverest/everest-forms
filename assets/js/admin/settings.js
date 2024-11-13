@@ -338,4 +338,40 @@
 			});
 		});
 
+		disableFormChangeModal();
+
+		/**
+	 * Disable leave page before saving changes modal when hid/show sidebar is clicked.
+	 */
+	function disableFormChangeModal() {
+
+		var form = $(".everest-forms").find("form")[0];
+
+
+		var formChanged = false;
+
+		$(form).on("change", function (event) {
+			if (event.target.name !== "everest-forms-enable-premium-sidebar") {
+				formChanged = true;
+			}
+		});
+
+		var skipBeforeUnloadPopup = false;
+		$(form).on("submit", function () {
+			skipBeforeUnloadPopup = true;
+		});
+		$(form).find(".evf-nav__link").on('click',function(){
+			skipBeforeUnloadPopup = true;
+		});
+
+		$(window).on("beforeunload", function (event) {
+			if (formChanged && !skipBeforeUnloadPopup) {
+				event.preventDefault();
+				event.returnValue = "";
+			} else {
+				event.stopImmediatePropagation();
+			}
+		});
+	}
+
 })( jQuery, everest_forms_settings_params );

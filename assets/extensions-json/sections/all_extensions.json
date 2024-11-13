@@ -374,23 +374,6 @@
       "popular_rank": 24
     },
     {
-      "title": "ActiveCampaign",
-      "slug": "everest-forms-activecampaign",
-      "name": "Everest Forms ActiveCampaign",
-      "image": "extensions-json/sections/images/activecampaign.png",
-      "excerpt": "Allows your users to subscribe to ActiveCampaign through form submission via Everest Forms.",
-      "link": "https://docs.everestforms.net/docs/activecampaign/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
-      "released_date": "15/07/2020",
-      "plan": [
-        "personal",
-        "agency",
-        "themegrill agency"
-      ],
-      "setting_url": "admin.php?page=evf-settings&tab=integration&section=activecampaign",
-      "demo_video_url": "6b9q89cUMzE",
-      "popular_rank": 25
-    },
-    {
       "title": "Advanced Form Analytics",
       "slug": "everest-forms-form-analytics",
       "name": "Everest Forms Advanced Form Analytics",
@@ -825,7 +808,7 @@
       "title": "Landing Pages",
       "slug": "everest-forms-landingpages",
       "name": "Everest Forms- LandingPages",
-      "image": "extensions-json/sections/images/LandingPage.webp",
+      "image": "extensions-json/sections/images/LandingPage.png",
       "excerpt": "Present your landing page as a form without going through the hassle of shortcodes and repetitive designing. A simple click, and that’s all you must do!",
       "link": "https://docs.everestforms.net/docs/landingpages/?utm_source=dashboard-all-features&utm_medium=card-documentation-link",
       "released_date": "07/08/2024",
@@ -869,6 +852,103 @@
       "setting_url": "",
       "demo_video_url": "WCsHC7NQ2QQ",
       "popular_rank": 16
+    },
+    {
+      "title": "Oxygen Builder",
+      "slug": "everest-forms-oxygen-builder",
+      "name": "Everest Forms Oxygen Builder",
+      "image": "extensions-json/sections/images/calculations.png",
+      "excerpt": "Get the widget of everest forms in the oxygen builder which helps to integrate the form easily.",
+      "link": "https://docs.everestforms.net/docs/oxygen-builder/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "released_date": "xx/xx/xxxx",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "setting_url": "",
+      "demo_video_url": ""
+    },
+    {
+      "title": "Slack",
+      "slug": "everest-forms-slack",
+      "name": "Everest Forms Slack",
+      "image": "extensions-json/sections/images/Slack.png",
+      "excerpt": " Instantly connect Everest Forms with Slack to receive form submission data directly in your channels, keeping your team in the loop in real time.",
+      "link": "https://docs.everestforms.net/docs/slack/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "released_date": "xx/xx/xx",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "setting_url": "",
+      "demo_video_url": ""
+    },
+    {
+      "title": "Bricks Builder",
+      "slug": "everest-forms-bricks-builder",
+      "name": "Everest Forms Bricks Builder",
+      "image": "extensions-json/sections/images/bricks-builder.png",
+      "excerpt": "Using Bricks Builder’s page editor, add your forms from Everest Forms to your website and customize them as needed.",
+      "link": "https://docs.everestforms.net/docs/bricks-builder/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "released_date": "xx/xx/xxxx",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "setting_url": "",
+      "demo_video_url": ""
+    },
+    {
+      "title": "Divi Builder",
+      "slug": "everest-forms-divi-builder",
+      "name": "Everest Forms Divi Builder",
+      "image": "extensions-json/sections/images/divi.png",
+      "excerpt": "Using Divi’s page editor, add your forms from Everest Forms to your website and customize them as needed. ",
+      "link": "https://docs.everestforms.net/docs/divi-builder/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "released_date": "xx/xx/xxxx",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "setting_url": "",
+      "demo_video_url": ""
+    },
+    {
+    "title": "Beaver Builder",
+      "slug": "everest-forms-beaver-builder",
+      "name": "Everest Forms Beaver Builder",
+      "image": "extensions-json/sections/images/beaver-builder.png",
+      "excerpt": "Using Beaver Builder's page editor, add your forms from Everest Forms to your website and customize them as needed.",
+      "link": "https://docs.everestforms.net/docs/beaver-builder/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "released_date": "xx/xx/xxxx",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "setting_url": "",
+      "demo_video_url": ""
+    },
+    {
+      "title": "ActiveCampaign",
+      "slug": "everest-forms-activecampaign",
+      "name": "Everest Forms ActiveCampaign",
+      "image": "extensions-json/sections/images/activecampaign.png",
+      "excerpt": "Allows your users to subscribe to ActiveCampaign through form submission via Everest Forms.",
+      "link": "https://docs.everestforms.net/docs/activecampaign/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "released_date": "15/07/2020",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=activecampaign",
+      "demo_video_url": "6b9q89cUMzE",
+      "popular_rank": 25
     },
     {
       "title": "GetGist",
