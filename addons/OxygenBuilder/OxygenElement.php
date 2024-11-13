@@ -2,22 +2,22 @@
 /**
  * Oxygen elements.
  *
- * @since xx.xx.xx
+ * @since 3.0.5
  * @package  EverestForms\Addons\OxygenBuilder\OxygenElement
  */
 
- namespace EverestForms\Addons\OxygenBuilder;
+namespace EverestForms\Addons\OxygenBuilder;
 
- /**
-  * Oxygen elements.
-  *
-  * @since xx.xx.xx
-  */
+/**
+ * Oxygen elements.
+ *
+ * @since 3.0.5
+ */
 class OxygenElement extends \OxyEl {
 	/**
 	 * Init.
 	 *
-	 * @since xx.xx.xx
+	 * @since 3.0.5
 	 */
 	public function init() {
 		$this->El->useAJAXControls();
@@ -26,7 +26,7 @@ class OxygenElement extends \OxyEl {
 	/**
 	 * Class names.
 	 *
-	 * @since xx.xx.xx
+	 * @since 3.0.5
 	 */
 	public function class_names() {
 		return array( 'evf-oxy-element' );
@@ -35,7 +35,7 @@ class OxygenElement extends \OxyEl {
 	/**
 	 * Accordion button places.
 	 *
-	 * @since xx.xx.xx
+	 * @since 3.0.5
 	 */
 	public function button_place() {
 		$button_place = $this->accordion_button_place();
@@ -50,7 +50,7 @@ class OxygenElement extends \OxyEl {
 	/**
 	 * Button priority.
 	 *
-	 * @since xx.xx.xx
+	 * @since 3.0.5
 	 */
 	public function button_priority() {
 		return '';

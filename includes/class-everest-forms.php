@@ -23,7 +23,7 @@ final class EverestForms {
 	 *
 	 * @var string
 	 */
-	public $version = '3.0.3.1';
+	public $version = '3.0.4.2';
 
 	/**
 	 * The single instance of the class.
@@ -356,7 +356,7 @@ final class EverestForms {
 	/**
 	 * Loaded the addons.
 	 *
-	 * @since xx.xx.xx
+	 * @since 3.0.5
 	 */
 	public function init_addons() {
 		Addons::init();

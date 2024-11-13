@@ -825,7 +825,7 @@
       "title": "Landing Pages",
       "slug": "everest-forms-landingpages",
       "name": "Everest Forms- LandingPages",
-      "image": "extensions-json/sections/images/LandingPage.webp",
+      "image": "extensions-json/sections/images/LandingPage.png",
       "excerpt": "Present your landing page as a form without going through the hassle of shortcodes and repetitive designing. A simple click, and that’s all you must do!",
       "link": "https://docs.everestforms.net/docs/landingpages/?utm_source=dashboard-all-features&utm_medium=card-documentation-link",
       "released_date": "07/08/2024",
@@ -885,17 +885,54 @@
       ],
       "setting_url": "",
       "demo_video_url": ""
-    },{
-    "title": "Divi Builder",
-    "slug": "everest-forms-divi-builder",
-    "name": "Everest Forms Divi Builder",
-    "image": "extensions-json/sections/images/divi.png",
-    "excerpt": "Using Divi’s page editor, add your forms from Everest Forms to your website and customize them as needed. ",
-    "link": "https://docs.everestforms.net/docs/divi-builder/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
-    "released_date": "xx/xx/xxxx",
-    "plan": "",
-    "setting_url": "",
-    "demo_video_url": ""
-  }
+    },
+    {
+      "title": "Slack",
+      "slug": "everest-forms-slack",
+      "name": "Everest Forms Slack",
+      "image": "extensions-json/sections/images/Slack.png",
+      "excerpt": " Instantly connect Everest Forms with Slack to receive form submission data directly in your channels, keeping your team in the loop in real time.",
+      "link": "https://docs.everestforms.net/docs/slack/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "released_date": "xx/xx/xx",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "setting_url": "",
+      "demo_video_url": ""
+    },
+    {
+      "title": "Bricks Builder",
+      "slug": "everest-forms-bricks-builder",
+      "name": "Everest Forms Bricks Builder",
+      "image": "extensions-json/sections/images/bricks-builder.png",
+      "excerpt": "Using Bricks Builder’s page editor, add your forms from Everest Forms to your website and customize them as needed.",
+      "link": "https://docs.everestforms.net/docs/bricks-builder/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "released_date": "xx/xx/xxxx",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "setting_url": "",
+      "demo_video_url": ""
+    },
+    {
+      "title": "Divi Builder",
+      "slug": "everest-forms-divi-builder",
+      "name": "Everest Forms Divi Builder",
+      "image": "extensions-json/sections/images/divi.png",
+      "excerpt": "Using Divi’s page editor, add your forms from Everest Forms to your website and customize them as needed. ",
+      "link": "https://docs.everestforms.net/docs/divi-builder/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "released_date": "xx/xx/xxxx",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "setting_url": "",
+      "demo_video_url": ""
+    }
   ]
 }
