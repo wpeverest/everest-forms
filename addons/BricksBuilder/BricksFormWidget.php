@@ -3,7 +3,7 @@
  * Builder form widget.
  *
  * @since xx.xx.xx
- * @package  EverestForms\Addons\BricksBuilder\OxygenFormWidget
+ * @package  EverestForms\Addons\BricksBuilder\BricksFormWidget
  */
 namespace EverestForms\Addons\BricksBuilder;
 

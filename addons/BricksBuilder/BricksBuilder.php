@@ -1,6 +1,6 @@
 <?php
 /**
- * Oxygen builder integration.
+ * Bricks builder integration.
  *
  * @since xx.xx.xx
  * @package EverestForms\Addons\BricksBuilder\BricksBuilder

@@ -1,6 +1,6 @@
 <?php
 /**
- * Oxygen Integration helper functions.
+ * Bricks Integration helper functions.
  *
  * @since xx.xx.xx
  * @package EverestForms\Addons\BricksBuilder
@@ -35,7 +35,7 @@ class Helper {
 	}
 
 	/**
-	 * Notice if the oxygen is not installed.
+	 * Notice if the bricks is not installed.
 	 *
 	 * @since xx.xx.xx
 	 */
