@@ -52,6 +52,7 @@ class EVF_Smart_Tags {
 				'user_role'              => esc_html__( 'User Role', 'everest-forms' ),
 				'referrer_url'           => esc_html__( 'Referrer URL', 'everest-forms' ),
 				'form_id'                => esc_html__( 'Form ID', 'everest-forms' ),
+				'entry_id'               => esc_html__( 'Entry ID', 'everest-forms' ),
 			)
 		);
 
@@ -325,7 +326,6 @@ class EVF_Smart_Tags {
 
 		// Other Smart tags.
 		preg_match_all( '/\{(.+?)\}/', $content, $other_tags );
-
 		if ( ! empty( $other_tags[1] ) ) {
 
 			foreach ( $other_tags[1] as $key => $tag ) {
