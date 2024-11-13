@@ -1287,8 +1287,10 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 	public function send_file_as_email_attachment( $attachment, $entry, $form_data, $context, $connection_id, $entry_id ) {
 
 		$file_email_attachments = isset( $form_data['settings']['email'][ $connection_id ]['file-email-attachments'] ) ? $form_data['settings']['email'][ $connection_id ]['file-email-attachments'] : 0;
-		if ( isset( $form_data['settings']['disabled_entries'] ) && '1' === $form_data['settings']['disabled_entries'] ) {
-			$attachment = $this->attach_entry_files_upload( $entry );
+		if ( isset( $form_data['settings']['disabled_entries'] ) && '1' === $form_data['settings']['disabled_entries'] && '1' === $file_email_attachments ) {
+				$attachment = $this->attach_entry_files_upload( $entry );
+		} elseif ( isset( $form_data['settings']['disabled_entries'] ) && '1' === $form_data['settings']['disabled_entries'] && ! defined( 'EFP_PLUGIN_FILE' ) ) {
+				$attachment = $this->attach_entry_files_upload( $entry );
 		}
 
 		if ( '1' === $file_email_attachments ) {

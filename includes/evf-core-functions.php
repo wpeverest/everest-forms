@@ -4554,7 +4554,7 @@ function evf_sanitize_builder( $post_data = array() ) {
 			$value = wp_kses_post( $data->value );
 		} elseif ( 'settings[external_url]' === $data->name ) {
 			$value = esc_url_raw( $data->value );
-		} elseif ( preg_match( '/evf_email_message/', $data->name ) || preg_match( '/telegram_message/', $data->name )) {
+		} elseif ( preg_match( '/evf_email_message/', $data->name ) || preg_match( '/telegram_message/', $data->name ) || preg_match( '/slack_message/', $data->name )) {
 			$value = wp_kses_post( $data->value );
 		} elseif ( preg_match('/calculation_field/', $data->name) ) {
 			$value = wp_kses_post( $data->value );
@@ -5612,7 +5612,7 @@ function evf_get_next_key_array( $arr, $key ) {
 /**
  * Function to generate the api key base on the string.
  *
- * @since xx.xx.xx
+ * @since 3.0.5
  * @param $string The string value.
  */
 function generate_api_key( $string = 'evf_restapi', $length = 32 ) {
@@ -5698,5 +5698,7 @@ const interval = setInterval( () => {
 	}
 }, 1 );
 JS;
-	wp_print_inline_script_tag( $js );
+	if ( function_exists( 'wp_print_inline_script_tag' ) ) {
+		wp_print_inline_script_tag( $js );
+	}
 } );
