@@ -269,7 +269,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 								/**
 								 * Icon for Settings tab with different icon.
 								 *
-								 * @since xx.xx.xx
+								 * @since 1.7.9
 								 */
 
 								// echo '<span class="evf-forms-options-header-header--top-icon">' . evf_file_get_contents( '/assets/images/settings-icons/' . $value['image_name'] . '.svg' ) . '</span>';
