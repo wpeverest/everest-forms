@@ -1,10 +1,11 @@
 == Changelog ==
 
 = 3.0.5          - xx-xx-2024
-* Feature        - Beaver Builder Compatibility.
+* Feature        - License settings page.
 * Feature        - Bricks builder integration.
 * Feature        - Divi Builder Compatibility.
 * Feature        - Oxygen builder integration.
+* Feature        - Beaver Builder Compatibility.
 * Tweak          - Coupon into module.
 * Tweak 		 - Move active campaign to module.
 * Tweak          - Track module activation in TG User Tracking.
