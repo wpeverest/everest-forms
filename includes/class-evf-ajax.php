@@ -1731,7 +1731,7 @@ class EVF_AJAX {
 	/**
 	 * Generate the restapi key
 	 *
-	 * @since xx.xx.xx
+	 * @since 3.0.5
 	 */
 	public static function generate_restapi_key() {
 		try {
