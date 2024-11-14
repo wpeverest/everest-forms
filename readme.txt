@@ -2,9 +2,9 @@
 Contributors: WPEverest
 Tags: contact form, custom form, form builder, forms, survey
 Requires at least: 5.2
-Tested up to: 6.6.1
+Tested up to: 6.7
 Requires PHP: 7.2
-Stable tag: 3.0.2
+Stable tag: 3.0.5
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -307,6 +307,52 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 
 == Changelog ==
+
+= 3.0.5          - xx-xx-2024
+* Feature        - Bricks builder integration.
+* Feature        - Divi Builder Compatibility.
+* Feature        - Oxygen builder integration.
+* Feature        - Beaver Builder Compatibility.
+* Tweak          - Coupon into module.
+* Tweak 		 - Move active campaign to module.
+* Tweak          - Track module activation in TG User Tracking.
+* Fix            - Tooltips does not work on mobile.
+* Fix            - Background color for PDF submission.
+* Dev            - Get gist integration.
+* Dev            - CleverReach Integration.
+* Dev            - Slack Integration Module.
+* Dev   		 - User Registration Social Login.
+* Dev            - Moved Campaign Monitor to module.
+
+= 3.0.4.2        - 03-11-2024
+* Fix            - Escaping issue in required field.
+
+= 3.0.4.1        - 30-10-2024
+* Fix            - Remove unnecessary source map from build.
+
+= 3.0.4         - 28-10-2024
+* Fix           - Escaping issue.
+* Fix           - Line break in the confirmation message.
+
+= 3.0.3.1       - 17-09-2024
+* Fix           - Issue with add new form template designs.
+* Fix           - Copy/Paste not working in word limit.
+
+= 3.0.3        - 16-09-2024
+* Feature      - Add new form page design.
+* Feature      - Entry submission RestApi.
+* Enhancement  - Send file directly as an attachment.
+* Fix          - Premium sidebar design issue.
+* Fix          - Escaping issue in Yes/No field.
+* Dev 		   - Calculation module.
+* Tweak        - Hidden field editable compatibility.
+* Tweak        - Catch mail send error.
+* Tweak        - Filter added to state default value.
+* Tweak        - Background color of dashboard.
+* Tweak        - Format likert field data in seperate column wise while exporting entry.
+* Dev          - Aweber integration.
+* Dev          - Calculation Module.
+* Dev          - Feature api log table.
 
 = 3.0.2        - 07-08-2024
 * Feature 	   - Enable minimum time for form submission.

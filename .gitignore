@@ -27,6 +27,7 @@ Thumbs.db
 # Composer
 /vendor/
 
+
 # Build
 build/
 everest-forms.zip

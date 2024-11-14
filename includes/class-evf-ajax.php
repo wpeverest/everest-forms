@@ -111,6 +111,7 @@ class EVF_AJAX {
 			'survey_dismiss'                 => false,
 			'allow_usage_dismiss'            => false,
 			'php_notice_dismiss'             => false,
+			'email_failed_notice_dismiss'    => false,
 			'enabled_form'                   => false,
 			'import_form_action'             => false,
 			'template_licence_check'         => false,
@@ -131,6 +132,7 @@ class EVF_AJAX {
 			'send_routine_report_test_email' => false,
 			'map_csv'                        => false,
 			'import_entries'                 => false,
+			'generate_restapi_key'           => false,
 		);
 
 		foreach ( $ajax_events as $ajax_event => $nopriv ) {
@@ -308,6 +310,12 @@ class EVF_AJAX {
 			array( 'source' => 'form-save' )
 		);
 		$empty_meta_data = array();
+
+		// Calculation backward compatibility.
+		$old_calculation_format = 0;
+		$new_calculation_format = 0;
+		$not_supported_operator = 0;
+
 		if ( ! empty( $data['form_fields'] ) ) {
 			foreach ( $data['form_fields'] as $field_key => $field ) {
 				if ( ! empty( $field['label'] ) ) {
@@ -335,6 +343,30 @@ class EVF_AJAX {
 				if ( empty( $field['meta-key'] ) && ! in_array( $field['type'], array( 'html', 'title', 'captcha', 'divider', 'reset', 'recaptcha', 'hcaptcha', 'turnstile' ), true ) ) {
 					$empty_meta_data[] = $field['label'];
 				}
+
+				if ( isset( $field['enable_calculation'] ) && ! empty( $field['enable_calculation'] ) ) {
+					if ( isset( $field['calculation_field'] ) && ! empty( $field['calculation_field'] ) ) {
+						$formula             = stripslashes( $field['calculation_field'] );
+						$old_formula_pattern = '/\{field_id="([^"]+)"\}/';
+						preg_match_all( $old_formula_pattern, $formula, $matches );
+
+						if ( ! empty( $matches[0] ) ) {
+							++$old_calculation_format;
+						}
+
+						preg_match_all( '/\^/', $formula, $operator );
+
+						if ( ! empty( $operator[0] ) ) {
+							++$not_supported_operator;
+						}
+
+						$new_formula_pattern = '/\$FIELD_(\d+)/';
+						preg_match_all( $new_formula_pattern, $formula, $new_matches );
+						if ( ! empty( $new_matches[0] ) ) {
+							++$new_calculation_format;
+						}
+					}
+				}
 			}
 
 			if ( ! empty( $empty_meta_data ) ) {
@@ -347,6 +379,34 @@ class EVF_AJAX {
 						'errorTitle'   => esc_html__( 'Meta Key missing', 'everest-forms' ),
 						/* translators: %s: empty meta data */
 						'errorMessage' => sprintf( esc_html__( 'Please add Meta key for fields: %s', 'everest-forms' ), '<strong>' . implode( ', ', $empty_meta_data ) . '</strong>' ),
+					)
+				);
+			}
+
+			if ( ! empty( $old_calculation_format ) && ! empty( $new_calculation_format ) ) {
+				$logger->error(
+					__( 'Formula update error.', 'everest-forms' ),
+					array( 'source' => 'form-save' )
+				);
+				wp_send_json_error(
+					array(
+						'errorTitle'   => esc_html__( 'Heads Up!', 'everest-forms' ),
+						/* translators: %s: empty meta data */
+						'errorMessage' => sprintf( esc_html__( 'Seems like your formula is not up to date. We suggest you update your formula.', 'everest-forms' ) ),
+					)
+				);
+			}
+
+			if ( ! empty( $not_supported_operator ) && ! empty( $new_calculation_format ) ) {
+				$logger->error(
+					__( 'Not supported operator.', 'everest-forms' ),
+					array( 'source' => 'form-save' )
+				);
+				wp_send_json_error(
+					array(
+						'errorTitle'   => esc_html__( 'Heads Up!', 'everest-forms' ),
+						/* translators: %s: empty meta data */
+						'errorMessage' => sprintf( esc_html__( 'The ^ sign is now replaced with pow(). Please update accordingly. Tip: pow(a,b) = a^b', 'everest-forms' ) ),
 					)
 				);
 			}
@@ -827,6 +887,20 @@ class EVF_AJAX {
 
 		update_option( 'everest_forms_php_deprecated_notice_last_prompt_date', $current_date );
 		update_option( 'everest_forms_php_deprecated_notice_prompt_count', ++$prompt_count );
+		wp_die();
+	}
+
+
+	/**
+	 * Triggered when clicking the email failed notice.
+	 */
+	public static function email_failed_notice_dismiss() {
+		check_ajax_referer( 'email_failed_nonce', '_wpnonce' );
+
+		if ( ! current_user_can( 'manage_everest_forms' ) ) {
+			wp_die( -1 );
+		}
+		update_option( 'everest_forms_email_send_notice_dismiss', true );
 		wp_die();
 	}
 
@@ -1646,6 +1720,24 @@ class EVF_AJAX {
 					'button_text' => 'View Entries',
 				)
 			);
+		} catch ( Exception $e ) {
+			wp_send_json_error(
+				array(
+					'message' => $e->getMessage(),
+				)
+			);
+		}
+	}
+	/**
+	 * Generate the restapi key
+	 *
+	 * @since 3.0.5
+	 */
+	public static function generate_restapi_key() {
+		try {
+			check_ajax_referer( 'process-restapi-api-ajax-nonce', 'security' );
+			$key = generate_api_key();
+			wp_send_json_success( $key );
 		} catch ( Exception $e ) {
 			wp_send_json_error(
 				array(

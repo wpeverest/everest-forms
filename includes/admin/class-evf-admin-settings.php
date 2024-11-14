@@ -258,11 +258,27 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 								$tabs_array[ $current_tab ] = isset( $tabs_array[ $current_tab ] ) ? $tabs_array[ $current_tab ] : array();
 							}
 
-							echo '<div class="everest-forms-options-header">
+							$class_for_title = isset( $value['id'] ) && ! empty( $value['id'] ) ? 'everest-forms-settings-title_' . $value['id'] : '';
+
+							echo '<div class="everest-forms-options-header ' . $class_for_title . '">
 							<div class="everest-forms-options-header--top">';
-							foreach ( $tabs_array as $icon_key => $icon_value ) {
-								echo '<span class="evf-forms-options-header-header--top-icon">' . evf_file_get_contents( '/assets/images/settings-icons/' . $icon_key . '.svg' ) . '</span>'; //phpcs:ignore
+
+							// For now icon is ignored.
+							if( isset( $value['image_name'] ) && ! empty( $value['image_name'] ) ) {
+
+								/**
+								 * Icon for Settings tab with different icon.
+								 *
+								 * @since 1.7.9
+								 */
+
+								// echo '<span class="evf-forms-options-header-header--top-icon">' . evf_file_get_contents( '/assets/images/settings-icons/' . $value['image_name'] . '.svg' ) . '</span>';
+							}else{
+								foreach ( $tabs_array as $icon_key => $icon_value ) {
+									echo '<span class="evf-forms-options-header-header--top-icon">' . evf_file_get_contents( '/assets/images/settings-icons/' . $icon_key . '.svg' ) . '</span>'; //phpcs:ignore
+								}
 							}
+
 							echo '<h3>' . esc_html( $value['title'] ) . '</h3>
 						  </div>
 						</div>';
@@ -869,6 +885,39 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 								</div>
 								</div>
 							<?php
+						break;
+					case 'restapi_key':
+						$key = $value['value'];
+
+						?>
+						<div class="everest-forms-global-settings evf-restapi-key-wrapper">
+							<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo wp_kses_post( $tooltip_html ); ?></label>
+							<div class="everest-forms-global-settings--field forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>" style="display:flex; gap:2px" >
+							<?php echo wp_kses_post( $description ); ?>
+									<input
+										type="text"
+										style=""
+										id="<?php echo esc_attr( $value['id'] ); ?>"
+										name="<?php echo esc_attr( $value['id'] ); ?>"
+										style="<?php echo esc_attr( $value['css'] ); ?> "
+										class="<?php echo esc_attr( $value['class'] ); ?> help_tip tooltipstered"
+										value="<?php echo esc_attr( $key ); ?>"
+										data-tip="Copy ApiKey"
+										data-copied="Copied!"
+										readonly
+									/>
+									<div>
+									<?php
+									if ( '' === $key ) {
+										echo '<button type="button" class="everest-forms-btn everest-forms-btn-primary  everest-forms-generate-api-key">generate</button>';
+									} else {
+										echo '<button type="button" class="everest-forms-btn everest-forms-btn-primary  everest-forms-generate-api-key">regenerate</button>';
+									}
+									?>
+									</div>
+							</div>
+						</div>
+						<?php
 						break;
 					// Default: run an action.
 					default:

@@ -84,25 +84,17 @@ class EVF_Admin_Form_Templates {
 	 * @since 1.0.0
 	 */
 	public static function load_template_view() {
-
-		$templates       = array();
-		$refresh_url     = add_query_arg(
+		echo "<div id='evf-templates'></div>";
+		wp_register_script( 'evf-templates', plugins_url( 'dist/templates.min.js', EVF_PLUGIN_FILE ), array( 'wp-element', 'react', 'react-dom', 'wp-api-fetch', 'wp-i18n', 'wp-blocks' ), EVF_VERSION, true );
+		wp_localize_script(
+			'evf-templates',
+			'evf_templates_script',
 			array(
-				'page'               => 'evf-builder&create-form=1',
-				'action'             => 'evf-template-refresh',
-				'evf-template-nonce' => wp_create_nonce( 'refresh' ),
-			),
-			admin_url( 'admin.php' )
+				'security' => wp_create_nonce( 'wp_rest' ),
+				'restURL'  => rest_url(),
+			)
 		);
-		$license_plan    = evf_get_license_plan();
-		$current_section = isset( $_GET['section'] ) ? sanitize_text_field( wp_unslash( $_GET['section'] ) ) : '_all'; // phpcs:ignore WordPress.Security.NonceVerification
-
-		if ( '_featured' !== $current_section ) {
-			$category  = isset( $_GET['section'] ) ? sanitize_text_field( wp_unslash( $_GET['section'] ) ) : 'free'; // phpcs:ignore WordPress.Security.NonceVerification
-			$templates = self::get_template_data( $category );
-		}
-
-		// Forms template area.
-		include_once dirname( __FILE__ ) . '/views/html-admin-page-form-templates.php';
+		wp_enqueue_script( 'evf-templates' );
 	}
+
 }

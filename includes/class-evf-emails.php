@@ -367,6 +367,19 @@ class EVF_Emails {
 		// Let's do this.
 		$sent = wp_mail( $to, $subject, $message, $this->get_headers(), $this->attachments );
 
+		if ( ! $sent ) {
+			$error_message = apply_filters( 'everest_forms_email_send_failed_message', '' );
+			$failed_data  = get_transient( 'everest_forms_mail_send_failed_count' );
+			$failed_count = $failed_data && isset( $failed_data['failed_count'] ) ? $failed_data['failed_count'] : 0;
+			++$failed_count;
+			set_transient(
+				'everest_forms_mail_send_failed_count',
+				array(
+					'failed_count'  => $failed_count,
+					'error_message' => $error_message,
+				)
+			);
+		}
 		// Hooks after the email is sent.
 		do_action( 'everest_forms_email_send_after', $this );
 
@@ -449,6 +462,7 @@ class EVF_Emails {
 		$message = '';
 
 		if ( $html ) {
+
 			/*
 			 * HTML emails.
 			 */
@@ -464,6 +478,13 @@ class EVF_Emails {
 
 			$field_iterator = 1;
 			foreach ( $this->fields as $meta_id => $field ) {
+
+				if ( isset( $this->form_data['settings']['disabled_entries'] ) && '1' === $this->form_data['settings']['disabled_entries'] ) {
+					$types_to_remove = array( 'image-upload', 'file-upload', 'signature' );
+					if ( isset( $field['type'] ) && in_array( $field['type'], $types_to_remove, true ) ) {
+						continue;
+					}
+				}
 				if (
 					! apply_filters( 'everest_forms_email_display_empty_fields', false ) &&
 					( empty( $field['value'] ) && '0' !== $field['value'] )
@@ -572,6 +593,14 @@ class EVF_Emails {
 			 * Plain Text emails.
 			 */
 			foreach ( $this->fields as $field ) {
+
+				if ( isset( $this->form_data['settings']['disabled_entries'] ) && '1' === $this->form_data['settings']['disabled_entries'] ) {
+					$types_to_remove = array( 'image-upload', 'file-upload', 'signature' );
+					if ( isset( $field['type'] ) && in_array( $field['type'], $types_to_remove, true ) ) {
+						continue;
+					}
+				}
+
 				if ( ! apply_filters( 'everest_forms_email_display_empty_fields', false ) && ( empty( $field['value'] ) && '0' !== $field['value'] ) ) {
 					continue;
 				}

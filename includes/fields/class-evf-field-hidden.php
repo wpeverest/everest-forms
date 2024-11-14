@@ -82,9 +82,14 @@ class EVF_Field_Hidden extends EVF_Form_Fields {
 		// Define data.
 		$primary = $field['properties']['inputs']['primary'];
 
+		// For edit purpose.
+		$is_edit_entry = isset( $_GET['edit-entry'] ) && sanitize_text_field( wp_unslash( $_GET['edit-entry'] ) ) ? true : false;
+		$field_type    = $is_edit_entry ? 'text' : 'hidden';
+
 		// Primary field.
 		printf(
-			'<input type="hidden" %s>',
+			'<input type="%s" %s>',
+			$field_type,
 			evf_html_attributes( $primary['id'], $primary['class'], $primary['data'], $primary['attr'] )
 		);
 	}

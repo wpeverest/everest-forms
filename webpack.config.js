@@ -4,7 +4,7 @@
 const { resolve } = require('path');
 const path = require("path");
 const CopyPlugin = require("copy-webpack-plugin");
-const NODE_ENV = process.env.NODE_ENV || "production";
+const NODE_ENV =  "production";
 
 const webpackConfig = {
 	mode: NODE_ENV,
@@ -17,6 +17,13 @@ const webpackConfig = {
 			process.cwd(),
 			'./src/blocks/index.js',
 		),
+		"divibuilder": resolve(
+			process.cwd(),
+			'./src/divibuilder/index.jsx'),
+		"templates": resolve(
+			process.cwd(),
+			'./src/templates/index.tsx',
+		),
 	},
 	output: {
 		path: resolve(process.cwd(), 'dist'),
@@ -27,10 +34,15 @@ const webpackConfig = {
 	module: {
 		rules: [
 			{
-				test: /.js$/,
-				loader: "babel-loader",
-				exclude: /node_modules/
-			},
+				test: /\.(js|jsx|ts|tsx)$/,
+				exclude: /node_modules/,
+				use: {
+				  loader: 'babel-loader',
+				  options: {
+					presets: ['@babel/preset-env', '@babel/preset-react','@babel/preset-typescript']
+				  }
+				},
+			  },
 			{
 				test: /\.(png|svg|jpg|jpeg|gif|webp)$/i,
 				use: [
@@ -65,6 +77,10 @@ const webpackConfig = {
 		"@wordpress/server-side-render": ["wp", "serverSideRender"],
 		react: ["React"],
 	},
+	resolve: {
+		extensions: ['.js', '.jsx', '.ts', '.tsx'],
+	  },
+
 };
 
 if (webpackConfig.mode !== "production") {

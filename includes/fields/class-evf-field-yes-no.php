@@ -475,8 +475,8 @@ class EVF_Field_Yes_No extends EVF_Form_Fields {
 		// Define data.
 		$primary        = $field['properties']['inputs']['primary'];
 		$yes_no         = $primary['yes_no'];
-		$yes_value      = esc_js( $yes_no['yes_value'] );
-		$no_value       = esc_js( $yes_no['no_value'] );
+		$yes_value      = esc_attr( $yes_no['yes_value'] );
+		$no_value       = esc_attr( $yes_no['no_value'] );
 		$yes_icon_color = $yes_no['yes_icon_color'];
 		$no_icon_color  = $yes_no['no_icon_color'];
 		$yes_icon       = $this->get_icon_svg( 'yes', $yes_icon_color );
@@ -500,8 +500,7 @@ class EVF_Field_Yes_No extends EVF_Form_Fields {
 				$field['id']
 			);
 
-			$primary['attr']['value']      = esc_js( $yes_value );
-			$primary['attr']['aria-label'] = esc_js( $yes_value );
+			$primary['attr']['value']      = esc_attr( $yes_value );
 
 		if ( 'with_icon' === $field_style ) {
 			printf(
@@ -545,7 +544,7 @@ class EVF_Field_Yes_No extends EVF_Form_Fields {
 			);
 
 			$primary['attr']['value']      = esc_js( $no_value );
-			$primary['attr']['aria-label'] = esc_js( $no_value );
+
 
 		if ( 'with_icon' === $field_style ) {
 			printf(
@@ -576,6 +575,9 @@ class EVF_Field_Yes_No extends EVF_Form_Fields {
 			echo '</label>';
 		echo '</div>';
 	}
+
+
+
 
 	/**
 	 * Validates field on form submit.
@@ -609,6 +611,7 @@ class EVF_Field_Yes_No extends EVF_Form_Fields {
 	 * @param mixed $meta_key Meta Key.
 	 */
 	public function format( $field_id, $field_submit, $form_data, $meta_key ) {
+
 		$value = '' !== $field_submit ? $field_submit : '';
 		$name  = ! empty( $form_data['form_fields'][ $field_id ]['label'] ) ? $form_data['form_fields'][ $field_id ]['label'] : '';
 
