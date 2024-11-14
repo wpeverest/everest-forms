@@ -320,6 +320,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 * Tweak          - Track module activation in TG User Tracking.
 * Fix            - Tooltips does not work on mobile.
 * Fix            - Background color for PDF submission.
+* Fix            - Critical issue when the publishable key is empty in live mode for recurring payment.
 * Dev 			 - amoCRM Module.
 * Dev       	 - QR Generator module.
 * Dev            - Get gist integration.
