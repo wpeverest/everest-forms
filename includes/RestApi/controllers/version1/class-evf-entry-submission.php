@@ -2,7 +2,7 @@
 /**
  * Entry Submission Controller Class.
  *
- * @since xx.xx.xx
+ * @since 3.0.3
  *
  * @package  EverestForms/Classes
  */
@@ -10,7 +10,9 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * UR_AddonsClass
+ * EVF_Entry_Submission class.
+ *
+ * @since 3.0.3
  */
 class EVF_Entry_Submission {
 
@@ -31,7 +33,7 @@ class EVF_Entry_Submission {
 	/**
 	 * Register routes.
 	 *
-	 * @since xx.xx.xx
+	 * @since 3.0.3
 	 *
 	 * @return void
 	 */
@@ -49,7 +51,7 @@ class EVF_Entry_Submission {
 	/**
 	 * Save the entry.
 	 *
-	 * @since xx.xx.xx
+	 * @since 3.0.3
 	 * @param WP_REST_Request $request Full data about the request.
 	 */
 	public function save_entry( $request ) {
@@ -218,7 +220,7 @@ class EVF_Entry_Submission {
 		/**
 		 * Allow to send the email after save entry using rest api.
 		 *
-		 * @since xx.xx.xx
+		 * @since 3.0.3
 		 *
 		 * @param boolean  $allow The allow value.
 		 */

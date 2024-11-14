@@ -80,7 +80,7 @@
         "agency",
         "themegrill agency"
       ],
-      "setting_url" : "admin.php?page=evf-settings&tab=pdf-submission",
+      "setting_url": "admin.php?page=evf-settings&tab=pdf-submission",
       "demo_video_url": "37CtaxJzYis",
       "popular_rank": 4
     },
@@ -134,23 +134,6 @@
       "setting_url": "",
       "demo_video_url": "pcwPjCt7N2I",
       "popular_rank": 8
-    },
-    {
-      "title": "User Registration",
-      "slug": "everest-forms-user-registration",
-      "name": "Everest Forms User Registration",
-      "image": "extensions-json/sections/images/user-registration.png",
-      "excerpt": "Allows you to create a custom WordPress user registration form instantly in few simple steps. You can add or remove input fields as per the style of your registration using this feature.",
-      "link": "https://docs.everestforms.net/docs/user-registration/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
-      "released_date": "16/07/2019",
-      "plan": [
-        "personal",
-        "agency",
-        "themegrill agency"
-      ],
-      "setting_url": "",
-      "demo_video_url": "MEyuznG2Tok",
-      "popular_rank": 12
     },
     {
       "title": "Google Sheets",
@@ -323,23 +306,6 @@
       "popular_rank": 19
     },
     {
-      "title": "SMS Notifications",
-      "slug": "everest-forms-sms-notifications",
-      "name": "Everest Forms SMS Notifications",
-      "image": "extensions-json/sections/images/sms-notifications.png",
-      "excerpt": "Using the Everest Forms SMS Notifications Add-on, you can now easily configure any online form to receive an SMS notification when a form is being submitted.",
-      "link": "https://docs.everestforms.net/docs/sms-notification/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
-      "released_date": "19/05/2022",
-      "plan": [
-        "personal",
-        "agency",
-        "themegrill agency"
-      ],
-      "setting_url": "admin.php?page=evf-settings&tab=integration&section=sms_notifications",
-      "demo_video_url": "tz4UKBX9WxM",
-      "popular_rank": 22
-    },
-    {
       "title": "Cloud Storage",
       "slug": "everest-forms-cloud-storage",
       "name": "Everest Forms Cloud Storage",
@@ -357,40 +323,6 @@
       "popular_rank": 23
     },
     {
-      "title": "Coupons",
-      "slug": "everest-forms-coupons",
-      "name": "Everest Forms Coupons",
-      "image": "extensions-json/sections/images/coupons.png",
-      "excerpt": "With the Everest Forms Coupon add-on, you can quickly create or add a coupon code on a form to encourage users to purchase the products.",
-      "link": "https://docs.everestforms.net/docs/coupons/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
-      "released_date": "23/09/2020",
-      "plan": [
-        "personal",
-        "agency",
-        "themegrill agency"
-      ],
-      "setting_url": "",
-      "demo_video_url": "GSYQIiyntW0",
-      "popular_rank": 24
-    },
-    {
-      "title": "ActiveCampaign",
-      "slug": "everest-forms-activecampaign",
-      "name": "Everest Forms ActiveCampaign",
-      "image": "extensions-json/sections/images/activecampaign.png",
-      "excerpt": "Allows your users to subscribe to ActiveCampaign through form submission via Everest Forms.",
-      "link": "https://docs.everestforms.net/docs/activecampaign/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
-      "released_date": "15/07/2020",
-      "plan": [
-        "personal",
-        "agency",
-        "themegrill agency"
-      ],
-      "setting_url": "admin.php?page=evf-settings&tab=integration&section=activecampaign",
-      "demo_video_url": "6b9q89cUMzE",
-      "popular_rank": 25
-    },
-    {
       "title": "Advanced Form Analytics",
       "slug": "everest-forms-form-analytics",
       "name": "Everest Forms Advanced Form Analytics",
@@ -405,23 +337,6 @@
       ],
       "setting_url": "admin.php?page=evf-settings&tab=analytics",
       "demo_video_url": "BCT7c8EmQfg"
-    },
-    {
-      "title": "Campaign Monitor",
-      "slug": "everest-forms-campaign-monitor",
-      "name": "Everest Forms Campaign Monitor",
-      "image": "extensions-json/sections/images/campaign-monitor.png",
-      "excerpt": "Allows your users to subscribe to Campaign Monitor through form submission via Everest Forms.",
-      "link": "https://docs.everestforms.net/docs/campaign-monitor/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
-      "released_date": "16/10/2020",
-      "plan": [
-        "personal",
-        "agency",
-        "themegrill agency"
-      ],
-      "setting_url": "admin.php?page=evf-settings&tab=integration&section=campaign_monitor",
-      "demo_video_url": "GBJMxmCurzw",
-      "popular_rank": 29
     },
     {
       "title": "Hubspot",
@@ -510,6 +425,23 @@
     }
   ],
   "features": [
+	{
+		"title": "Coupons",
+		"slug": "everest-forms-coupons",
+		"name": "Everest Forms Coupons",
+		"image": "extensions-json/sections/images/coupons.png",
+		"excerpt": "With the Everest Forms Coupon add-on, you can quickly create or add a coupon code on a form to encourage users to purchase the products.",
+		"link": "https://docs.everestforms.net/docs/coupons/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+		"released_date": "23/09/2020",
+		"plan": [
+		  "personal",
+		  "agency",
+		  "themegrill agency"
+		],
+		"setting_url": "",
+		"demo_video_url": "GSYQIiyntW0",
+		"popular_rank": 24
+	  },
     {
       "title": "Trello",
       "slug": "everest-forms-trello",
@@ -825,7 +757,7 @@
       "title": "Landing Pages",
       "slug": "everest-forms-landingpages",
       "name": "Everest Forms- LandingPages",
-      "image": "extensions-json/sections/images/LandingPage.webp",
+      "image": "extensions-json/sections/images/LandingPage.png",
       "excerpt": "Present your landing page as a form without going through the hassle of shortcodes and repetitive designing. A simple click, and that’s all you must do!",
       "link": "https://docs.everestforms.net/docs/landingpages/?utm_source=dashboard-all-features&utm_medium=card-documentation-link",
       "released_date": "07/08/2024",
@@ -835,7 +767,7 @@
         "themegrill agency"
       ],
       "setting_url": "",
-       "demo_video_url": ""
+      "demo_video_url": ""
     },
     {
       "title": "Aweber",
@@ -851,7 +783,7 @@
         "themegrill agency"
       ],
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=aweber",
-       "demo_video_url": ""
+      "demo_video_url": ""
     },
     {
       "title": "Calculations",
@@ -871,20 +803,233 @@
       "popular_rank": 16
     },
     {
-      "title": "amoCRM",
-      "slug": "everest-forms-amocrm",
-      "name": "Everest Forms amoCRM",
-      "image": "extensions-json/sections/images/amoCRM.png",
-      "excerpt": "Smoothly sync form submissions with amoCRM for effortless lead management.",
-      "link": "https://docs.everestforms.net/docs/amocrm/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "title": "Oxygen Builder",
+      "slug": "everest-forms-oxygen-builder",
+      "name": "Everest Forms Oxygen Builder",
+      "image": "extensions-json/sections/images/calculations.png",
+      "excerpt": "Get the widget of everest forms in the oxygen builder which helps to integrate the form easily.",
+      "link": "https://docs.everestforms.net/docs/oxygen-builder/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "released_date": "xx/xx/xxxx",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "setting_url": "",
+      "demo_video_url": ""
+    },
+    {
+      "title": "Slack",
+      "slug": "everest-forms-slack",
+      "name": "Everest Forms Slack",
+      "image": "extensions-json/sections/images/Slack.png",
+      "excerpt": " Instantly connect Everest Forms with Slack to receive form submission data directly in your channels, keeping your team in the loop in real time.",
+      "link": "https://docs.everestforms.net/docs/slack/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
       "released_date": "xx/xx/xx",
       "plan": [
         "personal",
         "agency",
         "themegrill agency"
       ],
-      "setting_url": "admin.php?page=evf-settings&tab=integration&section=amocrm",
+      "setting_url": "",
       "demo_video_url": ""
-    }
+    },
+    {
+      "title": "Bricks Builder",
+      "slug": "everest-forms-bricks-builder",
+      "name": "Everest Forms Bricks Builder",
+      "image": "extensions-json/sections/images/bricks-builder.png",
+      "excerpt": "Using Bricks Builder’s page editor, add your forms from Everest Forms to your website and customize them as needed.",
+      "link": "https://docs.everestforms.net/docs/bricks-builder/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "released_date": "xx/xx/xxxx",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "setting_url": "",
+      "demo_video_url": ""
+    },
+    {
+      "title": "Divi Builder",
+      "slug": "everest-forms-divi-builder",
+      "name": "Everest Forms Divi Builder",
+      "image": "extensions-json/sections/images/divi.png",
+      "excerpt": "Using Divi’s page editor, add your forms from Everest Forms to your website and customize them as needed. ",
+      "link": "https://docs.everestforms.net/docs/divi-builder/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "released_date": "xx/xx/xxxx",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "setting_url": "",
+      "demo_video_url": ""
+    },
+    {
+    "title": "Beaver Builder",
+      "slug": "everest-forms-beaver-builder",
+      "name": "Everest Forms Beaver Builder",
+      "image": "extensions-json/sections/images/beaver-builder.png",
+      "excerpt": "Using Beaver Builder's page editor, add your forms from Everest Forms to your website and customize them as needed.",
+      "link": "https://docs.everestforms.net/docs/beaver-builder/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "released_date": "xx/xx/xxxx",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "setting_url": "",
+      "demo_video_url": ""
+    },
+    {
+      "title": "ActiveCampaign",
+      "slug": "everest-forms-activecampaign",
+      "name": "Everest Forms ActiveCampaign",
+      "image": "extensions-json/sections/images/activecampaign.png",
+      "excerpt": "Allows your users to subscribe to ActiveCampaign through form submission via Everest Forms.",
+      "link": "https://docs.everestforms.net/docs/activecampaign/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "released_date": "15/07/2020",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=activecampaign",
+      "demo_video_url": "6b9q89cUMzE",
+      "popular_rank": 25
+    },
+    {
+      "title": "GetGist",
+      "slug": "everest-forms-getgist",
+      "name": "Everest Forms GetGist",
+      "image": "extensions-json/sections/images/getgist.png",
+      "excerpt": "GetGist is a marketing platform that combines email marketing, SMS campaigns, marketing automation, and CRM tools. It helps businesses streamline their marketing efforts, automate workflows, and analyze performance in one place.",
+      "link": "https://docs.everestforms.net/docs/getgist/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "released_date": "xx/xx/2024",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=getgist",
+      "demo_video_url": "d2Ujl82OJuA",
+      "popular_rank": "xx"
+    },
+    {
+      "title": "User Registration",
+      "slug": "everest-forms-user-registration",
+      "name": "Everest Forms User Registration",
+      "image": "extensions-json/sections/images/user-registration.png",
+      "excerpt": "Allows you to create a custom WordPress user registration form instantly in few simple steps. You can add or remove input fields as per the style of your registration using this feature.",
+      "link": "https://docs.everestforms.net/docs/user-registration/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "released_date": "16/07/2019",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=user_registration",
+      "demo_video_url": "MEyuznG2Tok",
+      "popular_rank": 12
+    },
+    {
+      "title": "Campaign Monitor",
+      "slug": "everest-forms-campaign-monitor",
+      "name": "Everest Forms Campaign Monitor",
+      "image": "extensions-json/sections/images/campaign-monitor.png",
+      "excerpt": "Allows your users to subscribe to Campaign Monitor through form submission via Everest Forms.",
+      "link": "https://docs.everestforms.net/docs/campaign-monitor/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "released_date": "16/10/2020",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=campaign_monitor",
+      "demo_video_url": "GBJMxmCurzw",
+      "popular_rank": 29
+    },
+    {
+      "title": "CleverReach",
+      "slug": "everest-forms-cleverreach",
+      "name": "Everest Forms CleverReach",
+      "image": "extensions-json/sections/images/cleverreach.png",
+      "excerpt": "Connect Everest Forms with CleverReach to grow your CleverReach subscriber list.",
+      "link": "https://docs.everestforms.net/docs/cleverreach/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "released_date": "xx/xx/xxxx",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=cleverreach",
+      "demo_video_url": ""
+    },
+      {
+        "title": "WP Bakery Builder",
+        "slug": "everest-forms-wpbakery-builder",
+        "name": "Everest Forms WP Bakery Builder",
+        "image": "extensions-json/sections/images/wpbakery.png",
+        "excerpt": "Using WPBakery’s page editor, add your forms from Everest Forms to your website and customize them as needed. ",
+        "link": "https://docs.everestforms.net/docs/wp-bakery-builder/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+        "released_date": "xx/xx/xxxx",
+        "plan": [
+          "personal",
+          "agency",
+          "themegrill agency"
+        ],
+        "setting_url": "",
+        "demo_video_url": ""
+      },
+      {
+        "title": "SMS Notifications",
+        "slug": "everest-forms-sms-notifications",
+        "name": "Everest Forms SMS Notifications",
+        "image": "extensions-json/sections/images/sms-notifications.png",
+        "excerpt": "Using the Everest Forms SMS Notifications Add-on, you can now easily configure any online form to receive an SMS notification when a form is being submitted.",
+        "link": "https://docs.everestforms.net/docs/sms-notification/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+        "released_date": "19/05/2022",
+        "plan": [
+          "personal",
+          "agency",
+          "themegrill agency"
+        ],
+        "setting_url": "admin.php?page=evf-settings&tab=integration&section=sms_notifications",
+        "demo_video_url": "tz4UKBX9WxM",
+        "popular_rank": 22
+      },
+      {
+        "title": "QR Generator",
+        "slug": "everest-forms-qr-generator",
+        "name": "Everest Forms QR Generator",
+        "image": "extensions-json/sections/images/qr-generator.png",
+        "excerpt": "Create instant QR codes for easy access to your forms.",
+        "link": "https://docs.everestforms.net/docs/qr-generator/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+        "released_date": "xx/xx/xx",
+        "plan": [
+          "personal",
+          "agency",
+          "themegrill agency"
+        ],
+        "setting_url": "",
+        "demo_video_url": ""
+      },
+      {
+        "title": "amoCRM",
+        "slug": "everest-forms-amocrm",
+        "name": "Everest Forms amoCRM",
+        "image": "extensions-json/sections/images/amoCRM.png",
+        "excerpt": "Smoothly sync form submissions with amoCRM for effortless lead management.",
+        "link": "https://docs.everestforms.net/docs/amocrm/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+        "released_date": "xx/xx/xx",
+        "plan": [
+          "personal",
+          "agency",
+          "themegrill agency"
+        ],
+        "setting_url": "admin.php?page=evf-settings&tab=integration&section=amocrm",
+        "demo_video_url": ""
+      }
   ]
 }
