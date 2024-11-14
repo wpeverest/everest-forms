@@ -314,6 +314,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 * Feature        - Divi Builder Compatibility.
 * Feature        - Oxygen builder integration.
 * Feature        - Beaver Builder Compatibility.
+* Feature        - WPBakery Builder Compatibility.
 * Tweak          - Coupon into module.
 * Tweak 		 - Move active campaign to module.
 * Tweak          - Track module activation in TG User Tracking.
