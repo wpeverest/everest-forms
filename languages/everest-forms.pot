@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the Everest Forms plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Everest Forms 3.0.3.1\n"
+"Project-Id-Version: Everest Forms 3.0.4.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/everest-forms\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-09-17T10:58:16+05:45\n"
+"POT-Creation-Date: 2024-11-03T16:56:00+05:45\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.10.0\n"
 "X-Domain: everest-forms\n"
@@ -29,9 +29,6 @@ msgstr ""
 #: src/blocks/blocks/form-selector/Edit.js:49
 #: src/blocks/blocks/form-selector/Edit.js:87
 #: src/blocks/blocks/frontend-listing/Edit.js:71
-#: dist/blocks.min.js:39487
-#: dist/blocks.min.js:39525
-#: dist/blocks.min.js:39643
 msgid "Everest Forms"
 msgstr ""
 
@@ -903,7 +900,6 @@ msgstr ""
 #: includes/admin/class-evf-admin-menus.php:267
 #: includes/class-evf-install.php:719
 #: src/dashboard/Constants/index.js:17
-#: dist/dashboard.min.js:55351
 msgid "Settings"
 msgstr ""
 
@@ -1035,14 +1031,12 @@ msgstr ""
 #: includes/admin/builder/class-evf-builder-page.php:157
 #: includes/admin/builder/class-evf-builder-settings.php:853
 #: src/dashboard/screens/FreeVsPro/FreeVsPro.js:217
-#: dist/dashboard.min.js:58061
 msgid "Post Submission"
 msgstr ""
 
 #: includes/admin/builder/class-evf-builder-page.php:161
 #: includes/admin/builder/class-evf-builder-settings.php:854
 #: src/dashboard/screens/FreeVsPro/FreeVsPro.js:247
-#: dist/dashboard.min.js:58091
 msgid "Save and Continue"
 msgstr ""
 
@@ -1064,7 +1058,6 @@ msgstr ""
 #: includes/admin/builder/class-evf-builder-page.php:177
 #: includes/admin/builder/class-evf-builder-settings.php:858
 #: src/dashboard/screens/FreeVsPro/FreeVsPro.js:267
-#: dist/dashboard.min.js:58111
 msgid "SMS Notifications"
 msgstr ""
 
@@ -1083,7 +1076,7 @@ msgstr ""
 #: includes/admin/builder/class-evf-builder-settings.php:361
 #: includes/admin/settings/class-evf-settings-email.php:25
 #: includes/admin/settings/class-evf-settings-validation.php:64
-#: includes/class-evf-smart-tags.php:119
+#: includes/class-evf-smart-tags.php:120
 #: includes/fields/class-evf-field-email.php:20
 #: includes/fields/class-evf-field-email.php:97
 #: includes/fields/class-evf-field-email.php:269
@@ -1147,7 +1140,7 @@ msgstr ""
 #: includes/admin/form-migrator/class-evf-fm-contactform7.php:401
 #: includes/admin/form-migrator/class-evf-fm-wpforms.php:206
 #: includes/class-evf-form-task.php:163
-#: includes/shortcodes/class-evf-shortcode-form.php:908
+#: includes/shortcodes/class-evf-shortcode-form.php:910
 msgid "This form is disabled."
 msgstr ""
 
@@ -1563,7 +1556,6 @@ msgstr ""
 #: includes/admin/class-evf-admin-assets.php:115
 #: includes/RestApi/controllers/version1/class-evf-modules.php:139
 #: src/dashboard/screens/FreeVsPro/FreeVsPro.js:416
-#: dist/dashboard.min.js:58260
 msgid "Pro"
 msgstr ""
 
@@ -1670,7 +1662,6 @@ msgstr ""
 #: includes/admin/class-evf-admin-assets.php:267
 #: includes/admin/class-evf-admin-editor.php:97
 #: src/dashboard/components/common/UsePluginInstallActivate.js:165
-#: dist/dashboard.min.js:57316
 msgid "Cancel"
 msgstr ""
 
@@ -1837,7 +1828,6 @@ msgstr ""
 #: includes/admin/class-evf-admin-assets.php:357
 #: includes/admin/views/html-admin-page-addons.php:218
 #: src/dashboard/screens/Modules/components/ModuleItem.js:476
-#: dist/dashboard.min.js:60785
 msgid "Upgrade Plan"
 msgstr ""
 
@@ -2315,8 +2305,6 @@ msgstr ""
 #: includes/admin/views/html-admin-page-builder.php:106
 #: src/dashboard/screens/Help/Lists/ShortcodesLists/ShortcodesLists.js:279
 #: src/dashboard/screens/Help/Lists/ShortcodesLists/ShortcodesLists.js:454
-#: dist/dashboard.min.js:59087
-#: dist/dashboard.min.js:59262
 msgid "Copied!"
 msgstr ""
 
@@ -2436,7 +2424,6 @@ msgstr ""
 
 #: includes/admin/class-evf-admin-menus.php:162
 #: src/dashboard/Constants/index.js:9
-#: dist/dashboard.min.js:55343
 msgid "Dashboard"
 msgstr ""
 
@@ -2466,7 +2453,6 @@ msgstr ""
 
 #: includes/admin/class-evf-admin-menus.php:318
 #: src/dashboard/screens/Modules/components/ModuleBody.js:47
-#: dist/dashboard.min.js:60068
 msgid "Upgrade to Pro"
 msgstr ""
 
@@ -2535,7 +2521,6 @@ msgstr ""
 
 #: includes/admin/class-evf-admin-welcome.php:75
 #: src/dashboard/screens/Dashboard/Dashboard.js:145
-#: dist/dashboard.min.js:57548
 msgid "Getting Started"
 msgstr ""
 
@@ -3145,7 +3130,6 @@ msgstr ""
 #: includes/admin/views/html-admin-page-addons.php:86
 #: includes/admin/views/html-admin-page-addons.php:164
 #: src/dashboard/screens/Products/components/ProductCard.js:140
-#: dist/dashboard.min.js:61103
 msgid "Activated"
 msgstr ""
 
@@ -3162,7 +3146,6 @@ msgstr ""
 #: includes/admin/views/html-admin-page-addons.php:117
 #: includes/admin/views/html-admin-page-addons.php:189
 #: src/dashboard/screens/Modules/Modules.js:316
-#: dist/dashboard.min.js:59910
 msgid "Deactivate"
 msgstr ""
 
@@ -3172,10 +3155,6 @@ msgstr ""
 #: src/dashboard/screens/Dashboard/components/UsefulPlugins.js:80
 #: src/dashboard/screens/Modules/Modules.js:313
 #: src/dashboard/screens/Products/components/ProductCard.js:142
-#: dist/dashboard.min.js:57330
-#: dist/dashboard.min.js:57768
-#: dist/dashboard.min.js:59907
-#: dist/dashboard.min.js:61105
 msgid "Activate"
 msgstr ""
 
@@ -3359,7 +3338,6 @@ msgstr ""
 #: includes/admin/views/html-admin-page-form-templates.php:33
 #: includes/admin/views/html-admin-page-setting.php:62
 #: src/dashboard/screens/FreeVsPro/FreeVsPro.js:413
-#: dist/dashboard.min.js:58257
 msgid "Free"
 msgstr ""
 
@@ -3540,7 +3518,6 @@ msgstr ""
 
 #: includes/admin/views/html-admin-page-setting.php:189
 #: src/dashboard/screens/Products/Products.js:37
-#: dist/dashboard.min.js:60924
 msgid "Plugins"
 msgstr ""
 
@@ -3692,7 +3669,6 @@ msgstr ""
 #: includes/admin/views/html-notice-php-deprecation.php:27
 #: templates/emails/summary-email-body-default.php:161
 #: src/dashboard/screens/Products/components/ProductCard.js:94
-#: dist/dashboard.min.js:61057
 msgid "Learn More"
 msgstr ""
 
@@ -4134,7 +4110,7 @@ msgstr ""
 
 #: includes/class-evf-form-task.php:95
 #: includes/class-evf-form-task.php:576
-#: includes/shortcodes/class-evf-shortcode-form.php:976
+#: includes/shortcodes/class-evf-shortcode-form.php:978
 #: includes/templates/contact.php:61
 msgid "Thanks for contacting us! We will be in touch with you shortly."
 msgstr ""
@@ -4198,7 +4174,7 @@ msgid "Everest Forms Process Completed."
 msgstr ""
 
 #: includes/class-evf-form-task.php:625
-#: templates/notices/success.php:69
+#: templates/notices/success.php:70
 msgid "Download your form submission in PDF format"
 msgstr ""
 
@@ -4571,7 +4547,6 @@ msgstr ""
 
 #: includes/class-evf-smart-tags.php:47
 #: src/dashboard/screens/Help/Lists/SmartTagsLists/SmartTagsLists.js:110
-#: dist/dashboard.min.js:59415
 msgid "User Name"
 msgstr ""
 
@@ -4605,128 +4580,132 @@ msgstr ""
 msgid "Form ID"
 msgstr ""
 
-#: includes/class-evf-smart-tags.php:71
+#: includes/class-evf-smart-tags.php:55
+msgid "Entry ID"
+msgstr ""
+
+#: includes/class-evf-smart-tags.php:72
 msgid "Alpha"
 msgstr ""
 
-#: includes/class-evf-smart-tags.php:75
+#: includes/class-evf-smart-tags.php:76
 msgid "Alphanumeric"
 msgstr ""
 
-#: includes/class-evf-smart-tags.php:79
+#: includes/class-evf-smart-tags.php:80
 #: includes/fields/class-evf-field-color.php:20
 msgid "Color"
 msgstr ""
 
-#: includes/class-evf-smart-tags.php:83
+#: includes/class-evf-smart-tags.php:84
 msgid "Country Code (2 Character)"
 msgstr ""
 
-#: includes/class-evf-smart-tags.php:87
+#: includes/class-evf-smart-tags.php:88
 msgid "Country Code (3 Character)"
 msgstr ""
 
-#: includes/class-evf-smart-tags.php:91
+#: includes/class-evf-smart-tags.php:92
 msgid "Date (mm/dd)"
 msgstr ""
 
-#: includes/class-evf-smart-tags.php:95
+#: includes/class-evf-smart-tags.php:96
 msgid "Date (dd/mm)"
 msgstr ""
 
-#: includes/class-evf-smart-tags.php:99
+#: includes/class-evf-smart-tags.php:100
 msgid "Date (mm.dd.yyyy)"
 msgstr ""
 
-#: includes/class-evf-smart-tags.php:103
+#: includes/class-evf-smart-tags.php:104
 msgid "Date (dd.mm.yyyy)"
 msgstr ""
 
-#: includes/class-evf-smart-tags.php:107
+#: includes/class-evf-smart-tags.php:108
 msgid "Date (yyyy-mm-dd)"
 msgstr ""
 
-#: includes/class-evf-smart-tags.php:111
+#: includes/class-evf-smart-tags.php:112
 msgid "Date (mm/dd/yyyy)"
 msgstr ""
 
-#: includes/class-evf-smart-tags.php:115
+#: includes/class-evf-smart-tags.php:116
 msgid "Date (dd/mm/yyyy)"
 msgstr ""
 
-#: includes/class-evf-smart-tags.php:123
+#: includes/class-evf-smart-tags.php:124
 msgid "IP (Version 4)"
 msgstr ""
 
-#: includes/class-evf-smart-tags.php:127
+#: includes/class-evf-smart-tags.php:128
 msgid "IP (Version 6)"
 msgstr ""
 
-#: includes/class-evf-smart-tags.php:131
+#: includes/class-evf-smart-tags.php:132
 msgid "ISBN"
 msgstr ""
 
-#: includes/class-evf-smart-tags.php:135
+#: includes/class-evf-smart-tags.php:136
 msgid "Latitude or Longitude"
 msgstr ""
 
-#: includes/class-evf-smart-tags.php:139
+#: includes/class-evf-smart-tags.php:140
 msgid "Numeric"
 msgstr ""
 
-#: includes/class-evf-smart-tags.php:143
+#: includes/class-evf-smart-tags.php:144
 msgid "Password (Numeric, lower, upper)"
 msgstr ""
 
-#: includes/class-evf-smart-tags.php:147
+#: includes/class-evf-smart-tags.php:148
 msgid "Password (Numeric, lower, upper, min 8)"
 msgstr ""
 
-#: includes/class-evf-smart-tags.php:151
+#: includes/class-evf-smart-tags.php:152
 msgid "Phone - General"
 msgstr ""
 
-#: includes/class-evf-smart-tags.php:155
+#: includes/class-evf-smart-tags.php:156
 msgid "Phone - UK"
 msgstr ""
 
-#: includes/class-evf-smart-tags.php:159
+#: includes/class-evf-smart-tags.php:160
 msgid "Phone - US: 123-456-7890"
 msgstr ""
 
-#: includes/class-evf-smart-tags.php:163
+#: includes/class-evf-smart-tags.php:164
 msgid "Phone - US: (123)456-7890"
 msgstr ""
 
-#: includes/class-evf-smart-tags.php:167
+#: includes/class-evf-smart-tags.php:168
 msgid "Phone - US: (123) 456-7890"
 msgstr ""
 
-#: includes/class-evf-smart-tags.php:171
+#: includes/class-evf-smart-tags.php:172
 msgid "Phone - US: Flexible"
 msgstr ""
 
-#: includes/class-evf-smart-tags.php:175
+#: includes/class-evf-smart-tags.php:176
 msgid "Postal Code (UK)"
 msgstr ""
 
-#: includes/class-evf-smart-tags.php:179
+#: includes/class-evf-smart-tags.php:180
 msgid "Price (1.23)"
 msgstr ""
 
-#: includes/class-evf-smart-tags.php:183
+#: includes/class-evf-smart-tags.php:184
 msgid "Slug"
 msgstr ""
 
-#: includes/class-evf-smart-tags.php:187
+#: includes/class-evf-smart-tags.php:188
 msgid "Time (hh:mm:ss)"
 msgstr ""
 
-#: includes/class-evf-smart-tags.php:191
+#: includes/class-evf-smart-tags.php:192
 msgid "URL"
 msgstr ""
 
-#: includes/class-evf-smart-tags.php:195
+#: includes/class-evf-smart-tags.php:196
 msgid "Zip Code"
 msgstr ""
 
@@ -13353,26 +13332,26 @@ msgstr ""
 msgid "Desktop"
 msgstr ""
 
-#: includes/evf-core-functions.php:5007
-#: includes/evf-core-functions.php:5049
-#: includes/evf-core-functions.php:5091
+#: includes/evf-core-functions.php:5010
+#: includes/evf-core-functions.php:5052
+#: includes/evf-core-functions.php:5094
 msgid "Everest Forms Daily Entries Statistics Report"
 msgstr ""
 
-#: includes/evf-core-functions.php:5012
-#: includes/evf-core-functions.php:5054
-#: includes/evf-core-functions.php:5097
+#: includes/evf-core-functions.php:5015
+#: includes/evf-core-functions.php:5057
+#: includes/evf-core-functions.php:5100
 msgid "Everest Forms Weekly Entries Statistics Report"
 msgstr ""
 
-#: includes/evf-core-functions.php:5017
-#: includes/evf-core-functions.php:5059
-#: includes/evf-core-functions.php:5103
+#: includes/evf-core-functions.php:5020
+#: includes/evf-core-functions.php:5062
+#: includes/evf-core-functions.php:5106
 msgid "Everest Forms Monthly Entries Statistics Report"
 msgstr ""
 
 #. translators: %s: Status Log URL
-#: includes/evf-core-functions.php:5636
+#: includes/evf-core-functions.php:5639
 msgid "Please check the `evf_mail_errors` log under <a target=\"_blank\" href=\"%s\"> Logs </a> section."
 msgstr ""
 
@@ -13776,7 +13755,7 @@ msgstr ""
 msgid "Enable to use date/time field as slot booking."
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:1154
+#: includes/fields/class-evf-field-date-time.php:1155
 msgid "---Select Field---"
 msgstr ""
 
@@ -13999,7 +13978,6 @@ msgstr ""
 
 #: includes/fields/class-evf-field-payment-authorize-net.php:20
 #: src/dashboard/screens/FreeVsPro/FreeVsPro.js:237
-#: dist/dashboard.min.js:58081
 msgid "Authorize.Net"
 msgstr ""
 
@@ -14153,7 +14131,6 @@ msgstr ""
 
 #: includes/fields/class-evf-field-repeater.php:20
 #: src/dashboard/screens/FreeVsPro/FreeVsPro.js:252
-#: dist/dashboard.min.js:58096
 msgid "Repeater Fields"
 msgstr ""
 
@@ -14362,51 +14339,51 @@ msgstr ""
 msgid "Failed to read changelog."
 msgstr ""
 
-#: includes/RestApi/controllers/version1/class-evf-entry-submission.php:62
+#: includes/RestApi/controllers/version1/class-evf-entry-submission.php:64
 msgid "No entry data found!"
 msgstr ""
 
-#: includes/RestApi/controllers/version1/class-evf-entry-submission.php:74
+#: includes/RestApi/controllers/version1/class-evf-entry-submission.php:76
 msgid "Form id is missing!"
 msgstr ""
 
-#: includes/RestApi/controllers/version1/class-evf-entry-submission.php:86
+#: includes/RestApi/controllers/version1/class-evf-entry-submission.php:88
 msgid "Form is not found!"
 msgstr ""
 
-#: includes/RestApi/controllers/version1/class-evf-entry-submission.php:98
+#: includes/RestApi/controllers/version1/class-evf-entry-submission.php:100
 msgid "Form is disalbed!"
 msgstr ""
 
-#: includes/RestApi/controllers/version1/class-evf-entry-submission.php:108
+#: includes/RestApi/controllers/version1/class-evf-entry-submission.php:110
 msgid "Form is empty!"
 msgstr ""
 
-#: includes/RestApi/controllers/version1/class-evf-entry-submission.php:118
+#: includes/RestApi/controllers/version1/class-evf-entry-submission.php:120
 msgid "Save entris is enable! Please disable to save the entry."
 msgstr ""
 
-#: includes/RestApi/controllers/version1/class-evf-entry-submission.php:209
+#: includes/RestApi/controllers/version1/class-evf-entry-submission.php:211
 msgid "Error found!!"
 msgstr ""
 
-#: includes/RestApi/controllers/version1/class-evf-entry-submission.php:249
+#: includes/RestApi/controllers/version1/class-evf-entry-submission.php:251
 msgid "Contact your administrator to enable REST API access"
 msgstr ""
 
-#: includes/RestApi/controllers/version1/class-evf-entry-submission.php:259
+#: includes/RestApi/controllers/version1/class-evf-entry-submission.php:261
 msgid "Contact your administrator to generate the api key."
 msgstr ""
 
-#: includes/RestApi/controllers/version1/class-evf-entry-submission.php:269
+#: includes/RestApi/controllers/version1/class-evf-entry-submission.php:271
 msgid "Missing api key!"
 msgstr ""
 
-#: includes/RestApi/controllers/version1/class-evf-entry-submission.php:277
+#: includes/RestApi/controllers/version1/class-evf-entry-submission.php:279
 msgid "Empty api key!"
 msgstr ""
 
-#: includes/RestApi/controllers/version1/class-evf-entry-submission.php:288
+#: includes/RestApi/controllers/version1/class-evf-entry-submission.php:290
 msgid "Unauthorized api key."
 msgstr ""
 
@@ -14525,7 +14502,7 @@ msgid "Something went wrong, please try again later."
 msgstr ""
 
 #. translators: %s - URL to a non-amp version of a page with the form.
-#: includes/shortcodes/class-evf-shortcode-form.php:949
+#: includes/shortcodes/class-evf-shortcode-form.php:951
 msgid "<a href=\"%s\">Go to the full page</a> to view and submit the form."
 msgstr ""
 
@@ -14589,268 +14566,205 @@ msgstr ""
 
 #: src/blocks/blocks/form-selector/Edit.js:51
 #: src/blocks/blocks/form-selector/Edit.js:55
-#: dist/blocks.min.js:39489
-#: dist/blocks.min.js:39493
 msgid "Select a Form"
 msgstr ""
 
 #: src/blocks/blocks/form-selector/Edit.js:66
-#: dist/blocks.min.js:39504
 msgid "Show Title"
 msgstr ""
 
 #: src/blocks/blocks/form-selector/Edit.js:71
-#: dist/blocks.min.js:39509
 msgid "Show Description"
 msgstr ""
 
 #: src/blocks/blocks/form-selector/Edit.js:95
-#: dist/blocks.min.js:39533
 msgid "Select a form"
 msgstr ""
 
 #: src/blocks/blocks/frontend-listing/Edit.js:73
 #: src/blocks/blocks/frontend-listing/Edit.js:77
 #: src/blocks/blocks/frontend-listing/Edit.js:100
-#: dist/blocks.min.js:39645
-#: dist/blocks.min.js:39649
-#: dist/blocks.min.js:39672
 msgid "Select list"
 msgstr ""
 
 #: src/blocks/blocks/frontend-listing/Edit.js:92
-#: dist/blocks.min.js:39664
 msgid "Everest Form Frontend Listing"
 msgstr ""
 
 #: src/blocks/blocks/user-login/Edit.js:40
-#: dist/blocks.min.js:39793
 msgid "Everest Forms User Login"
 msgstr ""
 
 #: src/dashboard/components/common/UsePluginInstallActivate.js:64
-#: dist/dashboard.min.js:57215
 msgid "%s plugin activated successfully"
 msgstr ""
 
 #: src/dashboard/components/common/UsePluginInstallActivate.js:77
-#: dist/dashboard.min.js:57228
 msgid "An error occurred"
 msgstr ""
 
 #: src/dashboard/components/common/UsePluginInstallActivate.js:114
-#: dist/dashboard.min.js:57265
 msgid "%s plugin installed and activated successfully"
 msgstr ""
 
 #: src/dashboard/components/common/UsePluginInstallActivate.js:180
 #: src/dashboard/screens/Dashboard/components/UsefulPlugins.js:81
 #: src/dashboard/screens/Products/components/ProductCard.js:143
-#: dist/dashboard.min.js:57331
-#: dist/dashboard.min.js:57769
-#: dist/dashboard.min.js:61106
 msgid "Install"
 msgstr ""
 
 #: src/dashboard/components/Header/Header.js:122
-#: dist/dashboard.min.js:55771
 msgid "You are currently using Everest Forms %s"
 msgstr ""
 
 #: src/dashboard/components/Header/Header.js:154
-#: dist/dashboard.min.js:55803
 msgid "Upgrade To Pro"
 msgstr ""
 
 #: src/dashboard/components/Header/Header.js:168
 #: src/dashboard/components/Header/Header.js:206
-#: dist/dashboard.min.js:55817
-#: dist/dashboard.min.js:55855
 msgid "Latest Updates"
 msgstr ""
 
 #: src/dashboard/Constants/index.js:13
-#: dist/dashboard.min.js:55347
 msgid "All Features"
 msgstr ""
 
 #: src/dashboard/Constants/index.js:22
-#: dist/dashboard.min.js:55356
 msgid "Help"
 msgstr ""
 
 #: src/dashboard/Constants/index.js:26
-#: dist/dashboard.min.js:55360
 msgid "Other Products"
 msgstr ""
 
 #: src/dashboard/Constants/index.js:35
-#: dist/dashboard.min.js:55369
 msgid "Free vs Pro"
 msgstr ""
 
 #: src/dashboard/Constants/Products.js:21
-#: dist/dashboard.min.js:55241
 msgid "Revolutionize e-learning effortlessly with Masteriyo, a WordPress LMS plugin. Sell courses with quizzes, assignments, etc., for a dynamic learning experience."
 msgstr ""
 
 #: src/dashboard/Constants/Products.js:28
-#: dist/dashboard.min.js:55248
 msgid "WordPress LMS plugin with Quiz Builder"
 msgstr ""
 
 #: src/dashboard/Constants/Products.js:38
-#: dist/dashboard.min.js:55258
 msgid "Fuel your digital creativity with BlockArt Blocks, a dynamic collection of custom Gutenberg blocks for designing captivating WordPress sites."
 msgstr ""
 
 #: src/dashboard/Constants/Products.js:45
-#: dist/dashboard.min.js:55265
 msgid "Custom Gutenberg Blocks Plugin"
 msgstr ""
 
 #: src/dashboard/Constants/Products.js:55
-#: dist/dashboard.min.js:55275
 msgid "The best Drag and drop user registration form and login form builder with a user profile page, email notification, user roles assignment, and more."
 msgstr ""
 
 #: src/dashboard/Constants/Products.js:62
-#: dist/dashboard.min.js:55282
 msgid "User Forms, Profiles, Roles, Notifications."
 msgstr ""
 
 #: src/dashboard/Constants/Products.js:72
-#: dist/dashboard.min.js:55292
 msgid "Experience advanced Gutenberg blocks with Magazine Blocks, designed for crafting stunning magazine and news websites."
 msgstr ""
 
 #: src/dashboard/Constants/Products.js:79
-#: dist/dashboard.min.js:55299
 msgid "Gutenberg Blocks for Magazine-style Websites"
 msgstr ""
 
 #: src/dashboard/Constants/Products.js:92
-#: dist/dashboard.min.js:55312
 msgid "Unlock boundless website possibilities with Zakra, a versatile multipurpose theme offering over 40 free starter sites for a tailored web experience."
 msgstr ""
 
 #: src/dashboard/Constants/Products.js:104
-#: dist/dashboard.min.js:55324
 msgid "Elevate your website's style with Colormag, the go-to choice for news, blogs, and magazines. Embark on a digital spectacle of website-building excellence! "
 msgstr ""
 
 #: src/dashboard/screens/Dashboard/components/UsefulPlugins.js:78
-#: dist/dashboard.min.js:57766
 msgid "Active"
 msgstr ""
 
 #: src/dashboard/screens/Dashboard/components/UsefulPlugins.js:93
 #: src/dashboard/screens/Products/components/ProductCard.js:161
-#: dist/dashboard.min.js:57781
-#: dist/dashboard.min.js:61124
 msgid "Activate Plugin"
 msgstr ""
 
 #: src/dashboard/screens/Dashboard/components/UsefulPlugins.js:94
 #: src/dashboard/screens/Products/components/ProductCard.js:162
-#: dist/dashboard.min.js:57782
-#: dist/dashboard.min.js:61125
 msgid "Install Plugin"
 msgstr ""
 
 #: src/dashboard/screens/Dashboard/components/UsefulPlugins.js:99
 #: src/dashboard/screens/Products/components/ProductCard.js:167
-#: dist/dashboard.min.js:57787
-#: dist/dashboard.min.js:61130
 msgid "Are you sure? You want to activate %s plugin."
 msgstr ""
 
 #: src/dashboard/screens/Dashboard/components/UsefulPlugins.js:106
 #: src/dashboard/screens/Products/components/ProductCard.js:174
-#: dist/dashboard.min.js:57794
-#: dist/dashboard.min.js:61137
 msgid "Are you sure? You want to install and activate %s plugin."
 msgstr ""
 
 #: src/dashboard/screens/Dashboard/Dashboard.js:58
-#: dist/dashboard.min.js:57461
 msgid "Welcome to Everest Forms!"
 msgstr ""
 
 #: src/dashboard/screens/Dashboard/Dashboard.js:86
-#: dist/dashboard.min.js:57489
 msgid "Create a Contact Form"
 msgstr ""
 
 #: src/dashboard/screens/Dashboard/Dashboard.js:99
-#: dist/dashboard.min.js:57502
 msgid "View all forms"
 msgstr ""
 
 #: src/dashboard/screens/Dashboard/Dashboard.js:116
-#: dist/dashboard.min.js:57519
 msgid "Everest Forms Community"
 msgstr ""
 
 #: src/dashboard/screens/Dashboard/Dashboard.js:120
 #: src/dashboard/screens/Help/Help.js:252
-#: dist/dashboard.min.js:57523
-#: dist/dashboard.min.js:58607
 msgid "Join our exclusive group and connect with fellow Everest Forms members. Ask questions, contribute to discussions, and share feedback!"
 msgstr ""
 
 #: src/dashboard/screens/Dashboard/Dashboard.js:131
-#: dist/dashboard.min.js:57534
 msgid "Join our Facebook Group"
 msgstr ""
 
 #: src/dashboard/screens/Dashboard/Dashboard.js:149
 #: src/dashboard/screens/Help/Help.js:205
-#: dist/dashboard.min.js:57552
-#: dist/dashboard.min.js:58560
 msgid "Check our documentation for detailed information on Everest Forms features and how to use them."
 msgstr ""
 
 #: src/dashboard/screens/Dashboard/Dashboard.js:160
-#: dist/dashboard.min.js:57563
 msgid "View Documentation"
 msgstr ""
 
 #: src/dashboard/screens/Dashboard/Dashboard.js:174
 #: src/dashboard/screens/Help/Help.js:166
-#: dist/dashboard.min.js:57577
-#: dist/dashboard.min.js:58521
 msgid "Support"
 msgstr ""
 
 #: src/dashboard/screens/Dashboard/Dashboard.js:178
-#: dist/dashboard.min.js:57581
 msgid "Submit a ticket for encountered issues and get help from our support team instantly."
 msgstr ""
 
 #: src/dashboard/screens/Dashboard/Dashboard.js:189
-#: dist/dashboard.min.js:57592
 msgid "Create a Ticket"
 msgstr ""
 
 #: src/dashboard/screens/Dashboard/Dashboard.js:203
 #: src/dashboard/screens/Help/Help.js:400
-#: dist/dashboard.min.js:57606
-#: dist/dashboard.min.js:58755
 msgid "Feature Request"
 msgstr ""
 
 #: src/dashboard/screens/Dashboard/Dashboard.js:207
 #: src/dashboard/screens/Help/Help.js:404
-#: dist/dashboard.min.js:57610
-#: dist/dashboard.min.js:58759
 msgid "Don’t find a feature you’re looking for? Suggest any features you think would enhance our product."
 msgstr ""
 
 #: src/dashboard/screens/Dashboard/Dashboard.js:218
 #: src/dashboard/screens/Help/Help.js:415
-#: dist/dashboard.min.js:57621
-#: dist/dashboard.min.js:58770
 msgid "Request a Feature"
 msgstr ""
 
@@ -14858,756 +14772,598 @@ msgstr ""
 #: src/dashboard/screens/Dashboard/Dashboard.js:247
 #: src/dashboard/screens/Help/Help.js:429
 #: src/dashboard/screens/Help/Help.js:444
-#: dist/dashboard.min.js:57635
-#: dist/dashboard.min.js:57650
-#: dist/dashboard.min.js:58784
-#: dist/dashboard.min.js:58799
 msgid "Submit a Review"
 msgstr ""
 
 #: src/dashboard/screens/Dashboard/Dashboard.js:236
 #: src/dashboard/screens/Help/Help.js:433
-#: dist/dashboard.min.js:57639
-#: dist/dashboard.min.js:58788
 msgid "Please take a moment to give us a review. We appreciate honest feedback that’ll help us improve our plugin."
 msgstr ""
 
 #: src/dashboard/screens/Dashboard/Dashboard.js:261
 #: src/dashboard/screens/Help/Help.js:371
-#: dist/dashboard.min.js:57664
-#: dist/dashboard.min.js:58726
 msgid "Video Tutorials"
 msgstr ""
 
 #: src/dashboard/screens/Dashboard/Dashboard.js:265
 #: src/dashboard/screens/Help/Help.js:375
-#: dist/dashboard.min.js:57668
-#: dist/dashboard.min.js:58730
 msgid "Watch our step-by-step video tutorials that’ll help you get the best out of Everest Forms’s features."
 msgstr ""
 
 #: src/dashboard/screens/Dashboard/Dashboard.js:276
 #: src/dashboard/screens/Help/Help.js:386
-#: dist/dashboard.min.js:57679
-#: dist/dashboard.min.js:58741
 msgid "Watch Videos"
 msgstr ""
 
 #: src/dashboard/screens/FreeVsPro/FreeVsPro.js:38
 #: src/dashboard/screens/Modules/Modules.js:286
-#: dist/dashboard.min.js:57882
-#: dist/dashboard.min.js:59880
 msgid "Features"
 msgstr ""
 
 #: src/dashboard/screens/FreeVsPro/FreeVsPro.js:41
-#: dist/dashboard.min.js:57885
 msgid "Unlimited Forms"
 msgstr ""
 
 #: src/dashboard/screens/FreeVsPro/FreeVsPro.js:46
-#: dist/dashboard.min.js:57890
 msgid "Unlimited Form Entries"
 msgstr ""
 
 #: src/dashboard/screens/FreeVsPro/FreeVsPro.js:51
-#: dist/dashboard.min.js:57895
 msgid "Email Notifications "
 msgstr ""
 
 #: src/dashboard/screens/FreeVsPro/FreeVsPro.js:56
-#: dist/dashboard.min.js:57900
 msgid "Google Analytics "
 msgstr ""
 
 #: src/dashboard/screens/FreeVsPro/FreeVsPro.js:61
-#: dist/dashboard.min.js:57905
 msgid "Multiple File Uploads"
 msgstr ""
 
 #: src/dashboard/screens/FreeVsPro/FreeVsPro.js:66
-#: dist/dashboard.min.js:57910
 msgid "User Redirection  "
 msgstr ""
 
 #: src/dashboard/screens/FreeVsPro/FreeVsPro.js:71
-#: dist/dashboard.min.js:57915
 msgid "Import/Export Forms "
 msgstr ""
 
 #: src/dashboard/screens/FreeVsPro/FreeVsPro.js:76
-#: dist/dashboard.min.js:57920
 msgid "Export Entries in CSV "
 msgstr ""
 
 #: src/dashboard/screens/FreeVsPro/FreeVsPro.js:81
-#: dist/dashboard.min.js:57925
 msgid "E-signature "
 msgstr ""
 
 #: src/dashboard/screens/FreeVsPro/FreeVsPro.js:86
-#: dist/dashboard.min.js:57930
 msgid "Webhook Support  "
 msgstr ""
 
 #: src/dashboard/screens/FreeVsPro/FreeVsPro.js:91
-#: dist/dashboard.min.js:57935
 msgid "Honeypot Security "
 msgstr ""
 
 #: src/dashboard/screens/FreeVsPro/FreeVsPro.js:96
-#: dist/dashboard.min.js:57940
 msgid "Google reCAPTCHA "
 msgstr ""
 
 #: src/dashboard/screens/FreeVsPro/FreeVsPro.js:101
-#: dist/dashboard.min.js:57945
 msgid "HCaptcha"
 msgstr ""
 
 #: src/dashboard/screens/FreeVsPro/FreeVsPro.js:106
-#: dist/dashboard.min.js:57950
 msgid "Whitelist/Blacklist Domains "
 msgstr ""
 
 #: src/dashboard/screens/FreeVsPro/FreeVsPro.js:111
-#: dist/dashboard.min.js:57955
 msgid "Google Drive"
 msgstr ""
 
 #: src/dashboard/screens/FreeVsPro/FreeVsPro.js:116
-#: dist/dashboard.min.js:57960
 msgid "Dropbox"
 msgstr ""
 
 #: src/dashboard/screens/FreeVsPro/FreeVsPro.js:121
-#: dist/dashboard.min.js:57965
 msgid "Smart Tags Support"
 msgstr ""
 
 #: src/dashboard/screens/FreeVsPro/FreeVsPro.js:126
-#: dist/dashboard.min.js:57970
 msgid "GDPR Compliance"
 msgstr ""
 
 #: src/dashboard/screens/FreeVsPro/FreeVsPro.js:131
-#: dist/dashboard.min.js:57975
 msgid "Test Emails"
 msgstr ""
 
 #: src/dashboard/screens/FreeVsPro/FreeVsPro.js:136
-#: dist/dashboard.min.js:57980
 msgid "AJAX Form Submission"
 msgstr ""
 
 #: src/dashboard/screens/FreeVsPro/FreeVsPro.js:141
-#: dist/dashboard.min.js:57985
 msgid "Auto-populate Forms "
 msgstr ""
 
 #: src/dashboard/screens/FreeVsPro/FreeVsPro.js:149
 #: src/dashboard/screens/Modules/Modules.js:291
-#: dist/dashboard.min.js:57993
-#: dist/dashboard.min.js:59885
 msgid "Addons"
 msgstr ""
 
 #: src/dashboard/screens/FreeVsPro/FreeVsPro.js:152
-#: dist/dashboard.min.js:57996
 msgid "Style Customizer "
 msgstr ""
 
 #: src/dashboard/screens/FreeVsPro/FreeVsPro.js:157
-#: dist/dashboard.min.js:58001
 msgid "Muilti-step Forms "
 msgstr ""
 
 #: src/dashboard/screens/FreeVsPro/FreeVsPro.js:162
-#: dist/dashboard.min.js:58006
 msgid "MailChimp "
 msgstr ""
 
 #: src/dashboard/screens/FreeVsPro/FreeVsPro.js:167
-#: dist/dashboard.min.js:58011
 msgid "ConvertKit "
 msgstr ""
 
 #: src/dashboard/screens/FreeVsPro/FreeVsPro.js:172
-#: dist/dashboard.min.js:58016
 msgid "PDF Form Submission "
 msgstr ""
 
 #: src/dashboard/screens/FreeVsPro/FreeVsPro.js:177
-#: dist/dashboard.min.js:58021
 msgid "Custom CAPTCHA"
 msgstr ""
 
 #: src/dashboard/screens/FreeVsPro/FreeVsPro.js:182
-#: dist/dashboard.min.js:58026
 msgid "Geolocation "
 msgstr ""
 
 #: src/dashboard/screens/FreeVsPro/FreeVsPro.js:187
-#: dist/dashboard.min.js:58031
 msgid "MailerLite"
 msgstr ""
 
 #: src/dashboard/screens/FreeVsPro/FreeVsPro.js:192
-#: dist/dashboard.min.js:58036
 msgid "ActiveCampaign "
 msgstr ""
 
 #: src/dashboard/screens/FreeVsPro/FreeVsPro.js:197
-#: dist/dashboard.min.js:58041
 msgid "Campaign Monitor"
 msgstr ""
 
 #: src/dashboard/screens/FreeVsPro/FreeVsPro.js:202
-#: dist/dashboard.min.js:58046
 msgid "Google Sheets "
 msgstr ""
 
 #: src/dashboard/screens/FreeVsPro/FreeVsPro.js:207
-#: dist/dashboard.min.js:58051
 msgid "Surveys, Polls, and Quiz "
 msgstr ""
 
 #: src/dashboard/screens/FreeVsPro/FreeVsPro.js:212
-#: dist/dashboard.min.js:58056
 msgid "User Registration "
 msgstr ""
 
 #: src/dashboard/screens/FreeVsPro/FreeVsPro.js:222
-#: dist/dashboard.min.js:58066
 msgid "Email Templates"
 msgstr ""
 
 #: src/dashboard/screens/FreeVsPro/FreeVsPro.js:227
-#: dist/dashboard.min.js:58071
 msgid "PayPal Standard"
 msgstr ""
 
 #: src/dashboard/screens/FreeVsPro/FreeVsPro.js:232
-#: dist/dashboard.min.js:58076
 msgid "Stripe"
 msgstr ""
 
 #: src/dashboard/screens/FreeVsPro/FreeVsPro.js:242
-#: dist/dashboard.min.js:58086
 msgid "Zapier"
 msgstr ""
 
 #: src/dashboard/screens/FreeVsPro/FreeVsPro.js:257
-#: dist/dashboard.min.js:58101
 msgid "Calculations"
 msgstr ""
 
 #: src/dashboard/screens/FreeVsPro/FreeVsPro.js:262
-#: dist/dashboard.min.js:58106
 msgid "Razorpay"
 msgstr ""
 
 #: src/dashboard/screens/FreeVsPro/FreeVsPro.js:272
-#: dist/dashboard.min.js:58116
 msgid "Coupons"
 msgstr ""
 
 #: src/dashboard/screens/FreeVsPro/FreeVsPro.js:277
-#: dist/dashboard.min.js:58121
 msgid "Frontend Listing"
 msgstr ""
 
 #: src/dashboard/screens/FreeVsPro/FreeVsPro.js:282
-#: dist/dashboard.min.js:58126
 msgid "Drip"
 msgstr ""
 
 #: src/dashboard/screens/FreeVsPro/FreeVsPro.js:287
-#: dist/dashboard.min.js:58131
 msgid "HubSpot"
 msgstr ""
 
 #: src/dashboard/screens/FreeVsPro/FreeVsPro.js:292
-#: dist/dashboard.min.js:58136
 msgid "Pipedrive"
 msgstr ""
 
 #: src/dashboard/screens/FreeVsPro/FreeVsPro.js:297
-#: dist/dashboard.min.js:58141
 msgid "Zoho CRM"
 msgstr ""
 
 #: src/dashboard/screens/FreeVsPro/FreeVsPro.js:302
-#: dist/dashboard.min.js:58146
 msgid "Salesforce"
 msgstr ""
 
 #: src/dashboard/screens/FreeVsPro/FreeVsPro.js:307
-#: dist/dashboard.min.js:58151
 msgid "Constant Contact"
 msgstr ""
 
 #: src/dashboard/screens/FreeVsPro/FreeVsPro.js:312
-#: dist/dashboard.min.js:58156
 msgid "Cloud Storage"
 msgstr ""
 
 #: src/dashboard/screens/FreeVsPro/FreeVsPro.js:317
-#: dist/dashboard.min.js:58161
 msgid "GetResponse"
 msgstr ""
 
 #: src/dashboard/screens/FreeVsPro/FreeVsPro.js:322
-#: dist/dashboard.min.js:58166
 msgid "Sendinblue"
 msgstr ""
 
 #: src/dashboard/screens/FreeVsPro/FreeVsPro.js:327
-#: dist/dashboard.min.js:58171
 msgid "Conversational Forms"
 msgstr ""
 
 #: src/dashboard/screens/FreeVsPro/FreeVsPro.js:332
-#: dist/dashboard.min.js:58176
 msgid "AI Contact Form - Free"
 msgstr ""
 
 #: src/dashboard/screens/FreeVsPro/FreeVsPro.js:337
-#: dist/dashboard.min.js:58181
 msgid "Advanced Form Analytics"
 msgstr ""
 
 #: src/dashboard/screens/FreeVsPro/FreeVsPro.js:476
-#: dist/dashboard.min.js:58320
 msgid "Upgrade Now"
 msgstr ""
 
 #: src/dashboard/screens/FreeVsPro/FreeVsPro.js:485
-#: dist/dashboard.min.js:58329
 msgid "Access all premium addons, features and upcoming updates right away by upgrading to the Pro version."
 msgstr ""
 
 #: src/dashboard/screens/FreeVsPro/FreeVsPro.js:503
-#: dist/dashboard.min.js:58347
 msgid "Get Everest Form Pro Now"
 msgstr ""
 
 #: src/dashboard/screens/Help/Help.js:94
-#: dist/dashboard.min.js:58449
 msgid "Shortcodes"
 msgstr ""
 
 #: src/dashboard/screens/Help/Help.js:97
-#: dist/dashboard.min.js:58452
 msgid "Find the complete list of shortcodes with their usage information and parameter details."
 msgstr ""
 
 #: src/dashboard/screens/Help/Help.js:114
-#: dist/dashboard.min.js:58469
 msgid "View all Shortcodes"
 msgstr ""
 
 #: src/dashboard/screens/Help/Help.js:130
-#: dist/dashboard.min.js:58485
 msgid "Smart Tags"
 msgstr ""
 
 #: src/dashboard/screens/Help/Help.js:133
-#: dist/dashboard.min.js:58488
 msgid "Find the complete list of smart tags with their usage information and parameter details."
 msgstr ""
 
 #: src/dashboard/screens/Help/Help.js:150
-#: dist/dashboard.min.js:58505
 msgid "View Tags"
 msgstr ""
 
 #: src/dashboard/screens/Help/Help.js:169
-#: dist/dashboard.min.js:58524
 msgid "If you have any issues or questions, our team is on standby to help you instantly."
 msgstr ""
 
 #: src/dashboard/screens/Help/Help.js:186
-#: dist/dashboard.min.js:58541
 msgid "Contact Support"
 msgstr ""
 
 #: src/dashboard/screens/Help/Help.js:202
-#: dist/dashboard.min.js:58557
 msgid "Need Some Help?"
 msgstr ""
 
 #: src/dashboard/screens/Help/Help.js:222
-#: dist/dashboard.min.js:58577
 msgid "View Now"
 msgstr ""
 
 #: src/dashboard/screens/Help/Help.js:229
-#: dist/dashboard.min.js:58584
 msgid "Join Our Community"
 msgstr ""
 
 #: src/dashboard/screens/Help/Help.js:249
-#: dist/dashboard.min.js:58604
 msgid "Facebook Community"
 msgstr ""
 
 #: src/dashboard/screens/Help/Help.js:270
-#: dist/dashboard.min.js:58625
 msgid "Join Group"
 msgstr ""
 
 #: src/dashboard/screens/Help/Help.js:291
-#: dist/dashboard.min.js:58646
 msgid "X ( Twitter )"
 msgstr ""
 
 #: src/dashboard/screens/Help/Help.js:294
-#: dist/dashboard.min.js:58649
 msgid "Follow us on X to get the latest news and updates about Everest Forms and the team behind it."
 msgstr ""
 
 #: src/dashboard/screens/Help/Help.js:312
-#: dist/dashboard.min.js:58667
 msgid "Follow"
 msgstr ""
 
 #: src/dashboard/screens/Help/Help.js:333
-#: dist/dashboard.min.js:58688
 msgid "YouTube"
 msgstr ""
 
 #: src/dashboard/screens/Help/Help.js:336
-#: dist/dashboard.min.js:58691
 msgid "Subscribe to our YouTube channel, where we guide you on using Everest Forms’s features and add-ons."
 msgstr ""
 
 #: src/dashboard/screens/Help/Help.js:354
-#: dist/dashboard.min.js:58709
 msgid "Subscribe"
 msgstr ""
 
 #: src/dashboard/screens/Help/Lists/ShortcodesLists/ShortcodesLists.js:38
-#: dist/dashboard.min.js:58846
 msgid "Displays everest forms in the front end."
 msgstr ""
 
 #: src/dashboard/screens/Help/Lists/ShortcodesLists/ShortcodesLists.js:45
-#: dist/dashboard.min.js:58853
 msgid "ID of the form to display."
 msgstr ""
 
 #: src/dashboard/screens/Help/Lists/ShortcodesLists/ShortcodesLists.js:55
-#: dist/dashboard.min.js:58863
 msgid "Displays Everest Forms with id 5"
 msgstr ""
 
 #: src/dashboard/screens/Help/Lists/ShortcodesLists/ShortcodesLists.js:64
-#: dist/dashboard.min.js:58872
 msgid "Display the login form for user who are created by using user registration addons."
 msgstr ""
 
 #: src/dashboard/screens/Help/Lists/ShortcodesLists/ShortcodesLists.js:71
-#: dist/dashboard.min.js:58879
 msgid "Redirect URL after login."
 msgstr ""
 
 #: src/dashboard/screens/Help/Lists/ShortcodesLists/ShortcodesLists.js:79
-#: dist/dashboard.min.js:58887
 msgid "Enable the recaptcha."
 msgstr ""
 
 #: src/dashboard/screens/Help/Lists/ShortcodesLists/ShortcodesLists.js:89
-#: dist/dashboard.min.js:58897
 msgid "Display the login form with recaptcha and redirect to sample page after login."
 msgstr ""
 
 #: src/dashboard/screens/Help/Lists/ShortcodesLists/ShortcodesLists.js:95
-#: dist/dashboard.min.js:58903
 msgid "Requires Everest Forms Pro and User registration Addon to be activated."
 msgstr ""
 
 #: src/dashboard/screens/Help/Lists/ShortcodesLists/ShortcodesLists.js:102
-#: dist/dashboard.min.js:58910
 msgid "Displays member directories in the front end."
 msgstr ""
 
 #: src/dashboard/screens/Help/Lists/ShortcodesLists/ShortcodesLists.js:109
-#: dist/dashboard.min.js:58917
 msgid "Frontend Listing ID to render."
 msgstr ""
 
 #: src/dashboard/screens/Help/Lists/ShortcodesLists/ShortcodesLists.js:119
-#: dist/dashboard.min.js:58927
 msgid "Displays user listing with ID 1 in the front end."
 msgstr ""
 
 #: src/dashboard/screens/Help/Lists/ShortcodesLists/ShortcodesLists.js:125
-#: dist/dashboard.min.js:58933
 msgid "Requires Everest Forms Pro and Frontend Listing Addon to be activated."
 msgstr ""
 
 #: src/dashboard/screens/Help/Lists/ShortcodesLists/ShortcodesLists.js:239
-#: dist/dashboard.min.js:59047
 msgid "All Shortcodes"
 msgstr ""
 
 #: src/dashboard/screens/Help/Lists/ShortcodesLists/ShortcodesLists.js:319
-#: dist/dashboard.min.js:59127
 msgid "Parameters:"
 msgstr ""
 
 #: src/dashboard/screens/Help/Lists/ShortcodesLists/ShortcodesLists.js:364
-#: dist/dashboard.min.js:59172
 msgid "REQUIRED."
 msgstr ""
 
 #: src/dashboard/screens/Help/Lists/ShortcodesLists/ShortcodesLists.js:399
-#: dist/dashboard.min.js:59207
 msgid "Examples:"
 msgstr ""
 
 #: src/dashboard/screens/Help/Lists/SmartTagsLists/SmartTagsLists.js:31
-#: dist/dashboard.min.js:59336
 msgid "The Smart Tags listed below can be used to parse user data that doesn’t require user to be registered in the email content."
 msgstr ""
 
 #: src/dashboard/screens/Help/Lists/SmartTagsLists/SmartTagsLists.js:38
-#: dist/dashboard.min.js:59343
 msgid "Current Date."
 msgstr ""
 
 #: src/dashboard/screens/Help/Lists/SmartTagsLists/SmartTagsLists.js:42
-#: dist/dashboard.min.js:59347
 msgid "Current Time."
 msgstr ""
 
 #: src/dashboard/screens/Help/Lists/SmartTagsLists/SmartTagsLists.js:46
-#: dist/dashboard.min.js:59351
 msgid "Site admin email."
 msgstr ""
 
 #: src/dashboard/screens/Help/Lists/SmartTagsLists/SmartTagsLists.js:50
-#: dist/dashboard.min.js:59355
 msgid "Name of the website."
 msgstr ""
 
 #: src/dashboard/screens/Help/Lists/SmartTagsLists/SmartTagsLists.js:54
-#: dist/dashboard.min.js:59359
 msgid "URL of the website."
 msgstr ""
 
 #: src/dashboard/screens/Help/Lists/SmartTagsLists/SmartTagsLists.js:58
 #: src/dashboard/screens/Help/Lists/SmartTagsLists/SmartTagsLists.js:70
-#: dist/dashboard.min.js:59363
-#: dist/dashboard.min.js:59375
 msgid "Current Page Title."
 msgstr ""
 
 #: src/dashboard/screens/Help/Lists/SmartTagsLists/SmartTagsLists.js:62
-#: dist/dashboard.min.js:59367
 msgid "Current Page Url."
 msgstr ""
 
 #: src/dashboard/screens/Help/Lists/SmartTagsLists/SmartTagsLists.js:66
-#: dist/dashboard.min.js:59371
 msgid "Current Page ID."
 msgstr ""
 
 #: src/dashboard/screens/Help/Lists/SmartTagsLists/SmartTagsLists.js:74
-#: dist/dashboard.min.js:59379
 msgid "Current page or post's author email."
 msgstr ""
 
 #: src/dashboard/screens/Help/Lists/SmartTagsLists/SmartTagsLists.js:81
-#: dist/dashboard.min.js:59386
 msgid "Current page or post's author name."
 msgstr ""
 
 #: src/dashboard/screens/Help/Lists/SmartTagsLists/SmartTagsLists.js:88
-#: dist/dashboard.min.js:59393
 msgid "Current form name"
 msgstr ""
 
 #: src/dashboard/screens/Help/Lists/SmartTagsLists/SmartTagsLists.js:92
-#: dist/dashboard.min.js:59397
 msgid "Current user's ip address."
 msgstr ""
 
 #: src/dashboard/screens/Help/Lists/SmartTagsLists/SmartTagsLists.js:99
-#: dist/dashboard.min.js:59404
 msgid "User ID."
 msgstr ""
 
 #: src/dashboard/screens/Help/Lists/SmartTagsLists/SmartTagsLists.js:103
-#: dist/dashboard.min.js:59408
 msgid "User Meta of particular key."
 msgstr ""
 
 #: src/dashboard/screens/Help/Lists/SmartTagsLists/SmartTagsLists.js:114
-#: dist/dashboard.min.js:59419
 msgid "Display Name."
 msgstr ""
 
 #: src/dashboard/screens/Help/Lists/SmartTagsLists/SmartTagsLists.js:118
-#: dist/dashboard.min.js:59423
 msgid "First Name."
 msgstr ""
 
 #: src/dashboard/screens/Help/Lists/SmartTagsLists/SmartTagsLists.js:122
-#: dist/dashboard.min.js:59427
 msgid "Last Name."
 msgstr ""
 
 #: src/dashboard/screens/Help/Lists/SmartTagsLists/SmartTagsLists.js:126
-#: dist/dashboard.min.js:59431
 msgid "Current User Email."
 msgstr ""
 
 #: src/dashboard/screens/Help/Lists/SmartTagsLists/SmartTagsLists.js:130
-#: dist/dashboard.min.js:59435
 msgid "Current User Role."
 msgstr ""
 
 #: src/dashboard/screens/Help/Lists/SmartTagsLists/SmartTagsLists.js:134
-#: dist/dashboard.min.js:59439
 msgid "URL of the referrer page from where users landed on the form."
 msgstr ""
 
 #: src/dashboard/screens/Help/Lists/SmartTagsLists/SmartTagsLists.js:141
-#: dist/dashboard.min.js:59446
 msgid "Current Form ID"
 msgstr ""
 
 #: src/dashboard/screens/Help/Lists/SmartTagsLists/SmartTagsLists.js:191
-#: dist/dashboard.min.js:59496
 msgid "All Smart Tags"
 msgstr ""
 
 #: src/dashboard/screens/Modules/components/ModuleBody.js:51
-#: dist/dashboard.min.js:60072
 msgid "License key"
 msgstr ""
 
 #: src/dashboard/screens/Modules/components/ModuleBody.js:90
-#: dist/dashboard.min.js:60111
 msgid "Everest Froms Pro Required"
 msgstr ""
 
 #: src/dashboard/screens/Modules/components/ModuleBody.js:95
-#: dist/dashboard.min.js:60116
 msgid "%s requires Everest Froms Pro to be activated. Please upgrade to a premium plan and unlock this %s."
 msgstr ""
 
 #: src/dashboard/screens/Modules/components/ModuleBody.js:104
-#: dist/dashboard.min.js:60125
 msgid "License Activation Required"
 msgstr ""
 
 #: src/dashboard/screens/Modules/components/ModuleBody.js:109
-#: dist/dashboard.min.js:60130
 msgid "Please activate license of Everest Froms Pro plugin in order to use %s"
 msgstr ""
 
 #: src/dashboard/screens/Modules/components/ModuleBody.js:116
-#: dist/dashboard.min.js:60137
 msgid "Activate License"
 msgstr ""
 
 #: src/dashboard/screens/Modules/components/ModuleBody.js:120
-#: dist/dashboard.min.js:60141
 msgid "Enter your license key"
 msgstr ""
 
 #: src/dashboard/screens/Modules/components/ModuleBody.js:149
-#: dist/dashboard.min.js:60170
 msgid "Please enter your plugin activation license key"
 msgstr ""
 
 #: src/dashboard/screens/Modules/components/ModuleBody.js:152
-#: dist/dashboard.min.js:60173
 msgid "Please enter the valid license key"
 msgstr ""
 
 #: src/dashboard/screens/Modules/components/ModuleItem.js:321
-#: dist/dashboard.min.js:60630
 msgid "Play Video"
 msgstr ""
 
 #: src/dashboard/screens/Modules/components/ModuleItem.js:408
-#: dist/dashboard.min.js:60717
 msgid "Documentation"
 msgstr ""
 
 #: src/dashboard/screens/Modules/components/ModuleItem.js:420
 #: src/dashboard/screens/Products/components/ProductCard.js:106
-#: dist/dashboard.min.js:60729
-#: dist/dashboard.min.js:61069
 msgid "Live Demo"
 msgstr ""
 
 #: src/dashboard/screens/Modules/Modules.js:255
-#: dist/dashboard.min.js:59849
 msgid "Popular"
 msgstr ""
 
 #: src/dashboard/screens/Modules/Modules.js:258
-#: dist/dashboard.min.js:59852
 msgid "Newest"
 msgstr ""
 
 #: src/dashboard/screens/Modules/Modules.js:261
-#: dist/dashboard.min.js:59855
 msgid "Oldest"
 msgstr ""
 
 #: src/dashboard/screens/Modules/Modules.js:264
-#: dist/dashboard.min.js:59858
 msgid "Ascending"
 msgstr ""
 
 #: src/dashboard/screens/Modules/Modules.js:267
-#: dist/dashboard.min.js:59861
 msgid "Descending"
 msgstr ""
 
 #: src/dashboard/screens/Modules/Modules.js:281
-#: dist/dashboard.min.js:59875
 msgid "All Modules"
 msgstr ""
 
 #: src/dashboard/screens/Modules/Modules.js:302
-#: dist/dashboard.min.js:59896
 msgid "Bulk Actions"
 msgstr ""
 
 #: src/dashboard/screens/Modules/Modules.js:332
-#: dist/dashboard.min.js:59926
 msgid "Apply"
 msgstr ""
 
 #: src/dashboard/screens/Modules/Modules.js:347
-#: dist/dashboard.min.js:59941
 msgid "Search..."
 msgstr ""
 
 #: src/dashboard/screens/Modules/Modules.js:379
-#: dist/dashboard.min.js:59973
 msgid "Sorry, No features found"
 msgstr ""
 
 #: src/dashboard/screens/Modules/Modules.js:381
-#: dist/dashboard.min.js:59975
 msgid "Sorry, No addons found"
 msgstr ""
 
 #: src/dashboard/screens/Modules/Modules.js:383
-#: dist/dashboard.min.js:59977
 msgid "Sorry, No modules found"
 msgstr ""
 
 #: src/dashboard/screens/Products/Products.js:55
-#: dist/dashboard.min.js:60942
 msgid "Themes"
 msgstr ""
 
