@@ -736,9 +736,11 @@ class EVF_Shortcode_Form {
 				$likert_rows    = isset( $field['likert_rows'] ) ? $field['likert_rows'] : array();
 				$row_keys       = array();
 				foreach ( $likert_rows as $row_key => $row_label ) {
-					$row_keys[]                     = $row_key;
-					$row_slug                       = 'required-field-message-' . $row_key;
-					$sub_field_messages[ $row_key ] = isset( $field[ $row_slug ] ) ? evf_string_translation( $form_data['id'], $field['id'], $field[ $row_slug ], '-' . $row_slug ) : $required_validation;
+					$row_keys[] = $row_key;
+					$row_slug   = 'required-field-message-' . $row_key;
+
+					$error_message                  = isset( $field[ $row_slug ] ) ? evf_string_translation( $form_data['id'], $field['id'], $field[ $row_slug ], '-' . $row_slug ) : $required_validation;
+					$sub_field_messages[ $row_key ] = htmlspecialchars( wp_kses( html_entity_decode( $error_message ), array() ) );
 				}
 				$container_data['row-keys'] = wp_json_encode( $row_keys );
 			} elseif ( 'address' === $field['type'] ) {
@@ -754,16 +756,18 @@ class EVF_Shortcode_Form {
 
 			if ( true === $has_sub_fields ) {
 				foreach ( $sub_field_messages as $sub_field_type => $error_message ) {
-					$container_data[ 'required-field-message-' . $sub_field_type ] = $error_message;
+					$container_data[ 'required-field-message-' . $sub_field_type ] = htmlspecialchars( wp_kses( html_entity_decode( $error_message ), array() ) );
+
 				}
 			} else {
-
 				if ( isset( $field['required_field_message_setting'] ) && 'global' === $field['required_field_message_setting'] ) {
-					$container_data['required-field-message'] = $required_validation;
+					$container_data['required-field-message'] = htmlspecialchars( wp_kses( html_entity_decode( $required_validation ), array() ) );
+
 				} elseif ( isset( $field['required-field-message'] ) && '' !== $field['required-field-message'] ) {
-					$container_data['required-field-message'] = evf_string_translation( $form_data['id'], $field['id'], $field['required-field-message'], '-required-field-message' );
+					$required_data                            = evf_string_translation( $form_data['id'], $field['id'], $field['required-field-message'], '-required-field-message' );
+					$container_data['required-field-message'] = htmlspecialchars( wp_kses( html_entity_decode( $required_data ), array() ) );
 				} else {
-					$container_data['required-field-message'] = $required_validation;
+					$container_data['required-field-message'] = htmlspecialchars( wp_kses( html_entity_decode( $required_validation ), array() ) );
 				}
 			}
 		}

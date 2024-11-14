@@ -1969,3 +1969,36 @@ $background-color_1: #f9f9f9;
 	background: #f6f7f8;
     border-bottom: 1px solid #ced4da !important;
 }
+
+/** CSS for Beaver builder*/
+.everest-forms-beaver__container {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+
+    img.everest-forms-logo__beaver {
+		background: #7545BB;
+		padding: 1rem;
+		border-radius: 14px;
+    }
+}
+.et-db {
+	#et-boc {
+	  .et-l {
+		.et-fb-modules-list {
+		  ul {
+			> li.everest_forms_divi_builder {
+			  &:before {
+				content: '';
+				background-image: url(https://everest-forms.me/wp-content/plugins/everest-forms/assets/images/icons/Everest-forms-vertical%20Logo.svg);
+				height: 34px;
+				background-repeat: no-repeat;
+				background-position: center;
+			  }
+			}
+		  }
+		}
+	  }
+	}
+  }

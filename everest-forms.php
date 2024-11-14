@@ -3,7 +3,7 @@
  * Plugin Name: Everest Forms
  * Plugin URI: https://everestforms.net/
  * Description: Drag and Drop contact form builder to easily create simple to complex forms for any purpose. Lightweight, Beautiful design, responsive and more.
- * Version: 3.0.3.1
+ * Version: 3.0.5
  * Author: WPEverest
  * Author URI: https://wpeverest.com
  * Text Domain: everest-forms
@@ -51,7 +51,7 @@ if ( is_readable( $autoloader ) && version_compare( PHP_VERSION, '7.1.3', '>=' )
 	 */
 	add_action(
 		'admin_notices',
-		function() {
+		function () {
 			?>
 			<div class="notice notice-error">
 				<p>

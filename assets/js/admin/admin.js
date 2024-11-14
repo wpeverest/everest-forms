@@ -258,6 +258,17 @@
 				maxWidth: 200,
 				multiple: true,
 				interactive: true,
+				trigger:'custom',
+				triggerOpen: {
+				  mouseenter: true,
+				  click: true,
+				  tap: true
+				},
+				triggerClose: {
+				  mouseleave: true,
+				  click: true,
+				  tap: true
+				},
 				position: 'bottom',
 				contentAsHTML: true,
 				updateAnimation: false,
@@ -282,6 +293,17 @@
 			position: 'bottom',
 			contentAsHTML: true,
 			updateAnimation: false,
+			trigger:'custom',
+			triggerOpen: {
+			  mouseenter: true,
+			  click: true,
+			  tap: true
+			},
+			triggerClose: {
+			  mouseleave: true,
+			  click: true,
+			  tap: true
+			},
 			restoration: 'current',
 			functionInit: function( instance, helper ) {
 				var $origin = $( helper.origin ),

@@ -2,7 +2,7 @@
 /**
  * Oxygen builder integration.
  *
- * @since xx.xx.xx
+ * @since 3.0.5
  * @package EverestForms\Addons\WPBakeryBuilder\WPBakeryBuilder
  */
 namespace EverestForms\Addons\WPBakeryBuilder;
@@ -13,7 +13,7 @@ use EverestForms\Addons\WPBakeryBuilder\Helper;
 /**
  * WPBakeryBuilder.
  *
- * @since xx.xx.xx
+ * @since 3.0.5
  */
 class WPBakeryBuilder {
 
@@ -26,7 +26,7 @@ class WPBakeryBuilder {
 	/**
 	 * Init.
 	 *
-	 * @since xx.xx.xx
+	 * @since 3.0.5
 	 */
 	public function setup() {
 
@@ -40,7 +40,7 @@ class WPBakeryBuilder {
 		/**
 		 * Action to create WPBakery Widget for Everest Forms.
 		 *
-		 * @since xx.xx.xx
+		 * @since 3.0.5
 		 */
 		add_action( 'vc_before_init', array( $this, 'evf_create_wpbakery_widget_category' ) );
 	}
@@ -48,7 +48,7 @@ class WPBakeryBuilder {
 	/**
 	 * Create WPBakery Widgets for Everest Forms.
 	 *
-	 * @since xx.xx.xx
+	 * @since 3.0.5
 	 */
 	public function evf_create_wpbakery_widget_category() {
 		$evf_get_all_forms = evf_get_all_forms();
@@ -81,5 +81,4 @@ class WPBakeryBuilder {
 
 		do_action( 'everest_forms_add_wpbakery_widget' );
 	}
-
 }

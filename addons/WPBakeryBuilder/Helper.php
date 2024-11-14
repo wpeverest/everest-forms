@@ -2,7 +2,7 @@
 /**
  * WPBakery Integration helper functions.
  *
- * @since xx.xx.xx
+ * @since 3.0.5
  * @package EverestForms\Addons\WPBakeryBuilder
  */
 
@@ -13,14 +13,14 @@ namespace EverestForms\Addons\WPBakeryBuilder;
  *
  * @package EverestForms\Addons\WPBakeryBuilder
  *
- * @since xx.xx.xx
+ * @since 3.0.5
  */
 class Helper {
 
 	/**
 	 * Return if WPBakery is active.
 	 *
-	 * @since xx.xx.xx
+	 * @since 3.0.5
 	 *
 	 * @return boolean
 	 */
@@ -31,25 +31,25 @@ class Helper {
 	/**
 	 * Check if the current request is for WPBakery editor.
 	 *
-	 * @since xx.xx.xx
+	 * @since 3.0.5
 	 *
 	 * @return boolean
 	 */
 	public static function is_WPBakery_editor() {
 		return isset( $_REQUEST['action'] ) &&
-			   ( in_array( $_REQUEST['action'], array( 'vc_load_shortcode', 'vc_inline', 'vc_frontend_editor' ), true ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+				( in_array( $_REQUEST['action'], array( 'vc_load_shortcode', 'vc_inline', 'vc_frontend_editor' ), true ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 	}
 
 	/**
 	 * Notice if the WPBakery is not instaled.
 	 *
-	 * @since xx.xx.xx
+	 * @since 3.0.5
 	 */
 	public static function print_admin_notice() {
 
 		add_action(
 			'admin_notices',
-			function() {
+			function () {
 				printf(
 					'<div class="notice notice-warning is-dismissible"><p><strong>%s </strong>%s</p><button type="button" class="notice-dismiss"><span class="screen-reader-text">%s</span></button></div>',
 					esc_html( 'Everest Forms:' ),
