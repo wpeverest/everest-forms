@@ -1,0 +1,96 @@
+name: EVF Staging Test
+
+on:
+    push:
+        branches:
+            - staging
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout Code From Current Branch
+              uses: actions/checkout@v2
+
+            - name: Add Private SSH Key
+              run: |
+                mkdir -p ~/.ssh
+                echo "${{ secrets.TG_PRIVATE_SSH_KEY }}" > ~/.ssh/id_rsa
+                chmod 600 ~/.ssh/id_rsa
+
+            - name: Add GitHub Email & Username
+              env:
+                MY_EMAIL: ${{ secrets.TG_GITHUB_EMAIL}}
+                MY_USERNAME: ${{ secrets.TG_GITHUB_USERNAME }}
+              run: |
+                git config --global user.email "$MY_EMAIL"
+                git config --global user.name "$MY_USERNAME"
+
+            - name: Use Node.js 12.x
+              uses: actions/setup-node@v2
+              with:
+                node-version: 12.x
+
+            - name: Setup PHP v7.4
+              uses: shivammathur/setup-php@v2
+              with:
+                php-version: '7.4'
+                extensions: cli, dev, curl, mbstring, xmlrpc
+
+            - name: NPM, Composer Install & NPM Build
+              run: |
+                npm install
+                composer install
+                npm run build
+                composer install --no-dev
+                mkdir everest-forms
+                rsync -rc --exclude-from="./.distignore" "./" "./everest-forms" --delete --delete-excluded
+
+            - name: Copy plugin file to server
+              env:
+                Srv_IP: ${{ secrets.QA_AUTOMATION_SERVER_IP }}
+                Srv_UsrName: ${{ secrets.QA_AUTOMATION_SERVER_USERNAME }}
+                Server_PASS: ${{ secrets.QA_AUTOMATION_SERVER_PASS }}
+              run: |
+                sshpass -p "$Server_PASS" rsync -ahPz -e "ssh -o StrictHostKeyChecking=no" everest-forms $Srv_UsrName@$Srv_IP:/home/master/applications/ycrdmckpsu/public_html/evfqatest/wp-content/plugins
+
+            - name: Setup Chrome
+              uses: browser-actions/setup-chrome@v1
+            - run: chrome --version
+
+            - name: Set up Python 3.12.1
+              uses: actions/setup-python@v3
+              with:
+                python-version: 3.12.1
+            - run: python -v
+
+            - name: Automation Test Script Everest Forms
+              run: |
+                mkdir python-code
+                cd python-code
+                git init
+                git remote add origin git@github.com:wpeverest/EVF-Automation.git
+                git pull origin test-evf-free
+                pip install -r requirements.txt
+                chmod +x test_evf_free.sh
+                bash ./test_evf_free.sh
+              continue-on-error: true
+
+            - name: Test Report Generation
+              uses: actions/upload-artifact@v4
+              if: success() || failure()
+              with:
+                name: Report                # Name of the folder
+                path: python-code/results
+
+            - name: Find Test Report Url Below
+              if: success() || failure()
+              env:
+                Srv_IP: ${{ secrets.QA_AUTOMATION_SERVER_IP }}
+                Srv_UsrName: ${{ secrets.QA_AUTOMATION_SERVER_USERNAME }}
+                Server_PASS: ${{ secrets.QA_AUTOMATION_SERVER_PASS }}
+              run: |
+                sshpass -p "$Server_PASS" ssh -o StrictHostKeyChecking=no $Srv_UsrName@$Srv_IP 'rm -rf /home/master/applications/ycrdmckpsu/public_html/evfqatest/reports/*'
+                sshpass -p "$Server_PASS" scp -o StrictHostKeyChecking=no -r python-code/results/* $Srv_UsrName@$Srv_IP:/home/master/applications/ycrdmckpsu/public_html/evfqatest/reports/
+                echo "https://qatest.wptests.net/evfqatest/reports/report.html"
+                echo "https://qatest.wptests.net/evfqatest/reports/test_report.html"
+              continue-on-error: true
