@@ -17,23 +17,6 @@
       "demo_video_url": "2Hs_dwpyJ54"
     },
     {
-      "title": "Style Customizer",
-      "slug": "everest-forms-style-customizer",
-      "name": "Everest Forms Style Customizer",
-      "image": "extensions-json/sections/images/style-customizer.png",
-      "excerpt": "Allows you to make design changes without coding. Powerful customizing panel with live preview helps you customize colors, fonts, spacing, background, alignment and more.",
-      "link": "https://docs.everestforms.net/docs/style-customizer/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
-      "released_date": "22/03/2019",
-      "plan": [
-        "personal",
-        "agency",
-        "themegrill agency"
-      ],
-      "setting_url": "",
-      "demo_video_url": "PEK-FBU8gP0",
-      "popular_rank": 1
-    },
-    {
       "title": "Custom Captcha",
       "slug": "everest-forms-captcha",
       "name": "Everest Forms Captcha",
@@ -510,6 +493,23 @@
     }
   ],
   "features": [
+    {
+      "title": "Style Customizer",
+      "slug": "everest-forms-style-customizer",
+      "name": "Everest Forms Style Customizer",
+      "image": "extensions-json/sections/images/style-customizer.png",
+      "excerpt": "Allows you to make design changes without coding. Powerful customizing panel with live preview helps you customize colors, fonts, spacing, background, alignment and more.",
+      "link": "https://docs.everestforms.net/docs/style-customizer/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "released_date": "22/03/2019",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "setting_url": "",
+      "demo_video_url": "PEK-FBU8gP0",
+      "popular_rank": 1
+    },
     {
       "title": "Trello",
       "slug": "everest-forms-trello",
