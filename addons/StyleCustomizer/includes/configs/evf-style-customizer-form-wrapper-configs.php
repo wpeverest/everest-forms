@@ -669,19 +669,19 @@ function evf_style_customizer_wrapper_controls( $controls, $customize ) {
 				'choices'     => array(
 					'bold'      => array(
 						'name'  => esc_html__( 'Bold', 'everest-forms' ),
-						'image' => plugins_url( 'includes/addons/StyleCustomizer/assets/images/bold.svg', EVF_PLUGIN_FILE ),
+						'image' => plugins_url( 'addons/StyleCustomizer/assets/images/bold.svg', EVF_PLUGIN_FILE ),
 					),
 					'italic'    => array(
 						'name'  => esc_html__( 'Italic', 'everest-forms' ),
-						'image' => plugins_url( 'includes/addons/StyleCustomizer/assets/images/italic.svg', EVF_PLUGIN_FILE ),
+						'image' => plugins_url( 'addons/StyleCustomizer/assets/images/italic.svg', EVF_PLUGIN_FILE ),
 					),
 					'underline' => array(
 						'name'  => esc_html__( 'Underline', 'everest-forms' ),
-						'image' => plugins_url( 'includes/addons/StyleCustomizer/assets/images/underline.svg', EVF_PLUGIN_FILE ),
+						'image' => plugins_url( 'addons/StyleCustomizer/assets/images/underline.svg', EVF_PLUGIN_FILE ),
 					),
 					'uppercase' => array(
 						'name'  => esc_html__( 'Uppercase', 'everest-forms' ),
-						'image' => plugins_url( 'includes/addons/StyleCustomizer/assets/images/uppercase.svg', EVF_PLUGIN_FILE ),
+						'image' => plugins_url( 'addons/StyleCustomizer/assets/images/uppercase.svg', EVF_PLUGIN_FILE ),
 					),
 				),
 			),
@@ -699,15 +699,15 @@ function evf_style_customizer_wrapper_controls( $controls, $customize ) {
 				'choices'     => array(
 					'left'   => array(
 						'name'  => esc_html__( 'Left', 'everest-forms' ),
-						'image' => plugins_url( 'includes/addons/StyleCustomizer/assets/images/align-left.svg', EVF_PLUGIN_FILE ),
+						'image' => plugins_url( 'addons/StyleCustomizer/assets/images/align-left.svg', EVF_PLUGIN_FILE ),
 					),
 					'center' => array(
 						'name'  => esc_html__( 'Center', 'everest-forms' ),
-						'image' => plugins_url( 'includes/addons/StyleCustomizer/assets/images/align-center.svg', EVF_PLUGIN_FILE ),
+						'image' => plugins_url( 'addons/StyleCustomizer/assets/images/align-center.svg', EVF_PLUGIN_FILE ),
 					),
 					'right'  => array(
 						'name'  => esc_html__( 'Right', 'everest-forms' ),
-						'image' => plugins_url( 'includes/addons/StyleCustomizer/assets/images/align-right.svg', EVF_PLUGIN_FILE ),
+						'image' => plugins_url( 'addons/StyleCustomizer/assets/images/align-right.svg', EVF_PLUGIN_FILE ),
 					),
 				),
 			),
@@ -826,19 +826,19 @@ function evf_style_customizer_wrapper_controls( $controls, $customize ) {
 				'choices'     => array(
 					'bold'      => array(
 						'name'  => esc_html__( 'Bold', 'everest-forms' ),
-						'image' => plugins_url( 'includes/addons/StyleCustomizer/assets/images/bold.svg', EVF_PLUGIN_FILE ),
+						'image' => plugins_url( 'addons/StyleCustomizer/assets/images/bold.svg', EVF_PLUGIN_FILE ),
 					),
 					'italic'    => array(
 						'name'  => esc_html__( 'Italic', 'everest-forms' ),
-						'image' => plugins_url( 'includes/addons/StyleCustomizer/assets/images/italic.svg', EVF_PLUGIN_FILE ),
+						'image' => plugins_url( 'addons/StyleCustomizer/assets/images/italic.svg', EVF_PLUGIN_FILE ),
 					),
 					'underline' => array(
 						'name'  => esc_html__( 'Underline', 'everest-forms' ),
-						'image' => plugins_url( 'includes/addons/StyleCustomizer/assets/images/underline.svg', EVF_PLUGIN_FILE ),
+						'image' => plugins_url( 'addons/StyleCustomizer/assets/images/underline.svg', EVF_PLUGIN_FILE ),
 					),
 					'uppercase' => array(
 						'name'  => esc_html__( 'Uppercase', 'everest-forms' ),
-						'image' => plugins_url( 'includes/addons/StyleCustomizer/assets/images/uppercase.svg', EVF_PLUGIN_FILE ),
+						'image' => plugins_url( 'addons/StyleCustomizer/assets/images/uppercase.svg', EVF_PLUGIN_FILE ),
 					),
 				),
 			),
@@ -856,15 +856,15 @@ function evf_style_customizer_wrapper_controls( $controls, $customize ) {
 				'choices'     => array(
 					'left'   => array(
 						'name'  => esc_html__( 'Left', 'everest-forms' ),
-						'image' => plugins_url( 'includes/addons/StyleCustomizer/assets/images/align-left.svg', EVF_PLUGIN_FILE ),
+						'image' => plugins_url( 'addons/StyleCustomizer/assets/images/align-left.svg', EVF_PLUGIN_FILE ),
 					),
 					'center' => array(
 						'name'  => esc_html__( 'Center', 'everest-forms' ),
-						'image' => plugins_url( 'includes/addons/StyleCustomizer/assets/images/align-center.svg', EVF_PLUGIN_FILE ),
+						'image' => plugins_url( 'addons/StyleCustomizer/assets/images/align-center.svg', EVF_PLUGIN_FILE ),
 					),
 					'right'  => array(
 						'name'  => esc_html__( 'Right', 'everest-forms' ),
-						'image' => plugins_url( 'includes/addons/StyleCustomizer/assets/images/align-right.svg', EVF_PLUGIN_FILE ),
+						'image' => plugins_url( 'addons/StyleCustomizer/assets/images/align-right.svg', EVF_PLUGIN_FILE ),
 					),
 				),
 			),
@@ -1005,19 +1005,19 @@ function evf_style_customizer_wrapper_controls( $controls, $customize ) {
 				'choices'     => array(
 					'bold'      => array(
 						'name'  => esc_html__( 'Bold', 'everest-forms' ),
-						'image' => plugins_url( 'includes/addons/StyleCustomizer/assets/images/bold.svg', EVF_PLUGIN_FILE ),
+						'image' => plugins_url( 'addons/StyleCustomizer/assets/images/bold.svg', EVF_PLUGIN_FILE ),
 					),
 					'italic'    => array(
 						'name'  => esc_html__( 'Italic', 'everest-forms' ),
-						'image' => plugins_url( 'includes/addons/StyleCustomizer/assets/images/italic.svg', EVF_PLUGIN_FILE ),
+						'image' => plugins_url( 'addons/StyleCustomizer/assets/images/italic.svg', EVF_PLUGIN_FILE ),
 					),
 					'underline' => array(
 						'name'  => esc_html__( 'Underline', 'everest-forms' ),
-						'image' => plugins_url( 'includes/addons/StyleCustomizer/assets/images/underline.svg', EVF_PLUGIN_FILE ),
+						'image' => plugins_url( 'addons/StyleCustomizer/assets/images/underline.svg', EVF_PLUGIN_FILE ),
 					),
 					'uppercase' => array(
 						'name'  => esc_html__( 'Uppercase', 'everest-forms' ),
-						'image' => plugins_url( 'includes/addons/StyleCustomizer/assets/images/uppercase.svg', EVF_PLUGIN_FILE ),
+						'image' => plugins_url( 'addons/StyleCustomizer/assets/images/uppercase.svg', EVF_PLUGIN_FILE ),
 					),
 				),
 			),
@@ -1035,15 +1035,15 @@ function evf_style_customizer_wrapper_controls( $controls, $customize ) {
 				'choices'     => array(
 					'left'   => array(
 						'name'  => esc_html__( 'Left', 'everest-forms' ),
-						'image' => plugins_url( 'includes/addons/StyleCustomizer/assets/images/align-left.svg', EVF_PLUGIN_FILE ),
+						'image' => plugins_url( 'addons/StyleCustomizer/assets/images/align-left.svg', EVF_PLUGIN_FILE ),
 					),
 					'center' => array(
 						'name'  => esc_html__( 'Center', 'everest-forms' ),
-						'image' => plugins_url( 'includes/addons/StyleCustomizer/assets/images/align-center.svg', EVF_PLUGIN_FILE ),
+						'image' => plugins_url( 'addons/StyleCustomizer/assets/images/align-center.svg', EVF_PLUGIN_FILE ),
 					),
 					'right'  => array(
 						'name'  => esc_html__( 'Right', 'everest-forms' ),
-						'image' => plugins_url( 'includes/addons/StyleCustomizer/assets/images/align-right.svg', EVF_PLUGIN_FILE ),
+						'image' => plugins_url( 'addons/StyleCustomizer/assets/images/align-right.svg', EVF_PLUGIN_FILE ),
 					),
 				),
 			),
@@ -1186,19 +1186,19 @@ function evf_style_customizer_wrapper_controls( $controls, $customize ) {
 				'choices'     => array(
 					'bold'      => array(
 						'name'  => esc_html__( 'Bold', 'everest-forms' ),
-						'image' => plugins_url( 'includes/addons/StyleCustomizer/assets/images/bold.svg', EVF_PLUGIN_FILE ),
+						'image' => plugins_url( 'addons/StyleCustomizer/assets/images/bold.svg', EVF_PLUGIN_FILE ),
 					),
 					'italic'    => array(
 						'name'  => esc_html__( 'Italic', 'everest-forms' ),
-						'image' => plugins_url( 'includes/addons/StyleCustomizer/assets/images/italic.svg', EVF_PLUGIN_FILE ),
+						'image' => plugins_url( 'addons/StyleCustomizer/assets/images/italic.svg', EVF_PLUGIN_FILE ),
 					),
 					'underline' => array(
 						'name'  => esc_html__( 'Underline', 'everest-forms' ),
-						'image' => plugins_url( 'includes/addons/StyleCustomizer/assets/images/underline.svg', EVF_PLUGIN_FILE ),
+						'image' => plugins_url( 'addons/StyleCustomizer/assets/images/underline.svg', EVF_PLUGIN_FILE ),
 					),
 					'uppercase' => array(
 						'name'  => esc_html__( 'Uppercase', 'everest-forms' ),
-						'image' => plugins_url( 'includes/addons/StyleCustomizer/assets/images/uppercase.svg', EVF_PLUGIN_FILE ),
+						'image' => plugins_url( 'addons/StyleCustomizer/assets/images/uppercase.svg', EVF_PLUGIN_FILE ),
 					),
 				),
 			),
@@ -1216,15 +1216,15 @@ function evf_style_customizer_wrapper_controls( $controls, $customize ) {
 				'choices'     => array(
 					'left'   => array(
 						'name'  => esc_html__( 'Left', 'everest-forms' ),
-						'image' => plugins_url( 'includes/addons/StyleCustomizer/assets/images/align-left.svg', EVF_PLUGIN_FILE ),
+						'image' => plugins_url( 'addons/StyleCustomizer/assets/images/align-left.svg', EVF_PLUGIN_FILE ),
 					),
 					'center' => array(
 						'name'  => esc_html__( 'Center', 'everest-forms' ),
-						'image' => plugins_url( 'includes/addons/StyleCustomizer/assets/images/align-center.svg', EVF_PLUGIN_FILE ),
+						'image' => plugins_url( 'addons/StyleCustomizer/assets/images/align-center.svg', EVF_PLUGIN_FILE ),
 					),
 					'right'  => array(
 						'name'  => esc_html__( 'Right', 'everest-forms' ),
-						'image' => plugins_url( 'includes/addons/StyleCustomizer/assets/images/align-right.svg', EVF_PLUGIN_FILE ),
+						'image' => plugins_url( 'addons/StyleCustomizer/assets/images/align-right.svg', EVF_PLUGIN_FILE ),
 					),
 				),
 			),
@@ -1357,19 +1357,19 @@ function evf_style_customizer_wrapper_controls( $controls, $customize ) {
 				'choices'     => array(
 					'bold'      => array(
 						'name'  => esc_html__( 'Bold', 'everest-forms-style-customizer' ),
-						'image' => plugins_url( 'includes/addons/StyleCustomizer/assets/images/bold.svg', EVF_PLUGIN_FILE ),
+						'image' => plugins_url( 'addons/StyleCustomizer/assets/images/bold.svg', EVF_PLUGIN_FILE ),
 					),
 					'italic'    => array(
 						'name'  => esc_html__( 'Italic', 'everest-forms-style-customizer' ),
-						'image' => plugins_url( 'includes/addons/StyleCustomizer/assets/images/italic.svg', EVF_PLUGIN_FILE ),
+						'image' => plugins_url( 'addons/StyleCustomizer/assets/images/italic.svg', EVF_PLUGIN_FILE ),
 					),
 					'underline' => array(
 						'name'  => esc_html__( 'Underline', 'everest-forms-style-customizer' ),
-						'image' => plugins_url( 'includes/addons/StyleCustomizer/assets/images/underline.svg', EVF_PLUGIN_FILE ),
+						'image' => plugins_url( 'addons/StyleCustomizer/assets/images/underline.svg', EVF_PLUGIN_FILE ),
 					),
 					'uppercase' => array(
 						'name'  => esc_html__( 'Uppercase', 'everest-forms-style-customizer' ),
-						'image' => plugins_url( 'includes/addons/StyleCustomizer/assets/images/uppercase.svg', EVF_PLUGIN_FILE ),
+						'image' => plugins_url( 'addons/StyleCustomizer/assets/images/uppercase.svg', EVF_PLUGIN_FILE ),
 					),
 				),
 			),
@@ -1387,15 +1387,15 @@ function evf_style_customizer_wrapper_controls( $controls, $customize ) {
 				'choices'     => array(
 					'left'   => array(
 						'name'  => esc_html__( 'Left', 'everest-forms-style-customizer' ),
-						'image' => plugins_url( 'includes/addons/StyleCustomizer/assets/images/align-left.svg', EVF_PLUGIN_FILE ),
+						'image' => plugins_url( 'addons/StyleCustomizer/assets/images/align-left.svg', EVF_PLUGIN_FILE ),
 					),
 					'center' => array(
 						'name'  => esc_html__( 'Center', 'everest-forms-style-customizer' ),
-						'image' => plugins_url( 'includes/addons/StyleCustomizer/assets/images/align-center.svg', EVF_PLUGIN_FILE ),
+						'image' => plugins_url( 'addons/StyleCustomizer/assets/images/align-center.svg', EVF_PLUGIN_FILE ),
 					),
 					'right'  => array(
 						'name'  => esc_html__( 'Right', 'everest-forms-style-customizer' ),
-						'image' => plugins_url( 'includes/addons/StyleCustomizer/assets/images/align-right.svg', EVF_PLUGIN_FILE ),
+						'image' => plugins_url( 'addons/StyleCustomizer/assets/images/align-right.svg', EVF_PLUGIN_FILE ),
 					),
 				),
 			),
@@ -1669,19 +1669,19 @@ function evf_style_customizer_wrapper_controls( $controls, $customize ) {
 				'choices'     => array(
 					'bold'      => array(
 						'name'  => esc_html__( 'Bold', 'everest-forms' ),
-						'image' => plugins_url( 'includes/addons/StyleCustomizer/assets/images/bold.svg', EVF_PLUGIN_FILE ),
+						'image' => plugins_url( 'addons/StyleCustomizer/assets/images/bold.svg', EVF_PLUGIN_FILE ),
 					),
 					'italic'    => array(
 						'name'  => esc_html__( 'Italic', 'everest-forms' ),
-						'image' => plugins_url( 'includes/addons/StyleCustomizer/assets/images/italic.svg', EVF_PLUGIN_FILE ),
+						'image' => plugins_url( 'addons/StyleCustomizer/assets/images/italic.svg', EVF_PLUGIN_FILE ),
 					),
 					'underline' => array(
 						'name'  => esc_html__( 'Underline', 'everest-forms' ),
-						'image' => plugins_url( 'includes/addons/StyleCustomizer/assets/images/underline.svg', EVF_PLUGIN_FILE ),
+						'image' => plugins_url( 'addons/StyleCustomizer/assets/images/underline.svg', EVF_PLUGIN_FILE ),
 					),
 					'uppercase' => array(
 						'name'  => esc_html__( 'Uppercase', 'everest-forms' ),
-						'image' => plugins_url( 'includes/addons/StyleCustomizer/assets/images/uppercase.svg', EVF_PLUGIN_FILE ),
+						'image' => plugins_url( 'addons/StyleCustomizer/assets/images/uppercase.svg', EVF_PLUGIN_FILE ),
 					),
 				),
 			),
@@ -1699,15 +1699,15 @@ function evf_style_customizer_wrapper_controls( $controls, $customize ) {
 				'choices'     => array(
 					'left'   => array(
 						'name'  => esc_html__( 'Left', 'everest-forms' ),
-						'image' => plugins_url( 'includes/addons/StyleCustomizer/assets/images/align-left.svg', EVF_PLUGIN_FILE ),
+						'image' => plugins_url( 'addons/StyleCustomizer/assets/images/align-left.svg', EVF_PLUGIN_FILE ),
 					),
 					'center' => array(
 						'name'  => esc_html__( 'Center', 'everest-forms' ),
-						'image' => plugins_url( 'includes/addons/StyleCustomizer/assets/images/align-center.svg', EVF_PLUGIN_FILE ),
+						'image' => plugins_url( 'addons/StyleCustomizer/assets/images/align-center.svg', EVF_PLUGIN_FILE ),
 					),
 					'right'  => array(
 						'name'  => esc_html__( 'Right', 'everest-forms' ),
-						'image' => plugins_url( 'includes/addons/StyleCustomizer/assets/images/align-right.svg', EVF_PLUGIN_FILE ),
+						'image' => plugins_url( 'addons/StyleCustomizer/assets/images/align-right.svg', EVF_PLUGIN_FILE ),
 					),
 				),
 			),
@@ -1822,19 +1822,19 @@ function evf_style_customizer_wrapper_controls( $controls, $customize ) {
 				'choices'     => array(
 					'bold'      => array(
 						'name'  => esc_html__( 'Bold', 'everest-forms' ),
-						'image' => plugins_url( 'includes/addons/StyleCustomizer/assets/images/bold.svg', EVF_PLUGIN_FILE ),
+						'image' => plugins_url( 'addons/StyleCustomizer/assets/images/bold.svg', EVF_PLUGIN_FILE ),
 					),
 					'italic'    => array(
 						'name'  => esc_html__( 'Italic', 'everest-forms' ),
-						'image' => plugins_url( 'includes/addons/StyleCustomizer/assets/images/italic.svg', EVF_PLUGIN_FILE ),
+						'image' => plugins_url( 'addons/StyleCustomizer/assets/images/italic.svg', EVF_PLUGIN_FILE ),
 					),
 					'underline' => array(
 						'name'  => esc_html__( 'Underline', 'everest-forms' ),
-						'image' => plugins_url( 'includes/addons/StyleCustomizer/assets/images/underline.svg', EVF_PLUGIN_FILE ),
+						'image' => plugins_url( 'addons/StyleCustomizer/assets/images/underline.svg', EVF_PLUGIN_FILE ),
 					),
 					'uppercase' => array(
 						'name'  => esc_html__( 'Uppercase', 'everest-forms' ),
-						'image' => plugins_url( 'includes/addons/StyleCustomizer/assets/images/uppercase.svg', EVF_PLUGIN_FILE ),
+						'image' => plugins_url( 'addons/StyleCustomizer/assets/images/uppercase.svg', EVF_PLUGIN_FILE ),
 					),
 				),
 			),
@@ -1877,15 +1877,15 @@ function evf_style_customizer_wrapper_controls( $controls, $customize ) {
 				'choices'     => array(
 					'left'   => array(
 						'name'  => __( 'Left', 'everest-forms' ),
-						'image' => plugins_url( 'includes/addons/StyleCustomizer/assets/images/align-left.svg', EVF_PLUGIN_FILE ),
+						'image' => plugins_url( 'addons/StyleCustomizer/assets/images/align-left.svg', EVF_PLUGIN_FILE ),
 					),
 					'center' => array(
 						'name'  => __( 'Center', 'everest-forms' ),
-						'image' => plugins_url( 'includes/addons/StyleCustomizer/assets/images/align-center.svg', EVF_PLUGIN_FILE ),
+						'image' => plugins_url( 'addons/StyleCustomizer/assets/images/align-center.svg', EVF_PLUGIN_FILE ),
 					),
 					'right'  => array(
 						'name'  => __( 'Right', 'everest-forms' ),
-						'image' => plugins_url( 'includes/addons/StyleCustomizer/assets/images/align-right.svg', EVF_PLUGIN_FILE ),
+						'image' => plugins_url( 'addons/StyleCustomizer/assets/images/align-right.svg', EVF_PLUGIN_FILE ),
 					),
 				),
 			),

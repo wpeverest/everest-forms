@@ -1,3 +1,4 @@
+
 /* global wp, _wpCustomizeBackground, _evfCustomizeControlsL10n */
 ( function( $, api, data ) {
 	'use strict';

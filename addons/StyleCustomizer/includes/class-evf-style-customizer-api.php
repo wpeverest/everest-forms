@@ -493,7 +493,7 @@ class EVF_Style_Customizer_API {
 		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
 		// Enqueue preview scripts.
-		wp_enqueue_script( 'everest-forms-customize-preview', plugins_url( "/assets/js/admin/customize-preview{$suffix}.js", EVF_PLUGIN_FILE ), array( 'jquery', 'customize-preview' ), EVF_VERSION, true );
+		wp_enqueue_script( 'everest-forms-customize-preview', plugins_url( "assets/js/admin/customize-preview{$suffix}.js", EVF_PLUGIN_FILE ), array( 'jquery', 'customize-preview' ), EVF_VERSION, true );
 		wp_localize_script(
 			'everest-forms-customize-preview',
 			'_evfCustomizePreviewL10n',
@@ -525,8 +525,8 @@ class EVF_Style_Customizer_API {
 		wp_enqueue_script( 'jquery-confirm' );
 		wp_enqueue_style( 'jquery-confirm' );
 		// Enqueue controls scripts.
-		wp_enqueue_style( 'everest-forms-customize-controls', plugins_url( '/assets/css/customize-controls.css', EVF_PLUGIN_FILE ), array(), EVF_VERSION );
-		wp_enqueue_script( 'everest-forms-customize-controls', plugins_url( "/assets/js/admin/customize-controls{$suffix}.js", EVF_PLUGIN_FILE ), array( 'jquery' ), EVF_VERSION, true );
+		wp_enqueue_style( 'everest-forms-customize-controls', plugins_url( 'assets/css/customize-controls.css', EVF_PLUGIN_FILE ), array(), EVF_VERSION );
+		wp_enqueue_script( 'everest-forms-customize-controls', plugins_url( "assets/js/admin/customize-controls{$suffix}.js", EVF_PLUGIN_FILE ), array( 'jquery' ), EVF_VERSION, true );
 		wp_localize_script(
 			'everest-forms-customize-controls',
 			'_evfCustomizeControlsL10n',
@@ -541,12 +541,23 @@ class EVF_Style_Customizer_API {
 				'color_palette_nonce' => wp_create_nonce( 'color_palette' ),
 			)
 		);
+
+		$custom_background = get_theme_support( 'custom-background' );
+		wp_localize_script(
+			'everest-forms-customize-controls',
+			'_wpCustomizeBackground',
+			array(
+				'defaults' => ! empty( $custom_background[0] ) ? $custom_background[0] : array(),
+				'nonces'   => array(
+					'add' => wp_create_nonce( 'background-add' ),
+				),
+			)
+		);
 	}
 
 	public function modify_customized_data( $response, $wp_customize ) {
 
-		$customized_data = get_option( 'everest_forms_styles', array() );
-		error_log(print_r($customized_data,true));
+		$customized_data   = get_option( 'everest_forms_styles', array() );
 		$matched_color_key = null;
 		foreach ( $response['setting_validities'] as $key => $validity ) {
 			if ( preg_match( '/everest_forms_styles\[(\d+)\]\[color_palette\]\[(color_\d+)\]/', $key, $matches ) ) {
@@ -701,7 +712,7 @@ class EVF_Style_Customizer_API {
 			$compiler = new ScssPhp\ScssPhp\Compiler(); // phpcs:ignore PHPCompatibility.LanguageConstructs.NewLanguageConstructs.t_ns_separatorFound
 			$compiler->setVariables( array( 'form_id' => $form_id ) );
 			$compiler->setFormatter( 'ScssPhp\ScssPhp\Formatter\Compressed' );
-			$compiler->addImportPath( plugin_dir_path( EVF_PLUGIN_FILE ) . '/assets/css/bourbon/' );
+			$compiler->addImportPath( plugin_dir_path( EVF_PLUGIN_FILE ) . 'assets/css/bourbon/' );
 			$compiled_css = $compiler->compile( trim( $scss ) );
 			return $compiled_css;
 		} catch ( Exception $e ) {

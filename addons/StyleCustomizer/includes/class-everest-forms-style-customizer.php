@@ -109,7 +109,7 @@ if ( ! class_exists( 'EverestForms_Style_Customizer' ) ) {
 			$screen_id = $screen ? $screen->id : '';
 
 			// Register admin scripts.
-			wp_register_style( 'everest-forms-customize-admin', plugins_url( '/assets/css/customize-admin.css', EVF_PLUGIN_FILE ), array(), EVF_VERSION );
+			wp_register_style( 'everest-forms-customize-admin', plugins_url( 'assets/css/customize-admin.css', EVF_PLUGIN_FILE ), array(), EVF_VERSION );
 
 			// Add RTL support for admin styles.
 			wp_style_add_data( 'everest-forms-customize-admin', 'rtl', 'replace' );

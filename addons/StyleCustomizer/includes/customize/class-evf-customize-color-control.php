@@ -42,7 +42,7 @@ class EVF_Customize_Color_Control extends WP_Customize_Color_Control {
 
 		// Enqueue control scripts.
 		wp_enqueue_style( 'wp-color-picker' );
-		wp_enqueue_script( 'wp-color-picker-alpha', plugins_url( "/assets/js/wp-color-picker/wp-color-picker-alpha{$suffix}.js", EVF_PLUGIN_FILE ), array( 'wp-color-picker' ), '2.1.4', true );
+		wp_enqueue_script( 'wp-color-picker-alpha', plugins_url( "assets/js/wp-color-picker/wp-color-picker-alpha{$suffix}.js", EVF_PLUGIN_FILE ), array( 'wp-color-picker' ), '2.1.4', true );
 	}
 
 	/**

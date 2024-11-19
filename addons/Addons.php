@@ -9,6 +9,7 @@
 namespace EverestForms\Addons;
 
 use EverestForms\Addons\OxygenBuilder\OxygenBuilder;
+use EverestForms\Addons\StyleCustomizer\StyleCustomizer;
 use EverestForms\Traits\Singleton;
 
 /**
@@ -44,7 +45,8 @@ class Addons {
 		return apply_filters(
 			'everest_forms_addon_list',
 			array(
-				'oxygen-builder' => OxygenBuilder::class,
+				'oxygen-builder'   => OxygenBuilder::class,
+				'style-customizer' => StyleCustomizer::class,
 			)
 		);
 	}

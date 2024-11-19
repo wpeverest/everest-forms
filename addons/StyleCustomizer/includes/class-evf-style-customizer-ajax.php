@@ -104,7 +104,7 @@ final class EVF_Style_Customizer_Ajax {
 
 			$template        = new stdClass();
 			$template->name  = $template_name;
-			$template->image = plugins_url( '/includes/addons/StyleCustomizer/assets/images/templates/default.png', EVF_PLUGIN_FILE );
+			$template->image = plugins_url( 'addons/StyleCustomizer/assets/images/templates/default.png', EVF_PLUGIN_FILE );
 			$template->data  = isset( $styles[ $form_id ] ) ? $styles[ $form_id ] : '';
 
 			if ( ! empty( $template->data ) ) {
