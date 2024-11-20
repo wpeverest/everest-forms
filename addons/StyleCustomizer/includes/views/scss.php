@@ -8,9 +8,16 @@
 
 defined( 'ABSPATH' ) || exit;
 
+if ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] === 'everest_forms_save_form' ) {
+	return array();
+}
+
 // Get values.
-$styles                = get_option( 'everest_forms_styles' );
-$current_color_palette = json_decode( wp_unslash( $_REQUEST['customized'] ), true );
+$styles = get_option( 'everest_forms_styles' );
+
+if ( isset( $_REQUEST['customized'] ) ) {
+	$current_color_palette = json_decode( wp_unslash( $_REQUEST['customized'] ), true );
+}
 
 $palette_key = null;
 foreach ( $current_color_palette as $key => $value ) {
@@ -74,7 +81,7 @@ if ( ! empty( $backward_compatibility_color_key ) ) {
 		$colorPaletteKey  = $colorPaletteKeys[0];
 		$palette_key      = $colorPaletteKey;
 	} else {
-		$palette_key = 'color_13';
+		$palette_key                                     = 'color_13';
 		$values[ $form_id ]['color_palette']['color_13'] = array(
 			'form_background'   => '',
 			'field_background'  => '',
@@ -381,7 +388,9 @@ $validation_message_border_color: <?php echo evf_clean( $values['validation_mess
 
 
 			.everest-forms-uploader {
-				// Background color missing.
+				<?php if ( '#ffffff' !== $values['typography']['file_upload_background_color'] ) : ?>
+					background-color: <?php echo evf_clean( $values['typography']['file_upload_background_color'] ); ?>;
+				<?php endif; ?>
 				<?php if ( isset( $values['file_upload_styles']['border_type'] ) ) : ?>
 					border-style: $file_upload_styles_border_type;
 					<?php if ( 'none' !== $values['file_upload_styles']['border_type'] ) : ?>

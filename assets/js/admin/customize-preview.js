@@ -495,7 +495,7 @@
 	} );
 
 	// Field Labels: margin
-	wp.customize( settings + '[typography][margin]', function( value ) {
+	wp.customize( settings + '[typography][field_labels_margin]', function( value ) {
 		preview_buttons.on( 'click', function() {
 			var control_value = value.get();
 			var active_responsive_device = $(this).data('device');
@@ -856,7 +856,7 @@
 	} );
 
 	// Field Styles: border_type
-	wp.customize( settings + '[typography][field_styles_border_type]', function( value ) {
+	wp.customize( settings + '[field_styles][border_type]', function( value ) {
 		value.bind( function( newval ) {
 			container.find('input, textarea, select, canvas.evf-signature-canvas, .StripeElement').css( 'border-style', newval );
 		} );
@@ -1036,7 +1036,7 @@
 	} );
 
 	// File Upload Styles: border_type
-	wp.customize( settings + '[typography][file_upload_border_type]', function( value ) {
+	wp.customize( settings + '[file_upload_styles][border_type]', function( value ) {
 		value.bind( function( newval ) {
 			container.find('.everest-forms-uploader').css( 'border-style', newval );
 		} );
@@ -1155,7 +1155,7 @@
 	/* Checkbox and Radio Styles Starts */
 
 	// Checkbox and Radio: font_size
-	wp.customize( settings + '[checkbox_radio_styles][checkbox_radio_font_size]', function( value ) {
+	wp.customize( settings + '[typography][checkbox_radio_font_size]', function( value ) {
 		var default_unit = 'px';
 		value.bind( function( newval ) {
 			container.find('input[type="radio"] + label, input[type="checkbox"] + label').css( 'font-size', newval + default_unit );
@@ -1163,7 +1163,7 @@
 	} );
 
 	// Checkbox and Radio: font_style
-	wp.customize( settings + '[checkbox_radio_styles][checkbox_radio_font_style]', function( value ) {
+	wp.customize( settings + '[typography][checkbox_radio_font_style]', function( value ) {
 		value.bind( function( newval ) {
 			if ( typeof newval != 'object' ) {
 				newval = JSON.parse( newval );
