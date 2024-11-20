@@ -29,15 +29,16 @@ if ( ! class_exists( 'EverestForms_Style_Customizer' ) ) {
 		 */
 		private function __construct() {
 
-					$this->configs();
-					$this->includes();
+			$this->configs();
+			$this->includes();
 
-					// Hooks.
-					add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
-					add_action( 'everest_forms_shortcode_scripts', array( $this, 'enqueue_shortcode_scripts' ) );
-					add_action( 'everest_forms_builder_content_fields', array( $this, 'output_form_designer' ) );
-					add_action( 'everest_form_elemntor_style', array( $this, 'evf_elementor' ), 10, 1 );
-
+			// Hooks.
+			add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
+			add_action( 'everest_forms_shortcode_scripts', array( $this, 'enqueue_shortcode_scripts' ) );
+			add_action( 'everest_forms_builder_content_fields', array( $this, 'output_form_designer' ) );
+			if ( defined( 'EFP_PLUGIN_FILE' ) ) {
+				add_action( 'everest_form_elemntor_style', array( $this, 'evf_elementor' ), 10, 1 );
+			}
 		}
 
 		/**
@@ -58,9 +59,11 @@ if ( ! class_exists( 'EverestForms_Style_Customizer' ) ) {
 		 * Configs.
 		 */
 		private function configs() {
-			require_once __DIR__ . '/configs/evf-style-customizer-form-wrapper-configs.php';
 			require_once __DIR__ . '/configs/evf-style-customizer-color-palette.php';
-			require_once __DIR__ . '/configs/evf-style-customizer-submission-message-configs.php';
+			if ( defined( 'EFP_PLUGIN_FILE' ) ) {
+				require_once __DIR__ . '/configs/evf-style-customizer-form-wrapper-configs.php';
+				require_once __DIR__ . '/configs/evf-style-customizer-submission-message-configs.php';
+			}
 		}
 
 		/**
