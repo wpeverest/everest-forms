@@ -535,6 +535,7 @@ class EVF_Style_Customizer_API {
 				'panelTitle'          => esc_html__( 'Everest Forms &ndash; Styles', 'everest-forms' ),
 				'panelDescription'    => esc_html__( 'Everest Forms &ndash; Styles Customizer allows you to preview changes and customize any form elements.', 'everest-forms' ),
 				'templates'           => self::get_templates(),
+				'is_pro'              => defined( 'EFP_PLUGIN_FILE' ) ? true : false,
 				'ajax_url'            => admin_url( 'admin-ajax.php' ),
 				'save_nonce'          => wp_create_nonce( 'save_template' ),
 				'delete_nonce'        => wp_create_nonce( 'delete_template' ),
