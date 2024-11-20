@@ -13,18 +13,21 @@ defined( 'ABSPATH' ) || exit;
  *
  * @param array $panels Array of panels.
  */
-function evf_style_customizer_submission_message_panels( $panels ) {
-	return array_merge(
-		$panels,
-		array(
-			'everest_forms_submission_message' => array(
-				'title'       => esc_html__( 'Form Messages', 'everest-forms' ),
-				'description' => esc_html__( 'This is field Submission message description.', 'everest-forms' ),
-			),
-		)
-	);
+if ( defined( 'EFP_PLUGIN_FILE' ) ) {
+	function evf_style_customizer_submission_message_panels( $panels ) {
+		return array_merge(
+			$panels,
+			array(
+				'everest_forms_submission_message' => array(
+					'title'       => esc_html__( 'Form Messages', 'everest-forms' ),
+					'description' => esc_html__( 'This is field Submission message description.', 'everest-forms' ),
+				),
+			)
+		);
+	}
+
+	add_filter( 'everest_forms_style_customizer_panels', 'evf_style_customizer_submission_message_panels' );
 }
-add_filter( 'everest_forms_style_customizer_panels', 'evf_style_customizer_submission_message_panels' );
 
 /**
  * Add everest forms Info and Message customizer sections.

@@ -40,7 +40,7 @@ class Helper {
 	}
 
 	/**
-	 * Notice if the oxygen is not instaled.
+	 * Notice if the oxygen is not installed.
 	 *
 	 * @since 3.0.5
 	 */

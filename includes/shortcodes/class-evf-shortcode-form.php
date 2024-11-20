@@ -844,17 +844,20 @@ class EVF_Shortcode_Form {
 		wp_enqueue_script( 'everest-forms-survey-polls-quiz-script' );
 
 		// Load jQuery flatpickr libraries. https://github.com/flatpickr/flatpickr.
-		if ( evf_is_field_exists( $atts['id'], 'date-time' ) ) {
+		if ( isset( $atts['id'] ) && evf_is_field_exists( $atts['id'], 'date-time' ) ) {
 			wp_enqueue_style( 'flatpickr' );
 			wp_enqueue_script( 'flatpickr' );
 		}
 
 		// Load jQuery mailcheck library - https://github.com/mailcheck/mailcheck.
-		if ( evf_is_field_exists( $atts['id'], 'email' ) && (bool) apply_filters( 'everest_forms_mailcheck_enabled', true ) ) {
+		if ( isset( $atts['id'] ) && evf_is_field_exists( $atts['id'], 'email' ) && (bool) apply_filters( 'everest_forms_mailcheck_enabled', true ) ) {
 			wp_enqueue_script( 'mailcheck' );
 		}
 
-		self::add_custom_css_js( $atts['id'] );
+		// Add custom CSS/JS
+		if ( isset( $atts['id'] ) ) {
+			self::add_custom_css_js( $atts['id'] );
+		}
 
 		$atts = shortcode_atts(
 			array(

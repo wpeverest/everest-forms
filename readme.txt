@@ -309,8 +309,25 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 == Changelog ==
 
 = 3.0.5          - xx-xx-2024
+* Feature        - License settings page.
+* Feature        - Bricks builder integration.
+* Feature        - Divi Builder Compatibility.
 * Feature        - Oxygen builder integration.
+* Feature        - Beaver Builder Compatibility.
+* Feature        - WPBakery Builder Compatibility.
+* Tweak          - Coupon into module.
+* Tweak 		 - Move active campaign to module.
+* Tweak          - Track module activation in TG User Tracking.
 * Fix            - Tooltips does not work on mobile.
+* Fix            - Background color for PDF submission.
+* Fix            - Critical issue when the publishable key is empty in live mode for recurring payment.
+* Dev 			 - amoCRM Module.
+* Dev       	 - QR Generator module.
+* Dev            - Get gist integration.
+* Dev            - CleverReach Integration.
+* Dev            - Slack Integration Module.
+* Dev   		 - User Registration Social Login.
+* Dev            - Moved Campaign Monitor to module.
 
 = 3.0.4.2        - 03-11-2024
 * Fix            - Escaping issue in required field.

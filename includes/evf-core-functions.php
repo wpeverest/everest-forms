@@ -4554,7 +4554,7 @@ function evf_sanitize_builder( $post_data = array() ) {
 			$value = wp_kses_post( $data->value );
 		} elseif ( 'settings[external_url]' === $data->name ) {
 			$value = esc_url_raw( $data->value );
-		} elseif ( preg_match( '/evf_email_message/', $data->name ) || preg_match( '/telegram_message/', $data->name )) {
+		} elseif ( preg_match( '/evf_email_message/', $data->name ) || preg_match( '/telegram_message/', $data->name ) || preg_match( '/slack_message/', $data->name )) {
 			$value = wp_kses_post( $data->value );
 		} elseif ( preg_match('/calculation_field/', $data->name) ) {
 			$value = wp_kses_post( $data->value );
@@ -5619,6 +5619,33 @@ function generate_api_key( $string = 'evf_restapi', $length = 32 ) {
 	$key = bin2hex( random_bytes( $length ) );
 
     return $key;
+}
+
+if ( !function_exists( 'evf_hex_to_rgb' ) ) {
+	/**
+	 * Converts a hex color code to an RGB array.
+	 *
+	 * @since x.x.x
+	 * @param string $hexcolor Hex color code, with or without '#'.
+	 * @return array RGB values as [red, green, blue].
+	 */
+	function evf_hex_to_rgb( $hexcolor ) {
+		$hexcolor = ltrim( $hexcolor, '#' );
+
+		if ( strlen( $hexcolor ) == 6 ) {
+			$r = hexdec(substr($hexcolor, 0, 2));
+			$g = hexdec(substr($hexcolor, 2, 2));
+			$b = hexdec(substr($hexcolor, 4, 2));
+		} elseif (strlen($hexcolor) == 3) {
+			$r = hexdec(str_repeat(substr($hexcolor, 0, 1), 2));
+			$g = hexdec(str_repeat(substr($hexcolor, 1, 1), 2));
+			$b = hexdec(str_repeat(substr($hexcolor, 2, 1), 2));
+		} else {
+			return [0, 0, 0];
+		}
+
+		return [$r, $g, $b];
+	}
 }
 
 add_action( 'wp_mail_failed', 'evf_email_send_failed_handler', 1 );

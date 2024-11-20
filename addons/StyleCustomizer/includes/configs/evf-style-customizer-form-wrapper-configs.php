@@ -13,6 +13,8 @@ defined( 'ABSPATH' ) || exit;
  *
  * @param array $sections Array of sections.
  */
+
+if ( defined( 'EFP_PLUGIN_FILE' ) ) {
 function evf_style_customizer_general_panels( $panels ) {
 	return array_merge(
 		$panels,
@@ -26,6 +28,7 @@ function evf_style_customizer_general_panels( $panels ) {
 }
 
 add_filter( 'everest_forms_style_customizer_panels', 'evf_style_customizer_general_panels' );
+}
 
 function evf_style_customizer_general_sections( $sections ) {
 	return array_merge(
