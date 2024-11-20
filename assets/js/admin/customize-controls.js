@@ -178,6 +178,16 @@
 					});
 				  });
 			}, 3000);
+
+			if (_evfCustomizeControlsL10n.is_pro === "" ){
+			const isTemplatePro = `image-radio-everest_forms_styles[${formId}][template]`;
+			document.querySelectorAll(`input[name="${isTemplatePro}"]`)
+				.forEach(element => {
+					if (['layout-two', 'layout-three', 'layout-four','layout-five','layout-six','layout-seven','layout-eight','layout-eleven'].includes(element.value)) {
+						element.classList.add('everest-forms-pro-template');
+					}
+				});
+			}
 		}
 
 	} );
@@ -1204,8 +1214,10 @@
 					});
 				}
 			}
+			 if (_evfCustomizeControlsL10n.is_pro === "1"){
 			render_save_template();
 			add_delete_template_icon();
+			}
 		});
 	})
 
