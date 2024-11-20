@@ -13,7 +13,6 @@ $styles                = get_option( 'everest_forms_styles' );
 $current_color_palette = json_decode( wp_unslash( $_REQUEST['customized'] ), true );
 
 $palette_key = null;
-
 foreach ( $current_color_palette as $key => $value ) {
 	if ( preg_match( '/everest_forms_styles\[(\d+)\]\[color_palette\]\[(color_\d+)\]/', $key, $matches ) ) {
 		$form_id     = $matches[1];
@@ -75,6 +74,7 @@ if ( ! empty( $backward_compatibility_color_key ) ) {
 		$colorPaletteKey  = $colorPaletteKeys[0];
 		$palette_key      = $colorPaletteKey;
 	} else {
+		$palette_key = 'color_13';
 		$values[ $form_id ]['color_palette']['color_13'] = array(
 			'form_background'   => '',
 			'field_background'  => '',

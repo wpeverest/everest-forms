@@ -226,7 +226,7 @@ function evf_style_customizer_color_palette_controls( $controls, $customize ) {
 			);
 		}
 
-		$class       = $palette['is_pro'] && defined( 'EFP_PLUGIN_FILE' ) ? 'evf-pro-palette' : 'evf-free-palette';
+		$class       = $palette['is_pro'] && ! defined( 'EFP_PLUGIN_FILE' ) ? 'evf-pro-palette' : '';
 		$input_attrs = array(
 			'class' => $class,
 		);
