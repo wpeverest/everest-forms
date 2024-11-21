@@ -1341,8 +1341,6 @@ $inputBorderColor: #CCCCCC;
 
 				// General > Typography Part CSS
 				&_general_typography {
-					padding: 0;
-
 					.customize-section-description-container {
 						padding: 12px 12px 0;
 						margin-bottom: 0;
@@ -1351,6 +1349,12 @@ $inputBorderColor: #CCCCCC;
 					.customize-control {
 						margin-bottom: 0;
 						border-bottom: 1px solid #dcdcde;
+
+						> label {
+							input[type="checkbox"] {
+								display: none;
+							}
+						}
 					}
 				}
 			}
