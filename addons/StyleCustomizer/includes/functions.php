@@ -210,14 +210,15 @@ function evfsc_migration() {
 
 		// Radio Checkbox Typography.
 		$checkbox_radio_typography_keys = array(
-			'font_size'     => 'checkbox_radio_font_size',
-			'font_color '   => 'checkbox_radio_font_color',
-			'font_style'    => 'checkbox_radio_font_style',
-			'alignment'     => 'checkbox_radio_alignment',
-			'size'          => 'checkbox_radio_size',
-			'color'         => 'checkbox_radio_color',
-			'checked_color' => 'checkbox_radio_checked_color',
-			'margin'        => 'checkbox_radio_margin',
+			'font_size'       => 'checkbox_radio_font_size',
+			'font_color '     => 'checkbox_radio_font_color',
+			'font_style'      => 'checkbox_radio_font_style',
+			'alignment'       => 'checkbox_radio_alignment',
+			'style_variation' => 'checkbox_radio_style_variation',
+			'size'            => 'checkbox_radio_size',
+			'color'           => 'checkbox_radio_color',
+			'checked_color'   => 'checkbox_radio_checked_color',
+			'margin'          => 'checkbox_radio_margin',
 		);
 		foreach ( $checkbox_radio_typography_keys as $checkbox_radio_typography_key => $checkbox_radio_typography_container_key ) {
 			if ( isset( $settings['checkbox_radio_styles'][ $checkbox_radio_typography_key ] ) ) {
