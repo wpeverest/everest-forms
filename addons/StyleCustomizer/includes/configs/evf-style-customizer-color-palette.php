@@ -41,8 +41,8 @@ function evf_style_customizer_color_palette_controls( $controls, $customize ) {
 			'label'     => esc_html__( 'Classic', 'everest-forms' ),
 			'colors'    => array(
 				'form_background'   => '#ffffff',
-				'field_background'  => '#ffffff',
-				'field_label'       => '#0c2e45',
+				'field_background'  => '#f6f6f6',
+				'field_label'       => '#81d2b',
 				'field_sublabel'    => '#0f3a57',
 				'button_text'       => '#ffffff',
 				'button_background' => '#3951a5',
@@ -53,12 +53,12 @@ function evf_style_customizer_color_palette_controls( $controls, $customize ) {
 		array(
 			'label'     => esc_html__( 'Monochrome', 'everest-forms' ),
 			'colors'    => array(
-				'form_background'   => '#f7f7f7',
-				'field_background'  => '#ffffff',
-				'field_label'       => '#262626',
-				'field_sublabel'    => '#666666',
+				'form_background'   => '#ffffff',
+				'field_background'  => '#f7f7f7',
+				'field_label'       => '#0c2e45',
+				'field_sublabel'    => '#0f3a57',
 				'button_text'       => '#ffffff',
-				'button_background' => '#1a1a1a',
+				'button_background' => '#3951a5',
 			),
 			'is_pro'    => false,
 			'is_custom' => false,
@@ -110,7 +110,7 @@ function evf_style_customizer_color_palette_controls( $controls, $customize ) {
 			'colors'    => array(
 				'form_background'   => '#f9fdf6',
 				'field_background'  => '#e9f6ea',
-				'field_label'       => '#405956',
+				'field_label'       => '#334745',
 				'field_sublabel'    => '#557773',
 				'button_text'       => '#ffffff',
 				'button_background' => '#405956',
@@ -122,7 +122,7 @@ function evf_style_customizer_color_palette_controls( $controls, $customize ) {
 			'label'     => esc_html__( 'Cloudy Sky', 'everest-forms' ),
 			'colors'    => array(
 				'form_background'   => '#f2f3f8',
-				'field_background'  => '#445079',
+				'field_background'  => '#e4e7f1',
 				'field_label'       => '#252b41',
 				'field_sublabel'    => '#2e3651',
 				'button_text'       => '#ffffff',
@@ -148,7 +148,7 @@ function evf_style_customizer_color_palette_controls( $controls, $customize ) {
 		array(
 			'label'     => esc_html__( 'Blushing Blossom', 'everest-forms' ),
 			'colors'    => array(
-				'form_background'   => '#fdf2f1',
+				'form_background'   => '#fdf7fa',
 				'field_background'  => '#fbeff5',
 				'field_label'       => '#532f42',
 				'field_sublabel'    => '#824a68',
@@ -177,7 +177,7 @@ function evf_style_customizer_color_palette_controls( $controls, $customize ) {
 				'form_background'   => '#363636',
 				'field_background'  => '#3d3d3d',
 				'field_label'       => '#ffffff',
-				'field_sublabel'    => '#999999',
+				'field_sublabel'    => '#f2f2f2',
 				'button_text'       => '#1a1a1a',
 				'button_background' => '#ffffff',
 			),
