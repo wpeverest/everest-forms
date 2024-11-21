@@ -15,19 +15,19 @@ defined( 'ABSPATH' ) || exit;
  */
 
 if ( defined( 'EFP_PLUGIN_FILE' ) ) {
-function evf_style_customizer_general_panels( $panels ) {
-	return array_merge(
-		$panels,
-		array(
-			'everest_forms_general_section' => array(
-				'title'       => esc_html__( 'General', 'everest-forms' ),
-				'description' => esc_html__( 'This is field Submission message description.', 'everest-forms' ),
-			),
-		)
-	);
-}
+	function evf_style_customizer_general_panels( $panels ) {
+		return array_merge(
+			$panels,
+			array(
+				'everest_forms_general_section' => array(
+					'title'       => esc_html__( 'General', 'everest-forms' ),
+					'description' => esc_html__( 'This is field Submission message description.', 'everest-forms' ),
+				),
+			)
+		);
+	}
 
-add_filter( 'everest_forms_style_customizer_panels', 'evf_style_customizer_general_panels' );
+	add_filter( 'everest_forms_style_customizer_panels', 'evf_style_customizer_general_panels' );
 }
 
 function evf_style_customizer_general_sections( $sections ) {
@@ -1712,6 +1712,22 @@ function evf_style_customizer_wrapper_controls( $controls, $customize ) {
 						'name'  => esc_html__( 'Right', 'everest-forms' ),
 						'image' => plugins_url( 'addons/StyleCustomizer/assets/images/align-right.svg', EVF_PLUGIN_FILE ),
 					),
+				),
+			),
+		),
+		'checkbox_radio_style_variation'            => array(
+			'setting' => array(
+				'default' => 'default',
+			),
+			'control' => array(
+				'label'       => esc_html__( 'Style Variation', 'everest-forms' ),
+				'description' => esc_html__( 'This is a form radio/checkbox style variation.', 'everest-forms' ),
+				'section'     => 'everest_forms_general_typography',
+				'type'        => 'radio',
+				'choices'     => array(
+					'default' => esc_html__( 'Default', 'everest-forms' ),
+					'outline' => esc_html__( 'Outline', 'everest-forms' ),
+					'filled'  => esc_html__( 'Filled', 'everest-forms' ),
 				),
 			),
 		),

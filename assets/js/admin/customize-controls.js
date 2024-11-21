@@ -787,8 +787,8 @@
 					controls: [ 'border_width', 'border_color' ],
 					callback: function( to ) { return 'none' !== to; }
 				},
-				'style_variation': {
-					controls: [ 'size', 'color', 'checked_color' ],
+				'checkbox_radio_style_variation': {
+					controls: [ 'checkbox_radio_size', 'checkbox_radio_color', 'checkbox_radio_checked_color' ],
 					callback: function( to ) { return 'default' !== to; },
 				},
 				'background_image': {
@@ -816,7 +816,7 @@
 					callback: function( to ) { return !! to; }
 				},
 				'checkbox_radio' : {
-					controls: [ 'checkbox_radio_font_size','checkbox_radio_font_color','checkbox_radio_font_style','checkbox_radio_text_alignment','checkbox_radio_line_height','checkbox_radio_margin','checkbox_radio_padding','checkbox_radio_alignment','checkbox_radio_size','checkbox_radio_color','checkbox_radio_checked_color'],
+					controls: [ 'checkbox_radio_font_size','checkbox_radio_font_color','checkbox_radio_font_style','checkbox_radio_text_alignment','checkbox_radio_style_variation','checkbox_radio_line_height','checkbox_radio_margin','checkbox_radio_padding','checkbox_radio_alignment','checkbox_radio_size','checkbox_radio_color','checkbox_radio_checked_color'],
 					callback: function( to ) { return !! to; }
 				},
 				'button' : {

@@ -454,7 +454,134 @@ $validation_message_border_color: <?php echo evf_clean( $values['validation_mess
 				<?php endforeach; ?>
 			}
 
-		// checkbox remaining.
+			.evf-field-radio,
+			.evf-field-checkbox,
+			.evf-field-payment-multiple,
+			.evf-field-payment-checkbox,
+			.evf-field-privacy-policy {
+				ul {
+					li {
+						text-align: $radio_checkbox_styles_alignment;
+						<?php foreach ( array( 'checkbox_radio_margin' ) as $separator_type ) : ?>
+							<?php foreach ( $values['typography'][ $separator_type ] as $device => $value ) : ?>
+								<?php if ( in_array( $device, array( 'desktop', 'tablet', 'mobille' ), true ) ) : ?>
+									<?php
+									if ( 'margin' === preg_replace( '/.*_/', '', $separator_type ) ) {
+										$value['right'] = 0;
+										$value['left']  = 0;
+									}
+									?>
+									<?php printf( '@include responsive-media(%s, %s, %s);', preg_replace( '/.*_/', '', $separator_type ), $device, evf_sanitize_dimension_unit( $value, 'px' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+								<?php endif; ?>
+							<?php endforeach; ?>
+						<?php endforeach; ?>
+
+						input[type="radio"] {
+							border-radius: 50%;
+							<?php if ( 'default' === $values['typography']['checkbox_radio_style_variation'] ) { ?>
+							<?php } elseif ( 'outline' === $values['typography']['checkbox_radio_style_variation'] ) { ?>
+								&:checked {
+									&::before {
+										width: 50%;
+										border-radius: 50%;
+										background: $radio_checkbox_styles_checked_color;
+									}
+								}
+							<?php } elseif ( 'filled' === $values['typography']['checkbox_radio_style_variation'] ) { ?>
+								&:checked {
+									&::before {
+										width: 50%;
+										border-radius: 50%;
+										background: #fff;
+									}
+								}
+							<?php } ?>
+						}
+
+						label {
+							flex: 1;
+						}
+					}
+				}
+				input[type='checkbox'],
+				input[type='radio'] {
+					<?php if ( 'default' === $values['typography']['checkbox_radio_style_variation'] ) { ?>
+					<?php } elseif ( 'outline' === $values['typography']['checkbox_radio_style_variation'] ) { ?>
+						width : $radio_checkbox_styles__size + 'px';
+						height : $radio_checkbox_styles__size + 'px';
+						display : inline-flex;
+						align-items : center;
+						justify-content : center;
+						-webkit-appearance : none;
+						border: 1px solid $radio_checkbox_styles_color;
+
+						&:checked {
+							border-color: $radio_checkbox_styles_checked_color;
+
+							&::before {
+								content: '';
+								height: 50%;
+							}
+						}
+
+					<?php } elseif ( 'filled' === $values['typography']['checkbox_radio_style_variation'] ) { ?>
+						width : $radio_checkbox_styles__size + 'px';
+						height : $radio_checkbox_styles__size + 'px';
+						display : inline-flex;
+						align-items : center;
+						justify-content : center;
+						-webkit-appearance : none;
+						background-color : $radio_checkbox_styles_color;
+
+						&:checked {
+							background-color: $radio_checkbox_styles_checked_color;
+
+							&::before {
+								content: '';
+								height: 50%;
+							}
+						}
+					<?php } ?>
+
+					+ label {
+						font-size: $radio_checkbox_styles__font_size + 'px';
+						color: $radio_checkbox_styles__font_color;
+						<?php foreach ( $font_styles as $prop => $value ) : ?>
+							<?php if ( 'yes' === evf_bool_to_string( $values['typography']['checkbox_radio_font_style'][ $value ] ) ) : ?>
+								<?php printf( '%s: %s;', $prop, evf_clean( $value ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+							<?php endif; ?>
+						<?php endforeach; ?>
+					}
+				}
+
+				input[type="checkbox"] {
+					<?php if ( 'default' === $values['typography']['checkbox_radio_style_variation'] ) { ?>
+					<?php } elseif ( 'outline' === $values['typography']['checkbox_radio_style_variation'] ) { ?>
+						&:checked {
+
+							&::before {
+								width: 25%;
+								border: solid $radio_checkbox_styles_checked_color;
+								border-width: 0 2px 2px 0;
+								transform: rotate(45deg);
+								margin-top: -12%;
+							}
+						}
+					<?php } elseif ( 'filled' === $values['typography']['checkbox_radio_style_variation'] ) { ?>
+						&:checked {
+
+							&::before {
+								width: 25%;
+								border: solid #fff;
+								border-width: 0 2px 2px 0;
+								transform: rotate(45deg);
+								margin-top: -12%;
+							}
+						}
+					<?php } ?>
+				}
+
+			}
 
 		.evf-field-description {
 				color: $field_description_font_color;
