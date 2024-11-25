@@ -399,8 +399,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 						?>
 						<div class="everest-forms-global-settings <?php echo esc_attr( implode( ' ', $visibility_class ) ); ?>">
 								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo wp_kses_post( $tooltip_html ); ?></label>
-								<div class="everest-forms-global-settings--field forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
-								<span class="colorpickpreview" style="background: <?php echo esc_attr( $option_value ); ?>">&nbsp;</span>
+								<div class="everest-forms-global-settings--field ">
 								<input
 									name="<?php echo esc_attr( $value['id'] ); ?>"
 									id="<?php echo esc_attr( $value['id'] ); ?>"
@@ -408,7 +407,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 									dir="ltr"
 									style="<?php echo esc_attr( $value['css'] ); ?>"
 									value="<?php echo esc_attr( $option_value ); ?>"
-									class="<?php echo esc_attr( $value['class'] ); ?>colorpick"
+									class="<?php echo esc_attr( $value['class'] ); ?>evf-colorpicker"
 									placeholder="<?php echo esc_attr( $value['placeholder'] ); ?>"
 						<?php
 						if ( ! empty( $value['custom_attributes'] ) && is_array( $value['custom_attributes'] ) ) {

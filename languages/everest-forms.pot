@@ -2,20 +2,26 @@
 # This file is distributed under the same license as the Everest Forms plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Everest Forms 3.0.4.2\n"
+"Project-Id-Version: Everest Forms 3.0.5\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/everest-forms\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-11-03T16:56:00+05:45\n"
+"POT-Creation-Date: 2024-11-20T04:34:58+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.10.0\n"
+"X-Generator: WP-CLI 2.9.0\n"
 "X-Domain: everest-forms\n"
 
 #. Plugin Name of the plugin
-#: everest-forms.php
+#: addons/BeaverBuilder/Helper.php:92
+#: addons/BricksBuilder/BricksFormWidget.php:26
+#: addons/BricksBuilder/BricksFormWidget.php:36
+#: addons/DiviBuilder/EverestFormsModule.php:48
+#: addons/OxygenBuilder/OxygenBuilder.php:60
+#: addons/WPBakeryBuilder/WPBakeryBuilder.php:65
+#: addons/WPBakeryBuilder/WPBakeryBuilder.php:68
 #: includes/admin/class-evf-admin-menus.php:152
 #: includes/admin/class-evf-admin.php:207
 #: includes/admin/evf-admin-functions.php:17
@@ -33,23 +39,181 @@ msgid "Everest Forms"
 msgstr ""
 
 #. Plugin URI of the plugin
-#: everest-forms.php
 msgid "https://everestforms.net/"
 msgstr ""
 
 #. Description of the plugin
-#: everest-forms.php
 msgid "Drag and Drop contact form builder to easily create simple to complex forms for any purpose. Lightweight, Beautiful design, responsive and more."
 msgstr ""
 
 #. Author of the plugin
-#: everest-forms.php
 msgid "WPEverest"
 msgstr ""
 
 #. Author URI of the plugin
-#: everest-forms.php
 msgid "https://wpeverest.com"
+msgstr ""
+
+#: addons/BeaverBuilder/Helper.php:57
+#: addons/BricksBuilder/Helper.php:51
+#: addons/DiviBuilder/Helper.php:49
+#: addons/OxygenBuilder/Helper.php:56
+#: addons/WPBakeryBuilder/Helper.php:57
+msgid "Dismiss this notice."
+msgstr ""
+
+#: addons/BeaverBuilder/Helper.php:77
+#: addons/BeaverBuilder/Helper.php:99
+#: addons/OxygenBuilder/Helper.php:76
+#: addons/OxygenBuilder/OxygenFormWidget.php:72
+#: src/blocks/blocks/form-selector/Edit.js:51
+#: src/blocks/blocks/form-selector/Edit.js:55
+msgid "Select a Form"
+msgstr ""
+
+#: addons/BeaverBuilder/Helper.php:95
+msgid "Form Selection"
+msgstr ""
+
+#: addons/BeaverBuilder/Helper.php:101
+msgid "Choose a form from the list."
+msgstr ""
+
+#: addons/BeaverBuilder/includes/frontend.php:25
+msgid "Seems like you haven't created a form. Please create one to use it."
+msgstr ""
+
+#: addons/BeaverBuilder/includes/frontend.php:27
+msgid "Please select a form"
+msgstr ""
+
+#: addons/BricksBuilder/BricksFormWidget.php:50
+#: addons/DiviBuilder/EverestFormsModule.php:70
+#: addons/DiviBuilder/EverestFormsModule.php:75
+#: addons/WPBakeryBuilder/WPBakeryBuilder.php:60
+#: includes/elementor/class-evf-widget.php:110
+msgid "Select Form"
+msgstr ""
+
+#: addons/BricksBuilder/BricksFormWidget.php:71
+msgid "No form selected."
+msgstr ""
+
+#: addons/DiviBuilder/EverestFormsModule.php:53
+#: addons/OxygenBuilder/OxygenFormWidget.php:22
+msgid "Forms"
+msgstr ""
+
+#: addons/DiviBuilder/EverestFormsModule.php:129
+msgid "Everest Forms Preview"
+msgstr ""
+
+#: addons/OxygenBuilder/OxygenFormWidget.php:95
+msgid "Form Container"
+msgstr ""
+
+#: addons/OxygenBuilder/OxygenFormWidget.php:103
+#: addons/OxygenBuilder/OxygenFormWidget.php:205
+msgid "Background Color"
+msgstr ""
+
+#: addons/OxygenBuilder/OxygenFormWidget.php:108
+msgid "Max Width"
+msgstr ""
+
+#: addons/OxygenBuilder/OxygenFormWidget.php:118
+#: addons/OxygenBuilder/OxygenFormWidget.php:234
+msgid "Padding"
+msgstr ""
+
+#: addons/OxygenBuilder/OxygenFormWidget.php:125
+#: addons/OxygenBuilder/OxygenFormWidget.php:241
+msgid "Margin"
+msgstr ""
+
+#: addons/OxygenBuilder/OxygenFormWidget.php:132
+#: addons/OxygenBuilder/OxygenFormWidget.php:246
+msgid "Border"
+msgstr ""
+
+#: addons/OxygenBuilder/OxygenFormWidget.php:139
+msgid "Border Radius"
+msgstr ""
+
+#: addons/OxygenBuilder/OxygenFormWidget.php:144
+#: addons/OxygenBuilder/OxygenFormWidget.php:248
+msgid "Box Shadow"
+msgstr ""
+
+#: addons/OxygenBuilder/OxygenFormWidget.php:158
+msgid "Labels"
+msgstr ""
+
+#: addons/OxygenBuilder/OxygenFormWidget.php:168
+msgid "Text Color"
+msgstr ""
+
+#: addons/OxygenBuilder/OxygenFormWidget.php:176
+msgid "Asterisk Color"
+msgstr ""
+
+#: addons/OxygenBuilder/OxygenFormWidget.php:191
+#: includes/admin/builder/class-evf-builder-settings.php:251
+msgid "Submit Button"
+msgstr ""
+
+#: addons/OxygenBuilder/OxygenFormWidget.php:200
+#: includes/class-evf-smart-tags.php:80
+#: includes/fields/class-evf-field-color.php:20
+msgid "Color"
+msgstr ""
+
+#: addons/OxygenBuilder/OxygenFormWidget.php:210
+msgid "Hover Color"
+msgstr ""
+
+#: addons/OxygenBuilder/OxygenFormWidget.php:215
+msgid "Width"
+msgstr ""
+
+#: addons/OxygenBuilder/OxygenFormWidget.php:222
+msgid "Margin Top"
+msgstr ""
+
+#: addons/OxygenBuilder/OxygenFormWidget.php:245
+msgid "Typography"
+msgstr ""
+
+#: addons/OxygenBuilder/OxygenFormWidget.php:247
+msgid "Hover Border"
+msgstr ""
+
+#: addons/OxygenBuilder/OxygenFormWidget.php:249
+msgid "Hover Box Shadow"
+msgstr ""
+
+#: addons/WPBakeryBuilder/WPBakeryBuilder.php:58
+msgid "Please create a form to use."
+msgstr ""
+
+#: addons/WPBakeryBuilder/WPBakeryBuilder.php:69
+msgid "Everest Forms widget for WPBakery."
+msgstr ""
+
+#: addons/WPBakeryBuilder/WPBakeryBuilder.php:73
+#: includes/class-evf-post-types.php:45
+#: includes/elementor/class-evf-widget.php:103
+msgid "Form"
+msgstr ""
+
+#: addons/WPBakeryBuilder/WPBakeryBuilder.php:76
+msgid "Select Form."
+msgstr ""
+
+#. translators: 1: composer command. 2: plugin directory
+#: everest-forms.php:42
+#: everest-forms.php:61
+msgid "Your installation of the Everest Forms plugin is incomplete. Please run %1$s within the %2$s directory."
 msgstr ""
 
 #. translators: %d: interval
@@ -412,7 +576,7 @@ msgstr ""
 
 #: includes/abstracts/class-evf-form-fields.php:1177
 #: includes/admin/class-evf-admin-assets.php:105
-#: includes/admin/class-evf-admin-settings.php:352
+#: includes/admin/class-evf-admin-settings.php:368
 msgid "Upload Image"
 msgstr ""
 
@@ -1066,6 +1230,11 @@ msgstr ""
 msgid "Telegram"
 msgstr ""
 
+#: includes/admin/builder/class-evf-builder-page.php:185
+#: includes/admin/builder/class-evf-builder-settings.php:860
+msgid "QR Generator"
+msgstr ""
+
 #: includes/admin/builder/class-evf-builder-settings.php:43
 #: includes/admin/builder/class-evf-builder-settings.php:183
 #: includes/admin/settings/class-evf-settings-general.php:25
@@ -1098,7 +1267,7 @@ msgstr ""
 #: includes/admin/builder/class-evf-builder-settings.php:383
 #: includes/admin/form-migrator/class-evf-fm-contactform7.php:374
 #: includes/admin/form-migrator/class-evf-fm-wpforms.php:163
-#: includes/class-evf-form-task.php:915
+#: includes/class-evf-form-task.php:916
 #: includes/evf-update-functions.php:140
 #: includes/templates/contact.php:71
 msgid "Admin Notification"
@@ -1140,7 +1309,7 @@ msgstr ""
 #: includes/admin/form-migrator/class-evf-fm-contactform7.php:401
 #: includes/admin/form-migrator/class-evf-fm-wpforms.php:206
 #: includes/class-evf-form-task.php:163
-#: includes/shortcodes/class-evf-shortcode-form.php:910
+#: includes/shortcodes/class-evf-shortcode-form.php:915
 msgid "This form is disabled."
 msgstr ""
 
@@ -1172,10 +1341,6 @@ msgstr ""
 #. translators: %1$s - general settings docs url
 #: includes/admin/builder/class-evf-builder-settings.php:245
 msgid "Enter CSS class names for the form wrapper. Multiple class names should be separated with spaces. <a href=\"%s\" target=\"_blank\">Learn More</a>"
-msgstr ""
-
-#: includes/admin/builder/class-evf-builder-settings.php:251
-msgid "Submit Button"
 msgstr ""
 
 #: includes/admin/builder/class-evf-builder-settings.php:257
@@ -1519,25 +1684,25 @@ msgid "Enter the minimum time waiting time for form submission."
 msgstr ""
 
 #: includes/admin/builder/class-evf-builder-settings.php:846
-#: includes/admin/builder/class-evf-builder-settings.php:878
+#: includes/admin/builder/class-evf-builder-settings.php:879
 msgid "Custom CSS and JS"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:880
-#: includes/admin/builder/class-evf-builder-settings.php:896
+#: includes/admin/builder/class-evf-builder-settings.php:881
+#: includes/admin/builder/class-evf-builder-settings.php:897
 msgid "Custom CSS"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:886
+#: includes/admin/builder/class-evf-builder-settings.php:887
 msgid "Enable Custom CSS"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:899
-#: includes/admin/builder/class-evf-builder-settings.php:915
+#: includes/admin/builder/class-evf-builder-settings.php:900
+#: includes/admin/builder/class-evf-builder-settings.php:916
 msgid "Custom JS"
 msgstr ""
 
-#: includes/admin/builder/class-evf-builder-settings.php:905
+#: includes/admin/builder/class-evf-builder-settings.php:906
 msgid "Enable Custom JS"
 msgstr ""
 
@@ -1554,7 +1719,7 @@ msgid "Preview"
 msgstr ""
 
 #: includes/admin/class-evf-admin-assets.php:115
-#: includes/RestApi/controllers/version1/class-evf-modules.php:139
+#: includes/RestApi/controllers/version1/class-evf-modules.php:142
 #: src/dashboard/screens/FreeVsPro/FreeVsPro.js:416
 msgid "Pro"
 msgstr ""
@@ -1827,7 +1992,7 @@ msgstr ""
 #: includes/admin/class-evf-admin-assets.php:237
 #: includes/admin/class-evf-admin-assets.php:357
 #: includes/admin/views/html-admin-page-addons.php:218
-#: src/dashboard/screens/Modules/components/ModuleItem.js:476
+#: src/dashboard/screens/Modules/components/ModuleItem.js:478
 msgid "Upgrade Plan"
 msgstr ""
 
@@ -2477,38 +2642,38 @@ msgstr ""
 msgid "The changes you made will be lost if you navigate away from this page."
 msgstr ""
 
-#: includes/admin/class-evf-admin-settings.php:349
+#: includes/admin/class-evf-admin-settings.php:365
 msgid "Upload Logo"
 msgstr ""
 
-#: includes/admin/class-evf-admin-settings.php:350
+#: includes/admin/class-evf-admin-settings.php:366
 msgid "Header Logo"
 msgstr ""
 
-#: includes/admin/class-evf-admin-settings.php:353
+#: includes/admin/class-evf-admin-settings.php:369
 msgid "Background Image"
 msgstr ""
 
-#: includes/admin/class-evf-admin-settings.php:737
+#: includes/admin/class-evf-admin-settings.php:753
 msgid "Select a page&hellip;"
 msgstr ""
 
-#: includes/admin/class-evf-admin-settings.php:746
+#: includes/admin/class-evf-admin-settings.php:762
 #: includes/evf-formatting-functions.php:576
 msgid "Day(s)"
 msgstr ""
 
-#: includes/admin/class-evf-admin-settings.php:747
+#: includes/admin/class-evf-admin-settings.php:763
 #: includes/evf-formatting-functions.php:577
 msgid "Week(s)"
 msgstr ""
 
-#: includes/admin/class-evf-admin-settings.php:748
+#: includes/admin/class-evf-admin-settings.php:764
 #: includes/evf-formatting-functions.php:578
 msgid "Month(s)"
 msgstr ""
 
-#: includes/admin/class-evf-admin-settings.php:749
+#: includes/admin/class-evf-admin-settings.php:765
 #: includes/evf-formatting-functions.php:579
 msgid "Year(s)"
 msgstr ""
@@ -3337,6 +3502,7 @@ msgstr ""
 
 #: includes/admin/views/html-admin-page-form-templates.php:33
 #: includes/admin/views/html-admin-page-setting.php:62
+#: includes/RestApi/controllers/version1/class-evf-modules.php:117
 #: src/dashboard/screens/FreeVsPro/FreeVsPro.js:413
 msgid "Free"
 msgstr ""
@@ -3616,7 +3782,7 @@ msgstr ""
 msgid "Collapse Menu"
 msgstr ""
 
-#: includes/admin/views/html-admin-settings.php:91
+#: includes/admin/views/html-admin-settings.php:92
 msgid "Save Changes"
 msgstr ""
 
@@ -3764,17 +3930,17 @@ msgstr ""
 msgid "Taking a while? Click here to run it now."
 msgstr ""
 
-#: includes/blocks/block-types/class-evf-blocks-abstract.php:65
+#: includes/blocks/block-types/class-evf-blocks-abstract.php:70
 msgid "Block name is not set."
 msgstr ""
 
 #. Translators: 1: Block name
-#: includes/blocks/block-types/class-evf-blocks-abstract.php:74
+#: includes/blocks/block-types/class-evf-blocks-abstract.php:79
 msgid "Metadata file for %s block does not exist."
 msgstr ""
 
-#: includes/class-everest-forms.php:133
-#: includes/class-everest-forms.php:142
+#: includes/class-everest-forms.php:135
+#: includes/class-everest-forms.php:144
 msgid "Cheatin&#8217; huh?"
 msgstr ""
 
@@ -3884,7 +4050,7 @@ msgid "Sorry, you are not allowed to install plugins on this site."
 msgstr ""
 
 #: includes/class-evf-ajax.php:666
-#: includes/RestApi/controllers/version1/class-evf-modules.php:363
+#: includes/RestApi/controllers/version1/class-evf-modules.php:372
 #: includes/RestApi/controllers/version1/class-evf-plugin-status.php:378
 msgid "Unable to connect to the filesystem. Please confirm your credentials."
 msgstr ""
@@ -4110,7 +4276,7 @@ msgstr ""
 
 #: includes/class-evf-form-task.php:95
 #: includes/class-evf-form-task.php:576
-#: includes/shortcodes/class-evf-shortcode-form.php:978
+#: includes/shortcodes/class-evf-shortcode-form.php:983
 #: includes/templates/contact.php:61
 msgid "Thanks for contacting us! We will be in touch with you shortly."
 msgstr ""
@@ -4179,23 +4345,23 @@ msgid "Download your form submission in PDF format"
 msgstr ""
 
 #. translators: %s - form name.
-#: includes/class-evf-form-task.php:943
+#: includes/class-evf-form-task.php:944
 msgid "New %s Entry"
 msgstr ""
 
-#: includes/class-evf-form-task.php:1057
+#: includes/class-evf-form-task.php:1058
 msgid "No form ID was found."
 msgstr ""
 
-#: includes/class-evf-form-task.php:1064
+#: includes/class-evf-form-task.php:1065
 msgid "Could not create an entry"
 msgstr ""
 
-#: includes/class-evf-form-task.php:1479
+#: includes/class-evf-form-task.php:1480
 msgid "Please wait"
 msgstr ""
 
-#: includes/class-evf-form-task.php:1482
+#: includes/class-evf-form-task.php:1483
 msgid "seconds, security checkup is being executed."
 msgstr ""
 
@@ -4260,11 +4426,6 @@ msgstr ""
 #. translators: 1: EVF_Logger::log 2: level
 #: includes/class-evf-logger.php:138
 msgid "%1$s was called with an invalid level \"%2$s\"."
-msgstr ""
-
-#: includes/class-evf-post-types.php:45
-#: includes/elementor/class-evf-widget.php:103
-msgid "Form"
 msgstr ""
 
 #: includes/class-evf-post-types.php:47
@@ -4592,11 +4753,6 @@ msgstr ""
 msgid "Alphanumeric"
 msgstr ""
 
-#: includes/class-evf-smart-tags.php:80
-#: includes/fields/class-evf-field-color.php:20
-msgid "Color"
-msgstr ""
-
 #: includes/class-evf-smart-tags.php:84
 msgid "Country Code (2 Character)"
 msgstr ""
@@ -4716,10 +4872,6 @@ msgstr ""
 #. translators: %s - Form name.
 #: includes/class-evf-template-loader.php:218
 msgid "%s &ndash; Preview"
-msgstr ""
-
-#: includes/elementor/class-evf-widget.php:110
-msgid "Select Form"
 msgstr ""
 
 #: includes/elementor/class-evf-widget.php:130
@@ -13351,7 +13503,7 @@ msgid "Everest Forms Monthly Entries Statistics Report"
 msgstr ""
 
 #. translators: %s: Status Log URL
-#: includes/evf-core-functions.php:5639
+#: includes/evf-core-functions.php:5666
 msgid "Please check the `evf_mail_errors` log under <a target=\"_blank\" href=\"%s\"> Logs </a> section."
 msgstr ""
 
@@ -13982,7 +14134,8 @@ msgid "Authorize.Net"
 msgstr ""
 
 #: includes/fields/class-evf-field-payment-coupon.php:20
-msgid "Coupon"
+#: src/dashboard/screens/FreeVsPro/FreeVsPro.js:272
+msgid "Coupons"
 msgstr ""
 
 #: includes/fields/class-evf-field-payment-quantity.php:19
@@ -14387,71 +14540,71 @@ msgstr ""
 msgid "Unauthorized api key."
 msgstr ""
 
-#: includes/RestApi/controllers/version1/class-evf-modules.php:172
+#: includes/RestApi/controllers/version1/class-evf-modules.php:175
 msgid "Module slug is a required field"
 msgstr ""
 
-#: includes/RestApi/controllers/version1/class-evf-modules.php:199
+#: includes/RestApi/controllers/version1/class-evf-modules.php:202
 msgid "Module couldn't be activated at the moment. Please try again later."
 msgstr ""
 
-#: includes/RestApi/controllers/version1/class-evf-modules.php:207
+#: includes/RestApi/controllers/version1/class-evf-modules.php:210
 msgid "Module activated successfully"
 msgstr ""
 
-#: includes/RestApi/controllers/version1/class-evf-modules.php:290
+#: includes/RestApi/controllers/version1/class-evf-modules.php:299
 #: includes/RestApi/controllers/version1/class-evf-plugin-status.php:306
 msgid "Addons activated successfully"
 msgstr ""
 
-#: includes/RestApi/controllers/version1/class-evf-modules.php:376
+#: includes/RestApi/controllers/version1/class-evf-modules.php:385
 #: includes/RestApi/controllers/version1/class-evf-plugin-status.php:391
 msgid "Addon installed Successfully"
 msgstr ""
 
-#: includes/RestApi/controllers/version1/class-evf-modules.php:394
+#: includes/RestApi/controllers/version1/class-evf-modules.php:403
 msgid "Addon slug is a required field"
 msgstr ""
 
-#: includes/RestApi/controllers/version1/class-evf-modules.php:416
+#: includes/RestApi/controllers/version1/class-evf-modules.php:425
 msgid "Module couldn't be deactivated. Please try again later."
 msgstr ""
 
-#: includes/RestApi/controllers/version1/class-evf-modules.php:424
+#: includes/RestApi/controllers/version1/class-evf-modules.php:433
 msgid "Module deactivated successfully"
 msgstr ""
 
-#: includes/RestApi/controllers/version1/class-evf-modules.php:481
+#: includes/RestApi/controllers/version1/class-evf-modules.php:490
 msgid "Please select addons to activate"
 msgstr ""
 
 #. translators: 1: Failed Addon Names
-#: includes/RestApi/controllers/version1/class-evf-modules.php:513
+#: includes/RestApi/controllers/version1/class-evf-modules.php:522
 msgid "%1$s activation failed. Please try again sometime later."
 msgstr ""
 
-#: includes/RestApi/controllers/version1/class-evf-modules.php:521
+#: includes/RestApi/controllers/version1/class-evf-modules.php:530
 #: includes/RestApi/controllers/version1/class-evf-plugin-status.php:197
 msgid "All of the selected modules have been activated successfully."
 msgstr ""
 
-#: includes/RestApi/controllers/version1/class-evf-modules.php:543
+#: includes/RestApi/controllers/version1/class-evf-modules.php:552
 msgid "Please select a module to deactivate"
 msgstr ""
 
-#: includes/RestApi/controllers/version1/class-evf-modules.php:574
+#: includes/RestApi/controllers/version1/class-evf-modules.php:583
 msgid "All of the selected modules have been deactivated."
 msgstr ""
 
-#: includes/RestApi/controllers/version1/class-evf-modules.php:582
+#: includes/RestApi/controllers/version1/class-evf-modules.php:591
 msgid "Some of the selected modules may not have been deactivated. Please try again later"
 msgstr ""
 
-#: includes/RestApi/controllers/version1/class-evf-modules.php:724
+#: includes/RestApi/controllers/version1/class-evf-modules.php:733
 msgid "Everest Forms Pro activated successfully."
 msgstr ""
 
-#: includes/RestApi/controllers/version1/class-evf-modules.php:733
+#: includes/RestApi/controllers/version1/class-evf-modules.php:742
 msgid "Please enter the valid license key."
 msgstr ""
 
@@ -14502,7 +14655,7 @@ msgid "Something went wrong, please try again later."
 msgstr ""
 
 #. translators: %s - URL to a non-amp version of a page with the form.
-#: includes/shortcodes/class-evf-shortcode-form.php:951
+#: includes/shortcodes/class-evf-shortcode-form.php:956
 msgid "<a href=\"%s\">Go to the full page</a> to view and submit the form."
 msgstr ""
 
@@ -14562,11 +14715,6 @@ msgstr ""
 
 #: templates/emails/summary-email-footer-default.php:59
 msgid "This email was auto-generated and sent from"
-msgstr ""
-
-#: src/blocks/blocks/form-selector/Edit.js:51
-#: src/blocks/blocks/form-selector/Edit.js:55
-msgid "Select a Form"
 msgstr ""
 
 #: src/blocks/blocks/form-selector/Edit.js:66
@@ -14965,10 +15113,6 @@ msgstr ""
 msgid "Razorpay"
 msgstr ""
 
-#: src/dashboard/screens/FreeVsPro/FreeVsPro.js:272
-msgid "Coupons"
-msgstr ""
-
 #: src/dashboard/screens/FreeVsPro/FreeVsPro.js:277
 msgid "Frontend Listing"
 msgstr ""
@@ -15302,15 +15446,15 @@ msgstr ""
 msgid "Please enter the valid license key"
 msgstr ""
 
-#: src/dashboard/screens/Modules/components/ModuleItem.js:321
+#: src/dashboard/screens/Modules/components/ModuleItem.js:323
 msgid "Play Video"
 msgstr ""
 
-#: src/dashboard/screens/Modules/components/ModuleItem.js:408
+#: src/dashboard/screens/Modules/components/ModuleItem.js:410
 msgid "Documentation"
 msgstr ""
 
-#: src/dashboard/screens/Modules/components/ModuleItem.js:420
+#: src/dashboard/screens/Modules/components/ModuleItem.js:422
 #: src/dashboard/screens/Products/components/ProductCard.js:106
 msgid "Live Demo"
 msgstr ""

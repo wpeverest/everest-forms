@@ -113,6 +113,12 @@ jQuery( function ( $ ) {
 			} );
 		},
 		init_datepicker: function () {
+
+		// Exclude flatpicker in oxygen builder.
+		if (window.location.search.includes('ct_builder=true')) {
+			return;
+		}
+
 			var evfDateField = $( '.evf-field-date-time' );
 			if ( evfDateField.length && evfDateField.find( '.flatpickr-field' ).length ) {
 				evfDateField.find( '.flatpickr-field' ).each( function () {

@@ -13,9 +13,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class BricksFormWidget extends \Bricks\Element {
 
-	  public $category = 'everest-forms';
-	  public $name     = 'everest-forms';
-	  public $icon     = 'ti-bolt-alt';
+		public $category = 'everest-forms';
+		public $name     = 'everest-forms';
+		public $icon     = 'ti-bolt-alt';
 
 	/**
 	 * Get label.
@@ -67,6 +67,8 @@ class BricksFormWidget extends \Bricks\Element {
 	public function render() {
 		$form_id = ! empty( $this->settings['everest_forms_control'] ) ? $this->settings['everest_forms_control'] : null;
 
+		echo "<div {$this->render_attributes( '_root' )}>";
+
 		if ( empty( $form_id ) ) {
 			echo esc_html__( 'No form selected.', 'everest-forms' );
 			return;
@@ -80,7 +82,6 @@ class BricksFormWidget extends \Bricks\Element {
 			array( 'class' => 'everest-forms' )
 		);
 
-		echo "<div {$this->render_attributes( '_root' )}>";
 		echo $content;
 		echo '</div>';
 	}
