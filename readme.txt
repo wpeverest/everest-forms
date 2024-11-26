@@ -310,6 +310,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 = 3.0.5          - xx-xx-2024
 * Feature        - License settings page.
+* Feature        - Style Customizer Module.
 * Feature        - Bricks builder integration.
 * Feature        - Divi Builder Compatibility.
 * Feature        - Oxygen builder integration.
