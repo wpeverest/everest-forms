@@ -8402,15 +8402,6 @@ img.ui-datepicker-trigger {
 					max-width: 800px;
 					border: 1px solid transparent;
 
-					&.feedback-enabled {
-						margin-top: 5px;
-						margin-left: -20px;
-						margin-bottom: 20px;
-						padding: 0 20px 20px;
-						border-radius: 4px;
-						border: 1px solid $color_gray-lighten;
-					}
-
 					> div > label {
 						padding: 0 10px;
 						margin: 0 0 10px -10px;
@@ -8434,11 +8425,7 @@ img.ui-datepicker-trigger {
 							margin-bottom: 20px;
 							border-radius: 4px;
 							border: 1px solid $color_gray-lighten;
-							background-color: adjust-color(
-								$color_gray-light-skin,
-								$saturation: +1%,
-								$lightness: +1%
-							);
+							background-color: #fcfcfd;
 
 							input {
 								&.score_from {
@@ -8516,6 +8503,14 @@ img.ui-datepicker-trigger {
 							display: block;
 							text-align: right;
 							margin-left: auto;
+							background-color: #7e3bd0;
+							padding: 6px 16px;
+							border: none;
+							border-radius: 3px;
+							font-size: 12px;
+							font-weight: 400;
+							color: #ffffff;
+							margin-top: 20px;
 						}
 					}
 				}
