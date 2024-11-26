@@ -2,7 +2,7 @@
 /**
  * Style Customizer.
  *
- * @since x.x.x
+ * @since 3.0.5
  * @package EverestForms\Addons\StyleCustomizer
  */
 

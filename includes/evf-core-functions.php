@@ -5625,7 +5625,7 @@ if ( !function_exists( 'evf_hex_to_rgb' ) ) {
 	/**
 	 * Converts a hex color code to an RGB array.
 	 *
-	 * @since x.x.x
+	 * @since 3.0.5
 	 * @param string $hexcolor Hex color code, with or without '#'.
 	 * @return array RGB values as [red, green, blue].
 	 */
