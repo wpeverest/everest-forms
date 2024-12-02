@@ -741,15 +741,24 @@
 					var isRecurringEnable = $('#everest-forms-panel-field-paypal-recurring');
 					$("#everest-forms-panel-field-paypal-interval_count-wrap").hide();
 					$("#everest-forms-panel-field-paypal-period-wrap").hide();
+
+					$("#everest-forms-panel-field-stripe-plan_name-wrap").hide();
+					$("#everest-forms-panel-field-stripe-interval_count-wrap").hide();
+					$("#everest-forms-panel-field-stripe-period-wrap").hide();
 				}
 			});
 
 			$( document.body ).on( 'evf_before_field_deleted',function(e, element_id){
 				var $field = $("#everest-forms-field-" + element_id);
 				var field_type = $field.attr("data-field-type");
+
 				if('payment-subscription-plan' === field_type ) {
 					$("#everest-forms-panel-field-paypal-interval_count-wrap").show();
 					$("#everest-forms-panel-field-paypal-period-wrap").show();
+
+					$("#everest-forms-panel-field-stripe-plan_name-wrap").hide();
+					$("#everest-forms-panel-field-stripe-interval_count-wrap").hide();
+					$("#everest-forms-panel-field-stripe-period-wrap").hide();
 				}
 			});
 
@@ -761,14 +770,46 @@
 				if($(isRecurringEnable).is(':checked')) {
 					$("#everest-forms-panel-field-paypal-interval_count-wrap").hide();
 					$("#everest-forms-panel-field-paypal-period-wrap").hide();
+
+					$("#everest-forms-panel-field-stripe-plan_name-wrap").hide();
+					$("#everest-forms-panel-field-stripe-interval_count-wrap").hide();
+					$("#everest-forms-panel-field-stripe-period-wrap").hide();
 				}
 
 				$(isRecurringEnable).on('click', function(e){
 
 					$("#everest-forms-panel-field-paypal-interval_count-wrap").hide();
 					$("#everest-forms-panel-field-paypal-period-wrap").hide();
+
+					$("#everest-forms-panel-field-stripe-plan_name-wrap").hide();
+					$("#everest-forms-panel-field-stripe-interval_count-wrap").hide();
+					$("#everest-forms-panel-field-stripe-period-wrap").hide();
 				});
 			}
+
+			var isStripeRecurringEnable = $('#everest-forms-panel-field-stripe-recurring');
+
+			var wrapper = $('.everest-forms-field-wrap');
+
+			if($(wrapper).find('.everest-forms-field-payment-subscription-plan').length > 0) {
+
+				if($(isStripeRecurringEnable).is(':checked')) {
+					$("#everest-forms-panel-field-stripe-plan_name-wrap").hide();
+					$("#everest-forms-panel-field-stripe-interval_count-wrap").hide();
+					$("#everest-forms-panel-field-stripe-period-wrap").hide();
+
+				}
+
+
+			}
+			$(isStripeRecurringEnable).on('click', function(e){
+				if($(this).is(':checked') && $(wrapper).find('.everest-forms-field-payment-subscription-plan').length > 0) {
+					$("#everest-forms-panel-field-stripe-plan_name-wrap").hide();
+					$("#everest-forms-panel-field-stripe-interval_count-wrap").hide();
+					$("#everest-forms-panel-field-stripe-period-wrap").hide();
+
+				}
+			});
 
 		},
 
