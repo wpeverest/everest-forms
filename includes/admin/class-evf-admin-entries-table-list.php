@@ -588,16 +588,6 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 		?>
 		<div class="alignleft actions">
 		<?php
-		if ( ! empty( $this->forms ) && 'top' === $which ) {
-
-			$this->forms_dropdown();
-			submit_button( __( 'Filter', 'everest-forms' ), '', 'filter_action', false, array( 'id' => 'post-query-submit' ) );
-
-			// Export CSV submit button.
-			if ( apply_filters( 'everest_forms_enable_csv_export', $show_export ) && current_user_can( 'export' ) ) {
-				submit_button( __( 'Export CSV', 'everest-forms' ), '', 'export_action', false, array( 'id' => 'export-csv-submit' ) );
-			}
-		}
 
 		if ( $num_entries['trash'] && isset( $_GET['status'] ) && 'trash' === $_GET['status'] && current_user_can( 'manage_everest_forms' ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 			submit_button( __( 'Empty Trash', 'everest-forms' ), 'apply', 'delete_all', false );
@@ -614,12 +604,12 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 		$forms   = evf_get_all_forms( true );
 		$form_id = isset( $_REQUEST['form_id'] ) ? absint( $_REQUEST['form_id'] ) : $this->form_id; // phpcs:ignore WordPress.Security.NonceVerification
 		?>
-		<label for="filter-by-form" class="screen-reader-text"><?php esc_html_e( 'Filter by form', 'everest-forms' ); ?></label>
-		<select name="form_id" id="filter-by-form" class="evf-enhanced-normal-select" style="min-width: 200px;">
-			<?php foreach ( $forms as $id => $form ) : ?>
-				<option value="<?php echo esc_attr( $id ); ?>" <?php selected( $form_id, $id ); ?>><?php echo esc_html( $form ); ?></option>
-			<?php endforeach; ?>
-		</select>
+			<label for="filter-by-form" class="screen-reader-text"><?php esc_html_e( 'Filter by form', 'everest-forms' ); ?></label>
+			<select name="form_id" id="filter-by-form" class="evf-enhanced-normal-select" style="min-width: 200px;">
+				<?php foreach ( $forms as $id => $form ) : ?>
+					<option value="<?php echo esc_attr( $id ); ?>" <?php selected( $form_id, $id ); ?>><?php echo esc_html( $form ); ?></option>
+				<?php endforeach; ?>
+			</select>
 		<?php
 	}
 

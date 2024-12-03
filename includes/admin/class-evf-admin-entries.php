@@ -52,32 +52,59 @@ class EVF_Admin_Entries {
 
 		// Get the entries IDs.
 		$entry_ids = evf_get_entries_ids( $entries_table_list->form_id );
+		$show_export = isset( $_GET['status'] ) && 'trash' === $_GET['status'] ? false : true; // phpcs:ignore WordPress.Security.NonceVerification
+
 
 		$entries_table_list->process_bulk_action();
 		$entries_table_list->prepare_items();
 		?>
 		<div id="everest-forms-entries-list" class="wrap">
-			<h1 class="wp-heading-inline"><?php esc_html_e( 'Entries', 'everest-forms' ); ?></h1>
-			<hr class="wp-header-end">
+			<div class="evf-entries-header-container">
+				<p class="title"><?php esc_html_e( 'Entries', 'everest-forms' ); ?></p>
+			</div>
 
 			<?php settings_errors(); ?>
 			<?php do_action( 'everest_forms_before_entry_list', $entries_table_list ); ?>
 
 			<?php if ( 0 < count( $entry_ids ) ) : ?>
-				<?php $entries_table_list->views(); ?>
-				<form id="entries-list" method="get" data-form-id="<?php echo absint( $entries_table_list->form_id ); ?>" data-last-entry-id="<?php echo absint( end( $entry_ids ) ); ?>">
-					<input type="hidden" name="page" value="evf-entries" />
-					<?php if ( ! empty( $_REQUEST['form_id'] ) ) : // phpcs:ignore WordPress.Security.NonceVerification ?>
-						<input type="hidden" name="form_id" value="<?php echo absint( $_REQUEST['form_id'] ); // phpcs:ignore WordPress.Security.NonceVerification ?>" />
-					<?php endif; ?>
-					<?php if ( ! empty( $_REQUEST['status'] ) ) : // phpcs:ignore WordPress.Security.NonceVerification ?>
-						<input type="hidden" name="status" value="<?php echo esc_attr( sanitize_text_field( wp_unslash( $_REQUEST['status'] ) ) ); // phpcs:ignore WordPress.Security.NonceVerification ?>" />
-					<?php endif; ?>
-					<?php
-						$entries_table_list->search_box( esc_html__( 'Search Entries', 'everest-forms' ), 'everest-forms' );
-						$entries_table_list->display();
-					?>
-				</form>
+				<div class="evf-entries-table-container">
+					<div class="inner-container">
+						<div class="entry-table-tabs">
+							<?php $entries_table_list->views(); ?>
+						</div>
+						<div class="entry-table-filters">
+							<div class="evf-forms-list">
+							<?php
+							if(! empty( $entries_table_list->forms )) {
+
+								$entries_table_list->forms_dropdown();
+								submit_button( __( 'Filter', 'everest-forms' ), '', 'filter_action', false, array( 'id' => 'post-query-submit' ) );
+
+								// Export CSV submit button.
+								if ( apply_filters( 'everest_forms_enable_csv_export', $show_export ) && current_user_can( 'export' ) ) {
+									submit_button( __( 'Export CSV', 'everest-forms' ), '', 'export_action', false, array( 'id' => 'export-csv-submit' ) );
+								}
+							}
+							?>
+							</div>
+							<form id="entries-list" method="get" data-form-id="<?php echo absint( $entries_table_list->form_id ); ?>" data-last-entry-id="<?php echo absint( end( $entry_ids ) ); ?>">
+								<input type="hidden" name="page" value="evf-entries" />
+								<?php if ( ! empty( $_REQUEST['form_id'] ) ) : // phpcs:ignore WordPress.Security.NonceVerification ?>
+									<input type="hidden" name="form_id" value="<?php echo absint( $_REQUEST['form_id'] ); // phpcs:ignore WordPress.Security.NonceVerification ?>" />
+								<?php endif; ?>
+								<?php if ( ! empty( $_REQUEST['status'] ) ) : // phpcs:ignore WordPress.Security.NonceVerification ?>
+									<input type="hidden" name="status" value="<?php echo esc_attr( sanitize_text_field( wp_unslash( $_REQUEST['status'] ) ) ); // phpcs:ignore WordPress.Security.NonceVerification ?>" />
+								<?php endif; ?>
+								<?php
+									$entries_table_list->search_box( 'Search', 'everest-forms' );
+								?>
+							</form>
+						</div>
+						<?php
+							$entries_table_list->display();
+						?>
+					</div>
+				</div>
 			<?php else : ?>
 				<div class="everest-forms-BlankState">
 					<svg aria-hidden="true" class="octicon octicon-graph everest-forms-BlankState-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M16 14v1H0V0h1v14h15zM5 13H3V8h2v5zm4 0H7V3h2v10zm4 0h-2V6h2v7z"/></svg>

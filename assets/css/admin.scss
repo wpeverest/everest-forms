@@ -10141,7 +10141,7 @@ everest-forms-field-option-row-rating-icon {
 				color: $color-white;
 				background: $everestforms;
 				border-color: $everestforms;
-				
+
 				svg {
 					fill: $color-white;
 				}
@@ -10196,21 +10196,176 @@ body {
 
 .evf-oxy-element {
 	.everest-forms {
-	  display: flex;
-	  justify-content: center;
-	  align-items: center;
-	  padding: 30px 0;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		padding: 30px 0;
 
-	  .everest-forms-notice {
-		margin-bottom: 0;
+		.everest-forms-notice {
+			margin-bottom: 0;
 
-		&::before {
-		  top: 50%;
-		  left: 16px;
-		  transform: translateY(-50%);
-		  line-height: 20px;
-		  margin-right: 0;
+			&::before {
+				top: 50%;
+				left: 16px;
+				transform: translateY(-50%);
+				line-height: 20px;
+				margin-right: 0;
+			}
 		}
-	  }
 	}
-  }
+}
+
+.everest-forms_page_evf-entries {
+	.evf-entries-header-container {
+		display: flex;
+		padding: 28px 36px;
+		justify-content: space-between;
+		align-items: center;
+		align-self: stretch;
+		border-radius: 8px;
+		background: #fff;
+
+		.title {
+			color: var(--Grey-grey-500, #222);
+			font-family: Inter;
+			font-size: 24px;
+			font-style: normal;
+			font-weight: 500;
+			line-height: 150%; /* 36px */
+		}
+	}
+
+	.evf-entries-table-container {
+		display: flex;
+		padding: 40px;
+		align-items: flex-start;
+		gap: 30px;
+		align-self: stretch;
+		border-radius: 8px;
+		border: 2px solid #f5f5f5;
+		background: #fff;
+
+		.inner-container {
+			display: flex;
+			flex-direction: column;
+			align-items: flex-start;
+			gap: 24px;
+			flex: 1 0 0;
+			.entry-table-tabs {
+				ul {
+					li {
+						a {
+							color: var(--Grey-grey-300, #6b6b6b);
+							font-family: Inter;
+							font-size: 14px;
+							font-style: normal;
+							font-weight: 400;
+							line-height: 24px; /* 171.429% */
+							&.current {
+								color: #475bb2;
+								span {
+									color: #475bb2;
+								}
+							}
+						}
+					}
+				}
+			}
+			.entry-table-filters {
+				display: flex;
+				padding-bottom: 24px;
+				justify-content: space-between;
+				align-items: center;
+				align-self: stretch;
+				border-bottom: 1px solid #dcdcdc;
+				background: var(--Grey-grey-0, #fff);
+				.evf-forms-list {
+					display: flex;
+					height: 38px;
+					align-items: center;
+					gap: 8px;
+					flex-shrink: 0;
+					.select2 {
+						.selection {
+							.select2-selection {
+								height: 38px;
+								border-radius: 4px;
+								border: 1px solid var(--Grey-grey-100, #bababa);
+								background: var(--Grey-0, #fff);
+								.select2-selection__rendered {
+									align-items: center;
+									gap: 8px;
+									flex-shrink: 0;
+									color: var(--Grey-grey-300, #6b6b6b);
+									font-family: Inter;
+									font-size: 14px;
+									font-style: normal;
+									font-weight: 400;
+									line-height: 150%; /* 21px */
+								}
+							}
+						}
+					}
+					#post-query-submit {
+						display: flex;
+						padding: 8px 16px;
+						justify-content: center;
+						align-items: center;
+						gap: 8px;
+						border-radius: 3px;
+						border: 1px solid var(--EVF-violet-Primary-400, #7545bb);
+						background: var(--EVF-violet-Primary-400, #7545bb);
+						color: var(--Grey-grey-0, #fff);
+						font-family: Inter;
+						font-size: 14px;
+						font-style: normal;
+						font-weight: 500;
+						line-height: 150%; /* 21px */
+					}
+					#export-csv-submit {
+						display: flex;
+						padding: 8px 14px;
+						justify-content: center;
+						align-items: center;
+						gap: 6px;
+						border-radius: 3px;
+						border: 1px solid var(--Blue-blue-500-Primary, #475bb2);
+						background: #f6f7f7;
+						color: var(--Blue-blue-500-Primary, #475bb2);
+						font-family: Inter;
+						font-size: 14px;
+						font-style: normal;
+						font-weight: 500;
+						line-height: 150%; /* 21px */
+					}
+				}
+
+				form {
+					.search-box {
+						#everest-forms-search-input {
+							display: flex;
+							height: 38px;
+							align-items: center;
+							align-self: stretch;
+							border-radius: 4px;
+							border: 1px solid var(--Grey-grey-100, #bababa);
+							background: var(--Grey-grey-0, #fff);
+						}
+						#search-submit {
+							height: 38px;
+							align-items: center;
+							align-self: stretch;
+						}
+					}
+				}
+			}
+
+			.tablenav {
+				display: flex;
+				justify-content: space-between;
+				align-items: flex-end;
+				align-self: stretch;
+			}
+		}
+	}
+}
