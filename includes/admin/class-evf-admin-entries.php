@@ -54,6 +54,28 @@ class EVF_Admin_Entries {
 		$entry_ids = evf_get_entries_ids( $entries_table_list->form_id );
 		$show_export = isset( $_GET['status'] ) && 'trash' === $_GET['status'] ? false : true; // phpcs:ignore WordPress.Security.NonceVerification
 
+		$selected_form_id = isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : absint( $entries_table_list->form_id ); //phpcs:ignore WordPress.Security.NonceVerification
+
+		$query = new WP_Query(
+			array(
+				'post_type'      => 'everest_form',
+				'posts_per_page' => -1,
+			)
+		);
+
+		$forms = array();
+		while ( $query->have_posts() ) {
+			$query->the_post();
+			$id           = get_the_ID();
+			$title        = get_the_title();
+			$forms[ $id ] = $title;
+		}
+
+		$duration = array(
+			'day'   => esc_html__( 'Day', 'everest-forms-pro' ),
+			'week'  => esc_html__( 'Week', 'everest-forms-pro' ),
+			'month' => esc_html__( 'Month', 'everest-forms-pro' ),
+		);
 
 		$entries_table_list->process_bulk_action();
 		$entries_table_list->prepare_items();
@@ -61,8 +83,32 @@ class EVF_Admin_Entries {
 		<div id="everest-forms-entries-list" class="wrap">
 			<div class="evf-entries-header-container">
 				<p class="title"><?php esc_html_e( 'Entries', 'everest-forms' ); ?></p>
+				<div class="evf-d-flex evf-align-items-center evf-my-2"
+			id="evf-dashboard-analytisc-header">
+					<select id="evf-forms-analytics-form-list" class="evf-enhanced-normal-select"  style="min-width: 350px;">
+						<?php foreach ( $forms as $id => $title ) : // phpcs:ignore WordPress.WP.GlobalVariablesOverride ?>
+							<option value="<?php echo esc_attr( $id ); ?>"
+								<?php selected( $id, $selected_form_id ); ?>">
+								<?php echo esc_html( $title ); ?>
+							</option>
+						<?php endforeach; ?>
+					</select>
+					<div class="evf-ml-auto evf-d-flex evf-align-items-center">
+						<div class="everest-forms-btn-group everest-forms-btn-group--inline evf-mr-1"
+							id="everest-forms-analytics-duration">
+						<?php foreach ( $duration as $key => $value ) : ?>
+							<a data-duration="<?php echo esc_attr( $key ); ?>"
+								class="everest-forms-btn <?php echo esc_attr( $key === $selected_duration ? 'is-active' : '' ); ?>">
+								<?php echo esc_html( $value ); ?>
+							</a>
+						<?php endforeach; ?>
+						</div>
+						<input id="evf-form-analytics-date-range"
+							placeholder="<?php echo esc_attr__( 'Select date range', 'everest-forms-pro' ); ?>" />
+					</div>
+				</div>
 			</div>
-
+			<div class="evf-entries-content-container">
 			<?php settings_errors(); ?>
 			<?php do_action( 'everest_forms_before_entry_list', $entries_table_list ); ?>
 
@@ -124,6 +170,7 @@ class EVF_Admin_Entries {
 					<style type="text/css">#posts-filter .wp-list-table, #posts-filter .tablenav.top, .tablenav.bottom .actions, .wrap .subsubsub { display: none; }</style>
 				</div>
 			<?php endif; ?>
+		</div>
 		</div>
 		<?php
 	}
