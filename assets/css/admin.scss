@@ -9244,7 +9244,7 @@ img.ui-datepicker-trigger {
 	.everest-forms-settings-container {
 		flex: 1;
 		padding: 20px;
-		background: #ffffff;
+		background: #FAFAFC;
 		box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 
 		.everest-forms-options-header {
@@ -9361,7 +9361,7 @@ img.ui-datepicker-trigger {
 		.everest-forms-header {
 			display: flex;
 			flex-direction: column;
-			background: #fafafc;
+			background: #ffffff;
 			border-right: 1px solid #ededed;
 			padding: 32px 0 20px;
 			width: 300px;
@@ -9420,7 +9420,7 @@ img.ui-datepicker-trigger {
 
 						&::after {
 							content: "";
-							background: #fff;
+							background: #fafafc;
 							width: 8px;
 							height: 100%;
 							position: absolute;
@@ -9469,7 +9469,7 @@ img.ui-datepicker-trigger {
 
 						&:hover,
 						&.nav-tab-active {
-							background: #ffffff;
+							background: #fafafc;
 
 							&::before {
 								opacity: 1;
@@ -9499,7 +9499,7 @@ img.ui-datepicker-trigger {
 						}
 
 						&.nav-tab-active {
-							background: #ffffff;
+							background: #fafafc;
 
 							&::before,
 							&::after {
@@ -9700,6 +9700,24 @@ img.ui-datepicker-trigger {
 
 					&--field {
 						flex: 1;
+
+						&.forminp-link {
+							.everest_forms_license_key_deactivation {
+								background: #ec474f !important;
+								border: 0;
+								color: #FFFFFF;
+								padding: 8px 16px;
+								font-size: 14px;
+								line-height: 22px;
+								font-weight: 500;
+								transition: all .3s;
+								border-radius: 4px;
+
+								&:hover {
+									background: #dc3545 !important;
+								}
+							}
+						}
 
 						&.forminp-input_test_button {
 							@media screen and (max-width: 782px) {
