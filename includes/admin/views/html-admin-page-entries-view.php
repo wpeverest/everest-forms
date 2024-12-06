@@ -142,10 +142,9 @@ if ( false !== $entry_index ) {
 												echo '<strong>' . esc_html__( 'Field ID', 'everest-forms' ) . '</strong>';
 											}
 
-											echo '</th></tr>';
-
+											echo '</th>';
 											// Field value.
-											echo '<tr class="everest-forms-entry-field field-value' . esc_attr( $field_class ) . '" style="' . esc_attr( $field_style ) . '"><td>';
+											echo '<td>';
 
 											if ( ! empty( $field_value ) || is_numeric( $field_value ) ) {
 												if ( is_serialized( $field_value ) ) {
@@ -182,7 +181,8 @@ if ( false !== $entry_index ) {
 												esc_html_e( 'Empty', 'everest-forms' );
 											}
 
-											echo '</td></tr>';
+											echo '</td>';
+											echo '</tr>';
 										}
 									}
 									?>
