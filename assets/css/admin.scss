@@ -10425,7 +10425,6 @@ body {
 					// justify-content: center;
 					// align-items: center;
 					gap: 32px;
-					flex: 1 0 0;
 					border-radius: 8px;
 					border: 2px solid #f2f2f2;
 					background: #fff;
@@ -10437,36 +10436,163 @@ body {
 						font-weight: 500;
 						line-height: 150%; /* 30px */
 					}
-					.device-table {
-						tr {
-							display: flex;
-						}
-						.device {
-							display: flex;
-							padding: 12px 16px 12px 24px;
-							align-items: center;
-							gap: 2px;
-							align-self: stretch;
-							border-radius: 5px 0px 0px 0px;
-							border-top: 1px solid #dcdcdc;
-							border-bottom: 1px solid #dcdcdc;
-							border-left: 1px solid #dcdcdc;
-							background: var(--Grey-grey-0, #fff);
-						}
+				}
+			}
+		}
+		//For survey and poll
+		.everest-forms-single-survey-container {
+			// display: flex;
+			padding: 40px;
+			flex-direction: column;
+			align-items: flex-start;
+			gap: 30px;
+			align-self: stretch;
+			border-radius: 8px;
+			border: 2px solid #f5f5f5;
+			background: #fff;
+			.everest-forms-survey-header {
+				// display: flex;
+				padding-bottom: 24px;
+				align-items: center;
+				gap: 16px;
+				align-self: stretch;
+				border-bottom: 1px solid #dcdcdc;
+				.everest-forms-survey-selection {
+					.form-header-name {
+						color: var(--Grey-grey-500, #222);
+						font-family: Inter;
+						font-size: 20px;
+						font-style: normal;
+						font-weight: 500;
+						line-height: 150%; /* 30px */
+					}
 
-						.usage {
-							display: flex;
-							padding: 12px 16px 12px 8px;
-							align-items: center;
-							gap: 2px;
-							align-self: stretch;
-							border-radius: 0px 5px 0px 0px;
-							border-top: 1px solid #dcdcdc;
-							border-right: 1px solid #dcdcdc;
-							border-bottom: 1px solid #dcdcdc;
-							background: var(--Grey-grey-0, #fff);
+					.everest-forms-survey-question-list {
+						display: flex;
+						height: 38px;
+						padding: 8px 12px;
+						align-items: center;
+						gap: 80px;
+						flex-shrink: 0;
+						border-radius: 4px;
+						border: 1px solid var(--Grey-grey-100, #bababa);
+						background: var(--Grey-0, #fff);
+						color: var(--Grey-grey-400, #383838);
+						font-family: Inter;
+						font-size: 14px;
+						font-style: normal;
+						font-weight: 400;
+						line-height: 150%; /* 21px */
+					}
+					.evf-analytic-button {
+						display: flex;
+						padding: 8px 16px;
+						justify-content: center;
+						align-items: center;
+						gap: 8px;
+						border-radius: 3px;
+						border: 1px solid var(--EVF-violet-Primary-400, #7545bb);
+						background: var(--EVF-violet-Primary-400, #7545bb);
+					}
+				}
+			}
+			.evf-survey-block {
+				display: flex;
+				flex-direction: column;
+				align-items: flex-start;
+				gap: 30px;
+				align-self: stretch;
+				.evf-survey-header {
+					display: flex;
+					justify-content: space-between;
+					align-items: center;
+					align-self: stretch;
+					.evf-survey-selection {
+						display: flex;
+						justify-content: space-between;
+						align-items: center;
+						align-self: stretch;
+						h3 {
+							color: var(--Grey-grey-500, #222);
+							font-family: Inter;
+							font-size: 16px;
+							font-style: normal;
+							font-weight: 500;
+							line-height: 150%; /* 24px */
 						}
 					}
+				}
+
+				.survey-block-average-overview {
+					display: flex;
+					align-items: flex-start;
+					gap: 20px;
+					align-self: stretch;
+					.total-response,
+					.skipped-response,
+					.average-response {
+						display: flex;
+						padding: 32px 20px;
+						align-items: flex-start;
+						gap: 20px;
+						flex: 1 0 0;
+						border-radius: 8px;
+						border: 2px solid #f2f2f2;
+						background: #fff;
+						.icon {
+							display: flex;
+							width: 64px;
+							height: 64px;
+							padding: 16px;
+							justify-content: center;
+							align-items: center;
+							border-radius: 6.4px;
+							background: #eee8f7;
+							svg {
+								width: 32px;
+								height: 32px;
+								flex-shrink: 0;
+							}
+						}
+
+						.response-detail {
+							display: flex;
+							flex-direction: row;
+							gap: 20px;
+							justify-content: center;
+							align-items: center;
+							.count {
+								display: flex;
+								flex-direction: column;
+
+								strong {
+									color: var(--Grey-grey-500, #222);
+									font-family: Inter;
+									font-size: 28px;
+									font-style: normal;
+									font-weight: 600;
+									line-height: 76%; /* 21.28px */
+								}
+
+								p {
+									color: var(--Grey-grey-500, #222);
+									font-family: Inter;
+									font-size: 18px;
+									font-style: normal;
+									font-weight: 500;
+									line-height: 150%; /* 27px */
+								}
+							}
+						}
+					}
+				}
+				.everest-forms-survey-summary {
+					display: flex;
+					padding: 40px;
+					flex-direction: column;
+					align-items: flex-start;
+					gap: 30px;
+					align-self: stretch;
 				}
 			}
 		}
