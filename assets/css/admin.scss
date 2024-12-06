@@ -10586,13 +10586,19 @@ body {
 						}
 					}
 				}
-				.everest-forms-survey-summary {
+				.survey-block-statistic-overview {
 					display: flex;
-					padding: 40px;
 					flex-direction: column;
 					align-items: flex-start;
 					gap: 30px;
 					align-self: stretch;
+					.everest-forms-survey-summary {
+						display: flex;
+						flex-direction: column;
+						align-items: flex-start;
+						gap: 30px;
+						align-self: stretch;
+					}
 				}
 			}
 		}
