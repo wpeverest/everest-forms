@@ -16,6 +16,8 @@ import {
 	Tooltip,
 	Icon,
 	Stack,
+	Alert,
+	Flex,
   } from '@chakra-ui/react'
 import { __ } from '@wordpress/i18n'
 import { Select } from 'chakra-react-select'
@@ -27,7 +29,7 @@ import { addManagerRole } from './RoleAndPermissionAPI'
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const [ userEmail, setUserEmail ] = useState("");
 	const [ permissions, setPermissions ] = useState([]);
-
+	const [ errors, setErrors ] = useState([]);
 
 	const roles = Object.entries( wp_roles ).map( ( [ key, value ] ) => ( {
 		label: value,
@@ -41,7 +43,17 @@ import { addManagerRole } from './RoleAndPermissionAPI'
 
 	const handleAddManager = ( email, assignedPermission )=> {
 		addManagerRole( email, assignedPermission ).then( (res) => {
-			console.log(res);
+			setErrors( [] );
+
+			if ( ! res.success ) {
+				let error = [];
+
+				Object.entries(res.message).forEach(([key, message]) => {
+					error.push({ key: key, message: message });
+				  });
+
+				setErrors( error );
+			}
 		})
 	}
 
@@ -96,11 +108,19 @@ import { addManagerRole } from './RoleAndPermissionAPI'
 							</Tooltip>
 						</FormLabel>
 						<Input
+							required
 							type='email'
 							placeholder='User Email Address'
 							onChange={(e) => setUserEmail(e.target.value)}
 						/>
-
+							 {errors.map((error, index) => {
+								 if (error.key === "user_email") {
+									 return (
+									<Alert borderRadius={"4px"} key={index} status="error">{error.message}</Alert>
+									);
+								}
+								return null;
+								})}
 					</Stack>
 
 					<Stack>
@@ -121,6 +141,7 @@ import { addManagerRole } from './RoleAndPermissionAPI'
 							</Tooltip>
 						</FormLabel>
 						<Select
+								required
 								isMulti
 								size="md"
 								placeholder={__(
@@ -132,19 +153,26 @@ import { addManagerRole } from './RoleAndPermissionAPI'
 								isClearable
 								isSearchable={false}
 							/>
+							 {errors.map((error, index) => {
+								if (error.key === "assigned_permission") {
+									return (
+								<Alert borderRadius={"4px"} key={index} status="error">{error.message}</Alert>
+								);
+								}
+								return null;
+							})}
 					</Stack>
 				</Stack>
+				<Flex justifyContent={"flex-end"} marginTop={"24px"}>
+					<Button _hover={{backgroundColor:"#FFFFF"}} color={"#6B6B6B"} fontWeight={"600"} fontSize={"16px"} lineHeight={"24px"} mr={3} onClick={onClose}>
+					Back
+					</Button>
+					<Button color={"#FFFFFF"} fontWeight={"500"} fontSize={"16px"} backgroundColor={"#7545BB"} padding={"10px 16px"} borderRadius={"4px"} border={"1px solid #7545BB"} width={"94px"} height={"39px"} _hover={{backgroundColor:"#7545BB"}}
+						onClick={(e) => { handleAddManager( userEmail, permissions) }}
+					>Confirm</Button>
+				</Flex>
 			</FormControl>
           </ModalBody>
-
-          <ModalFooter>
-            <Button _hover={{backgroundColor:"#FFFFF"}} color={"#6B6B6B"} fontWeight={"600"} fontSize={"16px"} lineHeight={"24px"} mr={3} onClick={onClose}>
-              Back
-            </Button>
-            <Button color={"#FFFFFF"} fontWeight={"500"} fontSize={"16px"} backgroundColor={"#7545BB"} padding={"10px 16px"} borderRadius={"4px"} border={"1px solid #7545BB"} width={"94px"} height={"39px"} _hover={{backgroundColor:"#7545BB"}}
-				onClick={(e) => { handleAddManager( userEmail, permissions) }}
-			>Confirm</Button>
-          </ModalFooter>
         </ModalContent>
       </Modal>
     </>

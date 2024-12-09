@@ -6,6 +6,7 @@ import AddUserDisplayModel from "./AddUserDisplayModel";
 const RoleBased = () => {
 	const [isAllChecked, setIsAllChecked] = useState(false);
 	const [wpRoles, setWPRoles] = useState([]);
+	const [evfPermission, setEvfPermission] = useState([]);
 	const [checkedItems, setCheckedItems] = useState({
 		Editor: false,
 		Author: false,
@@ -50,7 +51,8 @@ const RoleBased = () => {
 
 	useEffect(()=>{
 		getWPRoles().then((res)=>{
-			setWPRoles(res.data);
+			setWPRoles(res.data.roles);
+			setEvfPermission(res.data.permission.permissions);
 		});
 	}, []);
 
@@ -66,7 +68,7 @@ const RoleBased = () => {
 					</Text>
 				</Stack>
 				<Stack>
-					<AddUserDisplayModel wp_roles={wpRoles} />
+					<AddUserDisplayModel wp_roles={evfPermission} />
 				</Stack>
 			</Flex>
 			<Stack margin={"24px 0px"} borderBottom={"1px solid #DCDCDC"} paddingBottom={"24px"}>

@@ -81,14 +81,18 @@ class EVF_Roles_And_Permission {
 			$wp_roles = new WP_Roles();
 		}
 
+		$permissions = self::get_evf_permissions();
+
 		$roles        = array();
 		$ignore_roles = apply_filters( 'everest_forms_ignore_roles_to_give_permissions', array( 'administrator', 'subscriber' ) );
 
 		foreach ( $wp_roles->roles as $key => $value ) {
 			if ( ! in_array( $key, $ignore_roles ) ) {
-				$roles[ $key ] = $value['name'];
+				$roles['roles'][ $key ] = $value['name'];
 			}
 		}
+
+		$roles['permission'] = $permissions;
 
 		wp_send_json_success( $roles );
 	}
@@ -99,16 +103,83 @@ class EVF_Roles_And_Permission {
 			return new \WP_REST_Response(
 				array(
 					'success' => false,
-					'message' => esc_html__( 'Request data not found.', 'easy-mail-smtp' ),
+					'message' => esc_html__( 'Request data not found.', 'everest-forms' ),
 				),
 				200
 			);
 		}
 
 		$requested_data = $request['request'];
+
+		$user_email          = isset( $requested_data['user_email'] ) ? $requested_data['user_email'] : '';
+		$assigned_permission = isset( $requested_data['assigned_permission'] ) && ! empty( $requested_data['assigned_permission'] ) ? $requested_data['assigned_permission'] : array();
+
+		error_log( print_r( $requested_data, true ) );
+		if ( empty( $user_email ) && empty( $assigned_permission ) ) {
+			return new \WP_REST_Response(
+				array(
+					'success' => false,
+					'message' => array(
+						'user_email'          => esc_html__( 'User email is required.', 'everest-forms' ),
+						'assigned_permission' => esc_html__( 'User permission is required', 'everest-forms' ),
+					),
+				),
+				200
+			);
+		}
+
+		if ( empty( $assigned_permission ) ) {
+			return new \WP_REST_Response(
+				array(
+					'success' => false,
+					'message' => array(
+						'assigned_permission' => esc_html__( 'User permission is required', 'everest-forms' ),
+					),
+				),
+				200
+			);
+		}
+
+		if ( empty( $user_email ) ) {
+			return new \WP_REST_Response(
+				array(
+					'success' => false,
+					'message' => array(
+						'user_email' => esc_html__( 'User email is required.', 'everest-forms' ),
+					),
+				),
+				200
+			);
+		}
+
 		error_log( print_r( 'add_user_manager', true ) );
 		error_log( print_r( $requested_data, true ) );
 		wp_send_json_success();
+	}
+
+	private static function get_evf_permissions() {
+		$capabilities = array();
+
+		$capabilities['permissions'] = array(
+			'manage_everest_forms' => 'Manage Everest Forms',
+		);
+
+		$capability_types = array( 'forms', 'entries' );
+
+		foreach ( $capability_types as $capability_type ) {
+			if ( 'forms' === $capability_type ) {
+				$capabilities['permissions'][ "everest_forms_create_{$capability_type}" ] = 'Create ' . ucfirst( $capability_type );
+			}
+
+			foreach ( array( 'view', 'edit', 'delete' ) as $context ) {
+				$capabilities['permissions'][ "everest_forms_{$context}_{$capability_type}" ]        = ucfirst( $context ) . ' ' . ucfirst( $capability_type );
+				$capabilities['permissions'][ "everest_forms_{$context}_others_{$capability_type}" ] = ucfirst( $context ) . ' Others ' . ucfirst( $capability_type );
+			}
+		}
+
+		error_log( print_r( $capabilities, true ) );
+
+		return $capabilities;
 	}
 
 	/**
