@@ -264,7 +264,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 							<div class="everest-forms-options-header--top">';
 
 							// For now icon is ignored.
-							if( isset( $value['image_name'] ) && ! empty( $value['image_name'] ) ) {
+							if ( isset( $value['image_name'] ) && ! empty( $value['image_name'] ) ) {
 
 								/**
 								 * Icon for Settings tab with different icon.
@@ -273,7 +273,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 								 */
 
 								// echo '<span class="evf-forms-options-header-header--top-icon">' . evf_file_get_contents( '/assets/images/settings-icons/' . $value['image_name'] . '.svg' ) . '</span>';
-							}else{
+							} else {
 								foreach ( $tabs_array as $icon_key => $icon_value ) {
 									echo '<span class="evf-forms-options-header-header--top-icon">' . evf_file_get_contents( '/assets/images/settings-icons/' . $icon_key . '.svg' ) . '</span>'; //phpcs:ignore
 								}
@@ -560,7 +560,23 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 							}
 							?>
 															<?php checked( $key, $option_value ); ?>
-												/> <?php echo esc_html( $val ); ?></label>
+												/> <?php echo esc_html( $val ); ?>
+											<?php
+											if ( 'v2' === $key || 'v3' === $key ) {
+												$image_url = plugins_url( 'assets/images/captcha/reCAPTCHA.png', EVF_PLUGIN_FILE );
+												echo '<img src="' . esc_url( isset( $image_url ) ? $image_url : '' ) . '" />';
+
+											} elseif ( 'turnstile' === $key ) {
+												$image_url = plugins_url( 'assets/images/captcha/turnstile.png', EVF_PLUGIN_FILE );
+												echo '<img src="' . esc_url( isset( $image_url ) ? $image_url : '' ) . '" />';
+											} elseif ( 'hcaptcha' === $key ) {
+												$image_url = plugins_url( 'assets/images/captcha/turnstile.png', EVF_PLUGIN_FILE );
+												echo '<img src="' . esc_url( isset( $image_url ) ? $image_url : '' ) . '" />';
+											}
+
+											?>
+
+											</label>
 										</li>
 								<?php
 						}
