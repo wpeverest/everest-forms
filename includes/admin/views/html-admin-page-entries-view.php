@@ -65,14 +65,6 @@ if ( false !== $entry_index ) {
 			<div id="poststuff">
 				<div id="post-body" class="metabox-holder">
 					<!-- Entry Fields metabox -->
-					<!-- <div id="evf-entry-nav-buttons">
-						<a class="button" id="evf-prev-entry-button" href="<?php echo esc_url( $prev_entry_url ); ?>" <?php echo empty( $prev_entry ) ? esc_attr( 'disabled=disabled' ) : ''; ?> >
-							<?php esc_html_e( 'Previous', 'everest-forms' ); ?>
-						</a>
-						<a class="button" id="evf-next-entry-button" href="<?php echo esc_url( $next_entry_url ); ?>" <?php echo empty( $next_entry ) ? esc_attr( 'disabled=disabled' ) : ''; ?> >
-							<?php esc_html_e( 'Next', 'everest-forms' ); ?>
-						</a>
-					</div> -->
 					<div id="post-body-content" style="position: relative;">
 						<div id="everest-forms-entry-fields" class="everest-forms-entry-fields">
 							<h2 class="hndle">
@@ -194,6 +186,14 @@ if ( false !== $entry_index ) {
 						<?php do_action( 'everest_forms_entry_details_content', $entry, $form_id ); ?>
 					</div>
 					<!-- Entry Details metabox -->
+				</div>
+				<div id="evf-entry-nav-buttons">
+					<a class="button" id="evf-prev-entry-button" href="<?php echo esc_url( $prev_entry_url ); ?>" <?php echo empty( $prev_entry ) ? esc_attr( 'disabled=disabled' ) : ''; ?> >
+					<?php esc_html_e( 'Previous', 'everest-forms' ); ?>
+					</a>
+					<a class="button" id="evf-next-entry-button" href="<?php echo esc_url( $next_entry_url ); ?>" <?php echo empty( $next_entry ) ? esc_attr( 'disabled=disabled' ) : ''; ?> >
+						<?php esc_html_e( 'Next', 'everest-forms' ); ?>
+					</a>
 				</div>
 			</div>
 		</div>
