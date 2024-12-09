@@ -227,4 +227,13 @@ class EVF_Admin_Tools {
 		wp_safe_redirect( esc_url_raw( admin_url( 'admin.php?page=evf-tools&tab=logs' ) ) );
 		exit();
 	}
+
+	/**
+	 * Roles and permission.
+	 *
+	 * @since xx.xx.xx
+	 */
+	public static function roles_and_permission() {
+		echo '<div id="evf-roles-and-permission"></div>';
+	}
 }

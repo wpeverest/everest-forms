@@ -15,6 +15,7 @@ $tabs        = apply_filters(
 		'export'        => __( 'Export', 'everest-forms' ),
 		'form_migrator' => __( 'Form Migrator', 'everest-forms' ),
 		'system_info'   => __( 'System Info', 'everest-forms' ),
+		'roles_and_permission' => __('Roles and Permission', 'everest-froms')
 	)
 );
 $current_tab = ! empty( $_REQUEST['tab'] ) ? sanitize_title( wp_unslash( $_REQUEST['tab'] ) ) : 'import'; // phpcs:ignore WordPress.Security.NonceVerification
@@ -62,6 +63,9 @@ if ( 'yes' === get_option( 'everest_forms_enable_log', 'no' ) ) {
 					return;
 				}
 				\EVF_Pro_Admin_Tools::api_logs();
+				break;
+			case 'roles_and_permission':
+				EVF_Admin_Tools::roles_and_permission();
 				break;
 			default:
 				if ( array_key_exists( $current_tab, $tabs ) && has_action( 'everest_forms_admin_status_content_' . $current_tab ) ) {
