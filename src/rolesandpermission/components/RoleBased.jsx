@@ -1,6 +1,7 @@
 import { Box, Button, Checkbox, Flex, Stack, Text } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { bulkAssignPermission, getWPRoles } from "./RoleAndPermissionAPI";
+import AddUserDisplayModel from "./AddUserDisplayModel";
 
 const RoleBased = () => {
 	const [isAllChecked, setIsAllChecked] = useState(false);
@@ -36,6 +37,11 @@ const RoleBased = () => {
 		setIsAllChecked(allChecked);
 	};
 
+	const addUserManager = (e) => {
+		e.preventDefault();
+		alert("hello niraj")
+	}
+
 	useEffect(() => {
 		bulkAssignPermission().then((res) => {
 
@@ -50,7 +56,7 @@ const RoleBased = () => {
 
 	return (
 		<Box>
-			<Flex>
+			<Flex justifyContent={"space-between"}>
 				<Stack>
 					<Text fontSize={"16px"} fontWeight="bold" width={"1187px"} height={"21px"} margin={"0"}>
 						Role Based
@@ -60,23 +66,10 @@ const RoleBased = () => {
 					</Text>
 				</Stack>
 				<Stack>
-					<Button
-						width={"113px"}
-						height={"41px"}
-						backgroundColor={"#7545BB"}
-						padding={"10px 16px"}
-						gap={"6px"}
-						fontWeight={"500"}
-						lineHeight={"21px"}
-						fontSize={"14px"}
-						color={"#FFFFFF"}
-						_hover={{ backgroundColor: "#7545BB" }}
-					>
-						+ Add User
-					</Button>
+					<AddUserDisplayModel />
 				</Stack>
 			</Flex>
-			<Stack margin={"24px 0px"}>
+			<Stack margin={"24px 0px"} borderBottom={"1px solid #DCDCDC"} paddingBottom={"24px"}>
 				<Checkbox
 					width={"374px"}
 					isChecked={isAllChecked}

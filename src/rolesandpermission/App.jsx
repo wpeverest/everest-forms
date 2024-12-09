@@ -1,12 +1,14 @@
 import React from "react";
 import { ChakraProvider, Stack } from "@chakra-ui/react";
 import RoleBased from "./components/RoleBased";
+import UserRoleTable from "./components/UserRoleTable";
 
 const App = () => {
 	return (
 		<ChakraProvider>
-			<Stack padding={"28px 32px"} backgroundColor={"#FFFFFF"} borderRadius={"7px"} gap={"24px"}>
+			<Stack padding={"28px 32px"} backgroundColor={"#FFFFFF"} borderRadius={"7px"} direction={"column"}>
 				<RoleBased/>
+				<UserRoleTable/>
 			</Stack>
 		</ChakraProvider>
 	);
