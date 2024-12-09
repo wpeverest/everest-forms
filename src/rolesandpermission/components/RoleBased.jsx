@@ -66,7 +66,7 @@ const RoleBased = () => {
 					</Text>
 				</Stack>
 				<Stack>
-					<AddUserDisplayModel />
+					<AddUserDisplayModel wp_roles={wpRoles} />
 				</Stack>
 			</Flex>
 			<Stack margin={"24px 0px"} borderBottom={"1px solid #DCDCDC"} paddingBottom={"24px"}>

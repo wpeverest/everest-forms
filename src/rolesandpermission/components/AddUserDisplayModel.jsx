@@ -20,10 +20,31 @@ import {
 import { __ } from '@wordpress/i18n'
 import { Select } from 'chakra-react-select'
 
-  import React from 'react'
+  import React, { useState } from 'react'
+import { addManagerRole } from './RoleAndPermissionAPI'
 
-  const AddUserDisplayModel = () => {
-	const { isOpen, onOpen, onClose } = useDisclosure()
+  const AddUserDisplayModel = ( { wp_roles }) => {
+	const { isOpen, onOpen, onClose } = useDisclosure();
+	const [ userEmail, setUserEmail ] = useState("");
+	const [ permissions, setPermissions ] = useState([]);
+
+
+	const roles = Object.entries( wp_roles ).map( ( [ key, value ] ) => ( {
+		label: value,
+		value: key,
+	  } ) );
+
+	  const handleMultiplePermission = (selectedOptions) => {
+		const selectedValues = selectedOptions ? selectedOptions.map(option => option.value) : [];
+		setPermissions(selectedValues);
+	};
+
+	const handleAddManager = ( email, assignedPermission )=> {
+		addManagerRole( email, assignedPermission ).then( (res) => {
+			console.log(res);
+		})
+	}
+
   return (
     <>
       <Button
@@ -74,7 +95,12 @@ import { Select } from 'chakra-react-select'
 								/>
 							</Tooltip>
 						</FormLabel>
-						<Input type='email' placeholder='User Email Address' />
+						<Input
+							type='email'
+							placeholder='User Email Address'
+							onChange={(e) => setUserEmail(e.target.value)}
+						/>
+
 					</Stack>
 
 					<Stack>
@@ -101,17 +127,8 @@ import { Select } from 'chakra-react-select'
 									"Select user permission",
 									"everest-forms",
 								)}
-								options={[
-									{
-										label: __("Editor", "everest-forms"),
-										value: "editor"
-									},
-									{
-										label: __("Subscriber", "everest-forms"),
-										value: "subscriber",
-									}
-								]}
-								// onChange={(option) => setActionType(option?.value)}
+								options={roles}
+								onChange={handleMultiplePermission}
 								isClearable
 								isSearchable={false}
 							/>
@@ -124,7 +141,9 @@ import { Select } from 'chakra-react-select'
             <Button _hover={{backgroundColor:"#FFFFF"}} color={"#6B6B6B"} fontWeight={"600"} fontSize={"16px"} lineHeight={"24px"} mr={3} onClick={onClose}>
               Back
             </Button>
-            <Button color={"#FFFFFF"} fontWeight={"500"} fontSize={"16px"} backgroundColor={"#7545BB"} padding={"10px 16px"} borderRadius={"4px"} border={"1px solid #7545BB"} width={"94px"} height={"39px"} _hover={{backgroundColor:"#7545BB"}}>Confirm</Button>
+            <Button color={"#FFFFFF"} fontWeight={"500"} fontSize={"16px"} backgroundColor={"#7545BB"} padding={"10px 16px"} borderRadius={"4px"} border={"1px solid #7545BB"} width={"94px"} height={"39px"} _hover={{backgroundColor:"#7545BB"}}
+				onClick={(e) => { handleAddManager( userEmail, permissions) }}
+			>Confirm</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>

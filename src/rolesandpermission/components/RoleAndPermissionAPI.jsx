@@ -6,7 +6,8 @@ const base = restURL + "everest-forms/v1/roels_and_permission/";
 
 const urls = {
 	bulkAssignPermission: base + "bulk-assign-permission-based-on-role",
-	getWPRoles: base + "get-wp-roles"
+	getWPRoles: base + "get-wp-roles",
+	addUserManager : base + "add-user-manager",
 };
 
 export const bulkAssignPermission = async () => {
@@ -27,4 +28,20 @@ export const getWPRoles = async () => {
 			"X-WP-Nonce": security,
 		},
 	}).then((res)=> res);
+}
+
+export const addManagerRole = async ( user_email, assignedPermissions ) => {
+	return apiFetch({
+		path : urls.addUserManager,
+		method : "POST",
+		headers : {
+			"X-WP-Nonce" : security,
+		},
+		data: {
+			request: {
+				user_email : user_email,
+				assigned_permission : assignedPermissions
+			},
+		},
+	}).then((res) => res);
 }

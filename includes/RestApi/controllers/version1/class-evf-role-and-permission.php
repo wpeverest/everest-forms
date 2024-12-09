@@ -46,6 +46,15 @@ class EVF_Roles_And_Permission {
 		);
 		register_rest_route(
 			$this->namespace,
+			'/' . $this->rest_base . '/add-user-manager',
+			array(
+				'methods'             => 'POST',
+				'callback'            => array( __CLASS__, 'evf_add_user_manager' ),
+				'permission_callback' => array( __CLASS__, 'check_admin_permissions' ),
+			)
+		);
+		register_rest_route(
+			$this->namespace,
 			'/' . $this->rest_base . '/get-wp-roles',
 			array(
 				'methods'             => 'GET',
@@ -82,6 +91,24 @@ class EVF_Roles_And_Permission {
 		}
 
 		wp_send_json_success( $roles );
+	}
+
+	public static function evf_add_user_manager( $request ) {
+		if ( ! isset( $request['request'] ) || empty( $request['request'] ) ) {
+
+			return new \WP_REST_Response(
+				array(
+					'success' => false,
+					'message' => esc_html__( 'Request data not found.', 'easy-mail-smtp' ),
+				),
+				200
+			);
+		}
+
+		$requested_data = $request['request'];
+		error_log( print_r( 'add_user_manager', true ) );
+		error_log( print_r( $requested_data, true ) );
+		wp_send_json_success();
 	}
 
 	/**

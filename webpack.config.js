@@ -9,6 +9,21 @@ const NODE_ENV =  "production";
 const webpackConfig = {
 	mode: NODE_ENV,
 	entry: {
+		"dashboard": resolve(
+			process.cwd(),
+			'./src/dashboard/index.js',
+		),
+		"blocks": resolve(
+			process.cwd(),
+			'./src/blocks/index.js',
+		),
+		"divibuilder": resolve(
+			process.cwd(),
+			'./src/divibuilder/index.jsx'),
+		"templates": resolve(
+			process.cwd(),
+			'./src/templates/index.tsx',
+		),
 		"rolesandpermission": resolve(
 			process.cwd(),
 			'./src/rolesandpermission/index.js'
