@@ -196,6 +196,10 @@ class EVF_Admin {
 			return '';
 		}
 
+		if('everest-forms_page_evf-entries' === $current_screen->id) {
+			return;
+		}
+
 		$evf_pages = evf_get_screen_ids();
 		// Check to make sure we're on a EverestForms admin page.
 		if ( isset( $current_screen->id ) && apply_filters( 'everest_forms_display_admin_footer_text', in_array( $current_screen->id, $evf_pages, true ) ) ) {
