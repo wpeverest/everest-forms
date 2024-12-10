@@ -546,22 +546,23 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 							?>
 										<li>
 											<?php if ( 'v2' === $key || 'v3' === $key ||  'turnstile' === $key ||  'hcaptcha' === $key  ) { echo '<div class="everest-forms-captcha-radio-settings">'  ?>
-											<label><input
+												<input
 												name="<?php echo esc_attr( $value['id'] ); ?>"
 												id="<?php echo esc_attr( $value['id'] ); ?>"
 												value="<?php echo esc_attr( $key ); ?>"
 												type="radio"
 												style="<?php echo esc_attr( $value['css'] ); ?>"
-												class="<?php echo esc_attr( $value['class'] ); ?>"
-							<?php
-							if ( ! empty( $value['custom_attributes'] ) && is_array( $value['custom_attributes'] ) ) {
-								foreach ( $value['custom_attributes'] as $attribute => $attribute_value ) {
-									echo esc_attr( $attribute ) . '="' . esc_attr( $attribute_value ) . '"';
+													class="<?php echo esc_attr( $value['class'] ); ?>"
+								<?php
+								if ( ! empty( $value['custom_attributes'] ) && is_array( $value['custom_attributes'] ) ) {
+									foreach ( $value['custom_attributes'] as $attribute => $attribute_value ) {
+										echo esc_attr( $attribute ) . '="' . esc_attr( $attribute_value ) . '"';
+									}
 								}
-							}
-							?>
+								?>
 															<?php checked( $key, $option_value ); ?>
 												/>
+											<label for="<?php echo esc_attr( $value['id'] ); ?>">
 											<?php
 											if ( 'v2' === $key || 'v3' === $key ) {
 												$image_url = plugins_url( 'assets/images/captcha/reCAPTCHA-v2-v3.png', EVF_PLUGIN_FILE );
