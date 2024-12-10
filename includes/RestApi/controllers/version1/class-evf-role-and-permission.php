@@ -114,7 +114,6 @@ class EVF_Roles_And_Permission {
 		$user_email          = isset( $requested_data['user_email'] ) ? $requested_data['user_email'] : '';
 		$assigned_permission = isset( $requested_data['assigned_permission'] ) && ! empty( $requested_data['assigned_permission'] ) ? $requested_data['assigned_permission'] : array();
 
-		error_log( print_r( $requested_data, true ) );
 		if ( empty( $user_email ) && empty( $assigned_permission ) ) {
 			return new \WP_REST_Response(
 				array(
@@ -152,9 +151,95 @@ class EVF_Roles_And_Permission {
 			);
 		}
 
-		error_log( print_r( 'add_user_manager', true ) );
-		error_log( print_r( $requested_data, true ) );
-		wp_send_json_success();
+		$user = get_user_by( 'email', $user_email );
+
+		if ( empty( $user ) ) {
+			return new \WP_REST_Response(
+				array(
+					'success' => false,
+					'message' => array(
+						'user_email' => esc_html__( 'User not found with this email.', 'everest-forms' ),
+					),
+				),
+				200
+			);
+		}
+
+		self::attach_permission( $user, $assigned_permission );
+
+		update_user_meta( $user->ID, '_everest_forms_has_role', 1 );
+
+		$updated_user = array(
+			'id'          => $user->ID,
+			'first_name'  => $user->first_name,
+			'last_name'   => $user->last_name,
+			'email'       => $user->user_email,
+			'permissions' => self::get_user_permissions( $user ),
+		);
+
+		return new \WP_REST_Response(
+			array(
+				'success' => true,
+				'data'    => $updated_user,
+			),
+			200
+		);
+	}
+
+
+	public static function get_user_permissions( $user = false ) {
+		if ( is_numeric( $user ) ) {
+			$user = get_user_by( 'ID', $user );
+		}
+
+		if ( ! $user ) {
+			return array();
+		}
+
+		$permission_set = self::get_evf_permissions();
+		// $super_admin   = self::super_admin( $user );
+		// $capability    = self::find_user_capability( $user );
+
+		// if ( $super_admin || $capability ) {
+		// if ( $super_admin ) {
+		// $permission_set[] = 'administrator';
+		// }
+
+		// return $permission_set;
+		// }
+
+		$user_permissions = array_values( array_intersect( array_keys( $user->allcaps ), array_keys( $permission_set['permissions'] ) ) );
+
+		return apply_filters( 'everest_forms_current_user_permissions', $user_permissions );
+	}
+
+	public static function attach_permission( $user, $assigned_permission ) {
+		if ( is_numeric( $user ) ) {
+			$user = get_user_by( 'ID', $user );
+		}
+
+		if ( ! $user ) {
+			return false;
+		}
+
+		if ( user_can( $user, 'manage_options' ) ) {
+			return $user;
+		}
+
+		$all_permissions = self::get_evf_permissions();
+
+		foreach ( $all_permissions['permissions'] as $permission => $name ) {
+			error_log( print_r( $permission, true ) );
+			$user->remove_cap( $permission );
+		}
+
+		$assigned_permission = array_intersect( array_keys( $all_permissions['permissions'] ), $assigned_permission );
+
+		foreach ( $assigned_permission as $permission ) {
+			$user->add_cap( $permission );
+		}
+
+		return $user;
 	}
 
 	private static function get_evf_permissions() {
@@ -176,8 +261,6 @@ class EVF_Roles_And_Permission {
 				$capabilities['permissions'][ "everest_forms_{$context}_others_{$capability_type}" ] = ucfirst( $context ) . ' Others ' . ucfirst( $capability_type );
 			}
 		}
-
-		error_log( print_r( $capabilities, true ) );
 
 		return $capabilities;
 	}
