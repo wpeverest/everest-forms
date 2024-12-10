@@ -560,18 +560,21 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 							}
 							?>
 															<?php checked( $key, $option_value ); ?>
-												/> <?php echo esc_html( $val ); ?>
+												/>
 											<?php
 											if ( 'v2' === $key || 'v3' === $key ) {
-												$image_url = plugins_url( 'assets/images/captcha/reCAPTCHA.png', EVF_PLUGIN_FILE );
+												$image_url = plugins_url( 'assets/images/captcha/reCAPTCHA-v2-v3.png', EVF_PLUGIN_FILE );
 												echo '<img src="' . esc_url( isset( $image_url ) ? $image_url : '' ) . '" />';
+												echo '<p class="desc">' . esc_html( $val ) . '</p>';
 
 											} elseif ( 'turnstile' === $key ) {
-												$image_url = plugins_url( 'assets/images/captcha/turnstile.png', EVF_PLUGIN_FILE );
+												$image_url = plugins_url( 'assets/images/captcha/cloudflare-logo.png', EVF_PLUGIN_FILE );
 												echo '<img src="' . esc_url( isset( $image_url ) ? $image_url : '' ) . '" />';
+												echo '<p class="desc">' . esc_html( $val ) . '</p>';
 											} elseif ( 'hcaptcha' === $key ) {
-												$image_url = plugins_url( 'assets/images/captcha/turnstile.png', EVF_PLUGIN_FILE );
+												$image_url = plugins_url( 'assets/images/captcha/hCAPTCHA-logo.png', EVF_PLUGIN_FILE );
 												echo '<img src="' . esc_url( isset( $image_url ) ? $image_url : '' ) . '" />';
+												echo '<p class="desc">' . esc_html( $val ) . '</p>';
 											}
 
 											?>
