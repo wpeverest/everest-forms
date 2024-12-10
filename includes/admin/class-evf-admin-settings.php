@@ -545,6 +545,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 						foreach ( $value['options'] as $key => $val ) {
 							?>
 										<li>
+											<?php if ( 'v2' === $key || 'v3' === $key ||  'turnstile' === $key ||  'hcaptcha' === $key  ) { echo '<div class="everest-forms-captcha-radio-settings">'  ?>
 											<label><input
 												name="<?php echo esc_attr( $value['id'] ); ?>"
 												id="<?php echo esc_attr( $value['id'] ); ?>"
@@ -580,6 +581,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 											?>
 
 											</label>
+											<?php } ?>
 										</li>
 								<?php
 						}
