@@ -63,11 +63,11 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 					'options'  => array(
 						'v2'  => array(
 							'name' =>  esc_html__( 'reCAPTCHA v2', 'everest-forms' ),
-							'image' => plugins_url( 'assets/images/captcha/google-v3-reCAPTCHA.png', EVF_PLUGIN_FILE ),
+							'image' => plugins_url( 'assets/images/captcha/reCAPTCHA-v2-v3.png', EVF_PLUGIN_FILE ),
 						),
 						'v3'  => array(
 							'name' =>  esc_html__( 'reCAPTCHA v3', 'everest-forms' ),
-							'image' => plugins_url( 'assets/images/captcha/google-v3-reCAPTCHA.png', EVF_PLUGIN_FILE ),
+							'image' => plugins_url( 'assets/images/captcha/reCAPTCHA-v2-v3.png', EVF_PLUGIN_FILE ),
 						),
 						'hcaptcha'  => array(
 							'name' =>  esc_html__( 'hCaptcha', 'everest-forms' ),
