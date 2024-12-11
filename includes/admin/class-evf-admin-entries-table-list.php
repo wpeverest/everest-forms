@@ -328,7 +328,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 						$actions['unspam'] = '<a href="' . esc_url( admin_url( 'admin.php?page=evf-entries&amp;form_id=' . $entry->form_id . '&amp;unspam-entry=' . $entry->entry_id ) ) . '">' . esc_html__( 'Remove From Spam', 'everest-forms' ) . '</a>';
 						break;
 					default:
-						$actions['spam'] = '<a href="' . esc_url( admin_url( 'admin.php?page=evf-entries&amp;form_id=' . $entry->form_id . '&amp;spam-entry=' . $entry->entry_id ) ) . '">' . esc_html__( 'Spam', 'everest-forms' ) . '</a>';
+						$actions['spam'] = '<a href="' . esc_url( admin_url( 'admin.php?page=evf-entries&amp;form_id=' . $entry->form_id . '&amp;spam-entry=' . $entry->entry_id ) ) . '">' . esc_html__( 'Mark as Spam', 'everest-forms' ) . '</a>';
 						break;
 				}
 			}
