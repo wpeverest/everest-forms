@@ -5,7 +5,6 @@ import {
 	ModalOverlay,
 	ModalContent,
 	ModalHeader,
-	ModalFooter,
 	ModalBody,
 	ModalCloseButton,
 	useDisclosure,
@@ -32,7 +31,6 @@ const UserDisplayModal = ({ wp_roles, context = "", value = {} }) => {
 	const [errors, setErrors] = useState([]);
 	const toast = useToast();
 
-	// Populate data when editing
 	useEffect(() => {
 		if (context === "edit") {
 			setUserEmail(value.email || "");
@@ -40,7 +38,6 @@ const UserDisplayModal = ({ wp_roles, context = "", value = {} }) => {
 		}
 	}, [context, value]);
 
-	// Compute selected permissions for the Select component
 	const selectedPermissions = useMemo(() => {
 		return (
 			permissions?.map((val) => ({
@@ -50,15 +47,13 @@ const UserDisplayModal = ({ wp_roles, context = "", value = {} }) => {
 		);
 	}, [permissions, value.permission_details]);
 
-	// Map roles to options
-	const roles = useMemo(() => {
+	const all_permissions = useMemo(() => {
 		return Object.entries(wp_roles).map(([key, label]) => ({
 			label: label,
 			value: key,
 		}));
 	}, [wp_roles]);
 
-	// Handle changes in Select
 	const handleMultiplePermission = (selectedOptions) => {
 		const selectedValues = selectedOptions
 			? selectedOptions.map((option) => option.value)
@@ -66,7 +61,6 @@ const UserDisplayModal = ({ wp_roles, context = "", value = {} }) => {
 		setPermissions(selectedValues);
 	};
 
-	// Handle Add Manager logic
 	const handleAddManager = (email, assignedPermissions) => {
 		addManagerRole(email, assignedPermissions).then((res) => {
 			setErrors([]);
@@ -86,7 +80,6 @@ const UserDisplayModal = ({ wp_roles, context = "", value = {} }) => {
 		});
 	};
 
-	// Button styles
 	const addButtonStyles = {
 		width: "113px",
 		height: "41px",
@@ -208,13 +201,17 @@ const UserDisplayModal = ({ wp_roles, context = "", value = {} }) => {
 											"Select user permission",
 											"everest-forms"
 										)}
-										options={Object.entries(
-											value.permission_details || {}
-										).map(([key, label]) => ({
-											value: key,
-											label: label,
-										}))}
-										value={selectedPermissions}
+										options={
+											context === "edit"
+												? Object.entries(value.permission_details || {}).map(
+														([key, label]) => ({
+															value: key,
+															label: label,
+														})
+												  )
+												: all_permissions
+										}
+										value={context === "edit" ? selectedPermissions : undefined}
 										onChange={handleMultiplePermission}
 										isClearable
 										isSearchable={false}

@@ -55,10 +55,10 @@ const RoleBased = () => {
 		<Box>
 			<Flex justifyContent={"space-between"}>
 				<Stack>
-					<Text fontSize={"16px"} fontWeight="bold" width={"1187px"} height={"21px"} margin={"0"}>
+					<Text fontSize={"16px"} fontWeight="bold" height={"21px"} margin={"0"}>
 						Role Based
 					</Text>
-					<Text fontSize={"14px"} fontWeight="normal" width={"1187px"} height={"21px"} margin={"0"}>
+					<Text fontSize={"14px"} fontWeight="normal" height={"21px"} margin={"0"}>
 						By selecting additional roles below, you can give access to other user roles.
 					</Text>
 				</Stack>
