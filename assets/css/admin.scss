@@ -9747,14 +9747,55 @@ img.ui-datepicker-trigger {
 								display: flex;
 								flex-wrap: wrap;
 								align-items: center;
-								gap: 24px;
+								gap: 16px;
 
-								@media screen and (max-width: 1260px) {
-									gap: 16px;
-								}
+								// @media screen and (max-width: 1260px) {
+								// 	gap: 16px;
+								// }
 
 								li {
 									margin-bottom: 0;
+
+									.everest-forms-captcha-radio-settings {
+										label {
+											display: flex;
+											align-items: center;
+											gap: 8px;
+											border: 1px solid #E5E5E5;
+											padding: 6px 12px 6px 6px;
+											border-radius: 4px;
+											min-width: 190px;
+											cursor: pointer;
+											transition: all .3s;
+											
+											&:hover {
+												
+												border-color: #7545BB;
+											}
+								
+											img {
+												width: 40px;
+												height: auto;
+												border-radius: 2px;
+											}
+								
+											.desc {
+												color: #383838;
+												font-size: 14px;
+												font-weight: 500;
+												line-height: 20px;
+												margin: 0;
+											}
+										}
+										
+										input[type="radio"] {
+											display: none !important;
+											
+											&:checked ~ label {
+												border-color: #7545BB;
+											}
+										}
+									}
 
 									> label {
 										display: flex;
