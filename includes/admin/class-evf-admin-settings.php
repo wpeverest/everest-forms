@@ -581,7 +581,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 						?>
 							<div class="everest-forms-global-settings">
 								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo wp_kses_post( $tooltip_html ); ?></label>
-								<div class="everest-forms-global-settings--field forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
+								<div class="everest-forms-global-settings--field forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>   ">
 						<?php echo wp_kses_post( $description ); ?>
 								<div class="evf-toggle-section">
 									<span class="everest-forms-toggle-form">
@@ -606,11 +606,14 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 					// Radio image inputs.
 					case 'radio-image':
 						$option_value = $value['value'];
+						if ( isset( $value['id'] ) && 'everest_forms_recaptcha_type' === $value['id']  ){
+							$class = 'everest-forms-recaptcha-settings';
+						}
 
 						?>
 						<div class="everest-forms-global-settings">
 								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo wp_kses_post( $tooltip_html ); ?></label>
-								<div class="everest-forms-global-settings--field forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
+								<div class="everest-forms-global-settings--field forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?> <?php echo esc_attr( $class ); ?>">
 								<fieldset>
 									<ul>
 						<?php
