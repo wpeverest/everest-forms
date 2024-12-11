@@ -545,44 +545,22 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 						foreach ( $value['options'] as $key => $val ) {
 							?>
 										<li>
-											<?php if ( 'v2' === $key || 'v3' === $key ||  'turnstile' === $key ||  'hcaptcha' === $key  ) { echo '<div class="everest-forms-captcha-radio-settings">'  ?>
-												<input
+											<label><input
 												name="<?php echo esc_attr( $value['id'] ); ?>"
 												id="<?php echo esc_attr( $value['id'] ); ?>"
 												value="<?php echo esc_attr( $key ); ?>"
 												type="radio"
 												style="<?php echo esc_attr( $value['css'] ); ?>"
-													class="<?php echo esc_attr( $value['class'] ); ?>"
-								<?php
-								if ( ! empty( $value['custom_attributes'] ) && is_array( $value['custom_attributes'] ) ) {
-									foreach ( $value['custom_attributes'] as $attribute => $attribute_value ) {
-										echo esc_attr( $attribute ) . '="' . esc_attr( $attribute_value ) . '"';
-									}
+												class="<?php echo esc_attr( $value['class'] ); ?>"
+							<?php
+							if ( ! empty( $value['custom_attributes'] ) && is_array( $value['custom_attributes'] ) ) {
+								foreach ( $value['custom_attributes'] as $attribute => $attribute_value ) {
+									echo esc_attr( $attribute ) . '="' . esc_attr( $attribute_value ) . '"';
 								}
-								?>
+							}
+							?>
 															<?php checked( $key, $option_value ); ?>
-												/>
-											<label for="<?php echo esc_attr( $value['id'] ); ?>">
-											<?php
-											if ( 'v2' === $key || 'v3' === $key ) {
-												$image_url = plugins_url( 'assets/images/captcha/reCAPTCHA-v2-v3.png', EVF_PLUGIN_FILE );
-												echo '<img src="' . esc_url( isset( $image_url ) ? $image_url : '' ) . '" />';
-												echo '<p class="desc">' . esc_html( $val ) . '</p>';
-
-											} elseif ( 'turnstile' === $key ) {
-												$image_url = plugins_url( 'assets/images/captcha/cloudflare-logo.png', EVF_PLUGIN_FILE );
-												echo '<img src="' . esc_url( isset( $image_url ) ? $image_url : '' ) . '" />';
-												echo '<p class="desc">' . esc_html( $val ) . '</p>';
-											} elseif ( 'hcaptcha' === $key ) {
-												$image_url = plugins_url( 'assets/images/captcha/hCAPTCHA-logo.png', EVF_PLUGIN_FILE );
-												echo '<img src="' . esc_url( isset( $image_url ) ? $image_url : '' ) . '" />';
-												echo '<p class="desc">' . esc_html( $val ) . '</p>';
-											}
-
-											?>
-
-											</label>
-											<?php } ?>
+												/> <?php echo esc_html( $val ); ?></label>
 										</li>
 								<?php
 						}
@@ -593,7 +571,6 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 							</div>
 						<?php
 						break;
-
 							// Toggle input.
 					case 'toggle':
 						$option_value = $value['value'];
@@ -626,7 +603,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 						<?php
 						break;
 
-							// Radio image inputs.
+					// Radio image inputs.
 					case 'radio-image':
 						$option_value = $value['value'];
 
