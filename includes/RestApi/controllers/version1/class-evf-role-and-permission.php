@@ -62,6 +62,15 @@ class EVF_Roles_And_Permission {
 				'permission_callback' => array( __CLASS__, 'check_admin_permissions' ),
 			)
 		);
+		register_rest_route(
+			$this->namespace,
+			'/' . $this->rest_base . '/get-managers',
+			array(
+				'methods'             => 'GET',
+				'callback'            => array( __CLASS__, 'get_managers' ),
+				'permission_callback' => array( __CLASS__, 'check_admin_permissions' ),
+			)
+		);
 	}
 
 	public static function assign_permission_based_on_role() {
@@ -181,6 +190,7 @@ class EVF_Roles_And_Permission {
 			array(
 				'success' => true,
 				'data'    => $updated_user,
+				'message' => __( 'Manager added successfully.', 'everest-forms' ),
 			),
 			200
 		);
@@ -197,20 +207,28 @@ class EVF_Roles_And_Permission {
 		}
 
 		$permission_set = self::get_evf_permissions();
-		// $super_admin   = self::super_admin( $user );
+		$is_admin       = self::is_admin( $user );
 		// $capability    = self::find_user_capability( $user );
 
-		// if ( $super_admin || $capability ) {
-		// if ( $super_admin ) {
-		// $permission_set[] = 'administrator';
-		// }
+		if ( $is_admin ) {
+			if ( $is_admin ) {
+				$permission_set[] = 'administrator';
+			}
 
-		// return $permission_set;
-		// }
+			return $permission_set;
+		}
 
 		$user_permissions = array_values( array_intersect( array_keys( $user->allcaps ), array_keys( $permission_set['permissions'] ) ) );
 
 		return apply_filters( 'everest_forms_current_user_permissions', $user_permissions );
+	}
+
+	public static function is_admin( $user = false ) {
+		if ( $user ) {
+			return $user->has_cap( 'manage_options' );
+		} else {
+			return current_user_can( 'manage_options' );
+		}
 	}
 
 	public static function attach_permission( $user, $assigned_permission ) {
@@ -265,6 +283,60 @@ class EVF_Roles_And_Permission {
 		return $capabilities;
 	}
 
+	public static function get_managers( $attributes = array() ) {
+		error_log( print_r( 'get_managers', true ) );
+		$limit  = 10;
+		$page   = 1;
+		$offset = $page == 1 ? 0 : ( $page - 1 ) * $limit;
+
+		$query = new \WP_User_Query(
+			array(
+				'meta_key'     => '_everest_forms_has_role',
+				'meta_value'   => 1,
+				'meta_compare' => '=',
+				'number'       => $limit,
+				'offset'       => $offset,
+			)
+		);
+
+		$managers = array();
+
+		foreach ( $query->get_results() as $user ) {
+			$managers[] = array(
+				'id'          => $user->ID,
+				'first_name'  => $user->first_name,
+				'last_name'   => $user->last_name,
+				'email'       => $user->user_email,
+				'permissions' => self::get_user_permissions( $user ),
+				'roles'       => self::get_user_roles( $user->roles ),
+			);
+		}
+
+		$total = $query->get_total();
+
+		return new \WP_REST_Response(
+			array(
+				'success'     => true,
+				'managers'    => $managers,
+				'total'       => $total,
+				'permissions' => self::get_evf_permissions(),
+			),
+			200
+		);
+	}
+
+	private static function get_user_roles( $roles ) {
+		$role_str = '';
+		if ( count( $roles ) > 1 ) {
+			foreach ( $roles as $role ) {
+				$role_str .= $role . ', ';
+			}
+		} else {
+			$role_str = $roles[0];
+		}
+
+		return ucfirst( $role_str );
+	}
 	/**
 	 * Check if a given request has access to update a setting
 	 *
