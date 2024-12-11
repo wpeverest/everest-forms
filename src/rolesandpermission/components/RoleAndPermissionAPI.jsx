@@ -12,13 +12,19 @@ const urls = {
 	removeManager: base + "remove-manager",
 };
 
-export const bulkAssignPermission = async () => {
+export const bulkAssignPermission = async ( checkedItems ) => {
 	return apiFetch({
 		path: urls.bulkAssignPermission,
 		method: "POST",
 		headers: {
 			"X-WP-Nonce": security,
 		},
+		data : {
+			request: {
+
+				checked_roles : checkedItems
+			}
+		}
 	}).then((res) => res);
 };
 

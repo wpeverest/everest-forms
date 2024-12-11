@@ -82,14 +82,47 @@ class EVF_Roles_And_Permission {
 		);
 	}
 
-	public static function assign_permission_based_on_role() {
+	public static function assign_permission_based_on_role( $request ) {
+		if ( ! isset( $request['request'] ) || empty( $request['request'] ) ) {
+
+			return new \WP_REST_Response(
+				array(
+					'success' => false,
+					'message' => esc_html__( 'Request data not found.', 'everest-forms' ),
+				),
+				200
+			);
+		}
 		global $wp_roles;
+
+		$requested_data = $request['request'];
 
 		if ( ! isset( $wp_roles ) ) {
 			$wp_roles = new WP_Roles();
 		}
-		// error_log( print_r( $wp_roles->get_names(), true ) );
-		// wp_send_json_success();
+
+		$checked_roles = isset( $requested_data['checked_roles'] ) && ! empty( $requested_data['checked_roles'] ) ? $requested_data['checked_roles'] : array();
+
+		if ( is_array( $checked_roles ) ) {
+			foreach ( $checked_roles as $role => $checked ) {
+				if ( $checked ) {
+					if ( 'subscriber' == strtolower( $role ) ) {
+						return new \WP_REST_Response(
+							array(
+								'success' => false,
+								'message' => esc_html__( 'Sorry, you can not give access to the Subscriber role.', 'everest-forms' ),
+							),
+							200
+						);
+					}
+					$wp_role = $wp_roles->get_role( $role );
+					$wp_role->add_cap( 'manage_everest_forms' );
+					error_log( print_r( $wp_role, true ) );
+				}
+			}
+		}
+		error_log( print_r( $request['request'], true ) );
+		wp_send_json_success();
 	}
 
 	public static function get_wp_roles() {
