@@ -4,16 +4,13 @@ import { __ } from "@wordpress/i18n";
 import { SearchIcon, TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons';
 import { Select } from 'chakra-react-select';
 import { getManagers, getWPRoles } from './RoleAndPermissionAPI';
-import EditUserRoleModel from './EditUserRoleModel';
 import TrashUserRoleModel from './TrashUserRoleModel';
-import AddUserDisplayModel from './AddUserDisplayModel';
-// import { RolesAndPermissionContext } from '../context/RolesAndPermissionContext';
+import UserDisplayModal from './UserDisplayModal';
 
 const UserRoleTable = () => {
 
 	const [managers, setManagers ] = useState([]);
 	const [permissions, setPermissions ] = useState([]);
-	// const [ userAdded ] = useContext(RolesAndPermissionContext);
 	const [wpRoles, setWPRoles] = useState([]);
 
 	useEffect(() => {
@@ -128,7 +125,7 @@ const UserRoleTable = () => {
 								</Td>
 								<Td>
 									<Flex>
-										<AddUserDisplayModel wp_roles={wpRoles} context={"edit"} value={
+										<UserDisplayModal wp_roles={wpRoles} context={"edit"} value={
 											{'permission' : value.permissions, 'email' : value.email, 'permission_details' : permissions}
 										} /> | <TrashUserRoleModel/>
 									</Flex>

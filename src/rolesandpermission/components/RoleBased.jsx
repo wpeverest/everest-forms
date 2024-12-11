@@ -1,7 +1,7 @@
 import { Box, Button, Checkbox, Flex, Stack, Text } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { bulkAssignPermission, getWPRoles } from "./RoleAndPermissionAPI";
-import AddUserDisplayModel from "./AddUserDisplayModel";
+import UserDisplayModal from "./UserDisplayModal";
 
 const RoleBased = () => {
 	const [isAllChecked, setIsAllChecked] = useState(false);
@@ -38,11 +38,6 @@ const RoleBased = () => {
 		setIsAllChecked(allChecked);
 	};
 
-	const addUserManager = (e) => {
-		e.preventDefault();
-		alert("hello niraj")
-	}
-
 	useEffect(() => {
 		bulkAssignPermission().then((res) => {
 
@@ -68,7 +63,7 @@ const RoleBased = () => {
 					</Text>
 				</Stack>
 				<Stack>
-					<AddUserDisplayModel wp_roles={evfPermission} />
+					<UserDisplayModal wp_roles={evfPermission} />
 				</Stack>
 			</Flex>
 			<Stack margin={"24px 0px"} borderBottom={"1px solid #DCDCDC"} paddingBottom={"24px"}>
