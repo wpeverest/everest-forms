@@ -71,6 +71,15 @@ class EVF_Roles_And_Permission {
 				'permission_callback' => array( __CLASS__, 'check_admin_permissions' ),
 			)
 		);
+		register_rest_route(
+			$this->namespace,
+			'/' . $this->rest_base . '/remove-manager',
+			array(
+				'methods'             => 'POST',
+				'callback'            => array( __CLASS__, 'remove_managers' ),
+				'permission_callback' => array( __CLASS__, 'check_admin_permissions' ),
+			)
+		);
 	}
 
 	public static function assign_permission_based_on_role() {
@@ -337,6 +346,55 @@ class EVF_Roles_And_Permission {
 
 		return ucfirst( $role_str );
 	}
+
+	public static function remove_managers( $request ) {
+		if ( ! isset( $request['request'] ) || empty( $request['request'] ) ) {
+			return new \WP_REST_Response(
+				array(
+					'success' => false,
+					'message' => esc_html__( 'Request data not found.', 'everest-forms' ),
+				),
+				200
+			);
+		}
+
+		$requested_data = $request['request'];
+
+		$user_id = $requested_data['user_id'];
+		$user    = get_user_by( 'ID', $user_id );
+
+		if ( ! $user ) {
+			return new \WP_REST_Response(
+				array(
+					'success' => false,
+					'message' => esc_html__( 'Associate user could not be found.', 'everest-forms' ),
+				),
+				200
+			);
+		}
+
+		self::attach_permission( $user, array() );
+
+		delete_user_meta( $user->ID, '_everest_forms_has_role' );
+
+		$deleted_user = array(
+			'id'          => $user->ID,
+			'first_name'  => $user->first_name,
+			'last_name'   => $user->last_name,
+			'email'       => $user->user_email,
+			'permissions' => self::get_user_permissions( $user ),
+		);
+
+		return new \WP_REST_Response(
+			array(
+				'success' => true,
+				'data'    => $deleted_user,
+				'message' => __( 'Manager deleted successfully.', 'everest-forms' ),
+			),
+			200
+		);
+	}
+
 	/**
 	 * Check if a given request has access to update a setting
 	 *

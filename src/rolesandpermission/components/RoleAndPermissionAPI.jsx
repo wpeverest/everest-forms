@@ -8,7 +8,8 @@ const urls = {
 	bulkAssignPermission: base + "bulk-assign-permission-based-on-role",
 	getWPRoles: base + "get-wp-roles",
 	addUserManager : base + "add-user-manager",
-	getManagers : base + "get-managers"
+	getManagers : base + "get-managers",
+	removeManager: base + "remove-manager",
 };
 
 export const bulkAssignPermission = async () => {
@@ -55,6 +56,23 @@ export const getManagers = async () =>{
 			headers : {
 				"X-WP-Nonce" : security,
 			}
+		}
+	).then( (res) => res );
+ }
+
+ export const removeManager = async ( userID ) => {
+	return apiFetch(
+		{
+			path: urls.removeManager,
+			method: "POST",
+			headers: {
+				"X-WP-Nonce" : security,
+			},
+			data: {
+				request: {
+					user_id : userID,
+				},
+			},
 		}
 	).then( (res) => res );
  }

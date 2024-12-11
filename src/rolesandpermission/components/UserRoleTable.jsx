@@ -1,9 +1,9 @@
-import { Box, Button, Checkbox, Flex, Input, InputGroup, InputRightElement, Stack, Table, Tbody, Td, Text, Th, Thead, Tr, useQuery } from '@chakra-ui/react';
+import { Box, Button, Checkbox, Flex, Input, InputGroup, InputRightElement, Stack, Table, Tbody, Td, Text, Th, Thead, Tr, useQuery, useToast } from '@chakra-ui/react';
 import React, { useContext, useEffect, useState } from 'react';
 import { __ } from "@wordpress/i18n";
 import { SearchIcon, TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons';
 import { Select } from 'chakra-react-select';
-import { getManagers, getWPRoles } from './RoleAndPermissionAPI';
+import { getManagers, getWPRoles, removeManager } from './RoleAndPermissionAPI';
 import TrashUserRoleModel from './TrashUserRoleModel';
 import UserDisplayModal from './UserDisplayModal';
 
@@ -12,6 +12,8 @@ const UserRoleTable = () => {
 	const [managers, setManagers ] = useState([]);
 	const [permissions, setPermissions ] = useState([]);
 	const [wpRoles, setWPRoles] = useState([]);
+	const [userDeleted, setUserDeleted] = useState(false);
+	const toast = useToast();
 
 	useEffect(() => {
 		getManagers().then((res) => {
@@ -20,13 +22,28 @@ const UserRoleTable = () => {
 				setPermissions( res.permissions.permissions);
 			}
 		})
-	}, [])
+	}, [userDeleted])
 
 	useEffect(()=>{
 		getWPRoles().then((res)=>{
 			setWPRoles(res.data.roles);
 		});
 	}, []);
+
+	const deleteManager = ( userID) => {
+		removeManager( userID ).then(
+			(res) => {
+				if ( res.success ) {
+					setUserDeleted(true);
+					toast({
+						title: res.message,
+						status: "success",
+						duration: 3000,
+					});
+				}
+			}
+		)
+	}
   return (
 	<Stack gap={"20px"}>
 		<Flex gap={"10px"} direction={"row"}>
@@ -66,7 +83,6 @@ const UserRoleTable = () => {
 					padding="8px 14px 8px 14px"
 					type="button"
 					bg="#F6F7F7"
-					// onClick={() => handleBulkAction({ action: actionType })}
 				>
 					<Text fontWeight="500" size="13px" lineHeight="19.5px" color={"#475BB2"} width={"36px"} height={"20px"}>
 						{__("Apply", "everest-forms")}
@@ -124,10 +140,10 @@ const UserRoleTable = () => {
 									</Flex>
 								</Td>
 								<Td>
-									<Flex>
+									<Flex alignItems={"center"}>
 										<UserDisplayModal wp_roles={wpRoles} context={"edit"} value={
 											{'permission' : value.permissions, 'email' : value.email, 'permission_details' : permissions}
-										} /> | <TrashUserRoleModel/>
+										} /> | <TrashUserRoleModel deleteManager={() => deleteManager(value.id)}/>
 									</Flex>
 								</Td>
 							</Tr>
