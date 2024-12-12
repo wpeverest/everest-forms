@@ -80,6 +80,15 @@ class EVF_Roles_And_Permission {
 				'permission_callback' => array( __CLASS__, 'check_admin_permissions' ),
 			)
 		);
+		register_rest_route(
+			$this->namespace,
+			'/' . $this->rest_base . '/bulk-remove-managers',
+			array(
+				'methods'             => 'POST',
+				'callback'            => array( __CLASS__, 'bulk_remove_managers' ),
+				'permission_callback' => array( __CLASS__, 'check_admin_permissions' ),
+			)
+		);
 	}
 
 	public static function assign_permission_based_on_role( $request ) {
@@ -130,8 +139,14 @@ class EVF_Roles_And_Permission {
 				}
 			}
 		}
-		error_log( print_r( $request['request'], true ) );
-		wp_send_json_success();
+
+		return new \WP_REST_Response(
+			array(
+				'success' => true,
+				'message' => esc_html__( 'Successfully role saved.', 'everest-forms' ),
+			),
+			200
+		);
 	}
 
 	public static function get_wp_roles() {
@@ -432,6 +447,59 @@ class EVF_Roles_And_Permission {
 				'success' => true,
 				'data'    => $deleted_user,
 				'message' => __( 'Manager deleted successfully.', 'everest-forms' ),
+			),
+			200
+		);
+	}
+
+	public static function bulk_remove_managers( $request ) {
+		if ( ! isset( $request['request'] ) || empty( $request['request'] ) ) {
+			return new \WP_REST_Response(
+				array(
+					'success' => false,
+					'message' => esc_html__( 'Request data not found.', 'everest-forms' ),
+				),
+				200
+			);
+		}
+
+		$requested_data = $request['request'];
+
+		$user_ids = $requested_data['user_ids'];
+
+		if ( empty( $user_ids ) ) {
+			return new \WP_REST_Response(
+				array(
+					'success' => false,
+					'message' => esc_html__( 'Please select user.', 'everest-forms' ),
+				),
+				200
+			);
+		}
+
+		foreach ( $user_ids as $ID ) {
+			$user = get_user_by( 'ID', $ID );
+
+			if ( ! $user ) {
+				return new \WP_REST_Response(
+					array(
+						'success' => false,
+						'message' => esc_html__( 'Associate user could not be found.', 'everest-forms' ),
+					),
+					200
+				);
+			}
+
+			self::attach_permission( $user, array() );
+
+			delete_user_meta( $user->ID, '_everest_forms_has_role' );
+
+		}
+
+		return new \WP_REST_Response(
+			array(
+				'success' => true,
+				'message' => __( 'Managers deleted successfully.', 'everest-forms' ),
 			),
 			200
 		);

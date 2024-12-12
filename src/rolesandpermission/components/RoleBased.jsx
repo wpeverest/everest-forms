@@ -1,4 +1,4 @@
-import { Box, Button, Checkbox, Flex, Stack, Text } from "@chakra-ui/react";
+import { Box, Button, Checkbox, Flex, Stack, Text, useToast } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { bulkAssignPermission, getWPRoles } from "./RoleAndPermissionAPI";
 import UserDisplayModal from "./UserDisplayModal";
@@ -8,6 +8,7 @@ const RoleBased = () => {
   const [wpRoles, setWPRoles] = useState([]);
   const [evfPermission, setEvfPermission] = useState([]);
   const [checkedItems, setCheckedItems] = useState({});
+  const toast = useToast();
 
   const handleCheckAll = (e) => {
     const checked = e.target.checked;
@@ -45,10 +46,16 @@ const RoleBased = () => {
   }, []);
 
   useEffect( ()=>{
-		bulkAssignPermission( checkedItems ).then( (res)=> {
-			console.log(res);
-		})
-  },[isAllChecked, checkedItems])
+			bulkAssignPermission( checkedItems ).then( (res)=> {
+				if ( res.success ) {
+					toast({
+						title: res.message,
+						status: "success",
+						duration: 3000,
+					  })
+				}
+			})
+  },[ checkedItems ])
 
   return (
     <Box>

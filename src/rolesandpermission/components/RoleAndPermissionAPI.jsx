@@ -10,6 +10,7 @@ const urls = {
 	addUserManager : base + "add-user-manager",
 	getManagers : base + "get-managers",
 	removeManager: base + "remove-manager",
+	bulkRemoveManager : base + "bulk-remove-managers"
 };
 
 export const bulkAssignPermission = async ( checkedItems ) => {
@@ -81,4 +82,20 @@ export const getManagers = async () =>{
 			},
 		}
 	).then( (res) => res );
+ }
+
+
+ export const bulkRemoveManager = async ( userIDs ) => {
+		return apiFetch({
+			path: urls.bulkRemoveManager,
+			method: "POST",
+			headers: {
+				"X-WP-Nonce" : security,
+			},
+			data: {
+				request: {
+					user_ids : userIDs,
+				},
+			},
+		})
  }
