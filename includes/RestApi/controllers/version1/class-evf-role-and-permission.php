@@ -66,7 +66,7 @@ class EVF_Roles_And_Permission {
 			$this->namespace,
 			'/' . $this->rest_base . '/get-managers',
 			array(
-				'methods'             => 'GET',
+				'methods'             => 'POST',
 				'callback'            => array( __CLASS__, 'get_managers' ),
 				'permission_callback' => array( __CLASS__, 'check_admin_permissions' ),
 			)
@@ -350,10 +350,8 @@ class EVF_Roles_And_Permission {
 	}
 
 	public static function get_managers( $attributes = array() ) {
-		error_log( print_r( 'get_managers', true ) );
-		$limit  = 10;
-		$page   = 1;
-		$offset = $page == 1 ? 0 : ( $page - 1 ) * $limit;
+		$limit  = $attributes['request']['page_size'];
+		$offset = $attributes['request']['offset'];
 
 		$query = new \WP_User_Query(
 			array(

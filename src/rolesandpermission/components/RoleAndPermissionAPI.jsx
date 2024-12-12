@@ -55,13 +55,19 @@ export const addManagerRole = async ( user_email, assignedPermissions ) => {
 	}).then((res) => res);
 }
 
-export const getManagers = async () =>{
+export const getManagers = async ( offset="", pageSize="" ) =>{
 	return apiFetch(
 		{
 			path: urls.getManagers,
-			method: "GET",
+			method: "POST",
 			headers : {
 				"X-WP-Nonce" : security,
+			},
+			data:{
+				request: {
+					offset: offset,
+					page_size: pageSize
+				}
 			}
 		}
 	).then( (res) => res );

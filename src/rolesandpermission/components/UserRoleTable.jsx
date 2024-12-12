@@ -1,4 +1,14 @@
 import { Box, Button, Checkbox, Flex, Input, InputGroup, InputRightElement, Stack, Table, Tbody, Td, Text, Th, Thead, Tr, useQuery, useToast } from '@chakra-ui/react';
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import {
+	Pagination,
+	PaginationContainer,
+	PaginationNext,
+	PaginationPage,
+	PaginationPageGroup,
+	PaginationPrevious,
+	PaginationSeparator,
+	usePagination } from "@ajna/pagination";
 import React, { useContext, useEffect, useState } from 'react';
 import { __ } from "@wordpress/i18n";
 import { SearchIcon, TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons';
@@ -17,14 +27,59 @@ const UserRoleTable = () => {
 	const [bulkDeleteSuccess, setBulkDeleteSuccess] = useState();
 	const toast = useToast();
 
-	useEffect(() => {
-	  getManagers().then((res) => {
-		if ( res.success ) {
+	const [totalManagers, setTotalManagers] = useState(0);
+	const mappedOptions = [
+		{ label: 5, value: 5 },
+		{ label: 10, value: 10 },
+		{ label: 25, value: 25 },
+		{ label: 50, value: 50 },
+	];
+
+	const outerLimit = 2;
+	const innerLimit = 2;
+
+	const {
+		pages,
+		pagesCount,
+		offset,
+		currentPage,
+		setCurrentPage,
+		isDisabled,
+		pageSize,
+		setPageSize,
+	} = usePagination({
+		total: totalManagers,
+		limits: {
+			outer: outerLimit,
+			inner: innerLimit,
+		},
+		initialState: {
+			pageSize: 5,
+			isDisabled: false,
+			currentPage: 1,
+		},
+	});
+
+
+	const handlePageChange = (nextPage) => {
+		setCurrentPage(nextPage);
+	};
+
+	const handlePageSizeChange = ( selectedOption ) => {
+		const pageSize = Number( selectedOption .value);
+		setPageSize(pageSize);
+	};
+
+	useEffect(()=>{
+		getManagers( offset, pageSize ).then((res)=> {
+			if ( res.success ) {
 				setManagers( res.managers );
+				setTotalManagers(res.total)
 				setPermissions( res.permissions.permissions);
-		}
-	  });
-	}, [userDeleted, bulkDeleteSuccess]);
+			}
+
+		})
+	},[currentPage, pageSize, offset, userDeleted, bulkDeleteSuccess]);
 
 	useEffect(() => {
 	  getWPRoles().then((res) => {
@@ -219,6 +274,72 @@ const UserRoleTable = () => {
 			  </Tbody>
 			</Table>
 		  </Box>
+
+		  {/* Pagination */}
+			<Stack mt={3}>
+				<Flex alignItems="center" justify="space-between">
+					<Flex alignItems="center">
+						<Text fontSize="md" p={"4"}>
+							{__("Show per page", "everest-forms")}
+						</Text>
+						<Select
+							onChange={handlePageSizeChange}
+							colorScheme="primary"
+							isSearchable={false}
+							options={mappedOptions}
+							defaultValue={mappedOptions[0]}
+						/>
+					</Flex>
+					<Pagination
+						pagesCount={pagesCount}
+						currentPage={currentPage}
+						isDisabled={isDisabled}
+						onPageChange={handlePageChange}
+					>
+						<PaginationContainer justify="space-between" p={4}>
+							<PaginationPrevious
+								_hover={{ bg: "primary.200" }}
+								bg="gray.200"
+							>
+								<FaChevronLeft />
+							</PaginationPrevious>
+							<PaginationPageGroup
+								align="center"
+								separator={
+									<PaginationSeparator
+										bg="blue.300"
+										fontSize="sm"
+										w={7}
+										jumpSize={11}
+									/>
+								}
+							>
+								{pages?.map((page) => (
+									<PaginationPage
+										width={"7px"}
+										bg="grey.200"
+										key={`pagination_page_${page}`}
+										page={page}
+										fontSize="sm"
+										_hover={{ bg: "primary.200" }}
+										_current={{
+											bg: "blue.300",
+											fontSize: "sm",
+											w: 7,
+										}}
+									/>
+								))}
+							</PaginationPageGroup>
+							<PaginationNext
+								_hover={{ bg: "primary.200" }}
+								bg="gray.200"
+							>
+								<FaChevronRight />
+							</PaginationNext>
+						</PaginationContainer>
+					</Pagination>
+				</Flex>
+			</Stack>
 		</Stack>
 	  </Stack>
 	);
