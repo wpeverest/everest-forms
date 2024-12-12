@@ -105,6 +105,7 @@ class EVF_Roles_And_Permission {
 
 		if ( is_array( $checked_roles ) ) {
 			foreach ( $checked_roles as $role => $checked ) {
+				$permission = self::get_evf_permissions();
 				if ( $checked ) {
 					if ( 'subscriber' == strtolower( $role ) ) {
 						return new \WP_REST_Response(
@@ -116,8 +117,16 @@ class EVF_Roles_And_Permission {
 						);
 					}
 					$wp_role = $wp_roles->get_role( $role );
-					$wp_role->add_cap( 'manage_everest_forms' );
-					error_log( print_r( $wp_role, true ) );
+
+					foreach ( array_keys( $permission['permissions'] ) as $value ) {
+						$wp_role->add_cap( $value );
+					}
+				} else {
+					$wp_role = $wp_roles->get_role( $role );
+
+					foreach ( array_keys( $permission['permissions'] ) as $value ) {
+						$wp_role->remove_cap( $value );
+					}
 				}
 			}
 		}
