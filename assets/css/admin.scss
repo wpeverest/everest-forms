@@ -35,7 +35,7 @@
 		url("../fonts/EverestForms.woff?5c6kq4") format("woff"),
 		url("../fonts/EverestForms.svg?5c6kq4#EverestForms") format("svg");
 	font-weight: normal;
-	font-style: normal;
+	
 	font-display: block;
 }
 
@@ -216,7 +216,7 @@
 	color: #666;
 	display: inline-block;
 	font-size: 1.2em;
-	font-style: normal;
+	
 	height: 16px;
 	line-height: 16px;
 	position: relative;
@@ -4731,7 +4731,7 @@ p.search-box {
 						height: auto;
 						//  font-size: 13px;
 						//  background: #51cf66;
-						font-family: inherit;
+						
 						padding: 8px 16px 8px 14px;
 						display: flex;
 						align-items: center;
@@ -4781,7 +4781,7 @@ p.search-box {
 						font-size: 13px;
 						background: #51cf66;
 						color: $color-white;
-						font-family: inherit;
+						
 
 						&.dashicons {
 							&::before {
@@ -6504,7 +6504,7 @@ img.ui-datepicker-trigger {
 
 	.select2-search--inline .select2-search__field {
 		min-height: 28px;
-		font-family: inherit;
+		
 		font-size: inherit;
 		font-weight: inherit;
 		padding: 0 0 0 3px;
@@ -7035,7 +7035,7 @@ img.ui-datepicker-trigger {
 	content: "\e902";
 	font-family: "EverestForms";
 	font-weight: normal;
-	font-style: normal;
+	
 	font-display: block;
 }
 
@@ -7239,7 +7239,7 @@ img.ui-datepicker-trigger {
 
 	.select2-search--inline {
 		.select2-search__field {
-			font-family: inherit;
+			
 			font-size: inherit;
 			font-weight: inherit;
 			padding: 3px 0;
@@ -10229,17 +10229,13 @@ body {
 		padding: 28px 36px;
 		justify-content: space-between;
 		align-items: center;
-		align-self: stretch;
-		border-radius: 8px;
 		background: #fff;
 
 		.title {
-			color: var(--Grey-grey-500, #222);
-			font-family: Inter;
-			font-size: 24px;
-			font-style: normal;
+			color: #222222;			
+			font-size: 24px;			
 			font-weight: 500;
-			line-height: 150%; /* 36px */
+			line-height: 34px;
 		}
 
 		#evf-dashboard-analytisc-header {
@@ -10247,23 +10243,23 @@ body {
 			justify-content: flex-end;
 			align-items: center;
 			gap: 24px;
+
 			.select2 {
 				.selection {
 					.select2-selection {
 						height: 38px;
 						border-radius: 4px;
-						border: 1px solid var(--Grey-grey-100, #bababa);
-						background: var(--Grey-0, #fff);
+						border: 1px solid #bababa;
+						background: #ffffff;
+
 						.select2-selection__rendered {
 							align-items: center;
 							gap: 8px;
 							flex-shrink: 0;
-							color: var(--Grey-grey-300, #6b6b6b);
-							font-family: Inter;
-							font-size: 14px;
-							font-style: normal;
+							color: #6b6b6b;							
+							font-size: 14px;							
 							font-weight: 400;
-							line-height: 150%; /* 21px */
+							line-height: 22px;
 						}
 					}
 				}
@@ -10276,7 +10272,7 @@ body {
 			align-items: center;
 			gap: 4px;
 			border-radius: 4px;
-			background: var(--Grey-grey-25, #f4f4f4);
+			background: #f4f4f4;
 
 			a {
 				display: flex;
@@ -10285,12 +10281,10 @@ body {
 				border-radius: 2px;
 				background: #fff;
 				box-shadow: 0px 6px 21px 0px rgba(181, 181, 181, 0.13);
-				color: var(--EVF-violet-Primary-400, #7545bb);
-				font-family: Inter;
-				font-size: 14px;
-				font-style: normal;
+				color: #7545bb;		
+				font-size: 14px;				
 				font-weight: 400;
-				line-height: 150%; /* 21px */
+				line-height: 22px;
 			}
 		}
 		#evf-form-analytics-date-range {
@@ -10301,14 +10295,12 @@ body {
 			align-items: center;
 			align-self: stretch;
 			border-radius: 4px;
-			border: 1px solid var(--Grey-grey-75, #bdbdbd);
-			background: var(--Grey-0, #fff);
-			color: var(--Grey-grey-300, #6b6b6b);
-			font-family: Inter;
-			font-size: 14px;
-			font-style: normal;
+			border: 1px solid #bdbdbd;
+			background: #ffffff;
+			color: #6b6b6b;			
+			font-size: 14px;			
 			font-weight: 400;
-			line-height: 150%; /* 21px */
+			line-height: 22px;
 		}
 	}
 	.evf-entries-content-container {
@@ -10325,6 +10317,7 @@ body {
 					align-items: flex-start;
 					gap: 20px;
 					border-radius: 13px;
+
 					.submission-card {
 						display: flex;
 						padding: 32px 20px;
@@ -10333,12 +10326,17 @@ body {
 						border-radius: 8px;
 						border: 2px solid #f2f2f2;
 						background: #fff;
+
+						@media screen and (max-width: 1199px) {
+							padding: 32px 28px;
+						}    
+
 						.icon-title-wrapper {
 							display: flex;
 							padding: 32px 20px;
 							align-items: flex-start;
 							gap: 20px;
-							flex: 1 0 0;
+
 							.evf-icon {
 								display: flex;
 								width: 64px;
@@ -10355,21 +10353,18 @@ body {
 								flex-direction: column;
 								align-items: flex-start;
 								gap: 8px;
+
 								h2 {
-									color: var(--Grey-grey-500, #222);
-									font-family: Inter;
-									font-size: 18px;
-									font-style: normal;
+									color: #222222;									
+									font-size: 18px;									
 									font-weight: 500;
-									line-height: 150%; /* 27px */
+									line-height: 26px;
 								}
 								.evf-counter {
-									color: var(--Grey-grey-500, #222);
-									font-family: Inter;
-									font-size: 28px;
-									font-style: normal;
+									color: #222222;									
+									font-size: 28px;									
 									font-weight: 600;
-									line-height: 76%; /* 21.28px */
+									line-height: 24px;
 								}
 							}
 						}
@@ -10383,28 +10378,21 @@ body {
 				}
 
 				#everest-forms-entries-analytics {
-					// display: flex;
 					padding: 40px;
-					width: 1117px;
-					// flex-direction: column;
-					// align-items: flex-start;
-					gap: 20px;
-					// align-self: stretch;
 					border-radius: 8px;
 					border: 2px solid #f2f2f2;
 					background: #fff;
+
 					.everest-forms-card_header {
 						display: flex;
 						justify-content: space-between;
 						align-items: center;
-						flex: 1 0 0;
+
 						h3 {
-							color: var(--Grey-grey-500, #222);
-							font-family: Inter;
+							color: #222222;
 							font-size: 20px;
-							font-style: normal;
 							font-weight: 500;
-							line-height: 150%; /* 30px */
+							line-height: 30px;
 						}
 						#evf-entris-chart-types {
 							display: flex;
@@ -10413,34 +10401,27 @@ body {
 							align-items: center;
 							gap: 4px;
 							border-radius: 4px;
-							background: var(--Grey-grey-25, #f4f4f4);
+							background: #f4f4f4;
 						}
 					}
 				}
 				.evf-device-analytics {
-					// display: flex;
 					padding: 40px 32px;
-					// flex-direction: column;
-					// justify-content: center;
-					// align-items: center;
-					gap: 32px;
 					border-radius: 8px;
 					border: 2px solid #f2f2f2;
 					background: #fff;
+
 					.title {
-						color: var(--Grey-grey-500, #222);
-						font-family: Inter;
-						font-size: 20px;
-						font-style: normal;
+						color: #222222;					
+						font-size: 20px;						
 						font-weight: 500;
-						line-height: 150%; /* 30px */
+						line-height: 30px;
 					}
 				}
 			}
 		}
 		//For survey and poll
 		.everest-forms-single-survey-container {
-			// display: flex;
 			padding: 40px;
 			flex-direction: column;
 			align-items: flex-start;
@@ -10449,21 +10430,20 @@ body {
 			border-radius: 8px;
 			border: 2px solid #f5f5f5;
 			background: #fff;
+
 			.everest-forms-survey-header {
-				// display: flex;
 				padding-bottom: 24px;
 				align-items: center;
 				gap: 16px;
 				align-self: stretch;
 				border-bottom: 1px solid #dcdcdc;
+
 				.everest-forms-survey-selection {
 					.form-header-name {
-						color: var(--Grey-grey-500, #222);
-						font-family: Inter;
-						font-size: 20px;
-						font-style: normal;
+						color: #222222;					
+						font-size: 20px;						
 						font-weight: 500;
-						line-height: 150%; /* 30px */
+						line-height: 30px;
 					}
 
 					.everest-forms-survey-question-list {
@@ -10474,14 +10454,12 @@ body {
 						gap: 80px;
 						flex-shrink: 0;
 						border-radius: 4px;
-						border: 1px solid var(--Grey-grey-100, #bababa);
-						background: var(--Grey-0, #fff);
-						color: var(--Grey-grey-400, #383838);
-						font-family: Inter;
+						border: 1px solid #bababa;
+						background: #FFFFFF;
+						color: #383838;						
 						font-size: 14px;
-						font-style: normal;
 						font-weight: 400;
-						line-height: 150%; /* 21px */
+						line-height: 22px;
 					}
 					.evf-analytic-button {
 						display: flex;
@@ -10490,8 +10468,8 @@ body {
 						align-items: center;
 						gap: 8px;
 						border-radius: 3px;
-						border: 1px solid var(--EVF-violet-Primary-400, #7545bb);
-						background: var(--EVF-violet-Primary-400, #7545bb);
+						border: 1px solid #7545bb;
+						background: #7545bb;
 					}
 				}
 			}
@@ -10512,12 +10490,10 @@ body {
 						align-items: center;
 						align-self: stretch;
 						h3 {
-							color: var(--Grey-grey-500, #222);
-							font-family: Inter;
-							font-size: 16px;
-							font-style: normal;
+							color: #222222;							
+							font-size: 16px;							
 							font-weight: 500;
-							line-height: 150%; /* 24px */
+							line-height: 24px;
 						}
 					}
 				}
@@ -10565,21 +10541,17 @@ body {
 								flex-direction: column;
 
 								strong {
-									color: var(--Grey-grey-500, #222);
-									font-family: Inter;
-									font-size: 28px;
-									font-style: normal;
+									color: #222222;									
+									font-size: 28px;									
 									font-weight: 600;
-									line-height: 76%; /* 21.28px */
+									line-height: 28px;
 								}
 
 								p {
-									color: var(--Grey-grey-500, #222);
-									font-family: Inter;
-									font-size: 18px;
-									font-style: normal;
+									color: #222222;									
+									font-size: 18px;									
 									font-weight: 500;
-									line-height: 150%; /* 27px */
+									line-height: 26px;
 								}
 							}
 						}
@@ -10591,6 +10563,7 @@ body {
 					align-items: flex-start;
 					gap: 30px;
 					align-self: stretch;
+
 					.everest-forms-survey-summary {
 						display: flex;
 						flex-direction: column;
@@ -10617,19 +10590,19 @@ body {
 				flex-direction: column;
 				align-items: flex-start;
 				gap: 24px;
-				flex: 1 0 0;
+
 				.entry-table-tabs {
 					ul {
 						li {
 							a {
-								color: var(--Grey-grey-300, #6b6b6b);
-								font-family: Inter;
+								color: #6b6b6b;								
 								font-size: 14px;
-								font-style: normal;
 								font-weight: 400;
-								line-height: 24px; /* 171.429% */
+								line-height: 24px;
+
 								&.current {
 									color: #475bb2;
+
 									span {
 										color: #475bb2;
 									}
@@ -10645,7 +10618,8 @@ body {
 					align-items: center;
 					align-self: stretch;
 					border-bottom: 1px solid #dcdcdc;
-					background: var(--Grey-grey-0, #fff);
+					background: #FFFFFF;
+
 					.evf-forms-list {
 						display: flex;
 						height: 38px;
@@ -10657,19 +10631,17 @@ body {
 								.select2-selection {
 									height: 38px;
 									border-radius: 4px;
-									border: 1px solid
-										var(--Grey-grey-100, #bababa);
-									background: var(--Grey-0, #fff);
+									border: 1px solid #bababa;
+									background: #ffffff;
+
 									.select2-selection__rendered {
 										align-items: center;
 										gap: 8px;
 										flex-shrink: 0;
-										color: var(--Grey-grey-300, #6b6b6b);
-										font-family: Inter;
-										font-size: 14px;
-										font-style: normal;
+										color: #6b6b6b;										
+										font-size: 14px;										
 										font-weight: 400;
-										line-height: 150%; /* 21px */
+										line-height: 22px;
 									}
 								}
 							}
@@ -10681,15 +10653,12 @@ body {
 							align-items: center;
 							gap: 8px;
 							border-radius: 3px;
-							border: 1px solid
-								var(--EVF-violet-Primary-400, #7545bb);
-							background: var(--EVF-violet-Primary-400, #7545bb);
-							color: var(--Grey-grey-0, #fff);
-							font-family: Inter;
-							font-size: 14px;
-							font-style: normal;
+							border: 1px solid #7545bb;
+							background: #7545bb;
+							color: #FFFFFF;							
+							font-size: 14px;							
 							font-weight: 500;
-							line-height: 150%; /* 21px */
+							line-height: 22px;
 						}
 						#export-csv-submit {
 							display: flex;
@@ -10698,15 +10667,12 @@ body {
 							align-items: center;
 							gap: 6px;
 							border-radius: 3px;
-							border: 1px solid
-								var(--Blue-blue-500-Primary, #475bb2);
+							border: 1px solid #475bb2;
 							background: #f6f7f7;
-							color: var(--Blue-blue-500-Primary, #475bb2);
-							font-family: Inter;
-							font-size: 14px;
-							font-style: normal;
+							color: #475bb2;							
+							font-size: 14px;							
 							font-weight: 500;
-							line-height: 150%; /* 21px */
+							line-height: 22px;
 						}
 					}
 
@@ -10718,8 +10684,9 @@ body {
 								align-items: center;
 								align-self: stretch;
 								border-radius: 4px;
-								border: 1px solid var(--Grey-grey-100, #bababa);
-								background: var(--Grey-grey-0, #fff);
+								border: 1px solid #bababa;
+								background: #FFFFFF;
+
 							}
 							#search-submit {
 								height: 38px;
@@ -10759,10 +10726,8 @@ body {
 		border-radius: 8px;
 		background: #fff;
 		h1 {
-			color: var(--Grey-grey-500, #222);
-			font-family: Inter;
-			font-size: 24px;
-			font-style: normal;
+			color: #222222;			
+			font-size: 24px;			
 			font-weight: 500;
 			line-height: 150%; /* 36px */
 		}
@@ -10773,7 +10738,7 @@ body {
 			align-items: center;
 			gap: 9.231px;
 			border-radius: 4.615px;
-			border: 1.538px solid var(--Grey-grey-100, #bababa);
+			border: 1.538px solid #bababa;
 			background: #f6f7f7;
 			svg {
 				width: 15.385px;
@@ -10802,19 +10767,18 @@ body {
 			.everest-forms-entry-fields {
 				border-radius: 5px 5px 5px 5px;
 				border: 1px solid #dcdcdc;
-				background: var(--Grey-grey-0, #fff);
+				background: #FFFFFF;
+
 				h2 {
 					display: flex;
 					padding: 20px 16px;
 					justify-content: space-between;
 					align-items: center;
 					align-self: stretch;
-					color: var(--Grey-grey-400, #383838);
-					font-family: Inter;
-					font-size: 16px;
-					font-style: normal;
+					color: #383838;
+					font-size: 16px;					
 					font-weight: 500;
-					line-height: 24px; /* 150% */
+					line-height: 24px;
 				}
 			}
 
@@ -10825,14 +10789,12 @@ body {
 				align-items: center;
 				gap: 6px;
 				border-radius: 3px;
-				border: 1px solid var(--Blue-blue-500-Primary, #475bb2);
+				border: 1px solid #475bb2;
 				background: #f6f7f7;
-				color: var(--Blue-blue-500-Primary, #475bb2);
-				font-family: Inter;
-				font-size: 13px;
-				font-style: normal;
+				color: #475bb2;				
+				font-size: 13px;				
 				font-weight: 500;
-				line-height: 150%; /* 19.5px */
+				line-height: 19px;
 			}
 		}
 
@@ -10863,12 +10825,11 @@ body {
 					align-self: stretch;
 					border-radius: 5px 5px 0px 0px;
 					border-bottom: 1px solid #dcdcdc;
-					background: var(--Grey-grey-0, #fff);
+					background: #FFFFFF;
+
 					h2 {
-						color: var(--Grey-grey-400, #383838);
-						font-family: Inter;
-						font-size: 14px;
-						font-style: normal;
+						color: #383838;	
+						font-size: 14px;						
 						font-weight: 500;
 						line-height: 24px; /* 171.429% */
 					}
@@ -10882,12 +10843,13 @@ body {
 						align-items: center;
 						gap: 6px;
 						border-radius: 3px;
-						border: 1px solid var(--EVF-violet-Primary-400, #7545bb);
-						background: var(--EVF-violet-Primary-400, #7545bb);
-						color: var(--Grey-grey-0, #fff);
-						font-family: Inter;
+						border: 1px solid #7545bb;
+						background: #7545bb;
+						color: #FFFFFF;
+
+						
 						font-size: 13px;
-						font-style: normal;
+						
 						font-weight: 500;
 						line-height: 150%; /* 19.5px */
 					}
@@ -10896,16 +10858,14 @@ body {
 				.everest-forms-entry-user,
 				.everest-forms-entry-referer {
 					a {
-						color: var(--Grey-grey-400, #383838);
-						font-family: Inter;
-						font-size: 13px;
-						font-style: normal;
+						color: #383838;	
+						font-size: 13px;						
 						font-weight: 400;
 						line-height: 24px; /* 184.615% */
 						color: #475bb2;
-						font-family: Inter;
+						
 						font-size: 13px;
-						font-style: normal;
+						
 						font-weight: 400;
 						line-height: 24px;
 						text-decoration-line: underline;
@@ -10921,9 +10881,9 @@ body {
 						p {
 							a {
 								color: #475bb2;
-								font-family: Inter;
+								
 								font-size: 13px;
-								font-style: normal;
+								
 								font-weight: 400;
 								line-height: 24px; /* 184.615% */
 							}
@@ -10964,12 +10924,10 @@ body {
 		border-radius: 8px;
 		background: #fff;
 		h1 {
-			color: var(--Grey-grey-500, #222);
-			font-family: Inter;
-			font-size: 24px;
-			font-style: normal;
+			color: #222222;			
+			font-size: 24px;			
 			font-weight: 500;
-			line-height: 150%; /* 36px */
+			line-height: 34px;
 		}
 		a {
 			display: flex;
@@ -10978,7 +10936,7 @@ body {
 			align-items: center;
 			gap: 9.231px;
 			border-radius: 4.615px;
-			border: 1.538px solid var(--Grey-grey-100, #bababa);
+			border: 1.538px solid #bababa;
 			background: #f6f7f7;
 			svg {
 				width: 15.385px;
@@ -11007,26 +10965,26 @@ body {
 			.everest-forms-entry-details {
 				border-radius: 5px 5px 5px 5px;
 				border: 1px solid #dcdcdc;
-				background: var(--Grey-grey-0, #fff);
+				background: #FFFFFF;
+
 				h2 {
 					display: flex;
 					padding: 20px 16px;
 					justify-content: space-between;
 					align-items: center;
 					align-self: stretch;
-					color: var(--Grey-grey-400, #383838);
-					font-family: Inter;
-					font-size: 16px;
-					font-style: normal;
+					color: #383838;				
+					font-size: 16px;					
 					font-weight: 500;
-					line-height: 24px; /* 150% */
+					line-height: 24px;
 				}
 			}
 
 			.everest-forms-edit-entry-container {
 				border-radius: 5px 5px 5px 5px;
 				border: 1px solid #dcdcdc;
-				background: var(--Grey-grey-0, #fff);
+				background: #FFFFFF;
+
 
 				#everest-forms-edit-entry-form {
 					table {
@@ -11034,12 +10992,10 @@ body {
 							display: flex;
 							justify-content: flex-start;
 							width: 237px;
-							color: var(--Grey-grey-400, #383838);
-							font-family: Inter;
-							font-size: 13px;
-							font-style: normal;
+							color: #383838;							
+							font-size: 13px;							
 							font-weight: 500;
-							line-height: 24px; /* 184.615% */
+							line-height: 24px;
 						}
 						td {
 							div {
@@ -11071,21 +11027,17 @@ body {
 				align-self: stretch;
 				border-radius: 5px 5px 0px 0px;
 				border-bottom: 1px solid #dcdcdc;
-				background: var(--Grey-grey-0, #fff);
-				color: var(--Grey-grey-400, #383838);
-				font-family: Inter;
-				font-size: 14px;
-				font-style: normal;
+				background: #FFFFFF;
+				color: #383838;
+				font-size: 14px;				
 				font-weight: 500;
-				line-height: 24px; /* 171.429% */
+				line-height: 24px;
 			}
 			.everest-forms-entry-user,
 			.everest-forms-entry-referer {
 				a {
-					color: #475bb2;
-					font-family: Inter;
-					font-size: 13px;
-					font-style: normal;
+					color: #475bb2;					
+					font-size: 13px;					
 					font-weight: 400;
 					line-height: 24px;
 					text-decoration-line: underline;
@@ -11107,8 +11059,8 @@ body {
 				align-items: center;
 				gap: 6px;
 				border-radius: 3px;
-				border: 1px solid var(--EVF-violet-Primary-400, #7545bb);
-				background: var(--EVF-violet-Primary-400, #7545bb);
+				border: 1px solid #7545bb;
+				background: #7545bb;
 			}
 
 			a {
@@ -11118,12 +11070,10 @@ body {
 				align-items: center;
 				gap: 6px;
 				border-radius: 3px;
-				border: 1px solid var(--Blue-blue-500-Primary, #475bb2);
+				border: 1px solid #475bb2;
 				background: #f6f7f7;
-				color: #475bb2;
-				font-family: Inter;
-				font-size: 13px;
-				font-style: normal;
+				color: #475bb2;				
+				font-size: 13px;				
 				font-weight: 500;
 				line-height: 150%; /* 19.5px */
 			}
@@ -11135,6 +11085,19 @@ body {
 // Form Entries Design Fix
 body {
 	&.everest-forms_page_evf-entries {
+        box-sizing: border-box;
+
+		#wpfooter {
+			position: fixed;
+
+			#footer-upgrade {
+				background: #ffffff;
+				padding: 12px 16px;
+				border: 1px solid #f4f4f4;
+				border-radius: 6px;
+			}
+		}
+        
         .select2-container--open .select2-dropdown--below {
             margin-top: 5px;
         }
@@ -11147,11 +11110,15 @@ body {
 
 				.evf-entries {
 					&-header-container {
-						padding: 28px 36px;
+						position: sticky;
+						position: -webkit-sticky;
+						top: 32px;
+						border-bottom: 1px solid #f2f2f2;
+						z-index: 5;
+						box-shadow: 0px 4px 24px 0px rgba(10, 10, 10, 0.06);
                     
 						.title {
-							color: #222;
-							font-family: inherit;
+							color: #222;							
 							font-size: 24px;
 							font-weight: 500;
 							line-height: 36px;
@@ -11166,8 +11133,7 @@ body {
 								&-selection {
 									&__rendered {
 										min-height: 38px;
-										color: #6B6B6B;
-										font-family: inherit;
+										color: #6B6B6B;										
 										font-size: 14px;
 										font-weight: 400;
 										line-height: 22px;
@@ -11185,6 +11151,7 @@ body {
 								
 								&-container {
 									min-height: 38px;
+									width: 250px !important;
 									
 									&--open,
 									&--focus {
@@ -11206,7 +11173,7 @@ body {
 								
 								.everest-forms-btn {
 									color: #6B6B6B;
-									font-family: inherit;
+									
 									font-size: 14px;
 									font-weight: 400;
 									line-height: 22px;
@@ -11226,8 +11193,7 @@ body {
 							
 							#evf-form-analytics-date-range {
 								min-width: 250px;
-								margin: 0;
-								font-family: inherit;
+								margin: 0;								
 								color: #383838;
 								font-size: 14px;
 								font-weight: 400;
@@ -11238,6 +11204,14 @@ body {
 									text-transform: capitalize;
 								}
 							}
+
+							// @media screen and (max-width: 1199px) {
+							// 	select,
+							// 	.select2-container,
+							// 	> div {
+							// 		display: none !important;
+							// 	}
+							// }
 						}
 					}
 
@@ -11258,14 +11232,16 @@ body {
                                     
                                     .submission-cards {
                                         display: grid;
-                                        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+                                        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
                                         gap: 24px;
 										width: 100%;
                                         
-                                        .submission-card {                                            
+                                        .submission-card {      
+											flex-wrap: wrap;
+											justify-content: space-between;
+
                                             .icon-title-wrapper {
                                                 padding: 0;
-                                                flex: 1;
                                                 
                                                 .evf-icon {
                                                     padding: 0;
@@ -11280,7 +11256,7 @@ body {
                                                     
                                                     h2 {
                                                         color: #222222;
-                                                        font-family: inherit;
+                                                        
                                                         font-size: 18px;
                                                         font-weight: 500;
                                                         line-height: 26px;
@@ -11289,7 +11265,7 @@ body {
                                                     
                                                     .evf-counter {
                                                         color: #222222;
-                                                        font-family: inherit;
+                                                        
                                                         font-size: 26px;
                                                         font-weight: 600;
                                                         line-height: 26px;
@@ -11312,6 +11288,306 @@ body {
                                             }
                                         }
                                     }
+                                    
+                                    .evf-analytics-entry-device-wrapper {
+                                        width: 100%;
+                                        display: flex;
+                                        gap: 24px;
+
+										@media screen and (max-width: 1199px) {
+											flex-direction: column;
+										}                                        
+                                        
+                                        #everest-forms-entries-analytics {
+                                            width: 60%;
+                                            flex: 1;
+
+											@media screen and (max-width: 1199px) {
+												width: 100%;
+												flex: unset;
+											}    
+                                            
+                                            .everest-forms-card {
+                                                &_header {
+                                                    h3 {
+                                                        
+                                                    }
+                                                    
+                                                    .everest-forms-btn-group {
+                                                        background: #F4F4F4;
+                                                        border-radius: 4px;
+                                                        padding: 4px;
+                                                        gap: 4px;
+                                                        
+                                                        .everest-forms-btn {
+                                                            margin: 0 !important;
+                                                            padding: 4px 12px;
+                                                            background: transparent;
+                                                            
+                                                            &:focus {
+                                                                outline: none;
+                                                                box-shadow: none;
+                                                            }
+                                                            
+                                                            &:hover {
+                                                                svg {
+                                                                    fill: #7545BB;
+                                                                }
+                                                            }
+                                                            
+                                                            &.is-active {
+                                                                background: #fff;
+                                                                
+                                                                svg {
+                                                                    fill: #7545BB;
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        
+                                        .evf-device-analytics {
+                                            max-width: 540px;
+                                            width: 40%;
+
+											@media screen and (max-width: 1199px) {
+												width: 100%;
+												max-width: 100%;
+											}    
+                                            
+                                            .title {
+                                                margin-top: 0;
+                                                margin-bottom: 32px;
+                                            }
+                                            
+                                            .chart-container {
+                                                min-height: 290px;
+                                            }
+                                            
+                                            table.everest-forms-table {
+                                                border: 1px solid #DCDCDC;
+                                                border-radius: 5px;
+                                                border-collapse: collapse;
+                                                width: 100%;
+                                                
+                                                thead {
+                                                    tr {
+                                                        th {
+                                                            color: #383838;
+                                                            font-size: 14px;
+                                                            font-weight: 500;
+                                                            line-height: 24px;
+                                                            padding: 12px 24px;
+                                                            background: #fff;
+                                                            border: 1px solid #DCDCDC;
+                                                            border-left: 0;
+                                                            border-right: 0;
+                                                        }
+                                                    }
+                                                }
+                                                
+                                                tbody {
+                                                    tr {
+                                                        td {
+                                                            color: #383838;
+                                                            font-size: 13px;
+                                                            font-weight: 400;
+                                                            line-height: 24px;
+                                                            padding: 12px 24px;
+                                                            border: 0;
+                                                        }
+                                                        
+                                                        &:nth-child(odd) {
+                                                            background: #F6F7F7;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        
+                        .evf-entries-table-container {
+                            .inner-container {
+                                .entry-table-tabs {
+                                    ul {
+                                        margin-top: 0;
+                                        
+                                        li {
+                                            color: #6B6B6B;
+                                            font-size: 14px;
+                                            font-weight: 400;
+                                            line-height: 24px;
+                                            
+                                            a {
+                                                &.current {
+                                                    color: #7545BB;
+                                                    
+                                                    .count {
+                                                        color: #7545BB;
+                                                    }
+                                                }                                                
+                                            }
+                                            
+                                        }
+                                    }
+                                }
+                                
+                                .entry-table-filters {
+									@media screen and (max-width: 1199px) {
+										flex-direction: column;
+										align-items: flex-start;
+										gap: 20px;
+									}
+
+                                    .evf-forms-list {
+                                        gap: 12px;
+                                        
+                                        .select2 {
+                                            &-selection {
+                                                &__rendered {
+                                                    min-height: 38px;
+                                                    color: #6B6B6B;										
+                                                    font-size: 14px;
+                                                    font-weight: 400;
+                                                    line-height: 22px;
+                                                    padding: 7px 10px;
+                                                    box-sizing: border-box;
+                                                }
+
+                                                &__arrow {
+                                                    width: 20px;
+                                                    height: 20px;
+                                                    top: 10px;
+                                                    right: 6px;
+                                                }
+                                            }
+								
+                                            &-container {
+                                                min-height: 38px;
+
+                                                &--open,
+                                                &--focus {
+                                                    .select2-selection {
+                                                        box-shadow: none;
+                                                        border-color: #7545BB;
+                                                    }
+                                                }
+                                            }
+							             }
+                                        
+                                        input[type="submit"] {
+                                            margin: 0;
+                                            letter-spacing: .2px;
+                                            
+                                            &#post-query-submit {
+                                                line-height: 20px;
+                                            }
+                                            
+                                            &#export-csv-submit {
+                                                line-height: 20px;
+                                            }
+                                        }
+                                    }
+                                    
+                                    #entries-list {
+                                        .search-box {
+                                            margin: 0;
+                                            position: relative;
+                                            
+                                            &::before {
+                                                content: "";
+                                                background-image: url("data:image/svg+xml,%3Csvg width='18' height='19' viewBox='0 0 18 19' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M8.25 3.58594C5.48858 3.58594 3.25 5.82451 3.25 8.58594C3.25 11.3474 5.48858 13.5859 8.25 13.5859C11.0114 13.5859 13.25 11.3474 13.25 8.58594C13.25 5.82451 11.0114 3.58594 8.25 3.58594ZM1.25 8.58594C1.25 4.71994 4.38401 1.58594 8.25 1.58594C12.116 1.58594 15.25 4.71994 15.25 8.58594C15.25 12.4519 12.116 15.5859 8.25 15.5859C4.38401 15.5859 1.25 12.4519 1.25 8.58594Z' fill='%23999999'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M11.7804 12.1163C12.1709 11.7258 12.8041 11.7258 13.1946 12.1163L16.4571 15.3788C16.8476 15.7694 16.8476 16.4025 16.4571 16.793C16.0666 17.1836 15.4334 17.1836 15.0429 16.793L11.7804 13.5305C11.3899 13.14 11.3899 12.5069 11.7804 12.1163Z' fill='%23999999'/%3E%3C/svg%3E%0A");
+                                                background-repeat: no-repeat;
+                                                background-position: center;
+                                                background-size: 100%;
+                                                width: 18px;
+                                                height: 18px;
+                                                position: absolute;
+                                                right: 12px;
+                                            }
+                                            
+                                            input {
+                                                &[type="search"] {
+                                                    min-height: 38px;
+                                                    min-width: 275px;
+                                                    margin-right: 0;
+                                                    padding: 6px 36px 6px 12px;
+                                                    color: #383838;
+                                                    
+                                                    &:focus {
+                                                        outline: none;
+                                                        box-shadow: none;
+                                                        border-color: #7545BB;
+                                                    }
+                                                    
+                                                    &::placeholder {
+                                                        color: #6B6B6B;
+                                                    }
+                                                }
+                                                
+                                                &[type="submit"] {
+                                                    display: none;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                
+                                .tablenav {
+                                    height: auto;
+                                    margin: 0;
+                                    padding: 0;
+                                    align-items: center;
+                                    width: 100%;
+                                    
+                                    .bulkactions {
+                                        padding-right: 0;
+                                        display: flex;
+                                        align-items: center;
+                                        gap: 8px;
+                                        
+                                        select {
+                                            margin-right: 0;
+                                            min-height: 38px;
+                                            min-width: 180px;
+                                            padding-left: 12px;
+                                            padding-right: 12px;
+                                            border-color: #BABABA;
+                                            
+                                            &:hover {
+                                                color: #475BB2;
+                                            }
+                                            
+                                            &:focus {
+                                                outline: none;
+                                                box-shadow: none;
+                                                border-color: #475BB2;
+                                                color: #475BB2;
+                                            }
+                                        }
+                                        
+                                        input[type="submit"] {
+                                            color: #475BB2;
+                                            font-size: 14px;
+                                            font-weight: 500;
+                                            line-height: 20px;
+                                            margin-right: 0;
+                                            padding: 8px 12px;
+                                        }
+                                    }
+                                    
+                                    .tablenav-pages {
+                                        margin-bottom: 0;
+                                        
+                                        .displaying-num {
+                                            margin: 0;
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -11321,3 +11597,4 @@ body {
 		}
 	}
 }
+
