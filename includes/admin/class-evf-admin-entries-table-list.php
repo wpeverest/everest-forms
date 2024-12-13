@@ -530,16 +530,16 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 							$name       = '';
 
 							foreach ( $entry_data as $key => $value ) {
-								if ( strpos( $key, 'first_name_' ) === 0 ) {
+								if ( preg_match( '/^first_name_/', $key ) ) {
 									$first_name = $value;
 								}
 
-								if ( strpos( $key, 'email_' ) === 0 ) {
-									$email = $value;
+								if ( preg_match( '/^last_name_/', $key ) ) {
+									$last_name = $value;
 								}
 
-								if ( strpos( $key, 'last_name_' ) === 0 ) {
-									$last_name = $value;
+								if ( preg_match( '/^email_/', $key ) ) {
+									$email = $value;
 								}
 
 								if ( ! empty( $first_name ) && ! empty( $last_name ) ) {
@@ -554,13 +554,13 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 									$subject  = apply_filters( 'everest_forms_entry_submission_approval_subject', esc_html__( 'Entry Submission Approved' ) );
 									$message  = __( 'Hello, %s', 'everest-forms' );
 									$message  = sprintf( $message, $name );
-									$message .= ' <br/> ' . __( 'Congratulations, your entry has been approved fjgsfdj dsfksdjf sdjfksdhf ', 'everest-forms-pro' );
+									$message .= ' <br/> ' . __( 'Congratulations, your entry has been approved', 'everest-forms-pro' );
 									$message  = apply_filters( 'everest_forms_entry_approval_message', $message );
 								} else {
 									$subject  = apply_filters( 'everest_forms_entry_submission_denial_subject', esc_html__( 'Entry Submission Denied' ) );
 									$message  = __( 'Hello, %s', 'everest-forms' );
 									$message  = sprintf( $message, $name );
-									$message .= ' <br/> ' . __( 'Sorry to say that your entry has been denied fsjdfjsdf ndfjhskdjf', 'everest-forms-pro' );
+									$message .= ' <br/> ' . __( 'Sorry to say that your entry has been denied', 'everest-forms-pro' );
 									$message  = apply_filters( 'everest_forms_entry_denial_message', $message );
 								}
 							}
