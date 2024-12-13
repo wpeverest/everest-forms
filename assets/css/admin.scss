@@ -10330,7 +10330,6 @@ body {
 						padding: 32px 20px;
 						align-items: flex-start;
 						gap: 20px;
-						flex: 1 0 0;
 						border-radius: 8px;
 						border: 2px solid #f2f2f2;
 						background: #fff;
@@ -11127,6 +11126,197 @@ body {
 				font-style: normal;
 				font-weight: 500;
 				line-height: 150%; /* 19.5px */
+			}
+		}
+	}
+}
+
+
+// Form Entries Design Fix
+body {
+	&.everest-forms_page_evf-entries {
+        .select2-container--open .select2-dropdown--below {
+            margin-top: 5px;
+        }
+        
+		#wpbody {
+			margin-left: -20px;
+
+			#everest-forms-entries-list {
+				margin: 0;
+
+				.evf-entries {
+					&-header-container {
+						padding: 28px 36px;
+                    
+						.title {
+							color: #222;
+							font-family: inherit;
+							font-size: 24px;
+							font-weight: 500;
+							line-height: 36px;
+							margin: 0;
+						}
+						
+						#evf-dashboard-analytisc-header {
+							margin: 0 !important;
+							
+							// Select 2 container dropdown css
+							.select2 {
+								&-selection {
+									&__rendered {
+										min-height: 38px;
+										color: #6B6B6B;
+										font-family: inherit;
+										font-size: 14px;
+										font-weight: 400;
+										line-height: 22px;
+										padding: 7px 10px;
+										box-sizing: border-box;
+									}
+									
+									&__arrow {
+										width: 20px;
+										height: 20px;
+										top: 10px;
+										right: 6px;
+									}
+								}
+								
+								&-container {
+									min-height: 38px;
+									
+									&--open,
+									&--focus {
+										.select2-selection {
+											box-shadow: none;
+											border-color: #7545BB;
+										}
+									}
+								}
+							}
+							
+							> div {
+								gap: 20px;
+							}
+							
+							.everest-forms-btn-group {
+								margin-right: 0 !important;
+								border-radius: 4px;
+								
+								.everest-forms-btn {
+									color: #6B6B6B;
+									font-family: inherit;
+									font-size: 14px;
+									font-weight: 400;
+									line-height: 22px;
+									background: transparent;
+									box-shadow: none;
+									margin: 0;
+									padding: 4px 12px;
+									border-radius: 2px;
+									
+									&.is-active {
+										background: #ffffff;
+										color: #7545BB;
+										box-shadow: 0px 6px 21px 0px rgba(181, 181, 181, 0.13);
+									}
+								}
+							}
+							
+							#evf-form-analytics-date-range {
+								min-width: 250px;
+								margin: 0;
+								font-family: inherit;
+								color: #383838;
+								font-size: 14px;
+								font-weight: 400;
+								line-height: 22px;
+								
+								&::placeholder {
+									color: #6B6B6B;
+									text-transform: capitalize;
+								}
+							}
+						}
+					}
+
+					&-content-container {
+						padding: 36px;
+                        
+                        #evf-dashboard-analytics {
+                            width: 100%;
+                            
+                            .evf-container {
+                                padding: 0;
+                                
+                                #evf-dashboard-analytisc-body {
+                                    flex-direction: column;
+                                    gap: 24px;
+                                    margin-left: 0;
+                                    margin-right: 0;
+                                    
+                                    .submission-cards {
+                                        display: grid;
+                                        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+                                        gap: 24px;
+										width: 100%;
+                                        
+                                        .submission-card {                                            
+                                            .icon-title-wrapper {
+                                                padding: 0;
+                                                flex: 1;
+                                                
+                                                .evf-icon {
+                                                    padding: 0;
+                                                    display: flex !important;
+                                                    justify-content: center;
+                                                    align-items: center;
+                                                }
+                                                
+                                                .evf-title {
+                                                    margin-left: 0;
+                                                    margin-right: 0;
+                                                    
+                                                    h2 {
+                                                        color: #222222;
+                                                        font-family: inherit;
+                                                        font-size: 18px;
+                                                        font-weight: 500;
+                                                        line-height: 26px;
+                                                        margin: 0;
+                                                    }
+                                                    
+                                                    .evf-counter {
+                                                        color: #222222;
+                                                        font-family: inherit;
+                                                        font-size: 26px;
+                                                        font-weight: 600;
+                                                        line-height: 26px;
+                                                    }
+                                                    
+                                                    &::before,
+                                                    &::after {
+                                                        content: none;
+                                                    }
+                                                }
+                                            }
+                                            .chart-container {
+                                                max-width: 200px !important;
+                                                height: 64px !important;
+                                                
+                                                canvas {
+                                                    width: 100% !important;
+                                                    height: 100% !important;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+					}
+				}
 			}
 		}
 	}
