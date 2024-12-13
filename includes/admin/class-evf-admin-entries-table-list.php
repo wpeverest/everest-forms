@@ -517,6 +517,55 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 				case 'denied':
 					foreach ( $entry_ids as $entry_id ) {
 						if ( EVF_Admin_Entries::update_status( $entry_id, $doaction ) ) {
+							$admin_email = esc_attr( get_bloginfo( 'admin_email' ) );
+							$header      = "Reply-To: {$admin_email} \r\n";
+							$header     .= 'Content-Type: text/html; charset=UTF-8';
+
+							$entry      = evf_get_entry( $entry_id );
+							$entry_data = $entry->meta;
+
+							$first_name = '';
+							$last_name  = '';
+							$email      = '';
+							$name       = '';
+
+							foreach ( $entry_data as $key => $value ) {
+								if ( strpos( $key, 'first_name_' ) === 0 ) {
+									$first_name = $value;
+								}
+
+								if ( strpos( $key, 'email_' ) === 0 ) {
+									$email = $value;
+								}
+
+								if ( strpos( $key, 'last_name_' ) === 0 ) {
+									$last_name = $value;
+								}
+
+								if ( ! empty( $first_name ) && ! empty( $last_name ) ) {
+									$name = $first_name . ' ' . $last_name;
+								} elseif ( ! empty( $first_name ) ) {
+									$name = $first_name;
+								} else {
+									$name = $last_name;
+								}
+
+								if ( 'approved' === $doaction ) {
+									$subject  = apply_filters( 'everest_forms_entry_submission_approval_subject', esc_html__( 'Entry Submission Approved' ) );
+									$message  = __( 'Hello, %s', 'everest-forms' );
+									$message  = sprintf( $message, $name );
+									$message .= ' <br/> ' . __( 'Congratulations, your entry has been approved fjgsfdj dsfksdjf sdjfksdhf ', 'everest-forms-pro' );
+									$message  = apply_filters( 'everest_forms_entry_approval_message', $message );
+								} else {
+									$subject  = apply_filters( 'everest_forms_entry_submission_denial_subject', esc_html__( 'Entry Submission Denied' ) );
+									$message  = __( 'Hello, %s', 'everest-forms' );
+									$message  = sprintf( $message, $name );
+									$message .= ' <br/> ' . __( 'Sorry to say that your entry has been denied fsjdfjsdf ndfjhskdjf', 'everest-forms-pro' );
+									$message  = apply_filters( 'everest_forms_entry_denial_message', $message );
+								}
+							}
+							$email_obj = new EVF_Emails();
+							$email_obj->send( $email, $subject, $message );
 							++$count;
 						}
 					}
