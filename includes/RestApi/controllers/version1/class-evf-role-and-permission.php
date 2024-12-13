@@ -140,6 +140,8 @@ class EVF_Roles_And_Permission {
 			}
 		}
 
+		update_option( '_everest_forms_permission', $checked_roles, 'no' );
+
 		return new \WP_REST_Response(
 			array(
 				'success' => true,
@@ -158,12 +160,25 @@ class EVF_Roles_And_Permission {
 
 		$permissions = self::get_evf_permissions();
 
-		$roles        = array();
-		$ignore_roles = apply_filters( 'everest_forms_ignore_roles_to_give_permissions', array( 'administrator', 'subscriber' ) );
+		$roles              = array();
+		$ignore_roles       = apply_filters( 'everest_forms_ignore_roles_to_give_permissions', array( 'administrator', 'subscriber' ) );
+		$role_based_list    = get_option( '_everest_forms_permission', array() );
+		$checked_roles_list = array();
+
+		if ( ! empty( $role_based_list ) ) {
+			foreach ( $role_based_list as $role => $checked ) {
+				if ( $checked ) {
+					$checked_roles_list[] = $role;
+				}
+			}
+		}
 
 		foreach ( $wp_roles->roles as $key => $value ) {
 			if ( ! in_array( $key, $ignore_roles ) ) {
-				$roles['roles'][ $key ] = $value['name'];
+				$roles['roles'][ $key ] = array(
+					'name'    => $value['name'],
+					'checked' => in_array( $key, $checked_roles_list ),
+				);
 			}
 		}
 

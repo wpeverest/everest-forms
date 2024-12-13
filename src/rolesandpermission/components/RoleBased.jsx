@@ -1,4 +1,4 @@
-import { Box, Button, Checkbox, Flex, Stack, Text, useToast } from "@chakra-ui/react";
+import { Box, Checkbox, Flex, Stack, Text, useToast } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { bulkAssignPermission, getWPRoles } from "./RoleAndPermissionAPI";
 import UserDisplayModal from "./UserDisplayModal";
@@ -8,9 +8,11 @@ const RoleBased = () => {
   const [wpRoles, setWPRoles] = useState([]);
   const [evfPermission, setEvfPermission] = useState([]);
   const [checkedItems, setCheckedItems] = useState({});
+  const [firstLoad,setFirstLoad] = useState(true);
   const toast = useToast();
 
   const handleCheckAll = (e) => {
+	setFirstLoad(false);
     const checked = e.target.checked;
     setIsAllChecked(checked);
 
@@ -18,15 +20,49 @@ const RoleBased = () => {
       acc[role] = checked;
       return acc;
     }, {});
+
     setCheckedItems(updatedCheckedItems);
+
+    bulkAssignPermission(updatedCheckedItems).then((res) => {
+      if (res.success) {
+        toast({
+          title: res.message,
+          status: "success",
+          duration: 3000,
+        });
+      } else {
+        toast({
+          title: res.message || "Something went wrong",
+          status: "error",
+          duration: 3000,
+        });
+      }
+    });
   };
 
   const handleIndividualCheck = (role, isChecked) => {
+	setFirstLoad(false);
     const updatedCheckedItems = {
       ...checkedItems,
       [role]: isChecked,
     };
     setCheckedItems(updatedCheckedItems);
+
+    bulkAssignPermission(updatedCheckedItems).then((res) => {
+      if (res.success) {
+        toast({
+          title: res.message,
+          status: "success",
+          duration: 3000,
+        });
+      } else {
+        toast({
+          title: res.message || "Something went wrong",
+          status: "error",
+          duration: 3000,
+        });
+      }
+    });
 
     const allChecked = Object.values(updatedCheckedItems).every((item) => item);
     setIsAllChecked(allChecked);
@@ -38,24 +74,12 @@ const RoleBased = () => {
       setEvfPermission(res.data.permission.permissions);
 
       const initialCheckedItems = Object.keys(res.data.roles).reduce((acc, role) => {
-        acc[role] = false;
+        acc[role] = res.data.roles[role].checked;
         return acc;
       }, {});
       setCheckedItems(initialCheckedItems);
     });
   }, []);
-
-  useEffect( ()=>{
-			bulkAssignPermission( checkedItems ).then( (res)=> {
-				if ( res.success ) {
-					toast({
-						title: res.message,
-						status: "success",
-						duration: 3000,
-					  })
-				}
-			})
-  },[ checkedItems ])
 
   return (
     <Box>
@@ -86,10 +110,10 @@ const RoleBased = () => {
           {Object.entries(wpRoles).map(([roleKey, roleName]) => (
             <Checkbox
               key={roleKey}
-              isChecked={checkedItems[roleKey]}
+              isChecked={firstLoad ? roleName.checked : checkedItems[roleKey]}
               onChange={(e) => handleIndividualCheck(roleKey, e.target.checked)}
             >
-              {roleName}
+              {roleName.name}
             </Checkbox>
           ))}
         </Flex>
