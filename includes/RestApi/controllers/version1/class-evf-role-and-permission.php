@@ -328,7 +328,6 @@ class EVF_Roles_And_Permission {
 		$all_permissions = self::get_evf_permissions();
 
 		foreach ( $all_permissions['permissions'] as $permission => $name ) {
-			error_log( print_r( $permission, true ) );
 			$user->remove_cap( $permission );
 		}
 
