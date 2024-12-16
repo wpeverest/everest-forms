@@ -35,7 +35,7 @@
 		url("../fonts/EverestForms.woff?5c6kq4") format("woff"),
 		url("../fonts/EverestForms.svg?5c6kq4#EverestForms") format("svg");
 	font-weight: normal;
-	
+
 	font-display: block;
 }
 
@@ -216,7 +216,7 @@
 	color: #666;
 	display: inline-block;
 	font-size: 1.2em;
-	
+
 	height: 16px;
 	line-height: 16px;
 	position: relative;
@@ -4731,7 +4731,7 @@ p.search-box {
 						height: auto;
 						//  font-size: 13px;
 						//  background: #51cf66;
-						
+
 						padding: 8px 16px 8px 14px;
 						display: flex;
 						align-items: center;
@@ -4781,7 +4781,6 @@ p.search-box {
 						font-size: 13px;
 						background: #51cf66;
 						color: $color-white;
-						
 
 						&.dashicons {
 							&::before {
@@ -6504,7 +6503,7 @@ img.ui-datepicker-trigger {
 
 	.select2-search--inline .select2-search__field {
 		min-height: 28px;
-		
+
 		font-size: inherit;
 		font-weight: inherit;
 		padding: 0 0 0 3px;
@@ -7035,7 +7034,7 @@ img.ui-datepicker-trigger {
 	content: "\e902";
 	font-family: "EverestForms";
 	font-weight: normal;
-	
+
 	font-display: block;
 }
 
@@ -7239,7 +7238,6 @@ img.ui-datepicker-trigger {
 
 	.select2-search--inline {
 		.select2-search__field {
-			
 			font-size: inherit;
 			font-weight: inherit;
 			padding: 3px 0;
@@ -10232,13 +10230,13 @@ body {
 		background: #fff;
 
 		.title {
-			color: #222222;			
-			font-size: 24px;			
+			color: #222222;
+			font-size: 24px;
 			font-weight: 500;
 			line-height: 34px;
 		}
 
-		#evf-dashboard-analytisc-header {
+		#evf-dashboard-analytics-header {
 			display: flex;
 			justify-content: flex-end;
 			align-items: center;
@@ -10256,8 +10254,8 @@ body {
 							align-items: center;
 							gap: 8px;
 							flex-shrink: 0;
-							color: #6b6b6b;							
-							font-size: 14px;							
+							color: #6b6b6b;
+							font-size: 14px;
 							font-weight: 400;
 							line-height: 22px;
 						}
@@ -10281,8 +10279,8 @@ body {
 				border-radius: 2px;
 				background: #fff;
 				box-shadow: 0px 6px 21px 0px rgba(181, 181, 181, 0.13);
-				color: #7545bb;		
-				font-size: 14px;				
+				color: #7545bb;
+				font-size: 14px;
 				font-weight: 400;
 				line-height: 22px;
 			}
@@ -10297,8 +10295,8 @@ body {
 			border-radius: 4px;
 			border: 1px solid #bdbdbd;
 			background: #ffffff;
-			color: #6b6b6b;			
-			font-size: 14px;			
+			color: #6b6b6b;
+			font-size: 14px;
 			font-weight: 400;
 			line-height: 22px;
 		}
@@ -10329,7 +10327,7 @@ body {
 
 						@media screen and (max-width: 1199px) {
 							padding: 32px 28px;
-						}    
+						}
 
 						.icon-title-wrapper {
 							display: flex;
@@ -10355,14 +10353,14 @@ body {
 								gap: 8px;
 
 								h2 {
-									color: #222222;									
-									font-size: 18px;									
+									color: #222222;
+									font-size: 18px;
 									font-weight: 500;
 									line-height: 26px;
 								}
 								.evf-counter {
-									color: #222222;									
-									font-size: 28px;									
+									color: #222222;
+									font-size: 28px;
 									font-weight: 600;
 									line-height: 24px;
 								}
@@ -10412,8 +10410,8 @@ body {
 					background: #fff;
 
 					.title {
-						color: #222222;					
-						font-size: 20px;						
+						color: #222222;
+						font-size: 20px;
 						font-weight: 500;
 						line-height: 30px;
 					}
@@ -10440,8 +10438,8 @@ body {
 
 				.everest-forms-survey-selection {
 					.form-header-name {
-						color: #222222;					
-						font-size: 20px;						
+						color: #222222;
+						font-size: 20px;
 						font-weight: 500;
 						line-height: 30px;
 					}
@@ -10455,8 +10453,8 @@ body {
 						flex-shrink: 0;
 						border-radius: 4px;
 						border: 1px solid #bababa;
-						background: #FFFFFF;
-						color: #383838;						
+						background: #ffffff;
+						color: #383838;
 						font-size: 14px;
 						font-weight: 400;
 						line-height: 22px;
@@ -10490,8 +10488,8 @@ body {
 						align-items: center;
 						align-self: stretch;
 						h3 {
-							color: #222222;							
-							font-size: 16px;							
+							color: #222222;
+							font-size: 16px;
 							font-weight: 500;
 							line-height: 24px;
 						}
@@ -10541,15 +10539,15 @@ body {
 								flex-direction: column;
 
 								strong {
-									color: #222222;									
-									font-size: 28px;									
+									color: #222222;
+									font-size: 28px;
 									font-weight: 600;
 									line-height: 28px;
 								}
 
 								p {
-									color: #222222;									
-									font-size: 18px;									
+									color: #222222;
+									font-size: 18px;
 									font-weight: 500;
 									line-height: 26px;
 								}
@@ -10590,12 +10588,21 @@ body {
 				flex-direction: column;
 				align-items: flex-start;
 				gap: 24px;
-
+				.evf-entry-table-title {
+					span {
+						color: var(--Grey-grey-500, #222);
+						font-family: Inter;
+						font-size: 20px;
+						font-style: normal;
+						font-weight: 500;
+						line-height: 150%; /* 30px */
+					}
+				}
 				.entry-table-tabs {
 					ul {
 						li {
 							a {
-								color: #6b6b6b;								
+								color: #6b6b6b;
 								font-size: 14px;
 								font-weight: 400;
 								line-height: 24px;
@@ -10618,7 +10625,7 @@ body {
 					align-items: center;
 					align-self: stretch;
 					border-bottom: 1px solid #dcdcdc;
-					background: #FFFFFF;
+					background: #ffffff;
 
 					.evf-forms-list {
 						display: flex;
@@ -10638,8 +10645,8 @@ body {
 										align-items: center;
 										gap: 8px;
 										flex-shrink: 0;
-										color: #6b6b6b;										
-										font-size: 14px;										
+										color: #6b6b6b;
+										font-size: 14px;
 										font-weight: 400;
 										line-height: 22px;
 									}
@@ -10655,8 +10662,8 @@ body {
 							border-radius: 3px;
 							border: 1px solid #7545bb;
 							background: #7545bb;
-							color: #FFFFFF;							
-							font-size: 14px;							
+							color: #ffffff;
+							font-size: 14px;
 							font-weight: 500;
 							line-height: 22px;
 						}
@@ -10683,8 +10690,7 @@ body {
 								align-self: stretch;
 								border-radius: 4px;
 								border: 1px solid #bababa;
-								background: #FFFFFF;
-
+								background: #ffffff;
 							}
 							#search-submit {
 								height: 38px;
@@ -10724,8 +10730,8 @@ body {
 		border-radius: 8px;
 		background: #fff;
 		h1 {
-			color: #222222;			
-			font-size: 24px;			
+			color: #222222;
+			font-size: 24px;
 			font-weight: 500;
 			line-height: 150%; /* 36px */
 		}
@@ -10765,7 +10771,7 @@ body {
 			.everest-forms-entry-fields {
 				border-radius: 5px 5px 5px 5px;
 				border: 1px solid #dcdcdc;
-				background: #FFFFFF;
+				background: #ffffff;
 
 				h2 {
 					display: flex;
@@ -10774,7 +10780,7 @@ body {
 					align-items: center;
 					align-self: stretch;
 					color: #383838;
-					font-size: 16px;					
+					font-size: 16px;
 					font-weight: 500;
 					line-height: 24px;
 				}
@@ -10789,8 +10795,8 @@ body {
 				border-radius: 3px;
 				border: 1px solid #475bb2;
 				background: #f6f7f7;
-				color: #475bb2;				
-				font-size: 13px;				
+				color: #475bb2;
+				font-size: 13px;
 				font-weight: 500;
 				line-height: 19px;
 			}
@@ -10823,11 +10829,11 @@ body {
 					align-self: stretch;
 					border-radius: 5px 5px 0px 0px;
 					border-bottom: 1px solid #dcdcdc;
-					background: #FFFFFF;
+					background: #ffffff;
 
 					h2 {
-						color: #383838;	
-						font-size: 14px;						
+						color: #383838;
+						font-size: 14px;
 						font-weight: 500;
 						line-height: 24px; /* 171.429% */
 					}
@@ -10843,11 +10849,10 @@ body {
 						border-radius: 3px;
 						border: 1px solid #7545bb;
 						background: #7545bb;
-						color: #FFFFFF;
+						color: #ffffff;
 
-						
 						font-size: 13px;
-						
+
 						font-weight: 500;
 						line-height: 150%; /* 19.5px */
 					}
@@ -10856,14 +10861,14 @@ body {
 				.everest-forms-entry-user,
 				.everest-forms-entry-referer {
 					a {
-						color: #383838;	
-						font-size: 13px;						
+						color: #383838;
+						font-size: 13px;
 						font-weight: 400;
 						line-height: 24px; /* 184.615% */
 						color: #475bb2;
-						
+
 						font-size: 13px;
-						
+
 						font-weight: 400;
 						line-height: 24px;
 						text-decoration-line: underline;
@@ -10879,9 +10884,9 @@ body {
 						p {
 							a {
 								color: #475bb2;
-								
+
 								font-size: 13px;
-								
+
 								font-weight: 400;
 								line-height: 24px; /* 184.615% */
 							}
@@ -10922,8 +10927,8 @@ body {
 		border-radius: 8px;
 		background: #fff;
 		h1 {
-			color: #222222;			
-			font-size: 24px;			
+			color: #222222;
+			font-size: 24px;
 			font-weight: 500;
 			line-height: 34px;
 		}
@@ -10963,7 +10968,7 @@ body {
 			.everest-forms-entry-details {
 				border-radius: 5px 5px 5px 5px;
 				border: 1px solid #dcdcdc;
-				background: #FFFFFF;
+				background: #ffffff;
 
 				h2 {
 					display: flex;
@@ -10971,8 +10976,8 @@ body {
 					justify-content: space-between;
 					align-items: center;
 					align-self: stretch;
-					color: #383838;				
-					font-size: 16px;					
+					color: #383838;
+					font-size: 16px;
 					font-weight: 500;
 					line-height: 24px;
 				}
@@ -10981,8 +10986,7 @@ body {
 			.everest-forms-edit-entry-container {
 				border-radius: 5px 5px 5px 5px;
 				border: 1px solid #dcdcdc;
-				background: #FFFFFF;
-
+				background: #ffffff;
 
 				#everest-forms-edit-entry-form {
 					table {
@@ -10990,8 +10994,8 @@ body {
 							display: flex;
 							justify-content: flex-start;
 							width: 237px;
-							color: #383838;							
-							font-size: 13px;							
+							color: #383838;
+							font-size: 13px;
 							font-weight: 500;
 							line-height: 24px;
 						}
@@ -11025,17 +11029,17 @@ body {
 				align-self: stretch;
 				border-radius: 5px 5px 0px 0px;
 				border-bottom: 1px solid #dcdcdc;
-				background: #FFFFFF;
+				background: #ffffff;
 				color: #383838;
-				font-size: 14px;				
+				font-size: 14px;
 				font-weight: 500;
 				line-height: 24px;
 			}
 			.everest-forms-entry-user,
 			.everest-forms-entry-referer {
 				a {
-					color: #475bb2;					
-					font-size: 13px;					
+					color: #475bb2;
+					font-size: 13px;
 					font-weight: 400;
 					line-height: 24px;
 					text-decoration-line: underline;
@@ -11070,8 +11074,8 @@ body {
 				border-radius: 3px;
 				border: 1px solid #475bb2;
 				background: #f6f7f7;
-				color: #475bb2;				
-				font-size: 13px;				
+				color: #475bb2;
+				font-size: 13px;
 				font-weight: 500;
 				line-height: 150%; /* 19.5px */
 			}
@@ -11079,11 +11083,10 @@ body {
 	}
 }
 
-
 // Form Entries Design Fix
 body {
 	&.everest-forms_page_evf-entries {
-        box-sizing: border-box;
+		box-sizing: border-box;
 
 		#wpfooter {
 			position: fixed;
@@ -11095,11 +11098,11 @@ body {
 				border-radius: 6px;
 			}
 		}
-        
-        .select2-container--open .select2-dropdown--below {
-            margin-top: 5px;
-        }
-        
+
+		.select2-container--open .select2-dropdown--below {
+			margin-top: 5px;
+		}
+
 		#wpbody {
 			margin-left: -20px;
 
@@ -11114,7 +11117,7 @@ body {
 						border-bottom: 1px solid #f2f2f2;
 						z-index: 5;
 						box-shadow: 0px 4px 24px 0px rgba(10, 10, 10, 0.06);
-                    
+
 						.title {
 							color: #222;
 							font-size: 24px;
@@ -11122,23 +11125,23 @@ body {
 							line-height: 36px;
 							margin: 0;
 						}
-						
-						#evf-dashboard-analytisc-header {
+
+						#evf-dashboard-analytics-header {
 							margin: 0 !important;
-							
+
 							// Select 2 container dropdown css
 							.select2 {
 								&-selection {
 									&__rendered {
 										min-height: 38px;
-										color: #6B6B6B;										
+										color: #6b6b6b;
 										font-size: 14px;
 										font-weight: 400;
 										line-height: 22px;
 										padding: 7px 10px;
 										box-sizing: border-box;
 									}
-									
+
 									&__arrow {
 										width: 20px;
 										height: 20px;
@@ -11146,32 +11149,32 @@ body {
 										right: 6px;
 									}
 								}
-								
+
 								&-container {
 									min-height: 38px;
 									width: 250px !important;
-									
+
 									&--open,
 									&--focus {
 										.select2-selection {
 											box-shadow: none;
-											border-color: #7545BB;
+											border-color: #7545bb;
 										}
 									}
 								}
 							}
-							
+
 							> div {
 								gap: 20px;
 							}
-							
+
 							.everest-forms-btn-group {
 								margin-right: 0 !important;
 								border-radius: 4px;
-								
+
 								.everest-forms-btn {
-									color: #6B6B6B;
-									
+									color: #6b6b6b;
+
 									font-size: 14px;
 									font-weight: 400;
 									line-height: 22px;
@@ -11180,25 +11183,26 @@ body {
 									margin: 0;
 									padding: 4px 12px;
 									border-radius: 2px;
-									
+
 									&.is-active {
 										background: #ffffff;
-										color: #7545BB;
-										box-shadow: 0px 6px 21px 0px rgba(181, 181, 181, 0.13);
+										color: #7545bb;
+										box-shadow: 0px 6px 21px 0px
+											rgba(181, 181, 181, 0.13);
 									}
 								}
 							}
-							
+
 							#evf-form-analytics-date-range {
 								min-width: 250px;
-								margin: 0;								
+								margin: 0;
 								color: #383838;
 								font-size: 14px;
 								font-weight: 400;
 								line-height: 22px;
-								
+
 								&::placeholder {
-									color: #6B6B6B;
+									color: #6b6b6b;
 									text-transform: capitalize;
 								}
 							}
@@ -11215,258 +11219,260 @@ body {
 
 					&-content-container {
 						padding: 36px;
-                        
-                        #evf-dashboard-analytics {
-                            width: 100%;
-                            
-                            .evf-container {
-                                padding: 0;
-                                
-                                #evf-dashboard-analytisc-body {
-                                    flex-direction: column;
-                                    gap: 24px;
-                                    margin-left: 0;
-                                    margin-right: 0;
-                                    
-                                    .submission-cards {
-                                        display: grid;
-                                        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-                                        gap: 24px;
+
+						#evf-dashboard-analytics {
+							width: 100%;
+
+							.evf-container {
+								padding: 0;
+
+								#evf-dashboard-analytisc-body {
+									flex-direction: column;
+									gap: 24px;
+									margin-left: 0;
+									margin-right: 0;
+
+									.submission-cards {
+										display: grid;
+										grid-template-columns: repeat(
+											auto-fit,
+											minmax(320px, 1fr)
+										);
+										gap: 24px;
 										width: 100%;
-                                        
-                                        .submission-card {      
+
+										.submission-card {
 											flex-wrap: wrap;
 											justify-content: space-between;
 
-                                            .icon-title-wrapper {
-                                                padding: 0;
-                                                
-                                                .evf-icon {
-                                                    padding: 0;
-                                                    display: flex !important;
-                                                    justify-content: center;
-                                                    align-items: center;
-                                                }
-                                                
-                                                .evf-title {
-                                                    margin-left: 0;
-                                                    margin-right: 0;
-                                                    
-                                                    h2 {
-                                                        color: #222222;
-                                                        
-                                                        font-size: 18px;
-                                                        font-weight: 500;
-                                                        line-height: 26px;
-                                                        margin: 0;
-                                                    }
-                                                    
-                                                    .evf-counter {
-                                                        color: #222222;
-                                                        
-                                                        font-size: 26px;
-                                                        font-weight: 600;
-                                                        line-height: 26px;
-                                                    }
-                                                    
-                                                    &::before,
-                                                    &::after {
-                                                        content: none;
-                                                    }
-                                                }
-                                            }
-                                            .chart-container {
-                                                max-width: 200px !important;
-                                                height: 64px !important;
-                                                
-                                                canvas {
-                                                    width: 100% !important;
-                                                    height: 100% !important;
-                                                }
-                                            }
-                                        }
-                                    }
-                                    
-                                    .evf-analytics-entry-device-wrapper {
-                                        width: 100%;
-                                        display: flex;
-                                        gap: 24px;
+											.icon-title-wrapper {
+												padding: 0;
+
+												.evf-icon {
+													padding: 0;
+													display: flex !important;
+													justify-content: center;
+													align-items: center;
+												}
+
+												.evf-title {
+													margin-left: 0;
+													margin-right: 0;
+
+													h2 {
+														color: #222222;
+
+														font-size: 18px;
+														font-weight: 500;
+														line-height: 26px;
+														margin: 0;
+													}
+
+													.evf-counter {
+														color: #222222;
+
+														font-size: 26px;
+														font-weight: 600;
+														line-height: 26px;
+													}
+
+													&::before,
+													&::after {
+														content: none;
+													}
+												}
+											}
+											.chart-container {
+												max-width: 200px !important;
+												height: 64px !important;
+
+												canvas {
+													width: 100% !important;
+													height: 100% !important;
+												}
+											}
+										}
+									}
+
+									.evf-analytics-entry-device-wrapper {
+										width: 100%;
+										display: flex;
+										gap: 24px;
 
 										@media screen and (max-width: 1199px) {
 											flex-direction: column;
-										}                                        
-                                        
-                                        #everest-forms-entries-analytics {
-                                            width: 60%;
-                                            flex: 1;
+										}
+
+										#everest-forms-entries-analytics {
+											width: 60%;
+											flex: 1;
 
 											@media screen and (max-width: 1199px) {
 												width: 100%;
 												flex: unset;
-											}    
-                                            
-                                            .everest-forms-card {
-                                                &_header {
-                                                    h3 {
-                                                        
-                                                    }
-                                                    
-                                                    .everest-forms-btn-group {
-                                                        background: #F4F4F4;
-                                                        border-radius: 4px;
-                                                        padding: 4px;
-                                                        gap: 4px;
-                                                        
-                                                        .everest-forms-btn {
-                                                            margin: 0 !important;
-                                                            padding: 4px 12px;
-                                                            background: transparent;
-                                                            
-                                                            &:focus {
-                                                                outline: none;
-                                                                box-shadow: none;
-                                                            }
-                                                            
-                                                            &:hover {
-                                                                svg {
-                                                                    fill: #7545BB;
-                                                                }
-                                                            }
-                                                            
-                                                            &.is-active {
-                                                                background: #fff;
-                                                                
-                                                                svg {
-                                                                    fill: #7545BB;
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        
-                                        .evf-device-analytics {
-                                            max-width: 540px;
-                                            width: 40%;
+											}
+
+											.everest-forms-card {
+												&_header {
+													h3 {
+													}
+
+													.everest-forms-btn-group {
+														background: #f4f4f4;
+														border-radius: 4px;
+														padding: 4px;
+														gap: 4px;
+
+														.everest-forms-btn {
+															margin: 0 !important;
+															padding: 4px 12px;
+															background: transparent;
+
+															&:focus {
+																outline: none;
+																box-shadow: none;
+															}
+
+															&:hover {
+																svg {
+																	fill: #7545bb;
+																}
+															}
+
+															&.is-active {
+																background: #fff;
+
+																svg {
+																	fill: #7545bb;
+																}
+															}
+														}
+													}
+												}
+											}
+										}
+
+										.evf-device-analytics {
+											max-width: 540px;
+											width: 40%;
 
 											@media screen and (max-width: 1199px) {
 												width: 100%;
 												max-width: 100%;
-											}    
-                                            
-                                            .title {
-                                                margin-top: 0;
-                                                margin-bottom: 32px;
-                                            }
-                                            
-                                            .chart-container {
-                                                min-height: 290px;
-                                            }
-                                            
-                                            table.everest-forms-table {
-                                                border: 1px solid #DCDCDC;
-                                                border-radius: 5px;
-                                                border-collapse: collapse;
-                                                width: 100%;
-                                                
-                                                thead {
-                                                    tr {
-                                                        th {
-                                                            color: #383838;
-                                                            font-size: 14px;
-                                                            font-weight: 500;
-                                                            line-height: 24px;
-                                                            padding: 12px 24px;
-                                                            background: #fff;
-                                                            border: 1px solid #DCDCDC;
-                                                            border-left: 0;
-                                                            border-right: 0;
-                                                        }
-                                                    }
-                                                }
-                                                
-                                                tbody {
-                                                    tr {
-                                                        td {
-                                                            color: #383838;
-                                                            font-size: 13px;
-                                                            font-weight: 400;
-                                                            line-height: 24px;
-                                                            padding: 12px 24px;
-                                                            border: 0;
-                                                        }
-                                                        
-                                                        &:nth-child(odd) {
-                                                            background: #F6F7F7;
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        
-                        .evf-entries-table-container {
-                            .inner-container {
-                                .entry-table-tabs {
-                                    ul {
-                                        margin-top: 0;
-                                        
-                                        li {
-                                            color: #6B6B6B;
-                                            font-size: 14px;
-                                            font-weight: 400;
-                                            line-height: 24px;
-                                            
-                                            a {
-                                                &.current {
-                                                    color: #7545BB;
-                                                    
-                                                    .count {
-                                                        color: #7545BB;
-                                                    }
-                                                }                                                
-                                            }
-                                            
-                                        }
-                                    }
-                                }
-                                
-                                .entry-table-filters {
+											}
+
+											.title {
+												margin-top: 0;
+												margin-bottom: 32px;
+											}
+
+											.chart-container {
+												min-height: 290px;
+											}
+
+											table.everest-forms-table {
+												border: 1px solid #dcdcdc;
+												border-radius: 5px;
+												border-collapse: collapse;
+												width: 100%;
+
+												thead {
+													tr {
+														th {
+															color: #383838;
+															font-size: 14px;
+															font-weight: 500;
+															line-height: 24px;
+															padding: 12px 24px;
+															background: #fff;
+															border: 1px solid
+																#dcdcdc;
+															border-left: 0;
+															border-right: 0;
+														}
+													}
+												}
+
+												tbody {
+													tr {
+														td {
+															color: #383838;
+															font-size: 13px;
+															font-weight: 400;
+															line-height: 24px;
+															padding: 12px 24px;
+															border: 0;
+														}
+
+														&:nth-child(odd) {
+															background: #f6f7f7;
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+
+						.evf-entries-table-container {
+							.inner-container {
+								.entry-table-tabs {
+									ul {
+										margin-top: 0;
+
+										li {
+											color: #6b6b6b;
+											font-size: 14px;
+											font-weight: 400;
+											line-height: 24px;
+
+											a {
+												&.current {
+													color: #7545bb;
+
+													.count {
+														color: #7545bb;
+													}
+												}
+											}
+										}
+									}
+								}
+
+								.entry-table-filters {
 									@media screen and (max-width: 1199px) {
 										flex-direction: column;
 										align-items: flex-start;
 										gap: 20px;
 									}
 
-                                    .evf-forms-list {
-                                        gap: 12px;
-                                        
-                                        .select2 {
-                                            &-selection {
-                                                &__rendered {
-                                                    min-height: 38px;
-                                                    color: #6B6B6B;										
-                                                    font-size: 14px;
-                                                    font-weight: 400;
-                                                    line-height: 22px;
-                                                    padding: 7px 10px;
-                                                    box-sizing: border-box;
-                                                }
+									.evf-forms-list {
+										gap: 12px;
 
-                                                &__arrow {
-                                                    width: 20px;
-                                                    height: 20px;
-                                                    top: 10px;
-                                                    right: 6px;
-                                                }
-                                            }
-								
-                                            &-container {
-                                                min-height: 38px;
+										.select2 {
+											&-selection {
+												&__rendered {
+													min-height: 38px;
+													color: #6b6b6b;
+													font-size: 14px;
+													font-weight: 400;
+													line-height: 22px;
+													padding: 7px 10px;
+													box-sizing: border-box;
+												}
+
+												&__arrow {
+													width: 20px;
+													height: 20px;
+													top: 10px;
+													right: 6px;
+												}
+											}
+
+											&-container {
+												min-height: 38px;
 
                                                 &--open,
                                                 &--focus {
@@ -11558,19 +11564,19 @@ body {
                                             border-color: #BABABA;
                                             
                                             &:hover {
-                                                // color: #475BB2;
+                                                color: #475BB2;
                                             }
                                             
                                             &:focus {
                                                 outline: none;
                                                 box-shadow: none;
-                                                // border-color: #475BB2;
-                                                // color: #475BB2;
+                                                border-color: #475BB2;
+                                                color: #475BB2;
                                             }
                                         }
                                         
                                         input[type="submit"] {
-                                            // color: #475BB2;
+                                            color: #475BB2;
                                             font-size: 14px;
                                             font-weight: 500;
                                             line-height: 20px;
@@ -11579,66 +11585,11 @@ body {
                                         }
                                     }
                                     
-                                    &-pages {
+                                    .tablenav-pages {
                                         margin-bottom: 0;
                                         
                                         .displaying-num {
                                             margin: 0;
-                                        }
-                                    }
-                                }
-                                
-                                .table-view-list {
-                                    border-color: #dcdcdc;
-                                    box-shadow: none;
-                                    
-                                    thead,
-                                    tfoot {
-                                        tr,
-                                        td,
-                                        th {
-                                            border-color: #dcdcdc;    
-                                        }
-                                        
-                                        tr {
-                                            th {
-                                                a {
-                                                    display: flex;
-                                                    align-items: center;
-                                                    gap: 4px;
-                                                    color: #383838;
-                                                    font-weight: 500;
-                                                    
-                                                    .sorting-indicator {
-                                                        margin: 0;
-                                                    }
-                                                }
-                                                
-                                                &.column-more {
-                                                    width: 40px;
-                                                }
-                                            }
-                                        }
-                                    }
-                                    
-                                    tbody {
-                                        tr {
-                                            td {
-                                                font-weight: 400;
-                                                color: #383838;
-                                                padding-top: 12px;
-                                                padding-bottom: 12px;
-                                                
-                                                &.actions {
-                                                    a {
-                                                        // color: #475BB2;
-                                                    }
-                                                }
-                                            }
-                                            
-                                            &:nth-child(odd) {
-                                                background: #F6F7F7;
-                                            }
                                         }
                                     }
                                 }
@@ -11651,3 +11602,26 @@ body {
 	}
 }
 
+@media (max-width: 1199px) {
+	#evf-dashboard-analytics-header {
+		background-color: red;
+		display: none;
+	}
+
+	#filter-toggle {
+		display: block;
+		cursor: pointer;
+		color: #007bff;
+		font-size: 16px;
+	}
+}
+
+@media (min-width: 1200px) {
+	#filter-toggle {
+		display: none;
+	}
+
+	#evf-dashboard-analytics-header {
+		display: block;
+	}
+}

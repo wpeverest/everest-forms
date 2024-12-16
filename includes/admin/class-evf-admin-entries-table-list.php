@@ -664,4 +664,48 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 			)
 		);
 	}
+	/**
+	 * Table display.
+	 *
+	 * @since xx.xx.xx
+	 */
+	public function display() {
+		$singular = $this->_args['singular'];
+
+		$this->display_tablenav( 'top' );
+
+		$this->screen->render_screen_reader_content( 'heading_list' );
+		?>
+		<div class="evf-custom-table">
+		<table class="wp-list-table <?php echo implode( ' ', $this->get_table_classes() ); ?>">
+				<?php $this->print_table_description(); ?>
+			<thead>
+			<tr>
+				<?php $this->print_column_headers(); ?>
+			</tr>
+			</thead>
+
+			<tbody id="the-list"
+				<?php
+				if ( $singular ) {
+					echo " data-wp-lists='list:$singular'";
+				}
+				?>
+				>
+				<?php $this->display_rows_or_placeholder(); ?>
+			</tbody>
+
+			<tfoot>
+			<tr>
+				<?php $this->print_column_headers( false ); ?>
+			</tr>
+			</tfoot>
+
+		</table>
+		</div>
+
+		<?php
+		$this->display_tablenav( 'bottom' );
+	}
+
 }

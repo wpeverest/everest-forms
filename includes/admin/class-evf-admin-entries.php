@@ -83,8 +83,8 @@ class EVF_Admin_Entries {
 		<div id="everest-forms-entries-list" class="wrap">
 			<div class="evf-entries-header-container">
 				<p class="title"><?php esc_html_e( 'Entries', 'everest-forms' ); ?></p>
-				<div class="evf-d-flex evf-align-items-center evf-my-2"
-			id="evf-dashboard-analytisc-header">
+			<div class="evf-align-items-center evf-my-2"
+			id="evf-dashboard-analytics-header">
 					<select id="evf-forms-analytics-form-list" class="evf-enhanced-normal-select"  style="min-width: 350px;">
 						<?php foreach ( $forms as $id => $title ) : // phpcs:ignore WordPress.WP.GlobalVariablesOverride ?>
 							<option value="<?php echo esc_attr( $id ); ?>"
@@ -106,8 +106,13 @@ class EVF_Admin_Entries {
 						<input id="evf-form-analytics-date-range"
 							placeholder="<?php echo esc_attr__( 'Select date range', 'everest-forms-pro' ); ?>" />
 					</div>
-				</div>
 			</div>
+			<div id="filter-toggle">
+				<span>Filter Entries</span>
+			</div>
+			</div>
+
+
 			<div class="evf-entries-content-container">
 			<?php settings_errors(); ?>
 			<?php do_action( 'everest_forms_before_entry_list', $entries_table_list ); ?>
@@ -115,6 +120,9 @@ class EVF_Admin_Entries {
 			<?php if ( 0 < count( $entry_ids ) ) : ?>
 				<div class="evf-entries-table-container">
 					<div class="inner-container">
+						<div class="evf-entry-table-title">
+							<span>Table Data</span>
+						</div>
 						<div class="entry-table-tabs">
 							<?php $entries_table_list->views(); ?>
 						</div>
