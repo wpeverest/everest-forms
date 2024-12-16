@@ -29,6 +29,7 @@ class EVF_Admin_Menus {
 		add_action( 'admin_menu', array( $this, 'entries_menu' ), 30 );
 		add_action( 'admin_menu', array( $this, 'settings_menu' ), 50 );
 		add_action( 'admin_menu', array( $this, 'tools_menu' ), 60 );
+		add_action( 'admin_menu', array( $this, 'smtp_menu' ), 65 );
 		// Add admin topbar menu.
 		add_action( 'admin_bar_menu', array( $this, 'admin_top_menu_bar' ), 100 );
 
@@ -299,6 +300,10 @@ class EVF_Admin_Menus {
 		do_action( 'everest_forms_settings_page_init' );
 	}
 
+	public function smtp_menu() {
+		add_submenu_page( 'everest-forms', esc_html__( 'SMTP', 'everest-forms' ), esc_html__( 'SMTP', 'everest-forms' ), 'manage_everest_forms', 'smart-smtp', array( $this, 'smtp_page' ) );
+	}
+
 	/**
 	 * Add menu item.
 	 */
@@ -458,6 +463,13 @@ class EVF_Admin_Menus {
 	 */
 	public function tools_page() {
 		EVF_Admin_Tools::output();
+	}
+
+	/**
+	 * Smart SMTP page
+	 */
+	public function smtp_page() {
+		echo 'hello';
 	}
 }
 
