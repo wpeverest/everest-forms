@@ -25,9 +25,10 @@ if ( 'yes' === get_option( 'everest_forms_enable_log', 'no' ) ) {
 }
 
 ?>
+<div class="everest-forms">
 <div class="everest-forms-settings">
 	<div class="everest-forms-settings-wrapper">
-		<header>
+		<header class="everest-forms-header">
 			<div class="everest-forms-header--top">
 				<div class="everest-forms-header--top-logo">
 					<img src="<?php echo esc_url( evf()->plugin_url() . '/assets/images/icons/Everest-forms-Logo.png' ); ?>" alt="">
@@ -113,3 +114,4 @@ if ( 'yes' === get_option( 'everest_forms_enable_log', 'no' ) ) {
 	</div>
 </div>
 </div>
+		</div>
