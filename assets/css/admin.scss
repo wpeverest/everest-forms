@@ -10864,11 +10864,9 @@ body {
 						color: #383838;
 						font-size: 13px;
 						font-weight: 400;
-						line-height: 24px; /* 184.615% */
+						line-height: 24px;
 						color: #475bb2;
-
 						font-size: 13px;
-
 						font-weight: 400;
 						line-height: 24px;
 						text-decoration-line: underline;
@@ -10884,11 +10882,9 @@ body {
 						p {
 							a {
 								color: #475bb2;
-
 								font-size: 13px;
-
 								font-weight: 400;
-								line-height: 24px; /* 184.615% */
+								line-height: 24px;
 							}
 						}
 					}
@@ -11077,7 +11073,7 @@ body {
 				color: #475bb2;
 				font-size: 13px;
 				font-weight: 500;
-				line-height: 150%; /* 19.5px */
+				line-height: 150%;
 			}
 		}
 	}
@@ -11111,12 +11107,14 @@ body {
 
 				.evf-entries {
 					&-header-container {
-						position: sticky;
-						position: -webkit-sticky;
-						top: 32px;
+						// position: sticky;
+						// position: -webkit-sticky;
+						// top: 32px;
 						border-bottom: 1px solid #f2f2f2;
 						z-index: 5;
-						box-shadow: 0px 4px 24px 0px rgba(10, 10, 10, 0.06);
+						position: relative;
+                        top: 0;
+                        box-shadow: 0px 4px 24px 0px rgba(10, 10, 10, 0.06);
 
 						.title {
 							color: #222;
@@ -11201,6 +11199,12 @@ body {
 								font-weight: 400;
 								line-height: 22px;
 
+								&:focus {
+									outline: none;
+									box-shadow: none;
+									border: 1px solid #7545BB;
+								}
+
 								&::placeholder {
 									color: #6b6b6b;
 									text-transform: capitalize;
@@ -11214,6 +11218,56 @@ body {
 							// 		display: none !important;
 							// 	}
 							// }
+						
+                            @media screen and (max-width: 1199px) {
+                                position: absolute;
+                                right: 30px;
+                                top: 80px;
+                                background: #fff;
+                                padding: 20px;
+                                box-shadow: 0px 4px 24px 0px rgba(10, 10, 10, 0.06);
+                                border: 1px solid #dcdcdc;
+                                border-radius: 4px;
+                                flex-direction: column;
+                                gap: 20px;
+                                align-items: flex-start !important;
+                                max-width: 250px;
+                                
+                                .select2-container {
+                                    width: 100% !important;
+                                }
+                                
+                                > div {
+                                    flex-direction: column;
+                                    align-items: flex-start !important;
+                                    
+                                    .everest-forms-btn-group {
+                                        width: 100%;
+                                        box-sizing: border-box;
+                                        
+                                        a {
+                                            width: 33.33%;
+                                            justify-content: center;
+                                        }
+                                    
+                                    }       
+                                }
+                            }
+                        }
+
+						// Filter Entries Toggle Option
+						#filter-toggle {
+							span {
+								font-size: 15px;
+								line-height: 24px;
+								color: #383838;
+								display: block;
+								padding: 6px 16px;
+								background: #f4f4f4;
+								border: 1px solid #dcdcdc;
+								border-radius: 4px;
+								font-weight: 400;
+							}
 						}
 					}
 
@@ -11418,6 +11472,16 @@ body {
 
 						.evf-entries-table-container {
 							.inner-container {
+                                .evf-entry-table-title {
+                                    span {
+                                        color: #222;
+                                        font-family: inherit;
+                                        font-size: 20px;
+                                        font-weight: 500;
+                                        line-height: 30px;
+                                    }
+                                }
+                                
 								.entry-table-tabs {
 									ul {
 										margin-top: 0;
@@ -11584,12 +11648,76 @@ body {
                                             padding: 8px 12px;
                                         }
                                     }
+
+									&-pages {
+										margin-bottom: 0;
+
+										.displaying-num {
+											margin: 0;
+										}
+									}
+                                }
+
+								.evf-custom-table {
+									overflow-x: auto;
+									width: 100%;
+									-webkit-overflow-scrolling: touch;
+								}
+
+								.table-view-list {
+									width: 100%;
+									border-collapse: collapse;
+									min-width: 600px;
+                                    border-color: #dcdcdc;
+                                    box-shadow: none;
                                     
-                                    .tablenav-pages {
-                                        margin-bottom: 0;
+                                    thead,
+                                    tfoot {
+                                        tr,
+                                        td,
+                                        th {
+                                            border-color: #dcdcdc;    
+                                        }
                                         
-                                        .displaying-num {
-                                            margin: 0;
+                                        tr {
+                                            th {
+                                                a {
+                                                    display: flex;
+                                                    align-items: center;
+                                                    gap: 4px;
+                                                    color: #383838;
+                                                    font-weight: 500;
+                                                    
+                                                    .sorting-indicator {
+                                                        margin: 0;
+                                                    }
+                                                }
+                                                
+                                                &.column-more {
+                                                    width: 40px;
+                                                }
+                                            }
+                                        }
+                                    }
+                                    
+                                    tbody {
+                                        tr {
+                                            td {
+                                                font-weight: 400;
+                                                color: #383838;
+                                                padding-top: 12px;
+                                                padding-bottom: 12px;
+                                                
+                                                &.actions {
+                                                    a {
+                                                        // color: #475BB2;
+                                                    }
+                                                }
+                                            }
+                                            
+                                            &:nth-child(odd) {
+                                                background: #F6F7F7;
+                                            }
                                         }
                                     }
                                 }
@@ -11598,6 +11726,303 @@ body {
 					}
 				}
 			}
+            
+            .evf-view-entry-container,
+            .evf-edit-entry-container {
+                margin: 0;
+                gap: 0;
+                
+                .view-entry-header,
+                .edit-entry-header {
+                    display: flex;
+                    align-items: center;
+                    padding: 28px 36px;
+                    align-items: center;
+                    background: #fff;
+                    width: 100%;
+                    box-shadow: 0px 4px 24px 0px rgba(10, 10, 10, 0.06);
+                    border-bottom: 1px solid #f2f2f2;
+                    z-index: 5;
+                    border-radius: 0px;
+                    gap: 20px;
+                    
+                    a.page-title-action {
+                        margin-left: 0;
+                        width: 40px;
+                        height: 40px;
+                        padding: 0;
+                        top: 0;
+                        border-width: 1.5px;
+                        gap: 0;
+                        
+                        svg {
+                            width: 16px;
+                            height: 16px;
+                        }
+                    }
+                    
+                    h1 {
+                        margin: 0;
+                        padding: 0;
+                        line-height: 36px;
+                    }
+                    
+                    hr {
+                        display: none;
+                    }
+                }
+                
+                .everest-forms-entry {
+                    padding: 36px;
+                    
+                    .view-table,
+                    .edit-table {
+                        padding: 40px;
+                        
+                        #poststuff {
+                            padding: 0;
+                            
+                            #post-body-content {
+                                display: flex;
+                                flex-direction: column;
+                                gap: 32px;
+                                margin-bottom: 24px;
+                                
+                                #everest-forms-entry-fields,
+                                #everest-forms-entry-geolocation {
+                                    border: 1px solid #dcdcdc;
+                                    
+                                    h2 {
+                                        padding: 20px 16px;
+                                        border-radius: 5px 5px 0px 0px;
+                                        background: #ffffff;
+                                        border-bottom: 1px solid #dcdcdc;
+                                        
+                                        span {
+                                            color: #383838;
+                                            font-size: 16px;
+                                            font-weight: 500;
+                                            line-height: 24px;
+                                        }
+                                        
+                                        a {
+                                            // color: #475BB2;
+                                            font-size: 13px;
+                                            font-weight: 500;
+                                            line-height: 24px;
+                                            padding: 0;
+                                        }
+                                    }
+                                    
+                                    .inside {
+                                        table.wp-list-table {
+                                            border-radius: 5px;
+                                            box-shadow: none;
+                                            
+                                            tbody {
+                                                tr {
+                                                    th {
+                                                        display: table-cell;
+                                                        width: 350px;
+                                                        padding: 20px 16px;
+                                                        color: #383838;
+                                                        font-size: 14px;
+                                                        font-weight: 500;
+                                                        line-height: 24px;
+                                                        border-bottom: 0;
+                                                    }
+                                                    
+                                                    td {
+                                                        vertical-align: middle;
+                                                        color: #383838;
+                                                        font-size: 14px;
+                                                        font-weight: 400;
+                                                        line-height: 24px;
+                                                    }
+                                                    
+                                                    &:nth-child(odd) {
+                                                        background: #F6F7F7;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    
+                                    &.stuffbox {
+                                        margin-bottom: 0;
+                                    }
+                                }
+                            }
+                            
+                            #evf-entry-nav-buttons {
+                                padding: 0;
+                            }
+                        }
+                    }
+                    
+                    .postbox-container {
+                        width: 420px;
+                        
+                        #everest-forms-entry-details,
+                        #everest-forms-entry-actions {
+                            width: 100%;
+                            
+                            .title {
+                                padding: 0 0 12px 0;
+                                margin-bottom: 12px;
+                                
+                                h2 {
+                                    color: #383838;
+                                    font-size: 15px;
+                                    font-weight: 500;
+                                    line-height: 25px;
+                                    margin: 0;
+                                    padding-left: 4px;
+                                }
+                            }
+                            
+                            .inside {
+                                width: 100%;
+                                
+                                .everest-forms-entry-details-meta,
+                                .everest-forms-entry-actions-meta {
+                                    p {
+                                        margin: 0;
+                                        padding: 8px 4px;
+                                        font-size: 14px;
+                                        line-height: 24px;
+
+                                        span {
+                                            margin-right: 6px;
+                                            
+                                            &::before {
+                                                color: #999999;
+                                            }
+                                        }
+                                    }
+                                }
+                                    
+                                #major-publishing-actions {
+                                    margin-top: 12px;
+                                    border-top: 1px solid #dcdcdc;
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: space-between;
+                                    flex-direction: row-reverse;
+                                    background: #fff;
+                                    padding: 16px 4px 0px 4px;
+
+                                    .clear {
+                                        display: none;
+                                    }
+                                }                                
+                            }
+                        }
+                        
+                        #everest-forms-entry-actions {
+                            gap: 0;
+                            
+                            .inside {
+                                .everest-forms-entry-actions-meta {
+                                    p {
+                                        a {
+                                            color: #2271b1;
+                                            text-decoration: none;
+                                            font-size: 14px;
+                                            line-height: 24px;
+                                            
+                                            &:hover {
+                                                text-decoration: underline;    
+                                            }
+                                            
+                                            span {
+                                                text-decoration: none;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            
+            .evf-edit-entry-container {
+                .everest-forms-entry {
+                    .edit-table {
+                        .everest-forms-edit-entry-container {
+                            #post-body-content {
+                                margin-bottom: 0 !important;    
+                            }
+                            
+                            #everest-forms-entry-fields {
+                                border: 0 !important;
+                                
+                                .postbox-header {
+                                    border-bottom: 0;
+                                }
+                                
+                                .evf-field-container {
+                                    table.wp-list-table {
+                                        tbody {
+                                            tr {
+                                                th {
+                                                    
+                                                }
+                                                
+                                                td {
+                                                    .evf-field {
+                                                        padding: 0;
+                                                        margin: 0;
+                                                        
+                                                        &:has(textarea) {
+                                                            padding: 12px 0;
+                                                        }
+                                                        
+                                                        textarea {
+                                                            margin-bottom: 0;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    
+                    .postbox-container {
+                        .everest-forms-entry-details {
+                            h2 {
+                                margin: 0;
+                                color: #383838;
+                                font-size: 15px;
+                                font-weight: 500;
+                                line-height: 25px;
+                                margin: 0 0 12px;
+                                padding-left: 4px;
+                            }
+                            
+                            .inside {
+                                padding: 0;
+                                
+                                #major-publishing-actions {
+                                    #publishing-action {
+                                        gap: 8px;
+                                        
+                                        .button {
+                                            font-size: 13px;
+                                            line-height: 24px;
+                                            padding: 6px 16px;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
 		}
 	}
 }
