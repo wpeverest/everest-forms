@@ -33,6 +33,7 @@ class EVF_Admin_Import_Export {
 		if ( ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['everest-forms-export-nonce'] ) ), 'everest_forms_export_nonce' ) ) {
 			wp_die( esc_html__( 'Action failed. Please refresh the page and retry.', 'everest-forms' ) );
 		}
+
 		$form_ids = isset( $_POST['form_ids'] ) ? wp_unslash( $_POST['form_ids'] ) : array(); //phpcs:ignore
 
 		// Return if form id is not set and current user doesnot have export capability.
@@ -43,29 +44,58 @@ class EVF_Admin_Import_Export {
 		$export_all_forms = array();
 		$file_name        = 'evf-export-forms-' . current_time( 'Y-m-d_H:i:s' ) . '.json';
 
-		foreach ( $form_ids as $key => $form_id ) {
-			$form_id     = absint( wp_unslash( $form_id ) );
-			$form_post   = get_post( $form_id );
-			$export_data = array(
-				'form_post' => array(
-					'post_content' => $form_post->post_content,
-					'post_title'   => $form_post->post_title,
-					'post_name'    => $form_post->post_name,
-					'post_type'    => $form_post->post_type,
-					'post_status'  => $form_post->post_status,
-				),
-			);
-			// Export form styles if found.
-			$form_styles = get_option( 'everest_forms_styles', array() );
-			if ( ! empty( $form_styles[ $form_id ] ) ) {
-				$export_data['form_styles'] = wp_json_encode( $form_styles[ $form_id ] );
-			}
+		if ( count( $form_ids ) === 1 ) {
+			$all_forms = evf_get_all_forms();
 
-			if ( ob_get_contents() ) {
-				ob_clean();
-			}
+			foreach ( $all_forms as $key => $form_id ) {
+				$form_id     = absint( wp_unslash( $key ) );
+				$form_post   = get_post( $key );
+				$export_data = array(
+					'form_post' => array(
+						'post_content' => $form_post->post_content,
+						'post_title'   => $form_post->post_title,
+						'post_name'    => $form_post->post_name,
+						'post_type'    => $form_post->post_type,
+						'post_status'  => $form_post->post_status,
+					),
+				);
+				// Export form styles if found.
+				$form_styles = get_option( 'everest_forms_styles', array() );
+				if ( ! empty( $form_styles[ $form_id ] ) ) {
+					$export_data['form_styles'] = wp_json_encode( $form_styles[ $form_id ] );
+				}
 
-			$export_all_forms[] = $export_data;
+				if ( ob_get_contents() ) {
+					ob_clean();
+				}
+
+				$export_all_forms[] = $export_data;
+			}
+		} else {
+			foreach ( $form_ids as $key => $form_id ) {
+				$form_id     = absint( wp_unslash( $form_id ) );
+				$form_post   = get_post( $form_id );
+				$export_data = array(
+					'form_post' => array(
+						'post_content' => $form_post->post_content,
+						'post_title'   => $form_post->post_title,
+						'post_name'    => $form_post->post_name,
+						'post_type'    => $form_post->post_type,
+						'post_status'  => $form_post->post_status,
+					),
+				);
+				// Export form styles if found.
+				$form_styles = get_option( 'everest_forms_styles', array() );
+				if ( ! empty( $form_styles[ $form_id ] ) ) {
+					$export_data['form_styles'] = wp_json_encode( $form_styles[ $form_id ] );
+				}
+
+				if ( ob_get_contents() ) {
+					ob_clean();
+				}
+
+				$export_all_forms[] = $export_data;
+			}
 		}
 
 		$forms['forms'] = $export_all_forms;
