@@ -10142,7 +10142,7 @@ everest-forms-field-option-row-rating-icon {
 				color: $color-white;
 				background: $everestforms;
 				border-color: $everestforms;
-				
+
 				svg {
 					fill: $color-white;
 				}
@@ -10213,5 +10213,34 @@ body {
 		  margin-right: 0;
 		}
 	  }
+	}
+  }
+
+
+
+  .everest-forms-tabs {
+	display: flex;
+	list-style: none;
+	padding: 0;
+	border-bottom: 1px solid #ccc;
+	margin-bottom: 15px;
+
+	li {
+	  padding: 10px 15px;
+	  cursor: pointer;
+	  background: #f7f7f7;
+	  font-weight: 500;
+
+	  &.active {
+		background: #fff;
+	  }
+	}
+  }
+
+  .everest-forms-tab-content {
+	display: none;
+
+	&.active {
+	  display: block;
 	}
   }
