@@ -44,7 +44,7 @@ class EVF_Admin_Import_Export {
 		$export_all_forms = array();
 		$file_name        = 'evf-export-forms-' . current_time( 'Y-m-d_H:i:s' ) . '.json';
 
-		if ( count( $form_ids ) === 1 ) {
+		if ( count( $form_ids ) === 1 && isset( $form_ids[0] ) && 'select_all_forms' === $form_ids[0] ) {
 			$all_forms = evf_get_all_forms();
 
 			foreach ( $all_forms as $key => $form_id ) {
