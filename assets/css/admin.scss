@@ -8266,7 +8266,7 @@ img.ui-datepicker-trigger {
 		th,
 		td {
 			padding: 10px;
-			border: 1px solid #ddd;
+			border: 1px solid #dcdcdc;
 			text-align: left;
 			font-size: 14px;
 			white-space: nowrap;
@@ -8281,24 +8281,24 @@ img.ui-datepicker-trigger {
 
 		tr {
 			&:nth-child(even) {
-				background: #f5f5f5;
+				background: #ffffff;
 
 				th {
-					background: #f5f5f5;
+					background: #ffffff;
 				}
 			}
 
 			&:hover {
-				background: #f2f2f2;
+				background: #f4f4f4;
 
 				th {
-					background: #f2f2f2;
+					background: #f4f4f4;
 				}
 			}
 
 			th {
 				&[colspan="2"] {
-					background: #dfdfdf;
+					background: #f4f4f4;
 					color: #222222;
 					font-size: 15px;
 					line-height: 23px;
@@ -10257,12 +10257,14 @@ body {
 	}
   }
 
-  .everest-forms-tab-content {
-	display: none;
-
-	&.active {
-	  display: block;
-	}
+  .everest-forms_page_evf-tools {
+	  .everest-forms-tab-content {
+		display: none;
+	
+		&.active {
+		  display: block;
+		}
+	  }
   }
 
 
@@ -10662,6 +10664,94 @@ body {
 								font-weight: 500;
 								line-height: 20px;
 								background: #7545BB;
+							}
+						}
+
+						.evf-fm-form-list-container {
+							.evf-fm-forms-table-wrapper {
+								padding: 0 24px 24px;
+
+								h4 {
+									padding: 0;
+									margin-bottom: 16px;
+								}
+
+								table.evf-fm-forms-table {
+									tbody {
+										tr {
+											border-bottom: 1px solid #dcdcdc;
+
+											th {
+												width: 30px !important;
+											}
+
+											td {
+												font-size: 13px;
+
+												.evf-fm-import-actions {
+													justify-content: flex-end;
+													gap: 10px;
+
+													button {
+														margin: 0;
+														padding: 8px 10px;
+														font-weight: 500;
+
+														&:disabled {
+															background: #dfdfdf;
+															cursor: not-allowed;
+															pointer-events: none;
+														}
+
+														&.evf-fm-import {
+															&-single {
+																border: 1px solid #7545BB;
+																color: #7545BB;
+																background: #f2f2f2;
+
+																&:hover {
+																	background: #7545BB;
+																	color: #ffffff;
+																}
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+
+								.evf-fm-import-selected-wrapper {
+									margin: 24px 0 0;
+									align-items: center;
+
+									.evf-fm-import-selected-btn {
+										margin-top: 0;
+										padding: 8px 14px;
+										font-size: 14px;
+										line-height: 20px;
+										background: #7545BB;
+										color: #ffffff;
+									}
+
+									.evf-fm-pagination {
+										padding-top: 0;
+
+										button {
+											margin: 0;
+											font-size: 14px;
+											line-height: 20px;
+											width: 32px;
+											height: 32px;
+											padding: 0;
+											display: flex;
+											align-items: center;
+											justify-content: center;
+											border-radius: 3px;
+										}
+									}
+								}
 							}
 						}
 					}
