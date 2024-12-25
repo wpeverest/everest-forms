@@ -21,48 +21,47 @@ jQuery( function ( $ ) {
 	var everest_forms = {
 		$everest_form: $( 'form.everest-form' ),
 		init: function() {
-			this.init_inputMask();
-			this.init_mailcheck();
-			$(document).on('elementor/popup/show', () => {
+			const everstFormsInitializations = () => {
+				this.init_inputMask();
+				this.init_mailcheck();
 				this.init_datepicker();
-			});
-			this.init_datepicker();
-			// this.init_datepicker();
-			this.init_datedropdown();
-			this.load_validation();
-			this.submission_scroll();
-			this.randomize_elements();
-			this.init_enhanced_select();
-			this.checkUncheckAllcheckbox();
-			this.validateMinimumWordLength();
-			this.validateMinimumcharacterLength();
-			this.loadPhoneField();
-			this.loadCountryFlags();
-			this.ratingInit();
-			this.FormSubmissionWaitingTime();
+				this.init_datedropdown();
+				this.load_validation();
+				this.submission_scroll();
+				this.randomize_elements();
+				this.init_enhanced_select();
+				this.checkUncheckAllcheckbox();
+				this.validateMinimumWordLength();
+				this.validateMinimumcharacterLength();
+				this.loadPhoneField();
+				this.loadCountryFlags();
+				this.ratingInit();
+				this.FormSubmissionWaitingTime();
+			};
 
-			// Inline validation.
-			this.$everest_form.on( 'input validate change', '.input-text, select, input:checkbox, input:radio', this.validate_field );
+			// Initial setup
+			everstFormsInitializations();
 
-			//Add the active class in the fields.
+			// Reinitialize functions on Elementor popup show.
+			$(document).on('elementor/popup/show', everstFormsInitializations);
+
+			// Inline validation
+			this.$everest_form.on('input validate change', '.input-text, select, input:checkbox, input:radio', this.validate_field);
+
+			// Add or remove active class on focus
 			this.$everest_form.on('focusin', '.input-text, select, input[type="checkbox"], input[type="radio"]', function() {
 				$(this).addClass('everest-forms-field-active');
 			}).on('focusout', '.input-text, select, input[type="checkbox"], input[type="radio"]', function() {
 				$(this).removeClass('everest-forms-field-active');
 			});
 
-	;
-
-			/**
-			 * Focus on first error on submit.
-			 *
-			 * @since 3.0.5
-			 */
-			this.$everest_form.on( 'submit', function(){
+			// Scroll to first error on submit
+			this.$everest_form.on('submit', function() {
 				everest_forms.onSubmitErrorScroll();
-			})
+			});
 
-			$( document.body ).trigger( 'everest_forms_loaded' );
+			// Trigger custom event
+			$(document.body).trigger('everest_forms_loaded');
 		},
 		init_inputMask: function() {
 			// Only load if jQuery inputMask library exists.
@@ -870,6 +869,7 @@ jQuery( function ( $ ) {
 				return false;
 			}
 
+
 			// Determine the country by IP if storing user details is enabled.
 			if ( 'yes' !== everest_forms_params.disable_user_details ) {
 				inputOptions.geoIpLookup = everest_forms.currentIpToCountry;
@@ -897,10 +897,16 @@ jQuery( function ( $ ) {
 			$( '.evf-smart-phone-field' ).each( function( i, el ) {
 				var $el = $( el );
 
+				const rect = $el[0].getBoundingClientRect();
+
+				if (rect.width === 0 || rect.height === 0) {
+					return false;
+				}
+
+
 				// Hidden input allows to include country code into submitted data.
 				inputOptions.hiddenInput = $el.closest( '.evf-field-phone' ).data( 'field-id' );
 				inputOptions.utilsScript = everest_forms_params.plugin_url + 'assets/js/intlTelInput/utils.js';
-
 				$el.intlTelInput( inputOptions );
 
 				// Change name of the phone field.
