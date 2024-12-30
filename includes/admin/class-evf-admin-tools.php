@@ -227,4 +227,13 @@ class EVF_Admin_Tools {
 		wp_safe_redirect( esc_url_raw( admin_url( 'admin.php?page=evf-tools&tab=logs' ) ) );
 		exit();
 	}
+
+	/**
+	 * Handles output of the Smart SMTP Settings Page.
+	 *
+	 * @since xx.xx.xx
+	 */
+	public static function evf_smart_smtp_setup() {
+		include_once __DIR__ . '/views/html-admin-page-smart-smtp-setup.php';
+	}
 }

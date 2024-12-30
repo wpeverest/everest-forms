@@ -469,7 +469,7 @@ class EVF_Admin_Menus {
 	 * Smart SMTP page
 	 */
 	public function smtp_page() {
-		echo 'hello';
+		EVF_Admin_Tools::evf_smart_smtp_setup();
 	}
 }
 
