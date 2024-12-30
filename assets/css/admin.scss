@@ -12224,3 +12224,220 @@ body {
 		display: block;
 	}
 }
+
+
+// surveys and polls CSS
+body {
+    &.everest-forms_page_evf-entries {
+        #screen-meta-links {
+            display: none;
+        }
+        
+        .everest-forms {
+            .full-survey-entries-header {       
+                margin-bottom: 0;
+                
+                .everest-forms-btn {
+                    &-link {
+                        width: 40px;
+                        height: 40px;
+                        padding: 0;
+                    }
+                    
+                    &-primary {
+                        margin-left: auto;
+                        background: #7545BB;
+                        border-color: #7545BB;
+                        padding: 8px 16px;
+                        color: #fff;
+                        font-size: 14px;
+                        line-height: 24px;
+                    }
+                }
+            }
+            
+            &-settings {
+                padding: 36px !important;
+                width: 100%;
+                
+                &-wrapper {
+                    .everest-forms-header {
+                        border-right: 0;
+                        padding: 0;
+                        background: #fff;
+                        position: sticky;
+                        top: 24px;
+                        height: max-content;
+                        
+                        &--top {
+                            padding: 24px 20px;
+                            
+                            select {
+                                width: 100%;
+                                min-height: 38px;
+                                padding: 0 12px;
+                                border-radius: 4px;
+                                border: 1px solid #BABABA;
+                                color: #383838;
+                                
+                                &:focus {
+                                    box-shadow: none;
+                                    outline: none;
+                                    border-color: #7545BB;
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                &-container {
+                    border-left: 1px solid #ededed;
+                    background: #FAFAFA;
+                    
+                    .everest-forms-survey-single-field-container {
+                        .field_type {
+                            h1 {
+                                padding: 0 0 24px;
+                                border-bottom: 1px solid #EEE8F7;
+                                color: #383838;
+                                font-size: 24px;
+                                font-weight: 600;
+                                line-height: 36px;
+                                margin-bottom: 32px;
+                            }
+                        }
+                        
+                        .evf-survey {
+                            &-block {
+                                display: flex;
+                                flex-direction: column;
+                                gap: 30px;
+                                border-radius: 8px;
+                                border: 2px solid #F2F2F2;
+                                background: #FFF;
+                                padding: 32px 40px 40px 40px;
+                                
+                                .survey-block-average-overview {
+                                    gap: 24px;
+                                    
+                                    .box-wrap {
+                                        margin: 0;
+                                        border-radius: 0px;
+                                        border: 0;
+                                        
+                                        .response-detail {
+                                            width: 100%;
+                                            flex-direction: row;
+                                            align-items: center;
+                                            padding: 32px 24px;
+                                            border-radius: 8px;
+                                            border: 2px solid #F2F2F2;
+                                            background: #FFF;
+                                            gap: 20px;
+                                            
+                                            .icon {
+                                                width: 60px;
+                                                height: 60px;
+                                                border-radius: 6px;
+                                                background: #EEE8F7;
+                                                display: flex;
+                                                align-items: center;
+                                                justify-content: center;
+                                                
+                                                svg {
+                                                    width: 30px;
+                                                    height: 30px;
+                                                }
+                                            }
+                                            
+                                            .count {
+                                                display: flex;
+                                                flex-direction: column;
+                                                gap: 8px;
+                                                
+                                                p {
+                                                    color: #383838;
+                                                    font-size: 18px;
+                                                    font-weight: 500;
+                                                    line-height: 22px;
+                                                    margin: 0;
+                                                }
+                                                
+                                                strong {
+                                                    color: #383838;
+                                                    font-size: 28px;
+                                                    font-weight: 600;
+                                                    line-height: 30px;
+                                                    margin: 0;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                
+                                .survey-block-statistic-overview {
+                                    .survey-block-chart-content {
+                                        padding: 0;
+                                        border: 0;
+                                        
+                                        .chart-tab-action {
+                                            border: 0;
+                                            padding: 0;
+                                            background: #f4f4f4;
+                                            border-radius: 4px;
+                                            padding: 4px;
+                                            gap: 4px;
+                                            width: max-content;
+                                            margin-left: auto;
+                                            
+                                            button {
+                                                
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            
+                            &-header {
+                                display: flex;
+                                align-items: center;
+                                justify-content: space-between;
+                                
+                                .everest-forms-survey-selection {
+                                    a {
+                                        text-decoration: none;
+                                        width: 36px;
+                                        height: 36px;
+                                        background: red;
+                                        display: flex;
+                                        align-items: center;
+                                        justify-content: center;
+                                        border-radius: 3px;
+                                        border: 1px solid #7545BB;
+                                        background: #7545BB;
+                                        
+                                        span {
+                                            &::before {
+                                                color: #fff;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            
+                            &-selection {
+                                h3 {
+                                    color: #383838;
+                                    font-size: 18px;
+                                    font-weight: 600;
+                                    line-height: 28px;
+                                    margin: 0;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
