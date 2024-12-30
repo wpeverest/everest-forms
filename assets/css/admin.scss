@@ -10298,3 +10298,100 @@ body {
 		}
 	}
 }
+
+.everest-forms-smart-smtp-page-setup {
+	&__wrapper{
+		width: 730px;
+		display: flex;
+		flex-direction: column;
+		margin: auto;
+		background: #ffffff;
+		border-radius: 8px;
+		margin-top: 40px;
+		border: 1px solid #E9E9E9;
+		margin-bottom: 40px;
+
+
+		.everest_forms_install_and_activate_smart_smtp, .everest_forms_setup_smart_smtp{
+			font-size: 0.875rem;
+			font-weight: 600;
+		}
+	}
+
+	&__inner-wrapper{
+		display: flex;
+    	margin: 0;
+	}
+}
+
+.everest-forms-smart-smtp-page {
+	&__install-and-activate{
+		display: flex;
+		padding: 34px 30px;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 24px;
+		flex: 1 0 0;
+		border-right: 1px solid #E9E9E9;
+	}
+
+	&__setup-smart-smtp{
+		display: flex;
+		height: 353px;
+		padding: 34px 30px;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 24px;
+		flex: 1 0 0;
+	}
+
+	&__installation-step-one{
+		margin-bottom: 0;
+		color: #7545BB;
+		background: #F6F0FF;
+		padding: 12px 24px;
+		border-radius: 50%;
+		font-size: 2rem;
+		font-weight: 600;
+		opacity: 0.7;
+		margin-top: 0;
+
+		&__title {
+			font-size: 1.5rem;
+			line-height: 1.875rem;
+			margin-bottom: 0;
+			margin-top: 0;
+		}
+
+		&__description {
+			margin-top: 0;
+			margin-bottom: 0;
+			font-size: 0.875rem;
+		}
+	}
+
+	&__setup-step-two{
+		margin-bottom: 0;
+		color: #7545BB;
+		background: #F6F0FF;
+		padding: 12px 24px;
+		border-radius: 50%;
+		font-size: 2rem;
+		font-weight: 600;
+		opacity: 0.7;
+		margin-top: 0;
+
+		&__title {
+			font-size: 1.5rem;
+			line-height: 1.875rem;
+			margin-bottom: 0;
+			margin-top: 0;
+		}
+
+		&__description {
+			margin-top: 0;
+			margin-bottom: 0;
+			font-size: 0.875rem;
+		}
+	}
+}
