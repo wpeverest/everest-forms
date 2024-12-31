@@ -10236,6 +10236,10 @@ body {
 		border-radius: 8px;
 		margin-top: 40px;
 		border: 1px solid #E9E9E9;
+
+		@media only screen and (max-width: 768px) {
+			width: 670px;
+		}
 	}
 
 }
@@ -10311,6 +10315,9 @@ body {
 		border: 1px solid #E9E9E9;
 		margin-bottom: 40px;
 
+		@media only screen and (max-width: 768px) {
+			width: 670px;
+		}
 
 		.everest_forms_install_and_activate_smart_smtp, .everest_forms_setup_smart_smtp{
 			font-size: 0.875rem;
