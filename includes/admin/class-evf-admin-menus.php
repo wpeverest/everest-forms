@@ -301,7 +301,7 @@ class EVF_Admin_Menus {
 	}
 
 	public function smtp_menu() {
-		add_submenu_page( 'everest-forms', esc_html__( 'SMTP', 'everest-forms' ), esc_html__( 'SMTP', 'everest-forms' ), 'manage_everest_forms', 'smart-smtp', array( $this, 'smtp_page' ) );
+		add_submenu_page( 'everest-forms', esc_html__( 'SMTP', 'everest-forms' ), esc_html__( 'SMTP', 'everest-forms' ), 'manage_everest_forms', 'evf-smart-smtp', array( $this, 'smtp_page' ) );
 	}
 
 	/**
