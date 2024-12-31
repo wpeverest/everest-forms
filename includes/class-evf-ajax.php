@@ -99,40 +99,41 @@ class EVF_AJAX {
 	 */
 	public static function add_ajax_events() {
 		$ajax_events = array(
-			'save_form'                      => false,
-			'create_form'                    => false,
-			'get_next_id'                    => false,
-			'install_extension'              => false,
-			'integration_connect'            => false,
-			'new_email_add'                  => false,
-			'integration_disconnect'         => false,
-			'rated'                          => false,
-			'review_dismiss'                 => false,
-			'survey_dismiss'                 => false,
-			'allow_usage_dismiss'            => false,
-			'php_notice_dismiss'             => false,
-			'email_failed_notice_dismiss'    => false,
-			'enabled_form'                   => false,
-			'import_form_action'             => false,
-			'template_licence_check'         => false,
-			'template_activate_addon'        => false,
-			'ajax_form_submission'           => true,
-			'send_test_email'                => false,
-			'locate_form_action'             => false,
-			'slot_booking'                   => true,
-			'active_addons'                  => false,
-			'get_local_font_url'             => false,
-			'form_migrator_forms_list'       => false,
-			'form_migrator'                  => false,
-			'fm_dismiss_notice'              => false,
-			'email_duplicate'                => false,
-			'form_entry_migrator'            => false,
-			'embed_form'                     => false,
-			'goto_edit_page'                 => false,
-			'send_routine_report_test_email' => false,
-			'map_csv'                        => false,
-			'import_entries'                 => false,
-			'generate_restapi_key'           => false,
+			'save_form'                       => false,
+			'create_form'                     => false,
+			'get_next_id'                     => false,
+			'install_extension'               => false,
+			'integration_connect'             => false,
+			'new_email_add'                   => false,
+			'integration_disconnect'          => false,
+			'rated'                           => false,
+			'review_dismiss'                  => false,
+			'survey_dismiss'                  => false,
+			'allow_usage_dismiss'             => false,
+			'php_notice_dismiss'              => false,
+			'email_failed_notice_dismiss'     => false,
+			'enabled_form'                    => false,
+			'import_form_action'              => false,
+			'template_licence_check'          => false,
+			'template_activate_addon'         => false,
+			'ajax_form_submission'            => true,
+			'send_test_email'                 => false,
+			'locate_form_action'              => false,
+			'slot_booking'                    => true,
+			'active_addons'                   => false,
+			'get_local_font_url'              => false,
+			'form_migrator_forms_list'        => false,
+			'form_migrator'                   => false,
+			'fm_dismiss_notice'               => false,
+			'email_duplicate'                 => false,
+			'form_entry_migrator'             => false,
+			'embed_form'                      => false,
+			'goto_edit_page'                  => false,
+			'send_routine_report_test_email'  => false,
+			'map_csv'                         => false,
+			'import_entries'                  => false,
+			'generate_restapi_key'            => false,
+			'install_and_activate_smart_smtp' => false,
 		);
 
 		foreach ( $ajax_events as $ajax_event => $nopriv ) {
@@ -1705,7 +1706,7 @@ class EVF_AJAX {
 						} else {
 							self::$background_process->push_to_queue( $row_data );
 						}
-						$row++;
+						++$row;
 					}
 				}
 				fclose( $csv_file );
@@ -1744,6 +1745,68 @@ class EVF_AJAX {
 					'message' => $e->getMessage(),
 				)
 			);
+		}
+	}
+
+	public static function install_and_activate_smart_smtp() {
+		try {
+			check_ajax_referer( 'everest-forms-smart-smtp-installation-nonce', 'security' );
+
+			if ( ! current_user_can( 'install_plugins' ) ) {
+				wp_send_json_error(
+					array(
+						'message'         => 'You do not have permission to install plugins.',
+						'redirection_url' => '',
+					)
+				);
+				return;
+			}
+
+			$get_active_plugins = get_option( 'active_plugins', array() );
+
+			if ( ! empty( $get_active_plugins ) && in_array( 'smart-smtp/smart-smtp.php', $get_active_plugins ) ) {
+				wp_send_json_success(
+					array(
+						'message'         => 'SmartSMTP plugin is already activated!',
+						'redirection_url' => '',
+					)
+				);
+				return;
+			}
+
+			require_once ABSPATH . '/wp-admin/includes/file.php';
+			include_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
+			include_once ABSPATH . 'wp-admin/includes/plugin-install.php';
+
+			$plugin_info = plugins_api( 'plugin_information', array( 'slug' => 'smart-smtp' ) );
+
+			if ( is_wp_error( $plugin_info ) ) {
+				wp_send_json_error( array( 'message' => 'Unable to fetch plugin information from WordPress.org' ) );
+			}
+
+			$skin           = new WP_Ajax_Upgrader_Skin();
+			$upgrader       = new Plugin_Upgrader( $skin );
+			$install_result = $upgrader->install( $plugin_info->download_link );
+
+			if ( is_wp_error( $install_result ) ) {
+				wp_send_json_error( array( 'message' => 'Plugin installation failed: ' . $install_result->get_error_message() ) );
+			}
+
+			$activate_result = activate_plugin( 'smart-smtp/smart-smtp.php' );
+
+			if ( is_wp_error( $activate_result ) ) {
+				wp_send_json_error( array( 'message' => 'Plugin activation failed: ' . $activate_result->get_error_message() ) );
+			}
+
+			wp_send_json_success(
+				array(
+					'message'         => 'SmartSMTP plugin installed and activated successfully!',
+					'redirection_url' => admin_url( 'admin.php?page=smart-smtp' ),
+				)
+			);
+
+		} catch ( Exception $e ) {
+			wp_send_json_error( array( 'message' => $e->getMessage() ) );
 		}
 	}
 }

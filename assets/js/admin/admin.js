@@ -617,5 +617,51 @@
 	});
 
 
+	$( '.everest_forms_install_and_activate_smart_smtp' ).on( 'click', function() {
+		var data = {
+			action: 'everest_forms_install_and_activate_smart_smtp',
+			security: everest_forms_admin.smart_smtp_install_and_activate_nonce
+		};
 
+		try {
+			$.ajax({
+				url: everest_forms_admin.ajax_url,
+				method: 'POST',
+				data: data,
+				beforeSend: function () {
+					var spinner = '<i class="evf-loading evf-loading-active"></i>';
+					$( '.everest_forms_install_and_activate_smart_smtp' ).append( spinner );
+				},
+				success: function(response) {
+					$( '.everest_forms_install_and_activate_smart_smtp' ).find( '.evf-loading' ).remove();
+					$('.everest_forms_install_and_activate_smart_smtp')
+					.closest('.everest-forms-smart-smtp-page-setup__inner-wrapper')
+					.find('.everest_forms_install_and_activate_smart_smtp')
+					.removeClass('everest_forms_install_and_activate_smart_smtp everest-forms-btn-primary')
+					.addClass('everest_forms_install_and_activated_smart_smtp everest-forms-btn-secondary')
+					.css('pointer-events', 'none');
+
+					var data = response.data;
+					var message = data.message;
+					var redirection_url = data.redirection_url;
+
+					if('' !== message && '' !== redirection_url){
+						window.location.replace(redirection_url);
+					}
+				},
+				error:function(response) {
+					$( '.everest_forms_install_and_activate_smart_smtp' ).find( '.evf-loading' ).remove();
+					var error_data = response.data;
+					var message = error_data.message;
+					alert(message);
+					window.location.reload();
+				}
+			});
+		} catch (error) {
+			$( '.everest_forms_install_and_activate_smart_smtp' ).find( '.evf-loading' ).remove();
+			alert(error);
+			window.location.reload();
+
+		}
+	});
 })( jQuery, everest_forms_admin );
