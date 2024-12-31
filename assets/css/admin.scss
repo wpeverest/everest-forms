@@ -11879,7 +11879,7 @@ body {
 											 
 											 .everest-forms-survey-summary {
 												 width: 40%;
-												 padding: 24px 24px 24px 24px;
+												 padding: 24px;
 												 
 												 .summary-chart-wrapper {
 													 border: 0;
@@ -12434,6 +12434,23 @@ body {
                                                     }
                                                 }
                                             }
+
+											&:not(.evf-likert-chart-table) {
+												thead,
+												tbody {
+													tr {
+														th,
+														td {
+															width: 50%;
+															padding-left: 24px;
+
+															&:last-child {
+																text-align: left;
+															}
+														}
+													}
+												}
+											}
                                         }
                                     }
                                     
@@ -12489,8 +12506,7 @@ body {
                                     .everest-forms-survey-summary {
                                         width: 40%;
                                         padding: 24px;
-                                        display: flex;
-                                        gap: 30px;
+										display: block;
                                         
                                         .summary-chart-wrapper {
                                             border: 0;
