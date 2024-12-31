@@ -10240,6 +10240,25 @@ body {
 		@media only screen and (max-width: 768px) {
 			width: 670px;
 		}
+
+		@media only screen and (max-width: 400px) {
+			width: 326px;
+			margin: 16px;
+		}
+	}
+
+	&__images{
+		img{
+			@media only screen and (max-width:400px){
+				height: 50px;
+			}
+		}
+
+		span{
+			@media only screen and (max-width:400px){
+				font-size: 2.5rem;
+			}
+		}
 	}
 
 }
@@ -10270,6 +10289,10 @@ body {
 		font-weight: 600;
 		margin-bottom: 0;
 		color: #383838;
+
+		@media only screen and (max-width:400px) {
+			line-height: 1.8rem;
+		}
 	}
 
 	&__description {
@@ -10282,6 +10305,14 @@ body {
 		line-height: 1.31rem;
 		align-items: center;
 		padding: 0 65px;
+
+		@media only screen and (max-width:400px) {
+			padding: 0;
+			text-align: center;
+			margin-top: 0;
+			margin-bottom: 0;
+			line-height: 1.8rem;
+		}
 	}
 
 	&__listing{
@@ -10289,6 +10320,13 @@ body {
 		display: grid;
 		grid-template-columns: auto auto auto;
 		font-size: 14px;
+
+		@media only screen and (max-width:400px) {
+			padding: 0;
+			margin-top: 0;
+			margin-bottom: 0;
+			grid-template-columns: auto;
+		}
 
 		li{
 			display: flex;
@@ -10319,6 +10357,10 @@ body {
 			width: 670px;
 		}
 
+		@media only screen and (max-width: 400px) {
+			width: 326px;
+		}
+
 		.everest_forms_install_and_activate_smart_smtp, .everest_forms_setup_smart_smtp{
 			font-size: 0.875rem;
 			font-weight: 600;
@@ -10328,6 +10370,10 @@ body {
 	&__inner-wrapper{
 		display: flex;
     	margin: 0;
+
+		@media only screen and (max-width: 400px) {
+			flex-direction: column;
+		}
 	}
 }
 
@@ -10340,6 +10386,12 @@ body {
 		gap: 24px;
 		flex: 1 0 0;
 		border-right: 1px solid #E9E9E9;
+
+		@media only screen and (max-width: 400px) {
+			border-right: none;
+			border-bottom: 6px solid #E9E9E9;
+
+		}
 	}
 
 	&__setup-smart-smtp{
