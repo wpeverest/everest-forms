@@ -1781,7 +1781,7 @@ class EVF_AJAX {
 			$plugin_info = plugins_api( 'plugin_information', array( 'slug' => 'smart-smtp' ) );
 
 			if ( is_wp_error( $plugin_info ) ) {
-				wp_send_json_error( array( 'message' => 'Unable to fetch plugin information from WordPress.org' ) );
+				wp_send_json_error( array( 'message' => 'Unable to fetch plugin information from WordPress.org', 'redirection_url'=>'' ) );
 			}
 
 			$skin           = new WP_Ajax_Upgrader_Skin();

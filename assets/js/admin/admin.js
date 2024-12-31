@@ -634,19 +634,22 @@
 				},
 				success: function(response) {
 					$( '.everest_forms_install_and_activate_smart_smtp' ).find( '.evf-loading' ).remove();
-					$('.everest_forms_install_and_activate_smart_smtp')
-					.closest('.everest-forms-smart-smtp-page-setup__inner-wrapper')
-					.find('.everest_forms_install_and_activate_smart_smtp')
-					.removeClass('everest_forms_install_and_activate_smart_smtp everest-forms-btn-primary')
-					.addClass('everest_forms_install_and_activated_smart_smtp everest-forms-btn-secondary')
-					.css('pointer-events', 'none');
+
 
 					var data = response.data;
 					var message = data.message;
 					var redirection_url = data.redirection_url;
 
-					if('' !== message && '' !== redirection_url){
+					if ('' !== message && '' !== redirection_url) {
+						$('.everest_forms_install_and_activate_smart_smtp')
+						.closest('.everest-forms-smart-smtp-page-setup__inner-wrapper')
+						.find('.everest_forms_install_and_activate_smart_smtp')
+						.removeClass('everest_forms_install_and_activate_smart_smtp everest-forms-btn-primary')
+						.addClass('everest_forms_install_and_activated_smart_smtp everest-forms-btn-secondary')
+						.css('pointer-events', 'none');
 						window.location.replace(redirection_url);
+					} else if ('' !== message && '' === redirection_url) {
+						alert(message);
 					}
 				},
 				error:function(response) {
