@@ -10394,4 +10394,23 @@ body {
 			font-size: 0.875rem;
 		}
 	}
+
+	&__setup-disabled {
+		opacity:0.7
+	}
+
+	&__support-links{
+		font-size: 14px;
+		text-align: center;
+		margin-bottom: 40px;
+	}
+}
+
+
+.everest_forms_install_and_activated_smart_smtp {
+	background: #BBB;
+    opacity: 0.3;
+    padding: 12px 20px;
+    color: #363636;
+    font-size: 14px;
 }
