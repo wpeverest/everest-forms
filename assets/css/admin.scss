@@ -9590,7 +9590,7 @@ img.ui-datepicker-trigger {
 		}
 
 		.everest-forms-settings-container {
-			padding: 32px 20px 52px 32px;
+			padding: 32px 20px 32px 32px;
 			box-shadow: none;
 
 			.everest-forms-settings-main {
@@ -12287,14 +12287,29 @@ body {
                                 }
                             }
                         }
+
+						&--nav {
+							.nav-tab-wrapper {
+								.evf-nav__link {
+									svg {
+										path {
+											stroke: #4e4e4e;
+										}
+									}
+								}
+							}
+						}
                     }
                 }
                 
                 &-container {
                     border-left: 1px solid #ededed;
                     background: #FAFAFA;
+					padding-top: 0 !important;
                     
                     .everest-forms-survey-single-field-container {
+						padding-top: 32px;
+
                         .field_type {
                             h1 {
                                 padding: 0 0 24px;
@@ -12311,7 +12326,7 @@ body {
                             &-block {
                                 display: flex;
                                 flex-direction: column;
-                                gap: 30px;
+                                gap: 28px;
                                 border-radius: 8px;
                                 border: 2px solid #F2F2F2;
                                 background: #FFF;
@@ -12376,9 +12391,55 @@ body {
                                 }
                                 
                                 .survey-block-statistic-overview {
+                                    border: 2px solid #F2F2F2;
+                                    
+                                    // &:has(table) {
+                                    //     border: 0;
+                                        
+                                    //     .everest-forms-survey-summary {
+                                    //         padding: 0;
+                                    //     }
+                                    // }
+                                    
+                                    .everest-forms-survey-summary {                                        
+                                        table {
+                                            border: 1px solid #dcdcdc;
+                                            
+                                            thead {
+                                                tr {
+                                                    th {
+                                                        border-bottom-color: #dcdcdc;
+                                                        background: #fff;
+                                                    }
+                                                }
+                                            }
+                                            
+                                            tbody {
+                                                tr {
+                                                    &:nth-child(odd) {
+                                                        th,
+                                                        td {
+                                                            background: #F6F7F7;                                                            
+                                                        }
+                                                    }
+                                                    
+                                                    &:nth-child(even) {
+                                                        th,
+                                                        td {
+                                                            background: #fff;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    
                                     .survey-block-chart-content {
                                         padding: 0;
                                         border: 0;
+                                        padding: 24px 36px 24px 24px;
+                                        text-align: right !important;
+                                        border-right: 2px solid #f2f2f2;
                                         
                                         .chart-tab-action {
                                             border: 0;
@@ -12387,11 +12448,58 @@ body {
                                             border-radius: 4px;
                                             padding: 4px;
                                             gap: 4px;
-                                            width: max-content;
-                                            margin-left: auto;
+											width: max-content;
+											margin-left: auto;
                                             
                                             button {
+                                                width: auto;
+                                                height: auto;
+                                                padding: 4px 12px;
+                                                background: transparent;
+                                                margin: 0;
                                                 
+                                                svg {
+                                                    display: flex;
+                                                    width: 20px;
+                                                    height: 20px;
+                                                    fill: #6c7680;
+                                                    transition: all .25s ease 0s;
+                                                }
+                                                
+                                                &:hover {
+                                                    svg {
+                                                        fill: #7545bb;
+                                                    }
+                                                }
+                                                
+                                                &.current-tab-active {
+                                                    background: #fff;
+                                                    
+                                                    svg {
+                                                        fill: #7545bb;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    
+                                    .everest-forms-survey-summary {
+                                        width: 40%;
+                                        padding: 24px;
+                                        display: flex;
+                                        gap: 30px;
+                                        
+                                        .summary-chart-wrapper {
+                                            border: 0;
+                                            
+                                            .summary-chart-header {
+                                                padding: 0 0 12px;
+                                                background: none;
+                                                border-color: #dcdcdc;
+                                                font-size: 16px;
+                                                line-height: 26px;
+                                                color: #222222;
+                                                font-weight: 500;
                                             }
                                         }
                                     }
