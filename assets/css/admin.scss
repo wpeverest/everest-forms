@@ -994,11 +994,11 @@ body.everest-forms-builder {
 						}
 
 						&.import::before {
-							content: "\e02e";
+							content: "\e02f";
 						}
 
 						&.export::before {
-							content: "\e02f";
+							content: "\e02e";
 						}
 						&.form_migrator::before {
 							content: "\e916";
@@ -10197,7 +10197,7 @@ everest-forms-field-option-row-rating-icon {
 				color: $color-white;
 				background: $everestforms;
 				border-color: $everestforms;
-				
+
 				svg {
 					fill: $color-white;
 				}
@@ -10270,3 +10270,12 @@ body {
 	  }
 	}
   }
+
+.everest-forms-title-desc {
+    width: 100%;
+    justify-content: flex-end;
+}
+
+#evf-edit-form-name {
+    width: 100%;
+}

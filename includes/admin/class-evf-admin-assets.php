@@ -95,7 +95,7 @@ class EVF_Admin_Assets {
 		wp_register_script( 'everest-forms-survey-polls-quiz-builder', evf()->plugin_url() . "/assets/js/admin/everest-forms-survey-polls-quiz-builder{$suffix}.js", array( 'jquery', 'wp-util', 'underscore', 'jquery-ui-sortable' ), EVF_VERSION, true );
 		wp_register_script( 'random-color', evf()->plugin_url() . "/assets/js/admin/randomColor{$suffix}.js", array(), EVF_VERSION, true );
 		wp_register_script( 'chart', evf()->plugin_url() . "/assets/js/admin/chart{$suffix}.js", array(), EVF_VERSION, true );
-		wp_register_script( 'print_this', evf()->plugin_url() . "/assets/js/admin/printThis{$suffix}.min.js", array(), EVF_VERSION, true );
+		wp_register_script( 'print_this', evf()->plugin_url() . "/assets/js/admin/printThis.min.js", array(), EVF_VERSION, true );
 		wp_register_script( 'progress_bar', evf()->plugin_url() . "/assets/js/admin/progressbar{$suffix}.js", array(), EVF_VERSION, true );
 		wp_register_script( 'evf-import-entries-form-csv', evf()->plugin_url() . '/assets/js/admin/tool-import-entries' . $suffix . '.js', array( 'jquery' ), EVF_VERSION, true );
 		wp_localize_script(

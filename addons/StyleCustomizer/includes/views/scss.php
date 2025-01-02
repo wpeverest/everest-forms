@@ -13,7 +13,6 @@ defined( 'ABSPATH' ) || exit;
 // Get values.
 $styles = get_option( 'everest_forms_styles' );
 
-$styles = get_option( 'everest_forms_styles' );
 
 if ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] === 'everest_forms_save_form' ) {
 	if ( isset( $styles[ $form_id ]['color_palette'] ) && is_array( $styles[ $form_id ]['color_palette'] ) ) {

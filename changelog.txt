@@ -1,5 +1,8 @@
 == Changelog ==
 
+= 3.0.7.1       - 30-12-2024
+* Added         -  Transient for addon update.
+
 = 3.0.6        - 03-12-2024
 * Removed       - Necessary file from the distignore file.
 

@@ -15,7 +15,7 @@ defined( 'ABSPATH' ) || exit;
 		<?php
 		$forms = evf_get_all_forms( true, false );
 		if ( ! empty( $forms ) ) {
-			echo '<select id="everest-forms-form-export" class="evf-enhanced-select" style="min-width: 350px;" name="form_ids[]" data-placeholder="' . esc_attr__( 'Select Form(s)', 'everest-forms' ) . '" multiple>';
+			echo '<select id="everest-forms-form-export" class="evf-enhanced-select evf-select2-multiple" style="min-width: 350px;" name="form_ids[]" data-placeholder="' . esc_attr__( 'Select Form(s)', 'everest-forms' ) . '" data-selected_msg="' . esc_attr__( 'Selected %qty% Form(s)', 'everest-forms-pro' ) . '" multiple>';
 			foreach ( $forms as $id => $form ) { // phpcs:ignore WordPress.WP.GlobalVariablesOverride
 				echo '<option value="' . esc_attr( $id ) . '">' . esc_html( $form ) . '</option>';
 			}
@@ -26,7 +26,8 @@ defined( 'ABSPATH' ) || exit;
 		?>
 		<div class="publishing-action">
 			<?php wp_nonce_field( 'everest_forms_export_nonce', 'everest-forms-export-nonce' ); ?>
-			<button type="submit" class="everest-forms-btn everest-forms-btn-primary everest-forms-export-form-action" name="everest-forms-export-form"><?php esc_html_e( 'Export', 'everest-forms' ); ?></button>
+			<button type="submit" class="everest-forms-btn everest-forms-btn-primary everest-forms-export-form-action"
+				name="everest-forms-export-form"><?php esc_html_e( 'Export', 'everest-forms' ); ?></button>
 		</div>
 	</form>
 </div>
