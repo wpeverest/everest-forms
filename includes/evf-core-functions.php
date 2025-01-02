@@ -1558,13 +1558,14 @@ function evf_get_license_plan() {
 
 	if ( $license_key && is_plugin_active( 'everest-forms-pro/everest-forms-pro.php' ) ) {
 		$license_data = get_transient( 'evf_pro_license_plan' );
-
-		if ( 'error' === $license_data ) {
-			return false;
-		}
-
 		if ( false === $license_data ) {
 			$license_response = EVF_Updater_Key_API::check( array( 'license' => $license_key ) );
+
+			if ( ! $license_response ) {
+				$license_plan = get_option( 'evf_saved_license_plan', 'unknown' );
+				return evf_handle_license_plan_compatibility( $license_plan );
+			}
+
 			$license_data     = json_decode( $license_response );
 
 			if ( ! empty( $license_data->item_name ) ) {
@@ -1575,15 +1576,12 @@ function evf_get_license_plan() {
 					$license_data->item_plan
 				);
 				$license_data->item_plan = trim( $license_data->item_plan );
-
+				update_option( 'evf_saved_license_plan', $license_data->item_plan );
 				set_transient( 'evf_pro_license_plan', $license_data, WEEK_IN_SECONDS );
-			} else {
-				set_transient( 'evf_pro_license_plan', 'error', 6 * HOUR_IN_SECONDS );
-				return false;
 			}
 		}
-
-		return evf_handle_license_plan_compatibility( isset( $license_data->item_plan ) ? $license_data->item_plan : false );
+		$license_plan = isset( $license_data->item_plan ) ? $license_data->item_plan : get_option( 'evf_saved_license_plan', 'unknown' );
+		return evf_handle_license_plan_compatibility( $license_plan );
 	}
 
 	return false;
@@ -1612,7 +1610,7 @@ if ( ! function_exists( 'evf_handle_force_update' ) ) {
  * @param $license_plan License plan.
  */
 function evf_handle_license_plan_compatibility( $license_plan ) {
-	$license_plan = ( 'plus' === $license_plan || 'professional' === $license_plan ) ? 'personal' : $license_plan;
+	$license_plan = ( 'plus' === $license_plan || 'professional' === $license_plan ||'unknown' === $license_plan ) ? 'personal' : $license_plan;
 	return $license_plan;
 }
 
