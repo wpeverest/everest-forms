@@ -308,6 +308,9 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 == Changelog ==
 
+= 3.0.8         - xx-xx-2025
+* Tweak        -  Captcha design on admin.
+
 = 3.0.7.1       - 30-12-2024
 * Added         -  Transient for addon update.
 
