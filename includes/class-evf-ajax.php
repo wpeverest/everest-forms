@@ -1748,52 +1748,40 @@ class EVF_AJAX {
 		}
 	}
 
+	/**
+	 * Installs and activates the Smart SMTP plugin.
+	 *
+	 * @since x.x.x
+	 *
+	 * @return void Outputs a JSON response.
+	 */
 	public static function install_and_activate_smart_smtp() {
 		try {
 			check_ajax_referer( 'everest-forms-smart-smtp-installation-nonce', 'security' );
-
-			if ( ! current_user_can( 'install_plugins' ) ) {
-				wp_send_json_error(
-					array(
-						'message'         => 'You do not have permission to install plugins.',
-						'redirection_url' => '',
-					)
-				);
-				return;
+			if ( ! current_user_can( 'manage_everest_forms' ) ) {
+				wp_send_json_error( array( 'message' => 'You do not have permission to install plugins.' ) );
 			}
 
-			$get_active_plugins = get_option( 'active_plugins', array() );
-
-			if ( ! empty( $get_active_plugins ) && in_array( 'smart-smtp/smart-smtp.php', $get_active_plugins ) ) {
-				wp_send_json_success(
-					array(
-						'message'         => 'SmartSMTP plugin is already activated!',
-						'redirection_url' => '',
-					)
-				);
-				return;
+			if ( is_plugin_active( 'smart-smtp/smart-smtp.php' ) ) {
+				wp_send_json_success( array( 'message' => 'SmartSMTP plugin is already activated!' ) );
 			}
 
-			require_once ABSPATH . '/wp-admin/includes/file.php';
-			include_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
-			include_once ABSPATH . 'wp-admin/includes/plugin-install.php';
+			require_once ABSPATH . 'wp-admin/includes/plugin-install.php';
+			require_once ABSPATH . 'wp-admin/includes/file.php';
+			require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
 
 			$plugin_info = plugins_api( 'plugin_information', array( 'slug' => 'smart-smtp' ) );
-
 			if ( is_wp_error( $plugin_info ) ) {
-				wp_send_json_error( array( 'message' => 'Unable to fetch plugin information from WordPress.org', 'redirection_url'=>'' ) );
+				wp_send_json_error( array( 'message' => 'Unable to fetch plugin information from WordPress.org.' ) );
 			}
 
-			$skin           = new WP_Ajax_Upgrader_Skin();
-			$upgrader       = new Plugin_Upgrader( $skin );
+			$upgrader       = new Plugin_Upgrader( new WP_Ajax_Upgrader_Skin() );
 			$install_result = $upgrader->install( $plugin_info->download_link );
-
 			if ( is_wp_error( $install_result ) ) {
 				wp_send_json_error( array( 'message' => 'Plugin installation failed: ' . $install_result->get_error_message() ) );
 			}
 
 			$activate_result = activate_plugin( 'smart-smtp/smart-smtp.php' );
-
 			if ( is_wp_error( $activate_result ) ) {
 				wp_send_json_error( array( 'message' => 'Plugin activation failed: ' . $activate_result->get_error_message() ) );
 			}
@@ -1804,7 +1792,6 @@ class EVF_AJAX {
 					'redirection_url' => admin_url( 'admin.php?page=smart-smtp' ),
 				)
 			);
-
 		} catch ( Exception $e ) {
 			wp_send_json_error( array( 'message' => $e->getMessage() ) );
 		}
