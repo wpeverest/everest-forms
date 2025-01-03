@@ -16,6 +16,7 @@ import { Select } from 'chakra-react-select';
 import { bulkRemoveManager, getManagers, getWPRoles, removeManager } from './RoleAndPermissionAPI';
 import TrashUserRoleModel from './TrashUserRoleModel';
 import UserDisplayModal from './UserDisplayModal';
+import { debounce } from "lodash";
 
 const UserRoleTable = () => {
 	const [managers, setManagers] = useState([]);
@@ -25,6 +26,7 @@ const UserRoleTable = () => {
 	const [selectedRows, setSelectedRows] = useState([]);
 	const [bulkDelete, setBulkDelete] = useState(false);
 	const [bulkDeleteSuccess, setBulkDeleteSuccess] = useState();
+	const [searchManager, setSearchManager] = useState("");
 	const toast = useToast();
 
 	const [totalManagers, setTotalManagers] = useState(0);
@@ -70,8 +72,12 @@ const UserRoleTable = () => {
 		setPageSize(pageSize);
 	};
 
+	const debounceSearch = debounce((val) => {
+		setSearchManager(val);
+	}, 800);
+
 	useEffect(()=>{
-		getManagers( offset, pageSize ).then((res)=> {
+		getManagers( offset, pageSize, searchManager ).then((res)=> {
 			if ( res.success ) {
 				setManagers( res.managers );
 				setTotalManagers(res.total)
@@ -79,7 +85,7 @@ const UserRoleTable = () => {
 			}
 
 		})
-	},[currentPage, pageSize, offset, userDeleted, bulkDeleteSuccess]);
+	},[currentPage, pageSize, offset, userDeleted, bulkDeleteSuccess, searchManager]);
 
 	useEffect(() => {
 	  getWPRoles().then((res) => {
@@ -164,6 +170,7 @@ const UserRoleTable = () => {
 			  focusBorderColor="blue.500"
 			  borderRadius={"4px"}
 			  padding={"10px 16px"}
+			  onChange={(e) => debounceSearch(e.target.value)}
 			/>
 		  </InputGroup>
 		  <Select

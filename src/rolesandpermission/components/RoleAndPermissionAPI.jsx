@@ -55,7 +55,7 @@ export const addManagerRole = async ( user_email, assignedPermissions ) => {
 	}).then((res) => res);
 }
 
-export const getManagers = async ( offset="", pageSize="" ) =>{
+export const getManagers = async ( offset="", pageSize="", searchManager="" ) =>{
 	return apiFetch(
 		{
 			path: urls.getManagers,
@@ -66,7 +66,8 @@ export const getManagers = async ( offset="", pageSize="" ) =>{
 			data:{
 				request: {
 					offset: offset,
-					page_size: pageSize
+					page_size: pageSize,
+					search_manager: searchManager,
 				}
 			}
 		}
