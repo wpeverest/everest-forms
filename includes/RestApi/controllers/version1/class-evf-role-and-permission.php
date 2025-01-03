@@ -366,7 +366,7 @@ class EVF_Roles_And_Permission {
 	public static function get_managers( $attributes = array() ) {
 		$limit          = $attributes['request']['page_size'];
 		$offset         = $attributes['request']['offset'];
-		$search_manager = $attributes['request']['search_manager'];
+		$search_manager = isset( $attributes['request']['search_manager'] ) ? esc_attr( $attributes['request']['search_manager'] ) : '';
 
 		$query_args = array(
 			'meta_key'     => '_everest_forms_has_role',
@@ -378,7 +378,7 @@ class EVF_Roles_And_Permission {
 
 		if ( ! empty( $search_manager ) ) {
 			$query_args['search']         = '*' . esc_attr( $search_manager ) . '*';
-			$query_args['search_columns'] = array( 'user_login', 'user_email' );
+			$query_args['search_columns'] = array( 'user_login', 'user_email', 'display_name' );
 		}
 
 		$query = new \WP_User_Query( $query_args );
