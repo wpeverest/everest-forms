@@ -2943,7 +2943,6 @@
 						"address" !== field_type &&
 						"image-upload" !== field_type &&
 						"file-upload" !== field_type &&
-						"date-time" !== field_type &&
 						"hidden" !== field_type &&
 						"likert" !== field_type &&
 						"scale-rating" !== field_type &&
