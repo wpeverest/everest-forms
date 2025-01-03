@@ -646,7 +646,8 @@
 						.find('.everest_forms_install_and_activate_smart_smtp')
 						.removeClass('everest_forms_install_and_activate_smart_smtp everest-forms-btn-primary')
 						.addClass('everest_forms_install_and_activated_smart_smtp everest-forms-btn-secondary')
-						.css('pointer-events', 'none');
+						.css('pointer-events', 'none').
+						text('Installed and Activated SmartSMTP');
 						window.location.replace(redirection_url);
 					} else if ('' !== message && '' === redirection_url) {
 						alert(message);

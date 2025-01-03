@@ -1751,7 +1751,7 @@ class EVF_AJAX {
 	/**
 	 * Installs and activates the Smart SMTP plugin.
 	 *
-	 * @since x.x.x
+	 * @since xx.xx.xx
 	 *
 	 * @return void Outputs a JSON response.
 	 */
@@ -1766,22 +1766,46 @@ class EVF_AJAX {
 				wp_send_json_success( array( 'message' => 'SmartSMTP plugin is already activated!' ) );
 			}
 
-			require_once ABSPATH . 'wp-admin/includes/plugin-install.php';
-			require_once ABSPATH . 'wp-admin/includes/file.php';
-			require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
+			$installed_plugins = get_plugins();
 
-			$plugin_info = plugins_api( 'plugin_information', array( 'slug' => 'smart-smtp' ) );
-			if ( is_wp_error( $plugin_info ) ) {
-				wp_send_json_error( array( 'message' => 'Unable to fetch plugin information from WordPress.org.' ) );
+			if ( in_array( 'smart-smtp/smart-smtp.php', $installed_plugins ) ) {
+				$activate_result = activate_plugin( 'smart-smtp/smart-smtp.php' );
+				if ( is_wp_error( $install_result ) ) {
+					$error_message = $activate_result->get_error_message();
+					/* translators: %s:Error Message. */
+					wp_send_json_error(
+						array(
+							'message' => esc_html__( 'Sorry, We are unable to activate SmartSMTP because of %s', 'everest-forms-pro' ),
+							$error_message,
+						)
+					);
+				}
+			} else {
+				require_once ABSPATH . 'wp-admin/includes/plugin-install.php';
+				require_once ABSPATH . 'wp-admin/includes/file.php';
+				require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
+
+				$plugin_info = plugins_api( 'plugin_information', array( 'slug' => 'smart-smtp' ) );
+				if ( is_wp_error( $plugin_info ) ) {
+					wp_send_json_error( array( 'message' => esc_html__( 'Sorry, your internet connection was interrupted', 'everest-forms' ) ) );
+				}
+
+				$upgrader       = new Plugin_Upgrader( new WP_Ajax_Upgrader_Skin() );
+				$install_result = $upgrader->install( $plugin_info->download_link );
+				if ( is_wp_error( $install_result ) ) {
+					$installation_error = $install_result->get_error_message();
+					/* translators: %s:Error Message. */
+					wp_send_json_error(
+						array(
+							'message' => esc_html__( 'Plugin installation failed due to %s', 'everest-forms' ),
+							$installation_error,
+						)
+					);
+				}
+
+				$activate_result = activate_plugin( 'smart-smtp/smart-smtp.php' );
 			}
 
-			$upgrader       = new Plugin_Upgrader( new WP_Ajax_Upgrader_Skin() );
-			$install_result = $upgrader->install( $plugin_info->download_link );
-			if ( is_wp_error( $install_result ) ) {
-				wp_send_json_error( array( 'message' => 'Plugin installation failed: ' . $install_result->get_error_message() ) );
-			}
-
-			$activate_result = activate_plugin( 'smart-smtp/smart-smtp.php' );
 			if ( is_wp_error( $activate_result ) ) {
 				wp_send_json_error( array( 'message' => 'Plugin activation failed: ' . $activate_result->get_error_message() ) );
 			}
