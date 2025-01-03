@@ -300,6 +300,11 @@ class EVF_Admin_Menus {
 		do_action( 'everest_forms_settings_page_init' );
 	}
 
+	/**
+	 * Adds SMTP into Everest Forms Menu.
+	 *
+	 * @since xx.xx.xx
+	 */
 	public function smtp_menu() {
 		add_submenu_page( 'everest-forms', esc_html__( 'SMTP', 'everest-forms' ), esc_html__( 'SMTP', 'everest-forms' ), 'manage_everest_forms', 'evf-smart-smtp', array( $this, 'smtp_page' ) );
 	}

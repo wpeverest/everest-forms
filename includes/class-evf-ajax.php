@@ -1016,7 +1016,8 @@ class EVF_AJAX {
 			$message  = '<div class="everest-forms-message-text">';
 			$message .= '<h3 style="text-align:center; color: #ffc107;">' . esc_html( 'PS. This is just the sample data' ) . '</h3>';
 			$message .= '<p><strong>' . esc_html__( 'Hi there!', 'everest-forms' ) . ' 👋</strong></p>';
-			$message .= '<p>' . esc_html__( 'Let\'s see how your forms performed ' . $evf_summary_duration . '.', 'everest-forms' ) . '</p>';
+			/* translators: %s: Routine email summary duration */
+			$message .= '<p>' . sprintf( esc_html__( 'Let\'s see how your forms performed %s.', 'everest-forms' ), esc_html( $evf_summary_duration ) ) . '</p>';
 			$message .= '<br/>';
 			$message .= '<p><strong>' . esc_html__( 'Forms Stats', 'everest-forms' ) . '</strong></p>';
 			$message .= '<table align="left" border="0" cellpadding="0" cellspacing="0" width="100%" style="solid #dddddd; display:block;min-width: 100%;border-collapse: collapse;width:100%; display:table; padding-bottom:2rem" class="evf_entries_summary_table">';
@@ -1770,13 +1771,13 @@ class EVF_AJAX {
 
 			if ( in_array( 'smart-smtp/smart-smtp.php', $installed_plugins ) ) {
 				$activate_result = activate_plugin( 'smart-smtp/smart-smtp.php' );
-				if ( is_wp_error( $install_result ) ) {
+				if ( is_wp_error( $activate_result ) ) {
 					$error_message = $activate_result->get_error_message();
-					/* translators: %s:Error Message. */
+					/* translators: %s: Error message explaining the activation failure */
 					wp_send_json_error(
 						array(
-							'message' => esc_html__( 'Sorry, We are unable to activate SmartSMTP because of %s', 'everest-forms-pro' ),
-							$error_message,
+							'message' => esc_html__( 'Sorry, we are unable to activate SmartSMTP because of %s', 'everest-forms' ),
+							esc_html( $error_message ),
 						)
 					);
 				}
@@ -1794,11 +1795,11 @@ class EVF_AJAX {
 				$install_result = $upgrader->install( $plugin_info->download_link );
 				if ( is_wp_error( $install_result ) ) {
 					$installation_error = $install_result->get_error_message();
-					/* translators: %s:Error Message. */
+					/* translators: %s: Error message explaining the installation failure */
 					wp_send_json_error(
 						array(
 							'message' => esc_html__( 'Plugin installation failed due to %s', 'everest-forms' ),
-							$installation_error,
+							esc_html( $installation_error ),
 						)
 					);
 				}

@@ -108,7 +108,7 @@ if ( in_array( 'smart-smtp/smart-smtp.php', $all_active_plugins ) ) {
 					<p class="everest-forms-smart-smtp-page__setup-step-two__description">
 						<?php echo esc_html__( 'Choose your preferred mailer and complete the setup process.', 'everest-forms' ); ?>
 					</p>
-					<a href="<?php echo ( $is_smtp_active !== 0 ) ? esc_url( $redirect_url ) : '#'; ?>"
+					<a href="<?php echo ( 0 !== $is_smtp_active ) ? esc_url( $redirect_url ) : '#'; ?>"
 						class="everest-forms-btn everest-forms-btn-primary everest_forms_setup_smart_smtp"
 						<?php echo ( 0 === $is_smtp_active ) ? "style='pointer-events: none;'" : ''; ?>>
 						<?php echo esc_html__( 'View SmartSMTP Settings', 'everest-forms' ); ?>
