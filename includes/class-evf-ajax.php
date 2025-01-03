@@ -1773,9 +1773,9 @@ class EVF_AJAX {
 				$activate_result = activate_plugin( 'smart-smtp/smart-smtp.php' );
 				if ( is_wp_error( $activate_result ) ) {
 					$error_message = $activate_result->get_error_message();
-					/* translators: %s: Error message explaining the activation failure */
 					wp_send_json_error(
 						array(
+							/* translators: %s: Error message explaining the activation failure */
 							'message' => esc_html__( 'Sorry, we are unable to activate SmartSMTP because of %s', 'everest-forms' ),
 							esc_html( $error_message ),
 						)
@@ -1795,9 +1795,9 @@ class EVF_AJAX {
 				$install_result = $upgrader->install( $plugin_info->download_link );
 				if ( is_wp_error( $install_result ) ) {
 					$installation_error = $install_result->get_error_message();
-					/* translators: %s: Error message explaining the installation failure */
 					wp_send_json_error(
 						array(
+							/* translators: %s: Error message explaining the installation failure */
 							'message' => esc_html__( 'Plugin installation failed due to %s', 'everest-forms' ),
 							esc_html( $installation_error ),
 						)
