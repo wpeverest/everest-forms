@@ -91,6 +91,14 @@ class EVF_Roles_And_Permission {
 		);
 	}
 
+	/**
+	 * Assign permissions based on role.
+	 *
+	 * @since xx.xx.xx
+	 *
+	 * @param WP_REST_Request $request Full data about the request.
+	 * @return WP_REST_Response
+	 */
 	public static function assign_permission_based_on_role( $request ) {
 		if ( ! isset( $request['request'] ) || empty( $request['request'] ) ) {
 
@@ -151,6 +159,13 @@ class EVF_Roles_And_Permission {
 		);
 	}
 
+	/**
+	 * Get WordPress roles.
+	 *
+	 * @since xx.xx.xx
+	 *
+	 * @return void
+	 */
 	public static function get_wp_roles() {
 		global $wp_roles;
 
@@ -187,6 +202,14 @@ class EVF_Roles_And_Permission {
 		wp_send_json_success( $roles );
 	}
 
+	/**
+	 * Add user manager.
+	 *
+	 * @since xx.xx.xx
+	 *
+	 * @param WP_REST_Request $request Full data about the request.
+	 * @return WP_REST_Response
+	 */
 	public static function evf_add_user_manager( $request ) {
 		if ( ! isset( $request['request'] ) || empty( $request['request'] ) ) {
 
@@ -292,7 +315,14 @@ class EVF_Roles_And_Permission {
 		);
 	}
 
-
+	/**
+	 * Get user permissions.
+	 *
+	 * @since xx.xx.xx
+	 *
+	 * @param mixed $user User object or user ID.
+	 * @return array User permissions.
+	 */
 	public static function get_user_permissions( $user = false ) {
 		if ( is_numeric( $user ) ) {
 			$user = get_user_by( 'ID', $user );
@@ -319,6 +349,14 @@ class EVF_Roles_And_Permission {
 		return apply_filters( 'everest_forms_current_user_permissions', $user_permissions );
 	}
 
+	/**
+	 * Check if the user is an admin.
+	 *
+	 * @since xx.xx.xx
+	 *
+	 * @param mixed $user User object or user ID.
+	 * @return bool True if the user is an admin, false otherwise.
+	 */
 	public static function is_admin( $user = false ) {
 		if ( $user ) {
 			return $user->has_cap( 'manage_options' );
@@ -327,6 +365,15 @@ class EVF_Roles_And_Permission {
 		}
 	}
 
+	/**
+	 * Attach permissions to a user.
+	 *
+	 * @since xx.xx.xx
+	 *
+	 * @param mixed $user User object or user ID.
+	 * @param array $assigned_permission List of permissions to assign.
+	 * @return mixed User object on success, false on failure.
+	 */
 	public static function attach_permission( $user, $assigned_permission ) {
 		if ( is_numeric( $user ) ) {
 			$user = get_user_by( 'ID', $user );
@@ -355,6 +402,13 @@ class EVF_Roles_And_Permission {
 		return $user;
 	}
 
+	/**
+	 * Get EVF permissions.
+	 *
+	 * @since xx.xx.xx
+	 *
+	 * @return array List of EVF permissions.
+	 */
 	private static function get_evf_permissions() {
 		$capabilities = array();
 
@@ -378,6 +432,24 @@ class EVF_Roles_And_Permission {
 		return $capabilities;
 	}
 
+	/**
+	 * Retrieves a list of managers based on the provided attributes.
+	 *
+	 * @since xx.xx.xx
+	 * 
+	 * @param array $attributes {
+	 *     Array of attributes for querying managers.
+	 *
+	 *     @type array $request {
+	 *         Request parameters.
+	 *
+	 *         @type int    $page_size       Number of managers to retrieve.
+	 *         @type int    $offset          Offset for the query.
+	 *         @type string $search_manager  Optional. Search term to filter managers by username, email, or display name.
+	 *     }
+	 * }
+	 * @return WP_REST_Response Response object containing the list of managers and additional data.
+	 */
 	public static function get_managers( $attributes = array() ) {
 		$limit          = $attributes['request']['page_size'];
 		$offset         = $attributes['request']['offset'];
@@ -424,6 +496,14 @@ class EVF_Roles_And_Permission {
 		);
 	}
 
+	/**
+	 * Get user roles as a string.
+	 *
+	 * @since xx.xx.xx
+	 *
+	 * @param array $roles Array of user roles.
+	 * @return string User roles as a comma-separated string.
+	 */
 	private static function get_user_roles( $roles ) {
 		$role_str = '';
 		if ( count( $roles ) > 1 ) {
@@ -437,6 +517,14 @@ class EVF_Roles_And_Permission {
 		return ucfirst( $role_str );
 	}
 
+	/**
+	 * Remove a manager.
+	 *
+	 * @since xx.xx.xx
+	 *
+	 * @param WP_REST_Request $request Full data about the request.
+	 * @return WP_REST_Response
+	 */
 	public static function remove_managers( $request ) {
 		if ( ! isset( $request['request'] ) || empty( $request['request'] ) ) {
 			return new \WP_REST_Response(
@@ -485,6 +573,14 @@ class EVF_Roles_And_Permission {
 		);
 	}
 
+	/**
+	 * Remove multiple managers.
+	 *
+	 * @since xx.xx.xx
+	 *
+	 * @param WP_REST_Request $request Full data about the request.
+	 * @return WP_REST_Response
+	 */
 	public static function bulk_remove_managers( $request ) {
 		if ( ! isset( $request['request'] ) || empty( $request['request'] ) ) {
 			return new \WP_REST_Response(
@@ -540,6 +636,8 @@ class EVF_Roles_And_Permission {
 
 	/**
 	 * Check if a given request has access to update a setting
+	 *
+	 * @since xx.xx.xx
 	 *
 	 * @param WP_REST_Request $request Full data about the request.
 	 * @return WP_Error|bool
