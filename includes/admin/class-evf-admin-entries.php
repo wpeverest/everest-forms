@@ -83,6 +83,7 @@ class EVF_Admin_Entries {
 		<div id="everest-forms-entries-list" class="wrap">
 			<div class="evf-entries-header-container">
 				<p class="title"><?php esc_html_e( 'Entries', 'everest-forms' ); ?></p>
+				<?php if(defined('EFP_VERSION')): ?>
 			<div class="evf-align-items-center evf-my-2"
 			id="evf-dashboard-analytics-header">
 					<select id="evf-forms-analytics-form-list" class="evf-enhanced-normal-select"  style="min-width: 350px;">
@@ -107,6 +108,7 @@ class EVF_Admin_Entries {
 							placeholder="<?php echo esc_attr__( 'Select date range', 'everest-forms-pro' ); ?>" />
 					</div>
 			</div>
+			<?php endif ?>
 			<div id="filter-toggle">
 				<span>Filter Entries</span>
 			</div>
@@ -127,6 +129,7 @@ class EVF_Admin_Entries {
 							<?php $entries_table_list->views(); ?>
 						</div>
 						<div class="entry-table-filters">
+							<form id="entries-list" method="get" data-form-id="<?php echo absint( $entries_table_list->form_id ); ?>" data-last-entry-id="<?php echo absint( end( $entry_ids ) ); ?>">
 							<div class="evf-forms-list">
 							<?php
 							if(! empty( $entries_table_list->forms )) {
@@ -141,7 +144,6 @@ class EVF_Admin_Entries {
 							}
 							?>
 							</div>
-							<form id="entries-list" method="get" data-form-id="<?php echo absint( $entries_table_list->form_id ); ?>" data-last-entry-id="<?php echo absint( end( $entry_ids ) ); ?>">
 								<input type="hidden" name="page" value="evf-entries" />
 								<?php if ( ! empty( $_REQUEST['form_id'] ) ) : // phpcs:ignore WordPress.Security.NonceVerification ?>
 									<input type="hidden" name="form_id" value="<?php echo absint( $_REQUEST['form_id'] ); // phpcs:ignore WordPress.Security.NonceVerification ?>" />
