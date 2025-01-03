@@ -201,10 +201,10 @@ class EVF_Roles_And_Permission {
 
 		$requested_data = $request['request'];
 
-		$user_email          = isset( $requested_data['user_email'] ) ? $requested_data['user_email'] : '';
+		$user_emails         = isset( $requested_data['user_email'] ) ? ( empty( $requested_data['user_email'] ) ? '' : explode( ',', $requested_data['user_email'] ) ) : '';
 		$assigned_permission = isset( $requested_data['assigned_permission'] ) && ! empty( $requested_data['assigned_permission'] ) ? $requested_data['assigned_permission'] : array();
 
-		if ( empty( $user_email ) && empty( $assigned_permission ) ) {
+		if ( empty( $user_emails ) && empty( $assigned_permission ) ) {
 			return new \WP_REST_Response(
 				array(
 					'success' => false,
@@ -229,7 +229,7 @@ class EVF_Roles_And_Permission {
 			);
 		}
 
-		if ( empty( $user_email ) ) {
+		if ( empty( $user_emails ) ) {
 			return new \WP_REST_Response(
 				array(
 					'success' => false,
@@ -241,31 +241,46 @@ class EVF_Roles_And_Permission {
 			);
 		}
 
-		$user = get_user_by( 'email', $user_email );
+		$users_data     = array();
+		$user_not_found = array();
 
-		if ( empty( $user ) ) {
+		foreach ( $user_emails as $user_email ) {
+			$per_user_data = get_user_by( 'email', trim( $user_email ) );
+
+			if ( empty( $per_user_data ) ) {
+				$user_not_found[] = trim( $user_email );
+			}
+
+			$users_data[] = $per_user_data;
+		}
+
+		if ( ! empty( $user_not_found ) ) {
+			$not_found_user_emails = implode( ', ', $user_not_found );
 			return new \WP_REST_Response(
 				array(
 					'success' => false,
 					'message' => array(
-						'user_email' => esc_html__( 'User not found with this email.', 'everest-forms' ),
+						'user_email' => esc_html__( 'User not found with ' . $not_found_user_emails . ' emails.', 'everest-forms' ),
 					),
+
 				),
 				200
 			);
 		}
 
-		self::attach_permission( $user, $assigned_permission );
+		foreach ( $users_data as $user ) {
+			self::attach_permission( $user, $assigned_permission );
 
-		update_user_meta( $user->ID, '_everest_forms_has_role', 1 );
+			update_user_meta( $user->ID, '_everest_forms_has_role', 1 );
 
-		$updated_user = array(
-			'id'          => $user->ID,
-			'first_name'  => $user->first_name,
-			'last_name'   => $user->last_name,
-			'email'       => $user->user_email,
-			'permissions' => self::get_user_permissions( $user ),
-		);
+			$updated_user = array(
+				'id'          => $user->ID,
+				'first_name'  => $user->first_name,
+				'last_name'   => $user->last_name,
+				'email'       => $user->user_email,
+				'permissions' => self::get_user_permissions( $user ),
+			);
+		}
 
 		return new \WP_REST_Response(
 			array(
