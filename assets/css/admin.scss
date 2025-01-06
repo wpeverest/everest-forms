@@ -12313,6 +12313,14 @@ body {
 						&--nav {
 							.nav-tab-wrapper {
 								.evf-nav__link {
+									.field_type_icon {
+										background-color: white;
+										display: flex;
+										width: 20px;
+										height: 20px;
+										justify-content: center;
+										align-items: center;
+									}
 									svg {
 										path {
 											stroke: #4e4e4e;
