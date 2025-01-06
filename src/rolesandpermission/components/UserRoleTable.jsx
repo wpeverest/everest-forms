@@ -73,6 +73,7 @@ const UserRoleTable = () => {
 	};
 
 	const debounceSearch = debounce((val) => {
+		setCurrentPage(1);
 		setSearchManager(val);
 	}, 800);
 
@@ -124,21 +125,20 @@ const UserRoleTable = () => {
 	const isIndeterminate = selectedRows.length > 0 && selectedRows.length < managers.length;
 
 	const handleBulkDelete = () => {
-		if ( !bulkDelete ) {
-			toast({
-				title: "Please choose bulk action.",
-				status: 'error',
-				duration: 3000
-			})
-		}
+
 		if ( selectedRows.length === 0 ) {
 			toast({
 				title: "Please select user.",
 				status: 'error',
 				duration: 3000
 			})
-		}
-		if( bulkDelete && selectedRows.length != 0 ){
+		}else if ( !bulkDelete ) {
+			toast({
+				title: "Please choose bulk action.",
+				status: 'error',
+				duration: 3000
+			})
+		}else if( bulkDelete && selectedRows.length != 0 ){
 			bulkRemoveManager( selectedRows ).then( (res) => {
 				if ( res.success ) {
 					toast({
@@ -297,54 +297,63 @@ const UserRoleTable = () => {
 							defaultValue={mappedOptions[0]}
 						/>
 					</Flex>
-					<Pagination
-						pagesCount={pagesCount}
-						currentPage={currentPage}
-						isDisabled={isDisabled}
-						onPageChange={handlePageChange}
-					>
-						<PaginationContainer justify="space-between" p={4}>
-							<PaginationPrevious
-								_hover={{ bg: "primary.200" }}
-								bg="gray.200"
-							>
-								<FaChevronLeft />
-							</PaginationPrevious>
-							<PaginationPageGroup
-								align="center"
-								separator={
-									<PaginationSeparator
-										bg="blue.300"
-										fontSize="sm"
-										w={7}
-										jumpSize={11}
-									/>
-								}
-							>
-								{pages?.map((page) => (
-									<PaginationPage
-										width={"7px"}
-										bg="grey.200"
-										key={`pagination_page_${page}`}
-										page={page}
-										fontSize="sm"
-										_hover={{ bg: "primary.200" }}
-										_current={{
-											bg: "blue.300",
-											fontSize: "sm",
-											w: 7,
-										}}
-									/>
-								))}
-							</PaginationPageGroup>
-							<PaginationNext
-								_hover={{ bg: "primary.200" }}
-								bg="gray.200"
-							>
-								<FaChevronRight />
-							</PaginationNext>
-						</PaginationContainer>
-					</Pagination>
+						<Pagination
+							pagesCount={pagesCount}
+							currentPage={currentPage}
+							isDisabled={isDisabled}
+							onPageChange={handlePageChange}
+						>
+							<PaginationContainer justify="space-between" padding={"4px"}>
+								<PaginationPrevious
+									_hover={{ bg: "#BEE3F8" }}
+									bg="#E2E8F0"
+									width={"38px"}
+									height={"26px"}
+								>
+									<FaChevronLeft />
+								</PaginationPrevious>
+								<PaginationPageGroup
+									align="center"
+									separator={
+										<PaginationSeparator
+											bg="#63B3ED"
+											fontSize="12px"
+											width={"38px"}
+											height={"26px"}
+											jumpSize={"11px"}
+										/>
+									}
+								>
+									{pages?.map((page) => (
+										<PaginationPage
+											width={"38px"}
+											height={"26px"}
+											bg="#EDF2F7"
+											key={`pagination_page_${page}`}
+											padding={"4px 16px"}
+											borderRadius={"3px"}
+											page={page}
+											fontSize="12px"
+											_hover={{ bg: "#BEE3F8" }}
+											_current={{
+												bg: "#63B3ED",
+												fontSize: "14px",
+												width:"38px",
+												height:"26px",
+											}}
+										/>
+									))}
+								</PaginationPageGroup>
+								<PaginationNext
+									_hover={{ bg: "#BEE3F8" }}
+									bg="#E2E8F0"
+									width={"38px"}
+									height={"26px"}
+								>
+									<FaChevronRight />
+								</PaginationNext>
+							</PaginationContainer>
+						</Pagination>
 				</Flex>
 			</Stack>
 		</Stack>
