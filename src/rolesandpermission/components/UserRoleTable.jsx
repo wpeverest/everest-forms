@@ -230,54 +230,73 @@ const UserRoleTable = () => {
 				</Tr>
 			  </Thead>
 			  <Tbody>
-				{managers?.map((value) => (
-				  <Tr key={value.id} textAlign={"left"} height={"48px"}>
-					<Td>
-					  <Checkbox
-						isChecked={selectedRows.includes(value.id)}
-						onChange={(e) => handleSelectRow(value.id, e.target.checked)}
-					  />
-					</Td>
-					<Td>{value.id}</Td>
-					<Td>{`${value.first_name} ${value.last_name}`}</Td>
-					<Td>{value.email}</Td>
-					<Td>{value.roles}</Td>
-					<Td>
-					  <Flex gap={"4px"} flexWrap={"wrap"}>
-						{value.permissions.map((permission, index) => (
-						  <Text
-							margin={"0"}
-							cursor={"pointer"}
-							height="22px"
-							fontSize={"12px"}
-							fontWeight={"400"}
-							backgroundColor={"#EDEDED"}
-							color={"#383838"}
-							padding={"2px 6px"}
-							borderRadius={"5px"}
-							key={index}
-						  >
-							{permissions[permission]}
-						  </Text>
-						))}
-					  </Flex>
-					</Td>
-					<Td>
-					  <Flex alignItems={"center"}>
-						<UserDisplayModal
-						  wp_roles={wpRoles}
-						  context={"edit"}
-						  value={{
-							permission: value.permissions,
-							email: value.email,
-							permission_details: permissions,
-						  }}
-						/>{" "}
-						| <TrashUserRoleModel deleteManager={() => deleteManager(value.id)} />
-					  </Flex>
-					</Td>
-				  </Tr>
-				))}
+			  {totalManagers === 0 ? (
+						<Tr>
+							<Td colSpan="7">
+								<Flex justify="center" align="center" flexDirection={"column"} height="100%">
+									<img height={"236px"} width={"262px"} src={evf_roles_and_permission.not_found_image}/>
+									<Stack marginTop={"16px"} textAlign={"center"} gap={0}>
+										<Text margin={0} fontSize="lg" color="#222222" fontWeight={600}>
+											{__("You don’t have any Manager yet", "everest-forms")}
+										</Text>
+										<Text margin={"8px 0 0 0"} fontSize="sm" color="#6B6B6B" fontWeight={400}>
+											{__("Please create a manager and you are good to go.", "everest-forms")}
+										</Text>
+									</Stack>
+								</Flex>
+							</Td>
+						</Tr>
+					) : (
+						managers?.map((value) => (
+							<Tr key={value.id} textAlign="left" height="48px">
+								<Td>
+									<Checkbox
+										isChecked={selectedRows.includes(value.id)}
+										onChange={(e) => handleSelectRow(value.id, e.target.checked)}
+									/>
+								</Td>
+								<Td>{value.id}</Td>
+								<Td>{`${value.first_name} ${value.last_name}`}</Td>
+								<Td>{value.email}</Td>
+								<Td>{value.roles}</Td>
+								<Td>
+									<Flex gap="4px" flexWrap="wrap">
+										{value.permissions.map((permission, index) => (
+											<Text
+												key={index}
+												margin="0"
+												cursor="pointer"
+												height="22px"
+												fontSize="12px"
+												fontWeight="400"
+												backgroundColor="#EDEDED"
+												color="#383838"
+												padding="2px 6px"
+												borderRadius="5px"
+											>
+												{permissions[permission]}
+											</Text>
+										))}
+									</Flex>
+								</Td>
+								<Td>
+									<Flex alignItems="center">
+										<UserDisplayModal
+											wp_roles={wpRoles}
+											context="edit"
+											value={{
+												permission: value.permissions,
+												email: value.email,
+												permission_details: permissions,
+											}}
+										/>
+										{" | "}
+										<TrashUserRoleModel deleteManager={() => deleteManager(value.id)} />
+									</Flex>
+								</Td>
+							</Tr>
+						))
+					)}
 			  </Tbody>
 			</Table>
 		  </Box>

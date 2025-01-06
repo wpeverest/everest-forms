@@ -308,8 +308,9 @@ class EVF_Admin_Assets {
 				'evf-tool-roles-and-permission',
 				'evf_roles_and_permission',
 				array(
-					'security' => wp_create_nonce( 'wp_rest' ),
-					'restURL'  => rest_url(),
+					'security'        => wp_create_nonce( 'wp_rest' ),
+					'restURL'         => rest_url(),
+					'not_found_image' => evf()->plugin_url() . '/assets/images/not-found-image.png',
 				)
 			);
 
