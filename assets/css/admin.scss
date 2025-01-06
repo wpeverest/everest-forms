@@ -10668,7 +10668,7 @@ body {
 							gap: 6px;
 							border-radius: 3px;
 							background: #f6f7f7;
-							font-size: 14px;							
+							font-size: 14px;
 							font-weight: 500;
 							line-height: 22px;
 						}
@@ -10679,7 +10679,7 @@ body {
 						display: flex;
 						align-items: center;
 						justify-content: space-between;
-						
+
 						.search-box {
 							#everest-forms-search-input {
 								display: flex;
@@ -10739,7 +10739,7 @@ body {
 			border-radius: 4px;
 			border: 1.5px solid #bababa;
 			background: #f6f7f7;
-			
+
 			svg {
 				width: 16px;
 				height: 16px;
@@ -11100,8 +11100,8 @@ body {
 						border-bottom: 1px solid #f2f2f2;
 						z-index: 5;
 						position: relative;
-                        top: 0;
-                        box-shadow: 0px 4px 24px 0px rgba(10, 10, 10, 0.06);
+						top: 0;
+						box-shadow: 0px 4px 24px 0px rgba(10, 10, 10, 0.06);
 
 						.title {
 							color: #222;
@@ -11189,7 +11189,7 @@ body {
 								&:focus {
 									outline: none;
 									box-shadow: none;
-									border: 1px solid #7545BB;
+									border: 1px solid #7545bb;
 								}
 
 								&::placeholder {
@@ -11205,42 +11205,42 @@ body {
 							// 		display: none !important;
 							// 	}
 							// }
-						
-                            @media screen and (max-width: 1199px) {
-                                position: absolute;
-                                right: 30px;
-                                top: 80px;
-                                background: #fff;
-                                padding: 20px;
-                                box-shadow: 0px 4px 24px 0px rgba(10, 10, 10, 0.06);
-                                border: 1px solid #dcdcdc;
-                                border-radius: 4px;
-                                flex-direction: column;
-                                gap: 20px;
-                                align-items: flex-start !important;
-                                max-width: 250px;
-                                
-                                .select2-container {
-                                    width: 100% !important;
-                                }
-                                
-                                > div {
-                                    flex-direction: column;
-                                    align-items: flex-start !important;
-                                    
-                                    .everest-forms-btn-group {
-                                        width: 100%;
-                                        box-sizing: border-box;
-                                        
-                                        a {
-                                            width: 33.33%;
-                                            justify-content: center;
-                                        }
-                                    
-                                    }       
-                                }
-                            }
-                        }
+
+							@media screen and (max-width: 1199px) {
+								position: absolute;
+								right: 30px;
+								top: 80px;
+								background: #fff;
+								padding: 20px;
+								box-shadow: 0px 4px 24px 0px
+									rgba(10, 10, 10, 0.06);
+								border: 1px solid #dcdcdc;
+								border-radius: 4px;
+								flex-direction: column;
+								gap: 20px;
+								align-items: flex-start !important;
+								max-width: 250px;
+
+								.select2-container {
+									width: 100% !important;
+								}
+
+								> div {
+									flex-direction: column;
+									align-items: flex-start !important;
+
+									.everest-forms-btn-group {
+										width: 100%;
+										box-sizing: border-box;
+
+										a {
+											width: 33.33%;
+											justify-content: center;
+										}
+									}
+								}
+							}
+						}
 
 						// Filter Entries Toggle Option
 						#filter-toggle {
@@ -11467,16 +11467,16 @@ body {
 
 						.evf-entries-table-container {
 							.inner-container {
-                                .evf-entry-table-title {
-                                    span {
-                                        color: #222;
-                                        font-family: inherit;
-                                        font-size: 20px;
-                                        font-weight: 500;
-                                        line-height: 30px;
-                                    }
-                                }
-                                
+								.evf-entry-table-title {
+									span {
+										color: #222;
+										font-family: inherit;
+										font-size: 20px;
+										font-weight: 500;
+										line-height: 30px;
+									}
+								}
+
 								.entry-table-tabs {
 									ul {
 										margin-top: 0;
@@ -11535,116 +11535,116 @@ body {
 											&-container {
 												min-height: 38px;
 
-                                                &--open,
-                                                &--focus {
-                                                    .select2-selection {
-                                                        box-shadow: none;
-                                                        border-color: #7545BB;
-                                                    }
-                                                }
-                                            }
-							             }
-                                        
-                                        input[type="submit"] {
-                                            margin: 0;
-                                            letter-spacing: .2px;
-                                            
-                                            &#post-query-submit {
-                                                line-height: 20px;
-                                            }
-                                            
-                                            &#export-csv-submit {
-                                                line-height: 20px;
-                                            }
-                                        }
-                                    }
-                                    
-                                    #entries-list {
-                                        .search-box {
-                                            margin: 0;
-                                            position: relative;
-                                            
-                                            &::before {
-                                                content: "";
-                                                background-image: url("data:image/svg+xml,%3Csvg width='18' height='19' viewBox='0 0 18 19' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M8.25 3.58594C5.48858 3.58594 3.25 5.82451 3.25 8.58594C3.25 11.3474 5.48858 13.5859 8.25 13.5859C11.0114 13.5859 13.25 11.3474 13.25 8.58594C13.25 5.82451 11.0114 3.58594 8.25 3.58594ZM1.25 8.58594C1.25 4.71994 4.38401 1.58594 8.25 1.58594C12.116 1.58594 15.25 4.71994 15.25 8.58594C15.25 12.4519 12.116 15.5859 8.25 15.5859C4.38401 15.5859 1.25 12.4519 1.25 8.58594Z' fill='%23999999'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M11.7804 12.1163C12.1709 11.7258 12.8041 11.7258 13.1946 12.1163L16.4571 15.3788C16.8476 15.7694 16.8476 16.4025 16.4571 16.793C16.0666 17.1836 15.4334 17.1836 15.0429 16.793L11.7804 13.5305C11.3899 13.14 11.3899 12.5069 11.7804 12.1163Z' fill='%23999999'/%3E%3C/svg%3E%0A");
-                                                background-repeat: no-repeat;
-                                                background-position: center;
-                                                background-size: 100%;
-                                                width: 18px;
-                                                height: 18px;
-                                                position: absolute;
-                                                right: 12px;
-                                            }
-                                            
-                                            input {
-                                                &[type="search"] {
-                                                    min-height: 38px;
-                                                    min-width: 275px;
-                                                    margin-right: 0;
-                                                    padding: 6px 36px 6px 12px;
-                                                    color: #383838;
-                                                    
-                                                    &:focus {
-                                                        outline: none;
-                                                        box-shadow: none;
-                                                        border-color: #7545BB;
-                                                    }
-                                                    
-                                                    &::placeholder {
-                                                        color: #6B6B6B;
-                                                    }
-                                                }
-                                                
-                                                &[type="submit"] {
-                                                    display: none;
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                                
-                                .tablenav {
-                                    height: auto;
-                                    margin: 0;
-                                    padding: 0;
-                                    align-items: center;
-                                    width: 100%;
-                                    
-                                    .bulkactions {
-                                        padding-right: 0;
-                                        display: flex;
-                                        align-items: center;
-                                        gap: 8px;
-                                        
-                                        select {
-                                            margin-right: 0;
-                                            min-height: 38px;
-                                            min-width: 180px;
-                                            padding-left: 12px;
-                                            padding-right: 12px;
-                                            border-color: #BABABA;
-                                            
-                                            &:hover {
-                                                color: #475BB2;
-                                            }
-                                            
-                                            &:focus {
-                                                outline: none;
-                                                box-shadow: none;
-                                                border-color: #475BB2;
-                                                color: #475BB2;
-                                            }
-                                        }
-                                        
-                                        input[type="submit"] {
-                                            color: #475BB2;
-                                            font-size: 14px;
-                                            font-weight: 500;
-                                            line-height: 20px;
-                                            margin-right: 0;
-                                            padding: 8px 12px;
-                                        }
-                                    }
+												&--open,
+												&--focus {
+													.select2-selection {
+														box-shadow: none;
+														border-color: #7545bb;
+													}
+												}
+											}
+										}
+
+										input[type="submit"] {
+											margin: 0;
+											letter-spacing: 0.2px;
+
+											&#post-query-submit {
+												line-height: 20px;
+											}
+
+											&#export-csv-submit {
+												line-height: 20px;
+											}
+										}
+									}
+
+									#entries-list {
+										.search-box {
+											margin: 0;
+											position: relative;
+
+											&::before {
+												content: "";
+												background-image: url("data:image/svg+xml,%3Csvg width='18' height='19' viewBox='0 0 18 19' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M8.25 3.58594C5.48858 3.58594 3.25 5.82451 3.25 8.58594C3.25 11.3474 5.48858 13.5859 8.25 13.5859C11.0114 13.5859 13.25 11.3474 13.25 8.58594C13.25 5.82451 11.0114 3.58594 8.25 3.58594ZM1.25 8.58594C1.25 4.71994 4.38401 1.58594 8.25 1.58594C12.116 1.58594 15.25 4.71994 15.25 8.58594C15.25 12.4519 12.116 15.5859 8.25 15.5859C4.38401 15.5859 1.25 12.4519 1.25 8.58594Z' fill='%23999999'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M11.7804 12.1163C12.1709 11.7258 12.8041 11.7258 13.1946 12.1163L16.4571 15.3788C16.8476 15.7694 16.8476 16.4025 16.4571 16.793C16.0666 17.1836 15.4334 17.1836 15.0429 16.793L11.7804 13.5305C11.3899 13.14 11.3899 12.5069 11.7804 12.1163Z' fill='%23999999'/%3E%3C/svg%3E%0A");
+												background-repeat: no-repeat;
+												background-position: center;
+												background-size: 100%;
+												width: 18px;
+												height: 18px;
+												position: absolute;
+												right: 12px;
+											}
+
+											input {
+												&[type="search"] {
+													min-height: 38px;
+													min-width: 275px;
+													margin-right: 0;
+													padding: 6px 36px 6px 12px;
+													color: #383838;
+
+													&:focus {
+														outline: none;
+														box-shadow: none;
+														border-color: #7545bb;
+													}
+
+													&::placeholder {
+														color: #6b6b6b;
+													}
+												}
+
+												&[type="submit"] {
+													display: none;
+												}
+											}
+										}
+									}
+								}
+
+								.tablenav {
+									height: auto;
+									margin: 0;
+									padding: 0;
+									align-items: center;
+									width: 100%;
+
+									.bulkactions {
+										padding-right: 0;
+										display: flex;
+										align-items: center;
+										gap: 8px;
+
+										select {
+											margin-right: 0;
+											min-height: 38px;
+											min-width: 180px;
+											padding-left: 12px;
+											padding-right: 12px;
+											border-color: #bababa;
+
+											&:hover {
+												color: #475bb2;
+											}
+
+											&:focus {
+												outline: none;
+												box-shadow: none;
+												border-color: #475bb2;
+												color: #475bb2;
+											}
+										}
+
+										input[type="submit"] {
+											color: #475bb2;
+											font-size: 14px;
+											font-weight: 500;
+											line-height: 20px;
+											margin-right: 0;
+											padding: 8px 12px;
+										}
+									}
 
 									&-pages {
 										margin-bottom: 0;
@@ -11653,7 +11653,7 @@ body {
 											margin: 0;
 										}
 									}
-                                }
+								}
 
 								.evf-custom-table {
 									overflow-x: auto;
@@ -11665,71 +11665,71 @@ body {
 									width: 100%;
 									border-collapse: collapse;
 									min-width: 600px;
-                                    border-color: #dcdcdc;
-                                    box-shadow: none;
-                                    
-                                    thead,
-                                    tfoot {
-                                        tr,
-                                        td,
-                                        th {
-                                            border-color: #dcdcdc;    
-                                        }
-                                        
-                                        tr {
-                                            th {
-                                                a {
-                                                    display: flex;
-                                                    align-items: center;
-                                                    gap: 4px;
-                                                    color: #383838;
-                                                    font-weight: 500;
-                                                    
-                                                    .sorting-indicator {
-                                                        margin: 0;
-                                                    }
-                                                }
-                                                
-                                                &.column-more {
-                                                    width: 40px;
-                                                }
-                                            }
-                                        }
-                                    }
-                                    
-                                    tbody {
-                                        tr {
-                                            td {
-                                                font-weight: 400;
-                                                color: #383838;
-                                                padding-top: 12px;
-                                                padding-bottom: 12px;
-                                                
-                                                &.actions {
-                                                    a {
-                                                        // color: #475BB2;
-                                                    }
-                                                }
-                                            }
-                                            
-                                            &:nth-child(odd) {
-                                                background: #F6F7F7;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
+									border-color: #dcdcdc;
+									box-shadow: none;
+
+									thead,
+									tfoot {
+										tr,
+										td,
+										th {
+											border-color: #dcdcdc;
+										}
+
+										tr {
+											th {
+												a {
+													display: flex;
+													align-items: center;
+													gap: 4px;
+													color: #383838;
+													font-weight: 500;
+
+													.sorting-indicator {
+														margin: 0;
+													}
+												}
+
+												&.column-more {
+													width: 40px;
+												}
+											}
+										}
+									}
+
+									tbody {
+										tr {
+											td {
+												font-weight: 400;
+												color: #383838;
+												padding-top: 12px;
+												padding-bottom: 12px;
+
+												&.actions {
+													a {
+														// color: #475BB2;
+													}
+												}
+											}
+
+											&:nth-child(odd) {
+												background: #f6f7f7;
+											}
+										}
+									}
+								}
+							}
+						}
 
 						.everest-forms-single-survey-container {
-							.everest-forms-survey {        
+							.everest-forms-survey {
 								&-header {
 									margin: 0 0 30px;
 								}
-								
+
 								&-selection {
 									gap: 16px;
-									
+
 									h3 {
 										margin: 0 !important;
 										color: #222;
@@ -11737,18 +11737,18 @@ body {
 										font-weight: 500;
 										line-height: 30px;
 									}
-									
+
 									.survey-type-select {
 										margin-right: 0;
-										
+
 										.survey-type {
 											border-radius: 4px !important;
-											border: 1px solid #BABABA;
+											border: 1px solid #bababa;
 											padding: 0 12px !important;
 											min-height: 38px;
 										}
 									}
-									
+
 									.everest-forms-btn {
 										color: #fff;
 										font-size: 14px;
@@ -11756,455 +11756,457 @@ body {
 										line-height: 20px;
 										margin: 0;
 									}
-								}       
+								}
 							}
-							
-							 .evf-survey {
-									&-selection {
-										h3 {
-											margin: 0;
-											color: #222222;
-											font-size: 16px;
-											font-weight: 500;
-											line-height: 26px;
+
+							.evf-survey {
+								&-selection {
+									h3 {
+										margin: 0;
+										color: #222222;
+										font-size: 16px;
+										font-weight: 500;
+										line-height: 26px;
+									}
+								}
+
+								&-block {
+									.everest-forms-survey-selection {
+										#everest-forms-entried-summary-specific-field {
+											text-decoration: none;
+											width: 36px;
+											height: 36px;
+											background: #7545bb;
+											display: flex;
+											align-items: center;
+											justify-content: center;
+											border-radius: 3px;
+
+											span {
+												&::before {
+													color: #fff;
+												}
+											}
 										}
 									}
-								 
-								 &-block {
-									 .everest-forms-survey-selection {
-										 #everest-forms-entried-summary-specific-field {
-											 text-decoration: none;
-											 width: 36px;
-											 height: 36px;
-											 background: #7545BB;
-											 display: flex;
-											 align-items: center;
-											 justify-content: center;
-											 border-radius: 3px;
-											 
-											 span {
-												 &::before {
-													 color: #fff;
-												 }
-											 }
-										 }
-									 }
-									 
-									 .survey-block {
-										 &-average-overview {
-											 display: grid !important;
-											 grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-											 gap: 24px !important;
-											 width: 100%;
-										 
-										 .box-wrap {
-											margin: 0;
-											 
-											 .response-detail {
-												 padding: 0;
-												 
-												 .icon {
-													 padding: 0 !important;
-													 
-													 svg {
-														 width: 28px !important;
-														 height: 28px !important;
-													 }
-												 }
-												 
-												 .count {
-													 gap: 8px;
-													 
-													 p {
-														 color: #222222;
-														 font-size: 18px;
-														 font-weight: 500;
-														 line-height: 26px;
-														 margin: 0;
-													 }
-													 
-													 strong {
-														 margin-bottom: 0;
-														 color: #222222;
+
+									.survey-block {
+										&-average-overview {
+											display: grid !important;
+											grid-template-columns: repeat(
+												auto-fit,
+												minmax(320px, 1fr)
+											);
+											gap: 24px !important;
+											width: 100%;
+
+											.box-wrap {
+												margin: 0;
+
+												.response-detail {
+													padding: 0;
+
+													.icon {
+														padding: 0 !important;
+
+														svg {
+															width: 28px !important;
+															height: 28px !important;
+														}
+													}
+
+													.count {
+														gap: 8px;
+
+														p {
+															color: #222222;
+															font-size: 18px;
+															font-weight: 500;
+															line-height: 26px;
+															margin: 0;
+														}
+
+														strong {
+															margin-bottom: 0;
+															color: #222222;
 															font-size: 26px;
 															font-weight: 600;
 															line-height: 26px;
-													 }
-												 }
-											 }
-										 }
-										 }
-										 
-										 &-statistic-overview {
-											 flex-direction: row !important;
-											 border: 2px solid #f2f2f2;
-											 gap: 0 !important;
-											 
-											 .survey-block-chart-content {
-												 padding: 24px 36px 24px 24px;
-												 text-align: right !important;
-												 border-right: 2px solid #f2f2f2;
-												 
-												 .chart-tab-action {
-													 display: inline-block;
-													 padding: 0;
-													 border-bottom: 0;
-													 background: #f4f4f4;
-													 border-radius: 4px;
-													 padding: 4px;
-													 gap: 4px;
-													 
-													 button {
-														 width: auto;
-														 height: auto;
-														 margin: 0;
-														 padding: 4px 12px;
-														 background: transparent;
-														 
-														 svg {
-															 display: flex;
-														 }
-														 
-														 &:hover {
-															 svg {
-																 fill: #7545bb;
-															 }
-														 }
-														 
-														 &.current-tab-active {
-															 background: #fff;
-															 
-															 svg {
-																 fill: #7545bb;
-															 }
-														 }
-													 }
-												 }
-											 }
-											 
-											 .everest-forms-survey-summary {
-												 width: 40%;
-												 padding: 24px;
-												 
-												 .summary-chart-wrapper {
-													 border: 0;
-													 
-													 .summary-chart-header {
-														 padding: 0 0 12px;
-														 background: none;
-														 border-color: #dcdcdc;
-														 font-size: 16px;
-														 line-height: 26px;
-														 color: #222222;
-														 font-weight: 500;
-													 }
-												 }
-											 }
-										 }
-									 }
-								 }
+														}
+													}
+												}
+											}
+										}
+
+										&-statistic-overview {
+											flex-direction: row !important;
+											border: 2px solid #f2f2f2;
+											gap: 0 !important;
+
+											.survey-block-chart-content {
+												padding: 24px 36px 24px 24px;
+												text-align: right !important;
+												border-right: 2px solid #f2f2f2;
+
+												.chart-tab-action {
+													display: inline-block;
+													padding: 0;
+													border-bottom: 0;
+													background: #f4f4f4;
+													border-radius: 4px;
+													padding: 4px;
+													gap: 4px;
+
+													button {
+														width: auto;
+														height: auto;
+														margin: 0;
+														padding: 4px 12px;
+														background: transparent;
+
+														svg {
+															display: flex;
+														}
+
+														&:hover {
+															svg {
+																fill: #7545bb;
+															}
+														}
+
+														&.current-tab-active {
+															background: #fff;
+
+															svg {
+																fill: #7545bb;
+															}
+														}
+													}
+												}
+											}
+
+											.everest-forms-survey-summary {
+												width: 40%;
+												padding: 24px;
+
+												.summary-chart-wrapper {
+													border: 0;
+
+													.summary-chart-header {
+														padding: 0 0 12px;
+														background: none;
+														border-color: #dcdcdc;
+														font-size: 16px;
+														line-height: 26px;
+														color: #222222;
+														font-weight: 500;
+													}
+												}
+											}
+										}
+									}
 								}
+							}
 						}
 					}
 				}
 			}
-            
-            .evf-view-entry-container,
-            .evf-edit-entry-container {
-                margin: 0;
-                gap: 0;
-                
-                .view-entry-header,
-                .edit-entry-header {
-                    display: flex;
-                    align-items: center;
-                    padding: 28px 36px;
-                    align-items: center;
-                    background: #fff;
-                    width: 100%;
-                    box-shadow: 0px 4px 24px 0px rgba(10, 10, 10, 0.06);
-                    border-bottom: 1px solid #f2f2f2;
-                    z-index: 5;
-                    border-radius: 0px;
-                    gap: 20px;
-                    
-                    a.page-title-action {
-                        margin-left: 0;
-                        width: 40px;
-                        height: 40px;
-                        padding: 0;
-                        top: 0;
-                        border-width: 1.5px;
-                        gap: 0;
-                        
-                        svg {
-                            width: 16px;
-                            height: 16px;
-                        }
-                    }
-                    
-                    h1 {
-                        margin: 0;
-                        padding: 0;
-                        line-height: 36px;
-                    }
-                    
-                    hr {
-                        display: none;
-                    }
-                }
-                
-                .everest-forms-entry {
-                    padding: 36px;
-                    
-                    .view-table,
-                    .edit-table {
-                        padding: 40px;
+
+			.evf-view-entry-container,
+			.evf-edit-entry-container {
+				margin: 0;
+				gap: 0;
+
+				.view-entry-header,
+				.edit-entry-header {
+					display: flex;
+					align-items: center;
+					padding: 28px 36px;
+					align-items: center;
+					background: #fff;
+					width: 100%;
+					box-shadow: 0px 4px 24px 0px rgba(10, 10, 10, 0.06);
+					border-bottom: 1px solid #f2f2f2;
+					z-index: 5;
+					border-radius: 0px;
+					gap: 20px;
+
+					a.page-title-action {
+						margin-left: 0;
+						width: 40px;
+						height: 40px;
+						padding: 0;
+						top: 0;
+						border-width: 1.5px;
+						gap: 0;
+
+						svg {
+							width: 16px;
+							height: 16px;
+						}
+					}
+
+					h1 {
+						margin: 0;
+						padding: 0;
+						line-height: 36px;
+					}
+
+					hr {
+						display: none;
+					}
+				}
+
+				.everest-forms-entry {
+					padding: 36px;
+
+					.view-table,
+					.edit-table {
+						padding: 40px;
 						flex: 1;
-                        
-                        #poststuff {
-                            padding: 0;
-                            
-                            #post-body-content {
-                                display: flex;
-                                flex-direction: column;
-                                gap: 32px;
-                                margin-bottom: 24px;
-                                
-                                #everest-forms-entry-fields,
-                                #everest-forms-entry-geolocation {
-                                    border: 1px solid #dcdcdc;
-                                    
-                                    h2 {
-                                        padding: 20px 16px;
-                                        border-radius: 5px 5px 0px 0px;
-                                        background: #ffffff;
-                                        border-bottom: 1px solid #dcdcdc;
-                                        
-                                        span {
-                                            color: #383838;
-                                            font-size: 16px;
-                                            font-weight: 500;
-                                            line-height: 24px;
-                                        }
-                                        
-                                        a {
-                                            font-size: 13px;
-                                            font-weight: 500;
-                                            line-height: 24px;
-                                            padding: 0;
-                                        }
-                                    }
-                                    
-                                    .inside {
-                                        table.wp-list-table {
-                                            border-radius: 5px;
-                                            box-shadow: none;
-                                            
-                                            tbody {
-                                                tr {
-                                                    th {
-                                                        display: table-cell;
-                                                        width: 350px;
-                                                        padding: 20px 16px;
-                                                        color: #383838;
-                                                        font-size: 14px;
-                                                        font-weight: 500;
-                                                        line-height: 24px;
-                                                        border-bottom: 0;
-                                                    }
-                                                    
-                                                    td {
-                                                        vertical-align: middle;
-                                                        color: #383838;
-                                                        font-size: 14px;
-                                                        font-weight: 400;
-                                                        line-height: 24px;
-                                                    }
-                                                    
-                                                    &:nth-child(odd) {
-                                                        background: #F6F7F7;
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                    
-                                    &.stuffbox {
-                                        margin-bottom: 0;
-                                    }
-                                }
-                            }
-                            
-                            #evf-entry-nav-buttons {
-                                padding: 0;
-                            }
-                        }
-                    }
-                    
-                    .postbox-container {
-                        width: 420px;
-                        
-                        #everest-forms-entry-details,
-                        #everest-forms-entry-actions {
-                            width: 100%;
-                            
-                            .title {
-                                padding: 0 0 12px 0;
-                                margin-bottom: 12px;
-                                
-                                h2 {
-                                    color: #383838;
-                                    font-size: 15px;
-                                    font-weight: 500;
-                                    line-height: 25px;
-                                    margin: 0;
-                                    padding-left: 4px;
-                                }
-                            }
-                            
-                            .inside {
-                                width: 100%;
-                                
-                                .everest-forms-entry-details-meta,
-                                .everest-forms-entry-actions-meta {
-                                    p {
-                                        margin: 0;
-                                        padding: 8px 4px;
-                                        font-size: 14px;
-                                        line-height: 24px;
 
-                                        span {
-                                            margin-right: 6px;
-                                            
-                                            &::before {
-                                                color: #999999;
-                                            }
-                                        }
-                                    }
-                                }
-                                    
-                                #major-publishing-actions {
-                                    margin-top: 12px;
-                                    border-top: 1px solid #dcdcdc;
-                                    display: flex;
-                                    align-items: center;
-                                    justify-content: space-between;
-                                    flex-direction: row-reverse;
-                                    background: #fff;
-                                    padding: 16px 4px 0px 4px;
+						#poststuff {
+							padding: 0;
 
-                                    .clear {
-                                        display: none;
-                                    }
-                                }                                
-                            }
-                        }
-                        
-                        #everest-forms-entry-actions {
-                            gap: 0;
-                            
-                            .inside {
-                                .everest-forms-entry-actions-meta {
-                                    p {
-                                        a {
-                                            color: #2271b1;
-                                            text-decoration: none;
-                                            font-size: 14px;
-                                            line-height: 24px;
-                                            
-                                            &:hover {
-                                                text-decoration: underline;    
-                                            }
-                                            
-                                            span {
-                                                text-decoration: none;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            
-            .evf-edit-entry-container {
-                .everest-forms-entry {
-                    .edit-table {
-                        .everest-forms-edit-entry-container {
-                            #post-body-content {
-                                margin-bottom: 0 !important;    
-                            }
-                            
-                            #everest-forms-entry-fields {
-                                border: 0 !important;
-                                
-                                .postbox-header {
-                                    border-bottom: 0;
-                                }
-                                
-                                .evf-field-container {
-                                    table.wp-list-table {
-                                        tbody {
-                                            tr {
-                                                th {
-                                                    
-                                                }
-                                                
-                                                td {
-                                                    .evf-field {
-                                                        padding: 0;
-                                                        margin: 0;
-                                                        
-                                                        &:has(textarea) {
-                                                            padding: 12px 0;
-                                                        }
-                                                        
-                                                        textarea {
-                                                            margin-bottom: 0;
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    
-                    .postbox-container {
-                        .everest-forms-entry-details {
-                            h2 {
-                                margin: 0;
-                                color: #383838;
-                                font-size: 15px;
-                                font-weight: 500;
-                                line-height: 25px;
-                                margin: 0 0 12px;
-                                padding-left: 4px;
-                            }
-                            
-                            .inside {
-                                padding: 0;
-                                
-                                #major-publishing-actions {
-                                    #publishing-action {
-                                        gap: 8px;
-                                        
-                                        .button {
-                                            font-size: 13px;
-                                            line-height: 24px;
-                                            padding: 6px 16px;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+							#post-body-content {
+								display: flex;
+								flex-direction: column;
+								gap: 32px;
+								margin-bottom: 24px;
+
+								#everest-forms-entry-fields,
+								#everest-forms-entry-geolocation {
+									border: 1px solid #dcdcdc;
+
+									h2 {
+										padding: 20px 16px;
+										border-radius: 5px 5px 0px 0px;
+										background: #ffffff;
+										border-bottom: 1px solid #dcdcdc;
+
+										span {
+											color: #383838;
+											font-size: 16px;
+											font-weight: 500;
+											line-height: 24px;
+										}
+
+										a {
+											font-size: 13px;
+											font-weight: 500;
+											line-height: 24px;
+											padding: 0;
+										}
+									}
+
+									.inside {
+										table.wp-list-table {
+											border-radius: 5px;
+											box-shadow: none;
+
+											tbody {
+												tr {
+													th {
+														display: table-cell;
+														width: 350px;
+														padding: 20px 16px;
+														color: #383838;
+														font-size: 14px;
+														font-weight: 500;
+														line-height: 24px;
+														border-bottom: 0;
+													}
+
+													td {
+														vertical-align: middle;
+														color: #383838;
+														font-size: 14px;
+														font-weight: 400;
+														line-height: 24px;
+													}
+
+													&:nth-child(odd) {
+														background: #f6f7f7;
+													}
+												}
+											}
+										}
+									}
+
+									&.stuffbox {
+										margin-bottom: 0;
+									}
+								}
+							}
+
+							#evf-entry-nav-buttons {
+								padding: 0;
+							}
+						}
+					}
+
+					.postbox-container {
+						width: 420px;
+
+						#everest-forms-entry-details,
+						#everest-forms-entry-actions {
+							width: 100%;
+
+							.title {
+								padding: 0 0 12px 0;
+								margin-bottom: 12px;
+
+								h2 {
+									color: #383838;
+									font-size: 15px;
+									font-weight: 500;
+									line-height: 25px;
+									margin: 0;
+									padding-left: 4px;
+								}
+							}
+
+							.inside {
+								width: 100%;
+
+								.everest-forms-entry-details-meta,
+								.everest-forms-entry-actions-meta {
+									p {
+										margin: 0;
+										padding: 8px 4px;
+										font-size: 14px;
+										line-height: 24px;
+
+										span {
+											margin-right: 6px;
+
+											&::before {
+												color: #999999;
+											}
+										}
+									}
+								}
+
+								#major-publishing-actions {
+									margin-top: 12px;
+									border-top: 1px solid #dcdcdc;
+									display: flex;
+									align-items: center;
+									justify-content: space-between;
+									flex-direction: row-reverse;
+									background: #fff;
+									padding: 16px 4px 0px 4px;
+
+									.clear {
+										display: none;
+									}
+								}
+							}
+						}
+
+						#everest-forms-entry-actions {
+							gap: 0;
+
+							.inside {
+								.everest-forms-entry-actions-meta {
+									p {
+										a {
+											color: #2271b1;
+											text-decoration: none;
+											font-size: 14px;
+											line-height: 24px;
+
+											&:hover {
+												text-decoration: underline;
+											}
+
+											span {
+												text-decoration: none;
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+
+			.evf-edit-entry-container {
+				.everest-forms-entry {
+					.edit-table {
+						.everest-forms-edit-entry-container {
+							#post-body-content {
+								margin-bottom: 0 !important;
+							}
+
+							#everest-forms-entry-fields {
+								border: 0 !important;
+
+								.postbox-header {
+									border-bottom: 0;
+								}
+
+								.evf-field-container {
+									table.wp-list-table {
+										tbody {
+											tr {
+												th {
+												}
+
+												td {
+													.evf-field {
+														padding: 0;
+														margin: 0;
+
+														&:has(textarea) {
+															padding: 12px 0;
+														}
+
+														textarea {
+															margin-bottom: 0;
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+
+					.postbox-container {
+						.everest-forms-entry-details {
+							h2 {
+								margin: 0;
+								color: #383838;
+								font-size: 15px;
+								font-weight: 500;
+								line-height: 25px;
+								margin: 0 0 12px;
+								padding-left: 4px;
+							}
+
+							.inside {
+								padding: 0;
+
+								#major-publishing-actions {
+									#publishing-action {
+										gap: 8px;
+
+										.button {
+											font-size: 13px;
+											line-height: 24px;
+											padding: 6px 16px;
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
 		}
 	}
 }
@@ -12233,68 +12235,67 @@ body {
 	}
 }
 
-
 // surveys and polls CSS
 body {
-    &.everest-forms_page_evf-entries {
-        #screen-meta-links {
-            display: none;
-        }
-        
-        .everest-forms {
-            .full-survey-entries-header {       
-                margin-bottom: 0;
-                
-                .everest-forms-btn {
-                    &-link {
-                        width: 40px;
-                        height: 40px;
-                        padding: 0;
-                    }
-                    
-                    &-primary {
-                        margin-left: auto;
-                        background: #7545BB;
-                        border-color: #7545BB;
-                        padding: 8px 16px;
-                        color: #fff;
-                        font-size: 14px;
-                        line-height: 24px;
-                    }
-                }
-            }
-            
-            &-settings {
-                padding: 36px !important;
-                width: 100%;
-                
-                &-wrapper {
-                    .everest-forms-header {
-                        border-right: 0;
-                        padding: 0;
-                        background: #fff;
-                        position: sticky;
-                        top: 24px;
-                        height: max-content;
-                        
-                        &--top {
-                            padding: 24px 20px;
-                            
-                            select {
-                                width: 100%;
-                                min-height: 38px;
-                                padding: 0 12px;
-                                border-radius: 4px;
-                                border: 1px solid #BABABA;
-                                color: #383838;
-                                
-                                &:focus {
-                                    box-shadow: none;
-                                    outline: none;
-                                    border-color: #7545BB;
-                                }
-                            }
-                        }
+	&.everest-forms_page_evf-entries {
+		#screen-meta-links {
+			display: none;
+		}
+
+		.everest-forms {
+			.full-survey-entries-header {
+				margin-bottom: 0;
+
+				.everest-forms-btn {
+					&-link {
+						width: 40px;
+						height: 40px;
+						padding: 0;
+					}
+
+					&-primary {
+						margin-left: auto;
+						background: #7545bb;
+						border-color: #7545bb;
+						padding: 8px 16px;
+						color: #fff;
+						font-size: 14px;
+						line-height: 24px;
+					}
+				}
+			}
+
+			&-settings {
+				padding: 36px !important;
+				width: 100%;
+
+				&-wrapper {
+					.everest-forms-header {
+						border-right: 0;
+						padding: 0;
+						background: #fff;
+						position: sticky;
+						top: 24px;
+						height: max-content;
+
+						&--top {
+							padding: 24px 20px;
+
+							select {
+								width: 100%;
+								min-height: 38px;
+								padding: 0 12px;
+								border-radius: 4px;
+								border: 1px solid #bababa;
+								color: #383838;
+
+								&:focus {
+									box-shadow: none;
+									outline: none;
+									border-color: #7545bb;
+								}
+							}
+						}
 
 						&--nav {
 							.nav-tab-wrapper {
@@ -12307,138 +12308,152 @@ body {
 								}
 							}
 						}
-                    }
-                }
-                
-                &-container {
-                    border-left: 1px solid #ededed;
-                    background: #FAFAFA;
+					}
+				}
+
+				&-container {
+					border-left: 1px solid #ededed;
+					background: #fafafa;
 					padding-top: 0 !important;
-                    
-                    .everest-forms-survey-single-field-container {
+
+					.everest-forms-survey-single-field-container {
 						padding-top: 32px;
 
-                        .field_type {
-                            h1 {
-                                padding: 0 0 24px;
-                                border-bottom: 1px solid #EEE8F7;
-                                color: #383838;
-                                font-size: 24px;
-                                font-weight: 600;
-                                line-height: 36px;
-                                margin-bottom: 32px;
-                            }
-                        }
-                        
-                        .evf-survey {
-                            &-block {
-                                display: flex;
-                                flex-direction: column;
-                                gap: 28px;
-                                border-radius: 8px;
-                                border: 2px solid #F2F2F2;
-                                background: #FFF;
-                                padding: 32px 40px 40px 40px;
-                                
-                                .survey-block-average-overview {
-                                    gap: 24px;
-                                    
-                                    .box-wrap {
-                                        margin: 0;
-                                        border-radius: 0px;
-                                        border: 0;
-                                        
-                                        .response-detail {
-                                            width: 100%;
-                                            flex-direction: row;
-                                            align-items: center;
-                                            padding: 32px 24px;
-                                            border-radius: 8px;
-                                            border: 2px solid #F2F2F2;
-                                            background: #FFF;
-                                            gap: 20px;
-                                            
-                                            .icon {
-                                                width: 60px;
-                                                height: 60px;
-                                                border-radius: 6px;
-                                                background: #EEE8F7;
-                                                display: flex;
-                                                align-items: center;
-                                                justify-content: center;
-                                                
-                                                svg {
-                                                    width: 30px;
-                                                    height: 30px;
-                                                }
-                                            }
-                                            
-                                            .count {
-                                                display: flex;
-                                                flex-direction: column;
-                                                gap: 8px;
-                                                
-                                                p {
-                                                    color: #383838;
-                                                    font-size: 18px;
-                                                    font-weight: 500;
-                                                    line-height: 22px;
-                                                    margin: 0;
-                                                }
-                                                
-                                                strong {
-                                                    color: #383838;
-                                                    font-size: 28px;
-                                                    font-weight: 600;
-                                                    line-height: 30px;
-                                                    margin: 0;
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                                
-                                .survey-block-statistic-overview {
-                                    border: 2px solid #F2F2F2;
-                                    
-                                    // &:has(table) {
-                                    //     border: 0;
-                                        
-                                    //     .everest-forms-survey-summary {
-                                    //         padding: 0;
-                                    //     }
-                                    // }
-                                    
-                                    .everest-forms-survey-summary {                                        
-                                        table {
-                                            border: 1px solid #dcdcdc;
-                                            
-                                            thead {
-                                                tr {
-                                                    th {
-                                                        border-bottom-color: #dcdcdc;
-                                                        background: #fff;
-                                                    }
-                                                }
-                                            }
-                                            
-                                            tbody {
-                                                tr {
-                                                    &:nth-child(odd) {
-                                                        th,
-                                                        td {
-                                                            background: #F6F7F7;                                                            
-                                                        }
-                                                    }
-                                                    
-                                                    &:nth-child(even) {
-                                                        th,
-                                                        td {
-                                                            background: #fff;
-                                                        }
-                                                    }
-                                                }
-                                            }
+						.field_type {
+							display: flex;
+							align-items: flex-start;
+							gap: 16px;
+							align-self: stretch;
+							border-bottom: 1px solid #eee8f7;
+
+							.field_type_icon {
+								display: flex;
+								width: 40px;
+								height: 40px;
+								padding: 9.5px 10px 10.5px 10px;
+								justify-content: center;
+								align-items: center;
+							}
+							h1 {
+								padding: 0 0 24px;
+								border-bottom: 1px solid #eee8f7;
+								color: #383838;
+								font-size: 24px;
+								font-weight: 600;
+								line-height: 36px;
+								margin-bottom: 32px;
+							}
+						}
+
+						.evf-survey {
+							&-block {
+								display: flex;
+								flex-direction: column;
+								gap: 28px;
+								border-radius: 8px;
+								border: 2px solid #f2f2f2;
+								background: #fff;
+								padding: 32px 40px 40px 40px;
+
+								.survey-block-average-overview {
+									gap: 24px;
+
+									.box-wrap {
+										margin: 0;
+										border-radius: 0px;
+										border: 0;
+
+										.response-detail {
+											width: 100%;
+											flex-direction: row;
+											align-items: center;
+											padding: 32px 24px;
+											border-radius: 8px;
+											border: 2px solid #f2f2f2;
+											background: #fff;
+											gap: 20px;
+
+											.icon {
+												width: 60px;
+												height: 60px;
+												border-radius: 6px;
+												background: #eee8f7;
+												display: flex;
+												align-items: center;
+												justify-content: center;
+
+												svg {
+													width: 30px;
+													height: 30px;
+												}
+											}
+
+											.count {
+												display: flex;
+												flex-direction: column;
+												gap: 8px;
+
+												p {
+													color: #383838;
+													font-size: 18px;
+													font-weight: 500;
+													line-height: 22px;
+													margin: 0;
+												}
+
+												strong {
+													color: #383838;
+													font-size: 28px;
+													font-weight: 600;
+													line-height: 30px;
+													margin: 0;
+												}
+											}
+										}
+									}
+								}
+
+								.survey-block-statistic-overview {
+									border: 2px solid #f2f2f2;
+
+									// &:has(table) {
+									//     border: 0;
+
+									//     .everest-forms-survey-summary {
+									//         padding: 0;
+									//     }
+									// }
+
+									.everest-forms-survey-summary {
+										table {
+											border: 1px solid #dcdcdc;
+
+											thead {
+												tr {
+													th {
+														border-bottom-color: #dcdcdc;
+														background: #fff;
+													}
+												}
+											}
+
+											tbody {
+												tr {
+													&:nth-child(odd) {
+														th,
+														td {
+															background: #f6f7f7;
+														}
+													}
+
+													&:nth-child(even) {
+														th,
+														td {
+															background: #fff;
+														}
+													}
+												}
+											}
 
 											&:not(.evf-likert-chart-table) {
 												thead,
@@ -12456,120 +12471,121 @@ body {
 													}
 												}
 											}
-                                        }
-                                    }
-                                    
-                                    .survey-block-chart-content {
-                                        padding: 0;
-                                        border: 0;
-                                        padding: 24px 36px 24px 24px;
-                                        text-align: right !important;
-                                        border-right: 2px solid #f2f2f2;
-                                        
-                                        .chart-tab-action {
-                                            border: 0;
-                                            padding: 0;
-                                            background: #f4f4f4;
-                                            border-radius: 4px;
-                                            padding: 4px;
-                                            gap: 4px;
+										}
+									}
+
+									.survey-block-chart-content {
+										padding: 0;
+										border: 0;
+										padding: 24px 36px 24px 24px;
+										text-align: right !important;
+										border-right: 2px solid #f2f2f2;
+
+										.chart-tab-action {
+											border: 0;
+											padding: 0;
+											background: #f4f4f4;
+											border-radius: 4px;
+											padding: 4px;
+											gap: 4px;
 											width: max-content;
 											margin-left: auto;
-                                            
-                                            button {
-                                                width: auto;
-                                                height: auto;
-                                                padding: 4px 12px;
-                                                background: transparent;
-                                                margin: 0;
-                                                
-                                                svg {
-                                                    display: flex;
-                                                    width: 20px;
-                                                    height: 20px;
-                                                    fill: #6c7680;
-                                                    transition: all .25s ease 0s;
-                                                }
-                                                
-                                                &:hover {
-                                                    svg {
-                                                        fill: #7545bb;
-                                                    }
-                                                }
-                                                
-                                                &.current-tab-active {
-                                                    background: #fff;
-                                                    
-                                                    svg {
-                                                        fill: #7545bb;
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                    
-                                    .everest-forms-survey-summary {
-                                        width: 40%;
-                                        padding: 24px;
+
+											button {
+												width: auto;
+												height: auto;
+												padding: 4px 12px;
+												background: transparent;
+												margin: 0;
+
+												svg {
+													display: flex;
+													width: 20px;
+													height: 20px;
+													fill: #6c7680;
+													transition: all 0.25s ease
+														0s;
+												}
+
+												&:hover {
+													svg {
+														fill: #7545bb;
+													}
+												}
+
+												&.current-tab-active {
+													background: #fff;
+
+													svg {
+														fill: #7545bb;
+													}
+												}
+											}
+										}
+									}
+
+									.everest-forms-survey-summary {
+										width: 40%;
+										padding: 24px;
 										display: block;
-                                        
-                                        .summary-chart-wrapper {
-                                            border: 0;
-                                            
-                                            .summary-chart-header {
-                                                padding: 0 0 12px;
-                                                background: none;
-                                                border-color: #dcdcdc;
-                                                font-size: 16px;
-                                                line-height: 26px;
-                                                color: #222222;
-                                                font-weight: 500;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            
-                            &-header {
-                                display: flex;
-                                align-items: center;
-                                justify-content: space-between;
-                                
-                                .everest-forms-survey-selection {
-                                    a {
-                                        text-decoration: none;
-                                        width: 36px;
-                                        height: 36px;
-                                        background: red;
-                                        display: flex;
-                                        align-items: center;
-                                        justify-content: center;
-                                        border-radius: 3px;
-                                        border: 1px solid #7545BB;
-                                        background: #7545BB;
-                                        
-                                        span {
-                                            &::before {
-                                                color: #fff;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            
-                            &-selection {
-                                h3 {
-                                    color: #383838;
-                                    font-size: 18px;
-                                    font-weight: 600;
-                                    line-height: 28px;
-                                    margin: 0;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
+
+										.summary-chart-wrapper {
+											border: 0;
+
+											.summary-chart-header {
+												padding: 0 0 12px;
+												background: none;
+												border-color: #dcdcdc;
+												font-size: 16px;
+												line-height: 26px;
+												color: #222222;
+												font-weight: 500;
+											}
+										}
+									}
+								}
+							}
+
+							&-header {
+								display: flex;
+								align-items: center;
+								justify-content: space-between;
+
+								.everest-forms-survey-selection {
+									a {
+										text-decoration: none;
+										width: 36px;
+										height: 36px;
+										background: red;
+										display: flex;
+										align-items: center;
+										justify-content: center;
+										border-radius: 3px;
+										border: 1px solid #7545bb;
+										background: #7545bb;
+
+										span {
+											&::before {
+												color: #fff;
+											}
+										}
+									}
+								}
+							}
+
+							&-selection {
+								h3 {
+									color: #383838;
+									font-size: 18px;
+									font-weight: 600;
+									line-height: 28px;
+									margin: 0;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 }
