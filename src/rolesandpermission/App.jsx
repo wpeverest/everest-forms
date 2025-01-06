@@ -7,7 +7,6 @@ const App = () => {
 	return (
 		<ChakraProvider>
 			<Stack padding={"28px 32px"} backgroundColor={"#FFFFFF"} borderRadius={"7px"} direction={"column"}>
-				<RoleBased/>
 				<UserRoleTable/>
 			</Stack>
 		</ChakraProvider>

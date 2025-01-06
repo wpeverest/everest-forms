@@ -24,7 +24,7 @@ import { Select } from "chakra-react-select";
 import { __ } from "@wordpress/i18n";
 import { addManagerRole } from "./RoleAndPermissionAPI";
 
-const UserDisplayModal = ({ wp_roles, context = "", value = {} }) => {
+const UserDisplayModal = ({ wp_roles, context = "", value = {}, setUserAdded=false }) => {
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const [userEmail, setUserEmail] = useState("");
 	const [permissions, setPermissions] = useState([]);
@@ -70,6 +70,7 @@ const UserDisplayModal = ({ wp_roles, context = "", value = {} }) => {
 				);
 				setErrors(errorList);
 			} else {
+				setUserAdded(true);
 				onClose();
 				toast({
 					title: res.message,

@@ -19,6 +19,12 @@ import UserDisplayModal from './UserDisplayModal';
 import { debounce } from "lodash";
 
 const UserRoleTable = () => {
+
+	const [isAllChecked, setIsAllChecked] = useState(false);
+	const [evfPermission, setEvfPermission] = useState([]);
+	const [checkedItems, setCheckedItems] = useState({});
+	const [firstLoad,setFirstLoad] = useState(true);
+
 	const [managers, setManagers] = useState([]);
 	const [permissions, setPermissions] = useState([]);
 	const [wpRoles, setWPRoles] = useState([]);
@@ -27,6 +33,7 @@ const UserRoleTable = () => {
 	const [bulkDelete, setBulkDelete] = useState(false);
 	const [bulkDeleteSuccess, setBulkDeleteSuccess] = useState();
 	const [searchManager, setSearchManager] = useState("");
+	const [userAdded, setUserAdded] = useState(false);
 	const toast = useToast();
 
 	const [totalManagers, setTotalManagers] = useState(0);
@@ -80,13 +87,14 @@ const UserRoleTable = () => {
 	useEffect(()=>{
 		getManagers( offset, pageSize, searchManager ).then((res)=> {
 			if ( res.success ) {
+				setUserAdded(false);
 				setManagers( res.managers );
 				setTotalManagers(res.total)
 				setPermissions( res.permissions.permissions);
 			}
 
 		})
-	},[currentPage, pageSize, offset, userDeleted, bulkDeleteSuccess, searchManager]);
+	},[currentPage, pageSize, offset, userDeleted, bulkDeleteSuccess, searchManager, userAdded]);
 
 	useEffect(() => {
 	  getWPRoles().then((res) => {
@@ -123,6 +131,76 @@ const UserRoleTable = () => {
 
 	const isAllSelected = managers.length > 0 && selectedRows.length === managers.length;
 	const isIndeterminate = selectedRows.length > 0 && selectedRows.length < managers.length;
+
+	const handleCheckAll = (e) => {
+		setFirstLoad(false);
+		const checked = e.target.checked;
+		setIsAllChecked(checked);
+
+		const updatedCheckedItems = Object.keys(wpRoles).reduce((acc, role) => {
+		  acc[role] = checked;
+		  return acc;
+		}, {});
+
+		setCheckedItems(updatedCheckedItems);
+
+		bulkAssignPermission(updatedCheckedItems).then((res) => {
+		  if (res.success) {
+			toast({
+			  title: res.message,
+			  status: "success",
+			  duration: 3000,
+			});
+		  } else {
+			toast({
+			  title: res.message || "Something went wrong",
+			  status: "error",
+			  duration: 3000,
+			});
+		  }
+		});
+	  };
+
+	  const handleIndividualCheck = (role, isChecked) => {
+		setFirstLoad(false);
+		const updatedCheckedItems = {
+		  ...checkedItems,
+		  [role]: isChecked,
+		};
+		setCheckedItems(updatedCheckedItems);
+
+		bulkAssignPermission(updatedCheckedItems).then((res) => {
+		  if (res.success) {
+			toast({
+			  title: res.message,
+			  status: "success",
+			  duration: 3000,
+			});
+		  } else {
+			toast({
+			  title: res.message || "Something went wrong",
+			  status: "error",
+			  duration: 3000,
+			});
+		  }
+		});
+
+		const allChecked = Object.values(updatedCheckedItems).every((item) => item);
+		setIsAllChecked(allChecked);
+	  };
+
+	  useEffect(() => {
+		getWPRoles().then((res) => {
+		  setWPRoles(res.data.roles);
+		  setEvfPermission(res.data.permission.permissions);
+
+		  const initialCheckedItems = Object.keys(res.data.roles).reduce((acc, role) => {
+			acc[role] = res.data.roles[role].checked;
+			return acc;
+		  }, {});
+		  setCheckedItems(initialCheckedItems);
+		});
+	  }, []);
 
 	const handleBulkDelete = () => {
 
@@ -162,6 +240,46 @@ const UserRoleTable = () => {
 
 	return (
 	  <Stack gap={"20px"}>
+		{/* Role Based */}
+		<Box>
+			<Flex justifyContent={"space-between"}>
+				<Stack>
+				<Text fontSize={"16px"} fontWeight="bold" height={"21px"} margin={"0"}>
+					Role Based
+				</Text>
+				<Text fontSize={"14px"} fontWeight="normal" height={"21px"} margin={"0"}>
+					By selecting additional roles below, you can give access to other user roles.
+				</Text>
+				</Stack>
+				<Stack>
+				<UserDisplayModal wp_roles={evfPermission} setUserAdded={setUserAdded} />
+				</Stack>
+			</Flex>
+
+			<Stack margin={"24px 0px"} borderBottom={"1px solid #DCDCDC"} paddingBottom={"24px"}>
+				<Checkbox
+				width={"374px"}
+				isChecked={isAllChecked}
+				onChange={(e) => handleCheckAll(e)}
+				>
+				Check All
+				</Checkbox>
+
+				<Flex marginTop={"8px"} gap={"18px"}>
+				{Object.entries(wpRoles).map(([roleKey, roleName]) => (
+					<Checkbox
+					key={roleKey}
+					isChecked={firstLoad ? roleName.checked : checkedItems[roleKey]}
+					onChange={(e) => handleIndividualCheck(roleKey, e.target.checked)}
+					>
+					{roleName.name}
+					</Checkbox>
+				))}
+				</Flex>
+			</Stack>
+    	</Box>
+
+	{/* User Role Table */}
 		<Flex gap={"10px"} direction={"row"}>
 		  <InputGroup w="220px" h={"38px"}>
 			<InputRightElement pointerEvents="none" children={<SearchIcon color="#6B6B6B" />} />
@@ -333,6 +451,7 @@ const UserRoleTable = () => {
 								</PaginationPrevious>
 								<PaginationPageGroup
 									align="center"
+									marginLeft={"0"}
 									separator={
 										<PaginationSeparator
 											bg="#63B3ED"
