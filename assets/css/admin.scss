@@ -9267,6 +9267,12 @@ img.ui-datepicker-trigger {
 				align-items: center;
 				margin-bottom: 10px;
 
+				&:has(.everest-forms-recaptcha-settings) {
+					&:first-child {
+						align-items: flex-start;
+					}
+				}
+
 				@media screen and (max-width: 1260px) {
 					flex-direction: column;
 					gap: 8px;
@@ -9747,11 +9753,11 @@ img.ui-datepicker-trigger {
 								display: flex;
 								flex-wrap: wrap;
 								align-items: center;
-								gap: 24px;
+								gap: 16px;
 
-								@media screen and (max-width: 1260px) {
-									gap: 16px;
-								}
+								// @media screen and (max-width: 1260px) {
+								// 	gap: 16px;
+								// }
 
 								li {
 									margin-bottom: 0;
@@ -9764,6 +9770,56 @@ img.ui-datepicker-trigger {
 										line-height: 24px;
 										font-weight: 400;
 										color: #383838;
+									}
+								}
+							}
+
+							&-image {
+								&.everest-forms-recaptcha-settings {
+									ul {
+										flex-wrap: wrap;
+										margin-bottom: 0;
+
+										li {
+											> label {
+												display: flex;
+												flex-direction: row;
+												align-items: center;
+												gap: 8px;
+												border: 1px solid #E5E5E5;
+												padding: 6px 12px 6px 6px;
+												border-radius: 4px;
+												min-width: 190px;
+												cursor: pointer;
+												color: #383838;
+												font-size: 14px;
+												font-weight: 500;
+												line-height: 20px;
+												transition: all .3s;
+												
+												&:hover {				
+													background: #F6F5F8;
+													border-color: #7545BB;
+												}
+									
+												img {
+													width: 40px;
+													height: auto;
+													border-radius: 2px;
+													border: .6px solid #E5E5E5;
+												}
+												
+											}
+
+											input[type="radio"] {
+												display: none !important;
+												
+												&:checked ~ label {
+													background: #F6F5F8;
+													border-color: #7545BB;
+												}
+											}
+										}
 									}
 								}
 							}

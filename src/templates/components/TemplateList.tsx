@@ -90,9 +90,31 @@ const TemplateList: React.FC<TemplateListProps> = ({ selectedCategory, templates
   const closePluginModal = () => setIsPluginModalOpen(false);
 
   useEffect(() => {
-	const savedFavorites = localStorage.getItem("favorites");
+	const savedFavorites = localStorage.getItem('favorites');
+
 	if (savedFavorites) {
 	  setFavorites(JSON.parse(savedFavorites));
+	} else {
+	  const fetchFavorites = async () => {
+		try {
+		  const response: any = await apiFetch({
+			path: `${restURL}everest-forms/v1/templates/favorite_forms`,
+			method: 'GET',
+			headers: {
+			  'X-WP-Nonce': security,
+			},
+		  });
+
+		  if (response && Array.isArray(response)) {
+			setFavorites(response);
+			localStorage.setItem('favorites', JSON.stringify(response));
+		  }
+		} catch (error) {
+		  console.error('Error fetching favorites:', error);
+		}
+	  };
+
+	  fetchFavorites();
 	}
   }, []);
 

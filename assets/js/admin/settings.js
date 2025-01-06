@@ -87,7 +87,7 @@
 	});
 
 	// Show/hide based on reCAPTCHA type.
-	$( 'input#everest_forms_recaptcha_type' ).change( function() {
+	$('#evf-global-settings-recaptcha-v2, #evf-global-settings-recaptcha-v3, #evf-global-settings-hcaptcha, #evf-global-settings-cloudflare-turnstile').change(function() {
 		var recaptcha_v2_site_key             = $( '#everest_forms_recaptcha_v2_site_key' ).closest('.everest-forms-global-settings'),
 			recaptcha_v2_secret_key           = $( '#everest_forms_recaptcha_v2_secret_key' ).closest('.everest-forms-global-settings'),
 			recaptcha_v2_invisible_site_key   = $( '#everest_forms_recaptcha_v2_invisible_site_key' ).closest('.everest-forms-global-settings'),

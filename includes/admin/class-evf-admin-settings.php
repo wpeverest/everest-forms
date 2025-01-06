@@ -264,7 +264,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 							<div class="everest-forms-options-header--top">';
 
 							// For now icon is ignored.
-							if( isset( $value['image_name'] ) && ! empty( $value['image_name'] ) ) {
+							if ( isset( $value['image_name'] ) && ! empty( $value['image_name'] ) ) {
 
 								/**
 								 * Icon for Settings tab with different icon.
@@ -273,7 +273,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 								 */
 
 								// echo '<span class="evf-forms-options-header-header--top-icon">' . evf_file_get_contents( '/assets/images/settings-icons/' . $value['image_name'] . '.svg' ) . '</span>';
-							}else{
+							} else {
 								foreach ( $tabs_array as $icon_key => $icon_value ) {
 									echo '<span class="evf-forms-options-header-header--top-icon">' . evf_file_get_contents( '/assets/images/settings-icons/' . $icon_key . '.svg' ) . '</span>'; //phpcs:ignore
 								}
@@ -571,7 +571,6 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 							</div>
 						<?php
 						break;
-
 							// Toggle input.
 					case 'toggle':
 						$option_value = $value['value'];
@@ -582,7 +581,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 						?>
 							<div class="everest-forms-global-settings">
 								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo wp_kses_post( $tooltip_html ); ?></label>
-								<div class="everest-forms-global-settings--field forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
+								<div class="everest-forms-global-settings--field forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>   ">
 						<?php echo wp_kses_post( $description ); ?>
 								<div class="evf-toggle-section">
 									<span class="everest-forms-toggle-form">
@@ -604,14 +603,17 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 						<?php
 						break;
 
-							// Radio image inputs.
+					// Radio image inputs.
 					case 'radio-image':
 						$option_value = $value['value'];
+						if ( isset( $value['id'] ) && 'everest_forms_recaptcha_type' === $value['id']  ){
+							$class = 'everest-forms-recaptcha-settings';
+						}
 
 						?>
 						<div class="everest-forms-global-settings">
 								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo wp_kses_post( $tooltip_html ); ?></label>
-								<div class="everest-forms-global-settings--field forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
+								<div class="everest-forms-global-settings--field forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?> <?php echo esc_attr( $class ); ?>">
 								<fieldset>
 									<ul>
 						<?php
