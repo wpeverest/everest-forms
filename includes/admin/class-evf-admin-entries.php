@@ -55,6 +55,7 @@ class EVF_Admin_Entries {
 		$show_export = isset( $_GET['status'] ) && 'trash' === $_GET['status'] ? false : true; // phpcs:ignore WordPress.Security.NonceVerification
 
 		$selected_form_id = isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : absint( $entries_table_list->form_id ); //phpcs:ignore WordPress.Security.NonceVerification
+		$selected_duration = 'month';
 
 		$query = new WP_Query(
 			array(
