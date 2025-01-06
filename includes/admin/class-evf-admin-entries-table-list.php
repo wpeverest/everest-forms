@@ -313,7 +313,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	 */
 	public function column_actions( $entry ) {
 		$actions = array();
-		$status  = isset( $_GET['status'] ) ? sanitize_text_field( $_GET['status'] ) : '';
+		$status  = isset( $_GET['status'] ) ? sanitize_text_field( wp_unslash( $_GET['status'] ) ) : '';
 
 		if ( 'trash' !== $entry->status ) {
 			if ( current_user_can( 'everest_forms_view_entry', $entry->entry_id ) ) {
