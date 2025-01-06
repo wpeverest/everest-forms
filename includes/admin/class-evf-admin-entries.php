@@ -121,6 +121,7 @@ class EVF_Admin_Entries {
 			<?php do_action( 'everest_forms_before_entry_list', $entries_table_list ); ?>
 
 			<?php if ( 0 < count( $entry_ids ) ) : ?>
+				<form method="get" data-form-id="<?php echo absint( $entries_table_list->form_id ); ?>" data-last-entry-id="<?php echo absint( end( $entry_ids ) ); ?>">
 				<div class="evf-entries-table-container">
 					<div class="inner-container">
 						<div class="evf-entry-table-title">
@@ -130,7 +131,7 @@ class EVF_Admin_Entries {
 							<?php $entries_table_list->views(); ?>
 						</div>
 						<div class="entry-table-filters">
-							<form id="entries-list" method="get" data-form-id="<?php echo absint( $entries_table_list->form_id ); ?>" data-last-entry-id="<?php echo absint( end( $entry_ids ) ); ?>">
+						<div id="entries-list">
 							<div class="evf-forms-list">
 							<?php
 							if(! empty( $entries_table_list->forms )) {
@@ -155,13 +156,14 @@ class EVF_Admin_Entries {
 								<?php
 									$entries_table_list->search_box( 'Search', 'everest-forms' );
 								?>
-							</form>
-						</div>
-						<?php
+								</div>
+							</div>
+							<?php
 							$entries_table_list->display();
-						?>
+							?>
 					</div>
 				</div>
+			</form>
 			<?php else : ?>
 				<div class="everest-forms-BlankState">
 					<svg aria-hidden="true" class="octicon octicon-graph everest-forms-BlankState-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M16 14v1H0V0h1v14h15zM5 13H3V8h2v5zm4 0H7V3h2v10zm4 0h-2V6h2v7z"/></svg>
@@ -346,6 +348,7 @@ class EVF_Admin_Entries {
 	 * @since 1.3.0
 	 */
 	public function export_csv() {
+		error_log(print_r($_REQUEST, true));
 		check_admin_referer( 'bulk-entries' );
 
 		if ( isset( $_REQUEST['form_id'] ) && current_user_can( 'export' ) ) { // phpcs:ignore WordPress.Security.NonceVerification

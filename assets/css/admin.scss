@@ -11560,22 +11560,15 @@ body {
 									}
 
 									#entries-list {
+										width: 100%;
+										display: flex;
+										padding-bottom: 24px;
+										justify-content: space-between;
+										align-items: center;
+
 										.search-box {
 											margin: 0;
 											position: relative;
-
-											&::before {
-												content: "";
-												background-image: url("data:image/svg+xml,%3Csvg width='18' height='19' viewBox='0 0 18 19' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M8.25 3.58594C5.48858 3.58594 3.25 5.82451 3.25 8.58594C3.25 11.3474 5.48858 13.5859 8.25 13.5859C11.0114 13.5859 13.25 11.3474 13.25 8.58594C13.25 5.82451 11.0114 3.58594 8.25 3.58594ZM1.25 8.58594C1.25 4.71994 4.38401 1.58594 8.25 1.58594C12.116 1.58594 15.25 4.71994 15.25 8.58594C15.25 12.4519 12.116 15.5859 8.25 15.5859C4.38401 15.5859 1.25 12.4519 1.25 8.58594Z' fill='%23999999'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M11.7804 12.1163C12.1709 11.7258 12.8041 11.7258 13.1946 12.1163L16.4571 15.3788C16.8476 15.7694 16.8476 16.4025 16.4571 16.793C16.0666 17.1836 15.4334 17.1836 15.0429 16.793L11.7804 13.5305C11.3899 13.14 11.3899 12.5069 11.7804 12.1163Z' fill='%23999999'/%3E%3C/svg%3E%0A");
-												background-repeat: no-repeat;
-												background-position: center;
-												background-size: 100%;
-												width: 18px;
-												height: 18px;
-												position: absolute;
-												right: 12px;
-											}
-
 											input {
 												&[type="search"] {
 													min-height: 38px;
@@ -11594,9 +11587,25 @@ body {
 														color: #6b6b6b;
 													}
 												}
+											}
 
-												&[type="submit"] {
-													display: none;
+											#search-submit {
+												background: none;
+												border: 0;
+												padding: 0;
+												position: absolute;
+												top: 50%;
+												transform: translateY(-50%);
+												right: 14px;
+												display: flex;
+
+												svg {
+													width: 18px;
+													height: 18px;
+
+													path {
+														fill: #6b6b6b;
+													}
 												}
 											}
 										}
