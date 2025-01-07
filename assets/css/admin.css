@@ -6971,13 +6971,13 @@ body.everest-forms-builder.everest-forms_page_evf-builder #wpfooter {
 .everest-forms_page_evf-settings .everest-forms nav.evf-nav-tab-wrapper a.nav-tab span.evf-nav-icon.import::before,
 .everest-forms_page_evf-entries .everest-forms nav.evf-nav-tab-wrapper a.nav-tab span.evf-nav-icon.import::before,
 .everest-forms_page_evf-tools .everest-forms nav.evf-nav-tab-wrapper a.nav-tab span.evf-nav-icon.import::before {
-  content: "\e02e";
+  content: "\e02f";
 }
 .everest-forms_page_evf-builder .everest-forms nav.evf-nav-tab-wrapper a.nav-tab span.evf-nav-icon.export::before,
 .everest-forms_page_evf-settings .everest-forms nav.evf-nav-tab-wrapper a.nav-tab span.evf-nav-icon.export::before,
 .everest-forms_page_evf-entries .everest-forms nav.evf-nav-tab-wrapper a.nav-tab span.evf-nav-icon.export::before,
 .everest-forms_page_evf-tools .everest-forms nav.evf-nav-tab-wrapper a.nav-tab span.evf-nav-icon.export::before {
-  content: "\e02f";
+  content: "\e02e";
 }
 .everest-forms_page_evf-builder .everest-forms nav.evf-nav-tab-wrapper a.nav-tab span.evf-nav-icon.form_migrator::before,
 .everest-forms_page_evf-settings .everest-forms nav.evf-nav-tab-wrapper a.nav-tab span.evf-nav-icon.form_migrator::before,
@@ -14178,6 +14178,9 @@ img.ui-datepicker-trigger {
   align-items: center;
   margin-bottom: 10px;
 }
+.everest-forms-settings .everest-forms-settings-container .everest-forms-card .everest-forms-global-settings:has(.everest-forms-recaptcha-settings):first-child {
+  align-items: flex-start;
+}
 @media screen and (max-width: 1260px) {
   .everest-forms-settings .everest-forms-settings-container .everest-forms-card .everest-forms-global-settings {
     flex-direction: column;
@@ -14544,12 +14547,7 @@ img.ui-datepicker-trigger {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 24px;
-}
-@media screen and (max-width: 1260px) {
-  .everest-forms .everest-forms-settings .everest-forms-settings-container .everest-forms-card .everest-forms-global-settings--field.forminp-radio .everest-forms-recaptcha-type {
-    gap: 16px;
-  }
+  gap: 16px;
 }
 .everest-forms .everest-forms-settings .everest-forms-settings-container .everest-forms-card .everest-forms-global-settings--field.forminp-radio .everest-forms-recaptcha-type li {
   margin-bottom: 0;
@@ -14562,6 +14560,43 @@ img.ui-datepicker-trigger {
   line-height: 24px;
   font-weight: 400;
   color: #383838;
+}
+.everest-forms .everest-forms-settings .everest-forms-settings-container .everest-forms-card .everest-forms-global-settings--field.forminp-radio-image.everest-forms-recaptcha-settings ul {
+  flex-wrap: wrap;
+  margin-bottom: 0;
+}
+.everest-forms .everest-forms-settings .everest-forms-settings-container .everest-forms-card .everest-forms-global-settings--field.forminp-radio-image.everest-forms-recaptcha-settings ul li > label {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #E5E5E5;
+  padding: 6px 12px 6px 6px;
+  border-radius: 4px;
+  min-width: 190px;
+  cursor: pointer;
+  color: #383838;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  transition: all 0.3s;
+}
+.everest-forms .everest-forms-settings .everest-forms-settings-container .everest-forms-card .everest-forms-global-settings--field.forminp-radio-image.everest-forms-recaptcha-settings ul li > label:hover {
+  background: #F6F5F8;
+  border-color: #7545BB;
+}
+.everest-forms .everest-forms-settings .everest-forms-settings-container .everest-forms-card .everest-forms-global-settings--field.forminp-radio-image.everest-forms-recaptcha-settings ul li > label img {
+  width: 40px;
+  height: auto;
+  border-radius: 2px;
+  border: 0.6px solid #E5E5E5;
+}
+.everest-forms .everest-forms-settings .everest-forms-settings-container .everest-forms-card .everest-forms-global-settings--field.forminp-radio-image.everest-forms-recaptcha-settings ul li input[type=radio] {
+  display: none !important;
+}
+.everest-forms .everest-forms-settings .everest-forms-settings-container .everest-forms-card .everest-forms-global-settings--field.forminp-radio-image.everest-forms-recaptcha-settings ul li input[type=radio]:checked ~ label {
+  background: #F6F5F8;
+  border-color: #7545BB;
 }
 .everest-forms .everest-forms-settings .everest-forms-settings-container .everest-forms-card .everest-forms-global-settings--field.forminp-text input, .everest-forms .everest-forms-settings .everest-forms-settings-container .everest-forms-card .everest-forms-global-settings--field.forminp-number input, .everest-forms .everest-forms-settings .everest-forms-settings-container .everest-forms-card .everest-forms-global-settings--field.forminp-email input, .everest-forms .everest-forms-settings .everest-forms-settings-container .everest-forms-card .everest-forms-global-settings--field.forminp-color input {
   height: 36px;
@@ -14897,4 +14932,13 @@ body.evf-premium-sidebar-show .everest-forms-settings-premium-sidebar {
   transform: translateY(-50%);
   line-height: 20px;
   margin-right: 0;
+}
+
+.everest-forms-title-desc {
+  width: 100%;
+  justify-content: flex-end;
+}
+
+#evf-edit-form-name {
+  width: 100%;
 }

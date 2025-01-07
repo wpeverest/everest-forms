@@ -867,10 +867,14 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 			array_walk(
 				$field['value_raw'],
 				function ( &$val, $key, $img ) {
-					$img['data'][] = ! empty( $val['value'] ) ? sprintf(
-						'<a href="%s" rel="noopener noreferrer" target="_blank">%s</a>',
-						esc_url( $val['value'] ),
-						esc_html( $val['name'] )
+					$img['data'][] = ! empty( $val['value'] ) ? apply_filters(
+						'everest_forms_field_exporter_image',
+						sprintf(
+							'<a href="%s" rel="noopener noreferrer" target="_blank">%s</a>',
+							esc_url( $val['value'] ),
+							esc_html( $val['name'] )
+						),
+						$val
 					) : '';
 				},
 				array(

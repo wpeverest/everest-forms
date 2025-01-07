@@ -337,7 +337,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 		<input name="<?php echo esc_attr( $value['id'] ); ?>" id="<?php echo esc_attr( $value['id'] ); ?>"
 			type="<?php echo esc_attr( $value['type'] ); ?>" style="<?php echo esc_attr( $value['css'] ); ?>"
 			value="<?php echo esc_attr( $option_value ); ?>" class="<?php echo esc_attr( $value['class'] ); ?>"
-			placeholder="<?php echo esc_attr( $value['placeholder'] ); ?>" 
+			placeholder="<?php echo esc_attr( $value['placeholder'] ); ?>"
 									<?php
 									if ( ! empty( $value['custom_attributes'] ) && is_array( $value['custom_attributes'] ) ) {
 										foreach ( $value['custom_attributes'] as $attribute => $attribute_value ) {
@@ -403,7 +403,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 		<input name="<?php echo esc_attr( $value['id'] ); ?>" id="<?php echo esc_attr( $value['id'] ); ?>" type="text"
 			dir="ltr" style="<?php echo esc_attr( $value['css'] ); ?>" value="<?php echo esc_attr( $option_value ); ?>"
 			class="<?php echo esc_attr( $value['class'] ); ?>evf-colorpicker"
-			placeholder="<?php echo esc_attr( $value['placeholder'] ); ?>" 
+			placeholder="<?php echo esc_attr( $value['placeholder'] ); ?>"
 									<?php
 									if ( ! empty( $value['custom_attributes'] ) && is_array( $value['custom_attributes'] ) ) {
 										foreach ( $value['custom_attributes'] as $attribute => $attribute_value ) {
@@ -433,7 +433,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 
 		<textarea name="<?php echo esc_attr( $value['id'] ); ?>" id="<?php echo esc_attr( $value['id'] ); ?>"
 			style="<?php echo esc_attr( $value['css'] ); ?>" class="<?php echo esc_attr( $value['class'] ); ?>"
-			placeholder="<?php echo esc_attr( $value['placeholder'] ); ?>" 
+			placeholder="<?php echo esc_attr( $value['placeholder'] ); ?>"
 									<?php
 									if ( ! empty( $value['custom_attributes'] ) && is_array( $value['custom_attributes'] ) ) {
 										foreach ( $value['custom_attributes'] as $attribute => $attribute_value ) {
@@ -493,7 +493,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 		<select
 			name="<?php echo esc_attr( $value['id'] ); ?><?php echo ( 'multiselect' === $value['type'] ) ? '[]' : ''; ?>"
 			id="<?php echo esc_attr( $value['id'] ); ?>" style="<?php echo esc_attr( $value['css'] ); ?>"
-			class="<?php echo esc_attr( $value['class'] ); ?>" 
+			class="<?php echo esc_attr( $value['class'] ); ?>"
 							  <?php
 								if ( ! empty( $value['custom_attributes'] ) && is_array( $value['custom_attributes'] ) ) {
 									foreach ( $value['custom_attributes'] as $attribute => $attribute_value ) {
@@ -505,7 +505,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 						<?php
 						foreach ( $value['options'] as $key => $val ) {
 							?>
-			<option value="<?php echo esc_attr( $key ); ?>" 
+			<option value="<?php echo esc_attr( $key ); ?>"
 									  <?php
 
 										if ( is_array( $option_value ) ) {
@@ -546,7 +546,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 					<label><input name="<?php echo esc_attr( $value['id'] ); ?>"
 							id="<?php echo esc_attr( $value['id'] ); ?>" value="<?php echo esc_attr( $key ); ?>"
 							type="radio" style="<?php echo esc_attr( $value['css'] ); ?>"
-							class="<?php echo esc_attr( $value['class'] ); ?>" 
+							class="<?php echo esc_attr( $value['class'] ); ?>"
 											  <?php
 												if ( ! empty( $value['custom_attributes'] ) && is_array( $value['custom_attributes'] ) ) {
 													foreach ( $value['custom_attributes'] as $attribute => $attribute_value ) {
@@ -565,7 +565,6 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 </div>
 						<?php
 						break;
-
 							// Toggle input.
 					case 'toggle':
 						$option_value = $value['value'];
@@ -574,11 +573,9 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 							$option_value = $value['default'];
 						}
 						?>
-<div class="everest-forms-global-settings">
-	<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?>
-						<?php echo wp_kses_post( $tooltip_html ); ?></label>
-	<div
-		class="everest-forms-global-settings--field forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>">
+							<div class="everest-forms-global-settings">
+								<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?> <?php echo wp_kses_post( $tooltip_html ); ?></label>
+								<div class="everest-forms-global-settings--field forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>   ">
 						<?php echo wp_kses_post( $description ); ?>
 		<div class="evf-toggle-section">
 			<span class="everest-forms-toggle-form">
@@ -595,9 +592,12 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 						<?php
 						break;
 
-							// Radio image inputs.
+					// Radio image inputs.
 					case 'radio-image':
 						$option_value = $value['value'];
+						if ( isset( $value['id'] ) && 'everest_forms_recaptcha_type' === $value['id']  ){
+							$class = 'everest-forms-recaptcha-settings';
+						}
 
 						?>
 <div class="everest-forms-global-settings">
@@ -614,7 +614,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 					<input name="<?php echo esc_attr( $value['id'] ); ?>" value="<?php echo esc_attr( $key ); ?>"
 						type="radio" style="<?php echo esc_attr( $value['css'] ); ?>"
 						class="<?php echo esc_attr( $value['class'] ); ?>"
-						id="evf-global-settings-<?php echo esc_attr( str_replace( ' ', '-', strtolower( $val['name'] ) ) ); ?>" 
+						id="evf-global-settings-<?php echo esc_attr( str_replace( ' ', '-', strtolower( $val['name'] ) ) ); ?>"
 														   <?php
 															if ( ! empty( $value['custom_attributes'] ) && is_array( $value['custom_attributes'] ) ) {
 																foreach ( $value['custom_attributes'] as $attribute => $attribute_value ) {
@@ -762,7 +762,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 		<input name="<?php echo esc_attr( $value['id'] ); ?>[number]" id="<?php echo esc_attr( $value['id'] ); ?>"
 			type="number" style="width: 80px;" value="<?php echo esc_attr( $option_value['number'] ); ?>"
 			class="<?php echo esc_attr( $value['class'] ); ?>"
-			placeholder="<?php echo esc_attr( $value['placeholder'] ); ?>" step="1" min="1" 
+			placeholder="<?php echo esc_attr( $value['placeholder'] ); ?>" step="1" min="1"
 									<?php
 									if ( ! empty( $value['custom_attributes'] ) && is_array( $value['custom_attributes'] ) ) {
 										foreach ( $value['custom_attributes'] as $attribute => $attribute_value ) {
@@ -796,7 +796,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 								?>
 		<a href="<?php echo isset( $button['href'] ) ? esc_url( $button['href'] ) : ''; ?>"
 			class="button <?php echo isset( $button['class'] ) ? esc_attr( $button['class'] ) : ''; ?>"
-			style="<?php echo isset( $value['css'] ) ? esc_attr( $value['css'] ) : ''; ?>" 
+			style="<?php echo isset( $value['css'] ) ? esc_attr( $value['css'] ) : ''; ?>"
 								<?php
 								if ( ! empty( $value['custom_attributes'] ) && is_array( $value['custom_attributes'] ) ) {
 									foreach ( $value['custom_attributes'] as $attribute => $attribute_value ) {
@@ -841,7 +841,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 			style="<?php echo isset( $value['input_css'] ) ? esc_attr( $value['input_css'] ) : ''; ?>"
 			value="<?php echo isset( $option_value ) ? esc_attr( $option_value ) : ''; ?>"
 			class="<?php echo isset( $value['class'] ) ? esc_attr( $value['class'] ) : ''; ?>"
-			placeholder="<?php echo isset( $value['placeholder'] ) ? esc_attr( $value['placeholder'] ) : ''; ?>" 
+			placeholder="<?php echo isset( $value['placeholder'] ) ? esc_attr( $value['placeholder'] ) : ''; ?>"
 									<?php
 									if ( ! empty( $value['custom_attributes'] ) && is_array( $value['custom_attributes'] ) ) {
 										foreach ( $value['custom_attributes'] as $attribute => $attribute_value ) {
@@ -856,7 +856,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 							foreach ( $value['buttons'] as $button ) {
 								?>
 		<a href="<?php echo esc_url( $button['href'] ); ?>" class="button <?php echo esc_attr( $button['class'] ); ?>"
-			style="<?php echo isset( $value['button_css'] ) ? esc_attr( $value['button_css'] ) : ''; ?>" 
+			style="<?php echo isset( $value['button_css'] ) ? esc_attr( $value['button_css'] ) : ''; ?>"
 								<?php
 								if ( ! empty( $value['custom_attributes'] ) && is_array( $value['custom_attributes'] ) ) {
 									foreach ( $value['custom_attributes'] as $attribute => $attribute_value ) {

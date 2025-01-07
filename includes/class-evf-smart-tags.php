@@ -452,28 +452,27 @@ class EVF_Smart_Tags {
 						if ( is_array( $meta ) && ! empty( $meta[1][0] ) ) {
 							$key = $meta[1][0];
 
-							// $args  = array(
-							// 'post_type'      => 'any',
-							// 'meta_key'       => $key,
-							// 'posts_per_page' => -1,
-							// );
+							$args = array(
+								'post_type'      => 'any',
+								'meta_key'       => $key,
+								'posts_per_page' => -1,
+							);
 
-							// $query = new WP_Query( $args );
+							$query = new WP_Query( $args );
 
-							// if ( $query->have_posts() ) {
-							// while ( $query->have_posts() ) {
-							// $query->the_post();
-							// $post_id = get_the_ID();
-							// }
-							// }
+							if ( $query->have_posts() ) {
+								while ( $query->have_posts() ) {
+									$query->the_post();
+									$post_id = get_the_ID();
+								}
+							}
 
 							/**
 							 * get_queried_object_id() is used to get current page id.
 							 *
 							 * @since 3.0.4
 							 */
-							$value = get_post_meta( get_queried_object_id(), $key, true );
-
+							$value   = get_post_meta( $post_id, $key, true );
 							$content = str_replace( '{' . $tag . '}', wp_kses_post( $value ), $content );
 						} else {
 							$content = str_replace( '{' . $tag . '}', '', $content );
