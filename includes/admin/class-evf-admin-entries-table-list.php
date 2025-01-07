@@ -514,12 +514,13 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 					);
 					break;
 				case 'approved':
-				case 'denied':
 					foreach ( $entry_ids as $entry_id ) {
 						if ( EVF_Admin_Entries::update_status( $entry_id, $doaction ) ) {
 							$admin_email = esc_attr( get_bloginfo( 'admin_email' ) );
 							$header      = "Reply-To: {$admin_email} \r\n";
 							$header     .= 'Content-Type: text/html; charset=UTF-8';
+							$subject     = '';
+							$message     = '';
 
 							$entry      = evf_get_entry( $entry_id );
 							$entry_date = $entry->date_created;
@@ -532,6 +533,10 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 							$name       = '';
 
 							foreach ( $entry_data as $key => $value ) {
+								if ( preg_match( '/^name/', $key ) ) {
+									$name = $value;
+								}
+
 								if ( preg_match( '/^first_name_/', $key ) ) {
 									$first_name = $value;
 								}
@@ -540,35 +545,90 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 									$last_name = $value;
 								}
 
-								if ( preg_match( '/^email_/', $key ) ) {
+								if ( preg_match( '/^email/', $key ) ) {
 									$email = $value;
 								}
 
-								if ( ! empty( $first_name ) && ! empty( $last_name ) ) {
-									$name = $first_name . ' ' . $last_name;
-								} elseif ( ! empty( $first_name ) ) {
-									$name = $first_name;
+								if ( '' === $name ) {
+									if ( ! empty( $first_name ) && ! empty( $last_name ) ) {
+										$name = $first_name . ' ' . $last_name;
+									} elseif ( ! empty( $first_name ) ) {
+										$name = $first_name;
+									} else {
+										$name = $last_name;
+									}
 								} else {
-									$name = $last_name;
+									$name = $name;
 								}
 
-								if ( 'approved' === $doaction ) {
-									$subject  = apply_filters( 'everest_forms_entry_submission_approval_subject', esc_html__( 'Form Entry Approved', 'everest-forms' ) );
-									$message  = sprintf( __( 'Hey, %s', 'everest-forms' ), $name ) . '<br/>';
-									$message .= '<br/>' . __( "We’re pleased to inform you that your form entry submitted on {$entry_date} has been successfully approved.", 'everest-forms' ) . '<br/>';
-									$message .= '<br/>' . __( 'Thank you for giving us your precious time', 'everest-forms' ) . '<br/>';
-									$message .= '<br/>' . sprintf( __( 'From %s', 'everest-forms' ), $site_name );
-									$message  = apply_filters( 'everest_forms_entry_approval_message', $message );
-								} else {
-									$subject  = apply_filters( 'everest_forms_entry_submission_denial_subject', esc_html__( 'Form Entry Denied', 'everest-forms' ) );
-									$message  = sprintf( __( 'Hello, %s', 'everest-forms' ), $name ) . '<br/>';
-									$message .= '<br/>' . __( "We’re sorry to inform you that your form entry submitted on {$entry_date} has been denied. ", 'everest-forms' ) . '<br/>';
-									$message .= '<br/>' . __( 'Thank you for giving us your precious time', 'everest-forms' ) . '<br/>';
-									$message .= '<br/>' . sprintf( __( 'From %s', 'everest-forms' ), $site_name );
-									$message  = apply_filters( 'everest_forms_entry_denial_message', $message );
-								}
+								$subject  = apply_filters( 'everest_forms_entry_submission_approval_subject', esc_html__( 'Form Entry Approved', 'everest-forms' ) );
+								$message  = sprintf( __( 'Hey, %s', 'everest-forms' ), $name ) . '<br/>';
+								$message .= '<br/>' . __( "We’re pleased to inform you that your form entry submitted on {$entry_date} has been successfully approved.", 'everest-forms' ) . '<br/>';
+								$message .= '<br/>' . __( 'Thank you for giving us your precious time', 'everest-forms' ) . '<br/>';
+								$message .= '<br/>' . sprintf( __( 'From %s', 'everest-forms' ), $site_name );
+								$message  = apply_filters( 'everest_forms_entry_approval_message', $message );
 							}
+							$email_obj = new EVF_Emails();
+							$email_obj->send( $email, $subject, $message );
+							++$count;
+						}
+					}
+					break;
+				case 'denied':
+					foreach ( $entry_ids as $entry_id ) {
+						if ( EVF_Admin_Entries::update_status( $entry_id, $doaction ) ) {
+							$admin_email = esc_attr( get_bloginfo( 'admin_email' ) );
+							$header      = "Reply-To: {$admin_email} \r\n";
+							$header     .= 'Content-Type: text/html; charset=UTF-8';
+							$subject     = '';
+							$message     = '';
 
+							$entry      = evf_get_entry( $entry_id );
+							$entry_date = $entry->date_created;
+							$entry_data = $entry->meta;
+							$site_name  = get_option( 'blogname' );
+
+							$first_name = '';
+							$last_name  = '';
+							$email      = '';
+							$name       = '';
+
+							foreach ( $entry_data as $key => $value ) {
+								if ( preg_match( '/^name/', $key ) ) {
+									$name = $value;
+								}
+
+								if ( preg_match( '/^first_name_/', $key ) ) {
+									$first_name = $value;
+								}
+
+								if ( preg_match( '/^last_name_/', $key ) ) {
+									$last_name = $value;
+								}
+
+								if ( preg_match( '/^email/', $key ) ) {
+									$email = $value;
+								}
+
+								if ( '' === $name ) {
+									if ( ! empty( $first_name ) && ! empty( $last_name ) ) {
+										$name = $first_name . ' ' . $last_name;
+									} elseif ( ! empty( $first_name ) ) {
+										$name = $first_name;
+									} else {
+										$name = $last_name;
+									}
+								} else {
+									$name = $name;
+								}
+
+								$subject  = apply_filters( 'everest_forms_entry_submission_denial_subject', esc_html__( 'Form Entry Denied', 'everest-forms' ) );
+								$message  = sprintf( __( 'Hello, %s', 'everest-forms' ), $name ) . '<br/>';
+								$message .= '<br/>' . __( "We’re sorry to inform you that your form entry submitted on {$entry_date} has been denied. ", 'everest-forms' ) . '<br/>';
+								$message .= '<br/>' . __( 'Thank you for giving us your precious time', 'everest-forms' ) . '<br/>';
+								$message .= '<br/>' . sprintf( __( 'From %s', 'everest-forms' ), $site_name );
+								$message  = apply_filters( 'everest_forms_entry_denial_message', $message );
+							}
 							$email_obj = new EVF_Emails();
 							$email_obj->send( $email, $subject, $message );
 							++$count;

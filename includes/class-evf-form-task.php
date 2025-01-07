@@ -1390,6 +1390,10 @@ class EVF_Form_Task {
 					$entry_date                  = $entry->date_created;
 
 					foreach ( $entry_meta as $key => $value ) {
+						if ( preg_match( '/^name/', $key ) ) {
+							$name = $value;
+						}
+
 						if ( preg_match( '/^first_name_/', $key ) ) {
 							$first_name = $value;
 						}
@@ -1398,16 +1402,18 @@ class EVF_Form_Task {
 							$last_name = $value;
 						}
 
-						if ( preg_match( '/^email_/', $key ) ) {
+						if ( preg_match( '/^email/', $key ) ) {
 							$email = $value;
 						}
 
-						if ( ! empty( $first_name ) && ! empty( $last_name ) ) {
-							$name = $first_name . ' ' . $last_name;
-						} elseif ( ! empty( $first_name ) ) {
-							$name = $first_name;
-						} else {
-							$name = $last_name;
+						if ( '' === $name ) {
+							if ( ! empty( $first_name ) && ! empty( $last_name ) ) {
+								$name = $first_name . ' ' . $last_name;
+							} elseif ( ! empty( $first_name ) ) {
+								$name = $first_name;
+							} else {
+								$name = $last_name;
+							}
 						}
 
 						$subject  = apply_filters( 'everest_forms_entry_submission_approval_subject', esc_html__( 'Form Entry Approved', 'everest-forms' ) );
@@ -1454,12 +1460,16 @@ class EVF_Form_Task {
 					$evf_admin_approval_denied = $wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->prefix}evf_entries SET status = %s WHERE entry_id = %s ", 'denied', $evf_admin_entry_id ) );
 					$entry                     = evf_get_entry( $evf_admin_entry_id );
 					$entry_meta                = $entry->meta;
-					$entry_date                =  $entry->date_created;
+					$entry_date                = $entry->date_created;
 					$first_name                = '';
 					$last_name                 = '';
 					$email                     = '';
 
 					foreach ( $entry_meta as $key => $value ) {
+						if ( preg_match( '/^name/', $key ) ) {
+							$name = $value;
+						}
+
 						if ( preg_match( '/^first_name_/', $key ) ) {
 							$first_name = $value;
 						}
@@ -1468,16 +1478,18 @@ class EVF_Form_Task {
 							$last_name = $value;
 						}
 
-						if ( preg_match( '/^email_/', $key ) ) {
+						if ( preg_match( '/^email/', $key ) ) {
 							$email = $value;
 						}
 
-						if ( ! empty( $first_name ) && ! empty( $last_name ) ) {
-							$name = $first_name . ' ' . $last_name;
-						} elseif ( ! empty( $first_name ) ) {
-							$name = $first_name;
-						} else {
-							$name = $last_name;
+						if ( '' === $name ) {
+							if ( ! empty( $first_name ) && ! empty( $last_name ) ) {
+								$name = $first_name . ' ' . $last_name;
+							} elseif ( ! empty( $first_name ) ) {
+								$name = $first_name;
+							} else {
+								$name = $last_name;
+							}
 						}
 
 						$subject  = apply_filters( 'everest_forms_entry_submission_approval_subject', esc_html__( 'Entry Submission Denied' ) );

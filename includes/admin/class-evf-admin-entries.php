@@ -340,44 +340,50 @@ class EVF_Admin_Entries {
 				array( '%d' )
 			);
 
-			$entry      = evf_get_entry( $entry_id );
-			$entry_meta = $entry->meta;
-			$entry_date = $entry->date_created;
-			$first_name = '';
-			$last_name  = '';
-			$email      = '';
-			$site_name  = get_option( 'blogname', '' );
+			if ( isset( $_GET['view-entry'] ) && $entry_id === wp_unslash( $_GET['view-entry'] ) ) {
+				$entry      = evf_get_entry( $entry_id );
+				$entry_meta = $entry->meta;
+				$entry_date = $entry->date_created;
+				$first_name = '';
+				$last_name  = '';
+				$email      = '';
+				$site_name  = get_option( 'blogname', '' );
+				$subject    = '';
+				$message    = '';
 
-			foreach ( $entry_meta as $key => $value ) {
-				if ( preg_match( '/^first_name/', $key ) ) {
-					$first_name = $value;
+				foreach ( $entry_meta as $key => $value ) {
+					if ( preg_match( '/^first_name_/', $key ) ) {
+						$first_name = $value;
+					}
+
+					if ( preg_match( '/^last_name_/', $key ) ) {
+						$last_name = $value;
+					}
+
+					if ( preg_match( '/^email/', $key ) ) {
+						$email = $value;
+					}
+
+					if ( '' === $name ) {
+						if ( ! empty( $first_name ) && ! empty( $last_name ) ) {
+							$name = $first_name . ' ' . $last_name;
+						} elseif ( ! empty( $first_name ) ) {
+							$name = $first_name;
+						} else {
+							$name = $last_name;
+						}
+					}
+
+					$subject  = apply_filters( 'everest_forms_entry_submission_approval_subject', esc_html__( 'Form Entry Approved', 'everest-forms' ) );
+					$message  = sprintf( __( 'Hey, %s', 'everest-forms' ), $name ) . '<br/>';
+					$message .= '<br/>' . __( "We’re pleased to inform you that your form entry submitted on {$entry_date} has been successfully approved.", 'everest-forms' ) . '<br/>';
+					$message .= '<br/>' . __( 'Thank you for giving us your precious time.', 'everest-forms' ) . '<br/>';
+					$message .= '<br/>' . sprintf( __( 'From %s', 'everest-forms' ), $site_name );
+					$message  = apply_filters( 'everest_forms_entry_approval_message', $message );
 				}
-
-				if ( preg_match( '/^last_name/', $key ) ) {
-					$last_name = $value;
-				}
-
-				if ( preg_match( '/^email/', $key ) ) {
-					$email = $value;
-				}
-
-				if ( ! empty( $first_name ) && ! empty( $last_name ) ) {
-					$name = $first_name . ' ' . $last_name;
-				} elseif ( ! empty( $first_name ) ) {
-					$name = $first_name;
-				} else {
-					$name = $last_name;
-				}
-
-				$subject  = apply_filters( 'everest_forms_entry_submission_approval_subject', esc_html__( 'Form Entry Approved', 'everest-forms' ) );
-				$message  = sprintf( __( 'Hey, %s', 'everest-forms' ), $name ) . '<br/>';
-				$message .= '<br/>' . __( "We’re pleased to inform you that your form entry submitted on {$entry_date} has been successfully approved.", 'everest-forms' ) . '<br/>';
-				$message .= '<br/>' . __( 'Thank you for giving us your precious time.', 'everest-forms' ) . '<br/>';
-				$message .= '<br/>' . sprintf( __( 'From %s', 'everest-forms' ), $site_name );
-				$message  = apply_filters( 'everest_forms_entry_approval_message', $message );
+				$email_obj = new EVF_Emails();
+				$email_obj->send( $email, $subject, $message );
 			}
-			$email_obj = new EVF_Emails();
-			$email_obj->send( $email, $subject, $message );
 		} elseif ( 'denied' === $status ) {
 			$update = $wpdb->update(
 				$wpdb->prefix . 'evf_entries',
