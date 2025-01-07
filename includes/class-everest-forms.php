@@ -505,13 +505,15 @@ final class EverestForms {
 	 *
 	 * @since xx.xx.xx
 	 *
-	 * @param  Array $actions
+	 * @param  Array $actions Array of actions for bulk action.
+	 *
+	 * @return Array $actions Array of new bulk actions.
 	 */
 	public function everest_forms_entry_bulk_actions( $actions ) {
 		$actions['spam']   = esc_html__( 'Mark as Spam', 'everest-forms' );
 		$actions['unspam'] = esc_html__( 'Remove Entry from Spam', 'everest-forms' );
 
-		if ( isset( $_GET['status'] ) && wp_unslash( $_GET['status'] ) === 'spam' ) {
+		if ( isset( $_GET['status'] ) && sanitize_text_field( wp_unslash( $_GET['status'] ) ) === 'spam' ) {
 			unset( $actions['spam'] );
 		}
 
