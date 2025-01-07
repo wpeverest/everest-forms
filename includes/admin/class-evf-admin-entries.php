@@ -340,7 +340,7 @@ class EVF_Admin_Entries {
 				array( '%d' )
 			);
 
-			if ( isset( $_GET['view-entry'] ) && $entry_id === wp_unslash( $_GET['view-entry'] ) ) {
+			if ( isset( $_GET['view-entry'] ) && absint( $_GET['view-entry'] ) === $entry_id ) {
 				$entry      = evf_get_entry( $entry_id );
 				$entry_meta = $entry->meta;
 				$entry_date = $entry->date_created;
@@ -374,10 +374,13 @@ class EVF_Admin_Entries {
 						}
 					}
 
-					$subject  = apply_filters( 'everest_forms_entry_submission_approval_subject', esc_html__( 'Form Entry Approved', 'everest-forms' ) );
-					$message  = sprintf( __( 'Hey, %s', 'everest-forms' ), $name ) . '<br/>';
-					$message .= '<br/>' . __( "We’re pleased to inform you that your form entry submitted on {$entry_date} has been successfully approved.", 'everest-forms' ) . '<br/>';
+					$subject = apply_filters( 'everest_forms_entry_submission_approval_subject', esc_html__( 'Form Entry Approved', 'everest-forms' ) );
+					/* translators:%s: User name of form entry */
+					$message = sprintf( __( 'Hey, %s', 'everest-forms' ), $name ) . '<br/>';
+					/* translators:%s: Form Entry Date */
+					$message .= '<br/>' . sprintf( __( 'We’re pleased to inform you that your form entry submitted on %s has been successfully approved.', 'everest-forms' ), $entry_date ) . '<br/>';
 					$message .= '<br/>' . __( 'Thank you for giving us your precious time.', 'everest-forms' ) . '<br/>';
+					/* translators:%s: Site Name*/
 					$message .= '<br/>' . sprintf( __( 'From %s', 'everest-forms' ), $site_name );
 					$message  = apply_filters( 'everest_forms_entry_approval_message', $message );
 				}
@@ -424,10 +427,13 @@ class EVF_Admin_Entries {
 					$name = $last_name;
 				}
 
-				$subject  = apply_filters( 'everest_forms_entry_submission_approval_subject', esc_html__( 'Entry Submission Denied' ) );
-				$message  = sprintf( __( 'Hey, %s', 'everest-forms' ), $name ) . '<br/>';
-				$message .= '<br/>' . __( "We’re sorry to inform you that your form entry submitted on {$entry_date} has been denied.", 'everest-forms' ) . '<br/>';
+				$subject = apply_filters( 'everest_forms_entry_submission_approval_subject', esc_html__( 'Entry Submission Denied' ) );
+				/* translators:%s: User name of form entry */
+				$message = sprintf( __( 'Hey, %s', 'everest-forms' ), $name ) . '<br/>';
+				/* translators:%s: Form Entry Date */
+				$message .= '<br/>' . sprintf( __( 'We’re pleased to inform you that your form entry submitted on %s has been successfully approved.', 'everest-forms' ), $entry_date ) . '<br/>';
 				$message .= '<br/>' . __( 'Thank you for giving us your precious time.', 'everest-forms' ) . '<br/>';
+				/* translator: %s: Site Name */
 				$message .= '<br/>' . sprintf( __( 'From %s', 'everest-forms' ), $site_name );
 				$message  = apply_filters( 'everest_forms_entry_denial_message', $message );
 

@@ -1388,6 +1388,7 @@ class EVF_Form_Task {
 					$last_name                   = '';
 					$email                       = '';
 					$entry_date                  = $entry->date_created;
+					$name = '';
 
 					foreach ( $entry_meta as $key => $value ) {
 						if ( preg_match( '/^name/', $key ) ) {
@@ -1464,6 +1465,7 @@ class EVF_Form_Task {
 					$first_name                = '';
 					$last_name                 = '';
 					$email                     = '';
+					$name                      = '';
 
 					foreach ( $entry_meta as $key => $value ) {
 						if ( preg_match( '/^name/', $key ) ) {
