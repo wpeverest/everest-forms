@@ -183,6 +183,7 @@ final class EverestForms {
 		add_action( 'init', array( $this, 'form_fields' ), 0 );
 		add_action( 'init', array( 'EVF_Shortcodes', 'init' ), 0 );
 		add_action( 'switch_blog', array( $this, 'wpdb_table_fix' ), 0 );
+		add_filter( 'everest_forms_entry_bulk_actions', array( $this, 'everest_forms_entry_bulk_actions' ) );
 	}
 
 	/**
@@ -497,5 +498,25 @@ final class EverestForms {
 	 */
 	public function form_fields() {
 		return EVF_Fields::instance();
+	}
+
+	/**
+	 * Bulk actions in the entries table
+	 *
+	 * @since xx.xx.xx
+	 *
+	 * @param  Array $actions
+	 */
+	public function everest_forms_entry_bulk_actions( $actions ) {
+		if ( isset( $_GET['status'] ) && wp_slash( $_GET['status'] ) === 'spam' ) {
+			unset( $actions['spam'] );
+		}
+
+		return array_merge(
+			array(
+				'unspam' => esc_html__( 'Remove Entry from Spam', 'everest-forms' ),
+			),
+			$actions
+		);
 	}
 }
