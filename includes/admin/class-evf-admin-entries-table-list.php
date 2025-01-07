@@ -120,18 +120,26 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	 */
 	protected function get_sortable_columns() {
 		$sortable_columns = array();
+		$columns = $this->get_columns();
+
 
 		if ( isset( $_GET['form_id'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 			$sortable_columns = array(
 				'date' => array( 'date_created', false ),
 			);
+
+			foreach($columns as $key => $value) {
+				if(false !== strpos($key, 'evf_field_')) {
+					$sortable_columns[$key] = array($key, false);
+				}
+			}
 		}
 
 		return array_merge(
 			array(
 				'id' => array( 'title', false ),
 			),
-			$sortable_columns
+			$sortable_columns,
 		);
 	}
 
@@ -780,6 +788,5 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	</div>
 		<?php
 	}
-
 
 }
