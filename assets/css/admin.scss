@@ -12349,6 +12349,15 @@ body {
 								padding: 9.5px 10px 10.5px 10px;
 								justify-content: center;
 								align-items: center;
+								&.evf_survey_active_field {
+									border-radius: 3.75px;
+									background: var(--EVF-violet-50, #eee8f7);
+									svg {
+										path {
+											fill: #7545bb;
+										}
+									}
+								}
 							}
 							h1 {
 								padding: 0 0 24px;
