@@ -1,6 +1,5 @@
 import React from "react";
 import { ChakraProvider, Stack } from "@chakra-ui/react";
-import RoleBased from "./components/RoleBased";
 import UserRoleTable from "./components/UserRoleTable";
 
 const App = () => {

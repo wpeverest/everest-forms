@@ -88,6 +88,7 @@ const UserRoleTable = () => {
 		getManagers( offset, pageSize, searchManager ).then((res)=> {
 			if ( res.success ) {
 				setUserAdded(false);
+				setUserDeleted(false);
 				setManagers( res.managers );
 				setTotalManagers(res.total)
 				setPermissions( res.permissions.permissions);
