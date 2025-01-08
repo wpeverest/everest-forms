@@ -11,17 +11,25 @@ $everest_forms_image_path = evf()->plugin_url() . '/assets/images/everest-forms-
 $smart_smtp_image_path    = evf()->plugin_url() . '/assets/images/smart-smtp-logo.png';
 $checked_image_path       = evf()->plugin_url() . '/assets/images/evf-checked.png';
 $redirect_url             = admin_url( 'admin.php?page=smart-smtp' );
-$support_url              = 'https://wordpress.org/support/plugin/smart-smtp/';
-$documentation_url        = 'https://docs.themegrill.com/docs/smartsmtp/';
+$support_url              = 'https://wordpress.org/support/plugin/smart-smtp/?utm_source=everest_forms_dashboard';
+$documentation_url        = 'https://docs.themegrill.com/docs/smartsmtp/?utm_source=everest_forms_dashboard';
 
-$all_active_plugins = get_option( 'active_plugins', array() );
+$all_active_plugins    = get_option( 'active_plugins', array() );
+$all_installed_plugins = get_plugins();
 
-$is_smtp_active = 0;
+$is_smtp_active    = 0;
+$is_smtp_installed = 0;
 
 if ( in_array( 'smart-smtp/smart-smtp.php', $all_active_plugins ) ) {
 	$is_smtp_active = 1;
 } else {
 	$is_smtp_active = 0;
+}
+
+if ( $all_installed_plugins['smart-smtp/smart-smtp.php'] ) {
+	$is_smtp_installed = 1;
+} else {
+	$is_smtp_installed = 0;
 }
 
 ?>
@@ -86,13 +94,20 @@ if ( in_array( 'smart-smtp/smart-smtp.php', $all_active_plugins ) ) {
 					</p>
 					<?php } ?>
 					<h2 class="everest-forms-smart-smtp-page__installation-step-one__title">
-						<?php echo esc_html__( 'Install and Activate SmartSMTP', 'everest-forms' ); ?>
+					<?php
+					if ( 1 === $is_smtp_installed ) {
+						echo esc_html__( 'Activate SmartSMTP', 'everest-forms' );
+					} else {
+						echo esc_html__( 'Install and Activate SmartSMTP', 'everest-forms' );
+					}
+					?>
+
 					</h2>
 					<p class="everest-forms-smart-smtp-page__installation-step-one__description">
 						<?php echo esc_html__( 'Download and activate the SmartSMTP plugin directly from the WordPress.org repository.', 'everest-forms' ); ?>
 					</p>
 					<?php if ( 0 === $is_smtp_active ) { ?>
-					<button type="submit" class="everest-forms-btn everest-forms-btn-primary everest_forms_install_and_activate_smart_smtp" name="everest-forms-install-and-activate-smart-smtp"><?php echo esc_html__( 'Install & Activate SmartSMTP', 'everest-forms' ); ?></button>
+					<button type="submit" class="everest-forms-btn everest-forms-btn-primary everest_forms_install_and_activate_smart_smtp" name="everest-forms-install-and-activate-smart-smtp"><?php echo ( 1 === $is_smtp_installed ) ? esc_html__( 'Activate SmartSMTP', 'everest-forms' ) : esc_html__( 'Install & Activate SmartSMTP', 'everest-forms' ); ?></button>
 					<?php } else { ?>
 						<button type="submit" class="everest-forms-btn everest-forms-btn-secondary everest_forms_install_and_activated_smart_smtp" name="everest-forms-install-and-activated-smart-smtp" style='pointer-events: none;'><?php echo esc_html__( 'Installed & Activated SmartSMTP', 'everest-forms' ); ?></button>
 						<?php } ?>
@@ -118,9 +133,9 @@ if ( in_array( 'smart-smtp/smart-smtp.php', $all_active_plugins ) ) {
 		</div>
 
 		<div class="everest-forms-smart-smtp-page__support-links">
-			<a href = <?php echo esc_url( $support_url ); ?>><?php echo esc_html__( 'Support', 'everest-forms' ); ?></a>
+			<a href = <?php echo esc_url( $support_url ); ?> target="_blank"><?php echo esc_html__( 'Support', 'everest-forms' ); ?></a>
 			<span style="color:#DFDFDF">|</span>
-			<a href = <?php echo esc_url( $documentation_url ); ?>><?php echo esc_html__( 'Documentation', 'everest-forms' ); ?></a>
+			<a href = <?php echo esc_url( $documentation_url ); ?> target="_blank"><?php echo esc_html__( 'Documentation', 'everest-forms' ); ?></a>
 		</div>
 	</div>
 </div>
