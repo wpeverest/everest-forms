@@ -39,6 +39,7 @@ class EVF_REST_API {
 		include __DIR__ . '/controllers/version1/class-evf-gutenberg-blocks.php';
 		include __DIR__ . '/controllers/version1/class-evf-templates.php';
 		include __DIR__ . '/controllers/version1/class-evf-plugin-status.php';
+		include __DIR__ . '/controllers/version1/class-evf-role-and-permission.php';
 		// For external.
 		include __DIR__ . '/controllers/version1/class-evf-entry-submission.php';
 
@@ -92,12 +93,13 @@ class EVF_REST_API {
 	 */
 	protected static function get_v1_rest_classes() {
 		return array(
-			'modules'          => 'EVF_Modules',
-			'changelog'        => 'EVF_Changelog',
-			'gutenberg-blocks' => 'EVF_Gutenberg_Blocks',
-			'templates'        => 'Everest_Forms_Template_Section_Data',
-			'plugin'           => 'Everest_Forms_Plugin_Status',
-			'entry-submission' => 'EVF_Entry_Submission',
+			'modules'              => 'EVF_Modules',
+			'changelog'            => 'EVF_Changelog',
+			'gutenberg-blocks'     => 'EVF_Gutenberg_Blocks',
+			'templates'            => 'Everest_Forms_Template_Section_Data',
+			'plugin'               => 'Everest_Forms_Plugin_Status',
+			'entry-submission'     => 'EVF_Entry_Submission',
+			'roels_and_permission' => 'EVF_Roles_And_Permission',
 		);
 	}
 }

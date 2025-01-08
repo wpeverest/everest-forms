@@ -11,10 +11,10 @@ jobs:
         steps:
             - name: Checkout Code From Current Branch
               uses: actions/checkout@v2
-              
+
             - name: Set execute permissions for build-zip.sh
               run: chmod +x ./bin/build-zip.sh
-              
+
             - name: Build
               id: build
               uses: wpeverest/action-build@3.0.0

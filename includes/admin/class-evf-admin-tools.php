@@ -227,4 +227,22 @@ class EVF_Admin_Tools {
 		wp_safe_redirect( esc_url_raw( admin_url( 'admin.php?page=evf-tools&tab=logs' ) ) );
 		exit();
 	}
+
+	/**
+	 * Roles and permission.
+	 *
+	 * @since 3.0.8
+	 */
+	public static function roles_and_permission() {
+		echo '<div id="evf-roles-and-permission"></div>';
+	}
+
+	/**
+	 * Handles output of the Smart SMTP Settings Page.
+	 *
+	 * @since 3.0.8
+	 */
+	public static function evf_smart_smtp_setup() {
+		include_once __DIR__ . '/views/html-admin-page-smart-smtp-setup.php';
+	}
 }

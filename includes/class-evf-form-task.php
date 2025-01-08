@@ -65,6 +65,8 @@ class EVF_Form_Task {
 		add_action( 'everest_forms_complete_entry_save', array( $this, 'evf_set_approval_status' ), 10, 2 );
 		add_action( 'admin_init', array( $this, 'evf_admin_approve_entry' ), 10, 2 );
 		add_action( 'admin_init', array( $this, 'evf_admin_deny_entry' ) );
+		add_action( 'admin_init', array( $this, 'evf_mark_entry_spam' ), 10 );
+		add_action( 'admin_init', array( $this, 'evf_remove_entry_from_spam' ), 10 );
 	}
 
 	/**
@@ -1488,6 +1490,50 @@ class EVF_Form_Task {
 			}
 
 			return $errors;
+		}
+	}
+
+	/**
+	 * Marks the entry as spam.
+	 *
+	 * @since xx.xx.xx
+	 */
+	public function evf_mark_entry_spam() {
+		if ( ! isset( $_GET['spam-entry'] ) ) {
+			return;
+		}
+
+		if ( current_user_can( 'edit_users' ) ) {
+			global $wpdb;
+
+			$evf_admin_form_id      = isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0;
+			$evf_admin_entry_id     = isset( $_GET['spam-entry'] ) ? absint( $_GET['spam-entry'] ) : 0;
+			$evf_entry_redirect_url = admin_url() . 'admin.php?page=evf-entries&form_id=' . $evf_admin_form_id . '&view-entry=' . $evf_admin_entry_id;
+
+			$wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->prefix}evf_entries SET status = %s WHERE entry_id = %s ", 'spam', $evf_admin_entry_id ) );
+			wp_redirect( $evf_entry_redirect_url );
+		}
+	}
+
+	/**
+	 * Marks the entry as spam.
+	 *
+	 * @since xx.xx.xx
+	 */
+	public function evf_remove_entry_from_spam() {
+		if ( ! isset( $_GET['unspam-entry'] ) ) {
+			return;
+		}
+
+		if ( current_user_can( 'edit_users' ) ) {
+			global $wpdb;
+
+			$evf_admin_form_id      = isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0;
+			$evf_admin_entry_id     = isset( $_GET['unspam-entry'] ) ? absint( $_GET['unspam-entry'] ) : 0;
+			$evf_entry_redirect_url = admin_url() . 'admin.php?page=evf-entries&form_id=' . $evf_admin_form_id . '&view-entry=' . $evf_admin_entry_id;
+
+			$wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->prefix}evf_entries SET status = %s WHERE entry_id = %s ", 'publish', $evf_admin_entry_id ) );
+			wp_redirect( $evf_entry_redirect_url );
 		}
 	}
 }

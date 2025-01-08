@@ -313,10 +313,24 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	 */
 	public function column_actions( $entry ) {
 		$actions = array();
+		$status  = isset( $_GET['status'] ) ? sanitize_text_field( wp_unslash( $_GET['status'] ) ) : '';
 
 		if ( 'trash' !== $entry->status ) {
 			if ( current_user_can( 'everest_forms_view_entry', $entry->entry_id ) ) {
 				$actions['view'] = '<a href="' . esc_url( admin_url( 'admin.php?page=evf-entries&amp;form_id=' . $entry->form_id . '&amp;view-entry=' . $entry->entry_id ) ) . '">' . esc_html__( 'View', 'everest-forms' ) . '</a>';
+			}
+
+			$user_can_edit_entry = is_admin() && current_user_can( 'everest_forms_edit_entry', $entry->entry_id );
+
+			if ( $user_can_edit_entry ) {
+				switch ( $status ) {
+					case 'spam':
+						$actions['unspam'] = '<a href="' . esc_url( admin_url( 'admin.php?page=evf-entries&amp;form_id=' . $entry->form_id . '&amp;unspam-entry=' . $entry->entry_id ) ) . '">' . esc_html__( 'Remove From Spam', 'everest-forms' ) . '</a>';
+						break;
+					default:
+						$actions['spam'] = '<a href="' . esc_url( admin_url( 'admin.php?page=evf-entries&amp;form_id=' . $entry->form_id . '&amp;spam-entry=' . $entry->entry_id ) ) . '">' . esc_html__( 'Mark as Spam', 'everest-forms' ) . '</a>';
+						break;
+				}
 			}
 
 			if ( current_user_can( 'everest_forms_delete_entry', $entry->entry_id ) ) {
@@ -563,6 +577,36 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 						'bulk_action',
 						/* translators: %d: number of entries */
 						sprintf( _n( '%d entry permanently deleted.', '%d entries permanently deleted.', $count, 'everest-forms' ), $count ),
+						'updated'
+					);
+					break;
+				case 'spam':
+					foreach ( $entry_ids as $entry_id ) {
+						if ( EVF_Admin_Entries::update_status( $entry_id, 'spam' ) ) {
+							++$count;
+						}
+					}
+
+					add_settings_error(
+						'bulk_action',
+						'bulk_action',
+						/* translators: %d: number of entries */
+						sprintf( _n( '%d entry sent to spam.', '%d entries sent to Spam.', $count, 'everest-forms' ), $count ),
+						'updated'
+					);
+					break;
+				case 'unspam':
+					foreach ( $entry_ids as $entry_id ) {
+						if ( EVF_Admin_Entries::update_status( $entry_id, $doaction ) ) {
+							++$count;
+						}
+					}
+
+					add_settings_error(
+						'bulk_action',
+						'bulk_action',
+						/* translators: %d: number of entries */
+						sprintf( _n( '%d removed from spam.', '%d entries removed from spam.', $count, 'everest-forms' ), $count ),
 						'updated'
 					);
 					break;
