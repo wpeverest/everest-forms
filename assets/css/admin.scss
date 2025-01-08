@@ -9359,7 +9359,7 @@ img.ui-datepicker-trigger {
 		.everest-forms-header {
 			display: flex;
 			flex-direction: column;
-			background: #fafafc;
+			background: #ffffff;
 			border-right: 1px solid #ededed;
 			padding: 32px 0 20px;
 			width: 300px;
@@ -9418,7 +9418,7 @@ img.ui-datepicker-trigger {
 
 						&::after {
 							content: "";
-							background: #fff;
+							background: #fafafc;
 							width: 8px;
 							height: 100%;
 							position: absolute;
@@ -9448,9 +9448,9 @@ img.ui-datepicker-trigger {
 							display: flex;
 							align-items: center;
 							width: 100%;
+							justify-content: space-between;
 
 							> p {
-								width: 100%;
 								margin: 0;
 								font-size: 15px;
 								font-weight: 500;
@@ -9460,14 +9460,14 @@ img.ui-datepicker-trigger {
 							}
 
 							svg {
-								width: 20px;
-								height: 20px;
+								width: 18px;
+								height: 18px;
 							}
 						}
 
 						&:hover,
 						&.nav-tab-active {
-							background: #ffffff;
+							background: #fafafc;
 
 							&::before {
 								opacity: 1;
@@ -9497,7 +9497,7 @@ img.ui-datepicker-trigger {
 						}
 
 						&.nav-tab-active {
-							background: #ffffff;
+							background: #fafafc;
 
 							&::before,
 							&::after {
@@ -9592,6 +9592,7 @@ img.ui-datepicker-trigger {
 		.everest-forms-settings-container {
 			padding: 32px 20px 32px 32px;
 			box-shadow: none;
+			background: #fafafc;
 
 			.everest-forms-settings-main {
 				position: relative;
@@ -12292,14 +12293,14 @@ body {
 						height: max-content;
 
 						&--top {
-							padding: 24px 20px;
+							padding: 30px 20px;
 
 							select {
 								width: 100%;
 								min-height: 38px;
 								padding: 0 12px;
 								border-radius: 4px;
-								border: 1px solid #bababa;
+								border: 1px solid #d3d3d3;
 								color: #383838;
 
 								&:focus {
@@ -12313,6 +12314,20 @@ body {
 						&--nav {
 							.nav-tab-wrapper {
 								.evf-nav__link {
+									&-label {
+										width: auto;
+										flex: 1;
+									}
+
+									> svg {
+										width: 18px;
+										height: 18px;
+
+										path {
+											stroke: #4E4E4E;
+										}
+									}
+
 									.field_type_icon {
 										background-color: white;
 										display: flex;
@@ -12320,6 +12335,14 @@ body {
 										height: 20px;
 										justify-content: center;
 										align-items: center;
+									}
+
+									&.nav-tab-active {
+										> svg {
+											path {
+												stroke: #7545bb;
+											}
+										}
 									}
 								}
 							}
@@ -12337,36 +12360,38 @@ body {
 
 						.field_type {
 							display: flex;
-							align-items: flex-start;
+							align-items: center;
 							gap: 16px;
-							align-self: stretch;
 							border-bottom: 1px solid #eee8f7;
+							padding-bottom: 24px;
+							margin-bottom: 32px;
 
 							.field_type_icon {
 								display: flex;
 								width: 40px;
 								height: 40px;
-								padding: 9.5px 10px 10.5px 10px;
 								justify-content: center;
 								align-items: center;
-								&.evf_survey_active_field {
-									border-radius: 3.75px;
-									background: var(--EVF-violet-50, #eee8f7);
-									svg {
-										path {
-											fill: #7545bb;
-										}
+								border-radius: 4px;
+								background: #eee8f7;
+
+								svg {
+									path {
+										fill: #7545bb;
 									}
+								}
+
+								svg {
+									width: 20px;
+									height: 20px;
 								}
 							}
 							h1 {
-								padding: 0 0 24px;
-								border-bottom: 1px solid #eee8f7;
 								color: #383838;
 								font-size: 24px;
 								font-weight: 600;
-								line-height: 36px;
-								margin-bottom: 32px;
+								line-height: 32px;
+								padding: 0;
 							}
 						}
 
@@ -12441,17 +12466,18 @@ body {
 								.survey-block-statistic-overview {
 									border: 2px solid #f2f2f2;
 
-									// &:has(table) {
-									//     border: 0;
+									&:has(.evf-likert-chart-table) {
+									    border: 0;
 
-									//     .everest-forms-survey-summary {
-									//         padding: 0;
-									//     }
-									// }
+									    .everest-forms-survey-summary {
+									        padding: 0;
+									    }
+									}
 
 									.everest-forms-survey-summary {
 										table {
 											border: 1px solid #dcdcdc;
+											border-radius: 0px;
 
 											thead {
 												tr {
