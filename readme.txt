@@ -312,6 +312,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 * Feature 		- SMTP settings in Everest Forms.
 * Tweak         - Captcha design on admin.
 * Tweak         - Meta key field readonly.
+* Fix			- Date Picker and File upload field not working in elementor popup.
 
 = 3.0.7.1       - 30-12-2024
 * Added         -  Transient for addon update.
