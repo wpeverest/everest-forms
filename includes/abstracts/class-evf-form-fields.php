@@ -305,7 +305,8 @@ abstract class EVF_Form_Fields {
 					$class .= ' has-before';
 				}
 
-				$output = sprintf( '%s<input type="%s" class="widefat %s" id="everest-forms-field-option-%s-%s" name="form_fields[%s][%s]" value="%s" placeholder="%s" %s>', $before, $type, $class, $id, $slug, $id, $slug, esc_attr( $args['value'] ), $placeholder, $data );
+				$output = sprintf('%s<input type="%s" class="widefat %s" id="everest-forms-field-option-%s-%s" name="form_fields[%s][%s]" value="%s" placeholder="%s" %s %s>', $before, $type, $class, $id, $slug, $id, $slug, esc_attr($args['value']), $placeholder, $data, ('meta-key' === $args['slug'] ? ' readonly' : ''));
+
 				break;
 
 			// Textarea.

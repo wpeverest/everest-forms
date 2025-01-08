@@ -750,14 +750,16 @@ jQuery( function ( $ ) {
 		 *
 		 * @since 3.0.5
 		 */
-		onSubmitErrorScroll: function(){
-			if ( $( '.everest-forms-invalid' ).length ) {
-				$( 'html,body' ).animate( {
-					scrollTop: ( $( '.everest-forms-invalid' )[0].offset().top ) - 100
-				}, 1000 );
+		onSubmitErrorScroll: function() {
+			if ($('.everest-forms-invalid').length) {
+				const offset = $('.everest-forms-invalid').eq(0).offset();
+				if (offset) {
+					$('html,body').animate({
+						scrollTop: offset.top - 100
+					}, 1000);
+				}
 			}
 		},
-
 		randomize_elements: function() {
 			$( '.everest-forms-randomize' ).each( function() {
 				var $list      = $( this ),
