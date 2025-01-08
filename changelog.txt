@@ -1,5 +1,13 @@
 == Changelog ==
 
+= 3.0.8         - xx-xx-2025
+* Feature 		- SMTP settings in Everest Forms.
+* Tweak         - Captcha design on admin.
+* Tweak         - Meta key field readonly.
+
+= 3.0.7.1       - 30-12-2024
+* Added         -  Transient for addon update.
+
 = 3.0.6        - 03-12-2024
 * Removed       - Necessary file from the distignore file.
 

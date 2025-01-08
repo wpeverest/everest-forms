@@ -98,6 +98,14 @@ class EVF_Admin_Assets {
 		wp_register_script( 'print_this', evf()->plugin_url() . '/assets/js/admin/printThis.min.js', array(), EVF_VERSION, true );
 		wp_register_script( 'progress_bar', evf()->plugin_url() . "/assets/js/admin/progressbar{$suffix}.js", array(), EVF_VERSION, true );
 		wp_register_script( 'evf-import-entries-form-csv', evf()->plugin_url() . '/assets/js/admin/tool-import-entries' . $suffix . '.js', array( 'jquery' ), EVF_VERSION, true );
+
+		/**
+		 * Roles and permission.
+		 *
+		 * @since 3.0.8
+		 */
+		wp_register_script( 'evf-tool-roles-and-permission', evf()->plugin_url() . '/dist/rolesandpermission.min.js', array( 'wp-element', 'react', 'react-dom', 'wp-api-fetch', 'wp-i18n', 'wp-blocks' ), EVF_VERSION, true );
+
 		wp_localize_script(
 			'evf-file-uploader',
 			'evf_file_uploader',
@@ -290,10 +298,20 @@ class EVF_Admin_Assets {
 
 			wp_localize_script(
 				'evf-import-entries-form-csv',
-				'evf_import_entries_obj ',
+				'evf_import_entries_obj',
 				array(
 					'ajax_url' => admin_url( 'admin-ajax.php' ),
 					'nonce'    => wp_create_nonce( 'evf-import-entries' ),
+				)
+			);
+
+			wp_localize_script(
+				'evf-tool-roles-and-permission',
+				'evf_roles_and_permission',
+				array(
+					'security'        => wp_create_nonce( 'wp_rest' ),
+					'restURL'         => rest_url(),
+					'not_found_image' => evf()->plugin_url() . '/assets/images/not-found-image.png',
 				)
 			);
 
@@ -383,6 +401,7 @@ class EVF_Admin_Assets {
 			wp_enqueue_script( 'everest-forms-survey-polls-quiz-builder' );
 			wp_enqueue_script( 'random-color' );
 			// wp_enqueue_script( 'chart' ); //for future use.
+			wp_enqueue_script( 'evf-tool-roles-and-permission' );
 			wp_enqueue_script( 'progress_bar' );
 			wp_enqueue_script( 'evf-import-entries-form-csv' );
 			wp_enqueue_script( 'print_this' );

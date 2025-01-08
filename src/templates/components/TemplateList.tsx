@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   SimpleGrid,
   Box,
@@ -34,9 +34,6 @@ import notFoundImage from "../images/not-found-image.png";
 import { IoPlayOutline } from "react-icons/io5";
 import { FaRegHeart } from "react-icons/fa";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
-
-
-
 
 interface Template {
   id: number;
@@ -87,11 +84,39 @@ const TemplateList: React.FC<TemplateListProps> = ({ selectedCategory, templates
   const queryClient = useQueryClient();
   const [isPluginModalOpen, setIsPluginModalOpen] = useState(false);
 
-
   const openModal = () => onOpen();
   const closeModal = () => onClose();
   const openPluginModal = () => setIsPluginModalOpen(true);
   const closePluginModal = () => setIsPluginModalOpen(false);
+
+  useEffect(() => {
+	const savedFavorites = localStorage.getItem('favorites');
+
+	if (savedFavorites) {
+	  setFavorites(JSON.parse(savedFavorites));
+	} else {
+	  const fetchFavorites = async () => {
+		try {
+		  const response: any = await apiFetch({
+			path: `${restURL}everest-forms/v1/templates/favorite_forms`,
+			method: 'GET',
+			headers: {
+			  'X-WP-Nonce': security,
+			},
+		  });
+
+		  if (response && Array.isArray(response)) {
+			setFavorites(response);
+			localStorage.setItem('favorites', JSON.stringify(response));
+		  }
+		} catch (error) {
+		  console.error('Error fetching favorites:', error);
+		}
+	  };
+
+	  fetchFavorites();
+	}
+  }, []);
 
   const handleTemplateClick = async (template: Template) => {
     const requiredPlugins = template.addons ? Object.keys(template.addons) : [];
@@ -193,6 +218,7 @@ const TemplateList: React.FC<TemplateListProps> = ({ selectedCategory, templates
         : [...favorites, slug];
 
       setFavorites(newFavorites);
+	  localStorage.setItem("favorites", JSON.stringify(newFavorites));
 
       await apiFetch({
         path: `${restURL}everest-forms/v1/templates/favorite`,
@@ -224,6 +250,7 @@ const TemplateList: React.FC<TemplateListProps> = ({ selectedCategory, templates
       onSuccess: (newFavorites) => {
         queryClient.invalidateQueries(['templates']);
         setFavorites(newFavorites);
+		localStorage.setItem("favorites", JSON.stringify(newFavorites));
         queryClient.invalidateQueries(['favorites']);
       },
     }
