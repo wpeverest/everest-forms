@@ -169,14 +169,25 @@ class EVF_Template_Loader {
 			return;
 		}
 
-		if ( 0 < self::$form_id ) {
-			add_filter( 'the_title', array( __CLASS__, 'form_preview_title_filter' ), 100, 1 );
-			add_filter( 'the_content', array( __CLASS__, 'form_preview_content_filter' ), 999 );
-			add_filter( 'get_the_excerpt', array( __CLASS__, 'form_preview_content_filter' ), 999 );
-			add_filter( 'post_thumbnail_html', '__return_empty_string' );
-		}
+		add_filter( 'template_include', array( __CLASS__, 'evf_form_preview_template' ), PHP_INT_MAX );
+		// if ( 0 < self::$form_id ) {
+		// add_filter( 'the_title', array( __CLASS__, 'form_preview_title_filter' ), 100, 1 );
+		// add_filter( 'the_content', array( __CLASS__, 'form_preview_content_filter' ), 999 );
+		// add_filter( 'get_the_excerpt', array( __CLASS__, 'form_preview_content_filter' ), 999 );
+		// add_filter( 'post_thumbnail_html', '__return_empty_string' );
+		// }
 	}
 
+	public static function evf_form_preview_template( $evf_form_preview_template ) {
+		if ( is_embed() ) {
+			return $evf_form_preview_template;
+		}
+
+		wp_register_style( 'evf-form-preview-style', evf()->plugin_url() . '/assets/css/evf-form-preview.css', array(), EVF_VERSION );
+		wp_enqueue_style( 'evf-form-preview-style' );
+		$evf_form_preview_template = evf()->plugin_path() . '/templates/form-preview/evf-form-preview-template.php';
+		return $evf_form_preview_template;
+	}
 	/*
 	|--------------------------------------------------------------------------
 	| Email Preview Handling
