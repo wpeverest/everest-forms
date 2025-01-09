@@ -185,9 +185,28 @@ class EVF_Template_Loader {
 
 		wp_register_style( 'evf-form-preview-style', evf()->plugin_url() . '/assets/css/evf-form-preview.css', array(), EVF_VERSION );
 		wp_enqueue_style( 'evf-form-preview-style' );
-		$evf_form_preview_template = evf()->plugin_path() . '/templates/form-preview/evf-form-preview-template.php';
-		return $evf_form_preview_template;
+
+		ob_start();
+		if ( is_user_logged_in() && isset( $_GET['form_id'] ) ) {
+			self::generate_form_preview();
+		}
+
+		$form_content = ob_get_clean();
+		ob_start();
+		self::side_panel_content();
+
+		$side_panel_content = ob_get_clean();
+		$template           = evf_get_template(
+			'form-preview/evf-form-preview-template.php',
+			array(
+				'form_content'       => $form_content,
+				'side_panel_content' => $side_panel_content,
+			)
+		);
+
+		return $template;
 	}
+
 	/*
 	|--------------------------------------------------------------------------
 	| Email Preview Handling
@@ -259,6 +278,120 @@ class EVF_Template_Loader {
 		self::$in_content_filter = false;
 
 		return $content;
+	}
+
+
+	/**
+	 * Handles the preview of form.
+	 *
+	 * @since xx.xx.xx
+	 */
+	public static function generate_form_preview() {
+		if ( ! is_user_logged_in() ) {
+			return;
+		}
+
+		if ( isset( $_GET['form_id'] ) ) {
+			$form_id = $_GET['form_id'];// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+
+			$html  = '';
+			$html .= '<div class="evf-preview-content">';
+			$html .= '<span class="evf-form-preview-title">';
+			$html .= get_the_title( $form_id );
+			$html .= '</span>';
+
+			if ( function_exists( 'apply_shortcodes' ) ) {
+				$content = apply_shortcodes( '[everest_form id="' . $form_id . '"]' );
+			} else {
+				$content = do_shortcode( '[everest_form id="' . $form_id . '"]' );
+			}
+			$html .= $content;
+			$html .= '</div>';
+
+			echo $html;
+		}
+	}
+
+	/**
+	 * Side panel content.
+	 *
+	 * @since 4.0
+	 */
+	public static function side_panel_content() {
+
+		$is_pro_active = is_plugin_active( 'everest-forms-pro/everest-forms-pro.php' );
+		if ( ! $is_pro_active ) {
+			$heading      = esc_html__( 'Upgrade to our Pro version for everything you need for advanced registration form building.', 'everest-forms' );
+			$pro_features = array(
+				esc_html__( '40+ unique addons', 'everest-forms' ),
+				esc_html__( 'Advanced fields for registration forms', 'everest-forms' ),
+				esc_html__( 'WooCommerce with billing and shipping fields', 'everest-forms' ),
+				esc_html__( 'Supports 12 file types for uploads', 'everest-forms' ),
+				esc_html__( 'Stylish forms with customizer', 'everest-forms' ),
+				esc_html__( 'Conditional Logic for dynamic forms', 'everest-forms' ),
+				esc_html__( 'Control content with restrictions', 'everest-forms' ),
+				esc_html__( 'All form templates included', 'everest-forms' ),
+
+			);
+		} else {
+			$heading      = esc_html__( 'Our Top Addons', 'everest-forms' );
+			$pro_features = array(
+				esc_html__( 'Advanced Fields', 'everest-forms' ),
+				esc_html__( 'woocommerce', 'everest-forms' ),
+				esc_html__( 'Customize My Account', 'everest-forms' ),
+				esc_html__( 'File Upload', 'everest-forms' ),
+				esc_html__( 'Style Customizer', 'everest-forms' ),
+				esc_html__( 'Multi-Part', 'everest-forms' ),
+				esc_html__( 'Email Templates', 'everest-forms' ),
+				esc_html__( 'Field Visibility', 'everest-forms' ),
+			);
+		}
+		$is_theme_style = get_post_meta( $_GET['form_id'], 'user_registration_enable_theme_style', true );
+		if ( 'default' === $is_theme_style ) {
+			$checked    = '';
+			$data_theme = 'default';
+		} else {
+			$checked    = 'checked';
+			$data_theme = 'theme';
+		}
+		$html  = '';
+		$html .= '<div class="evf-from-preview-theme-toggle">';
+		$html .= '<label class="evf-form-preview-toggle-title">' . esc_html__( 'Apply Theme Style', 'everest-forms' ) . '</label>';
+		$html .= '<span class="evf-form-preview-toggle-theme-preview">';
+		$html .= '<input type="checkbox" class="evf-form-preview-theme-toggle-checkbox input-checkbox " id="ur_toggle_form_preview_theme" ' . $checked . '>';
+		$html .= '<span class="slider round"></span>';
+		$html .= '</span>';
+		$html .= '</div>';
+		$html .= '<div class="evf-form-preview-save hidden" id="evf-form-save" data-theme="' . $data_theme . '" data-id="' . $_GET['form_id'] . '">';
+		$html .= '<img src="' . esc_url( evf()->plugin_url() . '/assets/images/save-frame.svg' ) . '" alt="Save">';
+		$html .= '<div class="evf-form-preview-save-title">' . esc_html__( 'Save', 'everest-forms' ) . '</div>';
+		$html .= '</div>';
+		$html .= '<div class="evf-form-preview-pro-features">';
+		$html .= '<p class="evf-form-preview-pro-features-title">' . esc_html__( $heading, 'everest-forms' ) . '</p>';
+		foreach ( $pro_features as $list ) {
+			$html .= '<div class="evf-form-preview-sidebar__body--list-item">';
+
+			$html .= '<svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 18 18" fill="none">
+						<path d="M15 5.25L6.75 13.5L3 9.75" stroke="#4CC741" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+					</svg>';
+
+			$html .= '<span>';
+			$html .= wp_kses_post( $list );
+			$html .= '</span>';
+			$html .= '</div>';
+
+		}
+		if ( ! $is_pro_active ) {
+			$html .= '<div class="evf-form-preview-upgrade  id="evf-form-save" data-theme="default" ">';
+			$html .= '<img src="' . esc_url( evf()->plugin_url() . '/assets/images/upgrade-icon.svg' ) . '" alt="Save">';
+			$html .= '<div class="evf-form-preview-upgrade-title">Upgrade to Pro</div>';
+			$html .= '</div>';
+		}
+
+		echo $html; // phpcs:ignore
+
+		?>
+		<?php
 	}
 }
 

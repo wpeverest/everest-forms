@@ -65,12 +65,12 @@ wp_head();
 
 				<div class="evf-form-preview-form">
 					<?php
-					echo "Content"; // phpcs:ignore
+					echo $form_content; // phpcs:ignore
 					?>
 				</div>
 				<aside class="evf-form-side-panel">
 				<?php
-					echo "Sidebar"; // phpcs:ignore
+					echo $side_panel_content; // phpcs:ignore
 				?>
 				</aside>
 
