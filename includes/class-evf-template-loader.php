@@ -321,16 +321,17 @@ class EVF_Template_Loader {
 
 		$is_pro_active = is_plugin_active( 'everest-forms-pro/everest-forms-pro.php' );
 		if ( ! $is_pro_active ) {
-			$heading      = esc_html__( 'Upgrade to our Pro version for everything you need for advanced registration form building.', 'everest-forms' );
+			$heading      = esc_html__( 'Our Pro Features.', 'everest-forms' );
 			$pro_features = array(
-				esc_html__( '40+ unique addons', 'everest-forms' ),
-				esc_html__( 'Advanced fields for registration forms', 'everest-forms' ),
-				esc_html__( 'WooCommerce with billing and shipping fields', 'everest-forms' ),
-				esc_html__( 'Supports 12 file types for uploads', 'everest-forms' ),
-				esc_html__( 'Stylish forms with customizer', 'everest-forms' ),
-				esc_html__( 'Conditional Logic for dynamic forms', 'everest-forms' ),
-				esc_html__( 'Control content with restrictions', 'everest-forms' ),
-				esc_html__( 'All form templates included', 'everest-forms' ),
+				esc_html__( 'Stripe & PayPal Integration', 'everest-forms' ),
+				esc_html__( 'Style Export & Import', 'everest-forms' ),
+				esc_html__( 'Conditional Email Routing', 'everest-forms' ),
+				esc_html__( 'Advanced Form Fields', 'everest-forms' ),
+				esc_html__( 'Quiz & Survey Forms', 'everest-forms' ),
+				esc_html__( '40+ Integrations', 'everest-forms' ),
+				esc_html__( 'Multi-Step Forms', 'everest-forms' ),
+				esc_html__( 'SMS Notifications', 'everest-forms' ),
+				esc_html__( 'Calculated Fields', 'everest-forms' ),
 
 			);
 		} else {
@@ -363,7 +364,7 @@ class EVF_Template_Loader {
 		$html .= '</span>';
 		$html .= '</div>';
 		$html .= '<div class="evf-form-preview-save hidden" id="evf-form-save" data-theme="' . $data_theme . '" data-id="' . $_GET['form_id'] . '">';
-		$html .= '<img src="' . esc_url( evf()->plugin_url() . '/assets/images/save-frame.svg' ) . '" alt="Save">';
+		$html .= '<img src="' . esc_url( evf()->plugin_url() . '/assets/images/upgrade-to-pro-boost.png' ) . '" alt="Save">';
 		$html .= '<div class="evf-form-preview-save-title">' . esc_html__( 'Save', 'everest-forms' ) . '</div>';
 		$html .= '</div>';
 		$html .= '<div class="evf-form-preview-pro-features">';
@@ -383,8 +384,8 @@ class EVF_Template_Loader {
 		}
 		if ( ! $is_pro_active ) {
 			$html .= '<div class="evf-form-preview-upgrade  id="evf-form-save" data-theme="default" ">';
-			$html .= '<img src="' . esc_url( evf()->plugin_url() . '/assets/images/upgrade-icon.svg' ) . '" alt="Save">';
-			$html .= '<div class="evf-form-preview-upgrade-title">Upgrade to Pro</div>';
+			$html .= '<img src="' . esc_url( evf()->plugin_url() . '/assets/images/upgrade-boost-icon.svg' ) . '" alt="Upgrade">';
+			$html .= '<div class="evf-form-preview-upgrade-title">Upgrade to Pro</deiv>';
 			$html .= '</div>';
 		}
 
