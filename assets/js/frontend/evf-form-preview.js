@@ -87,12 +87,11 @@ jQuery(function ($) {
 				security: everest_forms_form_preview.form_preview_nonce
 			},
 			beforeSend: function () {
-				var spinner =
-					'<span class="evf-spinner is-active" style="margin-left: 20px"></span>';
-				$(".evf-form-preview-save").append(spinner);
+				var spinner = '<i class="evf-loading evf-loading-active"></i>';
+				$( '.evf-form-preview-save' ).append( spinner );
 			},
 			complete: function (response) {
-				$(".evf-spinner").remove();
+				$(".evf-loading").remove();
 				$("#evf-form-save").addClass("hidden");
 				// $('.evf-form-preview-save').find('img').remove()
 				// if (response.responseJSON.success === true) {
