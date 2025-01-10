@@ -183,8 +183,21 @@ class EVF_Template_Loader {
 			return $evf_form_preview_template;
 		}
 
+		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 		wp_register_style( 'evf-form-preview-style', evf()->plugin_url() . '/assets/css/evf-form-preview.css', array(), EVF_VERSION );
 		wp_enqueue_style( 'evf-form-preview-style' );
+
+		wp_register_script( 'evf-form-preview-script', evf()->plugin_url() . '/assets/js/frontend/evf-form-preview' . $suffix . '.js', array( 'jquery' ), EVF_VERSION );
+		wp_enqueue_script( 'evf-form-preview-script' );
+		wp_localize_script(
+			'evf-form-preview-script',
+			'everest_forms_form_preview ',
+			array(
+				'ajax_url'           => admin_url( 'admin-ajax.php' ),
+				'form_preview_nonce' => wp_create_nonce( 'evf_form_preview_nonce' ),
+				'pro_upgrade_link'   => esc_url( 'https://everestforms.net/pricing/?utm_source=form-preview&utm_medium=sidebar-upgrade-button&utm_campaign=lite-version' ),
+			)
+		);
 
 		ob_start();
 		if ( is_user_logged_in() && isset( $_GET['form_id'] ) ) {
@@ -347,7 +360,7 @@ class EVF_Template_Loader {
 				esc_html__( 'Field Visibility', 'everest-forms' ),
 			);
 		}
-		$is_theme_style = get_post_meta( $_GET['form_id'], 'user_registration_enable_theme_style', true );
+		$is_theme_style = get_post_meta( $_GET['form_id'], 'everest_forms_enable_theme_style', true );
 		if ( 'default' === $is_theme_style ) {
 			$checked    = '';
 			$data_theme = 'default';
@@ -359,12 +372,12 @@ class EVF_Template_Loader {
 		$html .= '<div class="evf-from-preview-theme-toggle">';
 		$html .= '<label class="evf-form-preview-toggle-title">' . esc_html__( 'Apply Theme Style', 'everest-forms' ) . '</label>';
 		$html .= '<span class="evf-form-preview-toggle-theme-preview">';
-		$html .= '<input type="checkbox" class="evf-form-preview-theme-toggle-checkbox input-checkbox " id="ur_toggle_form_preview_theme" ' . $checked . '>';
+		$html .= '<input type="checkbox" class="evf-form-preview-theme-toggle-checkbox input-checkbox " id="evf_toggle_form_preview_theme" ' . $checked . '>';
 		$html .= '<span class="slider round"></span>';
 		$html .= '</span>';
 		$html .= '</div>';
 		$html .= '<div class="evf-form-preview-save hidden" id="evf-form-save" data-theme="' . $data_theme . '" data-id="' . $_GET['form_id'] . '">';
-		$html .= '<img src="' . esc_url( evf()->plugin_url() . '/assets/images/upgrade-to-pro-boost.png' ) . '" alt="Save">';
+		$html .= '<img src="' . esc_url( evf()->plugin_url() . '/assets/images/save-frame.svg' ) . '" alt="Save">';
 		$html .= '<div class="evf-form-preview-save-title">' . esc_html__( 'Save', 'everest-forms' ) . '</div>';
 		$html .= '</div>';
 		$html .= '<div class="evf-form-preview-pro-features">';
