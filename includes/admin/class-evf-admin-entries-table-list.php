@@ -128,11 +128,11 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 				'date' => array( 'date_created', false ),
 			);
 
-			foreach($columns as $key => $value) {
-				if(false !== strpos($key, 'evf_field_')) {
-					$sortable_columns[$key] = array($key, false);
-				}
-			}
+			// foreach($columns as $key => $value) {
+			// 	if(false !== strpos($key, 'evf_field_')) {
+			// 		$sortable_columns[$key] = array($key, false);
+			// 	}
+			// }
 		}
 
 		return array_merge(
