@@ -1269,10 +1269,10 @@ abstract class EVF_Form_Fields {
 					$field_content .= '<input value="' . esc_attr( $interval_count ) . '" type="number" name="' . sprintf( 'form_fields[%s][choices][%s][%s]', $field['id'], $key, 'interval_count' ) . '" >';
 					$field_content .= '<select  name="' . sprintf( 'form_fields[%s][choices][%s][%s]', $field['id'], $key, 'recurring_period' ) . '">';
 					$periods        = array(
-						'day'   => __( 'Day(s)', 'user-registration' ),
-						'week'  => __( 'Week(s)', 'user-registration' ),
-						'month' => __( 'Month(s)', 'user-registration' ),
-						'year'  => __( 'Year(s)', 'user-registration' ),
+						'day'   => __( 'Day(s)', 'everest-forms' ),
+						'week'  => __( 'Week(s)', 'everest-forms' ),
+						'month' => __( 'Month(s)', 'everest-forms' ),
+						'year'  => __( 'Year(s)', 'everest-forms' ),
 					);
 					foreach ( $periods as $id => $label ) {
 						$selected = '';
@@ -1304,10 +1304,10 @@ abstract class EVF_Form_Fields {
 
 					$field_content .= '<select  name="' . sprintf( 'form_fields[%s][choices][%s][%s]', $field['id'], $key, 'trail_recurring_period' ) . '">';
 					$periods        = array(
-						'day'   => __( 'Day(s)', 'user-registration' ),
-						'week'  => __( 'Week(s)', 'user-registration' ),
-						'month' => __( 'Month(s)', 'user-registration' ),
-						'year'  => __( 'Year(s)', 'user-registration' ),
+						'day'   => __( 'Day(s)', 'everest-forms' ),
+						'week'  => __( 'Week(s)', 'everest-forms' ),
+						'month' => __( 'Month(s)', 'everest-forms' ),
+						'year'  => __( 'Year(s)', 'everest-forms' ),
 					);
 					foreach ( $periods as $id => $label ) {
 						$selected = '';
