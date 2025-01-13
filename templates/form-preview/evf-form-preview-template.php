@@ -8,7 +8,7 @@ wp_head();
 					<meta name="viewport" content="width=device-width"/>
 					<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 					<title>
-						<?php esc_html_e( 'User Registration - Setup Wizard', 'user-registration' ); ?>
+						<?php esc_html_e( 'User Registration - Setup Wizard', 'everest-forms' ); ?>
 					</title>
 					<?php
 						wp_print_head_scripts();
@@ -25,7 +25,7 @@ wp_head();
 			<path d="M29.7579 22.75H28.8438H26.0001H5.78907L15.8438 6.29686L20.0079 13H19.0938H15.8438L13.9141 16.25H15.8438H17.1641H25.7969L15.8438 0.203094L0 26H2.84375H28.8438H31.7891L29.7579 22.75Z" fill="#5317AA"/>
 		</svg>
 		</div>
-		<span class="evf-form-title"><?php esc_html_e( 'Form Preview', 'user-registration' ); ?></span>
+		<span class="evf-form-title"><?php esc_html_e( 'Form Preview', 'everest-forms' ); ?></span>
 
 		<div class="evf-form-preview-devices">
 		<svg class="evf-form-preview-device active" data-device="desktop" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
@@ -48,8 +48,8 @@ wp_head();
 						value='[everest_form id="<?php echo esc_attr( $form_id ); ?>"]'
 						class="code" size="35">
 						<button id="copy-shortcode" type="button" class="button button-primary button-large evf-copy-shortcode"
-	data-tip="<?php esc_attr_e( 'Copy Shortcode!', 'user-registration' ); ?>"
-	data-copied="<?php esc_attr_e( 'Copied!', 'user-registration' ); ?>">
+	data-tip="<?php esc_attr_e( 'Copy Shortcode!', 'everest-forms' ); ?>"
+	data-copied="<?php esc_attr_e( 'Copied!', 'everest-forms' ); ?>">
 	<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true" role="img">
 		<path fill="#383838" fill-rule="evenodd"
 			d="M3.116 3.116A1.25 1.25 0 0 1 4 2.75h9A1.25 1.25 0 0 1 14.25 4v1a.75.75 0 0 0 1.5 0V4A2.75 2.75 0 0 0 13 1.25H4A2.75 2.75 0 0 0 1.25 4v9A2.75 2.75 0 0 0 4 15.75h1a.75.75 0 0 0 0-1.5H4A1.25 1.25 0 0 1 2.75 13V4c0-.332.132-.65.366-.884ZM9.75 11c0-.69.56-1.25 1.25-1.25h9c.69 0 1.25.56 1.25 1.25v9c0 .69-.56 1.25-1.25 1.25h-9c-.69 0-1.25-.56-1.25-1.25v-9ZM11 8.25A2.75 2.75 0 0 0 8.25 11v9A2.75 2.75 0 0 0 11 22.75h9A2.75 2.75 0 0 0 22.75 20v-9A2.75 2.75 0 0 0 20 8.25h-9Z"
