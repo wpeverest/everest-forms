@@ -308,6 +308,8 @@ class EVF_Admin_Entries {
 	 */
 	public static function update_status( $entry_id, $status = 'publish' ) {
 		global $wpdb;
+
+		$is_bulk_action = isset( $_GET['bulk_action'] ) && 'Apply' == $_GET['bulk_action'] ? true : false; // phpcs:ignore WordPress.Security.NonceVerification
 		if ( in_array( $status, array( 'star', 'unstar' ), true ) ) {
 			$update = $wpdb->update(
 				$wpdb->prefix . 'evf_entries',
@@ -382,8 +384,11 @@ class EVF_Admin_Entries {
 				$message .= '<br/>' . sprintf( __( 'From %s', 'everest-forms' ), $site_name );
 				$message  = apply_filters( 'everest_forms_entry_approval_message', $message );
 			}
-			$email_obj = new EVF_Emails();
-			$email_obj->send( $email, $subject, $message );
+
+			if ( ! $is_bulk_action ) {
+				$email_obj = new EVF_Emails();
+				$email_obj->send( $email, $subject, $message );
+			}
 		} elseif ( 'denied' === $status ) {
 			$update = $wpdb->update(
 				$wpdb->prefix . 'evf_entries',
@@ -438,8 +443,11 @@ class EVF_Admin_Entries {
 				$message  = apply_filters( 'everest_forms_entry_denial_message', $message );
 
 			}
-			$email_obj = new EVF_Emails();
-			$email_obj->send( $email, $subject, $message );
+
+			if ( ! $is_bulk_action ) {
+				$email_obj = new EVF_Emails();
+				$email_obj->send( $email, $subject, $message );
+			}
 		} else {
 			$entry = evf_get_entry( $entry_id );
 
