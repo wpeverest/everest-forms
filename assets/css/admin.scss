@@ -10232,6 +10232,7 @@ body {
     border-bottom: 1px solid #E2E8F0;
     background: var(--white, #FFF);
 	margin-bottom: 40px;
+	margin-top: -10px;
 
 	.everest-forms-form-listing__header-left {
 		display: flex;
@@ -10280,8 +10281,162 @@ body {
     margin: 25px auto;
     border-radius: 7px;
 
-	table.forms{
+
+	table.wp-list-table {
+		border-color: #dcdcdc;
 		border-radius: 5px;
+		margin-bottom: 16px;
+		overflow: hidden;
+
+		a {
+			color: #383838;
+			transition: all 0.3s ease-in-out;
+
+			&:hover {
+				color: #475bb2;
+			}
+		}
+
+		thead {
+			tr {
+				td,
+				th {
+					border-bottom-color: #dcdcdc;
+				}
+
+				th {
+					font-size: 14px;
+					font-weight: 600;
+					line-height: 24px;
+					color: #383838;
+
+					&.sortable,
+					&.sorted {
+						padding: 0;
+
+						a {
+							font-size: 14px;
+							font-weight: 600;
+							line-height: 24px;
+							padding: 12px 8px;
+							display: flex;
+							align-items: center;
+							gap: 8px;
+
+							&:focus {
+								box-shadow: none;
+							}
+
+							.sorting-indicators {
+								gap: 4px;
+
+								.sorting-indicator {
+									margin: 0;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		tbody {
+			tr {
+				td {
+					&.username {
+						img {
+							border-radius: 5px0;
+							margin-top: 2px;
+						}
+					}
+
+					&.actions {
+						a {
+							color: #475bb2;
+							transition: all 0.3s ease-in-out;
+							padding-bottom: 2px;
+							position: relative;
+
+							&::before {
+								content: "";
+								background: #475bb2;
+								width: 100%;
+								height: 1px;
+								position: absolute;
+								bottom: 0;
+								opacity: 0;
+								transition: all 0.3s ease-in-out;
+							}
+
+							&:hover {
+								&::before {
+									opacity: 1;
+								}
+							}
+
+							&:focus {
+								box-shadow: none;
+								outline: none;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	.tablenav {
+		padding: 0;
+		margin: 0 0 16px;
+		height: auto;
+
+		&.bottom {
+			margin-bottom: 0;
+		}
+
+		.actions {
+			display: flex;
+			align-items: center;
+			gap: 12px;
+			padding-right: 12px;
+
+			select {
+				height: 36px;
+				margin: 0;
+				border-color: #bababa;
+
+				&:hover {
+					color: #475bb2;
+				}
+
+				&:focus {
+					box-shadow: none;
+					border: 1px solid #475bb2;
+				}
+			}
+
+			input {
+				&[type="submit"] {
+					padding: 6px 14px;
+					border-radius: 3px;
+					border: 1px solid #475bb2;
+					background: #f6f7f7;
+					color: #475bb2;
+					font-size: 14px;
+					font-weight: 500;
+					line-height: 150%;
+					transition: all 0.3s ease-in-out;
+
+					&:hover {
+						background: #f2f2f2;
+					}
+				}
+			}
+		}
+
+		&-pages {
+			margin-bottom: 0;
+		}
 	}
 
 	div.everest-forms-list-table-container__header{
