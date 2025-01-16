@@ -63,15 +63,17 @@ class EVF_Admin_Forms {
 		?>
 		<div class="wrap">
 			<div class="everest-forms-form-listing__header">
-				<div id="everest-forms-header__logo">
-					<svg xmlns="http://www.w3.org/2000/svg" width="32" height="26" viewBox="0 0 32 26" fill="none">
-						<path d="M25.8984 0H19.6016L21.5313 3.24999H27.8282L25.8984 0Z" fill="#5317AA"/>
-						<path d="M29.8594 6.49988H23.5625L25.5938 9.74987H31.8906L29.8594 6.49988Z" fill="#5317AA"/>
-						<path d="M29.7579 22.75H28.8438H26.0001H5.78907L15.8438 6.29686L20.0079 13H19.0938H15.8438L13.9141 16.25H15.8438H17.1641H25.7969L15.8438 0.203094L0 26H2.84375H28.8438H31.7891L29.7579 22.75Z" fill="#5317AA"/>
-					</svg>
-					<span id="everest-forms-logo__separator">|</span>
+				<div class="everest-forms-form-listing__header-left">
+					<div id="everest-forms-header__logo">
+						<svg xmlns="http://www.w3.org/2000/svg" width="32" height="26" viewBox="0 0 32 26" fill="none">
+							<path d="M25.8984 0H19.6016L21.5313 3.24999H27.8282L25.8984 0Z" fill="#5317AA"/>
+							<path d="M29.8594 6.49988H23.5625L25.5938 9.74987H31.8906L29.8594 6.49988Z" fill="#5317AA"/>
+							<path d="M29.7579 22.75H28.8438H26.0001H5.78907L15.8438 6.29686L20.0079 13H19.0938H15.8438L13.9141 16.25H15.8438H17.1641H25.7969L15.8438 0.203094L0 26H2.84375H28.8438H31.7891L29.7579 22.75Z" fill="#5317AA"/>
+						</svg>
+						<span id="everest-forms-logo__separator">|</span>
+					</div>
+					<a href="<?php echo esc_url( admin_url( 'admin.php?page=evf-builder' ) ); ?>" id="everest-forms-form-listing__heading"><?php esc_html_e( 'All Forms', 'everest-forms' ); ?></a>
 				</div>
-				<a href="<?php echo esc_url( admin_url( 'admin.php?page=evf-builder' ) ); ?>" id="everest-forms-form-listing__heading"><?php esc_html_e( 'All Forms', 'everest-forms' ); ?></a>
 				<button class="button" id="evf-form-listing__screen-options">
 					<?php esc_html_e( 'Screen Options', 'everest-forms' ); ?>
 					<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
@@ -94,8 +96,20 @@ class EVF_Admin_Forms {
 				<form id="form-list" method="post">
 					<input type="hidden" name="page" value="everest-forms"/>
 					<?php
+						echo '<div class="everest-forms-list-filters-row">';
 						$forms_table_list->views();
-						$forms_table_list->search_box( __( 'Search Forms', 'everest-forms' ), 'everest-forms' );
+					?>
+						<div id="everest-forms-list-search-form">
+							<label class="screen-reader-text" for="everest-forms-list-table-search-input">Search Forms</label>
+							<input type="search" id="everest-forms-list-table-search-input" name="s" value="<?php _admin_search_query(); ?>" placeholder="<?php esc_html_e( 'Search Forms ...', 'everest-forms' ); ?>" />
+							<button type="submit" id="search-submit">
+								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+									<path fill="#000" fill-rule="evenodd" d="M4 11a7 7 0 1 1 12.042 4.856 1.012 1.012 0 0 0-.186.186A7 7 0 0 1 4 11Zm12.618 7.032a9 9 0 1 1 1.414-1.414l3.675 3.675a1 1 0 0 1-1.414 1.414l-3.675-3.675Z" clip-rule="evenodd"/>
+								</svg>
+							</button>
+						</div>
+					<?php
+						echo '</div>';
 						$forms_table_list->display();
 
 						wp_nonce_field( 'save', 'everest-forms_nonce' );

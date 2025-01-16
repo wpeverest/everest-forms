@@ -1188,7 +1188,7 @@ body.everest-forms-builder {
 		top: 0;
 		margin-left: 16px;
 		&:active {
-			top: 0;
+			top: 0 !important;
 			margin-left: 16px;
 		}
 	}
@@ -10226,16 +10226,18 @@ body {
 
 .everest-forms-form-listing__header {
     display: flex;
-    width: 100%;
     padding: 0 24px;
     align-items: center;
-    gap: 30px;
+	justify-content: space-between;
     border-bottom: 1px solid #E2E8F0;
     background: var(--white, #FFF);
-	margin-left: -20px;
-	margin-top: -10px;
 	margin-bottom: 40px;
 
+	.everest-forms-form-listing__header-left {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
     div#everest-forms-header__logo {
         display: flex;
         align-items: center;
@@ -10250,7 +10252,6 @@ body {
 		border-color: #eaeaea;
 		border-radius: 4px;
 		padding: 8px 16px;
-		margin-left: 79%;
 		background: #eaeaea;
 	}
 
@@ -10259,7 +10260,7 @@ body {
 	}
 
 	span#everest-forms-logo__separator {
-		padding-left: 20px;
+		padding: 0 20px;
 		color: #e2e8f0;
 		font-size: 40px;
 		font-weight: 100;
@@ -10292,6 +10293,9 @@ body {
 		a{
 			color: #7545BB;
 			border-color: #7545BB;
+			top: 0;
+			font-size: 14px;
+			font-weight: 500;
 		}
 	}
 
@@ -10299,4 +10303,71 @@ body {
 
 button#show-settings-link{
 	display: none;
+}
+
+.everest-forms-list-filters-row{
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	align-items: center;
+	gap: 20px;
+	border-bottom: 1px solid #dcdcdc;
+	padding-bottom: 24px;
+	margin-bottom: 24px;
+
+	ul.subsubsub{
+		font-size: 15px;
+		li{
+			font-weight: 600;
+
+			a .count{
+				font-weight: 600;
+			}
+		}
+	}
+
+	#everest-forms-list-search-form {
+		width: 275px;
+		position: relative;
+
+		#everest-forms-list-table-search-input {
+			border-radius: 4px;
+			border: 1px solid #bababa;
+			background: #ffffff;
+			padding: 3px 42px 3px 12px;
+			width: 100%;
+
+			&::placeholder {
+				color: #999999;
+			}
+
+			&:focus {
+				box-shadow: none;
+				border: 1px solid #475bb2;
+			}
+		}
+
+		button {
+			&#search-submit {
+				position: absolute;
+				border: 0;
+				background: transparent;
+				padding: 0;
+				width: 18px;
+				height: 18px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				right: 12px;
+				top: 8px;
+
+				svg {
+					path {
+						fill: #999999;
+					}
+				}
+			}
+		}
+	}
+
 }
