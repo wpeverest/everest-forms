@@ -331,7 +331,7 @@ class EVF_Admin_Entries {
 				array( '%d' )
 			);
 		} elseif ( 'approved' === $status ) {
-			$update     = $wpdb->update(
+			$update = $wpdb->update(
 				$wpdb->prefix . 'evf_entries',
 				array(
 					'status' => 'publish',
@@ -340,6 +340,7 @@ class EVF_Admin_Entries {
 				array( '%s' ),
 				array( '%d' )
 			);
+
 			$entry      = evf_get_entry( $entry_id );
 			$entry_meta = $entry->meta;
 			$entry_date = $entry->date_created;
@@ -441,13 +442,22 @@ class EVF_Admin_Entries {
 				/* translator: %s: Site Name */
 				$message .= '<br/>' . sprintf( __( 'From %s', 'everest-forms' ), $site_name );
 				$message  = apply_filters( 'everest_forms_entry_denial_message', $message );
-
 			}
 
 			if ( ! $is_bulk_action ) {
 				$email_obj = new EVF_Emails();
 				$email_obj->send( $email, $subject, $message );
 			}
+		} elseif ( 'unspam' === $status ) {
+			$update = $wpdb->update(
+				$wpdb->prefix . 'evf_entries',
+				array(
+					'status' => 'publish',
+				),
+				array( 'entry_id' => $entry_id ),
+				array( '%s' ),
+				array( '%d' )
+			);
 		} else {
 			$entry = evf_get_entry( $entry_id );
 

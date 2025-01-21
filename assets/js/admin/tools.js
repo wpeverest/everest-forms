@@ -1,5 +1,81 @@
 /* global everest_forms_admin_tools */
 jQuery(function ($) {
+
+	$(document).ready(function () {
+		const tabs = $('.everest-forms-tabs li');
+		const contents = $('.everest-forms-tab-content');
+
+		tabs.on('click', function () {
+			tabs.removeClass('active');
+			contents.removeClass('active');
+
+			$(this).addClass('active');
+			$('#' + $(this).data('tab')).addClass('active');
+		});
+	});
+
+	// collapse
+
+	// Handles collapse of side menu.
+	$("#evf-settings-collapse").on("click", function (e) {
+		e.preventDefault();
+		if ($(this).hasClass("close")) {
+			$(this).closest("header").addClass("collapsed");
+			$(this).removeClass("close").addClass("open");
+			setStorageValue("evf-settings-navCollapsed", true); // set to localStorage
+		} else {
+			$(this).closest("header").removeClass("collapsed");
+			$(this).removeClass("open").addClass("close");
+			localStorage.removeItem("evf-settings-navCollapsed"); // remove from localStorage
+		}
+	});
+
+	// Persist the collapsable state through page reload
+
+	var isNavCollapsed =
+		getStorageValue("evf-settings-navCollapsed") === true
+			? "collapsed"
+			: "not-collapsed";
+			getStorageValue("evf-settings-navCollapsed");
+	if (isNavCollapsed == "collapsed") {
+		$(".everest-forms-header").addClass("collapsed");
+		$("#evf-settings-collapse").removeClass("close").addClass("open");
+	} else {
+		$(".everest-forms-header").removeClass("collapsed");
+		$("#evf-settings-collapse").removeClass("open").addClass("close");
+	}
+
+	// Set localStorage with expiry
+	function setStorageValue(key, value) {
+		var current = new Date();
+
+		var data = {
+			value: value,
+			expiry: current.getTime() + 86400000, // 1day of expiry time
+		};
+
+		localStorage.setItem(key, JSON.stringify(data));
+	}
+
+	// Get localStorage with expiry
+	function getStorageValue(key) {
+		var item = localStorage.getItem(key);
+
+		if (!item) {
+			return false;
+		}
+
+		var data = JSON.parse(item);
+		var current = new Date();
+
+		if (current.getTime() > data.expiry) {
+			localStorage.removeItem(key);
+			return false;
+		}
+		return true;
+	}
+
+
 	// Delete All Logs.
 	$("#log-viewer-select").on(
 		"click",

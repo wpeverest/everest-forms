@@ -24,6 +24,10 @@ const webpackConfig = {
 			process.cwd(),
 			'./src/templates/index.tsx',
 		),
+		"rolesandpermission": resolve(
+			process.cwd(),
+			'./src/rolesandpermission/index.js'
+		),
 	},
 	output: {
 		path: resolve(process.cwd(), 'dist'),
