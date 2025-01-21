@@ -28,30 +28,32 @@ class EVF_Smart_Tags {
 		$smart_tags = apply_filters(
 			'everest_forms_smart_tags',
 			array(
-				'current_date'           => esc_html__( 'Current Date', 'everest-forms' ),
-				'current_time'           => esc_html__( 'Current Time', 'everest-forms' ),
-				'admin_email'            => esc_html__( 'Site Admin Email', 'everest-forms' ),
-				'site_name'              => esc_html__( 'Site Name', 'everest-forms' ),
-				'site_url'               => esc_html__( 'Site URL', 'everest-forms' ),
-				'page_title'             => esc_html__( 'Page Title', 'everest-forms' ),
-				'page_url'               => esc_html__( 'Page URL', 'everest-forms' ),
-				'page_id'                => esc_html__( 'Page ID', 'everest-forms' ),
-				'post_title'             => esc_html__( 'Post Title', 'everest-forms' ),
-				'post_meta key=whatever' => esc_html__( 'Post Meta', 'everest-forms' ),
-				'author_email'           => esc_html__( 'Author Email', 'everest-forms' ),
-				'author_name'            => esc_html__( 'Author Name', 'everest-forms' ),
-				'form_name'              => esc_html__( 'Form Name', 'everest-forms' ),
-				'user_ip_address'        => esc_html__( 'User IP Address', 'everest-forms' ),
-				'user_id'                => esc_html__( 'User ID', 'everest-forms' ),
-				'user_meta key=whatever' => esc_html__( 'User Meta', 'everest-forms' ),
-				'user_name'              => esc_html__( 'User Name', 'everest-forms' ),
-				'display_name'           => esc_html__( 'User Display Name', 'everest-forms' ),
-				'first_name'             => esc_html__( 'First Name', 'everest-forms' ),
-				'last_name'              => esc_html__( 'Last Name', 'everest-forms' ),
-				'user_email'             => esc_html__( 'User Email', 'everest-forms' ),
-				'user_role'              => esc_html__( 'User Role', 'everest-forms' ),
-				'referrer_url'           => esc_html__( 'Referrer URL', 'everest-forms' ),
-				'form_id'                => esc_html__( 'Form ID', 'everest-forms' ),
+				'current_date'                            => esc_html__( 'Current Date', 'everest-forms' ),
+				'current_time'                            => esc_html__( 'Current Time', 'everest-forms' ),
+				'admin_email'                             => esc_html__( 'Site Admin Email', 'everest-forms' ),
+				'site_name'                               => esc_html__( 'Site Name', 'everest-forms' ),
+				'site_url'                                => esc_html__( 'Site URL', 'everest-forms' ),
+				'page_title'                              => esc_html__( 'Page Title', 'everest-forms' ),
+				'page_url'                                => esc_html__( 'Page URL', 'everest-forms' ),
+				'page_id'                                 => esc_html__( 'Page ID', 'everest-forms' ),
+				'post_title'                              => esc_html__( 'Post Title', 'everest-forms' ),
+				'post_meta key=whatever'                  => esc_html__( 'Post Meta', 'everest-forms' ),
+				'posts_meta_current_page_id key=whatever' => esc_html__( 'Post Meta By Current Page', 'everest-forms' ),
+				'author_email'                            => esc_html__( 'Author Email', 'everest-forms' ),
+				'author_name'                             => esc_html__( 'Author Name', 'everest-forms' ),
+				'form_name'                               => esc_html__( 'Form Name', 'everest-forms' ),
+				'user_ip_address'                         => esc_html__( 'User IP Address', 'everest-forms' ),
+				'user_id'                                 => esc_html__( 'User ID', 'everest-forms' ),
+				'user_meta key=whatever'                  => esc_html__( 'User Meta', 'everest-forms' ),
+				'user_name'                               => esc_html__( 'User Name', 'everest-forms' ),
+				'display_name'                            => esc_html__( 'User Display Name', 'everest-forms' ),
+				'first_name'                              => esc_html__( 'First Name', 'everest-forms' ),
+				'last_name'                               => esc_html__( 'Last Name', 'everest-forms' ),
+				'user_email'                              => esc_html__( 'User Email', 'everest-forms' ),
+				'user_role'                               => esc_html__( 'User Role', 'everest-forms' ),
+				'referrer_url'                            => esc_html__( 'Referrer URL', 'everest-forms' ),
+				'form_id'                                 => esc_html__( 'Form ID', 'everest-forms' ),
+				'entry_id'                                => esc_html__( 'Entry ID', 'everest-forms' ),
 			)
 		);
 
@@ -325,7 +327,6 @@ class EVF_Smart_Tags {
 
 		// Other Smart tags.
 		preg_match_all( '/\{(.+?)\}/', $content, $other_tags );
-
 		if ( ! empty( $other_tags[1] ) ) {
 
 			foreach ( $other_tags[1] as $key => $tag ) {
@@ -452,11 +453,12 @@ class EVF_Smart_Tags {
 						if ( is_array( $meta ) && ! empty( $meta[1][0] ) ) {
 							$key = $meta[1][0];
 
-							$args  = array(
+							$args = array(
 								'post_type'      => 'any',
 								'meta_key'       => $key,
 								'posts_per_page' => -1,
 							);
+
 							$query = new WP_Query( $args );
 
 							if ( $query->have_posts() ) {
@@ -465,8 +467,45 @@ class EVF_Smart_Tags {
 									$post_id = get_the_ID();
 								}
 							}
-							$value = get_post_meta( $post_id, $key, true );
 
+							/**
+							 * get_queried_object_id() is used to get current page id.
+							 *
+							 * @since 3.0.4
+							 */
+							$value   = get_post_meta( $post_id, $key, true );
+							$content = str_replace( '{' . $tag . '}', wp_kses_post( $value ), $content );
+						} else {
+							$content = str_replace( '{' . $tag . '}', '', $content );
+						}
+						break;
+					case 'posts_meta_current_page_id':
+						preg_match_all( '/key\=(.*?)$/', $tag, $meta );
+
+						if ( is_array( $meta ) && ! empty( $meta[1][0] ) ) {
+							$key = $meta[1][0];
+
+							$args = array(
+								'post_type'      => 'any',
+								'meta_key'       => $key,
+								'posts_per_page' => -1,
+							);
+
+							$query = new WP_Query( $args );
+
+							if ( $query->have_posts() ) {
+								while ( $query->have_posts() ) {
+									$query->the_post();
+									$post_id = get_the_ID();
+								}
+							}
+
+							/**
+							 * get_queried_object_id() is used to get current page id.
+							 *
+							 * @since 3.0.4
+							 */
+							$value   = get_post_meta( get_queried_object_id(), $key, true );
 							$content = str_replace( '{' . $tag . '}', wp_kses_post( $value ), $content );
 						} else {
 							$content = str_replace( '{' . $tag . '}', '', $content );

@@ -3,15 +3,11 @@
 *.md
 *.zip
 *.lock
-bin/
 build/
 changelog.txt
-composer.*
 Gruntfile.js
 webpack.config.js
 tests/
-vendor/
-src/
 node_modules/
 none
 package-lock.json

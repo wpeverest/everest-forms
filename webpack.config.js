@@ -4,7 +4,7 @@
 const { resolve } = require('path');
 const path = require("path");
 const CopyPlugin = require("copy-webpack-plugin");
-const NODE_ENV = process.env.NODE_ENV || "production";
+const NODE_ENV =  "production";
 
 const webpackConfig = {
 	mode: NODE_ENV,
@@ -17,9 +17,16 @@ const webpackConfig = {
 			process.cwd(),
 			'./src/blocks/index.js',
 		),
+		"divibuilder": resolve(
+			process.cwd(),
+			'./src/divibuilder/index.jsx'),
 		"templates": resolve(
 			process.cwd(),
 			'./src/templates/index.tsx',
+		),
+		"rolesandpermission": resolve(
+			process.cwd(),
+			'./src/rolesandpermission/index.js'
 		),
 	},
 	output: {

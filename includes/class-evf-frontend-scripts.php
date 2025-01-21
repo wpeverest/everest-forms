@@ -213,7 +213,9 @@ class EVF_Frontend_Scripts {
 				'version' => EVF_VERSION,
 			),
 		);
+
 		foreach ( $register_scripts as $name => $props ) {
+
 			self::register_script( $name, $props['src'], $props['deps'], $props['version'] );
 		}
 	}

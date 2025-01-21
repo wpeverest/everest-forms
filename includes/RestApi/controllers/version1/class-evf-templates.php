@@ -64,6 +64,16 @@ class Everest_Forms_Template_Section_Data {
 				'permission_callback' => array( $this, 'check_admin_permissions' ),
 			)
 		);
+
+		register_rest_route(
+			$this->namespace,
+			'/' . $this->rest_base . '/favorite_forms',
+			array(
+				'methods'             => 'GET',
+				'callback'            => array( $this, 'handle_get_favorites' ),
+				'permission_callback' => array( $this, 'check_admin_permissions' ),
+			)
+		);
 	}
 
 	/**
@@ -289,7 +299,7 @@ class Everest_Forms_Template_Section_Data {
 		}
 
 		// Capability check.
-		if ( ! current_user_can( 'manage_options' ) ) {
+		if ( ! current_user_can( 'manage_everest_forms' ) || ! current_user_can( 'everest_forms_create_forms' ) ) {
 			return new WP_Error(
 				'rest_forbidden',
 				esc_html__( 'You are not allowed to access this resource.', 'everest-forms' ),
@@ -298,5 +308,26 @@ class Everest_Forms_Template_Section_Data {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Retrieves the favorite forms of user.
+	 *
+	 * @since 3.0.8
+	 *
+	 * @param  WP_REST_Request $request
+	 */
+	public function handle_get_favorites( WP_REST_Request $request ) {
+		$user_id = get_current_user_id();
+		if ( ! $user_id ) {
+			return new WP_REST_Response( 'User not logged in.', 401 );
+		}
+
+		$user_favorites = get_option( 'user_favorites' );
+		if ( ! is_array( $user_favorites ) || ! isset( $user_favorites[ $user_id ] ) ) {
+			return new WP_REST_Response( array(), 200 );
+		}
+
+		return new WP_REST_Response( $user_favorites[ $user_id ], 200 );
 	}
 }

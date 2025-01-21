@@ -332,7 +332,7 @@
 		content: '\e903';
 	}
 	&coupon::before {
-		content: '\e904';
+		content: '\e90b';
 	}
 	&yes-no::before {
 		content: '\e905';
@@ -358,5 +358,8 @@
 		&::before {
 			content: '\e917';
 		}
+	}
+	&builder::before {
+		content: '\e904';
 	}
 }

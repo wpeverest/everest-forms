@@ -24,6 +24,8 @@ function evf_get_screen_ids() {
 		$evf_screen_id . '_page_evf-tools',
 		$evf_screen_id . '_page_evf-addons',
 		$evf_screen_id . '_page_evf-email-templates',
+		$evf_screen_id . '_page_smart-smtp',
+		$evf_screen_id . '_page_evf-smart-smtp',
 	);
 
 	return apply_filters( 'everest_forms_screen_ids', $screen_ids );
@@ -351,7 +353,7 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 					$output .= sprintf( ' <i class="dashicons dashicons-editor-help everest-forms-help-tooltip" title="%s"></i>', esc_attr( $item['tooltip'] ) );
 				}
 				$output .= '</label></span>';
-				$x++;
+				++$x;
 			}
 			break;
 
@@ -406,7 +408,7 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 
 			foreach ( $options as $key => $item ) {
 				if ( true === $is_multiple && is_array( $value ) ) {
-					 $output .= sprintf( '<option value="%s" %s>%s</option>', esc_attr( $key ), selected( in_array( $key, $value, true ), true, false ), $item );
+					$output .= sprintf( '<option value="%s" %s>%s</option>', esc_attr( $key ), selected( in_array( $key, $value, true ), true, false ), $item );
 				} else {
 					$output .= sprintf( '<option value="%s" %s>%s</option>', esc_attr( $key ), selected( $key, $value, false ), $item );
 				}
@@ -468,7 +470,7 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 					esc_html( $item['image'] )
 				);
 				$output .= '</label>';
-				$x ++;
+				++$x;
 			}
 			$output .= '</div>';
 			break;
