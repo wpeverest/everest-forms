@@ -65,10 +65,88 @@ defined( 'ABSPATH' ) || exit;
 
 			if ( $email_template_included ) {
 				$email_content = apply_filters( 'everest_forms_email_template_message', $email_content, $evf_emails_obj, $connection_id );
-				echo $email_content;
+				$allowed_tags  = array(
+					'p'      => array(
+						'style' => array(),
+					),
+					'table'  => array(
+						'border'      => array(),
+						'cellpadding' => array(),
+						'cellspacing' => array(),
+						'style'       => array(),
+					),
+					'tr'     => array(
+						'style' => array(),
+					),
+					'td'     => array(
+						'style' => array(),
+					),
+					'img'    => array(
+						'src'    => array(),
+						'alt'    => array(),
+						'height' => array(),
+						'width'  => array(),
+						'style'  => array(),
+					),
+					'a'      => array(
+						'href'  => array(),
+						'title' => array(),
+						'style' => array(),
+					),
+					'h1'     => array( 'style' => array() ),
+					'h2'     => array( 'style' => array() ),
+					'h3'     => array( 'style' => array() ),
+					'h4'     => array( 'style' => array() ),
+					'h5'     => array( 'style' => array() ),
+					'h6'     => array( 'style' => array() ),
+					'br'     => array(),
+					'strong' => array(),
+					'em'     => array(),
+					'style'  => array(),
+				);
+				echo wp_kses( $email_content, $allowed_tags );
 			} else {
 				$email_content = $evf_emails_obj->build_email( $email_content );
-				echo $email_content;
+				$allowed_tags  = array(
+					'p'      => array(
+						'style' => array(),
+					),
+					'table'  => array(
+						'border'      => array(),
+						'cellpadding' => array(),
+						'cellspacing' => array(),
+						'style'       => array(),
+					),
+					'tr'     => array(
+						'style' => array(),
+					),
+					'td'     => array(
+						'style' => array(),
+					),
+					'img'    => array(
+						'src'    => array(),
+						'alt'    => array(),
+						'height' => array(),
+						'width'  => array(),
+						'style'  => array(),
+					),
+					'a'      => array(
+						'href'  => array(),
+						'title' => array(),
+						'style' => array(),
+					),
+					'h1'     => array( 'style' => array() ),
+					'h2'     => array( 'style' => array() ),
+					'h3'     => array( 'style' => array() ),
+					'h4'     => array( 'style' => array() ),
+					'h5'     => array( 'style' => array() ),
+					'h6'     => array( 'style' => array() ),
+					'br'     => array(),
+					'strong' => array(),
+					'em'     => array(),
+					'style'  => array(),
+				);
+				echo wp_kses( $email_content, $allowed_tags );
 			}
 
 			?>

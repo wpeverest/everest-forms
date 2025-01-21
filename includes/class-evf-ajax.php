@@ -99,40 +99,41 @@ class EVF_AJAX {
 	 */
 	public static function add_ajax_events() {
 		$ajax_events = array(
-			'save_form'                      => false,
-			'create_form'                    => false,
-			'get_next_id'                    => false,
-			'install_extension'              => false,
-			'integration_connect'            => false,
-			'new_email_add'                  => false,
-			'integration_disconnect'         => false,
-			'rated'                          => false,
-			'review_dismiss'                 => false,
-			'survey_dismiss'                 => false,
-			'allow_usage_dismiss'            => false,
-			'php_notice_dismiss'             => false,
-			'email_failed_notice_dismiss'    => false,
-			'enabled_form'                   => false,
-			'import_form_action'             => false,
-			'template_licence_check'         => false,
-			'template_activate_addon'        => false,
-			'ajax_form_submission'           => true,
-			'send_test_email'                => false,
-			'locate_form_action'             => false,
-			'slot_booking'                   => true,
-			'active_addons'                  => false,
-			'get_local_font_url'             => false,
-			'form_migrator_forms_list'       => false,
-			'form_migrator'                  => false,
-			'fm_dismiss_notice'              => false,
-			'email_duplicate'                => false,
-			'form_entry_migrator'            => false,
-			'embed_form'                     => false,
-			'goto_edit_page'                 => false,
-			'send_routine_report_test_email' => false,
-			'map_csv'                        => false,
-			'import_entries'                 => false,
-			'generate_restapi_key'           => false,
+			'save_form'                       => false,
+			'create_form'                     => false,
+			'get_next_id'                     => false,
+			'install_extension'               => false,
+			'integration_connect'             => false,
+			'new_email_add'                   => false,
+			'integration_disconnect'          => false,
+			'rated'                           => false,
+			'review_dismiss'                  => false,
+			'survey_dismiss'                  => false,
+			'allow_usage_dismiss'             => false,
+			'php_notice_dismiss'              => false,
+			'email_failed_notice_dismiss'     => false,
+			'enabled_form'                    => false,
+			'import_form_action'              => false,
+			'template_licence_check'          => false,
+			'template_activate_addon'         => false,
+			'ajax_form_submission'            => true,
+			'send_test_email'                 => false,
+			'locate_form_action'              => false,
+			'slot_booking'                    => true,
+			'active_addons'                   => false,
+			'get_local_font_url'              => false,
+			'form_migrator_forms_list'        => false,
+			'form_migrator'                   => false,
+			'fm_dismiss_notice'               => false,
+			'email_duplicate'                 => false,
+			'form_entry_migrator'             => false,
+			'embed_form'                      => false,
+			'goto_edit_page'                  => false,
+			'send_routine_report_test_email'  => false,
+			'map_csv'                         => false,
+			'import_entries'                  => false,
+			'generate_restapi_key'            => false,
+			'install_and_activate_smart_smtp' => false,
 		);
 
 		foreach ( $ajax_events as $ajax_event => $nopriv ) {
@@ -1015,7 +1016,8 @@ class EVF_AJAX {
 			$message  = '<div class="everest-forms-message-text">';
 			$message .= '<h3 style="text-align:center; color: #ffc107;">' . esc_html( 'PS. This is just the sample data' ) . '</h3>';
 			$message .= '<p><strong>' . esc_html__( 'Hi there!', 'everest-forms' ) . ' 👋</strong></p>';
-			$message .= '<p>' . esc_html__( 'Let\'s see how your forms performed ' . $evf_summary_duration . '.', 'everest-forms' ) . '</p>';
+			/* translators: %s: Routine email summary duration */
+			$message .= '<p>' . sprintf( esc_html__( 'Let\'s see how your forms performed %s.', 'everest-forms' ), esc_html( $evf_summary_duration ) ) . '</p>';
 			$message .= '<br/>';
 			$message .= '<p><strong>' . esc_html__( 'Forms Stats', 'everest-forms' ) . '</strong></p>';
 			$message .= '<table align="left" border="0" cellpadding="0" cellspacing="0" width="100%" style="solid #dddddd; display:block;min-width: 100%;border-collapse: collapse;width:100%; display:table; padding-bottom:2rem" class="evf_entries_summary_table">';
@@ -1705,7 +1707,7 @@ class EVF_AJAX {
 						} else {
 							self::$background_process->push_to_queue( $row_data );
 						}
-						$row++;
+						++$row;
 					}
 				}
 				fclose( $csv_file );
@@ -1744,6 +1746,79 @@ class EVF_AJAX {
 					'message' => $e->getMessage(),
 				)
 			);
+		}
+	}
+
+	/**
+	 * Installs and activates the Smart SMTP plugin.
+	 *
+	 * @since xx.xx.xx
+	 *
+	 * @return void Outputs a JSON response.
+	 */
+	public static function install_and_activate_smart_smtp() {
+		try {
+			check_ajax_referer( 'everest-forms-smart-smtp-installation-nonce', 'security' );
+			if ( ! current_user_can( 'manage_everest_forms' ) ) {
+				wp_send_json_error( array( 'message' => 'You do not have permission to install plugins.' ) );
+			}
+
+			if ( is_plugin_active( 'smart-smtp/smart-smtp.php' ) ) {
+				wp_send_json_success( array( 'message' => 'SmartSMTP plugin is already activated!' ) );
+			}
+
+			$installed_plugins = get_plugins();
+
+			if ( in_array( 'smart-smtp/smart-smtp.php', $installed_plugins ) ) {
+				$activate_result = activate_plugin( 'smart-smtp/smart-smtp.php' );
+				if ( is_wp_error( $activate_result ) ) {
+					$error_message = $activate_result->get_error_message();
+					wp_send_json_error(
+						array(
+							/* translators: %s: Error message explaining the activation failure */
+							'message' => esc_html__( 'Sorry, we are unable to activate SmartSMTP because of %s', 'everest-forms' ),
+							esc_html( $error_message ),
+						)
+					);
+				}
+			} else {
+				require_once ABSPATH . 'wp-admin/includes/plugin-install.php';
+				require_once ABSPATH . 'wp-admin/includes/file.php';
+				require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
+
+				$plugin_info = plugins_api( 'plugin_information', array( 'slug' => 'smart-smtp' ) );
+				if ( is_wp_error( $plugin_info ) ) {
+					wp_send_json_error( array( 'message' => esc_html__( 'Sorry, your internet connection was interrupted', 'everest-forms' ) ) );
+				}
+
+				$upgrader       = new Plugin_Upgrader( new WP_Ajax_Upgrader_Skin() );
+				$install_result = $upgrader->install( $plugin_info->download_link );
+				if ( is_wp_error( $install_result ) ) {
+					$installation_error = $install_result->get_error_message();
+					wp_send_json_error(
+						array(
+							/* translators: %s: Error message explaining the installation failure */
+							'message' => esc_html__( 'Plugin installation failed due to %s', 'everest-forms' ),
+							esc_html( $installation_error ),
+						)
+					);
+				}
+
+				$activate_result = activate_plugin( 'smart-smtp/smart-smtp.php' );
+			}
+
+			if ( is_wp_error( $activate_result ) ) {
+				wp_send_json_error( array( 'message' => 'Plugin activation failed: ' . $activate_result->get_error_message() ) );
+			}
+
+			wp_send_json_success(
+				array(
+					'message'         => 'SmartSMTP plugin installed and activated successfully!',
+					'redirection_url' => admin_url( 'admin.php?page=smart-smtp' ),
+				)
+			);
+		} catch ( Exception $e ) {
+			wp_send_json_error( array( 'message' => $e->getMessage() ) );
 		}
 	}
 }

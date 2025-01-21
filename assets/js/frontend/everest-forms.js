@@ -21,44 +21,47 @@ jQuery( function ( $ ) {
 	var everest_forms = {
 		$everest_form: $( 'form.everest-form' ),
 		init: function() {
-			this.init_inputMask();
-			this.init_mailcheck();
-			this.init_datepicker();
-			this.init_datedropdown();
-			this.load_validation();
-			this.submission_scroll();
-			this.randomize_elements();
-			this.init_enhanced_select();
-			this.checkUncheckAllcheckbox();
-			this.validateMinimumWordLength();
-			this.validateMinimumcharacterLength();
-			this.loadPhoneField();
-			this.loadCountryFlags();
-			this.ratingInit();
-			this.FormSubmissionWaitingTime();
+			const everstFormsInitializations = () => {
+				this.init_inputMask();
+				this.init_mailcheck();
+				this.init_datepicker();
+				this.init_datedropdown();
+				this.load_validation();
+				this.submission_scroll();
+				this.randomize_elements();
+				this.init_enhanced_select();
+				this.checkUncheckAllcheckbox();
+				this.validateMinimumWordLength();
+				this.validateMinimumcharacterLength();
+				this.loadPhoneField();
+				this.loadCountryFlags();
+				this.ratingInit();
+				this.FormSubmissionWaitingTime();
+			};
 
-			// Inline validation.
-			this.$everest_form.on( 'input validate change', '.input-text, select, input:checkbox, input:radio', this.validate_field );
+			// Initial setup
+			everstFormsInitializations();
 
-			//Add the active class in the fields.
+			// Reinitialize functions on Elementor popup show.
+			$(document).on('elementor/popup/show', everstFormsInitializations);
+
+			// Inline validation
+			this.$everest_form.on('input validate change', '.input-text, select, input:checkbox, input:radio', this.validate_field);
+
+			// Add or remove active class on focus
 			this.$everest_form.on('focusin', '.input-text, select, input[type="checkbox"], input[type="radio"]', function() {
 				$(this).addClass('everest-forms-field-active');
 			}).on('focusout', '.input-text, select, input[type="checkbox"], input[type="radio"]', function() {
 				$(this).removeClass('everest-forms-field-active');
 			});
 
-	;
-
-			/**
-			 * Focus on first error on submit.
-			 *
-			 * @since 3.0.5
-			 */
-			this.$everest_form.on( 'submit', function(){
+			// Scroll to first error on submit
+			this.$everest_form.on('submit', function() {
 				everest_forms.onSubmitErrorScroll();
-			})
+			});
 
-			$( document.body ).trigger( 'everest_forms_loaded' );
+			// Trigger custom event
+			$(document.body).trigger('everest_forms_loaded');
 		},
 		init_inputMask: function() {
 			// Only load if jQuery inputMask library exists.
@@ -118,7 +121,6 @@ jQuery( function ( $ ) {
 		if (window.location.search.includes('ct_builder=true')) {
 			return;
 		}
-
 			var evfDateField = $( '.evf-field-date-time' );
 			if ( evfDateField.length && evfDateField.find( '.flatpickr-field' ).length ) {
 				evfDateField.find( '.flatpickr-field' ).each( function () {
@@ -213,44 +215,44 @@ jQuery( function ( $ ) {
 					}
 				} );
 			}
-				$(document).find(".evf-field-date-time input").on('change', function (event) {
-					var slotBooking = $(this).data('slot-booking'),
-						targetLabel = $(this).parent(),
-						errorLabel = $(this).parent().find('label.evf-error');
-					if(slotBooking === 1) {
-						var dataTimeValue = $(this).val(),
-						dateFormat = $(this).data('date-format'),
-						dateTimeFormat = $(this).data('date-time'),
-						mode = $(this).data('mode'),
-						form_id = $(this).data('form-id'),
-						time_interval = $(this).data('time-interval'),
-						data = {'action':'everest_forms_slot_booking', 'data-time-value':dataTimeValue, 'data-format': dateFormat, 'data-time-format': dateTimeFormat, 'mode': mode, 'form-id': form_id, 'time-interval':time_interval, 'security': everest_forms_params.everest_forms_slot_booking};
+				// $(document).find(".evf-field-date-time input").on('change', function (event) {
+				// 	var slotBooking = $(this).data('slot-booking'),
+				// 		targetLabel = $(this).parent(),
+				// 		errorLabel = $(this).parent().find('label.evf-error');
+				// 	if(slotBooking === 1) {
+				// 		var dataTimeValue = $(this).val(),
+				// 		dateFormat = $(this).data('date-format'),
+				// 		dateTimeFormat = $(this).data('date-time'),
+				// 		mode = $(this).data('mode'),
+				// 		form_id = $(this).data('form-id'),
+				// 		time_interval = $(this).data('time-interval'),
+				// 		data = {'action':'everest_forms_slot_booking', 'data-time-value':dataTimeValue, 'data-format': dateFormat, 'data-time-format': dateTimeFormat, 'mode': mode, 'form-id': form_id, 'time-interval':time_interval, 'security': everest_forms_params.everest_forms_slot_booking};
 
-						$.ajax({
-							url:everest_forms_params.ajax_url,
-							data: data,
-							type: 'POST',
-							beforeSend: function () {
-								var submitButton = $(document).find('.evf-submit-container button');
-								$(submitButton).prop('disabled', true);
-							},
-							success: function (res) {
-								if($(errorLabel).length) {
-									$(errorLabel).remove();
-								}
-								if(res.success === true) {
-									var message = res.data.message;
-									$(targetLabel).append('<label class="evf-error">'+message+'</label>');
-									var submitButton = $(document).find('.evf-submit-container button');
-									$(submitButton).prop('disabled', true);
-								} else {
-									var submitButton = $(document).find('.evf-submit-container button');
-									$(submitButton).prop('disabled', false);
-								}
-							}
-						});
-					}
-				})
+				// 		$.ajax({
+				// 			url:everest_forms_params.ajax_url,
+				// 			data: data,
+				// 			type: 'POST',
+				// 			beforeSend: function () {
+				// 				var submitButton = $(document).find('.evf-submit-container button');
+				// 				$(submitButton).prop('disabled', true);
+				// 			},
+				// 			success: function (res) {
+				// 				if($(errorLabel).length) {
+				// 					$(errorLabel).remove();
+				// 				}
+				// 				if(res.success === true) {
+				// 					var message = res.data.message;
+				// 					$(targetLabel).append('<label class="evf-error">'+message+'</label>');
+				// 					var submitButton = $(document).find('.evf-submit-container button');
+				// 					$(submitButton).prop('disabled', true);
+				// 				} else {
+				// 					var submitButton = $(document).find('.evf-submit-container button');
+				// 					$(submitButton).prop('disabled', false);
+				// 				}
+				// 			}
+				// 		});
+				// 	}
+				// })
 
 		},
 		init_datedropdown: function () {
@@ -750,14 +752,16 @@ jQuery( function ( $ ) {
 		 *
 		 * @since 3.0.5
 		 */
-		onSubmitErrorScroll: function(){
-			if ( $( '.everest-forms-invalid' ).length ) {
-				$( 'html,body' ).animate( {
-					scrollTop: ( $( '.everest-forms-invalid' )[0].offset().top ) - 100
-				}, 1000 );
+		onSubmitErrorScroll: function() {
+			if ($('.everest-forms-invalid').length) {
+				const offset = $('.everest-forms-invalid').eq(0).offset();
+				if (offset) {
+					$('html,body').animate({
+						scrollTop: offset.top - 100
+					}, 1000);
+				}
 			}
 		},
-
 		randomize_elements: function() {
 			$( '.everest-forms-randomize' ).each( function() {
 				var $list      = $( this ),
@@ -867,6 +871,7 @@ jQuery( function ( $ ) {
 				return false;
 			}
 
+
 			// Determine the country by IP if storing user details is enabled.
 			if ( 'yes' !== everest_forms_params.disable_user_details ) {
 				inputOptions.geoIpLookup = everest_forms.currentIpToCountry;
@@ -894,10 +899,16 @@ jQuery( function ( $ ) {
 			$( '.evf-smart-phone-field' ).each( function( i, el ) {
 				var $el = $( el );
 
+				const rect = $el[0].getBoundingClientRect();
+
+				if (rect.width === 0 || rect.height === 0) {
+					return false;
+				}
+
+
 				// Hidden input allows to include country code into submitted data.
 				inputOptions.hiddenInput = $el.closest( '.evf-field-phone' ).data( 'field-id' );
 				inputOptions.utilsScript = everest_forms_params.plugin_url + 'assets/js/intlTelInput/utils.js';
-
 				$el.intlTelInput( inputOptions );
 
 				// Change name of the phone field.

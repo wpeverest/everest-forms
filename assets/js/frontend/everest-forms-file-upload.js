@@ -422,17 +422,23 @@
 	 */
 	function ready() {
 		window.everest_forms = window.everest_forms || {};
-		window.everest_forms.dropzones = [].slice.call( document.querySelectorAll( '.everest-forms-uploader' ) ).map( dropZoneInit );
+		window.everest_forms.dropzones = [].slice.call(document.querySelectorAll('.everest-forms-uploader')).map(dropZoneInit);
 
-		jQuery( document ).on( 'everest-forms-uploads-init', function(event, el) {
+		jQuery(document).on('everest-forms-uploads-init', function(event, el) {
 			dropZoneInit(el);
+		});
+
+		jQuery(document).on('elementor/popup/show', function(event, popup) {
+			const popupContent = popup.$element || document;
+			popupContent.querySelectorAll('.everest-forms-uploader').forEach(el => dropZoneInit(el));
 		});
 	}
 
-	if ( document.readyState === 'loading' ) {
-
-		document.addEventListener( 'DOMContentLoaded', ready );
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', ready);
 	} else {
 		ready();
 	}
+
+
 }() );

@@ -1,10 +1,10 @@
-=== Everest Forms – Build Contact Forms, Surveys, Polls, Quizzes, Newsletter & Application Forms, and Many More with Ease! ===
-Contributors: WPEverest
+=== Everest Forms – WP Form Builder for Contact, Payment, Quiz, Newsletter, Survey & Poll! ===
+Contributors:everestforms,WPEverest
 Tags: contact form, custom form, form builder, forms, survey
 Requires at least: 5.5
 Tested up to: 6.7.1
 Requires PHP: 7.2
-Stable tag: 3.0.6
+Stable tag: 3.0.9
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -307,6 +307,31 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 
 == Changelog ==
+
+= 3.0.9         - xx-xx-2025
+* Dev		    - Subscription plan field with trail period.
+* Enhancement   - Forms table design.
+
+= 3.0.8.1         - 08-01-2025
+* Fix		      - Email Preview not working issue .
+
+= 3.0.8         - 08-01-2025
+* Feature		- User Roles and Permission.
+* Feature		- SMTP settings in Everest Forms.
+* Tweak			- Meta key field readonly.
+* Tweak         - Captcha design on admin.
+* Tweak			- Add mark as spam option in entries list.
+* Tweak         - Select all option in import forms.
+* Fix       - Minimize the license hit when server is unavailable .
+* Fix       - Date Picker and File upload field not working in Elementor popup.
+* Fix 			- Escaping issue in Email Preview template.
+* Fix           - Favorite color issue.
+* Fix           - Post Meta smart tag issue.
+* Fix           - Print option not working.
+
+
+= 3.0.7.1       - 30-12-2024
+* Added         -  Transient for addon update.
 
 = 3.0.6        - 03-12-2024
 * Removed       - Necessary file from the distignore file.

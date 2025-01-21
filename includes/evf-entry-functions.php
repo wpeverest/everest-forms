@@ -212,21 +212,25 @@ function evf_search_entries( $args ) {
 			$query[] = $wpdb->prepare( 'AND `status` = %s', 'approved' );
 		} elseif ( 'denied' === $args['status'] ) {
 			$query[] = $wpdb->prepare( 'AND `status` = %s', 'denied' );
+		} elseif ( 'spam' === $args['status'] ) {
+			$query[] = $wpdb->prepare( 'AND `status` = %s', 'spam' );
+		} elseif ( 'unspam' === $args['status'] ) {
+			$query[] = $wpdb->prepare( 'AND `status` = %s', 'publish' );
 		} else {
 			$query[] = $wpdb->prepare( 'AND `status` = %s', $args['status'] );
 		}
 	}
 
-	// Removing Draft Entry (Save and Contd Add-on).
+		// Removing Draft Entry (Save and Contd Add-on).
 	if ( empty( $args['status'] ) || 'draft' !== $args['status'] ) {
 		$query[] = $wpdb->prepare( 'AND `status` <> %s', 'draft' );
 	}
 
-	$valid_fields = array( 'date', 'form_id', 'title', 'status' );
-	$orderby      = in_array( $args['orderby'], $valid_fields, true ) ? $args['orderby'] : 'entry_id';
-	$order        = 'DESC' === strtoupper( $args['order'] ) ? 'DESC' : 'ASC';
-	$orderby_sql  = sanitize_sql_orderby( "{$orderby} {$order}" );
-	$query[]      = "ORDER BY {$orderby_sql}";
+		$valid_fields = array( 'date', 'form_id', 'title', 'status' );
+		$orderby      = in_array( $args['orderby'], $valid_fields, true ) ? $args['orderby'] : 'entry_id';
+		$order        = 'DESC' === strtoupper( $args['order'] ) ? 'DESC' : 'ASC';
+		$orderby_sql  = sanitize_sql_orderby( "{$orderby} {$order}" );
+		$query[]      = "ORDER BY {$orderby_sql}";
 
 	if ( -1 < $args['limit'] ) {
 		$query[] = $wpdb->prepare( 'LIMIT %d', absint( $args['limit'] ) );
@@ -236,19 +240,19 @@ function evf_search_entries( $args ) {
 		$query[] = $wpdb->prepare( 'OFFSET %d', absint( $args['offset'] ) );
 	}
 
-	$results = $wpdb->get_results( implode( ' ', $query ), ARRAY_A ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		$results = $wpdb->get_results( implode( ' ', $query ), ARRAY_A ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 
-	$ids = wp_list_pluck( $results, 'entry_id' );
+		$ids = wp_list_pluck( $results, 'entry_id' );
 
-	return $ids;
+		return $ids;
 }
 
-/**
- * Get total entries counts by status.
- *
- * @param  int $form_id Form ID.
- * @return array
- */
+	/**
+	 * Get total entries counts by status.
+	 *
+	 * @param  int $form_id Form ID.
+	 * @return array
+	 */
 function evf_get_count_entries_by_status( $form_id ) {
 	$form_data = evf()->form->get( $form_id, array( 'content_only' => true ) );
 	$statuses  = array_keys( evf_get_entry_statuses( $form_data ) );
@@ -271,15 +275,15 @@ function evf_get_count_entries_by_status( $form_id ) {
 	return $counts;
 }
 
-/**
- * Get total next entries counts by last entry.
- *
- * @since 1.5.0
- *
- * @param  int $form_id    Form ID.
- * @param  int $last_entry Last Form ID.
- * @return int[]
- */
+	/**
+	 * Get total next entries counts by last entry.
+	 *
+	 * @since 1.5.0
+	 *
+	 * @param  int $form_id    Form ID.
+	 * @param  int $last_entry Last Form ID.
+	 * @return int[]
+	 */
 function evf_get_count_entries_by_last_entry( $form_id, $last_entry ) {
 	global $wpdb;
 
@@ -293,18 +297,18 @@ function evf_get_count_entries_by_last_entry( $form_id, $last_entry ) {
 	return $results;
 }
 
-/**
- * Get all the entries by form id between the start and end date.
- *
- * @since 1.7.0
- *
- * @param int    $form_id    Form ID.
- * @param string $start_date Start date.
- * @param string $end_date   End date.
- * @param bool   $hide_trashed   Exclude trashed entries.
- *
- * @return array of entries by form ID.
- */
+	/**
+	 * Get all the entries by form id between the start and end date.
+	 *
+	 * @since 1.7.0
+	 *
+	 * @param int    $form_id    Form ID.
+	 * @param string $start_date Start date.
+	 * @param string $end_date   End date.
+	 * @param bool   $hide_trashed   Exclude trashed entries.
+	 *
+	 * @return array of entries by form ID.
+	 */
 function evf_get_entries_by_form_id( $form_id, $start_date = '', $end_date = '', $hide_trashed = false ) {
 	global $wpdb;
 
