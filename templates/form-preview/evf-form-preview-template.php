@@ -7,9 +7,6 @@ wp_head();
 				<head>
 					<meta name="viewport" content="width=device-width"/>
 					<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-					<title>
-						<?php esc_html_e( 'User Registration - Setup Wizard', 'everest-forms' ); ?>
-					</title>
 					<?php
 						wp_print_head_scripts();
 						$form_id = isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
