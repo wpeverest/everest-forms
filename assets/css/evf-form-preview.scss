@@ -168,7 +168,7 @@
 			}
 			.evf-form-preview-save,
 			.evf-form-preview-upgrade {
-				background: #475bb2;
+				background: #7e3bd0;
 				width: max-content;
 				padding: 10px;
 				margin-bottom: 0px;
@@ -177,7 +177,7 @@
 				margin-right: auto;
 				gap: 8px;
 				border-radius: 4px;
-				border: 1px solid #475bb2;
+				border: 1px solid #7e3bd0;
 				cursor: pointer;
 
 				.evf-form-preview-save-title {
@@ -432,7 +432,7 @@ body {
 						button[type="submit"] {
 							padding: 10px 16px 8px;
 							border-radius: 4px;
-							background: #475bb2;
+							background: #7e3bd0;
 							color: #fff;
 							font-size: 14px;
 							font-weight: 500;
@@ -507,7 +507,7 @@ body {
 						width: 40px;
 
 						&:checked + .slider {
-							background-color: #475bb2;
+							background-color: #7e3bd0;
 						}
 
 						&:focus + .slider {
@@ -569,7 +569,7 @@ body {
 		}
 
 		.evf-form-preview-sidepanel-toggler {
-			right: 420px;
+			right: 380px;
 			left: unset;
 			border: 1px solid #edeff7;
 			border-right: 0px;
