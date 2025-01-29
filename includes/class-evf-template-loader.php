@@ -187,8 +187,10 @@ class EVF_Template_Loader {
 		wp_register_style( 'evf-form-preview-style', evf()->plugin_url() . '/assets/css/evf-form-preview.css', array(), EVF_VERSION );
 		wp_enqueue_style( 'evf-form-preview-style' );
 
-		wp_register_script( 'evf-form-preview-script', evf()->plugin_url() . '/assets/js/frontend/evf-form-preview' . $suffix . '.js', array( 'jquery' ), EVF_VERSION );
+		wp_register_script( 'evf-form-preview-script', evf()->plugin_url() . '/assets/js/frontend/evf-form-preview' . $suffix . '.js', array( 'jquery', 'tooltipster' ), EVF_VERSION );
 		wp_enqueue_script( 'evf-form-preview-script' );
+		wp_register_script( 'tooltipster', evf()->plugin_url() . '/assets/js/tooltipster/tooltipster.bundle' . $suffix . '.js', array( 'jquery' ), '4.6.2', true );
+
 		wp_localize_script(
 			'evf-form-preview-script',
 			'everest_forms_form_preview ',

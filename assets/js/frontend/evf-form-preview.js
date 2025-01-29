@@ -114,4 +114,43 @@ jQuery(function ($) {
 	$(document.body).on("click", ".evf-form-preview-upgrade", function () {
 		window.open(everest_forms_form_preview.pro_upgrade_link, "_blank");
 	});
+
+	/**
+	 * Copy shortcode to clipboard.
+	 *
+	 * @since xx.xx.xx
+	 */
+	$(document.body)
+	.find('#copy-shortcode')
+	.on('click', async function () {
+		const $this = $(this);
+		try {
+			const textToCopy = $this.closest('.publishing-action').find('input').val();
+			await navigator.clipboard.writeText(textToCopy);
+			$this.trigger('aftercopy');
+		} catch (error) {
+			console.error('Failed to copy text:', error);
+		}
+	})
+	.on('aftercopy', function () {
+		const $this = $(this);
+
+		if (!$this.data('tooltipster-initialized')) {
+			$this.tooltipster({
+				theme: 'tooltipster-noir',
+				interactive: true,
+				trigger: 'custom',
+				maxWidth: 200,
+				content: $this.attr('data-copied'),
+				position: 'bottom'
+			});
+			$this.data('tooltipster-initialized', true);
+		}
+
+		$this.tooltipster('content', $this.attr('data-copied')).tooltipster('open');
+
+		setTimeout(() => {
+			$this.tooltipster('close');
+		}, 2000);
+	});
 });
