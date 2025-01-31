@@ -3,7 +3,7 @@ jQuery(function ($) {
 	 * Save form applying theme style.
 	 */
 	$(document.body).on("change", "#evf_toggle_form_preview_theme", function () {
-		$(".evf-frontend-form").toggleClass("evf-frontend-form-preview");
+		$(".everest-forms").toggleClass("evf-frontend-form-preview");
 		$("#evf-form-save").toggleClass("hidden");
 	});
 	/**
@@ -107,8 +107,8 @@ jQuery(function ($) {
 	$(document).ready(function () {
 		// $('#evf_toggle_form_preview_theme').is(":checked") ? $('link#evf-form-preview-theme-style-css').prop('disabled', true) : $('link#evf-form-preview-default-style-css').prop('disabled', false);
 		$("#evf_toggle_form_preview_theme").is(":checked")
-			? $(".evf-frontend-form").addClass("evf-frontend-form-preview")
-			: $(".evf-frontend-form").removeClass("evf-frontend-form-preview");
+			? $(".everest-forms").addClass("evf-frontend-form-preview")
+			: $(".everest-forms").removeClass("evf-frontend-form-preview");
 	});
 
 	$(document.body).on("click", ".evf-form-preview-upgrade", function () {
