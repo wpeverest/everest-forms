@@ -408,11 +408,25 @@ body {
 							.evf-frontend-row {
 								.evf-frontend-grid {
 									.evf-field {
-										.evf-field-label {
+										&-label {
 											color: #383838;
-											font-size: 15px;
+											font-size: 14px;
 											font-weight: 500;
-											line-height: 21px;
+											line-height: 20px;
+										}
+
+										ul {
+											li {
+												margin-bottom: 12px;
+												
+												input {
+													&[type="radio"],
+													&[type="checkbox"] {
+														min-height: 20px;
+														margin-top: 0;
+													}
+												}
+											}
 										}
 									}
 								}
@@ -420,7 +434,7 @@ body {
 						}
 						
 						.evf-submit-container {
-							margin-top: 20px;
+							margin-top: 12px;
 						}
 					}
 
@@ -429,7 +443,7 @@ body {
 							.evf-field-container {
 								.evf-frontend-row {
 									.evf-frontend-grid {
-										.evf-field {											
+										.evf-field {
 											input,
 											textarea,
 											select {
