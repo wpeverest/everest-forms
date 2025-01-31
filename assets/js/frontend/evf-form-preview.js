@@ -33,7 +33,7 @@ jQuery(function ($) {
 			.find(".evf-form-preview-device")
 			.removeClass("active");
 		$(this).parent().find("svg path").css("fill", "#383838");
-		$(this).find("path").css("fill", "#475BB2");
+		$(this).find("path").css("fill", "#7545BB");
 
 		if (device === "desktop") {
 			container_wrapper.addClass("evf-frontend-form-desktop-view");
