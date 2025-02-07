@@ -2,7 +2,6 @@
  * EverestFormsSurveyFrontEnd JS
  */
 jQuery( function ( $ ) {
-
 	var EverestFormsSurveyFrontEnd = {
 
 		init: function() {

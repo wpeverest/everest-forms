@@ -32,6 +32,16 @@
 	clear: both;
 }
 
+i.icon-wpb-vc_everest_forms {
+	background-image: url('data:image/svg+xml,%3Csvg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"%3E%3Crect width="32" height="32" rx="4" fill="%237545BB"/%3E%3Cpath d="M24.6621 4.62549H19.1523L20.8408 7.46923H26.3506L24.6621 4.62549Z" fill="white"/%3E%3Cpath d="M28.127 10.313H22.6172L24.3945 13.1567H29.9043L28.127 10.313Z" fill="white"/%3E%3Cpath d="M28.0381 24.5318H27.2383H24.7501H7.06544L15.8633 10.1353L19.5069 16.0005H18.7071H15.8633L14.1748 18.8443H15.8633H17.0186H24.5723L15.8633 4.80322L2 27.3755H4.48828H27.2383H29.8155L28.0381 24.5318Z" fill="white"/%3E%3C/svg%3E') !important;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 100%;
+	width: 32px;
+	height: 32px;
+
+}
+
 /**
  * Main EverestForms styles
  */
@@ -544,6 +554,7 @@
 					&.evf-field-radio,
 					&.evf-field-checkbox,
 					&.evf-field-payment-multiple,
+					&.evf-field-payment-subscription-plan,
 					&.evf-field-payment-checkbox {
 						ul {
 							li {
@@ -1955,7 +1966,41 @@ $background-color_1: #f9f9f9;
 	}
 }
 
-.evf-td-head{
+.evf-td-head {
 	background: #f6f7f8;
-    border-bottom: 1px solid #ced4da !important;
+	border-bottom: 1px solid #ced4da !important;
 }
+
+/** CSS for Beaver builder*/
+.everest-forms-beaver__container {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+
+    img.everest-forms-logo__beaver {
+		background: #7545BB;
+		padding: 1rem;
+		border-radius: 14px;
+    }
+}
+.et-db {
+	#et-boc {
+	  .et-l {
+		.et-fb-modules-list {
+		  ul {
+			> li.everest_forms_divi_builder {
+			  &:before {
+				content: '';
+				background-image: url('data:image/svg+xml,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20viewBox%3D%220%200%2020%2020%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M15.4553%202.87459H12.0039L13.0616%204.65593H16.513L15.4553%202.87459Z%22%20fill%3D%22black%22%2F%3E%3Cpath%20d%3D%22M17.6262%206.43721H14.1748L15.2882%208.21856H18.7395L17.6262%206.43721Z%22%20fill%3D%22black%22%2F%3E%3Cpath%20d%3D%22M17.5703%2015.3441H17.0693H15.5106H4.4328L9.94387%206.32597L12.2262%2010H11.7252H9.94387L8.88619%2011.7814H9.94387H10.6675H15.3993L9.94387%202.98592L1.25977%2017.1254H2.81845H17.0693H18.6836L17.5703%2015.3441Z%22%20fill%3D%22black%22%2F%3E%3C%2Fsvg%3E');
+				height: 16px;
+				background-repeat: no-repeat;
+				background-position: center;
+				filter: invert(47%) sepia(92%) saturate(2271%) hue-rotate(187deg) brightness(91%) contrast(86%);
+			  }
+			}
+		  }
+		}
+	  }
+	}
+  }

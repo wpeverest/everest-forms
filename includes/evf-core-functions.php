@@ -988,7 +988,7 @@ function evf_html_attributes( $id = '', $class = array(), $datas = array(), $att
 		if ( ! empty( $class ) ) {
 			// While editing hidden field should be visible.
 			if ( $is_edit_entry ) {
-				$class   = str_replace( 'evf-field-hidden', '', $class );
+				$class = str_replace( 'evf-field-hidden', '', $class );
 			}
 			$parts[] = 'class="' . $class . '"';
 		}
@@ -1143,7 +1143,7 @@ function evf_get_random_string( $length = 10 ) {
  * @return array of form data.
  */
 function evf_get_all_forms( $skip_disabled_entries = false, $check_disable_storing_entry_info = true ) {
-	if( is_null( evf()->form ) ) {
+	if ( is_null( evf()->form ) ) {
 		return array();
 	}
 	$forms    = array();
@@ -1558,34 +1558,59 @@ function evf_get_license_plan() {
 
 	if ( $license_key && is_plugin_active( 'everest-forms-pro/everest-forms-pro.php' ) ) {
 		$license_data = get_transient( 'evf_pro_license_plan' );
-
 		if ( false === $license_data ) {
-			$license_data = json_decode(
-				EVF_Updater_Key_API::check(
-					array(
-						'license' => $license_key,
-					)
-				)
-			);
+			$license_response = EVF_Updater_Key_API::check( array( 'license' => $license_key ) );
+
+			if ( ! $license_response ) {
+				$license_plan = get_option( 'evf_saved_license_plan', 'unknown' );
+				return evf_handle_license_plan_compatibility( $license_plan );
+			}
+
+			$license_data     = json_decode( $license_response );
 
 			if ( ! empty( $license_data->item_name ) ) {
-				$license_data->item_plan = trim( str_replace( 'everest forms', '', str_replace( 'lifetime', '', str_replace( '-lifetime', '', strtolower( $license_data->item_name ) ) ) ) );
+				$license_data->item_plan = strtolower( $license_data->item_name );
+				$license_data->item_plan = str_replace(
+					array( 'everest forms', 'lifetime', '-lifetime' ),
+					'',
+					$license_data->item_plan
+				);
+				$license_data->item_plan = trim( $license_data->item_plan );
+				update_option( 'evf_saved_license_plan', $license_data->item_plan );
 				set_transient( 'evf_pro_license_plan', $license_data, WEEK_IN_SECONDS );
 			}
 		}
-		return evf_handle_license_plan_compatibility( isset( $license_data->item_plan ) ? trim( str_replace( 'everest forms', '', str_replace( 'lifetime', '', str_replace( '-lifetime', '', strtolower( $license_data->item_plan ) ) ) ) ) : false );
+		$license_plan = isset( $license_data->item_plan ) ? $license_data->item_plan : get_option( 'evf_saved_license_plan', 'unknown' );
+		return evf_handle_license_plan_compatibility( $license_plan );
 	}
 
 	return false;
 }
 
+add_action( 'admin_init', 'evf_handle_force_update' );
+
+if ( ! function_exists( 'evf_handle_force_update' ) ) {
+
+	/**
+	 * Delete our plugins addon updater transient during force update.
+	 */
+	function evf_handle_force_update() {
+		global $pagenow;
+
+		if ( 'update-core.php' === $pagenow && ( isset( $_GET['force-check'] ) ) && ( '1' === $_GET['force-check'] ) ) {
+			delete_transient( 'evf_pro_license_plan' );
+		}
+	}
+}
+
+
 /** To handle the backward compatibility for those user who is still using the plus and professional plan license key.
-*
-* @since 3.0.0
-* @param $license_plan License plan.
-*/
+ *
+ * @since 3.0.0
+ * @param $license_plan License plan.
+ */
 function evf_handle_license_plan_compatibility( $license_plan ) {
-	$license_plan = ( 'plus' === $license_plan || 'professional' === $license_plan ) ? 'personal' : $license_plan;
+	$license_plan = ( 'plus' === $license_plan || 'professional' === $license_plan ||'unknown' === $license_plan ) ? 'personal' : $license_plan;
 	return $license_plan;
 }
 
@@ -4554,9 +4579,11 @@ function evf_sanitize_builder( $post_data = array() ) {
 			$value = wp_kses_post( $data->value );
 		} elseif ( 'settings[external_url]' === $data->name ) {
 			$value = esc_url_raw( $data->value );
-		} elseif ( preg_match( '/evf_email_message/', $data->name ) || preg_match( '/telegram_message/', $data->name )) {
+		} elseif ( preg_match( '/evf_email_message/', $data->name ) || preg_match( '/telegram_message/', $data->name ) || preg_match( '/slack_message/', $data->name ) ) {
 			$value = wp_kses_post( $data->value );
-		} elseif ( preg_match('/calculation_field/', $data->name) ) {
+		} elseif ( preg_match( '/calculation_field/', $data->name ) ) {
+			$value = wp_kses_post( $data->value );
+		} elseif ( preg_match( '/successful_form_submission_message/', $data->name ) ) {
 			$value = wp_kses_post( $data->value );
 		} else {
 			$value = sanitize_text_field( $data->value );
@@ -5211,369 +5238,7 @@ if ( ! function_exists( 'evf_process_all_fields_smart_tag' ) ) {
 	}
 }
 
-add_action( 'everest_forms_init', 'evf_check_addons_update' );
 
-if ( ! function_exists( 'evf_check_addons_update' ) ) {
-
-	/**
-	 * Manually check for addons update.
-	 */
-	function evf_check_addons_update() {
-		if ( class_exists( 'EVF_Plugin_Updater' ) ) {
-
-			$plugins_to_check = array();
-
-			if ( class_exists( 'EverestForms_Pro' ) && is_plugin_active( 'everest-forms-pro/everest-forms-pro.php' ) && defined( 'EFP_PLUGIN_FILE' ) && defined( 'EFP_VERSION' ) ) {
-				$plugins_to_check['EverestForms_Pro'] = array(
-					'plugin'  => 'everest-forms-pro/everest-forms-pro.php',
-					'file'    => EFP_PLUGIN_FILE,
-					'id'      => 3441,
-					'version' => EFP_VERSION,
-				);
-			}
-
-			if ( class_exists( 'EverestForms_Survey_Polls_Quiz' ) && is_plugin_active( 'everest-forms-survey-polls-quiz/everest-forms-survey-polls-quiz.php' ) && defined( 'EVF_SURVEY_POLLS_QUIZ_PLUGIN_FILE' ) && defined( 'EVF_SURVEY_POLLS_QUIZ_VERSION' ) ) {
-				$plugins_to_check['EverestForms_Survey_Polls_Quiz'] = array(
-					'plugin'  => 'everest-forms-survey-polls-quiz/everest-forms-survey-polls-quiz.php',
-					'file'    => EVF_SURVEY_POLLS_QUIZ_PLUGIN_FILE,
-					'id'      => 16165,
-					'version' => EVF_SURVEY_POLLS_QUIZ_VERSION,
-				);
-
-			}
-
-			if ( class_exists( 'EverestForms_ActiveCampaign' ) && is_plugin_active( 'everest-forms-activecampaign/everest-forms-activecampaign.php' ) && defined( 'EVF_ACTIVECAMPAIGN_PLUGIN_FILE' ) && defined( 'EVF_ACTIVE_CAMPAIGN_VERSION' ) ) {
-				$plugins_to_check['EverestForms_ActiveCampaign'] = array(
-					'plugin'  => 'everest-forms-activecampaign/everest-forms-activecampaign.php',
-					'file'    => EVF_ACTIVECAMPAIGN_PLUGIN_FILE,
-					'id'      => 61754,
-					'version' => EVF_ACTIVE_CAMPAIGN_VERSION,
-				);
-
-			}
-
-			if ( class_exists( 'EverestForms\\AuthorizeNet\\AuthorizeNet' ) && is_plugin_active( 'everest-forms-authorize-net/everest-forms-authorize-net.php' ) && defined( 'EVF_AUTHORIZE_NET_PLUGIN_FILE' ) && defined( 'EVF_AUTHORIZE_NET_VERSION' ) ) {
-				$plugins_to_check['EverestForms\\AuthorizeNet\\AuthorizeNet'] = array(
-					'plugin'  => 'everest-forms-authorize-net/everest-forms-authorize-net.php',
-					'file'    => EVF_AUTHORIZE_NET_PLUGIN_FILE,
-					'id'      => 249228,
-					'version' => EVF_AUTHORIZE_NET_VERSION,
-				);
-
-			}
-
-			if ( class_exists( 'EverestForms\\Calculations\\Calculations' ) && is_plugin_active( 'everest-forms-calculations/everest-forms-calculations.php' ) && defined( 'EVF_CALCULATIONS_PLUGIN_FILE' ) && defined( 'EVF_CALCULATIONS_VERSION' ) ) {
-				$plugins_to_check['EverestForms\\Calculations\\Calculations'] = array(
-					'plugin'  => 'everest-forms-calculations/everest-forms-calculations.php',
-					'file'    => EVF_CALCULATIONS_PLUGIN_FILE,
-					'id'      => 193220,
-					'version' => EVF_CALCULATIONS_VERSION,
-				);
-
-			}
-
-			if ( class_exists( 'EverestForms_Campaign_Monitor' ) && is_plugin_active( 'everest-forms-campaign-monitor/everest-forms-campaign-monitor.php' ) && defined( 'EVF_CAMPAIGN_MONITOR_PLUGIN_FILE' ) && defined( 'EVF_CAMPAIGN_MONITOR_VERSION' ) ) {
-				$plugins_to_check['EverestForms_Campaign_Monitor'] = array(
-					'plugin'  => 'everest-forms-campaign-monitor/everest-forms-campaign-monitor.php',
-					'file'    => EVF_CAMPAIGN_MONITOR_PLUGIN_FILE,
-					'id'      => 76871,
-					'version' => EVF_CAMPAIGN_MONITOR_VERSION,
-				);
-
-			}
-
-			if ( class_exists( 'EverestForms_Captcha' ) && is_plugin_active( 'everest-forms-captcha/everest-forms-captcha.php' ) && defined( 'EVF_CAPTCHA_PLUGIN_FILE' ) && defined( 'EVF_CAPTCHA_VERSION' ) ) {
-				$plugins_to_check['EverestForms_Captcha'] = array(
-					'plugin'  => 'everest-forms-captcha/everest-forms-captcha.php',
-					'file'    => EVF_CAPTCHA_PLUGIN_FILE,
-					'id'      => 22441,
-					'version' => EVF_CAPTCHA_VERSION,
-				);
-
-			}
-
-			if ( class_exists( 'EverestForms\\Cloud_Storage\\Cloud_Storage' ) && is_plugin_active( 'everest-forms-cloud-storage/everest-forms-cloud-storage.php' ) && defined( 'EVF_CLOUD_STORAGE_PLUGIN_FILE' ) && defined( 'EVF_CLOUD_STORAGE_VERSION' ) ) {
-				$plugins_to_check['EverestForms\\Cloud_Storage\\Cloud_Storage'] = array(
-					'plugin'  => 'everest-forms-cloud-storage/everest-forms-cloud-storage.php',
-					'file'    => EVF_CLOUD_STORAGE_PLUGIN_FILE,
-					'id'      => 226644,
-					'version' => EVF_CLOUD_STORAGE_VERSION,
-				);
-			}
-			if ( class_exists( 'EverestForms\\Constant_Contact\\Constant_Contact' ) && is_plugin_active( 'everest-forms-constant-contact/everest-forms-constant-contact.php' ) && defined( 'EVF_CONSTANT_CONTACT_PLUGIN_FILE' ) && defined( 'EVF_CONSTANT_CONTACT_VERSION' ) ) {
-				$plugins_to_check['EverestForms\\Constant_Contact\\Constant_Contact'] = array(
-					'plugin'  => 'everest-forms-constant-contact/everest-forms-constant-contact.php',
-					'file'    => EVF_CONSTANT_CONTACT_PLUGIN_FILE,
-					'id'      => 226646,
-					'version' => EVF_CONSTANT_CONTACT_VERSION,
-				);
-			}
-
-			if ( class_exists( 'EverestForms\\ConversationalForms\\ConversationalForms' ) && is_plugin_active( 'everest-forms-conversational-forms/everest-forms-conversational-forms.php' ) && defined( 'EVF_CONVERSATIONAL_FORMS_PLUGIN_FILE' ) && defined( 'EVF_CONVERSATIONAL_FORMS_VERSION' ) ) {
-				$plugins_to_check['EverestForms\\ConversationalForms\\ConversationalForms'] = array(
-					'plugin'  => 'everest-forms-conversational-forms/everest-forms-conversational-forms.php',
-					'file'    => EVF_CONVERSATIONAL_FORMS_PLUGIN_FILE,
-					'id'      => 232580,
-					'version' => EVF_CONVERSATIONAL_FORMS_VERSION,
-				);
-			}
-
-			if ( class_exists( 'EverestForms_ConvertKit' ) && is_plugin_active( 'everest-forms-convertkit/everest-forms-convertkit.php' ) && defined( 'EVF_CONVERTKIT_PLUGIN_FILE' ) && defined( 'EVF_CONVERTKIT_VERSION' ) ) {
-				$plugins_to_check['EverestForms_ConvertKit'] = array(
-					'plugin'  => 'everest-forms-convertkit/everest-forms-convertkit.php',
-					'file'    => EVF_CONVERTKIT_PLUGIN_FILE,
-					'id'      => 3435,
-					'version' => EVF_CONVERTKIT_VERSION,
-				);
-			}
-
-			if ( class_exists( 'EverestForms\\Coupons\\Coupons' ) && is_plugin_active( 'everest-forms-coupons/everest-forms-coupons.php' ) && defined( 'EVF_COUPONS_PLUGIN_FILE' ) && defined( 'EVF_COUPONS_VERSION' ) ) {
-				$plugins_to_check['EverestForms\\Coupons\\Coupons'] = array(
-					'plugin'  => 'everest-forms-coupons/everest-forms-coupons.php',
-					'file'    => EVF_COUPONS_PLUGIN_FILE,
-					'id'      => 211435,
-					'version' => EVF_COUPONS_VERSION,
-				);
-			}
-
-			if ( class_exists( 'EverestForms\\Drip\\Drip' ) && is_plugin_active( 'everest-forms-drip/everest-forms-drip.php' ) && defined( 'EVF_DRIP_PLUGIN_FILE' ) && defined( 'EVF_DRIP_VERSION' ) ) {
-				$plugins_to_check['EverestForms\\Drip\\Drip'] = array(
-					'plugin'  => 'everest-forms-drip/everest-forms-drip.php',
-					'file'    => EVF_DRIP_PLUGIN_FILE,
-					'id'      => 211428,
-					'version' => EVF_DRIP_VERSION,
-				);
-			}
-			if ( class_exists( 'EverestForms_Email_Templates' ) && is_plugin_active( 'everest-forms-email-templates/everest-forms-email-templates.php' ) && defined( 'EVF_EMAIL_TEMPLATES_PLUGIN_FILE' ) && defined( 'EVF_EMAIL_TEMPLATES_VERSION' ) ) {
-				$plugins_to_check['EverestForms_Email_Templates'] = array(
-					'plugin'  => 'everest-forms-email-templates/everest-forms-email-templates.php',
-					'file'    => EVF_EMAIL_TEMPLATES_PLUGIN_FILE,
-					'id'      => 72043,
-					'version' => EVF_EMAIL_TEMPLATES_VERSION,
-				);
-			}
-			if ( class_exists( 'EverestForms\\FormAnalytics\\FormAnalytics' ) && is_plugin_active( 'everest-forms-form-analytics/everest-forms-form-analytics.php' ) && defined( 'EVF_FORM_ANALYTICS_PLUGIN_FILE' ) && defined( 'EVF_FORM_ANALYTICS_VERSION' ) ) {
-				$plugins_to_check['EverestForms\\FormAnalytics\\FormAnalytics'] = array(
-					'plugin'  => 'everest-forms-form-analytics/everest-forms-form-analytics.php',
-					'file'    => EVF_FORM_ANALYTICS_PLUGIN_FILE,
-					'id'      => 252609,
-					'version' => EVF_FORM_ANALYTICS_VERSION,
-				);
-			}
-			if ( class_exists( 'EverestForms_Form_Restriction' ) && is_plugin_active( 'everest-forms-form-restriction/everest-forms-form-restriction.php' ) && defined( 'EVF_FORM_RESTRICTION_PLUGIN_FILE' ) && defined( 'EVF_FORM_RESTRICTION_VERSION' ) ) {
-				$plugins_to_check['EverestForms_Form_Restriction'] = array(
-					'plugin'  => 'everest-forms-form-restriction/everest-forms-form-restriction.php',
-					'file'    => EVF_FORM_RESTRICTION_PLUGIN_FILE,
-					'id'      => 61758,
-					'version' => EVF_FORM_RESTRICTION_VERSION,
-				);
-			}
-			if ( class_exists( 'EverestForms\\FrontendListing\\FrontendListing' ) && is_plugin_active( 'everest-forms-frontend-listing/everest-forms-frontend-listing.php' ) && defined( 'EVF_FRONTEND_LISTING_PLUGIN_FILE' ) && defined( 'EVF_FRONTEND_LISTING_VERSION' ) ) {
-				$plugins_to_check['EverestForms\\FrontendListing\\FrontendListing'] = array(
-					'plugin'  => 'everest-forms-frontend-listing/everest-forms-frontend-listing.php',
-					'file'    => EVF_FRONTEND_LISTING_PLUGIN_FILE,
-					'id'      => 211437,
-					'version' => EVF_FRONTEND_LISTING_VERSION,
-				);
-			}
-			if ( class_exists( 'EverestForms_Geolocation' ) && is_plugin_active( 'everest-forms-geolocation/everest-forms-geolocation.php' ) && defined( 'EVF_GEOLOCATION_PLUGIN_FILE' ) && defined( 'EVF_GEOLOCATION_VERSION' ) ) {
-				$plugins_to_check['EverestForms_Geolocation'] = array(
-					'plugin'  => 'everest-forms-geolocation/everest-forms-geolocation.php',
-					'file'    => EVF_GEOLOCATION_PLUGIN_FILE,
-					'id'      => 3632,
-					'version' => EVF_GEOLOCATION_VERSION,
-				);
-			}
-
-			if ( class_exists( 'EverestForms\\GetResponse\\GetResponse' ) && is_plugin_active( 'everest-forms-getresponse/everest-forms-getresponse.php' ) && defined( 'EVF_GETRESPONSE_PLUGIN_FILE' ) && defined( 'EVF_GETRESPONSE_VERSION' ) ) {
-				$plugins_to_check['EverestForms\\GetResponse\\GetResponse'] = array(
-					'plugin'  => 'everest-forms-getresponse/everest-forms-getresponse.php',
-					'file'    => EVF_GETRESPONSE_PLUGIN_FILE,
-					'id'      => 230163,
-					'version' => EVF_GETRESPONSE_VERSION,
-				);
-			}
-
-			if ( class_exists( 'EverestForms\\Google_Sheets\\Plugin' ) && is_plugin_active( 'everest-forms-google-sheets/everest-forms-google-sheets.php' ) && defined( 'EVF_GOOGLE_SHEETS_PLUGIN_FILE' ) && defined( 'EVF_GOOGLE_SHEETS_VERSION' ) ) {
-				$plugins_to_check['EverestForms\\Google_Sheets\\Plugin'] = array(
-					'plugin'  => 'everest-forms-google-sheets/everest-forms-google-sheets.php',
-					'file'    => EVF_GOOGLE_SHEETS_PLUGIN_FILE,
-					'id'      => 72041,
-					'version' => EVF_GOOGLE_SHEETS_VERSION,
-				);
-			}
-
-			if ( class_exists( 'EverestForms\\Hubspot\\Hubspot' ) && is_plugin_active( 'everest-forms-hubspot/everest-forms-hubspot.php' ) && defined( 'EVF_HUBSPOT_PLUGIN_FILE' ) && defined( 'EVF_HUBSPOT_VERSION' ) ) {
-				$plugins_to_check['EverestForms\\Hubspot\\Hubspot'] = array(
-					'plugin'  => 'everest-forms-hubspot/everest-forms-hubspot.php',
-					'file'    => EVF_HUBSPOT_PLUGIN_FILE,
-					'id'      => 211431,
-					'version' => EVF_HUBSPOT_VERSION,
-				);
-			}
-
-			if ( class_exists( 'EverestForms_MailChimp' ) && is_plugin_active( 'everest-forms-mailchimp/everest-forms-mailchimp.php' ) && defined( 'EVF_MAILCHIMP_PLUGIN_FILE' ) && defined( 'EVF_MAILCHIMP_VERSION' ) ) {
-				$plugins_to_check['EverestForms_MailChimp'] = array(
-					'plugin'  => 'everest-forms-mailchimp/everest-forms-mailchimp.php',
-					'file'    => EVF_MAILCHIMP_PLUGIN_FILE,
-					'id'      => 3432,
-					'version' => EVF_MAILCHIMP_VERSION,
-				);
-			}
-
-			if ( class_exists( 'EverestForms_MailerLite' ) && is_plugin_active( 'everest-forms-mailerlite/everest-forms-mailerlite.php' ) && defined( 'EVF_MAILERLITE_PLUGIN_FILE' ) && defined( 'EVF_MAILERLITE_VERSION' ) ) {
-				$plugins_to_check['EverestForms_MailerLite'] = array(
-					'plugin'  => 'everest-forms-mailerlite/everest-forms-mailerlite.php',
-					'file'    => EVF_MAILERLITE_PLUGIN_FILE,
-					'id'      => 61756,
-					'version' => EVF_MAILERLITE_VERSION,
-				);
-			}
-
-			if ( class_exists( 'EverestForms_MultiPart' ) && is_plugin_active( 'everest-forms-multi-part/everest-forms-multi-part.php' ) && defined( 'EVF_MULTI_PART_PLUGIN_FILE' ) && defined( 'EVF_MULTI_PART_VERSION' ) ) {
-				$plugins_to_check['EverestForms_MultiPart'] = array(
-					'plugin'  => 'everest-forms-multi-part/everest-forms-multi-part.php',
-					'file'    => EVF_MULTI_PART_PLUGIN_FILE,
-					'id'      => 5422,
-					'version' => EVF_MULTI_PART_VERSION,
-				);
-			}
-
-			if ( class_exists( 'EverestForms_PayPal_Standard' ) && is_plugin_active( 'everest-forms-paypal-standard/everest-forms-paypal-standard.php' ) && defined( 'EVF_PAYPAL_STANDARD_PLUGIN_FILE' ) && defined( 'EVF_PAYPALL_STANDARD_VERSION' ) ) {
-				$plugins_to_check['EverestForms_PayPal_Standard'] = array(
-					'plugin'  => 'everest-forms-paypal-standard/everest-forms-paypal-standard.php',
-					'file'    => EVF_PAYPAL_STANDARD_PLUGIN_FILE,
-					'id'      => 3437,
-					'version' => EVF_PAYPALL_STANDARD_VERSION,
-				);
-			}
-
-			if ( class_exists( 'EverestForms_PDF_Submission' ) && is_plugin_active( 'everest-forms-pdf-submission/everest-forms-pdf-submission.php' ) && defined( 'EVF_PDF_SUBMISSION_PLUGIN_FILE' ) && defined( 'EVF_PDF_SUBMISSION_VERSION' ) ) {
-				$plugins_to_check['EverestForms_PDF_Submission'] = array(
-					'plugin'  => 'everest-forms-pdf-submission/everest-forms-pdf-submission.php',
-					'file'    => EVF_PDF_SUBMISSION_PLUGIN_FILE,
-					'id'      => 3439,
-					'version' => EVF_PDF_SUBMISSION_VERSION,
-				);
-			}
-
-			if ( class_exists( 'EverestForms\\Pipedrive\\Pipedrive' ) && is_plugin_active( 'everest-forms-pipedrive/everest-forms-pipedrive.php' ) && defined( 'EVF_PIPEDRIVE_PLUGIN_FILE' ) && defined( 'EVF_PIPEDRIVE_VERSION' ) ) {
-				$plugins_to_check['EverestForms\\Pipedrive\\Pipedrive'] = array(
-					'plugin'  => 'everest-forms-pipedrive/everest-forms-pipedrive.php',
-					'file'    => EVF_PIPEDRIVE_PLUGIN_FILE,
-					'id'      => 211433,
-					'version' => EVF_PIPEDRIVE_VERSION,
-				);
-			}
-
-			if ( class_exists( 'EverestForms_Post_Submissions' ) && is_plugin_active( 'everest-forms-post-submission/everest-forms-post-submission.php' ) && defined( 'EVF_POST_SUBMISSIONS_PLUGIN_FILE' ) && defined( 'EVF_POST_SUBMISSIONS_VERSION' ) ) {
-				$plugins_to_check['EverestForms_Post_Submissions'] = array(
-					'plugin'  => 'everest-forms-post-submission/everest-forms-post-submission.php',
-					'file'    => EVF_POST_SUBMISSIONS_PLUGIN_FILE,
-					'id'      => 22436,
-					'version' => EVF_POST_SUBMISSIONS_VERSION,
-				);
-			}
-
-			if ( class_exists( 'EverestForms\\Razorpay\\Razorpay' ) && is_plugin_active( 'everest-forms-razorpay/everest-forms-razorpay.php' ) && defined( 'EVF_RAZORPAY_PLUGIN_FILE' ) && defined( 'EVF_RAZORPAY_VERSION' ) ) {
-				$plugins_to_check['EverestForms\\Razorpay\\Razorpay'] = array(
-					'plugin'  => 'everest-forms-razorpay/everest-forms-razorpay.php',
-					'file'    => EVF_RAZORPAY_PLUGIN_FILE,
-					'id'      => 205578,
-					'version' => EVF_RAZORPAY_VERSION,
-				);
-			}
-
-			if ( class_exists( 'EverestForms\\Repeater_Fields\\Plugin' ) && is_plugin_active( 'everest-forms-repeater-fields/everest-forms-repeater-fields.php' ) && defined( 'EVF_REPEATER_FIELDS_PLUGIN_FILE' ) && defined( 'EVF_REPEATER_FIELDS_VERSION' ) ) {
-				$plugins_to_check['EverestForms\\Repeater_Fields\\Plugin'] = array(
-					'plugin'  => 'everest-forms-repeater-fields/everest-forms-repeater-fields.php',
-					'file'    => EVF_REPEATER_FIELDS_PLUGIN_FILE,
-					'id'      => 157038,
-					'version' => EVF_REPEATER_FIELDS_VERSION,
-				);
-			}
-
-			if ( class_exists( 'EverestForms\\Salesflare\\Salesflare' ) && is_plugin_active( 'everest-forms-salesflare/everest-forms-salesflare.php' ) && defined( 'EVF_SALESFLARE_PLUGIN_FILE' ) && defined( 'EVF_SALESFLARE_VERSION' ) ) {
-				$plugins_to_check['EverestForms\\Salesflare\\Salesflare'] = array(
-					'plugin'  => 'everest-forms-salesflare/everest-forms-salesflare.php',
-					'file'    => EVF_SALESFLARE_PLUGIN_FILE,
-					'id'      => 72049,
-					'version' => EVF_SALESFLARE_VERSION,
-				);
-			}
-
-			if ( class_exists( 'EverestForms\\SaveAndContinue\\Plugin' ) && is_plugin_active( 'everest-forms-save-and-continue/everest-forms-save-and-continue.php' ) && defined( 'EVF_SAVE_AND_CONTINUE_PLUGIN_FILE' ) && defined( 'EVF_SAVE_AND_CONTINUE_VERSION' ) ) {
-				$plugins_to_check['EverestForms\\SaveAndContinue\\Plugin'] = array(
-					'plugin'  => 'everest-forms-save-and-continue/everest-forms-save-and-continue.php',
-					'file'    => EVF_SAVE_AND_CONTINUE_PLUGIN_FILE,
-					'id'      => 148284,
-					'version' => EVF_SAVE_AND_CONTINUE_VERSION,
-				);
-			}
-
-			if ( class_exists( 'EverestForms\\Sendinblue\\Sendinblue' ) && is_plugin_active( 'everest-forms-sendinblue/everest-forms-sendinblue.php' ) && defined( 'EVF_SENDINBLUE_PLUGIN_FILE' ) && defined( 'EVF_SENDINBLUE_VERSION' ) ) {
-				$plugins_to_check['EverestForms\\Sendinblue\\Sendinblue'] = array(
-					'plugin'  => 'everest-forms-sendinblue/everest-forms-sendinblue.php',
-					'file'    => EVF_SENDINBLUE_PLUGIN_FILE,
-					'id'      => 230165,
-					'version' => EVF_SENDINBLUE_VERSION,
-				);
-			}
-
-			if ( class_exists( 'EverestForms\\SmsNotification\\SmsNotification' ) && is_plugin_active( 'everest-forms-sms-notifications/everest-forms-sms-notifications.php' ) && defined( 'EVF_SMS_NOTIFICATION_PLUGIN_FILE' ) && defined( 'EVF_SMS_NOTIFICATION_VERSION' ) ) {
-				$plugins_to_check['EverestForms\\SmsNotification\\SmsNotification'] = array(
-					'plugin'  => 'everest-forms-sms-notifications/everest-forms-sms-notifications.php',
-					'file'    => EVF_SMS_NOTIFICATION_PLUGIN_FILE,
-					'id'      => 205580,
-					'version' => EVF_SMS_NOTIFICATION_VERSION,
-				);
-			}
-
-			if ( class_exists( 'EverestForms_Style_Customizer' ) && is_plugin_active( 'everest-forms-style-customizer/everest-forms-style-customizer.php' ) && defined( 'EVF_STYLE_CUSTOMIZER_PLUGIN_FILE' ) && defined( 'EVF_STYLE_CUSTOMIZER_VERSION' ) ) {
-				$plugins_to_check['EverestForms_Style_Customizer'] = array(
-					'plugin'  => 'everest-forms-style-customizer/everest-forms-style-customizer.php',
-					'file'    => EVF_STYLE_CUSTOMIZER_PLUGIN_FILE,
-					'id'      => 16166,
-					'version' => EVF_STYLE_CUSTOMIZER_VERSION,
-				);
-			}
-
-			if ( class_exists( 'EverestForms_User_Registration' ) && is_plugin_active( 'everest-forms-user-registration/everest-forms-user-registration.php' ) && defined( 'EVF_USER_REGISTRATION_PLUGIN_FILE' ) && defined( 'EVF_USER_REGISTRATION_VERSION' ) ) {
-				$plugins_to_check['EverestForms_User_Registration'] = array(
-					'plugin'  => 'everest-forms-user-registration/everest-forms-user-registration.php',
-					'file'    => EVF_USER_REGISTRATION_PLUGIN_FILE,
-					'id'      => 22439,
-					'version' => EVF_USER_REGISTRATION_VERSION,
-				);
-			}
-
-			if ( class_exists( 'EverestForms_Zapier' ) && is_plugin_active( 'everest-forms-zapier/everest-forms-zapier.php' ) && defined( 'EVF_ZAPIER_PLUGIN_FILE' ) && defined( 'EVF_ZAPIER_VERSION' ) ) {
-				$plugins_to_check['EverestForms_Zapier'] = array(
-					'plugin'  => 'everest-forms-zapier/everest-forms-zapier.php',
-					'file'    => EVF_ZAPIER_PLUGIN_FILE,
-					'id'      => 18350,
-					'version' => EVF_ZAPIER_VERSION,
-				);
-			}
-
-			if ( class_exists( 'EverestForms\\Zoho\\Zoho' ) && is_plugin_active( 'everest-forms-zoho/everest-forms-zoho.php' ) && defined( 'EVF_ZAPIER_PLUGIN_FILE' ) && defined( 'EVF_ZOHO_VERSION' ) ) {
-				$plugins_to_check['EverestForms\\Zoho\\Zoho'] = array(
-					'plugin'  => 'everest-forms-zoho/everest-forms-zoho.php',
-					'file'    => EVF_ZAPIER_PLUGIN_FILE,
-					'id'      => 219736,
-					'version' => EVF_ZOHO_VERSION,
-				);
-			}
-			$current = get_site_transient( 'update_plugins' );
-
-			foreach ( $plugins_to_check as $class_name => $plugin_data ) {
-				if ( ! isset( $current->response[ $plugin_data['plugin'] ] ) ) {
-					\EVF_Plugin_Updater::updates( $plugin_data['file'], $plugin_data['id'], $plugin_data['version'] );
-				}
-			}
-		}
-	}
-}
 
 /**
  * Get one time draggable fields fields.
@@ -5604,18 +5269,45 @@ function evf_get_next_key_array( $arr, $key ) {
 		$next_key = $keys[ $position + 1 ];
 	}
 
-	return isset( $next_key ) ? $next_key : '' ;
+	return isset( $next_key ) ? $next_key : '';
 }
 /**
  * Function to generate the api key base on the string.
  *
- * @since xx.xx.xx
+ * @since 3.0.5
  * @param $string The string value.
  */
 function generate_api_key( $string = 'evf_restapi', $length = 32 ) {
 	$key = bin2hex( random_bytes( $length ) );
 
-    return $key;
+	return $key;
+}
+
+if ( ! function_exists( 'evf_hex_to_rgb' ) ) {
+	/**
+	 * Converts a hex color code to an RGB array.
+	 *
+	 * @since 3.0.5
+	 * @param string $hexcolor Hex color code, with or without '#'.
+	 * @return array RGB values as [red, green, blue].
+	 */
+	function evf_hex_to_rgb( $hexcolor ) {
+		$hexcolor = ltrim( $hexcolor, '#' );
+
+		if ( strlen( $hexcolor ) == 6 ) {
+			$r = hexdec( substr( $hexcolor, 0, 2 ) );
+			$g = hexdec( substr( $hexcolor, 2, 2 ) );
+			$b = hexdec( substr( $hexcolor, 4, 2 ) );
+		} elseif ( strlen( $hexcolor ) == 3 ) {
+			$r = hexdec( str_repeat( substr( $hexcolor, 0, 1 ), 2 ) );
+			$g = hexdec( str_repeat( substr( $hexcolor, 1, 1 ), 2 ) );
+			$b = hexdec( str_repeat( substr( $hexcolor, 2, 1 ), 2 ) );
+		} else {
+			return array( 0, 0, 0 );
+		}
+
+		return array( $r, $g, $b );
+	}
 }
 
 add_action( 'wp_mail_failed', 'evf_email_send_failed_handler', 1 );
@@ -5628,7 +5320,7 @@ if ( ! function_exists( 'evf_email_send_failed_handler' ) ) {
 	 * @param object $error_instance WP_Error message instance.
 	 */
 	function evf_email_send_failed_handler( $error_instance ) {
-		$error_message = '';
+		$error_message   = '';
 		$decoded_message = json_decode( $error_instance->get_error_message() );
 
 		if ( json_last_error() === JSON_ERROR_NONE && ! empty( $decoded_message ) ) {
@@ -5654,8 +5346,36 @@ if ( ! function_exists( 'evf_email_send_failed_handler' ) ) {
 	}
 }
 
-add_action( 'admin_head', function() {
-	$js = <<<JS
+/**
+ * Get form data by field key.
+ *
+ * @param array  $form_data Form Data.
+ * @param string $key Field Key.
+ *
+ * @return array
+ */
+function evf_get_form_data_by_key( $form_data, $key = null ) {
+
+	$form_data_array = array();
+
+	foreach ( $form_data['form_fields'] as $field_data ) {
+
+		$field_key = isset( $field_data['type'] ) && null !== $field_data['type'] ? $field_data['type'] : '';
+
+		if ( ! empty( $field_key ) ) {
+			if ( $field_key === $key ) {
+				$form_data_array[] = $field_data;
+			}
+		}
+	}
+
+	return $form_data_array;
+}
+
+add_action(
+	'admin_head',
+	function () {
+		$js = <<<JS
 const isSidebarEnabled = localStorage.getItem( 'isPremiumSidebarEnabled' );
 const interval = setInterval( () => {
 	if ( document.body ) {
@@ -5668,5 +5388,8 @@ const interval = setInterval( () => {
 	}
 }, 1 );
 JS;
-	wp_print_inline_script_tag( $js );
-} );
+		if ( function_exists( 'wp_print_inline_script_tag' ) ) {
+			wp_print_inline_script_tag( $js );
+		}
+	}
+);

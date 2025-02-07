@@ -16,39 +16,39 @@
 		};
 	});
 
-	// Color picker
-	$( '.colorpick' )
+	$('.evf-colorpicker').wpColorPicker({
+        change: function (event, ui) {
+            // // Update the preview background color
+            // $(this).closest('.everest-forms-global-settings--field').find('.colorpickpreview').css('background-color', ui.color.toString());
+        },
+        hide: true,  // Keep the picker hidden initially
+        border: true
+    });
 
-		.iris({
-			change: function( event, ui ) {
-				$( this ).parent().find( '.colorpickpreview' ).css({ backgroundColor: ui.color.toString() });
-			},
-			hide: true,
-			border: true
-		})
+    // Toggle the color picker visibility when the input field is clicked
+    $('.evf-colorpicker').on('click', function (event) {
+        event.stopPropagation(); // Prevent the body click from hiding the picker
 
-		.on( 'click focus', function( event ) {
-			event.stopPropagation();
-			$( '.iris-picker' ).hide();
-			$( this ).closest( 'td' ).find( '.iris-picker' ).show();
-			$( this ).data( 'original-value', $( this ).val() );
-		})
+        // Show the color picker container
+        const pickerContainer = $(this).closest('.everest-forms-global-settings--field').find('.wp-picker-container .iris-picker');
 
-		.on( 'change', function() {
-			if ( $( this ).is( '.iris-error' ) ) {
-				var original_value = $( this ).data( 'original-value' );
+        if (pickerContainer.is(':visible')) {
+            pickerContainer.hide();
+        } else {
+            $('.iris-picker').hide();
+            pickerContainer.show();
+        }
+    });
 
-				if ( original_value.match( /^\#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$/ ) ) {
-					$( this ).val( $( this ).data( 'original-value' ) ).change();
-				} else {
-					$( this ).val( '' ).change();
-				}
-			}
-		});
+    // Hide the color picker when clicking anywhere outside
+    $('body').on('click', function () {
+        $('.iris-picker').hide();
+    });
 
-	$( 'body' ).on( 'click', function() {
-		$( '.iris-picker' ).hide();
-	});
+    // Prevent clicks inside the color picker from closing it
+    $('.wp-picker-container').on('click', function (event) {
+        event.stopPropagation();
+    });
 
 	// Edit prompt
 	$( function() {
@@ -87,7 +87,7 @@
 	});
 
 	// Show/hide based on reCAPTCHA type.
-	$( 'input#everest_forms_recaptcha_type' ).change( function() {
+	$('#evf-global-settings-recaptcha-v2, #evf-global-settings-recaptcha-v3, #evf-global-settings-hcaptcha, #evf-global-settings-cloudflare-turnstile').change(function() {
 		var recaptcha_v2_site_key             = $( '#everest_forms_recaptcha_v2_site_key' ).closest('.everest-forms-global-settings'),
 			recaptcha_v2_secret_key           = $( '#everest_forms_recaptcha_v2_secret_key' ).closest('.everest-forms-global-settings'),
 			recaptcha_v2_invisible_site_key   = $( '#everest_forms_recaptcha_v2_invisible_site_key' ).closest('.everest-forms-global-settings'),
@@ -337,5 +337,41 @@
 				},
 			});
 		});
+
+		disableFormChangeModal();
+
+		/**
+	 * Disable leave page before saving changes modal when hid/show sidebar is clicked.
+	 */
+	function disableFormChangeModal() {
+
+		var form = $(".everest-forms").find("form")[0];
+
+
+		var formChanged = false;
+
+		$(form).on("change", function (event) {
+			if (event.target.name !== "everest-forms-enable-premium-sidebar") {
+				formChanged = true;
+			}
+		});
+
+		var skipBeforeUnloadPopup = false;
+		$(form).on("submit", function () {
+			skipBeforeUnloadPopup = true;
+		});
+		$(form).find(".evf-nav__link").on('click',function(){
+			skipBeforeUnloadPopup = true;
+		});
+
+		$(window).on("beforeunload", function (event) {
+			if (formChanged && !skipBeforeUnloadPopup) {
+				event.preventDefault();
+				event.returnValue = "";
+			} else {
+				event.stopImmediatePropagation();
+			}
+		});
+	}
 
 })( jQuery, everest_forms_settings_params );

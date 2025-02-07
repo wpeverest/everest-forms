@@ -111,3 +111,13 @@ export const THEMES = [
 		liveDemoURL: "https://themegrilldemos.com/colormag-demos/#/",
 	},
 ];
+
+export const FreeModules = [
+	'ai-contact-form',
+	'everest-forms-oxygen-builder',
+	'everest-forms-beaver-builder',
+	'everest-forms-bricks-builder',
+	'everest-forms-divi-builder',
+	'everest-forms-wpbakery-builder',
+	'everest-forms-style-customizer',
+]

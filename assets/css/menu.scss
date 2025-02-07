@@ -326,16 +326,16 @@
 		content: '\e031';
 	}
 	&wysiwyg::before {
-		content: '\e901';
+		content: '\e922';
 	}
 	&eye::before {
 		content: '\e903';
 	}
 	&coupon::before {
-		content: '\e904';
+		content: '\e90b';
 	}
 	&yes-no::before {
-		content: '\e905';
+		content: '\e921';
 	}
 	&reset::before {
 		content: '\e907';
@@ -358,5 +358,11 @@
 		&::before {
 			content: '\e917';
 		}
+	}
+	&builder::before {
+		content: '\e904';
+	}
+	&subscription-plan::before{
+		content: '\e923';
 	}
 }

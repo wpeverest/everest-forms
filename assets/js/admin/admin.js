@@ -28,10 +28,15 @@
 		// Execute the function on page load
 		handleReportingFrequencyChange();
 
-		disableFormChangeModal();
+
 
 		// Add an event listener for changes and on the click in the reporting frequency
 		$(document).on('change click', '#everest_forms_entries_reporting_frequency', handleReportingFrequencyChange);
+
+
+		$('#evf-form-listing__screen-options').on('click', function() {
+			$("#show-settings-link").click();
+		});
 	});
 
 	// Function to handle changes in the premium sidebar.
@@ -52,39 +57,6 @@
 
 		});
 
-	/**
-	 * Disable leave page before saving changes modal when hid/show sidebar is clicked.
-	 */
-	function disableFormChangeModal() {
-
-		var form = $(".everest-forms").find("form")[0];
-		
-
-		var formChanged = false;
-
-		$(form).on("change", function (event) {
-			if (event.target.name !== "everest-forms-enable-premium-sidebar") {
-				formChanged = true;
-			}
-		});
-
-		var skipBeforeUnloadPopup = false;
-		$(form).on("submit", function () {
-			skipBeforeUnloadPopup = true;
-		});
-		$(form).find(".evf-nav__link").on('click',function(){
-			skipBeforeUnloadPopup = true;
-		});
-
-		$(window).on("beforeunload", function (event) {
-			if (formChanged && !skipBeforeUnloadPopup) {
-				event.preventDefault();
-				event.returnValue = "";
-			} else {
-				event.stopImmediatePropagation();
-			}
-		});
-	}
 
 	// Enable Perfect Scrollbar.
 	$( document ).on( 'init_perfect_scrollbar', function() {
@@ -291,6 +263,17 @@
 				maxWidth: 200,
 				multiple: true,
 				interactive: true,
+				trigger:'custom',
+				triggerOpen: {
+				  mouseenter: true,
+				  click: true,
+				  tap: true
+				},
+				triggerClose: {
+				  mouseleave: true,
+				  click: true,
+				  tap: true
+				},
 				position: 'bottom',
 				contentAsHTML: true,
 				updateAnimation: false,
@@ -315,6 +298,17 @@
 			position: 'bottom',
 			contentAsHTML: true,
 			updateAnimation: false,
+			trigger:'custom',
+			triggerOpen: {
+			  mouseenter: true,
+			  click: true,
+			  tap: true
+			},
+			triggerClose: {
+			  mouseleave: true,
+			  click: true,
+			  tap: true
+			},
 			restoration: 'current',
 			functionInit: function( instance, helper ) {
 				var $origin = $( helper.origin ),
@@ -628,5 +622,55 @@
 	});
 
 
+	$( '.everest_forms_install_and_activate_smart_smtp' ).on( 'click', function() {
+		var data = {
+			action: 'everest_forms_install_and_activate_smart_smtp',
+			security: everest_forms_admin.smart_smtp_install_and_activate_nonce
+		};
 
+		try {
+			$.ajax({
+				url: everest_forms_admin.ajax_url,
+				method: 'POST',
+				data: data,
+				beforeSend: function () {
+					var spinner = '<i class="evf-loading evf-loading-active"></i>';
+					$( '.everest_forms_install_and_activate_smart_smtp' ).append( spinner );
+				},
+				success: function(response) {
+					$( '.everest_forms_install_and_activate_smart_smtp' ).find( '.evf-loading' ).remove();
+
+
+					var data = response.data;
+					var message = data.message;
+					var redirection_url = data.redirection_url;
+
+					if ('' !== message && '' !== redirection_url) {
+						$('.everest_forms_install_and_activate_smart_smtp')
+						.closest('.everest-forms-smart-smtp-page-setup__inner-wrapper')
+						.find('.everest_forms_install_and_activate_smart_smtp')
+						.removeClass('everest_forms_install_and_activate_smart_smtp everest-forms-btn-primary')
+						.addClass('everest_forms_install_and_activated_smart_smtp everest-forms-btn-secondary')
+						.css('pointer-events', 'none').
+						text('Installed and Activated SmartSMTP');
+						window.location.replace(redirection_url);
+					} else if ('' !== message && '' === redirection_url) {
+						alert(message);
+					}
+				},
+				error:function(response) {
+					$( '.everest_forms_install_and_activate_smart_smtp' ).find( '.evf-loading' ).remove();
+					var error_data = response.data;
+					var message = error_data.message;
+					alert(message);
+					window.location.reload();
+				}
+			});
+		} catch (error) {
+			$( '.everest_forms_install_and_activate_smart_smtp' ).find( '.evf-loading' ).remove();
+			alert(error);
+			window.location.reload();
+
+		}
+	});
 })( jQuery, everest_forms_admin );

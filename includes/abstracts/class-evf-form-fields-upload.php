@@ -239,6 +239,35 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 			}
 		}
 
+		if ( 'pdf' === $ext ) {
+
+			$content  = file_get_contents( $path );
+			$patterns = array(
+				'/\/JS\b/',
+				'/\/JavaScript\b/',
+				'/eval\(/i',
+				'/app\.alert/i',
+				'/console\.log\b/i',
+				'/document\.write\b/i',
+				'/\/SubmitForm\b/i',
+				'/\/Launch\b/i',
+				'/\/RichMedia\b/i',
+				'/\/EmbeddedFile\b/i',
+				'/\/FileAttachment\b/i',
+				'/\/GoTo\b/i',
+			);
+
+			// Initialize errors array
+			$errors = array();
+
+			// Check for malicious patterns
+			foreach ( $patterns as $pattern ) {
+				if ( preg_match( $pattern, $content ) ) {
+					$errors[] = esc_html__( ' Malicious file detected', 'everest-forms' );
+				}
+			}
+		}
+
 		// Validate file size.
 		$max_size = min( wp_max_upload_size(), $this->max_file_size() );
 
@@ -867,10 +896,14 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 			array_walk(
 				$field['value_raw'],
 				function ( &$val, $key, $img ) {
-					$img['data'][] = ! empty( $val['value'] ) ? sprintf(
-						'<a href="%s" rel="noopener noreferrer" target="_blank">%s</a>',
-						esc_url( $val['value'] ),
-						esc_html( $val['name'] )
+					$img['data'][] = ! empty( $val['value'] ) ? apply_filters(
+						'everest_forms_field_exporter_image',
+						sprintf(
+							'<a href="%s" rel="noopener noreferrer" target="_blank">%s</a>',
+							esc_url( $val['value'] ),
+							esc_html( $val['name'] )
+						),
+						$val
 					) : '';
 				},
 				array(
@@ -1287,8 +1320,10 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 	public function send_file_as_email_attachment( $attachment, $entry, $form_data, $context, $connection_id, $entry_id ) {
 
 		$file_email_attachments = isset( $form_data['settings']['email'][ $connection_id ]['file-email-attachments'] ) ? $form_data['settings']['email'][ $connection_id ]['file-email-attachments'] : 0;
-		if ( isset( $form_data['settings']['disabled_entries'] ) && '1' === $form_data['settings']['disabled_entries'] ) {
-			$attachment = $this->attach_entry_files_upload( $entry );
+		if ( isset( $form_data['settings']['disabled_entries'] ) && '1' === $form_data['settings']['disabled_entries'] && '1' === $file_email_attachments ) {
+				$attachment = $this->attach_entry_files_upload( $entry );
+		} elseif ( isset( $form_data['settings']['disabled_entries'] ) && '1' === $form_data['settings']['disabled_entries'] && ! defined( 'EFP_PLUGIN_FILE' ) ) {
+				$attachment = $this->attach_entry_files_upload( $entry );
 		}
 
 		if ( '1' === $file_email_attachments ) {
@@ -1526,13 +1561,13 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 		$errors = apply_filters(
 			'evf_upload_validation_errors',
 			array(
-				UPLOAD_ERR_INI_SIZE   => esc_html__( 'The uploaded file exceeds the upload_max_filesize directive in php.ini.', 'everest-form' ),
-				UPLOAD_ERR_FORM_SIZE  => esc_html__( 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form.', 'everest-form' ),
-				UPLOAD_ERR_PARTIAL    => esc_html__( 'The uploaded file was only partially uploaded.', 'everest-form' ),
-				UPLOAD_ERR_NO_FILE    => esc_html__( 'No file was uploaded.', 'everest-form' ),
-				UPLOAD_ERR_NO_TMP_DIR => esc_html__( 'Missing a temporary folder.', 'everest-form' ),
-				UPLOAD_ERR_CANT_WRITE => esc_html__( 'Failed to write file to disk.', 'everest-form' ),
-				UPLOAD_ERR_EXTENSION  => esc_html__( 'File upload stopped by extension.', 'everest-form' ),
+				UPLOAD_ERR_INI_SIZE   => esc_html__( 'The uploaded file exceeds the upload_max_filesize directive in php.ini.', 'everest-forms' ),
+				UPLOAD_ERR_FORM_SIZE  => esc_html__( 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form.', 'everest-forms' ),
+				UPLOAD_ERR_PARTIAL    => esc_html__( 'The uploaded file was only partially uploaded.', 'everest-forms' ),
+				UPLOAD_ERR_NO_FILE    => esc_html__( 'No file was uploaded.', 'everest-forms' ),
+				UPLOAD_ERR_NO_TMP_DIR => esc_html__( 'Missing a temporary folder.', 'everest-forms' ),
+				UPLOAD_ERR_CANT_WRITE => esc_html__( 'Failed to write file to disk.', 'everest-forms' ),
+				UPLOAD_ERR_EXTENSION  => esc_html__( 'File upload stopped by extension.', 'everest-forms' ),
 			)
 		);
 

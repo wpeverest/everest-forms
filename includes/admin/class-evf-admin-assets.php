@@ -95,9 +95,17 @@ class EVF_Admin_Assets {
 		wp_register_script( 'everest-forms-survey-polls-quiz-builder', evf()->plugin_url() . "/assets/js/admin/everest-forms-survey-polls-quiz-builder{$suffix}.js", array( 'jquery', 'wp-util', 'underscore', 'jquery-ui-sortable' ), EVF_VERSION, true );
 		wp_register_script( 'random-color', evf()->plugin_url() . "/assets/js/admin/randomColor{$suffix}.js", array(), EVF_VERSION, true );
 		wp_register_script( 'chart', evf()->plugin_url() . "/assets/js/admin/chart{$suffix}.js", array(), EVF_VERSION, true );
-		wp_register_script( 'print_this', evf()->plugin_url() . "/assets/js/admin/printThis{$suffix}.min.js", array(), EVF_VERSION, true );
+		wp_register_script( 'print_this', evf()->plugin_url() . '/assets/js/admin/printThis.min.js', array(), EVF_VERSION, true );
 		wp_register_script( 'progress_bar', evf()->plugin_url() . "/assets/js/admin/progressbar{$suffix}.js", array(), EVF_VERSION, true );
 		wp_register_script( 'evf-import-entries-form-csv', evf()->plugin_url() . '/assets/js/admin/tool-import-entries' . $suffix . '.js', array( 'jquery' ), EVF_VERSION, true );
+
+		/**
+		 * Roles and permission.
+		 *
+		 * @since 3.0.8
+		 */
+		wp_register_script( 'evf-tool-roles-and-permission', evf()->plugin_url() . '/dist/rolesandpermission.min.js', array( 'wp-element', 'react', 'react-dom', 'wp-api-fetch', 'wp-i18n', 'wp-blocks' ), EVF_VERSION, true );
+
 		wp_localize_script(
 			'evf-file-uploader',
 			'evf_file_uploader',
@@ -213,34 +221,36 @@ class EVF_Admin_Assets {
 			'evf-upgrade',
 			'evf_upgrade',
 			array(
-				'ajax_url'                       => admin_url( 'admin-ajax.php' ),
-				'upgrade_title'                  => esc_html__( 'is a PRO Feature', 'everest-forms' ),
-				'upgrade_message'                => esc_html__( 'We\'re sorry, the %name% is not available on your plan.<br>Please upgrade to the PRO plan to unlock all these awesome features.', 'everest-forms' ),
-				'upgrade_button'                 => esc_html__( 'Upgrade to PRO', 'everest-forms' ),
-				'upgrade_url'                    => apply_filters( 'everest_forms_upgrade_url', 'https://everestforms.net/pricing/?utm_source=builder-fields&utm_medium=premium-field-popup&utm_campaign=' . evf()->utm_campaign ),
-				'upgrade_integration_url'        => apply_filters( 'everest_forms_upgrade_integration_url', 'https://everestforms.net/pricing/?utm_source=builder-settings&utm_medium=premium-form-settings-popup&utm_campaign=' . evf()->utm_campaign ),
-				'enable_stripe_title'            => esc_html__( 'Please enable Stripe', 'everest-forms' ),
-				'recaptcha_title'                => esc_html__( 'reCaptcha', 'everest-forms' ),
-				'recaptcha_api_key_message'      => esc_html__( 'Please enter a reCaptcha key on Everest Forms>Settings>Captcha>reCaptcha.', 'everest-forms' ),
-				'hcaptcha_title'                 => esc_html__( 'hCaptcha', 'everest-forms' ),
-				'hcaptcha_api_key_message'       => esc_html__( 'Please enter a hCaptcha key on Everest Forms>Settings>Captcha>hCaptcha.', 'everest-forms' ),
-				'turnstile_title'                => esc_html__( ' Cloudflare Turnstile', 'everest-forms' ),
-				'turnstile_api_key_message'      => esc_html__( 'Please enter a  Cloudflare Turnstile key on Everest Forms>Settings>Captcha>Cloudflare Turnstile.', 'everest-forms' ),
-				'enable_stripe_message'          => esc_html__( 'Enable Stripe Payment gateway in payments section to use this field.', 'everest-forms' ),
-				'enable_authorize_net_title'     => esc_html__( 'Please enable Authorize.Net', 'everest-forms' ),
-				'enable_authorize_net_message'   => esc_html__( 'Enable Authorize.Net Payment gateway in payments section to use this field.', 'everest-forms' ),
-				'enable_square_title'            => esc_html( 'Please enable Square', 'everest-forms' ),
-				'enable_square_message'          => esc_html__( 'Enable Square Payment gateway in payments section to use this field.', 'everest-forms' ),
-				'evf_install_and_active_nonce'   => wp_create_nonce( 'install_and_active_nonce' ),
-				'upgrade_plan_title'             => esc_html__( 'is a Premium Addon', 'everest-forms' ),
-				'upgrade_plan_message'           => esc_html__( 'This addon requires premium plan. Please upgrade to the Premium plan to unlock all these awesome field.', 'everest-forms' ),
-				'upgrade_plan_button'            => esc_html__( 'Upgrade Plan', 'everest-forms' ),
-				'admin_url'                      => admin_url(),
-				'vedio_links'                    => array(
+				'ajax_url'                        => admin_url( 'admin-ajax.php' ),
+				'upgrade_title'                   => esc_html__( 'is a PRO Feature', 'everest-forms' ),
+				'upgrade_message'                 => esc_html__( 'We\'re sorry, the %name% is not available on your plan.<br>Please upgrade to the PRO plan to unlock all these awesome features.', 'everest-forms' ),
+				'upgrade_button'                  => esc_html__( 'Upgrade to PRO', 'everest-forms' ),
+				'upgrade_url'                     => apply_filters( 'everest_forms_upgrade_url', 'https://everestforms.net/pricing/?utm_source=builder-fields&utm_medium=premium-field-popup&utm_campaign=' . evf()->utm_campaign ),
+				'upgrade_integration_url'         => apply_filters( 'everest_forms_upgrade_integration_url', 'https://everestforms.net/pricing/?utm_source=builder-settings&utm_medium=premium-form-settings-popup&utm_campaign=' . evf()->utm_campaign ),
+				'enable_stripe_title'             => esc_html__( 'Please enable Stripe', 'everest-forms' ),
+				'recaptcha_title'                 => esc_html__( 'reCaptcha', 'everest-forms' ),
+				'recaptcha_api_key_message'       => esc_html__( 'Please enter a reCaptcha key on Everest Forms>Settings>Captcha>reCaptcha.', 'everest-forms' ),
+				'hcaptcha_title'                  => esc_html__( 'hCaptcha', 'everest-forms' ),
+				'hcaptcha_api_key_message'        => esc_html__( 'Please enter a hCaptcha key on Everest Forms>Settings>Captcha>hCaptcha.', 'everest-forms' ),
+				'turnstile_title'                 => esc_html__( ' Cloudflare Turnstile', 'everest-forms' ),
+				'turnstile_api_key_message'       => esc_html__( 'Please enter a  Cloudflare Turnstile key on Everest Forms>Settings>Captcha>Cloudflare Turnstile.', 'everest-forms' ),
+				'enable_stripe_message'           => esc_html__( 'Enable Stripe Payment gateway in payments section to use this field.', 'everest-forms' ),
+				'enable_authorize_net_title'      => esc_html__( 'Please enable Authorize.Net', 'everest-forms' ),
+				'enable_authorize_net_message'    => esc_html__( 'Enable Authorize.Net Payment gateway in payments section to use this field.', 'everest-forms' ),
+				'enable_square_title'             => esc_html( 'Please enable Square', 'everest-forms' ),
+				'enable_square_message'           => esc_html__( 'Enable Square Payment gateway in payments section to use this field.', 'everest-forms' ),
+				'enable_recurring_period_title'   => esc_html__( 'Enable Recurring Subscription', 'everest-forms' ),
+				'enable_recurring_period_message' => esc_html__( 'Recurring Subscription Payment is disabled. Please enable it in the  to use the Subscription Plan field.', 'everest-forms' ),
+				'evf_install_and_active_nonce'    => wp_create_nonce( 'install_and_active_nonce' ),
+				'upgrade_plan_title'              => esc_html__( 'is a Premium Addon', 'everest-forms' ),
+				'upgrade_plan_message'            => esc_html__( 'This addon requires premium plan. Please upgrade to the Premium plan to unlock all these awesome field.', 'everest-forms' ),
+				'upgrade_plan_button'             => esc_html__( 'Upgrade Plan', 'everest-forms' ),
+				'admin_url'                       => admin_url(),
+				'vedio_links'                     => array(
 					'dropdown' => 'kDYAKElqNtM',
 				),
-				'evf_one_time_draggable_title'   => esc_html__( 'File upload', 'everest-forms' ),
-				'evf_one_time_draggable_message' => esc_html__( 'field can only be used once. To use it multiple times, please upgrade to the pro version.', 'everest-forms' ),
+				'evf_one_time_draggable_title'    => esc_html__( 'File upload', 'everest-forms' ),
+				'evf_one_time_draggable_message'  => esc_html__( 'field can only be used once. To use it multiple times, please upgrade to the pro version.', 'everest-forms' ),
 
 			)
 		);
@@ -284,15 +294,26 @@ class EVF_Admin_Assets {
 					'i18n_field_def_value_greater'  => esc_html__( 'Default value is greater than Maximum value.', 'everest-forms' ),
 					'i18n_field_def_value_smaller'  => esc_html__( 'Default value is smaller than Minimum value.', 'everest-forms' ),
 					'i18n_form_export_action_error' => esc_html__( 'Please select a form which you want to export.', 'everest-forms' ),
+					'smart_smtp_install_and_activate_nonce' => wp_create_nonce( 'everest-forms-smart-smtp-installation-nonce' ),
 				)
 			);
 
 			wp_localize_script(
 				'evf-import-entries-form-csv',
-				'evf_import_entries_obj ',
+				'evf_import_entries_obj',
 				array(
 					'ajax_url' => admin_url( 'admin-ajax.php' ),
 					'nonce'    => wp_create_nonce( 'evf-import-entries' ),
+				)
+			);
+
+			wp_localize_script(
+				'evf-tool-roles-and-permission',
+				'evf_roles_and_permission',
+				array(
+					'security'        => wp_create_nonce( 'wp_rest' ),
+					'restURL'         => rest_url(),
+					'not_found_image' => evf()->plugin_url() . '/assets/images/not-found-image.png',
 				)
 			);
 
@@ -333,7 +354,7 @@ class EVF_Admin_Assets {
 			wp_enqueue_script( 'evf-form-builder' );
 
 			wp_enqueue_script( 'wp-codemirror' );
-			// Enqueue additional scripts for hints if not included by default
+			// Enqueue additional scripts for hints if not included by default.
 			wp_enqueue_script( 'codemirror-hint', evf()->plugin_url() . '/assets/js/code-mirror/show-hint' . $suffix . '.js', array( 'wp-codemirror' ), EVF_VERSION, true );
 
 			// De-register scripts.
@@ -382,6 +403,10 @@ class EVF_Admin_Assets {
 			wp_enqueue_script( 'everest-forms-survey-polls-quiz-builder' );
 			wp_enqueue_script( 'random-color' );
 			// wp_enqueue_script( 'chart' ); //for future use.
+			if ( isset( $_GET['page'], $_GET['tab'] ) && $_GET['page'] === 'evf-tools' && $_GET['tab'] === 'roles_and_permission' ) {
+				wp_enqueue_script( 'evf-tool-roles-and-permission' );
+			}
+
 			wp_enqueue_script( 'progress_bar' );
 			wp_enqueue_script( 'evf-import-entries-form-csv' );
 			wp_enqueue_script( 'print_this' );

@@ -192,7 +192,7 @@ class EVF_Field_Number extends EVF_Form_Fields {
 		}
 
 		// Input primary: minimum value.
-		if ( '' !== $field['min_value'] ) {
+		if ( isset( $field['min_value'] ) && $field['min_value'] !== '' ) {
 			$properties['inputs']['primary']['attr']['min'] = ( '0' === $field['min_value'] ) ? '0' : (float) $field['min_value'];
 		}
 
@@ -203,6 +203,7 @@ class EVF_Field_Number extends EVF_Form_Fields {
 
 		return $properties;
 	}
+
 
 	/**
 	 * Filter callback for outputting formatted data.

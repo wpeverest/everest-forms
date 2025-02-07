@@ -1,14 +1,14 @@
-=== Everest Forms – Build Contact Forms, Surveys, Polls, Quizzes, Newsletter & Application Forms, and Many More with Ease! ===
-Contributors: WPEverest
+=== Everest Forms – Contact Forms, Quiz, Survey, Newsletter & Payment Form Builder for WordPress ===
+Contributors:everestforms,WPEverest
 Tags: contact form, custom form, form builder, forms, survey
-Requires at least: 5.2
-Tested up to: 6.6.1
+Requires at least: 5.5
+Tested up to: 6.7.1
 Requires PHP: 7.2
-Stable tag: 3.0.3.1
+Stable tag: 3.0.9.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-Fast, Lightweight & Secure Contact Form plugin. Beautiful & Responsive Pre-Built Templates. Create Contact, Booking, Payment, Quiz, Survey, Multi-Step, Registration and any type of forms.
+Best WordPress Form Plugin to Create Contact Forms, Surveys, Quizzes, Payment Forms, & Custom Forms Using Drag & Drop Form Builder.
 
 == Description ==
 
@@ -34,7 +34,7 @@ Effortlessly create online forms in WordPress using the simple drag-and-drop for
 
 Simply drag and drop the field you need from the options provided to your desired location on the form and customize it
 
-[youtube https://www.youtube.com/watch?v=4aX6zW9kjY0]
+[youtube https://www.youtube.com/watch?v=35CznJES5Uo]
 
 = Ready to Use Pre-Built Form Templates =
 
@@ -308,6 +308,76 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 == Changelog ==
 
+= 3.0.9.1       - 27-01-2025
+* Enhancement	    - Added regex pattern to check the file upload.
+
+= 3.0.9         - 24-01-2025
+* Enhance       - Forms table design.
+* Enhance       - Approve deny entry mail.
+* Dev		    - Subscription plan field with trail period.
+* Fix         	- Malicious File upload.
+
+= 3.0.8.1         - 08-01-2025
+* Fix		      - Email Preview not working issue .
+
+= 3.0.8         - 08-01-2025
+* Feature		- User Roles and Permission.
+* Feature		- SMTP settings in Everest Forms.
+* Tweak			- Meta key field readonly.
+* Tweak         - Captcha design on admin.
+* Tweak			- Add mark as spam option in entries list.
+* Tweak         - Select all option in import forms.
+* Fix       - Minimize the license hit when server is unavailable .
+* Fix       - Date Picker and File upload field not working in Elementor popup.
+* Fix 			- Escaping issue in Email Preview template.
+* Fix           - Favorite color issue.
+* Fix           - Post Meta smart tag issue.
+* Fix           - Print option not working.
+
+= 3.0.7.1       - 30-12-2024
+* Tweak         -  Transient for addon update.
+
+= 3.0.6        - 03-12-2024
+* Fix         - Necessary file from the distignore file.
+
+= 3.0.5.2        - 03-12-2024
+* Enhance        - SCSS PHP Compiler Updated.
+
+= 3.0.5.1        - 03-12-2024
+* Removed        - Vendor from the .distignore file.
+
+= 3.0.5          - 03-12-2024
+* Feature        - License settings page.
+* Feature        - Style Customizer Module.
+* Feature        - Bricks builder integration.
+* Feature        - Divi Builder Compatibility.
+* Feature        - Oxygen builder integration.
+* Feature        - Beaver Builder Compatibility.
+* Feature        - WPBakery Builder Compatibility.
+* Tweak          - Coupon into module.
+* Tweak 		 - Move active campaign to module.
+* Tweak          - Track module activation in TG User Tracking.
+* Fix            - Tooltips does not work on mobile.
+* Fix            - Background color for PDF submission.
+* Fix            - Critical issue when the publishable key is empty in live mode for recurring payment.
+* Dev 			 - amoCRM Module.
+* Dev       	 - QR Generator module.
+* Dev            - Get gist integration.
+* Dev            - CleverReach Integration.
+* Dev            - Slack Integration Module.
+* Dev   		 - User Registration Social Login.
+* Dev            - Moved Campaign Monitor to module.
+
+= 3.0.4.2        - 03-11-2024
+* Fix            - Escaping issue in required field.
+
+= 3.0.4.1        - 30-10-2024
+* Fix            - Remove unnecessary source map from build.
+
+= 3.0.4         - 28-10-2024
+* Fix           - Escaping issue.
+* Fix           - Line break in the confirmation message.
+
 = 3.0.3.1       - 17-09-2024
 * Fix           - Issue with add new form template designs.
 * Fix           - Copy/Paste not working in word limit.
@@ -315,7 +385,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 = 3.0.3        - 16-09-2024
 * Feature      - Add new form page design.
 * Feature      - Entry submission RestApi.
-* Enhancement  - Send file directly as an attachment.
+* Enhance      - Send file directly as an attachment.
 * Fix          - Premium sidebar design issue.
 * Fix          - Escaping issue in Yes/No field.
 * Dev 		   - Calculation module.
@@ -331,7 +401,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 = 3.0.2        - 07-08-2024
 * Feature 	   - Enable minimum time for form submission.
 * Feature      - Delete option in Header logo in PDF Submission.
-* Enhancement  - Custom file name field settings.
+* Enhance      - Custom file name field settings.
 * Fix		   - Escaping issue in Yes/No Field.
 * Dev          - Mollie Payment.
 * Dev          - Square Payment.
@@ -348,8 +418,8 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 = 3.0.1        - 03-07-2024
 * Feature 	   - Import entries in our form using csv file.
-* Enhancement  - Global Setting Premium Sidebar.
-* Enhancement  - Dashboard page.
+* Enhance      - Global Setting Premium Sidebar.
+* Enhance      - Dashboard page.
 * Fix          - Block design all messed up when viewed in block editor.
 * Fix          - Wrong instruction on captcha.
 * Fix          - Email template on email clone, save and continue forms.
@@ -365,18 +435,18 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 = 3.0.0       - 23-05-2024
 * Feature     - Dashboard page.​
 * Feature     - Email scheduling in daily, weekly or monthly for the progress data of form.​
-* Enhancement - Captcha field.​
-* Enhancement - Gutenberg block.​
-* Enhancement - Global Setting Design. ​
-* Enhancement - Move everest form pro fields into free.​
+* Enhance 	  - Captcha field.​
+* Enhance 	  - Gutenberg block.​
+* Enhance 	  - Global Setting Design. ​
+* Enhance 	  - Move everest form pro fields into free.​
 * Fix         - Custom JS issue with html special character.
 
 = 2.0.9       - 04-04-2024
 * Feature     - System information.
 * Feature 	  - Show entry preview after form submission.
 * Feature     - Admin approval entries.
-* Enhancement - Date field formats.
-* Enhancement - Appended active class to active input field.
+* Enhance     - Date field formats.
+* Enhance     - Appended active class to active input field.
 * Fix 		  - Everest Forms conflict with WordPress Customizer.
 * Tweak       - Filter introduced for template hierarchy.
 
@@ -385,13 +455,13 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 = 2.0.8       - 12-03-2024
 * Fix         - Restrict font_url for unauthorized users and allow only certain font_url.
-* Enhancement - Search functionality on Addons page.
+* Enhance     - Search functionality on Addons page.
 * Feature     - Embedded shortcode directly in page through builder.
 * Feature     - Form migrator for WPForms and Contact Forms 7.
 
 = 2.0.7       - 22-02-2024
-* Enhancement - Screenshot video on upgrade to pro popup.
-* Enhancement - Clone email form settings.
+* Enhance     - Screenshot video on upgrade to pro popup.
+* Enhance     - Clone email form settings.
 * Feature     - Email preview.
 * Fix 		  - Critical error in entry file.
 * Fix         - Show values setting not displaying in select field.
@@ -399,7 +469,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 * Dev         - Compatibility for Google calendar integration.
 
 = 2.0.6       - 26-12-2023
-* Upgraded    - Input mask library.
+* Tweak       - Input mask library.
 * Fix		  - Empty values in entries for (select, checkbox, radio) fields when wordPress site is in another language.
 * Fix         - XLSX export issue.
 * Fix 		  - PHP 8.2 dynamic properties are deprecated.

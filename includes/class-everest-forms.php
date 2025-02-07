@@ -6,6 +6,8 @@
  * @since   1.0.0
  */
 
+use EverestForms\Addons\Addons;
+
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -21,7 +23,7 @@ final class EverestForms {
 	 *
 	 * @var string
 	 */
-	public $version = '3.0.3.1';
+	public $version = '3.0.9.1';
 
 	/**
 	 * The single instance of the class.
@@ -161,6 +163,7 @@ final class EverestForms {
 		$this->define_constants();
 		$this->define_tables();
 		$this->includes();
+		$this->init_addons();
 		$this->init_hooks();
 		add_action( 'plugins_loaded', array( $this, 'objects' ), 1 );
 
@@ -180,6 +183,7 @@ final class EverestForms {
 		add_action( 'init', array( $this, 'form_fields' ), 0 );
 		add_action( 'init', array( 'EVF_Shortcodes', 'init' ), 0 );
 		add_action( 'switch_blog', array( $this, 'wpdb_table_fix' ), 0 );
+		add_filter( 'everest_forms_entry_bulk_actions', array( $this, 'everest_forms_entry_bulk_actions' ) );
 	}
 
 	/**
@@ -351,6 +355,15 @@ final class EverestForms {
 	}
 
 	/**
+	 * Loaded the addons.
+	 *
+	 * @since 3.0.5
+	 */
+	public function init_addons() {
+		Addons::init();
+	}
+
+	/**
 	 * Include required frontend files.
 	 */
 	public function frontend_includes() {
@@ -485,5 +498,25 @@ final class EverestForms {
 	 */
 	public function form_fields() {
 		return EVF_Fields::instance();
+	}
+
+	/**
+	 * Bulk actions in the entries table
+	 *
+	 * @since 3.0.8
+	 *
+	 * @param  Array $actions Array of actions for bulk action.
+	 *
+	 * @return Array $actions Array of new bulk actions.
+	 */
+	public function everest_forms_entry_bulk_actions( $actions ) {
+		$actions['spam']   = esc_html__( 'Mark as Spam', 'everest-forms' );
+		$actions['unspam'] = esc_html__( 'Remove Entry from Spam', 'everest-forms' );
+
+		if ( isset( $_GET['status'] ) && sanitize_text_field( wp_unslash( $_GET['status'] ) ) === 'spam' ) {
+			unset( $actions['spam'] );
+		}
+
+		return $actions;
 	}
 }

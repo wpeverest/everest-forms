@@ -13,6 +13,10 @@ defined( 'ABSPATH' ) || exit;
  */
 class EVF_Field_Image_Upload extends EVF_Form_Fields_Upload {
 
+	public $field_id = '';
+
+	public $field_data = '';
+
 	/**
 	 * Constructor.
 	 */
@@ -48,7 +52,6 @@ class EVF_Field_Image_Upload extends EVF_Form_Fields_Upload {
 		);
 
 		parent::__construct();
-
 	}
 
 	/**

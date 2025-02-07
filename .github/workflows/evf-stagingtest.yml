@@ -1,10 +1,9 @@
 name: Evf Staging QA Test
 
 on:
-  push:
-    branches:
-      - staging
-
+    push:
+        branches:
+            - staging
 jobs:
   deploy:
     runs-on: ubuntu-latest

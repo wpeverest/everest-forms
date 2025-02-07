@@ -113,6 +113,9 @@ class EVF_Modules {
 			$feature->link          = $feature->link . '&utm_campaign=' . EVF()->utm_campaign;
 			$feature->type          = 'feature';
 			$features_lists[ $key ] = $feature;
+			if ( in_array( $feature->slug, array( 'everest-forms-oxygen-builder', 'everest-forms-bricks-builder', 'everest-forms-divi-builder', 'everest-forms-beaver-builder', 'everest-forms-wpbakery-builder', 'everest-forms-style-customizer' ), true ) ) {
+				$feature->required_plan = esc_html__( 'Free', 'everest-forms' );
+			}
 		}
 
 		// Get Addons Lists.
@@ -244,11 +247,17 @@ class EVF_Modules {
 	 * @return WP_Error|WP_REST_Response
 	 */
 	public static function enable_feature( $slug ) {
-
 		// Logic to enable Feature.
 		$enabled_features = get_option( 'everest_forms_enabled_features', array() );
 		array_push( $enabled_features, $slug );
 		update_option( 'everest_forms_enabled_features', $enabled_features );
+
+		/**
+		 * Track module installation.
+		 *
+		 * @since 3.0.5
+		 */
+		do_action( 'evf_feature_track_data_for_tg_user_tracking', $slug );
 
 		return array( 'success' => true );
 	}
