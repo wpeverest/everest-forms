@@ -96,7 +96,7 @@ jobs:
           python-version: 3.12.1
       - run: python -v
 
-      - name: Automation Test Script User Registration
+      - name: Automation Test Script everest forms
         run: |
           mkdir python-code
           cd python-code
