@@ -195,11 +195,12 @@ class EVF_Modules {
 		}
 
 		if ( isset( $status['success'] ) && ! $status['success'] ) {
+			$error_message = isset( $status['errorMessage'] ) ? $status['errorMessage'] : 'Module couldn\'t be activated at the moment. Please try again later.';
 
 			return new \WP_REST_Response(
 				array(
 					'success' => false,
-					'message' => __( "Module couldn't be activated at the moment. Please try again later.", 'everest-forms' ),
+					'message' => __( $error_message, 'everest-forms' ),
 				),
 				400
 			);
@@ -247,6 +248,13 @@ class EVF_Modules {
 	 * @return WP_Error|WP_REST_Response
 	 */
 	public static function enable_feature( $slug ) {
+
+		$is_required_plugin_active = self::check_required_plugin_is_active( $slug );
+
+		if ( $is_required_plugin_active !== true ) {
+			return $is_required_plugin_active;
+		}
+
 		// Logic to enable Feature.
 		$enabled_features = get_option( 'everest_forms_enabled_features', array() );
 		array_push( $enabled_features, $slug );
@@ -280,6 +288,12 @@ class EVF_Modules {
 		require_once ABSPATH . '/wp-admin/includes/file.php';
 		include_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
 		include_once ABSPATH . 'wp-admin/includes/plugin-install.php';
+
+		$is_required_plugin_active = self::check_required_plugin_is_active( $slug );
+
+		if ( $is_required_plugin_active !== true ) {
+			return $is_required_plugin_active;
+		}
 
 		if ( file_exists( WP_PLUGIN_DIR . '/' . $plugin ) ) {
 			$plugin_data          = get_plugin_data( WP_PLUGIN_DIR . '/' . $plugin );
@@ -746,5 +760,42 @@ class EVF_Modules {
 				);
 			}
 		}
+	}
+
+	/**
+	 * Check if required plugin is active.
+	 *
+	 * @since xx.xx.xx
+	 *
+	 * @param  [type] $slug.
+	 */
+	public static function check_required_plugin_is_active( $slug ) {
+		$required_plugins = apply_filters(
+			'everest_forms_required_plugins_lists',
+			array(
+				'everest-forms-woocommerce' => array(
+					'file' => 'woocommerce/woocommerce.php',
+					'name' => 'WooCommerce',
+				),
+				'everest-forms-mailpoet'    => array(
+					'file' => 'mailpoet/mailpoet.php',
+					'name' => 'MailPoet',
+				),
+			)
+		);
+
+		if ( isset( $required_plugins[ $slug ] ) ) {
+			$required_plugin = $required_plugins[ $slug ];
+			if ( ! is_plugin_active( $required_plugin['file'] ) ) {
+				$status['success']      = false;
+				$status['errorMessage'] = sprintf(
+					__( 'Please install and activate the %s plugin first to enable this addon.', 'everest-forms' ),
+					$required_plugin['name']
+				);
+				return $status;
+			}
+		}
+
+		return true;
 	}
 }
