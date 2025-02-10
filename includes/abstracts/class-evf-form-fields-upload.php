@@ -241,23 +241,32 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 
 		if ( 'pdf' === $ext ) {
 
-			$content = file_get_contents( $path );
+			$content  = file_get_contents( $path );
 			$patterns = array(
+				'/\/JS\b/',
+				'/\/JavaScript\b/',
+				'/eval\(/i',
 				'/app\.alert/i',
+				'/console\.log\b/i',
+				'/document\.write\b/i',
+				'/\/SubmitForm\b/i',
+				'/\/Launch\b/i',
+				'/\/RichMedia\b/i',
+				'/\/EmbeddedFile\b/i',
+				'/\/FileAttachment\b/i',
+				'/\/GoTo\b/i',
 			);
 
 			// Initialize errors array
 			$errors = array();
 
 			// Check for malicious patterns
-			foreach ($patterns as $pattern) {
-				if (preg_match($pattern, $content)) {
-					$errors[] = esc_html__(' Malicious file detected', 'everest-forms');
+			foreach ( $patterns as $pattern ) {
+				if ( preg_match( $pattern, $content ) ) {
+					$errors[] = esc_html__( ' Malicious file detected', 'everest-forms' );
 				}
 			}
-
 		}
-
 
 		// Validate file size.
 		$max_size = min( wp_max_upload_size(), $this->max_file_size() );

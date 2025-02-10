@@ -1,10 +1,13 @@
 == Changelog ==
 
+= 3.0.9.1       - 27-01-2025
+* Enhancement	    - Added regex pattern to check the file upload.
+
 = 3.0.9         - 24-01-2025
 * Enhance       - Forms table design.
 * Enhance       - Approve deny entry mail.
 * Dev		    - Subscription plan field with trail period.
-* Fix         	- Vulnerability stored xss via malicious pdf.
+* Fix         	- Malicious File upload.
 
 = 3.0.8.1         - 08-01-2025
 * Fix		      - Email Preview not working issue .
