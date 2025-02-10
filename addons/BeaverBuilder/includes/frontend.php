@@ -14,7 +14,7 @@ $form_atts['id'] = isset( $settings_attr['form_selection'] ) ? $settings_attr['f
 
 if ( ! empty( $settings_attr['form_selection'] ) && ! empty( $form_list ) ) {
 	$form_render = EVF_Shortcodes::form( $form_atts );
-	echo $form_render;
+	echo wp_kses( $form_render, evf_get_allowed_html_tags( 'builder' ) );
 } else {
 	$image_path = evf()->plugin_url() . '/assets/images/everest-forms-logo.png';
 	$class      = 'everest-forms-logo__beaver';
@@ -45,5 +45,5 @@ if ( ! empty( $settings_attr['form_selection'] ) && ! empty( $form_list ) ) {
 	}
 
 	$render .= '</div>';
-	echo $render;
+	echo wp_kses( $render, evf_get_allowed_html_tags( 'builder' ) );
 }

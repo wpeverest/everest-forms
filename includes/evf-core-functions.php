@@ -5346,6 +5346,32 @@ if ( ! function_exists( 'evf_email_send_failed_handler' ) ) {
 	}
 }
 
+/**
+ * Get form data by field key.
+ *
+ * @param array  $form_data Form Data.
+ * @param string $key Field Key.
+ *
+ * @return array
+ */
+function evf_get_form_data_by_key( $form_data, $key = null ) {
+
+	$form_data_array = array();
+
+	foreach ( $form_data['form_fields'] as $field_data ) {
+
+		$field_key = isset( $field_data['type'] ) && null !== $field_data['type'] ? $field_data['type'] : '';
+
+		if ( ! empty( $field_key ) ) {
+			if ( $field_key === $key ) {
+				$form_data_array[] = $field_data;
+			}
+		}
+	}
+
+	return $form_data_array;
+}
+
 add_action(
 	'admin_head',
 	function () {

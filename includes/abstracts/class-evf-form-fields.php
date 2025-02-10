@@ -305,7 +305,7 @@ abstract class EVF_Form_Fields {
 					$class .= ' has-before';
 				}
 
-				$output = sprintf('%s<input type="%s" class="widefat %s" id="everest-forms-field-option-%s-%s" name="form_fields[%s][%s]" value="%s" placeholder="%s" %s %s>', $before, $type, $class, $id, $slug, $id, $slug, esc_attr($args['value']), $placeholder, $data, ('meta-key' === $args['slug'] ? ' readonly' : ''));
+				$output = sprintf( '%s<input type="%s" class="widefat %s" id="everest-forms-field-option-%s-%s" name="form_fields[%s][%s]" value="%s" placeholder="%s" %s %s>', $before, $type, $class, $id, $slug, $id, $slug, esc_attr( $args['value'] ), $placeholder, $data, apply_filters( 'evf_field_readonly_attribute', ( 'meta-key' === $args['slug'] ? 'readonly' : '' ), $args ) );
 
 				break;
 
@@ -1180,6 +1180,172 @@ abstract class EVF_Form_Fields {
 					if ( ! empty( $image ) ) {
 						$field_content .= sprintf( '<img class="attachment-thumb" src="%1$s">', esc_url_raw( $image ) );
 					}
+					$field_content .= '</div>';
+					$field_content .= sprintf( '<div class="actions"%s>', empty( $image ) ? ' style="display:none;"' : '' );
+					$field_content .= sprintf( '<button type="button" class="button remove-button">%1$s</button>', esc_html__( 'Remove', 'everest-forms' ) );
+					$field_content .= sprintf( '<button type="button" class="button upload-button">%1$s</button>', esc_html__( 'Change image', 'everest-forms' ) );
+					$field_content .= '</div>';
+					$field_content .= '</div>';
+					$field_content .= '</li>';
+				}
+				$field_content .= '</ul>';
+
+				// Final field output.
+				$output = $this->field_element(
+					'row',
+					$field,
+					array(
+						'slug'    => 'choices',
+						'content' => $field_label . $field_content,
+					),
+					$echo
+				);
+				break;
+
+			/*
+			 * Plan Choices.
+			 *
+			 * @since xx.xx.xx
+			 */
+			case 'plan_choices':
+				$class      = array();
+				$label      = ! empty( $args['label'] ) ? esc_html( $args['label'] ) : esc_html__( 'Plans', 'everest-forms' );
+				$choices    = ! empty( $field['choices'] ) ? $field['choices'] : $this->defaults;
+				$input_type = 'radio';
+
+				if ( ! empty( $field['show_values'] ) ) {
+					$class[] = 'show-values';
+				}
+
+				if ( ! empty( $field['choices_images'] ) ) {
+					$class[] = 'show-images';
+				}
+
+				// Field label.
+				$field_label   = $this->field_element(
+					'label',
+					$field,
+					array(
+						'slug'    => 'choices',
+						'value'   => $label,
+						'tooltip' => esc_html__( 'Add choices for the form field.', 'everest-forms' ),
+					)
+				);
+				$field_content = '';
+
+				// Field contents.
+				$field_content .= sprintf(
+					'<ul data-next-id="%s" class="evf-choices-list %s" data-field-id="%s" data-field-type="%s">',
+					max( array_keys( $choices ) ) + 1,
+					evf_sanitize_classes( $class, true ),
+					$field['id'],
+					$this->type
+				);
+				foreach ( $choices as $key => $choice ) {
+					$default = ! empty( $choice['default'] ) ? $choice['default'] : '';
+					$name    = sprintf( 'form_fields[%s][choices][%s]', $field['id'], $key );
+					$image   = ! empty( $choice['image'] ) ? $choice['image'] : '';
+
+					// BW compatibility for value in payment fields.
+					if ( ! empty( $field['amount'][ $key ]['value'] ) ) {
+						$choice['value'] = evf_format_amount( evf_sanitize_amount( $field['amount'][ $key ]['value'] ) );
+					}
+					$interval_count         = isset( $choice['interval_count'] ) ? $choice['interval_count'] : 1;
+					$recurring_period       = isset( $choice['recurring_period'] ) ? $choice['recurring_period'] : 'day';
+					$trail_interval_count   = isset( $choice['trail_interval_count'] ) ? $choice['trail_interval_count'] : 1;
+					$trail_recurring_period = isset( $choice['trail_recurring_period'] ) ? $choice['trail_recurring_period'] : 'day';
+
+					$field_content .= sprintf( '<li data-key="%1$d">', absint( $key ) );
+					$field_content .= '<span class="sort"><svg width="18" height="18" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18" role="img" aria-hidden="true" focusable="false"><path d="M13,8c0.6,0,1-0.4,1-1s-0.4-1-1-1s-1,0.4-1,1S12.4,8,13,8z M5,6C4.4,6,4,6.4,4,7s0.4,1,1,1s1-0.4,1-1S5.6,6,5,6z M5,10 c-0.6,0-1,0.4-1,1s0.4,1,1,1s1-0.4,1-1S5.6,10,5,10z M13,10c-0.6,0-1,0.4-1,1s0.4,1,1,1s1-0.4,1-1S13.6,10,13,10z M9,6 C8.4,6,8,6.4,8,7s0.4,1,1,1s1-0.4,1-1S9.6,6,9,6z M9,10c-0.6,0-1,0.4-1,1s0.4,1,1,1s1-0.4,1-1S9.6,10,9,10z"></path></svg></span>';
+					$field_content .= sprintf( '<input type="%1$s" name="%2$s[default]" class="default" value="1" %3$s>', $input_type, $name, checked( '1', $default, false ) );
+					$field_content .= '<div class="evf-choice-list-input">';
+					$field_content .= sprintf( '<input type="text" name="%1$s[label]" value="%2$s" class="label" data-key="%3$s">', $name, esc_attr( $choice['label'] ), absint( $key ) );
+					$field_content .= sprintf( '<input type="text" name="%1$s[value]" value="%2$s" class="value evf-money-input" placeholder="%3$s">', $name, esc_attr( $choice['value'] ), evf_format_amount( 0 ) );
+					$field_content .= '</div>';
+					$field_content .= '<a class="add" href="#"><i class="dashicons dashicons-plus-alt"></i></a>';
+					$field_content .= '<a class="remove" href="#"><i class="dashicons dashicons-dismiss"></i></a>';
+					$field_content .= '<div class="evf-subscription-plan-sub-details">';
+					// Recurring Details.
+					$field_content .= sprintf( '<h2>%s</h2>', __( 'Recurring Details', 'everest-forms-pro' ) );
+					$field_content .= '<input value="' . esc_attr( $interval_count ) . '" type="number" name="' . sprintf( 'form_fields[%s][choices][%s][%s]', $field['id'], $key, 'interval_count' ) . '" >';
+					$field_content .= '<select  name="' . sprintf( 'form_fields[%s][choices][%s][%s]', $field['id'], $key, 'recurring_period' ) . '">';
+					$periods        = array(
+						'day'   => __( 'Day(s)', 'everest-forms' ),
+						'week'  => __( 'Week(s)', 'everest-forms' ),
+						'month' => __( 'Month(s)', 'everest-forms' ),
+						'year'  => __( 'Year(s)', 'everest-forms' ),
+					);
+					foreach ( $periods as $id => $label ) {
+						$selected = '';
+						if ( $recurring_period === $id ) {
+							$selected = 'selected=selected';
+						}
+						$field_content .= '<option value="' . esc_attr( $id ) . '" ' . $selected . '>' . esc_html( $label ) . '</option>';
+					}
+					$field_content .= '</select>';
+					$field_content .= '</div>';
+					// EnableTrail period.
+					$trail_period_enable = isset( $choice['trail_period_enable'] ) ? $choice['trail_period_enable'] : false;
+
+					$field_content .= '<div class="evf-toggle-section evf-form-builder-toggle evf-trail-period-wrapper">';
+					$field_content .= sprintf( '<label for="evf-toggle-type-trail-period">%s</label>', __( 'Enable Trial Period', 'everest-forms' ) );
+					$field_content .= sprintf( '<div><span class="everest-forms-toggle-form">' );
+					$field_content .= '<input class="evf-enable-trial-period" type="checkbox" value="1"  name="' . sprintf( 'form_fields[%s][choices][%s][%s]', $field['id'], $key, 'trail_period_enable' ) . '"';
+
+					$checked = checked( '1', $trail_period_enable, false );
+
+					$field_content .= '' . $checked . '/>';
+					$field_content .= '<span class="slider round"></span>';
+					$field_content .= '</span></div>';
+					$field_content .= '</div>';
+					// Trial period details.
+					$field_content .= '<div class="evf-subscription-plan-sub-details evf-subscription-trail-period-option" style="display:none;">';
+					$field_content .= sprintf( '<h2>%s</h2>', __( 'Trial Period Details', 'everest-forms' ) );
+					$field_content .= '<input value="' . esc_attr( $trail_interval_count ) . '" type="number" name="' . sprintf( 'form_fields[%s][choices][%s][%s]', $field['id'], $key, 'trail_interval_count' ) . '" >';
+
+					$field_content .= '<select  name="' . sprintf( 'form_fields[%s][choices][%s][%s]', $field['id'], $key, 'trail_recurring_period' ) . '">';
+					$periods        = array(
+						'day'   => __( 'Day(s)', 'everest-forms' ),
+						'week'  => __( 'Week(s)', 'everest-forms' ),
+						'month' => __( 'Month(s)', 'everest-forms' ),
+						'year'  => __( 'Year(s)', 'everest-forms' ),
+					);
+					foreach ( $periods as $id => $label ) {
+						$selected = '';
+						if ( $trail_recurring_period === $id ) {
+							$selected = 'selected=selected';
+						}
+						$field_content .= '<option value="' . esc_attr( $id ) . '" ' . $selected . '>' . esc_html( $label ) . '</option>';
+					}
+					$field_content .= '</select>';
+					$field_content .= '</div>';
+
+					// TO enable exact date for subscription expiry.
+					$subscription_expiry_enable = isset( $choice['subscription_expiry_enable'] ) ? $choice['subscription_expiry_enable'] : false;
+					$subscription_expiry_date   = isset( $choice['subscription_expiry_date'] ) ? $choice['subscription_expiry_date'] : '';
+
+					$field_content .= '<div class="evf-toggle-section evf-form-builder-toggle evf-expiry-date-wrapper">';
+					$field_content .= sprintf( '<label for="evf-toggle-type-expiry-date">%s</label>', __( 'Enable Expiry Date', 'everest-forms' ) );
+					$field_content .= sprintf( '<span class="everest-forms-toggle-form">' );
+					$field_content .= '<input class="evf-enable-expiry-date" type="checkbox"  value="1"  name="' . sprintf( 'form_fields[%s][choices][%s][%s]', $field['id'], $key, 'subscription_expiry_enable' ) . '"';
+					$expiry_checked = checked( '1', $subscription_expiry_enable, false );
+
+					$field_content .= '' . $expiry_checked . '/>';
+					$field_content .= '<span class="slider round"></span>';
+					$field_content .= '</div>';
+					$field_content .= '<div class="evf-subscription-expiry-date-field evf-subscription-expiry-option"  >';
+					$field_content .= '<input type="text"  value="' . esc_attr( $subscription_expiry_date ) . '"   name="' . sprintf( 'form_fields[%s][choices][%s][%s]', $field['id'], $key, 'subscription_expiry_date' ) . '" data-field="options" class="evf-general-setting-field evf-radio-subscription-expiry-input evf-subscription-expiry-date evf-flatpickr-field regular-text without_icon flatpickr-input" data-date-format="Y-m-d" data-locale="en" readonly="readonly" />';
+					$field_content .= '</div>';
+
+					$field_content .= '<div class="everest-forms-attachment-media-view">';
+					$field_content .= sprintf( '<input type="hidden" class="source" name="%s[image]" value="%s">', $name, esc_url_raw( $image ) );
+					$field_content .= sprintf( '<button type="button" class="upload-button button-add-media"%s>%s</button>', ! empty( $image ) ? ' style="display:none;"' : '', esc_html__( 'Upload Image', 'everest-forms' ) );
+					$field_content .= '<div class="thumbnail thumbnail-image">';
+
+					if ( ! empty( $image ) ) {
+						$field_content .= sprintf( '<img class="attachment-thumb" src="%1$s">', esc_url_raw( $image ) );
+					}
+
 					$field_content .= '</div>';
 					$field_content .= sprintf( '<div class="actions"%s>', empty( $image ) ? ' style="display:none;"' : '' );
 					$field_content .= sprintf( '<button type="button" class="button remove-button">%1$s</button>', esc_html__( 'Remove', 'everest-forms' ) );
@@ -2116,7 +2282,7 @@ abstract class EVF_Form_Fields {
 
 			case 'choices':
 				$values         = ! empty( $field['choices'] ) ? $field['choices'] : $this->defaults;
-				$choices_fields = array( 'select', 'radio', 'checkbox', 'payment-multiple', 'payment-checkbox' );
+				$choices_fields = array( 'select', 'radio', 'checkbox', 'payment-multiple', 'payment-checkbox', 'payment-subscription-plan' );
 
 				// Notify if choices source is currently empty.
 				if ( empty( $values ) ) {
@@ -2219,13 +2385,13 @@ abstract class EVF_Form_Fields {
 							echo '<label>';
 							printf( '<span class="everest-forms-image-choices-image"><img src="%s" alt="%s"%s></span>', esc_url( $image_src ), esc_attr( $value['label'] ), ( ! empty( $value['label'] ) ? ' title="' . esc_attr( $value['label'] ) . '"' : '' ) );
 							printf( '<input type="%s" %s disabled>', esc_attr( $type ), esc_attr( $selected ) );
-							if ( ( 'payment-checkbox' === $field['type'] ) || ( 'payment-multiple' === $field['type'] ) ) {
+							if ( ( 'payment-checkbox' === $field['type'] ) || ( 'payment-multiple' === $field['type'] ) || ( 'payment-subscription-plan' === $field['type'] ) ) {
 								echo '<span class="everest-forms-image-choices-label">' . esc_html( $value['label'] . '-' . evf_format_amount( evf_sanitize_amount( $value['value'] ), true ) ) . '</span>';
 							} else {
 								echo '<span class="everest-forms-image-choices-label">' . esc_html( $value['label'] ) . '</span>';
 							}
 							echo '</label>';
-						} elseif ( ( 'payment-checkbox' === $field['type'] ) || ( 'payment-multiple' === $field['type'] ) ) {
+						} elseif ( ( 'payment-checkbox' === $field['type'] ) || ( 'payment-multiple' === $field['type'] ) || ( 'payment-subscription-plan' === $field['type'] ) ) {
 								printf( '<input type="%s" %s disabled>%s - %s', esc_attr( $type ), esc_attr( $selected ), esc_html( $value['label'] ), esc_attr( evf_format_amount( evf_sanitize_amount( $value['value'] ) ), true ) );
 						} else {
 							printf( '<input type="%s" %s disabled>%s', esc_attr( $type ), esc_attr( $selected ), esc_html( $value['label'] ) );

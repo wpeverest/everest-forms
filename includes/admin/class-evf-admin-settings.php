@@ -260,7 +260,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 
 							$class_for_title = isset( $value['id'] ) && ! empty( $value['id'] ) ? 'everest-forms-settings-title_' . $value['id'] : '';
 
-							echo '<div class="everest-forms-options-header ' . $class_for_title . '">
+							echo '<div class="everest-forms-options-header ' . esc_attr( $class_for_title ) . '">
 							<div class="everest-forms-options-header--top">';
 
 							// For now icon is ignored.
@@ -345,7 +345,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 										}
 									}
 									?>
-						 /><?php echo esc_html( $value['suffix'] ); ?> <?php echo wp_kses_post( $description ); ?>
+						/><?php echo esc_html( $value['suffix'] ); ?> <?php echo wp_kses_post( $description ); ?>
 	</div>
 </div>
 						<?php
@@ -411,7 +411,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 										}
 									}
 									?>
-						 />&lrm; <?php echo wp_kses_post( $description ); ?>
+						/>&lrm; <?php echo wp_kses_post( $description ); ?>
 		<div id="colorPickerDiv_<?php echo esc_attr( $value['id'] ); ?>" class="colorpickdiv"
 			style="z-index: 100;background:#eee;border:1px solid #ccc;position:absolute;display:none;"></div>
 	</div>
@@ -494,19 +494,19 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 			name="<?php echo esc_attr( $value['id'] ); ?><?php echo ( 'multiselect' === $value['type'] ) ? '[]' : ''; ?>"
 			id="<?php echo esc_attr( $value['id'] ); ?>" style="<?php echo esc_attr( $value['css'] ); ?>"
 			class="<?php echo esc_attr( $value['class'] ); ?>"
-							  <?php
+								<?php
 								if ( ! empty( $value['custom_attributes'] ) && is_array( $value['custom_attributes'] ) ) {
 									foreach ( $value['custom_attributes'] as $attribute => $attribute_value ) {
 										echo esc_attr( $attribute ) . '="' . esc_attr( $attribute_value ) . '"';
 									}
 								}
 								?>
-						 <?php echo 'multiselect' === $value['type'] ? 'multiple="multiple"' : ''; ?>>
+						<?php echo 'multiselect' === $value['type'] ? 'multiple="multiple"' : ''; ?>>
 						<?php
 						foreach ( $value['options'] as $key => $val ) {
 							?>
 			<option value="<?php echo esc_attr( $key ); ?>"
-									  <?php
+										<?php
 
 										if ( is_array( $option_value ) ) {
 											selected( in_array( (string) $key, $option_value, true ), true );
@@ -547,14 +547,14 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 							id="<?php echo esc_attr( $value['id'] ); ?>" value="<?php echo esc_attr( $key ); ?>"
 							type="radio" style="<?php echo esc_attr( $value['css'] ); ?>"
 							class="<?php echo esc_attr( $value['class'] ); ?>"
-											  <?php
+												<?php
 												if ( ! empty( $value['custom_attributes'] ) && is_array( $value['custom_attributes'] ) ) {
 													foreach ( $value['custom_attributes'] as $attribute => $attribute_value ) {
 														echo esc_attr( $attribute ) . '="' . esc_attr( $attribute_value ) . '"';
 													}
 												}
 												?>
-							 <?php checked( $key, $option_value ); ?> /> <?php echo esc_html( $val ); ?></label>
+							<?php checked( $key, $option_value ); ?> /> <?php echo esc_html( $val ); ?></label>
 				</li>
 							<?php
 						}
@@ -596,6 +596,8 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 						$option_value = $value['value'];
 						if ( isset( $value['id'] ) && 'everest_forms_recaptcha_type' === $value['id'] ) {
 							$class = 'everest-forms-recaptcha-settings';
+						} else {
+							$class = '';
 						}
 
 						?>
@@ -696,7 +698,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 							}
 						}
 						?>
-						 />
+						/>
 						<?php echo wp_kses_post( $description ); ?>
 				</label> <?php echo wp_kses_post( $tooltip_html ); ?>
 						<?php
@@ -770,7 +772,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 										}
 									}
 									?>
-						 />&nbsp;
+						/>&nbsp;
 		<select name="<?php echo esc_attr( $value['id'] ); ?>[unit]" style="width: auto;">
 						<?php
 						foreach ( $periods as $value => $label ) {
@@ -849,7 +851,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 										}
 									}
 									?>
-						 /><?php echo isset( $value['suffix'] ) ? esc_html( $value['suffix'] ) : ''; ?>
+						/><?php echo isset( $value['suffix'] ) ? esc_html( $value['suffix'] ) : ''; ?>
 						<?php echo isset( $description ) ? wp_kses_post( $description ) : ''; ?>
 						<?php
 						if ( isset( $value['buttons'] ) && is_array( $value['buttons'] ) ) {
@@ -911,7 +913,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 	<div
 		class="everest-forms-global-settings--field forminp-<?php echo isset( $value['type'] ) ? esc_attr( sanitize_title( $value['type'] ) ) : ''; ?>">
 						<?php
-							echo ! empty( $value['value'] ) ? $value['value'] : '';
+						echo ! empty( $value['value'] ) ? esc_html( $value['value'] ) : '';
 						?>
 	</div>
 </div>

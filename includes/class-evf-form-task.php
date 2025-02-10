@@ -54,6 +54,16 @@ class EVF_Form_Task {
 	public $is_valid_hash = false;
 
 	/**
+	 * Ajax error array.
+	 */
+	public $ajax_err = array();
+
+	/**
+	 * Is notice print?
+	 */
+	public $evf_notice_print = false;
+
+	/**
 	 * Primary class constructor.
 	 *
 	 * @since 1.0.0
@@ -1378,11 +1388,61 @@ class EVF_Form_Task {
 			$evf_admin_entry_id              = isset( $_GET['entry_id'] ) ? absint( $_GET['entry_id'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification
 			$evf_entry_redirect_url          = admin_url() . 'admin.php?page=evf-entries&form_id=' . $evf_admin_form_id . '&view-entry=' . $evf_admin_entry_id;
 			$evf_admin_entry_saved_token     = get_option( 'everest_forms_admin_entry_approval_token', array() );
+			$site_name                       = get_option( 'blogname' );
 
 			if ( 'yes' === $evf_admin_approval_entry_enable ) {
 				$evf_admin_approval_entry_token = isset( $_GET['evf_admin_approval_entry_token'] ) ? sanitize_text_field( wp_unslash( $_GET['evf_admin_approval_entry_token'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification
 				if ( in_array( $evf_admin_approve_entry_token_raw, $evf_admin_entry_saved_token ) ) {
 					$evf_admin_approval_approved = $wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->prefix}evf_entries SET status = %s WHERE entry_id = %s ", 'publish', $evf_admin_entry_id ) );
+					$entry                       = evf_get_entry( $evf_admin_entry_id );
+					$entry_meta                  = $entry->meta;
+					$first_name                  = '';
+					$last_name                   = '';
+					$email                       = '';
+					$entry_date                  = $entry->date_created;
+					$name                        = '';
+
+					foreach ( $entry_meta as $key => $value ) {
+						if ( preg_match( '/^name/', $key ) ) {
+							$name = $value;
+						}
+
+						if ( preg_match( '/^first_name_/', $key ) ) {
+							$first_name = $value;
+						}
+
+						if ( preg_match( '/^last_name_/', $key ) ) {
+							$last_name = $value;
+						}
+
+						if ( preg_match( '/^email/', $key ) ) {
+							$email = $value;
+						}
+
+						if ( '' === $name ) {
+							if ( ! empty( $first_name ) && ! empty( $last_name ) ) {
+								$name = $first_name . ' ' . $last_name;
+							} elseif ( ! empty( $first_name ) ) {
+								$name = $first_name;
+							} else {
+								$name = $last_name;
+							}
+						}
+
+						$subject = apply_filters( 'everest_forms_entry_submission_approval_subject', esc_html__( 'Form Entry Approved', 'everest-forms' ) );
+						// translators: %s is the name of the user
+						$message = sprintf( __( 'Hey, %s', 'everest-forms' ), $name ) . '<br/>';
+						// translators: %s is the entry_date.
+						$message .= '<br/>' . sprintf( __( 'We’re pleased to inform you that your form entry submitted on %s has been successfully approved.', 'everest-forms' ), $entry_date ) . '<br/>';
+						$message .= '<br/>' . __( 'Thank you for giving us your precious time.', 'everest-forms' ) . '<br/>';
+						// translators: %s is the site_name.
+						$message .= '<br/>' . sprintf( __( 'From %s', 'everest-forms' ), $site_name );
+						// translators: %s is the message.
+						$message = apply_filters( 'everest_forms_entry_approval_message', $message );
+					}
+
+					$email_obj = new EVF_Emails();
+					$test      = $email_obj->send( $email, $subject, $message );
 					wp_redirect( $evf_entry_redirect_url );
 				}
 			}
@@ -1408,12 +1468,62 @@ class EVF_Form_Task {
 			$evf_admin_entry_id                = isset( $_GET['entry_id'] ) ? absint( $_GET['entry_id'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification
 			$evf_entry_redirect_url            = admin_url() . 'admin.php?page=evf-entries&form_id=' . $evf_admin_form_id . '&view-entry=' . $evf_admin_entry_id;
 			$evf_admin_entry_saved_token       = get_option( 'everest_forms_admin_entry_approval_token', array() );
+			$site_name                         = get_option( 'blogname' );
 
 			if ( 'yes' === $evf_admin_approval_entry_enable ) {
 
 				$evf_admin_denial_entry_token = isset( $_GET['evf_admin_denial_entry_token'] ) ? sanitize_text_field( wp_unslash( $_GET['evf_admin_denial_entry_token'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification
 				if ( in_array( $evf_admin_approve_entry_token_raw, $evf_admin_entry_saved_token ) ) {
 					$evf_admin_approval_denied = $wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->prefix}evf_entries SET status = %s WHERE entry_id = %s ", 'denied', $evf_admin_entry_id ) );
+					$entry                     = evf_get_entry( $evf_admin_entry_id );
+					$entry_meta                = $entry->meta;
+					$entry_date                = $entry->date_created;
+					$first_name                = '';
+					$last_name                 = '';
+					$email                     = '';
+					$name                      = '';
+
+					foreach ( $entry_meta as $key => $value ) {
+						if ( preg_match( '/^name/', $key ) ) {
+							$name = $value;
+						}
+
+						if ( preg_match( '/^first_name_/', $key ) ) {
+							$first_name = $value;
+						}
+
+						if ( preg_match( '/^last_name_/', $key ) ) {
+							$last_name = $value;
+						}
+
+						if ( preg_match( '/^email/', $key ) ) {
+							$email = $value;
+						}
+
+						if ( '' === $name ) {
+							if ( ! empty( $first_name ) && ! empty( $last_name ) ) {
+								$name = $first_name . ' ' . $last_name;
+							} elseif ( ! empty( $first_name ) ) {
+								$name = $first_name;
+							} else {
+								$name = $last_name;
+							}
+						}
+
+						$subject = apply_filters( 'everest_forms_entry_submission_approval_subject', esc_html__( 'Entry Submission Denied' , 'everest-forms' ));
+						// translators: %s is the name of the user
+						$message = sprintf( __( 'Hey, %s', 'everest-forms' ), $name ) . '<br/>';
+						// translators: %s is the entry_date.
+						$message .= '<br/>' . sprintf( __( 'We’re sorry to inform you that your form entry submitted on %s has been denied.', 'everest-forms' ), $entry_date ) . '<br/>';
+						$message .= '<br/>' . __( 'Thank you for giving us your precious time.', 'everest-forms' ) . '<br/>';
+						// translators: %s is the site_name.
+						$message .= '<br/>' . sprintf( __( 'From %s', 'everest-forms' ), $site_name );
+						// translators: %s is the message.
+						$message = apply_filters( 'everest_forms_entry_denial_message', $message );
+
+					}
+					$email_obj = new EVF_Emails();
+					$email_obj->send( $email, $subject, $message );
 					wp_redirect( $evf_entry_redirect_url );
 				}
 			}
@@ -1496,7 +1606,7 @@ class EVF_Form_Task {
 	/**
 	 * Marks the entry as spam.
 	 *
-	 * @since xx.xx.xx
+	 * @since 3.0.9
 	 */
 	public function evf_mark_entry_spam() {
 		if ( ! isset( $_GET['spam-entry'] ) ) {
@@ -1518,7 +1628,7 @@ class EVF_Form_Task {
 	/**
 	 * Marks the entry as spam.
 	 *
-	 * @since xx.xx.xx
+	 * @since 3.0.9
 	 */
 	public function evf_remove_entry_from_spam() {
 		if ( ! isset( $_GET['unspam-entry'] ) ) {

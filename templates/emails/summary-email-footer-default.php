@@ -58,8 +58,8 @@ $font_family      = "'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-s
 				'%1$s %2$s',
 				'<div class="everest-forms-email-summary-footer-text" style="margin-top: 3rem; margin-bottom: 6rem; line-height: 1.5rem; color:#8f8f8f"><span class="everest-forms-summary-email-footer-message">' . esc_html__( 'This email was auto-generated and sent from', 'everest-forms' ) . '</span>',
 				'<a href="' . esc_url( home_url() ) . '" style="color:#5317aa;">' . esc_html( wp_specialchars_decode( get_bloginfo( 'name' ) ) ) . '</a> .<br/>
-				<span style="style="#8f8f8f">' . esc_html__( 'Learn ' ) . '</span>' .
-				'<a href="' . esc_url( home_url() ) . '" style="color:#aeaeae;">' . esc_html__( 'how to disable.' ) . '</a>' .
+				<span style="style="#8f8f8f">' . esc_html__( 'Learn ', 'everest-forms' ) . '</span>' .
+				'<a href="' . esc_url( home_url() ) . '" style="color:#aeaeae;">' . esc_html__( 'how to disable.', 'everest-forms' ) . '</a>' .
 				'</div>',
 			);
 			echo wp_kses_post( apply_filters( 'everest_forms_summary_email_footer_text', $footer ) );

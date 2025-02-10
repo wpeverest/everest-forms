@@ -2549,6 +2549,7 @@
 						 &.hcaptcha_empty_key_validate,
 						 &.enable-stripe-model,
 						 &.enable-authorize-net-model,
+						 &.enable-payment-subscription-plan,
 						 &.enable-mollie-model &.enable-square-model {
 							 opacity: 0.45;
 
@@ -4353,6 +4354,7 @@
 			 }
 
 			 .everest-forms-field-option-payment-multiple,
+			 .everest-forms-field-option-payment-subscription-plan,
 			 .everest-forms-field-option-payment-checkbox {
 				 .everest-forms-field-option-row {
 					 li {
@@ -4366,6 +4368,14 @@
 								 margin: 0 0 0 auto;
 								 flex: 0 0 23%;
 							 }
+						 }
+						 .evf-trail-period-wrapper,
+						 .evf-expiry-date-wrapper {
+							 margin-top: 10px;
+							 width: 100%;
+							 display: flex;
+							 justify-content: space-between;
+							 align-content: center;
 						 }
 					 }
 				 }
@@ -4642,7 +4652,7 @@
 				 }
 
 				 .evf-content-post-submissions-settings,
-				 .evf-content-user-registration-settings {
+				 .everest-forms-settings {
 					 .everest-forms-panel-field {
 						 max-width: 500px;
 					 }
@@ -11073,4 +11083,308 @@
     padding: 12px 20px;
     color: #363636;
     font-size: 14px;
+}
+
+.everest-forms-form-listing__header {
+    display: flex;
+    padding: 0 24px;
+    align-items: center;
+	justify-content: space-between;
+    border-bottom: 1px solid #E2E8F0;
+    background: var(--white, #FFF);
+	margin-bottom: 40px;
+	margin-top: -10px;
+
+	.everest-forms-form-listing__header-left {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+    div#everest-forms-header__logo {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+        height: 74px;
+    }
+
+	button#evf-form-listing__screen-options {
+		color: #222222;
+		font-size: 14px;
+		line-height: 21px;
+		border-color: #eaeaea;
+		border-radius: 4px;
+		padding: 8px 16px;
+		background: #eaeaea;
+	}
+
+	button#show-settings-link{
+		display: none;
+	}
+
+	span#everest-forms-logo__separator {
+		padding: 0 20px;
+		color: #e2e8f0;
+		font-size: 40px;
+		font-weight: 100;
+	}
+
+	a#everest-forms-form-listing__heading {
+		font-size: 16px;
+		text-decoration: none;
+		font-weight: 600;
+		color: #222222;
+	}
+}
+
+#everest-forms-list-table__container {
+	background-color: #ffffff;
+    padding: 24px;
+    margin: 25px auto;
+    border-radius: 7px;
+
+
+	table.wp-list-table {
+		border-color: #dcdcdc;
+		border-radius: 5px;
+		margin-bottom: 16px;
+		overflow: hidden;
+
+		a {
+			color: #383838;
+			transition: all 0.3s ease-in-out;
+
+			&:hover {
+				color: #475bb2;
+			}
+		}
+
+		thead {
+			tr {
+				td,
+				th {
+					border-bottom-color: #dcdcdc;
+				}
+
+				th {
+					font-size: 14px;
+					font-weight: 600;
+					line-height: 24px;
+					color: #383838;
+
+					&.sortable,
+					&.sorted {
+						padding: 0;
+
+						a {
+							font-size: 14px;
+							font-weight: 600;
+							line-height: 24px;
+							padding: 12px 8px;
+							display: flex;
+							align-items: center;
+							gap: 8px;
+
+							&:focus {
+								box-shadow: none;
+							}
+
+							.sorting-indicators {
+								gap: 4px;
+
+								.sorting-indicator {
+									margin: 0;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		tbody {
+			tr {
+				td {
+					&.username {
+						img {
+							border-radius: 5px0;
+							margin-top: 2px;
+						}
+					}
+
+					&.actions {
+						a {
+							color: #475bb2;
+							transition: all 0.3s ease-in-out;
+							padding-bottom: 2px;
+							position: relative;
+
+							&::before {
+								content: "";
+								background: #475bb2;
+								width: 100%;
+								height: 1px;
+								position: absolute;
+								bottom: 0;
+								opacity: 0;
+								transition: all 0.3s ease-in-out;
+							}
+
+							&:hover {
+								&::before {
+									opacity: 1;
+								}
+							}
+
+							&:focus {
+								box-shadow: none;
+								outline: none;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	.tablenav {
+		padding: 0;
+		margin: 0 0 16px;
+		height: auto;
+
+		&.bottom {
+			margin-bottom: 0;
+		}
+
+		.actions {
+			display: flex;
+			align-items: center;
+			gap: 12px;
+			padding-right: 12px;
+
+			select {
+				height: 36px;
+				margin: 0;
+				border-color: #bababa;
+
+				&:hover {
+					color: #475bb2;
+				}
+
+				&:focus {
+					box-shadow: none;
+					border: 1px solid #475bb2;
+				}
+			}
+
+			input {
+				&[type="submit"] {
+					padding: 6px 14px;
+					border-radius: 3px;
+					border: 1px solid #475bb2;
+					background: #f6f7f7;
+					color: #475bb2;
+					font-size: 14px;
+					font-weight: 500;
+					line-height: 150%;
+					transition: all 0.3s ease-in-out;
+
+					&:hover {
+						background: #f2f2f2;
+					}
+				}
+			}
+		}
+
+		&-pages {
+			margin-bottom: 0;
+		}
+	}
+
+	div.everest-forms-list-table-container__header{
+		display: flex;
+		align-items: center;
+		gap: 15px;
+		margin-bottom: 15px;
+
+		a{
+			color: #7545BB;
+			border-color: #7545BB;
+			top: 0;
+			font-size: 14px;
+			font-weight: 500;
+		}
+	}
+
+}
+
+button#show-settings-link{
+	display: none;
+}
+
+.everest-forms-list-filters-row{
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	align-items: center;
+	gap: 20px;
+	border-bottom: 1px solid #dcdcdc;
+	padding-bottom: 24px;
+	margin-bottom: 24px;
+
+	ul.subsubsub{
+		font-size: 15px;
+		margin: 0px;
+		li{
+			font-weight: 600;
+
+			a .count{
+				font-weight: 600;
+			}
+		}
+	}
+
+	#everest-forms-list-search-form {
+		width: 275px;
+		position: relative;
+
+		#everest-forms-list-table-search-input {
+			border-radius: 4px;
+			border: 1px solid #bababa;
+			background: #ffffff;
+			padding: 3px 42px 3px 12px;
+			width: 100%;
+
+			&::placeholder {
+				color: #999999;
+			}
+
+			&:focus {
+				box-shadow: none;
+				border: 1px solid #475bb2;
+			}
+		}
+
+		button {
+			&#search-submit {
+				position: absolute;
+				border: 0;
+				background: transparent;
+				padding: 0;
+				width: 18px;
+				height: 18px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				right: 12px;
+				top: 8px;
+
+				svg {
+					path {
+						fill: #999999;
+					}
+				}
+			}
+		}
+	}
+
 }
