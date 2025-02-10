@@ -1105,6 +1105,17 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 		foreach ( $files as $file ) {
 			$file = $this->generate_file_info( $file );
 
+			$wp_filetype = wp_check_filetype_and_ext( $file['tmp_path'], $file['name'] );
+
+			$ext             = empty( $wp_filetype['ext'] ) ? '' : $wp_filetype['ext'];
+			$type            = empty( $wp_filetype['type'] ) ? '' : $wp_filetype['type'];
+			$proper_filename = empty( $wp_filetype['proper_filename'] ) ? '' : $wp_filetype['proper_filename'];
+
+			if ( $proper_filename || ! $ext || ! $type ) {
+				evf()->task->errors[ $form_data['id'] ][ $field_id ] = esc_html__( 'File type is not allowed.', 'everest-forms' );
+				update_option( 'evf_validation_error', 'yes' );
+			}
+
 			// Allow third-party integrations.
 			if ( has_filter( 'everest_forms_integration_uploads' ) ) {
 				$file = apply_filters( 'everest_forms_integration_uploads', $file, $this->form_data );
@@ -1120,7 +1131,7 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 				) {
 
 					$this->create_dir( dirname( $file['path'] ) );
-					@rename( $file['tmp_path'], $file['path'] ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+					@rename( sanitize_file_name( $file['tmp_path'] ), sanitize_file_name( $file['path'] ) ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 					$this->set_file_fs_permissions( $file['path'] );
 			}
 
