@@ -310,6 +310,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 = 3.0.9.2       	- xx-xx-2025
 * Fix 				- Arbitrary file upload issue when form submit.
+* Fix 				- Date field is not working properly when Disable past date is enabled.
 
 = 3.0.9.1       - 27-01-2025
 * Enhancement	    - Added regex pattern to check the file upload.
