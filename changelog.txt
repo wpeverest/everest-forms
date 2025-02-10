@@ -1,5 +1,8 @@
 == Changelog ==
 
+= 3.0.9.2       	- xx-xx-2025
+* Fix 				- Arbitrary file upload issue when form submit.
+
 = 3.0.9.1       - 27-01-2025
 * Enhancement	    - Added regex pattern to check the file upload.
 
