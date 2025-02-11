@@ -773,19 +773,60 @@ class EVF_Modules {
 		$required_plugins = apply_filters(
 			'everest_forms_required_plugins_lists',
 			array(
-				'everest-forms-woocommerce' => array(
+				'everest-forms-woocommerce'      => array(
 					'file' => 'woocommerce/woocommerce.php',
 					'name' => 'WooCommerce',
 				),
-				'everest-forms-mailpoet'    => array(
+				'everest-forms-mailpoet'         => array(
 					'file' => 'mailpoet/mailpoet.php',
 					'name' => 'MailPoet',
+				),
+				'everest-forms-oxygen-builder'   => array(
+					'file' => 'oxygen-builder/oxygen-builder.php',
+					'name' => 'Oxygen Builder',
+				),
+				'everest-forms-beaver-builder'   => array(
+					'file' => 'bb-plugin/fl-builder.php',
+					'name' => 'Beaver Builder',
+				),
+				'everest-forms-wpbakery-builder' => array(
+					'file' => 'js_composer/js_composer.php',
+					'name' => 'WPBakery Builder',
+				),
+				'everest-forms-oxygen'           => array(
+					'file' => 'oxygen/functions.php',
+					'name' => 'Oxygen',
+				),
+				'everest-forms-divi-builder'     => array(
+					'is_theme' => true,
+					'name'     => 'Divi Builder',
+					'id'       => 'divi',
+				),
+				'everest-forms-bricks-builder'   => array(
+					'is_theme' => true,
+					'name'     => 'Bricks Builder',
+					'id'       => 'bricks',
 				),
 			)
 		);
 
 		if ( isset( $required_plugins[ $slug ] ) ) {
 			$required_plugin = $required_plugins[ $slug ];
+
+			if ( isset( $required_plugin['is_theme'] ) && $required_plugin['is_theme'] ) {
+				$active_theme = wp_get_theme();
+				if ( $active_theme->stylesheet != $required_plugin['id'] && $active_theme->template != $required_plugin['id'] ) {
+					$status['success']      = false;
+					$status['errorMessage'] = sprintf(
+						__( 'Please install and activate the %s theme first to enable this addon.', 'everest-forms' ),
+						$required_plugin['name']
+					);
+					return $status;
+				} else {
+					return true;
+				}
+			}
+
 			if ( ! is_plugin_active( $required_plugin['file'] ) ) {
 				$status['success']      = false;
 				$status['errorMessage'] = sprintf(
