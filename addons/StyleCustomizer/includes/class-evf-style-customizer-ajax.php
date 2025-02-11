@@ -118,7 +118,7 @@ final class EVF_Style_Customizer_Ajax {
 			wp_send_json_success(
 				array(
 					'template_id' => $template_slug,
-					'message'     => __( 'Template saved successfully. Please reload the page to view changes. Reload Now?', 'user-registration-style-customizer' ),
+					'message'     => __( 'Template saved successfully. Please reload the page to view changes. Reload Now?', 'everest-forms' ),
 				)
 			);
 			exit;

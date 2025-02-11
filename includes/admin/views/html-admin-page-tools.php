@@ -15,7 +15,7 @@ $tabs        = apply_filters(
 		'export'               => __( 'Export', 'everest-forms' ),
 		'form_migrator'        => __( 'Form Migrator', 'everest-forms' ),
 		'system_info'          => __( 'System Info', 'everest-forms' ),
-		'roles_and_permission' => __( 'Roles and Permission', 'everest-froms' ),
+		'roles_and_permission' => __( 'Roles and Permission', 'everest-forms' ),
 	)
 );
 $current_tab = ! empty( $_REQUEST['tab'] ) ? sanitize_title( wp_unslash( $_REQUEST['tab'] ) ) : 'import'; // phpcs:ignore WordPress.Security.NonceVerification

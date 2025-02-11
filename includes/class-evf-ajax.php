@@ -317,6 +317,32 @@ class EVF_AJAX {
 		$new_calculation_format = 0;
 		$not_supported_operator = 0;
 
+		$check_recurring_period = isset( $data['payments'] ) && isset( $data['payments']['stripe'] ) && isset( $data['payments']['stripe']['interval_count'] )
+										? ( 0 === $data['payments']['stripe']['interval_count'] || empty(
+											$data['payments']['stripe']['interval_count']
+											? true
+											: false
+										) )
+											: false;
+
+		$is_recurring_subscription_enabled = isset( $data['payments'] ) && isset( $data['payments']['stripe'] ) && isset( $data['payments']['stripe']['recurring'] ) && 1 == $data['payments']['stripe']['recurring']
+											? true
+											: false;
+
+		if ( $is_recurring_subscription_enabled && $check_recurring_period ) {
+			$logger->error(
+				__( 'Recurring period required.', 'everest-forms' ),
+				array( 'source' => 'form-save' )
+			);
+			wp_send_json_error(
+				array(
+					'errorTitle'   => esc_html__( 'Recurring period required.', 'everest-forms' ),
+					/* translators: %s: empty meta data */
+					'errorMessage' => esc_html__( 'Recurring Period is required. Please enter a valid value before saving the form.', 'everest-forms' ),
+				)
+			);
+		}
+
 		if ( ! empty( $data['form_fields'] ) ) {
 			foreach ( $data['form_fields'] as $field_key => $field ) {
 				if ( ! empty( $field['label'] ) ) {
@@ -1752,7 +1778,7 @@ class EVF_AJAX {
 	/**
 	 * Installs and activates the Smart SMTP plugin.
 	 *
-	 * @since xx.xx.xx
+	 * @since 3.0.9
 	 *
 	 * @return void Outputs a JSON response.
 	 */

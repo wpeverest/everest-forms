@@ -32,6 +32,11 @@
 
 		// Add an event listener for changes and on the click in the reporting frequency
 		$(document).on('change click', '#everest_forms_entries_reporting_frequency', handleReportingFrequencyChange);
+
+
+		$('#evf-form-listing__screen-options').on('click', function() {
+			$("#show-settings-link").click();
+		});
 	});
 
 	// Function to handle changes in the premium sidebar.

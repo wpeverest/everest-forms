@@ -200,7 +200,7 @@ class EVF_Field_Wysiwyg extends EVF_Form_Fields {
 	 * @return array Data for field exporter PDF or Email.
 	 */
 	public function field_exporter( $field ) {
-		$empty_message = '<em>' . __( '(empty)', 'everest-forms-repeater-fields' ) . '</em>';
+		$empty_message = '<em>' . __( '(empty)', 'everest-forms' ) . '</em>';
 		$field_value   = maybe_unserialize( $field );
 		$field_type    = isset( $field_value['type'] ) ? sanitize_text_field( $field_value['type'] ) : $this->type;
 

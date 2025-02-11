@@ -10,6 +10,7 @@ jQuery( function( $ ) {
 			$( document.body ).on( 'click dragstart', '.evf-registered-item.evf-upgrade-addon', this.evf_upgrade_addon );
 			$( document.body ).on( 'click dragstart', '.evf-registered-item.enable-stripe-model', this.enable_stripe_model );
 			$( document.body ).on( 'click dragstart', '.evf-registered-item.enable-authorize-net-model', this.enable_authorize_net_model );
+			$( document.body ).on( 'click dragstart', '.evf-registered-item.enable-payment-subscription-plan', this.enable_recurring_payment );
 			$( document.body ).on( 'click dragstart', '.evf-registered-item.everest-forms-pro-is_square_install', this.install_square_addon_notice );
 
 			if( 0 === $( document.body ).find('.evf-registered-item.everest-forms-pro-is_square_install').length ){
@@ -373,6 +374,22 @@ jQuery( function( $ ) {
 			$.alert({
 				title: evf_upgrade.enable_square_title,
 				content: evf_upgrade.enable_square_message,
+				icon: 'dashicons dashicons-info',
+				type: 'blue',
+				buttons : {
+					confirm : {
+						text: evf_data.i18n_close,
+						btnClass: 'btn-confirm',
+						keys: ['enter']
+					}
+				}
+			});
+		},
+		enable_recurring_payment : function ( e ){
+			e.preventDefault();
+			$.alert({
+				title: evf_upgrade.enable_recurring_period_title,
+				content: evf_upgrade.enable_recurring_period_message,
 				icon: 'dashicons dashicons-info',
 				type: 'blue',
 				buttons : {
