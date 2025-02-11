@@ -1,6 +1,10 @@
 == Changelog ==
 
-= 3.0.9.2       	- xx-xx-2025
+= 3.0.9.3       	- 12-01-2025
+* Fix 				- Image file upload issue.
+* Fix 				- File upload limit message not showing in the frontend.
+
+= 3.0.9.2       	- 11-01-2025
 * Fix 				- Arbitrary file upload issue when form submit.
 * Fix 				- Date field is not working properly when Disable past date is enabled.
 
