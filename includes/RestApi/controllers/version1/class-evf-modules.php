@@ -770,45 +770,7 @@ class EVF_Modules {
 	 * @param  [type] $slug.
 	 */
 	public static function check_required_plugin_is_active( $slug ) {
-		$required_plugins = apply_filters(
-			'everest_forms_required_plugins_lists',
-			array(
-				'everest-forms-woocommerce'      => array(
-					'file' => 'woocommerce/woocommerce.php',
-					'name' => 'WooCommerce',
-				),
-				'everest-forms-mailpoet'         => array(
-					'file' => 'mailpoet/mailpoet.php',
-					'name' => 'MailPoet',
-				),
-				'everest-forms-oxygen-builder'   => array(
-					'file' => 'oxygen-builder/oxygen-builder.php',
-					'name' => 'Oxygen Builder',
-				),
-				'everest-forms-beaver-builder'   => array(
-					'file' => 'bb-plugin/fl-builder.php',
-					'name' => 'Beaver Builder',
-				),
-				'everest-forms-wpbakery-builder' => array(
-					'file' => 'js_composer/js_composer.php',
-					'name' => 'WPBakery Builder',
-				),
-				'everest-forms-oxygen'           => array(
-					'file' => 'oxygen/functions.php',
-					'name' => 'Oxygen',
-				),
-				'everest-forms-divi-builder'     => array(
-					'is_theme' => true,
-					'name'     => 'Divi Builder',
-					'id'       => 'divi',
-				),
-				'everest-forms-bricks-builder'   => array(
-					'is_theme' => true,
-					'name'     => 'Bricks Builder',
-					'id'       => 'bricks',
-				),
-			)
-		);
+		$required_plugins = evf_get_addons_list_depend_on_another_plugins();
 
 		if ( isset( $required_plugins[ $slug ] ) ) {
 			$required_plugin = $required_plugins[ $slug ];
