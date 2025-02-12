@@ -24,8 +24,9 @@ import {
 	ModalHeader,
 	Spinner,
 	useDisclosure,
+	Icon,
 } from "@chakra-ui/react";
-import { SettingsIcon } from "@chakra-ui/icons";
+import { SettingsIcon, WarningIcon } from "@chakra-ui/icons";
 import { __ } from "@wordpress/i18n";
 import React, { useState, useEffect, useContext } from "react";
 import YouTubePlayer from 'react-player/youtube';
@@ -81,7 +82,6 @@ const ModuleItem = (props) => {
 	const [moduleStatus, setModuleStatus] = useState(status);
 	const [isPerformingAction, setIsPerformingAction] = useState(false);
 	const [moduleSettingsURL, setModuleSettingsURL] = useState('');
-console.log(data);
 
 	const handleModuleAction = () => {
 		setAddonActivated(true);
@@ -335,6 +335,35 @@ console.log(data);
 					</Tooltip>
 				</Box>
 			)}
+
+			{
+				data.dependent_status === 'inactive' && (
+					<Box
+					pos="absolute"
+					left={0}
+					bottom={0}
+					bg="rgba(0, 0, 0, 0.7)"
+					padding={"8px 20px"}
+					display="flex"
+					justifyContent="center"
+					backdropFilter="blur(5px)"
+					width={'100%'}
+			>
+				<Icon as={WarningIcon} color="red.500" w={'5'} h={'5'} />
+				<Text
+					color="white"
+					fontWeight={600}
+					fontSize={'14px'}
+					lineHeight={'21px'}
+					marginLeft="10px"
+
+				>
+				Activate { data.required_plugin } plugin to use this addon.
+				</Text>
+			</Box>
+			)
+
+			}
 
 			</Box>
 				<Badge

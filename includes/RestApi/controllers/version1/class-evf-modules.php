@@ -113,17 +113,20 @@ class EVF_Modules {
 
 				if ( isset( $required_plugins[ $feature->slug ]['is_theme'] ) && $required_plugins[ $feature->slug ]['is_theme'] ) {
 					$active_theme = wp_get_theme();
-					if ( $feature->slug  === 'everest-forms-bricks-builder' ) {
+					if ( $feature->slug === 'everest-forms-bricks-builder' ) {
 						if ( $active_theme->stylesheet != $required_plugins[ $feature->slug ]['id'] && $active_theme->template != $required_plugins[ $feature->slug ]['id'] ) {
-							$feature->dependent_status = 'inactive';
+							$feature->dependent_status      = 'inactive';
+							$feature->dependent_plugin_name = $required_plugins[ $feature->slug ]['name'];
 						} else {
 							$feature->dependent_status = 'active';
 						}
-					}else if( $feature->slug  === 'everest-forms-divi-builder' ){
+					} elseif ( $feature->slug === 'everest-forms-divi-builder' ) {
 						if ( 'Divi' === $active_theme->Name ) {
 							$feature->dependent_status = 'active';
-						}else{
-							$feature->dependent_status = 'inactive';
+						} else {
+							$feature->dependent_status      = 'inactive';
+							$feature->dependent_plugin_name = $required_plugins[ $feature->slug ]['name'];
+
 						}
 					}
 				} else {
@@ -131,7 +134,8 @@ class EVF_Modules {
 					if ( is_plugin_active( $required_plugin_file ) ) {
 						$feature->dependent_status = 'active';
 					} else {
-						$feature->dependent_status = 'inactive';
+						$feature->dependent_status      = 'inactive';
+						$feature->dependent_plugin_name = $required_plugins[ $feature->slug ]['name'];
 					}
 				}
 			}
