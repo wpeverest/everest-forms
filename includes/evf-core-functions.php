@@ -5412,7 +5412,7 @@ function evf_get_addons_list_depend_on_another_plugins() {
 				'name' => 'MailPoet',
 			),
 			'everest-forms-oxygen-builder'   => array(
-				'file' => 'oxygen-builder/oxygen-builder.php',
+				'file' => 'oxygen/functions.php',
 				'name' => 'Oxygen Builder',
 			),
 			'everest-forms-beaver-builder'   => array(
@@ -5422,10 +5422,6 @@ function evf_get_addons_list_depend_on_another_plugins() {
 			'everest-forms-wpbakery-builder' => array(
 				'file' => 'js_composer/js_composer.php',
 				'name' => 'WPBakery Builder',
-			),
-			'everest-forms-oxygen'           => array(
-				'file' => 'oxygen/functions.php',
-				'name' => 'Oxygen',
 			),
 			'everest-forms-divi-builder'     => array(
 				'is_theme' => true,
