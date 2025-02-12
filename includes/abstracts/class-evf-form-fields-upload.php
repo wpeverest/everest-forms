@@ -994,7 +994,7 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 					?>
 				</span>
 
-				<?php if ( (int) $max_file_number > 1 ) : ?>
+				<?php if ( ! empty( $limit_message ) ) : ?>
 					<span class="everest-forms-upload-hint">
 						<?php
 						/* translators: %d - max number of files. */
@@ -1131,7 +1131,7 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 				) {
 
 					$this->create_dir( dirname( $file['path'] ) );
-					@rename( sanitize_file_name( $file['tmp_path'] ), sanitize_file_name( $file['path'] ) ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+					@rename( $file['tmp_path'] , $file['path'] ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 					$this->set_file_fs_permissions( $file['path'] );
 			}
 
@@ -1419,7 +1419,6 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 				unlink( $csv_path );
 			}
 		}
-
 	}
 
 	/**

@@ -1,96 +1,182 @@
-name: EVF Staging Test
+name: Evf Staging QA Test
 
 on:
     push:
         branches:
             - staging
 jobs:
-    deploy:
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout Code From Current Branch
-              uses: actions/checkout@v2
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code From Current Branch
+        uses: actions/checkout@v2
 
-            - name: Add Private SSH Key
-              run: |
-                mkdir -p ~/.ssh
-                echo "${{ secrets.TG_PRIVATE_SSH_KEY }}" > ~/.ssh/id_rsa
-                chmod 600 ~/.ssh/id_rsa
+      - name: Add Private SSH Key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.TG_PRIVATE_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
 
-            - name: Add GitHub Email & Username
-              env:
-                MY_EMAIL: ${{ secrets.TG_GITHUB_EMAIL}}
-                MY_USERNAME: ${{ secrets.TG_GITHUB_USERNAME }}
-              run: |
-                git config --global user.email "$MY_EMAIL"
-                git config --global user.name "$MY_USERNAME"
+      - name: Add GitHub Email & Username
+        env:
+          MY_EMAIL: ${{ secrets.TG_GITHUB_EMAIL }}
+          MY_USERNAME: ${{ secrets.TG_GITHUB_USERNAME }}
+        run: |
+          git config --global user.email "$MY_EMAIL"
+          git config --global user.name "$MY_USERNAME"
 
-            - name: Use Node.js 12.x
-              uses: actions/setup-node@v2
-              with:
-                node-version: 12.x
+      - name: Use Node.js 12.x
+        uses: actions/setup-node@v2
+        with:
+          node-version: 12.x
 
-            - name: Setup PHP v7.4
-              uses: shivammathur/setup-php@v2
-              with:
-                php-version: '7.4'
-                extensions: cli, dev, curl, mbstring, xmlrpc
+      - name: Setup PHP v7.4
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
+          extensions: cli, dev, curl, mbstring, xmlrpc
 
-            - name: NPM, Composer Install & NPM Build
-              run: |
-                npm install
-                composer install
-                npm run build
-                composer install --no-dev
-                mkdir everest-forms
-                rsync -rc --exclude-from="./.distignore" "./" "./everest-forms" --delete --delete-excluded
+      - name: NPM, Composer Install & NPM Build
+        run: |
+          npm cache clean --force
+          rm -rf everest-forms.zip
+          rm -rf node_modules
+          rm -rf package-lock.json
+          npm install --legacy-peer-deps --force
+          composer install
+          npm run build --legacy-peer-deps --force
+          composer install --no-dev
+          mkdir everest-forms
+          rsync -rc --exclude-from="./.distignore" "./" "./everest-forms" --delete --delete-excluded
 
-            - name: Copy plugin file to server
-              env:
-                Srv_IP: ${{ secrets.QA_AUTOMATION_SERVER_IP }}
-                Srv_UsrName: ${{ secrets.QA_AUTOMATION_SERVER_USERNAME }}
-                Server_PASS: ${{ secrets.QA_AUTOMATION_SERVER_PASS }}
-              run: |
-                sshpass -p "$Server_PASS" rsync -ahPz -e "ssh -o StrictHostKeyChecking=no" everest-forms $Srv_UsrName@$Srv_IP:/home/master/applications/ycrdmckpsu/public_html/evfqatest/wp-content/plugins
+      - name: Create ZIP Archive
+        run: zip -r everest-forms.zip everest-forms 
+        
+      - name: remove the plugin file from server
+        env:
+          Srv_IP: ${{ secrets.QA_AUTOMATION_SERVER_IP }}
+          Srv_UsrName: ${{ secrets.QA_AUTOMATION_SERVER_USERNAME }}
+          Server_PASS: ${{ secrets.QA_AUTOMATION_SERVER_PASS }}
+        run: |
+          pwd
+          sshpass -p "$Server_PASS" ssh -o StrictHostKeyChecking=no $Srv_UsrName@$Srv_IP << EOF
+          cd applications/ycrdmckpsu/public_html/evftest/wp-content/plugins/
+          rm -rf everest-forms
+          EOF
 
-            - name: Setup Chrome
-              uses: browser-actions/setup-chrome@v1
-            - run: chrome --version
+      - name: Upload Plugin ZIP to Server Temp Folder
+        env:
+          Srv_IP: ${{ secrets.QA_AUTOMATION_SERVER_IP }}
+          Srv_UsrName: ${{ secrets.QA_AUTOMATION_SERVER_USERNAME }}
+          Server_PASS: ${{ secrets.QA_AUTOMATION_SERVER_PASS }}
+        run: |
+          pwd
+          sshpass -p "$Server_PASS" scp -r -o StrictHostKeyChecking=no everest-forms.zip $Srv_UsrName@$Srv_IP:applications/ycrdmckpsu/public_html/temp/
 
-            - name: Set up Python 3.12.1
-              uses: actions/setup-python@v3
-              with:
-                python-version: 3.12.1
-            - run: python -v
+      - name: Install and Activate Plugin via WP-CLI
+        env:
+          Srv_IP: ${{ secrets.QA_AUTOMATION_SERVER_IP }}
+          Srv_UsrName: ${{ secrets.QA_AUTOMATION_SERVER_USERNAME }}
+          Server_PASS: ${{ secrets.QA_AUTOMATION_SERVER_PASS }}
+        run: |
+          pwd
+          sshpass -p "$Server_PASS" ssh -o StrictHostKeyChecking=no $Srv_UsrName@$Srv_IP << EOF
+          cd applications/ycrdmckpsu/public_html/evftest
+          wp plugin install ../temp/everest-forms.zip --activate --debug
+          rm -f ../temp/everest-forms.zip
+          EOF
 
-            - name: Automation Test Script Everest Forms
-              run: |
-                mkdir python-code
-                cd python-code
-                git init
-                git remote add origin git@github.com:wpeverest/EVF-Automation.git
-                git pull origin test-evf-free
-                pip install -r requirements.txt
-                chmod +x test_evf_free.sh
-                bash ./test_evf_free.sh
-              continue-on-error: true
+      - name: Setup Chrome
+        uses: browser-actions/setup-chrome@v1
+      - run: chrome --version
 
-            - name: Test Report Generation
-              uses: actions/upload-artifact@v4
-              if: success() || failure()
-              with:
-                name: Report                # Name of the folder
-                path: python-code/results
+      - name: Set up Python 3.12.1
+        uses: actions/setup-python@v3
+        with:
+          python-version: 3.12.1
+      - run: python -v
 
-            - name: Find Test Report Url Below
-              if: success() || failure()
-              env:
-                Srv_IP: ${{ secrets.QA_AUTOMATION_SERVER_IP }}
-                Srv_UsrName: ${{ secrets.QA_AUTOMATION_SERVER_USERNAME }}
-                Server_PASS: ${{ secrets.QA_AUTOMATION_SERVER_PASS }}
-              run: |
-                sshpass -p "$Server_PASS" ssh -o StrictHostKeyChecking=no $Srv_UsrName@$Srv_IP 'rm -rf /home/master/applications/ycrdmckpsu/public_html/evfqatest/reports/*'
-                sshpass -p "$Server_PASS" scp -o StrictHostKeyChecking=no -r python-code/results/* $Srv_UsrName@$Srv_IP:/home/master/applications/ycrdmckpsu/public_html/evfqatest/reports/
-                echo "https://qatest.wptests.net/evfqatest/reports/report.html"
-                echo "https://qatest.wptests.net/evfqatest/reports/test_report.html"
-              continue-on-error: true
+      - name: Automation Test Script User Registration
+        run: |
+          mkdir python-code
+          cd python-code
+          git init
+          git remote add origin git@github.com:wpeverest/EVF-Automation.git
+          git pull origin test-evf-free
+          pip install -r requirements.txt
+          chmod +x test_evf_free.sh
+          bash ./test_evf_free.sh
+        continue-on-error: true
+
+      - name: Test Report Generation
+        uses: actions/upload-artifact@v4
+        if: success() || failure()
+        with:
+          name: Report
+          path: python-code/results
+
+      - name: Upload Test Report to Server
+        if: success() || failure()
+        env:
+          Srv_IP: ${{ secrets.QA_AUTOMATION_SERVER_IP }}
+          Srv_UsrName: ${{ secrets.QA_AUTOMATION_SERVER_USERNAME }}
+          Server_PASS: ${{ secrets.QA_AUTOMATION_SERVER_PASS }}
+        run: |
+          pwd
+          sshpass -p "$Server_PASS" ssh -o StrictHostKeyChecking=no $Srv_UsrName@$Srv_IP 'rm -rf applications/ycrdmckpsu/public_html/evftest/reports/*'
+          sshpass -p "$Server_PASS" scp -o StrictHostKeyChecking=no -r python-code/results/* $Srv_UsrName@$Srv_IP:applications/ycrdmckpsu/public_html/evftest/reports/
+          sshpass -p "$Server_PASS" ssh -o StrictHostKeyChecking=no $Srv_UsrName@$Srv_IP 'chmod 755 -R applications/ycrdmckpsu/public_html/evftest/reports/'
+          echo "https://qatest.wptests.net/evftest/reports/report.html"
+          
+
+      - name: Send Email Notification (Custom Python Code)
+        run: |
+          python - <<EOF
+          import smtplib
+          from email.mime.multipart import MIMEMultipart
+          from email.mime.text import MIMEText
+          import os
+          
+          # Gather environment variables from GitHub Actions inputs
+          smtp_server = os.getenv('SMTP_SERVER')
+          smtp_port = os.getenv('SMTP_PORT')
+          smtp_username = os.getenv('SMTP_USERNAME')
+          smtp_password = os.getenv('SMTP_PASSWORD')
+          to_email = os.getenv('TO_EMAIL')
+          subject = os.getenv('SUBJECT')
+          body = os.getenv('BODY')
+          from_email = os.getenv('FROM_EMAIL')
+          msg = MIMEMultipart()
+          msg['From'] = from_email
+          msg['To'] = to_email
+          msg['Subject'] = subject
+          msg.attach(MIMEText(body, "html"))
+          
+          try:
+              # Connect to the SMTP server and send the email
+              with smtplib.SMTP(smtp_server, smtp_port) as server:
+                  server.starttls()  # Secure the connection
+                  server.login(smtp_username, smtp_password)
+                  server.sendmail(from_email, to_email, msg.as_string())
+                  print("Email sent successfully.")
+          except Exception as e:
+              print(f"Error sending email: {e}")
+          EOF
+        env:
+          SMTP_SERVER: ${{ secrets.SMTP_SERVER }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          TO_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
+          FROM_EMAIL: ${{ secrets.FROM_EMAIL }}
+          SUBJECT: "Test Completed - EVF Staging QA Report"
+          BODY: |
+            <p>Test completed. View the report here:</p>
+            <a href="https://qatest.wptests.net/evftest/reports/report.html" 
+               style="display: inline-block; padding: 10px 20px; font-size: 16px; 
+                      color: #fff; background-color: #008000; text-decoration: none; 
+                      border-radius: 5px;">
+               View Report
+            </a>
+      
+                
