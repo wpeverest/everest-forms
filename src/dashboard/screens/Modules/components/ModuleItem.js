@@ -349,7 +349,7 @@ const ModuleItem = (props) => {
 					backdropFilter="blur(5px)"
 					width={'100%'}
 			>
-				<Icon as={WarningIcon} color="red.500" w={'5'} h={'5'} />
+				<Image src={_EVF_DASHBOARD_.alert_icon} w={'5'} h={'5'}/>
 				<Text
 					color="white"
 					fontWeight={600}
