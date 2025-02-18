@@ -1,5 +1,9 @@
 == Changelog ==
 
+= 3.0.9.4       	- 18-02-2025
+* Tweak 			- Open upgrade to pro to new tab from submenu.
+* Fix 				- Sanitization filename issue in temporary path.
+
 = 3.0.9.3       	- 11-02-2025
 * Fix 				- Image file upload issue.
 * Fix 				- File upload limit message not showing in the frontend.

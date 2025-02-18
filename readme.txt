@@ -4,7 +4,7 @@ Tags: contact form, custom form, form builder, forms, survey
 Requires at least: 5.5
 Tested up to: 6.7.1
 Requires PHP: 7.2
-Stable tag: 3.0.9.3
+Stable tag: 3.0.9.4
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -307,6 +307,10 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 
 == Changelog ==
+
+= 3.0.9.4       	- 18-02-2025
+* Tweak 			- Open upgrade to pro to new tab from submenu.
+* Fix 				- Sanitization filename issue in temporary path.
 
 = 3.0.9.3       	- 11-02-2025
 * Fix 				- Image file upload issue.
