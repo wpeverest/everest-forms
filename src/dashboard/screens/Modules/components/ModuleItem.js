@@ -267,6 +267,7 @@ const ModuleItem = (props) => {
 					borderTopRightRadius="sm"
 					borderTopLeftRadius="sm"
 					w="full"
+					height={"178px"}
 					onMouseOver={() =>
 							{if (demo_video_url) {
 								setShowPlayVideoButton(true);
