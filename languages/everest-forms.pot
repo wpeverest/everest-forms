@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the Everest Forms package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Everest Forms 3.0.9\n"
+"Project-Id-Version: Everest Forms 3.0.9.3\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/everest-forms\n"
-"POT-Creation-Date: 2025-01-23 10:39:50+00:00\n"
+"POT-Creation-Date: 2025-02-11 07:35:45+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -205,7 +205,7 @@ msgid "Submit Button"
 msgstr ""
 
 #: addons/OxygenBuilder/OxygenFormWidget.php:200
-#: includes/class-evf-smart-tags.php:81
+#: includes/class-evf-smart-tags.php:82
 #: includes/fields/class-evf-field-color.php:20
 msgid "Color"
 msgstr ""
@@ -1784,142 +1784,143 @@ msgstr ""
 msgid "File upload error. %s"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields-upload.php:255
+#: includes/abstracts/class-evf-form-fields-upload.php:266
 msgid " Malicious file detected"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields-upload.php:270
+#: includes/abstracts/class-evf-form-fields-upload.php:279
 #. translators: %s: max upload size
 msgid "File exceeds max size allowed (%s)."
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields-upload.php:279
+#: includes/abstracts/class-evf-form-fields-upload.php:288
 msgid "File must have an extension."
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields-upload.php:284
-#: includes/abstracts/class-evf-form-fields-upload.php:301
+#: includes/abstracts/class-evf-form-fields-upload.php:293
+#: includes/abstracts/class-evf-form-fields-upload.php:310
+#: includes/abstracts/class-evf-form-fields-upload.php:1115
+#. translators: %d - max number of files.
 msgid "File type is not allowed."
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields-upload.php:484
+#: includes/abstracts/class-evf-form-fields-upload.php:493
 msgid "Allowed File Extensions"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields-upload.php:485
+#: includes/abstracts/class-evf-form-fields-upload.php:494
 msgid "Enter the extensions you would like to allow, comma separated."
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields-upload.php:517
+#: includes/abstracts/class-evf-form-fields-upload.php:526
 msgid "File Upload Message"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields-upload.php:518
+#: includes/abstracts/class-evf-form-fields-upload.php:527
 msgid "Enter text to be displayed as file upload message"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields-upload.php:527
-#: includes/abstracts/class-evf-form-fields-upload.php:922
-#: includes/abstracts/class-evf-form-fields-upload.php:968
+#: includes/abstracts/class-evf-form-fields-upload.php:536
+#: includes/abstracts/class-evf-form-fields-upload.php:931
+#: includes/abstracts/class-evf-form-fields-upload.php:977
 #: includes/admin/form-migrator/class-evf-fm-contactform7.php:769
 msgid "Drop your file here or click here to upload"
 msgid_plural "Drop your files here or click here to upload"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/abstracts/class-evf-form-fields-upload.php:549
+#: includes/abstracts/class-evf-form-fields-upload.php:558
 msgid "Custom File Name"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields-upload.php:550
+#: includes/abstracts/class-evf-form-fields-upload.php:559
 msgid "Enter text to be displayed as file name."
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields-upload.php:583
+#: includes/abstracts/class-evf-form-fields-upload.php:592
 msgid "Upload Limit Message"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields-upload.php:584
+#: includes/abstracts/class-evf-form-fields-upload.php:593
 msgid "Enter text to be displayed as file upload limit message"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields-upload.php:594
-#: includes/abstracts/class-evf-form-fields-upload.php:924
-#: includes/abstracts/class-evf-form-fields-upload.php:970
+#: includes/abstracts/class-evf-form-fields-upload.php:603
+#: includes/abstracts/class-evf-form-fields-upload.php:933
+#: includes/abstracts/class-evf-form-fields-upload.php:979
 #. translators: 1: Number of Files
 msgid "You can upload up to %s files."
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields-upload.php:617
+#: includes/abstracts/class-evf-form-fields-upload.php:626
 msgid "Max File Size"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields-upload.php:619
+#: includes/abstracts/class-evf-form-fields-upload.php:628
 #. translators: %s - max upload size.
 msgid ""
 "Enter the max file size, in megabytes, to allow. If left blank, the value "
 "defaults to the maximum size the server allows which is %s."
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields-upload.php:650
-#: includes/abstracts/class-evf-form-fields-upload.php:663
+#: includes/abstracts/class-evf-form-fields-upload.php:659
+#: includes/abstracts/class-evf-form-fields-upload.php:672
 msgid "Maximum number limit on uploads"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields-upload.php:651
-#: includes/abstracts/class-evf-form-fields-upload.php:664
+#: includes/abstracts/class-evf-form-fields-upload.php:660
+#: includes/abstracts/class-evf-form-fields-upload.php:673
 msgid "Enter the number of files you wish the user to upload."
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields-upload.php:687
+#: includes/abstracts/class-evf-form-fields-upload.php:696
 msgid "Store file in WordPress Media Library"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields-upload.php:688
+#: includes/abstracts/class-evf-form-fields-upload.php:697
 msgid ""
 "Check this option to store the final uploaded file in the WordPress Media "
 "Library"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields-upload.php:821
+#: includes/abstracts/class-evf-form-fields-upload.php:830
 #: includes/abstracts/class-evf-form-fields.php:2290
 #: includes/class-evf-emails.php:477 includes/class-evf-emails.php:608
 #: includes/fields/class-evf-field-wysiwyg.php:203
 msgid "(empty)"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields-upload.php:1156
-#. translators: %d - max number of files.
+#: includes/abstracts/class-evf-form-fields-upload.php:1176
 msgid "Something went wrong while uploading file,Please try again"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields-upload.php:1555
+#: includes/abstracts/class-evf-form-fields-upload.php:1574
 msgid "The uploaded file exceeds the upload_max_filesize directive in php.ini."
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields-upload.php:1556
+#: includes/abstracts/class-evf-form-fields-upload.php:1575
 msgid ""
 "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
 "the HTML form."
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields-upload.php:1557
+#: includes/abstracts/class-evf-form-fields-upload.php:1576
 msgid "The uploaded file was only partially uploaded."
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields-upload.php:1558
+#: includes/abstracts/class-evf-form-fields-upload.php:1577
 msgid "No file was uploaded."
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields-upload.php:1559
+#: includes/abstracts/class-evf-form-fields-upload.php:1578
 msgid "Missing a temporary folder."
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields-upload.php:1560
+#: includes/abstracts/class-evf-form-fields-upload.php:1579
 msgid "Failed to write file to disk."
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields-upload.php:1561
+#: includes/abstracts/class-evf-form-fields-upload.php:1580
 msgid "File upload stopped by extension."
 msgstr ""
 
@@ -2854,7 +2855,7 @@ msgstr ""
 #: includes/admin/builder/class-evf-builder-settings.php:361
 #: includes/admin/settings/class-evf-settings-email.php:25
 #: includes/admin/settings/class-evf-settings-validation.php:64
-#: includes/class-evf-smart-tags.php:121
+#: includes/class-evf-smart-tags.php:122
 #: includes/fields/class-evf-field-email.php:20
 #: includes/fields/class-evf-field-email.php:97
 #: includes/fields/class-evf-field-email.php:269
@@ -2891,8 +2892,8 @@ msgstr ""
 
 #: includes/admin/builder/class-evf-builder-settings.php:190
 #: includes/class-evf-ajax.php:1052 includes/class-evf-smart-tags.php:44
-#: templates/emails/summary-email-body-default.php:90
-#: templates/emails/summary-email-body-default.php:128
+#: templates/emails/summary-email-body-default.php:97
+#: templates/emails/summary-email-body-default.php:135
 msgid "Form Name"
 msgstr ""
 
@@ -3904,14 +3905,17 @@ msgstr ""
 #: includes/admin/class-evf-admin-entries-table-list.php:644
 #: includes/admin/class-evf-admin-entries.php:380
 #: includes/admin/class-evf-admin-entries.php:438
-#: includes/class-evf-form-task.php:1433 includes/class-evf-form-task.php:1510
+#: includes/class-evf-form-task.php:1434 includes/class-evf-form-task.php:1515
 #. translators:%s: User name of form entry
+#. translators: %s is the name of the user
 msgid "Hey, %s"
 msgstr ""
 
 #: includes/admin/class-evf-admin-entries-table-list.php:582
 #: includes/admin/class-evf-admin-entries.php:382
+#: includes/class-evf-form-task.php:1436
 #. translators:%s: Form Entry Date
+#. translators: %s is the entry_date.
 msgid ""
 "We’re pleased to inform you that your form entry submitted on %s has been "
 "successfully approved."
@@ -3926,8 +3930,9 @@ msgstr ""
 #: includes/admin/class-evf-admin-entries-table-list.php:649
 #: includes/admin/class-evf-admin-entries.php:385
 #: includes/admin/class-evf-admin-entries.php:443
-#: includes/class-evf-form-task.php:1436 includes/class-evf-form-task.php:1513
+#: includes/class-evf-form-task.php:1439 includes/class-evf-form-task.php:1520
 #. translators:%s: Site Name
+#. translators: %s is the site_name.
 msgid "From %s"
 msgstr ""
 
@@ -4003,7 +4008,7 @@ msgstr ""
 #: includes/admin/class-evf-admin-menus.php:110
 #: includes/admin/class-evf-admin-menus.php:238
 #: includes/class-evf-ajax.php:1053
-#: templates/emails/summary-email-body-default.php:129
+#: templates/emails/summary-email-body-default.php:136
 msgid "Entries"
 msgstr ""
 
@@ -4021,12 +4026,13 @@ msgstr ""
 
 #: includes/admin/class-evf-admin-entries.php:383
 #: includes/admin/class-evf-admin-entries.php:441
-#: includes/class-evf-form-task.php:1435 includes/class-evf-form-task.php:1512
+#: includes/class-evf-form-task.php:1437 includes/class-evf-form-task.php:1518
 msgid "Thank you for giving us your precious time."
 msgstr ""
 
 #: includes/admin/class-evf-admin-entries.php:436
-#: includes/class-evf-form-task.php:1509
+#: includes/class-evf-form-task.php:1513
+#. translators: %s is the message.
 msgid "Entry Submission Denied"
 msgstr ""
 
@@ -5582,7 +5588,7 @@ msgstr ""
 
 #: includes/admin/views/html-notice-email-failed-notice.php:25
 #: includes/admin/views/html-notice-php-deprecation.php:27
-#: templates/emails/summary-email-body-default.php:161
+#: templates/emails/summary-email-body-default.php:168
 msgid "Learn More"
 msgstr ""
 
@@ -5895,7 +5901,7 @@ msgid "Let's see how your forms performed %s."
 msgstr ""
 
 #: includes/class-evf-ajax.php:1048
-#: templates/emails/summary-email-body-default.php:81
+#: templates/emails/summary-email-body-default.php:88
 msgid "Forms Stats"
 msgstr ""
 
@@ -6145,11 +6151,19 @@ msgstr ""
 msgid "Could not create an entry"
 msgstr ""
 
-#: includes/class-evf-form-task.php:1584
+#: includes/class-evf-form-task.php:1517
+#. translators: %s is the entry_date.
+msgid ""
+"We’re sorry to inform you that your form entry submitted on %s has been "
+"denied."
+msgstr ""
+
+#: includes/class-evf-form-task.php:1592
+#. translators: %s is the message.
 msgid "Please wait"
 msgstr ""
 
-#: includes/class-evf-form-task.php:1587
+#: includes/class-evf-form-task.php:1595
 msgid "seconds, security checkup is being executed."
 msgstr ""
 
@@ -6595,123 +6609,127 @@ msgstr ""
 msgid "Entry ID"
 msgstr ""
 
-#: includes/class-evf-smart-tags.php:73
+#: includes/class-evf-smart-tags.php:57
+msgid "User Agent"
+msgstr ""
+
+#: includes/class-evf-smart-tags.php:74
 msgid "Alpha"
 msgstr ""
 
-#: includes/class-evf-smart-tags.php:77
+#: includes/class-evf-smart-tags.php:78
 msgid "Alphanumeric"
 msgstr ""
 
-#: includes/class-evf-smart-tags.php:85
+#: includes/class-evf-smart-tags.php:86
 msgid "Country Code (2 Character)"
 msgstr ""
 
-#: includes/class-evf-smart-tags.php:89
+#: includes/class-evf-smart-tags.php:90
 msgid "Country Code (3 Character)"
 msgstr ""
 
-#: includes/class-evf-smart-tags.php:93
+#: includes/class-evf-smart-tags.php:94
 msgid "Date (mm/dd)"
 msgstr ""
 
-#: includes/class-evf-smart-tags.php:97
+#: includes/class-evf-smart-tags.php:98
 msgid "Date (dd/mm)"
 msgstr ""
 
-#: includes/class-evf-smart-tags.php:101
+#: includes/class-evf-smart-tags.php:102
 msgid "Date (mm.dd.yyyy)"
 msgstr ""
 
-#: includes/class-evf-smart-tags.php:105
+#: includes/class-evf-smart-tags.php:106
 msgid "Date (dd.mm.yyyy)"
 msgstr ""
 
-#: includes/class-evf-smart-tags.php:109
+#: includes/class-evf-smart-tags.php:110
 msgid "Date (yyyy-mm-dd)"
 msgstr ""
 
-#: includes/class-evf-smart-tags.php:113
+#: includes/class-evf-smart-tags.php:114
 msgid "Date (mm/dd/yyyy)"
 msgstr ""
 
-#: includes/class-evf-smart-tags.php:117
+#: includes/class-evf-smart-tags.php:118
 msgid "Date (dd/mm/yyyy)"
 msgstr ""
 
-#: includes/class-evf-smart-tags.php:125
+#: includes/class-evf-smart-tags.php:126
 msgid "IP (Version 4)"
 msgstr ""
 
-#: includes/class-evf-smart-tags.php:129
+#: includes/class-evf-smart-tags.php:130
 msgid "IP (Version 6)"
 msgstr ""
 
-#: includes/class-evf-smart-tags.php:133
+#: includes/class-evf-smart-tags.php:134
 msgid "ISBN"
 msgstr ""
 
-#: includes/class-evf-smart-tags.php:137
+#: includes/class-evf-smart-tags.php:138
 msgid "Latitude or Longitude"
 msgstr ""
 
-#: includes/class-evf-smart-tags.php:141
+#: includes/class-evf-smart-tags.php:142
 msgid "Numeric"
 msgstr ""
 
-#: includes/class-evf-smart-tags.php:145
+#: includes/class-evf-smart-tags.php:146
 msgid "Password (Numeric, lower, upper)"
 msgstr ""
 
-#: includes/class-evf-smart-tags.php:149
+#: includes/class-evf-smart-tags.php:150
 msgid "Password (Numeric, lower, upper, min 8)"
 msgstr ""
 
-#: includes/class-evf-smart-tags.php:153
+#: includes/class-evf-smart-tags.php:154
 msgid "Phone - General"
 msgstr ""
 
-#: includes/class-evf-smart-tags.php:157
+#: includes/class-evf-smart-tags.php:158
 msgid "Phone - UK"
 msgstr ""
 
-#: includes/class-evf-smart-tags.php:161
+#: includes/class-evf-smart-tags.php:162
 msgid "Phone - US: 123-456-7890"
 msgstr ""
 
-#: includes/class-evf-smart-tags.php:165
+#: includes/class-evf-smart-tags.php:166
 msgid "Phone - US: (123)456-7890"
 msgstr ""
 
-#: includes/class-evf-smart-tags.php:169
+#: includes/class-evf-smart-tags.php:170
 msgid "Phone - US: (123) 456-7890"
 msgstr ""
 
-#: includes/class-evf-smart-tags.php:173
+#: includes/class-evf-smart-tags.php:174
 msgid "Phone - US: Flexible"
 msgstr ""
 
-#: includes/class-evf-smart-tags.php:177
+#: includes/class-evf-smart-tags.php:178
 msgid "Postal Code (UK)"
 msgstr ""
 
-#: includes/class-evf-smart-tags.php:181
+#: includes/class-evf-smart-tags.php:182
 msgid "Price (1.23)"
 msgstr ""
 
-#: includes/class-evf-smart-tags.php:185
+#: includes/class-evf-smart-tags.php:186
 msgid "Slug"
 msgstr ""
 
-#: includes/class-evf-smart-tags.php:189
+#: includes/class-evf-smart-tags.php:190
 msgid "Time (hh:mm:ss)"
 msgstr ""
 
-#: includes/class-evf-smart-tags.php:193
+#: includes/class-evf-smart-tags.php:194
 msgid "URL"
 msgstr ""
 
-#: includes/class-evf-smart-tags.php:197
+#: includes/class-evf-smart-tags.php:198
 msgid "Zip Code"
 msgstr ""
 
@@ -15363,7 +15381,7 @@ msgid "Select a format for the date field."
 msgstr ""
 
 #: includes/fields/class-evf-field-date-time.php:88
-#: includes/fields/class-evf-field-date-time.php:493
+#: includes/fields/class-evf-field-date-time.php:494
 msgid "Time"
 msgstr ""
 
@@ -15400,164 +15418,164 @@ msgstr ""
 msgid "Choose a desire date format to display."
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:199
+#: includes/fields/class-evf-field-date-time.php:200
 msgid "Clear"
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:205
+#: includes/fields/class-evf-field-date-time.php:206
 msgid "Disable Dates"
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:206
+#: includes/fields/class-evf-field-date-time.php:207
 msgid "Select which dates you want to disable."
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:231
+#: includes/fields/class-evf-field-date-time.php:232
 msgid "Date Mode"
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:232
+#: includes/fields/class-evf-field-date-time.php:233
 msgid "Select your desire date mode."
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:247
+#: includes/fields/class-evf-field-date-time.php:248
 msgid "Date Localization"
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:248
+#: includes/fields/class-evf-field-date-time.php:249
 msgid "Choose a desire date localization to display."
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:329
+#: includes/fields/class-evf-field-date-time.php:330
 msgid "Timezone"
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:330
+#: includes/fields/class-evf-field-date-time.php:331
 msgid "Choose a desired timezone to save datetime in."
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:352
+#: includes/fields/class-evf-field-date-time.php:353
 msgid "Default to current date."
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:353
+#: includes/fields/class-evf-field-date-time.php:354
 msgid "Check this option to set current date as default."
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:364
+#: includes/fields/class-evf-field-date-time.php:365
 msgid "Disable the past date"
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:365
+#: includes/fields/class-evf-field-date-time.php:366
 msgid "Check this option to disable the past date"
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:376
+#: includes/fields/class-evf-field-date-time.php:377
 msgid "Enable Min Max date."
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:377
+#: includes/fields/class-evf-field-date-time.php:378
 msgid "Check this option to set min max date."
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:387
-#: includes/fields/class-evf-field-date-time.php:443
+#: includes/fields/class-evf-field-date-time.php:388
+#: includes/fields/class-evf-field-date-time.php:444
 msgid "Minimum Date"
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:388
+#: includes/fields/class-evf-field-date-time.php:389
 msgid "Select minium date."
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:409
-#: includes/fields/class-evf-field-date-time.php:466
+#: includes/fields/class-evf-field-date-time.php:410
+#: includes/fields/class-evf-field-date-time.php:467
 msgid "Maximum Date"
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:410
+#: includes/fields/class-evf-field-date-time.php:411
 msgid "Select maximum date."
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:432
+#: includes/fields/class-evf-field-date-time.php:433
 msgid "Enable Custom Input"
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:433
+#: includes/fields/class-evf-field-date-time.php:434
 msgid "Check this option to set date range 'x' days after today."
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:444
-#: includes/fields/class-evf-field-date-time.php:467
+#: includes/fields/class-evf-field-date-time.php:445
+#: includes/fields/class-evf-field-date-time.php:468
 msgid ""
 "Number of days after today or before for negative numbers. Example: today "
 "or +14 days or -5 days."
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:500
+#: includes/fields/class-evf-field-date-time.php:501
 msgid "Time interval and format"
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:501
+#: includes/fields/class-evf-field-date-time.php:502
 msgid "Choose time interval and format to display."
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:515
+#: includes/fields/class-evf-field-date-time.php:516
 msgid "15 minutes"
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:516
+#: includes/fields/class-evf-field-date-time.php:517
 msgid "30 minutes"
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:517
+#: includes/fields/class-evf-field-date-time.php:518
 msgid "1 hour"
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:530
+#: includes/fields/class-evf-field-date-time.php:531
 msgid "12 H"
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:531
+#: includes/fields/class-evf-field-date-time.php:532
 msgid "24 H"
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:596
+#: includes/fields/class-evf-field-date-time.php:597
 msgid "Enable Min Max Time."
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:597
+#: includes/fields/class-evf-field-date-time.php:598
 msgid "Check this option to set min max time."
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:608
+#: includes/fields/class-evf-field-date-time.php:609
 msgid "Minimum Time"
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:609
+#: includes/fields/class-evf-field-date-time.php:610
 msgid "Select minium time."
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:619
+#: includes/fields/class-evf-field-date-time.php:620
 msgid "Maximum Time"
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:620
+#: includes/fields/class-evf-field-date-time.php:621
 msgid "Select maximum time."
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:632
+#: includes/fields/class-evf-field-date-time.php:633
 msgid "Slot Booking"
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:639
+#: includes/fields/class-evf-field-date-time.php:640
 msgid "Enable Slot Booking"
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:641
+#: includes/fields/class-evf-field-date-time.php:642
 msgid "Enable to use date/time field as slot booking."
 msgstr ""
 
-#: includes/fields/class-evf-field-date-time.php:1155
+#: includes/fields/class-evf-field-date-time.php:1156
 msgid "---Select Field---"
 msgstr ""
 
@@ -16137,43 +16155,47 @@ msgstr ""
 msgid "Sent from %s"
 msgstr ""
 
-#: templates/emails/summary-email-body-default.php:72
+#: templates/emails/summary-email-body-default.php:73
 msgid "Hi there! "
 msgstr ""
 
-#: templates/emails/summary-email-body-default.php:78
+#: templates/emails/summary-email-body-default.php:77
+msgid "Let's see how your forms performed"
+msgstr ""
+
+#: templates/emails/summary-email-body-default.php:85
 msgid "Sorry, there are no forms to display the statistics."
 msgstr ""
 
-#: templates/emails/summary-email-body-default.php:91
+#: templates/emails/summary-email-body-default.php:98
 msgid "Impressions"
 msgstr ""
 
-#: templates/emails/summary-email-body-default.php:92
+#: templates/emails/summary-email-body-default.php:99
 msgid "Conversions"
 msgstr ""
 
-#: templates/emails/summary-email-body-default.php:93
+#: templates/emails/summary-email-body-default.php:100
 msgid "Conversion Rate"
 msgstr ""
 
-#: templates/emails/summary-email-body-default.php:94
+#: templates/emails/summary-email-body-default.php:101
 msgid "Abandonments"
 msgstr ""
 
-#: templates/emails/summary-email-body-default.php:95
+#: templates/emails/summary-email-body-default.php:102
 msgid "Abandonment Rate"
 msgstr ""
 
-#: templates/emails/summary-email-body-default.php:96
+#: templates/emails/summary-email-body-default.php:103
 msgid "Bounce Rate"
 msgstr ""
 
-#: templates/emails/summary-email-body-default.php:142
+#: templates/emails/summary-email-body-default.php:149
 msgid "More Details on Conversion rates"
 msgstr ""
 
-#: templates/emails/summary-email-body-default.php:149
+#: templates/emails/summary-email-body-default.php:156
 msgid ""
 "Business growth with Everest Forms.\r\n"
 "\t\t With the Advanced Form Analytics addon, you can efficiently track user "
