@@ -1114,6 +1114,7 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 			if ( $proper_filename || ! $ext || ! $type ) {
 				evf()->task->errors[ $form_data['id'] ][ $field_id ] = esc_html__( 'File type is not allowed.', 'everest-forms' );
 				update_option( 'evf_validation_error', 'yes' );
+				wp_die( 'File type is not allowed' );
 			}
 
 			// Allow third-party integrations.
