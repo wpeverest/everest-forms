@@ -570,6 +570,7 @@ class EVF_Form_Task {
 				array( 'source' => 'form-submission' )
 			);
 			do_action( "everest_forms_process_complete_{$form_id}", $this->form_fields, $entry, $this->form_data, $entry_id );
+			do_action( 'everest_forms_process_complete_send_data_to_zapier_app', $this->form_fields, $entry, $this->form_data, $entry_id );
 		} catch ( Exception $e ) {
 			evf_add_notice( $e->getMessage(), 'error' );
 			$logger->error(
@@ -1510,7 +1511,7 @@ class EVF_Form_Task {
 							}
 						}
 
-						$subject = apply_filters( 'everest_forms_entry_submission_approval_subject', esc_html__( 'Entry Submission Denied' , 'everest-forms' ));
+						$subject = apply_filters( 'everest_forms_entry_submission_approval_subject', esc_html__( 'Entry Submission Denied', 'everest-forms' ) );
 						// translators: %s is the name of the user
 						$message = sprintf( __( 'Hey, %s', 'everest-forms' ), $name ) . '<br/>';
 						// translators: %s is the entry_date.
