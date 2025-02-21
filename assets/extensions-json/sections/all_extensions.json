@@ -496,7 +496,7 @@
       "name": "Everest Forms- Moosend",
       "image": "extensions-json/sections/images/moosend.webp",
       "excerpt": "Allows you to connect Everest Forms entries with Moosend account via their API to improve outreach and boost revenue through email marketing.",
-      "link": "https://docs.everestforms.net/docs/moosend/?utm_source=dashboard-all-features&utm_medium=card-documentation-link",
+      "link": "https://docs.everestforms.net/?utm_source=dashboard-all-features&utm_medium=card-documentation-link",
       "released_date": "20/05/2024",
       "plan": [
         "personal",
@@ -627,7 +627,7 @@
       "name": "Everest Forms- Salesflare",
       "image": "extensions-json/sections/images/Salesflare.webp",
       "excerpt": "Boost your B2B business efficiency with Salesflare's simple and powerful CRM solution, now fully integrated with Everest Forms.",
-      "link": "https://docs.everestforms.net/docs/salesflare/?utm_source=dashboard-all-features&utm_medium=card-documentation-link",
+      "link": "https://docs.everestforms.net/?utm_source=dashboard-all-features&utm_medium=card-documentation-link",
       "released_date": "07/08/2024",
       "plan": [
         "personal",
@@ -808,7 +808,7 @@
       "name": "Everest Forms Oxygen Builder",
       "image": "extensions-json/sections/images/oxygen.png",
       "excerpt": "Using Oxygen Builder, add your forms from Everest Forms to your website and customize them as needed.",
-      "link": "https://docs.everestforms.net/docs/oxygen-builder/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "link": "https://docs.everestforms.net/docs/how-to-use-oxygen-builder-with-the-everest-forms/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
       "released_date": "03/12/2024",
       "plan": [
         "personal",
@@ -840,7 +840,7 @@
       "name": "Everest Forms Bricks Builder",
       "image": "extensions-json/sections/images/bricks-builder.png",
       "excerpt": "Using Bricks Builder’s page editor, add your forms from Everest Forms to your website and customize them as needed.",
-      "link": "https://docs.everestforms.net/docs/bricks-builder/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "link": "https://docs.everestforms.net/docs/how-to-use-bricks-builder-theme-with-everest-forms/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
       "released_date": "03/12/2024",
       "plan": [
         "personal",
@@ -856,7 +856,7 @@
       "name": "Everest Forms Divi Builder",
       "image": "extensions-json/sections/images/divi.png",
       "excerpt": "Using Divi’s page editor, add your forms from Everest Forms to your website and customize them as needed. ",
-      "link": "https://docs.everestforms.net/docs/divi-builder/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "link": "https://docs.everestforms.net/docs/how-to-use-divi-builder-with-everest-forms/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
       "released_date": "03/12/2024",
       "plan": [
         "personal",
@@ -872,7 +872,7 @@
       "name": "Everest Forms Beaver Builder",
       "image": "extensions-json/sections/images/beaver-builder.png",
       "excerpt": "Using Beaver Builder's page editor, add your forms from Everest Forms to your website and customize them as needed.",
-      "link": "https://docs.everestforms.net/docs/beaver-builder/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "link": "https://docs.everestforms.net/docs/how-to-use-beaver-builder-with-everest-forms/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
       "released_date": "03/12/2024",
       "plan": [
         "personal",
@@ -972,7 +972,7 @@
         "name": "Everest Forms WP Bakery Builder",
         "image": "extensions-json/sections/images/wpbakery.png",
         "excerpt": "Using WPBakery’s page editor, add your forms from Everest Forms to your website and customize them as needed. ",
-        "link": "https://docs.everestforms.net/docs/wp-bakery-builder/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+        "link": "https://docs.everestforms.net/docs/how-to-use-wp-bakery-page-builder-with-the-everest-forms/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
         "released_date": "03/12/2024",
         "plan": [
           "personal",
