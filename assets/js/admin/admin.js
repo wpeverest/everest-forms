@@ -607,6 +607,8 @@
 		} );
 	});
 	$('.everest-forms-generate-api-key, .everest-forms-regenerate-api-key').on('click', function(){
+		let dataId = $(this).data('id');
+
 		let data = {
 			action: "everest_forms_generate_restapi_key",
 			security: everest_forms_admin_generate_restapi_key.ajax_restapi_key_nonce,
@@ -616,7 +618,7 @@
 			type: "post",
 			data:data,
 			success:(res)=>{
-				$(document).find('#everest_forms_restapi_keys').val(res.data);
+				$(document).find('#' + dataId).val(res.data);
 			}
 		})
 	});
