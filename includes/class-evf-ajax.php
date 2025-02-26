@@ -343,6 +343,41 @@ class EVF_AJAX {
 			);
 		}
 
+		/**
+		 * Return when redirection url is not valid in Brevo redirection url.
+		 *
+		 * @since xx.xx.xx
+		 */
+		$send_in_blue_valid_url_count = 0;
+
+		if ( isset( $data['integrations']['sendinblue'] ) ) {
+			foreach ( $data['integrations']['sendinblue'] as $key => $value ) {
+				if ( isset( $value['options']['double_optin'] ) && $value['options']['double_optin'] && isset( $value['double_optin_redirection_url'] ) && ! empty( $value['double_optin_redirection_url'] ) ) {
+					$url_pattern = '/^([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$/';
+
+					if ( preg_match( $url_pattern, $value['double_optin_redirection_url'] ) ) {
+						$send_in_blue_valid_url_count = $send_in_blue_valid_url_count;
+					} else {
+						$send_in_blue_valid_url_count += 1;
+					}
+				}
+			}
+		}
+
+		if ( $send_in_blue_valid_url_count > 0 ) {
+			$logger->error(
+				__( 'Invalid URL', 'everest-forms' ),
+				array( 'source' => 'form-save' )
+			);
+			wp_send_json_error(
+				array(
+					'errorTitle'   => esc_html__( 'Invalid URL', 'everest-forms' ),
+					/* translators: %s: empty meta data */
+					'errorMessage' => esc_html__( 'Please add valid url on Brevo redirection url', 'everest-forms' ),
+				)
+			);
+		}
+
 		if ( ! empty( $data['form_fields'] ) ) {
 			foreach ( $data['form_fields'] as $field_key => $field ) {
 				if ( ! empty( $field['label'] ) ) {
