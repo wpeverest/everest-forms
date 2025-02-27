@@ -4728,14 +4728,30 @@ function parse_datetime_values( $datetime_value, $datetime_format, $date_format,
 			break;
 		case 'date':
 			if ( 'range' === $mode ) {
+				$datetime_value = apply_filters( 'everest_forms_time_date_format', $datetime_value );
 				$selected_dates = explode( ' to ', $datetime_value );
 				if ( count( $selected_dates ) >= 2 ) {
-					$datetime_start = "$selected_dates[0] 00:00";
-					$datetime_start = gmdate( 'Y-m-d H:i', strtotime( $datetime_start ) );
-					$date_time      = new DateTime( $selected_dates[1] );
-					$date_time->modify( '+23 hour' );
-					$datetime_end              = $date_time->format( 'Y-m-d H:i' );
-					$datetime_arr[ $entry_id ] = array( $datetime_start, $datetime_end );
+					if ( count( $selected_dates ) >= 2 ) {
+						$start_date = DateTime::createFromFormat( $date_format, $selected_dates[0] );
+						if ( $start_date === false ) {
+							evf_get_logger()->debug( print_r( "Invalid start date format: {$selected_dates[0]}", true ) );
+						}
+						$start_date->setTime( 0, 0 );
+						$datetime_start = $start_date->format( 'Y-m-d H:i' );
+
+						$end_date = DateTime::createFromFormat( $date_format, $selected_dates[1] );
+						if ( $end_date === false ) {
+							evf_get_logger()->debug( print_r( "Invalid end date format: {$selected_dates[1]}", true ) );
+						}
+						$end_date->modify( '+23 hours' );
+						$datetime_end = $end_date->format( 'Y-m-d H:i' );
+
+						$datetime_arr[ $entry_id ] = array( $datetime_start, $datetime_end );
+					}
+				}else{
+					if ( !empty($datetime_value) && ! is_array ( $datetime_value) ) {
+						$datetime_arr[ $entry_id ] = $datetime_value ;
+					}
 				}
 			} else {
 				$selected_dates = explode( ', ', $datetime_value );
@@ -4753,6 +4769,7 @@ function parse_datetime_values( $datetime_value, $datetime_format, $date_format,
 			break;
 		case 'date-time':
 			if ( 'range' === $mode ) {
+				$datetime_value = apply_filters( 'everest_forms_time_date_format', $datetime_value );
 				$selected_dates = explode( ' to ', $datetime_value );
 				if ( count( $selected_dates ) >= 2 ) {
 					$datetime_start            = gmdate( 'Y-m-d H:i', strtotime( $selected_dates[0] ) );
