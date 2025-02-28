@@ -755,7 +755,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 				case 'date':
 					$properties['inputs']['primary']['attr']['value']                  = isset( $field['date_default'] ) ? esc_attr( date_i18n( $field['date_format'] ) ) : '';
 					$properties['inputs']['primary']['attr']['data-date-format']       = ! empty( $field['date_format'] ) ? str_replace( 'g:i A', 'h:i K', esc_attr( $field['date_format'] ) ) : '';
-					$properties['inputs']['primary']['attr']['data-past-disable-date'] = isset( $field['past_date_disable'] ) ? esc_attr( date_i18n( 'Y-m-d' ) ) : '';
+					$properties['inputs']['primary']['attr']['data-past-disable-date'] = isset( $field['past_date_disable'] ) ? esc_attr( date_i18n( $field['date_format'] ) ) : '';
 					break;
 				case 'time':
 					$properties['inputs']['primary']['attr']['value']            = '';
@@ -766,12 +766,12 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 						$date_format                                      = esc_attr( $field['date_format'] ) . ' ' . esc_attr( $field['time_format'] );
 						$properties['inputs']['primary']['attr']['value'] = isset( $field['date_default'] ) ? esc_attr( date_i18n( $date_format ) ) : '';
 						$properties['inputs']['primary']['attr']['data-date-format']       = ! empty( $field['date_format'] ) ? str_replace( 'g:i A', 'h:i K', esc_attr( $date_format ) ) : '';
-						$properties['inputs']['primary']['attr']['data-past-disable-date'] = isset( $field['past_date_disable'] ) ? esc_attr( date_i18n( 'Y-m-d' ) ) : '';
+						$properties['inputs']['primary']['attr']['data-past-disable-date'] = isset( $field['past_date_disable'] ) ? esc_attr( date_i18n( $field['date_format'] ) ) : '';
 					} else {
 						$date_format                                      = esc_attr( $field['date_format'] ) . ' g:i A';
 						$properties['inputs']['primary']['attr']['value'] = isset( $field['date_default'] ) ? esc_attr( date_i18n( $date_format ) ) : '';
 						$properties['inputs']['primary']['attr']['data-date-format']       = ! empty( $field['date_format'] ) ? str_replace( 'g:i A', 'h:i K', esc_attr( $date_format ) ) : '';
-						$properties['inputs']['primary']['attr']['data-past-disable-date'] = isset( $field['past_date_disable'] ) ? esc_attr( date_i18n( 'Y-m-d' ) ) : '';
+						$properties['inputs']['primary']['attr']['data-past-disable-date'] = isset( $field['past_date_disable'] ) ? esc_attr( date_i18n( $field['date_format'] ) ) : '';
 					}
 					break;
 			}

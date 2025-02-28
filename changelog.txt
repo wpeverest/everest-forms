@@ -1,7 +1,27 @@
 == Changelog ==
 
+= 3.1.0     	- xx-xx-2025
+* Enhance  	 	- New settings id on header for each options.
+
+= 3.0.9.5     	- 20-02-2025
+* Fix           - File upload execution halted during arbitrary attack.
+* Fix           - Slot booking while the custom format is set in the WordPress timezone.
+
+= 3.0.9.4       	- 18-02-2025
+* Tweak 			- Open upgrade to pro to new tab from submenu.
+* Fix 				- Sanitization filename issue in temporary path.
+
+= 3.0.9.3       	- 11-02-2025
+* Fix 				- Image file upload issue.
+* Fix 				- File upload limit message not showing in the frontend.
+
+= 3.0.9.2       	- 10-02-2025
+* Tweak 			- Added smart tag for User Agent.
+* Fix 				- Arbitrary file upload issue when form submit.
+* Fix 				- Date field is not working properly when Disable past date is enabled.
+
 = 3.0.9.1       - 27-01-2025
-* Enhancement	    - Added regex pattern to check the file upload.
+* Enhance       - Added regex pattern to check the file upload.
 
 = 3.0.9         - 24-01-2025
 * Enhance       - Forms table design.
