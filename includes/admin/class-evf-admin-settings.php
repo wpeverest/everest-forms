@@ -244,7 +244,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 				$field_description = self::get_field_description( $value );
 				$description       = $field_description['description'];
 				$tooltip_html      = $field_description['tooltip_html'];
-
+				$setting_id        = isset( $value['setting_id'] ) ? $value['setting_id'] : '';
 				// Switch based on type.
 				switch ( $value['type'] ) {
 
@@ -260,7 +260,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 
 							$class_for_title = isset( $value['id'] ) && ! empty( $value['id'] ) ? 'everest-forms-settings-title_' . $value['id'] : '';
 
-							echo '<div class="everest-forms-options-header ' . esc_attr( $class_for_title ) . '">
+							echo '<div class="everest-forms-options-header ' . esc_attr( $class_for_title ) . '" id="everest-forms-settings-id-' . esc_attr( $setting_id ) . '">
 							<div class="everest-forms-options-header--top">';
 
 							// For now icon is ignored.
