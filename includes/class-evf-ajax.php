@@ -353,10 +353,10 @@ class EVF_AJAX {
 		if ( isset( $data['integrations']['sendinblue'] ) ) {
 			foreach ( $data['integrations']['sendinblue'] as $key => $value ) {
 				if ( isset( $value['options']['double_optin'] ) && $value['options']['double_optin'] && isset( $value['double_optin_redirection_url'] ) && ! empty( $value['double_optin_redirection_url'] ) ) {
-					$url_pattern = '/^([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$/';
+					$url_pattern = '/^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}([\/\?#][^\s]*)?$/';
 
 					if ( preg_match( $url_pattern, $value['double_optin_redirection_url'] ) ) {
-						$send_in_blue_valid_url_count = $send_in_blue_valid_url_count;
+						$send_in_blue_valid_url_count += 0;
 					} else {
 						$send_in_blue_valid_url_count += 1;
 					}
