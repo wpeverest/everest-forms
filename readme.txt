@@ -4,7 +4,7 @@ Tags: contact form, custom form, form builder, forms, survey
 Requires at least: 5.5
 Tested up to: 6.7.1
 Requires PHP: 7.2
-Stable tag: 3.0.9
+Stable tag: 3.1.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -308,11 +308,35 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 == Changelog ==
 
+= 3.1.0     	- xx-xx-2025
+* Enhance  	 	- New settings id on header for each options.
+* Enhance 		- Filter to show allowed country only on Smart Phone.
+
+= 3.0.9.5     	- 20-02-2025
+* Fix           - File upload execution halted during arbitrary attack.
+* Fix           - Slot booking while the custom format is set in the WordPress timezone.
+
+= 3.0.9.4       	- 18-02-2025
+* Tweak 			- Open upgrade to pro to new tab from submenu.
+* Fix 				- Sanitization filename issue in temporary path.
+
+= 3.0.9.3       	- 11-02-2025
+* Fix 				- Image file upload issue.
+* Fix 				- File upload limit message not showing in the frontend.
+
+= 3.0.9.2       	- 10-02-2025
+* Tweak 			- Added smart tag for User Agent.
+* Fix 				- Arbitrary file upload issue when form submit.
+* Fix 				- Date field is not working properly when Disable past date is enabled.
+
+= 3.0.9.1       - 27-01-2025
+* Enhancement	    - Added regex pattern to check the file upload.
+
 = 3.0.9         - 24-01-2025
 * Enhance       - Forms table design.
 * Enhance       - Approve deny entry mail.
 * Dev		    - Subscription plan field with trail period.
-* Fix         	- Vulnerability stored xss via malicious pdf.
+* Fix         	- Malicious File upload.
 
 = 3.0.8.1         - 08-01-2025
 * Fix		      - Email Preview not working issue .

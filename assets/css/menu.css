@@ -385,7 +385,7 @@
   content: "\e031";
 }
 .evf-icon-wysiwyg::before {
-  content: "\e901";
+  content: "\e922";
 }
 .evf-icon-eye::before {
   content: "\e903";
@@ -394,7 +394,7 @@
   content: "\e90b";
 }
 .evf-icon-yes-no::before {
-  content: "\e905";
+  content: "\e921";
 }
 .evf-icon-reset::before {
   content: "\e907";
@@ -418,5 +418,5 @@
   content: "\e904";
 }
 .evf-icon-subscription-plan::before {
-  content: "\e905";
+  content: "\e923";
 }

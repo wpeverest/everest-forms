@@ -83,6 +83,7 @@ class EVF_Admin_Dashboard {
 							in_array( 'colormag', $installed_theme_slugs, true ) || in_array( 'colormag-pro', $installed_theme_slugs, true ) ? 'inactive' : 'not-installed'
 						),
 					),
+					'alert_icon'           => plugins_url( 'assets/images/icons/alert-icon.png', EVF_PLUGIN_FILE ),
 				)
 			);
 
