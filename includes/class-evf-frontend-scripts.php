@@ -50,25 +50,33 @@ class EVF_Frontend_Scripts {
 	 * @return array
 	 */
 	public static function get_styles() {
-		return apply_filters(
-			'everest_forms_enqueue_styles',
-			array(
-				'everest-forms-general' => array(
-					'src'     => self::get_asset_url( 'assets/css/everest-forms.css' ),
-					'deps'    => '',
-					'version' => EVF_VERSION,
-					'media'   => 'all',
-					'has_rtl' => true,
-				),
-				'jquery-intl-tel-input' => array(
-					'src'     => self::get_asset_url( 'assets/css/intlTelInput/intlTelInput.css' ),
-					'deps'    => array(),
-					'version' => EVF_VERSION,
-					'media'   => 'all',
-					'has_rtl' => false,
-				),
-			)
-		);
+		global $post;
+		$post_content = $post->post_content;
+
+		if( has_shortcode ( $post_content, 'everest_form' ) || strpos ( $post_content, 'wp:everest-forms/form-selector' ) ) {
+			return apply_filters(
+				'everest_forms_enqueue_styles',
+				array(
+					'everest-forms-general' => array(
+						'src'     => self::get_asset_url( 'assets/css/everest-forms.css' ),
+						'deps'    => '',
+						'version' => EVF_VERSION,
+						'media'   => 'all',
+						'has_rtl' => true,
+					),
+					'jquery-intl-tel-input' => array(
+						'src'     => self::get_asset_url( 'assets/css/intlTelInput/intlTelInput.css' ),
+						'deps'    => array(),
+						'version' => EVF_VERSION,
+						'media'   => 'all',
+						'has_rtl' => false,
+					),
+				)
+			);
+		} else {
+			return '';
+		}
+
 	}
 
 	/**
