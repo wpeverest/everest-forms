@@ -24,8 +24,9 @@ import {
 	ModalHeader,
 	Spinner,
 	useDisclosure,
+	Icon,
 } from "@chakra-ui/react";
-import { SettingsIcon } from "@chakra-ui/icons";
+import { SettingsIcon, WarningIcon } from "@chakra-ui/icons";
 import { __ } from "@wordpress/i18n";
 import React, { useState, useEffect, useContext } from "react";
 import YouTubePlayer from 'react-player/youtube';
@@ -81,7 +82,6 @@ const ModuleItem = (props) => {
 	const [moduleStatus, setModuleStatus] = useState(status);
 	const [isPerformingAction, setIsPerformingAction] = useState(false);
 	const [moduleSettingsURL, setModuleSettingsURL] = useState('');
-console.log(data);
 
 	const handleModuleAction = () => {
 		setAddonActivated(true);
@@ -250,13 +250,14 @@ console.log(data);
 				position="relative"
 				overflow="visible"
 				opacity={moduleEnabled ? 1 : 0.7}
-			>
+				>
 
 			<Box
 				position="relative"
 				borderTopRightRadius="sm"
 				borderTopLeftRadius="sm"
 				overflow="hidden"
+				height={"178px"}
 				onMouseLeave={() => demo_video_url && setShowPlayVideoButton(false)}
 			>
 
@@ -266,6 +267,7 @@ console.log(data);
 					borderTopRightRadius="sm"
 					borderTopLeftRadius="sm"
 					w="full"
+					height={"178px"}
 					onMouseOver={() =>
 							{if (demo_video_url) {
 								setShowPlayVideoButton(true);
@@ -336,6 +338,35 @@ console.log(data);
 				</Box>
 			)}
 
+			{
+				data.dependent_status === 'inactive' && (
+					<Box
+					pos="absolute"
+					left={0}
+					bottom={0}
+					bg="rgba(0, 0, 0, 0.7)"
+					padding={"8px 20px"}
+					display="flex"
+					justifyContent="center"
+					backdropFilter="blur(5px)"
+					width={'100%'}
+			>
+				<Image src={_EVF_DASHBOARD_.alert_icon} w={'5'} h={'5'}/>
+				<Text
+					color="white"
+					fontWeight={600}
+					fontSize={'14px'}
+					lineHeight={'21px'}
+					marginLeft="10px"
+
+				>
+				Activate { data.required_plugin } plugin to use this addon.
+				</Text>
+			</Box>
+			)
+
+			}
+
 			</Box>
 				<Badge
 					backgroundColor="black"
@@ -399,7 +430,7 @@ console.log(data);
 				alignItems="center"
 				display="flex"
 			>
-				<HStack gap="1" align="center">
+				<HStack align="center" flexDirection={"column"} alignItems={"unset"} gap={"0"}>
 					<Link
 						href={link}
 						fontSize="xs"
@@ -409,9 +440,6 @@ console.log(data);
 					>
 						{__("Documentation", "everest-forms")}
 					</Link>
-					<Text as="span" lineHeight="1" color="gray.500">
-						|
-					</Text>
 					<Link
 						href={liveDemoURL}
 						fontSize="xs"

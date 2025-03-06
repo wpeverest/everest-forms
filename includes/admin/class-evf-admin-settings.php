@@ -244,7 +244,6 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 				$field_description = self::get_field_description( $value );
 				$description       = $field_description['description'];
 				$tooltip_html      = $field_description['tooltip_html'];
-
 				// Switch based on type.
 				switch ( $value['type'] ) {
 

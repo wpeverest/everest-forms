@@ -104,8 +104,58 @@ class EVF_Modules {
 		$features_lists = $extension_data->features;
 
 		$enabled_features = get_option( 'everest_forms_enabled_features', array() );
+		$required_plugins = evf_get_addons_list_depend_on_another_plugins();
+
 		foreach ( $features_lists as $key => $feature ) {
 			if ( in_array( $feature->slug, $enabled_features, true ) ) {
+				if ( isset( $required_plugins[ $feature->slug ] ) ) {
+					$feature->is_dependent    = true;
+					$feature->required_plugin = $required_plugins[ $feature->slug ]['name'];
+
+					if ( isset( $required_plugins[ $feature->slug ]['is_theme'] ) && $required_plugins[ $feature->slug ]['is_theme'] ) {
+						$active_theme = wp_get_theme();
+						if ( $feature->slug === 'everest-forms-bricks-builder' ) {
+							if ( $active_theme->stylesheet != $required_plugins[ $feature->slug ]['id'] && $active_theme->template != $required_plugins[ $feature->slug ]['id'] ) {
+								$feature->dependent_status      = 'inactive';
+								$feature->dependent_plugin_name = $required_plugins[ $feature->slug ]['name'];
+							} else {
+								$feature->dependent_status = 'active';
+							}
+						} elseif ( $feature->slug === 'everest-forms-divi-builder' ) {
+							if ( 'Divi' === $active_theme->Name ) {
+								$feature->dependent_status = 'active';
+							} else {
+								$feature->dependent_status      = 'inactive';
+								$feature->dependent_plugin_name = $required_plugins[ $feature->slug ]['name'];
+
+							}
+						}
+					} else {
+						$required_plugin_file = $required_plugins[ $feature->slug ]['file'];
+						$required_plugin_name = $required_plugins[ $feature->slug ]['name'];
+
+						if ( is_array( $required_plugin_file ) ) {
+							$activated_count = 0;
+							foreach ( $required_plugin_file as $file ) {
+								if ( is_plugin_active( $file ) ) {
+									++$activated_count;
+								}
+							}
+
+							$feature->dependent_status = $activated_count > 0 ? 'active' : 'inactive';
+							if ( $activated_count === 0 ) {
+								$feature->dependent_plugin_name = $required_plugin_name;
+							}
+						} else {
+							if ( is_plugin_active( $required_plugin_file ) ) {
+								$feature->dependent_status = 'active';
+							} else {
+								$feature->dependent_status      = 'inactive';
+								$feature->dependent_plugin_name = $required_plugin_name;
+							}
+						}
+					}
+				}
 				$feature->status = 'active';
 			} else {
 				$feature->status = 'inactive';
@@ -195,11 +245,12 @@ class EVF_Modules {
 		}
 
 		if ( isset( $status['success'] ) && ! $status['success'] ) {
+			$error_message = isset( $status['errorMessage'] ) ? $status['errorMessage'] : 'Module couldn\'t be activated at the moment. Please try again later.';
 
 			return new \WP_REST_Response(
 				array(
 					'success' => false,
-					'message' => __( "Module couldn't be activated at the moment. Please try again later.", 'everest-forms' ),
+					'message' => __( $error_message, 'everest-forms' ),
 				),
 				400
 			);
@@ -247,6 +298,13 @@ class EVF_Modules {
 	 * @return WP_Error|WP_REST_Response
 	 */
 	public static function enable_feature( $slug ) {
+
+		$is_required_plugin_active = self::check_required_plugin_is_active( $slug );
+
+		if ( $is_required_plugin_active !== true ) {
+			return $is_required_plugin_active;
+		}
+
 		// Logic to enable Feature.
 		$enabled_features = get_option( 'everest_forms_enabled_features', array() );
 		array_push( $enabled_features, $slug );
@@ -280,6 +338,12 @@ class EVF_Modules {
 		require_once ABSPATH . '/wp-admin/includes/file.php';
 		include_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
 		include_once ABSPATH . 'wp-admin/includes/plugin-install.php';
+
+		$is_required_plugin_active = self::check_required_plugin_is_active( $slug );
+
+		if ( $is_required_plugin_active !== true ) {
+			return $is_required_plugin_active;
+		}
 
 		if ( file_exists( WP_PLUGIN_DIR . '/' . $plugin ) ) {
 			$plugin_data          = get_plugin_data( WP_PLUGIN_DIR . '/' . $plugin );
@@ -746,5 +810,67 @@ class EVF_Modules {
 				);
 			}
 		}
+	}
+
+	/**
+	 * Check if required plugin is active.
+	 *
+	 * @since xx.xx.xx
+	 *
+	 * @param  [type] $slug.
+	 */
+	public static function check_required_plugin_is_active( $slug ) {
+		$required_plugins = evf_get_addons_list_depend_on_another_plugins();
+
+		if ( isset( $required_plugins[ $slug ] ) ) {
+			$required_plugin = $required_plugins[ $slug ];
+
+			if ( isset( $required_plugin['is_theme'] ) && $required_plugin['is_theme'] ) {
+				$active_theme = wp_get_theme();
+				if ( $active_theme->stylesheet != $required_plugin['id'] && $active_theme->template != $required_plugin['id'] ) {
+					$status['success']      = false;
+					$status['errorMessage'] = sprintf(
+						__( 'Please install and activate the %s theme first to enable this addon.', 'everest-forms' ),
+						$required_plugin['name']
+					);
+					return $status;
+				} else {
+					return true;
+				}
+			}
+
+			$required_plugin_file = $required_plugin['file'];
+
+			if ( is_array( $required_plugin_file ) ) {
+				$activated_count = 0;
+				foreach ( $required_plugin_file as $file ) {
+					if ( is_plugin_active( $file ) ) {
+						++$activated_count;
+					}
+				}
+
+				if ( $activated_count > 0 ) {
+					return true;
+				} else {
+					$status['success']      = false;
+					$status['errorMessage'] = sprintf(
+						__( 'Please install and activate the %s plugin first to enable this addon.', 'everest-forms' ),
+						$required_plugin['name']
+					);
+					return $status;
+				}
+			}
+
+			if ( ! is_plugin_active( $required_plugin['file'] ) ) {
+				$status['success']      = false;
+				$status['errorMessage'] = sprintf(
+					__( 'Please install and activate the %s plugin first to enable this addon.', 'everest-forms' ),
+					$required_plugin['name']
+				);
+				return $status;
+			}
+		}
+
+		return true;
 	}
 }

@@ -25,7 +25,8 @@ class Helper {
 	 * @return boolean
 	 */
 	public static function is_beaver_active() {
-		return in_array( 'bb-plugin/fl-builder.php', get_option( 'active_plugins', array() ), true );
+		return in_array( 'bb-plugin/fl-builder.php', get_option( 'active_plugins', array() ), true )
+		|| in_array( 'beaver-builder-lite-version/fl-builder.php', get_option( 'active_plugins', array() ), true );
 	}
 
 	/**
