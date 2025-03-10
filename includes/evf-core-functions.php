@@ -1142,7 +1142,7 @@ function evf_get_random_string( $length = 10 ) {
  * @param bool $check_disable_storing_entry_info Check disable storing entry.
  * @return array of form data.
  */
-function evf_get_all_forms( $skip_disabled_entries = false, $check_disable_storing_entry_info = true ) {
+function evf_get_all_forms( $skip_disabled_entries = false, $check_disable_storing_entry_info = true, $is_zapier_request = false ) {
 	if ( is_null( evf()->form ) ) {
 		return array();
 	}
@@ -1171,7 +1171,7 @@ function evf_get_all_forms( $skip_disabled_entries = false, $check_disable_stori
 			}
 
 			// Check permissions for forms with viewable.
-			if ( current_user_can( 'everest_forms_view_form_entries', $form_id ) ) {
+			if ( current_user_can( 'everest_forms_view_form_entries', $form_id ) || $is_zapier_request ) {
 				$forms[ $form_id ] = $form->post_title;
 			}
 		}
