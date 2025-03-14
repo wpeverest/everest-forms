@@ -37,6 +37,19 @@
 
 				});
 
+				/**
+				 * Disable row when form is disabled.
+				 *
+				 * @since xx.xx.xx
+				 */
+				$('.wp-list-table .everest-forms-toggle-form input').each(function () {
+					if (!$(this).prop('checked')) {
+						$(this).closest('tr').find('td').not('.has-row-actions').addClass('evf-disable-row');
+					} else {
+						$(this).closest('tr').find('td').not('.has-row-actions').removeClass('evf-disable-row');
+					}
+				});
+
 		 	});
 
 			$( document ).ready( function( $ ) {
@@ -3811,6 +3824,18 @@ jQuery( function ( $ ) {
 	// Toggle form status.
 	$( document ).on( 'change', '.wp-list-table .everest-forms-toggle-form input', function(e) {
 		e.stopPropagation();
+		/**
+		 * Disable row when form is disabled.
+		 *
+		 * @since xx.xx.xx
+		 */
+		if ( ! $( this ).prop( 'checked' ) ) {
+			$(this).closest('tr').find('td').not('.has-row-actions').addClass('evf-disable-row');
+
+		}else{
+			$(this).closest('tr').find('td').not('.has-row-actions').removeClass('evf-disable-row');
+		}
+
 		$.post( evf_data.ajax_url, {
 			action: 'everest_forms_enabled_form',
 			security: evf_data.evf_enabled_form,
