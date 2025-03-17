@@ -945,6 +945,25 @@ class EVF_AJAX {
 			wp_die( -1 );
 		}
 
+		/**
+		 * Update the form status in post table.
+		 *
+		 * @since xx.xx.xx
+		 */
+		$new_status = $enabled ? 'publish' : 'inactive';
+
+		$result = wp_update_post(
+			array(
+				'ID'          => $form_id,
+				'post_status' => $new_status,
+			),
+			true
+		);
+
+		if ( is_wp_error( $result ) ) {
+			wp_send_json_error( $result->get_error_message(), 500 );
+		}
+
 		$form_data = evf()->form->get( absint( $form_id ), array( 'content_only' => true ) );
 
 		$form_data['form_enabled'] = $enabled;
