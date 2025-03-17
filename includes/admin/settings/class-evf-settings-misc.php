@@ -96,14 +96,6 @@ class EVF_Settings_Misc extends EVF_Settings_Page {
 					'class'    => 'evf-restapi-key',
 				),
 				array(
-					'title'    => esc_html__( 'Enable Zapier', 'everest-forms' ),
-					'desc'     => __( 'Allow the zapier app to get access to get forms.', 'everest-forms' ),
-					'id'       => 'everest_forms_enable_zapier_to_get_forms',
-					'type'     => 'toggle',
-					'default'  => 'no',
-					'desc_tip' => true,
-				),
-				array(
 					'type' => 'sectionend',
 					'id'   => 'misc_options',
 				),
