@@ -418,7 +418,7 @@ body {
 										ul {
 											li {
 												margin-bottom: 12px;
-												
+
 												input {
 													&[type="radio"],
 													&[type="checkbox"] {
@@ -432,7 +432,7 @@ body {
 								}
 							}
 						}
-						
+
 						.evf-submit-container {
 							margin-top: 12px;
 						}
@@ -448,7 +448,7 @@ body {
 											textarea,
 											select {
 												border-color: #e9e9e9;
-												
+
 												&:focus {
 													border-color: #7545BB;
 												}
@@ -457,8 +457,8 @@ body {
 									}
 								}
 							}
-							
-							.evf-submit-container {								
+
+							.evf-submit-container {
 								.everest-forms-submit-button {
 									padding: 8px 16px;
 									color: #fff;
@@ -678,6 +678,70 @@ body {
 					}
 				}
 			}
+
+			.evf-form-preview-dropdown-container {
+				position: relative;
+				display: inline-block;
+			}
+
+			.evf-form-preview-dropdown-content {
+				opacity: 0;
+				visibility: hidden;
+				position: absolute;
+				background-color: #FFFFFF;
+				min-width: 280px;
+				box-shadow: 0 4px 24px rgba(44, 33, 180, 0.12);
+				border-radius: 4px;
+				margin-top: 2px;
+				transition: opacity 0.2s ease, visibility 0.2s ease;
+				z-index: 1;
+				padding: 0;
+				list-style: none;
+				right: 0;
+			}
+
+			.evf-form-preview-dropdown-container:hover .evf-form-preview-dropdown-content,
+			.evf-form-preview-dropdown-content:hover {
+				opacity: 1;
+				visibility: visible;
+			}
+
+			.evf-form-preview-dropdown-content li {
+				padding: 0;
+				background-color: #FFFFFF;
+			}
+
+			.evf-form-preview-dropdown-content li a {
+				display: block;
+				color: #383838;
+				padding: 12px;
+				text-decoration: none;
+				font-family: Arial, sans-serif;
+				font-size: 14px;
+				cursor: pointer;
+				transition: background-color 0.2s;
+			}
+
+			.evf-form-preview-dropdown-content li:nth-child(even) a {
+				background-color: #F6F3FA;
+			}
+
+			.evf-form-preview-dropdown-content li a:hover {
+				background-color: #E2D8F0;
+			}
+
+			#evf-form-preview-more-option {
+				cursor: pointer;
+				background: none;
+				border: none;
+				padding: 8px;
+				border-radius: 4px;
+			}
+
+			#evf-form-preview-more-option:hover {
+				background-color: #E2D8F0;
+			}
+
 		}
 	}
 }
