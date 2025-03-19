@@ -2019,6 +2019,12 @@
 				 }
 			 }
 
+			 .nav-tab:hover{
+				background-color: #8C3EEB;
+				border-bottom-right-radius: 7px;
+				border-bottom-left-radius: 7px;
+			 }
+
 			 .everest-forms-btn {
 				 &:focus {
 					 box-shadow: 0 0 0 3px
@@ -2158,7 +2164,21 @@
 					 }
 				 }
 
-				 .everest-forms-preview-button {
+				 .everest-forms-show-entries-btn{
+					height: 36px;
+					margin-right: 10px;
+					margin-left: 0 !important;
+					width: 96px;
+
+					.evf-nav-btn-container{
+						display: flex;
+						align-items: center;
+						justify-content: center;
+						gap: 6px
+					}
+				 }
+
+				 .everest-forms-preview-button, .everest-forms-show-entries-btn {
 					 background: $color-white;
 					 margin-left: 10px;
 					 display: inline-block;
