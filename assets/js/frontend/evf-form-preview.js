@@ -120,37 +120,34 @@ jQuery(function ($) {
 	 *
 	 * @since xx.xx.xx
 	 */
-	$(document.body)
-	.find('#copy-shortcode')
-	.on('click', async function () {
-		const $this = $(this);
-		try {
-			const textToCopy = $this.closest('.publishing-action').find('input').val();
-			await navigator.clipboard.writeText(textToCopy);
-			$this.trigger('aftercopy');
-		} catch (error) {
-			console.error('Failed to copy text:', error);
-		}
-	})
-	.on('aftercopy', function () {
-		const $this = $(this);
+	jQuery(document).ready(function ($) {
+		const $copyButton = $('#copy-shortcode');
 
-		if (!$this.data('tooltipster-initialized')) {
-			$this.tooltipster({
+		if (!$copyButton.data('tooltipster-initialized')) {
+			$copyButton.tooltipster({
 				theme: 'tooltipster-noir',
 				interactive: true,
-				trigger: 'custom',
+				trigger: 'hover',
 				maxWidth: 200,
-				content: $this.attr('data-copied'),
+				content: $copyButton.attr('data-tip'),
 				position: 'bottom'
 			});
-			$this.data('tooltipster-initialized', true);
+			$copyButton.data('tooltipster-initialized', true);
 		}
 
-		$this.tooltipster('content', $this.attr('data-copied')).tooltipster('open');
+		$copyButton.on('click', async function () {
+			try {
+				const textToCopy = $copyButton.siblings('input').val();
+				await navigator.clipboard.writeText(textToCopy);
 
-		setTimeout(() => {
-			$this.tooltipster('close');
-		}, 2000);
+				$copyButton.tooltipster('content', $copyButton.attr('data-copied')).tooltipster('open');
+
+				setTimeout(() => {
+					$copyButton.tooltipster('content', $copyButton.attr('data-tip')).tooltipster('close');
+				}, 2000);
+			} catch (error) {
+				console.error('Failed to copy text:', error);
+			}
+		});
 	});
 });

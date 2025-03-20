@@ -81,10 +81,12 @@
 				&.code {
 					width: 280px;
 					height: 33px;
+					font-size: 14px;
+					font-weight: 400;
 					padding: 0 6px;
 					margin: 0;
-					border-color: $grey-50;
-					background: $blue-25;
+					border-color: #F6F3FA !important;
+					background: #F6F3FA !important;
 					border-radius: 3px 0 0 3px;
 				}
 			}
@@ -93,8 +95,8 @@
 		#copy-shortcode {
 			margin-left: -5px;
 			border-radius: 0 4px 4px 0;
-			background: $blue-50 !important;
-			border-color: $grey-50 !important;
+			background: #F6F3FA !important;
+			border-color: #F6F3FA !important;
 			position: absolute;
 			right: 5px;
 			top: 50%;
@@ -737,11 +739,6 @@ body {
 				padding: 8px;
 				border-radius: 4px;
 			}
-
-			#evf-form-preview-more-option:hover {
-				background-color: #E2D8F0;
-			}
-
 		}
 	}
 }
