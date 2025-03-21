@@ -352,14 +352,14 @@ class EVF_Template_Loader {
 		} else {
 			$heading      = esc_html__( 'Our Top Addons', 'everest-forms' );
 			$pro_features = array(
-				esc_html__( 'Advanced Fields', 'everest-forms' ),
-				esc_html__( 'woocommerce', 'everest-forms' ),
-				esc_html__( 'Customize My Account', 'everest-forms' ),
-				esc_html__( 'File Upload', 'everest-forms' ),
 				esc_html__( 'Style Customizer', 'everest-forms' ),
-				esc_html__( 'Multi-Part', 'everest-forms' ),
+				esc_html__( 'Custom Captcha', 'everest-forms' ),
+				esc_html__( 'Multi Part Forms', 'everest-forms' ),
+				esc_html__( 'PDF Form Submission', 'everest-forms' ),
 				esc_html__( 'Email Templates', 'everest-forms' ),
-				esc_html__( 'Field Visibility', 'everest-forms' ),
+				esc_html__( 'Survey, Polls and Quiz', 'everest-forms' ),
+				esc_html__( 'Paypal Standard', 'everest-forms' ),
+				esc_html__( 'Repeater Fields', 'everest-forms' ),
 			);
 		}
 		$is_theme_style = get_post_meta( $_GET['form_id'], 'everest_forms_enable_theme_style', true );
