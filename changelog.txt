@@ -1,5 +1,8 @@
 == Changelog ==
 
+= 3.2.0     	- xx-xx-2025
+* Fix 			- Display file upload validation message in frontend.
+
 = 3.1.0     	- 05-03-2025
 * Enhance 		- Activation in module flow.
 * Enhance 		- 4 column design in addon page.
