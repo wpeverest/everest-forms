@@ -1,6 +1,6 @@
 == Changelog ==
 
-= 3.2.0     	- xx-xx-2025
+= 3.1.1     	- xx-xx-2025
 * Fix 			- Double rendering issue on smart phone field.
 * Fix 			- Display file upload validation message in frontend.
 * Dev 			- Conditional logic based on date range.
