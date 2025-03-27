@@ -14,7 +14,7 @@ Best Free WordPress Form Plugin to Create Contact Forms, Surveys, Quizzes, Payme
 
 **Best WordPress Contact Form Builder Plugin Available for Free**
 
-👉 [Try Everest Forms Now](https://demo.tastewp.com/everest-forms) (– The Best Free Contact Form Plugin for WordPress! (Live Demo))
+👉 [Try Everest Forms Now](https://demo.tastewp.com/everest-forms) The Best Free Contact Form Plugin for WordPress! (Live Demo)
 
 Everest Forms is the best free Contact Form Plugin for WordPress, allowing you to create custom contact forms, survey forms, quiz forms, booking forms, and more using a powerful drag and drop form builder.
 
