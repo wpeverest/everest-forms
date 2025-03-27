@@ -344,6 +344,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 * Fix 			- Double rendering issue on smart phone field.
 * Fix 			- Display file upload validation message in frontend.
 * Dev 			- Hook to add custom date format options.
+* Dev 			- Overall feedback issue on ajax submission.
 
 = 3.1.0     	- 05-03-2025
 * Enhance 		- Activation in module flow.
