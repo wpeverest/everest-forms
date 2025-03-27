@@ -2,10 +2,10 @@
 /**
  * Plugin Name: Everest Forms
  * Plugin URI: https://everestforms.net/
- * Description: Drag and Drop contact form builder to easily create simple to complex forms for any purpose. Lightweight, Beautiful design, responsive and more.
- * Version: 3.0.7.1
- * Author: WPEverest
- * Author URI: https://wpeverest.com
+ * Description: Best WordPress Form Plugin to Create Contact Forms, Surveys, Quizzes, Payment Forms, & Custom Forms Using Drag & Drop Form Builder.
+ * Version: 3.2.0
+ * Author: Everest Forms
+ * Author URI: https://everestforms.net/
  * Text Domain: everest-forms
  * Domain Path: /languages/
  *
@@ -55,17 +55,17 @@ if ( is_readable( $autoloader ) && version_compare( PHP_VERSION, '7.1.3', '>=' )
 			?>
 <div class="notice notice-error">
 	<p>
-		<?php
+			<?php
 					printf(
 						/* translators: 1: composer command. 2: plugin directory */
 						esc_html__( 'Your installation of the Everest Forms plugin is incomplete. Please run %1$s within the %2$s directory.', 'everest-forms' ),
 						'<code>composer install</code>',
 						'<code>' . esc_html( str_replace( ABSPATH, '', __DIR__ ) ) . '</code>'
 					);
-					?>
+			?>
 	</p>
 </div>
-<?php
+			<?php
 		}
 	);
 	return;

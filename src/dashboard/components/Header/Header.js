@@ -55,12 +55,8 @@ const Header = () => {
 	return (
 		<>
 			<Box
-				position={{
-					sm: "sticky",
-				}}
 				top="var(--wp-admin--admin-bar--height, 0)"
 				bg={"white"}
-				zIndex={1}
 				borderBottom="1px solid #E9E9E9"
 				width="100%"
 			>

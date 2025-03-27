@@ -554,6 +554,7 @@ i.icon-wpb-vc_everest_forms {
 					&.evf-field-radio,
 					&.evf-field-checkbox,
 					&.evf-field-payment-multiple,
+					&.evf-field-payment-subscription-plan,
 					&.evf-field-payment-checkbox {
 						ul {
 							li {
@@ -1965,9 +1966,9 @@ $background-color_1: #f9f9f9;
 	}
 }
 
-.evf-td-head{
+.evf-td-head {
 	background: #f6f7f8;
-    border-bottom: 1px solid #ced4da !important;
+	border-bottom: 1px solid #ced4da !important;
 }
 
 /** CSS for Beaver builder*/

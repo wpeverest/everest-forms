@@ -711,7 +711,7 @@ class EVF_Fm_Contactform7 extends EVF_Admin_Form_Migrator {
 							'required_field_message_setting' => 'global',
 							'required-field-message' => '',
 							'tooltip_description'    => '',
-							'validate_message'       => esc_html__( 'This field value needs to be unique.', 'everst-forms' ),
+							'validate_message'       => esc_html__( 'This field value needs to be unique.', 'everest-forms' ),
 							'placeholder'            => '',
 							'default_value'          => '',
 							'css'                    => $cf7_field_classes,

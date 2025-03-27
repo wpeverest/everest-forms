@@ -14,6 +14,18 @@
 		});
 	});
 
+	/**
+	 * Handle to open he upgrade to pro link in a new tab.
+	 *
+	 * @since 3.0.9.4
+	 */
+	$('#toplevel_page_everest-forms .wp-submenu li').each(function() {
+		var link = $(this).find('a');
+		if (link.text().trim() === 'Upgrade to Pro') {
+			link.attr('target', '_blank');
+		}
+	});
+
 	// Function to handle changes in the reporting frequency while sending the entries stat report.
 	$(document).ready(function () {
 		function handleReportingFrequencyChange() {
@@ -32,6 +44,11 @@
 
 		// Add an event listener for changes and on the click in the reporting frequency
 		$(document).on('change click', '#everest_forms_entries_reporting_frequency', handleReportingFrequencyChange);
+
+
+		$('#evf-form-listing__screen-options').on('click', function() {
+			$("#show-settings-link").click();
+		});
 	});
 
 	// Function to handle changes in the premium sidebar.
@@ -617,5 +634,55 @@
 	});
 
 
+	$( '.everest_forms_install_and_activate_smart_smtp' ).on( 'click', function() {
+		var data = {
+			action: 'everest_forms_install_and_activate_smart_smtp',
+			security: everest_forms_admin.smart_smtp_install_and_activate_nonce
+		};
 
+		try {
+			$.ajax({
+				url: everest_forms_admin.ajax_url,
+				method: 'POST',
+				data: data,
+				beforeSend: function () {
+					var spinner = '<i class="evf-loading evf-loading-active"></i>';
+					$( '.everest_forms_install_and_activate_smart_smtp' ).append( spinner );
+				},
+				success: function(response) {
+					$( '.everest_forms_install_and_activate_smart_smtp' ).find( '.evf-loading' ).remove();
+
+
+					var data = response.data;
+					var message = data.message;
+					var redirection_url = data.redirection_url;
+
+					if ('' !== message && '' !== redirection_url) {
+						$('.everest_forms_install_and_activate_smart_smtp')
+						.closest('.everest-forms-smart-smtp-page-setup__inner-wrapper')
+						.find('.everest_forms_install_and_activate_smart_smtp')
+						.removeClass('everest_forms_install_and_activate_smart_smtp everest-forms-btn-primary')
+						.addClass('everest_forms_install_and_activated_smart_smtp everest-forms-btn-secondary')
+						.css('pointer-events', 'none').
+						text('Installed and Activated SmartSMTP');
+						window.location.replace(redirection_url);
+					} else if ('' !== message && '' === redirection_url) {
+						alert(message);
+					}
+				},
+				error:function(response) {
+					$( '.everest_forms_install_and_activate_smart_smtp' ).find( '.evf-loading' ).remove();
+					var error_data = response.data;
+					var message = error_data.message;
+					alert(message);
+					window.location.reload();
+				}
+			});
+		} catch (error) {
+			$( '.everest_forms_install_and_activate_smart_smtp' ).find( '.evf-loading' ).remove();
+			alert(error);
+			window.location.reload();
+
+		}
+	});
 })( jQuery, everest_forms_admin );
