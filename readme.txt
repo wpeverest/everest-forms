@@ -341,6 +341,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 == Changelog ==
 
 = 3.2.0     	- xx-xx-2025
+* Fix 			- Double rendering issue on smart phone field.
 * Fix 			- Display file upload validation message in frontend.
 
 = 3.1.0     	- 05-03-2025

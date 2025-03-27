@@ -898,6 +898,7 @@ jQuery( function ( $ ) {
 
 			inputOptions.onlyCountries =
 			everest_forms_params.evf_smart_phone_allowed_countries;
+			inputOptions.preferredCountries = [];
 
 			$( '.evf-smart-phone-field' ).each( function( i, el ) {
 				var $el = $( el );
