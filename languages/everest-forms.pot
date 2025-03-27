@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the Everest Forms package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Everest Forms 3.0.9.2\n"
+"Project-Id-Version: Everest Forms 3.0.9.4\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/everest-forms\n"
-"POT-Creation-Date: 2025-02-10 10:40:13+00:00\n"
+"POT-Creation-Date: 2025-02-18 06:50:08+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1894,33 +1894,33 @@ msgstr ""
 msgid "Something went wrong while uploading file,Please try again"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields-upload.php:1575
+#: includes/abstracts/class-evf-form-fields-upload.php:1573
 msgid "The uploaded file exceeds the upload_max_filesize directive in php.ini."
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields-upload.php:1576
+#: includes/abstracts/class-evf-form-fields-upload.php:1574
 msgid ""
 "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
 "the HTML form."
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields-upload.php:1577
+#: includes/abstracts/class-evf-form-fields-upload.php:1575
 msgid "The uploaded file was only partially uploaded."
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields-upload.php:1578
+#: includes/abstracts/class-evf-form-fields-upload.php:1576
 msgid "No file was uploaded."
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields-upload.php:1579
+#: includes/abstracts/class-evf-form-fields-upload.php:1577
 msgid "Missing a temporary folder."
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields-upload.php:1580
+#: includes/abstracts/class-evf-form-fields-upload.php:1578
 msgid "Failed to write file to disk."
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields-upload.php:1581
+#: includes/abstracts/class-evf-form-fields-upload.php:1579
 msgid "File upload stopped by extension."
 msgstr ""
 

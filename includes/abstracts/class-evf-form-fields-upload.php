@@ -994,7 +994,7 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 					?>
 				</span>
 
-				<?php if ( ! empty( $limit_message ) ) : ?>
+				<?php if ( (int) $max_file_number >= 1 ) : ?>
 					<span class="everest-forms-upload-hint">
 						<?php
 						/* translators: %d - max number of files. */
@@ -1114,6 +1114,7 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 			if ( $proper_filename || ! $ext || ! $type ) {
 				evf()->task->errors[ $form_data['id'] ][ $field_id ] = esc_html__( 'File type is not allowed.', 'everest-forms' );
 				update_option( 'evf_validation_error', 'yes' );
+				wp_die( 'File type is not allowed' );
 			}
 
 			// Allow third-party integrations.
@@ -1198,8 +1199,7 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 	 */
 	protected function generate_file_info( $file ) {
 		$dir = $this->get_form_files_dir();
-
-		$file['tmp_path'] = trailingslashit( $this->get_tmp_dir() ) . $file['file'];
+		$file['tmp_path'] = trailingslashit( $this->get_tmp_dir() ) . sanitize_file_name($file['file']);
 		$file['type']     = 'application/octet-stream';
 		if ( is_file( $file['tmp_path'] ) ) {
 			$filetype     = wp_check_filetype( $file['tmp_path'] );

@@ -1,5 +1,27 @@
 == Changelog ==
 
+= 3.1.1     	- xx-xx-2025
+* Enhance 		- Form preview design revamp.
+* Fix 			- Double rendering issue on smart phone field.
+* Fix 			- Display file upload validation message in frontend.
+* Dev 			- Conditional logic based on date range.
+* Dev 			- Hook to add custom date format options.
+* Dev 			- Overall feedback issue on ajax submission.
+
+= 3.1.0     	- 05-03-2025
+* Enhance 		- Activation in module flow.
+* Enhance 		- 4 column design in addon page.
+* Enhance 		- Filter to show allowed country only on Smart Phone.
+* Fix 			- Documentation link is broken in addon page.
+
+= 3.0.9.5     	- 20-02-2025
+* Fix           - File upload execution halted during arbitrary attack.
+* Fix           - Slot booking while the custom format is set in the WordPress timezone.
+
+= 3.0.9.4       	- 18-02-2025
+* Tweak 			- Open upgrade to pro to new tab from submenu.
+* Fix 				- Sanitization filename issue in temporary path.
+
 = 3.0.9.3       	- 11-02-2025
 * Fix 				- Image file upload issue.
 * Fix 				- File upload limit message not showing in the frontend.

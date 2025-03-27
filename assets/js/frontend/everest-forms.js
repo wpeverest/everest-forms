@@ -896,6 +896,10 @@ jQuery( function ( $ ) {
 			// Set default country.
 			inputOptions.initialCountry = 'yes' === everest_forms_params.disable_user_details && countryCode ? countryCode : 'auto';
 
+			inputOptions.onlyCountries =
+			everest_forms_params.evf_smart_phone_allowed_countries;
+			inputOptions.preferredCountries = [];
+
 			$( '.evf-smart-phone-field' ).each( function( i, el ) {
 				var $el = $( el );
 
