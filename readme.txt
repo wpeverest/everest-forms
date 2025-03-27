@@ -343,6 +343,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 = 3.2.0     	- xx-xx-2025
 * Fix 			- Double rendering issue on smart phone field.
 * Fix 			- Display file upload validation message in frontend.
+* Dev 			- Conditional logic based on date range.
 * Dev 			- Hook to add custom date format options.
 * Dev 			- Overall feedback issue on ajax submission.
 
