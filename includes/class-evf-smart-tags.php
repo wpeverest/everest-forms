@@ -54,6 +54,7 @@ class EVF_Smart_Tags {
 				'referrer_url'                            => esc_html__( 'Referrer URL', 'everest-forms' ),
 				'form_id'                                 => esc_html__( 'Form ID', 'everest-forms' ),
 				'entry_id'                                => esc_html__( 'Entry ID', 'everest-forms' ),
+				'user_agent'                              => esc_html__( 'User Agent', 'everest-forms' ),
 			)
 		);
 
@@ -536,6 +537,10 @@ class EVF_Smart_Tags {
 							$form_id = '';
 						}
 						$content = str_replace( '{' . $other_tag . '}', $form_id, $content );
+						break;
+					case 'user_agent':
+						$user_agent = evf_get_user_agent();
+						$content   = str_replace( '{' . $other_tag . '}', $user_agent, $content );
 						break;
 				}
 			}
