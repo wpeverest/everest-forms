@@ -251,41 +251,21 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 				}
 			}
 
-			if (is_array($value) && !empty($value)) {
-				if (isset($value['label']) && is_array($value['label']) && !empty($value['label'])) {
-					$label_string = implode(', ', $value['label']);
+			$value = is_array( $value ) ? implode( ', ', $value['label'] ) : $value;
 
-					if (false === strpos($label_string, 'http')) {
-						$lines = explode("\n", $label_string);
-						$value = array_slice($lines, 0, 4);
-						$value = implode("\n", $value);
+			if ( false === strpos( $value, 'http' ) ) {
+				$lines = explode( "\n", $value );
+				$value = array_slice( $lines, 0, 4 );
+				$value = implode( "\n", $value );
 
-						// limit 5 lines.
-						if (count($lines) > 5) {
-							$value .= '&hellip;';
-						} elseif (strlen($value) > 75) {
-							$value = substr($value, 0, 75) . '&hellip;';
-						}
-
-						$value = nl2br(wp_strip_all_tags(trim($value)));
-					}
+				// limit 5 lines.
+				if ( count( $lines ) > 5 ) {
+					$value .= '&hellip;';
+				} elseif ( strlen( $value ) > 75 ) {
+					$value = substr( $value, 0, 75 ) . '&hellip;';
 				}
-			} else {
-				if (is_string($value) && !empty($value)) {
-					if (false === strpos($value, 'http')) {
-						$lines = explode("\n", $value);
-						$value = array_slice($lines, 0, 4);
-						$value = implode("\n", $value);
 
-						if (count($lines) > 5) {
-							$value .= '&hellip;';
-						} elseif (strlen($value) > 75) {
-							$value = substr($value, 0, 75) . '&hellip;';
-						}
-
-						$value = nl2br(wp_strip_all_tags(trim($value)));
-					}
-				}
+				$value = nl2br( wp_strip_all_tags( trim( $value ) ) );
 			}
 
 			return apply_filters( 'everest_forms_html_field_value', $value, $entry->meta[ $meta_key ], $entry, 'entry-table', $meta_key );
