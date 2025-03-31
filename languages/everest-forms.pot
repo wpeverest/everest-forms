@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the Everest Forms package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Everest Forms 3.0.9.4\n"
+"Project-Id-Version: Everest Forms 3.1.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/everest-forms\n"
-"POT-Creation-Date: 2025-02-18 06:50:08+00:00\n"
+"POT-Creation-Date: 2025-03-05 06:44:44+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -40,23 +40,23 @@ msgstr ""
 msgid "Renders the everest form"
 msgstr ""
 
-#: addons/BeaverBuilder/Helper.php:57 addons/BricksBuilder/Helper.php:51
+#: addons/BeaverBuilder/Helper.php:58 addons/BricksBuilder/Helper.php:51
 #: addons/DiviBuilder/Helper.php:49 addons/OxygenBuilder/Helper.php:56
 #: addons/WPBakeryBuilder/Helper.php:57
 msgid "Dismiss this notice."
 msgstr ""
 
-#: addons/BeaverBuilder/Helper.php:77 addons/BeaverBuilder/Helper.php:99
+#: addons/BeaverBuilder/Helper.php:78 addons/BeaverBuilder/Helper.php:100
 #: addons/OxygenBuilder/Helper.php:76
 #: addons/OxygenBuilder/OxygenFormWidget.php:72
 msgid "Select a Form"
 msgstr ""
 
-#: addons/BeaverBuilder/Helper.php:95
+#: addons/BeaverBuilder/Helper.php:96
 msgid "Form Selection"
 msgstr ""
 
-#: addons/BeaverBuilder/Helper.php:101
+#: addons/BeaverBuilder/Helper.php:102
 msgid "Choose a form from the list."
 msgstr ""
 
@@ -551,7 +551,7 @@ msgstr ""
 
 #: addons/StyleCustomizer/includes/class-evf-style-customizer-api.php:523
 #: includes/admin/settings/class-evf-settings-validation.php:52
-#: includes/class-evf-frontend-scripts.php:346
+#: includes/class-evf-frontend-scripts.php:347
 #: includes/evf-core-functions.php:1543
 msgid "This field is required."
 msgstr ""
@@ -824,7 +824,7 @@ msgid "%"
 msgstr ""
 
 #: addons/StyleCustomizer/includes/configs/evf-style-customizer-form-wrapper-configs.php:246
-#: includes/admin/class-evf-admin-settings.php:367
+#: includes/admin/class-evf-admin-settings.php:366
 msgid "Background Image"
 msgstr ""
 
@@ -1558,91 +1558,96 @@ msgstr ""
 msgid "Unauthorized api key."
 msgstr ""
 
-#: includes/RestApi/controllers/version1/class-evf-modules.php:117
+#: includes/RestApi/controllers/version1/class-evf-modules.php:167
 #: includes/admin/views/html-admin-page-form-templates.php:33
 #: includes/admin/views/html-admin-page-setting.php:62
 msgid "Free"
 msgstr ""
 
-#: includes/RestApi/controllers/version1/class-evf-modules.php:142
+#: includes/RestApi/controllers/version1/class-evf-modules.php:192
 #: includes/admin/class-evf-admin-assets.php:123
 msgid "Pro"
 msgstr ""
 
-#: includes/RestApi/controllers/version1/class-evf-modules.php:175
+#: includes/RestApi/controllers/version1/class-evf-modules.php:225
 msgid "Module slug is a required field"
 msgstr ""
 
-#: includes/RestApi/controllers/version1/class-evf-modules.php:202
-msgid "Module couldn't be activated at the moment. Please try again later."
-msgstr ""
-
-#: includes/RestApi/controllers/version1/class-evf-modules.php:210
+#: includes/RestApi/controllers/version1/class-evf-modules.php:261
 msgid "Module activated successfully"
 msgstr ""
 
-#: includes/RestApi/controllers/version1/class-evf-modules.php:299
+#: includes/RestApi/controllers/version1/class-evf-modules.php:363
 #: includes/RestApi/controllers/version1/class-evf-plugin-status.php:306
 msgid "Addons activated successfully"
 msgstr ""
 
-#: includes/RestApi/controllers/version1/class-evf-modules.php:372
+#: includes/RestApi/controllers/version1/class-evf-modules.php:436
 #: includes/RestApi/controllers/version1/class-evf-plugin-status.php:378
 #: includes/class-evf-ajax.php:693
 msgid "Unable to connect to the filesystem. Please confirm your credentials."
 msgstr ""
 
-#: includes/RestApi/controllers/version1/class-evf-modules.php:385
+#: includes/RestApi/controllers/version1/class-evf-modules.php:449
 #: includes/RestApi/controllers/version1/class-evf-plugin-status.php:391
 msgid "Addon installed Successfully"
 msgstr ""
 
-#: includes/RestApi/controllers/version1/class-evf-modules.php:403
+#: includes/RestApi/controllers/version1/class-evf-modules.php:467
 msgid "Addon slug is a required field"
 msgstr ""
 
-#: includes/RestApi/controllers/version1/class-evf-modules.php:425
+#: includes/RestApi/controllers/version1/class-evf-modules.php:489
 msgid "Module couldn't be deactivated. Please try again later."
 msgstr ""
 
-#: includes/RestApi/controllers/version1/class-evf-modules.php:433
+#: includes/RestApi/controllers/version1/class-evf-modules.php:497
 msgid "Module deactivated successfully"
 msgstr ""
 
-#: includes/RestApi/controllers/version1/class-evf-modules.php:490
+#: includes/RestApi/controllers/version1/class-evf-modules.php:554
 msgid "Please select addons to activate"
 msgstr ""
 
-#: includes/RestApi/controllers/version1/class-evf-modules.php:522
+#: includes/RestApi/controllers/version1/class-evf-modules.php:586
 #. translators: 1: Failed Addon Names
 msgid "%1$s activation failed. Please try again sometime later."
 msgstr ""
 
-#: includes/RestApi/controllers/version1/class-evf-modules.php:530
+#: includes/RestApi/controllers/version1/class-evf-modules.php:594
 #: includes/RestApi/controllers/version1/class-evf-plugin-status.php:197
 msgid "All of the selected modules have been activated successfully."
 msgstr ""
 
-#: includes/RestApi/controllers/version1/class-evf-modules.php:552
+#: includes/RestApi/controllers/version1/class-evf-modules.php:616
 msgid "Please select a module to deactivate"
 msgstr ""
 
-#: includes/RestApi/controllers/version1/class-evf-modules.php:583
+#: includes/RestApi/controllers/version1/class-evf-modules.php:647
 msgid "All of the selected modules have been deactivated."
 msgstr ""
 
-#: includes/RestApi/controllers/version1/class-evf-modules.php:591
+#: includes/RestApi/controllers/version1/class-evf-modules.php:655
 msgid ""
 "Some of the selected modules may not have been deactivated. Please try "
 "again later"
 msgstr ""
 
-#: includes/RestApi/controllers/version1/class-evf-modules.php:733
+#: includes/RestApi/controllers/version1/class-evf-modules.php:797
 msgid "Everest Forms Pro activated successfully."
 msgstr ""
 
-#: includes/RestApi/controllers/version1/class-evf-modules.php:742
+#: includes/RestApi/controllers/version1/class-evf-modules.php:806
 msgid "Please enter the valid license key."
+msgstr ""
+
+#: includes/RestApi/controllers/version1/class-evf-modules.php:833
+msgid "Please install and activate the %s theme first to enable this addon."
+msgstr ""
+
+#: includes/RestApi/controllers/version1/class-evf-modules.php:857
+#: includes/RestApi/controllers/version1/class-evf-modules.php:867
+msgid "Please install and activate the %s plugin first to enable this addon."
 msgstr ""
 
 #: includes/RestApi/controllers/version1/class-evf-plugin-status.php:157
@@ -1890,37 +1895,37 @@ msgstr ""
 msgid "(empty)"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields-upload.php:1176
+#: includes/abstracts/class-evf-form-fields-upload.php:1177
 msgid "Something went wrong while uploading file,Please try again"
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields-upload.php:1573
+#: includes/abstracts/class-evf-form-fields-upload.php:1574
 msgid "The uploaded file exceeds the upload_max_filesize directive in php.ini."
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields-upload.php:1574
+#: includes/abstracts/class-evf-form-fields-upload.php:1575
 msgid ""
 "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
 "the HTML form."
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields-upload.php:1575
+#: includes/abstracts/class-evf-form-fields-upload.php:1576
 msgid "The uploaded file was only partially uploaded."
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields-upload.php:1576
+#: includes/abstracts/class-evf-form-fields-upload.php:1577
 msgid "No file was uploaded."
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields-upload.php:1577
+#: includes/abstracts/class-evf-form-fields-upload.php:1578
 msgid "Missing a temporary folder."
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields-upload.php:1578
+#: includes/abstracts/class-evf-form-fields-upload.php:1579
 msgid "Failed to write file to disk."
 msgstr ""
 
-#: includes/abstracts/class-evf-form-fields-upload.php:1579
+#: includes/abstracts/class-evf-form-fields-upload.php:1580
 msgid "File upload stopped by extension."
 msgstr ""
 
@@ -2140,7 +2145,7 @@ msgstr ""
 #: includes/abstracts/class-evf-form-fields.php:1178
 #: includes/abstracts/class-evf-form-fields.php:1342
 #: includes/admin/class-evf-admin-assets.php:113
-#: includes/admin/class-evf-admin-settings.php:366
+#: includes/admin/class-evf-admin-settings.php:365
 msgid "Upload Image"
 msgstr ""
 
@@ -2164,28 +2169,28 @@ msgstr ""
 
 #: includes/abstracts/class-evf-form-fields.php:1273
 #: includes/abstracts/class-evf-form-fields.php:1308
-#: includes/admin/class-evf-admin-settings.php:752
+#: includes/admin/class-evf-admin-settings.php:751
 #: includes/evf-formatting-functions.php:576
 msgid "Day(s)"
 msgstr ""
 
 #: includes/abstracts/class-evf-form-fields.php:1274
 #: includes/abstracts/class-evf-form-fields.php:1309
-#: includes/admin/class-evf-admin-settings.php:753
+#: includes/admin/class-evf-admin-settings.php:752
 #: includes/evf-formatting-functions.php:577
 msgid "Week(s)"
 msgstr ""
 
 #: includes/abstracts/class-evf-form-fields.php:1275
 #: includes/abstracts/class-evf-form-fields.php:1310
-#: includes/admin/class-evf-admin-settings.php:754
+#: includes/admin/class-evf-admin-settings.php:753
 #: includes/evf-formatting-functions.php:578
 msgid "Month(s)"
 msgstr ""
 
 #: includes/abstracts/class-evf-form-fields.php:1276
 #: includes/abstracts/class-evf-form-fields.php:1311
-#: includes/admin/class-evf-admin-settings.php:755
+#: includes/admin/class-evf-admin-settings.php:754
 #: includes/evf-formatting-functions.php:579
 msgid "Year(s)"
 msgstr ""
@@ -2955,7 +2960,7 @@ msgstr ""
 #: includes/admin/builder/class-evf-builder-settings.php:259
 #: includes/admin/form-migrator/class-evf-fm-contactform7.php:411
 #: includes/class-evf-frontend-scripts.php:311
-#: includes/class-evf-frontend-scripts.php:344
+#: includes/class-evf-frontend-scripts.php:345
 #: includes/shortcodes/class-evf-shortcode-form.php:97
 #: includes/templates/contact.php:67
 msgid "Submit"
@@ -3730,7 +3735,7 @@ msgid "Please enter in a value greater or equal to 0."
 msgstr ""
 
 #: includes/admin/class-evf-admin-assets.php:423
-#: includes/class-evf-frontend-scripts.php:331
+#: includes/class-evf-frontend-scripts.php:332
 msgid "Please enter in a value less than 100."
 msgstr ""
 
@@ -4295,15 +4300,15 @@ msgstr ""
 msgid "The changes you made will be lost if you navigate away from this page."
 msgstr ""
 
-#: includes/admin/class-evf-admin-settings.php:363
+#: includes/admin/class-evf-admin-settings.php:362
 msgid "Upload Logo"
 msgstr ""
 
-#: includes/admin/class-evf-admin-settings.php:364
+#: includes/admin/class-evf-admin-settings.php:363
 msgid "Header Logo"
 msgstr ""
 
-#: includes/admin/class-evf-admin-settings.php:742
+#: includes/admin/class-evf-admin-settings.php:741
 msgid "Select a page&hellip;"
 msgstr ""
 
@@ -6183,19 +6188,19 @@ msgstr ""
 msgid "Please enter a valid phone number."
 msgstr ""
 
-#: includes/class-evf-frontend-scripts.php:336
+#: includes/class-evf-frontend-scripts.php:337
 msgid "{count} of {limit} max characters."
 msgstr ""
 
-#: includes/class-evf-frontend-scripts.php:337
+#: includes/class-evf-frontend-scripts.php:338
 msgid "{count} of {limit} max words."
 msgstr ""
 
-#: includes/class-evf-frontend-scripts.php:345
+#: includes/class-evf-frontend-scripts.php:346
 msgid "Something went wrong while making an AJAX submission"
 msgstr ""
 
-#: includes/class-evf-frontend-scripts.php:347
+#: includes/class-evf-frontend-scripts.php:348
 msgid "Click here to download your pdf submission"
 msgstr ""
 
@@ -15148,22 +15153,22 @@ msgid ""
 "with spaces."
 msgstr ""
 
-#: includes/evf-core-functions.php:5034 includes/evf-core-functions.php:5076
-#: includes/evf-core-functions.php:5118
+#: includes/evf-core-functions.php:5051 includes/evf-core-functions.php:5093
+#: includes/evf-core-functions.php:5135
 msgid "Everest Forms Daily Entries Statistics Report"
 msgstr ""
 
-#: includes/evf-core-functions.php:5039 includes/evf-core-functions.php:5081
-#: includes/evf-core-functions.php:5124
+#: includes/evf-core-functions.php:5056 includes/evf-core-functions.php:5098
+#: includes/evf-core-functions.php:5141
 msgid "Everest Forms Weekly Entries Statistics Report"
 msgstr ""
 
-#: includes/evf-core-functions.php:5044 includes/evf-core-functions.php:5086
-#: includes/evf-core-functions.php:5130
+#: includes/evf-core-functions.php:5061 includes/evf-core-functions.php:5103
+#: includes/evf-core-functions.php:5147
 msgid "Everest Forms Monthly Entries Statistics Report"
 msgstr ""
 
-#: includes/evf-core-functions.php:5328
+#: includes/evf-core-functions.php:5345
 #. translators: %s: Status Log URL
 msgid ""
 "Please check the `evf_mail_errors` log under <a target=\"_blank\" "
