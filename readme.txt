@@ -340,13 +340,14 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 == Changelog ==
 
-= 3.1.1     	- xx-xx-2025
+= 3.1.1     	- 31-03-2025
 * Enhance 		- Form preview design revamp.
 * Fix 			- Double rendering issue on smart phone field.
 * Fix 			- Display file upload validation message in frontend.
 * Dev 			- Conditional logic based on date range.
 * Dev 			- Hook to add custom date format options.
 * Dev 			- Overall feedback issue on ajax submission.
+* Dev 			- Display entry id in the entries list view.
 
 = 3.1.0     	- 05-03-2025
 * Enhance 		- Activation in module flow.
