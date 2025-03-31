@@ -520,14 +520,14 @@ button.everest-forms-btn:focus {
   border-radius: 4px;
   display: block;
   margin-bottom: 20px;
-  border: 1px solid #cdd0d8;
+  border: 1px solid #dee0e9;
 }
 .everest-forms-card a {
   text-decoration: none;
 }
 .everest-forms-card .everest-forms-card__header {
   padding: 16px 20px;
-  border-bottom: 1px solid #cdd0d8;
+  border-bottom: 1px solid #dee0e9;
 }
 .everest-forms-card .everest-forms-card__header .everest-forms-card__title {
   font-size: 1.25em;
@@ -550,7 +550,7 @@ button.everest-forms-btn:focus {
 .everest-forms-table td {
   padding: 16px;
   vertical-align: top;
-  border-top: 1px solid #cdd0d8;
+  border-top: 1px solid #dee0e9;
 }
 .everest-forms-table thead th {
   vertical-align: bottom;
@@ -558,7 +558,7 @@ button.everest-forms-btn:focus {
   color: #8e98a2;
   font-weight: 500;
   text-align: inherit;
-  border-bottom: 1px solid #cdd0d8;
+  border-bottom: 1px solid #dee0e9;
 }
 
 .table-responsive {
@@ -5949,23 +5949,23 @@ button.everest-forms-btn:focus {
   }
 }
 .evf-border {
-  border: 1px solid #cdd0d8 !important;
+  border: 1px solid #dee0e9 !important;
 }
 
 .evf-border-top {
-  border-top: 1px solid #cdd0d8 !important;
+  border-top: 1px solid #dee0e9 !important;
 }
 
 .evf-border-right {
-  border-right: 1px solid #cdd0d8 !important;
+  border-right: 1px solid #dee0e9 !important;
 }
 
 .evf-border-bottom {
-  border-bottom: 1px solid #cdd0d8 !important;
+  border-bottom: 1px solid #dee0e9 !important;
 }
 
 .evf-border-left {
-  border-left: 1px solid #cdd0d8 !important;
+  border-left: 1px solid #dee0e9 !important;
 }
 
 .evf-border-0 {
