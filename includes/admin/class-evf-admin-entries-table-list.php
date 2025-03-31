@@ -127,12 +127,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 			);
 		}
 
-		return array_merge(
-			array(
-				'id' => array( 'title', false ),
-			),
-			$sortable_columns
-		);
+		return $sortable_columns;
 	}
 
 	/**
@@ -186,6 +181,12 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 				unset( $entry_columns[ $key ] );
 				$entry_columns = array_merge( array( 'sn' ), $entry_columns );
 			}
+
+			$key = array_search( 'id', $entry_columns, true );
+			if ( false !== $key ) {
+				unset( $entry_columns[ $key ] );
+				$entry_columns = array_merge( array( 'id' ), $entry_columns );
+			}
 			foreach ( $entry_columns as $id ) {
 				// Check to make sure the field as not been removed.
 				$status = is_plugin_active( 'everest-forms-pro/everest-forms-pro.php' ) ? true : false;
@@ -194,6 +195,10 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 					if ( $status ) {
 						if ( 'sn' === $id ) {
 							$extra_column = apply_filters( 'everest_forms_entries_table_extra_columns', array(), 0, array() );
+							$columns      = array_merge( $columns, $extra_column );
+						}
+						if ( 'id' === $id ) {
+							$extra_column = apply_filters( 'everest_forms_entries_table_extra_columns_id', array(), 0, array() );
 							$columns      = array_merge( $columns, $extra_column );
 						}
 					}
