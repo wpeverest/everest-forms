@@ -127,12 +127,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 			);
 		}
 
-		return array_merge(
-			array(
-				'id' => array( 'title', false ),
-			),
-			$sortable_columns
-		);
+		return $sortable_columns;
 	}
 
 	/**
