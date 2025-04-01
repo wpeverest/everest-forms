@@ -8952,6 +8952,16 @@ p.search-box {
 .everest-forms_page_evf-builder #everest-forms-builder .evf-tab-content .everest-forms-panel .everest-forms-panel-sidebar .everest-forms-active-email .everest-forms-email-add:hover svg {
   fill: #fff;
 }
+.everest-forms_page_evf-builder #everest-forms-builder .evf-tab-content .everest-forms-panel .everest-forms-panel-sidebar .everest-forms-tab-content .evf-toggle-section {
+  display: flex;
+  align-items: center;
+}
+.everest-forms_page_evf-builder #everest-forms-builder .evf-tab-content .everest-forms-panel .everest-forms-panel-sidebar .everest-forms-tab-content .evf-toggle-section > span {
+  margin-top: 0;
+}
+.everest-forms_page_evf-builder #everest-forms-builder .evf-tab-content .everest-forms-panel .everest-forms-panel-sidebar .everest-forms-tab-content .evf-toggle-section > label {
+  margin-bottom: 0;
+}
 .everest-forms_page_evf-builder #everest-forms-builder .evf-tab-content .everest-forms-panel .everest-forms-field-option-date-time .format-selected-date .everest-forms-time,
 .everest-forms_page_evf-builder #everest-forms-builder .evf-tab-content .everest-forms-panel .everest-forms-field-option-date-time .format-selected-time .everest-forms-date {
   display: none;
@@ -9634,6 +9644,14 @@ p.search-box {
   margin-bottom: 20px;
   max-width: 740px;
 }
+.everest-forms_page_evf-builder #everest-forms-builder .evf-tab-content .everest-forms-panel-field.everest-forms-panel-field-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.everest-forms_page_evf-builder #everest-forms-builder .evf-tab-content .everest-forms-panel-field.everest-forms-panel-field-toggle .evf-toggle-section {
+  margin-bottom: 0;
+}
 .everest-forms_page_evf-builder #everest-forms-builder .evf-tab-content .everest-forms-panel-field .wp-editor-container {
   margin-bottom: 10px;
   border-radius: 4px;
@@ -10016,7 +10034,6 @@ p.search-box {
 }
 .everest-forms_page_evf-builder #everest-forms-builder .everest-forms-border-container {
   border: 1px solid #e9e9e9;
-  background: #fcfcfd;
   border-radius: 5px;
   padding: 18px 22px 6px;
   margin-bottom: 20px;

@@ -340,7 +340,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 == Changelog ==
 
-= 3.1.1     	- 31-03-2025
+= 3.1.1     	- 01-04-2025
 * Enhance 		- Form preview design revamp.
 * Fix 			- Double rendering issue on smart phone field.
 * Fix 			- Display file upload validation message in frontend.
