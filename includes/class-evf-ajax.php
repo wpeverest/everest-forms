@@ -134,6 +134,7 @@ class EVF_AJAX {
 			'import_entries'                  => false,
 			'generate_restapi_key'            => false,
 			'install_and_activate_smart_smtp' => false,
+			'form_preview_save'               => false,
 		);
 
 		foreach ( $ajax_events as $ajax_event => $nopriv ) {
@@ -1846,6 +1847,29 @@ class EVF_AJAX {
 		} catch ( Exception $e ) {
 			wp_send_json_error( array( 'message' => $e->getMessage() ) );
 		}
+	}
+
+	/**
+	 * Get form settings theme styles
+	 */
+	public static function form_preview_save() {
+		check_ajax_referer( 'evf_form_preview_nonce', 'security' );
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( array( 'message' => __( 'You do not have permission.', 'everest-forms' ) ) );
+			wp_die( -1 );
+		}
+		$form_id = isset( $_POST['id'] ) ? sanitize_text_field( $_POST['id'] ) : '';
+		$theme   = isset( $_POST['theme'] ) ? sanitize_text_field( $_POST['theme'] ) : '';
+
+		if ( empty( $form_id ) || empty( $theme ) ) {
+			wp_send_json_error( array( 'message' => __( 'Insufficient information', 'everest-forms' ) ) );
+		}
+
+		$default_theme = ( 'default' === $theme ) ? 'default' : 'theme';
+		update_post_meta( $form_id, 'everest_forms_enable_theme_style', $default_theme );
+
+		wp_send_json_success( array( 'message' => __( 'Saved', 'everest-forms' ) ) );
 	}
 }
 

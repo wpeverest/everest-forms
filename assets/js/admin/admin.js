@@ -14,6 +14,18 @@
 		});
 	});
 
+	/**
+	 * Handle to open he upgrade to pro link in a new tab.
+	 *
+	 * @since 3.0.9.4
+	 */
+	$('#toplevel_page_everest-forms .wp-submenu li').each(function() {
+		var link = $(this).find('a');
+		if (link.text().trim() === 'Upgrade to Pro') {
+			link.attr('target', '_blank');
+		}
+	});
+
 	// Function to handle changes in the reporting frequency while sending the entries stat report.
 	$(document).ready(function () {
 		function handleReportingFrequencyChange() {
