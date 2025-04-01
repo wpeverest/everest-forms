@@ -994,7 +994,7 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 					?>
 				</span>
 
-				<?php if ( ! empty( $limit_message ) ) : ?>
+				<?php if ( (int) $max_file_number >= 1 ) : ?>
 					<span class="everest-forms-upload-hint">
 						<?php
 						/* translators: %d - max number of files. */

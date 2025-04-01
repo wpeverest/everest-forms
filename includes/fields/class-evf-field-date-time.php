@@ -174,24 +174,32 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 				false
 			);
 
-			$date_format_select = $this->field_element(
+			$date_format_types = array(
+				'Y-m-d'  => date_i18n( 'Y-m-d' ) . ' (Y-m-d)',
+				'F j, Y' => date_i18n( 'F j, Y' ) . ' (F j, Y)',
+				'm/d/Y'  => date_i18n( 'm/d/Y' ) . ' (m/d/Y)',
+				'd/m/Y'  => date_i18n( 'd/m/Y' ) . ' (d/m/Y)',
+				'Y.m.d'  => date_i18n( 'Y.m.d' ) . ' (Y.m.d)',
+				'F,Y'    => date_i18n( 'F,Y' ) . ' (F,Y)',
+				'm.d.y'  => date_i18n( 'm.d.y' ) . ' (m.d.y)',
+				'd.m.y'  => date_i18n( 'd.m.y' ) . ' (d.m.y)',
+				'm-d-y'  => date_i18n( 'm-d-y' ) . ' (m-d-y)',
+			);
+
+			/**
+			 * Filter to modify the date format options.
+			 *
+			 * @since xx.xx.xx
+			 */
+			$date_format_options = apply_filters( 'everest_forms_date_format_options', $date_format_types );
+			$date_format_select  = $this->field_element(
 				'select',
 				$field,
 				array(
 					'slug'    => 'date_format',
 					'value'   => isset( $field['date_format'] ) ? $field['date_format'] : 'Y-m-d',
 					'class'   => 'evf-date-format',
-					'options' => array(
-						'Y-m-d'  => date_i18n( 'Y-m-d' ) . ' (Y-m-d)',
-						'F j, Y' => date_i18n( 'F j, Y' ) . ' (F j, Y)',
-						'm/d/Y'  => date_i18n( 'm/d/Y' ) . ' (m/d/Y)',
-						'd/m/Y'  => date_i18n( 'd/m/Y' ) . ' (d/m/Y)',
-						'Y.m.d'  => date_i18n( 'Y.m.d' ) . ' (Y.m.d)',
-						'F,Y'    => date_i18n( 'F,Y' ) . ' (F,Y)',
-						'm.d.y'  => date_i18n( 'm.d.y' ) . ' (m.d.y)',
-						'd.m.y'  => date_i18n( 'd.m.y' ) . ' (d.m.y)',
-						'm-d-y'  => date_i18n( 'm-d-y' ) . ' (m-d-y)',
-					),
+					'options' => $date_format_options,
 				),
 				false
 			);
