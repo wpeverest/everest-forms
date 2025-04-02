@@ -295,7 +295,7 @@ class EVF_Smart_Tags {
 								if ( ! empty( $value ) ) {
 									$files .= sprintf(
 										apply_filters(
-											'custom_file_link_output',
+											'everest_forms_smart_tags_file_upload',
 											'<a href="%s">%s</a>' . "\n",
 											$files_value
 										),
