@@ -620,11 +620,11 @@ class EVF_Form_Task {
 		$this->form_data['settings']['redirect_to'] = '0' === $this->form_data['settings']['redirect_to'] ? 'same' : $this->form_data['settings']['redirect_to'];
 
 		if ( '1' === $ajax_form_submission ) {
-			$response_data['message']  = $message;
-			$response_data['response'] = 'success';
-			$response_data['form_id']  = $form_id;
-			$response_data['entry_id'] = $entry_id;
-
+			$response_data['message']                   = $message;
+			$response_data['response']                  = 'success';
+			$response_data['form_id']                   = $form_id;
+			$response_data['entry_id']                  = $entry_id;
+			$response_data['submission_message_scroll'] = isset( $settings['submission_message_scroll'] ) ? $settings['submission_message_scroll'] : false;
 			if ( defined( 'EVF_PDF_SUBMISSION_VERSION' ) && ( 'yes' === get_option( 'everest_forms_pdf_download_after_submit', 'no' ) || ( isset( $pdf_submission['everest_forms_pdf_download_after_submit'] ) && 'yes' === $pdf_submission['everest_forms_pdf_download_after_submit'] ) ) ) {
 				$response_data['pdf_download'] = true;
 				$pdf_download_message          = get_option( 'everest_forms_pdf_custom_download_text', '' );
@@ -1511,7 +1511,7 @@ class EVF_Form_Task {
 							}
 						}
 
-						$subject = apply_filters( 'everest_forms_entry_submission_approval_subject', esc_html__( 'Entry Submission Denied' , 'everest-forms' ));
+						$subject = apply_filters( 'everest_forms_entry_submission_approval_subject', esc_html__( 'Entry Submission Denied', 'everest-forms' ) );
 						// translators: %s is the name of the user
 						$message = sprintf( __( 'Hey, %s', 'everest-forms' ), $name ) . '<br/>';
 						// translators: %s is the entry_date.

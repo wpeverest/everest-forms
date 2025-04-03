@@ -275,7 +275,7 @@ jQuery( function( $ ) {
 					})
 					.always( function( xhr ) {
 						var redirect_url = ( xhr.data && xhr.data.redirect_url ) ? xhr.data.redirect_url : '';
-						if ( ! redirect_url && $( '.everest-forms-notice' ).length ) {
+						if ( ! redirect_url && $( '.everest-forms-notice' ).length && xhr.data.submission_message_scroll  === "1" ) {
 							$( [document.documentElement, document.body] ).animate({
 								scrollTop: $( '.everest-forms-notice' ).offset().top
 							}, 800 );
