@@ -1881,7 +1881,7 @@
 								if( 'undefined' !== typeof xhr.data.html ) {
 									$( document ).find( '.everest-forms-row-option-group' ).append( xhr.data.html );
 									EVFPanelBuilder.conditionalLogicAppendRow( row_id );
-									// Disable conditional logc by default.
+									// Disable conditional logic by default.
 									$( '#everest-forms-panel-field-form_rows-connection_row_' + row_id + '-conditional_logic_status' ).prop( 'checked', false );
 								}
 							}
@@ -3145,6 +3145,7 @@
 				if( new_row_option.find( '.evf-field-conditional-field-select option:not(.evf-conditional-fields)').length > 1 ) {
 					new_row_option.find( '.evf-field-conditional-field-select option:not(.evf-conditional-fields):gt(0)').remove();
 				}
+				new_row_option.hide();
 			})
 		},
 
