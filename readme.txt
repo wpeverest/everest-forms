@@ -342,6 +342,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 = 3.1.1.1     	- 08-04-2025
 * Fix 			- Security Issue.
+* Fix 			- Critical error while viewing entries.
 * Fix 			- Square payment not working with redirect settings.
 
 = 3.1.1     	- 01-04-2025
