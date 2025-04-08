@@ -251,7 +251,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 				}
 			}
 
-			$value = is_array( $value ) ? implode( ', ', $value['label'] ) : $value;
+			$value = isset( $value['label'] ) && is_array( $value['label'] ) ? implode( ', ', $value['label'] ) : $value;
 
 			if ( false === strpos( $value, 'http' ) ) {
 				$lines = explode( "\n", $value );
