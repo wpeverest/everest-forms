@@ -256,12 +256,14 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 				}
 			}
 
-			// Limit to 5 lines.
+			$value = isset( $value['label'] ) && is_array( $value['label'] ) ? implode( ', ', $value['label'] ) : $value;
+
 			if ( false === strpos( $value, 'http' ) ) {
 				$lines = explode( "\n", $value );
 				$value = array_slice( $lines, 0, 4 );
 				$value = implode( "\n", $value );
 
+				// limit 5 lines.
 				if ( count( $lines ) > 5 ) {
 					$value .= '&hellip;';
 				} elseif ( strlen( $value ) > 75 ) {
@@ -270,6 +272,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 
 				$value = nl2br( wp_strip_all_tags( trim( $value ) ) );
 			}
+
 			return apply_filters( 'everest_forms_html_field_value', $value, $entry->meta[ $meta_key ], $entry, 'entry-table', $meta_key );
 		} else {
 			return '<span class="na">&mdash;</span>';
