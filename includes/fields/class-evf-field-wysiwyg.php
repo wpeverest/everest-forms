@@ -70,7 +70,7 @@ class EVF_Field_Wysiwyg extends EVF_Form_Fields {
 	 */
 	public function html_field_value( $value, $field, $form_data = array(), $context = '' ) {
 		if ( is_serialized( $field ) || in_array( $context, array( 'email-html', 'export-pdf' ), true ) ) {
-			$field_value = maybe_unserialize( $field );
+			$field_value = evf_maybe_unserialize( $field );
 			if ( ! empty( $field_value['type'] ) && $this->type === $field_value['type'] ) {
 				return ! empty( $field_value['value'] ) ? $field_value['value'] : '';
 			}
@@ -201,7 +201,7 @@ class EVF_Field_Wysiwyg extends EVF_Form_Fields {
 	 */
 	public function field_exporter( $field ) {
 		$empty_message = '<em>' . __( '(empty)', 'everest-forms' ) . '</em>';
-		$field_value   = maybe_unserialize( $field );
+		$field_value   = evf_maybe_unserialize( $field );
 		$field_type    = isset( $field_value['type'] ) ? sanitize_text_field( $field_value['type'] ) : $this->type;
 
 		if ( array_key_exists( 'value_raw', $field_value ) && ! empty( $field_value['value_raw'] ) ) {

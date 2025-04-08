@@ -341,9 +341,10 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 == Changelog ==
 
 = 3.1.1.1     	- 08-04-2025
-* Fix 			- Security Issue.
-* Fix 			- Critical error while viewing entries.
+* Fix 			- Unserialize issue with object injection.
+* Fix 			- Array to string conversion while viewing entries.
 * Fix 			- Square payment not working with redirect settings.
+* Fix 			- Restriction on form preview on the basis of capabilities.
 
 = 3.1.1     	- 01-04-2025
 * Enhance 		- Form preview design revamp.

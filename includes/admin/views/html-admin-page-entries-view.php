@@ -144,7 +144,7 @@ if ( false !== $entry_index ) {
 
 										if ( ! empty( $field_value ) || is_numeric( $field_value ) ) {
 											if ( is_serialized( $field_value ) ) {
-												$field_value = maybe_unserialize( $field_value );
+												$field_value = evf_maybe_unserialize( $field_value );
 												$field_label = isset( $field_value['label'] ) ? $field_value['label'] : $field_value;
 
 												if ( ! empty( $field_label ) && is_array( $field_label ) ) {
