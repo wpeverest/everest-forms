@@ -63,9 +63,9 @@ wp_head();
 				</svg>
 			</div>
 			<ul class="evf-form-preview-dropdown-content">
-				<li><a target="_blank" href="<?php echo admin_url( 'admin.php?page=evf-builder&tab=fields&form_id=' . $_GET['form_id'] ); ?>">Form Builder</a></li>
-				<li><a target="_blank" href="<?php echo admin_url( 'admin.php?page=evf-builder&tab=settings&form_id=' . $_GET['form_id'] ); ?>">Form Settings</a></li>
-				<li><a target="_blank" href="<?php echo admin_url( 'admin.php?page=evf-entries&form_id=' . $_GET['form_id'] ); ?>">Form Entries</a></li>
+			<li><a target="_blank" href="<?php echo esc_url( admin_url( 'admin.php?page=evf-builder&tab=fields&form_id=' . $form_id ) ); ?>"><?php esc_html_e( 'Form Builder', 'everest-forms' ); ?></a></li>
+			<li><a target="_blank" href="<?php echo esc_url( admin_url( 'admin.php?page=evf-builder&tab=settings&form_id=' . $form_id ) ); ?>"><?php esc_html_e( 'Form Settings', 'everest-forms' ); ?></a></li>
+			<li><a target="_blank" href="<?php echo esc_url( admin_url( 'admin.php?page=evf-entries&form_id=' . $form_id ) ); ?>"><?php esc_html_e( 'Form Entries', 'everest-forms' ); ?></a></li>
 			</ul>
 		</div>
 	</div>

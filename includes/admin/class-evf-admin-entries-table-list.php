@@ -242,7 +242,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 
 			if ( is_serialized( $value ) ) {
 				$field_html  = array();
-				$field_value = maybe_unserialize( $value );
+				$field_value = evf_maybe_unserialize( $value );
 
 				$field_label = ! empty( $field_value['label'] ) ? evf_clean( $field_value['label'] ) : $field_value;
 				if ( is_array( $field_label ) ) {

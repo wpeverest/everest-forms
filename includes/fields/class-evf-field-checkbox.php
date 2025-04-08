@@ -93,7 +93,7 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 	 */
 	public function html_field_value( $value, $field, $form_data = array(), $context = '' ) {
 		if ( is_serialized( $field ) || in_array( $context, array( 'email-html', 'export-pdf' ), true ) ) {
-			$field_value = maybe_unserialize( $field );
+			$field_value = evf_maybe_unserialize( $field );
 			$field_type  = isset( $field_value['type'] ) ? sanitize_text_field( $field_value['type'] ) : 'checkbox';
 
 			if ( $field_type === $this->type ) {

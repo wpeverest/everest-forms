@@ -1174,9 +1174,9 @@ class EVF_Form_Task {
 			$new_booked_slot = array( $form_id => $datetime_arr );
 
 			if ( empty( $get_booked_slot ) ) {
-				$all_booked_slot = maybe_serialize( $new_booked_slot );
+				$all_booked_slot = evf_maybe_serialize( $new_booked_slot );
 			} else {
-				$unserialized_booked_slot = maybe_unserialize( $get_booked_slot );
+				$unserialized_booked_slot = evf_maybe_unserialize( $get_booked_slot );
 
 				if ( array_key_exists( $form_id, $unserialized_booked_slot ) ) {
 					$booked_slot     = $unserialized_booked_slot[ $form_id ];

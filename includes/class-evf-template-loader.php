@@ -307,18 +307,20 @@ class EVF_Template_Loader {
 		}
 
 		if ( isset( $_GET['form_id'] ) ) {
-			$form_id = $_GET['form_id'];// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$form_id = absint( $_GET['form_id'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
 			$html  = '';
 			$html .= '<div class="evf-preview-content">';
 			$html .= '<span class="evf-form-preview-title">';
-			$html .= get_the_title( $form_id );
+			$html .= esc_html( get_the_title( $form_id ) );
 			$html .= '</span>';
 
+			$shortcode = sprintf( '[everest_form id="%d"]', $form_id );
+
 			if ( function_exists( 'apply_shortcodes' ) ) {
-				$content = apply_shortcodes( '[everest_form id="' . $form_id . '"]' );
+				$content = apply_shortcodes( $shortcode );
 			} else {
-				$content = do_shortcode( '[everest_form id="' . $form_id . '"]' );
+				$content = do_shortcode( $shortcode );
 			}
 			$html .= $content;
 			$html .= '</div>';

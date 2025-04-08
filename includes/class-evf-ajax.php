@@ -1128,7 +1128,7 @@ class EVF_AJAX {
 					)
 				);
 			}
-			$booked_slot = maybe_unserialize( get_option( 'evf_booked_slot', '' ) );
+			$booked_slot = evf_maybe_unserialize( get_option( 'evf_booked_slot', '' ) );
 			$is_booked   = false;
 			if ( ! empty( $booked_slot ) && array_key_exists( $form_id, $booked_slot ) ) {
 				foreach ( $datetime_arr as $arr ) {
