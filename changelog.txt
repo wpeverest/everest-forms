@@ -1,5 +1,18 @@
 == Changelog ==
 
+= 3.1.1.1     	- 08-04-2025
+* Fix 			- Security Issue.
+* Fix 			- Square payment not working with redirect settings.
+
+= 3.1.1     	- 01-04-2025
+* Enhance 		- Form preview design revamp.
+* Fix 			- Double rendering issue on smart phone field.
+* Fix 			- Display file upload validation message in frontend.
+* Dev 			- Conditional logic based on date range.
+* Dev 			- Hook to add custom date format options.
+* Dev 			- Overall feedback issue on ajax submission.
+* Dev 			- Display entry id in the entries list view.
+
 = 3.1.0     	- 05-03-2025
 * Enhance 		- Activation in module flow.
 * Enhance 		- 4 column design in addon page.

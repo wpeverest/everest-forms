@@ -3079,7 +3079,6 @@
 						"address" !== field_type &&
 						"image-upload" !== field_type &&
 						"file-upload" !== field_type &&
-						"date-time" !== field_type &&
 						"hidden" !== field_type &&
 						"likert" !== field_type &&
 						"scale-rating" !== field_type &&
@@ -3088,7 +3087,7 @@
 					) {
 						fields
 							.eq(index)
-							.insertAt(el_to_append, dragged_index, selected_id);
+							.insertAt(el_to_append, 1, selected_id);
 					}
 				}
 				if( fields.eq( index ).find( 'option:not(.evf-conditional-fields)').length > 1 ) {
