@@ -9,9 +9,18 @@ wp_head();
 					<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 					<?php
 						wp_print_head_scripts();
-						$form_id = isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+						$form_id = isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 					?>
 				</head>
+				<?php
+						$user = wp_get_current_user();
+				if ( ! current_user_can( 'administrator' ) && ! $user->has_cap( 'everest_forms_view_forms' ) ) {
+					echo '<div style="width: 100%; height: 100vh; display: flex; justify-content: center; align-items: center; font-size: 20px; font-weight: 600;">';
+					echo __( "You don't have permission to view this page.", 'everest-forms' );
+					echo '</div>';
+					exit;
+				}
+				?>
 				<body class="evf-multi-device-form-preview">
 			<div id="nav-menu-header">
 			<div class="evf-brand-logo evf-px-2">
@@ -63,9 +72,9 @@ wp_head();
 				</svg>
 			</div>
 			<ul class="evf-form-preview-dropdown-content">
-			<li><a target="_blank" href="<?php echo esc_url( admin_url( 'admin.php?page=evf-builder&tab=fields&form_id=' . $form_id ) ); ?>"><?php esc_html_e( 'Form Builder', 'everest-forms' ); ?></a></li>
-			<li><a target="_blank" href="<?php echo esc_url( admin_url( 'admin.php?page=evf-builder&tab=settings&form_id=' . $form_id ) ); ?>"><?php esc_html_e( 'Form Settings', 'everest-forms' ); ?></a></li>
-			<li><a target="_blank" href="<?php echo esc_url( admin_url( 'admin.php?page=evf-entries&form_id=' . $form_id ) ); ?>"><?php esc_html_e( 'Form Entries', 'everest-forms' ); ?></a></li>
+			<li><a target="_blank" href="<?php echo esc_url( admin_url( 'admin.php?page=evf-builder&tab=fields&form_id=' . absint( $form_id ) ) ); ?>"><?php esc_html_e( 'Form Builder', 'everest-forms' ); ?></a></li>
+			<li><a target="_blank" href="<?php echo esc_url( admin_url( 'admin.php?page=evf-builder&tab=settings&form_id=' . absint( $form_id ) ) ); ?>"><?php esc_html_e( 'Form Settings', 'everest-forms' ); ?></a></li>
+			<li><a target="_blank" href="<?php echo esc_url( admin_url( 'admin.php?page=evf-entries&form_id=' . absint( $form_id ) ) ); ?>"><?php esc_html_e( 'Form Entries', 'everest-forms' ); ?></a></li>
 			</ul>
 		</div>
 	</div>

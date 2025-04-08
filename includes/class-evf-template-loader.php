@@ -380,7 +380,7 @@ class EVF_Template_Loader {
 		$html .= '<span class="slider round"></span>';
 		$html .= '</span>';
 		$html .= '</div>';
-		$html .= '<div class="evf-form-preview-save hidden" id="evf-form-save" data-theme="' . $data_theme . '" data-id="' . $_GET['form_id'] . '">';
+		$html .= '<div class="evf-form-preview-save hidden" id="evf-form-save" data-theme="' . $data_theme . '" data-id="' . absint( $_GET['form_id'] ) . '">';
 		$html .= '<img src="' . esc_url( evf()->plugin_url() . '/assets/images/save-frame.svg' ) . '" alt="Save">';
 		$html .= '<div class="evf-form-preview-save-title">' . esc_html__( 'Save', 'everest-forms' ) . '</div>';
 		$html .= '</div>';
@@ -402,7 +402,7 @@ class EVF_Template_Loader {
 		if ( ! $is_pro_active ) {
 			$html .= '<div class="evf-form-preview-upgrade  id="evf-form-save" data-theme="default" ">';
 			$html .= '<img src="' . esc_url( evf()->plugin_url() . '/assets/images/upgrade-boost-icon.svg' ) . '" alt="Upgrade">';
-			$html .= '<div class="evf-form-preview-upgrade-title">Upgrade to Pro</deiv>';
+			$html .= '<div class="evf-form-preview-upgrade-title">Upgrade to Pro</div>';
 			$html .= '</div>';
 		}
 
