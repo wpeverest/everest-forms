@@ -294,9 +294,13 @@ class EVF_Smart_Tags {
 
 								if ( ! empty( $value ) ) {
 									$files .= sprintf(
-										'<a href="%s">%s</a> ' . "\n",
-										$files_value['value'],
-										$files_value['name']
+										apply_filters(
+											'everest_forms_smart_tags_file_upload',
+											'<a href="%s">%s</a>' . "\n",
+											$files_value
+										),
+										esc_url( $files_value['value'] ),
+										esc_html( $files_value['name'] )
 									);
 								}
 							}
@@ -540,7 +544,7 @@ class EVF_Smart_Tags {
 						break;
 					case 'user_agent':
 						$user_agent = evf_get_user_agent();
-						$content   = str_replace( '{' . $other_tag . '}', $user_agent, $content );
+						$content    = str_replace( '{' . $other_tag . '}', $user_agent, $content );
 						break;
 				}
 			}

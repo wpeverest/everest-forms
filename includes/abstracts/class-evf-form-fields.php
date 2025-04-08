@@ -2843,7 +2843,7 @@ abstract class EVF_Form_Fields {
 					$mode            = isset( $form_data['form_fields'][ $field_id ]['date_mode'] ) ? $form_data['form_fields'][ $field_id ]['date_mode'] : '';
 					$time_interval   = isset( $form_data['form_fields'][ $field_id ]['time_interval'] ) ? $form_data['form_fields'][ $field_id ]['time_interval'] : '';
 					$datetime_arr    = parse_datetime_values( $field_submit, $datetime_format, $date_format, $mode, $time_interval );
-					$booked_slot     = maybe_unserialize( get_option( 'evf_booked_slot', '' ) );
+					$booked_slot     = evf_maybe_unserialize( get_option( 'evf_booked_slot', '' ) );
 					$form_id         = $form_data['id'];
 					$is_booked       = false;
 					if ( ! empty( $booked_slot ) && array_key_exists( $form_id, $booked_slot ) ) {

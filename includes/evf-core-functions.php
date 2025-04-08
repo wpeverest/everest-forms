@@ -5458,3 +5458,29 @@ function evf_get_addons_list_depend_on_another_plugins() {
 
 	return $required_plugins;
 }
+
+
+if ( ! function_exists( 'evf_maybe_unserialize' ) ) {
+	/**
+	 * EVF Unserialize data.
+	 *
+	 * @param string $data Data that might be unserialized.
+	 * @param array  $options Options.
+	 *
+	 * @return mixed Unserialized data can be any type.
+	 *
+	 * @since 3.1.2
+	 */
+	function evf_maybe_unserialize( $data, $options = array() ) {
+
+		if ( is_serialized( $data ) ) {
+			if ( version_compare( PHP_VERSION, '7.1.0', '>=' ) ) {
+				$options = wp_parse_args( $options, array( 'allowed_classes' => false ) );
+				return @unserialize( trim( $data ), $options ); //phpcs:ignore.
+			}
+			return @unserialize( trim( $data ) ); //phpcs:ignore.
+		}
+
+		return $data;
+	}
+}
