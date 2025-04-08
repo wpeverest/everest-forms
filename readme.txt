@@ -4,7 +4,7 @@ Tags: contact form, custom form, form builder, forms, survey
 Requires at least: 5.5
 Tested up to: 6.7.1
 Requires PHP: 7.2
-Stable tag: 3.1.1.1
+Stable tag: 3.1.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -340,10 +340,11 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 == Changelog ==
 
-= 3.1.1.1     	- 08-04-2025
+= 3.1.2     	- 08-04-2025
 * Fix 			- Unserialize issue with object injection.
 * Fix 			- Array to string conversion while viewing entries.
 * Fix 			- Square payment not working with redirect settings.
+* Fix 			- Rendering conditional logic while searching field.
 * Fix 			- Restriction on form preview on the basis of capabilities.
 
 = 3.1.1     	- 01-04-2025
