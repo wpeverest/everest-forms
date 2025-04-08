@@ -256,7 +256,8 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 				}
 			}
 
-			// Limit to 5 lines.
+			$value = isset( $value['label'] ) && is_array( $value['label'] ) ? implode( ', ', $value['label'] ) : $value;
+
 			if ( false === strpos( $value, 'http' ) ) {
 				$lines = explode( "\n", $value );
 				$value = array_slice( $lines, 0, 4 );
