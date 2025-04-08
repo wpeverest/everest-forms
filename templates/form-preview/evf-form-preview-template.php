@@ -13,8 +13,7 @@ wp_head();
 					?>
 				</head>
 				<?php
-						$user = wp_get_current_user();
-				if ( ! current_user_can( 'administrator' ) && ! $user->has_cap( 'everest_forms_view_forms' ) ) {
+				if ( ! current_user_can( 'manage_options' ) && ! current_user_can( 'everest_forms_view_forms' ) ) {
 					echo '<div style="width: 100%; height: 100vh; display: flex; justify-content: center; align-items: center; font-size: 20px; font-weight: 600;">';
 					echo __( "You don't have permission to view this page.", 'everest-forms' );
 					echo '</div>';
