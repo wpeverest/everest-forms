@@ -345,6 +345,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 * Fix 			- Array to string conversion while viewing entries.
 * Fix 			- Square payment not working with redirect settings.
 * Fix 			- Rendering conditional logic while searching field.
+* Fix 			- Auto scroll submission message when disabled in ajax.
 * Fix 			- Restriction on form preview on the basis of capabilities.
 
 = 3.1.1     	- 01-04-2025

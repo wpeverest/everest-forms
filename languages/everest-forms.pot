@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the Everest Forms package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Everest Forms 3.1.1\n"
+"Project-Id-Version: Everest Forms 3.1.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/everest-forms\n"
-"POT-Creation-Date: 2025-04-01 03:47:06+00:00\n"
+"POT-Creation-Date: 2025-04-08 10:32:45+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -496,7 +496,7 @@ msgstr ""
 
 #: addons/StyleCustomizer/includes/class-evf-style-customizer-api.php:99
 #: includes/admin/views/html-admin-page-builder.php:115
-#: includes/class-evf-template-loader.php:383
+#: includes/class-evf-template-loader.php:385
 msgid "Save"
 msgstr ""
 
@@ -2845,7 +2845,7 @@ msgstr ""
 
 #: includes/admin/builder/class-evf-builder-page.php:177
 #: includes/admin/builder/class-evf-builder-settings.php:858
-#: includes/class-evf-template-loader.php:348
+#: includes/class-evf-template-loader.php:350
 msgid "SMS Notifications"
 msgstr ""
 
@@ -3310,7 +3310,7 @@ msgid "Make the form submission as failed"
 msgstr ""
 
 #: includes/admin/builder/class-evf-builder-settings.php:784
-#: includes/admin/class-evf-admin-entries-table-list.php:336
+#: includes/admin/class-evf-admin-entries-table-list.php:337
 #: includes/class-everest-forms.php:513
 msgid "Mark as Spam"
 msgstr ""
@@ -3844,73 +3844,73 @@ msgstr ""
 msgid "Field"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:325
+#: includes/admin/class-evf-admin-entries-table-list.php:326
 #: includes/admin/views/html-admin-page-entries-view.php:249
 msgid "View"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:333
+#: includes/admin/class-evf-admin-entries-table-list.php:334
 msgid "Remove From Spam"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:343
+#: includes/admin/class-evf-admin-entries-table-list.php:344
 #. translators: %s: entry name
 msgid "Trash form entry"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:354
+#: includes/admin/class-evf-admin-entries-table-list.php:355
 #: includes/admin/class-evf-admin-forms-table-list.php:183
 #: includes/evf-entry-functions.php:120
 msgid "Trash"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:358
+#: includes/admin/class-evf-admin-entries-table-list.php:359
 msgid "Restore form entry from trash"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:369
-#: includes/admin/class-evf-admin-entries-table-list.php:464
+#: includes/admin/class-evf-admin-entries-table-list.php:370
+#: includes/admin/class-evf-admin-entries-table-list.php:465
 #: includes/admin/class-evf-admin-forms-table-list.php:181
 #: includes/admin/class-evf-admin-forms-table-list.php:436
 msgid "Restore"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:374
+#: includes/admin/class-evf-admin-entries-table-list.php:375
 #. translators: %s: entry name
 msgid "Delete form entry permanently"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:385
-#: includes/admin/class-evf-admin-entries-table-list.php:465
+#: includes/admin/class-evf-admin-entries-table-list.php:386
+#: includes/admin/class-evf-admin-entries-table-list.php:466
 msgid "Delete Permanently"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:469
+#: includes/admin/class-evf-admin-entries-table-list.php:470
 msgid "Move to Trash"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:515
+#: includes/admin/class-evf-admin-entries-table-list.php:516
 #. translators: %d: number of entries, %s: entries status
 msgid "%1$d entry successfully %2$s."
 msgid_plural "%1$d entries successfully %2$s."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:531
+#: includes/admin/class-evf-admin-entries-table-list.php:532
 #. translators: %d: number of entries, %s: entries status
 msgid "%1$d entry successfully marked as %2$s."
 msgid_plural "%1$d entries successfully marked as %2$s."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:583
+#: includes/admin/class-evf-admin-entries-table-list.php:584
 #: includes/admin/class-evf-admin-entries.php:378
 #: includes/class-evf-form-task.php:1433
 msgid "Form Entry Approved"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:585
-#: includes/admin/class-evf-admin-entries-table-list.php:649
+#: includes/admin/class-evf-admin-entries-table-list.php:586
+#: includes/admin/class-evf-admin-entries-table-list.php:650
 #: includes/admin/class-evf-admin-entries.php:380
 #: includes/admin/class-evf-admin-entries.php:438
 #: includes/class-evf-form-task.php:1435 includes/class-evf-form-task.php:1516
@@ -3919,7 +3919,7 @@ msgstr ""
 msgid "Hey, %s"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:587
+#: includes/admin/class-evf-admin-entries-table-list.php:588
 #: includes/admin/class-evf-admin-entries.php:382
 #: includes/class-evf-form-task.php:1437
 #. translators:%s: Form Entry Date
@@ -3929,13 +3929,13 @@ msgid ""
 "successfully approved."
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:588
-#: includes/admin/class-evf-admin-entries-table-list.php:652
+#: includes/admin/class-evf-admin-entries-table-list.php:589
+#: includes/admin/class-evf-admin-entries-table-list.php:653
 msgid "Thank you for giving us your precious time"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:590
-#: includes/admin/class-evf-admin-entries-table-list.php:654
+#: includes/admin/class-evf-admin-entries-table-list.php:591
+#: includes/admin/class-evf-admin-entries-table-list.php:655
 #: includes/admin/class-evf-admin-entries.php:385
 #: includes/admin/class-evf-admin-entries.php:443
 #: includes/class-evf-form-task.php:1440 includes/class-evf-form-task.php:1521
@@ -3944,11 +3944,11 @@ msgstr ""
 msgid "From %s"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:647
+#: includes/admin/class-evf-admin-entries-table-list.php:648
 msgid "Form Entry Denied"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:651
+#: includes/admin/class-evf-admin-entries-table-list.php:652
 #: includes/admin/class-evf-admin-entries.php:440
 #. translators:%s: Form Entry Date
 msgid ""
@@ -3956,21 +3956,21 @@ msgid ""
 "denied."
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:674
+#: includes/admin/class-evf-admin-entries-table-list.php:675
 #. translators: %d: number of entries
 msgid "%d entry moved to the Trash."
 msgid_plural "%d entries moved to the Trash."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:689
+#: includes/admin/class-evf-admin-entries-table-list.php:690
 #. translators: %d: number of entries
 msgid "%d entry restored from the Trash."
 msgid_plural "%d entries restored from the Trash."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:704
+#: includes/admin/class-evf-admin-entries-table-list.php:705
 #: includes/admin/class-evf-admin-entries.php:251
 #. translators: %d: number of entries
 msgid "%d entry permanently deleted."
@@ -3978,35 +3978,35 @@ msgid_plural "%d entries permanently deleted."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:719
+#: includes/admin/class-evf-admin-entries-table-list.php:720
 #. translators: %d: number of entries
 msgid "%d entry sent to spam."
 msgid_plural "%d entries sent to Spam."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:734
+#: includes/admin/class-evf-admin-entries-table-list.php:735
 #. translators: %d: number of entries
 msgid "%d removed from spam."
 msgid_plural "%d entries removed from spam."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:763
+#: includes/admin/class-evf-admin-entries-table-list.php:764
 #: includes/admin/class-evf-admin-entries.php:90
 msgid "Filter"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:767
+#: includes/admin/class-evf-admin-entries-table-list.php:768
 msgid "Export CSV"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:772
+#: includes/admin/class-evf-admin-entries-table-list.php:773
 #: includes/admin/class-evf-admin-forms-table-list.php:524
 msgid "Empty Trash"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:786
+#: includes/admin/class-evf-admin-entries-table-list.php:787
 msgid "Filter by form"
 msgstr ""
 
@@ -4127,13 +4127,13 @@ msgstr ""
 
 #: includes/admin/class-evf-admin-forms-table-list.php:237
 #: includes/admin/views/html-admin-page-builder.php:106
-#: templates/form-preview/evf-form-preview-template.php:48
+#: templates/form-preview/evf-form-preview-template.php:56
 msgid "Copy Shortcode!"
 msgstr ""
 
 #: includes/admin/class-evf-admin-forms-table-list.php:237
 #: includes/admin/views/html-admin-page-builder.php:106
-#: templates/form-preview/evf-form-preview-template.php:49
+#: templates/form-preview/evf-form-preview-template.php:57
 msgid "Copied!"
 msgstr ""
 
@@ -6757,80 +6757,80 @@ msgstr ""
 msgid "%s &ndash; Preview"
 msgstr ""
 
-#: includes/class-evf-template-loader.php:339
+#: includes/class-evf-template-loader.php:341
 msgid "Our Pro Features."
 msgstr ""
 
-#: includes/class-evf-template-loader.php:341
+#: includes/class-evf-template-loader.php:343
 msgid "Stripe & PayPal Integration"
 msgstr ""
 
-#: includes/class-evf-template-loader.php:342
+#: includes/class-evf-template-loader.php:344
 msgid "Style Export & Import"
 msgstr ""
 
-#: includes/class-evf-template-loader.php:343
+#: includes/class-evf-template-loader.php:345
 msgid "Conditional Email Routing"
 msgstr ""
 
-#: includes/class-evf-template-loader.php:344
+#: includes/class-evf-template-loader.php:346
 msgid "Advanced Form Fields"
 msgstr ""
 
-#: includes/class-evf-template-loader.php:345
+#: includes/class-evf-template-loader.php:347
 msgid "Quiz & Survey Forms"
 msgstr ""
 
-#: includes/class-evf-template-loader.php:346
+#: includes/class-evf-template-loader.php:348
 msgid "40+ Integrations"
 msgstr ""
 
-#: includes/class-evf-template-loader.php:347
+#: includes/class-evf-template-loader.php:349
 msgid "Multi-Step Forms"
 msgstr ""
 
-#: includes/class-evf-template-loader.php:349
+#: includes/class-evf-template-loader.php:351
 msgid "Calculated Fields"
 msgstr ""
 
-#: includes/class-evf-template-loader.php:353
+#: includes/class-evf-template-loader.php:355
 msgid "Our Top Addons"
 msgstr ""
 
-#: includes/class-evf-template-loader.php:355
+#: includes/class-evf-template-loader.php:357
 msgid "Style Customizer"
 msgstr ""
 
-#: includes/class-evf-template-loader.php:356
+#: includes/class-evf-template-loader.php:358
 msgid "Custom Captcha"
 msgstr ""
 
-#: includes/class-evf-template-loader.php:357
+#: includes/class-evf-template-loader.php:359
 msgid "Multi Part Forms"
 msgstr ""
 
-#: includes/class-evf-template-loader.php:358
+#: includes/class-evf-template-loader.php:360
 msgid "PDF Form Submission"
 msgstr ""
 
-#: includes/class-evf-template-loader.php:359
+#: includes/class-evf-template-loader.php:361
 msgid "Email Templates"
 msgstr ""
 
-#: includes/class-evf-template-loader.php:360
+#: includes/class-evf-template-loader.php:362
 msgid "Survey, Polls and Quiz"
 msgstr ""
 
-#: includes/class-evf-template-loader.php:361
+#: includes/class-evf-template-loader.php:363
 msgid "Paypal Standard"
 msgstr ""
 
-#: includes/class-evf-template-loader.php:362
+#: includes/class-evf-template-loader.php:364
 #: includes/fields/class-evf-field-repeater.php:20
 msgid "Repeater Fields"
 msgstr ""
 
-#: includes/class-evf-template-loader.php:375
+#: includes/class-evf-template-loader.php:377
 msgid "Apply Theme Style"
 msgstr ""
 
@@ -16312,8 +16312,24 @@ msgstr ""
 msgid "how to disable."
 msgstr ""
 
-#: templates/form-preview/evf-form-preview-template.php:25
+#: templates/form-preview/evf-form-preview-template.php:18
+msgid "You don't have permission to view this page."
+msgstr ""
+
+#: templates/form-preview/evf-form-preview-template.php:33
 msgid "Form Preview"
+msgstr ""
+
+#: templates/form-preview/evf-form-preview-template.php:74
+msgid "Form Builder"
+msgstr ""
+
+#: templates/form-preview/evf-form-preview-template.php:75
+msgid "Form Settings"
+msgstr ""
+
+#: templates/form-preview/evf-form-preview-template.php:76
+msgid "Form Entries"
 msgstr ""
 
 #. Author URI of the plugin/theme
@@ -16412,7 +16428,7 @@ msgctxt "template"
 msgid "Change"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:433
+#: includes/admin/class-evf-admin-entries-table-list.php:434
 #. translators: %s: count
 msgctxt "entries"
 msgid "All <span class=\"count\">(%s)</span>"
@@ -16420,7 +16436,7 @@ msgid_plural "All <span class=\"count\">(%s)</span>"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/class-evf-admin-entries-table-list.php:435
+#: includes/admin/class-evf-admin-entries-table-list.php:436
 #. translators: %s: count
 msgctxt "entries"
 msgid "Spam <span class=\"count\">(%s)</span>"
