@@ -82,6 +82,7 @@ jobs:
           pwd
           sshpass -p "$Server_PASS" ssh -o StrictHostKeyChecking=no $Srv_UsrName@$Srv_IP << EOF
           cd applications/ycrdmckpsu/public_html/evftest
+          wp plugin delete everest-forms --debug
           wp plugin install ../temp/everest-forms.zip --activate --debug
           rm -f ../temp/everest-forms.zip
           EOF
