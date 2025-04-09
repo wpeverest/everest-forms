@@ -586,6 +586,7 @@ class EVF_Form_Task {
 
 		$settings                  = $this->form_data['settings'];
 		$message                   = isset( $settings['successful_form_submission_message'] ) ? $settings['successful_form_submission_message'] : __( 'Thanks for contacting us! We will be in touch with you shortly.', 'everest-forms' );
+		$message_display_location  = isset( $settings['successful_form_submission_message_display_location'] ) ? $settings['successful_form_submission_message_display_location'] : 'hide';
 		$is_pdf_submission_enabled = isset( $settings['pdf_submission']['enable_pdf_submission'] ) && ( 'yes' === $settings['pdf_submission']['enable_pdf_submission'] || '1' === $settings['pdf_submission']['enable_pdf_submission'] );
 		$pdf_submission            = $is_pdf_submission_enabled ? $settings['pdf_submission'] : '';
 
@@ -674,7 +675,9 @@ class EVF_Form_Task {
 			delete_option( 'everest_forms_overall_feedback_is_called' );
 			return $response_data;
 		} elseif ( ( 'same' === $this->form_data['settings']['redirect_to'] && empty( $submission_redirection_process ) ) || ( ! empty( $submission_redirection_process ) && 'same_page' == $submission_redirection_process['redirect_to'] ) ) {
-			evf_add_notice( $message, 'success' );
+			if ( 'hide' === $message_display_location ) {
+				evf_add_notice( $message, 'success' );
+			}
 		}
 		$logger->info(
 			'Everest Forms After success Message.',

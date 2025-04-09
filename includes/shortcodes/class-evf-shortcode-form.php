@@ -997,8 +997,11 @@ class EVF_Shortcode_Form {
 			return;
 		}
 
+		$message_display_location  	= isset( $form_data['settings']['successful_form_submission_message_display_location'] ) ? $form_data['settings']['successful_form_submission_message_display_location'] : 'hide';
+		$message 					= isset( $form_data['settings']['successful_form_submission_message'] ) ? $form_data['settings']['successful_form_submission_message'] : __( 'Thanks for contacting us! We will be in touch with you shortly.', 'everest-forms' );
+
 		$success = apply_filters( 'everest_forms_success', false, $form_id );
-		if ( $success && ! empty( $form_data ) ) {
+		if ( $success && ! empty( $form_data ) && 'hide' === $message_display_location ) {
 			do_action( 'everest_forms_frontend_output_success', $form_data );
 			return;
 		}
@@ -1130,6 +1133,10 @@ class EVF_Shortcode_Form {
 		} elseif ( isset( $atts['type'] ) && 'popup' === $popup_type ) {
 			do_action( 'everest_form_popup', $atts );
 		} else {
+			if ( $success && ! empty( $form_data ) && 'top' === $message_display_location ) {
+				evf_add_notice( $message, 'success' );
+				do_action( 'everest_forms_frontend_output_success', $form_data );
+			}
 			echo '<form ' . evf_html_attributes( $form_atts['id'], $form_atts['class'], $form_atts['data'], $form_atts['atts'] ) . '>';
 			if ( evf_is_amp() ) {
 				$state = array(
@@ -1144,6 +1151,10 @@ class EVF_Shortcode_Form {
 			do_action( 'everest_forms_frontend_output', $form_data, $title, $description, $errors );
 
 			echo '</form>';
+			if ( $success && ! empty( $form_data ) && 'bottom' === $message_display_location ) {
+				evf_add_notice( $message, 'success' );
+				do_action( 'everest_forms_frontend_output_success', $form_data );
+			}
 		}
 
 		do_action( 'everest_forms_frontend_output_form_after', $form_data, $form );
