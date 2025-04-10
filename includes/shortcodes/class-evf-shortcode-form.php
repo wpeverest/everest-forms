@@ -1136,6 +1136,9 @@ class EVF_Shortcode_Form {
 			if ( $success && ! empty( $form_data ) && 'top' === $message_display_location ) {
 				evf_add_notice( $message, 'success' );
 				do_action( 'everest_forms_frontend_output_success', $form_data );
+			}elseif ( $success && ! empty( $form_data ) && 'popup' === $message_display_location ) {
+				$form_atts['data']['message_location'] = $message_display_location;
+				$form_atts['data']['message']        = $message;
 			}
 			echo '<form ' . evf_html_attributes( $form_atts['id'], $form_atts['class'], $form_atts['data'], $form_atts['atts'] ) . '>';
 			if ( evf_is_amp() ) {
