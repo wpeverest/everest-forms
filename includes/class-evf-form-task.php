@@ -622,6 +622,7 @@ class EVF_Form_Task {
 
 		if ( '1' === $ajax_form_submission ) {
 			$response_data['message']                   = $message;
+			$response_data['message_display_location']  = $message_display_location;
 			$response_data['response']                  = 'success';
 			$response_data['form_id']                   = $form_id;
 			$response_data['entry_id']                  = $entry_id;

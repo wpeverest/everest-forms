@@ -126,11 +126,12 @@ jQuery( function( $ ) {
 						}
 					}
 
-						if ( 'success' === xhr.data.response || true === xhr.success ) {
-							let pdf_download_message = '';
-							let quiz_reporting = '';
-							let preview_confirmation = '';
-							if(xhr.data.form_id !== undefined && xhr.data.entry_id !== undefined && xhr.data.pdf_download == true){
+					if ( 'success' === xhr.data.response || true === xhr.success ) {
+						let pdf_download_message = '';
+						let quiz_reporting = '';
+						let preview_confirmation = '';
+						let message_location = '';
+						if(xhr.data.form_id !== undefined && xhr.data.entry_id !== undefined && xhr.data.pdf_download == true){
 								pdf_download_message = '<br><small><a href="/?page=evf-entries-pdf&form_id='+ xhr.data.form_id+'&entry_id='+xhr.data.entry_id+'">' + xhr.data.pdf_download_message + '</a></small>';
 							}
 							if( xhr.data.quiz_result_shown == true){
@@ -141,6 +142,9 @@ jQuery( function( $ ) {
 								preview_confirmation = xhr.data.preview_confirmation;
 							}
 
+							if ( xhr.data.message_display_location !== undefined && xhr.data.message_display_location !== '' ) {
+								message_location = xhr.data.message_display_location;
+							}
 
 							var paymentMethod = formTuple.find( ".everest-forms-stripe-gateways-tabs .evf-tab" ).has( 'a.active' ).data( 'gateway' );
 
@@ -175,8 +179,29 @@ jQuery( function( $ ) {
 							}
 
 							formTuple.trigger( 'reset' );
-							formTuple.closest( '.everest-forms' ).html( '<div class="everest-forms-notice everest-forms-notice--success" role="alert">' + xhr.data.message + pdf_download_message + '</div>' + quiz_reporting + preview_confirmation ).focus();
-							localStorage.removeItem(formTuple.attr('id'));
+							formTuple.closest('.everest-forms').find('.everest-forms-notice').remove();
+
+							if (message_location === 'hide') {
+								formTuple.closest('.everest-forms').html(
+									'<div class="everest-forms-notice everest-forms-notice--success" role="alert">' +
+									xhr.data.message + pdf_download_message +
+									'</div>' + quiz_reporting + preview_confirmation
+								).focus();
+							} else if (message_location === 'top') {
+								formTuple.closest('.everest-forms').prepend(
+									'<div class="everest-forms-notice everest-forms-notice--success" role="alert">' +
+									xhr.data.message + pdf_download_message +
+									'</div>' + quiz_reporting + preview_confirmation
+								).focus();
+							} else if (message_location === 'bottom') {
+								formTuple.closest('.everest-forms').append(
+									'<div class="everest-forms-notice everest-forms-notice--success" role="alert">' +
+									xhr.data.message + pdf_download_message +
+									'</div>' + quiz_reporting + preview_confirmation
+								).focus();
+							}
+
+							btn.attr('disabled', false).html(everest_forms_ajax_submission_params.submit);
 
 							// Trigger for form submission success.
 							var event = new CustomEvent("everest_forms_ajax_submission_success", {
