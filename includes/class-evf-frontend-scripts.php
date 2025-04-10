@@ -348,6 +348,8 @@ class EVF_Frontend_Scripts {
 					'error'               => esc_html__( 'Something went wrong while making an AJAX submission', 'everest-forms' ),
 					'required'            => esc_html__( 'This field is required.', 'everest-forms' ),
 					'pdf_download'        => esc_html__( 'Click here to download your pdf submission', 'everest-forms' ),
+					'evf_checked_image_url' 			   => esc_url( self::get_asset_url( 'assets/images/evf-checked.png' ) ),
+					'i18n_evf_success_text'				    => esc_html__( 'Success!', 'everest-forms' ),
 				);
 				break;
 			case 'everest-forms-survey-polls-quiz-script':
