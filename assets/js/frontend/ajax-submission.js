@@ -181,19 +181,19 @@ jQuery( function( $ ) {
 							formTuple.trigger( 'reset' );
 							formTuple.closest('.everest-forms').find('.everest-forms-notice').remove();
 
-							if (message_location === 'hide') {
+							if ( 'hide' === message_location ) {
 								formTuple.closest('.everest-forms').html(
 									'<div class="everest-forms-notice everest-forms-notice--success" role="alert">' +
 									xhr.data.message + pdf_download_message +
 									'</div>' + quiz_reporting + preview_confirmation
 								).focus();
-							} else if (message_location === 'top') {
+							} else if ( 'top' === message_location) {
 								formTuple.closest('.everest-forms').prepend(
 									'<div class="everest-forms-notice everest-forms-notice--success" role="alert">' +
 									xhr.data.message + pdf_download_message +
 									'</div>' + quiz_reporting + preview_confirmation
 								).focus();
-							} else if (message_location === 'bottom') {
+							} else if ( 'bottom' === message_location ) {
 								formTuple.closest('.everest-forms').append(
 									'<div class="everest-forms-notice everest-forms-notice--success" role="alert">' +
 									xhr.data.message + pdf_download_message +
