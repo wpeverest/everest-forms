@@ -26,7 +26,6 @@ class EVF_Field_Scale_Rating extends EVF_Form_Fields {
 			'basic-options'    => array(
 				'field_options' => array(
 					'label',
-					'meta',
 					'highest_rating_text',
 					'lowest_rating_text',
 					'highest_rating_point',
@@ -39,6 +38,7 @@ class EVF_Field_Scale_Rating extends EVF_Form_Fields {
 			),
 			'advanced-options' => array(
 				'field_options' => array(
+					'meta',
 					'label_hide',
 					'css',
 				),

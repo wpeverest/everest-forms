@@ -26,7 +26,6 @@ class EVF_Field_Email extends EVF_Form_Fields {
 			'basic-options'    => array(
 				'field_options' => array(
 					'label',
-					'meta',
 					'description',
 					'required',
 					'required_field_message_setting',
@@ -38,6 +37,7 @@ class EVF_Field_Email extends EVF_Form_Fields {
 				'field_options' => array(
 					'size',
 					'placeholder',
+					'meta',
 					'confirmation_placeholder',
 					'label_hide',
 					'sublabel_hide',
