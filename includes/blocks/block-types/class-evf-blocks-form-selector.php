@@ -42,9 +42,10 @@ class EVF_Blocks_Form_Selector extends EVF_Blocks_Abstract {
 		$title        = ! empty( $attr['displayTitle'] ) ? true : false;
 		$description  = ! empty( $attr['displayDescription'] ) ? true : false;
 		$popup        = ! empty( $attr['displayPopup'] ) ? true : false;
-		$popup_type   = ! empty( $attr['displayPopupType'] ) ? $attr['displayPopupType'] : false;
-		$popup_text   = ! empty( $attr['displayPopupText'] ) ? $attr['displayPopupText'] : 'View Form';
-		$popup_size   = ! empty( $attr['displayPopupSize'] ) ? $attr['displayPopupSize'] : false;
+		$popup_type   = ! empty( $attr['popupType'] ) ? $attr['popupType'] : 'none';
+		$popup_text   = ! empty( $attr['popupButtonText'] ) ? $attr['popupButtonText'] : 'View Form';
+		$popup_size   = ! empty( $attr['popupSize'] ) ? $attr['popupSize'] : 'default';
+
 
 		// Disable form fields if called from the Gutenberg editor.
 		if ( $is_gb_editor ) {
