@@ -37,23 +37,6 @@
 
 				});
 
-				$(document).find('.evf-input-meta-key').each(function () {
-					var $this = $(this);
-
-					$this.wrap('<div class="evf-meta-key-input-wrapper" style="position: relative; display: inline-block; width: 100%;"></div>');
-
-					$this.after(`
-						<span class="evf-edit-meta-key-icon" style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); cursor: pointer; display: flex; align-items: center;">
-							<svg width="25" height="25" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-								<rect x="0.5" y="0.5" width="29" height="29" rx="1.5" fill="#FDFDFD"/>
-								<rect x="0.5" y="0.5" width="29" height="29" rx="1.5" stroke="#E1E1E1"/>
-								<path d="M15 21H21.75" stroke="#6B6B6B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-								<path d="M18.2832 8.7163C18.5818 8.41773 18.9867 8.25 19.409 8.25C19.8312 8.25 20.2361 8.41773 20.5347 8.7163C20.8333 9.01487 21.001 9.41981 21.001 9.84205C21.001 10.2643 20.8333 10.6692 20.5347 10.9678L11.5272 19.9761C11.3488 20.1545 11.1282 20.285 10.886 20.3556L8.73195 20.9841C8.66742 21.0029 8.59901 21.004 8.53389 20.9873C8.46876 20.9706 8.40932 20.9368 8.36179 20.8892C8.31425 20.8417 8.28037 20.7822 8.26369 20.7171C8.247 20.652 8.24813 20.5836 8.26695 20.5191L8.89545 18.3651C8.96612 18.1231 9.09664 17.9028 9.27495 17.7246L18.2832 8.7163Z" stroke="#6B6B6B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-								<path d="M17.25 9.75L19.5 12" stroke="#6B6B6B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-							</svg>
-						</span>
-					`);
-				});
 		 	});
 
 			$( document ).ready( function( $ ) {
@@ -164,6 +147,8 @@
 
 			EVFPanelBuilder.bindPrivacyPolicyActions();
 			$( document.body ).on( 'evf_field_drop_complete', function( e, field_type, dragged_field_id ) {
+
+				EVFPanelBuilder.bindEditMetaKey( dragged_field_id );
 
 				// Set defaults in privacy policy field.
 				if ( 'privacy-policy' === field_type ) {
@@ -575,6 +560,7 @@
 			EVFPanelBuilder.bindBulkOptionActions();
 			EVFPanelBuilder.bindAkismetInit();
 			EVFPanelBuilder.bindFormSubmissionMinWaitingTime();
+			EVFPanelBuilder.bindEditMetaKey();
 
 			// Fields Panel.
 			EVFPanelBuilder.bindUIActionsFields();
@@ -3395,6 +3381,35 @@
 				$(document).find('.everest-forms-form-submission-minimum-waiting-time').show();
 			}else{
 				$(document).find('.everest-forms-form-submission-minimum-waiting-time').hide();
+			}
+		},
+		bindEditMetaKey: function( field_id = '') {
+
+			if ( '' === field_id ) {
+				$(document).find('.evf-input-meta-key').each(function () {
+					var $this = $(this);
+
+					appendEditIcon( $this );
+				});
+			}else{
+				var $this = $( '#everest-forms-field-option-' + field_id + '-meta-key' );
+				appendEditIcon( $this );
+			}
+
+			function appendEditIcon( $this ) {
+				$this.wrap('<div class="evf-meta-key-input-wrapper" style="position: relative; display: inline-block; width: 100%;"></div>');
+
+				$this.after(`
+					<span class="evf-edit-meta-key-icon" style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); cursor: pointer; display: flex; align-items: center;">
+						<svg width="25" height="25" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<rect x="0.5" y="0.5" width="29" height="29" rx="1.5" fill="#FDFDFD"/>
+							<rect x="0.5" y="0.5" width="29" height="29" rx="1.5" stroke="#E1E1E1"/>
+							<path d="M15 21H21.75" stroke="#6B6B6B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+							<path d="M18.2832 8.7163C18.5818 8.41773 18.9867 8.25 19.409 8.25C19.8312 8.25 20.2361 8.41773 20.5347 8.7163C20.8333 9.01487 21.001 9.41981 21.001 9.84205C21.001 10.2643 20.8333 10.6692 20.5347 10.9678L11.5272 19.9761C11.3488 20.1545 11.1282 20.285 10.886 20.3556L8.73195 20.9841C8.66742 21.0029 8.59901 21.004 8.53389 20.9873C8.46876 20.9706 8.40932 20.9368 8.36179 20.8892C8.31425 20.8417 8.28037 20.7822 8.26369 20.7171C8.247 20.652 8.24813 20.5836 8.26695 20.5191L8.89545 18.3651C8.96612 18.1231 9.09664 17.9028 9.27495 17.7246L18.2832 8.7163Z" stroke="#6B6B6B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+							<path d="M17.25 9.75L19.5 12" stroke="#6B6B6B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+						</svg>
+					</span>
+				`);
 			}
 		},
 
