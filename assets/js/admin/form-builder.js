@@ -229,6 +229,71 @@
 					}
 				});
 		});
+
+		$( document ).on( 'click', '.evf-edit-meta-key-icon', function() {
+			var $wrapper = $(this).closest('.evf-meta-key-input-wrapper');
+			var $input = $wrapper.find('.evf-input-meta-key');
+
+			// Make input editable
+			$input.prop('readonly', false).focus();
+
+			// Optionally add a class for styling
+			$input.addClass('evf-meta-key-editing');
+
+			// Hide the edit icon (optional)
+			$(this).hide();
+
+			// Optional: Add Save/Cancel buttons dynamically
+			if ($wrapper.find('.evf-meta-key-actions').length === 0) {
+				$wrapper.append(`
+					<span class="evf-meta-key-actions" style="position: absolute; right: 10px; top: 56%; transform: translateY(-50%); display: flex; gap: 6px;">
+						<span class="evf-save-meta-key-icon" style="cursor: pointer;">
+							<svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<rect x="1.20078" y="0.600195" width="22.8" height="22.8" rx="1.2" fill="white"/>
+							<rect x="1.20078" y="0.600195" width="22.8" height="22.8" rx="1.2" stroke="#E1E1E1" stroke-width="0.8"/>
+							<path d="M17.2689 8.5L10.8522 14.9167L7.93555 12" stroke="#383838" stroke-width="1.16667" stroke-linecap="round" stroke-linejoin="round"/>
+							</svg>
+						</span>
+						<span class="evf-cancel-meta-key-icon" style="cursor: pointer;">
+							<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<rect x="0.800391" y="0.600195" width="22.8" height="22.8" rx="1.2" fill="white"/>
+							<rect x="0.800391" y="0.600195" width="22.8" height="22.8" rx="1.2" stroke="#E1E1E1" stroke-width="0.8"/>
+							<path d="M12.2026 12.8161L9.34427 15.6745C9.23733 15.7814 9.10122 15.8349 8.93594 15.8349C8.77066 15.8349 8.63455 15.7814 8.5276 15.6745C8.42066 15.5675 8.36719 15.4314 8.36719 15.2661C8.36719 15.1009 8.42066 14.9648 8.5276 14.8578L11.3859 11.9995L8.5276 9.14115C8.42066 9.0342 8.36719 8.89809 8.36719 8.73281C8.36719 8.56753 8.42066 8.43142 8.5276 8.32448C8.63455 8.21753 8.77066 8.16406 8.93594 8.16406C9.10122 8.16406 9.23733 8.21753 9.34427 8.32448L12.2026 11.1828L15.0609 8.32448C15.1679 8.21753 15.304 8.16406 15.4693 8.16406C15.6345 8.16406 15.7707 8.21753 15.8776 8.32448C15.9845 8.43142 16.038 8.56753 16.038 8.73281C16.038 8.89809 15.9845 9.0342 15.8776 9.14115L13.0193 11.9995L15.8776 14.8578C15.9845 14.9648 16.038 15.1009 16.038 15.2661C16.038 15.4314 15.9845 15.5675 15.8776 15.6745C15.7707 15.7814 15.6345 15.8349 15.4693 15.8349C15.304 15.8349 15.1679 15.7814 15.0609 15.6745L12.2026 12.8161Z" fill="#383838"/>
+							</svg>
+						</span>
+					</span>
+				`);
+			}
+
+			$(document).on('click', '.evf-cancel-meta-key-icon', function () {
+				var $wrapper = $(this).closest('.evf-meta-key-input-wrapper');
+				var $input = $wrapper.find('.evf-input-meta-key');
+
+				// Revert to readonly and remove editing class
+				$input.prop('readonly', true).removeClass('evf-meta-key-editing');
+
+				// Hide Save/Cancel buttons and show edit icon again
+				$wrapper.find('.evf-meta-key-actions').remove();
+				$wrapper.find('.evf-edit-meta-key-icon').show();
+			});
+
+			$(document).on('click', '.evf-save-meta-key-icon', function () {
+				var $wrapper = $(this).closest('.evf-meta-key-input-wrapper');
+				var $input = $wrapper.find('.evf-input-meta-key');
+				var newValue = $input.val();
+
+				// You can add a save handler here (e.g., AJAX call)
+				console.log('Saved value:', newValue);
+
+				// Set readonly again
+				$input.prop('readonly', true).removeClass('evf-meta-key-editing');
+
+				// Hide Save/Cancel buttons and show edit icon again
+				$wrapper.find('.evf-meta-key-actions').remove();
+				$wrapper.find('.evf-edit-meta-key-icon').show();
+			});
+
+		});
 		},
 
 		/**
