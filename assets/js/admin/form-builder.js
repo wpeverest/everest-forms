@@ -231,19 +231,14 @@
 		});
 
 		$( document ).on( 'click', '.evf-edit-meta-key-icon', function() {
-			var $wrapper = $(this).closest('.evf-meta-key-input-wrapper');
-			var $input = $wrapper.find('.evf-input-meta-key');
+			var $wrapper = $(this).closest('.evf-meta-key-input-wrapper'),
+				$input = $wrapper.find('.evf-input-meta-key'),
+				$original_value = $( this ).data('meta_key');
 
-			// Make input editable
 			$input.prop('readonly', false).focus();
 
-			// Optionally add a class for styling
-			$input.addClass('evf-meta-key-editing');
-
-			// Hide the edit icon (optional)
 			$(this).hide();
 
-			// Optional: Add Save/Cancel buttons dynamically
 			if ($wrapper.find('.evf-meta-key-actions').length === 0) {
 				$wrapper.append(`
 					<span class="evf-meta-key-actions" style="position: absolute; right: 10px; top: 56%; transform: translateY(-50%); display: flex; gap: 6px;">
@@ -254,7 +249,7 @@
 							<path d="M17.2689 8.5L10.8522 14.9167L7.93555 12" stroke="#383838" stroke-width="1.16667" stroke-linecap="round" stroke-linejoin="round"/>
 							</svg>
 						</span>
-						<span class="evf-cancel-meta-key-icon" style="cursor: pointer;">
+						<span class="evf-cancel-meta-key-icon" style="cursor: pointer;" data-original_value="${$original_value}">
 							<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 							<rect x="0.800391" y="0.600195" width="22.8" height="22.8" rx="1.2" fill="white"/>
 							<rect x="0.800391" y="0.600195" width="22.8" height="22.8" rx="1.2" stroke="#E1E1E1" stroke-width="0.8"/>
@@ -265,32 +260,55 @@
 				`);
 			}
 
+			if ($wrapper.find('.evf-meta-key-warning').length === 0) {
+				$wrapper.after(`
+					<div class="evf-meta-key-warning" style="
+						margin-top: 8px;
+						padding: 10px;
+						background-color: #fff7f1;
+						border-left: 3px solid orange;
+						color: #6b4d00;
+						font-size: 14px;
+						display: flex;
+						align-items: flex-start;
+						gap: 8px;
+					">
+						<div style="flex-shrink: 0; margin-top: 2px;">
+							<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<path fill-rule="evenodd" clip-rule="evenodd" d="M7.99935 1.99984C4.68564 1.99984 1.99935 4.68613 1.99935 7.99984C1.99935 11.3135 4.68564 13.9998 7.99935 13.9998C11.3131 13.9998 13.9993 11.3135 13.9993 7.99984C13.9993 4.68613 11.3131 1.99984 7.99935 1.99984ZM0.666016 7.99984C0.666016 3.94975 3.94926 0.666504 7.99935 0.666504C12.0494 0.666504 15.3327 3.94975 15.3327 7.99984C15.3327 12.0499 12.0494 15.3332 7.99935 15.3332C3.94926 15.3332 0.666016 12.0499 0.666016 7.99984ZM7.99935 7.33317C8.36754 7.33317 8.66602 7.63165 8.66602 7.99984V10.6665C8.66602 11.0347 8.36754 11.3332 7.99935 11.3332C7.63116 11.3332 7.33268 11.0347 7.33268 10.6665V7.99984C7.33268 7.63165 7.63116 7.33317 7.99935 7.33317ZM7.99935 4.6665C7.63116 4.6665 7.33268 4.96498 7.33268 5.33317C7.33268 5.70136 7.63116 5.99984 7.99935 5.99984H8.00602C8.37421 5.99984 8.67268 5.70136 8.67268 5.33317C8.67268 4.96498 8.37421 4.6665 8.00602 4.6665H7.99935Z" fill="#EE9936"/>
+							</svg>
+						</div>
+						<div>
+							<strong>Caution:</strong> We don't recommend changing this unless necessary, as it affects data retrieval.
+						</div>
+					</div>
+				`);
+			}
+
+
 			$(document).on('click', '.evf-cancel-meta-key-icon', function () {
-				var $wrapper = $(this).closest('.evf-meta-key-input-wrapper');
-				var $input = $wrapper.find('.evf-input-meta-key');
+				var $wrapper = $(this).closest('.evf-meta-key-input-wrapper'),
+					$input = $wrapper.find('.evf-input-meta-key'),
+					originalValue = $(this).data('original_value');
 
-				// Revert to readonly and remove editing class
-				$input.prop('readonly', true).removeClass('evf-meta-key-editing');
+				$input.val(originalValue);
 
-				// Hide Save/Cancel buttons and show edit icon again
+				$input.prop('readonly', true);
+
 				$wrapper.find('.evf-meta-key-actions').remove();
 				$wrapper.find('.evf-edit-meta-key-icon').show();
+				$wrapper.next('.evf-meta-key-warning').remove();
 			});
 
 			$(document).on('click', '.evf-save-meta-key-icon', function () {
-				var $wrapper = $(this).closest('.evf-meta-key-input-wrapper');
-				var $input = $wrapper.find('.evf-input-meta-key');
-				var newValue = $input.val();
+				var $wrapper = $(this).closest('.evf-meta-key-input-wrapper'),
+					$input = $wrapper.find('.evf-input-meta-key');
 
-				// You can add a save handler here (e.g., AJAX call)
-				console.log('Saved value:', newValue);
+				$input.prop('readonly', true);
 
-				// Set readonly again
-				$input.prop('readonly', true).removeClass('evf-meta-key-editing');
-
-				// Hide Save/Cancel buttons and show edit icon again
 				$wrapper.find('.evf-meta-key-actions').remove();
 				$wrapper.find('.evf-edit-meta-key-icon').show();
+				$wrapper.next('.evf-meta-key-warning').remove();
 			});
 
 		});
@@ -3465,7 +3483,7 @@
 				$this.wrap('<div class="evf-meta-key-input-wrapper" style="position: relative; display: inline-block; width: 100%;"></div>');
 
 				$this.after(`
-					<span class="evf-edit-meta-key-icon" style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); cursor: pointer; display: flex; align-items: center;">
+					<span class="evf-edit-meta-key-icon" style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); cursor: pointer; display: flex; align-items: center;" data-meta_key="${$this.val()}">
 						<svg width="25" height="25" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
 							<rect x="0.5" y="0.5" width="29" height="29" rx="1.5" fill="#FDFDFD"/>
 							<rect x="0.5" y="0.5" width="29" height="29" rx="1.5" stroke="#E1E1E1"/>
