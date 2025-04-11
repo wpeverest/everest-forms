@@ -241,7 +241,7 @@
 
 			if ($wrapper.find('.evf-meta-key-actions').length === 0) {
 				$wrapper.append(`
-					<span class="evf-meta-key-actions" style="position: absolute; right: 10px; top: 56%; transform: translateY(-50%); display: flex; gap: 6px;">
+					<span class="evf-meta-key-actions">
 						<span class="evf-save-meta-key-icon" style="cursor: pointer;">
 							<svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 							<rect x="1.20078" y="0.600195" width="22.8" height="22.8" rx="1.2" fill="white"/>
@@ -262,18 +262,8 @@
 
 			if ($wrapper.find('.evf-meta-key-warning').length === 0) {
 				$wrapper.after(`
-					<div class="evf-meta-key-warning" style="
-						margin-top: 8px;
-						padding: 10px;
-						background-color: #fff7f1;
-						border-left: 3px solid orange;
-						color: #6b4d00;
-						font-size: 14px;
-						display: flex;
-						align-items: flex-start;
-						gap: 8px;
-					">
-						<div style="flex-shrink: 0; margin-top: 2px;">
+					<div class="evf-meta-key-warning" >
+						<div class="everest-forms-meta-key-warning-icon">
 							<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
 								<path fill-rule="evenodd" clip-rule="evenodd" d="M7.99935 1.99984C4.68564 1.99984 1.99935 4.68613 1.99935 7.99984C1.99935 11.3135 4.68564 13.9998 7.99935 13.9998C11.3131 13.9998 13.9993 11.3135 13.9993 7.99984C13.9993 4.68613 11.3131 1.99984 7.99935 1.99984ZM0.666016 7.99984C0.666016 3.94975 3.94926 0.666504 7.99935 0.666504C12.0494 0.666504 15.3327 3.94975 15.3327 7.99984C15.3327 12.0499 12.0494 15.3332 7.99935 15.3332C3.94926 15.3332 0.666016 12.0499 0.666016 7.99984ZM7.99935 7.33317C8.36754 7.33317 8.66602 7.63165 8.66602 7.99984V10.6665C8.66602 11.0347 8.36754 11.3332 7.99935 11.3332C7.63116 11.3332 7.33268 11.0347 7.33268 10.6665V7.99984C7.33268 7.63165 7.63116 7.33317 7.99935 7.33317ZM7.99935 4.6665C7.63116 4.6665 7.33268 4.96498 7.33268 5.33317C7.33268 5.70136 7.63116 5.99984 7.99935 5.99984H8.00602C8.37421 5.99984 8.67268 5.70136 8.67268 5.33317C8.67268 4.96498 8.37421 4.6665 8.00602 4.6665H7.99935Z" fill="#EE9936"/>
 							</svg>
@@ -3496,12 +3486,12 @@
 			}
 
 			function appendEditIcon( $this ) {
-				$this.wrap('<div class="evf-meta-key-input-wrapper" style="position: relative; display: inline-block; width: 100%;"></div>');
+				$this.wrap('<div class="evf-meta-key-input-wrapper"></div>');
 
-				$this.before('<span class="evf-meta-key-copy-btn" style="position: absolute; right: 8px; top: 0; transform: translateY(-158%); color: #383838; font-size: 12px; font-weight: 400; cursor: pointer; text-decoration: underline;">Copy Meta Key</span>');
+				$this.before('<span class="evf-meta-key-copy-btn">Copy Meta Key</span>');
 
 				$this.after(`
-					<span class="evf-edit-meta-key-icon" style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); cursor: pointer; display: flex; align-items: center;" data-meta_key="${$this.val()}">
+					<span class="evf-edit-meta-key-icon" data-meta_key="${$this.val()}">
 						<svg width="25" height="25" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
 							<rect x="0.5" y="0.5" width="29" height="29" rx="1.5" fill="#FDFDFD"/>
 							<rect x="0.5" y="0.5" width="29" height="29" rx="1.5" stroke="#E1E1E1"/>

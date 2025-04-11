@@ -11415,3 +11415,57 @@ button#show-settings-link{
 	}
 
 }
+
+.evf-meta-key-input-wrapper{
+	position: relative;
+	display: inline-block;
+	width: 100%;
+
+	.evf-meta-key-copy-btn{
+		position: absolute;
+		right: 8px;
+		top: 0;
+		transform: translateY(-158%);
+		color: #383838;
+		font-size: 12px;
+		font-weight: 400;
+		cursor: pointer;
+		text-decoration: underline;
+	}
+
+	.evf-edit-meta-key-icon{
+		position: absolute;
+		right: 8px;
+		top: 50%;
+		transform: translateY(-50%);
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+	}
+
+	.evf-meta-key-actions{
+		position: absolute;
+		right: 10px;
+		top: 56%;
+		transform: translateY(-50%);
+		display: flex;
+		gap: 6px;
+	}
+}
+
+.evf-meta-key-warning{
+	margin-top: 8px;
+	padding: 10px;
+	background-color: #fff7f1;
+	border-left: 3px solid orange;
+	color: #6b4d00;
+	font-size: 14px;
+	display: flex;
+	align-items: flex-start;
+	gap: 8px;
+
+	.everest-forms-meta-key-warning-icon{
+		flex-shrink: 0;
+		margin-top: 2px;
+	}
+}
