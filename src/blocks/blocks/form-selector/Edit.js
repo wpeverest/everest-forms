@@ -6,6 +6,7 @@ import {
 	PanelBody,
 	Placeholder,
 	TextControl,
+	TextHighlight,
 } from "@wordpress/components";
 import { InspectorControls, useBlockProps } from "@wordpress/block-editor";
 import { __ } from "@wordpress/i18n";
@@ -153,6 +154,32 @@ const Edit = (props) => {
 											setAttributes({ popupSize: size })
 										}
 									/>
+									<p>
+										{__(
+											"For the custom design of the Form, Popup Button or Link. ",
+											"everest-forms",
+										)}
+										<a
+											href="https://docs.everestforms.net/docs/style-customizer/"
+											target="_blank"
+											rel="noopener noreferrer"
+											style={{
+												color: "blue",
+												textDecoration: "none",
+												transition: "none",
+											}}
+											onMouseEnter={(e) =>
+												(e.currentTarget.style.textDecoration =
+													"underline")
+											}
+											onMouseLeave={(e) =>
+												(e.currentTarget.style.textDecoration =
+													"none")
+											}
+										>
+											{__("Here", "everest-forms")}
+										</a>
+									</p>
 								</>
 							)}
 						</PanelBody>
