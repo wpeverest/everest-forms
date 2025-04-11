@@ -3467,6 +3467,22 @@
 			}
 		},
 		bindEditMetaKey: function( field_id = '') {
+			$(document).on('click', '.evf-meta-key-copy-btn', function () {
+				const $wrapper = $(this).closest('.evf-meta-key-input-wrapper');
+				const $input = $wrapper.find('.evf-input-meta-key');
+				const metaKey = $input.val();
+
+				navigator.clipboard.writeText(metaKey).then(() => {
+					const originalText = $(this).text();
+					$(this).text('Copied!').css('color', 'green');
+
+					setTimeout(() => {
+						$(this).text(originalText).css('color', '');
+					}, 1500);
+				}).catch(err => {
+					console.error('Failed to copy:', err);
+				});
+			});
 
 			if ( '' === field_id ) {
 				$(document).find('.evf-input-meta-key').each(function () {
@@ -3481,6 +3497,8 @@
 
 			function appendEditIcon( $this ) {
 				$this.wrap('<div class="evf-meta-key-input-wrapper" style="position: relative; display: inline-block; width: 100%;"></div>');
+
+				$this.before('<span class="evf-meta-key-copy-btn" style="position: absolute; right: 8px; top: 0; transform: translateY(-158%); color: #383838; font-size: 12px; font-weight: 400; cursor: pointer; text-decoration: underline;">Copy Meta Key</span>');
 
 				$this.after(`
 					<span class="evf-edit-meta-key-icon" style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); cursor: pointer; display: flex; align-items: center;" data-meta_key="${$this.val()}">
