@@ -77,6 +77,10 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 							'name' =>  esc_html__( 'Cloudflare Turnstile', 'everest-forms' ),
 							'image' => plugins_url( 'assets/images/captcha/cloudflare-logo.png', EVF_PLUGIN_FILE ),
 						),
+						'cleantalk'  => array(
+							'name' =>  esc_html__( 'CleanTalk', 'everest-forms' ),
+							'image' => plugins_url( 'assets/images/captcha/cloudflare-logo.png', EVF_PLUGIN_FILE ),
+						),
 					),
 					'class'    => 'everest-forms-recaptcha-type',
 					'desc_tip' => true,
@@ -229,6 +233,31 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 					'class'    => 'evf-enhanced-select',
 					'value'    => get_option( 'everest_forms_recaptcha_recaptcha_language', 'en-GB' ),
 					'desc_tip' => true,
+				),
+				array(
+					'title'      => esc_html__( 'Access Key', 'everest-forms' ),
+					'type'       => 'text',
+					/* translators: %1$s - Cloudflare Turnstile docs url */
+					'desc'       => sprintf( esc_html__( 'Please enter access key from CleanTalk. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/how-to-integrate-cloudflare-turnstile-with-the-everest-forms/' ) ),
+					'is_visible' => 'cleantalk' === $recaptcha_type,
+					'id'         => 'everest_forms_recaptcha_cleantalk_access_key',
+					'default'    => '',
+					'desc_tip'   => true,
+				),
+				array(
+					'title'      => esc_html__( 'Spam Validation', 'everest-forms' ),
+					'type'       => 'select',
+					/* translators: %1$s - Cloudflare Trunstile docs url */
+					'desc'       => sprintf( esc_html__( 'Please select what will be happened once a submission marked as spam. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/how-to-integrate-cloudflare-turnstile-with-the-everest-forms/' ) ),
+					'id'         => 'everest_forms_recaptcha_cleantalk_spam_validation',
+					'is_visible' => 'cleantalk' === $recaptcha_type,
+					'options'    => array(
+						'mark_as_spam'  => esc_html__( 'Mark as Spam', 'everest-forms' ),
+						'mark_the_form_submission_failed' => esc_html__( 'Mark the form Submission as Failed', 'everest-forms' ),
+						'mark_as_spam_and_skip_processing'  => esc_html__( 'Mark as Spam and Skip Processing', 'everest-forms' ),
+					),
+					'class'      => 'evf-enhanced-select',
+					'desc_tip'   => true,
 				),
 
 				array(

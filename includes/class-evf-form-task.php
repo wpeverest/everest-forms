@@ -300,6 +300,9 @@ class EVF_Form_Task {
 					$site_key   = get_option( 'everest_forms_recaptcha_turnstile_site_key' );
 					$secret_key = get_option( 'everest_forms_recaptcha_turnstile_secret_key' );
 					$theme_mode = get_option( 'everest_forms_recaptcha_turnstile_theme' );
+				}elseif ( 'cleantalk' === $recaptcha_type ) {
+					$access_key = get_option( 'everest_forms_recaptcha_cleantalk_access_key' );
+					$spam_validation = get_option( 'everest_forms_recaptcha_cleantalk_spam_validation' );
 				}
 				$recaptcha_verified = false;
 				foreach ( (array) $this->form_data['form_fields'] as $field ) {

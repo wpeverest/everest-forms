@@ -513,6 +513,9 @@ class EVF_Shortcode_Form {
 			$secret_key = get_option( 'everest_forms_recaptcha_turnstile_secret_key' );
 			$theme      = get_option( 'everest_forms_recaptcha_turnstile_theme' );
 			$lang       = get_option( 'everest_forms_recaptcha_recaptcha_language', 'en-GB' );
+		}else{
+			$site_key   = '';
+			$secret_key = '';
 		}
 
 		if ( ! $site_key || ! $secret_key ) {
