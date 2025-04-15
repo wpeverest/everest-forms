@@ -412,12 +412,20 @@ class EVF_Form_Task {
 				$clean_talk_passed = $response->allow == 1 && $response->spam == 0 && $response->account_status == 1;
 
 				if ( ! $clean_talk_passed ) {
-					$this->errors[ $form_id ]['header'] = $error;
-					$logger->error(
-						$error,
-						array( 'source' => 'CleanTalk Anti-Spam' )
-					);
-					return $this->errors;
+					switch ( $spam_validation ) {
+						case 'mark_the_form_submission_failed':
+							$this->errors[ $form_id ]['header'] = $error;
+							$logger->error(
+								$error,
+								array( 'source' => 'CleanTalk Anti-Spam' )
+							);
+							return $this->errors;
+							break;
+
+						default:
+							$entry['evf_spam_status'] = 'spam';
+							break;
+					}
 				}
 			}
 
