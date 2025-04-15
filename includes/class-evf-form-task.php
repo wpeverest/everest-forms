@@ -368,9 +368,11 @@ class EVF_Form_Task {
 				}
 			}
 
+			$spam_validation = get_option( 'everest_forms_recaptcha_cleantalk_spam_validation', '' );
+			$marked_as_spam = false;
+
 			if ( 'cleantalk' === $recaptcha_type ) {
 				$access_key = get_option( 'everest_forms_recaptcha_cleantalk_access_key' );
-				$spam_validation = get_option( 'everest_forms_recaptcha_cleantalk_spam_validation' );
 				$error = esc_html__( 'CleanTalk verification failed, please try again later.', 'everest-forms' );
 
 				$submit_time = isset( $this->form_data['entry']['evf_form_load_time'] ) ? time() - (int)$this->form_data['entry']['evf_form_load_time'] : null;
@@ -423,7 +425,7 @@ class EVF_Form_Task {
 							break;
 
 						default:
-							$entry['evf_spam_status'] = 'spam';
+							$marked_as_spam = true;
 							break;
 					}
 				}
@@ -534,6 +536,8 @@ class EVF_Form_Task {
 					return $this->errors;
 				}
 				$entry['evf_spam_status'] = 'spam';
+			}elseif ( $marked_as_spam ) {
+				$entry['evf_spam_status'] = 'spam';
 			}
 			// Pass the form created date into the form data.
 			$this->form_data['created'] = $form->post_date;
@@ -603,6 +607,7 @@ class EVF_Form_Task {
 			$entry_id = $this->entry_save( $this->form_fields, $entry, $this->form_data['id'], $this->form_data );
 			$logger->notice( sprintf( 'Entry is Saved to DataBase' ) );
 
+			if ( '' === $spam_validation || 'mark_as_spam' === $spam_validation || ( 'mark_as_spam_and_skip_processing' === $spam_validation && ! $marked_as_spam ) ) {
 			$logger->notice( sprintf( 'Sending Email' ) );
 			// Success - send email notification.
 			$logger->info(
@@ -632,6 +637,10 @@ class EVF_Form_Task {
 				array( 'source' => 'form-submission' )
 			);
 			do_action( "everest_forms_process_complete_{$form_id}", $this->form_fields, $entry, $this->form_data, $entry_id );
+		}else{
+			// @todo remove this way of printing notices.
+			add_filter( 'everest_forms_success', array( $this, 'check_success_message' ), 10, 2 );
+		}
 		} catch ( Exception $e ) {
 			evf_add_notice( $e->getMessage(), 'error' );
 			$logger->error(
