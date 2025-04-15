@@ -300,9 +300,6 @@ class EVF_Form_Task {
 					$site_key   = get_option( 'everest_forms_recaptcha_turnstile_site_key' );
 					$secret_key = get_option( 'everest_forms_recaptcha_turnstile_secret_key' );
 					$theme_mode = get_option( 'everest_forms_recaptcha_turnstile_theme' );
-				}elseif ( 'cleantalk' === $recaptcha_type ) {
-					$access_key = get_option( 'everest_forms_recaptcha_cleantalk_access_key' );
-					$spam_validation = get_option( 'everest_forms_recaptcha_cleantalk_spam_validation' );
 				}
 				$recaptcha_verified = false;
 				foreach ( (array) $this->form_data['form_fields'] as $field ) {
@@ -370,6 +367,60 @@ class EVF_Form_Task {
 					}
 				}
 			}
+
+			if ( 'cleantalk' === $recaptcha_type ) {
+				$access_key = get_option( 'everest_forms_recaptcha_cleantalk_access_key' );
+				$spam_validation = get_option( 'everest_forms_recaptcha_cleantalk_spam_validation' );
+				$error = esc_html__( 'CleanTalk verification failed, please try again later.', 'everest-forms' );
+
+				$submit_time = isset( $this->form_data['entry']['evf_form_load_time'] ) ? time() - (int)$this->form_data['entry']['evf_form_load_time'] : null;
+				$event_token = isset( $this->form_data['entry']['evf_form_event_token'] ) ? $this->form_data['entry']['evf_form_event_token'] : null;
+
+				$clean_talk_request = [
+					'method_name'     => 'check_message',
+					'auth_key'        => $access_key,
+					'sender_ip'       => $_SERVER['REMOTE_ADDR'],
+					'sender_info'     => json_encode([
+						'REFERRER'   => $_SERVER['HTTP_REFERER'],
+						'USER_AGENT' => htmlspecialchars(@$_SERVER['HTTP_USER_AGENT'])
+					]),
+					'js_on'           => 1,
+					'submit_time'     => $submit_time,
+					'event_token'     => $event_token,
+					'sender_nickname' => 'novaby',
+					'sender_email'    => 'vyqukeb@mailinator.com',
+					'message'         => 'asdsad',
+					'phone'           => '981237918',
+					'agent'           => 'wordpress-everest-forms-' . EVF_VERSION,
+					'post_info'       => [
+						'comment_type' => 'everest_forms_vendor_integration__use_api',
+						'post_url'     => $_SERVER['HTTP_REFERER']
+					]
+				];
+
+				$raw_response = wp_remote_post(
+					'https://moderate.cleantalk.org/api2.0',
+					[
+						'body'    => json_encode($clean_talk_request),
+						'headers' => [
+							'Content-Type' => 'application/json',
+						],
+					]
+				);
+				$response = json_decode( wp_remote_retrieve_body( $raw_response ) );
+
+				$clean_talk_passed = $response->allow == 1 && $response->spam == 0 && $response->account_status == 1;
+
+				if ( ! $clean_talk_passed ) {
+					$this->errors[ $form_id ]['header'] = $error;
+					$logger->error(
+						$error,
+						array( 'source' => 'CleanTalk Anti-Spam' )
+					);
+					return $this->errors;
+				}
+			}
+
 			// Initial error check.
 			$errors = apply_filters( 'everest_forms_process_initial_errors', $this->errors, $this->form_data );
 
