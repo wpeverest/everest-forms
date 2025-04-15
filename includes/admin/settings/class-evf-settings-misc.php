@@ -96,6 +96,14 @@ class EVF_Settings_Misc extends EVF_Settings_Page {
 					'class'    => 'evf-restapi-key',
 				),
 				array(
+					'title'    => esc_html__( 'Enable CleanTalk Spam Protection', 'everest-forms' ),
+					'desc'     => __( 'CleanTalk spam protection desc', 'everest-forms' ),
+					'id'       => 'everest_forms_enable_cleantalk_spam_protection',
+					'type'     => 'toggle',
+					'default'  => 'no',
+					'desc_tip' => true,
+				),
+				array(
 					'type' => 'sectionend',
 					'id'   => 'misc_options',
 				),
