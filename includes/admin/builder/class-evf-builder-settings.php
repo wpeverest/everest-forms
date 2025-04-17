@@ -742,6 +742,43 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				);
 				do_action( 'everest_forms_inline_honeypot_settings', $this, 'honeypot', 'connection_1' );
 				echo '</div>';
+
+				/**
+				 * CleanTalks anti-spam protection.
+				 */
+				echo '<div class="everest-forms-border-container"><h4 class="everest-forms-border-container-title">' . esc_html__( 'CleanTalk', 'everest-forms' ) . '</h4>';
+				everest_forms_panel_field(
+					'toggle',
+					'settings',
+					'cleantalk',
+					$this->form_data,
+					esc_html__( 'Enable CleanTalk anti-spam protection', 'everest-forms' ),
+					array(
+						'default' => '0',
+					)
+				);
+
+				echo '<div class="everest-forms-border-container everest-forms-cleantalk-protection-type">';
+				everest_forms_panel_field(
+					'select',
+					'settings',
+					'cleantalk_protection_type',
+					$this->form_data,
+					esc_html__( 'Protection type', 'everest-forms' ),
+					array(
+						'default' => 'validation_failed',
+						'tooltip' => esc_html__( "Please select the protection type. Choosing 'Mark as Spam' allows the submission but marks the entry as spam, while selecting 'Make the form submission as failed' will prevent the form submission.", 'everest-forms' ),
+						'options' => array(
+							'validation_failed' => esc_html__( 'Make the form submission as failed', 'everest-forms' ),
+							'mark_as_spam'      => esc_html__( 'Mark as Spam', 'everest-forms' ),
+						),
+					)
+				);
+				do_action( 'everest_forms_inline_cleantalk_settings', $this, 'cleantalk', 'connection_1' );
+				echo '</div>';
+				echo '</div>';
+
+
 				/**
 				* Akismet anit-spam protection.
 				*

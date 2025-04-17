@@ -104,6 +104,28 @@ class EVF_Settings_Misc extends EVF_Settings_Page {
 					'desc_tip' => true,
 				),
 				array(
+					'title'    => esc_html__( 'CleanTalk Methods', 'everest-forms' ),
+					'desc'     => esc_html__( 'Choose the CleanTalk methods.', 'everest-forms' ),
+					'id'       => 'everest_forms_clean_talk_methods',
+					'default'  => 'rest_api',
+					'type'     => 'radio',
+					'options'  => array(
+						'rest_api' => 'RestApi',
+						'clean_talk_plugin' => 'CleanTalk Plugin',
+					),
+					'desc_tip' => true,
+					'class'    => 'evf-clean-talk-method',
+				),
+				array(
+					'title'    => esc_html__( 'Access Key', 'everest-forms' ),
+					'desc'     => esc_html__( 'Enter the access key', 'everest-forms' ),
+					'id'       => 'everest_forms_recaptcha_cleantalk_access_key',
+					'default'  => esc_html__( 'Approval notification for new pending entry', 'everest-forms' ),
+					'type'     => 'text',
+					'desc_tip' => true,
+					'class'    => 'evf-clean-talk-access-key',
+				),
+				array(
 					'type' => 'sectionend',
 					'id'   => 'misc_options',
 				),
