@@ -502,6 +502,12 @@ class EVF_Shortcode_Form {
 			return;
 		}
 
+		$is_cleantalk_activated = isset( $form_data['settings']['cleantalk'] ) ? $form_data['settings']['cleantalk'] : false;
+
+		if ( ! $is_cleantalk_activated ) {
+			return;
+		}
+
 		$recaptcha_api = 'https://moderate.cleantalk.org/ct-bot-detector-wrapper.js';
 		$recaptcha_inline = <<<JS
 		document.addEventListener("DOMContentLoaded", function () {

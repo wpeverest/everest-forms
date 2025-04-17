@@ -774,6 +774,50 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 						),
 					)
 				);
+
+				$is_cleantalk_activated_global = evf_string_to_bool( get_option( 'everest_forms_enable_cleantalk_spam_protection', '' ) );
+				$clean_talk_method = get_option( 'everest_forms_clean_talk_methods', '' );
+				$access_key = get_option( 'everest_forms_recaptcha_cleantalk_access_key' );
+				/**
+				* Warning message if the installation, activation and configuration are not proper.
+				*/
+				if ( ! $is_cleantalk_activated_global ) {
+					printf(
+						'<div class="evf-akismet"><span class="evf-akismet-warning"><span class="evf-akismet-warning-label">%s</span> %s <a href="%s" target="_blank">%s</a>. %s <a href="%s" target="_blank">%s</a></div>',
+						esc_html__( 'Warning:- ', 'everest-forms' ),
+						esc_html__( 'Enable CleanTalk in', 'everest-forms' ),
+						esc_url( admin_url( 'admin.php?page=evf-settings&tab=misc' ) ),
+						esc_html__( 'Global Settings > Misc', 'everest-forms' ),
+						esc_html__( 'Learn more at', 'everest-forms' ),
+						esc_url( 'https://docs.everestforms.net/' ),
+						esc_html__( 'documentation', 'everest-forms' )
+					);
+				}elseif ( 'rest_api' === $clean_talk_method && empty( $access_key ) ) {
+					printf(
+						'<div class="evf-akismet"><span class="evf-akismet-warning"><span class="evf-akismet-warning-label">%s</span> %s <a href="%s" target="_blank">%s</a>%s <a href="%s" target="_blank">%s</a></div>',
+						esc_html__( 'Warning:- ', 'everest-forms' ),
+						esc_html__( 'Go to', 'everest-forms' ),
+						esc_url( admin_url( 'admin.php?page=evf-settings&tab=misc' ) ),
+						esc_html__( 'Settings > Misc', 'everest-forms' ),
+						esc_html__( ' and add your CleanTalk Access Key. For more', 'everest-forms' ),
+						esc_url( 'https://docs.everestforms.net/' ),
+						esc_html__( 'info', 'everest-forms' )
+					);
+				}elseif ( 'clean_talk_plugin' === $clean_talk_method ) {
+					if ( ! class_exists( 'Cleantalk\Antispam\Cleantalk' ) ) {
+						printf(
+							'<div class="evf-akismet"><span class="evf-akismet-warning"><span class="evf-akismet-warning-label">%s</span> %s <a href="%s" target="_blank">%s</a>%s <a href="%s" target="_blank">%s</a></div>',
+							esc_html__( 'Warning:- ', 'everest-forms' ),
+							esc_html__( 'Go to', 'everest-forms' ),
+							esc_url( admin_url( 'admin.php?page=evf-settings&tab=misc' ) ),
+							esc_html__( 'Settings > Misc', 'everest-forms' ),
+							esc_html__( ' and activate the CleanTalk plugin. For more', 'everest-forms' ),
+							esc_url( 'https://docs.everestforms.net/' ),
+							esc_html__( 'info', 'everest-forms' )
+						);
+					}
+				}
+
 				do_action( 'everest_forms_inline_cleantalk_settings', $this, 'cleantalk', 'connection_1' );
 				echo '</div>';
 				echo '</div>';
