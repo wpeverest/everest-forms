@@ -546,6 +546,9 @@ class EVF_Smart_Tags {
 						$user_agent = evf_get_user_agent();
 						$content    = str_replace( '{' . $other_tag . '}', $user_agent, $content );
 						break;
+					case 'entry_id':
+						$content = str_replace( '{' . $other_tag . '}', $entry_id, $content );
+						break;
 				}
 			}
 		}
