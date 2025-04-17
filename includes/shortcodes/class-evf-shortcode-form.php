@@ -44,6 +44,7 @@ class EVF_Shortcode_Form {
 		add_action( 'everest_forms_display_field_after', array( 'EVF_Shortcode_Form', 'description' ), 5, 2 );
 		add_action( 'everest_forms_display_field_after', array( 'EVF_Shortcode_Form', 'wrapper_end' ), 15, 2 );
 		add_action( 'everest_forms_frontend_output', array( 'EVF_Shortcode_Form', 'honeypot' ), 15, 3 );
+		add_action( 'everest_forms_frontend_output', array( 'EVF_Shortcode_Form', 'clean_talk' ), 15, 3 );
 		if ( ! apply_filters( 'everest_forms_recaptcha_disabled', false ) ) {
 			add_action( 'everest_forms_frontend_output', array( 'EVF_Shortcode_Form', 'recaptcha' ), 20, 3 );
 		}
@@ -488,6 +489,63 @@ class EVF_Shortcode_Form {
 	}
 
 	/**
+	 * Anti-spam CleanTalk output if configured.
+	 *
+	 * @since xx.xx.xx
+	 *
+	 * @param  [type] $form_data Form data.
+	 */
+	public static function clean_talk( $form_data ){
+		$is_cleantalk_activated_global = evf_string_to_bool( get_option( 'everest_forms_enable_cleantalk_spam_protection', '' ) );
+
+		if ( ! $is_cleantalk_activated_global ) {
+			return;
+		}
+
+		$recaptcha_api = 'https://moderate.cleantalk.org/ct-bot-detector-wrapper.js';
+		$recaptcha_inline = <<<JS
+		document.addEventListener("DOMContentLoaded", function () {
+			var loadInput = document.querySelector('input[name="everest_forms[evf_form_load_time]"]');
+			if (loadInput) {
+				loadInput.value = Math.floor(Date.now() / 1000);
+			}
+
+			var maxAttempts = 10;
+			var attempts = 0;
+			var interval = setInterval(function () {
+				var match = document.cookie.match(/ct_event_token=([^;]+)/);
+				if (match && match[1]) {
+					var eventInput = document.querySelector('input[name="everest_forms[evf_event_token]"]');
+					if (eventInput) {
+						eventInput.value = match[1];
+					}
+					clearInterval(interval);
+				}
+				if (++attempts >= maxAttempts) {
+					clearInterval(interval);
+				}
+			}, 500);
+		});
+		JS;
+
+		// Enqueue reCaptcha scripts.
+		wp_enqueue_script(
+			'evf-clan-talk',
+			$recaptcha_api,
+			array( 'jquery' ),
+			EVF_VERSION,
+			true
+		);
+
+		wp_add_inline_script( 'evf-clan-talk', $recaptcha_inline );
+
+		if ( isset( $form_data['settings']['cleantalk'] ) && '1' === $form_data['settings']['cleantalk'] ) {
+			echo '<input type="hidden" name="everest_forms[evf_event_token]" value="">';
+			echo '<input type="hidden" name="everest_forms[evf_form_load_time]" class="evf_form_load_time" value="">';
+		}
+	}
+
+	/**
 	 * Google reCAPTCHA output if configured.
 	 *
 	 * @param array $form_data Form data and settings.
@@ -519,18 +577,14 @@ class EVF_Shortcode_Form {
 		}
 
 		if ( ! $site_key || ! $secret_key ) {
-			if ( 'cleantalk' != $recaptcha_type ) {
 				return;
-			}
 		}
 		// Check that the CAPTCHA is configured for the specific form.
 		if (
 		! isset( $form_data['settings']['recaptcha_support'] ) ||
 		'1' !== $form_data['settings']['recaptcha_support']
 		) {
-			if ( 'cleantalk' != $recaptcha_type ) {
 				return;
-			}
 		}
 		if ( evf_is_amp() ) {
 			if ( 'v3' === $recaptcha_type ) {
@@ -543,7 +597,7 @@ class EVF_Shortcode_Form {
 			return; // Only v3 is supported in AMP.
 		}
 
-		if ( (isset( $form_data['settings']['recaptcha_support'] ) && '1' === $form_data['settings']['recaptcha_support'] ) || 'cleantalk' === $recaptcha_type ) {
+		if ( isset( $form_data['settings']['recaptcha_support'] ) && '1' === $form_data['settings']['recaptcha_support'] ) {
 			$form_id = isset( $form_data['id'] ) ? absint( $form_data['id'] ) : 0;
 			$visible = ! empty( self::$parts[ $form_id ] ) ? 'style="display:none;"' : '';
 			$data    = apply_filters(
@@ -555,7 +609,7 @@ class EVF_Shortcode_Form {
 			);
 
 			// Load reCAPTCHA support if form supports it.
-			if ( ( $site_key && $secret_key ) || 'cleantalk' === $recaptcha_type ) {
+			if ( $site_key && $secret_key ) {
 				if ( 'v2' === $recaptcha_type ) {
 					$recaptcha_api = apply_filters( 'everest_forms_frontend_recaptcha_url', 'https://www.google.com/recaptcha/api.js?onload=EVFRecaptchaLoad&render=explicit', $recaptcha_type, $form_id );
 
@@ -591,32 +645,6 @@ class EVF_Shortcode_Form {
 					$recaptcha_api     = apply_filters( 'everest_forms_frontend_recaptcha_url', 'https://challenges.cloudflare.com/turnstile/v0/api.js?onload=EVFTurnstileLoad&render=explicit', $recaptcha_type, $form_id );
 					$recaptcha_inline  = 'var EVFTurnstileLoad = function(){jQuery(".g-recaptcha").each(function(index, el){var recaptchaID =  turnstile.render(el,{theme:"' . $theme . '",language:"' . $lang . '",callback:function(){EVFRecaptchaCallback(el);}},true);jQuery(el).attr( "data-recaptcha-id", recaptchaID);});};';
 					$recaptcha_inline .= 'var EVFRecaptchaCallback = function(el){jQuery(el).parent().find(".evf-recaptcha-hidden").val("1").trigger("change").valid();};';
-				}elseif ( 'cleantalk' === $recaptcha_type ) {
-					$recaptcha_api = 'https://moderate.cleantalk.org/ct-bot-detector-wrapper.js';
-					$recaptcha_inline = <<<JS
-					document.addEventListener("DOMContentLoaded", function () {
-						var loadInput = document.querySelector('input[name="everest_forms[evf_form_load_time]"]');
-						if (loadInput) {
-							loadInput.value = Math.floor(Date.now() / 1000);
-						}
-
-						var maxAttempts = 10;
-						var attempts = 0;
-						var interval = setInterval(function () {
-							var match = document.cookie.match(/ct_event_token=([^;]+)/);
-							if (match && match[1]) {
-								var eventInput = document.querySelector('input[name="everest_forms[evf_event_token]"]');
-								if (eventInput) {
-									eventInput.value = match[1];
-								}
-								clearInterval(interval);
-							}
-							if (++attempts >= maxAttempts) {
-								clearInterval(interval);
-							}
-						}, 500);
-					});
-					JS;
 				}
 
 				// Enqueue reCaptcha scripts.
@@ -645,11 +673,7 @@ class EVF_Shortcode_Form {
 					if ( 'hcaptcha' === $recaptcha_type && 'no' === $invisible_recaptcha || 'turnstile' === $recaptcha_type ) {
 						echo '<input type="text" name="g-recaptcha-hidden" class="evf-recaptcha-hidden" style="position:absolute!important;clip:rect(0,0,0,0)!important;height:1px!important;width:1px!important;border:0!important;overflow:hidden!important;padding:0!important;margin:0!important;" required>';
 					}
-				}elseif ( 'cleantalk' === $recaptcha_type ) {
-					echo '<input type="hidden" name="everest_forms[evf_event_token]" value="">';
-					echo '<input type="hidden" name="everest_forms[evf_form_load_time]" class="evf_form_load_time" value="">';
-				}
-				 else {
+				} else {
 					echo '<input type="hidden" name="everest_forms[recaptcha]" value="">';
 				}
 
