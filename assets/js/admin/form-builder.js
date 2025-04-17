@@ -3634,6 +3634,14 @@ jQuery(function () {
 
 	var mySelect = jQuery('#everest-forms-panel-field-settings-redirect_to option:selected').val();
 
+	if(mySelect === 'same') {
+		jQuery('#everest-forms-panel-field-settings-preview_confirmation-wrap').show();
+		jQuery('#everest-forms-panel-field-settings-preview_confirmation_select-wrap').show();
+	}else{
+		jQuery('#everest-forms-panel-field-settings-preview_confirmation-wrap').hide();
+		jQuery('#everest-forms-panel-field-settings-preview_confirmation_select-wrap').hide();
+	}
+
 	if ( mySelect == 'same' ) {
 		jQuery('#everest-forms-panel-field-settings-custom_page-wrap').hide();
 		jQuery('#everest-forms-panel-field-settings-enable_redirect_query_string-wrap').hide();
@@ -3652,6 +3660,14 @@ jQuery(function () {
 	}
 
 	jQuery( '#everest-forms-panel-field-settings-redirect_to' ).on( 'change', function () {
+		if(this.value === 'same') {
+			jQuery('#everest-forms-panel-field-settings-preview_confirmation-wrap').show();
+			jQuery('#everest-forms-panel-field-settings-preview_confirmation_select-wrap').show();
+		}else {
+			jQuery('#everest-forms-panel-field-settings-preview_confirmation-wrap').hide();
+			jQuery('#everest-forms-panel-field-settings-preview_confirmation_select-wrap').hide();
+		}
+
 		if ( this.value == 'same' ) {
 			jQuery('#everest-forms-panel-field-settings-custom_page-wrap').hide();
 			jQuery('#everest-forms-panel-field-settings-external_url-wrap').hide();
