@@ -3637,9 +3637,11 @@ jQuery(function () {
 	if(mySelect === 'same') {
 		jQuery('#everest-forms-panel-field-settings-preview_confirmation-wrap').show();
 		jQuery('#everest-forms-panel-field-settings-preview_confirmation_select-wrap').show();
+		jQuery('.evf-same-page-content').show();
 	}else{
 		jQuery('#everest-forms-panel-field-settings-preview_confirmation-wrap').hide();
 		jQuery('#everest-forms-panel-field-settings-preview_confirmation_select-wrap').hide();
+		jQuery('.evf-same-page-content').hide();
 	}
 
 	if ( mySelect == 'same' ) {
@@ -3663,9 +3665,11 @@ jQuery(function () {
 		if(this.value === 'same') {
 			jQuery('#everest-forms-panel-field-settings-preview_confirmation-wrap').show();
 			jQuery('#everest-forms-panel-field-settings-preview_confirmation_select-wrap').show();
+			jQuery('.evf-same-page-content').show();
 		}else {
 			jQuery('#everest-forms-panel-field-settings-preview_confirmation-wrap').hide();
 			jQuery('#everest-forms-panel-field-settings-preview_confirmation_select-wrap').hide();
+			jQuery('.evf-same-page-content').hide();
 		}
 
 		if ( this.value == 'same' ) {
