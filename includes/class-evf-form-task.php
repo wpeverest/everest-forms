@@ -1317,6 +1317,12 @@ class EVF_Form_Task {
 	 * @param  string $form_id (Optional) The identifier of the form.
 	 */
 	public function get_clean_talk_validate( $entry, $form_id = ''){
+		$enabled_features = get_option( 'everest_forms_enabled_features', array() );
+
+		if ( ! in_array( 'everest-forms-clean-talk', $enabled_features ) ) {
+			return false;
+		}
+
 		$is_clean_talk_activated_global = evf_string_to_bool( get_option( 'everest_forms_enable_cleantalk_spam_protection', '' ) );
 
 		if ( ! $is_clean_talk_activated_global ) {
