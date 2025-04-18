@@ -13,6 +13,7 @@ use EverestForms\Addons\OxygenBuilder\OxygenBuilder;
 use EverestForms\Addons\StyleCustomizer\StyleCustomizer;
 use EverestForms\Addons\DiviBuilder\DiviBuilder;
 use EverestForms\Addons\BeaverBuilder\BeaverBuilder;
+use EverestForms\Addons\CleanTalk\CleanTalk;
 use EverestForms\Addons\WPBakeryBuilder\WPBakeryBuilder;
 use EverestForms\Traits\Singleton;
 
@@ -55,6 +56,7 @@ class Addons {
 				'beaver-builder'   => BeaverBuilder::class,
 				'wpbakery-builder' => WPBakeryBuilder::class,
 				'style-customizer' => StyleCustomizer::class,
+				'clean-talk'		=> CleanTalk::class,
 			)
 		);
 	}

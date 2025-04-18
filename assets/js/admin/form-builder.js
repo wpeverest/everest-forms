@@ -558,7 +558,6 @@
 			EVFPanelBuilder.bindBulkOptionActions();
 			EVFPanelBuilder.bindAkismetInit();
 			EVFPanelBuilder.bindFormSubmissionMinWaitingTime();
-			EVFPanelBuilder.bindCleanTalkInit();
 
 			// Fields Panel.
 			EVFPanelBuilder.bindUIActionsFields();
@@ -3354,20 +3353,6 @@
 				$(document).find('.everest-forms-akismet-protection-type').show();
 			}else{
 				$(document).find('.everest-forms-akismet-protection-type').hide();
-			}
-		},
-		bindCleanTalkInit: function(){
-			var cleanTalkEnabler = $(document).find('#everest-forms-panel-field-settings-cleantalk');
-			EVFPanelBuilder.cleanTalkTogger(cleanTalkEnabler);
-			$(document).on('change', '#everest-forms-panel-field-settings-cleantalk', function(){
-				EVFPanelBuilder.cleanTalkTogger($(this));
-			})
-		},
-		cleanTalkTogger:function(cleanTalkEnabler){
-			if($(cleanTalkEnabler).is(':checked')){
-				$(document).find('.everest-forms-cleantalk-protection-type').show();
-			}else{
-				$(document).find('.everest-forms-cleantalk-protection-type').hide();
 			}
 		},
 

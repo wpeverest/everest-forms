@@ -686,48 +686,4 @@
 		}
 	});
 
-	//CleanTalk Spam Protection
-	if( $( '#everest_forms_enable_cleantalk_spam_protection' ).is(':checked') ){
-		$( document).find( '.evf-clean-talk-method' ).closest( '.everest-forms-global-settings' ).show();
-		$( document).find( '#everest_forms_recaptcha_cleantalk_access_key' ).closest( '.everest-forms-global-settings' ).show();
-	}else{
-		$( document).find( '.evf-clean-talk-method' ).closest( '.everest-forms-global-settings' ).hide();
-		$( document).find( '#everest_forms_recaptcha_cleantalk_access_key' ).closest( '.everest-forms-global-settings' ).hide();
-	}
-
-	$( '#everest_forms_enable_cleantalk_spam_protection' ).on( 'change', function(e){
-		const {checked} = e.target;
-		var evf_clean_talk_method = $('#everest_forms_clean_talk_methods:checked').val();
-
-		if( 'rest_api' === evf_clean_talk_method && checked ){
-			$(document).find('#everest_forms_recaptcha_cleantalk_access_key').closest('.everest-forms-global-settings').show();
-		}else{
-			$(document).find('#everest_forms_recaptcha_cleantalk_access_key').closest('.everest-forms-global-settings').hide();
-		}
-
-		if(checked) {
-			$( document).find( '.evf-clean-talk-method' ).closest( '.everest-forms-global-settings' ).show();
-		}else{
-			$( document).find( '.evf-clean-talk-method' ).closest( '.everest-forms-global-settings' ).hide();
-			$(document).find('#everest_forms_recaptcha_cleantalk_access_key').closest('.everest-forms-global-settings').hide();
-		}
-	});
-
-	var evf_clean_talk_method = $('#everest_forms_clean_talk_methods:checked').val();
-
-	if( 'rest_api' === evf_clean_talk_method && $( '#everest_forms_enable_cleantalk_spam_protection' ).is(':checked') ){
-		$(document).find('#everest_forms_recaptcha_cleantalk_access_key').closest('.everest-forms-global-settings').show();
-	}else{
-		$(document).find('#everest_forms_recaptcha_cleantalk_access_key').closest('.everest-forms-global-settings').hide();
-	}
-
-	$(document).on('click, change', '#everest_forms_clean_talk_methods', function(){
-		var evf_clean_talk_method = $('#everest_forms_clean_talk_methods:checked').val();
-		if('rest_api' === evf_clean_talk_method){
-			$(document).find('#everest_forms_recaptcha_cleantalk_access_key').closest('.everest-forms-global-settings').show();
-		}else{
-			$(document).find('#everest_forms_recaptcha_cleantalk_access_key').closest('.everest-forms-global-settings').hide();
-		}
-	});
-
 })( jQuery, everest_forms_admin );
