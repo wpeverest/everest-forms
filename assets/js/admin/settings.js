@@ -87,7 +87,7 @@
 	});
 
 	// Show/hide based on reCAPTCHA type.
-	$('#evf-global-settings-recaptcha-v2, #evf-global-settings-recaptcha-v3, #evf-global-settings-hcaptcha, #evf-global-settings-cloudflare-turnstile' ).change(function() {
+	$('#evf-global-settings-recaptcha-v2, #evf-global-settings-recaptcha-v3, #evf-global-settings-hcaptcha, #evf-global-settings-cloudflare-turnstile').change(function() {
 		var recaptcha_v2_site_key             = $( '#everest_forms_recaptcha_v2_site_key' ).closest('.everest-forms-global-settings'),
 			recaptcha_v2_secret_key           = $( '#everest_forms_recaptcha_v2_secret_key' ).closest('.everest-forms-global-settings'),
 			recaptcha_v2_invisible_site_key   = $( '#everest_forms_recaptcha_v2_invisible_site_key' ).closest('.everest-forms-global-settings'),
@@ -101,7 +101,6 @@
 			turnstile_site_key 				  = $( '#everest_forms_recaptcha_turnstile_site_key' ).closest('.everest-forms-global-settings'),
 			turnstile_secret_key              = $( '#everest_forms_recaptcha_turnstile_secret_key' ).closest('.everest-forms-global-settings');
 			turnstile_theme                   = $( '#everest_forms_recaptcha_turnstile_theme' ).closest('.everest-forms-global-settings');
-			captchaLanguage                	  = $( '#select2-everest_forms_recaptcha_recaptcha_language-container' ).closest('.everest-forms-global-settings');
 
 			if ( $( this ).is( ':checked' ) ) {
 				if ( 'v2' === $( this ).val() ) {
@@ -154,7 +153,7 @@
 					turnstile_site_key.show();
 					turnstile_secret_key.show();
 					turnstile_theme.show();
-				 }else {
+				 } else {
 					recaptcha_v2_site_key.hide();
 					recaptcha_v2_secret_key.hide();
 					recaptcha_v2_invisible.hide();

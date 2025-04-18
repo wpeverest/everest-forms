@@ -685,5 +685,4 @@
 
 		}
 	});
-
 })( jQuery, everest_forms_admin );

@@ -230,6 +230,7 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 					'value'    => get_option( 'everest_forms_recaptcha_recaptcha_language', 'en-GB' ),
 					'desc_tip' => true,
 				),
+
 				array(
 					'type' => 'sectionend',
 					'id'   => 'integration_options',
