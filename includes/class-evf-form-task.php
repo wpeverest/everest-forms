@@ -1326,7 +1326,7 @@ class EVF_Form_Task {
 		$is_clean_talk_activated_global = evf_string_to_bool( get_option( 'everest_forms_enable_cleantalk_spam_protection', '' ) );
 
 		if ( ! $is_clean_talk_activated_global ) {
-			return;
+			return false;
 		}
 
 		$is_cleantalk_activated = isset( $this->form_data['settings']['cleantalk'] ) ? $this->form_data['settings']['cleantalk'] : false;
