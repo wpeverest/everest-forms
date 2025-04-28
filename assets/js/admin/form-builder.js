@@ -3831,9 +3831,22 @@ jQuery( function ( $ ) {
 		 */
 		if ( ! $( this ).prop( 'checked' ) ) {
 			$(this).closest('tr').find('td').not('.has-row-actions').addClass('evf-disable-row');
-
+			var str = $( document ).find('.everest-forms-list-filters-row').find( '.inactive' ).find( 'span.count' ).text();
+			var newStr = str.replace(/\((\d+)\)/, function(match, p1) {
+				var number = parseInt(p1, 10);
+				number += 1;
+				return "(" + number + ")";
+			});
+			$( document ).find('.everest-forms-list-filters-row').find( '.inactive' ).find( 'span.count' ).text( newStr )
 		}else{
 			$(this).closest('tr').find('td').not('.has-row-actions').removeClass('evf-disable-row');
+			var str = $( document ).find('.everest-forms-list-filters-row').find( '.inactive' ).find( 'span.count' ).text();
+			var newStr = str.replace(/\((\d+)\)/, function(match, p1) {
+				var number = parseInt(p1, 10);
+				number -= 1;
+				return "(" + number + ")";
+			});
+			$( document ).find('.everest-forms-list-filters-row').find( '.inactive' ).find( 'span.count' ).text( newStr )
 		}
 
 		$.post( evf_data.ajax_url, {
