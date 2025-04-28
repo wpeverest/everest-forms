@@ -286,9 +286,6 @@ abstract class EVF_Form_Fields {
 
 			// Label.
 			case 'label':
-				if ( isset( $field['type'] ) && 'private-note' === $field['type'] ) {
-					$args['value'] = esc_html__( 'Private Note', 'everest-forms' );
-				}
 				$output = sprintf( '<label for="everest-forms-field-option-%s-%s" class="%s" %s>%s', $id, $slug, $class, $data, esc_html( $args['value'] ) );
 				if ( isset( $args['tooltip'] ) && ! empty( $args['tooltip'] ) ) {
 					$output .= ' ' . sprintf( '<i class="dashicons dashicons-editor-help everest-forms-help-tooltip" title="%s"></i>', esc_attr( $args['tooltip'] ) );
@@ -2246,7 +2243,9 @@ abstract class EVF_Form_Fields {
 
 		switch ( $option ) {
 			case 'label':
-				$label = isset( $field['label'] ) && ! empty( $field['label'] ) ? $field['label'] : '';
+				error_log( print_r( 'mah field', true ) );
+				error_log( print_r( $field, true ) );
+				$label = isset( $field['label'] ) && ! empty( $field['label'] ) ? $field['label'] . ('private-note' === $field['type'] ? (' (Admin Only)') : '' ) : '';
 				if ( $echo ) {
 					printf( '<label class="label-title %s"><span class="text">%s</span><span class="required">%s</span></label>', esc_attr( $class ), esc_html( $label ), esc_html( apply_filters( 'everest_form_get_required_type', '*', $field, $form_data ) ) );
 				} else {

@@ -26,6 +26,7 @@ class EVF_Field_Private_Note extends EVF_Form_Fields {
 			'basic-options'    => array(
 				'field_options' => array(
 					'label',
+					'description',
 					'meta',
 				),
 			)
@@ -59,5 +60,7 @@ class EVF_Field_Private_Note extends EVF_Form_Fields {
 
 		// Label.
 		$this->field_preview_option( 'label', $field );
+		// Description.
+		$this->field_preview_option( 'description', $field );
 	}
 }
