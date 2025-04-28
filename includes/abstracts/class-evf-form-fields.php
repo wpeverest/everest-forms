@@ -286,6 +286,9 @@ abstract class EVF_Form_Fields {
 
 			// Label.
 			case 'label':
+				if ( isset( $field['type'] ) && 'private-note' === $field['type'] ) {
+					$args['value'] = esc_html__( 'Private Note', 'everest-forms' );
+				}
 				$output = sprintf( '<label for="everest-forms-field-option-%s-%s" class="%s" %s>%s', $id, $slug, $class, $data, esc_html( $args['value'] ) );
 				if ( isset( $args['tooltip'] ) && ! empty( $args['tooltip'] ) ) {
 					$output .= ' ' . sprintf( '<i class="dashicons dashicons-editor-help everest-forms-help-tooltip" title="%s"></i>', esc_attr( $args['tooltip'] ) );
