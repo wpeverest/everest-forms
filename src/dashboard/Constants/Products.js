@@ -8,7 +8,7 @@ import { __ } from "@wordpress/i18n";
  */
 import * as Icon from "../components/Icon/Icon";
 import colormag from "../images/colormag.webp";
-import ur from "../images/UR-logo.gif";
+import ur from "../images/UR-logo.webp";
 import magazineBlocks from "../images/magazine-blocks.webp";
 import masteriyo from "../images/masteriyo.webp";
 import blockart from "../images/blockart-blocks.webp";
