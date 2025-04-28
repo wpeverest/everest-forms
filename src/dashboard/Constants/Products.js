@@ -120,4 +120,5 @@ export const FreeModules = [
 	'everest-forms-divi-builder',
 	'everest-forms-wpbakery-builder',
 	'everest-forms-style-customizer',
+	'everest-forms-clean-talk',
 ]
