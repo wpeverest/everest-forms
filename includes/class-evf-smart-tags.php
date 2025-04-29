@@ -546,6 +546,10 @@ class EVF_Smart_Tags {
 						$user_agent = evf_get_user_agent();
 						$content    = str_replace( '{' . $other_tag . '}', $user_agent, $content );
 						break;
+
+					default:
+						$content = apply_filters( 'everest_forms_custom_smart_tag', $content, $other_tag, $entry_id );
+						break;
 				}
 			}
 		}
