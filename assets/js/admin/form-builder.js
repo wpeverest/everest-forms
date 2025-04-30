@@ -558,6 +558,7 @@
 			EVFPanelBuilder.bindBulkOptionActions();
 			EVFPanelBuilder.bindAkismetInit();
 			EVFPanelBuilder.bindFormSubmissionMinWaitingTime();
+			EVFPanelBuilder.bindFormCategory();
 
 			// Fields Panel.
 			EVFPanelBuilder.bindUIActionsFields();
@@ -3601,6 +3602,67 @@
 				}
 			}
 		},
+		bindFormCategory: function() {
+			$('.form-category-select2').each(function() {
+				var $select = $(this);
+
+				$select.select2({
+					tags: true,
+					createTag: function(params) {
+						if (params.term.trim() === '') {
+							return null;
+						}
+
+						var exists = false;
+						$select.find('option').each(function() {
+							if ($(this).text() === params.term) {
+								exists = true;
+								return false;
+							}
+						});
+
+						if (exists) {
+							return null;
+						}
+
+						return {
+							id: params.term,
+							text: params.term,
+							isNew: true
+						};
+					},
+					templateResult: function(data) {
+						var $result = $('<span></span>');
+						$result.text(data.text);
+
+						if (data.isNew) {
+							$result.append(' <em>(new)</em>');
+						}
+
+						return $result;
+					}
+				}).on('select2:select', function(e) {
+					if (e.params.data.isNew) {
+						var newValue = e.params.data.text;
+
+						$select.find('option').filter(function() {
+							return $(this).val() === newValue && !$(this).prop('selected');
+						}).remove();
+
+						$select.find('option').filter(function() {
+							return $(this).val() === newValue && $(this).data('select2-tag');
+						}).remove();
+
+						// Create a proper selected option
+						var newOption = new Option(newValue, newValue, true, true);
+						$select.append(newOption).trigger('change');
+
+						// Force Select2 to update
+						$select.trigger('select2:select');
+					}
+				});
+			});
+		}
 
 	};
 

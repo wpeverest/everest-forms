@@ -16,9 +16,17 @@ defined( 'ABSPATH' ) || exit;
 class EVF_Post_Types {
 
 	/**
+	 * Tags taxonomy.
+	 *
+	 * @since xx.xx.xx
+	 */
+	const CATEGORY_TAXONOMY = 'evf_form_category';
+
+	/**
 	 * Hook in methods.
 	 */
 	public static function init() {
+		add_action( 'init', array( __CLASS__, 'register_taxonomy' ) );
 		add_action( 'init', array( __CLASS__, 'register_post_types' ), 5 );
 		add_action( 'admin_bar_menu', array( __CLASS__, 'admin_bar_menus' ), 100 );
 		add_action( 'everest_forms_after_register_post_type', array( __CLASS__, 'maybe_flush_rewrite_rules' ) );
@@ -133,6 +141,34 @@ class EVF_Post_Types {
 	public static function flush_rewrite_rules() {
 		flush_rewrite_rules();
 	}
+
+
+	/**
+	 * Register the new taxonomy for tags.
+	 *
+	 * @since xx.xx.xx
+	 */
+	public static function register_taxonomy() {
+
+		/**
+		 * Filters Tags taxonomy arguments.
+		 *
+		 * @since xx.xx.xx
+		 *
+		 * @param array $args Arguments.
+		 */
+		$args = apply_filters(
+			'evf_form_handler_register_taxonomy_args',
+			array(
+				'hierarchical' => false,
+				'rewrite'      => false,
+				'public'       => false,
+			)
+		);
+
+		register_taxonomy( self::CATEGORY_TAXONOMY, 'everest-forms', $args );
+	}
+
 }
 
 EVF_Post_Types::init();

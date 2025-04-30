@@ -439,6 +439,20 @@ class EVF_AJAX {
 				);
 			}
 		}
+		/**
+		 * Creatting the form category taxonomy.
+		 *
+		 * @since xx.xx.xx
+		 */
+		if ( ! empty( $data['settings']['form_category'] ) ) {
+			foreach ( $data['settings']['form_category'] as $category ) {
+				$term = get_term( $category, EVF_Post_Types::CATEGORY_TAXONOMY );
+				// In the case when the term is not found, create the new term.
+				if ( empty( $term ) || is_wp_error( $term ) ) {
+					$new_term = wp_insert_term( sanitize_text_field( $category ), EVF_Post_Types::CATEGORY_TAXONOMY );
+				}
+			}
+		}
 
 		// Fix for sorting field ordering.
 		$logger->info(

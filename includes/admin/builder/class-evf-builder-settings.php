@@ -205,6 +205,39 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				'tooltip'     => sprintf( esc_html__( 'Give the description to this form', 'everest-forms' ) ),
 			)
 		);
+
+		$form_category = get_terms(
+			array(
+				'taxonomy'   => EVF_Post_Types::CATEGORY_TAXONOMY,
+				'hide_empty' => false,
+			)
+		);
+
+		$form_category = is_wp_error( $form_category ) ? array() : (array) $form_category;
+
+		$tags_value   = wp_list_pluck( $form_category, 'term_id' );
+		$tags_options = wp_list_pluck( $form_category, 'name', 'slug' );
+
+		everest_forms_panel_field(
+			'select',
+			'settings',
+			'form_category',
+			$this->form_data,
+			esc_html__( 'Category', 'everest-forms' ),
+			array(
+				'default'     => '',
+				'tooltip'     => esc_html__( 'Choose the category of the form or add new category.', 'everest-forms' ),
+				'options'     => array_merge(
+					array(
+						'' => esc_html__( '', 'everest-forms' ),
+					),
+					$tags_options
+				),
+				'input_class' => 'form-category-select2',
+				'multiple'    => true,
+			)
+		);
+
 		everest_forms_panel_field(
 			'textarea',
 			'settings',
