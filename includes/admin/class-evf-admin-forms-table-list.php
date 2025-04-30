@@ -49,7 +49,7 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 			'cb'        => '<input type="checkbox" />',
 			'enabled'   => '',
 			'title'     => esc_html__( 'Title', 'everest-forms' ),
-			'category'  => esc_html__( 'Category', 'everest-forms' ),
+			'tags'      => esc_html__( 'Tags', 'everest-forms' ),
 			'shortcode' => esc_html__( 'Shortcode', 'everest-forms' ),
 			'author'    => esc_html__( 'Author', 'everest-forms' ),
 			'date'      => esc_html__( 'Date', 'everest-forms' ),
@@ -337,7 +337,7 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 	 * @param  object $posts Form object.
 	 * @return string
 	 */
-	public function column_category( $posts ) {
+	public function column_tags( $posts ) {
 		global $wpdb;
 
 		if ( ! current_user_can( 'everest_forms_view_form_entries', $posts->ID ) ) {
@@ -345,7 +345,7 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 		}
 
 		$form     = json_decode( $posts->post_content, true );
-		$category = empty( $form['settings']['form_category'] ) ? array() : $form['settings']['form_category'];
+		$category = empty( $form['settings']['form_tags'] ) ? array() : $form['settings']['form_tags'];
 
 		return implode( ', ', $category );
 	}
@@ -543,7 +543,7 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 		echo '<div class="alignleft actions">';
 
 		if ( 'top' === $which ) {
-			$this->category_dropdown();
+			$this->tags_dropdown();
 			submit_button( __( 'Filter', 'everest-forms' ), '', 'filter_action', false, array( 'category' => 'post-query-submit' ) );
 		}
 
@@ -572,16 +572,16 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 		);
 
 		/**
-		 * Filter on the basis of category.
+		 * Filter on the basis of tags.
 		 *
 		 * @since xx.xx.xx
 		 */
-		if ( ! empty( $_REQUEST['category'] ) ) {
+		if ( ! empty( $_REQUEST['tags'] ) ) {
 			$args['tax_query'] = array(
 				array(
-					'taxonomy' => EVF_Post_Types::CATEGORY_TAXONOMY,
+					'taxonomy' => EVF_Post_Types::TAGS_TAXONOMY,
 					'field'    => 'slug',
-					'terms'    => array_map( 'sanitize_text_field', array( $_REQUEST['category'] ) ),
+					'terms'    => array_map( 'absint', array( $_REQUEST['tags'] ) ),
 					'operator' => 'IN',
 				),
 			);
@@ -629,16 +629,16 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 	/**
 	 * Display a form dropdown for filtering entries.
 	 */
-	public function category_dropdown() {
-		$category_list     = FormHelper::get_all_form_category( 'term_id' );
-		$selected_category = isset( $_REQUEST['category'] ) ? sanitize_text_field( $_REQUEST['category'] ) : ''; // phpcs:ignore WordPress.Security.NonceVerification
+	public function tags_dropdown() {
+		$tag_list          = FormHelper::get_all_form_tags( 'term_id' );
+		$selected_category = isset( $_REQUEST['tags'] ) ? sanitize_text_field( $_REQUEST['tags'] ) : ''; // phpcs:ignore WordPress.Security.NonceVerification
 		?>
-		<label for="filter-by-category" class="screen-reader-text"><?php esc_html_e( 'Filter by Category', 'everest-forms' ); ?></label>
-		<select name="category" id="filter-by-category" class="evf-enhanced-select2" style="min-width: 200px;">
-			<option value="" <?php selected( $selected_category, '' ); ?>><?php echo __( 'All Category', 'everest-forms' ); ?></option>
+		<label for="filter-by-tags" class="screen-reader-text"><?php esc_html_e( 'Filter by Category', 'everest-forms' ); ?></label>
+		<select name="tags" id="filter-by-tags" class="evf-enhanced-select2" style="min-width: 200px;">
+			<option value="" <?php selected( $selected_category, '' ); ?>><?php echo __( 'All Tags', 'everest-forms' ); ?></option>
 
-			<?php foreach ( $category_list as $id => $category ) : ?>
-				<option value="<?php echo esc_attr( $id ); ?>" <?php selected( $selected_category, $id ); ?>><?php echo esc_html( $category ); ?></option>
+			<?php foreach ( $tag_list as $id => $tag ) : ?>
+				<option value="<?php echo esc_attr( $id ); ?>" <?php selected( $selected_category, $id ); ?>><?php echo esc_html( $tag ); ?></option>
 			<?php endforeach; ?>
 		</select>
 		<?php

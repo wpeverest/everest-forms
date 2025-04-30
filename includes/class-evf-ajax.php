@@ -440,22 +440,22 @@ class EVF_AJAX {
 			}
 		}
 		/**
-		 * Creatting the form category taxonomy.
+		 * Creatting the form tags taxonomy.
 		 *
 		 * @since xx.xx.xx
 		 */
-		if ( ! empty( $data['settings']['form_category'] ) ) {
+		if ( ! empty( $data['settings']['form_tags'] ) ) {
 			$term_ids = array();
 
-			foreach ( $data['settings']['form_category'] as $category_name ) {
+			foreach ( $data['settings']['form_tags'] as $tag_name ) {
 
-				$term = term_exists( $category_name, EVF_Post_Types::CATEGORY_TAXONOMY );
+				$term = term_exists( $tag_name, EVF_Post_Types::TAGS_TAXONOMY );
 
 				// If term doesn't exist, create it
 				if ( ! $term ) {
 					$term = wp_insert_term(
-						sanitize_text_field( $category_name ),
-						EVF_Post_Types::CATEGORY_TAXONOMY,
+						sanitize_text_field( $tag_name ),
+						EVF_Post_Types::TAGS_TAXONOMY,
 					);
 				}
 
@@ -465,10 +465,10 @@ class EVF_AJAX {
 			}
 
 			if ( ! empty( $term_ids ) ) {
-				wp_set_object_terms( absint( $data['id'] ), $term_ids, EVF_Post_Types::CATEGORY_TAXONOMY, false );
+				wp_set_object_terms( absint( $data['id'] ), $term_ids, EVF_Post_Types::TAGS_TAXONOMY, false );
 			}
 		} else {
-			wp_set_object_terms( absint( $data['id'] ), array(), EVF_Post_Types::CATEGORY_TAXONOMY, false );
+			wp_set_object_terms( absint( $data['id'] ), array(), EVF_Post_Types::TAGS_TAXONOMY, false );
 		}
 
 		// Fix for sorting field ordering.

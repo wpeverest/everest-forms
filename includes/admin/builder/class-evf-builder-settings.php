@@ -211,19 +211,19 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 		everest_forms_panel_field(
 			'select',
 			'settings',
-			'form_category',
+			'form_tags',
 			$this->form_data,
-			esc_html__( 'Category', 'everest-forms' ),
+			esc_html__( 'Tags', 'everest-forms' ),
 			array(
 				'default'     => '',
-				'tooltip'     => esc_html__( 'Please choose a category from the list, or type in a new category if you\'d like to add one.', 'everest-forms' ),
+				'tooltip'     => esc_html__( 'Please choose a tags from the list, or type in a new tag if you\'d like to add one.', 'everest-forms' ),
 				'options'     => array_merge(
 					array(
 						'' => esc_html__( '', 'everest-forms' ),
 					),
-					FormHelper::get_all_form_category()
+					FormHelper::get_all_form_tags()
 				),
-				'input_class' => 'form-category-select2',
+				'input_class' => 'form-tags-select2',
 				'multiple'    => true,
 			)
 		);

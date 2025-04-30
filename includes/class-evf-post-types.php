@@ -20,7 +20,7 @@ class EVF_Post_Types {
 	 *
 	 * @since xx.xx.xx
 	 */
-	const CATEGORY_TAXONOMY = 'evf_form_category';
+	const TAGS_TAXONOMY = 'evf_form_tags';
 
 	/**
 	 * Hook in methods.
@@ -166,7 +166,7 @@ class EVF_Post_Types {
 			)
 		);
 
-		register_taxonomy( self::CATEGORY_TAXONOMY, 'everest-forms', $args );
+		register_taxonomy( self::TAGS_TAXONOMY, 'everest-forms', $args );
 	}
 
 }

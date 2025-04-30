@@ -558,7 +558,7 @@
 			EVFPanelBuilder.bindBulkOptionActions();
 			EVFPanelBuilder.bindAkismetInit();
 			EVFPanelBuilder.bindFormSubmissionMinWaitingTime();
-			EVFPanelBuilder.bindFormCategory();
+			EVFPanelBuilder.bindFormTags();
 
 			// Fields Panel.
 			EVFPanelBuilder.bindUIActionsFields();
@@ -3602,8 +3602,8 @@
 				}
 			}
 		},
-		bindFormCategory: function() {
-			$('.form-category-select2').each(function() {
+		bindFormTags: function() {
+			$('.form-tags-select2').each(function() {
 				var $select = $(this);
 
 				$select.select2({
