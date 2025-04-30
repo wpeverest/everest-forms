@@ -6,11 +6,16 @@
 				EVFCleanTalk.bindCleanTalkInit();
 				EVFCleanTalk.toggleCleanTalkSettings();
 
-				$('#everest_forms_enable_cleantalk_spam_protection').on('change', function (e) {
-					EVFCleanTalk.toggleCleanTalkSettings();
+				$( document).on('click', '#everest-forms-clean-talk-save-settings', function (e) {
+					e.preventDefault();
+					EVFCleanTalk.saveCleanTalkSettings();
 				});
 
-				$( document ).on('change', '#everest_forms_clean_talk_methods', function () {
+				$( document ).on('change', '#everest_forms_enable_cleantalk_spam_protection', function(){
+					EVFCleanTalk.hideShowCleanTalkSetting( $( this ) );
+				})
+
+				$(document).on('change', 'input[name="everest_forms_clean_talk_methods"]', function () {
 					EVFCleanTalk.toggleCleanTalkSettings();
 				});
 			});
@@ -32,23 +37,12 @@
 		 * Show/hide CleanTalk-related settings based on selections.
 		 */
 		toggleCleanTalkSettings: function () {
-			const isEnabled = $('#everest_forms_enable_cleantalk_spam_protection').is(':checked');
-			const selectedMethod = $('#everest_forms_clean_talk_methods:checked').val();
+			const selectedMethod = $('input[name="everest_forms_clean_talk_methods"]:checked').val();
 
-			const $methodSetting = $('.evf-clean-talk-method').closest('.everest-forms-global-settings');
-			const $accessKeySetting = $('#everest_forms_recaptcha_cleantalk_access_key').closest('.everest-forms-global-settings');
-
-			if (isEnabled) {
-				$methodSetting.show();
-
-				if (selectedMethod === 'rest_api') {
-					$accessKeySetting.show();
-				} else {
-					$accessKeySetting.hide();
-				}
-			} else {
-				$methodSetting.hide();
-				$accessKeySetting.hide();
+			if ( 'rest_api' === selectedMethod ) {
+				$( document ).find( '.evf-clean-talk-access-key' ).removeClass( 'everest-forms-hidden' );
+			}else{
+				$( document ).find( '.evf-clean-talk-access-key' ).addClass( 'everest-forms-hidden' );
 			}
 		},
 
@@ -61,7 +55,52 @@
 			} else {
 				$('.everest-forms-cleantalk-protection-type').hide();
 			}
-		}
+		},
+		/**
+		 * Show/hide CleanTalk settings based on the selected method.
+		 */
+		saveCleanTalkSettings: function () {
+			const isEnabled = $('#everest_forms_enable_cleantalk_spam_protection').is(':checked');
+
+			const $form = $('#everest-forms-clean-talk-settings-form'),
+				  formData = $form.serializeArray();
+			const data = {
+				action: 'everest_forms_save_clean_talk_settings',
+				security: everest_forms_clean_talk.security,
+				form_data: formData,
+				is_clean_talk_enabled: isEnabled ? 'yes' : 'no',
+			};
+
+			$.ajax({
+				type: 'POST',
+				url: everest_forms_clean_talk.ajax_url,
+				data: data,
+				success: function (response) {
+					const killUnloadPrompt = setInterval(function () {
+						window.onbeforeunload = null;
+						$(window).off('beforeunload');
+					}, 500);
+
+					setTimeout(function () {
+						clearInterval(killUnloadPrompt);
+					}, 5000);
+				},
+				error: function () {
+					alert('Error saving settings.');
+				},
+			});
+		},
+
+		hideShowCleanTalkSetting: function( $el ) {
+			const isEnabled = $el.is(':checked')
+
+			if ( isEnabled ) {
+				$( document ).find( '#evf-clean-talk-section-container' ).removeClass( 'everest-forms-hidden');
+			}else{
+				$( document ).find( '#evf-clean-talk-section-container' ).addClass( 'everest-forms-hidden' );
+			}
+		},
+
 	};
 
 	EVFCleanTalk.init();

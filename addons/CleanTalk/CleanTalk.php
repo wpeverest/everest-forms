@@ -40,7 +40,6 @@ class CleanTalk {
 			return;
 		}
 		new Builder();
-		new Settings();
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 	}
 
@@ -56,6 +55,14 @@ class CleanTalk {
 
 		if ( 'everest-forms_page_evf-settings' === $screen_id || 'everest-forms_page_evf-builder' === $screen_id ) {
 			wp_enqueue_script( 'everest-forms-clean-talk' );
+			wp_localize_script(
+				'everest-forms-clean-talk',
+				'everest_forms_clean_talk',
+				array(
+					'ajax_url' => admin_url( 'admin-ajax.php' ),
+					'security'    => wp_create_nonce( 'everest_forms_clean_talk_nonce' ),
+				)
+			);
 		}
 	}
 }

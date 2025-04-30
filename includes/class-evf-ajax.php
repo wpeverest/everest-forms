@@ -135,6 +135,7 @@ class EVF_AJAX {
 			'generate_restapi_key'            => false,
 			'install_and_activate_smart_smtp' => false,
 			'form_preview_save'               => false,
+			'save_clean_talk_settings'        => true,
 		);
 
 		foreach ( $ajax_events as $ajax_event => $nopriv ) {
@@ -1870,6 +1871,52 @@ class EVF_AJAX {
 		update_post_meta( $form_id, 'everest_forms_enable_theme_style', $default_theme );
 
 		wp_send_json_success( array( 'message' => __( 'Saved', 'everest-forms' ) ) );
+	}
+
+	public static function save_clean_talk_settings(){
+		check_ajax_referer( 'everest_forms_clean_talk_nonce', 'security' );
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( array( 'message' => __( 'You do not have permission.', 'everest-forms' ) ) );
+			wp_die( -1 );
+		}
+
+		if ( isset( $_POST['action'] ) && 'everest_forms_save_clean_talk_settings' != $_POST['action'] ) {
+			wp_send_json_error( array( 'message' => __( 'Action doesn\'t match.', 'everest-forms' ) ) );
+			wp_die( -1 );
+		}
+
+		$clean_talk_settings_enabled = isset( $_POST['is_clean_talk_enabled'] ) ? sanitize_text_field( wp_unslash( $_POST['is_clean_talk_enabled'] ) ) : 'no';
+		update_option( 'everest_forms_enable_cleantalk_spam_protection', $clean_talk_settings_enabled );
+
+		$form_data = isset( $_POST['form_data'] ) ?  $_POST['form_data'] : '';
+
+		if ( empty( $form_data ) ) {
+			wp_send_json_error( array( 'message' => __( 'Insufficient information', 'everest-forms' ) ) );
+		}
+
+		error_log( print_r( $_POST, true ) );
+		$options_list = array(
+			'everest_forms_clean_talk_methods',
+			'everest_forms_recaptcha_cleantalk_access_key',
+		);
+
+		foreach ( $form_data as $data ) {
+			if ( empty( $data['name'] ) ) {
+				continue;
+			}
+
+			if ( in_array( $data['name'], $options_list ) ) {
+				$value = isset( $data['value'] ) ? sanitize_text_field( wp_unslash( $data['value'] ) ) : '';
+				update_option( $data['name'], $value );
+			}
+		}
+
+		wp_send_json(
+			array(
+				'message' => __( 'Settings saved successfully', 'everest-forms' ),
+			)
+		);
 	}
 }
 
