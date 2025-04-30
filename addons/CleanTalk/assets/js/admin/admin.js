@@ -71,6 +71,10 @@
 				is_clean_talk_enabled: isEnabled ? 'yes' : 'no',
 			};
 
+			const $button = $el;
+			const originalText = $button.val();
+			$button.prop('disabled', true).val('Saving...');
+
 			$.ajax({
 				type: 'POST',
 				url: everest_forms_clean_talk.ajax_url,
@@ -84,9 +88,19 @@
 					setTimeout(function () {
 						clearInterval(killUnloadPrompt);
 					}, 5000);
+
+					if (response.success) {
+						$button.val('Saved');
+					}
 				},
 				error: function () {
 					alert('Error saving settings.');
+					$button.val(originalText);
+				},
+				complete: function () {
+					setTimeout(function () {
+						$button.prop('disabled', false).val(originalText);
+					}, 2000);
 				},
 			});
 		},

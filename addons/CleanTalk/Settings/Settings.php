@@ -67,7 +67,7 @@ class Settings extends \EVF_Integration {
 					</div>
 
 					<!-- Radio Buttons -->
-					<div id="evf-clean-talk-section-container evf-settings-row" class="<?php echo "yes" !== get_option('everest_forms_enable_cleantalk_spam_protection') ? 'everest-forms-hidden' : ''  ?>">
+					<div id="evf-clean-talk-section-container" class="<?php echo "yes" !== get_option('everest_forms_enable_cleantalk_spam_protection') ? 'everest-forms-hidden' : ''  ?>">
 						<div class="evf-section">
 							<p class="evf-clean-talk-label-1" style="margin: 12px 0"><?php echo __( 'CleanTalk Methods', 'everest-forms') ?></p>
 							<div class="evf-clean-talk-radio" style="margin-bottom: 12px;">
@@ -87,10 +87,10 @@ class Settings extends \EVF_Integration {
 								<label class="evf-clean-talk-label-1" for="everest_forms_recaptcha_cleantalk_access_key"><?php echo __( 'Access Key', 'everest-forms') ?></label>
 							</div>
 							<input style="margin: 12px 0; width: 100%" class="evf-access-key" type="password" id="everest_forms_recaptcha_cleantalk_access_key" name="everest_forms_recaptcha_cleantalk_access_key" value="<?php echo esc_attr( get_option( 'everest_forms_recaptcha_cleantalk_access_key' ) ); ?>">
-							<p style="margin-bottom: 12px; margin-top: 0;"><?php echo __( 'Enter your CleanTalk REST API key from your ', 'everest-forms') ?><a href="https://cleantalk.org/my/" target="_blank" rel="noopener noreferrer"><?php echo __( 'account dashboard here', 'everest-forms') ?></a>.</p>
+							<p style="margin-bottom:0; margin-top:0"><?php echo __( 'Enter your CleanTalk REST API key from your ', 'everest-forms') ?><a href="https://cleantalk.org/my/" target="_blank" rel="noopener noreferrer"><?php echo __( 'account dashboard here', 'everest-forms') ?></a>.</p>
 						</div>
 					</div>
-					<input type="submit" id="everest-forms-clean-talk-save-settings" class="everest-forms-btn everest-forms-btn-primary" value="<?php esc_attr_e( 'Save Settings', 'everest-forms' ); ?>">
+					<input style="margin-top: 12px;" type="submit" id="everest-forms-clean-talk-save-settings" class="everest-forms-btn everest-forms-btn-primary" value="<?php esc_attr_e( 'Save Settings', 'everest-forms' ); ?>">
 				 </form>
 
 				</div>

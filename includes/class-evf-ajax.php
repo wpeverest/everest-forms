@@ -1912,7 +1912,7 @@ class EVF_AJAX {
 			}
 		}
 
-		wp_send_json(
+		wp_send_json_success(
 			array(
 				'message' => __( 'Settings saved successfully', 'everest-forms' ),
 			)
