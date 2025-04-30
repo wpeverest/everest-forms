@@ -1044,7 +1044,7 @@
           "agency",
           "themegrill agency"
         ],
-        "setting_url": "admin.php?page=evf-settings&tab=misc",
+        "setting_url": "admin.php?page=evf-settings&tab=integration&section=clean-talk",
         "demo_video_url": ""
       }
   ]
