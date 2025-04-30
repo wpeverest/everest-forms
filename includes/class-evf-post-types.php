@@ -166,7 +166,7 @@ class EVF_Post_Types {
 			)
 		);
 
-		register_taxonomy( self::TAGS_TAXONOMY, 'everest-forms', $args );
+		register_taxonomy( self::TAGS_TAXONOMY, 'everest_form', $args );
 	}
 
 }

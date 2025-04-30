@@ -463,12 +463,11 @@ class EVF_AJAX {
 					$term_ids[] = is_array( $term ) ? $term['term_id'] : $term;
 				}
 			}
-
 			if ( ! empty( $term_ids ) ) {
-				wp_set_object_terms( absint( $data['id'] ), $term_ids, EVF_Post_Types::TAGS_TAXONOMY, false );
+				wp_set_post_terms( absint( $data['id'] ), $term_ids, EVF_Post_Types::TAGS_TAXONOMY, false );
 			}
 		} else {
-			wp_set_object_terms( absint( $data['id'] ), array(), EVF_Post_Types::TAGS_TAXONOMY, false );
+			wp_set_post_terms( absint( $data['id'] ), array(), EVF_Post_Types::TAGS_TAXONOMY, false );
 		}
 
 		// Fix for sorting field ordering.

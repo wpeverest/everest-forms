@@ -344,10 +344,24 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 			return '-';
 		}
 
-		$form     = json_decode( $posts->post_content, true );
-		$category = empty( $form['settings']['form_tags'] ) ? array() : $form['settings']['form_tags'];
+		$form = json_decode( $posts->post_content, true );
+		$tags = FormHelper::get_form_tags( $posts->ID );
 
-		return implode( ', ', $category );
+		$output = '';
+		foreach ( $tags as $id => $tag ) {
+			if ( empty( $tag ) ) {
+				continue;
+			}
+
+			$output .= sprintf(
+				'<button type="submit" name="tags" class="button button-small evf-form-tags" value="%s" data-tag-id="%s">%s</button> ',
+				esc_attr( $id ),
+				esc_attr( $id ),
+				esc_html( $tag )
+			);
+		}
+
+		return $output;
 	}
 	/**
 	 * Table list views.
@@ -545,6 +559,7 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 		if ( 'top' === $which ) {
 			$this->tags_dropdown();
 			submit_button( __( 'Filter', 'everest-forms' ), '', 'filter_action', false, array( 'category' => 'post-query-submit' ) );
+			$this->manage_tags();
 		}
 
 		if ( $num_posts->trash && isset( $_GET['status'] ) && 'trash' === $_GET['status'] && current_user_can( 'everest_forms_delete_forms' ) ) { // phpcs:ignore WordPress.Security.NonceVerification
@@ -580,8 +595,8 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 			$args['tax_query'] = array(
 				array(
 					'taxonomy' => EVF_Post_Types::TAGS_TAXONOMY,
-					'field'    => 'slug',
-					'terms'    => array_map( 'absint', array( $_REQUEST['tags'] ) ),
+					'field'    => 'term_id',
+					'terms'    => array_map( 'absint', is_array( $_REQUEST['tags'] ) ? $_REQUEST['tags'] : array( $_REQUEST['tags'] ) ),
 					'operator' => 'IN',
 				),
 			);
@@ -630,17 +645,24 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 	 * Display a form dropdown for filtering entries.
 	 */
 	public function tags_dropdown() {
-		$tag_list          = FormHelper::get_all_form_tags( 'term_id' );
-		$selected_category = isset( $_REQUEST['tags'] ) ? sanitize_text_field( $_REQUEST['tags'] ) : ''; // phpcs:ignore WordPress.Security.NonceVerification
+		$tag_list      = FormHelper::get_all_form_tags( 'term_id' );
+		$selected_tags = isset( $_REQUEST['tags'] ) ? is_array( $_REQUEST['tags'] ) ? $_REQUEST['tags'] : array( $_REQUEST['tags'] ) : array(); // phpcs:ignore WordPress.Security.NonceVerification
 		?>
 		<label for="filter-by-tags" class="screen-reader-text"><?php esc_html_e( 'Filter by Category', 'everest-forms' ); ?></label>
-		<select name="tags" id="filter-by-tags" class="evf-enhanced-select2" style="min-width: 200px;">
-			<option value="" <?php selected( $selected_category, '' ); ?>><?php echo __( 'All Tags', 'everest-forms' ); ?></option>
+		<select name="tags[]" id="filter-by-tags" class="evf-enhanced-select" multiple style="min-width: 150px;">
 
 			<?php foreach ( $tag_list as $id => $tag ) : ?>
-				<option value="<?php echo esc_attr( $id ); ?>" <?php selected( $selected_category, $id ); ?>><?php echo esc_html( $tag ); ?></option>
+				<option value="<?php echo esc_attr( $id ); ?>" <?php echo in_array( $id, $selected_tags ) ? 'selected' : ''; ?>><?php echo esc_html( $tag ); ?></option>
 			<?php endforeach; ?>
 		</select>
 		<?php
+	}
+	/**
+	 * Manage tags - delete.
+	 *
+	 * @since xx.xx.xx
+	 */
+	public function manage_tags() {
+		printf( '<Button class=" button evf-manage-tags">%s</Button>', __( 'Manage Tags', 'everest-forms' ) );
 	}
 }
