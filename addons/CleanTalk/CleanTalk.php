@@ -52,11 +52,13 @@ class CleanTalk {
 		$suffix    = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
 		wp_register_script( 'everest-forms-clean-talk', plugins_url( "addons/CleanTalk/assets/js/admin/admin{$suffix}.js", EVF_PLUGIN_FILE ), array( 'jquery' ), EVF_VERSION, true );
+		wp_register_style( 'everest-forms-clean-talk-backward', plugins_url( "addons/CleanTalk/assets/css/admin/backward.css", EVF_PLUGIN_FILE ), array(), EVF_VERSION );
 		wp_register_style( 'everest-forms-clean-talk-style', plugins_url( "addons/CleanTalk/assets/css/admin/admin.css", EVF_PLUGIN_FILE ), array(), EVF_VERSION );
 
 		if ( ! defined( 'EFP_PLUGIN_FILE' )) {
-			wp_enqueue_style( 'everest-forms-clean-talk-style' );
+			wp_enqueue_style( 'everest-forms-clean-talk-backward' );
 		}
+		wp_enqueue_style( 'everest-forms-clean-talk-style' );
 
 		if ( 'everest-forms_page_evf-settings' === $screen_id || 'everest-forms_page_evf-builder' === $screen_id ) {
 			wp_enqueue_script( 'everest-forms-clean-talk' );

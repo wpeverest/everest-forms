@@ -1,14 +1,17 @@
-.everest-forms {
-	.everest-forms-settings-container {
-		.everest-forms-integration-back-button{
-			padding: 8px 12px;
-			border: 1px solid #2271b1;
-			display: block;
-			width: max-content;
-			margin-bottom: 20px;
-			border-radius: 3px;
-			font-size: 14px;
-			line-height: 16px;
-		}
+.evf-clean-talk-label-1{
+	font-size: 16px;
+	font-weight: 500;
+}
+.evf-clean-talk-label-2{
+	font-size: 13px;
+	font-weight: 400
+}
+
+#evf-clean-talk-section-container{
+	.evf-clean-talk-radio{
+		display:flex;
+		margin: 12px 0;
+		gap:24px;
+		align-items: center
 	}
 }
