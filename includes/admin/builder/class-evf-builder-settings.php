@@ -226,7 +226,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			esc_html__( 'Category', 'everest-forms' ),
 			array(
 				'default'     => '',
-				'tooltip'     => esc_html__( 'Choose the category of the form or add new category.', 'everest-forms' ),
+				'tooltip'     => esc_html__( 'Please choose a category from the list, or type in a new category if you\'d like to add one.', 'everest-forms' ),
 				'options'     => array_merge(
 					array(
 						'' => esc_html__( '', 'everest-forms' ),
