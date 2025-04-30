@@ -50,7 +50,7 @@ class Settings extends \EVF_Integration {
 
 			<div class="integration-connection-detail">
 				<div class="evf-account-connect">
-					<p style="font-size: 16px; font-weight: 500; margin: 0">Set Up CleanTalk Integration</p>
+					<p style="font-size: 16px; font-weight: 500; margin: 0"><?php echo __( 'Set Up CleanTalk Integration', 'everest-forms') ?></p>
 				</div>
 				<div class="evf-connection-list">
 				<!-- Toggle Row -->
@@ -62,30 +62,32 @@ class Settings extends \EVF_Integration {
 						<span class="slider round"></span>
 						</span>
 					</div>
-						<label class="" style="font-size: 13px; font-weight: 400" for="everest_forms_enable_cleantalk_spam_protection">Enable CleanTalk Spam Protection</label>
+						<label class="" style="font-size: 13px; font-weight: 400" for="everest_forms_enable_cleantalk_spam_protection"><?php echo __( 'Enable CleanTalk Spam Protection', 'everest-forms') ?></label>
 
 					</div>
 
 					<!-- Radio Buttons -->
 					<div id="evf-clean-talk-section-container evf-settings-row" class="<?php echo "yes" !== get_option('everest_forms_enable_cleantalk_spam_protection') ? 'everest-forms-hidden' : ''  ?>">
 						<div class="evf-section">
-							<p style="font-size: 16px; font-weight: 500; margin: 12px 0">CleanTalk Methods</p>
+							<p style="font-size: 16px; font-weight: 500; margin: 12px 0"><?php echo __( 'CleanTalk Methods', 'everest-forms') ?></p>
 							<div class="evf-radio-flex" style="display:flex; margin: 12px 0; gap:24px; align-items: center">
 								<label>
 									<input style="font-size: 13px; font-weight: 400" type="radio" name="everest_forms_clean_talk_methods" value="clean_talk_plugin" <?php checked( 'clean_talk_plugin', get_option( 'everest_forms_clean_talk_methods' ) ); ?>>
-									CleanTalk Plugin
+									<?php echo __( 'CleanTalk Plugin', 'everest-forms') ?>
 								</label>
 								<label>
 									<input type="radio" name="everest_forms_clean_talk_methods" value="rest_api" <?php checked( 'rest_api', get_option( 'everest_forms_clean_talk_methods' ) ); ?>>
-									CleanTalk RestApi
-								</label>
+									<?php echo __( 'CleanTalk RestApi', 'everest-forms') ?></label>
 							</div>
 						</div>
 
 						<!-- Access Key -->
 						<div class="evf-clean-talk-access-key <?php echo "clean_talk_plugin" === get_option('everest_forms_clean_talk_methods') ? 'everest-forms-hidden' : ''  ?>">
-							<label style="font-size: 16px; font-weight: 500" class="evf-label" for="everest_forms_recaptcha_cleantalk_access_key">Access Key</label><br>
+							<div>
+								<label style="font-size: 16px; font-weight: 500" class="evf-label" for="everest_forms_recaptcha_cleantalk_access_key"><?php echo __( 'Access Key', 'everest-forms') ?></label>
+							</div>
 							<input style="margin: 12px 0; width: 100%" class="evf-access-key" type="password" id="everest_forms_recaptcha_cleantalk_access_key" name="everest_forms_recaptcha_cleantalk_access_key" value="<?php echo esc_attr( get_option( 'everest_forms_recaptcha_cleantalk_access_key' ) ); ?>">
+							<p style="margin-bottom: 12px; margin-top: 0;"><?php echo __( 'Enter your CleanTalk REST API key from your ', 'everest-forms') ?><a href="https://cleantalk.org/my/" target="_blank" rel="noopener noreferrer"><?php echo __( 'account dashboard here', 'everest-forms') ?></a>.</p>
 						</div>
 					</div>
 					<input type="submit" id="everest-forms-clean-talk-save-settings" class="everest-forms-btn everest-forms-btn-primary" value="<?php esc_attr_e( 'Save Settings', 'everest-forms' ); ?>">
