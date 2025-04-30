@@ -65,8 +65,8 @@ class Builder {
 				'<div class="evf-akismet"><span class="evf-akismet-warning"><span class="evf-akismet-warning-label">%s</span> %s <a href="%s" target="_blank">%s</a>. %s <a href="%s" target="_blank">%s</a></div>',
 				esc_html__( 'Warning:- ', 'everest-forms' ),
 				esc_html__( 'Enable CleanTalk in', 'everest-forms' ),
-				esc_url( admin_url( 'admin.php?page=evf-settings&tab=misc' ) ),
-				esc_html__( 'Global Settings > Misc', 'everest-forms' ),
+				esc_url( admin_url( 'admin.php?page=evf-settings&tab=integration&section=clean-talk' ) ),
+				esc_html__( 'Global Settings > Integration', 'everest-forms' ),
 				esc_html__( 'Learn more at', 'everest-forms' ),
 				esc_url( 'https://docs.everestforms.net/' ),
 				esc_html__( 'documentation', 'everest-forms' )
@@ -76,8 +76,8 @@ class Builder {
 				'<div class="evf-akismet"><span class="evf-akismet-warning"><span class="evf-akismet-warning-label">%s</span> %s <a href="%s" target="_blank">%s</a>%s <a href="%s" target="_blank">%s</a></div>',
 				esc_html__( 'Warning:- ', 'everest-forms' ),
 				esc_html__( 'Go to', 'everest-forms' ),
-				esc_url( admin_url( 'admin.php?page=evf-settings&tab=misc' ) ),
-				esc_html__( 'Settings > Misc', 'everest-forms' ),
+				esc_url( admin_url( 'admin.php?page=evf-settings&tab=integration&section=clean-talk' ) ),
+				esc_html__( 'Settings > Integration', 'everest-forms' ),
 				esc_html__( ' and add your CleanTalk Access Key. For more', 'everest-forms' ),
 				esc_url( 'https://docs.everestforms.net/' ),
 				esc_html__( 'info', 'everest-forms' )
@@ -87,12 +87,12 @@ class Builder {
 				printf(
 					'<div class="evf-akismet"><span class="evf-akismet-warning"><span class="evf-akismet-warning-label">%s</span> %s <a href="%s" target="_blank">%s</a>%s <a href="%s" target="_blank">%s</a></div>',
 					esc_html__( 'Warning:- ', 'everest-forms' ),
-					esc_html__( 'Go to', 'everest-forms' ),
-					esc_url( admin_url( 'admin.php?page=evf-settings&tab=misc' ) ),
-					esc_html__( 'Settings > Misc', 'everest-forms' ),
-					esc_html__( ' and activate the CleanTalk plugin. For more', 'everest-forms' ),
+					esc_html__( 'This feature is inactive because CleanTalk plugin', 'everest-forms' ),
+					esc_url( admin_url( 'plugins.php' ) ),
+					esc_html__( ' has not properly configured.', 'everest-forms' ),
+					esc_html__( ' For more', 'everest-forms' ),
 					esc_url( 'https://docs.everestforms.net/' ),
-					esc_html__( 'info', 'everest-forms' )
+					esc_html__( 'information', 'everest-forms' )
 				);
 			}
 		}
