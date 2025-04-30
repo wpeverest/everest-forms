@@ -445,13 +445,30 @@ class EVF_AJAX {
 		 * @since xx.xx.xx
 		 */
 		if ( ! empty( $data['settings']['form_category'] ) ) {
-			foreach ( $data['settings']['form_category'] as $category ) {
-				$term = get_term( $category, EVF_Post_Types::CATEGORY_TAXONOMY );
-				// In the case when the term is not found, create the new term.
-				if ( empty( $term ) || is_wp_error( $term ) ) {
-					$new_term = wp_insert_term( sanitize_text_field( $category ), EVF_Post_Types::CATEGORY_TAXONOMY );
+			$term_ids = array();
+
+			foreach ( $data['settings']['form_category'] as $category_name ) {
+
+				$term = term_exists( $category_name, EVF_Post_Types::CATEGORY_TAXONOMY );
+
+				// If term doesn't exist, create it
+				if ( ! $term ) {
+					$term = wp_insert_term(
+						sanitize_text_field( $category_name ),
+						EVF_Post_Types::CATEGORY_TAXONOMY,
+					);
+				}
+
+				if ( ! is_wp_error( $term ) ) {
+					$term_ids[] = is_array( $term ) ? $term['term_id'] : $term;
 				}
 			}
+
+			if ( ! empty( $term_ids ) ) {
+				wp_set_object_terms( absint( $data['id'] ), $term_ids, EVF_Post_Types::CATEGORY_TAXONOMY, false );
+			}
+		} else {
+			wp_set_object_terms( absint( $data['id'] ), array(), EVF_Post_Types::CATEGORY_TAXONOMY, false );
 		}
 
 		// Fix for sorting field ordering.

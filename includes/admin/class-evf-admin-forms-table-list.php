@@ -6,6 +6,8 @@
  * @version 1.0.0
  */
 
+use EverestForms\Helpers\FormHelper;
+
 defined( 'ABSPATH' ) || exit;
 
 if ( ! class_exists( 'WP_List_Table' ) ) {
@@ -47,6 +49,7 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 			'cb'        => '<input type="checkbox" />',
 			'enabled'   => '',
 			'title'     => esc_html__( 'Title', 'everest-forms' ),
+			'category'  => esc_html__( 'Category', 'everest-forms' ),
 			'shortcode' => esc_html__( 'Shortcode', 'everest-forms' ),
 			'author'    => esc_html__( 'Author', 'everest-forms' ),
 			'date'      => esc_html__( 'Date', 'everest-forms' ),
@@ -329,6 +332,24 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 	}
 
 	/**
+	 * Return entries count.
+	 *
+	 * @param  object $posts Form object.
+	 * @return string
+	 */
+	public function column_category( $posts ) {
+		global $wpdb;
+
+		if ( ! current_user_can( 'everest_forms_view_form_entries', $posts->ID ) ) {
+			return '-';
+		}
+
+		$form     = json_decode( $posts->post_content, true );
+		$category = empty( $form['settings']['form_category'] ) ? array() : $form['settings']['form_category'];
+
+		return implode( ', ', $category );
+	}
+	/**
 	 * Table list views.
 	 *
 	 * @return array
@@ -519,11 +540,18 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 	protected function extra_tablenav( $which ) {
 		$num_posts = wp_count_posts( 'everest_form', 'readable' );
 
-		if ( $num_posts->trash && isset( $_GET['status'] ) && 'trash' === $_GET['status'] && current_user_can( 'everest_forms_delete_forms' ) ) { // phpcs:ignore WordPress.Security.NonceVerification
-			echo '<div class="alignleft actions">';
-				submit_button( __( 'Empty Trash', 'everest-forms' ), 'apply', 'delete_all', false );
-			echo '</div>';
+		echo '<div class="alignleft actions">';
+
+		if ( 'top' === $which ) {
+			$this->category_dropdown();
+			submit_button( __( 'Filter', 'everest-forms' ), '', 'filter_action', false, array( 'category' => 'post-query-submit' ) );
 		}
+
+		if ( $num_posts->trash && isset( $_GET['status'] ) && 'trash' === $_GET['status'] && current_user_can( 'everest_forms_delete_forms' ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+				submit_button( __( 'Empty Trash', 'everest-forms' ), 'apply', 'delete_all', false );
+		}
+
+		echo '</div>';
 	}
 
 	/**
@@ -543,6 +571,21 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 			'ignore_sticky_posts' => true,
 		);
 
+		/**
+		 * Filter on the basis of category.
+		 *
+		 * @since xx.xx.xx
+		 */
+		if ( ! empty( $_REQUEST['category'] ) ) {
+			$args['tax_query'] = array(
+				array(
+					'taxonomy' => EVF_Post_Types::CATEGORY_TAXONOMY,
+					'field'    => 'slug',
+					'terms'    => array_map( 'sanitize_text_field', array( $_REQUEST['category'] ) ),
+					'operator' => 'IN',
+				),
+			);
+		}
 		// Handle the status query.
 		if ( ! empty( $_REQUEST['status'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 			$args['post_status'] = sanitize_text_field( wp_unslash( $_REQUEST['status'] ) ); // phpcs:ignore WordPress.Security.NonceVerification
@@ -581,5 +624,23 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 				'total_pages' => $posts->max_num_pages,
 			)
 		);
+	}
+
+	/**
+	 * Display a form dropdown for filtering entries.
+	 */
+	public function category_dropdown() {
+		$category_list     = FormHelper::get_all_form_category( 'term_id' );
+		$selected_category = isset( $_REQUEST['category'] ) ? sanitize_text_field( $_REQUEST['category'] ) : ''; // phpcs:ignore WordPress.Security.NonceVerification
+		?>
+		<label for="filter-by-category" class="screen-reader-text"><?php esc_html_e( 'Filter by Category', 'everest-forms' ); ?></label>
+		<select name="category" id="filter-by-category" class="evf-enhanced-select2" style="min-width: 200px;">
+			<option value="" <?php selected( $selected_category, '' ); ?>><?php echo __( 'All Category', 'everest-forms' ); ?></option>
+
+			<?php foreach ( $category_list as $id => $category ) : ?>
+				<option value="<?php echo esc_attr( $id ); ?>" <?php selected( $selected_category, $id ); ?>><?php echo esc_html( $category ); ?></option>
+			<?php endforeach; ?>
+		</select>
+		<?php
 	}
 }
