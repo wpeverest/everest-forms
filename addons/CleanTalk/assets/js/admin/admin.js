@@ -8,7 +8,7 @@
 
 				$( document).on('click', '#everest-forms-clean-talk-save-settings', function (e) {
 					e.preventDefault();
-					EVFCleanTalk.saveCleanTalkSettings();
+					EVFCleanTalk.saveCleanTalkSettings( $( this ) );
 				});
 
 				$( document ).on('change', '#everest_forms_enable_cleantalk_spam_protection', function(){
@@ -59,7 +59,7 @@
 		/**
 		 * Show/hide CleanTalk settings based on the selected method.
 		 */
-		saveCleanTalkSettings: function () {
+		saveCleanTalkSettings: function ( $el ) {
 			const isEnabled = $('#everest_forms_enable_cleantalk_spam_protection').is(':checked');
 
 			const $form = $('#everest-forms-clean-talk-settings-form'),
