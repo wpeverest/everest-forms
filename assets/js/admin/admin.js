@@ -685,4 +685,68 @@
 
 		}
 	});
+
+	/**
+	 * Manage tags.
+	 *
+	 * @since xx.xx.xx
+	 */
+	$(document).on('click', '.evf-manage-tags', function(e){
+		e.preventDefault();
+		var tags = $('#filter-by-tags').val();
+
+		if(!tags || tags.length ===0) {
+			 return;
+		}
+
+		$.confirm( {
+			title: evf_admin_manage_tags.manage_tags_title,
+			theme: 'jconfirm-modern jconfirm-everest-forms',
+			icon: 'dashicons dashicons-lock',
+			backgroundDismiss: false,
+			scrollToPreviousElement: false,
+			content: tags.length > 0 ? evf_admin_manage_tags.manage_tags_desc : 'Select the tags first from the list.',
+			buttons:{
+				confirm:{
+					text:'Delete',
+					btnClass:'btn-red',
+					action:function() {
+						$.ajax({
+							type: 'POST',
+							url: evf_admin_manage_tags.ajax_url,
+							data: {
+								action: 'everest_forms_delete_form_tags',
+								tags: tags,
+								security : evf_admin_manage_tags.ajax_manage_tags_nonce
+							},
+							success: function(res) {
+								//for log.
+							}
+						});
+
+						window.location.reload();
+					}
+
+				},
+				cancel:{
+					text:'Cancel',
+					btnClass:'btn-gray'
+				}
+			},
+			type: 'blue',
+			boxWidth: '565px',
+			boxHeight:'200px'
+		} );
+
+	});
+
+	var $tagsSelect = $('#filter-by-tags');
+	var $manageTagsBtn = $('.evf-manage-tags');
+
+	$manageTagsBtn.prop('disabled', !$tagsSelect.val() || $tagsSelect.val().length === 0);
+
+	$tagsSelect.on('change', function() {
+		$manageTagsBtn.prop('disabled', !$(this).val() || $(this).val().length === 0);
+	});
+
 })( jQuery, everest_forms_admin );

@@ -11283,7 +11283,7 @@ body {
 			padding-right: 12px;
 
 			select {
-				height: 36px;
+				height: 30px !important;
 				margin: 0;
 				border-color: #bababa;
 
@@ -11312,6 +11312,22 @@ body {
 					&:hover {
 						background: #f2f2f2;
 					}
+				}
+			}
+
+			.evf-manage-tags {
+				padding: 6px 14px;
+				border-radius: 3px;
+				border: 1px solid #475bb2;
+				background: #f6f7f7;
+				color: #475bb2;
+				font-size: 14px;
+				font-weight: 500;
+				line-height: 150%;
+				transition: all 0.3s ease-in-out;
+
+				&:hover {
+					background: #f2f2f2;
 				}
 			}
 		}
@@ -11428,6 +11444,17 @@ button#show-settings-link {
 		.select2-search__field {
 			min-height: 24px;
 			line-height: 1.4;
+		}
+	}
+}
+
+.evf-manage-tags-body {
+	.tags-list {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		.tag {
+			margin-left: 6px;
 		}
 	}
 }

@@ -554,7 +554,7 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 	protected function extra_tablenav( $which ) {
 		$num_posts = wp_count_posts( 'everest_form', 'readable' );
 
-		echo '<div class="alignleft actions">';
+		echo '<div class="alignleft actions bulkactions">';
 
 		if ( 'top' === $which ) {
 			$this->tags_dropdown();
@@ -663,6 +663,8 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 	 * @since xx.xx.xx
 	 */
 	public function manage_tags() {
-		printf( '<Button class=" button evf-manage-tags">%s</Button>', __( 'Manage Tags', 'everest-forms' ) );
+		$tags = FormHelper::get_all_form_tags( 'term_id' );
+
+		printf( '<button type="button" data-tags="%s" class="button evf-manage-tags">%s</button>', htmlspecialchars( json_encode( $tags ) ), __( 'Delete Tags', 'everest-forms' ) );
 	}
 }

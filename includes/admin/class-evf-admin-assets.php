@@ -299,6 +299,20 @@ class EVF_Admin_Assets {
 			);
 
 			wp_localize_script(
+				'everest-forms-admin',
+				'evf_admin_manage_tags',
+				array(
+					'ajax_manage_tags_nonce' => wp_create_nonce( 'ajax_manage_tags_nonce' ),
+					'ajax_url'               => admin_url( 'admin-ajax.php' ),
+					'manage_tags_title'      => __( 'Are you sure want to delete selected tags?', 'everest-forms' ),
+					'manage_tags_desc'       => __(
+						'Delete tags that you\'re no longer using. Deleting a tag will remove it from a form, but will not delete the form itself.',
+						'everest-forms'
+					),
+				)
+			);
+
+			wp_localize_script(
 				'evf-import-entries-form-csv',
 				'evf_import_entries_obj',
 				array(

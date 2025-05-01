@@ -135,6 +135,7 @@ class EVF_AJAX {
 			'generate_restapi_key'            => false,
 			'install_and_activate_smart_smtp' => false,
 			'form_preview_save'               => false,
+			'delete_form_tags'                => false,
 		);
 
 		foreach ( $ajax_events as $ajax_event => $nopriv ) {
@@ -1900,6 +1901,32 @@ class EVF_AJAX {
 		update_post_meta( $form_id, 'everest_forms_enable_theme_style', $default_theme );
 
 		wp_send_json_success( array( 'message' => __( 'Saved', 'everest-forms' ) ) );
+	}
+	/**
+	 * Delete the tags.
+	 *
+	 * @since xx.xx.xx
+	 */
+	public static function delete_form_tags() {
+		check_ajax_referer( 'ajax_manage_tags_nonce', 'security' );
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( array( 'message' => __( 'You do not have permission.', 'everest-forms' ) ) );
+			wp_die( -1 );
+		}
+
+		$tags = isset( $_POST['tags'] ) ? array_map( 'absint', $_POST['tags'] ) : array();
+
+		if ( empty( $tags ) ) {
+			wp_send_json_error( array( 'message' => __( 'Missing tags.', 'everest-forms' ) ) );
+		}
+
+		foreach ( $tags as $tag ) {
+			wp_delete_term( $tag, EVF_Post_Types::TAGS_TAXONOMY );
+		}
+
+		wp_send_json_error( array( 'message' => __( 'Tags are deleted successfully.', 'everest-forms' ) ) );
+
 	}
 }
 
