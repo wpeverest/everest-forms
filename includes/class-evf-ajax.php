@@ -449,19 +449,20 @@ class EVF_AJAX {
 			$term_ids = array();
 
 			foreach ( $data['settings']['form_tags'] as $tag_name ) {
-
-				$term = term_exists( $tag_name, EVF_Post_Types::TAGS_TAXONOMY );
-
-				// If term doesn't exist, create it
-				if ( ! $term ) {
-					$term = wp_insert_term(
-						sanitize_text_field( $tag_name ),
-						EVF_Post_Types::TAGS_TAXONOMY,
-					);
+				if ( is_numeric( $tag_name ) ) {
+					$term = get_term( absint( $tag_name ), EVF_Post_Types::TAGS_TAXONOMY );
+					if ( $term && ! is_wp_error( $term ) ) {
+						$term_ids[] = $term->term_id;
+						continue;
+					}
 				}
 
+				$term = term_exists( $tag_name, EVF_Post_Types::TAGS_TAXONOMY );
+				if ( $term === null ) {
+					$term = wp_insert_term( sanitize_text_field( $tag_name ), EVF_Post_Types::TAGS_TAXONOMY );
+				}
 				if ( ! is_wp_error( $term ) ) {
-					$term_ids[] = is_array( $term ) ? $term['term_id'] : $term;
+					$term_ids[] = is_array( $term ) ? (int) $term['term_id'] : $term;
 				}
 			}
 			if ( ! empty( $term_ids ) ) {
