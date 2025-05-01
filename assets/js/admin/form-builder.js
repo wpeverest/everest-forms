@@ -3607,6 +3607,7 @@
 				var $select = $(this);
 
 				$select.select2({
+					placeholder:evf_data.select_form_tags_placeholder,
 					tags: true,
 					createTag: function(params) {
 						if (params.term.trim() === '') {
