@@ -77,7 +77,7 @@ class Settings extends \EVF_Integration {
 								</label>
 								<label class="evf-clean-talk-label-2">
 									<input type="radio" name="everest_forms_clean_talk_methods" value="rest_api" <?php checked( 'rest_api', get_option( 'everest_forms_clean_talk_methods' ) ); ?>>
-									<?php echo __( 'CleanTalk RestApi', 'everest-forms') ?></label>
+									<?php echo __( 'CleanTalk REST API', 'everest-forms') ?></label>
 							</div>
 						</div>
 
