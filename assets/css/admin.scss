@@ -5809,6 +5809,16 @@ table.wp-list-table {
 			background: lighten(#0095ff, 45%);
 		}
 	}
+
+	.column-tags {
+		.evf-form-tags {
+			border: none;
+			padding: 0px !important;
+		}
+		&:hover {
+			background-color: none !important;
+		}
+	}
 }
 
 /**

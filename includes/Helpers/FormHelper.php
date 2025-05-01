@@ -48,8 +48,7 @@ class FormHelper {
 			true
 		);
 
-		$form_tags = is_wp_error( $form_tags ) ? array() : (array) $form_tags;
-
+		$form_tags    = is_wp_error( $form_tags ) ? array() : (array) $form_tags;
 		$tags_options = wp_list_pluck( $form_tags, 'name', $key );
 
 		return $tags_options;

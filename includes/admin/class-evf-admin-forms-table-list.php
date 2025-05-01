@@ -344,8 +344,10 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 			return '-';
 		}
 
-		$form = json_decode( $posts->post_content, true );
-		$tags = FormHelper::get_form_tags( $posts->ID );
+		$form      = json_decode( $posts->post_content, true );
+		$tags      = FormHelper::get_form_tags( $posts->ID );
+		$tag_count = count( $tags );
+		$i         = 0;
 
 		$output = '';
 		foreach ( $tags as $id => $tag ) {
@@ -359,6 +361,10 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 				esc_attr( $id ),
 				esc_html( $tag )
 			);
+
+			if ( ++$i < $tag_count ) {
+				$output .= ', ';
+			}
 		}
 
 		return $output;
