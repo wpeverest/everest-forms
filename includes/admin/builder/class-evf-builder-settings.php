@@ -208,6 +208,8 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			)
 		);
 
+		$this->form_data['settings']['form_tags'] = FormHelper::get_form_tags( $this->form_data['id'], 'slug' );
+
 		everest_forms_panel_field(
 			'select',
 			'settings',

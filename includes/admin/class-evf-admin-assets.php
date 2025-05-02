@@ -76,7 +76,8 @@ class EVF_Admin_Assets {
 		$suffix    = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
 		// Register scripts.
-		wp_register_script( 'everest-forms-admin', evf()->plugin_url() . '/assets/js/admin/admin' . $suffix . '.js', array( 'jquery', 'jquery-blockui', 'jquery-ui-sortable', 'jquery-ui-widget', 'jquery-ui-core', 'tooltipster', 'wp-color-picker', 'perfect-scrollbar', 'evf-clipboard' ), EVF_VERSION, true );
+		wp_register_script( 'selectWoo', evf()->plugin_url() . '/assets/js/selectWoo/selectWoo.full' . $suffix . '.js', array( 'jquery' ), '1.0.8', true );
+		wp_register_script( 'everest-forms-admin', evf()->plugin_url() . '/assets/js/admin/admin' . $suffix . '.js', array( 'jquery', 'jquery-blockui', 'jquery-ui-sortable', 'jquery-ui-widget', 'jquery-ui-core', 'tooltipster', 'wp-color-picker', 'perfect-scrollbar', 'evf-clipboard', 'selectWoo' ), EVF_VERSION, true );
 		wp_register_script( 'everest-forms-extensions', evf()->plugin_url() . '/assets/js/admin/extensions' . $suffix . '.js', array( 'jquery', 'updates', 'wp-i18n' ), EVF_VERSION, true );
 		wp_register_script( 'everest-forms-email-admin', evf()->plugin_url() . '/assets/js/admin/evf-admin-email' . $suffix . '.js', array( 'jquery', 'jquery-blockui', 'jquery-ui-sortable', 'jquery-ui-widget', 'jquery-ui-core', 'tooltipster', 'wp-color-picker', 'perfect-scrollbar' ), EVF_VERSION, true );
 		wp_register_script( 'everest-forms-editor', evf()->plugin_url() . '/assets/js/admin/editor' . $suffix . '.js', array( 'jquery' ), EVF_VERSION, true );
@@ -86,7 +87,6 @@ class EVF_Admin_Assets {
 		wp_register_script( 'tooltipster', evf()->plugin_url() . '/assets/js/tooltipster/tooltipster.bundle' . $suffix . '.js', array( 'jquery' ), '4.6.2', true );
 		wp_register_script( 'perfect-scrollbar', evf()->plugin_url() . '/assets/js/perfect-scrollbar/perfect-scrollbar' . $suffix . '.js', array( 'jquery' ), '1.5.0', true );
 		wp_register_script( 'evf-clipboard', evf()->plugin_url() . '/assets/js/admin/evf-clipboard' . $suffix . '.js', array( 'jquery' ), EVF_VERSION, true );
-		wp_register_script( 'selectWoo', evf()->plugin_url() . '/assets/js/selectWoo/selectWoo.full' . $suffix . '.js', array( 'jquery' ), '1.0.8', true );
 		wp_register_script( 'evf-enhanced-select', evf()->plugin_url() . '/assets/js/admin/evf-enhanced-select' . $suffix . '.js', array( 'jquery', 'selectWoo' ), EVF_VERSION, true );
 		wp_register_script( 'evf-template-controller', evf()->plugin_url() . '/assets/js/admin/form-template-controller' . $suffix . '.js', array( 'jquery' ), EVF_VERSION, true );
 		wp_register_script( 'flatpickr', evf()->plugin_url() . '/assets/js/flatpickr/flatpickr' . $suffix . '.js', array( 'jquery' ), '4.6.3', true );

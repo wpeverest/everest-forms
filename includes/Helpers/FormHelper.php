@@ -53,4 +53,20 @@ class FormHelper {
 
 		return $tags_options;
 	}
+
+	/**
+	 * Get all the form tags based on the forms.
+	 *
+	 * @param [type] $form_ids The form list.
+	 */
+	public static function get_selected_forms_tags( $form_ids ) {
+		$all_tags = array();
+		foreach ( $form_ids as $form_id ) {
+
+			$tags = self::get_form_tags( $form_id );
+			$all_tags = $all_tags + $tags;
+		}
+
+		return $all_tags;
+	}
 }

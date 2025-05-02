@@ -136,6 +136,7 @@ class EVF_AJAX {
 			'install_and_activate_smart_smtp' => false,
 			'form_preview_save'               => false,
 			'delete_form_tags'                => false,
+			'update_tags_in_bulk'             => false,
 		);
 
 		foreach ( $ajax_events as $ajax_event => $nopriv ) {
@@ -1926,8 +1927,56 @@ class EVF_AJAX {
 			wp_delete_term( $tag, EVF_Post_Types::TAGS_TAXONOMY );
 		}
 
-		wp_send_json_error( array( 'message' => __( 'Tags are deleted successfully.', 'everest-forms' ) ) );
+		wp_send_json_success( array( 'message' => __( 'Tags are deleted successfully.', 'everest-forms' ) ) );
 
+	}
+
+	/**
+	 * Update tags in bulk.
+	 *
+	 * @since xx.xx.xx
+	 */
+	public static function update_tags_in_bulk() {
+
+		check_ajax_referer( 'ajax_manage_tags_nonce', 'security' );
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( array( 'message' => __( 'You do not have permission.', 'everest-forms' ) ) );
+			wp_die( -1 );
+		}
+
+		$tags  = isset( $_POST['tags'] ) ?  $_POST['tags'] : array();
+		$forms = isset( $_POST['forms'] ) ? array_map( 'absint', $_POST['forms'] ) : array();
+
+		if ( empty( $forms ) ) {
+			wp_send_json_error( array( 'message' => __( 'Please select atleast on form to updat the tags.', 'everest-forms' ) ) );
+		}
+
+		$term_ids = array();
+
+		foreach ( $tags as $tag_name ) {
+			if ( is_numeric( $tag_name ) ) {
+				$term = get_term( absint( $tag_name ), EVF_Post_Types::TAGS_TAXONOMY );
+				if ( $term && ! is_wp_error( $term ) ) {
+					$term_ids[] = $term->term_id;
+					continue;
+				}
+			}
+
+			$term = term_exists( $tag_name, EVF_Post_Types::TAGS_TAXONOMY );
+			if ( $term === null ) {
+				$term = wp_insert_term( sanitize_text_field( $tag_name ), EVF_Post_Types::TAGS_TAXONOMY );
+			}
+			if ( ! is_wp_error( $term ) ) {
+				$term_ids[] = is_array( $term ) ? (int) $term['term_id'] : $term;
+			}
+		}
+
+		foreach ( $forms as $id ) {
+			wp_set_post_terms( $id, $term_ids, EVF_Post_Types::TAGS_TAXONOMY, false );
+		}
+
+		wp_send_json_success( array( 'message' => __( 'Tags are updated successfully.', 'everest-forms' ) ) );
 	}
 }
 

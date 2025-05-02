@@ -11346,6 +11346,40 @@ body {
 			margin-bottom: 0;
 		}
 	}
+	.evf-bulk-edit-forms-tags-container {
+		display: flex;
+		flex-direction: row;
+		margin-bottom: 20px;
+		gap: 30px;
+		label {
+			font-size: 14px;
+			font-weight: 500;
+		}
+		.tags-selects {
+			display: flex;
+			flex-direction: column;
+			gap: 4px;
+
+			.evf-update-bulk-tags{
+				margin-top: 22px;
+			}
+		}
+		.evf-update-bulk-tags {
+			padding: 6px 14px;
+			border-radius: 3px;
+			border: 1px solid #475bb2;
+			background: #f6f7f7;
+			color: #475bb2;
+			font-size: 14px;
+			font-weight: 500;
+			line-height: 200%;
+			transition: all 0.3s ease-in-out;
+
+			&:hover {
+				background: #f2f2f2;
+			}
+		}
+	}
 
 	div.everest-forms-list-table-container__header {
 		display: flex;

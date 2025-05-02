@@ -482,7 +482,8 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 			}
 		} elseif ( current_user_can( 'everest_forms_delete_forms' ) ) {
 			$actions = array(
-				'trash' => esc_html__( 'Move to trash', 'everest-forms' ),
+				'trash'     => esc_html__( 'Move to trash', 'everest-forms' ),
+				'edit-tags' => esc_html__( 'Edit Tags', 'everest-forms' ),
 			);
 		}
 
@@ -672,5 +673,52 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 		$tags = FormHelper::get_all_form_tags( 'term_id' );
 
 		printf( '<button type="button" data-tags="%s" class="button evf-manage-tags">%s</button>', htmlspecialchars( json_encode( $tags ) ), __( 'Delete Tags', 'everest-forms' ) );
+	}
+
+	public function display_tablenav( $which ) {
+		$action   = $this->current_action();
+		$form_ids = isset( $_REQUEST['form_id'] ) ? wp_parse_id_list( wp_unslash( $_REQUEST['form_id'] ) ) : array(); // phpcs:ignore WordPress.Security.NonceVerification
+
+		parent::display_tablenav( $which );
+
+		$tags     = array_keys( FormHelper::get_selected_forms_tags( $form_ids ) );
+		$tag_list = FormHelper::get_all_form_tags( 'term_id' );
+
+		$all_forms = array();
+		foreach ( $this->items as $items ) {
+			$all_forms[ $items->ID ] = $items->post_title;
+		}
+
+		if ( 'edit-tags' === $action && 'top' === $which ) {
+			?>
+			<div class="evf-bulk-edit-forms-tags-container">
+				<div class="tags-selects">
+
+					<label class="label"><?php echo __( 'Selected forms', 'everest-forms' ); ?></label>
+					<select name="bulk_tag_forms[]" id="bulk_tag_forms" class="evf-enhanced-select" data-placeholder="<?php echo __( 'Select forms', 'everest-forms' ); ?>" multiple style="min-width: 150px;">
+
+					<?php foreach ( $all_forms as $id => $form_title ) : ?>
+						<option value="<?php echo esc_attr( $id ); ?>" <?php echo in_array( $id, $form_ids ) ? 'selected' : ''; ?>><?php echo esc_html( $form_title ); ?></option>
+					<?php endforeach; ?>
+					</select>
+				</div>
+
+				<div class="tags-selects">
+					<label class="label"><?php echo __( 'Selected Tags', 'everest-forms' ); ?></label>
+					<select name="bulk_tags[]" id="bulk_tags" class="form-tags-select2" data-placeholder="<?php echo __( 'Select tags', 'everest-forms' ); ?>" multiple style="min-width: 150px;">
+
+					<?php foreach ( $tag_list as $id => $tag ) : ?>
+						<option value="<?php echo esc_attr( $id ); ?>" <?php echo in_array( $id, $tags ) ? 'selected' : ''; ?>><?php echo esc_html( $tag ); ?></option>
+					<?php endforeach; ?>
+					</select>
+				</div>
+				<div class="tags-selects">
+					<button type="button" class="button evf-update-bulk-tags"><?php echo __( 'Update Tags', 'everest-forms' ); ?></button>
+				</div>
+
+			</div>
+			<?php
+
+		}
 	}
 }
