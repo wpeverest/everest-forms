@@ -7,6 +7,7 @@ import {
 	Placeholder,
 	TextControl,
 	TextHighlight,
+	TextareaControl,
 } from "@wordpress/components";
 import { InspectorControls, useBlockProps } from "@wordpress/block-editor";
 import { __ } from "@wordpress/i18n";
@@ -24,11 +25,15 @@ const Edit = (props) => {
 			popupType,
 			popupButtonText,
 			popupSize,
+			popupHeaderTitle,
+			popupFooterTitle,
+			popupHeaderDesc,
+			popupFooterDesc,
 		},
 		setAttributes,
 	} = props;
 	/* global _EVF_BLOCKS_ */
-	const { evfRestApiNonce, restURL, logoUrl } =
+	const { evfRestApiNonce, restURL, logoUrl, isPro } =
 		typeof _EVF_BLOCKS_ !== "undefined" && _EVF_BLOCKS_;
 
 	const formOptions = _EVF_BLOCKS_.forms.map((value) => ({
@@ -153,6 +158,54 @@ const Edit = (props) => {
 										onChange={(size) =>
 											setAttributes({ popupSize: size })
 										}
+									/>
+									<TextControl
+										label={__(
+											"Header title",
+											"everest-forms",
+										)}
+										value={popupHeaderTitle}
+										onChange={(value) => {
+											setAttributes({
+												popupHeaderTitle: value,
+											});
+										}}
+									/>
+									<TextareaControl
+										label={__(
+											"Header Description",
+											"everest-forms",
+										)}
+										value={popupHeaderDesc}
+										onChange={(value) => {
+											setAttributes({
+												popupHeaderDesc: value,
+											});
+										}}
+									/>
+									<TextControl
+										label={__(
+											"Footer title",
+											"everest-forms",
+										)}
+										value={popupFooterTitle}
+										onChange={(value) => {
+											setAttributes({
+												popupFooterTitle: value,
+											});
+										}}
+									/>
+									<TextareaControl
+										label={__(
+											"Footer Description",
+											"everest-forms",
+										)}
+										value={popupFooterDesc}
+										onChange={(value) => {
+											setAttributes({
+												popupFooterDesc: value,
+											});
+										}}
 									/>
 									<p>
 										{__(

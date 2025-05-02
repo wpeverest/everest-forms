@@ -31,6 +31,22 @@
       "type": "string",
       "default": ""
     },
+    "popupHeaderDesc": {
+      "type": "string",
+      "default": ""
+    },
+    "popupHeaderTitle": {
+      "type": "string",
+      "default": ""
+    },
+    "popupFooterDesc": {
+      "type": "string",
+      "default": ""
+    },
+    "popupFooterTitle": {
+      "type": "string",
+      "default": ""
+    },
     "popupButtonText": {
       "type": "string",
       "default": "View Form"

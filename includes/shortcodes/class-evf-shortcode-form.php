@@ -861,12 +861,16 @@ class EVF_Shortcode_Form {
 
 		$atts = shortcode_atts(
 			array(
-				'id'          => false,
-				'type'        => false,
-				'size'        => false,
-				'text'        => false,
-				'title'       => false,
-				'description' => false,
+				'id'           => false,
+				'type'         => false,
+				'size'         => false,
+				'text'         => false,
+				'title'        => false,
+				'description'  => false,
+				'header_title' => false,
+				'footer_title' => false,
+				'header_desc'  => false,
+				'footer_desc'  => false,
 			),
 			$atts,
 			'output'
