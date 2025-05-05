@@ -42,7 +42,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			array(
 				'general'      => esc_html__( 'General', 'everest-forms' ),
 				'email'        => esc_html__( 'Email', 'everest-forms' ),
-				'confirmation' => esc_html__( 'Confirmations', 'everest-forms' ),
+				'confirmation' => esc_html__( 'Confirmation', 'everest-forms' ),
 				'security'     => esc_html__( 'Anti-Spam and Security', 'everest-forms' ),
 			),
 			$this->form_data
@@ -592,15 +592,18 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				// --------------------------------------------------------------------//
 				echo '<div class="evf-content-section evf-content-confirmation-settings">';
 				echo '<div class="evf-content-section-title">';
-				esc_html_e( 'Confirmations', 'everest-forms' );
+				esc_html_e( 'Confirmation', 'everest-forms' );
 				echo '</div>';
-
+				echo '<div class="everest-forms-border-container evf-same-page-content">';
+				echo '<div class="evf-content-section-title">';
+				esc_html_e( 'Confirmation Settings', 'everest-forms' );
+				echo '</div>';
 				everest_forms_panel_field(
 					'select',
 					'settings',
 					'redirect_to',
 					$this->form_data,
-					esc_html__( 'Redirect To', 'everest-forms' ),
+					esc_html__( 'Confirmation Type', 'everest-forms' ),
 					array(
 						'default' => 'same',
 						/* translators: %1$s - general settings docs url */
@@ -664,38 +667,17 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					)
 				);
 
-				echo '<div class="everest-forms-border-container evf-same-page-content">';
-
 				everest_forms_panel_field(
 					'textarea',
 					'settings',
 					'successful_form_submission_message',
 					$this->form_data,
-					esc_html__( 'Successful form submission message', 'everest-forms' ),
+					esc_html__( 'Success Message', 'everest-forms' ),
 					array(
 						'input_class' => 'short',
 						'default'     => isset( $this->form->successful_form_submission_message ) ? $this->form->successful_form_submission_message : __( 'Thanks for contacting us! We will be in touch with you shortly', 'everest-forms' ),
 						/* translators: %1$s - general settings docs url */
 						'tooltip'     => sprintf( esc_html__( 'Success message that shows up after submitting form. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/general-settings/#4-toc-title' ) ),
-					)
-				);
-
-				everest_forms_panel_field(
-					'select',
-					'settings',
-					'successful_form_submission_message_display_location',
-					$this->form_data,
-					esc_html__( 'Success message display location', 'everest-forms' ),
-					array(
-						'default' => 'hide',
-						/* translators: %1$s - general settings docs url */
-						'tooltip' => sprintf( esc_html__( 'Choose where to display success message. <a href="%s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/confirmations/' ) ),
-						'options' => array(
-							'hide'   => esc_html__( 'Hide form', 'everest-forms' ),
-							'top'    => esc_html__( 'Top', 'everest-forms' ),
-							'bottom' => esc_html__( 'Bottom', 'everest-forms' ),
-							'popup'  => esc_html__( 'Popup', 'everest-forms' ),
-						),
 					)
 				);
 
@@ -737,6 +719,26 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 						),
 					)
 				);
+
+				everest_forms_panel_field(
+					'select',
+					'settings',
+					'successful_form_submission_message_display_location',
+					$this->form_data,
+					esc_html__( 'Display Message', 'everest-forms' ),
+					array(
+						'default' => 'hide',
+						/* translators: %1$s - general settings docs url */
+						'tooltip' => sprintf( esc_html__( 'Choose where to display success message. <a href="%s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/confirmations/' ) ),
+						'options' => array(
+							'hide'   => esc_html__( 'Hide form', 'everest-forms' ),
+							'top'    => esc_html__( 'Above the form', 'everest-forms' ),
+							'bottom' => esc_html__( 'Below the form', 'everest-forms' ),
+							'popup'  => esc_html__( 'Popup', 'everest-forms' ),
+						),
+					)
+				);
+
 				echo '</div>';
 				do_action( 'everest_forms_submission_redirection_settings', $this, 'submission_redirection' );
 
