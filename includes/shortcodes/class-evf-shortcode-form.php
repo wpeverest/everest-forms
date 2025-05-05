@@ -997,8 +997,16 @@ class EVF_Shortcode_Form {
 			return;
 		}
 
-		$message_display_location  	= isset( $form_data['settings']['successful_form_submission_message_display_location'] ) ? $form_data['settings']['successful_form_submission_message_display_location'] : 'hide';
-		$message 					= isset( $form_data['settings']['successful_form_submission_message'] ) ? $form_data['settings']['successful_form_submission_message'] : __( 'Thanks for contacting us! We will be in touch with you shortly.', 'everest-forms' );
+		// Check the form state type
+		$form_state_type = isset( $form_data['settings']['form_state_type'] ) ? $form_data['settings']['form_state_type'] : 'hide';
+
+		if ( 'hide' === $form_state_type ) {
+			$message_display_location = isset( $form_data['settings']['successful_form_submission_message_display_location'] ) ? $form_data['settings']['successful_form_submission_message_display_location'] : 'hide';
+		} else {
+			$message_display_location = isset( $form_data['settings']['reset_successful_form_submission_message_display_location'] ) ? $form_data['settings']['reset_successful_form_submission_message_display_location'] : 'top';
+		}
+
+		$message = isset( $form_data['settings']['successful_form_submission_message'] ) ? $form_data['settings']['successful_form_submission_message'] : __( 'Thanks for contacting us! We will be in touch with you shortly.', 'everest-forms' );
 
 		$success = apply_filters( 'everest_forms_success', false, $form_id );
 		if ( $success && ! empty( $form_data ) && 'hide' === $message_display_location ) {
@@ -1136,9 +1144,9 @@ class EVF_Shortcode_Form {
 			if ( $success && ! empty( $form_data ) && 'top' === $message_display_location ) {
 				evf_add_notice( $message, 'success' );
 				do_action( 'everest_forms_frontend_output_success', $form_data );
-			}elseif ( $success && ! empty( $form_data ) && 'popup' === $message_display_location ) {
+			} elseif ( $success && ! empty( $form_data ) && 'popup' === $message_display_location ) {
 				$form_atts['data']['message_location'] = $message_display_location;
-				$form_atts['data']['message']        = $message;
+				$form_atts['data']['message']          = $message;
 			}
 			echo '<form ' . evf_html_attributes( $form_atts['id'], $form_atts['class'], $form_atts['data'], $form_atts['atts'] ) . '>';
 			if ( evf_is_amp() ) {

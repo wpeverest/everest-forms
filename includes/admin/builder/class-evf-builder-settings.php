@@ -594,24 +594,25 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				echo '<div class="evf-content-section-title">';
 				esc_html_e( 'Confirmation', 'everest-forms' );
 				echo '</div>';
-				echo '<div class="everest-forms-border-container evf-same-page-content">';
+				echo '<div class="everest-forms-border-container">';
 				echo '<div class="evf-content-section-title">';
 				esc_html_e( 'Confirmation Settings', 'everest-forms' );
 				echo '</div>';
 				everest_forms_panel_field(
-					'select',
+					'radio',
 					'settings',
 					'redirect_to',
 					$this->form_data,
 					esc_html__( 'Confirmation Type', 'everest-forms' ),
 					array(
 						'default' => 'same',
-						/* translators: %1$s - general settings docs url */
+						'class'   => 'evf-builder-radio',
 						'tooltip' => sprintf( esc_html__( 'Choose where to redirect after form submission. <a href="%s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/general-settings/#5-toc-title' ) ),
 						'options' => array(
-							'same'         => esc_html__( 'Same Page', 'everest-forms' ),
-							'custom_page'  => esc_html__( 'Custom Page', 'everest-forms' ),
-							'external_url' => esc_html__( 'External URL', 'everest-forms' ),
+							'same'         => array( 'label' => esc_html__( 'Same Page', 'everest-forms' ) ),
+							'custom_page'  => array( 'label' => esc_html__( 'Custom Page', 'everest-forms' ) ),
+							'external_url' => array( 'label' => esc_html__( 'External URL', 'everest-forms' ) ),
+
 						),
 					)
 				);
@@ -623,6 +624,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					$this->form_data,
 					esc_html__( 'Custom Page', 'everest-forms' ),
 					array(
+						'class'   => 'custom-page-setting',
 						'default' => '0',
 						'options' => $this->get_all_pages(),
 					)
@@ -635,10 +637,22 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					$this->form_data,
 					esc_html__( 'External URL', 'everest-forms' ),
 					array(
+						'class'   => 'external-page-setting',
 						'default' => isset( $this->form->external_url ) ? $this->form->external_url : '',
 					)
 				);
-
+				everest_forms_panel_field(
+					'toggle',
+					'settings',
+					'enable_redirect_in_new_tab',
+					$this->form_data,
+					esc_html__( ' Open in new tab', 'everest-forms' ),
+					array(
+						'class'   => 'external-page-setting',
+						'tooltip' => esc_html__( 'Enable to open the url in the new tab.', 'everest-forms' ),
+						'default' => '0',
+					)
+				);
 				everest_forms_panel_field(
 					'toggle',
 					'settings',
@@ -646,6 +660,8 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					$this->form_data,
 					esc_html__( ' Append Query String', 'everest-forms' ),
 					array(
+						'class'   => 'custom-page-setting external-page-setting',
+						'tooltip' => esc_html__( 'Enable to add the query string in the url.', 'everest-forms' ),
 						'default' => '0',
 					)
 				);
@@ -657,6 +673,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					$this->form_data,
 					esc_html__( 'Query String', 'everest-forms' ),
 					array(
+						'class'     => 'custom-page-setting external-page-setting',
 						'default'   => isset( $settings['query_string'] ) ? $settings['query_string'] : '',
 						'class'     => isset( $settings['enable_redirect_query_string'] ) && '1' === $settings['enable_redirect_query_string'] ? '' : 'everest-forms-hidden',
 						'smarttags' => array(
@@ -674,6 +691,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					$this->form_data,
 					esc_html__( 'Success Message', 'everest-forms' ),
 					array(
+						'class'       => 'same-page-setting',
 						'input_class' => 'short',
 						'default'     => isset( $this->form->successful_form_submission_message ) ? $this->form->successful_form_submission_message : __( 'Thanks for contacting us! We will be in touch with you shortly', 'everest-forms' ),
 						/* translators: %1$s - general settings docs url */
@@ -688,7 +706,25 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					$this->form_data,
 					__( 'Automatically scroll to the submission message', 'everest-forms' ),
 					array(
+						'class'   => 'same-page-setting',
 						'default' => '1',
+					)
+				);
+
+				everest_forms_panel_field(
+					'radio',
+					'settings',
+					'form_state_type',
+					$this->form_data,
+					'',
+					array(
+						'default' => 'hide',
+						'class'   => 'same-page-setting evf-builder-radio',
+						'tooltip' => esc_html__( 'Choose preview style type.', 'everest-forms' ),
+						'options' => array(
+							'reset' => array( 'label' => esc_html__( 'Reset', 'everest-forms' ) ),
+							'hide'  => array( 'label' => esc_html__( 'Hide Form', 'everest-forms' ) ),
+						),
 					)
 				);
 
@@ -699,6 +735,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					$this->form_data,
 					esc_html__( 'Show entry preview after form submission', 'everest-forms' ),
 					array(
+						'class'   => 'same-page-setting',
 						'tooltip' => esc_html__( 'Show entry preview after form submission', 'everest-forms' ),
 					)
 				);
@@ -710,6 +747,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					$this->form_data,
 					esc_html__( 'Preview type', 'everest-forms' ),
 					array(
+						'class'   => 'same-page-setting',
 						'default' => 'basic',
 						'tooltip' => esc_html__( 'Choose preview style type.', 'everest-forms' ),
 						'options' => array(
@@ -719,7 +757,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 						),
 					)
 				);
-
+				// message display type based on the form state type.
 				everest_forms_panel_field(
 					'select',
 					'settings',
@@ -727,11 +765,30 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					$this->form_data,
 					esc_html__( 'Display Message', 'everest-forms' ),
 					array(
+						'class'   => 'same-page-setting form-state-hide',
 						'default' => 'hide',
 						/* translators: %1$s - general settings docs url */
 						'tooltip' => sprintf( esc_html__( 'Choose where to display success message. <a href="%s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/confirmations/' ) ),
 						'options' => array(
-							'hide'   => esc_html__( 'Hide form', 'everest-forms' ),
+
+							'hide'  => esc_html__( 'Default', 'everest-forms' ),
+							'popup' => esc_html__( 'Popup', 'everest-forms' ),
+						),
+					)
+				);
+
+				everest_forms_panel_field(
+					'select',
+					'settings',
+					'reset_successful_form_submission_message_display_location',
+					$this->form_data,
+					esc_html__( 'Display Message', 'everest-forms' ),
+					array(
+						'class'   => 'same-page-setting form-state-reset',
+						'default' => 'hide',
+						/* translators: %1$s - general settings docs url */
+						'tooltip' => sprintf( esc_html__( 'Choose where to display success message. <a href="%s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/confirmations/' ) ),
+						'options' => array(
 							'top'    => esc_html__( 'Above the form', 'everest-forms' ),
 							'bottom' => esc_html__( 'Below the form', 'everest-forms' ),
 							'popup'  => esc_html__( 'Popup', 'everest-forms' ),

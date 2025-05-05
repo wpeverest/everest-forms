@@ -3622,80 +3622,72 @@ jQuery(function () {
 		}
 	});
 
-		// Query String Toogle.
-		jQuery( '#everest-forms-panel-field-settings-enable_redirect_query_string-wrap input' ).on( 'change', function () {
-			var $this = jQuery( this );
-			if ( ! $this.is( ':checked' ) ) {
-				jQuery('#everest-forms-panel-field-settings-query_string-wrap').hide();
-			} else {
-				jQuery('#everest-forms-panel-field-settings-query_string-wrap').show();
-			}
-		});
-
-	var mySelect = jQuery('#everest-forms-panel-field-settings-redirect_to option:selected').val();
-
-	if(mySelect === 'same') {
-		jQuery('#everest-forms-panel-field-settings-preview_confirmation-wrap').show();
-		jQuery('#everest-forms-panel-field-settings-preview_confirmation_select-wrap').show();
-		jQuery('.evf-same-page-content').show();
-	}else{
-		jQuery('#everest-forms-panel-field-settings-preview_confirmation-wrap').hide();
-		jQuery('#everest-forms-panel-field-settings-preview_confirmation_select-wrap').hide();
-		jQuery('.evf-same-page-content').hide();
-	}
-
-	if ( mySelect == 'same' ) {
-		jQuery('#everest-forms-panel-field-settings-custom_page-wrap').hide();
-		jQuery('#everest-forms-panel-field-settings-enable_redirect_query_string-wrap').hide();
-		jQuery('#everest-forms-panel-field-settings-query_string-wrap').hide();
-		jQuery('#everest-forms-panel-field-settings-external_url-wrap').hide();
-	}
-	else if(mySelect == 'custom_page') {
-		jQuery('#everest-forms-panel-field-settings-custom_page-wrap').show();
-		jQuery('#everest-forms-panel-field-settings-external_url-wrap').hide();
-	}
-	else if(mySelect == 'external_url'){
-		jQuery('#everest-forms-panel-field-settings-external_url-wrap').show();
-		jQuery('#everest-forms-panel-field-settings-custom_page-wrap').hide();
-		jQuery('#everest-forms-panel-field-settings-enable_redirect_query_string-wrap').hide();
-		jQuery('#everest-forms-panel-field-settings-query_string-wrap').hide();
-	}
-
-	jQuery( '#everest-forms-panel-field-settings-redirect_to' ).on( 'change', function () {
-		if(this.value === 'same') {
-			jQuery('#everest-forms-panel-field-settings-preview_confirmation-wrap').show();
-			jQuery('#everest-forms-panel-field-settings-preview_confirmation_select-wrap').show();
-			jQuery('.evf-same-page-content').show();
-		}else {
-			jQuery('#everest-forms-panel-field-settings-preview_confirmation-wrap').hide();
-			jQuery('#everest-forms-panel-field-settings-preview_confirmation_select-wrap').hide();
-			jQuery('.evf-same-page-content').hide();
-		}
-
-		if ( this.value == 'same' ) {
-			jQuery('#everest-forms-panel-field-settings-custom_page-wrap').hide();
-			jQuery('#everest-forms-panel-field-settings-external_url-wrap').hide();
-			jQuery('#everest-forms-panel-field-settings-enable_redirect_query_string-wrap').hide();
+	// Query String Toogle.
+	jQuery( '#everest-forms-panel-field-settings-enable_redirect_query_string-wrap input' ).on( 'change', function () {
+		var $this = jQuery( this );
+		if ( ! $this.is( ':checked' ) ) {
 			jQuery('#everest-forms-panel-field-settings-query_string-wrap').hide();
-		}
-		else if ( this.value == 'custom_page') {
-			jQuery('#everest-forms-panel-field-settings-custom_page-wrap').show();
-			jQuery('#everest-forms-panel-field-settings-enable_redirect_query_string-wrap').show();
-			jQuery('#everest-forms-panel-field-settings-external_url-wrap').hide();
-
-			if(jQuery('#everest-forms-panel-field-settings-enable_redirect_query_string').is(':checked')){
-				jQuery('#everest-forms-panel-field-settings-query_string-wrap').show();
-			} else{
-				jQuery('#everest-forms-panel-field-settings-query_string-wrap').hide();
-			}
-		}
-		else if ( this.value == 'external_url') {
-			jQuery('#everest-forms-panel-field-settings-custom_page-wrap').hide();
-			jQuery('#everest-forms-panel-field-settings-enable_redirect_query_string-wrap').hide();
-			jQuery('#everest-forms-panel-field-settings-query_string-wrap').hide();
-			jQuery('#everest-forms-panel-field-settings-external_url-wrap').show();
+		} else {
+			jQuery('#everest-forms-panel-field-settings-query_string-wrap').show();
 		}
 	});
+	function pageType(redirectTo) {
+
+		// Hide all sections first (cleaner approach)
+		jQuery('.same-page-setting, .external-page-setting, .custom-page-setting').hide();
+
+		// Show only the selected section
+		switch(redirectTo) {
+			case 'same':
+				jQuery('.same-page-setting').show();
+				jQuery(function($) {
+					const initialValue = $('input[name="settings[form_state_type]"]:checked').val();
+					toggleMessageLocations(initialValue);
+
+					$('input[name="settings[form_state_type]"]').on('change', function() {
+						toggleMessageLocations($(this).val());
+					});
+				});
+				break;
+			case 'custom_page':
+				jQuery('.custom-page-setting').show();
+
+				const queryStringWrap = jQuery('#everest-forms-panel-field-settings-query_string-wrap');
+				queryStringWrap.toggle(
+					jQuery('#everest-forms-panel-field-settings-enable_redirect_query_string').is(':checked')
+				);
+				break;
+			case 'external_url':
+				jQuery('.external-page-setting').show();
+				break;
+		}
+	}
+
+	// Initialize on page load
+	jQuery(function($) {
+		// Get initial value and apply
+		const initialValue = $('input[name="settings[redirect_to]"]:checked').val();
+		pageType(initialValue);
+
+		// Handle changes
+		$('input[name="settings[redirect_to]"]').on('change', function() {
+			pageType($(this).val());
+		});
+	});
+
+
+	// Function to toggle message locations based on form state
+	function toggleMessageLocations(state) {
+		jQuery('.form-state-hide, .form-state-reset').hide();
+		console.log(state);
+
+		if (state === 'hide') {
+			jQuery('.form-state-hide').show();
+		} else if (state === 'reset') {
+			jQuery('.form-state-reset').show();
+		}
+	}
+
 	jQuery( '.evf-panel-field-options-button.evf-disabled-tab' ).hide();
 
 	// Conditional Logic fields for General Settings in Form for Submission Redirection.
