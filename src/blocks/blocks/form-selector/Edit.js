@@ -112,7 +112,7 @@ const Edit = (props) => {
 									setAttributes({ popupType: type })
 								}
 							/>
-							{"none" !== popupType && (
+							{"none" !== popupType && isPro && (
 								<>
 									<TextControl
 										label={__(

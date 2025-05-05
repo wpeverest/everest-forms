@@ -50,6 +50,15 @@ class EVF_Blocks_Form_Selector extends EVF_Blocks_Abstract {
 		$popup_footer_title = ! empty( $attr['popupFooterTitle'] ) ? $attr['popupFooterTitle'] : '';
 		$popup_footer_desc  = ! empty( $attr['popupFooterDesc'] ) ? $attr['popupFooterDesc'] : '';
 
+		if ( 'none' !== $popup_type && ! defined( 'EFP_VERSION' ) ) {
+			if ( $is_gb_editor ) {
+
+				return sprintf( '<div><p>%s</p></div>', __( 'Premium version of everest form needed to view the form', 'everest-forms' ) );
+			}
+
+			return $content;
+		}
+
 		// Disable form fields if called from the Gutenberg editor.
 		if ( $is_gb_editor ) {
 			add_filter(
