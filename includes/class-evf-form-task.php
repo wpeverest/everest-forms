@@ -659,12 +659,14 @@ class EVF_Form_Task {
 			// Check for Submission Redirection in Ajax Submission.
 			if ( empty( $submission_redirection_process ) ) {
 				if ( isset( $settings['redirect_to'] ) && 'external_url' === $settings['redirect_to'] ) {
-					$response_data['redirect_url'] = isset( $settings['external_url'] ) ? esc_url( $settings['external_url'] ) : 'undefined';
+					$response_data['redirect_url']               = isset( $settings['external_url'] ) ? esc_url( $settings['external_url'] ) : 'undefined';
+					$response_data['enable_redirect_in_new_tab'] = isset( $settings['enable_redirect_in_new_tab'] ) ? $settings['enable_redirect_in_new_tab'] : false;
 				} elseif ( isset( $settings['redirect_to'] ) && 'custom_page' === $settings['redirect_to'] ) {
 					$response_data['redirect_url'] = isset( $settings['custom_page'] ) ? get_page_link( absint( $settings['custom_page'] ) ) : 'undefined';
 				}
 			} else {
-				$response_data['redirect_url'] = $submission_redirection_process['external_url'];
+				$response_data['redirect_url']               = $submission_redirection_process['external_url'];
+				$response_data['enable_redirect_in_new_tab'] = isset( $settings['enable_redirect_in_new_tab'] ) ? esc_url( $settings['enable_redirect_in_new_tab'] ) : false;
 			}
 
 			// Add notice only if credit card is populated in form fields.
@@ -855,13 +857,32 @@ class EVF_Form_Task {
 				</script>
 			<?php
 		} elseif ( isset( $settings['redirect_to'] ) && 'external_url' === $settings['redirect_to'] ) {
-			?>
-			<script>
-				window.setTimeout( function () {
-					window.location.href = '<?php echo esc_url( $settings['external_url'] ); ?>';
-				})
-				</script>
-			<?php
+			$new_tab      = ! empty( $settings['enable_redirect_in_new_tab'] ); // More reliable check
+			$redirect_url = isset( $settings['external_url'] ) ? esc_url( $settings['external_url'] ) : '';
+
+			// Only proceed if we have a valid URL
+			if ( $redirect_url && filter_var( $redirect_url, FILTER_VALIDATE_URL ) ) {
+				if ( $new_tab ) {
+					?>
+					<script type="text/javascript">
+					(function() {
+						var newWindow = window.open('<?php echo $redirect_url; ?>', '_blank');
+						if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
+							window.location.href = '<?php echo $redirect_url; ?>';
+						}
+					})();
+					</script>
+					<?php
+				} else {
+					?>
+					<script type="text/javascript">
+					setTimeout(function() {
+						window.location.replace('<?php echo $redirect_url; ?>');
+					}, 100);
+					</script>
+					<?php
+				}
+			}
 		}
 
 		// Redirect if needed, to either a page or URL, after form processing.

@@ -116,7 +116,16 @@ jQuery( function( $ ) {
 						var redirect_url = ( xhr.data && xhr.data.redirect_url ) ? xhr.data.redirect_url : '';
 						if ( redirect_url && 'stripe' !== formTuple.find( ".everest-forms-gateway[data-gateway='stripe']" ).data( 'gateway' ) && 'square' !== formTuple.find( ".everest-forms-gateway[data-gateway='square']" ).data( 'gateway' )) {
 							formTuple.trigger( 'reset' );
-							window.location = redirect_url;
+							var new_tab = xhr.data.enable_redirect_in_new_tab ? xhr.data.enable_redirect_in_new_tab : false;
+
+							if (new_tab) {
+								var newWindow = window.open(redirect_url, '_blank');
+								if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
+									window.location.href = redirect_url;
+								}
+							} else {
+								window.location.href = redirect_url;
+							}
 							return;
 						}
 					if (xhr && xhr.payment_method && xhr.payment_method === 'paypal' && xhr.redirect) {
