@@ -605,10 +605,11 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					$this->form_data,
 					esc_html__( 'Confirmation Type', 'everest-forms' ),
 					array(
-						'default' => 'same',
-						'class'   => 'evf-builder-radio',
-						'tooltip' => sprintf( esc_html__( 'Choose where to redirect after form submission. <a href="%s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/general-settings/#5-toc-title' ) ),
-						'options' => array(
+						'default'     => 'same',
+						'class'       => 'evf-builder-radio',
+						'input_class' => 'confirmation-redirect-to',
+						'tooltip'     => sprintf( esc_html__( 'Choose where to redirect after form submission. <a href="%s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/general-settings/#5-toc-title' ) ),
+						'options'     => array(
 							'same'         => array( 'label' => esc_html__( 'Same Page', 'everest-forms' ) ),
 							'custom_page'  => array( 'label' => esc_html__( 'Custom Page', 'everest-forms' ) ),
 							'external_url' => array( 'label' => esc_html__( 'External URL', 'everest-forms' ) ),
@@ -718,10 +719,11 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					$this->form_data,
 					'',
 					array(
-						'default' => 'hide',
-						'class'   => 'same-page-setting evf-builder-radio',
-						'tooltip' => esc_html__( 'Choose preview style type.', 'everest-forms' ),
-						'options' => array(
+						'default'     => 'hide',
+						'class'       => 'same-page-setting evf-builder-radio',
+						'input_class' => 'form-state-type',
+						'tooltip'     => esc_html__( 'Choose preview style type.', 'everest-forms' ),
+						'options'     => array(
 							'reset' => array( 'label' => esc_html__( 'Reset', 'everest-forms' ) ),
 							'hide'  => array( 'label' => esc_html__( 'Hide Form', 'everest-forms' ) ),
 						),

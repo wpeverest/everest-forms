@@ -3631,34 +3631,35 @@ jQuery(function () {
 			jQuery('#everest-forms-panel-field-settings-query_string-wrap').show();
 		}
 	});
-	function pageType(redirectTo) {
+	function pageType(el, redirectTo) {
+		var outerWrapper = jQuery(el).closest('.everest-forms-border-container');
 
-		// Hide all sections first (cleaner approach)
-		jQuery('.same-page-setting, .external-page-setting, .custom-page-setting').hide();
+		outerWrapper.find('.same-page-setting, .external-page-setting, .custom-page-setting').hide();
 
-		// Show only the selected section
 		switch(redirectTo) {
 			case 'same':
-				jQuery('.same-page-setting').show();
+				outerWrapper.find('.same-page-setting').show();
 				jQuery(function($) {
-					const initialValue = $('input[name="settings[form_state_type]"]:checked').val();
-					toggleMessageLocations(initialValue);
+					var el =  outerWrapper.find('.form-state-type:checked');
 
-					$('input[name="settings[form_state_type]"]').on('change', function() {
-						toggleMessageLocations($(this).val());
+					var initialValue =el.val();
+					toggleMessageLocations(el, initialValue);
+
+					outerWrapper.off('change', '.form-state-type').on('change', '.form-state-type', function() {
+						toggleMessageLocations($(this), $(this).val());
 					});
 				});
 				break;
 			case 'custom_page':
-				jQuery('.custom-page-setting').show();
+				outerWrapper.find('.custom-page-setting').show();
 
-				const queryStringWrap = jQuery('#everest-forms-panel-field-settings-query_string-wrap');
+				var queryStringWrap = jQuery('#everest-forms-panel-field-settings-query_string-wrap');
 				queryStringWrap.toggle(
 					jQuery('#everest-forms-panel-field-settings-enable_redirect_query_string').is(':checked')
 				);
 				break;
 			case 'external_url':
-				jQuery('.external-page-setting').show();
+				outerWrapper.find('.external-page-setting').show();
 				break;
 		}
 	}
@@ -3666,20 +3667,21 @@ jQuery(function () {
 	// Initialize on page load
 	jQuery(function($) {
 		// Get initial value and apply
-		const initialValue = $('input[name="settings[redirect_to]"]:checked').val();
-		pageType(initialValue);
+		$('.confirmation-redirect-to:checked').each(function(){
+			var initialValue = $(this).val();
+			pageType($(this), initialValue);
+		});
 
 		// Handle changes
-		$('input[name="settings[redirect_to]"]').on('change', function() {
-			pageType($(this).val());
+		$('.confirmation-redirect-to').on('change', function() {
+			pageType($(this), $(this).val());
 		});
 	});
 
 
 	// Function to toggle message locations based on form state
-	function toggleMessageLocations(state) {
-		jQuery('.form-state-hide, .form-state-reset').hide();
-		console.log(state);
+	function toggleMessageLocations(el, state) {
+		jQuery(el).closest('.everest-forms-border-container').find('.form-state-hide, .form-state-reset').hide();
 
 		if (state === 'hide') {
 			jQuery('.form-state-hide').show();
