@@ -163,7 +163,37 @@ function everest_forms_settings_get_option( $option_name, $default = '' ) {
 
 	return EVF_Admin_Settings::get_option( $option_name, $default );
 }
+/**
+ * Resolve the parent path.
+ * like 'settings' or 'settings['conneciton'].
+ *
+ * @since xx.xx.xx
+ *
+ * @param [type] $form_data The form data.
+ * @param [type] $parent The parent.
+ */
+ function resolve_parent_path( $form_data, $parent ) {
+	$keys = array();
 
+	if ( strpos( $parent, '[' ) !== false ) {
+		// Handle 'settings[connection]' to ['settings', 'connection']
+		$parent = str_replace( ']', '', $parent );
+		$keys   = explode( '[', $parent );
+	} else {
+		$keys[] = $parent;
+	}
+
+	// Traverse the form_data with the resolved keys
+	foreach ( $keys as $key ) {
+		if ( is_array( $form_data ) && isset( $form_data[ $key ] ) ) {
+			$form_data = $form_data[ $key ];
+		} else {
+			return null;
+		}
+	}
+
+	return $form_data;
+}
 /**
  * Outputs fields to be used on panels (settings etc).
  *
@@ -200,13 +230,25 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 
 	// Check if we should store values in a parent array.
 	if ( ! empty( $parent ) ) {
+		$parent_data = resolve_parent_path( $form_data, $parent );
 		if ( ! empty( $subsection ) ) {
 			$field_name = sprintf( '%s[%s][%s][%s]', $parent, $panel, $subsection, $field );
-			$value      = isset( $form_data[ $parent ][ $panel ][ $subsection ][ $field ] ) ? $form_data[ $parent ][ $panel ][ $subsection ][ $field ] : $default;
-			$panel_id   = sanitize_html_class( $panel . '-' . $subsection );
+
+			if ( isset( $parent_data[ $panel ][ $subsection ][ $field ] ) ) {
+				$value = $parent_data[ $panel ][ $subsection ][ $field ];
+			} else {
+				$value = $default;
+			}
+
+			$panel_id = sanitize_html_class( $panel . '-' . $subsection );
 		} else {
 			$field_name = sprintf( '%s[%s][%s]', $parent, $panel, $field );
-			$value      = isset( $form_data[ $parent ][ $panel ][ $field ] ) ? $form_data[ $parent ][ $panel ][ $field ] : $default;
+
+			if ( isset( $parent_data[ $panel ][ $field ] ) ) {
+				$value = $parent_data[ $panel ][ $field ];
+			} else {
+				$value = $default;
+			}
 		}
 	} else {
 
