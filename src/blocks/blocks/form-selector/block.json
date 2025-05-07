@@ -29,7 +29,7 @@
     },
     "popupType": {
       "type": "string",
-      "default": ""
+      "default": "none"
     },
     "popupHeaderDesc": {
       "type": "string",
