@@ -2,7 +2,7 @@
 /**
  * CleanTalk.
  *
- * @since 3.0.5
+ * @since xx.xx.xx
  * @package EverestForms\Addons\CleanTalk
  */
 
@@ -15,7 +15,7 @@ use EverestForms\Traits\Singleton;
 /**
  * CleanTalk.
  *
- * @since 3.0.5
+ * @since xx.xx.xx
  */
 class CleanTalk {
 
@@ -24,7 +24,7 @@ class CleanTalk {
 	/**
 	 * Constructor.
 	 *
-	 * @since 3.0.5
+	 * @since xx.xx.xx
 	 */
 	public function __construct() {
 		$this->setup();
@@ -33,7 +33,7 @@ class CleanTalk {
 	/**
 	 * Setup the CleanTalk.
 	 *
-	 * @since 3.0.5
+	 * @since xx.xx.xx
 	 */
 	public function setup() {
 		if ( ! is_admin() ) {
@@ -52,10 +52,10 @@ class CleanTalk {
 		$suffix    = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
 		wp_register_script( 'everest-forms-clean-talk', plugins_url( "addons/CleanTalk/assets/js/admin/admin{$suffix}.js", EVF_PLUGIN_FILE ), array( 'jquery' ), EVF_VERSION, true );
-		wp_register_style( 'everest-forms-clean-talk-backward', plugins_url( "addons/CleanTalk/assets/css/admin/backward.css", EVF_PLUGIN_FILE ), array(), EVF_VERSION );
-		wp_register_style( 'everest-forms-clean-talk-style', plugins_url( "addons/CleanTalk/assets/css/admin/admin.css", EVF_PLUGIN_FILE ), array(), EVF_VERSION );
+		wp_register_style( 'everest-forms-clean-talk-backward', plugins_url( 'addons/CleanTalk/assets/css/admin/backward.css', EVF_PLUGIN_FILE ), array(), EVF_VERSION );
+		wp_register_style( 'everest-forms-clean-talk-style', plugins_url( 'addons/CleanTalk/assets/css/admin/admin.css', EVF_PLUGIN_FILE ), array(), EVF_VERSION );
 
-		if ( ! defined( 'EFP_PLUGIN_FILE' )) {
+		if ( ! defined( 'EFP_PLUGIN_FILE' ) ) {
 			wp_enqueue_style( 'everest-forms-clean-talk-backward' );
 		}
 		wp_enqueue_style( 'everest-forms-clean-talk-style' );
@@ -67,7 +67,7 @@ class CleanTalk {
 				'everest_forms_clean_talk',
 				array(
 					'ajax_url' => admin_url( 'admin-ajax.php' ),
-					'security'    => wp_create_nonce( 'everest_forms_clean_talk_nonce' ),
+					'security' => wp_create_nonce( 'everest_forms_clean_talk_nonce' ),
 				)
 			);
 		}

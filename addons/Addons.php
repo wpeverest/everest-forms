@@ -49,7 +49,7 @@ class Addons {
 			return $integrations;
 		}
 		$classes = array(
-			'clean-talk'           => 'EverestForms\Addons\CleanTalk\Settings\Settings',
+			'clean-talk' => 'EverestForms\Addons\CleanTalk\Settings\Settings',
 		);
 
 		foreach ( $classes as $key => $class_name ) {
@@ -82,7 +82,7 @@ class Addons {
 				'beaver-builder'   => BeaverBuilder::class,
 				'wpbakery-builder' => WPBakeryBuilder::class,
 				'style-customizer' => StyleCustomizer::class,
-				'clean-talk'		=> CleanTalk::class,
+				'clean-talk'       => CleanTalk::class,
 			)
 		);
 	}

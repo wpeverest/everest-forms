@@ -495,7 +495,7 @@ class EVF_Shortcode_Form {
 	 *
 	 * @param  [type] $form_data Form data.
 	 */
-	public static function clean_talk( $form_data ){
+	public static function clean_talk( $form_data ) {
 		$is_cleantalk_activated_global = evf_string_to_bool( get_option( 'everest_forms_enable_cleantalk_spam_protection', '' ) );
 
 		if ( ! $is_cleantalk_activated_global ) {
@@ -508,7 +508,7 @@ class EVF_Shortcode_Form {
 			return;
 		}
 
-		$recaptcha_api = 'https://moderate.cleantalk.org/ct-bot-detector-wrapper.js';
+		$recaptcha_api    = 'https://moderate.cleantalk.org/ct-bot-detector-wrapper.js';
 		$recaptcha_inline = <<<JS
 		document.addEventListener("DOMContentLoaded", function () {
 			var loadInput = document.querySelector('input[name="everest_forms[evf_form_load_time]"]');
@@ -577,7 +577,7 @@ class EVF_Shortcode_Form {
 			$secret_key = get_option( 'everest_forms_recaptcha_turnstile_secret_key' );
 			$theme      = get_option( 'everest_forms_recaptcha_turnstile_theme' );
 			$lang       = get_option( 'everest_forms_recaptcha_recaptcha_language', 'en-GB' );
-		}else{
+		} else {
 			$site_key   = '';
 			$secret_key = '';
 		}

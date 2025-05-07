@@ -475,12 +475,12 @@ class EVF_Form_Task {
 					return $this->errors;
 				}
 				$entry['evf_spam_status'] = 'spam';
-			}elseif ( $this->get_clean_talk_validate( $entry, $form_id ) ) {
+			} elseif ( $this->get_clean_talk_validate( $entry, $form_id ) ) {
 				$logger = evf_get_logger();
 				$logger->notice( sprintf( 'Spam entry for Form ID %d Response: %s', absint( $this->form_data['id'] ), evf_print_r( $entry, true ) ), array( 'source' => 'cleantalk' ) );
 				if ( isset( $this->form_data['settings']['cleantalk_protection_type'] ) && 'validation_failed' === $this->form_data['settings']['cleantalk_protection_type'] ) {
 
-					$cleantalk_message              = apply_filters( 'evf_cleantalk_validatation_error_message', sprintf( 'CleanTalk anti-spam verification failed, please try again later.', 'everest-forms' ) );
+					$cleantalk_message            = apply_filters( 'evf_cleantalk_validatation_error_message', sprintf( 'CleanTalk anti-spam verification failed, please try again later.', 'everest-forms' ) );
 					$errors[ $form_id ]['header'] = $cleantalk_message;
 					$this->errors                 = $errors;
 
@@ -1316,7 +1316,7 @@ class EVF_Form_Task {
 	 * @param  [type] $entry The form entry data to validate.
 	 * @param  string $form_id (Optional) The identifier of the form.
 	 */
-	public function get_clean_talk_validate( $entry, $form_id = ''){
+	public function get_clean_talk_validate( $entry, $form_id = '' ) {
 		$enabled_features = get_option( 'everest_forms_enabled_features', array() );
 
 		if ( ! in_array( 'everest-forms-clean-talk', $enabled_features ) ) {
@@ -1345,7 +1345,7 @@ class EVF_Form_Task {
 
 		if ( 'rest_api' === $clean_talk_method ) {
 			$mark_as_spam = $this->evf_is_spam_submission_clean_talk_rest_api( $entry );
-		}elseif( 'clean_talk_plugin' === $clean_talk_method ){
+		} elseif ( 'clean_talk_plugin' === $clean_talk_method ) {
 			$mark_as_spam = $this->evf_is_spam_submission_clean_talk( $entry );
 		}
 
@@ -1716,41 +1716,41 @@ class EVF_Form_Task {
 		if ( ! class_exists( 'Cleantalk\Antispam\Cleantalk' ) ) {
 			return false;
 		}
-        $clean_talk_request_obj = $this->get_clean_talk_request_obj( $entry );
-        $clean_talk_instance = new \Cleantalk\Antispam\Cleantalk();
-        $clean_talk_instance->server_url = 'https://moderate.cleantalk.org';
-        $response = $clean_talk_instance->isAllowMessage($clean_talk_request_obj);
+		$clean_talk_request_obj          = $this->get_clean_talk_request_obj( $entry );
+		$clean_talk_instance             = new \Cleantalk\Antispam\Cleantalk();
+		$clean_talk_instance->server_url = 'https://moderate.cleantalk.org';
+		$response                        = $clean_talk_instance->isAllowMessage( $clean_talk_request_obj );
 
-        return 0 == $response->allow;
-    }
+		return 0 == $response->allow;
+	}
 
 	/**
 	 * Get CleanTalk request.
 	 *
 	 * @since xx.xx.xx
 	 */
-	public function get_clean_talk_request_obj( $entry){
-		$access_key = get_option( 'everest_forms_recaptcha_cleantalk_access_key' );
-		$submit_time = isset( $this->form_data['entry']['evf_form_load_time'] ) ? time() - (int)$this->form_data['entry']['evf_form_load_time'] : null;
-		$entry_data = $this->get_entry_data_for_akismet( $this->form_data['form_fields'], $entry );
-		$entry_data = apply_filters( 'evf_entry_akismet_entry_data', $entry_data, $entry, $this->form_data );
+	public function get_clean_talk_request_obj( $entry ) {
+		$access_key  = get_option( 'everest_forms_recaptcha_cleantalk_access_key' );
+		$submit_time = isset( $this->form_data['entry']['evf_form_load_time'] ) ? time() - (int) $this->form_data['entry']['evf_form_load_time'] : null;
+		$entry_data  = $this->get_entry_data_for_akismet( $this->form_data['form_fields'], $entry );
+		$entry_data  = apply_filters( 'evf_entry_akismet_entry_data', $entry_data, $entry, $this->form_data );
 
-		$info = [
-            'auth_key'             => $access_key,
-            'sender_ip'            => $_SERVER['REMOTE_ADDR'],
-            'contact_form_subject' => get_the_title( absint( $this->form_data['id'] ) ),
-            'referrer'             => urlencode( $_SERVER['HTTP_REFERER'] ),
-            'page_url'             => htmlspecialchars( @$_SERVER['HTTP_USER_AGENT'] ),
-            'submit_time'          => $submit_time,
-            'agent'                => 'php-api',
-            'js_on'                => 1,
-        	'sender_nickname' 	   => isset( $entry_data['name'] ) ? $entry_data['name'] : '',
-			'sender_email'    	   => isset( $entry_data['email'] ) ? $entry_data['email'] : '',
-			'message'         	   => isset( $entry_data['content'] ) ? $entry_data['content'] : '',
+		$info = array(
+			'auth_key'             => $access_key,
+			'sender_ip'            => $_SERVER['REMOTE_ADDR'],
+			'contact_form_subject' => get_the_title( absint( $this->form_data['id'] ) ),
+			'referrer'             => urlencode( $_SERVER['HTTP_REFERER'] ),
+			'page_url'             => htmlspecialchars( @$_SERVER['HTTP_USER_AGENT'] ),
+			'submit_time'          => $submit_time,
+			'agent'                => 'php-api',
+			'js_on'                => 1,
+			'sender_nickname'      => isset( $entry_data['name'] ) ? $entry_data['name'] : '',
+			'sender_email'         => isset( $entry_data['email'] ) ? $entry_data['email'] : '',
+			'message'              => isset( $entry_data['content'] ) ? $entry_data['content'] : '',
 			'phone'                => '',
-        ];
+		);
 
-        return new CleantalkRequest($info);
+		return new CleantalkRequest( $info );
 	}
 
 	/**
@@ -1760,22 +1760,24 @@ class EVF_Form_Task {
 	 */
 	public function evf_is_spam_submission_clean_talk_rest_api( $entry ) {
 		$marked_as_spam = false;
-		$access_key = get_option( 'everest_forms_recaptcha_cleantalk_access_key' );
+		$access_key     = get_option( 'everest_forms_recaptcha_cleantalk_access_key' );
 
-		$submit_time = isset( $this->form_data['entry']['evf_form_load_time'] ) ? time() - (int)$this->form_data['entry']['evf_form_load_time'] : null;
+		$submit_time = isset( $this->form_data['entry']['evf_form_load_time'] ) ? time() - (int) $this->form_data['entry']['evf_form_load_time'] : null;
 		$event_token = isset( $this->form_data['entry']['evf_form_event_token'] ) ? $this->form_data['entry']['evf_form_event_token'] : null;
 
 		$entry_data = $this->get_entry_data_for_akismet( $this->form_data['form_fields'], $entry );
 		$entry_data = apply_filters( 'evf_entry_akismet_entry_data', $entry_data, $entry, $this->form_data );
 
-		$clean_talk_request = [
+		$clean_talk_request = array(
 			'method_name'     => 'check_message',
 			'auth_key'        => $access_key,
 			'sender_ip'       => $_SERVER['REMOTE_ADDR'],
-			'sender_info'     => json_encode([
-				'REFERRER'   => $_SERVER['HTTP_REFERER'],
-				'USER_AGENT' => htmlspecialchars(@$_SERVER['HTTP_USER_AGENT'])
-			]),
+			'sender_info'     => json_encode(
+				array(
+					'REFERRER'   => $_SERVER['HTTP_REFERER'],
+					'USER_AGENT' => htmlspecialchars( @$_SERVER['HTTP_USER_AGENT'] ),
+				)
+			),
 			'js_on'           => 1,
 			'submit_time'     => $submit_time,
 			'event_token'     => $event_token,
@@ -1784,22 +1786,22 @@ class EVF_Form_Task {
 			'message'         => isset( $entry_data['content'] ) ? $entry_data['content'] : '',
 			'phone'           => '',
 			'agent'           => 'wordpress-everest-forms-' . EVF_VERSION,
-			'post_info'       => [
+			'post_info'       => array(
 				'comment_type' => 'everest_forms_vendor_integration__use_api',
-				'post_url'     => $_SERVER['HTTP_REFERER']
-			]
-		];
+				'post_url'     => $_SERVER['HTTP_REFERER'],
+			),
+		);
 
 		$raw_response = wp_remote_post(
 			'https://moderate.cleantalk.org/api2.0',
-			[
-				'body'    => json_encode($clean_talk_request),
-				'headers' => [
+			array(
+				'body'    => json_encode( $clean_talk_request ),
+				'headers' => array(
 					'Content-Type' => 'application/json',
-				],
-			]
+				),
+			)
 		);
-		$response = json_decode( wp_remote_retrieve_body( $raw_response ) );
+		$response     = json_decode( wp_remote_retrieve_body( $raw_response ) );
 
 		$clean_talk_passed = $response->allow == 1 && $response->spam == 0 && $response->account_status == 1;
 

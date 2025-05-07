@@ -1873,7 +1873,10 @@ class EVF_AJAX {
 		wp_send_json_success( array( 'message' => __( 'Saved', 'everest-forms' ) ) );
 	}
 
-	public static function save_clean_talk_settings(){
+	/**
+	 * Save the clean talk settings.
+	 */
+	public static function save_clean_talk_settings() {
 		check_ajax_referer( 'everest_forms_clean_talk_nonce', 'security' );
 
 		if ( ! current_user_can( 'manage_options' ) ) {
@@ -1889,7 +1892,7 @@ class EVF_AJAX {
 		$clean_talk_settings_enabled = isset( $_POST['is_clean_talk_enabled'] ) ? sanitize_text_field( wp_unslash( $_POST['is_clean_talk_enabled'] ) ) : 'no';
 		update_option( 'everest_forms_enable_cleantalk_spam_protection', $clean_talk_settings_enabled );
 
-		$form_data = isset( $_POST['form_data'] ) ?  $_POST['form_data'] : '';
+		$form_data = isset( $_POST['form_data'] ) ? $_POST['form_data'] : '';
 
 		if ( empty( $form_data ) ) {
 			wp_send_json_error( array( 'message' => __( 'Insufficient information', 'everest-forms' ) ) );

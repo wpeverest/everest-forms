@@ -748,7 +748,6 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				 */
 				do_action( 'everest_forms_inline_cleantalk_settings', $this, 'cleantalk', 'connection_1' );
 
-
 				/**
 				* Akismet anit-spam protection.
 				*

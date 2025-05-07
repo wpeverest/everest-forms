@@ -2,7 +2,7 @@
 /**
  * CleanTalk.
  *
- * @since 3.0.5
+ * @since xx.xx.xx
  * @package EverestForms\Addons\CleanTalk\Builder
  */
 
@@ -11,20 +11,25 @@ namespace EverestForms\Addons\CleanTalk\Builder;
 /**
  * CleanTalk.
  *
- * @since 3.0.5
+ * @since xx.xx.xx
  */
 class Builder {
 
 	/**
 	 * Constructor.
 	 *
-	 * @since 3.0.5
+	 * @since xx.xx.xx
 	 */
 	public function __construct() {
-		add_action( 'everest_forms_inline_cleantalk_settings', array( $this, 'add_inline_clean_talk_settings') );
+		add_action( 'everest_forms_inline_cleantalk_settings', array( $this, 'add_inline_clean_talk_settings' ) );
 	}
 
-	public function add_inline_clean_talk_settings( $obj ){
+	/**
+	 * Inline settings.
+	 *
+	 * @param [type] $obj
+	 */
+	public function add_inline_clean_talk_settings( $obj ) {
 		echo '<div class="everest-forms-border-container"><h4 class="everest-forms-border-container-title">' . esc_html__( 'CleanTalk', 'everest-forms' ) . '</h4>';
 		everest_forms_panel_field(
 			'toggle',
@@ -55,8 +60,8 @@ class Builder {
 		);
 
 		$is_cleantalk_activated_global = evf_string_to_bool( get_option( 'everest_forms_enable_cleantalk_spam_protection', '' ) );
-		$clean_talk_method = get_option( 'everest_forms_clean_talk_methods', '' );
-		$access_key = get_option( 'everest_forms_recaptcha_cleantalk_access_key' );
+		$clean_talk_method             = get_option( 'everest_forms_clean_talk_methods', '' );
+		$access_key                    = get_option( 'everest_forms_recaptcha_cleantalk_access_key' );
 		/**
 		* Warning message if the installation, activation and configuration are not proper.
 		*/
@@ -71,7 +76,7 @@ class Builder {
 				esc_url( 'https://docs.everestforms.net/' ),
 				esc_html__( 'documentation', 'everest-forms' )
 			);
-		}elseif ( 'rest_api' === $clean_talk_method && empty( $access_key ) ) {
+		} elseif ( 'rest_api' === $clean_talk_method && empty( $access_key ) ) {
 			printf(
 				'<div class="evf-akismet"><span class="evf-akismet-warning"><span class="evf-akismet-warning-label">%s</span> %s <a href="%s" target="_blank">%s</a>%s <a href="%s" target="_blank">%s</a></div>',
 				esc_html__( 'Warning:- ', 'everest-forms' ),
@@ -82,7 +87,7 @@ class Builder {
 				esc_url( 'https://docs.everestforms.net/' ),
 				esc_html__( 'info', 'everest-forms' )
 			);
-		}elseif ( 'clean_talk_plugin' === $clean_talk_method ) {
+		} elseif ( 'clean_talk_plugin' === $clean_talk_method ) {
 			if ( ! class_exists( 'Cleantalk\Antispam\Cleantalk' ) ) {
 				printf(
 					'<div class="evf-akismet"><span class="evf-akismet-warning"><span class="evf-akismet-warning-label">%s</span> %s <a href="%s" target="_blank">%s</a>%s <a href="%s" target="_blank">%s</a></div>',
