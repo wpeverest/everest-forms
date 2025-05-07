@@ -11423,21 +11423,25 @@ button#show-settings-link{
 
 	.evf-meta-key-copy-btn{
 		position: absolute;
-		right: 8px;
+		right: 4px;
 		top: 0;
-		transform: translateY(-158%);
+		transform: translateY(10%);
 		color: #383838;
 		font-size: 12px;
 		font-weight: 400;
 		cursor: pointer;
 		text-decoration: underline;
+		padding: 5px;
+		background-color: #FFFFFF;
+		width: 30px;
+		height: 30px;
 	}
 
 	.evf-edit-meta-key-icon{
 		position: absolute;
 		right: 8px;
 		top: 50%;
-		transform: translateY(-50%);
+		transform: translateY(-250%);
 		cursor: pointer;
 		display: flex;
 		align-items: center;
@@ -11445,9 +11449,9 @@ button#show-settings-link{
 
 	.evf-meta-key-actions{
 		position: absolute;
-		right: 10px;
+		right: 7px;
 		top: 56%;
-		transform: translateY(-50%);
+		transform: translateY(-180%);
 		display: flex;
 		gap: 6px;
 	}

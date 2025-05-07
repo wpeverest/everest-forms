@@ -3462,16 +3462,15 @@
 				const $input = $wrapper.find('.evf-input-meta-key');
 				const metaKey = $input.val();
 
-				navigator.clipboard.writeText(metaKey).then(() => {
-					const originalText = $(this).text();
-					$(this).text('Copied!').css('color', 'green');
+				$( this ).tooltipster( 'content', $( this ).attr( 'data-copied' ) ).trigger( 'mouseenter' ).on( 'mouseleave', function() {
+					var $this = $( this );
 
-					setTimeout(() => {
-						$(this).text(originalText).css('color', '');
-					}, 1500);
-				}).catch(err => {
-					console.error('Failed to copy:', err);
-				});
+					setTimeout( function() {
+						$this.tooltipster( 'content', $this.attr( 'data-tip' ) );
+					}, 1000 );
+				} );
+
+				navigator.clipboard.writeText(metaKey);
 			});
 
 			if ( '' === field_id ) {
@@ -3485,23 +3484,30 @@
 				appendEditIcon( $this );
 			}
 
-			function appendEditIcon( $this ) {
+			function appendEditIcon($this) {
 				$this.wrap('<div class="evf-meta-key-input-wrapper"></div>');
 
-				$this.before('<span class="evf-meta-key-copy-btn">Copy Meta Key</span>');
+				$this.before(`<span class="evf-edit-meta-key-icon" data-meta_key="${$this.val()}">Edit</span>`);
 
-				$this.after(`
-					<span class="evf-edit-meta-key-icon" data-meta_key="${$this.val()}">
-						<svg width="25" height="25" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-							<rect x="0.5" y="0.5" width="29" height="29" rx="1.5" fill="#FDFDFD"/>
-							<rect x="0.5" y="0.5" width="29" height="29" rx="1.5" stroke="#E1E1E1"/>
-							<path d="M15 21H21.75" stroke="#6B6B6B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-							<path d="M18.2832 8.7163C18.5818 8.41773 18.9867 8.25 19.409 8.25C19.8312 8.25 20.2361 8.41773 20.5347 8.7163C20.8333 9.01487 21.001 9.41981 21.001 9.84205C21.001 10.2643 20.8333 10.6692 20.5347 10.9678L11.5272 19.9761C11.3488 20.1545 11.1282 20.285 10.886 20.3556L8.73195 20.9841C8.66742 21.0029 8.59901 21.004 8.53389 20.9873C8.46876 20.9706 8.40932 20.9368 8.36179 20.8892C8.31425 20.8417 8.28037 20.7822 8.26369 20.7171C8.247 20.652 8.24813 20.5836 8.26695 20.5191L8.89545 18.3651C8.96612 18.1231 9.09664 17.9028 9.27495 17.7246L18.2832 8.7163Z" stroke="#6B6B6B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-							<path d="M17.25 9.75L19.5 12" stroke="#6B6B6B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+				const $copyBtn = $(`
+					<span class="evf-meta-key-copy-btn" data-copied="Copied!" data-tip="Copy to clipboard">
+						<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<path d="M15.002 5.99902H7.50195C6.67353 5.99902 6.00195 6.6706 6.00195 7.49902V14.999C6.00195 15.8274 6.67353 16.499 7.50195 16.499H15.002C15.8304 16.499 16.502 15.8274 16.502 14.999V7.49902C16.502 6.6706 15.8304 5.99902 15.002 5.99902Z" stroke="#6B6B6B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+						<path d="M3.00195 11.999C2.17695 11.999 1.50195 11.324 1.50195 10.499V2.99902C1.50195 2.17402 2.17695 1.49902 3.00195 1.49902H10.502C11.327 1.49902 12.002 2.17402 12.002 2.99902" stroke="#6B6B6B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 						</svg>
 					</span>
 				`);
+
+				$this.after($copyBtn);
+
+				// Initialize Tooltipster
+				$copyBtn.tooltipster({
+					theme: 'tooltipster-default',
+					delay: 100,
+					side: 'top'
+				});
 			}
+
 		},
 
 		bindPrivacyPolicyActions: function() {
