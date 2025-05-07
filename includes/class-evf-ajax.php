@@ -312,6 +312,7 @@ class EVF_AJAX {
 			array( 'source' => 'form-save' )
 		);
 		$empty_meta_data = array();
+		$list_of_meta_keys = array();
 
 		// Calculation backward compatibility.
 		$old_calculation_format = 0;
@@ -366,6 +367,24 @@ class EVF_AJAX {
 
 					// Register string for translation.
 					evf_string_translation( $data['id'], $field['id'], $field['label'] );
+				}
+
+
+				$list_of_meta_keys[] = $field['meta-key'];
+
+				$unique_meta_keys = array_unique( $list_of_meta_keys );
+				if ( count( $unique_meta_keys ) < count( $list_of_meta_keys ) ) {
+					$logger->error(
+						__( 'Duplicate Meta Key.', 'everest-forms' ),
+						array( 'source' => 'form-save' )
+					);
+					wp_send_json_error(
+						array(
+							'errorTitle'   => esc_html__( 'Duplicate Meta Key', 'everest-forms' ),
+							/* translators: %s: empty meta data */
+							'errorMessage' => sprintf( esc_html__( '%s field has duplicate meta_key.', 'everest-forms' ), '<strong>' . $field['label'] . '</strong>' ),
+						)
+					);
 				}
 
 				if ( empty( $field['meta-key'] ) && ! in_array( $field['type'], array( 'html', 'title', 'captcha', 'divider', 'reset', 'recaptcha', 'hcaptcha', 'turnstile' ), true ) ) {
