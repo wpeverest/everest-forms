@@ -685,4 +685,156 @@
 
 		}
 	});
+
+	/**
+	 * Manage tags.
+	 *
+	 * @since xx.xx.xx
+	 */
+	$(document).on('click', '.evf-manage-tags', function(e){
+		e.preventDefault();
+		var tags = $('#filter-by-tags').val();
+
+		if(!tags || tags.length ===0) {
+			 return;
+		}
+
+		$.confirm( {
+			title: evf_admin_manage_tags.manage_tags_title,
+			theme: 'jconfirm-modern jconfirm-everest-forms',
+			icon: 'dashicons dashicons-lock',
+			backgroundDismiss: false,
+			scrollToPreviousElement: false,
+			content: tags.length > 0 ? evf_admin_manage_tags.manage_tags_desc : 'Select the tags first from the list.',
+			buttons:{
+				confirm:{
+					text:'Delete',
+					btnClass:'btn-red',
+					action:function() {
+						$.ajax({
+							type: 'POST',
+							url: evf_admin_manage_tags.ajax_url,
+							data: {
+								action: 'everest_forms_delete_form_tags',
+								tags: tags,
+								security : evf_admin_manage_tags.ajax_manage_tags_nonce
+							},
+							success: function(res) {
+								//for log.
+							}
+						});
+
+						window.location.reload();
+					}
+
+				},
+				cancel:{
+					text:'Cancel',
+					btnClass:'btn-gray'
+				}
+			},
+			type: 'blue',
+			boxWidth: '565px',
+			boxHeight:'200px'
+		} );
+
+	});
+
+	var $tagsSelect = $('#filter-by-tags');
+	var $manageTagsBtn = $('.evf-manage-tags');
+
+	$manageTagsBtn.prop('disabled', !$tagsSelect.val() || $tagsSelect.val().length === 0);
+
+	$tagsSelect.on('change', function() {
+		$manageTagsBtn.prop('disabled', !$(this).val() || $(this).val().length === 0);
+	});
+
+	$('.form-tags-select2').each(function() {
+		var $select = $(this);
+
+		$select.select2({
+			placeholder:$(this).data('placeholder'),
+			tags: true,
+			createTag: function(params) {
+				if (params.term.trim() === '') {
+					return null;
+				}
+
+				var exists = false;
+				$select.find('option').each(function() {
+					if ($(this).text() === params.term) {
+						exists = true;
+						return false;
+					}
+				});
+
+				if (exists) {
+					return null;
+				}
+
+				return {
+					id: params.term,
+					text: params.term,
+					isNew: true
+				};
+			},
+			templateResult: function(data) {
+				var $result = $('<span></span>');
+				$result.text(data.text);
+
+				if (data.isNew) {
+					$result.append(' <em>(new)</em>');
+				}
+
+				return $result;
+			}
+		}).on('select2:select', function(e) {
+			if (e.params.data.isNew) {
+				var newValue = e.params.data.text;
+
+				$select.find('option').filter(function() {
+					return $(this).val() === newValue && !$(this).prop('selected');
+				}).remove();
+
+				$select.find('option').filter(function() {
+					return $(this).val() === newValue && $(this).data('select2-tag');
+				}).remove();
+
+				// Create a proper selected option
+				var newOption = new Option(newValue, newValue, true, true);
+				$select.append(newOption).trigger('change');
+
+				// Force Select2 to update
+				$select.trigger('select2:select');
+			}
+		});
+	});
+
+	$('.evf-bulk-form-tags-select').trigger('evf-enhanced-tags-select-init');
+
+	$(document).on('click', '.evf-update-bulk-tags', function(){
+		var container = $(this).closest('.evf-bulk-edit-forms-tags-container'),
+		 forms = $(container).find('#bulk_tag_forms').val(),
+		 tags = $(container).find('#bulk_tags').val();
+
+		if(!forms || 0 === forms.length) {
+			return
+		}
+
+		$.ajax({
+			type: 'POST',
+			url: evf_admin_manage_tags.ajax_url,
+			data: {
+				action: 'everest_forms_update_tags_in_bulk',
+				tags: tags,
+				forms:forms,
+				security : evf_admin_manage_tags.ajax_manage_tags_nonce
+			},
+			success: function(res) {
+				window.location.reload();
+			}
+		});
+
+	})
+
 })( jQuery, everest_forms_admin );

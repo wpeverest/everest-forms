@@ -1205,7 +1205,7 @@ abstract class EVF_Form_Fields {
 			/*
 			 * Plan Choices.
 			 *
-			 * @since xx.xx.xx
+			 * @since 3.2.2
 			 */
 			case 'plan_choices':
 				$class      = array();
@@ -2243,7 +2243,9 @@ abstract class EVF_Form_Fields {
 
 		switch ( $option ) {
 			case 'label':
-				$label = isset( $field['label'] ) && ! empty( $field['label'] ) ? $field['label'] : '';
+				error_log( print_r( 'mah field', true ) );
+				error_log( print_r( $field, true ) );
+				$label = isset( $field['label'] ) && ! empty( $field['label'] ) ? $field['label'] . ('private-note' === $field['type'] ? (' (Admin Only)') : '' ) : '';
 				if ( $echo ) {
 					printf( '<label class="label-title %s"><span class="text">%s</span><span class="required">%s</span></label>', esc_attr( $class ), esc_html( $label ), esc_html( apply_filters( 'everest_form_get_required_type', '*', $field, $form_data ) ) );
 				} else {

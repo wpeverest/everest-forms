@@ -1,9 +1,15 @@
 name: Evf PR QA Test
 
 on:
-    push:
-        branches:
-            - pre-develop
+
+  push:
+    branches:
+      - pre-develop
+      
+  pull_request:
+    branches:
+      - pre-develop
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -51,14 +57,13 @@ jobs:
 
       - name: Create ZIP Archive
         run: zip -r everest-forms.zip everest-forms 
-        
-      - name: remove the plugin file from server
+
+      - name: Remove the plugin file from server
         env:
           Srv_IP: ${{ secrets.QA_AUTOMATION_SERVER_IP }}
           Srv_UsrName: ${{ secrets.QA_AUTOMATION_SERVER_USERNAME }}
           Server_PASS: ${{ secrets.QA_AUTOMATION_SERVER_PASS }}
         run: |
-          pwd
           sshpass -p "$Server_PASS" ssh -o StrictHostKeyChecking=no $Srv_UsrName@$Srv_IP << EOF
           cd applications/ycrdmckpsu/public_html/evftest/wp-content/plugins/
           rm -rf everest-forms
@@ -70,7 +75,6 @@ jobs:
           Srv_UsrName: ${{ secrets.QA_AUTOMATION_SERVER_USERNAME }}
           Server_PASS: ${{ secrets.QA_AUTOMATION_SERVER_PASS }}
         run: |
-          pwd
           sshpass -p "$Server_PASS" scp -r -o StrictHostKeyChecking=no everest-forms.zip $Srv_UsrName@$Srv_IP:applications/ycrdmckpsu/public_html/temp/
 
       - name: Install and Activate Plugin via WP-CLI
@@ -79,12 +83,9 @@ jobs:
           Srv_UsrName: ${{ secrets.QA_AUTOMATION_SERVER_USERNAME }}
           Server_PASS: ${{ secrets.QA_AUTOMATION_SERVER_PASS }}
         run: |
-          pwd
           sshpass -p "$Server_PASS" ssh -o StrictHostKeyChecking=no $Srv_UsrName@$Srv_IP << EOF
           cd applications/ycrdmckpsu/public_html/evftest
-          wp plugin delete everest-forms --debug
+          rm -rm /wp-content/plugins/everest-forms
           wp plugin install ../temp/everest-forms.zip --activate --debug
           rm -f ../temp/everest-forms.zip
           EOF
-
-      
