@@ -503,8 +503,8 @@ class EVF_Shortcode_Form {
 			return;
 		}
 
-		$recaptcha_api    = 'https://moderate.cleantalk.org/ct-bot-detector-wrapper.js';
-		$recaptcha_inline = <<<JS
+		$clean_talk_api    = 'https://moderate.cleantalk.org/ct-bot-detector-wrapper.js';
+		$clean_talk_inline = <<<JS
 		document.addEventListener("DOMContentLoaded", function () {
 			var loadInput = document.querySelector('input[name="everest_forms[evf_form_load_time]"]');
 			if (loadInput) {
@@ -532,13 +532,13 @@ class EVF_Shortcode_Form {
 		// Enqueue reCaptcha scripts.
 		wp_enqueue_script(
 			'evf-clan-talk',
-			$recaptcha_api,
+			$clean_talk_api,
 			array( 'jquery' ),
 			EVF_VERSION,
 			true
 		);
 
-		wp_add_inline_script( 'evf-clan-talk', $recaptcha_inline );
+		wp_add_inline_script( 'evf-clan-talk', $clean_talk_inline );
 
 		if ( isset( $form_data['settings']['cleantalk'] ) && '1' === $form_data['settings']['cleantalk'] ) {
 			echo '<input type="hidden" name="everest_forms[evf_event_token]" value="">';
