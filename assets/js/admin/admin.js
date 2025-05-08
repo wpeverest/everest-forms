@@ -59,10 +59,10 @@
 				document.cookie = 'isPremiumSidebarEnabled=' + isCheckboxChecked + '; path=/;';
 				if (isCheckboxChecked) {
 					$('body').removeClass('evf-premium-sidebar-hidden').addClass('evf-premium-sidebar-show');
-					$('.everest-forms-toggle-text').text('Show Sidebar');
+					$('.everest-forms-toggle-text').text('Hide Sidebar');
 				} else {
 					$('body').removeClass('evf-premium-sidebar-show').addClass('evf-premium-sidebar-hidden');
-					$('.everest-forms-toggle-text').text('Hide Sidebar');
+					$('.everest-forms-toggle-text').text('Show Sidebar');
 				}
 			}
 			$(document).on('change', '#everest-forms-enable-premium-sidebar', handlePremiumSidebar);
