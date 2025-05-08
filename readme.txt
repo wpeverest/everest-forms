@@ -341,12 +341,14 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 == Changelog ==
 
 = 3.2.2     	- 13-05-2025
+* Feature		- Add category/taxonomy on From.
 * Feature		- CleanTalk Anti-Spam Integration.
 * Feature 		- Private Note field on Form Builder.
 * Enhance 		- Option to edit meta key.
 * Enhance 		- Popup form option and customization.
 * Tweak 		- User Registration & Membership logo on other products.
 * Fix 			- Preserve filename in file upload.
+* Fix 			- Show premium sidebar enable disable issue.
 
 = 3.1.2     	- 08-04-2025
 * Fix 			- Unserialize issue with object injection.
