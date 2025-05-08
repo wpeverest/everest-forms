@@ -350,6 +350,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 * Fix 			- Preserve filename in file upload.
 * Fix 			- Show premium sidebar enable disable issue.
 * Fix 			- Form creation button generating multiple form.
+* Fix 			- Entry id smart tag not working in email subject.
 * Dev 			- Hook to add custom smart tag.
 
 = 3.1.2     	- 08-04-2025

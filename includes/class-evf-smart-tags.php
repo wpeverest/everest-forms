@@ -547,6 +547,10 @@ class EVF_Smart_Tags {
 						$content    = str_replace( '{' . $other_tag . '}', $user_agent, $content );
 						break;
 
+					case 'entry_id':
+						$content = str_replace( '{' . $other_tag . '}', $entry_id, $content );
+						break;
+
 					default:
 						$content = apply_filters( 'everest_forms_custom_smart_tag', $content, $other_tag, $entry_id );
 						break;
