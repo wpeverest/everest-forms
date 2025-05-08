@@ -153,7 +153,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	 * @return array
 	 */
 	public static function get_columns_form_disallowed_fields() {
-		return (array) apply_filters( 'everest_forms_entries_table_fields_disallow', array( 'html', 'title', 'captcha', 'repeater-fields', 'authorize-net' ) );
+		return (array) apply_filters( 'everest_forms_entries_table_fields_disallow', array( 'html', 'title', 'captcha', 'repeater-fields', 'authorize-net', 'private-note' ) );
 	}
 
 	/**

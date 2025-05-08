@@ -628,7 +628,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					esc_html__( 'Successful form submission message', 'everest-forms' ),
 					array(
 						'input_class' => 'short',
-						'default'     => isset( $this->form->successful_form_submission_message ) ? $this->form->successful_form_submission_message : __( 'Thanks for contacting us! We will be in touch with you shortly', 'everest-forms' ),
+						'default'     => isset( $this->form->successful_form_submission_message ) ? $this->form->successful_form_submission_message : __( 'Thanks for contacting us! We will be in touch with you shortly.', 'everest-forms' ),
 						/* translators: %1$s - general settings docs url */
 						'tooltip'     => sprintf( esc_html__( 'Success message that shows up after submitting form. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/general-settings/#4-toc-title' ) ),
 					)
@@ -767,6 +767,12 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				);
 				do_action( 'everest_forms_inline_honeypot_settings', $this, 'honeypot', 'connection_1' );
 				echo '</div>';
+
+				/**
+				 * CleanTalks anti-spam protection.
+				 */
+				do_action( 'everest_forms_inline_cleantalk_settings', $this, 'cleantalk', 'connection_1' );
+
 				/**
 				* Akismet anit-spam protection.
 				*
