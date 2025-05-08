@@ -3,7 +3,7 @@
  * First name field.
  *
  * @package EverestForms\Fields
- * @since   1.0.0
+ * @since   3.2.2
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -40,7 +40,7 @@ class EVF_Field_Private_Note extends EVF_Form_Fields {
 	/**
 	 * Should display field.
 	 *
-	 * @since xx.xx.xx
+	 * @since 3.2.2
 	 */
 	public function should_display_field( $should_display, $field, $form_data ) {
 		if ( isset( $field['type'] ) && $field['type'] === $this->type ) {
@@ -52,7 +52,7 @@ class EVF_Field_Private_Note extends EVF_Form_Fields {
 	/**
 	 * Field preview inside the builder.
 	 *
-	 * @since 1.0.0
+	 * @since 3.2.2
 	 *
 	 * @param array $field Field data and settings.
 	 */

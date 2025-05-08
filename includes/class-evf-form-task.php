@@ -1311,7 +1311,7 @@ class EVF_Form_Task {
 	/**
 	 * Check if a form entry should be validated by CleanTalk for potential spam.
 	 *
-	 * @since xx.xx.xx
+	 * @since 3.2.2
 	 *
 	 * @param  [type] $entry The form entry data to validate.
 	 * @param  string $form_id (Optional) The identifier of the form.
@@ -1710,7 +1710,7 @@ class EVF_Form_Task {
 	/**
 	 * Check if the submission is spam using CleanTalk Plugin.
 	 *
-	 * @since xx.xx.xx
+	 * @since 3.2.2
 	 */
 	public function evf_is_spam_submission_clean_talk( $entry ) {
 		if ( ! class_exists( 'Cleantalk\Antispam\Cleantalk' ) ) {
@@ -1727,7 +1727,7 @@ class EVF_Form_Task {
 	/**
 	 * Get CleanTalk request.
 	 *
-	 * @since xx.xx.xx
+	 * @since 3.2.2
 	 */
 	public function get_clean_talk_request_obj( $entry ) {
 		$access_key  = get_option( 'everest_forms_recaptcha_cleantalk_access_key' );
@@ -1756,7 +1756,7 @@ class EVF_Form_Task {
 	/**
 	 * Check if the submission is spam using CleanTalk REST API.
 	 *
-	 * @since xx.xx.xx
+	 * @since 3.2.2
 	 */
 	public function evf_is_spam_submission_clean_talk_rest_api( $entry ) {
 		$marked_as_spam = false;

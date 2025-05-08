@@ -92,7 +92,7 @@ if ( false !== $entry_index ) {
 								/**
 								 * Filter the entry meta key.
 								 *
-								 * @since xx.xx.xx
+								 * @since 3.2.2
 								 */
 								$field_type_by_meta_key = array();
 								$exclude_fields_array   = array(  'title', 'html', 'captcha', 'image-upload', 'file-upload', 'divider', 'reset', 'recaptcha', 'hcaptcha', 'turnstile', 'private-note' );
@@ -113,7 +113,7 @@ if ( false !== $entry_index ) {
 										/**
 										 * Filter the entry meta key.
 										 *
-										 * @since xx.xx.xx
+										 * @since 3.2.2
 										 */
 										if ( in_array( $meta_key, array_keys( $field_type_by_meta_key ), true ) && in_array( $field_type_by_meta_key[ $meta_key ], $exclude_fields_array, true ) ) {
 											continue;

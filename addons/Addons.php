@@ -41,7 +41,7 @@ class Addons {
 	 *
 	 * @param array $integrations List of integrations.
 	 *
-	 * @since xx.xx.xx
+	 * @since 3.2.2
 	 */
 	public function add_integration( $integrations ) {
 		$enabled_features = get_option( 'everest_forms_enabled_features', array() );

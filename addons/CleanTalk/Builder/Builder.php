@@ -2,7 +2,7 @@
 /**
  * CleanTalk.
  *
- * @since xx.xx.xx
+ * @since 3.2.2
  * @package EverestForms\Addons\CleanTalk\Builder
  */
 
@@ -11,14 +11,14 @@ namespace EverestForms\Addons\CleanTalk\Builder;
 /**
  * CleanTalk.
  *
- * @since xx.xx.xx
+ * @since 3.2.2
  */
 class Builder {
 
 	/**
 	 * Constructor.
 	 *
-	 * @since xx.xx.xx
+	 * @since 3.2.2
 	 */
 	public function __construct() {
 		add_action( 'everest_forms_inline_cleantalk_settings', array( $this, 'add_inline_clean_talk_settings' ) );

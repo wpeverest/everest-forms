@@ -118,7 +118,7 @@ jQuery(function ($) {
 	/**
 	 * Copy shortcode to clipboard.
 	 *
-	 * @since xx.xx.xx
+	 * @since 3.2.2
 	 */
 	jQuery(document).ready(function ($) {
 		const $copyButton = $('#copy-shortcode');
