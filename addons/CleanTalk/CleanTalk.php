@@ -2,7 +2,7 @@
 /**
  * CleanTalk.
  *
- * @since xx.xx.xx
+ * @since 3.2.2
  * @package EverestForms\Addons\CleanTalk
  */
 
@@ -15,7 +15,7 @@ use EverestForms\Traits\Singleton;
 /**
  * CleanTalk.
  *
- * @since xx.xx.xx
+ * @since 3.2.2
  */
 class CleanTalk {
 
@@ -24,7 +24,7 @@ class CleanTalk {
 	/**
 	 * Constructor.
 	 *
-	 * @since xx.xx.xx
+	 * @since 3.2.2
 	 */
 	public function __construct() {
 		$this->setup();
@@ -33,7 +33,7 @@ class CleanTalk {
 	/**
 	 * Setup the CleanTalk.
 	 *
-	 * @since xx.xx.xx
+	 * @since 3.2.2
 	 */
 	public function setup() {
 		if ( ! is_admin() ) {

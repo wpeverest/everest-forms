@@ -299,7 +299,7 @@ class EVF_Template_Loader {
 	/**
 	 * Handles the preview of form.
 	 *
-	 * @since xx.xx.xx
+	 * @since 3.2.2
 	 */
 	public static function generate_form_preview() {
 		if ( ! is_user_logged_in() ) {

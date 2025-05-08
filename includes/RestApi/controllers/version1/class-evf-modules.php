@@ -815,7 +815,7 @@ class EVF_Modules {
 	/**
 	 * Check if required plugin is active.
 	 *
-	 * @since xx.xx.xx
+	 * @since 3.2.2
 	 *
 	 * @param  [type] $slug.
 	 */

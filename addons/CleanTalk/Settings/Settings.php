@@ -2,7 +2,7 @@
 /**
  * CleanTalk.
  *
- * @since xx.xx.xx
+ * @since 3.2.2
  * @package EverestForms\Addons\CleanTalk\Settings
  */
 
@@ -11,7 +11,7 @@ namespace EverestForms\Addons\CleanTalk\Settings;
 /**
  * CleanTalk.
  *
- * @since xx.xx.xx
+ * @since 3.2.2
  */
 class Settings extends \EVF_Integration {
 
@@ -25,7 +25,7 @@ class Settings extends \EVF_Integration {
 	/**
 	 * Constructor.
 	 *
-	 * @since xx.xx.xx
+	 * @since 3.2.2
 	 */
 	public function __construct() {
 		$this->id                 = 'clean-talk';
