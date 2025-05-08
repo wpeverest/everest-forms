@@ -1,5 +1,33 @@
 == Changelog ==
 
+= 3.2.2     	- 13-05-2025
+* Feature		- Add category/taxonomy on From.
+* Feature		- CleanTalk Anti-Spam Integration.
+* Feature 		- Private Note field on Form Builder.
+* Enhance 		- Option to edit meta key.
+* Enhance 		- Popup form option and customization.
+* Tweak 		- User Registration & Membership logo on other products.
+* Fix 			- Preserve filename in file upload.
+* Fix 			- Show premium sidebar enable disable issue.
+* Fix 			- Form creation button generating multiple form.
+
+= 3.1.2     	- 08-04-2025
+* Fix 			- Unserialize issue with object injection.
+* Fix 			- Array to string conversion while viewing entries.
+* Fix 			- Square payment not working with redirect settings.
+* Fix 			- Rendering conditional logic while searching field.
+* Fix 			- Auto scroll submission message when disabled in ajax.
+* Fix 			- Restriction on form preview on the basis of capabilities.
+
+= 3.1.1     	- 01-04-2025
+* Enhance 		- Form preview design revamp.
+* Fix 			- Double rendering issue on smart phone field.
+* Fix 			- Display file upload validation message in frontend.
+* Dev 			- Conditional logic based on date range.
+* Dev 			- Hook to add custom date format options.
+* Dev 			- Overall feedback issue on ajax submission.
+* Dev 			- Display entry id in the entries list view.
+
 = 3.1.0     	- 05-03-2025
 * Enhance 		- Activation in module flow.
 * Enhance 		- 4 column design in addon page.

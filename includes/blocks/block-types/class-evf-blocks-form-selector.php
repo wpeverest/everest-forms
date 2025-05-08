@@ -38,13 +38,26 @@ class EVF_Blocks_Form_Selector extends EVF_Blocks_Abstract {
 			$classes .= ' ' . $attr['className'];
 		}
 
-		$is_gb_editor = defined( 'REST_REQUEST' ) && REST_REQUEST && ! empty( $_REQUEST['context'] ) && 'edit' === $_REQUEST['context']; // phpcs:ignore WordPress.Security.NonceVerification
-		$title        = ! empty( $attr['displayTitle'] ) ? true : false;
-		$description  = ! empty( $attr['displayDescription'] ) ? true : false;
-		$popup        = ! empty( $attr['displayPopup'] ) ? true : false;
-		$popup_type   = ! empty( $attr['displayPopupType'] ) ? $attr['displayPopupType'] : false;
-		$popup_text   = ! empty( $attr['displayPopupText'] ) ? $attr['displayPopupText'] : 'View Form';
-		$popup_size   = ! empty( $attr['displayPopupSize'] ) ? $attr['displayPopupSize'] : false;
+		$is_gb_editor       = defined( 'REST_REQUEST' ) && REST_REQUEST && ! empty( $_REQUEST['context'] ) && 'edit' === $_REQUEST['context']; // phpcs:ignore WordPress.Security.NonceVerification
+		$title              = ! empty( $attr['displayTitle'] ) ? true : false;
+		$description        = ! empty( $attr['displayDescription'] ) ? true : false;
+		$popup              = ! empty( $attr['displayPopup'] ) ? true : false;
+		$popup_type         = ! empty( $attr['popupType'] ) ? $attr['popupType'] : 'none';
+		$popup_text         = ! empty( $attr['popupButtonText'] ) ? $attr['popupButtonText'] : 'View Form';
+		$popup_size         = ! empty( $attr['popupSize'] ) ? $attr['popupSize'] : 'default';
+		$popup_header_title = ! empty( $attr['popupHeaderTitle'] ) ? $attr['popupHeaderTitle'] : '';
+		$popup_header_desc  = ! empty( $attr['popupHeaderDesc'] ) ? $attr['popupHeaderDesc'] : '';
+		$popup_footer_title = ! empty( $attr['popupFooterTitle'] ) ? $attr['popupFooterTitle'] : '';
+		$popup_footer_desc  = ! empty( $attr['popupFooterDesc'] ) ? $attr['popupFooterDesc'] : '';
+
+		if ( 'none' !== $popup_type && ! defined( 'EFP_VERSION' ) ) {
+			if ( $is_gb_editor ) {
+
+				return sprintf( '<div><p>%s</p></div>', __( 'Premium version of everest form needed to view the form', 'everest-forms' ) );
+			}
+
+			return $content;
+		}
 
 		// Disable form fields if called from the Gutenberg editor.
 		if ( $is_gb_editor ) {
@@ -75,12 +88,17 @@ class EVF_Blocks_Form_Selector extends EVF_Blocks_Abstract {
 		return EVF_Shortcodes::shortcode_wrapper(
 			array( 'EVF_Shortcode_Form', 'output' ),
 			array(
-				'id'          => $form_id,
-				'title'       => $title,
-				'description' => $description,
-				'type'        => $popup_type,
-				'text'        => $popup_text,
-				'size'        => $popup_size,
+				'id'           => $form_id,
+				'title'        => $title,
+				'description'  => $description,
+				'type'         => $popup_type,
+				'text'         => $popup_text,
+				'size'         => $popup_size,
+				'header_title' => $popup_header_title,
+				'footer_title' => $popup_footer_title,
+				'header_desc'  => $popup_header_desc,
+				'footer_desc'  => $popup_footer_desc,
+
 			),
 			array(
 				'class' => evf_sanitize_classes( $classes ),

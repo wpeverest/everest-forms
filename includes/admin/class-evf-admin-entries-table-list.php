@@ -127,12 +127,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 			);
 		}
 
-		return array_merge(
-			array(
-				'id' => array( 'title', false ),
-			),
-			$sortable_columns
-		);
+		return $sortable_columns;
 	}
 
 	/**
@@ -158,7 +153,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	 * @return array
 	 */
 	public static function get_columns_form_disallowed_fields() {
-		return (array) apply_filters( 'everest_forms_entries_table_fields_disallow', array( 'html', 'title', 'captcha', 'repeater-fields', 'authorize-net' ) );
+		return (array) apply_filters( 'everest_forms_entries_table_fields_disallow', array( 'html', 'title', 'captcha', 'repeater-fields', 'authorize-net', 'private-note' ) );
 	}
 
 	/**
@@ -186,6 +181,12 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 				unset( $entry_columns[ $key ] );
 				$entry_columns = array_merge( array( 'sn' ), $entry_columns );
 			}
+
+			$key = array_search( 'id', $entry_columns, true );
+			if ( false !== $key ) {
+				unset( $entry_columns[ $key ] );
+				$entry_columns = array_merge( array( 'id' ), $entry_columns );
+			}
 			foreach ( $entry_columns as $id ) {
 				// Check to make sure the field as not been removed.
 				$status = is_plugin_active( 'everest-forms-pro/everest-forms-pro.php' ) ? true : false;
@@ -194,6 +195,10 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 					if ( $status ) {
 						if ( 'sn' === $id ) {
 							$extra_column = apply_filters( 'everest_forms_entries_table_extra_columns', array(), 0, array() );
+							$columns      = array_merge( $columns, $extra_column );
+						}
+						if ( 'id' === $id ) {
+							$extra_column = apply_filters( 'everest_forms_entries_table_extra_columns_id', array(), 0, array() );
 							$columns      = array_merge( $columns, $extra_column );
 						}
 					}
@@ -237,7 +242,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 
 			if ( is_serialized( $value ) ) {
 				$field_html  = array();
-				$field_value = maybe_unserialize( $value );
+				$field_value = evf_maybe_unserialize( $value );
 
 				$field_label = ! empty( $field_value['label'] ) ? evf_clean( $field_value['label'] ) : $field_value;
 				if ( is_array( $field_label ) ) {
@@ -251,7 +256,8 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 				}
 			}
 
-			// Limit to 5 lines.
+			$value = isset( $value['label'] ) && is_array( $value['label'] ) ? implode( ', ', $value['label'] ) : $value;
+
 			if ( false === strpos( $value, 'http' ) ) {
 				$lines = explode( "\n", $value );
 				$value = array_slice( $lines, 0, 4 );

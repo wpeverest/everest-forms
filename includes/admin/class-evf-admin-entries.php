@@ -532,7 +532,7 @@ class EVF_Admin_Entries {
 		$form_fields  = $form_content['form_fields'];
 		foreach ( $form_fields as $field_name => $field ) {
 			if ( 'date-time' === $field['type'] && isset( $field['slot_booking_advanced'] ) && evf_string_to_bool( $field['slot_booking_advanced'] ) ) {
-				$booked_slot = maybe_unserialize( get_option( 'evf_booked_slot', '' ) );
+				$booked_slot = evf_maybe_unserialize( get_option( 'evf_booked_slot', '' ) );
 				if ( ! empty( $booked_slot ) && array_key_exists( $form_id, $booked_slot ) ) {
 					$form_booked_slot = $booked_slot[ $form_id ];
 					if ( array_key_exists( $entry_id, $form_booked_slot ) ) {

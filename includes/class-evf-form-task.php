@@ -8,6 +8,8 @@
 
 defined( 'ABSPATH' ) || exit;
 
+use Cleantalk\Antispam\CleantalkRequest;
+
 /**
  * EVF_Form_Task class.
  */
@@ -220,7 +222,7 @@ class EVF_Form_Task {
 						$field_submit = isset( $field_submit['signature_image'] ) ? $field_submit['signature_image'] : '';
 					}
 
-					$exclude = array( 'title', 'html', 'captcha', 'image-upload', 'file-upload', 'divider', 'reset', 'recaptcha', 'hcaptcha', 'turnstile' );
+					$exclude = array( 'title', 'html', 'captcha', 'image-upload', 'file-upload', 'divider', 'reset', 'recaptcha', 'hcaptcha', 'turnstile', 'private-note' );
 
 					if ( ! in_array( $field_type, $exclude, true ) ) {
 
@@ -367,6 +369,7 @@ class EVF_Form_Task {
 					}
 				}
 			}
+
 			// Initial error check.
 			$errors = apply_filters( 'everest_forms_process_initial_errors', $this->errors, $this->form_data );
 
@@ -467,6 +470,25 @@ class EVF_Form_Task {
 
 					$akismet_message              = apply_filters( 'evf_akisment_validatation_error_message', sprintf( 'Akismet anti-spam verification failed, please try again later.', 'everest-forms' ) );
 					$errors[ $form_id ]['header'] = $akismet_message;
+					$this->errors                 = $errors;
+
+					return $this->errors;
+				}
+				$entry['evf_spam_status'] = 'spam';
+			}
+
+			/** CleanTalk anit-spam protection.
+			 * If spam - return early.
+			 *
+			 * @since xx.xx.xx
+			 */
+			if ( $this->get_clean_talk_validate( $entry, $form_id ) ) {
+				$logger = evf_get_logger();
+				$logger->notice( sprintf( 'Spam entry for Form ID %d Response: %s', absint( $this->form_data['id'] ), evf_print_r( $entry, true ) ), array( 'source' => 'cleantalk' ) );
+				if ( isset( $this->form_data['settings']['cleantalk_protection_type'] ) && 'validation_failed' === $this->form_data['settings']['cleantalk_protection_type'] ) {
+
+					$cleantalk_message            = apply_filters( 'evf_cleantalk_validatation_error_message', sprintf( 'CleanTalk anti-spam verification failed, please try again later.', 'everest-forms' ) );
+					$errors[ $form_id ]['header'] = $cleantalk_message;
 					$this->errors                 = $errors;
 
 					return $this->errors;
@@ -620,11 +642,11 @@ class EVF_Form_Task {
 		$this->form_data['settings']['redirect_to'] = '0' === $this->form_data['settings']['redirect_to'] ? 'same' : $this->form_data['settings']['redirect_to'];
 
 		if ( '1' === $ajax_form_submission ) {
-			$response_data['message']  = $message;
-			$response_data['response'] = 'success';
-			$response_data['form_id']  = $form_id;
-			$response_data['entry_id'] = $entry_id;
-
+			$response_data['message']                   = $message;
+			$response_data['response']                  = 'success';
+			$response_data['form_id']                   = $form_id;
+			$response_data['entry_id']                  = $entry_id;
+			$response_data['submission_message_scroll'] = isset( $settings['submission_message_scroll'] ) ? $settings['submission_message_scroll'] : false;
 			if ( defined( 'EVF_PDF_SUBMISSION_VERSION' ) && ( 'yes' === get_option( 'everest_forms_pdf_download_after_submit', 'no' ) || ( isset( $pdf_submission['everest_forms_pdf_download_after_submit'] ) && 'yes' === $pdf_submission['everest_forms_pdf_download_after_submit'] ) ) ) {
 				$response_data['pdf_download'] = true;
 				$pdf_download_message          = get_option( 'everest_forms_pdf_custom_download_text', '' );
@@ -671,6 +693,7 @@ class EVF_Form_Task {
 			}
 			// $this->entry_confirmation_redirect( $this->form_data );
 			$response_data = apply_filters( 'everest_forms_after_success_ajax_message', $response_data, $this->form_data, $entry );
+			delete_option( 'everest_forms_overall_feedback_is_called' );
 			return $response_data;
 		} elseif ( ( 'same' === $this->form_data['settings']['redirect_to'] && empty( $submission_redirection_process ) ) || ( ! empty( $submission_redirection_process ) && 'same_page' == $submission_redirection_process['redirect_to'] ) ) {
 			evf_add_notice( $message, 'success' );
@@ -1173,9 +1196,9 @@ class EVF_Form_Task {
 			$new_booked_slot = array( $form_id => $datetime_arr );
 
 			if ( empty( $get_booked_slot ) ) {
-				$all_booked_slot = maybe_serialize( $new_booked_slot );
+				$all_booked_slot = evf_maybe_serialize( $new_booked_slot );
 			} else {
-				$unserialized_booked_slot = maybe_unserialize( $get_booked_slot );
+				$unserialized_booked_slot = evf_maybe_unserialize( $get_booked_slot );
 
 				if ( array_key_exists( $form_id, $unserialized_booked_slot ) ) {
 					$booked_slot     = $unserialized_booked_slot[ $form_id ];
@@ -1290,6 +1313,56 @@ class EVF_Form_Task {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Check if a form entry should be validated by CleanTalk for potential spam.
+	 *
+	 * @since 3.2.2
+	 *
+	 * @param  [type] $entry The form entry data to validate.
+	 * @param  string $form_id (Optional) The identifier of the form.
+	 */
+	public function get_clean_talk_validate( $entry, $form_id = '' ) {
+
+		$is_cleantalk_activated = isset( $this->form_data['settings']['cleantalk'] ) ? $this->form_data['settings']['cleantalk'] : false;
+
+		if ( ! $is_cleantalk_activated ) {
+			return false;
+		}
+
+		$clean_talk_method = get_option( 'everest_forms_clean_talk_methods', 'rest_api' );
+
+		if ( empty( $clean_talk_method ) ) {
+			return false;
+		}
+
+		$mark_as_spam = false;
+
+		$logger = evf_get_logger();
+
+		if ( 'rest_api' === $clean_talk_method ) {
+			$access_key = get_option( 'everest_forms_recaptcha_cleantalk_access_key' );
+
+			if ( empty( $access_key ) ) {
+				$logger->notice( 'Missing the CleanTalk Access Key', array( 'source' => 'cleantalk' ) );
+
+				return false;
+			}
+
+			$mark_as_spam = $this->evf_is_spam_submission_clean_talk_rest_api( $entry );
+		} elseif ( 'clean_talk_plugin' === $clean_talk_method ) {
+
+			if ( ! class_exists( 'Cleantalk\Antispam\Cleantalk' ) ) {
+				$logger->notice( 'Missing the CleanTalk Plugin.', array( 'source' => 'cleantalk' ) );
+
+				return false;
+			}
+
+			$mark_as_spam = $this->evf_is_spam_submission_clean_talk( $entry );
+		}
+
+		return $mark_as_spam;
 	}
 
 	/**
@@ -1510,7 +1583,7 @@ class EVF_Form_Task {
 							}
 						}
 
-						$subject = apply_filters( 'everest_forms_entry_submission_approval_subject', esc_html__( 'Entry Submission Denied' , 'everest-forms' ));
+						$subject = apply_filters( 'everest_forms_entry_submission_approval_subject', esc_html__( 'Entry Submission Denied', 'everest-forms' ) );
 						// translators: %s is the name of the user
 						$message = sprintf( __( 'Hey, %s', 'everest-forms' ), $name ) . '<br/>';
 						// translators: %s is the entry_date.
@@ -1645,5 +1718,110 @@ class EVF_Form_Task {
 			$wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->prefix}evf_entries SET status = %s WHERE entry_id = %s ", 'publish', $evf_admin_entry_id ) );
 			wp_redirect( $evf_entry_redirect_url );
 		}
+	}
+
+	/**
+	 * Check if the submission is spam using CleanTalk Plugin.
+	 *
+	 * @since 3.2.2
+	 */
+	public function evf_is_spam_submission_clean_talk( $entry ) {
+		if ( ! class_exists( 'Cleantalk\Antispam\Cleantalk' ) ) {
+			return false;
+		}
+		$clean_talk_request_obj          = $this->get_clean_talk_request_obj( $entry );
+		$clean_talk_instance             = new \Cleantalk\Antispam\Cleantalk();
+		$clean_talk_instance->server_url = 'https://moderate.cleantalk.org';
+		$response                        = $clean_talk_instance->isAllowMessage( $clean_talk_request_obj );
+
+		return 0 == $response->allow;
+	}
+
+	/**
+	 * Get CleanTalk request.
+	 *
+	 * @since 3.2.2
+	 */
+	public function get_clean_talk_request_obj( $entry ) {
+		$access_key  = get_option( 'everest_forms_recaptcha_cleantalk_access_key' );
+		$submit_time = isset( $this->form_data['entry']['evf_form_load_time'] ) ? time() - (int) $this->form_data['entry']['evf_form_load_time'] : null;
+		$entry_data  = $this->get_entry_data_for_akismet( $this->form_data['form_fields'], $entry );
+		$entry_data  = apply_filters( 'evf_entry_akismet_entry_data', $entry_data, $entry, $this->form_data );
+
+		$info = array(
+			'auth_key'             => $access_key,
+			'sender_ip'            => $_SERVER['REMOTE_ADDR'],
+			'contact_form_subject' => get_the_title( absint( $this->form_data['id'] ) ),
+			'referrer'             => urlencode( $_SERVER['HTTP_REFERER'] ),
+			'page_url'             => htmlspecialchars( @$_SERVER['HTTP_USER_AGENT'] ),
+			'submit_time'          => $submit_time,
+			'agent'                => 'php-api',
+			'js_on'                => 1,
+			'sender_nickname'      => isset( $entry_data['name'] ) ? $entry_data['name'] : '',
+			'sender_email'         => isset( $entry_data['email'] ) ? $entry_data['email'] : '',
+			'message'              => isset( $entry_data['content'] ) ? $entry_data['content'] : '',
+			'phone'                => '',
+		);
+
+		return new CleantalkRequest( $info );
+	}
+
+	/**
+	 * Check if the submission is spam using CleanTalk REST API.
+	 *
+	 * @since 3.2.2
+	 */
+	public function evf_is_spam_submission_clean_talk_rest_api( $entry ) {
+		$marked_as_spam = false;
+		$access_key     = get_option( 'everest_forms_recaptcha_cleantalk_access_key' );
+
+		$submit_time = isset( $this->form_data['entry']['evf_form_load_time'] ) ? time() - (int) $this->form_data['entry']['evf_form_load_time'] : null;
+		$event_token = isset( $this->form_data['entry']['evf_form_event_token'] ) ? $this->form_data['entry']['evf_form_event_token'] : null;
+
+		$entry_data = $this->get_entry_data_for_akismet( $this->form_data['form_fields'], $entry );
+		$entry_data = apply_filters( 'evf_entry_akismet_entry_data', $entry_data, $entry, $this->form_data );
+
+		$clean_talk_request = array(
+			'method_name'     => 'check_message',
+			'auth_key'        => $access_key,
+			'sender_ip'       => $_SERVER['REMOTE_ADDR'],
+			'sender_info'     => json_encode(
+				array(
+					'REFERRER'   => $_SERVER['HTTP_REFERER'],
+					'USER_AGENT' => htmlspecialchars( @$_SERVER['HTTP_USER_AGENT'] ),
+				)
+			),
+			'js_on'           => 1,
+			'submit_time'     => $submit_time,
+			'event_token'     => $event_token,
+			'sender_nickname' => isset( $entry_data['name'] ) ? $entry_data['name'] : '',
+			'sender_email'    => isset( $entry_data['email'] ) ? $entry_data['email'] : '',
+			'message'         => isset( $entry_data['content'] ) ? $entry_data['content'] : '',
+			'phone'           => '',
+			'agent'           => 'wordpress-everest-forms-' . EVF_VERSION,
+			'post_info'       => array(
+				'comment_type' => 'everest_forms_vendor_integration__use_api',
+				'post_url'     => $_SERVER['HTTP_REFERER'],
+			),
+		);
+
+		$raw_response = wp_remote_post(
+			'https://moderate.cleantalk.org/api2.0',
+			array(
+				'body'    => json_encode( $clean_talk_request ),
+				'headers' => array(
+					'Content-Type' => 'application/json',
+				),
+			)
+		);
+		$response     = json_decode( wp_remote_retrieve_body( $raw_response ) );
+
+		$clean_talk_passed = $response->allow == 1 && $response->spam == 0 && $response->account_status == 1;
+
+		if ( ! $clean_talk_passed ) {
+			$marked_as_spam = true;
+		}
+
+		return $marked_as_spam;
 	}
 }
