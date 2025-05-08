@@ -18,7 +18,7 @@ class EVF_Post_Types {
 	/**
 	 * Tags taxonomy.
 	 *
-	 * @since xx.xx.xx
+	 * @since 3.2.0
 	 */
 	const TAGS_TAXONOMY = 'evf_form_tags';
 
@@ -146,14 +146,14 @@ class EVF_Post_Types {
 	/**
 	 * Register the new taxonomy for tags.
 	 *
-	 * @since xx.xx.xx
+	 * @since 3.2.0
 	 */
 	public static function register_taxonomy() {
 
 		/**
 		 * Filters Tags taxonomy arguments.
 		 *
-		 * @since xx.xx.xx
+		 * @since 3.2.0
 		 *
 		 * @param array $args Arguments.
 		 */

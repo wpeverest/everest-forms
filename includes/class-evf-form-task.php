@@ -480,7 +480,7 @@ class EVF_Form_Task {
 			/** CleanTalk anit-spam protection.
 			 * If spam - return early.
 			 *
-			 * @since xx.xx.xx
+			 * @since 3.2.0
 			 */
 			if ( $this->get_clean_talk_validate( $entry, $form_id ) ) {
 				$logger = evf_get_logger();

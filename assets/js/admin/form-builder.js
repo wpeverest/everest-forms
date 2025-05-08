@@ -40,7 +40,7 @@
 				/**
 				 * Disable row when form is disabled.
 				 *
-				 * @since xx.xx.xx
+				 * @since 3.2.0
 				 */
 				$('.wp-list-table .everest-forms-toggle-form input').each(function () {
 					if (!$(this).prop('checked')) {
@@ -3961,7 +3961,7 @@ jQuery( function ( $ ) {
 		/**
 		 * Disable row when form is disabled.
 		 *
-		 * @since xx.xx.xx
+		 * @since 3.2.0
 		 */
 		if ( ! $( this ).prop( 'checked' ) ) {
 			$(this).closest('tr').find('td').not('.has-row-actions').addClass('evf-disable-row');

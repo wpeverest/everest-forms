@@ -461,9 +461,9 @@ class EVF_AJAX {
 			}
 		}
 		/**
-		 * Creatting the form tags taxonomy.
+		 * Creating the form tags taxonomy.
 		 *
-		 * @since xx.xx.xx
+		 * @since 3.2.0
 		 */
 		if ( ! empty( $data['settings']['form_tags'] ) ) {
 			$term_ids = array();
@@ -1001,7 +1001,7 @@ class EVF_AJAX {
 		/**
 		 * Update the form status in post table.
 		 *
-		 * @since xx.xx.xx
+		 * @since 3.2.0
 		 */
 		$new_status = $enabled ? 'publish' : 'inactive';
 
@@ -1945,7 +1945,7 @@ class EVF_AJAX {
 	/**
 	 * Delete the tags.
 	 *
-	 * @since xx.xx.xx
+	 * @since 3.2.0
 	 */
 	public static function delete_form_tags() {
 		check_ajax_referer( 'ajax_manage_tags_nonce', 'security' );
@@ -1972,7 +1972,7 @@ class EVF_AJAX {
 	/**
 	 * Update tags in bulk.
 	 *
-	 * @since xx.xx.xx
+	 * @since 3.2.0
 	 */
 	public static function update_tags_in_bulk() {
 

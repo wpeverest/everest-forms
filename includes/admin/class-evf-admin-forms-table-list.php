@@ -381,7 +381,7 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 		$status_links = array();
 		$num_posts    = array();
 
-		$total_posts = $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->posts} WHERE post_type = 'everest_form' AND post_status = 'publish'" ); // WPCS: cache ok, db call ok.
+		$total_posts = $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->posts} WHERE post_type = 'everest_form' AND post_status IN ( 'publish', 'inactive' )" ); // WPCS: cache ok, db call ok.
 		$all_args    = array( 'page' => 'evf-builder' );
 		if ( empty( $class ) && empty( $_REQUEST['status'] ) ) {
 			$class = 'current';
@@ -427,10 +427,8 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 			$status_links[ $status_name ] = $this->get_edit_link( $status_args, $status_label, $class );
 		}
 
-		// Custom "Inactive" status link
-		$inactive_count = count( evf()->form->get_multiple( array( 'post_status' => 'inactive' ) ) ); // Placeholder for now
+		$inactive_count = count( evf()->form->get_multiple( array( 'post_status' => 'inactive' ) ) );
 
-		// Add the "Inactive" status to the status links
 		$inactive_args = array(
 			'page'   => 'evf-builder',
 			'status' => 'inactive',
@@ -446,11 +444,8 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 			),
 			number_format_i18n( $inactive_count )
 		);
-
-		// Add the "Inactive" status link to the status_links array
 		$status_links['inactive'] = $this->get_edit_link( $inactive_args, $inactive_label, $class );
 
-		// Return all status links
 		return $status_links;
 	}
 
@@ -622,7 +617,7 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 		/**
 		 * Filter on the basis of tags.
 		 *
-		 * @since xx.xx.xx
+		 * @since 3.2.0
 		 */
 		if ( ! empty( $_REQUEST['tags'] ) ) {
 			$args['tax_query'] = array(
@@ -634,17 +629,18 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 				),
 			);
 		}
-		// Handle the status query.
+
 		if ( ! empty( $_REQUEST['status'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 			$status = sanitize_text_field( wp_unslash( $_REQUEST['status'] ) ); // phpcs:ignore WordPress.Security.NonceVerification
 
-			// If the status is 'inactive', handle it with a custom post_status.
 			if ( $status === 'inactive' ) {
-				$args['post_status'] = 'inactive'; // Adjust this if 'inactive' is a custom status.
+				$args['post_status'] = 'inactive';
 			} else {
 				// If it's a valid WordPress status, use it
 				$args['post_status'] = $status;
 			}
+		}else{
+			$args['post_status'] = array( 'publish', 'inactive' );
 		}
 
 		// Handle the search query.
@@ -701,7 +697,7 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 	/**
 	 * Manage tags - delete.
 	 *
-	 * @since xx.xx.xx
+	 * @since 3.2.0
 	 */
 	public function manage_tags() {
 		$tags = FormHelper::get_all_form_tags( 'term_id' );

@@ -84,7 +84,7 @@ class Addons {
 	/**
 	 * Addons but not showcase in dashboard.
 	 *
-	 * @since xx.xx.xx
+	 * @since 3.2.0
 	 */
 	public function not_addons_init() {
 		$addons = array(

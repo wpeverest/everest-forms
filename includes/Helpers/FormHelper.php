@@ -3,7 +3,7 @@
  * Core function for the plugin.
  *
  * @package EverestForms\Helpers
- * @since xx.xx.xx
+ * @since 3.2.0
  */
 
 namespace EverestForms\Helpers;
@@ -11,13 +11,13 @@ namespace EverestForms\Helpers;
 /**
  * FormHelper.
  *
- * @since xx.xx.xx
+ * @since 3.2.0
  */
 class FormHelper {
 	/**
 	 * Get all the form category list.
 	 *
-	 * @since xx.xx.xx
+	 * @since 3.2.0
 	 * @param string $key The key.
 	 */
 	public static function get_all_form_tags( $key = 'slug' ) {
@@ -37,7 +37,7 @@ class FormHelper {
 	/**
 	 * Particular form tags.
 	 *
-	 * @since xx.xx.xx
+	 * @since 3.2.0
 	 * @param [type] $form_id The form id.
 	 * @param string $key The option key type.
 	 */

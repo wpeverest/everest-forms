@@ -523,7 +523,7 @@ final class EverestForms {
 	/**
 	 * Register the "inactive" post status.
 	 *
-	 * @since xx.xx.xx
+	 * @since 3.2.0
 	 */
 	public function evf_register_inactive_post_status() {
 		register_post_status(
