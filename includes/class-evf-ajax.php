@@ -1908,8 +1908,6 @@ class EVF_AJAX {
 			wp_die( -1 );
 		}
 
-		$clean_talk_settings_enabled = isset( $_POST['is_clean_talk_enabled'] ) ? sanitize_text_field( wp_unslash( $_POST['is_clean_talk_enabled'] ) ) : 'no';
-		update_option( 'everest_forms_enable_cleantalk_spam_protection', $clean_talk_settings_enabled );
 
 		$form_data = isset( $_POST['form_data'] ) ? $_POST['form_data'] : '';
 

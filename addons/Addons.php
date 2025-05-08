@@ -33,6 +33,7 @@ class Addons {
 	 */
 	public function __construct() {
 		add_action( 'init', array( $this, 'addons_init' ) );
+		add_action( 'init', array( $this, 'not_addons_init' ) );
 		add_filter( 'everest_forms_integrations', array( $this, 'add_integration' ) );
 	}
 
@@ -44,19 +45,13 @@ class Addons {
 	 * @since 3.2.2
 	 */
 	public function add_integration( $integrations ) {
-		$enabled_features = get_option( 'everest_forms_enabled_features', array() );
-		if ( empty( $enabled_features ) ) {
-			return $integrations;
-		}
-		$classes = array(
+
+		$no_module_classes = array(
 			'clean-talk' => 'EverestForms\Addons\CleanTalk\Settings\Settings',
 		);
 
-		foreach ( $classes as $key => $class_name ) {
-			$key = 'everest-forms-' . $key;
-			if ( in_array( $key, $enabled_features, true ) ) {
-				$integrations[] = $class_name;
-			}
+		foreach ( $no_module_classes as $key => $class_name ) {
+			$integrations[] = $class_name;
 		}
 
 		return $integrations;
@@ -82,9 +77,25 @@ class Addons {
 				'beaver-builder'   => BeaverBuilder::class,
 				'wpbakery-builder' => WPBakeryBuilder::class,
 				'style-customizer' => StyleCustomizer::class,
-				'clean-talk'       => CleanTalk::class,
 			)
 		);
+	}
+
+	/**
+	 * Addons but not showcase in dashboard.
+	 *
+	 * @since xx.xx.xx
+	 */
+	public function not_addons_init() {
+		$addons = array(
+			'clean-talk' => CleanTalk::class,
+		);
+
+		foreach ( $addons as $key => $class_name ) {
+			if ( class_exists( $class_name ) ) {
+				$class_name::init();
+			}
+		}
 	}
 
 	/**
