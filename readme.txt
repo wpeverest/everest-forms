@@ -342,7 +342,8 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 = 3.2.2     	- 13-05-2025
 * Feature		- CleanTalk Anti-Spam Integration.
-* Tweak 			- User Registration & Membership logo on other products.
+* Tweak 		- User Registration & Membership logo on other products.
+* Fix 			- Preserve filename in file upload.
 
 = 3.1.2     	- 08-04-2025
 * Fix 			- Unserialize issue with object injection.
