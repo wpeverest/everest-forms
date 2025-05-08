@@ -1816,6 +1816,10 @@ class EVF_Form_Task {
 		);
 		$response     = json_decode( wp_remote_retrieve_body( $raw_response ) );
 
+		if ( empty( $response ) ) {
+			return true;
+		}
+
 		$clean_talk_passed = $response->allow == 1 && $response->spam == 0 && $response->account_status == 1;
 
 		if ( ! $clean_talk_passed ) {
