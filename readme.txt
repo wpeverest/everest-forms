@@ -344,6 +344,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 * Feature		- CleanTalk Anti-Spam Integration.
 * Feature 		- Private Note field on Form Builder.
 * Enhance 		- Option to edit meta key.
+* Enhance 		- Popup form option and customization.
 * Tweak 		- User Registration & Membership logo on other products.
 * Fix 			- Preserve filename in file upload.
 
