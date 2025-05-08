@@ -11560,3 +11560,7 @@ button#show-settings-link {
 		margin-top: 2px;
 	}
 }
+.evf-disable-row {
+	pointer-events: none;
+	opacity: 0.5;
+}
