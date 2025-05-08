@@ -33,7 +33,6 @@ class EVF_Field_Address extends EVF_Form_Fields {
 			'basic-options'    => array(
 				'field_options' => array(
 					'label',
-					'meta',
 					'description',
 					'required',
 					'required_field_message_setting',
@@ -42,6 +41,7 @@ class EVF_Field_Address extends EVF_Form_Fields {
 			),
 			'advanced-options' => array(
 				'field_options' => array(
+					'meta',
 					'address_1',
 					'address_2',
 					'city',

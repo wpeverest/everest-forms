@@ -72,11 +72,11 @@ if ( ! $tab_exists ) {
 					<div class="everest-forms-toggle-wrapper">
 						<div class="evf-toggle-section">
 							<span class="everest-forms-toggle-form">
-								<input type="checkbox" name="everest_forms_enable_log" id="everest-forms-enable-premium-sidebar" style="" class="" value="yes">
+								<input type="checkbox" name="everest_forms_enable_log" id="everest-forms-enable-premium-sidebar" style="" class="" value="<?php echo esc_attr( $is_premium_sidebar_enabled ); ?>" <?php checked( $is_premium_sidebar_enabled, 'true' ); ?> />
 								<span class="slider round"></span>
 							</span>
 						</div>
-						<span class="everest-forms-toggle-text">Hide Sidebar</span>
+						<span class="everest-forms-toggle-text"><?php echo $is_premium_sidebar_enabled ? 'Show Sidebar' : 'Hide Sidebar' ?></span>
 					</div>
 					<?php } ?>
 				<?php

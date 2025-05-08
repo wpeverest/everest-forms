@@ -26,7 +26,6 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 			'basic-options'    => array(
 				'field_options' => array(
 					'label',
-					'meta',
 					'choose_format',
 					'choose_style',
 					'description',
@@ -38,6 +37,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 			'advanced-options' => array(
 				'field_options' => array(
 					'placeholder',
+					'meta',
 					'datetime_options',
 					'label_hide',
 					'css',
@@ -189,7 +189,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 			/**
 			 * Filter to modify the date format options.
 			 *
-			 * @since xx.xx.xx
+			 * @since 3.2.2
 			 */
 			$date_format_options = apply_filters( 'everest_forms_date_format_options', $date_format_types );
 			$date_format_select  = $this->field_element(

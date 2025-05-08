@@ -26,6 +26,18 @@
     "displayDescription": {
       "type": "boolean",
       "default": false
+    },
+    "popupType": {
+      "type": "string",
+      "default": ""
+    },
+    "popupButtonText": {
+      "type": "string",
+      "default": "View Form"
+    },
+    "popupSize": {
+      "type": "string",
+      "default": ""
     }
   },
   "editorScript": "everest-forms-block-editor",
