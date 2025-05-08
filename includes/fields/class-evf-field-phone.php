@@ -26,7 +26,6 @@ class EVF_Field_Phone extends EVF_Form_Fields {
 			'basic-options'    => array(
 				'field_options' => array(
 					'label',
-					'meta',
 					'choose_format',
 					'description',
 					'input_mask',
@@ -38,6 +37,7 @@ class EVF_Field_Phone extends EVF_Form_Fields {
 			'advanced-options' => array(
 				'field_options' => array(
 					'placeholder',
+					'meta',
 					'label_hide',
 					'default_value',
 					'css',

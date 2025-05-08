@@ -163,7 +163,7 @@ class EVF_Modules {
 			$feature->link          = $feature->link . '&utm_campaign=' . EVF()->utm_campaign;
 			$feature->type          = 'feature';
 			$features_lists[ $key ] = $feature;
-			if ( in_array( $feature->slug, array( 'everest-forms-oxygen-builder', 'everest-forms-bricks-builder', 'everest-forms-divi-builder', 'everest-forms-beaver-builder', 'everest-forms-wpbakery-builder', 'everest-forms-style-customizer' ), true ) ) {
+			if ( in_array( $feature->slug, array( 'everest-forms-oxygen-builder', 'everest-forms-bricks-builder', 'everest-forms-divi-builder', 'everest-forms-beaver-builder', 'everest-forms-wpbakery-builder', 'everest-forms-style-customizer', 'everest-forms-clean-talk' ), true ) ) {
 				$feature->required_plan = esc_html__( 'Free', 'everest-forms' );
 			}
 		}
@@ -815,7 +815,7 @@ class EVF_Modules {
 	/**
 	 * Check if required plugin is active.
 	 *
-	 * @since xx.xx.xx
+	 * @since 3.2.2
 	 *
 	 * @param  [type] $slug.
 	 */

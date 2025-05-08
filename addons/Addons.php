@@ -13,6 +13,7 @@ use EverestForms\Addons\OxygenBuilder\OxygenBuilder;
 use EverestForms\Addons\StyleCustomizer\StyleCustomizer;
 use EverestForms\Addons\DiviBuilder\DiviBuilder;
 use EverestForms\Addons\BeaverBuilder\BeaverBuilder;
+use EverestForms\Addons\CleanTalk\CleanTalk;
 use EverestForms\Addons\WPBakeryBuilder\WPBakeryBuilder;
 use EverestForms\Traits\Singleton;
 
@@ -32,8 +33,34 @@ class Addons {
 	 */
 	public function __construct() {
 		add_action( 'init', array( $this, 'addons_init' ) );
+		add_filter( 'everest_forms_integrations', array( $this, 'add_integration' ) );
 	}
 
+	/**
+	 * Register integration.
+	 *
+	 * @param array $integrations List of integrations.
+	 *
+	 * @since 3.2.2
+	 */
+	public function add_integration( $integrations ) {
+		$enabled_features = get_option( 'everest_forms_enabled_features', array() );
+		if ( empty( $enabled_features ) ) {
+			return $integrations;
+		}
+		$classes = array(
+			'clean-talk' => 'EverestForms\Addons\CleanTalk\Settings\Settings',
+		);
+
+		foreach ( $classes as $key => $class_name ) {
+			$key = 'everest-forms-' . $key;
+			if ( in_array( $key, $enabled_features, true ) ) {
+				$integrations[] = $class_name;
+			}
+		}
+
+		return $integrations;
+	}
 	/**
 	 * Get addon list.
 	 *
@@ -55,6 +82,7 @@ class Addons {
 				'beaver-builder'   => BeaverBuilder::class,
 				'wpbakery-builder' => WPBakeryBuilder::class,
 				'style-customizer' => StyleCustomizer::class,
+				'clean-talk'       => CleanTalk::class,
 			)
 		);
 	}
