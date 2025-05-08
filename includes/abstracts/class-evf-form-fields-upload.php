@@ -163,7 +163,8 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 		$name         = sanitize_file_name( wp_unslash( $_FILES['file']['name'] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated
 		$extension    = strtolower( pathinfo( $name, PATHINFO_EXTENSION ) );
 		$errors       = $this->ajax_validate( $error, $extension, $path, $name );
-		$name_of_file = isset( $this->field_data['custom_file_name'] ) ? sanitize_file_name( $this->field_data['custom_file_name'] ) . '_' . uniqid( '', true ) . '.' . $extension : sanitize_file_name( wp_unslash( $_FILES['file']['name'] ) );  // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated
+		$name_of_file = isset( $this->field_data['custom_file_name'] ) && ! empty( $this->field_data['custom_file_name'] ) ? sanitize_file_name( $this->field_data['custom_file_name'] ) . '_' . uniqid( '', true ) . '.' . $extension : sanitize_file_name( wp_unslash( $_FILES['file']['name'] ) );  // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated
+
 
 		if ( count( $errors ) ) {
 			wp_send_json_error( implode( ',', $errors ), 400 );

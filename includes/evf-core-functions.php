@@ -5414,7 +5414,7 @@ JS;
 /**
  * Get the list of addons or module that are depended on another plugins.
  *
- * @since xx.xx.xx
+ * @since 3.2.2
  */
 function evf_get_addons_list_depend_on_another_plugins() {
 	$required_plugins = apply_filters(

@@ -1236,12 +1236,14 @@
 					value = $this.val().replace(/<\s*script/gi, '').replace(/\s+on\w+\s*=/gi, ' '),
 					id     = $this.parent().data( 'field-id' ),
 					$label = $( '#everest-forms-field-' + id ).find( '.label-title .text' );
-
-				if ( $label.hasClass( 'nl2br' ) ) {
-					$label.html( value.replace( /\n/g, '<br>') );
-				} else {
-					$label.html( value );
-				}
+					if ( $label.hasClass('nl2br') ) {
+						$label.html( value.replace(/\n/g, '<br>') );
+					} else if ( 'private-note' === $label.prevObject.data('field-type') ) {
+						value = value + ' (Admin Only)';
+						$label.html( value );
+					} else {
+						$label.html( value );
+					}
 			});
 
 			$builder.on( 'change', '.everest-forms-field-option-row-enable_prepopulate input', function( event ) {
