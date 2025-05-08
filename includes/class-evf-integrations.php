@@ -46,8 +46,9 @@ class EVF_Integrations {
 	 * @return array
 	 */
 	public function get_integrations() {
+		$default_integrations = array();
 		if ( ! defined( 'EFP_PLUGIN_FILE' ) ) {
-			$this->integrations = array(
+			$default_integrations = array(
 				'dropbox'       => (object) array(
 					'id'                 => 'dropbox',
 					'method_title'       => 'Dropbox',
@@ -95,6 +96,7 @@ class EVF_Integrations {
 				),
 			);
 		}
+		$this->integrations = array_merge( $this->integrations, $default_integrations );
 
 		return $this->integrations;
 	}
