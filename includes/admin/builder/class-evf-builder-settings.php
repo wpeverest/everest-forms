@@ -6,6 +6,8 @@
  * @since   1.2.0
  */
 
+use EverestForms\Helpers\FormHelper;
+
 defined( 'ABSPATH' ) || exit;
 
 if ( class_exists( 'EVF_Builder_Settings', false ) ) {
@@ -205,6 +207,29 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				'tooltip'     => sprintf( esc_html__( 'Give the description to this form', 'everest-forms' ) ),
 			)
 		);
+
+		$this->form_data['settings']['form_tags'] = FormHelper::get_form_tags( $this->form_data['id'], 'slug' );
+
+		everest_forms_panel_field(
+			'select',
+			'settings',
+			'form_tags',
+			$this->form_data,
+			esc_html__( 'Tags', 'everest-forms' ),
+			array(
+				'default'     => '',
+				'tooltip'     => esc_html__( 'Please choose a tags from the list, or type in a new tag if you\'d like to add one.', 'everest-forms' ),
+				'options'     => array_merge(
+					array(
+						'' => esc_html__( '', 'everest-forms' ),
+					),
+					FormHelper::get_all_form_tags()
+				),
+				'input_class' => 'form-tags-select2',
+				'multiple'    => true,
+			)
+		);
+
 		everest_forms_panel_field(
 			'textarea',
 			'settings',
@@ -603,7 +628,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					esc_html__( 'Successful form submission message', 'everest-forms' ),
 					array(
 						'input_class' => 'short',
-						'default'     => isset( $this->form->successful_form_submission_message ) ? $this->form->successful_form_submission_message : __( 'Thanks for contacting us! We will be in touch with you shortly', 'everest-forms' ),
+						'default'     => isset( $this->form->successful_form_submission_message ) ? $this->form->successful_form_submission_message : __( 'Thanks for contacting us! We will be in touch with you shortly.', 'everest-forms' ),
 						/* translators: %1$s - general settings docs url */
 						'tooltip'     => sprintf( esc_html__( 'Success message that shows up after submitting form. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/general-settings/#4-toc-title' ) ),
 					)
@@ -742,6 +767,12 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				);
 				do_action( 'everest_forms_inline_honeypot_settings', $this, 'honeypot', 'connection_1' );
 				echo '</div>';
+
+				/**
+				 * CleanTalks anti-spam protection.
+				 */
+				do_action( 'everest_forms_inline_cleantalk_settings', $this, 'cleantalk', 'connection_1' );
+
 				/**
 				* Akismet anit-spam protection.
 				*

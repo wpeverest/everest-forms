@@ -27,7 +27,11 @@ class EVF_Field_Hcaptcha extends \EVF_Form_Fields {
 			'basic-options' => array(
 				'field_options' => array(
 					'label',
-					'meta',
+				),
+			),
+			'advanced-options' => array(
+				'field_options' => array(
+					'meta'
 				),
 			),
 		);
