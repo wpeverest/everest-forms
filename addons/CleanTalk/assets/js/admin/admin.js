@@ -11,10 +11,6 @@
 					EVFCleanTalk.saveCleanTalkSettings( $( this ) );
 				});
 
-				$( document ).on('change', '#everest_forms_enable_cleantalk_spam_protection', function(){
-					EVFCleanTalk.hideShowCleanTalkSetting( $( this ) );
-				})
-
 				$(document).on('change', 'input[name="everest_forms_clean_talk_methods"]', function () {
 					EVFCleanTalk.toggleCleanTalkSettings();
 				});
@@ -60,7 +56,6 @@
 		 * Show/hide CleanTalk settings based on the selected method.
 		 */
 		saveCleanTalkSettings: function ( $el ) {
-			const isEnabled = $('#everest_forms_enable_cleantalk_spam_protection').is(':checked');
 
 			const $form = $('#everest-forms-clean-talk-settings-form'),
 				  formData = $form.serializeArray();
@@ -68,7 +63,7 @@
 				action: 'everest_forms_save_clean_talk_settings',
 				security: everest_forms_clean_talk.security,
 				form_data: formData,
-				is_clean_talk_enabled: isEnabled ? 'yes' : 'no',
+				is_clean_talk_enabled:'yes',
 			};
 
 			const $button = $el;
@@ -103,16 +98,6 @@
 					}, 2000);
 				},
 			});
-		},
-
-		hideShowCleanTalkSetting: function( $el ) {
-			const isEnabled = $el.is(':checked')
-
-			if ( isEnabled ) {
-				$( document ).find( '#evf-clean-talk-section-container' ).removeClass( 'everest-forms-hidden');
-			}else{
-				$( document ).find( '#evf-clean-talk-section-container' ).addClass( 'everest-forms-hidden' );
-			}
 		},
 
 	};

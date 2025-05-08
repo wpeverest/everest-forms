@@ -475,7 +475,14 @@ class EVF_Form_Task {
 					return $this->errors;
 				}
 				$entry['evf_spam_status'] = 'spam';
-			} elseif ( $this->get_clean_talk_validate( $entry, $form_id ) ) {
+			}
+
+			/** CleanTalk anit-spam protection.
+			 * If spam - return early.
+			 *
+			 * @since xx.xx.xx
+			 */
+			if ( $this->get_clean_talk_validate( $entry, $form_id ) ) {
 				$logger = evf_get_logger();
 				$logger->notice( sprintf( 'Spam entry for Form ID %d Response: %s', absint( $this->form_data['id'] ), evf_print_r( $entry, true ) ), array( 'source' => 'cleantalk' ) );
 				if ( isset( $this->form_data['settings']['cleantalk_protection_type'] ) && 'validation_failed' === $this->form_data['settings']['cleantalk_protection_type'] ) {
@@ -1317,17 +1324,6 @@ class EVF_Form_Task {
 	 * @param  string $form_id (Optional) The identifier of the form.
 	 */
 	public function get_clean_talk_validate( $entry, $form_id = '' ) {
-		$enabled_features = get_option( 'everest_forms_enabled_features', array() );
-
-		if ( ! in_array( 'everest-forms-clean-talk', $enabled_features ) ) {
-			return false;
-		}
-
-		$is_clean_talk_activated_global = evf_string_to_bool( get_option( 'everest_forms_enable_cleantalk_spam_protection', '' ) );
-
-		if ( ! $is_clean_talk_activated_global ) {
-			return false;
-		}
 
 		$is_cleantalk_activated = isset( $this->form_data['settings']['cleantalk'] ) ? $this->form_data['settings']['cleantalk'] : false;
 
@@ -1335,7 +1331,7 @@ class EVF_Form_Task {
 			return false;
 		}
 
-		$clean_talk_method = get_option( 'everest_forms_clean_talk_methods', '' );
+		$clean_talk_method = get_option( 'everest_forms_clean_talk_methods', 'rest_api' );
 
 		if ( empty( $clean_talk_method ) ) {
 			return false;
@@ -1343,9 +1339,26 @@ class EVF_Form_Task {
 
 		$mark_as_spam = false;
 
+		$logger = evf_get_logger();
+
 		if ( 'rest_api' === $clean_talk_method ) {
+			$access_key = get_option( 'everest_forms_recaptcha_cleantalk_access_key' );
+
+			if ( empty( $access_key ) ) {
+				$logger->notice( 'Missing the CleanTalk Access Key', array( 'source' => 'cleantalk' ) );
+
+				return false;
+			}
+
 			$mark_as_spam = $this->evf_is_spam_submission_clean_talk_rest_api( $entry );
 		} elseif ( 'clean_talk_plugin' === $clean_talk_method ) {
+
+			if ( ! class_exists( 'Cleantalk\Antispam\Cleantalk' ) ) {
+				$logger->notice( 'Missing the CleanTalk Plugin.', array( 'source' => 'cleantalk' ) );
+
+				return false;
+			}
+
 			$mark_as_spam = $this->evf_is_spam_submission_clean_talk( $entry );
 		}
 

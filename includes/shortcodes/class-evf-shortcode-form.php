@@ -496,11 +496,6 @@ class EVF_Shortcode_Form {
 	 * @param  [type] $form_data Form data.
 	 */
 	public static function clean_talk( $form_data ) {
-		$is_cleantalk_activated_global = evf_string_to_bool( get_option( 'everest_forms_enable_cleantalk_spam_protection', '' ) );
-
-		if ( ! $is_cleantalk_activated_global ) {
-			return;
-		}
 
 		$is_cleantalk_activated = isset( $form_data['settings']['cleantalk'] ) ? $form_data['settings']['cleantalk'] : false;
 

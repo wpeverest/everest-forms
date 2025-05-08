@@ -56,35 +56,22 @@ class Settings extends \EVF_Integration {
 			</div>
 
 			<div class="integration-connection-detail">
-				<div class="evf-account-connect">
-					<p class="evf-clean-talk-label-1" style="margin: 0"><?php echo __( 'Set Up CleanTalk Integration', 'everest-forms' ); ?></p>
-				</div>
 				<div class="evf-connection-list">
 				<!-- Toggle Row -->
 				 <form method="post" action="" id="everest-forms-clean-talk-settings-form">
-					<div class="evf-settings-row" style="display: flex; gap: 12px">
-						<div class="evf-toggle-section">
-						<span class="everest-forms-toggle-form">
-						<input type="checkbox" class="widefat" id="everest_forms_enable_cleantalk_spam_protection" value="yes" <?php checked( 'yes', get_option( 'everest_forms_enable_cleantalk_spam_protection' ) ); ?>>
-						<span class="slider round"></span>
-						</span>
-					</div>
-						<label class="evf-clean-talk-label-2" for="everest_forms_enable_cleantalk_spam_protection"><?php echo __( 'Enable CleanTalk Spam Protection', 'everest-forms' ); ?></label>
-
-					</div>
 
 					<!-- Radio Buttons -->
-					<div id="evf-clean-talk-section-container" class="<?php echo 'yes' !== get_option( 'everest_forms_enable_cleantalk_spam_protection' ) ? 'everest-forms-hidden' : ''; ?>">
+					<div id="evf-clean-talk-section-container" class="">
 						<div class="evf-section">
 							<p class="evf-clean-talk-label-1" style="margin: 12px 0"><?php echo __( 'CleanTalk Methods', 'everest-forms' ); ?></p>
 							<div class="evf-clean-talk-radio" style="margin-bottom: 12px;">
 								<label class="evf-clean-talk-label-2">
-									<input type="radio" name="everest_forms_clean_talk_methods" value="clean_talk_plugin" <?php checked( 'clean_talk_plugin', get_option( 'everest_forms_clean_talk_methods' ) ); ?>>
+									<input type="radio" name="everest_forms_clean_talk_methods" value="rest_api" <?php checked( 'rest_api', get_option( 'everest_forms_clean_talk_methods', 'rest_api' ) ); ?>>
+									<?php echo __( 'CleanTalk REST API', 'everest-forms' ); ?></label>
+								<label class="evf-clean-talk-label-2">
+									<input type="radio" name="everest_forms_clean_talk_methods" value="clean_talk_plugin" <?php checked( 'clean_talk_plugin', get_option( 'everest_forms_clean_talk_methods', 'rest_api' ) ); ?>>
 									<?php echo __( 'CleanTalk Plugin', 'everest-forms' ); ?>
 								</label>
-								<label class="evf-clean-talk-label-2">
-									<input type="radio" name="everest_forms_clean_talk_methods" value="rest_api" <?php checked( 'rest_api', get_option( 'everest_forms_clean_talk_methods' ) ); ?>>
-									<?php echo __( 'CleanTalk REST API', 'everest-forms' ); ?></label>
 							</div>
 						</div>
 
