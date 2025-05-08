@@ -1,5 +1,18 @@
 == Changelog ==
 
+= 3.2.2     	- 13-05-2025
+* Feature		- Add category/taxonomy on From.
+* Feature		- CleanTalk Anti-Spam Integration.
+* Feature 		- Private Note field on Form Builder.
+* Enhance 		- Option to edit meta key.
+* Enhance 		- Popup form option and customization.
+* Tweak 		- User Registration & Membership logo on other products.
+* Fix 			- Preserve filename in file upload.
+* Fix 			- Show premium sidebar enable disable issue.
+* Fix 			- Form creation button generating multiple form.
+* Fix 			- Entry id smart tag not working in email subject.
+* Dev 			- Hook to add custom smart tag.
+
 = 3.1.2     	- 08-04-2025
 * Fix 			- Unserialize issue with object injection.
 * Fix 			- Array to string conversion while viewing entries.

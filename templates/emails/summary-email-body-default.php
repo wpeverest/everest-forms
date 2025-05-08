@@ -82,7 +82,7 @@ switch ($evf_summary_frequency) {
 	<?php
 	$evf_entries_data = evf_entries_summaries();
 	if ('' === $evf_entries_data || count($evf_entries_data) <= 0) {
-		echo '<p>' . esc_html__('Sorry, there are no forms to display the statistics.', 'everest-forms') . '</p>';
+		echo '<p>' . esc_html__('Sorry, there are no data to generate the statistics.', 'everest-forms') . '</p>';
 	} else {
 	?>
 		<p><strong><?php esc_html_e('Forms Stats', 'everest-forms'); ?></strong></p>

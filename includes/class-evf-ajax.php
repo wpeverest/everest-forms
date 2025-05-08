@@ -135,6 +135,9 @@ class EVF_AJAX {
 			'generate_restapi_key'            => false,
 			'install_and_activate_smart_smtp' => false,
 			'form_preview_save'               => false,
+			'delete_form_tags'                => false,
+			'update_tags_in_bulk'             => false,
+			'save_clean_talk_settings'        => true,
 		);
 
 		foreach ( $ajax_events as $ajax_event => $nopriv ) {
@@ -311,7 +314,8 @@ class EVF_AJAX {
 			__( 'Check for empty meta key.', 'everest-forms' ),
 			array( 'source' => 'form-save' )
 		);
-		$empty_meta_data = array();
+		$empty_meta_data   = array();
+		$list_of_meta_keys = array();
 
 		// Calculation backward compatibility.
 		$old_calculation_format = 0;
@@ -366,6 +370,23 @@ class EVF_AJAX {
 
 					// Register string for translation.
 					evf_string_translation( $data['id'], $field['id'], $field['label'] );
+				}
+
+				$list_of_meta_keys[] = $field['meta-key'];
+
+				$unique_meta_keys = array_unique( $list_of_meta_keys );
+				if ( count( $unique_meta_keys ) < count( $list_of_meta_keys ) ) {
+					$logger->error(
+						__( 'Duplicate Meta Key.', 'everest-forms' ),
+						array( 'source' => 'form-save' )
+					);
+					wp_send_json_error(
+						array(
+							'errorTitle'   => esc_html__( 'Duplicate Meta Key', 'everest-forms' ),
+							/* translators: %s: empty meta data */
+							'errorMessage' => sprintf( esc_html__( '%s field has duplicate meta_key.', 'everest-forms' ), '<strong>' . $field['label'] . '</strong>' ),
+						)
+					);
 				}
 
 				if ( empty( $field['meta-key'] ) && ! in_array( $field['type'], array( 'html', 'title', 'captcha', 'divider', 'reset', 'recaptcha', 'hcaptcha', 'turnstile' ), true ) ) {
@@ -438,6 +459,37 @@ class EVF_AJAX {
 					)
 				);
 			}
+		}
+		/**
+		 * Creatting the form tags taxonomy.
+		 *
+		 * @since xx.xx.xx
+		 */
+		if ( ! empty( $data['settings']['form_tags'] ) ) {
+			$term_ids = array();
+
+			foreach ( $data['settings']['form_tags'] as $tag_name ) {
+				if ( is_numeric( $tag_name ) ) {
+					$term = get_term( absint( $tag_name ), EVF_Post_Types::TAGS_TAXONOMY );
+					if ( $term && ! is_wp_error( $term ) ) {
+						$term_ids[] = $term->term_id;
+						continue;
+					}
+				}
+
+				$term = term_exists( $tag_name, EVF_Post_Types::TAGS_TAXONOMY );
+				if ( $term === null ) {
+					$term = wp_insert_term( sanitize_text_field( $tag_name ), EVF_Post_Types::TAGS_TAXONOMY );
+				}
+				if ( ! is_wp_error( $term ) ) {
+					$term_ids[] = is_array( $term ) ? (int) $term['term_id'] : $term;
+				}
+			}
+			if ( ! empty( $term_ids ) ) {
+				wp_set_post_terms( absint( $data['id'] ), $term_ids, EVF_Post_Types::TAGS_TAXONOMY, false );
+			}
+		} else {
+			wp_set_post_terms( absint( $data['id'] ), array(), EVF_Post_Types::TAGS_TAXONOMY, false );
 		}
 
 		// Fix for sorting field ordering.
@@ -944,6 +996,25 @@ class EVF_AJAX {
 
 		if ( ! current_user_can( 'everest_forms_edit_form', $form_id ) ) {
 			wp_die( -1 );
+		}
+
+		/**
+		 * Update the form status in post table.
+		 *
+		 * @since xx.xx.xx
+		 */
+		$new_status = $enabled ? 'publish' : 'inactive';
+
+		$result = wp_update_post(
+			array(
+				'ID'          => $form_id,
+				'post_status' => $new_status,
+			),
+			true
+		);
+
+		if ( is_wp_error( $result ) ) {
+			wp_send_json_error( $result->get_error_message(), 500 );
 		}
 
 		$form_data = evf()->form->get( absint( $form_id ), array( 'content_only' => true ) );
@@ -1870,6 +1941,125 @@ class EVF_AJAX {
 		update_post_meta( $form_id, 'everest_forms_enable_theme_style', $default_theme );
 
 		wp_send_json_success( array( 'message' => __( 'Saved', 'everest-forms' ) ) );
+	}
+	/**
+	 * Delete the tags.
+	 *
+	 * @since xx.xx.xx
+	 */
+	public static function delete_form_tags() {
+		check_ajax_referer( 'ajax_manage_tags_nonce', 'security' );
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( array( 'message' => __( 'You do not have permission.', 'everest-forms' ) ) );
+			wp_die( -1 );
+		}
+
+		$tags = isset( $_POST['tags'] ) ? array_map( 'absint', $_POST['tags'] ) : array();
+
+		if ( empty( $tags ) ) {
+			wp_send_json_error( array( 'message' => __( 'Missing tags.', 'everest-forms' ) ) );
+		}
+
+		foreach ( $tags as $tag ) {
+			wp_delete_term( $tag, EVF_Post_Types::TAGS_TAXONOMY );
+		}
+
+		wp_send_json_success( array( 'message' => __( 'Tags are deleted successfully.', 'everest-forms' ) ) );
+
+	}
+
+	/**
+	 * Update tags in bulk.
+	 *
+	 * @since xx.xx.xx
+	 */
+	public static function update_tags_in_bulk() {
+
+		check_ajax_referer( 'ajax_manage_tags_nonce', 'security' );
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( array( 'message' => __( 'You do not have permission.', 'everest-forms' ) ) );
+			wp_die( -1 );
+		}
+
+		$tags  = isset( $_POST['tags'] ) ? $_POST['tags'] : array();
+		$forms = isset( $_POST['forms'] ) ? array_map( 'absint', $_POST['forms'] ) : array();
+
+		if ( empty( $forms ) ) {
+			wp_send_json_error( array( 'message' => __( 'Please select atleast on form to updat the tags.', 'everest-forms' ) ) );
+		}
+
+		$term_ids = array();
+
+		foreach ( $tags as $tag_name ) {
+			if ( is_numeric( $tag_name ) ) {
+				$term = get_term( absint( $tag_name ), EVF_Post_Types::TAGS_TAXONOMY );
+				if ( $term && ! is_wp_error( $term ) ) {
+					$term_ids[] = $term->term_id;
+					continue;
+				}
+			}
+
+			$term = term_exists( $tag_name, EVF_Post_Types::TAGS_TAXONOMY );
+			if ( $term === null ) {
+				$term = wp_insert_term( sanitize_text_field( $tag_name ), EVF_Post_Types::TAGS_TAXONOMY );
+			}
+			if ( ! is_wp_error( $term ) ) {
+				$term_ids[] = is_array( $term ) ? (int) $term['term_id'] : $term;
+			}
+		}
+
+		foreach ( $forms as $id ) {
+			wp_set_post_terms( $id, $term_ids, EVF_Post_Types::TAGS_TAXONOMY, false );
+		}
+
+		wp_send_json_success( array( 'message' => __( 'Tags are updated successfully.', 'everest-forms' ) ) );
+	}
+
+	/**
+	 * Save the clean talk settings.
+	 */
+	public static function save_clean_talk_settings() {
+		check_ajax_referer( 'everest_forms_clean_talk_nonce', 'security' );
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( array( 'message' => __( 'You do not have permission.', 'everest-forms' ) ) );
+			wp_die( -1 );
+		}
+
+		if ( isset( $_POST['action'] ) && 'everest_forms_save_clean_talk_settings' != $_POST['action'] ) {
+			wp_send_json_error( array( 'message' => __( 'Action doesn\'t match.', 'everest-forms' ) ) );
+			wp_die( -1 );
+		}
+
+		$form_data = isset( $_POST['form_data'] ) ? $_POST['form_data'] : '';
+
+		if ( empty( $form_data ) ) {
+			wp_send_json_error( array( 'message' => __( 'Insufficient information', 'everest-forms' ) ) );
+		}
+
+		$options_list = array(
+			'everest_forms_clean_talk_methods',
+			'everest_forms_recaptcha_cleantalk_access_key',
+		);
+
+		foreach ( $form_data as $data ) {
+			if ( empty( $data['name'] ) ) {
+				continue;
+			}
+
+			if ( in_array( $data['name'], $options_list ) ) {
+				$value = isset( $data['value'] ) ? sanitize_text_field( wp_unslash( $data['value'] ) ) : '';
+				update_option( $data['name'], $value );
+			}
+		}
+
+		wp_send_json_success(
+			array(
+				'message' => __( 'Settings saved successfully', 'everest-forms' ),
+			)
+		);
 	}
 }
 
