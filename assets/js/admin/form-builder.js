@@ -633,7 +633,6 @@
 			EVFPanelBuilder.bindBulkOptionActions();
 			EVFPanelBuilder.bindAkismetInit();
 			EVFPanelBuilder.bindFormSubmissionMinWaitingTime();
-			EVFPanelBuilder.bindEditMetaKey();
 
 			// Fields Panel.
 			EVFPanelBuilder.bindUIActionsFields();
@@ -3732,6 +3731,9 @@
 				}
 			}
 		},
+		bindFormTags: function() {
+
+		}
 
 	};
 

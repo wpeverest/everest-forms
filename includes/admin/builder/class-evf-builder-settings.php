@@ -6,6 +6,8 @@
  * @since   1.2.0
  */
 
+use EverestForms\Helpers\FormHelper;
+
 defined( 'ABSPATH' ) || exit;
 
 if ( class_exists( 'EVF_Builder_Settings', false ) ) {
@@ -205,6 +207,29 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				'tooltip'     => sprintf( esc_html__( 'Give the description to this form', 'everest-forms' ) ),
 			)
 		);
+
+		$this->form_data['settings']['form_tags'] = FormHelper::get_form_tags( $this->form_data['id'], 'slug' );
+
+		everest_forms_panel_field(
+			'select',
+			'settings',
+			'form_tags',
+			$this->form_data,
+			esc_html__( 'Tags', 'everest-forms' ),
+			array(
+				'default'     => '',
+				'tooltip'     => esc_html__( 'Please choose a tags from the list, or type in a new tag if you\'d like to add one.', 'everest-forms' ),
+				'options'     => array_merge(
+					array(
+						'' => esc_html__( '', 'everest-forms' ),
+					),
+					FormHelper::get_all_form_tags()
+				),
+				'input_class' => 'form-tags-select2',
+				'multiple'    => true,
+			)
+		);
+
 		everest_forms_panel_field(
 			'textarea',
 			'settings',
