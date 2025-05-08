@@ -89,12 +89,36 @@ if ( false !== $entry_index ) {
 								<?php
 								$entry_meta = apply_filters( 'everest_forms_entry_single_data', $entry->meta, $entry, $form_data );
 
+								/**
+								 * Filter the entry meta key.
+								 *
+								 * @since 3.2.2
+								 */
+								$field_type_by_meta_key = array();
+								$exclude_fields_array   = array(  'title', 'html', 'captcha', 'image-upload', 'file-upload', 'divider', 'reset', 'recaptcha', 'hcaptcha', 'turnstile', 'private-note' );
+
+								$exclude_fields_array = apply_filters( 'everest_forms_view_entry_exclude_fields', $exclude_fields_array, $entry_meta, $form_data );
+
+								foreach ( $form_data['form_fields'] as $field ) {
+									$field_type_by_meta_key[ $field['meta-key'] ] = $field['type'];
+								}
+
 								if ( empty( $entry_meta ) ) {
 									// Whoops, no fields! This shouldn't happen under normal use cases.
 									echo '<p class="no-fields">' . esc_html__( 'This entry does not have any fields.', 'everest-forms' ) . '</p>';
 								} else {
 									// Display the fields and their values.
 									foreach ( $entry_meta as $meta_key => $meta_value ) {
+
+										/**
+										 * Filter the entry meta key.
+										 *
+										 * @since 3.2.2
+										 */
+										if ( in_array( $meta_key, array_keys( $field_type_by_meta_key ), true ) && in_array( $field_type_by_meta_key[ $meta_key ], $exclude_fields_array, true ) ) {
+											continue;
+										}
+
 										// Check if hidden fields exists.
 										if ( in_array( $meta_key, apply_filters( 'everest_forms_hidden_entry_fields', array() ), true ) ) {
 											continue;

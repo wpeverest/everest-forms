@@ -46,7 +46,6 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 			'basic-options'    => array(
 				'field_options' => array(
 					'label',
-					'meta',
 					'choices',
 					'choices_images',
 					'description',
@@ -57,6 +56,7 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 			),
 			'advanced-options' => array(
 				'field_options' => array(
+					'meta',
 					'randomize',
 					'show_values',
 					'input_columns',

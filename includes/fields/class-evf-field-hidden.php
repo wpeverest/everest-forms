@@ -26,10 +26,14 @@ class EVF_Field_Hidden extends EVF_Form_Fields {
 			'basic-options' => array(
 				'field_options' => array(
 					'label',
-					'meta',
 					'label_disable',
 					'default_value',
 					'css',
+				),
+			),
+			'advanced-options' => array(
+				'field_options' => array(
+					'meta'
 				),
 			),
 		);

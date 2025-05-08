@@ -399,7 +399,7 @@ class EVF_Fm_Contactform7 extends EVF_Admin_Form_Migrator {
 			'form_title'                         => sanitize_text_field( $cf7_form_name ),
 			'form_description'                   => '',
 			'form_disable_message'               => esc_html__( 'This form is disabled.', 'everest-forms' ),
-			'successful_form_submission_message' => esc_html__( 'Thanks for contacting us! We will be in touch with you shortly', 'everest-forms' ),
+			'successful_form_submission_message' => esc_html__( 'Thanks for contacting us! We will be in touch with you shortly.', 'everest-forms' ),
 			'submission_message_scroll'          => '1',
 			'redirect_to'                        => 'same',
 			'custom_page'                        => '',
