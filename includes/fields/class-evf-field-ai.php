@@ -32,12 +32,12 @@ class EVF_Field_AI extends EVF_Form_Fields {
 			'basic-options'    => array(
 				'field_options' => array(
 					'label',
-					'meta',
 					'description',
 				),
 			),
 			'advanced-options' => array(
 				'field_options' => array(
+					'meta',
 					'ai_chatbot',
 					'ai_prompt',
 					'ai_type',
