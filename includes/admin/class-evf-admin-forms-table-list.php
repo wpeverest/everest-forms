@@ -506,6 +506,7 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 				'trash'     => esc_html__( 'Move to trash', 'everest-forms' ),
 				'edit-tags' => esc_html__( 'Edit Tags', 'everest-forms' ),
 				'inactive'  => esc_html__( 'Inactive', 'everest-forms' ),
+				'active'    => esc_html__( 'Active', 'everest-forms' ),
 			);
 		}
 
@@ -589,6 +590,27 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 					'bulk_action',
 					/* translators: %d: number of forms */
 					sprintf( _n( '%d form marked as inactive.', '%d forms marked as inactive.', $count, 'everest-forms' ), $count ),
+					'updated'
+				);
+				break;
+
+			case 'active':
+				foreach ( $form_ids as $form_id ) {
+					$result = wp_update_post( array( 'ID' => $form_id, 'post_status' => 'publish' ) );
+					if ( $result ) {
+						$form_data = evf()->form->get( absint( $form_id ), array( 'content_only' => true ) );
+						$form_data['form_enabled'] = 1;
+
+						evf()->form->update( $form_id, $form_data );
+						++$count;
+					}
+				}
+
+				add_settings_error(
+					'bulk_action',
+					'bulk_action',
+					/* translators: %d: number of forms */
+					sprintf( _n( '%d form marked as active.', '%d forms marked as active.', $count, 'everest-forms' ), $count ),
 					'updated'
 				);
 				break;
