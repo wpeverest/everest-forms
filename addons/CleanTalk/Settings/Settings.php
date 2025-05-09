@@ -32,6 +32,12 @@ class Settings extends \EVF_Integration {
 		$this->icon               = plugins_url( 'addons/CleanTalk/assets/images/CleanTalk.png', EVF_PLUGIN_FILE );
 		$this->method_title       = esc_html__( 'CleanTalk', 'everest-forms-pro' );
 		$this->method_description = esc_html__( 'CleanTalk Integration with Everest Forms', 'everest-forms-pro' );
+		$connected_lists          = get_option( 'everest_forms_integrations', array() );
+		if ( ! empty( get_option( 'everest_forms_recaptcha_cleantalk_access_key' ) ) ) {
+			$this->account_status = 'connected';
+		} else {
+			$this->account_status = '';
+		}
 	}
 
 	/**

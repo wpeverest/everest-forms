@@ -381,7 +381,7 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 		$status_links = array();
 		$num_posts    = array();
 
-		$total_posts = $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->posts} WHERE post_type = 'everest_form' AND post_status = 'publish'" ); // WPCS: cache ok, db call ok.
+		$total_posts = $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->posts} WHERE post_type = 'everest_form' AND post_status IN ('publish', 'inactive' )" ); // WPCS: cache ok, db call ok.
 		$all_args    = array( 'page' => 'evf-builder' );
 		if ( empty( $class ) && empty( $_REQUEST['status'] ) ) {
 			$class = 'current';
@@ -645,6 +645,8 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 				// If it's a valid WordPress status, use it
 				$args['post_status'] = $status;
 			}
+		} else {
+			$args['post_status'] = array( 'publish', 'inactive' );
 		}
 
 		// Handle the search query.
