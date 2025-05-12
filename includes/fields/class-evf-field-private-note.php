@@ -19,7 +19,7 @@ class EVF_Field_Private_Note extends EVF_Form_Fields {
 	public function __construct() {
 		$this->name     = esc_html__( 'Private Note', 'everest-forms' );
 		$this->type     = 'private-note';
-		$this->icon     = 'evf-icon evf-icon-first-name';
+		$this->icon     = 'evf-icon evf-icon-private-note';
 		$this->order    = 91;
 		$this->group    = 'general';
 		$this->settings = array(

@@ -372,10 +372,12 @@ class EVF_AJAX {
 					evf_string_translation( $data['id'], $field['id'], $field['label'] );
 				}
 
-				$list_of_meta_keys[] = $field['meta-key'];
+				if ( ! empty( $field['meta-key'] ) ) {
+					$list_of_meta_keys[] = $field['meta-key'];
+				}
+				$unique_meta_keys   = array_unique( $list_of_meta_keys );
 
-				$unique_meta_keys = array_unique( $list_of_meta_keys );
-				if ( count( $unique_meta_keys ) < count( $list_of_meta_keys ) ) {
+				if ( ! in_array( $field['type'], array( 'html', 'title', 'captcha', 'divider', 'reset', 'recaptcha', 'hcaptcha', 'turnstile' ), true ) && count( $unique_meta_keys ) < count( $list_of_meta_keys ) ) {
 					$logger->error(
 						__( 'Duplicate Meta Key.', 'everest-forms' ),
 						array( 'source' => 'form-save' )

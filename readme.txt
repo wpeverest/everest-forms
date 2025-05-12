@@ -4,7 +4,7 @@ Tags: contact form, custom form, form builder, forms, survey
 Requires at least: 5.5
 Tested up to: 6.8.1
 Requires PHP: 7.2
-Stable tag: 3.2.2
+Stable tag: 3.2.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -340,7 +340,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 == Changelog ==
 
-= 3.2.2     	- 13-05-2025
+= 3.2.0     	- 13-05-2025
 * Feature		- Add category/taxonomy on From.
 * Feature		- CleanTalk Anti-Spam Integration.
 * Feature 		- Private Note field on Form Builder.

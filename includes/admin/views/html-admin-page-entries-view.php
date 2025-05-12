@@ -92,15 +92,17 @@ if ( false !== $entry_index ) {
 								/**
 								 * Filter the entry meta key.
 								 *
-								 * @since 3.2.2
+								 * @since 3.2.0
 								 */
 								$field_type_by_meta_key = array();
-								$exclude_fields_array   = array(  'title', 'html', 'captcha', 'image-upload', 'file-upload', 'divider', 'reset', 'recaptcha', 'hcaptcha', 'turnstile', 'private-note' );
+								$exclude_fields_array   = array( 'private-note' );
 
 								$exclude_fields_array = apply_filters( 'everest_forms_view_entry_exclude_fields', $exclude_fields_array, $entry_meta, $form_data );
 
 								foreach ( $form_data['form_fields'] as $field ) {
-									$field_type_by_meta_key[ $field['meta-key'] ] = $field['type'];
+									if ( isset( $field['meta-key'] ) ) {
+										$field_type_by_meta_key[ $field['meta-key'] ] = $field['type'];
+									}
 								}
 
 								if ( empty( $entry_meta ) ) {
@@ -113,7 +115,7 @@ if ( false !== $entry_index ) {
 										/**
 										 * Filter the entry meta key.
 										 *
-										 * @since 3.2.2
+										 * @since 3.2.0
 										 */
 										if ( in_array( $meta_key, array_keys( $field_type_by_meta_key ), true ) && in_array( $field_type_by_meta_key[ $meta_key ], $exclude_fields_array, true ) ) {
 											continue;
@@ -210,7 +212,8 @@ if ( false !== $entry_index ) {
 						</div>
 					</div>
 
-					<?php do_action( 'everest_forms_entry_details_content', $entry, $form_id ); ?>
+					<?php do_action( 'everest_forms_entry_details_content', $entry, $form_id );
+					?>
 				</div>
 				<!-- Entry Details metabox -->
 				<div id="postbox-container-1" class="postbox-container">
