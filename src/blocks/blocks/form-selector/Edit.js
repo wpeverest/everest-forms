@@ -114,18 +114,21 @@ const Edit = (props) => {
 							/>
 							{"none" !== popupType && isPro && (
 								<>
-									<TextControl
-										label={__(
-											"Popup Button Text",
-											"everest-forms",
-										)}
-										value={popupButtonText}
-										onChange={(value) => {
-											setAttributes({
-												popupButtonText: value,
-											});
-										}}
-									/>
+									{"popup" !== popupType && (
+										<TextControl
+											label={__(
+												"Popup Button Text",
+												"everest-forms",
+											)}
+											value={popupButtonText}
+											onChange={(value) => {
+												setAttributes({
+													popupButtonText: value,
+												});
+											}}
+										/>
+									)}
+
 									<SelectControl
 										label={__(
 											"Popup Size",
