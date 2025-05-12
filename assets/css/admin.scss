@@ -5812,11 +5812,16 @@ table.wp-list-table {
 
 	.column-tags {
 		.evf-form-tags {
-			border: none;
-			padding: 0px !important;
-		}
-		&:hover {
-			background-color: none !important;
+			border: 1px solid #2271b1;
+			padding: 4px 8px;
+			line-height: 16px;
+			min-height: unset;
+			vertical-align: middle;
+			margin-bottom: 6px;
+			
+			&:hover {
+				border-color: #0a4b78;
+			}
 		}
 	}
 }
@@ -6358,7 +6363,7 @@ img.ui-datepicker-trigger {
 			&.select2-search__field {
 				min-width: 10px;
 				margin-top: 0 !important;
-				margin-bottom: 4px !important;
+				margin-bottom: 4px;
 			}
 		}
 	}
@@ -7567,7 +7572,7 @@ img.ui-datepicker-trigger {
 		input.select2-search__field {
 			min-width: 10px;
 			margin-top: 0 !important;
-			margin-bottom: 4px !important;
+			margin-bottom: 4px;
 		}
 
 		li {
@@ -7760,7 +7765,7 @@ img.ui-datepicker-trigger {
 		border-top: none;
 		border-top-left-radius: 0;
 		border-top-right-radius: 0;
-		margin-top: -15px;
+		margin-top: 0;
 	}
 }
 
@@ -11290,10 +11295,10 @@ body {
 			display: flex;
 			align-items: center;
 			gap: 12px;
-			padding-right: 12px;
+			padding-right: 16px;
 
 			select {
-				height: 30px !important;
+				min-height: 38px;
 				margin: 0;
 				border-color: #bababa;
 
@@ -11310,14 +11315,16 @@ body {
 			input {
 				&[type="submit"] {
 					padding: 6px 14px;
+					min-height: 38px;
 					border-radius: 3px;
-					border: 1px solid #475bb2;
+					border: 1px solid #7545bb;
 					background: #f6f7f7;
-					color: #475bb2;
+					color: #7545bb;
 					font-size: 14px;
 					font-weight: 500;
 					line-height: 150%;
 					transition: all 0.3s ease-in-out;
+					margin-right: 0;
 
 					&:hover {
 						background: #f2f2f2;
@@ -11328,16 +11335,59 @@ body {
 			.evf-manage-tags {
 				padding: 6px 14px;
 				border-radius: 3px;
-				border: 1px solid #475bb2;
+				border: 1px solid #7545bb;
 				background: #f6f7f7;
-				color: #475bb2;
+				color: #7545bb;
 				font-size: 14px;
 				font-weight: 500;
 				line-height: 150%;
+				min-height: 38px;
 				transition: all 0.3s ease-in-out;
+				
+				&:disabled {
+					pointer-events: none;
+				}
 
 				&:hover {
 					background: #f2f2f2;
+				}
+			}
+
+			&.bulkactions {
+				.select2 {
+					&-selection {
+						min-height: 38px;
+						max-height: 38px;
+						padding-left: 8px;
+						padding-right: 12px;
+
+						&:has(.select2-selection__choice) {
+							padding-left: 0;
+						}
+
+						&__rendered {
+							min-height: 38px;
+						}
+					}
+
+					&-search {
+						margin: 0;
+						display: flex;
+						align-items: center;
+
+						&__field {
+							margin-bottom: 0;
+						}
+					}
+
+					&-container--focus,
+					&-container--open {
+						.select2-selection {
+							box-shadow: none;
+							outline: none;
+							border-color: #7545bb !important;
+						}
+					}
 				}
 			}
 		}
@@ -11348,31 +11398,68 @@ body {
 	}
 	.evf-bulk-edit-forms-tags-container {
 		display: flex;
-		flex-direction: row;
+		align-items: flex-end;
 		margin-bottom: 20px;
-		gap: 30px;
+		gap: 12px;
+
 		label {
 			font-size: 14px;
 			font-weight: 500;
 		}
+
 		.tags-selects {
 			display: flex;
 			flex-direction: column;
 			gap: 4px;
 
-			.evf-update-bulk-tags{
-				margin-top: 22px;
+			.select2 {
+				&-selection {
+					min-height: 38px;
+					max-height: 38px;
+					padding-left: 8px;
+					padding-right: 12px;
+
+					&:has(.select2-selection__choice) {
+						padding-left: 0;
+					}
+
+					&__rendered {
+						min-height: 38px;
+					}
+				}
+
+				&-search {
+					margin: 0;
+					display: flex;
+					align-items: center;
+
+					&__field {
+						margin-bottom: 0;
+					}
+				}
+
+				&-container--focus,
+				&-container--open {
+					.select2-selection {
+						box-shadow: none;
+						outline: none;
+						border-color: #7545bb !important;
+					}
+				}
 			}
 		}
+
 		.evf-update-bulk-tags {
 			padding: 6px 14px;
 			border-radius: 3px;
-			border: 1px solid #475bb2;
+			border: 1px solid #7545bb;
 			background: #f6f7f7;
-			color: #475bb2;
+			color: #7545bb;
 			font-size: 14px;
 			font-weight: 500;
-			line-height: 200%;
+			line-height: 26px;
+			height: 38px;
+			margin-top: 0;
 			transition: all 0.3s ease-in-out;
 
 			&:hover {
