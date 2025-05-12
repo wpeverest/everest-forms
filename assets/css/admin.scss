@@ -952,7 +952,7 @@ body.everest-forms-builder {
 						}
 
 						&.settings::before {
-							content: "\e002";
+							content: "\e92a";
 						}
 
 						&.recaptcha::before {
@@ -972,20 +972,20 @@ body.everest-forms-builder {
 						}
 
 						&.fields::before {
-							content: "\e00b";
+							content: "\e92c";
 						}
 
 						&.payment,
 						&.payments {
 							&::before {
-								content: "\e01f";
+								content: "\e92b";
 							}
 						}
 
 						&.integration,
 						&.integrations {
 							&::before {
-								content: "\e01e";
+								content: "\e929";
 							}
 						}
 
@@ -5411,7 +5411,7 @@ p.search-box {
 						text-align: center;
 
 						&::before {
-							content: "\e021";
+							content: "\e92e";
 						}
 					}
 
