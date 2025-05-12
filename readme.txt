@@ -340,7 +340,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 == Changelog ==
 
-= 3.2.0     	- 13-05-2025
+= 3.2.0     	- 12-05-2025
 * Feature		- Add category/taxonomy on From.
 * Feature		- CleanTalk Anti-Spam Integration.
 * Feature 		- Private Note field on Form Builder.
