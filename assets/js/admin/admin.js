@@ -789,6 +789,8 @@
 				return $result;
 			}
 		}).on('select2:select', function(e) {
+			if (!e.params) return;
+
 			if (e.params.data.isNew) {
 				var newValue = e.params.data.text;
 
