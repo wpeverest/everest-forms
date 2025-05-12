@@ -700,12 +700,19 @@
 		}
 
 		$.confirm( {
-			title: evf_admin_manage_tags.manage_tags_title,
-			theme: 'jconfirm-modern jconfirm-everest-forms',
-			icon: 'dashicons dashicons-lock',
-			backgroundDismiss: false,
-			scrollToPreviousElement: false,
-			content: tags.length > 0 ? evf_admin_manage_tags.manage_tags_desc : 'Select the tags first from the list.',
+			title: 'Delete Tags',
+			theme: 'modern',
+			type: 'red',
+			boxClass:'evf-delete-tags-popup',
+			boxWidth: '25%',
+			useBootstrap: false,
+			backgroundDismiss: true,
+			content: evf_admin_manage_tags.manage_tags_title +
+			'<br>' +
+			'<div style="color: #ff4d4f; padding-top: 20px; padding-bottom:20px">' +
+				'<i class="fa fa-exclamation-triangle" aria-hidden="true" style="margin-right: 2px;"></i>' +
+				 evf_admin_manage_tags.manage_tags_desc  +
+			'</div>',
 			buttons:{
 				confirm:{
 					text:'Delete',
