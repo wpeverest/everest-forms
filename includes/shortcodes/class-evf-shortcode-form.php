@@ -965,7 +965,9 @@ class EVF_Shortcode_Form {
 		$form = evf()->form->get( (int) $id );
 
 		if ( empty( $form ) || 'publish' !== $form->post_status ) {
-			return;
+			if ( 'inactive' !== $form->post_status ) {
+				return;
+			}
 		}
 
 		// Basic form information.
