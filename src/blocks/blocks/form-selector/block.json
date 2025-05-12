@@ -3,7 +3,7 @@
   "apiVersion": 3,
   "name": "everest-forms/form-selector",
   "version": "1.0.0",
-  "title": "Everest Form",
+  "title": "Everest Forms",
   "category": "everest-forms",
   "description": "Select and display one of your forms.",
   "keywords": [
