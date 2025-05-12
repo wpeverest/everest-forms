@@ -223,146 +223,149 @@
 	-moz-osx-font-smoothing: grayscale;
 }
 .evf-icon- {
-	&captcha::before {
-		content: '\e004';
-	}
-	&password::before {
-		content: '\e004';
-	}
-	&email::before {
-		content: '\e005';
-	}
-	&map-marker::before {
-		content: '\e007';
-	}
-	&flag::before {
-		content: '\e00a';
-	}
-	&first-name::before {
-		content: '\e00d';
-	}
-	&last-name::before {
-		content: '\e00e';
-	}
-	&text::before {
-		content: '\e00f';
-	}
-	&paragraph::before {
-		content: '\e010';
-	}
-	&dropdown::before {
-		content: '\e011';
-	}
-	&checkbox::before {
-		content: '\e012';
-	}
-	&multiple-choices::before {
-		content: '\e013';
-	}
-	&multiple-choices-radio::before {
-		content: '\e014';
-	}
-	&number::before {
-		content: '\e015';
-	}
-	&website::before {
-		content: '\e016';
-	}
-	&calendar::before {
-		content: '\e017';
-	}
-	&single-item::before {
-		content: '\e018';
-	}
-	&file-upload::before {
-		content: '\e019';
-	}
-	&hidden::before {
-		content: '\e01a';
-	}
-	&phone::before {
-		content: '\e01b';
-	}
-	&custom-html::before {
-		content: '\e01c';
-	}
-	&section-divider::before {
-		content: '\e01d';
-	}
-	&payment::before {
-		content: '\e01f';
-	}
-	&total::before {
-		content: '\e020';
-	}
-	&subtotal::before {
-		content: '\e020';
-	}
-	&img-upload::before {
-		content: '\e022';
-	}
-	&star::before {
-		content: '\e024';
-	}
-	&likert::before {
-		content: '\e025';
-	}
-	&scale-rating::before {
-		content: '\e026';
-	}
-	&signature::before {
-		content: '\e028';
-	}
-	&privacy-policy::before {
-		content: '\e02c';
-	}
-	&repeater::before {
-		content: '\e032';
-	}
-	&range-slider::before {
-		content: '\e02b';
-	}
-	&divider::before {
-		content: '\e031';
-	}
-	&wysiwyg::before {
-		content: '\e922';
-	}
-	&eye::before {
-		content: '\e903';
-	}
-	&coupon::before {
-		content: '\e90b';
-	}
-	&yes-no::before {
-		content: '\e921';
-	}
-	&reset::before {
-		content: '\e907';
-	}
-	&progress::before {
-		content: '\e908';
-	}
-	&color::before {
-		content: '\e909';
-	}
-	&ai::before {
-		content: '\e913';
-	}
-	&lookup::before {
+    &captcha::before {
+        content: '\e928';
+    }
+    &password::before {
+        content: '\e911';
+    }
+    &email::before {
         content: '\e914';
     }
-	&turnstile,
-	&recaptcha,
-	&hcaptcha {
-		&::before {
-			content: '\e917';
-		}
-	}
-	&builder::before {
-		content: '\e904';
-	}
-	&subscription-plan::before{
-		content: '\e923';
+    &map-marker::before {
+        content: '\e917';
+    }
+    &flag::before {
+        content: '\e915';
+    }
+    &first-name::before {
+        content: '\e91f';
+    }
+    &last-name::before {
+        content: '\e91c';
+    }
+    &text::before {
+        content: '\e906';
+    }
+    &paragraph::before {
+        content: '\e912';
+    }
+    &dropdown::before {
+        content: '\e921';
+    }
+    &checkbox::before {
+        content: '\e927';
+    }
+    &multiple-choices::before {
+        content: '\e919';
+    }
+    &multiple-choices-radio::before {
+        content: '\e919';
+    }
+    &number::before {
+        content: '\e918';
+    }
+    &website::before {
+        content: '\e903';
+    }
+    &calendar::before {
+        content: '\e916';
+    }
+    &single-item::before {
+        content: '\e907';
+    }
+    &file-upload::before {
+        content: '\e920';
+    }
+    &hidden::before {
+        content: '\e91e';
+    }
+    &phone::before {
+        content: '\e900';
+    }
+    &custom-html::before {
+        content: '\e923';
+    }
+    &section-divider::before {
+        content: '\e908';
+    }
+    &payment::before {
+        content: '\e924';
+    }
+    &total::before {
+        content: '\e904';
+    }
+    &subtotal::before {
+        content: '\e904';
+    }
+    &img-upload::before {
+        content: '\e91d';
+    }
+    &star::before {
+        content: '\e90c';
+    }
+    &likert::before {
+        content: '\e91b';
+    }
+    &scale-rating::before {
+        content: '\e909';
+    }
+    &signature::before {
+        content: '\e913';
+    }
+    &privacy-policy::before {
+        content: '\e910';
+    }
+    &repeater::before {
+        content: '\e90b';
+    }
+    &range-slider::before {
+        content: '\e90d';
+    }
+    &divider::before {
+        content: '\e922';
+    }
+    &wysiwyg::before {
+        content: '\e902';
+    }
+    &eye::before {
+        content: '\e903';
+    }
+    &coupon::before {
+        content: '\e925';
+    }
+    &yes-no::before {
+        content: '\e901';
+    }
+    &reset::before {
+        content: '\e90a';
+    }
+    &progress::before {
+        content: '\e90f';
+    }
+    &color::before {
+        content: '\e926';
+    }
+    &ai::before {
+        content: '\e913';
+    }
+    &lookup::before {
+        content: '\e91a';
+    }
+    &turnstile,
+    &recaptcha,
+    &hcaptcha {
+        &::before {
+            content: '\e917';
+        }
+    }
+    &builder::before {
+        content: '\e904';
+    }
+    &subscription-plan::before{
+        content: '\e905';
+    }
+	&private-note::before {
+		content: '\e92d';
 	}
 }
