@@ -199,6 +199,7 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 				home_url()
 			);
 			$duplicate_link = wp_nonce_url( admin_url( 'admin.php?page=evf-builder&action=duplicate_form&form_id=' . absint( $posts->ID ) ), 'everest-forms-duplicate-form_' . $posts->ID );
+			$form_settings_link = admin_url( 'admin.php?page=evf-builder&tab=settings&form_id=' . absint( $posts->ID ) );
 
 			if ( 'trash' !== $post_status ) {
 				$actions['view'] = '<a href="' . esc_url( $preview_link ) . '" rel="bookmark" target="_blank">' . __( 'Preview', 'everest-forms' ) . '</a>';
@@ -214,6 +215,9 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 
 			if ( 'publish' === $post_status && current_user_can( 'everest_forms_create_forms' ) ) {
 				$actions['locate'] = '<a href="#" class="evf-form-locate" data-id= "' . esc_attr( $posts->ID ) . '">' . __( 'Locate', 'everest-forms' ) . '</a>';
+			}
+			if ( 'publish' === $post_status && current_user_can( 'everest_forms_create_forms' ) ) {
+				$actions['settings'] = '<a href="' . $form_settings_link . '" target="__blank">' . __( 'Settings', 'everest-forms' ) . '</a>';
 			}
 		}
 
