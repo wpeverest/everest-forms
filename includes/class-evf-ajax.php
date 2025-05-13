@@ -2046,13 +2046,53 @@ class EVF_AJAX {
 			'everest_forms_recaptcha_cleantalk_access_key',
 		);
 
+		$is_rest_api_method = false;
 		foreach ( $form_data as $data ) {
 			if ( empty( $data['name'] ) ) {
 				continue;
 			}
 
 			if ( in_array( $data['name'], $options_list ) ) {
+				if ( 'everest_forms_clean_talk_methods' === $data['name'] && 'rest_api' === $data['value'] ) {
+					$is_rest_api_method = true;
+				}
+
 				$value = isset( $data['value'] ) ? sanitize_text_field( wp_unslash( $data['value'] ) ) : '';
+
+				if ( $is_rest_api_method && 'everest_forms_recaptcha_cleantalk_access_key' === $data['name'] ) {
+					if ( empty( $value ) ) {
+						wp_send_json_error( array( 'message' => __( 'Please enter the CleanTalk access key.', 'everest-forms' ) ) );
+					}else{
+						$clean_talk_request = array(
+							'method_name' => 'notice_paid_till',
+							'auth_key'    => $value,
+						);
+						$response = wp_remote_post(
+							'https://api.cleantalk.org/',
+							array(
+								'body'    => \http_build_query( $clean_talk_request, true ),
+								'headers' => array(
+									'Content-Type' => 'application/x-www-form-urlencoded',
+								),
+							)
+						);
+						$response = json_decode( wp_remote_retrieve_body( $response ) );
+						if ($response->data->moderate == 1 && $response->data->valid == 1 && $response->data->product_id == 1) {
+							update_option( $data['name'], $value );
+							wp_send_json_success(
+								array(
+									'message' => __( 'Settings saved successfully', 'everest-forms' ),
+								)
+							);
+						} else {
+							wp_send_json_error(
+								array(
+									'message' => __( 'Invalid CleanTalk access key.', 'everest-forms' ),
+								)
+							);
+						}
+					}
+				}
 				update_option( $data['name'], $value );
 			}
 		}
