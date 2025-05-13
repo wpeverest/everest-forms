@@ -67,14 +67,17 @@
 			};
 
 			const $button = $el;
-			const originalText = $button.val();
-			$button.prop('disabled', true).val('Saving...');
 
 			$.ajax({
 				type: 'POST',
 				url: everest_forms_clean_talk.ajax_url,
 				data: data,
+				beforeSend : function() {
+					var spinner = '<i class="evf-loading evf-loading-active"></i>';
+					$button.append( spinner );
+				},
 				success: function (response) {
+					$button.find('.evf-loading').remove();
 					const killUnloadPrompt = setInterval(function () {
 						window.onbeforeunload = null;
 						$(window).off('beforeunload');
@@ -84,19 +87,45 @@
 						clearInterval(killUnloadPrompt);
 					}, 5000);
 
+					const $messageBox = $(document).find('.evf-clean-talk-message');
+
+					$messageBox.attr('style', '');
+					const baseStyle = `
+						padding: 10px 15px;
+						border-radius: 4px;
+						margin-top: 10px;
+						font-weight: bold;
+						display: block;
+					`;
+
 					if (response.success) {
-						$button.val('Saved');
+						$messageBox
+							.attr('style', baseStyle + `
+								color: #155724;
+								background-color: #d4edda;
+								border: 1px solid #c3e6cb;
+							`)
+							.text(response.data.message || 'Form submitted successfully!');
+					} else {
+						$messageBox
+							.attr('style', baseStyle + `
+								color: #721c24;
+								background-color: #f8d7da;
+								border: 1px solid #f5c6cb;
+							`)
+							.text(response.data.message || 'An error occurred. Please try again.');
 					}
+
+					setTimeout(function () {
+						$messageBox.fadeOut(300, function () {
+							$messageBox.attr('style', '').text('').show();
+						});
+					}, 5000);
 				},
 				error: function () {
 					alert('Error saving settings.');
 					$button.val(originalText);
-				},
-				complete: function () {
-					setTimeout(function () {
-						$button.prop('disabled', false).val(originalText);
-					}, 2000);
-				},
+				}
 			});
 		},
 
