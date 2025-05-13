@@ -13,6 +13,7 @@ use EverestForms\Addons\OxygenBuilder\OxygenBuilder;
 use EverestForms\Addons\StyleCustomizer\StyleCustomizer;
 use EverestForms\Addons\DiviBuilder\DiviBuilder;
 use EverestForms\Addons\BeaverBuilder\BeaverBuilder;
+use EverestForms\Addons\CleanTalk\CleanTalk;
 use EverestForms\Addons\WPBakeryBuilder\WPBakeryBuilder;
 use EverestForms\Traits\Singleton;
 
@@ -32,8 +33,29 @@ class Addons {
 	 */
 	public function __construct() {
 		add_action( 'init', array( $this, 'addons_init' ) );
+		add_action( 'init', array( $this, 'not_addons_init' ) );
+		add_filter( 'everest_forms_integrations', array( $this, 'add_integration' ) );
 	}
 
+	/**
+	 * Register integration.
+	 *
+	 * @param array $integrations List of integrations.
+	 *
+	 * @since 3.2.2
+	 */
+	public function add_integration( $integrations ) {
+
+		$no_module_classes = array(
+			'clean-talk' => 'EverestForms\Addons\CleanTalk\Settings\Settings',
+		);
+
+		foreach ( $no_module_classes as $key => $class_name ) {
+			$integrations[] = $class_name;
+		}
+
+		return $integrations;
+	}
 	/**
 	 * Get addon list.
 	 *
@@ -57,6 +79,23 @@ class Addons {
 				'style-customizer' => StyleCustomizer::class,
 			)
 		);
+	}
+
+	/**
+	 * Addons but not showcase in dashboard.
+	 *
+	 * @since 3.2.0
+	 */
+	public function not_addons_init() {
+		$addons = array(
+			'clean-talk' => CleanTalk::class,
+		);
+
+		foreach ( $addons as $key => $class_name ) {
+			if ( class_exists( $class_name ) ) {
+				$class_name::init();
+			}
+		}
 	}
 
 	/**

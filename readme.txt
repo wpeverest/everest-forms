@@ -2,35 +2,37 @@
 Contributors:everestforms,WPEverest
 Tags: contact form, custom form, form builder, forms, survey
 Requires at least: 5.5
-Tested up to: 6.7.1
+Tested up to: 6.8.1
 Requires PHP: 7.2
-Stable tag: 3.1.0
+Stable tag: 3.2.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-Best Free WordPress Form Plugin to Create Contact Forms, Surveys, Quizzes, Payment Forms, Multi-step Forms & More Using Drag & Drop Builder.
+Best WordPress Form Plugin to Create Contact Forms, Surveys, Quizzes, Payment Forms, & Custom Forms Using Drag & Drop Form Builder.
 
 == Description ==
 
-**Best WordPress Contact Form Builder Plugin Available for Free**
+**Best WordPress Contact Form Builder Plugin for Free**
 
-👉 [Try Everest Forms Now](https://demo.tastewp.com/everest-forms) The Best Free Contact Form Plugin for WordPress! (Live Demo)
+👉 [Give a Try](https://demo.tastewp.com/everest-forms) (Clicking this link creates a demo where you can test Everest Forms.)
 
-Everest Forms is the best free Contact Form Plugin for WordPress, allowing you to create custom contact forms, survey forms, quiz forms, booking forms, and more using a powerful drag and drop form builder.
+Everest Forms is the best beginner-friendly WordPress form builder plugin for creating custom contact forms, application forms, newsletter subscription form, quiz forms, surveys, and polls—with payment integrations, CRM, email marketing, and more.
 
-It also supports multi-step forms, file upload forms, and payment integrations like PayPal, Stripe, and Authorize.Net in its form builder.
+It features an intuitive drag-and-drop interface, allowing you to effortlessly create unlimited forms or choose from a wide selection of pre-made templates.
 
-[All features](https://everestforms.net/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) | [Documentation](https://docs.everestforms.net/) | [Join Our Community](http://demo.wpeverest.com/everest-forms/)
+[All features](https://everestforms.net/?utm_source=wporg&utm_medium=link&utm_campaign=evf-readme) | [Documentation](https://docs.everestforms.net/) | [Join Our Community](http://demo.wpeverest.com/everest-forms/)
 
 [youtube https://youtu.be/AvK0KU2ycqc ]
 
+## Get the Best Form Building Experience for FREE with Everest Forms
 
-## The Best Drag and Drop Form Builder for WordPress
-Create online forms in WordPress with ease using Everest Forms' intuitive drag-and-drop form builder—no coding required.
-
-Whether it’s a contact form, multi-step form, quiz form, survey form, newsletter form, or just a strong form builder, just select the fields you need, drag them into place, and customize to fit your needs.
+Everest Forms stands out as one of the best WordPress form builder plugins by offering powerful features for free—features you won’t find in many other free plugins.
 
 [youtube https://youtu.be/35CznJES5Uo ]
+
+### Drag and Drop Form Builder
+
+Create online forms in WordPress with ease using Everest Forms' intuitive drag-and-drop builder—no coding required. Just select the fields you need, drag them into place, and customize to fit your needs.
 
 Free fields include:
 
@@ -85,77 +87,79 @@ Pro fields include:
 * Authorize.Net
 * Square
 
-## Surveys, Polls, & Quiz Builder
+### Surveys, Polls, & Quiz Builder
 
-Everest Forms is a feature-rich Survey Maker, Poll Maker, and Quiz Builder plugin for WordPress. With versatile form fields like ratings, Likert scales, multiple-choice, yes/no options, and open-ended questions, you can create engaging surveys, polls, and quizzes effortlessly.
+Everest Forms also serves as a powerful Survey Maker and Poll Maker plugin for WordPress websites with versatile fields like ratings, yes/no options, Likert scales, and more available for free.
 
-With the Everest Forms Surveys, Polls, and Quiz Add-on (Pro), take user interaction to the next level:
-
- ✅ Build dynamic surveys to collect real-time feedback
- ✅ Design interactive polls with instant results
- ✅ Create quizzes with customizable questions, scoring, and conditional logic within the quiz
+With the pro version, you can enhance user interactions with the Everest Forms Surveys, Polls, and Quiz add-on. In addition to dynamic surveys and interactive polls, the pro version also allows users to create quiz forms with fully customizable questions, responses, and scoring options.
 
 With in-depth reporting and analytics, you can track responses in real time, uncover valuable insights, and make informed decisions.
 
-## Ready to Use Pre-Built Form Templates
+### Ready to Use Pre-Built Form Templates
 
 Start quickly with a ready-to-use WordPress contact form template, or explore other options like job application forms, survey forms, leave request forms, church donation forms, registration forms, hotel booking forms, CV application forms, hospital admission forms, order forms, callback forms, employee information forms, and more.
 
 Plus, with the premium style customizer addon, you get access to unlimited styling options for your WordPress forms.
 
-## Style Customizer(Add-on)
+### Style Customizer(Add-on)
 
-Personalize your forms with unlimited styling options. Adjust colors, fonts, borders, and backgrounds to match your WordPress website design—no coding required!
+Easily customize your form's appearance with just a few clicks—adjust colors, fonts, borders, and backgrounds to match your website's look and feel. The simple and intuitive editor lets you see changes in real time.
 
-## Form Entries Management
+### Form Entries Management
 
-All form submissions are securely stored in the WordPress dashboard. Effortlessly view, edit (Pro), delete, and restore entries in one place.
+All submitted form entries are stored in the Entries section, which you can easily access from your WordPress dashboard.
 
-##  PDF Form Submission
+Manage your form entries effortlessly, allowing you to view, edit(pro), delete, or restore them with just a few clicks.
 
-Generate PDFs from form entries for easy email notifications, invoices, contracts, and record-keeping. Customize layouts, add logos, and choose which fields to include. Perfect for job applications, orders, or general inquiries.
+###  PDF Form Submission
 
-## More Everest Forms Features for Free
+Generate PDFs from form entries for email notifications or to create documents like invoices, contracts, and agreements. It makes sharing and archiving submissions super easy.
 
-➡️ **100% Mobile Responsive:** Create unlimited forms that look great on all devices.
-➡️ **GDPR Friendly:** Provides tools to help comply with privacy regulations.
-➡️ **AJAX Form Submission:** Provide a seamless experience to your users by submitting forms without reloading the page.
-➡️ **Entry Storage & Management:** Stores form entries in a dedicated table, allowing direct viewing of submissions in the WordPress dashboard. Users can disable entry storage and receive submissions via email only if preferred.
-➡️ **Custom Email Notifications (unlimited):** Send multiple custom email notifications to different recipients, including confirmation emails to users, detailed notifications to admins, or selective emails to specific teams (e.g., sales team).
-➡️ **Custom Submission Confirmations:** Show custom success messages or redirect users to a specific page or custom URL on successful form submission.
-➡️ **Spam Protection & Security:** Includes Honeypot, Akismet integration, submission delay settings, and CAPTCHA options like reCAPTCHA, hCAPTCHA, and Cloudflare Turnstile.
-➡️ **Flexible Embedding Options:** Embed forms using the Gutenberg block, shortcodes, or the "Embed" button for quick insertion into pages.
-➡️ **Form & Entry Migration:** Easily import form and entries from other plugins like Contact Form 7 and WPForms for migration.
+Customize the PDF layout, add a header and logo, choose which fields to include, and more.
 
-## More Everest Forms Features for Premium Users
+Whether you’re receiving job applications or general inquiries, it’s perfect for convenient sharing with your team.
 
-↪️ **[Premium] [Smart Conditional Logic:](https://everestforms.net/features/file-uploads/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)** Choose to show/hide specific form fields based on your users’ interaction with previous fields.
+### More Everest Forms Features for Free
 
-↪️ **[Premium] Collect Digital Signatures:** Collect e-signatures from customers through your forms.
+* **100% Mobile Responsive:** Create unlimited forms that look great on all devices.
+* **GDPR Friendly:** Provides tools to help comply with privacy regulations.
+* **AJAX Form Submission:** Provide a seamless experience to your users by submitting forms without reloading the page.
+* **Entry Storage & Management:** Stores form entries in a dedicated table, allowing direct viewing of submissions in the WordPress dashboard. Users can disable entry storage and receive submissions via email only if preferred.
+* **Custom Email Notifications (unlimited):** Send multiple custom email notifications to different recipients, including confirmation emails to users, detailed notifications to admins, or selective emails to specific teams (e.g., sales team).
+* **Custom Submission Confirmations:** Show custom success messages or redirect users to a specific page or custom URL on successful form submission.
+* **Spam Protection & Security:** Includes Honeypot, Akismet integration, submission delay settings, and CAPTCHA options like reCAPTCHA, hCAPTCHA, and Cloudflare Turnstile.
+* **Flexible Embedding Options:** Embed forms using the Gutenberg block, shortcodes, or the "Embed" button for quick insertion into pages.
+* **Form & Entry Migration:** Easily import form and entries from other plugins like Contact Form 7 and WPForms for migration.
 
-↪️ **[Premium] [Surveys, Polls, & Quiz](https://everestforms.net/features/surveys-polls-and-quiz/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)** Create post submission forms to allow your users to submit their blog posts directly from the front end.
+### More Everest Forms Features for Premium Users
 
-↪️ **[Premium] [Front End Post Submissions:](https://everestforms.net/features/post-submissions/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)** Create post submission forms to allow your users to submit their blog posts directly from the front end.
+* **[Premium] [Smart Conditional Logic:](https://everestforms.net/features/file-uploads/?utm_source=wporg&utm_medium=link&utm_campaign=evf-readme)** Choose to show/hide specific form fields based on your users’ interaction with previous fields.
 
-↪️ **[Premium] [Frontend Listing:](https://everestforms.net/features/frontend-listing/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)** List form entries submitted by your users to any post or page. Visitors can view and check the user entries of any particular form on the front end.
+* **[Premium] Collect Digital Signatures:** Collect e-signatures from customers through your forms.
 
-↪️ **[Premium]  Collect Payments:** Integrate [PayPal](https://everestforms.net/features/paypal-standard/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro),[Stripe](https://everestforms.net/features/stripe/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro),[Square](https://everestforms.net/features/square-payment/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro),[Mollie](https://everestforms.net/features/mollie-payment/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro),[Authorize.Net](https://everestforms.net/features/authorize-net/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) and [RazorPay](https://everestforms.net/features/razorpay/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) into WordPress forms for payments.
+* **[Premium] [Surveys, Polls, & Quiz](https://everestforms.net/features/surveys-polls-and-quiz/?utm_source=wporg&utm_medium=link&utm_campaign=evf-readme)** Create post submission forms to allow your users to submit their blog posts directly from the front end.
 
-↪️ **[Premium] [Form Restriction:](https://everestforms.net/features/form-restriction/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)**  Limit the form submission entries, schedule forms, restrict logged-out users, enable password protection, and more.
+* **[Premium] [Front End Post Submissions:](https://everestforms.net/features/post-submissions/?utm_source=wporg&utm_medium=link&utm_campaign=evf-readme)** Create post submission forms to allow your users to submit their blog posts directly from the front end.
 
-↪️ **[Premium] [Geolocation:](https://everestforms.net/features/geolocation/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)** Track the geolocation data of your users submitting the form, such as IP address, country, city, postal /Zip code, etc.
+* **[Premium] [Frontend Listing:](https://everestforms.net/features/frontend-listing/?utm_source=wporg&utm_medium=link&utm_campaign=evf-readme)** List form entries submitted by your users to any post or page. Visitors can view and check the user entries of any particular form on the front end.
 
-↪️ **[Premium] [Save and Continue:](https://everestforms.net/features/save-and-continue/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)** Lower form abandonment rates by enabling users to save their partially filled information and continue to complete and submit it later.
+* **[Premium]  Collect Payments:** Integrate [PayPal](https://everestforms.net/features/paypal-standard/?utm_source=wporg&utm_medium=link&utm_campaign=evf-readme),[Stripe](https://everestforms.net/features/stripe/?utm_source=wporg&utm_medium=link&utm_campaign=evf-readme),[Square](https://everestforms.net/features/square-payment/?utm_source=wporg&utm_medium=link&utm_campaign=evf-readme),[Mollie](https://everestforms.net/features/mollie-payment/?utm_source=wporg&utm_medium=link&utm_campaign=evf-readme),[Authorize.Net](https://everestforms.net/features/authorize-net/?utm_source=wporg&utm_medium=link&utm_campaign=evf-readme) and [RazorPay](https://everestforms.net/features/razorpay/?utm_source=wporg&utm_medium=link&utm_campaign=evf-readme) into WordPress forms for payments.
 
-↪️ **[Premium] [Multi Part Forms:](https://everestforms.net/features/multi-part-forms/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)** Create interactive multi-step forms with customizable progress bars, making it easier for users and boosting completion rates.
+* **[Premium] [Form Restriction:](https://everestforms.net/features/form-restriction/?utm_source=wporg&utm_medium=link&utm_campaign=evf-readme)**  Limit the form submission entries, schedule forms, restrict logged-out users, enable password protection, and more.
 
-↪️ **[Premium] [Repeater Fields:](https://everestforms.net/features/repeater-fields/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)** Allow users to repeatedly add a set of form fields within the form for short, concise, and user-friendly forms.
+* **[Premium] [Geolocation:](https://everestforms.net/features/geolocation/?utm_source=wporg&utm_medium=link&utm_campaign=evf-readme)** Track the geolocation data of your users submitting the form, such as IP address, country, city, postal /Zip code, etc.
 
-↪️ **[Premium] [Calculations:](https://everestforms.net/features/calculations/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)** Use Everest Forms' as a calculator builder. It can handle simple additions, subtractions, or multiplication to complicated geometric operations.
+* **[Premium] [Save and Continue:](https://everestforms.net/features/save-and-continue/?utm_source=wporg&utm_medium=link&utm_campaign=evf-readme)** Lower form abandonment rates by enabling users to save their partially filled information and continue to complete and submit it later.
 
-↪️ **[Premium] [Coupons:](https://everestforms.net/features/coupons/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)**  Create fixed and percentage-based coupons to offer discounts to users through your payment forms.
+* **[Premium] [Multi Part Forms:](https://everestforms.net/features/multi-part-forms/?utm_source=wporg&utm_medium=link&utm_campaign=evf-readme)** Create interactive multi-step forms with customizable progress bars, making it easier for users and boosting completion rates.
 
-↪️ **[Premium] [Conversational Forms:](https://everestforms.net/features/conversational-forms/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)** Increase conversions by transforming forms into engaging, conversation-style experiences.
+* **[Premium] [Repeater Fields:](https://everestforms.net/features/repeater-fields/?utm_source=wporg&utm_medium=link&utm_campaign=evf-readme)** Allow users to repeatedly add a set of form fields within the form for short, concise, and user-friendly forms.
+
+* **[Premium] [Calculations:](https://everestforms.net/features/calculations/?utm_source=wporg&utm_medium=link&utm_campaign=evf-readme)** Use Everest Forms' as a calculator builder. It can handle simple additions, subtractions, or multiplication to complicated geometric operations.
+
+* **[Premium] [Coupons:](https://everestforms.net/features/coupons/?utm_source=wporg&utm_medium=link&utm_campaign=evf-readme)**  Create fixed and percentage-based coupons to offer discounts to users through your payment forms.
+
+* **[Premium] [Conversational Forms:](https://everestforms.net/features/conversational-forms/?utm_source=wporg&utm_medium=link&utm_campaign=evf-readme)** Increase conversions by transforming forms into engaging, conversation-style experiences.
 
 There’s even more to this amazing WordPress contact form plugin! Everest Forms is a fully functional solution that works as a form builder, quiz maker, survey tool, payment form plugin, and more for WordPress websites.
 
@@ -166,60 +170,42 @@ Discover all the features we haven’t listed here - [Explore them now!](https:/
 Here are the integrations you can access with Everest Forms form builder plugin.
 
 * Trello
-* [iContact](https://everestforms.net/icontact/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)
+* [iContact](https://everestforms.net/icontact/?utm_source=wporg&utm_medium=link&utm_campaign=evf-readme)
 * WooCommerce
-* [Moosend](https://everestforms.net/features/moosend/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)
-* [MailPoet](https://everestforms.net/features/mailpoet/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)
-* [OnePageCRM](https://everestforms.net/features/onepagecrm/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)
+* [Moosend](https://everestforms.net/features/moosend/?utm_source=wporg&utm_medium=link&utm_campaign=evf-readme)
+* [MailPoet](https://everestforms.net/features/mailpoet/?utm_source=wporg&utm_medium=link&utm_campaign=evf-readme)
+* [OnePageCRM](https://everestforms.net/features/onepagecrm/?utm_source=wporg&utm_medium=link&utm_campaign=evf-readme)
 * Telegram
-* [Brevo](https://everestforms.net/features/sendinblue/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro) (formerly Sendinblue)
-* [Drip](https://everestforms.net/features/drip/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)
-* [ConvertKit](https://everestforms.net/features/convertkit/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)
-* [GetResponse](https://everestforms.net/features/getresponse/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)
+* [Brevo](https://everestforms.net/features/sendinblue/?utm_source=wporg&utm_medium=link&utm_campaign=evf-readme) (formerly Sendinblue)
+* [Drip](https://everestforms.net/features/drip/?utm_source=wporg&utm_medium=link&utm_campaign=evf-readme)
+* [ConvertKit](https://everestforms.net/features/convertkit/?utm_source=wporg&utm_medium=link&utm_campaign=evf-readme)
+* [GetResponse](https://everestforms.net/features/getresponse/?utm_source=wporg&utm_medium=link&utm_campaign=evf-readme)
 * Salesflare
-* [Constant Contact](https://everestforms.net/features/constant-contact/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)
-* [Pipedrive CRM](https://everestforms.net/features/pipedrive/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)
+* [Constant Contact](https://everestforms.net/features/constant-contact/?utm_source=wporg&utm_medium=link&utm_campaign=evf-readme)
+* [Pipedrive CRM](https://everestforms.net/features/pipedrive/?utm_source=wporg&utm_medium=link&utm_campaign=evf-readme)
 * Square
 * Airtable
-* [MailerLite](https://everestforms.net/features/mailerlite/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)
-* [MailChimp](https://everestforms.net/features/mailchimp/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)
+* [MailerLite](https://everestforms.net/features/mailerlite/?utm_source=wporg&utm_medium=link&utm_campaign=evf-readme)
+* [MailChimp](https://everestforms.net/features/mailchimp/?utm_source=wporg&utm_medium=link&utm_campaign=evf-readme)
 * Mollie Pay
 * Aweber
 * Slack
-* [ActiveCampaign](https://everestforms.net/features/activecampaign/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)
-* [Campaign Monitor](https://everestforms.net/features/campaign-monitor/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)
+* [ActiveCampaign](https://everestforms.net/features/activecampaign/?utm_source=wporg&utm_medium=link&utm_campaign=evf-readme)
+* [Campaign Monitor](https://everestforms.net/features/campaign-monitor/?utm_source=wporg&utm_medium=link&utm_campaign=evf-readme)
 * CleverReach
 * Twilio
 * amoCRM
 * Google Sheets
 * PayPal
 * Stripe
-* [HubSpot](https://everestforms.net/features/hubspot/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)
-* [Salesforce](https://everestforms.net/features/salesforce/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)
+* [HubSpot](https://everestforms.net/features/hubspot/?utm_source=wporg&utm_medium=link&utm_campaign=evf-readme)
+* [Salesforce](https://everestforms.net/features/salesforce/?utm_source=wporg&utm_medium=link&utm_campaign=evf-readme)
 * Authorize.Net
 * Razor Pay
-* [Zoho CRM](https://everestforms.net/features/zoho-crm/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)
+* [Zoho CRM](https://everestforms.net/features/zoho-crm/?utm_source=wporg&utm_medium=link&utm_campaign=evf-readme)
 * Zapier
 
 Plus, with tools like Zapier and webhooks, you can integrate Everest Forms with countless other applications.
-
-## What Do People Say About Everest Forms?
-
-[Baxtrip](https://wordpress.org/support/topic/the-best-contact-form-for-wordpress-3/) – The Best Contact Form for WordPress
-
-I tried so many contact forms for WordPress, but all of them lack one (or more) important features. Finally, I came across Everest Forms, and it solved all my problems.
-
-[Winwickmum](https://wordpress.org/support/topic/easy-to-use-contact-form-4/) - Easy to Use Contact Form
-
-Easy to use, looks good on the website, and the support was great when I needed help.
-
-[Somaweera](https://wordpress.org/support/topic/exceptional-plugin-for-effortless-wesbite-visitor-information-management/) - Exceptional Plugin for Effortless Website Visitor Information Management
-
-The user-friendly interface ensures that visitors can submit their information with ease, contributing to a positive user experience. The PDF attachment delivered to my email is well-organized, making it a breeze to review and manage the collected data.
-
-[Dev Kabir](https://wordpress.org/support/topic/must-have-tool-for-any-website-owner/) - Must-Have Tool for Any Website Owner
-
-I’m extremely satisfied with this form builder plugin, and I highly recommend it to anyone looking for an easy and efficient way to create beautiful and functional forms for their WordPress site.
 
 ## Create Different Types of WordPress Forms Without Any Coding Skills
 
@@ -244,6 +230,24 @@ I’m extremely satisfied with this form builder plugin, and I highly recommend 
 For booking forms, Everest Forms lets you set dates, days, and time slots, with email notifications and Google Calendar integration.
 
 👉 [Explore all pre-built Everest Forms demos](https://everestforms.net/form-templates/).
+
+## What Do People Say About Everest Forms?
+
+[Baxtrip](https://wordpress.org/support/topic/the-best-contact-form-for-wordpress-3/) – The Best Contact Form for WordPress
+
+I tried so many contact forms for WordPress, but all of them lack one (or more) important features. Finally, I came across Everest Forms, and it solved all my problems.
+
+[Winwickmum](https://wordpress.org/support/topic/easy-to-use-contact-form-4/) - Easy to Use Contact Form
+
+Easy to use, looks good on the website, and the support was great when I needed help.
+
+[Somaweera](https://wordpress.org/support/topic/exceptional-plugin-for-effortless-wesbite-visitor-information-management/) - Exceptional Plugin for Effortless Website Visitor Information Management
+
+The user-friendly interface ensures that visitors can submit their information with ease, contributing to a positive user experience. The PDF attachment delivered to my email is well-organized, making it a breeze to review and manage the collected data.
+
+[Dev Kabir](https://wordpress.org/support/topic/must-have-tool-for-any-website-owner/) - Must-Have Tool for Any Website Owner
+
+I’m extremely satisfied with this form builder plugin, and I highly recommend it to anyone looking for an easy and efficient way to create beautiful and functional forms for their WordPress site.
 
 ## Getting Started:
 * [Watch our video tutorials](https://www.youtube.com/@EverestForms)
@@ -311,7 +315,7 @@ Yes, Everest Forms is designed to work with any themes that have been coded foll
 
 = Do you have a quick get started video for Everest Form? =
 
-Yes, we do. Check out this [Getting Started Videos](https://docs.everestforms.net/docs-category/video-tutorials/?utm_source=wporg&utm_medium=link&utm_campaign=evf-upgrade-to-pro)
+Yes, we do. Check out this [Getting Started Videos](https://docs.everestforms.net/docs-category/video-tutorials/?utm_source=wporg&utm_medium=link&utm_campaign=evf-readme)
 
 = What types of forms can I build with Everest Forms? =
 
@@ -333,8 +337,41 @@ Everest Forms comes with a set of robust spam protection features. You can easil
 
 Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/everest-forms/) :)
 
+= How can I report security bugs? =
+
+You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/f788d7f0-ea8a-4fd5-bcae-81a5d09a476c)
 
 == Changelog ==
+
+= 3.2.0     	- 12-05-2025
+* Feature		- Add category/taxonomy on From.
+* Feature		- CleanTalk Anti-Spam Integration.
+* Feature 		- Private Note field on Form Builder.
+* Enhance 		- Option to edit meta key.
+* Enhance 		- Popup form option and customization.
+* Tweak 		- User Registration & Membership logo on other products.
+* Fix 			- Preserve filename in file upload.
+* Fix 			- Show premium sidebar enable disable issue.
+* Fix 			- Form creation button generating multiple form.
+* Fix 			- Entry id smart tag not working in email subject.
+* Dev 			- Hook to add custom smart tag.
+
+= 3.1.2     	- 08-04-2025
+* Fix 			- Unserialize issue with object injection.
+* Fix 			- Array to string conversion while viewing entries.
+* Fix 			- Square payment not working with redirect settings.
+* Fix 			- Rendering conditional logic while searching field.
+* Fix 			- Auto scroll submission message when disabled in ajax.
+* Fix 			- Restriction on form preview on the basis of capabilities.
+
+= 3.1.1     	- 01-04-2025
+* Enhance 		- Form preview design revamp.
+* Fix 			- Double rendering issue on smart phone field.
+* Fix 			- Display file upload validation message in frontend.
+* Dev 			- Conditional logic based on date range.
+* Dev 			- Hook to add custom date format options.
+* Dev 			- Overall feedback issue on ajax submission.
+* Dev 			- Display entry id in the entries list view.
 
 = 3.1.0     	- 05-03-2025
 * Enhance 		- Activation in module flow.

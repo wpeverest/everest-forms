@@ -110,6 +110,7 @@ const PluginStatus: React.FC<PluginStatusProps> = ({
   };
   const handleButtonClick = async () => {
 	if (installComplete) {
+	  setInstallInProgress(true);
 	  onActivateAndContinue();
 	} else {
 	  const anyNotInstalled = requiredPlugins.some(

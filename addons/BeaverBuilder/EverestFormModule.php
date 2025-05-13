@@ -12,9 +12,9 @@ class EverestFormModule extends \FLBuilderModule {
 	public function __construct() {
 		parent::__construct(
 			array(
-				'name'            => __( 'Everest Forms', 'everest-forms-pro' ),
-				'description'     => __( 'Renders the everest form', 'everest-forms-pro' ),
-				'category'        => __( 'Everest Forms', 'everest-forms-pro' ),
+				'name'            => __( 'Everest Forms', 'everest-forms' ),
+				'description'     => __( 'Renders the everest form', 'everest-forms' ),
+				'category'        => __( 'Everest Forms', 'everest-forms' ),
 				'dir'             => __DIR__,
 				'url'             => __DIR__,
 				'editor_export'   => true,

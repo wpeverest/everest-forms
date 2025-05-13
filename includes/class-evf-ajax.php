@@ -99,40 +99,45 @@ class EVF_AJAX {
 	 */
 	public static function add_ajax_events() {
 		$ajax_events = array(
-			'save_form'                      => false,
-			'create_form'                    => false,
-			'get_next_id'                    => false,
-			'install_extension'              => false,
-			'integration_connect'            => false,
-			'new_email_add'                  => false,
-			'integration_disconnect'         => false,
-			'rated'                          => false,
-			'review_dismiss'                 => false,
-			'survey_dismiss'                 => false,
-			'allow_usage_dismiss'            => false,
-			'php_notice_dismiss'             => false,
-			'email_failed_notice_dismiss'    => false,
-			'enabled_form'                   => false,
-			'import_form_action'             => false,
-			'template_licence_check'         => false,
-			'template_activate_addon'        => false,
-			'ajax_form_submission'           => true,
-			'send_test_email'                => false,
-			'locate_form_action'             => false,
-			'slot_booking'                   => true,
-			'active_addons'                  => false,
-			'get_local_font_url'             => false,
-			'form_migrator_forms_list'       => false,
-			'form_migrator'                  => false,
-			'fm_dismiss_notice'              => false,
-			'email_duplicate'                => false,
-			'form_entry_migrator'            => false,
-			'embed_form'                     => false,
-			'goto_edit_page'                 => false,
-			'send_routine_report_test_email' => false,
-			'map_csv'                        => false,
-			'import_entries'                 => false,
-			'generate_restapi_key'           => false,
+			'save_form'                       => false,
+			'create_form'                     => false,
+			'get_next_id'                     => false,
+			'install_extension'               => false,
+			'integration_connect'             => false,
+			'new_email_add'                   => false,
+			'integration_disconnect'          => false,
+			'rated'                           => false,
+			'review_dismiss'                  => false,
+			'survey_dismiss'                  => false,
+			'allow_usage_dismiss'             => false,
+			'php_notice_dismiss'              => false,
+			'email_failed_notice_dismiss'     => false,
+			'enabled_form'                    => false,
+			'import_form_action'              => false,
+			'template_licence_check'          => false,
+			'template_activate_addon'         => false,
+			'ajax_form_submission'            => true,
+			'send_test_email'                 => false,
+			'locate_form_action'              => false,
+			'slot_booking'                    => true,
+			'active_addons'                   => false,
+			'get_local_font_url'              => false,
+			'form_migrator_forms_list'        => false,
+			'form_migrator'                   => false,
+			'fm_dismiss_notice'               => false,
+			'email_duplicate'                 => false,
+			'form_entry_migrator'             => false,
+			'embed_form'                      => false,
+			'goto_edit_page'                  => false,
+			'send_routine_report_test_email'  => false,
+			'map_csv'                         => false,
+			'import_entries'                  => false,
+			'generate_restapi_key'            => false,
+			'install_and_activate_smart_smtp' => false,
+			'form_preview_save'               => false,
+			'delete_form_tags'                => false,
+			'update_tags_in_bulk'             => false,
+			'save_clean_talk_settings'        => true,
 		);
 
 		foreach ( $ajax_events as $ajax_event => $nopriv ) {
@@ -309,12 +314,39 @@ class EVF_AJAX {
 			__( 'Check for empty meta key.', 'everest-forms' ),
 			array( 'source' => 'form-save' )
 		);
-		$empty_meta_data = array();
+		$empty_meta_data   = array();
+		$list_of_meta_keys = array();
 
 		// Calculation backward compatibility.
 		$old_calculation_format = 0;
 		$new_calculation_format = 0;
 		$not_supported_operator = 0;
+
+		$check_recurring_period = isset( $data['payments'] ) && isset( $data['payments']['stripe'] ) && isset( $data['payments']['stripe']['interval_count'] )
+										? ( 0 === $data['payments']['stripe']['interval_count'] || empty(
+											$data['payments']['stripe']['interval_count']
+											? true
+											: false
+										) )
+											: false;
+
+		$is_recurring_subscription_enabled = isset( $data['payments'] ) && isset( $data['payments']['stripe'] ) && isset( $data['payments']['stripe']['recurring'] ) && 1 == $data['payments']['stripe']['recurring']
+											? true
+											: false;
+
+		if ( $is_recurring_subscription_enabled && $check_recurring_period ) {
+			$logger->error(
+				__( 'Recurring period required.', 'everest-forms' ),
+				array( 'source' => 'form-save' )
+			);
+			wp_send_json_error(
+				array(
+					'errorTitle'   => esc_html__( 'Recurring period required.', 'everest-forms' ),
+					/* translators: %s: empty meta data */
+					'errorMessage' => esc_html__( 'Recurring Period is required. Please enter a valid value before saving the form.', 'everest-forms' ),
+				)
+			);
+		}
 
 		if ( ! empty( $data['form_fields'] ) ) {
 			foreach ( $data['form_fields'] as $field_key => $field ) {
@@ -338,6 +370,25 @@ class EVF_AJAX {
 
 					// Register string for translation.
 					evf_string_translation( $data['id'], $field['id'], $field['label'] );
+				}
+
+				if ( ! empty( $field['meta-key'] ) ) {
+					$list_of_meta_keys[] = $field['meta-key'];
+				}
+				$unique_meta_keys   = array_unique( $list_of_meta_keys );
+
+				if ( ! in_array( $field['type'], array( 'html', 'title', 'captcha', 'divider', 'reset', 'recaptcha', 'hcaptcha', 'turnstile' ), true ) && count( $unique_meta_keys ) < count( $list_of_meta_keys ) ) {
+					$logger->error(
+						__( 'Duplicate Meta Key.', 'everest-forms' ),
+						array( 'source' => 'form-save' )
+					);
+					wp_send_json_error(
+						array(
+							'errorTitle'   => esc_html__( 'Duplicate Meta Key', 'everest-forms' ),
+							/* translators: %s: empty meta data */
+							'errorMessage' => sprintf( esc_html__( '%s field has duplicate meta_key.', 'everest-forms' ), '<strong>' . $field['label'] . '</strong>' ),
+						)
+					);
 				}
 
 				if ( empty( $field['meta-key'] ) && ! in_array( $field['type'], array( 'html', 'title', 'captcha', 'divider', 'reset', 'recaptcha', 'hcaptcha', 'turnstile' ), true ) ) {
@@ -410,6 +461,37 @@ class EVF_AJAX {
 					)
 				);
 			}
+		}
+		/**
+		 * Creating the form tags taxonomy.
+		 *
+		 * @since 3.2.0
+		 */
+		if ( ! empty( $data['settings']['form_tags'] ) ) {
+			$term_ids = array();
+
+			foreach ( $data['settings']['form_tags'] as $tag_name ) {
+				if ( is_numeric( $tag_name ) ) {
+					$term = get_term( absint( $tag_name ), EVF_Post_Types::TAGS_TAXONOMY );
+					if ( $term && ! is_wp_error( $term ) ) {
+						$term_ids[] = $term->term_id;
+						continue;
+					}
+				}
+
+				$term = term_exists( $tag_name, EVF_Post_Types::TAGS_TAXONOMY );
+				if ( $term === null ) {
+					$term = wp_insert_term( sanitize_text_field( $tag_name ), EVF_Post_Types::TAGS_TAXONOMY );
+				}
+				if ( ! is_wp_error( $term ) ) {
+					$term_ids[] = is_array( $term ) ? (int) $term['term_id'] : $term;
+				}
+			}
+			if ( ! empty( $term_ids ) ) {
+				wp_set_post_terms( absint( $data['id'] ), $term_ids, EVF_Post_Types::TAGS_TAXONOMY, false );
+			}
+		} else {
+			wp_set_post_terms( absint( $data['id'] ), array(), EVF_Post_Types::TAGS_TAXONOMY, false );
 		}
 
 		// Fix for sorting field ordering.
@@ -918,6 +1000,25 @@ class EVF_AJAX {
 			wp_die( -1 );
 		}
 
+		/**
+		 * Update the form status in post table.
+		 *
+		 * @since 3.2.0
+		 */
+		$new_status = $enabled ? 'publish' : 'inactive';
+
+		$result = wp_update_post(
+			array(
+				'ID'          => $form_id,
+				'post_status' => $new_status,
+			),
+			true
+		);
+
+		if ( is_wp_error( $result ) ) {
+			wp_send_json_error( $result->get_error_message(), 500 );
+		}
+
 		$form_data = evf()->form->get( absint( $form_id ), array( 'content_only' => true ) );
 
 		$form_data['form_enabled'] = $enabled;
@@ -1015,7 +1116,8 @@ class EVF_AJAX {
 			$message  = '<div class="everest-forms-message-text">';
 			$message .= '<h3 style="text-align:center; color: #ffc107;">' . esc_html( 'PS. This is just the sample data' ) . '</h3>';
 			$message .= '<p><strong>' . esc_html__( 'Hi there!', 'everest-forms' ) . ' 👋</strong></p>';
-			$message .= '<p>' . esc_html__( 'Let\'s see how your forms performed ' . $evf_summary_duration . '.', 'everest-forms' ) . '</p>';
+			/* translators: %s: Routine email summary duration */
+			$message .= '<p>' . sprintf( esc_html__( 'Let\'s see how your forms performed %s.', 'everest-forms' ), esc_html( $evf_summary_duration ) ) . '</p>';
 			$message .= '<br/>';
 			$message .= '<p><strong>' . esc_html__( 'Forms Stats', 'everest-forms' ) . '</strong></p>';
 			$message .= '<table align="left" border="0" cellpadding="0" cellspacing="0" width="100%" style="solid #dddddd; display:block;min-width: 100%;border-collapse: collapse;width:100%; display:table; padding-bottom:2rem" class="evf_entries_summary_table">';
@@ -1099,7 +1201,7 @@ class EVF_AJAX {
 					)
 				);
 			}
-			$booked_slot = maybe_unserialize( get_option( 'evf_booked_slot', '' ) );
+			$booked_slot = evf_maybe_unserialize( get_option( 'evf_booked_slot', '' ) );
 			$is_booked   = false;
 			if ( ! empty( $booked_slot ) && array_key_exists( $form_id, $booked_slot ) ) {
 				foreach ( $datetime_arr as $arr ) {
@@ -1705,7 +1807,7 @@ class EVF_AJAX {
 						} else {
 							self::$background_process->push_to_queue( $row_data );
 						}
-						$row++;
+						++$row;
 					}
 				}
 				fclose( $csv_file );
@@ -1745,6 +1847,221 @@ class EVF_AJAX {
 				)
 			);
 		}
+	}
+
+	/**
+	 * Installs and activates the Smart SMTP plugin.
+	 *
+	 * @since 3.0.9
+	 *
+	 * @return void Outputs a JSON response.
+	 */
+	public static function install_and_activate_smart_smtp() {
+		try {
+			check_ajax_referer( 'everest-forms-smart-smtp-installation-nonce', 'security' );
+			if ( ! current_user_can( 'manage_everest_forms' ) ) {
+				wp_send_json_error( array( 'message' => 'You do not have permission to install plugins.' ) );
+			}
+
+			if ( is_plugin_active( 'smart-smtp/smart-smtp.php' ) ) {
+				wp_send_json_success( array( 'message' => 'SmartSMTP plugin is already activated!' ) );
+			}
+
+			$installed_plugins = get_plugins();
+
+			if ( in_array( 'smart-smtp/smart-smtp.php', $installed_plugins ) ) {
+				$activate_result = activate_plugin( 'smart-smtp/smart-smtp.php' );
+				if ( is_wp_error( $activate_result ) ) {
+					$error_message = $activate_result->get_error_message();
+					wp_send_json_error(
+						array(
+							/* translators: %s: Error message explaining the activation failure */
+							'message' => esc_html__( 'Sorry, we are unable to activate SmartSMTP because of %s', 'everest-forms' ),
+							esc_html( $error_message ),
+						)
+					);
+				}
+			} else {
+				require_once ABSPATH . 'wp-admin/includes/plugin-install.php';
+				require_once ABSPATH . 'wp-admin/includes/file.php';
+				require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
+
+				$plugin_info = plugins_api( 'plugin_information', array( 'slug' => 'smart-smtp' ) );
+				if ( is_wp_error( $plugin_info ) ) {
+					wp_send_json_error( array( 'message' => esc_html__( 'Sorry, your internet connection was interrupted', 'everest-forms' ) ) );
+				}
+
+				$upgrader       = new Plugin_Upgrader( new WP_Ajax_Upgrader_Skin() );
+				$install_result = $upgrader->install( $plugin_info->download_link );
+				if ( is_wp_error( $install_result ) ) {
+					$installation_error = $install_result->get_error_message();
+					wp_send_json_error(
+						array(
+							/* translators: %s: Error message explaining the installation failure */
+							'message' => esc_html__( 'Plugin installation failed due to %s', 'everest-forms' ),
+							esc_html( $installation_error ),
+						)
+					);
+				}
+
+				$activate_result = activate_plugin( 'smart-smtp/smart-smtp.php' );
+			}
+
+			if ( is_wp_error( $activate_result ) ) {
+				wp_send_json_error( array( 'message' => 'Plugin activation failed: ' . $activate_result->get_error_message() ) );
+			}
+
+			wp_send_json_success(
+				array(
+					'message'         => 'SmartSMTP plugin installed and activated successfully!',
+					'redirection_url' => admin_url( 'admin.php?page=smart-smtp' ),
+				)
+			);
+		} catch ( Exception $e ) {
+			wp_send_json_error( array( 'message' => $e->getMessage() ) );
+		}
+	}
+
+	/**
+	 * Get form settings theme styles
+	 */
+	public static function form_preview_save() {
+		check_ajax_referer( 'evf_form_preview_nonce', 'security' );
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( array( 'message' => __( 'You do not have permission.', 'everest-forms' ) ) );
+			wp_die( -1 );
+		}
+		$form_id = isset( $_POST['id'] ) ? sanitize_text_field( $_POST['id'] ) : '';
+		$theme   = isset( $_POST['theme'] ) ? sanitize_text_field( $_POST['theme'] ) : '';
+
+		if ( empty( $form_id ) || empty( $theme ) ) {
+			wp_send_json_error( array( 'message' => __( 'Insufficient information', 'everest-forms' ) ) );
+		}
+
+		$default_theme = ( 'default' === $theme ) ? 'default' : 'theme';
+		update_post_meta( $form_id, 'everest_forms_enable_theme_style', $default_theme );
+
+		wp_send_json_success( array( 'message' => __( 'Saved', 'everest-forms' ) ) );
+	}
+	/**
+	 * Delete the tags.
+	 *
+	 * @since 3.2.0
+	 */
+	public static function delete_form_tags() {
+		check_ajax_referer( 'ajax_manage_tags_nonce', 'security' );
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( array( 'message' => __( 'You do not have permission.', 'everest-forms' ) ) );
+			wp_die( -1 );
+		}
+
+		$tags = isset( $_POST['tags'] ) ? array_map( 'absint', $_POST['tags'] ) : array();
+
+		if ( empty( $tags ) ) {
+			wp_send_json_error( array( 'message' => __( 'Missing tags.', 'everest-forms' ) ) );
+		}
+
+		foreach ( $tags as $tag ) {
+			wp_delete_term( $tag, EVF_Post_Types::TAGS_TAXONOMY );
+		}
+
+		wp_send_json_success( array( 'message' => __( 'Tags are deleted successfully.', 'everest-forms' ) ) );
+
+	}
+
+	/**
+	 * Update tags in bulk.
+	 *
+	 * @since 3.2.0
+	 */
+	public static function update_tags_in_bulk() {
+
+		check_ajax_referer( 'ajax_manage_tags_nonce', 'security' );
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( array( 'message' => __( 'You do not have permission.', 'everest-forms' ) ) );
+			wp_die( -1 );
+		}
+
+		$tags  = isset( $_POST['tags'] ) ? $_POST['tags'] : array();
+		$forms = isset( $_POST['forms'] ) ? array_map( 'absint', $_POST['forms'] ) : array();
+
+		if ( empty( $forms ) ) {
+			wp_send_json_error( array( 'message' => __( 'Please select atleast on form to updat the tags.', 'everest-forms' ) ) );
+		}
+
+		$term_ids = array();
+
+		foreach ( $tags as $tag_name ) {
+			if ( is_numeric( $tag_name ) ) {
+				$term = get_term( absint( $tag_name ), EVF_Post_Types::TAGS_TAXONOMY );
+				if ( $term && ! is_wp_error( $term ) ) {
+					$term_ids[] = $term->term_id;
+					continue;
+				}
+			}
+
+			$term = term_exists( $tag_name, EVF_Post_Types::TAGS_TAXONOMY );
+			if ( $term === null ) {
+				$term = wp_insert_term( sanitize_text_field( $tag_name ), EVF_Post_Types::TAGS_TAXONOMY );
+			}
+			if ( ! is_wp_error( $term ) ) {
+				$term_ids[] = is_array( $term ) ? (int) $term['term_id'] : $term;
+			}
+		}
+
+		foreach ( $forms as $id ) {
+			wp_set_post_terms( $id, $term_ids, EVF_Post_Types::TAGS_TAXONOMY, false );
+		}
+
+		wp_send_json_success( array( 'message' => __( 'Tags are updated successfully.', 'everest-forms' ) ) );
+	}
+
+	/**
+	 * Save the clean talk settings.
+	 */
+	public static function save_clean_talk_settings() {
+		check_ajax_referer( 'everest_forms_clean_talk_nonce', 'security' );
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_send_json_error( array( 'message' => __( 'You do not have permission.', 'everest-forms' ) ) );
+			wp_die( -1 );
+		}
+
+		if ( isset( $_POST['action'] ) && 'everest_forms_save_clean_talk_settings' != $_POST['action'] ) {
+			wp_send_json_error( array( 'message' => __( 'Action doesn\'t match.', 'everest-forms' ) ) );
+			wp_die( -1 );
+		}
+
+		$form_data = isset( $_POST['form_data'] ) ? $_POST['form_data'] : '';
+
+		if ( empty( $form_data ) ) {
+			wp_send_json_error( array( 'message' => __( 'Insufficient information', 'everest-forms' ) ) );
+		}
+
+		$options_list = array(
+			'everest_forms_clean_talk_methods',
+			'everest_forms_recaptcha_cleantalk_access_key',
+		);
+
+		foreach ( $form_data as $data ) {
+			if ( empty( $data['name'] ) ) {
+				continue;
+			}
+
+			if ( in_array( $data['name'], $options_list ) ) {
+				$value = isset( $data['value'] ) ? sanitize_text_field( wp_unslash( $data['value'] ) ) : '';
+				update_option( $data['name'], $value );
+			}
+		}
+
+		wp_send_json_success(
+			array(
+				'message' => __( 'Settings saved successfully', 'everest-forms' ),
+			)
+		);
 	}
 }
 

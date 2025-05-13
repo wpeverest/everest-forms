@@ -163,7 +163,8 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 		$name         = sanitize_file_name( wp_unslash( $_FILES['file']['name'] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated
 		$extension    = strtolower( pathinfo( $name, PATHINFO_EXTENSION ) );
 		$errors       = $this->ajax_validate( $error, $extension, $path, $name );
-		$name_of_file = isset( $this->field_data['custom_file_name'] ) ? sanitize_file_name( $this->field_data['custom_file_name'] ) . '_' . uniqid( '', true ) . '.' . $extension : sanitize_file_name( wp_unslash( $_FILES['file']['name'] ) );  // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated
+		$name_of_file = isset( $this->field_data['custom_file_name'] ) && ! empty( $this->field_data['custom_file_name'] ) ? sanitize_file_name( $this->field_data['custom_file_name'] ) . '_' . uniqid( '', true ) . '.' . $extension : sanitize_file_name( wp_unslash( $_FILES['file']['name'] ) );  // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated
+
 
 		if ( count( $errors ) ) {
 			wp_send_json_error( implode( ',', $errors ), 400 );
@@ -236,6 +237,35 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 			if ( is_string( $upload_error_message ) ) {
 				/* translators: %s - error text. */
 				$errors[] = sprintf( esc_html__( 'File upload error. %s', 'everest-forms' ), $upload_error_message );
+			}
+		}
+
+		if ( 'pdf' === $ext ) {
+
+			$content  = file_get_contents( $path );
+			$patterns = array(
+				'/\/JS\b/',
+				'/\/JavaScript\b/',
+				'/eval\(/i',
+				'/app\.alert/i',
+				'/console\.log\b/i',
+				'/document\.write\b/i',
+				'/\/SubmitForm\b/i',
+				'/\/Launch\b/i',
+				'/\/RichMedia\b/i',
+				'/\/EmbeddedFile\b/i',
+				'/\/FileAttachment\b/i',
+				'/\/GoTo\b/i',
+			);
+
+			// Initialize errors array
+			$errors = array();
+
+			// Check for malicious patterns
+			foreach ( $patterns as $pattern ) {
+				if ( preg_match( $pattern, $content ) ) {
+					$errors[] = esc_html__( ' Malicious file detected', 'everest-forms' );
+				}
 			}
 		}
 
@@ -867,10 +897,14 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 			array_walk(
 				$field['value_raw'],
 				function ( &$val, $key, $img ) {
-					$img['data'][] = ! empty( $val['value'] ) ? sprintf(
-						'<a href="%s" rel="noopener noreferrer" target="_blank">%s</a>',
-						esc_url( $val['value'] ),
-						esc_html( $val['name'] )
+					$img['data'][] = ! empty( $val['value'] ) ? apply_filters(
+						'everest_forms_field_exporter_image',
+						sprintf(
+							'<a href="%s" rel="noopener noreferrer" target="_blank">%s</a>',
+							esc_url( $val['value'] ),
+							esc_html( $val['name'] )
+						),
+						$val
 					) : '';
 				},
 				array(
@@ -961,7 +995,7 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 					?>
 				</span>
 
-				<?php if ( (int) $max_file_number > 1 ) : ?>
+				<?php if ( (int) $max_file_number >= 1 ) : ?>
 					<span class="everest-forms-upload-hint">
 						<?php
 						/* translators: %d - max number of files. */
@@ -1072,6 +1106,18 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 		foreach ( $files as $file ) {
 			$file = $this->generate_file_info( $file );
 
+			$wp_filetype = wp_check_filetype_and_ext( $file['tmp_path'], $file['name'] );
+
+			$ext             = empty( $wp_filetype['ext'] ) ? '' : $wp_filetype['ext'];
+			$type            = empty( $wp_filetype['type'] ) ? '' : $wp_filetype['type'];
+			$proper_filename = empty( $wp_filetype['proper_filename'] ) ? '' : $wp_filetype['proper_filename'];
+
+			if ( $proper_filename || ! $ext || ! $type ) {
+				evf()->task->errors[ $form_data['id'] ][ $field_id ] = esc_html__( 'File type is not allowed.', 'everest-forms' );
+				update_option( 'evf_validation_error', 'yes' );
+				wp_die( 'File type is not allowed' );
+			}
+
 			// Allow third-party integrations.
 			if ( has_filter( 'everest_forms_integration_uploads' ) ) {
 				$file = apply_filters( 'everest_forms_integration_uploads', $file, $this->form_data );
@@ -1087,7 +1133,7 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 				) {
 
 					$this->create_dir( dirname( $file['path'] ) );
-					@rename( $file['tmp_path'], $file['path'] ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+					@rename( $file['tmp_path'] , $file['path'] ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 					$this->set_file_fs_permissions( $file['path'] );
 			}
 
@@ -1154,8 +1200,7 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 	 */
 	protected function generate_file_info( $file ) {
 		$dir = $this->get_form_files_dir();
-
-		$file['tmp_path'] = trailingslashit( $this->get_tmp_dir() ) . $file['file'];
+		$file['tmp_path'] = trailingslashit( $this->get_tmp_dir() ) . sanitize_file_name($file['file']);
 		$file['type']     = 'application/octet-stream';
 		if ( is_file( $file['tmp_path'] ) ) {
 			$filetype     = wp_check_filetype( $file['tmp_path'] );
@@ -1375,7 +1420,6 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 				unlink( $csv_path );
 			}
 		}
-
 	}
 
 	/**
@@ -1528,13 +1572,13 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 		$errors = apply_filters(
 			'evf_upload_validation_errors',
 			array(
-				UPLOAD_ERR_INI_SIZE   => esc_html__( 'The uploaded file exceeds the upload_max_filesize directive in php.ini.', 'everest-form' ),
-				UPLOAD_ERR_FORM_SIZE  => esc_html__( 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form.', 'everest-form' ),
-				UPLOAD_ERR_PARTIAL    => esc_html__( 'The uploaded file was only partially uploaded.', 'everest-form' ),
-				UPLOAD_ERR_NO_FILE    => esc_html__( 'No file was uploaded.', 'everest-form' ),
-				UPLOAD_ERR_NO_TMP_DIR => esc_html__( 'Missing a temporary folder.', 'everest-form' ),
-				UPLOAD_ERR_CANT_WRITE => esc_html__( 'Failed to write file to disk.', 'everest-form' ),
-				UPLOAD_ERR_EXTENSION  => esc_html__( 'File upload stopped by extension.', 'everest-form' ),
+				UPLOAD_ERR_INI_SIZE   => esc_html__( 'The uploaded file exceeds the upload_max_filesize directive in php.ini.', 'everest-forms' ),
+				UPLOAD_ERR_FORM_SIZE  => esc_html__( 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form.', 'everest-forms' ),
+				UPLOAD_ERR_PARTIAL    => esc_html__( 'The uploaded file was only partially uploaded.', 'everest-forms' ),
+				UPLOAD_ERR_NO_FILE    => esc_html__( 'No file was uploaded.', 'everest-forms' ),
+				UPLOAD_ERR_NO_TMP_DIR => esc_html__( 'Missing a temporary folder.', 'everest-forms' ),
+				UPLOAD_ERR_CANT_WRITE => esc_html__( 'Failed to write file to disk.', 'everest-forms' ),
+				UPLOAD_ERR_EXTENSION  => esc_html__( 'File upload stopped by extension.', 'everest-forms' ),
 			)
 		);
 

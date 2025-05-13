@@ -482,12 +482,12 @@ function evf_style_customizer_wrapper_controls( $controls, $customize ) {
 			),
 			'control' => array(
 				'type'        => 'select',
-				'label'       => esc_html__( 'Border Type', 'everest-forms-style-customizer' ),
-				'description' => esc_html__( 'Set the border type for file upload fields.', 'everest-forms-style-customizer' ),
+				'label'       => esc_html__( 'Border Type', 'everest-forms' ),
+				'description' => esc_html__( 'Set the border type for file upload fields.', 'everest-forms' ),
 				'section'     => 'everest_forms_file_upload_styles',
 				'choices'     => array(
-					'dashed' => esc_html__( 'Dashed', 'everest-forms-style-customizer' ),
-					'dotted' => esc_html__( 'Dotted', 'everest-forms-style-customizer' ),
+					'dashed' => esc_html__( 'Dashed', 'everest-forms' ),
+					'dotted' => esc_html__( 'Dotted', 'everest-forms' ),
 				),
 			),
 		),
@@ -501,8 +501,8 @@ function evf_style_customizer_wrapper_controls( $controls, $customize ) {
 				),
 			),
 			'control' => array(
-				'label'       => esc_html__( 'Border Width', 'everest-forms-style-customizer' ),
-				'description' => esc_html__( 'Set the border width for file upload fields.', 'everest-forms-style-customizer' ),
+				'label'       => esc_html__( 'Border Width', 'everest-forms' ),
+				'description' => esc_html__( 'Set the border width for file upload fields.', 'everest-forms' ),
 				'section'     => 'everest_forms_file_upload_styles',
 				'type'        => 'EVF_Customize_Dimension_Control',
 				'input_attrs' => array(
@@ -525,8 +525,8 @@ function evf_style_customizer_wrapper_controls( $controls, $customize ) {
 				),
 			),
 			'control' => array(
-				'label'       => esc_html__( 'Border Radius', 'everest-forms-style-customizer' ),
-				'description' => esc_html__( 'Set the border radius for file upload fields.', 'everest-forms-style-customizer' ),
+				'label'       => esc_html__( 'Border Radius', 'everest-forms' ),
+				'description' => esc_html__( 'Set the border radius for file upload fields.', 'everest-forms' ),
 				'section'     => 'everest_forms_file_upload_styles',
 				'type'        => 'EVF_Customize_Dimension_Control',
 				'input_attrs' => array(
@@ -536,8 +536,8 @@ function evf_style_customizer_wrapper_controls( $controls, $customize ) {
 					'anchor'       => true,
 					'input_type'   => 'number',
 					'unit_choices' => array(
-						'px' => esc_attr__( 'PX', 'everest-forms-style-customizer' ),
-						'%'  => esc_attr__( '%', 'everest-forms-style-customizer' ),
+						'px' => esc_attr__( 'PX', 'everest-forms' ),
+						'%'  => esc_attr__( '%', 'everest-forms' ),
 					),
 				),
 			),
@@ -1318,8 +1318,8 @@ function evf_style_customizer_wrapper_controls( $controls, $customize ) {
 				'sanitize_callback' => 'sanitize_text_field',
 			),
 			'control' => array(
-				'label'       => esc_html__( 'Font Size', 'everest-forms-style-customizer' ),
-				'description' => esc_html__( 'This is a section title font size.', 'everest-forms-style-customizer' ),
+				'label'       => esc_html__( 'Font Size', 'everest-forms' ),
+				'description' => esc_html__( 'This is a section title font size.', 'everest-forms' ),
 				'section'     => 'everest_forms_general_typography',
 				'type'        => 'EVF_Customize_Slider_Control',
 				'input_attrs' => array(
@@ -1334,8 +1334,8 @@ function evf_style_customizer_wrapper_controls( $controls, $customize ) {
 				'default' => '#575757',
 			),
 			'control' => array(
-				'label'       => esc_html__( 'Font Color', 'everest-forms-style-customizer' ),
-				'description' => esc_html__( 'This is a section title font color.', 'everest-forms-style-customizer' ),
+				'label'       => esc_html__( 'Font Color', 'everest-forms' ),
+				'description' => esc_html__( 'This is a section title font color.', 'everest-forms' ),
 				'section'     => 'everest_forms_general_typography',
 				'type'        => 'EVF_Customize_Color_Control',
 				'custom_args' => array(
@@ -1353,25 +1353,25 @@ function evf_style_customizer_wrapper_controls( $controls, $customize ) {
 				),
 			),
 			'control' => array(
-				'label'       => esc_html__( 'Font Style', 'everest-forms-style-customizer' ),
-				'description' => esc_html__( 'This is a form section title font style.', 'everest-forms-style-customizer' ),
+				'label'       => esc_html__( 'Font Style', 'everest-forms' ),
+				'description' => esc_html__( 'This is a form section title font style.', 'everest-forms' ),
 				'section'     => 'everest_forms_general_typography',
 				'type'        => 'EVF_Customize_Image_Checkbox_Control',
 				'choices'     => array(
 					'bold'      => array(
-						'name'  => esc_html__( 'Bold', 'everest-forms-style-customizer' ),
+						'name'  => esc_html__( 'Bold', 'everest-forms' ),
 						'image' => plugins_url( 'addons/StyleCustomizer/assets/images/bold.svg', EVF_PLUGIN_FILE ),
 					),
 					'italic'    => array(
-						'name'  => esc_html__( 'Italic', 'everest-forms-style-customizer' ),
+						'name'  => esc_html__( 'Italic', 'everest-forms' ),
 						'image' => plugins_url( 'addons/StyleCustomizer/assets/images/italic.svg', EVF_PLUGIN_FILE ),
 					),
 					'underline' => array(
-						'name'  => esc_html__( 'Underline', 'everest-forms-style-customizer' ),
+						'name'  => esc_html__( 'Underline', 'everest-forms' ),
 						'image' => plugins_url( 'addons/StyleCustomizer/assets/images/underline.svg', EVF_PLUGIN_FILE ),
 					),
 					'uppercase' => array(
-						'name'  => esc_html__( 'Uppercase', 'everest-forms-style-customizer' ),
+						'name'  => esc_html__( 'Uppercase', 'everest-forms' ),
 						'image' => plugins_url( 'addons/StyleCustomizer/assets/images/uppercase.svg', EVF_PLUGIN_FILE ),
 					),
 				),
@@ -1383,21 +1383,21 @@ function evf_style_customizer_wrapper_controls( $controls, $customize ) {
 				'sanitize_callback' => 'sanitize_text_field',
 			),
 			'control' => array(
-				'label'       => esc_html__( 'Text Alignment', 'everest-forms-style-customizer' ),
-				'description' => esc_html__( 'This is a section title text alignment.', 'everest-forms-style-customizer' ),
+				'label'       => esc_html__( 'Text Alignment', 'everest-forms' ),
+				'description' => esc_html__( 'This is a section title text alignment.', 'everest-forms' ),
 				'section'     => 'everest_forms_general_typography',
 				'type'        => 'EVF_Customize_Image_Radio_Control',
 				'choices'     => array(
 					'left'   => array(
-						'name'  => esc_html__( 'Left', 'everest-forms-style-customizer' ),
+						'name'  => esc_html__( 'Left', 'everest-forms' ),
 						'image' => plugins_url( 'addons/StyleCustomizer/assets/images/align-left.svg', EVF_PLUGIN_FILE ),
 					),
 					'center' => array(
-						'name'  => esc_html__( 'Center', 'everest-forms-style-customizer' ),
+						'name'  => esc_html__( 'Center', 'everest-forms' ),
 						'image' => plugins_url( 'addons/StyleCustomizer/assets/images/align-center.svg', EVF_PLUGIN_FILE ),
 					),
 					'right'  => array(
-						'name'  => esc_html__( 'Right', 'everest-forms-style-customizer' ),
+						'name'  => esc_html__( 'Right', 'everest-forms' ),
 						'image' => plugins_url( 'addons/StyleCustomizer/assets/images/align-right.svg', EVF_PLUGIN_FILE ),
 					),
 				),
@@ -1409,8 +1409,8 @@ function evf_style_customizer_wrapper_controls( $controls, $customize ) {
 				'sanitize_callback' => 'sanitize_text_field',
 			),
 			'control' => array(
-				'label'       => esc_html__( 'Line Height', 'everest-forms-style-customizer' ),
-				'description' => esc_html__( 'This is a section title line height.', 'everest-forms-style-customizer' ),
+				'label'       => esc_html__( 'Line Height', 'everest-forms' ),
+				'description' => esc_html__( 'This is a section title line height.', 'everest-forms' ),
 				'section'     => 'everest_forms_general_typography',
 				'type'        => 'EVF_Customize_Slider_Control',
 				'input_attrs' => array(
@@ -1432,8 +1432,8 @@ function evf_style_customizer_wrapper_controls( $controls, $customize ) {
 				),
 			),
 			'control' => array(
-				'label'       => esc_html__( 'Form Margin', 'everest-forms-style-customizer' ),
-				'description' => esc_html__( 'This is a section title margin.', 'everest-forms-style-customizer' ),
+				'label'       => esc_html__( 'Form Margin', 'everest-forms' ),
+				'description' => esc_html__( 'This is a section title margin.', 'everest-forms' ),
 				'section'     => 'everest_forms_general_typography',
 				'type'        => 'EVF_Customize_Dimension_Control',
 				'custom_args' => array(
@@ -1455,8 +1455,8 @@ function evf_style_customizer_wrapper_controls( $controls, $customize ) {
 				),
 			),
 			'control' => array(
-				'label'       => esc_html__( 'Form Padding', 'everest-forms-style-customizer' ),
-				'description' => esc_html__( 'This is a section title padding.', 'everest-forms-style-customizer' ),
+				'label'       => esc_html__( 'Form Padding', 'everest-forms' ),
+				'description' => esc_html__( 'This is a section title padding.', 'everest-forms' ),
 				'section'     => 'everest_forms_general_typography',
 				'type'        => 'EVF_Customize_Dimension_Control',
 				'input_attrs' => array(
@@ -1813,8 +1813,8 @@ function evf_style_customizer_wrapper_controls( $controls, $customize ) {
 				'sanitize_callback' => 'sanitize_text_field',
 			),
 			'control' => array(
-				'label'       => esc_html__( 'Font Size', 'everest-forms-style-customizer' ),
-				'description' => esc_html__( 'This is a form button font size (px).', 'everest-forms-style-customizer' ),
+				'label'       => esc_html__( 'Font Size', 'everest-forms' ),
+				'description' => esc_html__( 'This is a form button font size (px).', 'everest-forms' ),
 				'section'     => 'everest_forms_general_typography',
 				'type'        => 'EVF_Customize_Slider_Control',
 				'input_attrs' => array(

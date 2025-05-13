@@ -49,7 +49,6 @@ class EVF_Field_Likert extends EVF_Form_Fields {
 			'basic-options'    => array(
 				'field_options' => array(
 					'label',
-					'meta',
 					'input_type',
 					'drop_down_choices',
 					'likert_rows',
@@ -62,6 +61,7 @@ class EVF_Field_Likert extends EVF_Form_Fields {
 			),
 			'advanced-options' => array(
 				'field_options' => array(
+					'meta',
 					'label_hide',
 					'css',
 				),
