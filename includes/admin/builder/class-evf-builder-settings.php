@@ -594,7 +594,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				echo '<div class="evf-content-section-title">';
 				esc_html_e( 'Confirmation', 'everest-forms' );
 				echo '</div>';
-				echo '<div class="everest-forms-border-container">';
+				echo '<div class="evf-confirmation-wrap everest-forms-border-container">';
 				echo '<div class="evf-content-section-title">';
 				esc_html_e( 'Confirmation Settings', 'everest-forms' );
 				echo '</div>';
@@ -662,6 +662,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					esc_html__( ' Append Query String', 'everest-forms' ),
 					array(
 						'class'   => 'custom-page-setting external-page-setting',
+						'input_class' => 'append-query-string-input',
 						'tooltip' => esc_html__( 'Enable to add the query string in the url.', 'everest-forms' ),
 						'default' => '0',
 					)
@@ -674,9 +675,8 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					$this->form_data,
 					esc_html__( 'Query String', 'everest-forms' ),
 					array(
-						'class'     => 'custom-page-setting external-page-setting',
 						'default'   => isset( $settings['query_string'] ) ? $settings['query_string'] : '',
-						'class'     => isset( $settings['enable_redirect_query_string'] ) && '1' === $settings['enable_redirect_query_string'] ? '' : 'everest-forms-hidden',
+						'class'     => 'custom-page-setting external-page-setting query-string-wrap',
 						'smarttags' => array(
 							'type'        => 'all',
 							'form_fields' => 'all',
@@ -738,6 +738,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					esc_html__( 'Show entry preview after form submission', 'everest-forms' ),
 					array(
 						'class'   => 'same-page-setting',
+						'input_class'=> 'everest-preview-confirmation',
 						'tooltip' => esc_html__( 'Show entry preview after form submission', 'everest-forms' ),
 					)
 				);
@@ -749,7 +750,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					$this->form_data,
 					esc_html__( 'Preview type', 'everest-forms' ),
 					array(
-						'class'   => 'same-page-setting',
+						'class'   => 'same-page-setting preview-confirm-select-wrapper',
 						'default' => 'basic',
 						'tooltip' => esc_html__( 'Choose preview style type.', 'everest-forms' ),
 						'options' => array(

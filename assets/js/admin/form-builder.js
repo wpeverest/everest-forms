@@ -2496,18 +2496,24 @@
             });
         },
 		bindPreviewConfirmation: function () {
-			if ($( '#everest-forms-panel-field-settings-preview_confirmation' ).prop( 'checked' )) {
-				$( '#everest-forms-panel-field-settings-preview_confirmation_select-wrap' ).show();
-			}else{
-				$( '#everest-forms-panel-field-settings-preview_confirmation_select-wrap' ).hide();
-			}
-			$( '#everest-forms-panel-field-settings-preview_confirmation' ).on( 'change', function() {
-				  if ( $( this ).prop( 'checked' ) ) {
-					$( '#everest-forms-panel-field-settings-preview_confirmation_select-wrap' ).show();
-				} else {
-					$( '#everest-forms-panel-field-settings-preview_confirmation_select-wrap' ).hide();
-				}
-			})
+				$('.everest-preview-confirmation').each(function() {
+					const $checkbox = $(this);
+					const $target = $checkbox.closest('.everest-forms-panel-field-toggle').next('.preview-confirm-select-wrapper');
+
+					if ($checkbox.is(":checked")) {
+						$target.show();
+					} else {
+						$target.hide();
+					}
+
+					$checkbox.on('change', function() {
+						if ($(this).is(":checked")) {
+							$target.show();
+						} else {
+							$target.hide();
+						}
+					});
+			});
 		},
 		bindSaveOptionWithKeyEvent:function() {
 			$('body').on("keydown", function (e) {
@@ -3623,70 +3629,88 @@ jQuery(function () {
 	});
 
 	// Query String Toogle.
-	jQuery( '#everest-forms-panel-field-settings-enable_redirect_query_string-wrap input' ).on( 'change', function () {
-		var $this = jQuery( this );
-		if ( ! $this.is( ':checked' ) ) {
-			jQuery('#everest-forms-panel-field-settings-query_string-wrap').hide();
-		} else {
-			jQuery('#everest-forms-panel-field-settings-query_string-wrap').show();
-		}
-	});
+	// jQuery( '#everest-forms-panel-field-settings-enable_redirect_query_string-wrap input' ).on( 'change', function () {
+	// 	var $this = jQuery( this );
+	// 	if ( ! $this.is( ':checked' ) ) {
+	// 		jQuery('#everest-forms-panel-field-settings-query_string-wrap').hide();
+	// 	} else {
+	// 		jQuery('#everest-forms-panel-field-settings-query_string-wrap').show();
+	// 	}
+	// });
 	function pageType(el, redirectTo) {
-		var outerWrapper = jQuery(el).closest('.everest-forms-border-container');
+		var outerWrapper = jQuery(el).closest('.evf-confirmation-wrap');
 
+		// Hide all settings initially
 		outerWrapper.find('.same-page-setting, .external-page-setting, .custom-page-setting').hide();
 
-		switch(redirectTo) {
+		// Handle form state type changes
+		jQuery(function($) {
+			var el = outerWrapper.find('.form-state-type:checked');
+			var initialValue = el.val();
+			toggleMessageLocations(el, initialValue);
+
+			outerWrapper.off('change', '.form-state-type').on('change', '.form-state-type', function() {
+				toggleMessageLocations($(this), $(this).val());
+			});
+		});
+
+		// Handle query string toggle
+		var queryStringWrap = outerWrapper.find('.query-string-wrap');
+		var appendInput = outerWrapper.find('.append-query-string-input');
+		queryStringWrap.toggle(appendInput.is(':checked'));
+
+		outerWrapper.on('change', '.append-query-string-input', function() {
+			queryStringWrap.toggle($(this).is(':checked'));
+		});
+
+		// If the element isn't checked, return early
+		if (!el.is(':checked')) {
+			return;
+		}
+
+		// Show the appropriate settings based on redirect type
+		switch (redirectTo) {
 			case 'same':
 				outerWrapper.find('.same-page-setting').show();
-				jQuery(function($) {
-					var el =  outerWrapper.find('.form-state-type:checked');
-
-					var initialValue =el.val();
-					toggleMessageLocations(el, initialValue);
-
-					outerWrapper.off('change', '.form-state-type').on('change', '.form-state-type', function() {
-						toggleMessageLocations($(this), $(this).val());
-					});
-				});
 				break;
 			case 'custom_page':
 				outerWrapper.find('.custom-page-setting').show();
-
-				var queryStringWrap = jQuery('#everest-forms-panel-field-settings-query_string-wrap');
-				queryStringWrap.toggle(
-					jQuery('#everest-forms-panel-field-settings-enable_redirect_query_string').is(':checked')
-				);
 				break;
 			case 'external_url':
 				outerWrapper.find('.external-page-setting').show();
+				break;
+			default:
+				// Optional: handle unexpected redirectTo values
+				console.warn('Unknown redirect type:', redirectTo);
 				break;
 		}
 	}
 
 	// Initialize on page load
 	jQuery(function($) {
+
 		// Get initial value and apply
-		$('.confirmation-redirect-to:checked').each(function(){
+		$('.confirmation-redirect-to').each(function(){
 			var initialValue = $(this).val();
 			pageType($(this), initialValue);
 		});
 
 		// Handle changes
 		$('.confirmation-redirect-to').on('change', function() {
-			pageType($(this), $(this).val());
+			pageType($(this), 	$(this).val());
 		});
 	});
 
 
 	// Function to toggle message locations based on form state
 	function toggleMessageLocations(el, state) {
-		jQuery(el).closest('.everest-forms-border-container').find('.form-state-hide, .form-state-reset').hide();
+		var wrapper = jQuery(el).closest('.everest-forms-border-container');
+		wrapper.find('.form-state-hide, .form-state-reset').hide();
 
 		if (state === 'hide') {
-			jQuery('.form-state-hide').show();
+			wrapper.find('.form-state-hide').show();
 		} else if (state === 'reset') {
-			jQuery('.form-state-reset').show();
+			wrapper.find('.form-state-reset').show();
 		}
 	}
 
