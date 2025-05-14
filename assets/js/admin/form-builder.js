@@ -3865,7 +3865,16 @@ jQuery( function ( $ ) {
 	$( document.body ).on( 'init_add_fields_toogle', function() {
 		$( '.everest-forms-add-fields' ).on( 'click', '.everest-forms-add-fields-group > a', function( event ) {
 			event.preventDefault();
+
+			$( '.everest-forms-add-fields-group' ).each( function() {
+				$( this ).removeClass( 'open' ).addClass( 'closed' );
+			});
+
 			$( this ).parent( '.everest-forms-add-fields-group' ).toggleClass( 'closed' ).toggleClass( 'open' );
+
+			$( '.everest-forms-add-fields-group.closed' ).each( function() {
+				$( this ).find( '.evf-registered-buttons' ).hide();
+			});
 		});
 		$( '.everest-forms-add-fields' ).on( 'click', '.everest-forms-add-fields-group a', function() {
 			$( this ).next( '.evf-registered-buttons' ).stop().slideToggle();

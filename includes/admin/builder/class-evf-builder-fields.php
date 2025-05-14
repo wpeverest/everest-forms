@@ -116,7 +116,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 		if ( ! empty( $form_fields ) ) {
 			foreach ( $form_fields as $group => $form_field ) {
 				?>
-				<div class="everest-forms-add-fields-group open">
+				<div class="everest-forms-add-fields-group closed">
 					<a href="#" class="everest-forms-add-fields-heading" data-group="<?php echo esc_attr( $group ); ?>"><?php echo esc_html( evf_get_fields_group( $group ) ); ?><i class="handlediv"></i></a>
 					<div class="evf-registered-buttons">
 						<?php
