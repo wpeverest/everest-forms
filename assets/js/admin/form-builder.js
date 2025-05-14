@@ -2788,6 +2788,13 @@
 				var $fieldOptions = $( '#everest-forms-field-option-' + field_id );
 				if ( $fieldOptions.length > 0 ) {
 					$( '#everest-forms-field-option-basic-' + field_id ).find( '.everest-forms-field-option-group-inner').show();
+					const $tempLink = $('<a href="#field-options"></a>').appendTo(document.body);
+
+					$tempLink[0].click();
+
+					setTimeout(() => {
+						$tempLink.remove();
+					}, 100);
 				}
 				$('#everest-forms-field-option-' + field_id).show();
 				$('#everest-forms-field-' + field_id).addClass('active');
