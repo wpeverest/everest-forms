@@ -3865,16 +3865,7 @@ jQuery( function ( $ ) {
 	$( document.body ).on( 'init_add_fields_toogle', function() {
 		$( '.everest-forms-add-fields' ).on( 'click', '.everest-forms-add-fields-group > a', function( event ) {
 			event.preventDefault();
-
-			$( '.everest-forms-add-fields-group' ).each( function() {
-				$( this ).removeClass( 'open' ).addClass( 'closed' );
-			});
-
 			$( this ).parent( '.everest-forms-add-fields-group' ).toggleClass( 'closed' ).toggleClass( 'open' );
-
-			$( '.everest-forms-add-fields-group.closed' ).each( function() {
-				$( this ).find( '.evf-registered-buttons' ).hide();
-			});
 		});
 		$( '.everest-forms-add-fields' ).on( 'click', '.everest-forms-add-fields-group a', function() {
 			$( this ).next( '.evf-registered-buttons' ).stop().slideToggle();
@@ -3887,7 +3878,13 @@ jQuery( function ( $ ) {
 	// Fields Options - Open/close.
 	$( document.body ).on( 'click', '.everest-forms-field-option .everest-forms-field-option-group > a', function( event ) {
 		event.preventDefault();
+		$( '.everest-forms-field-option-group' ).each( function() {
+			$( this ).removeClass( 'open' ).addClass( 'closed' );
+		});
 		$( this ).parent( '.everest-forms-field-option-group' ).toggleClass( 'closed' ).toggleClass( 'open' );
+		$( '.everest-forms-field-option-group.closed' ).each( function() {
+			$( this ).find( '.everest-forms-field-option-group-inner' ).hide();
+		});
 	});
 	$( document.body ).on( 'click', '.everest-forms-field-option .everest-forms-field-option-group a', function( event ) {
 		// If the user clicks on some form input inside, the box should not be toggled.
