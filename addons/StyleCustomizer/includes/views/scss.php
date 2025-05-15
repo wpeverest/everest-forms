@@ -35,6 +35,13 @@ if ( isset( $_REQUEST['customized'] ) ) {
 	}
 }
 
+if ( null === $palette_key && ! isset( $_REQUEST['customized'] ) && ! isset( $_REQUEST['action'] ) ) {
+	if ( isset( $styles[ $form_id ]['color_palette'] ) && is_array( $styles[ $form_id ]['color_palette'] ) ) {
+		$colorPaletteKeys = array_keys( $styles[ $form_id ]['color_palette'] );
+		$colorPaletteKey  = $colorPaletteKeys[0];
+		$palette_key      = $colorPaletteKey;
+	}
+}
 
 
 if ( $form_id && $palette_key && isset( $current_color_palette[ "everest_forms_styles[$form_id][color_palette][$palette_key]" ] ) ) {
@@ -43,7 +50,6 @@ if ( $form_id && $palette_key && isset( $current_color_palette[ "everest_forms_s
 		$palette_key => $new_palette,
 	);
 }
-
 
 if ( isset( $styles[ $form_id ] ) && is_array( $styles[ $form_id ] ) ) {
 	$styles[ $form_id ] = array_map(
@@ -102,7 +108,7 @@ if ( ! empty( $backward_compatibility_color_key ) ) {
 	}
 }
 
-if ( isset( $_COOKIE['color_palette_save'] ) ) {
+if ( null === $palette_key && isset( $_COOKIE['color_palette_save'] ) ) {
 	$palette_key = $_COOKIE['color_palette_save'];
 }
 
