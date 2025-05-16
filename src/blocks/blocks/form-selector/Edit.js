@@ -119,20 +119,23 @@ const Edit = (props) => {
 									</PopoverTrigger>
 
 								<PopoverContent
-									_focus={{ boxShadow: "none" }}
-									bg="black"
-									color="white"
+									_focus={{ boxShadow: "0px 4px 50px 0px rgba(0, 0, 0, 0.16)" }}
 									maxWidth={"200px"}
+									boxShadow={"0px 4px 50px 0px rgba(0, 0, 0, 0.16)"}
 								>
-									<PopoverArrow bg="black" />
-									<PopoverBody fontSize="sm">
-									You are currently using the free version of our plugin. Please upgrade to premium version to use this feature.{" "}
+									<PopoverArrow bg="#ffff" />
+									<PopoverBody
+										fontSize={"14px"}
+										fontWeight={"400"}
+									>
+									You  currently using the free version of our plugin. Please upgrade to premium version to use this feature.{" "}
 									<Link
 										href="https://everestforms.net/pricing/?utm_source=popup_type_edit_page&utm_medium=upgrade-link&utm_campaign=lite-version"
 										target="_blank"
 										rel="noopener noreferrer"
 										color="#754bb2"
 										textDecoration="underline"
+										fontWeight={"600"}
 									>
 										Upgrade To Pro
 									</Link>
