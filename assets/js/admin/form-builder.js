@@ -3627,31 +3627,21 @@ jQuery(function ($) {
 		}
 	});
 
-	// Query String Toogle.
-	// $( '#everest-forms-panel-field-settings-enable_redirect_query_string-wrap input' ).on( 'change', function () {
-	// 	var $this = $( this );
-	// 	if ( ! $this.is( ':checked' ) ) {
-	// 		$('#everest-forms-panel-field-settings-query_string-wrap').hide();
-	// 	} else {
-	// 		$('#everest-forms-panel-field-settings-query_string-wrap').show();
-	// 	}
-	// });
 	function pageType(el, redirectTo) {
 		var outerWrapper = $(el).closest('.evf-confirmation-wrap');
 
-		// Hide all settings initially
-		outerWrapper.find('.same-page-setting, .external-page-setting, .custom-page-setting').hide();
-
-		// If the element isn't checked, return early
+		// If the element isn't checked, return early.
 		if (!el.is(':checked')) {
 			return;
 		}
 
-		// Show the appropriate settings based on redirect type
+		// Show the appropriate settings based on redirect type.
 		switch (redirectTo) {
 			case 'same':
 				$(outerWrapper).find('.same-page-setting').show();
-				// Handle form state type changes
+				outerWrapper.find('.external-page-setting, .custom-page-setting').hide();
+
+				// Handle form state type changes.
 				var el = outerWrapper.find('.form-state-type:checked');
 				var initialValue = el.val();
 
@@ -3664,14 +3654,17 @@ jQuery(function ($) {
 				break;
 			case 'custom_page':
 				outerWrapper.find('.custom-page-setting').show();
+				outerWrapper.find('.same-page-setting, .external-page-setting').hide();
+
 				toggleAppendQueryString(outerWrapper);
 				break;
 			case 'external_url':
 				outerWrapper.find('.external-page-setting').show();
+				outerWrapper.find('.same-page-setting, .custom-page-setting').hide();
+
 				toggleAppendQueryString(outerWrapper);
 				break;
 			default:
-				// Optional: handle unexpected redirectTo values
 				console.warn('Unknown redirect type:', redirectTo);
 				break;
 		}
