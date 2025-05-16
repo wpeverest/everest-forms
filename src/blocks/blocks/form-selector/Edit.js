@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, ChakraProvider } from "@chakra-ui/react";
+import { Box, ChakraProvider, Link, Popover, PopoverArrow, PopoverBody, PopoverContent, PopoverTrigger, Tooltip } from "@chakra-ui/react";
 import {
 	SelectControl,
 	ToggleControl,
@@ -77,41 +77,83 @@ const Edit = (props) => {
 								]}
 								onChange={selectForm}
 							/>
-							<ToggleControl
-								label={__("Show Title", "everest-forms")}
-								checked={displayTitle}
-								onChange={toggleDisplayTitle}
-							/>
-							<ToggleControl
-								label={__("Show Description", "everest-forms")}
-								checked={displayDescription}
-								onChange={toggleDisplayDescription}
-							/>
-							<SelectControl
-								label={__("Popup Type", "everest-forms")}
-								value={popupType}
-								options={[
-									{
-										label: __("None", "everest-forms"),
-										value: "none",
-									},
-									{
-										label: __("Link", "everest-forms"),
-										value: "popup-link",
-									},
-									{
-										label: __("Button", "everest-forms"),
-										value: "popup-button",
-									},
-									{
-										label: __("Popup", "everest-forms"),
-										value: "popup",
-									},
-								]}
-								onChange={(type) =>
-									setAttributes({ popupType: type })
-								}
-							/>
+
+							<Box
+								opacity={ isPro && popupType !== 'none' ? 0.5 : 1}
+								cursor={ isPro && popupType !== 'none' ? "not-allowed" : "pointer"}
+							>
+								<ToggleControl
+									label={__("Show Title", "everest-forms")}
+									checked={displayTitle}
+									onChange={toggleDisplayTitle}
+									disabled={ isPro && popupType !== 'none' ? true : false }
+								/>
+								<ToggleControl
+									label={__("Show Description", "everest-forms")}
+									checked={displayDescription}
+									onChange={toggleDisplayDescription}
+									disabled={ isPro && popupType !== 'none' ? true : false }
+								/>
+							</Box>
+
+							{ ! isPro ? (
+							<Popover trigger="hover" openDelay={300} closeDelay={300} placement="bottom">
+									<PopoverTrigger>
+										<Box
+											opacity={ "0.5" }
+											cursor={ "not-allowed" }
+										>
+											<SelectControl
+											label={__("Popup Type", "everest-forms")}
+											value={popupType}
+											options={[
+												{ label: __("None", "everest-forms"), value: "none" },
+												{ label: __("Link", "everest-forms"), value: "popup-link" },
+												{ label: __("Button", "everest-forms"), value: "popup-button" },
+												{ label: __("Popup", "everest-forms"), value: "popup" },
+											]}
+											onChange={(type) => setAttributes({ popupType: type })}
+											disabled={!isPro}
+											/>
+										</Box>
+									</PopoverTrigger>
+
+								<PopoverContent
+									_focus={{ boxShadow: "none" }}
+									bg="black"
+									color="white"
+									maxWidth={"200px"}
+								>
+									<PopoverArrow bg="black" />
+									<PopoverBody fontSize="sm">
+									You are currently using the free version of our plugin. Please upgrade to premium version to use this feature.{" "}
+									<Link
+										href="https://everestforms.net/pricing/?utm_source=popup_type_edit_page&utm_medium=upgrade-link&utm_campaign=lite-version"
+										target="_blank"
+										rel="noopener noreferrer"
+										color="#754bb2"
+										textDecoration="underline"
+									>
+										Upgrade To Pro
+									</Link>
+									</PopoverBody>
+								</PopoverContent>
+								</Popover>
+								) : (
+								<SelectControl
+									label={__("Popup Type", "everest-forms")}
+									value={popupType}
+									options={[
+									{ label: __("None", "everest-forms"), value: "none" },
+									{ label: __("Link", "everest-forms"), value: "popup-link" },
+									{ label: __("Button", "everest-forms"), value: "popup-button" },
+									{ label: __("Popup", "everest-forms"), value: "popup" },
+									]}
+									onChange={(type) => setAttributes( { popupType: type } ) }
+									disabled={!isPro}
+								/>
+								)}
+
 							{"none" !== popupType && isPro && (
 								<>
 									{"popup" !== popupType && (
@@ -164,7 +206,7 @@ const Edit = (props) => {
 									/>
 									<TextControl
 										label={__(
-											"Header title",
+											"Popup Header title",
 											"everest-forms",
 										)}
 										value={popupHeaderTitle}
@@ -176,7 +218,7 @@ const Edit = (props) => {
 									/>
 									<TextareaControl
 										label={__(
-											"Header Description",
+											"Popup Header Description",
 											"everest-forms",
 										)}
 										value={popupHeaderDesc}
@@ -188,7 +230,7 @@ const Edit = (props) => {
 									/>
 									<TextControl
 										label={__(
-											"Footer title",
+											"Popup Footer title",
 											"everest-forms",
 										)}
 										value={popupFooterTitle}
@@ -200,7 +242,7 @@ const Edit = (props) => {
 									/>
 									<TextareaControl
 										label={__(
-											"Footer Description",
+											"Popup Footer Description",
 											"everest-forms",
 										)}
 										value={popupFooterDesc}
