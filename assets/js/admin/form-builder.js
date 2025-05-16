@@ -538,7 +538,6 @@
 			EVFPanelBuilder.bindCloneField();
 			EVFPanelBuilder.bindSaveOption();
 			EVFPanelBuilder.bindEmbedOption();
-			EVFPanelBuilder.bindPreviewConfirmation();
 			EVFPanelBuilder.bindSaveOptionWithKeyEvent();
 			EVFPanelBuilder.bindOpenShortcutKeysModalWithKeyEvent();
 			EVFPanelBuilder.bindAddNewRow();
@@ -3613,55 +3612,35 @@
 	EVFPanelBuilder.init();
 })(jQuery, window.evf_data);
 
-jQuery(function () {
+jQuery(function ($) {
 
-	if ( jQuery('#everest-forms-panel-field-settingsemail-evf_send_confirmation_email').attr("checked") != 'checked' )	{
-		jQuery('#everest-forms-panel-field-settingsemail-evf_send_confirmation_email-wrap').nextAll().hide();
+	if ( $('#everest-forms-panel-field-settingsemail-evf_send_confirmation_email').attr("checked") != 'checked' )	{
+		$('#everest-forms-panel-field-settingsemail-evf_send_confirmation_email-wrap').nextAll().hide();
 	}
 
-	jQuery( '#everest-forms-panel-field-settingsemail-evf_send_confirmation_email' ).on( 'change', function () {
+	$( '#everest-forms-panel-field-settingsemail-evf_send_confirmation_email' ).on( 'change', function () {
 
-		if ( jQuery( this ).attr('checked') != 'checked') {
-			jQuery('#everest-forms-panel-field-settingsemail-evf_send_confirmation_email-wrap').nextAll().hide();
+		if ( $( this ).attr('checked') != 'checked') {
+			$('#everest-forms-panel-field-settingsemail-evf_send_confirmation_email-wrap').nextAll().hide();
 		} else {
-			jQuery('#everest-forms-panel-field-settingsemail-evf_send_confirmation_email-wrap').nextAll().show();
+			$('#everest-forms-panel-field-settingsemail-evf_send_confirmation_email-wrap').nextAll().show();
 		}
 	});
 
 	// Query String Toogle.
-	// jQuery( '#everest-forms-panel-field-settings-enable_redirect_query_string-wrap input' ).on( 'change', function () {
-	// 	var $this = jQuery( this );
+	// $( '#everest-forms-panel-field-settings-enable_redirect_query_string-wrap input' ).on( 'change', function () {
+	// 	var $this = $( this );
 	// 	if ( ! $this.is( ':checked' ) ) {
-	// 		jQuery('#everest-forms-panel-field-settings-query_string-wrap').hide();
+	// 		$('#everest-forms-panel-field-settings-query_string-wrap').hide();
 	// 	} else {
-	// 		jQuery('#everest-forms-panel-field-settings-query_string-wrap').show();
+	// 		$('#everest-forms-panel-field-settings-query_string-wrap').show();
 	// 	}
 	// });
 	function pageType(el, redirectTo) {
-		var outerWrapper = jQuery(el).closest('.evf-confirmation-wrap');
+		var outerWrapper = $(el).closest('.evf-confirmation-wrap');
 
 		// Hide all settings initially
 		outerWrapper.find('.same-page-setting, .external-page-setting, .custom-page-setting').hide();
-
-		// Handle form state type changes
-		jQuery(function($) {
-			var el = outerWrapper.find('.form-state-type:checked');
-			var initialValue = el.val();
-			toggleMessageLocations(el, initialValue);
-
-			outerWrapper.off('change', '.form-state-type').on('change', '.form-state-type', function() {
-				toggleMessageLocations($(this), $(this).val());
-			});
-		});
-
-		// Handle query string toggle
-		var queryStringWrap = outerWrapper.find('.query-string-wrap');
-		var appendInput = outerWrapper.find('.append-query-string-input');
-		queryStringWrap.toggle(appendInput.is(':checked'));
-
-		outerWrapper.on('change', '.append-query-string-input', function() {
-			queryStringWrap.toggle($(this).is(':checked'));
-		});
 
 		// If the element isn't checked, return early
 		if (!el.is(':checked')) {
@@ -3671,13 +3650,25 @@ jQuery(function () {
 		// Show the appropriate settings based on redirect type
 		switch (redirectTo) {
 			case 'same':
-				outerWrapper.find('.same-page-setting').show();
+				$(outerWrapper).find('.same-page-setting').show();
+				// Handle form state type changes
+				var el = outerWrapper.find('.form-state-type:checked');
+				var initialValue = el.val();
+
+				toggleMessageLocations(el, initialValue);
+				previewType(outerWrapper);
+
+				outerWrapper.off('change', '.form-state-type').on('change', '.form-state-type', function() {
+					toggleMessageLocations($(this), $(this).val());
+				});
 				break;
 			case 'custom_page':
 				outerWrapper.find('.custom-page-setting').show();
+				toggleAppendQueryString(outerWrapper);
 				break;
 			case 'external_url':
 				outerWrapper.find('.external-page-setting').show();
+				toggleAppendQueryString(outerWrapper);
 				break;
 			default:
 				// Optional: handle unexpected redirectTo values
@@ -3687,7 +3678,7 @@ jQuery(function () {
 	}
 
 	// Initialize on page load
-	jQuery(function($) {
+	$(function($) {
 
 		// Get initial value and apply
 		$('.confirmation-redirect-to').each(function(){
@@ -3704,7 +3695,7 @@ jQuery(function () {
 
 	// Function to toggle message locations based on form state
 	function toggleMessageLocations(el, state) {
-		var wrapper = jQuery(el).closest('.everest-forms-border-container');
+		var wrapper = $(el).closest('.everest-forms-border-container');
 		wrapper.find('.form-state-hide, .form-state-reset').hide();
 
 		if (state === 'hide') {
@@ -3714,40 +3705,28 @@ jQuery(function () {
 		}
 	}
 
-	jQuery( '.evf-panel-field-options-button.evf-disabled-tab' ).hide();
+	// Handle query string toggle
+	function toggleAppendQueryString(outerWrapper) {
+		var queryStringWrap = outerWrapper.find('.query-string-wrap');
+		var appendInput = outerWrapper.find('.append-query-string-input');
+		queryStringWrap.toggle(appendInput.is(':checked'));
 
-	// Conditional Logic fields for General Settings in Form for Submission Redirection.
+		outerWrapper.on('change', '.append-query-string-input', function() {
+			queryStringWrap.toggle($(this).is(':checked'));
+		});
+	}
 
-	jQuery( '.everest-forms-conditional-field-settings-redirect_to').each(function() {
-		var conditional_rule_selection =this.value;
-		if ( 'custom_page' == conditional_rule_selection ) {
-			jQuery(this).parents('.evf-field-conditional-container').find('.everest-forms-conditional-field-settings-custom_page').show();
-			jQuery(this).parents('.evf-field-conditional-container').find('.everest-forms-conditional-field-settings-external_url').hide();
-		}
-		else if( 'external_url' == conditional_rule_selection ) {
-			jQuery(this).parents('.evf-field-conditional-container').find('.everest-forms-conditional-field-settings-custom_page').hide();
-			jQuery(this).parents('.evf-field-conditional-container').find('.everest-forms-conditional-field-settings-external_url').show();
-		} else {
-			jQuery(this).parents('.evf-field-conditional-container').find('.everest-forms-conditional-field-settings-custom_page').hide();
-			jQuery(this).parents('.evf-field-conditional-container').find('.everest-forms-conditional-field-settings-external_url').hide();
-		}
+	function previewType(outerWrapper) {
+		var queryStringWrap = outerWrapper.find('.preview-confirm-select-wrapper');
+		var appendInput = outerWrapper.find('.everest-preview-confirmation');
+		queryStringWrap.toggle(appendInput.is(':checked'));
 
-	})
+		outerWrapper.on('change', '.everest-preview-confirmation', function() {
+			queryStringWrap.toggle($(this).is(':checked'));
+		});
+	}
 
-	jQuery( document ).on( 'change', '.everest-forms-conditional-field-settings-redirect_to', function () {
-		if ( 'custom_page' == this.value ) {
-				jQuery(this).parents('.evf-field-conditional-container').find('.everest-forms-conditional-field-settings-custom_page').show();
-				jQuery(this).parents('.evf-field-conditional-container').find('.everest-forms-conditional-field-settings-external_url').hide();
-		}
-		else if( 'external_url' == this.value ) {
-				jQuery(this).parents('.evf-field-conditional-container').find('.everest-forms-conditional-field-settings-custom_page').hide();
-				jQuery(this).parents('.evf-field-conditional-container').find('.everest-forms-conditional-field-settings-external_url').show();
-		} else {
-				jQuery(this).parents('.evf-field-conditional-container').find('.everest-forms-conditional-field-settings-custom_page').hide();
-				jQuery(this).parents('.evf-field-conditional-container').find('.everest-forms-conditional-field-settings-external_url').hide();
-		}
-	});
-
+	$( '.evf-panel-field-options-button.evf-disabled-tab' ).hide();
 });
 
 jQuery( function ( $ ) {
