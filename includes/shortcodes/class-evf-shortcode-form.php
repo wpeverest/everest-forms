@@ -1001,9 +1001,17 @@ class EVF_Shortcode_Form {
 		$form_state_type = isset( $form_data['settings']['form_state_type'] ) ? $form_data['settings']['form_state_type'] : 'hide';
 
 		if ( 'hide' === $form_state_type ) {
-			$message_display_location = isset( $form_data['settings']['successful_form_submission_message_display_location'] ) ? $form_data['settings']['successful_form_submission_message_display_location'] : 'hide';
+			$message_display_location = isset( $form_data['settings']['message_display_location_of_hide'] ) ? $form_data['settings']['message_display_location_of_hide'] : 'hide';
 		} else {
-			$message_display_location = isset( $form_data['settings']['reset_successful_form_submission_message_display_location'] ) ? $form_data['settings']['reset_successful_form_submission_message_display_location'] : 'top';
+			$message_display_location = isset( $form_data['settings']['message_display_location_of_reset'] ) ? $form_data['settings']['message_display_location_of_reset'] : 'top';
+		}
+
+		// If conditional logic match then getting messag and position.
+		if ( ! empty( $_REQUEST['evf_popup_message'] ) ) {
+			$message = sanitize_text_field( $_REQUEST['evf_popup_message'] );
+		}
+		if ( ! empty( $_REQUEST['evf_message_display_location'] ) ) {
+			$message_display_location = sanitize_text_field( $_REQUEST['evf_message_display_location'] );
 		}
 
 		$message = isset( $form_data['settings']['successful_form_submission_message'] ) ? $form_data['settings']['successful_form_submission_message'] : __( 'Thanks for contacting us! We will be in touch with you shortly.', 'everest-forms' );

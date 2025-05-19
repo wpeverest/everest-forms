@@ -764,7 +764,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				everest_forms_panel_field(
 					'select',
 					'settings',
-					'successful_form_submission_message_display_location',
+					'message_display_location_of_hide',
 					$this->form_data,
 					esc_html__( 'Display Message', 'everest-forms' ),
 					array(
@@ -783,7 +783,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				everest_forms_panel_field(
 					'select',
 					'settings',
-					'reset_successful_form_submission_message_display_location',
+					'message_display_location_of_reset',
 					$this->form_data,
 					esc_html__( 'Display Message', 'everest-forms' ),
 					array(

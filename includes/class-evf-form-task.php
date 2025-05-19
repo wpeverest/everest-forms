@@ -584,9 +584,18 @@ class EVF_Form_Task {
 			}
 		}
 
-		$settings                  = $this->form_data['settings'];
-		$message                   = isset( $settings['successful_form_submission_message'] ) ? $settings['successful_form_submission_message'] : __( 'Thanks for contacting us! We will be in touch with you shortly.', 'everest-forms' );
-		$message_display_location  = isset( $settings['successful_form_submission_message_display_location'] ) ? $settings['successful_form_submission_message_display_location'] : 'hide';
+		$settings        = $this->form_data['settings'];
+		$message         = isset( $settings['successful_form_submission_message'] ) ? $settings['successful_form_submission_message'] : __( 'Thanks for contacting us! We will be in touch with you shortly.', 'everest-forms' );
+		$form_state_type = isset( $settings['form_state_type'] ) ? $settings['form_state_type'] : 'hide';
+
+		if ( 'hide' === $form_state_type ) {
+
+			$message_display_location = isset( $settings['message_display_location_of_hide'] ) ? $settings['message_display_location_of_hide'] : 'hide';
+		} else {
+			$message_display_location = isset( $settings['message_display_location_of_reset'] ) ? $settings['message_display_location_of_reset'] : 'top';
+		}
+
+		// $message_display_location  = isset( $settings['successful_form_submission_message_display_location'] ) ? $settings['successful_form_submission_message_display_location'] : 'hide';
 		$is_pdf_submission_enabled = isset( $settings['pdf_submission']['enable_pdf_submission'] ) && ( 'yes' === $settings['pdf_submission']['enable_pdf_submission'] || '1' === $settings['pdf_submission']['enable_pdf_submission'] );
 		$pdf_submission            = $is_pdf_submission_enabled ? $settings['pdf_submission'] : '';
 
@@ -665,8 +674,22 @@ class EVF_Form_Task {
 					$response_data['redirect_url'] = isset( $settings['custom_page'] ) ? get_page_link( absint( $settings['custom_page'] ) ) : 'undefined';
 				}
 			} else {
-				$response_data['redirect_url']               = $submission_redirection_process['external_url'];
-				$response_data['enable_redirect_in_new_tab'] = isset( $settings['enable_redirect_in_new_tab'] ) ? esc_url( $settings['enable_redirect_in_new_tab'] ) : false;
+				// Overiding the default setting message
+				if ( 'same' === $submission_redirection_process['redirect_to'] ) {
+					$form_state_type = $submission_redirection_process['settings']['form_state_type'];
+					if ( 'hide' === $form_state_type ) {
+
+						$response_data['message_display_location'] = $submission_redirection_process['settings']['message_display_location_of_hide'];
+					} else {
+						$response_data['message_display_location'] = $submission_redirection_process['settings']['message_display_location_of_reset'];
+					}
+
+					$response_data['message'] = $submission_redirection_process['settings']['successful_form_submission_message'];
+
+				} else {
+					$response_data['redirect_url']               = $submission_redirection_process['external_url'];
+					$response_data['enable_redirect_in_new_tab'] = isset( $settings['enable_redirect_in_new_tab'] ) ? esc_url( $settings['enable_redirect_in_new_tab'] ) : false;
+				}
 			}
 
 			// Add notice only if credit card is populated in form fields.
@@ -677,10 +700,26 @@ class EVF_Form_Task {
 			$response_data = apply_filters( 'everest_forms_after_success_ajax_message', $response_data, $this->form_data, $entry );
 			delete_option( 'everest_forms_overall_feedback_is_called' );
 			return $response_data;
-		} elseif ( ( 'same' === $this->form_data['settings']['redirect_to'] && empty( $submission_redirection_process ) ) || ( ! empty( $submission_redirection_process ) && 'same_page' == $submission_redirection_process['redirect_to'] ) ) {
+		} elseif ( ( 'same' === $this->form_data['settings']['redirect_to'] && empty( $submission_redirection_process ) ) ) {
+
 			if ( 'hide' === $message_display_location ) {
 				evf_add_notice( $message, 'success' );
 			}
+		} elseif ( ! empty( $submission_redirection_process ) && 'same' == $submission_redirection_process['redirect_to'] ) {
+			$form_state_type = $submission_redirection_process['settings']['form_state_type'];
+			$message         = $submission_redirection_process['settings']['successful_form_submission_message'];
+			if ( 'hide' === $form_state_type ) {
+
+				$message_display_location = isset( $submission_redirection_process['settings']['message_display_location_of_hide'] ) ? $submission_redirection_process['settings']['message_display_location_of_hide'] : 'hide';
+			} else {
+				$message_display_location = isset( $submission_redirection_process['settings']['message_display_location_of_reset'] ) ? $submission_redirection_process['settings']['message_display_location_of_reset'] : 'top';
+			}
+			if ( 'hide' === $message_display_location ) {
+				evf_add_notice( $message, 'success' );
+			}
+			//Setting message to reflect back after page refresh.
+			$_REQUEST['evf_message_display_location'] = sanitize_text_field( $message_display_location );
+			$_REQUEST['evf_popup_message']            = wp_kses_post( $message );
 		}
 		$logger->info(
 			'Everest Forms After success Message.',

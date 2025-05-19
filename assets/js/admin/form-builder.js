@@ -3680,8 +3680,8 @@ jQuery(function ($) {
 		});
 
 		// Handle changes
-		$('.confirmation-redirect-to').on('change', function() {
-			pageType($(this), 	$(this).val());
+		$(document).on('change', '.confirmation-redirect-to', function() {
+			pageType($(this), $(this).val());
 		});
 	});
 
