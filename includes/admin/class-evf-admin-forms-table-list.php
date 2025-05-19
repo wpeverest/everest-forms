@@ -430,7 +430,7 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 			);
 
 			if ( 'publish' === $status_name ) {
-				$status_label = str_replace( 'Published', 'Active', $status_label );
+				$status_label = str_replace( 'Published', __( 'Active', 'everest-forms' ), $status_label );
 			}
 			$status_links[ $status_name ] = $this->get_edit_link( $status_args, $status_label, $class );
 		}
