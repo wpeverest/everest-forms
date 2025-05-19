@@ -2113,3 +2113,22 @@ $background-color_1: #f9f9f9;
 		}
 	}
 }
+
+.evf-popup-type-premium-label {
+  position: relative;
+  display: inline-block;
+  padding-right: 20px; /* make room for the icon */
+}
+
+.evf-popup-type-premium-label::before {
+  content: "";
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTMiIHZpZXdCb3g9IjAgMCAxMiAxMyIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3QgeD0iMC42ODc1IiB5PSIxLjE4NzUiIHdpZHRoPSIxMC42MjUiIGhlaWdodD0iMTAuNjI1IiByeD0iMS41NjI1IiBmaWxsPSIjNzU0NUJCIiBzdHJva2U9IiM3NTQ1QkIiIHN0cm9rZS13aWR0aD0iMC42MjUiLz4KPHBhdGggZD0iTTYuMDAwMjggMy43MjE5NUw3LjY2Njk1IDguMTY2NEg0LjMzMzYyTDYuMDAwMjggMy43MjE5NVoiIGZpbGw9IiNFRkVGRUYiLz4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkZCIgY2xpcC1ydWxlPSJldmVub2RkZCIgZD0iTTMuMjIyNTMgNC44MzMwNkwzLjYxOTM2IDguMTY2M0g4LjM4MTI2TDguNzc4MDkgNC44MzMwNkw2LjAwMDMxIDcuMTI0NzNMMy4yMjI1MyA0LjgzMzA2Wk04LjM4MTIzIDguNDgzODVIMy42MTkzMlY5LjI3NzVIOC4zODEyM1Y4LjQ4Mzg1WiIgZmlsbD0id2hpdGUiLz4KPC9zdmc+");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  top: 0;
+  right: 0;
+}

@@ -100,20 +100,24 @@ const Edit = (props) => {
 							<Popover trigger="hover" openDelay={300} closeDelay={300} placement="bottom">
 									<PopoverTrigger>
 										<Box
-											opacity={ "0.5" }
-											cursor={ "not-allowed" }
 										>
 											<SelectControl
-											label={__("Popup Type", "everest-forms")}
-											value={popupType}
-											options={[
-												{ label: __("None", "everest-forms"), value: "none" },
-												{ label: __("Link", "everest-forms"), value: "popup-link" },
-												{ label: __("Button", "everest-forms"), value: "popup-button" },
-												{ label: __("Popup", "everest-forms"), value: "popup" },
-											]}
-											onChange={(type) => setAttributes({ popupType: type })}
-											disabled={!isPro}
+											opacity={ "0.5" }
+											cursor={ "not-allowed" }
+												label={
+													<span className="evf-popup-type-premium-label">
+													{__("Popup Type", "everest-forms")}
+													</span>
+												}
+												value={popupType}
+												options={[
+													{ label: __("None", "everest-forms"), value: "none" },
+													{ label: __("Link", "everest-forms"), value: "popup-link" },
+													{ label: __("Button", "everest-forms"), value: "popup-button" },
+													{ label: __("Popup", "everest-forms"), value: "popup" },
+												]}
+												onChange={(type) => setAttributes({ popupType: type })}
+												disabled={!isPro}
 											/>
 										</Box>
 									</PopoverTrigger>
@@ -128,7 +132,8 @@ const Edit = (props) => {
 										fontSize={"14px"}
 										fontWeight={"400"}
 									>
-									You  currently using the free version of our plugin. Please upgrade to premium version to use this feature.{" "}
+									This feature requires the Premium version.
+									<br/>
 									<Link
 										href="https://everestforms.net/pricing/?utm_source=popup_type_edit_page&utm_medium=upgrade-link&utm_campaign=lite-version"
 										target="_blank"
@@ -137,7 +142,7 @@ const Edit = (props) => {
 										textDecoration="underline"
 										fontWeight={"600"}
 									>
-										Upgrade To Pro
+										Upgrade Now
 									</Link>
 									</PopoverBody>
 								</PopoverContent>
