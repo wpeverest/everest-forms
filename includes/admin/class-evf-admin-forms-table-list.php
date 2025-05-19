@@ -205,6 +205,10 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 				$actions['view'] = '<a href="' . esc_url( $preview_link ) . '" rel="bookmark" target="_blank">' . __( 'Preview', 'everest-forms' ) . '</a>';
 			}
 
+			if ( 'publish' === $post_status && current_user_can( 'everest_forms_create_forms' ) ) {
+				$actions['settings'] = '<a href="' . $form_settings_link . '" target="__blank">' . __( 'Settings', 'everest-forms' ) . '</a>';
+			}
+
 			if ( isset( $form_data['settings']['enable_conversational_forms'] ) && $form_data['settings']['enable_conversational_forms'] ) {
 				$actions['view_conversational_forms'] = '<a href="' . esc_url( home_url( $posts->post_name ) ) . '" title="View ConversationalForm"  target="_blank">' . __( 'Conversational Form Preview', 'everest-forms' ) . '</a>';
 			}
@@ -215,9 +219,6 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 
 			if ( 'publish' === $post_status && current_user_can( 'everest_forms_create_forms' ) ) {
 				$actions['locate'] = '<a href="#" class="evf-form-locate" data-id= "' . esc_attr( $posts->ID ) . '">' . __( 'Locate', 'everest-forms' ) . '</a>';
-			}
-			if ( 'publish' === $post_status && current_user_can( 'everest_forms_create_forms' ) ) {
-				$actions['settings'] = '<a href="' . $form_settings_link . '" target="__blank">' . __( 'Settings', 'everest-forms' ) . '</a>';
 			}
 		}
 
@@ -428,6 +429,9 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 				number_format_i18n( $num_posts[ $status_name ] )
 			);
 
+			if ( 'publish' === $status_name ) {
+				$status_label = str_replace( 'Published', 'Active', $status_label );
+			}
 			$status_links[ $status_name ] = $this->get_edit_link( $status_args, $status_label, $class );
 		}
 
