@@ -603,11 +603,22 @@ class EVF_Form_Task {
 		$is_global_pdf_download_enabled = 'yes' === get_option( 'everest_forms_pdf_download_after_submit', 'no' ) || '1' === get_option( 'everest_forms_pdf_download_after_submit', 'no' );
 		$should_allow_pdf_download      = $is_pdf_submission_enabled ? $is_pdf_download_after_submit : $is_global_pdf_download_enabled;
 
+		// Check Conditional Logic and get the redirection URL.
+		$submission_redirection_process = apply_filters( 'everest_forms_submission_redirection_process', array(), $this->form_fields, $this->form_data );
+
 		$is_preview_confirmation = isset( $this->form_data['settings']['preview_confirmation'] ) ? $this->form_data['settings']['preview_confirmation'] : 0;
+
+		if (! empty( $submission_redirection_process ) && 'same' == $submission_redirection_process['redirect_to'] ) {
+			$is_preview_confirmation = $submission_redirection_process['settings']['preview_confirmation'];
+		}
 
 		// show preview of form after submission.
 		if ( '1' === $is_preview_confirmation ) {
 			$preview_style = isset( $this->form_data['settings']['preview_confirmation_select'] ) ? $this->form_data['settings']['preview_confirmation_select'] : 'basic';
+
+			if (! empty( $submission_redirection_process ) && 'same' == $submission_redirection_process['redirect_to'] ){
+				$preview_style = $submission_redirection_process['settings']['preview_confirmation_select'];
+			}
 			if ( '1' === $ajax_form_submission ) {
 				$response_data['is_preview_confirmation'] = $is_preview_confirmation;
 				$response_data['preview_confirmation']    = apply_filters( 'everest_forms_preview_confirmation', $this->form_data, $this->form_fields, $preview_style );
@@ -622,9 +633,6 @@ class EVF_Form_Task {
 			$__everest_form_id       = $form_id;
 			$__everest_form_entry_id = $entry_id;
 		}
-
-		// Check Conditional Logic and get the redirection URL.
-		$submission_redirection_process = apply_filters( 'everest_forms_submission_redirection_process', array(), $this->form_fields, $this->form_data );
 
 		// Backward compatibility for evf form templates.
 		$this->form_data['settings']['redirect_to'] = '0' === $this->form_data['settings']['redirect_to'] ? 'same' : $this->form_data['settings']['redirect_to'];
@@ -717,7 +725,7 @@ class EVF_Form_Task {
 			if ( 'hide' === $message_display_location ) {
 				evf_add_notice( $message, 'success' );
 			}
-			//Setting message to reflect back after page refresh.
+			// Setting message to reflect back after page refresh.
 			$_REQUEST['evf_message_display_location'] = sanitize_text_field( $message_display_location );
 			$_REQUEST['evf_popup_message']            = wp_kses_post( $message );
 		}

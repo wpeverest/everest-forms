@@ -3640,6 +3640,7 @@ jQuery(function ($) {
 			case 'same':
 				$(outerWrapper).find('.same-page-setting').show();
 				outerWrapper.find('.external-page-setting, .custom-page-setting').hide();
+				outerWrapper.find('.custom-and-external-page-setting').hide();
 
 				// Handle form state type changes.
 				var el = outerWrapper.find('.form-state-type:checked');
@@ -3654,12 +3655,14 @@ jQuery(function ($) {
 				break;
 			case 'custom_page':
 				outerWrapper.find('.custom-page-setting').show();
+				outerWrapper.find('.custom-and-external-page-setting').show();
 				outerWrapper.find('.same-page-setting, .external-page-setting').hide();
 
 				toggleAppendQueryString(outerWrapper);
 				break;
 			case 'external_url':
 				outerWrapper.find('.external-page-setting').show();
+				outerWrapper.find('.custom-and-external-page-setting').show();
 				outerWrapper.find('.same-page-setting, .custom-page-setting').hide();
 
 				toggleAppendQueryString(outerWrapper);

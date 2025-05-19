@@ -661,7 +661,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					$this->form_data,
 					esc_html__( ' Append Query String', 'everest-forms' ),
 					array(
-						'class'   => 'custom-page-setting external-page-setting',
+						'class'   => 'custom-and-external-page-setting',
 						'input_class' => 'append-query-string-input',
 						'tooltip' => esc_html__( 'Enable to add the query string in the url.', 'everest-forms' ),
 						'default' => '0',
@@ -676,7 +676,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					esc_html__( 'Query String', 'everest-forms' ),
 					array(
 						'default'   => isset( $settings['query_string'] ) ? $settings['query_string'] : '',
-						'class'     => 'custom-page-setting external-page-setting query-string-wrap',
+						'class'     => 'query-string-wrap',
 						'smarttags' => array(
 							'type'        => 'all',
 							'form_fields' => 'all',
