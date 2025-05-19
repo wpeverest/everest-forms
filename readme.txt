@@ -345,6 +345,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 = 3.2.1     	- 19-05-2025
 * Tweak 		- Added settings option on form table.
+* Fix 			- Form templates style not applying.
 
 = 3.2.0     	- 12-05-2025
 * Feature		- Add category/taxonomy on From.
