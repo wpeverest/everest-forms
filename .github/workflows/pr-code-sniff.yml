@@ -1,5 +1,8 @@
 name: Run code sniff on PR
-on: pull_request
+on: 
+  push: 
+    branches: 
+      -Automation-actions-Fix
 jobs:
   test:
     name: Code sniff (PHP 7.4 , WP Latest)
@@ -23,7 +26,7 @@ jobs:
           composer --version
 
       - name: Get cached composer directories
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ./vendor
           key: ${{ runner.os }}-${{ hashFiles('./composer.lock') }}
