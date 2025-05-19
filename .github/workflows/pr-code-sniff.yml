@@ -1,8 +1,5 @@
 name: Run code sniff on PR
-on: 
-  push: 
-    branches: 
-      - Automation-actions-Fix
+on: pull_request
 jobs:
   test:
     name: Code sniff (PHP 7.4 , WP Latest)
