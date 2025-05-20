@@ -2048,22 +2048,22 @@ class EVF_AJAX {
 
 		$is_rest_api_method = false;
 		foreach ( $form_data as $data ) {
-			if ( empty( $data['name'] ) ) {
+			if ( empty( sanitize_text_field( wp_unslash( $data['name'] ) ) ) ) {
 				continue;
 			}
 
 			$output = '';
 			$output .= '<div class="everest-forms-clean-talk-message-outer-wrapper">';
 
-			if ( in_array( $data['name'], $options_list ) ) {
-				if ('everest_forms_clean_talk_methods' === $data['name'] && 'rest_api' === $data['value']) {
+			if ( in_array( sanitize_text_field( wp_unslash( $data['name'] ) ), $options_list ) ) {
+				if ('everest_forms_clean_talk_methods' === sanitize_text_field( wp_unslash( $data['name'] ) ) && 'rest_api' === sanitize_text_field( wp_unslash( $data['value'] ) ) ) {
 					$is_rest_api_method = true;
 				}
 
-				$value = isset( $data['value'] ) ? sanitize_text_field( wp_unslash($data['value'] ) ) : '';
+				$value = isset( $data['value'] ) ? sanitize_text_field( wp_unslash( $data['value'] ) ) : '';
 
-				if ( $is_rest_api_method && 'everest_forms_recaptcha_cleantalk_access_key' === $data['name'] ) {
-					if (empty($value)) {
+				if ( $is_rest_api_method && 'everest_forms_recaptcha_cleantalk_access_key' === sanitize_text_field( wp_unslash( $data['name'] ) ) ) {
+					if ( empty( $value ) ) {
 						$output .= '<span class="everest-forms-clean-talk-icon-box">
 							<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
 							<g clip-path="url(#clip0_4735_4306)">
@@ -2090,7 +2090,7 @@ class EVF_AJAX {
 						$response = wp_remote_post(
 							'https://api.cleantalk.org/',
 							array(
-								'body'    => \http_build_query($clean_talk_request, true),
+								'body'    => \http_build_query( $clean_talk_request, true ),
 								'headers' => array(
 									'Content-Type' => 'application/x-www-form-urlencoded',
 								),
@@ -2098,7 +2098,7 @@ class EVF_AJAX {
 						);
 						$response = json_decode( wp_remote_retrieve_body( $response ) );
 						if ( $response->data->moderate == 1 && $response->data->valid == 1 && $response->data->product_id == 1 ) {
-							update_option( $data['name'], $value );
+							update_option( sanitize_text_field( wp_unslash( $data['name'] ) ), $value );
 
 							$output .= '<span class="everest-forms-clean-talk-icon-box">
 								<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -2131,7 +2131,7 @@ class EVF_AJAX {
 						}
 					}
 				}
-				update_option( $data['name'], $value );
+				update_option( sanitize_text_field( wp_unslash( $data['name'] ) ), $value );
 			}
 		}
 
