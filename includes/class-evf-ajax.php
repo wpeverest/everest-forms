@@ -2096,7 +2096,7 @@ class EVF_AJAX {
 								),
 							)
 						);
-						$response = json_decode(wp_remote_retrieve_body( $response ) );
+						$response = json_decode( wp_remote_retrieve_body( $response ) );
 						if ( $response->data->moderate == 1 && $response->data->valid == 1 && $response->data->product_id == 1 ) {
 							update_option( $data['name'], $value );
 
