@@ -75,6 +75,11 @@
 				beforeSend : function() {
 					var spinner = '<i class="evf-loading evf-loading-active"></i>';
 					$button.append( spinner );
+					$button.attr( 'disabled', true );
+					$button.css({
+						cursor: 'not-allowed',
+						opacity: 0.5
+					});
 				},
 				success: function (response) {
 					$button.find('.evf-loading').remove();
@@ -87,37 +92,31 @@
 						clearInterval(killUnloadPrompt);
 					}, 5000);
 
-					const $messageBox = $(document).find('.evf-clean-talk-message');
-
-					$messageBox.attr('style', '');
-					const baseStyle = `
-						padding: 10px 15px;
-						border-radius: 4px;
-						margin-top: 10px;
-						font-weight: bold;
-						display: block;
-					`;
+					const $messageBox = $( document ).find( '.evf-clean-talk-message' );
+					$messageBox.empty();
+					$messageBox.append( response.data.html );
 
 					if (response.success) {
-						$messageBox
-							.attr('style', baseStyle + `
-								color: #155724;
-								background-color: #d4edda;
-								border: 1px solid #c3e6cb;
-							`)
-							.text(response.data.message || 'Form submitted successfully!');
+						$messageBox.find( '.everest-forms-clean-talk-message-outer-wrapper' ).addClass( 'everest-forms-clean-talk-success-state' );
 					} else {
-						$messageBox
-							.attr('style', baseStyle + `
-								color: #721c24;
-								background-color: #f8d7da;
-								border: 1px solid #f5c6cb;
-							`)
-							.text(response.data.message || 'An error occurred. Please try again.');
+						if ( 'empty' === response.data.error ) {
+							$messageBox.find( '.everest-forms-clean-talk-message-outer-wrapper' ).addClass( 'everest-forms-clean-talk-empty-state' );
+						}else{
+							$messageBox.find( '.everest-forms-clean-talk-message-outer-wrapper' ).addClass( 'everest-forms-clean-talk-invalid-state' );
+						}
 					}
+
+					$button.attr( 'disabled', false );
+					$button.css({
+						cursor: '',
+						opacity: 1
+					});
 
 					setTimeout(function () {
 						$messageBox.fadeOut(300, function () {
+							$messageBox.find( '.everest-forms-clean-talk-message-outer-wrapper' ).removeClass( 'everest-forms-clean-talk-empty-state' );
+							$messageBox.find( '.everest-forms-clean-talk-message-outer-wrapper' ).removeClass( 'everest-forms-clean-talk-invalid-state' );
+							$messageBox.find( '.everest-forms-clean-talk-message-outer-wrapper' ).removeClass( 'everest-forms-clean-talk-success-state' );
 							$messageBox.attr('style', '').text('').show();
 						});
 					}, 5000);
