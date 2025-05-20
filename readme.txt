@@ -344,6 +344,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 == Changelog ==
 
 = 3.2.2     	- 20-05-2025
+* Enhance 		- Validate clean talk access key on save.
 * Fix 			- Form templates not loading.
 
 = 3.2.1     	- 19-05-2025
