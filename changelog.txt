@@ -1,5 +1,8 @@
 == Changelog ==
 
+= 3.2.2     	- 20-05-2025
+* Fix 			- Form templates not loading.
+
 = 3.2.1     	- 19-05-2025
 * Tweak 		- Added settings option on form table.
 * Fix 			- Form templates style not applying.
