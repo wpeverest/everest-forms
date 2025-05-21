@@ -3520,7 +3520,8 @@
 				$copyBtn.tooltipster({
 					theme: 'tooltipster-default',
 					delay: 100,
-					side: 'top'
+					side: 'top',
+					updateAnimation: 'null'
 				});
 			}
 
