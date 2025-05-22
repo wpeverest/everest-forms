@@ -421,7 +421,7 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 
 				$choice['attr']['tabindex'] = '-1';
 				printf( '<input type="checkbox" %s %s %s>', evf_html_attributes( $choice['id'], $choice['class'], $choice['data'], $choice['attr'] ), esc_attr( $choice['required'] ), checked( '1', $choice['default'], false ) );
-				echo '<label class="everest-forms-image-choices-label">' . wp_kses_post( $choice['label']['text'] ) . '</label>';
+				echo '<label class="everest-forms-image-choices-label"' . ( isset( $choice['id'] ) ? ' for="' . esc_attr( $choice['id'] ) . '"' : '' ) . '>' . wp_kses_post( $choice['label']['text'] ) . '</label>';
 				echo '</label>';
 			} else {
 				// Normal display.
