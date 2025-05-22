@@ -545,10 +545,14 @@
 				if (editInterface.length) {
 					editInterface.remove();
 				} else if (dataCustom === undefined) {
+					console.log('yeta xu');
+
 					control.showEditInterface();
 				}
 
 				if (dataCustom === 'evf-custom-color-palette') {
+					console.log('custom');
+
 					if (iconElement.html() === '✎') {
 						control.showEditInterface();
 						iconElement.html('✖');
@@ -556,6 +560,8 @@
 						iconElement.html('✎');
 					}
 				} else if (dataCustom === '') {
+					console.log('else if');
+
 					$.confirm({
 						title: 'Edit Color Palette',
 						content: _evfCustomizeControlsL10n.color_palette_edit_title +
@@ -642,13 +648,40 @@
 			`;
 
 			control.container.append(editInterfaceHtml);
-			control.container.find('.color-picker').wpColorPicker();
+			control.container.find('.color-picker').each(function () {
+				var $input = $(this);
+				$input.wpColorPicker({
+					change: function (event, ui) {
+						console.log('Color confirmed:', ui.color.toString());
+					},
+					clear: function () {
+						console.log('Color cleared');
+					}
+				});
+			});
+
+			control.container.find('.color-picker').each(function () {
+				var $input = $(this);
+				console.log($input);
+
+				$input.on('irischange', function (event, ui) {
+					console.log( $( this ) );
+
+					const newColor = ui.color.toString();
+					// window.parent.changeStyleForCustomPalette('test', newColor);
+					console.log('Live color change:', newColor);
+
+					// $('.everest-forms .evf-container').css('background-color', newColor);
+				});
+			});
+
+			// Handle Save button
 			control.container.on('click', '.color-palette-save-button', function () {
-				if ("disabled" === $("#save.save").attr("disabled")) {
+				// if ("disabled" === $("#save.save").attr("disabled")) {
 					control.saveEditedColors();
-				} else {
-					alert("Please save the unsaved changes to create the color palettes.");
-				}
+				// } else {
+				// 	alert("Please save the unsaved changes to create the color palettes.");
+				// }
 			});
 
 			control.container.find('.color-palette-name-input').on('change', function () {
@@ -685,15 +718,6 @@
 						boxWidth: '20%',
 						useBootstrap: false,
 						backgroundDismiss: true,
-						buttons: {
-							OK: {
-								text: 'OK',
-								btnClass: 'btn-green',
-								action: function() {
-									window.location.reload();
-								}
-							}
-						},
 						onOpenBefore: function() {
 							this.$jconfirmBox.css({
 								'background': '#ffffff',
@@ -1086,13 +1110,13 @@
 						e.preventDefault();
 						e.stopPropagation();
 
-						if ("disabled" === $("#save.save").attr("disabled")) {
+						// if ("disabled" === $("#save.save").attr("disabled")) {
 							send_save_template_request( this );
-						} else {
-							alert(
-								"Please save the unsaved changes to create the template."
-							);
-						}
+						// } else {
+						// 	alert(
+						// 		"Please save the unsaved changes to create the template."
+						// 	);
+						// }
 					});
 				};
 
