@@ -43,6 +43,82 @@
 
                 }
             });
+
+				var $editColorPaletteBtn = parentLi.find( '.color-palette-edit-icon' );
+
+				// $editColorPaletteBtn.trigger( 'click' );
+				$editColorPaletteBtn.on( 'click', function(){
+					setTimeout( function(){
+						if ( 0 != parentLi.find( '.color-palette-edit-interface').length ) {
+							console.log('found');
+							parentLi.find( '.color-palette-edit-interface').find( '.color-picker' ).each( function(){
+								var $input = $( this ),
+									$field_type = $input.closest( '.wp-picker-container' ).siblings( 'label' ).attr( 'data-key' );
+									console.log($field_type);
+
+
+								console.log($input);
+
+								// 1. Get the color button (as DOM element, not jQuery object)
+								const colorButton = $input.closest('.wp-picker-input-wrap').siblings('.wp-color-result')[0];
+
+								console.log(colorButton);
+
+								// 2. Check if element exists
+								if (!colorButton) {
+									console.error('Color button not found!');
+									return;
+								}
+
+								// 3. Track style changes
+								const observer = new MutationObserver((mutations) => {
+									mutations.forEach((mutation) => {
+										if (mutation.attributeName === 'style') {
+											const newColor = colorButton.style.backgroundColor;
+											switch ($field_type) {
+												case 'form_background':
+													container.css( 'background-color', newColor );
+													break;
+												case 'field_background':
+													container.find( 'input, textarea, select, canvas.evf-signature-canvas, .StripeElement' ).css( 'background-color', newColor );
+													break;
+												case 'field_sublabel':
+													field_sub_label.css( 'color', newColor );
+													break;
+												case 'field_label':
+													field_label.css( 'color', newColor );
+													break;
+												case 'button_text':
+													button.css( 'color', newColor );
+													break;
+												case 'button_background':
+													button.css( 'background-color', newColor );
+													break;
+
+											}
+
+											// Trigger custom event
+											$(document).trigger('colorPickerUpdated', { color: newColor });
+										}
+									});
+								});
+
+								// 4. Start observing
+								observer.observe(colorButton, {
+									attributes: true,
+									attributeFilter: ['style']
+								});
+
+								// 5. Listen for changes elsewhere
+								$(document).on('colorPickerUpdated', (e, data) => {
+									console.log('Detected color change:', data.color);
+									// Your custom logic here
+								});
+							})
+						}
+					}, 500);
+				});
+
         });
 
 
