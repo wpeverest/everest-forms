@@ -718,6 +718,15 @@
 						boxWidth: '20%',
 						useBootstrap: false,
 						backgroundDismiss: true,
+						buttons: {
+							OK: {
+								text: 'OK',
+								btnClass: 'btn-green',
+								action: function() {
+									window.location.reload();
+								}
+							}
+						},
 						onOpenBefore: function() {
 							this.$jconfirmBox.css({
 								'background': '#ffffff',
@@ -750,6 +759,7 @@
 							});
 						}
 					});
+					$( "#save.save").trigger('click');
 				}
 			}).fail(function (error) {});
 			control.container.find('.color-palette-edit-interface').remove();
