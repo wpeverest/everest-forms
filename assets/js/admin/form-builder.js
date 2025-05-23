@@ -2835,6 +2835,9 @@
 					EVFPanelBuilder.checkEmptyGrid();
 				},
 				over: function( event, ui ) {
+					if ( ! ui.item.hasClass('required') ) {
+						ui.item.find( '.required' ).remove();
+					}
 					$( '.evf-admin-grid' ).addClass( 'evf-hover' );
 					$( event.target ).addClass( 'evf-item-hover' );
 					$( event.target ).closest( '.evf-admin-row' ).addClass( 'evf-hover' );
@@ -2849,6 +2852,12 @@
 					$(document).trigger('evf_sort_update_complete',{event: event,ui:  ui});
 				},
 				stop: function( event, ui ) {
+					if ( !ui.item.hasClass( 'required' ) ) {
+						const labelTitle = ui.item.find('.label-title');
+						if (labelTitle.length > 0) {
+							labelTitle.append('<span class="required">*</span>');
+						}
+					}
 					ui.item.removeAttr( 'style' );
 					EVFPanelBuilder.checkEmptyGrid();
 				}
