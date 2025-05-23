@@ -100,6 +100,7 @@ const Edit = (props) => {
 							<Popover trigger="hover" openDelay={300} closeDelay={300} placement="bottom">
 									<PopoverTrigger>
 										<Box
+										marginTop={"16px"}
 										>
 											<SelectControl
 											opacity={ "0.5" }
@@ -124,7 +125,7 @@ const Edit = (props) => {
 
 								<PopoverContent
 									_focus={{ boxShadow: "0px 4px 50px 0px rgba(0, 0, 0, 0.16)" }}
-									maxWidth={"200px"}
+									maxWidth={"248px"}
 									boxShadow={"0px 4px 50px 0px rgba(0, 0, 0, 0.16)"}
 								>
 									<PopoverArrow bg="#ffff" />
@@ -133,7 +134,6 @@ const Edit = (props) => {
 										fontWeight={"400"}
 									>
 									This feature requires the Premium version.
-									<br/>
 									<Link
 										href="https://everestforms.net/pricing/?utm_source=popup_type_edit_page&utm_medium=upgrade-link&utm_campaign=lite-version"
 										target="_blank"
@@ -141,6 +141,7 @@ const Edit = (props) => {
 										color="#754bb2"
 										textDecoration="underline"
 										fontWeight={"600"}
+										marginLeft={"8px"}
 									>
 										Upgrade Now
 									</Link>
