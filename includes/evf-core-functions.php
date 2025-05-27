@@ -1610,7 +1610,7 @@ if ( ! function_exists( 'evf_handle_force_update' ) ) {
  * @param $license_plan License plan.
  */
 function evf_handle_license_plan_compatibility( $license_plan ) {
-	$license_plan = ( 'plus' === $license_plan || 'professional' === $license_plan ||'unknown' === $license_plan ) ? 'personal' : $license_plan;
+	$license_plan = ( 'unknown' === $license_plan ) ? 'personal' : $license_plan;
 	return $license_plan;
 }
 
