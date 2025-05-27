@@ -11295,7 +11295,7 @@ body {
 			display: flex;
 			align-items: center;
 			gap: 12px;
-			padding-right: 16px;
+			padding-right: 24px;
 
 			select {
 				min-height: 38px;
@@ -11335,9 +11335,9 @@ body {
 			.evf-manage-tags {
 				padding: 6px 14px;
 				border-radius: 3px;
-				border: 1px solid #7545bb;
-				background: #f6f7f7;
-				color: #7545bb;
+				border: 1px solid #dc3545;
+				background: #fdf6f7;
+				color: #dc3545;
 				font-size: 14px;
 				font-weight: 500;
 				line-height: 150%;
@@ -11346,6 +11346,7 @@ body {
 
 				&:disabled {
 					pointer-events: none;
+					display: none;
 				}
 
 				&:hover {
@@ -11566,10 +11567,6 @@ button#show-settings-link {
 
 		.select2-selection--multiple {
 			border-color: $color_gray-lighten;
-		}
-
-		.select2-selection__choice {
-			margin: 4px 4px 0 0;
 		}
 
 		.select2-search__field {
