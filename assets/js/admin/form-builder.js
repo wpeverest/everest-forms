@@ -3652,6 +3652,29 @@ jQuery(function ($) {
 				outerWrapper.off('change', '.form-state-type').on('change', '.form-state-type', function() {
 					toggleMessageLocations($(this), $(this).val());
 				});
+
+				outerWrapper.on('change', '.everest-preview-confirmation', function(){
+					var html = '';
+					if($(this).is(':checked')) {
+						var options =[{value:'top', label: 'Above Form Summary'}, {value:"bottom", label:'Below Form Summary'}, {value:'popup', label:'As Popup'}];
+					}else{
+						var options =[{value:'hide', label: 'Shown Message in Place of Form'}, {value:'popup', label:'As Popup'}];
+					}
+
+					var select = outerWrapper.find('.form-state-hide select');
+
+					select.empty();
+
+					$.each(options, function(index, option) {
+						html += `<option value="${option.value}">${option.label}</option>`;
+					});
+
+					select.html(html);
+					setTimeout(function() {
+								select.trigger('change');
+							}, 50);
+
+				})
 				break;
 			case 'custom_page':
 				outerWrapper.find('.custom-page-setting').show();
@@ -3696,7 +3719,15 @@ jQuery(function ($) {
 
 		if (state === 'hide') {
 			wrapper.find('.form-state-hide').show();
+			wrapper.find('.preview-confirmation-toggle-wrapper').show();
+			if(wrapper.find('.everest-preview-confirmation').is(':checked')) {
+				wrapper.find('.preview-confirm-select-wrapper').show();
+			}else{
+				wrapper.find('.preview-confirm-select-wrapper').hide();
+			}
 		} else if (state === 'reset') {
+			wrapper.find('.preview-confirmation-toggle-wrapper').hide();
+			wrapper.find('.preview-confirm-select-wrapper').hide();
 			wrapper.find('.form-state-reset').show();
 		}
 	}

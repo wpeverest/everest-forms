@@ -592,7 +592,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				// --------------------------------------------------------------------//
 				echo '<div class="evf-content-section evf-content-confirmation-settings">';
 				echo '<div class="evf-content-section-title">';
-				esc_html_e( 'Confirmation', 'everest-forms' );
+				esc_html_e( 'Form Confirmation', 'everest-forms' );
 				echo '</div>';
 				echo '<div class="evf-confirmation-wrap everest-forms-border-container">';
 				echo '<div class="evf-content-section-title">';
@@ -611,9 +611,8 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 						'tooltip'     => sprintf( esc_html__( 'Choose where to redirect after form submission. <a href="%s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/general-settings/#5-toc-title' ) ),
 						'options'     => array(
 							'same'         => array( 'label' => esc_html__( 'Same Page', 'everest-forms' ) ),
-							'custom_page'  => array( 'label' => esc_html__( 'Custom Page', 'everest-forms' ) ),
-							'external_url' => array( 'label' => esc_html__( 'External URL', 'everest-forms' ) ),
-
+							'custom_page'  => array( 'label' => esc_html__( 'Redirect to Custom Page', 'everest-forms' ) ),
+							'external_url' => array( 'label' => esc_html__( 'Redirect to External URL', 'everest-forms' ) ),
 						),
 					)
 				);
@@ -661,10 +660,10 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					$this->form_data,
 					esc_html__( ' Append Query String', 'everest-forms' ),
 					array(
-						'class'   => 'custom-and-external-page-setting',
+						'class'       => 'custom-and-external-page-setting',
 						'input_class' => 'append-query-string-input',
-						'tooltip' => esc_html__( 'Enable to add the query string in the url.', 'everest-forms' ),
-						'default' => '0',
+						'tooltip'     => esc_html__( 'Enable to add the query string in the url.', 'everest-forms' ),
+						'default'     => '0',
 					)
 				);
 
@@ -676,7 +675,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					esc_html__( 'Query String', 'everest-forms' ),
 					array(
 						'default'   => isset( $settings['query_string'] ) ? $settings['query_string'] : '',
-						'class'     => 'query-string-wrap',
+						'class'     => 'custom-and-external-page-setting query-string-wrap',
 						'smarttags' => array(
 							'type'        => 'all',
 							'form_fields' => 'all',
@@ -705,7 +704,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					'settings',
 					'submission_message_scroll',
 					$this->form_data,
-					__( 'Automatically scroll to the submission message', 'everest-forms' ),
+					__( 'Auto scroll to Submission Message', 'everest-forms' ),
 					array(
 						'class'   => 'same-page-setting',
 						'default' => '1',
@@ -717,7 +716,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					'settings',
 					'form_state_type',
 					$this->form_data,
-					'',
+					esc_html__( 'After Submission Form Behavior', 'everest-forms' ),
 					array(
 						'default'     => 'hide',
 						'class'       => 'same-page-setting evf-builder-radio',
@@ -735,11 +734,10 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					'settings',
 					'preview_confirmation',
 					$this->form_data,
-					esc_html__( 'Show entry preview after form submission', 'everest-forms' ),
+					esc_html__( 'Show User Submitted Form Summary After Submission', 'everest-forms' ),
 					array(
-						'class'   => 'same-page-setting',
-						'input_class'=> 'everest-preview-confirmation',
-						'tooltip' => esc_html__( 'Show entry preview after form submission', 'everest-forms' ),
+						'class'       => 'same-page-setting preview-confirmation-toggle-wrapper',
+						'input_class' => 'everest-preview-confirmation',
 					)
 				);
 
@@ -760,7 +758,23 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 						),
 					)
 				);
+
 				// message display type based on the form state type.
+				$option = array(
+					'hide'  => esc_html__( 'Shown Message in Place of Form', 'everest-forms' ),
+					'popup' => esc_html__( 'As Popup', 'everest-forms' ),
+				);
+
+				$is_preview = isset( $this->form_data['settings']['preview_confirmation'] ) ? $this->form_data['settings']['preview_confirmation'] : false;
+
+				if ( $is_preview ) {
+					$option = array(
+						'top'    => esc_html__( 'Above Form Summary', 'everest-forms' ),
+						'bottom' => esc_html( 'Below Form Summary', 'everest-forms' ),
+						'popup'  => esc_html__( 'As Popup', 'everest-forms' ),
+					);
+				}
+
 				everest_forms_panel_field(
 					'select',
 					'settings',
@@ -768,15 +782,12 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					$this->form_data,
 					esc_html__( 'Display Message', 'everest-forms' ),
 					array(
-						'class'   => 'same-page-setting form-state-hide',
-						'default' => 'hide',
+						'class'       => 'same-page-setting form-state-hide',
+						'input_class' => 'message-display-location-of-hide',
+						'default'     => 'hide',
 						/* translators: %1$s - general settings docs url */
-						'tooltip' => sprintf( esc_html__( 'Choose where to display success message. <a href="%s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/confirmations/' ) ),
-						'options' => array(
-
-							'hide'  => esc_html__( 'Default', 'everest-forms' ),
-							'popup' => esc_html__( 'Popup', 'everest-forms' ),
-						),
+						'tooltip'     => sprintf( esc_html__( 'Choose where to display success message. <a href="%s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/confirmations/' ) ),
+						'options'     => $option,
 					)
 				);
 
@@ -794,7 +805,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 						'options' => array(
 							'top'    => esc_html__( 'Above the form', 'everest-forms' ),
 							'bottom' => esc_html__( 'Below the form', 'everest-forms' ),
-							'popup'  => esc_html__( 'Popup', 'everest-forms' ),
+							'popup'  => esc_html__( 'As Popup', 'everest-forms' ),
 						),
 					)
 				);
