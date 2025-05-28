@@ -450,7 +450,13 @@ class EVF_AJAX {
 			$data['form_fields'] = array_merge( array_intersect_key( array_flip( $structure ), $data['form_fields'] ), $data['form_fields'] );
 		}
 
-		$form_id     = evf()->form->update( $data['id'], $data );
+		$form_id = evf()->form->update( $data['id'], $data );
+
+		// To track the new confirmation.
+		if ( ! get_post_meta( $form_data['id'], 'updated_form_confirmation', true ) ) {
+			update_post_meta( $form_data['id'], 'updated_form_confirmation', true );
+		}
+
 		$form_styles = get_option( 'everest_forms_styles', array() );
 		$logger->info(
 			__( 'Saving form.', 'everest-forms' ),
