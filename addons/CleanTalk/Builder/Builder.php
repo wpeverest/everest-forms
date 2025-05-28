@@ -30,6 +30,8 @@ class Builder {
 	 * @param [type] $obj
 	 */
 	public function add_inline_clean_talk_settings( $obj ) {
+		$settings = isset( $this->form_data['settings'] ) ? $this->form_data['settings'] : array();
+
 		echo '<div class="everest-forms-border-container"><h4 class="everest-forms-border-container-title">' . esc_html__( 'CleanTalk', 'everest-forms' ) . '</h4>';
 		everest_forms_panel_field(
 			'toggle',
@@ -43,35 +45,22 @@ class Builder {
 		);
 
 		$clean_talk_method = get_option( 'everest_forms_clean_talk_methods', 'rest_api' );
-		$access_key        = get_option( 'everest_forms_recaptcha_cleantalk_access_key' );
-		/**
-		* Warning message if the installation, activation and configuration are not proper.
-		*/
-		if ( 'rest_api' === $clean_talk_method && empty( $access_key ) ) {
-			printf(
-				'<div class="evf-akismet"><span class="evf-akismet-warning"><span class="evf-akismet-warning-label">%s</span> %s <a href="%s" target="_blank">%s</a>%s <a href="%s" target="_blank">%s</a></div>',
-				esc_html__( 'Warning:- ', 'everest-forms' ),
-				esc_html__( 'Go to', 'everest-forms' ),
-				esc_url( admin_url( 'admin.php?page=evf-settings&tab=integration&section=clean-talk' ) ),
-				esc_html__( 'Settings > Integration', 'everest-forms' ),
-				esc_html__( ' and add your CleanTalk Access Key. For more', 'everest-forms' ),
-				esc_url( 'https://docs.everestforms.net/' ),
-				esc_html__( 'info', 'everest-forms' )
-			);
-		} elseif ( 'clean_talk_plugin' === $clean_talk_method ) {
-			if ( ! class_exists( 'Cleantalk\Antispam\Cleantalk' ) ) {
-				printf(
-					'<div class="evf-akismet"><span class="evf-akismet-warning"><span class="evf-akismet-warning-label">%s</span> %s <a href="%s" target="_blank">%s</a>%s <a href="%s" target="_blank">%s</a></div>',
-					esc_html__( 'Warning:- ', 'everest-forms' ),
-					esc_html__( 'This feature is inactive because CleanTalk plugin', 'everest-forms' ),
-					esc_url( admin_url( 'plugins.php' ) ),
-					esc_html__( ' has not properly configured.', 'everest-forms' ),
-					esc_html__( ' For more', 'everest-forms' ),
-					esc_url( 'https://docs.everestforms.net/' ),
-					esc_html__( 'information', 'everest-forms' )
-				);
-			}
-		}
+		$access_key        = get_option( 'everest_forms_recaptcha_cleantalk_access_key', '' );
+
+		error_log( print_r( $access_key, true ) );
+		echo '<div class="everest-forms-border-container everest-forms-cleantalk-protection-type">';
+		everest_forms_panel_field(
+			'text',
+			'settings',
+			'clean_talk_access_key',
+			$access_key,
+			esc_html__( 'CleanTalk Access Key', 'everest-forms' ),
+			array(
+				'default' => $access_key,
+				'tooltip' => esc_html__( 'CleanTalk Access Key', 'everest-forms' ),
+			)
+		);
+		echo '</div>';
 		echo '<div class="everest-forms-border-container everest-forms-cleantalk-protection-type">';
 		everest_forms_panel_field(
 			'select',
