@@ -404,6 +404,7 @@ const ModuleItem = (props) => {
 											  )
 											: handleBoxClick();
 									}}
+									opacity={ data.dependent_status === 'inactive' ? 0.5 : 1 }
 								>
 									{title}
 								</Checkbox>
