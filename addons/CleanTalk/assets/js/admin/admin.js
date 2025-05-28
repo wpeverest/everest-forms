@@ -4,15 +4,10 @@
 		init: function () {
 			$( document ).ready( function () {
 				EVFCleanTalk.bindCleanTalkInit();
-				EVFCleanTalk.toggleCleanTalkSettings();
 
 				$( document).on('click', '#everest-forms-clean-talk-save-settings', function (e) {
 					e.preventDefault();
 					EVFCleanTalk.saveCleanTalkSettings( $( this ) );
-				});
-
-				$(document).on('change', 'input[name="everest_forms_clean_talk_methods"]', function () {
-					EVFCleanTalk.toggleCleanTalkSettings();
 				});
 			});
 		},
@@ -27,19 +22,6 @@
 			$(document).on('change', '#everest-forms-panel-field-settings-cleantalk', function () {
 				EVFCleanTalk.cleanTalkToggle($(this));
 			});
-		},
-
-		/**
-		 * Show/hide CleanTalk-related settings based on selections.
-		 */
-		toggleCleanTalkSettings: function () {
-			const selectedMethod = $('input[name="everest_forms_clean_talk_methods"]:checked').val();
-
-			if ( 'rest_api' === selectedMethod ) {
-				$( document ).find( '.evf-clean-talk-access-key' ).removeClass( 'everest-forms-hidden' );
-			}else{
-				$( document ).find( '.evf-clean-talk-access-key' ).addClass( 'everest-forms-hidden' );
-			}
 		},
 
 		/**
