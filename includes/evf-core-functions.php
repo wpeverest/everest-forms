@@ -5495,9 +5495,8 @@ function evf_form_confirmation_backward_compatibility( $form_data ) {
 	if ( empty( $form_data ) ) {
 		return $form_data;
 	}
-
+	//If the form is updated then return original form data.
 	if ( get_post_meta( $form_data['id'], 'updated_form_confirmation', true ) ) {
-
 		return $form_data;
 	}
 

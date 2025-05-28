@@ -583,7 +583,8 @@ class EVF_Form_Task {
 				return $response_data;
 			}
 		}
-
+		//For form confirmation backward compatilibity.
+		$this->form_data = evf_form_confirmation_backward_compatibility($this->form_data);
 		$settings        = $this->form_data['settings'];
 		$message         = isset( $settings['successful_form_submission_message'] ) ? $settings['successful_form_submission_message'] : __( 'Thanks for contacting us! We will be in touch with you shortly.', 'everest-forms' );
 		$form_state_type = isset( $settings['form_state_type'] ) ? $settings['form_state_type'] : 'hide';

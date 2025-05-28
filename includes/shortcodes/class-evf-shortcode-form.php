@@ -903,7 +903,10 @@ class EVF_Shortcode_Form {
 		}
 
 		// Basic form information.
-		$form_data       = apply_filters( 'everest_forms_frontend_form_data', evf_decode( $form->post_content ) );
+		$form_data = apply_filters( 'everest_forms_frontend_form_data', evf_decode( $form->post_content ) );
+		//For form confirmation backward compatilibity.
+		$form_data = evf_form_confirmation_backward_compatibility( $form_data );
+
 		$form_id         = absint( $form->ID );
 		$settings        = isset( $form_data['settings'] ) ? $form_data['settings'] : array();
 		$action          = esc_url_raw( remove_query_arg( 'evf-forms' ) );
@@ -1161,7 +1164,7 @@ class EVF_Shortcode_Form {
 				$form_atts['data']['message_location'] = $message_display_location;
 				$form_atts['data']['message']          = $message;
 			}
-			//Adding the form state type. hide or reset
+			// Adding the form state type. hide or reset
 			$form_atts['data']['form_state_type'] = $form_state_type;
 
 			echo '<form ' . evf_html_attributes( $form_atts['id'], $form_atts['class'], $form_atts['data'], $form_atts['atts'] ) . '>';

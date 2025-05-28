@@ -453,8 +453,8 @@ class EVF_AJAX {
 		$form_id = evf()->form->update( $data['id'], $data );
 
 		// To track the new confirmation.
-		if ( ! get_post_meta( $form_data['id'], 'updated_form_confirmation', true ) ) {
-			update_post_meta( $form_data['id'], 'updated_form_confirmation', true );
+		if ( ! get_post_meta( $form_id, 'updated_form_confirmation', true ) ) {
+			update_post_meta( $form_id, 'updated_form_confirmation', true );
 		}
 
 		$form_styles = get_option( 'everest_forms_styles', array() );
