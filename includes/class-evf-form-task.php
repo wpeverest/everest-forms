@@ -1331,38 +1331,18 @@ class EVF_Form_Task {
 			return false;
 		}
 
-		$clean_talk_method = get_option( 'everest_forms_clean_talk_methods', 'rest_api' );
+		$mark_as_spam = false;
+		$logger 	  = evf_get_logger();
 
-		if ( empty( $clean_talk_method ) ) {
+		$access_key = get_option( 'everest_forms_recaptcha_cleantalk_access_key', '' );
+
+		if ( empty( $access_key ) ) {
+			$logger->notice( 'Missing the CleanTalk Access Key', array( 'source' => 'cleantalk' ) );
+
 			return false;
 		}
 
-		$mark_as_spam = false;
-
-		$logger = evf_get_logger();
-
-		if ( 'rest_api' === $clean_talk_method ) {
-			$access_key = get_option( 'everest_forms_recaptcha_cleantalk_access_key' );
-
-			if ( empty( $access_key ) ) {
-				$logger->notice( 'Missing the CleanTalk Access Key', array( 'source' => 'cleantalk' ) );
-
-				return false;
-			}
-
-			$mark_as_spam = $this->evf_is_spam_submission_clean_talk_rest_api( $entry );
-		} elseif ( 'clean_talk_plugin' === $clean_talk_method ) {
-
-			if ( ! class_exists( 'Cleantalk\Antispam\Cleantalk' ) ) {
-				$logger->notice( 'Missing the CleanTalk Plugin.', array( 'source' => 'cleantalk' ) );
-
-				return false;
-			}
-
-			$mark_as_spam = $this->evf_is_spam_submission_clean_talk( $entry );
-		}
-
-		return $mark_as_spam;
+		return  $this->evf_is_spam_submission_clean_talk_rest_api( $entry, $access_key );
 	}
 
 	/**
@@ -1721,59 +1701,12 @@ class EVF_Form_Task {
 	}
 
 	/**
-	 * Check if the submission is spam using CleanTalk Plugin.
-	 *
-	 * @since 3.2.2
-	 */
-	public function evf_is_spam_submission_clean_talk( $entry ) {
-		if ( ! class_exists( 'Cleantalk\Antispam\Cleantalk' ) ) {
-			return false;
-		}
-		$clean_talk_request_obj          = $this->get_clean_talk_request_obj( $entry );
-		$clean_talk_instance             = new \Cleantalk\Antispam\Cleantalk();
-		$clean_talk_instance->server_url = 'https://moderate.cleantalk.org';
-		$response                        = $clean_talk_instance->isAllowMessage( $clean_talk_request_obj );
-
-		return 0 == $response->allow;
-	}
-
-	/**
-	 * Get CleanTalk request.
-	 *
-	 * @since 3.2.2
-	 */
-	public function get_clean_talk_request_obj( $entry ) {
-		$access_key  = get_option( 'everest_forms_recaptcha_cleantalk_access_key' );
-		$submit_time = isset( $this->form_data['entry']['evf_form_load_time'] ) ? time() - (int) $this->form_data['entry']['evf_form_load_time'] : null;
-		$entry_data  = $this->get_entry_data_for_akismet( $this->form_data['form_fields'], $entry );
-		$entry_data  = apply_filters( 'evf_entry_akismet_entry_data', $entry_data, $entry, $this->form_data );
-
-		$info = array(
-			'auth_key'             => $access_key,
-			'sender_ip'            => $_SERVER['REMOTE_ADDR'],
-			'contact_form_subject' => get_the_title( absint( $this->form_data['id'] ) ),
-			'referrer'             => urlencode( $_SERVER['HTTP_REFERER'] ),
-			'page_url'             => htmlspecialchars( @$_SERVER['HTTP_USER_AGENT'] ),
-			'submit_time'          => $submit_time,
-			'agent'                => 'php-api',
-			'js_on'                => 1,
-			'sender_nickname'      => isset( $entry_data['name'] ) ? $entry_data['name'] : '',
-			'sender_email'         => isset( $entry_data['email'] ) ? $entry_data['email'] : '',
-			'message'              => isset( $entry_data['content'] ) ? $entry_data['content'] : '',
-			'phone'                => '',
-		);
-
-		return new CleantalkRequest( $info );
-	}
-
-	/**
 	 * Check if the submission is spam using CleanTalk REST API.
 	 *
 	 * @since 3.2.2
 	 */
-	public function evf_is_spam_submission_clean_talk_rest_api( $entry ) {
+	public function evf_is_spam_submission_clean_talk_rest_api( $entry, $access_key ) {
 		$marked_as_spam = false;
-		$access_key     = get_option( 'everest_forms_recaptcha_cleantalk_access_key' );
 
 		$submit_time = isset( $this->form_data['entry']['evf_form_load_time'] ) ? time() - (int) $this->form_data['entry']['evf_form_load_time'] : null;
 		$event_token = isset( $this->form_data['entry']['evf_form_event_token'] ) ? $this->form_data['entry']['evf_form_event_token'] : null;
