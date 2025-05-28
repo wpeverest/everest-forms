@@ -140,6 +140,8 @@ jQuery( function( $ ) {
 						let quiz_reporting = '';
 						let preview_confirmation = '';
 						let message_location = '';
+						let form_state_type = '';
+
 						if(xhr.data.form_id !== undefined && xhr.data.entry_id !== undefined && xhr.data.pdf_download == true){
 								pdf_download_message = '<br><small><a href="/?page=evf-entries-pdf&form_id='+ xhr.data.form_id+'&entry_id='+xhr.data.entry_id+'">' + xhr.data.pdf_download_message + '</a></small>';
 							}
@@ -153,6 +155,10 @@ jQuery( function( $ ) {
 
 							if ( xhr.data.message_display_location !== undefined && xhr.data.message_display_location !== '' ) {
 								message_location = xhr.data.message_display_location;
+							}
+
+							if ( xhr.data.form_state_type !== undefined && xhr.data.form_state_type !== '' ) {
+								form_state_type = xhr.data.form_state_type;
 							}
 
 							var paymentMethod = formTuple.find( ".everest-forms-stripe-gateways-tabs .evf-tab" ).has( 'a.active' ).data( 'gateway' );
@@ -181,7 +187,6 @@ jQuery( function( $ ) {
 								return;
 							}
 							if( 'square' === formTuple.find( ".everest-forms-gateway[data-gateway='square']" ).data('gateway') ){
-								console.log('square');
 
 								formTuple.trigger( 'everest_forms_frontend_payment_before_success_message', xhr.data );
 								return;
@@ -204,9 +209,9 @@ jQuery( function( $ ) {
 								).focus();
 							} else if ( 'bottom' === message_location ) {
 								formTuple.closest('.everest-forms').append(
-									'<div class="everest-forms-notice everest-forms-notice--success" role="alert">' +
+									preview_confirmation + '<div class="everest-forms-notice everest-forms-notice--success" role="alert">' +
 									xhr.data.message + pdf_download_message +
-									'</div>' + quiz_reporting + preview_confirmation
+									'</div>' + quiz_reporting
 								).focus();
 							}else if ( 'popup' === message_location ) {
 								$('body').css('overflow', 'hidden');
@@ -234,6 +239,14 @@ jQuery( function( $ ) {
 										$('body').css('overflow', '');
 									});
 								});
+
+								formTuple.closest('.everest-forms').append(
+									preview_confirmation + quiz_reporting
+								).focus();
+							}
+							//If the form state hide then hide the form.
+							if('hide' === form_state_type) {
+								$('.evf-frontend-row, .evf-submit-container ').hide();
 							}
 
 							btn.attr('disabled', false).html(everest_forms_ajax_submission_params.submit);

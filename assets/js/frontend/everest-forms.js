@@ -1046,7 +1046,11 @@ jQuery( function ( $ ) {
 
 		popUpMessage: function() {
 			var $isPopup = $('.everest-form').is('[data-message_location]');
+			var $isFormStateHidden = $('.everest-form').data('form_state_type');
 
+			if('hide' === $isFormStateHidden) {
+				$('.evf-frontend-row, .evf-submit-container ').hide();
+			}
 			if ( ! $isPopup ) {
 				return;
 			}

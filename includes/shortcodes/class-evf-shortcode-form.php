@@ -1014,6 +1014,11 @@ class EVF_Shortcode_Form {
 			$message_display_location = sanitize_text_field( $_REQUEST['evf_message_display_location'] );
 		}
 
+		$form_state_type = '';
+		if ( ! empty( $_REQUEST['evf_form_state_type'] ) ) {
+			$form_state_type = sanitize_text_field( $_REQUEST['evf_form_state_type'] );
+		}
+
 		$message = isset( $form_data['settings']['successful_form_submission_message'] ) ? $form_data['settings']['successful_form_submission_message'] : __( 'Thanks for contacting us! We will be in touch with you shortly.', 'everest-forms' );
 
 		$success = apply_filters( 'everest_forms_success', false, $form_id );
@@ -1156,6 +1161,9 @@ class EVF_Shortcode_Form {
 				$form_atts['data']['message_location'] = $message_display_location;
 				$form_atts['data']['message']          = $message;
 			}
+			//Adding the form state type. hide or reset
+			$form_atts['data']['form_state_type'] = $form_state_type;
+
 			echo '<form ' . evf_html_attributes( $form_atts['id'], $form_atts['class'], $form_atts['data'], $form_atts['atts'] ) . '>';
 			if ( evf_is_amp() ) {
 				$state = array(
@@ -1170,7 +1178,9 @@ class EVF_Shortcode_Form {
 			do_action( 'everest_forms_frontend_output', $form_data, $title, $description, $errors );
 
 			echo '</form>';
+
 			if ( $success && ! empty( $form_data ) && 'bottom' === $message_display_location ) {
+				do_action( 'everest_forms_frontend_output_success', $form_data );
 				evf_add_notice( $message, 'success' );
 				do_action( 'everest_forms_frontend_output_success', $form_data );
 			}

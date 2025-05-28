@@ -608,15 +608,15 @@ class EVF_Form_Task {
 
 		$is_preview_confirmation = isset( $this->form_data['settings']['preview_confirmation'] ) ? $this->form_data['settings']['preview_confirmation'] : 0;
 
-		if (! empty( $submission_redirection_process ) && 'same' == $submission_redirection_process['redirect_to'] ) {
+		if ( ! empty( $submission_redirection_process ) && 'same' == $submission_redirection_process['redirect_to'] ) {
 			$is_preview_confirmation = $submission_redirection_process['settings']['preview_confirmation'];
 		}
-
+		$form_state_type = isset( $this->form_data['settings']['form_state_type'] ) ? $this->form_data['settings']['form_state_type'] : 'hide';
 		// show preview of form after submission.
-		if ( '1' === $is_preview_confirmation ) {
+		if ( '1' === $is_preview_confirmation && 'hide' === $form_state_type ) {
 			$preview_style = isset( $this->form_data['settings']['preview_confirmation_select'] ) ? $this->form_data['settings']['preview_confirmation_select'] : 'basic';
 
-			if (! empty( $submission_redirection_process ) && 'same' == $submission_redirection_process['redirect_to'] ){
+			if ( ! empty( $submission_redirection_process ) && 'same' == $submission_redirection_process['redirect_to'] ) {
 				$preview_style = $submission_redirection_process['settings']['preview_confirmation_select'];
 			}
 			if ( '1' === $ajax_form_submission ) {
@@ -640,6 +640,7 @@ class EVF_Form_Task {
 		if ( '1' === $ajax_form_submission ) {
 			$response_data['message']                   = $message;
 			$response_data['message_display_location']  = $message_display_location;
+			$response_data['form_state_type']           = $form_state_type;
 			$response_data['response']                  = 'success';
 			$response_data['form_id']                   = $form_id;
 			$response_data['entry_id']                  = $entry_id;
@@ -709,10 +710,13 @@ class EVF_Form_Task {
 			delete_option( 'everest_forms_overall_feedback_is_called' );
 			return $response_data;
 		} elseif ( ( 'same' === $this->form_data['settings']['redirect_to'] && empty( $submission_redirection_process ) ) ) {
-
 			if ( 'hide' === $message_display_location ) {
 				evf_add_notice( $message, 'success' );
 			}
+
+			$form_state_type                 = $this->form_data['settings']['form_state_type'];
+			$_REQUEST['evf_form_state_type'] = sanitize_text_field( $form_state_type );
+
 		} elseif ( ! empty( $submission_redirection_process ) && 'same' == $submission_redirection_process['redirect_to'] ) {
 			$form_state_type = $submission_redirection_process['settings']['form_state_type'];
 			$message         = $submission_redirection_process['settings']['successful_form_submission_message'];
@@ -727,6 +731,7 @@ class EVF_Form_Task {
 			}
 			// Setting message to reflect back after page refresh.
 			$_REQUEST['evf_message_display_location'] = sanitize_text_field( $message_display_location );
+			$_REQUEST['evf_form_state_type']          = sanitize_text_field( $form_state_type );
 			$_REQUEST['evf_popup_message']            = wp_kses_post( $message );
 		}
 		$logger->info(
