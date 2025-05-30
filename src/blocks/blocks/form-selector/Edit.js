@@ -132,6 +132,9 @@ const Edit = (props) => {
 									<PopoverBody
 										fontSize={"14px"}
 										fontWeight={"400"}
+										color={"#444"}
+										fontStyle={"normal"}
+										lineHeight={"150%"}
 									>
 									This feature requires the Premium version.
 									<Link
@@ -142,6 +145,10 @@ const Edit = (props) => {
 										textDecoration="underline"
 										fontWeight={"600"}
 										marginLeft={"8px"}
+										opacity={"0.9"}
+										lineHeight={"150%"}
+										textDecorationLine={"underline"}
+										textDecorationStyle={"solid"}
 									>
 										Upgrade Now
 									</Link>
