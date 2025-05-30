@@ -1800,18 +1800,10 @@ p.search-box {
 
 	.evf-content-confirmation-settings {
 		.evf-builder-radio {
-			display: flex;
-			flex-direction: row;
-
-			> *:not(label) {
-				display: flex;
-			}
-
 			.row {
-				display: flex;
+				width: auto;
 				height: 38px;
 				padding: 8px 12px;
-				align-items: center;
 				gap: 8px;
 				border-radius: 4px;
 				border: 1px solid var(--EVF-violet-Primary-400, #7545bb);

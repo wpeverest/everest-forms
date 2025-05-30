@@ -595,7 +595,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				 *
 				 * @since xx.xx.xx
 				 */
-				$this->form_data = evf_form_confirmation_backward_compatibility($this->form_data);
+				$this->form_data = evf_form_confirmation_backward_compatibility( $this->form_data );
 
 				echo '<div class="evf-content-section evf-content-confirmation-settings">';
 				echo '<div class="evf-content-section-title">';
