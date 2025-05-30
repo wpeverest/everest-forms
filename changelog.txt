@@ -1,5 +1,8 @@
 == Changelog ==
 
+= 3.2.3     	- 05-06-2025
+* Tweak 		- Form fields smart tag options for default value in form fields.
+
 = 3.2.2     	- 20-05-2025
 * Enhance 		- Validate clean talk access key on save.
 * Fix 			- Form templates not loading.
