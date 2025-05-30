@@ -4890,7 +4890,8 @@ p.search-box {
 				border-bottom: 1px solid $color_gray-lighten;
 
 				&.active {
-					background: $color_gray-light-skin;
+					background: $color-white;
+					color: $evf_primary-color;
 					border-bottom: 1px solid transparent;
 				}
 
