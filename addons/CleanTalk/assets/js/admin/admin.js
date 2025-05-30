@@ -11,7 +11,62 @@
 				});
 
 				$( document ).on( 'click', '.everest-forms-warning-text-link', function (e){
-					console.log('Warning link clicked');
+						var modelContent 			= '';
+						$.confirm({
+							title: '',
+							boxWidth: '604px',
+							useBootstrap: false,
+							content: '' +
+								'<form action="" class="formAccessKey">' +
+								'<div class="form-group">' +
+								'<div style="text-align:left; margin-bottom: 12px; font-size: 15px; font-weight: 500; line-height: 120%">CleanTalk Access Key</div><input style="height:38px; margin: 0" type="text" class="access-key form-control" placeholder="Enter access key" required />' +
+								'<div class="error-message" style="color: red; font-size: 13px; display: none; margin-top: 5px;"></div>' +
+								'<p style="margin-top: 10px; font-size: 13px;">' +
+								'Enter your CleanTalk REST API key from your ' +
+								'<a href="https://cleantalk.org/my" target="_blank">account dashboard here</a>.' +
+								'</p>' +
+								'<div style="background: #f3f6fb; padding: 10px; border-left: 3px solid #3498db; font-size: 13px; margin-top: 10px;">' +
+								'<strong>Note:</strong> This will update the CleanTalk Access Key globally. You can check here on ' +
+								'<a href="#">Settings &gt; Integration &gt; CleanTalk</a>.' +
+								'</div>' +
+								'</div>' +
+								'</form>',
+							buttons: {
+								formSubmit: {
+									text: 'Save Settings',
+									btnClass: 'everest-forms-btn everest-forms-btn-primary',
+									action: function () {
+										var name = this.$content.find('.name').val().trim();
+										var errorContainer = this.$content.find('.error-message');
+
+										if (!name) {
+											errorContainer.text('Please enter a valid name').show();
+											return false; // Prevent closing
+										}
+
+										// If valid, optionally clear error
+										errorContainer.hide();
+
+										// Do something with the name
+										console.log('Name:', name);
+										// You can close the modal or proceed further
+										return false;
+									}
+								},
+								cancel: function () {
+									// Do nothing
+								},
+							},
+							onContentReady: function () {
+								var jc = this;
+
+								this.$content.find('form').on('submit', function (e) {
+									e.preventDefault(); // Prevent default form submission
+									jc.$$formSubmit.trigger('click'); // Trigger button click manually
+								});
+							}
+						});
+
 				})
 				$( document ).on( 'click', '.everest-forms-update-clean-talk-key-button', function (e){
 					e.preventDefault();

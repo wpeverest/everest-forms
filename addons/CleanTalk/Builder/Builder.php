@@ -37,7 +37,7 @@ class Builder {
 		echo '<div class="everest-forms-border-container">';
 		echo '<div class="everest-forms-clean-talk-setting-container"><h4 class="everest-forms-border-container-title">' . esc_html__( 'CleanTalk', 'everest-forms' ) . '</h4>';
 		echo '<div>';
-		echo '<button class="everest-forms-update-clean-talk-key-button ' . ( empty( $access_key ) ? 'everest-forms-hidden' : '') . '" data-action="everest_forms_update_cleantalk_key">';
+		echo '<button class="everest-forms-update-clean-talk-key-button ' . ( empty( $access_key ) ? 'everest-forms-hidden' : '') . 'data-access-key="' . esc_attr( $access_key ) . '" >';
 		echo esc_html__( 'Update Key', 'everest-forms' );
 		echo '</button>';
 		echo '<a href="https://docs.everestforms.net/docs/cleantalk/" target="_blank" class="everest-forms-learn-more-link-cleantalk">' . esc_html__( 'View Docs', 'everest-forms' ) . '</a>';
