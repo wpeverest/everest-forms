@@ -314,8 +314,16 @@ class EVF_AJAX {
 			__( 'Check for empty meta key.', 'everest-forms' ),
 			array( 'source' => 'form-save' )
 		);
+
+		// Check for empty field label.
+		$logger->info(
+			__( 'Checking if the field label is empty or not.', 'everest-forms' ),
+			array( 'source' => 'form-save' )
+		);
+
 		$empty_meta_data   = array();
 		$list_of_meta_keys = array();
+		$empty_field_label = array();
 
 		// Calculation backward compatibility.
 		$old_calculation_format = 0;
@@ -395,6 +403,10 @@ class EVF_AJAX {
 					$empty_meta_data[] = $field['label'];
 				}
 
+				if ( empty( $field['label'] ) && ! in_array( $field['type'], array( 'html', 'title', 'captcha', 'divider', 'reset', 'recaptcha', 'hcaptcha', 'turnstile' ), true ) ) {
+					$empty_field_label[] = $field['id'];
+				}
+
 				if ( isset( $field['enable_calculation'] ) && ! empty( $field['enable_calculation'] ) ) {
 					if ( isset( $field['calculation_field'] ) && ! empty( $field['calculation_field'] ) ) {
 						$formula             = stripslashes( $field['calculation_field'] );
@@ -430,6 +442,20 @@ class EVF_AJAX {
 						'errorTitle'   => esc_html__( 'Meta Key missing', 'everest-forms' ),
 						/* translators: %s: empty meta data */
 						'errorMessage' => sprintf( esc_html__( 'Please add Meta key for fields: %s', 'everest-forms' ), '<strong>' . implode( ', ', $empty_meta_data ) . '</strong>' ),
+					)
+				);
+			}
+
+			if ( ! empty( $empty_field_label ) ) {
+				$logger->error(
+					__( 'Empty Field Label.', 'everest-forms' ),
+					array( 'source' => 'form-save' )
+				);
+				wp_send_json_error(
+					array(
+						'errorTitle'   => esc_html__( 'Empty Field Label.', 'everest-forms' ),
+						/* translators: %s: empty field label */
+						'errorMessage' => sprintf( wp_kses_post( __( 'Please add label for fields: %s.<br>To hide the field please Enable Hide Label option from Advanced Options > Hide Label', 'everest-forms' ) ), '<strong>' . implode( ', ', $empty_field_label ) . '</strong>')
 					)
 				);
 			}
@@ -2052,11 +2078,11 @@ class EVF_AJAX {
 				continue;
 			}
 
-			$output = '';
+			$output  = '';
 			$output .= '<div class="everest-forms-clean-talk-message-outer-wrapper">';
 
 			if ( in_array( sanitize_text_field( wp_unslash( $data['name'] ) ), $options_list ) ) {
-				if ('everest_forms_clean_talk_methods' === sanitize_text_field( wp_unslash( $data['name'] ) ) && 'rest_api' === sanitize_text_field( wp_unslash( $data['value'] ) ) ) {
+				if ( 'everest_forms_clean_talk_methods' === sanitize_text_field( wp_unslash( $data['name'] ) ) && 'rest_api' === sanitize_text_field( wp_unslash( $data['value'] ) ) ) {
 					$is_rest_api_method = true;
 				}
 
@@ -2078,16 +2104,18 @@ class EVF_AJAX {
 						</span>';
 						$output .= '<span class="everest-forms-clean-talk-message-box">Please enter the CleanTalk access key.</span>';
 						$output .= '</div>';
-						wp_send_json_error(array(
-							'error' => 'empty',
-							'html'	 => $output,
-						));
+						wp_send_json_error(
+							array(
+								'error' => 'empty',
+								'html'  => $output,
+							)
+						);
 					} else {
 						$clean_talk_request = array(
 							'method_name' => 'notice_paid_till',
 							'auth_key'    => $value,
 						);
-						$response = wp_remote_post(
+						$response           = wp_remote_post(
 							'https://api.cleantalk.org/',
 							array(
 								'body'    => \http_build_query( $clean_talk_request, true ),
@@ -2096,7 +2124,7 @@ class EVF_AJAX {
 								),
 							)
 						);
-						$response = json_decode( wp_remote_retrieve_body( $response ) );
+						$response           = json_decode( wp_remote_retrieve_body( $response ) );
 						if ( $response->data->moderate == 1 && $response->data->valid == 1 && $response->data->product_id == 1 ) {
 							update_option( sanitize_text_field( wp_unslash( $data['name'] ) ), $value );
 
@@ -2110,7 +2138,7 @@ class EVF_AJAX {
 
 							wp_send_json_success(
 								array(
-									'html' => $output
+									'html' => $output,
 								)
 							);
 						} else {
@@ -2125,7 +2153,7 @@ class EVF_AJAX {
 							wp_send_json_error(
 								array(
 									'error' => 'invalid',
-									'html' => $output
+									'html'  => $output,
 								)
 							);
 						}
@@ -2145,7 +2173,7 @@ class EVF_AJAX {
 		wp_send_json_success(
 			array(
 				'message' => __( 'Settings saved successfully', 'everest-forms' ),
-				'html'    => $output
+				'html'    => $output,
 			)
 		);
 	}
