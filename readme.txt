@@ -345,9 +345,11 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 = 3.2.3     	- 05-06-2025
 * Enhance 		- Active module workflow.
+* Enhance 		- Block Popup form settings.
 * Tweak 		- Form fields smart tag options for default value in form fields.
 * Fix 			- Incorrect asterisk display when moving fields.
 * Fix 			- Selection of option while clicking on label for image option.
+
 
 = 3.2.2     	- 20-05-2025
 * Enhance 		- Validate clean talk access key on save.

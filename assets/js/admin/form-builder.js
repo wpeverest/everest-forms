@@ -2785,6 +2785,17 @@
 			$( document.body ).trigger( 'evf-init-switch-field-options' );
 
 			if ( typeof field_id !== 'undefined' ) {
+				var $fieldOptions = $( '#everest-forms-field-option-' + field_id );
+				if ( $fieldOptions.length > 0 ) {
+					$( '#everest-forms-field-option-basic-' + field_id ).find( '.everest-forms-field-option-group-inner').show();
+					const $tempLink = $('<a href="#field-options"></a>').appendTo(document.body);
+
+					$tempLink[0].click();
+
+					setTimeout(() => {
+						$tempLink.remove();
+					}, 100);
+				}
 				$('#everest-forms-field-option-' + field_id).show();
 				$('#everest-forms-field-' + field_id).addClass('active');
 			} else {
@@ -3887,7 +3898,15 @@ jQuery( function ( $ ) {
 	// Fields Options - Open/close.
 	$( document.body ).on( 'click', '.everest-forms-field-option .everest-forms-field-option-group > a', function( event ) {
 		event.preventDefault();
+		var $fielOption = $( this ).closest( '.everest-forms-field-option-group' ).closest('.everest-forms-field-option');
+
+		$fielOption.find( '.everest-forms-field-option-group' ).each( function() {
+			$( this ).removeClass( 'open' ).addClass( 'closed' );
+		});
 		$( this ).parent( '.everest-forms-field-option-group' ).toggleClass( 'closed' ).toggleClass( 'open' );
+		$( '.everest-forms-field-option-group.closed' ).each( function() {
+			$( this ).find( '.everest-forms-field-option-group-inner' ).hide();
+		});
 	});
 	$( document.body ).on( 'click', '.everest-forms-field-option .everest-forms-field-option-group a', function( event ) {
 		// If the user clicks on some form input inside, the box should not be toggled.
