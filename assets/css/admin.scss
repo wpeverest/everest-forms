@@ -2552,13 +2552,15 @@ p.search-box {
 						border: 1px solid #EDEFF7;
 						width: 30.3%;
 						z-index: 999;
-						color: $color_gray-light;
+						color: #383838;
+						font-weight: 400;
 						cursor: pointer;
 						border-radius: 4px;
 						font-size: 12px;
 						transition: all 0.3s ease-in-out;
 						text-align: center;
 						background-color: #FBFBFD;
+						line-height: 150%;
 
 						.dashicons {
 							display: block;
@@ -4483,8 +4485,7 @@ p.search-box {
 			.evf-icon {
 				color: inherit;
 				display: block;
-				// font-size: 32px;
-				font-size: 28px;
+				font-size: 24px;
 				text-align: center;
 				margin-bottom: 6px;
 				padding: 0;
@@ -4882,7 +4883,7 @@ p.search-box {
 				padding: 15px 0;
 				font-size: 14px;
 				line-height: 150%;
-				font-weight: 600;
+				font-weight: 500;
 				text-align: center;
 				color: $color_gray-dark;
 				background: $color_gray-more-lighten;
