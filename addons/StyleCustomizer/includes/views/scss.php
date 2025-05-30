@@ -35,6 +35,13 @@ if ( isset( $_REQUEST['customized'] ) ) {
 	}
 }
 
+if ( null === $palette_key && ! isset( $_REQUEST['customized'] ) && ! isset( $_REQUEST['action'] ) ) {
+	if ( isset( $styles[ $form_id ]['color_palette'] ) && is_array( $styles[ $form_id ]['color_palette'] ) ) {
+		$colorPaletteKeys = array_keys( $styles[ $form_id ]['color_palette'] );
+		$colorPaletteKey  = $colorPaletteKeys[0];
+		$palette_key      = $colorPaletteKey;
+	}
+}
 
 
 if ( $form_id && $palette_key && isset( $current_color_palette[ "everest_forms_styles[$form_id][color_palette][$palette_key]" ] ) ) {
@@ -43,7 +50,6 @@ if ( $form_id && $palette_key && isset( $current_color_palette[ "everest_forms_s
 		$palette_key => $new_palette,
 	);
 }
-
 
 if ( isset( $styles[ $form_id ] ) && is_array( $styles[ $form_id ] ) ) {
 	$styles[ $form_id ] = array_map(
@@ -102,10 +108,9 @@ if ( ! empty( $backward_compatibility_color_key ) ) {
 	}
 }
 
-if ( isset( $_COOKIE['color_palette_save'] ) ) {
+if ( null === $palette_key && isset( $_COOKIE['color_palette_save'] ) ) {
 	$palette_key = $_COOKIE['color_palette_save'];
 }
-
 
 // Form data.
 $form_data = EVF()->form->get( $form_id, array( 'content_only' => true ) );
@@ -201,7 +206,6 @@ $success_message_background_color: <?php echo evf_clean( $values['success_messag
 $success_message_border_type: <?php echo evf_clean( $values['success_message']['border_type'] ); ?>;
 $success_message_border_color: <?php echo evf_clean( $values['success_message']['border_color'] ); ?>;
 
-// Error Message styles variables.
 $error_message_font_size: <?php echo evf_clean( $values['error_message']['font_size'] ); ?>;
 $error_message_text_alignment: <?php echo evf_clean( $values['error_message']['text_alignment'] ); ?>;
 $error_message_font_color: <?php echo evf_clean( $values['error_message']['font_color'] ); ?>;
@@ -260,16 +264,16 @@ $validation_message_border_color: <?php echo evf_clean( $values['validation_mess
 				<?php if ( '' !== $values['form_container']['opacity'] ) : ?>
 					opacity: <?php echo evf_clean( $values['form_container']['opacity'] ); ?>;
 				<?php endif; ?>
-				<?php if ( isset( $values['form_container']['background_position_x'], $values['form_container']['background_position_y'] ) ) : ?>
-					<?php printf( 'background-position: %s %s;', evf_clean( $values['form_container']['background_position_x'] ), evf_clean( $values['form_container']['background_position_y'] ) ); ?>
+				<?php if ( ! empty( $values['form_container']['background_position_x'] ) && ! empty( $values['form_container']['background_position_y'] ) ) : ?>
+					<?php printf( 'background-position: %s %s;', empty( evf_clean( $values['form_container']['background_position_x'] ) ) ? '' : evf_clean( $values['form_container']['background_position_x'] ), empty( evf_clean( $values['form_container']['background_position_y'] ) ) ? '' : evf_clean( $values['form_container']['background_position_y'] ) ); ?>
 				<?php endif; ?>
 				<?php foreach ( array( 'background_repeat', 'background_attachment' ) as $background_prop ) : ?>
-					<?php if ( '' !== $values['form_container'][ $background_prop ] ) : ?>
+					<?php if ( ! empty( $values['form_container'][ $background_prop ] ) ) : ?>
 						<?php printf( '%s: %s;', str_replace( '_', '-', $background_prop ), evf_clean( $values['form_container'][ $background_prop ] ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 					<?php endif; ?>
 				<?php endforeach; ?>
 			<?php endif; ?>
-			<?php if ( isset( $values['form_container']['border_type'] ) ) : ?>
+			<?php if ( ! empty( $values['form_container']['border_type'] ) ) : ?>
 				border-style: $container_border_type;
 				<?php if ( 'none' !== $values['form_container']['border_type'] ) : ?>
 					border-color: $container__border_color;

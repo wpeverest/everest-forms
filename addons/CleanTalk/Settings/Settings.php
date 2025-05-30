@@ -89,8 +89,9 @@ class Settings extends \EVF_Integration {
 							<input style="margin: 12px 0; width: 100%" class="evf-access-key" type="password" id="everest_forms_recaptcha_cleantalk_access_key" name="everest_forms_recaptcha_cleantalk_access_key" value="<?php echo esc_attr( get_option( 'everest_forms_recaptcha_cleantalk_access_key' ) ); ?>">
 							<p style="margin-bottom:0; margin-top:0"><?php echo __( 'Enter your CleanTalk REST API key from your ', 'everest-forms' ); ?><a href="https://cleantalk.org/my/" target="_blank" rel="noopener noreferrer"><?php echo __( 'account dashboard here', 'everest-forms' ); ?></a>.</p>
 						</div>
+						<div class="evf-clean-talk-message"></div>
 					</div>
-					<input style="margin-top: 12px;" type="submit" id="everest-forms-clean-talk-save-settings" class="everest-forms-btn everest-forms-btn-primary" value="<?php esc_attr_e( 'Save Settings', 'everest-forms' ); ?>">
+					<button style="margin-top: 12px;" type="submit" id="everest-forms-clean-talk-save-settings" class="everest-forms-btn everest-forms-btn-primary" ><?php echo __('Save Settings', 'everest-forms') ?></button>
 				 </form>
 
 				</div>
