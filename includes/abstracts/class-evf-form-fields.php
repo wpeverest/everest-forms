@@ -1596,9 +1596,18 @@ abstract class EVF_Form_Fields {
 				$exclude_fields = array( 'rating', 'number', 'range-slider', 'payment-quantity', 'reset' );
 
 				if ( ! in_array( $field['type'], $exclude_fields, true ) ) {
-					$output .= '<a href="#" class="evf-toggle-smart-tag-display" data-type="other"><span class="dashicons dashicons-editor-code"></span></a>';
+					$output .= '<a href="#" class="evf-toggle-smart-tag-display" data-type="all"><span class="dashicons dashicons-editor-code"></span></a>';
 					$output .= '<div class="evf-smart-tag-lists" style="display: none">';
-					$output .= '<div class="smart-tag-title other-tag-title">Others</div><ul class="evf-others"></ul></div>';
+
+					$output .= '<div class="smart-tag-title">';
+					$output .= esc_html__( 'Available Fields', 'everest-forms' );
+					$output .= '</div><ul class="evf-fields"></ul>';
+
+					$output .= '<div class="smart-tag-title other-tag-title">';
+					$output .= esc_html__( 'Others', 'everest-forms' );
+					$output .= '</div><ul class="evf-others"></ul>';
+
+					$output .= '</div>';
 				}
 
 				$output = $this->field_element(
