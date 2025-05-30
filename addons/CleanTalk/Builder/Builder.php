@@ -31,8 +31,17 @@ class Builder {
 	 */
 	public function add_inline_clean_talk_settings( $obj ) {
 		$settings = isset( $this->form_data['settings'] ) ? $this->form_data['settings'] : array();
+		$clean_talk_method = get_option( 'everest_forms_clean_talk_methods', 'rest_api' );
+		$access_key        = get_option( 'everest_forms_recaptcha_cleantalk_access_key', '' );
 
-		echo '<div class="everest-forms-border-container"><h4 class="everest-forms-border-container-title">' . esc_html__( 'CleanTalk', 'everest-forms' ) . '</h4>';
+		echo '<div class="everest-forms-border-container">';
+		echo '<div class="everest-forms-clean-talk-setting-container"><h4 class="everest-forms-border-container-title">' . esc_html__( 'CleanTalk', 'everest-forms' ) . '</h4>';
+		echo '<div>';
+		echo '<button class="everest-forms-update-clean-talk-key-button ' . ( empty( $access_key ) ? 'everest-forms-hidden' : '') . '" data-action="everest_forms_update_cleantalk_key">';
+		echo esc_html__( 'Update Key', 'everest-forms' );
+		echo '</button>';
+		echo '<a href="https://docs.everestforms.net/docs/cleantalk/" target="_blank" class="everest-forms-learn-more-link-cleantalk">' . esc_html__( 'View Docs', 'everest-forms' ) . '</a>';
+		echo '</div></div>';
 		everest_forms_panel_field(
 			'toggle',
 			'settings',
@@ -44,22 +53,12 @@ class Builder {
 			)
 		);
 
-		$clean_talk_method = get_option( 'everest_forms_clean_talk_methods', 'rest_api' );
-		$access_key        = get_option( 'everest_forms_recaptcha_cleantalk_access_key', '' );
-
-		error_log( print_r( $access_key, true ) );
-		echo '<div class="everest-forms-border-container everest-forms-cleantalk-protection-type">';
-		everest_forms_panel_field(
-			'text',
-			'settings',
-			'clean_talk_access_key',
-			$access_key,
-			esc_html__( 'CleanTalk Access Key', 'everest-forms' ),
-			array(
-				'default' => $access_key,
-				'tooltip' => esc_html__( 'CleanTalk Access Key', 'everest-forms' ),
-			)
-		);
+		echo '<div class="everest-forms-warning-container">';
+		echo '<img src="' . esc_url( plugins_url( 'addons/CleanTalk/assets/images/warning.png', EVF_PLUGIN_FILE ) ) . '" alt="' . esc_attr__( 'CleanTalk', 'everest-forms' ) . '" class="everest-forms-warning-icon" />';
+		echo '<p class="everest-forms-warning-text">';
+		echo esc_html__( 'No CleanTalk access key found  ', 'everest-forms' );
+		echo '<span class="everest-forms-warning-text-link">Add Key</span>';
+		echo '</p>';
 		echo '</div>';
 		echo '<div class="everest-forms-border-container everest-forms-cleantalk-protection-type">';
 		everest_forms_panel_field(

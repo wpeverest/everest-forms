@@ -15,3 +15,74 @@
 		align-items: center
 	}
 }
+
+.everest-forms-border-container{
+	.everest-forms-clean-talk-setting-container{
+		display: flex;
+		justify-content: space-between;
+		height: 39px;
+		border-bottom: 1px solid #E9E9E9;
+		margin-bottom: 24px;
+
+		.everest-forms-border-container-title{
+			border-bottom: 0px !important;
+		}
+
+		.everest-forms-update-clean-talk-key-button{
+			background-color: #ffff;
+			color: #2271B1;
+			border: none;
+			cursor: pointer;
+			margin-right: 12px;
+			font-size: 13px;
+			font-style: normal;
+			font-weight: 400;
+			line-height: 150%;
+			text-decoration: underline !important;
+		}
+
+		.everest-forms-learn-more-link-cleantalk{
+			color: #2271B1;
+			text-align: right;
+			font-size: 13px;
+			font-style: normal;
+			font-weight: 400;
+			line-height: 150%;
+			text-decoration: underline !important;
+		}
+	}
+	.everest-forms-warning-container{
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		padding: 10px 11px;
+		border-left: 3px solid #EE9936;
+		background: #FFFAF5;
+		align-self: stretch;
+		height: 40px;
+		height: 40px;
+		margin: 20px 0;
+	}
+
+	.everest-forms-warning-text{
+		color: #383838;
+		font-size: 13px;
+		font-style: normal;
+		font-weight: 400;
+		line-height: 150%;
+	}
+
+	.everest-forms-warning-text-link{
+		color: #2271B1;
+		font-size: 13px;
+		font-style: normal;
+		font-weight: 400;
+		line-height: 150%;
+		text-decoration-line: underline !important;
+		text-decoration-style: solid;
+		text-decoration-skip-ink: none;
+		text-decoration-thickness: auto;
+		text-underline-offset: auto;
+		cursor: pointer;
+	}
+}

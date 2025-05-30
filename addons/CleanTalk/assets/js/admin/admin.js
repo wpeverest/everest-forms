@@ -9,6 +9,14 @@
 					e.preventDefault();
 					EVFCleanTalk.saveCleanTalkSettings( $( this ) );
 				});
+
+				$( document ).on( 'click', '.everest-forms-warning-text-link', function (e){
+					console.log('Warning link clicked');
+				})
+				$( document ).on( 'click', '.everest-forms-update-clean-talk-key-button', function (e){
+					e.preventDefault();
+					console.log('Update link clicked');
+				})
 			});
 		},
 
@@ -29,9 +37,10 @@
 		 */
 		cleanTalkToggle: function (cleanTalkEnabler) {
 			if ($(cleanTalkEnabler).is(':checked')) {
-				$('.everest-forms-cleantalk-protection-type').show();
+
+				$('.everest-forms-cleantalk-protection-type, .everest-forms-warning-container').show();
 			} else {
-				$('.everest-forms-cleantalk-protection-type').hide();
+				$('.everest-forms-cleantalk-protection-type, .everest-forms-warning-container').hide();
 			}
 		},
 		/**
