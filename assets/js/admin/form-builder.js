@@ -250,6 +250,7 @@
 
 			$input.prop('readonly', false).focus();
 
+			$( document ).find( '.evf-meta-key-copy-btn' ).hide();
 			$(this).hide();
 
 			if ($wrapper.find('.evf-meta-key-actions').length === 0) {
@@ -293,7 +294,7 @@
 				var $wrapper = $(this).closest('.evf-meta-key-input-wrapper'),
 					$input = $wrapper.find('.evf-input-meta-key'),
 					originalValue = $(this).data('original_value');
-
+				$( document ).find( '.evf-meta-key-copy-btn' ).show();
 				$input.val(originalValue);
 
 				$input.prop('readonly', true);
@@ -306,7 +307,7 @@
 			$(document).on('click', '.evf-save-meta-key-icon', function () {
 				var $wrapper = $(this).closest('.evf-meta-key-input-wrapper'),
 					$input = $wrapper.find('.evf-input-meta-key');
-
+				$( document ).find( '.evf-meta-key-copy-btn' ).show();
 				$input.prop('readonly', true);
 
 				$wrapper.find('.evf-meta-key-actions').remove();
@@ -3539,7 +3540,8 @@
 				$copyBtn.tooltipster({
 					theme: 'tooltipster-default',
 					delay: 100,
-					side: 'top'
+					side: 'top',
+					updateAnimation: 'null'
 				});
 			}
 
