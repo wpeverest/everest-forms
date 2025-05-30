@@ -344,6 +344,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 == Changelog ==
 
 = 3.2.3     	- 05-06-2025
+* Enhance 		- Active module workflow.
 * Tweak 		- Form fields smart tag options for default value in form fields.
 * Fix 			- Incorrect asterisk display when moving fields.
 * Fix 			- Selection of option while clicking on label for image option.
