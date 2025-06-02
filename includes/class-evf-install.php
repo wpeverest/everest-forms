@@ -165,6 +165,7 @@ class EVF_Install {
 		self::maybe_add_activated_date();
 
 		delete_transient( 'evf_installing' );
+		delete_transient( 'evf_template_section_list' );
 
 		do_action( 'everest_forms_flush_rewrite_rules' );
 		do_action( 'everest_forms_installed' );

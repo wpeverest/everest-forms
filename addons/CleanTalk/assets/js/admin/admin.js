@@ -67,14 +67,22 @@
 			};
 
 			const $button = $el;
-			const originalText = $button.val();
-			$button.prop('disabled', true).val('Saving...');
 
 			$.ajax({
 				type: 'POST',
 				url: everest_forms_clean_talk.ajax_url,
 				data: data,
+				beforeSend : function() {
+					var spinner = '<i class="evf-loading evf-loading-active"></i>';
+					$button.append( spinner );
+					$button.attr( 'disabled', true );
+					$button.css({
+						cursor: 'not-allowed',
+						opacity: 0.5
+					});
+				},
 				success: function (response) {
+					$button.find('.evf-loading').remove();
 					const killUnloadPrompt = setInterval(function () {
 						window.onbeforeunload = null;
 						$(window).off('beforeunload');
@@ -84,19 +92,39 @@
 						clearInterval(killUnloadPrompt);
 					}, 5000);
 
+					const $messageBox = $( document ).find( '.evf-clean-talk-message' );
+					$messageBox.empty();
+					$messageBox.append( response.data.html );
+
 					if (response.success) {
-						$button.val('Saved');
+						$messageBox.find( '.everest-forms-clean-talk-message-outer-wrapper' ).addClass( 'everest-forms-clean-talk-success-state' );
+					} else {
+						if ( 'empty' === response.data.error ) {
+							$messageBox.find( '.everest-forms-clean-talk-message-outer-wrapper' ).addClass( 'everest-forms-clean-talk-empty-state' );
+						}else{
+							$messageBox.find( '.everest-forms-clean-talk-message-outer-wrapper' ).addClass( 'everest-forms-clean-talk-invalid-state' );
+						}
 					}
+
+					$button.attr( 'disabled', false );
+					$button.css({
+						cursor: '',
+						opacity: 1
+					});
+
+					setTimeout(function () {
+						$messageBox.fadeOut(300, function () {
+							$messageBox.find( '.everest-forms-clean-talk-message-outer-wrapper' ).removeClass( 'everest-forms-clean-talk-empty-state' );
+							$messageBox.find( '.everest-forms-clean-talk-message-outer-wrapper' ).removeClass( 'everest-forms-clean-talk-invalid-state' );
+							$messageBox.find( '.everest-forms-clean-talk-message-outer-wrapper' ).removeClass( 'everest-forms-clean-talk-success-state' );
+							$messageBox.attr('style', '').text('').show();
+						});
+					}, 5000);
 				},
 				error: function () {
 					alert('Error saving settings.');
 					$button.val(originalText);
-				},
-				complete: function () {
-					setTimeout(function () {
-						$button.prop('disabled', false).val(originalText);
-					}, 2000);
-				},
+				}
 			});
 		},
 

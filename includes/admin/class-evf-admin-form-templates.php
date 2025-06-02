@@ -41,7 +41,7 @@ class EVF_Admin_Form_Templates {
 
 		if ( false === $template_data ) {
 
-			$template_json_url = $template_url . 'templates.json';
+			$template_json_url = $template_url . 'templates1.json';
 			try {
 				$content      = wp_remote_get( $template_json_url );
 				$content_json = wp_remote_retrieve_body( $content );
@@ -53,9 +53,9 @@ class EVF_Admin_Form_Templates {
 
 			// Removing directory so the templates can be reinitialized.
 			$folder_path = untrailingslashit( plugin_dir_path( EVF_PLUGIN_FILE ) . '/assets/images/templates' );
-			if ( isset( $template_data->templates ) ) {
+			if ( isset( $template_data->templates[0]->templates ) ) {
 
-				foreach ( $template_data->templates as $template_tuple ) {
+				foreach ( $template_data->templates[0]->templates as $template_tuple ) {
 
 					$image_url = isset( $template_tuple->image ) ? $template_tuple->image : ( $template_url . 'images/' . $template_tuple->slug . '.png' );
 
