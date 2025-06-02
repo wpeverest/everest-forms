@@ -53,7 +53,7 @@ class Builder {
 			)
 		);
 
-		if ( empty( $access_key ) ) {
+		if (  empty( $access_key ) ) {
 			echo '<div class="everest-forms-warning-container">';
 			echo '<img src="' . esc_url( plugins_url( 'addons/CleanTalk/assets/images/warning.png', EVF_PLUGIN_FILE ) ) . '" alt="' . esc_attr__( 'CleanTalk', 'everest-forms' ) . '" class="everest-forms-warning-icon" />';
 			echo '<p class="everest-forms-warning-text">';
