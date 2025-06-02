@@ -37,7 +37,7 @@ class Builder {
 		echo '<div class="everest-forms-border-container">';
 		echo '<div class="everest-forms-clean-talk-setting-container"><h4 class="everest-forms-border-container-title">' . esc_html__( 'CleanTalk', 'everest-forms' ) . '</h4>';
 		echo '<div>';
-		echo '<button class="everest-forms-update-clean-talk-key-button ' . ( empty( $access_key ) ? 'everest-forms-hidden' : '') . 'data-access-key="' . esc_attr( $access_key ) . '" >';
+		echo '<button class="everest-forms-update-clean-talk-key-button ' . ( empty( $access_key ) ? 'everest-forms-hidden' : '' ) . '" data-access-key="' . esc_attr( $access_key ) . '">';
 		echo esc_html__( 'Update Key', 'everest-forms' );
 		echo '</button>';
 		echo '<a href="https://docs.everestforms.net/docs/cleantalk/" target="_blank" class="everest-forms-learn-more-link-cleantalk">' . esc_html__( 'View Docs', 'everest-forms' ) . '</a>';
@@ -53,13 +53,15 @@ class Builder {
 			)
 		);
 
-		echo '<div class="everest-forms-warning-container">';
-		echo '<img src="' . esc_url( plugins_url( 'addons/CleanTalk/assets/images/warning.png', EVF_PLUGIN_FILE ) ) . '" alt="' . esc_attr__( 'CleanTalk', 'everest-forms' ) . '" class="everest-forms-warning-icon" />';
-		echo '<p class="everest-forms-warning-text">';
-		echo esc_html__( 'No CleanTalk access key found  ', 'everest-forms' );
-		echo '<span class="everest-forms-warning-text-link">Add Key</span>';
-		echo '</p>';
-		echo '</div>';
+		if ( empty( $access_key ) ) {
+			echo '<div class="everest-forms-warning-container">';
+			echo '<img src="' . esc_url( plugins_url( 'addons/CleanTalk/assets/images/warning.png', EVF_PLUGIN_FILE ) ) . '" alt="' . esc_attr__( 'CleanTalk', 'everest-forms' ) . '" class="everest-forms-warning-icon" />';
+			echo '<p class="everest-forms-warning-text">';
+			echo esc_html__( 'No CleanTalk access key found  ', 'everest-forms' );
+			echo '<span class="everest-forms-warning-text-link">Add Key</span>';
+			echo '</p>';
+			echo '</div>';
+		}
 		echo '<div class="everest-forms-border-container everest-forms-cleantalk-protection-type">';
 		everest_forms_panel_field(
 			'select',
