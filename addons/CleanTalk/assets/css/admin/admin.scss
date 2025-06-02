@@ -136,8 +136,21 @@
 			text-align: left;
 			background: #f3f6fb;
 			padding: 10px;
-			border-left: 3px solid #3498db;
-			font-size: 14px;
+			border-left: 3px solid #4584FF;
+			display: flex;
+
+			svg{
+				margin-right: 8px !important;
+				margin-top: 2px !important;
+			}
+
+			p{
+				color: #383838;
+				font-size: 13px;
+				font-style: normal;
+				font-weight: 400;
+				line-height: 150%;
+			}
 		}
 	}
 }
