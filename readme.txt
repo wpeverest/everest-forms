@@ -344,9 +344,11 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 == Changelog ==
 
 = 3.2.3     	- 05-06-2025
+* Enhance 		- Form builder design.
 * Enhance 		- Active module workflow.
-* Tweak 		- Edit meta key design.
+* Enhance		- Prevent form save if the field is empty.
 * Enhance 		- Block Popup form settings.
+* Tweak 		- Edit meta key design.
 * Tweak 		- Form fields smart tag options for default value in form fields.
 * Fix 			- Save color palette workflow.
 * Fix 			- Incorrect asterisk display when moving fields.
