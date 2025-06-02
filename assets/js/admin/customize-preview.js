@@ -20,33 +20,76 @@
                 var color = $(this).val();
 				var colorElements = $(this).data('title').replace(/\s+/g, '_').toLowerCase();
 
-
-				switch (colorElements) {
-                    case 'form_background':
-						container.css( 'background-color', color );
-                        break;
-                    case 'field_background':
-						container.find( 'input, textarea, select, canvas.evf-signature-canvas, .StripeElement' ).css( 'background-color', color );
-                        break;
-					case 'field_sublabel':
-						field_sub_label.css( 'color', color );
-						break;
-					case 'field_label':
-						field_label.css( 'color', color );
-						break;
-					case 'button_text':
-						button.css( 'color', color );
-						break;
-					case 'button_background':
-						button.css( 'background-color', color );
-						break;
-
-                }
+				switchColors( colorElements, color );
             });
+
+			var $editColorPaletteBtn = parentLi.find( '.color-palette-edit-icon' );
+
+			$editColorPaletteBtn.on( 'click', function(){
+				setTimeout( function(){
+					if ( 0 != parentLi.find( '.color-palette-edit-interface').length ) {
+						parentLi.find( '.color-palette-edit-interface').find( '.color-picker' ).each( function(){
+							var $input = $( this ),
+								$field_type = $input.closest( '.wp-picker-container' ).siblings( 'label' ).attr( 'data-key' ),
+								colorButton = $input.closest('.wp-picker-input-wrap').siblings('.wp-color-result')[0];
+
+							if (!colorButton) {
+								console.error('Color button not found!');
+								return;
+							}
+
+							const observer = new MutationObserver((mutations) => {
+								mutations.forEach((mutation) => {
+									if (mutation.attributeName === 'style') {
+										const newColor = colorButton.style.backgroundColor;
+										switchColors( $field_type, newColor );
+									}
+								});
+							});
+
+							/**
+							 * Need to observe compulsory.
+							 */
+							observer.observe(colorButton, {
+								attributes: true,
+								attributeFilter: ['style']
+							});
+						})
+					}
+				}, 1000);
+			});
         });
 
-
-
+	/**
+	 * Switch color.
+	 *
+	 * @since xx.xx.xx
+	 *
+	 * @param {string} field_type
+	 * @param {string} color
+	 */
+	function switchColors( field_type, color ){
+		switch (field_type) {
+			case 'form_background':
+				container.css( 'background-color', color );
+				break;
+			case 'field_background':
+				container.find( 'input, textarea, select, canvas.evf-signature-canvas, .StripeElement' ).css( 'background-color', color );
+				break;
+			case 'field_sublabel':
+				field_sub_label.css( 'color', color );
+				break;
+			case 'field_label':
+				field_label.css( 'color', color );
+				break;
+			case 'button_text':
+				button.css( 'color', color );
+				break;
+			case 'button_background':
+				button.css( 'background-color', color );
+				break;
+		}
+	}
 
 	/**
 	 * Add Google font link into header.

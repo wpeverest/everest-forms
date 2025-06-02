@@ -5,6 +5,7 @@
 * Tweak 		- Edit meta key design.
 * Enhance 		- Block Popup form settings.
 * Tweak 		- Form fields smart tag options for default value in form fields.
+* Fix 			- Save color palette workflow.
 * Fix 			- Incorrect asterisk display when moving fields.
 * Fix 			- Selection of option while clicking on label for image option.
 

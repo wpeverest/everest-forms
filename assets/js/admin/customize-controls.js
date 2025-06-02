@@ -644,11 +644,7 @@
 			control.container.append(editInterfaceHtml);
 			control.container.find('.color-picker').wpColorPicker();
 			control.container.on('click', '.color-palette-save-button', function () {
-				if ("disabled" === $("#save.save").attr("disabled")) {
 					control.saveEditedColors();
-				} else {
-					alert("Please save the unsaved changes to create the color palettes.");
-				}
 			});
 
 			control.container.find('.color-palette-name-input').on('change', function () {
@@ -726,6 +722,8 @@
 							});
 						}
 					});
+
+					$( "#save.save" ).trigger( 'click' );
 				}
 			}).fail(function (error) {});
 			control.container.find('.color-palette-edit-interface').remove();
