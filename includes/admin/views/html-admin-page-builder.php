@@ -101,7 +101,7 @@ $preview_link = add_query_arg(
 				?>
 			</nav>
 			<div class="evf-forms-nav-right">
-				<a class="everest-forms-btn everest-forms-show-entries-btn" href="<?php echo esc_url( admin_url( 'admin.php?page=evf-entries&form_id=' . $_GET['form_id'] ) ); ?>" rel="bookmark" target="_blank">
+				<a class="everest-forms-btn everest-forms-show-entries-btn" href="<?php echo esc_url( admin_url( 'admin.php?page=evf-entries&form_id=' . absint( $_GET['form_id'] ) ) ); ?>" rel="bookmark" target="_blank">
 					<div class="evf-nav-btn-container">
 						<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
 							<path d="M8.66602 11.3333V6" stroke="#383838" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
