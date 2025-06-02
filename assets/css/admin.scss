@@ -2552,13 +2552,15 @@ p.search-box {
 						border: 1px solid #EDEFF7;
 						width: 30.3%;
 						z-index: 999;
-						color: $color_gray-light;
+						color: #383838;
+						font-weight: 400;
 						cursor: pointer;
 						border-radius: 4px;
 						font-size: 12px;
 						transition: all 0.3s ease-in-out;
 						text-align: center;
 						background-color: #FBFBFD;
+						line-height: 150%;
 
 						.dashicons {
 							display: block;
@@ -2682,6 +2684,7 @@ p.search-box {
 					.everest-forms-field-options {
 						background-color: #F6F7F9;
 						display: none;
+						height: 100vh;
 
 						.everest-forms-border-container {
 							.everest-forms-field-option-row {
@@ -2794,8 +2797,9 @@ p.search-box {
 
 						.everest-forms-field-option-group {
 							&.everest-forms-field-option-group-basic, &.everest-forms-field-option-group-advanced, &.everest-forms-field-option-group-conditionals, &.everest-forms-field-option-group-calculations, &.everest-forms-field-option-group-quiz {
-									background: white;
+									background: #FBFBFD;
 									padding: 16px 14px;
+									border: 1px solid #E1E1E1;
 									border-radius: 2px;
 									margin-bottom: 12px;
 								.everest-forms-field-option-group-toggle {
@@ -2814,12 +2818,13 @@ p.search-box {
 							font-size: 14px;
 							font-weight: 600;
 							display: block;
-							color: $color_gray-dark;
+							color: #23282d;
+							font-weight: 500;
+							line-height: 150%;
 						}
 
 						.everest-forms-field-option-group-inner {
-							padding: 15px 0;
-							border-bottom: 1px solid $color_gray-lighten;
+							padding-top: 15px;
 						}
 					}
 
@@ -3923,12 +3928,12 @@ p.search-box {
 			}
 
 			label {
-				font-size: 14px;
+				font-size: 15px;
 				margin-bottom: 10px;
 				// color: $color_gray-base;
-				color: #222222;
+				color: #222;
 				display: block;
-				font-weight: 600;
+				font-weight: 500;
 
 				i {
 					color: $color_gray-light;
@@ -4482,8 +4487,7 @@ p.search-box {
 			.evf-icon {
 				color: inherit;
 				display: block;
-				// font-size: 32px;
-				font-size: 28px;
+				font-size: 24px;
 				text-align: center;
 				margin-bottom: 6px;
 				padding: 0;
@@ -4881,14 +4885,15 @@ p.search-box {
 				padding: 15px 0;
 				font-size: 14px;
 				line-height: 150%;
-				font-weight: 600;
+				font-weight: 500;
 				text-align: center;
 				color: $color_gray-dark;
 				background: $color_gray-more-lighten;
 				border-bottom: 1px solid $color_gray-lighten;
 
 				&.active {
-					background: $color_gray-light-skin;
+					background: $color-white;
+					color: $evf_primary-color;
 					border-bottom: 1px solid transparent;
 				}
 
@@ -4901,7 +4906,7 @@ p.search-box {
 		.everest-forms-panel-sidebar {
 			.everest-forms-add-fields,
 			.everest-forms-field-options {
-				padding: 32px 14px;
+				padding: 16px 14px;
 			}
 			.everest-forms-add-fields {
 				.everest-forms-input-group {
