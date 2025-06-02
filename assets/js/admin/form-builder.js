@@ -2920,13 +2920,17 @@
 			if ( 'add-fields' === id ) {
 				$( '.everest-forms-add-fields' ).show();
 				$( '.everest-forms-field-options' ).hide();
+				$( '.everest-forms-search-input' ).removeClass( 'everest-forms-hidden' );
+
 			} else {
 				if ( 'field-options' === id ) {
 					id = $( '.everest-forms-field' ).first().data( 'field-id' );
 					$( '.everest-forms-field-options' ).show();
+					$( '.everest-forms-search-input' ).addClass( 'everest-forms-hidden' );
 					$( '.everest-forms-field' ).first().addClass( 'active' );
 				} else {
 					$( '#everest-forms-field-' + id ).addClass( 'active' );
+					$( '.everest-forms-search-input' ).removeClass( 'everest-forms-hidden' );
 				}
 				$( '.everest-forms-field-option' ).hide();
 				$( '#everest-forms-field-option-' + id ).show();
