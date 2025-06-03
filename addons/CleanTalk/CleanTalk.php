@@ -58,7 +58,6 @@ class CleanTalk {
 		if ( ! defined( 'EFP_PLUGIN_FILE' ) ) {
 			wp_enqueue_style( 'everest-forms-clean-talk-backward' );
 		}
-		wp_enqueue_style( 'everest-forms-clean-talk-style' );
 
 		if ( 'everest-forms_page_evf-settings' === $screen_id || 'everest-forms_page_evf-builder' === $screen_id ) {
 			wp_enqueue_script( 'everest-forms-clean-talk' );

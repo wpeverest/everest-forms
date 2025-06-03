@@ -316,8 +316,16 @@ class EVF_AJAX {
 			__( 'Check for empty meta key.', 'everest-forms' ),
 			array( 'source' => 'form-save' )
 		);
+
+		// Check for empty field label.
+		$logger->info(
+			__( 'Checking if the field label is empty or not.', 'everest-forms' ),
+			array( 'source' => 'form-save' )
+		);
+
 		$empty_meta_data   = array();
 		$list_of_meta_keys = array();
+		$empty_field_label = array();
 
 		// Calculation backward compatibility.
 		$old_calculation_format = 0;
@@ -397,6 +405,10 @@ class EVF_AJAX {
 					$empty_meta_data[] = $field['label'];
 				}
 
+				if ( empty( $field['label'] ) && ! in_array( $field['type'], array( 'html', 'title', 'captcha', 'divider', 'reset', 'recaptcha', 'hcaptcha', 'turnstile' ), true ) ) {
+					$empty_field_label[] = $field['id'];
+				}
+
 				if ( isset( $field['enable_calculation'] ) && ! empty( $field['enable_calculation'] ) ) {
 					if ( isset( $field['calculation_field'] ) && ! empty( $field['calculation_field'] ) ) {
 						$formula             = stripslashes( $field['calculation_field'] );
@@ -432,6 +444,20 @@ class EVF_AJAX {
 						'errorTitle'   => esc_html__( 'Meta Key missing', 'everest-forms' ),
 						/* translators: %s: empty meta data */
 						'errorMessage' => sprintf( esc_html__( 'Please add Meta key for fields: %s', 'everest-forms' ), '<strong>' . implode( ', ', $empty_meta_data ) . '</strong>' ),
+					)
+				);
+			}
+
+			if ( ! empty( $empty_field_label ) ) {
+				$logger->error(
+					__( 'Empty Field Label.', 'everest-forms' ),
+					array( 'source' => 'form-save' )
+				);
+				wp_send_json_error(
+					array(
+						'errorTitle'   => esc_html__( 'Empty Field Label.', 'everest-forms' ),
+						/* translators: %s: empty field label */
+						'errorMessage' => sprintf( wp_kses_post( __( 'Please add label for fields: %s.<br>To hide the field please Enable Hide Label option from Advanced Options > Hide Label', 'everest-forms' ) ), '<strong>' . implode( ', ', $empty_field_label ) . '</strong>')
 					)
 				);
 			}

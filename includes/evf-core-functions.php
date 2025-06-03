@@ -5446,7 +5446,7 @@ function evf_get_addons_list_depend_on_another_plugins() {
 			'everest-forms-divi-builder'     => array(
 				'is_theme' => true,
 				'name'     => 'Divi Builder',
-				'id'       => 'divi',
+				'id'       => 'Divi',
 			),
 			'everest-forms-bricks-builder'   => array(
 				'is_theme' => true,

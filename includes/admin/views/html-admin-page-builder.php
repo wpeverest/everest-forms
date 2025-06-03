@@ -101,6 +101,17 @@ $preview_link = add_query_arg(
 				?>
 			</nav>
 			<div class="evf-forms-nav-right">
+				<a class="everest-forms-btn everest-forms-show-entries-btn" href="<?php echo esc_url( admin_url( 'admin.php?page=evf-entries&form_id=' . absint( $_GET['form_id'] ) ) ); ?>" rel="bookmark" target="_blank">
+					<div class="evf-nav-btn-container">
+						<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<path d="M8.66602 11.3333V6" stroke="#383838" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
+							<path d="M12 11.334V3.33398" stroke="#383838" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
+							<path d="M2 2V12.6667C2 13.0203 2.14048 13.3594 2.39052 13.6095C2.64057 13.8595 2.97971 14 3.33333 14H14" stroke="#383838" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
+							<path d="M5.33398 11.334V9.33398" stroke="#383838" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
+						</svg>
+						<?php esc_html_e( 'Entries', 'everest-forms' ); ?>
+					</div>
+				</a>
 				<div class="evf-shortcode-field">
 					<input type="text" class="large-text code" onfocus="this.select();" value="<?php printf( esc_html( '[everest_form id="%s"]' ), isset( $_GET['form_id'] ) ? absint( sanitize_text_field( wp_unslash( $_GET['form_id'] ) ) ) : 0 ); // phpcs:ignore WordPress.Security.NonceVerification ?>" id="evf-form-shortcode" readonly="readonly" />
 					<button id="copy-shortcode" class="everest-forms-btn help_tip dashicons copy-shortcode" href="#" data-tip="<?php esc_attr_e( 'Copy Shortcode!', 'everest-forms' ); ?>" data-copied="<?php esc_attr_e( 'Copied!', 'everest-forms' ); ?>">

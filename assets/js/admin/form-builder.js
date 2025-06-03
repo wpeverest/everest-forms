@@ -250,6 +250,7 @@
 
 			$input.prop('readonly', false).focus();
 
+			$( document ).find( '.evf-meta-key-copy-btn' ).hide();
 			$(this).hide();
 
 			if ($wrapper.find('.evf-meta-key-actions').length === 0) {
@@ -293,7 +294,7 @@
 				var $wrapper = $(this).closest('.evf-meta-key-input-wrapper'),
 					$input = $wrapper.find('.evf-input-meta-key'),
 					originalValue = $(this).data('original_value');
-
+				$( document ).find( '.evf-meta-key-copy-btn' ).show();
 				$input.val(originalValue);
 
 				$input.prop('readonly', true);
@@ -306,7 +307,7 @@
 			$(document).on('click', '.evf-save-meta-key-icon', function () {
 				var $wrapper = $(this).closest('.evf-meta-key-input-wrapper'),
 					$input = $wrapper.find('.evf-input-meta-key');
-
+				$( document ).find( '.evf-meta-key-copy-btn' ).show();
 				$input.prop('readonly', true);
 
 				$wrapper.find('.evf-meta-key-actions').remove();
@@ -2785,6 +2786,17 @@
 			$( document.body ).trigger( 'evf-init-switch-field-options' );
 
 			if ( typeof field_id !== 'undefined' ) {
+				var $fieldOptions = $( '#everest-forms-field-option-' + field_id );
+				if ( $fieldOptions.length > 0 ) {
+					$( '#everest-forms-field-option-basic-' + field_id ).find( '.everest-forms-field-option-group-inner').show();
+					const $tempLink = $('<a href="#field-options"></a>').appendTo(document.body);
+
+					$tempLink[0].click();
+
+					setTimeout(() => {
+						$tempLink.remove();
+					}, 100);
+				}
 				$('#everest-forms-field-option-' + field_id).show();
 				$('#everest-forms-field-' + field_id).addClass('active');
 			} else {
@@ -2835,6 +2847,9 @@
 					EVFPanelBuilder.checkEmptyGrid();
 				},
 				over: function( event, ui ) {
+					if ( ! ui.item.hasClass('required') ) {
+						ui.item.find( '.required' ).remove();
+					}
 					$( '.evf-admin-grid' ).addClass( 'evf-hover' );
 					$( event.target ).addClass( 'evf-item-hover' );
 					$( event.target ).closest( '.evf-admin-row' ).addClass( 'evf-hover' );
@@ -2849,6 +2864,12 @@
 					$(document).trigger('evf_sort_update_complete',{event: event,ui:  ui});
 				},
 				stop: function( event, ui ) {
+					if ( !ui.item.hasClass( 'required' ) ) {
+						const labelTitle = ui.item.find('.label-title');
+						if (labelTitle.length > 0) {
+							labelTitle.append('<span class="required">*</span>');
+						}
+					}
 					ui.item.removeAttr( 'style' );
 					EVFPanelBuilder.checkEmptyGrid();
 				}
@@ -2909,13 +2930,17 @@
 			if ( 'add-fields' === id ) {
 				$( '.everest-forms-add-fields' ).show();
 				$( '.everest-forms-field-options' ).hide();
+				$( '.everest-forms-search-input' ).removeClass( 'everest-forms-hidden' );
+
 			} else {
 				if ( 'field-options' === id ) {
 					id = $( '.everest-forms-field' ).first().data( 'field-id' );
 					$( '.everest-forms-field-options' ).show();
+					$( '.everest-forms-search-input' ).addClass( 'everest-forms-hidden' );
 					$( '.everest-forms-field' ).first().addClass( 'active' );
 				} else {
 					$( '#everest-forms-field-' + id ).addClass( 'active' );
+					$( '.everest-forms-search-input' ).removeClass( 'everest-forms-hidden' );
 				}
 				$( '.everest-forms-field-option' ).hide();
 				$( '#everest-forms-field-option-' + id ).show();
@@ -3519,7 +3544,8 @@
 				$copyBtn.tooltipster({
 					theme: 'tooltipster-default',
 					delay: 100,
-					side: 'top'
+					side: 'top',
+					updateAnimation: 'null'
 				});
 			}
 
@@ -3878,7 +3904,15 @@ jQuery( function ( $ ) {
 	// Fields Options - Open/close.
 	$( document.body ).on( 'click', '.everest-forms-field-option .everest-forms-field-option-group > a', function( event ) {
 		event.preventDefault();
+		var $fielOption = $( this ).closest( '.everest-forms-field-option-group' ).closest('.everest-forms-field-option');
+
+		$fielOption.find( '.everest-forms-field-option-group' ).each( function() {
+			$( this ).removeClass( 'open' ).addClass( 'closed' );
+		});
 		$( this ).parent( '.everest-forms-field-option-group' ).toggleClass( 'closed' ).toggleClass( 'open' );
+		$( '.everest-forms-field-option-group.closed' ).each( function() {
+			$( this ).find( '.everest-forms-field-option-group-inner' ).hide();
+		});
 	});
 	$( document.body ).on( 'click', '.everest-forms-field-option .everest-forms-field-option-group a', function( event ) {
 		// If the user clicks on some form input inside, the box should not be toggled.

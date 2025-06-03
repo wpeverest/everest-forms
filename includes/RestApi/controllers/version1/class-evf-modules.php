@@ -109,9 +109,6 @@ class EVF_Modules {
 		foreach ( $features_lists as $key => $feature ) {
 			if ( in_array( $feature->slug, $enabled_features, true ) ) {
 				if ( isset( $required_plugins[ $feature->slug ] ) ) {
-					$feature->is_dependent    = true;
-					$feature->required_plugin = $required_plugins[ $feature->slug ]['name'];
-
 					if ( isset( $required_plugins[ $feature->slug ]['is_theme'] ) && $required_plugins[ $feature->slug ]['is_theme'] ) {
 						$active_theme = wp_get_theme();
 						if ( $feature->slug === 'everest-forms-bricks-builder' ) {
@@ -160,6 +157,12 @@ class EVF_Modules {
 			} else {
 				$feature->status = 'inactive';
 			}
+
+			if ( isset( $required_plugins[ $feature->slug ] ) ) {
+				$feature->is_dependent    = true;
+				$feature->required_plugin = $required_plugins[ $feature->slug ]['name'];
+			}
+
 			$feature->link          = $feature->link . '&utm_campaign=' . EVF()->utm_campaign;
 			$feature->type          = 'feature';
 			$features_lists[ $key ] = $feature;
