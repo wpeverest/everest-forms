@@ -113,11 +113,12 @@
 		saveCleanTalkSettings: function ( $el ) {
 
 			const $form = $('#everest-forms-clean-talk-settings-form'),
-				  formData = $form.serializeArray();
+				  accessKey = $form.find( '#everest_forms_recaptcha_cleantalk_access_key' ).val().trim();
+
 			const data = {
 				action: 'everest_forms_save_clean_talk_settings',
 				security: everest_forms_clean_talk.security,
-				form_data: formData,
+				form_data: { 'access_key': accessKey },
 				is_clean_talk_enabled:'yes',
 			};
 
@@ -147,17 +148,19 @@
 						clearInterval(killUnloadPrompt);
 					}, 5000);
 
-					const $messageBox = $( document ).find( '.evf-clean-talk-message' );
+					const $messageBox = $( document ).find( '.evf-clean-talk-message' ).show();
 					$messageBox.empty();
 					$messageBox.append( response.data.html );
 
+					$messageBox.removeClass( 'evf-error-message' );
+					$messageBox.removeClass( 'evf-success-message' );
 					if (response.success) {
-						$messageBox.find( '.everest-forms-clean-talk-message-outer-wrapper' ).addClass( 'everest-forms-clean-talk-success-state' );
+						$messageBox.addClass( 'evf-success-message' );
 					} else {
 						if ( 'empty' === response.data.error ) {
-							$messageBox.find( '.everest-forms-clean-talk-message-outer-wrapper' ).addClass( 'everest-forms-clean-talk-empty-state' );
+							$messageBox.addClass( 'evf-error-message' );
 						}else{
-							$messageBox.find( '.everest-forms-clean-talk-message-outer-wrapper' ).addClass( 'everest-forms-clean-talk-invalid-state' );
+							$messageBox.addClass( 'evf-error-message' );
 						}
 					}
 

@@ -133,6 +133,7 @@
 	 font-style: normal !important;
 	 font-weight: 400 !important;
 	 line-height: 150% !important;
+	 text-transform: capitalize !important;
 }
  .everest-forms-clean_talk__submit {
 	 margin-right: 24px !important;
@@ -143,5 +144,28 @@
 	 font-weight: 400 !important;
 	 line-height: 120% !important;
 	 margin-bottom: 24px !important;
-	text-transform: capitalize !important;
+	 text-transform: capitalize !important;
+}
+ .evf-clean-talk-message.evf-success-message {
+	 color: #383838;
+	 font-size: 13px;
+	 font-style: normal;
+	 font-weight: 400;
+	 line-height: 150%;
+	 border-left: 3px solid #4cc741;
+	 background: #f5fff4;
+}
+ .evf-clean-talk-message {
+	 padding: 10px 11px;
+	 display: flex;
+	 margin: 16px 0;
+}
+ .evf-clean-talk-message.evf-error-message {
+	 color: #383838;
+	 font-size: 13px;
+	 font-style: normal;
+	 font-weight: 400;
+	 line-height: 150%;
+	 border-left: 3px solid #f25656;
+	 background: #fff4f4;
 }
