@@ -70,11 +70,11 @@ class Builder {
 			$obj->form_data,
 			esc_html__( 'Protection type', 'everest-forms' ),
 			array(
-				'default' => 'validation_failed',
+				'default' => 'mark_as_spam',
 				'tooltip' => esc_html__( "Please select the protection type. Choosing 'Mark as Spam' allows the submission but marks the entry as spam, while selecting 'Reject Submission' will prevent the form submission.", 'everest-forms' ),
 				'options' => array(
-					'validation_failed' => esc_html__( 'Reject Submission', 'everest-forms' ),
 					'mark_as_spam'      => esc_html__( 'Mark as Spam', 'everest-forms' ),
+					'validation_failed' => esc_html__( 'Reject Submission', 'everest-forms' ),
 				),
 			)
 		);
