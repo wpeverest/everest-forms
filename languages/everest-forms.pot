@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the Everest Forms package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Everest Forms 3.2.0\n"
+"Project-Id-Version: Everest Forms 3.2.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/everest-forms\n"
-"POT-Creation-Date: 2025-05-12 12:09:21+00:00\n"
+"POT-Creation-Date: 2025-05-19 10:53:34+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -2795,6 +2795,7 @@ msgstr ""
 #: includes/abstracts/class-evf-form-fields.php:2520
 #: includes/admin/builder/class-evf-builder-fields.php:400
 #: includes/admin/builder/class-evf-builder-settings.php:27
+#: includes/admin/class-evf-admin-forms-table-list.php:209
 #: includes/admin/class-evf-admin-menus.php:268
 #: includes/class-evf-install.php:719
 msgid "Settings"
@@ -3459,7 +3460,7 @@ msgid "Get Started"
 msgstr ""
 
 #: includes/admin/class-evf-admin-assets.php:122
-#: includes/admin/class-evf-admin-forms-table-list.php:204
+#: includes/admin/class-evf-admin-forms-table-list.php:205
 #: includes/admin/views/html-admin-page-builder.php:113
 #: includes/admin/views/html-admin-page-form-templates.php:94
 msgid "Preview"
@@ -3976,7 +3977,7 @@ msgstr ""
 #: includes/admin/class-evf-admin-entries-table-list.php:370
 #: includes/admin/class-evf-admin-entries-table-list.php:465
 #: includes/admin/class-evf-admin-forms-table-list.php:184
-#: includes/admin/class-evf-admin-forms-table-list.php:498
+#: includes/admin/class-evf-admin-forms-table-list.php:506
 msgid "Restore"
 msgstr ""
 
@@ -4099,7 +4100,7 @@ msgstr[1] ""
 
 #: includes/admin/class-evf-admin-entries-table-list.php:764
 #: includes/admin/class-evf-admin-entries.php:90
-#: includes/admin/class-evf-admin-forms-table-list.php:632
+#: includes/admin/class-evf-admin-forms-table-list.php:640
 msgid "Filter"
 msgstr ""
 
@@ -4108,7 +4109,7 @@ msgid "Export CSV"
 msgstr ""
 
 #: includes/admin/class-evf-admin-entries-table-list.php:773
-#: includes/admin/class-evf-admin-forms-table-list.php:637
+#: includes/admin/class-evf-admin-forms-table-list.php:645
 msgid "Empty Trash"
 msgstr ""
 
@@ -4215,81 +4216,82 @@ msgid "Delete this item permanently"
 msgstr ""
 
 #: includes/admin/class-evf-admin-forms-table-list.php:189
-#: includes/admin/class-evf-admin-forms-table-list.php:502
+#: includes/admin/class-evf-admin-forms-table-list.php:510
 msgid "Delete permanently"
 msgstr ""
 
-#: includes/admin/class-evf-admin-forms-table-list.php:208
+#: includes/admin/class-evf-admin-forms-table-list.php:213
 msgid "Conversational Form Preview"
 msgstr ""
 
-#: includes/admin/class-evf-admin-forms-table-list.php:212
+#: includes/admin/class-evf-admin-forms-table-list.php:217
 msgid "Duplicate"
 msgstr ""
 
-#: includes/admin/class-evf-admin-forms-table-list.php:216
+#: includes/admin/class-evf-admin-forms-table-list.php:221
 msgid "Locate"
 msgstr ""
 
-#: includes/admin/class-evf-admin-forms-table-list.php:240
+#: includes/admin/class-evf-admin-forms-table-list.php:245
 #: includes/admin/views/html-admin-page-builder.php:106
 #: templates/form-preview/evf-form-preview-template.php:56
 msgid "Copy Shortcode!"
 msgstr ""
 
-#: includes/admin/class-evf-admin-forms-table-list.php:240
+#: includes/admin/class-evf-admin-forms-table-list.php:245
 #: includes/admin/views/html-admin-page-builder.php:106
 #: templates/form-preview/evf-form-preview-template.php:57
 msgid "Copied!"
 msgstr ""
 
-#: includes/admin/class-evf-admin-forms-table-list.php:290
+#: includes/admin/class-evf-admin-forms-table-list.php:295
 msgid "Y/m/d g:i:s A"
 msgstr ""
 
-#: includes/admin/class-evf-admin-forms-table-list.php:302
+#: includes/admin/class-evf-admin-forms-table-list.php:307
 #. translators: %s: Time
 msgid "%s ago"
 msgstr ""
 
-#: includes/admin/class-evf-admin-forms-table-list.php:306
+#: includes/admin/class-evf-admin-forms-table-list.php:311
 msgid "Y/m/d"
 msgstr ""
 
-#: includes/admin/class-evf-admin-forms-table-list.php:506
+#: includes/admin/class-evf-admin-forms-table-list.php:433
+#: includes/admin/class-evf-admin-forms-table-list.php:517
+msgid "Active"
+msgstr ""
+
+#: includes/admin/class-evf-admin-forms-table-list.php:514
 #: includes/admin/views/html-admin-page-entries-view.php:301
 msgid "Move to trash"
 msgstr ""
 
-#: includes/admin/class-evf-admin-forms-table-list.php:507
+#: includes/admin/class-evf-admin-forms-table-list.php:515
 msgid "Edit Tags"
 msgstr ""
 
-#: includes/admin/class-evf-admin-forms-table-list.php:508
+#: includes/admin/class-evf-admin-forms-table-list.php:516
 #: includes/admin/views/html-admin-page-addons.php:88
 #: includes/admin/views/html-admin-page-addons.php:166
 msgid "Inactive"
 msgstr ""
 
-#: includes/admin/class-evf-admin-forms-table-list.php:509
-msgid "Active"
-msgstr ""
-
-#: includes/admin/class-evf-admin-forms-table-list.php:542
+#: includes/admin/class-evf-admin-forms-table-list.php:550
 #. translators: %d: number of forms
 msgid "%d form moved to the Trash."
 msgid_plural "%d forms moved to the Trash."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/class-evf-admin-forms-table-list.php:557
+#: includes/admin/class-evf-admin-forms-table-list.php:565
 #. translators: %d: number of forms
 msgid "%d form restored from the Trash."
 msgid_plural "%d forms restored from the Trash."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/class-evf-admin-forms-table-list.php:572
+#: includes/admin/class-evf-admin-forms-table-list.php:580
 #: includes/admin/class-evf-admin-forms.php:167
 #. translators: %d: number of forms
 msgid "%d form permanently deleted."
@@ -4297,46 +4299,46 @@ msgid_plural "%d forms permanently deleted."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/class-evf-admin-forms-table-list.php:592
+#: includes/admin/class-evf-admin-forms-table-list.php:600
 #. translators: %d: number of forms
 msgid "%d form marked as inactive."
 msgid_plural "%d forms marked as inactive."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/class-evf-admin-forms-table-list.php:613
+#: includes/admin/class-evf-admin-forms-table-list.php:621
 #. translators: %d: number of forms
 msgid "%d form marked as active."
 msgid_plural "%d forms marked as active."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/class-evf-admin-forms-table-list.php:731
+#: includes/admin/class-evf-admin-forms-table-list.php:739
 msgid "Filter by Category"
 msgstr ""
 
-#: includes/admin/class-evf-admin-forms-table-list.php:732
-#: includes/admin/class-evf-admin-forms-table-list.php:781
+#: includes/admin/class-evf-admin-forms-table-list.php:740
+#: includes/admin/class-evf-admin-forms-table-list.php:789
 msgid "Select tags"
 msgstr ""
 
-#: includes/admin/class-evf-admin-forms-table-list.php:748
+#: includes/admin/class-evf-admin-forms-table-list.php:756
 msgid "Delete Tags"
 msgstr ""
 
-#: includes/admin/class-evf-admin-forms-table-list.php:770
+#: includes/admin/class-evf-admin-forms-table-list.php:778
 msgid "Selected forms"
 msgstr ""
 
-#: includes/admin/class-evf-admin-forms-table-list.php:771
+#: includes/admin/class-evf-admin-forms-table-list.php:779
 msgid "Select forms"
 msgstr ""
 
-#: includes/admin/class-evf-admin-forms-table-list.php:780
+#: includes/admin/class-evf-admin-forms-table-list.php:788
 msgid "Selected Tags"
 msgstr ""
 
-#: includes/admin/class-evf-admin-forms-table-list.php:789
+#: includes/admin/class-evf-admin-forms-table-list.php:797
 msgid "Update Tags"
 msgstr ""
 
@@ -16648,7 +16650,7 @@ msgid_plural "Spam <span class=\"count\">(%s)</span>"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/class-evf-admin-forms-table-list.php:392
+#: includes/admin/class-evf-admin-forms-table-list.php:397
 #. translators: %s: count
 msgctxt "posts"
 msgid "All <span class=\"count\">(%s)</span>"
@@ -16656,7 +16658,7 @@ msgid_plural "All <span class=\"count\">(%s)</span>"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/class-evf-admin-forms-table-list.php:438
+#: includes/admin/class-evf-admin-forms-table-list.php:446
 msgctxt "posts"
 msgid "Inactive <span class=\"count\">(%s)</span>"
 msgid_plural "Inactive <span class=\"count\">(%s)</span>"

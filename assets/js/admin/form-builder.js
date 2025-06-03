@@ -250,6 +250,7 @@
 
 			$input.prop('readonly', false).focus();
 
+			$( document ).find( '.evf-meta-key-copy-btn' ).hide();
 			$(this).hide();
 
 			if ($wrapper.find('.evf-meta-key-actions').length === 0) {
@@ -293,7 +294,7 @@
 				var $wrapper = $(this).closest('.evf-meta-key-input-wrapper'),
 					$input = $wrapper.find('.evf-input-meta-key'),
 					originalValue = $(this).data('original_value');
-
+				$( document ).find( '.evf-meta-key-copy-btn' ).show();
 				$input.val(originalValue);
 
 				$input.prop('readonly', true);
@@ -306,7 +307,7 @@
 			$(document).on('click', '.evf-save-meta-key-icon', function () {
 				var $wrapper = $(this).closest('.evf-meta-key-input-wrapper'),
 					$input = $wrapper.find('.evf-input-meta-key');
-
+				$( document ).find( '.evf-meta-key-copy-btn' ).show();
 				$input.prop('readonly', true);
 
 				$wrapper.find('.evf-meta-key-actions').remove();
@@ -2846,6 +2847,9 @@
 					EVFPanelBuilder.checkEmptyGrid();
 				},
 				over: function( event, ui ) {
+					if ( ! ui.item.hasClass('required') ) {
+						ui.item.find( '.required' ).remove();
+					}
 					$( '.evf-admin-grid' ).addClass( 'evf-hover' );
 					$( event.target ).addClass( 'evf-item-hover' );
 					$( event.target ).closest( '.evf-admin-row' ).addClass( 'evf-hover' );
@@ -2860,6 +2864,12 @@
 					$(document).trigger('evf_sort_update_complete',{event: event,ui:  ui});
 				},
 				stop: function( event, ui ) {
+					if ( !ui.item.hasClass( 'required' ) ) {
+						const labelTitle = ui.item.find('.label-title');
+						if (labelTitle.length > 0) {
+							labelTitle.append('<span class="required">*</span>');
+						}
+					}
 					ui.item.removeAttr( 'style' );
 					EVFPanelBuilder.checkEmptyGrid();
 				}
@@ -3534,7 +3544,8 @@
 				$copyBtn.tooltipster({
 					theme: 'tooltipster-default',
 					delay: 100,
-					side: 'top'
+					side: 'top',
+					updateAnimation: 'null'
 				});
 			}
 

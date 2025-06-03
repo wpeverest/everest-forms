@@ -2706,6 +2706,7 @@ p.search-box {
 					}
 
 					.everest-forms-field-options {
+						background-color: #fffff;
 						display: none;
 						height: 100vh;
 
@@ -2838,10 +2839,10 @@ p.search-box {
 						}
 
 						.everest-forms-field-option-group-toggle {
+							font-size: 14px;
+							font-weight: 600;
 							display: block;
 							color: #23282d;
-							font-size: 16px;
-							font-style: normal;
 							font-weight: 500;
 							line-height: 150%;
 						}
@@ -11716,4 +11717,33 @@ button#show-settings-link {
 .evf-disable-row {
 	pointer-events: none;
 	opacity: 0.5;
+}
+
+.everest-forms-clean-talk-message-outer-wrapper{
+	margin-top: 16px;
+	margin-bottom: 6px;
+	padding: 10px 11px;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	font-size: 13px;
+
+	&.everest-forms-clean-talk-empty-state{
+		background: #FFFAF5;
+		border-left: 3px solid #EE9936;
+	}
+
+	&.everest-forms-clean-talk-invalid-state {
+		background: #FFF4F4;
+		border-left: 3px solid #F25656;
+	}
+
+	&.everest-forms-clean-talk-success-state {
+		background: #F5FFF4;
+		border-left: 3px solid #4CC741;
+	}
+
+	.everest-forms-clean-talk-icon-box{
+		margin-top: 5px;
+	}
 }
