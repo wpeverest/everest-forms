@@ -1132,6 +1132,7 @@ class EVF_Form_Task {
 				}
 
 				if ( isset( $field['meta_key'], $field['value'] ) && '' !== $field['value'] ) {
+					$field['value'] = apply_filters( 'everest_forms_process_smart_tags', $field['value'], $form_data, $fields, $entry_id );
 					$entry_metadata = array(
 						'entry_id'   => $entry_id,
 						'meta_key'   => sanitize_key( $field['meta_key'] ),
