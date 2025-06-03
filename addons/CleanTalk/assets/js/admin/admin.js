@@ -169,15 +169,6 @@
 						cursor: '',
 						opacity: 1
 					});
-
-					setTimeout(function () {
-						$messageBox.fadeOut(300, function () {
-							$messageBox.find( '.everest-forms-clean-talk-message-outer-wrapper' ).removeClass( 'everest-forms-clean-talk-empty-state' );
-							$messageBox.find( '.everest-forms-clean-talk-message-outer-wrapper' ).removeClass( 'everest-forms-clean-talk-invalid-state' );
-							$messageBox.find( '.everest-forms-clean-talk-message-outer-wrapper' ).removeClass( 'everest-forms-clean-talk-success-state' );
-							$messageBox.attr('style', '').text('').show();
-						});
-					}, 5000);
 				},
 				error: function () {
 					alert('Error saving settings.');
