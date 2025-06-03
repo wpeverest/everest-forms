@@ -69,4 +69,36 @@ class FormHelper {
 
 		return $all_tags;
 	}
+
+	/**
+	 * Save CleanTalk settings.
+	 *
+	 * @since xx.xx.xx
+	 *
+	 * @param string $access_key The access key.
+	 * @return bool
+	 */
+	public static function evf_save_clean_talk_settings( $access_key ){
+		$clean_talk_request = array(
+			'method_name' => 'notice_paid_till',
+			'auth_key'    => sanitize_text_field( $access_key ),
+		);
+
+		$response = wp_remote_post(
+			'https://api.cleantalk.org/',
+			array(
+				'body'    => \http_build_query( $clean_talk_request, true ),
+				'headers' => array(
+					'Content-Type' => 'application/x-www-form-urlencoded',
+				),
+			)
+		);
+		$response = json_decode( wp_remote_retrieve_body( $response ) );
+		if ( $response->data->moderate == 1 && $response->data->valid == 1 && $response->data->product_id == 1 ) {
+			update_option( 'everest_forms_recaptcha_cleantalk_access_key', sanitize_text_field( $access_key ) );
+			return true;
+		} else {
+			return false;
+		}
+	}
 }
