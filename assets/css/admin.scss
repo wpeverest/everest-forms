@@ -2787,6 +2787,14 @@ p.search-box {
 									border-color: $evf_primary-color;
 								}
 							}
+
+							.evf-meta-key-input-wrapper {
+								.evf-meta-key-copy-btn  {
+									display: flex;
+									align-items: center;
+									justify-content: center;
+								}
+							}
 						}
 
 						.everest-forms-field-option {
@@ -2805,6 +2813,32 @@ p.search-box {
 									display: none;
 								}
 							}
+
+							&-group {							
+								&.everest-forms-field-option-group-basic, &.everest-forms-field-option-group-advanced, &.everest-forms-field-option-group-conditionals, &.everest-forms-field-option-group-calculations, &.everest-forms-field-option-group-quiz {
+									background: #FBFBFD;
+									padding: 16px 14px;
+									border: 1px solid #E1E1E1;
+									border-radius: 4px;
+									margin: 0 0 12px;
+
+									.everest-forms-field-option-group-toggle {
+										padding-top: 0;
+									}
+								}
+
+								&:last-child {
+									margin-bottom: 0;
+
+									.everest-forms-field-option-group-inner {
+										border-bottom: none;
+									}
+								}
+
+								&.closed {
+									background: #ffffff;
+								}
+							}
 						}
 
 						.everest-forms-field-option-phone {
@@ -2819,28 +2853,7 @@ p.search-box {
 							}
 						}
 
-						.everest-forms-field-option-group {
-							&.everest-forms-field-option-group-basic, &.everest-forms-field-option-group-advanced, &.everest-forms-field-option-group-conditionals, &.everest-forms-field-option-group-calculations, &.everest-forms-field-option-group-quiz {
-									background: #FBFBFD;
-									padding: 16px 14px;
-									border: 1px solid #E1E1E1;
-									border-radius: 2px;
-									margin-bottom: 12px;
-								.everest-forms-field-option-group-toggle {
-									padding-top: 0;
-								}
-							}
-
-							&.everest-forms-field-option-group-basic{
-								margin-top:-15px;
-							}
-
-							&:last-child {
-								.everest-forms-field-option-group-inner {
-									border-bottom: none;
-								}
-							}
-						}
+						
 
 						.everest-forms-field-option-group-toggle {
 							font-size: 14px;
