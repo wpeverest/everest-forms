@@ -2831,6 +2831,10 @@ p.search-box {
 								}
 							}
 
+							&.everest-forms-field-option-group-basic{
+								margin-top:-15px;
+							}
+
 							&:last-child {
 								.everest-forms-field-option-group-inner {
 									border-bottom: none;
