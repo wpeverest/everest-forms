@@ -5478,7 +5478,8 @@ if ( ! function_exists( 'evf_maybe_unserialize' ) ) {
 				$options = wp_parse_args( $options, array( 'allowed_classes' => false ) );
 				return @unserialize( trim( $data ), $options ); //phpcs:ignore.
 			}
-			return @unserialize( trim( $data ) ); //phpcs:ignore.
+			//Blocked unserialize() attempt on PHP <  7.1
+			return null;
 		}
 
 		return $data;

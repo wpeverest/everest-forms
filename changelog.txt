@@ -3,8 +3,9 @@
 = 3.2.3     	- 05-06-2025
 * Enhance 		- Form builder design.
 * Enhance 		- Active module workflow.
-* Enhance		- Prevent form save if the field is empty.
 * Enhance 		- Block Popup form settings.
+* Enhance		- Prevent form save if the field is empty.
+* Enhance 		- CleanTalk anti spam save access key workflow.
 * Tweak 		- Edit meta key design.
 * Tweak 		- Form fields smart tag options for default value in form fields.
 * Fix 			- Save color palette workflow.
