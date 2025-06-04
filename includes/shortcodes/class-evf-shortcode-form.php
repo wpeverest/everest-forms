@@ -835,6 +835,35 @@ class EVF_Shortcode_Form {
 		}
 		$errors     = isset( evf()->task->errors[ $form_id ][ $field_id ] ) ? evf()->task->errors[ $form_id ][ $field_id ] : '';
 		$defaults   = isset( $_POST['everest_forms']['form_fields'][ $field_id ] ) && ( ! is_array( $_POST['everest_forms']['form_fields'][ $field_id ] ) && ! empty( $_POST['everest_forms']['form_fields'][ $field_id ] ) ) ? $_POST['everest_forms']['form_fields'][ $field_id ] : ''; // @codingStandardsIgnoreLine
+
+		/**
+		 *  Count the number of smart tags in the default value which contain form fields smart tag.
+		 *
+		 * @since 3.2.3
+		 */
+		$count         = 0;
+		$default_value = '';
+
+		if ( isset( $field['default_value'] ) ) {
+			preg_match_all( '/\{field_id="(.+?)"\}/', $field['default_value'], $ids );
+			if ( ! empty( $ids[1] ) ) {
+				$count++;
+			}
+		}
+
+		if ( $count > 0 ) {
+			$is_hidden = isset( $field['hidden_field_visibility'] ) ? evf_string_to_bool( $field['hidden_field_visibility'] ) :
+						( isset( $field['type'] ) && 'hidden' === $field['type'] ? true : false );
+
+			if ( $is_hidden ) {
+				$default_value = isset( $field['default_value'] ) ? apply_filters( 'everest_forms_process_smart_tags', $field['default_value'], $form_data ) : $defaults;
+			}else{
+				$default_value = isset( $field['default_value'] ) ?  '' : $defaults;
+			}
+		}else{
+			$default_value = isset( $field['default_value'] ) ? apply_filters( 'everest_forms_process_smart_tags', $field['default_value'], $form_data ) : $defaults;
+		}
+
 		$properties = apply_filters(
 			'everest_forms_field_properties_' . $field['type'],
 			array(
@@ -862,8 +891,7 @@ class EVF_Shortcode_Form {
 					'primary' => array(
 						'attr'     => array(
 							'name'        => "everest_forms[form_fields][{$field_id}]",
-							'value'       => isset( $field['default_value'] ) ? apply_filters( 'everest_forms_process_smart_tags', $field['default_value'], $form_data ) : $defaults,
-							'placeholder' => isset( $field['placeholder'] ) ? evf_string_translation( $form_data['id'], $field['id'], $field['placeholder'], '-placeholder' ) : '',
+							'value'       => $default_value,
 						),
 						'class'    => $attributes['input_class'],
 						'data'     => $attributes['input_data'],
