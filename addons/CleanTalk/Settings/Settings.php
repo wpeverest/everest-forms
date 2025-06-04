@@ -80,7 +80,6 @@ class Settings extends \EVF_Integration {
 
 				</div>
 			</div>
-		</div>
 		<?php
 	}
 }
