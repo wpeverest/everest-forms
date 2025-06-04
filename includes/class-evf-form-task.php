@@ -542,6 +542,17 @@ class EVF_Form_Task {
 			$this->form_fields = apply_filters( 'everest_forms_process_after_filter', $this->form_fields, $entry, $this->form_data );
 			$logger->notice( sprintf( 'Everest Form Process After: %s', evf_print_r( $this->form_fields, true ) ) );
 
+			/**
+			 *  Apply smart tags to form fields values.
+			 *
+			 * @since 3.2.3
+			 */
+			foreach ($this->form_fields as $key => $value) {
+				if ( isset( $value['value'] ) ) {
+					$this->form_fields[ $key ]['value'] = apply_filters( 'everest_forms_process_smart_tags', $value['value'], $this->form_data, $this->form_fields );
+				}
+			}
+
 			// One last error check - don't proceed if there are any errors.
 			if ( ! empty( $this->errors[ $form_id ] ) ) {
 				if ( empty( $this->errors[ $form_id ]['header'] ) ) {
