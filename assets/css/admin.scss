@@ -2404,7 +2404,7 @@ p.search-box {
 					#evf-collapse {
 						width: 22px;
 						height: 41px;
-						background: #f6f7f9;
+						background: #ffff;
 						position: fixed;
 						bottom: 100px;
 						border-style: solid;
@@ -2790,7 +2790,7 @@ p.search-box {
 								}
 							}
 
-							&-group {							
+							&-group {
 								&.everest-forms-field-option-group-basic, &.everest-forms-field-option-group-advanced, &.everest-forms-field-option-group-conditionals, &.everest-forms-field-option-group-calculations, &.everest-forms-field-option-group-quiz {
 									background: #FBFBFD;
 									padding: 16px 14px;
