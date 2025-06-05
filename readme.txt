@@ -350,12 +350,12 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 * Enhance 		- CleanTalk anti spam save access key workflow.
 * Enhance		- Prevent form save if the field label is empty.
 * Tweak 		- Edit meta key design.
-* Tweak 		- Form fields smart tag options for default value in form fields.
-* Tweak 		– Updated jQuery Validate to 1.21.0 to fix security vulnerabilities.
+* Tweak 		– JS validator version updated.
+* Tweak 		- Form fields smart tag options for default value in hidden form fields.
 * Fix 			- Save color palette workflow.
 * Fix 			- Incorrect asterisk display when moving fields.
+* Fix 			- Return null for serialized data in PHP 7.1 or earlier.
 * Fix 			- Selection of option while clicking on label for image option.
-* Fix 			– Prevented unserialize() on PHP versions below 7.1 for security reasons.
 
 
 = 3.2.2     	- 20-05-2025
