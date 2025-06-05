@@ -2025,8 +2025,8 @@ p.search-box {
 				margin-right: 24px;
 
 				img {
-					width: 32px;
-					height: 32px;
+					width: 40px;
+					height: 40px;
 				}
 			}
 
@@ -2394,7 +2394,7 @@ p.search-box {
 					width: 400px;
 					height: calc(100vh - 105px);
 					position: relative;
-					background-color: $color_gray-light-skin;
+					background-color: #ffff;
 					border-right: 1px solid $color_gray-lighten;
 
 					@media screen and (max-width: 1226px) {
@@ -11724,6 +11724,7 @@ button#show-settings-link {
 		cursor: pointer;
 		display: flex;
 		align-items: center;
+		text-decoration: underline;
 	}
 
 	.evf-meta-key-actions{

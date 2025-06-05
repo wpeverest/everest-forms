@@ -4,13 +4,15 @@
 * Enhance 		- Form builder design.
 * Enhance 		- Active module workflow.
 * Enhance 		- Block Popup form settings.
-* Enhance		- Prevent form save if the field is empty.
 * Enhance 		- CleanTalk anti spam save access key workflow.
+* Enhance		- Prevent form save if the field label is empty.
 * Tweak 		- Edit meta key design.
 * Tweak 		- Form fields smart tag options for default value in form fields.
+* Tweak 		– Updated jQuery Validate to 1.21.0 to fix security vulnerabilities.
 * Fix 			- Save color palette workflow.
 * Fix 			- Incorrect asterisk display when moving fields.
 * Fix 			- Selection of option while clicking on label for image option.
+* Fix 			– Prevented unserialize() on PHP versions below 7.1 for security reasons.
 
 
 = 3.2.2     	- 20-05-2025
