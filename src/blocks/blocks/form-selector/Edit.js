@@ -50,6 +50,11 @@ const Edit = (props) => {
 		setAttributes({ displayDescription: description });
 	};
 
+	const textMap = {
+		"popup-link": __("Popup Link Text", "everest-forms"),
+		"popup-button": __("Popup Button Text", "everest-forms"),
+	};
+
 	return (
 		<>
 			<ChakraProvider>
@@ -175,7 +180,7 @@ const Edit = (props) => {
 									{"popup" !== popupType && (
 										<TextControl
 											label={__(
-												"Popup Button Text",
+												textMap[popupType],
 												"everest-forms",
 											)}
 											value={popupButtonText}
