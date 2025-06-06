@@ -892,6 +892,7 @@ class EVF_Shortcode_Form {
 						'attr'     => array(
 							'name'        => "everest_forms[form_fields][{$field_id}]",
 							'value'       => $default_value,
+							'placeholder' => isset( $field['placeholder'] ) ? evf_string_translation( $form_data['id'], $field['id'], $field['placeholder'], '-placeholder' ) : '',
 						),
 						'class'    => $attributes['input_class'],
 						'data'     => $attributes['input_data'],
