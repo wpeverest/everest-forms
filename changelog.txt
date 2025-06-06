@@ -1,5 +1,8 @@
 == Changelog ==
 
+= 3.2.4     	- 06-06-2025
+* Fix 			- Inconsistency on form builder field option design.
+
 = 3.2.3     	- 05-06-2025
 * Enhance 		- Form builder design.
 * Enhance 		- Active module workflow.
