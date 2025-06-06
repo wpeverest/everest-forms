@@ -108,55 +108,12 @@ class EVF_Modules {
 
 		foreach ( $features_lists as $key => $feature ) {
 			if ( in_array( $feature->slug, $enabled_features, true ) ) {
-				if ( isset( $required_plugins[ $feature->slug ] ) ) {
-					if ( isset( $required_plugins[ $feature->slug ]['is_theme'] ) && $required_plugins[ $feature->slug ]['is_theme'] ) {
-						$active_theme = wp_get_theme();
-						if ( $feature->slug === 'everest-forms-bricks-builder' ) {
-							if ( $active_theme->stylesheet != $required_plugins[ $feature->slug ]['id'] && $active_theme->template != $required_plugins[ $feature->slug ]['id'] ) {
-								$feature->dependent_status      = 'inactive';
-								$feature->dependent_plugin_name = $required_plugins[ $feature->slug ]['name'];
-							} else {
-								$feature->dependent_status = 'active';
-							}
-						} elseif ( $feature->slug === 'everest-forms-divi-builder' ) {
-							if ( 'Divi' === $active_theme->Name ) {
-								$feature->dependent_status = 'active';
-							} else {
-								$feature->dependent_status      = 'inactive';
-								$feature->dependent_plugin_name = $required_plugins[ $feature->slug ]['name'];
-
-							}
-						}
-					} else {
-						$required_plugin_file = $required_plugins[ $feature->slug ]['file'];
-						$required_plugin_name = $required_plugins[ $feature->slug ]['name'];
-
-						if ( is_array( $required_plugin_file ) ) {
-							$activated_count = 0;
-							foreach ( $required_plugin_file as $file ) {
-								if ( is_plugin_active( $file ) ) {
-									++$activated_count;
-								}
-							}
-
-							$feature->dependent_status = $activated_count > 0 ? 'active' : 'inactive';
-							if ( $activated_count === 0 ) {
-								$feature->dependent_plugin_name = $required_plugin_name;
-							}
-						} else {
-							if ( is_plugin_active( $required_plugin_file ) ) {
-								$feature->dependent_status = 'active';
-							} else {
-								$feature->dependent_status      = 'inactive';
-								$feature->dependent_plugin_name = $required_plugin_name;
-							}
-						}
-					}
-				}
 				$feature->status = 'active';
 			} else {
 				$feature->status = 'inactive';
 			}
+			// Check if the feature is dependent on another plugin.
+			$feature = self::evf_get_plugin_dependency_status( $required_plugins, $feature );
 
 			if ( isset( $required_plugins[ $feature->slug ] ) ) {
 				$feature->is_dependent    = true;
@@ -875,5 +832,65 @@ class EVF_Modules {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Get the plugin dependency status.
+	 *
+	 * @since 3.2.4
+	 *
+	 * @param array $required_plugins Required plugins.
+	 * @param object $feature Feature object.
+	 *
+	 * @return object Updated feature object with dependency status.
+	 */
+	public static function evf_get_plugin_dependency_status( $required_plugins, $feature ) {
+		if ( isset( $required_plugins[ $feature->slug ] ) ) {
+			if ( isset( $required_plugins[ $feature->slug ]['is_theme'] ) && $required_plugins[ $feature->slug ]['is_theme'] ) {
+				$active_theme = wp_get_theme();
+				if ( $feature->slug === 'everest-forms-bricks-builder' ) {
+					if ( $active_theme->stylesheet != $required_plugins[ $feature->slug ]['id'] && $active_theme->template != $required_plugins[ $feature->slug ]['id'] ) {
+						$feature->dependent_status      = 'inactive';
+						$feature->dependent_plugin_name = $required_plugins[ $feature->slug ]['name'];
+					} else {
+						$feature->dependent_status = 'active';
+					}
+				} elseif ( $feature->slug === 'everest-forms-divi-builder' ) {
+					if ( 'Divi' === $active_theme->Name ) {
+						$feature->dependent_status = 'active';
+					} else {
+						$feature->dependent_status      = 'inactive';
+						$feature->dependent_plugin_name = $required_plugins[ $feature->slug ]['name'];
+
+					}
+				}
+			} else {
+				$required_plugin_file = $required_plugins[ $feature->slug ]['file'];
+				$required_plugin_name = $required_plugins[ $feature->slug ]['name'];
+
+				if ( is_array( $required_plugin_file ) ) {
+					$activated_count = 0;
+					foreach ( $required_plugin_file as $file ) {
+						if ( is_plugin_active( $file ) ) {
+							++$activated_count;
+						}
+					}
+
+					$feature->dependent_status = $activated_count > 0 ? 'active' : 'inactive';
+					if ( $activated_count === 0 ) {
+						$feature->dependent_plugin_name = $required_plugin_name;
+					}
+				} else {
+					if ( is_plugin_active( $required_plugin_file ) ) {
+						$feature->dependent_status = 'active';
+					} else {
+						$feature->dependent_status      = 'inactive';
+						$feature->dependent_plugin_name = $required_plugin_name;
+					}
+				}
+			}
+		}
+
+		return $feature;
 	}
 }

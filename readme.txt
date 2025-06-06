@@ -344,6 +344,8 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 == Changelog ==
 
 = 3.2.4     	- 06-06-2025
+* Fix 			- Placeholder issue on frontend.
+* Fix 			- Module activation design in dashboard.
 * Fix 			- Inconsistency on form builder field option design.
 
 = 3.2.3     	- 05-06-2025
