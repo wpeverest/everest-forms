@@ -2798,6 +2798,23 @@
 					}, 100);
 				}
 				$('#everest-forms-field-option-' + field_id).show();
+
+				/**
+				 * Close all field option groups except basic group
+				 * This is to ensure that only basic group is open when switching to field options.
+				 *
+				 * @since 3.2.4
+				 */
+				$('#everest-forms-field-option-' + field_id).find( '.everest-forms-field-option-group' ).each( function() {
+					$field_options_element = $( this );
+					if ( ! $field_options_element.hasClass( 'everest-forms-field-option-group-basic' ) ) {
+						if ( $field_options_element.hasClass( 'open' ) ) {
+							$field_options_element.removeClass( 'open' ).addClass( 'closed' );
+							$field_options_element.find( '.everest-forms-field-option-group-inner' ).hide();
+						}
+					}
+				});
+
 				$('#everest-forms-field-' + field_id).addClass('active');
 			} else {
 				if ( $('.evf-admin-field-wrapper .everest-forms-field').length > 0 ) {
