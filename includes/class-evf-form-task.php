@@ -151,14 +151,23 @@ class EVF_Form_Task {
 			$this->evf_notice_print = false;
 			$logger                 = evf_get_logger();
 
-			// Check nonce for form submission.
-			if ( empty( $_POST[ '_wpnonce' . $form_id ] ) || ! wp_verify_nonce( wp_unslash( sanitize_key( $_POST[ '_wpnonce' . $form_id ] ) ), 'everest-forms_process_submit' ) ) { // phpcs:ignore WordPress.Security.NonceVerification
-				$this->errors[ $form_id ]['header'] = esc_html__( 'We were unable to process your form, please try again.', 'everest-forms' );
-				$logger->error(
-					$this->errors[ $form_id ]['header'],
-					array( 'source' => 'form-submission' )
-				);
-				return $this->errors;
+			/**
+			 * Filter to bypass the form nonce validation.
+			 * By default it is false.
+			 *
+			 * @since xx.xx.xx
+			 */
+			if ( ! apply_filters( 'evf_bypass_form_nonce_validation', false, $form_id ) ) {
+				// Check nonce for form submission.
+
+				if ( empty( $_POST[ '_wpnonce' . $form_id ] ) || ! wp_verify_nonce( wp_unslash( sanitize_key( $_POST[ '_wpnonce' . $form_id ] ) ), 'everest-forms_process_submit' ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+					$this->errors[ $form_id ]['header'] = esc_html__( 'We were unable to process your form, please try again.', 'everest-forms' );
+					$logger->error(
+						$this->errors[ $form_id ]['header'],
+						array( 'source' => 'form-submission' )
+					);
+					return $this->errors;
+				}
 			}
 
 			// Validate form is real and active (published).
@@ -547,7 +556,7 @@ class EVF_Form_Task {
 			 *
 			 * @since 3.2.3
 			 */
-			foreach ($this->form_fields as $key => $value) {
+			foreach ( $this->form_fields as $key => $value ) {
 				if ( ! empty( $value['value'] ) && is_string( $value['value'] ) && strpos( $value['value'], '{' ) !== false ) {
 					$this->form_fields[ $key ]['value'] = apply_filters( 'everest_forms_process_smart_tags', $value['value'], $this->form_data, $this->form_fields );
 				}
@@ -1346,7 +1355,7 @@ class EVF_Form_Task {
 		}
 
 		$mark_as_spam = false;
-		$logger 	  = evf_get_logger();
+		$logger       = evf_get_logger();
 
 		$access_key = get_option( 'everest_forms_recaptcha_cleantalk_access_key', '' );
 
@@ -1356,7 +1365,7 @@ class EVF_Form_Task {
 			return false;
 		}
 
-		return  $this->evf_is_spam_submission_clean_talk_rest_api( $entry, $access_key );
+		return $this->evf_is_spam_submission_clean_talk_rest_api( $entry, $access_key );
 	}
 
 	/**
