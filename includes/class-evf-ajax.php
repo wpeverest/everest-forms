@@ -139,7 +139,7 @@ class EVF_AJAX {
 			'form_preview_save'               => false,
 			'delete_form_tags'                => false,
 			'update_tags_in_bulk'             => false,
-			'save_clean_talk_settings'        => true,
+			'save_clean_talk_settings'        => false,
 		);
 
 		foreach ( $ajax_events as $ajax_event => $nopriv ) {
