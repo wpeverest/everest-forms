@@ -49,6 +49,7 @@ class EVF_Shortcode_Form {
 			add_action( 'everest_forms_frontend_output', array( 'EVF_Shortcode_Form', 'recaptcha' ), 20, 3 );
 		}
 		add_action( 'everest_forms_frontend_output', array( 'EVF_Shortcode_Form', 'footer' ), 25, 3 );
+		add_action( 'everest_forms_frontend_output', array( 'EVF_Shortcode_Form', 'inline_script_to_update_nonce' ), 26, 3 );
 
 		// reCaptcha Language.
 		add_filter( 'everest_forms_frontend_recaptcha_url', array( __CLASS__, 'evf_recaptcha_language' ), 10, 1 );
@@ -503,7 +504,7 @@ class EVF_Shortcode_Form {
 			return;
 		}
 
-		$detector_js_url    = 'https://moderate.cleantalk.org/ct-bot-detector-wrapper.js';
+		$detector_js_url   = 'https://moderate.cleantalk.org/ct-bot-detector-wrapper.js';
 		$clean_talk_inline = <<<JS
 		document.addEventListener("DOMContentLoaded", function () {
 			var loadInput = document.querySelector('input[name="everest_forms[evf_form_load_time]"]');
@@ -833,7 +834,7 @@ class EVF_Shortcode_Form {
 				}
 			}
 		}
-		$errors     = isset( evf()->task->errors[ $form_id ][ $field_id ] ) ? evf()->task->errors[ $form_id ][ $field_id ] : '';
+		$errors   = isset( evf()->task->errors[ $form_id ][ $field_id ] ) ? evf()->task->errors[ $form_id ][ $field_id ] : '';
 		$defaults   = isset( $_POST['everest_forms']['form_fields'][ $field_id ] ) && ( ! is_array( $_POST['everest_forms']['form_fields'][ $field_id ] ) && ! empty( $_POST['everest_forms']['form_fields'][ $field_id ] ) ) ? $_POST['everest_forms']['form_fields'][ $field_id ] : ''; // @codingStandardsIgnoreLine
 
 		/**
@@ -857,10 +858,10 @@ class EVF_Shortcode_Form {
 
 			if ( $is_hidden ) {
 				$default_value = isset( $field['default_value'] ) ? apply_filters( 'everest_forms_process_smart_tags', $field['default_value'], $form_data ) : $defaults;
-			}else{
-				$default_value = isset( $field['default_value'] ) ?  '' : $defaults;
+			} else {
+				$default_value = isset( $field['default_value'] ) ? '' : $defaults;
 			}
-		}else{
+		} else {
 			$default_value = isset( $field['default_value'] ) ? apply_filters( 'everest_forms_process_smart_tags', $field['default_value'], $form_data ) : $defaults;
 		}
 
@@ -1369,5 +1370,48 @@ class EVF_Shortcode_Form {
 		} else {
 			return '';
 		}
+	}
+	/**
+	 * This fuction add the inline script to update the nonce to avoid nonce from caching.
+	 *
+	 * @since xx.xx.xx
+	 *
+	 * @param [type] $form_data The form data.
+	 * @param [type] $title The title for the form.
+	 * @param [type] $description The Form description.
+	 * @return void
+	 */
+	public static function inline_script_to_update_nonce( $form_data, $title, $description ) {
+		$form_id = $form_data['id'];
+		$form    = evf()->form->get( absint( $form_id ) );
+
+		if ( empty( $form ) ) {
+			return;
+		}
+
+		$form_data = evf_decode( $form->post_content );
+		if ( ! isset( $form_data['settings']['prevent_from_nonce_caching'] ) || ! evf_string_to_bool( $form_data['settings']['prevent_from_nonce_caching'] ) ) {
+			return;
+		}
+
+		add_action(
+			'wp_footer',
+			function () use ( $form_id ) {
+				echo '<script type="text/javascript">jQuery(function() {'
+					. 'jQuery.ajax({'
+						. "url: '" . esc_url( admin_url( 'admin-ajax.php', is_ssl() ? 'https' : 'http' ) ) . "',"
+						. 'type: "POST",'
+						. 'data: {'
+							. 'action: "everest_forms_get_form_update_nonce",'
+							. 'form_id: "' . (int) $form_id . '",'
+						. '},'
+						. 'success: function (response) {'
+							. "jQuery('#_wpnonce" . (int) $form_id . "').val( response.data );"
+						. '}'
+					. '});'
+				. '})</script>';
+			},
+			99
+		);
 	}
 }

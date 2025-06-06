@@ -334,6 +334,19 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			)
 		);
 
+		everest_forms_panel_field(
+			'toggle',
+			'settings',
+			'prevent_from_nonce_caching',
+			$this->form_data,
+			esc_html__( 'Prevent form nonce from being cached', 'everest-forms' ),
+			array(
+				'default' => isset( $settings['prevent_from_nonce_caching'] ) ? $settings['prevent_from_nonce_caching'] : 0,
+				/* translators: %1$s - general settings docs url */
+				'tooltip' => sprintf( esc_html__( 'Enable this option to ensure the form nonce is dynamic and not cached by the browser or page cache. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/general-settings/#13-toc-title' ) ),
+			)
+		);
+
 		do_action( 'everest_forms_inline_general_settings', $this );
 
 		echo '</div>';
