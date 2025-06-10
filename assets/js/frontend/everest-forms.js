@@ -824,6 +824,9 @@ jQuery( function ( $ ) {
 		},
 		validateMinimumWordLength: function() {
 			Array.prototype.slice.call( document.querySelectorAll( '.everest-forms-min-words-length-enabled' ) ).map( function( event ) {
+				if (!jQuery(event).is(':visible')){
+					return;
+				   }
 				var minWords    = parseInt( event.dataset.textMinLength, 10 ) || 0;
 
 				// Add the custom validation method.
