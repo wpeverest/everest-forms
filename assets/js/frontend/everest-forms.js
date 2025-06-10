@@ -842,6 +842,11 @@ jQuery( function ( $ ) {
 		},
 		validateMinimumcharacterLength: function() {
 			Array.prototype.slice.call( document.querySelectorAll( '.everest-forms-min-characters-length-enabled' ) ).map( function( event ) {
+				// Skips the validation for hidden fields.
+				if (!jQuery(event).is(':visible')){
+				 return;
+				}
+
 				var minCharacters    = parseInt( event.dataset.textMinLength, 10 ) || 0;
 
 				// Add the custom validation method.
