@@ -23,7 +23,7 @@ final class EverestForms {
 	 *
 	 * @var string
 	 */
-	public $version = '3.1.1';
+	public $version = '3.2.5';
 
 	/**
 	 * The single instance of the class.
@@ -184,6 +184,7 @@ final class EverestForms {
 		add_action( 'init', array( 'EVF_Shortcodes', 'init' ), 0 );
 		add_action( 'switch_blog', array( $this, 'wpdb_table_fix' ), 0 );
 		add_filter( 'everest_forms_entry_bulk_actions', array( $this, 'everest_forms_entry_bulk_actions' ) );
+		add_action( 'init', array( $this, 'evf_register_inactive_post_status' ) );
 	}
 
 	/**
@@ -518,5 +519,24 @@ final class EverestForms {
 		}
 
 		return $actions;
+	}
+	/**
+	 * Register the "inactive" post status.
+	 *
+	 * @since 3.2.0
+	 */
+	public function evf_register_inactive_post_status() {
+		register_post_status(
+			'inactive',
+			array(
+				'label'                     => _x( 'Inactive', 'post' ),
+				'public'                    => false, // This prevents it from being shown on the front-end.
+				'exclude_from_search'       => true, // Exclude from search results.
+				'show_ui'                   => true, // Show it in the admin UI.
+				'show_in_admin_all_list'    => true, // Display in the "All" view in the admin.
+				'show_in_admin_status_list' => true, // Show in the "Post Status" dropdown in admin.
+				'label_count'               => _n_noop( 'Inactive <span class="count">(%s)</span>', 'Inactive <span class="count">(%s)</span>' ),
+			)
+		);
 	}
 }

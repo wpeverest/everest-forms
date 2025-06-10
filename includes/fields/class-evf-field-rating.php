@@ -26,7 +26,6 @@ class EVF_Field_Rating extends EVF_Form_Fields {
 			'basic-options'    => array(
 				'field_options' => array(
 					'label',
-					'meta',
 					'description',
 					'number_of_stars',
 					'required',
@@ -36,6 +35,7 @@ class EVF_Field_Rating extends EVF_Form_Fields {
 			),
 			'advanced-options' => array(
 				'field_options' => array(
+					'meta',
 					'rating_icon',
 					'icon_color',
 					'label_hide',
@@ -300,7 +300,7 @@ class EVF_Field_Rating extends EVF_Form_Fields {
 	 */
 	public function html_rating_value( $val, $field_val, $form_data = array(), $context = '' ) {
 		if ( is_serialized( $field_val ) ) {
-			$value = maybe_unserialize( $field_val );
+			$value = evf_maybe_unserialize( $field_val );
 			if ( isset( $value['type'] ) && $value['type'] === $this->type ) {
 				// Icons ref: https://emojipedia.org/.
 				switch ( $value['icon'] ) {

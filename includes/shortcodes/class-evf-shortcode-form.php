@@ -44,6 +44,7 @@ class EVF_Shortcode_Form {
 		add_action( 'everest_forms_display_field_after', array( 'EVF_Shortcode_Form', 'description' ), 5, 2 );
 		add_action( 'everest_forms_display_field_after', array( 'EVF_Shortcode_Form', 'wrapper_end' ), 15, 2 );
 		add_action( 'everest_forms_frontend_output', array( 'EVF_Shortcode_Form', 'honeypot' ), 15, 3 );
+		add_action( 'everest_forms_frontend_output', array( 'EVF_Shortcode_Form', 'clean_talk' ), 15, 3 );
 		if ( ! apply_filters( 'everest_forms_recaptcha_disabled', false ) ) {
 			add_action( 'everest_forms_frontend_output', array( 'EVF_Shortcode_Form', 'recaptcha' ), 20, 3 );
 		}
@@ -488,6 +489,64 @@ class EVF_Shortcode_Form {
 	}
 
 	/**
+	 * Anti-spam CleanTalk output if configured.
+	 *
+	 * @since 3.2.2
+	 *
+	 * @param  [type] $form_data Form data.
+	 */
+	public static function clean_talk( $form_data ) {
+
+		$is_cleantalk_activated = isset( $form_data['settings']['cleantalk'] ) ? $form_data['settings']['cleantalk'] : false;
+
+		if ( ! $is_cleantalk_activated ) {
+			return;
+		}
+
+		$detector_js_url    = 'https://moderate.cleantalk.org/ct-bot-detector-wrapper.js';
+		$clean_talk_inline = <<<JS
+		document.addEventListener("DOMContentLoaded", function () {
+			var loadInput = document.querySelector('input[name="everest_forms[evf_form_load_time]"]');
+			if (loadInput) {
+				loadInput.value = Math.floor(Date.now() / 1000);
+			}
+
+			var maxAttempts = 10;
+			var attempts = 0;
+			var interval = setInterval(function () {
+				var match = document.cookie.match(/ct_event_token=([^;]+)/);
+				if (match && match[1]) {
+					var eventInput = document.querySelector('input[name="everest_forms[evf_event_token]"]');
+					if (eventInput) {
+						eventInput.value = match[1];
+					}
+					clearInterval(interval);
+				}
+				if (++attempts >= maxAttempts) {
+					clearInterval(interval);
+				}
+			}, 500);
+		});
+		JS;
+
+		// Enqueue reCaptcha scripts.
+		wp_enqueue_script(
+			'evf-clan-talk',
+			$detector_js_url,
+			array( 'jquery' ),
+			EVF_VERSION,
+			true
+		);
+
+		wp_add_inline_script( 'evf-clan-talk', $clean_talk_inline );
+
+		if ( isset( $form_data['settings']['cleantalk'] ) && '1' === $form_data['settings']['cleantalk'] ) {
+			echo '<input type="hidden" name="everest_forms[evf_event_token]" value="">';
+			echo '<input type="hidden" name="everest_forms[evf_form_load_time]" class="evf_form_load_time" value="">';
+		}
+	}
+
+	/**
 	 * Google reCAPTCHA output if configured.
 	 *
 	 * @param array $form_data Form data and settings.
@@ -513,6 +572,9 @@ class EVF_Shortcode_Form {
 			$secret_key = get_option( 'everest_forms_recaptcha_turnstile_secret_key' );
 			$theme      = get_option( 'everest_forms_recaptcha_turnstile_theme' );
 			$lang       = get_option( 'everest_forms_recaptcha_recaptcha_language', 'en-GB' );
+		} else {
+			$site_key   = '';
+			$secret_key = '';
 		}
 
 		if ( ! $site_key || ! $secret_key ) {
@@ -773,6 +835,35 @@ class EVF_Shortcode_Form {
 		}
 		$errors     = isset( evf()->task->errors[ $form_id ][ $field_id ] ) ? evf()->task->errors[ $form_id ][ $field_id ] : '';
 		$defaults   = isset( $_POST['everest_forms']['form_fields'][ $field_id ] ) && ( ! is_array( $_POST['everest_forms']['form_fields'][ $field_id ] ) && ! empty( $_POST['everest_forms']['form_fields'][ $field_id ] ) ) ? $_POST['everest_forms']['form_fields'][ $field_id ] : ''; // @codingStandardsIgnoreLine
+
+		/**
+		 *  Count the number of smart tags in the default value which contain form fields smart tag.
+		 *
+		 * @since 3.2.3
+		 */
+		$count         = 0;
+		$default_value = '';
+
+		if ( isset( $field['default_value'] ) ) {
+			preg_match_all( '/\{field_id="(.+?)"\}/', $field['default_value'], $ids );
+			if ( ! empty( $ids[1] ) ) {
+				$count++;
+			}
+		}
+
+		if ( $count > 0 ) {
+			$is_hidden = isset( $field['hidden_field_visibility'] ) ? evf_string_to_bool( $field['hidden_field_visibility'] ) :
+						( isset( $field['type'] ) && 'hidden' === $field['type'] ? true : false );
+
+			if ( $is_hidden ) {
+				$default_value = isset( $field['default_value'] ) ? apply_filters( 'everest_forms_process_smart_tags', $field['default_value'], $form_data ) : $defaults;
+			}else{
+				$default_value = isset( $field['default_value'] ) ?  '' : $defaults;
+			}
+		}else{
+			$default_value = isset( $field['default_value'] ) ? apply_filters( 'everest_forms_process_smart_tags', $field['default_value'], $form_data ) : $defaults;
+		}
+
 		$properties = apply_filters(
 			'everest_forms_field_properties_' . $field['type'],
 			array(
@@ -800,7 +891,7 @@ class EVF_Shortcode_Form {
 					'primary' => array(
 						'attr'     => array(
 							'name'        => "everest_forms[form_fields][{$field_id}]",
-							'value'       => isset( $field['default_value'] ) ? apply_filters( 'everest_forms_process_smart_tags', $field['default_value'], $form_data ) : $defaults,
+							'value'       => $default_value,
 							'placeholder' => isset( $field['placeholder'] ) ? evf_string_translation( $form_data['id'], $field['id'], $field['placeholder'], '-placeholder' ) : '',
 						),
 						'class'    => $attributes['input_class'],
@@ -861,12 +952,16 @@ class EVF_Shortcode_Form {
 
 		$atts = shortcode_atts(
 			array(
-				'id'          => false,
-				'type'        => false,
-				'size'        => false,
-				'text'        => false,
-				'title'       => false,
-				'description' => false,
+				'id'           => false,
+				'type'         => false,
+				'size'         => false,
+				'text'         => false,
+				'title'        => false,
+				'description'  => false,
+				'header_title' => false,
+				'footer_title' => false,
+				'header_desc'  => false,
+				'footer_desc'  => false,
 			),
 			$atts,
 			'output'
@@ -898,7 +993,11 @@ class EVF_Shortcode_Form {
 		// Grab the form data, if not found then we bail.
 		$form = evf()->form->get( (int) $id );
 
-		if ( empty( $form ) || 'publish' !== $form->post_status ) {
+		if ( empty( $form ) ) {
+			return;
+		}
+
+		if ( 'publish' !== $form->post_status && 'inactive' !== $form->post_status ) {
 			return;
 		}
 

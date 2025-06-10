@@ -1,1 +1,86 @@
-#everest-forms-builder .everest-forms-designer-icon{position:fixed;left:22px;bottom:65px;width:55px;height:55px;padding:8px;z-index:99999;cursor:pointer;border-radius:50%;background:#0095ff;box-shadow:-1px 2px 20px #79c2f6}#everest-forms-builder .everest-forms-designer-icon svg{fill:#fff}#everest-forms-builder.multi-part-activated .everest-forms-designer-icon{bottom:105px}@media screen and (max-width:782px){#everest-forms-builder.multi-part-activated .everest-forms-designer-icon{bottom:75px}}
+/**
+ * admin.scss
+ * General admin styles.
+ */
+/**
+ * Imports
+ */
+/** Minimum breakpoint width. Null for the smallest (first) breakpoint.
+ *
+ *	>> breakpoint-min(sm, (xs: 0, sm: 576px, md: 768px, lg: 992px, xl: 1200px))
+ *	576px
+ **/
+/**
+ * Media of at least the minimum breakpoint width. No query for the smallest breakpoint.
+ * Makes the @content apply to the given breakpoint and wider.
+ **/
+/**
+ * Grid system
+ *
+ * Generate semantic grid columns with these mixins.
+ **/
+/**
+ * _mixins.scss
+ * EverestForms Mixins
+ */
+/**
+ * Objects
+ */
+/**
+ * EverestForms CSS Variables
+ */
+/*=====  Primary Color  ======*/
+/*=====  Semantic Color  ======*/
+/*=====  Neutral colors  ======*/
+/**
+ * EverestForms CSS Variables
+ */
+/*=====  Primary Color  ======*/
+/*=====  Semantic Color  ======*/
+/*=====  Neutral colors  ======*/
+/**
+ * Font Size Variables
+ */
+/**
+ * Grid breakpoints
+ *
+ * Define the minimum dimensions at which your layout will change,
+ * adapting to different screen sizes, for use in media queries.
+ **/
+/**
+ * Grid containers
+ *
+ * Define the maximum width of `.ur-container` for different screen sizes.
+ * scss-docs-start container-max-widths
+ **/
+/**
+ * Styling begins.
+ */
+#everest-forms-builder .everest-forms-designer-icon {
+  position: fixed;
+  left: 22px;
+  bottom: 65px;
+  width: 55px;
+  height: 55px;
+  padding: 8px;
+  z-index: 99999;
+  cursor: pointer;
+  border-radius: 50%;
+  background: #0095ff;
+  box-shadow: -1px 2px 20px #79c2f6;
+}
+#everest-forms-builder .everest-forms-designer-icon svg {
+  fill: #fff;
+}
+#everest-forms-builder.multi-part-activated .everest-forms-designer-icon {
+  bottom: 105px;
+}
+
+/**
+ * Optimisation for screens 782px and smaller.
+ **/
+@media screen and (max-width: 782px) {
+  #everest-forms-builder.multi-part-activated .everest-forms-designer-icon {
+    bottom: 75px;
+  }
+}

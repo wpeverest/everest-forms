@@ -97,12 +97,14 @@ class EVF_Admin_Preview_Confirmation {
 		$close_div = 'basic' === $preview_style ? '' : '</div>';
 
 		foreach ( $fields as $formatted_string ) {
-			if ( 'basic' === $preview_style ) {
-				$output .= '<div class="everest_forms_preview_confirmation_' . $preview_style . '_label">' . $formatted_string['label'] . ' : ' . $close_div;
-				$output .= $formatted_string['value'] . '</div>';
-			} else {
-				$output .= '<div class="everest_forms_preview_confirmation_' . $preview_style . '_label">' . $formatted_string['label'] . ' : ' . $close_div;
-				$output .= '<div class="everest_forms_preview_confirmation_' . $preview_style . '_value">' . $formatted_string['value'] . '</div>';
+			if ( is_array( $formatted_string ) && isset( $formatted_string['label'], $formatted_string['value'] ) ) {
+				if ( 'basic' === $preview_style ) {
+					$output .= '<div class="everest_forms_preview_confirmation_' . $preview_style . '_label">' . $formatted_string['label'] . ' : ' . $close_div;
+					$output .= $formatted_string['value'] . '</div>';
+				} else {
+					$output .= '<div class="everest_forms_preview_confirmation_' . $preview_style . '_label">' . $formatted_string['label'] . ' : ' . $close_div;
+					$output .= '<div class="everest_forms_preview_confirmation_' . $preview_style . '_value">' . $formatted_string['value'] . '</div>';
+				}
 			}
 		}
 

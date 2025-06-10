@@ -199,10 +199,10 @@ class EVF_Entry_CSV_Exporter extends EVF_CSV_Exporter {
 					} elseif ( 'radio' === $field['type'] ) {
 						$correct_answer_key = array_keys( $correct_answer )[0];
 						$correct_answer     = $field['choices'][ $correct_answer_key ]['label'];
-						$given_answer       = maybe_unserialize( $given_answer )['label'];
+						$given_answer       = evf_maybe_unserialize( $given_answer )['label'];
 						$is_correct         = ( $given_answer === $correct_answer );
 					} elseif ( 'checkbox' === $field['type'] ) {
-						$given_answer_data   = maybe_unserialize( $given_answer )['label'];
+						$given_answer_data   = evf_maybe_unserialize( $given_answer )['label'];
 						$is_correct          = true;
 						$choices             = $field['choices'];
 						$correct_answer_keys = array_keys( $correct_answer );

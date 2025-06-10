@@ -108,7 +108,7 @@ class EVF_Form_Handler {
 				 $args['post__in'] = array( 0 );
 			}
 		}
-		
+
 		// For cache lets unset the cap args.
 		unset( $args['cap'] );
 
@@ -211,7 +211,7 @@ class EVF_Form_Handler {
 		);
 
 		$templates = EVF_Admin_Form_Templates::get_template_data();
-		$templates = is_array( $templates ) ? $templates : array();
+		$templates = is_array( $templates ) ? $templates[0]->templates : array();
 		if ( ! empty( $templates ) ) {
 			foreach ( $templates as $template_data ) {
 				if ( $template_data->slug === $template && 'blank' !== $template_data->slug ) {

@@ -2,9 +2,9 @@
 Contributors:everestforms,WPEverest
 Tags: contact form, custom form, form builder, forms, survey
 Requires at least: 5.5
-Tested up to: 6.7.1
+Tested up to: 6.8.1
 Requires PHP: 7.2
-Stable tag: 3.1.1
+Stable tag: 3.2.5
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -337,8 +337,60 @@ Everest Forms comes with a set of robust spam protection features. You can easil
 
 Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/everest-forms/) :)
 
+= How can I report security bugs? =
+
+You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/f788d7f0-ea8a-4fd5-bcae-81a5d09a476c)
 
 == Changelog ==
+
+= 3.2.5     	- 06-06-2025
+* Fix 			- Placeholder issue on frontend.
+* Fix 			- Module activation design in dashboard.
+* Fix 			- Inconsistency on form builder field option design.
+
+= 3.2.3     	- 05-06-2025
+* Enhance 		- Form builder design.
+* Enhance 		- Active module workflow.
+* Enhance 		- Block Popup form settings.
+* Enhance 		- CleanTalk anti spam save access key workflow.
+* Enhance		- Prevent form save if the field label is empty.
+* Tweak 		- Edit meta key design.
+* Tweak 		– JS validator version updated.
+* Tweak 		- Form fields smart tag options for default value in hidden form fields.
+* Fix 			- Save color palette workflow.
+* Fix 			- Incorrect asterisk display when moving fields.
+* Fix 			- Return null for serialized data in PHP 7.1 or earlier.
+* Fix 			- Selection of option while clicking on label for image option.
+
+
+= 3.2.2     	- 20-05-2025
+* Enhance 		- Validate clean talk access key on save.
+* Fix 			- Form templates not loading.
+
+= 3.2.1     	- 19-05-2025
+* Tweak 		- Added settings option on form table.
+* Fix 			- Form templates style not applying.
+
+= 3.2.0     	- 12-05-2025
+* Feature		- Add category/taxonomy on From.
+* Feature		- CleanTalk Anti-Spam Integration.
+* Feature 		- Private Note field on Form Builder.
+* Enhance 		- Option to edit meta key.
+* Enhance 		- Popup form option and customization.
+* Tweak 		- User Registration & Membership logo on other products.
+* Fix 			- Preserve filename in file upload.
+* Fix 			- Show premium sidebar enable disable issue.
+* Fix 			- Form creation button generating multiple form.
+* Fix 			- Entry id smart tag not working in email subject.
+* Dev 			- Hook to add custom smart tag.
+
+= 3.1.2     	- 08-04-2025
+* Fix 			- Unserialize issue with object injection.
+* Fix 			- Array to string conversion while viewing entries.
+* Fix 			- Square payment not working with redirect settings.
+* Fix 			- Rendering conditional logic while searching field.
+* Fix 			- Auto scroll submission message when disabled in ajax.
+* Fix 			- Restriction on form preview on the basis of capabilities.
 
 = 3.1.1     	- 01-04-2025
 * Enhance 		- Form preview design revamp.

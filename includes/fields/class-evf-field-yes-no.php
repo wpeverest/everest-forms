@@ -26,7 +26,6 @@ class EVF_Field_Yes_No extends EVF_Form_Fields {
 			'basic-options'    => array(
 				'field_options' => array(
 					'label',
-					'meta',
 					'yes_value',
 					'no_value',
 					'description',
@@ -37,6 +36,7 @@ class EVF_Field_Yes_No extends EVF_Form_Fields {
 			),
 			'advanced-options' => array(
 				'field_options' => array(
+					'meta',
 					'style',
 					'yes_icon_color',
 					'no_icon_color',

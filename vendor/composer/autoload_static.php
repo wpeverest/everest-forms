@@ -14,6 +14,7 @@ class ComposerStaticInit11b556de92789ded0f435d9d0dda273a
         'E' => 
         array (
             'EverestForms\\Traits\\' => 20,
+            'EverestForms\\Helpers\\' => 21,
             'EverestForms\\Addons\\' => 20,
         ),
         'C' => 
@@ -30,6 +31,10 @@ class ComposerStaticInit11b556de92789ded0f435d9d0dda273a
         'EverestForms\\Traits\\' => 
         array (
             0 => __DIR__ . '/../..' . '/traits',
+        ),
+        'EverestForms\\Helpers\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/includes/Helpers',
         ),
         'EverestForms\\Addons\\' => 
         array (

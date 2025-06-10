@@ -9,7 +9,7 @@ defined( 'ABSPATH' ) || exit;
 
 $tab_exists                 = isset( $tabs[ $current_tab ] ) || has_action( 'everest_forms_sections_' . $current_tab ) || has_action( 'everest_forms_settings_' . $current_tab );
 $current_tab_label          = isset( $tabs[ $current_tab ] ) ? $tabs[ $current_tab ] : '';
-$is_premium_sidebar_enabled = isset( $_COOKIE['isPremiumSidebarEnabled'] ) ? sanitize_text_field( wp_unslash( $_COOKIE['isPremiumSidebarEnabled'] ) ) : '';
+$is_premium_sidebar_enabled = isset( $_COOKIE['isPremiumSidebarEnabled'] ) ? evf_string_to_bool( $_COOKIE['isPremiumSidebarEnabled'] ) : false;
 $is_premium_sidebar_class   = $is_premium_sidebar_enabled ? 'everest-forms-hidden' : '';
 if ( ! $tab_exists ) {
 	wp_safe_redirect( admin_url( 'admin.php?page=evf-settings' ) );
@@ -72,11 +72,11 @@ if ( ! $tab_exists ) {
 					<div class="everest-forms-toggle-wrapper">
 						<div class="evf-toggle-section">
 							<span class="everest-forms-toggle-form">
-								<input type="checkbox" name="everest_forms_enable_log" id="everest-forms-enable-premium-sidebar" style="" class="" value="yes">
+								<input type="checkbox" name="everest_forms_enable_log" id="everest-forms-enable-premium-sidebar" style="" class="" value="<?php echo esc_attr( $is_premium_sidebar_enabled ); ?>" <?php checked( $is_premium_sidebar_enabled, true ); ?> />
 								<span class="slider round"></span>
 							</span>
 						</div>
-						<span class="everest-forms-toggle-text">Hide Sidebar</span>
+						<span class="everest-forms-toggle-text"><?php echo ! $is_premium_sidebar_enabled ? 'Show Sidebar' : 'Hide Sidebar'; ?></span>
 					</div>
 					<?php } ?>
 				<?php

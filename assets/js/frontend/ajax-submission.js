@@ -114,7 +114,7 @@ jQuery( function( $ ) {
 					})
 					.done( function ( xhr, textStatus, errorThrown ) {
 						var redirect_url = ( xhr.data && xhr.data.redirect_url ) ? xhr.data.redirect_url : '';
-						if ( redirect_url && 'stripe' !== formTuple.find( ".everest-forms-gateway[data-gateway='stripe']" ).data( 'gateway' )) {
+						if ( redirect_url && 'stripe' !== formTuple.find( ".everest-forms-gateway[data-gateway='stripe']" ).data( 'gateway' ) && 'square' !== formTuple.find( ".everest-forms-gateway[data-gateway='square']" ).data( 'gateway' )) {
 							formTuple.trigger( 'reset' );
 							window.location = redirect_url;
 							return;
@@ -168,6 +168,8 @@ jQuery( function( $ ) {
 								return;
 							}
 							if( 'square' === formTuple.find( ".everest-forms-gateway[data-gateway='square']" ).data('gateway') ){
+								console.log('square');
+
 								formTuple.trigger( 'everest_forms_frontend_payment_before_success_message', xhr.data );
 								return;
 							}
@@ -275,7 +277,7 @@ jQuery( function( $ ) {
 					})
 					.always( function( xhr ) {
 						var redirect_url = ( xhr.data && xhr.data.redirect_url ) ? xhr.data.redirect_url : '';
-						if ( ! redirect_url && $( '.everest-forms-notice' ).length ) {
+						if ( ! redirect_url && $( '.everest-forms-notice' ).length && xhr.data.submission_message_scroll  === "1" ) {
 							$( [document.documentElement, document.body] ).animate({
 								scrollTop: $( '.everest-forms-notice' ).offset().top
 							}, 800 );

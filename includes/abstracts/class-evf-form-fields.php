@@ -1205,7 +1205,7 @@ abstract class EVF_Form_Fields {
 			/*
 			 * Plan Choices.
 			 *
-			 * @since xx.xx.xx
+			 * @since 3.2.2
 			 */
 			case 'plan_choices':
 				$class      = array();
@@ -1596,9 +1596,18 @@ abstract class EVF_Form_Fields {
 				$exclude_fields = array( 'rating', 'number', 'range-slider', 'payment-quantity', 'reset' );
 
 				if ( ! in_array( $field['type'], $exclude_fields, true ) ) {
-					$output .= '<a href="#" class="evf-toggle-smart-tag-display" data-type="other"><span class="dashicons dashicons-editor-code"></span></a>';
+					$output .= '<a href="#" class="evf-toggle-smart-tag-display" data-type="all"><span class="dashicons dashicons-editor-code"></span></a>';
 					$output .= '<div class="evf-smart-tag-lists" style="display: none">';
-					$output .= '<div class="smart-tag-title other-tag-title">Others</div><ul class="evf-others"></ul></div>';
+
+					$output .= '<div class="smart-tag-title">';
+					$output .= esc_html__( 'Available Fields', 'everest-forms' );
+					$output .= '</div><ul class="evf-fields"></ul>';
+
+					$output .= '<div class="smart-tag-title other-tag-title">';
+					$output .= esc_html__( 'Others', 'everest-forms' );
+					$output .= '</div><ul class="evf-others"></ul>';
+
+					$output .= '</div>';
 				}
 
 				$output = $this->field_element(
@@ -2243,7 +2252,7 @@ abstract class EVF_Form_Fields {
 
 		switch ( $option ) {
 			case 'label':
-				$label = isset( $field['label'] ) && ! empty( $field['label'] ) ? $field['label'] : '';
+				$label = isset( $field['label'] ) && ! empty( $field['label'] ) ? $field['label'] . ('private-note' === $field['type'] ? (' (Admin Only)') : '' ) : '';
 				if ( $echo ) {
 					printf( '<label class="label-title %s"><span class="text">%s</span><span class="required">%s</span></label>', esc_attr( $class ), esc_html( $label ), esc_html( apply_filters( 'everest_form_get_required_type', '*', $field, $form_data ) ) );
 				} else {
@@ -2843,7 +2852,7 @@ abstract class EVF_Form_Fields {
 					$mode            = isset( $form_data['form_fields'][ $field_id ]['date_mode'] ) ? $form_data['form_fields'][ $field_id ]['date_mode'] : '';
 					$time_interval   = isset( $form_data['form_fields'][ $field_id ]['time_interval'] ) ? $form_data['form_fields'][ $field_id ]['time_interval'] : '';
 					$datetime_arr    = parse_datetime_values( $field_submit, $datetime_format, $date_format, $mode, $time_interval );
-					$booked_slot     = maybe_unserialize( get_option( 'evf_booked_slot', '' ) );
+					$booked_slot     = evf_maybe_unserialize( get_option( 'evf_booked_slot', '' ) );
 					$form_id         = $form_data['id'];
 					$is_booked       = false;
 					if ( ! empty( $booked_slot ) && array_key_exists( $form_id, $booked_slot ) ) {

@@ -37,6 +37,19 @@
 
 				});
 
+				/**
+				 * Disable row when form is disabled.
+				 *
+				 * @since 3.2.0
+				 */
+				$('.wp-list-table .everest-forms-toggle-form input').each(function () {
+					if (!$(this).prop('checked')) {
+						$(this).closest('tr').find('td').not('.has-row-actions').addClass('evf-disable-row');
+					} else {
+						$(this).closest('tr').find('td').not('.has-row-actions').removeClass('evf-disable-row');
+					}
+				});
+
 		 	});
 
 			$( document ).ready( function( $ ) {
@@ -148,6 +161,8 @@
 			EVFPanelBuilder.bindPrivacyPolicyActions();
 			$( document.body ).on( 'evf_field_drop_complete', function( e, field_type, dragged_field_id ) {
 
+				EVFPanelBuilder.bindEditMetaKey( dragged_field_id );
+
 				// Set defaults in privacy policy field.
 				if ( 'privacy-policy' === field_type ) {
 					var consent_message = evf_data.i18n_privacy_policy_consent_message;
@@ -226,6 +241,80 @@
 						$icons.css( 'fill', value );
 					}
 				});
+		});
+
+		$( document ).on( 'click', '.evf-edit-meta-key-icon', function() {
+			var $wrapper = $(this).closest('.evf-meta-key-input-wrapper'),
+				$input = $wrapper.find('.evf-input-meta-key'),
+				$original_value = $( this ).data('meta_key');
+
+			$input.prop('readonly', false).focus();
+
+			$( document ).find( '.evf-meta-key-copy-btn' ).hide();
+			$(this).hide();
+
+			if ($wrapper.find('.evf-meta-key-actions').length === 0) {
+				$wrapper.append(`
+					<span class="evf-meta-key-actions">
+						<span class="evf-save-meta-key-icon" style="cursor: pointer;">
+							<svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<rect x="1.20078" y="0.600195" width="22.8" height="22.8" rx="1.2" fill="white"/>
+							<rect x="1.20078" y="0.600195" width="22.8" height="22.8" rx="1.2" stroke="#E1E1E1" stroke-width="0.8"/>
+							<path d="M17.2689 8.5L10.8522 14.9167L7.93555 12" stroke="#383838" stroke-width="1.16667" stroke-linecap="round" stroke-linejoin="round"/>
+							</svg>
+						</span>
+						<span class="evf-cancel-meta-key-icon" style="cursor: pointer;" data-original_value="${$original_value}">
+							<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<rect x="0.800391" y="0.600195" width="22.8" height="22.8" rx="1.2" fill="white"/>
+							<rect x="0.800391" y="0.600195" width="22.8" height="22.8" rx="1.2" stroke="#E1E1E1" stroke-width="0.8"/>
+							<path d="M12.2026 12.8161L9.34427 15.6745C9.23733 15.7814 9.10122 15.8349 8.93594 15.8349C8.77066 15.8349 8.63455 15.7814 8.5276 15.6745C8.42066 15.5675 8.36719 15.4314 8.36719 15.2661C8.36719 15.1009 8.42066 14.9648 8.5276 14.8578L11.3859 11.9995L8.5276 9.14115C8.42066 9.0342 8.36719 8.89809 8.36719 8.73281C8.36719 8.56753 8.42066 8.43142 8.5276 8.32448C8.63455 8.21753 8.77066 8.16406 8.93594 8.16406C9.10122 8.16406 9.23733 8.21753 9.34427 8.32448L12.2026 11.1828L15.0609 8.32448C15.1679 8.21753 15.304 8.16406 15.4693 8.16406C15.6345 8.16406 15.7707 8.21753 15.8776 8.32448C15.9845 8.43142 16.038 8.56753 16.038 8.73281C16.038 8.89809 15.9845 9.0342 15.8776 9.14115L13.0193 11.9995L15.8776 14.8578C15.9845 14.9648 16.038 15.1009 16.038 15.2661C16.038 15.4314 15.9845 15.5675 15.8776 15.6745C15.7707 15.7814 15.6345 15.8349 15.4693 15.8349C15.304 15.8349 15.1679 15.7814 15.0609 15.6745L12.2026 12.8161Z" fill="#383838"/>
+							</svg>
+						</span>
+					</span>
+				`);
+			}
+
+			if ($wrapper.find('.evf-meta-key-warning').length === 0) {
+				$wrapper.after(`
+					<div class="evf-meta-key-warning" >
+						<div class="everest-forms-meta-key-warning-icon">
+							<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<path fill-rule="evenodd" clip-rule="evenodd" d="M7.99935 1.99984C4.68564 1.99984 1.99935 4.68613 1.99935 7.99984C1.99935 11.3135 4.68564 13.9998 7.99935 13.9998C11.3131 13.9998 13.9993 11.3135 13.9993 7.99984C13.9993 4.68613 11.3131 1.99984 7.99935 1.99984ZM0.666016 7.99984C0.666016 3.94975 3.94926 0.666504 7.99935 0.666504C12.0494 0.666504 15.3327 3.94975 15.3327 7.99984C15.3327 12.0499 12.0494 15.3332 7.99935 15.3332C3.94926 15.3332 0.666016 12.0499 0.666016 7.99984ZM7.99935 7.33317C8.36754 7.33317 8.66602 7.63165 8.66602 7.99984V10.6665C8.66602 11.0347 8.36754 11.3332 7.99935 11.3332C7.63116 11.3332 7.33268 11.0347 7.33268 10.6665V7.99984C7.33268 7.63165 7.63116 7.33317 7.99935 7.33317ZM7.99935 4.6665C7.63116 4.6665 7.33268 4.96498 7.33268 5.33317C7.33268 5.70136 7.63116 5.99984 7.99935 5.99984H8.00602C8.37421 5.99984 8.67268 5.70136 8.67268 5.33317C8.67268 4.96498 8.37421 4.6665 8.00602 4.6665H7.99935Z" fill="#EE9936"/>
+							</svg>
+						</div>
+						<div>
+							<strong>Caution:</strong> We don't recommend changing this unless necessary, as it affects data retrieval.
+						</div>
+					</div>
+				`);
+			}
+
+
+			$(document).on('click', '.evf-cancel-meta-key-icon', function () {
+				var $wrapper = $(this).closest('.evf-meta-key-input-wrapper'),
+					$input = $wrapper.find('.evf-input-meta-key'),
+					originalValue = $(this).data('original_value');
+				$( document ).find( '.evf-meta-key-copy-btn' ).show();
+				$input.val(originalValue);
+
+				$input.prop('readonly', true);
+
+				$wrapper.find('.evf-meta-key-actions').remove();
+				$wrapper.find('.evf-edit-meta-key-icon').show();
+				$wrapper.next('.evf-meta-key-warning').remove();
+			});
+
+			$(document).on('click', '.evf-save-meta-key-icon', function () {
+				var $wrapper = $(this).closest('.evf-meta-key-input-wrapper'),
+					$input = $wrapper.find('.evf-input-meta-key');
+				$( document ).find( '.evf-meta-key-copy-btn' ).show();
+				$input.prop('readonly', true);
+
+				$wrapper.find('.evf-meta-key-actions').remove();
+				$wrapper.find('.evf-edit-meta-key-icon').show();
+				$wrapper.next('.evf-meta-key-warning').remove();
+			});
+
 		});
 		},
 
@@ -558,6 +647,7 @@
 			EVFPanelBuilder.bindBulkOptionActions();
 			EVFPanelBuilder.bindAkismetInit();
 			EVFPanelBuilder.bindFormSubmissionMinWaitingTime();
+			EVFPanelBuilder.bindEditMetaKey();
 
 			// Fields Panel.
 			EVFPanelBuilder.bindUIActionsFields();
@@ -1160,12 +1250,14 @@
 					value = $this.val().replace(/<\s*script/gi, '').replace(/\s+on\w+\s*=/gi, ' '),
 					id     = $this.parent().data( 'field-id' ),
 					$label = $( '#everest-forms-field-' + id ).find( '.label-title .text' );
-
-				if ( $label.hasClass( 'nl2br' ) ) {
-					$label.html( value.replace( /\n/g, '<br>') );
-				} else {
-					$label.html( value );
-				}
+					if ( $label.hasClass('nl2br') ) {
+						$label.html( value.replace(/\n/g, '<br>') );
+					} else if ( 'private-note' === $label.prevObject.data('field-type') ) {
+						value = value + ' (Admin Only)';
+						$label.html( value );
+					} else {
+						$label.html( value );
+					}
 			});
 
 			$builder.on( 'change', '.everest-forms-field-option-row-enable_prepopulate input', function( event ) {
@@ -1881,7 +1973,7 @@
 								if( 'undefined' !== typeof xhr.data.html ) {
 									$( document ).find( '.everest-forms-row-option-group' ).append( xhr.data.html );
 									EVFPanelBuilder.conditionalLogicAppendRow( row_id );
-									// Disable conditional logc by default.
+									// Disable conditional logic by default.
 									$( '#everest-forms-panel-field-form_rows-connection_row_' + row_id + '-conditional_logic_status' ).prop( 'checked', false );
 								}
 							}
@@ -2694,7 +2786,35 @@
 			$( document.body ).trigger( 'evf-init-switch-field-options' );
 
 			if ( typeof field_id !== 'undefined' ) {
+				var $fieldOptions = $( '#everest-forms-field-option-' + field_id );
+				if ( $fieldOptions.length > 0 ) {
+					$( '#everest-forms-field-option-basic-' + field_id ).find( '.everest-forms-field-option-group-inner').show();
+					const $tempLink = $('<a href="#field-options"></a>').appendTo(document.body);
+
+					$tempLink[0].click();
+
+					setTimeout(() => {
+						$tempLink.remove();
+					}, 100);
+				}
 				$('#everest-forms-field-option-' + field_id).show();
+
+				/**
+				 * Close all field option groups except basic group
+				 * This is to ensure that only basic group is open when switching to field options.
+				 *
+				 * @since 3.2.4
+				 */
+				$('#everest-forms-field-option-' + field_id).find( '.everest-forms-field-option-group' ).each( function() {
+					$field_options_element = $( this );
+					if ( ! $field_options_element.hasClass( 'everest-forms-field-option-group-basic' ) ) {
+						if ( $field_options_element.hasClass( 'open' ) ) {
+							$field_options_element.removeClass( 'open' ).addClass( 'closed' );
+							$field_options_element.find( '.everest-forms-field-option-group-inner' ).hide();
+						}
+					}
+				});
+
 				$('#everest-forms-field-' + field_id).addClass('active');
 			} else {
 				if ( $('.evf-admin-field-wrapper .everest-forms-field').length > 0 ) {
@@ -2744,6 +2864,9 @@
 					EVFPanelBuilder.checkEmptyGrid();
 				},
 				over: function( event, ui ) {
+					if ( ! ui.item.hasClass('required') ) {
+						ui.item.find( '.required' ).remove();
+					}
 					$( '.evf-admin-grid' ).addClass( 'evf-hover' );
 					$( event.target ).addClass( 'evf-item-hover' );
 					$( event.target ).closest( '.evf-admin-row' ).addClass( 'evf-hover' );
@@ -2758,6 +2881,12 @@
 					$(document).trigger('evf_sort_update_complete',{event: event,ui:  ui});
 				},
 				stop: function( event, ui ) {
+					if ( !ui.item.hasClass( 'required' ) ) {
+						const labelTitle = ui.item.find('.label-title');
+						if (labelTitle.length > 0) {
+							labelTitle.append('<span class="required">*</span>');
+						}
+					}
 					ui.item.removeAttr( 'style' );
 					EVFPanelBuilder.checkEmptyGrid();
 				}
@@ -2818,6 +2947,7 @@
 			if ( 'add-fields' === id ) {
 				$( '.everest-forms-add-fields' ).show();
 				$( '.everest-forms-field-options' ).hide();
+
 			} else {
 				if ( 'field-options' === id ) {
 					id = $( '.everest-forms-field' ).first().data( 'field-id' );
@@ -2825,6 +2955,7 @@
 					$( '.everest-forms-field' ).first().addClass( 'active' );
 				} else {
 					$( '#everest-forms-field-' + id ).addClass( 'active' );
+
 				}
 				$( '.everest-forms-field-option' ).hide();
 				$( '#everest-forms-field-option-' + id ).show();
@@ -3145,6 +3276,7 @@
 				if( new_row_option.find( '.evf-field-conditional-field-select option:not(.evf-conditional-fields)').length > 1 ) {
 					new_row_option.find( '.evf-field-conditional-field-select option:not(.evf-conditional-fields):gt(0)').remove();
 				}
+				new_row_option.hide();
 			})
 		},
 
@@ -3379,6 +3511,60 @@
 				$(document).find('.everest-forms-form-submission-minimum-waiting-time').hide();
 			}
 		},
+		bindEditMetaKey: function( field_id = '') {
+			$(document).on('click', '.evf-meta-key-copy-btn', function () {
+				const $wrapper = $(this).closest('.evf-meta-key-input-wrapper');
+				const $input = $wrapper.find('.evf-input-meta-key');
+				const metaKey = $input.val();
+
+				$( this ).tooltipster( 'content', $( this ).attr( 'data-copied' ) ).trigger( 'mouseenter' ).on( 'mouseleave', function() {
+					var $this = $( this );
+
+					setTimeout( function() {
+						$this.tooltipster( 'content', $this.attr( 'data-tip' ) );
+					}, 1000 );
+				} );
+
+				navigator.clipboard.writeText(metaKey);
+			});
+
+			if ( '' === field_id ) {
+				$(document).find('.evf-input-meta-key').each(function () {
+					var $this = $(this);
+
+					appendEditIcon( $this );
+				});
+			}else{
+				var $this = $( '#everest-forms-field-option-' + field_id + '-meta-key' );
+				appendEditIcon( $this );
+			}
+
+			function appendEditIcon($this) {
+				$this.wrap('<div class="evf-meta-key-input-wrapper"></div>');
+
+				$this.before(`<span class="evf-edit-meta-key-icon" data-meta_key="${$this.val()}">Edit</span>`);
+
+				const $copyBtn = $(`
+					<span class="evf-meta-key-copy-btn" data-copied="Copied!" data-tip="Copy to clipboard">
+						<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<path d="M15.002 5.99902H7.50195C6.67353 5.99902 6.00195 6.6706 6.00195 7.49902V14.999C6.00195 15.8274 6.67353 16.499 7.50195 16.499H15.002C15.8304 16.499 16.502 15.8274 16.502 14.999V7.49902C16.502 6.6706 15.8304 5.99902 15.002 5.99902Z" stroke="#6B6B6B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+						<path d="M3.00195 11.999C2.17695 11.999 1.50195 11.324 1.50195 10.499V2.99902C1.50195 2.17402 2.17695 1.49902 3.00195 1.49902H10.502C11.327 1.49902 12.002 2.17402 12.002 2.99902" stroke="#6B6B6B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+						</svg>
+					</span>
+				`);
+
+				$this.after($copyBtn);
+
+				// Initialize Tooltipster
+				$copyBtn.tooltipster({
+					theme: 'tooltipster-default',
+					delay: 100,
+					side: 'top',
+					updateAnimation: 'null'
+				});
+			}
+
+		},
 
 		bindPrivacyPolicyActions: function() {
 			// Consent message change handler.
@@ -3600,6 +3786,9 @@
 				}
 			}
 		},
+		bindFormTags: function() {
+
+		}
 
 	};
 
@@ -3730,7 +3919,15 @@ jQuery( function ( $ ) {
 	// Fields Options - Open/close.
 	$( document.body ).on( 'click', '.everest-forms-field-option .everest-forms-field-option-group > a', function( event ) {
 		event.preventDefault();
+		var $fielOption = $( this ).closest( '.everest-forms-field-option-group' ).closest('.everest-forms-field-option');
+
+		$fielOption.find( '.everest-forms-field-option-group' ).each( function() {
+			$( this ).removeClass( 'open' ).addClass( 'closed' );
+		});
 		$( this ).parent( '.everest-forms-field-option-group' ).toggleClass( 'closed' ).toggleClass( 'open' );
+		$( '.everest-forms-field-option-group.closed' ).each( function() {
+			$( this ).find( '.everest-forms-field-option-group-inner' ).hide();
+		});
 	});
 	$( document.body ).on( 'click', '.everest-forms-field-option .everest-forms-field-option-group a', function( event ) {
 		// If the user clicks on some form input inside, the box should not be toggled.
@@ -3810,6 +4007,31 @@ jQuery( function ( $ ) {
 	// Toggle form status.
 	$( document ).on( 'change', '.wp-list-table .everest-forms-toggle-form input', function(e) {
 		e.stopPropagation();
+		/**
+		 * Disable row when form is disabled.
+		 *
+		 * @since 3.2.0
+		 */
+		if ( ! $( this ).prop( 'checked' ) ) {
+			$(this).closest('tr').find('td').not('.has-row-actions').addClass('evf-disable-row');
+			var str = $( document ).find('.everest-forms-list-filters-row').find( '.inactive' ).find( 'span.count' ).text();
+			var newStr = str.replace(/\((\d+)\)/, function(match, p1) {
+				var number = parseInt(p1, 10);
+				number += 1;
+				return "(" + number + ")";
+			});
+			$( document ).find('.everest-forms-list-filters-row').find( '.inactive' ).find( 'span.count' ).text( newStr )
+		}else{
+			$(this).closest('tr').find('td').not('.has-row-actions').removeClass('evf-disable-row');
+			var str = $( document ).find('.everest-forms-list-filters-row').find( '.inactive' ).find( 'span.count' ).text();
+			var newStr = str.replace(/\((\d+)\)/, function(match, p1) {
+				var number = parseInt(p1, 10);
+				number -= 1;
+				return "(" + number + ")";
+			});
+			$( document ).find('.everest-forms-list-filters-row').find( '.inactive' ).find( 'span.count' ).text( newStr )
+		}
+
 		$.post( evf_data.ajax_url, {
 			action: 'everest_forms_enabled_form',
 			security: evf_data.evf_enabled_form,

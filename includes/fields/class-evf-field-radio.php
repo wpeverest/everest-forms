@@ -46,7 +46,6 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 			'basic-options'    => array(
 				'field_options' => array(
 					'label',
-					'meta',
 					'choices',
 					'choices_images',
 					'description',
@@ -57,6 +56,7 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 			),
 			'advanced-options' => array(
 				'field_options' => array(
+					'meta',
 					'randomize',
 					'show_values',
 					'input_columns',
@@ -91,7 +91,7 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 	 */
 	public function html_field_value( $value, $field, $form_data = array(), $context = '' ) {
 		if ( is_serialized( $field ) || in_array( $context, array( 'email-html', 'export-pdf' ), true ) ) {
-			$field_value = maybe_unserialize( $field );
+			$field_value = evf_maybe_unserialize( $field );
 			$field_type  = isset( $field_value['type'] ) ? sanitize_text_field( $field_value['type'] ) : 'radio';
 
 			if ( $field_type === $this->type ) {
@@ -321,7 +321,7 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 				$choice['attr']['tabindex'] = '-1';
 
 				printf( '<input type="radio" %s %s %s >', evf_html_attributes( $choice['id'], $choice['class'], $choice['data'], $choice['attr'] ), esc_attr( $choice['required'] ), checked( '1', $choice['default'], false ) );
-				echo '<label class="everest-forms-image-choices-label">' . wp_kses_post( $choice['label']['text'] ) . '</label>';
+				echo '<label class="everest-forms-image-choices-label" for="' . ( isset( $choice['id'] ) ? $choice['id'] : '' ) . '">' . wp_kses_post( $choice['label']['text'] ) . '</label>';
 				echo '</label>';
 			} else {
 				// Normal display.

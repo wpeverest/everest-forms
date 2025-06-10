@@ -153,7 +153,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	 * @return array
 	 */
 	public static function get_columns_form_disallowed_fields() {
-		return (array) apply_filters( 'everest_forms_entries_table_fields_disallow', array( 'html', 'title', 'captcha', 'repeater-fields', 'authorize-net' ) );
+		return (array) apply_filters( 'everest_forms_entries_table_fields_disallow', array( 'html', 'title', 'captcha', 'repeater-fields', 'authorize-net', 'private-note' ) );
 	}
 
 	/**
@@ -242,7 +242,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 
 			if ( is_serialized( $value ) ) {
 				$field_html  = array();
-				$field_value = maybe_unserialize( $value );
+				$field_value = evf_maybe_unserialize( $value );
 
 				$field_label = ! empty( $field_value['label'] ) ? evf_clean( $field_value['label'] ) : $field_value;
 				if ( is_array( $field_label ) ) {
@@ -256,7 +256,8 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 				}
 			}
 
-			// Limit to 5 lines.
+			$value = isset( $value['label'] ) && is_array( $value['label'] ) ? implode( ', ', $value['label'] ) : $value;
+
 			if ( false === strpos( $value, 'http' ) ) {
 				$lines = explode( "\n", $value );
 				$value = array_slice( $lines, 0, 4 );
@@ -784,7 +785,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 		$form_id = isset( $_REQUEST['form_id'] ) ? absint( $_REQUEST['form_id'] ) : $this->form_id; // phpcs:ignore WordPress.Security.NonceVerification
 		?>
 		<label for="filter-by-form" class="screen-reader-text"><?php esc_html_e( 'Filter by form', 'everest-forms' ); ?></label>
-		<select name="form_id" id="filter-by-form" class="evf-enhanced-normal-select" style="min-width: 200px;">
+		<select name="form_id" id="filter-by-form" class="evf-enhanced-normal-select" style="min-width: 200px;" data-placeholder="<?php esc_attr_e( 'Search form...', 'everest-forms' ); ?>">
 			<?php foreach ( $forms as $id => $form ) : ?>
 				<option value="<?php echo esc_attr( $id ); ?>" <?php selected( $form_id, $id ); ?>><?php echo esc_html( $form ); ?></option>
 			<?php endforeach; ?>
