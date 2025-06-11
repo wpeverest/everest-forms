@@ -406,7 +406,8 @@ class EVF_AJAX {
 				}
 
 				if ( empty( $field['label'] ) && ! in_array( $field['type'], array( 'html', 'title', 'captcha', 'divider', 'reset', 'recaptcha', 'hcaptcha', 'turnstile' ), true ) ) {
-					$empty_field_label[] = $field['id'];
+					$empty_label = ucwords( str_replace( ['-', '_'], ' ', $field['type'] ) );
+					$empty_field_label[] = $empty_label;
 				}
 
 				if ( isset( $field['enable_calculation'] ) && ! empty( $field['enable_calculation'] ) ) {
