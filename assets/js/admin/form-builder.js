@@ -1250,13 +1250,21 @@
 					value = $this.val().replace(/<\s*script/gi, '').replace(/\s+on\w+\s*=/gi, ' '),
 					id     = $this.parent().data( 'field-id' ),
 					$label = $( '#everest-forms-field-' + id ).find( '.label-title .text' );
-					if ( $label.hasClass('nl2br') ) {
+
+					if ( '' === value ) {
+						var originalValue = $this.closest( '.everest-forms-field-option-group' ).data( 'original_label_value' );
+						$label.html( originalValue );
+						$label.css( {opacity: 0.5})
+					}else if ( $label.hasClass('nl2br') ) {
 						$label.html( value.replace(/\n/g, '<br>') );
+						$label.css( {opacity: 1})
 					} else if ( 'private-note' === $label.prevObject.data('field-type') ) {
 						value = value + ' (Admin Only)';
 						$label.html( value );
+						$label.css( {opacity: 1})
 					} else {
 						$label.html( value );
+						$label.css( {opacity: 1})
 					}
 			});
 
@@ -1440,6 +1448,18 @@
 			// Real-time updates for "Hide Label" field option.
 			$builder.on( 'change', '.everest-forms-field-option-row-label_hide input', function() {
 				var id = $(this).parent().parent().parent().data( 'field-id' );
+				var $el =  $( '.everest-forms-field-option-row-label input'),
+					value = $el.val(),
+					originalValue = $el.closest( '.everest-forms-field-option-group' ).data( 'original_label_value' );
+
+				var $label = $( '#everest-forms-field-' + id ).find( '.label-title .text' );
+
+				if ( '' === value ) {
+					$label.html( originalValue );
+					$label.css( {opacity: 0.5 } );
+				}else{
+					$label.css( { opacity: 1 } );
+				}
 				$( '#everest-forms-field-' + id ).toggleClass( 'label_hide' );
 			});
 

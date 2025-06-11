@@ -418,22 +418,24 @@ abstract class EVF_Form_Fields {
 			do_action( "everest_forms_field_options_bottom_{$option}", $field, $this );
 		}
 
+
 		switch ( $option ) {
 			/**
 			 * Basic Fields.
 			 */
 
 			/*
-			 * Basic Options markup.
-			 */
+			* Basic Options markup.
+			*/
 			case 'basic-options':
+				$value   = ! empty( $field['label'] ) ? esc_attr( $field['label'] ) : '';
 				if ( 'open' === $markup ) {
 					if ( $echo ) {
-						printf( '<div class="everest-forms-field-option-group everest-forms-field-option-group-basic open" id="everest-forms-field-option-basic-%s">', esc_attr( $field['id'] ) );
+						printf( '<div class="everest-forms-field-option-group everest-forms-field-option-group-basic open" id="everest-forms-field-option-basic-%s" data-original_label_value="%s">', esc_attr( $field['id'] ), esc_attr( $value ) );
 						printf( '<a href="#" class="everest-forms-field-option-group-toggle">%s<span> (ID #%s)</span> <i class="handlediv"></i></a>', esc_html( $this->name ), esc_html( $field['id'] ) );
 						printf( '<div class="everest-forms-field-option-group-inner %s">', esc_attr( $class ) );
 					} else {
-						$output  = sprintf( '<div class="everest-forms-field-option-group everest-forms-field-option-group-basic open" id="everest-forms-field-option-basic-%s">', $field['id'] );
+						$output  = sprintf( '<div class="everest-forms-field-option-group everest-forms-field-option-group-basic open" id="everest-forms-field-option-basic-%s" data-original_label_value="%s">',  esc_attr( $field['id'] ), esc_attr( $value ) );
 						$output .= sprintf( '<a href="#" class="everest-forms-field-option-group-toggle">%s<span> (ID #%s)</span> <i class="handlediv"></i></a>', $this->name, $field['id'] );
 						$output .= sprintf( '<div class="everest-forms-field-option-group-inner %s">', $class );
 					}
