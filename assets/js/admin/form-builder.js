@@ -3940,18 +3940,10 @@ jQuery( function ( $ ) {
 		if ( $( event.target ).filter( ':input, option, .sort' ).length ) {
 			return;
 		}
-		console.log(' arko closed');
-		console.log($( this ).parent() );
-
-
 		$( this ).next( '.everest-forms-field-option-group-inner' ).stop().slideToggle();
 	});
 	$( document.body ).on( 'init_field_options_toggle', function() {
 		$( '.everest-forms-field-option-group.closed' ).each( function() {
-			console.log('another closed');
-			console.log($( this ) );
-
-
 			$( this ).find( '.everest-forms-field-option-group-inner' ).hide();
 		});
 	} ).trigger( 'init_field_options_toggle' );
