@@ -493,36 +493,6 @@ class EVF_AJAX {
 		}
 
 		/**
-		 * Save CleanTalk settings.
-		 *
-		 * @since xx.xx.xx
-		 */
-		if ( isset( $data['settings']['clean_talk_access_key'] ) && ! empty( $data['settings']['clean_talk_access_key'] ) ) {
-			$logger->info(
-				__( 'Saving CleanTalk settings.', 'everest-forms' ),
-				array( 'source' => 'form-save' )
-			);
-
-			$access_key = sanitize_text_field( $data['settings']['clean_talk_access_key'] );
-			$is_valid_access_key = FormHelper::evf_save_clean_talk_settings( $access_key );
-
-			if ( ! $is_valid_access_key ) {
-				$logger->error(
-					__( 'Invalid CleanTalk Access Key.', 'everest-forms' ),
-					array( 'source' => 'form-save' )
-				);
-				wp_send_json_error(
-					array(
-						'errorTitle'   => esc_html__( 'Invalid CleanTalk Access Key', 'everest-forms' ),
-						/* translators: %s: empty meta data */
-						'errorMessage' => esc_html__( 'Please enter a valid CleanTalk Access Key.', 'everest-forms' ),
-					)
-				);
-			}
-			unset( $data['settings']['clean_talk_access_key'] );
-		}
-
-		/**
 		 * Creating the form tags taxonomy.
 		 *
 		 * @since 3.2.0
