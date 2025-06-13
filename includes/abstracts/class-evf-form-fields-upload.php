@@ -7,6 +7,8 @@
  * @since   1.0.0
  */
 
+use EverestForms\Helpers\FormHelper;
+
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -164,7 +166,6 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 		$extension    = strtolower( pathinfo( $name, PATHINFO_EXTENSION ) );
 		$errors       = $this->ajax_validate( $error, $extension, $path, $name );
 		$name_of_file = isset( $this->field_data['custom_file_name'] ) && ! empty( $this->field_data['custom_file_name'] ) ? sanitize_file_name( $this->field_data['custom_file_name'] ) . '_' . uniqid( '', true ) . '.' . $extension : sanitize_file_name( wp_unslash( $_FILES['file']['name'] ) );  // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated
-
 
 		if ( count( $errors ) ) {
 			wp_send_json_error( implode( ',', $errors ), 400 );
@@ -961,6 +962,9 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 	 * @param array $form_data All Form Data.
 	 */
 	public function field_display( $field, $field_atts, $form_data ) {
+		// error_log( print_r( $field, true ) );
+		// error_log( print_r( $field_atts, true ) );
+
 		// Define data.
 		$primary           = $field['properties']['inputs']['primary'];
 		$conditional_rules = isset( $field['properties']['inputs']['primary']['attr']['conditional_rules'] ) ? $field['properties']['inputs']['primary']['attr']['conditional_rules'] : '';
@@ -1004,6 +1008,50 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 					</span>
 				<?php endif; ?>
 			</div>
+			<?php
+			$files = isset( $field_atts['value_raw'] ) ? $field_atts['value_raw'] : array();
+			if ( ! empty( $files ) ) {
+				$key = $field_atts['meta_key'];
+				foreach ( $files as $file ) {
+					?>
+					<div class="dz-preview dz-processing dz-image-preview dz-success dz-complete">
+						<div class="dz-image">
+							<?php
+							$attachment_url = $file['value'];
+
+							if ( empty( $attachment_url ) ) {
+								$attachment_url = home_url() . '/wp-includes/images/media/text.png';
+							}
+
+							$filename_only = $file['name']; // Just the file name.
+							$filesize_only = filesize( $attachment_url );
+
+							if ( false !== $filesize_only ) {
+								$filesize_only = size_format( $filesize_only, 1 );
+							}
+
+							$ext           = pathinfo( $attachment_url, PATHINFO_EXTENSION );
+							$fileIcon      = FormHelper::evf_file_upload_check_file_types( $ext );
+							$fileIcon      = ! is_null( $fileIcon ) ? evf()->plugin_url() . '/assets/images/filetypes/' . $fileIcon . '.svg' : $attachment_url;
+							?>
+
+							<img data-dz-thumbnail="" alt="<?php echo esc_html( sanitize_text_field( $filename_only ) ); ?>"  src="<?php echo esc_url( $fileIcon ); ?>"/>
+						</div>
+						<div class="dz-details">
+							<div class="dz-size">
+								<span data-dz-size=""><strong><?php echo esc_html( sanitize_text_field( $filesize_only ) ); ?></strong></span>
+							</div>
+							<div class="dz-filename">
+								<span data-dz-name=""><?php echo esc_html( sanitize_text_field( $filename_only ) ); ?></span>
+							</div>
+						</div>
+						<a class="evf-download-file" href="<?php echo esc_url( $attachment_url ); ?>" title="Download" target="_blank" download ><span class="dashicons dashicons-arrow-down-alt"></span></a>
+						<a class="dz-remove evf-remove-file" href="javascript:undefined;" title="Remove" data-dz-remove="" data-attachment-id="" data-field-name="<?php echo esc_attr( $key ); ?>"></a>
+					</div>
+					<?php
+				}
+			}
+		?>
 		</div>
 		<input type="text" class="dropzone-input input-text" id="everest-forms-<?php echo absint( $form_id ); ?>-field_<?php echo esc_attr( $field_id ); ?>" name="<?php echo esc_attr( $input_name ); ?>" <?php echo esc_attr( $required ); ?> conditional_id="<?php echo esc_attr( $conditional_id ); ?>" conditional_rules='<?php echo $conditional_rules; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>'>
 		<?php
@@ -1068,12 +1116,12 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 			'type'      => $this->type,
 			'meta_key'  => $meta_key,
 		);
-
 		// We should actually receive some files info.
 		if ( empty( $_POST[ $input_name ] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
 			evf()->task->form_fields[ $this->field_id ] = $processed;
 			return;
 		}
+		// error_log(print_r(evf()->task->form_fields, true));
 
 		// Make sure form fields are stored.
 		if ( ! empty( evf()->task->form_fields[ $this->field_id ] ) ) { // @codingStandardsIgnoreLine
@@ -1133,7 +1181,7 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 				) {
 
 					$this->create_dir( dirname( $file['path'] ) );
-					@rename( $file['tmp_path'] , $file['path'] ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+					@rename( $file['tmp_path'], $file['path'] ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 					$this->set_file_fs_permissions( $file['path'] );
 			}
 
@@ -1199,8 +1247,8 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 	 * @param array $file Submitted file basic info.
 	 */
 	protected function generate_file_info( $file ) {
-		$dir = $this->get_form_files_dir();
-		$file['tmp_path'] = trailingslashit( $this->get_tmp_dir() ) . sanitize_file_name($file['file']);
+		$dir              = $this->get_form_files_dir();
+		$file['tmp_path'] = trailingslashit( $this->get_tmp_dir() ) . sanitize_file_name( $file['file'] );
 		$file['type']     = 'application/octet-stream';
 		if ( is_file( $file['tmp_path'] ) ) {
 			$filetype     = wp_check_filetype( $file['tmp_path'] );

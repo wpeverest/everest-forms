@@ -2591,7 +2591,7 @@ abstract class EVF_Form_Fields {
 			$field['properties'] = $this->get_single_field_property_value( $value, 'primary', $field['properties'], $field );
 		}
 
-		$this->field_display( $field, null, $form_data );
+		$this->field_display( $field, $entry_field, $form_data );
 	}
 
 	/**
