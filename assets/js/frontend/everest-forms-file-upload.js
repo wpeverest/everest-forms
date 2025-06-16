@@ -375,6 +375,7 @@
 		var formId   = parseInt( $el.dataset.formId, 10 );
 		var fieldId  = $el.dataset.fieldId;
 		var maxFiles = parseInt( $el.dataset.maxFileNumber, 10 );
+		var currentFileCount = parseInt($el.dataset.currentFileCount, 10) || 0;
 
 		var acceptedFiles = $el.dataset.extensions.split( ',' ).map( function( el ) {
 			return '.' + el;
@@ -390,6 +391,10 @@
 			dictInvalidFileType: window.everest_forms_upload_parms.errors.file_extension,
 			dictFileTooBig: window.everest_forms_upload_parms.errors.file_size,
 			timeout: everest_forms_upload_parms.max_timeout,
+			init: function() {
+            	this.currentFileCount = currentFileCount;
+				this.options.maxFiles = maxFiles - currentFileCount;
+			 }
 		} );
 
 		dz.dataTransfer = {

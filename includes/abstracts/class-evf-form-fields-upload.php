@@ -982,6 +982,9 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 		$upload_message    = isset( $field['upload_message'] ) ? $field['upload_message'] : esc_html( sprintf( _n( 'Drop your file here or click here to upload', 'Drop your files here or click here to upload', (int) $max_file_number, 'everest-forms' ), (int) $max_file_number ) );
 		/* translators: 1: Number of Files */
 		$limit_message = isset( $field['limit_message'] ) ? $field['limit_message'] : sprintf( __( 'You can upload up to %s files.', 'everest-forms' ), (int) $max_file_number );
+
+		$files = isset( $field_atts['value_raw'] ) ? $field_atts['value_raw'] : array();
+
 		?>
 		<div class="everest-forms-uploader"
 			data-field-id="<?php echo esc_attr( $field_id ); ?>"
@@ -990,7 +993,9 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 			data-extensions="<?php echo esc_attr( $extensions ); ?>"
 			data-max-size="<?php echo (int) $max_size; ?>"
 			data-max-file-number="<?php echo (int) $max_file_number; ?>"
-			data-post-max-size="<?php echo (int) $post_max_size; ?>">
+			data-post-max-size="<?php echo (int) $post_max_size; ?>"
+			data-current-file-count="<?php echo count( $files ); ?>"
+			>
 			<div class="dz-message">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32px" height="32px" fill="#868e96"><path class="cls-1" d="M18.12,17.52,17,16.4V25a1,1,0,0,1-2,0V16.4l-1.12,1.12a1,1,0,0,1-1.42,0,1,1,0,0,1,0-1.41l2.83-2.83a1,1,0,0,1,1.42,0l2.83,2.83a1,1,0,0,1-.71,1.7A1,1,0,0,1,18.12,17.52ZM22,22H20a1,1,0,0,1,0-2h2a4,4,0,0,0,.27-8,1,1,0,0,1-.84-.57,6,6,0,0,0-11.36,1.69,1,1,0,0,1-1,.86H9A3,3,0,0,0,9,20h3a1,1,0,0,1,0,2H9a5,5,0,0,1-.75-9.94A8,8,0,0,1,23,10.1,6,6,0,0,1,22,22Z"/></svg>
 				<span class="everest-forms-upload-title">
@@ -1009,7 +1014,6 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 				<?php endif; ?>
 			</div>
 			<?php
-			$files = isset( $field_atts['value_raw'] ) ? $field_atts['value_raw'] : array();
 			if ( ! empty( $files ) ) {
 				$key = $field_atts['meta_key'];
 				foreach ( $files as $file ) {
@@ -1030,9 +1034,9 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 								$filesize_only = size_format( $filesize_only, 1 );
 							}
 
-							$ext           = pathinfo( $attachment_url, PATHINFO_EXTENSION );
-							$fileIcon      = FormHelper::evf_file_upload_check_file_types( $ext );
-							$fileIcon      = ! is_null( $fileIcon ) ? evf()->plugin_url() . '/assets/images/filetypes/' . $fileIcon . '.svg' : $attachment_url;
+							$ext      = pathinfo( $attachment_url, PATHINFO_EXTENSION );
+							$fileIcon = FormHelper::evf_file_upload_check_file_types( $ext );
+							$fileIcon = ! is_null( $fileIcon ) ? evf()->plugin_url() . '/assets/images/filetypes/' . $fileIcon . '.svg' : $attachment_url;
 							?>
 
 							<img data-dz-thumbnail="" alt="<?php echo esc_html( sanitize_text_field( $filename_only ) ); ?>"  src="<?php echo esc_url( $fileIcon ); ?>"/>
@@ -1051,7 +1055,7 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 					<?php
 				}
 			}
-		?>
+			?>
 		</div>
 		<input type="text" class="dropzone-input input-text" id="everest-forms-<?php echo absint( $form_id ); ?>-field_<?php echo esc_attr( $field_id ); ?>" name="<?php echo esc_attr( $input_name ); ?>" <?php echo esc_attr( $required ); ?> conditional_id="<?php echo esc_attr( $conditional_id ); ?>" conditional_rules='<?php echo $conditional_rules; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>'>
 		<?php
@@ -1116,12 +1120,18 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 			'type'      => $this->type,
 			'meta_key'  => $meta_key,
 		);
+
 		// We should actually receive some files info.
-		if ( empty( $_POST[ $input_name ] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
-			evf()->task->form_fields[ $this->field_id ] = $processed;
-			return;
+		$raw_files = isset( $_POST[ $input_name ] ) ? $_POST[ $input_name ] : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing
+		if ( empty( $raw_files ) ) {
+			if ( empty( $field_submit ) ) {
+				evf()->task->form_fields[ $this->field_id ] = $processed;
+				return;
+			} else {
+				// For handle update entry case.
+				$raw_files = $field_submit;
+			}
 		}
-		// error_log(print_r(evf()->task->form_fields, true));
 
 		// Make sure form fields are stored.
 		if ( ! empty( evf()->task->form_fields[ $this->field_id ] ) ) { // @codingStandardsIgnoreLine
@@ -1130,7 +1140,7 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 
 		// Make sure json_decode() doesn't fail on newer PHP.
 		try {
-			$raw_files = json_decode( wp_unslash( $_POST[ $input_name ] ), true ); // phpcs:ignore WordPress.Security
+			$raw_files = json_decode( wp_unslash( $raw_files ), true ); // phpcs:ignore WordPress.Security
 		} catch ( Exception $e ) {
 			evf()->task->form_fields[ $this->field_id ] = $processed;
 			return;
