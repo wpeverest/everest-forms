@@ -50,6 +50,10 @@
 					}
 				});
 
+				$( document ).on( 'click', '.evf-select-row-type', function( e ){
+					e.preventDefault();
+					EVFPanelBuilder.bindAddNewRowV2( $( this ) );
+				})
 		 	});
 
 			$( document ).ready( function( $ ) {
@@ -648,6 +652,7 @@
 			EVFPanelBuilder.bindAkismetInit();
 			EVFPanelBuilder.bindFormSubmissionMinWaitingTime();
 			EVFPanelBuilder.bindEditMetaKey();
+			EVFPanelBuilder.bindChooseRowType();
 
 			// Fields Panel.
 			EVFPanelBuilder.bindUIActionsFields();
@@ -1915,16 +1920,36 @@
 		},
 		bindAddNewRow: function() {
 			$( 'body' ).on( 'click', '.evf-add-row span', function() {
-				$( '#add-fields').trigger( 'click' );
-				var $this        = $( this ),
+				/**
+				 * This function can work for both drag and add new fields.
+				 *
+				 * @since xx.xx.xx
+				 */
+				EVFPanelBuilder.bindAddNewRowV2( $( this ) )
+			});
+		},
+
+		/**
+		 * This function can work for both drag and add new fields.
+		 *
+		 * @since xx.xx.xx
+		 */
+		bindAddNewRowV2: function( $el, isAddRow = '', response = '' ) {
+			$( '#add-fields').trigger( 'click' );
+			console.log('bindAddNewRowV2');
+
+			console.log($el);
+
+				var $this        = $el,
 					wrapper      = $( '.evf-admin-field-wrapper' ),
 					row_ids      = $( '.evf-admin-row' ).map( function() {
 						return $( this ).data( 'row-id' );
 					} ).get(),
 					max_row_id   = Math.max.apply( Math, row_ids ),
 					row_clone    = $( '.evf-admin-row' ).eq(0).clone(),
-					total_rows   = $this.parent().attr( 'data-total-rows' ),
-					current_part = $this.parents( '.evf-admin-field-container' ).attr( 'data-current-part' );
+					total_rows   =  'yes' === isAddRow ? $this.attr( 'data-total-rows' ) : $this.parent().attr( 'data-total-rows' ),
+					current_part = $this.parents( '.evf-admin-field-container' ).attr( 'data-current-part' ),
+					isSelectRowType = $this.parents().is( '[data-is_select_row_type]' ) ? $this.parents().attr( 'data-is_select_row_type' ) : '';
 
 				max_row_id++;
 				total_rows++;
@@ -1949,9 +1974,15 @@
 						'padding': '40px'
 					}).append( '<i class="spinner is-active" style="margin:0px auto;"></i>' );
 
+					if ( 'yes' === isAddRow ) {
+						row_clone.find( '.evf-admin-grid').first().append( response.data.preview );
+					}
 					// Row append.
 					wrapper.append( row_clone );
 
+					if ( 'yes' === isSelectRowType ) {
+						EVFPanelBuilder.bindApplyGrid( row_clone, $el.data( 'col_num') );
+					}
 
 					// Initialize fields UI.
 					EVFPanelBuilder.bindFields();
@@ -1999,8 +2030,55 @@
 					// Trigger event after row add.
 					$this.trigger('everest-forms-after-add-row', row_clone);
 				}
-			});
+		},
 
+		/**
+		 * Apply grid on row.
+		 *
+		 * @since xx.xx.xx
+		 */
+		bindApplyGrid: function ( $el, grid_id = '' ){
+			var $this_single_row = $el.closest('.evf-admin-row');
+			if ( '' === grid_id ) {
+				if ( $el.hasClass('active') ) {
+					return;
+				}
+				var grid_id = parseInt( $el.attr( 'data-evf-grid' ), 10 );
+			}
+				console.log($this_single_row);
+
+				var max_number_of_grid = 4;
+		 		if ( grid_id > max_number_of_grid ) {
+		 			return;
+		 		}
+
+		 		var grid_node = $('<div class="evf-admin-grid evf-grid-' + grid_id + ' ui-sortable evf-empty-grid" />');
+		 		var grids = $('<div/>');
+
+		 		$.each($this_single_row.find('.evf-admin-grid'), function () {
+		 			$(this).children('*').each(function () {
+						grids.append($(this).clone());  // "this" is the current element in the loop
+					});
+		 		});
+		 		$this_single_row.find('.evf-admin-grid').remove();
+		 		$this_single_row.find('.evf-clear ').remove();
+		 		$this_single_row.append('<div class="clear evf-clear"></div>');
+
+		 		for ( var $grid_number = 1; $grid_number <= grid_id; $grid_number++ ) {
+
+					console.log('inside');
+					console.log($grid_number);
+
+
+		 			grid_node.attr('data-grid-id', $grid_number);
+		 			$this_single_row.append(grid_node.clone());
+
+		 		}
+		 		$this_single_row.append('<div class="clear evf-clear"></div>');
+		 		$this_single_row.find('.evf-admin-grid').eq(0).append(grids.html());
+		 		$this_single_row.find('.evf-grid-selector').removeClass('active');
+		 		$(this).addClass('active');
+		 		EVFPanelBuilder.bindFields();
 		},
 		bindCloneField: function () {
 			$( 'body' ).on( 'click', '.everest-forms-preview .everest-forms-field .everest-forms-field-duplicate', function() {
@@ -2847,7 +2925,7 @@
 			}).disableSelection();
 
 			$( '.evf-admin-row' ).sortable({
-				items: '.evf-move-col',
+				items: '.evf-admin-grid',
 				axis: 'x',
 				cursor: 'move',
 				opacity: 0.65,
@@ -3026,45 +3104,12 @@
 		 		EVFPanelBuilder.checkEmptyGrid();
 		 		$('.evf-show-grid').closest('.evf-toggle-row').find('.evf-toggle-row-content').stop(true).slideUp(200);
 		 	});
-		 	var max_number_of_grid = 4;
 		 	$('body').on('click', '.evf-grid-selector', function () {
-		 		var $this_single_row = $(this).closest('.evf-admin-row');
-		 		if ( $(this).hasClass('active') ) {
-		 			return;
-		 		}
-		 		var grid_id = parseInt( $( this ).attr( 'data-evf-grid' ), 10 );
-		 		if ( grid_id > max_number_of_grid ) {
-		 			return;
-		 		}
-
-		 		var grid_node = $('<div class="evf-admin-grid evf-grid-' + grid_id + ' ui-sortable evf-empty-grid" />');
-		 		var grids = $('<div/>');
-
-		 		$.each($this_single_row.find('.evf-admin-grid'), function () {
-		 			$(this).children('*').each(function () {
-						grids.append($(this).clone());  // "this" is the current element in the loop
-					});
-		 		});
-		 		$this_single_row.find('.evf-admin-grid').remove();
-		 		$this_single_row.find('.evf-clear ').remove();
-		 		$this_single_row.append('<div class="clear evf-clear"></div>');
-
-		 		for ( var $grid_number = 1; $grid_number <= grid_id; $grid_number++ ) {
-
-		 			grid_node.attr('data-grid-id', $grid_number);
-		 			$this_single_row.append(grid_node.clone());
-
-		 		}
-		 		$this_single_row.append('<div class="clear evf-clear"></div>');
-		 		$this_single_row.find('.evf-admin-grid').eq(0).append(grids.html());
-		 		$this_single_row.find('.evf-grid-selector').removeClass('active');
-		 		$(this).addClass('active');
-		 		EVFPanelBuilder.bindFields();
+		 		EVFPanelBuilder.bindApplyGrid( $( this ) );
 		 	});
 		},
 		fieldDrop: function ( field, $el = '' ) {
 			var field_type = field.attr( 'data-field-type' );
-			var isAddRow = $el.is('[data-is_add_row]') ? $el.data( 'is_add_row' ) : '';
 
 			var invalid_fields = ["payment-total"];
 			if (
@@ -3129,36 +3174,12 @@
 						}
 					});
 
+					if ( '' !== $el ) {
+						var isAddRow = $el.is('[data-is_add_row]') ? $el.data( 'is_add_row' ) : '';
+					}
+
 					if ( 'yes' === isAddRow ) {
-						var addNewRowClone = $el.clone(),
-							wrapper      = $( '.evf-admin-field-wrapper' ),
-							row_ids      = $( '.evf-admin-row' ).map( function() {
-								return $( this ).data( 'row-id' );
-							} ).get(),
-							max_row_id   = Math.max.apply( Math, row_ids ),
-							row_clone    = $( '.evf-admin-row' ).eq(0).clone(),
-							total_rows   = $el.parent().attr( 'data-total-rows' ),
-							current_part = $el.parents( '.evf-admin-field-container' ).attr( 'data-current-part' );
-
-						max_row_id++;
-						total_rows++;
-						row_clone.find( '.evf-admin-grid' ).html( '' );
-						row_clone.attr( 'data-row-id', max_row_id );
-						console.log('here');
-
-						var $toAppend = $( row_clone.find( '.evf-move-col' )[0] );
-						console.log($toAppend);
-
-
-						$toAppend.find( '.evf-admin-grid').append( field_preview )
-						console.log(row_clone);
-
-						$( '.evf-add-row-new' ).before( row_clone )
-						console.log(total_rows);
-
-
-						$el.remove();
-						$( '.evf-add-row-new' ).append( addNewRowClone );
+						EVFPanelBuilder.bindAddNewRowV2( $el, isAddRow,  response );
 					}else{
 						field.after( field_preview );
 					}
@@ -3625,6 +3646,60 @@
 
 		},
 
+		/**
+		 * Choose row type.
+		 *
+		 * @since xx.xx.xx
+		 */
+		bindChooseRowType : function () {
+			$( '.evf-add-row-content svg' ).on( 'click', function( e ){
+					e.preventDefault();
+					var addRowContent = $( this ).closest( '.evf-add-row-content' ).clone(),
+						totalRows = $( this ).closest( '.evf-add-row-content' ).data( 'total-rows'),
+						nextRowId = $( this ).closest( '.evf-add-row-content' ).data( 'next-row-id');
+
+					var html = `
+						<div class="evf-add-row-cancel-btn">
+							<span>
+								<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path d="M12.0008 13.4008L7.10078 18.3008C6.91745 18.4841 6.68411 18.5758 6.40078 18.5758C6.11745 18.5758 5.88411 18.4841 5.70078 18.3008C5.51745 18.1174 5.42578 17.8841 5.42578 17.6008C5.42578 17.3174 5.51745 17.0841 5.70078 16.9008L10.6008 12.0008L5.70078 7.10078C5.51745 6.91745 5.42578 6.68411 5.42578 6.40078C5.42578 6.11745 5.51745 5.88411 5.70078 5.70078C5.88411 5.51745 6.11745 5.42578 6.40078 5.42578C6.68411 5.42578 6.91745 5.51745 7.10078 5.70078L12.0008 10.6008L16.9008 5.70078C17.0841 5.51745 17.3174 5.42578 17.6008 5.42578C17.8841 5.42578 18.1174 5.51745 18.3008 5.70078C18.4841 5.88411 18.5758 6.11745 18.5758 6.40078C18.5758 6.68411 18.4841 6.91745 18.3008 7.10078L13.4008 12.0008L18.3008 16.9008C18.4841 17.0841 18.5758 17.3174 18.5758 17.6008C18.5758 17.8841 18.4841 18.1174 18.3008 18.3008C18.1174 18.4841 17.8841 18.5758 17.6008 18.5758C17.3174 18.5758 17.0841 18.4841 16.9008 18.3008L12.0008 13.4008Z" fill="#383838"/>
+								</svg>
+							</span>
+						</div>
+						<div class="evf-select-row-type-wrapper" >
+						<div class="evf-select-row-type-inner"><p class="evf-select-row-type-inner-title">Row Settings</p>
+						<p class="evf-select-row-type-inner-desc">Select The type of row</p></div>
+						<div class="evf-select-row-type-inner-content-wrapper" data-total-rows="${totalRows}" data-next-row-id="${nextRowId}" data-is_select_row_type="yes">
+							<div class="evf-select-row-type evf-grid-1" data-col_num="1"></div>
+							<div class="evf-select-row-type evf-grid-2" data-col_num="2">
+								<div class="col"></div>
+								<div class="col"></div>
+							</div>
+							<div class="evf-select-row-type evf-grid-3" data-col_num="3">
+								<div class="col"></div>
+								<div class="col"></div>
+								<div class="col"></div>
+							</div>
+							<div class="evf-select-row-type evf-grid-4" data-col_num="4">
+								<div class="col"></div>
+								<div class="col"></div>
+								<div class="col"></div>
+								<div class="col"></div>
+							</div>
+						</div>
+						</div>
+					`;
+
+					$( '.evf-add-row-new' ).html( html );
+
+					$( document ).on( 'click', '.evf-add-row-cancel-btn span svg', function( e ){
+						e.preventDefault();
+						$( '.evf-add-row-new' ).html( addRowContent );
+						EVFPanelBuilder.bindChooseRowType();
+						EVFPanelBuilder.bindFields();
+					});
+				});
+		},
 		bindPrivacyPolicyActions: function() {
 			// Consent message change handler.
 			$( document.body ).on( 'input', '.everest-forms-field-option .evf-privacy-policy-consent-message', function ( e ) {
