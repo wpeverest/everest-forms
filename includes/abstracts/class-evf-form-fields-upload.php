@@ -981,22 +981,8 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 		/* translators: 1: Number of Files */
 		$limit_message = isset( $field['limit_message'] ) ? $field['limit_message'] : sprintf( __( 'You can upload up to %s files.', 'everest-forms' ), (int) $max_file_number );
 
-		$files = isset( $field_atts['value_raw'] ) ? (array) $field_atts['value_raw'] : array();
-
-		$current_file_count  = count( $files );
-		$existing_files_data = empty( $files ) ? array() : array_map(
-			function( $file ) {
-				$file_url = isset( $file['value'] ) ? $file['value'] : array();
-				return array(
-					'name' => isset( $file['name'] ) ? $file['name'] : basename( $file_url ),
-					'size' => $this->get_local_file_size( $file_url ),
-					'url'  => $file_url,
-					'id'   => isset( $file['id'] ) ? $file['id'] : 0,
-					'type' => $this->get_file_mime_type( $file_url ),
-				);
-			},
-			$files
-		);
+		$files          = isset( $field_atts['value_raw'] ) ? (array) $field_atts['value_raw'] : array();
+		$old_input_name = sprintf( 'everest_forms_%d_old_%s[]', $this->form_id, $this->field_id );
 		?>
 		<div class="everest-forms-uploader"
 			data-field-id="<?php echo esc_attr( $field_id ); ?>"
@@ -1007,8 +993,6 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 			data-max-file-number="<?php echo (int) $max_file_number; ?>"
 			data-post-max-size="<?php echo (int) $post_max_size; ?>"
 			data-current-file-count="<?php echo count( $files ); ?>"
-			data-current-file-count="<?php echo (int) $current_file_count; ?>"
-			data-existing-files="<?php echo esc_attr( wp_json_encode( $existing_files_data ) ); ?>"
 			>
 			<div class="dz-message">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32px" height="32px" fill="#868e96"><path class="cls-1" d="M18.12,17.52,17,16.4V25a1,1,0,0,1-2,0V16.4l-1.12,1.12a1,1,0,0,1-1.42,0,1,1,0,0,1,0-1.41l2.83-2.83a1,1,0,0,1,1.42,0l2.83,2.83a1,1,0,0,1-.71,1.7A1,1,0,0,1,18.12,17.52ZM22,22H20a1,1,0,0,1,0-2h2a4,4,0,0,0,.27-8,1,1,0,0,1-.84-.57,6,6,0,0,0-11.36,1.69,1,1,0,0,1-1,.86H9A3,3,0,0,0,9,20h3a1,1,0,0,1,0,2H9a5,5,0,0,1-.75-9.94A8,8,0,0,1,23,10.1,6,6,0,0,1,22,22Z"/></svg>
@@ -1027,7 +1011,6 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 					</span>
 				<?php endif; ?>
 			</div>
-			<!--
 			<?php
 			if ( ! empty( $files ) ) {
 				$key = $field_atts['meta_key'];
@@ -1063,6 +1046,7 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 							<div class="dz-filename">
 								<span data-dz-name=""><?php echo esc_html( sanitize_text_field( $filename_only ) ); ?></span>
 							</div>
+							<input type="hidden" name="<?php echo $old_input_name; ?>" value='<?php echo json_encode( $file ); ?>' />
 						</div>
 						<a class="evf-download-file" href="<?php echo esc_url( $attachment_url ); ?>" title="Download" target="_blank" download ><span class="dashicons dashicons-arrow-down-alt"></span></a>
 						<a class="dz-remove evf-remove-file" href="javascript:undefined;" title="Remove" data-dz-remove="" data-attachment-id="" data-field-name="<?php echo esc_attr( $key ); ?>"></a>
@@ -1071,7 +1055,6 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 				}
 			}
 			?>
-			 -->
 		</div>
 		<input type="text" class="dropzone-input input-text" id="everest-forms-<?php echo absint( $form_id ); ?>-field_<?php echo esc_attr( $field_id ); ?>" name="<?php echo esc_attr( $input_name ); ?>" <?php echo esc_attr( $required ); ?> conditional_id="<?php echo esc_attr( $conditional_id ); ?>" conditional_rules='<?php echo $conditional_rules; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>'>
 		<?php
@@ -1185,7 +1168,7 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 				return;
 			} else {
 				// For handle update entry case.
-				$raw_files = $field_submit;
+				$raw_files = $field_submit['new_files'];
 			}
 		}
 
@@ -1253,6 +1236,17 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 
 			$data[] = $this->generate_file_data( $file );
 		}
+
+		$old_data = array_map(
+			function( $file ) {
+				$decoded = json_decode( $file, true );
+
+				return is_array( $decoded ) ? $decoded : array();
+			},
+			$field_submit['old_files']
+		);
+
+		$data = array_merge( $data, $old_data );
 
 		if ( ! empty( $data ) ) {
 			$mapped_value = array_map(

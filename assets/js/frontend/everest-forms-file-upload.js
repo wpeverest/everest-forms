@@ -375,7 +375,7 @@
 		var formId   = parseInt( $el.dataset.formId, 10 );
 		var fieldId  = $el.dataset.fieldId;
 		var maxFiles = parseInt( $el.dataset.maxFileNumber, 10 );
-		// var currentFileCount = parseInt($el.dataset.currentFileCount, 10) || 0;
+		var currentFileCount = parseInt($el.dataset.currentFileCount, 10) || 0;
 
 		let existingFiles = [];
 		try {
@@ -394,38 +394,12 @@
 			url: window.everest_forms_upload_parms.url,
 			addRemoveLinks: true,
 			maxFilesize: ( parseInt( $el.dataset.maxSize, 10 ) / 1000000 ).toFixed( 2 ),
-			maxFiles: maxFiles,
+			maxFiles: maxFiles - currentFileCount,
 			acceptedFiles: acceptedFiles,
 			dictMaxFilesExceeded: window.everest_forms_upload_parms.errors.file_limit.replace( '{fileLimit}', maxFiles ),
 			dictInvalidFileType: window.everest_forms_upload_parms.errors.file_extension,
 			dictFileTooBig: window.everest_forms_upload_parms.errors.file_size,
 			timeout: everest_forms_upload_parms.max_timeout,
-			init: function() {
-				existingFiles.forEach(file => {
-					const mockFile = {
-						name: file.name,
-						size: file.size,
-						serverId: file.id,
-						accepted: true,
-						status: Dropzone.ADDED,
-						upload: {
-							progress: 100,
-							total: file.size,
-							bytesSent: file.size
-						},
-						existing: true
-					};
-
-					this.files.push(mockFile);
-
-					this.emit("addedfile", mockFile);
-
-					this.emit("thumbnail", mockFile, file.url)
-
-					this.emit("complete", mockFile);
-					this.emit("success", mockFile);
-				});
-        	}
 		} );
 
 		dz.dataTransfer = {
@@ -471,11 +445,10 @@
 
 		$(document).on('click','.evf-remove-file', function(e) {
 
-			var max_files = $(this)
-				.closest(".everest-forms-uploader")
-				.data("max-file-number");
+			var max_files = $(this).closest(".everest-forms-uploader")[0].dropzone.options.maxFiles;
 			$(this).closest(".everest-forms-uploader")[0].dropzone.options.maxFiles =
 			++max_files;
+			$(this).closest('.everest-forms-uploader').find('.dz-message').show();
 
 			$(this).closest(".dz-preview").remove();
 		});
