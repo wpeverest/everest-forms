@@ -1,6 +1,6 @@
 'use strict';
 
-( function() {
+( function($) {
 
 	/**
 	 * Toggle loading message above submit button.
@@ -375,7 +375,16 @@
 		var formId   = parseInt( $el.dataset.formId, 10 );
 		var fieldId  = $el.dataset.fieldId;
 		var maxFiles = parseInt( $el.dataset.maxFileNumber, 10 );
-		var currentFileCount = parseInt($el.dataset.currentFileCount, 10) || 0;
+		// var currentFileCount = parseInt($el.dataset.currentFileCount, 10) || 0;
+
+		let existingFiles = [];
+		try {
+			if ($el.dataset.existingFiles) {
+				existingFiles = JSON.parse($el.dataset.existingFiles);
+			}
+		} catch (e) {
+			console.error('Error parsing existing files:', e);
+		}
 
 		var acceptedFiles = $el.dataset.extensions.split( ',' ).map( function( el ) {
 			return '.' + el;
@@ -392,9 +401,31 @@
 			dictFileTooBig: window.everest_forms_upload_parms.errors.file_size,
 			timeout: everest_forms_upload_parms.max_timeout,
 			init: function() {
-            	this.currentFileCount = currentFileCount;
-				this.options.maxFiles = maxFiles - currentFileCount;
-			 }
+				existingFiles.forEach(file => {
+					const mockFile = {
+						name: file.name,
+						size: file.size,
+						serverId: file.id,
+						accepted: true,
+						status: Dropzone.ADDED,
+						upload: {
+							progress: 100,
+							total: file.size,
+							bytesSent: file.size
+						},
+						existing: true
+					};
+
+					this.files.push(mockFile);
+
+					this.emit("addedfile", mockFile);
+
+					this.emit("thumbnail", mockFile, file.url)
+
+					this.emit("complete", mockFile);
+					this.emit("success", mockFile);
+				});
+        	}
 		} );
 
 		dz.dataTransfer = {
@@ -437,6 +468,17 @@
 			const popupContent = popup.$element || document;
 			popupContent.querySelectorAll('.everest-forms-uploader').forEach(el => dropZoneInit(el));
 		});
+
+		$(document).on('click','.evf-remove-file', function(e) {
+
+			var max_files = $(this)
+				.closest(".everest-forms-uploader")
+				.data("max-file-number");
+			$(this).closest(".everest-forms-uploader")[0].dropzone.options.maxFiles =
+			++max_files;
+
+			$(this).closest(".dz-preview").remove();
+		});
 	}
 
 	if (document.readyState === 'loading') {
@@ -444,6 +486,4 @@
 	} else {
 		ready();
 	}
-
-
-}() );
+}(jQuery) );
