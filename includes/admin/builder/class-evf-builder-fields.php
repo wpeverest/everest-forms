@@ -322,6 +322,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 
 			$grid_class = 'evf-admin-grid evf-grid-' . ( $active_grid );
 			for ( $grid_start = 1; $grid_start <= $active_grid; $grid_start++ ) {
+				echo '<div class="evf-move-col">';
 				echo '<div class="' . esc_attr( $grid_class ) . ' " data-grid-id="' . absint( $grid_start ) . '">';
 				$grid_fields    = isset( $row_grid[ 'grid_' . $grid_start ] ) && is_array( $row_grid[ 'grid_' . $grid_start ] ) ? $row_grid[ 'grid_' . $grid_start ] : ( isset( $this->form_data['settings']['recaptcha_support'] ) && '1' === $this->form_data['settings']['recaptcha_support'] ? array(
 					'IWX5HFxv2j-18',
@@ -344,6 +345,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 					}
 				}
 				echo '</div>';
+				echo '</div>';
 			}
 			echo '<div class="clear evf-clear"></div>';
 			echo '</div >';
@@ -363,6 +365,12 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 		 */
 		do_action( 'everest_forms_display_builder_fields_after', $form_data, $form_id );
 
+			echo '<div class="evf-add-row-new"><div class="evf-add-row-content evf-admin-grid" data-is_add_row="yes" data-total-rows="' . count( $structure ) . '" data-next-row-id="' . (int) max( $row_ids ) . '"><svg width="38" height="39" viewBox="0 0 38 39" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect y="0.5" width="38" height="38" rx="19" fill="#7E3BD0"/>
+<path d="M19.0002 12.8242V26.2492V12.8242ZM12.3252 19.4992H25.6752H12.3252Z" fill="#0E0E0E"/>
+<path d="M19.0002 12.8242V26.2492M12.3252 19.4992H25.6752" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg><div><span>Drag Form Field here</span></div></div>
+</div>';
 		echo '</div>';
 		echo '<div class="clear evf-clear"></div>';
 		if ( defined( 'EVF_REPEATER_FIELDS_VERSION' ) ) {

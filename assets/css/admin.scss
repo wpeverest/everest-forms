@@ -7008,12 +7008,14 @@ img.ui-datepicker-trigger {
 						margin: 0 0 20px;
 						position: relative;
 
-						.evf-admin-grid {
-							&.evf-grid-1,
-							&.evf-grid-2,
-							&.evf-grid-3,
-							&.evf-grid-4 {
-								width: auto;
+						.evf-move-col{
+							.evf-admin-grid {
+								&.evf-grid-1,
+								&.evf-grid-2,
+								&.evf-grid-3,
+								&.evf-grid-4 {
+									width: auto;
+								}
 							}
 						}
 					}
@@ -11784,5 +11786,27 @@ button#show-settings-link {
 
 	.everest-forms-clean-talk-icon-box{
 		margin-top: 5px;
+	}
+}
+
+
+.evf-add-row-new{
+	background-color: #FCFBFD;
+	padding: 32px 0px;
+	.evf-add-row-content{
+	    margin: auto;
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+		align-items: center;
+		justify-content: center;
+
+		div span{
+			color:  #383838;
+			font-size: 14px;
+			font-style: italic;
+			font-weight: 300;
+			line-height: 150%;
+		}
 	}
 }

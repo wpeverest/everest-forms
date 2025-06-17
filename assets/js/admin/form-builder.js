@@ -2846,6 +2846,26 @@
 				}
 			}).disableSelection();
 
+			$( '.evf-admin-row' ).sortable({
+				items: '.evf-move-col',
+				axis: 'x',
+				cursor: 'move',
+				opacity: 0.65,
+				scrollSensitivity: 40,
+				forcePlaceholderSize: true,
+				placeholder: 'evf-sortable-placeholder',
+				containment: '.evf-admin-row',
+				start: function( event, ui ) {
+					ui.item.css({
+						'backgroundColor': '#f7fafc',
+						'border': '1px dashed #5d96ee'
+					});
+				},
+				stop: function( event, ui ) {
+					ui.item.removeAttr( 'style' );
+				}
+			}).disableSelection();
+
 			$( '.evf-admin-grid' ).sortable({
 				items: '> .everest-forms-field[data-field-type!="repeater-fields"]',
 				delay  : 100,
@@ -2873,8 +2893,13 @@
 					EVFPanelBuilder.checkEmptyGrid();
 				},
 				receive: function( event, ui ) {
+					console.log('recieved');
+					var $el = $( this );
+
 					if ( ui.sender.is( 'button' ) ) {
-						EVFPanelBuilder.fieldDrop( ui.helper );
+						console.log('fieldDrop');
+
+						EVFPanelBuilder.fieldDrop( ui.helper, $el );
 					}
 				},
 				update: function(event, ui) {
@@ -3037,8 +3062,10 @@
 		 		EVFPanelBuilder.bindFields();
 		 	});
 		},
-		fieldDrop: function ( field ) {
+		fieldDrop: function ( field, $el = '' ) {
 			var field_type = field.attr( 'data-field-type' );
+			var isAddRow = $el.is('[data-is_add_row]') ? $el.data( 'is_add_row' ) : '';
+
 			var invalid_fields = ["payment-total"];
 			if (
 				invalid_fields.includes(
@@ -3102,7 +3129,39 @@
 						}
 					});
 
-					field.after( field_preview );
+					if ( 'yes' === isAddRow ) {
+						var addNewRowClone = $el.clone(),
+							wrapper      = $( '.evf-admin-field-wrapper' ),
+							row_ids      = $( '.evf-admin-row' ).map( function() {
+								return $( this ).data( 'row-id' );
+							} ).get(),
+							max_row_id   = Math.max.apply( Math, row_ids ),
+							row_clone    = $( '.evf-admin-row' ).eq(0).clone(),
+							total_rows   = $el.parent().attr( 'data-total-rows' ),
+							current_part = $el.parents( '.evf-admin-field-container' ).attr( 'data-current-part' );
+
+						max_row_id++;
+						total_rows++;
+						row_clone.find( '.evf-admin-grid' ).html( '' );
+						row_clone.attr( 'data-row-id', max_row_id );
+						console.log('here');
+
+						var $toAppend = $( row_clone.find( '.evf-move-col' )[0] );
+						console.log($toAppend);
+
+
+						$toAppend.find( '.evf-admin-grid').append( field_preview )
+						console.log(row_clone);
+
+						$( '.evf-add-row-new' ).before( row_clone )
+						console.log(total_rows);
+
+
+						$el.remove();
+						$( '.evf-add-row-new' ).append( addNewRowClone );
+					}else{
+						field.after( field_preview );
+					}
 
 					if ( null !== $( '#everest-forms-panel-field-settings-enable_survey') && $( '#everest-forms-panel-field-settings-enable_survey' ).prop( 'checked' ) ) {
 						$( '#everest-forms-field-option-' + dragged_field_id + '-survey_status' ).prop( 'checked', true );
