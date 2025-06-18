@@ -981,7 +981,7 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 		/* translators: 1: Number of Files */
 		$limit_message = isset( $field['limit_message'] ) ? $field['limit_message'] : sprintf( __( 'You can upload up to %s files.', 'everest-forms' ), (int) $max_file_number );
 
-		$files          = isset( $field_atts['value_raw'] ) ? (array) $field_atts['value_raw'] : array();
+		$files          = ! empty( $field_atts['value_raw'] ) ? (array) $field_atts['value_raw'] : array();
 		$old_input_name = sprintf( 'everest_forms_%d_old_%s[]', $this->form_id, $this->field_id );
 		?>
 		<div class="everest-forms-uploader"
