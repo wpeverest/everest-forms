@@ -284,12 +284,40 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 			echo '<div class="evf-admin-row" data-row-id="' . absint( $row ) . '"' . ( ! empty( $repeater_field ) ? esc_attr( $repeater_field ) : '' ) . '>';
 			echo '<div class="evf-toggle-row">';
 			if ( empty( $repeater_field ) ) {
-				echo '<div class="evf-duplicate-row"><span class="dashicons dashicons-media-default" title="Duplicate Row"></span></div>';
-				echo '<div class="evf-delete-row"><span class="dashicons dashicons-trash" title="Delete Row"></span></div>';
-				echo '<div class="evf-show-grid"><span class="dashicons dashicons-edit" title="Edit"></span></div>';
+				echo '<div class="evf-drag-row"><svg xmlns="http://www.w3.org/2000/svg" width="19" height="18" viewBox="0 0 17 16" fill="none">
+  <path d="M13.9954 4.66471C13.6273 4.66471 13.3288 4.96319 13.3288 5.33138C13.3288 5.69957 13.6273 5.99805 13.9954 5.99805C14.3636 5.99805 14.6621 5.69957 14.6621 5.33138C14.6621 4.96319 14.3636 4.66471 13.9954 4.66471Z" stroke="white" stroke-width="1.33333"/>
+  <path d="M14.0501 9.7487C13.6819 9.7487 13.3835 10.0472 13.3835 10.4154C13.3835 10.7836 13.6819 11.082 14.0501 11.082C14.4183 11.082 14.7168 10.7836 14.7168 10.4154C14.7168 10.0472 14.4183 9.7487 14.0501 9.7487Z" stroke="white" stroke-width="1.33333"/>
+  <path d="M8.66243 4.66471C8.29425 4.66471 7.99577 4.96319 7.99577 5.33138C7.99577 5.69957 8.29425 5.99805 8.66243 5.99805C9.03062 5.99805 9.3291 5.69957 9.3291 5.33138C9.3291 4.96319 9.03062 4.66471 8.66243 4.66471Z" stroke="white" stroke-width="1.33333"/>
+  <path d="M8.66243 9.9987C8.29425 9.9987 7.99577 10.2972 7.99577 10.6654C7.99577 11.0336 8.29425 11.332 8.66243 11.332C9.03062 11.332 9.3291 11.0336 9.3291 10.6654C9.3291 10.2972 9.03062 9.9987 8.66243 9.9987Z" stroke="white" stroke-width="1.33333"/>
+  <path d="M3.32845 4.66471C2.96026 4.66471 2.66178 4.96319 2.66178 5.33138C2.66178 5.69957 2.96026 5.99805 3.32845 5.99805C3.69664 5.99805 3.99512 5.69957 3.99512 5.33138C3.99512 4.96319 3.69664 4.66471 3.32845 4.66471Z" stroke="white" stroke-width="1.33333"/>
+  <path d="M3.32845 9.9987C2.96026 9.9987 2.66178 10.2972 2.66178 10.6654C2.66178 11.0336 2.96026 11.332 3.32845 11.332C3.69664 11.332 3.99512 11.0336 3.99512 10.6654C3.99512 10.2972 3.69664 9.9987 3.32845 9.9987Z" stroke="white" stroke-width="1.33333"/>
+</svg></div>';
+				echo '<div class="evf-duplicate-row"><svg xmlns="http://www.w3.org/2000/svg" width="19" height="18" viewBox="0 0 19 18" fill="none">
+  <path d="M14.4853 7.19336H9.0633C8.39785 7.19336 7.8584 7.73281 7.8584 8.39826V13.8203C7.8584 14.4858 8.39785 15.0252 9.0633 15.0252H14.4853C15.1508 15.0252 15.6902 14.4858 15.6902 13.8203V8.39826C15.6902 7.73281 15.1508 7.19336 14.4853 7.19336Z" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M5.44798 10.8104H4.84553C4.52597 10.8104 4.21949 10.6834 3.99353 10.4575C3.76757 10.2315 3.64063 9.92503 3.64062 9.60547V4.18342C3.64062 3.86386 3.76757 3.55739 3.99353 3.33142C4.21949 3.10546 4.52597 2.97852 4.84553 2.97852H10.2676C10.5871 2.97852 10.8936 3.10546 11.1196 3.33142C11.3455 3.55739 11.4725 3.86386 11.4725 4.18342V4.78587" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+</svg></div>';
+
+				echo '<div class="evf-show-grid"><svg xmlns="http://www.w3.org/2000/svg" width="19" height="18" viewBox="0 0 21 20" fill="none">
+  <mask id="path-1-inside-1_5077_34264" fill="white">
+    <path d="M2.7334 5.53828C2.7334 4.71676 3.39937 4.05078 4.2209 4.05078H10.6667V15.9508H4.2209C3.39937 15.9508 2.7334 15.2848 2.7334 14.4633V5.53828Z"/>
+  </mask>
+  <path d="M1.7334 5.53828C1.7334 4.16447 2.84709 3.05078 4.2209 3.05078H11.1667L10.1667 5.05078H4.2209C3.95166 5.05078 3.7334 5.26904 3.7334 5.53828L1.7334 5.53828ZM11.1667 16.9508H4.2209C2.84709 16.9508 1.7334 15.8371 1.7334 14.4633L3.7334 14.4633C3.7334 14.7325 3.95166 14.9508 4.2209 14.9508H10.1667L11.1667 16.9508ZM4.2209 16.9508C2.84709 16.9508 1.7334 15.8371 1.7334 14.4633V5.53828C1.7334 4.16447 2.84709 3.05078 4.2209 3.05078L4.2209 5.05078C3.95166 5.05078 3.7334 5.26904 3.7334 5.53828V14.4633C3.7334 14.7325 3.95166 14.9508 4.2209 14.9508L4.2209 16.9508ZM11.1667 3.05078V16.9508L10.1667 14.9508V5.05078L11.1667 3.05078Z" fill="white" mask="url(#path-1-inside-1_5077_34264)"/>
+  <mask id="path-3-inside-2_5077_34264" fill="white">
+    <path d="M10.668 4.05078H17.1138C17.9353 4.05078 18.6013 4.71676 18.6013 5.53828V14.4633C18.6013 15.2848 17.9353 15.9508 17.1138 15.9508H10.668V4.05078Z"/>
+  </mask>
+  <path d="M10.168 3.05078H17.1138C18.4876 3.05078 19.6013 4.16447 19.6013 5.53828L17.6013 5.53828C17.6013 5.26904 17.383 5.05078 17.1138 5.05078H11.168L10.168 3.05078ZM19.6013 14.4633C19.6013 15.8371 18.4876 16.9508 17.1138 16.9508H10.168L11.168 14.9508H17.1138C17.383 14.9508 17.6013 14.7325 17.6013 14.4633L19.6013 14.4633ZM10.168 16.9508V3.05078L11.168 5.05078V14.9508L10.168 16.9508ZM17.1138 3.05078C18.4876 3.05078 19.6013 4.16447 19.6013 5.53828V14.4633C19.6013 15.8371 18.4876 16.9508 17.1138 16.9508V14.9508C17.383 14.9508 17.6013 14.7325 17.6013 14.4633V5.53828C17.6013 5.26904 17.383 5.05078 17.1138 5.05078V3.05078Z" fill="white" mask="url(#path-3-inside-2_5077_34264)"/>
+</svg></div>';
 				if ( defined( 'EFP_VERSION' ) ) {
-					echo '<div class="evf-row-setting"><span class="dashicons dashicons-admin-settings" title="Row Setting"></span></div>';
+					echo '<div class="evf-row-setting"><svg class="dashicons-admin-settings" xmlns="http://www.w3.org/2000/svg" width="19" height="18" viewBox="0 0 17 16" fill="none">
+  <path d="M8.81268 1.33398H8.51935C8.16573 1.33398 7.82659 1.47446 7.57654 1.72451C7.32649 1.97456 7.18602 2.3137 7.18602 2.66732V2.78732C7.18578 3.02113 7.12405 3.25078 7.00704 3.45321C6.89003 3.65564 6.72184 3.82374 6.51935 3.94065L6.23268 4.10732C6.02999 4.22434 5.80007 4.28595 5.56602 4.28595C5.33197 4.28595 5.10204 4.22434 4.89935 4.10732L4.79935 4.05398C4.49339 3.87749 4.12991 3.82961 3.78868 3.92086C3.44746 4.0121 3.15638 4.23501 2.97935 4.54065L2.83268 4.79398C2.65619 5.09994 2.60831 5.46343 2.69956 5.80465C2.7908 6.14587 3.01371 6.43695 3.31935 6.61398L3.41935 6.68065C3.62087 6.79699 3.78843 6.96404 3.90538 7.1652C4.02234 7.36637 4.08461 7.59463 4.08602 7.82732V8.16732C4.08695 8.40226 4.02578 8.63329 3.90871 8.83699C3.79164 9.04069 3.62282 9.20984 3.41935 9.32732L3.31935 9.38732C3.01371 9.56435 2.7908 9.85543 2.69956 10.1967C2.60831 10.5379 2.65619 10.9014 2.83268 11.2073L2.97935 11.4607C3.15638 11.7663 3.44746 11.9892 3.78868 12.0804C4.12991 12.1717 4.49339 12.1238 4.79935 11.9473L4.89935 11.894C5.10204 11.777 5.33197 11.7154 5.56602 11.7154C5.80007 11.7154 6.02999 11.777 6.23268 11.894L6.51935 12.0607C6.72184 12.1776 6.89003 12.3457 7.00704 12.5481C7.12405 12.7505 7.18578 12.9802 7.18602 13.214V13.334C7.18602 13.6876 7.32649 14.0267 7.57654 14.2768C7.82659 14.5268 8.16573 14.6673 8.51935 14.6673H8.81268C9.16631 14.6673 9.50544 14.5268 9.75549 14.2768C10.0055 14.0267 10.146 13.6876 10.146 13.334V13.214C10.1463 12.9802 10.208 12.7505 10.325 12.5481C10.442 12.3457 10.6102 12.1776 10.8127 12.0607L11.0993 11.894C11.302 11.777 11.532 11.7154 11.766 11.7154C12.0001 11.7154 12.23 11.777 12.4327 11.894L12.5327 11.9473C12.8386 12.1238 13.2021 12.1717 13.5433 12.0804C13.8846 11.9892 14.1756 11.7663 14.3527 11.4607L14.4993 11.2006C14.6758 10.8947 14.7237 10.5312 14.6325 10.19C14.5412 9.84876 14.3183 9.55768 14.0127 9.38065L13.9127 9.32732C13.7092 9.20984 13.5404 9.04069 13.4233 8.83699C13.3062 8.63329 13.2451 8.40226 13.246 8.16732V7.83398C13.2451 7.59904 13.3062 7.36802 13.4233 7.16431C13.5404 6.96061 13.7092 6.79146 13.9127 6.67398L14.0127 6.61398C14.3183 6.43695 14.5412 6.14587 14.6325 5.80465C14.7237 5.46343 14.6758 5.09994 14.4993 4.79398L14.3527 4.54065C14.1756 4.23501 13.8846 4.0121 13.5433 3.92086C13.2021 3.82961 12.8386 3.87749 12.5327 4.05398L12.4327 4.10732C12.23 4.22434 12.0001 4.28595 11.766 4.28595C11.532 4.28595 11.302 4.22434 11.0993 4.10732L10.8127 3.94065C10.6102 3.82374 10.442 3.65564 10.325 3.45321C10.208 3.25078 10.1463 3.02113 10.146 2.78732V2.66732C10.146 2.3137 10.0055 1.97456 9.75549 1.72451C9.50544 1.47446 9.16631 1.33398 8.81268 1.33398Z" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M8.66602 10C9.77059 10 10.666 9.10457 10.666 8C10.666 6.89543 9.77059 6 8.66602 6C7.56145 6 6.66602 6.89543 6.66602 8C6.66602 9.10457 7.56145 10 8.66602 10Z" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+</svg></div>';
 				}
+
+			echo '<div class="evf-delete-row"><svg xmlns="http://www.w3.org/2000/svg" width="19" height="18" viewBox="0 0 21 20" fill="none">
+  <path d="M15.6641 5.00195L5.66406 15.002" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M5.66406 5.00195L15.6641 15.002" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+</svg></div>';
 			}
 			echo '<div class="evf-toggle-row-content">';
 			echo '<span>' . esc_html__( 'Row Settings', 'everest-forms' ) . '</span>';
@@ -363,50 +391,49 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 		 */
 		do_action( 'everest_forms_display_builder_fields_after', $form_data, $form_id );
 
-			echo '<div class="evf-add-row-new"><div class="evf-add-row-content evf-admin-grid" data-is_add_row="yes" data-total-rows="' . count( $structure ) . '" data-next-row-id="' . (int) max( $row_ids ) . '"><svg width="38" height="39" viewBox="0 0 38 39" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect y="0.5" width="38" height="38" rx="19" fill="#7E3BD0"/>
-<path d="M19.0002 12.8242V26.2492V12.8242ZM12.3252 19.4992H25.6752H12.3252Z" fill="#0E0E0E"/>
-<path d="M19.0002 12.8242V26.2492M12.3252 19.4992H25.6752" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-</svg><div><span>Drag Form Field here</span></div></div>
-<div id="evf-select-row-type-outer-wrapper" class="everest-forms-hidden">
-	<div class="evf-add-row-cancel-btn">
-		<span>
-			<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-				<path d="M12.0008 13.4008L7.10078 18.3008C6.91745 18.4841 6.68411 18.5758 6.40078 18.5758C6.11745 18.5758 5.88411 18.4841 5.70078 18.3008C5.51745 18.1174 5.42578 17.8841 5.42578 17.6008C5.42578 17.3174 5.51745 17.0841 5.70078 16.9008L10.6008 12.0008L5.70078 7.10078C5.51745 6.91745 5.42578 6.68411 5.42578 6.40078C5.42578 6.11745 5.51745 5.88411 5.70078 5.70078C5.88411 5.51745 6.11745 5.42578 6.40078 5.42578C6.68411 5.42578 6.91745 5.51745 7.10078 5.70078L12.0008 10.6008L16.9008 5.70078C17.0841 5.51745 17.3174 5.42578 17.6008 5.42578C17.8841 5.42578 18.1174 5.51745 18.3008 5.70078C18.4841 5.88411 18.5758 6.11745 18.5758 6.40078C18.5758 6.68411 18.4841 6.91745 18.3008 7.10078L13.4008 12.0008L18.3008 16.9008C18.4841 17.0841 18.5758 17.3174 18.5758 17.6008C18.5758 17.8841 18.4841 18.1174 18.3008 18.3008C18.1174 18.4841 17.8841 18.5758 17.6008 18.5758C17.3174 18.5758 17.0841 18.4841 16.9008 18.3008L12.0008 13.4008Z" fill="#383838"/>
-			</svg>
-		</span>
-	</div>
-	<div class="evf-select-row-type-wrapper" >
-	<div class="evf-select-row-type-inner"><p class="evf-select-row-type-inner-title">Row Settings</p>
-	<p class="evf-select-row-type-inner-desc">Select The type of row</p></div>
-	<div class="evf-select-row-type-inner-content-wrapper" data-total-rows="' . count( $structure ) . '" data-next-row-id="' . (int) max( $row_ids ) . '" data-is_select_row_type="yes">
-		<div class="evf-select-row-type evf-grid-1" data-col_num="1"></div>
-		<div class="evf-select-row-type evf-grid-2" data-col_num="2">
-			<div class="col"></div>
-			<div class="col"></div>
-		</div>
-		<div class="evf-select-row-type evf-grid-3" data-col_num="3">
-			<div class="col"></div>
-			<div class="col"></div>
-			<div class="col"></div>
-		</div>
-		<div class="evf-select-row-type evf-grid-4" data-col_num="4">
-			<div class="col"></div>
-			<div class="col"></div>
-			<div class="col"></div>
-			<div class="col"></div>
-		</div>
-	</div>
-	</div>
-</div>
-</div>';
 		echo '</div>';
 		echo '<div class="clear evf-clear"></div>';
 		if ( defined( 'EVF_REPEATER_FIELDS_VERSION' ) ) {
 			echo '<div class="evf-repeater-row-wrapper">'; // Repeater Row Wrapper starts.
 		}
 
-		echo '<div class="evf-add-row" data-total-rows="' . count( $structure ) . '" data-next-row-id="' . (int) max( $row_ids ) . '"><span class="everest-forms-btn everest-forms-btn-primary dashicons dashicons-plus-alt">' . esc_html__( 'Add Row', 'everest-forms' ) . '</span></div>';
+		echo '<div class="evf-add-row-new"><div class="evf-add-row-content evf-admin-grid" data-is_add_row="yes" data-total-rows="' . count( $structure ) . '" data-next-row-id="' . (int) max( $row_ids ) . '"><svg width="38" height="39" viewBox="0 0 38 39" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect y="0.5" width="38" height="38" rx="19" fill="#7E3BD0"/>
+<path d="M19.0002 12.8242V26.2492V12.8242ZM12.3252 19.4992H25.6752H12.3252Z" fill="#0E0E0E"/>
+<path d="M19.0002 12.8242V26.2492M12.3252 19.4992H25.6752" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg><div><span>Drag Form Field here</span></div></div>
+<div id="evf-select-row-type-outer-wrapper" class="everest-forms-hidden">
+<div class="evf-add-row-cancel-btn">
+	<span>
+		<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<path d="M12.0008 13.4008L7.10078 18.3008C6.91745 18.4841 6.68411 18.5758 6.40078 18.5758C6.11745 18.5758 5.88411 18.4841 5.70078 18.3008C5.51745 18.1174 5.42578 17.8841 5.42578 17.6008C5.42578 17.3174 5.51745 17.0841 5.70078 16.9008L10.6008 12.0008L5.70078 7.10078C5.51745 6.91745 5.42578 6.68411 5.42578 6.40078C5.42578 6.11745 5.51745 5.88411 5.70078 5.70078C5.88411 5.51745 6.11745 5.42578 6.40078 5.42578C6.68411 5.42578 6.91745 5.51745 7.10078 5.70078L12.0008 10.6008L16.9008 5.70078C17.0841 5.51745 17.3174 5.42578 17.6008 5.42578C17.8841 5.42578 18.1174 5.51745 18.3008 5.70078C18.4841 5.88411 18.5758 6.11745 18.5758 6.40078C18.5758 6.68411 18.4841 6.91745 18.3008 7.10078L13.4008 12.0008L18.3008 16.9008C18.4841 17.0841 18.5758 17.3174 18.5758 17.6008C18.5758 17.8841 18.4841 18.1174 18.3008 18.3008C18.1174 18.4841 17.8841 18.5758 17.6008 18.5758C17.3174 18.5758 17.0841 18.4841 16.9008 18.3008L12.0008 13.4008Z" fill="#383838"/>
+		</svg>
+	</span>
+</div>
+<div class="evf-select-row-type-wrapper" >
+<div class="evf-select-row-type-inner"><p class="evf-select-row-type-inner-title">Row Settings</p>
+<p class="evf-select-row-type-inner-desc">Select The type of row</p></div>
+<div class="evf-select-row-type-inner-content-wrapper" data-total-rows="' . count( $structure ) . '" data-next-row-id="' . (int) max( $row_ids ) . '" data-is_select_row_type="yes">
+	<div class="evf-select-row-type evf-grid-1" data-col_num="1"></div>
+	<div class="evf-select-row-type evf-grid-2" data-col_num="2">
+		<div class="col"></div>
+		<div class="col"></div>
+	</div>
+	<div class="evf-select-row-type evf-grid-3" data-col_num="3">
+		<div class="col"></div>
+		<div class="col"></div>
+		<div class="col"></div>
+	</div>
+	<div class="evf-select-row-type evf-grid-4" data-col_num="4">
+		<div class="col"></div>
+		<div class="col"></div>
+		<div class="col"></div>
+		<div class="col"></div>
+	</div>
+</div>
+</div>
+</div>
+</div>';
 
 		if ( defined( 'EVF_REPEATER_FIELDS_VERSION' ) ) {
 			echo '<div class="evf-add-row repeater-row" data-total-rows="' . count( $structure ) . '" data-next-row-id="' . (int) max( $row_ids ) . '"><span class="everest-forms-btn everest-forms-btn-primary dashicons dashicons-plus-alt">' . esc_html__( 'Add Repeater Row', 'everest-forms' ) . '</span></div>';
@@ -432,12 +459,35 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 		printf( '<div class="everest-forms-field everest-forms-field-%1$s %2$s" id="everest-forms-field-%3$s" data-field-id="%3$s" data-field-type="%4$s">', esc_attr( $field['type'] ), esc_attr( $css ), esc_attr( $field['id'] ), esc_attr( $field['type'] ) );
 		printf( '<div class="evf-field-action">' );
 		if ( 'repeater-fields' !== $field['type'] ) {
-			printf( '<a href="#" class="everest-forms-field-duplicate" title="%s"><span class="dashicons dashicons-media-default"></span></a>', esc_html__( 'Duplicate Field', 'everest-forms' ) );
-			printf( '<a href="#" class="everest-forms-field-delete" title="%s"><span class="dashicons dashicons-trash"></span></a>', esc_html__( 'Delete Field', 'everest-forms' ) );
-			printf( '<a href="#" class="everest-forms-field-setting" title="%s"><span class="dashicons dashicons-admin-generic"></span></a>', esc_html__( 'Settings', 'everest-forms' ) );
+			printf( '<a href="#" class="everest-forms-field-drag" title="%s"><svg xmlns="http://www.w3.org/2000/svg" width="19" height="18" viewBox="0 0 17 16" fill="none">
+  <path d="M13.9954 4.66471C13.6273 4.66471 13.3288 4.96319 13.3288 5.33138C13.3288 5.69957 13.6273 5.99805 13.9954 5.99805C14.3636 5.99805 14.6621 5.69957 14.6621 5.33138C14.6621 4.96319 14.3636 4.66471 13.9954 4.66471Z" stroke="white" stroke-width="1.33333"/>
+  <path d="M14.0501 9.7487C13.6819 9.7487 13.3835 10.0472 13.3835 10.4154C13.3835 10.7836 13.6819 11.082 14.0501 11.082C14.4183 11.082 14.7168 10.7836 14.7168 10.4154C14.7168 10.0472 14.4183 9.7487 14.0501 9.7487Z" stroke="white" stroke-width="1.33333"/>
+  <path d="M8.66243 4.66471C8.29425 4.66471 7.99577 4.96319 7.99577 5.33138C7.99577 5.69957 8.29425 5.99805 8.66243 5.99805C9.03062 5.99805 9.3291 5.69957 9.3291 5.33138C9.3291 4.96319 9.03062 4.66471 8.66243 4.66471Z" stroke="white" stroke-width="1.33333"/>
+  <path d="M8.66243 9.9987C8.29425 9.9987 7.99577 10.2972 7.99577 10.6654C7.99577 11.0336 8.29425 11.332 8.66243 11.332C9.03062 11.332 9.3291 11.0336 9.3291 10.6654C9.3291 10.2972 9.03062 9.9987 8.66243 9.9987Z" stroke="white" stroke-width="1.33333"/>
+  <path d="M3.32845 4.66471C2.96026 4.66471 2.66178 4.96319 2.66178 5.33138C2.66178 5.69957 2.96026 5.99805 3.32845 5.99805C3.69664 5.99805 3.99512 5.69957 3.99512 5.33138C3.99512 4.96319 3.69664 4.66471 3.32845 4.66471Z" stroke="white" stroke-width="1.33333"/>
+  <path d="M3.32845 9.9987C2.96026 9.9987 2.66178 10.2972 2.66178 10.6654C2.66178 11.0336 2.96026 11.332 3.32845 11.332C3.69664 11.332 3.99512 11.0336 3.99512 10.6654C3.99512 10.2972 3.69664 9.9987 3.32845 9.9987Z" stroke="white" stroke-width="1.33333"/>
+</svg></a>', esc_html__( 'Drag Field', 'everest-forms' ) );
+			printf( '<a href="#" class="everest-forms-field-duplicate" title="%s"><svg xmlns="http://www.w3.org/2000/svg" width="19" height="18" viewBox="0 0 19 18" fill="none">
+  <path d="M14.4853 7.19336H9.0633C8.39785 7.19336 7.8584 7.73281 7.8584 8.39826V13.8203C7.8584 14.4858 8.39785 15.0252 9.0633 15.0252H14.4853C15.1508 15.0252 15.6902 14.4858 15.6902 13.8203V8.39826C15.6902 7.73281 15.1508 7.19336 14.4853 7.19336Z" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M5.44798 10.8104H4.84553C4.52597 10.8104 4.21949 10.6834 3.99353 10.4575C3.76757 10.2315 3.64063 9.92503 3.64062 9.60547V4.18342C3.64062 3.86386 3.76757 3.55739 3.99353 3.33142C4.21949 3.10546 4.52597 2.97852 4.84553 2.97852H10.2676C10.5871 2.97852 10.8936 3.10546 11.1196 3.33142C11.3455 3.55739 11.4725 3.86386 11.4725 4.18342V4.78587" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+</svg></a>', esc_html__( 'Duplicate Field', 'everest-forms' ) );
+			printf( '<a href="#" class="everest-forms-field-setting" title="%s"><svg class="dashicons-admin-generic" xmlns="http://www.w3.org/2000/svg" width="19" height="18" viewBox="0 0 17 16" fill="none">
+  <path d="M8.81268 1.33398H8.51935C8.16573 1.33398 7.82659 1.47446 7.57654 1.72451C7.32649 1.97456 7.18602 2.3137 7.18602 2.66732V2.78732C7.18578 3.02113 7.12405 3.25078 7.00704 3.45321C6.89003 3.65564 6.72184 3.82374 6.51935 3.94065L6.23268 4.10732C6.02999 4.22434 5.80007 4.28595 5.56602 4.28595C5.33197 4.28595 5.10204 4.22434 4.89935 4.10732L4.79935 4.05398C4.49339 3.87749 4.12991 3.82961 3.78868 3.92086C3.44746 4.0121 3.15638 4.23501 2.97935 4.54065L2.83268 4.79398C2.65619 5.09994 2.60831 5.46343 2.69956 5.80465C2.7908 6.14587 3.01371 6.43695 3.31935 6.61398L3.41935 6.68065C3.62087 6.79699 3.78843 6.96404 3.90538 7.1652C4.02234 7.36637 4.08461 7.59463 4.08602 7.82732V8.16732C4.08695 8.40226 4.02578 8.63329 3.90871 8.83699C3.79164 9.04069 3.62282 9.20984 3.41935 9.32732L3.31935 9.38732C3.01371 9.56435 2.7908 9.85543 2.69956 10.1967C2.60831 10.5379 2.65619 10.9014 2.83268 11.2073L2.97935 11.4607C3.15638 11.7663 3.44746 11.9892 3.78868 12.0804C4.12991 12.1717 4.49339 12.1238 4.79935 11.9473L4.89935 11.894C5.10204 11.777 5.33197 11.7154 5.56602 11.7154C5.80007 11.7154 6.02999 11.777 6.23268 11.894L6.51935 12.0607C6.72184 12.1776 6.89003 12.3457 7.00704 12.5481C7.12405 12.7505 7.18578 12.9802 7.18602 13.214V13.334C7.18602 13.6876 7.32649 14.0267 7.57654 14.2768C7.82659 14.5268 8.16573 14.6673 8.51935 14.6673H8.81268C9.16631 14.6673 9.50544 14.5268 9.75549 14.2768C10.0055 14.0267 10.146 13.6876 10.146 13.334V13.214C10.1463 12.9802 10.208 12.7505 10.325 12.5481C10.442 12.3457 10.6102 12.1776 10.8127 12.0607L11.0993 11.894C11.302 11.777 11.532 11.7154 11.766 11.7154C12.0001 11.7154 12.23 11.777 12.4327 11.894L12.5327 11.9473C12.8386 12.1238 13.2021 12.1717 13.5433 12.0804C13.8846 11.9892 14.1756 11.7663 14.3527 11.4607L14.4993 11.2006C14.6758 10.8947 14.7237 10.5312 14.6325 10.19C14.5412 9.84876 14.3183 9.55768 14.0127 9.38065L13.9127 9.32732C13.7092 9.20984 13.5404 9.04069 13.4233 8.83699C13.3062 8.63329 13.2451 8.40226 13.246 8.16732V7.83398C13.2451 7.59904 13.3062 7.36802 13.4233 7.16431C13.5404 6.96061 13.7092 6.79146 13.9127 6.67398L14.0127 6.61398C14.3183 6.43695 14.5412 6.14587 14.6325 5.80465C14.7237 5.46343 14.6758 5.09994 14.4993 4.79398L14.3527 4.54065C14.1756 4.23501 13.8846 4.0121 13.5433 3.92086C13.2021 3.82961 12.8386 3.87749 12.5327 4.05398L12.4327 4.10732C12.23 4.22434 12.0001 4.28595 11.766 4.28595C11.532 4.28595 11.302 4.22434 11.0993 4.10732L10.8127 3.94065C10.6102 3.82374 10.442 3.65564 10.325 3.45321C10.208 3.25078 10.1463 3.02113 10.146 2.78732V2.66732C10.146 2.3137 10.0055 1.97456 9.75549 1.72451C9.50544 1.47446 9.16631 1.33398 8.81268 1.33398Z" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M8.66602 10C9.77059 10 10.666 9.10457 10.666 8C10.666 6.89543 9.77059 6 8.66602 6C7.56145 6 6.66602 6.89543 6.66602 8C6.66602 9.10457 7.56145 10 8.66602 10Z" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+</svg></a>', esc_html__( 'Settings', 'everest-forms' ) );
+			printf( '<a href="#" class="everest-forms-field-delete" title="%s"><svg xmlns="http://www.w3.org/2000/svg" width="19" height="18" viewBox="0 0 21 20" fill="none">
+			<path d="M15.6641 5.00195L5.66406 15.002" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+			<path d="M5.66406 5.00195L15.6641 15.002" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+			</svg></a>', esc_html__( 'Delete Field', 'everest-forms' ) );
 		} else {
-			printf( '<a href="#" class="evf-duplicate-row" title="%s"><span class="dashicons dashicons-media-default"></span></a>', esc_html__( 'Duplicate Repeater', 'everest-forms' ) );
-			printf( '<a href="#" class="evf-delete-row" title="%s"><span class="dashicons dashicons-trash"></span></a>', esc_html__( 'Delete Repeater', 'everest-forms' ) );
+			printf( '<a href="#" class="evf-duplicate-row" title="%s"><svg xmlns="http://www.w3.org/2000/svg" width="19" height="18" viewBox="0 0 19 18" fill="none">
+  <path d="M14.4853 7.19336H9.0633C8.39785 7.19336 7.8584 7.73281 7.8584 8.39826V13.8203C7.8584 14.4858 8.39785 15.0252 9.0633 15.0252H14.4853C15.1508 15.0252 15.6902 14.4858 15.6902 13.8203V8.39826C15.6902 7.73281 15.1508 7.19336 14.4853 7.19336Z" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M5.44798 10.8104H4.84553C4.52597 10.8104 4.21949 10.6834 3.99353 10.4575C3.76757 10.2315 3.64063 9.92503 3.64062 9.60547V4.18342C3.64062 3.86386 3.76757 3.55739 3.99353 3.33142C4.21949 3.10546 4.52597 2.97852 4.84553 2.97852H10.2676C10.5871 2.97852 10.8936 3.10546 11.1196 3.33142C11.3455 3.55739 11.4725 3.86386 11.4725 4.18342V4.78587" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+</svg></a>', esc_html__( 'Duplicate Repeater', 'everest-forms' ) );
+			printf( '<a href="#" class="evf-delete-row" title="%s"><svg xmlns="http://www.w3.org/2000/svg" width="19" height="18" viewBox="0 0 21 20" fill="none">
+  <path d="M15.6641 5.00195L5.66406 15.002" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M5.66406 5.00195L15.6641 15.002" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+</svg></a>', esc_html__( 'Delete Repeater', 'everest-forms' ) );
 		}
 		printf( '</div>' );
 

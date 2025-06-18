@@ -1967,6 +1967,8 @@
 				// Row infos.
 				$this.parent().attr( 'data-total-rows', total_rows );
 				$this.parent().attr( 'data-next-row-id', max_row_id );
+				$this.parent().find( '.evf-add-row-content' ).attr( 'data-total-rows', total_rows );
+				$this.parent().find( '.evf-add-row-content' ).attr( 'data-next-row-id', max_row_id );
 
 				if( 0 < $( '.everest-forms-row-options' ).length && false === $this.closest( '.evf-add-row' ).hasClass('repeater-row') ) {
 
@@ -2039,7 +2041,7 @@
 		 *
 		 * @since xx.xx.xx
 		 */
-		bindApplyGrid: function ( $el, grid_id = '' ){
+		bindApplyGrid: function ( $el, grid_id = 1 ){
 			var $this_single_row = $el.closest('.evf-admin-row');
 			if ( '' === grid_id ) {
 				if ( $el.hasClass('active') ) {
@@ -2926,25 +2928,29 @@
 				}
 			}).disableSelection();
 
-			$( '.evf-admin-row' ).sortable({
-				items: '.evf-admin-grid',
-				axis: 'x',
-				cursor: 'move',
-				opacity: 0.65,
-				scrollSensitivity: 40,
-				forcePlaceholderSize: true,
-				placeholder: 'evf-sortable-placeholder',
-				containment: '.evf-admin-row',
-				start: function( event, ui ) {
-					ui.item.css({
-						'backgroundColor': '#f7fafc',
-						'border': '1px dashed #5d96ee'
-					});
-				},
-				stop: function( event, ui ) {
-					ui.item.removeAttr( 'style' );
-				}
-			}).disableSelection();
+			/**
+			 * Move col code.
+			 */
+			
+			// $( '.evf-admin-row' ).sortable({
+			// 	items: '.evf-admin-grid',
+			// 	axis: 'x',
+			// 	cursor: 'move',
+			// 	opacity: 0.65,
+			// 	scrollSensitivity: 40,
+			// 	forcePlaceholderSize: true,
+			// 	placeholder: 'evf-sortable-placeholder',
+			// 	containment: '.evf-admin-row',
+			// 	start: function( event, ui ) {
+			// 		ui.item.css({
+			// 			'backgroundColor': '#f7fafc',
+			// 			'border': '1px dashed #5d96ee'
+			// 		});
+			// 	},
+			// 	stop: function( event, ui ) {
+			// 		ui.item.removeAttr( 'style' );
+			// 	}
+			// }).disableSelection();
 
 			$( '.evf-admin-grid' ).sortable({
 				items: '> .everest-forms-field[data-field-type!="repeater-fields"]',

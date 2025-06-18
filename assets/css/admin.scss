@@ -2885,7 +2885,7 @@ p.search-box {
 
 						&::before {
 							content: "";
-							background: #7545bb;
+							background: $evf_primary-color;
 							width: 4px;
 							height: 100%;
 							position: absolute;
@@ -3095,7 +3095,7 @@ p.search-box {
 
 						&::before {
 							content: "";
-							background: #7545bb;
+							background: $evf_primary-color;
 							width: 4px;
 							height: 100%;
 							position: absolute;
@@ -3243,8 +3243,8 @@ p.search-box {
 					}
 
 					.evf-toggle-row {
-						top: 0;
-						right: 0;
+						top: -29px;
+						right: 50%;
 						opacity: 0;
 						display: flex;
 						cursor: pointer;
@@ -3253,66 +3253,42 @@ p.search-box {
 						color: $color-white;
 						transition: 0.7s all;
 						z-index: 9999;
+						border-radius: 6px;
 
-						.evf-show-grid {
+						.evf-duplicate-row,
+						.evf-show-grid,
+						.evf-row-setting,
+						.evf-delete-row,
+						.evf-drag-row{
 							&:hover {
-								span {
-									&.dashicons {
-										background-color: $green;
-									}
+								svg{
+									background-color: $evf_primary-color;
 								}
 							}
 						}
 
-						.evf-delete-row {
-							span {
-								&.dashicons {
-									// border-right: 1px solid	transparentize($color-white, 0.8);
-									border-right: 1px solid #fff;
-								}
-							}
-
-							&:hover {
-								span {
-									&.dashicons {
-										background-color: $red;
-									}
-								}
+						.evf-drag-row{
+							svg{
+								border-radius: 6.024px 0px 0px 6.024px;
 							}
 						}
 
-						.evf-duplicate-row {
-							span {
-								&.dashicons {
-									border-radius: 0 0 0 3px;
-									border-right: 1px solid
-										transparentize($color-white, 0.8);
-								}
-							}
-
-							&:hover {
-								span {
-									&.dashicons {
-										background-color: $blue;
-									}
-								}
+						.evf-delete-row{
+							svg{
+								border-radius: 0px 6.024px 6.024px 0px;
 							}
 						}
 
-						span {
-							&.dashicons {
-								// background: $color_gray-base;
-								font-size: 14px;
-								height: auto;
-								width: auto;
-								// color: $color-white;
-								padding: 5px;
-								background: #e9e9e9;
-								color: #666666;
+						svg {
+							font-size: 14px;
+							height: auto;
+							width: auto;
+							color: $color-white;
+							padding: 5px;
+							background: #4B4C4D;
 
-								&:hover {
-									color: #fff;
-								}
+							&:hover {
+								color: #fff;
 							}
 						}
 
@@ -3402,9 +3378,8 @@ p.search-box {
 					&.evf-hover {
 						// background-color: lighten($blue, 48%);
 						// border: 1px dashed $blue;
-						background: #fcfcfc;
-						border: 1px solid #e7e7e7;
-						border-radius: 5px;
+						background: #F5F5F5;
+						border-radius: 8px;
 
 						.evf-admin-grid {
 							// border: 1px dashed $color-gray-light;
@@ -3791,48 +3766,39 @@ p.search-box {
 
 					.evf-field-action {
 						position: absolute;
-						// top: 15px;
-						// right: 15px;
-						top: 6px;
-						right: 1px;
+						top: -29px;
+						left: 1px;
 						visibility: hidden;
 						opacity: 0;
 						transition: 0.5s all;
 
 						a {
-							padding: 5px;
-							// color: $color-white;
-							// background: $color_gray-base;
-							// border-right: 1px solid transparentize($color-white, 0.8);
-							background: #e9e9e9;
-							border-right: 1px solid #fff;
-							color: #666666;
-
-							&:first-child {
-								// border-radius: 3px 0 0 3px;
-								border-radius: 0 0 0 3px;
+							svg{
+								font-size: 14px;
+								height: auto;
+								width: auto;
+								color: $color-white;
+								padding: 5px;
+								background: #4B4C4D;
 							}
 
-							&:last-child {
-								// border-radius: 0 3px 3px 0;
-								border-radius: 0 3px 0 0;
-								border-right: none;
-							}
-
-							&.everest-forms-field-delete:hover {
-								background-color: $red;
-							}
-
-							&:hover {
-								color: #fff;
-								background-color: $blue;
+						&.everest-forms-field-drag{
+							svg{
+								border-radius: 6.024px 0px 0px 6.024px;
 							}
 						}
 
-						.dashicons {
-							font-size: 15px;
-							height: auto;
-							width: auto;
+						&.everest-forms-field-delete{
+							svg{
+								border-radius: 0px 6.024px 6.024px 0px;
+							}
+						}
+
+						&:hover {
+							svg{
+								background-color: $evf_primary-color;
+							}
+						}
 						}
 					}
 
@@ -3879,9 +3845,9 @@ p.search-box {
 					}
 
 					&:hover {
-						border-radius: 3px;
-						border: 1px dashed #8c64c6;
-						background: #f8f8fa;
+						border-radius: 4px;
+						border: 1px solid $evf_primary-color;
+						background: #fff;
 
 						.evf-field-action {
 							visibility: visible;
@@ -8404,7 +8370,7 @@ img.ui-datepicker-trigger {
 	margin-top: 40px;
 
 	&-copy {
-		background: #7545bb;
+		background: $evf_primary-color;
 		position: absolute;
 		top: 0;
 		right: 0;
@@ -9582,7 +9548,7 @@ img.ui-datepicker-trigger {
 
 						&::before {
 							content: "";
-							background: #7545bb;
+							background: $evf_primary-color;
 							width: 4px;
 							height: 100%;
 							position: absolute;
@@ -9653,19 +9619,19 @@ img.ui-datepicker-trigger {
 								&-icon {
 									svg {
 										path {
-											fill: #7545bb;
+											fill: $evf_primary-color;
 										}
 									}
 								}
 
 								&-label {
 									> p {
-										color: #7545bb;
+										color: $evf_primary-color;
 									}
 
 									svg {
 										path {
-											stroke: #7545bb;
+											stroke: $evf_primary-color;
 										}
 									}
 								}
@@ -9712,7 +9678,7 @@ img.ui-datepicker-trigger {
 						}
 
 						&:hover {
-							background: #7545bb;
+							background: $evf_primary-color;
 							color: #ffffff;
 
 							.evf-nav-icon {
@@ -9825,7 +9791,7 @@ img.ui-datepicker-trigger {
 							height: 20px;
 
 							path {
-								fill: #7545bb;
+								fill: $evf_primary-color;
 							}
 						}
 					}
@@ -9910,7 +9876,7 @@ img.ui-datepicker-trigger {
 								}
 
 								a {
-									color: #7545bb;
+									color: $evf_primary-color;
 									text-decoration: underline;
 
 									&:focus {
@@ -9972,7 +9938,7 @@ img.ui-datepicker-trigger {
 
 												&:hover {
 													background: #f6f5f8;
-													border-color: #7545bb;
+													border-color: $evf_primary-color;
 												}
 
 												img {
@@ -9988,7 +9954,7 @@ img.ui-datepicker-trigger {
 
 												&:checked ~ label {
 													background: #f6f5f8;
-													border-color: #7545bb;
+													border-color: $evf_primary-color;
 												}
 											}
 										}
@@ -10012,7 +9978,7 @@ img.ui-datepicker-trigger {
 								color: #383838;
 
 								&:focus {
-									border-color: #7545bb;
+									border-color: $evf_primary-color;
 									outline: none;
 									box-shadow: none;
 								}
@@ -10043,7 +10009,7 @@ img.ui-datepicker-trigger {
 							.select2-container--focus,
 							.select2-container--open {
 								.select2-selection {
-									border-color: #7545bb;
+									border-color: $evf_primary-color;
 									box-shadow: none;
 								}
 							}
@@ -10065,7 +10031,7 @@ img.ui-datepicker-trigger {
 											display: none;
 
 											&:checked ~ label {
-												border: 1px solid #7545bb;
+												border: 1px solid $evf_primary-color;
 											}
 										}
 
@@ -10162,7 +10128,7 @@ img.ui-datepicker-trigger {
 								padding-right: 12px;
 
 								&:focus {
-									border-color: #7545bb;
+									border-color: $evf_primary-color;
 									outline: none;
 									box-shadow: none;
 								}
@@ -10319,7 +10285,7 @@ img.ui-datepicker-trigger {
 
 			.everest-forms-btn {
 				border-radius: 4px;
-				background: #7545bb;
+				background: $evf_primary-color;
 				padding: 8px 16px;
 				color: #ffffff;
 				font-size: 14px;
@@ -10507,14 +10473,14 @@ body {
 								}
 
 								&:hover {
-									color: #7545bb;
+									color: $evf_primary-color;
 								}
 
 								&.active {
-									color: #7545bb;
+									color: $evf_primary-color;
 
 									&::before {
-										background: #7545bb;
+										background: $evf_primary-color;
 									}
 								}
 							}
@@ -10659,7 +10625,7 @@ body {
 										font-size: 14px;
 										font-weight: 500;
 										line-height: 20px;
-										background: #7545bb;
+										background: $evf_primary-color;
 									}
 								}
 							}
@@ -10866,7 +10832,7 @@ body {
 								font-size: 14px;
 								font-weight: 500;
 								line-height: 20px;
-								background: #7545bb;
+								background: $evf_primary-color;
 							}
 						}
 
@@ -10910,12 +10876,12 @@ body {
 															&-single {
 																border: 1px
 																	solid
-																	#7545bb;
-																color: #7545bb;
+																	$evf_primary-color;
+																color: $evf_primary-color;
 																background: #f2f2f2;
 
 																&:hover {
-																	background: #7545bb;
+																	background: $evf_primary-color;
 																	color: #ffffff;
 																}
 															}
@@ -10936,7 +10902,7 @@ body {
 										padding: 8px 14px;
 										font-size: 14px;
 										line-height: 20px;
-										background: #7545bb;
+										background: $evf_primary-color;
 										color: #ffffff;
 									}
 
@@ -11027,7 +10993,7 @@ body {
 		align-items: center;
 
 		#everest-forms-smart-smtp-page-features__everest-forms-logo {
-			background: #7545bb;
+			background: $evf_primary-color;
 			padding: 6px;
 			border-radius: 10px;
 		}
@@ -11162,7 +11128,7 @@ body {
 
 	&__installation-step-one {
 		margin-bottom: 0;
-		color: #7545bb;
+		color: $evf_primary-color;
 		background: #f6f0ff;
 		padding: 12px 24px;
 		border-radius: 50%;
@@ -11187,7 +11153,7 @@ body {
 
 	&__setup-step-two {
 		margin-bottom: 0;
-		color: #7545bb;
+		color: $evf_primary-color;
 		background: #f6f0ff;
 		padding: 12px 24px;
 		border-radius: 50%;
@@ -11424,9 +11390,9 @@ body {
 					padding: 6px 14px;
 					min-height: 38px;
 					border-radius: 3px;
-					border: 1px solid #7545bb;
+					border: 1px solid $evf_primary-color;
 					background: #f6f7f7;
-					color: #7545bb;
+					color: $evf_primary-color;
 					font-size: 14px;
 					font-weight: 500;
 					line-height: 150%;
@@ -11442,9 +11408,9 @@ body {
 			.evf-manage-tags {
 				padding: 6px 14px;
 				border-radius: 3px;
-				border: 1px solid #7545bb;
+				border: 1px solid $evf_primary-color;
 				background: #f6f7f7;
-				color: #7545bb;
+				color: $evf_primary-color;
 				font-size: 14px;
 				font-weight: 500;
 				line-height: 150%;
@@ -11492,7 +11458,7 @@ body {
 						.select2-selection {
 							box-shadow: none;
 							outline: none;
-							border-color: #7545bb !important;
+							border-color: $evf_primary-color !important;
 						}
 					}
 				}
@@ -11550,7 +11516,7 @@ body {
 					.select2-selection {
 						box-shadow: none;
 						outline: none;
-						border-color: #7545bb !important;
+						border-color: $evf_primary-color !important;
 					}
 				}
 			}
@@ -11559,9 +11525,9 @@ body {
 		.evf-update-bulk-tags {
 			padding: 6px 14px;
 			border-radius: 3px;
-			border: 1px solid #7545bb;
+			border: 1px solid $evf_primary-color;
 			background: #f6f7f7;
-			color: #7545bb;
+			color: $evf_primary-color;
 			font-size: 14px;
 			font-weight: 500;
 			line-height: 26px;
@@ -11582,8 +11548,8 @@ body {
 		margin-bottom: 15px;
 
 		a {
-			color: #7545bb;
-			border-color: #7545bb;
+			color: $evf_primary-color;
+			border-color: $evf_primary-color;
 			top: 0;
 			font-size: 14px;
 			font-weight: 500;
@@ -11791,8 +11757,11 @@ button#show-settings-link {
 
 
 .evf-add-row-new{
-	background-color: #FCFBFD;
+	border-radius: 5px;
+	border: 1px dashed #999;
+	background: #FCFBFD;
 	padding: 32px 0px;
+	margin-top: 32px;
 	cursor: auto;
 	.evf-add-row-content{
 	    margin: auto;
