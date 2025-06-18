@@ -3295,10 +3295,10 @@ p.search-box {
 						.evf-toggle-row-content {
 							display: none;
 							position: absolute;
-							width: 160px;
-							padding: 20px;
+							width: 240px;
+							padding: 10px;
 							text-align: center;
-							right: -10px;
+							right: -44px;
 							border-radius: 5px;
 							background-color: $color-white;
 							font-weight: 600;
@@ -3307,7 +3307,7 @@ p.search-box {
 							transition: 0.9s background-color;
 							border: 1px solid $color-gray-lighten;
 							box-shadow: 1px 2px 10px 0
-								transparentize($color_gray-dark, 0.85);
+							transparentize($color_gray-dark, 0.85);
 
 							&::before,
 							&::after {
@@ -3317,7 +3317,7 @@ p.search-box {
 
 							&::before {
 								top: -7px;
-								right: 14px;
+								right: 45%;
 								border-right: 7px solid transparent;
 								border-bottom: 7px solid $color-white;
 								border-left: 7px solid transparent;
@@ -3325,7 +3325,7 @@ p.search-box {
 
 							&::after {
 								top: -8px;
-								right: 12px;
+								right: 44%;
 								border-right: 9px solid transparent;
 								border-bottom: 9px solid $color-gray-lighten;
 								border-left: 9px solid transparent;
@@ -3345,15 +3345,16 @@ p.search-box {
 
 							.evf-grid-selector {
 								margin: 3px;
-								width: 40px;
-								height: 30px;
+								width: 47.8261px;
+								height: 25.9324px;
 								display: inline-block;
-								border: 1px solid $color_gray-lighten;
+								border: 1px solid #ffff;
 
 								span {
 									height: 100%;
 									display: inline-block;
-									background: $color-white;
+									background-color: #E1E1E1;
+									// background: $color-white;
 
 									&:nth-child(n + 1) {
 										border-left: 1px solid
@@ -3365,10 +3366,10 @@ p.search-box {
 								}
 
 								&.active {
-									border-color: $blue;
+									background-color: #6B6B6B;
 
 									span {
-										border-color: $blue;
+										background-color: #6B6B6B;
 									}
 								}
 							}

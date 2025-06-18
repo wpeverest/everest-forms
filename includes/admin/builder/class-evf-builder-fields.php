@@ -320,8 +320,6 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 </svg></div>';
 			}
 			echo '<div class="evf-toggle-row-content">';
-			echo '<span>' . esc_html__( 'Row Settings', 'everest-forms' ) . '</span>';
-			echo '<small>' . esc_html__( 'Select the type of row', 'everest-forms' ) . '</small>';
 			echo '<div class="clear"></div>';
 
 			for ( $grid_active = 1; $grid_active <= $total_grid; $grid_active++ ) {
