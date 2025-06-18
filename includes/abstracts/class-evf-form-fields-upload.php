@@ -1015,6 +1015,9 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 			if ( ! empty( $files ) ) {
 				$key = $field_atts['meta_key'];
 				foreach ( $files as $file ) {
+					if ( empty( $file ) ) {
+						continue;
+					}
 					?>
 					<div class="dz-preview dz-processing dz-image-preview dz-success dz-complete">
 						<div class="dz-image">
@@ -1168,7 +1171,7 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 				return;
 			} else {
 				// For handle update entry case.
-				$raw_files = $field_submit['new_files'];
+				$raw_files = isset( $field_submit['new_files'] ) ? $field_submit['new_files'] : array();
 			}
 		}
 
@@ -1177,54 +1180,50 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 			return;
 		}
 
-		// Make sure json_decode() doesn't fail on newer PHP.
-		try {
-			$raw_files = json_decode( wp_unslash( $raw_files ), true ); // phpcs:ignore WordPress.Security
-		} catch ( Exception $e ) {
-			evf()->task->form_fields[ $this->field_id ] = $processed;
-			return;
-		}
-
-		// Make sure we process only submitted files with the expected structure and keys.
-		$files = array_filter(
-			$raw_files,
-			static function ( $file ) {
-				return ( is_array( $file ) || is_object( $file ) && count( $file ) === 2 ) && ! empty( $file['file'] ) && ! empty( $file['name'] );
-			}
-		);
-
-		if ( empty( $files ) ) {
-			evf()->task->form_fields[ $this->field_id ] = $processed;
-			return;
-		}
-
 		$data = array();
 
-		foreach ( $files as $file ) {
-			$file = $this->generate_file_info( $file );
-
-			$wp_filetype = wp_check_filetype_and_ext( $file['tmp_path'], $file['name'] );
-
-			$ext             = empty( $wp_filetype['ext'] ) ? '' : $wp_filetype['ext'];
-			$type            = empty( $wp_filetype['type'] ) ? '' : $wp_filetype['type'];
-			$proper_filename = empty( $wp_filetype['proper_filename'] ) ? '' : $wp_filetype['proper_filename'];
-
-			if ( $proper_filename || ! $ext || ! $type ) {
-				evf()->task->errors[ $form_data['id'] ][ $field_id ] = esc_html__( 'File type is not allowed.', 'everest-forms' );
-				update_option( 'evf_validation_error', 'yes' );
-				wp_die( 'File type is not allowed' );
+		if ( ! empty( $raw_files ) ) {
+			// Make sure json_decode() doesn't fail on newer PHP.
+			try {
+				$raw_files = json_decode( wp_unslash( $raw_files ), true ); // phpcs:ignore WordPress.Security
+			} catch ( Exception $e ) {
+				evf()->task->form_fields[ $this->field_id ] = $processed;
+				return;
 			}
 
-			// Allow third-party integrations.
-			if ( has_filter( 'everest_forms_integration_uploads' ) ) {
-				$file = apply_filters( 'everest_forms_integration_uploads', $file, $this->form_data );
-			}
+			// Make sure we process only submitted files with the expected structure and keys.
+			$files = array_filter(
+				$raw_files,
+				static function ( $file ) {
+					return ( is_array( $file ) || is_object( $file ) && count( $file ) === 2 ) && ! empty( $file['file'] ) && ! empty( $file['name'] );
+				}
+			);
 
-			if ( $this->is_media_integrated() ) {
-				$file['path'] = $file['tmp_path'];
+			foreach ( $files as $file ) {
+				$file = $this->generate_file_info( $file );
 
-				$file = $this->generate_file_attachment( $file );
-			} elseif (
+				$wp_filetype = wp_check_filetype_and_ext( $file['tmp_path'], $file['name'] );
+
+				$ext             = empty( $wp_filetype['ext'] ) ? '' : $wp_filetype['ext'];
+				$type            = empty( $wp_filetype['type'] ) ? '' : $wp_filetype['type'];
+				$proper_filename = empty( $wp_filetype['proper_filename'] ) ? '' : $wp_filetype['proper_filename'];
+
+				if ( $proper_filename || ! $ext || ! $type ) {
+					evf()->task->errors[ $form_data['id'] ][ $field_id ] = esc_html__( 'File type is not allowed.', 'everest-forms' );
+					update_option( 'evf_validation_error', 'yes' );
+					wp_die( 'File type is not allowed' );
+				}
+
+				// Allow third-party integrations.
+				if ( has_filter( 'everest_forms_integration_uploads' ) ) {
+					$file = apply_filters( 'everest_forms_integration_uploads', $file, $this->form_data );
+				}
+
+				if ( $this->is_media_integrated() ) {
+					$file['path'] = $file['tmp_path'];
+
+					$file = $this->generate_file_attachment( $file );
+				} elseif (
 					! isset( $file['external'] )
 					&& file_exists( $file['tmp_path'] )
 				) {
@@ -1232,21 +1231,25 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 					$this->create_dir( dirname( $file['path'] ) );
 					@rename( $file['tmp_path'], $file['path'] ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 					$this->set_file_fs_permissions( $file['path'] );
-			}
+				}
 
-			$data[] = $this->generate_file_data( $file );
+				$data[] = $this->generate_file_data( $file );
+			}
 		}
 
-		$old_data = array_map(
-			function( $file ) {
-				$decoded = json_decode( $file, true );
+		if ( isset( $field_submit['old_files'] ) ) {
 
-				return is_array( $decoded ) ? $decoded : array();
-			},
-			$field_submit['old_files']
-		);
+			$old_data = array_map(
+				function( $file ) {
+					$decoded = json_decode( $file, true );
 
-		$data = array_merge( $data, $old_data );
+					return is_array( $decoded ) ? $decoded : array();
+				},
+				$field_submit['old_files']
+			);
+
+			$data = array_merge( $data, $old_data );
+		}
 
 		if ( ! empty( $data ) ) {
 			$mapped_value = array_map(
