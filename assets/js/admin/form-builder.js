@@ -1969,6 +1969,8 @@
 				$this.parent().attr( 'data-next-row-id', max_row_id );
 				$this.parent().find( '.evf-add-row-content' ).attr( 'data-total-rows', total_rows );
 				$this.parent().find( '.evf-add-row-content' ).attr( 'data-next-row-id', max_row_id );
+				$this.parent().find( '.evf-select-row-type-inner-content-wrapper' ).attr( 'data-total-rows', total_rows );
+				$this.parent().find( '.evf-select-row-type-inner-content-wrapper' ).attr( 'data-next-row-id', max_row_id );
 
 				if( 0 < $( '.everest-forms-row-options' ).length && false === $this.closest( '.evf-add-row' ).hasClass('repeater-row') ) {
 
@@ -1980,6 +1982,7 @@
 
 					if ( 'yes' === isAddRow ) {
 						row_clone.find( '.evf-admin-grid').first().append( response.data.preview );
+						EVFPanelBuilder.bindApplyGrid( row_clone, 1 );
 					}
 					// Row append.
 					wrapper.append( row_clone );
@@ -2041,7 +2044,7 @@
 		 *
 		 * @since xx.xx.xx
 		 */
-		bindApplyGrid: function ( $el, grid_id = 1 ){
+		bindApplyGrid: function ( $el, grid_id = '' ){
 			var $this_single_row = $el.closest('.evf-admin-row');
 			if ( '' === grid_id ) {
 				if ( $el.hasClass('active') ) {
@@ -2931,7 +2934,7 @@
 			/**
 			 * Move col code.
 			 */
-			
+
 			// $( '.evf-admin-row' ).sortable({
 			// 	items: '.evf-admin-grid',
 			// 	axis: 'x',
@@ -3003,6 +3006,31 @@
 				}
 			}).disableSelection();
 
+			/**
+			 * Add drag fields from "Drag Form field here"
+			 *
+			 * @since xx.xx.xx
+			 */
+			$( '.evf-add-row-new' ).sortable({
+				items: '.evf-add-row-new',
+				delay  : 100,
+				opacity: 0.65,
+				cursor: 'move',
+				scrollSensitivity: 40,
+				forcePlaceholderSize: true,
+				connectWith: '.evf-add-row-new',
+				appendTo: document.body,
+				containment: '.evf-add-row-new',
+
+				receive: function( event, ui ) {
+					var $el = $( event.target );
+
+					if ( ui.sender.is( 'button' ) ) {
+						EVFPanelBuilder.fieldDrop( ui.helper, $el );
+					}
+				}
+			}).disableSelection();
+
 			$( '.evf-registered-buttons button.evf-registered-item' ).draggable({
 				delay: 200,
 				cancel: false,
@@ -3021,7 +3049,7 @@
 				},
 				opacity: 0.75,
 				containment: '#everest-forms-builder',
-				connectToSortable: '.evf-admin-grid'
+				connectToSortable: '.evf-admin-grid, .evf-add-row-new'
 			}).disableSelection();
 
 			// Repeatable grid connect to sortable setter.
