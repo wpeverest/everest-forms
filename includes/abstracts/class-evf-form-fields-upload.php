@@ -1053,7 +1053,7 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 							<input type="hidden" class="existing-file" name="<?php echo $old_input_name; ?>" value='<?php echo json_encode( $file ); ?>' />
 						</div>
 						<a class="evf-download-file" href="<?php echo esc_url( $attachment_url ); ?>" title="Download" target="_blank" download ><span class="dashicons dashicons-arrow-down-alt"></span></a>
-						<a class="dz-remove evf-remove-file" href="javascript:undefined;" title="Remove" data-dz-remove="" data-form-id="<?php echo absint( $form_id ); ?>" data-entry-id="<?php echo absint( $_GET['edit-entry'] ); ?>" data-field-name="<?php echo esc_attr( $key ); ?>"></a>
+						<a class="dz-remove evf-remove-file" href="javascript:undefined;" title="Remove" data-dz-remove="" data-form-id="<?php echo absint( $form_id ); ?>" data-field-name="<?php echo esc_attr( $key ); ?>"></a>
 					</div>
 					<?php
 				}
