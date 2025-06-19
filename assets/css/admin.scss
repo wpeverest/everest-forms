@@ -3245,7 +3245,7 @@ p.search-box {
 
 					.evf-toggle-row {
 						top: -36px;
-						right: 50%;
+						left: 50%;
 						opacity: 0;
 						display: flex;
 						cursor: pointer;
@@ -3255,6 +3255,7 @@ p.search-box {
 						transition: 0.7s all;
 						z-index: 9999;
 						border-radius: 6px;
+						transform: translateX( -50% );
 
 						.evf-duplicate-row,
 						.evf-show-grid,
@@ -3392,6 +3393,13 @@ p.search-box {
 							opacity: 1;
 							visibility: visible;
 						}
+					}
+
+					&.evf-active{
+						margin: 0 0 10px;
+						border: 1px solid $evf_primary-color;
+						background: #fff;
+						border-radius: 8px;
 					}
 
 					.evf-admin-grid {
@@ -3658,17 +3666,10 @@ p.search-box {
 						float: right;
 					}
 
-					&.active {
+					&.evf-active {
 						margin: 0 0 10px;
-						// border: 1px solid $color_gray-lighten;
-						border: 1px solid #d7d9e0;
-						// background: $color_gray-light-skin;
-						background: #f9f9f9;
-
-						.evf-field-action {
-							opacity: 1;
-							visibility: visible;
-						}
+						border: 1px solid $evf_primary-color;
+						background: #fff;
 
 						&:last-child {
 							margin-bottom: 0;
@@ -3769,10 +3770,11 @@ p.search-box {
 					.evf-field-action {
 						position: absolute;
 						top: -36px;
-						left: 1px;
 						visibility: hidden;
 						opacity: 0;
 						transition: 0.5s all;
+						left: 50%;
+						transform: translateX( -50% );
 
 						a {
 							svg{
@@ -3848,8 +3850,7 @@ p.search-box {
 
 					&:hover {
 						border-radius: 4px;
-						border: 1px solid $evf_primary-color;
-						background: #fff;
+						background: #f8f8fa;
 
 						.evf-field-action {
 							visibility: visible;

@@ -63,6 +63,30 @@
 				$( document ).on( 'mouseout', '.everest-forms-field' , function(){
 					$( this ).closest( '.evf-admin-row' ).addClass( 'evf-hover' )
 				});
+
+				$( document ).on( 'click', '.everest-forms-field' , function( e ){
+					e.stopPropagation();
+					$( '.everest-forms-field' ).removeClass( 'evf-active' );
+					$( this ).addClass( 'evf-active' );
+					$( '.evf-admin-row' ).removeClass( 'evf-active' );
+				});
+
+				$( document ).on( 'click', '.evf-admin-row ', function( e ){
+					e.stopPropagation();
+					var row_id = $( this ).attr( 'data-row-id' );
+					$( '.everest-forms-row-options .everest-forms-row-option' ).each( function() {
+						$( this ).hide();
+					});
+
+					$( '.evf-admin-row' ).removeClass( 'evf-active' );
+					$( this ).addClass( 'evf-active' );
+					$( '.everest-forms-field' ).removeClass( 'evf-active' );
+					$( '#field-options, #multi-part-options' ).hide();
+					$( '.everest-forms-field-options, .everest-forms-multi-part-options' ).hide();
+					$( '.everest-forms-row-options' ).show();
+					$( document ).find( '.everest-forms-row-options #everest-forms-row-option-row_' + row_id ).show();
+					$( '#row-options' ).show().trigger( 'click' ).addClass( 'active' );
+				});
 		 	});
 
 			$( document ).ready( function( $ ) {
