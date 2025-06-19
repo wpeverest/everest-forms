@@ -983,6 +983,7 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 
 		$files          = ! empty( $field_atts['value_raw'] ) ? (array) $field_atts['value_raw'] : array();
 		$old_input_name = sprintf( 'everest_forms_%d_old_%s[]', $this->form_id, $this->field_id );
+		$delete_input_name = sprintf( 'everest_forms_%d_delete_%s', $this->form_id, $this->field_id );
 		?>
 		<div class="everest-forms-uploader"
 			data-field-id="<?php echo esc_attr( $field_id ); ?>"
@@ -1049,13 +1050,16 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 							<div class="dz-filename">
 								<span data-dz-name=""><?php echo esc_html( sanitize_text_field( $filename_only ) ); ?></span>
 							</div>
-							<input type="hidden" name="<?php echo $old_input_name; ?>" value='<?php echo json_encode( $file ); ?>' />
+							<input type="hidden" class="existing-file" name="<?php echo $old_input_name; ?>" value='<?php echo json_encode( $file ); ?>' />
 						</div>
 						<a class="evf-download-file" href="<?php echo esc_url( $attachment_url ); ?>" title="Download" target="_blank" download ><span class="dashicons dashicons-arrow-down-alt"></span></a>
-						<a class="dz-remove evf-remove-file" href="javascript:undefined;" title="Remove" data-dz-remove="" data-attachment-id="" data-field-name="<?php echo esc_attr( $key ); ?>"></a>
+						<a class="dz-remove evf-remove-file" href="javascript:undefined;" title="Remove" data-dz-remove="" data-form-id="<?php echo absint( $form_id ); ?>" data-entry-id="<?php echo absint( $_GET['edit-entry'] ); ?>" data-field-name="<?php echo esc_attr( $key ); ?>"></a>
 					</div>
 					<?php
 				}
+				?>
+				<input type="hidden" class="deleted-input" name="<?php echo $delete_input_name; ?>" value='' />
+				<?php
 			}
 			?>
 		</div>

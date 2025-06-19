@@ -450,6 +450,27 @@
 			++max_files;
 			$(this).closest('.everest-forms-uploader').find('.dz-message').show();
 
+			var fileData = $(this).closest('.dz-preview').find('.existing-file').val();
+			var deleteInput = $(this).closest('.everest-forms-uploader').find('.deleted-input');
+			var deleteInputValue = deleteInput.val();
+
+			if (!deleteInputValue) {
+				deleteInputValue = [fileData];
+			} else {
+				try {
+					deleteInputValue = JSON.parse(deleteInputValue);
+					if (!Array.isArray(deleteInputValue)) {
+						deleteInputValue = [deleteInputValue, fileData];
+					} else {
+						deleteInputValue.push(fileData);
+					}
+				} catch (e) {
+					deleteInputValue = [deleteInputValue, fileData];
+				}
+			}
+
+			deleteInput.val(JSON.stringify(deleteInputValue));
+
 			$(this).closest(".dz-preview").remove();
 		});
 	}
