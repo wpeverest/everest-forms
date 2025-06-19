@@ -3237,13 +3237,14 @@ p.search-box {
 					transition:
 						0.5s border,
 						0.5s background-color;
+					padding: 32px;
 
 					&:last-child {
 						margin-bottom: 0;
 					}
 
 					.evf-toggle-row {
-						top: -29px;
+						top: -36px;
 						right: 50%;
 						opacity: 0;
 						display: flex;
@@ -3767,7 +3768,7 @@ p.search-box {
 
 					.evf-field-action {
 						position: absolute;
-						top: -29px;
+						top: -36px;
 						left: 1px;
 						visibility: hidden;
 						opacity: 0;

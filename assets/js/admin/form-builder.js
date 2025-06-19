@@ -55,7 +55,14 @@
 					EVFPanelBuilder.bindAddNewRowV2( $( this ) );
 					$( this ).closest( '#evf-select-row-type-outer-wrapper' ).addClass( 'everest-forms-hidden' );
 					$( '.evf-add-row-content' ).show();
-				})
+				});
+
+				$( document ).on( 'mouseover', '.everest-forms-field' , function(){
+					$( this ).closest( '.evf-admin-row' ).removeClass( 'evf-hover' )
+				});
+				$( document ).on( 'mouseout', '.everest-forms-field' , function(){
+					$( this ).closest( '.evf-admin-row' ).addClass( 'evf-hover' )
+				});
 		 	});
 
 			$( document ).ready( function( $ ) {
