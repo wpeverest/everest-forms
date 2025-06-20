@@ -310,19 +310,6 @@ class EVF_Form_Task {
 					if ( ! empty( $site_key ) && ! empty( $secret_key ) && isset( $this->form_data['settings']['recaptcha_support'] ) && '1' === $this->form_data['settings']['recaptcha_support'] &&
 					! isset( $_POST['__amp_form_verify'] ) && ( 'v3' === $recaptcha_type || ! evf_is_amp() ) || ( ! empty( $site_key ) && ! empty( $secret_key ) ) && in_array( $field_type, $captcha, true ) ) {
 
-						if ( 'hcaptcha' === $recaptcha_type ) {
-							$error = esc_html__( 'hCaptcha verification failed, please try again later.', 'everest-forms' );
-						} elseif ( 'turnstile' === $recaptcha_type ) {
-							$error = esc_html__( 'Cloudflare Turnstile verification failed, please try again later.', 'everest-forms' );
-						} else {
-							$error = esc_html__( 'Google reCAPTCHA verification failed, please try again later.', 'everest-forms' );
-						}
-
-						$logger->error(
-							$error,
-							array( 'source' => 'Google reCAPTCHA' )
-						);
-
 						$token = ! empty( $_POST['g-recaptcha-response'] ) ? evf_clean( wp_unslash( $_POST['g-recaptcha-response'] ) ) : false;
 
 						if ( 'v3' === $recaptcha_type ) {
@@ -348,12 +335,29 @@ class EVF_Form_Task {
 
 						if ( ! is_wp_error( $raw_response ) ) {
 							$response = json_decode( wp_remote_retrieve_body( $raw_response ) );
-							// Check reCAPTCHA response.
-							if ( empty( $response->success ) || ( 'v3' === $recaptcha_type && $response->score <= get_option( 'everest_forms_recaptcha_v3_threshold_score', apply_filters( 'everest_forms_recaptcha_v3_threshold', '0.5' ) ) ) ) {
-								if ( 'v3' === $recaptcha_type ) {
+
+							$recaptcha_passed = true;
+
+							if ( empty( $response->success ) ) {
+								$recaptcha_passed = false;
+							} elseif ( 'v3' === $recaptcha_type ) {
+								$threshold = get_option( 'everest_forms_recaptcha_v3_threshold_score', apply_filters( 'everest_forms_recaptcha_v3_threshold', '0.5' ) );
+								if ( ! isset( $response->score ) || $response->score <= floatval( $threshold ) ) {
+									$recaptcha_passed = false;
 									if ( isset( $response->score ) ) {
 										$error .= ' (' . esc_html( $response->score ) . ')';
 									}
+								}
+							}
+
+							if ( ! $recaptcha_passed ) {
+								if ( 'hcaptcha' === $recaptcha_type ) {
+									$error = esc_html__( 'hCaptcha verification failed, please try again later.', 'everest-forms' );
+								} elseif ( 'turnstile' === $recaptcha_type ) {
+									$error = esc_html__( 'Cloudflare Turnstile verification failed, please try again later.', 'everest-forms' );
+								} else {
+
+									$error = esc_html__( 'Google reCAPTCHA verification failed, please try again later.', 'everest-forms' );
 								}
 								$this->errors[ $form_id ]['header'] = $error;
 								$logger->error(
@@ -547,7 +551,7 @@ class EVF_Form_Task {
 			 *
 			 * @since 3.2.3
 			 */
-			foreach ($this->form_fields as $key => $value) {
+			foreach ( $this->form_fields as $key => $value ) {
 				if ( ! empty( $value['value'] ) && is_string( $value['value'] ) && strpos( $value['value'], '{' ) !== false ) {
 					$this->form_fields[ $key ]['value'] = apply_filters( 'everest_forms_process_smart_tags', $value['value'], $this->form_data, $this->form_fields );
 				}
@@ -1346,7 +1350,7 @@ class EVF_Form_Task {
 		}
 
 		$mark_as_spam = false;
-		$logger 	  = evf_get_logger();
+		$logger       = evf_get_logger();
 
 		$access_key = get_option( 'everest_forms_recaptcha_cleantalk_access_key', '' );
 
@@ -1356,7 +1360,7 @@ class EVF_Form_Task {
 			return false;
 		}
 
-		return  $this->evf_is_spam_submission_clean_talk_rest_api( $entry, $access_key );
+		return $this->evf_is_spam_submission_clean_talk_rest_api( $entry, $access_key );
 	}
 
 	/**
