@@ -3238,6 +3238,7 @@ p.search-box {
 						0.5s border,
 						0.5s background-color;
 					padding: 32px;
+					gap: 32px;
 
 					&:last-child {
 						margin-bottom: 0;
@@ -4835,46 +4836,33 @@ p.search-box {
 					margin: 20px auto 0;
 					text-align: center;
 
-					span {
-						//  width: auto;
-						height: auto;
-						//  font-size: 13px;
-						//  background: #51cf66;
-						font-family: inherit;
-						padding: 8px 16px 8px 14px;
-						display: flex;
-						align-items: center;
-						justify-content: center;
-						width: max-content;
-						margin: 0 auto;
-						gap: 6px;
-						font-size: 14px;
-						background: #7e3bd0;
-						transition: all 0.3s ease-in-out;
+					&.repeater-row{
+							span{
+							border: 1px solid #7545BB;
+							height: auto;
+							font-family: inherit;
+							padding: 8px 16px 8px 14px;
+							display: flex !important;
+							align-items: center;
+							justify-content: center;
+							width: max-content;
+							margin: 0 auto;
+							gap: 6px;
+							font-size: 14px;
+							transition: all 0.3s ease-in-out;
+							border-radius: 4px;
+							cursor: pointer;
 
-						&.dashicons {
-							&::before {
-								//  width: 20px;
-								//  height: 20px;
-								//  line-height: 1;
-								font-size: 16px;
-								//  margin-right: 10px;
-								font-family: dashicons;
-								vertical-align: middle;
-								//  padding: 2px 12px 2px 0;
-								//  border-right: 1px solid
-								// 	 transparentize($color-white, 0.7);
-								width: auto;
-								height: auto;
-								margin: 0;
-								padding: 0;
-								border-right: 0;
+							&:hover{
+								svg {
+									path {
+									stroke: #fff;
+									}
+								}
+
+								background: #7545BB;
+								color: #fff;
 							}
-						}
-
-						&:hover {
-							//  background: #33ba4a;
-							background: #8d2fff;
 						}
 					}
 				}
@@ -7152,6 +7140,20 @@ img.ui-datepicker-trigger {
 		margin-left: -30px !important;
 		margin-top: -1px !important;
 		min-height: 48px;
+
+		.evf-field-action{
+			.evf-duplicate-row{
+				svg{
+					border-radius: 6.024px 0px 0px 6.024px;
+				}
+			}
+
+			.evf-delete-row{
+				svg{
+					border-radius:  0px 6.024px 6.024px 0px;
+				}
+			}
+		}
 	}
 	div.evf-admin-grid.evf-repeatable-grid {
 		padding: 0 10px 10px !important;

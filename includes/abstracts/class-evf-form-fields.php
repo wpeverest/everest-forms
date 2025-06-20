@@ -2545,8 +2545,14 @@ abstract class EVF_Form_Fields {
 				<path d="M5.66406 5.00195L15.6641 15.002" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
 				</svg></a>', esc_html__( 'Delete Field', 'everest-forms' ) );
 		} else {
-			$preview .= sprintf( '<a href="#" class="evf-duplicate-row" title="%s"><span class="dashicons dashicons-media-default"></span></a>', esc_html__( 'Duplicate Field', 'everest-forms' ) );
-			$preview .= sprintf( '<a href="#" class="evf-delete-row" title="%s"><span class="dashicons dashicons-trash"></span></a>', esc_html__( 'Delete Field', 'everest-forms' ) );
+			$preview .= sprintf( '<a href="#" class="evf-duplicate-row" title="%s"><svg xmlns="http://www.w3.org/2000/svg" width="19" height="18" viewBox="0 0 19 18" fill="none">
+				<path d="M14.4853 7.19336H9.0633C8.39785 7.19336 7.8584 7.73281 7.8584 8.39826V13.8203C7.8584 14.4858 8.39785 15.0252 9.0633 15.0252H14.4853C15.1508 15.0252 15.6902 14.4858 15.6902 13.8203V8.39826C15.6902 7.73281 15.1508 7.19336 14.4853 7.19336Z" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+				<path d="M5.44798 10.8104H4.84553C4.52597 10.8104 4.21949 10.6834 3.99353 10.4575C3.76757 10.2315 3.64063 9.92503 3.64062 9.60547V4.18342C3.64062 3.86386 3.76757 3.55739 3.99353 3.33142C4.21949 3.10546 4.52597 2.97852 4.84553 2.97852H10.2676C10.5871 2.97852 10.8936 3.10546 11.1196 3.33142C11.3455 3.55739 11.4725 3.86386 11.4725 4.18342V4.78587" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+				</svg></a>', esc_html__( 'Duplicate Field', 'everest-forms' ) );
+			$preview .= sprintf( '<a href="#" class="evf-delete-row" title="%s"><svg xmlns="http://www.w3.org/2000/svg" width="19" height="18" viewBox="0 0 21 20" fill="none">
+				<path d="M15.6641 5.00195L5.66406 15.002" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+				<path d="M5.66406 5.00195L15.6641 15.002" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+				</svg></a>', esc_html__( 'Delete Field', 'everest-forms' ) );
 		}
 		$preview .= sprintf( '</div>' );
 		$preview .= ob_get_clean();

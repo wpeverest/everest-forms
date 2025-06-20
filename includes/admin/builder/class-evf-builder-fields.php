@@ -434,7 +434,10 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 </div>';
 
 		if ( defined( 'EVF_REPEATER_FIELDS_VERSION' ) ) {
-			echo '<div class="evf-add-row repeater-row" data-total-rows="' . count( $structure ) . '" data-next-row-id="' . (int) max( $row_ids ) . '"><span class="everest-forms-btn everest-forms-btn-primary dashicons dashicons-plus-alt">' . esc_html__( 'Add Repeater Row', 'everest-forms' ) . '</span></div>';
+			echo '<div class="evf-add-row repeater-row" data-total-rows="' . count( $structure ) . '" data-next-row-id="' . (int) max( $row_ids ) . '"><span><svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M3.33398 8.5H12.6673" stroke="#7545BB" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M8 3.83203V13.1654" stroke="#7545BB" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>' . esc_html__( 'Add Repeater Row', 'everest-forms' ) . '</span></div>';
 			echo '</div>'; // Repeater Row Wrapper ends.
 		}
 		echo '</div >';
