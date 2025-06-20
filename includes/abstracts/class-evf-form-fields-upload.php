@@ -981,9 +981,10 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 		/* translators: 1: Number of Files */
 		$limit_message = isset( $field['limit_message'] ) ? $field['limit_message'] : sprintf( __( 'You can upload up to %s files.', 'everest-forms' ), (int) $max_file_number );
 
-		$files          = ! empty( $field_atts['value_raw'] ) ? (array) $field_atts['value_raw'] : array();
-		$old_input_name = sprintf( 'everest_forms_%d_old_%s[]', $this->form_id, $this->field_id );
+		$files             = isset( $primary['attr']['value'] ) ? explode( ' ', $primary['attr']['value'] ) : array();
+		$old_input_name    = sprintf( 'everest_forms_%d_old_%s[]', $this->form_id, $this->field_id );
 		$delete_input_name = sprintf( 'everest_forms_%d_delete_%s', $this->form_id, $this->field_id );
+
 		?>
 		<div class="everest-forms-uploader"
 			data-field-id="<?php echo esc_attr( $field_id ); ?>"
@@ -1015,21 +1016,22 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 			<?php
 			if ( ! empty( $files ) ) {
 				$key = $field_atts['meta_key'];
-				foreach ( $files as $file ) {
-					if ( empty( $file ) ) {
+				foreach ( $files as $attachment_url ) {
+					if ( empty( $attachment_url ) || ! $attachment_url ) {
 						continue;
 					}
 					?>
 					<div class="dz-preview dz-processing dz-image-preview dz-success dz-complete">
 						<div class="dz-image">
 							<?php
-							$attachment_url = $file['value'];
 
 							if ( empty( $attachment_url ) ) {
 								$attachment_url = home_url() . '/wp-includes/images/media/text.png';
 							}
 
-							$filename_only = $file['name']; // Just the file name.
+							$filename_only = basename( $attachment_url ); // Just the file name.
+							$file_original = preg_replace( '/-[a-f0-9]{32}/', '', $filename_only ); // Remove hash to get original name
+
 							$filesize_only = $this->get_local_file_size( $attachment_url );
 
 							if ( false !== $filesize_only ) {
@@ -1039,6 +1041,17 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 							$ext      = pathinfo( $attachment_url, PATHINFO_EXTENSION );
 							$fileIcon = FormHelper::evf_file_upload_check_file_types( $ext );
 							$fileIcon = ! is_null( $fileIcon ) ? evf()->plugin_url() . '/assets/images/filetypes/' . $fileIcon . '.svg' : $attachment_url;
+
+							$file = array(
+								'name'          => $file_original,
+								'value'         => $attachment_url,
+								'file'          => $filename_only,
+								'file_original' => $file_original,
+								'ext'           => $ext,
+								'attachment_id' => 0,
+								'id'            => $field_id,
+								'type'          => $this->get_file_mime_type( $attachment_url ),
+							);
 							?>
 
 							<img data-dz-thumbnail="" alt="<?php echo esc_html( sanitize_text_field( $filename_only ) ); ?>"  src="<?php echo esc_url( $fileIcon ); ?>"/>
