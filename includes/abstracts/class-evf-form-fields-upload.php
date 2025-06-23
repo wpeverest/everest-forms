@@ -981,7 +981,7 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 		/* translators: 1: Number of Files */
 		$limit_message = isset( $field['limit_message'] ) ? $field['limit_message'] : sprintf( __( 'You can upload up to %s files.', 'everest-forms' ), (int) $max_file_number );
 
-		$files             = isset( $primary['attr']['value'] ) ? explode( ' ', $primary['attr']['value'] ) : array();
+		$files             = ! empty( $primary['attr']['value'] ) ? explode( ' ', $primary['attr']['value'] ) : array();
 		$old_input_name    = sprintf( 'everest_forms_%d_old_%s[]', $this->form_id, $this->field_id );
 		$delete_input_name = sprintf( 'everest_forms_%d_delete_%s', $this->form_id, $this->field_id );
 
@@ -1015,7 +1015,7 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 			</div>
 			<?php
 			if ( ! empty( $files ) ) {
-				$key = $field_atts['meta_key'];
+				$key = $field['meta-key'];
 				foreach ( $files as $attachment_url ) {
 					if ( empty( $attachment_url ) || ! $attachment_url ) {
 						continue;
