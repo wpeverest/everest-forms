@@ -1389,11 +1389,6 @@ class EVF_Shortcode_Form {
 			return;
 		}
 
-		$form_data = evf_decode( $form->post_content );
-		if ( ! isset( $form_data['settings']['prevent_from_nonce_caching'] ) || ! evf_string_to_bool( $form_data['settings']['prevent_from_nonce_caching'] ) ) {
-			return;
-		}
-
 		add_action(
 			'wp_footer',
 			function () use ( $form_id ) {

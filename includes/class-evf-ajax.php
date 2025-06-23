@@ -2210,16 +2210,6 @@ class EVF_AJAX {
 			wp_die( __( 'Form not found!', 'everest-forms' ), 403 );
 		}
 
-		$form_data = evf_decode( $form->post_content );
-
-		// Check if nonce caching prevention is enabled
-		if (
-		! isset( $form_data['settings']['prevent_from_nonce_caching'] ) ||
-		! evf_string_to_bool( $form_data['settings']['prevent_from_nonce_caching'] )
-		) {
-			return;
-		}
-
 		// Strict referer verification
 		$referer      = wp_get_referer();
 		$allowed_host = parse_url( home_url(), PHP_URL_HOST );
