@@ -1719,6 +1719,7 @@ class EVF_AJAX {
 
 		if ( ! empty( $csv_header ) ) {
 			foreach ( $csv_header as $value ) {
+
 				$output .= '<option value="' . esc_attr( $value ) . '">' . esc_html( str_replace( '"', '', $value ) ) . '</option>';
 			}
 		} else {
@@ -1764,7 +1765,7 @@ class EVF_AJAX {
 
 		$file_extension = strtolower( pathinfo( $csv_data['csvfile']['name'], PATHINFO_EXTENSION ) );
 
-		if ( 'csv' != $file_extension ) {
+		if ( 'csv' !== $file_extension ) {
 			wp_send_json_error(
 				array(
 					'message' => 'File must be a CSV file.',
@@ -1780,26 +1781,47 @@ class EVF_AJAX {
 		$filename   = 'import_entries_data.csv';
 		$csv_url    = $upload_dir['basedir'] . $upload_dir['subdir'] . '/' . $filename;
 
+		// Remove existing file if already exists
 		if ( ! empty( $csv_url ) && file_exists( $csv_url ) ) {
 			@unlink( $csv_url );
 		}
 
-		$csv_file   = $csv_data['csvfile']['tmp_name'];
-		$data       = file_get_contents( $csv_file );
-		$data_array = explode( "\n", $data );
+		// Move uploaded file to uploads directory
+		$csv_file    = $csv_data['csvfile']['tmp_name'];
+		$upload_file = move_uploaded_file( $csv_file, $csv_url );
 
-		$upload_file = move_uploaded_file( $csv_data['csvfile']['tmp_name'], $csv_url );
-
-		if ( empty( $data_array[0] ) ) {
+		if ( ! $upload_file || ! file_exists( $csv_url ) ) {
 			wp_send_json_error(
 				array(
-					'message' => 'CSV file doesn\'t contain any data.',
+					'message' => 'File upload failed.',
 				)
 			);
 		}
 
-		return explode( ',', $data_array[0] );
+		// Use fgetcsv to safely parse the header
+		$handle = fopen( $csv_url, 'r' );
+		if ( ! $handle ) {
+			wp_send_json_error(
+				array(
+					'message' => 'Unable to open uploaded CSV file.',
+				)
+			);
+		}
+
+		$csv_header = fgetcsv( $handle );
+		fclose( $handle );
+
+		if ( empty( $csv_header ) ) {
+			wp_send_json_error(
+				array(
+					'message' => 'CSV file doesn\'t contain any header row.',
+				)
+			);
+		}
+
+		return $csv_header;
 	}
+
 
 	/**
 	 * Import entries from the CSV file and process them in the background.
