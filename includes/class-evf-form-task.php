@@ -79,6 +79,13 @@ class EVF_Form_Task {
 		add_action( 'admin_init', array( $this, 'evf_admin_deny_entry' ) );
 		add_action( 'admin_init', array( $this, 'evf_mark_entry_spam' ), 10 );
 		add_action( 'admin_init', array( $this, 'evf_remove_entry_from_spam' ), 10 );
+		/**
+		 * Delete files.
+		 *
+		 * @since xx.xx.xx
+		 */
+		add_action( 'before_delete_post', array( $this, 'delete_entry_files_before_form_delete' ), 10, 1 );
+		add_action( 'everest_forms_before_delete_entries', array( $this, 'delete_entry_files' ), 10, 1 );
 	}
 
 	/**
@@ -1778,5 +1785,96 @@ class EVF_Form_Task {
 		}
 
 		return $marked_as_spam;
+	}
+
+	/**
+	 * Remove Files Attached to the Entry of the Form.
+	 *
+	 * @param int $form_id Form ID to get required form data and remove files.
+	 */
+	public function delete_entry_files_before_form_delete( $form_id ) {
+		$entries = evf_get_entries_ids( $form_id );
+		if ( ! empty( $entries ) ) {
+			foreach ( $entries as $entry_id ) {
+				$this->delete_entry_files( $entry_id );
+			}
+		}
+	}
+
+	/**
+	 * Delete Attachment after removing Entry.
+	 *
+	 * @param int $entry_id Entry ID for which file should be removed.
+	 */
+	public function delete_entry_files( $entry_id ) {
+		$get_entry = evf_get_entry( $entry_id, 'meta' );
+		if ( empty( $get_entry->meta ) ) {
+			return;
+		}
+
+		// Get form configuration
+		$form_id     = $get_entry->form_id;
+		$form        = evf()->form->get( $form_id, array( 'content_only' => true ) );
+		$form_fields = isset( $form['form_fields'] ) ? $form['form_fields'] : array();
+
+		// Build field type lookup by meta-key
+		$field_types = array();
+		foreach ( $form_fields as $field_id => $field_config ) {
+			if ( isset( $field_config['meta-key'] ) && ! empty( $field_config['meta-key'] ) ) {
+				$field_types[ $field_config['meta-key'] ] = $field_config['type'];
+			}
+		}
+
+		$uploads           = wp_upload_dir();
+		$base_dir          = realpath( $uploads['basedir'] );
+		$everest_forms_dir = $base_dir ? realpath( $base_dir . '/everest_forms_uploads' ) : false;
+
+		foreach ( $get_entry->meta as $meta_key => $meta_value ) {
+			if ( empty( $meta_value ) ) {
+				continue;
+			}
+
+			$field_type = isset( $field_types[ $meta_key ] ) ? $field_types[ $meta_key ] : '';
+
+			if ( preg_match( '/signature_/', $meta_key ) || $field_type === 'signature' ) {
+				$this->safe_delete_file( $meta_value, $base_dir );
+			} elseif ( 'file-upload' === $field_type || 'image-upload' === $field_type ) {
+				$files = explode( "\n", $meta_value );
+				foreach ( $files as $file ) {
+					$path_from_url = wp_parse_url( $file, PHP_URL_PATH );
+					if ( ! $path_from_url ) {
+						continue;
+					}
+
+					$uploaded_file = $uploads['basedir'] . preg_replace(
+						'/.*uploads/',
+						'/everest_forms_uploads',
+						$path_from_url
+					);
+
+					$this->safe_delete_file( $uploaded_file, $base_dir );
+				}
+			}
+		}
+	}
+
+	/**
+	 * Securely delete a file with path validation
+	 *
+	 * @param string $path File path to delete
+	 * @param string $allowed_base Base directory path (must be realpath result)
+	 */
+	private function safe_delete_file( $path, $allowed_base ) {
+		if ( ! $allowed_base || empty( $path ) ) {
+			return;
+		}
+		$normalized_path = wp_normalize_path( $path );
+		$resolved_path   = realpath( $normalized_path );
+		// Validate path is within allowed directory
+		if ( $resolved_path && strpos( $resolved_path, $allowed_base ) === 0 ) {
+			if ( is_file( $resolved_path ) ) {
+				wp_delete_file( $resolved_path );
+			}
+		}
 	}
 }
