@@ -1757,6 +1757,73 @@ p.search-box {
 					border-radius: 13px;
 					border: 1px solid #e1e1e1;
 					box-shadow: 0px 7px 29px 0px rgba(100, 100, 111, 0.09);
+
+					.evf-content-section-title {
+						margin-top: 0;
+					}
+
+					.evf-confirmation-wrap {
+						.evf-content-section-title {
+							font-size: 18px;
+							padding-bottom: 16px;
+						}
+						
+						.everest-forms-panel-field {
+							label {
+								margin-top: 0;
+							}
+							
+							.radio-list {
+								display: flex;
+								align-items: center;
+								flex-wrap: wrap;
+								gap: 16px;
+								
+								.inline {
+									border: 1px solid #E1E1E1;
+									padding: 8px 12px;
+									border-radius: 4px;
+									margin-bottom: 0;
+									transition: all .3s ease-in-out;
+									cursor: pointer;
+
+									&:hover {
+										border-color: #7545BB;
+									}
+
+									input[type="radio"] {
+										margin-top: -2px;
+										margin-right: 8px;
+										vertical-align: middle;
+										border-color: #bababa;
+
+										&:checked {
+											border-color: #7545BB;
+
+											&::before {
+												background-color: #7545BB;
+
+												@media screen and (max-width: 782px) {
+													width: 0.5rem;
+													height: 0.5rem;
+													margin: 0.1875rem;
+												}
+											}
+										}
+
+										@media screen and (max-width: 782px) {
+											width: 1rem;
+											height: 1rem;
+										}
+									}
+
+									&:has(input[type="radio"]:checked) {
+										border-color: #7545BB;
+									}
+								}
+							}
+						}
+					}
 				}
 
 				&-title {
@@ -1810,6 +1877,12 @@ p.search-box {
 				background: var(--Grey-0, #fff);
 			}
 		}
+
+		&:has(.evf-field-conditional-container[style*="display: none;"]) {
+			.evf_conditional_logic_container {
+				margin-bottom: 0;
+			}
+		}
 	}
 }
 
@@ -1834,8 +1907,8 @@ p.search-box {
 					background: #ffffff;
 					border-radius: 13px;
 					border: 1px solid #e1e1e1;
-					box-shadow: 0px 7px 29px 0px rgba(100, 100, 111, 0.09);
-				}
+					box-shadow: 0px 7px 29px 0px rgba(100, 100, 111, 0.09);					
+				}				
 
 				&-title {
 					font-size: 22px;
@@ -2295,6 +2368,134 @@ p.search-box {
 			}
 
 			.evf-field-conditional-container {
+				&.active {
+					padding: 18px 24px;
+					box-shadow: none;
+					border-radius: 4px;
+					border-color: #e9e9e9;
+
+					.evf-content-section-title {
+						padding-bottom: 20px;
+						margin-bottom: 24px;
+						padding-top: 0;
+
+						.confirmation-title {
+							display: flex;
+							align-items: center;
+							flex-wrap: wrap;
+							gap: 12px;
+							position: relative;
+							
+							.evf-edit-confirm-icon {
+								display: flex;
+								justify-content: center;
+								align-items: center;
+								width: 34px;
+								height: 34px;
+								padding: 0;
+								background: #fdfdfd;
+								border: 1px solid #e1e1e1;
+								border-radius: 3px;
+								cursor: pointer;
+								
+								svg {
+									width: 18px;
+									height: 18px;
+								}
+							}
+
+							.edit-title {
+								margin-bottom: 0;
+
+								.evf-confirm-edit-title-input {
+									min-height: 34px;
+									max-height: 34px;
+									padding-right: 55px;
+
+									@media screen and (max-width: 600px) {
+										max-width: 140px;
+									}
+								}
+							}
+
+							.evf-confirmation-edit-ok {
+								position: absolute;
+								right: 73px;
+								background: #f4f4f4;
+								border: 0;
+								font-size: 14px;
+								line-height: 20px;
+								padding: 4px 10px;
+								border-radius: 2px;
+								text-transform: capitalize;
+								color: #383838;
+								cursor: pointer;
+
+								@media screen and (max-width: 600px) {
+									position: unset;
+									margin-left: -4px;
+									min-height: 32px;
+								}
+							}
+							
+							.show-title {
+								color: #222;
+								font-size: 18px;
+								font-weight: 600;
+								line-height: 28px;
+								margin: 0;
+							}
+							
+							.inactive-status,
+							.active-status {
+								padding: 6px 8px;
+								border-radius: 50px;
+								font-size: 10px;
+								font-weight: 600;
+								line-height: 10px;
+								font-size: 12px;
+								text-transform: capitalize;
+							}
+
+							.inactive-status {
+								background: #E1E1E1;
+								color: #6B6B6B;
+							}
+
+							.active-status {
+								background: #E8F6EC;
+								color: #13A53C;
+							}
+						}
+
+						.evf-close-custom-confirm-settings {
+							svg {
+								transition: all 0.3s ease-in-out;
+								transform: rotate(-180deg);
+							}
+						}
+					}
+
+					.evf-delete-conditional-confirmation {
+						color: #6b6b6b;
+						background: #f4f4f4;
+						font-size: 14px;
+						line-height: 20px;
+						font-weight: 500;
+						border: 1px solid #bababa;
+						border-radius: 4px;
+						padding: 6px 12px;
+						cursor: pointer;
+						transition: all 0.3s ease-in-out;
+
+						&:hover {
+							color: #F55463;
+							background: #FEEEF0;
+							border-color: #FEEEF0;
+						}
+					}
+				}
+
 				.evf-field-logic {
 					.everest-forms-conditional-field-settings-redirect_to {
 						width: 120px;
@@ -2309,19 +2510,23 @@ p.search-box {
 					}
 				}
 
-				// .evf-conditional-group {
-				// 	> a {
-				// 		height: 32px !important;
+				&:has(.evf-conditional-confirmation-body[style*="display: none;"]),
+				&:has(.evf-field-confirmation-conditional-container[style*="display: none;"]),
+				&:has(.evf-conditional-confirmation-active-toggle[style*="display: none;"]) {
+					min-height: unset;
 
-				// 		&.conditonal-rule-add {
-				// 			width: 42px !important;
-				// 		}
+					.evf-content-section-title {
+						padding: 0;
+						margin: 0;
+						border-bottom: 0;
 
-				// 		&.conditonal-rule-remove {
-				// 			width: 32px !important;
-				// 		}
-				// 	}
-				// }
+						.evf-close-custom-confirm-settings {
+							svg {
+								transform: rotate(0deg);
+							}
+						}
+					}
+				}
 			}
 
 			#evf-custom-css-block,
@@ -3987,7 +4192,8 @@ p.search-box {
 				height: 120px;
 
 				&.short {
-					height: 60px;
+					padding: 8px 12px;
+					height: 100px;
 				}
 			}
 
@@ -4501,10 +4707,10 @@ p.search-box {
 			}
 		}
 
+		.evf-confirmation-wrap,
 		.everest-forms-border-container {
 			border: 1px solid #e9e9e9;
-			//  background: #fcfcfd;
-			border-radius: 5px;
+			border-radius: 4px;
 			padding: 18px 22px 6px;
 			margin-bottom: 20px;
 			max-width: 740px;
@@ -4514,7 +4720,6 @@ p.search-box {
 			}
 
 			.everest-forms-border-container-title {
-				// display: inline-block;
 				color: #222222;
 				font-size: 18px;
 				font-weight: 600;
@@ -6938,6 +7143,10 @@ img.ui-datepicker-trigger {
 						.everest-forms-panel-sidebar,
 						.everest-forms-panel-content-wrap {
 							width: 100%;
+						}
+
+						.everest-forms-panel-sidebar {
+							height: auto;
 						}
 
 						.everest-forms-panel-content-wrap {
