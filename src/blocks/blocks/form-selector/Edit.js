@@ -143,7 +143,7 @@ const Edit = (props) => {
 									>
 									This feature requires the Premium version.
 									<Link
-										href="https://everestforms.net/pricing/?utm_source=popup_type_edit_page&utm_medium=upgrade-link&utm_campaign=lite-version"
+										href="https://everestforms.net/upgrade/?utm_source=popup_type_edit_page&utm_medium=upgrade-link&utm_campaign=lite-version"
 										target="_blank"
 										rel="noopener noreferrer"
 										color="#754bb2"

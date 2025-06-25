@@ -460,7 +460,7 @@ const TemplateList: React.FC<TemplateListProps> = ({ selectedCategory, templates
 					{__("OK", "everest-forms")}
 				</Button>
 				<a
-						href="https://everestforms.net/pricing/?utm_source=form-template&utm_medium=premium-form-templates-popup&utm_campaign=lite-version"
+						href="https://everestforms.net/upgrade/?utm_source=form-template&utm_medium=premium-form-templates-popup&utm_campaign=lite-version"
 						target="_blank"
 						rel="noopener noreferrer"
 						style={{ width: "inherit" }}
