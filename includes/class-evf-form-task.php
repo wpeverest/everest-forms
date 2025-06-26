@@ -304,22 +304,43 @@ class EVF_Form_Task {
 					$theme_mode = get_option( 'everest_forms_recaptcha_turnstile_theme' );
 				}
 				$recaptcha_verified = false;
+				$error              = '';
 				foreach ( (array) $this->form_data['form_fields'] as $field ) {
 					$field_type = isset( $field['type'] ) ? $field['type'] : '';
 					$captcha    = array( 'recaptcha', 'hcaptcha', 'turnstile' );
-					if ( ! empty( $site_key ) && ! empty( $secret_key ) && isset( $this->form_data['settings']['recaptcha_support'] ) && '1' === $this->form_data['settings']['recaptcha_support'] &&
-					! isset( $_POST['__amp_form_verify'] ) && ( 'v3' === $recaptcha_type || ! evf_is_amp() ) || ( ! empty( $site_key ) && ! empty( $secret_key ) ) && in_array( $field_type, $captcha, true ) ) {
 
+					if (
+						( ! empty( $site_key ) && ! empty( $secret_key ) &&
+						  isset( $this->form_data['settings']['recaptcha_support'] ) &&
+						  '1' === $this->form_data['settings']['recaptcha_support'] &&
+						  ! isset( $_POST['__amp_form_verify'] ) &&
+						  ( 'v3' === $recaptcha_type || ! evf_is_amp() )
+						)
+						||
+						( ! empty( $site_key ) && ! empty( $secret_key ) && in_array( $field_type, $captcha, true ) )
+					) {
+						// Get the token based on CAPTCHA type
 						$token = ! empty( $_POST['g-recaptcha-response'] ) ? evf_clean( wp_unslash( $_POST['g-recaptcha-response'] ) ) : false;
 
 						if ( 'v3' === $recaptcha_type ) {
 							$token = ! empty( $_POST['everest_forms']['recaptcha'] ) ? evf_clean( wp_unslash( $_POST['everest_forms']['recaptcha'] ) ) : false;
+						} elseif ( 'hcaptcha' === $recaptcha_type ) {
+							$token = ! empty( $_POST['h-captcha-response'] ) ? evf_clean( wp_unslash( $_POST['h-captcha-response'] ) ) : false;
+						} elseif ( 'turnstile' === $recaptcha_type ) {
+							$token = ! empty( $_POST['cf-turnstile-response'] ) ? evf_clean( wp_unslash( $_POST['cf-turnstile-response'] ) ) : false;
 						}
+
+						if ( ! $token ) {
+							$error                              = esc_html__( 'CAPTCHA token missing. Please try again.', 'everest-forms' );
+							$this->errors[ $form_id ]['header'] = $error;
+							$logger->error( $error, array( 'source' => 'CAPTCHA' ) );
+							return $this->errors;
+						}
+
+						// Validate the token
 						if ( 'hcaptcha' === $recaptcha_type ) {
-							$token        = ! empty( $_POST['h-captcha-response'] ) ? evf_clean( wp_unslash( $_POST['h-captcha-response'] ) ) : false;
 							$raw_response = wp_safe_remote_get( 'https://hcaptcha.com/siteverify?secret=' . $secret_key . '&response=' . $token );
 						} elseif ( 'turnstile' === $recaptcha_type ) {
-							$token        = ! empty( $_POST['cf-turnstile-response'] ) ? evf_clean( wp_unslash( $_POST['cf-turnstile-response'] ) ) : false;
 							$url          = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
 							$params       = array(
 								'method' => 'POST',
@@ -336,11 +357,9 @@ class EVF_Form_Task {
 						if ( ! is_wp_error( $raw_response ) ) {
 							$response = json_decode( wp_remote_retrieve_body( $raw_response ) );
 
-							$recaptcha_passed = true;
+							$recaptcha_passed = ! empty( $response->success );
 
-							if ( empty( $response->success ) ) {
-								$recaptcha_passed = false;
-							} elseif ( 'v3' === $recaptcha_type ) {
+							if ( $recaptcha_passed && 'v3' === $recaptcha_type ) {
 								$threshold = get_option( 'everest_forms_recaptcha_v3_threshold_score', apply_filters( 'everest_forms_recaptcha_v3_threshold', '0.5' ) );
 								if ( ! isset( $response->score ) || $response->score <= floatval( $threshold ) ) {
 									$recaptcha_passed = false;
@@ -356,14 +375,11 @@ class EVF_Form_Task {
 								} elseif ( 'turnstile' === $recaptcha_type ) {
 									$error = esc_html__( 'Cloudflare Turnstile verification failed, please try again later.', 'everest-forms' );
 								} else {
-
 									$error = esc_html__( 'Google reCAPTCHA verification failed, please try again later.', 'everest-forms' );
 								}
+
 								$this->errors[ $form_id ]['header'] = $error;
-								$logger->error(
-									$error,
-									array( 'source' => 'Google reCAPTCHA' )
-								);
+								$logger->error( $error, array( 'source' => 'CAPTCHA' ) );
 								return $this->errors;
 							}
 						}
@@ -1509,7 +1525,7 @@ class EVF_Form_Task {
 						// translators: %s is the site_name.
 						$message .= '<br/>' . sprintf( __( 'From %s', 'everest-forms' ), $site_name );
 						// translators: %s is the message.
-						$message = apply_filters( 'everest_forms_entry_approval_message', $message );
+						$message = apply_filters( 'everest_forms_entry_approval_message', $message, $name, $entry_date, $site_name );
 					}
 
 					$email_obj = new EVF_Emails();
@@ -1590,7 +1606,7 @@ class EVF_Form_Task {
 						// translators: %s is the site_name.
 						$message .= '<br/>' . sprintf( __( 'From %s', 'everest-forms' ), $site_name );
 						// translators: %s is the message.
-						$message = apply_filters( 'everest_forms_entry_denial_message', $message );
+						$message = apply_filters( 'everest_forms_entry_denial_message', $message, $name, $entry_date, $site_name );
 
 					}
 					$email_obj = new EVF_Emails();
