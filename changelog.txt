@@ -2,6 +2,7 @@
 
 = 3.2.6     	- 26-06-2025
 * Enhance  		- Added filter for signature.
+* Tweak 		- Change upgrade url.
 * Fix 			- ReCaptcha issue.
 * Fix 			- Skip validation for hidden fields.
 * Fix 			- Field options expand collapse icon.

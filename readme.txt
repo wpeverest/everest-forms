@@ -20,7 +20,7 @@ Everest Forms is the best beginner-friendly WordPress form builder plugin for cr
 
 It features an intuitive drag-and-drop interface, allowing you to effortlessly create unlimited forms or choose from a wide selection of pre-made templates.
 
-[All features](https://everestforms.net/?utm_source=wporg&utm_medium=link&utm_campaign=evf-readme) | [Documentation](https://docs.everestforms.net/) | [Join Our Community](http://demo.wpeverest.com/everest-forms/)
+[All features](https://everestforms.net/features/?utm_source=wporg&utm_medium=all-feature-link&utm_campaign=evf-readme) | [Documentation](https://docs.everestforms.net/?utm_source=wporg&utm_medium=docs-top-link&utm_campaign=evf-readme) | [Join Our Community](https://www.facebook.com/groups/everestforms/)
 
 [youtube https://youtu.be/AvK0KU2ycqc ]
 
@@ -163,7 +163,7 @@ Whether you’re receiving job applications or general inquiries, it’s perfect
 
 There’s even more to this amazing WordPress contact form plugin! Everest Forms is a fully functional solution that works as a form builder, quiz maker, survey tool, payment form plugin, and more for WordPress websites.
 
-Discover all the features we haven’t listed here - [Explore them now!](https://everestforms.net/features/)
+Discover all the features we haven’t listed here - [Explore them now!](https://everestforms.net/features/?utm_source=wporg&utm_medium=explore-them-link&utm_campaign=evf-readme)
 
 ## Integrations
 
@@ -209,27 +209,27 @@ Plus, with tools like Zapier and webhooks, you can integrate Everest Forms with 
 
 ## Create Different Types of WordPress Forms Without Any Coding Skills
 
-* [Contact Form](https://everestforms.net/form-templates/simple-contact-form/)
+* [Contact Form](https://everestforms.net/form-templates/simple-contact-form/?utm_source=wporg&utm_medium=link&utm_campaign=evf-readme)
 * Request Form
-* [Support Request Form](https://everestforms.net/form-templates/support-request-form/)
-* [Travel Booking Form](https://everestforms.net/form-templates/travel-booking-form/)
-* [Job Application Form](https://everestforms.net/form-templates/job-application-form/)
+* [Support Request Form](https://everestforms.net/form-templates/support-request-form/?utm_source=wporg&utm_medium=link&utm_campaign=evf-readme)
+* [Travel Booking Form](https://everestforms.net/form-templates/travel-booking-form/?utm_source=wporg&utm_medium=link&utm_campaign=evf-readme)
+* [Job Application Form](https://everestforms.net/form-templates/job-application-form/?utm_source=wporg&utm_medium=link&utm_campaign=evf-readme)
 * Multi-step Form
-* [Quiz Form](https://everestforms.net/form-templates/quiz-form/)
-* [Customer Survey Form](https://everestforms.net/form-templates/customer-survey-form/)
-* [Payment Submission Form](https://everestforms.net/form-templates/hotel-booking-form/)
+* [Quiz Form](https://everestforms.net/form-templates/quiz-form/?utm_source=wporg&utm_medium=link&utm_campaign=evf-readme)
+* [Customer Survey Form](https://everestforms.net/form-templates/customer-survey-form/?utm_source=wporg&utm_medium=link&utm_campaign=evf-readme)
+* [Payment Submission Form](https://everestforms.net/form-templates/hotel-booking-form/?utm_source=wporg&utm_medium=link&utm_campaign=evf-readme)
 * Simple Registration Form
-* [Request a Call Form](https://everestforms.net/form-templates/call-back-form/)
-* [Conditional Form](https://everestforms.net/form-templates/conditional-application-form/)
+* [Request a Call Form](https://everestforms.net/form-templates/call-back-form/?utm_source=wporg&utm_medium=link&utm_campaign=evf-readme)
+* [Conditional Form](https://everestforms.net/form-templates/conditional-application-form/?utm_source=wporg&utm_medium=link&utm_campaign=evf-readme)
 * Poll Form
 * Signature Form
-* [Church Donation Form](https://everestforms.net/form-templates/church-donation-form/)
+* [Church Donation Form](https://everestforms.net/form-templates/church-donation-form/?utm_source=wporg&utm_medium=link&utm_campaign=evf-readme)
 * Medical Appointment Form
 * Newsletter Signup Form
 
 For booking forms, Everest Forms lets you set dates, days, and time slots, with email notifications and Google Calendar integration.
 
-👉 [Explore all pre-built Everest Forms demos](https://everestforms.net/form-templates/).
+👉 [Explore all pre-built Everest Forms demos](https://everestforms.net/form-templates/?utm_source=wporg&utm_medium=link&utm_campaign=evf-readme).
 
 ## What Do People Say About Everest Forms?
 
@@ -345,6 +345,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 = 3.2.6     	- 26-06-2025
 * Enhance  		- Added filter for signature.
+* Tweak 		- Change upgrade url.
 * Fix 			- ReCaptcha issue.
 * Fix 			- Skip validation for hidden fields.
 * Fix 			- Field options expand collapse icon.
