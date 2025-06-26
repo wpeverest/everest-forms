@@ -4,7 +4,7 @@ Tags: contact form, custom form, form builder, forms, survey
 Requires at least: 5.5
 Tested up to: 6.8.1
 Requires PHP: 7.2
-Stable tag: 3.2.5
+Stable tag: 3.2.6
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -342,6 +342,14 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/f788d7f0-ea8a-4fd5-bcae-81a5d09a476c)
 
 == Changelog ==
+
+= 3.2.6     	- 26-06-2025
+* Enhance  		- Added filter for signature.
+* Fix 			- ReCaptcha issue.
+* Fix 			- Field options expand collapse icon.
+* Fix 			- Csv , issue while importing entries.
+* Fix 			- Customize approval and denial email with extra info.
+* Fix 			- Disable date not working when date format is changed.
 
 = 3.2.5     	- 06-06-2025
 * Fix 			- Placeholder issue on frontend.

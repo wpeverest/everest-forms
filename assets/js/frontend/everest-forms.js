@@ -159,11 +159,17 @@ jQuery( function ( $ ) {
 						disableDates = inputData.disableDates.split( ',' );
 					}
 
-					if(inputData.pastDisableDate){
-						var pastDisableDate = inputData.pastDisableDate;
+				var pastDisableDate = '';
+				if (inputData.pastDisableDate) {
+					if (inputData.dateFormat === 'Y-m-d') {
+						pastDisableDate = inputData.pastDisableDate;
 					} else {
-						var pastDisableDate = '';
+						const parsed = flatpickr.parseDate(inputData.pastDisableDate, inputData.dateFormat);
+						if (parsed) {
+							pastDisableDate = flatpickr.formatDate(parsed, 'Y-m-d');
+						}
 					}
+				}
 
 					switch( inputData.dateTime ) {
 						case 'date':

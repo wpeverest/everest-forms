@@ -3920,10 +3920,16 @@ jQuery( function ( $ ) {
 	$( document.body ).on( 'click', '.everest-forms-field-option .everest-forms-field-option-group > a', function( event ) {
 		event.preventDefault();
 		var $fielOption = $( this ).closest( '.everest-forms-field-option-group' ).closest('.everest-forms-field-option');
+		var currentElement = $( this ),
+		    currentElementId = currentElement.parent( '.everest-forms-field-option-group').attr( 'id');
 
 		$fielOption.find( '.everest-forms-field-option-group' ).each( function() {
-			$( this ).removeClass( 'open' ).addClass( 'closed' );
+			var selectedID = $( this ).attr( 'id' );
+			if ( currentElementId !== selectedID ) {
+				$( this ).removeClass( 'open' ).addClass( 'closed' );
+			}
 		});
+
 		$( this ).parent( '.everest-forms-field-option-group' ).toggleClass( 'closed' ).toggleClass( 'open' );
 		$( '.everest-forms-field-option-group.closed' ).each( function() {
 			$( this ).find( '.everest-forms-field-option-group-inner' ).hide();
@@ -3934,7 +3940,6 @@ jQuery( function ( $ ) {
 		if ( $( event.target ).filter( ':input, option, .sort' ).length ) {
 			return;
 		}
-
 		$( this ).next( '.everest-forms-field-option-group-inner' ).stop().slideToggle();
 	});
 	$( document.body ).on( 'init_field_options_toggle', function() {
