@@ -349,6 +349,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 * Fix 			- Skip validation for hidden fields.
 * Fix 			- Field options expand collapse icon.
 * Fix 			- Csv , issue while importing entries.
+* Fix 			- Date time issue while changing date timezone.
 * Fix 			- Customize approval and denial email with extra info.
 * Fix 			- Disable date not working when date format is changed.
 
