@@ -191,7 +191,7 @@ jQuery( function( $ ) {
 			} else {
 				var name = $(this).find('h3').text();
 			}
-			evf_upgrade_actions.upgrade_integration( name , $( this ).data( 'links' ) );
+			evf_upgrade_actions.upgrade_integration( name , $( this ).data( 'links' ) , $( this ) );
 		},
 		feature_upgrade: function( e ) {
 			e.preventDefault();
@@ -304,7 +304,7 @@ jQuery( function( $ ) {
 				}
 			});
 		},
-		upgrade_integration: function( name = '',links = '' ) {
+		upgrade_integration: function( name = '',links = '', $el = '' ) {
 
 			var message = evf_upgrade.upgrade_message.replace( /%name%/g, name );
 			boxWidth = '1000px';
@@ -322,7 +322,11 @@ jQuery( function( $ ) {
 						btnClass: 'btn-confirm',
 						keys: ['enter'],
 						action: function () {
-							window.open( evf_upgrade.upgrade_integration_url, '_blank' );
+							if ( $el.hasClass( 'upgrade-addons-settings') ) {
+								window.open( evf_upgrade.upgrade_integration_url_form, '_blank' );
+							}else{
+								window.open( evf_upgrade.upgrade_integration_url, '_blank' );
+							}
 						}
 					},
 					cancel: {

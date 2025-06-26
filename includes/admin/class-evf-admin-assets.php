@@ -227,6 +227,7 @@ class EVF_Admin_Assets {
 				'upgrade_message'                 => esc_html__( 'We\'re sorry, the %name% is not available on your plan.<br>Please upgrade to the PRO plan to unlock all these awesome features.', 'everest-forms' ),
 				'upgrade_button'                  => esc_html__( 'Upgrade to PRO', 'everest-forms' ),
 				'upgrade_url'                     => apply_filters( 'everest_forms_upgrade_url', 'https://everestforms.net/upgrade/?utm_medium=evf-form-builder&utm_source=evf-free&utm_campaign=builder-pro-field-popup&utm_content=Upgrade%20to%20Pro' ),
+				'upgrade_integration_url_form'    => apply_filters( 'everest_forms_upgrade_integration_url', 'https://everestforms.net/upgrade/?utm_medium=evf-form-setting&utm_source=evf-free&utm_campaign=form-setting-pro-popup&utm_content=Upgrade%20to%20Pro' ),
 				'upgrade_integration_url'         => apply_filters( 'everest_forms_upgrade_integration_url', 'https://everestforms.net/upgrade/?utm_medium=evf-global-setting&utm_source=evf-free&utm_campaign=integration-setting-popup' ),
 				'enable_stripe_title'             => esc_html__( 'Please enable Stripe', 'everest-forms' ),
 				'recaptcha_title'                 => esc_html__( 'reCaptcha', 'everest-forms' ),
