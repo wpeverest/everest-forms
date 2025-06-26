@@ -346,6 +346,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 = 3.2.6     	- 26-06-2025
 * Enhance  		- Added filter for signature.
 * Fix 			- ReCaptcha issue.
+* Fix 			- Skip validation for hidden fields.
 * Fix 			- Field options expand collapse icon.
 * Fix 			- Csv , issue while importing entries.
 * Fix 			- Customize approval and denial email with extra info.
