@@ -241,9 +241,25 @@ class EVF_Smart_Tags {
 						}
 
 						if ( ! empty( $value ) ) {
+							$styles = array(
+								'width'      => '150px',
+								'height'     => '80px',
+								'max-width'  => '100px',
+								'max-height' => '200px',
+							);
+
+							$styles = apply_filters('everest_forms_export_signature_style', $styles, $fields[ $mixed_field_id[1] ] );
+
+							// Convert styles array to inline style string
+							$style_string = '';
+							foreach ( $styles as $key => $val ) {
+								$style_string .= $key . ':' . $val . ';';
+							}
+
 							$value = sprintf(
-								'<img src="%s" style="width:150px;height:80px;max-height:200px;max-width:100px;"/>',
-								$value
+								'<img src="%s" style="%s"/>',
+								esc_url( $value ),
+								esc_attr( $style_string )
 							);
 						}
 					}
