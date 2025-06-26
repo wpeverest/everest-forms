@@ -736,15 +736,15 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 						if ( $count > 1 ) {
 							foreach ( $field_val['field_value']['value_raw'] as $key => $value ) {
 								if ( 1 === $count ) {
-									$val .= '<a href="' . esc_url( $value['value'] ) . '" target="_blank">' . $value['name'] . '</a>';
+									$val .= '<a href="' . esc_url( $value['value'] ) . '" target="_blank">' . esc_html ( $value['name'] ) . '</a>';
 								} else {
-									$val .= '<a href="' . esc_url( $value['value'] ) . '" target="_blank">' . $value['name'] . '</a>, ';
+									$val .= '<a href="' . esc_url( $value['value'] ) . '" target="_blank">' . esc_html( $value['name'] ) . '</a>, ';
 
 								}
 								--$count;
 							}
 						} else {
-							$val .= '<a href="' . esc_url( $field_val['value'] ) . '" target="_blank">' . $field_val['field_value']['value_raw'][0]['name'] . '</a>';
+							$val .= '<a href="' . esc_url( $field_val['value'] ) . '" target="_blank">' . esc_html ( $field_val['field_value']['value_raw'][0]['name'] ) . '</a>';
 						}
 						return $val;
 					}
