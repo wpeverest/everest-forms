@@ -1525,7 +1525,7 @@ class EVF_Form_Task {
 						// translators: %s is the site_name.
 						$message .= '<br/>' . sprintf( __( 'From %s', 'everest-forms' ), $site_name );
 						// translators: %s is the message.
-						$message = apply_filters( 'everest_forms_entry_approval_message', $message );
+						$message = apply_filters( 'everest_forms_entry_approval_message', $message, $name, $entry_date, $site_name );
 					}
 
 					$email_obj = new EVF_Emails();
@@ -1606,7 +1606,7 @@ class EVF_Form_Task {
 						// translators: %s is the site_name.
 						$message .= '<br/>' . sprintf( __( 'From %s', 'everest-forms' ), $site_name );
 						// translators: %s is the message.
-						$message = apply_filters( 'everest_forms_entry_denial_message', $message );
+						$message = apply_filters( 'everest_forms_entry_denial_message', $message, $name, $entry_date, $site_name );
 
 					}
 					$email_obj = new EVF_Emails();

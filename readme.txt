@@ -344,10 +344,11 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 == Changelog ==
 
 = 3.2.6     	- 26-06-2025
-* Tweak  		- filter for signature.
+* Enhance  		- Added filter for signature.
 * Fix 			- ReCaptcha issue.
 * Fix 			- Field options expand collapse icon.
 * Fix 			- Csv , issue while importing entries.
+* Fix 			- Customize approval and denial email with extra info.
 * Fix 			- Disable date not working when date format is changed.
 
 = 3.2.5     	- 06-06-2025
