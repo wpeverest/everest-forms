@@ -348,6 +348,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 * Fix 			- ReCaptcha issue.
 * Fix 			- Field options expand collapse icon.
 * Fix 			- Csv , issue while importing entries.
+* Fix 			- Disable date not working when date format is changed.
 
 = 3.2.5     	- 06-06-2025
 * Fix 			- Placeholder issue on frontend.
