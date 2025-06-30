@@ -1,5 +1,16 @@
 == Changelog ==
 
+= 3.2.6     	- 26-06-2025
+* Enhance  		- Added filter for signature.
+* Tweak 		- Change upgrade url.
+* Fix 			- ReCaptcha issue.
+* Fix 			- Skip validation for hidden fields.
+* Fix 			- Field options expand collapse icon.
+* Fix 			- Csv , issue while importing entries.
+* Fix 			- Date time issue while changing date timezone.
+* Fix 			- Customize approval and denial email with extra info.
+* Fix 			- Disable date not working when date format is changed.
+
 = 3.2.5     	- 06-06-2025
 * Fix 			- Placeholder issue on frontend.
 * Fix 			- Module activation design in dashboard.

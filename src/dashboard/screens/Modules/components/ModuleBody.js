@@ -47,7 +47,7 @@ const ModuleBody = ({
 		buttonText: __("Upgrade to Pro", "everest-forms"),
 		upgradeURL:
 			upgradeURL +
-			"&utm_source=dashboard-addons&utm_medium=upgrade-popup",
+			"utm_medium=addon-activation-page&utm_source=evf-free&utm_campaign=addon-page-feature-block&utm_content=Upgrade%20Plan",
 		licenseActivationPlaceholder: __("License key","everest-forms"),
 	});
 

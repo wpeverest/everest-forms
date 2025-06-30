@@ -1,14 +1,14 @@
-=== Everest Forms – Contact Form, Quiz, Survey, Newsletter & Payment Form Builder for WordPress ===
+=== Contact Form by Everest Forms - Simple Contact Form to Advanced Contact Form, Quiz, Survey, & Custom Contact Form Builder for WordPress ===
 Contributors:everestforms,WPEverest
 Tags: contact form, custom form, form builder, forms, survey
 Requires at least: 5.5
 Tested up to: 6.8.1
 Requires PHP: 7.2
-Stable tag: 3.2.5
+Stable tag: 3.2.6
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-Best WordPress Form Plugin to Create Contact Forms, Surveys, Quizzes, Payment Forms, & Custom Forms Using Drag & Drop Form Builder.
+Easily create contact form, payment form, conversational form, calculator form, multi-step form, registration form, quiz form, survey form etc.
 
 == Description ==
 
@@ -20,7 +20,7 @@ Everest Forms is the best beginner-friendly WordPress form builder plugin for cr
 
 It features an intuitive drag-and-drop interface, allowing you to effortlessly create unlimited forms or choose from a wide selection of pre-made templates.
 
-[All features](https://everestforms.net/?utm_source=wporg&utm_medium=link&utm_campaign=evf-readme) | [Documentation](https://docs.everestforms.net/) | [Join Our Community](http://demo.wpeverest.com/everest-forms/)
+[All features](https://everestforms.net/features/?utm_source=wporg&utm_medium=all-feature-link&utm_campaign=evf-readme) | [Documentation](https://docs.everestforms.net/?utm_source=wporg&utm_medium=docs-top-link&utm_campaign=evf-readme) | [Join Our Community](https://www.facebook.com/groups/everestforms/)
 
 [youtube https://youtu.be/AvK0KU2ycqc ]
 
@@ -163,7 +163,7 @@ Whether you’re receiving job applications or general inquiries, it’s perfect
 
 There’s even more to this amazing WordPress contact form plugin! Everest Forms is a fully functional solution that works as a form builder, quiz maker, survey tool, payment form plugin, and more for WordPress websites.
 
-Discover all the features we haven’t listed here - [Explore them now!](https://everestforms.net/features/)
+Discover all the features we haven’t listed here - [Explore them now!](https://everestforms.net/features/?utm_source=wporg&utm_medium=explore-them-link&utm_campaign=evf-readme)
 
 ## Integrations
 
@@ -209,27 +209,27 @@ Plus, with tools like Zapier and webhooks, you can integrate Everest Forms with 
 
 ## Create Different Types of WordPress Forms Without Any Coding Skills
 
-* [Contact Form](https://everestforms.net/form-templates/simple-contact-form/)
+* [Contact Form](https://everestforms.net/form-templates/simple-contact-form/?utm_source=wporg&utm_medium=link&utm_campaign=evf-readme)
 * Request Form
-* [Support Request Form](https://everestforms.net/form-templates/support-request-form/)
-* [Travel Booking Form](https://everestforms.net/form-templates/travel-booking-form/)
-* [Job Application Form](https://everestforms.net/form-templates/job-application-form/)
+* [Support Request Form](https://everestforms.net/form-templates/support-request-form/?utm_source=wporg&utm_medium=link&utm_campaign=evf-readme)
+* [Travel Booking Form](https://everestforms.net/form-templates/travel-booking-form/?utm_source=wporg&utm_medium=link&utm_campaign=evf-readme)
+* [Job Application Form](https://everestforms.net/form-templates/job-application-form/?utm_source=wporg&utm_medium=link&utm_campaign=evf-readme)
 * Multi-step Form
-* [Quiz Form](https://everestforms.net/form-templates/quiz-form/)
-* [Customer Survey Form](https://everestforms.net/form-templates/customer-survey-form/)
-* [Payment Submission Form](https://everestforms.net/form-templates/hotel-booking-form/)
+* [Quiz Form](https://everestforms.net/form-templates/quiz-form/?utm_source=wporg&utm_medium=link&utm_campaign=evf-readme)
+* [Customer Survey Form](https://everestforms.net/form-templates/customer-survey-form/?utm_source=wporg&utm_medium=link&utm_campaign=evf-readme)
+* [Payment Submission Form](https://everestforms.net/form-templates/hotel-booking-form/?utm_source=wporg&utm_medium=link&utm_campaign=evf-readme)
 * Simple Registration Form
-* [Request a Call Form](https://everestforms.net/form-templates/call-back-form/)
-* [Conditional Form](https://everestforms.net/form-templates/conditional-application-form/)
+* [Request a Call Form](https://everestforms.net/form-templates/call-back-form/?utm_source=wporg&utm_medium=link&utm_campaign=evf-readme)
+* [Conditional Form](https://everestforms.net/form-templates/conditional-application-form/?utm_source=wporg&utm_medium=link&utm_campaign=evf-readme)
 * Poll Form
 * Signature Form
-* [Church Donation Form](https://everestforms.net/form-templates/church-donation-form/)
+* [Church Donation Form](https://everestforms.net/form-templates/church-donation-form/?utm_source=wporg&utm_medium=link&utm_campaign=evf-readme)
 * Medical Appointment Form
 * Newsletter Signup Form
 
 For booking forms, Everest Forms lets you set dates, days, and time slots, with email notifications and Google Calendar integration.
 
-👉 [Explore all pre-built Everest Forms demos](https://everestforms.net/form-templates/).
+👉 [Explore all pre-built Everest Forms demos](https://everestforms.net/form-templates/?utm_source=wporg&utm_medium=link&utm_campaign=evf-readme).
 
 ## What Do People Say About Everest Forms?
 
@@ -342,6 +342,17 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/f788d7f0-ea8a-4fd5-bcae-81a5d09a476c)
 
 == Changelog ==
+
+= 3.2.6     	- 26-06-2025
+* Enhance  		- Added filter for signature.
+* Tweak 		- Change upgrade url.
+* Fix 			- ReCaptcha issue.
+* Fix 			- Skip validation for hidden fields.
+* Fix 			- Field options expand collapse icon.
+* Fix 			- Csv , issue while importing entries.
+* Fix 			- Date time issue while changing date timezone.
+* Fix 			- Customize approval and denial email with extra info.
+* Fix 			- Disable date not working when date format is changed.
 
 = 3.2.5     	- 06-06-2025
 * Fix 			- Placeholder issue on frontend.
