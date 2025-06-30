@@ -132,4 +132,32 @@ class FormHelper {
 
 		return $fileIcon;
 	}
+
+	/**
+	 * Remove the file.
+	 *
+	 * @param [type] $file_url The file url.
+	 */
+	public static function remove_file( $file_url ) {
+		$uploads       = wp_upload_dir();
+		$base_dir      = realpath( $uploads['basedir'] );
+		$path_from_url = wp_parse_url( $file_url, PHP_URL_PATH );
+
+		$uploaded_file = $uploads['basedir'] . preg_replace(
+			'/.*uploads/',
+			'/everest_forms_uploads',
+			$path_from_url
+		);
+
+		$normalized_path = wp_normalize_path( $uploaded_file );
+		$resolved_path   = realpath( $normalized_path );
+		// Validate path is within allowed directory
+		if ( $resolved_path && strpos( $resolved_path, $base_dir ) === 0 ) {
+			if ( is_file( $resolved_path ) ) {
+				wp_delete_file( $resolved_path );
+			}
+		}
+
+		return;
+	}
 }
