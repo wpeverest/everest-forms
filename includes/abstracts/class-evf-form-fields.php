@@ -2612,7 +2612,7 @@ abstract class EVF_Form_Fields {
 		}
 
 		if ( isset( $field['type'] ) && 'signature' === $field['type'] ) {
-			$get_value = sanitize_text_field( $get_value ); // Sanitize (but keeps slashes)
+			$get_value = sanitize_text_field( $raw_value ); // Sanitize (but keeps slashes)
 		} else {
 			// Standard text field (unslash first, then sanitize)
 			$get_value = sanitize_text_field( wp_unslash( $raw_value ) );

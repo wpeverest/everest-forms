@@ -1040,7 +1040,8 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 
 							$ext      = pathinfo( $attachment_url, PATHINFO_EXTENSION );
 							$fileIcon = FormHelper::evf_file_upload_check_file_types( $ext );
-							$fileIcon = ! is_null( $fileIcon ) ? evf()->plugin_url() . '/assets/images/filetypes/' . $fileIcon . '.svg' : $attachment_url;
+
+							$fileIcon = ! is_null( $fileIcon ) ? evf()->plugin_url() . '/assets/images/filetypes/' . $fileIcon . '.png' : $attachment_url;
 
 							$file = array(
 								'name'          => $file_original,
