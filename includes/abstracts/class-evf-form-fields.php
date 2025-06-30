@@ -2252,7 +2252,7 @@ abstract class EVF_Form_Fields {
 
 		switch ( $option ) {
 			case 'label':
-				$label = isset( $field['label'] ) && ! empty( $field['label'] ) ? $field['label'] . ('private-note' === $field['type'] ? (' (Admin Only)') : '' ) : '';
+				$label = isset( $field['label'] ) && ! empty( $field['label'] ) ? $field['label'] . ( 'private-note' === $field['type'] ? ( ' (Admin Only)' ) : '' ) : '';
 				if ( $echo ) {
 					printf( '<label class="label-title %s"><span class="text">%s</span><span class="required">%s</span></label>', esc_attr( $class ), esc_html( $label ), esc_html( apply_filters( 'everest_form_get_required_type', '*', $field, $form_data ) ) );
 				} else {
@@ -2611,7 +2611,12 @@ abstract class EVF_Form_Fields {
 			return $properties;
 		}
 
-		$get_value = wp_unslash( sanitize_text_field( $raw_value ) );
+		if ( isset( $field['type'] ) && 'signature' === $field['type'] ) {
+			$get_value = sanitize_text_field( $get_value ); // Sanitize (but keeps slashes)
+		} else {
+			// Standard text field (unslash first, then sanitize)
+			$get_value = sanitize_text_field( wp_unslash( $raw_value ) );
+		}
 
 		if ( ! empty( $field['choices'] ) && is_array( $field['choices'] ) ) {
 			$properties = $this->get_single_field_property_value_choices( $get_value, $properties, $field );
