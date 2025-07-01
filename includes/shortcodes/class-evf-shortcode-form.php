@@ -904,7 +904,7 @@ class EVF_Shortcode_Form {
 
 		// Basic form information.
 		$form_data = apply_filters( 'everest_forms_frontend_form_data', evf_decode( $form->post_content ) );
-		//For form confirmation backward compatilibity.
+		// For form confirmation backward compatilibity.
 		$form_data = evf_form_confirmation_backward_compatibility( $form_data );
 
 		$form_id         = absint( $form->ID );
@@ -1008,7 +1008,6 @@ class EVF_Shortcode_Form {
 		} else {
 			$message_display_location = isset( $form_data['settings']['message_display_location_of_reset'] ) ? $form_data['settings']['message_display_location_of_reset'] : 'top';
 		}
-
 		// If conditional logic match then getting messag and position.
 		if ( ! empty( $_REQUEST['evf_popup_message'] ) ) {
 			$message = sanitize_text_field( $_REQUEST['evf_popup_message'] );
@@ -1021,8 +1020,6 @@ class EVF_Shortcode_Form {
 		if ( ! empty( $_REQUEST['evf_form_state_type'] ) ) {
 			$form_state_type = sanitize_text_field( $_REQUEST['evf_form_state_type'] );
 		}
-
-		$message = isset( $form_data['settings']['successful_form_submission_message'] ) ? $form_data['settings']['successful_form_submission_message'] : __( 'Thanks for contacting us! We will be in touch with you shortly.', 'everest-forms' );
 
 		$success = apply_filters( 'everest_forms_success', false, $form_id );
 		if ( $success && ! empty( $form_data ) && 'hide' === $message_display_location ) {
