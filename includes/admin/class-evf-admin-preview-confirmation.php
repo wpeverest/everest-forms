@@ -47,7 +47,7 @@ class EVF_Admin_Preview_Confirmation {
 	public static function preview_confirmation( $form_data, $form_fields, $preview_style ) {
 
 		$output  = '';
-		$output .= '<div class="everest_forms_preview_confirmation_' . esc_attr( $preview_style ) . '">';
+		$output .= '<div class="everest_forms_preview_confirmation_' . $preview_style . '">';
 
 		$exclude = array(
 			'captcha',
@@ -75,7 +75,7 @@ class EVF_Admin_Preview_Confirmation {
 			} elseif ( empty( $form_fields[ $id ]['value'] ) ) {
 				continue; // Skip empty fields
 			} elseif ( 'basic' === $preview_style ) {
-				$output .= '<div class="everest_forms_preview_confirmation_' . esc_attr( $preview_style ) . '_label">' . esc_html( $form_fields[ $id ]['name'] ) . '<a href="' . esc_url(  $form_fields[ $id ]['value'] ) . '" rel="noopener noreferrer" target="_blank"><img src="' . esc_url( $form_fields[ $id ]['value'] ) . '" style="width:200px;" /></a></div>';
+				$output .= '<div class="everest_forms_preview_confirmation_' . $preview_style . '_label">' . $form_fields[ $id ]['name'] . '<a href="' . esc_url( $form_fields[ $id ]['value'] ) . '" rel="noopener noreferrer" target="_blank"><img src="' . esc_url( $form_fields[ $id ]['value'] ) . '" style="width:200px;" /></a></div>';
 				continue;
 			}
 
@@ -98,11 +98,12 @@ class EVF_Admin_Preview_Confirmation {
 
 		foreach ( $fields as $formatted_string ) {
 			if ( 'basic' === $preview_style ) {
-				$output .= '<div class="everest_forms_preview_confirmation_' . esc_url( $preview_style ) . '_label">' . esc_html( $formatted_string['label'] ) . ' : ' . esc_html( $close_div );
+				$output .= '<div class="everest_forms_preview_confirmation_' . $preview_style . '_label">' . $formatted_string['label'] . ' : ' . $close_div;
 				$output .= '<span>'  . $formatted_string['value'] . '</span></div>';
 			} else {
-				$output .= '<div class="everest_forms_preview_confirmation_' . esc_attr( $preview_style ) . '_label">' . esc_html( $formatted_string['label'] ) . ' : ' . esc_html( $close_div );
-				$output .= '<div class="everest_forms_preview_confirmation_' . esc_attr( $preview_style ) . '_value">' . esc_html( $formatted_string['value'] ) . '</div>';
+				error_log( print_r( $formatted_string, true ) );
+				$output .= '<div class="everest_forms_preview_confirmation_' . $preview_style . '_label">' . $formatted_string['label'] . ' : ' . $close_div;
+				$output .= '<div class="everest_forms_preview_confirmation_' . $preview_style . '_value">' . $formatted_string['value'] . '</div>';
 			}
 		}
 
