@@ -99,7 +99,7 @@ class EVF_Admin_Preview_Confirmation {
 		foreach ( $fields as $formatted_string ) {
 			if ( 'basic' === $preview_style ) {
 				$output .= '<div class="everest_forms_preview_confirmation_' . $preview_style . '_label">' . $formatted_string['label'] . ' : ' . $close_div;
-				$output .= $formatted_string['value'] . '</div>';
+				$output .= '<span>'  . $formatted_string['value'] . '</span></div>';
 			} else {
 				$output .= '<div class="everest_forms_preview_confirmation_' . $preview_style . '_label">' . $formatted_string['label'] . ' : ' . $close_div;
 				$output .= '<div class="everest_forms_preview_confirmation_' . $preview_style . '_value">' . $formatted_string['value'] . '</div>';
