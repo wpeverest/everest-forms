@@ -361,7 +361,7 @@ class EVF_Form_Task {
 
 							if ( $recaptcha_passed && 'v3' === $recaptcha_type ) {
 								$threshold = get_option( 'everest_forms_recaptcha_v3_threshold_score', apply_filters( 'everest_forms_recaptcha_v3_threshold', '0.5' ) );
-								if ( ! isset( $response->score ) || $response->score <= floatval( $threshold ) ) {
+								if ( ! isset( $response->score ) || $response->score < floatval( $threshold ) ) {
 									$recaptcha_passed = false;
 									if ( isset( $response->score ) ) {
 										$error .= ' (' . esc_html( $response->score ) . ')';
