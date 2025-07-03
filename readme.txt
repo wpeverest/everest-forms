@@ -345,6 +345,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 = 3.3.0     	- 07-07-2025
 * Enhance		- Update form nonce using the ajax method.
+* Enhance 		- Form confirmation redirection and previews after submission.
 * Enhance 		- Edit field file upload, image upload and signature from both frontend listing and admin.
 * Tweak 		- CleanTalk bot detector js updated.
 * Dev 			- Global setting for paypal in settings payment.
