@@ -328,7 +328,7 @@ class EVF_Admin_Menus {
 				esc_html__( 'Upgrade to Pro', 'everest-forms' )
 			),
 			'manage_everest_forms',
-			esc_url_raw( 'https://everestforms.net/pricing/?utm_source=evf-upgrade-to-pro-submenu&utm_medium=upgrade-link&utm_campaign=' . EVF()->utm_campaign )
+			esc_url_raw( 'https://everestforms.net/upgrade/?utm_medium=evf-dashboard&utm_source=evf-free&utm_campaign=dash-wp-sub-menu&utm_content=Upgrade%20to%20Pro' )
 		);
 	}
 

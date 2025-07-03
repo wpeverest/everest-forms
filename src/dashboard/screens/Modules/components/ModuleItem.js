@@ -210,7 +210,7 @@ const ModuleItem = (props) => {
 		upgradeModalRef.moduleName = data.name;
 
 		if (!isPro) {
-			const plan_upgrade_url = upgradeURL + '&utm_source=dashboard-all-feature&utm_medium=dashboard-upgrade-plan'
+			const plan_upgrade_url = upgradeURL + 'utm_medium=addon-activation-page&utm_source=evf-free&utm_campaign=addon-page-feature-block&utm_content=Upgrade%20Plan'
 			window.open(plan_upgrade_url,'_blank');
 		} else if (isPro && !licenseActivated) {
 			upgradeModalRef.type = "license";

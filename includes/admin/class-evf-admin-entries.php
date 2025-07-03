@@ -383,7 +383,7 @@ class EVF_Admin_Entries {
 				$message .= '<br/>' . __( 'Thank you for giving us your precious time.', 'everest-forms' ) . '<br/>';
 				/* translators:%s: Site Name*/
 				$message .= '<br/>' . sprintf( __( 'From %s', 'everest-forms' ), $site_name );
-				$message  = apply_filters( 'everest_forms_entry_approval_message', $message );
+				$message  = apply_filters( 'everest_forms_entry_approval_message', $message, $name, $entry_date, $site_name );
 			}
 
 			if ( ! $is_bulk_action ) {
@@ -441,7 +441,7 @@ class EVF_Admin_Entries {
 				$message .= '<br/>' . __( 'Thank you for giving us your precious time.', 'everest-forms' ) . '<br/>';
 				/* translator: %s: Site Name */
 				$message .= '<br/>' . sprintf( __( 'From %s', 'everest-forms' ), $site_name );
-				$message  = apply_filters( 'everest_forms_entry_denial_message', $message );
+				$message  = apply_filters( 'everest_forms_entry_denial_message', $message, $name, $entry_date, $site_name );
 			}
 
 			if ( ! $is_bulk_action ) {
