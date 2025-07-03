@@ -54,6 +54,7 @@ class EVF_Admin_Addons {
 	 * Handles output of the addons page in admin.
 	 */
 	public static function output() {
+		error_log( print_r( 'output', true ) );
 		$addons          = array();
 		$sections        = self::get_sections();
 		$refresh_url     = add_query_arg(
