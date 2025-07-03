@@ -9,6 +9,7 @@
 defined( 'ABSPATH' ) || exit;
 
 use Cleantalk\Antispam\CleantalkRequest;
+use EverestForms\Helpers\FormHelper;
 
 /**
  * EVF_Form_Task class.
@@ -527,10 +528,29 @@ class EVF_Form_Task {
 
 			// Format and Sanitize inputs.
 			foreach ( (array) $this->form_data['form_fields'] as $field ) {
-				$field_id        = $field['id'];
-				$field_key       = isset( $field['meta-key'] ) ? $field['meta-key'] : '';
-				$field_type      = $field['type'];
-				$field_submit    = isset( $entry['form_fields'][ $field_id ] ) ? $entry['form_fields'][ $field_id ] : '';
+				$field_id     = $field['id'];
+				$field_key    = isset( $field['meta-key'] ) ? $field['meta-key'] : '';
+				$field_type   = $field['type'];
+				$field_submit = isset( $entry['form_fields'][ $field_id ] ) ? $entry['form_fields'][ $field_id ] : array();
+
+				// Handle file uploads for save continue.
+				if ( in_array( $field_type, array( 'file-upload', 'image-upload' ) ) && defined( 'EVF_SAVE_AND_CONTINUE_VERSION' ) ) {
+					$field_submit['new_files'] = isset( $_POST[ 'everest_forms_' . $form_id . '_' . $field_id ] ) ? stripslashes_deep( $_POST[ 'everest_forms_' . $form_id . '_' . $field_id ] ) : array();
+					$field_submit['old_files'] = isset( $_POST[ 'everest_forms_' . $form_id . '_old_' . $field_id ] ) ? stripslashes_deep( $_POST[ 'everest_forms_' . $form_id . '_old_' . $field_id ] ) : array();
+
+					$deleted_files = isset( $_POST[ 'everest_forms_' . $form_id . '_delete_' . $field_id ] ) ? stripslashes_deep( $_POST[ 'everest_forms_' . $form_id . '_delete_' . $field_id ] ) : '';
+
+					if ( ! empty( $deleted_files ) ) {
+						$deleted_files = json_decode( $deleted_files, true );
+						foreach ( $deleted_files as $file ) {
+							$file = json_decode( $file, true );
+							if ( ! empty( $file ) ) {
+								FormHelper::remove_file( $file['value'] );
+							}
+						}
+					}
+				}
+
 				$repeater_fields = array_key_exists( 'repeater-fields', $field ) ? $field['repeater-fields'] : 'no';
 
 				if ( 'no' === $repeater_fields || 'repeater-fields' === $field_type ) {

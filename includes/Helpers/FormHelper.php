@@ -63,7 +63,7 @@ class FormHelper {
 		$all_tags = array();
 		foreach ( $form_ids as $form_id ) {
 
-			$tags = self::get_form_tags( $form_id );
+			$tags     = self::get_form_tags( $form_id );
 			$all_tags = $all_tags + $tags;
 		}
 
@@ -78,7 +78,7 @@ class FormHelper {
 	 * @param string $access_key The access key.
 	 * @return bool
 	 */
-	public static function evf_save_clean_talk_settings( $access_key ){
+	public static function evf_save_clean_talk_settings( $access_key ) {
 		$clean_talk_request = array(
 			'method_name' => 'notice_paid_till',
 			'auth_key'    => sanitize_text_field( $access_key ),
@@ -100,5 +100,64 @@ class FormHelper {
 		} else {
 			return false;
 		}
+	}
+
+	/**
+	 * Check the file type.
+	 *
+	 * @param [type] $ext The extension.
+	 */
+	public static function evf_file_upload_check_file_types( $ext ) {
+		$supportedFileTypes = array(
+			'pdf',
+			'doc',
+			'xls',
+			'ppt',
+			'mp3',
+			'mp4',
+			'zip',
+		);
+		$newMsFileTypes     = array( 'docx', 'xlsx', 'pptx' );
+		$imageFileTypes     = array( 'jpg', 'jpeg', 'png', 'gif' );
+
+		$fileIcon = null;
+
+		if ( in_array( $ext, $supportedFileTypes ) ) {
+			$fileIcon = $ext;
+		} elseif ( in_array( $ext, $newMsFileTypes ) ) {
+			$fileIcon = substr( $ext, 0, - 1 );
+		} elseif ( ! in_array( $ext, $imageFileTypes ) ) {
+			$fileIcon = 'default';
+		}
+
+		return $fileIcon;
+	}
+
+	/**
+	 * Remove the file.
+	 *
+	 * @param [type] $file_url The file url.
+	 */
+	public static function remove_file( $file_url ) {
+		$uploads       = wp_upload_dir();
+		$base_dir      = realpath( $uploads['basedir'] );
+		$path_from_url = wp_parse_url( $file_url, PHP_URL_PATH );
+
+		$uploaded_file = $uploads['basedir'] . preg_replace(
+			'/.*uploads/',
+			'/everest_forms_uploads',
+			$path_from_url
+		);
+
+		$normalized_path = wp_normalize_path( $uploaded_file );
+		$resolved_path   = realpath( $normalized_path );
+		// Validate path is within allowed directory
+		if ( $resolved_path && strpos( $resolved_path, $base_dir ) === 0 ) {
+			if ( is_file( $resolved_path ) ) {
+				wp_delete_file( $resolved_path );
+			}
+		}
+
+		return;
 	}
 }

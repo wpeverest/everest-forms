@@ -844,7 +844,7 @@ class EVF_Shortcode_Form {
 				}
 			}
 		}
-		$errors     = isset( evf()->task->errors[ $form_id ][ $field_id ] ) ? evf()->task->errors[ $form_id ][ $field_id ] : '';
+		$errors   = isset( evf()->task->errors[ $form_id ][ $field_id ] ) ? evf()->task->errors[ $form_id ][ $field_id ] : '';
 		$defaults   = isset( $_POST['everest_forms']['form_fields'][ $field_id ] ) && ( ! is_array( $_POST['everest_forms']['form_fields'][ $field_id ] ) && ! empty( $_POST['everest_forms']['form_fields'][ $field_id ] ) ) ? $_POST['everest_forms']['form_fields'][ $field_id ] : ''; // @codingStandardsIgnoreLine
 
 		/**
@@ -868,10 +868,10 @@ class EVF_Shortcode_Form {
 
 			if ( $is_hidden ) {
 				$default_value = isset( $field['default_value'] ) ? apply_filters( 'everest_forms_process_smart_tags', $field['default_value'], $form_data ) : $defaults;
-			}else{
-				$default_value = isset( $field['default_value'] ) ?  '' : $defaults;
+			} else {
+				$default_value = isset( $field['default_value'] ) ? '' : $defaults;
 			}
-		}else{
+		} else {
 			$default_value = isset( $field['default_value'] ) ? apply_filters( 'everest_forms_process_smart_tags', $field['default_value'], $form_data ) : $defaults;
 		}
 
