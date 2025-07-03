@@ -3647,7 +3647,7 @@ jQuery(function ($) {
 				var initialValue = el.val();
 
 				toggleMessageLocations(el, initialValue);
-				previewType(outerWrapper);
+				previewType(el, outerWrapper);
 
 				outerWrapper.off('change', '.form-state-type').on('change', '.form-state-type', function() {
 					toggleMessageLocations($(this), $(this).val());
@@ -3743,8 +3743,14 @@ jQuery(function ($) {
 		});
 	}
 
-	function previewType(outerWrapper) {
+	function previewType(el, outerWrapper) {
 		var queryStringWrap = outerWrapper.find('.preview-confirm-select-wrapper');
+
+		if(el.val() == 'reset') {
+		  queryStringWrap.toggle(false);
+		  return;
+		}
+
 		var appendInput = outerWrapper.find('.everest-preview-confirmation');
 		queryStringWrap.toggle(appendInput.is(':checked'));
 

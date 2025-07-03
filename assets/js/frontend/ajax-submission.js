@@ -125,8 +125,8 @@ jQuery( function( $ ) {
 								}
 							} else {
 								window.location.href = redirect_url;
+								return;
 							}
-							return;
 						}
 					if (xhr && xhr.payment_method && xhr.payment_method === 'paypal' && xhr.redirect) {
 						if ('paypal' === xhr.payment_method) {

@@ -583,8 +583,8 @@ class EVF_Form_Task {
 				return $response_data;
 			}
 		}
-		//For form confirmation backward compatilibity.
-		$this->form_data = evf_form_confirmation_backward_compatibility($this->form_data);
+		// For form confirmation backward compatilibity.
+		$this->form_data = evf_form_confirmation_backward_compatibility( $this->form_data );
 		$settings        = $this->form_data['settings'];
 		$message         = isset( $settings['successful_form_submission_message'] ) ? $settings['successful_form_submission_message'] : __( 'Thanks for contacting us! We will be in touch with you shortly.', 'everest-forms' );
 		$form_state_type = isset( $settings['form_state_type'] ) ? $settings['form_state_type'] : 'hide';
@@ -697,8 +697,8 @@ class EVF_Form_Task {
 					$response_data['message'] = $submission_redirection_process['settings']['successful_form_submission_message'];
 
 				} else {
-					$response_data['redirect_url']               = $submission_redirection_process['external_url'];
-					$response_data['enable_redirect_in_new_tab'] = isset( $settings['enable_redirect_in_new_tab'] ) ? esc_url( $settings['enable_redirect_in_new_tab'] ) : false;
+					$response_data['redirect_url']               = esc_url( $submission_redirection_process['external_url'] );
+					$response_data['enable_redirect_in_new_tab'] = isset( $settings['enable_redirect_in_new_tab'] ) ? $settings['enable_redirect_in_new_tab'] : false;
 				}
 			}
 
