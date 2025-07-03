@@ -9,6 +9,7 @@
 defined( 'ABSPATH' ) || exit;
 
 use Cleantalk\Antispam\CleantalkRequest;
+use EverestForms\Helpers\FormHelper;
 
 /**
  * EVF_Form_Task class.
@@ -79,6 +80,13 @@ class EVF_Form_Task {
 		add_action( 'admin_init', array( $this, 'evf_admin_deny_entry' ) );
 		add_action( 'admin_init', array( $this, 'evf_mark_entry_spam' ), 10 );
 		add_action( 'admin_init', array( $this, 'evf_remove_entry_from_spam' ), 10 );
+		/**
+		 * Delete files.
+		 *
+		 * @since xx.xx.xx
+		 */
+		add_action( 'before_delete_post', array( $this, 'delete_entry_files_before_form_delete' ), 10, 1 );
+		add_action( 'everest_forms_before_delete_entries', array( $this, 'delete_entry_files' ), 10, 1 );
 	}
 
 	/**
@@ -313,22 +321,43 @@ class EVF_Form_Task {
 					$theme_mode = get_option( 'everest_forms_recaptcha_turnstile_theme' );
 				}
 				$recaptcha_verified = false;
+				$error              = '';
 				foreach ( (array) $this->form_data['form_fields'] as $field ) {
 					$field_type = isset( $field['type'] ) ? $field['type'] : '';
 					$captcha    = array( 'recaptcha', 'hcaptcha', 'turnstile' );
-					if ( ! empty( $site_key ) && ! empty( $secret_key ) && isset( $this->form_data['settings']['recaptcha_support'] ) && '1' === $this->form_data['settings']['recaptcha_support'] &&
-					! isset( $_POST['__amp_form_verify'] ) && ( 'v3' === $recaptcha_type || ! evf_is_amp() ) || ( ! empty( $site_key ) && ! empty( $secret_key ) ) && in_array( $field_type, $captcha, true ) ) {
 
+					if (
+						( ! empty( $site_key ) && ! empty( $secret_key ) &&
+						  isset( $this->form_data['settings']['recaptcha_support'] ) &&
+						  '1' === $this->form_data['settings']['recaptcha_support'] &&
+						  ! isset( $_POST['__amp_form_verify'] ) &&
+						  ( 'v3' === $recaptcha_type || ! evf_is_amp() )
+						)
+						||
+						( ! empty( $site_key ) && ! empty( $secret_key ) && in_array( $field_type, $captcha, true ) )
+					) {
+						// Get the token based on CAPTCHA type
 						$token = ! empty( $_POST['g-recaptcha-response'] ) ? evf_clean( wp_unslash( $_POST['g-recaptcha-response'] ) ) : false;
 
 						if ( 'v3' === $recaptcha_type ) {
 							$token = ! empty( $_POST['everest_forms']['recaptcha'] ) ? evf_clean( wp_unslash( $_POST['everest_forms']['recaptcha'] ) ) : false;
+						} elseif ( 'hcaptcha' === $recaptcha_type ) {
+							$token = ! empty( $_POST['h-captcha-response'] ) ? evf_clean( wp_unslash( $_POST['h-captcha-response'] ) ) : false;
+						} elseif ( 'turnstile' === $recaptcha_type ) {
+							$token = ! empty( $_POST['cf-turnstile-response'] ) ? evf_clean( wp_unslash( $_POST['cf-turnstile-response'] ) ) : false;
 						}
+
+						if ( ! $token ) {
+							$error                              = esc_html__( 'CAPTCHA token missing. Please try again.', 'everest-forms' );
+							$this->errors[ $form_id ]['header'] = $error;
+							$logger->error( $error, array( 'source' => 'CAPTCHA' ) );
+							return $this->errors;
+						}
+
+						// Validate the token
 						if ( 'hcaptcha' === $recaptcha_type ) {
-							$token        = ! empty( $_POST['h-captcha-response'] ) ? evf_clean( wp_unslash( $_POST['h-captcha-response'] ) ) : false;
 							$raw_response = wp_safe_remote_get( 'https://hcaptcha.com/siteverify?secret=' . $secret_key . '&response=' . $token );
 						} elseif ( 'turnstile' === $recaptcha_type ) {
-							$token        = ! empty( $_POST['cf-turnstile-response'] ) ? evf_clean( wp_unslash( $_POST['cf-turnstile-response'] ) ) : false;
 							$url          = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
 							$params       = array(
 								'method' => 'POST',
@@ -345,13 +374,11 @@ class EVF_Form_Task {
 						if ( ! is_wp_error( $raw_response ) ) {
 							$response = json_decode( wp_remote_retrieve_body( $raw_response ) );
 
-							$recaptcha_passed = true;
+							$recaptcha_passed = ! empty( $response->success );
 
-							if ( empty( $response->success ) ) {
-								$recaptcha_passed = false;
-							} elseif ( 'v3' === $recaptcha_type ) {
+							if ( $recaptcha_passed && 'v3' === $recaptcha_type ) {
 								$threshold = get_option( 'everest_forms_recaptcha_v3_threshold_score', apply_filters( 'everest_forms_recaptcha_v3_threshold', '0.5' ) );
-								if ( ! isset( $response->score ) || $response->score <= floatval( $threshold ) ) {
+								if ( ! isset( $response->score ) || $response->score < floatval( $threshold ) ) {
 									$recaptcha_passed = false;
 									if ( isset( $response->score ) ) {
 										$error .= ' (' . esc_html( $response->score ) . ')';
@@ -365,14 +392,11 @@ class EVF_Form_Task {
 								} elseif ( 'turnstile' === $recaptcha_type ) {
 									$error = esc_html__( 'Cloudflare Turnstile verification failed, please try again later.', 'everest-forms' );
 								} else {
-
 									$error = esc_html__( 'Google reCAPTCHA verification failed, please try again later.', 'everest-forms' );
 								}
+
 								$this->errors[ $form_id ]['header'] = $error;
-								$logger->error(
-									$error,
-									array( 'source' => 'Google reCAPTCHA' )
-								);
+								$logger->error( $error, array( 'source' => 'CAPTCHA' ) );
 								return $this->errors;
 							}
 						}
@@ -513,10 +537,29 @@ class EVF_Form_Task {
 
 			// Format and Sanitize inputs.
 			foreach ( (array) $this->form_data['form_fields'] as $field ) {
-				$field_id        = $field['id'];
-				$field_key       = isset( $field['meta-key'] ) ? $field['meta-key'] : '';
-				$field_type      = $field['type'];
-				$field_submit    = isset( $entry['form_fields'][ $field_id ] ) ? $entry['form_fields'][ $field_id ] : '';
+				$field_id     = $field['id'];
+				$field_key    = isset( $field['meta-key'] ) ? $field['meta-key'] : '';
+				$field_type   = $field['type'];
+				$field_submit = isset( $entry['form_fields'][ $field_id ] ) ? $entry['form_fields'][ $field_id ] : array();
+
+				// Handle file uploads for save continue.
+				if ( in_array( $field_type, array( 'file-upload', 'image-upload' ) ) && defined( 'EVF_SAVE_AND_CONTINUE_VERSION' ) ) {
+					$field_submit['new_files'] = isset( $_POST[ 'everest_forms_' . $form_id . '_' . $field_id ] ) ? stripslashes_deep( $_POST[ 'everest_forms_' . $form_id . '_' . $field_id ] ) : array();
+					$field_submit['old_files'] = isset( $_POST[ 'everest_forms_' . $form_id . '_old_' . $field_id ] ) ? stripslashes_deep( $_POST[ 'everest_forms_' . $form_id . '_old_' . $field_id ] ) : array();
+
+					$deleted_files = isset( $_POST[ 'everest_forms_' . $form_id . '_delete_' . $field_id ] ) ? stripslashes_deep( $_POST[ 'everest_forms_' . $form_id . '_delete_' . $field_id ] ) : '';
+
+					if ( ! empty( $deleted_files ) ) {
+						$deleted_files = json_decode( $deleted_files, true );
+						foreach ( $deleted_files as $file ) {
+							$file = json_decode( $file, true );
+							if ( ! empty( $file ) ) {
+								FormHelper::remove_file( $file['value'] );
+							}
+						}
+					}
+				}
+
 				$repeater_fields = array_key_exists( 'repeater-fields', $field ) ? $field['repeater-fields'] : 'no';
 
 				if ( 'no' === $repeater_fields || 'repeater-fields' === $field_type ) {
@@ -1223,7 +1266,7 @@ class EVF_Form_Task {
 			$new_booked_slot = array( $form_id => $datetime_arr );
 
 			if ( empty( $get_booked_slot ) ) {
-				$all_booked_slot = evf_maybe_serialize( $new_booked_slot );
+				$all_booked_slot = maybe_serialize( $new_booked_slot );
 			} else {
 				$unserialized_booked_slot = evf_maybe_unserialize( $get_booked_slot );
 
@@ -1518,7 +1561,7 @@ class EVF_Form_Task {
 						// translators: %s is the site_name.
 						$message .= '<br/>' . sprintf( __( 'From %s', 'everest-forms' ), $site_name );
 						// translators: %s is the message.
-						$message = apply_filters( 'everest_forms_entry_approval_message', $message );
+						$message = apply_filters( 'everest_forms_entry_approval_message', $message, $name, $entry_date, $site_name );
 					}
 
 					$email_obj = new EVF_Emails();
@@ -1599,7 +1642,7 @@ class EVF_Form_Task {
 						// translators: %s is the site_name.
 						$message .= '<br/>' . sprintf( __( 'From %s', 'everest-forms' ), $site_name );
 						// translators: %s is the message.
-						$message = apply_filters( 'everest_forms_entry_denial_message', $message );
+						$message = apply_filters( 'everest_forms_entry_denial_message', $message, $name, $entry_date, $site_name );
 
 					}
 					$email_obj = new EVF_Emails();
@@ -1736,13 +1779,27 @@ class EVF_Form_Task {
 		$marked_as_spam = false;
 
 		$submit_time = isset( $this->form_data['entry']['evf_form_load_time'] ) ? time() - (int) $this->form_data['entry']['evf_form_load_time'] : null;
-		$event_token = isset( $this->form_data['entry']['evf_form_event_token'] ) ? $this->form_data['entry']['evf_form_event_token'] : null;
+		$event_token = isset( $this->form_data['entry']['evf_event_token'] ) ? $this->form_data['entry']['evf_event_token'] : null
 
-		$entry_data = $this->get_entry_data_for_akismet( $this->form_data['form_fields'], $entry );
-		$entry_data = apply_filters( 'evf_entry_akismet_entry_data', $entry_data, $entry, $this->form_data );
+		$entry_data = $this->evf_get_entry_data_for_cleantalk( $this->form_data['form_fields'], $entry );
+
+        $all_headers = null;
+
+        if ( function_exists('apache_request_headers') ) {
+            $all_headers = array_filter(
+                apache_request_headers(),
+                function ($value, $key) {
+                    return strtolower($key) !== 'cookie';
+                },
+                ARRAY_FILTER_USE_BOTH
+            );
+            $all_headers = json_encode($all_headers);
+            $all_headers = false !== $all_headers ? $all_headers : null;
+        }
 
 		$clean_talk_request = array(
 			'method_name'     => 'check_message',
+			'all_headers'	  => $all_headers,
 			'auth_key'        => $access_key,
 			'sender_ip'       => $_SERVER['REMOTE_ADDR'],
 			'sender_info'     => json_encode(
@@ -1754,10 +1811,9 @@ class EVF_Form_Task {
 			'js_on'           => 1,
 			'submit_time'     => $submit_time,
 			'event_token'     => $event_token,
-			'sender_nickname' => isset( $entry_data['name'] ) ? $entry_data['name'] : '',
-			'sender_email'    => isset( $entry_data['email'] ) ? $entry_data['email'] : '',
-			'message'         => isset( $entry_data['content'] ) ? $entry_data['content'] : '',
-			'phone'           => '',
+			'sender_nickname' => isset( $entry_data['sender_nickname'] ) ? $entry_data['sender_nickname'] : '',
+			'sender_email'    => isset( $entry_data['sender_email'] ) ? $entry_data['sender_email'] : '',
+			'message'         => isset( $entry_data['message'] ) ? $entry_data['message'] : '',
 			'agent'           => 'wordpress-everest-forms-' . EVF_VERSION,
 			'post_info'       => array(
 				'comment_type' => 'everest_forms_vendor_integration__use_api',
@@ -1788,4 +1844,150 @@ class EVF_Form_Task {
 
 		return $marked_as_spam;
 	}
+
+	/**
+	 * Remove Files Attached to the Entry of the Form.
+	 *
+	 * @param int $form_id Form ID to get required form data and remove files.
+	 */
+	public function delete_entry_files_before_form_delete( $form_id ) {
+		$entries = evf_get_entries_ids( $form_id );
+		if ( ! empty( $entries ) ) {
+			foreach ( $entries as $entry_id ) {
+				$this->delete_entry_files( $entry_id );
+			}
+		}
+	}
+
+	/**
+	 * Delete Attachment after removing Entry.
+	 *
+	 * @param int $entry_id Entry ID for which file should be removed.
+	 */
+	public function delete_entry_files( $entry_id ) {
+		$get_entry = evf_get_entry( $entry_id, 'meta' );
+		if ( empty( $get_entry->meta ) ) {
+			return;
+		}
+
+		// Get form configuration
+		$form_id     = $get_entry->form_id;
+		$form        = evf()->form->get( $form_id, array( 'content_only' => true ) );
+		$form_fields = isset( $form['form_fields'] ) ? $form['form_fields'] : array();
+
+		// Build field type lookup by meta-key
+		$field_types = array();
+		foreach ( $form_fields as $field_id => $field_config ) {
+			if ( isset( $field_config['meta-key'] ) && ! empty( $field_config['meta-key'] ) ) {
+				$field_types[ $field_config['meta-key'] ] = $field_config['type'];
+			}
+		}
+
+		$uploads           = wp_upload_dir();
+		$base_dir          = realpath( $uploads['basedir'] );
+		$everest_forms_dir = $base_dir ? realpath( $base_dir . '/everest_forms_uploads' ) : false;
+
+		foreach ( $get_entry->meta as $meta_key => $meta_value ) {
+			if ( empty( $meta_value ) ) {
+				continue;
+			}
+
+			$field_type = isset( $field_types[ $meta_key ] ) ? $field_types[ $meta_key ] : '';
+
+			if ( preg_match( '/signature_/', $meta_key ) || $field_type === 'signature' ) {
+				$this->safe_delete_file( $meta_value, $base_dir );
+			} elseif ( 'file-upload' === $field_type || 'image-upload' === $field_type ) {
+				$files = explode( "\n", $meta_value );
+				foreach ( $files as $file ) {
+					$path_from_url = wp_parse_url( $file, PHP_URL_PATH );
+					if ( ! $path_from_url ) {
+						continue;
+					}
+
+					$uploaded_file = $uploads['basedir'] . preg_replace(
+						'/.*uploads/',
+						'/everest_forms_uploads',
+						$path_from_url
+					);
+
+					$this->safe_delete_file( $uploaded_file, $base_dir );
+				}
+			}
+		}
+	}
+
+	/**
+	 * Securely delete a file with path validation
+	 *
+	 * @param string $path File path to delete
+	 * @param string $allowed_base Base directory path (must be realpath result)
+	 */
+	private function safe_delete_file( $path, $allowed_base ) {
+		if ( ! $allowed_base || empty( $path ) ) {
+			return;
+		}
+		$normalized_path = wp_normalize_path( $path );
+		$resolved_path   = realpath( $normalized_path );
+		// Validate path is within allowed directory
+		if ( $resolved_path && strpos( $resolved_path, $allowed_base ) === 0 ) {
+			if ( is_file( $resolved_path ) ) {
+				wp_delete_file( $resolved_path );
+			}
+		}
+	}
+
+	/**
+     * @param array $maybe_form_fields
+     * @param array $post_entry
+     *
+	 * @since 3.3.0
+	 *
+     * @return array
+     */
+    private function evf_get_entry_data_for_cleantalk( $maybe_form_fields, $post_entry ) {
+        $entry_data = array(
+            'sender_nickname' => array(),
+            'sender_email'    => '',
+            'message'         => array(),
+        );
+        $list_of_ct_expected_fields = array(
+            'fullname',
+            'first-name',
+            'last-name',
+            'email',
+            'text',
+            'textarea',
+        );
+        $list_of_ct_expected_fields = apply_filters( 'evf_cleantalk_expected_fields', $list_of_ct_expected_fields, $maybe_form_fields );
+        foreach ( $post_entry['form_fields'] as $key => $value ) {
+            if ( isset( $maybe_form_fields[$key]['type'] ) ) {
+                switch ( $maybe_form_fields[$key]['type'] ) {
+                    case 'first-name':
+                    case 'last-name':
+                    case 'fullname':
+                        $entry_data['sender_nickname'][] = isset( $value ) ? $value : '';
+                        break;
+                    case 'email':
+                        empty($entry_data['sender_email']) && $entry_data['sender_email'] = isset( $value ) ? $value : '';
+                        break;
+                    case 'text':
+                    case 'textarea':
+                        $entry_data['message'][] = isset( $value ) ? $value : '';
+                        break;
+                    default:
+                        if ( in_array( $maybe_form_fields[$key]['type'], $list_of_ct_expected_fields, true ) ) {
+                            $entry_data['message'][] = isset( $value ) ? $value : '';
+                        }
+                }
+            }
+        }
+        $entry_data = apply_filters( 'evf_entry_cleantalk_entry_data', $entry_data, $post_entry, $maybe_form_fields );
+        if ( isset($entry_data['message'] ) && is_array( $entry_data['message'] ) ) {
+            $entry_data['message'] = implode( ' ', $entry_data['message'] );
+        }
+        if (isset( $entry_data['sender_nickname']) && is_array( $entry_data['sender_nickname'] ) ) {
+            $entry_data['sender_nickname'] = implode( ' ', $entry_data['sender_nickname'] );
+        }
+        return $entry_data;
+    }
 }

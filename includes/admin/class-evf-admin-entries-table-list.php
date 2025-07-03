@@ -589,7 +589,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 								$message .= '<br/>' . __( 'Thank you for giving us your precious time', 'everest-forms' ) . '<br/>';
 								/* translators:%s: Site Name */
 								$message .= '<br/>' . sprintf( __( 'From %s', 'everest-forms' ), $site_name );
-								$message  = apply_filters( 'everest_forms_entry_approval_message', $message );
+								$message  = apply_filters( 'everest_forms_entry_approval_message', $message, $name, $entry_date, $site_name );
 							}
 							$email_obj = new EVF_Emails();
 							$email_obj->send( $email, $subject, $message );
@@ -653,7 +653,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 								$message .= '<br/>' . __( 'Thank you for giving us your precious time', 'everest-forms' ) . '<br/>';
 								/* translators:%s: Site Name */
 								$message .= '<br/>' . sprintf( __( 'From %s', 'everest-forms' ), $site_name );
-								$message  = apply_filters( 'everest_forms_entry_denial_message', $message );
+								$message  = apply_filters( 'everest_forms_entry_denial_message', $message, $name, $entry_date, $site_name );
 							}
 							$email_obj = new EVF_Emails();
 							$email_obj->send( $email, $subject, $message );
