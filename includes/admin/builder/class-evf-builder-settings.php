@@ -612,7 +612,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 		?>
 				<div id="everest-forms-panel-field-settings-redirect_to-wrap" class="everest-forms-panel-field evf-builder-radio  everest-forms-panel-field-radio">
 					<label for="everest-forms-panel-field-settings-redirect_to"><?php echo __( 'Confirmation Type', 'everest-forms' ); ?>
-						<i class="dashicons dashicons-editor-help everest-forms-help-tooltip tooltipstered"></i>
+						<i title="<?php echo __( 'Choose the confirmation type', 'everest-forms' ); ?>" class="dashicons dashicons-editor-help everest-forms-help-tooltip"></i>
 					</label>
 					<div class="radio-list">
 						<label for="everest-forms-panel-field-settings-redirect_to-1" class="inline"><input type="radio" id="everest-forms-panel-field-settings-redirect_to-1" name="settings[redirect_to]" value="same" class="widefat confirmation-redirect-to" <?php echo checked( 'same', $confirmation_type, false ); ?> ><?php echo __( 'Same Page', 'everest-forms' ); ?></label>
@@ -716,7 +716,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			$form_state_type = isset( $this->form_data['settings']['form_state_type'] ) ? $this->form_data['settings']['form_state_type'] : 'hide';
 		?>
 				<div id="everest-forms-panel-field-settings-form_state_type-wrap" class="everest-forms-panel-field same-page-setting evf-builder-radio  everest-forms-panel-field-radio" style="">
-					<label for="everest-forms-panel-field-settings-form_state_type"><?php echo __( 'After Submission Form Behavior', 'everest-forms' ); ?> <i class="dashicons dashicons-editor-help everest-forms-help-tooltip tooltipstered"></i></label>
+					<label for="everest-forms-panel-field-settings-form_state_type"><?php echo __( 'After Submission Form Behavior', 'everest-forms' ); ?> <i title="<?php echo __( 'Choose the submission form behavior.', 'everest-forms' ); ?>" class="dashicons dashicons-editor-help everest-forms-help-tooltip tooltipstered"></i></label>
 					<div class="radio-list">
 						<label for="everest-forms-panel-field-settings-form_state_type-1" class="inline"><input type="radio" id="everest-forms-panel-field-settings-form_state_type-1" name="settings[form_state_type]" value="reset" class="widefat form-state-type" <?php echo checked( 'reset', $form_state_type, false ); ?> > <?php echo __( 'Reset Form', 'everest-forms' ); ?></label>
 						<label for="everest-forms-panel-field-settings-form_state_type-2" class="inline"><input type="radio" id="everest-forms-panel-field-settings-form_state_type-2" name="settings[form_state_type]" value="hide" class="widefat form-state-type"  <?php echo checked( 'hide', $form_state_type, false ); ?> ><?php echo __( 'Hide Form', 'everest-forms' ); ?></label>
