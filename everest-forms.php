@@ -3,7 +3,7 @@
  * Plugin Name: Everest Forms
  * Plugin URI: https://everestforms.net/
  * Description: Best WordPress Form Plugin to Create Contact Forms, Surveys, Quizzes, Payment Forms, & Custom Forms Using Drag & Drop Form Builder.
- * Version: 3.2.6
+ * Version: 3.3.0
  * Author: Everest Forms
  * Author URI: https://everestforms.net/
  * Text Domain: everest-forms

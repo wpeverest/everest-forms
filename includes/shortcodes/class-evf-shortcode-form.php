@@ -503,7 +503,7 @@ class EVF_Shortcode_Form {
 			return;
 		}
 
-		$detector_js_url   = 'https://moderate.cleantalk.org/ct-bot-detector-wrapper.js';
+		$detector_js_url    = 'https://fd.cleantalk.org/ct-bot-detector-wrapper.js';
 		$clean_talk_inline = <<<JS
 		document.addEventListener("DOMContentLoaded", function () {
 			var loadInput = document.querySelector('input[name="everest_forms[evf_form_load_time]"]');
@@ -513,23 +513,34 @@ class EVF_Shortcode_Form {
 
 			var maxAttempts = 10;
 			var attempts = 0;
-			var interval = setInterval(function () {
-				var match = document.cookie.match(/ct_event_token=([^;]+)/);
-				if (match && match[1]) {
-					var eventInput = document.querySelector('input[name="everest_forms[evf_event_token]"]');
-					if (eventInput) {
-						eventInput.value = match[1];
+			var token = false;
+			var interval = setInterval( function () {
+				var lStorage = localStorage.getItem('bot_detector_event_token');
+				if ( lStorage !== null ) {
+					try {
+						lStorage = JSON.parse( lStorage );
+						if ( lStorage.hasOwnProperty( 'value' )  && typeof lStorage.value === 'string' ) {
+							token = lStorage.value;
+						}
+					} catch ( e ) {
+						token = null;
 					}
-					clearInterval(interval);
 				}
-				if (++attempts >= maxAttempts) {
-					clearInterval(interval);
+				if ( token ) {
+					var eventInput = document.querySelector( 'input[name="everest_forms[evf_event_token]"]' );
+					if ( eventInput ) {
+						eventInput.value = token;
+					}
+					clearInterval( interval );
+				}
+				if ( ++attempts >= maxAttempts ) {
+					clearInterval( interval );
 				}
 			}, 500);
 		});
 		JS;
 
-		// Enqueue reCaptcha scripts.
+		// Enqueue cleanTalk scripts.
 		wp_enqueue_script(
 			'evf-clan-talk',
 			$detector_js_url,
