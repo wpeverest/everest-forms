@@ -607,7 +607,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				echo '</h4>';
 
 				$confirmation_type = isset( $this->form_data['settings']['redirect_to'] ) ? $this->form_data['settings']['redirect_to'] : 'same';
-				$confirmation_type = 0 == $confirmation_type ? 'same' : $confirmation_type;
+				$confirmation_type = 0 === $confirmation_type ? 'same' : $confirmation_type;
 
 		?>
 				<div id="everest-forms-panel-field-settings-redirect_to-wrap" class="everest-forms-panel-field evf-builder-radio  everest-forms-panel-field-radio">
