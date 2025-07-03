@@ -672,9 +672,20 @@ class EVF_Form_Task {
 				return $response_data;
 			}
 		}
+		// For form confirmation backward compatilibity.
+		$this->form_data = evf_form_confirmation_backward_compatibility( $this->form_data );
+		$settings        = $this->form_data['settings'];
+		$message         = isset( $settings['successful_form_submission_message'] ) ? $settings['successful_form_submission_message'] : __( 'Thanks for contacting us! We will be in touch with you shortly.', 'everest-forms' );
+		$form_state_type = isset( $settings['form_state_type'] ) ? $settings['form_state_type'] : 'hide';
 
-		$settings                  = $this->form_data['settings'];
-		$message                   = isset( $settings['successful_form_submission_message'] ) ? $settings['successful_form_submission_message'] : __( 'Thanks for contacting us! We will be in touch with you shortly.', 'everest-forms' );
+		if ( 'hide' === $form_state_type ) {
+
+			$message_display_location = isset( $settings['message_display_location_of_hide'] ) ? $settings['message_display_location_of_hide'] : 'hide';
+		} else {
+			$message_display_location = isset( $settings['message_display_location_of_reset'] ) ? $settings['message_display_location_of_reset'] : 'top';
+		}
+
+		// $message_display_location  = isset( $settings['successful_form_submission_message_display_location'] ) ? $settings['successful_form_submission_message_display_location'] : 'hide';
 		$is_pdf_submission_enabled = isset( $settings['pdf_submission']['enable_pdf_submission'] ) && ( 'yes' === $settings['pdf_submission']['enable_pdf_submission'] || '1' === $settings['pdf_submission']['enable_pdf_submission'] );
 		$pdf_submission            = $is_pdf_submission_enabled ? $settings['pdf_submission'] : '';
 
@@ -682,11 +693,22 @@ class EVF_Form_Task {
 		$is_global_pdf_download_enabled = 'yes' === get_option( 'everest_forms_pdf_download_after_submit', 'no' ) || '1' === get_option( 'everest_forms_pdf_download_after_submit', 'no' );
 		$should_allow_pdf_download      = $is_pdf_submission_enabled ? $is_pdf_download_after_submit : $is_global_pdf_download_enabled;
 
+		// Check Conditional Logic and get the redirection URL.
+		$submission_redirection_process = apply_filters( 'everest_forms_submission_redirection_process', array(), $this->form_fields, $this->form_data );
+
 		$is_preview_confirmation = isset( $this->form_data['settings']['preview_confirmation'] ) ? $this->form_data['settings']['preview_confirmation'] : 0;
 
+		if ( ! empty( $submission_redirection_process ) && 'same' == $submission_redirection_process['redirect_to'] ) {
+			$is_preview_confirmation = $submission_redirection_process['settings']['preview_confirmation'];
+		}
+		$form_state_type = isset( $this->form_data['settings']['form_state_type'] ) ? $this->form_data['settings']['form_state_type'] : 'hide';
 		// show preview of form after submission.
-		if ( '1' === $is_preview_confirmation ) {
+		if ( '1' === $is_preview_confirmation && 'hide' === $form_state_type ) {
 			$preview_style = isset( $this->form_data['settings']['preview_confirmation_select'] ) ? $this->form_data['settings']['preview_confirmation_select'] : 'basic';
+
+			if ( ! empty( $submission_redirection_process ) && 'same' == $submission_redirection_process['redirect_to'] ) {
+				$preview_style = $submission_redirection_process['settings']['preview_confirmation_select'];
+			}
 			if ( '1' === $ajax_form_submission ) {
 				$response_data['is_preview_confirmation'] = $is_preview_confirmation;
 				$response_data['preview_confirmation']    = apply_filters( 'everest_forms_preview_confirmation', $this->form_data, $this->form_fields, $preview_style );
@@ -702,14 +724,13 @@ class EVF_Form_Task {
 			$__everest_form_entry_id = $entry_id;
 		}
 
-		// Check Conditional Logic and get the redirection URL.
-		$submission_redirection_process = apply_filters( 'everest_forms_submission_redirection_process', array(), $this->form_fields, $this->form_data );
-
 		// Backward compatibility for evf form templates.
 		$this->form_data['settings']['redirect_to'] = '0' === $this->form_data['settings']['redirect_to'] ? 'same' : $this->form_data['settings']['redirect_to'];
 
 		if ( '1' === $ajax_form_submission ) {
 			$response_data['message']                   = $message;
+			$response_data['message_display_location']  = $message_display_location;
+			$response_data['form_state_type']           = $form_state_type;
 			$response_data['response']                  = 'success';
 			$response_data['form_id']                   = $form_id;
 			$response_data['entry_id']                  = $entry_id;
@@ -746,12 +767,28 @@ class EVF_Form_Task {
 			// Check for Submission Redirection in Ajax Submission.
 			if ( empty( $submission_redirection_process ) ) {
 				if ( isset( $settings['redirect_to'] ) && 'external_url' === $settings['redirect_to'] ) {
-					$response_data['redirect_url'] = isset( $settings['external_url'] ) ? esc_url( $settings['external_url'] ) : 'undefined';
+					$response_data['redirect_url']               = isset( $settings['external_url'] ) ? esc_url( $settings['external_url'] ) : 'undefined';
+					$response_data['enable_redirect_in_new_tab'] = isset( $settings['enable_redirect_in_new_tab'] ) ? $settings['enable_redirect_in_new_tab'] : false;
 				} elseif ( isset( $settings['redirect_to'] ) && 'custom_page' === $settings['redirect_to'] ) {
 					$response_data['redirect_url'] = isset( $settings['custom_page'] ) ? get_page_link( absint( $settings['custom_page'] ) ) : 'undefined';
 				}
 			} else {
-				$response_data['redirect_url'] = $submission_redirection_process['external_url'];
+				// Overiding the default setting message
+				if ( 'same' === $submission_redirection_process['redirect_to'] ) {
+					$form_state_type = $submission_redirection_process['settings']['form_state_type'];
+					if ( 'hide' === $form_state_type ) {
+
+						$response_data['message_display_location'] = $submission_redirection_process['settings']['message_display_location_of_hide'];
+					} else {
+						$response_data['message_display_location'] = $submission_redirection_process['settings']['message_display_location_of_reset'];
+					}
+
+					$response_data['message'] = $submission_redirection_process['settings']['successful_form_submission_message'];
+
+				} else {
+					$response_data['redirect_url']               = esc_url( $submission_redirection_process['external_url'] );
+					$response_data['enable_redirect_in_new_tab'] = isset( $settings['enable_redirect_in_new_tab'] ) ? $settings['enable_redirect_in_new_tab'] : false;
+				}
 			}
 
 			// Add notice only if credit card is populated in form fields.
@@ -762,8 +799,30 @@ class EVF_Form_Task {
 			$response_data = apply_filters( 'everest_forms_after_success_ajax_message', $response_data, $this->form_data, $entry );
 			delete_option( 'everest_forms_overall_feedback_is_called' );
 			return $response_data;
-		} elseif ( ( 'same' === $this->form_data['settings']['redirect_to'] && empty( $submission_redirection_process ) ) || ( ! empty( $submission_redirection_process ) && 'same_page' == $submission_redirection_process['redirect_to'] ) ) {
-			evf_add_notice( $message, 'success' );
+		} elseif ( ( 'same' === $this->form_data['settings']['redirect_to'] && empty( $submission_redirection_process ) ) ) {
+			if ( 'hide' === $message_display_location ) {
+				evf_add_notice( $message, 'success' );
+			}
+
+			$form_state_type                 = $this->form_data['settings']['form_state_type'];
+			$_REQUEST['evf_form_state_type'] = sanitize_text_field( $form_state_type );
+
+		} elseif ( ! empty( $submission_redirection_process ) && 'same' == $submission_redirection_process['redirect_to'] ) {
+			$form_state_type = $submission_redirection_process['settings']['form_state_type'];
+			$message         = $submission_redirection_process['settings']['successful_form_submission_message'];
+			if ( 'hide' === $form_state_type ) {
+
+				$message_display_location = isset( $submission_redirection_process['settings']['message_display_location_of_hide'] ) ? $submission_redirection_process['settings']['message_display_location_of_hide'] : 'hide';
+			} else {
+				$message_display_location = isset( $submission_redirection_process['settings']['message_display_location_of_reset'] ) ? $submission_redirection_process['settings']['message_display_location_of_reset'] : 'top';
+			}
+			if ( 'hide' === $message_display_location ) {
+				evf_add_notice( $message, 'success' );
+			}
+			// Setting message to reflect back after page refresh.
+			$_REQUEST['evf_message_display_location'] = sanitize_text_field( $message_display_location );
+			$_REQUEST['evf_form_state_type']          = sanitize_text_field( $form_state_type );
+			$_REQUEST['evf_popup_message']            = wp_kses_post( $message );
 		}
 		$logger->info(
 			'Everest Forms After success Message.',
@@ -940,13 +999,32 @@ class EVF_Form_Task {
 				</script>
 			<?php
 		} elseif ( isset( $settings['redirect_to'] ) && 'external_url' === $settings['redirect_to'] ) {
-			?>
-			<script>
-				window.setTimeout( function () {
-					window.location.href = '<?php echo esc_url( $settings['external_url'] ); ?>';
-				})
-				</script>
-			<?php
+			$new_tab      = ! empty( $settings['enable_redirect_in_new_tab'] ); // More reliable check
+			$redirect_url = isset( $settings['external_url'] ) ? esc_url( $settings['external_url'] ) : '';
+
+			// Only proceed if we have a valid URL
+			if ( $redirect_url && filter_var( $redirect_url, FILTER_VALIDATE_URL ) ) {
+				if ( $new_tab ) {
+					?>
+					<script type="text/javascript">
+					(function() {
+						var newWindow = window.open('<?php echo $redirect_url; ?>', '_blank');
+						if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
+							window.location.href = '<?php echo $redirect_url; ?>';
+						}
+					})();
+					</script>
+					<?php
+				} else {
+					?>
+					<script type="text/javascript">
+					setTimeout(function() {
+						window.location.replace('<?php echo $redirect_url; ?>');
+					}, 100);
+					</script>
+					<?php
+				}
+			}
 		}
 
 		// Redirect if needed, to either a page or URL, after form processing.
@@ -1779,7 +1857,7 @@ class EVF_Form_Task {
 		$marked_as_spam = false;
 
 		$submit_time = isset( $this->form_data['entry']['evf_form_load_time'] ) ? time() - (int) $this->form_data['entry']['evf_form_load_time'] : null;
-		$event_token = isset( $this->form_data['entry']['evf_event_token'] ) ? $this->form_data['entry']['evf_event_token'] : null
+		$event_token = isset( $this->form_data['entry']['evf_event_token'] ) ? $this->form_data['entry']['evf_event_token'] : null;
 
 		$entry_data = $this->evf_get_entry_data_for_cleantalk( $this->form_data['form_fields'], $entry );
 

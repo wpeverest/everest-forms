@@ -1031,18 +1031,21 @@ class EVF_Shortcode_Form
 		}
 
 		// Basic form information.
-		$form_data       = apply_filters('everest_forms_frontend_form_data', evf_decode($form->post_content));
-		$form_id         = absint($form->ID);
-		$settings        = isset($form_data['settings']) ? $form_data['settings'] : array();
-		$action          = esc_url_raw(remove_query_arg('evf-forms'));
-		$title           = filter_var($title, FILTER_VALIDATE_BOOLEAN);
-		$description     = filter_var($description, FILTER_VALIDATE_BOOLEAN);
-		$errors          = isset(evf()->task->errors[$form_id]) ? evf()->task->errors[$form_id] : array();
-		$form_enabled    = isset($form_data['form_enabled']) ? absint($form_data['form_enabled']) : 1;
-		$kff_enabled     = isset($settings['keyboard_friendly_form']) ? absint($settings['keyboard_friendly_form']) : 0;
-		$disable_message = isset($form_data['settings']['form_disable_message']) ? evf_string_translation($form_data['id'], 'form_disable_message', $form_data['settings']['form_disable_message']) : __('This form is disabled.', 'everest-forms');
-		if ((isset($form_data['payments']['stripe']['enable_stripe']) && '1' === $form_data['payments']['stripe']['enable_stripe']) || (isset($form_data['payments']['square']['enable_square']) && '1' === $form_data['payments']['square']['enable_square'])) {
-			$ajax_form_submission = isset($settings['ajax_form_submission']) ? 1 : 0;
+		$form_data = apply_filters( 'everest_forms_frontend_form_data', evf_decode( $form->post_content ) );
+		// For form confirmation backward compatilibity.
+		$form_data = evf_form_confirmation_backward_compatibility( $form_data );
+
+		$form_id         = absint( $form->ID );
+		$settings        = isset( $form_data['settings'] ) ? $form_data['settings'] : array();
+		$action          = esc_url_raw( remove_query_arg( 'evf-forms' ) );
+		$title           = filter_var( $title, FILTER_VALIDATE_BOOLEAN );
+		$description     = filter_var( $description, FILTER_VALIDATE_BOOLEAN );
+		$errors          = isset( evf()->task->errors[ $form_id ] ) ? evf()->task->errors[ $form_id ] : array();
+		$form_enabled    = isset( $form_data['form_enabled'] ) ? absint( $form_data['form_enabled'] ) : 1;
+		$kff_enabled     = isset( $settings['keyboard_friendly_form'] ) ? absint( $settings['keyboard_friendly_form'] ) : 0;
+		$disable_message = isset( $form_data['settings']['form_disable_message'] ) ? evf_string_translation( $form_data['id'], 'form_disable_message', $form_data['settings']['form_disable_message'] ) : __( 'This form is disabled.', 'everest-forms' );
+		if ( ( isset( $form_data['payments']['stripe']['enable_stripe'] ) && '1' === $form_data['payments']['stripe']['enable_stripe'] ) || ( isset( $form_data['payments']['square']['enable_square'] ) && '1' === $form_data['payments']['square']['enable_square'] ) ) {
+			$ajax_form_submission = isset( $settings['ajax_form_submission'] ) ? 1 : 0;
 		} else {
 			$ajax_form_submission = isset($settings['ajax_form_submission']) ? $settings['ajax_form_submission'] : 0;
 		}
@@ -1097,6 +1100,8 @@ class EVF_Shortcode_Form
 			return;
 		}
 
+		$message = isset( $form_data['settings']['successful_form_submission_message'] ) ? $form_data['settings']['successful_form_submission_message'] : esc_html__( 'Thanks for contacting us! We will be in touch with you shortly.', 'everest-forms' );
+
 		// Before output hook.
 		do_action('everest_forms_frontend_output_before', $form_data, $form);
 
@@ -1125,9 +1130,30 @@ class EVF_Shortcode_Form
 			return;
 		}
 
-		$success = apply_filters('everest_forms_success', false, $form_id);
-		if ($success && ! empty($form_data)) {
-			do_action('everest_forms_frontend_output_success', $form_data);
+		// Check the form state type
+		$form_state_type = isset( $form_data['settings']['form_state_type'] ) ? $form_data['settings']['form_state_type'] : 'hide';
+
+		if ( 'hide' === $form_state_type ) {
+			$message_display_location = isset( $form_data['settings']['message_display_location_of_hide'] ) ? $form_data['settings']['message_display_location_of_hide'] : 'hide';
+		} else {
+			$message_display_location = isset( $form_data['settings']['message_display_location_of_reset'] ) ? $form_data['settings']['message_display_location_of_reset'] : 'top';
+		}
+		// If conditional logic match then getting messag and position.
+		if ( ! empty( $_REQUEST['evf_popup_message'] ) ) {
+			$message = sanitize_text_field( $_REQUEST['evf_popup_message'] );
+		}
+		if ( ! empty( $_REQUEST['evf_message_display_location'] ) ) {
+			$message_display_location = sanitize_text_field( $_REQUEST['evf_message_display_location'] );
+		}
+
+		$form_state_type = '';
+		if ( ! empty( $_REQUEST['evf_form_state_type'] ) ) {
+			$form_state_type = sanitize_text_field( $_REQUEST['evf_form_state_type'] );
+		}
+
+		$success = apply_filters( 'everest_forms_success', false, $form_id );
+		if ( $success && ! empty( $form_data ) && 'hide' === $message_display_location ) {
+			do_action( 'everest_forms_frontend_output_success', $form_data );
 			return;
 		}
 
@@ -1258,8 +1284,18 @@ class EVF_Shortcode_Form
 		} elseif (isset($atts['type']) && 'popup' === $popup_type) {
 			do_action('everest_form_popup', $atts);
 		} else {
-			echo '<form ' . evf_html_attributes($form_atts['id'], $form_atts['class'], $form_atts['data'], $form_atts['atts']) . '>';
-			if (evf_is_amp()) {
+			if ( $success && ! empty( $form_data ) && 'top' === $message_display_location ) {
+				evf_add_notice( $message, 'success' );
+				do_action( 'everest_forms_frontend_output_success', $form_data );
+			} elseif ( $success && ! empty( $form_data ) && 'popup' === $message_display_location ) {
+				$form_atts['data']['message_location'] = $message_display_location;
+				$form_atts['data']['message']          = $message;
+			}
+			// Adding the form state type. hide or reset
+			$form_atts['data']['form_state_type'] = $form_state_type;
+
+			echo '<form ' . evf_html_attributes( $form_atts['id'], $form_atts['class'], $form_atts['data'], $form_atts['atts'] ) . '>';
+			if ( evf_is_amp() ) {
 				$state = array(
 					'submitting' => false,
 				);
@@ -1272,6 +1308,12 @@ class EVF_Shortcode_Form
 			do_action('everest_forms_frontend_output', $form_data, $title, $description, $errors);
 
 			echo '</form>';
+
+			if ( $success && ! empty( $form_data ) && 'bottom' === $message_display_location ) {
+				do_action( 'everest_forms_frontend_output_success', $form_data );
+				evf_add_notice( $message, 'success' );
+				do_action( 'everest_forms_frontend_output_success', $form_data );
+			}
 		}
 
 		do_action('everest_forms_frontend_output_form_after', $form_data, $form);

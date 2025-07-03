@@ -37,6 +37,7 @@ jQuery( function ( $ ) {
 				this.loadCountryFlags();
 				this.ratingInit();
 				this.FormSubmissionWaitingTime();
+				this.popUpMessage();
 			};
 
 			// Initial setup
@@ -1057,6 +1058,45 @@ jQuery( function ( $ ) {
 			});
 		},
 
+		popUpMessage: function() {
+			var $isPopup = $('.everest-form').is('[data-message_location]');
+			var $isFormStateHidden = $('.everest-form').data('form_state_type');
+
+			if('hide' === $isFormStateHidden) {
+				$('.evf-frontend-row, .evf-submit-container ').hide();
+			}
+			if ( ! $isPopup ) {
+				return;
+			}
+
+			var $message = $('.everest-form').data('message');
+
+			$('body').css('overflow', 'hidden');
+
+			var popupHTML = `
+				<div class="everest-forms-popup-overlay">
+					<div class="everest-forms-popup">
+						<div class="everest-forms-popup-close">
+							<svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<path d="M7 6.06668L1.26666 0.333344L0.333328 1.20001L6.06666 6.93334L0.333328 12.6L1.26666 13.5333L7 7.86668L12.6667 13.5333L13.6 12.6L7.93333 6.93334L13.6667 1.33334L12.7333 0.466677L7 6.06668Z" fill="#383838"/>
+							</svg>
+						</div>
+						<img src="${ everest_forms_params.evf_checked_image_url }" alt="Checked Logo" class="everest-forms-popup-success-logo">
+						<p class="everest-forms-popup-success-text">${ everest_forms_params.i18n_evf_success_text }</p>
+						<p>${ $message }</p>
+					</div>
+				</div>
+			`;
+
+			$('body').append(popupHTML);
+
+			$('.everest-forms-popup-close').on('click', function() {
+				$('.everest-forms-popup-overlay').fadeOut(200, function() {
+					$(this).remove();
+					$('body').css('overflow', '');
+				});
+			});
+		},
 
 		getFirstBrowserLanguage: function() {
 			var nav = window.navigator,

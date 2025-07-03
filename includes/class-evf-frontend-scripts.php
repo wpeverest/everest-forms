@@ -330,6 +330,8 @@ class EVF_Frontend_Scripts {
 					'i18n_messages_phone'                  => get_option( 'everest_forms_phone_validation', __( 'Please enter a valid phone number.', 'everest-forms' ) ),
 					'evf_smart_phone_allowed_countries'    => apply_filters( 'everest_forms_smart_phone_allowed_countries', array() ),
 					'i18n_field_rating_greater_than_max_value_error' => esc_html__( 'Please enter in a value less than 100.', 'everest-forms' ),
+					'evf_checked_image_url' 			   => esc_url( self::get_asset_url( 'assets/images/evf-checked.png' ) ),
+					'i18n_evf_success_text'				    => esc_html__( 'Success!', 'everest-forms' ),
 				);
 				break;
 			case 'everest-forms-text-limit':
@@ -346,6 +348,8 @@ class EVF_Frontend_Scripts {
 					'error'               => esc_html__( 'Something went wrong while making an AJAX submission', 'everest-forms' ),
 					'required'            => esc_html__( 'This field is required.', 'everest-forms' ),
 					'pdf_download'        => esc_html__( 'Click here to download your pdf submission', 'everest-forms' ),
+					'evf_checked_image_url' 			   => esc_url( self::get_asset_url( 'assets/images/evf-checked.png' ) ),
+					'i18n_evf_success_text'				    => esc_html__( 'Success!', 'everest-forms' ),
 				);
 				break;
 			case 'everest-forms-survey-polls-quiz-script':
