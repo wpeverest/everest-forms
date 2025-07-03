@@ -139,7 +139,8 @@ class EVF_AJAX {
 			'form_preview_save'               => false,
 			'delete_form_tags'                => false,
 			'update_tags_in_bulk'             => false,
-			'save_clean_talk_settings'        => false,
+			'save_clean_talk_settings'        => true,
+			'get_form_update_nonce'           => true,
 		);
 
 		foreach ( $ajax_events as $ajax_event => $nopriv ) {
@@ -2191,6 +2192,36 @@ class EVF_AJAX {
 			);
 		}
 	}
+	/**
+	 * This callback give the update nonce of the form.
+	 *
+	 * @since xx.xx.xx
+	 */
+	public static function get_form_update_nonce() {
+		$form_id = isset( $_POST['form_id'] ) ? absint( $_POST['form_id'] ) : 0;
+
+		if ( empty( $form_id ) ) {
+			wp_die( __( 'Form ID is missing!', 'everest-forms' ), 403 );
+		}
+
+		$form = evf()->form->get( $form_id );
+
+		if ( empty( $form ) ) {
+			wp_die( __( 'Form not found!', 'everest-forms' ), 403 );
+		}
+
+		// Strict referer verification
+		$referer      = wp_get_referer();
+		$allowed_host = parse_url( home_url(), PHP_URL_HOST );
+		$referer_host = parse_url( $referer, PHP_URL_HOST );
+
+		if ( ! $referer || $referer_host !== $allowed_host ) {
+			wp_die( __( 'Invalid form submission source.', 'everest-forms' ), 403 );
+		}
+
+		wp_send_json_success( wp_create_nonce( 'everest-forms_process_submit' ) );
+	}
+
 }
 
 EVF_AJAX::init();

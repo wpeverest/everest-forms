@@ -49,6 +49,7 @@ class EVF_Shortcode_Form {
 			add_action( 'everest_forms_frontend_output', array( 'EVF_Shortcode_Form', 'recaptcha' ), 20, 3 );
 		}
 		add_action( 'everest_forms_frontend_output', array( 'EVF_Shortcode_Form', 'footer' ), 25, 3 );
+		add_action( 'everest_forms_frontend_output', array( 'EVF_Shortcode_Form', 'inline_script_to_update_nonce' ), 26, 3 );
 
 		// reCaptcha Language.
 		add_filter( 'everest_forms_frontend_recaptcha_url', array( __CLASS__, 'evf_recaptcha_language' ), 10, 1 );
@@ -1380,5 +1381,43 @@ class EVF_Shortcode_Form {
 		} else {
 			return '';
 		}
+	}
+	/**
+	 * This fuction add the inline script to update the nonce to avoid nonce from caching.
+	 *
+	 * @since xx.xx.xx
+	 *
+	 * @param [type] $form_data The form data.
+	 * @param [type] $title The title for the form.
+	 * @param [type] $description The Form description.
+	 * @return void
+	 */
+	public static function inline_script_to_update_nonce( $form_data, $title, $description ) {
+		$form_id = $form_data['id'];
+		$form    = evf()->form->get( absint( $form_id ) );
+
+		if ( empty( $form ) ) {
+			return;
+		}
+
+		add_action(
+			'wp_footer',
+			function () use ( $form_id ) {
+				echo '<script type="text/javascript">jQuery(function() {'
+					. 'jQuery.ajax({'
+						. "url: '" . esc_url( admin_url( 'admin-ajax.php', is_ssl() ? 'https' : 'http' ) ) . "',"
+						. 'type: "POST",'
+						. 'data: {'
+							. 'action: "everest_forms_get_form_update_nonce",'
+							. 'form_id: "' . (int) $form_id . '",'
+						. '},'
+						. 'success: function (response) {'
+							. "jQuery('#_wpnonce" . (int) $form_id . "').val( response.data );"
+						. '}'
+					. '});'
+				. '})</script>';
+			},
+			99
+		);
 	}
 }
