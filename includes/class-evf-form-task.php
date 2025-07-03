@@ -83,7 +83,7 @@ class EVF_Form_Task {
 		/**
 		 * Delete files.
 		 *
-		 * @since xx.xx.xx
+		 * @since 3.3.0
 		 */
 		add_action( 'before_delete_post', array( $this, 'delete_entry_files_before_form_delete' ), 10, 1 );
 		add_action( 'everest_forms_before_delete_entries', array( $this, 'delete_entry_files' ), 10, 1 );
@@ -163,7 +163,7 @@ class EVF_Form_Task {
 			 * Filter to bypass the form nonce validation.
 			 * By default it is false.
 			 *
-			 * @since xx.xx.xx
+			 * @since 3.3.0
 			 */
 			if ( ! apply_filters( 'evf_bypass_form_nonce_validation', false, $form_id ) ) {
 				// Check nonce for form submission.
