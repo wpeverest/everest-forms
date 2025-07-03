@@ -6,6 +6,8 @@
  * @since   1.2.0
  */
 
+use EverestForms\Helpers\FormHelper;
+
 defined( 'ABSPATH' ) || exit;
 
 if ( class_exists( 'EVF_Builder_Settings', false ) ) {
@@ -205,6 +207,29 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				'tooltip'     => sprintf( esc_html__( 'Give the description to this form', 'everest-forms' ) ),
 			)
 		);
+
+		$this->form_data['settings']['form_tags'] = FormHelper::get_form_tags( $this->form_data['id'], 'slug' );
+
+		everest_forms_panel_field(
+			'select',
+			'settings',
+			'form_tags',
+			$this->form_data,
+			esc_html__( 'Tags', 'everest-forms' ),
+			array(
+				'default'     => '',
+				'tooltip'     => esc_html__( 'Please choose a tags from the list, or type in a new tag if you\'d like to add one.', 'everest-forms' ),
+				'options'     => array_merge(
+					array(
+						'' => esc_html__( '', 'everest-forms' ),
+					),
+					FormHelper::get_all_form_tags()
+				),
+				'input_class' => 'form-tags-select2',
+				'multiple'    => true,
+			)
+		);
+
 		everest_forms_panel_field(
 			'textarea',
 			'settings',
@@ -308,6 +333,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				'tooltip' => sprintf( esc_html__( 'Disable storing form entries. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/general-settings/#13-toc-title' ) ),
 			)
 		);
+
 
 		do_action( 'everest_forms_inline_general_settings', $this );
 
@@ -607,7 +633,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				echo '</h4>';
 
 				$confirmation_type = isset( $this->form_data['settings']['redirect_to'] ) ? $this->form_data['settings']['redirect_to'] : 'same';
-				$confirmation_type = 0 === $confirmation_type ? 'same' : $confirmation_type;
+				$confirmation_type = 0 == $confirmation_type ? 'same' : $confirmation_type;
 
 		?>
 				<div id="everest-forms-panel-field-settings-redirect_to-wrap" class="everest-forms-panel-field evf-builder-radio  everest-forms-panel-field-radio">
@@ -830,6 +856,12 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 				);
 				do_action( 'everest_forms_inline_honeypot_settings', $this, 'honeypot', 'connection_1' );
 				echo '</div>';
+
+				/**
+				 * CleanTalks anti-spam protection.
+				 */
+				do_action( 'everest_forms_inline_cleantalk_settings', $this, 'cleantalk', 'connection_1' );
+
 				/**
 				* Akismet anit-spam protection.
 				*
@@ -866,9 +898,9 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 					esc_html__( 'Protection type', 'everest-forms' ),
 					array(
 						'default' => 'validation_failed',
-						'tooltip' => esc_html__( "Please select the protection type. Choosing 'Mark as Spam' allows the submission but marks the entry as spam, while selecting 'Make the form submission as failed' will prevent the form submission.", 'everest-forms' ),
+						'tooltip' => esc_html__( "Please select the protection type. Choosing 'Mark as Spam' allows the submission but marks the entry as spam, while selecting 'Reject Submission' will prevent the form submission.", 'everest-forms' ),
 						'options' => array(
-							'validation_failed' => esc_html__( 'Make the form submission as failed', 'everest-forms' ),
+							'validation_failed' => esc_html__( 'Reject Submission', 'everest-forms' ),
 							'mark_as_spam'      => esc_html__( 'Mark as Spam', 'everest-forms' ),
 						),
 					)

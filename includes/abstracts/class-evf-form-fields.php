@@ -1205,7 +1205,7 @@ abstract class EVF_Form_Fields {
 			/*
 			 * Plan Choices.
 			 *
-			 * @since xx.xx.xx
+			 * @since 3.2.2
 			 */
 			case 'plan_choices':
 				$class      = array();
@@ -1596,9 +1596,18 @@ abstract class EVF_Form_Fields {
 				$exclude_fields = array( 'rating', 'number', 'range-slider', 'payment-quantity', 'reset' );
 
 				if ( ! in_array( $field['type'], $exclude_fields, true ) ) {
-					$output .= '<a href="#" class="evf-toggle-smart-tag-display" data-type="other"><span class="dashicons dashicons-editor-code"></span></a>';
+					$output .= '<a href="#" class="evf-toggle-smart-tag-display" data-type="all"><span class="dashicons dashicons-editor-code"></span></a>';
 					$output .= '<div class="evf-smart-tag-lists" style="display: none">';
-					$output .= '<div class="smart-tag-title other-tag-title">Others</div><ul class="evf-others"></ul></div>';
+
+					$output .= '<div class="smart-tag-title">';
+					$output .= esc_html__( 'Available Fields', 'everest-forms' );
+					$output .= '</div><ul class="evf-fields"></ul>';
+
+					$output .= '<div class="smart-tag-title other-tag-title">';
+					$output .= esc_html__( 'Others', 'everest-forms' );
+					$output .= '</div><ul class="evf-others"></ul>';
+
+					$output .= '</div>';
 				}
 
 				$output = $this->field_element(
@@ -2243,7 +2252,7 @@ abstract class EVF_Form_Fields {
 
 		switch ( $option ) {
 			case 'label':
-				$label = isset( $field['label'] ) && ! empty( $field['label'] ) ? $field['label'] : '';
+				$label = isset( $field['label'] ) && ! empty( $field['label'] ) ? $field['label'] . ( 'private-note' === $field['type'] ? ( ' (Admin Only)' ) : '' ) : '';
 				if ( $echo ) {
 					printf( '<label class="label-title %s"><span class="text">%s</span><span class="required">%s</span></label>', esc_attr( $class ), esc_html( $label ), esc_html( apply_filters( 'everest_form_get_required_type', '*', $field, $form_data ) ) );
 				} else {
@@ -2582,7 +2591,7 @@ abstract class EVF_Form_Fields {
 			$field['properties'] = $this->get_single_field_property_value( $value, 'primary', $field['properties'], $field );
 		}
 
-		$this->field_display( $field, null, $form_data );
+		$this->field_display( $field, $entry_field, $form_data );
 	}
 
 	/**
@@ -2602,7 +2611,12 @@ abstract class EVF_Form_Fields {
 			return $properties;
 		}
 
-		$get_value = wp_unslash( sanitize_text_field( $raw_value ) );
+		if ( isset( $field['type'] ) && 'signature' === $field['type'] ) {
+			$get_value = sanitize_text_field( $raw_value ); // Sanitize (but keeps slashes)
+		} else {
+			// Standard text field (unslash first, then sanitize)
+			$get_value = sanitize_text_field( wp_unslash( $raw_value ) );
+		}
 
 		if ( ! empty( $field['choices'] ) && is_array( $field['choices'] ) ) {
 			$properties = $this->get_single_field_property_value_choices( $get_value, $properties, $field );

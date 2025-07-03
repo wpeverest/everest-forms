@@ -160,11 +160,17 @@ jQuery( function ( $ ) {
 						disableDates = inputData.disableDates.split( ',' );
 					}
 
-					if(inputData.pastDisableDate){
-						var pastDisableDate = inputData.pastDisableDate;
+				var pastDisableDate = '';
+				if (inputData.pastDisableDate) {
+					if (inputData.dateFormat === 'Y-m-d') {
+						pastDisableDate = inputData.pastDisableDate;
 					} else {
-						var pastDisableDate = '';
+						const parsed = flatpickr.parseDate(inputData.pastDisableDate, inputData.dateFormat);
+						if (parsed) {
+							pastDisableDate = flatpickr.formatDate(parsed, 'Y-m-d');
+						}
 					}
+				}
 
 					switch( inputData.dateTime ) {
 						case 'date':
@@ -539,7 +545,7 @@ jQuery( function ( $ ) {
 
 				$this.validate({
 					messages: error_messages,
-					ignore: '',
+					ignore: ':hidden:not(.evf-enhanced-select)',
 					errorClass: 'evf-error',
 					validClass: 'evf-valid',
 					errorPlacement: function( error, element ) {
@@ -825,6 +831,9 @@ jQuery( function ( $ ) {
 		},
 		validateMinimumWordLength: function() {
 			Array.prototype.slice.call( document.querySelectorAll( '.everest-forms-min-words-length-enabled' ) ).map( function( event ) {
+				if (!jQuery(event).is(':visible')){
+					return;
+				   }
 				var minWords    = parseInt( event.dataset.textMinLength, 10 ) || 0;
 
 				// Add the custom validation method.
@@ -843,6 +852,11 @@ jQuery( function ( $ ) {
 		},
 		validateMinimumcharacterLength: function() {
 			Array.prototype.slice.call( document.querySelectorAll( '.everest-forms-min-characters-length-enabled' ) ).map( function( event ) {
+				// Skips the validation for hidden fields.
+				if (!jQuery(event).is(':visible')){
+				 return;
+				}
+
 				var minCharacters    = parseInt( event.dataset.textMinLength, 10 ) || 0;
 
 				// Add the custom validation method.

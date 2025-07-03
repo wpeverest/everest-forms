@@ -91,6 +91,7 @@ class EVF_Fields {
 				'EVF_Field_Turnstile',
 				'EVF_Field_AI',
 				'EVF_Field_File_Upload',
+				'EVF_Field_Private_Note'
 			)
 		);
 		if ( ! class_exists( '\EverestForms\AI' ) ) {

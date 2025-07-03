@@ -26,7 +26,6 @@ class EVF_Field_Rating extends EVF_Form_Fields {
 			'basic-options'    => array(
 				'field_options' => array(
 					'label',
-					'meta',
 					'description',
 					'number_of_stars',
 					'required',
@@ -36,6 +35,7 @@ class EVF_Field_Rating extends EVF_Form_Fields {
 			),
 			'advanced-options' => array(
 				'field_options' => array(
+					'meta',
 					'rating_icon',
 					'icon_color',
 					'label_hide',

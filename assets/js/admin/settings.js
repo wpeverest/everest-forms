@@ -153,7 +153,7 @@
 					turnstile_site_key.show();
 					turnstile_secret_key.show();
 					turnstile_theme.show();
-				 }  else {
+				 } else {
 					recaptcha_v2_site_key.hide();
 					recaptcha_v2_secret_key.hide();
 					recaptcha_v2_invisible.hide();

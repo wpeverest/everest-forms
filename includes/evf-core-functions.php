@@ -5414,7 +5414,7 @@ JS;
 /**
  * Get the list of addons or module that are depended on another plugins.
  *
- * @since xx.xx.xx
+ * @since 3.2.2
  */
 function evf_get_addons_list_depend_on_another_plugins() {
 	$required_plugins = apply_filters(
@@ -5446,7 +5446,7 @@ function evf_get_addons_list_depend_on_another_plugins() {
 			'everest-forms-divi-builder'     => array(
 				'is_theme' => true,
 				'name'     => 'Divi Builder',
-				'id'       => 'divi',
+				'id'       => 'Divi',
 			),
 			'everest-forms-bricks-builder'   => array(
 				'is_theme' => true,
@@ -5478,7 +5478,8 @@ if ( ! function_exists( 'evf_maybe_unserialize' ) ) {
 				$options = wp_parse_args( $options, array( 'allowed_classes' => false ) );
 				return @unserialize( trim( $data ), $options ); //phpcs:ignore.
 			}
-			return @unserialize( trim( $data ) ); //phpcs:ignore.
+			//Blocked unserialize() attempt on PHP <  7.1
+			return null;
 		}
 
 		return $data;

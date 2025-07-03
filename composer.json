@@ -9,7 +9,8 @@
   "autoload": {
     "psr-4": {
       "EverestForms\\Addons\\": "addons/",
-      "EverestForms\\Traits\\": "traits/"
+      "EverestForms\\Traits\\": "traits/",
+      "EverestForms\\Helpers\\":"includes/Helpers"
     }
   },
   "authors": [

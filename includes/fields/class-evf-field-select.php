@@ -43,7 +43,6 @@ class EVF_Field_Select extends EVF_Form_Fields {
 			'basic-options'    => array(
 				'field_options' => array(
 					'label',
-					'meta',
 					'choices',
 					'enhanced_select',
 					'description',
@@ -54,6 +53,7 @@ class EVF_Field_Select extends EVF_Form_Fields {
 			),
 			'advanced-options' => array(
 				'field_options' => array(
+					'meta',
 					'size',
 					'show_values',
 					'placeholder',

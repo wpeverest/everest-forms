@@ -153,7 +153,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	 * @return array
 	 */
 	public static function get_columns_form_disallowed_fields() {
-		return (array) apply_filters( 'everest_forms_entries_table_fields_disallow', array( 'html', 'title', 'captcha', 'repeater-fields', 'authorize-net' ) );
+		return (array) apply_filters( 'everest_forms_entries_table_fields_disallow', array( 'html', 'title', 'captcha', 'repeater-fields', 'authorize-net', 'private-note' ) );
 	}
 
 	/**
@@ -589,7 +589,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 								$message .= '<br/>' . __( 'Thank you for giving us your precious time', 'everest-forms' ) . '<br/>';
 								/* translators:%s: Site Name */
 								$message .= '<br/>' . sprintf( __( 'From %s', 'everest-forms' ), $site_name );
-								$message  = apply_filters( 'everest_forms_entry_approval_message', $message );
+								$message  = apply_filters( 'everest_forms_entry_approval_message', $message, $name, $entry_date, $site_name );
 							}
 							$email_obj = new EVF_Emails();
 							$email_obj->send( $email, $subject, $message );
@@ -653,7 +653,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 								$message .= '<br/>' . __( 'Thank you for giving us your precious time', 'everest-forms' ) . '<br/>';
 								/* translators:%s: Site Name */
 								$message .= '<br/>' . sprintf( __( 'From %s', 'everest-forms' ), $site_name );
-								$message  = apply_filters( 'everest_forms_entry_denial_message', $message );
+								$message  = apply_filters( 'everest_forms_entry_denial_message', $message, $name, $entry_date, $site_name );
 							}
 							$email_obj = new EVF_Emails();
 							$email_obj->send( $email, $subject, $message );
@@ -785,7 +785,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 		$form_id = isset( $_REQUEST['form_id'] ) ? absint( $_REQUEST['form_id'] ) : $this->form_id; // phpcs:ignore WordPress.Security.NonceVerification
 		?>
 		<label for="filter-by-form" class="screen-reader-text"><?php esc_html_e( 'Filter by form', 'everest-forms' ); ?></label>
-		<select name="form_id" id="filter-by-form" class="evf-enhanced-normal-select" style="min-width: 200px;">
+		<select name="form_id" id="filter-by-form" class="evf-enhanced-normal-select" style="min-width: 200px;" data-placeholder="<?php esc_attr_e( 'Search form...', 'everest-forms' ); ?>">
 			<?php foreach ( $forms as $id => $form ) : ?>
 				<option value="<?php echo esc_attr( $id ); ?>" <?php selected( $form_id, $id ); ?>><?php echo esc_html( $form ); ?></option>
 			<?php endforeach; ?>

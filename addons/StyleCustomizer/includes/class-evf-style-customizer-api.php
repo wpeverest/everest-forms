@@ -587,7 +587,7 @@ class EVF_Style_Customizer_API {
 				'upgrade_message' => esc_html__( 'Unfortunately, this feature is available on the Pro version. Please upgrade to unlock it.', 'everest-forms' ),
 				'upgrade_button'  => esc_html__( 'Upgrade to PRO', 'everest-forms' ),
 				'i18n_ok'         => esc_html__( 'OK', 'everest-forms' ),
-				'upgrade_url'     => apply_filters( 'everest_forms_upgrade_url', 'https://everestforms.net/pricing/?utm_source=style-customizer&utm_medium=premium-style-customizer&utm_campaign=' . evf()->utm_campaign ),
+				'upgrade_url'     => apply_filters( 'everest_forms_upgrade_url', 'https://everestforms.net/upgrade/?utm_medium=style-customizer&utm_source=evf-free&utm_campaign=color-palette-popup&utm_content=Upgrade%20to%20Pro' ),
 
 			)
 		);

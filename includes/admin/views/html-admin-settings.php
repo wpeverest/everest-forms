@@ -9,7 +9,7 @@ defined( 'ABSPATH' ) || exit;
 
 $tab_exists                 = isset( $tabs[ $current_tab ] ) || has_action( 'everest_forms_sections_' . $current_tab ) || has_action( 'everest_forms_settings_' . $current_tab );
 $current_tab_label          = isset( $tabs[ $current_tab ] ) ? $tabs[ $current_tab ] : '';
-$is_premium_sidebar_enabled = isset( $_COOKIE['isPremiumSidebarEnabled'] ) ? sanitize_text_field( wp_unslash( $_COOKIE['isPremiumSidebarEnabled'] ) ) : '';
+$is_premium_sidebar_enabled = isset( $_COOKIE['isPremiumSidebarEnabled'] ) ? evf_string_to_bool( $_COOKIE['isPremiumSidebarEnabled'] ) : false;
 $is_premium_sidebar_class   = $is_premium_sidebar_enabled ? 'everest-forms-hidden' : '';
 if ( ! $tab_exists ) {
 	wp_safe_redirect( admin_url( 'admin.php?page=evf-settings' ) );
@@ -72,11 +72,11 @@ if ( ! $tab_exists ) {
 					<div class="everest-forms-toggle-wrapper">
 						<div class="evf-toggle-section">
 							<span class="everest-forms-toggle-form">
-								<input type="checkbox" name="everest_forms_enable_log" id="everest-forms-enable-premium-sidebar" style="" class="" value="yes">
+								<input type="checkbox" name="everest_forms_enable_log" id="everest-forms-enable-premium-sidebar" style="" class="" value="<?php echo esc_attr( $is_premium_sidebar_enabled ); ?>" <?php checked( $is_premium_sidebar_enabled, true ); ?> />
 								<span class="slider round"></span>
 							</span>
 						</div>
-						<span class="everest-forms-toggle-text">Hide Sidebar</span>
+						<span class="everest-forms-toggle-text"><?php echo ! $is_premium_sidebar_enabled ? 'Show Sidebar' : 'Hide Sidebar'; ?></span>
 					</div>
 					<?php } ?>
 				<?php
@@ -128,7 +128,7 @@ if ( ! $tab_exists ) {
 					<li>Priority support for premium users</li>
 				</ul>
 				<p>To enjoy all the benefits of Everest Forms Pro...</p>
-				<a href="https://everestforms.net/pricing/?utm_campaign=lite-version&utm_source=premium-cta-&utm_medium=upgrade-cta-button"  target="_blank" class="everest-forms-premium-sidebar-button">Get the Everest Forms Pro</a>
+				<a href="https://everestforms.net/upgrade/?utm_medium=evf-global-setting&utm_source=evf-free&utm_campaign=setting-sidebar-premium-info&utm_content=Get%20the%20Everest%20Forms%20Pro"  target="_blank" class="everest-forms-premium-sidebar-button">Get the Everest Forms Pro</a>
 				<p>Thank you for choosing Everest Forms 😊</p>';
 				$content = apply_filters( 'everest_forms_cta_promotiona_content', $content );
 				echo wp_kses( $content, $allowed_html );
