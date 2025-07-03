@@ -345,6 +345,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 = 3.3.0     	- 07-07-2025
 * Tweak 		- CleanTalk bot detector js updated.
+* Dev 			- Global setting for paypal in settings payment.
 
 = 3.2.6     	- 26-06-2025
 * Enhance  		- Added filter for signature.
