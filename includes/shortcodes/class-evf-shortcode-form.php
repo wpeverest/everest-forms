@@ -972,6 +972,8 @@ class EVF_Shortcode_Form {
 			return;
 		}
 
+		$message = isset( $form_data['settings']['successful_form_submission_message'] ) ? $form_data['settings']['successful_form_submission_message'] : esc_html__( 'Thanks for contacting us! We will be in touch with you shortly.', 'everest-forms' );
+
 		// Before output hook.
 		do_action( 'everest_forms_frontend_output_before', $form_data, $form );
 
@@ -983,7 +985,6 @@ class EVF_Shortcode_Form {
 		) {
 			$query_args = base64_decode( $_GET['everest_forms_return'] ); // phpcs:ignore
 			parse_str( $query_args, $query_arg );
-			$message        = isset( $form_data['settings']['successful_form_submission_message'] ) ? $form_data['settings']['successful_form_submission_message'] : esc_html__( 'Thanks for contacting us! We will be in touch with you shortly.', 'everest-forms' );
 			$pdf_submission = isset( $form_data['settings']['pdf_submission']['enable_pdf_submission'] ) && 0 !== $form_data['settings']['pdf_submission']['enable_pdf_submission'] ? $form_data['settings']['pdf_submission'] : '';
 			if ( defined( 'EVF_PDF_SUBMISSION_VERSION' ) && ( 'yes' === get_option( 'everest_forms_pdf_download_after_submit', 'no' ) || ( isset( $pdf_submission['everest_forms_pdf_download_after_submit'] ) && 'yes' === $pdf_submission['everest_forms_pdf_download_after_submit'] ) ) ) {
 				global $__everest_form_id;
