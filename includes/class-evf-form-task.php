@@ -1038,14 +1038,24 @@ class EVF_Form_Task {
 			if ( $redirect_url && filter_var( $redirect_url, FILTER_VALIDATE_URL ) ) {
 				if ( $new_tab ) {
 					?>
-					<script type="text/javascript">
-					(function() {
-						var newWindow = window.open('<?php echo esc_url( $redirect_url ); ?>', '_blank');
-						if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
-							window.location.href = '<?php echo esc_url( $redirect_url ); ?>';
-						}
-					})();
-					</script>
+						<script type="text/javascript">
+							document.addEventListener('DOMContentLoaded', function() {
+								var a = document.createElement('a');
+								a.href = '<?php echo esc_url( $redirect_url ); ?>';
+								a.target = '_blank';
+								a.rel = 'noopener noreferrer';
+								a.style.display = 'none';
+
+								document.body.appendChild(a);
+
+								a.click();
+
+								// Fallback if blocked
+								setTimeout(function() {
+									window.location.href = '<?php echo esc_url( $redirect_url ); ?>';
+								}, 100);
+							});
+						</script>
 					<?php
 				} else {
 					?>
