@@ -1000,7 +1000,17 @@ class EVF_Form_Task {
 			<?php
 		} elseif ( isset( $settings['redirect_to'] ) && 'external_url' === $settings['redirect_to'] ) {
 			$new_tab      = ! empty( $settings['enable_redirect_in_new_tab'] ); // More reliable check
-			$redirect_url = isset( $settings['external_url'] ) ? esc_url( $settings['external_url'] ) : '';
+
+			if ( isset( $settings['enable_redirect_query_string'] ) && '1' === $settings['enable_redirect_query_string'] ) {
+				parse_str( $settings['query_string'], $output );
+				$query_redirect_url = array();
+				foreach ( $output as $key => $value ) {
+					$query_redirect_url[ $key ] = rawurlencode( apply_filters( 'everest_forms_process_smart_tags', $value, $this->form_data, $this->form_fields ) );
+				}
+				$redirect_url = add_query_arg( $query_redirect_url, $settings['external_url'] );
+			} else {
+				$redirect_url = $settings['external_url'];
+			}
 
 			// Only proceed if we have a valid URL
 			if ( $redirect_url && filter_var( $redirect_url, FILTER_VALIDATE_URL ) ) {
@@ -1008,9 +1018,9 @@ class EVF_Form_Task {
 					?>
 					<script type="text/javascript">
 					(function() {
-						var newWindow = window.open('<?php echo $redirect_url; ?>', '_blank');
+						var newWindow = window.open('<?php echo esc_url( $redirect_url ); ?>', '_blank');
 						if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
-							window.location.href = '<?php echo $redirect_url; ?>';
+							window.location.href = '<?php echo esc_url( $redirect_url ); ?>';
 						}
 					})();
 					</script>
@@ -1019,7 +1029,7 @@ class EVF_Form_Task {
 					?>
 					<script type="text/javascript">
 					setTimeout(function() {
-						window.location.replace('<?php echo $redirect_url; ?>');
+						window.location.replace('<?php echo esc_url( $redirect_url ); ?>');
 					}, 100);
 					</script>
 					<?php
