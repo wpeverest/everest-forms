@@ -767,10 +767,34 @@ class EVF_Form_Task {
 			// Check for Submission Redirection in Ajax Submission.
 			if ( empty( $submission_redirection_process ) ) {
 				if ( isset( $settings['redirect_to'] ) && 'external_url' === $settings['redirect_to'] ) {
-					$response_data['redirect_url']               = isset( $settings['external_url'] ) ? esc_url( $settings['external_url'] ) : 'undefined';
+					if ( isset( $settings['enable_redirect_query_string'] ) && '1' === $settings['enable_redirect_query_string'] ) {
+						parse_str( $settings['query_string'], $output );
+						$query_redirect_url = array();
+						foreach ( $output as $key => $value ) {
+							$query_redirect_url[ $key ] = rawurlencode( apply_filters( 'everest_forms_process_smart_tags', $value, $this->form_data, $this->form_fields ) );
+						}
+						$redirect_url = add_query_arg( $query_redirect_url, $settings['external_url'] );
+					} else {
+						$redirect_url = $settings['external_url'];
+					}
+					error_log( print_r( $redirect_url, true ) );
+					$response_data['redirect_url']               = ! empty( $redirect_url ) ? esc_url( $redirect_url ) : 'undefined';
 					$response_data['enable_redirect_in_new_tab'] = isset( $settings['enable_redirect_in_new_tab'] ) ? $settings['enable_redirect_in_new_tab'] : false;
+					error_log( print_r( $response_data, true ) );
+
 				} elseif ( isset( $settings['redirect_to'] ) && 'custom_page' === $settings['redirect_to'] ) {
-					$response_data['redirect_url'] = isset( $settings['custom_page'] ) ? get_page_link( absint( $settings['custom_page'] ) ) : 'undefined';
+					if ( isset( $settings['enable_redirect_query_string'] ) && '1' === $settings['enable_redirect_query_string'] ) {
+						parse_str( $settings['query_string'], $output );
+						$query_redirect_url = array();
+						foreach ( $output as $key => $value ) {
+							$query_redirect_url[ $key ] = apply_filters( 'everest_forms_process_smart_tags', $value, $this->form_data, $this->form_fields );
+						}
+						$redirect_url = add_query_arg( $query_redirect_url, esc_url( get_page_link( $settings['custom_page'] ) ) );
+					} else {
+						$redirect_url = get_page_link( $settings['custom_page'] );
+					}
+					$response_data['redirect_url']               = ! empty( $redirect_url ) ? esc_url( $redirect_url ) : 'undefined';
+
 				}
 			} else {
 				// Overiding the default setting message
