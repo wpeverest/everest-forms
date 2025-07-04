@@ -777,10 +777,8 @@ class EVF_Form_Task {
 					} else {
 						$redirect_url = $settings['external_url'];
 					}
-					error_log( print_r( $redirect_url, true ) );
 					$response_data['redirect_url']               = ! empty( $redirect_url ) ? esc_url( $redirect_url ) : 'undefined';
 					$response_data['enable_redirect_in_new_tab'] = isset( $settings['enable_redirect_in_new_tab'] ) ? $settings['enable_redirect_in_new_tab'] : false;
-					error_log( print_r( $response_data, true ) );
 
 				} elseif ( isset( $settings['redirect_to'] ) && 'custom_page' === $settings['redirect_to'] ) {
 					if ( isset( $settings['enable_redirect_query_string'] ) && '1' === $settings['enable_redirect_query_string'] ) {
