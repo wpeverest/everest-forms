@@ -3815,7 +3815,7 @@ jQuery(function ($) {
 		}
 	});
 
-	function pageType(el, redirectTo) {
+	window.pageType = function(el, redirectTo) {
 		var outerWrapper = $(el).closest('.evf-confirmation-wrap');
 
 		// If the element isn't checked, return early.
@@ -3890,12 +3890,12 @@ jQuery(function ($) {
 		// Get initial value and apply
 		$('.confirmation-redirect-to').each(function(){
 			var initialValue = $(this).val();
-			pageType($(this), initialValue);
+			window.pageType($(this), initialValue);
 		});
 
 		// Handle changes
 		$(document).on('change', '.confirmation-redirect-to', function() {
-			pageType($(this), $(this).val());
+			window.pageType($(this), $(this).val());
 		});
 	});
 
