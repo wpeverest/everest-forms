@@ -616,7 +616,7 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 		return $output;
 	}
 }
-add_action( 'admin_init', array( $this, 'check_version_compatibility_for_form_confirmation' ) );
+add_action( 'admin_init', 'check_version_compatibility_for_form_confirmation' );
 
 /**
  * Check the version compatibility for form confirmation.
@@ -629,7 +629,7 @@ function check_version_compatibility_for_form_confirmation() {
 	if ( version_compare( 'EFP_VERSION', '1.9.6', '<' ) ) {
 		add_action(
 			'admin_notices',
-			function() use ( $update_info ) {
+			function() {
 					echo '<div class="notice notice-error is-dismissible">';
 					echo '<p>' . sprintf(
 						__( 'Please update Everest Forms Pro to version 1.9.6 or higher to ensure compatibility with form confirmation after submission.', 'everest-forms' )
