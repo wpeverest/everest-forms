@@ -1412,16 +1412,20 @@ class EVF_Shortcode_Form
 					$custom_js
 				);
 
-				wp_register_script(
-					'evf-custom',
-					'',
-					array('jquery'),
-					EVF_VERSION,
-					true
-				);
+				if ( ! wp_script_is('evf-custom', 'registered') ) {
+					wp_register_script(
+						'evf-custom',
+						'',
+						array('jquery'),
+						EVF_VERSION,
+						true
+					);
+				}
 
-				wp_add_inline_script('evf-custom', $custom_js);
-				wp_enqueue_script('evf-custom');
+				if ( ! wp_script_is('evf-custom', 'enqueued' ) ) {
+					wp_add_inline_script('evf-custom', $custom_js);
+					wp_enqueue_script('evf-custom');
+				}
 			}
 		}
 	}
