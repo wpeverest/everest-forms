@@ -613,7 +613,7 @@ class EVF_AJAX {
 	 * Ajax handler for form submission.
 	 */
 	public static function ajax_form_submission() {
-		 check_ajax_referer( 'everest_forms_ajax_form_submission', 'security' );
+		//  check_ajax_referer( 'everest_forms_ajax_form_submission', 'security' );
 
 		if ( ! empty( $_POST['everest_forms']['id'] ) ) {
 			$process = evf()->task->ajax_form_submission( evf_sanitize_entry( wp_unslash( $_POST['everest_forms'] ) ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
