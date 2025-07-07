@@ -3991,6 +3991,38 @@ jQuery( function ( $ ) {
 			return;
 		}
 		$( this ).next( '.everest-forms-field-option-group-inner' ).stop().slideToggle();
+
+		/**
+		 * If the field option group is not basic, then auto scroll to top.
+		 *
+		 * @since 3.3.0
+		 */
+		var $el = $( this ).closest('.everest-forms-field-option-group');
+
+		if ( $el.length && ! $el.hasClass( 'everest-forms-field-option-group-basic' ) ) {
+			var targetId = 'evf-temp-target';
+			var newTarget = $('<div>', {
+				id: targetId,
+				text: ''
+			});
+
+			newTarget.insertBefore($el);
+
+			var dynamicLink = $('<a>', {
+				id: 'evf-temp-link',
+				href: '#' + targetId
+			});
+
+			dynamicLink.insertBefore($el);
+
+			dynamicLink[0].click();
+
+			setTimeout(function() {
+				newTarget.remove();
+				dynamicLink.remove();
+			}, 100);
+		}
+
 	});
 	$( document.body ).on( 'init_field_options_toggle', function() {
 		$( '.everest-forms-field-option-group.closed' ).each( function() {
