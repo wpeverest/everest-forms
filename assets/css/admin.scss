@@ -3031,7 +3031,6 @@ p.search-box {
 									.everest-forms-field-option-group-toggle {
 										padding: 16px 14px;
 										border-bottom: 0;
-										background: transparent;
 									}
 
 									&.open {
@@ -4345,7 +4344,7 @@ p.search-box {
 					margin-right: 20px;
 				}
 
-				.evf-enable-email-toggle {
+				.evf-enable-email-toggle, .evf-enable-webhook-toggle {
 					position: absolute;
 					top: 15px;
 					right: -20px;
