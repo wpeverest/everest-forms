@@ -4000,14 +4000,7 @@ jQuery( function ( $ ) {
 		var $el = $( this ).closest('.everest-forms-field-option-group');
 
 		if ( $el.length && ! $el.hasClass( 'everest-forms-field-option-group-basic' ) ) {
-			var targetId = 'evf-temp-target';
-			var newTarget = $('<div>', {
-				id: targetId,
-				text: ''
-			});
-
-			newTarget.insertBefore($el);
-
+			var targetId = 'field-options';
 			var dynamicLink = $('<a>', {
 				id: 'evf-temp-link',
 				href: '#' + targetId
@@ -4018,7 +4011,6 @@ jQuery( function ( $ ) {
 			dynamicLink[0].click();
 
 			setTimeout(function() {
-				newTarget.remove();
 				dynamicLink.remove();
 			}, 100);
 		}
