@@ -172,7 +172,7 @@ function everest_forms_settings_get_option( $option_name, $default = '' ) {
  * @param [type] $form_data The form data.
  * @param [type] $parent The parent.
  */
- function resolve_parent_path( $form_data, $parent ) {
+function resolve_parent_path( $form_data, $parent ) {
 	$keys = array();
 
 	if ( strpos( $parent, '[' ) !== false ) {
@@ -614,5 +614,28 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 		echo wp_kses( $output, evf_get_allowed_html_tags( 'builder' ) );
 	} else {
 		return $output;
+	}
+}
+add_action( 'admin_init', array( $this, 'check_version_compatibility_for_form_confirmation' ) );
+
+/**
+ * Check the version compatibility for form confirmation.
+ */
+function check_version_compatibility_for_form_confirmation() {
+	if ( ! defined( 'EFP_VERSION' ) ) {
+		return;
+	}
+
+	if ( version_compare( 'EFP_VERSION', '1.9.6', '<' ) ) {
+		add_action(
+			'admin_notices',
+			function() use ( $update_info ) {
+					echo '<div class="notice notice-error is-dismissible">';
+					echo '<p>' . sprintf(
+						__( 'Please update Everest Forms (free version) to version 3.3.0 or higher to ensure compatibility with form confirmation after submission.', 'everest-forms-pro' )
+					) . '</p>';
+					  echo '</div>';
+			}
+		);
 	}
 }
