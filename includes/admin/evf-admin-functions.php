@@ -616,7 +616,7 @@ function everest_forms_panel_field( $option, $panel, $field, $form_data, $label,
 		return $output;
 	}
 }
-add_action( 'admin_init', array( $this, 'check_version_compatibility_for_form_confirmation' ) );
+add_action( 'admin_init', 'check_version_compatibility_for_form_confirmation' );
 
 /**
  * Check the version compatibility for form confirmation.
