@@ -626,13 +626,13 @@ function check_version_compatibility_for_form_confirmation() {
 		return;
 	}
 
-	if ( version_compare( 'EFP_VERSION', '1.9.6', '<' ) ) {
+	if ( version_compare( EFP_VERSION, '1.9.6', '<' ) ) {
 		add_action(
 			'admin_notices',
 			function() {
 					echo '<div class="notice notice-error is-dismissible">';
 					echo '<p>' . sprintf(
-						__( 'Please update Everest Forms Pro to version 1.9.6 or higher to ensure compatibility with form confirmation after submission.', 'everest-forms' )
+						__( 'Everest Forms is up to date, but Everest Forms Pro is not. Please update Everest Forms Pro to v1.9.6 or higher to avoid compatibility issues.', 'everest-forms' )
 					) . '</p>';
 					  echo '</div>';
 			}
