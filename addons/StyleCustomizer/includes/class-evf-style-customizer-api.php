@@ -177,7 +177,7 @@ class EVF_Style_Customizer_API {
 		$current_form_id       = isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0;
 		$current_template_name = isset( $templates_styles[ $current_form_id ]['template'] ) ? $templates_styles[ $current_form_id ]['template'] : 'Default Template';
 
-		$active_template = isset( $templates_styles[ $current_form_id ]['template'] ) ? $templates_styles[ $current_form_id ]['template'] : 'Default Template';
+		$active_template = isset( $templates_styles[ $current_form_id ]['template'] ) ? $templates_list[ $templates_styles[ $current_form_id ]['template'] ] : 'Default Template';
 
 		$this->add_customize_setting(
 			$wp_customize,
@@ -608,6 +608,21 @@ class EVF_Style_Customizer_API {
 				$form_id           = $matches[1];
 				break;
 			}
+		}
+
+		$templates_styles = get_option( 'everest_forms_styles', array() );
+
+		$template           = get_option( 'evf_style_templates', array() );
+		$templates_settings = json_decode( $template, true );
+
+		if ( ! empty( $form_id ) ) {
+			$active_template_id              = isset( $customized_data[ $form_id ]['template'] ) ? $customized_data[ $form_id ]['template'] : 'default';
+			$active_template_customized_data = isset( $customized_data[ $form_id ] ) ? $customized_data[ $form_id ] : array();
+			unset( $active_template_customized_data['template'] );
+			$template_data         = isset( $templates_settings[ $active_template_id ]['data'] ) ? $templates_settings[ $active_template_id ]['data'] : array();
+			$updated_template_data = array_merge( $template_data, $active_template_customized_data );
+
+			$templates_settings[ $active_template_id ]['data'] = $updated_template_data;
 		}
 
 		if ( $matched_color_key !== null && isset( $customized_data[ $form_id ]['color_palette'][ $matched_color_key ] ) ) {
