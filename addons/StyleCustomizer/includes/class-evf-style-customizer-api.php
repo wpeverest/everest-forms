@@ -170,10 +170,14 @@ class EVF_Style_Customizer_API {
 		// Register a customize section type.
 		$wp_customize->register_section_type( 'EVF_Customize_Templates_Section' );
 
-		$form_data       = EVF()->form->get( $this->form_id, array( 'content_only' => true ) );
-		$template_id     = 'everest_forms_styles[' . $this->form_id . '][template]';
-		$templates_list  = self::get_templates_list();
-		$active_template = isset( $templates_list[ $form_data['settings']['layout_class'] ] ) ? $templates_list[ $form_data['settings']['layout_class'] ] : 'Default Template';
+		$form_data             = EVF()->form->get( $this->form_id, array( 'content_only' => true ) );
+		$template_id           = 'everest_forms_styles[' . $this->form_id . '][template]';
+		$templates_list        = self::get_templates_list();
+		$templates_styles      = get_option( 'everest_forms_styles', array() );
+		$current_form_id       = isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0;
+		$current_template_name = isset( $templates_styles[ $current_form_id ]['template'] ) ? $templates_styles[ $current_form_id ]['template'] : 'Default Template';
+
+		$active_template = isset( $templates_styles[ $current_form_id ]['template'] ) ? $templates_styles[ $current_form_id ]['template'] : 'Default Template';
 
 		$this->add_customize_setting(
 			$wp_customize,
@@ -247,14 +251,14 @@ class EVF_Style_Customizer_API {
 			} else {
 				if ( ! $stored_styles || ! is_array( $stored_styles ) ) {
 					update_option( 'evf_style_templates', $default_styles_raw );
-				} else {
-					foreach ( $default_styles as $key => $value ) {
-						if ( ! isset( $stored_styles[ $key ] ) ) {
-							$stored_styles[ $key ] = $value;
-						}
+			} else {
+				foreach ( $default_styles as $key => $value ) {
+					if ( ! isset( $stored_styles[ $key ] ) ) {
+						$stored_styles[ $key ] = $value;
 					}
+				}
 
-					update_option( 'evf_style_templates', json_encode( $stored_styles ) );
+				update_option( 'evf_style_templates', json_encode( $stored_styles ) );
 				}
 			}
 		}
@@ -766,7 +770,9 @@ class EVF_Style_Customizer_API {
 	 * Update form layout class data.
 	 */
 	public function update_form_data() {
-		$styles    = get_option( 'everest_forms_styles', array() );
+		$styles   = get_option( 'everest_forms_styles', array() );
+		$template = get_option( 'evf_style_templates', array() );
+
 		$form_data = EVF()->form->get( $this->form_id, array( 'content_only' => true ) );
 
 		if ( isset( $form_data['settings']['layout_class'], $styles[ $this->form_id ]['template'] ) ) {
