@@ -29,8 +29,15 @@ jQuery( function( $ ) {
 			$( document.body ).on( 'click ', '.evf-pro-palette', this.customizerupgrade );
 			$( document.body ).on( 'click ', '.everest-forms-pro-template', this.customizerupgrade );
 
-
+			if ( !( evf_data.is_pro ) ) {
+				$(document.body).find('.everest-forms-field-option-row-max_file_number input[type="number"]').on('input', function () {
+					var $this = $(this);
+					$this.val(1);
+					evf_upgrade_actions.evf_one_file_limit_message();
+				});
+			}
 		},
+
 		customizerupgrade: function (e) {
 			e.preventDefault();
 
@@ -429,6 +436,23 @@ jQuery( function( $ ) {
 			$.alert({
 				title: evf_upgrade.evf_one_time_draggable_title,
 				content: evf_upgrade.evf_one_time_draggable_message,
+				icon: 'dashicons dashicons-info',
+				type: 'blue',
+				buttons : {
+					confirm : {
+						text: evf_data.i18n_close,
+						btnClass: 'btn-confirm',
+						keys: ['enter']
+					}
+				}
+			});
+		},
+
+
+		evf_one_file_limit_message: function(){
+			$.alert({
+				title: evf_upgrade.evf_one_time_draggable_title,
+				content: evf_upgrade.evf_file_upload_free_file_limit_message,
 				icon: 'dashicons dashicons-info',
 				type: 'blue',
 				buttons : {
