@@ -259,8 +259,8 @@ class EVF_Style_Customizer_API {
 				}
 
 				update_option( 'evf_style_templates', json_encode( $stored_styles ) );
-				}
 			}
+		}
 		}
 
 		return apply_filters( 'evf_style_templates', json_decode( $styles ) );
@@ -621,9 +621,21 @@ class EVF_Style_Customizer_API {
 			unset( $active_template_customized_data['template'] );
 			$template_data         = isset( $templates_settings[ $active_template_id ]['data'] ) ? $templates_settings[ $active_template_id ]['data'] : array();
 			$updated_template_data = array_merge( $template_data, $active_template_customized_data );
-
-			$templates_settings[ $active_template_id ]['data'] = $updated_template_data;
 		}
+
+		$customized_template_data  = $active_template_customized_data;
+		$customized_template_color = isset( $customized_template_data['color_palette'][ $matched_color_key ] ) ? $customized_template_data['color_palette'][ $matched_color_key ] : array();
+		unset( $customized_template_data['color_palette'] );
+		$customized_template_data['form_container']['background_color']            = $customized_template_color['form_background'];
+		$customized_template_data['field_styles']['field_styles_background_color'] = $customized_template_color['field_background'];
+		$customized_template_data['typography']['field_labels_font_color']         = $customized_template_color['field_label'];
+		$customized_template_data['typography']['field_sublabels_font_color']      = $customized_template_color['field_sublabel'];
+		$customized_template_data['typography']['button_font_color']               = $customized_template_color['button_text'];
+		$customized_template_data['typography']['button_background_color']         = $customized_template_color['button_background'];
+
+		$templates_settings[ $active_template_id ]['data'] = $customized_template_data;
+
+		update_option( 'evf_style_templates', $templates_settings );
 
 		if ( $matched_color_key !== null && isset( $customized_data[ $form_id ]['color_palette'][ $matched_color_key ] ) ) {
 			$customized_data[ $form_id ]['color_palette'] = array(
