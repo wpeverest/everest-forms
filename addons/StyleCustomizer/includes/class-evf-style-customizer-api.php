@@ -274,7 +274,9 @@ class EVF_Style_Customizer_API {
 		$templates_list = array();
 
 		foreach ( $templates as $template_slug => $template ) {
-			$templates_list[ $template_slug ] = $template->name;
+			if ( ! empty( $template->name ) ) {
+				$templates_list[ $template_slug ] = $template->name;
+			}
 		}
 
 		return $templates_list;
@@ -607,6 +609,8 @@ class EVF_Style_Customizer_API {
 				$matched_color_key = $matches[2];
 				$form_id           = $matches[1];
 				break;
+			} elseif ( preg_match( '/everest_forms_styles\[(\d+)\]/', $key, $matches ) ) {
+				$form_id = $matches[1];
 			}
 		}
 
@@ -624,18 +628,18 @@ class EVF_Style_Customizer_API {
 		}
 
 		$customized_template_data  = $active_template_customized_data;
-		$customized_template_color = isset( $customized_template_data['color_palette'][ $matched_color_key ] ) ? $customized_template_data['color_palette'][ $matched_color_key ] : array();
+		$selected_color            = isset( $customized_template_data['color_palette'] ) ? array_key_last( $customized_template_data['color_palette'] ) : array();
+		$customized_template_color = isset( $customized_template_data['color_palette'][ $selected_color ] ) ? $customized_template_data['color_palette'][ $selected_color ] : array();
 		unset( $customized_template_data['color_palette'] );
-		$customized_template_data['form_container']['background_color']            = $customized_template_color['form_background'];
-		$customized_template_data['field_styles']['field_styles_background_color'] = $customized_template_color['field_background'];
-		$customized_template_data['typography']['field_labels_font_color']         = $customized_template_color['field_label'];
-		$customized_template_data['typography']['field_sublabels_font_color']      = $customized_template_color['field_sublabel'];
-		$customized_template_data['typography']['button_font_color']               = $customized_template_color['button_text'];
-		$customized_template_data['typography']['button_background_color']         = $customized_template_color['button_background'];
+		$customized_template_data['form_container']['background_color']            = isset( $customized_template_color['form_background'] ) ? $customized_template_color['form_background'] : '';
+		$customized_template_data['field_styles']['field_styles_background_color'] = isset( $customized_template_color['field_background'] ) ? $customized_template_color['field_background'] : '';
+		$customized_template_data['typography']['field_labels_font_color']         = isset( $customized_template_color['field_label'] ) ? $customized_template_color['field_label'] : '';
+		$customized_template_data['typography']['field_sublabels_font_color']      = isset( $customized_template_color['field_sublabel'] ) ? $customized_template_color['field_sublabel'] : '';
+		$customized_template_data['typography']['button_font_color']               = isset( $customized_template_color['button_text'] ) ? $customized_template_color['button_text'] : '';
+		$customized_template_data['typography']['button_background_color']         = isset( $customized_template_color['button_background'] ) ? $customized_template_color['button_background'] : '';
 
 		$templates_settings[ $active_template_id ]['data'] = $customized_template_data;
-
-		update_option( 'evf_style_templates', $templates_settings );
+		update_option( 'evf_style_templates', json_encode( $templates_settings ) );
 
 		if ( $matched_color_key !== null && isset( $customized_data[ $form_id ]['color_palette'][ $matched_color_key ] ) ) {
 			$customized_data[ $form_id ]['color_palette'] = array(
