@@ -49,7 +49,7 @@ class EVF_Settings_Validation extends EVF_Settings_Page {
 					'type'     => 'text',
 					'desc_tip' => true,
 					'css'      => 'min-width: 350px;',
-					'default'  => esc_html__( 'This field is required.', 'everest-forms' ),
+					'default'  => __( 'This field is required.', 'everest-forms' ),
 				),
 				array(
 					'title'    => esc_html__( 'Website URL', 'everest-forms' ),
@@ -58,7 +58,7 @@ class EVF_Settings_Validation extends EVF_Settings_Page {
 					'type'     => 'text',
 					'desc_tip' => true,
 					'css'      => 'min-width: 350px;',
-					'default'  => esc_html__( 'Please enter a valid URL.', 'everest-forms' ),
+					'default'  => __( 'Please enter a valid URL.', 'everest-forms' ),
 				),
 				array(
 					'title'    => esc_html__( 'Email', 'everest-forms' ),
@@ -67,7 +67,7 @@ class EVF_Settings_Validation extends EVF_Settings_Page {
 					'type'     => 'text',
 					'desc_tip' => true,
 					'css'      => 'min-width: 350px;',
-					'default'  => esc_html__( 'Please enter a valid email address.', 'everest-forms' ),
+					'default'  => __( 'Please enter a valid email address.', 'everest-forms' ),
 				),
 				array(
 					'title'    => esc_html__( 'Email Suggestion', 'everest-forms' ),
@@ -76,7 +76,7 @@ class EVF_Settings_Validation extends EVF_Settings_Page {
 					'type'     => 'text',
 					'desc_tip' => true,
 					'css'      => 'min-width: 350px;',
-					'default'  => esc_html__( 'Did you mean {suggestion}?', 'everest-forms' ),
+					'default'  => __( 'Did you mean {suggestion}?', 'everest-forms' ),
 				),
 				array(
 					'title'    => esc_html__( 'Confirm Value', 'everest-forms' ),
@@ -85,7 +85,7 @@ class EVF_Settings_Validation extends EVF_Settings_Page {
 					'type'     => 'text',
 					'desc_tip' => true,
 					'css'      => 'min-width: 350px;',
-					'default'  => esc_html__( 'Field values do not match.', 'everest-forms' ),
+					'default'  => __( 'Field values do not match.', 'everest-forms' ),
 				),
 				array(
 					'title'    => esc_html__( 'Checkbox Selection Limit', 'everest-forms' ),
@@ -94,7 +94,7 @@ class EVF_Settings_Validation extends EVF_Settings_Page {
 					'type'     => 'text',
 					'desc_tip' => true,
 					'css'      => 'min-width: 350px;',
-					'default'  => esc_html__( 'You have exceeded number of allowed selections: {#}.', 'everest-forms' ),
+					'default'  => __( 'You have exceeded number of allowed selections: {#}.', 'everest-forms' ),
 				),
 				array(
 					'title'    => esc_html__( 'Number', 'everest-forms' ),
@@ -103,7 +103,7 @@ class EVF_Settings_Validation extends EVF_Settings_Page {
 					'type'     => 'text',
 					'desc_tip' => true,
 					'css'      => 'min-width: 350px;',
-					'default'  => esc_html__( 'Please enter a valid number.', 'everest-forms' ),
+					'default'  => __( 'Please enter a valid number.', 'everest-forms' ),
 				),
 				array(
 					'type' => 'sectionend',
