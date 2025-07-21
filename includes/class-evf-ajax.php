@@ -385,7 +385,26 @@ class EVF_AJAX {
 				}
 
 				if ( ! empty( $field['meta-key'] ) ) {
-					$list_of_meta_keys[] = $field['meta-key'];
+					
+					$sanitized_meta_key = sanitize_key( $field['meta-key'] );
+					
+				
+					if ( $sanitized_meta_key !== $field['meta-key'] ) {
+						$logger->error(
+							__( 'Invalid meta-key characters detected.', 'everest-forms' ),
+							array( 'source' => 'form-save' )
+						);
+						wp_send_json_error(
+							array(
+								'errorTitle'   => esc_html__( 'Invalid Meta Key', 'everest-forms' ),
+								'errorMessage' => sprintf( esc_html__( 'Meta key for field "%s" contains invalid characters. Only lowercase letters, numbers, hyphens, and underscores are allowed.', 'everest-forms' ), '<strong>' . $field['label'] . '</strong>' ),
+							)
+						);
+					}
+					
+					$list_of_meta_keys[] = $sanitized_meta_key;
+
+					$field['meta-key'] = $sanitized_meta_key;
 				}
 				$unique_meta_keys = array_unique( $list_of_meta_keys );
 
