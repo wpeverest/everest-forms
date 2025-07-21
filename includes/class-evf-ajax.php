@@ -632,7 +632,7 @@ class EVF_AJAX {
 	 * Ajax handler for form submission.
 	 */
 	public static function ajax_form_submission() {
-		//  check_ajax_referer( 'everest_forms_ajax_form_submission', 'security' );
+		check_ajax_referer( 'everest_forms_ajax_form_submission', 'security' );
 
 		if ( ! empty( $_POST['everest_forms']['id'] ) ) {
 			$process = evf()->task->ajax_form_submission( evf_sanitize_entry( wp_unslash( $_POST['everest_forms'] ) ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
@@ -985,6 +985,8 @@ class EVF_AJAX {
 	 * Triggered when clicking the rating footer.
 	 */
 	public static function rated() {
+		check_ajax_referer( 'everest_forms_rated', 'security' );
+
 		if ( ! current_user_can( 'manage_everest_forms' ) ) {
 			wp_die( -1 );
 		}
@@ -996,6 +998,8 @@ class EVF_AJAX {
 	 * Triggered when clicking the review notice button.
 	 */
 	public static function review_dismiss() {
+		check_ajax_referer( 'everest_forms_review_dismiss', 'security' );
+
 		if ( ! current_user_can( 'manage_everest_forms' ) ) {
 			wp_die( -1 );
 		}
@@ -1010,6 +1014,8 @@ class EVF_AJAX {
 	 * Triggered when clicking the survey notice button.
 	 */
 	public static function survey_dismiss() {
+		check_ajax_referer( 'everest_forms_survey_dismiss', 'security' );
+
 		if ( ! current_user_can( 'manage_everest_forms' ) ) {
 			wp_die( -1 );
 		}
