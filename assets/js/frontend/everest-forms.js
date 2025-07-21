@@ -1084,7 +1084,7 @@ jQuery( function ( $ ) {
 						</div>
 						<img src="${ everest_forms_params.evf_checked_image_url }" alt="Checked Logo" class="everest-forms-popup-success-logo">
 						<p class="everest-forms-popup-success-text">${ everest_forms_params.i18n_evf_success_text }</p>
-						<p>${ $message }</p>
+						<p>${ $('<div>').text($message).html() }</p>
 					</div>
 				</div>
 			`;

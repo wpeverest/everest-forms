@@ -117,15 +117,14 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 
 		$file = sanitize_file_name( wp_unslash( $_POST['file'] ) ); // phpcs:ignore WordPress.Security.NonceVerification
 
-		// Security: Strip any path traversal sequences and null bytes
+		// Strip any path traversal sequences and null bytes
 		$file = str_replace( array( '../', '..\\', '\\', "\0" ), '', $file );
 
-		// Security: Prevent deletion of protected files
 		if ( in_array( strtolower( $file ), array_map( 'strtolower', $this->protected_files ), true ) ) {
 			wp_send_json_error( esc_html__( 'This file cannot be deleted for security reasons.', 'everest-forms' ) );
 		}
 
-		// Security: Only allow deletion from whitelisted directories
+		// Only allow deletion from whitelisted directories
 		$allowed_dirs = array(
 			$this->get_tmp_dir(),
 			$this->get_form_files_dir()['path'],
@@ -133,7 +132,7 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 
 		$tmp_path = wp_normalize_path( $this->get_tmp_dir() . '/' . $file );
 
-		// Security: Validate that the target path is within allowed directories
+		// Validate that the target path is within allowed directories
 		$is_allowed = false;
 		foreach ( $allowed_dirs as $allowed_dir ) {
 			$allowed_dir = wp_normalize_path( $allowed_dir );
