@@ -132,7 +132,16 @@ if ( false !== $entry_index ) {
 										// Check for empty serialized value.
 										if ( is_serialized( $meta_value ) ) {
 											$raw_meta_val = unserialize( $meta_value ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_unserialize
-											if ( ! empty( $raw_meta_val['type'] ) && in_array( $raw_meta_val['type'], array( 'payment-checkbox', 'checkbox', 'radio', 'payment-multiple', ) ) && empty( $raw_meta_val['label'][0] ) ) {
+
+											$field_type_array = apply_filters( 'everest_forms_serialized_value_field_type', array(
+													'payment-checkbox',
+													'checkbox',
+													'radio',
+													'payment-multiple'
+												)
+											);
+
+											if ( ! empty( $raw_meta_val['type'] ) && in_array( $raw_meta_val['type'], $field_type_array  ) && empty( $raw_meta_val['label'][0] ) ) {
 												$meta_value = '';
 											} else {
 												$is_dropdown = false;
