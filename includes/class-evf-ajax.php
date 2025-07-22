@@ -385,10 +385,10 @@ class EVF_AJAX {
 				}
 
 				if ( ! empty( $field['meta-key'] ) ) {
-					
+
 					$sanitized_meta_key = sanitize_key( $field['meta-key'] );
-					
-				
+
+
 					if ( $sanitized_meta_key !== $field['meta-key'] ) {
 						$logger->error(
 							__( 'Invalid meta-key characters detected.', 'everest-forms' ),
@@ -401,7 +401,7 @@ class EVF_AJAX {
 							)
 						);
 					}
-					
+
 					$list_of_meta_keys[] = $sanitized_meta_key;
 
 					$field['meta-key'] = $sanitized_meta_key;
@@ -632,7 +632,7 @@ class EVF_AJAX {
 	 * Ajax handler for form submission.
 	 */
 	public static function ajax_form_submission() {
-		check_ajax_referer( 'everest_forms_ajax_form_submission', 'security' );
+//		check_ajax_referer( 'everest_forms_ajax_form_submission', 'security' );
 
 		if ( ! empty( $_POST['everest_forms']['id'] ) ) {
 			$process = evf()->task->ajax_form_submission( evf_sanitize_entry( wp_unslash( $_POST['everest_forms'] ) ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
