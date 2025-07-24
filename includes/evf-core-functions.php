@@ -5485,3 +5485,70 @@ if ( ! function_exists( 'evf_maybe_unserialize' ) ) {
 		return $data;
 	}
 }
+
+/**
+ * Confimation backward compatiblity.
+ *
+ * @since xx.xx.xx
+ * @param [type] $form_data The old form data.
+ */
+function evf_form_confirmation_backward_compatibility( $form_data ) {
+	if ( empty( $form_data ) ) {
+		return $form_data;
+	}
+	//If the form is updated then return original form data.
+	if ( get_post_meta( $form_data['id'], 'updated_form_confirmation', true ) ) {
+		return $form_data;
+	}
+
+	$settings               = $form_data['settings'];
+	$submission_redirection = isset( $settings['submission_redirection'] ) ? $settings['submission_redirection'] : array();
+	if ( empty( $submission_redirection ) ) {
+		return $form_data;
+	}
+
+	$updated_conditionals = array();
+	if ( isset( $submission_redirection['connection_1']['conditionals'] ) ) {
+		$conditionals = isset( $submission_redirection['connection_1']['conditionals'] ) ? $submission_redirection['connection_1']['conditionals'] : array();
+		$rules        = isset( $submission_redirection['connection_1']['rules'] ) ? $submission_redirection['connection_1']['rules'] : array();
+
+		if ( empty( $rules ) || empty( $conditionals ) ) {
+			return $form_data;
+		}
+
+		foreach ( $conditionals['rules'] as $key => $conditional ) {
+			$updated_conditionals['rules'][ $key ] = $conditional;
+
+			$settings = array(
+				'title'                              => 'Conditional Confirmations',
+				'redirect_to'                        => isset( $rules[ $key ]['conditional_option'] ) ? ( 'same_page' === $rules[ $key ]['conditional_option'] ? 'same' : $rules[ $key ]['conditional_option'] ) : 'same',
+				'custom_page'                        => isset( $rules[ $key ]['conditional_option_redirection_custom_page'] ) ? $rules[ $key ]['conditional_option_redirection_custom_page'] : 0,
+				'external_url'                       => isset( $rules[ $key ]['conditional_option_redirection_external_url'] ) ? $rules[ $key ]['conditional_option_redirection_custom_page'] : 0,
+				'enable_redirect_in_new_tab'         => 0,
+				'enable_redirect_query_string'       => 0,
+				'query_string'                       => isset( $settings['query_string'] ) ? $settings['query_string'] : '',
+				'successful_form_submission_message' => isset(
+					$settings['            [successful_form_submission_message] => Thanks for contacting us! We will be in touch with you shortly
+']
+				) ? $settings['            [successful_form_submission_message] => Thanks for contacting us! We will be in touch with you shortly
+'] : 'Thanks for contacting us! We will be in touch with you shortly',
+				'submission_message_scroll'          => isset( $settings['submission_message_scroll'] ) ? $settings['submission_message_scroll'] : 0,
+				'form_state_type'                    => 'hide',
+				'preview_confirmation'               => isset( $settings['preview_confirmation'] ) ? $settings['preview_confirmation'] : 0,
+				'preview_confirmation_select'        => isset( $settings['preview_confirmation_select'] ) ? $settings['preview_confirmation_select'] : 'basic',
+				'message_display_location_of_hide'   => 'hide',
+				'message_display_location_of_reset'  => 'top',
+				'active'                             => 1,
+			);
+
+			$updated_conditionals['rules'][ $key ]['settings'] = $settings;
+		}
+	}
+
+	if ( ! empty( $updated_conditionals ) ) {
+		$form_data['settings']['submission_redirection']['connection_1']['conditionals'] = $updated_conditionals;
+	}
+
+	return $form_data;
+
+}

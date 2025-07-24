@@ -143,7 +143,7 @@ const Header = () => {
 									w="85px"
 									href={
 										upgradeURL +
-										"&utm_source=dashboard-header&utm_medium=top-menu-link"
+										"utm_medium=evf-dashboard&utm_source=evf-free&utm_campaign=header-upgrade-btn&utm_content=Upgrade%20to%20Pro"
 									}
 									isExternal
 								>

@@ -627,7 +627,6 @@
 			EVFPanelBuilder.bindCloneField();
 			EVFPanelBuilder.bindSaveOption();
 			EVFPanelBuilder.bindEmbedOption();
-			EVFPanelBuilder.bindPreviewConfirmation();
 			EVFPanelBuilder.bindSaveOptionWithKeyEvent();
 			EVFPanelBuilder.bindOpenShortcutKeysModalWithKeyEvent();
 			EVFPanelBuilder.bindAddNewRow();
@@ -2588,18 +2587,24 @@
             });
         },
 		bindPreviewConfirmation: function () {
-			if ($( '#everest-forms-panel-field-settings-preview_confirmation' ).prop( 'checked' )) {
-				$( '#everest-forms-panel-field-settings-preview_confirmation_select-wrap' ).show();
-			}else{
-				$( '#everest-forms-panel-field-settings-preview_confirmation_select-wrap' ).hide();
-			}
-			$( '#everest-forms-panel-field-settings-preview_confirmation' ).on( 'change', function() {
-				  if ( $( this ).prop( 'checked' ) ) {
-					$( '#everest-forms-panel-field-settings-preview_confirmation_select-wrap' ).show();
-				} else {
-					$( '#everest-forms-panel-field-settings-preview_confirmation_select-wrap' ).hide();
-				}
-			})
+				$('.everest-preview-confirmation').each(function() {
+					const $checkbox = $(this);
+					const $target = $checkbox.closest('.everest-forms-panel-field-toggle').next('.preview-confirm-select-wrapper');
+
+					if ($checkbox.is(":checked")) {
+						$target.show();
+					} else {
+						$target.hide();
+					}
+
+					$checkbox.on('change', function() {
+						if ($(this).is(":checked")) {
+							$target.show();
+						} else {
+							$target.hide();
+						}
+					});
+			});
 		},
 		bindSaveOptionWithKeyEvent:function() {
 			$('body').on("keydown", function (e) {
@@ -3795,109 +3800,154 @@
 	EVFPanelBuilder.init();
 })(jQuery, window.evf_data);
 
-jQuery(function () {
+jQuery(function ($) {
 
-	if ( jQuery('#everest-forms-panel-field-settingsemail-evf_send_confirmation_email').attr("checked") != 'checked' )	{
-		jQuery('#everest-forms-panel-field-settingsemail-evf_send_confirmation_email-wrap').nextAll().hide();
+	if ( $('#everest-forms-panel-field-settingsemail-evf_send_confirmation_email').attr("checked") != 'checked' )	{
+		$('#everest-forms-panel-field-settingsemail-evf_send_confirmation_email-wrap').nextAll().hide();
 	}
 
-	jQuery( '#everest-forms-panel-field-settingsemail-evf_send_confirmation_email' ).on( 'change', function () {
+	$( '#everest-forms-panel-field-settingsemail-evf_send_confirmation_email' ).on( 'change', function () {
 
-		if ( jQuery( this ).attr('checked') != 'checked') {
-			jQuery('#everest-forms-panel-field-settingsemail-evf_send_confirmation_email-wrap').nextAll().hide();
+		if ( $( this ).attr('checked') != 'checked') {
+			$('#everest-forms-panel-field-settingsemail-evf_send_confirmation_email-wrap').nextAll().hide();
 		} else {
-			jQuery('#everest-forms-panel-field-settingsemail-evf_send_confirmation_email-wrap').nextAll().show();
+			$('#everest-forms-panel-field-settingsemail-evf_send_confirmation_email-wrap').nextAll().show();
 		}
 	});
 
-		// Query String Toogle.
-		jQuery( '#everest-forms-panel-field-settings-enable_redirect_query_string-wrap input' ).on( 'change', function () {
-			var $this = jQuery( this );
-			if ( ! $this.is( ':checked' ) ) {
-				jQuery('#everest-forms-panel-field-settings-query_string-wrap').hide();
-			} else {
-				jQuery('#everest-forms-panel-field-settings-query_string-wrap').show();
-			}
+	window.pageType = function(el, redirectTo) {
+		var outerWrapper = $(el).closest('.evf-confirmation-wrap');
+
+		// If the element isn't checked, return early.
+		if (!el.is(':checked')) {
+			return;
+		}
+
+		// Show the appropriate settings based on redirect type.
+		switch (redirectTo) {
+			case 'same':
+				$(outerWrapper).find('.same-page-setting').show();
+				outerWrapper.find('.external-page-setting, .custom-page-setting').hide();
+				outerWrapper.find('.custom-and-external-page-setting').hide();
+
+				// Handle form state type changes.
+				var el = outerWrapper.find('.form-state-type:checked');
+				var initialValue = el.val();
+
+				toggleMessageLocations(el, initialValue);
+				previewType(el, outerWrapper);
+
+				outerWrapper.off('change', '.form-state-type').on('change', '.form-state-type', function() {
+					toggleMessageLocations($(this), $(this).val());
+				});
+
+				outerWrapper.on('change', '.everest-preview-confirmation', function(){
+					var html = '';
+					if($(this).is(':checked')) {
+						var options =[{value:'top', label: 'Above Form Summary'}, {value:"bottom", label:'Below Form Summary'}, {value:'popup', label:'As Popup'}];
+					}else{
+						var options =[{value:'hide', label: 'Shown Message in Place of Form'}, {value:'popup', label:'As Popup'}];
+					}
+
+					var select = outerWrapper.find('.form-state-hide select');
+
+					select.empty();
+
+					$.each(options, function(index, option) {
+						html += `<option value="${option.value}">${option.label}</option>`;
+					});
+
+					select.html(html);
+					setTimeout(function() {
+								select.trigger('change');
+							}, 50);
+
+				})
+				break;
+			case 'custom_page':
+				outerWrapper.find('.custom-page-setting').show();
+				outerWrapper.find('.custom-and-external-page-setting').show();
+				outerWrapper.find('.same-page-setting, .external-page-setting').hide();
+
+				toggleAppendQueryString(outerWrapper);
+				break;
+			case 'external_url':
+				outerWrapper.find('.external-page-setting').show();
+				outerWrapper.find('.custom-and-external-page-setting').show();
+				outerWrapper.find('.same-page-setting, .custom-page-setting').hide();
+
+				toggleAppendQueryString(outerWrapper);
+				break;
+			default:
+				console.warn('Unknown redirect type:', redirectTo);
+				break;
+		}
+	}
+
+	// Initialize on page load
+	$(function($) {
+
+		// Get initial value and apply
+		$('.confirmation-redirect-to').each(function(){
+			var initialValue = $(this).val();
+			window.pageType($(this), initialValue);
 		});
 
-	var mySelect = jQuery('#everest-forms-panel-field-settings-redirect_to option:selected').val();
+		// Handle changes
+		$(document).on('change', '.confirmation-redirect-to', function() {
+			window.pageType($(this), $(this).val());
+		});
+	});
 
-	if ( mySelect == 'same' ) {
-		jQuery('#everest-forms-panel-field-settings-custom_page-wrap').hide();
-		jQuery('#everest-forms-panel-field-settings-enable_redirect_query_string-wrap').hide();
-		jQuery('#everest-forms-panel-field-settings-query_string-wrap').hide();
-		jQuery('#everest-forms-panel-field-settings-external_url-wrap').hide();
-	}
-	else if(mySelect == 'custom_page') {
-		jQuery('#everest-forms-panel-field-settings-custom_page-wrap').show();
-		jQuery('#everest-forms-panel-field-settings-external_url-wrap').hide();
-	}
-	else if(mySelect == 'external_url'){
-		jQuery('#everest-forms-panel-field-settings-external_url-wrap').show();
-		jQuery('#everest-forms-panel-field-settings-custom_page-wrap').hide();
-		jQuery('#everest-forms-panel-field-settings-enable_redirect_query_string-wrap').hide();
-		jQuery('#everest-forms-panel-field-settings-query_string-wrap').hide();
-	}
 
-	jQuery( '#everest-forms-panel-field-settings-redirect_to' ).on( 'change', function () {
-		if ( this.value == 'same' ) {
-			jQuery('#everest-forms-panel-field-settings-custom_page-wrap').hide();
-			jQuery('#everest-forms-panel-field-settings-external_url-wrap').hide();
-			jQuery('#everest-forms-panel-field-settings-enable_redirect_query_string-wrap').hide();
-			jQuery('#everest-forms-panel-field-settings-query_string-wrap').hide();
-		}
-		else if ( this.value == 'custom_page') {
-			jQuery('#everest-forms-panel-field-settings-custom_page-wrap').show();
-			jQuery('#everest-forms-panel-field-settings-enable_redirect_query_string-wrap').show();
-			jQuery('#everest-forms-panel-field-settings-external_url-wrap').hide();
+	// Function to toggle message locations based on form state
+	function toggleMessageLocations(el, state) {
+		var wrapper = $(el).closest('.everest-forms-border-container');
+		wrapper.find('.form-state-hide, .form-state-reset').hide();
 
-			if(jQuery('#everest-forms-panel-field-settings-enable_redirect_query_string').is(':checked')){
-				jQuery('#everest-forms-panel-field-settings-query_string-wrap').show();
-			} else{
-				jQuery('#everest-forms-panel-field-settings-query_string-wrap').hide();
+		if (state === 'hide') {
+			wrapper.find('.form-state-hide').show();
+			wrapper.find('.preview-confirmation-toggle-wrapper').show();
+			if(wrapper.find('.everest-preview-confirmation').is(':checked')) {
+				wrapper.find('.preview-confirm-select-wrapper').show();
+			}else{
+				wrapper.find('.preview-confirm-select-wrapper').hide();
 			}
+		} else if (state === 'reset') {
+			wrapper.find('.preview-confirmation-toggle-wrapper').hide();
+			wrapper.find('.preview-confirm-select-wrapper').hide();
+			wrapper.find('.form-state-reset').show();
 		}
-		else if ( this.value == 'external_url') {
-			jQuery('#everest-forms-panel-field-settings-custom_page-wrap').hide();
-			jQuery('#everest-forms-panel-field-settings-enable_redirect_query_string-wrap').hide();
-			jQuery('#everest-forms-panel-field-settings-query_string-wrap').hide();
-			jQuery('#everest-forms-panel-field-settings-external_url-wrap').show();
-		}
-	});
-	jQuery( '.evf-panel-field-options-button.evf-disabled-tab' ).hide();
+	}
 
-	// Conditional Logic fields for General Settings in Form for Submission Redirection.
+	// Handle query string toggle
+	function toggleAppendQueryString(outerWrapper) {
+		var queryStringWrap = outerWrapper.find('.query-string-wrap');
+		var appendInput = outerWrapper.find('.append-query-string-input');
+		queryStringWrap.toggle(appendInput.is(':checked'));
 
-	jQuery( '.everest-forms-conditional-field-settings-redirect_to').each(function() {
-		var conditional_rule_selection =this.value;
-		if ( 'custom_page' == conditional_rule_selection ) {
-			jQuery(this).parents('.evf-field-conditional-container').find('.everest-forms-conditional-field-settings-custom_page').show();
-			jQuery(this).parents('.evf-field-conditional-container').find('.everest-forms-conditional-field-settings-external_url').hide();
-		}
-		else if( 'external_url' == conditional_rule_selection ) {
-			jQuery(this).parents('.evf-field-conditional-container').find('.everest-forms-conditional-field-settings-custom_page').hide();
-			jQuery(this).parents('.evf-field-conditional-container').find('.everest-forms-conditional-field-settings-external_url').show();
-		} else {
-			jQuery(this).parents('.evf-field-conditional-container').find('.everest-forms-conditional-field-settings-custom_page').hide();
-			jQuery(this).parents('.evf-field-conditional-container').find('.everest-forms-conditional-field-settings-external_url').hide();
+		outerWrapper.on('change', '.append-query-string-input', function() {
+			queryStringWrap.toggle($(this).is(':checked'));
+		});
+	}
+
+	function previewType(el, outerWrapper) {
+		var queryStringWrap = outerWrapper.find('.preview-confirm-select-wrapper');
+
+		if(el.val() == 'reset') {
+		  queryStringWrap.toggle(false);
+		  return;
 		}
 
-	})
+		var appendInput = outerWrapper.find('.everest-preview-confirmation');
+		queryStringWrap.toggle(appendInput.is(':checked'));
 
-	jQuery( document ).on( 'change', '.everest-forms-conditional-field-settings-redirect_to', function () {
-		if ( 'custom_page' == this.value ) {
-				jQuery(this).parents('.evf-field-conditional-container').find('.everest-forms-conditional-field-settings-custom_page').show();
-				jQuery(this).parents('.evf-field-conditional-container').find('.everest-forms-conditional-field-settings-external_url').hide();
-		}
-		else if( 'external_url' == this.value ) {
-				jQuery(this).parents('.evf-field-conditional-container').find('.everest-forms-conditional-field-settings-custom_page').hide();
-				jQuery(this).parents('.evf-field-conditional-container').find('.everest-forms-conditional-field-settings-external_url').show();
-		} else {
-				jQuery(this).parents('.evf-field-conditional-container').find('.everest-forms-conditional-field-settings-custom_page').hide();
-				jQuery(this).parents('.evf-field-conditional-container').find('.everest-forms-conditional-field-settings-external_url').hide();
-		}
-	});
+		outerWrapper.on('change', '.everest-preview-confirmation', function() {
+			queryStringWrap.toggle($(this).is(':checked'));
+		});
+	}
 
+	$( '.evf-panel-field-options-button.evf-disabled-tab' ).hide();
 });
 
 jQuery( function ( $ ) {
@@ -3920,10 +3970,16 @@ jQuery( function ( $ ) {
 	$( document.body ).on( 'click', '.everest-forms-field-option .everest-forms-field-option-group > a', function( event ) {
 		event.preventDefault();
 		var $fielOption = $( this ).closest( '.everest-forms-field-option-group' ).closest('.everest-forms-field-option');
+		var currentElement = $( this ),
+		    currentElementId = currentElement.parent( '.everest-forms-field-option-group').attr( 'id');
 
 		$fielOption.find( '.everest-forms-field-option-group' ).each( function() {
-			$( this ).removeClass( 'open' ).addClass( 'closed' );
+			var selectedID = $( this ).attr( 'id' );
+			if ( currentElementId !== selectedID ) {
+				$( this ).removeClass( 'open' ).addClass( 'closed' );
+			}
 		});
+
 		$( this ).parent( '.everest-forms-field-option-group' ).toggleClass( 'closed' ).toggleClass( 'open' );
 		$( '.everest-forms-field-option-group.closed' ).each( function() {
 			$( this ).find( '.everest-forms-field-option-group-inner' ).hide();
@@ -3934,8 +3990,31 @@ jQuery( function ( $ ) {
 		if ( $( event.target ).filter( ':input, option, .sort' ).length ) {
 			return;
 		}
-
 		$( this ).next( '.everest-forms-field-option-group-inner' ).stop().slideToggle();
+
+		/**
+		 * If the field option group is not basic, then auto scroll to top.
+		 *
+		 * @since 3.3.0
+		 */
+		var $el = $( this ).closest('.everest-forms-field-option-group');
+
+		if ( $el.length && ! $el.hasClass( 'everest-forms-field-option-group-basic' ) ) {
+			var targetId = 'field-options';
+			var dynamicLink = $('<a>', {
+				id: 'evf-temp-link',
+				href: '#' + targetId
+			});
+
+			dynamicLink.insertBefore($el);
+
+			dynamicLink[0].click();
+
+			setTimeout(function() {
+				dynamicLink.remove();
+			}, 100);
+		}
+
 	});
 	$( document.body ).on( 'init_field_options_toggle', function() {
 		$( '.everest-forms-field-option-group.closed' ).each( function() {

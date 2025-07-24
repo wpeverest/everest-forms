@@ -102,10 +102,7 @@ jQuery( function( $ ) {
 						name: 'action',
 						value: 'everest_forms_ajax_form_submission'
 					});
-					data.push({
-						name: 'security',
-						value: everest_forms_ajax_submission_params.evf_ajax_submission
-					});
+
 					// Fire the ajax request.
 					$.ajax({
 						url: everest_forms_ajax_submission_params.ajax_url,
@@ -116,8 +113,17 @@ jQuery( function( $ ) {
 						var redirect_url = ( xhr.data && xhr.data.redirect_url ) ? xhr.data.redirect_url : '';
 						if ( redirect_url && 'stripe' !== formTuple.find( ".everest-forms-gateway[data-gateway='stripe']" ).data( 'gateway' ) && 'square' !== formTuple.find( ".everest-forms-gateway[data-gateway='square']" ).data( 'gateway' )) {
 							formTuple.trigger( 'reset' );
-							window.location = redirect_url;
-							return;
+							var new_tab = xhr.data.enable_redirect_in_new_tab ? xhr.data.enable_redirect_in_new_tab : false;
+
+							if (new_tab) {
+								var newWindow = window.open(redirect_url, '_blank');
+								if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
+									window.location.href = redirect_url;
+								}
+							} else {
+								window.location.href = redirect_url;
+								return;
+							}
 						}
 					if (xhr && xhr.payment_method && xhr.payment_method === 'paypal' && xhr.redirect) {
 						if ('paypal' === xhr.payment_method) {
@@ -126,11 +132,14 @@ jQuery( function( $ ) {
 						}
 					}
 
-						if ( 'success' === xhr.data.response || true === xhr.success ) {
-							let pdf_download_message = '';
-							let quiz_reporting = '';
-							let preview_confirmation = '';
-							if(xhr.data.form_id !== undefined && xhr.data.entry_id !== undefined && xhr.data.pdf_download == true){
+					if ( 'success' === xhr.data.response || true === xhr.success ) {
+						let pdf_download_message = '';
+						let quiz_reporting = '';
+						let preview_confirmation = '';
+						let message_location = '';
+						let form_state_type = '';
+
+						if(xhr.data.form_id !== undefined && xhr.data.entry_id !== undefined && xhr.data.pdf_download == true){
 								pdf_download_message = '<br><small><a href="/?page=evf-entries-pdf&form_id='+ xhr.data.form_id+'&entry_id='+xhr.data.entry_id+'">' + xhr.data.pdf_download_message + '</a></small>';
 							}
 							if( xhr.data.quiz_result_shown == true){
@@ -141,6 +150,13 @@ jQuery( function( $ ) {
 								preview_confirmation = xhr.data.preview_confirmation;
 							}
 
+							if ( xhr.data.message_display_location !== undefined && xhr.data.message_display_location !== '' ) {
+								message_location = xhr.data.message_display_location;
+							}
+
+							if ( xhr.data.form_state_type !== undefined && xhr.data.form_state_type !== '' ) {
+								form_state_type = xhr.data.form_state_type;
+							}
 
 							var paymentMethod = formTuple.find( ".everest-forms-stripe-gateways-tabs .evf-tab" ).has( 'a.active' ).data( 'gateway' );
 
@@ -168,15 +184,69 @@ jQuery( function( $ ) {
 								return;
 							}
 							if( 'square' === formTuple.find( ".everest-forms-gateway[data-gateway='square']" ).data('gateway') ){
-								console.log('square');
 
 								formTuple.trigger( 'everest_forms_frontend_payment_before_success_message', xhr.data );
 								return;
 							}
 
 							formTuple.trigger( 'reset' );
-							formTuple.closest( '.everest-forms' ).html( '<div class="everest-forms-notice everest-forms-notice--success" role="alert">' + xhr.data.message + pdf_download_message + '</div>' + quiz_reporting + preview_confirmation ).focus();
-							localStorage.removeItem(formTuple.attr('id'));
+							formTuple.closest('.everest-forms').find('.everest-forms-notice').remove();
+
+							if ( 'hide' === message_location ) {
+								formTuple.closest('.everest-forms').html(
+									'<div class="everest-forms-notice everest-forms-notice--success" role="alert">' +
+									xhr.data.message + pdf_download_message +
+									'</div>' + quiz_reporting + preview_confirmation
+								).focus();
+							} else if ( 'top' === message_location) {
+								formTuple.closest('.everest-forms').prepend(
+									'<div class="everest-forms-notice everest-forms-notice--success" role="alert">' +
+									xhr.data.message + pdf_download_message +
+									'</div>' + quiz_reporting + preview_confirmation
+								).focus();
+							} else if ( 'bottom' === message_location ) {
+								formTuple.closest('.everest-forms').append(
+									preview_confirmation + '<div class="everest-forms-notice everest-forms-notice--success" role="alert">' +
+									xhr.data.message + pdf_download_message +
+									'</div>' + quiz_reporting
+								).focus();
+							}else if ( 'popup' === message_location ) {
+								$('body').css('overflow', 'hidden');
+
+								var popupHTML = `
+									<div class="everest-forms-popup-overlay">
+										<div class="everest-forms-popup">
+											<div class="everest-forms-popup-close">
+												<svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+												<path d="M7 6.06668L1.26666 0.333344L0.333328 1.20001L6.06666 6.93334L0.333328 12.6L1.26666 13.5333L7 7.86668L12.6667 13.5333L13.6 12.6L7.93333 6.93334L13.6667 1.33334L12.7333 0.466677L7 6.06668Z" fill="#383838"/>
+												</svg>
+											</div>
+											<img src="${ everest_forms_ajax_submission_params.evf_checked_image_url }" alt="Checked Logo" class="everest-forms-popup-success-logo">
+											<p class="everest-forms-popup-success-text">${ everest_forms_ajax_submission_params.i18n_evf_success_text }</p>
+											<p>${ xhr.data.message }</p>
+										</div>
+									</div>
+								`;
+
+								$('body').append(popupHTML);
+
+								$('.everest-forms-popup-close').on('click', function() {
+									$('.everest-forms-popup-overlay').fadeOut(200, function() {
+										$(this).remove();
+										$('body').css('overflow', '');
+									});
+								});
+
+								formTuple.closest('.everest-forms').append(
+									preview_confirmation + quiz_reporting
+								).focus();
+							}
+							//If the form state hide then hide the form.
+							if('hide' === form_state_type) {
+								$('.evf-frontend-row, .evf-submit-container ').hide();
+							}
+
+							btn.attr('disabled', false).html(everest_forms_ajax_submission_params.submit);
 
 							// Trigger for form submission success.
 							var event = new CustomEvent("everest_forms_ajax_submission_success", {
