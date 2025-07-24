@@ -29,13 +29,13 @@ jQuery( function( $ ) {
 			$( document.body ).on( 'click ', '.evf-pro-palette', this.customizerupgrade );
 			$( document.body ).on( 'click ', '.everest-forms-pro-template', this.customizerupgrade );
 
-			if ( !( evf_data.is_pro ) ) {
-				$(document.body).find('.everest-forms-field-option-row-max_file_number input[type="number"]').on('input', function () {
-					var $this = $(this);
-					$this.val(1);
-					evf_upgrade_actions.evf_one_file_limit_message();
-				});
-			}
+
+			evf_upgrade_actions.limit_file_upload();
+			
+			$(document).on(
+				"evf_field_drop_complete",
+				evf_upgrade_actions.limit_file_upload
+			);
 		},
 
 		customizerupgrade: function (e) {
@@ -310,6 +310,15 @@ jQuery( function( $ ) {
 					}
 				}
 			});
+		},
+		limit_file_upload: function(){
+			if ( !( evf_data.is_pro ) ) {
+				$(document.body).find('.everest-forms-field-option-row-max_file_number input[type="number"]').on('input', function () {
+					var $this = $(this);
+					$this.val(1);
+					evf_upgrade_actions.evf_one_file_limit_message();
+				});
+			}
 		},
 		upgrade_integration: function( name = '',links = '', $el = '' ) {
 

@@ -250,12 +250,12 @@ abstract class EVF_Form_Fields {
 		// BW compat for number attrs.
 		if ( ! empty( $args['min'] ) ) {
 			$args['attrs']['min'] = esc_attr( $args['min'] );
-			// unset( $args['min'] );
+			unset( $args['min'] );
 		}
 
 		if ( ! empty( $args['max'] ) ) {
 			$args['attrs']['max'] = esc_attr( $args['max'] );
-			// unset( $args['max'] );
+			unset( $args['max'] );
 		}
 		if ( ! empty( $args['required'] ) && $args['required'] ) {
 			$args['attrs']['required'] = 'required';
@@ -314,8 +314,8 @@ abstract class EVF_Form_Fields {
 			case 'number':
 				$type        = ! empty( $args['type'] ) ? esc_attr( $args['type'] ) : 'text';
 				$placeholder = ! empty( $args['placeholder'] ) ? esc_attr( $args['placeholder'] ) : '';
-				$min         = ! empty( $args['min'] ) ? 'min="' . esc_attr( $args['min'] ) . '"' : '';
-				$max         = ! empty( $args['max'] ) ? 'max="' . esc_attr( $args['max'] ) . '"' : '';
+				$min         = ! empty( $args['attrs']['min'] ) ? 'min="' . esc_attr( $args['attrs']['min'] ) . '"' : '';
+				$max         = ! empty( $args['attrs']['max'] ) ? 'max="' . esc_attr( $args['attrs']['max'] ) . '"' : '';
 				$before      = ! empty( $args['before'] ) ? '<span class="before-input">' . esc_html( $args['before'] ) . '</span>' : '';
 				if ( ! empty( $before ) ) {
 					$class .= ' has-before';
