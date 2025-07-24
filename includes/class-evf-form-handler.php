@@ -105,7 +105,7 @@ class EVF_Form_Handler {
 
 		if ( ! current_user_can( 'everest_forms_view_forms' ) && ! current_user_can( 'everest_forms_view_others_forms' ) ) {
 			if ( isset( $args['cap'] ) && ( 'everest_forms_view_conversational_forms' !== $args['cap'] && 'everest_forms_pro_view_landing_page' !== $args['cap'] ) ) {
-				 $args['post__in'] = array( 0 );
+				$args['post__in'] = array( 0 );
 			}
 		}
 
@@ -320,6 +320,12 @@ class EVF_Form_Handler {
 		$has_targeted_link_rel_filters = ( false !== has_filter( 'content_save_pre', 'wp_targeted_link_rel' ) );
 		if ( $has_targeted_link_rel_filters ) {
 			wp_remove_targeted_link_rel_filters();
+		}
+
+		$evf_form_data = evf()->form->get( $form_id, array( 'content_only' => true ) );
+
+		if ( isset( $evf_form_data['meta']['entry_columns'] ) && ! isset( $data['meta']['entry_columns'] ) ) {
+			$data['meta']['entry_columns'] = $evf_form_data['meta']['entry_columns'];
 		}
 
 		$form    = array(
