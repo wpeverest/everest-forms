@@ -7,12 +7,13 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$form_id    = isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification
-$entry_id   = isset( $_GET['view-entry'] ) ? absint( $_GET['view-entry'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification
-$entry      = evf_get_entry( $entry_id, true );
-$form_data  = evf()->form->get( $form_id, array( 'content_only' => true ) );
-$hide_empty = isset( $_COOKIE['everest_forms_entry_hide_empty'] ) && 'true' === $_COOKIE['everest_forms_entry_hide_empty'];
-$trash_link = wp_nonce_url(
+$form_id      = isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification
+$entry_id     = isset( $_GET['view-entry'] ) ? absint( $_GET['view-entry'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification
+$entry        = evf_get_entry( $entry_id, true );
+$entry_fields = json_decode( $entry->fields );
+$form_data    = evf()->form->get( $form_id, array( 'content_only' => true ) );
+$hide_empty   = isset( $_COOKIE['everest_forms_entry_hide_empty'] ) && 'true' === $_COOKIE['everest_forms_entry_hide_empty'];
+$trash_link   = wp_nonce_url(
 	add_query_arg(
 		array(
 			'trash' => $entry_id,
@@ -131,11 +132,31 @@ if ( false !== $entry_index ) {
 										// Check for empty serialized value.
 										if ( is_serialized( $meta_value ) ) {
 											$raw_meta_val = unserialize( $meta_value ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_unserialize
-											if ( preg_match( '/dropdown_/', $meta_key ) && empty( $raw_meta_val[0] ) ) {
+
+											$field_type_array = apply_filters( 'everest_forms_serialized_value_field_type', array(
+													'payment-checkbox',
+													'checkbox',
+													'radio',
+													'payment-multiple'
+												)
+											);
+
+											if ( ! empty( $raw_meta_val['type'] ) && in_array( $raw_meta_val['type'], $field_type_array  ) && empty( $raw_meta_val['label'][0] ) ) {
 												$meta_value = '';
-											} elseif ( ! preg_match( '/dropdown_/', $meta_key ) && empty( $raw_meta_val['label'][0] ) ) {
-												$meta_value = '';
+											} else {
+												$is_dropdown = false;
+												foreach ( $entry_fields as $field ) {
+													if ( $meta_key === $field->meta_key && 'select' === $field->type ) {
+														$is_dropdown = true;
+														break;
+													}
+												}
+
+												if ( $is_dropdown && empty( $raw_meta_val[0] ) ) {
+													$meta_value = '';
+												}
 											}
+
 										}
 
 										if ( evf_is_json( $meta_value ) ) {
@@ -151,7 +172,7 @@ if ( false !== $entry_index ) {
 										// Field name.
 										echo '<tr class="everest-forms-entry-field field-name' . esc_attr( $field_class ) . '" style="' . esc_attr( $field_style ) . '"><th>';
 
-										$value = evf_get_form_data_by_meta_key( $form_id, $meta_key, json_decode( $entry->fields ) );
+										$value = evf_get_form_data_by_meta_key( $form_id, $meta_key, $entry_fields );
 
 										if ( $value ) {
 											if ( apply_filters( 'everest_forms_html_field_label', false ) ) {

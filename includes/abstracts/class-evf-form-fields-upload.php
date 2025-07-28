@@ -699,13 +699,14 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 			true
 		);
 		$fld = $this->field_element(
-			'text',
+			'number',
 			$field,
 			array(
 				'slug'    => 'max_file_number',
 				'type'    => 'number',
 				'min'     => '1',
-				'value'   => $max_file_number = ( ( defined( 'EFP_PLUGIN_FILE' ) ) && ! empty( $field['max_file_number'] ) ) ? $field['max_file_number'] : 1,
+				'max'     => $max_file_number = ( ( ( defined( 'EFP_PLUGIN_FILE' ) ) && ! ( empty( $field['max_file_number'] ) && 0 < intval( $field['max_file_number'] ) ) ) || ! empty( $field['max_file_number'] ) ) ? $field['max_file_number'] : 1,
+				'value'   => $max_file_number = ( ( ( defined( 'EFP_PLUGIN_FILE' ) ) && ! ( empty( $field['max_file_number'] ) && 0 < intval( $field['max_file_number'] ) ) ) || ! empty( $field['max_file_number'] ) ) ? $field['max_file_number'] : 1,
 				'desc'    => esc_html__( 'Maximum number limit on uploads', 'everest-forms' ),
 				'tooltip' => esc_html__( 'Enter the number of files you wish the user to upload.', 'everest-forms' ),
 			),
@@ -1293,7 +1294,7 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 		if ( isset( $field_submit['old_files'] ) ) {
 
 			$old_data = array_map(
-				function( $file ) {
+				function ( $file ) {
 					$decoded = json_decode( $file, true );
 
 					return is_array( $decoded ) ? $decoded : array();
