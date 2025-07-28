@@ -4657,18 +4657,20 @@ function evf_sanitize_builder($post_data = array())
 	}
 
 	$form_data = array();
-	foreach ($post_data as $data_key => $data) {
-		$name = sanitize_text_field($data->name);
-		if (preg_match('/\<.*\>/', $data->value)) {
-			$value = wp_kses_post($data->value);
-		} elseif ('settings[external_url]' === $data->name) {
-			$value = esc_url_raw($data->value);
-		} elseif (preg_match('/evf_email_message/', $data->name) || preg_match('/telegram_message/', $data->name) || preg_match('/slack_message/', $data->name)) {
-			$value = wp_kses_post($data->value);
-		} elseif (preg_match('/calculation_field/', $data->name)) {
-			$value = wp_kses_post($data->value);
-		} elseif (preg_match('/successful_form_submission_message/', $data->name)) {
-			$value = wp_kses_post($data->value);
+	foreach ( $post_data as $data_key => $data ) {
+		$name = sanitize_text_field( $data->name );
+		if ( preg_match( '/\<.*\>/', $data->value ) ) {
+			$value = wp_kses_post( $data->value );
+		} elseif ( 'settings[external_url]' === $data->name ) {
+			$value = esc_url_raw( $data->value );
+		} elseif ( preg_match( '/evf_email_message/', $data->name ) || preg_match( '/telegram_message/', $data->name ) || preg_match( '/slack_message/', $data->name ) ) {
+			$value = wp_kses_post( $data->value );
+		} elseif ( preg_match( '/calculation_field/', $data->name ) ) {
+			$value = wp_kses_post( $data->value );
+		} elseif ( preg_match( '/successful_form_submission_message/', $data->name ) ) {
+			$value = wp_kses_post( $data->value );
+		} elseif ( preg_match( '/meta-key/', $data->name ) ) {
+			$value = sanitize_key( $data->value );
 		} else {
 			$value = sanitize_text_field($data->value);
 		}
