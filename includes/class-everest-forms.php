@@ -23,7 +23,7 @@ final class EverestForms {
 	 *
 	 * @var string
 	 */
-	public $version = '3.3.0';
+	public $version = '3.4.0';
 
 	/**
 	 * The single instance of the class.
@@ -218,6 +218,7 @@ final class EverestForms {
 		$this->define( 'EVF_LOG_DIR', $upload_dir['basedir'] . '/evf-logs/' );
 		$this->define( 'EVF_SESSION_CACHE_GROUP', 'evf_session_id' );
 		$this->define( 'EVF_TEMPLATE_DEBUG_MODE', false );
+		$this->define( 'EVF_DEV', false );
 	}
 
 	/**

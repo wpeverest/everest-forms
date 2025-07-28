@@ -328,9 +328,9 @@ class EVF_Entry_CSV_Exporter extends EVF_CSV_Exporter {
 						$value = apply_filters( 'everest_forms_plaintext_field_value', $fields[ $column_id ]['value']['country_code'], $fields[ $column_id ]['value'], $entry, 'email-plain' );
 						break;
 					case 'repeater-fields':
-						$labels          = array();
-						$repeater_fields = array();
-
+						$labels               = array();
+						$repeater_fields      = array();
+						$repeater_accumulator = array();
 						foreach ( $fields[ $column_id ]['value_raw'] as $field_value ) {
 							foreach ( $field_value as $key => $val ) {
 								$repeater_field_value = '';
@@ -339,50 +339,82 @@ class EVF_Entry_CSV_Exporter extends EVF_CSV_Exporter {
 									switch ( $repeater_field_type ) {
 										case 'checkbox':
 										case 'payment-checkbox':
-											$value                 = $val['value']['label'];
-											$value                 = implode( ', ', $value );
-											$repeater_field_value  = implode( ', ', $repeater_fields[ $val['id'] ]['value']['label'] );
-											$repeater_field_value .= ', ' . $value;
+											$current_value = is_array( $val['value']['label'] ) ? implode( ', ', $val['value']['label'] ) : $val['value']['label'];
+
+											if ( ! isset( $repeater_accumulator[ $val['id'] ] ) ) {
+												$repeater_accumulator[ $val['id'] ] = array();
+											}
+
+											$repeater_accumulator[ $val['id'] ][] = $current_value;
+											$repeater_field_value                 = implode( ', ', $repeater_accumulator[ $val['id'] ] );
 											break;
+
 										case 'radio':
 										case 'payment-multiple':
-											$repeater_field_value  = $repeater_fields[ $val['id'] ]['value']['label'];
-											$repeater_field_value .= ', ' . $val['value']['label'];
-											break;
-										case 'select':
-											$value = $val['value'];
-											if ( is_array( $value ) ) {
-												$value = implode( ',', $value );
-											} else {
-												$value = $value;
+											$current_value = $val['value']['label'];
+
+											if ( ! isset( $repeater_accumulator[ $val['id'] ] ) ) {
+												$repeater_accumulator[ $val['id'] ] = array();
 											}
-											$repeater_field_value  = implode( ', ', $repeater_fields[ $val['id'] ]['value'] );
-											$repeater_field_value .= ', ' . $value;
+
+											$repeater_accumulator[ $val['id'] ][] = $current_value;
+											$repeater_field_value                 = implode( ', ', $repeater_accumulator[ $val['id'] ] );
 											break;
+
+										case 'select':
+											$current_value = $val['value'];
+											if ( is_array( $current_value ) ) {
+												$current_value = implode( ', ', $current_value );
+											}
+
+											if ( ! isset( $repeater_accumulator[ $val['id'] ] ) ) {
+												$repeater_accumulator[ $val['id'] ] = array();
+											}
+
+											$repeater_accumulator[ $val['id'] ][] = $current_value;
+											$repeater_field_value                 = implode( ', ', $repeater_accumulator[ $val['id'] ] );
+											break;
+
 										default:
-											$repeater_field_value  = $repeater_fields[ $val['id'] ]['value'];
-											$repeater_field_value .= ', ' . $val['value'];
+											$current_value = $val['value'];
+
+											if ( ! isset( $repeater_accumulator[ $val['id'] ] ) ) {
+												$repeater_accumulator[ $val['id'] ] = array();
+											}
+
+											$repeater_accumulator[ $val['id'] ][] = $current_value;
+											$repeater_field_value                 = implode( ', ', $repeater_accumulator[ $val['id'] ] );
 											break;
 									}
 								} else {
 									$repeater_fields[ $val['id'] ] = $val;
-								}
-								$fields[ $key ]['value'] = $repeater_field_value;
-								$labels []               = isset( $val['name'] ) ? $val['name'] : $val['value']['name'];
 
+									$current_value = is_array( $val['value'] ) && isset( $val['value']['label'] )
+										? $val['value']['label']
+										: $val['value'];
+
+									if ( is_array( $current_value ) ) {
+										$current_value = implode( ', ', $current_value );
+									}
+
+									$repeater_accumulator[ $val['id'] ][] = $current_value;
+									$repeater_field_value                 = $current_value;
+								}
+
+								$fields[ $key ]['value'] = $repeater_field_value;
+
+								$labels[] = isset( $val['name'] )
+									? $val['name']
+									: ( is_array( $val['value'] ) && isset( $val['value']['name'] )
+										? $val['value']['name']
+										: '' );
 							}
 						}
 
 						$labels = array_unique( $labels );
-						$value  = '';
 
-						foreach ( $labels as $val ) {
-							if ( end( $labels ) === $val ) {
-								$value .= $val;
-							} else {
-								$value .= $val . ' ,';
-							}
-						}
+						$value = implode( ', ', array_filter( $labels ) );
+						$fields[ $column_id ]['value'] = $value;
 						break;
 					case 'likert':
 						$form            = evf()->form->get( $entry->form_id );
