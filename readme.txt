@@ -343,7 +343,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Changelog ==
 
-= 3.3.1     	- 27-07-2025
+= 3.4.0     	- 27-07-2025
 * Fix 			- Limitation of file upload.
 
 = 3.3.0     	- 08-07-2025
