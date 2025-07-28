@@ -1,4 +1,4 @@
-=== Everest Forms - Contact Form, Payment Form, Quiz, Survey & Custom Form Builder  ===
+=== Everest Forms - Contact Form, Payment Form, Quiz, Survey & Custom Form Builder ===
 Contributors:everestforms,WPEverest
 Tags: contact form, custom form, form builder, forms, survey
 Requires at least: 5.5
