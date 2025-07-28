@@ -2,9 +2,9 @@
 Contributors:everestforms,WPEverest
 Tags: contact form, custom form, form builder, forms, survey
 Requires at least: 5.5
-Tested up to: 6.8.1
+Tested up to: 6.8.2
 Requires PHP: 7.2
-Stable tag: 3.3.0
+Stable tag: 3.3.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -343,7 +343,10 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Changelog ==
 
-= 3.3.0     	- 07-07-2025
+= 3.4.0     	- 27-07-2025
+* Fix 			- Limitation of file upload.
+
+= 3.3.0     	- 08-07-2025
 * Enhance		- Update form nonce using the ajax method.
 * Enhance 		- Form confirmation redirection and previews after submission.
 * Enhance 		- Edit field file upload, image upload and signature from both frontend listing and admin.

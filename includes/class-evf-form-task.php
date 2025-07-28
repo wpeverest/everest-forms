@@ -826,7 +826,7 @@ class EVF_Form_Task {
 				evf_add_notice( $message, 'success' );
 			}
 
-			$form_state_type                 = $this->form_data['settings']['form_state_type'];
+			$form_state_type                 = isset( $this->form_data['settings']['form_state_type'] ) ? $this->form_data['settings']['form_state_type'] : 'hide';
 			$_REQUEST['evf_form_state_type'] = sanitize_text_field( $form_state_type );
 
 		} elseif ( ! empty( $submission_redirection_process ) && 'same' == $submission_redirection_process['redirect_to'] ) {
