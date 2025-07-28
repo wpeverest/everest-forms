@@ -345,6 +345,8 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 = 3.4.0     	- 27-07-2025
 * Fix 			- Limitation of file upload.
+* Fix 			- Style Customizer template not applied to duplicate forms.
+* Fix 			- Issue while exporting repeater field value.
 
 = 3.3.0     	- 08-07-2025
 * Enhance		- Update form nonce using the ajax method.

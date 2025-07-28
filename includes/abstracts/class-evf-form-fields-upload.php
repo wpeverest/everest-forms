@@ -1259,7 +1259,7 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 		if ( isset( $field_submit['old_files'] ) ) {
 
 			$old_data = array_map(
-				function( $file ) {
+				function ( $file ) {
 					$decoded = json_decode( $file, true );
 
 					return is_array( $decoded ) ? $decoded : array();
