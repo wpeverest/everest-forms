@@ -343,7 +343,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Changelog ==
 
-= 3.4.0     	- 27-07-2025
+= 3.4.0     	- 28-07-2025
 * Enhance		- Escaping and sanitization.
 * Dev 			- App on zapier.
 * Fix 			- Limitation of file upload.
