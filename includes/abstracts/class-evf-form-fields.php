@@ -252,9 +252,10 @@ abstract class EVF_Form_Fields {
 			$args['attrs']['min'] = esc_attr( $args['min'] );
 			unset( $args['min'] );
 		}
+
 		if ( ! empty( $args['max'] ) ) {
 			$args['attrs']['max'] = esc_attr( $args['max'] );
-			unset( $args['min'] );
+			unset( $args['max'] );
 		}
 		if ( ! empty( $args['required'] ) && $args['required'] ) {
 			$args['attrs']['required'] = 'required';
@@ -305,7 +306,22 @@ abstract class EVF_Form_Fields {
 					$class .= ' has-before';
 				}
 
-				$output = sprintf( '%s<input type="%s" class="widefat %s" id="everest-forms-field-option-%s-%s" name="form_fields[%s][%s]" value="%s" placeholder="%s" %s %s>', $before, $type, $class, $id, $slug, $id, $slug, esc_attr( $args['value'] ), $placeholder, $data, apply_filters( 'evf_field_readonly_attribute', ( 'meta-key' === $args['slug'] ? 'readonly' : '' ), $args ) );
+				$output = sprintf( '%s<input type="%s" class="widefat %s" id="everest-forms-field-option-%s-%s" name="form_fields[%s][%s]" value="%s" placeholder="%s" %s %s>', $before, $type, $class, $id, $slug, $id, $slug, esc_attr( $args['value'] ), $placeholder,  $data, apply_filters( 'evf_field_readonly_attribute', ( 'meta-key' === $args['slug'] ? 'readonly' : '' ), $args ) );
+
+				break;
+
+			// Number input.
+			case 'number':
+				$type        = ! empty( $args['type'] ) ? esc_attr( $args['type'] ) : 'text';
+				$placeholder = ! empty( $args['placeholder'] ) ? esc_attr( $args['placeholder'] ) : '';
+				$min         = ! empty( $args['attrs']['min'] ) ? 'min="' . esc_attr( $args['attrs']['min'] ) . '"' : '';
+				$max         = ! empty( $args['attrs']['max'] ) ? 'max="' . esc_attr( $args['attrs']['max'] ) . '"' : '';
+				$before      = ! empty( $args['before'] ) ? '<span class="before-input">' . esc_html( $args['before'] ) . '</span>' : '';
+				if ( ! empty( $before ) ) {
+					$class .= ' has-before';
+				}
+
+				$output = sprintf( '%s<input type="%s" class="widefat %s" id="everest-forms-field-option-%s-%s" name="form_fields[%s][%s]" value="%s" placeholder="%s" %s %s %s %s>', $before, $type, $class, $id, $slug, $id, $slug, esc_attr( $args['value'] ), $placeholder, $min, $max, $data, apply_filters( 'evf_field_readonly_attribute', ( 'meta-key' === $args['slug'] ? 'readonly' : '' ), $args ) );
 
 				break;
 
