@@ -1,4 +1,4 @@
-=== Contact Form by Everest Forms - Simple Contact Form to Advanced Contact Form, Quiz, Survey, & Custom Contact Form Builder for WordPress ===
+=== Everest Forms - Contact Form, Payment Form, Quiz, Survey & Custom Form Builder  ===
 Contributors:everestforms,WPEverest
 Tags: contact form, custom form, form builder, forms, survey
 Requires at least: 5.5
@@ -8,7 +8,7 @@ Stable tag: 3.4.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-Easily create contact form, payment form, conversational form, calculator form, multi-step form, registration form, quiz form, survey form etc.
+Easily create contact form, payment form, conversational form, calculator, multi-step form, registration form, quiz form, survey form etc.
 
 == Description ==
 
