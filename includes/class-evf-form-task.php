@@ -1857,6 +1857,11 @@ class EVF_Form_Task {
 			return;
 		}
 
+		// Verify nonce for security
+		if ( ! wp_verify_nonce( $_GET['_wpnonce'], 'spam-entry' ) ) {
+			wp_die( esc_html__( 'Security check failed. Please try again.', 'everest-forms' ) );
+		}
+
 		if ( current_user_can( 'edit_users' ) ) {
 			global $wpdb;
 
@@ -1877,6 +1882,11 @@ class EVF_Form_Task {
 	public function evf_remove_entry_from_spam() {
 		if ( ! isset( $_GET['unspam-entry'] ) ) {
 			return;
+		}
+
+		// Verify nonce for security
+		if ( ! wp_verify_nonce( $_GET['_wpnonce'], 'unspam-entry' ) ) {
+			wp_die( esc_html__( 'Security check failed. Please try again.', 'everest-forms' ) );
 		}
 
 		if ( current_user_can( 'edit_users' ) ) {

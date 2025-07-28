@@ -1271,7 +1271,7 @@ class EVF_Shortcode_Form {
 				do_action( 'everest_forms_frontend_output_success', $form_data );
 			} elseif ( $success && ! empty( $form_data ) && 'popup' === $message_display_location ) {
 				$form_atts['data']['message_location'] = $message_display_location;
-				$form_atts['data']['message']          = $message;
+				$form_atts['data']['message']          = esc_html( $message );
 			}
 			// Adding the form state type. hide or reset
 			$form_atts['data']['form_state_type'] = $form_state_type;

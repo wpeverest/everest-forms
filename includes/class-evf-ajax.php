@@ -385,7 +385,26 @@ class EVF_AJAX {
 				}
 
 				if ( ! empty( $field['meta-key'] ) ) {
-					$list_of_meta_keys[] = $field['meta-key'];
+
+					$sanitized_meta_key = sanitize_key( $field['meta-key'] );
+
+
+					if ( $sanitized_meta_key !== $field['meta-key'] ) {
+						$logger->error(
+							__( 'Invalid meta-key characters detected.', 'everest-forms' ),
+							array( 'source' => 'form-save' )
+						);
+						wp_send_json_error(
+							array(
+								'errorTitle'   => esc_html__( 'Invalid Meta Key', 'everest-forms' ),
+								'errorMessage' => sprintf( esc_html__( 'Meta key for field "%s" contains invalid characters. Only lowercase letters, numbers, hyphens, and underscores are allowed.', 'everest-forms' ), '<strong>' . $field['label'] . '</strong>' ),
+							)
+						);
+					}
+
+					$list_of_meta_keys[] = $sanitized_meta_key;
+
+					$field['meta-key'] = $sanitized_meta_key;
 				}
 				$unique_meta_keys = array_unique( $list_of_meta_keys );
 
@@ -613,7 +632,7 @@ class EVF_AJAX {
 	 * Ajax handler for form submission.
 	 */
 	public static function ajax_form_submission() {
-		//  check_ajax_referer( 'everest_forms_ajax_form_submission', 'security' );
+//		check_ajax_referer( 'everest_forms_ajax_form_submission', 'security' );
 
 		if ( ! empty( $_POST['everest_forms']['id'] ) ) {
 			$process = evf()->task->ajax_form_submission( evf_sanitize_entry( wp_unslash( $_POST['everest_forms'] ) ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
@@ -966,6 +985,8 @@ class EVF_AJAX {
 	 * Triggered when clicking the rating footer.
 	 */
 	public static function rated() {
+		check_ajax_referer( 'everest_forms_rated', 'security' );
+
 		if ( ! current_user_can( 'manage_everest_forms' ) ) {
 			wp_die( -1 );
 		}
@@ -977,6 +998,8 @@ class EVF_AJAX {
 	 * Triggered when clicking the review notice button.
 	 */
 	public static function review_dismiss() {
+		check_ajax_referer( 'everest_forms_review_dismiss', 'security' );
+
 		if ( ! current_user_can( 'manage_everest_forms' ) ) {
 			wp_die( -1 );
 		}
@@ -991,6 +1014,8 @@ class EVF_AJAX {
 	 * Triggered when clicking the survey notice button.
 	 */
 	public static function survey_dismiss() {
+		check_ajax_referer( 'everest_forms_survey_dismiss', 'security' );
+
 		if ( ! current_user_can( 'manage_everest_forms' ) ) {
 			wp_die( -1 );
 		}
@@ -1151,6 +1176,10 @@ class EVF_AJAX {
 	 */
 	public static function send_routine_report_test_email() {
 		try {
+			if ( ! current_user_can( 'manage_options' ) ) {
+				wp_send_json_error( array( 'message' => __( 'Unauthorized.', 'everest-forms' ) ), 401 );
+			}
+
 			check_ajax_referer( 'process-ajax-nonce', 'security' );
 			$from                                = esc_attr( get_bloginfo( 'name', 'display' ) );
 			$email                               = esc_attr( get_bloginfo( 'admin_email' ) );

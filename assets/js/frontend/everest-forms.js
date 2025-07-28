@@ -94,7 +94,8 @@ jQuery( function ( $ ) {
 				$el.mailcheck( {
 					suggested: function( el, suggestion ) {
 						$( '#' + id + '_suggestion' ).remove();
-						var suggestion_msg = everest_forms_params.i18n_messages_email_suggestion.replace( '{suggestion}', '<a href="#" class="mailcheck-suggestion" data-id="' + id + '" title="' + everest_forms_params.i18n_messages_email_suggestion_title + '">' + suggestion.full + '</a>' );
+						var escapedSuggestion = $('<div>').text(suggestion.full).html();
+						var suggestion_msg = everest_forms_params.i18n_messages_email_suggestion.replace( '{suggestion}', '<a href="#" class="mailcheck-suggestion" data-id="' + id + '" title="' + everest_forms_params.i18n_messages_email_suggestion_title + '">' + escapedSuggestion + '</a>' );
 						if( el.parents( 'span.input-wrapper' ).length ) {
 							$( el ).parents( 'span.input-wrapper' ).after( '<label class="evf-error mailcheck-error" id="' + id + '_suggestion">' + suggestion_msg + '</label>' );
 						}else {
@@ -1083,7 +1084,7 @@ jQuery( function ( $ ) {
 						</div>
 						<img src="${ everest_forms_params.evf_checked_image_url }" alt="Checked Logo" class="everest-forms-popup-success-logo">
 						<p class="everest-forms-popup-success-text">${ everest_forms_params.i18n_evf_success_text }</p>
-						<p>${ $message }</p>
+						<p>${ $('<div>').text($message).html() }</p>
 					</div>
 				</div>
 			`;

@@ -103,6 +103,11 @@ jQuery( function( $ ) {
 						value: 'everest_forms_ajax_form_submission'
 					});
 
+					data.push({
+						name: 'security',
+						value: everest_forms_ajax_submission_params.evf_ajax_submission
+					});
+
 					// Fire the ajax request.
 					$.ajax({
 						url: everest_forms_ajax_submission_params.ajax_url,
