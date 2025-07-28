@@ -659,6 +659,7 @@ class EVF_Form_Task {
 				array( 'source' => 'form-submission' )
 			);
 			do_action( "everest_forms_process_complete_{$form_id}", $this->form_fields, $entry, $this->form_data, $entry_id );
+			do_action( 'everest_forms_process_complete_send_data_to_zapier_app', $this->form_fields, $entry, $this->form_data, $entry_id );
 		} catch ( Exception $e ) {
 			evf_add_notice( $e->getMessage(), 'error' );
 			$logger->error(

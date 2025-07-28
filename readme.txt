@@ -344,6 +344,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 == Changelog ==
 
 = 3.4.0     	- 27-07-2025
+* Dev 			- App on zapier.
 * Fix 			- Limitation of file upload.
 * Fix 			- Issue while exporting repeater field value.
 * Fix 			- Dropdown value showing empty on entry table.
