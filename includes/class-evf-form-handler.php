@@ -322,6 +322,12 @@ class EVF_Form_Handler {
 			wp_remove_targeted_link_rel_filters();
 		}
 
+		$evf_form_data = evf()->form->get( $form_id, array( 'content_only' => true ) );
+
+		if ( isset( $evf_form_data['meta']['entry_columns'] ) && ! isset( $data['meta']['entry_columns'] ) ) {
+			$data['meta']['entry_columns'] = $evf_form_data['meta']['entry_columns'];
+		}
+
 		$form    = array(
 			'ID'           => $form_id,
 			'post_title'   => esc_html( $title ),

@@ -349,6 +349,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 * Fix 			- Issue while exporting repeater field value.
 * Fix 			- Dropdown value showing empty on entry table.
 * Fix 			- Style Customizer template not applied to duplicate forms.
+* Fix 			- Form entries table customization lost after updating the form.
 
 = 3.3.0     	- 08-07-2025
 * Enhance		- Update form nonce using the ajax method.
