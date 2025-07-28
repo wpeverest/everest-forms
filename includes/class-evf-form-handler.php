@@ -436,6 +436,12 @@ class EVF_Form_Handler {
 				return false;
 			}
 
+			$form_styles = get_option( 'everest_forms_styles', array() );
+			if ( isset( $form_styles[ $id ] ) ) {
+				$form_styles[ $new_form_id ] = $form_styles[ $id ];
+				update_option( 'everest_forms_styles', $form_styles );
+			}
+
 			return $new_form_id;
 		}
 

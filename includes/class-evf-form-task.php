@@ -659,6 +659,7 @@ class EVF_Form_Task {
 				array( 'source' => 'form-submission' )
 			);
 			do_action( "everest_forms_process_complete_{$form_id}", $this->form_fields, $entry, $this->form_data, $entry_id );
+			do_action( 'everest_forms_process_complete_send_data_to_zapier_app', $this->form_fields, $entry, $this->form_data, $entry_id );
 		} catch ( Exception $e ) {
 			evf_add_notice( $e->getMessage(), 'error' );
 			$logger->error(
@@ -1856,6 +1857,11 @@ class EVF_Form_Task {
 			return;
 		}
 
+		// Verify nonce for security
+		if ( ! wp_verify_nonce( $_GET['_wpnonce'], 'spam-entry' ) ) {
+			wp_die( esc_html__( 'Security check failed. Please try again.', 'everest-forms' ) );
+		}
+
 		if ( current_user_can( 'edit_users' ) ) {
 			global $wpdb;
 
@@ -1876,6 +1882,11 @@ class EVF_Form_Task {
 	public function evf_remove_entry_from_spam() {
 		if ( ! isset( $_GET['unspam-entry'] ) ) {
 			return;
+		}
+
+		// Verify nonce for security
+		if ( ! wp_verify_nonce( $_GET['_wpnonce'], 'unspam-entry' ) ) {
+			wp_die( esc_html__( 'Security check failed. Please try again.', 'everest-forms' ) );
 		}
 
 		if ( current_user_can( 'edit_users' ) ) {

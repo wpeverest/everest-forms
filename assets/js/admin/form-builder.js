@@ -1295,8 +1295,8 @@
 				var $desc = $('#everest-forms-field-' + id).find('.description');
 				var value = $this.val();
 
-				// Sanitize the user input to prevent script injection and remove event handlers
-				value = value.replace(/<\s*script/gi, '').replace(/\s+on\w+\s*=/gi, ' ');
+				// Sanitize the user input to prevent script injection, iframe injection, and remove event handlers
+				value = value.replace(/<\s*script/gi, '').replace(/<\s*iframe/gi, '').replace(/\s+on\w+\s*=/gi, ' ');
 
 				if ($desc.hasClass('nl2br')) {
 					$desc.html(value.replace(/\n/g, '<br>'));

@@ -2,9 +2,9 @@
 Contributors:everestforms,WPEverest
 Tags: contact form, custom form, form builder, forms, survey
 Requires at least: 5.5
-Tested up to: 6.8.1
+Tested up to: 6.8.2
 Requires PHP: 7.2
-Stable tag: 3.3.0
+Stable tag: 3.3.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -342,6 +342,14 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/f788d7f0-ea8a-4fd5-bcae-81a5d09a476c)
 
 == Changelog ==
+
+= 3.4.0     	- 27-07-2025
+* Dev 			- App on zapier.
+* Fix 			- Limitation of file upload.
+* Fix 			- Issue while exporting repeater field value.
+* Fix 			- Dropdown value showing empty on entry table.
+* Fix 			- Style Customizer template not applied to duplicate forms.
+* Fix 			- Form entries table customization lost after updating the form.
 
 = 3.3.0     	- 08-07-2025
 * Enhance		- Update form nonce using the ajax method.
