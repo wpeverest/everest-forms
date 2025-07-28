@@ -328,7 +328,6 @@ class EVF_Entry_CSV_Exporter extends EVF_CSV_Exporter {
 						$value = apply_filters( 'everest_forms_plaintext_field_value', $fields[ $column_id ]['value']['country_code'], $fields[ $column_id ]['value'], $entry, 'email-plain' );
 						break;
 					case 'repeater-fields':
-					case 'repeater-fields':
 						$labels               = array();
 						$repeater_fields      = array();
 						$repeater_accumulator = array();
