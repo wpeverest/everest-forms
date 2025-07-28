@@ -36,7 +36,8 @@ defined( 'ABSPATH' ) || exit;
 				event.preventDefault();
 			}
 			$.post( ajaxurl, {
-				action: 'everest_forms_review_dismiss'
+				action: 'everest_forms_review_dismiss',
+				security: '<?php echo wp_create_nonce( 'everest_forms_review_dismiss' ); ?>'
 			} );
 			$( '.evf-review-notice' ).remove();
 		} );

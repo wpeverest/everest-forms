@@ -24,6 +24,13 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 	protected $blacklist = array( 'ade', 'adp', 'app', 'asp', 'bas', 'bat', 'cer', 'cgi', 'chm', 'cmd', 'com', 'cpl', 'crt', 'csh', 'csr', 'dll', 'drv', 'exe', 'fxp', 'flv', 'hlp', 'hta', 'htaccess', 'htm', 'htpasswd', 'inf', 'ins', 'isp', 'jar', 'js', 'jse', 'jsp', 'ksh', 'lnk', 'mdb', 'mde', 'mdt', 'mdw', 'msc', 'msi', 'msp', 'mst', 'ops', 'pcd', 'php', 'pif', 'pl', 'prg', 'ps1', 'ps2', 'py', 'rb', 'reg', 'scr', 'sct', 'sh', 'shb', 'shs', 'sys', 'swf', 'tmp', 'torrent', 'url', 'vb', 'vbe', 'vbs', 'vbscript', 'wsc', 'wsf', 'wsf', 'wsh' );
 
 	/**
+	 * Files that are not allowed to be deleted.
+	 *
+	 * @var array
+	 */
+	protected $protected_files = array( 'index.html', 'index.php', '.htaccess', '.htpasswd' );
+
+	/**
 	 * Hook in tabs.
 	 */
 	public function init_hooks() {
@@ -108,8 +115,36 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 			wp_send_json_error( $default_error );
 		}
 
-		$file     = sanitize_file_name( wp_unslash( $_POST['file'] ) ); // phpcs:ignore WordPress.Security.NonceVerification
+		$file = sanitize_file_name( wp_unslash( $_POST['file'] ) ); // phpcs:ignore WordPress.Security.NonceVerification
+
+		// Strip any path traversal sequences and null bytes
+		$file = str_replace( array( '../', '..\\', '\\', "\0" ), '', $file );
+
+		if ( in_array( strtolower( $file ), array_map( 'strtolower', $this->protected_files ), true ) ) {
+			wp_send_json_error( esc_html__( 'This file cannot be deleted for security reasons.', 'everest-forms' ) );
+		}
+
+		// Only allow deletion from whitelisted directories
+		$allowed_dirs = array(
+			$this->get_tmp_dir(),
+			$this->get_form_files_dir()['path'],
+		);
+
 		$tmp_path = wp_normalize_path( $this->get_tmp_dir() . '/' . $file );
+
+		// Validate that the target path is within allowed directories
+		$is_allowed = false;
+		foreach ( $allowed_dirs as $allowed_dir ) {
+			$allowed_dir = wp_normalize_path( $allowed_dir );
+			if ( strpos( $tmp_path, $allowed_dir ) === 0 ) {
+				$is_allowed = true;
+				break;
+			}
+		}
+
+		if ( ! $is_allowed ) {
+			wp_send_json_error( esc_html__( 'Access denied: File location not allowed.', 'everest-forms' ) );
+		}
 
 		// Requested file does not exist, which is good.
 		if ( ! is_file( $tmp_path ) ) {
@@ -664,13 +699,14 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 			true
 		);
 		$fld = $this->field_element(
-			'text',
+			'number',
 			$field,
 			array(
 				'slug'    => 'max_file_number',
 				'type'    => 'number',
 				'min'     => '1',
-				'value'   => $max_file_number = ( ( defined( 'EFP_PLUGIN_FILE' ) ) && ! empty( $field['max_file_number'] ) ) ? $field['max_file_number'] : 1,
+				'max'     => $max_file_number = ( ( ( defined( 'EFP_PLUGIN_FILE' ) ) && ! ( empty( $field['max_file_number'] ) && 0 < intval( $field['max_file_number'] ) ) ) || ! empty( $field['max_file_number'] ) ) ? $field['max_file_number'] : 1,
+				'value'   => $max_file_number = ( ( ( defined( 'EFP_PLUGIN_FILE' ) ) && ! ( empty( $field['max_file_number'] ) && 0 < intval( $field['max_file_number'] ) ) ) || ! empty( $field['max_file_number'] ) ) ? $field['max_file_number'] : 1,
 				'desc'    => esc_html__( 'Maximum number limit on uploads', 'everest-forms' ),
 				'tooltip' => esc_html__( 'Enter the number of files you wish the user to upload.', 'everest-forms' ),
 			),
@@ -1258,7 +1294,7 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 		if ( isset( $field_submit['old_files'] ) ) {
 
 			$old_data = array_map(
-				function( $file ) {
+				function ( $file ) {
 					$decoded = json_decode( $file, true );
 
 					return is_array( $decoded ) ? $decoded : array();
