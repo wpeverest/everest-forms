@@ -104,8 +104,8 @@ class EVF_Field_HTML extends EVF_Form_Fields {
 		// Primary field.
 		printf(
 			'<div %s>%s</div>',
-			evf_html_attributes( $primary['id'], $primary['class'], $primary['data'], $primary['attr'] ),
-			$shortcode // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			evf_html_attributes( $primary['id'], $primary['class'], $primary['data'], $primary['attr'] ), // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			wp_kses( $shortcode, evf_get_allowed_html_tags( 'builder' ) )
 		);
 	}
 
