@@ -247,16 +247,16 @@ class EVF_Style_Customizer_API {
 			} else {
 				if ( ! $stored_styles || ! is_array( $stored_styles ) ) {
 					update_option( 'evf_style_templates', $default_styles_raw );
-				} else {
-					foreach ( $default_styles as $key => $value ) {
-						if ( ! isset( $stored_styles[ $key ] ) ) {
-							$stored_styles[ $key ] = $value;
-						}
+			} else {
+				foreach ( $default_styles as $key => $value ) {
+					if ( ! isset( $stored_styles[ $key ] ) ) {
+						$stored_styles[ $key ] = $value;
 					}
-
-					update_option( 'evf_style_templates', json_encode( $stored_styles ) );
 				}
+
+				update_option( 'evf_style_templates', json_encode( $stored_styles ) );
 			}
+		}
 		}
 
 		return apply_filters( 'evf_style_templates', json_decode( $styles ) );
@@ -603,17 +603,45 @@ class EVF_Style_Customizer_API {
 				$matched_color_key = $matches[2];
 				$form_id           = $matches[1];
 				break;
+			} elseif ( preg_match( '/everest_forms_styles\[(\d+)\]/', $key, $matches ) ) {
+				$form_id = $matches[1];
 			}
 		}
 
-		if ( $matched_color_key !== null && isset( $customized_data[ $form_id ]['color_palette'][ $matched_color_key ] ) ) {
-			$customized_data[ $form_id ]['color_palette'] = array(
-				$matched_color_key => $customized_data[ $form_id ]['color_palette'][ $matched_color_key ],
-			);
+		$existing_color_palette = isset( $customized_data[ $form_id ]['color_palette'] ) ? $customized_data[ $form_id ]['color_palette'] : array();
+
+		if ( ( $matched_color_key !== null && isset( $customized_data[ $form_id ]['color_palette'][ $matched_color_key ] ) ) || ! empty( $existing_color_palette ) ) {
+
+			$new_palette = array();
+
+			if ( isset( $customized_data[ $form_id ]['color_palette'][ $matched_color_key ] ) && ! empty( $customized_data[ $form_id ]['color_palette'][ $matched_color_key ] ) ) {
+				$new_palette[ $matched_color_key ] = $customized_data[ $form_id ]['color_palette'][ $matched_color_key ];
+			}
+
+			$new_palette_status = ! empty( $new_palette ) ? 1 : 0;
+
+			switch ( $new_palette_status ) {
+				case 1:
+					// Use the new palette
+					$customized_data[ $form_id ]['color_palette'] = $new_palette;
+					break;
+
+				case 0:
+				default:
+					$last_color_palette = array_key_last( $existing_color_palette );
+					if ( $last_color_palette !== null ) {
+						$customized_data[ $form_id ]['color_palette'][ $last_color_palette ] = $existing_color_palette[ $last_color_palette ];
+					}
+					break;
+			}
+
+			if ( isset( $customized_data[''] ) ) {
+				unset( $customized_data[''] );
+			}
 			update_option( 'everest_forms_styles', $customized_data );
 		}
 
-		return $response;
+			return $response;
 	}
 
 
