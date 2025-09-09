@@ -140,13 +140,13 @@ $container__border_color: <?php echo evf_clean( $values['form_container']['borde
 
 
 //Field Labels Variables.
-$field_label_font_color : <?php echo isset( $values['color_palette'][ $palette_key ]['field_label'] ) ? evf_clean( $values['color_palette'][ $palette_key ]['field_label'] ) : ''; ?>;
+$field_label_font_color : <?php echo isset( $values['color_palette'][ $palette_key ]['field_label'] ) ? evf_clean( $values['color_palette'][ $palette_key ]['field_label'] ) : '#383838'; ?>;
 $field_label_font_size: <?php echo evf_clean( $values['typography']['field_labels_font_size'] ); ?>;
 $field_label_line_height: <?php echo evf_clean( $values['typography']['field_labels_line_height'] ); ?>;
 $field_label_text_alignment: <?php echo evf_clean( $values['typography']['field_labels_text_alignment'] ); ?>;
 
 // Field Sublabels Variables.
-$field_sublabel_font_color: <?php echo isset( $values['color_palette'][ $palette_key ]['field_sublabel'] ) ? evf_clean( $values['color_palette'][ $palette_key ]['field_sublabel'] ) : ''; ?>;
+$field_sublabel_font_color: <?php echo isset( $values['color_palette'][ $palette_key ]['field_sublabel'] ) ? evf_clean( $values['color_palette'][ $palette_key ]['field_sublabel'] ) : '#383838'; ?>;
 $field_sublabel_font_size: <?php echo evf_clean( $values['typography']['field_sublabels_font_size'] ); ?>;
 $field_sublabel_line_height: <?php echo evf_clean( $values['typography']['field_sublabels_line_height'] ); ?>;
 $field_sublabel_text_alignment: <?php echo evf_clean( $values['typography']['field_sublabels_text_alignment'] ); ?>;
@@ -188,14 +188,14 @@ $section_title_alignment: <?php echo evf_clean( $values['typography']['section_t
 $section_title_line_height: <?php echo evf_clean( $values['typography']['section_title_line_height'] ); ?>;
 
 // Button styles variables.
-$button_font_color: <?php echo isset( $values['color_palette'][ $palette_key ]['button_text'] ) ? evf_clean( $values['color_palette'][ $palette_key ]['button_text'] ) : ''; ?>;
+$button_font_color: <?php echo isset( $values['color_palette'][ $palette_key ]['button_text'] ) ? evf_clean( $values['color_palette'][ $palette_key ]['button_text'] ) : '#ffffff'; ?>;
 $button_hover_font_color: <?php echo evf_clean( $values['typography']['button_hover_font_color'] ); ?>;
 $button_font_size: <?php echo evf_clean( $values['typography']['button_font_size'] ); ?>;
 $button_line_height: <?php echo evf_clean( $values['typography']['button_line_height'] ); ?>;
 $button_border_type: <?php echo evf_clean( $values['button']['border_type'] ); ?>;
 $button_border_color: <?php echo evf_clean( $values['typography']['button_border_color'] ); ?>;
 $button_border_hover_color: <?php echo evf_clean( $values['typography']['button_border_hover_color'] ); ?>;
-$button_background_color: <?php echo isset( $values['color_palette'][ $palette_key ]['button_background'] ) ? evf_clean( $values['color_palette'][ $palette_key ]['button_background'] ) : ''; ?>;
+$button_background_color: <?php echo isset( $values['color_palette'][ $palette_key ]['button_background'] ) ? evf_clean( $values['color_palette'][ $palette_key ]['button_background'] ) : '#7545bb'; ?>;
 $button_hover_background_color: <?php echo evf_clean( $values['typography']['button_hover_background_color'] ); ?>;
 
 // Success Message styles variables.
@@ -302,7 +302,7 @@ $validation_message_border_color: <?php echo evf_clean( $values['validation_mess
 					text-align: $field_label_text_alignment;
 					<?php foreach ( array( 'field_labels_margin', 'field_labels_padding' ) as $separator_type ) : ?>
 						<?php foreach ( $values['typography'][ $separator_type ] as $device => $value ) : ?>
-							<?php if ( in_array( $device, array( 'desktop', 'tablet', 'mobille' ), true ) ) : ?>
+							<?php if ( in_array( $device, array( 'desktop', 'tablet', 'mobile' ), true ) ) : ?>
 								<?php printf( '@include responsive-media(%s, %s, %s);', preg_replace( '/.*_/', '', $separator_type ), $device, evf_sanitize_dimension_unit( $value, 'px' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 							<?php endif; ?>
 						<?php endforeach; ?>
