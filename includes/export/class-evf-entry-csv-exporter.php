@@ -457,7 +457,7 @@ class EVF_Entry_CSV_Exporter extends EVF_CSV_Exporter {
 			} else {
 				// It is done to display the currencies symbol instead of its HTML entities values.
 				$clean_value = html_entity_decode(
-					preg_match( '/textarea/', $column_type ) ? sanitize_textarea_field( $value ) : $value,
+					preg_match( '/textarea/', $column_type ) ? sanitize_textarea_field( $value ) : sanitize_text_field( $value ),
 					ENT_QUOTES,
 					'UTF-8'
 				);
