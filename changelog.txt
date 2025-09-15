@@ -1,6 +1,9 @@
 == Changelog ==
 
-= 3.4.0     	- 27-07-2025
+= 3.4.1     	- xx-xx-2025
+* Fix 			- Currency is not parsing correctly in the CSV export.
+
+= 3.4.0     	- 28-07-2025
 * Enhance		- Escaping and sanitization.
 * Dev 			- App on zapier.
 * Fix 			- Limitation of file upload.
