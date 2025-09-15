@@ -455,7 +455,23 @@ class EVF_Entry_CSV_Exporter extends EVF_CSV_Exporter {
 					$row[ $col_row_key ] = $val;
 				}
 			} else {
-				$row[ $column_id ] = apply_filters( 'everest_forms_format_csv_field_data', preg_match( '/textarea/', $column_type ) ? sanitize_textarea_field( $value ) : $value, $raw_value, $column_id, $column_name, $columns, $entry );
+				// It is done to display the currencies symbol instead of its HTML entities values.
+				$clean_value = html_entity_decode(
+					preg_match( '/textarea/', $column_type ) ? sanitize_textarea_field( $value ) : sanitize_text_field( $value ),
+					ENT_QUOTES,
+					'UTF-8'
+				);
+
+				$row[ $column_id ] = apply_filters(
+					'everest_forms_format_csv_field_data',
+					$clean_value,
+					$raw_value,
+					$column_id,
+					$column_name,
+					$columns,
+					$entry
+				);
+
 			}
 			if ( empty( $this->request_data ) ) {
 				$row['status'] = (
