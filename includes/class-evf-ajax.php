@@ -586,6 +586,20 @@ class EVF_AJAX {
 
 		$form_id = evf()->form->update( $data['id'], $data );
 
+		/**
+		 * Save immediate feedback to non logged in user option in post meta.
+		 *
+		 * @since xx.xx.xx
+		 */
+		if ( isset( $data['settings']['show_immediate_feedback_to_guests'] ) && ! empty( $data['settings']['show_immediate_feedback_to_guests'] ) ) {
+			$show_or_hide          = sanitize_text_field( $data['settings']['show_immediate_feedback_to_guests'] );
+			if ( $show_or_hide ) {
+				update_post_meta( $form_id, 'everest_forms_show_immediate_feedback_to_guests', $show_or_hide );
+			}
+		}else{
+			update_post_meta( $form_id, 'everest_forms_show_immediate_feedback_to_guests', '' );
+		}
+
 		// To track the new confirmation.
 		if ( ! get_post_meta( $form_id, 'updated_form_confirmation', true ) ) {
 			update_post_meta( $form_id, 'updated_form_confirmation', true );
