@@ -343,7 +343,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Changelog ==
 
-= 3.4.1     	- xx-xx-2025
+= 3.4.1     	- 18-09-2025
 * Enhance		- Sanitization and Escaping.
 * Fix 			- Currency is not parsing correctly in the CSV export.
 
