@@ -492,7 +492,7 @@ const FreeVsPro = () => {
 					colorScheme="primary"
 					href={
 						upgradeURL +
-						"&utm_source=dashboard-free-vs-pro&utm_medium=upgrade-button"
+						"utm_medium=evf-dashboard&utm_source=evf-free&utm_campaign=dash-free-vs-pro-footer&utm_content=Get%20Everest%20Form%20Pro%20Now"
 					}
 					color="white !important"
 					textDecor="none !important"

@@ -65,38 +65,21 @@ class Settings extends \EVF_Integration {
 				<div class="evf-connection-list">
 				<!-- Toggle Row -->
 				 <form method="post" action="" id="everest-forms-clean-talk-settings-form">
-
-					<!-- Radio Buttons -->
-					<div id="evf-clean-talk-section-container" class="">
-						<div class="evf-section">
-							<p class="evf-clean-talk-label-1" style="margin: 12px 0"><?php echo __( 'CleanTalk Methods', 'everest-forms' ); ?></p>
-							<div class="evf-clean-talk-radio" style="margin-bottom: 12px;">
-								<label class="evf-clean-talk-label-2">
-									<input type="radio" name="everest_forms_clean_talk_methods" value="rest_api" <?php checked( 'rest_api', get_option( 'everest_forms_clean_talk_methods', 'rest_api' ) ); ?>>
-									<?php echo __( 'CleanTalk REST API', 'everest-forms' ); ?></label>
-								<label class="evf-clean-talk-label-2">
-									<input type="radio" name="everest_forms_clean_talk_methods" value="clean_talk_plugin" <?php checked( 'clean_talk_plugin', get_option( 'everest_forms_clean_talk_methods', 'rest_api' ) ); ?>>
-									<?php echo __( 'CleanTalk Plugin', 'everest-forms' ); ?>
-								</label>
-							</div>
-						</div>
-
 						<!-- Access Key -->
-						<div class="evf-clean-talk-access-key <?php echo 'clean_talk_plugin' === get_option( 'everest_forms_clean_talk_methods' ) ? 'everest-forms-hidden' : ''; ?>">
+						<div class="evf-clean-talk-access-key">
 							<div>
-								<label class="evf-clean-talk-label-1" for="everest_forms_recaptcha_cleantalk_access_key"><?php echo __( 'Access Key', 'everest-forms' ); ?></label>
+								<label class="evf-clean-talk-label-1" for="everest_forms_recaptcha_cleantalk_access_key"><?php echo __( 'CleanTalk Access Key', 'everest-forms' ); ?></label>
 							</div>
 							<input style="margin: 12px 0; width: 100%" class="evf-access-key" type="password" id="everest_forms_recaptcha_cleantalk_access_key" name="everest_forms_recaptcha_cleantalk_access_key" value="<?php echo esc_attr( get_option( 'everest_forms_recaptcha_cleantalk_access_key' ) ); ?>">
 							<p style="margin-bottom:0; margin-top:0"><?php echo __( 'Enter your CleanTalk REST API key from your ', 'everest-forms' ); ?><a href="https://cleantalk.org/my/" target="_blank" rel="noopener noreferrer"><?php echo __( 'account dashboard here', 'everest-forms' ); ?></a>.</p>
 						</div>
-						<div class="evf-clean-talk-message"></div>
+						<div class="evf-clean-talk-message" style="display: none;"></div>
 					</div>
 					<button style="margin-top: 12px;" type="submit" id="everest-forms-clean-talk-save-settings" class="everest-forms-btn everest-forms-btn-primary" ><?php echo __('Save Settings', 'everest-forms') ?></button>
 				 </form>
 
 				</div>
 			</div>
-		</div>
 		<?php
 	}
 }

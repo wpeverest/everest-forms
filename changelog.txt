@@ -1,5 +1,57 @@
 == Changelog ==
 
+= 3.4.1     	- 19-09-2025
+* Enhance		- Sanitization and Escaping.
+* Fix 			- Currency is not parsing correctly in the CSV export.
+
+= 3.4.0     	- 28-07-2025
+* Enhance		- Escaping and sanitization.
+* Dev 			- App on zapier.
+* Fix 			- Limitation of file upload.
+* Fix 			- Issue while exporting repeater field value.
+* Fix 			- Dropdown value showing empty on entry table.
+* Fix 			- Style Customizer template not applied to duplicate forms.
+* Fix 			- Form entries table customization lost after updating the form.
+
+= 3.3.0     	- 08-07-2025
+* Enhance		- Update form nonce using the ajax method.
+* Enhance 		- Form confirmation redirection and previews after submission.
+* Enhance 		- Edit field file upload, image upload and signature from both frontend listing and admin.
+* Tweak 		- CleanTalk bot detector js updated.
+* Dev 			- Global setting for paypal in settings payment.
+* Fix 			- Delete file on form entry deletion on free.
+
+= 3.2.6     	- 26-06-2025
+* Enhance  		- Added filter for signature.
+* Tweak 		- Change upgrade url.
+* Fix 			- ReCaptcha issue.
+* Fix 			- Skip validation for hidden fields.
+* Fix 			- Field options expand collapse icon.
+* Fix 			- Csv , issue while importing entries.
+* Fix 			- Date time issue while changing date timezone.
+* Fix 			- Customize approval and denial email with extra info.
+* Fix 			- Disable date not working when date format is changed.
+
+= 3.2.5     	- 06-06-2025
+* Fix 			- Placeholder issue on frontend.
+* Fix 			- Module activation design in dashboard.
+* Fix 			- Inconsistency on form builder field option design.
+
+= 3.2.3     	- 05-06-2025
+* Enhance 		- Form builder design.
+* Enhance 		- Active module workflow.
+* Enhance 		- Block Popup form settings.
+* Enhance 		- CleanTalk anti spam save access key workflow.
+* Enhance		- Prevent form save if the field label is empty.
+* Tweak 		- Edit meta key design.
+* Tweak 		– JS validator version updated.
+* Tweak 		- Form fields smart tag options for default value in hidden form fields.
+* Fix 			- Save color palette workflow.
+* Fix 			- Incorrect asterisk display when moving fields.
+* Fix 			- Return null for serialized data in PHP 7.1 or earlier.
+* Fix 			- Selection of option while clicking on label for image option.
+
+
 = 3.2.2     	- 20-05-2025
 * Enhance 		- Validate clean talk access key on save.
 * Fix 			- Form templates not loading.

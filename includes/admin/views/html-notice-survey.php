@@ -48,7 +48,8 @@ defined( 'ABSPATH' ) || exit;
 				event.preventDefault();
 			}
 			$.post( ajaxurl, {
-				action: 'everest_forms_survey_dismiss'
+				action: 'everest_forms_survey_dismiss',
+				security: '<?php echo wp_create_nonce( 'everest_forms_survey_dismiss' ); ?>'
 			} );
 			$( '.evf-survey-notice' ).remove();
 		} );

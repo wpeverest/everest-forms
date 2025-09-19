@@ -30,7 +30,18 @@ class Builder {
 	 * @param [type] $obj
 	 */
 	public function add_inline_clean_talk_settings( $obj ) {
-		echo '<div class="everest-forms-border-container"><h4 class="everest-forms-border-container-title">' . esc_html__( 'CleanTalk', 'everest-forms' ) . '</h4>';
+		$settings = isset( $this->form_data['settings'] ) ? $this->form_data['settings'] : array();
+		$clean_talk_method = get_option( 'everest_forms_clean_talk_methods', 'rest_api' );
+		$access_key        = get_option( 'everest_forms_recaptcha_cleantalk_access_key', '' );
+
+		echo '<div class="everest-forms-border-container">';
+		echo '<div class="everest-forms-clean-talk-setting-container"><h4 class="everest-forms-border-container-title">' . esc_html__( 'CleanTalk', 'everest-forms' ) . '</h4>';
+		echo '<div>';
+		echo '<button class="everest-forms-update-clean-talk-key-button ' . ( empty( $access_key ) ? 'everest-forms-hidden' : '' ) . '" data-access-key="' . esc_attr( $access_key ) . '">';
+		echo esc_html__( 'Update Key', 'everest-forms' );
+		echo '</button>';
+		echo '<a href="https://docs.everestforms.net/docs/cleantalk/" target="_blank" class="everest-forms-learn-more-link-cleantalk">' . esc_html__( 'View Docs', 'everest-forms' ) . '</a>';
+		echo '</div></div>';
 		everest_forms_panel_field(
 			'toggle',
 			'settings',
@@ -42,35 +53,14 @@ class Builder {
 			)
 		);
 
-		$clean_talk_method = get_option( 'everest_forms_clean_talk_methods', 'rest_api' );
-		$access_key        = get_option( 'everest_forms_recaptcha_cleantalk_access_key' );
-		/**
-		* Warning message if the installation, activation and configuration are not proper.
-		*/
-		if ( 'rest_api' === $clean_talk_method && empty( $access_key ) ) {
-			printf(
-				'<div class="evf-akismet"><span class="evf-akismet-warning"><span class="evf-akismet-warning-label">%s</span> %s <a href="%s" target="_blank">%s</a>%s <a href="%s" target="_blank">%s</a></div>',
-				esc_html__( 'Warning:- ', 'everest-forms' ),
-				esc_html__( 'Go to', 'everest-forms' ),
-				esc_url( admin_url( 'admin.php?page=evf-settings&tab=integration&section=clean-talk' ) ),
-				esc_html__( 'Settings > Integration', 'everest-forms' ),
-				esc_html__( ' and add your CleanTalk Access Key. For more', 'everest-forms' ),
-				esc_url( 'https://docs.everestforms.net/' ),
-				esc_html__( 'info', 'everest-forms' )
-			);
-		} elseif ( 'clean_talk_plugin' === $clean_talk_method ) {
-			if ( ! class_exists( 'Cleantalk\Antispam\Cleantalk' ) ) {
-				printf(
-					'<div class="evf-akismet"><span class="evf-akismet-warning"><span class="evf-akismet-warning-label">%s</span> %s <a href="%s" target="_blank">%s</a>%s <a href="%s" target="_blank">%s</a></div>',
-					esc_html__( 'Warning:- ', 'everest-forms' ),
-					esc_html__( 'This feature is inactive because CleanTalk plugin', 'everest-forms' ),
-					esc_url( admin_url( 'plugins.php' ) ),
-					esc_html__( ' has not properly configured.', 'everest-forms' ),
-					esc_html__( ' For more', 'everest-forms' ),
-					esc_url( 'https://docs.everestforms.net/' ),
-					esc_html__( 'information', 'everest-forms' )
-				);
-			}
+		if (  empty( $access_key ) ) {
+			echo '<div class="everest-forms-warning-container">';
+			echo '<img src="' . esc_url( plugins_url( 'addons/CleanTalk/assets/images/warning.png', EVF_PLUGIN_FILE ) ) . '" alt="' . esc_attr__( 'CleanTalk', 'everest-forms' ) . '" class="everest-forms-warning-icon" />';
+			echo '<p class="everest-forms-warning-text">';
+			echo esc_html__( 'No CleanTalk access key found  ', 'everest-forms' );
+			echo '<span class="everest-forms-warning-text-link">Add Key</span>';
+			echo '</p>';
+			echo '</div>';
 		}
 		echo '<div class="everest-forms-border-container everest-forms-cleantalk-protection-type">';
 		everest_forms_panel_field(
@@ -80,11 +70,11 @@ class Builder {
 			$obj->form_data,
 			esc_html__( 'Protection type', 'everest-forms' ),
 			array(
-				'default' => 'validation_failed',
-				'tooltip' => esc_html__( "Please select the protection type. Choosing 'Mark as Spam' allows the submission but marks the entry as spam, while selecting 'Make the form submission as failed' will prevent the form submission.", 'everest-forms' ),
+				'default' => 'mark_as_spam',
+				'tooltip' => esc_html__( "Please select the protection type. Choosing 'Mark as Spam' allows the submission but marks the entry as spam, while selecting 'Reject Submission' will prevent the form submission.", 'everest-forms' ),
 				'options' => array(
-					'validation_failed' => esc_html__( 'Make the form submission as failed', 'everest-forms' ),
 					'mark_as_spam'      => esc_html__( 'Mark as Spam', 'everest-forms' ),
+					'validation_failed' => esc_html__( 'Reject Submission', 'everest-forms' ),
 				),
 			)
 		);

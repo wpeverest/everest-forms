@@ -197,7 +197,7 @@ class EVF_Template_Loader {
 			array(
 				'ajax_url'           => admin_url( 'admin-ajax.php' ),
 				'form_preview_nonce' => wp_create_nonce( 'evf_form_preview_nonce' ),
-				'pro_upgrade_link'   => esc_url( 'https://everestforms.net/pricing/?utm_source=form-preview&utm_medium=sidebar-upgrade-button&utm_campaign=lite-version' ),
+				'pro_upgrade_link'   => esc_url( 'https://everestforms.net/upgrade/?utm_medium=evf-form-preview&utm_source=evf-free&utm_campaign=preview-sidebar-btn&utm_content=Upgrade%20to%20Pro' ),
 			)
 		);
 

@@ -215,7 +215,7 @@ defined( 'ABSPATH' ) || exit;
 										</div>
 									<?php else : ?>
 										<div class="action-buttons upgrade-plan">
-											<a class="button upgrade-now" href="https://everestforms.net/pricing/?utm_source=addons-page&utm_medium=upgrade-button&utm_campaign=evf-upgrade-to-pro" target="_blank"><?php esc_html_e( 'Upgrade Plan', 'everest-forms' ); ?></a>
+											<a class="button upgrade-now" href="https://everestforms.net/upgrade/?utm_source=addons-page&utm_medium=upgrade-button&utm_campaign=evf-upgrade-to-pro" target="_blank"><?php esc_html_e( 'Upgrade Plan', 'everest-forms' ); ?></a>
 										</div>
 									<?php endif; ?>
 								</div>

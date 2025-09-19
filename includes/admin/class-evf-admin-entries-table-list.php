@@ -331,10 +331,32 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 			if ( $user_can_edit_entry ) {
 				switch ( $status ) {
 					case 'spam':
-						$actions['unspam'] = '<a href="' . esc_url( admin_url( 'admin.php?page=evf-entries&amp;form_id=' . $entry->form_id . '&amp;unspam-entry=' . $entry->entry_id ) ) . '">' . esc_html__( 'Remove From Spam', 'everest-forms' ) . '</a>';
+						$actions['unspam'] = '<a href="' . esc_url(
+							wp_nonce_url(
+								add_query_arg(
+									array(
+										'unspam-entry' => $entry->entry_id,
+										'form_id'      => $entry->form_id,
+									),
+									admin_url( 'admin.php?page=evf-entries' )
+								),
+								'unspam-entry'
+							)
+						) . '">' . esc_html__( 'Remove From Spam', 'everest-forms' ) . '</a>';
 						break;
 					default:
-						$actions['spam'] = '<a href="' . esc_url( admin_url( 'admin.php?page=evf-entries&amp;form_id=' . $entry->form_id . '&amp;spam-entry=' . $entry->entry_id ) ) . '">' . esc_html__( 'Mark as Spam', 'everest-forms' ) . '</a>';
+						$actions['spam'] = '<a href="' . esc_url(
+							wp_nonce_url(
+								add_query_arg(
+									array(
+										'spam-entry' => $entry->entry_id,
+										'form_id'    => $entry->form_id,
+									),
+									admin_url( 'admin.php?page=evf-entries' )
+								),
+								'spam-entry'
+							)
+						) . '">' . esc_html__( 'Mark as Spam', 'everest-forms' ) . '</a>';
 						break;
 				}
 			}
@@ -589,7 +611,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 								$message .= '<br/>' . __( 'Thank you for giving us your precious time', 'everest-forms' ) . '<br/>';
 								/* translators:%s: Site Name */
 								$message .= '<br/>' . sprintf( __( 'From %s', 'everest-forms' ), $site_name );
-								$message  = apply_filters( 'everest_forms_entry_approval_message', $message );
+								$message  = apply_filters( 'everest_forms_entry_approval_message', $message, $name, $entry_date, $site_name );
 							}
 							$email_obj = new EVF_Emails();
 							$email_obj->send( $email, $subject, $message );
@@ -653,7 +675,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 								$message .= '<br/>' . __( 'Thank you for giving us your precious time', 'everest-forms' ) . '<br/>';
 								/* translators:%s: Site Name */
 								$message .= '<br/>' . sprintf( __( 'From %s', 'everest-forms' ), $site_name );
-								$message  = apply_filters( 'everest_forms_entry_denial_message', $message );
+								$message  = apply_filters( 'everest_forms_entry_denial_message', $message, $name, $entry_date, $site_name );
 							}
 							$email_obj = new EVF_Emails();
 							$email_obj->send( $email, $subject, $message );
@@ -785,7 +807,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 		$form_id = isset( $_REQUEST['form_id'] ) ? absint( $_REQUEST['form_id'] ) : $this->form_id; // phpcs:ignore WordPress.Security.NonceVerification
 		?>
 		<label for="filter-by-form" class="screen-reader-text"><?php esc_html_e( 'Filter by form', 'everest-forms' ); ?></label>
-		<select name="form_id" id="filter-by-form" class="evf-enhanced-normal-select" style="min-width: 200px;">
+		<select name="form_id" id="filter-by-form" class="evf-enhanced-normal-select" style="min-width: 200px;" data-placeholder="<?php esc_attr_e( 'Search form...', 'everest-forms' ); ?>">
 			<?php foreach ( $forms as $id => $form ) : ?>
 				<option value="<?php echo esc_attr( $id ); ?>" <?php selected( $form_id, $id ); ?>><?php echo esc_html( $form ); ?></option>
 			<?php endforeach; ?>
