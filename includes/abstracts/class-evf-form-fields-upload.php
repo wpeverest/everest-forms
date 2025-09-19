@@ -80,7 +80,19 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 				'loading_message' => esc_html__( 'Do not submit the form until the upload process is finished', 'everest-forms' ),
 			)
 		);
-		wp_enqueue_script( 'everest-forms-file-upload' );
+
+		$form_id     = isset( $atts['id'] ) ? absint( $atts['id'] ) : 0;
+		$form_fields = evf_get_form_fields( $form_id );
+		$form_data   = EVF()->form->get( $form_id, array( 'content_only' => true ) );
+		$form_fields = isset( $form_data['form_fields'] ) ? $form_data['form_fields'] : array();
+
+		foreach ( $form_fields as $form_field ) {
+			if ( 'file-upload' === $form_field['type'] || 'image-upload' === $form_field['type'] ) {
+				wp_enqueue_script( 'dropzone' );
+				wp_enqueue_script( 'everest-forms-file-upload' );
+				break;
+			}
+		}
 	}
 
 	/**

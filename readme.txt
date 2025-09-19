@@ -344,8 +344,9 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 == Changelog ==
 
 = 3.4.1     	- 19-09-2025
-* Enhance		- Sanitization and Escaping.
-* Fix 			- Currency is not parsing correctly in the CSV export.
+* Enhance		- Sanitization and Escaping on smart tag and field display.
+* Fix 			- Currency parsing issue in CSV export.
+* Fix			- Dequeued unnecessary JS when related fields are absent.
 
 = 3.4.0     	- 28-07-2025
 * Enhance		- Escaping and sanitization.
