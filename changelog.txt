@@ -1,6 +1,6 @@
 == Changelog ==
 
-= 3.4.1     	- 18-09-2025
+= 3.4.1     	- 19-09-2025
 * Enhance		- Sanitization and Escaping.
 * Fix 			- Currency is not parsing correctly in the CSV export.
 
