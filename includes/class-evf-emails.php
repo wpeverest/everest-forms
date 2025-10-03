@@ -505,6 +505,12 @@ class EVF_Emails {
 					continue;
 				}
 
+				$evf_hide_empty_rating_field = apply_filters( 'everest_forms_hide_empty_rating_field', false );
+
+				if ( ! empty( $evf_hide_empty_rating_field ) && 'rating' === $field['type'] && empty( $field['value']['value'] ) ) {
+					continue;
+				}
+
 				// If there's the export data filter, utilize that and re-loop promptly.
 				if ( has_filter( "everest_forms_field_exporter_{$field['type']}" ) ) {
 					$formatted_string          = apply_filters( "everest_forms_field_exporter_{$field['type']}", $field, 'email-html', 2 );
