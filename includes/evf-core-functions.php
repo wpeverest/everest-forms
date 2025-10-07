@@ -1618,6 +1618,19 @@ function evf_get_license_plan()
 	if ($license_key && is_plugin_active('everest-forms-pro/everest-forms-pro.php')) {
 		$license_data = get_transient('evf_pro_license_plan');
 		if (false === $license_data) {
+
+			/**
+			 * Load the updater class.
+			 *
+			 * @since xx.xx.xx
+			 */
+			if ( ! class_exists( 'EVF_Updater_Key_API' ) ) {
+				$updater_file = EFP_ABSPATH . 'includes/updater/class-evf-updater-key-api.php';
+				if ( file_exists( $updater_file ) ) {
+					require_once $updater_file;
+				}
+			}
+
 			$license_response = EVF_Updater_Key_API::check(array('license' => $license_key));
 
 			if (! $license_response) {
