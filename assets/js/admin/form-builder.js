@@ -353,6 +353,18 @@
 			});
 
 		});
+
+			$(document).on('mousedown', '.evf-col-divider', function (e) {
+				e.preventDefault();
+
+				const $divider = $(this);
+
+				const $wrapper = $divider.closest('.evf-admin-grid');
+				const $prevCol = $divider.closest('.evf-col-divider-wrapper').prev('.evf-admin-grid');
+				const $nextCol = $divider.closest('.evf-col-divider-wrapper').next('.evf-admin-grid');
+
+				});
+
 		},
 
 		/**
@@ -2949,7 +2961,7 @@
 		bindFields: function () {
 			$( '.evf-admin-field-wrapper' ).sortable({
 				items: '.evf-admin-row',
-				cancel: '.evf-col-divider-wrapper, .evf-col-divider-wrapper *',
+				cancel: '.evf-col-divider-wrapper, .evf-col-divider-wrapper *, .evf-duplicate-row, .evf-show-grid, .evf-row-setting, .evf-delete-row',
 				axis: 'y',
 				cursor: 'move',
 				opacity: 0.65,
