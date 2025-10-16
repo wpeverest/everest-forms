@@ -105,7 +105,7 @@ class EVF_Form_Handler {
 
 		if ( ! current_user_can( 'everest_forms_view_forms' ) && ! current_user_can( 'everest_forms_view_others_forms' ) ) {
 			if ( isset( $args['cap'] ) && ( 'everest_forms_view_conversational_forms' !== $args['cap'] && 'everest_forms_pro_view_landing_page' !== $args['cap'] ) ) {
-				 $args['post__in'] = array( 0 );
+				$args['post__in'] = array( 0 );
 			}
 		}
 
@@ -322,6 +322,12 @@ class EVF_Form_Handler {
 			wp_remove_targeted_link_rel_filters();
 		}
 
+		$evf_form_data = evf()->form->get( $form_id, array( 'content_only' => true ) );
+
+		if ( isset( $evf_form_data['meta']['entry_columns'] ) && ! isset( $data['meta']['entry_columns'] ) ) {
+			$data['meta']['entry_columns'] = $evf_form_data['meta']['entry_columns'];
+		}
+
 		$form    = array(
 			'ID'           => $form_id,
 			'post_title'   => esc_html( $title ),
@@ -428,6 +434,12 @@ class EVF_Form_Handler {
 
 			if ( ! $new_form_id || is_wp_error( $new_form_id ) ) {
 				return false;
+			}
+
+			$form_styles = get_option( 'everest_forms_styles', array() );
+			if ( isset( $form_styles[ $id ] ) ) {
+				$form_styles[ $new_form_id ] = $form_styles[ $id ];
+				update_option( 'everest_forms_styles', $form_styles );
 			}
 
 			return $new_form_id;

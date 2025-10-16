@@ -128,7 +128,7 @@ if ( ! $tab_exists ) {
 					<li>Priority support for premium users</li>
 				</ul>
 				<p>To enjoy all the benefits of Everest Forms Pro...</p>
-				<a href="https://everestforms.net/pricing/?utm_campaign=lite-version&utm_source=premium-cta-&utm_medium=upgrade-cta-button"  target="_blank" class="everest-forms-premium-sidebar-button">Get the Everest Forms Pro</a>
+				<a href="https://everestforms.net/upgrade/?utm_medium=evf-global-setting&utm_source=evf-free&utm_campaign=setting-sidebar-premium-info&utm_content=Get%20the%20Everest%20Forms%20Pro"  target="_blank" class="everest-forms-premium-sidebar-button">Get the Everest Forms Pro</a>
 				<p>Thank you for choosing Everest Forms 😊</p>';
 				$content = apply_filters( 'everest_forms_cta_promotiona_content', $content );
 				echo wp_kses( $content, $allowed_html );

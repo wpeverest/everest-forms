@@ -64,7 +64,7 @@ class EVF_Admin_Preview_Confirmation {
 
 			$formatted_string = '';
 
-			if ( isset( $form_fields[ $id ]['type'] ) && 'image-upload' !== $form_fields[ $id ]['type'] ) {
+			if ( isset( $form_fields[ $id ]['type'] ) ) {
 				if ( has_filter( "everest_forms_field_exporter_{$form_fields[ $id ]['type']}" ) ) {
 					$formatted_string = apply_filters( "everest_forms_field_exporter_{$form_fields[ $id ]['type']}", $form_fields[ $id ] );
 
@@ -75,7 +75,7 @@ class EVF_Admin_Preview_Confirmation {
 			} elseif ( empty( $form_fields[ $id ]['value'] ) ) {
 				continue; // Skip empty fields
 			} elseif ( 'basic' === $preview_style ) {
-				$output .= '<div class="everest_forms_preview_confirmation_' . $preview_style . '_label">' . $form_fields[ $id ]['name'] . '<a href="' . $form_fields[ $id ]['value'] . '" rel="noopener noreferrer" target="_blank"><img src="' . $form_fields[ $id ]['value'] . '" style="width:200px;" /></a></div>';
+				$output .= '<div class="everest_forms_preview_confirmation_' . $preview_style . '_label">' . $form_fields[ $id ]['name'] . '<a href="' . esc_url( $form_fields[ $id ]['value'] ) . '" rel="noopener noreferrer" target="_blank"><img src="' . esc_url( $form_fields[ $id ]['value'] ) . '" style="width:200px;" /></a></div>';
 				continue;
 			}
 
@@ -100,7 +100,7 @@ class EVF_Admin_Preview_Confirmation {
 			if ( is_array( $formatted_string ) && isset( $formatted_string['label'], $formatted_string['value'] ) ) {
 				if ( 'basic' === $preview_style ) {
 					$output .= '<div class="everest_forms_preview_confirmation_' . $preview_style . '_label">' . $formatted_string['label'] . ' : ' . $close_div;
-					$output .= $formatted_string['value'] . '</div>';
+					$output .= '<span>' . $formatted_string['value'] . '</span></div>';
 				} else {
 					$output .= '<div class="everest_forms_preview_confirmation_' . $preview_style . '_label">' . $formatted_string['label'] . ' : ' . $close_div;
 					$output .= '<div class="everest_forms_preview_confirmation_' . $preview_style . '_value">' . $formatted_string['value'] . '</div>';

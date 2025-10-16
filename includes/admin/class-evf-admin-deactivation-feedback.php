@@ -151,18 +151,42 @@ if ( ! class_exists( 'EVF_Admin_Deactivation_Feedback', false ) ) :
 		}
 
 		/**
+		 * Get api stats url.
+		 *
+		 * @return string
+		 */
+		private function get_stats_api_url() {
+			$url = '';
+			// Ingore for development mode.
+			if ( defined( 'EVF_DEV' ) && EVF_DEV ) {
+				if ( defined( 'TG_USERS_TRACKING_VERSION' ) ) {
+					$url = rest_url() . 'tgreporting/v1/deactivation/';
+				};
+			} else {
+				$url = self::FEEDBACK_URL;
+			}
+
+			return $url;
+		}
+
+		/**
 		 * Sends an API request with deactivation data.
 		 *
 		 * @param array $deactivation_data Deactivation Data.
 		 * @return string The response body from the API request.
 		 */
 		private function send_api_request( $deactivation_data ) {
+			$stats_api_url = $this->get_stats_api_url();
+
+			if ( '' === $stats_api_url ) {
+				return;
+			}
 			$headers = array(
 				'user-agent' => 'EverestForms/' . evf()->version . '; ' . get_bloginfo( 'url' ),
 			);
 
 			$response = wp_remote_post(
-				self::FEEDBACK_URL,
+				$stats_api_url,
 				array(
 					'method'      => 'POST',
 					'timeout'     => 45,

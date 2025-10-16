@@ -893,10 +893,11 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 			value="<?php echo esc_attr( $key ); ?>" data-tip="Copy ApiKey" data-copied="Copied!" readonly />
 		<div>
 						<?php
+						$unique_id = isset( $value['id'] ) ? $value['id'] : '';
 						if ( '' === $key ) {
-							echo '<button type="button" class="everest-forms-btn everest-forms-btn-primary  everest-forms-generate-api-key">generate</button>';
+							echo '<button type="button" id="' . $unique_id . '" data-id="' . $unique_id . '" class="everest-forms-btn everest-forms-btn-primary  everest-forms-generate-api-key">generate</button>';
 						} else {
-							echo '<button type="button" class="everest-forms-btn everest-forms-btn-primary  everest-forms-generate-api-key">regenerate</button>';
+							echo '<button type="button" id="' . $unique_id . '" data-id="' . $unique_id . '" class="everest-forms-btn everest-forms-btn-primary  everest-forms-generate-api-key ' . $unique_id . '">regenerate</button>';
 						}
 						?>
 		</div>
@@ -1029,7 +1030,8 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 						break;
 					default:
 						if ( is_string( $raw_value ) ) {
-							$value = evf_clean( html_entity_decode( $raw_value ) );
+							$decoded_value = html_entity_decode( html_entity_decode( $raw_value ) );
+							$value = wp_kses_post( $decoded_value );
 						} else {
 							$value = evf_clean( $raw_value );
 						}

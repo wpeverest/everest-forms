@@ -1125,6 +1125,10 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 	 * @return array
 	 */
 	public function set_default_timezone( $properties, $field ) {
+		// Does not set default date time if default date feature is not enabled.`
+		if ( ! isset( $field['date_default'] ) || 1 !== absint( $field['date_default'] ) ) {
+			return $properties;
+		}
 
 		if ( ! empty( $field['date_timezone'] ) && 'Default' !== $field['date_timezone'] ) {
 			$timezone = $field['date_timezone'];

@@ -63,7 +63,7 @@
 	/**
 	 * Switch color.
 	 *
-	 * @since xx.xx.xx
+	 * @since 3.3.0
 	 *
 	 * @param {string} field_type
 	 * @param {string} color

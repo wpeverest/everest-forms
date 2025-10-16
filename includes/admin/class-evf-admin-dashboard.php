@@ -57,7 +57,7 @@ class EVF_Admin_Dashboard {
 					'licensePlan'          => evf_get_license_plan(),
 					'licenseActivationURL' => esc_url_raw( admin_url( 'plugins.php' ) ),
 					'utmCampaign'          => EVF()->utm_campaign,
-					'upgradeURL'           => esc_url_raw( 'https://everestforms.net/pricing/?utm_campaign=' . EVF()->utm_campaign ),
+					'upgradeURL'           => esc_url_raw( 'https://everestforms.net/upgrade/?' ),
 					'plugins'              => array_reduce(
 						$allowed_plugin_slugs,
 						function ( $acc, $curr ) use ( $installed_plugin_slugs ) {
