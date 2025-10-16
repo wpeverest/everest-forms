@@ -3748,6 +3748,22 @@ p.search-box {
 							}
 						}
 					}
+
+					.evf-col-divider-wrapper{
+						position: relative;
+
+						.evf-col-divider{
+							position: absolute;
+							content: "";
+							top: 0;
+							right: 0;
+							transform: translateY(40%);
+							width: 5px;
+							height: 100%;
+							cursor: ew-resize;
+							z-index: 9999;
+						}
+					}
 				}
 
 				.everest-forms-field-payment-single {

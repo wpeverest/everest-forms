@@ -2949,6 +2949,7 @@
 		bindFields: function () {
 			$( '.evf-admin-field-wrapper' ).sortable({
 				items: '.evf-admin-row',
+				cancel: '.evf-col-divider-wrapper, .evf-col-divider-wrapper *',
 				axis: 'y',
 				cursor: 'move',
 				opacity: 0.65,

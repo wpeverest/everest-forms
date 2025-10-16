@@ -370,6 +370,17 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 					}
 				}
 				echo '</div>';
+
+				if ( $grid_start != $active_grid ) {
+					echo '<div class="evf-col-divider-wrapper">';
+					echo '<div class="evf-col-divider">';
+					echo '<svg width="6" height="32" viewBox="0 0 6 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<path d="M5 0H4.5V32H5H5.5V0H5ZM1 32H1.5V0H1H0.5V32H1Z" fill="#999999"/>
+						</svg>';
+					echo '</div>';
+					echo '</div>';
+				}
+				
 			}
 			echo '<div class="clear evf-clear"></div>';
 			echo '</div >';
