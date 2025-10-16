@@ -18,7 +18,7 @@ Build any form you need with a single plugin. Everest Forms combines a drag-and-
 
 Over 100,000+ WordPress websites trust it for everything from simple contact forms to complex applications.
 
-Unlike other form plugins that lock essential features behind paywalls, Everest Forms provides Form Entries, File Uploads, Admin Approval, Survey Field and other advanced tools in the Free version.
+Everest Forms includes pro-level features like Form Entries, File Uploads, Admin Approval, and Survey Fields in the free version, so you can build professional forms from day one.
 
 👉 [Try Everest Forms](https://demo.tastewp.com/everest-forms) (Clicking this link creates a demo where you can test Everest Forms.)
 
@@ -84,7 +84,7 @@ Get advanced capabilities like multi-step forms, conversational forms, AI-powere
 * **CleanTalk Anti-Spam** Stop spam in real time with cloud-based filtering that blocks bots without frustrating real users.
 * **GDPR Compliance Tools** Add privacy policy checkboxes, consent fields, and data handling disclosures to meet privacy regulations.
 
-### Everest Forms Complete Feature List
+### Everest Forms Complete Feature List (Free and Pro)
 
 ## Intuitive From Builder
 
