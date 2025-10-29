@@ -354,16 +354,120 @@
 
 		});
 
-			$(document).on('mousedown', '.evf-col-divider', function (e) {
-				e.preventDefault();
+	$(document).on('mousedown', '.evf-col-divider', function (e) {
+		e.preventDefault();
 
-				const $divider = $(this);
+		const $divider = $(this);
+		const $prevCol = $divider.closest('.evf-col-divider-wrapper').prev('.evf-admin-grid');
+		const $nextCol = $divider.closest('.evf-col-divider-wrapper').next('.evf-admin-grid');
 
-				const $wrapper = $divider.closest('.evf-admin-grid');
-				const $prevCol = $divider.closest('.evf-col-divider-wrapper').prev('.evf-admin-grid');
-				const $nextCol = $divider.closest('.evf-col-divider-wrapper').next('.evf-admin-grid');
+		if (!$prevCol.length) return;
 
-				});
+		let gridType = '1';
+		if ($prevCol.hasClass('evf-grid-4') || $nextCol.hasClass('evf-grid-4')) {
+			gridType = '4';
+		} else if ($prevCol.hasClass('evf-grid-3') || $nextCol.hasClass('evf-grid-3')) {
+			gridType = '3';
+		} else if ($prevCol.hasClass('evf-grid-2') || $nextCol.hasClass('evf-grid-2')) {
+			gridType = '2';
+		}
+
+		const startX = e.pageX;
+
+		if (gridType === '2') {
+			let prevColWidth = 50;
+			let nextColWidth = 50;
+
+			$(document).on('mousemove.evfColResize', function (e) {
+				const deltaX = e.pageX - startX;
+				const wrapperWidth = $prevCol.parent().width();
+				const deltaPercent = (deltaX / wrapperWidth) * 100;
+
+				let newPrevColWidth = prevColWidth + deltaPercent;
+				let newNextColWidth = nextColWidth - deltaPercent;
+
+				if (newPrevColWidth < 10) newPrevColWidth = 10;
+				if (newNextColWidth < 10) newNextColWidth = 10;
+
+				if (newPrevColWidth > 50) newPrevColWidth = prevColWidth;
+				if (newNextColWidth > 50) newNextColWidth = prevColWidth;
+
+				if (newPrevColWidth + newNextColWidth !== 100) {
+					newNextColWidth = 100 - newPrevColWidth;
+				}
+
+
+				$prevCol.css('width', newPrevColWidth + '%');
+				$nextCol.css('width', newNextColWidth + '%');
+			});
+
+			$(document).on('mouseup.evfColResize', function () {
+				$(document).off('mousemove.evfColResize mouseup.evfColResize');
+			});
+		}
+
+		if (gridType === '3') {
+			let prevColWidth = 33.33;
+			let nextColWidth = 33.33;
+
+			$(document).on('mousemove.evfColResize', function (e) {
+				const deltaX = e.pageX - startX;
+				const wrapperWidth = $prevCol.parent().width();
+				const deltaPercent = (deltaX / wrapperWidth) * 100;
+
+				let newPrevColWidth = prevColWidth + deltaPercent;
+				let newNextColWidth = nextColWidth - deltaPercent;
+
+				if (newPrevColWidth < 10) newPrevColWidth = 10;
+				if (newNextColWidth < 10) newNextColWidth = 10;
+
+				if (newPrevColWidth > 50) newPrevColWidth = prevColWidth;
+				if (newNextColWidth > 50) newNextColWidth = prevColWidth;
+
+				if (newPrevColWidth + newNextColWidth !== 100) {
+					newNextColWidth = 100 - newPrevColWidth;
+				}
+
+				$prevCol.css('width', newPrevColWidth + '%');
+				$nextCol.css('width', newNextColWidth + '%');
+			});
+
+			$(document).on('mouseup.evfColResize', function () {
+				$(document).off('mousemove.evfColResize mouseup.evfColResize');
+			});
+		}
+		if (gridType === '4') {
+			let prevColWidth = 25;
+			let nextColWidth = 25;
+
+			$(document).on('mousemove.evfColResize', function (e) {
+				const deltaX = e.pageX - startX;
+				const wrapperWidth = $prevCol.parent().width();
+				const deltaPercent = (deltaX / wrapperWidth) * 100;
+
+				let newPrevColWidth = prevColWidth + deltaPercent;
+				let newNextColWidth = nextColWidth - deltaPercent;
+
+				if (newPrevColWidth < 10) newPrevColWidth = 10;
+				if (newNextColWidth < 10) newNextColWidth = 10;
+
+				if (newPrevColWidth > 50) newPrevColWidth = prevColWidth;
+				if (newNextColWidth > 50) newNextColWidth = prevColWidth;
+
+				if (newPrevColWidth + newNextColWidth !== 100) {
+					newNextColWidth = 100 - newPrevColWidth;
+				}
+
+				$prevCol.css('width', newPrevColWidth + '%');
+				$nextCol.css('width', newNextColWidth + '%');
+			});
+
+			$(document).on('mouseup.evfColResize', function () {
+				$(document).off('mousemove.evfColResize mouseup.evfColResize');
+			});
+		}
+	});
+
 
 		},
 
