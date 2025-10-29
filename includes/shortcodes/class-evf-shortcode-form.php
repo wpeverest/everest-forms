@@ -943,7 +943,21 @@ class EVF_Shortcode_Form {
 	 */
 	public static function output( $atts ) {
 		wp_enqueue_script( 'everest-forms' );
-		wp_enqueue_script( 'everest-forms-survey-polls-quiz-script' );
+
+		$form_id     = isset( $atts['id'] ) ? absint( $atts['id'] ) : 0;
+		$form_fields = evf_get_form_fields( $form_id );
+		$form_data   = EVF()->form->get( $form_id, array( 'content_only' => true ) );
+		$form_fields = isset( $form_data['form_fields'] ) ? $form_data['form_fields'] : array();
+
+		foreach ( $form_fields as $form_field ) {
+			if (
+				( isset( $form_field['type'] ) && in_array( $form_field['type'], array( 'rating', 'likert', 'yes-no', 'scale-rating' ), true ) ) ||
+				( isset( $form_field['survey_status'] ) && absint( $form_field['survey_status'] ) === 1 ) ||
+				( isset( $form_field['quiz_status'] ) && absint( $form_field['quiz_status'] ) === 1 )
+			) {
+				wp_enqueue_script( 'everest-forms-survey-polls-quiz-script' );
+			}
+		}
 
 		// Load jQuery flatpickr libraries. https://github.com/flatpickr/flatpickr.
 		if ( isset( $atts['id'] ) && evf_is_field_exists( $atts['id'], 'date-time' ) ) {
