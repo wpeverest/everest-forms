@@ -375,22 +375,27 @@
 		const startX = e.pageX;
 
 		if (gridType === '2') {
-			let prevColWidth = 50;
-			let nextColWidth = 50;
+			const wrapperWidth = $prevCol.parent().width();
+			 let prevColWidth = $prevCol[0].style.width
+				? parseFloat($prevCol[0].style.width)
+				: 50;
+
+			let nextColWidth = $nextCol[0].style.width
+				? parseFloat($nextCol[0].style.width)
+				: 50;
 
 			$(document).on('mousemove.evfColResize', function (e) {
 				const deltaX = e.pageX - startX;
-				const wrapperWidth = $prevCol.parent().width();
 				const deltaPercent = (deltaX / wrapperWidth) * 100;
 
 				let newPrevColWidth = prevColWidth + deltaPercent;
 				let newNextColWidth = nextColWidth - deltaPercent;
 
-				if (newPrevColWidth < 10) newPrevColWidth = 10;
-				if (newNextColWidth < 10) newNextColWidth = 10;
+				if (newPrevColWidth < 20) newPrevColWidth = 20;
+				if (newNextColWidth < 20) newNextColWidth = 20;
 
-				if (newPrevColWidth > 50) newPrevColWidth = prevColWidth;
-				if (newNextColWidth > 50) newNextColWidth = prevColWidth;
+				if (newPrevColWidth > 75) newPrevColWidth = 75;
+				if (newNextColWidth > 75) newNextColWidth = 75;
 
 				if (newPrevColWidth + newNextColWidth !== 100) {
 					newNextColWidth = 100 - newPrevColWidth;
@@ -407,8 +412,14 @@
 		}
 
 		if (gridType === '3') {
-			let prevColWidth = 33.33;
-			let nextColWidth = 33.33;
+			const wrapperWidth = $prevCol.parent().width();
+			 let prevColWidth = $prevCol[0].style.width
+				? parseFloat($prevCol[0].style.width)
+				: 33.33;
+
+			let nextColWidth = $nextCol[0].style.width
+				? parseFloat($nextCol[0].style.width)
+				: 33.33;
 
 			$(document).on('mousemove.evfColResize', function (e) {
 				const deltaX = e.pageX - startX;
@@ -418,14 +429,16 @@
 				let newPrevColWidth = prevColWidth + deltaPercent;
 				let newNextColWidth = nextColWidth - deltaPercent;
 
-				if (newPrevColWidth < 10) newPrevColWidth = 10;
-				if (newNextColWidth < 10) newNextColWidth = 10;
+				if (newPrevColWidth < 20) newPrevColWidth = 20;
+				if (newNextColWidth < 20) newNextColWidth = 20;
 
-				if (newPrevColWidth > 50) newPrevColWidth = prevColWidth;
-				if (newNextColWidth > 50) newNextColWidth = prevColWidth;
+				if (newPrevColWidth > 56) newPrevColWidth = 56;
+				if (newNextColWidth > 56) newNextColWidth = 56;
 
-				if (newPrevColWidth + newNextColWidth !== 100) {
-					newNextColWidth = 100 - newPrevColWidth;
+				if (newPrevColWidth + newNextColWidth !== 66.63 && newNextColWidth !== 20 ) {
+
+					newNextColWidth = 66.63 - newPrevColWidth;
+					console.log(newNextColWidth, 'Change');
 				}
 
 				$prevCol.css('width', newPrevColWidth + '%');
@@ -437,8 +450,14 @@
 			});
 		}
 		if (gridType === '4') {
-			let prevColWidth = 25;
-			let nextColWidth = 25;
+			const wrapperWidth = $prevCol.parent().width();
+			 let prevColWidth = $prevCol[0].style.width
+				? parseFloat($prevCol[0].style.width)
+				: 25;
+
+			let nextColWidth = $nextCol[0].style.width
+				? parseFloat($nextCol[0].style.width)
+				: 25;
 
 			$(document).on('mousemove.evfColResize', function (e) {
 				const deltaX = e.pageX - startX;
@@ -448,14 +467,16 @@
 				let newPrevColWidth = prevColWidth + deltaPercent;
 				let newNextColWidth = nextColWidth - deltaPercent;
 
-				if (newPrevColWidth < 10) newPrevColWidth = 10;
-				if (newNextColWidth < 10) newNextColWidth = 10;
+				if (newPrevColWidth < 20) newPrevColWidth = 20;
+				if (newNextColWidth < 20) newNextColWidth = 20;
 
-				if (newPrevColWidth > 50) newPrevColWidth = prevColWidth;
-				if (newNextColWidth > 50) newNextColWidth = prevColWidth;
+				if (newPrevColWidth > 30) newPrevColWidth = 30;
+				if (newNextColWidth > 30) newNextColWidth = 30;
 
-				if (newPrevColWidth + newNextColWidth !== 100) {
-					newNextColWidth = 100 - newPrevColWidth;
+				if (newPrevColWidth + newNextColWidth !== 50 && newNextColWidth !== 20 ) {
+					newNextColWidth = 50 - newPrevColWidth;
+					console.log('inside', newNextColWidth);
+
 				}
 
 				$prevCol.css('width', newPrevColWidth + '%');
