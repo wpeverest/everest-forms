@@ -391,8 +391,8 @@
 				let newPrevColWidth = prevColWidth + deltaPercent;
 				let newNextColWidth = nextColWidth - deltaPercent;
 
-				if (newPrevColWidth < 20) newPrevColWidth = 20;
-				if (newNextColWidth < 20) newNextColWidth = 20;
+				if (newPrevColWidth < 10) newPrevColWidth = 10;
+				if (newNextColWidth < 10) newNextColWidth = 10;
 
 				if (newPrevColWidth > 75) newPrevColWidth = 75;
 				if (newNextColWidth > 75) newNextColWidth = 75;
@@ -429,13 +429,13 @@
 				let newPrevColWidth = prevColWidth + deltaPercent;
 				let newNextColWidth = nextColWidth - deltaPercent;
 
-				if (newPrevColWidth < 20) newPrevColWidth = 20;
-				if (newNextColWidth < 20) newNextColWidth = 20;
+				if (newPrevColWidth < 10) newPrevColWidth = 10;
+				if (newNextColWidth < 10) newNextColWidth = 10;
 
 				if (newPrevColWidth > 56) newPrevColWidth = 56;
 				if (newNextColWidth > 56) newNextColWidth = 56;
 
-				if (newPrevColWidth + newNextColWidth !== 66.63 && newNextColWidth !== 20 ) {
+				if (newPrevColWidth + newNextColWidth !== 66.63 && newNextColWidth !== 10 ) {
 
 					newNextColWidth = 66.63 - newPrevColWidth;
 					console.log(newNextColWidth, 'Change');
@@ -467,13 +467,13 @@
 				let newPrevColWidth = prevColWidth + deltaPercent;
 				let newNextColWidth = nextColWidth - deltaPercent;
 
-				if (newPrevColWidth < 20) newPrevColWidth = 20;
-				if (newNextColWidth < 20) newNextColWidth = 20;
+				if (newPrevColWidth < 10) newPrevColWidth = 10;
+				if (newNextColWidth < 10) newNextColWidth = 10;
 
 				if (newPrevColWidth > 30) newPrevColWidth = 30;
 				if (newNextColWidth > 30) newNextColWidth = 30;
 
-				if (newPrevColWidth + newNextColWidth !== 50 && newNextColWidth !== 20 ) {
+				if (newPrevColWidth + newNextColWidth !== 50 && newNextColWidth !== 10 ) {
 					newNextColWidth = 50 - newPrevColWidth;
 					console.log('inside', newNextColWidth);
 
