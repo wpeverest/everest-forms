@@ -582,7 +582,7 @@
 						$( document ).find( '.evf-admin-row[data-row-id="' + rowId + '"]' ).find( '.evf-admin-grid[data-grid-id="' + gridId + '"]' ).css( 'width', value + '%' );
 					}
 				}
-			}else if (gridType === '3') {
+			}else if ( '3' === gridType) {
 				if (nextColContainer.length > 0) {
 					let nextColGridId = nextColContainer.find("input[type='number']").data('grid-id');
 					let totalOtherColsWidth = 0;
@@ -646,6 +646,69 @@
 						.find('.evf-admin-row[data-row-id="' + rowId + '"] .evf-admin-grid[data-grid-id="' + prevColGridId + '"]')
 						.css('width', prevColWidth + '%');
 
+					$(document)
+						.find('.evf-admin-row[data-row-id="' + rowId + '"] .evf-admin-grid[data-grid-id="' + gridId + '"]')
+						.css('width', value + '%');
+				}
+			}else if ( '4' === gridType ) {
+				if ( nextColContainer.length > 0 ) {
+					let nextColGridId = nextColContainer.find("input[type='number']").data('grid-id');
+					let totalOtherColsWidth = 0;
+
+					$adminRow.find('.evf-admin-grid').each(function() {
+						let $col = $(this);
+						let $orgGridId = $col.data('grid-id');
+						if ($orgGridId !== gridId && $orgGridId !== nextColGridId) {
+							let colWidth = $col[0].style.width ? parseFloat($col[0].style.width) : 25;
+							totalOtherColsWidth += colWidth;
+						}
+					});
+
+					let nextColWidth = 100 - value - totalOtherColsWidth;
+					if (nextColWidth < 10) {
+						$this.val($this.data('last-valid') || value);
+						return;
+					}
+
+					$this.data('last-valid', value);
+
+					nextColContainer.find("input[type='number']").val(nextColWidth);
+
+					$(document)
+						.find('.evf-admin-row[data-row-id="' + rowId + '"] .evf-admin-grid[data-grid-id="' + nextColGridId + '"]')
+						.css('width', nextColWidth + '%');
+					$(document)
+						.find('.evf-admin-row[data-row-id="' + rowId + '"] .evf-admin-grid[data-grid-id="' + gridId + '"]')
+						.css('width', value + '%');
+				} else {
+					let prevColWidth = 0,
+						$prevContainer = $this.closest('.everest-forms-col-width-container').prev('.everest-forms-col-width-container');
+
+					$adminRow.find('.evf-admin-grid').each(function() {
+						let $col = $(this);
+						let $orgGridId = $col.data('grid-id');
+						if ($orgGridId !== gridId) {
+							let colWidth = $col[0].style.width ? parseFloat($col[0].style.width) : 25;
+							prevColWidth += colWidth;
+						}
+					});
+
+					prevColWidth = 100 - value - prevColWidth;
+
+					if (prevColWidth < 10) {
+						console.warn('Previous column width too small — ignoring change.');
+						$this.val($this.data('last-valid') || value);
+						return;
+					}
+
+					$this.data('last-valid', value);
+
+					$prevContainer.find("input[type='number']").val(prevColWidth);
+					let prevColGridId = $prevContainer.find("input[type='number']").data('grid-id');
+
+					$(document)
+						.find('.evf-admin-row[data-row-id="' + rowId + '"] .evf-admin-grid[data-grid-id="' + prevColGridId + '"]')
+						.css('width', prevColWidth + '%');
 					$(document)
 						.find('.evf-admin-row[data-row-id="' + rowId + '"] .evf-admin-grid[data-grid-id="' + gridId + '"]')
 						.css('width', value + '%');
