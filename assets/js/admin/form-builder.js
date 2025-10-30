@@ -354,197 +354,222 @@
 
 		});
 
-	$(document).on('mousedown', '.evf-col-divider', function (e) {
-		e.preventDefault();
+		$(document).on('mousedown', '.evf-col-divider', function (e) {
+			e.preventDefault();
 
-		const $divider = $(this),
-			  $prevCol = $divider.closest('.evf-col-divider-wrapper').prev('.evf-admin-grid'),
-			  $nextCol = $divider.closest('.evf-col-divider-wrapper').next('.evf-admin-grid'),
-			  $rowId   = $divider.data('row-id'),
-			  $wrapper = $divider.closest('.evf-admin-row');
+			const $divider = $(this),
+				$prevCol = $divider.closest('.evf-col-divider-wrapper').prev('.evf-admin-grid'),
+				$nextCol = $divider.closest('.evf-col-divider-wrapper').next('.evf-admin-grid'),
+				$rowId   = $divider.data('row-id'),
+				$wrapper = $divider.closest('.evf-admin-row');
 
-		if (!$prevCol.length) return;
+			if (!$prevCol.length) return;
 
-		let gridType = '1';
-		if ($prevCol.hasClass('evf-grid-4') || $nextCol.hasClass('evf-grid-4')) {
-			gridType = '4';
-		} else if ($prevCol.hasClass('evf-grid-3') || $nextCol.hasClass('evf-grid-3')) {
-			gridType = '3';
-		} else if ($prevCol.hasClass('evf-grid-2') || $nextCol.hasClass('evf-grid-2')) {
-			gridType = '2';
-		}
-
-		const startX = e.pageX;
-
-		if (gridType === '2') {
-			const wrapperWidth = $prevCol.parent().width();
-			 let prevColWidth = $prevCol[0].style.width
-				? parseFloat($prevCol[0].style.width)
-				: 50;
-
-			let nextColWidth = $nextCol[0].style.width
-				? parseFloat($nextCol[0].style.width)
-				: 50;
-
-			$(document).on('mousemove.evfColResize', function (e) {
-				const deltaX = e.pageX - startX;
-				const deltaPercent = (deltaX / wrapperWidth) * 100;
-
-				let newPrevColWidth = prevColWidth + deltaPercent;
-				let newNextColWidth = nextColWidth - deltaPercent;
-
-				if (newPrevColWidth < 10) newPrevColWidth = 10;
-				if (newNextColWidth < 10) newNextColWidth = 10;
-
-				if (newPrevColWidth > 90) newPrevColWidth = 90;
-				if (newNextColWidth > 90) newNextColWidth = 90;
-
-				if (newPrevColWidth + newNextColWidth !== 100) {
-					newNextColWidth = 100 - newPrevColWidth;
-				}
-
-
-				$prevCol.css('width', newPrevColWidth + '%');
-				$nextCol.css('width', newNextColWidth + '%');
-
-
-				$( document ).find( '#everest-forms-row-option-' + $rowId ).find( '.everest-forms-' + $rowId + '-grid_1').val( parseFloat( newPrevColWidth.toFixed(0) ) );
-				$( document ).find( '#everest-forms-row-option-' + $rowId ).find( '.everest-forms-' + $rowId + '-grid_2').val( parseFloat( newNextColWidth.toFixed(0) ) );
-			});
-
-			$(document).on('mouseup.evfColResize', function () {
-				$(document).off('mousemove.evfColResize mouseup.evfColResize');
-			});
-		}
-
-		if (gridType === '3') {
-			const prevGridId   = $prevCol.data('grid-id'),
-				  nextGridId   = $nextCol.data('grid-id');
-
-			 let prevColWidth = $prevCol[0].style.width
-				? parseFloat($prevCol[0].style.width)
-				: 33.33;
-
-			let nextColWidth = $nextCol[0].style.width
-				? parseFloat($nextCol[0].style.width)
-				: 33.33;
-
-			let thirdWidth = 0;
-
-			$wrapper.find('.evf-admin-grid').each(function() {
-				const $col = $(this);
-				let $orgGridId = $col.data('grid-id');
-				if ( $orgGridId !== prevGridId && $orgGridId !== nextGridId ) {
-					thirdWidth = $col[0].style.width
-						? parseFloat($col[0].style.width)
-						: 33.33;
-				}
-			});
-
-			$(document).on('mousemove.evfColResize', function (e) {
-				const deltaX = e.pageX - startX;
-				const wrapperWidth = $prevCol.parent().width();
-				const deltaPercent = (deltaX / wrapperWidth) * 100;
-
-				let newPrevColWidth = prevColWidth + deltaPercent;
-				let newNextColWidth = nextColWidth - deltaPercent;
-
-				if (newPrevColWidth < 10) newPrevColWidth = 10;
-				if (newNextColWidth < 10) newNextColWidth = 10;
-
-				if (newPrevColWidth > 56) newPrevColWidth = 56;
-				if (newNextColWidth > 56) newNextColWidth = 56;
-
-				if (newPrevColWidth + newNextColWidth + thirdWidth !== 100 && newNextColWidth !== 10 ) {
-					newNextColWidth = 100 - thirdWidth - newPrevColWidth;
-					console.log(newNextColWidth, 'Change');
-				}
-
-				newPrevColWidth = parseFloat( newPrevColWidth.toFixed( 0) );
-				newNextColWidth = parseFloat( newNextColWidth.toFixed( 0 ) );
-
-				$prevCol.css('width', newPrevColWidth + '%');
-				$nextCol.css('width',  newNextColWidth + '%');
-
-				$( document ).find( '#everest-forms-row-option-' + $rowId ).find( '.everest-forms-' + $rowId + '-grid_' + prevGridId ).val( newPrevColWidth );
-				$( document ).find( '#everest-forms-row-option-' + $rowId ).find( '.everest-forms-' + $rowId + '-grid_' + nextGridId ).val( newNextColWidth );
-			});
-
-			$(document).on('mouseup.evfColResize', function () {
-				$(document).off('mousemove.evfColResize mouseup.evfColResize');
-			});
-		}
-		if (gridType === '4') {
-			const wrapperWidth = $prevCol.parent().width();
-			const prevGridId   = $prevCol.data('grid-id'),
-				  nextGridId   = $nextCol.data('grid-id');
-			 let prevColWidth = $prevCol[0].style.width
-				? parseFloat($prevCol[0].style.width)
-				: 25;
-
-			let nextColWidth = $nextCol[0].style.width
-				? parseFloat($nextCol[0].style.width)
-				: 25;
-
-			let thirdWidth = 0;
-
-			$wrapper.find('.evf-admin-grid').each(function() {
-				const $col = $(this);
-				let $orgGridId = $col.data('grid-id');
-
-				if ( $orgGridId !== prevGridId && $orgGridId !== nextGridId ) {
-					thirdWidth += $col[0].style.width
-						? parseFloat($col[0].style.width)
-						: 25;
-				}
-			});
-
-			$(document).on('mousemove.evfColResize', function (e) {
-				const deltaX = e.pageX - startX;
-				const wrapperWidth = $prevCol.parent().width();
-				const deltaPercent = (deltaX / wrapperWidth) * 100;
-
-				let newPrevColWidth = prevColWidth + deltaPercent;
-				let newNextColWidth = nextColWidth - deltaPercent;
-
-				if (newPrevColWidth < 10) newPrevColWidth = 10;
-				if (newNextColWidth < 10) newNextColWidth = 10;
-
-				if (newPrevColWidth > 30) newPrevColWidth = 30;
-				if (newNextColWidth > 30) newNextColWidth = 30;
-
-				if (newPrevColWidth + newNextColWidth + thirdWidth !== 100 && newNextColWidth !== 10 ) {
-					newNextColWidth = 100 - thirdWidth - newPrevColWidth;
-				}
-
-				newPrevColWidth = parseFloat( newPrevColWidth.toFixed( 0) );
-				newNextColWidth = parseFloat( newNextColWidth.toFixed( 0 ) );
-
-				$prevCol.css('width', newPrevColWidth + '%');
-				$nextCol.css('width', newNextColWidth + '%');
-
-				$( document ).find( '#everest-forms-row-option-' + $rowId ).find( '.everest-forms-' + $rowId + '-grid_' + prevGridId ).val( newPrevColWidth );
-				$( document ).find( '#everest-forms-row-option-' + $rowId ).find( '.everest-forms-' + $rowId + '-grid_' + nextGridId ).val( newNextColWidth );
-			});
-
-			$(document).on('mouseup.evfColResize', function () {
-				$(document).off('mousemove.evfColResize mouseup.evfColResize');
-			});
-		}
-	});
-
-	$( document ).find( ".everest-forms-col-width-container input[type='number']" ).on( 'change keyup', function() {
-		var $this       = $( this ),
-			value       = parseInt( $this.val(), 10 ),
-			gridId    	= $this.data( 'grid-id' ),
-			rowId    	= $this.data( 'row-id' );
-			nextColContainer = $this.closest( '.everest-forms-col-width-container' ).next( '.everest-forms-col-width-container' );
-
-
-			if ( $( document ).find( '.evf-admin-row[data-row-id="' + rowId + '"]' ).length > 0 && $( document ).find( '.evf-admin-grid[data-grid-id="' + gridId + '"]' ).length > 0 ) {
-				$( document ).find( '.evf-admin-row[data-row-id="' + rowId + '"]' ).find( '.evf-admin-grid[data-grid-id="' + gridId + '"]' ).css( 'width', value + '%' );
+			let gridType = '1';
+			if ($prevCol.hasClass('evf-grid-4') || $nextCol.hasClass('evf-grid-4')) {
+				gridType = '4';
+			} else if ($prevCol.hasClass('evf-grid-3') || $nextCol.hasClass('evf-grid-3')) {
+				gridType = '3';
+			} else if ($prevCol.hasClass('evf-grid-2') || $nextCol.hasClass('evf-grid-2')) {
+				gridType = '2';
 			}
-	});
+
+			const startX = e.pageX;
+
+			if (gridType === '2') {
+				const wrapperWidth = $prevCol.parent().width();
+				let prevColWidth = $prevCol[0].style.width
+					? parseFloat($prevCol[0].style.width)
+					: 50;
+
+				let nextColWidth = $nextCol[0].style.width
+					? parseFloat($nextCol[0].style.width)
+					: 50;
+
+				$(document).on('mousemove.evfColResize', function (e) {
+					const deltaX = e.pageX - startX;
+					const deltaPercent = (deltaX / wrapperWidth) * 100;
+
+					let newPrevColWidth = prevColWidth + deltaPercent;
+					let newNextColWidth = nextColWidth - deltaPercent;
+
+					if (newPrevColWidth < 10) newPrevColWidth = 10;
+					if (newNextColWidth < 10) newNextColWidth = 10;
+
+					if (newPrevColWidth > 90) newPrevColWidth = 90;
+					if (newNextColWidth > 90) newNextColWidth = 90;
+
+					if (newPrevColWidth + newNextColWidth !== 100) {
+						newNextColWidth = 100 - newPrevColWidth;
+					}
+
+
+					$prevCol.css('width', newPrevColWidth + '%');
+					$nextCol.css('width', newNextColWidth + '%');
+
+
+					$( document ).find( '#everest-forms-row-option-' + $rowId ).find( '.everest-forms-' + $rowId + '-grid_1').val( parseFloat( newPrevColWidth.toFixed(0) ) );
+					$( document ).find( '#everest-forms-row-option-' + $rowId ).find( '.everest-forms-' + $rowId + '-grid_2').val( parseFloat( newNextColWidth.toFixed(0) ) );
+				});
+
+				$(document).on('mouseup.evfColResize', function () {
+					$(document).off('mousemove.evfColResize mouseup.evfColResize');
+				});
+			}
+
+			if (gridType === '3') {
+				const prevGridId   = $prevCol.data('grid-id'),
+					nextGridId   = $nextCol.data('grid-id');
+
+				let prevColWidth = $prevCol[0].style.width
+					? parseFloat($prevCol[0].style.width)
+					: 33.33;
+
+				let nextColWidth = $nextCol[0].style.width
+					? parseFloat($nextCol[0].style.width)
+					: 33.33;
+
+				let thirdWidth = 0;
+
+				$wrapper.find('.evf-admin-grid').each(function() {
+					const $col = $(this);
+					let $orgGridId = $col.data('grid-id');
+					if ( $orgGridId !== prevGridId && $orgGridId !== nextGridId ) {
+						thirdWidth = $col[0].style.width
+							? parseFloat($col[0].style.width)
+							: 33.33;
+					}
+				});
+
+				$(document).on('mousemove.evfColResize', function (e) {
+					const deltaX = e.pageX - startX;
+					const wrapperWidth = $prevCol.parent().width();
+					const deltaPercent = (deltaX / wrapperWidth) * 100;
+
+					let newPrevColWidth = prevColWidth + deltaPercent;
+					let newNextColWidth = nextColWidth - deltaPercent;
+
+					if (newPrevColWidth < 10) newPrevColWidth = 10;
+					if (newNextColWidth < 10) newNextColWidth = 10;
+
+					if (newPrevColWidth > 56) newPrevColWidth = 56;
+					if (newNextColWidth > 56) newNextColWidth = 56;
+
+					if (newPrevColWidth + newNextColWidth + thirdWidth !== 100 && newNextColWidth !== 10 ) {
+						newNextColWidth = 100 - thirdWidth - newPrevColWidth;
+						console.log(newNextColWidth, 'Change');
+					}
+
+					newPrevColWidth = parseFloat( newPrevColWidth.toFixed( 0) );
+					newNextColWidth = parseFloat( newNextColWidth.toFixed( 0 ) );
+
+					$prevCol.css('width', newPrevColWidth + '%');
+					$nextCol.css('width',  newNextColWidth + '%');
+
+					$( document ).find( '#everest-forms-row-option-' + $rowId ).find( '.everest-forms-' + $rowId + '-grid_' + prevGridId ).val( newPrevColWidth );
+					$( document ).find( '#everest-forms-row-option-' + $rowId ).find( '.everest-forms-' + $rowId + '-grid_' + nextGridId ).val( newNextColWidth );
+				});
+
+				$(document).on('mouseup.evfColResize', function () {
+					$(document).off('mousemove.evfColResize mouseup.evfColResize');
+				});
+			}
+			if (gridType === '4') {
+				const wrapperWidth = $prevCol.parent().width();
+				const prevGridId   = $prevCol.data('grid-id'),
+					nextGridId   = $nextCol.data('grid-id');
+				let prevColWidth = $prevCol[0].style.width
+					? parseFloat($prevCol[0].style.width)
+					: 25;
+
+				let nextColWidth = $nextCol[0].style.width
+					? parseFloat($nextCol[0].style.width)
+					: 25;
+
+				let thirdWidth = 0;
+
+				$wrapper.find('.evf-admin-grid').each(function() {
+					const $col = $(this);
+					let $orgGridId = $col.data('grid-id');
+
+					if ( $orgGridId !== prevGridId && $orgGridId !== nextGridId ) {
+						thirdWidth += $col[0].style.width
+							? parseFloat($col[0].style.width)
+							: 25;
+					}
+				});
+
+				$(document).on('mousemove.evfColResize', function (e) {
+					const deltaX = e.pageX - startX;
+					const wrapperWidth = $prevCol.parent().width();
+					const deltaPercent = (deltaX / wrapperWidth) * 100;
+
+					let newPrevColWidth = prevColWidth + deltaPercent;
+					let newNextColWidth = nextColWidth - deltaPercent;
+
+					if (newPrevColWidth < 10) newPrevColWidth = 10;
+					if (newNextColWidth < 10) newNextColWidth = 10;
+
+					if (newPrevColWidth > 30) newPrevColWidth = 30;
+					if (newNextColWidth > 30) newNextColWidth = 30;
+
+					if (newPrevColWidth + newNextColWidth + thirdWidth !== 100 && newNextColWidth !== 10 ) {
+						newNextColWidth = 100 - thirdWidth - newPrevColWidth;
+					}
+
+					newPrevColWidth = parseFloat( newPrevColWidth.toFixed( 0) );
+					newNextColWidth = parseFloat( newNextColWidth.toFixed( 0 ) );
+
+					$prevCol.css('width', newPrevColWidth + '%');
+					$nextCol.css('width', newNextColWidth + '%');
+
+					$( document ).find( '#everest-forms-row-option-' + $rowId ).find( '.everest-forms-' + $rowId + '-grid_' + prevGridId ).val( newPrevColWidth );
+					$( document ).find( '#everest-forms-row-option-' + $rowId ).find( '.everest-forms-' + $rowId + '-grid_' + nextGridId ).val( newNextColWidth );
+				});
+
+				$(document).on('mouseup.evfColResize', function () {
+					$(document).off('mousemove.evfColResize mouseup.evfColResize');
+				});
+			}
+		});
+
+		$( document ).find( ".everest-forms-col-width-container input[type='number']" ).on( 'change keyup', function() {
+			var $this       = $( this ),
+				value       = parseInt( $this.val(), 10 ),
+				gridId    	= $this.data( 'grid-id' ),
+				rowId    	= $this.data( 'row-id' );
+				nextColContainer = $this.closest( '.everest-forms-col-width-container' ).next( '.everest-forms-col-width-container' );
+
+
+				if ( $( document ).find( '.evf-admin-row[data-row-id="' + rowId + '"]' ).length > 0 && $( document ).find( '.evf-admin-grid[data-grid-id="' + gridId + '"]' ).length > 0 ) {
+					$( document ).find( '.evf-admin-row[data-row-id="' + rowId + '"]' ).find( '.evf-admin-grid[data-grid-id="' + gridId + '"]' ).css( 'width', value + '%' );
+				}
+		});
+
+		$( document ).on('change', '.everest-forms-col-option-auto-width input[type="checkbox"]', function() {
+			let $el 	  		= $( this ),
+				isChecked 		= $el.is(':checked'),
+				rowId			= $el.data( 'row-id' ),
+				originalWidth 	= $( this ).data( 'original-col-width' );
+
+				let $inputEl = $el.closest('.everest-forms-col-option-row')
+                  .find('.everest-forms-col-width-container input[type="number"]');
+
+				if (isChecked) {
+					$inputEl.each(function() {
+						$(this).val(originalWidth);
+						$(this).prop('readonly', true);
+					});
+					$( document ).find( '.evf-admin-row[data-row-id="' + rowId + '"]' ).find( '.evf-admin-grid' ).css( 'width', originalWidth + '%' );
+				} else {
+					$inputEl.each(function() {
+						$(this).prop('readonly', false);
+					});
+				}
+
+		});
+
+
 
 
 		},
