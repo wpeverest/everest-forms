@@ -358,6 +358,7 @@ class EVF_Shortcode_Form {
 	 */
 	public static function fields( $form_data, $title, $description ) {
 		$structure = isset( $form_data['structure'] ) ? $form_data['structure'] : array();
+		$col_width_lists = isset( $form_data['settings']['col_width_lists'] ) ? $form_data['settings']['col_width_lists'] : array();
 
 		// Bail if empty form fields.
 		if ( empty( $form_data['form_fields'] ) ) {
@@ -400,7 +401,12 @@ class EVF_Shortcode_Form {
 			foreach ( $row as $grid_key => $grid ) {
 				$number_of_grid = count( $row );
 
-				echo '<div class="evf-frontend-grid evf-grid-' . absint( $number_of_grid ) . '" data-grid="' . esc_attr( $grid_key ) . '">';
+				$has_width 	  = isset( $col_width_lists[ $row_key ][ $grid_key ] );
+				$inline_style = 'style="max-width:' . ( $has_width ? esc_attr( $col_width_lists[ $row_key ][ $grid_key ] ) : ( 100 / $number_of_grid ) ) . '%; flex-basis:auto; width:100%;"';
+
+				echo '<div class="evf-frontend-grid evf-grid-' . absint( $number_of_grid ) . '" data-grid="' . esc_attr( $grid_key ) . '" ' . ( $has_width ? $inline_style : '' ) . '>';
+
+
 
 				if ( ! is_array( $grid ) ) {
 					$grid = array();

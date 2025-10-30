@@ -357,10 +357,11 @@
 	$(document).on('mousedown', '.evf-col-divider', function (e) {
 		e.preventDefault();
 
-		const $divider = $(this);
-		const $prevCol = $divider.closest('.evf-col-divider-wrapper').prev('.evf-admin-grid');
-		const $nextCol = $divider.closest('.evf-col-divider-wrapper').next('.evf-admin-grid');
-		const $rowId   = $divider.data('row-id');
+		const $divider = $(this),
+			  $prevCol = $divider.closest('.evf-col-divider-wrapper').prev('.evf-admin-grid'),
+			  $nextCol = $divider.closest('.evf-col-divider-wrapper').next('.evf-admin-grid'),
+			  $rowId   = $divider.data('row-id'),
+			  $wrapper = $divider.closest('.evf-admin-row');
 
 		if (!$prevCol.length) return;
 
@@ -417,7 +418,6 @@
 		}
 
 		if (gridType === '3') {
-			const wrapperWidth = $prevCol.parent().width();
 			const prevGridId   = $prevCol.data('grid-id'),
 				  nextGridId   = $nextCol.data('grid-id');
 
@@ -428,6 +428,18 @@
 			let nextColWidth = $nextCol[0].style.width
 				? parseFloat($nextCol[0].style.width)
 				: 33.33;
+
+			let thirdWidth = 0;
+
+			$wrapper.find('.evf-admin-grid').each(function() {
+				const $col = $(this);
+				let $orgGridId = $col.data('grid-id');
+				if ( $orgGridId !== prevGridId && $orgGridId !== nextGridId ) {
+					thirdWidth = $col[0].style.width
+						? parseFloat($col[0].style.width)
+						: 33.33;
+				}
+			});
 
 			$(document).on('mousemove.evfColResize', function (e) {
 				const deltaX = e.pageX - startX;
@@ -443,17 +455,19 @@
 				if (newPrevColWidth > 56) newPrevColWidth = 56;
 				if (newNextColWidth > 56) newNextColWidth = 56;
 
-				if (newPrevColWidth + newNextColWidth !== 66.63 && newNextColWidth !== 10 ) {
-
-					newNextColWidth = 66.63 - newPrevColWidth;
+				if (newPrevColWidth + newNextColWidth + thirdWidth !== 100 && newNextColWidth !== 10 ) {
+					newNextColWidth = 100 - thirdWidth - newPrevColWidth;
 					console.log(newNextColWidth, 'Change');
 				}
 
-				$prevCol.css('width', newPrevColWidth + '%');
-				$nextCol.css('width', newNextColWidth + '%');
+				newPrevColWidth = parseFloat( newPrevColWidth.toFixed( 0) );
+				newNextColWidth = parseFloat( newNextColWidth.toFixed( 0 ) );
 
-				$( document ).find( '#everest-forms-row-option-' + $rowId ).find( '.everest-forms-' + $rowId + '-grid_' + prevGridId ).val( parseFloat( newPrevColWidth.toFixed(0) ) );
-				$( document ).find( '#everest-forms-row-option-' + $rowId ).find( '.everest-forms-' + $rowId + '-grid_' + nextGridId ).val( parseFloat( newNextColWidth.toFixed(0) ) );
+				$prevCol.css('width', newPrevColWidth + '%');
+				$nextCol.css('width',  newNextColWidth + '%');
+
+				$( document ).find( '#everest-forms-row-option-' + $rowId ).find( '.everest-forms-' + $rowId + '-grid_' + prevGridId ).val( newPrevColWidth );
+				$( document ).find( '#everest-forms-row-option-' + $rowId ).find( '.everest-forms-' + $rowId + '-grid_' + nextGridId ).val( newNextColWidth );
 			});
 
 			$(document).on('mouseup.evfColResize', function () {
@@ -472,6 +486,19 @@
 				? parseFloat($nextCol[0].style.width)
 				: 25;
 
+			let thirdWidth = 0;
+
+			$wrapper.find('.evf-admin-grid').each(function() {
+				const $col = $(this);
+				let $orgGridId = $col.data('grid-id');
+
+				if ( $orgGridId !== prevGridId && $orgGridId !== nextGridId ) {
+					thirdWidth += $col[0].style.width
+						? parseFloat($col[0].style.width)
+						: 25;
+				}
+			});
+
 			$(document).on('mousemove.evfColResize', function (e) {
 				const deltaX = e.pageX - startX;
 				const wrapperWidth = $prevCol.parent().width();
@@ -486,17 +513,18 @@
 				if (newPrevColWidth > 30) newPrevColWidth = 30;
 				if (newNextColWidth > 30) newNextColWidth = 30;
 
-				if (newPrevColWidth + newNextColWidth !== 50 && newNextColWidth !== 10 ) {
-					newNextColWidth = 50 - newPrevColWidth;
-					console.log('inside', newNextColWidth);
-
+				if (newPrevColWidth + newNextColWidth + thirdWidth !== 100 && newNextColWidth !== 10 ) {
+					newNextColWidth = 100 - thirdWidth - newPrevColWidth;
 				}
+
+				newPrevColWidth = parseFloat( newPrevColWidth.toFixed( 0) );
+				newNextColWidth = parseFloat( newNextColWidth.toFixed( 0 ) );
 
 				$prevCol.css('width', newPrevColWidth + '%');
 				$nextCol.css('width', newNextColWidth + '%');
 
-				$( document ).find( '#everest-forms-row-option-' + $rowId ).find( '.everest-forms-' + $rowId + '-grid_' + prevGridId ).val( parseFloat( newPrevColWidth.toFixed(0) ) );
-				$( document ).find( '#everest-forms-row-option-' + $rowId ).find( '.everest-forms-' + $rowId + '-grid_' + nextGridId ).val( parseFloat( newNextColWidth.toFixed(0) ) );
+				$( document ).find( '#everest-forms-row-option-' + $rowId ).find( '.everest-forms-' + $rowId + '-grid_' + prevGridId ).val( newPrevColWidth );
+				$( document ).find( '#everest-forms-row-option-' + $rowId ).find( '.everest-forms-' + $rowId + '-grid_' + nextGridId ).val( newNextColWidth );
 			});
 
 			$(document).on('mouseup.evfColResize', function () {
