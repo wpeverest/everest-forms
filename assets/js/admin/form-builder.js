@@ -536,14 +536,53 @@
 		$( document ).find( ".everest-forms-col-width-container input[type='number']" ).on( 'change keyup', function() {
 			var $this       = $( this ),
 				value       = parseInt( $this.val(), 10 ),
-				gridId    	= $this.data( 'grid-id' ),
-				rowId    	= $this.data( 'row-id' );
-				nextColContainer = $this.closest( '.everest-forms-col-width-container' ).next( '.everest-forms-col-width-container' );
+				gridId      = $this.data( 'grid-id' ),
+				rowId       = $this.data( 'row-id' ),
+				nextColContainer = $this.closest( '.everest-forms-col-width-container' ).next( '.everest-forms-col-width-container' ),
+				$adminRow = $( document ).find( '.evf-admin-row[data-row-id="' + rowId + '"]' ),
+				gridType = '1';
 
+			if ( $adminRow.find( '.evf-admin-grid' ).hasClass('evf-grid-4' ) ) {
+				gridType = '4';
+			} else if ( $adminRow.find( '.evf-admin-grid' ).hasClass('evf-grid-3' ) ) {
+				gridType = '3';
+			} else if ( $adminRow.find( '.evf-admin-grid' ).hasClass('evf-grid-2' )) {
+				gridType = '2';
+			}
 
-				if ( $( document ).find( '.evf-admin-row[data-row-id="' + rowId + '"]' ).length > 0 && $( document ).find( '.evf-admin-grid[data-grid-id="' + gridId + '"]' ).length > 0 ) {
-					$( document ).find( '.evf-admin-row[data-row-id="' + rowId + '"]' ).find( '.evf-admin-grid[data-grid-id="' + gridId + '"]' ).css( 'width', value + '%' );
+			if ( gridType === '2' ) {
+				if ( nextColContainer.length > 0 ) {
+					let nextColGridId = nextColContainer.find( "input[type='number']" ).data( 'grid-id' );
+					console.log( 'nextColGridId', nextColGridId );
+
+					let nextColWidth = 100 - value;
+					nextColContainer.find( "input[type='number']" ).val( nextColWidth );
+					console.log('nextColGridId', nextColGridId);
+
+					if ( $( document ).find( '.evf-admin-row[data-row-id="' + rowId + '"]' ).length > 0 && $( document ).find( '.evf-admin-grid[data-grid-id="' + nextColGridId + '"]' ).length > 0 ) {
+						$( document ).find( '.evf-admin-row[data-row-id="' + rowId + '"]' ).find( '.evf-admin-grid[data-grid-id="' + nextColGridId + '"]' ).css( 'width', nextColWidth + '%' );
+					}
+
+					if ( $( document ).find( '.evf-admin-row[data-row-id="' + rowId + '"]' ).length > 0 && $( document ).find( '.evf-admin-grid[data-grid-id="' + gridId + '"]' ).length > 0 ) {
+						$( document ).find( '.evf-admin-row[data-row-id="' + rowId + '"]' ).find( '.evf-admin-grid[data-grid-id="' + gridId + '"]' ).css( 'width', value + '%' );
+					}
+				} else {
+					let prevColWidth = 100 - value,
+						$prevContainer = $this.closest( '.everest-forms-col-width-container' ).prev( '.everest-forms-col-width-container' );
+
+					$prevContainer.find( "input[type='number']" ).val( prevColWidth );
+
+					let prevColGridId = $prevContainer.find( "input[type='number']" ).data( 'grid-id' );
+
+					if ( $( document ).find( '.evf-admin-row[data-row-id="' + rowId + '"]' ).length > 0 && $( document ).find( '.evf-admin-grid[data-grid-id="' + prevColGridId + '"]' ).length > 0 ) {
+						$( document ).find( '.evf-admin-row[data-row-id="' + rowId + '"]' ).find( '.evf-admin-grid[data-grid-id="' + prevColGridId + '"]' ).css( 'width', prevColWidth + '%' );
+					}
+
+					if ( $( document ).find( '.evf-admin-row[data-row-id="' + rowId + '"]' ).length > 0 && $( document ).find( '.evf-admin-grid[data-grid-id="' + gridId + '"]' ).length > 0 ) {
+						$( document ).find( '.evf-admin-row[data-row-id="' + rowId + '"]' ).find( '.evf-admin-grid[data-grid-id="' + gridId + '"]' ).css( 'width', value + '%' );
+					}
 				}
+			}
 		});
 
 		$( document ).on('change', '.everest-forms-col-option-auto-width input[type="checkbox"]', function() {
@@ -560,10 +599,15 @@
 						$(this).val(originalWidth);
 						$(this).prop('readonly', true);
 					});
-					$( document ).find( '.evf-admin-row[data-row-id="' + rowId + '"]' ).find( '.evf-admin-grid' ).css( 'width', originalWidth + '%' );
+					let $adminRow = $( document ).find( '.evf-admin-row[data-row-id="' + rowId + '"]' );
+
+					$adminRow.find( '.evf-admin-grid' ).css( 'width', originalWidth + '%' );
+					$adminRow.find( '.evf-col-divider-wrapper' ).hide();
 				} else {
 					$inputEl.each(function() {
-						$(this).prop('readonly', false);
+							let $adminRow = $( document ).find( '.evf-admin-row[data-row-id="' + rowId + '"]' );
+							$(this).prop('readonly', false);
+							$adminRow.find( '.evf-col-divider-wrapper' ).show();
 					});
 				}
 
