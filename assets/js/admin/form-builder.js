@@ -505,6 +505,19 @@
 		}
 	});
 
+	$( document ).find( ".everest-forms-col-width-container input[type='number']" ).on( 'change keyup', function() {
+		var $this       = $( this ),
+			value       = parseInt( $this.val(), 10 ),
+			gridId    	= $this.data( 'grid-id' ),
+			rowId    	= $this.data( 'row-id' );
+			nextColContainer = $this.closest( '.everest-forms-col-width-container' ).next( '.everest-forms-col-width-container' );
+
+
+			if ( $( document ).find( '.evf-admin-row[data-row-id="' + rowId + '"]' ).length > 0 && $( document ).find( '.evf-admin-grid[data-grid-id="' + gridId + '"]' ).length > 0 ) {
+				$( document ).find( '.evf-admin-row[data-row-id="' + rowId + '"]' ).find( '.evf-admin-grid[data-grid-id="' + gridId + '"]' ).css( 'width', value + '%' );
+			}
+	});
+
 
 		},
 
