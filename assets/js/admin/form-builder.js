@@ -2465,7 +2465,10 @@
 		 * @since xx.xx.xx
 		 */
 		bindApplyGrid: function ( $el, grid_id = '' ){
-			var $this_single_row = $el.closest('.evf-admin-row');
+			var $this_single_row = $el.closest('.evf-admin-row'),
+				row_id = $this_single_row.attr('data-row-id');
+			console.log('this_single_row', $this_single_row);
+
 			if ( '' === grid_id ) {
 				if ( $el.hasClass('active') ) {
 					return;
@@ -2488,12 +2491,29 @@
 		 		});
 		 		$this_single_row.find('.evf-admin-grid').remove();
 		 		$this_single_row.find('.evf-clear ').remove();
+				 $this_single_row.find('.evf-col-divider-wrapper').remove();
 		 		$this_single_row.append('<div class="clear evf-clear"></div>');
 
-		 		for ( var $grid_number = 1; $grid_number <= grid_id; $grid_number++ ) {
-		 			grid_node.attr('data-grid-id', $grid_number);
-		 			$this_single_row.append(grid_node.clone());
-		 		}
+				for ( var $grid_number = 1; $grid_number <= grid_id; $grid_number++ ) {
+					grid_node.attr('data-grid-id', $grid_number);
+					var grid_node_clone = grid_node.clone();
+
+					$this_single_row.append(grid_node_clone);
+
+					if ( $grid_number !== grid_id ) {
+						var dividerHTML = `
+							<div class="evf-col-divider-wrapper">
+								<div class="evf-col-divider" data-row-id="row_${ row_id }"">
+									<svg width="6" height="32" viewBox="0 0 6 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path d="M5 0H4.5V32H5H5.5V0H5ZM1 32H1.5V0H1H0.5V32H1Z" fill="#999999"/>
+									</svg>
+								</div>
+							</div>
+						`;
+
+						grid_node_clone.after(dividerHTML);
+					}
+				}
 
 		 		$this_single_row.append('<div class="clear evf-clear"></div>');
 		 		$this_single_row.find('.evf-admin-grid').eq(0).append(grids.html());
