@@ -532,7 +532,7 @@
 			}
 		});
 
-		$( document ).find( ".everest-forms-col-width-container input[type='number']" ).on( 'change keyup', function() {
+		$( document ).on( 'change keyup', '.everest-forms-col-width-container input[type="number"]', function() {
 			var $this       = $( this ),
 				value       = parseInt( $this.val(), 10 ),
 				gridId      = $this.data( 'grid-id' ),
@@ -599,6 +599,8 @@
 						$this.val($this.data('last-valid') || value);
 						return;
 					}
+
+					nextColWidth = parseFloat( nextColWidth.toFixed( 0 ) );
 
 					$this.data('last-valid', value);
 
