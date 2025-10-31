@@ -193,6 +193,8 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 		$form_id   = absint( $form_data['id'] );
 		$fields    = isset( $form_data['form_fields'] ) ? $form_data['form_fields'] : array();
 		$structure = isset( $form_data['structure'] ) ? $form_data['structure'] : array( 'row_1' => array() );
+		$col_width_lists = isset( $form_data['settings']['col_width_lists'] ) ? $form_data['settings']['col_width_lists'] : array();
+
 		$row_ids   = array_map(
 			function ( $row_id ) {
 				return str_replace( 'row_', '', $row_id );
@@ -348,7 +350,10 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 
 			$grid_class = 'evf-admin-grid evf-grid-' . ( $active_grid );
 			for ( $grid_start = 1; $grid_start <= $active_grid; $grid_start++ ) {
-				echo '<div class="' . esc_attr( $grid_class ) . ' " data-grid-id="' . absint( $grid_start ) . '">';
+				$has_width 	  = isset( $col_width_lists[ $row_id ][ 'grid_' . $grid_start ] );
+				$inline_style = 'style="max-width:' . ( $has_width ? esc_attr( $col_width_lists[ $row_id ][ 'grid_' .$grid_start ] ) : ( 100 / $active_grid ) ) . '%; flex-basis:auto; width:100%;"';
+
+				echo '<div class="' . esc_attr( $grid_class ) . ' " data-grid-id="' . absint( $grid_start ) . '"' . $inline_style . '>';
 				$grid_fields    = isset( $row_grid[ 'grid_' . $grid_start ] ) && is_array( $row_grid[ 'grid_' . $grid_start ] ) ? $row_grid[ 'grid_' . $grid_start ] : ( isset( $this->form_data['settings']['recaptcha_support'] ) && '1' === $this->form_data['settings']['recaptcha_support'] ? array(
 					'IWX5HFxv2j-18',
 				) : array() );
