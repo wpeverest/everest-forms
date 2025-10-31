@@ -2424,7 +2424,8 @@
 							action: 'everest_forms_new_row',
 							security: evf_data.evf_add_row_nonce,
 							form_id: evf_data.form_id,
-							row_id: row_id
+							row_id: row_id,
+							col_id: $el.data( 'col_num')
 						},
 						success: function( xhr ) {
 							if( true === xhr.success ) {
