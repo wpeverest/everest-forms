@@ -457,7 +457,6 @@
 
 					if (newPrevColWidth + newNextColWidth + thirdWidth !== 100 && newNextColWidth !== 10 ) {
 						newNextColWidth = 100 - thirdWidth - newPrevColWidth;
-						console.log(newNextColWidth, 'Change');
 					}
 
 					newPrevColWidth = parseFloat( newPrevColWidth.toFixed( 0) );
@@ -553,11 +552,8 @@
 			if ( gridType === '2' ) {
 				if ( nextColContainer.length > 0 ) {
 					let nextColGridId = nextColContainer.find( "input[type='number']" ).data( 'grid-id' );
-					console.log( 'nextColGridId', nextColGridId );
-
 					let nextColWidth = 100 - value;
 					nextColContainer.find( "input[type='number']" ).val( nextColWidth );
-					console.log('nextColGridId', nextColGridId);
 
 					if ( $( document ).find( '.evf-admin-row[data-row-id="' + rowId + '"]' ).length > 0 && $( document ).find( '.evf-admin-grid[data-grid-id="' + nextColGridId + '"]' ).length > 0 ) {
 						$( document ).find( '.evf-admin-row[data-row-id="' + rowId + '"]' ).find( '.evf-admin-grid[data-grid-id="' + nextColGridId + '"]' ).css( 'width', nextColWidth + '%' );
@@ -618,12 +614,13 @@
 
 				} else {
 					let prevColWidth = 0,
-						$prevContainer = $this.closest('.everest-forms-col-width-container').prev('.everest-forms-col-width-container');
+						$prevContainer = $this.closest('.everest-forms-col-width-container').prev('.everest-forms-col-width-container'),
+						prevGridId = $prevContainer.find("input[type='number']").data('grid-id');
 
 					$adminRow.find('.evf-admin-grid').each(function() {
 						let $col = $(this);
 						let $orgGridId = $col.data('grid-id');
-						if ($orgGridId !== gridId) {
+						if ( $orgGridId !== gridId && $orgGridId !== prevGridId ) {
 							let colWidth = $col[0].style.width ? parseFloat($col[0].style.width) : 33.33;
 							prevColWidth += colWidth;
 						}
@@ -632,12 +629,13 @@
 					prevColWidth = 100 - value - prevColWidth;
 
 					if (prevColWidth < 10) {
-						console.warn('Previous column width too small — ignoring change.');
 						$this.val($this.data('last-valid') || value);
 						return;
 					}
 
 					$this.data('last-valid', value);
+
+					prevColWidth = parseFloat( prevColWidth.toFixed( 0 ) );
 
 					$prevContainer.find("input[type='number']").val(prevColWidth);
 					let prevColGridId = $prevContainer.find("input[type='number']").data('grid-id');
@@ -682,12 +680,13 @@
 						.css('width', value + '%');
 				} else {
 					let prevColWidth = 0,
-						$prevContainer = $this.closest('.everest-forms-col-width-container').prev('.everest-forms-col-width-container');
+						$prevContainer = $this.closest('.everest-forms-col-width-container').prev('.everest-forms-col-width-container'),
+						prevGridId = $prevContainer.find("input[type='number']").data('grid-id');
 
 					$adminRow.find('.evf-admin-grid').each(function() {
 						let $col = $(this);
 						let $orgGridId = $col.data('grid-id');
-						if ($orgGridId !== gridId) {
+						if ( $orgGridId !== gridId && $orgGridId !== prevGridId ) {
 							let colWidth = $col[0].style.width ? parseFloat($col[0].style.width) : 25;
 							prevColWidth += colWidth;
 						}
@@ -696,10 +695,11 @@
 					prevColWidth = 100 - value - prevColWidth;
 
 					if (prevColWidth < 10) {
-						console.warn('Previous column width too small — ignoring change.');
 						$this.val($this.data('last-valid') || value);
 						return;
 					}
+
+					prevColWidth = parseFloat( prevColWidth.toFixed( 0 ) );
 
 					$this.data('last-valid', value);
 
@@ -2362,10 +2362,6 @@
 		 */
 		bindAddNewRowV2: function( $el, isAddRow = '', response = '' ) {
 			$( '#add-fields').trigger( 'click' );
-			console.log('bindAddNewRowV2');
-
-			console.log($el);
-
 				var $this        = $el,
 					wrapper      = $( '.evf-admin-field-wrapper' ),
 					row_ids      = $( '.evf-admin-row' ).map( function() {
@@ -2476,7 +2472,6 @@
 				}
 				var grid_id = parseInt( $el.attr( 'data-evf-grid' ), 10 );
 			}
-				console.log($this_single_row);
 
 				var max_number_of_grid = 4;
 		 		if ( grid_id > max_number_of_grid ) {
@@ -2496,15 +2491,10 @@
 		 		$this_single_row.append('<div class="clear evf-clear"></div>');
 
 		 		for ( var $grid_number = 1; $grid_number <= grid_id; $grid_number++ ) {
-
-					console.log('inside');
-					console.log($grid_number);
-
-
 		 			grid_node.attr('data-grid-id', $grid_number);
 		 			$this_single_row.append(grid_node.clone());
-
 		 		}
+
 		 		$this_single_row.append('<div class="clear evf-clear"></div>');
 		 		$this_single_row.find('.evf-admin-grid').eq(0).append(grids.html());
 		 		$this_single_row.find('.evf-grid-selector').removeClass('active');
@@ -3413,12 +3403,9 @@
 					EVFPanelBuilder.checkEmptyGrid();
 				},
 				receive: function( event, ui ) {
-					console.log('recieved');
 					var $el = $( this );
 
 					if ( ui.sender.is( 'button' ) ) {
-						console.log('fieldDrop');
-
 						EVFPanelBuilder.fieldDrop( ui.helper, $el );
 					}
 				},
