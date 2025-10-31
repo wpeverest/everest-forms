@@ -189,11 +189,12 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 	 * Outputs fields preview content.
 	 */
 	public function output_fields_preview() {
-		$form_data = $this->form_data;
-		$form_id   = absint( $form_data['id'] );
-		$fields    = isset( $form_data['form_fields'] ) ? $form_data['form_fields'] : array();
-		$structure = isset( $form_data['structure'] ) ? $form_data['structure'] : array( 'row_1' => array() );
+		$form_data 		 = $this->form_data;
+		$form_id   		 = absint( $form_data['id'] );
+		$fields    		 = isset( $form_data['form_fields'] ) ? $form_data['form_fields'] : array();
+		$structure 		 = isset( $form_data['structure'] ) ? $form_data['structure'] : array( 'row_1' => array() );
 		$col_width_lists = isset( $form_data['settings']['col_width_lists'] ) ? $form_data['settings']['col_width_lists'] : array();
+		$auto_width_lists = isset( $form_data['settings']['auto_width'] ) ? $form_data['settings']['auto_width'] : array();
 
 		$row_ids   = array_map(
 			function ( $row_id ) {
@@ -377,7 +378,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 				echo '</div>';
 
 				if ( $grid_start != $active_grid ) {
-					echo '<div class="evf-col-divider-wrapper">';
+					echo '<div class="evf-col-divider-wrapper" ' . ( isset( $auto_width_lists[ $row_id ] ) ? "style='display:none;'" : '' ) . '>';
 					echo '<div class="evf-col-divider" data-row-id="' .  esc_attr( $row_id ) . '">';
 					echo '<svg width="6" height="32" viewBox="0 0 6 32" fill="none" xmlns="http://www.w3.org/2000/svg">
 						<path d="M5 0H4.5V32H5H5.5V0H5ZM1 32H1.5V0H1H0.5V32H1Z" fill="#999999"/>
