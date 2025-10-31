@@ -2468,9 +2468,15 @@
 		 * @since xx.xx.xx
 		 */
 		bindApplyGrid: function ( $el, grid_id = '' ){
-			var $this_single_row = $el.closest('.evf-admin-row'),
+			var $this_single_row;
+			var row_id = '';
+			if ( $el.hasClass( 'everest-forms-col-option-grid-item' ) ) {
+				row_id = $el.attr( 'data-row-id' );
+				$this_single_row = $( document ).find( '.evf-admin-row[data-row-id="' + row_id + '"]' );
+			}else{
+				$this_single_row = $el.closest('.evf-admin-row');
 				row_id = $this_single_row.attr('data-row-id');
-
+			}
 
 			if ( '' === grid_id ) {
 				if ( $el.hasClass('active') ) {
@@ -2478,6 +2484,8 @@
 				}
 				var grid_id = parseInt( $el.attr( 'data-evf-grid' ), 10 );
 
+				EVFPanelBuilder.bindRowSettings( row_id, grid_id, $el );
+			}else{
 				EVFPanelBuilder.bindRowSettings( row_id, grid_id, $el );
 			}
 
@@ -2522,8 +2530,10 @@
 
 		 		$this_single_row.append('<div class="clear evf-clear"></div>');
 		 		$this_single_row.find('.evf-admin-grid').eq(0).append(grids.html());
-		 		$this_single_row.find('.evf-grid-selector').removeClass('active');
-		 		$(this).addClass('active');
+				if ( ! $el.hasClass( 'everest-forms-col-option-grid-item' ) ) {
+					$this_single_row.find('.evf-grid-selector').removeClass('active');
+					$el.addClass('active');
+				}
 		 		EVFPanelBuilder.bindFields();
 		},
 		/**
@@ -3618,7 +3628,7 @@
 		 		EVFPanelBuilder.checkEmptyGrid();
 		 		$('.evf-show-grid').closest('.evf-toggle-row').find('.evf-toggle-row-content').stop(true).slideUp(200);
 		 	});
-		 	$('body').on('click', '.evf-grid-selector', function () {
+		 	$( document ).on( 'click', '.evf-grid-selector', function () {
 		 		EVFPanelBuilder.bindApplyGrid( $( this ) );
 		 	});
 		},
