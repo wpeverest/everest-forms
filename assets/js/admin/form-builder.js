@@ -2468,13 +2468,15 @@
 		bindApplyGrid: function ( $el, grid_id = '' ){
 			var $this_single_row = $el.closest('.evf-admin-row'),
 				row_id = $this_single_row.attr('data-row-id');
-			console.log('this_single_row', $this_single_row);
+
 
 			if ( '' === grid_id ) {
 				if ( $el.hasClass('active') ) {
 					return;
 				}
 				var grid_id = parseInt( $el.attr( 'data-evf-grid' ), 10 );
+
+				EVFPanelBuilder.bindRowSettings( row_id, grid_id, $el );
 			}
 
 				var max_number_of_grid = 4;
@@ -2521,6 +2523,41 @@
 		 		$this_single_row.find('.evf-grid-selector').removeClass('active');
 		 		$(this).addClass('active');
 		 		EVFPanelBuilder.bindFields();
+		},
+		/**
+		 * Append row settings based on grid number.
+		 *
+		 * @since xx.xx.xx
+		 */
+		bindRowSettings: function( row_id, grid_id, $el ){
+			var $rowSettingsWrapper = $( document ).find( '#everest-forms-row-option-row_' + row_id ),
+				colWidthColOuterContainer = $rowSettingsWrapper.find( '.everest-forms-col-width-outer-container-wrapper' ),
+				firstColWidthContainer = $rowSettingsWrapper.find( '.everest-forms-col-width-container' );
+				colWidthClone = firstColWidthContainer.eq( 0 ).clone(),
+				autoWidthColInput = $rowSettingsWrapper.find( '.everest-forms-col-option-auto-width input[type="checkbox"]' );
+
+				colWidthColOuterContainer.empty();
+
+				for (let i = 1; i <= grid_id; i++) {
+					let $newCol = colWidthClone.clone(),
+						colWidthLabel = 'Column ' + i,
+						colWidthInput = Math.floor(100 / grid_id);
+
+					autoWidthColInput.prop( 'checked', true );
+					autoWidthColInput.data( 'original-col-width', colWidthInput);
+
+					$newCol.find('.everest-forms-col-width-container-title').text(colWidthLabel);
+
+					let $input = $newCol.find('input');
+					$input.attr('name', 'settings[col_width_lists][row_' + row_id + '][grid_' + i + ']')
+						.attr('class', 'widefat everest-forms-row_' + row_id + '-grid_' + i)
+						.attr('data-row-id', row_id)
+						.attr('data-grid-id', i)
+						.attr( 'readonly', true )
+						.val(colWidthInput);
+
+					colWidthColOuterContainer.append($newCol);
+				}
 		},
 		bindCloneField: function () {
 			$( 'body' ).on( 'click', '.everest-forms-preview .everest-forms-field .everest-forms-field-duplicate', function() {
