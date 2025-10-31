@@ -351,7 +351,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 			$grid_class = 'evf-admin-grid evf-grid-' . ( $active_grid );
 			for ( $grid_start = 1; $grid_start <= $active_grid; $grid_start++ ) {
 				$has_width 	  = isset( $col_width_lists[ $row_id ][ 'grid_' . $grid_start ] );
-				$inline_style = 'style="max-width:' . ( $has_width ? esc_attr( $col_width_lists[ $row_id ][ 'grid_' .$grid_start ] ) : ( 100 / $active_grid ) ) . '%; flex-basis:auto; width:100%;"';
+				$inline_style = 'style="width:' . ( $has_width ? esc_attr( $col_width_lists[ $row_id ][ 'grid_' .$grid_start ] ) : ( 100 / $active_grid ) ) . '%; flex-basis:auto;"';
 
 				echo '<div class="' . esc_attr( $grid_class ) . ' " data-grid-id="' . absint( $grid_start ) . '"' . $inline_style . '>';
 				$grid_fields    = isset( $row_grid[ 'grid_' . $grid_start ] ) && is_array( $row_grid[ 'grid_' . $grid_start ] ) ? $row_grid[ 'grid_' . $grid_start ] : ( isset( $this->form_data['settings']['recaptcha_support'] ) && '1' === $this->form_data['settings']['recaptcha_support'] ? array(
