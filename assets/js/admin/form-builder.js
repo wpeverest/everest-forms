@@ -4603,6 +4603,21 @@ jQuery( function ( $ ) {
 			$( this ).find( '.everest-forms-field-option-group-inner' ).hide();
 		});
 	});
+
+	// Row Options - Open/close.
+	$( document.body ).on( 'click', '.everest-forms-col-option-group > a', function( event ) {
+		event.preventDefault();
+		$( this ).parent( '.everest-forms-col-option-group' ).toggleClass( 'closed' ).toggleClass( 'open' );
+		$( '.everest-forms-col-option-group.closed' ).each( function() {
+			$( this ).find( '.everest-forms-col-option-group-inner' ).hide();
+		});
+	});
+
+	$( document.body ).on( 'click', '.everest-forms-col-option-group > a', function( event ) {
+		event.preventDefault();
+		$( this ).next( '.everest-forms-col-option-group-inner' ).stop().slideToggle();
+	});
+
 	$( document.body ).on( 'click', '.everest-forms-field-option .everest-forms-field-option-group a', function( event ) {
 		// If the user clicks on some form input inside, the box should not be toggled.
 		if ( $( event.target ).filter( ':input, option, .sort' ).length ) {
