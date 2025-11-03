@@ -4605,18 +4605,21 @@ jQuery( function ( $ ) {
 	});
 
 	// Row Options - Open/close.
-	$( document.body ).on( 'click', '.everest-forms-col-option-group > a', function( event ) {
+	$(document).on('click', '.everest-forms-col-option-group > a', function (event) {
 		event.preventDefault();
-		$( this ).parent( '.everest-forms-col-option-group' ).toggleClass( 'closed' ).toggleClass( 'open' );
-		$( '.everest-forms-col-option-group.closed' ).each( function() {
-			$( this ).find( '.everest-forms-col-option-group-inner' ).hide();
-		});
+
+		const $group = $(this).closest('.everest-forms-col-option-group');
+		const $inner = $group.find('.everest-forms-col-option-group-inner');
+		
+		$group.toggleClass('closed open');
+
+		if ($group.hasClass('closed')) {
+			$inner.stop(true, true).slideUp(200);
+		} else {
+			$inner.stop(true, true).slideDown(200);
+		}
 	});
 
-	$( document.body ).on( 'click', '.everest-forms-col-option-group > a', function( event ) {
-		event.preventDefault();
-		$( this ).next( '.everest-forms-col-option-group-inner' ).stop().slideToggle();
-	});
 
 	$( document.body ).on( 'click', '.everest-forms-field-option .everest-forms-field-option-group a', function( event ) {
 		// If the user clicks on some form input inside, the box should not be toggled.
