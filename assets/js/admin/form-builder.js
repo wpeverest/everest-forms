@@ -2136,8 +2136,10 @@
 		 		$this_single_row.find('.evf-admin-grid').eq(0).append(grids.html());
 				if ( ! $el.hasClass( 'everest-forms-col-option-grid-item' ) ) {
 					$this_single_row.find('.evf-grid-selector').removeClass('active');
-					$el.addClass('active');
+				}else{
+					$el.siblings( '.everest-forms-col-option-grid-item' ).removeClass( 'active' );
 				}
+				$el.addClass('active');
 		 		EVFPanelBuilder.bindFields();
 		},
 		/**
