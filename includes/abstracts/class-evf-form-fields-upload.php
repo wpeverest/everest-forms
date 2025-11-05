@@ -1387,7 +1387,12 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 		// Data for no media case.
 		$file_ext              = pathinfo( $file['name'], PATHINFO_EXTENSION );
 		$file_base             = wp_basename( $file['name'], ".$file_ext" );
-		$file['file_name_new'] = sprintf( '%s-%s.%s', $file_base, wp_hash( $dir['path'] . $this->form_data['id'] . $this->field_id ), strtolower( $file_ext ) );
+		$file['file_name_new'] = apply_filters(
+			'everest_forms_modify_file_name',
+			sprintf('%s-%s.%s', $file_base, wp_hash($dir['path'] . $this->form_data['id'] . $this->field_id), strtolower($file_ext)),
+			$file_base,
+			$file_ext
+		);
 		$file['file_name_new'] = wp_unique_filename( trailingslashit( $dir['path'] ), sanitize_file_name( $file['file_name_new'] ) );
 		$file['file_url']      = trailingslashit( $dir['url'] ) . $file['file_name_new'];
 		$file['path']          = trailingslashit( $dir['path'] ) . $file['file_name_new'];
