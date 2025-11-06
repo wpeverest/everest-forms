@@ -3475,7 +3475,7 @@ p.search-box {
 					transition:
 						0.5s border,
 						0.5s background-color;
-					padding: 32px;
+					padding: 32px 0;
 					gap: 32px;
 
 					&:last-child {
@@ -3495,6 +3495,7 @@ p.search-box {
 						z-index: 9999;
 						border-radius: 6px;
 						transform: translateX( -50% );
+						// border: 1px solid ;
 
 						.evf-duplicate-row,
 						.evf-show-grid,

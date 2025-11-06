@@ -2008,9 +2008,7 @@
 
 					row_clone.find( 'div' ).hide();
 
-					row_clone.css({
-						'padding': '40px'
-					}).append( '<i class="spinner is-active" style="margin:0px auto;"></i>' );
+					row_clone.append( '<i class="spinner is-active" style="margin:0px auto;"></i>' );
 
 					if ( 'yes' === isAddRow ) {
 						row_clone.find( '.evf-admin-grid').first().append( response.data.preview );
@@ -2050,7 +2048,7 @@
 							}
 						}
 					}).always( function() {
-						row_clone.css( {'padding':0 } );
+						// row_clone.css( {'padding':0 } );
 
 						row_clone.find( 'div' ).show();
 
