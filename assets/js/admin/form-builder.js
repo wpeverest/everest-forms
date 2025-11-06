@@ -73,7 +73,9 @@
 
 				$( document ).on( 'click', '.evf-admin-row ', function( e ){
 					e.stopPropagation();
-					var row_id = $( this ).attr( 'data-row-id' );
+					var row_id = $( this ).attr( 'data-row-id' ),
+						gridCount = $( this ).find( '.evf-admin-grid' ).length;
+
 					$( '.everest-forms-row-options .everest-forms-row-option' ).each( function() {
 						$( this ).hide();
 					});
@@ -85,6 +87,10 @@
 					$( '.everest-forms-field-options, .everest-forms-multi-part-options' ).hide();
 					$( '.everest-forms-row-options' ).show();
 					$( document ).find( '.everest-forms-row-options #everest-forms-row-option-row_' + row_id ).show();
+					$( document ).find( '.everest-forms-row-options #everest-forms-row-option-row_' + row_id ).find( '.everest-forms-col-option-grid-item').removeClass( 'active' );
+					$( document ).find( '.everest-forms-row-options #everest-forms-row-option-row_' + row_id ).find( '.everest-forms-col-option-grid-item[data-evf-grid="' + gridCount +'"]').addClass( 'active' );
+
+
 					$( '#row-options' ).show().trigger( 'click' ).addClass( 'active' );
 				});
 		 	});
