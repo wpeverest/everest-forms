@@ -2117,7 +2117,7 @@
 					$elArray.push({ ['grid_' + nGridId]: gridChildren });
 					nGridId++;
 				});
-				
+
 		 		$this_single_row.find('.evf-admin-grid').remove();
 		 		$this_single_row.find('.evf-clear ').remove();
 				 $this_single_row.find('.evf-col-divider-wrapper').remove();
@@ -2169,6 +2169,8 @@
 					$this_single_row.find('.evf-grid-selector').removeClass('active');
 				}else{
 					$el.siblings( '.everest-forms-col-option-grid-item' ).removeClass( 'active' );
+					$( document ).find( '.evf-admin-row[data-row-id="' + row_id + '"]' ).find( '.evf-grid-selector' ).removeClass( 'active' );
+					$( document ).find( '.evf-admin-row[data-row-id="' + row_id + '"]' ).find( '.evf-grid-selector[data-evf-grid="' + grid_id +'"]' ).addClass( 'active' );
 				}
 				$el.addClass('active');
 		 		EVFPanelBuilder.bindFields();
