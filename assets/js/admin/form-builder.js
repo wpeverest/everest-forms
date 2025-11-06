@@ -359,6 +359,51 @@
 			});
 
 		});
+
+		$( document ).on( "click", '.everest-forms-col-width-container-delete' , function( e ){
+			e.stopPropagation();
+
+			var $el = $( this ),
+				row_id = $el.data( 'row-id'),
+				grid_id = $el.data( 'grid-id' ),
+				$row_wrapper = $( document ).find( '.evf-admin-row[data-row-id="' + row_id +'"' ),
+				grid_count = 1;
+
+			$.confirm({
+				title: false,
+				content: evf_data.i18n_delete_field_confirm,
+				type: 'red',
+				closeIcon: false,
+				backgroundDismiss: false,
+				icon: 'dashicons dashicons-warning',
+				buttons: {
+					confirm: {
+						text: evf_data.i18n_ok,
+						btnClass: 'btn-confirm',
+						keys: ['enter'],
+						action: function () {
+								if ( $row_wrapper.find( '.evf-admin-grid' ).hasClass( 'evf-grid-4') ) {
+									grid_count = 4;
+								}else if( $row_wrapper.find( '.evf-admin-grid' ).hasClass( 'evf-grid-3') ){
+									grid_count = 3;
+								}else if( $row_wrapper.find( '.evf-admin-grid' ).hasClass( 'evf-grid-2') ){
+									grid_count = 2;
+								}
+								gridSelectorEl = $(document).find( '.everest-forms-col-option-grid-item[data-evf-grid="' + ( grid_count - 1 ) + '"][data-row-id="' + row_id + '"]' );
+
+								EVFPanelBuilder.bindApplyGrid( gridSelectorEl, ( grid_count-1 ) );
+						}
+					},
+					cancel: {
+						text: evf_data.i18n_cancel,
+						action: function () {
+							
+						}
+					}
+				}
+			} );
+		});
+
 		},
 
 		/**
@@ -2173,6 +2218,7 @@
 					$( document ).find( '.evf-admin-row[data-row-id="' + row_id + '"]' ).find( '.evf-grid-selector[data-evf-grid="' + grid_id +'"]' ).addClass( 'active' );
 				}
 				$el.addClass('active');
+				$( document ).trigger( 'click' );
 		 		EVFPanelBuilder.bindFields();
 		},
 		/**
@@ -2183,7 +2229,7 @@
 		bindRowSettings: function( row_id, grid_id, $el ){
 			var $rowSettingsWrapper = $( document ).find( '#everest-forms-row-option-row_' + row_id ),
 				colWidthColOuterContainer = $rowSettingsWrapper.find( '.everest-forms-col-width-outer-container-wrapper' ),
-				firstColWidthContainer = $rowSettingsWrapper.find( '.everest-forms-col-width-container' );
+				firstColWidthContainer = $rowSettingsWrapper.find( '.everest-forms-col-width-container' ),
 				colWidthClone = firstColWidthContainer.eq( 0 ).clone(),
 				autoWidthColInput = $rowSettingsWrapper.find( '.everest-forms-col-option-auto-width input[type="checkbox"]' );
 
@@ -2197,7 +2243,7 @@
 					autoWidthColInput.prop( 'checked', true );
 					autoWidthColInput.data( 'original-col-width', colWidthInput);
 
-					$newCol.find('.everest-forms-col-width-container-title').text(colWidthLabel);
+					$newCol.find('.everest-forms-col-width-container-title span').text(colWidthLabel);
 
 					let $input = $newCol.find('input');
 					$input.attr('name', 'settings[col_width_lists][row_' + row_id + '][grid_' + i + ']')
