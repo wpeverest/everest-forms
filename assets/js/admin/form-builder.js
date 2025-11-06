@@ -2090,7 +2090,7 @@
 				if ( $el.hasClass('active') ) {
 					return;
 				}
-				var grid_id = parseInt( $el.attr( 'data-evf-grid' ), 10 );
+				grid_id = parseInt( $el.attr( 'data-evf-grid' ), 10 );
 
 				EVFPanelBuilder.bindRowSettings( row_id, grid_id, $el );
 			}else{
@@ -2103,41 +2103,68 @@
 		 		}
 
 		 		var grid_node = $('<div class="evf-admin-grid evf-grid-' + grid_id + ' ui-sortable evf-empty-grid" />');
-		 		var grids = $('<div/>');
+		 		// var grids = $('<div/>');
 
-		 		$.each($this_single_row.find('.evf-admin-grid'), function () {
-		 			$(this).children('*').each(function () {
-						grids.append($(this).clone());  // "this" is the current element in the loop
+				var $elArray = [],
+					nGridId = 1;
+
+				$.each($this_single_row.find('.evf-admin-grid'), function () {
+					 var gridChildren = [];
+					$(this).children('*').each(function () {
+						gridChildren.push($(this).clone());
+						// grids.append($(this).clone());  // "this" is the current element in the loop
 					});
-		 		});
+					$elArray.push({ ['grid_' + nGridId]: gridChildren });
+					nGridId++;
+				});
+				
 		 		$this_single_row.find('.evf-admin-grid').remove();
 		 		$this_single_row.find('.evf-clear ').remove();
 				 $this_single_row.find('.evf-col-divider-wrapper').remove();
 		 		$this_single_row.append('<div class="clear evf-clear"></div>');
 
 				for ( var $grid_number = 1; $grid_number <= grid_id; $grid_number++ ) {
-					grid_node.attr('data-grid-id', $grid_number);
 					var grid_node_clone = grid_node.clone();
+					grid_node_clone
+						.addClass('evf-grid-' + grid_id)
+						.attr('data-grid-id', $grid_number);
+
+					var gridData = $elArray[$grid_number - 1];
+					if (gridData && gridData['grid_' + $grid_number]) {
+						gridData['grid_' + $grid_number].forEach(function ($child) {
+							grid_node_clone.append($child);
+						});
+					}
+
+					if ($grid_number === grid_id) {
+						for (var extra = grid_id + 1; extra <= max_number_of_grid; extra++) {
+							var extraGrid = $elArray[extra - 1];
+							if (extraGrid && extraGrid['grid_' + extra]) {
+								extraGrid['grid_' + extra].forEach(function ($child) {
+									grid_node_clone.append($child);
+								});
+							}
+						}
+					}
 
 					$this_single_row.append(grid_node_clone);
 
 					if ( $grid_number !== grid_id ) {
 						var dividerHTML = `
 							<div class="evf-col-divider-wrapper">
-								<div class="evf-col-divider" data-row-id="row_${ row_id }"">
+								<div class="evf-col-divider" data-row-id="row_${row_id}">
 									<svg width="6" height="32" viewBox="0 0 6 32" fill="none" xmlns="http://www.w3.org/2000/svg">
 										<path d="M5 0H4.5V32H5H5.5V0H5ZM1 32H1.5V0H1H0.5V32H1Z" fill="#999999"/>
 									</svg>
 								</div>
 							</div>
 						`;
-
 						grid_node_clone.after(dividerHTML);
 					}
 				}
 
 		 		$this_single_row.append('<div class="clear evf-clear"></div>');
-		 		$this_single_row.find('.evf-admin-grid').eq(0).append(grids.html());
+		 		// $this_single_row.find('.evf-admin-grid').eq(0).append(grids.html());
 				if ( ! $el.hasClass( 'everest-forms-col-option-grid-item' ) ) {
 					$this_single_row.find('.evf-grid-selector').removeClass('active');
 				}else{
