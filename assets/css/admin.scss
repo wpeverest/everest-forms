@@ -3021,15 +3021,14 @@ p.search-box {
 								&-advanced,
 								&-conditionals,
 								&-calculations,
-								&-quiz,
-								&-group {
+								&-quiz {
 									// background: #fbfbfd;
 									background: $color-white;
 									border: 1px solid #e1e1e1;
 									border-radius: 2px;
 									margin-bottom: 16px;
 
-									.everest-forms-field-option-group-toggle, .everest-forms-save-option-group-toggle {
+									.everest-forms-field-option-group-toggle {
 										padding: 16px 14px;
 										border-bottom: 0;
 									}
@@ -3085,19 +3084,27 @@ p.search-box {
 							}
 						}
 
+						.everest-forms-save-option-group-toggle{
+							padding: 16px 14px;
+						}
 						.everest-forms-field-option-group-toggle, .everest-forms-save-option-group-toggle {
 							background-color: $color_gray-light-skin;
 							border-bottom: 1px solid $color_gray-lighten;
-							padding: 15px 0;
 							font-size: 14px;
 							font-weight: 600;
 							display: block;
 							color: $color_gray-dark;
 						}
 
+						.everest-forms-field-option-group-toggle{
+							padding: 15px 0;
+						}
+
 						.everest-forms-field-option-group-inner, .everest-forms-save-option-group-inner {
 							padding: 16px;
 							background: #f6f7f9;
+
+
 						}
 					}
 
@@ -4690,7 +4697,7 @@ p.search-box {
 			.everest-forms-field-option-payment-multiple,
 			.everest-forms-field-option-payment-subscription-plan,
 			.everest-forms-field-option-payment-checkbox {
-				.everest-forms-field-option-row {
+				.everest-forms-field-option-row  {
 					li {
 						input[type="text"] {
 							width: 65%;
@@ -4933,9 +4940,8 @@ p.search-box {
 								border-radius: 4px;
 								border-color: #7545BB;
 								background: #7545BB;
-								.button{
-
-								}
+								text-align: center;
+								cursor: pointer;
 							}
 						}
 					}
@@ -12144,5 +12150,44 @@ button#show-settings-link {
 		padding: 22px 22px 0 22px;
 		background-color: #fcfcfd;
 		border: 1px solid #f4f4f4;
+	}
+}
+
+.everest-forms-submit-button{
+	&-outer-wrapper{
+		display: flex;
+		flex-direction: column;
+		gap: 3px;
+
+		.everest-forms-submit-button-title-wrapper{
+			span{
+				color: #222222;
+				font-size: 15px;
+				font-weight: 500;
+				line-height: 140%;
+			}
+		}
+
+	}
+	&-inner-wrapper{
+		display: flex;
+		gap: 10px;
+	}
+	&-inner-items{
+		background: #ffff;
+		padding: 8px;
+		cursor: pointer;
+		border-radius: 5px;
+
+		&.active{
+			border: 1px solid $evf_primary-color;
+		}
+
+		.everest-forms-submit-button-item-title{
+			span{
+				font-size: 13px;
+				font-weight: 400;
+			}
+		}
 	}
 }

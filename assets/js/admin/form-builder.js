@@ -404,12 +404,32 @@
 			} );
 		});
 
-		$(document).on('click', '.evf-submit-btn.button', function(e) {
+		$(document).on('click', '.evf-submit-btn', function(e) {
 			e.preventDefault();
 			$( document ).find( '.evf-submit-settings, .everest-forms-save-option, .everest-forms-submit-options' ).show();
 			$( document ).find( '.everest-forms-fields-tab > a' ).removeClass( 'active' );
 			$( document ).find( '.evf-submit-settings' ).addClass( 'active' );
 			$( document ).find( '#field-options, .everest-forms-add-fields, .everest-forms-field-options' ).hide();
+		});
+
+		$( document ).on( 'click', '.everest-forms-submit-button-inner-items', function( e ){
+			e.stopPropagation();
+
+			$( document ).find( '.everest-forms-submit-button-inner-items' ).removeClass( 'active' );
+			$( this ).addClass( 'active' );
+
+			var $el = $( this ),
+				borderWidthType = $el.data( 'width' ),
+				$btnEl = $( document ).find( '.evf-submit-btn' );
+
+			if ( 'fill' == borderWidthType ) {
+				$btnEl.removeClass( 'button' );
+			}else{
+				$btnEl.addClass( 'button' );
+			}
+			$( document ).find( '#everest-forms-submit_button_width' ).val( borderWidthType );
+			$btnEl.removeClass( 'active' );
+
 		});
 
 		},

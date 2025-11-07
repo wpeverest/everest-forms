@@ -196,6 +196,8 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 	 * @since xx.xx.xx
 	 */
 	public function output_submit_options(){
+		$settings = isset($this->form_data['settings']) ? $this->form_data['settings'] : array();
+
 		$row_option_class = apply_filters(
 				'everest_forms_builder_row_save_button_class',
 				array(
@@ -210,8 +212,6 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 						</a>
 						<div class="everest-forms-save-option-group-inner ">
 							<div class="everest-forms-save-option-row everest-forms-save-option-row-label ">
-
-								<div class="everest-forms-col-width-outer-container-wrapper">
 									<?php
 										everest_forms_panel_field(
 											'text',
@@ -247,8 +247,58 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 											)
 										);
 										do_action('everest_forms_inline_submit_settings', $this, 'submit', 'connection_1');
+
+										$submit_button_width = isset( $settings['submit_button_width'] ) ? $settings['submit_button_width'] : 'auto';
+
 									?>
-								</div>
+									<div class="everest-forms-submit-button-outer-wrapper" >
+										<div class="everest-forms-submit-button-title-wrapper">
+											<span><?php echo __( 'Border Width', 'everest-forms' ); ?></span>
+										</div>
+										<div class="everest-forms-submit-button-inner-wrapper">
+											<div class="everest-forms-submit-button-inner-items <?php echo ( 'auto' === $submit_button_width ? 'active' : ''); ?>" data-width="auto">
+												<div class="everest-forms-submit-button-item-img">
+													<svg width="92" height="98" viewBox="0 0 92 98" fill="none" xmlns="http://www.w3.org/2000/svg">
+													<rect x="0.437193" y="0.437193" width="91.1256" height="96.242" rx="2.18596" stroke="#EEE8F7" stroke-width="0.874386"/>
+													<rect x="8.74414" y="15.9395" width="34.2679" height="3.83758" rx="1.91879" fill="#DBDBDB"/>
+													<rect x="48.9883" y="15.9395" width="34.2679" height="3.83758" rx="1.91879" fill="#DBDBDB"/>
+													<rect x="8.74414" y="26.1738" width="34.2679" height="3.83758" rx="1.91879" fill="#DBDBDB"/>
+													<rect x="48.9883" y="26.1738" width="34.2679" height="3.83758" rx="1.91879" fill="#DBDBDB"/>
+													<rect x="8.74414" y="36.4062" width="74.5123" height="3.83758" rx="1.91879" fill="#DBDBDB"/>
+													<rect x="8.74414" y="46.6406" width="74.5123" height="3.83758" rx="1.91879" fill="#DBDBDB"/>
+													<rect x="8.74414" y="56.873" width="34.2679" height="3.83758" rx="1.91879" fill="#DBDBDB"/>
+													<rect x="48.9883" y="56.873" width="34.2679" height="3.83758" rx="1.91879" fill="#DBDBDB"/>
+													<rect x="8.74414" y="70.9434" width="30.7006" height="10.2335" rx="1.4941" fill="#999999"/>
+													</svg>
+												</div>
+												<div class="everest-forms-submit-button-item-title">
+													<span><?php echo __( 'Auto', 'everest-forms' ); ?></span>
+												</div>
+											</div>
+											<div class="everest-forms-submit-button-inner-items <?php echo ( 'fill' === $submit_button_width ? 'active' : ''); ?>" data-width="fill">
+												<div class="everest-forms-submit-button-item-img">
+													<svg width="92" height="98" viewBox="0 0 92 98" fill="none" xmlns="http://www.w3.org/2000/svg">
+													<rect x="0.437193" y="0.437193" width="91.1256" height="96.242" rx="2.18596" stroke="#EEE8F7" stroke-width="0.874386"/>
+													<rect x="8.74414" y="15.9395" width="34.2679" height="3.83758" rx="1.91879" fill="#DBDBDB"/>
+													<rect x="48.9883" y="15.9395" width="34.2679" height="3.83758" rx="1.91879" fill="#DBDBDB"/>
+													<rect x="8.74414" y="26.1738" width="34.2679" height="3.83758" rx="1.91879" fill="#DBDBDB"/>
+													<rect x="48.9883" y="26.1738" width="34.2679" height="3.83758" rx="1.91879" fill="#DBDBDB"/>
+													<rect x="8.74414" y="36.4062" width="74.5123" height="3.83758" rx="1.91879" fill="#DBDBDB"/>
+													<rect x="8.74414" y="46.6406" width="74.5123" height="3.83758" rx="1.91879" fill="#DBDBDB"/>
+													<rect x="8.74414" y="56.873" width="34.2679" height="3.83758" rx="1.91879" fill="#DBDBDB"/>
+													<rect x="48.9883" y="56.873" width="34.2679" height="3.83758" rx="1.91879" fill="#DBDBDB"/>
+													<rect x="8.74414" y="70.9434" width="74.5123" height="10.2335" rx="1.4941" fill="#999999"/>
+													</svg>
+
+												</div>
+												<div class="everest-forms-submit-button-item-title">
+													<span><?php echo __( 'Fill Width', 'everest-forms' ); ?></span>
+												</div>
+												<input type="hidden" id="everest-forms-submit_button_width" name="settings[submit_button_width]" value="<?php echo ( isset( $settings['submit_button_width'] ) ? $settings['submit_button_width'] : 'auto'  ) ?>"/>
+
+											</div>
+										</div>
+									</div>
 							</div>
 						</div>
 					</div>
@@ -343,6 +393,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 		foreach ( $structure as $row_id => $row_data ) {
 			$row         = str_replace( 'row_', '', $row_id );
 			$row_grid    = isset( $form_data['structure'][ 'row_' . $row ] ) ? $form_data['structure'][ 'row_' . $row ] : array();
+			$settings    = isset( $this->form_data['settings'] ) ? $this->form_data['settings'] : array();
 			$form_grid   = apply_filters( 'everest_forms_default_form_grid', 4 );
 			$total_grid  = $form_grid;
 			$active_grid = ( count( $row_grid ) > 0 ) ? count( $row_grid ) : ( isset( $this->form_data['settings']['recaptcha_support'] ) && '1' === $this->form_data['settings']['recaptcha_support'] ? 1 : 2 );
@@ -529,7 +580,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 			echo '</div>'; // Repeater Row Wrapper ends.
 		}
 
-			echo '<div class="evf-submit-btn button" data-total-rows="' . count( $structure ) . '" data-next-row-id="' . (int) max( $row_ids ) . '"><span>' . esc_html__( 'Submit', 'everest-forms' ) . '</span></div>';
+			echo '<div class="evf-submit-btn ' . ( isset( $settings[ 'submit_button_width' ] ) && 'auto' == $settings[ 'submit_button_width' ] ? 'button' : ''  ) . '" data-total-rows="' . count( $structure ) . '" data-next-row-id="' . (int) max( $row_ids ) . '"><span>' . esc_html__( 'Submit', 'everest-forms' ) . '</span></div>';
 		echo '</div >';
 	}
 

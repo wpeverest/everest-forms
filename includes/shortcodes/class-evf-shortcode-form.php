@@ -152,8 +152,11 @@ class EVF_Shortcode_Form {
 
 		do_action( 'everest_forms_display_submit_before', $form_data );
 
+		$submit_button_width = isset( $settings['submit_button_width'] ) ? $settings['submit_button_width'] : 'auto';
+		$btn_inline_style = 'fill' == $submit_button_width ? 'style="width: 100%"' : '';
+
 		printf(
-			"<button type='submit' name='everest_forms[submit]' class='everest-forms-submit-button button evf-submit %s' id='evf-submit-%d' value='evf-submit' %s conditional_rules='%s' conditional_id='%s' %s %s>%s</button>",
+			"<button type='submit' name='everest_forms[submit]' class='everest-forms-submit-button button evf-submit %s' id='evf-submit-%d' value='evf-submit' %s conditional_rules='%s' conditional_id='%s' %s %s %s>%s</button>",
 			esc_attr( $classes ),
 			esc_attr( $form_id ),
 			! isset( $settings['submit_button_processing_text'] ) ? 'data-process-text="' . esc_attr__( 'Processing&hellip;', 'everest-forms' ) . '"' : ( ! empty( $settings['submit_button_processing_text'] ) ? 'data-process-text="' . esc_attr( evf_string_translation( $form_data['id'], 'processing_text', $settings['submit_button_processing_text'] ) ) . '"' : '' ),
@@ -166,6 +169,7 @@ class EVF_Shortcode_Form {
 				$data_attrs,
 				$attrs
 			),
+			$btn_inline_style,
 			esc_html( $submit_btn )
 		);
 
