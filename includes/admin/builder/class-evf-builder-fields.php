@@ -49,6 +49,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 			add_action( 'everest_forms_builder_fields', array( $this, 'output_fields' ) );
 			add_action( 'everest_forms_builder_fields_options', array( $this, 'output_fields_options' ) );
 			add_action( 'everest_forms_builder_fields_preview', array( $this, 'output_fields_preview' ) );
+			add_action( 'everest_forms_builder_submit_options', array( $this, 'output_submit_options' ) );
 		}
 	}
 
@@ -60,6 +61,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 		<div class="everest-forms-fields-tab">
 			<a href="#" id="add-fields" class="fields active"><?php esc_html_e( 'Add Fields', 'everest-forms' ); ?></a>
 			<a href="#" id="field-options" class="options"><?php esc_html_e( 'Field Options', 'everest-forms' ); ?></a>
+			<a href="#" id="submit-settings" class="options evf-submit-settings" style="display: none;"><?php esc_html_e( 'Submit Settings', 'everest-forms' ); ?></a>
 			<?php do_action( 'everest_forms_builder_fields_tab', $this->form ); ?>
 		</div>
 		<div class="everest-forms-tab-content">
@@ -81,6 +83,9 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 			</div>
 			<div class="everest-forms-field-options">
 				<?php do_action( 'everest_forms_builder_fields_options', $this->form ); ?>
+			</div>
+			<div class="everest-forms-submit-options">
+				<?php do_action( 'everest_forms_builder_submit_options', $this->form ); ?>
 			</div>
 			<?php do_action( 'everest_forms_builder_fields_tab_content', $this->form ); ?>
 		</div>
@@ -183,6 +188,72 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 		} else {
 			printf( '<p class="no-fields">%s</p>', esc_html__( 'You don\'t have any fields yet.', 'everest-forms' ) );
 		}
+	}
+
+	/**
+	 * Output submit button options.
+	 *
+	 * @since xx.xx.xx
+	 */
+	public function output_submit_options(){
+		$row_option_class = apply_filters(
+				'everest_forms_builder_row_save_button_class',
+				array(
+					'everest-forms-save-option',
+				)
+			);
+				?>
+				<div class="<?php echo esc_attr( implode( ' ', $row_option_class ) ); ?>" id="everest-forms-save-option" >
+					<div class="everest-forms-save-option-group open">
+						<a href="#" class="everest-forms-save-option-group-toggle">
+							<?php echo __( 'Submit Button Settings', 		'everest-forms'); ?></span> <i class="handlediv"></i>
+						</a>
+						<div class="everest-forms-save-option-group-inner ">
+							<div class="everest-forms-save-option-row everest-forms-save-option-row-label ">
+
+								<div class="everest-forms-col-width-outer-container-wrapper">
+									<?php
+										everest_forms_panel_field(
+											'text',
+											'settings',
+											'submit_button_text',
+											$this->form_data,
+											esc_html__('Submit button text', 'everest-forms'),
+											array(
+												'default' => isset($settings['submit_button_text']) ? $settings['submit_button_text'] : __('Submit', 'everest-forms'),
+												'tooltip' => esc_html__('Enter desired text for submit button.', 'everest-forms'),
+											)
+										);
+										everest_forms_panel_field(
+											'text',
+											'settings',
+											'submit_button_processing_text',
+											$this->form_data,
+											__('Submit button processing text', 'everest-forms'),
+											array(
+												'default' => isset($settings['submit_button_processing_text']) ? $settings['submit_button_processing_text'] : __('Processing&hellip;', 'everest-forms'),
+												'tooltip' => esc_html__('Enter the submit button text that you would like the button to display while the form submission is processing.', 'everest-forms'),
+											)
+										);
+										everest_forms_panel_field(
+											'text',
+											'settings',
+											'submit_button_class',
+											$this->form_data,
+											esc_html__('Submit button class', 'everest-forms'),
+											array(
+												'default' => isset($settings['submit_button_class']) ? $settings['submit_button_class'] : '',
+												'tooltip' => esc_html__('Enter CSS class names for submit button. Multiple class names should be separated with spaces.', 'everest-forms'),
+											)
+										);
+										do_action('everest_forms_inline_submit_settings', $this, 'submit', 'connection_1');
+									?>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+		<?php
 	}
 
 	/**
@@ -457,6 +528,8 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 </svg>' . esc_html__( 'Add Repeater Row', 'everest-forms' ) . '</span></div>';
 			echo '</div>'; // Repeater Row Wrapper ends.
 		}
+
+			echo '<div class="evf-submit-btn button" data-total-rows="' . count( $structure ) . '" data-next-row-id="' . (int) max( $row_ids ) . '"><span>' . esc_html__( 'Submit', 'everest-forms' ) . '</span></div>';
 		echo '</div >';
 	}
 

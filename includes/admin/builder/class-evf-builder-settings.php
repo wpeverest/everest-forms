@@ -92,7 +92,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page
 
 ?>
 		<div class="everest-forms-active-email">
-			<button class="everest-forms-btn everest-forms-btn-primary everest-forms-email-add" data-form_id="<?php echo isset($_GET['form_id']) ? absint(sanitize_text_field(wp_unslash($_GET['form_id']))) : 0; // phpcs:ignore WordPress.Security.NonceVerification 
+			<button class="everest-forms-btn everest-forms-btn-primary everest-forms-email-add" data-form_id="<?php echo isset($_GET['form_id']) ? absint(sanitize_text_field(wp_unslash($_GET['form_id']))) : 0; // phpcs:ignore WordPress.Security.NonceVerification
 																												?>" data-source="email" data-type="<?php echo esc_attr('connection'); ?>">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
 					<path d="M12 21.95c-.6 0-1-.4-1-1v-8H3.1c-.6 0-1-.4-1-1s.4-1 1-1H11v-7.9c0-.6.4-1 1-1s1 .4 1 1v7.9h7.9c.6 0 1 .4 1 1s-.4 1-1 1H13v8c0 .6-.4 1-1 1Z" />
@@ -293,42 +293,6 @@ class EVF_Builder_Settings extends EVF_Builder_Page
 
 		do_action('everest_forms_field_required_indicators', $this->form_data, $settings);
 
-		echo '<div class="everest-forms-border-container"><h4 class="everest-forms-border-container-title">' . esc_html__('Submit Button', 'everest-forms') . '</h4>';
-		everest_forms_panel_field(
-			'text',
-			'settings',
-			'submit_button_text',
-			$this->form_data,
-			esc_html__('Submit button text', 'everest-forms'),
-			array(
-				'default' => isset($settings['submit_button_text']) ? $settings['submit_button_text'] : __('Submit', 'everest-forms'),
-				'tooltip' => esc_html__('Enter desired text for submit button.', 'everest-forms'),
-			)
-		);
-		everest_forms_panel_field(
-			'text',
-			'settings',
-			'submit_button_processing_text',
-			$this->form_data,
-			__('Submit button processing text', 'everest-forms'),
-			array(
-				'default' => isset($settings['submit_button_processing_text']) ? $settings['submit_button_processing_text'] : __('Processing&hellip;', 'everest-forms'),
-				'tooltip' => esc_html__('Enter the submit button text that you would like the button to display while the form submission is processing.', 'everest-forms'),
-			)
-		);
-		everest_forms_panel_field(
-			'text',
-			'settings',
-			'submit_button_class',
-			$this->form_data,
-			esc_html__('Submit button class', 'everest-forms'),
-			array(
-				'default' => isset($settings['submit_button_class']) ? $settings['submit_button_class'] : '',
-				'tooltip' => esc_html__('Enter CSS class names for submit button. Multiple class names should be separated with spaces.', 'everest-forms'),
-			)
-		);
-		do_action('everest_forms_inline_submit_settings', $this, 'submit', 'connection_1');
-		echo '</div>';
 		do_action('everest_forms_inline_integrations_settings', $this->form_data, $settings);
 		everest_forms_panel_field(
 			'toggle',

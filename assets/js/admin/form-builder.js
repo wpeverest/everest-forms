@@ -397,11 +397,19 @@
 					cancel: {
 						text: evf_data.i18n_cancel,
 						action: function () {
-							
+
 						}
 					}
 				}
 			} );
+		});
+
+		$(document).on('click', '.evf-submit-btn.button', function(e) {
+			e.preventDefault();
+			$( document ).find( '.evf-submit-settings, .everest-forms-save-option, .everest-forms-submit-options' ).show();
+			$( document ).find( '.everest-forms-fields-tab > a' ).removeClass( 'active' );
+			$( document ).find( '.evf-submit-settings' ).addClass( 'active' );
+			$( document ).find( '#field-options, .everest-forms-add-fields, .everest-forms-field-options' ).hide();
 		});
 
 		},
@@ -3259,7 +3267,8 @@
 			if ( 'add-fields' === id ) {
 				$( '.everest-forms-add-fields' ).show();
 				$( '.everest-forms-field-options' ).hide();
-
+				$( '.everest-forms-submit-options' ).hide();
+				$( '#submit-settings' ).hide();
 			} else {
 				if ( 'field-options' === id ) {
 					id = $( '.everest-forms-field' ).first().data( 'field-id' );

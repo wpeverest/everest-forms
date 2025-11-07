@@ -1964,7 +1964,7 @@ p.search-box {
 
 .everest-forms_page_evf-builder {
 	.everest-forms-add-fields-group,
-	.everest-forms-field-option-group, .everest-forms-col-option-group {
+	.everest-forms-field-option-group, .everest-forms-col-option-group, .everest-forms-save-option-group {
 		.handlediv {
 			float: right;
 
@@ -2908,7 +2908,7 @@ p.search-box {
 						}
 					}
 
-					.everest-forms-field-options {
+					.everest-forms-field-options, .everest-forms-submit-options {
 						background-color: #fffff;
 						display: none;
 
@@ -2999,7 +2999,7 @@ p.search-box {
 							}
 						}
 
-						.everest-forms-field-option {
+						.everest-forms-field-option, .everest-forms-save-option {
 							display: none;
 
 							// Email/Password Confirmation.
@@ -3021,14 +3021,15 @@ p.search-box {
 								&-advanced,
 								&-conditionals,
 								&-calculations,
-								&-quiz {
+								&-quiz,
+								&-group {
 									// background: #fbfbfd;
 									background: $color-white;
 									border: 1px solid #e1e1e1;
 									border-radius: 2px;
 									margin-bottom: 16px;
 
-									.everest-forms-field-option-group-toggle {
+									.everest-forms-field-option-group-toggle, .everest-forms-save-option-group-toggle {
 										padding: 16px 14px;
 										border-bottom: 0;
 									}
@@ -3078,13 +3079,13 @@ p.search-box {
 							}
 
 							&:last-child {
-								.everest-forms-field-option-group-inner {
+								.everest-forms-field-option-group-inner, .everest-forms-save-option-group-inner {
 									border-bottom: none;
 								}
 							}
 						}
 
-						.everest-forms-field-option-group-toggle {
+						.everest-forms-field-option-group-toggle, .everest-forms-save-option-group-toggle {
 							background-color: $color_gray-light-skin;
 							border-bottom: 1px solid $color_gray-lighten;
 							padding: 15px 0;
@@ -3094,7 +3095,7 @@ p.search-box {
 							color: $color_gray-dark;
 						}
 
-						.everest-forms-field-option-group-inner {
+						.everest-forms-field-option-group-inner, .everest-forms-save-option-group-inner {
 							padding: 16px;
 							background: #f6f7f9;
 						}
@@ -4920,6 +4921,24 @@ p.search-box {
 					border-radius: 9px;
 					border: 1px solid #e1e1e1;
 					box-shadow: 0px 7px 29px 0px rgba(100, 100, 111, 0.09);
+
+					.everest-forms-preview{
+						.evf-admin-field-container{
+							.evf-submit-btn {
+								padding: 8px 16px;
+								color: #fff;
+								font-size: 14px;
+								font-weight: 500;
+								line-height: 22px;
+								border-radius: 4px;
+								border-color: #7545BB;
+								background: #7545BB;
+								.button{
+
+								}
+							}
+						}
+					}
 				}
 
 				.evf-content-sms-notifications-settings {
@@ -5167,7 +5186,7 @@ p.search-box {
 
 		.everest-forms-panel-sidebar {
 			.everest-forms-add-fields,
-			.everest-forms-field-options {
+			.everest-forms-field-options, .everest-forms-submit-options {
 				background-color: #ffff;
 				padding: 16px 14px;
 			}
