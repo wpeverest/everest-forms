@@ -432,6 +432,13 @@
 
 		});
 
+		$( document ).find( '#everest-forms-panel-field-settings-submit_button_text' ).on( 'keyup', function( e ){
+			e.preventDefault();
+
+			var btnTxt = $( this ).val();
+			$( ".evf-submit-btn > span" ).html( btnTxt );
+		});
+
 		},
 
 		/**

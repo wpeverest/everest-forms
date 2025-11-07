@@ -580,7 +580,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 			echo '</div>'; // Repeater Row Wrapper ends.
 		}
 
-			echo '<div class="evf-submit-btn ' . ( isset( $settings[ 'submit_button_width' ] ) && 'auto' == $settings[ 'submit_button_width' ] ? 'button' : ''  ) . '" data-total-rows="' . count( $structure ) . '" data-next-row-id="' . (int) max( $row_ids ) . '"><span>' . esc_html__( 'Submit', 'everest-forms' ) . '</span></div>';
+			echo '<div class="evf-submit-btn ' . ( isset( $settings[ 'submit_button_width' ] ) && 'auto' == $settings[ 'submit_button_width' ] ? 'button' : ''  ) . '" data-total-rows="' . count( $structure ) . '" data-next-row-id="' . (int) max( $row_ids ) . '"><span>' . ( isset( $settings[ 'submit_button_text' ] ) ? $settings[ 'submit_button_text' ] : __( 'Submit' , 'everest-forms' ) ) . '</span></div>';
 		echo '</div >';
 	}
 
