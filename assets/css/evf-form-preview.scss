@@ -443,7 +443,7 @@ body {
 										.everest-forms-image-choices {
 											.everest-forms-image-choices-item {
 												margin-bottom: 20px !important;
-												
+
 												&:has(input:checked) {
 													.everest-forms-field-label-inline {
 														border-color: var(--wp--preset--color--vivid-cyan-blue);
@@ -515,6 +515,17 @@ body {
 							}
 
 							.evf-submit-container {
+
+								&.left{
+									text-align: left;
+								}
+								&.center{
+									text-align: center;
+								}
+								&.right{
+									text-align: right;
+								}
+								
 								.everest-forms-submit-button {
 									padding: 8px 16px;
 									color: #fff;

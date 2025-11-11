@@ -139,8 +139,9 @@ class EVF_Shortcode_Form {
 		}
 
 		$conditional_rules = wp_json_encode( $con_rules );
+		$submit_button_position = isset( $settings['submit_button_position'] ) ? $settings['submit_button_position'] : 'left';
 
-		echo '<div class="evf-submit-container ' . esc_attr( implode( ' ', $visibility_class ) ) . '" >';
+		echo '<div class="evf-submit-container ' . $submit_button_position .  esc_attr( implode( ' ', $visibility_class ) ) . '" >';
 
 		echo '<input type="hidden" name="everest_forms[id]" value="' . absint( $form_id ) . '">';
 

@@ -412,24 +412,42 @@
 			$( document ).find( '#field-options, .everest-forms-add-fields, .everest-forms-field-options' ).hide();
 		});
 
-		$( document ).on( 'click', '.everest-forms-submit-button-inner-items', function( e ){
+		$( document ).on( 'click', '.everest-forms-submit-button-inner-items.everest-forms-submit-button-width', function( e ){
 			e.stopPropagation();
 
-			$( document ).find( '.everest-forms-submit-button-inner-items' ).removeClass( 'active' );
+			$( document ).find( '.everest-forms-submit-button-inner-items.everest-forms-submit-button-width' ).removeClass( 'active' );
 			$( this ).addClass( 'active' );
 
 			var $el = $( this ),
-				borderWidthType = $el.data( 'width' ),
+				buttonWidth = $el.data( 'width' ),
 				$btnEl = $( document ).find( '.evf-submit-btn' );
 
-			if ( 'fill' == borderWidthType ) {
+			if ( 'fill' == buttonWidth ) {
 				$btnEl.removeClass( 'button' );
+				$( document ).find( '.everest-forms-submit-button-position-outer-wrapper' ).hide();
 			}else{
+				$( document ).find( '.everest-forms-submit-button-position-outer-wrapper' ).show();
 				$btnEl.addClass( 'button' );
 			}
-			$( document ).find( '#everest-forms-submit_button_width' ).val( borderWidthType );
+			$( document ).find( '#everest-forms-submit_button_width' ).val( buttonWidth );
 			$btnEl.removeClass( 'active' );
 
+		});
+
+		$( document ).on( 'click', '.everest-forms-submit-button-inner-items.everest-forms-submit-button-position', function( e ){
+			e.stopPropagation();
+
+			$( document ).find( '.everest-forms-submit-button-inner-items.everest-forms-submit-button-position' ).removeClass( 'active' );
+			$( this ).addClass( 'active' );
+
+			var $el = $( this ),
+				buttonPosition = $el.data( 'position' ),
+				$btnEl = $( document ).find( '.evf-submit-btn' );
+
+			$btnEl.closest('.evf-submit-btn-outer-wrapper').removeClass('center left right');
+			$btnEl.closest( '.evf-submit-btn-outer-wrapper' ).addClass( buttonPosition );
+			$( document ).find( '#everest-forms-submit_button_position' ).val( buttonPosition );
+			$btnEl.removeClass( 'active' );
 		});
 
 		$( document ).find( '#everest-forms-panel-field-settings-submit_button_text' ).on( 'keyup', function( e ){

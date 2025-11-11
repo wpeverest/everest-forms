@@ -249,14 +249,15 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 										do_action('everest_forms_inline_submit_settings', $this, 'submit', 'connection_1');
 
 										$submit_button_width = isset( $settings['submit_button_width'] ) ? $settings['submit_button_width'] : 'auto';
+										$submit_button_position = isset( $settings['submit_button_position'] ) ? $settings['submit_button_position'] : 'left';
 
 									?>
-									<div class="everest-forms-submit-button-outer-wrapper" >
+									<div class="everest-forms-submit-button-outer-wrapper everest-forms-submit-button-width-outer-wrapper" >
 										<div class="everest-forms-submit-button-title-wrapper">
-											<span><?php echo __( 'Border Width', 'everest-forms' ); ?></span>
+											<span><?php echo __( 'Button Width', 'everest-forms' ); ?></span>
 										</div>
 										<div class="everest-forms-submit-button-inner-wrapper">
-											<div class="everest-forms-submit-button-inner-items <?php echo ( 'auto' === $submit_button_width ? 'active' : ''); ?>" data-width="auto">
+											<div class="everest-forms-submit-button-inner-items everest-forms-submit-button-width <?php echo ( 'auto' === $submit_button_width ? 'active' : ''); ?>" data-width="auto">
 												<div class="everest-forms-submit-button-item-img">
 													<svg width="92" height="98" viewBox="0 0 92 98" fill="none" xmlns="http://www.w3.org/2000/svg">
 													<rect x="0.437193" y="0.437193" width="91.1256" height="96.242" rx="2.18596" stroke="#EEE8F7" stroke-width="0.874386"/>
@@ -275,7 +276,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 													<span><?php echo __( 'Auto', 'everest-forms' ); ?></span>
 												</div>
 											</div>
-											<div class="everest-forms-submit-button-inner-items <?php echo ( 'fill' === $submit_button_width ? 'active' : ''); ?>" data-width="fill">
+											<div class="everest-forms-submit-button-inner-items everest-forms-submit-button-width <?php echo ( 'fill' === $submit_button_width ? 'active' : ''); ?>" data-width="fill">
 												<div class="everest-forms-submit-button-item-img">
 													<svg width="92" height="98" viewBox="0 0 92 98" fill="none" xmlns="http://www.w3.org/2000/svg">
 													<rect x="0.437193" y="0.437193" width="91.1256" height="96.242" rx="2.18596" stroke="#EEE8F7" stroke-width="0.874386"/>
@@ -299,8 +300,74 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 											</div>
 										</div>
 									</div>
+									<div class="everest-forms-submit-button-outer-wrapper everest-forms-submit-button-position-outer-wrapper" style="<?php echo ( 'fill' === $submit_button_width ? 'display:none' : '' ); ?>">
+										<div class="everest-forms-submit-button-title-wrapper">
+											<span><?php echo __( 'Button Position', 'everest-forms' ); ?></span>
+										</div>
+										<div class="everest-forms-submit-button-inner-wrapper">
+											<div class="everest-forms-submit-button-inner-items everest-forms-submit-button-position  <?php echo ( 'left' === $submit_button_position ? 'active' : ''); ?>" data-position="left">
+												<div class="everest-forms-submit-button-item-img">
+												<svg width="92" height="98" viewBox="0 0 92 98" fill="none" xmlns="http://www.w3.org/2000/svg">
+												<rect x="0.437193" y="0.437193" width="91.1256" height="96.242" rx="2.18596" stroke="#EEE8F7" stroke-width="0.874386"/>
+												<rect x="8.74414" y="15.9395" width="34.2679" height="3.83758" rx="1.91879" fill="#DBDBDB"/>
+												<rect x="48.9883" y="15.9395" width="34.2679" height="3.83758" rx="1.91879" fill="#DBDBDB"/>
+												<rect x="8.74414" y="26.1738" width="34.2679" height="3.83758" rx="1.91879" fill="#DBDBDB"/>
+												<rect x="48.9883" y="26.1738" width="34.2679" height="3.83758" rx="1.91879" fill="#DBDBDB"/>
+												<rect x="8.74414" y="36.4062" width="74.5123" height="3.83758" rx="1.91879" fill="#DBDBDB"/>
+												<rect x="8.74414" y="46.6406" width="74.5123" height="3.83758" rx="1.91879" fill="#DBDBDB"/>
+												<rect x="8.74414" y="56.873" width="34.2679" height="3.83758" rx="1.91879" fill="#DBDBDB"/>
+												<rect x="48.9883" y="56.873" width="34.2679" height="3.83758" rx="1.91879" fill="#DBDBDB"/>
+												<rect x="8.74414" y="70.9434" width="30.7006" height="10.2335" rx="1.4941" fill="#999999"/>
+												</svg>
+												</div>
+												<div class="everest-forms-submit-button-item-title">
+													<span><?php echo __( 'Left', 'everest-forms' ); ?></span>
+												</div>
+											</div>
+											<div class="everest-forms-submit-button-inner-items everest-forms-submit-button-position  <?php echo ( 'center' === $submit_button_position ? 'active' : ''); ?>" data-position="center">
+												<div class="everest-forms-submit-button-item-img">
+													<svg width="92" height="98" viewBox="0 0 92 98" fill="none" xmlns="http://www.w3.org/2000/svg">
+													<rect x="0.437193" y="0.437193" width="91.1256" height="96.242" rx="2.18596" stroke="#EEE8F7" stroke-width="0.874386"/>
+													<rect x="8.74414" y="15.9395" width="34.2679" height="3.83758" rx="1.91879" fill="#DBDBDB"/>
+													<rect x="48.9883" y="15.9395" width="34.2679" height="3.83758" rx="1.91879" fill="#DBDBDB"/>
+													<rect x="8.74414" y="26.1738" width="34.2679" height="3.83758" rx="1.91879" fill="#DBDBDB"/>
+													<rect x="48.9883" y="26.1738" width="34.2679" height="3.83758" rx="1.91879" fill="#DBDBDB"/>
+													<rect x="8.74414" y="36.4062" width="74.5123" height="3.83758" rx="1.91879" fill="#DBDBDB"/>
+													<rect x="8.74414" y="46.6406" width="74.5123" height="3.83758" rx="1.91879" fill="#DBDBDB"/>
+													<rect x="8.74414" y="56.873" width="34.2679" height="3.83758" rx="1.91879" fill="#DBDBDB"/>
+													<rect x="48.9883" y="56.873" width="34.2679" height="3.83758" rx="1.91879" fill="#DBDBDB"/>
+													<rect x="30.6494" y="70.9434" width="30.7006" height="10.2335" rx="1.4941" fill="#999999"/>
+												</svg>
+											</div>
+											<div class="everest-forms-submit-button-item-title">
+												<span><?php echo __( 'Center', 'everest-forms' ); ?></span>
+												</div>
+
+											</div>
+											<div class="everest-forms-submit-button-inner-items everest-forms-submit-button-position  <?php echo ( 'right' === $submit_button_position ? 'active' : ''); ?>" data-position="right">
+												<div class="everest-forms-submit-button-item-img">
+													<svg width="92" height="98" viewBox="0 0 92 98" fill="none" xmlns="http://www.w3.org/2000/svg">
+														<rect x="0.437193" y="0.437193" width="91.1256" height="96.242" rx="2.18596" stroke="#EEE8F7" stroke-width="0.874386"/>
+														<rect x="8.74414" y="15.9395" width="34.2679" height="3.83758" rx="1.91879" fill="#DBDBDB"/>
+														<rect x="48.9883" y="15.9395" width="34.2679" height="3.83758" rx="1.91879" fill="#DBDBDB"/>
+														<rect x="8.74414" y="26.1738" width="34.2679" height="3.83758" rx="1.91879" fill="#DBDBDB"/>
+														<rect x="48.9883" y="26.1738" width="34.2679" height="3.83758" rx="1.91879" fill="#DBDBDB"/>
+														<rect x="8.74414" y="36.4062" width="74.5123" height="3.83758" rx="1.91879" fill="#DBDBDB"/>
+														<rect x="8.74414" y="46.6406" width="74.5123" height="3.83758" rx="1.91879" fill="#DBDBDB"/>
+														<rect x="8.74414" y="56.873" width="34.2679" height="3.83758" rx="1.91879" fill="#DBDBDB"/>
+														<rect x="48.9883" y="56.873" width="34.2679" height="3.83758" rx="1.91879" fill="#DBDBDB"/>
+														<rect x="52.5557" y="70.9434" width="30.7006" height="10.2335" rx="1.4941" fill="#999999"/>
+													</svg>
+												</div>
+												<div class="everest-forms-submit-button-item-title">
+													<span><?php echo __( 'Right', 'everest-forms' ); ?></span>
+												</div>
+											</div>
+											<input type="hidden" id="everest-forms-submit_button_position" name="settings[submit_button_position]" value="<?php echo ( isset( $settings['submit_button_position'] ) ? $settings['submit_button_position'] : 'left'  ) ?>"/>
+										</div>
+									</div>
+								</div>
 							</div>
-						</div>
 					</div>
 				</div>
 		<?php
@@ -580,7 +647,17 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 			echo '</div>'; // Repeater Row Wrapper ends.
 		}
 
-			echo '<div class="evf-submit-btn ' . ( isset( $settings[ 'submit_button_width' ] ) && 'auto' == $settings[ 'submit_button_width' ] ? 'button' : ''  ) . '" data-total-rows="' . count( $structure ) . '" data-next-row-id="' . (int) max( $row_ids ) . '"><span>' . ( isset( $settings[ 'submit_button_text' ] ) ? $settings[ 'submit_button_text' ] : __( 'Submit' , 'everest-forms' ) ) . '</span></div>';
+		$settings['submit_button_width'] = isset($settings['submit_button_width']) ? $settings['submit_button_width'] : 'auto';
+		$submit_button_position = isset($settings['submit_button_position']) ? $settings['submit_button_position'] : 'left';
+
+		$button_class = ($settings['submit_button_width'] === 'auto') ? 'button' : '';
+		$button_text  = isset( $settings['submit_button_text'] ) ? $settings['submit_button_text'] : __( 'Submit', 'everest-forms' );
+
+		echo '<div class="evf-submit-btn-outer-wrapper ' . $submit_button_position . '">';
+		echo '<div class="evf-submit-btn ' . $button_class . '" data-total-rows="' . count($structure) . '" data-next-row-id="' . (int) max($row_ids) . '">';
+		echo '<span>' . $button_text . '</span>';
+		echo '</div></div>';
+
 		echo '</div >';
 	}
 

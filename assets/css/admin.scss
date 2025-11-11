@@ -3104,6 +3104,9 @@ p.search-box {
 							padding: 16px;
 							background: #f6f7f9;
 
+							.everest-forms-submit-button-inner-wrapper{
+								margin-bottom: 20px;
+							}
 
 						}
 					}
@@ -4931,17 +4934,29 @@ p.search-box {
 
 					.everest-forms-preview{
 						.evf-admin-field-container{
-							.evf-submit-btn {
-								padding: 8px 16px;
-								color: #fff;
-								font-size: 14px;
-								font-weight: 500;
-								line-height: 22px;
-								border-radius: 4px;
-								border-color: #7545BB;
-								background: #7545BB;
-								text-align: center;
-								cursor: pointer;
+							.evf-submit-btn-outer-wrapper{
+								.evf-submit-btn {
+									padding: 8px 16px;
+									color: #fff;
+									font-size: 14px;
+									font-weight: 500;
+									line-height: 22px;
+									border-radius: 4px;
+									border-color: #7545BB;
+									background: #7545BB;
+									text-align: center;
+									cursor: pointer;
+								}
+
+								&.left{
+									text-align: left;
+								}
+								&.center{
+									text-align: center;
+								}
+								&.right{
+									text-align: right;
+								}
 							}
 						}
 					}
