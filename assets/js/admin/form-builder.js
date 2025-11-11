@@ -83,8 +83,8 @@
 					$( '.evf-admin-row' ).removeClass( 'evf-active' );
 					$( this ).addClass( 'evf-active' );
 					$( '.everest-forms-field' ).removeClass( 'evf-active' );
-					$( '#field-options, #multi-part-options' ).hide();
-					$( '.everest-forms-field-options, .everest-forms-multi-part-options' ).hide();
+					$( '#field-options, #multi-part-options, #submit-settings' ).hide();
+					$( '.everest-forms-field-options, .everest-forms-multi-part-options, .everest-forms-submit-options' ).hide();
 					$( '.everest-forms-row-options' ).show();
 					$( document ).find( '.everest-forms-row-options #everest-forms-row-option-row_' + row_id ).show();
 					$( document ).find( '.everest-forms-row-options #everest-forms-row-option-row_' + row_id ).find( '.everest-forms-col-option-grid-item').removeClass( 'active' );
@@ -409,7 +409,7 @@
 			$( document ).find( '.evf-submit-settings, .everest-forms-save-option, .everest-forms-submit-options' ).show();
 			$( document ).find( '.everest-forms-fields-tab > a' ).removeClass( 'active' );
 			$( document ).find( '.evf-submit-settings' ).addClass( 'active' );
-			$( document ).find( '#field-options, .everest-forms-add-fields, .everest-forms-field-options' ).hide();
+			$( document ).find( '#field-options, .everest-forms-add-fields, .everest-forms-field-options, #row-options, .everest-forms-row-options, #multi-part-options, .everest-forms-multi-part-options' ).hide();
 		});
 
 		$( document ).on( 'click', '.everest-forms-submit-button-inner-items.everest-forms-submit-button-width', function( e ){
@@ -585,6 +585,7 @@
 
 			// By default hide the 'Select All' checkbox for Dropdown field
 			$(document.body).on('click', '.everest-forms-field, .everest-forms-field-select[data-field-type="select"]', function () {
+				$( document ).find( '#submit-settings, .everest-forms-submit-options' ).hide();
 				$builder.find('.everest-forms-field-option-row-choices .everest-forms-btn-group span').each(function () {
 					var $field_id = $(this).parent().parent().data('field-id');
 
