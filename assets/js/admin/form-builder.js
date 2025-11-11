@@ -4360,6 +4360,25 @@ jQuery( function ( $ ) {
 		}
 	});
 
+	/**
+	 * Toggle Save Button Settings.
+	 *
+	 * @since xx.xx.xx
+	 */
+	$(document).on( 'click', '.everest-forms-save-option-group > a', function (event) {
+		event.preventDefault();
+
+		const $group = $(this).closest('.everest-forms-save-option-group');
+		const $inner = $group.find('.everest-forms-save-option-group-inner');
+
+		$group.toggleClass('closed open');
+
+		if ($group.hasClass('closed')) {
+			$inner.stop(true, true).slideUp(200);
+		} else {
+			$inner.stop(true, true).slideDown(200);
+		}
+	});
 
 	$( document.body ).on( 'click', '.everest-forms-field-option .everest-forms-field-option-group a', function( event ) {
 		// If the user clicks on some form input inside, the box should not be toggled.
