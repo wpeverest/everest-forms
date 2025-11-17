@@ -2174,7 +2174,7 @@
 		 *
 		 * @since xx.xx.xx
 		 */
-		bindApplyGrid: function ( $el, grid_id = '' ){
+		bindApplyGrid: function ( $el, grid_id = '', oldGridId = '', newGridId = ''  ){
 			var $this_single_row;
 			var row_id = '';
 			if ( $el.hasClass( 'everest-forms-col-option-grid-item' ) ) {
@@ -2216,6 +2216,23 @@
 					$elArray.push({ ['grid_' + nGridId]: gridChildren });
 					nGridId++;
 				});
+				
+				if ( '' != oldGridId ) {
+					const fromIndex = oldGridId - 1;
+					const toIndex = newGridId;
+
+					$elArray.splice(toIndex, 0, ...$elArray.splice(fromIndex, 1));
+
+					$elArray.forEach((item, index) => {
+						const oldKey = Object.keys(item)[0];
+						const newKey = 'grid_' + (index + 1);
+
+						if (oldKey !== newKey) {
+							item[newKey] = item[oldKey];
+							delete item[oldKey];
+						}
+					});
+				}
 
 		 		$this_single_row.find('.evf-admin-grid').remove();
 		 		$this_single_row.find('.evf-clear ').remove();
@@ -2297,6 +2314,7 @@
 					autoWidthColInput.prop( 'checked', true );
 					autoWidthColInput.data( 'original-col-width', colWidthInput);
 
+					$newCol.data( 'grid-id', i );
 					$newCol.find('.everest-forms-col-width-container-title span').text(colWidthLabel);
 
 					let $input = $newCol.find('input');
@@ -3184,6 +3202,35 @@
 			// 		ui.item.removeAttr( 'style' );
 			// 	}
 			// }).disableSelection();
+
+			$( '.everest-forms-col-width-outer-container-wrapper' ).sortable({
+				items: '.everest-forms-col-width-container',
+				handle: '.evf-admin-grid-move',
+				axis: 'y',
+				cursor: 'move',
+				opacity: 0.65,
+				scrollSensitivity: 40,
+				forcePlaceholderSize: true,
+				placeholder: 'evf-sortable-placeholder',
+				containment: '.everest-forms-col-width-outer-container-wrapper',
+				start: function(event, ui) {
+					ui.item.css({
+						'backgroundColor': '#f7fafc',
+						'border': '1px dashed #5d96ee'
+					});
+				},
+				stop: function(event, ui) {
+					const newGridId = ui.item.index(),
+						oldGridId = ui.item.data( 'grid-id' ),
+						rowId	  = ui.item.data( 'row-id' ),
+						$el       = $(document).find( '.everest-forms-col-option-grid-item[data-evf-grid="' + ( oldGridId )+ '"][data-row-id="' + rowId + '"]' );
+						gridCount = $( document ).find( '#everest-forms-row-option-row_' + rowId ).find( '.everest-forms-col-width-container[data-row-id="' + rowId + '"]').length;
+
+						EVFPanelBuilder.bindApplyGrid( $el, gridCount, oldGridId , newGridId );
+
+					ui.item.removeAttr('style');
+				}
+			}).disableSelection();
 
 			$( '.evf-admin-grid' ).sortable({
 				items: '> .everest-forms-field[data-field-type!="repeater-fields"]',
