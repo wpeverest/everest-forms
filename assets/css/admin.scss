@@ -3814,6 +3814,10 @@ p.search-box {
 					border-radius: 3px;
 					transition: 0.5s box-shadow;
 
+					&.evf-field-merged{
+						border: 1px dashed $evf_primary-color;
+					}
+
 					.everest-forms-image-choices {
 						.everest-forms-image-choices-item {
 							margin-bottom: 20px !important;
@@ -4122,6 +4126,8 @@ p.search-box {
 						width: 280px;
 						height: auto;
 					}
+
+
 				}
 
 				.file-uploader {
@@ -12175,6 +12181,7 @@ button#show-settings-link {
 		gap: 3px;
 
 		.everest-forms-submit-button-title-wrapper{
+			margin-bottom: 8px;
 			span{
 				color: #222222;
 				font-size: 15px;
@@ -12193,6 +12200,7 @@ button#show-settings-link {
 		padding: 8px;
 		cursor: pointer;
 		border-radius: 5px;
+		border: 1px solid #ffff;
 
 		&.active{
 			border: 1px solid $evf_primary-color;

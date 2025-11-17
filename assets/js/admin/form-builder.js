@@ -2216,7 +2216,7 @@
 					$elArray.push({ ['grid_' + nGridId]: gridChildren });
 					nGridId++;
 				});
-				
+
 				if ( '' != oldGridId ) {
 					const fromIndex = oldGridId - 1;
 					const toIndex = newGridId;
@@ -2257,7 +2257,11 @@
 							var extraGrid = $elArray[extra - 1];
 							if (extraGrid && extraGrid['grid_' + extra]) {
 								extraGrid['grid_' + extra].forEach(function ($child) {
+									$child.addClass( 'evf-field-merged' );
 									grid_node_clone.append($child);
+										setTimeout(function(){
+										$child.removeClass( 'evf-field-merged' );
+									}, 2000 );
 								});
 							}
 						}
