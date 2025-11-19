@@ -69,29 +69,7 @@
 					$( '.everest-forms-field' ).removeClass( 'evf-active' );
 					$( this ).addClass( 'evf-active' );
 					$( '.evf-admin-row' ).removeClass( 'evf-active' );
-				});
-
-				$( document ).on( 'click', '.evf-admin-row ', function( e ){
-					e.stopPropagation();
-					var row_id = $( this ).attr( 'data-row-id' ),
-						gridCount = $( this ).find( '.evf-admin-grid' ).length;
-
-					$( '.everest-forms-row-options .everest-forms-row-option' ).each( function() {
-						$( this ).hide();
-					});
-
-					$( '.evf-admin-row' ).removeClass( 'evf-active' );
-					$( this ).addClass( 'evf-active' );
-					$( '.everest-forms-field' ).removeClass( 'evf-active' );
-					$( '#field-options, #multi-part-options, #submit-settings' ).hide();
-					$( '.everest-forms-field-options, .everest-forms-multi-part-options, .everest-forms-submit-options' ).hide();
-					$( '.everest-forms-row-options' ).show();
-					$( document ).find( '.everest-forms-row-options #everest-forms-row-option-row_' + row_id ).show();
-					$( document ).find( '.everest-forms-row-options #everest-forms-row-option-row_' + row_id ).find( '.everest-forms-col-option-grid-item').removeClass( 'active' );
-					$( document ).find( '.everest-forms-row-options #everest-forms-row-option-row_' + row_id ).find( '.everest-forms-col-option-grid-item[data-evf-grid="' + gridCount +'"]').addClass( 'active' );
-
-
-					$( '#row-options' ).show().trigger( 'click' ).addClass( 'active' );
+					$( '#field-options' ).addClass('active').show();
 				});
 		 	});
 
