@@ -566,14 +566,16 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 				}
 				echo '</div>';
 
-				if ( $grid_start != $active_grid ) {
-					echo '<div class="evf-col-divider-wrapper" ' . ( isset( $auto_width_lists[ $row_id ] ) ? "style='display:none;'" : '' ) . '>';
-					echo '<div class="evf-col-divider" data-row-id="' .  esc_attr( $row_id ) . '">';
-					echo '<svg width="6" height="32" viewBox="0 0 6 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-						<path d="M5 0H4.5V32H5H5.5V0H5ZM1 32H1.5V0H1H0.5V32H1Z" fill="#999999"/>
-						</svg>';
-					echo '</div>';
-					echo '</div>';
+				if ( defined( 'EFP_VERSION' )) {
+					if ( $grid_start != $active_grid ) {
+						echo '<div class="evf-col-divider-wrapper" ' . ( isset( $auto_width_lists[ $row_id ] ) ? "style='display:none;'" : '' ) . '>';
+						echo '<div class="evf-col-divider" data-row-id="' .  esc_attr( $row_id ) . '">';
+						echo '<svg width="6" height="32" viewBox="0 0 6 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<path d="M5 0H4.5V32H5H5.5V0H5ZM1 32H1.5V0H1H0.5V32H1Z" fill="#999999"/>
+							</svg>';
+						echo '</div>';
+						echo '</div>';
+					}
 				}
 
 			}
@@ -601,7 +603,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 			echo '<div class="evf-repeater-row-wrapper">'; // Repeater Row Wrapper starts.
 		}
 
-		echo '<div class="evf-add-row-new" data-is_add_row="yes" data-total-rows="' . count( $structure ) . '" data-next-row-id="' . (int) max( $row_ids ) . '"><div class="evf-add-row-content" data-is_add_row="yes" data-total-rows="' . count( $structure ) . '" data-next-row-id="' . (int) max( $row_ids ) . '"><svg width="38" height="39" viewBox="0 0 38 39" fill="none" xmlns="http://www.w3.org/2000/svg">
+		echo '<div class="evf-add-row-new" data-total-rows="' . count( $structure ) . '" data-next-row-id="' . (int) max( $row_ids ) . '"><div class="evf-add-row-content" data-is_add_row="yes" data-total-rows="' . count( $structure ) . '" data-next-row-id="' . (int) max( $row_ids ) . '"><svg width="38" height="39" viewBox="0 0 38 39" fill="none" xmlns="http://www.w3.org/2000/svg">
 <rect y="0.5" width="38" height="38" rx="19" fill="#7E3BD0"/>
 <path d="M19.0002 12.8242V26.2492V12.8242ZM12.3252 19.4992H25.6752H12.3252Z" fill="#0E0E0E"/>
 <path d="M19.0002 12.8242V26.2492M12.3252 19.4992H25.6752" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>

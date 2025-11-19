@@ -2081,8 +2081,7 @@
 				$this.parent().find( '.evf-select-row-type-inner-content-wrapper' ).attr( 'data-total-rows', total_rows );
 				$this.parent().find( '.evf-select-row-type-inner-content-wrapper' ).attr( 'data-next-row-id', max_row_id );
 
-				if( 0 < $( '.everest-forms-row-options' ).length && false === $this.closest( '.evf-add-row' ).hasClass('repeater-row') ) {
-
+				if( 0 <= $( '.everest-forms-row-options' ).length && false === $this.closest( '.evf-add-row-new' ).hasClass('repeater-row') ) {
 					row_clone.find( 'div' ).hide();
 
 					row_clone.append( '<i class="spinner is-active" style="margin:0px auto;"></i>' );
@@ -2155,6 +2154,10 @@
 		bindApplyGrid: function ( $el, grid_id = '', oldGridId = '', newGridId = ''  ){
 			var $this_single_row;
 			var row_id = '';
+			console.log($el);
+			console.log( grid_id );
+
+
 			if ( $el.hasClass( 'everest-forms-col-option-grid-item' ) ) {
 				row_id = $el.attr( 'data-row-id' );
 				$this_single_row = $( document ).find( '.evf-admin-row[data-row-id="' + row_id + '"]' );
