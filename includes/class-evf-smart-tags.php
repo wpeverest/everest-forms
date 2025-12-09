@@ -569,7 +569,12 @@ class EVF_Smart_Tags {
 						break;
 
 					case 'entry_id':
-						$content = str_replace( '{' . $other_tag . '}', $entry_id, $content );
+						if ( ! empty( $entry_id ) ) {
+							$content = str_replace( '{' . $other_tag . '}', $entry_id, $content );
+						} else {
+							$form_entry_id = ! empty( $form_data['entry']['id'] ) ? absint( $form_data['entry']['id'] ) : '';
+							$content       = str_replace( '{' . $other_tag . '}', $form_entry_id, $content );
+						}
 						break;
 
 					default:
