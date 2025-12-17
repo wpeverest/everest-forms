@@ -126,6 +126,9 @@ abstract class EVF_Blocks_Abstract {
 			$this->build_html( $this->content ),
 			$this
 		);
+		$content          = str_replace( '[', '&#91;', $content );
+		$content          = str_replace( ']', '&#93;', $content );
+
 		return $content;
 	}
 
