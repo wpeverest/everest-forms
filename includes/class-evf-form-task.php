@@ -8,6 +8,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
+use CleanTalk\CleantalkAntispam;
 use Cleantalk\Antispam\CleantalkRequest;
 use EverestForms\Helpers\FormHelper;
 
@@ -1967,7 +1968,16 @@ class EVF_Form_Task {
 			return true;
 		}
 
-		$clean_talk_passed = $response->allow == 1 && $response->spam == 0 && $response->account_status == 1;
+		$email_field        = isset( $entry_data['sender_email'] ) ? $entry_data['sender_email'] : '';
+		$cleantalk_antispam = new CleantalkAntispam( $access_key, $email_field );
+		$api_result         = $cleantalk_antispam->handle();
+		if ( empty( $api_result ) ) {
+			return true;
+		}
+		$api_result = $cleantalk_antispam->handle();
+		$cleantalk_antispam->setEventTokenEnabled( 1 );
+
+		$clean_talk_passed = $api_result->allow == 1 && $api_result->spam == 0 && $api_result->account_status == 1;
 
 		if ( ! $clean_talk_passed ) {
 			$marked_as_spam = true;
