@@ -478,7 +478,7 @@ class EVF_AJAX {
 					array(
 						'errorTitle'   => esc_html__( 'Empty Field Label.', 'everest-forms' ),
 						/* translators: %s: empty field label */
-						'errorMessage' => sprintf( wp_kses_post( __( 'Please add label for fields: %s.<br>To hide the field please Enable Hide Label option from Advanced Options > Hide Label', 'everest-forms' ) ), '<strong>' . implode( ', ', $empty_field_label ) . '</strong>' ),
+						'errorMessage' => wp_kses_post( sprintf( __( 'Please add label for fields: %s.<br>To hide the field please Enable Hide Label option from Advanced Options > Hide Label', 'everest-forms' ), '<strong>' . implode( ', ', $empty_field_label ) . '</strong>' ) ),
 					)
 				);
 			}
