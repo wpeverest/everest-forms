@@ -146,6 +146,28 @@ module.exports = function (grunt) {
 
         // Minify all .css files
         cssmin: {
+            options: {
+                format: {
+                    breaks: {
+                        afterAtRule: true,
+                        afterBlockBegins: true,
+                        afterBlockEnds: true,
+                        afterComment: true,
+                        afterProperty: true,
+                        afterRuleBegins: true,
+                        afterRuleEnds: true,
+                        beforeBlockEnds: true,
+                        betweenSelectors: true
+                    },
+                    indentBy: 1,
+                    indentWith: 'tab',
+                    spaces: {
+                        aroundSelectorRelation: true,
+                        beforeBlockBegins: true,
+                        beforeValue: true
+                    }
+                }
+            },
             minify: {
                 expand: true,
                 cwd: '<%= dirs.css %>/',
@@ -196,9 +218,7 @@ module.exports = function (grunt) {
         postcss: {
             options: {
                 processors: [
-                    require('autoprefixer')({
-                        overrideBrowserslist: ['> 0.1%', 'ie 8', 'ie 9'],
-                    }),
+                    require('autoprefixer')(),
                 ],
             },
             dist: {
@@ -255,7 +275,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-compress');
 
     // Register tasks
-
+    grunt.registerTask('default', ['sass', 'rtlcss', 'cssmin', 'concat', 'uglify']);
     grunt.registerTask('release', ['sass', 'rtlcss', 'cssmin', 'concat', 'jshint', 'uglify', 'makepot','compress:withoutVersion','compress:withVersion']);
 	grunt.registerTask('dev', ['watch']);
 };
