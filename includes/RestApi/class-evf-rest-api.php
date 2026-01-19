@@ -42,6 +42,8 @@ class EVF_REST_API {
 		include __DIR__ . '/controllers/version1/class-evf-role-and-permission.php';
 		// For external.
 		include __DIR__ . '/controllers/version1/class-evf-entry-submission.php';
+		// For site assistant.
+		include __DIR__ . '/controllers/version1/class-evf-site-assistant.php';
 
 		add_action( 'rest_api_init', array( __CLASS__, 'register_rest_routes' ) );
 	}
@@ -100,6 +102,7 @@ class EVF_REST_API {
 			'plugin'               => 'Everest_Forms_Plugin_Status',
 			'entry-submission'     => 'EVF_Entry_Submission',
 			'roels_and_permission' => 'EVF_Roles_And_Permission',
+			'site_assistant'       => 'EVF_Site_Assistant',
 		);
 	}
 }
