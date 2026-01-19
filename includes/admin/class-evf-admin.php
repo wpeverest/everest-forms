@@ -46,7 +46,6 @@ class EVF_Admin {
 		include_once __DIR__ . '/class-evf-admin-forms.php';
 		include_once __DIR__ . '/class-evf-admin-entries.php';
 		include_once __DIR__ . '/class-evf-admin-import-export.php';
-		include_once __DIR__ . '/class-evf-admin-deactivation-feedback.php';
 
 		// Setup/welcome.
 		if ( ! empty( $_GET['page'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
@@ -210,7 +209,7 @@ class EVF_Admin {
 				evf_enqueue_js(
 					"
 					jQuery( 'a.evf-rating-link' ).on( 'click', function() {
-						jQuery.post( '" . evf()->ajax_url() . "', { 
+						jQuery.post( '" . evf()->ajax_url() . "', {
 							action: 'everest_forms_rated',
 							security: '" . wp_create_nonce( 'everest_forms_rated' ) . "'
 						} );

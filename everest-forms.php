@@ -8,6 +8,8 @@
  * Author URI: https://everestforms.net/
  * Text Domain: everest-forms
  * Domain Path: /languages/
+ * WordPress Available: yes
+ * Requires License: no
  *
  * @package EverestForms
  */
@@ -90,3 +92,23 @@ function evf() {
 
 // Global for backwards compatibility.
 $GLOBALS['everest-forms'] = evf();
+
+/**
+ * ThemeGrill SDK customizations
+ * Disable promotions and dashboard widgets
+ */
+add_filter( 'themegrill_sdk_ran_promos', '__return_true' );
+add_filter( 'themegrill_sdk_hide_dashboard_widget', '__return_true' );
+
+/**
+ * Register Everest Forms with ThemeGrill SDK
+ */
+add_filter(
+	'themegrill_sdk_products',
+	function ( $products ) {
+		$products[] = EVF_PLUGIN_FILE;
+		return $products;
+	},
+	10,
+	1
+);
