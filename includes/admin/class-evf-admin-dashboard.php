@@ -97,6 +97,7 @@ class EVF_Admin_Dashboard {
 				'_EVF_DASHBOARD_',
 				array(
 					'adminURL'             => esc_url( admin_url() ),
+					'adminEmail'           => get_option( 'admin_email' ),
 					'settingsURL'          => esc_url( admin_url( '/admin.php?page=evf-settings' ) ),
 					'siteURL'              => esc_url( home_url( '/' ) ),
 					'liveDemoURL'          => esc_url_raw( 'https://everestforms.demoswp.net/' ),

@@ -57,13 +57,13 @@ interface Props {
 
 const SiteAssistant:React.FC<Props> = ({siteAssistantQuery}) => {
   const dashboardData = typeof _EVF_DASHBOARD_ !== "undefined" ? _EVF_DASHBOARD_ : {};
-  const { utmCampaign, evfRestApiNonce, restURL } = dashboardData;
+  const { utmCampaign, evfRestApiNonce, restURL, adminEmail} = dashboardData;
 
   const toast = useToast();
   const queryClient = useQueryClient();
 
   const [open, setOpen] = useState<Record<string, boolean>>({});
-  const [testEmail, setTestEmail] = useState<string>("");
+  const [testEmail, setTestEmail] = useState<string>(adminEmail || "");
 
   const toggleOpen = useCallback((id: string) => {
     setOpen((prev) => ({ ...prev, [id]: !prev[id] }));
@@ -239,6 +239,13 @@ const SiteAssistant:React.FC<Props> = ({siteAssistantQuery}) => {
               value={testEmail}
               onChange={(e) => setTestEmail(e.target.value)}
               isDisabled={sendTestEmailMutation.isLoading}
+			  onKeyDown={e => {
+			  if (e.key === 'Enter') {
+				e.preventDefault();
+				handleSendTestEmail();
+			  }
+			  }}
+
             />
           </FormControl>
           <Button
@@ -254,6 +261,12 @@ const SiteAssistant:React.FC<Props> = ({siteAssistantQuery}) => {
       </Collapse>
     </Stack>
   );
+
+	useEffect(()=>{
+	if(adminEmail){
+		setTestEmail(adminEmail);
+	}
+	},[adminEmail])
 
   const renderSpamProtectionContent = (stepNumber: number) => (
     <Stack
