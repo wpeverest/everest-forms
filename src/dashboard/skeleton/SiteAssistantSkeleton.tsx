@@ -21,10 +21,8 @@ const SiteAssistantSkeleton = () => {
           xl: '3fr 1fr',
         }}
       >
-        {/* Main Content Skeleton */}
-        <Stack gap="5">
-          {/* Send Test Email Section Skeleton */}
-          <Stack
+         <Stack gap="5">
+           <Stack
             p="6"
             gap="5"
             bgColor="white"

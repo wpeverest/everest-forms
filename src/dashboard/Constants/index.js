@@ -6,7 +6,7 @@ const { isPro, utmCampaign } =
 let ROUTES = [
 	{
 		route: "/",
-		label: __("Dashboard", "everest-forms"),
+		label: __("Site Assistant", "everest-forms"),
 	},
 	{
 		route: "/features",

@@ -226,7 +226,7 @@ const Modules = () => {
 
 	return (
 		<Box top="var(--wp-admin--admin-bar--height, 0)" zIndex={1}>
-			<Container maxW="container.xl">
+			<Container maxW="full">
 				<Stack
 					direction="row"
 					minH="70px"
@@ -356,7 +356,7 @@ const Modules = () => {
 					</Stack>
 				</Stack>
 			</Container>
-			<Container maxW="container.xl">
+			<Container maxW="full">
 				{
 					isSearching ? (
 						<AddonsSkeleton />

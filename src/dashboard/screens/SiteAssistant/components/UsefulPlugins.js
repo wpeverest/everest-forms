@@ -22,11 +22,11 @@ import React, { useRef, useState, useEffect, useContext } from "react";
 /**
  *  Internal Dependencies
  */
-import { PLUGINS } from "./../../../Constants/Products";
+import { PLUGINS } from "../../../Constants/Products";
 import DashboardContext, {
 	DashboardProvider,
-} from "./../../../context/DashboardContext";
-import UsePluginInstallActivate from "./../../../components/common/UsePluginInstallActivate";
+} from "../../../context/DashboardContext";
+import UsePluginInstallActivate from "../../../components/common/UsePluginInstallActivate";
 
 const Plugin = ({ plugin, index }) => {
 	const { isOpen, onOpen, onClose } = useDisclosure();

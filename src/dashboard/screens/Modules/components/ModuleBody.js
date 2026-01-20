@@ -249,7 +249,7 @@ const ModuleBody = ({
 						</ModalContent>
 					</Modal>
 				)}
-				<Container maxW="container.xl">
+				<Container maxW="full">
 					{isEmpty(filteredAddons) ? (
 						<AddonsSkeleton />
 					) : (

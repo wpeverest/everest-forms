@@ -14,6 +14,59 @@ defined( 'ABSPATH' ) || exit;
 class EVF_Admin_Dashboard {
 
 	/**
+	 * Check if spam protection (reCAPTCHA) is configured.
+	 * Requires BOTH site key AND secret key to be filled.
+	 *
+	 * @return bool True if any captcha type has BOTH keys configured, false otherwise.
+	 */
+	protected static function is_spam_protection_configured() {
+		$captcha_configs = array(
+			array(
+				'site_key'   => get_option( 'everest_forms_recaptcha_v2_site_key', '' ),
+				'secret_key' => get_option( 'everest_forms_recaptcha_v2_secret_key', '' ),
+			),
+			array(
+				'site_key'   => get_option( 'everest_forms_recaptcha_v2_invisible_site_key', '' ),
+				'secret_key' => get_option( 'everest_forms_recaptcha_v2_invisible_secret_key', '' ),
+			),
+			array(
+				'site_key'   => get_option( 'everest_forms_recaptcha_v3_site_key', '' ),
+				'secret_key' => get_option( 'everest_forms_recaptcha_v3_secret_key', '' ),
+			),
+			array(
+				'site_key'   => get_option( 'everest_forms_recaptcha_hcaptcha_site_key', '' ),
+				'secret_key' => get_option( 'everest_forms_recaptcha_hcaptcha_secret_key', '' ),
+			),
+			array(
+				'site_key'   => get_option( 'everest_forms_recaptcha_turnstile_site_key', '' ),
+				'secret_key' => get_option( 'everest_forms_recaptcha_turnstile_secret_key', '' ),
+			),
+		);
+
+		foreach ( $captcha_configs as $config ) {
+			if ( ! empty( $config['site_key'] ) && ! empty( $config['secret_key'] ) ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Check if spam protection step is completed.
+	 * Returns true if EITHER manually skipped OR configured with both keys.
+	 *
+	 * @return bool True if spam protection is completed, false otherwise.
+	 */
+	protected static function is_spam_protection_completed() {
+		$manually_skipped = (bool) get_option( 'everest_forms_spam_protection_skipped', false );
+		$is_configured    = self::is_spam_protection_configured();
+
+		return $manually_skipped || $is_configured;
+	}
+
+
+	/**
 	 * Handles output of the reports page in admin.
 	 */
 	public static function page_output() {
@@ -58,6 +111,10 @@ class EVF_Admin_Dashboard {
 					'licenseActivationURL' => esc_url_raw( admin_url( 'plugins.php' ) ),
 					'utmCampaign'          => EVF()->utm_campaign,
 					'upgradeURL'           => esc_url_raw( 'https://everestforms.net/upgrade/?' ),
+					'allStepsCompleted'    => (
+															self::is_spam_protection_completed()
+															&& (bool) get_option( 'everest_forms_test_email_sent', false )
+														) ? '1' : '0',
 					'plugins'              => array_reduce(
 						$allowed_plugin_slugs,
 						function ( $acc, $curr ) use ( $installed_plugin_slugs ) {
@@ -80,8 +137,8 @@ class EVF_Admin_Dashboard {
 							in_array( 'zakra', $installed_theme_slugs, true ) ? 'inactive' : 'not-installed'
 						),
 						'colormag' => strpos( $current_theme, 'colormag' ) !== false || strpos( $current_theme, 'colormag-pro' ) !== false ? 'active' : (
-							in_array( 'colormag', $installed_theme_slugs, true ) || in_array( 'colormag-pro', $installed_theme_slugs, true ) ? 'inactive' : 'not-installed'
-						),
+						in_array( 'colormag', $installed_theme_slugs, true ) || in_array( 'colormag-pro', $installed_theme_slugs, true ) ? 'inactive' : 'not-installed'
+					),
 					),
 					'alert_icon'           => plugins_url( 'assets/images/icons/alert-icon.png', EVF_PLUGIN_FILE ),
 				)
@@ -100,9 +157,10 @@ class EVF_Admin_Dashboard {
 	 */
 	public static function dashboard_page_body() {
 		?>
-			<body class="everest-forms-dashboard notranslate" translate="no">
-				<div id="everest-forms-dashboard"></div>
-			</body>
+
+<body class="everest-forms-dashboard notranslate" translate="no">
+	<div id="everest-forms-dashboard"></div>
+</body>
 		<?php
 	}
 
@@ -118,8 +176,8 @@ class EVF_Admin_Dashboard {
 		wp_print_footer_scripts();
 		wp_print_scripts( 'evf-dashboard-script' );
 		?>
-		</html>
+
+</html>
 		<?php
 	}
-
 }

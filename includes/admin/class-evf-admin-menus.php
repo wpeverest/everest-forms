@@ -160,7 +160,7 @@ class EVF_Admin_Menus {
 		add_submenu_page(
 			'everest-forms',
 			__( 'Everest Forms Dashboard', 'everest-forms' ),
-			__( 'Dashboard', 'everest-forms' ),
+			__( 'Site Assistant', 'everest-forms' ),
 			'manage_everest_forms',
 			'evf-dashboard',
 			array(

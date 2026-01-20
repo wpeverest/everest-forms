@@ -24,17 +24,15 @@ import {
 import { __ } from "@wordpress/i18n";
 import React, { useCallback, useState, useMemo, useEffect } from "react";
 import { BiChevronDown, BiChevronUp } from 'react-icons/bi';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient, UseQueryResult } from '@tanstack/react-query';
 import apiFetch from "@wordpress/api-fetch";
 
 /**
  *  Internal Dependencies
  */
-import UsefulPlugins from "./components/UsefulPlugins";
-import { docURL, facebookGroup, submitReviewUrl, ticketUrl } from "../../utils/constants";
+ import { docURL, facebookGroup, submitReviewUrl, ticketUrl ,featureRequestURL} from "../../utils/constants";
 import { Bulb, DocsLines, Headphones, Star, Team, Video } from "../../components/Icon/Icon";
-import { templatesScriptData } from './../../../templates/utils/global';
-import SiteAssistantSkeleton from "../../skeleton/SiteAssistantSkeleton";
+ import SiteAssistantSkeleton from "../../skeleton/SiteAssistantSkeleton";
 
 interface SiteAssistantData {
   skipped_steps: string[];
@@ -53,7 +51,11 @@ interface StepConfig {
   renderContent: (stepNumber: number) => JSX.Element;
 }
 
-const Dashboard = () => {
+interface Props {
+	siteAssistantQuery : UseQueryResult<any,any>;
+}
+
+const SiteAssistant:React.FC<Props> = ({siteAssistantQuery}) => {
   const dashboardData = typeof _EVF_DASHBOARD_ !== "undefined" ? _EVF_DASHBOARD_ : {};
   const { utmCampaign, evfRestApiNonce, restURL } = dashboardData;
 
@@ -67,53 +69,24 @@ const Dashboard = () => {
     setOpen((prev) => ({ ...prev, [id]: !prev[id] }));
   }, []);
 
-  const helpURL =
-    "https://docs.everestforms.net/?utm_source=dashboard-dashboard&utm_medium=sidebar-link&utm_campaign=" +
-    utmCampaign;
-  const featureRequestURL =
-    "https://everestforms.net/feature-requests/?utm_source=dashboard-dashboard&utm_medium=sidebar-link&utm_campaign=" +
-    utmCampaign;
-  const supportURL = "https://everestforms.net/support/?utm_source=dashboard-dashboard&utm_medium=sidebar-link&utm_campaign=" +
-    utmCampaign;
+	const handleConfigureRecaptcha = () => {
+	const settingsURL =
+		window._EVF_DASHBOARD_?.settingsURL ||
+		`${window.location.origin}/wp-admin/admin.php?page=evf-settings`;
 
-  const handleConfigureRecaptcha = () => {
-    const settingsURL =
-      window._EVF_DASHBOARD_?.settingsURL ||
-      `${window.location.origin}/wp-admin/admin.php?page=evf-settings&tab=recaptcha`;
-    window.open(`${settingsURL}&tab=captcha&method=v2`, "_blank");
-  };
+	window.open(`${settingsURL}&tab=captcha`, "_blank");
+	};
 
-  const handleOtherSpamFeatures = () => {
-    const settingsURL =
-      window._EVF_DASHBOARD_?.settingsURL ||
-      `${window.location.origin}/wp-admin/admin.php?page=evf-settings&tab=recaptcha`;
-    window.open(`${settingsURL}&tab=captcha`, "_blank");
-  };
+	const handleOtherSpamFeatures = () => {
+	const settingsURL =
+		window._EVF_DASHBOARD_?.settingsURL ||
+		`${window.location.origin}/wp-admin/admin.php?page=evf-settings`;
 
-  const { data: siteData, isLoading, error } = useQuery<ApiResponse>({
-    queryKey: ['siteAssistant'],
-    queryFn: async () => {
-      const response = await apiFetch({
-        path: `${restURL}everest-forms/v1/site-assistant`,
-        method: 'GET',
-        headers: {
-          'X-WP-Nonce': evfRestApiNonce,
-        },
-      });
-      return response as ApiResponse;
-    },
-    retry: 1,
-    onError: (error: any) => {
-      console.error('Error fetching site assistant data:', error);
-      toast({
-        title: __("Error", "everest-forms"),
-        description: __("Failed to load setup status.", "everest-forms"),
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
-    },
-  });
+	// Properly concatenate &tab=captcha
+	window.open(`${settingsURL}&tab=captcha`, "_blank");
+	};
+
+  const { data: siteData, isLoading, error } = siteAssistantQuery;
 
   const skipSpamProtectionMutation = useMutation({
     mutationFn: async () => {
@@ -218,7 +191,7 @@ const Dashboard = () => {
       <HStack justify={'space-between'}>
         <HStack alignItems="center">
           <Heading as="h3" size="md" fontWeight="semibold">
-            {stepNumber}. {__('Send Test Email', 'everest-forms')}
+            {stepNumber}{")"} {__('Send Test Email', 'everest-forms')}
           </Heading>
           {siteData?.data?.test_email_sent && (
             <Text fontSize="sm" color="green.500" fontWeight="medium">
@@ -294,7 +267,7 @@ const Dashboard = () => {
       <HStack justify={'space-between'}>
         <HStack alignItems="center">
           <Heading as="h3" size="md" fontWeight="semibold">
-            {stepNumber}. {__('Spam Protection', 'everest-forms')}
+            {stepNumber}{")"} {__('Spam Protection', 'everest-forms')}
           </Heading>
         </HStack>
         <IconButton
@@ -459,7 +432,7 @@ const Dashboard = () => {
             borderColor="gray.100"
           >
             <HStack gap="2">
-              <Icon as={Team} h="5" fill="primary.500" />
+              <Icon as={Team} fontSize={'xl'} fill="primary.500" />
               <Heading as="h3" size="sm" fontWeight="semibold">
                 {__('Everest Forms Community', 'everest-forms')}
               </Heading>
@@ -488,7 +461,7 @@ const Dashboard = () => {
             borderColor="gray.100"
           >
             <HStack gap="2">
-              <Icon as={DocsLines} h="5" fill="primary.500" />
+              <Icon as={DocsLines} fontSize={'xl'} fill="primary.500" />
               <Heading as="h3" size="sm" fontWeight="semibold">
                 {__('Getting Started', 'everest-forms')}
               </Heading>
@@ -517,7 +490,7 @@ const Dashboard = () => {
             borderColor="gray.100"
           >
             <HStack gap="2">
-              <Icon as={Headphones} h="5" fill="primary.500" />
+              <Icon as={Headphones} fontSize={'xl'} fill="primary.500" />
               <Heading as="h3" size="sm" fontWeight="semibold">
                 {__('Support', 'everest-forms')}
               </Heading>
@@ -546,7 +519,7 @@ const Dashboard = () => {
             borderColor="gray.100"
           >
             <HStack gap="2">
-              <Icon as={Bulb} h="5" fill="primary.500" />
+              <Icon as={Bulb} fontSize={'xl'} fill="primary.500" />
               <Heading as="h3" size="sm" fontWeight="semibold">
                 {__('Feature Request', 'everest-forms')}
               </Heading>
@@ -575,7 +548,7 @@ const Dashboard = () => {
             borderColor="gray.100"
           >
             <HStack gap="2">
-              <Icon as={Star} h="5" fill="primary.500" />
+              <Icon as={Star} fontSize={'xl'} fill="primary.500" />
               <Heading as="h3" size="sm" fontWeight="semibold">
                 {__('Submit a Review', 'everest-forms')}
               </Heading>
@@ -604,7 +577,7 @@ const Dashboard = () => {
             borderColor="gray.100"
           >
             <HStack gap="2">
-              <Icon as={Video} h="5" fill="primary.500" />
+              <Icon as={Video} fontSize={'xl'} fill="primary.500" />
               <Heading as="h3" size="sm" fontWeight="semibold">
                 {__('Video Tutorials', 'everest-forms')}
               </Heading>
@@ -630,4 +603,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default SiteAssistant;

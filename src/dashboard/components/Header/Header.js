@@ -22,7 +22,7 @@ import {
 	Tooltip,
 } from "@chakra-ui/react";
 import { __ } from "@wordpress/i18n";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 import { NavLink } from "react-router-dom";
 
 /**
@@ -34,7 +34,7 @@ import { EVF, ExternalLink } from "../Icon/Icon";
 import IntersectObserver from "../IntersectionObserver/IntersectionObserver";
 import Changelog from "../Changelog/Changelog";
 
-const Header = () => {
+const Header = ({hideSiteAssistant = false}) => {
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const ref = useRef();
 
@@ -52,6 +52,14 @@ const Header = () => {
 		};
 	}, [isOpen]);
 
+
+	const filteredRoutes = useMemo(() => {
+		if (hideSiteAssistant) {
+			return ROUTES.filter((route) => route.route !== "/");
+		}
+		return ROUTES;
+	}, [hideSiteAssistant]);
+
 	return (
 		<>
 			<Box
@@ -60,7 +68,7 @@ const Header = () => {
 				borderBottom="1px solid #E9E9E9"
 				width="100%"
 			>
-				<Container maxW="container.xl">
+				<Container maxW="full">
 					<Stack
 						direction="row"
 						minH="70px"
@@ -71,8 +79,8 @@ const Header = () => {
 							<Link as={NavLink} to="/dashboard">
 								<EVF h="10" w="10" />
 							</Link>
-							<IntersectObserver routes={ROUTES}>
-								{ROUTES.map(({ route, label }) => (
+							<IntersectObserver routes={filteredRoutes}>
+								{filteredRoutes.map(({ route, label }) => (
 									<Link
 										data-target={route}
 										key={route}
