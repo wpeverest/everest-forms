@@ -253,7 +253,7 @@ const ModuleBody = ({
 					{isEmpty(filteredAddons) ? (
 						<AddonsSkeleton />
 					) : (
-						<SimpleGrid columns={4} spacing="5">
+						<SimpleGrid columns={{ base: 1, sm: 2, md: 3, lg: 4 }} spacing="5">
 							{isArray(filteredAddons) &&
 								filteredAddons?.map((data) => (
 									<ModuleItem

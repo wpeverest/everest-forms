@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useCallback } from "react";
+import React, { useContext, useEffect, useState, useCallback, useMemo } from "react";
 import {
 	Box,
 	Container,
@@ -12,10 +12,15 @@ import {
 	Button,
 	InputGroup,
 	InputLeftElement,
+	InputRightElement,
 	Input,
 	FormControl,
 	useToast,
-	Text
+	Text,
+	Spinner,
+	Flex,
+	Icon,
+	IconButton
 } from "@chakra-ui/react";
 import { __ } from "@wordpress/i18n";
 import {
@@ -31,6 +36,7 @@ import dashboardReducer, {
 } from "./../../reducers/DashboardReducer";
 import DashboardContext from "./../../context/DashboardContext";
 import { debounce } from "lodash";
+import { CloseIcon } from "@chakra-ui/icons";
 
 const Modules = () => {
 	const toast = useToast();
@@ -57,27 +63,33 @@ const Modules = () => {
 					});
 
 					setOriginalModules(data.modules_lists);
-					filterModules(data.modules_lists);
 					setModulesLoaded(true);
 				}
 			})
 			.catch((error) => {
 				setError(error.message);
 			});
-	}, [dispatch, tabIndex]);
+	}, [dispatch]);
 
-	const filterModules = (modules) => {
+	const filterModules = useCallback((modules, searchValue = '') => {
 		let filteredModules = modules;
 
-		if (tabIndex === 1) {
-			filteredModules = modules.filter(module => module.type === "feature");
+ 		if (tabIndex === 1) {
+			filteredModules = filteredModules.filter(module => module.type === "feature");
 		} else if (tabIndex === 2) {
-			filteredModules = modules.filter(module => module.type === "addon");
+			filteredModules = filteredModules.filter(module => module.type === "addon");
+		}
+
+ 		if (searchValue.trim()) {
+			filteredModules = filteredModules.filter((module) =>
+				module.title.toLowerCase().includes(searchValue.toLowerCase())
+			);
 		}
 
 		setModules(filteredModules);
 		setModulesLoaded(true);
-	};
+		setNoItemFound(filteredModules.length === 0 && searchValue.trim() !== '');
+	}, [tabIndex]);
 
 	useEffect(() => {
 		fetchModules();
@@ -94,8 +106,10 @@ const Modules = () => {
 	}, [error]);
 
 	useEffect(() => {
-		filterModules(originalModules);
-	}, [tabIndex, originalModules]);
+		if (originalModules.length > 0) {
+			filterModules(originalModules, searchItem);
+		}
+	}, [tabIndex, originalModules, filterModules, searchItem]);
 
 	const handleBulkActions = () => {
 		setIsPerformingBulkAction(true);
@@ -124,47 +138,37 @@ const Modules = () => {
 			});
 	};
 
-	const debounceSearch = debounce((val) => {
-		setIsSearching(true);
-
-		if (!val) {
-			filterModules(originalModules);
-			setIsSearching(false);
-			return;
-		}
-
-		let searchedData = [];
-
-		if (tabIndex === 1) {
-			searchedData = originalModules.filter(
-				(module) => module.type === "feature" && module.title.toLowerCase().includes(val.toLowerCase())
-			);
-		} else if (tabIndex === 2) {
-			searchedData = originalModules.filter(
-				(module) => module.type === "addon" && module.title.toLowerCase().includes(val.toLowerCase())
-			);
-		} else {
-			searchedData = originalModules.filter((module) => module.title.toLowerCase().includes(val.toLowerCase()));
-		}
-
-		if (searchedData.length > 0) {
-			setModules(searchedData);
-			setModulesLoaded(true);
-			setNoItemFound(false);
-		} else {
-			setModules([]);
-			setModulesLoaded(false);
-			setNoItemFound(true);
-		}
-
+	const performSearch = useCallback((val) => {
+		filterModules(originalModules, val);
 		setIsSearching(false);
-	}, 800);
+	}, [originalModules, filterModules]);
+
+	const debounceSearch = useMemo(
+		() => debounce((val) => {
+			performSearch(val);
+		}, 200),
+		[performSearch]
+	);
 
 	const handleSearchInputChange = (e) => {
 		const val = e.target.value;
 		setSearchItem(val);
+		setIsSearching(true);
 		debounceSearch(val);
 	};
+
+	const handleClearSearch = () => {
+		setSearchItem('');
+		setIsSearching(false);
+		debounceSearch.cancel();
+		filterModules(originalModules, '');
+	};
+
+	useEffect(() => {
+		return () => {
+			debounceSearch.cancel();
+		};
+	}, [debounceSearch]);
 
 	const parseDate = (dateString) => {
 		const [day, month, year] = dateString.split("/").map(Number);
@@ -225,7 +229,13 @@ const Modules = () => {
 	};
 
 	return (
-		<Box top="var(--wp-admin--admin-bar--height, 0)" zIndex={1}>
+		<Box
+			top="var(--wp-admin--admin-bar--height, 0)"
+			zIndex={1}
+			minH="100vh"
+			display="flex"
+			flexDirection="column"
+		>
 			<Container maxW="container.xl">
 				<Stack
 					direction="row"
@@ -275,19 +285,13 @@ const Modules = () => {
 							}}
 						>
 							<TabList>
-								<Tab
-									onClick={() => handleSearchInputChange({ target: { value: searchItem } })}
-								>
+								<Tab>
 									{__("All Modules", "everest-forms")}
 								</Tab>
-								<Tab
-									onClick={() => handleSearchInputChange({ target: { value: searchItem } })}
-								>
+								<Tab>
 									{__("Features", "everest-forms")}
 								</Tab>
-								<Tab
-									onClick={() => handleSearchInputChange({ target: { value: searchItem } })}
-								>
+								<Tab>
 									{__("Addons", "everest-forms")}
 								</Tab>
 							</TabList>
@@ -349,73 +353,107 @@ const Modules = () => {
 										"everest-forms"
 									)}
 									paddingLeft="32px !important"
-									value={searchItem} onChange={handleSearchInputChange}
+									paddingRight={searchItem ? "32px !important" : "12px !important"}
+									value={searchItem}
+									onChange={handleSearchInputChange}
 								/>
+								<InputRightElement top="2px">
+									{isSearching ? (
+										<Spinner size="sm" color="gray.400" />
+									) : searchItem ? (
+										<IconButton
+											aria-label="Clear search"
+											icon={<CloseIcon />}
+											size="xs"
+											variant="ghost"
+											onClick={handleClearSearch}
+											_hover={{ bg: "gray.100" }}
+											borderRadius="full"
+										/>
+									) : null}
+								</InputRightElement>
 							</InputGroup>
 						</FormControl>
 					</Stack>
 				</Stack>
 			</Container>
-			<Container maxW="container.xl">
+			<Container
+				maxW="container.xl"
+				flex="1"
+				display="flex"
+				flexDirection="column"
+			>
 				{
-					isSearching ? (
-						<AddonsSkeleton />
-					) : (
-						noItemFound ? (
-							<Text
-								align="center"
-								fontSize="1.2rem"
-								bg="red"
-								color="white"
-								p={4}
-								m="5rem auto 0"
-								width="60%"
-								borderRadius="10px"
-								fontWeight="bold"
+					noItemFound ? (
+						<Flex
+							direction="column"
+							align="center"
+							justify="flex-start"
+							flex="1"
+							minH="calc(100vh - 140px)"
+							gap="4"
+							pt="120px"
+						>
+							<Box
+								as="svg"
+								width="80px"
+								height="80px"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								strokeWidth="2"
+								strokeLinecap="round"
+								strokeLinejoin="round"
+								color="gray.400"
 							>
-								{(() => {
-									switch (tabIndex) {
-										case 1:
-											return __("Sorry, No features found", "everest-forms");
-										case 2:
-											return __("Sorry, No addons found", "everest-forms");
-										default:
-											return __("Sorry, No modules found", "everest-forms");
-									}
-								})()}
-							</Text>
-						) : (
-							<Box>
-								<Tabs index={tabIndex}>
-									<TabPanels>
-										<TabPanel>
-											<ModuleBody
-												isPerformingBulkAction={isPerformingBulkAction}
-												filteredAddons={modules}
-												setSelectedModuleData={setSelectedModuleData}
-												selectedModuleData={selectedModuleData}
-											/>
-										</TabPanel>
-										<TabPanel>
-											<ModuleBody
-												isPerformingBulkAction={isPerformingBulkAction}
-												filteredAddons={modules}
-												setSelectedModuleData={setSelectedModuleData}
-												selectedModuleData={selectedModuleData}
-											/>
-										</TabPanel>
-										<TabPanel>
-											<ModuleBody
-												isPerformingBulkAction={isPerformingBulkAction}
-												filteredAddons={modules}
-												setSelectedModuleData={setSelectedModuleData}
-												selectedModuleData={selectedModuleData}
-											/>
-										</TabPanel>
-									</TabPanels>
-								</Tabs>
+								<circle cx="11" cy="11" r="8"></circle>
+								<path d="m21 21-4.35-4.35"></path>
 							</Box>
-						)
+							<Text
+								fontSize="18px"
+								fontWeight="500"
+								color="gray.700"
+							>
+								{__("Sorry, no result found.", "everest-forms")}
+							</Text>
+							<Text
+								fontSize="14px"
+								color="gray.500"
+							>
+								{__("Please try another search", "everest-forms")}
+							</Text>
+						</Flex>
+					) : (
+						<Box flex="1" minH="calc(100vh - 140px)">
+							<Tabs index={tabIndex} h="100%">
+								<TabPanels h="100%">
+									<TabPanel h="100%">
+										<ModuleBody
+											isPerformingBulkAction={isPerformingBulkAction}
+											filteredAddons={modules}
+											setSelectedModuleData={setSelectedModuleData}
+											selectedModuleData={selectedModuleData}
+										/>
+									</TabPanel>
+									<TabPanel h="100%">
+										<ModuleBody
+											isPerformingBulkAction={isPerformingBulkAction}
+											filteredAddons={modules}
+											setSelectedModuleData={setSelectedModuleData}
+											selectedModuleData={selectedModuleData}
+										/>
+									</TabPanel>
+									<TabPanel h="100%">
+										<ModuleBody
+											isPerformingBulkAction={isPerformingBulkAction}
+											filteredAddons={modules}
+											setSelectedModuleData={setSelectedModuleData}
+											selectedModuleData={selectedModuleData}
+										/>
+									</TabPanel>
+								</TabPanels>
+							</Tabs>
+						</Box>
 					)
 				}
 			</Container>
