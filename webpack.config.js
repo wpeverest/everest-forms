@@ -74,6 +74,7 @@ const webpackConfig = {
 		'@wordpress/components': ['wp', 'components'],
 		'@wordpress/block-editor': ['wp', 'blockEditor'],
 		'@wordpress/server-side-render': ['wp', 'serverSideRender'],
+		'@wordpress/hooks': ['wp', 'hooks'],
 		react: ['React'],
 	},
 	resolve: {

@@ -9,6 +9,10 @@ let ROUTES = [
 		label: __("Dashboard", "everest-forms"),
 	},
 	{
+		route: "/analytics",
+		label: __("Analytics", "everest-forms"),
+	},
+	{
 		route: "/features",
 		label: __("All Features", "everest-forms"),
 	},
