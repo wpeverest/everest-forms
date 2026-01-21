@@ -28,15 +28,14 @@ const FreeAnalyticsContent = () => {
  * @since x.x.x
  *
  * This function uses WordPress hooks to allow pro plugin to inject analytics.
- * Re-checks filter after mount to handle timing issues.
+ * Uses a loading state to prevent content flash when pro filter loads.
  */
 const Analytics = () => {
-	const [, forceUpdate] = useState(0);
+	const [isReady, setIsReady] = useState(false);
 
-	// Re-render once after mount to pick up any late-registered filters
 	useEffect(() => {
 		const timer = setTimeout(() => {
-			forceUpdate((n) => n + 1);
+			setIsReady(true);
 		}, 0);
 		return () => clearTimeout(timer);
 	}, []);
@@ -45,6 +44,10 @@ const Analytics = () => {
 		'everest-forms-analytics',
 		FreeAnalyticsContent,
 	);
+
+	if (!isReady) {
+		return null;
+	}
 
 	return <AnalyticsContent />;
 };
