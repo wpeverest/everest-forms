@@ -146,28 +146,6 @@ module.exports = function (grunt) {
 
         // Minify all .css files
         cssmin: {
-            options: {
-                format: {
-                    breaks: {
-                        afterAtRule: true,
-                        afterBlockBegins: true,
-                        afterBlockEnds: true,
-                        afterComment: true,
-                        afterProperty: true,
-                        afterRuleBegins: true,
-                        afterRuleEnds: true,
-                        beforeBlockEnds: true,
-                        betweenSelectors: true
-                    },
-                    indentBy: 1,
-                    indentWith: 'tab',
-                    spaces: {
-                        aroundSelectorRelation: true,
-                        beforeBlockBegins: true,
-                        beforeValue: true
-                    }
-                }
-            },
             minify: {
                 expand: true,
                 cwd: '<%= dirs.css %>/',
