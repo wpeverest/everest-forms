@@ -75,6 +75,7 @@ class EVF_Admin_Dashboard {
 		}
 		if ( ! empty( $_GET['page'] ) && 'evf-dashboard' === $_GET['page'] ) { //phpcs:ignore WordPress.Security.NonceVerification
 			wp_enqueue_script( 'evf-dashboard-script', EVF()->plugin_url() . '/dist/dashboard.min.js', array( 'wp-element', 'react', 'react-dom' ), EVF()->version, true );
+
 			if ( ! function_exists( 'get_plugins' ) ) {
 				require_once ABSPATH . 'wp-admin/includes/plugin.php';
 			}

@@ -690,7 +690,8 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 					<input name="<?php echo esc_attr( $value['id'] ); ?>" id="<?php echo esc_attr( $value['id'] ); ?>"
 						type="checkbox"
 						class="<?php echo esc_attr( isset( $value['class'] ) ? $value['class'] : '' ); ?>" value="1"
-						<?php checked( $option_value, 'yes' ); ?> <?php
+						<?php checked( $option_value, 'yes' ); ?>
+						<?php
 						if ( ! empty( $value['custom_attributes'] ) && is_array( $value['custom_attributes'] ) ) {
 							foreach ( $value['custom_attributes'] as $attribute => $attribute_value ) {
 								echo esc_attr( $attribute ) . '="' . esc_attr( $attribute_value ) . '"';
@@ -1031,7 +1032,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 					default:
 						if ( is_string( $raw_value ) ) {
 							$decoded_value = html_entity_decode( html_entity_decode( $raw_value ) );
-							$value = wp_kses_post( $decoded_value );
+							$value         = wp_kses_post( $decoded_value );
 						} else {
 							$value = evf_clean( $raw_value );
 						}

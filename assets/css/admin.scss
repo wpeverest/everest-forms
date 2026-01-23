@@ -6,34 +6,33 @@
 /**
  * Import
  */
-@import "variables/variables";
-@import "mixins/mixins";
-@import "fonts";
-@import "animation";
-@import "clearings";
-@import "confirm";
+@import 'variables/variables';
+@import 'mixins/mixins';
+@import 'fonts';
+@import 'animation';
+@import 'clearings';
+@import 'confirm';
 
 // Components
-@import "components/badge", "components/forms", "components/buttons",
-	"components/card", "components/table";
+@import 'components/badge', 'components/forms', 'components/buttons',
+	'components/card', 'components/table';
 
-@import "colors";
-@import "containers";
-@import "grid";
+@import 'colors';
+@import 'containers';
+@import 'grid';
 
 //Utilities
-@import "utility/display", "utility/spacing", "utility/border";
+@import 'utility/display', 'utility/spacing', 'utility/border';
 
 //Everest-forms icon
 @font-face {
-	font-family: "EverestForms";
-	src: url("../fonts/EverestForms.eot?5c6kq4");
+	font-family: 'EverestForms';
+	src: url('../fonts/EverestForms.eot?5c6kq4');
 	src:
-		url("../fonts/EverestForms.eot?5c6kq4#iefix")
-			format("embedded-opentype"),
-		url("../fonts/EverestForms.ttf?5c6kq4") format("truetype"),
-		url("../fonts/EverestForms.woff?5c6kq4") format("woff"),
-		url("../fonts/EverestForms.svg?5c6kq4#EverestForms") format("svg");
+		url('../fonts/EverestForms.eot?5c6kq4#iefix') format('embedded-opentype'),
+		url('../fonts/EverestForms.ttf?5c6kq4') format('truetype'),
+		url('../fonts/EverestForms.woff?5c6kq4') format('woff'),
+		url('../fonts/EverestForms.svg?5c6kq4#EverestForms') format('svg');
 	font-weight: normal;
 	font-style: normal;
 	font-display: block;
@@ -225,7 +224,7 @@
 
 	&::after {
 		cursor: help;
-		@include icon_dashicons("\f223");
+		@include icon_dashicons('\f223');
 	}
 }
 
@@ -240,7 +239,7 @@
 	min-width: 500px;
 
 	&::before {
-		content: "\f348";
+		content: '\f348';
 		font-size: 22px;
 		vertical-align: middle;
 		font-family: dashicons;
@@ -335,7 +334,7 @@
 			margin: 0;
 		}
 
-		&[type="number"] {
+		&[type='number'] {
 			-moz-appearance: textfield;
 		}
 	}
@@ -608,8 +607,7 @@ body.everest-forms-builder {
 				}
 
 				&:hover {
-					box-shadow: 0 2px 20px 0
-						transparentize($color_gray-base, 0.85);
+					box-shadow: 0 2px 20px 0 transparentize($color_gray-base, 0.85);
 				}
 			}
 		}
@@ -640,7 +638,7 @@ body.everest-forms-builder {
 		margin-right: 4px;
 		position: relative;
 
-		input[type="checkbox"] {
+		input[type='checkbox'] {
 			position: absolute;
 			top: 0;
 			bottom: 0;
@@ -671,7 +669,7 @@ body.everest-forms-builder {
 			background-color: #cdd0d2;
 
 			&::before {
-				content: "";
+				content: '';
 				width: 12px;
 				height: 12px;
 				position: absolute;
@@ -720,7 +718,7 @@ body.everest-forms-builder {
 						border: 9px solid transparent;
 
 						&::before {
-							content: "";
+							content: '';
 							height: 6px;
 							width: 2px;
 							background: #fff;
@@ -768,7 +766,7 @@ body.everest-forms-builder {
 				justify-content: flex-end;
 
 				&::after {
-					content: "";
+					content: '';
 					width: 4px;
 					height: 4px;
 					margin-right: 2px;
@@ -955,95 +953,95 @@ body.everest-forms-builder {
 						text-align: center;
 
 						&::before {
-							@include iconbefore("\e001");
+							@include iconbefore('\e001');
 							margin-right: 0;
 						}
 
 						&.general::before {
-							content: "\e001";
+							content: '\e001';
 						}
 
 						&.settings::before {
-							content: "\e92b";
+							content: '\e92b';
 						}
 
 						&.recaptcha::before {
-							content: "\e003";
+							content: '\e003';
 						}
 
 						&.email::before {
-							content: "\e006";
+							content: '\e006';
 						}
 
 						&.validation::before {
-							content: "\e910";
+							content: '\e910';
 						}
 
 						&.pdf-submission::before {
-							content: "\e023";
+							content: '\e023';
 						}
 
 						&.fields::before {
-							content: "\e92c";
+							content: '\e92c';
 						}
 
 						&.payment,
 						&.payments {
 							&::before {
-								content: "\e92a";
+								content: '\e92a';
 							}
 						}
 
 						&.integration,
 						&.integrations {
 							&::before {
-								content: "\e929";
+								content: '\e929';
 							}
 						}
 
 						&.logs::before {
-							content: "\e02d";
+							content: '\e02d';
 						}
 
 						&.import::before {
-							content: "\e02e";
+							content: '\e02e';
 						}
 
 						&.export::before {
-							content: "\e02f";
+							content: '\e02f';
 						}
 						&.form_migrator::before {
-							content: "\e916";
+							content: '\e916';
 						}
 						&.payment_log::before {
-							content: "\e918";
+							content: '\e918';
 						}
 						&.api_logs::before {
-							content: "\e919";
+							content: '\e919';
 						}
 						&.permission::before {
-							content: "\e030";
+							content: '\e030';
 						}
 						&.evf-widget::before {
-							content: "\e902";
+							content: '\e902';
 						}
 						&.geolocation::before {
-							content: "\e900";
+							content: '\e900';
 						}
 						&.delete::before {
-							content: "\e906";
+							content: '\e906';
 						}
 						&.misc::before {
-							content: "\e911";
+							content: '\e911';
 						}
 						&.ai::before {
-							content: "\e912";
+							content: '\e912';
 						}
 						&.lookup::before {
-							content: "\e914";
+							content: '\e914';
 						}
 						&.analytics::before {
-							content: "\e915";
+							content: '\e915';
 						}
 					}
 				}
@@ -1385,7 +1383,7 @@ body.everest-forms-builder {
 
 			&:hover {
 				.everest-forms-screenshot::after {
-					content: "";
+					content: '';
 					display: block;
 					background: transparentize($color_gray-base, 0.5);
 					position: absolute;
@@ -1452,7 +1450,7 @@ body.everest-forms-builder {
 					.evf-button::after {
 						position: absolute;
 						top: 0;
-						content: "";
+						content: '';
 					}
 					.evf-button::before {
 						left: -1.5em;
@@ -1574,7 +1572,7 @@ body.everest-forms-builder {
 					text-align: left;
 					margin-bottom: 0;
 
-					input[type="text"] {
+					input[type='text'] {
 						margin: 5px 2px 2px;
 						padding: 5px 10px;
 
@@ -1655,12 +1653,11 @@ body.everest-forms-builder {
 							opacity: 1;
 							width: 34%;
 							height: 50%;
-							content: "";
+							content: '';
 							transform-origin: left top;
 							border-top: 2px solid $color_gray-lighten;
 							border-right: 2px solid $color_gray-lighten;
-							transform: scaleX(-1) rotate(135deg)
-								translate(-58%, -40%);
+							transform: scaleX(-1) rotate(135deg) translate(-58%, -40%);
 						}
 					}
 
@@ -1803,7 +1800,7 @@ p.search-box {
 										border-color: #7545bb;
 									}
 
-									input[type="radio"] {
+									input[type='radio'] {
 										margin-top: -2px;
 										margin-right: 8px;
 										vertical-align: middle;
@@ -1829,7 +1826,7 @@ p.search-box {
 										}
 									}
 
-									&:has(input[type="radio"]:checked) {
+									&:has(input[type='radio']:checked) {
 										border-color: #7545bb;
 									}
 								}
@@ -1890,7 +1887,7 @@ p.search-box {
 			}
 		}
 
-		&:has(.evf-field-conditional-container[style*="display: none;"]) {
+		&:has(.evf-field-conditional-container[style*='display: none;']) {
 			.evf_conditional_logic_container {
 				margin-bottom: 0;
 			}
@@ -1969,7 +1966,7 @@ p.search-box {
 			float: right;
 
 			&::before {
-				content: "\f343" !important;
+				content: '\f343' !important;
 				cursor: pointer;
 				display: inline-block;
 				font: 400 20px/1 Dashicons;
@@ -1983,7 +1980,7 @@ p.search-box {
 
 		&.closed {
 			.handlediv::before {
-				content: "\f347" !important;
+				content: '\f347' !important;
 			}
 		}
 	}
@@ -2086,8 +2083,8 @@ p.search-box {
 			display: flex;
 			flex-wrap: nowrap;
 
-			input[type="text"],
-			input[type="number"],
+			input[type='text'],
+			input[type='number'],
 			select {
 				flex: 0 0 50%;
 				margin-right: 2%;
@@ -2123,11 +2120,7 @@ p.search-box {
 			.everest-forms-btn {
 				&:focus {
 					box-shadow: 0 0 0 3px
-						adjust-color(
-							$everestforms,
-							$saturation: 39%,
-							$lightness: +18%
-						);
+						adjust-color($everestforms, $saturation: 39%, $lightness: +18%);
 				}
 			}
 
@@ -2161,7 +2154,7 @@ p.search-box {
 							//  color: $color-white;
 
 							&::before {
-								@include iconbefore("\e00c");
+								@include iconbefore('\e00c');
 								line-height: 27px;
 								margin-right: 0;
 								padding-right: 0;
@@ -2228,11 +2221,7 @@ p.search-box {
 
 						&:focus {
 							box-shadow: 0 0 0 2px
-								adjust-color(
-									$everestforms,
-									$saturation: 39%,
-									$lightness: +18%
-								);
+								adjust-color($everestforms, $saturation: 39%, $lightness: +18%);
 						}
 					}
 
@@ -2299,7 +2288,7 @@ p.search-box {
 			}
 
 			.evf_smart_tag {
-				input[type="text"] {
+				input[type='text'] {
 					width: 100%;
 					min-height: 36px;
 				}
@@ -2537,14 +2526,12 @@ p.search-box {
 					}
 				}
 
+				&:has(.evf-conditional-confirmation-body[style*='display: none;']),
 				&:has(
-						.evf-conditional-confirmation-body[style*="display: none;"]
+						.evf-field-confirmation-conditional-container[style*='display: none;']
 					),
 				&:has(
-						.evf-field-confirmation-conditional-container[style*="display: none;"]
-					),
-				&:has(
-						.evf-conditional-confirmation-active-toggle[style*="display: none;"]
+						.evf-conditional-confirmation-active-toggle[style*='display: none;']
 					) {
 					min-height: unset;
 
@@ -2823,7 +2810,7 @@ p.search-box {
 							color: #ccd1d6;
 
 							&::before {
-								content: "";
+								content: '';
 								background-image: url(../images/icons/evf-pro-icon.png);
 								background-repeat: no-repeat;
 								background-position: center;
@@ -2958,7 +2945,7 @@ p.search-box {
 								display: flex;
 								align-items: center;
 
-								input[type="number"] {
+								input[type='number'] {
 									width: 30%;
 									margin-right: 8px;
 								}
@@ -2975,8 +2962,8 @@ p.search-box {
 							select {
 								height: 36px;
 
-								&[type="checkbox"],
-								&[type="radio"] {
+								&[type='checkbox'],
+								&[type='radio'] {
 									height: 16px;
 								}
 							}
@@ -3035,7 +3022,7 @@ p.search-box {
 
 									&.open {
 										.everest-forms-field-option-group-toggle {
-											background: #F6F7F9;
+											background: #f6f7f9;
 											border-bottom: 1px solid #e1e1e1;
 										}
 									}
@@ -3122,7 +3109,7 @@ p.search-box {
 						}
 
 						&::before {
-							content: "";
+							content: '';
 							background: #7545bb;
 							width: 4px;
 							height: 100%;
@@ -3301,7 +3288,7 @@ p.search-box {
 										top: 50%;
 										left: 3px;
 										width: 2px;
-										content: "";
+										content: '';
 										height: 10px;
 										position: absolute;
 										background: $color_gray-base;
@@ -3310,13 +3297,11 @@ p.search-box {
 									}
 
 									&::before {
-										transform: translateY(-50%)
-											rotate(45deg);
+										transform: translateY(-50%) rotate(45deg);
 									}
 
 									&::after {
-										transform: translateY(-50%)
-											rotate(-45deg);
+										transform: translateY(-50%) rotate(-45deg);
 									}
 								}
 							}
@@ -3332,7 +3317,7 @@ p.search-box {
 						transition: all 0.3s ease-in-out;
 
 						&::before {
-							content: "";
+							content: '';
 							background: #7545bb;
 							width: 4px;
 							height: 100%;
@@ -3523,8 +3508,7 @@ p.search-box {
 							span {
 								&.dashicons {
 									border-radius: 0 0 0 3px;
-									border-right: 1px solid
-										transparentize($color-white, 0.8);
+									border-right: 1px solid transparentize($color-white, 0.8);
 								}
 							}
 
@@ -3568,12 +3552,11 @@ p.search-box {
 							top: 35px;
 							transition: 0.9s background-color;
 							border: 1px solid $color-gray-lighten;
-							box-shadow: 1px 2px 10px 0
-								transparentize($color_gray-dark, 0.85);
+							box-shadow: 1px 2px 10px 0 transparentize($color_gray-dark, 0.85);
 
 							&::before,
 							&::after {
-								content: "";
+								content: '';
 								position: absolute;
 							}
 
@@ -3618,8 +3601,7 @@ p.search-box {
 									background: $color-white;
 
 									&:nth-child(n + 1) {
-										border-left: 1px solid
-											$color_gray-lighten;
+										border-left: 1px solid $color_gray-lighten;
 									}
 									&:nth-child(1) {
 										border-left: 0 none;
@@ -3753,7 +3735,7 @@ p.search-box {
 							border: 1px dashed $color-gray-light;
 
 							&::before {
-								content: "\f132";
+								content: '\f132';
 								font-size: 40px;
 								font-family: dashicons;
 								line-height: 1.2;
@@ -3806,11 +3788,8 @@ p.search-box {
 
 							&:has(input:checked) {
 								.everest-forms-field-label-inline {
-									border-color: var(
-										--wp--preset--color--vivid-cyan-blue
-									);
-									box-shadow: 0px 6px 24px 0px
-										rgba(10, 10, 10, 0.06);
+									border-color: var(--wp--preset--color--vivid-cyan-blue);
+									box-shadow: 0px 6px 24px 0px rgba(10, 10, 10, 0.06);
 								}
 							}
 
@@ -3925,7 +3904,7 @@ p.search-box {
 					}
 
 					&.label_hide {
-						input[type="text"] {
+						input[type='text'] {
 							margin-bottom: 0;
 						}
 
@@ -3939,13 +3918,13 @@ p.search-box {
 					}
 
 					input {
-						&[type="text"],
-						&[type="email"] {
+						&[type='text'],
+						&[type='email'] {
 							margin-bottom: 5px;
 						}
 
-						&[type="checkbox"],
-						&[type="radio"] {
+						&[type='checkbox'],
+						&[type='radio'] {
 							margin-right: 10px;
 						}
 					}
@@ -4181,7 +4160,7 @@ p.search-box {
 						right: 0;
 
 						&::before {
-							content: "";
+							content: '';
 							width: 45px;
 							background-color: $blue;
 							height: 1px;
@@ -4232,8 +4211,8 @@ p.search-box {
 				}
 
 				input {
-					&[type="checkbox"],
-					&[type="radio"] {
+					&[type='checkbox'],
+					&[type='radio'] {
 						margin-right: 10px;
 					}
 				}
@@ -4344,7 +4323,8 @@ p.search-box {
 					margin-right: 20px;
 				}
 
-				.evf-enable-email-toggle, .evf-enable-webhook-toggle {
+				.evf-enable-email-toggle,
+				.evf-enable-webhook-toggle {
 					position: absolute;
 					top: 15px;
 					right: -20px;
@@ -4399,7 +4379,7 @@ p.search-box {
 							.everest-forms-panel-field-checkbox {
 								margin-bottom: 12px;
 
-								input[type="checkbox"] {
+								input[type='checkbox'] {
 									margin-right: 8px;
 								}
 							}
@@ -4505,12 +4485,12 @@ p.search-box {
 					}
 
 					input {
-						&[type="text"] {
+						&[type='text'] {
 							width: 100%;
 						}
 
-						&[type="radio"],
-						&[type="checkbox"] {
+						&[type='radio'],
+						&[type='checkbox'] {
 							margin: 0px 6px 0 0;
 						}
 
@@ -4617,7 +4597,7 @@ p.search-box {
 
 				&.show-values {
 					li {
-						input[type="text"].value {
+						input[type='text'].value {
 							display: block;
 						}
 					}
@@ -4656,7 +4636,7 @@ p.search-box {
 						margin-bottom: 10px;
 						border: 1px solid $color_gray-lighten;
 
-						input[type="text"] {
+						input[type='text'] {
 							width: calc(100% - 39px);
 						}
 
@@ -4704,7 +4684,7 @@ p.search-box {
 			.everest-forms-field-option-payment-checkbox {
 				.everest-forms-field-option-row {
 					li {
-						input[type="text"] {
+						input[type='text'] {
 							width: 65%;
 							margin-right: 8px;
 
@@ -4854,8 +4834,8 @@ p.search-box {
 			.input-group-col-2 {
 				margin-bottom: 15px;
 
-				input[type="text"],
-				input[type="number"],
+				input[type='text'],
+				input[type='number'],
 				select {
 					margin-bottom: 0;
 					margin-left: 0;
@@ -4949,7 +4929,7 @@ p.search-box {
 							border-radius: 4px 4px 0 0;
 							border-bottom: 1px solid $color_gray-lighten;
 
-							input[type="text"] {
+							input[type='text'] {
 								font-weight: 600;
 							}
 
@@ -4980,7 +4960,7 @@ p.search-box {
 							border-bottom: 1px solid #e2e2e2;
 							margin-bottom: 20px;
 
-							input[type="text"] {
+							input[type='text'] {
 								font-weight: 600;
 								border: 0;
 								padding: 0;
@@ -5023,7 +5003,7 @@ p.search-box {
 						background: $color_gray-more-lighten;
 
 						&::after {
-							content: "";
+							content: '';
 							border-radius: 3px;
 							position: absolute;
 							left: 32px;
@@ -5297,7 +5277,7 @@ p.search-box {
 		}
 	}
 
-	textarea[disabled="disabled"] {
+	textarea[disabled='disabled'] {
 		background: #dfdfdf !important;
 	}
 
@@ -5330,9 +5310,9 @@ p.search-box {
 			}
 		}
 
-		input[type="text"],
-		input[type="number"],
-		input[type="email"] {
+		input[type='text'],
+		input[type='number'],
+		input[type='email'] {
 			height: auto;
 		}
 
@@ -5344,17 +5324,17 @@ p.search-box {
 
 		// Give regular settings inputs a standard width and padding.
 		textarea,
-		input[type="text"],
-		input[type="email"],
-		input[type="number"],
-		input[type="password"],
-		input[type="datetime"],
-		input[type="datetime-local"],
-		input[type="date"],
-		input[type="time"],
-		input[type="week"],
-		input[type="url"],
-		input[type="tel"],
+		input[type='text'],
+		input[type='email'],
+		input[type='number'],
+		input[type='password'],
+		input[type='datetime'],
+		input[type='datetime-local'],
+		input[type='date'],
+		input[type='time'],
+		input[type='week'],
+		input[type='url'],
+		input[type='tel'],
 		input.regular-input {
 			margin: 0;
 			padding: 0 8px;
@@ -5367,11 +5347,11 @@ p.search-box {
 			}
 		}
 
-		input[type="datetime-local"],
-		input[type="date"],
-		input[type="time"],
-		input[type="week"],
-		input[type="tel"] {
+		input[type='datetime-local'],
+		input[type='date'],
+		input[type='time'],
+		input[type='week'],
+		input[type='tel'] {
 			width: 200px;
 		}
 
@@ -5395,9 +5375,9 @@ p.search-box {
 		table {
 			select,
 			textarea,
-			input[type="text"],
-			input[type="email"],
-			input[type="number"],
+			input[type='text'],
+			input[type='email'],
+			input[type='number'],
 			input.regular-input {
 				width: auto;
 			}
@@ -5571,7 +5551,7 @@ p.search-box {
 			justify-content: space-between;
 			margin-bottom: 10px;
 
-			&[data-action="upgrade"] {
+			&[data-action='upgrade'] {
 				opacity: 0.4;
 			}
 
@@ -5604,7 +5584,7 @@ p.search-box {
 							left: 0;
 							top: 50%;
 							right: 0;
-							content: "";
+							content: '';
 							width: 10px;
 							height: 10px;
 							display: block;
@@ -5685,7 +5665,7 @@ p.search-box {
 							&::before {
 								border-radius: 50%;
 								position: absolute;
-								content: "";
+								content: '';
 								height: 18px;
 								width: 18px;
 								bottom: 2px;
@@ -5732,7 +5712,7 @@ p.search-box {
 						text-align: center;
 
 						&::before {
-							content: "\e92e";
+							content: '\e92e';
 						}
 					}
 
@@ -5803,7 +5783,7 @@ p.search-box {
 						&::before {
 							left: 0;
 							top: 50%;
-							content: "";
+							content: '';
 							width: 10px;
 							height: 10px;
 							display: block;
@@ -5862,7 +5842,7 @@ p.search-box {
 
 								&::before {
 									display: block;
-									content: "";
+									content: '';
 									position: absolute;
 									height: 10px;
 									width: 10px;
@@ -6190,22 +6170,22 @@ table.wp-list-table {
 
 				.everest-forms-edit-entry-field {
 					.evf-field {
-						input[type="text"],
-						input[type="date"],
-						input[type="date"],
-						input[type="datetime-local"],
-						input[type="email"],
-						input[type="file"],
-						input[type="image"],
-						input[type="month"],
-						input[type="number"],
-						input[type="password"],
-						input[type="range"],
-						input[type="search"],
-						input[type="tel"],
-						input[type="time"],
-						input[type="url"],
-						input[type="week"],
+						input[type='text'],
+						input[type='date'],
+						input[type='date'],
+						input[type='datetime-local'],
+						input[type='email'],
+						input[type='file'],
+						input[type='image'],
+						input[type='month'],
+						input[type='number'],
+						input[type='password'],
+						input[type='range'],
+						input[type='search'],
+						input[type='tel'],
+						input[type='time'],
+						input[type='url'],
+						input[type='week'],
 						select,
 						.StripeElement,
 						canvas.evf-signature-canvas {
@@ -6230,8 +6210,8 @@ table.wp-list-table {
 									margin: 0;
 								}
 
-								input[type="radio"],
-								input[type="checkbox"] {
+								input[type='radio'],
+								input[type='checkbox'] {
 									margin-top: 4px;
 									margin-right: 8px;
 								}
@@ -6605,7 +6585,7 @@ img.tips {
 	}
 
 	&::after {
-		content: "";
+		content: '';
 		display: block;
 		border: 8px solid #d82223;
 		border-right-color: transparent;
@@ -6736,7 +6716,7 @@ img.ui-datepicker-trigger {
 		right: 0;
 		height: 1px;
 		background: #fff;
-		content: "";
+		content: '';
 	}
 }
 
@@ -6926,12 +6906,9 @@ img.ui-datepicker-trigger {
 				color: $color;
 			}
 
-			.select2-container.select2-container--focus
-				.select2-selection--single,
-			.select2-container.select2-container--open
-				.select2-selection--single,
-			.select2-container.select2-container--open
-				.select2-selection--multiple {
+			.select2-container.select2-container--focus .select2-selection--single,
+			.select2-container.select2-container--open .select2-selection--single,
+			.select2-container.select2-container--open .select2-selection--multiple {
 				border-color: $color;
 				box-shadow: 0 0 0 1px $color;
 			}
@@ -7100,7 +7077,7 @@ img.ui-datepicker-trigger {
 					.everest-forms-field-option-row-choices {
 						ul {
 							li {
-								input[type="text"] {
+								input[type='text'] {
 									width: calc(100% - 118px);
 								}
 
@@ -7274,7 +7251,7 @@ img.ui-datepicker-trigger {
 
 				.evf-choices-list {
 					li {
-						input[type="text"] {
+						input[type='text'] {
 							width: 84%;
 						}
 					}
@@ -7411,8 +7388,8 @@ img.ui-datepicker-trigger {
 
 #elementor-editor-wrapper .everest-icon:before,
 .elementor-edit-area .everest-icon:before {
-	content: "\e902";
-	font-family: "EverestForms";
+	content: '\e902';
+	font-family: 'EverestForms';
 	font-weight: normal;
 	font-style: normal;
 	font-display: block;
@@ -7512,14 +7489,14 @@ img.ui-datepicker-trigger {
 
 // Customize Select2 style
 .select2-results__option .wrap:before {
-	content: "\2610";
+	content: '\2610';
 	width: 25px;
 	height: 25px;
 	padding-right: 10px;
 }
 
-.select2-results__option[data-selected="true"] .wrap:before {
-	content: "\2714";
+.select2-results__option[data-selected='true'] .wrap:before {
+	content: '\2714';
 }
 
 .select2-drop,
@@ -7632,13 +7609,13 @@ img.ui-datepicker-trigger {
 
 .everest-forms-form-template-wrapper {
 	.everest-forms-form-template {
-		&[data-filter-template="free"] {
-			.everest-forms-template-wrap[data-plan="premium"] {
+		&[data-filter-template='free'] {
+			.everest-forms-template-wrap[data-plan='premium'] {
 				display: none;
 			}
 		}
-		&[data-filter-template="premium"] {
-			.everest-forms-template-wrap[data-plan="free"] {
+		&[data-filter-template='premium'] {
+			.everest-forms-template-wrap[data-plan='free'] {
 				display: none;
 			}
 		}
@@ -7766,8 +7743,8 @@ img.ui-datepicker-trigger {
 						}
 
 						&::before {
-							content: "";
-							background-image: url("../images/icons/embed-back-icon.svg");
+							content: '';
+							background-image: url('../images/icons/embed-back-icon.svg');
 							background-repeat: no-repeat;
 							background-position: center;
 							background-size: 100%;
@@ -7780,7 +7757,7 @@ img.ui-datepicker-trigger {
 				}
 
 				.everest-forms-select-existing-post-container {
-					input[type="text"] {
+					input[type='text'] {
 						width: 70%;
 						padding: 3px 12px;
 
@@ -7976,7 +7953,7 @@ img.ui-datepicker-trigger {
 	}
 }
 
-.select2-container[dir="rtl"] {
+.select2-container[dir='rtl'] {
 	.select2-selection--single {
 		.select2-selection__rendered {
 			padding-right: 8px;
@@ -8010,7 +7987,7 @@ img.ui-datepicker-trigger {
 		right: 0;
 		height: 1px;
 		background: #fff;
-		content: "";
+		content: '';
 	}
 }
 
@@ -8061,7 +8038,7 @@ img.ui-datepicker-trigger {
 
 	.wrap {
 		&:before {
-			content: "\2610";
+			content: '\2610';
 			width: 25px;
 			height: 25px;
 			padding-right: 10px;
@@ -8203,7 +8180,7 @@ img.ui-datepicker-trigger {
 				margin: 5px 5px 0 0;
 
 				&::before {
-					content: "";
+					content: '';
 					display: none;
 				}
 			}
@@ -8262,16 +8239,16 @@ img.ui-datepicker-trigger {
 			overflow-y: auto;
 		}
 	}
-	.select2-results__option[role="group"] {
+	.select2-results__option[role='group'] {
 		padding: 0;
 	}
-	.select2-results__option[aria-disabled="true"] {
+	.select2-results__option[aria-disabled='true'] {
 		color: #999;
 	}
-	.select2-results__option[aria-selected="true"] {
+	.select2-results__option[aria-selected='true'] {
 		background-color: #ddd;
 	}
-	.select2-results__option[data-selected="true"] {
+	.select2-results__option[data-selected='true'] {
 		background-color: #ddd;
 	}
 	.select2-results__option {
@@ -8316,7 +8293,7 @@ img.ui-datepicker-trigger {
 		padding: 6px;
 	}
 }
-.select2-container--default[dir="rtl"] {
+.select2-container--default[dir='rtl'] {
 	.select2-selection--single {
 		.select2-selection__clear {
 			float: left;
@@ -8513,10 +8490,10 @@ img.ui-datepicker-trigger {
 			overflow-y: auto;
 		}
 	}
-	.select2-results__option[role="group"] {
+	.select2-results__option[role='group'] {
 		padding: 0;
 	}
-	.select2-results__option[aria-disabled="true"] {
+	.select2-results__option[aria-disabled='true'] {
 		color: grey;
 	}
 	.select2-results__option--highlighted[aria-selected] {
@@ -8533,7 +8510,7 @@ img.ui-datepicker-trigger {
 		padding: 6px;
 	}
 }
-.select2-container--classic[dir="rtl"] {
+.select2-container--classic[dir='rtl'] {
 	.select2-selection--single {
 		.select2-selection__clear {
 			float: left;
@@ -8676,7 +8653,7 @@ img.ui-datepicker-trigger {
 			}
 
 			th {
-				&[colspan="2"] {
+				&[colspan='2'] {
 					background: #f4f4f4;
 					color: #222222;
 					font-size: 15px;
@@ -8701,7 +8678,7 @@ img.ui-datepicker-trigger {
 
 			&:hover {
 				&::before {
-					content: "";
+					content: '';
 					background: #000;
 					position: absolute;
 					width: 100%;
@@ -8721,7 +8698,7 @@ img.ui-datepicker-trigger {
 					}
 
 					&::before {
-						content: "";
+						content: '';
 						background: #d52626;
 						width: 42px;
 						height: 42px;
@@ -8733,7 +8710,7 @@ img.ui-datepicker-trigger {
 					}
 
 					&::after {
-						content: "\e906";
+						content: '\e906';
 						position: absolute;
 						font-size: 22px;
 						color: #fff;
@@ -8863,8 +8840,7 @@ img.ui-datepicker-trigger {
 											position: absolute;
 											right: 0;
 											background: $color_gray-more-lighten;
-											border: 1px solid
-												$color-gray-lighten;
+											border: 1px solid $color-gray-lighten;
 											border-radius: 0 4px 4px 0;
 										}
 									}
@@ -8938,14 +8914,14 @@ img.ui-datepicker-trigger {
 					&::before {
 						height: 16px;
 						width: 16px;
-						content: "";
+						content: '';
 						border: 1px solid $color_gray-lighten;
 						display: block;
 						margin: 0 auto;
 					}
 				}
 
-				input[type="radio"] {
+				input[type='radio'] {
 					+ label {
 						&::before {
 							border-radius: 50%;
@@ -9050,8 +9026,8 @@ img.ui-datepicker-trigger {
 }
 
 .evf-survey-choices {
-	&[data-choice-type="drop_down_choices"] {
-		input[type="text"] {
+	&[data-choice-type='drop_down_choices'] {
+		input[type='text'] {
 			width: 74%;
 		}
 	}
@@ -9803,7 +9779,7 @@ img.ui-datepicker-trigger {
 						transition: all 0.3s ease-in-out;
 
 						&::before {
-							content: "";
+							content: '';
 							background: #7545bb;
 							width: 4px;
 							height: 100%;
@@ -9815,7 +9791,7 @@ img.ui-datepicker-trigger {
 						}
 
 						&::after {
-							content: "";
+							content: '';
 							background: #fff;
 							width: 8px;
 							height: 100%;
@@ -9847,7 +9823,7 @@ img.ui-datepicker-trigger {
 							align-items: center;
 							width: 100%;
 							opacity: 1;
-							transition: all .4s ease-in-out;
+							transition: all 0.4s ease-in-out;
 
 							> p {
 								width: 100%;
@@ -9943,9 +9919,8 @@ img.ui-datepicker-trigger {
 
 							.evf-nav-icon {
 								img {
-									filter: brightness(0) saturate(100%)
-										invert(100%) sepia(0%) saturate(7487%)
-										hue-rotate(137deg) brightness(89%)
+									filter: brightness(0) saturate(100%) invert(100%) sepia(0%)
+										saturate(7487%) hue-rotate(137deg) brightness(89%)
 										contrast(114%);
 								}
 							}
@@ -10078,8 +10053,8 @@ img.ui-datepicker-trigger {
 				.everest-forms-global-settings {
 					margin-bottom: 0;
 
-					&:has(label[for="everest_forms_email_template"]),
-					&:has(label[for="everest_forms_pdf_template"]) {
+					&:has(label[for='everest_forms_email_template']),
+					&:has(label[for='everest_forms_pdf_template']) {
 						align-items: flex-start;
 					}
 
@@ -10113,7 +10088,7 @@ img.ui-datepicker-trigger {
 								flex-direction: column;
 								gap: 12px;
 
-								input[type="email"] {
+								input[type='email'] {
 									width: 100%;
 									margin-right: 0 !important;
 								}
@@ -10209,7 +10184,7 @@ img.ui-datepicker-trigger {
 												}
 											}
 
-											input[type="radio"] {
+											input[type='radio'] {
 												display: none !important;
 
 												&:checked ~ label {
@@ -10336,8 +10311,8 @@ img.ui-datepicker-trigger {
 								width: max-content;
 
 								&::after {
-									content: "";
-									background-image: url("../images/icons/send-icon.svg");
+									content: '';
+									background-image: url('../images/icons/send-icon.svg');
 									background-repeat: no-repeat;
 									background-size: 100%;
 									background-position: center;
@@ -10430,8 +10405,8 @@ img.ui-datepicker-trigger {
 								gap: 6px;
 
 								&::before {
-									content: "";
-									background-image: url("../images/icons/upload-icon.svg");
+									content: '';
+									background-image: url('../images/icons/upload-icon.svg');
 									background-repeat: no-repeat;
 									background-size: 100%;
 									background-position: center;
@@ -10463,7 +10438,7 @@ img.ui-datepicker-trigger {
 
 								&:hover {
 									&::before {
-										content: "";
+										content: '';
 										background: #000;
 										position: absolute;
 										width: 100%;
@@ -10478,13 +10453,12 @@ img.ui-datepicker-trigger {
 										&:hover {
 											&::before,
 											&::after {
-												transform: translate(-50%, -50%)
-													scale(1.1);
+												transform: translate(-50%, -50%) scale(1.1);
 											}
 										}
 
 										&::before {
-											content: "";
+											content: '';
 											background: #d52626;
 											width: 42px;
 											height: 42px;
@@ -10496,7 +10470,7 @@ img.ui-datepicker-trigger {
 										}
 
 										&::after {
-											content: "\e907";
+											content: '\e907';
 											position: absolute;
 											font-size: 22px;
 											color: #fff;
@@ -10575,7 +10549,7 @@ everest-forms-field-option-row-rating-icon {
 			border: 1px solid $color_gray-lighten;
 		}
 
-		input[type="radio"] {
+		input[type='radio'] {
 			display: none;
 		}
 
@@ -10583,11 +10557,7 @@ everest-forms-field-option-row-rating-icon {
 			width: 32px;
 			height: 32px;
 			font-size: 18px;
-			fill: adjust-color(
-				$color_gray-normal,
-				$saturation: +4%,
-				$lightness: -2%
-			);
+			fill: adjust-color($color_gray-normal, $saturation: +4%, $lightness: -2%);
 		}
 
 		input:checked {
@@ -10723,7 +10693,7 @@ body {
 								position: relative;
 
 								&::before {
-									content: "";
+									content: '';
 									background: transparent;
 									width: 100%;
 									height: 3px;
@@ -10830,7 +10800,7 @@ body {
 									margin: 8px 0 24px;
 									height: max-content;
 
-									input[type="file"] {
+									input[type='file'] {
 										min-height: max-content;
 									}
 
@@ -10919,7 +10889,7 @@ body {
 											border-color: #e9e9e9;
 											padding: 5px 12px;
 
-											&[name="date_range"] {
+											&[name='date_range'] {
 												background: #fafafa;
 											}
 										}
@@ -10940,7 +10910,7 @@ body {
 											gap: 12px;
 
 											select,
-											input[type="text"] {
+											input[type='text'] {
 												min-height: 38px;
 												border-color: #e9e9e9;
 												color: #383838;
@@ -11037,7 +11007,7 @@ body {
 							margin: 8px 0 24px;
 							height: max-content;
 
-							input[type="file"] {
+							input[type='file'] {
 								min-height: max-content;
 							}
 
@@ -11134,9 +11104,7 @@ body {
 
 														&.evf-fm-import {
 															&-single {
-																border: 1px
-																	solid
-																	#7545bb;
+																border: 1px solid #7545bb;
 																color: #7545bb;
 																background: #f2f2f2;
 
@@ -11588,7 +11556,7 @@ body {
 							position: relative;
 
 							&::before {
-								content: "";
+								content: '';
 								background: #475bb2;
 								width: 100%;
 								height: 1px;
@@ -11646,7 +11614,7 @@ body {
 			}
 
 			input {
-				&[type="submit"] {
+				&[type='submit'] {
 					padding: 6px 14px;
 					min-height: 38px;
 					border-radius: 3px;
@@ -12029,4 +11997,8 @@ button#show-settings-link {
 		background-color: #fcfcfd;
 		border: 1px solid #f4f4f4;
 	}
+}
+
+#evf-react-header-root > div {
+	top: 0px !important;
 }

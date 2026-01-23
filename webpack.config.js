@@ -18,6 +18,10 @@ const webpackConfig = {
 			process.cwd(),
 			'./src/rolesandpermission/index.js',
 		),
+		dashboardHeader: resolve(
+			process.cwd(),
+			'./src/dashboard/header-standalone.js',
+		),
 	},
 	output: {
 		path: resolve(process.cwd(), 'dist'),

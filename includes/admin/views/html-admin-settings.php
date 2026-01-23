@@ -16,9 +16,14 @@ if ( ! $tab_exists ) {
 	exit;
 }
 
-
+$use_react_header = apply_filters( 'everest_forms_use_react_header', true, $current_tab );
 
 ?>
+
+<?php if ( $use_react_header ) : ?>
+	<div id="evf-react-header-root"></div>
+<?php endif; ?>
+
 <div class="wrap everest-forms">
 <?php if ( 'integration' !== $current_tab ) : ?>
 	<form method="<?php echo esc_attr( apply_filters( 'everest_forms_settings_form_method_tab_' . $current_tab, 'post' ) ); ?>" id="mainform" action="" enctype="multipart/form-data">
