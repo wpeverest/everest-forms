@@ -59,14 +59,20 @@
     "grunt-rtlcss": "2.0.2",
     "grunt-sass": "3.1.0",
     "grunt-stylelint": "0.18.0",
+    "grunt-wp-i18n": "1.0.4",
     "husky": "7.0.4",
     "lint-staged": "12.5.0",
     "node-sass": "7.0.3",
+    "prettier": "3.4.0",
+    "prettier-plugin-organize-imports": "4.1.0",
     "sass": "1.78.0",
     "stylelint": "14.11.0",
     "stylelint-config-wordpress": "17.0.0",
+    "typescript": "5.9.3",
     "webpack": "5.93.0",
-    "webpack-cli": "4.10.0"
+    "webpack-cli": "4.10.0",
+    "webpack-mode": "^1.1.0",
+    "webpackbar": "^5.0.2"
   },
   "engines": {
     "node": ">=8.9.3",
@@ -87,12 +93,13 @@
     ]
   },
   "dependencies": {
+    "@ajna/pagination": "1.4.19",
     "@chakra-ui/icons": "^2.0.17",
     "@chakra-ui/react": "2.8.2",
     "@emotion/react": "11.11.4",
     "@emotion/styled": "11.11.0",
     "@tanstack/react-query": "4.36.1",
-    "@tanstack/react-query-devtools": "5.53.2",
+    "@tanstack/react-query-devtools": "4.36.1",
     "@types/node": "20.10.5",
     "@types/react": "18.2.45",
     "@types/react-beautiful-dnd": "13.1.7",

@@ -196,9 +196,7 @@ module.exports = function (grunt) {
         postcss: {
             options: {
                 processors: [
-                    require('autoprefixer')({
-                        overrideBrowserslist: ['> 0.1%', 'ie 8', 'ie 9'],
-                    }),
+                    require('autoprefixer')(),
                 ],
             },
             dist: {
@@ -255,7 +253,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-compress');
 
     // Register tasks
-
+    grunt.registerTask('default', ['sass', 'rtlcss', 'cssmin', 'concat', 'uglify']);
     grunt.registerTask('release', ['sass', 'rtlcss', 'cssmin', 'concat', 'jshint', 'uglify', 'makepot','compress:withoutVersion','compress:withVersion']);
 	grunt.registerTask('dev', ['watch']);
 };
