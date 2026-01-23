@@ -59,12 +59,87 @@ const Header = ({ hideSiteAssistant = false }) => {
 		};
 	}, [isOpen]);
 
-	const filteredRoutes = useMemo(() => {
-		if (hideSiteAssistant) {
-			return ROUTES.filter((route) => route.route !== '/');
-		}
-		return ROUTES;
+	// Split routes into left navigation and right navigation
+	const { leftRoutes, rightRoutes } = useMemo(() => {
+		const allRoutes = hideSiteAssistant
+			? ROUTES.filter((route) => route.route !== '/')
+			: ROUTES;
+
+		// Routes to show on the right: Help and Free vs Pro
+		const rightRoutePaths = ['/help', '/free-vs-pro'];
+
+		return {
+			leftRoutes: allRoutes.filter(
+				(route) => !rightRoutePaths.includes(route.route),
+			),
+			rightRoutes: allRoutes.filter((route) =>
+				rightRoutePaths.includes(route.route),
+			),
+		};
 	}, [hideSiteAssistant]);
+
+	const renderNavLink = (route, label, external) => {
+		const convertedRoute = convertRoute(route, isSettingsPage, adminURL);
+		const isExternal = external || isExternalRoute(convertedRoute);
+		const isActive = isRouteActive(route, location.pathname, isSettingsPage);
+		const shouldUseExternalLink = isSettingsPage || isExternal;
+
+		return shouldUseExternalLink ? (
+			<Link
+				data-target={route}
+				key={route}
+				href={convertedRoute}
+				fontSize="sm"
+				fontWeight="semibold"
+				lineHeight="150%"
+				color={isActive ? 'primary.500' : '#383838'}
+				borderBottom={isActive ? '3px solid' : 'none'}
+				borderColor={isActive ? 'primary.500' : 'transparent'}
+				marginBottom={isActive ? '-2px' : '0'}
+				_hover={{
+					color: 'primary.500',
+				}}
+				_focus={{
+					boxShadow: 'none',
+				}}
+				display="inline-flex"
+				alignItems="center"
+				px="2"
+				h="full"
+			>
+				{label}
+			</Link>
+		) : (
+			<Link
+				data-target={route}
+				key={route}
+				as={NavLink}
+				to={route}
+				fontSize="sm"
+				fontWeight="semibold"
+				lineHeight="150%"
+				color="#383838"
+				_hover={{
+					color: 'primary.500',
+				}}
+				_focus={{
+					boxShadow: 'none',
+				}}
+				_activeLink={{
+					color: 'primary.500',
+					borderBottom: '3px solid',
+					borderColor: 'primary.500',
+					marginBottom: '-2px',
+				}}
+				display="inline-flex"
+				alignItems="center"
+				px="2"
+				h="full"
+			>
+				{label}
+			</Link>
+		);
+	};
 
 	return (
 		<>
@@ -78,95 +153,42 @@ const Header = ({ hideSiteAssistant = false }) => {
 			>
 				<Container maxW="full">
 					<Stack direction="row" minH="70px" justify="space-between" px="6">
+						{/* Left Side - Logo and Main Navigation */}
 						<Stack direction="row" align="center" gap="7">
 							<Link
 								as={isSettingsPage ? 'a' : NavLink}
 								to={isSettingsPage ? undefined : '/'}
 								href={
 									isSettingsPage
-										? `${adminURL}admin.php?page=evf-dashboard`
+										? `${adminURL}/admin.php?page=evf-dashboard`
 										: undefined
 								}
 							>
 								<EVF h="10" w="10" />
 							</Link>
 
-							<IntersectObserver routes={filteredRoutes}>
-								{filteredRoutes.map(({ route, label, external }) => {
-									const convertedRoute = convertRoute(
-										route,
-										isSettingsPage,
-										adminURL,
-									);
-									const isExternal =
-										external || isExternalRoute(convertedRoute);
-									const isActive = isRouteActive(
-										route,
-										location.pathname,
-										isSettingsPage,
-									);
-
-									const shouldUseExternalLink = isSettingsPage || isExternal;
-
-									return shouldUseExternalLink ? (
-										<Link
-											data-target={route}
-											key={route}
-											href={convertedRoute}
-											fontSize="sm"
-											fontWeight="semibold"
-											lineHeight="150%"
-											color={isActive ? 'primary.500' : '#383838'}
-											borderBottom={isActive ? '3px solid' : 'none'}
-											borderColor={isActive ? 'primary.500' : 'transparent'}
-											marginBottom={isActive ? '-2px' : '0'}
-											_hover={{
-												color: 'primary.500',
-											}}
-											_focus={{
-												boxShadow: 'none',
-											}}
-											display="inline-flex"
-											alignItems="center"
-											px="2"
-											h="full"
-										>
-											{label}
-										</Link>
-									) : (
-										<Link
-											data-target={route}
-											key={route}
-											as={NavLink}
-											to={route}
-											fontSize="sm"
-											fontWeight="semibold"
-											lineHeight="150%"
-											color="#383838"
-											_hover={{
-												color: 'primary.500',
-											}}
-											_focus={{
-												boxShadow: 'none',
-											}}
-											_activeLink={{
-												color: 'primary.500',
-												borderBottom: '3px solid',
-												borderColor: 'primary.500',
-												marginBottom: '-2px',
-											}}
-											display="inline-flex"
-											alignItems="center"
-											px="2"
-											h="full"
-										>
-											{label}
-										</Link>
-									);
-								})}
+							<IntersectObserver routes={leftRoutes}>
+								{leftRoutes.map(({ route, label, external }) =>
+									renderNavLink(route, label, external),
+								)}
 							</IntersectObserver>
 						</Stack>
+
 						<Stack direction="row" align="center" spacing="12px">
+							<Stack direction="row" align="center" gap="1">
+								{rightRoutes.map(({ route, label, external }) =>
+									renderNavLink(route, label, external),
+								)}
+							</Stack>
+
+							{rightRoutes.length > 0 && (
+								<>
+									<Center height="18px">
+										<Divider orientation="vertical" />
+									</Center>
+								</>
+							)}
+
 							<Tooltip
 								label={sprintf(
 									__(
@@ -186,24 +208,28 @@ const Header = ({ hideSiteAssistant = false }) => {
 									{'v' + version}
 								</Tag>
 							</Tooltip>
-							<Center height="18px">
-								<Divider orientation="vertical" />
-							</Center>
+
 							{!isPro && (
-								<Link
-									color="#2563EB"
-									fontSize="12px"
-									height="18px"
-									w="85px"
-									href={
-										upgradeURL +
-										'utm_medium=evf-dashboard&utm_source=evf-free&utm_campaign=header-upgrade-btn&utm_content=Upgrade%20to%20Pro'
-									}
-									isExternal
-								>
-									{__('Upgrade To Pro', 'everest-forms')}
-								</Link>
+								<>
+									<Center height="18px">
+										<Divider orientation="vertical" />
+									</Center>
+									<Link
+										color="#2563EB"
+										fontSize="12px"
+										height="18px"
+										w="85px"
+										href={
+											upgradeURL +
+											'utm_medium=evf-dashboard&utm_source=evf-free&utm_campaign=header-upgrade-btn&utm_content=Upgrade%20to%20Pro'
+										}
+										isExternal
+									>
+										{__('Upgrade To Pro', 'everest-forms')}
+									</Link>
+								</>
 							)}
+
 							<Button
 								onClick={onOpen}
 								variant="unstyled"
