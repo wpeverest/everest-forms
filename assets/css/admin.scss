@@ -41,6 +41,12 @@
 /**
 	   * Styling begins
 	   */
+
+// Remove margin-top from entries list when React header is present
+#everest-forms-entries-list {
+	margin-top: 0;
+}
+
 .blockUI.blockOverlay {
 	@include loader();
 }

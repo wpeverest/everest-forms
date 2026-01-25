@@ -47,6 +47,9 @@ const Header = ({ hideSiteAssistant = false }) => {
 		typeof _EVF_DASHBOARD_ !== 'undefined' && _EVF_DASHBOARD_;
 
 	const isSettingsPage = pageType === 'settings';
+	const isEntriesPage = pageType === 'entries';
+	const isAnalyticsPage = pageType === 'analytics';
+	const isNonDashboardPage = isSettingsPage || isEntriesPage || isAnalyticsPage;
 
 	useEffect(() => {
 		if (isOpen) {
@@ -79,10 +82,15 @@ const Header = ({ hideSiteAssistant = false }) => {
 	}, [hideSiteAssistant]);
 
 	const renderNavLink = (route, label, external) => {
-		const convertedRoute = convertRoute(route, isSettingsPage, adminURL);
+		const convertedRoute = convertRoute(route, isNonDashboardPage, adminURL);
 		const isExternal = external || isExternalRoute(convertedRoute);
-		const isActive = isRouteActive(route, location.pathname, isSettingsPage);
-		const shouldUseExternalLink = isSettingsPage || isExternal;
+		const isActive = isRouteActive(
+			route,
+			location.pathname,
+			isSettingsPage,
+			pageType,
+		);
+		const shouldUseExternalLink = isNonDashboardPage || isExternal;
 
 		return shouldUseExternalLink ? (
 			<Link
@@ -144,11 +152,10 @@ const Header = ({ hideSiteAssistant = false }) => {
 	return (
 		<>
 			<Box
-				top="var(--wp-admin--admin-bar--height, 0)"
 				bg={'white'}
 				borderBottom="1px solid #E9E9E9"
 				width="100%"
-				position={isSettingsPage ? 'relative' : 'sticky'}
+				position={'relative'}
 				zIndex="10"
 			>
 				<Container maxW="full">
@@ -156,10 +163,10 @@ const Header = ({ hideSiteAssistant = false }) => {
 						{/* Left Side - Logo and Main Navigation */}
 						<Stack direction="row" align="center" gap="7">
 							<Link
-								as={isSettingsPage ? 'a' : NavLink}
-								to={isSettingsPage ? undefined : '/'}
+								as={isNonDashboardPage ? 'a' : NavLink}
+								to={isNonDashboardPage ? undefined : '/'}
 								href={
-									isSettingsPage
+									isNonDashboardPage
 										? `${adminURL}/admin.php?page=evf-dashboard`
 										: undefined
 								}

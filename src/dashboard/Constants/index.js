@@ -24,9 +24,9 @@ let ROUTES = [
 		external: false,
 	},
 	{
-		route: '/features',
-		label: __('All Features', 'everest-forms'),
-		external: false,
+		route: `${cleanAdminURL}/admin.php?page=evf-entries`,
+		label: __('Entries', 'everest-forms'),
+		external: true,
 	},
 	{
 		route: `${cleanAdminURL}/admin.php?page=evf-settings`,
@@ -34,16 +34,28 @@ let ROUTES = [
 		external: true,
 	},
 	{
+		route: '/features',
+		label: __('All Features', 'everest-forms'),
+		external: false,
+	},
+	{
 		route: '/help',
 		label: __('Help', 'everest-forms'),
 		external: false,
 	},
-	{
-		route: '/products',
-		label: __('Other Products', 'everest-forms'),
-		external: false,
-	},
 ];
+
+if (isPro) {
+	ROUTES = [
+		ROUTES[0],
+		{
+			route: `${cleanAdminURL}/admin.php?page=everest-forms-analytics`,
+			label: __('Analytics', 'everest-forms'),
+			external: true,
+		},
+		...ROUTES.slice(1),
+	];
+}
 
 if (!isPro) {
 	ROUTES = [
@@ -118,16 +130,16 @@ const normalizeURL = (url) => {
 /**
  * Convert internal routes to full admin URLs when needed
  * @param {string} route - The route path
- * @param {boolean} isSettingsPage - Whether we're on settings page
+ * @param {boolean} isNonDashboardPage - Whether we're on a non-dashboard page (settings, entries, etc.)
  * @param {string} adminURL - WordPress admin URL
  * @returns {string} - Converted route
  */
-export const convertRoute = (route, isSettingsPage, adminURL) => {
+export const convertRoute = (route, isNonDashboardPage, adminURL) => {
 	if (route.includes('admin.php') || route.includes('?page=')) {
 		return route;
 	}
 
-	if (isSettingsPage) {
+	if (isNonDashboardPage) {
 		const cleanURL = normalizeURL(adminURL);
 
 		if (route === '/') {
@@ -153,9 +165,19 @@ export const isExternalRoute = (route) => {
  * @param {string} route - The route path
  * @param {string} currentPath - Current location path
  * @param {boolean} isSettingsPage - Whether we're on settings page
+ * @param {string} pageType - Current page type (settings, entries, analytics, etc.)
  * @returns {boolean}
  */
-export const isRouteActive = (route, currentPath, isSettingsPage) => {
+export const isRouteActive = (route, currentPath, isSettingsPage, pageType) => {
+	// Check for analytics page
+	if (pageType === 'analytics' && route.includes('everest-forms-analytics')) {
+		return true;
+	}
+	// Check for entries page
+	if (pageType === 'entries' && route.includes('evf-entries')) {
+		return true;
+	}
+	// Check for settings page
 	if (isSettingsPage && route.includes('evf-settings')) {
 		return true;
 	}

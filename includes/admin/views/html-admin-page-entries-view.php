@@ -51,12 +51,17 @@ if ( false !== $entry_index ) {
 	$next_entry = isset( $form_entries[ $entry_index + 1 ] ) ? $form_entries[ $entry_index + 1 ] : '';
 }
 
+$use_react_header = apply_filters( 'everest_forms_use_react_header', true, 'entries' );
+
 ?>
 <div class="wrap everest-forms">
-	<h1 class="wp-heading-inline"><?php esc_html_e( 'View Entry', 'everest-forms' ); ?></h1>
-	<a href="<?php echo esc_url( admin_url( 'admin.php?page=evf-entries&amp;form_id=' . $form_id ) ); ?>" class="page-title-action"><?php esc_html_e( 'Back to All Entries', 'everest-forms' ); ?></a>
-	<hr class="wp-header-end">
-	<?php do_action( 'everest_forms_view_entries_notices' ); ?>
+	<?php if ( $use_react_header ) : ?>
+		<div id="evf-react-header-root" data-active-menu="entries"></div>
+		<?php endif; ?>
+		<h1 class="wp-heading-inline"><?php esc_html_e( 'View Entry', 'everest-forms' ); ?></h1>
+		<a href="<?php echo esc_url( admin_url( 'admin.php?page=evf-entries&amp;form_id=' . $form_id ) ); ?>" class="page-title-action"><?php esc_html_e( 'Back to All Entries', 'everest-forms' ); ?></a>
+		<hr class="wp-header-end">
+		<?php do_action( 'everest_forms_view_entries_notices' ); ?>
 	<div class="everest-forms-entry">
 		<div id="poststuff">
 			<div id="post-body" class="metabox-holder columns-2">
@@ -133,15 +138,17 @@ if ( false !== $entry_index ) {
 										if ( is_serialized( $meta_value ) ) {
 											$raw_meta_val = unserialize( $meta_value ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_unserialize
 
-											$field_type_array = apply_filters( 'everest_forms_serialized_value_field_type', array(
+											$field_type_array = apply_filters(
+												'everest_forms_serialized_value_field_type',
+												array(
 													'payment-checkbox',
 													'checkbox',
 													'radio',
-													'payment-multiple'
+													'payment-multiple',
 												)
 											);
 
-											if ( ! empty( $raw_meta_val['type'] ) && in_array( $raw_meta_val['type'], $field_type_array  ) && empty( $raw_meta_val['label'][0] ) ) {
+											if ( ! empty( $raw_meta_val['type'] ) && in_array( $raw_meta_val['type'], $field_type_array ) && empty( $raw_meta_val['label'][0] ) ) {
 												$meta_value = '';
 											} else {
 												$is_dropdown = false;
@@ -156,7 +163,6 @@ if ( false !== $entry_index ) {
 													$meta_value = '';
 												}
 											}
-
 										}
 
 										if ( evf_is_json( $meta_value ) ) {
@@ -233,7 +239,8 @@ if ( false !== $entry_index ) {
 						</div>
 					</div>
 
-					<?php do_action( 'everest_forms_entry_details_content', $entry, $form_id );
+					<?php
+					do_action( 'everest_forms_entry_details_content', $entry, $form_id );
 					?>
 				</div>
 				<!-- Entry Details metabox -->

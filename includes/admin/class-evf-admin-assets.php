@@ -499,7 +499,17 @@ class EVF_Admin_Assets {
 			);
 
 			$script_handle = 'evf-dashboard-header';
-			$page_type     = 'settings';
+
+			// Determine page type based on current page.
+			if ( 'evf-entries' === $current_page ) {
+				$page_type = 'entries';
+			} elseif ( 'evf-settings' === $current_page ) {
+				$page_type = 'settings';
+			} elseif ( 'everest-forms-analytics' === $current_page ) {
+				$page_type = 'analytics';
+			} else {
+				$page_type = $current_page;
+			}
 
 		wp_localize_script(
 			$script_handle,
