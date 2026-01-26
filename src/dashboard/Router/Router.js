@@ -5,7 +5,8 @@ import { useToast } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import apiFetch from '@wordpress/api-fetch';
 import { __ } from '@wordpress/i18n';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Route, Routes } from 'react-router-dom';
 
 /**
  *  Internal Dependencies
@@ -24,10 +25,23 @@ const Router = () => {
 	const toast = useToast();
 
 	/* global _EVF_DASHBOARD_ */
-	const { isPro, settingsURL, evfRestApiNonce, restURL, allStepsCompleted } =
+	const {
+		isPro,
+		settingsURL,
+		evfRestApiNonce,
+		restURL,
+		allStepsCompleted,
+		adminURL,
+	} =
 		typeof _EVF_DASHBOARD_ !== 'undefined'
 			? _EVF_DASHBOARD_
-			: { isPro: false, settingsURL: '', evfRestApiNonce: '', restURL: '' };
+			: {
+					isPro: false,
+					settingsURL: '',
+					evfRestApiNonce: '',
+					restURL: '',
+					adminURL: '',
+				};
 
 	const siteAssistantQuery = useQuery({
 		queryKey: ['siteAssistant'],
@@ -60,35 +74,45 @@ const Router = () => {
 		? Boolean(allStepsCompleted === '1')
 		: siteAssistantQuery?.data?.data?.all_steps_completed;
 
+	const RedirectToPhpPage = ({ page }) => {
+		useEffect(() => {
+			let cleanURL = adminURL;
+			if (cleanURL.endsWith('/')) {
+				cleanURL = cleanURL.slice(0, -1);
+			}
+			if (cleanURL.endsWith('/admin.php')) {
+				cleanURL = cleanURL.slice(0, -10);
+			}
+
+			window.location.href = `${cleanURL}/admin.php?page=${page}`;
+		}, [page]);
+
+		return null;
+	};
+
+	const DefaultRedirect = () => {
+		if (isAllStepsCompleted) {
+			if (isPro) {
+				return <RedirectToPhpPage page="everest-forms-analytics" />;
+			} else {
+				return <RedirectToPhpPage page="evf-entries" />;
+			}
+		} else {
+			return <SiteAssistant siteAssistantQuery={siteAssistantQuery} />;
+		}
+	};
+
 	return (
 		<>
 			<Header hideSiteAssistant={isAllStepsCompleted} />
 			<Routes>
-				<Route
-					path="/"
-					element={
-						isAllStepsCompleted ? (
-							<Navigate to="/features" replace />
-						) : (
-							<SiteAssistant siteAssistantQuery={siteAssistantQuery} />
-						)
-					}
-				/>
+				<Route path="/" element={<DefaultRedirect />} />
 				<Route path="/settings" element={<Settings to={settingsURL} />} />
 				<Route path="/features" element={<Modules />} />
 				{!isPro && <Route path="/free-vs-pro" element={<FreeVsPro />} />}
 				<Route path="/help" element={<Help />} />
-				<Route
-					path="*"
-					element={
-						isAllStepsCompleted ? (
-							<Navigate to="/features" replace />
-						) : (
-							<SiteAssistant siteAssistantQuery={siteAssistantQuery} />
-						)
-					}
-				/>
 				<Route path="/products" element={<Products />} />
+				<Route path="*" element={<DefaultRedirect />} />
 			</Routes>
 		</>
 	);

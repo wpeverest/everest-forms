@@ -62,13 +62,11 @@ const Header = ({ hideSiteAssistant = false }) => {
 		};
 	}, [isOpen]);
 
-	// Split routes into left navigation and right navigation
 	const { leftRoutes, rightRoutes } = useMemo(() => {
 		const allRoutes = hideSiteAssistant
 			? ROUTES.filter((route) => route.route !== '/')
 			: ROUTES;
 
-		// Routes to show on the right: Help and Free vs Pro
 		const rightRoutePaths = ['/help', '/free-vs-pro'];
 
 		return {
