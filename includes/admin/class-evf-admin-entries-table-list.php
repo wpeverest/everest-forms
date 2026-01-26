@@ -800,7 +800,7 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 		/**
 		 * Action hook to add extra filters in entries table.
 		 *
-		 * @since x.x.x
+		 * @since 3.4.2
 		 * @param int $form_id Current form ID.
 		 */
 		do_action( 'everest_forms_entries_table_extra_filters', $this->form_id, $which );

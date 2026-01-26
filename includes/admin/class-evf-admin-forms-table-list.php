@@ -225,7 +225,7 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 		/**
 		 * Filter form list row actions.
 		 *
-		 * @since x.x.x
+		 * @since 3.4.2
 		 * @param array  $actions Array of row actions.
 		 * @param object $posts   Form object.
 		 * @return array

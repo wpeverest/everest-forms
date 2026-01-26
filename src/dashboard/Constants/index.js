@@ -1,6 +1,6 @@
 import { __ } from '@wordpress/i18n';
 
-const { isPro, adminURL } =
+const { isPro, adminURL, showAnalyticsTab } =
 	typeof _EVF_DASHBOARD_ !== 'undefined' && _EVF_DASHBOARD_;
 
 const normalizeAdminURL = (url) => {
@@ -45,7 +45,7 @@ let ROUTES = [
 	},
 ];
 
-if (isPro) {
+if (isPro && showAnalyticsTab) {
 	ROUTES = [
 		ROUTES[0],
 		{

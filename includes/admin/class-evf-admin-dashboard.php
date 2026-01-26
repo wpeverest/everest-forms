@@ -109,6 +109,7 @@ class EVF_Admin_Dashboard {
 					'restURL'              => rest_url(),
 					'version'              => EVF()->version,
 					'isPro'                => is_plugin_active( 'everest-forms-pro/everest-forms-pro.php' ),
+					'showAnalyticsTab'     => is_plugin_active( 'everest-forms-form-analytics/everest-forms-form-analytics.php' ),
 					'licensePlan'          => evf_get_license_plan(),
 					'licenseActivationURL' => esc_url_raw( admin_url( 'plugins.php' ) ),
 					'utmCampaign'          => EVF()->utm_campaign,

@@ -29,14 +29,14 @@ if ( ! class_exists( 'EVF_Stats' ) ) {
 
 			add_filter(
 				'pre_option_everest_forms_sdk_enable_logger',
-				function( $enabled ) {
-					return "yes" === get_option( 'everest_forms_allow_usage_tracking' ) ? 'yes' : 'no';
+				function ( $enabled ) {
+					return 'yes' === get_option( 'everest_forms_allow_usage_tracking' ) ? 'yes' : 'no';
 				}
 			);
 
 			add_action(
-				 'update_option_everest_forms_sdk_enable_logger',
-				function( $old_value, $value ) {
+				'update_option_everest_forms_sdk_enable_logger',
+				function ( $old_value, $value ) {
 					if ( 'yes' === $value ) {
 						update_option( 'everest_forms_allow_usage_tracking', 'yes' );
 					} elseif ( 'no' === $value ) {
@@ -110,8 +110,8 @@ if ( ! class_exists( 'EVF_Stats' ) ) {
 		 * @return array The plugin information of active plugins and the base plugin including product name, version, type, slug, form count, entry count, and license key if it's a premium plugin.
 		 */
 		public function get_plugin_lists() {
-			$is_premium = $this->is_premium();
-			$base_product = $this->get_base_product();
+			$is_premium        = $this->is_premium();
+			$base_product      = $this->get_base_product();
 			$base_product_name = $is_premium ? 'Everest Forms Pro' : 'Everest Forms';
 
 			// Build base product metadata.
@@ -141,8 +141,8 @@ if ( ! class_exists( 'EVF_Stats' ) ) {
 			if ( ! function_exists( 'get_plugins' ) ) {
 				require_once ABSPATH . 'wp-admin/includes/plugin.php';
 			}
-			$all_plugins = get_plugins();
-			$active_plugins = get_option( 'active_plugins', array() );
+			$all_plugins            = get_plugins();
+			$active_plugins         = get_option( 'active_plugins', array() );
 			$installed_plugin_slugs = array_keys( $all_plugins );
 
 			// Get addons list.
@@ -174,7 +174,7 @@ if ( ! class_exists( 'EVF_Stats' ) ) {
 		/**
 		 * Get the version of an addon
 		 *
-		 * @since x.x.x
+		 * @since 3.4.2
 		 *
 		 * @param object $addon The addon object with slug property.
 		 * @param array  $all_plugins Array of all installed plugins.
@@ -224,7 +224,7 @@ if ( ! class_exists( 'EVF_Stats' ) ) {
 		/**
 		 * Run the process once when user gives consent.
 		 *
-		 * @since x.x.x Update logger flag option on settings save.
+		 * @since 3.4.2 Update logger flag option on settings save.
 		 *
 		 * @param mixed  $old_value The old value of the option.
 		 * @param mixed  $value The new value of the option.
@@ -289,11 +289,11 @@ if ( ! class_exists( 'EVF_Stats' ) ) {
 		 * If the value is not numeric, it attempts to convert it to a timestamp.
 		 * Returns the number of full days elapsed since installation.
 		 *
-		 *  @since x.x.x
+		 *  @since 3.4.2
 		 * @return int Number of days since the plugin was installed.
 		 */
 		public static function get_install_days() {
-			$install_time = get_option( 'everest_forms_install', time() ) ;
+			$install_time = get_option( 'everest_forms_install', time() );
 			if ( ! is_numeric( $install_time ) ) {
 				$install_time = strtotime( $install_time );
 			}
@@ -307,7 +307,7 @@ if ( ! class_exists( 'EVF_Stats' ) ) {
 		 * Callback for SDK tracking filter.
 		 *
 		 * @return array Tracking data payload.
-		 * @since x.x.x
+		 * @since 3.4.2
 		 */
 		public function provide_tracking_data() {
 			if ( ! $this->is_usage_allowed() ) {
@@ -315,24 +315,24 @@ if ( ! class_exists( 'EVF_Stats' ) ) {
 			}
 
 			global $wpdb;
-			$data                         = array();
-			$data['product_data']         = $this->get_plugin_lists();
-			$data['admin_email']          = get_bloginfo( 'admin_email' );
-			$data['website_url']          = get_bloginfo( 'url' );
-			$data['install_days']         = $this->get_install_days() ?? null;
-			$data['wp_version']           = get_bloginfo( 'version' );
-			$data['php_version']          = phpversion();
-			$data['mysql_version']        = $wpdb->db_version();
-			$data['server_software']      = isset( $_SERVER['SERVER_SOFTWARE'] ) ? sanitize_text_field( wp_unslash( $_SERVER['SERVER_SOFTWARE'] ) ) : '';
-			$data['is_ssl']               = is_ssl();
-			$data['is_multisite']         = is_multisite();
-			$data['is_wp_com']            = defined( 'IS_WPCOM' ) && IS_WPCOM;
-			$data['is_wp_com_vip']        = ( defined( 'WPCOM_IS_VIP_ENV' ) && WPCOM_IS_VIP_ENV ) || ( function_exists( 'wpcom_is_vip' ) && wpcom_is_vip() );
-			$data['is_wp_cache']          = defined( 'WP_CACHE' ) && WP_CACHE;
-			$data['multi_site_count']     = $this->get_sites_total();
-			$data['locale']               = get_locale();
-			$data['timezone']             = $this->get_timezone_offset();
-			$data['base_product']         = $this->get_base_product();
+			$data                     = array();
+			$data['product_data']     = $this->get_plugin_lists();
+			$data['admin_email']      = get_bloginfo( 'admin_email' );
+			$data['website_url']      = get_bloginfo( 'url' );
+			$data['install_days']     = $this->get_install_days() ?? null;
+			$data['wp_version']       = get_bloginfo( 'version' );
+			$data['php_version']      = phpversion();
+			$data['mysql_version']    = $wpdb->db_version();
+			$data['server_software']  = isset( $_SERVER['SERVER_SOFTWARE'] ) ? sanitize_text_field( wp_unslash( $_SERVER['SERVER_SOFTWARE'] ) ) : '';
+			$data['is_ssl']           = is_ssl();
+			$data['is_multisite']     = is_multisite();
+			$data['is_wp_com']        = defined( 'IS_WPCOM' ) && IS_WPCOM;
+			$data['is_wp_com_vip']    = ( defined( 'WPCOM_IS_VIP_ENV' ) && WPCOM_IS_VIP_ENV ) || ( function_exists( 'wpcom_is_vip' ) && wpcom_is_vip() );
+			$data['is_wp_cache']      = defined( 'WP_CACHE' ) && WP_CACHE;
+			$data['multi_site_count'] = $this->get_sites_total();
+			$data['locale']           = get_locale();
+			$data['timezone']         = $this->get_timezone_offset();
+			$data['base_product']     = $this->get_base_product();
 
 			return $data;
 		}
