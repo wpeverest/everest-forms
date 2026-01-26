@@ -1745,6 +1745,18 @@ p.search-box {
 		margin-left: 0;
 		margin-right: 0;
 		max-width: 100%;
+
+		#evf-dashboard-analytisc-header {
+			margin: 40px 0 !important;
+		}
+	}
+}
+
+#evf-form-analytics {
+	margin-left: 2px !important;
+	margin-right: 20px !important;
+	.evf-container {
+		max-width: 100% !important;
 	}
 }
 
