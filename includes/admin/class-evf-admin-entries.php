@@ -55,12 +55,14 @@ class EVF_Admin_Entries {
 
 		$entries_table_list->process_bulk_action();
 		$entries_table_list->prepare_items();
+
+		$use_react_header = apply_filters( 'everest_forms_use_react_header', true, 'entries' );
 		?>
 		<div id="everest-forms-entries-list" class="wrap">
-			<h1 class="wp-heading-inline"><?php esc_html_e( 'Entries', 'everest-forms' ); ?></h1>
-			<hr class="wp-header-end">
-
-		<?php settings_errors(); ?>
+			<?php if ( $use_react_header ) : ?>
+				<div id="evf-react-header-root" data-active-menu="entries"></div>
+				<?php endif; ?>
+				<?php settings_errors(); ?>
 		<?php do_action( 'everest_forms_before_entry_list', $entries_table_list ); ?>
 
 		<?php if ( 0 < count( $entry_ids ) ) : ?>

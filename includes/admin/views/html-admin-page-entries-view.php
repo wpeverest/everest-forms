@@ -133,15 +133,17 @@ if ( false !== $entry_index ) {
 										if ( is_serialized( $meta_value ) ) {
 											$raw_meta_val = unserialize( $meta_value ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_unserialize
 
-											$field_type_array = apply_filters( 'everest_forms_serialized_value_field_type', array(
+											$field_type_array = apply_filters(
+												'everest_forms_serialized_value_field_type',
+												array(
 													'payment-checkbox',
 													'checkbox',
 													'radio',
-													'payment-multiple'
+													'payment-multiple',
 												)
 											);
 
-											if ( ! empty( $raw_meta_val['type'] ) && in_array( $raw_meta_val['type'], $field_type_array  ) && empty( $raw_meta_val['label'][0] ) ) {
+											if ( ! empty( $raw_meta_val['type'] ) && in_array( $raw_meta_val['type'], $field_type_array ) && empty( $raw_meta_val['label'][0] ) ) {
 												$meta_value = '';
 											} else {
 												$is_dropdown = false;
@@ -156,7 +158,6 @@ if ( false !== $entry_index ) {
 													$meta_value = '';
 												}
 											}
-
 										}
 
 										if ( evf_is_json( $meta_value ) ) {
@@ -233,7 +234,8 @@ if ( false !== $entry_index ) {
 						</div>
 					</div>
 
-					<?php do_action( 'everest_forms_entry_details_content', $entry, $form_id );
+					<?php
+					do_action( 'everest_forms_entry_details_content', $entry, $form_id );
 					?>
 				</div>
 				<!-- Entry Details metabox -->

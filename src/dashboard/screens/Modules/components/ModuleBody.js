@@ -1,35 +1,36 @@
 /**
  *  External Dependencies
  */
-import React, { useState, useEffect, useContext } from "react";
 import {
-	Tabs,
-	Container,
-	Modal,
-	ModalOverlay,
-	ModalContent,
-	ModalCloseButton,
-	ModalFooter,
+	Box,
 	Button,
-	Text,
-	SimpleGrid,
+	Container,
 	Input,
 	Link,
+	Modal,
+	ModalCloseButton,
+	ModalContent,
+	ModalFooter,
+	ModalOverlay,
+	SimpleGrid,
+	Tabs,
+	Text,
 	VStack,
 	useToast,
-} from "@chakra-ui/react";
-import { sprintf, __ } from "@wordpress/i18n";
+} from '@chakra-ui/react';
+import { __, sprintf } from '@wordpress/i18n';
+import { useContext, useEffect, useState } from 'react';
 
 /**
  *  Internal Dependencies
  */
-import { isArray, isEmpty } from "./../../../utils/utils";
-import { actionTypes } from "./../../../reducers/DashboardReducer";
-import DashboardContext from "./../../../context/DashboardContext";
-import { Lock } from "./../../../components/Icon/Icon";
-import ModuleItem from "./ModuleItem";
-import AddonsSkeleton from "./../../../skeleton/AddonsSkeleton/AddonsSkeleton";
-import { activateLicense } from "./modules-api";
+import { Lock } from './../../../components/Icon/Icon';
+import DashboardContext from './../../../context/DashboardContext';
+import { actionTypes } from './../../../reducers/DashboardReducer';
+import AddonsSkeleton from './../../../skeleton/AddonsSkeleton/AddonsSkeleton';
+import { isArray, isEmpty } from './../../../utils/utils';
+import ModuleItem from './ModuleItem';
+import { activateLicense } from './modules-api';
 
 const ModuleBody = ({
 	isPerformingBulkAction,
@@ -39,22 +40,23 @@ const ModuleBody = ({
 }) => {
 	/* global _EVF_DASHBOARD_ */
 	const { upgradeURL, licenseActivationURL, licensePlan, isPro } =
-		typeof _EVF_DASHBOARD_ !== "undefined" && _EVF_DASHBOARD_;
+		typeof _EVF_DASHBOARD_ !== 'undefined' && _EVF_DASHBOARD_;
 	const [{ upgradeModal }, dispatch] = useContext(DashboardContext);
 	const [upgradeContent, setUpgradeContent] = useState({
-		title: "",
-		body: "",
-		buttonText: __("Upgrade to Pro", "everest-forms"),
+		title: '',
+		body: '',
+		buttonText: __('Upgrade to Pro', 'everest-forms'),
 		upgradeURL:
 			upgradeURL +
-			"utm_medium=addon-activation-page&utm_source=evf-free&utm_campaign=addon-page-feature-block&utm_content=Upgrade%20Plan",
-		licenseActivationPlaceholder: __("License key","everest-forms"),
+			'utm_medium=addon-activation-page&utm_source=evf-free&utm_campaign=addon-page-feature-block&utm_content=Upgrade%20Plan',
+		licenseActivationPlaceholder: __('License key', 'everest-forms'),
 	});
 
 	const toast = useToast();
 
 	const [licenseActivationKey, setLicenseKey] = useState('');
-	const [licenseActivationValidationMessage, setLicenseValidationMessage] = useState('');
+	const [licenseActivationValidationMessage, setLicenseValidationMessage] =
+		useState('');
 	const [reloadPage, setReloadPage] = useState(false);
 
 	const handleActivationKeyChange = (event) => {
@@ -70,7 +72,7 @@ const ModuleBody = ({
 
 		if (checked) {
 			selectedModules[slug] = {
-				slug: slug + "/" + slug + ".php",
+				slug: slug + '/' + slug + '.php',
 				name,
 				type,
 			};
@@ -88,52 +90,51 @@ const ModuleBody = ({
 		if (upgradeModal.enable) {
 			if (!isPro) {
 				upgradeContentRef.title = __(
-					"Everest Froms Pro Required",
-					"everest-forms"
+					'Everest Froms Pro Required',
+					'everest-forms',
 				);
 				upgradeContentRef.body = sprintf(
 					__(
-						"%s requires Everest Froms Pro to be activated. Please upgrade to a premium plan and unlock this %s.",
-						"everest-forms"
+						'%s requires Everest Froms Pro to be activated. Please upgrade to a premium plan and unlock this %s.',
+						'everest-forms',
 					),
 					upgradeModal.moduleName,
-					upgradeModal.moduleType
+					upgradeModal.moduleType,
 				);
 			} else {
-				if ( !licensePlan) {
+				if (!licensePlan) {
 					upgradeContentRef.title = __(
-						"License Activation Required",
-						"everest-forms"
+						'License Activation Required',
+						'everest-forms',
 					);
 					upgradeContentRef.body = sprintf(
 						__(
-							"Please activate license of Everest Froms Pro plugin in order to use %s",
-							"everest-forms"
+							'Please activate license of Everest Froms Pro plugin in order to use %s',
+							'everest-forms',
 						),
-						upgradeModal.moduleName
+						upgradeModal.moduleName,
 					);
 					upgradeContentRef.buttonText = sprintf(
-						__("Activate License", "everest-forms"),
-						upgradeModal.moduleName
+						__('Activate License', 'everest-forms'),
+						upgradeModal.moduleName,
 					);
 					upgradeContentRef.licenseActivationPlaceholder = sprintf(
-						__("Enter your license key", "everest-forms"),
-						upgradeModal.moduleName
+						__('Enter your license key', 'everest-forms'),
+						upgradeModal.moduleName,
 					);
 					upgradeContentRef.upgradeURL = licenseActivationURL;
 				}
-
 			}
 			setUpgradeContent(upgradeContentRef);
 		}
 	}, [upgradeModal]);
 
 	useEffect(() => {
-		if(reloadPage){
+		if (reloadPage) {
 			window.location.reload();
 			setReloadPage(false);
 		}
-	},[reloadPage]);
+	}, [reloadPage]);
 
 	const updateUpgradeModal = () => {
 		const upgradeModalRef = { ...upgradeModal };
@@ -145,11 +146,20 @@ const ModuleBody = ({
 	};
 
 	const licenseActivation = () => {
-		if( '' === licenseActivationKey ){
-			setLicenseValidationMessage(sprintf(__('Please enter your plugin activation license key','everest-forms')));
+		if ('' === licenseActivationKey) {
+			setLicenseValidationMessage(
+				sprintf(
+					__(
+						'Please enter your plugin activation license key',
+						'everest-forms',
+					),
+				),
+			);
 			setLicenseValidationStatus(true);
-		} else if( licenseActivationKey.length < 32 ){
-			setLicenseValidationMessage(sprintf(__('Please enter the valid license key','everest-forms')));
+		} else if (licenseActivationKey.length < 32) {
+			setLicenseValidationMessage(
+				sprintf(__('Please enter the valid license key', 'everest-forms')),
+			);
 			setLicenseValidationStatus(true);
 		} else {
 			setLicenseValidationMessage('');
@@ -157,32 +167,34 @@ const ModuleBody = ({
 			setLicenseActivation(true);
 
 			activateLicense(licenseActivationKey)
-			.then((data) => {
-				setLicenseActivation(true);
-				if (data.code === 200) {
-					toast({
-						title: data.message,
-						status: "success",
-						duration: 3000,
-					});
-					setLicenseActivation(false);
-					setReloadPage(true);
-				} else if( data.code === 400 ) {
-					toast({
-						title: data.message,
-						status: "error",
-						duration: 3000,
-					});
-				}
-			}).catch((e) => {
+				.then((data) => {
+					setLicenseActivation(true);
+					if (data.code === 200) {
+						toast({
+							title: data.message,
+							status: 'success',
+							duration: 3000,
+						});
+						setLicenseActivation(false);
+						setReloadPage(true);
+					} else if (data.code === 400) {
+						toast({
+							title: data.message,
+							status: 'error',
+							duration: 3000,
+						});
+					}
+				})
+				.catch((e) => {
 					toast({
 						title: e.message,
-						status: "error",
+						status: 'error',
 						duration: 3000,
 					});
-			}).finally(() => {
-				setLicenseActivation(false);
-			});
+				})
+				.finally(() => {
+					setLicenseActivation(false);
+				});
 		}
 	};
 
@@ -197,16 +209,9 @@ const ModuleBody = ({
 						isCentered
 					>
 						<ModalOverlay />
-						<ModalContent
-							alignItems={"center"}
-							p="50px 11px 55px 11px"
-						>
-							<Lock h={"131px"} w={"150px"} />
-							<Text
-								fontSize="24px"
-								lineHeight="44px"
-								fontWeight="600"
-							>
+						<ModalContent alignItems={'center'} p="50px 11px 55px 11px">
+							<Lock h={'131px'} w={'150px'} />
+							<Text fontSize="24px" lineHeight="44px" fontWeight="600">
 								{upgradeContent.title}
 							</Text>
 							<ModalCloseButton boxShadow="none !important" />
@@ -219,65 +224,66 @@ const ModuleBody = ({
 								{upgradeContent.body}
 							</Text>
 							<ModalFooter paddingBottom="0px" w="400px">
-							<VStack
-								width="100%"
-							>
-							{isPro && (
-								<Input
-									placeholder={upgradeContent.licenseActivationPlaceholder}
-									onChange={handleActivationKeyChange}
-								/>
-							)}
-								<Button
-									colorScheme="primary"
-									color="white !important"
-									textDecor="none !important"
-									onClick={licenseActivation}
-									w="100%"
-									as={!isPro ? Link : ''}
-									href={!isPro ? upgradeContent.upgradeURL : ''}
-									isExternal
-									isLoading = {isLicenseActivation}
-								>
-									{upgradeContent.buttonText}
-								</Button>
-								{isPro && licenseActivationValidationMessage && (
-									<Text fontSize='md' color='red'>{licenseActivationValidationMessage}</Text>
-								)}
+								<VStack width="100%">
+									{isPro && (
+										<Input
+											placeholder={upgradeContent.licenseActivationPlaceholder}
+											onChange={handleActivationKeyChange}
+										/>
+									)}
+									<Button
+										colorScheme="primary"
+										color="white !important"
+										textDecor="none !important"
+										onClick={licenseActivation}
+										w="100%"
+										as={!isPro ? Link : ''}
+										href={!isPro ? upgradeContent.upgradeURL : ''}
+										isExternal
+										isLoading={isLicenseActivation}
+									>
+										{upgradeContent.buttonText}
+									</Button>
+									{isPro && licenseActivationValidationMessage && (
+										<Text fontSize="md" color="red">
+											{licenseActivationValidationMessage}
+										</Text>
+									)}
 								</VStack>
 							</ModalFooter>
 						</ModalContent>
 					</Modal>
 				)}
-				<Container maxW="container.xl">
-					{isEmpty(filteredAddons) ? (
-						<AddonsSkeleton />
-					) : (
-						<SimpleGrid columns={4} spacing="5">
-							{isArray(filteredAddons) &&
-								filteredAddons?.map((data) => (
-									<ModuleItem
-										key={data.slug}
-										data={data}
-										isChecked={selectedModuleData.hasOwnProperty(
-											data.slug
-										)}
-										onCheckedChange={(slug, checked) => {
-											handleCheckedChange(
-												slug,
-												checked,
-												data.name,
-												data.type
-											);
-										}}
-										isPerformingBulkAction={
-											isPerformingBulkAction
-										}
-										selectedModuleData={selectedModuleData}
-									/>
-								))}
-						</SimpleGrid>
-					)}
+				<Container maxW="full" px={0}>
+					<Box maxW="1400px" mx="auto">
+						{isEmpty(filteredAddons) ? (
+							<AddonsSkeleton />
+						) : (
+							<SimpleGrid
+								columns={{ base: 1, sm: 2, md: 3, lg: 4 }}
+								spacing="5"
+							>
+								{isArray(filteredAddons) &&
+									filteredAddons?.map((data) => (
+										<ModuleItem
+											key={data.slug}
+											data={data}
+											isChecked={selectedModuleData.hasOwnProperty(data.slug)}
+											onCheckedChange={(slug, checked) => {
+												handleCheckedChange(
+													slug,
+													checked,
+													data.name,
+													data.type,
+												);
+											}}
+											isPerformingBulkAction={isPerformingBulkAction}
+											selectedModuleData={selectedModuleData}
+										/>
+									))}
+							</SimpleGrid>
+						)}
+					</Box>
 				</Container>
 			</Tabs>
 		</>

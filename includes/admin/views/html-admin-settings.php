@@ -16,16 +16,21 @@ if ( ! $tab_exists ) {
 	exit;
 }
 
-
+$use_react_header = apply_filters( 'everest_forms_use_react_header', true, $current_tab );
 
 ?>
+
+
 <div class="wrap everest-forms">
-<?php if ( 'integration' !== $current_tab ) : ?>
-	<form method="<?php echo esc_attr( apply_filters( 'everest_forms_settings_form_method_tab_' . $current_tab, 'post' ) ); ?>" id="mainform" action="" enctype="multipart/form-data">
-	<?php endif; ?>
-	<h1 class="screen-reader-text"><?php echo esc_html( $current_tab_label ); ?></h1>
-	<div class="everest-forms-settings">
-		<div class="everest-forms-settings-wrapper">
+	<?php if ( 'integration' !== $current_tab ) : ?>
+		<form method="<?php echo esc_attr( apply_filters( 'everest_forms_settings_form_method_tab_' . $current_tab, 'post' ) ); ?>" id="mainform" action="" enctype="multipart/form-data">
+			<?php endif; ?>
+			<h1 class="screen-reader-text"><?php echo esc_html( $current_tab_label ); ?></h1>
+			<?php if ( $use_react_header ) : ?>
+				<div id="evf-react-header-root"></div>
+			<?php endif; ?>
+			<div class="everest-forms-settings">
+				<div class="everest-forms-settings-wrapper">
 			<header class="everest-forms-header">
 				<div class="everest-forms-header--top">
 					<div class="everest-forms-header--top-logo">

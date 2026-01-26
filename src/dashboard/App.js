@@ -1,22 +1,31 @@
-import React from "react";
-import { HashRouter } from "react-router-dom";
-import { Container, ChakraProvider } from "@chakra-ui/react";
-import Theme from "./Theme/Theme";
-import Router from "./Router/Router";
-import { Header } from "./components";
-import dashboardReducer, { initialState } from "./reducers/DashboardReducer";
-
-import { DashboardProvider } from "./context/DashboardContext";
+import { ChakraProvider } from '@chakra-ui/react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { HashRouter } from 'react-router-dom';
+import Router from './Router/Router';
+import Theme from './Theme/Theme';
+import { DashboardProvider } from './context/DashboardContext';
+import dashboardReducer, { initialState } from './reducers/DashboardReducer';
 
 const App = () => {
+	const queryClient = new QueryClient({
+		defaultOptions: {
+			queries: {
+				refetchOnWindowFocus: false,
+				refetchOnReconnect: false,
+			},
+		},
+	});
+
 	return (
-		<DashboardProvider initialState={initialState} dashboardReducer={dashboardReducer}>
+		<DashboardProvider
+			initialState={initialState}
+			dashboardReducer={dashboardReducer}
+		>
 			<HashRouter>
 				<ChakraProvider theme={Theme}>
-					<Header />
-					<Container maxW="container.xl">
+					<QueryClientProvider client={queryClient}>
 						<Router />
-					</Container>
+					</QueryClientProvider>
 				</ChakraProvider>
 			</HashRouter>
 		</DashboardProvider>

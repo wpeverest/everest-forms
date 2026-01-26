@@ -191,14 +191,14 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 		}
 
 		if ( current_user_can( 'everest_forms_view_form', $posts->ID ) ) {
-			$preview_link   = add_query_arg(
+			$preview_link       = add_query_arg(
 				array(
 					'form_id'     => absint( $posts->ID ),
 					'evf_preview' => 'true',
 				),
 				home_url()
 			);
-			$duplicate_link = wp_nonce_url( admin_url( 'admin.php?page=evf-builder&action=duplicate_form&form_id=' . absint( $posts->ID ) ), 'everest-forms-duplicate-form_' . $posts->ID );
+			$duplicate_link     = wp_nonce_url( admin_url( 'admin.php?page=evf-builder&action=duplicate_form&form_id=' . absint( $posts->ID ) ), 'everest-forms-duplicate-form_' . $posts->ID );
 			$form_settings_link = admin_url( 'admin.php?page=evf-builder&tab=settings&form_id=' . absint( $posts->ID ) );
 
 			if ( 'trash' !== $post_status ) {
@@ -221,6 +221,16 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 				$actions['locate'] = '<a href="#" class="evf-form-locate" data-id= "' . esc_attr( $posts->ID ) . '">' . __( 'Locate', 'everest-forms' ) . '</a>';
 			}
 		}
+
+		/**
+		 * Filter form list row actions.
+		 *
+		 * @since 3.4.2
+		 * @param array  $actions Array of row actions.
+		 * @param object $posts   Form object.
+		 * @return array
+		 */
+		$actions = apply_filters( 'everest_forms_form_list_actions', $actions, $posts );
 
 		$row_actions = array();
 
@@ -442,7 +452,7 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 			'status' => 'inactive',
 		);
 
-		$inactive_label = sprintf(
+		$inactive_label           = sprintf(
 			_nx(
 				'Inactive <span class="count">(%s)</span>',
 				'Inactive <span class="count">(%s)</span>',
@@ -583,9 +593,14 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 				break;
 			case 'inactive':
 				foreach ( $form_ids as $form_id ) {
-					$result = wp_update_post( array( 'ID' => $form_id, 'post_status' => 'inactive' ) );
+					$result = wp_update_post(
+						array(
+							'ID'          => $form_id,
+							'post_status' => 'inactive',
+						)
+					);
 					if ( $result ) {
-						$form_data = evf()->form->get( absint( $form_id ), array( 'content_only' => true ) );
+						$form_data                 = evf()->form->get( absint( $form_id ), array( 'content_only' => true ) );
 						$form_data['form_enabled'] = 0;
 
 						evf()->form->update( $form_id, $form_data );
@@ -604,9 +619,14 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 
 			case 'active':
 				foreach ( $form_ids as $form_id ) {
-					$result = wp_update_post( array( 'ID' => $form_id, 'post_status' => 'publish' ) );
+					$result = wp_update_post(
+						array(
+							'ID'          => $form_id,
+							'post_status' => 'publish',
+						)
+					);
 					if ( $result ) {
-						$form_data = evf()->form->get( absint( $form_id ), array( 'content_only' => true ) );
+						$form_data                 = evf()->form->get( absint( $form_id ), array( 'content_only' => true ) );
 						$form_data['form_enabled'] = 1;
 
 						evf()->form->update( $form_id, $form_data );
@@ -690,7 +710,7 @@ class EVF_Admin_Forms_Table_List extends WP_List_Table {
 				// If it's a valid WordPress status, use it
 				$args['post_status'] = $status;
 			}
-		}else{
+		} else {
 			$args['post_status'] = array( 'publish', 'inactive' );
 		}
 

@@ -154,9 +154,11 @@
 		height: 280px;
 		margin-top: -140px;
 	}
+
 	#evf-modal-inner {
 		padding: 0 16px 60px;
 	}
+
 	#evf-modal-cancel {
 		line-height: 32px;
 	}
@@ -186,11 +188,48 @@
 		top: 10px;
 		bottom: 10px;
 	}
+
 	#evf-modal-inner {
 		overflow: auto;
 		height: -webkit-calc(100% - 92px);
 		height: calc(100% - 92px);
 		padding-bottom: 2px;
+	}
+}
+
+#toplevel_page_everest-forms ul li {
+	&:not(.is-sub-menu) {
+		a[href="admin.php?page=evf-builder"] {
+			border-top: 1px solid hsla(0, 0%, 100%, 0.2);
+			margin-top: 5px;
+			padding-top: 8px;
+		}
+
+		a[href="admin.php?page=evf-entries"] {
+			border-bottom: 1px solid hsla(0, 0%, 100%, 0.2);
+			margin-bottom: 5px;
+			padding-bottom: 8px;
+		}
+
+		a[href="admin.php?page=evf-settings"] {
+			border-top: 1px solid hsla(0, 0%, 100%, 0.2);
+			margin-top: 5px;
+			padding-top: 8px;
+		}
+
+		/* If the previous sibling li contains the entries link, remove the top border / spacing on settings */
+		&:has(> a[href="admin.php?page=evf-entries"])+li>a[href="admin.php?page=evf-settings"] {
+			border-top: none;
+			margin-top: 0;
+			padding-top: 0;
+		}
+
+		a[href="admin.php?page=evf-smart-smtp"] {
+			border-top: 1px solid hsla(0, 0%, 100%, 0.2);
+			margin-top: 5px;
+			padding-top: 8px;
+		}
+
 	}
 }
 
@@ -222,149 +261,196 @@
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
+
 .evf-icon- {
-    &captcha::before {
-        content: '\e928';
-    }
-    &password::before {
-        content: '\e911';
-    }
-    &email::before {
-        content: '\e914';
-    }
-    &map-marker::before {
-        content: '\e917';
-    }
-    &flag::before {
-        content: '\e915';
-    }
-    &first-name::before {
-        content: '\e91f';
-    }
-    &last-name::before {
-        content: '\e91c';
-    }
-    &text::before {
-        content: '\e906';
-    }
-    &paragraph::before {
-        content: '\e912';
-    }
-    &dropdown::before {
-        content: '\e921';
-    }
-    &checkbox::before {
-        content: '\e927';
-    }
-    &multiple-choices::before {
-        content: '\e919';
-    }
-    &multiple-choices-radio::before {
-        content: '\e919';
-    }
-    &number::before {
-        content: '\e918';
-    }
-    &website::before {
-        content: '\e903';
-    }
-    &calendar::before {
-        content: '\e916';
-    }
-    &single-item::before {
-        content: '\e907';
-    }
-    &file-upload::before {
-        content: '\e920';
-    }
-    &hidden::before {
-        content: '\e91e';
-    }
-    &phone::before {
-        content: '\e900';
-    }
-    &custom-html::before {
-        content: '\e923';
-    }
-    &section-divider::before {
-        content: '\e908';
-    }
-    &payment::before {
-        content: '\e924';
-    }
-    &total::before {
-        content: '\e904';
-    }
-    &subtotal::before {
-        content: '\e904';
-    }
-    &img-upload::before {
-        content: '\e91d';
-    }
-    &star::before {
-        content: '\e90c';
-    }
-    &likert::before {
-        content: '\e91b';
-    }
-    &scale-rating::before {
-        content: '\e909';
-    }
-    &signature::before {
-        content: '\e913';
-    }
-    &privacy-policy::before {
-        content: '\e910';
-    }
-    &repeater::before {
-        content: '\e90b';
-    }
-    &range-slider::before {
-        content: '\e90d';
-    }
-    &divider::before {
-        content: '\e922';
-    }
-    &wysiwyg::before {
-        content: '\e902';
-    }
-    &eye::before {
-        content: '\e903';
-    }
-    &coupon::before {
-        content: '\e925';
-    }
-    &yes-no::before {
-        content: '\e901';
-    }
-    &reset::before {
-        content: '\e90a';
-    }
-    &progress::before {
-        content: '\e90f';
-    }
-    &color::before {
-        content: '\e926';
-    }
-    &ai::before {
-        content: '\e913';
-    }
-    &lookup::before {
-        content: '\e91a';
-    }
-    &turnstile,
-    &recaptcha,
-    &hcaptcha {
-        &::before {
-            content: '\e917';
-        }
-    }
-    &builder::before {
-        content: '\e904';
-    }
-    &subscription-plan::before{
-        content: '\e905';
-    }
+	&captcha::before {
+		content: '\e928';
+	}
+
+	&password::before {
+		content: '\e911';
+	}
+
+	&email::before {
+		content: '\e914';
+	}
+
+	&map-marker::before {
+		content: '\e917';
+	}
+
+	&flag::before {
+		content: '\e915';
+	}
+
+	&first-name::before {
+		content: '\e91f';
+	}
+
+	&last-name::before {
+		content: '\e91c';
+	}
+
+	&text::before {
+		content: '\e906';
+	}
+
+	&paragraph::before {
+		content: '\e912';
+	}
+
+	&dropdown::before {
+		content: '\e921';
+	}
+
+	&checkbox::before {
+		content: '\e927';
+	}
+
+	&multiple-choices::before {
+		content: '\e919';
+	}
+
+	&multiple-choices-radio::before {
+		content: '\e919';
+	}
+
+	&number::before {
+		content: '\e918';
+	}
+
+	&website::before {
+		content: '\e903';
+	}
+
+	&calendar::before {
+		content: '\e916';
+	}
+
+	&single-item::before {
+		content: '\e907';
+	}
+
+	&file-upload::before {
+		content: '\e920';
+	}
+
+	&hidden::before {
+		content: '\e91e';
+	}
+
+	&phone::before {
+		content: '\e900';
+	}
+
+	&custom-html::before {
+		content: '\e923';
+	}
+
+	&section-divider::before {
+		content: '\e908';
+	}
+
+	&payment::before {
+		content: '\e924';
+	}
+
+	&total::before {
+		content: '\e904';
+	}
+
+	&subtotal::before {
+		content: '\e904';
+	}
+
+	&img-upload::before {
+		content: '\e91d';
+	}
+
+	&star::before {
+		content: '\e90c';
+	}
+
+	&likert::before {
+		content: '\e91b';
+	}
+
+	&scale-rating::before {
+		content: '\e909';
+	}
+
+	&signature::before {
+		content: '\e913';
+	}
+
+	&privacy-policy::before {
+		content: '\e910';
+	}
+
+	&repeater::before {
+		content: '\e90b';
+	}
+
+	&range-slider::before {
+		content: '\e90d';
+	}
+
+	&divider::before {
+		content: '\e922';
+	}
+
+	&wysiwyg::before {
+		content: '\e902';
+	}
+
+	&eye::before {
+		content: '\e903';
+	}
+
+	&coupon::before {
+		content: '\e925';
+	}
+
+	&yes-no::before {
+		content: '\e901';
+	}
+
+	&reset::before {
+		content: '\e90a';
+	}
+
+	&progress::before {
+		content: '\e90f';
+	}
+
+	&color::before {
+		content: '\e926';
+	}
+
+	&ai::before {
+		content: '\e913';
+	}
+
+	&lookup::before {
+		content: '\e91a';
+	}
+
+	&turnstile,
+	&recaptcha,
+	&hcaptcha {
+		&::before {
+			content: '\e917';
+		}
+	}
+
+	&builder::before {
+		content: '\e904';
+	}
+
+	&subscription-plan::before {
+		content: '\e905';
+	}
+
 	&private-note::before {
 		content: '\e92d';
 	}
