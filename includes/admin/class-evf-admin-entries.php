@@ -62,7 +62,6 @@ class EVF_Admin_Entries {
 			<?php if ( $use_react_header ) : ?>
 				<div id="evf-react-header-root" data-active-menu="entries"></div>
 				<?php endif; ?>
-				<hr class="wp-header-end">
 				<?php settings_errors(); ?>
 		<?php do_action( 'everest_forms_before_entry_list', $entries_table_list ); ?>
 
