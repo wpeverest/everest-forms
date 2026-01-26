@@ -237,7 +237,7 @@ const Modules = () => {
 	return (
 		<Box top="var(--wp-admin--admin-bar--height, 0)" zIndex={1}>
 			<Container maxW="full" px={{ base: '4', lg: '6' }}>
-				<Box maxW="1400px" mx="auto">
+				<Box mx="auto">
 					<Stack
 						direction={{ base: 'column', lg: 'row' }}
 						minH="70px"
