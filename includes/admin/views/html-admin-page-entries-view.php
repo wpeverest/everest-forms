@@ -55,14 +55,14 @@ $use_react_header = apply_filters( 'everest_forms_use_react_header', true, 'entr
 
 ?>
 <div class="wrap everest-forms">
-	<?php if ( $use_react_header ) : ?>
-		<div id="evf-react-header-root" data-active-menu="entries"></div>
-		<?php endif; ?>
-		<h1 class="wp-heading-inline"><?php esc_html_e( 'View Entry', 'everest-forms' ); ?></h1>
-		<a href="<?php echo esc_url( admin_url( 'admin.php?page=evf-entries&amp;form_id=' . $form_id ) ); ?>" class="page-title-action"><?php esc_html_e( 'Back to All Entries', 'everest-forms' ); ?></a>
-		<hr class="wp-header-end">
-		<?php do_action( 'everest_forms_view_entries_notices' ); ?>
+	<h1 class="wp-heading-inline"><?php esc_html_e( 'View Entry', 'everest-forms' ); ?></h1>
+	<a href="<?php echo esc_url( admin_url( 'admin.php?page=evf-entries&amp;form_id=' . $form_id ) ); ?>" class="page-title-action"><?php esc_html_e( 'Back to All Entries', 'everest-forms' ); ?></a>
+	<hr class="wp-header-end">
+	<?php do_action( 'everest_forms_view_entries_notices' ); ?>
 	<div class="everest-forms-entry">
+		<?php if ( $use_react_header ) : ?>
+			<div id="evf-react-header-root" data-active-menu="entries"></div>
+			<?php endif; ?>
 		<div id="poststuff">
 			<div id="post-body" class="metabox-holder columns-2">
 				<!-- Entry Fields metabox -->

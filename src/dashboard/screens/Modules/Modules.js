@@ -235,9 +235,9 @@ const Modules = () => {
 	};
 
 	return (
-		<Box top="var(--wp-admin--admin-bar--height, 0)" zIndex={1}>
+		<Box top="var(--wp-admin--admin-bar--height, 0)" zIndex={1} py={5}>
 			<Container maxW="full" px={{ base: '4', lg: '6' }}>
-				<Box mx="auto">
+				<Box maxW="1400px" mx="auto">
 					<Stack
 						direction={{ base: 'column', lg: 'row' }}
 						minH="70px"
@@ -274,38 +274,6 @@ const Modules = () => {
 									{__('Descending', 'everest-forms')}
 								</option>
 							</Select>
-
-							<Tabs
-								index={tabIndex}
-								onChange={(index) => {
-									setTabIndex(index);
-								}}
-							>
-								<TabList>
-									<Tab
-										onClick={() =>
-											handleSearchInputChange({ target: { value: searchItem } })
-										}
-									>
-										{__('All Modules', 'everest-forms')}
-									</Tab>
-									<Tab
-										onClick={() =>
-											handleSearchInputChange({ target: { value: searchItem } })
-										}
-									>
-										{__('Features', 'everest-forms')}
-									</Tab>
-									<Tab
-										onClick={() =>
-											handleSearchInputChange({ target: { value: searchItem } })
-										}
-									>
-										{__('Addons', 'everest-forms')}
-									</Tab>
-								</TabList>
-							</Tabs>
-
 							<Box display="flex" gap="8px">
 								<Select
 									display="inline-flex"
@@ -342,6 +310,37 @@ const Modules = () => {
 									{__('Apply', 'everest-forms')}
 								</Button>
 							</Box>
+
+							<Tabs
+								index={tabIndex}
+								onChange={(index) => {
+									setTabIndex(index);
+								}}
+							>
+								<TabList>
+									<Tab
+										onClick={() =>
+											handleSearchInputChange({ target: { value: searchItem } })
+										}
+									>
+										{__('All Modules', 'everest-forms')}
+									</Tab>
+									<Tab
+										onClick={() =>
+											handleSearchInputChange({ target: { value: searchItem } })
+										}
+									>
+										{__('Features', 'everest-forms')}
+									</Tab>
+									<Tab
+										onClick={() =>
+											handleSearchInputChange({ target: { value: searchItem } })
+										}
+									>
+										{__('Addons', 'everest-forms')}
+									</Tab>
+								</TabList>
+							</Tabs>
 						</Stack>
 						<Stack
 							direction="row"
@@ -367,7 +366,7 @@ const Modules = () => {
 					</Stack>
 				</Box>
 			</Container>
-			<Container maxW="full" px={{ base: '4', lg: '6' }}>
+			<Container maxW="full" px={{ base: '4', lg: '6' }} mt={2}>
 				<Box maxW="1400px" mx="auto">
 					{isSearching ? (
 						<AddonsSkeleton />
@@ -400,7 +399,7 @@ const Modules = () => {
 						<Box>
 							<Tabs index={tabIndex}>
 								<TabPanels>
-									<TabPanel>
+									<TabPanel px={0}>
 										<ModuleBody
 											isPerformingBulkAction={isPerformingBulkAction}
 											filteredAddons={modules}
@@ -408,7 +407,7 @@ const Modules = () => {
 											selectedModuleData={selectedModuleData}
 										/>
 									</TabPanel>
-									<TabPanel>
+									<TabPanel px={0}>
 										<ModuleBody
 											isPerformingBulkAction={isPerformingBulkAction}
 											filteredAddons={modules}
@@ -416,7 +415,7 @@ const Modules = () => {
 											selectedModuleData={selectedModuleData}
 										/>
 									</TabPanel>
-									<TabPanel>
+									<TabPanel px={0}>
 										<ModuleBody
 											isPerformingBulkAction={isPerformingBulkAction}
 											filteredAddons={modules}

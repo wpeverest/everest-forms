@@ -10675,7 +10675,7 @@ body {
 }
 
 body {
-	background: #f0f0f1 !important;
+	background: #f0f0f1;
 
 	&.everest-forms_page_evf-tools {
 		.everest-forms {
@@ -12007,4 +12007,8 @@ button#show-settings-link {
 
 #evf-react-header-root > div {
 	top: 0px !important;
+}
+
+.wrap.everest-forms {
+	padding-top: 0;
 }

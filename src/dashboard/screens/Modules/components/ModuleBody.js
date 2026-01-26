@@ -254,7 +254,7 @@ const ModuleBody = ({
 						</ModalContent>
 					</Modal>
 				)}
-				<Container maxW="full" px={{ base: '4', lg: '6' }}>
+				<Container maxW="full" px={0}>
 					<Box maxW="1400px" mx="auto">
 						{isEmpty(filteredAddons) ? (
 							<AddonsSkeleton />

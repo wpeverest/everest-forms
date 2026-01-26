@@ -204,6 +204,7 @@ const Header = ({ hideSiteAssistant = false }) => {
 								)}
 							>
 								<Tag
+									display={'inline-flex !important'}
 									variant="outline"
 									colorScheme="primary"
 									borderRadius="xl"
