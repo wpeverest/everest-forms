@@ -1,5 +1,8 @@
 == Changelog ==
 
+= 3.4.2.1     	- 26-01-2026
+* Fix			- Vendor file issue.
+
 = 3.4.2     	- 26-01-2026
 * Enhance		- Site assistant added.
 * Dev 			- Added filters for form submit error messages.

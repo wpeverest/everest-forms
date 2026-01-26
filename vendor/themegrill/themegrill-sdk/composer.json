@@ -1,0 +1,28 @@
+{
+  "name": "themegrill/themegrill-sdk",
+  "description": "ThemeGrill SDK",
+  "type": "library",
+  "require-dev": {
+    "yoast/phpunit-polyfills": "^4.0"
+  },
+  "license": "GPL-3.0",
+  "authors": [
+    {
+      "name": "themegrill",
+      "email": "team@themegrill.com",
+      "homepage": "https://themegrill.com"
+    }
+  ],
+  "require": {
+    "php": ">=7.2.24"
+  },
+  "support": {
+    "issues": "https://github.com/themegrill/themegrill-sdk/issues"
+  },
+  "config": {
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    }
+  },
+  "version": "1.0.1"
+}
