@@ -100,7 +100,7 @@ const Header = ({ hideSiteAssistant = false }) => {
 				key={route}
 				href={convertedRoute}
 				isExternal={route === 'https://everestforms.net/free-vs-pro/'}
-				fontSize="md"
+				fontSize="15px"
 				fontWeight="semibold"
 				lineHeight="150%"
 				color={isActive ? 'primary.500' : '#383838'}
@@ -130,7 +130,7 @@ const Header = ({ hideSiteAssistant = false }) => {
 				key={route}
 				as={NavLink}
 				to={route}
-				fontSize="md"
+				fontSize="15px"
 				fontWeight="semibold"
 				lineHeight="150%"
 				color="#383838"
@@ -211,6 +211,26 @@ const Header = ({ hideSiteAssistant = false }) => {
 									</Center>
 								</>
 							)}
+							{!isPro && (
+								<>
+									<Link
+										color="orange"
+										fontSize="15px"
+										height="18px"
+										href={
+											upgradeURL +
+											'utm_medium=evf-dashboard&utm_source=evf-free&utm_campaign=header-upgrade-btn&utm_content=Upgrade%20to%20Pro'
+										}
+										isExternal
+										display="inline-flex"
+										alignItems="center"
+										gap="1"
+									>
+										{__('Upgrade To Pro', 'everest-forms')}
+										<ExternalLink w="16px" h="16px" fill="currentColor" />
+									</Link>
+								</>
+							)}
 
 							<Tooltip
 								label={sprintf(
@@ -232,27 +252,6 @@ const Header = ({ hideSiteAssistant = false }) => {
 									{'v' + version}
 								</Tag>
 							</Tooltip>
-
-							{!isPro && (
-								<>
-									<Link
-										color="orange"
-										fontSize="md"
-										height="18px"
-										href={
-											upgradeURL +
-											'utm_medium=evf-dashboard&utm_source=evf-free&utm_campaign=header-upgrade-btn&utm_content=Upgrade%20to%20Pro'
-										}
-										isExternal
-										display="inline-flex"
-										alignItems="center"
-										gap="1"
-									>
-										{__('Upgrade To Pro', 'everest-forms')}
-										<ExternalLink w="16px" h="16px" fill="currentColor" />
-									</Link>
-								</>
-							)}
 
 							<Button
 								onClick={onOpen}
