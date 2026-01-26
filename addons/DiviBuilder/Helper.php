@@ -25,10 +25,12 @@ class Helper {
 	 * @return boolean
 	 */
 	public static function is_divi_active() {
+		// check if it is child theme of divi
 		$active_theme_details = wp_get_theme();
 		$theme_name           = $active_theme_details->Name;
+		$parent_theme_name    = $active_theme_details->parent()->Name;
 
-		if ( 'Divi' === $theme_name ) {
+		if ( 'Divi' === $theme_name || 'Divi' === $parent_theme_name ) {
 			return true;
 		}
 	}
