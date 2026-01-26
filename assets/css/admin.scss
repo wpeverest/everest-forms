@@ -15,7 +15,7 @@
 
 // Components
 @import 'components/badge', 'components/forms', 'components/buttons',
-	'components/card', 'components/table';
+'components/card', 'components/table';
 
 @import 'colors';
 @import 'containers';
@@ -109,10 +109,12 @@
 	}
 
 	.plugin-card {
+
 		.name,
 		.desc {
 			margin-right: 0;
 		}
+
 		.plugin-card-top {
 			padding: 20px;
 			min-height: 130px;
@@ -183,6 +185,7 @@
 
 				.action-buttons {
 					.button.updating-message {
+
 						&::before,
 						&::after {
 							margin-top: -1px;
@@ -419,6 +422,7 @@ body.everest-forms-builder {
 		#wpcontent {
 			padding-left: 0;
 		}
+
 		#wpfooter {
 			position: fixed;
 			padding: 11px 20px;
@@ -571,7 +575,7 @@ body.everest-forms-builder {
 				max-width: 100%;
 
 				&:hover {
-					& + .everest-forms-welcome-video__button {
+					&+.everest-forms-welcome-video__button {
 						visibility: visible;
 						opacity: 1;
 					}
@@ -653,7 +657,7 @@ body.everest-forms-builder {
 			z-index: 1;
 
 			&:checked {
-				+ .slider {
+				+.slider {
 					//  background-color: $green;
 					background-color: $evf_primary-color;
 
@@ -718,7 +722,7 @@ body.everest-forms-builder {
 				position: absolute;
 
 				&:checked {
-					+ .evf-toggle-switch-wrap {
+					+.evf-toggle-switch-wrap {
 						background-color: #11a0d2;
 						border: 2px solid #11a0d2;
 						border: 9px solid transparent;
@@ -739,7 +743,7 @@ body.everest-forms-builder {
 						}
 					}
 
-					~ .evf-toggle-switch-control {
+					~.evf-toggle-switch-control {
 						background-color: #fff;
 						border-width: 0;
 						transform: translateX(18px) translateY(-50%);
@@ -751,7 +755,7 @@ body.everest-forms-builder {
 				}
 
 				&:focus {
-					+ .evf-toggle-switch-wrap {
+					+.evf-toggle-switch-wrap {
 						box-shadow:
 							0 0 0 2px #fff,
 							0 0 0 3px #6c7781;
@@ -1016,36 +1020,47 @@ body.everest-forms-builder {
 						&.export::before {
 							content: '\e02f';
 						}
+
 						&.form_migrator::before {
 							content: '\e916';
 						}
+
 						&.payment_log::before {
 							content: '\e918';
 						}
+
 						&.api_logs::before {
 							content: '\e919';
 						}
+
 						&.permission::before {
 							content: '\e030';
 						}
+
 						&.evf-widget::before {
 							content: '\e902';
 						}
+
 						&.geolocation::before {
 							content: '\e900';
 						}
+
 						&.delete::before {
 							content: '\e906';
 						}
+
 						&.misc::before {
 							content: '\e911';
 						}
+
 						&.ai::before {
 							content: '\e912';
 						}
+
 						&.lookup::before {
 							content: '\e914';
 						}
+
 						&.analytics::before {
 							content: '\e915';
 						}
@@ -1203,6 +1218,7 @@ body.everest-forms-builder {
 	.page-title-action {
 		top: 0;
 		margin-left: 16px;
+
 		&:active {
 			top: 0;
 			margin-left: 16px;
@@ -1429,6 +1445,7 @@ body.everest-forms-builder {
 				}
 
 				&.loading {
+
 					.evf-button,
 					.evf-button::before,
 					.evf-button::after {
@@ -1440,6 +1457,7 @@ body.everest-forms-builder {
 						padding: 0;
 						border-radius: 0;
 					}
+
 					.evf-button {
 						color: $color-white;
 						text-indent: -9999em;
@@ -1452,39 +1470,48 @@ body.everest-forms-builder {
 						-webkit-animation-delay: -0.16s;
 						animation-delay: -0.16s;
 					}
+
 					.evf-button::before,
 					.evf-button::after {
 						position: absolute;
 						top: 0;
 						content: '';
 					}
+
 					.evf-button::before {
 						left: -1.5em;
 						-webkit-animation-delay: -0.32s;
 						animation-delay: -0.32s;
 					}
+
 					.evf-button::after {
 						left: 1.5em;
 					}
+
 					@-webkit-keyframes load1 {
+
 						0%,
 						80%,
 						100% {
 							box-shadow: 0 0;
 							height: 4em;
 						}
+
 						40% {
 							box-shadow: 0 -2em;
 							height: 5em;
 						}
 					}
+
 					@keyframes load1 {
+
 						0%,
 						80%,
 						100% {
 							box-shadow: 0 0;
 							height: 4em;
 						}
+
 						40% {
 							box-shadow: 0 -2em;
 							height: 5em;
@@ -1729,13 +1756,16 @@ body.everest-forms-builder {
 		}
 	}
 }
+
 // Entries page
 #evf-dashboard-analytisc-body {
+
 	&::after,
 	&::before {
 		display: none;
 	}
 }
+
 p.search-box {
 	margin-top: 15px;
 }
@@ -1755,6 +1785,7 @@ p.search-box {
 #evf-form-analytics {
 	margin-left: 2px !important;
 	margin-right: 20px !important;
+
 	.evf-container {
 		max-width: 100% !important;
 	}
@@ -1774,6 +1805,7 @@ p.search-box {
 
 	.everest-forms-panel-content-wrap {
 		.everest-forms-panel-content {
+
 			.evf-content-section,
 			.evf-panel-content-section {
 				min-height: calc(100vh - 155px);
@@ -1861,6 +1893,7 @@ p.search-box {
 				}
 
 				.everest-forms-panel-field {
+
 					input,
 					textarea,
 					select {
@@ -1925,6 +1958,7 @@ p.search-box {
 
 	.everest-forms-panel-content-wrap {
 		.everest-forms-panel-content {
+
 			.evf-content-section,
 			.evf-panel-content-section {
 				min-height: calc(100vh - 155px);
@@ -1945,6 +1979,7 @@ p.search-box {
 				}
 
 				.everest-forms-panel-field {
+
 					input,
 					textarea,
 					select {
@@ -1978,6 +2013,7 @@ p.search-box {
 }
 
 .everest-forms_page_evf-builder {
+
 	.everest-forms-add-fields-group,
 	.everest-forms-field-option-group {
 		.handlediv {
@@ -2137,8 +2173,7 @@ p.search-box {
 
 			.everest-forms-btn {
 				&:focus {
-					box-shadow: 0 0 0 3px
-						adjust-color($everestforms, $saturation: 39%, $lightness: +18%);
+					box-shadow: 0 0 0 3px adjust-color($everestforms, $saturation: 39%, $lightness: +18%);
 				}
 			}
 
@@ -2238,8 +2273,7 @@ p.search-box {
 						transition: all 0.35s ease 0s;
 
 						&:focus {
-							box-shadow: 0 0 0 2px
-								adjust-color($everestforms, $saturation: 39%, $lightness: +18%);
+							box-shadow: 0 0 0 2px adjust-color($everestforms, $saturation: 39%, $lightness: +18%);
 						}
 					}
 
@@ -2545,12 +2579,8 @@ p.search-box {
 				}
 
 				&:has(.evf-conditional-confirmation-body[style*='display: none;']),
-				&:has(
-						.evf-field-confirmation-conditional-container[style*='display: none;']
-					),
-				&:has(
-						.evf-conditional-confirmation-active-toggle[style*='display: none;']
-					) {
+				&:has(.evf-field-confirmation-conditional-container[style*='display: none;']),
+				&:has(.evf-conditional-confirmation-active-toggle[style*='display: none;']) {
 					min-height: unset;
 
 					.evf-content-section-title {
@@ -2798,6 +2828,7 @@ p.search-box {
 							display: block;
 							margin: 0 auto;
 						}
+
 						&.evf-upgrade-addon {
 							cursor: not-allowed;
 						}
@@ -2852,6 +2883,7 @@ p.search-box {
 							}
 
 							svg {
+
 								.cls-1,
 								.cls-2,
 								.cls-3 {
@@ -2888,6 +2920,7 @@ p.search-box {
 							z-index: 99999;
 
 							svg {
+
 								.cls-1,
 								.cls-2,
 								.cls-3 {
@@ -2899,6 +2932,7 @@ p.search-box {
 
 					.evf-setting--checkbox,
 					.evf-field-option--checkbox {
+
 						input,
 						label {
 							width: auto;
@@ -2920,7 +2954,7 @@ p.search-box {
 						.everest-forms-border-container {
 							.everest-forms-field-option-row {
 								&.everest-forms-field-option-row-date_format {
-									> .inline {
+									>.inline {
 										margin-left: 0;
 										margin-right: 10px;
 
@@ -2976,6 +3010,7 @@ p.search-box {
 									display: none !important;
 								}
 							}
+
 							input,
 							select {
 								height: 36px;
@@ -3009,12 +3044,9 @@ p.search-box {
 
 							// Email/Password Confirmation.
 							&.everest-forms-confirm-disabled,
-							&.everest-forms-field-option-email:not(
-									.everest-forms-confirm-enabled
-								),
-							&.everest-forms-field-option-password:not(
-									.everest-forms-confirm-enabled
-								) {
+							&.everest-forms-field-option-email:not(.everest-forms-confirm-enabled),
+							&.everest-forms-field-option-password:not(.everest-forms-confirm-enabled) {
+
 								.everest-forms-field-option-row-sublabel_hide,
 								.everest-forms-field-option-row-confirmation_placeholder {
 									display: none;
@@ -3022,6 +3054,7 @@ p.search-box {
 							}
 
 							&-group {
+
 								&-basic,
 								&-advanced,
 								&-conditionals,
@@ -3065,6 +3098,7 @@ p.search-box {
 						}
 
 						.everest-forms-field-option-group {
+
 							&-basic,
 							&-advanced,
 							&-conditionals,
@@ -3113,11 +3147,9 @@ p.search-box {
 						font-size: 14px;
 						font-weight: 600;
 						color: $color_gray-dark;
-						background-color: adjust-color(
-							$color_gray-more-lighten,
-							$saturation: -1,
-							$lightness: +2
-						);
+						background-color: adjust-color($color_gray-more-lighten,
+								$saturation: -1,
+								$lightness: +2);
 						border-bottom: 1px solid $color_gray-lighten;
 						position: relative;
 						transition: all 0.3s ease-in-out;
@@ -3406,6 +3438,7 @@ p.search-box {
 				}
 
 				.everest-forms-field-option-date-time {
+
 					.format-selected-date .everest-forms-time,
 					.format-selected-time .everest-forms-date {
 						display: none;
@@ -3429,6 +3462,7 @@ p.search-box {
 				}
 
 				.everest-forms-field-option-address {
+
 					.default,
 					.placeholder {
 						width: 44%;
@@ -3595,7 +3629,7 @@ p.search-box {
 								z-index: -1;
 							}
 
-							> span {
+							>span {
 								color: $color_gray-base;
 								display: block;
 							}
@@ -3621,6 +3655,7 @@ p.search-box {
 									&:nth-child(n + 1) {
 										border-left: 1px solid $color_gray-lighten;
 									}
+
 									&:nth-child(1) {
 										border-left: 0 none;
 									}
@@ -3765,10 +3800,12 @@ p.search-box {
 				}
 
 				.everest-forms-field-payment-single {
+
 					.widefat,
 					.item-price-hidden {
 						display: none;
 					}
+
 					.item-price-hidden {
 						margin: 0;
 						color: #999;
@@ -3779,6 +3816,7 @@ p.search-box {
 						.widefat {
 							display: block;
 						}
+
 						.item-price {
 							display: none;
 						}
@@ -3936,6 +3974,7 @@ p.search-box {
 					}
 
 					input {
+
 						&[type='text'],
 						&[type='email'] {
 							margin-bottom: 5px;
@@ -4229,6 +4268,7 @@ p.search-box {
 				}
 
 				input {
+
 					&[type='checkbox'],
 					&[type='radio'] {
 						margin-right: 10px;
@@ -4713,6 +4753,7 @@ p.search-box {
 								// flex: 0 0 23%;
 							}
 						}
+
 						.evf-trail-period-wrapper,
 						.evf-expiry-date-wrapper {
 							margin-top: 10px;
@@ -5047,7 +5088,7 @@ p.search-box {
 						&.everst-forms-name-editing {
 							pointer-events: all;
 
-							& + .evf-icon {
+							&+.evf-icon {
 								background: $everestforms;
 								color: $color-white;
 								border-radius: 4px 0 0 4px;
@@ -5123,6 +5164,7 @@ p.search-box {
 						}
 					}
 				}
+
 				.evf-add-row-repeater {
 					margin: 20px auto;
 					text-align: left;
@@ -5190,11 +5232,13 @@ p.search-box {
 		}
 
 		.everest-forms-panel-sidebar {
+
 			.everest-forms-add-fields,
 			.everest-forms-field-options {
 				background-color: #ffff;
 				padding: 16px 14px;
 			}
+
 			.everest-forms-add-fields {
 				.everest-forms-input-group {
 					margin-bottom: 26px !important;
@@ -5211,6 +5255,7 @@ p.search-box {
 			color: $color_gray-light;
 			transition: all 0.2s ease 0s;
 		}
+
 		.everest-forms-field {
 			&.everest-forms-field-image-upload {
 				.everest-forms-uploader {
@@ -5276,6 +5321,7 @@ p.search-box {
 
 	.evf-admin-breadcrumb {
 		margin-left: 0.5em;
+
 		a {
 			color: #a46497;
 		}
@@ -5391,6 +5437,7 @@ p.search-box {
 
 		// Ignore nested inputs.
 		table {
+
 			select,
 			textarea,
 			input[type='text'],
@@ -5448,7 +5495,7 @@ p.search-box {
 			color: $color_gray-base;
 		}
 
-		th label + .everest-forms-help-tip {
+		th label+.everest-forms-help-tip {
 			position: absolute;
 			margin: 0;
 			right: 0;
@@ -5965,6 +6012,7 @@ p.search-box {
 		text-align: right;
 		border-top: 2px solid $color_gray-more-lighten;
 	}
+
 	.evf-fm-wrapper {
 		.evf-fm-form-list-container {
 			.evf-fm-forms-table-wrapper {
@@ -5974,6 +6022,7 @@ p.search-box {
 					padding-top: 16px;
 					padding-bottom: 16px;
 				}
+
 				table,
 				th,
 				td {
@@ -5983,9 +6032,11 @@ p.search-box {
 				table {
 					tr {
 						border-bottom: 2px solid #e9ebf1;
+
 						&.evf-fm-hide-row {
 							display: none;
 						}
+
 						&.evf-fm-show-row {
 							display: none;
 						}
@@ -5994,18 +6045,22 @@ p.search-box {
 							width: 150px;
 							padding: 12px;
 						}
+
 						td {
 							.evf-fm-import-actions {
 								display: flex;
 							}
+
 							width: 600px;
 							padding: 12px;
 							text-align: center;
+
 							.evf-fm-import-single {
 								padding: 8px;
 								background-color: #e9ebf1;
 								border-radius: 4px;
 								border: none;
+
 								&:hover {
 									background-color: #7e3bd0;
 									color: #fff;
@@ -6013,6 +6068,7 @@ p.search-box {
 									cursor: pointer;
 								}
 							}
+
 							.evf-fm-import-entry {
 								padding: 8px;
 								background-color: #b5facd;
@@ -6020,6 +6076,7 @@ p.search-box {
 								border: none;
 								display: inline;
 								margin-left: 8px;
+
 								&:not(:disabled):hover {
 									background-color: #7e3bd0;
 									color: #fff;
@@ -6030,16 +6087,20 @@ p.search-box {
 						}
 					}
 				}
+
 				.evf-fm-pagination {
 					padding-top: 16px;
+
 					button {
 						margin: 2px;
 						cursor: pointer;
+
 						&:hover {
 							background-color: #7e3bd0;
 							color: #fff;
 							border: none;
 						}
+
 						&.evf-fm-btn-active {
 							background-color: #7e3bd0;
 							color: #fff;
@@ -6047,6 +6108,7 @@ p.search-box {
 						}
 					}
 				}
+
 				.evf-fm-import-selected-wrapper {
 					display: flex;
 					flex-direction: row;
@@ -6054,6 +6116,7 @@ p.search-box {
 					margin-left: 15px;
 					margin-right: 100px;
 				}
+
 				.evf-fm-import-selected-btn {
 					margin-top: 16px;
 					padding: 8px;
@@ -6061,6 +6124,7 @@ p.search-box {
 					border-radius: 4px;
 					border: none;
 					align-items: right;
+
 					&:hover {
 						background-color: #7e3bd0;
 						color: #fff;
@@ -6167,6 +6231,7 @@ table.wp-list-table {
 	}
 
 	#poststuff {
+
 		#everest-forms-entry-fields,
 		#everest-forms-entry-details,
 		#everest-forms-entry-actions,
@@ -6188,6 +6253,7 @@ table.wp-list-table {
 
 				.everest-forms-edit-entry-field {
 					.evf-field {
+
 						input[type='text'],
 						input[type='date'],
 						input[type='date'],
@@ -6370,18 +6436,22 @@ table.wp-list-table {
 	.log-level--alert {
 		background-color: #ff4136;
 	}
+
 	.log-level--critical,
 	.log-level--error {
 		background-color: #ff851b;
 	}
+
 	.log-level--warning,
 	.log-level--notice {
 		color: #222;
 		background-color: #ffdc00;
 	}
+
 	.log-level--info {
 		background-color: #0074d9;
 	}
+
 	.log-level--debug {
 		background-color: #3d9970;
 	}
@@ -6391,9 +6461,11 @@ table.wp-list-table {
 		.column-timestamp {
 			width: 18%;
 		}
+
 		.column-level {
 			width: 14%;
 		}
+
 		.column-source {
 			width: 15%;
 		}
@@ -6403,6 +6475,7 @@ table.wp-list-table {
 #log-viewer-select {
 	padding: 10px 0 8px;
 	line-height: 28px;
+
 	h2 a {
 		vertical-align: middle;
 	}
@@ -6757,11 +6830,13 @@ img.ui-datepicker-trigger {
 		bottom: -1px;
 	}
 }
+
 .select2-container--open {
 	.select2-dropdown--below {
 		margin-top: -15px;
 	}
 }
+
 .select2-container {
 	@media only screen and (max-width: 782px) {
 		font-size: 16px;
@@ -6770,9 +6845,11 @@ img.ui-datepicker-trigger {
 	&:focus {
 		outline: none;
 	}
+
 	span.selection {
 		display: block;
 	}
+
 	.select2-selection__rendered.ui-sortable li {
 		cursor: move;
 	}
@@ -6814,8 +6891,7 @@ img.ui-datepicker-trigger {
 			right: 1px;
 			height: 28px;
 			width: 23px;
-			background: url(data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M5%206l5%205%205-5%202%201-7%207-7-7%202-1z%22%20fill%3D%22%23555%22%2F%3E%3C%2Fsvg%3E)
-				no-repeat right 5px top 55%;
+			background: url(data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M5%206l5%205%205-5%202%201-7%207-7-7%202-1z%22%20fill%3D%22%23555%22%2F%3E%3C%2Fsvg%3E) no-repeat right 5px top 55%;
 			background-size: 16px 16px;
 
 			@media only screen and (max-width: 782px) {
@@ -6902,43 +6978,41 @@ img.ui-datepicker-trigger {
 		light: #04a4cc,
 	);
 
-	@each $name, $color in $wp_admin_colors {
-		&-#{$name} {
-			.select2-dropdown {
-				border-color: $color;
-			}
+@each $name, $color in $wp_admin_colors {
+	&-#{$name} {
+		.select2-dropdown {
+			border-color: $color;
+		}
 
-			.select2-dropdown--below {
-				box-shadow:
-					0 0 0 1px $color,
-					0 2px 1px rgba(0, 0, 0, 0.1);
-			}
+		.select2-dropdown--below {
+			box-shadow:
+				0 0 0 1px $color,
+				0 2px 1px rgba(0, 0, 0, 0.1);
+		}
 
-			.select2-dropdown--above {
-				box-shadow:
-					0 0 0 1px $color,
-					0 -2px 1px rgba(0, 0, 0, 0.1);
-			}
+		.select2-dropdown--above {
+			box-shadow:
+				0 0 0 1px $color,
+				0 -2px 1px rgba(0, 0, 0, 0.1);
+		}
 
-			.select2-selection--single .select2-selection__rendered:hover {
-				color: $color;
-			}
+		.select2-selection--single .select2-selection__rendered:hover {
+			color: $color;
+		}
 
-			.select2-container.select2-container--focus .select2-selection--single,
-			.select2-container.select2-container--open .select2-selection--single,
-			.select2-container.select2-container--open .select2-selection--multiple {
-				border-color: $color;
-				box-shadow: 0 0 0 1px $color;
-			}
+		.select2-container.select2-container--focus .select2-selection--single,
+		.select2-container.select2-container--open .select2-selection--single,
+		.select2-container.select2-container--open .select2-selection--multiple {
+			border-color: $color;
+			box-shadow: 0 0 0 1px $color;
+		}
 
-			.select2-container--default
-				.select2-results__option--highlighted[aria-selected],
-			.select2-container--default
-				.select2-results__option--highlighted[data-selected] {
-				background-color: $color;
-			}
+		.select2-container--default .select2-results__option--highlighted[aria-selected],
+		.select2-container--default .select2-results__option--highlighted[data-selected] {
+			background-color: $color;
 		}
 	}
+}
 }
 
 .everest-forms {
@@ -7100,6 +7174,7 @@ img.ui-datepicker-trigger {
 								}
 
 								a {
+
 									&.add,
 									&.remove {
 										width: 40px;
@@ -7170,6 +7245,7 @@ img.ui-datepicker-trigger {
 	   * Optimisation for screens 600px and smaller.
 	   */
 @media screen and (max-width: 600px) {
+
 	.everest-forms_page_evf-builder,
 	.everest-forms_page_evf-settings {
 		.everest-forms {
@@ -7220,6 +7296,7 @@ img.ui-datepicker-trigger {
 						position: relative;
 
 						.evf-admin-grid {
+
 							&.evf-grid-1,
 							&.evf-grid-2,
 							&.evf-grid-3,
@@ -7391,14 +7468,17 @@ img.ui-datepicker-trigger {
 		width: 90% !important;
 	}
 }
+
 .evf-repeater-fields {
 	padding: 0 20px 20px;
+
 	.everest-forms-field-repeater-fields {
 		width: calc(100% + 60px) !important;
 		margin-left: -30px !important;
 		margin-top: -1px !important;
 		min-height: 48px;
 	}
+
 	div.evf-admin-grid.evf-repeatable-grid {
 		padding: 0 10px 10px !important;
 	}
@@ -7632,6 +7712,7 @@ img.ui-datepicker-trigger {
 				display: none;
 			}
 		}
+
 		&[data-filter-template='premium'] {
 			.everest-forms-template-wrap[data-plan='free'] {
 				display: none;
@@ -7685,7 +7766,7 @@ img.ui-datepicker-trigger {
 				}
 
 				.everest_forms_hide_container {
-					> p {
+					>p {
 						padding-left: 20px;
 						padding-right: 20px;
 					}
@@ -7835,15 +7916,16 @@ img.ui-datepicker-trigger {
 		&:focus {
 			outline: 0;
 		}
+
 		.select2-selection__arrow {
 			right: 1px;
 			height: 28px;
 			width: 23px;
-			background: url(data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M5%206l5%205%205-5%202%201-7%207-7-7%202-1z%22%20fill%3D%22%23555%22%2F%3E%3C%2Fsvg%3E)
-				no-repeat right 5px top 55%;
+			background: url(data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M5%206l5%205%205-5%202%201-7%207-7-7%202-1z%22%20fill%3D%22%23555%22%2F%3E%3C%2Fsvg%3E) no-repeat right 5px top 55%;
 			background-size: 16px 16px;
 			right: 3px;
 			height: 30px;
+
 			b {
 				display: none;
 			}
@@ -7905,14 +7987,17 @@ img.ui-datepicker-trigger {
 		.select2-selection__choice {
 			padding: 2px 6px;
 			padding: 2px 6px;
+
 			.description {
 				display: none;
 			}
 		}
 	}
+
 	.select2-search--inline {
 		float: left;
 		padding: 0;
+
 		.select2-search__field {
 			box-sizing: border-box;
 			border: none;
@@ -8019,6 +8104,7 @@ img.ui-datepicker-trigger {
 		padding: 8px;
 		margin: 0;
 		padding: 8px;
+
 		&:focus {
 			outline: 0;
 		}
@@ -8029,6 +8115,7 @@ img.ui-datepicker-trigger {
 		padding: 8px;
 		margin: 0;
 		padding: 8px;
+
 		&:focus {
 			outline: 0;
 		}
@@ -8209,6 +8296,7 @@ img.ui-datepicker-trigger {
 			margin-top: 5px;
 			float: left;
 		}
+
 		.select2-selection__clear {
 			cursor: pointer;
 			float: right;
@@ -8216,6 +8304,7 @@ img.ui-datepicker-trigger {
 			margin-top: 5px;
 			margin-right: 10px;
 		}
+
 		.select2-selection__choice {
 			background-color: #e4e4e4;
 			border: 1px solid #aaa;
@@ -8226,22 +8315,26 @@ img.ui-datepicker-trigger {
 			margin-top: 5px;
 			padding: 0 5px;
 		}
+
 		.select2-selection__choice__remove {
 			color: #999;
 			cursor: pointer;
 			display: inline-block;
 			font-weight: 700;
 			margin-right: 2px;
+
 			&:hover {
 				color: #333;
 			}
 		}
 	}
+
 	.select2-search--dropdown {
 		.select2-search__field {
 			border: 1px solid #aaa;
 		}
 	}
+
 	.select2-search--inline {
 		.select2-search__field {
 			background: 0 0;
@@ -8251,42 +8344,54 @@ img.ui-datepicker-trigger {
 			-webkit-appearance: textfield;
 		}
 	}
+
 	.select2-results {
-		> .select2-results__options {
+		>.select2-results__options {
 			max-height: 200px;
 			overflow-y: auto;
 		}
 	}
+
 	.select2-results__option[role='group'] {
 		padding: 0;
 	}
+
 	.select2-results__option[aria-disabled='true'] {
 		color: #999;
 	}
+
 	.select2-results__option[aria-selected='true'] {
 		background-color: #ddd;
 	}
+
 	.select2-results__option[data-selected='true'] {
 		background-color: #ddd;
 	}
+
 	.select2-results__option {
 		.select2-results__option {
 			padding-left: 1em;
+
 			.select2-results__group {
 				padding-left: 0;
 			}
+
 			.select2-results__option {
 				margin-left: -1em;
 				padding-left: 2em;
+
 				.select2-results__option {
 					margin-left: -2em;
 					padding-left: 3em;
+
 					.select2-results__option {
 						margin-left: -3em;
 						padding-left: 4em;
+
 						.select2-results__option {
 							margin-left: -4em;
 							padding-left: 5em;
+
 							.select2-results__option {
 								margin-left: -5em;
 								padding-left: 6em;
@@ -8297,64 +8402,78 @@ img.ui-datepicker-trigger {
 			}
 		}
 	}
+
 	.select2-results__option--highlighted[aria-selected] {
 		color: #fff;
 		background-color: #0073aa;
 	}
+
 	.select2-results__option--highlighted[data-selected] {
 		color: #fff;
 		background-color: #0073aa;
 	}
+
 	.select2-results__group {
 		cursor: default;
 		display: block;
 		padding: 6px;
 	}
 }
+
 .select2-container--default[dir='rtl'] {
 	.select2-selection--single {
 		.select2-selection__clear {
 			float: left;
 		}
+
 		.select2-selection__arrow {
 			left: 1px;
 			right: auto;
 		}
 	}
+
 	.select2-selection--multiple {
 		.select2-search--inline {
 			float: right;
 		}
+
 		.select2-selection__choice {
 			float: right;
 			margin-left: 5px;
 			margin-right: auto;
 		}
+
 		.select2-selection__placeholder {
 			float: right;
 		}
+
 		.select2-selection__choice__remove {
 			margin-left: 2px;
 			margin-right: auto;
 		}
 	}
 }
+
 .select2-container--default.select2-container--disabled {
 	.select2-selection--single {
 		background-color: #eee;
 		cursor: default;
+
 		.select2-selection__clear {
 			display: none;
 		}
 	}
+
 	.select2-selection--multiple {
 		background-color: #eee;
 		cursor: default;
 	}
+
 	.select2-selection__choice__remove {
 		display: none;
 	}
 }
+
 .select2-container--default.select2-container--open {
 	.select2-selection--single {
 		.select2-selection__arrow {
@@ -8365,32 +8484,38 @@ img.ui-datepicker-trigger {
 		}
 	}
 }
+
 .select2-container--default.select2-container--focus {
 	.select2-selection--multiple {
 		border: solid #000 1px;
 		outline: 0;
 	}
 }
+
 .select2-container--default.select2-container--open.select2-container--above {
 	.select2-selection--multiple {
 		border-top-left-radius: 0;
 		border-top-right-radius: 0;
 	}
+
 	.select2-selection--single {
 		border-top-left-radius: 0;
 		border-top-right-radius: 0;
 	}
 }
+
 .select2-container--default.select2-container--open.select2-container--below {
 	.select2-selection--multiple {
 		border-bottom-left-radius: 0;
 		border-bottom-right-radius: 0;
 	}
+
 	.select2-selection--single {
 		border-bottom-left-radius: 0;
 		border-bottom-right-radius: 0;
 	}
 }
+
 .select2-container--classic {
 	.select2-selection--single {
 		background-color: #f7f7f7;
@@ -8399,22 +8524,27 @@ img.ui-datepicker-trigger {
 		outline: 0;
 		background-image: linear-gradient(to bottom, #fff 50%, #eee 100%);
 		background-repeat: repeat-x;
+
 		&:focus {
 			border: 1px solid #0073aa;
 		}
+
 		.select2-selection__rendered {
 			color: #444;
 			line-height: 28px;
 		}
+
 		.select2-selection__clear {
 			cursor: pointer;
 			float: right;
 			font-weight: 700;
 			margin-right: 10px;
 		}
+
 		.select2-selection__placeholder {
 			color: #999;
 		}
+
 		.select2-selection__arrow {
 			background-color: #ddd;
 			border: none;
@@ -8428,6 +8558,7 @@ img.ui-datepicker-trigger {
 			width: 20px;
 			background-image: linear-gradient(to bottom, #eee 50%, #ccc 100%);
 			background-repeat: repeat-x;
+
 			b {
 				border-color: #888 transparent transparent transparent;
 				border-style: solid;
@@ -8442,23 +8573,28 @@ img.ui-datepicker-trigger {
 			}
 		}
 	}
+
 	.select2-selection--multiple {
 		background-color: #fff;
 		border: 1px solid #aaa;
 		border-radius: 4px;
 		cursor: text;
 		outline: 0;
+
 		&:focus {
 			border: 1px solid #0073aa;
 		}
+
 		.select2-selection__rendered {
 			list-style: none;
 			margin: 0;
 			padding: 0 5px;
 		}
+
 		.select2-selection__clear {
 			display: none;
 		}
+
 		.select2-selection__choice {
 			background-color: #e4e4e4;
 			border: 1px solid #aaa;
@@ -8469,70 +8605,85 @@ img.ui-datepicker-trigger {
 			margin-top: 5px;
 			padding: 0 5px;
 		}
+
 		.select2-selection__choice__remove {
 			color: #888;
 			cursor: pointer;
 			display: inline-block;
 			font-weight: 700;
 			margin-right: 2px;
+
 			&:hover {
 				color: #555;
 			}
 		}
 	}
+
 	.select2-search--dropdown {
 		.select2-search__field {
 			border: 1px solid #aaa;
 			outline: 0;
 		}
 	}
+
 	.select2-search--inline {
 		.select2-search__field {
 			outline: 0;
 			box-shadow: none;
 		}
 	}
+
 	.select2-dropdown {
 		background-color: #fff;
 		border: 1px solid transparent;
 	}
+
 	.select2-dropdown--above {
 		border-bottom: none;
 	}
+
 	.select2-dropdown--below {
 		border-top: none;
 	}
+
 	.select2-results {
-		> .select2-results__options {
+		>.select2-results__options {
 			max-height: 200px;
 			overflow-y: auto;
 		}
 	}
+
 	.select2-results__option[role='group'] {
 		padding: 0;
 	}
+
 	.select2-results__option[aria-disabled='true'] {
 		color: grey;
 	}
+
 	.select2-results__option--highlighted[aria-selected] {
 		background-color: #3875d7;
 		color: #fff;
 	}
+
 	.select2-results__option--highlighted[data-selected] {
 		background-color: #3875d7;
 		color: #fff;
 	}
+
 	.select2-results__group {
 		cursor: default;
 		display: block;
 		padding: 6px;
 	}
 }
+
 .select2-container--classic[dir='rtl'] {
 	.select2-selection--single {
 		.select2-selection__clear {
 			float: left;
 		}
+
 		.select2-selection__arrow {
 			border: none;
 			border-right: 1px solid #aaa;
@@ -8543,37 +8694,45 @@ img.ui-datepicker-trigger {
 			right: auto;
 		}
 	}
+
 	.select2-selection--multiple {
 		.select2-selection__choice {
 			float: right;
 			margin-left: 5px;
 			margin-right: auto;
 		}
+
 		.select2-selection__choice__remove {
 			margin-left: 2px;
 			margin-right: auto;
 		}
 	}
 }
+
 .select2-container--classic.select2-container--open {
 	.select2-selection--single {
 		border: 1px solid #0073aa;
+
 		.select2-selection__arrow {
 			background: 0 0;
 			border: none;
+
 			b {
 				border-color: transparent transparent #888 transparent;
 				border-width: 0 4px 5px 4px;
 			}
 		}
 	}
+
 	.select2-selection--multiple {
 		border: 1px solid #0073aa;
 	}
+
 	.select2-dropdown {
 		border-color: #0073aa;
 	}
 }
+
 .select2-container--classic.select2-container--open.select2-container--above {
 	.select2-selection--single {
 		border-top: none;
@@ -8582,12 +8741,14 @@ img.ui-datepicker-trigger {
 		background-image: linear-gradient(to bottom, #fff 0, #eee 50%);
 		background-repeat: repeat-x;
 	}
+
 	.select2-selection--multiple {
 		border-top: none;
 		border-top-left-radius: 0;
 		border-top-right-radius: 0;
 	}
 }
+
 .select2-container--classic.select2-container--open.select2-container--below {
 	.select2-selection--single {
 		border-bottom: none;
@@ -8596,12 +8757,14 @@ img.ui-datepicker-trigger {
 		background-image: linear-gradient(to bottom, #eee 50%, #fff 100%);
 		background-repeat: repeat-x;
 	}
+
 	.select2-selection--multiple {
 		border-bottom: none;
 		border-bottom-left-radius: 0;
 		border-bottom-right-radius: 0;
 	}
 }
+
 .evf-akismet {
 	.evf-akismet-warning {
 		.evf-akismet-warning-label {
@@ -8683,6 +8846,7 @@ img.ui-datepicker-trigger {
 		}
 	}
 }
+
 // Image upload button delete icon
 .everest-forms-panel-field-image {
 	.everest-forms-custom-image-container {
@@ -8709,6 +8873,7 @@ img.ui-datepicker-trigger {
 					display: contents;
 
 					&:hover {
+
 						&::before,
 						&::after {
 							transform: translate(-50%, -50%) scale(1.1);
@@ -8741,6 +8906,7 @@ img.ui-datepicker-trigger {
 		}
 	}
 }
+
 #everest-forms-builder {
 	.everest-forms-options {
 		padding-left: 20px;
@@ -8786,7 +8952,7 @@ img.ui-datepicker-trigger {
 					max-width: 800px;
 					border: 1px solid transparent;
 
-					> div > label {
+					>div>label {
 						padding: 0 10px;
 						margin: 0 0 10px -10px;
 						background: $color-white;
@@ -8902,6 +9068,7 @@ img.ui-datepicker-trigger {
 
 		// Likert-table and Scale rating table
 		table {
+
 			&.everest-forms-likert-table,
 			&.everest-froms-likert-field-preview,
 			&.everest-forms-scale-rating-table {
@@ -8940,7 +9107,7 @@ img.ui-datepicker-trigger {
 				}
 
 				input[type='radio'] {
-					+ label {
+					+label {
 						&::before {
 							border-radius: 50%;
 						}
@@ -8991,6 +9158,7 @@ img.ui-datepicker-trigger {
 						}
 
 						&:nth-child(even) {
+
 							th,
 							td {
 								background: $color_gray-light-skin;
@@ -9368,6 +9536,7 @@ img.ui-datepicker-trigger {
 		tbody {
 			tr {
 				&:nth-child(even) {
+
 					th,
 					td {
 						background: $color_gray-light-skin;
@@ -9383,6 +9552,7 @@ img.ui-datepicker-trigger {
 		}
 
 		&.evf-likert-chart-table {
+
 			th,
 			td {
 				text-align: center;
@@ -9665,6 +9835,7 @@ img.ui-datepicker-trigger {
 					flex: 2;
 					width: 100%;
 				}
+
 				.evf-restapi-key {
 					width: 530px !important;
 				}
@@ -9705,6 +9876,7 @@ img.ui-datepicker-trigger {
 		overflow: hidden;
 	}
 }
+
 .everest-forms {
 	.everest-forms-settings {
 		padding: 0 !important;
@@ -9843,7 +10015,7 @@ img.ui-datepicker-trigger {
 							opacity: 1;
 							transition: all 0.4s ease-in-out;
 
-							> p {
+							>p {
 								width: 100%;
 								margin: 0;
 								font-size: 15px;
@@ -9878,7 +10050,7 @@ img.ui-datepicker-trigger {
 								}
 
 								&-label {
-									> p {
+									>p {
 										color: #7545bb;
 									}
 
@@ -9939,9 +10111,7 @@ img.ui-datepicker-trigger {
 
 							.evf-nav-icon {
 								img {
-									filter: brightness(0) saturate(100%) invert(100%) sepia(0%)
-										saturate(7487%) hue-rotate(137deg) brightness(89%)
-										contrast(114%);
+									filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(7487%) hue-rotate(137deg) brightness(89%) contrast(114%);
 								}
 							}
 						}
@@ -9980,6 +10150,7 @@ img.ui-datepicker-trigger {
 								opacity: 0;
 							}
 						}
+
 						#evf-settings-collapse {
 							.evf-nav-icon {
 								img {
@@ -10078,7 +10249,7 @@ img.ui-datepicker-trigger {
 						align-items: flex-start;
 					}
 
-					> label {
+					>label {
 						color: #383838;
 						font-size: 15px;
 						font-weight: 500;
@@ -10121,7 +10292,7 @@ img.ui-datepicker-trigger {
 						}
 
 						fieldset {
-							> label {
+							>label {
 								font-size: 14px;
 								line-height: 22px;
 								font-weight: 400;
@@ -10156,7 +10327,8 @@ img.ui-datepicker-trigger {
 
 								li {
 									margin-bottom: 0;
-									> label {
+
+									>label {
 										display: flex;
 										align-items: center;
 										gap: 6px;
@@ -10175,7 +10347,7 @@ img.ui-datepicker-trigger {
 										margin-bottom: 0;
 
 										li {
-											> label {
+											>label {
 												display: flex;
 												flex-direction: row;
 												align-items: center;
@@ -10207,7 +10379,7 @@ img.ui-datepicker-trigger {
 											input[type='radio'] {
 												display: none !important;
 
-												&:checked ~ label {
+												&:checked~label {
 													background: #f6f5f8;
 													border-color: #7545bb;
 												}
@@ -10285,7 +10457,7 @@ img.ui-datepicker-trigger {
 										input {
 											display: none;
 
-											&:checked ~ label {
+											&:checked~label {
 												border: 1px solid #7545bb;
 											}
 										}
@@ -10434,6 +10606,7 @@ img.ui-datepicker-trigger {
 									height: 14px;
 								}
 							}
+
 							.everest-forms-custom-image-delete,
 							.evf-image-container {
 								object-fit: cover;
@@ -10471,6 +10644,7 @@ img.ui-datepicker-trigger {
 										display: contents;
 
 										&:hover {
+
 											&::before,
 											&::after {
 												transform: translate(-50%, -50%) scale(1.1);
@@ -10506,7 +10680,7 @@ img.ui-datepicker-trigger {
 				}
 			}
 
-			> p {
+			>p {
 				margin: 0;
 				font-size: 14px;
 				line-height: 24px;
@@ -10581,7 +10755,7 @@ everest-forms-field-option-row-rating-icon {
 		}
 
 		input:checked {
-			+ label {
+			+label {
 				color: $color-white;
 				background: $everestforms;
 				border-color: $everestforms;
@@ -10737,6 +10911,7 @@ body {
 						}
 
 						.everest-forms-tab-content {
+
 							.everest-forms-import-form,
 							.everest-forms-import-entries-wrapper,
 							.everest-forms-export-form,
@@ -10882,6 +11057,7 @@ body {
 
 							.evf-tools-export-entries {
 								.evf-tools-entries-export-options {
+
 									&-fields,
 									&-additional-info,
 									&-format,
@@ -10923,10 +11099,8 @@ body {
 
 										&-options {
 											display: grid;
-											grid-template-columns: repeat(
-												auto-fit,
-												minmax(200px, 1fr)
-											);
+											grid-template-columns: repeat(auto-fit,
+													minmax(200px, 1fr));
 											gap: 12px;
 
 											select,
@@ -11458,6 +11632,7 @@ body {
 		align-items: center;
 		justify-content: center;
 	}
+
 	div#everest-forms-header__logo {
 		display: flex;
 		align-items: center;
@@ -11517,6 +11692,7 @@ body {
 
 		thead {
 			tr {
+
 				td,
 				th {
 					border-bottom-color: #dcdcdc;
@@ -11717,6 +11893,7 @@ body {
 			margin-bottom: 0;
 		}
 	}
+
 	.evf-bulk-edit-forms-tags-container {
 		display: flex;
 		align-items: flex-end;
@@ -11822,6 +11999,7 @@ button#show-settings-link {
 	ul.subsubsub {
 		font-size: 15px;
 		margin: 0px;
+
 		li {
 			font-weight: 600;
 
@@ -11905,6 +12083,7 @@ button#show-settings-link {
 		display: flex;
 		flex-direction: row;
 		flex-wrap: wrap;
+
 		.tag {
 			margin-left: 6px;
 		}
@@ -11969,6 +12148,7 @@ button#show-settings-link {
 		margin-top: 2px;
 	}
 }
+
 .evf-disable-row {
 	pointer-events: none;
 	opacity: 0.5;
@@ -12019,7 +12199,7 @@ button#show-settings-link {
 	}
 }
 
-#evf-react-header-root > div {
+#evf-react-header-root>div {
 	top: 0px !important;
 }
 
