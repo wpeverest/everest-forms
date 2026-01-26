@@ -9923,6 +9923,8 @@ img.ui-datepicker-trigger {
 							display: flex;
 							align-items: center;
 							justify-content: center;
+							min-width: 20px;
+							flex-shrink: 0;
 
 							img {
 								width: 20px;
