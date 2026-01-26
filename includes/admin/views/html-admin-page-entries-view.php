@@ -51,8 +51,6 @@ if ( false !== $entry_index ) {
 	$next_entry = isset( $form_entries[ $entry_index + 1 ] ) ? $form_entries[ $entry_index + 1 ] : '';
 }
 
-$use_react_header = apply_filters( 'everest_forms_use_react_header', true, 'entries' );
-
 ?>
 <div class="wrap everest-forms">
 	<h1 class="wp-heading-inline"><?php esc_html_e( 'View Entry', 'everest-forms' ); ?></h1>
@@ -60,9 +58,6 @@ $use_react_header = apply_filters( 'everest_forms_use_react_header', true, 'entr
 	<hr class="wp-header-end">
 	<?php do_action( 'everest_forms_view_entries_notices' ); ?>
 	<div class="everest-forms-entry">
-		<?php if ( $use_react_header ) : ?>
-			<div id="evf-react-header-root" data-active-menu="entries"></div>
-			<?php endif; ?>
 		<div id="poststuff">
 			<div id="post-body" class="metabox-holder columns-2">
 				<!-- Entry Fields metabox -->
