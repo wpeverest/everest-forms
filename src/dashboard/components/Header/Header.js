@@ -34,7 +34,7 @@ import ROUTES, {
 } from '../../Constants';
 import announcement from '../../images/announcement.gif';
 import Changelog from '../Changelog/Changelog';
-import { EVF } from '../Icon/Icon';
+import { EVF, ExternalLink } from '../Icon/Icon';
 import IntersectObserver from '../IntersectionObserver/IntersectionObserver';
 
 const Header = ({ hideSiteAssistant = false }) => {
@@ -67,19 +67,22 @@ const Header = ({ hideSiteAssistant = false }) => {
 			? ROUTES.filter((route) => route.route !== '/')
 			: ROUTES;
 
-		const rightRoutePaths = ['/help', '/free-vs-pro'];
+		const rightRoutePaths = ['/help', 'https://everestforms.net/free-vs-pro/'];
 
 		return {
 			leftRoutes: allRoutes.filter(
 				(route) => !rightRoutePaths.includes(route.route),
 			),
-			rightRoutes: allRoutes.filter((route) =>
-				rightRoutePaths.includes(route.route),
-			),
+			rightRoutes: allRoutes
+				.filter((route) => rightRoutePaths.includes(route.route))
+				.sort(
+					(a, b) =>
+						rightRoutePaths.indexOf(a.route) - rightRoutePaths.indexOf(b.route),
+				),
 		};
 	}, [hideSiteAssistant]);
 
-	const renderNavLink = (route, label, external) => {
+	const renderNavLink = (route, label, external, showExternalIcon = false) => {
 		const convertedRoute = convertRoute(route, isNonDashboardPage, adminURL);
 		const isExternal = external || isExternalRoute(convertedRoute);
 		const isActive = isRouteActive(
@@ -89,13 +92,15 @@ const Header = ({ hideSiteAssistant = false }) => {
 			pageType,
 		);
 		const shouldUseExternalLink = isNonDashboardPage || isExternal;
+		const shouldShowIcon = showExternalIcon;
 
 		return shouldUseExternalLink ? (
 			<Link
 				data-target={route}
 				key={route}
 				href={convertedRoute}
-				fontSize="sm"
+				isExternal={route === 'https://everestforms.net/free-vs-pro/'}
+				fontSize="md"
 				fontWeight="semibold"
 				lineHeight="150%"
 				color={isActive ? 'primary.500' : '#383838'}
@@ -110,10 +115,14 @@ const Header = ({ hideSiteAssistant = false }) => {
 				}}
 				display="inline-flex"
 				alignItems="center"
+				gap="1"
 				px="2"
 				h="full"
 			>
 				{label}
+				{shouldShowIcon && (
+					<ExternalLink w="16px" h="16px" fill="currentColor" />
+				)}
 			</Link>
 		) : (
 			<Link
@@ -121,7 +130,7 @@ const Header = ({ hideSiteAssistant = false }) => {
 				key={route}
 				as={NavLink}
 				to={route}
-				fontSize="sm"
+				fontSize="md"
 				fontWeight="semibold"
 				lineHeight="150%"
 				color="#383838"
@@ -139,10 +148,14 @@ const Header = ({ hideSiteAssistant = false }) => {
 				}}
 				display="inline-flex"
 				alignItems="center"
+				gap="1"
 				px="2"
 				h="full"
 			>
 				{label}
+				{shouldShowIcon && (
+					<ExternalLink w="16px" h="16px" fill="currentColor" />
+				)}
 			</Link>
 		);
 	};
@@ -182,7 +195,12 @@ const Header = ({ hideSiteAssistant = false }) => {
 						<Stack direction="row" align="center" spacing="12px">
 							<Stack direction="row" align="center" gap="1">
 								{rightRoutes.map(({ route, label, external }) =>
-									renderNavLink(route, label, external),
+									renderNavLink(
+										route,
+										label,
+										external,
+										route === 'https://everestforms.net/free-vs-pro/',
+									),
 								)}
 							</Stack>
 
@@ -217,21 +235,21 @@ const Header = ({ hideSiteAssistant = false }) => {
 
 							{!isPro && (
 								<>
-									<Center height="18px">
-										<Divider orientation="vertical" />
-									</Center>
 									<Link
-										color="#2563EB"
-										fontSize="12px"
+										color="orange"
+										fontSize="md"
 										height="18px"
-										w="85px"
 										href={
 											upgradeURL +
 											'utm_medium=evf-dashboard&utm_source=evf-free&utm_campaign=header-upgrade-btn&utm_content=Upgrade%20to%20Pro'
 										}
 										isExternal
+										display="inline-flex"
+										alignItems="center"
+										gap="1"
 									>
 										{__('Upgrade To Pro', 'everest-forms')}
+										<ExternalLink w="16px" h="16px" fill="currentColor" />
 									</Link>
 								</>
 							)}

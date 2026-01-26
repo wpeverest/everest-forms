@@ -61,9 +61,9 @@ if (!isPro) {
 	ROUTES = [
 		...ROUTES.slice(0, 4),
 		{
-			route: '/free-vs-pro',
+			route: 'https://everestforms.net/free-vs-pro/',
 			label: __('Free vs Pro', 'everest-forms'),
-			external: false,
+			external: true,
 		},
 		...ROUTES.slice(4),
 	];
