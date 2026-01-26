@@ -157,7 +157,7 @@ const Header = ({ hideSiteAssistant = false }) => {
 				zIndex="10"
 			>
 				<Container maxW="full">
-					<Stack direction="row" minH="70px" justify="space-between" px="6">
+					<Stack direction="row" minH="70px" justify="space-between">
 						{/* Left Side - Logo and Main Navigation */}
 						<Stack direction="row" align="center" gap="7">
 							<Link
