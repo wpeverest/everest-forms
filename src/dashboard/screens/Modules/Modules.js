@@ -385,10 +385,10 @@ const Modules = () => {
 	};
 
 	return (
-		<Box bg="#F9FAFB" minH="100vh" py={{ base: '16px', md: '24px' }}>
-			<Container maxW="1400px" px={{ base: '16px', md: '24px' }}>
+		<Box top="var(--wp-admin--admin-bar--height, 0)" zIndex={1} minH="100vh">
+			<Container maxW="100%" p="20px">
 				{/* Filters and Categories Section */}
-				<Box mb="4">
+				<Box mb="6">
 					<Filters
 						sortOptions={sortOptions}
 						statusOptions={statusOptions}

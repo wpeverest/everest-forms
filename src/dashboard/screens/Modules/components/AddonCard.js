@@ -70,8 +70,6 @@ const AddonCard = ({ addon, showToast }) => {
 			return;
 		}
 
-		// If user has any paid plan (isPro is true), enable the module
-		// Everest Forms uses: personal, agency, themegrill agency
 		if (isPro) {
 			setModuleEnabled(true);
 			return;
@@ -145,19 +143,14 @@ const AddonCard = ({ addon, showToast }) => {
 	};
 
 	const getPlanBadge = (plan) => {
-		// If no plan, it's free
 		if (!plan || plan.length === 0) {
-			return "Free";
+			return 'Free';
 		}
 
-		// Check for free in array
-		if (Array.isArray(plan) && plan.includes("free")) {
-			return "Free";
+		if (Array.isArray(plan) && plan.includes('free')) {
+			return 'Free';
 		}
-
-		// For Everest Forms, paid plans are: personal, agency, themegrill agency
-		// Show "PRO" for all paid plans
-		return "PRO";
+		return 'PRO';
 	};
 
 	const getPlanBadgeStyles = (plan) => {
@@ -173,7 +166,6 @@ const AddonCard = ({ addon, showToast }) => {
 			};
 		}
 
-		// PRO badge - blue style
 		return {
 			bg: "#EFF6FF",
 			border: "1px solid #93C5FD",
@@ -191,12 +183,9 @@ const AddonCard = ({ addon, showToast }) => {
 			borderRadius="lg"
 			border="1px solid"
 			borderColor="gray.200"
-			p="5"
+			p="6"
 			boxShadow="sm"
-			_hover={{
-				boxShadow: "md",
-				borderColor: "gray.300"
-			}}
+			_hover={{ boxShadow: 'md' }}
 			transition="all 0.2s"
 			position="relative"
 			height="100%"
@@ -211,8 +200,8 @@ const AddonCard = ({ addon, showToast }) => {
 					left="0"
 					right="0"
 					bottom="0"
-					bg="rgba(255, 255, 255, 0.9)"
-					borderRadius="lg"
+					bg="rgba(255, 255, 255, 0.8)"
+					borderRadius="xl"
 					alignItems="center"
 					justifyContent="center"
 					zIndex="10"
@@ -222,69 +211,66 @@ const AddonCard = ({ addon, showToast }) => {
 			)}
 
 			{/* Main Content Layout */}
-			<HStack align="start" spacing="3" mb="4">
+			<HStack align="start" spacing="4" flxe="1" mb="6">
 				{/* Left Side - Icon */}
 				<Box
-					w="48px"
-					h="48px"
+					w="10"
+					h="10"
 					bg="white"
-					borderRadius="lg"
+					borderRadius="full"
 					display="flex"
 					alignItems="center"
 					justifyContent="center"
-					border="1px solid"
-					borderColor="gray.200"
+					boxShadow="sm"
 					flexShrink={0}
 					overflow="hidden"
-					p="2"
 				>
 					{addon.image ? (
 						<img
 							src={getImageUrl(addon.image)}
 							alt={addon.title}
 							style={{
-								width: "100%",
-								height: "100%",
-								objectFit: "contain"
+								width: '100%',
+								height: '100%',
+								objectFit: 'contain',
+								borderRadius: '50%',
 							}}
 							onError={(e) => {
-								e.target.style.display = "none";
+								e.target.style.display = 'none';
 								if (e.target.nextSibling) {
-									e.target.nextSibling.style.display = "flex";
+									e.target.nextSibling.style.display = 'flex';
 								}
 							}}
 						/>
 					) : null}
 					<Box
-						display={addon.image ? "none" : "flex"}
+						display={addon.image ? 'none' : 'flex'}
 						alignItems="center"
 						justifyContent="center"
 						fontSize="2xl"
 						width="100%"
 						height="100%"
-						color="gray.400"
 					>
 						📋
 					</Box>
 				</Box>
 
 				{/* Right Side - Title and Badge */}
-				<VStack align="start" spacing="2" flex="1">
+				<VStack align="start" spacing="3" flex="1">
 					<HStack justify="space-between" w="full" align="start">
 						<Heading
 							size="sm"
-							color="gray.900"
+							color="gray.800"
 							fontWeight="600"
-							fontSize="15px"
-							lineHeight="1.4"
+							fontSize="16px"
 						>
 							{addon.title}
 						</Heading>
 						<Badge
 							fontSize={badgeStyles.fontSize}
 							px="2"
-							py="0.5"
-							borderRadius="md"
+							py="1"
+							borderRadius="base"
 							bg={badgeStyles.bg}
 							border={badgeStyles.border}
 							color={badgeStyles.color}
@@ -297,19 +283,21 @@ const AddonCard = ({ addon, showToast }) => {
 					</HStack>
 
 					{/* Description */}
-					<Text
-						fontSize="13px"
-						color="gray.600"
-						lineHeight="1.5"
-						noOfLines={2}
-					>
-						{addon.excerpt || "No description available."}
+					<Text fontSize="13px" color="gray.600" lineHeight="1.5" noOfLines={2}>
+						{addon.excerpt || 'No description available.'}
 					</Text>
 				</VStack>
 			</HStack>
 
 			{/* Footer Section */}
-			<HStack justify="space-between" align="center" mt="auto" pt="3" borderTop="1px solid" borderColor="gray.100">
+			<HStack
+				justify="space-between"
+				align="center"
+				mt="auto"
+				pt="3"
+				borderTop="1px solid"
+				borderColor="gray.100"
+			>
 				<HStack spacing="2" fontSize="13px">
 					{addon.link && (
 						<Link
@@ -317,10 +305,10 @@ const AddonCard = ({ addon, showToast }) => {
 							color="gray.600"
 							textDecoration="none"
 							isExternal
-							_hover={{ color: "#475bb2", textDecoration: "underline" }}
+							_hover={{ color: '#475bb2', textDecoration: 'underline' }}
 							fontWeight="500"
 						>
-							{__("Docs", "everest-forms")}
+							{__('Docs', 'everest-forms')}
 						</Link>
 					)}
 					{addon.demo_video_url && (
@@ -329,10 +317,10 @@ const AddonCard = ({ addon, showToast }) => {
 							<IconButton
 								size="xs"
 								icon={<Icon as={FaPlay} />}
-								aria-label={__("Video Tutorial", "everest-forms")}
+								aria-label={__('Video Tutorial', 'everest-forms')}
 								variant="ghost"
 								color="gray.600"
-								_hover={{ color: "#475bb2", bg: "gray.50" }}
+								_hover={{ color: '#475bb2', bg: 'gray.50' }}
 								onClick={handleVideoPlay}
 							/>
 						</>
@@ -343,11 +331,11 @@ const AddonCard = ({ addon, showToast }) => {
 							<IconButton
 								size="xs"
 								icon={<FaCog />}
-								aria-label={__("Settings", "everest-forms")}
+								aria-label={__('Settings', 'everest-forms')}
 								variant="ghost"
 								color="gray.600"
-								_hover={{ color: "#475bb2", bg: "gray.50" }}
-								onClick={() => window.open(addon.setting_url, "_self")}
+								_hover={{ color: '#475bb2', bg: 'gray.50' }}
+								onClick={() => window.open(addon.setting_url, '_self')}
 							/>
 						</>
 					)}
@@ -360,12 +348,12 @@ const AddonCard = ({ addon, showToast }) => {
 							isDisabled={isLoading}
 							size="md"
 							sx={{
-								"& .chakra-switch__track": {
-									bg: isActive ? "#475bb2" : "gray.300"
+								'& .chakra-switch__track': {
+									bg: isActive ? '#475bb2' : 'gray.300',
 								},
-								"& .chakra-switch__track[data-checked]": {
-									bg: "#475bb2"
-								}
+								'& .chakra-switch__track[data-checked]': {
+									bg: '#475bb2',
+								},
 							}}
 						/>
 					) : (
@@ -379,15 +367,15 @@ const AddonCard = ({ addon, showToast }) => {
 							px="4"
 							h="32px"
 							_hover={{
-								bg: "#3a4a8f",
-								borderColor: "#3a4a8f"
+								bg: '#3a4a8f',
+								borderColor: '#3a4a8f',
 							}}
 							_active={{
-								bg: "#2d3b70"
+								bg: '#2d3b70',
 							}}
 							onClick={handleUpgradePlan}
 						>
-							{__("Upgrade Plan", "everest-forms")}
+							{__('Upgrade Plan', 'everest-forms')}
 						</Button>
 					)}
 				</HStack>
@@ -408,7 +396,13 @@ const AddonCard = ({ addon, showToast }) => {
 						</ModalHeader>
 						<ModalCloseButton />
 						<ModalBody pb="6">
-							<Box position="relative" paddingTop="56.25%" bg="gray.100" borderRadius="md" overflow="hidden">
+							<Box
+								position="relative"
+								paddingTop="56.25%"
+								bg="gray.100"
+								borderRadius="md"
+								overflow="hidden"
+							>
 								<ReactPlayer
 									url={`https://www.youtube.com/watch?v=${addon.demo_video_url}`}
 									playing={true}
@@ -416,9 +410,9 @@ const AddonCard = ({ addon, showToast }) => {
 									height="100%"
 									controls
 									style={{
-										position: "absolute",
+										position: 'absolute',
 										top: 0,
-										left: 0
+										left: 0,
 									}}
 									onReady={() => setVideoLoading(false)}
 									onStart={() => setVideoLoading(false)}
