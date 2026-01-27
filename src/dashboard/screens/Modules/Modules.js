@@ -1,174 +1,314 @@
-import {
-	Box,
-	Button,
-	Container,
-	FormControl,
-	Input,
-	InputGroup,
-	InputLeftElement,
-	Select,
-	Stack,
-	Tab,
-	TabList,
-	TabPanel,
-	TabPanels,
-	Tabs,
-	Text,
-	useToast,
-} from '@chakra-ui/react';
+/**
+ *  External Dependencies
+ */
+import { Box, Container, IconButton, Text, useToast } from '@chakra-ui/react';
 import { __ } from '@wordpress/i18n';
 import { debounce } from 'lodash';
-import { useCallback, useContext, useEffect, useState } from 'react';
-import { Search } from './../../components/Icon/Icon';
+import {
+	useCallback,
+	useContext,
+	useEffect,
+	useMemo,
+	useRef,
+	useState,
+} from 'react';
+import { FaArrowUp } from 'react-icons/fa';
+
+// Use your existing context import - NO CHANGES NEEDED
+import { PageNotFound } from './../../components/Icon/Icon';
 import DashboardContext from './../../context/DashboardContext';
 import { actionTypes } from './../../reducers/DashboardReducer';
 import AddonsSkeleton from './../../skeleton/AddonsSkeleton/AddonsSkeleton';
-import ModuleBody from './components/ModuleBody';
-import {
-	bulkActivateModules,
-	bulkDeactivateModules,
-	getAllModules,
-} from './components/modules-api';
+import { getAllModules } from './components/modules-api';
+
+// Import new components
+import CardsGrid from './components/CardsGrid';
+import Categories from './components/Categories';
+import Filters from './components/Filters';
 
 const Modules = () => {
 	const toast = useToast();
-	const [modules, setModules] = useState([]);
-	const [originalModules, setOriginalModules] = useState([]);
-	const [error, setError] = useState(null);
-	const [selectedModuleData, setSelectedModuleData] = useState('');
-	const [isSearching, setIsSearching] = useState(false);
-	const [tabIndex, setTabIndex] = useState(0);
-	const [isPerformingBulkAction, setIsPerformingBulkAction] = useState(false);
-	const [bulkAction, setBulkAction] = useState('');
-	const [modulesLoaded, setModulesLoaded] = useState(false);
+	// Use your existing context pattern
 	const [{ allModules }, dispatch] = useContext(DashboardContext);
-	const [searchItem, setSearchItem] = useState('');
-	const [noItemFound, setNoItemFound] = useState(false);
+
+	const [state, setState] = useState({
+		modules: [],
+		originalModules: [],
+		modulesLoaded: false,
+		selectedModuleData: {},
+		bulkAction: '',
+		isPerformingBulkAction: false,
+		searchItem: '',
+		noItemFound: false,
+		error: null,
+		selectedCategory: 'All',
+		selectedSort: 'default',
+		selectedStatus: 'all',
+		selectedPlan: 'all',
+		isLoading: false,
+		highlightedCategories: [],
+	});
+	const [showScrollTop, setShowScrollTop] = useState(false);
+	const searchItemRef = useRef(state.searchItem);
+	const isFirstRender = useRef(true);
+
+	// Dynamic categories based on modules data
+	const getDynamicCategories = () => {
+		if (!state.originalModules || state.originalModules.length === 0) {
+			return [{ value: 'All', label: 'All', internalValue: 'All' }];
+		}
+
+		// Get unique categories from modules
+		const uniqueCategories = [
+			...new Set(
+				state.originalModules.map((module) => module.category).filter(Boolean),
+			),
+		];
+
+		// Map category names to display names (customize these for Everest Forms)
+		const categoryDisplayNames = {
+			'Form Elements': 'Form Elements',
+			Integrations: 'Integrations',
+			Marketing: 'Marketing',
+			'Payment Gateways': 'Payment Gateways',
+			'Email Marketing': 'Email Marketing',
+			Others: 'Others',
+		};
+
+		// Create category objects with both internal and display names
+		const categories = [{ value: 'All', label: 'All', internalValue: 'All' }];
+
+		uniqueCategories.forEach((category) => {
+			categories.push({
+				value: categoryDisplayNames[category] || category,
+				label: categoryDisplayNames[category] || category,
+				internalValue: category,
+			});
+		});
+
+		return categories;
+	};
+
+	const categories = useMemo(
+		() => getDynamicCategories(),
+		[state.originalModules],
+	);
+
+	// Options for dropdowns
+	const statusOptions = [
+		{ label: 'All Status', value: 'all' },
+		{ label: 'Active', value: 'active' },
+		{ label: 'Inactive', value: 'inactive' },
+	];
+
+	const planOptions = [
+		{ label: 'All Plans', value: 'all' },
+		{ label: 'Free', value: 'free' },
+		{ label: 'Pro', value: 'pro' },
+	];
+
+	const sortOptions = [
+		{ label: __('All', 'everest-forms'), value: 'default' },
+		{ label: __('Newest', 'everest-forms'), value: 'newest' },
+		{ label: __('Oldest', 'everest-forms'), value: 'oldest' },
+		{ label: __('Ascending', 'everest-forms'), value: 'asc' },
+		{ label: __('Descending', 'everest-forms'), value: 'desc' },
+	];
+
+	// Memoized values for select components
+	const selectedSortValue = useMemo(
+		() =>
+			sortOptions.find((option) => option.value === state.selectedSort) || null,
+		[state.selectedSort],
+	);
+
+	const selectedStatusValue = useMemo(
+		() =>
+			statusOptions.find((option) => option.value === state.selectedStatus) ||
+			null,
+		[state.selectedStatus],
+	);
+
+	const selectedPlanValue = useMemo(
+		() =>
+			planOptions.find((option) => option.value === state.selectedPlan) || null,
+		[state.selectedPlan],
+	);
+
+	// Deduplicate modules based on slug
+	const deduplicateModules = (modules) => {
+		const seen = new Set();
+		return modules.filter((module) => {
+			if (seen.has(module.slug)) {
+				return false;
+			}
+			seen.add(module.slug);
+			return true;
+		});
+	};
 
 	const fetchModules = useCallback(() => {
+		setState((prev) => ({ ...prev, isLoading: true }));
 		getAllModules()
 			.then((data) => {
 				if (data.success) {
+					const deduplicatedModules = deduplicateModules(data.modules_lists);
+
 					dispatch({
 						type: actionTypes.GET_ALL_MODULES,
-						allModules: data.modules_lists,
+						allModules: deduplicatedModules,
 					});
-
-					setOriginalModules(data.modules_lists);
-					filterModules(data.modules_lists);
-					setModulesLoaded(true);
+					setState((prev) => ({
+						...prev,
+						originalModules: deduplicatedModules,
+						modulesLoaded: true,
+						isLoading: false,
+					}));
+					filterModules(deduplicatedModules, 'All', false);
 				}
 			})
-			.catch((error) => {
-				setError(error.message);
-			});
-	}, [dispatch, tabIndex]);
-
-	const filterModules = (modules) => {
-		let filteredModules = modules;
-
-		if (tabIndex === 1) {
-			filteredModules = modules.filter((module) => module.type === 'feature');
-		} else if (tabIndex === 2) {
-			filteredModules = modules.filter((module) => module.type === 'addon');
-		}
-
-		setModules(filteredModules);
-		setModulesLoaded(true);
-	};
+			.catch((error) =>
+				setState((prev) => ({
+					...prev,
+					error: error.message,
+					modulesLoaded: true,
+					isLoading: false,
+				})),
+			);
+	}, [dispatch]);
 
 	useEffect(() => {
+		setState((prev) => ({ ...prev, isLoading: true }));
 		fetchModules();
 	}, [fetchModules]);
 
+	// Scroll to top functionality
 	useEffect(() => {
-		if (error !== null) {
-			toast({
-				title: error,
-				status: 'error',
-				duration: 3000,
-			});
-		}
-	}, [error]);
+		const handleScroll = () => {
+			const scrollTop =
+				window.pageYOffset || document.documentElement.scrollTop;
+			setShowScrollTop(scrollTop > 300);
+		};
 
-	useEffect(() => {
-		filterModules(originalModules);
-	}, [tabIndex, originalModules]);
+		window.addEventListener('scroll', handleScroll);
+		return () => window.removeEventListener('scroll', handleScroll);
+	}, []);
 
-	const handleBulkActions = () => {
-		setIsPerformingBulkAction(true);
-
-		const actionFunction =
-			bulkAction === 'activate' ? bulkActivateModules : bulkDeactivateModules;
-
-		actionFunction(selectedModuleData)
-			.then((data) => {
-				toast({
-					title: data.message,
-					status: data.success ? 'success' : 'error',
-					duration: 3000,
-				});
-			})
-			.catch((e) => {
-				toast({
-					title: e.message,
-					status: 'error',
-					duration: 3000,
-				});
-			})
-			.finally(() => {
-				setIsPerformingBulkAction(false);
-				setSelectedModuleData({});
-				fetchModules();
-			});
+	const scrollToTop = () => {
+		window.scrollTo({
+			top: 0,
+			behavior: 'smooth',
+		});
 	};
 
-	const debounceSearch = debounce((val) => {
-		setIsSearching(true);
-
-		if (!val) {
-			filterModules(originalModules);
-			setIsSearching(false);
-			return;
+	// Filter Modules by Categories
+	const filterModules = (
+		modules,
+		category,
+		showLoading = false,
+		statusFilter = null,
+		planFilter = null,
+	) => {
+		if (showLoading) {
+			setState((prev) => ({ ...prev, isLoading: true }));
 		}
 
-		let searchedData = [];
+		const processFilter = () => {
+			let filtered = modules;
 
-		if (tabIndex === 1) {
-			searchedData = originalModules.filter(
-				(module) =>
-					module.type === 'feature' &&
-					module.title.toLowerCase().includes(val.toLowerCase()),
-			);
-		} else if (tabIndex === 2) {
-			searchedData = originalModules.filter(
-				(module) =>
-					module.type === 'addon' &&
-					module.title.toLowerCase().includes(val.toLowerCase()),
-			);
+			// Filter by category
+			if (category && category !== 'All') {
+				filtered = filtered.filter((mod) => mod.category === category);
+			}
+
+			// Filter by status
+			const currentStatus =
+				statusFilter !== null ? statusFilter : state.selectedStatus;
+			if (currentStatus && currentStatus !== 'all') {
+				filtered = filtered.filter((mod) => mod.status === currentStatus);
+			}
+
+			// Filter by plan
+			const currentPlan = planFilter !== null ? planFilter : state.selectedPlan;
+			if (currentPlan && currentPlan !== 'all') {
+				filtered = filtered.filter((mod) => {
+					if (currentPlan === 'free') {
+						return mod.plan && mod.plan.includes('free');
+					} else if (currentPlan === 'pro') {
+						return mod.plan && mod.plan.includes('pro');
+					}
+					return true;
+				});
+			}
+
+			// Filter by search term
+			const searchValue = searchItemRef.current.toLowerCase();
+			if (searchValue) {
+				filtered = filtered.filter((mod) =>
+					mod.title.toLowerCase().includes(searchValue),
+				);
+			}
+
+			// Determine which categories contain search results
+			let highlightedCategories = [];
+			if (searchValue && searchValue.length >= 3) {
+				const categoriesWithResults = [
+					...new Set(filtered.map((mod) => mod.category).filter(Boolean)),
+				];
+				highlightedCategories = categoriesWithResults;
+			}
+
+			setState((prev) => ({
+				...prev,
+				modules: filtered,
+				noItemFound: filtered.length === 0,
+				isLoading: false,
+				highlightedCategories: highlightedCategories,
+			}));
+		};
+
+		if (showLoading) {
+			setTimeout(processFilter, 150);
 		} else {
-			searchedData = originalModules.filter((module) =>
-				module.title.toLowerCase().includes(val.toLowerCase()),
-			);
+			processFilter();
 		}
+	};
 
-		if (searchedData.length > 0) {
-			setModules(searchedData);
-			setModulesLoaded(true);
-			setNoItemFound(false);
-		} else {
-			setModules([]);
-			setModulesLoaded(false);
-			setNoItemFound(true);
-		}
+	const showToast = (title, status) => {
+		toast({
+			title: __(title, 'everest-forms'),
+			status,
+			duration: 3000,
+			isClosable: true,
+			position: 'top-right',
+		});
+	};
 
-		setIsSearching(false);
-	}, 800);
+	// Search Modules
+	const debounceSearch = useCallback(
+		debounce((val) => {
+			filterModules(state.originalModules, 'All', false);
+		}, 300),
+		[state.originalModules],
+	);
 
 	const handleSearchInputChange = (e) => {
 		const val = e.target.value;
-		setSearchItem(val);
-		debounceSearch(val);
+		setState((prev) => ({ ...prev, searchItem: val }));
+		searchItemRef.current = val;
+
+		if (val.length >= 3) {
+			debounceSearch(val);
+		} else if (val.length === 0) {
+			setState((prev) => ({ ...prev, highlightedCategories: [] }));
+			filterModules(
+				state.originalModules,
+				state.selectedCategory,
+				false,
+				state.selectedStatus,
+				state.selectedPlan,
+			);
+		}
 	};
 
 	const parseDate = (dateString) => {
@@ -176,259 +316,205 @@ const Modules = () => {
 		return new Date(year, month - 1, day);
 	};
 
-	const handleSorterChange = (sortType, data, setData) => {
+	const handleSorterChange = (sortType, data) => {
 		switch (sortType) {
 			case 'newest':
-				setData(
-					[...data].sort(
-						(firstAddonInContext, secondAddonInContext) =>
-							parseDate(secondAddonInContext.released_date) -
-							parseDate(firstAddonInContext.released_date),
+				setState((prev) => ({
+					...prev,
+					modules: [...data].sort(
+						(a, b) => parseDate(b.released_date) - parseDate(a.released_date),
 					),
-				);
+				}));
 				break;
 			case 'oldest':
-				setData(
-					[...data].sort(
-						(firstAddonInContext, secondAddonInContext) =>
-							parseDate(firstAddonInContext.released_date) -
-							parseDate(secondAddonInContext.released_date),
+				setState((prev) => ({
+					...prev,
+					modules: [...data].sort(
+						(a, b) => parseDate(a.released_date) - parseDate(b.released_date),
 					),
-				);
+				}));
 				break;
 			case 'asc':
-				setData(
-					[...data].sort((firstAddonInContext, secondAddonInContext) =>
-						firstAddonInContext.title.localeCompare(secondAddonInContext.title),
-					),
-				);
+				setState((prev) => ({
+					...prev,
+					modules: [...data].sort((a, b) => a.title.localeCompare(b.title)),
+				}));
 				break;
 			case 'desc':
-				setData(
-					[...data].sort((firstAddonInContext, secondAddonInContext) =>
-						secondAddonInContext.title.localeCompare(firstAddonInContext.title),
-					),
-				);
+				setState((prev) => ({
+					...prev,
+					modules: [...data].sort((a, b) => b.title.localeCompare(a.title)),
+				}));
+				break;
+			case 'default':
+				// Sort by popular_rank if available
+				const sortedData = [...data].sort((a, b) => {
+					if ('popular_rank' in a && 'popular_rank' in b) {
+						return a.popular_rank - b.popular_rank;
+					} else if ('popular_rank' in a) {
+						return -1;
+					} else if ('popular_rank' in b) {
+						return 1;
+					} else {
+						return 0;
+					}
+				});
+				setState((prev) => ({ ...prev, modules: sortedData }));
 				break;
 			default:
-				const sortedData = [...data].sort(
-					(firstAddonInContext, secondAddonInContext) => {
-						if (
-							'popular_rank' in firstAddonInContext &&
-							'popular_rank' in secondAddonInContext
-						) {
-							return (
-								firstAddonInContext.popular_rank -
-								secondAddonInContext.popular_rank
-							);
-						} else if ('popular_rank' in firstAddonInContext) {
-							return -1;
-						} else if ('popular_rank' in secondAddonInContext) {
-							return 1;
-						} else {
-							return 0;
-						}
-					},
-				);
-				setData(sortedData);
+				setState((prev) => ({
+					...prev,
+					modulesLoaded: false,
+				}));
 		}
 	};
 
+	// Reset all filters to default values
+	const handleResetFilters = () => {
+		setState((prev) => ({
+			...prev,
+			selectedCategory: 'All',
+			selectedSort: 'default',
+			selectedStatus: 'all',
+			selectedPlan: 'all',
+			searchItem: '',
+			highlightedCategories: [],
+		}));
+		searchItemRef.current = '';
+		filterModules(state.originalModules, 'All', false, 'all', 'all');
+	};
+
 	return (
-		<Box top="var(--wp-admin--admin-bar--height, 0)" zIndex={1} py={5}>
-			<Container maxW="full" px={{ base: '4', lg: '6' }}>
-				<Box maxW="1400px" mx="auto">
-					<Stack
-						direction={{ base: 'column', lg: 'row' }}
-						minH="70px"
-						justify="space-between"
-						py="4"
+		<Box bg="#F9FAFB" minH="100vh" py={{ base: '16px', md: '24px' }}>
+			<Container maxW="1400px" px={{ base: '16px', md: '24px' }}>
+				{/* Filters and Categories Section */}
+				<Box mb="4">
+					<Filters
+						sortOptions={sortOptions}
+						statusOptions={statusOptions}
+						planOptions={planOptions}
+						selectedSortValue={selectedSortValue}
+						selectedStatusValue={selectedStatusValue}
+						selectedPlanValue={selectedPlanValue}
+						onSortChange={(selectedOption) => {
+							setState((prev) => ({
+								...prev,
+								selectedSort: selectedOption?.value || 'default',
+							}));
+							handleSorterChange(selectedOption?.value, state.originalModules);
+						}}
+						onStatusChange={(selectedOption) => {
+							const newStatus = selectedOption?.value || 'all';
+							setState((prev) => ({ ...prev, selectedStatus: newStatus }));
+							filterModules(
+								state.originalModules,
+								state.selectedCategory,
+								false,
+								newStatus,
+								null,
+							);
+						}}
+						onPlanChange={(selectedOption) => {
+							const newPlan = selectedOption?.value || 'all';
+							setState((prev) => ({ ...prev, selectedPlan: newPlan }));
+							filterModules(
+								state.originalModules,
+								state.selectedCategory,
+								false,
+								null,
+								newPlan,
+							);
+						}}
+						searchValue={state.searchItem}
+						onSearchChange={handleSearchInputChange}
+						onReset={handleResetFilters}
+					/>
+
+					<Categories
+						categories={categories}
+						selectedCategory={state.selectedCategory}
+						highlightedCategories={state.highlightedCategories}
+						onCategoryChange={(displayValue, internalValue) => {
+							setState((prev) => ({ ...prev, selectedCategory: displayValue }));
+							filterModules(state.originalModules, internalValue, true);
+						}}
+					/>
+				</Box>
+
+				{/* Content Section */}
+				{state.isLoading || !state.modulesLoaded ? (
+					<AddonsSkeleton />
+				) : state.noItemFound && state.searchItem ? (
+					<Box
+						bg="white"
+						borderRadius="lg"
+						boxShadow="sm"
+						display="flex"
+						justifyContent="center"
+						flexDirection="column"
+						padding={{ base: '60px 20px', md: '100px' }}
 						gap="4"
+						alignItems="center"
+						minH="400px"
 					>
-						<Stack
-							direction={{ base: 'column', md: 'row' }}
-							align={{ base: 'stretch', md: 'center' }}
-							gap="4"
-							flexWrap="wrap"
-						>
-							<Select
-								display="inline-flex"
-								alignItems="center"
-								size="md"
-								bg="#DFDFE0"
-								onChange={(e) => {
-									handleSorterChange(e.target.value, modules, setModules);
-								}}
-								border="1px solid #DFDFE0 !important"
-								borderRadius="4px !important"
-								icon=""
-								width="fit-content"
-							>
-								<option value="default">
-									{__('Popular', 'everest-forms')}
-								</option>
-								<option value="newest">{__('Newest', 'everest-forms')}</option>
-								<option value="oldest">{__('Oldest', 'everest-forms')}</option>
-								<option value="asc">{__('Ascending', 'everest-forms')}</option>
-								<option value="desc">
-									{__('Descending', 'everest-forms')}
-								</option>
-							</Select>
-							<Box display="flex" gap="8px">
-								<Select
-									display="inline-flex"
-									alignItems="center"
-									size="md"
-									bg="#DFDFE0"
-									placeholder={__('Bulk Actions', 'everest-forms')}
-									onChange={(e) => setBulkAction(e.target.value)}
-									icon=""
-									width="fit-content"
-									border="1px solid #DFDFE0 !important"
-									borderRadius="4px !important"
-								>
-									<option value="activate">
-										{__('Activate', 'everest-forms')}
-									</option>
-									<option value="deactivate">
-										{__('Deactivate', 'everest-forms')}
-									</option>
-								</Select>
-
-								<Button
-									fontSize="14px"
-									variant="outline"
-									fontWeight="normal"
-									color="gray.600"
-									borderRadius="base"
-									border="1px solid #DFDFE0 !important"
-									textDecor="none !important"
-									padding="6px 12px"
-									onClick={handleBulkActions}
-									isLoading={isPerformingBulkAction}
-								>
-									{__('Apply', 'everest-forms')}
-								</Button>
-							</Box>
-
-							<Tabs
-								index={tabIndex}
-								onChange={(index) => {
-									setTabIndex(index);
-								}}
-							>
-								<TabList>
-									<Tab
-										onClick={() =>
-											handleSearchInputChange({ target: { value: searchItem } })
-										}
-									>
-										{__('All Modules', 'everest-forms')}
-									</Tab>
-									<Tab
-										onClick={() =>
-											handleSearchInputChange({ target: { value: searchItem } })
-										}
-									>
-										{__('Features', 'everest-forms')}
-									</Tab>
-									<Tab
-										onClick={() =>
-											handleSearchInputChange({ target: { value: searchItem } })
-										}
-									>
-										{__('Addons', 'everest-forms')}
-									</Tab>
-								</TabList>
-							</Tabs>
-						</Stack>
-						<Stack
-							direction="row"
-							align="center"
-							gap="4"
-							w={{ base: 'full', lg: 'auto' }}
-						>
-							<FormControl maxW={{ base: 'full', lg: '250px' }}>
-								<InputGroup>
-									<InputLeftElement pointerEvents="none" top="2px">
-										<Search h="5" w="5" color="gray.300" />
-									</InputLeftElement>
-									<Input
-										type="text"
-										placeholder={__('Search...', 'everest-forms')}
-										paddingLeft="32px !important"
-										value={searchItem}
-										onChange={handleSearchInputChange}
-									/>
-								</InputGroup>
-							</FormControl>
-						</Stack>
-					</Stack>
-				</Box>
-			</Container>
-			<Container maxW="full" px={{ base: '4', lg: '6' }} mt={2}>
-				<Box maxW="1400px" mx="auto">
-					{isSearching ? (
-						<AddonsSkeleton />
-					) : noItemFound ? (
+						<PageNotFound color="gray.300" />
 						<Text
-							align="center"
-							fontSize={{ base: '1rem', md: '1.2rem' }}
-							bg="red.500"
-							color="white"
-							p={4}
-							my="8"
-							mx="auto"
-							maxW="600px"
-							w="full"
-							borderRadius="md"
-							fontWeight="semibold"
+							fontSize={{ base: '18px', md: '20px' }}
+							fontWeight="600"
+							color="gray.800"
 						>
-							{(() => {
-								switch (tabIndex) {
-									case 1:
-										return __('Sorry, No features found', 'everest-forms');
-									case 2:
-										return __('Sorry, No addons found', 'everest-forms');
-									default:
-										return __('Sorry, No modules found', 'everest-forms');
-								}
-							})()}
+							{__('Sorry, no result found.', 'everest-forms')}
 						</Text>
-					) : (
-						<Box>
-							<Tabs index={tabIndex}>
-								<TabPanels>
-									<TabPanel px={0}>
-										<ModuleBody
-											isPerformingBulkAction={isPerformingBulkAction}
-											filteredAddons={modules}
-											setSelectedModuleData={setSelectedModuleData}
-											selectedModuleData={selectedModuleData}
-										/>
-									</TabPanel>
-									<TabPanel px={0}>
-										<ModuleBody
-											isPerformingBulkAction={isPerformingBulkAction}
-											filteredAddons={modules}
-											setSelectedModuleData={setSelectedModuleData}
-											selectedModuleData={selectedModuleData}
-										/>
-									</TabPanel>
-									<TabPanel px={0}>
-										<ModuleBody
-											isPerformingBulkAction={isPerformingBulkAction}
-											filteredAddons={modules}
-											setSelectedModuleData={setSelectedModuleData}
-											selectedModuleData={selectedModuleData}
-										/>
-									</TabPanel>
-								</TabPanels>
-							</Tabs>
-						</Box>
-					)}
-				</Box>
+						<Text fontSize="14px" color="gray.500" textAlign="center">
+							{__('Please try another search', 'everest-forms')}
+						</Text>
+					</Box>
+				) : (
+					<CardsGrid
+						modules={state.modules}
+						selectedCategory={state.selectedCategory}
+						showToast={showToast}
+					/>
+				)}
 			</Container>
+
+			{/* Scroll to Top Button */}
+			{showScrollTop && (
+				<IconButton
+					position="fixed"
+					bottom={{ base: '20px', md: '24px' }}
+					right={{ base: '20px', md: '24px' }}
+					zIndex="1000"
+					aria-label="Scroll to top"
+					icon={<FaArrowUp />}
+					size="md"
+					variant="solid"
+					bg="white"
+					border="1px solid"
+					borderColor="#E5E7EB"
+					color="#6B7280"
+					borderRadius="full"
+					boxShadow="0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)"
+					w="48px"
+					h="48px"
+					_hover={{
+						bg: '#F9FAFB',
+						borderColor: '#D1D5DB',
+						color: '#374151',
+						transform: 'translateY(-2px)',
+						boxShadow:
+							'0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+					}}
+					_active={{
+						transform: 'translateY(0)',
+					}}
+					_focus={{
+						boxShadow: '0 0 0 3px rgba(66, 99, 235, 0.1)',
+					}}
+					transition="all 0.2s ease"
+					onClick={scrollToTop}
+				/>
+			)}
 		</Box>
 	);
 };

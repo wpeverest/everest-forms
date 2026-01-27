@@ -13,6 +13,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Form Elements",
       "setting_url": "admin.php?page=evf-settings&tab=ai",
       "demo_video_url": "2Hs_dwpyJ54"
     },
@@ -29,6 +30,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Security",
       "setting_url": "",
       "demo_video_url": "obScswjZ24Q",
       "popular_rank": 2
@@ -46,6 +48,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Form Elements",
       "setting_url": "",
       "demo_video_url": "qVpDzAx-_4A",
       "popular_rank": 3
@@ -63,6 +66,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Cloud & Storage",
       "setting_url": "admin.php?page=evf-settings&tab=pdf-submission",
       "demo_video_url": "37CtaxJzYis",
       "popular_rank": 4
@@ -80,6 +84,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Email Marketing",
       "setting_url": "",
       "demo_video_url": "Cp2aL7IkAXc",
       "popular_rank": 5
@@ -97,6 +102,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Marketing & Analytics",
       "setting_url": "",
       "demo_video_url": "i1vR-YmaBOg",
       "popular_rank": 7
@@ -114,6 +120,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Payment Gateways",
       "setting_url": "admin.php?page=evf-settings&tab=payment",
       "demo_video_url": "pcwPjCt7N2I",
       "popular_rank": 8
@@ -131,6 +138,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Integrations",
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=google_sheets",
       "demo_video_url": "tvS6Y_rNBfs",
       "popular_rank": 9
@@ -148,6 +156,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Form Elements",
       "setting_url": "",
       "demo_video_url": "4xxEi0rSB20",
       "popular_rank": 11
@@ -165,6 +174,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Payment Gateways",
       "setting_url": "admin.php?page=evf-settings&tab=payment",
       "demo_video_url": "wZXnaxLxdz4",
       "popular_rank": 14
@@ -182,6 +192,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Form Elements",
       "setting_url": "",
       "demo_video_url": "W2lc02Ge-FU",
       "popular_rank": 10
@@ -199,6 +210,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Form Elements",
       "setting_url": "admin.php?page=evf-settings&tab=geolocation",
       "demo_video_url": "j02yG57GA20",
       "popular_rank": 13
@@ -216,6 +228,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Security",
       "setting_url": "",
       "demo_video_url": "Q1-dja7m3Sc",
       "popular_rank": 15
@@ -233,6 +246,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Form Elements",
       "setting_url": "",
       "demo_video_url": "gTtewu4DpCo",
       "popular_rank": 18
@@ -250,6 +264,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Marketing & Analytics",
       "setting_url": "",
       "demo_video_url": "XO38b8Lp19s",
       "popular_rank": 21
@@ -267,6 +282,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Form Elements",
       "setting_url": "",
       "demo_video_url": "LBNuyo4lpTY",
       "popular_rank": 20
@@ -284,6 +300,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Integrations",
       "setting_url": "",
       "demo_video_url": "t7NRAPZCbYg",
       "popular_rank": 19
@@ -301,6 +318,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Cloud & Storage",
       "setting_url": "",
       "demo_video_url": "yXE4ydYfkic",
       "popular_rank": 23
@@ -318,6 +336,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Marketing & Analytics",
       "setting_url": "admin.php?page=evf-settings&tab=analytics",
       "demo_video_url": "BCT7c8EmQfg"
     },
@@ -326,7 +345,7 @@
       "slug": "everest-forms-hubspot",
       "name": "Everest Forms Hubspot",
       "image": "extensions-json/sections/images/Hubspot.webp",
-      "excerpt": "Use Everest Forms as the entry point for HubSpot’s lead generation process.",
+      "excerpt": "Use Everest Forms as the entry point for HubSpot's lead generation process.",
       "link": "https://docs.everestforms.net/docs/hubspot/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
       "released_date": "26/09/2022 ",
       "plan": [
@@ -334,6 +353,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "CRM Integrations",
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=hubspot",
       "demo_video_url": "mOhJkZpBMPY",
       "popular_rank": 28
@@ -351,6 +371,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "CRM Integrations",
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=salesforce",
       "demo_video_url": "1VsyUu4NAhk",
       "popular_rank": 30
@@ -368,6 +389,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Payment Gateways",
       "setting_url": "admin.php?page=evf-settings&tab=payment",
       "demo_video_url": "a5EcKjwWD1A",
       "popular_rank": 31
@@ -385,6 +407,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Payment Gateways",
       "setting_url": "admin.php?page=evf-settings&tab=payment",
       "demo_video_url": "2Og6b1JXDWs",
       "popular_rank": 36
@@ -402,29 +425,31 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "CRM Integrations",
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=zoho",
       "demo_video_url": "sfHFiUIHpg0",
       "popular_rank": 34
     }
   ],
   "features": [
-	{
-		"title": "Coupons",
-		"slug": "everest-forms-coupons",
-		"name": "Everest Forms Coupons",
-		"image": "extensions-json/sections/images/Coupons.webp",
-		"excerpt": "Create discount codes and add them to checkout and payment forms to boost sales.",
-		"link": "https://docs.everestforms.net/docs/coupons/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
-		"released_date": "23/09/2020",
-		"plan": [
-		  "personal",
-		  "agency",
-		  "themegrill agency"
-		],
-		"setting_url": "",
-		"demo_video_url": "GSYQIiyntW0",
-		"popular_rank": 24
-	  },
+    {
+      "title": "Coupons",
+      "slug": "everest-forms-coupons",
+      "name": "Everest Forms Coupons",
+      "image": "extensions-json/sections/images/Coupons.webp",
+      "excerpt": "Create discount codes and add them to checkout and payment forms to boost sales.",
+      "link": "https://docs.everestforms.net/docs/coupons/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "released_date": "23/09/2020",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "category": "E-Commerce",
+      "setting_url": "",
+      "demo_video_url": "GSYQIiyntW0",
+      "popular_rank": 24
+    },
     {
       "title": "Style Customizer",
       "slug": "everest-forms-style-customizer",
@@ -434,10 +459,9 @@
       "link": "https://docs.everestforms.net/docs/style-customizer/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
       "released_date": "22/03/2019",
       "plan": [
-        "personal",
-        "agency",
-        "themegrill agency"
+        "free"
       ],
+      "category": "Form Elements",
       "setting_url": "",
       "demo_video_url": "PEK-FBU8gP0",
       "popular_rank": 1
@@ -455,6 +479,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Integrations",
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=trello",
       "demo_video_url": "9ouI1v9KScY"
     },
@@ -471,6 +496,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Email Marketing",
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=icontact",
       "demo_video_url": "Lqdh-LujsUA"
     },
@@ -487,6 +513,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "E-Commerce",
       "setting_url": "",
       "demo_video_url": "TeZK82kxiLk"
     },
@@ -503,6 +530,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Email Marketing",
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=moosend",
       "demo_video_url": "xeTf9YP9cpM"
     },
@@ -519,6 +547,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Email Marketing",
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=mailpoet",
       "demo_video_url": "yFf3loV_azY"
     },
@@ -535,6 +564,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "CRM Integrations",
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=onepagecrm",
       "demo_video_url": "42EUj-Dlnr0"
     },
@@ -551,6 +581,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Integrations",
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=telegram",
       "demo_video_url": "lAI-wh2EPfs"
     },
@@ -567,6 +598,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Email Marketing",
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=sendinblue",
       "demo_video_url": "d2Ujl82OJuA",
       "popular_rank": 26
@@ -584,6 +616,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Email Marketing",
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=drip",
       "demo_video_url": "4BBKgRelpgE",
       "popular_rank": 35
@@ -601,6 +634,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Email Marketing",
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=convertkit",
       "demo_video_url": "9_JboNu_uaE",
       "popular_rank": 17
@@ -618,6 +652,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Email Marketing",
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=getresponse",
       "demo_video_url": "bXrjALmtADw"
     },
@@ -626,7 +661,7 @@
       "slug": "everest-forms-salesflare",
       "name": "Everest Forms- Salesflare",
       "image": "extensions-json/sections/images/Salesflare.webp",
-      "excerpt": "Combine Everest Forms with Salesflare’s simple and powerful B2BCRM solution.",
+      "excerpt": "Combine Everest Forms with Salesflare's simple and powerful B2BCRM solution.",
       "link": "https://docs.everestforms.net/docs/salesflare-integrations/?utm_source=dashboard-all-features&utm_medium=card-documentation-link",
       "released_date": "07/08/2024",
       "plan": [
@@ -634,6 +669,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "CRM Integrations",
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=salesflare",
       "demo_video_url": "IpXwi2Jc2uE"
     },
@@ -650,6 +686,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Email Marketing",
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=constant_contact",
       "demo_video_url": "SSovJr5-8b0",
       "popular_rank": 33
@@ -667,6 +704,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "CRM Integrations",
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=pipedrive",
       "demo_video_url": "84cGKj07g4g",
       "popular_rank": 32
@@ -684,6 +722,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Payment Gateways",
       "setting_url": "admin.php?page=evf-settings&tab=payment",
       "demo_video_url": "5ymZV-S0mMs"
     },
@@ -700,6 +739,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Integrations",
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=airtable",
       "demo_video_url": "SS_N2OoT5wU"
     },
@@ -716,6 +756,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Email Marketing",
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=mailerlite",
       "demo_video_url": "JqdNsPFKg5o",
       "popular_rank": 27
@@ -733,6 +774,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Email Marketing",
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=mailchimp",
       "demo_video_url": "FhFsHdAIXwE",
       "popular_rank": 6
@@ -750,6 +792,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Payment Gateways",
       "setting_url": "admin.php?page=evf-settings&tab=payment",
       "demo_video_url": "r263krbqzfo"
     },
@@ -766,6 +809,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Marketing & Analytics",
       "setting_url": "",
       "demo_video_url": "r2N26kMvEtE"
     },
@@ -782,6 +826,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Email Marketing",
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=aweber",
       "demo_video_url": ""
     },
@@ -798,6 +843,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Form Elements",
       "setting_url": "",
       "demo_video_url": "Ro5ZyyUdCGU",
       "popular_rank": 16
@@ -815,6 +861,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Page Builders",
       "setting_url": "",
       "demo_video_url": ""
     },
@@ -831,6 +878,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Integrations",
       "setting_url": "",
       "demo_video_url": ""
     },
@@ -847,6 +895,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Page Builders",
       "setting_url": "",
       "demo_video_url": ""
     },
@@ -863,11 +912,12 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Page Builders",
       "setting_url": "",
       "demo_video_url": ""
     },
     {
-    "title": "Beaver Builder",
+      "title": "Beaver Builder",
       "slug": "everest-forms-beaver-builder",
       "name": "Everest Forms Beaver Builder",
       "image": "extensions-json/sections/images/beaver-builder.webp",
@@ -879,6 +929,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Page Builders",
       "setting_url": "",
       "demo_video_url": ""
     },
@@ -895,6 +946,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Email Marketing",
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=activecampaign",
       "demo_video_url": "6b9q89cUMzE",
       "popular_rank": 25
@@ -912,6 +964,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Email Marketing",
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=getgist",
       "demo_video_url": "",
       "popular_rank": "xx"
@@ -929,6 +982,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Form Elements",
       "setting_url": "admin.php?page=evf-settings&tab=user_registration",
       "demo_video_url": "MEyuznG2Tok",
       "popular_rank": 12
@@ -946,6 +1000,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Email Marketing",
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=campaign_monitor",
       "demo_video_url": "GBJMxmCurzw",
       "popular_rank": 29
@@ -963,73 +1018,78 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Email Marketing",
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=cleverreach",
       "demo_video_url": ""
     },
-      {
-        "title": "WP Bakery Builder",
-        "slug": "everest-forms-wpbakery-builder",
-        "name": "Everest Forms WP Bakery Builder",
-        "image": "extensions-json/sections/images/wpbakery.webp",
-        "excerpt": "Add forms from Everest Forms directly to your website using WPBakery Page Builder.",
-        "link": "https://docs.everestforms.net/docs/how-to-use-wp-bakery-page-builder-with-the-everest-forms/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
-        "released_date": "03/12/2024",
-        "plan": [
-          "personal",
-          "agency",
-          "themegrill agency"
-        ],
-        "setting_url": "",
-        "demo_video_url": ""
-      },
-      {
-        "title": "SMS Notifications",
-        "slug": "everest-forms-sms-notifications",
-        "name": "Everest Forms SMS Notifications",
-        "image": "extensions-json/sections/images/sms-notifications.webp",
-        "excerpt": "Notify users of successful form submission using SMS Notifications.",
-        "link": "https://docs.everestforms.net/docs/sms-notification/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
-        "released_date": "19/05/2022",
-        "plan": [
-          "personal",
-          "agency",
-          "themegrill agency"
-        ],
-        "setting_url": "admin.php?page=evf-settings&tab=integration&section=sms_notifications",
-        "demo_video_url": "tz4UKBX9WxM",
-        "popular_rank": 22
-      },
-      {
-        "title": "QR Generator",
-        "slug": "everest-forms-qr-generator",
-        "name": "Everest Forms QR Generator",
-        "image": "extensions-json/sections/images/QR-Generator.webp",
-        "excerpt": "Create QR codes for your forms for easy access and sharing.",
-        "link": "https://docs.everestforms.net/docs/qr-generator/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
-        "released_date": "xx/xx/xx",
-        "plan": [
-          "personal",
-          "agency",
-          "themegrill agency"
-        ],
-        "setting_url": "",
-        "demo_video_url": ""
-      },
-      {
-        "title": "amoCRM",
-        "slug": "everest-forms-amocrm",
-        "name": "Everest Forms amoCRM",
-        "image": "extensions-json/sections/images/amoCRM.webp",
-        "excerpt": "Smoothly sync form submissions with amoCRM for effortless lead management.",
-        "link": "https://docs.everestforms.net/docs/amocrm/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
-        "released_date": "xx/xx/xx",
-        "plan": [
-          "personal",
-          "agency",
-          "themegrill agency"
-        ],
-        "setting_url": "admin.php?page=evf-settings&tab=integration&section=amocrm",
-        "demo_video_url": ""
-      }
+    {
+      "title": "WP Bakery Builder",
+      "slug": "everest-forms-wpbakery-builder",
+      "name": "Everest Forms WP Bakery Builder",
+      "image": "extensions-json/sections/images/wpbakery.webp",
+      "excerpt": "Add forms from Everest Forms directly to your website using WPBakery Page Builder.",
+      "link": "https://docs.everestforms.net/docs/how-to-use-wp-bakery-page-builder-with-the-everest-forms/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "released_date": "03/12/2024",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "category": "Page Builders",
+      "setting_url": "",
+      "demo_video_url": ""
+    },
+    {
+      "title": "SMS Notifications",
+      "slug": "everest-forms-sms-notifications",
+      "name": "Everest Forms SMS Notifications",
+      "image": "extensions-json/sections/images/sms-notifications.webp",
+      "excerpt": "Notify users of successful form submission using SMS Notifications.",
+      "link": "https://docs.everestforms.net/docs/sms-notification/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "released_date": "19/05/2022",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "category": "Integrations",
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=sms_notifications",
+      "demo_video_url": "tz4UKBX9WxM",
+      "popular_rank": 22
+    },
+    {
+      "title": "QR Generator",
+      "slug": "everest-forms-qr-generator",
+      "name": "Everest Forms QR Generator",
+      "image": "extensions-json/sections/images/QR-Generator.webp",
+      "excerpt": "Create QR codes for your forms for easy access and sharing.",
+      "link": "https://docs.everestforms.net/docs/qr-generator/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "released_date": "xx/xx/xx",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "category": "Form Elements",
+      "setting_url": "",
+      "demo_video_url": ""
+    },
+    {
+      "title": "amoCRM",
+      "slug": "everest-forms-amocrm",
+      "name": "Everest Forms amoCRM",
+      "image": "extensions-json/sections/images/amoCRM.webp",
+      "excerpt": "Smoothly sync form submissions with amoCRM for effortless lead management.",
+      "link": "https://docs.everestforms.net/docs/amocrm/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "released_date": "xx/xx/xx",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "category": "CRM Integrations",
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=amocrm",
+      "demo_video_url": ""
+    }
   ]
 }
