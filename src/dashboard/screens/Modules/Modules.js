@@ -14,21 +14,17 @@ import {
 } from 'react';
 import { FaArrowUp } from 'react-icons/fa';
 
-// Use your existing context import - NO CHANGES NEEDED
 import { PageNotFound } from './../../components/Icon/Icon';
 import DashboardContext from './../../context/DashboardContext';
 import { actionTypes } from './../../reducers/DashboardReducer';
 import AddonsSkeleton from './../../skeleton/AddonsSkeleton/AddonsSkeleton';
 import { getAllModules } from './components/modules-api';
-
-// Import new components
 import CardsGrid from './components/CardsGrid';
 import Categories from './components/Categories';
 import Filters from './components/Filters';
 
 const Modules = () => {
 	const toast = useToast();
-	// Use your existing context pattern
 	const [{ allModules }, dispatch] = useContext(DashboardContext);
 
 	const [state, setState] = useState({
@@ -51,6 +47,25 @@ const Modules = () => {
 	const [showScrollTop, setShowScrollTop] = useState(false);
 	const searchItemRef = useRef(state.searchItem);
 	const isFirstRender = useRef(true);
+
+	const searchIndex = useMemo(() => {
+		if (!state.originalModules || state.originalModules.length === 0) {
+			return new Map();
+		}
+
+		const index = new Map();
+		state.originalModules.forEach((module, idx) => {
+			index.set(idx, {
+				titleLower: module.title.toLowerCase(),
+				category: module.category,
+				status: module.status,
+				plan: module.plan,
+				module: module,
+			});
+		});
+
+		return index;
+	}, [state.originalModules]);
 
 	// Dynamic categories based on modules data
 	const getDynamicCategories = () => {
@@ -147,6 +162,129 @@ const Modules = () => {
 		});
 	};
 
+	// FIXED: Filter Modules - removed useCallback to avoid stale closure issues
+	const filterModules = (
+		modules,
+		category,
+		showLoading = false,
+		statusFilter = null,
+		planFilter = null,
+	) => {
+		if (showLoading) {
+			setState((prev) => ({ ...prev, isLoading: true }));
+		}
+
+		const processFilter = () => {
+			// If no modules yet, return early
+			if (!modules || modules.length === 0) {
+				setState((prev) => ({
+					...prev,
+					modules: [],
+					noItemFound: true,
+					isLoading: false,
+					highlightedCategories: [],
+				}));
+				return;
+			}
+
+			// Get current filter values - use passed values or state
+			const currentStatus =
+				statusFilter !== null ? statusFilter : state.selectedStatus;
+			const currentPlan = planFilter !== null ? planFilter : state.selectedPlan;
+			const searchValue = searchItemRef.current.toLowerCase().trim();
+
+			// Use search index for faster filtering if available
+			const filtered = [];
+			const categoriesWithResults = new Set();
+
+			// Create temporary index if searchIndex is empty
+			const indexToUse =
+				searchIndex.size > 0
+					? searchIndex
+					: new Map(
+							modules.map((mod, idx) => [
+								idx,
+								{
+									titleLower: mod.title.toLowerCase(),
+									category: mod.category,
+									status: mod.status,
+									plan: mod.plan,
+									module: mod,
+								},
+							]),
+						);
+
+			indexToUse.forEach((indexedModule) => {
+				// Early exit if category doesn't match
+				if (
+					category &&
+					category !== 'All' &&
+					indexedModule.category !== category
+				) {
+					return;
+				}
+
+				// Early exit if status doesn't match
+				if (
+					currentStatus &&
+					currentStatus !== 'all' &&
+					indexedModule.status !== currentStatus
+				) {
+					return;
+				}
+
+				// Early exit if plan doesn't match
+				if (currentPlan && currentPlan !== 'all') {
+					if (
+						currentPlan === 'free' &&
+						(!indexedModule.plan || !indexedModule.plan.includes('free'))
+					) {
+						return;
+					}
+					if (
+						currentPlan === 'pro' &&
+						(!indexedModule.plan || !indexedModule.plan.includes('pro'))
+					) {
+						return;
+					}
+				}
+
+				// Early exit if search doesn't match
+				if (searchValue && !indexedModule.titleLower.includes(searchValue)) {
+					return;
+				}
+
+				// All filters passed, add to results
+				filtered.push(indexedModule.module);
+
+				// Track categories with results for highlighting
+				if (searchValue && indexedModule.category) {
+					categoriesWithResults.add(indexedModule.category);
+				}
+			});
+
+			// Update state once with all results
+			setState((prev) => ({
+				...prev,
+				modules: filtered,
+				noItemFound: filtered.length === 0,
+				isLoading: false,
+				highlightedCategories: searchValue
+					? Array.from(categoriesWithResults)
+					: [],
+			}));
+		};
+
+		if (showLoading) {
+			// Use requestAnimationFrame for smoother UI updates
+			requestAnimationFrame(() => {
+				setTimeout(processFilter, 0);
+			});
+		} else {
+			processFilter();
+		}
+	};
+
 	const fetchModules = useCallback(() => {
 		setState((prev) => ({ ...prev, isLoading: true }));
 		getAllModules()
@@ -158,13 +296,18 @@ const Modules = () => {
 						type: actionTypes.GET_ALL_MODULES,
 						allModules: deduplicatedModules,
 					});
+
+					// Set original modules first
 					setState((prev) => ({
 						...prev,
 						originalModules: deduplicatedModules,
 						modulesLoaded: true,
-						isLoading: false,
 					}));
-					filterModules(deduplicatedModules, 'All', false);
+
+					// Then filter with a slight delay to ensure state is updated
+					setTimeout(() => {
+						filterModules(deduplicatedModules, 'All', false);
+					}, 0);
 				}
 			})
 			.catch((error) =>
@@ -178,7 +321,6 @@ const Modules = () => {
 	}, [dispatch]);
 
 	useEffect(() => {
-		setState((prev) => ({ ...prev, isLoading: true }));
 		fetchModules();
 	}, [fetchModules]);
 
@@ -201,79 +343,6 @@ const Modules = () => {
 		});
 	};
 
-	// Filter Modules by Categories
-	const filterModules = (
-		modules,
-		category,
-		showLoading = false,
-		statusFilter = null,
-		planFilter = null,
-	) => {
-		if (showLoading) {
-			setState((prev) => ({ ...prev, isLoading: true }));
-		}
-
-		const processFilter = () => {
-			let filtered = modules;
-
-			// Filter by category
-			if (category && category !== 'All') {
-				filtered = filtered.filter((mod) => mod.category === category);
-			}
-
-			// Filter by status
-			const currentStatus =
-				statusFilter !== null ? statusFilter : state.selectedStatus;
-			if (currentStatus && currentStatus !== 'all') {
-				filtered = filtered.filter((mod) => mod.status === currentStatus);
-			}
-
-			// Filter by plan
-			const currentPlan = planFilter !== null ? planFilter : state.selectedPlan;
-			if (currentPlan && currentPlan !== 'all') {
-				filtered = filtered.filter((mod) => {
-					if (currentPlan === 'free') {
-						return mod.plan && mod.plan.includes('free');
-					} else if (currentPlan === 'pro') {
-						return mod.plan && mod.plan.includes('pro');
-					}
-					return true;
-				});
-			}
-
-			// Filter by search term
-			const searchValue = searchItemRef.current.toLowerCase();
-			if (searchValue) {
-				filtered = filtered.filter((mod) =>
-					mod.title.toLowerCase().includes(searchValue),
-				);
-			}
-
-			// Determine which categories contain search results
-			let highlightedCategories = [];
-			if (searchValue && searchValue.length >= 3) {
-				const categoriesWithResults = [
-					...new Set(filtered.map((mod) => mod.category).filter(Boolean)),
-				];
-				highlightedCategories = categoriesWithResults;
-			}
-
-			setState((prev) => ({
-				...prev,
-				modules: filtered,
-				noItemFound: filtered.length === 0,
-				isLoading: false,
-				highlightedCategories: highlightedCategories,
-			}));
-		};
-
-		if (showLoading) {
-			setTimeout(processFilter, 150);
-		} else {
-			processFilter();
-		}
-	};
-
 	const showToast = (title, status) => {
 		toast({
 			title: __(title, 'everest-forms'),
@@ -284,12 +353,31 @@ const Modules = () => {
 		});
 	};
 
-	// Search Modules
+	// OPTIMIZATION 3: Reduced debounce time and immediate feedback
 	const debounceSearch = useCallback(
-		debounce((val) => {
-			filterModules(state.originalModules, 'All', false);
-		}, 300),
-		[state.originalModules],
+		debounce(() => {
+			const currentCategoryObj = categories.find(
+				(cat) => cat.value === state.selectedCategory,
+			);
+			const currentInternalCategory = currentCategoryObj
+				? currentCategoryObj.internalValue
+				: 'All';
+
+			filterModules(
+				state.originalModules,
+				currentInternalCategory,
+				false,
+				state.selectedStatus,
+				state.selectedPlan,
+			);
+		}, 200), // Reduced from 300ms to 200ms for faster response
+		[
+			state.originalModules,
+			state.selectedCategory,
+			state.selectedStatus,
+			state.selectedPlan,
+			categories,
+		],
 	);
 
 	const handleSearchInputChange = (e) => {
@@ -297,17 +385,32 @@ const Modules = () => {
 		setState((prev) => ({ ...prev, searchItem: val }));
 		searchItemRef.current = val;
 
-		if (val.length >= 3) {
-			debounceSearch(val);
-		} else if (val.length === 0) {
+		// OPTIMIZATION 4: Instant filtering for empty search
+		if (val.length === 0) {
+			// Cancel any pending debounced searches
+			debounceSearch.cancel();
+
+			// Clear highlights immediately
 			setState((prev) => ({ ...prev, highlightedCategories: [] }));
+
+			const currentCategoryObj = categories.find(
+				(cat) => cat.value === state.selectedCategory,
+			);
+			const currentInternalCategory = currentCategoryObj
+				? currentCategoryObj.internalValue
+				: 'All';
+
+			// Filter immediately without debounce
 			filterModules(
 				state.originalModules,
-				state.selectedCategory,
+				currentInternalCategory,
 				false,
 				state.selectedStatus,
 				state.selectedPlan,
 			);
+		} else if (val.length >= 2) {
+			// OPTIMIZATION 5: Start searching at 2 characters instead of 3
+			debounceSearch();
 		}
 	};
 
@@ -316,61 +419,57 @@ const Modules = () => {
 		return new Date(year, month - 1, day);
 	};
 
-	const handleSorterChange = (sortType, data) => {
-		switch (sortType) {
-			case 'newest':
-				setState((prev) => ({
-					...prev,
-					modules: [...data].sort(
+	// OPTIMIZATION 6: Sort using cached modules instead of originalModules
+	const handleSorterChange = useCallback((sortType) => {
+		setState((prev) => {
+			let sortedModules = [...prev.modules];
+
+			switch (sortType) {
+				case 'newest':
+					sortedModules.sort(
 						(a, b) => parseDate(b.released_date) - parseDate(a.released_date),
-					),
-				}));
-				break;
-			case 'oldest':
-				setState((prev) => ({
-					...prev,
-					modules: [...data].sort(
+					);
+					break;
+				case 'oldest':
+					sortedModules.sort(
 						(a, b) => parseDate(a.released_date) - parseDate(b.released_date),
-					),
-				}));
-				break;
-			case 'asc':
-				setState((prev) => ({
-					...prev,
-					modules: [...data].sort((a, b) => a.title.localeCompare(b.title)),
-				}));
-				break;
-			case 'desc':
-				setState((prev) => ({
-					...prev,
-					modules: [...data].sort((a, b) => b.title.localeCompare(a.title)),
-				}));
-				break;
-			case 'default':
-				// Sort by popular_rank if available
-				const sortedData = [...data].sort((a, b) => {
-					if ('popular_rank' in a && 'popular_rank' in b) {
-						return a.popular_rank - b.popular_rank;
-					} else if ('popular_rank' in a) {
-						return -1;
-					} else if ('popular_rank' in b) {
-						return 1;
-					} else {
+					);
+					break;
+				case 'asc':
+					sortedModules.sort((a, b) => a.title.localeCompare(b.title));
+					break;
+				case 'desc':
+					sortedModules.sort((a, b) => b.title.localeCompare(a.title));
+					break;
+				case 'default':
+					sortedModules.sort((a, b) => {
+						if ('popular_rank' in a && 'popular_rank' in b) {
+							return a.popular_rank - b.popular_rank;
+						} else if ('popular_rank' in a) {
+							return -1;
+						} else if ('popular_rank' in b) {
+							return 1;
+						}
 						return 0;
-					}
-				});
-				setState((prev) => ({ ...prev, modules: sortedData }));
-				break;
-			default:
-				setState((prev) => ({
-					...prev,
-					modulesLoaded: false,
-				}));
-		}
-	};
+					});
+					break;
+				default:
+					break;
+			}
+
+			return {
+				...prev,
+				modules: sortedModules,
+				selectedSort: sortType,
+			};
+		});
+	}, []);
 
 	// Reset all filters to default values
 	const handleResetFilters = () => {
+		// Cancel any pending searches
+		debounceSearch.cancel();
+
 		setState((prev) => ({
 			...prev,
 			selectedCategory: 'All',
@@ -383,6 +482,42 @@ const Modules = () => {
 		searchItemRef.current = '';
 		filterModules(state.originalModules, 'All', false, 'all', 'all');
 	};
+
+	// Helper function to get appropriate message based on active filters
+	const getNoResultsMessage = () => {
+		const hasSearch = state.searchItem.trim().length > 0;
+		const hasFilters =
+			state.selectedCategory !== 'All' ||
+			state.selectedStatus !== 'all' ||
+			state.selectedPlan !== 'all';
+
+		if (hasSearch && hasFilters) {
+			return {
+				title: __('No modules match your search and filters', 'everest-forms'),
+				subtitle: __(
+					'Try adjusting your search term or filters',
+					'everest-forms',
+				),
+			};
+		} else if (hasSearch) {
+			return {
+				title: __('Sorry, no result found.', 'everest-forms'),
+				subtitle: __('Please try another search', 'everest-forms'),
+			};
+		} else if (hasFilters) {
+			return {
+				title: __('No modules match your filters', 'everest-forms'),
+				subtitle: __('Try adjusting your filter selection', 'everest-forms'),
+			};
+		}
+
+		return {
+			title: __('No modules available', 'everest-forms'),
+			subtitle: __('Please check back later', 'everest-forms'),
+		};
+	};
+
+	const noResultsMessage = getNoResultsMessage();
 
 	return (
 		<Box top="var(--wp-admin--admin-bar--height, 0)" zIndex={1} minH="100vh">
@@ -397,18 +532,22 @@ const Modules = () => {
 						selectedStatusValue={selectedStatusValue}
 						selectedPlanValue={selectedPlanValue}
 						onSortChange={(selectedOption) => {
-							setState((prev) => ({
-								...prev,
-								selectedSort: selectedOption?.value || 'default',
-							}));
-							handleSorterChange(selectedOption?.value, state.originalModules);
+							handleSorterChange(selectedOption?.value || 'default');
 						}}
 						onStatusChange={(selectedOption) => {
 							const newStatus = selectedOption?.value || 'all';
 							setState((prev) => ({ ...prev, selectedStatus: newStatus }));
+
+							const currentCategoryObj = categories.find(
+								(cat) => cat.value === state.selectedCategory,
+							);
+							const currentInternalCategory = currentCategoryObj
+								? currentCategoryObj.internalValue
+								: 'All';
+
 							filterModules(
 								state.originalModules,
-								state.selectedCategory,
+								currentInternalCategory,
 								false,
 								newStatus,
 								null,
@@ -417,9 +556,17 @@ const Modules = () => {
 						onPlanChange={(selectedOption) => {
 							const newPlan = selectedOption?.value || 'all';
 							setState((prev) => ({ ...prev, selectedPlan: newPlan }));
+
+							const currentCategoryObj = categories.find(
+								(cat) => cat.value === state.selectedCategory,
+							);
+							const currentInternalCategory = currentCategoryObj
+								? currentCategoryObj.internalValue
+								: 'All';
+
 							filterModules(
 								state.originalModules,
-								state.selectedCategory,
+								currentInternalCategory,
 								false,
 								null,
 								newPlan,
@@ -444,7 +591,7 @@ const Modules = () => {
 				{/* Content Section */}
 				{state.isLoading || !state.modulesLoaded ? (
 					<AddonsSkeleton />
-				) : state.noItemFound && state.searchItem ? (
+				) : state.noItemFound ? (
 					<Box
 						bg="white"
 						borderRadius="lg"
@@ -463,10 +610,10 @@ const Modules = () => {
 							fontWeight="600"
 							color="gray.800"
 						>
-							{__('Sorry, no result found.', 'everest-forms')}
+							{noResultsMessage.title}
 						</Text>
 						<Text fontSize="14px" color="gray.500" textAlign="center">
-							{__('Please try another search', 'everest-forms')}
+							{noResultsMessage.subtitle}
 						</Text>
 					</Box>
 				) : (

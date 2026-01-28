@@ -181,13 +181,13 @@ const Filters = ({
 							width="38px"
 							boxShadow="0 1px 2px 0 rgba(0, 0, 0, 0.05)"
 							_hover={{
-								bg: "gray.50",
-								borderColor: "#D1D5DB",
-								color: "gray.700"
+								bg: 'gray.50',
+								borderColor: '#D1D5DB',
+								color: 'gray.700',
 							}}
 							_focus={{
-								boxShadow: "0 0 0 3px rgba(66, 99, 235, 0.1)",
-								borderColor: "#4263EB"
+								boxShadow: '0 0 0 3px rgba(66, 99, 235, 0.1)',
+								borderColor: '#4263EB',
 							}}
 							onClick={onReset}
 						/>
@@ -199,7 +199,7 @@ const Filters = ({
 						</InputLeftElement>
 						<Input
 							key="search-input"
-							placeholder="Search (min 3 characters)..."
+							placeholder="Search modules..."
 							value={searchValue}
 							onChange={onSearchChange}
 							bg="white"
@@ -209,16 +209,16 @@ const Filters = ({
 							fontSize="14px"
 							boxShadow="0 1px 2px 0 rgba(0, 0, 0, 0.05)"
 							_hover={{
-								borderColor: "#D1D5DB"
+								borderColor: '#D1D5DB',
 							}}
 							_focus={{
-								borderColor: "#4263EB",
-								boxShadow: "0 0 0 3px rgba(66, 99, 235, 0.1)",
-								outline: "none"
+								borderColor: '#4263EB',
+								boxShadow: '0 0 0 3px rgba(66, 99, 235, 0.1)',
+								outline: 'none',
 							}}
 							_placeholder={{
-								color: "#9CA3AF",
-								fontSize: "14px"
+								color: '#9CA3AF',
+								fontSize: '14px',
 							}}
 						/>
 					</InputGroup>
