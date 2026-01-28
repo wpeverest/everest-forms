@@ -500,7 +500,6 @@ class EVF_Admin_Assets {
 
 			$script_handle = 'evf-dashboard-header';
 
-			// Determine page type based on current page.
 		if ( 'evf-entries' === $current_page ) {
 			$page_type = 'entries';
 		} elseif ( 'evf-settings' === $current_page ) {

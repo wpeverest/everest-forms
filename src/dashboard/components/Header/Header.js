@@ -43,13 +43,18 @@ const Header = ({ hideSiteAssistant = false }) => {
 	const location = useLocation();
 
 	/* global _EVF_DASHBOARD_ */
-	const { version, isPro, upgradeURL, pageType, adminURL } =
+	const { version, isPro, upgradeURL, pageType, adminURL, currentPage } =
 		typeof _EVF_DASHBOARD_ !== 'undefined' && _EVF_DASHBOARD_;
 
 	const isSettingsPage = pageType === 'settings';
 	const isEntriesPage = pageType === 'entries';
 	const isAnalyticsPage = pageType === 'analytics';
-	const isNonDashboardPage = isSettingsPage || isEntriesPage || isAnalyticsPage;
+	// Check if we're on any page that's not the main dashboard
+	const isNonDashboardPage =
+		isSettingsPage ||
+		isEntriesPage ||
+		isAnalyticsPage ||
+		(currentPage && currentPage !== 'evf-dashboard');
 
 	useEffect(() => {
 		if (isOpen) {
