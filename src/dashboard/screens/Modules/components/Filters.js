@@ -1,6 +1,7 @@
 /**
  * External Dependencies
  */
+import { CloseIcon } from "@chakra-ui/icons";
 import {
 	Box,
 	HStack,
@@ -8,6 +9,7 @@ import {
 	Input,
 	InputGroup,
 	InputLeftElement,
+	InputRightElement,
 	Stack,
 	Tooltip
 } from "@chakra-ui/react";
@@ -221,6 +223,22 @@ const Filters = ({
 								fontSize: '14px',
 							}}
 						/>
+						{searchValue && (
+							<InputRightElement h="38px">
+								<IconButton
+									aria-label="Clear search"
+									icon={<CloseIcon />}
+									size="xs"
+									variant="ghost"
+									color="gray.400"
+									_hover={{
+										color: 'gray.600',
+										bg: 'transparent',
+									}}
+									onClick={() => onSearchChange({ target: { value: '' } })}
+								/>
+							</InputRightElement>
+						)}
 					</InputGroup>
 				</HStack>
 			</Stack>

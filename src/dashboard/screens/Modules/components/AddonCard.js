@@ -181,7 +181,6 @@ const AddonCard = ({ addon, showToast }) => {
 			border="1px solid"
 			borderColor="gray.200"
 			p="6"
-			boxShadow="sm"
 			_hover={{ boxShadow: 'md' }}
 			transition="all 0.2s"
 			position="relative"

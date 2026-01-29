@@ -73,11 +73,11 @@ const Categories = ({
 		<Box
 			bg="white"
 			borderRadius="lg"
-			p="6"
+			p="4"
 			mb="4"
 			boxShadow="sm"
 			position="relative"
-			minH="80px"
+			minH="56px"
 		>
 			{/* Left Arrow with gradient fade effect */}
 			{showLeftArrow && (
@@ -152,7 +152,7 @@ const Categories = ({
 					position="relative"
 					flexShrink={0}
 					minW="max-content"
-					py="2"
+					py="1"
 				>
 					{categories.map((category, index) => {
 						const isSelected = selectedCategory === category.value;
@@ -168,9 +168,11 @@ const Categories = ({
 								key={`${category.value}-${category.internalValue}-${index}`}
 								position="relative"
 								cursor="pointer"
-								pb="3"
+								py="2"
 								px="2"
 								flexShrink={0}
+								display="flex"
+								alignItems="center"
 								onClick={() =>
 									onCategoryChange(category.value, category.internalValue)
 								}
@@ -276,8 +278,8 @@ const Categories = ({
 			<Box
 				position="absolute"
 				bottom="0"
-				left="6"
-				right="6"
+				left="4"
+				right="4"
 				height="1px"
 				bg="gray.200"
 			/>

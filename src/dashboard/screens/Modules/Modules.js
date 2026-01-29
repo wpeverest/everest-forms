@@ -2,6 +2,7 @@
  *  External Dependencies
  */
 import { Box, Container, IconButton, Text, useToast } from '@chakra-ui/react';
+import { useQuery } from '@tanstack/react-query';
 import { __ } from '@wordpress/i18n';
 import { debounce } from 'lodash';
 import {
@@ -67,19 +68,16 @@ const Modules = () => {
 		return index;
 	}, [state.originalModules]);
 
-
 	const getDynamicCategories = () => {
 		if (!state.originalModules || state.originalModules.length === 0) {
 			return [{ value: 'All', label: 'All', internalValue: 'All' }];
 		}
-
 
 		const uniqueCategories = [
 			...new Set(
 				state.originalModules.map((module) => module.category).filter(Boolean),
 			),
 		];
-
 
 		const categoryDisplayNames = {
 			'Form Elements': 'Form Elements',
@@ -89,7 +87,6 @@ const Modules = () => {
 			'Email Marketing': 'Email Marketing',
 			Others: 'Others',
 		};
-
 
 		const categories = [{ value: 'All', label: 'All', internalValue: 'All' }];
 
@@ -108,7 +105,6 @@ const Modules = () => {
 		() => getDynamicCategories(),
 		[state.originalModules],
 	);
-
 
 	const statusOptions = [
 		{ label: 'All Status', value: 'all' },
@@ -130,7 +126,6 @@ const Modules = () => {
 		{ label: __('Descending', 'everest-forms'), value: 'desc' },
 	];
 
-
 	const selectedSortValue = useMemo(
 		() =>
 			sortOptions.find((option) => option.value === state.selectedSort) || null,
@@ -150,7 +145,6 @@ const Modules = () => {
 		[state.selectedPlan],
 	);
 
-
 	const deduplicateModules = (modules) => {
 		const seen = new Set();
 		return modules.filter((module) => {
@@ -161,7 +155,6 @@ const Modules = () => {
 			return true;
 		});
 	};
-
 
 	const filterModules = (
 		modules,
@@ -175,7 +168,6 @@ const Modules = () => {
 		}
 
 		const processFilter = () => {
-
 			if (!modules || modules.length === 0) {
 				setState((prev) => ({
 					...prev,
@@ -187,16 +179,13 @@ const Modules = () => {
 				return;
 			}
 
-
 			const currentStatus =
 				statusFilter !== null ? statusFilter : state.selectedStatus;
 			const currentPlan = planFilter !== null ? planFilter : state.selectedPlan;
 			const searchValue = searchItemRef.current.toLowerCase().trim();
 
-
 			const filtered = [];
 			const categoriesWithResults = new Set();
-
 
 			const indexToUse =
 				searchIndex.size > 0
@@ -215,7 +204,6 @@ const Modules = () => {
 						);
 
 			indexToUse.forEach((indexedModule) => {
-
 				if (
 					category &&
 					category !== 'All' &&
@@ -224,7 +212,6 @@ const Modules = () => {
 					return;
 				}
 
-
 				if (
 					currentStatus &&
 					currentStatus !== 'all' &&
@@ -232,7 +219,6 @@ const Modules = () => {
 				) {
 					return;
 				}
-
 
 				if (currentPlan && currentPlan !== 'all') {
 					const modulePlan = indexedModule.plan || '';
@@ -259,20 +245,16 @@ const Modules = () => {
 					}
 				}
 
-
 				if (searchValue && !indexedModule.titleLower.includes(searchValue)) {
 					return;
 				}
 
-
 				filtered.push(indexedModule.module);
-
 
 				if (searchValue && indexedModule.category) {
 					categoriesWithResults.add(indexedModule.category);
 				}
 			});
-
 
 			setState((prev) => ({
 				...prev,
@@ -286,7 +268,6 @@ const Modules = () => {
 		};
 
 		if (showLoading) {
-
 			requestAnimationFrame(() => {
 				setTimeout(processFilter, 0);
 			});
@@ -295,45 +276,50 @@ const Modules = () => {
 		}
 	};
 
-	const fetchModules = useCallback(() => {
-		setState((prev) => ({ ...prev, isLoading: true }));
-		getAllModules()
-			.then((data) => {
-				if (data.success) {
-					const deduplicatedModules = deduplicateModules(data.modules_lists);
-
-					dispatch({
-						type: actionTypes.GET_ALL_MODULES,
-						allModules: deduplicatedModules,
-					});
-
-
-					setState((prev) => ({
-						...prev,
-						originalModules: deduplicatedModules,
-						modulesLoaded: true,
-					}));
-
-
-					setTimeout(() => {
-						filterModules(deduplicatedModules, 'All', false);
-					}, 0);
-				}
-			})
-			.catch((error) =>
-				setState((prev) => ({
-					...prev,
-					error: error.message,
-					modulesLoaded: true,
-					isLoading: false,
-				})),
-			);
-	}, [dispatch]);
+	const {
+		data: modulesData,
+		isLoading: isQueryLoading,
+		isError,
+		error: queryError,
+	} = useQuery({
+		queryKey: ['modules'],
+		queryFn: getAllModules,
+		staleTime: 5 * 60 * 1000,
+		cacheTime: 10 * 60 * 1000,
+		retry: 2,
+	});
 
 	useEffect(() => {
-		fetchModules();
-	}, [fetchModules]);
+		if (modulesData?.success) {
+			const deduplicatedModules = deduplicateModules(modulesData.modules_lists);
 
+			dispatch({
+				type: actionTypes.GET_ALL_MODULES,
+				allModules: deduplicatedModules,
+			});
+
+			setState((prev) => ({
+				...prev,
+				originalModules: deduplicatedModules,
+				modulesLoaded: true,
+			}));
+
+			setTimeout(() => {
+				filterModules(deduplicatedModules, 'All', false);
+			}, 0);
+		}
+	}, [modulesData, dispatch]);
+
+	useEffect(() => {
+		if (isError) {
+			setState((prev) => ({
+				...prev,
+				error: queryError?.message || 'Failed to load modules',
+				modulesLoaded: true,
+				isLoading: false,
+			}));
+		}
+	}, [isError, queryError]);
 
 	useEffect(() => {
 		const handleScroll = () => {
@@ -353,7 +339,6 @@ const Modules = () => {
 		});
 	};
 
-
 	const showToast = (title, status) => {
 		toast({
 			title: __(title, 'everest-forms'),
@@ -370,7 +355,6 @@ const Modules = () => {
 			},
 		});
 	};
-
 
 	const debounceSearch = useCallback(
 		debounce(() => {
@@ -403,11 +387,8 @@ const Modules = () => {
 		setState((prev) => ({ ...prev, searchItem: val }));
 		searchItemRef.current = val;
 
-
 		if (val.length === 0) {
-
 			debounceSearch.cancel();
-
 
 			setState((prev) => ({ ...prev, highlightedCategories: [] }));
 
@@ -418,7 +399,6 @@ const Modules = () => {
 				? currentCategoryObj.internalValue
 				: 'All';
 
-
 			filterModules(
 				state.originalModules,
 				currentInternalCategory,
@@ -427,8 +407,6 @@ const Modules = () => {
 				state.selectedPlan,
 			);
 		} else if (val.length >= 2) {
-
-
 			if (state.selectedCategory !== 'All') {
 				setState((prev) => ({ ...prev, selectedCategory: 'All' }));
 			}
@@ -487,9 +465,7 @@ const Modules = () => {
 		});
 	}, []);
 
-
 	const handleResetFilters = () => {
-
 		debounceSearch.cancel();
 
 		setState((prev) => ({
@@ -504,7 +480,6 @@ const Modules = () => {
 		searchItemRef.current = '';
 		filterModules(state.originalModules, 'All', false, 'all', 'all');
 	};
-
 
 	const getNoResultsMessage = () => {
 		const hasSearch = state.searchItem.trim().length > 0;
@@ -544,106 +519,111 @@ const Modules = () => {
 	return (
 		<Box top="var(--wp-admin--admin-bar--height, 0)" zIndex={1} minH="100vh">
 			<Container maxW="100%" p="20px">
-				{/* Filters and Categories Section */}
-				<Box mb="6">
-					<Filters
-						sortOptions={sortOptions}
-						statusOptions={statusOptions}
-						planOptions={planOptions}
-						selectedSortValue={selectedSortValue}
-						selectedStatusValue={selectedStatusValue}
-						selectedPlanValue={selectedPlanValue}
-						onSortChange={(selectedOption) => {
-							handleSorterChange(selectedOption?.value || 'default');
-						}}
-						onStatusChange={(selectedOption) => {
-							const newStatus = selectedOption?.value || 'all';
-							setState((prev) => ({ ...prev, selectedStatus: newStatus }));
-
-							const currentCategoryObj = categories.find(
-								(cat) => cat.value === state.selectedCategory,
-							);
-							const currentInternalCategory = currentCategoryObj
-								? currentCategoryObj.internalValue
-								: 'All';
-
-							filterModules(
-								state.originalModules,
-								currentInternalCategory,
-								false,
-								newStatus,
-								null,
-							);
-						}}
-						onPlanChange={(selectedOption) => {
-							const newPlan = selectedOption?.value || 'all';
-							setState((prev) => ({ ...prev, selectedPlan: newPlan }));
-
-							const currentCategoryObj = categories.find(
-								(cat) => cat.value === state.selectedCategory,
-							);
-							const currentInternalCategory = currentCategoryObj
-								? currentCategoryObj.internalValue
-								: 'All';
-
-							filterModules(
-								state.originalModules,
-								currentInternalCategory,
-								false,
-								null,
-								newPlan,
-							);
-						}}
-						searchValue={state.searchItem}
-						onSearchChange={handleSearchInputChange}
-						onReset={handleResetFilters}
-					/>
-
-					<Categories
-						categories={categories}
-						selectedCategory={state.selectedCategory}
-						highlightedCategories={state.highlightedCategories}
-						onCategoryChange={(displayValue, internalValue) => {
-							setState((prev) => ({ ...prev, selectedCategory: displayValue }));
-							filterModules(state.originalModules, internalValue, true);
-						}}
-					/>
-				</Box>
-
-				{/* Content Section */}
-				{state.isLoading || !state.modulesLoaded ? (
+				{state.isLoading || isQueryLoading || !state.modulesLoaded ? (
 					<AddonsSkeleton />
-				) : state.noItemFound ? (
-					<Box
-						bg="white"
-						borderRadius="lg"
-						boxShadow="sm"
-						display="flex"
-						justifyContent="center"
-						flexDirection="column"
-						padding={{ base: '60px 20px', md: '100px' }}
-						gap="4"
-						alignItems="center"
-						minH="400px"
-					>
-						<PageNotFound color="gray.300" />
-						<Text
-							fontSize={{ base: '18px', md: '20px' }}
-							fontWeight="600"
-							color="gray.800"
-						>
-							{noResultsMessage.title}
-						</Text>
-						<Text fontSize="14px" color="gray.500" textAlign="center">
-							{noResultsMessage.subtitle}
-						</Text>
-					</Box>
 				) : (
-					<CardsGrid
-						modules={state.modules}
-						selectedCategory={state.selectedCategory}
-						showToast={showToast}
-					/>
+					<>
+						<Box mb="6">
+							<Filters
+								sortOptions={sortOptions}
+								statusOptions={statusOptions}
+								planOptions={planOptions}
+								selectedSortValue={selectedSortValue}
+								selectedStatusValue={selectedStatusValue}
+								selectedPlanValue={selectedPlanValue}
+								onSortChange={(selectedOption) => {
+									handleSorterChange(selectedOption?.value || 'default');
+								}}
+								onStatusChange={(selectedOption) => {
+									const newStatus = selectedOption?.value || 'all';
+									setState((prev) => ({ ...prev, selectedStatus: newStatus }));
+
+									const currentCategoryObj = categories.find(
+										(cat) => cat.value === state.selectedCategory,
+									);
+									const currentInternalCategory = currentCategoryObj
+										? currentCategoryObj.internalValue
+										: 'All';
+
+									filterModules(
+										state.originalModules,
+										currentInternalCategory,
+										false,
+										newStatus,
+										null,
+									);
+								}}
+								onPlanChange={(selectedOption) => {
+									const newPlan = selectedOption?.value || 'all';
+									setState((prev) => ({ ...prev, selectedPlan: newPlan }));
+
+									const currentCategoryObj = categories.find(
+										(cat) => cat.value === state.selectedCategory,
+									);
+									const currentInternalCategory = currentCategoryObj
+										? currentCategoryObj.internalValue
+										: 'All';
+
+									filterModules(
+										state.originalModules,
+										currentInternalCategory,
+										false,
+										null,
+										newPlan,
+									);
+								}}
+								searchValue={state.searchItem}
+								onSearchChange={handleSearchInputChange}
+								onReset={handleResetFilters}
+							/>
+
+							<Categories
+								categories={categories}
+								selectedCategory={state.selectedCategory}
+								highlightedCategories={state.highlightedCategories}
+								onCategoryChange={(displayValue, internalValue) => {
+									setState((prev) => ({
+										...prev,
+										selectedCategory: displayValue,
+									}));
+									filterModules(state.originalModules, internalValue, true);
+								}}
+							/>
+						</Box>
+
+						{state.noItemFound ? (
+							<Box
+								bg="white"
+								borderRadius="lg"
+								boxShadow="sm"
+								display="flex"
+								justifyContent="center"
+								flexDirection="column"
+								padding={{ base: '60px 20px', md: '100px' }}
+								gap="4"
+								alignItems="center"
+								minH="400px"
+							>
+								<PageNotFound color="gray.300" />
+								<Text
+									fontSize={{ base: '18px', md: '20px' }}
+									fontWeight="600"
+									color="gray.800"
+								>
+									{noResultsMessage.title}
+								</Text>
+								<Text fontSize="14px" color="gray.500" textAlign="center">
+									{noResultsMessage.subtitle}
+								</Text>
+							</Box>
+						) : (
+							<CardsGrid
+								modules={state.modules}
+								selectedCategory={state.selectedCategory}
+								showToast={showToast}
+							/>
+						)}
+					</>
 				)}
 			</Container>
 
