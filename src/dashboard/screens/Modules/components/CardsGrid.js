@@ -15,7 +15,6 @@ const CardsGrid = ({ modules, selectedCategory, showToast }) => {
 	const getModulesByCategory = () => {
 		const modulesByCategory = new Map();
 
-		// Group modules by category
 		modules.forEach((module) => {
 			const category = module.category || 'Others';
 			if (!modulesByCategory.has(category)) {
@@ -24,7 +23,6 @@ const CardsGrid = ({ modules, selectedCategory, showToast }) => {
 			modulesByCategory.get(category).push(module);
 		});
 
-		// Define category order for Everest Forms
 		const categoryOrder = [
 			'Form Elements',
 			'Payment Gateways',
@@ -38,10 +36,10 @@ const CardsGrid = ({ modules, selectedCategory, showToast }) => {
 			'Cloud & Storage',
 		];
 
-		// Sort categories based on defined order
+
 		const sortedCategories = [];
 
-		// First, add categories in the defined order
+		
 		categoryOrder.forEach((categoryName) => {
 			if (modulesByCategory.has(categoryName)) {
 				sortedCategories.push([
@@ -51,7 +49,7 @@ const CardsGrid = ({ modules, selectedCategory, showToast }) => {
 			}
 		});
 
-		// Then add any remaining categories that weren't in the order
+
 		modulesByCategory.forEach((categoryModules, category) => {
 			if (!categoryOrder.includes(category)) {
 				sortedCategories.push([category, categoryModules]);
@@ -107,7 +105,7 @@ const CardsGrid = ({ modules, selectedCategory, showToast }) => {
 		);
 	}
 
-	// Single category view
+
 	const categoryName =
 		selectedCategory !== 'All'
 			? selectedCategory

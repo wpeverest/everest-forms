@@ -18,10 +18,10 @@ import { PageNotFound } from './../../components/Icon/Icon';
 import DashboardContext from './../../context/DashboardContext';
 import { actionTypes } from './../../reducers/DashboardReducer';
 import AddonsSkeleton from './../../skeleton/AddonsSkeleton/AddonsSkeleton';
-import { getAllModules } from './components/modules-api';
 import CardsGrid from './components/CardsGrid';
 import Categories from './components/Categories';
 import Filters from './components/Filters';
+import { getAllModules } from './components/modules-api';
 
 const Modules = () => {
 	const toast = useToast();
@@ -67,20 +67,20 @@ const Modules = () => {
 		return index;
 	}, [state.originalModules]);
 
-	// Dynamic categories based on modules data
+
 	const getDynamicCategories = () => {
 		if (!state.originalModules || state.originalModules.length === 0) {
 			return [{ value: 'All', label: 'All', internalValue: 'All' }];
 		}
 
-		// Get unique categories from modules
+
 		const uniqueCategories = [
 			...new Set(
 				state.originalModules.map((module) => module.category).filter(Boolean),
 			),
 		];
 
-		// Map category names to display names (customize these for Everest Forms)
+
 		const categoryDisplayNames = {
 			'Form Elements': 'Form Elements',
 			Integrations: 'Integrations',
@@ -90,7 +90,7 @@ const Modules = () => {
 			Others: 'Others',
 		};
 
-		// Create category objects with both internal and display names
+
 		const categories = [{ value: 'All', label: 'All', internalValue: 'All' }];
 
 		uniqueCategories.forEach((category) => {
@@ -109,7 +109,7 @@ const Modules = () => {
 		[state.originalModules],
 	);
 
-	// Options for dropdowns
+
 	const statusOptions = [
 		{ label: 'All Status', value: 'all' },
 		{ label: 'Active', value: 'active' },
@@ -130,7 +130,7 @@ const Modules = () => {
 		{ label: __('Descending', 'everest-forms'), value: 'desc' },
 	];
 
-	// Memoized values for select components
+
 	const selectedSortValue = useMemo(
 		() =>
 			sortOptions.find((option) => option.value === state.selectedSort) || null,
@@ -150,7 +150,7 @@ const Modules = () => {
 		[state.selectedPlan],
 	);
 
-	// Deduplicate modules based on slug
+
 	const deduplicateModules = (modules) => {
 		const seen = new Set();
 		return modules.filter((module) => {
@@ -162,7 +162,7 @@ const Modules = () => {
 		});
 	};
 
-	// FIXED: Filter Modules - removed useCallback to avoid stale closure issues
+
 	const filterModules = (
 		modules,
 		category,
@@ -175,7 +175,7 @@ const Modules = () => {
 		}
 
 		const processFilter = () => {
-			// If no modules yet, return early
+
 			if (!modules || modules.length === 0) {
 				setState((prev) => ({
 					...prev,
@@ -187,17 +187,17 @@ const Modules = () => {
 				return;
 			}
 
-			// Get current filter values - use passed values or state
+
 			const currentStatus =
 				statusFilter !== null ? statusFilter : state.selectedStatus;
 			const currentPlan = planFilter !== null ? planFilter : state.selectedPlan;
 			const searchValue = searchItemRef.current.toLowerCase().trim();
 
-			// Use search index for faster filtering if available
+
 			const filtered = [];
 			const categoriesWithResults = new Set();
 
-			// Create temporary index if searchIndex is empty
+
 			const indexToUse =
 				searchIndex.size > 0
 					? searchIndex
@@ -215,7 +215,7 @@ const Modules = () => {
 						);
 
 			indexToUse.forEach((indexedModule) => {
-				// Early exit if category doesn't match
+
 				if (
 					category &&
 					category !== 'All' &&
@@ -224,7 +224,7 @@ const Modules = () => {
 					return;
 				}
 
-				// Early exit if status doesn't match
+
 				if (
 					currentStatus &&
 					currentStatus !== 'all' &&
@@ -233,37 +233,47 @@ const Modules = () => {
 					return;
 				}
 
-				// Early exit if plan doesn't match
+
 				if (currentPlan && currentPlan !== 'all') {
-					if (
-						currentPlan === 'free' &&
-						(!indexedModule.plan || !indexedModule.plan.includes('free'))
-					) {
-						return;
+					const modulePlan = indexedModule.plan || '';
+					const planLower =
+						typeof modulePlan === 'string'
+							? modulePlan.toLowerCase()
+							: Array.isArray(modulePlan)
+								? modulePlan.join(',').toLowerCase()
+								: '';
+
+					if (currentPlan === 'free') {
+						if (!planLower.includes('free')) {
+							return;
+						}
 					}
-					if (
-						currentPlan === 'pro' &&
-						(!indexedModule.plan || !indexedModule.plan.includes('pro'))
-					) {
-						return;
+
+					if (currentPlan === 'pro') {
+						const isFree = planLower.includes('free');
+						const isPro = planLower.includes('pro');
+
+						if (isFree && !isPro) {
+							return;
+						}
 					}
 				}
 
-				// Early exit if search doesn't match
+
 				if (searchValue && !indexedModule.titleLower.includes(searchValue)) {
 					return;
 				}
 
-				// All filters passed, add to results
+
 				filtered.push(indexedModule.module);
 
-				// Track categories with results for highlighting
+
 				if (searchValue && indexedModule.category) {
 					categoriesWithResults.add(indexedModule.category);
 				}
 			});
 
-			// Update state once with all results
+
 			setState((prev) => ({
 				...prev,
 				modules: filtered,
@@ -276,7 +286,7 @@ const Modules = () => {
 		};
 
 		if (showLoading) {
-			// Use requestAnimationFrame for smoother UI updates
+
 			requestAnimationFrame(() => {
 				setTimeout(processFilter, 0);
 			});
@@ -297,14 +307,14 @@ const Modules = () => {
 						allModules: deduplicatedModules,
 					});
 
-					// Set original modules first
+
 					setState((prev) => ({
 						...prev,
 						originalModules: deduplicatedModules,
 						modulesLoaded: true,
 					}));
 
-					// Then filter with a slight delay to ensure state is updated
+
 					setTimeout(() => {
 						filterModules(deduplicatedModules, 'All', false);
 					}, 0);
@@ -324,7 +334,7 @@ const Modules = () => {
 		fetchModules();
 	}, [fetchModules]);
 
-	// Scroll to top functionality
+
 	useEffect(() => {
 		const handleScroll = () => {
 			const scrollTop =
@@ -343,17 +353,25 @@ const Modules = () => {
 		});
 	};
 
+
 	const showToast = (title, status) => {
 		toast({
 			title: __(title, 'everest-forms'),
 			status,
 			duration: 3000,
 			isClosable: true,
-			position: 'top-right',
+			position: 'top',
+			containerStyle: {
+				marginTop: '120px',
+				width: '100%',
+				display: 'flex',
+				justifyContent: 'center',
+				zIndex: 9999,
+			},
 		});
 	};
 
-	// OPTIMIZATION 3: Reduced debounce time and immediate feedback
+
 	const debounceSearch = useCallback(
 		debounce(() => {
 			const currentCategoryObj = categories.find(
@@ -370,7 +388,7 @@ const Modules = () => {
 				state.selectedStatus,
 				state.selectedPlan,
 			);
-		}, 200), // Reduced from 300ms to 200ms for faster response
+		}, 200),
 		[
 			state.originalModules,
 			state.selectedCategory,
@@ -385,12 +403,12 @@ const Modules = () => {
 		setState((prev) => ({ ...prev, searchItem: val }));
 		searchItemRef.current = val;
 
-		// OPTIMIZATION 4: Instant filtering for empty search
+
 		if (val.length === 0) {
-			// Cancel any pending debounced searches
+
 			debounceSearch.cancel();
 
-			// Clear highlights immediately
+
 			setState((prev) => ({ ...prev, highlightedCategories: [] }));
 
 			const currentCategoryObj = categories.find(
@@ -400,7 +418,7 @@ const Modules = () => {
 				? currentCategoryObj.internalValue
 				: 'All';
 
-			// Filter immediately without debounce
+
 			filterModules(
 				state.originalModules,
 				currentInternalCategory,
@@ -409,7 +427,12 @@ const Modules = () => {
 				state.selectedPlan,
 			);
 		} else if (val.length >= 2) {
-			// OPTIMIZATION 5: Start searching at 2 characters instead of 3
+
+
+			if (state.selectedCategory !== 'All') {
+				setState((prev) => ({ ...prev, selectedCategory: 'All' }));
+			}
+
 			debounceSearch();
 		}
 	};
@@ -419,7 +442,6 @@ const Modules = () => {
 		return new Date(year, month - 1, day);
 	};
 
-	// OPTIMIZATION 6: Sort using cached modules instead of originalModules
 	const handleSorterChange = useCallback((sortType) => {
 		setState((prev) => {
 			let sortedModules = [...prev.modules];
@@ -465,9 +487,9 @@ const Modules = () => {
 		});
 	}, []);
 
-	// Reset all filters to default values
+
 	const handleResetFilters = () => {
-		// Cancel any pending searches
+
 		debounceSearch.cancel();
 
 		setState((prev) => ({
@@ -483,7 +505,7 @@ const Modules = () => {
 		filterModules(state.originalModules, 'All', false, 'all', 'all');
 	};
 
-	// Helper function to get appropriate message based on active filters
+
 	const getNoResultsMessage = () => {
 		const hasSearch = state.searchItem.trim().length > 0;
 		const hasFilters =

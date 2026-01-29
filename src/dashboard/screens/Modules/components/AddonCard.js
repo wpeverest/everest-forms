@@ -40,13 +40,12 @@ const AddonCard = ({ addon, showToast }) => {
 		onClose: onVideoClose
 	} = useDisclosure();
 
-	// Get global variables from Everest Forms
+
 	const { isPro, licensePlan } =
 		typeof _EVF_DASHBOARD_ !== "undefined" && _EVF_DASHBOARD_
 			? _EVF_DASHBOARD_
 			: {};
 
-	// Get assets URL from global variable
 	const getImageUrl = (imagePath) => {
 		const { assetsURL } =
 			typeof _EVF_DASHBOARD_ !== "undefined" && _EVF_DASHBOARD_;
@@ -56,15 +55,14 @@ const AddonCard = ({ addon, showToast }) => {
 		return imagePath;
 	};
 
-	// Check if module is enabled based on plan requirements
+
 	useEffect(() => {
-		// If no plan array or empty, assume it's a free module
 		if (!addon.plan || addon.plan.length === 0) {
 			setModuleEnabled(true);
 			return;
 		}
 
-		// Check if module has "free" in plan array
+
 		if (Array.isArray(addon.plan) && addon.plan.includes("free")) {
 			setModuleEnabled(true);
 			return;
@@ -75,7 +73,6 @@ const AddonCard = ({ addon, showToast }) => {
 			return;
 		}
 
-		// User is on free plan but module requires paid plan
 		setModuleEnabled(false);
 	}, [addon.plan, isPro]);
 

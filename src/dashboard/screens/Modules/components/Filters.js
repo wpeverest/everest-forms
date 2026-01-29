@@ -29,7 +29,7 @@ const Filters = ({
 	onSearchChange,
 	onReset
 }) => {
-	// Common select styles
+	
 	const selectStyles = {
 		control: (base) => ({
 			...base,
