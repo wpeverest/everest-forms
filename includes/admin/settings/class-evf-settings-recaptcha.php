@@ -27,13 +27,60 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 		parent::__construct();
 		add_action( 'everest_forms_sections_' . $this->id, array( $this, 'output_sections' ) );
 		add_action( 'everest_forms_update_options_' . $this->id, array( $this, 'handle_captcha_enable_toggle' ), 5 );
+
+		$this->maybe_migrate_legacy_settings();
+	}
+
+	/**
+	 * Migrate legacy CAPTCHA settings to new accordion format.
+	 * Only runs once when transitioning from old to new format.
+	 */
+	private function maybe_migrate_legacy_settings() {
+		$migration_complete = get_option( 'everest_forms_recaptcha_migration_v2_complete', false );
+
+		if ( $migration_complete ) {
+			return;
+		}
+
+		$captcha_types      = array( 'v2', 'v3', 'hcaptcha', 'turnstile' );
+		$has_enable_options = false;
+
+		foreach ( $captcha_types as $type ) {
+			if ( false !== get_option( 'everest_forms_recaptcha_' . $type . '_enable', false ) ) {
+				$has_enable_options = true;
+				break;
+			}
+		}
+
+		if ( $has_enable_options ) {
+			update_option( 'everest_forms_recaptcha_migration_v2_complete', true );
+			return;
+		}
+
+		$active_type = get_option( 'everest_forms_recaptcha_type', '' );
+
+		if ( ! empty( $active_type ) && in_array( $active_type, $captcha_types, true ) ) {
+			foreach ( $captcha_types as $type ) {
+				$enable_value = ( $type === $active_type ) ? 'yes' : 'no';
+				update_option( 'everest_forms_recaptcha_' . $type . '_enable', $enable_value );
+			}
+		} else {
+			foreach ( $captcha_types as $type ) {
+				update_option( 'everest_forms_recaptcha_' . $type . '_enable', 'no' );
+			}
+		}
+
+		update_option( 'everest_forms_recaptcha_migration_v2_complete', true );
 	}
 
 	/**
 	 * Handle CAPTCHA enable toggle to ensure only one is active.
 	 */
 	public function handle_captcha_enable_toggle() {
-		// Check which CAPTCHA was just enabled
+		if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'everest-forms-settings' ) ) {
+			return;
+		}
+
 		$enabled_captcha = '';
 
 		if ( isset( $_POST['everest_forms_recaptcha_v2_enable'] ) && 'yes' === $_POST['everest_forms_recaptcha_v2_enable'] ) {
@@ -46,10 +93,8 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 			$enabled_captcha = 'turnstile';
 		}
 
-		// Define all CAPTCHA types
 		$captcha_types = array( 'v2', 'v3', 'hcaptcha', 'turnstile' );
 
-		// If a CAPTCHA was enabled, disable all others and update the type
 		if ( ! empty( $enabled_captcha ) ) {
 			foreach ( $captcha_types as $type ) {
 				if ( $type === $enabled_captcha ) {
@@ -60,7 +105,6 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 				}
 			}
 		} else {
-			// Check if any CAPTCHA was disabled
 			$all_disabled = true;
 			foreach ( $captcha_types as $type ) {
 				if ( isset( $_POST[ 'everest_forms_recaptcha_' . $type . '_enable' ] ) && 'yes' === $_POST[ 'everest_forms_recaptcha_' . $type . '_enable' ] ) {
@@ -69,11 +113,11 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 				}
 			}
 
-			// If all CAPTCHAs are disabled, ensure all enable options are set to 'no'
 			if ( $all_disabled ) {
 				foreach ( $captcha_types as $type ) {
 					update_option( 'everest_forms_recaptcha_' . $type . '_enable', 'no' );
 				}
+				update_option( 'everest_forms_recaptcha_type', '' );
 			}
 		}
 	}
@@ -85,7 +129,7 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 	 */
 	public function get_sections() {
 		$sections = array(
-			'integration' => esc_html__( ' Integration', 'everest-forms' ),
+			'integration' => esc_html__( 'Integration', 'everest-forms' ),
 			'language'    => esc_html__( 'Language', 'everest-forms' ),
 		);
 
@@ -152,11 +196,10 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 		$recaptcha_type = get_option( 'everest_forms_recaptcha_type', 'v2' );
 		$invisible      = get_option( 'everest_forms_recaptcha_v2_invisible', 'no' );
 
-		// Get enable status for each CAPTCHA type
-		$v2_enabled        = get_option( 'everest_forms_recaptcha_v2_enable', 'v2' === $recaptcha_type ? 'yes' : 'no' );
-		$v3_enabled        = get_option( 'everest_forms_recaptcha_v3_enable', 'v3' === $recaptcha_type ? 'yes' : 'no' );
-		$hcaptcha_enabled  = get_option( 'everest_forms_recaptcha_hcaptcha_enable', 'hcaptcha' === $recaptcha_type ? 'yes' : 'no' );
-		$turnstile_enabled = get_option( 'everest_forms_recaptcha_turnstile_enable', 'turnstile' === $recaptcha_type ? 'yes' : 'no' );
+		$v2_enabled        = get_option( 'everest_forms_recaptcha_v2_enable', 'no' );
+		$v3_enabled        = get_option( 'everest_forms_recaptcha_v3_enable', 'no' );
+		$hcaptcha_enabled  = get_option( 'everest_forms_recaptcha_hcaptcha_enable', 'no' );
+		$turnstile_enabled = get_option( 'everest_forms_recaptcha_turnstile_enable', 'no' );
 
 		$settings = apply_filters(
 			'everest_forms_recaptcha_integration_settings',
@@ -164,24 +207,24 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 				array(
 					'title' => esc_html__( 'CAPTCHA Integration', 'everest-forms' ),
 					'type'  => 'title',
-					'desc'  => '',
+					/* translators: %1$s - reCAPTCHA Integration Doc URL, %2$s - hCaptcha Integration Doc URL, %3$s - Cloudflare Turnstile Integration Doc URL */
+					'desc'  => sprintf( __( 'Get detailed documentation on integrating <a href="%1$s" target="_blank">reCAPTCHA</a>, <a href="%2$s" target="_blank">hCaptcha</a> and <a href="%3$s" target="_blank">Cloudflare Turnstile</a> with Everest forms.', 'everest-forms' ), 'https://docs.everestforms.net/docs/how-to-integrate-google-recaptcha/', 'https://docs.everestforms.net/docs/how-to-integrate-hcaptcha/', 'https://docs.everestforms.net/docs/how-to-integrate-cloudflare-turnstile-with-the-everest-forms/' ),
 					'id'    => 'integration_options',
 				),
 				array(
 					'type'  => 'accordion',
 					'items' => array(
-						// reCAPTCHA v2
 						array(
-							'title'   => esc_html__( 'reCAPTCHA v2', 'everest-forms' ),
-							'icon'    => plugins_url( 'assets/images/captcha/reCAPTCHA-v2-v3.png', EVF_PLUGIN_FILE ),
-							'is_open' => 'yes' === $v2_enabled,
-							'fields'  => array(
+							'title'      => esc_html__( 'reCAPTCHA v2', 'everest-forms' ),
+							'icon'       => plugins_url( 'assets/images/captcha/reCAPTCHA-v2-v3.png', EVF_PLUGIN_FILE ),
+							'is_enabled' => 'yes' === $v2_enabled,
+							'fields'     => array(
 								array(
 									'title'    => esc_html__( 'Enable reCAPTCHA v2', 'everest-forms' ),
 									'type'     => 'toggle',
 									'desc'     => esc_html__( 'Enable reCAPTCHA v2. Note: Enabling this will automatically disable other CAPTCHA providers.', 'everest-forms' ),
 									'id'       => 'everest_forms_recaptcha_v2_enable',
-									'default'  => 'v2' === $recaptcha_type ? 'yes' : 'no',
+									'default'  => 'no',
 									'desc_tip' => true,
 								),
 								array(
@@ -232,18 +275,17 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 								),
 							),
 						),
-						// reCAPTCHA v3
 						array(
-							'title'   => esc_html__( 'reCAPTCHA v3', 'everest-forms' ),
-							'icon'    => plugins_url( 'assets/images/captcha/reCAPTCHA-v2-v3.png', EVF_PLUGIN_FILE ),
-							'is_open' => 'yes' === $v3_enabled,
-							'fields'  => array(
+							'title'      => esc_html__( 'reCAPTCHA v3', 'everest-forms' ),
+							'icon'       => plugins_url( 'assets/images/captcha/reCAPTCHA-v2-v3.png', EVF_PLUGIN_FILE ),
+							'is_enabled' => 'yes' === $v3_enabled,
+							'fields'     => array(
 								array(
 									'title'    => esc_html__( 'Enable reCAPTCHA v3', 'everest-forms' ),
 									'type'     => 'toggle',
 									'desc'     => esc_html__( 'Enable reCAPTCHA v3. Note: Enabling this will automatically disable other CAPTCHA providers.', 'everest-forms' ),
 									'id'       => 'everest_forms_recaptcha_v3_enable',
-									'default'  => 'v3' === $recaptcha_type ? 'yes' : 'no',
+									'default'  => 'no',
 									'desc_tip' => true,
 								),
 								array(
@@ -279,18 +321,17 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 								),
 							),
 						),
-						// hCaptcha
 						array(
-							'title'   => esc_html__( 'hCaptcha', 'everest-forms' ),
-							'icon'    => plugins_url( 'assets/images/captcha/hCAPTCHA-logo.png', EVF_PLUGIN_FILE ),
-							'is_open' => 'yes' === $hcaptcha_enabled,
-							'fields'  => array(
+							'title'      => esc_html__( 'hCaptcha', 'everest-forms' ),
+							'icon'       => plugins_url( 'assets/images/captcha/hCAPTCHA-logo.png', EVF_PLUGIN_FILE ),
+							'is_enabled' => 'yes' === $hcaptcha_enabled,
+							'fields'     => array(
 								array(
 									'title'    => esc_html__( 'Enable hCaptcha', 'everest-forms' ),
 									'type'     => 'toggle',
 									'desc'     => esc_html__( 'Enable hCaptcha. Note: Enabling this will automatically disable other CAPTCHA providers.', 'everest-forms' ),
 									'id'       => 'everest_forms_recaptcha_hcaptcha_enable',
-									'default'  => 'hcaptcha' === $recaptcha_type ? 'yes' : 'no',
+									'default'  => 'no',
 									'desc_tip' => true,
 								),
 								array(
@@ -313,18 +354,17 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 								),
 							),
 						),
-						// Cloudflare Turnstile
 						array(
-							'title'   => esc_html__( 'Cloudflare Turnstile', 'everest-forms' ),
-							'icon'    => plugins_url( 'assets/images/captcha/cloudflare-logo.png', EVF_PLUGIN_FILE ),
-							'is_open' => 'yes' === $turnstile_enabled,
-							'fields'  => array(
+							'title'      => esc_html__( 'Cloudflare Turnstile', 'everest-forms' ),
+							'icon'       => plugins_url( 'assets/images/captcha/cloudflare-logo.png', EVF_PLUGIN_FILE ),
+							'is_enabled' => 'yes' === $turnstile_enabled,
+							'fields'     => array(
 								array(
 									'title'    => esc_html__( 'Enable Cloudflare Turnstile', 'everest-forms' ),
 									'type'     => 'toggle',
 									'desc'     => esc_html__( 'Enable Cloudflare Turnstile. Note: Enabling this will automatically disable other CAPTCHA providers.', 'everest-forms' ),
 									'id'       => 'everest_forms_recaptcha_turnstile_enable',
-									'default'  => 'turnstile' === $recaptcha_type ? 'yes' : 'no',
+									'default'  => 'no',
 									'desc_tip' => true,
 								),
 								array(
@@ -386,7 +426,7 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 
 		foreach ( $languages['languages'] as $key => $value ) {
 			/* translators: %1$s - Langauge Name */
-			$lang_options[ $value['Value'] ] = sprintf( esc_html__( '%s', 'everest-forms' ), $value['Language'] ); // phpcs:ignore
+			$lang_options[ $value['Value'] ] = sprintf( esc_html__( '%s', 'everest-forms' ), $value['Language'] );
 		}
 
 		$settings = array(

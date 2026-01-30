@@ -14,35 +14,31 @@ $accordion-success-color: #46b450;
 
 $accordion-spacing: 18px;
 $accordion-spacing-sm: 14px;
-$accordion-gap: 12px; // Increased from 8px for better spacing
-$card-gap: 16px; // Gap between cards
+$accordion-gap: 12px;
+$card-gap: 16px;
 
 $accordion-icon-size: 40px;
 $accordion-border-radius: 4px;
 
 $breakpoint-mobile: 782px;
 
-// Card wrapper styling
 .everest-forms-card {
-	background: $accordion-bg-page; // Use page background color for card
+	background: $accordion-bg-page;
 	border: 1px solid $accordion-border-color;
 	border-radius: $accordion-border-radius;
-	padding: $accordion-gap; // Add padding to create space around items
+	padding: $accordion-gap;
 	margin-bottom: $card-gap;
 
 	&:last-child {
 		margin-bottom: 0;
 	}
 
-	// When accordion wrapper is inside a card
 	.everest-forms-accordion-wrapper {
 		padding: 0;
 		margin: 0;
-		gap: $accordion-gap; // Keep the gap for spacing between items
+		gap: $accordion-gap;
 
-		// Style accordion items inside card
 		.everest-forms-accordion-item {
-			// Keep full styling - don't remove borders
 			border: 1px solid $accordion-border-color;
 			border-radius: $accordion-border-radius;
 			background: $accordion-bg-white;
@@ -116,6 +112,50 @@ $breakpoint-mobile: 782px;
 	}
 }
 
+.everest-forms-accordion-status {
+	position: relative;
+
+	.toggle-switch-outer {
+		width: 20px;
+		height: 20px;
+		display: block;
+		position: relative;
+		border-radius: 3px;
+		border: 1px solid #ced4da;
+
+		&::before {
+			left: 0;
+			top: 50%;
+			right: 0;
+			content: '';
+			width: 10px;
+			height: 10px;
+			display: block;
+			margin: 0 auto;
+			border-radius: 2px;
+			position: absolute;
+			background-color: #ced4da;
+			transform: translateY(-50%);
+		}
+
+		&.connected {
+			border-color: #4bce61;
+
+			&::before {
+				background-color: #4bce61;
+			}
+		}
+
+		&.disconnected {
+			border-color: #ced4da;
+
+			&::before {
+				background-color: #ced4da;
+			}
+		}
+	}
+}
+
 .everest-forms-accordion-icon {
 	display: flex;
 	align-items: center;
@@ -123,6 +163,7 @@ $breakpoint-mobile: 782px;
 	width: $accordion-icon-size;
 	height: $accordion-icon-size;
 	margin-right: 14px;
+	margin-left: 10px;
 	flex-shrink: 0;
 
 	img {
@@ -147,17 +188,6 @@ $breakpoint-mobile: 782px;
 	display: flex;
 	align-items: center;
 	gap: 10px;
-}
-
-.everest-forms-accordion-status {
-	display: inline-flex;
-	padding: 4px 10px;
-	background: #e8f5e9;
-	color: $accordion-success-color;
-	font-size: 12px;
-	font-weight: 500;
-	border-radius: 12px;
-	text-transform: capitalize;
 }
 
 .everest-forms-accordion-toggle {
@@ -583,6 +613,7 @@ $breakpoint-mobile: 782px;
 		width: 32px;
 		height: 32px;
 		margin-right: 10px;
+		margin-left: 10px;
 
 		img {
 			max-width: 28px;

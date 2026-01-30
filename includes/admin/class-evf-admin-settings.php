@@ -924,37 +924,72 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 						if ( ! isset( $value['items'] ) || ! is_array( $value['items'] ) ) {
 							break;
 						}
-
 						?>
-				<div class="everest-forms-accordion-wrapper">
+	<div class="everest-forms-accordion-wrapper">
 						<?php foreach ( $value['items'] as $index => $item ) : ?>
-						<div class="everest-forms-accordion-item <?php echo isset( $item['is_open'] ) && $item['is_open'] ? 'is-open' : ''; ?>" data-accordion-index="<?php echo esc_attr( $index ); ?>">
-							<div class="everest-forms-accordion-header">
-								<?php if ( isset( $item['icon'] ) ) : ?>
-									<span class="everest-forms-accordion-icon">
-										<img src="<?php echo esc_url( $item['icon'] ); ?>" alt="<?php echo esc_attr( $item['title'] ); ?>">
-									</span>
-								<?php endif; ?>
-								<h3 class="everest-forms-accordion-title"><?php echo esc_html( $item['title'] ); ?></h3>
-								<span class="everest-forms-accordion-toggle">
-									<svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-										<path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-									</svg>
-								</span>
-							</div>
-							<div class="everest-forms-accordion-content">
-								<div class="everest-forms-accordion-content-inner">
-									<?php
-									if ( isset( $item['fields'] ) && is_array( $item['fields'] ) ) {
-										self::output_fields( $item['fields'] );
+							<?php
+							$is_open      = isset( $item['is_open'] ) && $item['is_open'];
+							$is_connected = false;
+							if ( isset( $item['is_enabled'] ) ) {
+								$is_connected = $item['is_enabled'];
+							} elseif ( isset( $item['connection_check'] ) && is_array( $item['connection_check'] ) ) {
+
+								$is_connected = true;
+								foreach ( $item['connection_check'] as $field_id ) {
+									$field_value = get_option( $field_id, '' );
+									if ( empty( $field_value ) ) {
+										$is_connected = false;
+										break;
 									}
-									?>
-								</div>
-							</div>
-						</div>
-					<?php endforeach; ?>
+								}
+							}
+
+							$item_classes = array( 'everest-forms-accordion-item' );
+							if ( $is_open ) {
+								$item_classes[] = 'is-open';
+							}
+							if ( $is_connected ) {
+								$item_classes[] = 'is-connected';
+							}
+							?>
+			<div class="<?php echo esc_attr( implode( ' ', $item_classes ) ); ?>" data-accordion-index="<?php echo esc_attr( $index ); ?>">
+
+				<div class="everest-forms-accordion-header">
+					<div class="everest-forms-accordion-status">
+
+					<span class="toggle-switch-outer <?php echo $is_connected ? 'connected' : 'disconnected'; ?>"></span>
+
+					</div>
+
+							<?php if ( isset( $item['icon'] ) ) : ?>
+						<span class="everest-forms-accordion-icon">
+							<img src="<?php echo esc_url( $item['icon'] ); ?>" alt="<?php echo esc_attr( $item['title'] ); ?>">
+						</span>
+					<?php endif; ?>
+
+					<h3 class="everest-forms-accordion-title">
+							<?php echo esc_html( $item['title'] ); ?>
+					</h3>
+
+					<span class="everest-forms-accordion-toggle">
+						<svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+							<path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+						</svg>
+					</span>
 				</div>
-									<?php
+				<div class="everest-forms-accordion-content">
+					<div class="everest-forms-accordion-content-inner">
+							<?php
+							if ( isset( $item['fields'] ) && is_array( $item['fields'] ) ) {
+								self::output_fields( $item['fields'] );
+							}
+							?>
+					</div>
+				</div>
+			</div>
+		<?php endforeach; ?>
+	</div>
+						<?php
 						break;
 					default:
 						do_action( 'everest_forms_admin_field_' . $value['type'], $value );

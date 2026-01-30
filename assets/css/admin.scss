@@ -9774,13 +9774,14 @@ img.ui-datepicker-trigger {
 //General settings
 .everest-forms-settings {
 	display: flex;
-	background: #f1f1f1;
+	background: #f4f4f4 !important;
 	min-height: 100vh;
 
 	.everest-forms-settings-container {
 		flex: 1;
 		padding: 20px;
-		background: #ffffff;
+		// background: inherit;
+		// background-color: #f4f4f4 !important;
 		box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 
 		.everest-forms-options-header {
