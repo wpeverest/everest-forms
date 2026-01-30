@@ -43,10 +43,7 @@
 	border-spacing: 0;
 	background: $color-white;
 	border-radius: 5px;
-	border-top: 1px solid #e1e1e1 !important;
-	border-bottom: 1px solid #e1e1e1 !important;
-	border-left: none;
-	border-right: none;
+	border: 1px solid #e1e1e1 !important;
 	box-shadow: none;
 
 	thead {
@@ -126,6 +123,12 @@
 						border-top: 4px solid $everestforms;
 					}
 				}
+			}
+		}
+
+		tr {
+			.check-column {
+				border-bottom: 1px solid #e1e1e1;
 			}
 		}
 	}
