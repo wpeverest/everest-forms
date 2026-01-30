@@ -168,7 +168,7 @@ abstract class EVF_Base_List_Table extends WP_List_Table {
 	/**
 	 * Display the pagination.
 	 *
-	 * Enhanced pagination with numbered page links.
+	 * Enhanced pagination with numbered page links, first/last buttons, and items per page selector.
 	 * Only displays at the bottom of the table.
 	 *
 	 * @param string $which The location of the pagination nav.
@@ -209,6 +209,20 @@ abstract class EVF_Base_List_Table extends WP_List_Table {
 
 		$page_links = array();
 
+		// First page button.
+		if ( 1 === $current ) {
+			$page_links[] = '<span class="tablenav-pages-navspan button disabled first-page" aria-hidden="true" title="' . esc_attr__( 'First page', 'everest-forms' ) . '">&laquo;</span>';
+		} else {
+			$page_links[] = sprintf(
+				"<a class='first-page button' href='%s' title='%s'><span class='screen-reader-text'>%s</span><span aria-hidden='true'>%s</span></a>",
+				esc_url( add_query_arg( 'paged', 1, $current_url ) ),
+				esc_attr__( 'First page', 'everest-forms' ),
+				esc_html__( 'First page', 'everest-forms' ),
+				'&laquo;'
+			);
+		}
+
+		// Previous page button.
 		if ( 1 === $current ) {
 			$page_links[] = '<span class="tablenav-pages-navspan button disabled" aria-hidden="true">&lsaquo;</span>';
 		} else {
@@ -249,6 +263,7 @@ abstract class EVF_Base_List_Table extends WP_List_Table {
 			}
 		}
 
+		// Next page button.
 		if ( $total_pages === $current ) {
 			$page_links[] = '<span class="tablenav-pages-navspan button disabled" aria-hidden="true">&rsaquo;</span>';
 		} else {
@@ -257,6 +272,19 @@ abstract class EVF_Base_List_Table extends WP_List_Table {
 				esc_url( add_query_arg( 'paged', min( $total_pages, $current + 1 ), $current_url ) ),
 				esc_html__( 'Next page', 'everest-forms' ),
 				'&rsaquo;'
+			);
+		}
+
+		// Last page button.
+		if ( $total_pages === $current ) {
+			$page_links[] = '<span class="tablenav-pages-navspan button disabled last-page" aria-hidden="true" title="' . esc_attr__( 'Last page', 'everest-forms' ) . '">&raquo;</span>';
+		} else {
+			$page_links[] = sprintf(
+				"<a class='last-page button' href='%s' title='%s'><span class='screen-reader-text'>%s</span><span aria-hidden='true'>%s</span></a>",
+				esc_url( add_query_arg( 'paged', $total_pages, $current_url ) ),
+				esc_attr__( 'Last page', 'everest-forms' ),
+				esc_html__( 'Last page', 'everest-forms' ),
+				'&raquo;'
 			);
 		}
 

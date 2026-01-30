@@ -417,7 +417,7 @@
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	padding: 30px 20px;
+	padding: 30px 0;
 	background: $color-white;
 	border: none;
 	margin: 0;
@@ -510,6 +510,7 @@
 	&.bottom {
 		border: none;
 		border-radius: 0;
+		margin-top: 20px;
 
 		#bulk-action-selector-bottom {
 			display: none;
@@ -594,6 +595,8 @@
 			}
 
 			// Arrow navigation buttons
+			.first-page,
+			.last-page,
 			.prev-page,
 			.next-page,
 			span.button {
@@ -614,6 +617,8 @@
 				cursor: pointer;
 			}
 
+			.first-page,
+			.last-page,
 			.prev-page,
 			.next-page {
 				&:hover {
@@ -621,6 +626,13 @@
 					color: $everestforms;
 					border-color: #e1e1e1 !important;
 				}
+			}
+
+			// First and last page buttons with distinct styling
+			.first-page,
+			.last-page {
+				font-size: 16px;
+				font-weight: 600;
 			}
 
 			span.button.disabled {
@@ -940,6 +952,8 @@
 	.tablenav-pages {
 		.pagination-links {
 			.page-numbers,
+			.first-page,
+			.last-page,
 			.prev-page,
 			.next-page,
 			span.button {
