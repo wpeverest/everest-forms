@@ -11,7 +11,7 @@
 	td {
 		padding: 16px;
 		vertical-align: top;
-		border-top: 1px solid $border-color;
+		border-top: 1px solid #e1e1e1 !important;
 	}
 
 	thead {
@@ -21,12 +21,11 @@
 			color: $color_gray-light;
 			font-weight: 500;
 			text-align: inherit;
-			border-bottom: 1px solid $border-color;
+			border-bottom: 1px solid #e1e1e1 !important;
 		}
 	}
 }
 
-// Scroll behaviour for responsive devices
 .table-responsive {
 	display: block;
 	width: 100%;
@@ -44,18 +43,28 @@
 	border-spacing: 0;
 	background: $color-white;
 	border-radius: 8px;
-	border: 1px solid $border-color;
+	border-top: 1px solid #e1e1e1 !important;
+	border-bottom: 1px solid #e1e1e1 !important;
+	border-left: none;
+	border-right: none;
 	box-shadow: none;
 
-	// Table Headers
 	thead {
 		th {
-			padding: 16px 20px;
-			background: #f9fafb;
-			border-bottom: 1px solid $border-color;
-			color: #374151;
+			padding: 12px 0;
+			background: $color-white;
+			border-top: none;
+			border-bottom: 1px solid #e1e1e1 !important;
+			color: #383838;
+			font-family:
+				Inter,
+				-apple-system,
+				BlinkMacSystemFont,
+				'Segoe UI',
+				sans-serif;
 			font-weight: 600;
-			font-size: 13px;
+			font-size: 14px;
+			line-height: 24px;
 			text-transform: none;
 			letter-spacing: normal;
 			vertical-align: middle;
@@ -74,22 +83,27 @@
 			&.sortable {
 				cursor: pointer;
 				user-select: none;
-				transition: background-color 0.15s ease;
+				transition:
+					background-color 0.15s ease,
+					color 0.15s ease;
 
 				&:hover {
-					background: #f3f4f6;
+					background: lighten($everestforms, 48%);
+					color: $everestforms;
 				}
 
 				a {
 					display: flex;
 					align-items: center;
-					gap: 6px;
+					gap: 2px;
 					text-decoration: none;
 					color: inherit;
+					transition: color 0.15s ease;
 				}
 
 				&.sorted {
-					background: #f3f4f6;
+					background: lighten($everestforms, 48%);
+					color: $everestforms;
 
 					&.asc,
 					&.desc {
@@ -105,36 +119,52 @@
 					}
 
 					&.asc a::after {
-						border-bottom: 4px solid #6b7280;
+						border-bottom: 4px solid $everestforms;
 					}
 
 					&.desc a::after {
-						border-top: 4px solid #6b7280;
+						border-top: 4px solid $everestforms;
 					}
 				}
-			}
-
-			&.check-column {
-				width: 40px;
-				padding-left: 16px;
-				padding-right: 8px;
 			}
 		}
 	}
 
-	// Table Body
 	tbody {
 		tr {
-			transition: background-color 0.15s ease;
-			background: $color-white;
-			border-bottom: 1px solid $border-color;
+			transition:
+				background-color 0.15s ease,
+				box-shadow 0.15s ease;
+			background: transparent;
+			border-bottom: 1px solid #e1e1e1 !important;
+			position: relative;
 
 			&:last-child {
 				border-bottom: none;
 			}
 
 			&:hover {
-				background: #f9fafb;
+				background: transparent;
+				box-shadow: 0 2px 4px rgba(126, 59, 208, 0.04);
+
+				.row-actions {
+					visibility: visible;
+					opacity: 1;
+				}
+
+				td:has(.row-actions) {
+					color: $everestforms;
+
+					strong,
+					strong a,
+					> a {
+						color: $everestforms;
+					}
+				}
+
+				td:not(:has(.row-actions)) {
+					color: #222;
+				}
 			}
 
 			&.read {
@@ -169,7 +199,6 @@
 			}
 		}
 
-		// Add bottom border radius to last row when no pagination
 		tr:last-child {
 			td:first-child {
 				border-bottom-left-radius: 8px;
@@ -181,19 +210,29 @@
 		}
 
 		td {
-			padding: 16px 20px;
-			color: #374151;
+			padding: 16px 0;
+			color: #222;
+			font-family:
+				Inter,
+				-apple-system,
+				BlinkMacSystemFont,
+				'Segoe UI',
+				sans-serif;
 			font-size: 14px;
+			font-weight: 600;
+			line-height: normal;
 			vertical-align: middle;
-			border-bottom: none;
+			border: none;
+			background: #faf8fc;
 
 			&.check-column {
-				width: 40px;
-				padding-left: 16px;
-				padding-right: 8px;
+				width: 48px;
+				height: 48px;
+				padding: 12px 16px;
+				text-align: center;
+				border: none;
 			}
 
-			// Column specific styles
 			&.column-title {
 				font-weight: 500;
 
@@ -202,12 +241,12 @@
 				}
 
 				a {
-					color: #2563eb;
+					color: $everestforms;
 					text-decoration: none;
 					font-weight: 500;
 
 					&:hover {
-						color: #1d4ed8;
+						color: darken($everestforms, 10%);
 						text-decoration: underline;
 					}
 				}
@@ -224,13 +263,21 @@
 				}
 
 				a {
-					color: #2563eb;
+					color: #383838;
+					font-family:
+						Inter,
+						-apple-system,
+						BlinkMacSystemFont,
+						'Segoe UI',
+						sans-serif;
+					font-size: 12px;
+					font-weight: 400;
+					line-height: normal;
 					text-decoration: none;
-					font-size: 13px;
 					transition: color 0.15s ease;
 
 					&:hover {
-						color: #1d4ed8;
+						color: #000;
 					}
 
 					&.submitdelete {
@@ -244,7 +291,59 @@
 
 				.sep {
 					color: #d1d5db;
-					margin: 0 2px;
+					margin: 0 6px;
+				}
+			}
+
+			.row-actions {
+				visibility: hidden;
+				opacity: 0;
+				transition:
+					opacity 0.2s ease,
+					visibility 0.2s ease;
+				margin-top: 6px;
+				display: flex;
+				gap: 5px;
+				align-items: center;
+
+				span {
+					display: flex;
+					align-items: center;
+					gap: 4px;
+
+					a {
+						color: #383838;
+						font-family:
+							Inter,
+							-apple-system,
+							BlinkMacSystemFont,
+							'Segoe UI',
+							sans-serif;
+						font-size: 12px;
+						font-weight: 400;
+						line-height: normal;
+						text-decoration: none;
+						transition: all 0.15s ease;
+
+						&:hover {
+							color: #000;
+							text-decoration: underline;
+						}
+
+						&.submitdelete {
+							color: #dc2626;
+
+							&:hover {
+								color: #b91c1c;
+							}
+						}
+					}
+
+					.sep {
+						color: #d1d5db;
+						margin: 0 10px;
+						font-weight: 400;
+					}
 				}
 			}
 
@@ -320,8 +419,7 @@
 	justify-content: space-between;
 	padding: 30px 20px;
 	background: $color-white;
-	border: 1px solid $border-color;
-	border-top: none;
+	border: none;
 	margin: 0;
 	margin-bottom: 30px;
 
@@ -334,8 +432,8 @@
 	}
 
 	&.bottom {
-		border-top: none;
-		border-radius: 0 0 8px 8px;
+		border: none;
+		border-radius: 0;
 
 		#bulk-action-selector-bottom {
 			display: none;
@@ -386,18 +484,20 @@
 				cursor: pointer;
 
 				&:hover {
-					background: #f3f4f6;
-					color: #111827;
+					background: lighten($everestforms, 48%);
+					color: $everestforms;
+					border-color: #e1e1e1 !important;
 				}
 
 				&.current {
-					background: #6366f1;
+					background: $everestforms;
 					color: $color-white;
-					border-color: #6366f1;
+					border-color: #e1e1e1 !important;
 					cursor: default;
+					box-shadow: 0 2px 4px rgba(126, 59, 208, 0.25);
 
 					&:hover {
-						background: #6366f1;
+						background: $everestforms;
 						color: $color-white;
 					}
 				}
@@ -411,6 +511,8 @@
 
 					&:hover {
 						background: transparent;
+						color: #9ca3af;
+						border-color: transparent;
 					}
 				}
 			}
@@ -439,8 +541,9 @@
 			.prev-page,
 			.next-page {
 				&:hover {
-					background: #f3f4f6;
-					color: #111827;
+					background: lighten($everestforms, 48%);
+					color: $everestforms;
+					border-color: #e1e1e1 !important;
 				}
 			}
 
@@ -466,18 +569,26 @@
 .bulkactions {
 	display: flex;
 	align-items: center;
-	gap: 8px;
+	gap: 10px;
 
 	select {
+		display: flex;
+		width: 170px;
+		flex-direction: column;
+		justify-content: center;
+		align-items: flex-start;
+		gap: 8px;
 		height: 36px;
 		padding: 0 32px 0 12px;
-		border: 1px solid #d1d5db;
+		border: 1px solid #e1e1e1 !important;
 		border-radius: 6px;
 		background: $color-white;
 		color: #374151;
 		font-size: 14px;
 		cursor: pointer;
-		transition: border-color 0.15s ease;
+		transition:
+			border-color 0.15s ease,
+			box-shadow 0.15s ease;
 		appearance: none;
 		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
 		background-position: right 8px center;
@@ -485,33 +596,38 @@
 		background-size: 20px;
 
 		&:hover {
-			border-color: #9ca3af;
+			border-color: #e1e1e1 !important;
 		}
 
 		&:focus {
 			outline: none;
-			border-color: #2563eb;
-			box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+			border-color: #e1e1e1 !important;
+			box-shadow: 0 0 0 3px rgba(126, 59, 208, 0.1);
 		}
 	}
 
 	input[type='submit'],
 	button {
+		display: flex;
 		height: 36px;
-		padding: 0 16px;
-		border: 1px solid #d1d5db;
-		border-radius: 6px;
-		background: $color-white;
+		padding: 8px 14px;
+		justify-content: center;
+		align-items: center;
+		gap: 6px;
+		border-radius: 3px;
+		border: 1px solid #7545bb !important;
+		background: #faf8fc;
 		color: #374151;
 		font-size: 14px;
 		font-weight: 500;
+		line-height: 1;
 		cursor: pointer;
 		transition: all 0.15s ease;
 
 		&:hover {
-			border-color: #9ca3af;
-			background: #f9fafb;
-			color: #111827;
+			border-color: #7545bb !important;
+			background: lighten($everestforms, 48%);
+			color: $everestforms;
 		}
 
 		&:active {
@@ -535,19 +651,31 @@
 	margin: 0;
 
 	input[type='search'] {
+		display: flex;
+		width: 232px;
 		height: 36px;
-		padding: 0 12px;
-		border: 1px solid #d1d5db;
-		border-radius: 6px;
+		padding: 10px 40px 10px 16px;
+		justify-content: space-between;
+		align-items: center;
+		align-self: stretch;
+		border-radius: 4px;
+		border: 1px solid #bababa !important;
+		background: #fff;
 		font-size: 14px;
+		line-height: 1;
 		color: #374151;
-		transition: border-color 0.15s ease;
-		min-width: 250px;
+		transition:
+			border-color 0.15s ease,
+			box-shadow 0.15s ease;
+		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20' fill='none'%3E%3Cpath d='M17.5 17.5L13.875 13.875M15.8333 9.16667C15.8333 12.8486 12.8486 15.8333 9.16667 15.8333C5.48477 15.8333 2.5 12.8486 2.5 9.16667C2.5 5.48477 5.48477 2.5 9.16667 2.5C12.8486 2.5 15.8333 5.48477 15.8333 9.16667Z' stroke='%23BABABA' stroke-width='1.66667' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+		background-position: right 12px center;
+		background-repeat: no-repeat;
+		background-size: 20px;
 
 		&:focus {
 			outline: none;
-			border-color: #2563eb;
-			box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+			border-color: #bababa !important;
+			box-shadow: 0 0 0 3px rgba(126, 59, 208, 0.1);
 		}
 
 		&::placeholder {
@@ -558,18 +686,21 @@
 	input[type='submit'] {
 		height: 36px;
 		padding: 0 16px;
-		border: 1px solid #2563eb;
+		border: 1px solid #e1e1e1 !important;
 		border-radius: 6px;
-		background: #2563eb;
+		background: $everestforms;
 		color: $color-white;
 		font-size: 14px;
 		font-weight: 500;
 		cursor: pointer;
 		transition: all 0.15s ease;
+		box-shadow: 0 1px 2px rgba(126, 59, 208, 0.15);
 
 		&:hover {
-			background: #1d4ed8;
-			border-color: #1d4ed8;
+			background: darken($everestforms, 5%);
+			border-color: #e1e1e1 !important;
+			color: $color-white;
+			box-shadow: 0 2px 4px rgba(126, 59, 208, 0.25);
 		}
 
 		&:active {
@@ -586,23 +717,30 @@
 	input[type='checkbox'] {
 		width: 16px;
 		height: 16px;
-		border: 1px solid #d1d5db;
+		border: 1px solid #e1e1e1 !important;
 		border-radius: 4px;
 		cursor: pointer;
 		transition: all 0.15s ease;
+		appearance: none;
+		-webkit-appearance: none;
+		-moz-appearance: none;
 
 		&:hover {
-			border-color: #9ca3af;
+			border-color: #e1e1e1 !important;
 		}
 
 		&:checked {
-			background: #2563eb;
-			border-color: #2563eb;
+			background: $everestforms;
+			border-color: #e1e1e1 !important;
+			background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23ffffff'%3E%3Cpath d='M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z'/%3E%3C/svg%3E");
+			background-repeat: no-repeat;
+			background-position: center;
+			background-size: 12px;
 		}
 
 		&:focus {
 			outline: none;
-			box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+			box-shadow: 0 0 0 3px rgba(126, 59, 208, 0.15);
 		}
 	}
 
@@ -680,7 +818,7 @@
 			tr {
 				display: block;
 				margin-bottom: 12px;
-				border: 1px solid $border-color;
+				border: 1px solid #e1e1e1 !important;
 				border-radius: 8px;
 				background: $color-white;
 
@@ -693,7 +831,7 @@
 				display: block;
 				text-align: right;
 				padding: 10px 12px;
-				border-bottom: 1px solid #f3f4f6;
+				border-bottom: 1px solid #e1e1e1 !important;
 
 				&:last-child {
 					border-bottom: none;
