@@ -725,12 +725,13 @@
 	align-items: center;
 	gap: 8px;
 	margin: 0;
+	position: relative;
 
 	input[type='search'] {
 		display: flex;
 		width: 232px;
 		height: 36px;
-		padding: 10px 40px 10px 16px;
+		padding: 10px 50px 10px 16px;
 		justify-content: space-between;
 		align-items: center;
 		align-self: stretch;
@@ -757,31 +758,32 @@
 		&::placeholder {
 			color: #9ca3af;
 		}
+
+		// Style webkit clear button - position it to the left of search icon
+		&::-webkit-search-cancel-button {
+			-webkit-appearance: none;
+			appearance: none;
+			height: 16px;
+			width: 16px;
+			background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M12 4L4 12M4 4L12 12' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+			background-size: 16px 16px;
+			background-repeat: no-repeat;
+			background-position: center;
+			cursor: pointer;
+			position: relative;
+			right: -6px;
+			opacity: 0.6;
+			transition: opacity 0.15s ease;
+
+			&:hover {
+				opacity: 1;
+			}
+		}
 	}
 
+	// Hide search submit button
 	input[type='submit'] {
-		height: 36px;
-		padding: 0 16px;
-		border: 1px solid #e1e1e1 !important;
-		border-radius: 6px;
-		background: $everestforms;
-		color: $color-white;
-		font-size: 14px;
-		font-weight: 500;
-		cursor: pointer;
-		transition: all 0.15s ease;
-		box-shadow: 0 1px 2px rgba(126, 59, 208, 0.15);
-
-		&:hover {
-			background: darken($everestforms, 5%);
-			border-color: #e1e1e1 !important;
-			color: $color-white;
-			box-shadow: 0 2px 4px rgba(126, 59, 208, 0.25);
-		}
-
-		&:active {
-			transform: scale(0.98);
-		}
+		display: none;
 	}
 }
 
