@@ -43,14 +43,14 @@
 	border-collapse: separate;
 	border-spacing: 0;
 	background: $color-white;
-	border-radius: 0;
+	border-radius: 8px;
 	border: 1px solid $border-color;
 	box-shadow: none;
 
 	// Table Headers
 	thead {
 		th {
-			padding: 12px 16px;
+			padding: 16px 20px;
 			background: #f9fafb;
 			border-bottom: 1px solid $border-color;
 			color: #374151;
@@ -62,6 +62,14 @@
 			text-align: left;
 			white-space: nowrap;
 			position: relative;
+
+			&:first-child {
+				border-top-left-radius: 8px;
+			}
+
+			&:last-child {
+				border-top-right-radius: 8px;
+			}
 
 			&.sortable {
 				cursor: pointer;
@@ -161,8 +169,19 @@
 			}
 		}
 
+		// Add bottom border radius to last row when no pagination
+		tr:last-child {
+			td:first-child {
+				border-bottom-left-radius: 8px;
+			}
+
+			td:last-child {
+				border-bottom-right-radius: 8px;
+			}
+		}
+
 		td {
-			padding: 12px 16px;
+			padding: 16px 20px;
 			color: #374151;
 			font-size: 14px;
 			vertical-align: middle;
@@ -271,6 +290,23 @@
 			background: #f9fafb;
 		}
 	}
+
+	tfoot {
+		display: none;
+	}
+
+	// When pagination exists (table followed by .tablenav.bottom), remove bottom radius
+	&:has(+ .tablenav.bottom) {
+		tbody tr:last-child {
+			td:first-child {
+				border-bottom-left-radius: 0 !important;
+			}
+
+			td:last-child {
+				border-bottom-right-radius: 0 !important;
+			}
+		}
+	}
 }
 
 /**
@@ -299,8 +335,7 @@
 
 	&.bottom {
 		border-top: none;
-		border-bottom-left-radius: 8px;
-		border-bottom-right-radius: 8px;
+		border-radius: 0 0 8px 8px;
 
 		#bulk-action-selector-bottom {
 			display: none;
