@@ -956,7 +956,6 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 				</div>
 									<?php
 						break;
-					// Default: run an action.
 					default:
 						do_action( 'everest_forms_admin_field_' . $value['type'], $value );
 						break;

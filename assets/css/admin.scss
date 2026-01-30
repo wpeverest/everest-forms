@@ -9931,13 +9931,32 @@ img.ui-datepicker-trigger {
 			&--nav {
 				height: 100%;
 
+				// Tab item container
+				.evf-nav__tab-item {
+					display: flex;
+					flex-direction: column;
+
+					// Rotate arrow when active and has sub-sections
+					&:has(.evf-scroll-ui) {
+						.nav-tab-active {
+							.evf-nav__link-label svg {
+								transform: rotate(90deg);
+							}
+						}
+					}
+
+					.evf-scroll-ui {
+						border-left: 4px solid transparent;
+						background: #ffffff;
+					}
+				}
+
 				.evf-nav-tab-wrapper {
 					display: flex;
 					flex-direction: column;
 					gap: 1px;
 					background: transparent;
 					position: relative;
-					// height: 100%;
 					overflow: unset !important;
 
 					.evf-nav__link {
@@ -10011,6 +10030,11 @@ img.ui-datepicker-trigger {
 							svg {
 								width: 20px;
 								height: 20px;
+								transition: transform 0.3s ease-in-out;
+
+								path {
+									transition: stroke 0.3s ease-in-out;
+								}
 							}
 						}
 
@@ -10108,6 +10132,104 @@ img.ui-datepicker-trigger {
 						}
 					}
 				}
+
+				.evf-scroll-ui {
+					max-height: 300px;
+					overflow-y: auto;
+					padding: 0;
+					margin-top: 0;
+					animation: slideDown 0.3s ease;
+
+					&::-webkit-scrollbar {
+						width: 4px;
+					}
+
+					&::-webkit-scrollbar-track {
+						background: transparent;
+					}
+
+					&::-webkit-scrollbar-thumb {
+						background: #d1d5db;
+						border-radius: 2px;
+					}
+
+					&::-webkit-scrollbar-thumb:hover {
+						background: #9ca3af;
+					}
+				}
+
+				.evf-subsections {
+					list-style: none;
+					margin: 0;
+					padding: 0;
+					background: transparent;
+					position: relative;
+
+					&::before {
+						content: '';
+						position: absolute;
+						left: 27px;
+						top: 27px;
+						width: 2px;
+						height: calc(100% - 16px - 36px);
+						background: #e1e1e1;
+						z-index: 1;
+					}
+
+					li {
+						margin: 0;
+						padding: 0;
+						position: relative;
+
+						a {
+							display: flex;
+							align-items: center;
+							padding: 12px 20px 12px 52px;
+							text-decoration: none;
+							color: #6b7280;
+							font-size: 14px;
+							font-weight: 500;
+							line-height: 21px;
+							position: relative;
+							background: transparent;
+							transition: color 0.2s ease;
+
+							&::before {
+								content: '';
+								position: absolute;
+								left: 24px;
+								top: 50%;
+								transform: translateY(-50%);
+								width: 10px;
+								height: 10px;
+								background: #e1e1e1;
+								border-radius: 50%;
+								z-index: 2;
+								transition: all 0.2s ease;
+							}
+
+							&.current {
+								color: #7545bb;
+								font-weight: 600;
+								&::before {
+									background: #7545bb;
+									width: 10px;
+									height: 10px;
+									left: 23px;
+								}
+							}
+
+							&:hover {
+								color: #7545bb;
+							}
+
+							&:focus {
+								outline: none;
+								box-shadow: none;
+							}
+						}
+					}
+				}
 			}
 
 			&.collapsed {
@@ -10126,24 +10248,207 @@ img.ui-datepicker-trigger {
 				}
 
 				.everest-forms-header--nav {
-					.evf-nav-tab-wrapper {
-						.evf-nav__link {
-							// display: inline-block;
+					height: 100%;
 
-							&-label {
-								// display: none;
-								opacity: 0;
+					.evf-nav__tab-item {
+						display: flex;
+						flex-direction: column;
+						position: relative;
+
+						// Add vertical line for parent items that have children
+						&:has(.evf-subsections) {
+							position: relative;
+
+							// Main vertical connecting line
+							> .evf-scroll-ui::before {
+								content: '';
+								position: absolute;
+								left: 28px;
+								top: 0;
+								bottom: 12px;
+								width: 1px;
+								background: #e1e1e1;
+								z-index: 1;
 							}
 						}
 
-						#evf-settings-collapse {
-							.evf-nav-icon {
-								img {
-									transform: rotate(180deg);
+						&:has(.evf-scroll-ui) {
+							.nav-tab-active {
+								.evf-nav__link-label svg {
+									transform: rotate(90deg);
+								}
+							}
+						}
+
+						.evf-scroll-ui {
+							border-left: 4px solid transparent;
+							background: #ffffff;
+							position: relative;
+						}
+					}
+
+					.evf-subsections {
+						list-style: none;
+						margin: 0;
+						padding: 0;
+						background: transparent;
+						position: relative;
+
+						li {
+							margin: 0;
+							padding: 0;
+							position: relative;
+
+							// Vertical connecting line
+							&::before {
+								content: '';
+								position: absolute;
+								left: 28px;
+								top: 0;
+								bottom: 0;
+								width: 1px;
+								background: #dcdcdc;
+								z-index: 1;
+							}
+
+							// Hide vertical line after last item
+							&:last-child::before {
+								bottom: 50%;
+							}
+
+							// Horizontal line connecting to text
+							&::after {
+								content: '';
+								position: absolute;
+								left: 28px;
+								top: 50%;
+								transform: translateY(-50%);
+								width: 16px;
+								height: 1px;
+								background: #dcdcdc;
+								z-index: 1;
+							}
+
+							a {
+								display: flex;
+								align-items: center;
+								padding: 12px 20px 12px 52px;
+								text-decoration: none;
+								color: #6b7280;
+								font-size: 14px;
+								font-weight: 500;
+								line-height: 21px;
+								border-left: 3px solid transparent;
+								position: relative;
+								background: transparent;
+
+								&.current {
+									color: #7545bb;
+									border-left-color: #7545bb;
+									font-weight: 600;
+								}
+
+								&:focus {
+									outline: none;
+									box-shadow: none;
 								}
 							}
 						}
 					}
+
+					@media screen and (max-width: 1300px) {
+						.evf-subsections li {
+							&::before {
+								left: 24px;
+							}
+
+							&::after {
+								left: 24px;
+								width: 14px;
+							}
+
+							a {
+								padding: 10px 16px 10px 44px;
+								font-size: 13px;
+							}
+						}
+					}
+
+					@media screen and (max-width: 782px) {
+						.evf-subsections li {
+							&::before {
+								left: 20px;
+							}
+
+							&::after {
+								left: 20px;
+								width: 12px;
+							}
+
+							a {
+								padding: 10px 16px 10px 40px;
+								font-size: 13px;
+							}
+						}
+					}
+				}
+
+				// Animation for sliding down sub-sections
+				@keyframes slideDown {
+					from {
+						opacity: 0;
+						transform: translateY(-10px);
+					}
+					to {
+						opacity: 1;
+						transform: translateY(0);
+					}
+				}
+
+				// Mobile responsive
+				@media screen and (max-width: 782px) {
+					.everest-forms-header--nav {
+						.evf-subsections li a {
+							padding: 10px 16px 10px 40px;
+							font-size: 13px;
+
+							&.current::before {
+								left: 20px;
+							}
+						}
+
+						.evf-scroll-ui {
+							max-height: 250px;
+						}
+					}
+				}
+			}
+		}
+
+		@keyframes slideDown {
+			from {
+				opacity: 0;
+				transform: translateY(-10px);
+			}
+			to {
+				opacity: 1;
+				transform: translateY(0);
+			}
+		}
+
+		@media screen and (max-width: 782px) {
+			.everest-forms-header--nav {
+				.evf-subsections li a {
+					padding: 10px 16px 10px 40px;
+					font-size: 13px;
+
+					&.current::before {
+						left: 20px;
+					}
+				}
+
+				.evf-scroll-ui {
+					max-height: 250px;
 				}
 			}
 		}

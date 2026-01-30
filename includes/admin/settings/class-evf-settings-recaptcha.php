@@ -25,6 +25,103 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 		$this->label = esc_html__( 'CAPTCHA', 'everest-forms' );
 
 		parent::__construct();
+		add_action( 'everest_forms_sections_' . $this->id, array( $this, 'output_sections' ) );
+		add_action( 'everest_forms_update_options_' . $this->id, array( $this, 'handle_captcha_enable_toggle' ), 5 );
+	}
+
+	/**
+	 * Handle CAPTCHA enable toggle to ensure only one is active.
+	 */
+	public function handle_captcha_enable_toggle() {
+		// Check which CAPTCHA was just enabled
+		$enabled_captcha = '';
+
+		if ( isset( $_POST['everest_forms_recaptcha_v2_enable'] ) && 'yes' === $_POST['everest_forms_recaptcha_v2_enable'] ) {
+			$enabled_captcha = 'v2';
+		} elseif ( isset( $_POST['everest_forms_recaptcha_v3_enable'] ) && 'yes' === $_POST['everest_forms_recaptcha_v3_enable'] ) {
+			$enabled_captcha = 'v3';
+		} elseif ( isset( $_POST['everest_forms_recaptcha_hcaptcha_enable'] ) && 'yes' === $_POST['everest_forms_recaptcha_hcaptcha_enable'] ) {
+			$enabled_captcha = 'hcaptcha';
+		} elseif ( isset( $_POST['everest_forms_recaptcha_turnstile_enable'] ) && 'yes' === $_POST['everest_forms_recaptcha_turnstile_enable'] ) {
+			$enabled_captcha = 'turnstile';
+		}
+
+		// Define all CAPTCHA types
+		$captcha_types = array( 'v2', 'v3', 'hcaptcha', 'turnstile' );
+
+		// If a CAPTCHA was enabled, disable all others and update the type
+		if ( ! empty( $enabled_captcha ) ) {
+			foreach ( $captcha_types as $type ) {
+				if ( $type === $enabled_captcha ) {
+					update_option( 'everest_forms_recaptcha_' . $type . '_enable', 'yes' );
+					update_option( 'everest_forms_recaptcha_type', $type );
+				} else {
+					update_option( 'everest_forms_recaptcha_' . $type . '_enable', 'no' );
+				}
+			}
+		} else {
+			// Check if any CAPTCHA was disabled
+			$all_disabled = true;
+			foreach ( $captcha_types as $type ) {
+				if ( isset( $_POST[ 'everest_forms_recaptcha_' . $type . '_enable' ] ) && 'yes' === $_POST[ 'everest_forms_recaptcha_' . $type . '_enable' ] ) {
+					$all_disabled = false;
+					break;
+				}
+			}
+
+			// If all CAPTCHAs are disabled, ensure all enable options are set to 'no'
+			if ( $all_disabled ) {
+				foreach ( $captcha_types as $type ) {
+					update_option( 'everest_forms_recaptcha_' . $type . '_enable', 'no' );
+				}
+			}
+		}
+	}
+
+	/**
+	 * Get sections for CAPTCHA tab.
+	 *
+	 * @return array
+	 */
+	public function get_sections() {
+		$sections = array(
+			'integration' => esc_html__( ' Integration', 'everest-forms' ),
+			'language'    => esc_html__( 'Language', 'everest-forms' ),
+		);
+
+		return apply_filters( 'everest_forms_get_sections_' . $this->id, $sections );
+	}
+
+	/**
+	 * Output sections in navigation sidebar.
+	 */
+	public function output_sections() {
+		global $current_section;
+
+		$sections = $this->get_sections();
+
+		if ( empty( $sections ) || 1 === sizeof( $sections ) ) {
+			return;
+		}
+
+		echo '<ul class="evf-subsections">';
+
+		foreach ( $sections as $id => $label ) {
+			$url = add_query_arg(
+				array(
+					'page'    => 'evf-settings',
+					'tab'     => $this->id,
+					'section' => sanitize_title( $id ),
+				),
+				admin_url( 'admin.php' )
+			);
+
+			$current_section = isset( $_GET['section'] ) ? sanitize_text_field( wp_unslash( $_GET['section'] ) ) : 'integration';
+
+			echo '<li><a href="' . esc_url( $url ) . '" class="' . ( $current_section === $id ? 'current' : '' ) . '">' . esc_html( $label ) . '</a></li>';
+		}
+
+		echo '</ul>';
 	}
 
 	/**
@@ -33,40 +130,42 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 	 * @return array
 	 */
 	public function get_settings() {
-		$recaptcha_type = get_option( 'everest_forms_recaptcha_type', 'v2' );
-		$invisible      = get_option( 'everest_forms_recaptcha_v2_invisible', 'no' );
-		$languages      = '{"languages":[{"Language":"Arabic","Value":"ar"},{"Language":"Afrikaans","Value":"af"},{"Language":"Amharic","Value":"am"},{"Language":"Armenian","Value":"hy"},{"Language":"Azerbaijani","Value":"az"},{"Language":"Basque","Value":"eu"},{"Language":"Bengali","Value":"bn"},{"Language":"Bulgarian","Value":"bg"},{"Language":"Catalan","Value":"ca"},{"Language":"Chinese (Hong Kong)","Value":"zh-HK"},{"Language":"Chinese (Simplified)","Value":"zh-CN"},{"Language":"Chinese (Traditional)","Value":"zh-TW"},{"Language":"Croatian","Value":"hr"},{"Language":"Czech","Value":"cs"},{"Language":"Danish","Value":"da"},{"Language":"Dutch *","Value":"nl"},{"Language":"English (UK)","Value":"en-GB"},{"Language":"English (US) *","Value":"en"},{"Language":"Estonian","Value":"et"},{"Language":"Filipino","Value":"fil"},{"Language":"Finnish","Value":"fi"},{"Language":"French *","Value":"fr"},{"Language":"French (Canadian)","Value":"fr-CA"},{"Language":"Galician","Value":"gl"},{"Language":"Georgian","Value":"ka"},{"Language":"German *","Value":"de"},{"Language":"German (Austria)","Value":"de-AT"},{"Language":"German (Switzerland)","Value":"de-CH"},{"Language":"Greek","Value":"el"},{"Language":"Gujarati","Value":"gu"},{"Language":"Hebrew","Value":"iw"},{"Language":"Hindi","Value":"hi"},{"Language":"Hungarain","Value":"hu"},{"Language":"Icelandic","Value":"is"},{"Language":"Indonesian","Value":"id"},{"Language":"Italian *","Value":"it"},{"Language":"Japanese","Value":"ja"},{"Language":"Kannada","Value":"kn"},{"Language":"Korean","Value":"ko"},{"Language":"Laothian","Value":"lo"},{"Language":"Latvian","Value":"lv"},{"Language":"Lithuanian","Value":"lt"},{"Language":"Malay","Value":"ms"},{"Language":"Malayalam","Value":"ml"},{"Language":"Marathi","Value":"mr"},{"Language":"Mongolian","Value":"mn"},{"Language":"Norwegian","Value":"no"},{"Language":"Persian","Value":"fa"},{"Language":"Polish","Value":"pl"},{"Language":"Portuguese *","Value":"pt"},{"Language":"Portuguese (Brazil)","Value":"pt-BR"},{"Language":"Portuguese (Portugal)","Value":"pt-PT"},{"Language":"Romanian","Value":"ro"},{"Language":"Russian","Value":"ru"},{"Language":"Serbian","Value":"sr"},{"Language":"Sinhalese","Value":"si"},{"Language":"Slovak","Value":"sk"},{"Language":"Slovenian","Value":"sl"},{"Language":"Spanish *","Value":"es"},{"Language":"Spanish (Latin America)","Value":"es-419"},{"Language":"Swahili","Value":"sw"},{"Language":"Swedish","Value":"sv"},{"Language":"Tamil","Value":"ta"},{"Language":"Telugu","Value":"te"},{"Language":"Thai","Value":"th"},{"Language":"Turkish","Value":"tr"},{"Language":"Ukrainian","Value":"uk"},{"Language":"Urdu","Value":"ur"},{"Language":"Vietnamese","Value":"vi"},{"Language":"Zulu","Value":"zu"}]}';
-		$languages      = json_decode( $languages, true );
-		$lang_options   = array();
+		global $current_section;
 
-		foreach ( $languages['languages'] as $key => $value ) {
-			/* translators: %1$s - Langauge Name */
-			$lang_options[ $value['Value'] ] = sprintf( esc_html__( '%s', 'everest-forms' ), $value['Language'] ); // phpcs:ignore
+		$current_section = isset( $_GET['section'] ) ? sanitize_text_field( wp_unslash( $_GET['section'] ) ) : 'integration';
+
+		if ( 'language' === $current_section ) {
+			$settings = $this->get_language_settings();
+		} else {
+			$settings = $this->get_integration_settings();
 		}
 
+		return apply_filters( 'everest_forms_get_settings_' . $this->id, $settings, $current_section );
+	}
+
+	/**
+	 * Get CAPTCHA integration settings (all CAPTCHA providers as accordions).
+	 *
+	 * @return array
+	 */
+	public function get_integration_settings() {
+		$recaptcha_type = get_option( 'everest_forms_recaptcha_type', 'v2' );
+		$invisible      = get_option( 'everest_forms_recaptcha_v2_invisible', 'no' );
+
+		// Get enable status for each CAPTCHA type
+		$v2_enabled        = get_option( 'everest_forms_recaptcha_v2_enable', 'v2' === $recaptcha_type ? 'yes' : 'no' );
+		$v3_enabled        = get_option( 'everest_forms_recaptcha_v3_enable', 'v3' === $recaptcha_type ? 'yes' : 'no' );
+		$hcaptcha_enabled  = get_option( 'everest_forms_recaptcha_hcaptcha_enable', 'hcaptcha' === $recaptcha_type ? 'yes' : 'no' );
+		$turnstile_enabled = get_option( 'everest_forms_recaptcha_turnstile_enable', 'turnstile' === $recaptcha_type ? 'yes' : 'no' );
+
 		$settings = apply_filters(
-			'everest_forms_recaptcha_settings',
+			'everest_forms_recaptcha_integration_settings',
 			array(
 				array(
 					'title' => esc_html__( 'CAPTCHA Integration', 'everest-forms' ),
 					'type'  => 'title',
-					/* translators: %1$s - reCAPTCHA Integration Doc URL, %2$s - hCaptcha Integration Doc URL, %3$s - Cloudflare Turnstile Integration Doc URL */
-					'desc'  => sprintf( __( 'Get detailed documentation on integrating <a href="%1$s" target="_blank">reCAPTCHA</a>, <a href="%2$s" target="_blank">hCaptcha</a> and <a href="%3$s" target="_blank">Cloudflare Turnstile</a> with Everest forms.', 'everest-forms' ), 'https://docs.everestforms.net/docs/how-to-integrate-google-recaptcha/', 'https://docs.everestforms.net/docs/how-to-integrate-hcaptcha/', 'https://docs.everestforms.net/docs/how-to-integrate-cloudflare-turnstile-with-the-everest-forms/' ),
+					'desc'  => '',
 					'id'    => 'integration_options',
-				),
-				array(
-					'title'    => esc_html__( 'CAPTCHA Language', 'everest-forms' ),
-					'type'     => 'select',
-					'desc'     => esc_html__( 'Choose a preferred language for displaying CAPTCHA text.', 'everest-forms' ),
-					'id'       => 'everest_forms_recaptcha_recaptcha_language',
-					'options'  => $lang_options,
-					'class'    => 'evf-enhanced-select',
-					'value'    => get_option( 'everest_forms_recaptcha_recaptcha_language', 'en-GB' ),
-					'desc_tip' => true,
-				),
-				array(
-					'type' => 'sectionend',
-					'id'   => 'integration_options',
 				),
 				array(
 					'type'  => 'accordion',
@@ -75,8 +174,16 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 						array(
 							'title'   => esc_html__( 'reCAPTCHA v2', 'everest-forms' ),
 							'icon'    => plugins_url( 'assets/images/captcha/reCAPTCHA-v2-v3.png', EVF_PLUGIN_FILE ),
-							'is_open' => 'v2' === $recaptcha_type,
+							'is_open' => 'yes' === $v2_enabled,
 							'fields'  => array(
+								array(
+									'title'    => esc_html__( 'Enable reCAPTCHA v2', 'everest-forms' ),
+									'type'     => 'toggle',
+									'desc'     => esc_html__( 'Enable reCAPTCHA v2. Note: Enabling this will automatically disable other CAPTCHA providers.', 'everest-forms' ),
+									'id'       => 'everest_forms_recaptcha_v2_enable',
+									'default'  => 'v2' === $recaptcha_type ? 'yes' : 'no',
+									'desc_tip' => true,
+								),
 								array(
 									'title'    => esc_html__( 'Site Key (reCAPTCHA V2)', 'everest-forms' ),
 									'type'     => 'text',
@@ -129,8 +236,16 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 						array(
 							'title'   => esc_html__( 'reCAPTCHA v3', 'everest-forms' ),
 							'icon'    => plugins_url( 'assets/images/captcha/reCAPTCHA-v2-v3.png', EVF_PLUGIN_FILE ),
-							'is_open' => 'v3' === $recaptcha_type,
+							'is_open' => 'yes' === $v3_enabled,
 							'fields'  => array(
+								array(
+									'title'    => esc_html__( 'Enable reCAPTCHA v3', 'everest-forms' ),
+									'type'     => 'toggle',
+									'desc'     => esc_html__( 'Enable reCAPTCHA v3. Note: Enabling this will automatically disable other CAPTCHA providers.', 'everest-forms' ),
+									'id'       => 'everest_forms_recaptcha_v3_enable',
+									'default'  => 'v3' === $recaptcha_type ? 'yes' : 'no',
+									'desc_tip' => true,
+								),
 								array(
 									'title'    => esc_html__( 'Site Key (reCAPTCHA V3)', 'everest-forms' ),
 									'type'     => 'text',
@@ -168,8 +283,16 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 						array(
 							'title'   => esc_html__( 'hCaptcha', 'everest-forms' ),
 							'icon'    => plugins_url( 'assets/images/captcha/hCAPTCHA-logo.png', EVF_PLUGIN_FILE ),
-							'is_open' => 'hcaptcha' === $recaptcha_type,
+							'is_open' => 'yes' === $hcaptcha_enabled,
 							'fields'  => array(
+								array(
+									'title'    => esc_html__( 'Enable hCaptcha', 'everest-forms' ),
+									'type'     => 'toggle',
+									'desc'     => esc_html__( 'Enable hCaptcha. Note: Enabling this will automatically disable other CAPTCHA providers.', 'everest-forms' ),
+									'id'       => 'everest_forms_recaptcha_hcaptcha_enable',
+									'default'  => 'hcaptcha' === $recaptcha_type ? 'yes' : 'no',
+									'desc_tip' => true,
+								),
 								array(
 									'title'    => esc_html__( 'Site Key (hCaptcha)', 'everest-forms' ),
 									'type'     => 'text',
@@ -194,8 +317,16 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 						array(
 							'title'   => esc_html__( 'Cloudflare Turnstile', 'everest-forms' ),
 							'icon'    => plugins_url( 'assets/images/captcha/cloudflare-logo.png', EVF_PLUGIN_FILE ),
-							'is_open' => 'turnstile' === $recaptcha_type,
+							'is_open' => 'yes' === $turnstile_enabled,
 							'fields'  => array(
+								array(
+									'title'    => esc_html__( 'Enable Cloudflare Turnstile', 'everest-forms' ),
+									'type'     => 'toggle',
+									'desc'     => esc_html__( 'Enable Cloudflare Turnstile. Note: Enabling this will automatically disable other CAPTCHA providers.', 'everest-forms' ),
+									'id'       => 'everest_forms_recaptcha_turnstile_enable',
+									'default'  => 'turnstile' === $recaptcha_type ? 'yes' : 'no',
+									'desc_tip' => true,
+								),
 								array(
 									'title'    => esc_html__( 'Site Key (Cloudflare Turnstile)', 'everest-forms' ),
 									'type'     => 'text',
@@ -233,10 +364,55 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 						),
 					),
 				),
+				array(
+					'type' => 'sectionend',
+					'id'   => 'integration_options',
+				),
 			)
 		);
 
-		return apply_filters( 'everest_forms_get_settings_' . $this->id, $settings );
+		return $settings;
+	}
+
+	/**
+	 * Get CAPTCHA language settings.
+	 *
+	 * @return array
+	 */
+	public function get_language_settings() {
+		$languages    = '{"languages":[{"Language":"Arabic","Value":"ar"},{"Language":"Afrikaans","Value":"af"},{"Language":"Amharic","Value":"am"},{"Language":"Armenian","Value":"hy"},{"Language":"Azerbaijani","Value":"az"},{"Language":"Basque","Value":"eu"},{"Language":"Bengali","Value":"bn"},{"Language":"Bulgarian","Value":"bg"},{"Language":"Catalan","Value":"ca"},{"Language":"Chinese (Hong Kong)","Value":"zh-HK"},{"Language":"Chinese (Simplified)","Value":"zh-CN"},{"Language":"Chinese (Traditional)","Value":"zh-TW"},{"Language":"Croatian","Value":"hr"},{"Language":"Czech","Value":"cs"},{"Language":"Danish","Value":"da"},{"Language":"Dutch *","Value":"nl"},{"Language":"English (UK)","Value":"en-GB"},{"Language":"English (US) *","Value":"en"},{"Language":"Estonian","Value":"et"},{"Language":"Filipino","Value":"fil"},{"Language":"Finnish","Value":"fi"},{"Language":"French *","Value":"fr"},{"Language":"French (Canadian)","Value":"fr-CA"},{"Language":"Galician","Value":"gl"},{"Language":"Georgian","Value":"ka"},{"Language":"German *","Value":"de"},{"Language":"German (Austria)","Value":"de-AT"},{"Language":"German (Switzerland)","Value":"de-CH"},{"Language":"Greek","Value":"el"},{"Language":"Gujarati","Value":"gu"},{"Language":"Hebrew","Value":"iw"},{"Language":"Hindi","Value":"hi"},{"Language":"Hungarain","Value":"hu"},{"Language":"Icelandic","Value":"is"},{"Language":"Indonesian","Value":"id"},{"Language":"Italian *","Value":"it"},{"Language":"Japanese","Value":"ja"},{"Language":"Kannada","Value":"kn"},{"Language":"Korean","Value":"ko"},{"Language":"Laothian","Value":"lo"},{"Language":"Latvian","Value":"lv"},{"Language":"Lithuanian","Value":"lt"},{"Language":"Malay","Value":"ms"},{"Language":"Malayalam","Value":"ml"},{"Language":"Marathi","Value":"mr"},{"Language":"Mongolian","Value":"mn"},{"Language":"Norwegian","Value":"no"},{"Language":"Persian","Value":"fa"},{"Language":"Polish","Value":"pl"},{"Language":"Portuguese *","Value":"pt"},{"Language":"Portuguese (Brazil)","Value":"pt-BR"},{"Language":"Portuguese (Portugal)","Value":"pt-PT"},{"Language":"Romanian","Value":"ro"},{"Language":"Russian","Value":"ru"},{"Language":"Serbian","Value":"sr"},{"Language":"Sinhalese","Value":"si"},{"Language":"Slovak","Value":"sk"},{"Language":"Slovenian","Value":"sl"},{"Language":"Spanish *","Value":"es"},{"Language":"Spanish (Latin America)","Value":"es-419"},{"Language":"Swahili","Value":"sw"},{"Language":"Swedish","Value":"sv"},{"Language":"Tamil","Value":"ta"},{"Language":"Telugu","Value":"te"},{"Language":"Thai","Value":"th"},{"Language":"Turkish","Value":"tr"},{"Language":"Ukrainian","Value":"uk"},{"Language":"Urdu","Value":"ur"},{"Language":"Vietnamese","Value":"vi"},{"Language":"Zulu","Value":"zu"}]}';
+		$languages    = json_decode( $languages, true );
+		$lang_options = array();
+
+		foreach ( $languages['languages'] as $key => $value ) {
+			/* translators: %1$s - Langauge Name */
+			$lang_options[ $value['Value'] ] = sprintf( esc_html__( '%s', 'everest-forms' ), $value['Language'] ); // phpcs:ignore
+		}
+
+		$settings = array(
+			array(
+				'title' => esc_html__( 'CAPTCHA Language', 'everest-forms' ),
+				'type'  => 'title',
+				'desc'  => '',
+				'id'    => 'language_options',
+			),
+			array(
+				'title'    => esc_html__( 'CAPTCHA Language', 'everest-forms' ),
+				'type'     => 'select',
+				'desc'     => esc_html__( 'Choose a preferred language for displaying CAPTCHA text.', 'everest-forms' ),
+				'id'       => 'everest_forms_recaptcha_recaptcha_language',
+				'options'  => $lang_options,
+				'class'    => 'evf-enhanced-select',
+				'default'  => 'en-GB',
+				'desc_tip' => true,
+			),
+			array(
+				'type' => 'sectionend',
+				'id'   => 'language_options',
+			),
+		);
+
+		return $settings;
 	}
 
 	/**
