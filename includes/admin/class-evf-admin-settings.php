@@ -932,14 +932,39 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 							$is_connected = false;
 							if ( isset( $item['is_enabled'] ) ) {
 								$is_connected = $item['is_enabled'];
-							} elseif ( isset( $item['connection_check'] ) && is_array( $item['connection_check'] ) ) {
+							} elseif ( isset( $item['connection_check'] ) ) {
+								$connection_check = $item['connection_check'];
 
-								$is_connected = true;
-								foreach ( $item['connection_check'] as $field_id ) {
-									$field_value = get_option( $field_id, '' );
-									if ( empty( $field_value ) ) {
-										$is_connected = false;
-										break;
+								// Handle grouped checks (test OR live credentials)
+								if ( isset( $connection_check['groups'] ) && is_array( $connection_check['groups'] ) ) {
+									$mode         = isset( $connection_check['mode'] ) ? $connection_check['mode'] : 'any_group';
+									$is_connected = false;
+
+									foreach ( $connection_check['groups'] as $group_name => $group_fields ) {
+										$group_complete = true;
+										foreach ( $group_fields as $field_id ) {
+											$field_value = get_option( $field_id, '' );
+											if ( empty( $field_value ) ) {
+												$group_complete = false;
+												break;
+											}
+										}
+
+										if ( $group_complete ) {
+											$is_connected = true;
+											if ( $mode === 'any_group' ) {
+												break;
+											}
+										}
+									}
+								} elseif ( is_array( $connection_check ) ) {
+									$is_connected = true;
+									foreach ( $connection_check as $field_id ) {
+										$field_value = get_option( $field_id, '' );
+										if ( empty( $field_value ) ) {
+											$is_connected = false;
+											break;
+										}
 									}
 								}
 							}
