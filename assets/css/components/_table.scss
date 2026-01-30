@@ -429,6 +429,82 @@
 		.tablenav-pages {
 			display: none;
 		}
+
+		// Move form dropdown, filter, and export buttons to the right
+		.actions:has(#filter-by-form) {
+			margin-left: auto;
+			order: 2;
+			gap: 10px;
+		}
+	}
+
+	// Form dropdown select styling (consistent with bulk actions)
+	#filter-by-form {
+		display: flex;
+		width: 170px;
+		flex-direction: column;
+		justify-content: center;
+		align-items: flex-start;
+		gap: 8px;
+		height: 36px;
+		padding: 0 32px 0 12px;
+		border: 1px solid #e1e1e1 !important;
+		border-radius: 6px;
+		background: $color-white;
+		color: #374151;
+		font-size: 14px;
+		line-height: 1;
+		cursor: pointer;
+		transition:
+			border-color 0.15s ease,
+			box-shadow 0.15s ease;
+		appearance: none;
+		box-sizing: border-box;
+		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+		background-position: right 8px center;
+		background-repeat: no-repeat;
+		background-size: 20px;
+		min-width: auto;
+
+		&:hover {
+			border-color: #e1e1e1 !important;
+		}
+
+		&:focus {
+			outline: none;
+			border-color: #e1e1e1 !important;
+			box-shadow: 0 0 0 3px rgba(126, 59, 208, 0.1);
+		}
+	}
+
+	// Filter and Export CSV button styling (consistent with apply button)
+	#post-query-submit,
+	#export-csv-submit {
+		display: flex;
+		height: 36px;
+		padding: 8px 14px;
+		justify-content: center;
+		align-items: center;
+		gap: 6px;
+		border-radius: 3px;
+		border: 1px solid #7545bb !important;
+		background: #faf8fc;
+		color: #374151;
+		font-size: 14px;
+		font-weight: 500;
+		line-height: 1;
+		cursor: pointer;
+		transition: all 0.15s ease;
+
+		&:hover {
+			border-color: #7545bb !important;
+			background: lighten($everestforms, 48%);
+			color: $everestforms;
+		}
+
+		&:active {
+			transform: scale(0.98);
+		}
 	}
 
 	&.bottom {
