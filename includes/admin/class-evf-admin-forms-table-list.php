@@ -10,14 +10,14 @@ use EverestForms\Helpers\FormHelper;
 
 defined( 'ABSPATH' ) || exit;
 
-if ( ! class_exists( 'WP_List_Table' ) ) {
-	require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
+if ( ! class_exists( 'EVF_Base_List_Table' ) ) {
+	require_once dirname( __FILE__ ) . '/class-evf-base-list-table.php';
 }
 
 /**
  * Forms table list class.
  */
-class EVF_Admin_Forms_Table_List extends WP_List_Table {
+class EVF_Admin_Forms_Table_List extends EVF_Base_List_Table {
 
 	/**
 	 * Initialize the form table list.

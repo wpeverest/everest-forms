@@ -8,14 +8,14 @@
 
 defined( 'ABSPATH' ) || exit;
 
-if ( ! class_exists( 'WP_List_Table' ) ) {
-	require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
+if ( ! class_exists( 'EVF_Base_List_Table' ) ) {
+	require_once __DIR__ . '/class-evf-base-list-table.php';
 }
 
 /**
  * Entries table list class.
  */
-class EVF_Admin_Entries_Table_List extends WP_List_Table {
+class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 
 	/**
 	 * Form ID.
@@ -100,12 +100,11 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	 * @return array
 	 */
 	public function get_columns() {
-		$columns            = array();
-		$columns['cb']      = '<input type="checkbox" />';
-		$columns            = apply_filters( 'everest_forms_add_extra_columns', $columns );
-		$columns            = apply_filters( 'everest_forms_entries_table_form_fields_columns', $this->get_columns_form_fields( $columns ), $this->form_id, $this->form_data );
-		$columns['date']    = esc_html__( 'Date Created', 'everest-forms' );
-		$columns['actions'] = esc_html__( 'Actions', 'everest-forms' );
+		$columns         = array();
+		$columns['cb']   = '<input type="checkbox" />';
+		$columns         = apply_filters( 'everest_forms_add_extra_columns', $columns );
+		$columns         = apply_filters( 'everest_forms_entries_table_form_fields_columns', $this->get_columns_form_fields( $columns ), $this->form_id, $this->form_data );
+		$columns['date'] = esc_html__( 'Date Created', 'everest-forms' );
 		// Columns Adjustment Settings.
 		if ( defined( 'EFP_VERSION' ) ) {
 			$columns['more'] = '<a href="#" class="everest-forms-entries-setting" title="' . esc_attr__( 'More Options', 'everest-forms' ) . '" data-evf-form_id="' . $this->form_id . '"><i class="dashicons dashicons-admin-generic"></i></a>';
@@ -312,12 +311,12 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 	}
 
 	/**
-	 * Render the actions column.
+	 * Get row actions for an entry.
 	 *
 	 * @param  object $entry Entry object.
-	 * @return string
+	 * @return array
 	 */
-	public function column_actions( $entry ) {
+	protected function get_row_actions( $entry ) {
 		$actions = array();
 		$status  = isset( $_GET['status'] ) ? sanitize_text_field( wp_unslash( $_GET['status'] ) ) : '';
 
@@ -409,7 +408,63 @@ class EVF_Admin_Entries_Table_List extends WP_List_Table {
 			}
 		}
 
-		return implode( ' <span class="sep">|</span> ', apply_filters( 'everest_forms_entry_table_actions', $actions, $entry ) );
+		return apply_filters( 'everest_forms_entry_table_actions', $actions, $entry );
+	}
+
+	/**
+	 * Render the actions column.
+	 *
+	 * @param  object $entry Entry object.
+	 * @return string
+	 */
+	public function column_actions( $entry ) {
+		$actions = $this->get_row_actions( $entry );
+		return implode( ' <span class="sep">|</span> ', $actions );
+	}
+
+	/**
+	 * Handle row actions for the primary column.
+	 *
+	 * @param object $entry       Entry object.
+	 * @param string $column_name Current column name.
+	 * @param string $primary     Primary column name.
+	 * @return string
+	 */
+	protected function handle_row_actions( $entry, $column_name, $primary ) {
+		if ( $primary !== $column_name ) {
+			return '';
+		}
+
+		$actions = $this->get_row_actions( $entry );
+		return $this->row_actions( $actions, false );
+	}
+
+	/**
+	 * Get the name of the primary column.
+	 *
+	 * @return string
+	 */
+	protected function get_primary_column_name() {
+		$columns = $this->get_columns();
+
+		unset( $columns['cb'], $columns['actions'], $columns['more'] );
+
+		$primary = '';
+		if ( ! empty( $columns ) ) {
+			foreach ( $columns as $column_key => $column_name ) {
+				if ( strpos( $column_key, 'evf_field_' ) === 0 ) {
+					$primary = $column_key;
+					break;
+				}
+			}
+
+			if ( empty( $primary ) ) {
+				reset( $columns );
+				$primary = key( $columns );
+			}
+		}
+
+		return $primary;
 	}
 
 	/**
