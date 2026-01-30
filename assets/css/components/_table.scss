@@ -42,7 +42,7 @@
 	border-collapse: separate;
 	border-spacing: 0;
 	background: $color-white;
-	border-radius: 8px;
+	border-radius: 5px;
 	border-top: 1px solid #e1e1e1 !important;
 	border-bottom: 1px solid #e1e1e1 !important;
 	border-left: none;
@@ -73,11 +73,11 @@
 			position: relative;
 
 			&:first-child {
-				border-top-left-radius: 8px;
+				border-top-left-radius: 5px;
 			}
 
 			&:last-child {
-				border-top-right-radius: 8px;
+				border-top-right-radius: 5px;
 			}
 
 			&.sortable {
@@ -139,12 +139,20 @@
 			border-bottom: 1px solid #e1e1e1 !important;
 			position: relative;
 
+			// Alternating row colors - starting with #FAF8FC
+			&:nth-child(odd) {
+				background: #faf8fc;
+			}
+
+			&:nth-child(even) {
+				background: #fff;
+			}
+
 			&:last-child {
 				border-bottom: none;
 			}
 
 			&:hover {
-				background: transparent;
 				box-shadow: 0 2px 4px rgba(126, 59, 208, 0.04);
 
 				.row-actions {
@@ -201,11 +209,11 @@
 
 		tr:last-child {
 			td:first-child {
-				border-bottom-left-radius: 8px;
+				border-bottom-left-radius: 5px;
 			}
 
 			td:last-child {
-				border-bottom-right-radius: 8px;
+				border-bottom-right-radius: 5px;
 			}
 		}
 
@@ -223,7 +231,7 @@
 			line-height: normal;
 			vertical-align: middle;
 			border: none;
-			background: #faf8fc;
+			background: transparent;
 
 			&.check-column {
 				width: 48px;
@@ -489,7 +497,7 @@
 		border-radius: 3px;
 		border: 1px solid #7545bb !important;
 		background: #faf8fc;
-		color: #374151;
+		color: $everestforms;
 		font-size: 14px;
 		font-weight: 500;
 		line-height: 1;
@@ -705,7 +713,7 @@
 		border-radius: 3px;
 		border: 1px solid #7545bb !important;
 		background: #faf8fc;
-		color: #374151;
+		color: $everestforms;
 		font-size: 14px;
 		font-weight: 500;
 		line-height: 1;
