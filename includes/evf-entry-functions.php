@@ -1,6 +1,6 @@
 <?php
 /**
- * EverestForms Entry Functions
+ * EverestForms Entry Functions - FIXED for All Forms View
  *
  * @package EverestForms\Functions
  * @since   1.1.0
@@ -148,13 +148,15 @@ function evf_search_entries( $args ) {
 		$args['cap'] = 'everest_forms_view_form_entries';
 	}
 
-	// Check if form ID is valid for entries.
-	if ( ! array_key_exists( $args['form_id'], evf_get_all_forms() ) ) {
+	// FIXED: Only check if form ID is valid when a specific form is requested
+	// Skip this check for "All Forms" view (form_id = 0)
+	if ( ! empty( $args['form_id'] ) && ! array_key_exists( $args['form_id'], evf_get_all_forms() ) ) {
 		return array();
 	}
 
-	// Check permission if we can view form entries.
-	if ( ! empty( $args['cap'] ) && ! current_user_can( $args['cap'], $args['form_id'] ) ) {
+	// FIXED: Check permission only when a specific form is requested
+	// Skip capability check for "All Forms" view (form_id = 0)
+	if ( ! empty( $args['form_id'] ) && ! empty( $args['cap'] ) && ! current_user_can( $args['cap'], $args['form_id'] ) ) {
 		return array();
 	}
 
@@ -221,16 +223,16 @@ function evf_search_entries( $args ) {
 		}
 	}
 
-		// Removing Draft Entry (Save and Contd Add-on).
+	// Removing Draft Entry (Save and Contd Add-on).
 	if ( empty( $args['status'] ) || 'draft' !== $args['status'] ) {
 		$query[] = $wpdb->prepare( 'AND `status` <> %s', 'draft' );
 	}
 
-		$valid_fields = array( 'date', 'form_id', 'title', 'status' );
-		$orderby      = in_array( $args['orderby'], $valid_fields, true ) ? $args['orderby'] : 'entry_id';
-		$order        = 'DESC' === strtoupper( $args['order'] ) ? 'DESC' : 'ASC';
-		$orderby_sql  = sanitize_sql_orderby( "{$orderby} {$order}" );
-		$query[]      = "ORDER BY {$orderby_sql}";
+	$valid_fields = array( 'date', 'form_id', 'title', 'status' );
+	$orderby      = in_array( $args['orderby'], $valid_fields, true ) ? $args['orderby'] : 'entry_id';
+	$order        = 'DESC' === strtoupper( $args['order'] ) ? 'DESC' : 'ASC';
+	$orderby_sql  = sanitize_sql_orderby( "{$orderby} {$order}" );
+	$query[]      = "ORDER BY {$orderby_sql}";
 
 	if ( -1 < $args['limit'] ) {
 		$query[] = $wpdb->prepare( 'LIMIT %d', absint( $args['limit'] ) );
@@ -240,19 +242,19 @@ function evf_search_entries( $args ) {
 		$query[] = $wpdb->prepare( 'OFFSET %d', absint( $args['offset'] ) );
 	}
 
-		$results = $wpdb->get_results( implode( ' ', $query ), ARRAY_A ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+	$results = $wpdb->get_results( implode( ' ', $query ), ARRAY_A ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 
-		$ids = wp_list_pluck( $results, 'entry_id' );
+	$ids = wp_list_pluck( $results, 'entry_id' );
 
-		return $ids;
+	return $ids;
 }
 
-	/**
-	 * Get total entries counts by status.
-	 *
-	 * @param  int $form_id Form ID.
-	 * @return array
-	 */
+/**
+ * Get total entries counts by status.
+ *
+ * @param  int $form_id Form ID.
+ * @return array
+ */
 function evf_get_count_entries_by_status( $form_id ) {
 	$form_data = evf()->form->get( $form_id, array( 'content_only' => true ) );
 	$statuses  = array_keys( evf_get_entry_statuses( $form_data ) );
@@ -275,15 +277,15 @@ function evf_get_count_entries_by_status( $form_id ) {
 	return $counts;
 }
 
-	/**
-	 * Get total next entries counts by last entry.
-	 *
-	 * @since 1.5.0
-	 *
-	 * @param  int $form_id    Form ID.
-	 * @param  int $last_entry Last Form ID.
-	 * @return int[]
-	 */
+/**
+ * Get total next entries counts by last entry.
+ *
+ * @since 1.5.0
+ *
+ * @param  int $form_id    Form ID.
+ * @param  int $last_entry Last Form ID.
+ * @return int[]
+ */
 function evf_get_count_entries_by_last_entry( $form_id, $last_entry ) {
 	global $wpdb;
 
@@ -297,18 +299,18 @@ function evf_get_count_entries_by_last_entry( $form_id, $last_entry ) {
 	return $results;
 }
 
-	/**
-	 * Get all the entries by form id between the start and end date.
-	 *
-	 * @since 1.7.0
-	 *
-	 * @param int    $form_id    Form ID.
-	 * @param string $start_date Start date.
-	 * @param string $end_date   End date.
-	 * @param bool   $hide_trashed   Exclude trashed entries.
-	 *
-	 * @return array of entries by form ID.
-	 */
+/**
+ * Get all the entries by form id between the start and end date.
+ *
+ * @since 1.7.0
+ *
+ * @param int    $form_id    Form ID.
+ * @param string $start_date Start date.
+ * @param string $end_date   End date.
+ * @param bool   $hide_trashed   Exclude trashed entries.
+ *
+ * @return array of entries by form ID.
+ */
 function evf_get_entries_by_form_id( $form_id, $start_date = '', $end_date = '', $hide_trashed = false ) {
 	global $wpdb;
 

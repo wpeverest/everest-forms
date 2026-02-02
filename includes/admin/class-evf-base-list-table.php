@@ -107,6 +107,9 @@ abstract class EVF_Base_List_Table extends WP_List_Table {
 	 * @return string
 	 */
 	public function column_cb( $item ) {
+		if ( ! isset( $item->ID ) ) {
+			return '';
+		}
 		return sprintf( '<input type="checkbox" name="%1$s[]" value="%2$s" />', $this->_args['singular'], $item->ID );
 	}
 
@@ -166,6 +169,173 @@ abstract class EVF_Base_List_Table extends WP_List_Table {
 	}
 
 	/**
+	 * Get the current URL with sanitized server variables.
+	 *
+	 * @return string Current URL.
+	 */
+	protected function get_current_url() {
+		$http_host   = isset( $_SERVER['HTTP_HOST'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_HOST'] ) ) : '';
+		$request_uri = isset( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
+
+		if ( empty( $http_host ) || empty( $request_uri ) ) {
+			return admin_url();
+		}
+
+		$current_url          = set_url_scheme( 'http://' . $http_host . $request_uri );
+		$removable_query_args = wp_removable_query_args();
+
+		return remove_query_arg( $removable_query_args, $current_url );
+	}
+
+	/**
+	 * Get the display text for pagination showing current range of items.
+	 *
+	 * @param int $current     Current page number.
+	 * @param int $per_page    Number of items per page.
+	 * @param int $total_items Total number of items.
+	 * @return string HTML output for displaying item range.
+	 */
+	protected function get_pagination_display_text( $current, $per_page, $total_items ) {
+		$start = ( ( $current - 1 ) * $per_page ) + 1;
+		$end   = min( $current * $per_page, $total_items );
+
+		return '<span class="displaying-num">' . sprintf(
+			/* translators: 1: start number, 2: end number, 3: total number */
+			esc_html__( 'Showing %1$s-%2$s of %3$s entries', 'everest-forms' ),
+			number_format_i18n( $start ),
+			number_format_i18n( $end ),
+			number_format_i18n( $total_items )
+		) . '</span>';
+	}
+
+	/**
+	 * Get first and last page navigation buttons.
+	 *
+	 * @param int    $current     Current page number.
+	 * @param int    $total_pages Total number of pages.
+	 * @param string $current_url Current URL without pagination args.
+	 * @return array Array of HTML strings for navigation buttons.
+	 */
+	protected function get_first_last_buttons( $current, $total_pages, $current_url ) {
+		$buttons = array();
+
+		// First page button.
+		if ( 1 === $current ) {
+			$buttons['first'] = '<span class="tablenav-pages-navspan button disabled first-page" aria-hidden="true" title="' . esc_attr__( 'First page', 'everest-forms' ) . '">&laquo;</span>';
+		} else {
+			$buttons['first'] = sprintf(
+				"<a class='first-page button' href='%s' title='%s'><span class='screen-reader-text'>%s</span><span aria-hidden='true'>%s</span></a>",
+				esc_url( add_query_arg( 'paged', 1, $current_url ) ),
+				esc_attr__( 'First page', 'everest-forms' ),
+				esc_html__( 'First page', 'everest-forms' ),
+				'&laquo;'
+			);
+		}
+
+		// Last page button.
+		if ( $total_pages === $current ) {
+			$buttons['last'] = '<span class="tablenav-pages-navspan button disabled last-page" aria-hidden="true" title="' . esc_attr__( 'Last page', 'everest-forms' ) . '">&raquo;</span>';
+		} else {
+			$buttons['last'] = sprintf(
+				"<a class='last-page button' href='%s' title='%s'><span class='screen-reader-text'>%s</span><span aria-hidden='true'>%s</span></a>",
+				esc_url( add_query_arg( 'paged', $total_pages, $current_url ) ),
+				esc_attr__( 'Last page', 'everest-forms' ),
+				esc_html__( 'Last page', 'everest-forms' ),
+				'&raquo;'
+			);
+		}
+
+		return $buttons;
+	}
+
+	/**
+	 * Get previous and next page navigation buttons.
+	 *
+	 * @param int    $current     Current page number.
+	 * @param int    $total_pages Total number of pages.
+	 * @param string $current_url Current URL without pagination args.
+	 * @return array Array of HTML strings for navigation buttons.
+	 */
+	protected function get_prev_next_buttons( $current, $total_pages, $current_url ) {
+		$buttons = array();
+
+		// Previous page button.
+		if ( 1 === $current ) {
+			$buttons['prev'] = '<span class="tablenav-pages-navspan button disabled" aria-hidden="true">&lsaquo;</span>';
+		} else {
+			$buttons['prev'] = sprintf(
+				"<a class='prev-page button' href='%s'><span class='screen-reader-text'>%s</span><span aria-hidden='true'>%s</span></a>",
+				esc_url( add_query_arg( 'paged', max( 1, $current - 1 ), $current_url ) ),
+				esc_html__( 'Previous page', 'everest-forms' ),
+				'&lsaquo;'
+			);
+		}
+
+		// Next page button.
+		if ( $total_pages === $current ) {
+			$buttons['next'] = '<span class="tablenav-pages-navspan button disabled" aria-hidden="true">&rsaquo;</span>';
+		} else {
+			$buttons['next'] = sprintf(
+				"<a class='next-page button' href='%s'><span class='screen-reader-text'>%s</span><span aria-hidden='true'>%s</span></a>",
+				esc_url( add_query_arg( 'paged', min( $total_pages, $current + 1 ), $current_url ) ),
+				esc_html__( 'Next page', 'everest-forms' ),
+				'&rsaquo;'
+			);
+		}
+
+		return $buttons;
+	}
+
+	/**
+	 * Get numbered page links for pagination.
+	 *
+	 * @param int    $current     Current page number.
+	 * @param int    $total_pages Total number of pages.
+	 * @param string $current_url Current URL without pagination args.
+	 * @return array Array of HTML strings for page number links.
+	 */
+	protected function get_page_number_links( $current, $total_pages, $current_url ) {
+		$page_links = array();
+		$mid_size   = 2;
+		$end_size   = 1;
+
+		for ( $n = 1; $n <= $total_pages; $n++ ) {
+			$show_link = false;
+
+			// Show first and last pages.
+			if ( $n <= $end_size || $n > $total_pages - $end_size ) {
+				$show_link = true;
+			}
+
+			// Show pages around current page.
+			if ( $n >= $current - $mid_size && $n <= $current + $mid_size ) {
+				$show_link = true;
+			}
+
+			if ( $show_link ) {
+				if ( $n === $current ) {
+					$page_links[] = sprintf(
+						"<span class='page-numbers current' aria-current='page'>%s</span>",
+						number_format_i18n( $n )
+					);
+				} else {
+					$page_links[] = sprintf(
+						"<a class='page-numbers' href='%s' aria-label='%s'>%s</a>",
+						esc_url( add_query_arg( 'paged', $n, $current_url ) ),
+						/* translators: %s: page number */
+						esc_attr( sprintf( __( 'Page %s', 'everest-forms' ), number_format_i18n( $n ) ) ),
+						number_format_i18n( $n )
+					);
+				}
+			} elseif ( ! empty( $page_links ) && strpos( $page_links[ count( $page_links ) - 1 ], 'dots' ) === false ) {
+				$page_links[] = '<span class="page-numbers dots" aria-hidden="true">...</span>';
+			}
+		}
+
+		return $page_links;
+	}
+
+	/**
 	 * Display the pagination.
 	 *
 	 * Enhanced pagination with numbered page links, first/last buttons, and items per page selector.
@@ -190,103 +360,31 @@ abstract class EVF_Base_List_Table extends WP_List_Table {
 			$infinite_scroll = $this->_pagination_args['infinite_scroll'];
 		}
 
-		$current              = $this->get_pagenum();
-		$removable_query_args = wp_removable_query_args();
-		$current_url          = set_url_scheme( 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-		$current_url          = remove_query_arg( $removable_query_args, $current_url );
+		$current     = $this->get_pagenum();
+		$per_page    = $this->_pagination_args['per_page'];
+		$current_url = $this->get_current_url();
 
-		$per_page = $this->_pagination_args['per_page'];
-		$start    = ( ( $current - 1 ) * $per_page ) + 1;
-		$end      = min( $current * $per_page, $total_items );
+		// Get display text showing current range.
+		$output = $this->get_pagination_display_text( $current, $per_page, $total_items );
 
-		$output = '<span class="displaying-num">' . sprintf(
-			/* translators: 1: start number, 2: end number, 3: total number */
-			esc_html__( 'Showing %1$s-%2$s of %3$s entries', 'everest-forms' ),
-			number_format_i18n( $start ),
-			number_format_i18n( $end ),
-			number_format_i18n( $total_items )
-		) . '</span>';
-
+		// Build page links array.
 		$page_links = array();
 
-		// First page button.
-		if ( 1 === $current ) {
-			$page_links[] = '<span class="tablenav-pages-navspan button disabled first-page" aria-hidden="true" title="' . esc_attr__( 'First page', 'everest-forms' ) . '">&laquo;</span>';
-		} else {
-			$page_links[] = sprintf(
-				"<a class='first-page button' href='%s' title='%s'><span class='screen-reader-text'>%s</span><span aria-hidden='true'>%s</span></a>",
-				esc_url( add_query_arg( 'paged', 1, $current_url ) ),
-				esc_attr__( 'First page', 'everest-forms' ),
-				esc_html__( 'First page', 'everest-forms' ),
-				'&laquo;'
-			);
-		}
+		// Get first/last buttons.
+		$first_last   = $this->get_first_last_buttons( $current, $total_pages, $current_url );
+		$page_links[] = $first_last['first'];
 
-		// Previous page button.
-		if ( 1 === $current ) {
-			$page_links[] = '<span class="tablenav-pages-navspan button disabled" aria-hidden="true">&lsaquo;</span>';
-		} else {
-			$page_links[] = sprintf(
-				"<a class='prev-page button' href='%s'><span class='screen-reader-text'>%s</span><span aria-hidden='true'>%s</span></a>",
-				esc_url( add_query_arg( 'paged', max( 1, $current - 1 ), $current_url ) ),
-				esc_html__( 'Previous page', 'everest-forms' ),
-				'&lsaquo;'
-			);
-		}
+		// Get prev/next buttons.
+		$prev_next    = $this->get_prev_next_buttons( $current, $total_pages, $current_url );
+		$page_links[] = $prev_next['prev'];
 
-		$mid_size = 2;
-		$end_size = 1;
+		// Get numbered page links.
+		$number_links = $this->get_page_number_links( $current, $total_pages, $current_url );
+		$page_links   = array_merge( $page_links, $number_links );
 
-		for ( $n = 1; $n <= $total_pages; $n++ ) {
-			$show_link = false;
-
-			if ( $n <= $end_size || $n > $total_pages - $end_size ) {
-				$show_link = true;
-			}
-
-			if ( $n >= $current - $mid_size && $n <= $current + $mid_size ) {
-				$show_link = true;
-			}
-
-			if ( $show_link ) {
-				if ( $n === $current ) {
-					$page_links[] = sprintf( "<span class='page-numbers current'>%s</span>", number_format_i18n( $n ) );
-				} else {
-					$page_links[] = sprintf(
-						"<a class='page-numbers' href='%s'>%s</a>",
-						esc_url( add_query_arg( 'paged', $n, $current_url ) ),
-						number_format_i18n( $n )
-					);
-				}
-			} elseif ( ! $show_link && isset( $page_links[ count( $page_links ) - 1 ] ) && strpos( $page_links[ count( $page_links ) - 1 ], 'dots' ) === false ) {
-				$page_links[] = '<span class="page-numbers dots">...</span>';
-			}
-		}
-
-		// Next page button.
-		if ( $total_pages === $current ) {
-			$page_links[] = '<span class="tablenav-pages-navspan button disabled" aria-hidden="true">&rsaquo;</span>';
-		} else {
-			$page_links[] = sprintf(
-				"<a class='next-page button' href='%s'><span class='screen-reader-text'>%s</span><span aria-hidden='true'>%s</span></a>",
-				esc_url( add_query_arg( 'paged', min( $total_pages, $current + 1 ), $current_url ) ),
-				esc_html__( 'Next page', 'everest-forms' ),
-				'&rsaquo;'
-			);
-		}
-
-		// Last page button.
-		if ( $total_pages === $current ) {
-			$page_links[] = '<span class="tablenav-pages-navspan button disabled last-page" aria-hidden="true" title="' . esc_attr__( 'Last page', 'everest-forms' ) . '">&raquo;</span>';
-		} else {
-			$page_links[] = sprintf(
-				"<a class='last-page button' href='%s' title='%s'><span class='screen-reader-text'>%s</span><span aria-hidden='true'>%s</span></a>",
-				esc_url( add_query_arg( 'paged', $total_pages, $current_url ) ),
-				esc_attr__( 'Last page', 'everest-forms' ),
-				esc_html__( 'Last page', 'everest-forms' ),
-				'&raquo;'
-			);
-		}
+		// Add next and last buttons.
+		$page_links[] = $prev_next['next'];
+		$page_links[] = $first_last['last'];
 
 		$pagination_links_class = 'pagination-links';
 		if ( ! empty( $infinite_scroll ) ) {

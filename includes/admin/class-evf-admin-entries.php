@@ -1,6 +1,6 @@
 <?php
 /**
- * EverestForms Admin Entries Class
+ * EverestForms Admin Entries Class - All Forms Support
  *
  * @package EverestForms\Admin
  * @since   1.1.0
@@ -48,10 +48,20 @@ class EVF_Admin_Entries {
 	 * Table list output.
 	 */
 	private static function table_list_output() {
-		global $entries_table_list;
+		global $entries_table_list, $wpdb;
 
-		// Get the entries IDs.
-		$entry_ids = evf_get_entries_ids( $entries_table_list->form_id );
+		// Get form_id (0 for All Forms view)
+		$form_id = isset( $_REQUEST['form_id'] ) ? absint( $_REQUEST['form_id'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification
+
+		// Get the entries IDs based on form_id
+		if ( $form_id > 0 ) {
+			// Specific form: use existing function
+			$entry_ids = evf_get_entries_ids( $form_id );
+		} else {
+			// All Forms: get all entries
+			$results   = $wpdb->get_col( "SELECT entry_id FROM {$wpdb->prefix}evf_entries WHERE status != 'trash' ORDER BY entry_id DESC" );
+			$entry_ids = array_map( 'intval', $results );
+		}
 
 		$entries_table_list->process_bulk_action();
 		$entries_table_list->prepare_items();
@@ -61,13 +71,13 @@ class EVF_Admin_Entries {
 		<div id="everest-forms-entries-list" class="wrap">
 			<?php if ( $use_react_header ) : ?>
 				<div id="evf-react-header-root" data-active-menu="entries"></div>
-				<?php endif; ?>
-				<?php settings_errors(); ?>
-		<?php do_action( 'everest_forms_before_entry_list', $entries_table_list ); ?>
+			<?php endif; ?>
+			<?php settings_errors(); ?>
+			<?php do_action( 'everest_forms_before_entry_list', $entries_table_list ); ?>
 
-		<?php if ( 0 < count( $entry_ids ) ) : ?>
+			<?php if ( 0 < count( $entry_ids ) ) : ?>
 				<?php $entries_table_list->views(); ?>
-				<form id="entries-list" method="get" data-form-id="<?php echo absint( $entries_table_list->form_id ); ?>" data-last-entry-id="<?php echo absint( end( $entry_ids ) ); ?>">
+				<form id="entries-list" method="get" data-form-id="<?php echo absint( $entries_table_list->form_id ); ?>" data-last-entry-id="<?php echo ! empty( $entry_ids ) ? absint( end( $entry_ids ) ) : 0; ?>">
 					<input type="hidden" name="page" value="evf-entries" />
 					<?php if ( ! empty( $_REQUEST['form_id'] ) ) : // phpcs:ignore WordPress.Security.NonceVerification ?>
 						<input type="hidden" name="form_id" value="<?php echo absint( $_REQUEST['form_id'] ); // phpcs:ignore WordPress.Security.NonceVerification ?>" />
@@ -100,7 +110,7 @@ class EVF_Admin_Entries {
 				</div>
 			<?php endif; ?>
 		</div>
-			<?php
+		<?php
 	}
 
 	/**
@@ -381,7 +391,7 @@ class EVF_Admin_Entries {
 				/* translators:%s: User name of form entry */
 				$message = sprintf( __( 'Hey, %s', 'everest-forms' ), $name ) . '<br/>';
 				/* translators:%s: Form Entry Date */
-				$message .= '<br/>' . sprintf( __( 'We’re pleased to inform you that your form entry submitted on %s has been successfully approved.', 'everest-forms' ), $entry_date ) . '<br/>';
+				$message .= '<br/>' . sprintf( __( 'We\'re pleased to inform you that your form entry submitted on %s has been successfully approved.', 'everest-forms' ), $entry_date ) . '<br/>';
 				$message .= '<br/>' . __( 'Thank you for giving us your precious time.', 'everest-forms' ) . '<br/>';
 				/* translators:%s: Site Name*/
 				$message .= '<br/>' . sprintf( __( 'From %s', 'everest-forms' ), $site_name );
@@ -484,13 +494,13 @@ class EVF_Admin_Entries {
 				);
 			}
 
-				$update = $wpdb->update(
-					$wpdb->prefix . 'evf_entries',
-					array( 'status' => $status ),
-					array( 'entry_id' => $entry_id ),
-					array( '%s' ),
-					array( '%d' )
-				);
+			$update = $wpdb->update(
+				$wpdb->prefix . 'evf_entries',
+				array( 'status' => $status ),
+				array( 'entry_id' => $entry_id ),
+				array( '%s' ),
+				array( '%d' )
+			);
 		}
 
 		return $update;

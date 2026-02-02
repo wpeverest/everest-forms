@@ -1,6 +1,6 @@
 <?php
 /**
- * EverestForms Entries Table List
+ * EverestForms Entries Table List - Dual View Support
  *
  * @package EverestForms\Admin
  * @since   1.1.0
@@ -54,8 +54,12 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 
 		// Check that the user has created at least one form.
 		if ( ! empty( $this->forms ) ) {
-			$this->form_id   = ! empty( $_REQUEST['form_id'] ) ? absint( $_REQUEST['form_id'] ) : apply_filters( 'everest_forms_entry_list_default_form_id', key( $this->forms ) ); // phpcs:ignore WordPress.Security.NonceVerification
-			$this->form      = evf()->form->get( $this->form_id );
+			// FIXED: Set form_id to 0 for "All Forms" view by default
+			$this->form_id = ! empty( $_REQUEST['form_id'] ) ? absint( $_REQUEST['form_id'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification
+
+			// Get form data from first form (for structure/methods that need it)
+			$first_form_id   = key( $this->forms );
+			$this->form      = evf()->form->get( $first_form_id );
 			$this->form_data = ! empty( $this->form->post_content ) ? evf_decode( $this->form->post_content ) : '';
 		}
 
@@ -100,15 +104,26 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 	 * @return array
 	 */
 	public function get_columns() {
-		$columns         = array();
-		$columns['cb']   = '<input type="checkbox" />';
-		$columns         = apply_filters( 'everest_forms_add_extra_columns', $columns );
-		$columns         = apply_filters( 'everest_forms_entries_table_form_fields_columns', $this->get_columns_form_fields( $columns ), $this->form_id, $this->form_data );
-		$columns['date'] = esc_html__( 'Date Created', 'everest-forms' );
+		$columns       = array();
+		$columns['cb'] = '<input type="checkbox" />';
+		$columns       = apply_filters( 'everest_forms_add_extra_columns', $columns );
+
+		// STEP 1: All Forms view - Simple Entry + Form + Date columns
+		if ( 0 === $this->form_id ) {
+			$columns['entry'] = esc_html__( 'Entry', 'everest-forms' );
+			$columns['form']  = esc_html__( 'Form', 'everest-forms' );
+			$columns['date']  = esc_html__( 'Date Created', 'everest-forms' );
+		} else {
+			// STEP 2: Specific form - Show original dynamic columns
+			$columns         = apply_filters( 'everest_forms_entries_table_form_fields_columns', $this->get_columns_form_fields( $columns ), $this->form_id, $this->form_data );
+			$columns['date'] = esc_html__( 'Date Created', 'everest-forms' );
+		}
+
 		// Columns Adjustment Settings.
 		if ( defined( 'EFP_VERSION' ) ) {
 			$columns['more'] = '<a href="#" class="everest-forms-entries-setting" title="' . esc_attr__( 'More Options', 'everest-forms' ) . '" data-evf-form_id="' . $this->form_id . '"><i class="dashicons dashicons-admin-generic"></i></a>';
 		}
+
 		return apply_filters( 'everest_forms_entries_table_columns', $columns, $this->form_data );
 	}
 
@@ -222,7 +237,101 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 	}
 
 	/**
-	 * Show specific form fields.
+	 * Column for simplified "Entry" view (All Forms only)
+	 *
+	 * @param object $entry Entry object.
+	 * @return string
+	 */
+	public function column_entry( $entry ) {
+		if ( empty( $entry->meta ) ) {
+			return '<span class="na">&mdash;</span>';
+		}
+
+		// Skip system fields
+		$skip_fields = array( 'entry_id', 'form_id', 'user_id', 'user_device', 'user_ip_address', 'viewed', 'starred', 'status' );
+
+		// Find first non-empty field value
+		foreach ( $entry->meta as $key => $value ) {
+			// Skip system fields and fields starting with underscore
+			if ( in_array( $key, $skip_fields, true ) || strpos( $key, '_' ) === 0 ) {
+				continue;
+			}
+
+			// Process the value
+			$field_value = $this->process_field_value( $value );
+
+			if ( ! empty( $field_value ) && '&mdash;' !== $field_value ) {
+				return $field_value;
+			}
+		}
+
+		return '<span class="na">&mdash;</span>';
+	}
+
+	/**
+	 * Column for form name (All Forms view only)
+	 *
+	 * @param object $entry Entry object.
+	 * @return string
+	 */
+	public function column_form( $entry ) {
+		$form_title = get_the_title( $entry->form_id );
+
+		if ( empty( $form_title ) ) {
+			return '&mdash;';
+		}
+
+		return '<a href="' . esc_url( admin_url( 'admin.php?page=evf-entries&form_id=' . $entry->form_id ) ) . '">' . esc_html( $form_title ) . '</a>';
+	}
+
+	/**
+	 * Process field value for display
+	 *
+	 * @param mixed $value Field value.
+	 * @return string Processed value.
+	 */
+	private function process_field_value( $value ) {
+		if ( empty( $value ) ) {
+			return '&mdash;';
+		}
+
+		if ( evf_is_json( $value ) ) {
+			$field_value = json_decode( $value, true );
+			$value       = isset( $field_value['value'] ) ? $field_value['value'] : $value;
+		}
+
+		if ( is_serialized( $value ) ) {
+			$field_value = evf_maybe_unserialize( $value );
+			$field_label = ! empty( $field_value['label'] ) ? evf_clean( $field_value['label'] ) : $field_value;
+
+			if ( is_array( $field_label ) ) {
+				$value = implode( ', ', array_map( 'esc_html', $field_label ) );
+			} else {
+				$value = esc_html( $field_label );
+			}
+		}
+
+		if ( is_array( $value ) ) {
+			if ( isset( $value['label'] ) ) {
+				$value = is_array( $value['label'] ) ? implode( ', ', $value['label'] ) : $value['label'];
+			} else {
+				$value = implode( ', ', $value );
+			}
+		}
+
+		// Truncate long values
+		if ( false === strpos( $value, 'http' ) ) {
+			if ( strlen( $value ) > 100 ) {
+				$value = substr( $value, 0, 100 ) . '&hellip;';
+			}
+			$value = wp_strip_all_tags( trim( $value ) );
+		}
+
+		return $value;
+	}
+
+	/**
+	 * Show specific form fields (for specific form view).
 	 *
 	 * @param  object $entry Entry object.
 	 * @param  string $column_name Column Name.
@@ -296,6 +405,14 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 			case 'sn':
 				$position = array_search( $entry, $this->items );
 				$value    = $position + 1;
+				break;
+
+			case 'entry':
+				$value = $this->column_entry( $entry );
+				break;
+
+			case 'form':
+				$value = $this->column_form( $entry );
 				break;
 
 			default:
@@ -445,6 +562,12 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 	 * @return string
 	 */
 	protected function get_primary_column_name() {
+		// For All Forms view
+		if ( 0 === $this->form_id ) {
+			return 'entry';
+		}
+
+		// For specific form view - use existing logic
 		$columns = $this->get_columns();
 
 		unset( $columns['cb'], $columns['actions'], $columns['more'] );
@@ -500,17 +623,30 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 	 * @return array
 	 */
 	protected function get_views() {
-		$status_links  = array();
-		$num_entries   = evf_get_count_entries_by_status( $this->form_id );
+		$status_links = array();
+
+		// Get counts based on form_id
+		if ( 0 === $this->form_id ) {
+			$num_entries = $this->get_all_forms_entry_counts();
+		} else {
+			$num_entries = evf_get_count_entries_by_status( $this->form_id );
+		}
+
 		$total_entries = apply_filters( 'everest_forms_total_entries_count', (int) $num_entries['publish'], $num_entries, $this->form_id );
 		$spam_entries  = apply_filters( 'everest_forms_spam_total_entries_count', (int) $num_entries['spam'], $num_entries, $this->form_id );
 		$statuses      = array_keys( evf_get_entry_statuses( $this->form_data ) );
 		$class         = empty( $_REQUEST['status'] ) ? ' class="current"' : ''; // phpcs:ignore WordPress.Security.NonceVerification
 
+		$base_url = admin_url( 'admin.php?page=evf-entries' );
+		if ( $this->form_id > 0 ) {
+			$base_url = add_query_arg( 'form_id', $this->form_id, $base_url );
+		}
+
 		/* translators: %s: count */
-		$status_links['all'] = "<a href='admin.php?page=evf-entries&amp;form_id=$this->form_id'$class>" . sprintf( _nx( 'All <span class="count">(%s)</span>', 'All <span class="count">(%s)</span>', $total_entries, 'entries', 'everest-forms' ), number_format_i18n( $total_entries ) ) . '</a>';
+		$status_links['all'] = "<a href='" . esc_url( $base_url ) . "'$class>" . sprintf( _nx( 'All <span class="count">(%s)</span>', 'All <span class="count">(%s)</span>', $total_entries, 'entries', 'everest-forms' ), number_format_i18n( $total_entries ) ) . '</a>';
 		/* translators: %s: count */
-		$status_links['spam'] = "<a href='admin.php?page=evf-entries&amp;form_id=$this->form_id &amp;status=spam'$class>" . sprintf( _nx( 'Spam <span class="count">(%s)</span>', 'Spam <span class="count">(%s)</span>', $spam_entries, 'entries', 'everest-forms' ), number_format_i18n( $spam_entries ) ) . '</a>';
+		$spam_url             = add_query_arg( 'status', 'spam', $base_url );
+		$status_links['spam'] = "<a href='" . esc_url( $spam_url ) . "'$class>" . sprintf( _nx( 'Spam <span class="count">(%s)</span>', 'Spam <span class="count">(%s)</span>', $spam_entries, 'entries', 'everest-forms' ), number_format_i18n( $spam_entries ) ) . '</a>';
 
 		foreach ( $statuses as $status_name ) {
 			$class = '';
@@ -523,12 +659,38 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 				$class = ' class="current"';
 			}
 
-			$label = $this->get_status_label( $status_name, $num_entries[ $status_name ] );
+			$label      = $this->get_status_label( $status_name, $num_entries[ $status_name ] );
+			$status_url = add_query_arg( 'status', $status_name, $base_url );
 
-			$status_links[ $status_name ] = "<a href='admin.php?page=evf-entries&amp;form_id=$this->form_id&amp;status=$status_name'$class>" . sprintf( translate_nooped_plural( $label, $num_entries[ $status_name ] ), number_format_i18n( $num_entries[ $status_name ] ) ) . '</a>';
+			$status_links[ $status_name ] = "<a href='" . esc_url( $status_url ) . "'$class>" . sprintf( translate_nooped_plural( $label, $num_entries[ $status_name ] ), number_format_i18n( $num_entries[ $status_name ] ) ) . '</a>';
 		}
 
 		return apply_filters( 'everest_forms_entries_table_views', $status_links, $num_entries, $this->form_data );
+	}
+
+	/**
+	 * Get entry counts across all forms
+	 *
+	 * @return array
+	 */
+	private function get_all_forms_entry_counts() {
+		global $wpdb;
+
+		$counts = array(
+			'publish' => 0,
+			'spam'    => 0,
+			'trash'   => 0,
+			'pending' => 0,
+			'denied'  => 0,
+		);
+
+		$results = $wpdb->get_results( "SELECT status, COUNT(*) as count FROM {$wpdb->prefix}evf_entries GROUP BY status" );
+
+		foreach ( $results as $row ) {
+			$counts[ $row->status ] = (int) $row->count;
+		}
+
+		return $counts;
 	}
 
 	/**
@@ -578,166 +740,6 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 			}
 
 			switch ( $doaction ) {
-				case 'star':
-				case 'unstar':
-					foreach ( $entry_ids as $entry_id ) {
-						if ( EVF_Admin_Entries::update_status( $entry_id, $doaction ) ) {
-							++$count;
-						}
-					}
-
-					add_settings_error(
-						'bulk_action',
-						'bulk_action',
-						/* translators: %d: number of entries, %s: entries status */
-						sprintf( _n( '%1$d entry successfully %2$s.', '%1$d entries successfully %2$s.', $count, 'everest-forms' ), $count, 'star' === $doaction ? 'starred' : 'unstarred' ),
-						'updated'
-					);
-					break;
-				case 'read':
-				case 'unread':
-					foreach ( $entry_ids as $entry_id ) {
-						if ( EVF_Admin_Entries::update_status( $entry_id, $doaction ) ) {
-							++$count;
-						}
-					}
-
-					add_settings_error(
-						'bulk_action',
-						'bulk_action',
-						/* translators: %d: number of entries, %s: entries status */
-						sprintf( _n( '%1$d entry successfully marked as %2$s.', '%1$d entries successfully marked as %2$s.', $count, 'everest-forms' ), $count, $doaction ),
-						'updated'
-					);
-					break;
-				case 'approved':
-					foreach ( $entry_ids as $entry_id ) {
-						if ( EVF_Admin_Entries::update_status( $entry_id, $doaction ) ) {
-							$admin_email = esc_attr( get_bloginfo( 'admin_email' ) );
-							$header      = "Reply-To: {$admin_email} \r\n";
-							$header     .= 'Content-Type: text/html; charset=UTF-8';
-							$subject     = '';
-							$message     = '';
-
-							$entry      = evf_get_entry( $entry_id );
-							$entry_date = $entry->date_created;
-							$entry_data = $entry->meta;
-							$site_name  = get_option( 'blogname' );
-
-							$first_name = '';
-							$last_name  = '';
-							$email      = '';
-							$name       = '';
-
-							foreach ( $entry_data as $key => $value ) {
-								if ( preg_match( '/^name/', $key ) ) {
-									$name = $value;
-								}
-
-								if ( preg_match( '/^first_name_/', $key ) ) {
-									$first_name = $value;
-								}
-
-								if ( preg_match( '/^last_name_/', $key ) ) {
-									$last_name = $value;
-								}
-
-								if ( preg_match( '/^email/', $key ) ) {
-									$email = $value;
-								}
-
-								if ( '' === $name ) {
-									if ( ! empty( $first_name ) && ! empty( $last_name ) ) {
-										$name = $first_name . ' ' . $last_name;
-									} elseif ( ! empty( $first_name ) ) {
-										$name = $first_name;
-									} else {
-										$name = $last_name;
-									}
-								} else {
-									$name = $name;
-								}
-
-								$subject = apply_filters( 'everest_forms_entry_submission_approval_subject', esc_html__( 'Form Entry Approved', 'everest-forms' ) );
-								/* translators:%s: User name of form entry */
-								$message = sprintf( __( 'Hey, %s', 'everest-forms' ), $name ) . '<br/>';
-								/* translators:%s: Form Entry Date */
-								$message .= '<br/>' . sprintf( __( 'We’re pleased to inform you that your form entry submitted on %s has been successfully approved.', 'everest-forms' ), $entry_date ) . '<br/>';
-								$message .= '<br/>' . __( 'Thank you for giving us your precious time', 'everest-forms' ) . '<br/>';
-								/* translators:%s: Site Name */
-								$message .= '<br/>' . sprintf( __( 'From %s', 'everest-forms' ), $site_name );
-								$message  = apply_filters( 'everest_forms_entry_approval_message', $message, $name, $entry_date, $site_name );
-							}
-							$email_obj = new EVF_Emails();
-							$email_obj->send( $email, $subject, $message );
-							++$count;
-						}
-					}
-					break;
-				case 'denied':
-					foreach ( $entry_ids as $entry_id ) {
-						if ( EVF_Admin_Entries::update_status( $entry_id, $doaction ) ) {
-							$admin_email = esc_attr( get_bloginfo( 'admin_email' ) );
-							$header      = "Reply-To: {$admin_email} \r\n";
-							$header     .= 'Content-Type: text/html; charset=UTF-8';
-							$subject     = '';
-							$message     = '';
-
-							$entry      = evf_get_entry( $entry_id );
-							$entry_date = $entry->date_created;
-							$entry_data = $entry->meta;
-							$site_name  = get_option( 'blogname' );
-
-							$first_name = '';
-							$last_name  = '';
-							$email      = '';
-							$name       = '';
-
-							foreach ( $entry_data as $key => $value ) {
-								if ( preg_match( '/^name/', $key ) ) {
-									$name = $value;
-								}
-
-								if ( preg_match( '/^first_name_/', $key ) ) {
-									$first_name = $value;
-								}
-
-								if ( preg_match( '/^last_name_/', $key ) ) {
-									$last_name = $value;
-								}
-
-								if ( preg_match( '/^email/', $key ) ) {
-									$email = $value;
-								}
-
-								if ( '' === $name ) {
-									if ( ! empty( $first_name ) && ! empty( $last_name ) ) {
-										$name = $first_name . ' ' . $last_name;
-									} elseif ( ! empty( $first_name ) ) {
-										$name = $first_name;
-									} else {
-										$name = $last_name;
-									}
-								} else {
-									$name = $name;
-								}
-
-								$subject = apply_filters( 'everest_forms_entry_submission_denial_subject', esc_html__( 'Form Entry Denied', 'everest-forms' ) );
-								/* translators:%s: User name of form entry */
-								$message = sprintf( __( 'Hey, %s', 'everest-forms' ), $name ) . '<br/>';
-								/* translators:%s: Form Entry Date */
-								$message .= '<br/>' . sprintf( __( 'We regret to inform you that your form entry submitted on %s has been denied.', 'everest-forms' ), $entry_date ) . '<br/>';
-								$message .= '<br/>' . __( 'Thank you for giving us your precious time', 'everest-forms' ) . '<br/>';
-								/* translators:%s: Site Name */
-								$message .= '<br/>' . sprintf( __( 'From %s', 'everest-forms' ), $site_name );
-								$message  = apply_filters( 'everest_forms_entry_denial_message', $message, $name, $entry_date, $site_name );
-							}
-							$email_obj = new EVF_Emails();
-							$email_obj->send( $email, $subject, $message );
-							++$count;
-						}
-					}
-					break;
 				case 'trash':
 					foreach ( $entry_ids as $entry_id ) {
 						if ( EVF_Admin_Entries::update_status( $entry_id, 'trash' ) ) {
@@ -783,36 +785,6 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 						'updated'
 					);
 					break;
-				case 'spam':
-					foreach ( $entry_ids as $entry_id ) {
-						if ( EVF_Admin_Entries::update_status( $entry_id, 'spam' ) ) {
-							++$count;
-						}
-					}
-
-					add_settings_error(
-						'bulk_action',
-						'bulk_action',
-						/* translators: %d: number of entries */
-						sprintf( _n( '%d entry sent to spam.', '%d entries sent to Spam.', $count, 'everest-forms' ), $count ),
-						'updated'
-					);
-					break;
-				case 'unspam':
-					foreach ( $entry_ids as $entry_id ) {
-						if ( EVF_Admin_Entries::update_status( $entry_id, $doaction ) ) {
-							++$count;
-						}
-					}
-
-					add_settings_error(
-						'bulk_action',
-						'bulk_action',
-						/* translators: %d: number of entries */
-						sprintf( _n( '%d removed from spam.', '%d entries removed from spam.', $count, 'everest-forms' ), $count ),
-						'updated'
-					);
-					break;
 			}
 			$sendback = remove_query_arg( array( 'action', 'action2' ), $sendback );
 
@@ -830,7 +802,7 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 	 * @param string $which The location of the extra table nav markup.
 	 */
 	protected function extra_tablenav( $which ) {
-		$num_entries = evf_get_count_entries_by_status( $this->form_id );
+		$num_entries = ( 0 === $this->form_id ) ? $this->get_all_forms_entry_counts() : evf_get_count_entries_by_status( $this->form_id );
 		$show_export = isset( $_GET['status'] ) && 'trash' === $_GET['status'] ? false : true; // phpcs:ignore WordPress.Security.NonceVerification
 		?>
 		<div class="alignleft actions">
@@ -870,6 +842,7 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 		?>
 		<label for="filter-by-form" class="screen-reader-text"><?php esc_html_e( 'Filter by form', 'everest-forms' ); ?></label>
 		<select name="form_id" id="filter-by-form" class="evf-enhanced-normal-select" style="min-width: 200px;" data-placeholder="<?php esc_attr_e( 'Search form...', 'everest-forms' ); ?>">
+			<option value="0" <?php selected( $form_id, 0 ); ?>><?php esc_html_e( 'All Forms', 'everest-forms' ); ?></option>
 			<?php foreach ( $forms as $id => $form ) : ?>
 				<option value="<?php echo esc_attr( $id ); ?>" <?php selected( $form_id, $id ); ?>><?php echo esc_html( $form ); ?></option>
 			<?php endforeach; ?>
@@ -887,7 +860,7 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 		// Query args.
 		$args = array(
 			'status'  => 'publish',
-			'form_id' => $this->form_id,
+			'form_id' => $this->form_id,  // 0 for All Forms, specific ID for single form
 			'limit'   => $per_page,
 			'offset'  => $per_page * ( $current_page - 1 ),
 		);
