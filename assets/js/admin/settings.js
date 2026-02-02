@@ -87,149 +87,36 @@
 		return false;
 	});
 
-	// Show/hide based on reCAPTCHA type.
-	$(
-		'#evf-global-settings-recaptcha-v2, #evf-global-settings-recaptcha-v3, #evf-global-settings-hcaptcha, #evf-global-settings-cloudflare-turnstile',
-	)
-		.change(function () {
-			var recaptcha_v2_site_key = $(
-					'#everest_forms_recaptcha_v2_site_key',
-				).closest('.everest-forms-global-settings'),
-				recaptcha_v2_secret_key = $(
-					'#everest_forms_recaptcha_v2_secret_key',
-				).closest('.everest-forms-global-settings'),
-				recaptcha_v2_invisible_site_key = $(
+	// Handle invisible reCAPTCHA v2 toggle
+	$('input#everest_forms_recaptcha_v2_invisible')
+		.on('change', function () {
+			var v2_site_key = $('#everest_forms_recaptcha_v2_site_key').closest(
+					'.everest-forms-global-settings',
+				),
+				v2_secret_key = $('#everest_forms_recaptcha_v2_secret_key').closest(
+					'.everest-forms-global-settings',
+				),
+				v2_invisible_site_key = $(
 					'#everest_forms_recaptcha_v2_invisible_site_key',
 				).closest('.everest-forms-global-settings'),
-				recaptcha_v2_invisible_secret_key = $(
+				v2_invisible_secret_key = $(
 					'#everest_forms_recaptcha_v2_invisible_secret_key',
-				).closest('.everest-forms-global-settings'),
-				recaptcha_v2_invisible = $(
-					'#everest_forms_recaptcha_v2_invisible',
-				).closest('.everest-forms-global-settings'),
-				recaptcha_v3_site_key = $(
-					'#everest_forms_recaptcha_v3_site_key',
-				).closest('.everest-forms-global-settings'),
-				recaptcha_v3_secret_key = $(
-					'#everest_forms_recaptcha_v3_secret_key',
 				).closest('.everest-forms-global-settings');
-			recaptcha_v3_threshold_score = $(
-				'#everest_forms_recaptcha_v3_threshold_score',
-			).closest('.everest-forms-global-settings');
-			(hcaptcha_site_key = $(
-				'#everest_forms_recaptcha_hcaptcha_site_key',
-			).closest('.everest-forms-global-settings')),
-				(hcaptcha_secret_key = $(
-					'#everest_forms_recaptcha_hcaptcha_secret_key',
-				).closest('.everest-forms-global-settings'));
-			(turnstile_site_key = $(
-				'#everest_forms_recaptcha_turnstile_site_key',
-			).closest('.everest-forms-global-settings')),
-				(turnstile_secret_key = $(
-					'#everest_forms_recaptcha_turnstile_secret_key',
-				).closest('.everest-forms-global-settings'));
-			turnstile_theme = $('#everest_forms_recaptcha_turnstile_theme').closest(
-				'.everest-forms-global-settings',
-			);
 
 			if ($(this).is(':checked')) {
-				if ('v2' === $(this).val()) {
-					if ($('#everest_forms_recaptcha_v2_invisible').is(':checked')) {
-						recaptcha_v2_site_key.hide();
-						recaptcha_v2_secret_key.hide();
-						recaptcha_v2_invisible_site_key.show();
-						recaptcha_v2_invisible_secret_key.show();
-					} else {
-						recaptcha_v2_invisible_site_key.hide();
-						recaptcha_v2_invisible_secret_key.hide();
-						recaptcha_v2_site_key.show();
-						recaptcha_v2_secret_key.show();
-					}
-					recaptcha_v2_invisible.show();
-					recaptcha_v3_site_key.hide();
-					recaptcha_v3_secret_key.hide();
-					hcaptcha_site_key.hide();
-					hcaptcha_secret_key.hide();
-					turnstile_site_key.hide();
-					turnstile_secret_key.hide();
-					turnstile_theme.hide();
-					recaptcha_v3_threshold_score.hide();
-				} else if ('hcaptcha' === $(this).val()) {
-					recaptcha_v2_invisible.hide();
-					recaptcha_v2_invisible_site_key.hide();
-					recaptcha_v2_invisible_secret_key.hide();
-					recaptcha_v3_site_key.hide();
-					recaptcha_v3_secret_key.hide();
-					recaptcha_v3_threshold_score.hide();
-					recaptcha_v2_site_key.hide();
-					recaptcha_v2_secret_key.hide();
-					turnstile_site_key.hide();
-					turnstile_secret_key.hide();
-					turnstile_theme.hide();
-					hcaptcha_site_key.show();
-					hcaptcha_secret_key.show();
-				} else if ('turnstile' === $(this).val()) {
-					recaptcha_v2_site_key.hide();
-					recaptcha_v2_secret_key.hide();
-					recaptcha_v2_invisible.hide();
-					recaptcha_v2_invisible_site_key.hide();
-					recaptcha_v2_invisible_secret_key.hide();
-					recaptcha_v3_site_key.hide();
-					recaptcha_v3_secret_key.hide();
-					recaptcha_v3_threshold_score.hide();
-					hcaptcha_site_key.hide();
-					hcaptcha_secret_key.hide();
-					turnstile_site_key.show();
-					turnstile_secret_key.show();
-					turnstile_theme.show();
-				} else {
-					recaptcha_v2_site_key.hide();
-					recaptcha_v2_secret_key.hide();
-					recaptcha_v2_invisible.hide();
-					recaptcha_v2_invisible_site_key.hide();
-					recaptcha_v2_invisible_secret_key.hide();
-					hcaptcha_site_key.hide();
-					hcaptcha_secret_key.hide();
-					turnstile_site_key.hide();
-					turnstile_secret_key.hide();
-					turnstile_theme.hide();
-					recaptcha_v3_site_key.show();
-					recaptcha_v3_secret_key.show();
-					recaptcha_v3_threshold_score.show();
-				}
+				v2_site_key.hide();
+				v2_secret_key.hide();
+
+				v2_invisible_site_key.removeClass('everest-forms-hidden').show();
+				v2_invisible_secret_key.removeClass('everest-forms-hidden').show();
+			} else {
+				v2_site_key.show();
+				v2_secret_key.show();
+				v2_invisible_site_key.addClass('everest-forms-hidden').hide();
+				v2_invisible_secret_key.addClass('everest-forms-hidden').hide();
 			}
 		})
-		.change();
-
-	$('input#everest_forms_recaptcha_v2_invisible').change(function () {
-		if ($(this).is(':checked')) {
-			$('#everest_forms_recaptcha_v2_site_key')
-				.closest('.everest-forms-global-settings')
-				.hide();
-			$('#everest_forms_recaptcha_v2_secret_key')
-				.closest('.everest-forms-global-settings')
-				.hide();
-			$('#everest_forms_recaptcha_v2_invisible_site_key')
-				.closest('.everest-forms-global-settings')
-				.show();
-			$('#everest_forms_recaptcha_v2_invisible_secret_key')
-				.closest('.everest-forms-global-settings')
-				.show();
-		} else {
-			$('#everest_forms_recaptcha_v2_site_key')
-				.closest('.everest-forms-global-settings')
-				.show();
-			$('#everest_forms_recaptcha_v2_secret_key')
-				.closest('.everest-forms-global-settings')
-				.show();
-			$('#everest_forms_recaptcha_v2_invisible_site_key')
-				.closest('.everest-forms-global-settings')
-				.hide();
-			$('#everest_forms_recaptcha_v2_invisible_secret_key')
-				.closest('.everest-forms-global-settings')
-				.hide();
-		}
-	});
+		.trigger('change');
 
 	// Send Test Email.
 	$('.everest_forms_send_email_test').on('click', function (e) {

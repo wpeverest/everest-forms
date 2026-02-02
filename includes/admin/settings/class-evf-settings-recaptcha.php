@@ -194,7 +194,8 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 	 */
 	public function get_integration_settings() {
 		$recaptcha_type = get_option( 'everest_forms_recaptcha_type', 'v2' );
-		$invisible      = get_option( 'everest_forms_recaptcha_v2_invisible', 'no' );
+		error_log( print_r( $recaptcha_type, true ) );
+		$invisible = get_option( 'everest_forms_recaptcha_v2_invisible', 'no' );
 
 		$v2_enabled        = get_option( 'everest_forms_recaptcha_v2_enable', 'no' );
 		$v3_enabled        = get_option( 'everest_forms_recaptcha_v3_enable', 'no' );
@@ -228,6 +229,14 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 									'desc_tip' => true,
 								),
 								array(
+									'title'    => esc_html__( 'Invisible reCAPTCHA', 'everest-forms' ),
+									'type'     => 'toggle',
+									'desc'     => esc_html__( 'Enable Invisible reCAPTCHA.', 'everest-forms' ),
+									'id'       => 'everest_forms_recaptcha_v2_invisible',
+									'default'  => 'no',
+									'desc_tip' => true,
+								),
+								array(
 									'title'    => esc_html__( 'Site Key (reCAPTCHA V2)', 'everest-forms' ),
 									'type'     => 'text',
 									/* translators: %1$s - Google reCAPTCHA docs url */
@@ -243,14 +252,6 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 									'desc'     => sprintf( esc_html__( 'Please enter your secret key for your reCAPTCHA v2. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/how-to-integrate-google-recaptcha/' ) ),
 									'id'       => 'everest_forms_recaptcha_v2_secret_key',
 									'default'  => '',
-									'desc_tip' => true,
-								),
-								array(
-									'title'    => esc_html__( 'Invisible reCAPTCHA', 'everest-forms' ),
-									'type'     => 'toggle',
-									'desc'     => esc_html__( 'Enable Invisible reCAPTCHA.', 'everest-forms' ),
-									'id'       => 'everest_forms_recaptcha_v2_invisible',
-									'default'  => 'no',
 									'desc_tip' => true,
 								),
 								array(
