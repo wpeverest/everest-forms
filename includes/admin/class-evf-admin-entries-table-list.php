@@ -49,17 +49,14 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 	 * Initialize the log table list.
 	 */
 	public function __construct() {
-		// Fetch all forms.
 		$this->forms = evf_get_all_forms( true );
-
-		// Check that the user has created at least one form.
 		if ( ! empty( $this->forms ) ) {
-			// FIXED: Set form_id to 0 for "All Forms" view by default
-			$this->form_id = ! empty( $_REQUEST['form_id'] ) ? absint( $_REQUEST['form_id'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification
+			$this->form_id = isset( $_REQUEST['form_id'] ) ? absint( $_REQUEST['form_id'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification
 
-			// Get form data from first form (for structure/methods that need it)
-			$first_form_id   = key( $this->forms );
-			$this->form      = evf()->form->get( $first_form_id );
+			$default_form_id = apply_filters( 'everest_forms_entry_list_default_form_id', key( $this->forms ) );
+			$active_form_id  = ( $this->form_id > 0 ) ? $this->form_id : $default_form_id;
+
+			$this->form      = evf()->form->get( $active_form_id );
 			$this->form_data = ! empty( $this->form->post_content ) ? evf_decode( $this->form->post_content ) : '';
 		}
 
@@ -71,6 +68,7 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 			)
 		);
 	}
+
 
 	/**
 	 * Get the current action selected from the bulk actions dropdown.
@@ -108,18 +106,16 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 		$columns['cb'] = '<input type="checkbox" />';
 		$columns       = apply_filters( 'everest_forms_add_extra_columns', $columns );
 
-		// STEP 1: All Forms view - Simple Entry + Form + Date columns
+		
 		if ( 0 === $this->form_id ) {
 			$columns['entry'] = esc_html__( 'Entry', 'everest-forms' );
 			$columns['form']  = esc_html__( 'Form', 'everest-forms' );
 			$columns['date']  = esc_html__( 'Date Created', 'everest-forms' );
 		} else {
-			// STEP 2: Specific form - Show original dynamic columns
 			$columns         = apply_filters( 'everest_forms_entries_table_form_fields_columns', $this->get_columns_form_fields( $columns ), $this->form_id, $this->form_data );
 			$columns['date'] = esc_html__( 'Date Created', 'everest-forms' );
 		}
 
-		// Columns Adjustment Settings.
 		if ( defined( 'EFP_VERSION' ) ) {
 			$columns['more'] = '<a href="#" class="everest-forms-entries-setting" title="' . esc_attr__( 'More Options', 'everest-forms' ) . '" data-evf-form_id="' . $this->form_id . '"><i class="dashicons dashicons-admin-generic"></i></a>';
 		}

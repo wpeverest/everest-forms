@@ -33,7 +33,6 @@ function evf_get_entry( $id, $with_fields = false, $args = array() ) {
 		wp_cache_add( $id, $entry, 'evf-entry' );
 	}
 
-	// BW: Mark entry as read for older entries.
 	if ( is_null( $entry->fields ) && empty( $entry->viewed ) ) {
 		$is_viewed = $wpdb->update(
 			$wpdb->prefix . 'evf_entries',
@@ -124,14 +123,17 @@ function evf_get_entry_statuses( $form_data = array() ) {
 	);
 }
 
+
 /**
  * Search entries.
  *
+ *
  * @param  array $args Search arguments.
- * @return array
+ * @return array       Array of entry IDs.
  */
 function evf_search_entries( $args ) {
 	global $wpdb;
+
 
 	$args = wp_parse_args(
 		$args,
@@ -144,55 +146,51 @@ function evf_search_entries( $args ) {
 		)
 	);
 
+
 	if ( ! isset( $args['cap'] ) ) {
 		$args['cap'] = 'everest_forms_view_form_entries';
 	}
 
-	// FIXED: Only check if form ID is valid when a specific form is requested
-	// Skip this check for "All Forms" view (form_id = 0)
-	if ( ! empty( $args['form_id'] ) && ! array_key_exists( $args['form_id'], evf_get_all_forms() ) ) {
-		return array();
+
+	if ( ! empty( $args['form_id'] ) ) {
+		$all_forms = evf_get_all_forms();
+
+		if ( ! array_key_exists( $args['form_id'], $all_forms ) ) {
+			return array();
+		}
+
+		if ( ! empty( $args['cap'] ) && ! current_user_can( $args['cap'], $args['form_id'] ) ) {
+			return array();
+		}
 	}
 
-	// FIXED: Check permission only when a specific form is requested
-	// Skip capability check for "All Forms" view (form_id = 0)
-	if ( ! empty( $args['form_id'] ) && ! empty( $args['cap'] ) && ! current_user_can( $args['cap'], $args['form_id'] ) ) {
-		return array();
-	}
-
-	// WHERE clause.
 	$where = array(
 		'default' => "{$wpdb->prefix}evf_entries.entry_id = {$wpdb->prefix}evf_entrymeta.entry_id",
 	);
 
-	$allowed_forms = implode(
-		',',
-		array_map(
-			'intval',
-			evf()->form->get(
-				'',
-				array(
-					'fields' => 'ids',
-					'cap'    => $args['cap'],
-				)
-			)
+	$allowed_form_ids = evf()->form->get(
+		'',
+		array(
+			'fields' => 'ids',
+			'cap'    => $args['cap'],
 		)
 	);
 
-	// Check if forms are allowed.
+	$allowed_forms = implode( ',', array_map( 'intval', (array) $allowed_form_ids ) );
+
 	if ( ! empty( $allowed_forms ) ) {
 		$where['arg_form_id'] = "{$wpdb->prefix}evf_entries.form_id IN ( {$allowed_forms} )";
 	} else {
 		$where = array( 'return_empty' => '1=0' );
 	}
 
-	// Give developers an ability to modify WHERE (unset clauses, add new, etc).
 	$where     = (array) apply_filters( 'everest_forms_search_entries_where', $where, $args );
 	$where_sql = implode( ' AND ', $where );
-
-	// Query object.
-	$query   = array();
-	$query[] = "SELECT DISTINCT {$wpdb->prefix}evf_entries.entry_id FROM {$wpdb->prefix}evf_entries INNER JOIN {$wpdb->prefix}evf_entrymeta WHERE {$where_sql}";
+	$query     = array();
+	$query[]   = "SELECT DISTINCT {$wpdb->prefix}evf_entries.entry_id
+	            FROM {$wpdb->prefix}evf_entries
+	            INNER JOIN {$wpdb->prefix}evf_entrymeta
+	            WHERE {$where_sql}";
 
 	if ( ! empty( $args['search'] ) ) {
 		$like    = '%' . $wpdb->esc_like( $args['search'] ) . '%';
@@ -223,7 +221,6 @@ function evf_search_entries( $args ) {
 		}
 	}
 
-	// Removing Draft Entry (Save and Contd Add-on).
 	if ( empty( $args['status'] ) || 'draft' !== $args['status'] ) {
 		$query[] = $wpdb->prepare( 'AND `status` <> %s', 'draft' );
 	}
@@ -232,7 +229,8 @@ function evf_search_entries( $args ) {
 	$orderby      = in_array( $args['orderby'], $valid_fields, true ) ? $args['orderby'] : 'entry_id';
 	$order        = 'DESC' === strtoupper( $args['order'] ) ? 'DESC' : 'ASC';
 	$orderby_sql  = sanitize_sql_orderby( "{$orderby} {$order}" );
-	$query[]      = "ORDER BY {$orderby_sql}";
+
+	$query[] = "ORDER BY {$orderby_sql}";
 
 	if ( -1 < $args['limit'] ) {
 		$query[] = $wpdb->prepare( 'LIMIT %d', absint( $args['limit'] ) );
@@ -244,10 +242,9 @@ function evf_search_entries( $args ) {
 
 	$results = $wpdb->get_results( implode( ' ', $query ), ARRAY_A ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 
-	$ids = wp_list_pluck( $results, 'entry_id' );
-
-	return $ids;
+	return wp_list_pluck( $results, 'entry_id' );
 }
+
 
 /**
  * Get total entries counts by status.
