@@ -521,6 +521,8 @@ class EVF_Admin_Assets {
 				'upgradeURL'       => 'https://everestforms.net/pricing/?',
 				'adminURL'         => admin_url( 'admin.php' ),
 				'ajaxURL'          => admin_url( 'admin-ajax.php' ),
+				'evfRestApiNonce'  => wp_create_nonce( 'wp_rest' ),
+				'restURL'          => rest_url(),
 				'nonce'            => wp_create_nonce( 'evf_admin' ),
 				'pageType'         => $page_type,
 				'currentPage'      => $current_page,
