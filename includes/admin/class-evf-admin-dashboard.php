@@ -19,7 +19,7 @@ class EVF_Admin_Dashboard {
 	 *
 	 * @return bool True if any captcha type has BOTH keys configured, false otherwise.
 	 */
-	protected static function is_spam_protection_configured() {
+	public static function is_spam_protection_configured() {
 		$captcha_configs = array(
 			array(
 				'site_key'   => get_option( 'everest_forms_recaptcha_v2_site_key', '' ),
@@ -58,7 +58,7 @@ class EVF_Admin_Dashboard {
 	 *
 	 * @return bool True if spam protection is completed, false otherwise.
 	 */
-	protected static function is_spam_protection_completed() {
+	public static function is_spam_protection_completed() {
 		$manually_skipped = (bool) get_option( 'everest_forms_spam_protection_skipped', false );
 		$is_configured    = self::is_spam_protection_configured();
 

@@ -32,6 +32,7 @@ const Router = () => {
 		restURL,
 		allStepsCompleted,
 		adminURL,
+		showAnalyticsTab,
 	} =
 		typeof _EVF_DASHBOARD_ !== 'undefined'
 			? _EVF_DASHBOARD_
@@ -41,6 +42,7 @@ const Router = () => {
 					evfRestApiNonce: '',
 					restURL: '',
 					adminURL: '',
+					showAnalyticsTab: false,
 				};
 
 	const siteAssistantQuery = useQuery({
@@ -92,7 +94,7 @@ const Router = () => {
 
 	const DefaultRedirect = () => {
 		if (isAllStepsCompleted) {
-			if (isPro) {
+			if (isPro && showAnalyticsTab) {
 				return <RedirectToPhpPage page="everest-forms-analytics" />;
 			} else {
 				return <RedirectToPhpPage page="evf-entries" />;
