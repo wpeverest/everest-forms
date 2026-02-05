@@ -115,7 +115,8 @@ class EVF_Admin_Dashboard {
 					'utmCampaign'          => EVF()->utm_campaign,
 					'upgradeURL'           => esc_url_raw( 'https://everestforms.net/upgrade/?' ),
 					'allStepsCompleted'    => (
-															self::is_spam_protection_completed()
+															(bool) get_option( 'everest_forms_create_form_skipped', false )
+															&& self::is_spam_protection_completed()
 															&& (bool) get_option( 'everest_forms_test_email_sent', false )
 														) ? '1' : '0',
 					'plugins'              => array_reduce(

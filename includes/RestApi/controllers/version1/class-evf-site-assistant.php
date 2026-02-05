@@ -20,6 +20,7 @@ class EVF_Site_Assistant {
 
 	const TEST_EMAIL_SENT         = 'everest_forms_test_email_sent';
 	const SPAM_PROTECTION_SKIPPED = 'everest_forms_spam_protection_skipped';
+	const CREATE_FORM_SKIPPED     = 'everest_forms_create_form_skipped';
 
 	/**
 	 * Constructor.
@@ -160,6 +161,16 @@ class EVF_Site_Assistant {
 	}
 
 	/**
+	 * Check if any forms exist.
+	 *
+	 * @return bool True if forms exist, false otherwise.
+	 */
+	protected function has_forms() {
+		$forms = evf_get_all_forms();
+		return ! empty( $forms );
+	}
+
+	/**
 	 * Get setup status.
 	 *
 	 * @param WP_REST_Request $request Full request object.
@@ -173,9 +184,14 @@ class EVF_Site_Assistant {
 
 		$skipped_steps           = array();
 		$spam_protection_skipped = $this->is_spam_protection_completed();
+		$create_form_skipped     = (bool) get_option( self::CREATE_FORM_SKIPPED, false );
 
 		if ( $spam_protection_skipped ) {
 			$skipped_steps[] = 'spam_protection';
+		}
+
+		if ( $create_form_skipped ) {
+			$skipped_steps[] = 'create_form';
 		}
 
 		// Get test_email_sent status (defaults to false)
@@ -186,6 +202,7 @@ class EVF_Site_Assistant {
 			'test_email_sent'            => $test_email_sent,
 			'spam_protection_configured' => $this->is_spam_protection_configured(),
 			'all_steps_completed'        => $this->are_all_steps_completed(),
+			'has_forms'                  => $this->has_forms(),
 		);
 
 		return rest_ensure_response(
@@ -215,10 +232,15 @@ class EVF_Site_Assistant {
 
 		if ( 'all' === $step ) {
 			update_option( self::SPAM_PROTECTION_SKIPPED, true );
+			update_option( self::CREATE_FORM_SKIPPED, true );
 			$skipped[] = 'spam_protection';
+			$skipped[] = 'create_form';
 		} elseif ( 'spam_protection' === $step ) {
 			update_option( self::SPAM_PROTECTION_SKIPPED, true );
 			$skipped[] = 'spam_protection';
+		} elseif ( 'create_form' === $step ) {
+			update_option( self::CREATE_FORM_SKIPPED, true );
+			$skipped[] = 'create_form';
 		} else {
 			return new \WP_Error(
 				'rest_invalid_param',
@@ -232,9 +254,14 @@ class EVF_Site_Assistant {
 		// Get updated status to match get_status response structure
 		$skipped_steps           = array();
 		$spam_protection_skipped = $this->is_spam_protection_completed();
+		$create_form_skipped     = (bool) get_option( self::CREATE_FORM_SKIPPED, false );
 
 		if ( $spam_protection_skipped ) {
 			$skipped_steps[] = 'spam_protection';
+		}
+
+		if ( $create_form_skipped ) {
+			$skipped_steps[] = 'create_form';
 		}
 
 		$test_email_sent = (bool) get_option( self::TEST_EMAIL_SENT, false );
@@ -251,6 +278,7 @@ class EVF_Site_Assistant {
 					'test_email_sent'            => $test_email_sent,
 					'spam_protection_configured' => $this->is_spam_protection_configured(),
 					'all_steps_completed'        => $this->are_all_steps_completed(),
+					'has_forms'                  => $this->has_forms(),
 				),
 			)
 		);
@@ -286,9 +314,14 @@ class EVF_Site_Assistant {
 
 			$skipped_steps           = array();
 			$spam_protection_skipped = $this->is_spam_protection_completed();
+			$create_form_skipped     = (bool) get_option( self::CREATE_FORM_SKIPPED, false );
 
 			if ( $spam_protection_skipped ) {
 				$skipped_steps[] = 'spam_protection';
+			}
+
+			if ( $create_form_skipped ) {
+				$skipped_steps[] = 'create_form';
 			}
 
 			return rest_ensure_response(
@@ -300,6 +333,7 @@ class EVF_Site_Assistant {
 						'skipped_steps'              => $skipped_steps,
 						'spam_protection_configured' => $this->is_spam_protection_configured(),
 						'all_steps_completed'        => $this->are_all_steps_completed(),
+						'has_forms'                  => $this->has_forms(),
 					),
 				)
 			);
@@ -342,10 +376,11 @@ class EVF_Site_Assistant {
 	 * @return bool True if all steps completed, false otherwise.
 	 */
 	protected function are_all_steps_completed() {
+		$create_form_completed     = (bool) get_option( self::CREATE_FORM_SKIPPED, false );
 		$spam_protection_completed = $this->is_spam_protection_completed();
 		$test_email_sent           = (bool) get_option( self::TEST_EMAIL_SENT, false );
 
-		return $spam_protection_completed && $test_email_sent;
+		return $create_form_completed && $spam_protection_completed && $test_email_sent;
 	}
 
 	/**

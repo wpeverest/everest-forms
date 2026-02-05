@@ -6,7 +6,7 @@ import { useQuery } from '@tanstack/react-query';
 import apiFetch from '@wordpress/api-fetch';
 import { __ } from '@wordpress/i18n';
 import { useEffect } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
 
 /**
  *  Internal Dependencies
@@ -24,6 +24,7 @@ import SiteAssistantSkeleton from '../skeleton/SiteAssistantSkeleton';
 
 const Router = () => {
 	const toast = useToast();
+	const location = useLocation();
 
 	/* global _EVF_DASHBOARD_ */
 	const {
@@ -110,31 +111,50 @@ const Router = () => {
 		}
 	};
 
-	// Show full-page loader when loading AND steps are completed (will redirect)
-	// This prevents header from flashing before redirect
-	if (siteAssistantQuery.isLoading && Boolean(allStepsCompleted === '1')) {
+	// Determine if we should show the loader (only when redirecting from root path)
+	const isOnRootPath = location.pathname === '/' || location.pathname === '';
+	const showLoader =
+		isOnRootPath &&
+		((siteAssistantQuery.isLoading && Boolean(allStepsCompleted === '1')) ||
+			(!siteAssistantQuery.isLoading && isAllStepsCompleted));
+
+	// Show header on all pages except when redirecting from root
+	const shouldShowHeader = !(isOnRootPath && isAllStepsCompleted);
+
+	// If showing loader, show spinner and hidden routes for redirect
+	if (showLoader) {
 		return (
-			<Box
-				display="flex"
-				justifyContent="center"
-				alignItems="center"
-				minHeight="100vh"
-				bg="white"
-			>
-				<Spinner
-					thickness="4px"
-					speed="0.65s"
-					emptyColor="gray.200"
-					color="primary.500"
-					size="xl"
-				/>
-			</Box>
+			<>
+				<Box
+					display="flex"
+					justifyContent="center"
+					alignItems="center"
+					minHeight="calc(100vh - 32px)"
+					bg="white"
+				>
+					<Spinner
+						thickness="4px"
+						speed="0.65s"
+						emptyColor="gray.200"
+						color="primary.500"
+						size="xl"
+					/>
+				</Box>
+				{/* Hidden routes to execute redirect */}
+				<Box display="none">
+					<Routes>
+						<Route path="/" element={<DefaultRedirect />} />
+						<Route path="*" element={<DefaultRedirect />} />
+					</Routes>
+				</Box>
+			</>
 		);
 	}
 
+	// Normal rendering when not redirecting
 	return (
 		<>
-			<Header hideSiteAssistant={isAllStepsCompleted} />
+			{shouldShowHeader && <Header hideSiteAssistant={isAllStepsCompleted} />}
 			<Routes>
 				<Route path="/" element={<DefaultRedirect />} />
 				<Route path="/settings" element={<Settings to={settingsURL} />} />
