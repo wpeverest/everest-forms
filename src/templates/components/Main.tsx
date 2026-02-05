@@ -60,46 +60,36 @@ const Main: React.FC<{ filter: string }> = ({ filter }) => {
 		];
 	}, [templates]);
 
-	// Handle URL parameters for category pre-selection
 	useEffect(() => {
-		if (categorySetFromURL) return; // Already set, don't run again
-		if (categories.length <= 1) return; // Wait for categories to be loaded (more than just "All Forms")
+		if (categorySetFromURL) return;
+		if (categories.length <= 1) return;
 
 		const urlParams = new URLSearchParams(window.location.search);
 
-		// Check for category parameter from Site Assistant
 		if (urlParams.has('evf_template_category')) {
 			const categorySlug = urlParams.get('evf_template_category') || '';
 
-			// Normalize function to remove spaces and special characters
 			const normalize = (str: string) =>
-				str.toLowerCase().replace(/\s+/g, '').replace(/[^a-z0-9]/g, '');
+				str
+					.toLowerCase()
+					.replace(/\s+/g, '')
+					.replace(/[^a-z0-9]/g, '');
 
 			const normalizedSlug = normalize(categorySlug);
 
-			// Log for debugging
-			console.log('Category slug from URL:', categorySlug);
-			console.log('Normalized slug:', normalizedSlug);
-			console.log('Available categories:', categories.map(c => c.name));
-
-			// Find matching category by normalizing both strings
-			// Priority: exact match > starts with > contains
-			const matchedCategory = categories.find((cat) => {
+			let matchedCategory = categories.find((cat) => {
 				const normalizedCatName = normalize(cat.name);
 
-				// Try exact match first
 				if (normalizedCatName === normalizedSlug) {
 					console.log(`Exact match: "${cat.name}"`);
 					return true;
 				}
 
-				// Try if category name starts with the slug
 				if (normalizedCatName.startsWith(normalizedSlug)) {
 					console.log(`Starts with match: "${cat.name}"`);
 					return true;
 				}
 
-				// Try if slug starts with category name (for shorter category names)
 				if (normalizedSlug.startsWith(normalizedCatName)) {
 					console.log(`Reverse starts with match: "${cat.name}"`);
 					return true;
@@ -108,9 +98,40 @@ const Main: React.FC<{ filter: string }> = ({ filter }) => {
 				return false;
 			});
 
-			console.log('Matched category:', matchedCategory?.name);
+			if (!matchedCategory) {
+				matchedCategory = categories.find((cat) => {
+					const normalizedCatName = normalize(cat.name);
 
-			if (matchedCategory && matchedCategory.name !== __('All Forms', 'everest-forms')) {
+					const slugWords = categorySlug.toLowerCase().split(/[\s-]+/);
+					const catWords = cat.name.toLowerCase().split(/[\s-]+/);
+
+					const hasMatchingWord = slugWords.some((word) =>
+						catWords.some(
+							(catWord) => catWord.includes(word) || word.includes(catWord),
+						),
+					);
+
+					if (hasMatchingWord) {
+						console.log(`Word match: "${cat.name}"`);
+						return true;
+					}
+
+					if (
+						normalizedCatName.includes(normalizedSlug) ||
+						normalizedSlug.includes(normalizedCatName)
+					) {
+						console.log(`Contains match: "${cat.name}"`);
+						return true;
+					}
+
+					return false;
+				});
+			}
+
+			if (
+				matchedCategory &&
+				matchedCategory.name !== __('All Forms', 'everest-forms')
+			) {
 				setState((prevState) => ({
 					...prevState,
 					selectedCategory: matchedCategory.name,
@@ -118,7 +139,7 @@ const Main: React.FC<{ filter: string }> = ({ filter }) => {
 				setCategorySetFromURL(true);
 			}
 		}
-	}, [categories, categorySetFromURL]); // Re-run when categories change
+	}, [categories, categorySetFromURL]);
 
 	const filteredTemplates = useMemo(() => {
 		return templates.filter(
@@ -132,11 +153,11 @@ const Main: React.FC<{ filter: string }> = ({ filter }) => {
 		);
 	}, [selectedCategory, searchTerm, templates, filter]);
 
-	const handleCategorySelect = useCallback((category) => {
+	const handleCategorySelect = useCallback((category: string) => {
 		setState((prevState) => ({ ...prevState, selectedCategory: category }));
 	}, []);
 
-	const handleSearchChange = useCallback((searchTerm) => {
+	const handleSearchChange = useCallback((searchTerm: string) => {
 		setState((prevState) => ({ ...prevState, searchTerm }));
 	}, []);
 

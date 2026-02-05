@@ -109,7 +109,6 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 			window._EVF_DASHBOARD_?.settingsURL ||
 			`${window.location.origin}/wp-admin/admin.php?page=evf-settings`;
 
-		// Properly concatenate &tab=captcha
 		window.open(`${settingsURL}&tab=recaptcha`, '_blank');
 	};
 
@@ -220,7 +219,7 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 			name: __('Business Form', 'everest-forms'),
 			count: 13,
 			icon: businessFormIcon,
-			slug: 'business',
+			slug: 'bussiness',
 		},
 		{
 			name: __('Education Form', 'everest-forms'),
@@ -415,6 +414,9 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 							</Text>
 							<Link
 								color="primary.500"
+								_hover={{
+									color: 'primary.600',
+								}}
 								textDecoration="underline"
 								onClick={handleViewAllTemplates}
 								cursor="pointer"
@@ -481,9 +483,7 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 							cursor="pointer"
 							opacity={skipCreateFormMutation.isLoading ? 0.6 : 1}
 							pointerEvents={skipCreateFormMutation.isLoading ? 'none' : 'auto'}
-							_hover={{
-								textDecoration: 'underline',
-							}}
+							textDecor={'underline'}
 						>
 							{skipCreateFormMutation.isLoading
 								? __('Skipping...', 'everest-forms')
@@ -702,9 +702,7 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 							pointerEvents={
 								skipSpamProtectionMutation.isLoading ? 'none' : 'auto'
 							}
-							_hover={{
-								textDecoration: 'underline',
-							}}
+							textDecor={'underline'}
 						>
 							{skipSpamProtectionMutation.isLoading
 								? __('Skipping...', 'everest-forms')
