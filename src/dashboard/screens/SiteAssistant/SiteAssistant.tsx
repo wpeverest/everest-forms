@@ -199,7 +199,7 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 			toast({
 				title: __('Invalid Email', 'everest-forms'),
 				description: __('Please enter a valid email address.', 'everest-forms'),
-				status: 'warning',
+				status: 'error',
 				duration: 3000,
 				isClosable: true,
 			});
