@@ -83,12 +83,29 @@ const Main: React.FC<{ filter: string }> = ({ filter }) => {
 			console.log('Available categories:', categories.map(c => c.name));
 
 			// Find matching category by normalizing both strings
+			// Priority: exact match > starts with > contains
 			const matchedCategory = categories.find((cat) => {
 				const normalizedCatName = normalize(cat.name);
-				const matches = normalizedCatName.includes(normalizedSlug) ||
-					   normalizedSlug.includes(normalizedCatName);
-				console.log(`Checking "${cat.name}" (${normalizedCatName}) against "${categorySlug}" (${normalizedSlug}): ${matches}`);
-				return matches;
+
+				// Try exact match first
+				if (normalizedCatName === normalizedSlug) {
+					console.log(`Exact match: "${cat.name}"`);
+					return true;
+				}
+
+				// Try if category name starts with the slug
+				if (normalizedCatName.startsWith(normalizedSlug)) {
+					console.log(`Starts with match: "${cat.name}"`);
+					return true;
+				}
+
+				// Try if slug starts with category name (for shorter category names)
+				if (normalizedSlug.startsWith(normalizedCatName)) {
+					console.log(`Reverse starts with match: "${cat.name}"`);
+					return true;
+				}
+
+				return false;
 			});
 
 			console.log('Matched category:', matchedCategory?.name);

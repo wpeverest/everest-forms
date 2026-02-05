@@ -18,13 +18,6 @@ import {
 	Image,
 	Input,
 	Link,
-	Modal,
-	ModalBody,
-	ModalCloseButton,
-	ModalContent,
-	ModalFooter,
-	ModalHeader,
-	ModalOverlay,
 	Stack,
 	Text,
 	useToast,
@@ -98,8 +91,6 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 
 	const [open, setOpen] = useState<Record<string, boolean>>({});
 	const [testEmail, setTestEmail] = useState<string>(adminEmail || '');
-	const [isCreateFormModalOpen, setIsCreateFormModalOpen] = useState(false);
-	const [newFormName, setNewFormName] = useState('');
 
 	const toggleOpen = useCallback((id: string) => {
 		setOpen((prev) => ({ ...prev, [id]: !prev[id] }));
@@ -258,7 +249,7 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 	];
 
 	const handleCreateNewForm = () => {
-		setIsCreateFormModalOpen(true);
+		createBlankFormMutation.mutate(__('Untitled', 'everest-forms'));
 	};
 
 	const handleViewAllTemplates = () => {
@@ -331,9 +322,6 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 		},
 		onSuccess: (response) => {
 			if (response.success && response.data) {
-				// Mark create form as completed by skipping it
-				skipCreateFormMutation.mutate();
-				// Redirect to form builder
 				window.location.href = response.data.redirect;
 			}
 		},
@@ -349,20 +337,6 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 			});
 		},
 	});
-
-	const handleCreateFormSubmit = () => {
-		if (!newFormName.trim()) {
-			toast({
-				title: __('Invalid Form Name', 'everest-forms'),
-				description: __('Please enter a form name.', 'everest-forms'),
-				status: 'warning',
-				duration: 3000,
-				isClosable: true,
-			});
-			return;
-		}
-		createBlankFormMutation.mutate(newFormName);
-	};
 
 	const renderCreateFormContent = () => (
 		<Stack
@@ -423,6 +397,8 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 						colorScheme="primary"
 						onClick={handleCreateNewForm}
 						leftIcon={<Text fontSize="lg">+</Text>}
+						isLoading={createBlankFormMutation.isLoading}
+						loadingText={__('Creating...', 'everest-forms')}
 					>
 						{__('Create New Form', 'everest-forms')}
 					</Button>
@@ -1086,59 +1062,6 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 					</Stack>
 				</Stack>
 			</Grid>
-
-			<Modal
-				isOpen={isCreateFormModalOpen}
-				onClose={() => {
-					setIsCreateFormModalOpen(false);
-					setNewFormName('');
-				}}
-				size="md"
-			>
-				<ModalOverlay />
-				<ModalContent>
-					<ModalHeader>{__('Create New Form', 'everest-forms')}</ModalHeader>
-					<ModalCloseButton />
-					<ModalBody>
-						<FormControl>
-							<FormLabel>{__('Form Name', 'everest-forms')}</FormLabel>
-							<Input
-								placeholder={__('Enter form name', 'everest-forms')}
-								value={newFormName}
-								onChange={(e) => setNewFormName(e.target.value)}
-								onKeyDown={(e) => {
-									if (e.key === 'Enter') {
-										e.preventDefault();
-										handleCreateFormSubmit();
-									}
-								}}
-								isDisabled={createBlankFormMutation.isLoading}
-							/>
-						</FormControl>
-					</ModalBody>
-					<ModalFooter>
-						<Button
-							variant="ghost"
-							mr={3}
-							onClick={() => {
-								setIsCreateFormModalOpen(false);
-								setNewFormName('');
-							}}
-							isDisabled={createBlankFormMutation.isLoading}
-						>
-							{__('Cancel', 'everest-forms')}
-						</Button>
-						<Button
-							colorScheme="primary"
-							onClick={handleCreateFormSubmit}
-							isLoading={createBlankFormMutation.isLoading}
-							loadingText={__('Creating...', 'everest-forms')}
-						>
-							{__('Create Form', 'everest-forms')}
-						</Button>
-					</ModalFooter>
-				</ModalContent>
-			</Modal>
 		</Container>
 	);
 };
