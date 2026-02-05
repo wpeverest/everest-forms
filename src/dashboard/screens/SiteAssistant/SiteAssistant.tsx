@@ -425,7 +425,14 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 								{__('View All', 'everest-forms')}
 							</Link>
 						</HStack>
-						<Grid templateColumns="repeat(3, 1fr)" gap={5}>
+						<Grid
+							templateColumns={{
+								base: '1fr',
+								md: 'repeat(2, 1fr)',
+								lg: 'repeat(3, 1fr)',
+							}}
+							gap={5}
+						>
 							{formCategories.map((category, index) => (
 								<Box
 									key={index}
