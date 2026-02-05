@@ -211,37 +211,37 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 	const formCategories = [
 		{
 			name: __('Application Form', 'everest-forms'),
-			count: 10,
+			count: 15,
 			icon: applicationFormIcon,
 			slug: 'application',
 		},
 		{
 			name: __('Business Form', 'everest-forms'),
-			count: 13,
+			count: 2,
 			icon: businessFormIcon,
 			slug: 'bussiness',
 		},
 		{
 			name: __('Education Form', 'everest-forms'),
-			count: 13,
+			count: 2,
 			icon: educationFormIcon,
 			slug: 'education',
 		},
 		{
 			name: __('Information Form', 'everest-forms'),
-			count: 10,
+			count: 7,
 			icon: informationFormIcon,
 			slug: 'information',
 		},
 		{
 			name: __('Health Care Form', 'everest-forms'),
-			count: 13,
+			count: 1,
 			icon: healthcareFormIcon,
 			slug: 'healthcare',
 		},
 		{
 			name: __('Feedback Form', 'everest-forms'),
-			count: 10,
+			count: 8,
 			icon: feedbackFormIcon,
 			slug: 'feedback',
 		},
@@ -465,7 +465,10 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 												lineHeight="150%"
 												textTransform="capitalize"
 											>
-												{category.count} {__('Templates', 'everest-forms')}
+												{category.count}{' '}
+												{category.count > 1
+													? __('Templates', 'everest-forms')
+													: __('Template', 'everest-forms')}
 											</Text>
 										</Flex>
 									</HStack>
