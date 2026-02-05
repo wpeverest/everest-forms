@@ -376,7 +376,7 @@ class EVF_Site_Assistant {
 	 * @return bool True if all steps completed, false otherwise.
 	 */
 	protected function are_all_steps_completed() {
-		$create_form_completed     = (bool) get_option( self::CREATE_FORM_SKIPPED, false );
+		$create_form_completed     = (bool) get_option( self::CREATE_FORM_SKIPPED, false ) || $this->has_forms();
 		$spam_protection_completed = $this->is_spam_protection_completed();
 		$test_email_sent           = (bool) get_option( self::TEST_EMAIL_SENT, false );
 
