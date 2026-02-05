@@ -89,7 +89,7 @@ class EVF_Admin_Forms {
 						<a href="<?php echo esc_url( admin_url( 'admin.php?page=evf-builder&create-form=1' ) ); ?>" class="page-title-action"><?php esc_html_e( 'Add New', 'everest-forms' ); ?></a>
 					<?php endif; ?>
 				</div>
-				<hr class="wp-header-end">
+				<!-- <hr class="wp-header-end"> -->
 
 				<?php settings_errors(); ?>
 

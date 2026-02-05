@@ -653,7 +653,7 @@ class EVF_Admin_Forms_Table_List extends EVF_Base_List_Table {
 	protected function extra_tablenav( $which ) {
 		$num_posts = wp_count_posts( 'everest_form', 'readable' );
 
-		echo '<div class="alignleft actions bulkactions">';
+		echo '<div class="everest-forms-extra-table-nav">';
 
 		if ( 'top' === $which ) {
 			$this->tags_dropdown();

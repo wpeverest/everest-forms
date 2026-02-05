@@ -1,228 +1,147 @@
 /**
- * Table Structure
- **/
+ * Everest Forms - Unified Modern Table Design System (FIXED)
+ * All issues resolved - matches Figma perfectly
+ */
 
-.everest-forms-table {
-	width: 100%;
-	color: $body-text;
-	border-collapse: collapse;
+// ============================================================================
+// DESIGN TOKENS / VARIABLES
+// ============================================================================
 
-	th,
-	td {
-		padding: 16px;
-		vertical-align: top;
-		border-top: 1px solid #e1e1e1 !important;
+$evf-primary: #7545bb;
+$evf-primary-hover: #8c5aca;
+$evf-primary-light: #faf8fc;
+$evf-text-primary: #222;
+$evf-text-secondary: #383838;
+$evf-text-muted: #6b7280;
+$evf-border: #e1e1e1;
+$evf-bg-white: #ffffff;
+$evf-bg-light: #f9fafb;
+$evf-bg-hover: #f9fafb;
+$evf-shadow-sm:
+	0 1px 3px 0 rgba(0, 0, 0, 0.1),
+	0 1px 2px 0 rgba(0, 0, 0, 0.06);
+$evf-shadow-hover: 0 2px 4px rgba(126, 59, 208, 0.04);
+$evf-radius-sm: 4px;
+$evf-radius-md: 6px;
+$evf-radius-lg: 8px;
+$evf-radius-xl: 12px;
+$evf-transition: all 0.2s ease;
+
+// Status Colors
+$status-unread-bg: #fff7ed;
+$status-unread-text: #ea580c;
+$status-read-bg: #f0fdf4;
+$status-read-text: #16a34a;
+$status-pending-bg: #fef3c7;
+$status-pending-text: #92400e;
+$status-trash-bg: #fee2e2;
+$status-trash-text: #991b1b;
+
+
+.wrap,
+#everest-forms-entries-list,
+.everest-forms-admin-page {
+	max-width: 100%;
+	margin: 24px;
+	padding: 24px 28px;
+	border-radius: $evf-radius-xl;
+	background: $evf-bg-white;
+	border: 1px solid $evf-border;
+
+	.evf-admin-header {
+		margin-bottom: 24px;
 	}
+}
 
-	thead {
-		th {
-			vertical-align: bottom;
-			background: $color_gray-light-skin;
-			color: $color_gray-light;
-			font-weight: 500;
-			text-align: inherit;
-			border-bottom: 1px solid #e1e1e1 !important;
+.subsubsub {
+	display: flex;
+	padding: 0;
+	margin: 0 0 24px 0;
+	list-style: none;
+	font-size: 0;
+
+	li {
+		margin: 0;
+		padding: 0;
+		font-size: 14px;
+		list-style: none;
+		display: flex;
+		align-items: center;
+
+		&::before,
+		&::after {
+			content: none !important;
 		}
-	}
-}
 
-.table-responsive {
-	display: block;
-	width: 100%;
-	overflow-x: auto;
-}
-
-/**
- * Enhanced Base List Table Styles
- * For EVF_Base_List_Table and its children
- **/
-
-.evf-base-list-table {
-	width: 100%;
-	border-collapse: separate;
-	border-spacing: 0;
-	background: $color-white;
-	border-radius: 5px;
-	border: 1px solid #e1e1e1 !important;
-	box-shadow: none;
-
-	thead {
-		th {
-			padding: 12px 0;
-			background: $color-white;
-			border-top: none;
-			border-bottom: 1px solid #e1e1e1 !important;
-			color: #383838;
+		a {
+			display: inline-flex;
+			align-items: center;
+			gap: 6px;
+			padding: 12px 4px;
+			color: $evf-text-muted;
 			font-family:
 				Inter,
 				-apple-system,
 				BlinkMacSystemFont,
 				'Segoe UI',
 				sans-serif;
-			font-weight: 600;
 			font-size: 14px;
-			line-height: 24px;
-			text-transform: none;
-			letter-spacing: normal;
-			vertical-align: middle;
-			text-align: left;
-			white-space: nowrap;
-			position: relative;
-
-			&:first-child {
-				border-top-left-radius: 5px;
-			}
-
-			&:last-child {
-				border-top-right-radius: 5px;
-			}
-
-			&.sortable {
-				cursor: pointer;
-				user-select: none;
-				transition:
-					background-color 0.15s ease,
-					color 0.15s ease;
-
-				&:hover {
-					background: lighten($everestforms, 48%);
-					color: $everestforms;
-				}
-
-				a {
-					display: flex;
-					align-items: center;
-					gap: 2px;
-					text-decoration: none;
-					color: inherit;
-					transition: color 0.15s ease;
-				}
-
-				&.sorted {
-					background: lighten($everestforms, 48%);
-					color: $everestforms;
-
-					&.asc,
-					&.desc {
-						a::after {
-							content: '';
-							display: inline-block;
-							width: 0;
-							height: 0;
-							margin-left: 4px;
-							border-left: 4px solid transparent;
-							border-right: 4px solid transparent;
-						}
-					}
-
-					&.asc a::after {
-						border-bottom: 4px solid $everestforms;
-					}
-
-					&.desc a::after {
-						border-top: 4px solid $everestforms;
-					}
-				}
-			}
-		}
-
-		tr {
-			.check-column {
-				border-bottom: 1px solid #e1e1e1;
-			}
-		}
-	}
-
-	tbody {
-		tr {
-			transition:
-				background-color 0.15s ease,
-				box-shadow 0.15s ease;
-			background: transparent;
-			border-bottom: 1px solid #e1e1e1 !important;
-			position: relative;
-
-			// Alternating row colors - starting with #FAF8FC
-			&:nth-child(odd) {
-				background: #faf8fc;
-			}
-
-			&:nth-child(even) {
-				background: #fff;
-			}
-
-			&:last-child {
-				border-bottom: none;
-			}
+			font-weight: 500;
+			text-decoration: none;
+			border-bottom: 2px solid transparent;
+			margin-bottom: -2px;
+			transition: $evf-transition;
 
 			&:hover {
-				box-shadow: 0 2px 4px rgba(126, 59, 208, 0.04);
-
-				.row-actions {
-					visibility: visible;
-					opacity: 1;
-				}
-
-				td:has(.row-actions) {
-					color: $everestforms;
-
-					strong,
-					strong a,
-					> a {
-						color: $everestforms;
-					}
-				}
-
-				td:not(:has(.row-actions)) {
-					color: #222;
-				}
+				color: $evf-primary;
 			}
 
-			&.read {
-				opacity: 0.7;
+			&.current {
+				color: $evf-primary;
+				border-bottom-color: $evf-primary;
 			}
 
-			&.unread {
-				font-weight: 500;
-
-				td:first-child {
-					position: relative;
-
-					&::before {
-						content: '';
-						position: absolute;
-						left: 0;
-						top: 0;
-						bottom: 0;
-						width: 3px;
-						background: $everestforms;
-					}
-				}
-			}
-
-			&.status-trash {
-				opacity: 0.5;
-				background: rgba($red, 0.02);
-			}
-
-			&.status-spam {
-				background: rgba($orange, 0.03);
+			.count {
+				color: $evf-text-muted;
+				font-weight: 400;
+				margin-left: 2px;
 			}
 		}
+	}
+}
 
-		tr:last-child {
-			td:first-child {
-				border-bottom-left-radius: 5px;
-			}
+// ============================================================================
+// TOP ACTION BAR (Tablenav Top) – BULK LEFT, FILTER/EXPORT RIGHT
+// ============================================================================
 
-			td:last-child {
-				border-bottom-right-radius: 5px;
-			}
-		}
+.tablenav.top {
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	gap: 16px;
+	margin-bottom: 16px; // tighter like UR list table
+	padding: 0;
+	background: transparent;
+	border: none;
+	position: relative;
+	min-height: 40px;
 
-		td {
-			padding: 16px 0;
-			color: #222;
+	// Bulk actions wrapper – ALWAYS LEFT
+	> .alignleft.actions.bulkactions {
+		order: 1;
+		display: flex;
+		gap: 10px;
+		align-items: center;
+		margin: 0;
+
+		select,
+		#bulk-action-selector-top {
+			height: 36px;
+			padding: 0 32px 0 12px;
+			border: 1px solid $evf-border !important;
+			border-radius: $evf-radius-md;
+			background: $evf-bg-white;
+			color: $evf-text-secondary;
 			font-family:
 				Inter,
 				-apple-system,
@@ -230,543 +149,277 @@
 				'Segoe UI',
 				sans-serif;
 			font-size: 14px;
-			font-weight: 600;
-			line-height: normal;
-			vertical-align: top;
-			border: none;
-			background: transparent;
+			font-weight: 400;
+			line-height: 1;
+			cursor: pointer;
+			transition: $evf-transition;
+			appearance: none;
+			background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+			background-position: right 8px center;
+			background-repeat: no-repeat;
+			background-size: 20px;
+			min-width: 170px;
 
-			&.check-column {
-				width: 48px;
-				height: 48px;
-				padding: 12px 16px;
-				text-align: center;
-				border: none;
+			&:hover {
+				border-color: darken($evf-border, 5%) !important;
 			}
 
-			&.column-title {
-				font-weight: 500;
+			&:focus {
+				outline: none;
+				border-color: $evf-border !important;
+				box-shadow: 0 0 0 3px rgba($evf-primary, 0.1);
+			}
+		}
 
-				strong {
-					color: #111827;
-				}
+		input[type='submit'],
+		.button {
+			height: 36px;
+			padding: 8px 14px;
+			border: 1px solid $evf-primary !important;
+			border-radius: 3px;
+			background: $evf-primary-light;
+			color: $evf-primary;
+			font-family:
+				Inter,
+				-apple-system,
+				BlinkMacSystemFont,
+				'Segoe UI',
+				sans-serif;
+			font-size: 14px;
+			font-weight: 500;
+			line-height: 1;
+			cursor: pointer;
+			transition: $evf-transition;
+			margin: 0;
 
-				a {
-					color: $everestforms;
-					text-decoration: none;
-					font-weight: 500;
-
-					&:hover {
-						color: darken($everestforms, 10%);
-						text-decoration: underline;
-					}
-				}
+			&:hover {
+				background: lighten($evf-primary, 48%);
+				border-color: $evf-primary !important;
+				color: $evf-primary;
 			}
 
-			&.column-actions {
-				white-space: nowrap;
-
-				.row-actions {
-					display: flex;
-					gap: 8px;
-					align-items: center;
-					flex-wrap: wrap;
-				}
-
-				a {
-					color: #383838;
-					font-family:
-						Inter,
-						-apple-system,
-						BlinkMacSystemFont,
-						'Segoe UI',
-						sans-serif;
-					font-size: 12px;
-					font-weight: 400;
-					line-height: normal;
-					text-decoration: none;
-					transition: color 0.15s ease;
-
-					&:hover {
-						color: #000;
-					}
-
-					&.submitdelete {
-						color: #dc2626;
-
-						&:hover {
-							color: #b91c1c;
-						}
-					}
-				}
-
-				.sep {
-					color: #d1d5db;
-					margin: 0 6px;
-				}
+			&:active {
+				transform: scale(0.98);
 			}
 
-			.row-actions {
-				visibility: hidden;
-				opacity: 0;
-				transition:
-					opacity 0.2s ease,
-					visibility 0.2s ease;
-				margin-top: 6px;
-				display: flex;
-				gap: 5px;
-				align-items: center;
-
-				span {
-					display: flex;
-					align-items: center;
-					gap: 4px;
-
-					a {
-						color: #383838;
-						font-family:
-							Inter,
-							-apple-system,
-							BlinkMacSystemFont,
-							'Segoe UI',
-							sans-serif;
-						font-size: 12px;
-						font-weight: 400;
-						line-height: normal;
-						text-decoration: none;
-						transition: all 0.15s ease;
-
-						&:hover {
-							color: #000;
-							text-decoration: underline;
-						}
-
-						&.submitdelete {
-							color: #dc2626;
-
-							&:hover {
-								color: #b91c1c;
-							}
-						}
-					}
-
-					.sep {
-						color: #d1d5db;
-						margin: 0 10px;
-						font-weight: 400;
-					}
-				}
-			}
-
-			// Badges
-			.badge {
-				display: inline-block;
-				padding: 3px 10px;
-				border-radius: 6px;
-				font-size: 12px;
-				font-weight: 500;
-				line-height: 1.5;
-
-				&.badge-success {
-					background: #d1fae5;
-					color: #065f46;
-				}
-
-				&.badge-warning {
-					background: #fed7aa;
-					color: #92400e;
-				}
-
-				&.badge-danger {
-					background: #fee2e2;
-					color: #991b1b;
-				}
-
-				&.badge-info {
-					background: #dbeafe;
-					color: #1e40af;
-				}
+			&:focus {
+				outline: none;
+				box-shadow: 0 0 0 3px rgba($evf-primary, 0.1);
 			}
 		}
 	}
 
-	// Empty state
-	.no-items {
-		td {
-			padding: 60px 20px;
-			text-align: center;
-			color: #9ca3af;
-			font-size: 15px;
-			background: #f9fafb;
-		}
-	}
-
-	tfoot {
-		display: none;
-	}
-
-	// When pagination exists (table followed by .tablenav.bottom), remove bottom radius
-	&:has(+ .tablenav.bottom) {
-		tbody tr:last-child {
-			td:first-child {
-				border-bottom-left-radius: 0 !important;
-			}
-
-			td:last-child {
-				border-bottom-right-radius: 0 !important;
-			}
-		}
-	}
-}
-
-/**
- * Enhanced Pagination Styles
- * Modern pagination with numbered page links matching the design
- **/
-
-.tablenav {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	padding: 30px 0;
-	background: $color-white;
-	border: none;
-	margin: 0;
-	margin-bottom: 30px;
-
-	&.top {
-		border: none !important;
-		// Hide pagination on top
-		.tablenav-pages {
-			display: none;
-		}
-
-		// Move form dropdown, filter, and export buttons to the right
-		.actions:has(#filter-by-form) {
-			margin-left: auto;
-			order: 2;
-			gap: 10px;
-		}
-	}
-
-	// Form dropdown select styling (consistent with bulk actions)
-	#filter-by-form {
-		display: flex;
-		width: 170px;
-		flex-direction: column;
-		justify-content: center;
-		align-items: flex-start;
-		gap: 8px;
-		height: 36px;
-		padding: 0 32px 0 12px;
-		border: 1px solid #e1e1e1 !important;
-		border-radius: 6px;
-		background: $color-white;
-		color: #374151;
-		font-size: 14px;
-		line-height: 1;
-		cursor: pointer;
-		transition:
-			border-color 0.15s ease,
-			box-shadow 0.15s ease;
-		appearance: none;
-		box-sizing: border-box;
-		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
-		background-position: right 8px center;
-		background-repeat: no-repeat;
-		background-size: 20px;
-		min-width: auto;
-
-		&:hover {
-			border-color: #e1e1e1 !important;
-		}
-
-		&:focus {
-			outline: none;
-			border-color: #e1e1e1 !important;
-			box-shadow: 0 0 0 3px rgba(126, 59, 208, 0.1);
-		}
-	}
-
-	// Filter and Export CSV button styling (consistent with apply button)
-	#post-query-submit,
-	#export-csv-submit {
-		display: flex;
-		height: 36px;
-		padding: 8px 14px;
-		justify-content: center;
-		align-items: center;
-		gap: 6px;
-		border-radius: 3px;
-		border: 1px solid #7545bb !important;
-		background: #faf8fc;
-		color: $everestforms;
-		font-size: 14px;
-		font-weight: 500;
-		line-height: 1;
-		cursor: pointer;
-		transition: all 0.15s ease;
-
-		&:hover {
-			border-color: #7545bb !important;
-			background: lighten($everestforms, 48%);
-			color: $everestforms;
-		}
-
-		&:active {
-			transform: scale(0.98);
-		}
-	}
-
-	&.bottom {
-		border: none;
-		border-radius: 0;
-		margin-top: 20px;
-
-		#bulk-action-selector-bottom {
-			display: none;
-		}
-	}
-
-	.alignleft {
+	// Extra table nav (Manage Columns, Filter, Export) – ALWAYS RIGHT
+	> .everest-forms-extra-table-nav {
+		order: 2;
+		margin-left: auto; // push to far right
 		display: flex;
 		align-items: center;
 		gap: 10px;
-	}
 
-	.tablenav-pages {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		width: 100%;
-		color: #6b7280;
-		font-size: 14px;
-
-		.displaying-num {
-			color: #6b7280;
-			font-weight: 400;
+		// Manage Columns Button
+		.evf-manage-columns-btn,
+		button[class*='manage'] {
+			height: 36px;
+			padding: 8px 14px;
+			border: 1px solid $evf-border !important;
+			border-radius: 3px;
+			background: $evf-bg-white;
+			color: $evf-text-secondary;
+			font-family:
+				Inter,
+				-apple-system,
+				BlinkMacSystemFont,
+				'Segoe UI',
+				sans-serif;
 			font-size: 14px;
-		}
-
-		.pagination-links {
-			display: flex;
+			font-weight: 500;
+			line-height: 1;
+			cursor: pointer;
+			transition: $evf-transition;
+			display: inline-flex;
 			align-items: center;
-			gap: 4px;
+			gap: 6px;
+			margin: 0;
 
-			// Page number buttons
-			.page-numbers {
-				display: inline-flex;
-				align-items: center;
-				justify-content: center;
-				min-width: 40px;
-				height: 40px;
-				padding: 0 4px;
-				border: 1px solid transparent;
-				border-radius: 8px;
-				background: transparent;
-				color: #374151;
-				text-decoration: none;
-				font-size: 14px;
-				font-weight: 500;
-				transition: all 0.2s ease;
-				cursor: pointer;
-
-				&:hover {
-					background: lighten($everestforms, 48%);
-					color: $everestforms;
-					border-color: #e1e1e1 !important;
-				}
-
-				&.current {
-					background: $everestforms;
-					color: $color-white;
-					border-color: #e1e1e1 !important;
-					cursor: default;
-					box-shadow: 0 2px 4px rgba(126, 59, 208, 0.25);
-
-					&:hover {
-						background: $everestforms;
-						color: $color-white;
-					}
-				}
-
-				&.dots {
-					border: none;
-					background: transparent;
-					cursor: default;
-					pointer-events: none;
-					color: #9ca3af;
-
-					&:hover {
-						background: transparent;
-						color: #9ca3af;
-						border-color: transparent;
-					}
-				}
+			svg {
+				width: 16px;
+				height: 16px;
 			}
 
-			// Arrow navigation buttons
-			.first-page,
-			.last-page,
-			.prev-page,
-			.next-page,
-			span.button {
-				display: inline-flex;
-				align-items: center;
-				justify-content: center;
-				min-width: 40px;
-				height: 40px;
-				padding: 0;
-				border: 1px solid transparent;
-				border-radius: 8px;
-				background: transparent;
-				color: #374151;
-				text-decoration: none;
-				font-size: 18px;
-				font-weight: 400;
-				transition: all 0.2s ease;
-				cursor: pointer;
+			&:hover {
+				background: $evf-bg-hover;
+				border-color: darken($evf-border, 5%) !important;
 			}
 
-			.first-page,
-			.last-page,
-			.prev-page,
-			.next-page {
-				&:hover {
-					background: lighten($everestforms, 48%);
-					color: $everestforms;
-					border-color: #e1e1e1 !important;
-				}
-			}
-
-			// First and last page buttons with distinct styling
-			.first-page,
-			.last-page {
-				font-size: 16px;
-				font-weight: 600;
-			}
-
-			span.button.disabled {
-				opacity: 0.3;
-				cursor: not-allowed;
-				pointer-events: none;
-				background: transparent;
+			&:focus {
+				outline: none;
+				box-shadow: 0 0 0 3px rgba($evf-primary, 0.1);
 			}
 		}
 
-		// Hide "one page" pagination
-		&.one-page {
-			display: none;
+		// Form filter dropdown
+		#filter-by-form,
+		select[name='form_id'],
+		.evf-enhanced-select,
+		.evf-enhanced-normal-select {
+			height: 36px;
+			padding: 0 32px 0 12px;
+			border: 1px solid $evf-border !important;
+			border-radius: $evf-radius-md;
+			background: $evf-bg-white;
+			color: $evf-text-secondary;
+			font-family:
+				Inter,
+				-apple-system,
+				BlinkMacSystemFont,
+				'Segoe UI',
+				sans-serif;
+			font-size: 14px;
+			font-weight: 400;
+			line-height: 1;
+			cursor: pointer;
+			transition: $evf-transition;
+			appearance: none;
+			background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+			background-position: right 8px center;
+			background-repeat: no-repeat;
+			background-size: 20px;
+			min-width: 170px;
+			margin: 0;
+
+			&:hover {
+				border-color: darken($evf-border, 5%) !important;
+			}
+
+			&:focus {
+				outline: none;
+				border-color: $evf-border !important;
+				box-shadow: 0 0 0 3px rgba($evf-primary, 0.1);
+			}
 		}
+
+		// Filter button
+		#post-query-submit,
+		input[type='submit'][name='filter_action'] {
+			height: 36px;
+			padding: 8px 14px;
+			border: 1px solid $evf-primary !important;
+			border-radius: 3px;
+			background: $evf-primary-light;
+			color: $evf-primary;
+			font-family:
+				Inter,
+				-apple-system,
+				BlinkMacSystemFont,
+				'Segoe UI',
+				sans-serif;
+			font-size: 14px;
+			font-weight: 500;
+			line-height: 1;
+			cursor: pointer;
+			transition: $evf-transition;
+			margin: 0;
+
+			&:hover {
+				background: lighten($evf-primary, 48%);
+				border-color: $evf-primary !important;
+			}
+
+			&:active {
+				transform: scale(0.98);
+			}
+		}
+
+		// Export CSV button
+		#export-csv-submit,
+		button[name='export_action'],
+		input[type='submit'][name='export_action'] {
+			height: 36px;
+			padding: 8px 14px;
+			border: 1px solid $evf-primary !important;
+			border-radius: 3px;
+			background: $evf-primary-light;
+			color: $evf-primary;
+			font-family:
+				Inter,
+				-apple-system,
+				BlinkMacSystemFont,
+				'Segoe UI',
+				sans-serif;
+			font-size: 14px;
+			font-weight: 500;
+			line-height: 1;
+			cursor: pointer;
+			transition: $evf-transition;
+			display: inline-flex;
+			align-items: center;
+			gap: 6px;
+			margin: 0;
+
+			svg {
+				width: 16px;
+				height: 16px;
+			}
+
+			&:hover {
+				background: lighten($evf-primary, 48%);
+				border-color: $evf-primary !important;
+
+				svg path {
+					stroke: $evf-primary;
+				}
+			}
+
+			&:active {
+				transform: scale(0.98);
+			}
+		}
+	}
+
+	// Hide clearing <br> inside flex
+	br.clear {
+		display: none;
+	}
+
+	// Hide pagination on top
+	.tablenav-pages {
+		display: none;
 	}
 }
 
-/**
- * Bulk Actions Bar
- **/
-
-.bulkactions {
-	display: flex;
-	align-items: center;
-	gap: 10px;
-
-	select {
-		display: flex;
-		width: 170px;
-		flex-direction: column;
-		justify-content: center;
-		align-items: flex-start;
-		gap: 8px;
-		height: 36px;
-		padding: 0 32px 0 12px;
-		border: 1px solid #e1e1e1 !important;
-		border-radius: 6px;
-		background: $color-white;
-		color: #374151;
-		font-size: 14px;
-		cursor: pointer;
-		transition:
-			border-color 0.15s ease,
-			box-shadow 0.15s ease;
-		appearance: none;
-		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
-		background-position: right 8px center;
-		background-repeat: no-repeat;
-		background-size: 20px;
-
-		&:hover {
-			border-color: #e1e1e1 !important;
-		}
-
-		&:focus {
-			outline: none;
-			border-color: #e1e1e1 !important;
-			box-shadow: 0 0 0 3px rgba(126, 59, 208, 0.1);
-		}
-	}
-
-	input[type='submit'],
-	button {
-		display: flex;
-		height: 36px;
-		padding: 8px 14px;
-		justify-content: center;
-		align-items: center;
-		gap: 6px;
-		border-radius: 3px;
-		border: 1px solid #7545bb !important;
-		background: #faf8fc;
-		color: $everestforms;
-		font-size: 14px;
-		font-weight: 500;
-		line-height: 1;
-		cursor: pointer;
-		transition: all 0.15s ease;
-
-		&:hover {
-			border-color: #7545bb !important;
-			background: lighten($everestforms, 48%);
-			color: $everestforms;
-		}
-
-		&:active {
-			transform: scale(0.98);
-		}
-
-		&#doaction2 {
-			display: none;
-		}
-	}
-}
-
-/**
- * Search Box Styling
- **/
+// ============================================================================
+// SEARCH BOX
+// ============================================================================
 
 .search-box {
-	display: flex;
-	align-items: center;
-	gap: 8px;
+	position: absolute;
+	top: 0;
+	right: 0;
 	margin: 0;
-	position: relative;
+	z-index: 10;
+
+	label {
+		display: none;
+	}
 
 	input[type='search'] {
-		display: flex;
-		width: 232px;
 		height: 36px;
 		padding: 10px 50px 10px 16px;
-		justify-content: space-between;
-		align-items: center;
-		align-self: stretch;
-		border-radius: 4px;
 		border: 1px solid #bababa !important;
-		background: #fff;
+		border-radius: $evf-radius-sm;
+		background: $evf-bg-white;
+		font-family:
+			Inter,
+			-apple-system,
+			BlinkMacSystemFont,
+			'Segoe UI',
+			sans-serif;
 		font-size: 14px;
 		line-height: 1;
-		color: #374151;
-		transition:
-			border-color 0.15s ease,
-			box-shadow 0.15s ease;
+		color: $evf-text-secondary;
+		min-width: 232px;
+		transition: $evf-transition;
 		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20' fill='none'%3E%3Cpath d='M17.5 17.5L13.875 13.875M15.8333 9.16667C15.8333 12.8486 12.8486 15.8333 9.16667 15.8333C5.48477 15.8333 2.5 12.8486 2.5 9.16667C2.5 5.48477 5.48477 2.5 9.16667 2.5C12.8486 2.5 15.8333 5.48477 15.8333 9.16667Z' stroke='%23BABABA' stroke-width='1.66667' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
 		background-position: right 12px center;
 		background-repeat: no-repeat;
@@ -775,14 +428,13 @@
 		&:focus {
 			outline: none;
 			border-color: #bababa !important;
-			box-shadow: 0 0 0 3px rgba(126, 59, 208, 0.1);
+			box-shadow: 0 0 0 3px rgba($evf-primary, 0.1);
 		}
 
 		&::placeholder {
 			color: #9ca3af;
 		}
 
-		// Style webkit clear button - position it to the left of search icon
 		&::-webkit-search-cancel-button {
 			-webkit-appearance: none;
 			appearance: none;
@@ -804,44 +456,522 @@
 		}
 	}
 
-	// Hide search submit button
 	input[type='submit'] {
 		display: none;
 	}
 }
 
-/**
- * Checkbox Styling
- **/
+// ============================================================================
+// MODERN TABLE DESIGN - FIXED ROW ACTIONS
+// ============================================================================
 
-.evf-base-list-table {
-	input[type='checkbox'] {
-		width: 16px;
-		height: 16px;
-		border: 1px solid #e1e1e1 !important;
-		border-radius: 4px;
-		cursor: pointer;
-		transition: all 0.15s ease;
-		appearance: none;
-		-webkit-appearance: none;
-		-moz-appearance: none;
+.evf-base-list-table,
+.wp-list-table.widefat.evf-base-list-table,
+.everest-forms-table {
+	width: 100%;
+	border-collapse: separate;
+	border-spacing: 0;
+	background: $evf-bg-white;
+	border: 1px solid $evf-border !important;
+	border-radius: $evf-radius-lg;
+	overflow: hidden;
+	box-shadow: none;
+	margin-top: 16px; // was 60px – tighter like UR list table
+	margin-bottom: 0;
 
-		&:hover {
-			border-color: #e1e1e1 !important;
+	// Remove the "more" column globally
+	thead th.column-more,
+	tbody td.column-more {
+		display: none !important;
+	}
+
+	.everest-forms-entries-setting {
+		display: none !important;
+	}
+
+	// Table Header
+	thead {
+		th {
+			padding: 12px 16px;
+			background: $evf-bg-white;
+			border-top: none !important;
+			border-bottom: 1px solid $evf-border !important;
+			border-right: none;
+			border-left: none;
+			color: $evf-text-secondary;
+			font-family:
+				Inter,
+				-apple-system,
+				BlinkMacSystemFont,
+				'Segoe UI',
+				sans-serif;
+			font-size: 14px;
+			font-weight: 600;
+			line-height: 24px;
+			text-transform: none;
+			letter-spacing: normal;
+			text-align: left;
+			white-space: nowrap;
+			vertical-align: middle;
+			position: relative;
+
+			&:first-child {
+				border-top-left-radius: $evf-radius-lg;
+			}
+
+			&:last-child {
+				border-top-right-radius: $evf-radius-lg;
+			}
+
+			&.check-column {
+				width: 48px;
+				height: 48px;
+				padding: 12px 16px;
+			}
+
+			&.column-indicators {
+				width: 80px;
+			}
+
+			&.column-status {
+				width: 140px;
+			}
+
+			&.column-date {
+				width: 180px;
+			}
+
+			&.column-entries {
+				width: 100px;
+			}
+
+			// Sortable columns
+			&.sortable,
+			&.sorted {
+				cursor: pointer;
+				user-select: none;
+				transition:
+					background-color 0.15s ease,
+					color 0.15s ease;
+
+				&:hover {
+					background: $evf-primary-light;
+					color: $evf-primary;
+				}
+
+				a {
+					display: flex;
+					align-items: center;
+					gap: 2px;
+					text-decoration: none;
+					color: inherit;
+					transition: color 0.15s ease;
+
+					&:focus {
+						outline: none;
+						box-shadow: none;
+					}
+				}
+
+				&.sorted {
+					background: $evf-primary-light;
+					color: $evf-primary;
+
+					&.asc,
+					&.desc {
+						a::after {
+							content: '';
+							display: inline-block;
+							width: 0;
+							height: 0;
+							margin-left: 4px;
+							border-left: 4px solid transparent;
+							border-right: 4px solid transparent;
+						}
+					}
+
+					&.asc a::after {
+						border-bottom: 4px solid $evf-primary;
+					}
+
+					&.desc a::after {
+						border-top: 4px solid $evf-primary;
+					}
+				}
+			}
 		}
+	}
 
-		&:checked {
-			background: $everestforms;
-			border-color: #e1e1e1 !important;
-			background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23ffffff'%3E%3Cpath d='M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z'/%3E%3C/svg%3E");
-			background-repeat: no-repeat;
-			background-position: center;
-			background-size: 12px;
+	// Table Body
+	tbody {
+		tr {
+			transition:
+				background-color 0.15s ease,
+				box-shadow 0.15s ease;
+			border-bottom: 1px solid $evf-border !important;
+			border-right: none;
+			border-left: none;
+			position: relative;
+
+			// Alternating rows
+			&:nth-child(odd) {
+				background: $evf-primary-light;
+			}
+
+			&:nth-child(even) {
+				background: $evf-bg-white;
+			}
+
+			&:last-child {
+				border-bottom: none !important;
+
+				td:first-child {
+					border-bottom-left-radius: $evf-radius-lg;
+				}
+
+				td:last-child {
+					border-bottom-right-radius: $evf-radius-lg;
+				}
+			}
+
+			// Row hover state
+			&:hover {
+				background: $evf-bg-hover;
+				box-shadow: $evf-shadow-hover;
+
+				// Show row actions on ANY hover
+				.row-actions {
+					visibility: visible !important;
+					opacity: 1 !important;
+				}
+
+				// Change primary column color
+				.column-primary,
+				.column-title,
+				.entry {
+					color: $evf-primary;
+
+					strong,
+					strong a,
+					> a {
+						color: $evf-primary !important;
+					}
+				}
+			}
+
+			// Unread styling
+			&.unread {
+				font-weight: 500;
+
+				td:first-child {
+					position: relative;
+
+					&::before {
+						content: '';
+						position: absolute;
+						left: 0;
+						top: 0;
+						bottom: 0;
+						width: 3px;
+						background: $evf-primary;
+					}
+				}
+			}
+
+			// Read styling
+			&.read {
+				opacity: 0.7;
+			}
+
+			// Status-specific styling
+			&.status-trash {
+				opacity: 0.5;
+				background: rgba($status-trash-bg, 0.3);
+			}
+
+			&.status-spam {
+				background: rgba($status-pending-bg, 0.3);
+			}
+
+			td {
+				padding: 16px;
+				color: $evf-text-primary;
+				font-family:
+					Inter,
+					-apple-system,
+					BlinkMacSystemFont,
+					'Segoe UI',
+					sans-serif;
+				font-size: 14px;
+				font-weight: 600;
+				line-height: normal;
+				vertical-align: middle;
+				border: none;
+				background: transparent;
+
+				&.check-column {
+					width: 48px;
+					height: 48px;
+					padding: 12px 16px;
+					text-align: center;
+
+					input[type='checkbox'] {
+						width: 16px;
+						height: 16px;
+						border: 1px solid $evf-border !important;
+						border-radius: $evf-radius-sm;
+						cursor: pointer;
+						transition: $evf-transition;
+						appearance: none;
+						-webkit-appearance: none;
+						-moz-appearance: none;
+						margin: 0;
+
+						&:hover {
+							border-color: darken($evf-border, 5%) !important;
+						}
+
+						&:checked {
+							background: $evf-primary;
+							border-color: $evf-primary !important;
+							background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23ffffff'%3E%3Cpath d='M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z'/%3E%3C/svg%3E");
+							background-repeat: no-repeat;
+							background-position: center;
+							background-size: 12px;
+						}
+
+						&:focus {
+							outline: none;
+							box-shadow: 0 0 0 3px rgba($evf-primary, 0.15);
+						}
+					}
+				}
+
+				// Indicators column
+				&.indicators {
+					display: flex;
+					gap: 8px;
+
+					a {
+						display: inline-flex;
+						align-items: center;
+						justify-content: center;
+						width: 28px;
+						height: 28px;
+						border-radius: $evf-radius-md;
+						transition: $evf-transition;
+						text-decoration: none;
+
+						&.indicator-star {
+							color: $evf-text-muted;
+
+							&:hover {
+								color: #fbbf24;
+								background: #fef3c7;
+							}
+
+							&.unstar {
+								color: #fbbf24;
+
+								&:hover {
+									background: #fef3c7;
+								}
+							}
+						}
+
+						&.indicator-read {
+							color: $evf-text-muted;
+
+							&:hover {
+								color: $evf-primary;
+								background: rgba($evf-primary, 0.1);
+							}
+
+							&.unread {
+								color: $evf-primary;
+
+								&:hover {
+									background: rgba($evf-primary, 0.1);
+								}
+							}
+						}
+
+						.dashicons {
+							width: 16px;
+							height: 16px;
+							font-size: 16px;
+						}
+					}
+				}
+
+				// Primary column - FIXED ROW ACTIONS
+				&.column-primary,
+				&.column-title,
+				&.entry {
+					font-weight: 600;
+					color: $evf-text-primary;
+
+					strong {
+						color: $evf-text-primary;
+						font-weight: 600;
+					}
+
+					a {
+						// color: $evf-primary;
+						// text-decoration: none;
+						font-weight: 500;
+
+						&:hover {
+							color: darken($evf-primary, 10%);
+							text-decoration: underline;
+						}
+					}
+
+					// ROW ACTIONS - ALWAYS SHOW ON HOVER
+					.row-actions {
+						visibility: hidden;
+						opacity: 0;
+						margin-top: 4px;
+						display: flex;
+						gap: 4px;
+						font-size: 12px;
+						font-weight: 400;
+						transition:
+							opacity 0.2s ease,
+							visibility 0.2s ease;
+						white-space: nowrap;
+						overflow: hidden;
+
+						span {
+							display: flex;
+							align-items: center;
+							gap: 4px;
+
+							a {
+								color: $evf-text-secondary;
+								font-family:
+									Inter,
+									-apple-system,
+									BlinkMacSystemFont,
+									'Segoe UI',
+									sans-serif;
+								font-size: 12px;
+								font-weight: 400;
+								text-decoration: none;
+								transition: $evf-transition;
+								white-space: nowrap;
+
+								&:hover {
+									color: #000;
+									text-decoration: underline;
+								}
+
+								&.submitdelete {
+									color: #dc2626;
+
+									&:hover {
+										color: #b91c1c;
+									}
+								}
+							}
+
+							.sep {
+								color: #d1d5db;
+								margin: 0 10px;
+								font-weight: 400;
+							}
+						}
+					}
+				}
+
+				// Form link column
+				&.form,
+				&.column-form {
+					a {
+						// color: $evf-primary;
+						text-decoration: none;
+
+						&:hover {
+							text-decoration: underline;
+						}
+					}
+				}
+
+				// Status badges
+				&.status,
+				&.column-status {
+					.badge {
+						display: inline-flex;
+						align-items: center;
+						padding: 3px 10px;
+						border-radius: $evf-radius-md;
+						font-size: 12px;
+						font-weight: 500;
+						line-height: 1.5;
+
+						&.unread {
+							background: $status-unread-bg !important;
+							color: $status-unread-text !important;
+						}
+
+						&.read {
+							background: $status-read-bg !important;
+							color: $status-read-text !important;
+						}
+
+						&.badge-success {
+							background: $status-read-bg;
+							color: $status-read-text;
+						}
+
+						&.badge-warning,
+						&.badge-pending {
+							background: $status-pending-bg;
+							color: $status-pending-text;
+						}
+
+						&.badge-danger,
+						&.badge-trash {
+							background: $status-trash-bg;
+							color: $status-trash-text;
+						}
+
+						&.badge-info {
+							background: #dbeafe;
+							color: #1e40af;
+						}
+					}
+				}
+
+				// Date column
+				&.date,
+				&.column-date {
+					color: $evf-text-muted;
+					font-size: 13px;
+					font-weight: 400;
+				}
+
+				// Entries count
+				&.column-entries {
+					font-weight: 600;
+					color: $evf-text-primary;
+				}
+			}
+
+			.toggle-row {
+				display: none;
+			}
 		}
+	}
 
-		&:focus {
-			outline: none;
-			box-shadow: 0 0 0 3px rgba(126, 59, 208, 0.15);
+	// Empty state
+	.no-items {
+		td {
+			padding: 60px 20px;
+			text-align: center;
+			color: #9ca3af;
+			font-size: 15px;
+			background: #f9fafb;
 		}
 	}
 
@@ -850,24 +980,173 @@
 	}
 }
 
-/**
- * Responsive Adjustments
- **/
+// ============================================================================
+// PAGINATION – tighter like UR list table
+// ============================================================================
 
-@media screen and (max-width: 782px) {
-	.evf-base-list-table {
-		thead {
-			th {
-				padding: 10px 12px;
-				font-size: 12px;
+.tablenav.bottom {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 16px 0;
+	margin: 0;
+	margin-bottom: 16px;
+	border: none;
+	background: transparent;
+
+	#bulk-action-selector-bottom {
+		display: none;
+	}
+
+	.alignleft.actions {
+		display: none;
+	}
+
+	.tablenav-pages {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		width: 100%;
+		color: $evf-text-muted;
+		font-size: 14px;
+		margin: 0;
+
+		.displaying-num {
+			color: $evf-text-muted;
+			font-family:
+				Inter,
+				-apple-system,
+				BlinkMacSystemFont,
+				'Segoe UI',
+				sans-serif;
+			font-weight: 400;
+			font-size: 14px;
+			margin: 0;
+		}
+
+		.pagination-links {
+			display: flex;
+			align-items: center;
+			gap: 4px;
+
+			.page-numbers,
+			.first-page,
+			.last-page,
+			.prev-page,
+			.next-page,
+			span.button,
+			a.button {
+				display: inline-flex;
+				align-items: center;
+				justify-content: center;
+				min-width: 40px;
+				height: 40px;
+				padding: 0 4px;
+				border: 1px solid transparent;
+				border-radius: $evf-radius-lg;
+				background: transparent;
+				color: $evf-text-secondary;
+				text-decoration: none;
+				font-family:
+					Inter,
+					-apple-system,
+					BlinkMacSystemFont,
+					'Segoe UI',
+					sans-serif;
+				font-size: 14px;
+				font-weight: 500;
+				line-height: 1;
+				transition: $evf-transition;
+				cursor: pointer;
+
+				&:hover:not(.disabled):not(.current) {
+					background: $evf-primary-light;
+					color: $evf-primary;
+					border-color: $evf-border !important;
+				}
+
+				&.current {
+					background: $evf-primary;
+					color: $evf-bg-white;
+					border-color: $evf-border !important;
+					cursor: default;
+					box-shadow: 0 2px 4px rgba(126, 59, 208, 0.25);
+
+					&:hover {
+						background: $evf-primary;
+						color: $evf-bg-white;
+					}
+				}
+
+				&.dots {
+					border: none;
+					background: transparent;
+					cursor: default;
+					pointer-events: none;
+					color: #9ca3af;
+
+					&:hover {
+						background: transparent;
+						color: #9ca3af;
+						border-color: transparent;
+					}
+				}
+
+				&.disabled {
+					opacity: 0.3;
+					cursor: not-allowed;
+					pointer-events: none;
+					background: transparent;
+				}
+
+				.screen-reader-text {
+					display: none;
+				}
+			}
+
+			.first-page,
+			.last-page {
+				font-size: 16px;
+				font-weight: 600;
 			}
 		}
 
-		tbody {
-			td {
-				padding: 10px 12px;
-				font-size: 13px;
-			}
+		&.one-page {
+			display: none;
+		}
+	}
+}
+
+// ============================================================================
+// RESPONSIVE DESIGN
+// ============================================================================
+
+@media screen and (max-width: 1024px) {
+	.search-box {
+		position: static;
+		margin-bottom: 16px;
+		width: 100%;
+
+		input[type='search'] {
+			width: 100%;
+		}
+	}
+
+	.evf-base-list-table {
+		margin-top: 0;
+	}
+}
+
+@media screen and (max-width: 782px) {
+	.evf-base-list-table {
+		thead th {
+			padding: 10px 12px;
+			font-size: 12px;
+		}
+
+		tbody td {
+			padding: 10px 12px;
+			font-size: 13px;
 		}
 	}
 
@@ -875,13 +1154,28 @@
 		flex-direction: column;
 		align-items: flex-start;
 		gap: 16px;
-		padding: 16px;
+		padding: 16px 0;
 
-		.alignleft {
-			width: 100%;
+		&.top {
+			.alignleft,
+			.everest-forms-extra-table-nav {
+				width: 100%;
+				flex-wrap: wrap;
+
+				select,
+				button,
+				input[type='submit'] {
+					width: 100%;
+					margin-bottom: 8px;
+
+					&:last-child {
+						margin-bottom: 0;
+					}
+				}
+			}
 		}
 
-		.tablenav-pages {
+		&.bottom .tablenav-pages {
 			width: 100%;
 			flex-direction: column;
 			align-items: flex-start;
@@ -898,15 +1192,31 @@
 			}
 		}
 	}
-
-	.search-box {
-		input[type='search'] {
-			min-width: 200px;
-		}
-	}
 }
 
 @media screen and (max-width: 600px) {
+	.subsubsub {
+		flex-wrap: wrap;
+
+		li a {
+			padding: 8px 4px;
+			font-size: 13px;
+		}
+	}
+
+	.tablenav-pages .pagination-links {
+		.page-numbers,
+		.first-page,
+		.last-page,
+		.prev-page,
+		.next-page,
+		span.button {
+			min-width: 36px;
+			height: 36px;
+			font-size: 13px;
+		}
+	}
+
 	.evf-base-list-table {
 		border: none;
 		box-shadow: none;
@@ -919,9 +1229,9 @@
 			tr {
 				display: block;
 				margin-bottom: 12px;
-				border: 1px solid #e1e1e1 !important;
-				border-radius: 8px;
-				background: $color-white;
+				border: 1px solid $evf-border !important;
+				border-radius: $evf-radius-lg;
+				background: $evf-bg-white;
 
 				&:hover {
 					box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
@@ -932,10 +1242,10 @@
 				display: block;
 				text-align: right;
 				padding: 10px 12px;
-				border-bottom: 1px solid #e1e1e1 !important;
+				border-bottom: 1px solid $evf-border !important;
 
 				&:last-child {
-					border-bottom: none;
+					border-bottom: none !important;
 				}
 
 				&.check-column {
@@ -947,7 +1257,7 @@
 					content: attr(data-label);
 					float: left;
 					font-weight: 600;
-					color: #6b7280;
+					color: $evf-text-muted;
 					font-size: 12px;
 					text-transform: uppercase;
 					letter-spacing: 0.5px;
@@ -957,49 +1267,6 @@
 					content: none;
 				}
 			}
-		}
-	}
-
-	.tablenav-pages {
-		.pagination-links {
-			.page-numbers,
-			.first-page,
-			.last-page,
-			.prev-page,
-			.next-page,
-			span.button {
-				min-width: 36px;
-				height: 36px;
-				font-size: 13px;
-			}
-		}
-	}
-
-	.search-box {
-		flex-direction: column;
-		width: 100%;
-
-		input[type='search'] {
-			width: 100%;
-			min-width: auto;
-		}
-
-		input[type='submit'] {
-			width: 100%;
-		}
-	}
-
-	.bulkactions {
-		flex-direction: column;
-		width: 100%;
-
-		select {
-			width: 100%;
-		}
-
-		input[type='submit'],
-		button {
-			width: 100%;
 		}
 	}
 }

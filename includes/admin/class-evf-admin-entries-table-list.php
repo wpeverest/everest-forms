@@ -1,6 +1,6 @@
 <?php
 /**
- * EverestForms Entries Table List - Dual View Support
+ * EverestForms Entries Table List 
  *
  * @package EverestForms\Admin
  * @since   1.1.0
@@ -69,7 +69,6 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 		);
 	}
 
-
 	/**
 	 * Get the current action selected from the bulk actions dropdown.
 	 *
@@ -106,19 +105,17 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 		$columns['cb'] = '<input type="checkbox" />';
 		$columns       = apply_filters( 'everest_forms_add_extra_columns', $columns );
 
-		
 		if ( 0 === $this->form_id ) {
+			// All Forms view - simplified columns
 			$columns['entry'] = esc_html__( 'Entry', 'everest-forms' );
 			$columns['form']  = esc_html__( 'Form', 'everest-forms' );
 			$columns['date']  = esc_html__( 'Date Created', 'everest-forms' );
 		} else {
+			// Specific form view - dynamic columns based on form fields
 			$columns         = apply_filters( 'everest_forms_entries_table_form_fields_columns', $this->get_columns_form_fields( $columns ), $this->form_id, $this->form_data );
 			$columns['date'] = esc_html__( 'Date Created', 'everest-forms' );
 		}
 
-		if ( defined( 'EFP_VERSION' ) ) {
-			$columns['more'] = '<a href="#" class="everest-forms-entries-setting" title="' . esc_attr__( 'More Options', 'everest-forms' ) . '" data-evf-form_id="' . $this->form_id . '"><i class="dashicons dashicons-admin-generic"></i></a>';
-		}
 
 		return apply_filters( 'everest_forms_entries_table_columns', $columns, $this->form_data );
 	}
@@ -399,7 +396,7 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 				break;
 
 			case 'sn':
-				$position = array_search( $entry, $this->items );
+				$position = array_search( $entry, $this->items, true );
 				$value    = $position + 1;
 				break;
 
@@ -795,22 +792,42 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 	/**
 	 * Extra controls to be displayed between bulk actions and pagination.
 	 *
+	 * MODIFIED: Added Manage Columns button to replace the gear icon in table header
+	 *
 	 * @param string $which The location of the extra table nav markup.
 	 */
 	protected function extra_tablenav( $which ) {
 		$num_entries = ( 0 === $this->form_id ) ? $this->get_all_forms_entry_counts() : evf_get_count_entries_by_status( $this->form_id );
 		$show_export = isset( $_GET['status'] ) && 'trash' === $_GET['status'] ? false : true; // phpcs:ignore WordPress.Security.NonceVerification
 		?>
-		<div class="alignleft actions">
+		<div class="everest-forms-extra-table-nav">
 		<?php
 		if ( ! empty( $this->forms ) && 'top' === $which ) {
+
+			if ( defined( 'EFP_VERSION' ) && $this->form_id > 0 ) {
+				?>
+				<button type="button" class="button evf-manage-columns-btn" id="evf-manage-columns" data-form-id="<?php echo esc_attr( $this->form_id ); ?>">
+					<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 6px;">
+						<path d="M2 4.66667H14M2 8H14M2 11.3333H14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+					</svg>
+					<?php esc_html_e( 'Manage Columns', 'everest-forms' ); ?>
+				</button>
+				<?php
+			}
 
 			$this->forms_dropdown();
 			submit_button( __( 'Filter', 'everest-forms' ), '', 'filter_action', false, array( 'id' => 'post-query-submit' ) );
 
 			// Export CSV submit button.
 			if ( apply_filters( 'everest_forms_enable_csv_export', $show_export ) && current_user_can( 'export' ) ) {
-				submit_button( __( 'Export CSV', 'everest-forms' ), '', 'export_action', false, array( 'id' => 'export-csv-submit' ) );
+				?>
+				<button type="submit" name="export_action" value="1" class="button" id="export-csv-submit">
+					<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 6px;">
+						<path d="M14 10V12.6667C14 13.0203 13.8595 13.3594 13.6095 13.6095C13.3594 13.8595 13.0203 14 12.6667 14H3.33333C2.97971 14 2.64057 13.8595 2.39052 13.6095C2.14048 13.3594 2 13.0203 2 12.6667V10M11.3333 5.33333L8 2M8 2L4.66667 5.33333M8 2V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+					</svg>
+					<?php esc_html_e( 'Export CSV', 'everest-forms' ); ?>
+				</button>
+				<?php
 			}
 		}
 
