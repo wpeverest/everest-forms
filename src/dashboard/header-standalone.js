@@ -1,4 +1,13 @@
-import { ChakraProvider, useToast } from '@chakra-ui/react';
+import {
+	Box,
+	ChakraProvider,
+	Container,
+	HStack,
+	Skeleton,
+	SkeletonCircle,
+	Stack,
+	useToast,
+} from '@chakra-ui/react';
 import { QueryClient, QueryClientProvider, useQuery } from '@tanstack/react-query';
 import apiFetch from '@wordpress/api-fetch';
 import { __ } from '@wordpress/i18n';
@@ -51,6 +60,48 @@ function HeaderWithQuery() {
 	const isAllStepsCompleted = siteAssistantQuery?.isLoading
 		? Boolean(allStepsCompleted === '1')
 		: siteAssistantQuery?.data?.data?.all_steps_completed;
+
+	// Show skeleton loading that matches the actual header UI
+	if (siteAssistantQuery.isLoading) {
+		return (
+			<Box
+				bg="white"
+				borderBottom="1px solid #E9E9E9"
+				width="100%"
+				position="relative"
+				zIndex="10"
+			>
+				<Container maxW="full">
+					<Stack direction="row" minH="70px" justify="space-between">
+						{/* Left Side - Logo and Navigation Skeleton */}
+						<Stack direction="row" align="center" gap="7">
+							{/* Logo Skeleton */}
+							<SkeletonCircle size="10" />
+
+							{/* Navigation Links Skeleton */}
+							<HStack spacing="1" h="full">
+								<Skeleton height="20px" width="100px" />
+								<Skeleton height="20px" width="80px" />
+								<Skeleton height="20px" width="90px" />
+								<Skeleton height="20px" width="95px" />
+							</HStack>
+						</Stack>
+
+						{/* Right Side - Actions Skeleton */}
+						<Stack direction="row" align="center" spacing="12px">
+							<HStack spacing="1">
+								<Skeleton height="20px" width="60px" />
+								<Skeleton height="20px" width="90px" />
+							</HStack>
+							<Skeleton height="20px" width="100px" />
+							<Skeleton height="24px" width="50px" borderRadius="xl" />
+							<SkeletonCircle size="10" />
+						</Stack>
+					</Stack>
+				</Container>
+			</Box>
+		);
+	}
 
 	return <Header hideSiteAssistant={isAllStepsCompleted} />;
 }

@@ -1,7 +1,7 @@
 /**
  *  External Dependencies
  */
-import { useToast } from '@chakra-ui/react';
+import { Box, Spinner, useToast } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import apiFetch from '@wordpress/api-fetch';
 import { __ } from '@wordpress/i18n';
@@ -20,6 +20,7 @@ import {
 	Settings,
 	SiteAssistant,
 } from '../screens';
+import SiteAssistantSkeleton from '../skeleton/SiteAssistantSkeleton';
 
 const Router = () => {
 	const toast = useToast();
@@ -93,6 +94,11 @@ const Router = () => {
 	};
 
 	const DefaultRedirect = () => {
+		// Show Site Assistant skeleton while fetching data
+		if (siteAssistantQuery.isLoading) {
+			return <SiteAssistantSkeleton />;
+		}
+
 		if (isAllStepsCompleted) {
 			if (isPro && showAnalyticsTab) {
 				return <RedirectToPhpPage page="everest-forms-analytics" />;
@@ -103,6 +109,28 @@ const Router = () => {
 			return <SiteAssistant siteAssistantQuery={siteAssistantQuery} />;
 		}
 	};
+
+	// Show full-page loader when loading AND steps are completed (will redirect)
+	// This prevents header from flashing before redirect
+	if (siteAssistantQuery.isLoading && Boolean(allStepsCompleted === '1')) {
+		return (
+			<Box
+				display="flex"
+				justifyContent="center"
+				alignItems="center"
+				minHeight="100vh"
+				bg="white"
+			>
+				<Spinner
+					thickness="4px"
+					speed="0.65s"
+					emptyColor="gray.200"
+					color="primary.500"
+					size="xl"
+				/>
+			</Box>
+		);
+	}
 
 	return (
 		<>
