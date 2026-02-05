@@ -731,7 +731,8 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 			steps.push({
 				id: 'createForm',
 				title: __('Start Creating Forms', 'everest-forms'),
-				isCompleted: (data) => !!data?.skipped_steps?.includes('create_form'),
+				isCompleted: (data) =>
+					!!data?.skipped_steps?.includes('create_form') || !!data?.has_forms,
 				renderContent: renderCreateFormContent,
 			});
 		}
