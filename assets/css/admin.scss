@@ -38,13 +38,16 @@
 	font-display: block;
 }
 
-/**
-	   * Styling begins
-	   */
+body[class*='everest-forms_page_'] {
+	background: #f4f4f4 !important;
 
-// Remove margin-top from entries list when React header is present
+	#wpcontent {
+		padding-left: 0;
+	}
+}
+
 #everest-forms-entries-list {
-	margin-top: 0;
+	margin-top: 32px;
 }
 
 .blockUI.blockOverlay {
@@ -11655,8 +11658,8 @@ body {
 
 #everest-forms-list-table__container {
 	background-color: #ffffff;
-	padding: 24px;
-	margin: 25px auto;
+	// padding: 24px;
+	// margin: 25px auto;
 	border-radius: 7px;
 
 	table.wp-list-table {

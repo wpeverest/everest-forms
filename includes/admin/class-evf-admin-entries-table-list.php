@@ -1,6 +1,6 @@
 <?php
 /**
- * EverestForms Entries Table List 
+ * EverestForms Entries Table List
  *
  * @package EverestForms\Admin
  * @since   1.1.0
@@ -115,7 +115,6 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 			$columns         = apply_filters( 'everest_forms_entries_table_form_fields_columns', $this->get_columns_form_fields( $columns ), $this->form_id, $this->form_data );
 			$columns['date'] = esc_html__( 'Date Created', 'everest-forms' );
 		}
-
 
 		return apply_filters( 'everest_forms_entries_table_columns', $columns, $this->form_data );
 	}
@@ -392,7 +391,11 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 				break;
 
 			case 'date':
-				$value = date_i18n( get_option( 'date_format' ), strtotime( $entry->date_created ) + ( get_option( 'gmt_offset' ) * 3600 ) );
+				$value = date_i18n(
+					'Y/m/d',
+					strtotime( $entry->date_created ) + ( get_option( 'gmt_offset' ) * 3600 )
+				);
+
 				break;
 
 			case 'sn':
