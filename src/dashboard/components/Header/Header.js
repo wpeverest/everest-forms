@@ -64,7 +64,7 @@ const Header = ({ hideSiteAssistant = false }) => {
 
 	const { leftRoutes, rightRoutes } = useMemo(() => {
 		const allRoutes = hideSiteAssistant
-			? ROUTES.filter((route) => route.route !== '/')
+			? ROUTES.filter((route) => route.key !== 'siteAssistant')
 			: ROUTES;
 
 		const rightRoutePaths = ['/help', 'https://everestforms.net/free-vs-pro/'];
