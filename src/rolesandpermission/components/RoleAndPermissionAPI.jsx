@@ -10,7 +10,8 @@ const urls = {
 	addUserManager : base + "add-user-manager",
 	getManagers : base + "get-managers",
 	removeManager: base + "remove-manager",
-	bulkRemoveManager : base + "bulk-remove-managers"
+	bulkRemoveManager : base + "bulk-remove-managers",
+	getWPUsers: base + "get-wp-users"
 };
 
 export const bulkAssignPermission = async ( checkedItems ) => {
@@ -106,3 +107,19 @@ export const getManagers = async ( offset="", pageSize="", searchManager="" ) =>
 			},
 		})
  }
+
+export const getWPUsers = async ( page = 1, search = "" ) => {
+	return apiFetch({
+		path: urls.getWPUsers,
+		method: "POST",
+		headers: {
+			"X-WP-Nonce": security,
+		},
+		data: {
+			request: {
+				page: page,
+				search: search,
+			},
+		},
+	}).then((res) => res);
+}
