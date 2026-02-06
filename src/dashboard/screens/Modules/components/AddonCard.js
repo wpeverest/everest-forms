@@ -180,7 +180,7 @@ const AddonCard = ({ addon, showToast }) => {
 			borderRadius="lg"
 			border="1px solid"
 			borderColor="gray.200"
-			p="6"
+			p={{ base: "4", sm: "5", md: "6" }}
 			_hover={{ boxShadow: 'md' }}
 			transition="all 0.2s"
 			position="relative"
@@ -207,17 +207,16 @@ const AddonCard = ({ addon, showToast }) => {
 			)}
 
 			{/* Main Content Layout */}
-			<HStack align="start" spacing="4" flxe="1" mb="6">
+			<HStack align="start" spacing={{ base: "3", sm: "4" }} flex="1" mb={{ base: "4", sm: "5", md: "6" }}>
 				{/* Left Side - Icon */}
 				<Box
-					w="10"
-					h="10"
+					w={{ base: "9", sm: "10" }}
+					h={{ base: "9", sm: "10" }}
 					bg="white"
 					borderRadius="full"
 					display="flex"
 					alignItems="center"
 					justifyContent="center"
-					boxShadow="sm"
 					flexShrink={0}
 					overflow="hidden"
 				>
@@ -243,7 +242,7 @@ const AddonCard = ({ addon, showToast }) => {
 						display={addon.image ? 'none' : 'flex'}
 						alignItems="center"
 						justifyContent="center"
-						fontSize="2xl"
+						fontSize={{ base: "xl", sm: "2xl" }}
 						width="100%"
 						height="100%"
 					>
@@ -252,13 +251,16 @@ const AddonCard = ({ addon, showToast }) => {
 				</Box>
 
 				{/* Right Side - Title and Badge */}
-				<VStack align="start" spacing="3" flex="1">
-					<HStack justify="space-between" w="full" align="start">
+				<VStack align="start" spacing={{ base: "2", sm: "3" }} flex="1" minW="0">
+					<HStack justify="space-between" w="full" align="start" spacing="2">
 						<Heading
 							size="sm"
 							color="gray.800"
 							fontWeight="600"
-							fontSize="16px"
+							fontSize={{ base: "14px", sm: "15px", md: "16px" }}
+							noOfLines={2}
+							flex="1"
+							minW="0"
 						>
 							{addon.title}
 						</Heading>
@@ -279,7 +281,12 @@ const AddonCard = ({ addon, showToast }) => {
 					</HStack>
 
 					{/* Description */}
-					<Text fontSize="13px" color="gray.600" lineHeight="1.5" noOfLines={2}>
+					<Text
+						fontSize={{ base: "12px", sm: "13px" }}
+						color="gray.600"
+						lineHeight="1.5"
+						noOfLines={2}
+					>
 						{addon.excerpt || 'No description available.'}
 					</Text>
 				</VStack>
@@ -290,11 +297,18 @@ const AddonCard = ({ addon, showToast }) => {
 				justify="space-between"
 				align="center"
 				mt="auto"
-				pt="3"
+				pt={{ base: "2", sm: "3" }}
 				borderTop="1px solid"
 				borderColor="gray.100"
+				flexWrap={{ base: "wrap", sm: "nowrap" }}
+				gap={{ base: "2", sm: "0" }}
 			>
-				<HStack spacing="2" fontSize="13px">
+				<HStack
+					spacing="2"
+					fontSize={{ base: "12px", sm: "13px" }}
+					flexWrap="wrap"
+					flex={{ base: "1", sm: "0 1 auto" }}
+				>
 					{addon.link && (
 						<Link
 							href={addon.link}
@@ -309,7 +323,7 @@ const AddonCard = ({ addon, showToast }) => {
 					)}
 					{addon.demo_video_url && (
 						<>
-							<Text color="gray.300">|</Text>
+							<Text color="gray.300" display={{ base: "none", sm: "block" }}>|</Text>
 							<IconButton
 								size="xs"
 								icon={<Icon as={FaPlay} />}
@@ -323,7 +337,7 @@ const AddonCard = ({ addon, showToast }) => {
 					)}
 					{addon.setting_url && isActive && (
 						<>
-							<Text color="gray.300">|</Text>
+							<Text color="gray.300" display={{ base: "none", sm: "block" }}>|</Text>
 							<IconButton
 								size="xs"
 								icon={<FaCog />}
@@ -336,7 +350,7 @@ const AddonCard = ({ addon, showToast }) => {
 						</>
 					)}
 				</HStack>
-				<HStack spacing="2">
+				<HStack spacing="2" flexShrink={0}>
 					{moduleEnabled ? (
 						<Switch
 							isChecked={isActive}
@@ -355,13 +369,13 @@ const AddonCard = ({ addon, showToast }) => {
 					) : (
 						<Button
 							size="sm"
-							fontSize="13px"
+							fontSize={{ base: "12px", sm: "13px" }}
 							fontWeight="600"
 							bg="#475bb2"
 							color="white"
 							borderColor="#475bb2"
-							px="4"
-							h="32px"
+							px={{ base: "3", sm: "4" }}
+							h={{ base: "28px", sm: "32px" }}
 							_hover={{
 								bg: '#3a4a8f',
 								borderColor: '#3a4a8f',
@@ -382,16 +396,21 @@ const AddonCard = ({ addon, showToast }) => {
 				<Modal
 					isOpen={isVideoOpen}
 					onClose={onVideoClose}
-					size="3xl"
+					size={{ base: "full", sm: "xl", md: "2xl", lg: "3xl" }}
 					isCentered
 				>
 					<ModalOverlay bg="blackAlpha.700" />
-					<ModalContent mx="4">
-						<ModalHeader textAlign="center" fontSize="lg" fontWeight="600">
+					<ModalContent mx={{ base: "0", sm: "4" }} my={{ base: "0", sm: "auto" }}>
+						<ModalHeader
+							textAlign="center"
+							fontSize={{ base: "md", sm: "lg" }}
+							fontWeight="600"
+							px={{ base: "4", sm: "6" }}
+						>
 							{addon.title}
 						</ModalHeader>
 						<ModalCloseButton />
-						<ModalBody pb="6">
+						<ModalBody pb={{ base: "4", sm: "6" }} px={{ base: "4", sm: "6" }}>
 							<Box
 								position="relative"
 								paddingTop="56.25%"

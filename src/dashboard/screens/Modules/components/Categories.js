@@ -9,12 +9,11 @@ const Categories = ({
 	categories,
 	selectedCategory,
 	highlightedCategories = [],
-	onCategoryChange
+	onCategoryChange,
 }) => {
 	const scrollContainerRef = useRef(null);
 	const [showLeftArrow, setShowLeftArrow] = useState(false);
 	const [showRightArrow, setShowRightArrow] = useState(false);
-
 
 	const checkArrows = () => {
 		const container = scrollContainerRef.current;
@@ -30,11 +29,9 @@ const Categories = ({
 	};
 
 	useEffect(() => {
-
 		const timer = setTimeout(() => {
 			const container = scrollContainerRef.current;
 			if (container) {
-
 				container.scrollLeft = 0;
 				checkArrows();
 			}
@@ -52,7 +49,6 @@ const Categories = ({
 		};
 	}, [categories]);
 
-	
 	const scrollLeft = () => {
 		const container = scrollContainerRef.current;
 		if (container) {
@@ -73,31 +69,28 @@ const Categories = ({
 		<Box
 			bg="white"
 			borderRadius="lg"
-			p="4"
+			p={{ base: '3', sm: '4' }}
 			mb="4"
-			boxShadow="sm"
 			position="relative"
-			minH="56px"
+			minH={{ base: '52px', sm: '56px' }}
 		>
-			{/* Left Arrow with gradient fade effect */}
 			{showLeftArrow && (
 				<>
-					{/* Gradient overlay */}
 					<Box
 						position="absolute"
 						left="0"
 						top="0"
 						bottom="0"
-						width="70px"
+						width={{ base: '50px', sm: '60px', md: '70px' }}
 						bgGradient="linear(to-r, white 40%, transparent)"
 						zIndex="1"
 						pointerEvents="none"
 						borderRadius="lg 0 0 lg"
 					/>
 					<IconButton
-						icon={<ChevronLeftIcon boxSize={6} />}
+						icon={<ChevronLeftIcon boxSize={{ base: 5, sm: 6 }} />}
 						position="absolute"
-						left="3"
+						left={{ base: '2', sm: '3' }}
 						top="50%"
 						transform="translateY(-50%)"
 						zIndex="3"
@@ -107,11 +100,10 @@ const Categories = ({
 						border="1px solid"
 						borderColor="#E5E7EB"
 						color="#6B7280"
-						boxShadow="0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)"
 						borderRadius="full"
-						w="36px"
-						h="36px"
-						minW="36px"
+						w={{ base: '32px', sm: '36px' }}
+						h={{ base: '32px', sm: '36px' }}
+						minW={{ base: '32px', sm: '36px' }}
 						_hover={{
 							bg: '#F9FAFB',
 							borderColor: '#D1D5DB',
@@ -129,14 +121,13 @@ const Categories = ({
 				</>
 			)}
 
-			{/* Scrollable Container */}
 			<Box
 				ref={scrollContainerRef}
 				overflowX="auto"
 				overflowY="hidden"
 				onScroll={checkArrows}
-				pl={showLeftArrow ? '16' : '2'}
-				pr={showRightArrow ? '16' : '2'}
+				pl={showLeftArrow ? { base: '12', sm: '14', md: '16' } : '2'}
+				pr={showRightArrow ? { base: '12', sm: '14', md: '16' } : '2'}
 				css={{
 					'&::-webkit-scrollbar': {
 						display: 'none',
@@ -147,7 +138,7 @@ const Categories = ({
 				}}
 			>
 				<HStack
-					spacing="6"
+					spacing={{ base: '4', sm: '5', md: '6' }}
 					align="center"
 					position="relative"
 					flexShrink={0}
@@ -168,8 +159,8 @@ const Categories = ({
 								key={`${category.value}-${category.internalValue}-${index}`}
 								position="relative"
 								cursor="pointer"
-								py="2"
-								px="2"
+								py={{ base: '1.5', sm: '2' }}
+								px={{ base: '1.5', sm: '2' }}
 								flexShrink={0}
 								display="flex"
 								alignItems="center"
@@ -193,7 +184,7 @@ const Categories = ({
 								}}
 							>
 								<Text
-									fontSize="15px"
+									fontSize={{ base: '14px', sm: '15px' }}
 									fontWeight={shouldHighlight ? '600' : '500'}
 									color={shouldHighlight ? '#4263EB' : '#6B7280'}
 									transition="all 0.2s ease"
@@ -215,7 +206,6 @@ const Categories = ({
 										bg="#4263EB"
 										borderRadius="3px 3px 0 0"
 										transition="all 0.2s ease"
-										boxShadow="0 -1px 0 0 #4263EB"
 									/>
 								)}
 							</Box>
@@ -233,16 +223,16 @@ const Categories = ({
 						right="0"
 						top="0"
 						bottom="0"
-						width="70px"
+						width={{ base: '50px', sm: '60px', md: '70px' }}
 						bgGradient="linear(to-l, white 40%, transparent)"
 						zIndex="1"
 						pointerEvents="none"
 						borderRadius="0 lg lg 0"
 					/>
 					<IconButton
-						icon={<ChevronRightIcon boxSize={6} />}
+						icon={<ChevronRightIcon boxSize={{ base: 5, sm: 6 }} />}
 						position="absolute"
-						right="3"
+						right={{ base: '2', sm: '3' }}
 						top="50%"
 						transform="translateY(-50%)"
 						zIndex="3"
@@ -252,11 +242,10 @@ const Categories = ({
 						border="1px solid"
 						borderColor="#E5E7EB"
 						color="#6B7280"
-						boxShadow="0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)"
 						borderRadius="full"
-						w="36px"
-						h="36px"
-						minW="36px"
+						w={{ base: '32px', sm: '36px' }}
+						h={{ base: '32px', sm: '36px' }}
+						minW={{ base: '32px', sm: '36px' }}
 						_hover={{
 							bg: '#F9FAFB',
 							borderColor: '#D1D5DB',
@@ -273,16 +262,6 @@ const Categories = ({
 					/>
 				</>
 			)}
-
-			{/* Bottom border line */}
-			<Box
-				position="absolute"
-				bottom="0"
-				left="4"
-				right="4"
-				height="1px"
-				bg="gray.200"
-			/>
 		</Box>
 	);
 };

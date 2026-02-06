@@ -163,117 +163,101 @@ const Modules = () => {
 		statusFilter = null,
 		planFilter = null,
 	) => {
-		if (showLoading) {
-			setState((prev) => ({ ...prev, isLoading: true }));
+		if (!modules || modules.length === 0) {
+			setState((prev) => ({
+				...prev,
+				modules: [],
+				noItemFound: true,
+				highlightedCategories: [],
+			}));
+			return;
 		}
 
-		const processFilter = () => {
-			if (!modules || modules.length === 0) {
-				setState((prev) => ({
-					...prev,
-					modules: [],
-					noItemFound: true,
-					isLoading: false,
-					highlightedCategories: [],
-				}));
+		const currentStatus =
+			statusFilter !== null ? statusFilter : state.selectedStatus;
+		const currentPlan = planFilter !== null ? planFilter : state.selectedPlan;
+		const searchValue = searchItemRef.current.toLowerCase().trim();
+
+		const filtered = [];
+		const categoriesWithResults = new Set();
+
+		const indexToUse =
+			searchIndex.size > 0
+				? searchIndex
+				: new Map(
+						modules.map((mod, idx) => [
+							idx,
+							{
+								titleLower: mod.title.toLowerCase(),
+								category: mod.category,
+								status: mod.status,
+								plan: mod.plan,
+								module: mod,
+							},
+						]),
+					);
+
+		indexToUse.forEach((indexedModule) => {
+			if (
+				category &&
+				category !== 'All' &&
+				indexedModule.category !== category
+			) {
 				return;
 			}
 
-			const currentStatus =
-				statusFilter !== null ? statusFilter : state.selectedStatus;
-			const currentPlan = planFilter !== null ? planFilter : state.selectedPlan;
-			const searchValue = searchItemRef.current.toLowerCase().trim();
+			if (
+				currentStatus &&
+				currentStatus !== 'all' &&
+				indexedModule.status !== currentStatus
+			) {
+				return;
+			}
 
-			const filtered = [];
-			const categoriesWithResults = new Set();
+			if (currentPlan && currentPlan !== 'all') {
+				const modulePlan = indexedModule.plan || '';
+				const planLower =
+					typeof modulePlan === 'string'
+						? modulePlan.toLowerCase()
+						: Array.isArray(modulePlan)
+							? modulePlan.join(',').toLowerCase()
+							: '';
 
-			const indexToUse =
-				searchIndex.size > 0
-					? searchIndex
-					: new Map(
-							modules.map((mod, idx) => [
-								idx,
-								{
-									titleLower: mod.title.toLowerCase(),
-									category: mod.category,
-									status: mod.status,
-									plan: mod.plan,
-									module: mod,
-								},
-							]),
-						);
-
-			indexToUse.forEach((indexedModule) => {
-				if (
-					category &&
-					category !== 'All' &&
-					indexedModule.category !== category
-				) {
-					return;
-				}
-
-				if (
-					currentStatus &&
-					currentStatus !== 'all' &&
-					indexedModule.status !== currentStatus
-				) {
-					return;
-				}
-
-				if (currentPlan && currentPlan !== 'all') {
-					const modulePlan = indexedModule.plan || '';
-					const planLower =
-						typeof modulePlan === 'string'
-							? modulePlan.toLowerCase()
-							: Array.isArray(modulePlan)
-								? modulePlan.join(',').toLowerCase()
-								: '';
-
-					if (currentPlan === 'free') {
-						if (!planLower.includes('free')) {
-							return;
-						}
-					}
-
-					if (currentPlan === 'pro') {
-						const isFree = planLower.includes('free');
-						const isPro = planLower.includes('pro');
-
-						if (isFree && !isPro) {
-							return;
-						}
+				if (currentPlan === 'free') {
+					if (!planLower.includes('free')) {
+						return;
 					}
 				}
 
-				if (searchValue && !indexedModule.titleLower.includes(searchValue)) {
-					return;
+				if (currentPlan === 'pro') {
+					const isFree = planLower.includes('free');
+					const isPro = planLower.includes('pro');
+
+					if (isFree && !isPro) {
+						return;
+					}
 				}
+			}
 
-				filtered.push(indexedModule.module);
+			if (searchValue && !indexedModule.titleLower.includes(searchValue)) {
+				return;
+			}
 
-				if (searchValue && indexedModule.category) {
-					categoriesWithResults.add(indexedModule.category);
-				}
-			});
+			filtered.push(indexedModule.module);
 
-			setState((prev) => ({
-				...prev,
-				modules: filtered,
-				noItemFound: filtered.length === 0,
-				isLoading: false,
-				highlightedCategories: searchValue
-					? Array.from(categoriesWithResults)
-					: [],
-			}));
-		};
+			if (searchValue && indexedModule.category) {
+				categoriesWithResults.add(indexedModule.category);
+			}
+		});
 
-		if (showLoading) {
-			requestAnimationFrame(() => {
-				setTimeout(processFilter, 0);
-			});
-		} else {
-			processFilter();
-		}
+		setState((prev) => ({
+			...prev,
+			modules: filtered,
+			noItemFound: filtered.length === 0,
+			highlightedCategories: searchValue
+				? Array.from(categoriesWithResults)
+				: [],
+		}));
 	};
 
 	const {
@@ -518,12 +502,12 @@ const Modules = () => {
 
 	return (
 		<Box top="var(--wp-admin--admin-bar--height, 0)" zIndex={1} minH="100vh">
-			<Container maxW="100%" p="20px">
+			<Container maxW="100%" p={{ base: '12px', sm: '16px', md: '20px' }}>
 				{state.isLoading || isQueryLoading || !state.modulesLoaded ? (
 					<AddonsSkeleton />
 				) : (
 					<>
-						<Box mb="6">
+						<Box mb="4">
 							<Filters
 								sortOptions={sortOptions}
 								statusOptions={statusOptions}
@@ -586,7 +570,7 @@ const Modules = () => {
 										...prev,
 										selectedCategory: displayValue,
 									}));
-									filterModules(state.originalModules, internalValue, true);
+									filterModules(state.originalModules, internalValue, false);
 								}}
 							/>
 						</Box>
@@ -595,24 +579,38 @@ const Modules = () => {
 							<Box
 								bg="white"
 								borderRadius="lg"
-								boxShadow="sm"
 								display="flex"
 								justifyContent="center"
 								flexDirection="column"
-								padding={{ base: '60px 20px', md: '100px' }}
-								gap="4"
+								padding={{
+									base: '40px 16px',
+									sm: '60px 20px',
+									md: '80px 40px',
+									lg: '100px',
+								}}
+								gap={{ base: '3', md: '4' }}
 								alignItems="center"
-								minH="400px"
+								minH={{ base: '300px', md: '400px' }}
 							>
-								<PageNotFound color="gray.300" />
+								<PageNotFound
+									color="gray.300"
+									boxSize={{ base: '16', sm: '20', md: '24' }}
+								/>
 								<Text
-									fontSize={{ base: '18px', md: '20px' }}
+									fontSize={{ base: '16px', sm: '18px', md: '20px' }}
 									fontWeight="600"
 									color="gray.800"
+									textAlign="center"
+									px={{ base: '2', sm: '4' }}
 								>
 									{noResultsMessage.title}
 								</Text>
-								<Text fontSize="14px" color="gray.500" textAlign="center">
+								<Text
+									fontSize={{ base: '13px', sm: '14px' }}
+									color="gray.500"
+									textAlign="center"
+									px={{ base: '2', sm: '4' }}
+								>
 									{noResultsMessage.subtitle}
 								</Text>
 							</Box>
@@ -627,12 +625,11 @@ const Modules = () => {
 				)}
 			</Container>
 
-			{/* Scroll to Top Button */}
 			{showScrollTop && (
 				<IconButton
 					position="fixed"
-					bottom={{ base: '20px', md: '24px' }}
-					right={{ base: '20px', md: '24px' }}
+					bottom={{ base: '16px', sm: '20px', md: '24px' }}
+					right={{ base: '16px', sm: '20px', md: '24px' }}
 					zIndex="1000"
 					aria-label="Scroll to top"
 					icon={<FaArrowUp />}
@@ -643,22 +640,17 @@ const Modules = () => {
 					borderColor="#E5E7EB"
 					color="#6B7280"
 					borderRadius="full"
-					boxShadow="0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)"
-					w="48px"
-					h="48px"
+					w={{ base: '44px', sm: '48px' }}
+					h={{ base: '44px', sm: '48px' }}
+					minW={{ base: '44px', sm: '48px' }}
 					_hover={{
 						bg: '#F9FAFB',
 						borderColor: '#D1D5DB',
 						color: '#374151',
 						transform: 'translateY(-2px)',
-						boxShadow:
-							'0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
 					}}
 					_active={{
 						transform: 'translateY(0)',
-					}}
-					_focus={{
-						boxShadow: '0 0 0 3px rgba(66, 99, 235, 0.1)',
 					}}
 					transition="all 0.2s ease"
 					onClick={scrollToTop}

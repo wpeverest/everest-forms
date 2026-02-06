@@ -43,7 +43,7 @@ const Filters = ({
 			borderRadius: "8px",
 			fontSize: "14px",
 			pointerEvents: "auto",
-			boxShadow: "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
+			boxShadow: "none",
 			"&:hover": {
 				borderColor: "#D1D5DB"
 			}
@@ -85,8 +85,7 @@ const Filters = ({
 		menu: (base) => ({
 			...base,
 			borderRadius: "8px",
-			boxShadow:
-				"0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
+			boxShadow: "none",
 			border: "1px solid #E5E7EB",
 			overflow: "hidden"
 		}),
@@ -114,51 +113,69 @@ const Filters = ({
 	};
 
 	return (
-		<Box bg="white" borderRadius="lg" p="5" mb="4" boxShadow="sm">
-			<Stack direction="row" justify="space-between" align="center">
-				<HStack spacing="3">
-					<Select
-						instanceId="plan-select"
-						options={planOptions}
-						value={selectedPlanValue}
-						placeholder="All Plans"
-						isSearchable={false}
-						isClearable={false}
-						onChange={onPlanChange}
-						menuPortalTarget={document.body}
-						menuPosition="fixed"
-						menuShouldBlockScroll={false}
-						chakraStyles={selectStyles}
-					/>
-					<Select
-						instanceId="sort-select"
-						options={sortOptions}
-						value={selectedSortValue}
-						placeholder="All"
-						isSearchable={false}
-						isClearable={false}
-						onChange={onSortChange}
-						menuPortalTarget={document.body}
-						menuPosition="fixed"
-						menuShouldBlockScroll={false}
-						chakraStyles={selectStyles}
-					/>
-					<Select
-						instanceId="status-select"
-						options={statusOptions}
-						value={selectedStatusValue}
-						placeholder="All Status"
-						isSearchable={false}
-						isClearable={false}
-						onChange={onStatusChange}
-						menuPortalTarget={document.body}
-						menuPosition="fixed"
-						menuShouldBlockScroll={false}
-						chakraStyles={selectStyles}
-					/>
+		<Box bg="white" borderRadius="lg" p={{ base: "4", md: "5" }} mb="4">
+			<Stack
+				direction={{ base: "column", lg: "row" }}
+				justify={{ base: "flex-start", lg: "space-between" }}
+				align={{ base: "stretch", lg: "center" }}
+				spacing={{ base: "3", md: "4" }}
+			>
+				<HStack
+					spacing={{ base: "2", sm: "3" }}
+					flexWrap={{ base: "wrap", sm: "nowrap" }}
+					w={{ base: "full", lg: "auto" }}
+				>
+					<Box w={{ base: "calc(50% - 4px)", sm: "140px" }}>
+						<Select
+							instanceId="plan-select"
+							options={planOptions}
+							value={selectedPlanValue}
+							placeholder="All Plans"
+							isSearchable={false}
+							isClearable={false}
+							onChange={onPlanChange}
+							menuPortalTarget={document.body}
+							menuPosition="fixed"
+							menuShouldBlockScroll={false}
+							chakraStyles={selectStyles}
+						/>
+					</Box>
+					<Box w={{ base: "calc(50% - 4px)", sm: "140px" }}>
+						<Select
+							instanceId="sort-select"
+							options={sortOptions}
+							value={selectedSortValue}
+							placeholder="All"
+							isSearchable={false}
+							isClearable={false}
+							onChange={onSortChange}
+							menuPortalTarget={document.body}
+							menuPosition="fixed"
+							menuShouldBlockScroll={false}
+							chakraStyles={selectStyles}
+						/>
+					</Box>
+					<Box w={{ base: "calc(50% - 4px)", sm: "140px" }}>
+						<Select
+							instanceId="status-select"
+							options={statusOptions}
+							value={selectedStatusValue}
+							placeholder="All Status"
+							isSearchable={false}
+							isClearable={false}
+							onChange={onStatusChange}
+							menuPortalTarget={document.body}
+							menuPosition="fixed"
+							menuShouldBlockScroll={false}
+							chakraStyles={selectStyles}
+						/>
+					</Box>
 				</HStack>
 
-				<HStack spacing="3">
+				<HStack
+					spacing="3"
+					w={{ base: "full", lg: "auto" }}
+				>
 					<Tooltip
 						label="Reset all filters"
 						placement="top"
@@ -181,21 +198,25 @@ const Filters = ({
 							borderRadius="8px"
 							height="38px"
 							width="38px"
-							boxShadow="0 1px 2px 0 rgba(0, 0, 0, 0.05)"
+							minW="38px"
+							flexShrink={0}
 							_hover={{
 								bg: 'gray.50',
 								borderColor: '#D1D5DB',
 								color: 'gray.700',
 							}}
 							_focus={{
-								boxShadow: '0 0 0 3px rgba(66, 99, 235, 0.1)',
 								borderColor: '#4263EB',
 							}}
 							onClick={onReset}
 						/>
 					</Tooltip>
 
-					<InputGroup maxW="320px" w="320px">
+					<InputGroup
+						maxW={{ base: "full", lg: "320px" }}
+						w={{ base: "full", lg: "320px" }}
+						flex={{ base: "1", lg: "0 0 auto" }}
+					>
 						<InputLeftElement pointerEvents="none" h="38px">
 							<Search h="4" w="4" color="gray.400" />
 						</InputLeftElement>
@@ -209,13 +230,11 @@ const Filters = ({
 							borderRadius="8px"
 							height="38px"
 							fontSize="14px"
-							boxShadow="0 1px 2px 0 rgba(0, 0, 0, 0.05)"
 							_hover={{
 								borderColor: '#D1D5DB',
 							}}
 							_focus={{
 								borderColor: '#4263EB',
-								boxShadow: '0 0 0 3px rgba(66, 99, 235, 0.1)',
 								outline: 'none',
 							}}
 							_placeholder={{
