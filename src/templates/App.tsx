@@ -5,28 +5,19 @@ import {
 	ChakraProvider,
 	Heading,
 	HStack,
-	Icon,
 	Link,
 	Text,
 	VStack,
 } from '@chakra-ui/react';
-import { useQueryClient } from '@tanstack/react-query';
+import { useIsFetching, useQueryClient } from '@tanstack/react-query';
 import { __ } from '@wordpress/i18n';
 import { useState } from 'react';
 import Theme from '../dashboard/Theme/Theme';
 import Main from './components/Main';
 
-const EVFIcon = (props) => (
-	<Icon viewBox="0 0 24 24" {...props}>
-		<path
-			fill="currentColor"
-			d="M21.23,10H17.79L16.62,8h3.46ZM17.77,4l1.15,2H15.48L14.31,4Zm-15,16L12,4l5.77,10H10.85L12,12h2.31L12,8,6.23,18H20.08l1.16,2Z"
-		/>
-	</Icon>
-);
-
 const App = () => {
 	const queryClient = useQueryClient();
+	const isFetching = useIsFetching(['templates']);
 	const [selectedTab, setSelectedTab] = useState<string>(
 		__('All', 'everest-forms'),
 	);
@@ -36,7 +27,9 @@ const App = () => {
 	};
 
 	const handleRefreshTemplates = () => {
-		queryClient.invalidateQueries(['templates']);
+		if (!isFetching) {
+			queryClient.invalidateQueries(['templates']);
+		}
 	};
 
 	return (
@@ -58,7 +51,7 @@ const App = () => {
 						<VStack align="start" gap="8px" flex="1" minW="300px">
 							<Heading
 								as="h1"
-								fontSize="32px"
+								fontSize="3xl"
 								lineHeight="1.2"
 								fontWeight="600"
 								color="grey.400"
@@ -135,10 +128,20 @@ const App = () => {
 								alignItems="center"
 								gap="6px"
 								onClick={handleRefreshTemplates}
-								cursor="pointer"
-								_hover={{ color: 'primary.500' }}
+								cursor={isFetching ? 'not-allowed' : 'pointer'}
+								opacity={isFetching ? 0.6 : 1}
+								pointerEvents={isFetching ? 'none' : 'auto'}
+								_hover={{ color: isFetching ? 'primary.400' : 'primary.500' }}
 							>
-								<RepeatIcon />
+								<RepeatIcon
+									sx={{
+										animation: isFetching ? 'spin 1s linear infinite' : 'none',
+										'@keyframes spin': {
+											'0%': { transform: 'rotate(0deg)' },
+											'100%': { transform: 'rotate(360deg)' },
+										},
+									}}
+								/>
 								{__('Refresh Templates', 'everest-forms')}
 							</Link>
 						</HStack>
