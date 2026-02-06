@@ -127,13 +127,11 @@ function evf_get_entry_statuses( $form_data = array() ) {
 /**
  * Search entries.
  *
- *
  * @param  array $args Search arguments.
  * @return array       Array of entry IDs.
  */
 function evf_search_entries( $args ) {
 	global $wpdb;
-
 
 	$args = wp_parse_args(
 		$args,
@@ -146,11 +144,9 @@ function evf_search_entries( $args ) {
 		)
 	);
 
-
 	if ( ! isset( $args['cap'] ) ) {
 		$args['cap'] = 'everest_forms_view_form_entries';
 	}
-
 
 	if ( ! empty( $args['form_id'] ) ) {
 		$all_forms = evf_get_all_forms();
@@ -206,6 +202,8 @@ function evf_search_entries( $args ) {
 			$query[] = $wpdb->prepare( 'AND `status` != %s AND `viewed` = 0', 'trash' );
 		} elseif ( 'starred' === $args['status'] ) {
 			$query[] = $wpdb->prepare( 'AND `status` != %s AND `starred` = 1', 'trash' );
+		} elseif ( 'read' === $args['status'] ) {
+			$query[] = $wpdb->prepare( 'AND `status` != %s AND `viewed` = 1', 'trash' );
 		} elseif ( 'pending' === $args['status'] ) {
 			$query[] = $wpdb->prepare( 'AND `status` = %s', 'pending' );
 		} elseif ( 'approved' === $args['status'] ) {

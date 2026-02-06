@@ -424,24 +424,39 @@ abstract class EVF_Base_List_Table extends WP_List_Table {
 	 * @param string $input_id ID attribute value for the search input field.
 	 */
 	public function search_box( $text, $input_id ) {
-		if ( empty( $_REQUEST['s'] ) && ! $this->has_items() ) { // phpcs:ignore WordPress.Security.NonceVerification
+		if ( empty( $_REQUEST['s'] ) && ! $this->has_items() ) {
 			return;
 		}
 
 		$input_id = $input_id . '-search-input';
 
-		if ( ! empty( $_REQUEST['orderby'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
-			echo '<input type="hidden" name="orderby" value="' . esc_attr( sanitize_text_field( wp_unslash( $_REQUEST['orderby'] ) ) ) . '" />'; // phpcs:ignore WordPress.Security.NonceVerification
+		if ( ! empty( $_REQUEST['orderby'] ) ) {
+			echo '<input type="hidden" name="orderby" value="' . esc_attr( sanitize_text_field( wp_unslash( $_REQUEST['orderby'] ) ) ) . '" />';
 		}
-		if ( ! empty( $_REQUEST['order'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
-			echo '<input type="hidden" name="order" value="' . esc_attr( sanitize_text_field( wp_unslash( $_REQUEST['order'] ) ) ) . '" />'; // phpcs:ignore WordPress.Security.NonceVerification
+		if ( ! empty( $_REQUEST['order'] ) ) {
+			echo '<input type="hidden" name="order" value="' . esc_attr( sanitize_text_field( wp_unslash( $_REQUEST['order'] ) ) ) . '" />';
 		}
 		?>
-	<p class="search-box">
-		<label class="screen-reader-text" for="<?php echo esc_attr( $input_id ); ?>"><?php echo esc_html( $text ); ?>:</label>
-		<input type="search" id="<?php echo esc_attr( $input_id ); ?>" name="s" value="<?php _admin_search_query(); ?>" placeholder="<?php echo esc_attr( $text ); ?>" />
-		<?php submit_button( $text, '', '', false, array( 'id' => 'search-submit' ) ); ?>
-	</p>
+	<div class="search-box evf-search">
+		<label class="screen-reader-text" for="<?php echo esc_attr( $input_id ); ?>">
+			<?php echo esc_html( $text ); ?>:
+		</label>
+
+		<input type="search"
+				id="<?php echo esc_attr( $input_id ); ?>"
+				name="s"
+				value="<?php _admin_search_query(); ?>"
+				placeholder="<?php echo esc_attr( $text ); ?>" />
+
+		<button type="submit" id="search-submit" class="evf-search-submit button">
+			<span class="screen-reader-text"><?php echo esc_html( $text ); ?></span>
+			<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24">
+				<path fill="currentColor" fill-rule="evenodd"
+						d="M4 11a7 7 0 1 1 12.042 4.856 1.012 1.012 0 0 0-.186.186A7 7 0 0 1 4 11Zm12.618 7.032a9 9 0 1 1 1.414-1.414l3.675 3.675a1 1 0 0 1-1.414 1.414l-3.675-3.675Z"
+						clip-rule="evenodd"></path>
+			</svg>
+		</button>
+	</div>
 		<?php
 	}
 }

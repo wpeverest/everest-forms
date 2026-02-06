@@ -85,7 +85,7 @@ class EVF_Admin_Forms {
 					<?php endif; ?>
 				</div>
 
-				<div class="search-box" style="position: relative; flex: 0 0 auto; margin: 0;">
+				<div class="search-box" style="position: absolute; flex: 0 0 auto; margin: 0; right: 0;">
 					<?php $forms_table_list->search_box( esc_html__( 'Search Forms', 'everest-forms' ), 'everest-forms' ); ?>
 				</div>
 			</div>
