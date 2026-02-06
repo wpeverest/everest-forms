@@ -1,4 +1,4 @@
-import { Box, Flex, Spinner, useBreakpointValue } from '@chakra-ui/react';
+import { Box, Flex, useBreakpointValue } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import apiFetch from '@wordpress/api-fetch';
 import { __ } from '@wordpress/i18n';
@@ -6,6 +6,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { templatesScriptData } from '../utils/global';
 import Sidebar from './Sidebar';
 import TemplateList from './TemplateList';
+import TemplatesSkeleton from './TemplatesSkeleton';
 
 const { restURL, security } = templatesScriptData;
 
@@ -40,6 +41,7 @@ const Main: React.FC<{ filter: string }> = ({ filter }) => {
 	const {
 		data: templates = [],
 		isLoading,
+		isFetching,
 		error,
 	} = useQuery(['templates'], fetchTemplates);
 
@@ -163,13 +165,9 @@ const Main: React.FC<{ filter: string }> = ({ filter }) => {
 
 	const sidebarWidth = useBreakpointValue({ base: '100%', md: '250px' });
 
-	if (isLoading)
-		return (
-			<Flex justify="center" align="center" height="100vh">
-				<Spinner size="xl" />
-			</Flex>
-		);
 	if (error) return <div>{(error as Error).message}</div>;
+
+	const showSkeleton = isLoading || isFetching;
 
 	return (
 		<Box>
@@ -184,6 +182,7 @@ const Main: React.FC<{ filter: string }> = ({ filter }) => {
 						selectedCategory={state.selectedCategory}
 						onCategorySelect={handleCategorySelect}
 						onSearchChange={handleSearchChange}
+						isLoading={isLoading}
 					/>
 				</Box>
 				<Box
@@ -193,10 +192,14 @@ const Main: React.FC<{ filter: string }> = ({ filter }) => {
 					marginRight="28px"
 				/>
 				<Box flex={1}>
-					<TemplateList
-						selectedCategory={selectedCategory}
-						templates={filteredTemplates}
-					/>
+					{showSkeleton ? (
+						<TemplatesSkeleton />
+					) : (
+						<TemplateList
+							selectedCategory={selectedCategory}
+							templates={filteredTemplates}
+						/>
+					)}
 				</Box>
 			</Flex>
 		</Box>

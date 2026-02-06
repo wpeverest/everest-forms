@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from "react";
-import { Box, VStack, HStack, Text, Spacer, Input, InputLeftElement, InputGroup, Badge, CardHeader,CardFooter,Button,Card,Heading } from "@chakra-ui/react";
+import { Box, VStack, HStack, Text, Spacer, Input, InputLeftElement, InputGroup, Badge, CardHeader,CardFooter,Button,Card,Heading, Skeleton } from "@chakra-ui/react";
 import { IoSearchOutline } from "react-icons/io5";
 import debounce from "lodash.debounce";
 import { __ } from '@wordpress/i18n';
@@ -8,9 +8,10 @@ interface SidebarProps {
   selectedCategory: string;
   onCategorySelect: (category: string) => void;
   onSearchChange: (searchTerm: string) => void;
+  isLoading?: boolean;
 }
 
-const Sidebar: React.FC<SidebarProps> = React.memo(({ categories, selectedCategory, onCategorySelect, onSearchChange }) => {
+const Sidebar: React.FC<SidebarProps> = React.memo(({ categories, selectedCategory, onCategorySelect, onSearchChange, isLoading = false }) => {
   const [searchTerm, setSearchTerm] = useState<string>("");
 
   const debouncedSearchChange = useCallback(
@@ -51,27 +52,39 @@ const Sidebar: React.FC<SidebarProps> = React.memo(({ categories, selectedCatego
 		</InputGroup>
 
       <VStack align="stretch" gap="2px">
-        {orderedCategories.map((category) => (
-          <HStack
-            key={category.name}
-            p="12px"
-            _hover={{
-				bg: "#F7F4FB",
-				"& > .badge": {
-				  bg: selectedCategory === category.name ? "#FFFFFF" : "#FFFFFF"
-			}
-			}}
-            borderRadius="md"
-            cursor="pointer"
+        {isLoading ? (
+          Array(6)
+            .fill(1)
+            .map((_, i) => (
+              <HStack key={i} p="12px" borderRadius="md">
+                <Skeleton height="20px" width="60%" />
+                <Spacer />
+                <Skeleton height="32px" width="32px" borderRadius="8px" />
+              </HStack>
+            ))
+        ) : (
+          orderedCategories.map((category) => (
+            <HStack
+              key={category.name}
+              p="12px"
+              _hover={{
+                bg: "#F7F4FB",
+                "& > .badge": {
+                  bg: selectedCategory === category.name ? "#FFFFFF" : "#FFFFFF"
+                }
+              }}
+              borderRadius="md"
+              cursor="pointer"
 
-            bg={selectedCategory === category.name ? "#F7F4FB" : "transparent"}
-            onClick={() => onCategorySelect(category.name)}
-          >
-            <Text color={selectedCategory === category.name ? "#7545BB" : ""} fontWeight="semibold" margin="0px">{category.name}</Text>
-            <Spacer />
-            <Badge  className="badge" display="flex" alignItems="center" justifyContent="center" width="32px" height="32px" padding="0px" borderRadius="8px" color={selectedCategory === category.name ? "#7545BB" : ""} bg={selectedCategory === category.name ? "white" : "#F2F2F2"} >{category.count}</Badge>
-          </HStack>
-        ))}
+              bg={selectedCategory === category.name ? "#F7F4FB" : "transparent"}
+              onClick={() => onCategorySelect(category.name)}
+            >
+              <Text color={selectedCategory === category.name ? "#7545BB" : ""} fontWeight="semibold" margin="0px">{category.name}</Text>
+              <Spacer />
+              <Badge  className="badge" display="flex" alignItems="center" justifyContent="center" width="32px" height="32px" padding="0px" borderRadius="8px" color={selectedCategory === category.name ? "#7545BB" : ""} bg={selectedCategory === category.name ? "white" : "#F2F2F2"} >{category.count}</Badge>
+            </HStack>
+          ))
+        )}
 		<Card
 				align='center'
 				bg="linear-gradient(90.62deg, rgba(76, 21, 155, 0.7) 0.2%, rgba(76, 21, 155, 0.7) 0.21%, rgba(140, 100, 198, 0.7) 99.25%)"
