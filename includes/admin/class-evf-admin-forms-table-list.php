@@ -47,10 +47,10 @@ class EVF_Admin_Forms_Table_List extends EVF_Base_List_Table {
 	public function get_columns() {
 		$forms_columns = array(
 			'cb'        => '<input type="checkbox" />',
-			'enabled'   => '',
 			'title'     => esc_html__( 'Title', 'everest-forms' ),
 			'tags'      => esc_html__( 'Tags', 'everest-forms' ),
 			'shortcode' => esc_html__( 'Shortcode', 'everest-forms' ),
+			'enabled'   => esc_html__( 'Status', 'everest-forms' ),
 			'author'    => esc_html__( 'Author', 'everest-forms' ),
 			'date'      => esc_html__( 'Date', 'everest-forms' ),
 		);
@@ -253,7 +253,9 @@ class EVF_Admin_Forms_Table_List extends EVF_Base_List_Table {
 		<span class="shortcode evf-shortcode-field">
 			<input type="text" onfocus="this.select();" readonly="readonly" value="<?php echo esc_attr( '[everest_form id="' . absint( $posts->ID ) . '"]' ); ?> " class="large-text code">
 			<button class="button evf-copy-shortcode help_tip" type="button" href="#" data-tip="<?php esc_attr_e( 'Copy Shortcode!', 'everest-forms' ); ?>" data-copied="<?php esc_attr_e( 'Copied!', 'everest-forms' ); ?>">
-				<span class="dashicons dashicons-admin-page"></span>
+				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+				<path fill="#383838" fill-rule="evenodd" d="M3.116 3.116A1.25 1.25 0 0 1 4 2.75h9A1.25 1.25 0 0 1 14.25 4v1a.75.75 0 0 0 1.5 0V4A2.75 2.75 0 0 0 13 1.25H4A2.75 2.75 0 0 0 1.25 4v9A2.75 2.75 0 0 0 4 15.75h1a.75.75 0 0 0 0-1.5H4A1.25 1.25 0 0 1 2.75 13V4c0-.332.132-.65.366-.884ZM9.75 11c0-.69.56-1.25 1.25-1.25h9c.69 0 1.25.56 1.25 1.25v9c0 .69-.56 1.25-1.25 1.25h-9c-.69 0-1.25-.56-1.25-1.25v-9ZM11 8.25A2.75 2.75 0 0 0 8.25 11v9A2.75 2.75 0 0 0 11 22.75h9A2.75 2.75 0 0 0 22.75 20v-9A2.75 2.75 0 0 0 20 8.25h-9Z" clip-rule="evenodd"></path>
+			</svg>
 			</button>
 		</span>
 		<?php

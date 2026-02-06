@@ -106,12 +106,10 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 		$columns       = apply_filters( 'everest_forms_add_extra_columns', $columns );
 
 		if ( 0 === $this->form_id ) {
-			// All Forms view - simplified columns
 			$columns['entry'] = esc_html__( 'Entry', 'everest-forms' );
 			$columns['form']  = esc_html__( 'Form', 'everest-forms' );
 			$columns['date']  = esc_html__( 'Date Created', 'everest-forms' );
 		} else {
-			// Specific form view - dynamic columns based on form fields
 			$columns         = apply_filters( 'everest_forms_entries_table_form_fields_columns', $this->get_columns_form_fields( $columns ), $this->form_id, $this->form_data );
 			$columns['date'] = esc_html__( 'Date Created', 'everest-forms' );
 		}
@@ -215,7 +213,7 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 			}
 		}
 
-		return $columns;
+		return apply_filters( 'everest_forms_entries_table_form_field_columns', $columns, $this->form_id, $this->form_data );
 	}
 
 	/**
@@ -244,7 +242,6 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 
 		// Find first non-empty field value
 		foreach ( $entry->meta as $key => $value ) {
-			// Skip system fields and fields starting with underscore
 			if ( in_array( $key, $skip_fields, true ) || strpos( $key, '_' ) === 0 ) {
 				continue;
 			}
@@ -621,7 +618,6 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 	protected function get_views() {
 		$status_links = array();
 
-		// Get counts based on form_id
 		if ( 0 === $this->form_id ) {
 			$num_entries = $this->get_all_forms_entry_counts();
 		} else {
@@ -630,8 +626,12 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 
 		$total_entries = apply_filters( 'everest_forms_total_entries_count', (int) $num_entries['publish'], $num_entries, $this->form_id );
 		$spam_entries  = apply_filters( 'everest_forms_spam_total_entries_count', (int) $num_entries['spam'], $num_entries, $this->form_id );
-		$statuses      = array_keys( evf_get_entry_statuses( $this->form_data ) );
-		$class         = empty( $_REQUEST['status'] ) ? ' class="current"' : ''; // phpcs:ignore WordPress.Security.NonceVerification
+
+		$unread_entries = isset( $num_entries['unread'] ) ? (int) $num_entries['unread'] : 0;
+		$read_entries   = isset( $num_entries['read'] ) ? (int) $num_entries['read'] : 0;
+
+		$statuses = array_keys( evf_get_entry_statuses( $this->form_data ) );
+		$class    = empty( $_REQUEST['status'] ) ? ' class="current"' : ''; // phpcs:ignore WordPress.Security.NonceVerification
 
 		$base_url = admin_url( 'admin.php?page=evf-entries' );
 		if ( $this->form_id > 0 ) {
@@ -640,19 +640,31 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 
 		/* translators: %s: count */
 		$status_links['all'] = "<a href='" . esc_url( $base_url ) . "'$class>" . sprintf( _nx( 'All <span class="count">(%s)</span>', 'All <span class="count">(%s)</span>', $total_entries, 'entries', 'everest-forms' ), number_format_i18n( $total_entries ) ) . '</a>';
+
+		// Unread tab
+		$unread_url             = add_query_arg( 'status', 'unread', $base_url );
+		$unread_class           = ( isset( $_REQUEST['status'] ) && 'unread' === $_REQUEST['status'] ) ? ' class="current"' : '';
+		$status_links['unread'] = "<a href='" . esc_url( $unread_url ) . "'$unread_class>" . sprintf( _nx( 'Unread <span class="count">(%s)</span>', 'Unread <span class="count">(%s)</span>', $unread_entries, 'entries', 'everest-forms' ), number_format_i18n( $unread_entries ) ) . '</a>';
+
+		// Read tab
+		$read_url             = add_query_arg( 'status', 'read', $base_url );
+		$read_class           = ( isset( $_REQUEST['status'] ) && 'read' === $_REQUEST['status'] ) ? ' class="current"' : '';
+		$status_links['read'] = "<a href='" . esc_url( $read_url ) . "'$read_class>" . sprintf( _nx( 'Read <span class="count">(%s)</span>', 'Read <span class="count">(%s)</span>', $read_entries, 'entries', 'everest-forms' ), number_format_i18n( $read_entries ) ) . '</a>';
+
 		/* translators: %s: count */
 		$spam_url             = add_query_arg( 'status', 'spam', $base_url );
-		$status_links['spam'] = "<a href='" . esc_url( $spam_url ) . "'$class>" . sprintf( _nx( 'Spam <span class="count">(%s)</span>', 'Spam <span class="count">(%s)</span>', $spam_entries, 'entries', 'everest-forms' ), number_format_i18n( $spam_entries ) ) . '</a>';
+		$spam_class           = ( isset( $_REQUEST['status'] ) && 'spam' === $_REQUEST['status'] ) ? ' class="current"' : '';
+		$status_links['spam'] = "<a href='" . esc_url( $spam_url ) . "'$spam_class>" . sprintf( _nx( 'Spam <span class="count">(%s)</span>', 'Spam <span class="count">(%s)</span>', $spam_entries, 'entries', 'everest-forms' ), number_format_i18n( $spam_entries ) ) . '</a>';
 
 		foreach ( $statuses as $status_name ) {
-			$class = '';
-
 			if ( 'publish' === $status_name ) {
 				continue;
 			}
 
 			if ( isset( $_REQUEST['status'] ) && sanitize_key( wp_unslash( $_REQUEST['status'] ) ) === $status_name ) { // phpcs:ignore WordPress.Security.NonceVerification
 				$class = ' class="current"';
+			} else {
+				$class = '';
 			}
 
 			$label      = $this->get_status_label( $status_name, $num_entries[ $status_name ] );
@@ -678,6 +690,8 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 			'trash'   => 0,
 			'pending' => 0,
 			'denied'  => 0,
+			'unread'  => 0,
+			'read'    => 0,
 		);
 
 		$results = $wpdb->get_results( "SELECT status, COUNT(*) as count FROM {$wpdb->prefix}evf_entries GROUP BY status" );
@@ -685,6 +699,13 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 		foreach ( $results as $row ) {
 			$counts[ $row->status ] = (int) $row->count;
 		}
+
+		// ADD THIS: Count read/unread
+		$unread_count = $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}evf_entries WHERE viewed = 0 AND status != 'trash'" );
+		$read_count   = $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}evf_entries WHERE viewed = 1 AND status != 'trash'" );
+
+		$counts['unread'] = (int) $unread_count;
+		$counts['read']   = (int) $read_count;
 
 		return $counts;
 	}
@@ -876,10 +897,24 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 		// Query args.
 		$args = array(
 			'status'  => 'publish',
-			'form_id' => $this->form_id,  // 0 for All Forms, specific ID for single form
+			'form_id' => $this->form_id,
 			'limit'   => $per_page,
 			'offset'  => $per_page * ( $current_page - 1 ),
 		);
+
+		if ( ! empty( $_REQUEST['status'] ) ) {
+			$status = sanitize_key( wp_unslash( $_REQUEST['status'] ) );
+
+			if ( 'unread' === $status ) {
+				$args['status'] = 'publish';
+				$args['viewed'] = 0;
+			} elseif ( 'read' === $status ) {
+				$args['status'] = 'publish';
+				$args['viewed'] = 1;
+			} else {
+				$args['status'] = $status;
+			}
+		}
 
 		// Handle the status query.
 		if ( ! empty( $_REQUEST['status'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification

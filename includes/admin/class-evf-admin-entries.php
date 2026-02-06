@@ -120,6 +120,8 @@ class EVF_Admin_Entries {
 	 */
 	public function actions() {
 		if ( $this->is_entries_page() ) {
+
+
 			// Trash entry.
 			if ( isset( $_GET['trash'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 				$this->trash_entry();
