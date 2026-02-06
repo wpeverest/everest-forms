@@ -73,6 +73,7 @@ const Categories = ({
 			mb="4"
 			position="relative"
 			minH={{ base: '52px', sm: '56px' }}
+			overflow="hidden"
 		>
 			{showLeftArrow && (
 				<>
@@ -93,7 +94,7 @@ const Categories = ({
 						left={{ base: '2', sm: '3' }}
 						top="50%"
 						transform="translateY(-50%)"
-						zIndex="3"
+						zIndex="1"
 						size="sm"
 						variant="solid"
 						bg="white"
@@ -195,7 +196,6 @@ const Categories = ({
 									{category.label}
 								</Text>
 
-								{/* Active/Highlighted indicator underline */}
 								{shouldHighlight && (
 									<Box
 										position="absolute"
@@ -214,10 +214,8 @@ const Categories = ({
 				</HStack>
 			</Box>
 
-			{/* Right Arrow with gradient fade effect */}
 			{showRightArrow && (
 				<>
-					{/* Gradient overlay */}
 					<Box
 						position="absolute"
 						right="0"
@@ -235,7 +233,7 @@ const Categories = ({
 						right={{ base: '2', sm: '3' }}
 						top="50%"
 						transform="translateY(-50%)"
-						zIndex="3"
+						zIndex="1"
 						size="sm"
 						variant="solid"
 						bg="white"

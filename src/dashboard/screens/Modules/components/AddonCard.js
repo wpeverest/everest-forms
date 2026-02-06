@@ -20,71 +20,65 @@ import {
 	Spinner,
 	Switch,
 	Text,
+	Tooltip,
 	useDisclosure,
-	VStack
-} from "@chakra-ui/react";
-import { __ } from "@wordpress/i18n";
-import { useEffect, useState } from "react";
-import { FaCog, FaPlay } from "react-icons/fa";
-import ReactPlayer from "react-player";
-import { activateModule, deactivateModule } from "./modules-api";
+	VStack,
+} from '@chakra-ui/react';
+import { __ } from '@wordpress/i18n';
+import { useMemo, useState } from 'react';
+import { FaCog, FaPlay } from 'react-icons/fa';
+import ReactPlayer from 'react-player';
+import { activateModule, deactivateModule } from './modules-api';
 
 const AddonCard = ({ addon, showToast }) => {
-	const [isActive, setIsActive] = useState(addon.status === "active");
+	const [isActive, setIsActive] = useState(addon.status === 'active');
 	const [isLoading, setIsLoading] = useState(false);
-	const [moduleEnabled, setModuleEnabled] = useState(false);
 	const [videoLoading, setVideoLoading] = useState(false);
 	const {
 		isOpen: isVideoOpen,
 		onOpen: onVideoOpen,
-		onClose: onVideoClose
+		onClose: onVideoClose,
 	} = useDisclosure();
 
-
 	const { isPro, licensePlan } =
-		typeof _EVF_DASHBOARD_ !== "undefined" && _EVF_DASHBOARD_
+		typeof _EVF_DASHBOARD_ !== 'undefined' && _EVF_DASHBOARD_
 			? _EVF_DASHBOARD_
 			: {};
 
 	const getImageUrl = (imagePath) => {
 		const { assetsURL } =
-			typeof _EVF_DASHBOARD_ !== "undefined" && _EVF_DASHBOARD_;
+			typeof _EVF_DASHBOARD_ !== 'undefined' && _EVF_DASHBOARD_;
 		if (imagePath && assetsURL) {
 			return assetsURL + imagePath;
 		}
 		return imagePath;
 	};
 
-
-	useEffect(() => {
+	const moduleEnabled = useMemo(() => {
 		if (!addon.plan || addon.plan.length === 0) {
-			setModuleEnabled(true);
-			return;
+			return true;
 		}
 
-
-		if (Array.isArray(addon.plan) && addon.plan.includes("free")) {
-			setModuleEnabled(true);
-			return;
+		if (Array.isArray(addon.plan) && addon.plan.includes('free')) {
+			return true;
 		}
 
 		if (isPro) {
-			setModuleEnabled(true);
-			return;
+			return true;
 		}
 
-		setModuleEnabled(false);
+		return false;
 	}, [addon.plan, isPro]);
 
 	const handleUpgradePlan = () => {
 		const { upgradeURL } =
-			typeof _EVF_DASHBOARD_ !== "undefined" && _EVF_DASHBOARD_;
+			typeof _EVF_DASHBOARD_ !== 'undefined' && _EVF_DASHBOARD_;
 		if (upgradeURL) {
 			const plan_upgrade_url =
 				upgradeURL +
-				"?utm_source=dashboard-modules&utm_medium=upgrade-button&utm_campaign=" +
+				'?utm_source=dashboard-modules&utm_medium=upgrade-button&utm_campaign=' +
 				addon.slug;
-			window.open(plan_upgrade_url, "_blank");
+			window.open(plan_upgrade_url, '_blank');
 		}
 	};
 
@@ -102,38 +96,38 @@ const AddonCard = ({ addon, showToast }) => {
 				if (response.success) {
 					setIsActive(false);
 					showToast(
-						response.message || __("Module deactivated successfully", "everest-forms"),
-						"success"
+						response.message ||
+							__('Module deactivated successfully', 'everest-forms'),
+						'success',
 					);
 				} else {
 					showToast(
-						response.message || __("Failed to deactivate module", "everest-forms"),
-						"error"
+						response.message ||
+							__('Failed to deactivate module', 'everest-forms'),
+						'error',
 					);
 				}
 			} else {
-				response = await activateModule(
-					addon.slug,
-					addon.name,
-					addon.type
-				);
+				response = await activateModule(addon.slug, addon.name, addon.type);
 				if (response.success) {
 					setIsActive(true);
 					showToast(
-						response.message || __("Module activated successfully", "everest-forms"),
-						"success"
+						response.message ||
+							__('Module activated successfully', 'everest-forms'),
+						'success',
 					);
 				} else {
 					showToast(
-						response.message || __("Failed to activate module", "everest-forms"),
-						"error"
+						response.message ||
+							__('Failed to activate module', 'everest-forms'),
+						'error',
 					);
 				}
 			}
 		} catch (error) {
 			showToast(
-				error.message || __("An error occurred", "everest-forms"),
-				"error"
+				error.message || __('An error occurred', 'everest-forms'),
+				'error',
 			);
 		}
 		setIsLoading(false);
@@ -153,22 +147,22 @@ const AddonCard = ({ addon, showToast }) => {
 	const getPlanBadgeStyles = (plan) => {
 		const badge = getPlanBadge(plan);
 
-		if (badge === "Free") {
+		if (badge === 'Free') {
 			return {
-				bg: "transparent",
-				border: "1px solid #D1D5DB",
-				color: "#6B7280",
-				fontSize: "11px",
-				fontWeight: "500"
+				bg: 'transparent',
+				border: '1px solid #D1D5DB',
+				color: '#6B7280',
+				fontSize: '11px',
+				fontWeight: '500',
 			};
 		}
 
 		return {
-			bg: "#EFF6FF",
-			border: "1px solid #93C5FD",
-			color: "#3B82F6",
-			fontSize: "11px",
-			fontWeight: "600"
+			bg: '#EFF6FF',
+			border: '1px solid #93C5FD',
+			color: '#3B82F6',
+			fontSize: '11px',
+			fontWeight: '600',
 		};
 	};
 
@@ -180,7 +174,7 @@ const AddonCard = ({ addon, showToast }) => {
 			borderRadius="lg"
 			border="1px solid"
 			borderColor="gray.200"
-			p={{ base: "4", sm: "5", md: "6" }}
+			p={{ base: '4', sm: '5', md: '6' }}
 			_hover={{ boxShadow: 'md' }}
 			transition="all 0.2s"
 			position="relative"
@@ -206,13 +200,16 @@ const AddonCard = ({ addon, showToast }) => {
 				</Flex>
 			)}
 
-			{/* Main Content Layout */}
-			<HStack align="start" spacing={{ base: "3", sm: "4" }} flex="1" mb={{ base: "4", sm: "5", md: "6" }}>
-				{/* Left Side - Icon */}
+			<HStack
+				align="start"
+				spacing={{ base: '3', sm: '4' }}
+				flex="1"
+				mb={{ base: '4', sm: '5', md: '6' }}
+			>
 				<Box
-					w={{ base: "9", sm: "10" }}
-					h={{ base: "9", sm: "10" }}
-					bg="white"
+					w={{ base: '9', sm: '10' }}
+					h={{ base: '9', sm: '10' }}
+					bg="gray.50"
 					borderRadius="full"
 					display="flex"
 					alignItems="center"
@@ -242,7 +239,7 @@ const AddonCard = ({ addon, showToast }) => {
 						display={addon.image ? 'none' : 'flex'}
 						alignItems="center"
 						justifyContent="center"
-						fontSize={{ base: "xl", sm: "2xl" }}
+						fontSize={{ base: 'xl', sm: '2xl' }}
 						width="100%"
 						height="100%"
 					>
@@ -251,13 +248,18 @@ const AddonCard = ({ addon, showToast }) => {
 				</Box>
 
 				{/* Right Side - Title and Badge */}
-				<VStack align="start" spacing={{ base: "2", sm: "3" }} flex="1" minW="0">
+				<VStack
+					align="start"
+					spacing={{ base: '2', sm: '3' }}
+					flex="1"
+					minW="0"
+				>
 					<HStack justify="space-between" w="full" align="start" spacing="2">
 						<Heading
 							size="sm"
 							color="gray.800"
 							fontWeight="600"
-							fontSize={{ base: "14px", sm: "15px", md: "16px" }}
+							fontSize={{ base: '14px', sm: '15px', md: '16px' }}
 							noOfLines={2}
 							flex="1"
 							minW="0"
@@ -280,34 +282,49 @@ const AddonCard = ({ addon, showToast }) => {
 						</Badge>
 					</HStack>
 
-					{/* Description */}
-					<Text
-						fontSize={{ base: "12px", sm: "13px" }}
-						color="gray.600"
-						lineHeight="1.5"
-						noOfLines={2}
+					<Tooltip
+						label={
+							addon.excerpt || __('No description available.', 'everest-forms')
+						}
+						placement="bottom"
+						hasArrow
+						bg="white"
+						color="gray.800"
+						fontSize="sm"
+						fontWeight="400"
+						borderRadius="md"
+						px="3"
+						py="2"
 					>
-						{addon.excerpt || 'No description available.'}
-					</Text>
+						<Text
+							fontSize={{ base: '12px', sm: '13px' }}
+							color="gray.600"
+							lineHeight="1.5"
+							noOfLines={2}
+							cursor="help"
+						>
+							{addon.excerpt ||
+								__('No description available.', 'everest-forms')}
+						</Text>
+					</Tooltip>
 				</VStack>
 			</HStack>
 
-			{/* Footer Section */}
 			<HStack
 				justify="space-between"
 				align="center"
 				mt="auto"
-				pt={{ base: "2", sm: "3" }}
+				pt={{ base: '2', sm: '3' }}
 				borderTop="1px solid"
 				borderColor="gray.100"
-				flexWrap={{ base: "wrap", sm: "nowrap" }}
-				gap={{ base: "2", sm: "0" }}
+				flexWrap={{ base: 'wrap', sm: 'nowrap' }}
+				gap={{ base: '2', sm: '0' }}
 			>
 				<HStack
 					spacing="2"
-					fontSize={{ base: "12px", sm: "13px" }}
+					fontSize={{ base: '12px', sm: '13px' }}
 					flexWrap="wrap"
-					flex={{ base: "1", sm: "0 1 auto" }}
+					flex={{ base: '1', sm: '0 1 auto' }}
 				>
 					{addon.link && (
 						<Link
@@ -323,7 +340,9 @@ const AddonCard = ({ addon, showToast }) => {
 					)}
 					{addon.demo_video_url && (
 						<>
-							<Text color="gray.300" display={{ base: "none", sm: "block" }}>|</Text>
+							<Text color="gray.300" display={{ base: 'none', sm: 'block' }}>
+								|
+							</Text>
 							<IconButton
 								size="xs"
 								icon={<Icon as={FaPlay} />}
@@ -337,7 +356,9 @@ const AddonCard = ({ addon, showToast }) => {
 					)}
 					{addon.setting_url && isActive && (
 						<>
-							<Text color="gray.300" display={{ base: "none", sm: "block" }}>|</Text>
+							<Text color="gray.300" display={{ base: 'none', sm: 'block' }}>
+								|
+							</Text>
 							<IconButton
 								size="xs"
 								icon={<FaCog />}
@@ -369,13 +390,13 @@ const AddonCard = ({ addon, showToast }) => {
 					) : (
 						<Button
 							size="sm"
-							fontSize={{ base: "12px", sm: "13px" }}
+							fontSize={{ base: '12px', sm: '13px' }}
 							fontWeight="600"
 							bg="#475bb2"
 							color="white"
 							borderColor="#475bb2"
-							px={{ base: "3", sm: "4" }}
-							h={{ base: "28px", sm: "32px" }}
+							px={{ base: '3', sm: '4' }}
+							h={{ base: '28px', sm: '32px' }}
 							_hover={{
 								bg: '#3a4a8f',
 								borderColor: '#3a4a8f',
@@ -396,21 +417,24 @@ const AddonCard = ({ addon, showToast }) => {
 				<Modal
 					isOpen={isVideoOpen}
 					onClose={onVideoClose}
-					size={{ base: "full", sm: "xl", md: "2xl", lg: "3xl" }}
+					size={{ base: 'full', sm: 'xl', md: '2xl', lg: '3xl' }}
 					isCentered
 				>
 					<ModalOverlay bg="blackAlpha.700" />
-					<ModalContent mx={{ base: "0", sm: "4" }} my={{ base: "0", sm: "auto" }}>
+					<ModalContent
+						mx={{ base: '0', sm: '4' }}
+						my={{ base: '0', sm: 'auto' }}
+					>
 						<ModalHeader
 							textAlign="center"
-							fontSize={{ base: "md", sm: "lg" }}
+							fontSize={{ base: 'md', sm: 'lg' }}
 							fontWeight="600"
-							px={{ base: "4", sm: "6" }}
+							px={{ base: '4', sm: '6' }}
 						>
 							{addon.title}
 						</ModalHeader>
 						<ModalCloseButton />
-						<ModalBody pb={{ base: "4", sm: "6" }} px={{ base: "4", sm: "6" }}>
+						<ModalBody pb={{ base: '4', sm: '6' }} px={{ base: '4', sm: '6' }}>
 							<Box
 								position="relative"
 								paddingTop="56.25%"

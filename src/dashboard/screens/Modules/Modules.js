@@ -44,6 +44,7 @@ const Modules = () => {
 		selectedPlan: 'all',
 		isLoading: false,
 		highlightedCategories: [],
+		isTransitioning: false,
 	});
 	const [showScrollTop, setShowScrollTop] = useState(false);
 	const searchItemRef = useRef(state.searchItem);
@@ -569,58 +570,73 @@ const Modules = () => {
 									setState((prev) => ({
 										...prev,
 										selectedCategory: displayValue,
+										isTransitioning: true,
 									}));
-									filterModules(state.originalModules, internalValue, false);
+
+									requestAnimationFrame(() => {
+										filterModules(state.originalModules, internalValue, false);
+										setTimeout(() => {
+											setState((prev) => ({
+												...prev,
+												isTransitioning: false,
+											}));
+										}, 10);
+									});
 								}}
 							/>
 						</Box>
 
-						{state.noItemFound ? (
-							<Box
-								bg="white"
-								borderRadius="lg"
-								display="flex"
-								justifyContent="center"
-								flexDirection="column"
-								padding={{
-									base: '40px 16px',
-									sm: '60px 20px',
-									md: '80px 40px',
-									lg: '100px',
-								}}
-								gap={{ base: '3', md: '4' }}
-								alignItems="center"
-								minH={{ base: '300px', md: '400px' }}
-							>
-								<PageNotFound
-									color="gray.300"
-									boxSize={{ base: '16', sm: '20', md: '24' }}
+						<Box
+							opacity={state.isTransitioning ? 0 : 1}
+							transition="opacity 0.15s ease-in-out"
+						>
+							{state.noItemFound ? (
+								<Box
+									bg="white"
+									borderRadius="lg"
+									display="flex"
+									justifyContent="center"
+									flexDirection="column"
+									padding={{
+										base: '40px 16px',
+										sm: '60px 20px',
+										md: '80px 40px',
+										lg: '100px',
+									}}
+									gap={{ base: '3', md: '4' }}
+									alignItems="center"
+									minH={{ base: '300px', md: '400px' }}
+								>
+									<PageNotFound
+										color="gray.300"
+										boxSize={{ base: '16', sm: '20', md: '24' }}
+									/>
+									<Text
+										fontSize={{ base: '16px', sm: '18px', md: '20px' }}
+										fontWeight="600"
+										color="gray.800"
+										textAlign="center"
+										px={{ base: '2', sm: '4' }}
+									>
+										{noResultsMessage.title}
+									</Text>
+									<Text
+										fontSize={{ base: '13px', sm: '14px' }}
+										color="gray.500"
+										textAlign="center"
+										px={{ base: '2', sm: '4' }}
+									>
+										{noResultsMessage.subtitle}
+									</Text>
+								</Box>
+							) : (
+								<CardsGrid
+									modules={state.modules}
+									selectedCategory={state.selectedCategory}
+									showToast={showToast}
 								/>
-								<Text
-									fontSize={{ base: '16px', sm: '18px', md: '20px' }}
-									fontWeight="600"
-									color="gray.800"
-									textAlign="center"
-									px={{ base: '2', sm: '4' }}
-								>
-									{noResultsMessage.title}
-								</Text>
-								<Text
-									fontSize={{ base: '13px', sm: '14px' }}
-									color="gray.500"
-									textAlign="center"
-									px={{ base: '2', sm: '4' }}
-								>
-									{noResultsMessage.subtitle}
-								</Text>
-							</Box>
-						) : (
-							<CardsGrid
-								modules={state.modules}
-								selectedCategory={state.selectedCategory}
-								showToast={showToast}
-							/>
-						)}
+							)}
+						</Box>
 					</>
 				)}
 			</Container>
