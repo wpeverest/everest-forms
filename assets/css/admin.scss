@@ -9801,7 +9801,7 @@ img.ui-datepicker-trigger {
 
 			.everest-forms-global-settings {
 				display: flex;
-				align-items: center;
+				align-items: flex-start;
 				margin-bottom: 10px;
 
 				@media screen and (max-width: 1260px) {
@@ -10480,6 +10480,13 @@ img.ui-datepicker-trigger {
 						line-height: 24px;
 						color: #383838;
 						font-weight: 500;
+					}
+				}
+
+				p {
+					a {
+						color: #2271b1;
+						text-decoration: underline !important;
 					}
 				}
 			}
