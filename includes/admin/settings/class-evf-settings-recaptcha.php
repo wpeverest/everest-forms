@@ -215,7 +215,6 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 	 */
 	public function get_integration_settings() {
 		$recaptcha_type = get_option( 'everest_forms_recaptcha_type', 'v2' );
-		error_log( print_r( $recaptcha_type, true ) );
 		$invisible = get_option( 'everest_forms_recaptcha_v2_invisible', 'no' );
 
 		$v2_enabled        = get_option( 'everest_forms_recaptcha_v2_enable', 'no' );
