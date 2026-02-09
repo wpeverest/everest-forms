@@ -81,19 +81,49 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 			return;
 		}
 
-		$enabled_captcha = '';
+		$captcha_types = array( 'v2', 'v3', 'hcaptcha', 'turnstile' );
 
-		if ( isset( $_POST['everest_forms_recaptcha_v2_enable'] ) && 'yes' === $_POST['everest_forms_recaptcha_v2_enable'] ) {
-			$enabled_captcha = 'v2';
-		} elseif ( isset( $_POST['everest_forms_recaptcha_v3_enable'] ) && 'yes' === $_POST['everest_forms_recaptcha_v3_enable'] ) {
-			$enabled_captcha = 'v3';
-		} elseif ( isset( $_POST['everest_forms_recaptcha_hcaptcha_enable'] ) && 'yes' === $_POST['everest_forms_recaptcha_hcaptcha_enable'] ) {
-			$enabled_captcha = 'hcaptcha';
-		} elseif ( isset( $_POST['everest_forms_recaptcha_turnstile_enable'] ) && 'yes' === $_POST['everest_forms_recaptcha_turnstile_enable'] ) {
-			$enabled_captcha = 'turnstile';
+		$has_enable_field = false;
+		foreach ( $captcha_types as $type ) {
+			if ( isset( $_POST[ 'everest_forms_recaptcha_' . $type . '_enable' ] ) ) {
+				$has_enable_field = true;
+				break;
+			}
 		}
 
-		$captcha_types = array( 'v2', 'v3', 'hcaptcha', 'turnstile' );
+		if ( ! $has_enable_field ) {
+			return;
+		}
+
+		$enabled_captcha = '';
+
+		if ( isset( $_POST['everest_forms_recaptcha_v2_enable'] ) ) {
+			$v2_enable = sanitize_text_field( wp_unslash( $_POST['everest_forms_recaptcha_v2_enable'] ) );
+			if ( 'yes' === $v2_enable ) {
+				$enabled_captcha = 'v2';
+			}
+		}
+
+		if ( empty( $enabled_captcha ) && isset( $_POST['everest_forms_recaptcha_v3_enable'] ) ) {
+			$v3_enable = sanitize_text_field( wp_unslash( $_POST['everest_forms_recaptcha_v3_enable'] ) );
+			if ( 'yes' === $v3_enable ) {
+				$enabled_captcha = 'v3';
+			}
+		}
+
+		if ( empty( $enabled_captcha ) && isset( $_POST['everest_forms_recaptcha_hcaptcha_enable'] ) ) {
+			$hcaptcha_enable = sanitize_text_field( wp_unslash( $_POST['everest_forms_recaptcha_hcaptcha_enable'] ) );
+			if ( 'yes' === $hcaptcha_enable ) {
+				$enabled_captcha = 'hcaptcha';
+			}
+		}
+
+		if ( empty( $enabled_captcha ) && isset( $_POST['everest_forms_recaptcha_turnstile_enable'] ) ) {
+			$turnstile_enable = sanitize_text_field( wp_unslash( $_POST['everest_forms_recaptcha_turnstile_enable'] ) );
+			if ( 'yes' === $turnstile_enable ) {
+				$enabled_captcha = 'turnstile';
+			}
+		}
 
 		if ( ! empty( $enabled_captcha ) ) {
 			foreach ( $captcha_types as $type ) {
@@ -105,22 +135,13 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 				}
 			}
 		} else {
-			$all_disabled = true;
 			foreach ( $captcha_types as $type ) {
-				if ( isset( $_POST[ 'everest_forms_recaptcha_' . $type . '_enable' ] ) && 'yes' === $_POST[ 'everest_forms_recaptcha_' . $type . '_enable' ] ) {
-					$all_disabled = false;
-					break;
-				}
+				update_option( 'everest_forms_recaptcha_' . $type . '_enable', 'no' );
 			}
-
-			if ( $all_disabled ) {
-				foreach ( $captcha_types as $type ) {
-					update_option( 'everest_forms_recaptcha_' . $type . '_enable', 'no' );
-				}
-				update_option( 'everest_forms_recaptcha_type', '' );
-			}
+			update_option( 'everest_forms_recaptcha_type', '' );
 		}
 	}
+
 
 	/**
 	 * Get sections for CAPTCHA tab.
