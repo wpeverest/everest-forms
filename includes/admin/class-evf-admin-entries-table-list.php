@@ -627,9 +627,6 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 		$total_entries = apply_filters( 'everest_forms_total_entries_count', (int) $num_entries['publish'], $num_entries, $this->form_id );
 		$spam_entries  = apply_filters( 'everest_forms_spam_total_entries_count', (int) $num_entries['spam'], $num_entries, $this->form_id );
 
-		$unread_entries = isset( $num_entries['unread'] ) ? (int) $num_entries['unread'] : 0;
-		$read_entries   = isset( $num_entries['read'] ) ? (int) $num_entries['read'] : 0;
-
 		$statuses = array_keys( evf_get_entry_statuses( $this->form_data ) );
 		$class    = empty( $_REQUEST['status'] ) ? ' class="current"' : ''; // phpcs:ignore WordPress.Security.NonceVerification
 
@@ -641,15 +638,7 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 		/* translators: %s: count */
 		$status_links['all'] = "<a href='" . esc_url( $base_url ) . "'$class>" . sprintf( _nx( 'All <span class="count">(%s)</span>', 'All <span class="count">(%s)</span>', $total_entries, 'entries', 'everest-forms' ), number_format_i18n( $total_entries ) ) . '</a>';
 
-		// Unread tab
-		$unread_url             = add_query_arg( 'status', 'unread', $base_url );
-		$unread_class           = ( isset( $_REQUEST['status'] ) && 'unread' === $_REQUEST['status'] ) ? ' class="current"' : '';
-		$status_links['unread'] = "<a href='" . esc_url( $unread_url ) . "'$unread_class>" . sprintf( _nx( 'Unread <span class="count">(%s)</span>', 'Unread <span class="count">(%s)</span>', $unread_entries, 'entries', 'everest-forms' ), number_format_i18n( $unread_entries ) ) . '</a>';
 
-		// Read tab
-		$read_url             = add_query_arg( 'status', 'read', $base_url );
-		$read_class           = ( isset( $_REQUEST['status'] ) && 'read' === $_REQUEST['status'] ) ? ' class="current"' : '';
-		$status_links['read'] = "<a href='" . esc_url( $read_url ) . "'$read_class>" . sprintf( _nx( 'Read <span class="count">(%s)</span>', 'Read <span class="count">(%s)</span>', $read_entries, 'entries', 'everest-forms' ), number_format_i18n( $read_entries ) ) . '</a>';
 
 		/* translators: %s: count */
 		$spam_url             = add_query_arg( 'status', 'spam', $base_url );
