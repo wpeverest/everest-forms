@@ -75,7 +75,7 @@ class EVF_Admin_Entries {
 		<div id="everest-forms-entries-list" class="wrap">
 
 			<?php settings_errors(); ?>
-			<?php //do_action( 'everest_forms_before_entry_list', $entries_table_list ); ?>
+			<?php do_action( 'everest_forms_before_entry_list', $entries_table_list ); ?>
 
 			<?php if ( 0 < count( $entry_ids ) ) : ?>
 				<?php $entries_table_list->views(); ?>
@@ -120,7 +120,6 @@ class EVF_Admin_Entries {
 	 */
 	public function actions() {
 		if ( $this->is_entries_page() ) {
-
 
 			// Trash entry.
 			if ( isset( $_GET['trash'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
