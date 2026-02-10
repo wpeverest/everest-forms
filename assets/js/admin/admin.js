@@ -80,6 +80,44 @@
 	// Function to handle changes in the reporting frequency while sending the entries stat report.
 	$(document).ready(function () {
 
+		var $evfNotice = $('#setting-error-bulk_action.notice');
+
+		if ($evfNotice.length) {
+			var toastType = 'info';
+
+			if (
+				$evfNotice.hasClass('notice-success') ||
+				$evfNotice.hasClass('updated')
+			) {
+				toastType = 'success';
+			} else if (
+				$evfNotice.hasClass('notice-error') ||
+				$evfNotice.hasClass('error')
+			) {
+				toastType = 'error';
+			} else if ($evfNotice.hasClass('notice-warning')) {
+				toastType = 'warning';
+			}
+
+			var message = $evfNotice.find('p').text().trim();
+
+			if (message) {
+				$evfNotice.remove();
+				window.evfShowToast(message, toastType, 5000);
+			}
+		}
+
+		var $entryNotice = $('#message.updated.notice');
+
+		if ($entryNotice.length) {
+			var entryMessage = $entryNotice.find('p').text().trim();
+
+			if (entryMessage) {
+				$entryNotice.remove();
+				window.evfShowToast(entryMessage, 'success', 5000);
+			}
+		}
+
 		function handleReportingFrequencyChange() {
 			var everest_forms_entries_reporting_frequency = $('#everest_forms_entries_reporting_frequency').val();
 				if ('Weekly' !== everest_forms_entries_reporting_frequency) {

@@ -46,7 +46,8 @@ body[class*='everest-forms_page_'] {
 		padding-left: 0;
 	}
 
-	#setting-error-bulk_action {
+	#setting-error-bulk_action,
+	#message.updated.notice {
 		display: none !important;
 	}
 }
