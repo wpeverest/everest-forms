@@ -80,6 +80,30 @@
 	// Function to handle changes in the reporting frequency while sending the entries stat report.
 	$(document).ready(function () {
 
+	var urlParams = new URLSearchParams(window.location.search);
+	var toastMessage = urlParams.get('evf_toast');
+	var toastType = urlParams.get('evf_toast_type') || 'success';
+
+	if (toastMessage) {
+		try {
+			window.evfShowToast(
+				atob(decodeURIComponent(toastMessage)),
+				toastType,
+				5000,
+			);
+
+			urlParams.delete('evf_toast');
+			urlParams.delete('evf_toast_type');
+
+			window.history.replaceState(
+				{},
+				document.title,
+				window.location.pathname +
+					(urlParams.toString() ? '?' + urlParams.toString() : ''),
+			);
+		} catch (e) {}
+	}
+
 		var $evfNotice = $('#setting-error-bulk_action.notice');
 
 		if ($evfNotice.length) {
@@ -104,17 +128,6 @@
 			if (message) {
 				$evfNotice.remove();
 				window.evfShowToast(message, toastType, 5000);
-			}
-		}
-
-		var $entryNotice = $('#message.updated.notice');
-
-		if ($entryNotice.length) {
-			var entryMessage = $entryNotice.find('p').text().trim();
-
-			if (entryMessage) {
-				$entryNotice.remove();
-				window.evfShowToast(entryMessage, 'success', 5000);
 			}
 		}
 

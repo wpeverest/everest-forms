@@ -86,7 +86,7 @@ if ( false !== $entry_index ) {
 					<div class="evf-section-header-actions">
 					<a href="#"
 							class="evf-toggle-empty everest-forms-empty-field-toggle password_preview dashicons <?php echo $hide_empty ? 'dashicons-hidden' : 'dashicons-visibility'; ?>"
-							title="<?php echo $hide_empty ? esc_attr__( 'Show password', 'everest-forms' ) : esc_attr__( 'Hide password', 'everest-forms' ); ?>">
+							title="<?php echo $hide_empty ? esc_attr__( 'Show empty fields', 'everest-forms' ) : esc_attr__( 'Hide empty fields', 'everest-forms' ); ?>">
 
 							<?php
 							echo $hide_empty
@@ -363,7 +363,7 @@ jQuery(document).on('click', '.everest-forms-empty-field-toggle', function (even
 		$btn
 			.removeClass('dashicons-hidden')
 			.addClass('dashicons-visibility')
-			.attr('title', '<?php esc_attr_e( 'Hide password', 'everest-forms' ); ?>')
+			.attr('title', '<?php esc_attr_e( 'Hide empty fields', 'everest-forms' ); ?>')
 			.text('<?php esc_html_e( 'Hide Empty Fields', 'everest-forms' ); ?>');
 
 		jQuery('.evf-field-empty').show();
@@ -373,7 +373,7 @@ jQuery(document).on('click', '.everest-forms-empty-field-toggle', function (even
 		$btn
 			.removeClass('dashicons-visibility')
 			.addClass('dashicons-hidden')
-			.attr('title', '<?php esc_attr_e( 'Show password', 'everest-forms' ); ?>')
+			.attr('title', '<?php esc_attr_e( 'Show empty fields', 'everest-forms' ); ?>')
 			.text('<?php esc_html_e( 'Show Empty Fields', 'everest-forms' ); ?>');
 
 		jQuery('.evf-field-empty').hide();
