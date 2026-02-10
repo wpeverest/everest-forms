@@ -638,8 +638,6 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 		/* translators: %s: count */
 		$status_links['all'] = "<a href='" . esc_url( $base_url ) . "'$class>" . sprintf( _nx( 'All <span class="count">(%s)</span>', 'All <span class="count">(%s)</span>', $total_entries, 'entries', 'everest-forms' ), number_format_i18n( $total_entries ) ) . '</a>';
 
-
-
 		/* translators: %s: count */
 		$spam_url             = add_query_arg( 'status', 'spam', $base_url );
 		$spam_class           = ( isset( $_REQUEST['status'] ) && 'spam' === $_REQUEST['status'] ) ? ' class="current"' : '';
@@ -832,7 +830,7 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 			submit_button( __( 'Filter', 'everest-forms' ), '', 'filter_action', false, array( 'id' => 'post-query-submit' ) );
 
 			// Export CSV submit button.
-			if ( apply_filters( 'everest_forms_enable_csv_export', $show_export ) && current_user_can( 'export' ) ) {
+			if ( apply_filters( 'everest_forms_enable_csv_export', $show_export ) && current_user_can( 'export' ) && $this->form_id > 0 ) {
 				?>
 				<button type="submit" name="export_action" value="1" class="button" id="export-csv-submit">
 					<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 6px;">
