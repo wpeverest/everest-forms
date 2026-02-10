@@ -817,7 +817,12 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 
 			if ( defined( 'EFP_VERSION' ) && $this->form_id > 0 ) {
 				?>
-				<button type="button" class="button evf-manage-columns-btn" id="evf-manage-columns" data-form-id="<?php echo esc_attr( $this->form_id ); ?>">
+			<button
+						type="button"
+						class="button evf-manage-columns-btn everest-forms-entries-setting"
+						id="evf-manage-columns"
+						data-evf-form_id="<?php echo esc_attr( $this->form_id ); ?>"
+					>
 					<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 6px;">
 						<path d="M2 4.66667H14M2 8H14M2 11.3333H14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 					</svg>
