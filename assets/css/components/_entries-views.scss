@@ -172,24 +172,97 @@ $spacing-xl: 24px;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		padding: 0px 15px;
+		padding: 0 $spacing-xl;
+		min-height: 56px;
+		gap: $spacing-xl;
+		flex-wrap: nowrap;
 		border-bottom: 1px solid $border-color;
 	}
 
+	// The h2 title — flex so any hook-injected icon sits inline with text
 	.evf-section-title {
 		margin: 0;
 		font-size: 18px;
 		font-weight: 600;
 		color: $text-dark;
+		display: flex;
+		align-items: center;
+		gap: $spacing-xs;
+		flex: 1;           // takes available space, pushes actions to right
+		min-width: 0;      // allows text to truncate if needed
+
+		// Any icon/link injected by do_action() inside the <h2>
+		a,
+		svg,
+		img,
+		span {
+			display: inline-flex;
+			align-items: center;
+			vertical-align: middle;
+		}
+
+		// Stray edit icon rendered by everest_forms_before_entry_details_hndle
+		> a:first-child {
+			line-height: 1;
+			flex-shrink: 0;
+
+			svg {
+				width: 18px;
+				height: 18px;
+				fill: $text-medium;
+			}
+		}
 	}
 
 	// Right side of card header: Hide Empty Fields + Edit
 	.evf-section-header-actions {
 		display: flex;
 		align-items: center;
-		gap: $spacing-md;
+		gap: $spacing-lg;
+		flex-shrink: 0;
+		flex-wrap: nowrap;
 
+		// "Hide Empty Fields" toggle — never wrap
+		// NOTE: this element also carries .dashicons .dashicons-visibility classes
+		// which use ::before pseudo-content; we must neutralize their layout side-effects
+		.everest-forms-empty-field-toggle {
+			white-space: nowrap;
+			display: inline-flex !important;  // override dashicons display:inline-block
+			align-items: center;
+			gap: 6px;
+			color: $primary-color;
+			font-size: 14px !important;
+			font-weight: 500 !important;
+			text-decoration: none;
+			line-height: 1 !important;
+			cursor: pointer;
+			position: static !important;     // neutralize any dashicons positioning
+			vertical-align: middle;
+			width: auto !important;           // dashicons forces width/height — reset
+			height: auto !important;
+			@include transition;
+
+			// The ::before eye icon from dashicons
+			&::before {
+				font-size: 18px !important;
+				width: 18px !important;
+				height: 18px !important;
+				line-height: 1 !important;
+				display: inline-flex !important;
+				align-items: center;
+				flex-shrink: 0;
+				margin-right: 0;             // let the gap property handle spacing
+			}
+
+			&:hover {
+				text-decoration: underline;
+				color: darken($primary-color, 10%);
+			}
+		}
+
+		// "Edit" link
 		.everest-forms-edit-entry-update {
+			white-space: nowrap;
 			display: inline-flex;
 			align-items: center;
 			gap: 6px;
@@ -197,8 +270,16 @@ $spacing-xl: 24px;
 			font-weight: 500;
 			color: $primary-color;
 			text-decoration: none;
+			line-height: 1;
 			cursor: pointer;
 			@include transition;
+
+			svg {
+				width: 16px;
+				height: 16px;
+				flex-shrink: 0;
+				fill: currentColor;
+			}
 
 			&:hover {
 				color: darken($primary-color, 10%);
@@ -234,6 +315,100 @@ $spacing-xl: 24px;
 }
 
 // ==============================================================================
+// EDIT ENTRY — POSTBOX HEADER (Show Empty Fields toggle inside h2.hndle)
+// The edit entry form uses WordPress's native .postbox structure, not
+// .evf-section-header. The toggle sits inside <h2 class="hndle"> alongside
+// the title <span>.
+// ==============================================================================
+
+.everest-forms-edit-entry-container {
+
+	.postbox {
+		border: none;
+		box-shadow: none;
+		background: transparent;
+		margin: 0;
+	}
+
+	.postbox-header {
+		border-bottom: 1px solid $border-color;
+		padding: 0;
+		background: transparent;
+		// Override WP's default postbox-header flex that can misalign children
+		display: flex;
+		align-items: stretch;
+	}
+
+	// The h2 inside postbox-header acts as our card header row
+	h2.hndle {
+		display: flex !important;
+		align-items: center !important;
+		justify-content: space-between !important;
+		width: 100%;
+		min-height: 56px;
+		padding: 0 $spacing-xl !important;
+		margin: 0 !important;
+		font-size: 18px !important;
+		font-weight: 600 !important;
+		color: $text-dark !important;
+		border: none !important;
+		background: transparent !important;
+		cursor: default;
+		gap: $spacing-xl;
+
+		// The title text span — takes available space
+		> span:first-child {
+			flex: 1;
+			min-width: 0;
+			font-size: 18px;
+			font-weight: 600;
+			color: $text-dark;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+
+		// The "Show/Hide Empty Fields" toggle inside the h2
+		// It has .dashicons applied directly — must neutralise those styles
+		.everest-forms-empty-field-toggle {
+			display: inline-flex !important;
+			align-items: center !important;
+			gap: 6px !important;
+			white-space: nowrap !important;
+			flex-shrink: 0 !important;
+			// Reset dashicons dimension overrides
+			width: auto !important;
+			height: auto !important;
+			line-height: 1 !important;
+			position: static !important;
+			vertical-align: middle !important;
+			// Styling
+			color: $primary-color !important;
+			font-size: 14px !important;
+			font-weight: 500 !important;
+			text-decoration: none;
+			cursor: pointer;
+			@include transition;
+
+			&::before {
+				font-size: 18px !important;
+				width: 18px !important;
+				height: 18px !important;
+				line-height: 1 !important;
+				display: inline-flex !important;
+				align-items: center;
+				flex-shrink: 0;
+			}
+
+			&:hover {
+				color: darken($primary-color, 10%) !important;
+				text-decoration: underline;
+			}
+		}
+	}
+}
+
+// ==============================================================================
 // EDIT ENTRY FORM STYLES
 // ==============================================================================
 
@@ -262,6 +437,7 @@ $spacing-xl: 24px;
 	.postbox {
 		border: none;
 		box-shadow: none;
+		margin: 0;
 	}
 
 	.evf-frontend-row {
@@ -918,6 +1094,13 @@ $spacing-xl: 24px;
 		&:last-child {
 			margin-bottom: 0;
 		}
+
+		a {
+			svg {
+				width: 18px;
+				height: 18px;
+			}
+		}
 	}
 
 	a,
@@ -1099,8 +1282,9 @@ $spacing-xl: 24px;
 	}
 }
 
-// Toggle Empty Fields Link
+// Toggle Empty Fields Link (global, outside card context)
 .everest-forms-empty-field-toggle {
+	white-space: nowrap;
 	display: inline-flex;
 	align-items: center;
 	gap: 6px;
@@ -1324,6 +1508,13 @@ $spacing-xl: 24px;
 			flex-direction: column;
 			align-items: flex-start;
 			gap: $spacing-sm;
+			min-height: auto;
+			padding: $spacing-md $spacing-lg;
+
+			.evf-section-header-actions {
+				width: 100%;
+				justify-content: flex-start;
+			}
 		}
 
 		.evf-section-content {

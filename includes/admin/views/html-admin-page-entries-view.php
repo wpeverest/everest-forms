@@ -48,7 +48,7 @@ if ( false !== $entry_index ) {
 	<div class="evf-entry-header">
 		<div class="evf-entry-header-left">
 			<a href="<?php echo esc_url( admin_url( 'admin.php?page=evf-entries&amp;form_id=' . $form_id ) ); ?>" class="evf-back-link">
-				<span class="dashicons dashicons-arrow-left-alt2"></span>
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 22"><path d="M10.352 3.935a.917.917 0 0 1 1.296 1.297l-5.769 5.767 5.769 5.77a.916.916 0 1 1-1.296 1.296l-6.417-6.417a.917.917 0 0 1 0-1.296z"/><path d="M17.416 10.083a.917.917 0 0 1 0 1.834H4.583a.917.917 0 0 1 0-1.834z"/></svg>
 			</a>
 			<h1 class="evf-entry-title">
 				<?php
@@ -84,12 +84,19 @@ if ( false !== $entry_index ) {
 						<?php do_action( 'everest_forms_after_entry_details_hndle', $entry ); ?>
 					</h2>
 					<div class="evf-section-header-actions">
-						<a href="#" class="evf-toggle-empty everest-forms-empty-field-toggle">
-							<?php $hide_empty ? esc_html_e( 'Show Empty Fields', 'everest-forms' ) : esc_html_e( 'Hide Empty Fields', 'everest-forms' ); ?>
+					<a href="#"
+							class="evf-toggle-empty everest-forms-empty-field-toggle password_preview dashicons <?php echo $hide_empty ? 'dashicons-hidden' : 'dashicons-visibility'; ?>"
+							title="<?php echo $hide_empty ? esc_attr__( 'Show password', 'everest-forms' ) : esc_attr__( 'Hide password', 'everest-forms' ); ?>">
+
+							<?php
+							echo $hide_empty
+								? esc_html__( 'Show Empty Fields', 'everest-forms' )
+								: esc_html__( 'Hide Empty Fields', 'everest-forms' );
+							?>
 						</a>
 						<?php if ( current_user_can( 'everest_forms_edit_entry', $entry->entry_id ) ) : ?>
 							<?php do_action( 'everest_forms_entry_details_sidebar_action', $entry, $form_data ); ?>
-					  <?php endif; ?>
+						<?php endif; ?>
 					</div>
 				</div>
 
@@ -345,19 +352,33 @@ if ( false !== $entry_index ) {
 </div>
 
 <script type="text/javascript">
-	jQuery( document ).on( 'click', '.everest-forms-empty-field-toggle', function( event ) {
-		event.preventDefault();
+jQuery(document).on('click', '.everest-forms-empty-field-toggle', function (event) {
+	event.preventDefault();
 
-		if ( wpCookies.get( 'everest_forms_entry_hide_empty' ) === 'true' ) {
-			wpCookies.remove( 'everest_forms_entry_hide_empty' );
-			jQuery( this ).text( '<?php esc_html_e( 'Hide Empty Fields', 'everest-forms' ); ?>' );
-			jQuery( '.evf-field-empty' ).show();
-		} else {
-			wpCookies.set( 'everest_forms_entry_hide_empty', 'true', 2592000 );
-			jQuery( this ).text( '<?php esc_html_e( 'Show Empty Fields', 'everest-forms' ); ?>' );
-			jQuery( '.evf-field-empty' ).hide();
-		}
-	});
+	var $btn = jQuery(this);
+
+	if (wpCookies.get('everest_forms_entry_hide_empty') === 'true') {
+		wpCookies.remove('everest_forms_entry_hide_empty');
+
+		$btn
+			.removeClass('dashicons-hidden')
+			.addClass('dashicons-visibility')
+			.attr('title', '<?php esc_attr_e( 'Hide password', 'everest-forms' ); ?>')
+			.text('<?php esc_html_e( 'Hide Empty Fields', 'everest-forms' ); ?>');
+
+		jQuery('.evf-field-empty').show();
+	} else {
+		wpCookies.set('everest_forms_entry_hide_empty', 'true', 2592000);
+
+		$btn
+			.removeClass('dashicons-visibility')
+			.addClass('dashicons-hidden')
+			.attr('title', '<?php esc_attr_e( 'Show password', 'everest-forms' ); ?>')
+			.text('<?php esc_html_e( 'Show Empty Fields', 'everest-forms' ); ?>');
+
+		jQuery('.evf-field-empty').hide();
+	}
+});
 
 	jQuery( document ).ready( function( $ ) {
 		if ( wpCookies.get( 'everest_forms_entry_hide_empty' ) === 'true' ) {
