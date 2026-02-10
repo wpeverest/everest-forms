@@ -483,36 +483,51 @@
 			},
 			success: function(response) {
 				var len = Object.keys(response.data).length;
-				if(len>0) {
-					var add_tag = '<div class = "locate-form"><span>'+everest_forms_admin_locate.form_found+'</span>';
+
+				if (len > 0) {
+					var add_tag =
+						'<div class="locate-form"><span>' +
+						everest_forms_admin_locate.form_found +
+						'</span>';
 					var i = 1;
-					$.each(response.data, function(index, value) {
-						if(i > 1) {
-							add_tag +=", ";
+
+					$.each(response.data, function (index, value) {
+						if (i > 1) {
+							add_tag += ', ';
 						}
-						let wordsArray = index.split(" ");
-						if(wordsArray.length > 4 ) {
+						let wordsArray = index.split(' ');
+						if (wordsArray.length > 4) {
 							let slicedArray = wordsArray.slice(0, 4);
-							index = slicedArray.join(" ");
-							index = index + "...";
+							index = slicedArray.join(' ') + '...';
 						}
-						add_tag+=' <a href="'+value+'" target="_blank">'+index+'</a>';
+						add_tag +=
+							' <a href="' + value + '" target="_blank">' + index + '</a>';
 						i++;
 					});
-					add_tag +="</div>";
-					if($(target_tag).find('.locate-form').length !=0) {
-						$(target_tag).find('.locate-form').remove();
-					}
-					$(target_tag).find('span:first').prepend(add_tag);
 
-				} else {
-					if($(target_tag).find('.locate-form').length !=0) {
-						$(target_tag).find('.locate-form').remove();
+					add_tag += '</div>';
+
+					if ($(target_tag).prev('.locate-form').length !== 0) {
+						$(target_tag).prev('.locate-form').remove();
 					}
-					$(target_tag).find('span:first').prepend('<div class = "locate-form"><span>'+everest_forms_admin_locate.form_found_error+'</span></div>');
+
+					// ⬇️ insert BEFORE .row-actions
+					$(target_tag).before(add_tag);
+				} else {
+					if ($(target_tag).prev('.locate-form').length !== 0) {
+						$(target_tag).prev('.locate-form').remove();
+					}
+
+					$(target_tag).before(
+						'<div class="locate-form"><span>' +
+							everest_forms_admin_locate.form_found_error +
+							'</span></div>',
+					);
 				}
+
 				$(target_tag).find('.evf-loading').remove();
 			}
+
 
 		})
 	});
