@@ -9,7 +9,7 @@ $text-light: #9ca3af;
 $border-color: #e5e7eb;
 $bg-light: #f9fafb;
 $bg-white: #ffffff;
-$danger-color: #ef4444;
+$danger-color: #F25656;
 $success-color: #10b981;
 $warning-color: #f59e0b;
 $info-color: #3b82f6;
@@ -61,11 +61,11 @@ $spacing-xl: 24px;
 	background-color: $bg-white;
 	padding: $spacing-md $spacing-xl;
 	border-radius: $border-radius;
-	margin-bottom: $spacing-lg;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	@include card-shadow;
+	border-bottom: 1px solid $border-color;
+	// @include card-shadow;
 
 	.evf-entry-header-left {
 		display: flex;
@@ -77,8 +77,8 @@ $spacing-xl: 24px;
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		width: 36px;
-		height: 36px;
+		width: 22px;
+		height: 22px;
 		background-color: transparent;
 		border-radius: $border-radius-sm;
 		text-decoration: none;
@@ -99,9 +99,10 @@ $spacing-xl: 24px;
 
 	.evf-entry-title {
 		margin: 0;
-		font-size: 20px;
-		font-weight: 600;
+		font-size: 18px;
+		font-weight: 500;
 		color: $text-dark;
+		padding: 0;
 		line-height: 1.2;
 	}
 
@@ -149,9 +150,9 @@ $spacing-xl: 24px;
 .evf-entry-content-wrapper {
 	display: grid;
 	grid-template-columns: 1fr 320px;
-	gap: $spacing-lg;
+	gap: $spacing-xl;
 	align-items: flex-start;
-	padding: 24px;
+	padding: 32px;
 }
 
 // Main Content
@@ -172,11 +173,10 @@ $spacing-xl: 24px;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		padding: 0 $spacing-xl;
-		min-height: 56px;
+		padding: 0;
+		min-height: auto;
 		gap: $spacing-xl;
 		flex-wrap: nowrap;
-		border-bottom: 1px solid $border-color;
 	}
 
 	// The h2 title — flex so any hook-injected icon sits inline with text
@@ -231,6 +231,7 @@ $spacing-xl: 24px;
 			align-items: center;
 			gap: 6px;
 			color: $primary-color;
+			font-family: inherit;
 			font-size: 14px !important;
 			font-weight: 500 !important;
 			text-decoration: none;
@@ -310,7 +311,7 @@ $spacing-xl: 24px;
 	}
 
 	.evf-section-content {
-		padding: $spacing-xl;
+		padding-top: $spacing-xl;
 	}
 }
 
@@ -792,7 +793,8 @@ $spacing-xl: 24px;
 
 .evf-field-label {
 	font-size: 14px;
-	font-weight: 600;
+	font-family: inherit;
+	font-weight: 400;
 	color: $text-medium;
 	margin-bottom: $spacing-xs;
 	text-transform: capitalize;
@@ -847,6 +849,7 @@ $spacing-xl: 24px;
 	width: 100%;
 	border-collapse: collapse;
 	font-size: 14px;
+	border: none !important;
 
 	thead {
 		background-color: $bg-light;
@@ -857,6 +860,7 @@ $spacing-xl: 24px;
 			font-weight: 600;
 			color: $text-medium;
 			border-bottom: 1px solid $border-color;
+			background-color: $bg-white;
 		}
 	}
 
@@ -1010,9 +1014,10 @@ $spacing-xl: 24px;
 	background-color: $bg-white;
 	border-radius: $border-radius;
 	overflow: hidden;
-	@include card-shadow;
 	margin-bottom: $spacing-lg;
-	border: none;
+	border: 1px solid $border-color;
+	box-shadow: none !important;
+	padding: $spacing-xl;
 
 	&:last-child {
 		margin-bottom: 0;
@@ -1020,16 +1025,17 @@ $spacing-xl: 24px;
 
 	h2 {
 		margin: 0;
-		padding: $spacing-md $spacing-lg;
+		// padding: $spacing-md $spacing-lg;
 		font-size: 16px;
 		font-weight: 600;
 		color: $text-dark;
-		border-bottom: none;
+		border-bottom: 1px solid $border-color;
 		background: transparent;
+		padding-bottom: $spacing-lg;
+		margin-bottom: $spacing-xl;
 	}
 
 	.inside {
-		padding: $spacing-md $spacing-lg;
 		margin: 0;
 	}
 }
@@ -1138,13 +1144,14 @@ $spacing-xl: 24px;
 	.everest-forms-entry-delete a,
 	p.everest-forms-entry-delete a {
 		color: $danger-color;
+		font-weight: 400;
 
 		.dashicons {
 			color: $danger-color;
 		}
 
 		&:hover {
-			background-color: #fef2f2;
+			background-color: #FFF4F4;
 			color: darken($danger-color, 10%);
 
 			.dashicons {
@@ -1361,13 +1368,13 @@ $spacing-xl: 24px;
 	background-color: $bg-white;
 	border-radius: $border-radius;
 	overflow: hidden;
-	@include card-shadow;
-	margin-bottom: $spacing-lg;
-	border: none;
+	border: 1px solid $border-color;
+	box-shadow: none;
+	padding: $spacing-xl;
 
 	h2 {
 		margin: 0;
-		padding: $spacing-lg $spacing-xl;
+		padding-bottom: $spacing-lg;
 		font-size: 18px;
 		font-weight: 600;
 		color: $text-dark;
@@ -1376,8 +1383,9 @@ $spacing-xl: 24px;
 	}
 
 	.inside {
-		padding: $spacing-xl;
+		// padding-top: $spacing-xl;
 		margin: 0;
+		border-top: 1px solid $border-color;
 	}
 }
 
@@ -1518,7 +1526,7 @@ $spacing-xl: 24px;
 		}
 
 		.evf-section-content {
-			padding: $spacing-md;
+			padding-top: $spacing-md;
 		}
 	}
 
