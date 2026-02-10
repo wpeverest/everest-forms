@@ -5673,3 +5673,67 @@ function evf_form_confirmation_backward_compatibility($form_data)
 
 	return $form_data;
 }
+
+
+add_action( 'admin_footer', function() {
+
+    $screen = get_current_screen();
+    if ( ! $screen ) {
+        return;
+    }
+
+    $evf_screens = array(
+        'everest-forms_page_evf-builder',
+        'everest-forms_page_evf-settings',
+    );
+
+    if ( ! in_array( $screen->id, $evf_screens, true ) ) {
+        return;
+    }
+
+    $type_map = array(
+        'updated' => 'success',
+        'error'   => 'error',
+        'warning' => 'warning',
+        'info'    => 'info',
+    );
+
+    $notices    = get_settings_errors();
+    $evf_toasts = array();
+    $keep       = array();
+
+    foreach ( $notices as $notice ) {
+        if ( $notice['setting'] === 'bulk_action' && $notice['code'] === 'bulk_action' ) {
+            $evf_toasts[] = array(
+                'message' => wp_strip_all_tags( $notice['message'] ),
+                'type'    => isset( $type_map[ $notice['type'] ] ) ? $type_map[ $notice['type'] ] : 'info',
+            );
+        } else {
+            $keep[] = $notice;
+        }
+    }
+
+    if ( empty( $evf_toasts ) ) {
+        return;
+    }
+
+    global $wp_settings_errors;
+    $wp_settings_errors = $keep;
+
+
+    ?>
+    <script>
+        document.addEventListener( 'DOMContentLoaded', function() {
+            <?php foreach ( $evf_toasts as $toast ) : ?>
+                if ( typeof window.evfShowToast === 'function' ) {
+                    window.evfShowToast(
+                        <?php echo wp_json_encode( $toast['message'] ); ?>,
+                        <?php echo wp_json_encode( $toast['type'] ); ?>,
+                        5000
+                    );
+                }
+            <?php endforeach; ?>
+        } );
+    </script>
+    <?php
+}, 1 );

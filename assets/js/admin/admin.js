@@ -1,6 +1,57 @@
 /* global everest_forms_admin, PerfectScrollbar */
 ( function( $, params ) {
 
+	function evfGetToastContainer() {
+		var $container = $('#evf-toast-container');
+
+		if (!$container.length) {
+			$container = $('<div id="evf-toast-container"></div>');
+			$('body').append($container);
+		}
+
+		return $container;
+	}
+
+	window.evfShowToast = function (message, type, duration) {
+		type = type || 'info';
+		duration = typeof duration === 'number' ? duration : 4000;
+
+		var $container = evfGetToastContainer();
+
+		var $toast = $(
+			'<div class="evf-toast evf-toast-' +
+				type +
+				'">' +
+				'<button type="button" class="evf-toast-close" aria-label="Close">&times;</button>' +
+				'<div class="evf-toast-content"></div>' +
+				'</div>',
+		);
+
+		$toast.find('.evf-toast-content').html(message);
+		$container.append($toast);
+
+		setTimeout(function () {
+			$toast.addClass('is-visible');
+		}, 10);
+
+		if (duration > 0) {
+			setTimeout(function () {
+				hideToast($toast);
+			}, duration);
+		}
+
+		$toast.on('click', '.evf-toast-close', function () {
+			hideToast($toast);
+		});
+
+		function hideToast($el) {
+			$el.removeClass('is-visible');
+			setTimeout(function () {
+				$el.remove();
+			}, 250);
+		}
+	};
+
 	// Colorpicker.
 	$( document ).on( 'click', '.everest-forms-field.everest-forms-field-rating', function() {
 		$( '.everest-forms-field-option-row-icon_color input.evf-colorpicker' ).wpColorPicker({
@@ -28,6 +79,7 @@
 
 	// Function to handle changes in the reporting frequency while sending the entries stat report.
 	$(document).ready(function () {
+
 		function handleReportingFrequencyChange() {
 			var everest_forms_entries_reporting_frequency = $('#everest_forms_entries_reporting_frequency').val();
 				if ('Weekly' !== everest_forms_entries_reporting_frequency) {

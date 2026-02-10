@@ -308,16 +308,25 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 			}
 		}
 
-		// Truncate long values
-		if ( false === strpos( $value, 'http' ) ) {
-			if ( strlen( $value ) > 100 ) {
-				$value = substr( $value, 0, 100 ) . '&hellip;';
+
+		if ( is_string( $value ) && filter_var( $value, FILTER_VALIDATE_URL ) ) {
+			$path = wp_parse_url( $value, PHP_URL_PATH );
+			if ( ! empty( $path ) ) {
+				$value = basename( $path );
 			}
-			$value = wp_strip_all_tags( trim( $value ) );
 		}
+
+		$value = (string) $value;
+		if ( strlen( $value ) > 100 ) {
+			$value = substr( $value, 0, 100 ) . '&hellip;';
+		}
+
+		$value = wp_strip_all_tags( trim( $value ) );
 
 		return $value;
 	}
+
+
 
 	/**
 	 * Show specific form fields (for specific form view).

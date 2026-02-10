@@ -15,7 +15,8 @@
 
 // Components
 @import 'components/badge', 'components/forms', 'components/buttons',
-	'components/card', 'components/table', 'components/entries-views';
+	'components/card', 'components/table', 'components/entries-views',
+	'components/toast';
 
 @import 'colors';
 @import 'containers';
@@ -43,6 +44,10 @@ body[class*='everest-forms_page_'] {
 
 	#wpcontent {
 		padding-left: 0;
+	}
+
+	#setting-error-bulk_action {
+		display: none !important;
 	}
 }
 

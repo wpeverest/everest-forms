@@ -1,0 +1,126 @@
+// -----------------------------------------------------
+// Toast Variables
+// -----------------------------------------------------
+$toast-width: 320px;
+$toast-bg: #323232;
+$toast-color: #fff;
+$toast-radius: 6px;
+$toast-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+$toast-padding: 12px 16px;
+$toast-gap: 12px;
+$toast-z: 99999;
+$toast-duration: 0.25s;
+
+// Colors for types
+$toast-success: #22c55e;
+$toast-error: #ef4444;
+$toast-warning: #f97316;
+$toast-info: #6366f1;
+
+// -----------------------------------------------------
+// Hide EVF bulk action notice — JS shows it as toast
+// -----------------------------------------------------
+#setting-error-bulk_action {
+	display: none !important;
+}
+
+// -----------------------------------------------------
+// Container — bottom center
+// -----------------------------------------------------
+#evf-toast-container {
+	position: fixed;
+	bottom: 30px;
+	left: 50%;
+	transform: translateX(-50%);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: $toast-gap;
+	z-index: $toast-z;
+}
+
+// -----------------------------------------------------
+// Toast Box
+// -----------------------------------------------------
+.evf-toast {
+	position: relative;
+	width: $toast-width;
+	max-width: 95vw;
+	background: $toast-bg;
+	color: $toast-color;
+	padding: $toast-padding;
+	border-radius: $toast-radius;
+	box-shadow: $toast-shadow;
+
+	opacity: 0;
+	transform: translateY(16px);
+	transition:
+		opacity $toast-duration ease,
+		transform $toast-duration ease;
+
+	&.is-visible {
+		opacity: 1;
+		transform: translateY(0);
+	}
+
+	// Toast close button
+	.evf-toast-close {
+		position: absolute;
+		right: 8px;
+		top: 6px;
+		background: transparent;
+		border: none;
+		font-size: 18px;
+		color: inherit;
+		cursor: pointer;
+		line-height: 1;
+
+		&:hover {
+			opacity: 0.8;
+		}
+	}
+}
+
+// -----------------------------------------------------
+// Toast Types
+// -----------------------------------------------------
+.evf-toast-success {
+	background: $toast-success;
+}
+
+.evf-toast-error {
+	background: $toast-error;
+}
+
+.evf-toast-warning {
+	background: $toast-warning;
+}
+
+.evf-toast-info {
+	background: $toast-info;
+}
+
+// -----------------------------------------------------
+// Animations
+// -----------------------------------------------------
+@keyframes toast-fade-in {
+	0% {
+		opacity: 0;
+		transform: translateY(16px);
+	}
+	100% {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes toast-fade-out {
+	0% {
+		opacity: 1;
+		transform: translateY(0);
+	}
+	100% {
+		opacity: 0;
+		transform: translateY(16px);
+	}
+}
