@@ -690,14 +690,14 @@ export const MagazineBlocks = React.forwardRef((props, ref) => (
 export const EVF = React.forwardRef((props, ref) => (
 	<chakra.svg
 		viewBox="0 0 40 40"
-		xmlns="https://www.w3.org/2000/svg"
-		{...props}
+		xmlns="http://www.w3.org/2000/svg"
+		fill="none"
 		ref={ref}
+		{...props}
 	>
-		<rect width="40" height="40" fill="#7545BB" rx="3.636" />
 		<path
-			fill="#fff"
-			d="M26.72 11h-4.31l1.32 2.224h4.309L26.72 11Zm2.71 4.447h-4.308l1.39 2.224h4.308l-1.39-2.224Zm-.069 11.119h-16.4l6.88-11.258 2.849 4.587h-2.85l-1.32 2.223h8.13l-6.81-10.98L9 28.79h21.751l-1.39-2.223Z"
+			fill="#5317aa"
+			d="M30.517 6.188h-6.69l2.05 3.453h6.69zm4.209 6.906h-6.69l2.157 3.453h6.69zm-.108 17.266H9.15l10.683-17.482L24.258 20h-4.424l-2.05 3.453h12.625L19.834 6.403 3 33.813h33.776z"
 		/>
 	</chakra.svg>
 ));
