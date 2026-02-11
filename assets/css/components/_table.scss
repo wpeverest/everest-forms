@@ -67,17 +67,19 @@ $status-trash-text: #991b1b;
 			display: inline-flex;
 			align-items: center;
 			gap: 6px;
-			padding: 12px 4px;
+			padding: 8px 4px;
 			color: $evf-text-muted;
-			font-family:
-				Inter,
-				-apple-system,
-				BlinkMacSystemFont,
-				'Segoe UI',
-				sans-serif;
+			// font-family:
+			// 	Inter,
+			// 	-apple-system,
+			// 	BlinkMacSystemFont,
+			// 	'Segoe UI',
+			// 	sans-serif;
 			font-size: 14px;
-			font-weight: 500;
+			font-family: inherit;
+			font-weight: 400;
 			text-decoration: none;
+			letter-spacing: 0.2px;
 			border-bottom: 2px solid transparent;
 			margin-bottom: -2px;
 			transition: $evf-transition;
@@ -123,18 +125,13 @@ $status-trash-text: #991b1b;
 
 		select,
 		#bulk-action-selector-top {
-			height: 36px;
+			min-height: 38px;
 			padding: 0 32px 0 12px;
 			border: 1px solid $evf-border !important;
 			border-radius: $evf-radius-md;
 			background: $evf-bg-white;
 			color: $evf-text-secondary;
-			font-family:
-				Inter,
-				-apple-system,
-				BlinkMacSystemFont,
-				'Segoe UI',
-				sans-serif;
+			font-family: inherit;
 			font-size: 14px;
 			font-weight: 400;
 			line-height: 1;
@@ -143,7 +140,8 @@ $status-trash-text: #991b1b;
 			appearance: none;
 			background-position: right 8px center;
 			background-repeat: no-repeat;
-			background-size: 20px;
+			background-size: 14px;
+			background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23737373' viewBox='0 0 24 24'%3E%3Cpath d='M19.561 7.403a1.468 1.468 0 0 1 2.02 0 1.339 1.339 0 0 1 0 1.944l-8.57 8.25a1.468 1.468 0 0 1-2.021 0l-8.572-8.25a1.339 1.339 0 0 1 0-1.944 1.468 1.468 0 0 1 2.02 0L12 14.68l7.561-7.278Z'/%3E%3C/svg%3E");
 			min-width: 170px;
 
 			&:hover {
@@ -218,7 +216,7 @@ $status-trash-text: #991b1b;
 
 		.evf-manage-columns-btn,
 		button[class*='manage'] {
-			height: 36px;
+			min-height: 38px;
 			padding: 8px 14px;
 			border: 1px solid $evf-border !important;
 			border-radius: 3px;
@@ -231,7 +229,7 @@ $status-trash-text: #991b1b;
 				'Segoe UI',
 				sans-serif;
 			font-size: 14px;
-			font-weight: 500;
+			font-weight: 400;
 			line-height: 1;
 			cursor: pointer;
 			transition: $evf-transition;
@@ -243,6 +241,7 @@ $status-trash-text: #991b1b;
 			svg {
 				width: 16px;
 				height: 16px;
+				color: #6b6b6b;
 			}
 
 			&:hover {
@@ -392,9 +391,9 @@ $status-trash-text: #991b1b;
 	}
 
 	input[type='search'] {
-		height: 36px;
+		height: 38px;
 		padding: 10px 50px 10px 16px;
-		border: 1px solid #bababa !important;
+		border: 1px solid #e1e1e1 !important;
 		border-radius: $evf-radius-sm;
 		background: $evf-bg-white;
 		font-family:
@@ -406,11 +405,16 @@ $status-trash-text: #991b1b;
 		font-size: 14px;
 		line-height: 1;
 		color: $evf-text-secondary;
-		min-width: 232px;
+		min-width: 260px;
 		transition: $evf-transition;
 		background-position: right 12px center;
 		background-repeat: no-repeat;
 		background-size: 20px;
+		align-items: center;
+
+		svg {
+			color: red !important;
+		}
 
 		&:focus {
 			outline: none;
@@ -676,8 +680,8 @@ $status-trash-text: #991b1b;
 			}
 
 			&:hover {
-				background: $evf-bg-hover;
-				box-shadow: $evf-shadow-hover;
+				// background: $evf-bg-hover;
+				// box-shadow: $evf-shadow-hover;
 
 				.row-actions {
 					visibility: visible !important;
@@ -806,14 +810,14 @@ $status-trash-text: #991b1b;
 
 							&:hover {
 								color: #fbbf24;
-								background: #fef3c7;
+								// background: #fef3c7;
 							}
 
 							&.unstar {
 								color: #fbbf24;
 
 								&:hover {
-									background: #fef3c7;
+									// background: #fef3c7;
 								}
 							}
 						}
@@ -847,8 +851,9 @@ $status-trash-text: #991b1b;
 				&.column-primary,
 				&.column-title,
 				&.entry {
-					font-weight: 400;
+					font-weight: 500;
 					color: $evf-text-primary;
+					cursor: pointer;
 
 					strong {
 						color: $evf-text-primary;
@@ -891,7 +896,7 @@ $status-trash-text: #991b1b;
 									BlinkMacSystemFont,
 									'Segoe UI',
 									sans-serif;
-								font-size: 12px;
+								font-size: 13px;
 								font-weight: 400;
 								text-decoration: none;
 								transition: $evf-transition;
@@ -927,6 +932,7 @@ $status-trash-text: #991b1b;
 
 						&:hover {
 							text-decoration: underline;
+							color: $evf-primary;
 						}
 					}
 				}
@@ -937,9 +943,10 @@ $status-trash-text: #991b1b;
 					.evf-badge {
 						display: inline-flex;
 						align-items: center;
-						padding: 6px 16px;
+						padding: 6px 16px !important;
 						border-radius: 20px;
-						font-size: 13px;
+						font-size: 11px;
+						letter-spacing: 0.3px;
 						font-weight: 500;
 						line-height: 1;
 						border-width: 1.5px;
@@ -991,8 +998,8 @@ $status-trash-text: #991b1b;
 
 				&.date,
 				&.column-date {
-					color: $evf-text-muted;
-					font-size: 13px;
+					color: #6b6b6b;
+					font-size: 14px;
 					font-weight: 400;
 				}
 
@@ -1242,6 +1249,7 @@ $status-trash-text: #991b1b;
 		li a {
 			padding: 8px 4px;
 			font-size: 13px;
+			font-weight: 400;
 		}
 	}
 
@@ -1327,5 +1335,8 @@ $status-trash-text: #991b1b;
 		right: 12px;
 		-ms-transform: translateY(-50%);
 		transform: translateY(-50%);
+	}
+	svg {
+		color: #999999 !important;
 	}
 }

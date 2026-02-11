@@ -6955,8 +6955,8 @@ img.ui-datepicker-trigger {
 	&.select2-container--focus .select2-selection--single,
 	&.select2-container--open .select2-selection--single,
 	&.select2-container--open .select2-selection--multiple {
-		border-color: #007cba;
-		box-shadow: 0 0 0 1px #007cba;
+		border-color: #8c64c6;
+		// box-shadow: 0 0 0 1px #007cba;
 	}
 
 	.selection {
@@ -7045,7 +7045,7 @@ img.ui-datepicker-trigger {
 			}
 
 			.select2-selection--single .select2-selection__rendered:hover {
-				color: $color;
+				color: $primary-color;
 			}
 
 			.select2-container.select2-container--focus .select2-selection--single,
@@ -8275,8 +8275,9 @@ img.ui-datepicker-trigger {
 .select2-container--default {
 	.select2-selection--single {
 		background-color: #fff;
-		border: 1px solid #aaa;
+		border: 1px solid #e1e1e1;
 		border-radius: 4px;
+		min-height: 38px;
 
 		.select2-selection__rendered {
 			color: #444;
@@ -8296,7 +8297,7 @@ img.ui-datepicker-trigger {
 		.select2-selection__arrow {
 			height: 26px;
 			position: absolute;
-			top: 1px;
+			top: 6px;
 			right: 1px;
 			width: 20px;
 
@@ -8457,8 +8458,8 @@ img.ui-datepicker-trigger {
 	}
 
 	.select2-results__option--highlighted[data-selected] {
-		color: #fff;
-		background-color: #0073aa;
+		color: #222;
+		background-color: #eee8f7;
 	}
 
 	.select2-results__group {
@@ -8574,7 +8575,7 @@ img.ui-datepicker-trigger {
 		background-repeat: repeat-x;
 
 		&:focus {
-			border: 1px solid #0073aa;
+			border: 1px solid $primary-color;
 		}
 
 		.select2-selection__rendered {
@@ -12561,9 +12562,4 @@ button#show-settings-link {
 
 .wrap.everest-forms {
 	padding-top: 0;
-}
-
-.everest-forms-BlankState-message {
-	font-size: 20px;
-	font-weight: 600;
 }

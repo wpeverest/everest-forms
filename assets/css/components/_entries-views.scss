@@ -9,7 +9,7 @@ $text-light: #9ca3af;
 $border-color: #e5e7eb;
 $bg-light: #f9fafb;
 $bg-white: #ffffff;
-$danger-color: #F25656;
+$danger-color: #f25656;
 $success-color: #10b981;
 $warning-color: #f59e0b;
 $info-color: #3b82f6;
@@ -184,12 +184,14 @@ $spacing-xl: 24px;
 		margin: 0;
 		font-size: 18px;
 		font-weight: 600;
+		padding-bottom: 24px;
 		color: $text-dark;
 		display: flex;
 		align-items: center;
 		gap: $spacing-xs;
-		flex: 1;           // takes available space, pushes actions to right
-		min-width: 0;      // allows text to truncate if needed
+		flex: 1;
+		min-width: 0;
+		border-bottom: none;
 
 		// Any icon/link injected by do_action() inside the <h2>
 		a,
@@ -227,7 +229,7 @@ $spacing-xl: 24px;
 		// which use ::before pseudo-content; we must neutralize their layout side-effects
 		.everest-forms-empty-field-toggle {
 			white-space: nowrap;
-			display: inline-flex !important;  // override dashicons display:inline-block
+			display: inline-flex !important; // override dashicons display:inline-block
 			align-items: center;
 			gap: 6px;
 			color: $primary-color;
@@ -237,9 +239,9 @@ $spacing-xl: 24px;
 			text-decoration: none;
 			line-height: 1 !important;
 			cursor: pointer;
-			position: static !important;     // neutralize any dashicons positioning
+			position: static !important; // neutralize any dashicons positioning
 			vertical-align: middle;
-			width: auto !important;           // dashicons forces width/height — reset
+			width: auto !important; // dashicons forces width/height — reset
 			height: auto !important;
 			@include transition;
 
@@ -252,7 +254,7 @@ $spacing-xl: 24px;
 				display: inline-flex !important;
 				align-items: center;
 				flex-shrink: 0;
-				margin-right: 0;             // let the gap property handle spacing
+				margin-right: 0; // let the gap property handle spacing
 			}
 
 			&:hover {
@@ -269,7 +271,7 @@ $spacing-xl: 24px;
 			gap: 6px;
 			font-size: 14px;
 			font-weight: 500;
-			color: $primary-color;
+			color: #6b6b6b;
 			text-decoration: none;
 			line-height: 1;
 			cursor: pointer;
@@ -279,12 +281,17 @@ $spacing-xl: 24px;
 				width: 16px;
 				height: 16px;
 				flex-shrink: 0;
-				fill: currentColor;
+				fill: #6b6b6b;
 			}
 
-			&:hover {
+			&:hover,
+			&:active {
 				color: darken($primary-color, 10%);
-				text-decoration: underline;
+
+				svg,
+				svg * {
+					fill: $primary-color !important;
+				}
 			}
 		}
 	}
@@ -323,7 +330,6 @@ $spacing-xl: 24px;
 // ==============================================================================
 
 .everest-forms-edit-entry-container {
-
 	.postbox {
 		border: none;
 		box-shadow: none;
@@ -347,7 +353,6 @@ $spacing-xl: 24px;
 		justify-content: space-between !important;
 		width: 100%;
 		min-height: 56px;
-		padding: 0 $spacing-xl !important;
 		margin: 0 !important;
 		font-size: 18px !important;
 		font-weight: 600 !important;
@@ -384,8 +389,9 @@ $spacing-xl: 24px;
 			position: static !important;
 			vertical-align: middle !important;
 			// Styling
-			color: $primary-color !important;
+			color: #6b6b6b !important;
 			font-size: 14px !important;
+			font-family: inherit;
 			font-weight: 500 !important;
 			text-decoration: none;
 			cursor: pointer;
@@ -416,8 +422,7 @@ $spacing-xl: 24px;
 .everest-forms-edit-entry-container {
 	background-color: $bg-white;
 	border-radius: $border-radius;
-	@include card-shadow;
-	margin-bottom: $spacing-lg;
+	border: 1px solid $border-color;
 
 	form {
 		padding: 0;
@@ -711,12 +716,10 @@ $spacing-xl: 24px;
 
 // Inline edit footer (Cancel + Save inside main card)
 .evf-entry-edit-actions {
-	padding: $spacing-lg $spacing-xl;
 	margin: 0;
-	border-top: 1px solid $border-color;
+	padding: 0 $spacing-xl $spacing-xl 0;
 	display: flex;
 	justify-content: flex-end;
-	background-color: $bg-light;
 
 	#publishing-action,
 	.evf-edit-actions-wrapper {
@@ -729,10 +732,11 @@ $spacing-xl: 24px;
 
 		.button {
 			width: auto;
-			min-width: 96px;
+			min-height: 36px;
 			padding: $spacing-sm $spacing-lg;
 			border-radius: $border-radius-sm;
 			font-size: 14px;
+			line-height: 24px;
 			font-weight: 500;
 			box-shadow: none;
 			text-shadow: none;
@@ -910,8 +914,11 @@ $spacing-xl: 24px;
 	}
 
 	&.evf-status-publish {
-		background-color: #dbeafe;
-		color: #1e40af;
+		color: #2271b1;
+		font-size: 13px;
+		padding: 0;
+		text-transform: capitalize;
+		letter-spacing: 0;
 	}
 }
 
@@ -1023,7 +1030,7 @@ $spacing-xl: 24px;
 		margin-bottom: 0;
 	}
 
-	h2 {
+	.evf-entry-actions-header {
 		margin: 0;
 		// padding: $spacing-md $spacing-lg;
 		font-size: 16px;
@@ -1105,7 +1112,11 @@ $spacing-xl: 24px;
 			svg {
 				width: 18px;
 				height: 18px;
+				fill: #6b6b6b;
 			}
+			// svg:hover {
+			// 	fill:red;
+			// }
 		}
 	}
 
@@ -1119,7 +1130,8 @@ $spacing-xl: 24px;
 		color: $text-dark;
 		text-decoration: none;
 		font-size: 14px;
-		font-weight: 500;
+		font-family: inherit;
+		font-weight: 400;
 		@include transition;
 
 		.dashicons {
@@ -1131,8 +1143,13 @@ $spacing-xl: 24px;
 		}
 
 		&:hover {
-			background-color: $bg-light;
-			color: $text-dark;
+			background-color: #faf8fc;
+			color: $primary-color;
+
+			svg,
+			svg * {
+				fill: $primary-color !important;
+			}
 
 			.dashicons {
 				color: $primary-color;
@@ -1151,7 +1168,7 @@ $spacing-xl: 24px;
 		}
 
 		&:hover {
-			background-color: #FFF4F4;
+			background-color: #fff4f4;
 			color: darken($danger-color, 10%);
 
 			.dashicons {
