@@ -688,6 +688,7 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 			'denied'  => 0,
 			'unread'  => 0,
 			'read'    => 0,
+		    'starred' => 0,
 		);
 
 		$results = $wpdb->get_results( "SELECT status, COUNT(*) as count FROM {$wpdb->prefix}evf_entries GROUP BY status" );
