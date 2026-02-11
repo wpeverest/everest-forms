@@ -272,13 +272,11 @@ const UserDisplayModal = ({
 										>
 											{__('User Email', 'everest-forms')}
 										</FormLabel>
-										<AsyncSelect
+										<Select
 											required
-											cacheOptions
-											defaultOptions
-											loadOptions={loadUsers}
+											options={[]}
 											placeholder={__(
-												'Search and select user email',
+												'Enter the user email',
 												'everest-forms',
 											)}
 											value={
@@ -290,9 +288,6 @@ const UserDisplayModal = ({
 												setUserEmail(option ? option.value : '')
 											}
 											isDisabled={true}
-											additional={{
-												page: 1,
-											}}
 											size="md"
 											components={{
 												Input: (props) => (
