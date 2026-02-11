@@ -4,7 +4,7 @@
       "title": "AI Contact Form",
       "slug": "ai-contact-form",
       "name": "AI Contact Form",
-      "image": "extensions-json/sections/images/ai.webp",
+      "image": "extensions-json/sections/images/ai.png",
       "excerpt": "Integrated ChatGPT-powered chatbot into your form.",
       "link": "https://docs.everestforms.net/docs/ai/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
       "released_date": "23/11/2023",
@@ -13,6 +13,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Form Elements",
       "setting_url": "admin.php?page=evf-settings&tab=ai",
       "demo_video_url": "2Hs_dwpyJ54"
     },
@@ -20,7 +21,7 @@
       "title": "Custom Captcha",
       "slug": "everest-forms-captcha",
       "name": "Everest Forms Captcha",
-      "image": "extensions-json/sections/images/custom-captcha.webp",
+      "image": "extensions-json/sections/images/custom-captcha.png",
       "excerpt": "Avoid bot and spam submissions by adding custom questions and match captcha to your forms.",
       "link": "https://docs.everestforms.net/docs/captcha/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
       "released_date": "16/07/2019",
@@ -29,6 +30,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Security",
       "setting_url": "",
       "demo_video_url": "obScswjZ24Q",
       "popular_rank": 2
@@ -37,7 +39,7 @@
       "title": "Multi Part Forms",
       "slug": "everest-forms-multi-part",
       "name": "Everest Forms Multi Part",
-      "image": "extensions-json/sections/images/Multi-Part-Forms.webp",
+      "image": "extensions-json/sections/images/Multi-Part-Forms.png",
       "excerpt": "Break your forms into multiple smaller parts for better user engagement.",
       "link": "https://docs.everestforms.net/docs/multi-part-form/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
       "released_date": "31/10/2018",
@@ -46,6 +48,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Form Elements",
       "setting_url": "",
       "demo_video_url": "qVpDzAx-_4A",
       "popular_rank": 3
@@ -54,7 +57,7 @@
       "title": "PDF Form Submission",
       "slug": "everest-forms-pdf-submission",
       "name": "Everest Forms PDF Submission",
-      "image": "extensions-json/sections/images/pdf-submission.webp",
+      "image": "extensions-json/sections/images/pdf-submission.png",
       "excerpt": "Export individual form entries as PDF with option to download and send as email attachment.",
       "link": "https://docs.everestforms.net/docs/pdf-form-submission/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
       "released_date": "10/09/2018",
@@ -63,6 +66,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Cloud & Storage",
       "setting_url": "admin.php?page=evf-settings&tab=pdf-submission",
       "demo_video_url": "37CtaxJzYis",
       "popular_rank": 4
@@ -71,7 +75,7 @@
       "title": "Email Templates",
       "slug": "everest-forms-email-templates",
       "name": "Everest Forms Email Templates",
-      "image": "extensions-json/sections/images/email-templates.webp",
+      "image": "extensions-json/sections/images/email-templates.png",
       "excerpt": "Perfect your email design using no-code customization tool and live preview.",
       "link": "https://docs.everestforms.net/docs/email-template/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
       "released_date": "23/09/2022",
@@ -80,6 +84,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Email Marketing",
       "setting_url": "",
       "demo_video_url": "Cp2aL7IkAXc",
       "popular_rank": 5
@@ -88,7 +93,7 @@
       "title": "Survey Polls and Quiz",
       "slug": "everest-forms-survey-polls-quiz",
       "name": "Everest Forms Survey, Polls and Quiz",
-      "image": "extensions-json/sections/images/survey-polls-quiz.webp",
+      "image": "extensions-json/sections/images/survey-polls-quiz.png",
       "excerpt": "Create interactive surveys, polls, and quizzes using Everest Forms to engage your users.",
       "link": "https://docs.everestforms.net/docs/survey-polls-and-quiz/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
       "released_date": "22/03/2019",
@@ -97,6 +102,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Marketing & Analytics",
       "setting_url": "",
       "demo_video_url": "i1vR-YmaBOg",
       "popular_rank": 7
@@ -105,7 +111,7 @@
       "title": "PayPal Standard",
       "slug": "everest-forms-paypal-standard",
       "name": "Everest Forms PayPal Standard",
-      "image": "extensions-json/sections/images/payment-paypal.webp",
+      "image": "extensions-json/sections/images/payment-paypal.png",
       "excerpt": "Integrate PayPal with Everest Forms to collect deposits, payments, and donations.",
       "link": "https://docs.everestforms.net/docs/paypal-standard/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
       "released_date": "10/09/2018",
@@ -114,6 +120,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Payment Gateways",
       "setting_url": "admin.php?page=evf-settings&tab=payment",
       "demo_video_url": "pcwPjCt7N2I",
       "popular_rank": 8
@@ -122,7 +129,7 @@
       "title": "Google Sheets",
       "slug": "everest-forms-google-sheets",
       "name": "Everest Forms Google Sheets",
-      "image": "extensions-json/sections/images/google-sheets.webp",
+      "image": "extensions-json/sections/images/google-sheets.png",
       "excerpt": "Connect your forms to Google Sheets and sync form entries and submitted data.",
       "link": "https://docs.everestforms.net/docs/google-sheets/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
       "released_date": "29/03/2022",
@@ -131,6 +138,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Integrations",
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=google_sheets",
       "demo_video_url": "tvS6Y_rNBfs",
       "popular_rank": 9
@@ -139,7 +147,7 @@
       "title": "Save And Continue",
       "slug": "everest-forms-save-and-continue",
       "name": "Everest Forms Save And Continue",
-      "image": "extensions-json/sections/images/Save-And-Continue.webp",
+      "image": "extensions-json/sections/images/Save-And-Continue.png",
       "excerpt": "Boost form completion rate by allowing users to save draft and complete submission later.",
       "link": "https://docs.everestforms.net/docs/save-and-continue/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
       "released_date": "16/09/2021",
@@ -148,6 +156,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Form Elements",
       "setting_url": "",
       "demo_video_url": "4xxEi0rSB20",
       "popular_rank": 11
@@ -156,7 +165,7 @@
       "title": "Stripe",
       "slug": "everest-forms-stripe",
       "name": "Everest Forms Stripe",
-      "image": "extensions-json/sections/images/payment-stripe.webp",
+      "image": "extensions-json/sections/images/payment-stripe.png",
       "excerpt": "Connect your Everest forms with Stripe to easily collect deposits, payments, and donations.",
       "link": "https://docs.everestforms.net/docs/stripe/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
       "released_date": "04/04/2019",
@@ -165,6 +174,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Payment Gateways",
       "setting_url": "admin.php?page=evf-settings&tab=payment",
       "demo_video_url": "wZXnaxLxdz4",
       "popular_rank": 14
@@ -173,7 +183,7 @@
       "title": "Repeater Fields",
       "slug": "everest-forms-repeater-fields",
       "name": "Everest Forms Repeater Fields",
-      "image": "extensions-json/sections/images/repeater-fields.webp",
+      "image": "extensions-json/sections/images/repeater-fields.png",
       "excerpt": "Create repeating sets of fields within your WordPress forms.",
       "link": "https://docs.everestforms.net/docs/repeater-fields/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
       "released_date": "26/10/2021",
@@ -182,6 +192,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Form Elements",
       "setting_url": "",
       "demo_video_url": "W2lc02Ge-FU",
       "popular_rank": 10
@@ -190,7 +201,7 @@
       "title": "Geolocation",
       "slug": "everest-forms-geolocation",
       "name": "Everest Forms Geolocation",
-      "image": "extensions-json/sections/images/Geolocation.webp",
+      "image": "extensions-json/sections/images/Geolocation.png",
       "excerpt": "Collect geolocation data like IP, Country, and Postal/Zip of your leads during form submission.",
       "link": "https://docs.everestforms.net/docs/geolocation/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
       "released_date": "15/09/2018",
@@ -199,6 +210,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Form Elements",
       "setting_url": "admin.php?page=evf-settings&tab=geolocation",
       "demo_video_url": "j02yG57GA20",
       "popular_rank": 13
@@ -207,7 +219,7 @@
       "title": "Form Restriction",
       "slug": "everest-forms-form-restriction",
       "name": "Everest Forms Form Restriction",
-      "image": "extensions-json/sections/images/form-restriction.webp",
+      "image": "extensions-json/sections/images/form-restriction.png",
       "excerpt": "Restrict form access to users based on number of entries, country, submission date, and password.",
       "link": "https://docs.everestforms.net/docs/form-restriction/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
       "released_date": "15/07/2020",
@@ -216,6 +228,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Security",
       "setting_url": "",
       "demo_video_url": "Q1-dja7m3Sc",
       "popular_rank": 15
@@ -224,7 +237,7 @@
       "title": "Post Submissions",
       "slug": "everest-forms-post-submissions",
       "name": "Everest Forms Post Submissions",
-      "image": "extensions-json/sections/images/Post-Submissions.webp",
+      "image": "extensions-json/sections/images/Post-Submissions.png",
       "excerpt": "Allow users to submit post content from front-end form without access to dashboard.",
       "link": "https://docs.everestforms.net/docs/post-submissions/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
       "released_date": "16/07/2019",
@@ -233,6 +246,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Form Elements",
       "setting_url": "",
       "demo_video_url": "gTtewu4DpCo",
       "popular_rank": 18
@@ -241,7 +255,7 @@
       "title": "Conversational Forms",
       "slug": "everest-forms-conversational-forms",
       "name": "Everest Forms Conversational Forms",
-      "image": "extensions-json/sections/images/conversational-forms.webp",
+      "image": "extensions-json/sections/images/conversational-forms.png",
       "excerpt": "Increase conversions by transforming forms into engaging, conversation-style experiences.",
       "link": "https://docs.everestforms.net/docs/conversational-forms/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
       "released_date": "18/10/2022",
@@ -250,6 +264,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Marketing & Analytics",
       "setting_url": "",
       "demo_video_url": "XO38b8Lp19s",
       "popular_rank": 21
@@ -258,7 +273,7 @@
       "title": "Frontend Listing",
       "slug": "everest-forms-frontend-listing",
       "name": "Everest Forms Frontend Listing",
-      "image": "extensions-json/sections/images/frontend-listing.webp",
+      "image": "extensions-json/sections/images/frontend-listing.png",
       "excerpt": "Display form entries on the front-end for visitors. You can control which fields to show.",
       "link": "https://docs.everestforms.net/docs/frontend-listing/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
       "released_date": "15/06/2022",
@@ -267,6 +282,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Form Elements",
       "setting_url": "",
       "demo_video_url": "LBNuyo4lpTY",
       "popular_rank": 20
@@ -275,7 +291,7 @@
       "title": "Zapier",
       "slug": "everest-forms-zapier",
       "name": "Everest Forms Zapier",
-      "image": "extensions-json/sections/images/Zapier.webp",
+      "image": "extensions-json/sections/images/Zapier.png",
       "excerpt": "Connect Everest Forms with 7000+ popular web apps through Zapier for automated workflows.",
       "link": "https://docs.everestforms.net/docs/zapier/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
       "released_date": "02/05/2019",
@@ -284,6 +300,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Integrations",
       "setting_url": "",
       "demo_video_url": "t7NRAPZCbYg",
       "popular_rank": 19
@@ -292,7 +309,7 @@
       "title": "Cloud Storage",
       "slug": "everest-forms-cloud-storage",
       "name": "Everest Forms Cloud Storage",
-      "image": "extensions-json/sections/images/cloud-storage.webp",
+      "image": "extensions-json/sections/images/cloud-storage.png",
       "excerpt": "Upload form submission & files to Amazon S3 and OneDrive.",
       "link": "https://docs.everestforms.net/docs/cloud-storage/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
       "released_date": "31/08/2022",
@@ -301,6 +318,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Cloud & Storage",
       "setting_url": "",
       "demo_video_url": "yXE4ydYfkic",
       "popular_rank": 23
@@ -309,7 +327,7 @@
       "title": "Advanced Form Analytics",
       "slug": "everest-forms-form-analytics",
       "name": "Everest Forms Advanced Form Analytics",
-      "image": "extensions-json/sections/images/form-analytics.webp",
+      "image": "extensions-json/sections/images/form-analytics.png",
       "excerpt": "Analyze how users interact with forms by monitoring impressions, conversions, abandonments, and bounce rate.",
       "link": "https://docs.everestforms.net/docs/form-analytics/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
       "released_date": "30/08/2023",
@@ -318,6 +336,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Marketing & Analytics",
       "setting_url": "admin.php?page=evf-settings&tab=analytics",
       "demo_video_url": "BCT7c8EmQfg"
     },
@@ -325,8 +344,8 @@
       "title": "Hubspot",
       "slug": "everest-forms-hubspot",
       "name": "Everest Forms Hubspot",
-      "image": "extensions-json/sections/images/Hubspot.webp",
-      "excerpt": "Use Everest Forms as the entry point for HubSpot’s lead generation process.",
+      "image": "extensions-json/sections/images/Hubspot.png",
+      "excerpt": "Use Everest Forms as the entry point for HubSpot's lead generation process.",
       "link": "https://docs.everestforms.net/docs/hubspot/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
       "released_date": "26/09/2022 ",
       "plan": [
@@ -334,6 +353,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "CRM Integrations",
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=hubspot",
       "demo_video_url": "mOhJkZpBMPY",
       "popular_rank": 28
@@ -342,7 +362,7 @@
       "title": "Salesforce",
       "slug": "everest-forms-salesforce",
       "name": "Everest Forms Salesforce",
-      "image": "extensions-json/sections/images/Salesforce.webp",
+      "image": "extensions-json/sections/images/Salesforce.png",
       "excerpt": "Connect Everest Forms to Salesforce account to manage your leads effectively.",
       "link": "https://docs.everestforms.net/docs/salesforce/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
       "released_date": "31/08/2022",
@@ -351,6 +371,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "CRM Integrations",
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=salesforce",
       "demo_video_url": "1VsyUu4NAhk",
       "popular_rank": 30
@@ -359,7 +380,7 @@
       "title": "Authorize.Net",
       "slug": "everest-forms-authorize-net",
       "name": "Everest Forms Authorize.Net",
-      "image": "extensions-json/sections/images/authorize-net.webp",
+      "image": "extensions-json/sections/images/authorize-net.png",
       "excerpt": "Integrate Authorize.Net into your payment forms to collect deposits, charges, and donations.",
       "link": "https://docs.everestforms.net/docs/authorize-net/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
       "released_date": "14/06/2023",
@@ -368,6 +389,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Payment Gateways",
       "setting_url": "admin.php?page=evf-settings&tab=payment",
       "demo_video_url": "a5EcKjwWD1A",
       "popular_rank": 31
@@ -376,7 +398,7 @@
       "title": "Razorpay",
       "slug": "everest-forms-razorpay",
       "name": "Everest Forms Razorpay",
-      "image": "extensions-json/sections/images/Razorpay.webp",
+      "image": "extensions-json/sections/images/Razorpay.png",
       "excerpt": "Add Razorpay payment to your forms to accept payments from India.",
       "link": "https://docs.everestforms.net/docs/razorpay/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
       "released_date": "19/05/2022",
@@ -385,6 +407,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Payment Gateways",
       "setting_url": "admin.php?page=evf-settings&tab=payment",
       "demo_video_url": "2Og6b1JXDWs",
       "popular_rank": 36
@@ -393,7 +416,7 @@
       "title": "Zoho",
       "slug": "everest-forms-zoho",
       "name": "Everest Forms Zoho CRM",
-      "image": "extensions-json/sections/images/zoho.webp",
+      "image": "extensions-json/sections/images/zoho.png",
       "excerpt": "Collect leads through Everest Forms and add them to Zoho CRM.",
       "link": "https://docs.everestforms.net/docs/zoho-crm/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
       "released_date": "19/07/2022",
@@ -402,42 +425,43 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "CRM Integrations",
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=zoho",
       "demo_video_url": "sfHFiUIHpg0",
       "popular_rank": 34
     }
   ],
   "features": [
-	{
-		"title": "Coupons",
-		"slug": "everest-forms-coupons",
-		"name": "Everest Forms Coupons",
-		"image": "extensions-json/sections/images/Coupons.webp",
-		"excerpt": "Create discount codes and add them to checkout and payment forms to boost sales.",
-		"link": "https://docs.everestforms.net/docs/coupons/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
-		"released_date": "23/09/2020",
-		"plan": [
-		  "personal",
-		  "agency",
-		  "themegrill agency"
-		],
-		"setting_url": "",
-		"demo_video_url": "GSYQIiyntW0",
-		"popular_rank": 24
-	  },
     {
-      "title": "Style Customizer",
-      "slug": "everest-forms-style-customizer",
-      "name": "Everest Forms Style Customizer",
-      "image": "extensions-json/sections/images/Style-Customizer.webp",
-      "excerpt": "Enhance the appearance of your forms by no-code customization and styling options like colors, fonts, spacing, background, alignment and more.",
-      "link": "https://docs.everestforms.net/docs/style-customizer/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
-      "released_date": "22/03/2019",
+      "title": "Coupons",
+      "slug": "everest-forms-coupons",
+      "name": "Everest Forms Coupons",
+      "image": "extensions-json/sections/images/Coupons.png",
+      "excerpt": "Create discount codes and add them to checkout and payment forms to boost sales.",
+      "link": "https://docs.everestforms.net/docs/coupons/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "released_date": "23/09/2020",
       "plan": [
         "personal",
         "agency",
         "themegrill agency"
       ],
+      "category": "E-Commerce",
+      "setting_url": "",
+      "demo_video_url": "GSYQIiyntW0",
+      "popular_rank": 24
+    },
+    {
+      "title": "Style Customizer",
+      "slug": "everest-forms-style-customizer",
+      "name": "Everest Forms Style Customizer",
+      "image": "extensions-json/sections/images/Style-Customizer.png",
+      "excerpt": "Enhance the appearance of your forms by no-code customization and styling options like colors, fonts, spacing, background, alignment and more.",
+      "link": "https://docs.everestforms.net/docs/style-customizer/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "released_date": "22/03/2019",
+      "plan": [
+        "free"
+      ],
+      "category": "Form Elements",
       "setting_url": "",
       "demo_video_url": "PEK-FBU8gP0",
       "popular_rank": 1
@@ -446,7 +470,7 @@
       "title": "Trello",
       "slug": "everest-forms-trello",
       "name": "Everest Forms- Trello",
-      "image": "extensions-json/sections/images/Trello.webp",
+      "image": "extensions-json/sections/images/Trello.png",
       "excerpt": "Send form entries data directly to your Trello account as task on form submission.",
       "link": "https://docs.everestforms.net/docs/trello/?utm_source=dashboard-all-features&utm_medium=card-documentation-link",
       "released_date": "20/05/2024",
@@ -455,6 +479,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Integrations",
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=trello",
       "demo_video_url": "9ouI1v9KScY"
     },
@@ -462,7 +487,7 @@
       "title": "iContact",
       "slug": "everest-forms-icontact",
       "name": "Everest Forms- iContact",
-      "image": "extensions-json/sections/images/iContact.webp",
+      "image": "extensions-json/sections/images/iContact.png",
       "excerpt": "Add contacts to iContact mailing list with field data on form submission.",
       "link": "https://docs.everestforms.net/docs/icontact/?utm_source=dashboard-all-features&utm_medium=card-documentation-link",
       "released_date": "20/05/2024",
@@ -471,6 +496,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Email Marketing",
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=icontact",
       "demo_video_url": "Lqdh-LujsUA"
     },
@@ -478,7 +504,7 @@
       "title": "Woocommerce",
       "slug": "everest-forms-woocommerce",
       "name": "Everest Forms- Woocommerce",
-      "image": "extensions-json/sections/images/Woocommerce.webp",
+      "image": "extensions-json/sections/images/Woocommerce.png",
       "excerpt": "Add custom fields to WooCommerce product page to collect user information.",
       "link": "https://docs.everestforms.net/docs/woocommerce/?utm_source=dashboard-all-features&utm_medium=card-documentation-link",
       "released_date": "20/05/2024",
@@ -487,6 +513,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "E-Commerce",
       "setting_url": "",
       "demo_video_url": "TeZK82kxiLk"
     },
@@ -494,7 +521,7 @@
       "title": "Moosend",
       "slug": "everest-forms-moosend",
       "name": "Everest Forms- Moosend",
-      "image": "extensions-json/sections/images/Moosend.webp",
+      "image": "extensions-json/sections/images/Moosend.png",
       "excerpt": "Add leads captured from forms to Moosend marketing list.",
       "link": "https://docs.everestforms.net/docs/moosend/?utm_source=dashboard-all-features&utm_medium=card-documentation-link",
       "released_date": "20/05/2024",
@@ -503,6 +530,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Email Marketing",
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=moosend",
       "demo_video_url": "xeTf9YP9cpM"
     },
@@ -510,7 +538,7 @@
       "title": "Mailpoet",
       "slug": "everest-forms-mailpoet",
       "name": "Everest Forms- Mailpoet",
-      "image": "extensions-json/sections/images/MailPoet.webp",
+      "image": "extensions-json/sections/images/MailPoet.png",
       "excerpt": "Add contacts to Mailpoet feed and list on successful form submission.",
       "link": "https://docs.everestforms.net/docs/mailpoet/?utm_source=dashboard-all-features&utm_medium=card-documentation-link",
       "released_date": "20/05/2024",
@@ -519,6 +547,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Email Marketing",
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=mailpoet",
       "demo_video_url": "yFf3loV_azY"
     },
@@ -526,7 +555,7 @@
       "title": "OnePageCRM",
       "slug": "everest-forms-onepagecrm",
       "name": "Everest Forms- OnePageCRM",
-      "image": "extensions-json/sections/images/OnePageCRM.webp",
+      "image": "extensions-json/sections/images/OnePageCRM.png",
       "excerpt": "Combine Everest Forms and OnePageCRM for effective lead management.",
       "link": "https://docs.everestforms.net/docs/onepagecrm/?utm_source=dashboard-all-features&utm_medium=card-documentation-link",
       "released_date": "20/05/2024",
@@ -535,6 +564,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "CRM Integrations",
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=onepagecrm",
       "demo_video_url": "42EUj-Dlnr0"
     },
@@ -542,7 +572,7 @@
       "title": "Telegram",
       "slug": "everest-forms-telegram",
       "name": "Everest Forms Telegram",
-      "image": "extensions-json/sections/images/Telegram.webp",
+      "image": "extensions-json/sections/images/Telegram.png",
       "excerpt": "Receive notification on Telegram on each successful form entry.",
       "link": "https://docs.everestforms.net/docs/telegram/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
       "released_date": "07/08/2024",
@@ -551,6 +581,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Integrations",
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=telegram",
       "demo_video_url": "lAI-wh2EPfs"
     },
@@ -558,7 +589,7 @@
       "title": "Brevo",
       "slug": "everest-forms-brevo",
       "name": "Everest Forms Brevo",
-      "image": "extensions-json/sections/images/brevo.webp",
+      "image": "extensions-json/sections/images/brevo.png",
       "excerpt": "Add contacts to Brevo mailing list with field data on form submission, also supports double opt-in.",
       "link": "https://docs.everestforms.net/docs/sendinblue/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
       "released_date": "26/09/2022",
@@ -567,6 +598,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Email Marketing",
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=sendinblue",
       "demo_video_url": "d2Ujl82OJuA",
       "popular_rank": 26
@@ -575,7 +607,7 @@
       "title": "Drip",
       "slug": "everest-forms-drip",
       "name": "Everest Forms Drip",
-      "image": "extensions-json/sections/images/Drip.webp",
+      "image": "extensions-json/sections/images/Drip.png",
       "excerpt": "Add contacts to Drip mailing lists with tags and EU consent using Everest Froms.",
       "link": "https://docs.everestforms.net/docs/drip/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
       "released_date": "15/06/2022",
@@ -584,6 +616,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Email Marketing",
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=drip",
       "demo_video_url": "4BBKgRelpgE",
       "popular_rank": 35
@@ -592,7 +625,7 @@
       "title": "ConvertKit",
       "slug": "everest-forms-convertkit",
       "name": "Everest Forms ConvertKit",
-      "image": "extensions-json/sections/images/convertkit.webp",
+      "image": "extensions-json/sections/images/convertkit.png",
       "excerpt": "Allows you to efficiently grow your business by generating more leads with ConvertKit. It also helps increase automated emails for better lead generation.",
       "link": "https://docs.everestforms.net/docs/convertkit/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
       "released_date": "10/08/2018",
@@ -601,6 +634,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Email Marketing",
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=convertkit",
       "demo_video_url": "9_JboNu_uaE",
       "popular_rank": 17
@@ -609,7 +643,7 @@
       "title": "GetResponse",
       "slug": "everest-forms-getresponse",
       "name": "Everest Forms GetResponse",
-      "image": "extensions-json/sections/images/getresponse.webp",
+      "image": "extensions-json/sections/images/getresponse.png",
       "excerpt": "Add contacts to GetResponse email list through Everest Forms.",
       "link": "https://docs.everestforms.net/docs/getresponse/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
       "released_date": "26/09/2022",
@@ -618,6 +652,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Email Marketing",
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=getresponse",
       "demo_video_url": "bXrjALmtADw"
     },
@@ -625,8 +660,8 @@
       "title": "Salesflare",
       "slug": "everest-forms-salesflare",
       "name": "Everest Forms- Salesflare",
-      "image": "extensions-json/sections/images/Salesflare.webp",
-      "excerpt": "Combine Everest Forms with Salesflare’s simple and powerful B2BCRM solution.",
+      "image": "extensions-json/sections/images/Salesflare.png",
+      "excerpt": "Combine Everest Forms with Salesflare's simple and powerful B2BCRM solution.",
       "link": "https://docs.everestforms.net/docs/salesflare-integrations/?utm_source=dashboard-all-features&utm_medium=card-documentation-link",
       "released_date": "07/08/2024",
       "plan": [
@@ -634,6 +669,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "CRM Integrations",
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=salesflare",
       "demo_video_url": "IpXwi2Jc2uE"
     },
@@ -641,7 +677,7 @@
       "title": "Constant Contact",
       "slug": "everest-forms-constant-contact",
       "name": "Everest Forms Constant Contact",
-      "image": "extensions-json/sections/images/constant-contact.webp",
+      "image": "extensions-json/sections/images/constant-contact.png",
       "excerpt": "Connect Everest Forms to Constant Contact to manage captured leads.",
       "link": "https://docs.everestforms.net/docs/constant-contact/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
       "released_date": "31/08/2022",
@@ -650,6 +686,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Email Marketing",
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=constant_contact",
       "demo_video_url": "SSovJr5-8b0",
       "popular_rank": 33
@@ -658,7 +695,7 @@
       "title": "Pipedrive",
       "slug": "everest-forms-pipedrive",
       "name": "Everest Forms Pipedrive",
-      "image": "extensions-json/sections/images/Pipedrive.webp",
+      "image": "extensions-json/sections/images/Pipedrive.png",
       "excerpt": "Add leads captured from Everest Form to Pipedrive CRM for contact management and marketing automation.",
       "link": "https://docs.everestforms.net/docs/pipedrive/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
       "released_date": "15/06/2022",
@@ -667,6 +704,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "CRM Integrations",
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=pipedrive",
       "demo_video_url": "84cGKj07g4g",
       "popular_rank": 32
@@ -675,7 +713,7 @@
       "title": "Square",
       "slug": "everest-forms-square",
       "name": "Everest Forms - Square",
-      "image": "extensions-json/sections/images/square-payment.webp",
+      "image": "extensions-json/sections/images/square-payment.png",
       "excerpt": "Integrate Square into your WordPress forms to collect payments online securely.",
       "link": "https://docs.everestforms.net/docs/square/?utm_source=dashboard-all-features&utm_medium=card-documentation-link",
       "released_date": "07/08/2024",
@@ -684,6 +722,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Payment Gateways",
       "setting_url": "admin.php?page=evf-settings&tab=payment",
       "demo_video_url": "5ymZV-S0mMs"
     },
@@ -691,7 +730,7 @@
       "title": "Airtable",
       "slug": "everest-forms-airtable",
       "name": "Everest Forms- Airtable",
-      "image": "extensions-json/sections/images/Airtable.webp",
+      "image": "extensions-json/sections/images/Airtable.png",
       "excerpt": "Sync form entry data between Everest Form and Airtable database.",
       "link": "https://docs.everestforms.net/docs/airtable/?utm_source=dashboard-all-features&utm_medium=card-documentation-link",
       "released_date": "07/08/2024",
@@ -700,6 +739,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Integrations",
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=airtable",
       "demo_video_url": "SS_N2OoT5wU"
     },
@@ -707,7 +747,7 @@
       "title": "MailerLite",
       "slug": "everest-forms-mailerlite",
       "name": "Everest Forms MailerLite",
-      "image": "extensions-json/sections/images/mailerlite.webp",
+      "image": "extensions-json/sections/images/mailerlite.png",
       "excerpt": "Add contacts to your MailerLite email list directly on form submission through Everest Forms.",
       "link": "https://docs.everestforms.net/docs/mailerlite/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
       "released_date": "15/07/2020",
@@ -716,6 +756,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Email Marketing",
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=mailerlite",
       "demo_video_url": "JqdNsPFKg5o",
       "popular_rank": 27
@@ -724,7 +765,7 @@
       "title": "Mailchimp",
       "slug": "everest-forms-mailchimp",
       "name": "Everest Forms Mailchimp",
-      "image": "extensions-json/sections/images/Mailchimp.webp",
+      "image": "extensions-json/sections/images/Mailchimp.png",
       "excerpt": "Use this integration to add subscribers directly to MailChimp email list and groups.",
       "link": "https://docs.everestforms.net/docs/mailchimp/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
       "released_date": "10/08/2018",
@@ -733,6 +774,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Email Marketing",
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=mailchimp",
       "demo_video_url": "FhFsHdAIXwE",
       "popular_rank": 6
@@ -741,7 +783,7 @@
       "title": "Mollie",
       "slug": "everest-forms-mollie",
       "name": "Everest Forms Mollie",
-      "image": "extensions-json/sections/images/Mollie.webp",
+      "image": "extensions-json/sections/images/Mollie.png",
       "excerpt": "Integrate Mollie Pay into Everest Forms to collect payments through forms.",
       "link": "https://docs.everestforms.net/docs/mollie/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
       "released_date": "07/08/2024",
@@ -750,6 +792,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Payment Gateways",
       "setting_url": "admin.php?page=evf-settings&tab=payment",
       "demo_video_url": "r263krbqzfo"
     },
@@ -757,7 +800,7 @@
       "title": "Landing Pages",
       "slug": "everest-forms-landingpages",
       "name": "Everest Forms- LandingPages",
-      "image": "extensions-json/sections/images/LandingPage.webp",
+      "image": "extensions-json/sections/images/LandingPage.png",
       "excerpt": "Create distraction-free custom landing pages for lead-generation.",
       "link": "https://docs.everestforms.net/docs/landing-page/?utm_source=dashboard-all-features&utm_medium=card-documentation-link",
       "released_date": "07/08/2024",
@@ -766,6 +809,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Marketing & Analytics",
       "setting_url": "",
       "demo_video_url": "r2N26kMvEtE"
     },
@@ -773,7 +817,7 @@
       "title": "Aweber",
       "slug": "everest-forms-aweber",
       "name": "Everest Forms- Aweber",
-      "image": "extensions-json/sections/images/aweber.webp",
+      "image": "extensions-json/sections/images/aweber.png",
       "excerpt": "Add contacts to Aweber mailing list with field data on form submission.",
       "link": "https://docs.everestforms.net/docs/aweber/?utm_source=dashboard-all-features&utm_medium=card-documentation-link",
       "released_date": "13/09/2024",
@@ -782,6 +826,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Email Marketing",
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=aweber",
       "demo_video_url": ""
     },
@@ -789,7 +834,7 @@
       "title": "Calculations",
       "slug": "everest-forms-calculations",
       "name": "Everest Forms Calculations",
-      "image": "extensions-json/sections/images/calculations.webp",
+      "image": "extensions-json/sections/images/calculations.png",
       "excerpt": "Create calculators like price estimator, BMI, Interest calculator. By enabling calculation in fields.",
       "link": "https://docs.everestforms.net/docs/calculations/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
       "released_date": "29/03/2022",
@@ -798,6 +843,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Form Elements",
       "setting_url": "",
       "demo_video_url": "Ro5ZyyUdCGU",
       "popular_rank": 16
@@ -806,7 +852,7 @@
       "title": "Oxygen Builder",
       "slug": "everest-forms-oxygen-builder",
       "name": "Everest Forms Oxygen Builder",
-      "image": "extensions-json/sections/images/oxygen.webp",
+      "image": "extensions-json/sections/images/oxygen.png",
       "excerpt": "Add forms from Everest Forms directly to your website using Oxygen Builder.",
       "link": "https://docs.everestforms.net/docs/how-to-use-oxygen-builder-with-the-everest-forms/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
       "released_date": "03/12/2024",
@@ -815,6 +861,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Page Builders",
       "setting_url": "",
       "demo_video_url": ""
     },
@@ -822,7 +869,7 @@
       "title": "Slack",
       "slug": "everest-forms-slack",
       "name": "Everest Forms Slack",
-      "image": "extensions-json/sections/images/Slack.webp",
+      "image": "extensions-json/sections/images/Slack.png",
       "excerpt": "Get real-time form submission notification on your Slack channel along with entry information.",
       "link": "https://docs.everestforms.net/docs/slack/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
       "released_date": "xx/xx/xx",
@@ -831,6 +878,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Integrations",
       "setting_url": "",
       "demo_video_url": ""
     },
@@ -838,7 +886,7 @@
       "title": "Bricks Builder",
       "slug": "everest-forms-bricks-builder",
       "name": "Everest Forms Bricks Builder",
-      "image": "extensions-json/sections/images/bricks-builder.webp",
+      "image": "extensions-json/sections/images/bricks-builder.png",
       "excerpt": "Add forms from Everest Forms directly to your website using Bricks Builder.",
       "link": "https://docs.everestforms.net/docs/how-to-use-bricks-builder-theme-with-everest-forms/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
       "released_date": "03/12/2024",
@@ -847,6 +895,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Page Builders",
       "setting_url": "",
       "demo_video_url": ""
     },
@@ -854,7 +903,7 @@
       "title": "Divi Builder",
       "slug": "everest-forms-divi-builder",
       "name": "Everest Forms Divi Builder",
-      "image": "extensions-json/sections/images/divi.webp",
+      "image": "extensions-json/sections/images/divi.png",
       "excerpt": "Add forms from Everest Forms directly to your website using Divi Builder.",
       "link": "https://docs.everestforms.net/docs/how-to-use-divi-builder-with-everest-forms/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
       "released_date": "03/12/2024",
@@ -863,14 +912,15 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Page Builders",
       "setting_url": "",
       "demo_video_url": ""
     },
     {
-    "title": "Beaver Builder",
+      "title": "Beaver Builder",
       "slug": "everest-forms-beaver-builder",
       "name": "Everest Forms Beaver Builder",
-      "image": "extensions-json/sections/images/beaver-builder.webp",
+      "image": "extensions-json/sections/images/beaver-builder.png",
       "excerpt": "Add forms from Everest Forms directly to your website using Beaver Builder.",
       "link": "https://docs.everestforms.net/docs/how-to-use-beaver-builder-with-everest-forms/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
       "released_date": "03/12/2024",
@@ -879,6 +929,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Page Builders",
       "setting_url": "",
       "demo_video_url": ""
     },
@@ -886,7 +937,7 @@
       "title": "ActiveCampaign",
       "slug": "everest-forms-activecampaign",
       "name": "Everest Forms ActiveCampaign",
-      "image": "extensions-json/sections/images/activecampaign.webp",
+      "image": "extensions-json/sections/images/activecampaign.png",
       "excerpt": "Add contacts to ActiveCampaign email list and group with custom note through Everest Forms.",
       "link": "https://docs.everestforms.net/docs/activecampaign/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
       "released_date": "15/07/2020",
@@ -895,6 +946,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Email Marketing",
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=activecampaign",
       "demo_video_url": "6b9q89cUMzE",
       "popular_rank": 25
@@ -903,7 +955,7 @@
       "title": "GetGist",
       "slug": "everest-forms-getgist",
       "name": "Everest Forms GetGist",
-      "image": "extensions-json/sections/images/getgist.webp",
+      "image": "extensions-json/sections/images/getgist.png",
       "excerpt": "Capture leads through Everest Forms for GetGist campaign.",
       "link": "https://docs.everestforms.net/docs/getgist/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
       "released_date": "xx/xx/2024",
@@ -912,6 +964,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Email Marketing",
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=getgist",
       "demo_video_url": "",
       "popular_rank": "xx"
@@ -920,7 +973,7 @@
       "title": "User Registration",
       "slug": "everest-forms-user-registration",
       "name": "Everest Forms User Registration",
-      "image": "extensions-json/sections/images/user-registration.webp",
+      "image": "extensions-json/sections/images/user-registration.png",
       "excerpt": "Create custom WordPress sign-up forms with Everest Forms using this user registration fields.",
       "link": "https://docs.everestforms.net/docs/user-registration/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
       "released_date": "16/07/2019",
@@ -929,6 +982,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Form Elements",
       "setting_url": "admin.php?page=evf-settings&tab=user_registration",
       "demo_video_url": "MEyuznG2Tok",
       "popular_rank": 12
@@ -937,7 +991,7 @@
       "title": "Campaign Monitor",
       "slug": "everest-forms-campaign-monitor",
       "name": "Everest Forms Campaign Monitor",
-      "image": "extensions-json/sections/images/campaign-monitor.webp",
+      "image": "extensions-json/sections/images/campaign-monitor.png",
       "excerpt": "Use Everest Forms as subscription form for our Campaign Monitor marketing list.",
       "link": "https://docs.everestforms.net/docs/campaign-monitor/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
       "released_date": "16/10/2020",
@@ -946,6 +1000,7 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Email Marketing",
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=campaign_monitor",
       "demo_video_url": "GBJMxmCurzw",
       "popular_rank": 29
@@ -954,7 +1009,7 @@
       "title": "CleverReach",
       "slug": "everest-forms-cleverreach",
       "name": "Everest Forms CleverReach",
-      "image": "extensions-json/sections/images/cleverreach.webp",
+      "image": "extensions-json/sections/images/cleverreach.png",
       "excerpt": "Sync form submission data with CleverReach to build and manage email campaigns.",
       "link": "https://docs.everestforms.net/docs/clever-reach/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
       "released_date": "03/12/2024",
@@ -963,73 +1018,78 @@
         "agency",
         "themegrill agency"
       ],
+      "category": "Email Marketing",
       "setting_url": "admin.php?page=evf-settings&tab=integration&section=cleverreach",
       "demo_video_url": ""
     },
-      {
-        "title": "WP Bakery Builder",
-        "slug": "everest-forms-wpbakery-builder",
-        "name": "Everest Forms WP Bakery Builder",
-        "image": "extensions-json/sections/images/wpbakery.webp",
-        "excerpt": "Add forms from Everest Forms directly to your website using WPBakery Page Builder.",
-        "link": "https://docs.everestforms.net/docs/how-to-use-wp-bakery-page-builder-with-the-everest-forms/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
-        "released_date": "03/12/2024",
-        "plan": [
-          "personal",
-          "agency",
-          "themegrill agency"
-        ],
-        "setting_url": "",
-        "demo_video_url": ""
-      },
-      {
-        "title": "SMS Notifications",
-        "slug": "everest-forms-sms-notifications",
-        "name": "Everest Forms SMS Notifications",
-        "image": "extensions-json/sections/images/sms-notifications.webp",
-        "excerpt": "Notify users of successful form submission using SMS Notifications.",
-        "link": "https://docs.everestforms.net/docs/sms-notification/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
-        "released_date": "19/05/2022",
-        "plan": [
-          "personal",
-          "agency",
-          "themegrill agency"
-        ],
-        "setting_url": "admin.php?page=evf-settings&tab=integration&section=sms_notifications",
-        "demo_video_url": "tz4UKBX9WxM",
-        "popular_rank": 22
-      },
-      {
-        "title": "QR Generator",
-        "slug": "everest-forms-qr-generator",
-        "name": "Everest Forms QR Generator",
-        "image": "extensions-json/sections/images/QR-Generator.webp",
-        "excerpt": "Create QR codes for your forms for easy access and sharing.",
-        "link": "https://docs.everestforms.net/docs/qr-generator/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
-        "released_date": "xx/xx/xx",
-        "plan": [
-          "personal",
-          "agency",
-          "themegrill agency"
-        ],
-        "setting_url": "",
-        "demo_video_url": ""
-      },
-      {
-        "title": "amoCRM",
-        "slug": "everest-forms-amocrm",
-        "name": "Everest Forms amoCRM",
-        "image": "extensions-json/sections/images/amoCRM.webp",
-        "excerpt": "Smoothly sync form submissions with amoCRM for effortless lead management.",
-        "link": "https://docs.everestforms.net/docs/amocrm/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
-        "released_date": "xx/xx/xx",
-        "plan": [
-          "personal",
-          "agency",
-          "themegrill agency"
-        ],
-        "setting_url": "admin.php?page=evf-settings&tab=integration&section=amocrm",
-        "demo_video_url": ""
-      }
+    {
+      "title": "WP Bakery Builder",
+      "slug": "everest-forms-wpbakery-builder",
+      "name": "Everest Forms WP Bakery Builder",
+      "image": "extensions-json/sections/images/wpbakery.png",
+      "excerpt": "Add forms from Everest Forms directly to your website using WPBakery Page Builder.",
+      "link": "https://docs.everestforms.net/docs/how-to-use-wp-bakery-page-builder-with-the-everest-forms/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "released_date": "03/12/2024",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "category": "Page Builders",
+      "setting_url": "",
+      "demo_video_url": ""
+    },
+    {
+      "title": "SMS Notifications",
+      "slug": "everest-forms-sms-notifications",
+      "name": "Everest Forms SMS Notifications",
+      "image": "extensions-json/sections/images/sms-notifications.png",
+      "excerpt": "Notify users of successful form submission using SMS Notifications.",
+      "link": "https://docs.everestforms.net/docs/sms-notification/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "released_date": "19/05/2022",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "category": "Integrations",
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=sms_notifications",
+      "demo_video_url": "tz4UKBX9WxM",
+      "popular_rank": 22
+    },
+    {
+      "title": "QR Generator",
+      "slug": "everest-forms-qr-generator",
+      "name": "Everest Forms QR Generator",
+      "image": "extensions-json/sections/images/QR-Generator.png",
+      "excerpt": "Create QR codes for your forms for easy access and sharing.",
+      "link": "https://docs.everestforms.net/docs/qr-generator/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "released_date": "xx/xx/xx",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "category": "Form Elements",
+      "setting_url": "",
+      "demo_video_url": ""
+    },
+    {
+      "title": "amoCRM",
+      "slug": "everest-forms-amocrm",
+      "name": "Everest Forms amoCRM",
+      "image": "extensions-json/sections/images/amoCRM.png",
+      "excerpt": "Smoothly sync form submissions with amoCRM for effortless lead management.",
+      "link": "https://docs.everestforms.net/docs/amocrm/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
+      "released_date": "xx/xx/xx",
+      "plan": [
+        "personal",
+        "agency",
+        "themegrill agency"
+      ],
+      "category": "CRM Integrations",
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=amocrm",
+      "demo_video_url": ""
+    }
   ]
 }

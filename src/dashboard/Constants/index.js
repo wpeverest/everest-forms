@@ -38,7 +38,7 @@ let ROUTES = [
 	},
 	{
 		route: '/features',
-		label: __('All Features', 'everest-forms'),
+		label: __('Addons', 'everest-forms'),
 		external: false,
 		key: 'features',
 	},
