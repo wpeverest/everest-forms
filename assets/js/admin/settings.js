@@ -136,30 +136,26 @@
 				$('.everest_forms_send_email_test')
 					.closest('.everest_forms_send_email_test')
 					.append(spinner);
-				$('.everest-froms-send_test_email_notice').remove();
 			},
 			complete: function (response) {
-				var message_string = '';
-
 				$('.everest_forms_send_email_test')
 					.closest('.everest_forms_send_email_test')
 					.find('.evf-loading')
 					.remove();
-				$('.everest-froms-send_test_email_notice').remove();
-				if (true === response.responseJSON.success) {
-					message_string =
-						'<div id="message" class="updated inline everest-froms-send_test_email_notice"><p><strong>' +
-						response.responseJSON.data.message +
-						'</strong></p></div>';
-					$('.everest-forms-options-header').append(message_string);
-				} else {
-					message_string =
-						'<div id="message" class="error inline everest-froms-send_test_email_notice"><p><strong>' +
-						response.responseJSON.data.message +
-						'</strong></p></div>';
-				}
 
-				$('.everest-forms-settings').find('h2').after(message_string);
+				if (true === response.responseJSON.success) {
+					window.evfShowToast(
+						response.responseJSON.data.message,
+						'success',
+						5000,
+					);
+				} else {
+					window.evfShowToast(
+						response.responseJSON.data.message,
+						'error',
+						5000,
+					);
+				}
 			},
 		});
 	});
