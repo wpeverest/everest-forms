@@ -15,7 +15,8 @@
 
 // Components
 @import 'components/badge', 'components/forms', 'components/buttons',
-	'components/card', 'components/table', 'components/accordion';
+	'components/card', 'components/table', 'components/entries-views',
+	'components/toast', 'components/accordion';
 
 @import 'colors';
 @import 'containers';
@@ -38,13 +39,21 @@
 	font-display: block;
 }
 
-/**
-	   * Styling begins
-	   */
+body[class*='everest-forms_page_'] {
+	background: #f4f4f4 !important;
 
-// Remove margin-top from entries list when React header is present
+	#wpcontent {
+		padding-left: 0;
+	}
+
+	#setting-error-bulk_action,
+	#message.updated.notice {
+		display: none !important;
+	}
+}
+
 #everest-forms-entries-list {
-	margin-top: 0;
+	margin-top: 32px;
 }
 
 .blockUI.blockOverlay {
@@ -407,10 +416,45 @@ img.help_tip {
 			width: 100%;
 		}
 
+		input[type='text'] {
+			min-height: 36px;
+			font-size: 13px;
+			line-height: 20px;
+			width: -webkit-fill-available;
+			padding: 0 12px;
+			border: 1px solid #e1e1e1;
+			color: #383838;
+			font-weight: 400;
+			box-shadow: none;
+			margin: 0;
+			border-right: 0;
+			background: #f8f8fa;
+			border-radius: 4px 0 0 4px;
+			flex: 1;
+
+			&:focus {
+				outline: 2px solid transparent;
+			}
+		}
+
 		.evf-copy-shortcode {
-			margin-left: 4px;
-			padding: 0 4px;
-			line-height: 1;
+			width: 38px;
+			box-shadow: none;
+			margin: 0;
+			margin-left: -5px;
+			border-radius: 0 4px 4px 0;
+			background: #f4f4f4 !important;
+			border-color: #e1e1e1 !important;
+			min-height: 36px;
+			line-height: 20px;
+
+			svg {
+				fill: #fff;
+				width: 18px;
+				height: 18px;
+				margin-bottom: 3px;
+				vertical-align: middle;
+			}
 		}
 	}
 }
@@ -6137,21 +6181,37 @@ table.wp-list-table {
 		color: #999;
 	}
 
+	.column-title {
+		width: 450px;
+		.locate-form {
+			margin: 2px 0 0;
+			font-size: 11px;
+			color: #666;
+		}
+	}
+
+	.column-tags {
+		width: 200px;
+	}
+
 	.column-date {
-		width: 12%;
+		// width: 12%;
 	}
 
 	.column-entries {
 		width: 74px;
-		text-align: center;
 	}
 
 	.column-actions {
 		width: 175px;
 	}
 
+	.column-shortcode {
+		width: 350px;
+	}
+
 	.column-enabled {
-		width: 25px;
+		width: 100px;
 	}
 
 	.column-status img {
@@ -11968,8 +12028,8 @@ body {
 
 #everest-forms-list-table__container {
 	background-color: #ffffff;
-	padding: 24px;
-	margin: 25px auto;
+	// padding: 24px;
+	// margin: 25px auto;
 	border-radius: 7px;
 
 	table.wp-list-table {
@@ -12288,7 +12348,7 @@ button#show-settings-link {
 	justify-content: space-between;
 	align-items: center;
 	gap: 20px;
-	border-bottom: 1px solid #dcdcdc;
+	// border-bottom: 1px solid #dcdcdc;
 	padding-bottom: 24px;
 	margin-bottom: 24px;
 
