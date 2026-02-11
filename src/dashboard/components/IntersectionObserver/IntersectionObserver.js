@@ -5,6 +5,7 @@ import React, { useEffect, useRef, useState } from "react";
 import {
 	HStack,
 	IconButton,
+	Link,
 	Menu,
 	MenuButton,
 	MenuItem,
@@ -17,6 +18,7 @@ import PropTypes from "prop-types";
  *  Internal Dependencies
  */
 import { DotsHorizontal } from "../Icon/Icon";
+import { convertRoute, isExternalRoute } from "../../Constants";
 
 const IntersectionStyles = {
 	visible: {
@@ -52,6 +54,13 @@ const IntersectObserver = ({ children, routes }) => {
 	const selectedHiddenRoute = hiddenRoutes.find(
 		(h) => h.route === location.pathname
 	);
+
+	const { pageType, adminURL } =
+		typeof _EVF_DASHBOARD_ !== "undefined" && _EVF_DASHBOARD_;
+	const isSettingsPage = pageType === "settings";
+	const isEntriesPage = pageType === "entries";
+	const isAnalyticsPage = pageType === "analytics";
+	const isNonDashboardPage = isSettingsPage || isEntriesPage || isAnalyticsPage;
 
 	useEffect(() => {
 		if (!ref.current) return;
@@ -131,8 +140,37 @@ const IntersectObserver = ({ children, routes }) => {
 						icon={<DotsHorizontal w="24px" h="24px" />}
 					></MenuButton>
 					<MenuList display="flex" flexDirection="column">
-						{hiddenRoutes.map(({ label, route }) => {
-							return (
+						{hiddenRoutes.map(({ label, route, external }) => {
+							const convertedRoute = convertRoute(route, isNonDashboardPage, adminURL);
+							const isExternal = external || isExternalRoute(convertedRoute);
+							const shouldUseExternalLink = isNonDashboardPage || isExternal;
+
+							return shouldUseExternalLink ? (
+								<MenuItem
+									key={route}
+									as={Link}
+									href={convertedRoute}
+									isExternal={route === 'https://everestforms.net/free-vs-pro/'}
+									marginBottom={"0px"}
+									data-target={route}
+									fontSize="sm"
+									fontWeight="semibold"
+									lineHeight="150%"
+									color="#383838"
+									_hover={{
+										color: "primary.500",
+									}}
+									_focus={{
+										boxShadow: "none",
+									}}
+									display="inline-flex"
+									alignItems="center"
+									px="2"
+									py="10px"
+								>
+									{label}
+								</MenuItem>
+							) : (
 								<MenuItem
 									key={route}
 									as={NavLink}
