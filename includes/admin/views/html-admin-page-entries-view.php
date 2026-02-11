@@ -50,12 +50,12 @@ if ( false !== $entry_index ) {
 			<a href="<?php echo esc_url( admin_url( 'admin.php?page=evf-entries&amp;form_id=' . $form_id ) ); ?>" class="evf-back-link">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 22"><path d="M10.352 3.935a.917.917 0 0 1 1.296 1.297l-5.769 5.767 5.769 5.77a.916.916 0 1 1-1.296 1.296l-6.417-6.417a.917.917 0 0 1 0-1.296z"/><path d="M17.416 10.083a.917.917 0 0 1 0 1.834H4.583a.917.917 0 0 1 0-1.834z"/></svg>
 			</a>
-			<h1 class="evf-entry-title">
+			<span class="evf-entry-title">
 				<?php
 				/* translators: %s: Entry ID */
 				printf( esc_html__( '%1$s: Entry #%2$s', 'everest-forms' ), esc_html( _draft_or_post_title( $form_id ) ), absint( $entry_id ) );
 				?>
-			</h1>
+			</span>
 		</div>
 		<div class="evf-entry-header-right">
 			<a class="evf-nav-btn evf-prev-btn" href="<?php echo esc_url( $prev_entry_url ); ?>" <?php echo empty( $prev_entry ) ? 'disabled' : ''; ?>>
@@ -78,11 +78,11 @@ if ( false !== $entry_index ) {
 			<!-- Personal Information Section -->
 			<div id="everest-forms-entry-fields" class="evf-entry-section evf-personal-info stuffbox">
 				<div class="evf-section-header">
-					<h2 class="evf-section-title hndle">
+					<div class="evf-section-title hndle">
 						<?php do_action( 'everest_forms_before_entry_details_hndle', $entry ); ?>
 						<span><?php esc_html_e( 'Personal Information', 'everest-forms' ); ?></span>
 						<?php do_action( 'everest_forms_after_entry_details_hndle', $entry ); ?>
-					</h2>
+					</div>
 					<div class="evf-section-header-actions">
 					<a href="#"
 							class="evf-toggle-empty everest-forms-empty-field-toggle password_preview dashicons <?php echo $hide_empty ? 'dashicons-hidden' : 'dashicons-visibility'; ?>"
@@ -231,7 +231,7 @@ if ( false !== $entry_index ) {
 			<!-- Entry Details Section -->
 			<div id="everest-forms-entry-details-table" class="evf-entry-section evf-entry-details-section stuffbox">
 				<div class="evf-section-header">
-					<h2 class="evf-section-title hndle"><span><?php esc_html_e( 'Entry Details', 'everest-forms' ); ?></span></h2>
+					<div class="evf-section-title hndle"><span><?php esc_html_e( 'Entry Details', 'everest-forms' ); ?></span></div>
 				</div>
 
 				<div class="evf-section-content inside">
@@ -310,7 +310,7 @@ if ( false !== $entry_index ) {
 
 			<!-- Entry Actions Section (FREE - Hardcoded in template) -->
 			<div id="everest-forms-entry-actions" class="stuffbox">
-				<h2><?php esc_html_e( 'Entry Actions', 'everest-forms' ); ?></h2>
+				<div class="evf-entry-actions-header"><?php esc_html_e( 'Entry Actions', 'everest-forms' ); ?></div>
 				<div class="inside">
 					<div class="everest-forms-entry-actions-meta">
 						<?php

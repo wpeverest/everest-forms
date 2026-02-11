@@ -45,7 +45,6 @@ class EVF_Admin_Forms {
 
 			include 'views/html-admin-page-builder.php';
 		} elseif ( isset( $_GET['create-form'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
-
 			EVF_Admin_Form_Templates::load_template_view();
 		} else {
 			self::table_list_output();
@@ -77,7 +76,9 @@ class EVF_Admin_Forms {
 
 			<div class="everest-forms-base-list-table-heading" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 15px;">
 				<div style="display: flex; align-items: center; gap: 10px; flex: 0 0 auto;">
-					<h2 class="wp-heading-inline" style="margin: 0; padding: 0; line-height: 1;"><?php esc_html_e( 'All Forms', 'everest-forms' ); ?></h2>
+					<span class="evf-forms-title">
+						<?php esc_html_e( 'All Forms', 'everest-forms' ); ?>
+					</span>
 					<?php if ( current_user_can( 'everest_forms_create_forms' ) ) : ?>
 						<a href="<?php echo esc_url( admin_url( 'admin.php?page=evf-builder&create-form=1' ) ); ?>" class="page-title-action" style="margin: 0;">
 							<?php esc_html_e( 'Add New', 'everest-forms' ); ?>
