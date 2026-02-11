@@ -1,4 +1,4 @@
-import { ChakraProvider } from '@chakra-ui/react';
+import { ChakraProvider, Container } from '@chakra-ui/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { HashRouter } from 'react-router-dom';
 import Router from './Router/Router';
@@ -24,7 +24,9 @@ const App = () => {
 			<HashRouter>
 				<ChakraProvider theme={Theme}>
 					<QueryClientProvider client={queryClient}>
-						<Router />
+						<Container maxW="100%">
+							<Router />
+						</Container>
 					</QueryClientProvider>
 				</ChakraProvider>
 			</HashRouter>
