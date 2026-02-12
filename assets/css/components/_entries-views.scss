@@ -65,6 +65,7 @@ $spacing-xl: 24px;
 	align-items: center;
 	justify-content: space-between;
 	border-bottom: 1px solid $border-color;
+	min-height: 70px;
 	// @include card-shadow;
 
 	.evf-entry-header-left {
@@ -152,14 +153,14 @@ $spacing-xl: 24px;
 	grid-template-columns: 1fr 320px;
 	gap: $spacing-xl;
 	align-items: flex-start;
-	padding: 32px;
+	padding: 24px;
 }
 
 // Main Content
 .evf-entry-main-content {
 	display: flex;
 	flex-direction: column;
-	gap: $spacing-lg;
+	gap: $spacing-xl;
 }
 
 // Entry Section (Card)
@@ -173,7 +174,7 @@ $spacing-xl: 24px;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		padding: 0;
+		padding-bottom: $spacing-lg;
 		min-height: auto;
 		gap: $spacing-xl;
 		flex-wrap: nowrap;
@@ -184,7 +185,6 @@ $spacing-xl: 24px;
 		margin: 0;
 		font-size: 18px;
 		font-weight: 600;
-		padding-bottom: 24px;
 		color: $text-dark;
 		display: flex;
 		align-items: center;
@@ -345,14 +345,17 @@ $spacing-xl: 24px;
 		display: flex;
 		align-items: stretch;
 	}
+	.inside {
+		padding: 0 !important;
+	}
 
 	// The h2 inside postbox-header acts as our card header row
-	h2.hndle {
+	.hndle {
 		display: flex !important;
 		align-items: center !important;
 		justify-content: space-between !important;
 		width: 100%;
-		min-height: 56px;
+		min-height: auto;
 		margin: 0 !important;
 		font-size: 18px !important;
 		font-weight: 600 !important;
@@ -361,6 +364,7 @@ $spacing-xl: 24px;
 		background: transparent !important;
 		cursor: default;
 		gap: $spacing-xl;
+		padding-bottom: 20px;
 
 		// The title text span — takes available space
 		> span:first-child {
@@ -454,7 +458,7 @@ $spacing-xl: 24px;
 	// Form content wrapper
 	.evf-edit-form-content,
 	form > div:not(.evf-entry-edit-actions) {
-		padding: $spacing-xl;
+		padding: $spacing-xl $spacing-xl 0 $spacing-xl;
 	}
 
 	// Form fields
@@ -874,6 +878,7 @@ $spacing-xl: 24px;
 
 			&:last-child {
 				border-bottom: none;
+				background-color: #faf8fc !important;
 			}
 
 			&:hover {
@@ -1030,6 +1035,7 @@ $spacing-xl: 24px;
 		margin-bottom: 0;
 	}
 
+	.evf-section-header-actions,
 	.evf-entry-actions-header {
 		margin: 0;
 		// padding: $spacing-md $spacing-lg;
@@ -1114,9 +1120,6 @@ $spacing-xl: 24px;
 				height: 18px;
 				fill: #6b6b6b;
 			}
-			// svg:hover {
-			// 	fill:red;
-			// }
 		}
 	}
 
@@ -1145,6 +1148,7 @@ $spacing-xl: 24px;
 		&:hover {
 			background-color: #faf8fc;
 			color: $primary-color;
+			border-radius: 4px;
 
 			svg,
 			svg * {
@@ -1154,6 +1158,11 @@ $spacing-xl: 24px;
 			.dashicons {
 				color: $primary-color;
 			}
+		}
+
+		&:focus {
+			box-shadow: none;
+			outline: none;
 		}
 	}
 
@@ -1388,6 +1397,7 @@ $spacing-xl: 24px;
 	border: 1px solid $border-color;
 	box-shadow: none;
 	padding: $spacing-xl;
+	margin: 0;
 
 	h2 {
 		margin: 0;

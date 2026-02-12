@@ -46,7 +46,7 @@ $status-trash-text: #991b1b;
 .subsubsub {
 	display: flex;
 	padding: 0;
-	margin: 0 0 24px 0;
+	margin: 10px 0 14px 0;
 	list-style: none;
 	font-size: 0;
 
@@ -381,7 +381,6 @@ $status-trash-text: #991b1b;
 }
 
 .search-box {
-	position: absolute;
 	right: 52px;
 	margin: 0;
 	z-index: 10;
@@ -456,9 +455,18 @@ $status-trash-text: #991b1b;
 	display: flex;
 	align-items: center;
 	gap: 16px;
+	flex-wrap: wrap;
+	justify-content: space-between;
+
+	.evf-forms-title {
+		margin: 0;
+		color: #222;
+		font-size: 22px;
+		font-weight: 600;
+	}
 
 	.page-title-action {
-		min-height: 36px;
+		min-height: 38px;
 		border: 1px solid $evf-primary;
 		color: #fff;
 		background: $evf-primary;
@@ -478,6 +486,23 @@ $status-trash-text: #991b1b;
 			background: $evf-primary;
 			color: #fff;
 			border-color: $evf-primary;
+		}
+		&:active {
+			min-height: 38px;
+			border: 1px solid $evf-primary;
+			color: #fff;
+			background: $evf-primary;
+			padding: 0 14px 0 12px;
+			font-size: 14px;
+			line-height: 20px;
+			border-radius: 4px;
+			font-weight: 500;
+			text-decoration: none;
+			transition: all 0.3s ease-in-out;
+			box-sizing: border-box;
+			display: flex;
+			align-items: center;
+			gap: 6px;
 		}
 
 		&::before {
@@ -1331,10 +1356,17 @@ $status-trash-text: #991b1b;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		top: 50%;
-		right: 12px;
+		top: 29.5%;
+		right: 66px;
 		-ms-transform: translateY(-50%);
 		transform: translateY(-50%);
+
+		&:focus {
+			color: none;
+			box-shadow: none;
+			outline: none;
+			outline-offset: none;
+		}
 	}
 	svg {
 		color: #999999 !important;

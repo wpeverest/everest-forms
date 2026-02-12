@@ -74,8 +74,8 @@ class EVF_Admin_Forms {
 		<form id="form-list" method="post">
 			<input type="hidden" name="page" value="everest-forms"/>
 
-			<div class="everest-forms-base-list-table-heading" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 15px;">
-				<div style="display: flex; align-items: center; gap: 10px; flex: 0 0 auto;">
+			<div class="everest-forms-base-list-table-heading">
+				<div style="display: flex; align-items: center; gap: 16px; flex: 0 0 auto;">
 					<span class="evf-forms-title">
 						<?php esc_html_e( 'All Forms', 'everest-forms' ); ?>
 					</span>
@@ -86,7 +86,7 @@ class EVF_Admin_Forms {
 					<?php endif; ?>
 				</div>
 
-				<div class="search-box" style="position: absolute; flex: 0 0 auto; margin: 0; right: 0;">
+				<div class="search-box" style="flex: 0 0 auto; margin: 0; right: 0;">
 					<?php $forms_table_list->search_box( esc_html__( 'Search Forms', 'everest-forms' ), 'everest-forms' ); ?>
 				</div>
 			</div>
