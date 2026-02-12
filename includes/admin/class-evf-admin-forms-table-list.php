@@ -692,12 +692,12 @@ class EVF_Admin_Forms_Table_List extends EVF_Base_List_Table {
 		 *
 		 * @since 3.2.0
 		 */
-		if ( ! empty( $_REQUEST['tag_id'] ) ) {
+		if ( ! empty( $_REQUEST['tags'] ) ) {
 			$args['tax_query'] = array(
 				array(
 					'taxonomy' => EVF_Post_Types::TAGS_TAXONOMY,
 					'field'    => 'term_id',
-					'terms'    => array_map( 'absint', is_array( $_REQUEST['tag_id'] ) ? $_REQUEST['tag_id'] : array( $_REQUEST['tag_id'] ) ),
+					'terms'    => array_map( 'absint', is_array( $_REQUEST['tags'] ) ? $_REQUEST['tags'] : array( $_REQUEST['tags'] ) ),
 					'operator' => 'IN',
 				),
 			);
@@ -755,26 +755,16 @@ class EVF_Admin_Forms_Table_List extends EVF_Base_List_Table {
 	 * Display a form dropdown for filtering entries.
 	 */
 	public function tags_dropdown() {
-		$tag_list = FormHelper::get_all_form_tags( 'term_id' );
-		$tag_id   = isset( $_REQUEST['tag_id'] ) ? absint( $_REQUEST['tag_id'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification
+		$tag_list      = FormHelper::get_all_form_tags( 'term_id' );
+		$selected_tags = isset( $_REQUEST['tags'] ) ? is_array( $_REQUEST['tags'] ) ? $_REQUEST['tags'] : array( $_REQUEST['tags'] ) : array(); // phpcs:ignore WordPress.Security.NonceVerification
 		?>
-	<label for="filter-by-tag" class="screen-reader-text">
-		<?php esc_html_e( 'Filter by tag', 'everest-forms' ); ?>
-	</label>
+		<label for="filter-by-tags" class="screen-reader-text"><?php esc_html_e( 'Filter by Category', 'everest-forms' ); ?></label>
+		<select name="tags[]" id="filter-by-tags" class="evf-enhanced-select" data-placeholder="<?php echo __( 'Select tags', 'everest-forms' ); ?>" multiple style="min-width: 150px;">
 
-	<select
-		name="tag_id"
-		id="filter-by-tag"
-		class="evf-enhanced-normal-select"
-		style="min-width: 200px;"
-		data-placeholder="<?php esc_attr_e( 'Search tag...', 'everest-forms' ); ?>"
-	>
-		<?php foreach ( $tag_list as $id => $tag ) : ?>
-			<option value="<?php echo esc_attr( $id ); ?>" <?php selected( $tag_id, $id ); ?>>
-				<?php echo esc_html( $tag ); ?>
-			</option>
-		<?php endforeach; ?>
-	</select>
+			<?php foreach ( $tag_list as $id => $tag ) : ?>
+				<option value="<?php echo esc_attr( $id ); ?>" <?php echo in_array( $id, $selected_tags ) ? 'selected' : ''; ?>><?php echo esc_html( $tag ); ?></option>
+			<?php endforeach; ?>
+		</select>
 		<?php
 	}
 
