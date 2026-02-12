@@ -971,10 +971,10 @@ body.everest-forms-builder {
 			a.nav-tab {
 				position: relative;
 				z-index: 1;
-				color: #222222;
+				color: #383838;
 				margin-left: 0;
 				margin-bottom: 0;
-				margin-top: 6px;
+				margin-top: 0;
 				gap: 24px;
 				display: flex;
 				cursor: pointer;
@@ -2200,23 +2200,65 @@ p.search-box {
 		}
 
 		.everest-forms-nav-wrapper {
-			background-color: #fff;
+			background: #fff;
 			display: flex;
 			flex-wrap: wrap;
 			align-items: center;
-			padding-left: 24px;
+			height: 70px;
+			padding: 0 20px 0 24px;
 			border-bottom: 1px solid #e1e1e1;
 
-			.everest-forms-logo {
-				display: flex;
-				align-items: center;
-				border-right: 1px solid #e2e2e2;
-				padding: 6px 24px 6px 0;
-				margin-right: 24px;
+			// .everest-forms-logo {
+			// 	display: flex;
+			// 	align-items: center;
+			// 	border-right: 1px solid #e2e2e2;
+			// 	padding: 6px 24px 6px 0;
+			// 	margin-right: 24px;
 
-				img {
-					width: 40px;
-					height: 40px;
+			// 	img {
+			// 		width: 40px;
+			// 		height: 40px;
+			// 	}
+			// }
+
+			.everest-forms-back-button-wrapper {
+				align-content: center;
+				margin-right: 16px;
+
+				.back-button {
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					position: relative;
+
+					&::before {
+						content: '';
+						background: #f4f4f4;
+						position: absolute;
+						width: 32px;
+						height: 32px;
+						top: 50%;
+						left: 50%;
+						border-radius: 4px;
+						z-index: 0;
+						-ms-transform: translate(-50%, -50%);
+						transform: translate(-50%, -50%);
+						opacity: 0;
+						transition: all 0.3s ease-in-out;
+					}
+
+					svg {
+						width: 20px;
+						height: 20px;
+						fill: #383838;
+						position: relative;
+					}
+
+					&:hover {
+						&::before {
+							opacity: 1;
+						}
+					}
 				}
 			}
 
@@ -2229,7 +2271,10 @@ p.search-box {
 			}
 
 			.evf-forms-nav-right {
-				padding: 21px 30px 19px;
+				box-sizing: border-box;
+				height: 100%;
+				padding: 0;
+				align-content: center;
 				margin-left: auto;
 
 				.evf-shortcode-field {
@@ -2396,6 +2441,7 @@ p.search-box {
 
 			.evf-nav-tab-wrapper {
 				gap: 4px;
+				overflow: unset !important;
 			}
 		}
 
@@ -4423,9 +4469,19 @@ p.search-box {
 			}
 
 			.evf-grid-lists {
-				margin-left: -1.5%;
-				margin-right: 1.5%;
-				background-color: $color_gray-light-skin;
+				width: 100%;
+				display: flex;
+				text-align: center;
+				box-sizing: border-box;
+				justify-content: center;
+				border: 1px solid transparent;
+				border-radius: 4px;
+				transition: all 0.3s ease-in;
+				border-left: 0;
+				gap: 24px;
+				// margin-left: -1.5%;
+				// margin-right: 1.5%;
+				background-color: transparent;
 				display: flex;
 
 				.evf-grid-lists-item {
