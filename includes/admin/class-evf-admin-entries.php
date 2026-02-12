@@ -77,7 +77,7 @@ class EVF_Admin_Entries {
 			<?php settings_errors(); ?>
 			<?php do_action( 'everest_forms_before_entry_list', $entries_table_list ); ?>
 
-			<?php if ( 0 < count( $entry_ids ) ) : ?>
+			<?php // if ( 0 < count( $entry_ids ) ) : ?>
 				<?php $entries_table_list->views(); ?>
 				<form id="entries-list" method="get" data-form-id="<?php echo absint( $entries_table_list->form_id ); ?>" data-last-entry-id="<?php echo ! empty( $entry_ids ) ? absint( end( $entry_ids ) ) : 0; ?>">
 					<input type="hidden" name="page" value="evf-entries" />
@@ -92,25 +92,25 @@ class EVF_Admin_Entries {
 						$entries_table_list->display();
 					?>
 				</form>
-			<?php else : ?>
-				<div class="everest-forms-BlankState">
+			<?php // else : ?>
+				<!-- <div class="everest-forms-BlankState">
 					<svg aria-hidden="true" class="octicon octicon-graph everest-forms-BlankState-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M16 14v1H0V0h1v14h15zM5 13H3V8h2v5zm4 0H7V3h2v10zm4 0h-2V6h2v7z"/></svg>
-					<div class="everest-forms-BlankState-message"><?php esc_html_e( 'Whoops, it appears you do not have any form entries yet.', 'everest-forms' ); ?></div>
-					<?php if ( ! empty( $entries_table_list->forms ) ) : ?>
+					<div class="everest-forms-BlankState-message"><?php // esc_html_e( 'Whoops, it appears you do not have any form entries yet.', 'everest-forms' ); ?></div>
+					<?php // if ( ! empty( $entries_table_list->forms ) ) : ?>
 						<form id="entries-list" method="get">
 							<input type="hidden" name="page" value="evf-entries" />
 							<?php
-								$entries_table_list->forms_dropdown();
-								submit_button( __( 'Filter', 'everest-forms' ), '', '', false, array( 'id' => 'post-query-submit' ) );
+								// $entries_table_list->forms_dropdown();
+								// submit_button( __( 'Filter', 'everest-forms' ), '', '', false, array( 'id' => 'post-query-submit' ) );
 							?>
 						</form>
-					<?php else : ?>
+					<?php // else : ?>
 						<a class="everest-forms-BlankState-cta button-primary button" target="_blank" href="https://docs.everestforms.net/guide-to-form-entries/?utm_source=entries&utm_medium=learn-more-about-entries-btn&utm_campaign=<?php echo esc_attr( evf()->utm_campaign ); ?>"><?php esc_html_e( 'Learn more about entries', 'everest-forms' ); ?></a>
-						<a class="everest-forms-BlankState-cta button" href="<?php echo esc_url( admin_url( 'admin.php?page=evf-builder&create-form=1' ) ); ?>"><?php esc_html_e( 'Create your first form!', 'everest-forms' ); ?></a>
-					<?php endif; ?>
+						<a class="everest-forms-BlankState-cta button" href="<?php // echo esc_url( admin_url( 'admin.php?page=evf-builder&create-form=1' ) ); ?>"><?php esc_html_e( 'Create your first form!', 'everest-forms' ); ?></a>
+					<?php // endif; ?>
 					<style type="text/css">#posts-filter .wp-list-table, #posts-filter .tablenav.top, .tablenav.bottom .actions, .wrap .subsubsub { display: none; }</style>
-				</div>
-			<?php endif; ?>
+				</div> -->
+			<?php // endif; ?>
 		</div>
 		<?php
 	}
