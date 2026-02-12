@@ -84,17 +84,6 @@ $use_react_header = apply_filters( 'everest_forms_use_react_header', true, $curr
 
 					<div class="everest-forms-settings-container">
 						<div class="everest-forms-settings-main">
-							<?php if ( ! defined( 'EFP_PLUGIN_FILE' ) ) { ?>
-								<div class="everest-forms-toggle-wrapper">
-									<div class="evf-toggle-section">
-										<span class="everest-forms-toggle-form">
-											<input type="checkbox" name="everest_forms_enable_log" id="everest-forms-enable-premium-sidebar" style="" class="" value="<?php echo esc_attr( $is_premium_sidebar_enabled ); ?>" <?php checked( $is_premium_sidebar_enabled, true ); ?> />
-											<span class="slider round"></span>
-										</span>
-									</div>
-									<span class="everest-forms-toggle-text"><?php echo ! $is_premium_sidebar_enabled ? 'Show Sidebar' : 'Hide Sidebar'; ?></span>
-								</div>
-							<?php } ?>
 							<?php
 							self::show_messages();
 
@@ -117,42 +106,6 @@ $use_react_header = apply_filters( 'everest_forms_use_react_header', true, $curr
 						</div>
 					</div>
 				</div>
-				<?php if ( ! defined( 'EFP_PLUGIN_FILE' ) ) { ?>
-					<div class="everest-forms-settings-premium-sidebar <?php echo esc_attr( $is_premium_sidebar_class ); ?>" id="everest-forms-settings-premium-sidebar">
-						<?php
-						$allowed_html = array(
-							'a'   => array(
-								'href'   => array(),
-								'target' => array(),
-							),
-							'h2'  => array(),
-							'p'   => array(),
-							'h3'  => array(),
-							'ul'  => array(),
-							'li'  => array(),
-							'!--' => array(),
-						);
-
-						$content = '<h2>Get Even More from Everest Forms with the Premium Plan</h2>
-						<p>The free version of Everest Forms is just the start. Upgrade to our Pro version for everything you need for advanced form building.</p>
-						<h3>Premium Benefits:</h3>
-						<ul>
-							<li>Instant access to 35+ unique addons </li>
-							<li>Attention grabbing forms with advanced style customizer </li>
-							<li>Form security with custom captcha</li>
-							<li>Multiple payment options (PayPal, Stripe, etc.)</li>
-							<li>Interactive multi-step forms, and quizzes</li>
-							<li>Tables and graphics in Entries</li>
-							<li>Priority support for premium users</li>
-						</ul>
-						<p>To enjoy all the benefits of Everest Forms Pro...</p>
-						<a href="https://everestforms.net/upgrade/?utm_medium=evf-global-setting&utm_source=evf-free&utm_campaign=setting-sidebar-premium-info&utm_content=Get%20the%20Everest%20Forms%20Pro"  target="_blank" class="everest-forms-premium-sidebar-button">Get the Everest Forms Pro</a>
-						<p>Thank you for choosing Everest Forms 😊</p>';
-						$content = apply_filters( 'everest_forms_cta_promotiona_content', $content );
-						echo wp_kses( $content, $allowed_html );
-						?>
-					</div>
-				<?php } ?>
 			</div>
 	<?php if ( 'integration' !== $current_tab ) : ?>
 		</form>

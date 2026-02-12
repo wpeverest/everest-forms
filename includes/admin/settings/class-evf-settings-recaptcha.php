@@ -95,34 +95,93 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 			return;
 		}
 
-		$enabled_captcha = '';
+		$enabled_captcha   = '';
+		$validation_errors = array();
 
+		// Check reCAPTCHA v2
 		if ( isset( $_POST['everest_forms_recaptcha_v2_enable'] ) ) {
 			$v2_enable = sanitize_text_field( wp_unslash( $_POST['everest_forms_recaptcha_v2_enable'] ) );
 			if ( 'yes' === $v2_enable ) {
 				$enabled_captcha = 'v2';
+
+				// Check for invisible mode
+				$invisible = isset( $_POST['everest_forms_recaptcha_v2_invisible'] ) ? sanitize_text_field( wp_unslash( $_POST['everest_forms_recaptcha_v2_invisible'] ) ) : 'no';
+
+				if ( 'yes' === $invisible ) {
+					// Validate invisible keys
+					$invisible_site_key   = isset( $_POST['everest_forms_recaptcha_v2_invisible_site_key'] ) ? sanitize_text_field( wp_unslash( $_POST['everest_forms_recaptcha_v2_invisible_site_key'] ) ) : '';
+					$invisible_secret_key = isset( $_POST['everest_forms_recaptcha_v2_invisible_secret_key'] ) ? sanitize_text_field( wp_unslash( $_POST['everest_forms_recaptcha_v2_invisible_secret_key'] ) ) : '';
+
+					if ( empty( $invisible_site_key ) || empty( $invisible_secret_key ) ) {
+						$validation_errors[] = __( 'Please enter both Site Key and Secret Key for Invisible reCAPTCHA v2.', 'everest-forms' );
+					}
+				} else {
+					// Validate regular v2 keys
+					$site_key   = isset( $_POST['everest_forms_recaptcha_v2_site_key'] ) ? sanitize_text_field( wp_unslash( $_POST['everest_forms_recaptcha_v2_site_key'] ) ) : '';
+					$secret_key = isset( $_POST['everest_forms_recaptcha_v2_secret_key'] ) ? sanitize_text_field( wp_unslash( $_POST['everest_forms_recaptcha_v2_secret_key'] ) ) : '';
+
+					if ( empty( $site_key ) || empty( $secret_key ) ) {
+						$validation_errors[] = __( 'Please enter both Site Key and Secret Key for reCAPTCHA v2.', 'everest-forms' );
+					}
+				}
 			}
 		}
 
+		// Check reCAPTCHA v3
 		if ( empty( $enabled_captcha ) && isset( $_POST['everest_forms_recaptcha_v3_enable'] ) ) {
 			$v3_enable = sanitize_text_field( wp_unslash( $_POST['everest_forms_recaptcha_v3_enable'] ) );
 			if ( 'yes' === $v3_enable ) {
 				$enabled_captcha = 'v3';
+
+				$site_key   = isset( $_POST['everest_forms_recaptcha_v3_site_key'] ) ? sanitize_text_field( wp_unslash( $_POST['everest_forms_recaptcha_v3_site_key'] ) ) : '';
+				$secret_key = isset( $_POST['everest_forms_recaptcha_v3_secret_key'] ) ? sanitize_text_field( wp_unslash( $_POST['everest_forms_recaptcha_v3_secret_key'] ) ) : '';
+
+				if ( empty( $site_key ) || empty( $secret_key ) ) {
+					$validation_errors[] = __( 'Please enter both Site Key and Secret Key for reCAPTCHA v3.', 'everest-forms' );
+				}
 			}
 		}
 
+		// Check hCaptcha
 		if ( empty( $enabled_captcha ) && isset( $_POST['everest_forms_recaptcha_hcaptcha_enable'] ) ) {
 			$hcaptcha_enable = sanitize_text_field( wp_unslash( $_POST['everest_forms_recaptcha_hcaptcha_enable'] ) );
 			if ( 'yes' === $hcaptcha_enable ) {
 				$enabled_captcha = 'hcaptcha';
+
+				$site_key   = isset( $_POST['everest_forms_recaptcha_hcaptcha_site_key'] ) ? sanitize_text_field( wp_unslash( $_POST['everest_forms_recaptcha_hcaptcha_site_key'] ) ) : '';
+				$secret_key = isset( $_POST['everest_forms_recaptcha_hcaptcha_secret_key'] ) ? sanitize_text_field( wp_unslash( $_POST['everest_forms_recaptcha_hcaptcha_secret_key'] ) ) : '';
+
+				if ( empty( $site_key ) || empty( $secret_key ) ) {
+					$validation_errors[] = __( 'Please enter both Site Key and Secret Key for hCaptcha.', 'everest-forms' );
+				}
 			}
 		}
 
+		// Check Cloudflare Turnstile
 		if ( empty( $enabled_captcha ) && isset( $_POST['everest_forms_recaptcha_turnstile_enable'] ) ) {
 			$turnstile_enable = sanitize_text_field( wp_unslash( $_POST['everest_forms_recaptcha_turnstile_enable'] ) );
 			if ( 'yes' === $turnstile_enable ) {
 				$enabled_captcha = 'turnstile';
+
+				$site_key   = isset( $_POST['everest_forms_recaptcha_turnstile_site_key'] ) ? sanitize_text_field( wp_unslash( $_POST['everest_forms_recaptcha_turnstile_site_key'] ) ) : '';
+				$secret_key = isset( $_POST['everest_forms_recaptcha_turnstile_secret_key'] ) ? sanitize_text_field( wp_unslash( $_POST['everest_forms_recaptcha_turnstile_secret_key'] ) ) : '';
+
+				if ( empty( $site_key ) || empty( $secret_key ) ) {
+					$validation_errors[] = __( 'Please enter both Site Key and Secret Key for Cloudflare Turnstile.', 'everest-forms' );
+				}
 			}
+		}
+
+		if ( ! empty( $validation_errors ) ) {
+
+			foreach ( $captcha_types as $type ) {
+				update_option( 'everest_forms_recaptcha_' . $type . '_enable', 'no' );
+			}
+			update_option( 'everest_forms_recaptcha_type', '' );
+
+			$error_message = implode( ' ', $validation_errors );
+			$this->add_toast_redirect( $error_message, 'error' );
+			return;
 		}
 
 		if ( ! empty( $enabled_captcha ) ) {
@@ -140,6 +199,28 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 			}
 			update_option( 'everest_forms_recaptcha_type', '' );
 		}
+	}
+
+	/**
+	 * Add toast message and redirect.
+	 *
+	 * @param string $message The message to display.
+	 * @param string $type The type of toast (success, error, warning, info).
+	 */
+	private function add_toast_redirect( $message, $type = 'error' ) {
+		$redirect_url = add_query_arg(
+			array(
+				'page'           => 'evf-settings',
+				'tab'            => 'recaptcha',
+				'section'        => 'integration',
+				'evf_toast'      => rawurlencode( base64_encode( $message ) ),
+				'evf_toast_type' => $type,
+			),
+			admin_url( 'admin.php' )
+		);
+
+		wp_safe_redirect( $redirect_url );
+		exit;
 	}
 
 
@@ -215,7 +296,7 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 	 */
 	public function get_integration_settings() {
 		$recaptcha_type = get_option( 'everest_forms_recaptcha_type', 'v2' );
-		$invisible = get_option( 'everest_forms_recaptcha_v2_invisible', 'no' );
+		$invisible      = get_option( 'everest_forms_recaptcha_v2_invisible', 'no' );
 
 		$v2_enabled        = get_option( 'everest_forms_recaptcha_v2_enable', 'no' );
 		$v3_enabled        = get_option( 'everest_forms_recaptcha_v3_enable', 'no' );
