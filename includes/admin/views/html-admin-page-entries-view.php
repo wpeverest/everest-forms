@@ -13,15 +13,6 @@ $entry        = evf_get_entry( $entry_id, true );
 $entry_fields = json_decode( $entry->fields );
 $form_data    = evf()->form->get( $form_id, array( 'content_only' => true ) );
 $hide_empty   = isset( $_COOKIE['everest_forms_entry_hide_empty'] ) && 'true' === $_COOKIE['everest_forms_entry_hide_empty'];
-$trash_link   = wp_nonce_url(
-	add_query_arg(
-		array(
-			'trash' => $entry_id,
-		),
-		admin_url( 'admin.php?page=evf-entries&amp;form_id=' . $form_id )
-	),
-	'trash-entry'
-);
 
 $form_entries = evf_get_entries_by_form_id( $form_id, '', '', true );
 $form_entries = array_map(
@@ -52,308 +43,346 @@ if ( false !== $entry_index ) {
 }
 
 ?>
-<div class="wrap everest-forms">
-	<h1 class="wp-heading-inline"><?php esc_html_e( 'View Entry', 'everest-forms' ); ?></h1>
-	<a href="<?php echo esc_url( admin_url( 'admin.php?page=evf-entries&amp;form_id=' . $form_id ) ); ?>" class="page-title-action"><?php esc_html_e( 'Back to All Entries', 'everest-forms' ); ?></a>
-	<hr class="wp-header-end">
+<div class="wrap everest-forms evf-entry-view-wrapper">
+	<!-- Header Section -->
+	<div class="evf-entry-header">
+		<div class="evf-entry-header-left">
+			<a href="<?php echo esc_url( admin_url( 'admin.php?page=evf-entries&amp;form_id=' . $form_id ) ); ?>" class="evf-back-link">
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 22"><path d="M10.352 3.935a.917.917 0 0 1 1.296 1.297l-5.769 5.767 5.769 5.77a.916.916 0 1 1-1.296 1.296l-6.417-6.417a.917.917 0 0 1 0-1.296z"/><path d="M17.416 10.083a.917.917 0 0 1 0 1.834H4.583a.917.917 0 0 1 0-1.834z"/></svg>
+			</a>
+			<span class="evf-entry-title">
+				<?php
+				/* translators: %s: Entry ID */
+				printf( esc_html__( '%1$s: Entry #%2$s', 'everest-forms' ), esc_html( _draft_or_post_title( $form_id ) ), absint( $entry_id ) );
+				?>
+			</span>
+		</div>
+		<div class="evf-entry-header-right">
+			<a class="evf-nav-btn evf-prev-btn" href="<?php echo esc_url( $prev_entry_url ); ?>" <?php echo empty( $prev_entry ) ? 'disabled' : ''; ?>>
+				<span class="dashicons dashicons-arrow-left-alt2"></span>
+				<?php esc_html_e( 'Previous', 'everest-forms' ); ?>
+			</a>
+			<a class="evf-nav-btn evf-next-btn" href="<?php echo esc_url( $next_entry_url ); ?>" <?php echo empty( $next_entry ) ? 'disabled' : ''; ?>>
+				<?php esc_html_e( 'Next', 'everest-forms' ); ?>
+				<span class="dashicons dashicons-arrow-right-alt2"></span>
+			</a>
+		</div>
+	</div>
+
 	<?php do_action( 'everest_forms_view_entries_notices' ); ?>
-	<div class="everest-forms-entry">
-		<div id="poststuff">
-			<div id="post-body" class="metabox-holder columns-2">
-				<!-- Entry Fields metabox -->
-				<div id="evf-entry-nav-buttons">
-					<a class="button" id="evf-prev-entry-button" href="<?php echo esc_url( $prev_entry_url ); ?>" <?php echo empty( $prev_entry ) ? esc_attr( 'disabled=disabled' ) : ''; ?> >
-						<?php esc_html_e( 'Previous', 'everest-forms' ); ?>
-					</a>
-					<a class="button" id="evf-next-entry-button" href="<?php echo esc_url( $next_entry_url ); ?>" <?php echo empty( $next_entry ) ? esc_attr( 'disabled=disabled' ) : ''; ?> >
-						<?php esc_html_e( 'Next', 'everest-forms' ); ?>
-					</a>
-				</div>
-				<div id="post-body-content" style="position: relative;">
-					<div id="everest-forms-entry-fields" class="stuffbox">
-						<h2 class="hndle">
-							<?php do_action( 'everest_forms_before_entry_details_hndle', $entry ); ?>
-							<span>
+
+	<!-- Main Content Wrapper -->
+	<div class="evf-entry-content-wrapper">
+		<!-- Left Column: Entry Fields and Details -->
+		<div class="evf-entry-main-content">
+			<!-- Personal Information Section -->
+			<div id="everest-forms-entry-fields" class="evf-entry-section evf-personal-info stuffbox">
+				<div class="evf-section-header">
+					<div class="evf-section-title hndle">
+						<?php do_action( 'everest_forms_before_entry_details_hndle', $entry ); ?>
+						<span><?php esc_html_e( 'Personal Information', 'everest-forms' ); ?></span>
+						<?php do_action( 'everest_forms_after_entry_details_hndle', $entry ); ?>
+					</div>
+					<div class="evf-section-header-actions">
+					<a href="#"
+							class="evf-toggle-empty everest-forms-empty-field-toggle password_preview dashicons <?php echo $hide_empty ? 'dashicons-hidden' : 'dashicons-visibility'; ?>"
+							title="<?php echo $hide_empty ? esc_attr__( 'Show empty fields', 'everest-forms' ) : esc_attr__( 'Hide empty fields', 'everest-forms' ); ?>">
+
 							<?php
-							/* translators: %s: Entry ID */
-							printf( esc_html__( '%1$s: Entry #%2$s', 'everest-forms' ), esc_html( _draft_or_post_title( $form_id ) ), absint( $entry_id ) );
+							echo $hide_empty
+								? esc_html__( 'Show Empty Fields', 'everest-forms' )
+								: esc_html__( 'Hide Empty Fields', 'everest-forms' );
 							?>
-							</span>
-							<?php do_action( 'everest_forms_after_entry_details_hndle', $entry ); ?>
-							<a href="#" class="everest-forms-empty-field-toggle">
-								<?php $hide_empty ? esc_html_e( 'Show Empty Fields', 'everest-forms' ) : esc_html_e( 'Hide Empty Fields', 'everest-forms' ); ?>
-							</a>
-						</h2>
-						<div class="inside">
-							<table class="wp-list-table widefat fixed striped posts">
-								<tbody>
-								<?php
-								$entry_meta = apply_filters( 'everest_forms_entry_single_data', $entry->meta, $entry, $form_data );
+						</a>
+						<?php if ( current_user_can( 'everest_forms_edit_entry', $entry->entry_id ) ) : ?>
+							<?php do_action( 'everest_forms_entry_details_sidebar_action', $entry, $form_data ); ?>
+						<?php endif; ?>
+					</div>
+				</div>
 
-								/**
-								 * Filter the entry meta key.
-								 *
-								 * @since 3.2.0
-								 */
-								$field_type_by_meta_key = array();
-								$exclude_fields_array   = array( 'private-note' );
+				<div class="evf-section-content inside">
+					<?php
+					$entry_meta = apply_filters( 'everest_forms_entry_single_data', $entry->meta, $entry, $form_data );
 
-								$exclude_fields_array = apply_filters( 'everest_forms_view_entry_exclude_fields', $exclude_fields_array, $entry_meta, $form_data );
+					$field_type_by_meta_key = array();
+					$exclude_fields_array   = array( 'private-note' );
 
-								foreach ( $form_data['form_fields'] as $field ) {
-									if ( isset( $field['meta-key'] ) ) {
-										$field_type_by_meta_key[ $field['meta-key'] ] = $field['type'];
+					$exclude_fields_array = apply_filters( 'everest_forms_view_entry_exclude_fields', $exclude_fields_array, $entry_meta, $form_data );
+
+					foreach ( $form_data['form_fields'] as $field ) {
+						if ( isset( $field['meta-key'] ) ) {
+							$field_type_by_meta_key[ $field['meta-key'] ] = $field['type'];
+						}
+					}
+
+					if ( empty( $entry_meta ) ) {
+						echo '<p class="evf-no-fields">' . esc_html__( 'This entry does not have any fields.', 'everest-forms' ) . '</p>';
+					} else {
+						foreach ( $entry_meta as $meta_key => $meta_value ) {
+							if ( in_array( $meta_key, array_keys( $field_type_by_meta_key ), true ) && in_array( $field_type_by_meta_key[ $meta_key ], $exclude_fields_array, true ) ) {
+								continue;
+							}
+
+							if ( in_array( $meta_key, apply_filters( 'everest_forms_hidden_entry_fields', array() ), true ) ) {
+								continue;
+							}
+
+							$meta_value = is_serialized( $meta_value ) ? $meta_value : wp_strip_all_tags( $meta_value );
+
+							if ( is_serialized( $meta_value ) ) {
+								$raw_meta_val = unserialize( $meta_value ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_unserialize
+
+								$field_type_array = apply_filters(
+									'everest_forms_serialized_value_field_type',
+									array(
+										'payment-checkbox',
+										'checkbox',
+										'radio',
+										'payment-multiple',
+									)
+								);
+
+								if ( ! empty( $raw_meta_val['type'] ) && in_array( $raw_meta_val['type'], $field_type_array, true ) && empty( $raw_meta_val['label'][0] ) ) {
+									$meta_value = '';
+								} else {
+									$is_dropdown = false;
+									foreach ( $entry_fields as $field ) {
+										if ( $meta_key === $field->meta_key && 'select' === $field->type ) {
+											$is_dropdown = true;
+											break;
+										}
+									}
+
+									if ( $is_dropdown && empty( $raw_meta_val[0] ) ) {
+										$meta_value = '';
 									}
 								}
+							}
 
-								if ( empty( $entry_meta ) ) {
-									// Whoops, no fields! This shouldn't happen under normal use cases.
-									echo '<p class="no-fields">' . esc_html__( 'This entry does not have any fields.', 'everest-forms' ) . '</p>';
-								} else {
-									// Display the fields and their values.
-									foreach ( $entry_meta as $meta_key => $meta_value ) {
+							if ( evf_is_json( $meta_value ) ) {
+								$meta_value = json_decode( $meta_value, true );
+								$meta_value = $meta_value['value'];
+							}
 
-										/**
-										 * Filter the entry meta key.
-										 *
-										 * @since 3.2.0
-										 */
-										if ( in_array( $meta_key, array_keys( $field_type_by_meta_key ), true ) && in_array( $field_type_by_meta_key[ $meta_key ], $exclude_fields_array, true ) ) {
-											continue;
-										}
+							$field_value     = apply_filters( 'everest_forms_html_field_value', $meta_value, $entry_meta[ $meta_key ], $entry_meta, 'entry-single' );
+							$is_empty        = is_string( $field_value ) && ( '(empty)' === wp_strip_all_tags( $field_value ) || '' === $field_value );
+							$field_class     = $is_empty ? 'evf-field-empty' : '';
+							$correct_answers = false;
 
-										// Check if hidden fields exists.
-										if ( in_array( $meta_key, apply_filters( 'everest_forms_hidden_entry_fields', array() ), true ) ) {
-											continue;
-										}
+							$field_label = evf_get_form_data_by_meta_key( $form_id, $meta_key, $entry_fields );
+							if ( ! $field_label ) {
+								$field_label = esc_html__( 'Field ID', 'everest-forms' );
+							}
 
-										$meta_value = is_serialized( $meta_value ) ? $meta_value : wp_strip_all_tags( $meta_value );
+							if ( apply_filters( 'everest_forms_html_field_label', false ) ) {
+								$correct_answers = apply_filters( 'everest_forms_single_entry_label', $field_label, $meta_key, $field_value );
+							}
 
-										// Check for empty serialized value.
-										if ( is_serialized( $meta_value ) ) {
-											$raw_meta_val = unserialize( $meta_value ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_unserialize
+							echo '<div class="evf-field-row everest-forms-entry-field ' . esc_attr( $field_class ) . '">';
+							echo '<div class="evf-field-label field-name"><strong>' . esc_html( $field_label ) . '</strong></div>';
+							echo '<div class="evf-field-value field-value">';
 
-											$field_type_array = apply_filters(
-												'everest_forms_serialized_value_field_type',
-												array(
-													'payment-checkbox',
-													'checkbox',
-													'radio',
-													'payment-multiple',
-												)
-											);
+							if ( ! empty( $field_value ) || is_numeric( $field_value ) ) {
+								if ( is_serialized( $field_value ) ) {
+									$field_value     = evf_maybe_unserialize( $field_value );
+									$field_label_val = isset( $field_value['label'] ) ? $field_value['label'] : $field_value;
 
-											if ( ! empty( $raw_meta_val['type'] ) && in_array( $raw_meta_val['type'], $field_type_array ) && empty( $raw_meta_val['label'][0] ) ) {
-												$meta_value = '';
-											} else {
-												$is_dropdown = false;
-												foreach ( $entry_fields as $field ) {
-													if ( $meta_key === $field->meta_key && 'select' === $field->type ) {
-														$is_dropdown = true;
-														break;
-													}
-												}
-
-												if ( $is_dropdown && empty( $raw_meta_val[0] ) ) {
-													$meta_value = '';
-												}
-											}
-										}
-
-										if ( evf_is_json( $meta_value ) ) {
-											$meta_value = json_decode( $meta_value, true );
-											$meta_value = $meta_value['value'];
-										}
-
-										$field_value     = apply_filters( 'everest_forms_html_field_value', $meta_value, $entry_meta[ $meta_key ], $entry_meta, 'entry-single' );
-										$field_class     = is_string( $field_value ) && ( '(empty)' === wp_strip_all_tags( $field_value ) || '' === $field_value ) ? ' empty' : '';
-										$field_style     = $hide_empty && empty( $field_value ) ? 'display:none;' : '';
-										$correct_answers = false;
-
-										// Field name.
-										echo '<tr class="everest-forms-entry-field field-name' . esc_attr( $field_class ) . '" style="' . esc_attr( $field_style ) . '"><th>';
-
-										$value = evf_get_form_data_by_meta_key( $form_id, $meta_key, $entry_fields );
-
-										if ( $value ) {
-											if ( apply_filters( 'everest_forms_html_field_label', false ) ) {
-												$correct_answers = apply_filters( 'everest_forms_single_entry_label', $value, $meta_key, $field_value );
-											} else {
-												echo '<strong>' . esc_html( make_clickable( $value ) ) . '</strong>';
-											}
-										} else {
-											echo '<strong>' . esc_html__( 'Field ID', 'everest-forms' ) . '</strong>';
-										}
-
-										echo '</th></tr>';
-
-										// Field value.
-										echo '<tr class="everest-forms-entry-field field-value' . esc_attr( $field_class ) . '" style="' . esc_attr( $field_style ) . '"><td>';
-
-										if ( ! empty( $field_value ) || is_numeric( $field_value ) ) {
-											if ( is_serialized( $field_value ) ) {
-												$field_value = evf_maybe_unserialize( $field_value );
-												$field_label = isset( $field_value['label'] ) ? $field_value['label'] : $field_value;
-
-												if ( ! empty( $field_label ) && is_array( $field_label ) ) {
-													foreach ( $field_label as $field => $value ) {
-														$answer_class = '';
-														if ( $correct_answers ) {
-															if ( in_array( $value, $correct_answers, true ) ) {
-																$answer_class = 'correct_answer';
-															} else {
-																$answer_class = 'wrong_answer';
-															}
-														}
-														echo '<span class="list ' . esc_attr( $answer_class ) . '">' . esc_html( wp_strip_all_tags( $value ) ) . '</span>';
-													}
-												} else {
-													echo nl2br( make_clickable( $field_label ) ); // @codingStandardsIgnoreLine
-												}
-											} elseif ( $correct_answers && false !== $correct_answers ) {
-												if ( in_array( $field_value, $correct_answers, true ) ) {
+									if ( ! empty( $field_label_val ) && is_array( $field_label_val ) ) {
+										foreach ( $field_label_val as $field => $value ) {
+											$answer_class = '';
+											if ( $correct_answers ) {
+												if ( in_array( $value, $correct_answers, true ) ) {
 													$answer_class = 'correct_answer';
 												} else {
 													$answer_class = 'wrong_answer';
 												}
-													echo '<span class="list ' . esc_attr( $answer_class ) . '">' . esc_html( wp_strip_all_tags( $field_value ) ) . '</span>';
-											} else {
-												echo nl2br( make_clickable( $field_value ) ); // @codingStandardsIgnoreLine
-
 											}
-										} else {
-											esc_html_e( 'Empty', 'everest-forms' );
+											echo '<span class="list evf-answer-badge ' . esc_attr( $answer_class ) . '">' . esc_html( wp_strip_all_tags( $value ) ) . '</span>';
 										}
-
-										echo '</td></tr>';
+									} else {
+										echo nl2br( make_clickable( $field_label_val ) ); // @codingStandardsIgnoreLine
 									}
+								} elseif ( $correct_answers && false !== $correct_answers ) {
+									if ( in_array( $field_value, $correct_answers, true ) ) {
+										$answer_class = 'correct_answer';
+									} else {
+										$answer_class = 'wrong_answer';
+									}
+									echo '<span class="list evf-answer-badge ' . esc_attr( $answer_class ) . '">' . esc_html( wp_strip_all_tags( $field_value ) ) . '</span>';
+								} else {
+									echo nl2br( make_clickable( $field_value ) ); // @codingStandardsIgnoreLine
 								}
-								?>
-								</tbody>
-							</table>
-						</div>
-					</div>
+							} else {
+								echo '<span class="evf-empty-value">' . esc_html__( 'Empty', 'everest-forms' ) . '</span>';
+							}
 
-					<?php
-					do_action( 'everest_forms_entry_details_content', $entry, $form_id );
+							echo '</div>';
+							echo '</div>';
+						}
+					}
 					?>
 				</div>
-				<!-- Entry Details metabox -->
-				<div id="postbox-container-1" class="postbox-container">
-					<div id="everest-forms-entry-details" class="stuffbox">
-						<h2><?php esc_html_e( 'Entry Details', 'everest-forms' ); ?></h2>
-						<div class="inside">
-							<div id="submitbox" class="submitbox">
-								<div class="everest-forms-entry-details-meta">
-									<p class="everest-forms-entry-id">
-										<span class="dashicons dashicons-admin-network"></span>
-										<?php esc_html_e( 'Entry ID:', 'everest-forms' ); ?>
-										<strong><?php echo absint( $entry_id ); ?></strong>
-									</p>
+			</div>
 
-									<p class="everest-forms-entry-date">
-										<span class="dashicons dashicons-calendar"></span>
-										<?php esc_html_e( 'Submitted:', 'everest-forms' ); ?>
-										<strong><?php echo esc_html( date_i18n( esc_html__( 'M j, Y @ g:ia', 'everest-forms' ), strtotime( $entry->date_created ) + ( get_option( 'gmt_offset' ) * 3600 ) ) ); ?> </strong>
-									</p>
+			<?php
+			do_action( 'everest_forms_entry_details_content', $entry, $form_id );
+			?>
 
+			<!-- Entry Details Section -->
+			<div id="everest-forms-entry-details-table" class="evf-entry-section evf-entry-details-section stuffbox">
+				<div class="evf-section-header">
+					<div class="evf-section-title hndle"><span><?php esc_html_e( 'Entry Details', 'everest-forms' ); ?></span></div>
+				</div>
+
+				<div class="evf-section-content inside">
+					<div class="evf-details-table-wrapper">
+						<table class="evf-details-table wp-list-table widefat fixed striped">
+							<thead>
+								<tr>
+									<th><?php esc_html_e( 'ID', 'everest-forms' ); ?></th>
+									<th><?php esc_html_e( 'User', 'everest-forms' ); ?></th>
+									<th><?php esc_html_e( 'IP', 'everest-forms' ); ?></th>
+									<th><?php esc_html_e( 'Status', 'everest-forms' ); ?></th>
+									<th><?php esc_html_e( 'Submitted Date', 'everest-forms' ); ?></th>
 									<?php if ( ! empty( $entry->date_modified ) ) : ?>
-										<p class="everest-forms-entry-modified">
-											<span class="dashicons dashicons-calendar"></span>
-											<?php esc_html_e( 'Modified:', 'everest-forms' ); ?>
-											<strong><?php echo esc_html( date_i18n( esc_html__( 'M j, Y @ g:ia', 'everest-forms' ), strtotime( $entry->date_modified ) + ( get_option( 'gmt_offset' ) * 3600 ) ) ); ?> </strong>
-										</p>
+									<th><?php esc_html_e( 'Modified Date', 'everest-forms' ); ?></th>
 									<?php endif; ?>
-
-									<?php if ( ! empty( $entry->user_id ) && 0 !== $entry->user_id ) : ?>
-										<p class="everest-forms-entry-user">
-											<span class="dashicons dashicons-admin-users"></span>
-											<?php
-											esc_html_e( 'User:', 'everest-forms' );
+									<th><?php esc_html_e( 'Referer Link', 'everest-forms' ); ?></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td><?php echo absint( $entry_id ); ?></td>
+									<td>
+										<?php
+										if ( ! empty( $entry->user_id ) && 0 !== $entry->user_id ) {
 											$user      = get_userdata( $entry->user_id );
 											$user_name = ! empty( $user->display_name ) ? $user->display_name : $user->user_login;
-											// phpcs:ignore WordPress.WP.GlobalVariablesOverride
-											$user_url = add_query_arg(
+											$user_url  = add_query_arg(
 												array(
 													'user_id' => absint( $user->ID ),
 												),
 												admin_url( 'user-edit.php' )
 											);
-											?>
-											<strong><a href="<?php echo esc_url( $user_url ); ?>"><?php echo esc_html( $user_name ); ?></a></strong>
-										</p>
-									<?php endif; ?>
-
-									<?php if ( ! empty( $entry->user_ip_address ) ) : ?>
-										<p class="everest-forms-entry-ip">
-											<span class="dashicons dashicons-location"></span>
-											<?php esc_html_e( 'User IP:', 'everest-forms' ); ?>
-											<strong><?php echo esc_html( $entry->user_ip_address ); ?></strong>
-										</p>
-									<?php endif; ?>
-
-									<?php if ( ! empty( $entry->referer ) ) : ?>
-										<p class="everest-forms-entry-referer">
-											<span class="dashicons dashicons-admin-links"></span>
-											<?php esc_html_e( 'Referer Link:', 'everest-forms' ); ?>
-											<strong><a href="<?php echo esc_url( $entry->referer ); ?>" target="_blank"><?php esc_html_e( 'View', 'everest-forms' ); ?></a></strong>
-										</p>
-									<?php endif; ?>
-
-									<?php
-									if ( ! empty( $entry->status ) ) :
-										{
-
+											echo '<a href="' . esc_url( $user_url ) . '">' . esc_html( $user_name ) . '</a>';
+										} else {
+											esc_html_e( 'Guest', 'everest-forms' );
 										}
 										?>
-										<p class="everest-forms-entry-status">
-											<span class="dashicons dashicons-category"></span>
-											<?php esc_html_e( 'Status:', 'everest-forms' ); ?>
-											<strong><?php echo ! empty( $entry->status ) ? esc_html( ucwords( sanitize_text_field( $entry->status ) ) ) : esc_html__( 'Completed', 'everest-forms' ); ?></strong>
-										</p>
+									</td>
+									<td><?php echo ! empty( $entry->user_ip_address ) ? esc_html( $entry->user_ip_address ) : '-'; ?></td>
+									<td>
+										<?php
+										$status       = ! empty( $entry->status ) ? sanitize_text_field( $entry->status ) : 'completed';
+										$status_class = 'evf-status-' . strtolower( $status );
+										?>
+										<span class="evf-status-badge <?php echo esc_attr( $status_class ); ?>">
+											<?php echo esc_html( ucwords( $status ) ); ?>
+										</span>
+									</td>
+									<td><?php echo esc_html( date_i18n( 'Y-m-d H:i:s', strtotime( $entry->date_created ) + ( get_option( 'gmt_offset' ) * 3600 ) ) ); ?></td>
+									<?php if ( ! empty( $entry->date_modified ) ) : ?>
+									<td><?php echo esc_html( date_i18n( 'Y-m-d H:i:s', strtotime( $entry->date_modified ) + ( get_option( 'gmt_offset' ) * 3600 ) ) ); ?></td>
 									<?php endif; ?>
-
-									<?php do_action( 'everest_forms_entry_details_sidebar_details', $entry, $entry_meta, $form_data ); ?>
-								</div>
-
-								<?php if ( current_user_can( 'everest_forms_edit_entry', $entry->entry_id ) || current_user_can( 'everest_forms_delete_entry', $entry->entry_id ) ) : ?>
-									<div id="major-publishing-actions">
-										<?php do_action( 'everest_forms_entry_details_sidebar_action', $entry, $form_data ); ?>
-										<?php if ( current_user_can( 'everest_forms_delete_entry', $entry->entry_id ) ) : ?>
-											<div id="delete-action">
-												<a class="submitdelete" aria-label="<?php echo esc_attr__( 'Move to trash', 'everest-forms' ); ?>" href="<?php echo esc_url( $trash_link ); ?>"><?php esc_html_e( 'Move to trash', 'everest-forms' ); ?></a>
-											</div>
+									<td>
+										<?php if ( ! empty( $entry->referer ) ) : ?>
+											<a href="<?php echo esc_url( $entry->referer ); ?>" target="_blank" class="evf-referer-link">
+												<?php esc_html_e( 'View', 'everest-forms' ); ?>
+											</a>
+										<?php else : ?>
+											-
 										<?php endif; ?>
-										<div class="clear"></div>
-									</div>
-								<?php endif; ?>
-							</div>
-						</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
 					</div>
-					<?php do_action( 'everest_forms_after_entry_details', $entry, $entry_meta, $form_data ); ?>
+
+					<?php do_action( 'everest_forms_entry_details_sidebar_details', $entry, $entry_meta, $form_data ); ?>
 				</div>
 			</div>
 		</div>
+
+		<!-- Right Sidebar -->
+		<div class="evf-entry-sidebar">
+			<!-- Edit Entry Button -->
+
+
+			<!-- Entry Actions Section (FREE - Hardcoded in template) -->
+			<div id="everest-forms-entry-actions" class="stuffbox">
+				<div class="evf-entry-actions-header"><?php esc_html_e( 'Entry Actions', 'everest-forms' ); ?></div>
+				<div class="inside">
+					<div class="everest-forms-entry-actions-meta">
+						<?php
+						// Hook for PRO features (Star, Unread, Approve, Deny, Export, Print, etc.)
+						// These appear FIRST
+						do_action( 'everest_forms_entry_details_sidebar_actions', $entry, $form_data );
+						?>
+
+						<!-- Delete Entry (FREE FEATURE - Always visible, appears LAST inside Entry Actions) -->
+						<?php if ( current_user_can( 'everest_forms_delete_entry', $entry->entry_id ) ) : ?>
+							<?php
+							$trash_link = wp_nonce_url(
+								add_query_arg(
+									array(
+										'trash' => $entry_id,
+									),
+									admin_url( 'admin.php?page=evf-entries&form_id=' . $form_id )
+								),
+								'trash-entry'
+							);
+							?>
+							<p class="everest-forms-entry-delete">
+								<a href="<?php echo esc_url( $trash_link ); ?>">
+									<span class="dashicons dashicons-trash"></span>
+									<?php esc_html_e( 'Delete Entry', 'everest-forms' ); ?>
+								</a>
+							</p>
+						<?php endif; ?>
+					</div>
+				</div>
+			</div>
+
+			<?php
+			// Payment Details, Quiz Scores, etc.
+			do_action( 'everest_forms_after_entry_details', $entry, $entry_meta, $form_data );
+			?>
+		</div>
 	</div>
 </div>
-<!--  Toggle displaying empty fields. -->
+
 <script type="text/javascript">
-	jQuery( document ).on( 'click', '#everest-forms-entry-fields .everest-forms-empty-field-toggle', function( event ) {
-		event.preventDefault();
+jQuery(document).on('click', '.everest-forms-empty-field-toggle', function (event) {
+	event.preventDefault();
 
-		// Handle cookie.
+	var $btn = jQuery(this);
+
+	if (wpCookies.get('everest_forms_entry_hide_empty') === 'true') {
+		wpCookies.remove('everest_forms_entry_hide_empty');
+
+		$btn
+			.removeClass('dashicons-hidden')
+			.addClass('dashicons-visibility')
+			.attr('title', '<?php esc_attr_e( 'Hide empty fields', 'everest-forms' ); ?>')
+			.text('<?php esc_html_e( 'Hide Empty Fields', 'everest-forms' ); ?>');
+
+		jQuery('.evf-field-empty').show();
+	} else {
+		wpCookies.set('everest_forms_entry_hide_empty', 'true', 2592000);
+
+		$btn
+			.removeClass('dashicons-visibility')
+			.addClass('dashicons-hidden')
+			.attr('title', '<?php esc_attr_e( 'Show empty fields', 'everest-forms' ); ?>')
+			.text('<?php esc_html_e( 'Show Empty Fields', 'everest-forms' ); ?>');
+
+		jQuery('.evf-field-empty').hide();
+	}
+});
+
+	jQuery( document ).ready( function( $ ) {
 		if ( wpCookies.get( 'everest_forms_entry_hide_empty' ) === 'true' ) {
-
-			// User was hiding empty fields, so now display them.
-			wpCookies.remove( 'everest_forms_entry_hide_empty' );
-			jQuery( this ).text( 'Hide Empty Fields' );
-		} else {
-
-			// User was seeing empty fields, so now hide them.
-			wpCookies.set( 'everest_forms_entry_hide_empty', 'true', 2592000 ); // 1month.
-			jQuery( this ).text( 'Show Empty Fields' );
+			$( '.evf-field-empty' ).hide();
 		}
-
-		jQuery( '.everest-forms-entry-field.empty' ).toggle();
 	});
 </script>

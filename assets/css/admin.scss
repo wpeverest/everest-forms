@@ -15,7 +15,8 @@
 
 // Components
 @import 'components/badge', 'components/forms', 'components/buttons',
-	'components/card', 'components/table';
+	'components/card', 'components/table', 'components/entries-views',
+	'components/toast', 'components/accordion';
 
 @import 'colors';
 @import 'containers';
@@ -38,13 +39,21 @@
 	font-display: block;
 }
 
-/**
-	   * Styling begins
-	   */
+body[class*='everest-forms_page_'] {
+	background: #f4f4f4 !important;
 
-// Remove margin-top from entries list when React header is present
+	#wpcontent {
+		padding-left: 0;
+	}
+
+	#setting-error-bulk_action,
+	#message.updated.notice {
+		display: none !important;
+	}
+}
+
 #everest-forms-entries-list {
-	margin-top: 0;
+	margin-top: 32px;
 }
 
 .blockUI.blockOverlay {
@@ -407,10 +416,45 @@ img.help_tip {
 			width: 100%;
 		}
 
+		input[type='text'] {
+			min-height: 36px;
+			font-size: 13px;
+			line-height: 20px;
+			width: -webkit-fill-available;
+			padding: 0 12px;
+			border: 1px solid #e1e1e1;
+			color: #383838;
+			font-weight: 400;
+			box-shadow: none;
+			margin: 0;
+			border-right: 0;
+			background: #f8f8fa;
+			border-radius: 4px 0 0 4px;
+			flex: 1;
+
+			&:focus {
+				outline: 2px solid transparent;
+			}
+		}
+
 		.evf-copy-shortcode {
-			margin-left: 4px;
-			padding: 0 4px;
-			line-height: 1;
+			width: 38px;
+			box-shadow: none;
+			margin: 0;
+			margin-left: -5px;
+			border-radius: 0 4px 4px 0;
+			background: #f4f4f4 !important;
+			border-color: #e1e1e1 !important;
+			min-height: 36px;
+			line-height: 20px;
+
+			svg {
+				fill: #fff;
+				width: 18px;
+				height: 18px;
+				margin-bottom: 3px;
+				vertical-align: middle;
+			}
 		}
 	}
 }
@@ -6177,21 +6221,37 @@ table.wp-list-table {
 		color: #999;
 	}
 
+	.column-title {
+		width: 450px;
+		.locate-form {
+			margin: 2px 0 0;
+			font-size: 11px;
+			color: #666;
+		}
+	}
+
+	.column-tags {
+		width: 200px;
+	}
+
 	.column-date {
-		width: 12%;
+		// width: 12%;
 	}
 
 	.column-entries {
 		width: 74px;
-		text-align: center;
 	}
 
 	.column-actions {
 		width: 175px;
 	}
 
+	.column-shortcode {
+		width: 350px;
+	}
+
 	.column-enabled {
-		width: 25px;
+		width: 100px;
 	}
 
 	.column-status img {
@@ -6936,8 +6996,8 @@ img.ui-datepicker-trigger {
 	&.select2-container--focus .select2-selection--single,
 	&.select2-container--open .select2-selection--single,
 	&.select2-container--open .select2-selection--multiple {
-		border-color: #007cba;
-		box-shadow: 0 0 0 1px #007cba;
+		border-color: #8c64c6;
+		// box-shadow: 0 0 0 1px #007cba;
 	}
 
 	.selection {
@@ -8256,8 +8316,9 @@ img.ui-datepicker-trigger {
 .select2-container--default {
 	.select2-selection--single {
 		background-color: #fff;
-		border: 1px solid #aaa;
+		border: 1px solid #e1e1e1;
 		border-radius: 4px;
+		min-height: 38px;
 
 		.select2-selection__rendered {
 			color: #444;
@@ -8277,7 +8338,7 @@ img.ui-datepicker-trigger {
 		.select2-selection__arrow {
 			height: 26px;
 			position: absolute;
-			top: 1px;
+			top: 6px;
 			right: 1px;
 			width: 20px;
 
@@ -8438,8 +8499,8 @@ img.ui-datepicker-trigger {
 	}
 
 	.select2-results__option--highlighted[data-selected] {
-		color: #fff;
-		background-color: #0073aa;
+		color: #222;
+		background-color: #eee8f7;
 	}
 
 	.select2-results__group {
@@ -8555,7 +8616,7 @@ img.ui-datepicker-trigger {
 		background-repeat: repeat-x;
 
 		&:focus {
-			border: 1px solid #0073aa;
+			border: 1px solid $primary-color;
 		}
 
 		.select2-selection__rendered {
@@ -9815,13 +9876,14 @@ img.ui-datepicker-trigger {
 //General settings
 .everest-forms-settings {
 	display: flex;
-	background: #f1f1f1;
+	background: #f4f4f4 !important;
 	min-height: 100vh;
 
 	.everest-forms-settings-container {
 		flex: 1;
 		padding: 20px;
-		background: #ffffff;
+		// background: inherit;
+		// background-color: #f4f4f4 !important;
 		box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 
 		.everest-forms-options-header {
@@ -9841,7 +9903,7 @@ img.ui-datepicker-trigger {
 
 			.everest-forms-global-settings {
 				display: flex;
-				align-items: center;
+				align-items: flex-start;
 				margin-bottom: 10px;
 
 				@media screen and (max-width: 1260px) {
@@ -9972,13 +10034,32 @@ img.ui-datepicker-trigger {
 			&--nav {
 				height: 100%;
 
+				// Tab item container
+				.evf-nav__tab-item {
+					display: flex;
+					flex-direction: column;
+
+					// Rotate arrow when active and has sub-sections
+					&:has(.evf-scroll-ui) {
+						.nav-tab-active {
+							.evf-nav__link-label svg {
+								transform: rotate(90deg);
+							}
+						}
+					}
+
+					.evf-scroll-ui {
+						border-left: 4px solid transparent;
+						background: #ffffff;
+					}
+				}
+
 				.evf-nav-tab-wrapper {
 					display: flex;
 					flex-direction: column;
 					gap: 1px;
 					background: transparent;
 					position: relative;
-					// height: 100%;
 					overflow: unset !important;
 
 					.evf-nav__link {
@@ -10052,6 +10133,11 @@ img.ui-datepicker-trigger {
 							svg {
 								width: 20px;
 								height: 20px;
+								transition: transform 0.3s ease-in-out;
+
+								path {
+									transition: stroke 0.3s ease-in-out;
+								}
 							}
 						}
 
@@ -10149,6 +10235,104 @@ img.ui-datepicker-trigger {
 						}
 					}
 				}
+
+				.evf-scroll-ui {
+					max-height: 300px;
+					overflow-y: auto;
+					padding: 0;
+					margin-top: 0;
+					animation: slideDown 0.3s ease;
+
+					&::-webkit-scrollbar {
+						width: 4px;
+					}
+
+					&::-webkit-scrollbar-track {
+						background: transparent;
+					}
+
+					&::-webkit-scrollbar-thumb {
+						background: #d1d5db;
+						border-radius: 2px;
+					}
+
+					&::-webkit-scrollbar-thumb:hover {
+						background: #9ca3af;
+					}
+				}
+
+				.evf-subsections {
+					list-style: none;
+					margin: 0;
+					padding: 0;
+					background: transparent;
+					position: relative;
+
+					&::before {
+						content: '';
+						position: absolute;
+						left: 27px;
+						top: 27px;
+						width: 2px;
+						height: calc(100% - 16px - 36px);
+						background: #e1e1e1;
+						z-index: 1;
+					}
+
+					li {
+						margin: 0;
+						padding: 0;
+						position: relative;
+
+						a {
+							display: flex;
+							align-items: center;
+							padding: 12px 20px 12px 52px;
+							text-decoration: none;
+							color: #6b7280;
+							font-size: 14px;
+							font-weight: 500;
+							line-height: 21px;
+							position: relative;
+							background: transparent;
+							transition: color 0.2s ease;
+
+							&::before {
+								content: '';
+								position: absolute;
+								left: 24px;
+								top: 50%;
+								transform: translateY(-50%);
+								width: 10px;
+								height: 10px;
+								background: #e1e1e1;
+								border-radius: 50%;
+								z-index: 2;
+								transition: all 0.2s ease;
+							}
+
+							&.current {
+								color: #7545bb;
+								font-weight: 600;
+								&::before {
+									background: #7545bb;
+									width: 10px;
+									height: 10px;
+									left: 23px;
+								}
+							}
+
+							&:hover {
+								color: #7545bb;
+							}
+
+							&:focus {
+								outline: none;
+								box-shadow: none;
+							}
+						}
+					}
+				}
 			}
 
 			&.collapsed {
@@ -10167,24 +10351,207 @@ img.ui-datepicker-trigger {
 				}
 
 				.everest-forms-header--nav {
-					.evf-nav-tab-wrapper {
-						.evf-nav__link {
-							// display: inline-block;
+					height: 100%;
 
-							&-label {
-								// display: none;
-								opacity: 0;
+					.evf-nav__tab-item {
+						display: flex;
+						flex-direction: column;
+						position: relative;
+
+						// Add vertical line for parent items that have children
+						&:has(.evf-subsections) {
+							position: relative;
+
+							// Main vertical connecting line
+							> .evf-scroll-ui::before {
+								content: '';
+								position: absolute;
+								left: 28px;
+								top: 0;
+								bottom: 12px;
+								width: 1px;
+								background: #e1e1e1;
+								z-index: 1;
 							}
 						}
 
-						#evf-settings-collapse {
-							.evf-nav-icon {
-								img {
-									transform: rotate(180deg);
+						&:has(.evf-scroll-ui) {
+							.nav-tab-active {
+								.evf-nav__link-label svg {
+									transform: rotate(90deg);
+								}
+							}
+						}
+
+						.evf-scroll-ui {
+							border-left: 4px solid transparent;
+							background: #ffffff;
+							position: relative;
+						}
+					}
+
+					.evf-subsections {
+						list-style: none;
+						margin: 0;
+						padding: 0;
+						background: transparent;
+						position: relative;
+
+						li {
+							margin: 0;
+							padding: 0;
+							position: relative;
+
+							// Vertical connecting line
+							&::before {
+								content: '';
+								position: absolute;
+								left: 28px;
+								top: 0;
+								bottom: 0;
+								width: 1px;
+								background: #dcdcdc;
+								z-index: 1;
+							}
+
+							// Hide vertical line after last item
+							&:last-child::before {
+								bottom: 50%;
+							}
+
+							// Horizontal line connecting to text
+							&::after {
+								content: '';
+								position: absolute;
+								left: 28px;
+								top: 50%;
+								transform: translateY(-50%);
+								width: 16px;
+								height: 1px;
+								background: #dcdcdc;
+								z-index: 1;
+							}
+
+							a {
+								display: flex;
+								align-items: center;
+								padding: 12px 20px 12px 52px;
+								text-decoration: none;
+								color: #6b7280;
+								font-size: 14px;
+								font-weight: 500;
+								line-height: 21px;
+								border-left: 3px solid transparent;
+								position: relative;
+								background: transparent;
+
+								&.current {
+									color: #7545bb;
+									border-left-color: #7545bb;
+									font-weight: 600;
+								}
+
+								&:focus {
+									outline: none;
+									box-shadow: none;
 								}
 							}
 						}
 					}
+
+					@media screen and (max-width: 1300px) {
+						.evf-subsections li {
+							&::before {
+								left: 24px;
+							}
+
+							&::after {
+								left: 24px;
+								width: 14px;
+							}
+
+							a {
+								padding: 10px 16px 10px 44px;
+								font-size: 13px;
+							}
+						}
+					}
+
+					@media screen and (max-width: 782px) {
+						.evf-subsections li {
+							&::before {
+								left: 20px;
+							}
+
+							&::after {
+								left: 20px;
+								width: 12px;
+							}
+
+							a {
+								padding: 10px 16px 10px 40px;
+								font-size: 13px;
+							}
+						}
+					}
+				}
+
+				// Animation for sliding down sub-sections
+				@keyframes slideDown {
+					from {
+						opacity: 0;
+						transform: translateY(-10px);
+					}
+					to {
+						opacity: 1;
+						transform: translateY(0);
+					}
+				}
+
+				// Mobile responsive
+				@media screen and (max-width: 782px) {
+					.everest-forms-header--nav {
+						.evf-subsections li a {
+							padding: 10px 16px 10px 40px;
+							font-size: 13px;
+
+							&.current::before {
+								left: 20px;
+							}
+						}
+
+						.evf-scroll-ui {
+							max-height: 250px;
+						}
+					}
+				}
+			}
+		}
+
+		@keyframes slideDown {
+			from {
+				opacity: 0;
+				transform: translateY(-10px);
+			}
+			to {
+				opacity: 1;
+				transform: translateY(0);
+			}
+		}
+
+		@media screen and (max-width: 782px) {
+			.everest-forms-header--nav {
+				.evf-subsections li a {
+					padding: 10px 16px 10px 40px;
+					font-size: 13px;
+
+					&.current::before {
+						left: 20px;
+					}
+				}
+
+				.evf-scroll-ui {
+					max-height: 250px;
 				}
 			}
 		}
@@ -10215,6 +10582,13 @@ img.ui-datepicker-trigger {
 						line-height: 24px;
 						color: #383838;
 						font-weight: 500;
+					}
+				}
+
+				p {
+					a {
+						color: #2271b1;
+						text-decoration: underline !important;
 					}
 				}
 			}
@@ -11696,8 +12070,8 @@ body {
 
 #everest-forms-list-table__container {
 	background-color: #ffffff;
-	padding: 24px;
-	margin: 25px auto;
+	// padding: 24px;
+	// margin: 25px auto;
 	border-radius: 7px;
 
 	table.wp-list-table {
@@ -12016,7 +12390,7 @@ button#show-settings-link {
 	justify-content: space-between;
 	align-items: center;
 	gap: 20px;
-	border-bottom: 1px solid #dcdcdc;
+	// border-bottom: 1px solid #dcdcdc;
 	padding-bottom: 24px;
 	margin-bottom: 24px;
 

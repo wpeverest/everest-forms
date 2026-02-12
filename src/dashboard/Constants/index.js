@@ -22,26 +22,31 @@ let ROUTES = [
 		route: '/',
 		label: __('Site Assistant', 'everest-forms'),
 		external: false,
+		key: 'siteAssistant',
 	},
 	{
 		route: `${cleanAdminURL}/admin.php?page=evf-entries`,
 		label: __('Entries', 'everest-forms'),
 		external: true,
+		key: 'entries',
 	},
 	{
 		route: `${cleanAdminURL}/admin.php?page=evf-settings`,
 		label: __('Settings', 'everest-forms'),
 		external: true,
+		key: 'settings',
 	},
 	{
 		route: '/features',
-		label: __('All Features', 'everest-forms'),
+		label: __('Addons', 'everest-forms'),
 		external: false,
+		key: 'features',
 	},
 	{
 		route: '/help',
 		label: __('Help', 'everest-forms'),
 		external: false,
+		key: 'help',
 	},
 ];
 

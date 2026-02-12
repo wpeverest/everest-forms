@@ -43,13 +43,18 @@ const Header = ({ hideSiteAssistant = false }) => {
 	const location = useLocation();
 
 	/* global _EVF_DASHBOARD_ */
-	const { version, isPro, upgradeURL, pageType, adminURL } =
+	const { version, isPro, upgradeURL, pageType, adminURL, currentPage } =
 		typeof _EVF_DASHBOARD_ !== 'undefined' && _EVF_DASHBOARD_;
 
 	const isSettingsPage = pageType === 'settings';
 	const isEntriesPage = pageType === 'entries';
 	const isAnalyticsPage = pageType === 'analytics';
-	const isNonDashboardPage = isSettingsPage || isEntriesPage || isAnalyticsPage;
+	// Check if we're on any page that's not the main dashboard
+	const isNonDashboardPage =
+		isSettingsPage ||
+		isEntriesPage ||
+		isAnalyticsPage ||
+		(currentPage && currentPage !== 'evf-dashboard');
 
 	useEffect(() => {
 		if (isOpen) {
@@ -64,7 +69,7 @@ const Header = ({ hideSiteAssistant = false }) => {
 
 	const { leftRoutes, rightRoutes } = useMemo(() => {
 		const allRoutes = hideSiteAssistant
-			? ROUTES.filter((route) => route.route !== '/')
+			? ROUTES.filter((route) => route.key !== 'siteAssistant')
 			: ROUTES;
 
 		const rightRoutePaths = ['/help', 'https://everestforms.net/free-vs-pro/'];

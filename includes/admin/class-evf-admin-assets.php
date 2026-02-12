@@ -500,7 +500,6 @@ class EVF_Admin_Assets {
 
 			$script_handle = 'evf-dashboard-header';
 
-			// Determine page type based on current page.
 		if ( 'evf-entries' === $current_page ) {
 			$page_type = 'entries';
 		} elseif ( 'evf-settings' === $current_page ) {
@@ -515,16 +514,22 @@ class EVF_Admin_Assets {
 			$script_handle,
 			'_EVF_DASHBOARD_',
 			array(
-				'version'          => EVF_VERSION,
-				'isPro'            => defined( 'EFP_PLUGIN_FILE' ),
-				'showAnalyticsTab' => is_plugin_active( 'everest-forms-form-analytics/everest-forms-form-analytics.php' ),
-				'upgradeURL'       => 'https://everestforms.net/pricing/?',
-				'adminURL'         => admin_url( 'admin.php' ),
-				'ajaxURL'          => admin_url( 'admin-ajax.php' ),
-				'nonce'            => wp_create_nonce( 'evf_admin' ),
-				'pageType'         => $page_type,
-				'currentPage'      => $current_page,
-				'currentTab'       => $current_tab,
+				'version'           => EVF_VERSION,
+				'isPro'             => defined( 'EFP_PLUGIN_FILE' ),
+				'showAnalyticsTab'  => is_plugin_active( 'everest-forms-form-analytics/everest-forms-form-analytics.php' ),
+				'upgradeURL'        => 'https://everestforms.net/pricing/?',
+				'adminURL'          => admin_url( 'admin.php' ),
+				'ajaxURL'           => admin_url( 'admin-ajax.php' ),
+				'evfRestApiNonce'   => wp_create_nonce( 'wp_rest' ),
+				'restURL'           => rest_url(),
+				'nonce'             => wp_create_nonce( 'evf_admin' ),
+				'pageType'          => $page_type,
+				'currentPage'       => $current_page,
+				'currentTab'        => $current_tab,
+				'allStepsCompleted' => (
+					EVF_Admin_Dashboard::is_spam_protection_completed()
+					&& (bool) get_option( 'everest_forms_test_email_sent', false )
+				) ? '1' : '0',
 			)
 		);
 	}

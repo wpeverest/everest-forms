@@ -25,14 +25,14 @@ class EVF_Field_Recaptcha extends \EVF_Form_Fields {
 
 		$this->group    = 'advanced';
 		$this->settings = array(
-			'basic-options' => array(
+			'basic-options'    => array(
 				'field_options' => array(
 					'label',
 				),
 			),
 			'advanced-options' => array(
 				'field_options' => array(
-					'meta'
+					'meta',
 				),
 			),
 		);
@@ -59,7 +59,6 @@ class EVF_Field_Recaptcha extends \EVF_Form_Fields {
 			$secret_key = get_option( 'everest_forms_recaptcha_v3_secret_key' );
 		}
 		return empty( $site_key ) || empty( $secret_key ) || ( 'v2' !== $recaptcha_type && 'v3' !== $recaptcha_type ) ? 'recaptcha_empty_key_validate' : '';
-
 	}
 
 
@@ -72,22 +71,35 @@ class EVF_Field_Recaptcha extends \EVF_Form_Fields {
 	 * @param array $field Field data and settings.
 	 */
 	public function field_preview( $field ) {
+		$recaptcha_type = get_option( 'everest_forms_recaptcha_type', '' );
+		$v2_enabled     = get_option( 'everest_forms_recaptcha_v2_enable', 'no' );
+		$v3_enabled     = get_option( 'everest_forms_recaptcha_v3_enable', 'no' );
+		$invisible      = get_option( 'everest_forms_recaptcha_v2_invisible', 'no' );
+
+		if ( 'v2' === $recaptcha_type && 'yes' !== $v2_enabled ) {
+			return;
+		}
+
+		if ( 'v3' === $recaptcha_type && 'yes' !== $v3_enabled ) {
+			return;
+		}
+
+		if ( 'v2' === $recaptcha_type && 'no' === $invisible ) {
+			$image_url = plugins_url( 'assets/images/captcha/reCAPTCHA.png', EVF_PLUGIN_FILE );
+		} elseif ( ( 'v2' === $recaptcha_type && 'yes' === $invisible ) || 'v3' === $recaptcha_type ) {
+			$image_url = plugins_url( 'assets/images/captcha/google-v3-reCAPTCHA.png', EVF_PLUGIN_FILE );
+		} else {
+			return;
+		}
+
 		// Label.
 		$this->field_preview_option( 'label', $field );
 
 		// Default value.
-		$default_value       = isset( $field['default_value'] ) && ! empty( $field['default_value'] ) ? $field['default_value'] : '';
-		$recaptcha_type      = get_option( 'everest_forms_recaptcha_type', 'v2' );
-		$invisible_recaptcha = get_option( 'everest_forms_recaptcha_v2_invisible', 'no' );
-		if ( 'v2' === $recaptcha_type && 'no' === $invisible_recaptcha ) {
-			$image_url = plugins_url( 'assets/images/captcha/reCAPTCHA.png', EVF_PLUGIN_FILE );
-		} elseif ( ( 'v2' === $recaptcha_type && 'yes' === $invisible_recaptcha ) || 'v3' === $recaptcha_type ) {
-			$image_url = plugins_url( 'assets/images/captcha/google-v3-reCAPTCHA.png', EVF_PLUGIN_FILE );
-		}
-		// Primary input.
-		echo '<img src="' . esc_url( isset( $image_url ) ? $image_url : '' ) . '" class="widefat" disabled />';
-
+		$default_value = isset( $field['default_value'] ) && ! empty( $field['default_value'] ) ? $field['default_value'] : '';
+		echo '<img src="' . esc_url( $image_url ) . '" class="widefat" disabled />';
 	}
+
 
 	/**
 	 * Field display on the form front-end.
@@ -99,21 +111,35 @@ class EVF_Field_Recaptcha extends \EVF_Form_Fields {
 	 * @param array $form_data All Form Data.
 	 */
 	public function field_display( $field, $field_atts, $form_data ) {
-		$recaptcha_type      = get_option( 'everest_forms_recaptcha_type', 'v2' );
+		$recaptcha_type      = get_option( 'everest_forms_recaptcha_type', '' );
 		$invisible_recaptcha = get_option( 'everest_forms_recaptcha_v2_invisible', 'no' );
+		$v2_enabled          = get_option( 'everest_forms_recaptcha_v2_enable', 'no' );
+		$v3_enabled          = get_option( 'everest_forms_recaptcha_v3_enable', 'no' );
 
-		if ( 'v2' === $recaptcha_type && 'no' === $invisible_recaptcha ) {
-			$site_key   = get_option( 'everest_forms_recaptcha_v2_site_key' );
-			$secret_key = get_option( 'everest_forms_recaptcha_v2_secret_key' );
-		} elseif ( 'v2' === $recaptcha_type && 'yes' === $invisible_recaptcha ) {
-			$site_key   = get_option( 'everest_forms_recaptcha_v2_invisible_site_key' );
-			$secret_key = get_option( 'everest_forms_recaptcha_v2_invisible_secret_key' );
+		if ( 'v2' === $recaptcha_type ) {
+			if ( 'yes' !== $v2_enabled ) {
+				return;
+			}
+
+			if ( 'no' === $invisible_recaptcha ) {
+				$site_key   = get_option( 'everest_forms_recaptcha_v2_site_key' );
+				$secret_key = get_option( 'everest_forms_recaptcha_v2_secret_key' );
+			} else {
+				$site_key   = get_option( 'everest_forms_recaptcha_v2_invisible_site_key' );
+				$secret_key = get_option( 'everest_forms_recaptcha_v2_invisible_secret_key' );
+			}
 		} elseif ( 'v3' === $recaptcha_type ) {
+			if ( 'yes' !== $v3_enabled ) {
+				return;
+			}
+
 			$site_key   = get_option( 'everest_forms_recaptcha_v3_site_key' );
 			$secret_key = get_option( 'everest_forms_recaptcha_v3_secret_key' );
+		} else {
+			return;
 		}
 
-		if ( isset( $site_key, $secret_key ) && ( ! $site_key || ! $secret_key ) ) {
+		if ( ! isset( $site_key, $secret_key ) || ! $site_key || ! $secret_key ) {
 			return;
 		}
 
@@ -125,26 +151,24 @@ class EVF_Field_Recaptcha extends \EVF_Form_Fields {
 					esc_attr( 'evf_' . $form_data['id'] )
 				);
 			}
-			return; // Only v3 is supported in AMP.
+			return;
 		}
 
-			$form_id = isset( $form_data['id'] ) ? absint( $form_data['id'] ) : 0;
-			$visible = ! empty( self::$parts[ $form_id ] ) ? 'style="display:none;"' : '';
-			$data    = apply_filters(
-				'everest_forms_frontend_recaptcha',
-				array(
-					'sitekey' => trim( sanitize_text_field( $site_key ) ),
-				),
-				$form_data
-			);
+		$form_id = isset( $form_data['id'] ) ? absint( $form_data['id'] ) : 0;
+		$visible = ! empty( self::$parts[ $form_id ] ) ? 'style="display:none;"' : '';
+		$data    = apply_filters(
+			'everest_forms_frontend_recaptcha',
+			array(
+				'sitekey' => trim( sanitize_text_field( $site_key ) ),
+			),
+			$form_data
+		);
 
-			// Load reCAPTCHA support if form supports it.
 		if ( $site_key && $secret_key ) {
 			if ( 'v2' === $recaptcha_type ) {
 				$recaptcha_api = apply_filters( 'everest_forms_frontend_recaptcha_url', 'https://www.google.com/recaptcha/api.js?onload=EVFRecaptchaLoad&render=explicit', $recaptcha_type, $form_id );
 
 				if ( 'yes' === $invisible_recaptcha ) {
-					$data['size']     = 'invisible';
 					$recaptcha_inline = 'var EVFRecaptchaLoad = function(){jQuery(".g-recaptcha").each(function(index, el){var recaptchaID = grecaptcha.render(el,{callback:function(){EVFRecaptchaCallback(el);}},true);   el.closest("form").querySelector("button[type=submit]").recaptchaID = recaptchaID;});};
 						var EVFRecaptchaCallback = function (el) {
 							var $form = el.closest("form");
@@ -169,7 +193,6 @@ class EVF_Field_Recaptcha extends \EVF_Form_Fields {
 				$recaptcha_inline .= 'grecaptcha.ready(function(){grecaptcha.execute("' . esc_html( $site_key ) . '",{action:"everest_form"}).then(function(token){var f=document.getElementsByName("everest_forms[recaptcha]");for(var i=0;i<f.length;i++){f[i].value = token;}});});';
 			}
 
-			// Enqueue reCaptcha scripts.
 			wp_enqueue_script(
 				'evf-recaptcha',
 				$recaptcha_api,
@@ -178,14 +201,12 @@ class EVF_Field_Recaptcha extends \EVF_Form_Fields {
 				true
 			);
 
-			// Load reCaptcha callback once.
 			static $count = 1;
 			if ( 1 === $count ) {
-					wp_add_inline_script( 'evf-recaptcha', $recaptcha_inline );
-					$count++;
+				wp_add_inline_script( 'evf-recaptcha', $recaptcha_inline );
+				++$count;
 			}
 
-			// Output the reCAPTCHA container.
 			$class = ( 'v3' === $recaptcha_type || ( 'v2' === $recaptcha_type && 'yes' === $invisible_recaptcha ) ) ? 'recaptcha-hidden' : '';
 			echo '<div class="evf-recaptcha-container ' . esc_attr( $class ) . '" style="display:' . ( ! empty( self::$parts[ $form_id ] ) ? 'none' : 'block' ) . '">';
 
@@ -197,6 +218,5 @@ class EVF_Field_Recaptcha extends \EVF_Form_Fields {
 
 			echo '</div>';
 		}
-
 	}
 }

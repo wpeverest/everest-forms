@@ -307,6 +307,14 @@ class EVF_Emails {
 		}
 
 		$message = $this->process_tag( $message, false );
+
+		/**
+		 * Filter to modify the email message format before line break conversion.
+		 *
+		 * @since xx.xx.xx
+		 */
+		$message = apply_filters( 'everest_forms_email_message_pre_format', $message, $this );
+
 		$message = nl2br( $message );
 
 		$body    = ob_get_clean();
