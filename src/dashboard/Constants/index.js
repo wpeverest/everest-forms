@@ -37,6 +37,12 @@ let ROUTES = [
 		key: 'settings',
 	},
 	{
+		route: `${cleanAdminURL}/admin.php?page=evf-builder`,
+		label: __('All forms', 'everest-forms'),
+		external: true,
+		key: 'forms',
+	},
+	{
 		route: '/features',
 		label: __('Addons', 'everest-forms'),
 		external: false,
@@ -182,6 +188,12 @@ export const isRouteActive = (route, currentPath, isSettingsPage, pageType) => {
 	if (pageType === 'entries' && route.includes('evf-entries')) {
 		return true;
 	}
+
+	// check for forms page
+	if (pageType === 'forms' && route.includes('evf-builder')) {
+		return true;
+	}
+
 	// Check for settings page
 	if (isSettingsPage && route.includes('evf-settings')) {
 		return true;

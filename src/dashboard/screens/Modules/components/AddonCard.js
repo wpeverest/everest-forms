@@ -158,9 +158,9 @@ const AddonCard = ({ addon, showToast }) => {
 		}
 
 		return {
-			bg: '#EFF6FF',
-			border: '1px solid #93C5FD',
-			color: '#3B82F6',
+			bg: '#FFFAF5',
+			border: '1px solid #FF8C39',
+			color: '#FF8C39',
 			fontSize: '11px',
 			fontWeight: '600',
 		};
@@ -196,7 +196,7 @@ const AddonCard = ({ addon, showToast }) => {
 					justifyContent="center"
 					zIndex="10"
 				>
-					<Spinner size="lg" color="#475bb2" thickness="3px" />
+					<Spinner size="lg" color="#7545bb" thickness="3px" />
 				</Flex>
 			)}
 
@@ -332,7 +332,7 @@ const AddonCard = ({ addon, showToast }) => {
 							color="gray.600"
 							textDecoration="none"
 							isExternal
-							_hover={{ color: '#475bb2', textDecoration: 'underline' }}
+							_hover={{ color: '#7545bb', textDecoration: 'underline' }}
 							fontWeight="500"
 						>
 							{__('Docs', 'everest-forms')}
@@ -349,7 +349,7 @@ const AddonCard = ({ addon, showToast }) => {
 								aria-label={__('Video Tutorial', 'everest-forms')}
 								variant="ghost"
 								color="gray.600"
-								_hover={{ color: '#475bb2', bg: 'gray.50' }}
+								_hover={{ color: '#7545bb', bg: 'gray.50' }}
 								onClick={handleVideoPlay}
 							/>
 						</>
@@ -365,7 +365,7 @@ const AddonCard = ({ addon, showToast }) => {
 								aria-label={__('Settings', 'everest-forms')}
 								variant="ghost"
 								color="gray.600"
-								_hover={{ color: '#475bb2', bg: 'gray.50' }}
+								_hover={{ color: '#7545bb', bg: 'gray.50' }}
 								onClick={() => window.open(addon.setting_url, '_self')}
 							/>
 						</>
@@ -380,10 +380,10 @@ const AddonCard = ({ addon, showToast }) => {
 							size="md"
 							sx={{
 								'& .chakra-switch__track': {
-									bg: isActive ? '#475bb2' : 'gray.300',
+									bg: isActive ? '#7545bb' : 'gray.300',
 								},
 								'& .chakra-switch__track[data-checked]': {
-									bg: '#475bb2',
+									bg: '#7545bb',
 								},
 							}}
 						/>
@@ -392,9 +392,9 @@ const AddonCard = ({ addon, showToast }) => {
 							size="sm"
 							fontSize={{ base: '12px', sm: '13px' }}
 							fontWeight="600"
-							bg="#475bb2"
+							bg="#7545bb"
 							color="white"
-							borderColor="#475bb2"
+							borderColor="#7545bb"
 							px={{ base: '3', sm: '4' }}
 							h={{ base: '28px', sm: '32px' }}
 							_hover={{
@@ -463,7 +463,7 @@ const AddonCard = ({ addon, showToast }) => {
 										left="50%"
 										transform="translate(-50%, -50%)"
 									>
-										<Spinner size="lg" color="#475bb2" />
+										<Spinner size="lg" color="#7545bb" />
 									</Box>
 								)}
 							</Box>

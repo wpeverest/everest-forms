@@ -18,6 +18,7 @@ import {
 	Modules,
 	Products,
 	Settings,
+
 	SiteAssistant,
 } from '../screens';
 import SiteAssistantSkeleton from '../skeleton/SiteAssistantSkeleton';

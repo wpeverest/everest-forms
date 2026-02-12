@@ -59,8 +59,9 @@ const IntersectObserver = ({ children, routes }) => {
 		typeof _EVF_DASHBOARD_ !== "undefined" && _EVF_DASHBOARD_;
 	const isSettingsPage = pageType === "settings";
 	const isEntriesPage = pageType === "entries";
+    const isFormsPage = pageType === "forms";
 	const isAnalyticsPage = pageType === "analytics";
-	const isNonDashboardPage = isSettingsPage || isEntriesPage || isAnalyticsPage;
+	const isNonDashboardPage = isSettingsPage || isEntriesPage || isAnalyticsPage || isFormsPage;
 
 	useEffect(() => {
 		if (!ref.current) return;
