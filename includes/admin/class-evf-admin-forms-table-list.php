@@ -692,12 +692,12 @@ class EVF_Admin_Forms_Table_List extends EVF_Base_List_Table {
 		 *
 		 * @since 3.2.0
 		 */
-		if ( ! empty( $_REQUEST['tags'] ) ) {
+		if ( ! empty( $_REQUEST['tag_id'] ) ) {
 			$args['tax_query'] = array(
 				array(
 					'taxonomy' => EVF_Post_Types::TAGS_TAXONOMY,
 					'field'    => 'term_id',
-					'terms'    => array_map( 'absint', is_array( $_REQUEST['tags'] ) ? $_REQUEST['tags'] : array( $_REQUEST['tags'] ) ),
+					'terms'    => array_map( 'absint', is_array( $_REQUEST['tag_id'] ) ? $_REQUEST['tag_id'] : array( $_REQUEST['tag_id'] ) ),
 					'operator' => 'IN',
 				),
 			);

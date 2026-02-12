@@ -6283,16 +6283,16 @@ table.wp-list-table {
 
 	.column-tags {
 		.evf-form-tags {
-			border: 1px solid #2271b1;
+			border: none;
 			padding: 4px 8px;
 			line-height: 16px;
 			min-height: unset;
 			vertical-align: middle;
 			margin-bottom: 6px;
 
-			&:hover {
-				border-color: #0a4b78;
-			}
+			// &:hover {
+			// 	border-color: #0a4b78;
+			// }
 		}
 	}
 }
