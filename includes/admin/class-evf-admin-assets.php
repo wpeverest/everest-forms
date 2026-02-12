@@ -485,6 +485,13 @@ class EVF_Admin_Assets {
 	 * Enqueue dashboard scripts (React).
 	 */
 	public function enqueue_dashboard_scripts() {
+		$screen    = get_current_screen();
+		$screen_id = $screen ? $screen->id : '';
+
+		if ( ! in_array( $screen_id, evf_get_screen_ids(), true ) ) {
+			return;
+		}
+
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		$current_page = isset( $_GET['page'] ) ? sanitize_text_field( wp_unslash( $_GET['page'] ) ) : '';
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
