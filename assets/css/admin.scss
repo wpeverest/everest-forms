@@ -997,12 +997,13 @@ body.everest-forms-builder {
 					// border-bottom-right-radius: 7px;
 					// border-bottom-left-radius: 7px;
 					// margin-bottom: 6px;
-					background-color: #eee8f7;
+					background-color: #f6f3fa;
 					padding: 8px 16px;
 					border-radius: 4px;
-					color: $evf_primary-color;
+					color: #7545bb;
 					font-weight: 500;
 					max-height: 38px !important;
+					gap: 24px;
 				}
 
 				&:hover {
@@ -1014,8 +1015,8 @@ body.everest-forms-builder {
 						float: none;
 						width: auto;
 						height: auto;
-						// display: block;
-						// font-size: 32px;
+						display: flex;
+						font-size: 32px;
 						text-align: center;
 						display: none;
 
@@ -1029,6 +1030,7 @@ body.everest-forms-builder {
 						}
 
 						&.settings::before {
+							content: '\e92f';
 						}
 
 						&.recaptcha::before {
@@ -1048,7 +1050,7 @@ body.everest-forms-builder {
 						}
 
 						&.fields::before {
-							// content: '\e92c';
+							content: '\e92f';
 						}
 
 						&.payment,
@@ -4471,7 +4473,7 @@ p.search-box {
 				position: relative;
 				margin-bottom: 20px;
 				max-width: 100%;
-				display: flex;
+				// display: flex;
 				align-items: baseline;
 				gap: 30px;
 
@@ -6283,16 +6285,16 @@ table.wp-list-table {
 
 	.column-tags {
 		.evf-form-tags {
-			border: none;
+			border: 1px solid #2271b1;
 			padding: 4px 8px;
 			line-height: 16px;
 			min-height: unset;
 			vertical-align: middle;
 			margin-bottom: 6px;
 
-			// &:hover {
-			// 	border-color: #0a4b78;
-			// }
+			&:hover {
+				border-color: #0a4b78;
+			}
 		}
 	}
 }

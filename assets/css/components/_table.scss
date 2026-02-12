@@ -202,7 +202,7 @@ $status-trash-text: #991b1b;
 
 		.select2-container {
 			width: 185px !important;
-			height: 45px !important;
+			height: 35px !important;
 		}
 
 		.select2-container .select2-selection--single {
@@ -381,9 +381,11 @@ $status-trash-text: #991b1b;
 }
 
 .search-box {
-	right: 52px;
+	// right: 52px;
 	margin: 0;
 	z-index: 10;
+	text-align: end;
+	position: relative;
 
 	label {
 		display: none;
@@ -1356,8 +1358,8 @@ $status-trash-text: #991b1b;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		top: 29.5%;
-		right: 66px;
+		top: 50%;
+		right: 16px;
 		-ms-transform: translateY(-50%);
 		transform: translateY(-50%);
 
