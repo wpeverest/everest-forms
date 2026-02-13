@@ -986,9 +986,10 @@ body.everest-forms-builder {
 				font-family: inherit;
 				// padding: 0 12px;
 				align-items: center;
-				// padding: 8px 16px;
+				padding: 8px 16px;
+				border-radius: 4px;
 				border: none transparent;
-				max-height: 38px !important;
+				// max-height: 38px !important;
 				// transition: 0.3s background-color ease-in-out;
 				background: none;
 
@@ -996,6 +997,19 @@ body.everest-forms-builder {
 				&.nav-tab-active {
 					background-color: #f6f3fa;
 					color: #7545bb;
+
+					.evf-nav-icon {
+						&.fields,
+						&.settings,
+						&.integrations,
+						&.payments {
+							&::before {
+								filter: brightness(0) saturate(100%) invert(26%) sepia(77%)
+									saturate(1950%) hue-rotate(249deg) brightness(84%)
+									contrast(81%);
+							}
+						}
+					}
 				}
 
 				&:hover {
@@ -1040,6 +1054,16 @@ body.everest-forms-builder {
 
 						&.pdf-submission::before {
 							content: '\e023';
+						}
+
+						&.fields,
+						&.settings,
+						&.integrations,
+						&.payments {
+							&::before {
+								width: 20px;
+								height: 20px;
+							}
 						}
 
 						&.fields::before {
@@ -2436,7 +2460,7 @@ p.search-box {
 			}
 
 			.evf-nav-tab-wrapper {
-				gap: 4px;
+				gap: 10px;
 				overflow: unset !important;
 			}
 		}
