@@ -90,12 +90,7 @@ const Header = ({ hideSiteAssistant = false }) => {
 	const renderNavLink = (route, label, external, showExternalIcon = false) => {
 		const convertedRoute = convertRoute(route, isNonDashboardPage, adminURL);
 		const isExternal = external || isExternalRoute(convertedRoute);
-		const isActive = isRouteActive(
-			route,
-			location.pathname,
-			isSettingsPage,
-			pageType,
-		);
+	const isActive = isRouteActive(route, location.pathname, pageType);
 		const shouldUseExternalLink = isNonDashboardPage || isExternal;
 		const shouldShowIcon = showExternalIcon;
 

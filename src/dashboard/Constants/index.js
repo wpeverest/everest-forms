@@ -175,32 +175,62 @@ export const isExternalRoute = (route) => {
 /**
  * Check if route is active
  * @param {string} route - The route path
- * @param {string} currentPath - Current location path
- * @param {boolean} isSettingsPage - Whether we're on settings page
- * @param {string} pageType - Current page type (settings, entries, analytics, etc.)
+ * @param {string} currentPath - Current location path (from React Router)
+ * @param {string} pageType - Current page type (settings, entries, analytics, forms, etc.)
  * @returns {boolean}
  */
-export const isRouteActive = (route, currentPath, isSettingsPage, pageType) => {
-	// Check for analytics page
-	if (pageType === 'analytics' && route.includes('everest-forms-analytics')) {
-		return true;
-	}
-	// Check for entries page
-	if (pageType === 'entries' && route.includes('evf-entries')) {
+export const isRouteActive = (route, currentPath, pageType) => {
+	// Get current page from URL parameters
+	const urlParams = new URLSearchParams(window.location.search);
+	const currentPage = urlParams.get('page');
+
+	// Check for WordPress admin pages by URL parameter
+	if (
+		currentPage === 'everest-forms-analytics' &&
+		route.includes('everest-forms-analytics')
+	) {
 		return true;
 	}
 
-	// check for forms page
-	if (pageType === 'forms' && route.includes('evf-builder')) {
+	if (currentPage === 'evf-entries' && route.includes('evf-entries')) {
 		return true;
 	}
 
-	// Check for settings page
-	if (isSettingsPage && route.includes('evf-settings')) {
+	if (currentPage === 'evf-builder' && route.includes('evf-builder')) {
 		return true;
 	}
-	if (!isSettingsPage && !isExternalRoute(route)) {
-		return currentPath === route;
+
+	if (currentPage === 'evf-settings' && route.includes('evf-settings')) {
+		return true;
 	}
+
+	// For dashboard internal routes (hash-based navigation)
+	if (currentPage === 'evf-dashboard' || !currentPage) {
+		// Check if it's a hash route
+		const hash = window.location.hash.replace('#', '');
+
+		if (!route.includes('admin.php') && !route.includes('?page=')) {
+			// This is an internal route
+			if (hash === '' && route === '/') {
+				return true;
+			}
+			if (hash && route === `/${hash}`) {
+				return true;
+			}
+			if (hash && route === hash) {
+				return true;
+			}
+			// Use React Router's currentPath as fallback
+			if (currentPath === route) {
+				return true;
+			}
+		}
+	}
+
+	// Check external routes like free-vs-pro
+	if (route.includes('everestforms.net/free-vs-pro')) {
+		return false; // External links are never "active"
+	}
+
 	return false;
 };

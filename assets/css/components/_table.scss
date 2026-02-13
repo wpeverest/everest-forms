@@ -566,7 +566,7 @@ $status-trash-text: #991b1b;
 
 		th {
 			// Table Top Width
-			// width: auto !important;
+			width: auto !important;
 			padding: 14px 16px;
 			background: $evf-bg-white;
 			border-top: none !important;
@@ -616,6 +616,15 @@ $status-trash-text: #991b1b;
 			&.column-status {
 				width: 10%;
 			}
+
+			&.column-shortcode {
+				width: 22em !important;
+			}
+
+			&.column-enabled {
+				width: 8em !important;
+			}
+
 			&.column-primary {
 				width: 20%;
 			}
