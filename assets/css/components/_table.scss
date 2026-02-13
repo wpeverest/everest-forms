@@ -522,6 +522,17 @@ $status-trash-text: #991b1b;
 	}
 }
 
+.everest-forms-table-container {
+	all: unset;
+	overflow-x: auto;
+	width: 100%;
+	display: block;
+
+	 table{
+		min-width: 900px;
+	 }
+}
+
 .evf-base-list-table,
 .wp-list-table.widefat.evf-base-list-table,
 .everest-forms-table {
@@ -535,6 +546,7 @@ $status-trash-text: #991b1b;
 	box-shadow: none;
 	margin-top: 32px;
 	margin-bottom: 0;
+	// min-width: 900px;
 
 	thead th.column-more,
 	tbody td.column-more {
@@ -553,6 +565,7 @@ $status-trash-text: #991b1b;
 		}
 
 		th {
+			width: auto !important;
 			padding: 14px 16px;
 			background: $evf-bg-white;
 			border-top: none !important;
@@ -591,7 +604,7 @@ $status-trash-text: #991b1b;
 			}
 
 			&.column-indicators {
-				width: 3%;
+				width: 2.2em !important;
 			}
 			&.column-id {
 				width: 6%;
@@ -625,6 +638,7 @@ $status-trash-text: #991b1b;
 			&.column-actions {
 				width: 30%;
 			}
+
 			a {
 				font-size: 14px;
 				font-weight: 600;
@@ -642,6 +656,7 @@ $status-trash-text: #991b1b;
 				transition:
 					background-color 0.15s ease,
 					color 0.15s ease;
+				// overflow: unset;
 
 				&:hover {
 					background: none;
@@ -655,6 +670,7 @@ $status-trash-text: #991b1b;
 					text-decoration: none;
 					color: inherit;
 					transition: color 0.15s ease;
+					overflow: unset;
 
 					&:focus {
 						outline: none;
@@ -916,6 +932,7 @@ $status-trash-text: #991b1b;
 						opacity: 0;
 						margin-top: 4px;
 						display: flex;
+						flex-wrap: wrap;
 						gap: 4px;
 						font-size: 12px;
 						font-weight: 400;

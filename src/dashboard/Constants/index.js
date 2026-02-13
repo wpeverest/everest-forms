@@ -25,6 +25,12 @@ let ROUTES = [
 		key: 'siteAssistant',
 	},
 	{
+		route: `${cleanAdminURL}/admin.php?page=evf-builder`,
+		label: __('All forms', 'everest-forms'),
+		external: true,
+		key: 'forms',
+	},
+	{
 		route: `${cleanAdminURL}/admin.php?page=evf-entries`,
 		label: __('Entries', 'everest-forms'),
 		external: true,
@@ -36,12 +42,7 @@ let ROUTES = [
 		external: true,
 		key: 'settings',
 	},
-	{
-		route: `${cleanAdminURL}/admin.php?page=evf-builder`,
-		label: __('All forms', 'everest-forms'),
-		external: true,
-		key: 'forms',
-	},
+
 	{
 		route: '/features',
 		label: __('Addons', 'everest-forms'),

@@ -6072,7 +6072,7 @@ p.search-box {
 .everest-forms-export-form,
 .everest-forms-form-migrator {
 	background: $color-white;
-	max-width: 700px;
+	max-width: 100%;
 	padding: 20px;
 	margin-top: 20px;
 	box-shadow: 1px 3px 10px transparentize($color_gray-base, 0.95);
@@ -10023,7 +10023,7 @@ img.ui-datepicker-trigger {
 .everest-forms_page_evf-settings,
 .everest-forms_page_evf-tools {
 	.everest-forms {
-		padding: 20px;
+		// padding: 20px;
 		overflow: hidden;
 	}
 }
@@ -10070,7 +10070,7 @@ img.ui-datepicker-trigger {
 			flex-direction: column;
 			background: #fafafc;
 			border-right: 1px solid #ededed;
-			padding: 32px 0 20px;
+			padding: 0px 0 20px;
 			width: 300px;
 			overflow-x: hidden;
 			max-width: 100%;
@@ -10132,7 +10132,7 @@ img.ui-datepicker-trigger {
 						display: flex;
 						padding: 16px 20px;
 						align-items: center;
-						gap: 16px;
+						gap: 24px;
 						min-height: 54px;
 						border-bottom: 1px solid #ededed;
 						position: relative;

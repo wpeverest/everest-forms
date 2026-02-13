@@ -24,7 +24,7 @@ const App = () => {
 			<HashRouter>
 				<ChakraProvider theme={Theme}>
 					<QueryClientProvider client={queryClient}>
-						<Container maxW="100%">
+						<Container maxW="100%" padding={0}>
 							<Router />
 						</Container>
 					</QueryClientProvider>

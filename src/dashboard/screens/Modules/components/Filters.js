@@ -31,101 +31,101 @@ const Filters = ({
 	onSearchChange,
 	onReset
 }) => {
-	
+
 	const selectStyles = {
 		control: (base) => ({
 			...base,
-			backgroundColor: "white",
-			borderColor: "#E5E7EB",
-			width: "140px",
-			minHeight: "38px",
-			cursor: "pointer",
-			borderRadius: "8px",
-			fontSize: "14px",
-			pointerEvents: "auto",
-			boxShadow: "none",
-			"&:hover": {
-				borderColor: "#D1D5DB"
-			}
+			backgroundColor: 'white',
+			borderColor: '#E5E7EB',
+			width: '140px',
+			minHeight: '38px',
+			cursor: 'pointer',
+			borderRadius: '8px',
+			fontSize: '14px',
+			pointerEvents: 'auto',
+			boxShadow: 'none',
+			'&:hover': {
+				borderColor: '#D1D5DB',
+			},
 		}),
 		valueContainer: (base) => ({
 			...base,
-			cursor: "pointer",
-			pointerEvents: "auto",
-			padding: "2px 12px"
+			cursor: 'pointer',
+			pointerEvents: 'auto',
+			padding: '2px 12px',
 		}),
 		input: (base) => ({
 			...base,
-			cursor: "pointer",
-			pointerEvents: "auto"
+			cursor: 'pointer',
+			pointerEvents: 'auto',
 		}),
 		placeholder: (base) => ({
 			...base,
-			color: "#9CA3AF",
-			fontSize: "14px"
+			color: '#9CA3AF',
+			fontSize: '14px',
 		}),
 		singleValue: (base) => ({
 			...base,
-			color: "#374151",
-			fontSize: "14px",
-			fontWeight: "500"
+			color: '#374151',
+			fontSize: '14px',
+			fontWeight: '500',
 		}),
 		indicatorSeparator: () => ({
-			display: "none"
+			display: 'none',
 		}),
 		dropdownIndicator: (base) => ({
 			...base,
-			color: "#6B7280",
-			padding: "8px",
-			cursor: "pointer",
-			"&:hover": {
-				color: "#374151"
-			}
+			color: '#6B7280',
+			padding: '8px',
+			cursor: 'pointer',
+			'&:hover': {
+				color: '#374151',
+			},
 		}),
 		menu: (base) => ({
 			...base,
-			borderRadius: "8px",
-			boxShadow: "none",
-			border: "1px solid #E5E7EB",
-			overflow: "hidden"
+			borderRadius: '8px',
+			boxShadow: 'none',
+			border: '1px solid #E5E7EB',
+			overflow: 'hidden',
 		}),
 		menuList: (base) => ({
 			...base,
-			padding: "4px"
+			padding: '4px',
 		}),
 		option: (base, state) => ({
 			...base,
-			fontSize: "14px",
-			cursor: "pointer",
+			fontSize: '14px',
+			cursor: 'pointer',
 			backgroundColor: state.isSelected
-				? "#EEF2FF"
+				? '#EEF2FF'
 				: state.isFocused
-					? "#F9FAFB"
-					: "white",
-			color: state.isSelected ? "#4263EB" : "#374151",
-			fontWeight: state.isSelected ? "600" : "400",
-			borderRadius: "4px",
-			margin: "2px 0",
-			"&:active": {
-				backgroundColor: "#EEF2FF"
-			}
-		})
+					? '#F9FAFB'
+					: 'white',
+			color: state.isSelected ? '#7545bb' : '#374151',
+			fontWeight: state.isSelected ? '600' : '400',
+			borderRadius: '4px',
+			margin: '2px 0',
+			'&:active': {
+				backgroundColor: '#EEF2FF',
+			},
+		}),
 	};
 
 	return (
-		<Box bg="white" borderRadius="lg" p={{ base: "4", md: "5" }} mb="4">
+		<Box bg="white" borderRadius="lg" p={{ base: '4', md: '5' }} mb="4">
 			<Stack
-				direction={{ base: "column", lg: "row" }}
-				justify={{ base: "flex-start", lg: "space-between" }}
-				align={{ base: "stretch", lg: "center" }}
-				spacing={{ base: "3", md: "4" }}
+				direction={{ base: 'column', lg: 'row' }}
+				justify={{ base: 'flex-start', lg: 'space-between' }}
+				align={{ base: 'stretch', lg: 'center' }}
+				spacing={{ base: '3', md: '4' }}
 			>
 				<HStack
-					spacing={{ base: "2", sm: "3" }}
-					flexWrap={{ base: "wrap", sm: "nowrap" }}
-					w={{ base: "full", lg: "auto" }}
+					spacing={{ base: '2', sm: '3' }}
+					flexWrap={{ base: 'wrap', sm: 'nowrap' }}
+					w={{ base: 'full', lg: 'auto' }}
 				>
-					<Box w={{ base: "calc(50% - 4px)", sm: "140px" }}>
+					<Box w={{ base: 'calc(50% - 4px)', sm: '140px' }}>
 						<Select
 							instanceId="plan-select"
 							options={planOptions}
@@ -140,7 +140,7 @@ const Filters = ({
 							chakraStyles={selectStyles}
 						/>
 					</Box>
-					<Box w={{ base: "calc(50% - 4px)", sm: "140px" }}>
+					<Box w={{ base: 'calc(50% - 4px)', sm: '140px' }}>
 						<Select
 							instanceId="sort-select"
 							options={sortOptions}
@@ -155,7 +155,7 @@ const Filters = ({
 							chakraStyles={selectStyles}
 						/>
 					</Box>
-					<Box w={{ base: "calc(50% - 4px)", sm: "140px" }}>
+					<Box w={{ base: 'calc(50% - 4px)', sm: '140px' }}>
 						<Select
 							instanceId="status-select"
 							options={statusOptions}
@@ -172,10 +172,7 @@ const Filters = ({
 					</Box>
 				</HStack>
 
-				<HStack
-					spacing="3"
-					w={{ base: "full", lg: "auto" }}
-				>
+				<HStack spacing="3" w={{ base: 'full', lg: 'auto' }}>
 					<Tooltip
 						label="Reset all filters"
 						placement="top"
@@ -206,16 +203,16 @@ const Filters = ({
 								color: 'gray.700',
 							}}
 							_focus={{
-								borderColor: '#4263EB',
+								borderColor: '#7545bb',
 							}}
 							onClick={onReset}
 						/>
 					</Tooltip>
 
 					<InputGroup
-						maxW={{ base: "full", lg: "320px" }}
-						w={{ base: "full", lg: "320px" }}
-						flex={{ base: "1", lg: "0 0 auto" }}
+						maxW={{ base: 'full', lg: '320px' }}
+						w={{ base: 'full', lg: '320px' }}
+						flex={{ base: '1', lg: '0 0 auto' }}
 					>
 						<InputLeftElement pointerEvents="none" h="38px">
 							<Search h="4" w="4" color="gray.400" />
@@ -234,7 +231,7 @@ const Filters = ({
 								borderColor: '#D1D5DB',
 							}}
 							_focus={{
-								borderColor: '#4263EB',
+								borderColor: '#7545bb',
 								outline: 'none',
 							}}
 							_placeholder={{

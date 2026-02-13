@@ -503,7 +503,7 @@ const Modules = () => {
 
 	return (
 		<Box top="var(--wp-admin--admin-bar--height, 0)" zIndex={1} minH="100vh">
-			<Container maxW="100%" p={{ base: '12px', sm: '16px', md: '20px' }}>
+			<Container maxW="100%" p={{ base: '12px', sm: '16px', md: '20px' }} padding="24px">
 				{state.isLoading || isQueryLoading || !state.modulesLoaded ? (
 					<AddonsSkeleton />
 				) : (

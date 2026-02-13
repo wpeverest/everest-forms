@@ -87,6 +87,88 @@ abstract class EVF_Base_List_Table extends WP_List_Table {
 	}
 
 	/**
+	 * Display content above the table.
+	 *
+	 * This method can be overridden by child classes to add custom content
+	 * above the table structure (before tablenav and the actual table).
+	 *
+	 * @since 3.4.3
+	 */
+	protected function display_above_table() {
+		/**
+		 * Hook to add content above the table.
+		 *
+		 * @param EVF_Base_List_Table $table The current table instance.
+		 */
+		do_action( 'everest_forms_above_table', $this );
+
+		// Default implementation - adds the everest-forms-extra-table-nav div
+		?>
+		<div class="everest-forms-extra-table-nav">
+			<?php
+			/**
+			 * Hook to add content inside the extra table nav div.
+			 *
+			 * @param EVF_Base_List_Table $table The current table instance.
+			 */
+			do_action( 'everest_forms_extra_table_nav_content', $this );
+			?>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Display the table with above-table content support.
+	 *
+	 * Overrides parent display() to add content above the table and wrap everything in a div.
+	 */
+	public function display() {
+		// Opening wrapper div
+		echo '<div class="everest-forms-table-wrapper">';
+
+		// Display content above the table.
+		$this->display_above_table();
+
+		$singular = $this->_args['singular'];
+
+		$this->display_tablenav( 'top' );
+
+		$this->screen->render_screen_reader_content( 'heading_list' );
+		?>
+		<div class="everest-forms-table-container">
+			<table class="wp-list-table <?php echo implode( ' ', $this->get_table_classes() ); ?>">
+				<thead>
+				<tr>
+					<?php $this->print_column_headers(); ?>
+				</tr>
+				</thead>
+
+				<tbody id="the-list"
+					<?php
+					if ( $singular ) {
+						echo " data-wp-lists='list:$singular'";
+					}
+					?>
+					>
+					<?php $this->display_rows_or_placeholder(); ?>
+				</tbody>
+
+				<tfoot>
+				<tr>
+					<?php $this->print_column_headers( false ); ?>
+				</tr>
+				</tfoot>
+
+			</table>
+		</div>
+		<?php
+		$this->display_tablenav( 'bottom' );
+
+		// Closing wrapper div
+		echo '</div>';
+	}
+
+	/**
 	 * Table list views.
 	 *
 	 * Default implementation. Child classes can override this method.

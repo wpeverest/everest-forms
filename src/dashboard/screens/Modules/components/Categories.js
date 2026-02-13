@@ -179,7 +179,7 @@ const Categories = ({
 								}}
 								_hover={{
 									'& > div:first-of-type': {
-										color: shouldHighlight ? '#4263EB' : '#1a202c',
+										color: shouldHighlight ? '#7545bb' : '#1a202c',
 										transform: 'translateY(-1px)',
 									},
 								}}
@@ -187,7 +187,7 @@ const Categories = ({
 								<Text
 									fontSize={{ base: '14px', sm: '15px' }}
 									fontWeight={shouldHighlight ? '600' : '500'}
-									color={shouldHighlight ? '#4263EB' : '#6B7280'}
+									color={shouldHighlight ? '#7545bb' : '#6B7280'}
 									transition="all 0.2s ease"
 									whiteSpace="nowrap"
 									userSelect="none"
@@ -203,7 +203,7 @@ const Categories = ({
 										left="0"
 										right="0"
 										height="3px"
-										bg="#4263EB"
+										bg="#7545bb"
 										borderRadius="3px 3px 0 0"
 										transition="all 0.2s ease"
 									/>

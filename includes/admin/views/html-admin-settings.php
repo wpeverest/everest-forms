@@ -31,11 +31,11 @@ $use_react_header = apply_filters( 'everest_forms_use_react_header', true, $curr
 			<div class="everest-forms-settings">
 				<div class="everest-forms-settings-wrapper">
 					<header class="everest-forms-header">
-						<div class="everest-forms-header--top">
+						<!-- <div class="everest-forms-header--top">
 							<div class="everest-forms-header--top-logo">
 								<img src="<?php echo esc_url( evf()->plugin_url() . '/assets/images/icons/Everest-forms-Logo.png' ); ?>" alt="">
 							</div>
-						</div>
+						</div> -->
 						<div class="everest-forms-header--nav">
 							<nav class="nav-tab-wrapper evf-nav-tab-wrapper">
 								<?php
