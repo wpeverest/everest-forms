@@ -109,7 +109,7 @@ $status-trash-text: #991b1b;
 	align-items: center;
 	justify-content: flex-start;
 	gap: 16px;
-	margin-bottom: 16px;
+	// margin-bottom: 16px;
 	padding: 0;
 	background: transparent;
 	border: none;
@@ -528,9 +528,9 @@ $status-trash-text: #991b1b;
 	width: 100%;
 	display: block;
 
-	 table{
+	table {
 		min-width: 900px;
-	 }
+	}
 }
 
 .evf-base-list-table,
@@ -565,7 +565,8 @@ $status-trash-text: #991b1b;
 		}
 
 		th {
-			width: auto !important;
+			// Table Top Width
+			// width: auto !important;
 			padding: 14px 16px;
 			background: $evf-bg-white;
 			border-top: none !important;
@@ -1407,3 +1408,17 @@ $status-trash-text: #991b1b;
 		color: #999999 !important;
 	}
 }
+
+// .everest-forms-entry-delete {
+// 	span.dashicons.dashicons-trash {
+// 		&::before {
+// 			width: 18px;
+// 			height: 18px;
+// 			display: block;
+// 			background-size: contain;
+// 			background-repeat: none;
+// 			background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M4 20V6a1 1 0 0 1 2 0v14a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V6a1 1 0 1 1 2 0v14a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3'/%3E%3Cpath d='M21 5a1 1 0 1 1 0 2H3a1 1 0 0 1 0-2z'/%3E%3Cpath d='M15 6V4a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v2a1 1 0 0 1-2 0V4a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v2a1 1 0 1 1-2 0'/%3E%3C/svg%3E");
+// 			color: red;
+// 		}
+// 	}
+// }
