@@ -417,7 +417,7 @@ img.help_tip {
 		}
 
 		input[type='text'] {
-			min-height: 36px;
+			min-height: 38px;
 			font-size: 13px;
 			line-height: 20px;
 			width: -webkit-fill-available;
@@ -428,7 +428,7 @@ img.help_tip {
 			box-shadow: none;
 			margin: 0;
 			border-right: 0;
-			background: #f8f8fa;
+			background: none;
 			border-radius: 4px 0 0 4px;
 			flex: 1;
 
@@ -1050,7 +1050,7 @@ body.everest-forms-builder {
 						}
 
 						&.fields::before {
-							content: '\e92f';
+							content: '\e92c';
 						}
 
 						&.payment,
@@ -3816,6 +3816,7 @@ p.search-box {
 						transition:
 							0.5s border,
 							0.5s background-color;
+						text-align: left;
 
 						&.evf-hover {
 							&.evf-item-hover {
@@ -6280,7 +6281,7 @@ table.wp-list-table {
 	}
 
 	.column-title {
-		width: 450px;
+		width: 25% !important;
 		.locate-form {
 			margin: 2px 0 0;
 			font-size: 11px;
@@ -6289,27 +6290,32 @@ table.wp-list-table {
 	}
 
 	.column-tags {
-		width: 200px;
-	}
-
-	.column-date {
-		// width: 12%;
-	}
-
-	.column-entries {
-		width: 74px;
-	}
-
-	.column-actions {
-		width: 175px;
+		width: 12%;
 	}
 
 	.column-shortcode {
-		width: 350px;
+		width: 25%;
 	}
 
 	.column-enabled {
-		width: 100px;
+		width: 10%;
+		padding-left: 32px !important;
+	}
+
+	.column-date {
+		width: 10%;
+	}
+
+	.column-author {
+		width: 10%;
+	}
+
+	.column-entries {
+		width: 8%;
+	}
+
+	.column-actions {
+		width: 25%;
 	}
 
 	.column-status img {
@@ -6908,9 +6914,9 @@ img.ui-datepicker-trigger {
 
 	&.select2-container--focus {
 		.select2-selection--multiple {
-			border-color: #5b9dd9;
-			box-shadow: 0 0 2px rgba(30, 140, 190, 0.8);
-			outline: 2px solid transparent;
+			border-color: #7545bb;
+			// box-shadow: 0 0 2px rgba(30, 140, 190, 0.8);
+			outline: 1px solid #7545bb;
 		}
 	}
 }
@@ -7054,13 +7060,14 @@ img.ui-datepicker-trigger {
 	&.select2-container--focus .select2-selection--single,
 	&.select2-container--open .select2-selection--single,
 	&.select2-container--open .select2-selection--multiple {
-		border-color: #8c64c6;
+		border-color: #7545bb;
 		// box-shadow: 0 0 0 1px #007cba;
 	}
 
 	.selection {
 		.select2-selection--multiple {
-			min-height: 36px;
+			//Tags
+			max-height: 38px;
 			line-height: 1.5;
 			border-radius: 4px;
 			border-color: #7e8993;
@@ -8430,7 +8437,7 @@ img.ui-datepicker-trigger {
 
 			li {
 				list-style: none;
-				margin: 5px 5px 0 0;
+				// margin: 5px 5px 0 0;
 
 				&::before {
 					content: '';

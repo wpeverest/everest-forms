@@ -477,6 +477,7 @@ $status-trash-text: #991b1b;
 		font-size: 14px;
 		line-height: 20px;
 		border-radius: 4px;
+		top: 0 !important;
 		font-weight: 500;
 		text-decoration: none;
 		transition: all 0.3s ease-in-out;
@@ -565,7 +566,7 @@ $status-trash-text: #991b1b;
 				BlinkMacSystemFont,
 				'Segoe UI',
 				sans-serif;
-			font-size: 13px;
+			font-size: 14px !important;
 			font-weight: 600;
 			line-height: 20px;
 			text-transform: none;
