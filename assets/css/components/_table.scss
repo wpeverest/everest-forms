@@ -383,9 +383,9 @@ $status-trash-text: #991b1b;
 .search-box {
 	// right: 52px;
 	margin: 0;
-	z-index: 10;
-	text-align: end;
-	position: relative;
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
 
 	label {
 		display: none;
@@ -412,6 +412,7 @@ $status-trash-text: #991b1b;
 		background-repeat: no-repeat;
 		background-size: 20px;
 		align-items: center;
+		margin-right: -18px;
 
 		svg {
 			color: red !important;
@@ -1392,7 +1393,7 @@ $status-trash-text: #991b1b;
 
 .evf-search {
 	#search-submit {
-		position: absolute;
+		// position: absolute;
 		border: 0;
 		background: 0 0;
 		padding: 0;
@@ -1401,10 +1402,11 @@ $status-trash-text: #991b1b;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		top: 50%;
-		right: 16px;
-		-ms-transform: translateY(-50%);
-		transform: translateY(-50%);
+		transform: translateX(-14px);
+		// top: 50%;
+		// right: 16px;
+		// -ms-transform: translateY(-50%);
+		// transform: translateY(-50%);
 
 		&:focus {
 			color: none;
