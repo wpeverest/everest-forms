@@ -34,7 +34,7 @@ $status-trash-text: #991b1b;
 	max-width: 100%;
 	margin: 24px;
 	padding: 24px 28px;
-	border-radius: $evf-radius-xl;
+	border-radius: $evf-radius-lg;
 	background: $evf-bg-white;
 	border: 1px solid $evf-border;
 
@@ -46,7 +46,7 @@ $status-trash-text: #991b1b;
 .subsubsub {
 	display: flex;
 	padding: 0;
-	margin: 10px 0 14px 0;
+	margin: 0px 0 14px 0;
 	list-style: none;
 	font-size: 0;
 
@@ -459,6 +459,7 @@ $status-trash-text: #991b1b;
 	gap: 16px;
 	flex-wrap: wrap;
 	justify-content: space-between;
+	margin-bottom: 10px;
 
 	.evf-forms-title {
 		margin: 0;
@@ -589,26 +590,39 @@ $status-trash-text: #991b1b;
 			}
 
 			&.column-indicators {
-				width: 40px;
+				width: 3%;
 			}
-
+			&.column-id {
+				width: 6%;
+			}
+			&.column-sn {
+				width: 6%;
+			}
 			&.column-status {
+				width: 10%;
+			}
+			&.column-primary {
+				width: 20%;
 			}
 
-			&.column-form {
-				width: 480px;
+			&.column-evf-field-subject {
+				width: 10%;
+			}
+
+			&.column-evf-field-email {
+				width: 15%;
 			}
 
 			&.column-date {
-				width: 180px;
+				width: 10%;
 			}
 
 			&.column-entry {
-				width: 550px;
+				width: 30%;
 			}
 
 			&.column-actions {
-				width: 200px;
+				width: 30%;
 			}
 			a {
 				font-size: 14px;
@@ -629,7 +643,7 @@ $status-trash-text: #991b1b;
 					color 0.15s ease;
 
 				&:hover {
-					background: $evf-primary-light;
+					background: none;
 					color: $evf-primary;
 				}
 
@@ -888,7 +902,7 @@ $status-trash-text: #991b1b;
 					}
 
 					a {
-						font-weight: 400;
+						font-weight: 500;
 
 						&:hover {
 							color: darken($evf-primary, 10%);
@@ -1061,10 +1075,11 @@ $status-trash-text: #991b1b;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	padding: 20px 0;
+	// padding: 20px 0;
 	margin: 0;
-	margin-top: 16px;
+	// margin-top: 16px;
 	margin-bottom: 0;
+	height: 0;
 	border: none;
 	background: transparent;
 	overflow: visible;

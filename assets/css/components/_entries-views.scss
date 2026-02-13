@@ -6,6 +6,7 @@ $primary-color: #7c3aed;
 $text-dark: #1f2937;
 $text-medium: #6b7280;
 $text-light: #9ca3af;
+$text-muted: #6b6b6b;
 $border-color: #e5e7eb;
 $bg-light: #f9fafb;
 $bg-white: #ffffff;
@@ -14,8 +15,9 @@ $success-color: #10b981;
 $warning-color: #f59e0b;
 $info-color: #3b82f6;
 
-$border-radius: 6px;
+$border-radius: 4px;
 $border-radius-sm: 6px;
+$border-radius-md: 8px;
 $spacing-xs: 8px;
 $spacing-sm: 12px;
 $spacing-md: 16px;
@@ -65,6 +67,7 @@ $spacing-xl: 24px;
 	align-items: center;
 	justify-content: space-between;
 	border-bottom: 1px solid $border-color;
+	height: 70px;
 	// @include card-shadow;
 
 	.evf-entry-header-left {
@@ -119,7 +122,7 @@ $spacing-xl: 24px;
 		padding: $spacing-xs $spacing-md;
 		background-color: $bg-white;
 		border: 1px solid $border-color;
-		border-radius: $border-radius-sm;
+		border-radius: $border-radius;
 		color: $text-dark;
 		font-size: 14px;
 		font-weight: 500;
@@ -134,8 +137,20 @@ $spacing-xl: 24px;
 		}
 
 		&:hover:not([disabled]) {
-			background-color: $bg-light;
-			border-color: darken($border-color, 10%);
+			background-color: #faf8fc;
+			border-color: $evf-primary;
+			color: $evf-primary;
+		}
+
+		&:active {
+			background-color: #faf8fc;
+			border-color: $evf-primary;
+			color: $evf-primary;
+		}
+		&:focus {
+			border-color: $evf-primary;
+			outline: none;
+			box-shadow: none;
 		}
 
 		&[disabled] {
@@ -152,7 +167,7 @@ $spacing-xl: 24px;
 	grid-template-columns: 1fr 320px;
 	gap: $spacing-xl;
 	align-items: flex-start;
-	padding: 32px;
+	padding: 24px;
 }
 
 // Main Content
@@ -271,7 +286,7 @@ $spacing-xl: 24px;
 			gap: 6px;
 			font-size: 14px;
 			font-weight: 500;
-			color: #6b6b6b;
+			color: $text-muted;
 			text-decoration: none;
 			line-height: 1;
 			cursor: pointer;
@@ -281,7 +296,7 @@ $spacing-xl: 24px;
 				width: 16px;
 				height: 16px;
 				flex-shrink: 0;
-				fill: #6b6b6b;
+				fill: $text-muted;
 			}
 
 			&:hover,
@@ -335,6 +350,10 @@ $spacing-xl: 24px;
 		box-shadow: none;
 		background: transparent;
 		margin: 0;
+		border-radius: $border-radius-sm;
+	}
+	.evf-field-container {
+		padding: 0 !important;
 	}
 
 	.postbox-header {
@@ -344,16 +363,16 @@ $spacing-xl: 24px;
 		// Override WP's default postbox-header flex that can misalign children
 		display: flex;
 		align-items: stretch;
+		margin-bottom: 20px;
 	}
 
 	// The h2 inside postbox-header acts as our card header row
-	h2.hndle {
+	.hndle {
 		display: flex !important;
 		align-items: center !important;
 		justify-content: space-between !important;
 		width: 100%;
-		min-height: 56px;
-		margin: 0 !important;
+		// min-height: 56px;
 		font-size: 18px !important;
 		font-weight: 600 !important;
 		color: $text-dark !important;
@@ -361,6 +380,7 @@ $spacing-xl: 24px;
 		background: transparent !important;
 		cursor: default;
 		gap: $spacing-xl;
+		padding-bottom: 20px;
 
 		// The title text span — takes available space
 		> span:first-child {
@@ -389,7 +409,7 @@ $spacing-xl: 24px;
 			position: static !important;
 			vertical-align: middle !important;
 			// Styling
-			color: #6b6b6b !important;
+			color: $text-muted !important;
 			font-size: 14px !important;
 			font-family: inherit;
 			font-weight: 500 !important;
@@ -444,6 +464,8 @@ $spacing-xl: 24px;
 		border: none;
 		box-shadow: none;
 		margin: 0;
+		padding: 24px 24px 0 24px !important;
+		border-radius: $border-radius-sm !important;
 	}
 
 	.evf-frontend-row {
@@ -730,16 +752,16 @@ $spacing-xl: 24px;
 		align-items: center;
 		gap: $spacing-md;
 
-		.button {
-			width: auto;
+		.button-primary {
 			min-height: 36px;
-			padding: $spacing-sm $spacing-lg;
-			border-radius: $border-radius-sm;
+			padding: 0 20px;
+			border-radius: 4px;
 			font-size: 14px;
 			line-height: 24px;
 			font-weight: 500;
 			box-shadow: none;
 			text-shadow: none;
+			background-color: #7545bb;
 			cursor: pointer;
 			@include transition;
 		}
@@ -747,13 +769,14 @@ $spacing-xl: 24px;
 		// Cancel – subtle button
 		.button-secondary,
 		.everest-forms-edit-entry-cancel {
-			background-color: $bg-white;
-			border: 1px solid $border-color;
-			color: $text-dark;
+			background: none !important;
+			border: none !important;
+			color: $text-muted;
+			font-size: 14px;
 
 			&:hover {
-				background-color: $bg-light;
-				border-color: darken($border-color, 10%);
+				background-color: none;
+				border-color: none;
 			}
 		}
 
@@ -874,6 +897,7 @@ $spacing-xl: 24px;
 
 			&:last-child {
 				border-bottom: none;
+				background: #faf8fc;
 			}
 
 			&:hover {
@@ -1019,7 +1043,7 @@ $spacing-xl: 24px;
 #everest-forms-entry-subscription,
 .evf-entry-sidebar > div {
 	background-color: $bg-white;
-	border-radius: $border-radius;
+	border-radius: $border-radius-sm;
 	overflow: hidden;
 	margin-bottom: $spacing-lg;
 	border: 1px solid $border-color;
@@ -1030,7 +1054,8 @@ $spacing-xl: 24px;
 		margin-bottom: 0;
 	}
 
-	.evf-entry-actions-header {
+	.evf-entry-actions-header,
+	.evf-section-header-actions {
 		margin: 0;
 		// padding: $spacing-md $spacing-lg;
 		font-size: 16px;
@@ -1112,7 +1137,7 @@ $spacing-xl: 24px;
 			svg {
 				width: 18px;
 				height: 18px;
-				fill: #6b6b6b;
+				fill: $text-muted;
 			}
 			// svg:hover {
 			// 	fill:red;
@@ -1154,6 +1179,10 @@ $spacing-xl: 24px;
 			.dashicons {
 				color: $primary-color;
 			}
+		}
+		&:focus {
+			box-shadow: none;
+			outline: none;
 		}
 	}
 
@@ -1323,6 +1352,10 @@ $spacing-xl: 24px;
 		text-decoration: underline;
 		color: darken($primary-color, 10%);
 	}
+	&:focus {
+		box-shadow: none;
+		outline: none;
+	}
 }
 
 // Notices
@@ -1383,11 +1416,12 @@ $spacing-xl: 24px;
 
 .evf-entry-main-content .stuffbox {
 	background-color: $bg-white;
-	border-radius: $border-radius;
+	border-radius: $border-radius-sm;
 	overflow: hidden;
 	border: 1px solid $border-color;
 	box-shadow: none;
 	padding: $spacing-xl;
+	margin: 0;
 
 	h2 {
 		margin: 0;
@@ -1564,7 +1598,7 @@ $spacing-xl: 24px;
 
 	.everest-forms-edit-entry-container {
 		form > div:not(.evf-entry-edit-actions) {
-			padding: $spacing-md;
+			padding: $spacing-md 0 $spacing-md $spacing-md;
 		}
 
 		> h2,
