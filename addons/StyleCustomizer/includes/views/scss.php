@@ -531,6 +531,13 @@ $validation_message_border_color: <?php echo evf_clean( $values['validation_mess
 						}
 					}
 				}
+
+				&.everest-forms-list-inline {
+					ul li {
+						margin-right: 20px;
+					}
+				}
+
 				input[type='checkbox'],
 				input[type='radio'] {
 					<?php if ( 'default' === $values['typography']['checkbox_radio_style_variation'] ) { ?>
