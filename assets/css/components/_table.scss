@@ -567,7 +567,7 @@ $status-trash-text: #991b1b;
 
 		th {
 			// Table Top Width
-			width: auto !important;
+			// width: unset !important;
 			padding: 14px 16px;
 			background: $evf-bg-white;
 			border-top: none !important;
@@ -1100,6 +1100,20 @@ $status-trash-text: #991b1b;
 	}
 }
 
+body {
+	&:not(&.everest-forms_page_evf-builder) {
+		.everest-forms-table-container {
+			.evf-base-list-table {
+				thead {
+					th {
+						width: auto !important;
+					}
+				}
+			}
+		}
+	}
+}
+
 .tablenav.bottom {
 	display: flex;
 	align-items: center;
@@ -1419,5 +1433,3 @@ $status-trash-text: #991b1b;
 		color: #999999 !important;
 	}
 }
-
-
