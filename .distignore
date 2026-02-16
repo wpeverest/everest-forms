@@ -3,7 +3,7 @@
 *.md
 *.zip
 *.lock
-build/
+/build/
 changelog.txt
 Gruntfile.js
 webpack.config.js
