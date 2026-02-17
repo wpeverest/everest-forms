@@ -115,6 +115,8 @@ $status-trash-text: #991b1b;
 	border: none;
 	position: relative;
 	min-height: 40px;
+	margin-top: 28px;
+}
 
 	> .alignleft.actions.bulkactions {
 		order: 1;
@@ -547,6 +549,7 @@ $status-trash-text: #991b1b;
 	box-shadow: none;
 	margin-top: 32px;
 	margin-bottom: 0;
+	margin-top: 30px;
 	// min-width: 900px;
 
 	thead th.column-more,
