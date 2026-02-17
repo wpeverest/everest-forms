@@ -169,7 +169,10 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 			queryClient.setQueryData(['siteAssistant'], data);
 			toast({
 				title: __('Success', 'everest-forms'),
-				description: __('Test email sent successfully.', 'everest-forms'),
+				description: __(
+					'Test email sent successfully. Didn’t receive it? Please check your Spam or Junk folder.',
+					'everest-forms',
+				),
 				status: 'success',
 				duration: 3000,
 				isClosable: true,
