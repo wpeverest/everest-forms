@@ -115,7 +115,6 @@ $status-trash-text: #991b1b;
 	border: none;
 	position: relative;
 	min-height: 40px;
-	margin-top: 28px;
 
 	> .alignleft.actions.bulkactions {
 		order: 1;
@@ -548,7 +547,6 @@ $status-trash-text: #991b1b;
 	box-shadow: none;
 	margin-top: 32px;
 	margin-bottom: 0;
-	margin-top: 30px;
 	// min-width: 900px;
 
 	thead th.column-more,
@@ -569,7 +567,7 @@ $status-trash-text: #991b1b;
 
 		th {
 			// Table Top Width
-			// width: unset !important;
+			width: auto !important;
 			padding: 14px 16px;
 			background: $evf-bg-white;
 			border-top: none !important;
@@ -1099,20 +1097,6 @@ $status-trash-text: #991b1b;
 
 	tfoot {
 		display: none;
-	}
-}
-
-body {
-	&:not(&.everest-forms_page_evf-builder) {
-		.everest-forms-table-container {
-			.evf-base-list-table {
-				thead {
-					th {
-						width: auto !important;
-					}
-				}
-			}
-		}
 	}
 }
 
