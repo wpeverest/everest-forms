@@ -161,7 +161,6 @@ class EVF_Admin_Menus {
 		$site_assistant_data = get_option( 'everest_forms_site_assistant', array() );
 		$all_steps_completed = isset( $site_assistant_data['all_steps_completed'] ) && $site_assistant_data['all_steps_completed'];
 
-		if ( ! $all_steps_completed ) {
 			add_submenu_page(
 				'everest-forms',
 				__( 'Site Assistant', 'everest-forms' ),
@@ -170,6 +169,18 @@ class EVF_Admin_Menus {
 				'evf-dashboard',
 				array( $this, 'dashboard_page' ),
 				-1
+			);
+
+		if ( $all_steps_completed ) {
+			add_action(
+				'admin_head',
+				function () {
+					echo '<style>
+            #toplevel_page_everest-forms .wp-submenu li.wp-first-item:has(a[href="admin.php?page=evf-dashboard"]) {
+                display: none !important;
+            }
+            </style>';
+				}
 			);
 		}
 	}
