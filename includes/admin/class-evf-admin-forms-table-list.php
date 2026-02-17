@@ -513,28 +513,35 @@ class EVF_Admin_Forms_Table_List extends EVF_Base_List_Table {
 	 *
 	 * @return array
 	 */
-	protected function get_bulk_actions() {
-		$actions = array();
+protected function get_bulk_actions() {
+    $actions = array();
 
-		if ( isset( $_GET['status'] ) && 'trash' === $_GET['status'] ) { // phpcs:ignore WordPress.Security.NonceVerification
-			if ( current_user_can( 'everest_forms_edit_forms' ) ) {
-				$actions['untrash'] = esc_html__( 'Restore', 'everest-forms' );
-			}
+    $has_tags = ! empty( FormHelper::get_all_form_tags( 'term_id' ) );
 
-			if ( current_user_can( 'everest_forms_delete_forms' ) ) {
-				$actions['delete'] = esc_html__( 'Delete permanently', 'everest-forms' );
-			}
-		} elseif ( current_user_can( 'everest_forms_delete_forms' ) ) {
-			$actions = array(
-				'trash'     => esc_html__( 'Move to trash', 'everest-forms' ),
-				'edit-tags' => esc_html__( 'Edit Tags', 'everest-forms' ),
-				'inactive'  => esc_html__( 'Inactive', 'everest-forms' ),
-				'active'    => esc_html__( 'Active', 'everest-forms' ),
-			);
-		}
+    if ( isset( $_GET['status'] ) && 'trash' === $_GET['status'] ) {
+        if ( current_user_can( 'everest_forms_edit_forms' ) ) {
+            $actions['untrash'] = esc_html__( 'Restore', 'everest-forms' );
+        }
 
-		return $actions;
-	}
+        if ( current_user_can( 'everest_forms_delete_forms' ) ) {
+            $actions['delete'] = esc_html__( 'Delete permanently', 'everest-forms' );
+        }
+    } elseif ( current_user_can( 'everest_forms_delete_forms' ) ) {
+        $actions = array(
+            'trash'     => esc_html__( 'Move to trash', 'everest-forms' ),
+        );
+
+        if ( $has_tags ) {
+            $actions['edit-tags'] = esc_html__( 'Edit Tags', 'everest-forms' );
+        }
+
+        $actions['inactive']  = esc_html__( 'Inactive', 'everest-forms' );
+        $actions['active']    = esc_html__( 'Active', 'everest-forms' );
+    }
+
+    return $actions;
+}
+
 
 	/**
 	 * Process bulk actions.
