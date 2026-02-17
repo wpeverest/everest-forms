@@ -9,7 +9,6 @@ import {
 	Divider,
 	Flex,
 	FormControl,
-	FormLabel,
 	Grid,
 	Heading,
 	HStack,
@@ -345,6 +344,9 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 			borderRadius="base"
 			border="1px"
 			borderColor="gray.100"
+			overflow="hidden"
+			width="100%"
+			minWidth="0"
 		>
 			<HStack
 				justify={'space-between'}
@@ -513,6 +515,9 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 			borderRadius="base"
 			border="1px"
 			borderColor="gray.100"
+			overflow="hidden"
+			width="100%"
+			minWidth="0"
 		>
 			<HStack
 				justify={'space-between'}
@@ -553,37 +558,66 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 				/>
 			</HStack>
 			<Collapse in={open?.sendTestEmail}>
-				<Stack gap={5}>
+				<Stack gap={5} minWidth="0" width="100%">
 					<Divider color={'gray.200'} />
-					<Text
-						fontSize="14px"
-						fontWeight="400"
-						color="grey.350"
-						lineHeight="19.3px"
+					<HStack align="flex-start" gap={3}>
+						<Text
+							fontSize="14px"
+							fontWeight="400"
+							color="grey.350"
+							lineHeight="19.3px"
+						>
+							{__(
+								"This tool sends a real test email to confirm your website can deliver messages. If you don't receive it, your email settings may need to be configured.",
+								'everest-forms',
+							)}
+						</Text>
+					</HStack>
+
+					<FormControl
+						width="100%"
+						maxWidth="100%"
+						sx={{ overflow: 'hidden' }}
+						padding="0px 1px"
 					>
-						{__(
-							'Make sure emails are being sent to your users. Test by sending a sample email to yourself.',
-							'everest-forms',
-						)}
-					</Text>
-					<FormControl gap={2}>
-						<FormLabel>
-							{__('Email Address (To send test email to)', 'everest-forms')}
-						</FormLabel>
-						<Input
-							placeholder={__('Email', 'everest-forms')}
-							type="email"
-							value={testEmail}
-							onChange={(e) => setTestEmail(e.target.value)}
-							isDisabled={sendTestEmailMutation.isLoading}
-							onKeyDown={(e) => {
-								if (e.key === 'Enter') {
-									e.preventDefault();
-									handleSendTestEmail();
-								}
-							}}
-						/>
+						<HStack align="center" spacing={4} width="100%">
+							<Text
+								fontSize="15px"
+								fontWeight="600"
+								color="grey.500"
+								whiteSpace="nowrap"
+								flexShrink={0}
+							>
+								{__('Your Email Address', 'everest-forms')}
+							</Text>
+							<Input
+								placeholder={__(
+									'Enter the address where the test email should be delivered.',
+									'everest-forms',
+								)}
+								type="email"
+								value={testEmail}
+								onChange={(e) => setTestEmail(e.target.value)}
+								isDisabled={sendTestEmailMutation.isLoading}
+								onKeyDown={(e) => {
+									if (e.key === 'Enter') {
+										e.preventDefault();
+										handleSendTestEmail();
+									}
+								}}
+								sx={{
+									padding: '0 12px !important',
+									paddingRight: '12px !important',
+									boxSizing: 'border-box !important',
+									width: '100% !important',
+									maxWidth: '100% !important',
+									border: '1px solid #e1e1e1 !important',
+									fontSize: '14px !important',
+								}}
+							/>
+						</HStack>
 					</FormControl>
+
 					<Button
 						width={'fit-content'}
 						colorScheme="primary"
@@ -612,6 +646,9 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 			borderRadius="base"
 			border="1px"
 			borderColor="gray.100"
+			overflow="hidden"
+			width="100%"
+			minWidth="0"
 		>
 			<HStack
 				justify={'space-between'}

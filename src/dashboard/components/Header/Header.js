@@ -173,18 +173,9 @@ const Header = ({ hideSiteAssistant = false }) => {
 					<Stack direction="row" minH="70px" justify="space-between">
 						{/* Left Side - Logo and Main Navigation */}
 						<Stack direction="row" align="center" gap="7">
-							<Link
-								as={isNonDashboardPage ? 'a' : NavLink}
-								to={isNonDashboardPage ? undefined : '/'}
-								href={
-									isNonDashboardPage
-										? `${adminURL}/admin.php?page=evf-dashboard`
-										: undefined
-								}
-							>
+							<Box>
 								<EVF h="10" w="10" />
-							</Link>
-
+							</Box>
 							<IntersectObserver routes={leftRoutes}>
 								{leftRoutes.map(({ route, label, external }) =>
 									renderNavLink(route, label, external),

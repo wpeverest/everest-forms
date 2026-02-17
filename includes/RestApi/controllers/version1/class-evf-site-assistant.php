@@ -340,7 +340,7 @@ class EVF_Site_Assistant {
 			return rest_ensure_response(
 				array(
 					'success' => true,
-					'message' => __( 'Test email sent successfully.', 'everest-forms' ),
+					'message' => __( 'Test email sent successfully. Didn’t receive it? Please check your Spam or Junk folder.', 'everest-forms' ),
 					'data'    => array(
 						'test_email_sent'            => true,
 						'skipped_steps'              => $skipped_steps,
