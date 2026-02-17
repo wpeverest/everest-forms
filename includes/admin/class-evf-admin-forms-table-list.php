@@ -394,81 +394,82 @@ class EVF_Admin_Forms_Table_List extends EVF_Base_List_Table {
 	 * @return array
 	 */
 	protected function get_views() {
-		global $wpdb;
+		return array();
+		// global $wpdb;
 
-		$class        = '';
-		$status_links = array();
-		$num_posts    = array();
+		// $class        = '';
+		// $status_links = array();
+		// $num_posts    = array();
 
-		$total_posts = $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->posts} WHERE post_type = 'everest_form' AND post_status IN ( 'publish', 'inactive' )" ); // WPCS: cache ok, db call ok.
-		$all_args    = array( 'page' => 'evf-builder' );
-		if ( empty( $class ) && empty( $_REQUEST['status'] ) ) {
-			$class = 'current';
-		}
+		// $total_posts = $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->posts} WHERE post_type = 'everest_form' AND post_status IN ( 'publish', 'inactive' )" ); // WPCS: cache ok, db call ok.
+		// $all_args    = array( 'page' => 'evf-builder' );
+		// if ( empty( $class ) && empty( $_REQUEST['status'] ) ) {
+		// $class = 'current';
+		// }
 
-		$all_inner_html = sprintf(
-			/* translators: %s: count */
-			_nx(
-				'All <span class="count">(%s)</span>',
-				'All <span class="count">(%s)</span>',
-				$total_posts,
-				'posts',
-				'everest-forms'
-			),
-			number_format_i18n( $total_posts )
-		);
+		// $all_inner_html = sprintf(
+		// // * translators: %s: count */
+		// _nx(
+		// 'All <span class="count">(%s)</span>',
+		// 'All <span class="count">(%s)</span>',
+		// $total_posts,
+		// 'posts',
+		// 'everest-forms'
+		// ),
+		// number_format_i18n( $total_posts )
+		// );
 
-		$status_links['all'] = $this->get_edit_link( $all_args, $all_inner_html, $class );
+		// $status_links['all'] = $this->get_edit_link( $all_args, $all_inner_html, $class );
 
-		foreach ( get_post_stati( array( 'show_in_admin_status_list' => true ), 'objects' ) as $status ) {
-			$class                     = '';
-			$status_name               = $status->name;
-			$num_posts[ $status_name ] = count( evf()->form->get_multiple( array( 'post_status' => $status_name ) ) );
+		// foreach ( get_post_stati( array( 'show_in_admin_status_list' => true ), 'objects' ) as $status ) {
+		// $class                     = '';
+		// $status_name               = $status->name;
+		// $num_posts[ $status_name ] = count( evf()->form->get_multiple( array( 'post_status' => $status_name ) ) );
 
-			if ( ! in_array( $status_name, array( 'publish', 'draft', 'pending', 'trash', 'future', 'private', 'auto-draft', 'approved', 'denied' ), true ) || empty( $num_posts[ $status_name ] ) ) {
-				continue;
-			}
+		// if ( ! in_array( $status_name, array( 'publish', 'draft', 'pending', 'trash', 'future', 'private', 'auto-draft', 'approved', 'denied' ), true ) || empty( $num_posts[ $status_name ] ) ) {
+		// continue;
+		// }
 
-			if ( isset( $_REQUEST['status'] ) && $status_name === $_REQUEST['status'] ) { // phpcs:ignore WordPress.Security.NonceVerification
-				$class = 'current';
-			}
+		// if ( isset( $_REQUEST['status'] ) && $status_name === $_REQUEST['status'] ) { // phpcs:ignore WordPress.Security.NonceVerification
+		// $class = 'current';
+		// }
 
-			$status_args = array(
-				'page'   => 'evf-builder',
-				'status' => $status_name,
-			);
+		// $status_args = array(
+		// 'page'   => 'evf-builder',
+		// 'status' => $status_name,
+		// );
 
-			$status_label = sprintf(
-				translate_nooped_plural( $status->label_count, $num_posts[ $status_name ] ),
-				number_format_i18n( $num_posts[ $status_name ] )
-			);
+		// $status_label = sprintf(
+		// translate_nooped_plural( $status->label_count, $num_posts[ $status_name ] ),
+		// number_format_i18n( $num_posts[ $status_name ] )
+		// );
 
-			if ( 'publish' === $status_name ) {
-				$status_label = str_replace( 'Published', __( 'Active', 'everest-forms' ), $status_label );
-			}
-			$status_links[ $status_name ] = $this->get_edit_link( $status_args, $status_label, $class );
-		}
+		// if ( 'publish' === $status_name ) {
+		// $status_label = str_replace( 'Published', __( 'Active', 'everest-forms' ), $status_label );
+		// }
+		// $status_links[ $status_name ] = $this->get_edit_link( $status_args, $status_label, $class );
+		// }
 
-		$inactive_count = count( evf()->form->get_multiple( array( 'post_status' => 'inactive' ) ) );
+		// $inactive_count = count( evf()->form->get_multiple( array( 'post_status' => 'inactive' ) ) );
 
-		$inactive_args = array(
-			'page'   => 'evf-builder',
-			'status' => 'inactive',
-		);
+		// $inactive_args = array(
+		// 'page'   => 'evf-builder',
+		// 'status' => 'inactive',
+		// );
 
-		$inactive_label           = sprintf(
-			_nx(
-				'Inactive <span class="count">(%s)</span>',
-				'Inactive <span class="count">(%s)</span>',
-				$inactive_count,
-				'posts',
-				'everest-forms'
-			),
-			number_format_i18n( $inactive_count )
-		);
-		$status_links['inactive'] = $this->get_edit_link( $inactive_args, $inactive_label, $class );
+		// $inactive_label           = sprintf(
+		// _nx(
+		// 'Inactive <span class="count">(%s)</span>',
+		// 'Inactive <span class="count">(%s)</span>',
+		// $inactive_count,
+		// 'posts',
+		// 'everest-forms'
+		// ),
+		// number_format_i18n( $inactive_count )
+		// );
+		// $status_links['inactive'] = $this->get_edit_link( $inactive_args, $inactive_label, $class );
 
-		return $status_links;
+		// return $status_links;
 	}
 
 	/**
@@ -661,9 +662,10 @@ class EVF_Admin_Forms_Table_List extends EVF_Base_List_Table {
 		echo '<div class="everest-forms-extra-table-nav">';
 
 		if ( 'top' === $which ) {
+			$this->forms_status_dropdown();
+
 			if ( ! empty( $tag_list ) ) {
 				$this->tags_dropdown();
-				submit_button( __( 'Filter', 'everest-forms' ), '', 'filter_action', false, array( 'category' => 'post-query-submit' ) );
 			}
 			$this->manage_tags();
 		}
@@ -673,6 +675,37 @@ class EVF_Admin_Forms_Table_List extends EVF_Base_List_Table {
 		}
 
 		echo '</div>';
+	}
+
+	/**
+	 * Display a status dropdown for filtering forms.
+	 */
+	public function forms_status_dropdown() {
+		global $wpdb;
+
+		$current_status = isset( $_REQUEST['status'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['status'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification
+
+		$total_posts    = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->posts} WHERE post_type = 'everest_form' AND post_status IN ( 'publish', 'inactive' )" );
+		$active_count   = count( evf()->form->get_multiple( array( 'post_status' => 'publish' ) ) );
+		$inactive_count = count( evf()->form->get_multiple( array( 'post_status' => 'inactive' ) ) );
+		$trash_count    = count( evf()->form->get_multiple( array( 'post_status' => 'trash' ) ) );
+
+		$statuses = array(
+			''         => sprintf( __( 'All (%d)', 'everest-forms' ), $total_posts ),
+			'publish'  => sprintf( __( 'Active (%d)', 'everest-forms' ), $active_count ),
+			'inactive' => sprintf( __( 'Inactive (%d)', 'everest-forms' ), $inactive_count ),
+			'trash'    => sprintf( __( 'Trash (%d)', 'everest-forms' ), $trash_count ),
+		);
+		?>
+	<label for="filter-by-form-status" class="screen-reader-text"><?php esc_html_e( 'Filter by status', 'everest-forms' ); ?></label>
+	<select name="status" class="evf-enhanced-select" id="filter-by-form-status" >
+		<?php foreach ( $statuses as $value => $label ) : ?>
+			<option value="<?php echo esc_attr( $value ); ?>" <?php selected( $current_status, $value ); ?>>
+				<?php echo esc_html( $label ); ?>
+			</option>
+		<?php endforeach; ?>
+	</select>
+		<?php
 	}
 
 	/**

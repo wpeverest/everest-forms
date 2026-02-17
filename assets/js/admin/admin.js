@@ -148,6 +148,59 @@
 		// Add an event listener for changes and on the click in the reporting frequency
 		$(document).on('change click', '#everest_forms_entries_reporting_frequency', handleReportingFrequencyChange);
 
+		$(document).on('change', '#filter-by-form', function () {
+			var $form = $(this).closest('form');
+
+			$form.find('input[name="status"]').remove();
+
+			$form.submit();
+		});
+
+		$(document).on(
+			'select2:select select2:unselect',
+			'#filter-by-form',
+			function () {
+				$(this).trigger('change');
+			},
+		);
+
+		// Auto-submit on status dropdown change (entries page).
+		$(document).on('change', '#filter-by-status', function () {
+			var $form = $(this).closest('form');
+			var status = $(this).val();
+			$form.find('input[name="status"]').remove();
+
+			if (status !== '') {
+				$form.append(
+					'<input type="hidden" name="status" value="' + status + '" />',
+				);
+			}
+
+			// Remove the select itself so it doesn't send a duplicate.
+			$(this).prop('disabled', true);
+
+			$form.submit();
+		});
+
+		// Auto-submit on forms status dropdown change (forms page).
+		$(document).on('change', '#filter-by-form-status', function () {
+			var status = $(this).val();
+			var url = new URL(window.location.href);
+
+			if (status !== '') {
+				url.searchParams.set('status', status);
+			} else {
+				url.searchParams.delete('status');
+			}
+
+			url.searchParams.set('page', 'evf-builder');
+
+
+			url.searchParams.delete('paged');
+
+			window.location.href = url.toString();
+		});
+
 
 		$('#evf-form-listing__screen-options').on('click', function() {
 			$("#show-settings-link").click();
