@@ -45,27 +45,30 @@ class EVF_Admin_Forms_Table_List extends EVF_Base_List_Table {
 	 * @return array
 	 */
 	public function get_columns() {
+		$has_tags = ! empty( FormHelper::get_all_form_tags( 'term_id' ) );
+
 		$forms_columns = array(
-			'cb'        => '<input type="checkbox" />',
-			'title'     => esc_html__( 'Title', 'everest-forms' ),
-			'tags'      => esc_html__( 'Tags', 'everest-forms' ),
-			'shortcode' => esc_html__( 'Shortcode', 'everest-forms' ),
-			'enabled'   => esc_html__( 'Status', 'everest-forms' ),
-			'author'    => esc_html__( 'Author', 'everest-forms' ),
-			'date'      => esc_html__( 'Date', 'everest-forms' ),
+			'cb'    => '<input type="checkbox" />',
+			'title' => esc_html__( 'Title', 'everest-forms' ),
 		);
 
-		// Hide form enabled toggle if in trash page.
+		if ( $has_tags ) {
+			$forms_columns['tags'] = esc_html__( 'Tags', 'everest-forms' );
+		}
+
+		$forms_columns['shortcode'] = esc_html__( 'Shortcode', 'everest-forms' );
+		$forms_columns['enabled']   = esc_html__( 'Status', 'everest-forms' );
+		$forms_columns['author']    = esc_html__( 'Author', 'everest-forms' );
+		$forms_columns['date']      = esc_html__( 'Date', 'everest-forms' );
+
 		if ( isset( $_GET['status'] ) && 'trash' === $_GET['status'] ) { // phpcs:ignore WordPress.Security.NonceVerification
 			unset( $forms_columns['enabled'] );
 		}
 
-		// Only show entries column if the user can view entries.
 		if ( current_user_can( 'everest_forms_view_entries' ) || current_user_can( 'everest_forms_view_others_entries' ) ) {
 			$forms_columns['entries'] = esc_html__( 'Entries', 'everest-forms' );
 		}
 
-		// Only "Move to trash" bulk action exist, lets hide cb if the user cannot delete forms.
 		if ( isset( $_GET['status'] ) && 'trash' !== $_GET['status'] && ! current_user_can( 'everest_forms_delete_forms' ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 			unset( $forms_columns['cb'] );
 		}
@@ -355,37 +358,36 @@ class EVF_Admin_Forms_Table_List extends EVF_Base_List_Table {
 	 * @return string
 	 */
 	public function column_tags( $posts ) {
-		global $wpdb;
+		$tags = FormHelper::get_form_tags( $posts->ID );
 
-		if ( ! current_user_can( 'everest_forms_view_form_entries', $posts->ID ) ) {
-			return '-';
+		if ( empty( $tags ) ) {
+			return '<span class="na">&ndash;</span>';
 		}
 
-		$form      = json_decode( $posts->post_content, true );
-		$tags      = FormHelper::get_form_tags( $posts->ID );
 		$tag_count = count( $tags );
 		$i         = 0;
+		$output    = '';
 
-		$output = '';
 		foreach ( $tags as $id => $tag ) {
 			if ( empty( $tag ) ) {
 				continue;
 			}
 
 			$output .= sprintf(
-				'<button type="submit" name="tags" class="button button-small evf-form-tags" value="%s" data-tag-id="%s">%s</button> ',
+				'<button type="submit" name="tags" class="button button-small evf-form-tags" value="%s" data-tag-id="%s">%s</button>',
 				esc_attr( $id ),
 				esc_attr( $id ),
 				esc_html( $tag )
 			);
 
 			if ( ++$i < $tag_count ) {
-				$output .= ', ';
+				$output .= ' ';
 			}
 		}
 
-		return $output;
+		return $output ?: '<span class="na">&ndash;</span>';
 	}
+
 	/**
 	 * Table list views.
 	 *
@@ -654,17 +656,20 @@ class EVF_Admin_Forms_Table_List extends EVF_Base_List_Table {
 	 */
 	protected function extra_tablenav( $which ) {
 		$num_posts = wp_count_posts( 'everest_form', 'readable' );
+		$tag_list  = FormHelper::get_all_form_tags( 'term_id' );
 
 		echo '<div class="everest-forms-extra-table-nav">';
 
 		if ( 'top' === $which ) {
-			$this->tags_dropdown();
-			submit_button( __( 'Filter', 'everest-forms' ), '', 'filter_action', false, array( 'category' => 'post-query-submit' ) );
+			if ( ! empty( $tag_list ) ) {
+				$this->tags_dropdown();
+				submit_button( __( 'Filter', 'everest-forms' ), '', 'filter_action', false, array( 'category' => 'post-query-submit' ) );
+			}
 			$this->manage_tags();
 		}
 
 		if ( $num_posts->trash && isset( $_GET['status'] ) && 'trash' === $_GET['status'] && current_user_can( 'everest_forms_delete_forms' ) ) { // phpcs:ignore WordPress.Security.NonceVerification
-				submit_button( __( 'Empty Trash', 'everest-forms' ), 'apply', 'delete_all', false );
+			submit_button( __( 'Empty Trash', 'everest-forms' ), 'apply', 'delete_all', false );
 		}
 
 		echo '</div>';
@@ -776,7 +781,15 @@ class EVF_Admin_Forms_Table_List extends EVF_Base_List_Table {
 	public function manage_tags() {
 		$tags = FormHelper::get_all_form_tags( 'term_id' );
 
-		printf( '<button type="button" data-tags="%s" class="button evf-manage-tags">%s</button>', htmlspecialchars( json_encode( $tags ) ), __( 'Delete Tags', 'everest-forms' ) );
+		if ( empty( $tags ) ) {
+			return;
+		}
+
+		printf(
+			'<button type="button" data-tags="%s" class="button evf-manage-tags">%s</button>',
+			htmlspecialchars( json_encode( $tags ) ),
+			__( 'Delete Tags', 'everest-forms' )
+		);
 	}
 
 	public function display_tablenav( $which ) {
