@@ -154,11 +154,20 @@ class EVF_Site_Assistant {
 	 * @return bool True if spam protection is completed, false otherwise.
 	 */
 	protected function is_spam_protection_completed() {
-		$manually_skipped = (bool) get_option( self::SPAM_PROTECTION_SKIPPED, false );
-		$is_configured    = $this->is_spam_protection_configured();
+		$manually_skipped        = (bool) get_option( self::SPAM_PROTECTION_SKIPPED, false );
+		$is_configured           = $this->is_spam_protection_configured();
+		$is_recaptcha_configured = $this->is_recaptcha_keys_set();
 
-		return $manually_skipped || $is_configured;
+		return $manually_skipped || $is_configured || $is_recaptcha_configured;
 	}
+
+	protected function is_recaptcha_keys_set() {
+		$site_key   = get_option( 'everest_forms_recaptcha_v2_site_key', '' );
+		$secret_key = get_option( 'everest_forms_recaptcha_v2_secret_key', '' );
+
+		return ! empty( $site_key ) && ! empty( $secret_key );
+	}
+
 
 	/**
 	 * Check if any forms exist.
@@ -251,10 +260,13 @@ class EVF_Site_Assistant {
 
 		do_action( 'everest_forms_setup_skipped', $step );
 
-		// Get updated status to match get_status response structure
 		$skipped_steps           = array();
 		$spam_protection_skipped = $this->is_spam_protection_completed();
 		$create_form_skipped     = (bool) get_option( self::CREATE_FORM_SKIPPED, false );
+
+		if ( $spam_protection_skipped && $create_form_skipped ) {
+			update_option( 'everest_forms_site_assistant', array( 'all_steps_completed' => true ) );
+		}
 
 		if ( $spam_protection_skipped ) {
 			$skipped_steps[] = 'spam_protection';
@@ -283,6 +295,7 @@ class EVF_Site_Assistant {
 			)
 		);
 	}
+
 
 	/**
 	 * Send test email.

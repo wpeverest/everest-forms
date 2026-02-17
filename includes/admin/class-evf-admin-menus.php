@@ -157,19 +157,23 @@ class EVF_Admin_Menus {
 	 * Add dashboard sub menu.
 	 */
 	public function dashboard_menu() {
-		add_submenu_page(
-			'everest-forms',
-			__( 'Site Assistant', 'everest-forms' ),
-			__( 'Site Assistant', 'everest-forms' ),
-			'manage_everest_forms',
-			'evf-dashboard',
-			array(
-				$this,
-				'dashboard_page',
-			),
-			-1
-		);
+
+		$site_assistant_data = get_option( 'everest_forms_site_assistant', array() );
+		$all_steps_completed = isset( $site_assistant_data['all_steps_completed'] ) && $site_assistant_data['all_steps_completed'];
+
+		if ( ! $all_steps_completed ) {
+			add_submenu_page(
+				'everest-forms',
+				__( 'Site Assistant', 'everest-forms' ),
+				__( 'Site Assistant', 'everest-forms' ),
+				'manage_everest_forms',
+				'evf-dashboard',
+				array( $this, 'dashboard_page' ),
+				-1
+			);
+		}
 	}
+
 	/**
 	 * Add menu items.
 	 */

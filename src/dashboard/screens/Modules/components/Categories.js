@@ -1,6 +1,3 @@
-/**
- * External Dependencies
- */
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import { Box, HStack, IconButton, Text } from '@chakra-ui/react';
 import { useEffect, useRef, useState } from 'react';
@@ -53,7 +50,7 @@ const Categories = ({
 		const container = scrollContainerRef.current;
 		if (container) {
 			container.scrollBy({ left: -250, behavior: 'smooth' });
-			setTimeout(checkArrows, 350);
+			checkArrows();
 		}
 	};
 
@@ -61,7 +58,7 @@ const Categories = ({
 		const container = scrollContainerRef.current;
 		if (container) {
 			container.scrollBy({ left: 250, behavior: 'smooth' });
-			setTimeout(checkArrows, 350);
+			checkArrows();
 		}
 	};
 
@@ -118,6 +115,7 @@ const Categories = ({
 						transition="all 0.2s ease"
 						onClick={scrollLeft}
 						aria-label="Scroll left"
+						pointerEvents="auto"
 					/>
 				</>
 			)}
@@ -257,6 +255,7 @@ const Categories = ({
 						transition="all 0.2s ease"
 						onClick={scrollRight}
 						aria-label="Scroll right"
+						pointerEvents="auto"
 					/>
 				</>
 			)}

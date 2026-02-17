@@ -739,17 +739,17 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 
 		steps.push(
 			{
-				id: 'sendTestEmail',
-				title: __('Send Test Email', 'everest-forms'),
-				isCompleted: (data) => !!data?.test_email_sent,
-				renderContent: renderSendTestEmailContent,
-			},
-			{
 				id: 'spamProtection',
 				title: __('Spam Protection', 'everest-forms'),
 				isCompleted: (data) =>
 					!!data?.skipped_steps?.includes('spam_protection'),
 				renderContent: renderSpamProtectionContent,
+			},
+			{
+				id: 'sendTestEmail',
+				title: __('Send Test Email', 'everest-forms'),
+				isCompleted: (data) => !!data?.test_email_sent,
+				renderContent: renderSendTestEmailContent,
 			},
 		);
 

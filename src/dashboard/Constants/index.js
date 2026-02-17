@@ -26,7 +26,7 @@ let ROUTES = [
 	},
 	{
 		route: `${cleanAdminURL}/admin.php?page=evf-builder`,
-		label: __('All forms', 'everest-forms'),
+		label: __('All Forms', 'everest-forms'),
 		external: true,
 		key: 'forms',
 	},

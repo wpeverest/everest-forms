@@ -501,9 +501,29 @@ const Modules = () => {
 
 	const noResultsMessage = getNoResultsMessage();
 
+	const handleModuleToggle = useCallback((slug, newStatus) => {
+		setState((prev) => {
+			const updatedOriginalModules = prev.originalModules.map((mod) =>
+				mod.slug === slug ? { ...mod, status: newStatus } : mod,
+			);
+			const updatedModules = prev.modules.map((mod) =>
+				mod.slug === slug ? { ...mod, status: newStatus } : mod,
+			);
+			return {
+				...prev,
+				originalModules: updatedOriginalModules,
+				modules: updatedModules,
+			};
+		});
+	}, []);
+
 	return (
 		<Box top="var(--wp-admin--admin-bar--height, 0)" zIndex={1} minH="100vh">
-			<Container maxW="100%" p={{ base: '12px', sm: '16px', md: '20px' }} padding="24px">
+			<Container
+				maxW="100%"
+				p={{ base: '12px', sm: '16px', md: '20px' }}
+				padding="24px"
+			>
 				{state.isLoading || isQueryLoading || !state.modulesLoaded ? (
 					<AddonsSkeleton />
 				) : (
@@ -634,6 +654,7 @@ const Modules = () => {
 									modules={state.modules}
 									selectedCategory={state.selectedCategory}
 									showToast={showToast}
+									onModuleToggle={handleModuleToggle}
 								/>
 							)}
 						</Box>

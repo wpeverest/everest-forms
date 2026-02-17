@@ -25,7 +25,7 @@ import {
 	VStack,
 } from '@chakra-ui/react';
 import { __ } from '@wordpress/i18n';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { FaCog, FaPlay } from 'react-icons/fa';
 import ReactPlayer from 'react-player';
 import { activateModule, deactivateModule } from './modules-api';
@@ -87,51 +87,46 @@ const AddonCard = ({ addon, showToast }) => {
 		onVideoOpen();
 	};
 
-	const handleToggle = async () => {
-		setIsLoading(true);
-		try {
-			let response;
-			if (isActive) {
-				response = await deactivateModule(addon.slug, addon.type);
-				if (response.success) {
-					setIsActive(false);
-					showToast(
-						response.message ||
-							__('Module deactivated successfully', 'everest-forms'),
-						'success',
-					);
+	  useEffect(() => {
+			setIsActive(addon.status === 'active');
+		}, [addon.status]);
+
+	  const handleToggle = async () => {
+			setIsLoading(true);
+			try {
+				let response;
+				if (isActive) {
+					response = await deactivateModule(addon.slug, addon.type);
+					if (response.success) {
+						setIsActive(false);
+						showToast(
+							response.message || 'Module deactivated successfully',
+							'success',
+						);
+					} else {
+						showToast(
+							response.message || 'Failed to deactivate module',
+							'error',
+						);
+					}
 				} else {
-					showToast(
-						response.message ||
-							__('Failed to deactivate module', 'everest-forms'),
-						'error',
-					);
+					response = await activateModule(addon.slug, addon.name, addon.type);
+					if (response.success) {
+						setIsActive(true);
+						showToast(
+							response.message || 'Module activated successfully',
+							'success',
+						);
+					} else {
+						showToast(response.message || 'Failed to activate module', 'error');
+					}
 				}
-			} else {
-				response = await activateModule(addon.slug, addon.name, addon.type);
-				if (response.success) {
-					setIsActive(true);
-					showToast(
-						response.message ||
-							__('Module activated successfully', 'everest-forms'),
-						'success',
-					);
-				} else {
-					showToast(
-						response.message ||
-							__('Failed to activate module', 'everest-forms'),
-						'error',
-					);
-				}
+			} catch (error) {
+				showToast(error.message || 'An error occurred', 'error');
 			}
-		} catch (error) {
-			showToast(
-				error.message || __('An error occurred', 'everest-forms'),
-				'error',
-			);
-		}
-		setIsLoading(false);
-	};
+			setIsLoading(false);
+		};
+
 
 	const getPlanBadge = (plan) => {
 		if (!plan || plan.length === 0) {
