@@ -676,11 +676,12 @@ protected function get_bulk_actions() {
 				submit_button( __( 'Filter', 'everest-forms' ), '', 'filter_action', false, array( 'category' => 'post-query-submit' ) );
 			}
 			$this->manage_tags();
-		}
-
-		if ( $num_posts->trash && isset( $_GET['status'] ) && 'trash' === $_GET['status'] && current_user_can( 'everest_forms_delete_forms' ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+			if ( $num_posts->trash && isset( $_GET['status'] ) && 'trash' === $_GET['status'] && current_user_can( 'everest_forms_delete_forms' ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 			submit_button( __( 'Empty Trash', 'everest-forms' ), 'apply', 'delete_all', false );
 		}
+		}
+
+
 
 		echo '</div>';
 	}
