@@ -38,6 +38,24 @@
 				});
 
 
+
+
+				$(document).on(
+					'click',
+					'.back-button, [href*="evf-builder"]:not([href*="form_id"])',
+					function (e) {
+						if (!window.location.search.includes('form_id')) {
+							return;
+						}
+						e.preventDefault();
+						window.location.href =
+							window.location.origin +
+							window.location.pathname +
+							'?page=evf-builder';
+					},
+				);
+
+
 				/**
 				 * Disable row when form is disabled.
 				 *
