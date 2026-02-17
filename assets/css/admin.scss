@@ -53,7 +53,7 @@ body[class*='everest-forms_page_'] {
 }
 
 #everest-forms-entries-list {
-	margin-top: 32px;
+	// margin-top: 32px;
 }
 
 .blockUI.blockOverlay {
@@ -224,7 +224,7 @@ body[class*='everest-forms_page_'] {
 }
 
 /**
-	   * Help Tip
+	   * Help Tip Tooltip Icon
 	   */
 .everest-forms-help-tip {
 	cursor: help;
@@ -1079,7 +1079,6 @@ body.everest-forms-builder {
 								// content: '\e92a';
 								background-repeat: no-repeat;
 								background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M21 12a9 9 0 1 0-18 0 9 9 0 0 0 18 0m2 0c0 6.075-4.925 11-11 11S1 18.075 1 12 5.925 1 12 1s11 4.925 11 11'/%3E%3Cpath d='M14.625 13.75a.875.875 0 0 0-.875-.875h-3.5a2.625 2.625 0 1 1 0-5.25h5.25a.875.875 0 0 1 0 1.75h-5.25a.875.875 0 1 0 0 1.75h3.5a2.625 2.625 0 1 1 0 5.25H8.5a.875.875 0 0 1 0-1.75h5.25a.875.875 0 0 0 .875-.875'/%3E%3Cpath d='M11.125 17.25V6.75a.875.875 0 0 1 1.75 0v10.5a.875.875 0 0 1-1.75 0'/%3E%3C/svg%3E");
-								// background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M21.1 5.066c0-.015-.006-.047-.05-.087a.34.34 0 0 0-.227-.079H3.177a.34.34 0 0 0-.228.08c-.043.04-.049.07-.049.086v13.868c0 .015.006.047.05.086.045.042.123.08.227.08h17.646a.34.34 0 0 0 .228-.08c.043-.04.049-.07.049-.086zm1.8 13.868c0 1.167-1.015 1.966-2.077 1.966H3.177c-1.062 0-2.077-.8-2.077-1.966V5.066C1.1 3.9 2.115 3.1 3.177 3.1h17.646c1.062 0 2.077.8 2.077 1.966z'/%3E%3Cpath d='M13 12a1 1 0 1 0-2 0 1 1 0 0 0 2 0m-6.99-1a1 1 0 1 1 0 2H6a1 1 0 1 1 0-2zm12 0a1 1 0 1 1 0 2H18a1 1 0 1 1 0-2zM15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0'/%3E%3C/svg%3E");
 							}
 						}
 
@@ -3215,7 +3214,7 @@ p.search-box {
 
 									&.open {
 										.everest-forms-field-option-group-toggle {
-											background: #f6f7f9;
+											// background: #f6f7f9;
 											border-bottom: 1px solid #e1e1e1;
 										}
 									}
@@ -5764,8 +5763,7 @@ p.search-box {
 
 		.everest-forms-integrations {
 			border-radius: 3px;
-			background: #fbfafc;
-			border: 1px solid #eee8f7;
+			border: 1px solid #e1e1e1;
 			padding: 16px 20px;
 			display: flex;
 			flex-wrap: wrap;
@@ -6374,14 +6372,20 @@ table.wp-list-table {
 	.column-tags {
 		.evf-form-tags {
 			border: none;
-			padding: 4px 8px;
+			background: none;
+			padding: 0 8px;
+			color: #7545bb;
+			// border: 1px solid #7545bb;
 			line-height: 16px;
 			min-height: unset;
 			vertical-align: middle;
 			margin-bottom: 6px;
+			font-size: 13px;
+			text-decoration: none;
+			text-align: center;
 
 			&:hover {
-				border-color: #0a4b78;
+				text-decoration: underline;
 			}
 		}
 	}
@@ -7177,14 +7181,14 @@ img.ui-datepicker-trigger {
 			}
 
 			.select2-selection--single .select2-selection__rendered:hover {
-				color: $color;
+				color: #7545bb;
 			}
 
 			.select2-container.select2-container--focus .select2-selection--single,
 			.select2-container.select2-container--open .select2-selection--single,
 			.select2-container.select2-container--open .select2-selection--multiple {
-				border-color: $color;
-				box-shadow: 0 0 0 1px $color;
+				border-color: #7545bb;
+				box-shadow: 0 0 0 1px #7545bb;
 			}
 
 			.select2-container--default
@@ -7203,9 +7207,9 @@ img.ui-datepicker-trigger {
 			.select2-container--default {
 				&.select2-container--focus {
 					.select2-selection--multiple {
-						border-color: #5b9dd9;
-						box-shadow: 0 0 2px rgba(30, 140, 190, 0.8);
-						outline: 2px solid transparent;
+						border-color: #7545bb;
+						// box-shadow: 0 0 2px rgba(30, 140, 190, 0.8);
+						// outline: 2px solid transparent;
 					}
 				}
 			}
@@ -8083,8 +8087,8 @@ img.ui-datepicker-trigger {
 			line-height: 32px;
 			padding-right: 24px;
 
-			&:hover {
-				color: #007cba;
+			&:hover &:active {
+				color: #7545bb;
 			}
 		}
 
@@ -10056,7 +10060,7 @@ img.ui-datepicker-trigger {
 
 .everest-forms {
 	.everest-forms-settings {
-		padding: 0 !important;
+		padding: 24px !important;
 		gap: 24px;
 		background: transparent;
 
@@ -10065,11 +10069,12 @@ img.ui-datepicker-trigger {
 		}
 
 		&-wrapper {
-			box-shadow: 0px 6px 26px 0px rgba(10, 10, 10, 0.08);
+			// box-shadow: 0px 6px 26px 0px rgba(10, 10, 10, 0.08);
 			background: #ffffff;
 			flex: 1;
 			display: flex;
 			max-width: 100%;
+			border-radius: 8px;
 		}
 
 		&-main {
@@ -10095,12 +10100,13 @@ img.ui-datepicker-trigger {
 			display: flex;
 			flex-direction: column;
 			background: #fafafc;
-			border-right: 1px solid #ededed;
+			border: 1px solid #e9e9e9;
 			padding: 0px 0 20px;
 			width: 300px;
 			overflow-x: hidden;
 			max-width: 100%;
 			transition: all 0.3s;
+			border-radius: 8px 0 0 8px;
 
 			@media screen and (max-width: 1300px) {
 				width: 220px;
@@ -10651,6 +10657,9 @@ img.ui-datepicker-trigger {
 		.everest-forms-settings-container {
 			padding: 32px 20px 52px 32px;
 			box-shadow: none;
+			border: 1px solid #e9e9e9;
+			border-left: none;
+			border-radius: 0 8px 8px 0;
 
 			.everest-forms-settings-main {
 				position: relative;
@@ -10753,11 +10762,22 @@ img.ui-datepicker-trigger {
 						gap: 8px;
 
 						.everest-forms-help-tip {
-							width: 18px;
-							height: 18px;
+							width: 14px;
+							height: 14px;
+							transition: filter 0.3s ease;
 
 							&::after {
-								color: #999999;
+								// settings help icon
+								color: transparent;
+								background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M21 12a9 9 0 1 0-18 0 9 9 0 0 0 18 0m2 0c0 6.075-4.925 11-11 11S1 18.075 1 12 5.925 1 12 1s11 4.925 11 11' fill='%23383838'/%3E%3Cpath d='M11 12V8a1 1 0 1 1 2 0v4a1 1 0 1 1-2 0m1.01 3a1 1 0 1 1 0 2H12a1 1 0 1 1 0-2z' fill='%23383838'/%3E%3C/svg%3E");
+								background-repeat: no-repeat;
+								
+							}
+
+							&:hover::after {
+								filter: brightness(0) saturate(100%) invert(26%) sepia(77%)
+									saturate(1950%) hue-rotate(249deg) brightness(84%)
+									contrast(81%);
 							}
 						}
 					}
