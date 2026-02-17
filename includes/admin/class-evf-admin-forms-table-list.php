@@ -666,6 +666,7 @@ class EVF_Admin_Forms_Table_List extends EVF_Base_List_Table {
 
 			if ( ! empty( $tag_list ) ) {
 				$this->tags_dropdown();
+				submit_button( __( 'Filter', 'everest-forms' ), '', 'filter_action', false, array( 'category' => 'post-query-submit' ) );
 			}
 			$this->manage_tags();
 		}
