@@ -7215,7 +7215,7 @@ img.ui-datepicker-trigger {
 			}
 
 			.select2-container {
-				min-width: 350px !important;
+				// min-width: 350px !important;
 			}
 		}
 	}
@@ -8059,7 +8059,7 @@ img.ui-datepicker-trigger {
 	margin: 0;
 	position: relative;
 	vertical-align: middle;
-	width: 350px !important;
+	width: 350px;
 
 	.select2-selection--single {
 		box-sizing: border-box;
@@ -10771,7 +10771,6 @@ img.ui-datepicker-trigger {
 								color: transparent;
 								background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M21 12a9 9 0 1 0-18 0 9 9 0 0 0 18 0m2 0c0 6.075-4.925 11-11 11S1 18.075 1 12 5.925 1 12 1s11 4.925 11 11' fill='%23383838'/%3E%3Cpath d='M11 12V8a1 1 0 1 1 2 0v4a1 1 0 1 1-2 0m1.01 3a1 1 0 1 1 0 2H12a1 1 0 1 1 0-2z' fill='%23383838'/%3E%3C/svg%3E");
 								background-repeat: no-repeat;
-								
 							}
 
 							&:hover::after {

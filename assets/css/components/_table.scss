@@ -204,6 +204,7 @@ $status-trash-text: #991b1b;
 		.select2-container {
 			width: 185px !important;
 			height: 35px !important;
+			z-index: 4 !important;
 		}
 
 		.select2-container .select2-selection--single {
@@ -1116,6 +1117,13 @@ body {
 					}
 				}
 			}
+		}
+	}
+
+	&.everest-forms_page_evf-builder,
+	&.everest-forms_page_evf-entries {
+		.select2-container {
+			width: auto;
 		}
 	}
 }
