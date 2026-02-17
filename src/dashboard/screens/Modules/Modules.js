@@ -501,6 +501,11 @@ const Modules = () => {
 
 	const noResultsMessage = getNoResultsMessage();
 
+	/**
+	 * Updates both originalModules and modules in state when a toggle occurs.
+	 * This ensures the correct status is reflected when switching category tabs
+	 * without requiring a full page reload.
+	 */
 	const handleModuleToggle = useCallback((slug, newStatus) => {
 		setState((prev) => {
 			const updatedOriginalModules = prev.originalModules.map((mod) =>

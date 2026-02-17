@@ -30,7 +30,7 @@ import { FaCog, FaPlay } from 'react-icons/fa';
 import ReactPlayer from 'react-player';
 import { activateModule, deactivateModule } from './modules-api';
 
-const AddonCard = ({ addon, showToast }) => {
+const AddonCard = ({ addon, showToast, onModuleToggle }) => {
 	const [isActive, setIsActive] = useState(addon.status === 'active');
 	const [isLoading, setIsLoading] = useState(false);
 	const [videoLoading, setVideoLoading] = useState(false);
@@ -87,46 +87,48 @@ const AddonCard = ({ addon, showToast }) => {
 		onVideoOpen();
 	};
 
-	  useEffect(() => {
-			setIsActive(addon.status === 'active');
-		}, [addon.status]);
+	// Sync local isActive state when addon.status changes (e.g. after category switch)
+	useEffect(() => {
+		setIsActive(addon.status === 'active');
+	}, [addon.status]);
 
-	  const handleToggle = async () => {
-			setIsLoading(true);
-			try {
-				let response;
-				if (isActive) {
-					response = await deactivateModule(addon.slug, addon.type);
-					if (response.success) {
-						setIsActive(false);
-						showToast(
-							response.message || 'Module deactivated successfully',
-							'success',
-						);
-					} else {
-						showToast(
-							response.message || 'Failed to deactivate module',
-							'error',
-						);
-					}
+	const handleToggle = async () => {
+		setIsLoading(true);
+		try {
+			let response;
+			if (isActive) {
+				response = await deactivateModule(addon.slug, addon.type);
+				if (response.success) {
+					setIsActive(false);
+					onModuleToggle?.(addon.slug, 'inactive');
+					showToast(
+						response.message || 'Module deactivated successfully',
+						'success',
+					);
 				} else {
-					response = await activateModule(addon.slug, addon.name, addon.type);
-					if (response.success) {
-						setIsActive(true);
-						showToast(
-							response.message || 'Module activated successfully',
-							'success',
-						);
-					} else {
-						showToast(response.message || 'Failed to activate module', 'error');
-					}
+					showToast(
+						response.message || 'Failed to deactivate module',
+						'error',
+					);
 				}
-			} catch (error) {
-				showToast(error.message || 'An error occurred', 'error');
+			} else {
+				response = await activateModule(addon.slug, addon.name, addon.type);
+				if (response.success) {
+					setIsActive(true);
+					onModuleToggle?.(addon.slug, 'active');
+					showToast(
+						response.message || 'Module activated successfully',
+						'success',
+					);
+				} else {
+					showToast(response.message || 'Failed to activate module', 'error');
+				}
 			}
-			setIsLoading(false);
-		};
-
+		} catch (error) {
+			showToast(error.message || 'An error occurred', 'error');
+		}
+		setIsLoading(false);
+	};
 
 	const getPlanBadge = (plan) => {
 		if (!plan || plan.length === 0) {
