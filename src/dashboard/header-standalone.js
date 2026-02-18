@@ -89,7 +89,7 @@ function HeaderWithQuery() {
 
 						{/* Right Side - Actions Skeleton */}
 						<Stack direction="row" align="center" spacing="12px">
-							<HStack spacing="1">
+							<HStack spacing="1" >
 								<Skeleton height="20px" width="60px" />
 								<Skeleton height="20px" width="90px" />
 							</HStack>

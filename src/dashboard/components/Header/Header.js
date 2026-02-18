@@ -184,7 +184,7 @@ const Header = ({ hideSiteAssistant = false }) => {
 						</Stack>
 
 						<Stack direction="row" align="center" spacing="12px">
-							<Stack direction="row" align="center" gap="1">
+							<Stack direction="row" align="center" gap="1" h={'full'}>
 								{rightRoutes.map(({ route, label, external }) =>
 									renderNavLink(
 										route,

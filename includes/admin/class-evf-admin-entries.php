@@ -98,30 +98,14 @@ class EVF_Admin_Entries {
 					</div>
 					<?php
 					$style = '';
+						$entry_ids = evf_get_entries_ids( $entries_table_list->form_id );
 
-					if ( defined( 'EFP_VERSION' ) && absint( $form_id ) === 0 ) {
+					if ( defined( 'EFP_VERSION' ) && ( absint( $form_id ) === 0) || (  0 === count( $entry_ids ) ) ) {
 						$style = 'style="display:none;"';
 					}
 					?>
 					<!-- Tab Navigation -->
 					<ul class="evf-tab-nav" role="tablist" <?php echo $style; ?>>
-						<li role="presentation">
-							<button
-								class="evf-tab-nav__btn"
-								data-tab="evf-panel-analytics"
-								role="tab"
-								aria-controls="evf-panel-analytics"
-								aria-selected="false"
-								type="button"
-							>
-								<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-									<line x1="18" y1="20" x2="18" y2="10"/>
-									<line x1="12" y1="20" x2="12" y2="4"/>
-									<line x1="6"  y1="20" x2="6"  y2="14"/>
-								</svg>
-								<?php esc_html_e( 'Analytics', 'everest-forms' ); ?>
-							</button>
-						</li>
 						<li role="presentation">
 							<button
 								class="evf-tab-nav__btn"
@@ -138,6 +122,23 @@ class EVF_Admin_Entries {
 									<line x1="9"  y1="3"  x2="9"  y2="21"/>
 								</svg>
 								<?php esc_html_e( 'Entries', 'everest-forms' ); ?>
+							</button>
+						</li>
+						<li role="presentation">
+							<button
+								class="evf-tab-nav__btn"
+								data-tab="evf-panel-analytics"
+								role="tab"
+								aria-controls="evf-panel-analytics"
+								aria-selected="false"
+								type="button"
+							>
+								<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+									<line x1="18" y1="20" x2="18" y2="10"/>
+									<line x1="12" y1="20" x2="12" y2="4"/>
+									<line x1="6"  y1="20" x2="6"  y2="14"/>
+								</svg>
+								<?php esc_html_e( 'Analytics', 'everest-forms' ); ?>
 							</button>
 						</li>
 					</ul>

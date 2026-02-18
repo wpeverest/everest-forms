@@ -513,34 +513,34 @@ class EVF_Admin_Forms_Table_List extends EVF_Base_List_Table {
 	 *
 	 * @return array
 	 */
-protected function get_bulk_actions() {
-    $actions = array();
+	protected function get_bulk_actions() {
+		$actions = array();
 
-    $has_tags = ! empty( FormHelper::get_all_form_tags( 'term_id' ) );
+		$has_tags = ! empty( FormHelper::get_all_form_tags( 'term_id' ) );
 
-    if ( isset( $_GET['status'] ) && 'trash' === $_GET['status'] ) {
-        if ( current_user_can( 'everest_forms_edit_forms' ) ) {
-            $actions['untrash'] = esc_html__( 'Restore', 'everest-forms' );
-        }
+		if ( isset( $_GET['status'] ) && 'trash' === $_GET['status'] ) {
+			if ( current_user_can( 'everest_forms_edit_forms' ) ) {
+				$actions['untrash'] = esc_html__( 'Restore', 'everest-forms' );
+			}
 
-        if ( current_user_can( 'everest_forms_delete_forms' ) ) {
-            $actions['delete'] = esc_html__( 'Delete permanently', 'everest-forms' );
-        }
-    } elseif ( current_user_can( 'everest_forms_delete_forms' ) ) {
-        $actions = array(
-            'trash'     => esc_html__( 'Move to trash', 'everest-forms' ),
-        );
+			if ( current_user_can( 'everest_forms_delete_forms' ) ) {
+				$actions['delete'] = esc_html__( 'Delete permanently', 'everest-forms' );
+			}
+		} elseif ( current_user_can( 'everest_forms_delete_forms' ) ) {
+			$actions = array(
+				'trash' => esc_html__( 'Move to trash', 'everest-forms' ),
+			);
 
-        if ( $has_tags ) {
-            $actions['edit-tags'] = esc_html__( 'Edit Tags', 'everest-forms' );
-        }
+			if ( $has_tags ) {
+				$actions['edit-tags'] = esc_html__( 'Edit Tags', 'everest-forms' );
+			}
 
-        $actions['inactive']  = esc_html__( 'Inactive', 'everest-forms' );
-        $actions['active']    = esc_html__( 'Active', 'everest-forms' );
-    }
+			$actions['inactive'] = esc_html__( 'Inactive', 'everest-forms' );
+			$actions['active']   = esc_html__( 'Active', 'everest-forms' );
+		}
 
-    return $actions;
-}
+		return $actions;
+	}
 
 
 	/**
@@ -677,11 +677,9 @@ protected function get_bulk_actions() {
 			}
 			$this->manage_tags();
 			if ( $num_posts->trash && isset( $_GET['status'] ) && 'trash' === $_GET['status'] && current_user_can( 'everest_forms_delete_forms' ) ) { // phpcs:ignore WordPress.Security.NonceVerification
-			submit_button( __( 'Empty Trash', 'everest-forms' ), 'apply', 'delete_all', false );
+				submit_button( __( 'Empty Trash', 'everest-forms' ), 'apply', 'delete_all', false );
+			}
 		}
-		}
-
-
 
 		echo '</div>';
 	}
@@ -854,7 +852,7 @@ protected function get_bulk_actions() {
 				<div class="tags-selects">
 
 					<label class="label"><?php echo __( 'Selected forms', 'everest-forms' ); ?></label>
-					<select name="bulk_tag_forms[]" id="bulk_tag_forms" class="evf-enhanced-select" data-placeholder="<?php echo __( 'Select forms', 'everest-forms' ); ?>" multiple style="min-width: 150px;">
+					<select name="bulk_tag_forms[]" id="bulk_tag_forms" class="evf-enhanced-select" data-placeholder="<?php echo __( 'Select forms', 'everest-forms' ); ?>" multiple style="min-width: 300px;">
 
 					<?php foreach ( $all_forms as $id => $form_title ) : ?>
 						<option value="<?php echo esc_attr( $id ); ?>" <?php echo in_array( $id, $form_ids ) ? 'selected' : ''; ?>><?php echo esc_html( $form_title ); ?></option>
@@ -864,7 +862,7 @@ protected function get_bulk_actions() {
 
 				<div class="tags-selects">
 					<label class="label"><?php echo __( 'Selected Tags', 'everest-forms' ); ?></label>
-					<select name="bulk_tags[]" id="bulk_tags" class="form-tags-select2" data-placeholder="<?php echo __( 'Select tags', 'everest-forms' ); ?>" multiple style="min-width: 150px;">
+					<select name="bulk_tags[]" id="bulk_tags" class="form-tags-select2" data-placeholder="<?php echo __( 'Select tags', 'everest-forms' ); ?>" multiple style="min-width: 300px;">
 
 					<?php foreach ( $tag_list as $id => $tag ) : ?>
 						<option value="<?php echo esc_attr( $id ); ?>" <?php echo in_array( $id, $tags ) ? 'selected' : ''; ?>><?php echo esc_html( $tag ); ?></option>
