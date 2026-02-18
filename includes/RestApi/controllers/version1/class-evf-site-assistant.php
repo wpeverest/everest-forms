@@ -21,6 +21,7 @@ class EVF_Site_Assistant {
 	const TEST_EMAIL_SENT         = 'everest_forms_test_email_sent';
 	const SPAM_PROTECTION_SKIPPED = 'everest_forms_spam_protection_skipped';
 	const CREATE_FORM_SKIPPED     = 'everest_forms_create_form_skipped';
+	const SEND_TEST_EMAIL_SKIPPED = 'everest_forms_send_test_email_skipped';
 
 	/**
 	 * Constructor.
@@ -250,6 +251,9 @@ class EVF_Site_Assistant {
 		} elseif ( 'create_form' === $step ) {
 			update_option( self::CREATE_FORM_SKIPPED, true );
 			$skipped[] = 'create_form';
+		} elseif ( 'send_test_email' === $step ) {
+			update_option( self::SEND_TEST_EMAIL_SKIPPED, true );
+			$skipped[] = 'send_test_email';
 		} else {
 			return new \WP_Error(
 				'rest_invalid_param',
@@ -276,7 +280,11 @@ class EVF_Site_Assistant {
 			$skipped_steps[] = 'create_form';
 		}
 
-		$test_email_sent = (bool) get_option( self::TEST_EMAIL_SENT, false );
+		$test_email_sent         = (bool) get_option( self::TEST_EMAIL_SENT, false );
+		$send_test_email_skipped = (bool) get_option( self::SEND_TEST_EMAIL_SKIPPED, false );
+		if ( $send_test_email_skipped ) {
+			$skipped_steps[] = 'send_test_email';
+		}
 
 		return rest_ensure_response(
 			array(
@@ -391,7 +399,8 @@ class EVF_Site_Assistant {
 	protected function are_all_steps_completed() {
 		$create_form_completed     = (bool) get_option( self::CREATE_FORM_SKIPPED, false ) || $this->has_forms();
 		$spam_protection_completed = $this->is_spam_protection_completed();
-		$test_email_sent           = (bool) get_option( self::TEST_EMAIL_SENT, false );
+		$test_email_sent           = (bool) get_option( self::TEST_EMAIL_SENT, false )
+				|| (bool) get_option( self::SEND_TEST_EMAIL_SKIPPED, false );
 
 		return $create_form_completed && $spam_protection_completed && $test_email_sent;
 	}

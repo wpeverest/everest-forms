@@ -170,7 +170,7 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 			toast({
 				title: __('Success', 'everest-forms'),
 				description: __(
-					'Test email sent successfully. Didn’t receive it? Please check your Spam or Junk folder.',
+					"Test email sent successfully. Didn't receive it? Please check your Spam or Junk folder.",
 					'everest-forms',
 				),
 				status: 'success',
@@ -185,6 +185,44 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 				title: __('Error', 'everest-forms'),
 				description:
 					error?.message || __('Failed to send test email.', 'everest-forms'),
+				status: 'error',
+				duration: 3000,
+				isClosable: true,
+			});
+		},
+	});
+
+	const skipSendTestEmailMutation = useMutation({
+		mutationFn: async () => {
+			const response = await apiFetch({
+				path: `${restURL}everest-forms/v1/site-assistant/skip-setup`,
+				method: 'POST',
+				headers: {
+					'X-WP-Nonce': evfRestApiNonce,
+				},
+				data: {
+					step: 'send_test_email',
+				},
+			});
+			return response as ApiResponse;
+		},
+		onSuccess: (data) => {
+			queryClient.setQueryData(['siteAssistant'], data);
+			toast({
+				title: __('Success', 'everest-forms'),
+				description: __('Send test email step skipped.', 'everest-forms'),
+				status: 'success',
+				duration: 3000,
+				isClosable: true,
+			});
+		},
+		onError: (error: any) => {
+			console.error('Error skipping send test email:', error);
+			toast({
+				title: __('Error', 'everest-forms'),
+				description:
+					error?.message ||
+					__('Failed to skip send test email step.', 'everest-forms'),
 				status: 'error',
 				duration: 3000,
 				isClosable: true,
@@ -621,15 +659,34 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 						</HStack>
 					</FormControl>
 
-					<Button
-						width={'fit-content'}
-						colorScheme="primary"
-						onClick={handleSendTestEmail}
-						isLoading={sendTestEmailMutation.isLoading}
-						loadingText={__('Sending...', 'everest-forms')}
-					>
-						{__('Send Test Email', 'everest-forms')}
-					</Button>
+					<Flex justify="space-between" align="center">
+						<Button
+							width={'fit-content'}
+							colorScheme="primary"
+							onClick={handleSendTestEmail}
+							isLoading={sendTestEmailMutation.isLoading}
+							loadingText={__('Sending...', 'everest-forms')}
+						>
+							{__('Send Test Email', 'everest-forms')}
+						</Button>
+						<Link
+							fontSize="13px"
+							fontWeight="400"
+							color="grey.150"
+							letterSpacing="0.2px"
+							onClick={() => skipSendTestEmailMutation.mutate()}
+							cursor="pointer"
+							opacity={skipSendTestEmailMutation.isLoading ? 0.6 : 1}
+							pointerEvents={
+								skipSendTestEmailMutation.isLoading ? 'none' : 'auto'
+							}
+							textDecor={'underline'}
+						>
+							{skipSendTestEmailMutation.isLoading
+								? __('Skipping...', 'everest-forms')
+								: __('Skip Setup', 'everest-forms')}
+						</Link>
+					</Flex>
 				</Stack>
 			</Collapse>
 		</Stack>
@@ -788,7 +845,9 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 			{
 				id: 'sendTestEmail',
 				title: __('Send Test Email', 'everest-forms'),
-				isCompleted: (data) => !!data?.test_email_sent,
+				isCompleted: (data) =>
+					!!data?.test_email_sent ||
+					!!data?.skipped_steps?.includes('send_test_email'),
 				renderContent: renderSendTestEmailContent,
 			},
 		);
@@ -800,6 +859,7 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 		sendTestEmailMutation.isLoading,
 		skipSpamProtectionMutation.isLoading,
 		skipCreateFormMutation.isLoading,
+		skipSendTestEmailMutation.isLoading,
 		siteData,
 	]);
 
