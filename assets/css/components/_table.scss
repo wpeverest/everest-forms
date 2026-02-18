@@ -146,12 +146,13 @@ $status-trash-text: #991b1b;
 			min-width: 170px;
 
 			&:hover {
-				border-color: darken($evf-border, 5%) !important;
+				border-color: darken(#7545bb, 5%) !important;
 			}
 
 			&:focus {
-				// outline: none;
-				border-color: $evf-border !important;
+				outline: none !important;
+				border: 1px solid #7545bb !important;
+				box-shadow: none !important;
 				// box-shadow: 0 0 0 3px rgba($evf-primary, 0.1);
 			}
 		}
@@ -178,9 +179,9 @@ $status-trash-text: #991b1b;
 			margin: 0;
 
 			&:hover {
-				background: lighten($evf-primary, 48%);
-				border-color: $evf-primary !important;
-				color: $evf-primary;
+				background: lighten(#7545bb, 48%);
+				border-color: #7545bb !important;
+				color: #7545bb;
 			}
 
 			&:active {
@@ -189,7 +190,7 @@ $status-trash-text: #991b1b;
 
 			&:focus {
 				outline: none;
-				box-shadow: 0 0 0 3px rgba($evf-primary, 0.1);
+				box-shadow: none !important;
 			}
 		}
 	}
@@ -1434,9 +1435,10 @@ body {
 
 		&:focus {
 			color: none;
-			box-shadow: none;
-			outline: none;
+			box-shadow: none !important;
+			outline: none !important;
 			outline-offset: none;
+			border: 1px solid #7545bb;
 		}
 	}
 	svg {
@@ -1448,4 +1450,38 @@ body {
 	position: relative;
 	overflow: visible;
 	padding-bottom: 50px;
+}
+
+// Edit Tags //
+
+.evf-bulk-edit-forms-tags-container {
+	display: flex;
+	margin-top: 20px;
+	align-items: center;
+	gap: 16px;
+	.tags-selects {
+		display: block;
+		.label {
+			margin-right: 10px;
+			font-size: 13px;
+			font-weight: 500;
+			font-family: inherit;
+
+			&::after {
+				margin-left: 4px;
+				content: ':';
+			}
+		}
+
+		.button {
+			padding: 4px 12px;
+			max-height: 38px;
+			background: #faf8fc;
+			color: #7545bb;
+			border: 1px solid #7545bb;
+			font-size: 13px;
+			border-radius: 4px;
+			font-weight: 600;
+		}
+	}
 }

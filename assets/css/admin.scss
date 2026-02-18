@@ -2965,6 +2965,7 @@ p.search-box {
 						text-align: center;
 						background-color: #fbfbfd;
 						line-height: 150%;
+						max-height: fit-content;
 
 						.dashicons {
 							display: block;
@@ -6384,6 +6385,11 @@ table.wp-list-table {
 			text-decoration: none;
 			text-align: center;
 
+			&::before {
+				margin-right: 3px;
+				content: '#';
+			}
+
 			&:hover {
 				text-decoration: underline;
 			}
@@ -7097,15 +7103,16 @@ img.ui-datepicker-trigger {
 	.selection {
 		.select2-selection--multiple {
 			//Tags
-			max-height: 38px;
+			max-height: max-content;
+			min-height: 38px;
 			line-height: 1.5;
 			border-radius: 4px;
-			border-color: #7e8993;
+			border-color: #e1e1e1;
 			width: 100%;
 
 			.select2-selection__rendered {
 				.select2-selection__choice {
-					background: #ededed;
+					background: #f4f4f4;
 					border-radius: 3px;
 					gap: 4px;
 					padding: 6px 10px 6px 8px;
@@ -10771,7 +10778,6 @@ img.ui-datepicker-trigger {
 								color: transparent;
 								background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M21 12a9 9 0 1 0-18 0 9 9 0 0 0 18 0m2 0c0 6.075-4.925 11-11 11S1 18.075 1 12 5.925 1 12 1s11 4.925 11 11' fill='%23383838'/%3E%3Cpath d='M11 12V8a1 1 0 1 1 2 0v4a1 1 0 1 1-2 0m1.01 3a1 1 0 1 1 0 2H12a1 1 0 1 1 0-2z' fill='%23383838'/%3E%3C/svg%3E");
 								background-repeat: no-repeat;
-								
 							}
 
 							&:hover::after {
@@ -12716,4 +12722,14 @@ button#show-settings-link {
 .wrap.everest-forms {
 	padding: 0;
 	margin: 0;
+}
+
+.jconfirm-buttons .evf_entries_save_action {
+	font-size: 15px;
+	font-weight: 600;
+	background-color: #7545bb;
+	color: #fff;
+	border-radius: 4px;
+	padding: 10px 20px;
+	text-transform: capitalize;
 }
