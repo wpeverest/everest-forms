@@ -1870,6 +1870,257 @@ p.search-box {
 	}
 }
 
+.evf-entries-tab-wrapper {
+	background: #fff;
+	border-radius: 4px;
+	overflow: visible;
+}
+
+.evf-entries-tab-header {
+	display: flex;
+	align-items: center;
+	background: #fff;
+	min-height: 50px;
+	gap: 12px;
+
+	.evf-entries-tab-header-title {
+		font-size: 22px;
+		font-weight: 600;
+	}
+
+	.evf-entries-form-selector {
+		display: flex;
+		align-items: center;
+		flex: 0 0 auto;
+		padding: 8px 0;
+
+		label.screen-reader-text {
+			clip: rect(1px, 1px, 1px, 1px);
+			position: absolute;
+			height: 1px;
+			width: 1px;
+			overflow: hidden;
+		}
+
+		select#filter-by-form {
+			min-width: 200px;
+			max-width: 280px;
+			height: 36px;
+			border: 1px solid #e1e1e1;
+			border-radius: 4px;
+			padding: 0 10px;
+			font-size: 14px;
+			color: #383838;
+			background: #fff;
+			cursor: pointer;
+			transition: border-color 0.2s ease;
+
+			&:focus {
+				border-color: #7545bb;
+				box-shadow: none;
+				outline: none;
+			}
+		}
+
+		.select2-container {
+			min-width: 200px !important;
+			max-width: 280px;
+			margin: 0 !important;
+
+			.select2-selection--single {
+				height: 36px;
+				border-color: #e1e1e1;
+				border-radius: 4px;
+				transition: border-color 0.2s ease;
+
+				.select2-selection__rendered {
+					line-height: 34px;
+					padding-left: 10px;
+					color: #383838;
+				}
+
+				.select2-selection__arrow {
+					// height: 34px;
+				}
+			}
+
+			&.select2-container--focus,
+			&.select2-container--open {
+				.select2-selection--single {
+					border-color: #7545bb;
+					box-shadow: none;
+				}
+			}
+		}
+	}
+
+	.evf-tab-nav {
+		list-style: none;
+		display: flex;
+		gap: 2px;
+		align-items: center;
+		background: #f3f4f6;
+		border-radius: 5px;
+		padding: 4px;
+		height: max-content;
+		margin-left: auto;
+
+		li {
+			margin: 0;
+			padding: 0;
+
+			&::before {
+				display: none !important;
+			}
+		}
+
+		&__btn {
+			display: flex;
+			align-items: center;
+			gap: 8px;
+			border: 0;
+			background: 0 0;
+			margin: 0;
+			box-shadow: none;
+			border-radius: 4px;
+			padding: 6px 16px;
+			font-weight: 500;
+			font-size: 13px;
+			color: #646970;
+			cursor: pointer;
+			transition: all 0.2s ease;
+			white-space: nowrap;
+			line-height: 20px;
+
+			&:focus {
+				outline: none;
+				box-shadow: none;
+			}
+
+			svg {
+				width: 15px;
+				height: 15px;
+				flex-shrink: 0;
+				opacity: 0.5;
+				transition: opacity 0.2s ease;
+			}
+
+			&:hover {
+				color: #7545bb;
+
+				svg {
+					opacity: 0.85;
+				}
+			}
+
+			&.evf-tab--active {
+				color: #7545bb;
+				background: #fff;
+				box-shadow: 0 4px 24px 0 rgba(10, 10, 10, 0.06);
+
+				svg {
+					opacity: 1;
+				}
+			}
+		}
+	}
+}
+
+// .evf-tab-nav__btn {
+// 	display: inline-flex;
+// 	align-items: center;
+// 	gap: 7px;
+// 	padding: 13px 16px 12px;
+// 	font-family: inherit;
+// 	font-size: 14px;
+// 	font-weight: 500;
+// 	line-height: 1.4;
+// 	color: #6b6b6b;
+// 	background: transparent;
+// 	border: none;
+// 	border-bottom: 2px solid transparent;
+// 	border-radius: 0;
+// 	cursor: pointer;
+// 	white-space: nowrap;
+// 	// Transitions
+// 	transition:
+// 		color 0.2s ease,
+// 		border-color 0.2s ease,
+// 		background-color 0.2s ease;
+// 	// Reset any WP button defaults
+// 	box-shadow: none !important;
+// 	outline: none;
+
+// 	svg {
+// 		width: 15px;
+// 		height: 15px;
+// 		flex-shrink: 0;
+// 		opacity: 0.5;
+// 		transition: opacity 0.2s ease;
+// 	}
+
+// 	// Hover
+// 	// &:hover {
+// 	// 	color: #7545bb;
+// 	// 	background: #f6f3fa;
+
+// 	// 	svg {
+// 	// 		opacity: 0.85;
+// 	// 	}
+// 	// }
+
+// 	// &:focus {
+// 	// 	box-shadow: none;
+// 	// 	outline: none;
+// 	// }
+
+// 	// Active / selected tab
+// 	&.evf-tab--active {
+// 		color: #7545bb;
+// 		border-bottom-color: #7545bb;
+// 		background: transparent;
+
+// 		svg {
+// 			opacity: 1;
+// 		}
+// 	}
+// }
+.evf-tab-panel {
+	display: none;
+
+	&--active {
+		display: block;
+		animation: evf-tab-fadein 0.18s ease forwards;
+	}
+}
+
+@keyframes evf-tab-fadein {
+	from {
+		opacity: 0;
+		transform: translateY(4px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+#evf-panel-analytics {
+	padding: 0;
+	#evf-dashboard-analytics,
+	#evf-form-analytics {
+		margin-left: 0 !important;
+		margin-right: 0 !important;
+		margin-bottom: 0 !important;
+
+		.evf-container {
+			max-width: 100% !important;
+			margin-left: 0;
+			margin-right: 0;
+		}
+	}
+}
+
 /**
 	   * Form Builder
 	   **/

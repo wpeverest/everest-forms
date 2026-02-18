@@ -65,39 +65,134 @@ class EVF_Admin_Entries {
 		$use_react_header = apply_filters( 'everest_forms_use_react_header', true, 'entries' );
 		if ( $use_react_header ) {
 			?>
-		<div id="evf-react-header-root" data-active-menu="entries"></div>
+			<div id="evf-react-header-root" data-active-menu="entries"></div>
 			<?php
 		}
 		?>
-	<div id="everest-forms-entries-list" class="wrap">
 
-		<?php settings_errors(); ?>
-		<?php do_action( 'everest_forms_before_entry_list', $entries_table_list ); ?>
+		<div id="everest-forms-entries-list" class="wrap">
+			<?php settings_errors(); ?>
+			<div class="evf-entries-tab-wrapper">
+				<div class="evf-entries-tab-header">
+					<div class="evf-entries-tab-header-title">
+						<span class="evf-entries-tab-header-title__text">
+							<?php esc_html_e( 'Entries', 'everest-forms' ); ?>
+						</span>
+					</div>
+					<div class="evf-entries-form-selector">
+						<label for="filter-by-form" class="screen-reader-text"><?php esc_html_e( 'Filter by form', 'everest-forms' ); ?></label>
+						<select
+							name="form_id"
+							id="filter-by-form"
+							class="evf-enhanced-normal-select evf-auto-filter"
+							data-placeholder="<?php esc_attr_e( 'Search form...', 'everest-forms' ); ?>"
+						>
+							<option value="0" <?php selected( $form_id, 0 ); ?>><?php esc_html_e( 'All Forms', 'everest-forms' ); ?></option>
+							<?php
+							$forms = evf_get_all_forms( true );
+							foreach ( $forms as $id => $form ) :
+								?>
+								<option value="<?php echo esc_attr( $id ); ?>" <?php selected( $form_id, $id ); ?>><?php echo esc_html( $form ); ?></option>
+							<?php endforeach; ?>
+						</select>
+					</div>
+					<?php
+					$style = '';
 
-		<form id="entries-list" method="get" data-form-id="<?php echo absint( $entries_table_list->form_id ); ?>" data-last-entry-id="<?php echo ! empty( $entry_ids ) ? absint( end( $entry_ids ) ) : 0; ?>">
-			<input type="hidden" name="page" value="evf-entries" />
-			<?php if ( ! empty( $_REQUEST['form_id'] ) ) : // phpcs:ignore WordPress.Security.NonceVerification ?>
-				<input type="hidden" name="form_id" value="<?php echo absint( $_REQUEST['form_id'] ); // phpcs:ignore WordPress.Security.NonceVerification ?>" />
-			<?php endif; ?>
-			<?php if ( ! empty( $_REQUEST['status'] ) ) : // phpcs:ignore WordPress.Security.NonceVerification ?>
-				<input type="hidden" name="status" value="<?php echo esc_attr( sanitize_text_field( wp_unslash( $_REQUEST['status'] ) ) ); // phpcs:ignore WordPress.Security.NonceVerification ?>" />
-			<?php endif; ?>
+					if ( defined( 'EFP_VERSION' ) && absint( $form_id ) === 0 ) {
+						$style = 'style="display:none;"';
+					}
+					?>
+					<!-- Tab Navigation -->
+					<ul class="evf-tab-nav" role="tablist" <?php echo $style; ?>>
+						<li role="presentation">
+							<button
+								class="evf-tab-nav__btn"
+								data-tab="evf-panel-analytics"
+								role="tab"
+								aria-controls="evf-panel-analytics"
+								aria-selected="false"
+								type="button"
+							>
+								<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+									<line x1="18" y1="20" x2="18" y2="10"/>
+									<line x1="12" y1="20" x2="12" y2="4"/>
+									<line x1="6"  y1="20" x2="6"  y2="14"/>
+								</svg>
+								<?php esc_html_e( 'Analytics', 'everest-forms' ); ?>
+							</button>
+						</li>
+						<li role="presentation">
+							<button
+								class="evf-tab-nav__btn"
+								data-tab="evf-panel-entries"
+								role="tab"
+								aria-controls="evf-panel-entries"
+								aria-selected="false"
+								type="button"
+							>
+								<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+									<rect x="3" y="3" width="18" height="18" rx="2"/>
+									<line x1="3"  y1="9"  x2="21" y2="9"/>
+									<line x1="3"  y1="15" x2="21" y2="15"/>
+									<line x1="9"  y1="3"  x2="9"  y2="21"/>
+								</svg>
+								<?php esc_html_e( 'Entries', 'everest-forms' ); ?>
+							</button>
+						</li>
+					</ul>
 
-			<div class="everest-forms-base-list-table-heading">
-				<div style="display: flex; align-items: center; gap: 16px; flex: 0 0 auto;">
-					<span class="evf-forms-title">
-						<?php esc_html_e( 'Entries', 'everest-forms' ); ?>
-					</span>
+				</div><!-- /.evf-entries-tab-header -->
+
+				<div
+					id="evf-panel-analytics"
+					class="evf-tab-panel"
+					role="tabpanel"
+					hidden
+				>
+					<?php do_action( 'everest_forms_before_entry_list', $entries_table_list ); ?>
 				</div>
-				<div class="search-box" style="flex: 0 0 auto; margin: 0; right: 0;">
-					<?php $entries_table_list->search_box( esc_html__( 'Search Entries', 'everest-forms' ), 'everest-forms' ); ?>
-				</div>
+
+
+				<div
+					id="evf-panel-entries"
+					class="evf-tab-panel"
+					role="tabpanel"
+					hidden
+				>
+					<form
+						id="entries-list"
+						method="get"
+						data-form-id="<?php echo absint( $entries_table_list->form_id ); ?>"
+						data-last-entry-id="<?php echo ! empty( $entry_ids ) ? absint( end( $entry_ids ) ) : 0; ?>"
+					>
+						<input type="hidden" name="page" value="evf-entries" />
+
+						<?php if ( ! empty( $_REQUEST['form_id'] ) ) : // phpcs:ignore WordPress.Security.NonceVerification ?>
+							<input type="hidden" name="form_id" value="<?php echo absint( $_REQUEST['form_id'] ); // phpcs:ignore WordPress.Security.NonceVerification ?>" />
+						<?php endif; ?>
+
+						<?php if ( ! empty( $_REQUEST['status'] ) ) : // phpcs:ignore WordPress.Security.NonceVerification ?>
+							<input type="hidden" name="status" value="<?php echo esc_attr( sanitize_text_field( wp_unslash( $_REQUEST['status'] ) ) ); // phpcs:ignore WordPress.Security.NonceVerification ?>" />
+						<?php endif; ?>
+
+						<div class="everest-forms-base-list-table-heading">
+							<div style="display: flex; align-items: center; gap: 16px; flex: 0 0 auto;">
+								<span class="evf-forms-title">
+									<?php // esc_html_e( 'Entries', 'everest-forms' ); ?>
+								</span>
+							</div>
+
+						</div>
+
+						<?php $entries_table_list->views(); ?>
+						<?php $entries_table_list->display(); ?>
+
+					</form>
+				</div><!-- /#evf-panel-entries -->
+
 			</div>
-
-			<?php $entries_table_list->views(); ?>
-			<?php $entries_table_list->display(); ?>
-		</form>
-	</div>
+		</div>
 		<?php
 	}
 
@@ -164,7 +259,7 @@ class EVF_Admin_Entries {
 	}
 
 	/**
-	 * Trash entry.
+	 * Untrash entry.
 	 */
 	private function untrash_entry() {
 		check_admin_referer( 'untrash-entry' );
@@ -282,7 +377,7 @@ class EVF_Admin_Entries {
 	 * Remove entry.
 	 *
 	 * @param  int $entry_id Entry ID.
-	 * @param  int $form_id Form ID.
+	 * @param  int $form_id  Form ID.
 	 * @return bool
 	 */
 	public static function remove_entry( $entry_id, $form_id = 0 ) {
@@ -462,7 +557,7 @@ class EVF_Admin_Entries {
 		} else {
 			$entry = evf_get_entry( $entry_id );
 
-			// Preseve entry status.
+			// Preserve entry status.
 			if ( 'trash' === $status ) {
 				$wpdb->insert(
 					$wpdb->prefix . 'evf_entrymeta',
@@ -521,11 +616,12 @@ class EVF_Admin_Entries {
 
 		return $response;
 	}
+
 	/**
 	 * Delete booked slot after deleting the entries.
 	 *
-	 * @param int $form_id form id.
-	 * @param int $entry_id entry id.
+	 * @param int $form_id  Form ID.
+	 * @param int $entry_id Entry ID.
 	 */
 	public function evf_delete_booked_slot( $form_id, $entry_id ) {
 		$form_data    = get_post( $form_id );

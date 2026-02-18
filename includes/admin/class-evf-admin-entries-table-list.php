@@ -625,7 +625,7 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 	 */
 	protected function get_views() {
 
-		 return array();
+		return array();
 
 		// $status_links = array();
 
@@ -680,42 +680,42 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 	 * @return array
 	 */
 	private function get_all_forms_entry_counts() {
-    global $wpdb;
+		global $wpdb;
 
-    // Initialize counts array with default counts for each status
-    $counts = array(
-        'publish' => 0,
-        'spam'    => 0,
-        'trash'   => 0,
-        'pending' => 0,
-        'denied'  => 0,
-        'unread'  => 0,
-        'read'    => 0,
-        'starred' => 0, // Add starred count
-    );
+		// Initialize counts array with default counts for each status
+		$counts = array(
+			'publish' => 0,
+			'spam'    => 0,
+			'trash'   => 0,
+			'pending' => 0,
+			'denied'  => 0,
+			'unread'  => 0,
+			'read'    => 0,
+			'starred' => 0, // Add starred count
+		);
 
-    // Query to get the count of entries grouped by status (publish, spam, etc.)
-    $results = $wpdb->get_results( "SELECT status, COUNT(*) as count FROM {$wpdb->prefix}evf_entries GROUP BY status" );
+		// Query to get the count of entries grouped by status (publish, spam, etc.)
+		$results = $wpdb->get_results( "SELECT status, COUNT(*) as count FROM {$wpdb->prefix}evf_entries GROUP BY status" );
 
-    // Loop through the results and populate the counts array for each status
-    foreach ( $results as $row ) {
-        $counts[ $row->status ] = (int) $row->count;
-    }
+		// Loop through the results and populate the counts array for each status
+		foreach ( $results as $row ) {
+			$counts[ $row->status ] = (int) $row->count;
+		}
 
-    // Count the unread entries (viewed = 0, status != 'trash')
-    $unread_count = $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}evf_entries WHERE viewed = 0 AND status != 'trash'" );
+		// Count the unread entries (viewed = 0, status != 'trash')
+		$unread_count = $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}evf_entries WHERE viewed = 0 AND status != 'trash'" );
 
-    $read_count = $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}evf_entries WHERE viewed = 1 AND status != 'trash'" );
+		$read_count = $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}evf_entries WHERE viewed = 1 AND status != 'trash'" );
 
-    $counts['unread'] = (int) $unread_count;
-    $counts['read']   = (int) $read_count;
+		$counts['unread'] = (int) $unread_count;
+		$counts['read']   = (int) $read_count;
 
-    $starred_count = $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}evf_entries WHERE starred = 1 AND status != 'trash'" );
+		$starred_count = $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}evf_entries WHERE starred = 1 AND status != 'trash'" );
 
-    $counts['starred'] = (int) $starred_count;
+		$counts['starred'] = (int) $starred_count;
 
-    return $counts;
-}
+		return $counts;
+	}
 
 
 	/**
@@ -1017,12 +1017,18 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 	 * @param string $which The location of the extra table nav markup.
 	 */
 	protected function extra_tablenav( $which ) {
+		global $entries_table_list, $wpdb;
 		$num_entries = ( 0 === $this->form_id ) ? $this->get_all_forms_entry_counts() : evf_get_count_entries_by_status( $this->form_id );
 		$show_export = isset( $_GET['status'] ) && 'trash' === $_GET['status'] ? false : true; // phpcs:ignore WordPress.Security.NonceVerification
 		?>
 	<div class="everest-forms-extra-table-nav">
 		<?php
 		if ( ! empty( $this->forms ) && 'top' === $which ) {
+			?>
+			<div class="search-box" style="flex: 0 0 auto; margin: 0; right: 0;">
+				<?php $entries_table_list->search_box( esc_html__( 'Search Entries', 'everest-forms' ), 'everest-forms' ); ?>
+			</div>
+			<?php
 
 			if ( defined( 'EFP_VERSION' ) && $this->form_id > 0 ) {
 				?>
@@ -1040,7 +1046,6 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 				<?php
 			}
 
-			$this->forms_dropdown();
 			$this->status_dropdown( $num_entries );
 
 			// Export CSV submit button.
@@ -1055,7 +1060,6 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 				<?php
 			}
 
-			// Empty Trash button - only at top.
 			if ( $num_entries['trash'] && isset( $_GET['status'] ) && 'trash' === $_GET['status'] && current_user_can( 'manage_everest_forms' ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 				submit_button( __( 'Empty Trash', 'everest-forms' ), 'apply', 'delete_all', false );
 			}

@@ -79,30 +79,29 @@
 
 	// Function to handle changes in the reporting frequency while sending the entries stat report.
 	$(document).ready(function () {
+		var urlParams = new URLSearchParams(window.location.search);
+		var toastMessage = urlParams.get('evf_toast');
+		var toastType = urlParams.get('evf_toast_type') || 'success';
 
-	var urlParams = new URLSearchParams(window.location.search);
-	var toastMessage = urlParams.get('evf_toast');
-	var toastType = urlParams.get('evf_toast_type') || 'success';
+		if (toastMessage) {
+			try {
+				window.evfShowToast(
+					atob(decodeURIComponent(toastMessage)),
+					toastType,
+					5000,
+				);
 
-	if (toastMessage) {
-		try {
-			window.evfShowToast(
-				atob(decodeURIComponent(toastMessage)),
-				toastType,
-				5000,
-			);
+				urlParams.delete('evf_toast');
+				urlParams.delete('evf_toast_type');
 
-			urlParams.delete('evf_toast');
-			urlParams.delete('evf_toast_type');
-
-			window.history.replaceState(
-				{},
-				document.title,
-				window.location.pathname +
-					(urlParams.toString() ? '?' + urlParams.toString() : ''),
-			);
-		} catch (e) {}
-	}
+				window.history.replaceState(
+					{},
+					document.title,
+					window.location.pathname +
+						(urlParams.toString() ? '?' + urlParams.toString() : ''),
+				);
+			} catch (e) {}
+		}
 
 		var $evfNotice = $('#setting-error-bulk_action.notice');
 
@@ -132,37 +131,95 @@
 		}
 
 		function handleReportingFrequencyChange() {
-			var everest_forms_entries_reporting_frequency = $('#everest_forms_entries_reporting_frequency').val();
-				if ('Weekly' !== everest_forms_entries_reporting_frequency) {
-				$('#everest_forms_entries_reporting_day').closest('.everest-forms-global-settings').hide();
+			var everest_forms_entries_reporting_frequency = $(
+				'#everest_forms_entries_reporting_frequency',
+			).val();
+			if ('Weekly' !== everest_forms_entries_reporting_frequency) {
+				$('#everest_forms_entries_reporting_day')
+					.closest('.everest-forms-global-settings')
+					.hide();
 			} else {
-				$('#everest_forms_entries_reporting_day').closest('.everest-forms-global-settings').show();
+				$('#everest_forms_entries_reporting_day')
+					.closest('.everest-forms-global-settings')
+					.show();
 			}
 		}
 
 		// Execute the function on page load
 		handleReportingFrequencyChange();
 
+		//Entries tab
+		var $wrapper = $('.evf-entries-tab-wrapper');
 
+		if ($wrapper.length) {
+			// Click handler.
+			$wrapper.on('click', '.evf-tab-nav__btn', function () {
+				var $btn = $(this);
+				var target = $btn.data('tab');
+
+				$('.evf-tab-nav__btn', $wrapper)
+					.removeClass('evf-tab--active')
+					.attr('aria-selected', 'false');
+
+				$btn.addClass('evf-tab--active').attr('aria-selected', 'true');
+
+				$('.evf-tab-panel', $wrapper)
+					.removeClass('evf-tab-panel--active')
+					.attr('hidden', true);
+
+				$('#' + target, $wrapper)
+					.addClass('evf-tab-panel--active')
+					.removeAttr('hidden');
+
+				if (window.sessionStorage) {
+					sessionStorage.setItem('evf_active_entries_tab', target);
+				}
+
+				$(window).trigger('resize');
+			});
+
+			// Restore last active tab on page load.
+			var savedTab = window.sessionStorage
+				? sessionStorage.getItem('evf_active_entries_tab')
+				: null;
+
+			if (savedTab && $('#' + savedTab, $wrapper).length) {
+				$('.evf-tab-nav__btn[data-tab="' + savedTab + '"]', $wrapper).trigger(
+					'click',
+				);
+			} else {
+				$('.evf-tab-nav__btn', $wrapper).first().trigger('click');
+			}
+		}
 
 		// Add an event listener for changes and on the click in the reporting frequency
-		$(document).on('change click', '#everest_forms_entries_reporting_frequency', handleReportingFrequencyChange);
-
-		$(document).on('change', '#filter-by-form', function () {
-			var $form = $(this).closest('form');
-
-			$form.find('input[name="status"]').remove();
-
-			$form.submit();
-		});
-
 		$(document).on(
-			'select2:select select2:unselect',
-			'#filter-by-form',
-			function () {
-				$(this).trigger('change');
-			},
+			'change click',
+			'#everest_forms_entries_reporting_frequency',
+			handleReportingFrequencyChange,
 		);
+
+		$(document).ready(function () {
+			$(document).on('change', '#filter-by-form', function () {
+				var $form = $(this).val();
+				var url = new URL(window.location.href);
+
+				if ($form !== '') {
+					url.searchParams.set('form_id', $form);
+				} else {
+					url.searchParams.delete('form_id');
+				}
+				window.location.href = url.toString();
+			});
+
+			$(document).on(
+				'select2:select select2:unselect',
+				'#filter-by-form',
+				function () {
+					$(this).trigger('change');
+				},
+			);
+		});
 
 		// Auto-submit on status dropdown change (entries page).
 		$(document).on('change', '#filter-by-status', function () {
@@ -195,15 +252,13 @@
 
 			url.searchParams.set('page', 'evf-builder');
 
-
 			url.searchParams.delete('paged');
 
 			window.location.href = url.toString();
 		});
 
-
-		$('#evf-form-listing__screen-options').on('click', function() {
-			$("#show-settings-link").click();
+		$('#evf-form-listing__screen-options').on('click', function () {
+			$('#show-settings-link').click();
 		});
 	});
 
