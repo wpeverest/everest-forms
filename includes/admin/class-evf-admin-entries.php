@@ -53,24 +53,58 @@ class EVF_Admin_Entries {
 		$form_id = isset( $_REQUEST['form_id'] ) ? absint( $_REQUEST['form_id'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification
 		$current_status = isset( $_REQUEST['status'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['status'] ) ) : 'publish'; // phpcs:ignore WordPress.Security.NonceVerification
 
-	// Determine current status from DB only
-			if ( $form_id > 0 ) {
-				$current_status = $wpdb->get_var(
-					$wpdb->prepare(
-						"SELECT status FROM {$wpdb->prefix}evf_entries
-						WHERE form_id = %d AND status != 'draft'
-						ORDER BY entry_id DESC LIMIT 1",
-						$form_id
-					)
-				);
-			} else {
-				$current_status = $wpdb->get_var(
-					"SELECT status FROM {$wpdb->prefix}evf_entries
-					WHERE status != 'draft'
-					ORDER BY entry_id DESC LIMIT 1"
-				);
-			}
 
+		if ( $form_id > 0 ) {
+
+
+    $has_publish = $wpdb->get_var(
+        $wpdb->prepare(
+            "SELECT 1 FROM {$wpdb->prefix}evf_entries
+             WHERE form_id = %d AND status = 'publish'
+             LIMIT 1",
+            $form_id
+        )
+    );
+
+    if ( $has_publish ) {
+        $current_status = 'publish';
+    } else {
+
+        $has_trash = $wpdb->get_var(
+            $wpdb->prepare(
+                "SELECT 1 FROM {$wpdb->prefix}evf_entries
+                 WHERE form_id = %d AND status = 'trash'
+                 LIMIT 1",
+                $form_id
+            )
+        );
+
+        $current_status = $has_trash ? 'trash' : '';
+    }
+
+} else {
+
+    $has_publish = $wpdb->get_var(
+        "SELECT 1 FROM {$wpdb->prefix}evf_entries
+         WHERE status = 'publish'
+         LIMIT 1"
+    );
+
+    if ( $has_publish ) {
+        $current_status = 'publish';
+    } else {
+
+        $has_trash = $wpdb->get_var(
+            "SELECT 1 FROM {$wpdb->prefix}evf_entries
+             WHERE status = 'trash'
+             LIMIT 1"
+        );
+
+        $current_status = $has_trash ? 'trash' : '';
+    }
+}
+
+error_log( print_r( $current_status, true ) );
 
 		$current_status = $current_status ? $current_status : 'publish';
 

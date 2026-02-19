@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Everest Forms 3.4.3\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/everest-forms\n"
-"POT-Creation-Date: 2026-02-18 12:17:48+00:00\n"
+"POT-Creation-Date: 2026-02-19 03:56:48+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -4088,15 +4088,15 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: includes/admin/class-evf-admin-entries-table-list.php:848
-#: includes/admin/class-evf-admin-entries.php:475
+#: includes/admin/class-evf-admin-entries.php:491
 #: includes/class-evf-form-task.php:1676
 msgid "Form Entry Approved"
 msgstr ""
 
 #: includes/admin/class-evf-admin-entries-table-list.php:850
 #: includes/admin/class-evf-admin-entries-table-list.php:914
-#: includes/admin/class-evf-admin-entries.php:477
-#: includes/admin/class-evf-admin-entries.php:535
+#: includes/admin/class-evf-admin-entries.php:493
+#: includes/admin/class-evf-admin-entries.php:551
 #: includes/class-evf-form-task.php:1678 includes/class-evf-form-task.php:1759
 #. translators:%s: User name of form entry
 #. translators: %s is the name of the user
@@ -4119,8 +4119,8 @@ msgstr ""
 
 #: includes/admin/class-evf-admin-entries-table-list.php:855
 #: includes/admin/class-evf-admin-entries-table-list.php:919
-#: includes/admin/class-evf-admin-entries.php:482
-#: includes/admin/class-evf-admin-entries.php:540
+#: includes/admin/class-evf-admin-entries.php:498
+#: includes/admin/class-evf-admin-entries.php:556
 #: includes/class-evf-form-task.php:1683 includes/class-evf-form-task.php:1764
 #. translators:%s: Site Name
 #. translators: %s is the site_name.
@@ -4132,7 +4132,7 @@ msgid "Form Entry Denied"
 msgstr ""
 
 #: includes/admin/class-evf-admin-entries-table-list.php:916
-#: includes/admin/class-evf-admin-entries.php:537
+#: includes/admin/class-evf-admin-entries.php:553
 #. translators:%s: Form Entry Date
 msgid ""
 "We regret to inform you that your form entry submitted on %s has been "
@@ -4154,7 +4154,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: includes/admin/class-evf-admin-entries-table-list.php:969
-#: includes/admin/class-evf-admin-entries.php:348
+#: includes/admin/class-evf-admin-entries.php:364
 #. translators: %d: number of entries
 msgid "%d entry permanently deleted."
 msgid_plural "%d entries permanently deleted."
@@ -4193,17 +4193,17 @@ msgid "Empty Trash"
 msgstr ""
 
 #: includes/admin/class-evf-admin-entries-table-list.php:1080
-#: includes/admin/class-evf-admin-entries.php:83
+#: includes/admin/class-evf-admin-entries.php:98
 msgid "Filter by form"
 msgstr ""
 
 #: includes/admin/class-evf-admin-entries-table-list.php:1081
-#: includes/admin/class-evf-admin-entries.php:88
+#: includes/admin/class-evf-admin-entries.php:103
 msgid "Search form..."
 msgstr ""
 
 #: includes/admin/class-evf-admin-entries-table-list.php:1082
-#: includes/admin/class-evf-admin-entries.php:90
+#: includes/admin/class-evf-admin-entries.php:105
 #: includes/admin/class-evf-admin-forms.php:80
 #: includes/admin/class-evf-admin-menus.php:92
 #: includes/admin/class-evf-admin-menus.php:179
@@ -4234,8 +4234,8 @@ msgstr ""
 msgid "Filter by status"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries.php:79
-#: includes/admin/class-evf-admin-entries.php:124
+#: includes/admin/class-evf-admin-entries.php:94
+#: includes/admin/class-evf-admin-entries.php:139
 #: includes/admin/class-evf-admin-forms-table-list.php:69
 #: includes/admin/class-evf-admin-forms-table-list.php:182
 #: includes/admin/class-evf-admin-menus.php:110
@@ -4246,30 +4246,30 @@ msgstr ""
 msgid "Entries"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries.php:141
+#: includes/admin/class-evf-admin-entries.php:157
 msgid "Analytics"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries.php:479
+#: includes/admin/class-evf-admin-entries.php:495
 #. translators:%s: Form Entry Date
 msgid ""
 "We're pleased to inform you that your form entry submitted on %s has been "
 "successfully approved."
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries.php:480
-#: includes/admin/class-evf-admin-entries.php:538
+#: includes/admin/class-evf-admin-entries.php:496
+#: includes/admin/class-evf-admin-entries.php:554
 #: includes/class-evf-form-task.php:1681 includes/class-evf-form-task.php:1762
 msgid "Thank you for giving us your precious time."
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries.php:533
+#: includes/admin/class-evf-admin-entries.php:549
 #: includes/class-evf-form-task.php:1757
 #. translators: %s is the message.
 msgid "Entry Submission Denied"
 msgstr ""
 
-#: includes/admin/class-evf-admin-entries.php:614
+#: includes/admin/class-evf-admin-entries.php:630
 #. translators: %d - New form entries count.
 msgid "%d new entry since you last checked."
 msgid_plural "%d new entries since you last checked."
