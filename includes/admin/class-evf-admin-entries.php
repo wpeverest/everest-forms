@@ -104,8 +104,6 @@ class EVF_Admin_Entries {
     }
 }
 
-error_log( print_r( $current_status, true ) );
-
 		$current_status = $current_status ? $current_status : 'publish';
 
 		$entries_table_list->process_bulk_action();

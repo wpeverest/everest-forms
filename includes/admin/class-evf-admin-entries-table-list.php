@@ -694,10 +694,10 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 			'starred' => 0, // Add starred count
 		);
 
-		// Query to get the count of entries grouped by status (publish, spam, etc.)
+
 		$results = $wpdb->get_results( "SELECT status, COUNT(*) as count FROM {$wpdb->prefix}evf_entries GROUP BY status" );
 
-		// Loop through the results and populate the counts array for each status
+
 		foreach ( $results as $row ) {
 			$counts[ $row->status ] = (int) $row->count;
 		}
@@ -1091,46 +1091,49 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 	 * Display a status dropdown for filtering entries.
 	 */
 	public function status_dropdown( $num_entries ) {
-		$current_status = isset( $_REQUEST['status'] ) ? sanitize_key( wp_unslash( $_REQUEST['status'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification
+    $current_status = isset( $_REQUEST['status'] ) ? sanitize_key( wp_unslash( $_REQUEST['status'] ) ) : '';
 
-		$statuses = array(
-			''       => __( 'All', 'everest-forms' ),
-			'unread' => __( 'Unread', 'everest-forms' ),
-			'read'   => __( 'Read', 'everest-forms' ),
-			'spam'   => __( 'Spam', 'everest-forms' ),
-			'trash'  => __( 'Trash', 'everest-forms' ),
-		);
+    $statuses = array(
+        'all'    => __( 'All', 'everest-forms' ),
+        'unread' => __( 'Unread', 'everest-forms' ),
+        'read'   => __( 'Read', 'everest-forms' ),
+        'spam'   => __( 'Spam', 'everest-forms' ),
+        'trash'  => __( 'Trash', 'everest-forms' ),
+    );
 
-		if ( ! empty( $this->form_data ) ) {
-			$extra_statuses = evf_get_entry_statuses( $this->form_data );
-			foreach ( $extra_statuses as $key => $label ) {
-				if ( ! isset( $statuses[ $key ] ) && 'publish' !== $key ) {
-					$statuses[ $key ] = $label;
-				}
-			}
-		}
-		?>
-	<label for="filter-by-status" class="screen-reader-text"><?php esc_html_e( 'Filter by status', 'everest-forms' ); ?></label>
-	<select name="status" class="evf-enhanced-select" id="filter-by-status" >
-		<?php foreach ( $statuses as $value => $label ) : ?>
-			<option value="<?php echo esc_attr( $value ); ?>" <?php selected( $current_status, $value ); ?>>
-				<?php
-				$count = '';
-				if ( '' === $value ) {
-					$count = isset( $num_entries['publish'] ) ? absint( $num_entries['publish'] ) : 0;
-				} elseif ( isset( $num_entries[ $value ] ) ) {
-					$count = absint( $num_entries[ $value ] );
-				}
-				echo esc_html( $label );
-				if ( '' !== $count ) {
-					echo ' (' . esc_html( $count ) . ')';
-				}
-				?>
-			</option>
-		<?php endforeach; ?>
-	</select>
-		<?php
-	}
+    if ( ! empty( $this->form_data ) ) {
+        $extra_statuses = evf_get_entry_statuses( $this->form_data );
+        foreach ( $extra_statuses as $key => $label ) {
+            if ( ! isset( $statuses[ $key ] ) && 'publish' !== $key ) {
+                $statuses[ $key ] = $label;
+            }
+        }
+    }
+
+    // Map status keys to count keys.
+    $count_map = array(
+        'all'    => 'publish',
+        'unread' => 'unread',
+        'read'   => 'read',
+        'spam'   => 'spam',
+        'trash'  => 'trash',
+    );
+    ?>
+    <select name="status" id="filter-by-status" class="evf-enhanced-normal-select evf-auto-filter">
+        <?php foreach ( $statuses as $key => $label ) :
+            $count_key = isset( $count_map[ $key ] ) ? $count_map[ $key ] : $key;
+            $count     = isset( $num_entries[ $count_key ] ) ? (int) $num_entries[ $count_key ] : 0;
+            $display   = 'all' === $key
+                ? $label
+                : sprintf( '%s (%d)', $label, $count );
+        ?>
+            <option value="<?php echo esc_attr( $key ); ?>" <?php selected( $current_status, $key ); ?>>
+                <?php echo esc_html( $display ); ?>
+            </option>
+        <?php endforeach; ?>
+    </select>
+    <?php
+}
 
 
 	/**
