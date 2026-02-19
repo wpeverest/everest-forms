@@ -168,7 +168,7 @@ class EVF_Admin_Entries {
 									<line x1="3"  y1="15" x2="21" y2="15"/>
 									<line x1="9"  y1="3"  x2="9"  y2="21"/>
 								</svg>
-								<?php esc_html_e( 'Entries', 'everest-forms' ); ?>
+								<?php esc_html_e( 'Table', 'everest-forms' ); ?>
 							</button>
 						</li>
 						<?php if ( defined( 'EFP_VERSION' ) && count( $entry_ids ) > 0 && 'trash' !== $current_status ) : ?>
@@ -186,7 +186,7 @@ class EVF_Admin_Entries {
 									<line x1="12" y1="20" x2="12" y2="4"/>
 									<line x1="6"  y1="20" x2="6"  y2="14"/>
 								</svg>
-								<?php esc_html_e( 'Analytics', 'everest-forms' ); ?>
+								<?php esc_html_e( 'Report', 'everest-forms' ); ?>
 							</button>
 						</li>
 						<?php endif; ?>

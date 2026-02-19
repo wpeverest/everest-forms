@@ -217,6 +217,12 @@ $status-trash-text: #991b1b;
 			padding-left: 10px !important;
 		}
 
+		#delete_all.button.apply {
+			color: #7545bb !important;
+			border-color: #7545bb !important;
+			background-color: #faf8fc !important;
+		}
+
 		.evf-manage-columns-btn,
 		button[class*='manage'] {
 			min-height: 38px;
