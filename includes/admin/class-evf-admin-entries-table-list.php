@@ -193,7 +193,7 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 			}
 			foreach ( $entry_columns as $id ) {
 				// Check to make sure the field as not been removed.
-				$status = is_plugin_active( 'everest-forms-pro/everest-forms-pro.php' ) ? true : false;
+				$status =  defined( 'EFP_VERSION' ) ? true : false;
 				$status = apply_filters( 'everest_forms_plugin_active_status', $status );
 				if ( empty( $this->form_data['form_fields'][ $id ] ) ) {
 					if ( $status ) {
@@ -1123,9 +1123,7 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
         <?php foreach ( $statuses as $key => $label ) :
             $count_key = isset( $count_map[ $key ] ) ? $count_map[ $key ] : $key;
             $count     = isset( $num_entries[ $count_key ] ) ? (int) $num_entries[ $count_key ] : 0;
-            $display   = 'all' === $key
-                ? $label
-                : sprintf( '%s (%d)', $label, $count );
+          $display = sprintf( '%s (%d)', $label, $count );
         ?>
             <option value="<?php echo esc_attr( $key ); ?>" <?php selected( $current_status, $key ); ?>>
                 <?php echo esc_html( $display ); ?>
