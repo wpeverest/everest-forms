@@ -339,7 +339,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Changelog ==
 
-= 3.4.3 - 16-02-2026
+= 3.4.3       - 19-02-2026
 * Enhancement - Improved Addons page.
 * Enhancement - Improved reCAPTCHA and Payment page.
 * Enhancement - Improved Entry page.

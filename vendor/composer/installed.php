@@ -3,7 +3,7 @@
         'name' => 'wpeverest/everest-forms',
         'pretty_version' => 'dev-develop',
         'version' => 'dev-develop',
-        'reference' => '7d02d2cede569bc42301fc1ddcc545f1119b23e0',
+        'reference' => 'f01e4ff52476e4d2f89fbbfa2c253ae48767f37c',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -40,7 +40,7 @@
         'wpeverest/everest-forms' => array(
             'pretty_version' => 'dev-develop',
             'version' => 'dev-develop',
-            'reference' => '7d02d2cede569bc42301fc1ddcc545f1119b23e0',
+            'reference' => 'f01e4ff52476e4d2f89fbbfa2c253ae48767f37c',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
