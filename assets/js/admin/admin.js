@@ -171,28 +171,13 @@
 					.addClass('evf-tab-panel--active')
 					.removeAttr('hidden');
 
-				if (window.sessionStorage) {
-					sessionStorage.setItem('evf_active_entries_tab', target);
-				}
-
 				$(window).trigger('resize');
 			});
 
-			// Restore last active tab on page load.
-			var savedTab = window.sessionStorage
-				? sessionStorage.getItem('evf_active_entries_tab')
-				: null;
-
-			if (savedTab && $('#' + savedTab, $wrapper).length) {
-				$('.evf-tab-nav__btn[data-tab="' + savedTab + '"]', $wrapper).trigger(
-					'click',
-				);
-			} else {
-				$('.evf-tab-nav__btn', $wrapper).first().trigger('click');
-			}
+			
+			$('.evf-tab-nav__btn', $wrapper).first().trigger('click');
 		}
 
-		// Add an event listener for changes and on the click in the reporting frequency
 		$(document).on(
 			'change click',
 			'#everest_forms_entries_reporting_frequency',

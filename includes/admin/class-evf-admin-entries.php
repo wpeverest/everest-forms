@@ -51,13 +51,28 @@ class EVF_Admin_Entries {
 		global $entries_table_list, $wpdb;
 
 		$form_id = isset( $_REQUEST['form_id'] ) ? absint( $_REQUEST['form_id'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification
+		$current_status = isset( $_REQUEST['status'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['status'] ) ) : 'publish'; // phpcs:ignore WordPress.Security.NonceVerification
 
-		if ( $form_id > 0 ) {
-			$entry_ids = evf_get_entries_ids( $form_id );
-		} else {
-			$results   = $wpdb->get_col( "SELECT entry_id FROM {$wpdb->prefix}evf_entries WHERE status != 'trash' ORDER BY entry_id DESC" );
-			$entry_ids = array_map( 'intval', $results );
-		}
+	// Determine current status from DB only
+			if ( $form_id > 0 ) {
+				$current_status = $wpdb->get_var(
+					$wpdb->prepare(
+						"SELECT status FROM {$wpdb->prefix}evf_entries
+						WHERE form_id = %d AND status != 'draft'
+						ORDER BY entry_id DESC LIMIT 1",
+						$form_id
+					)
+				);
+			} else {
+				$current_status = $wpdb->get_var(
+					"SELECT status FROM {$wpdb->prefix}evf_entries
+					WHERE status != 'draft'
+					ORDER BY entry_id DESC LIMIT 1"
+				);
+			}
+
+
+		$current_status = $current_status ? $current_status : 'publish';
 
 		$entries_table_list->process_bulk_action();
 		$entries_table_list->prepare_items();
@@ -97,10 +112,10 @@ class EVF_Admin_Entries {
 						</select>
 					</div>
 					<?php
-					$style = '';
-						$entry_ids = evf_get_entries_ids( $entries_table_list->form_id );
+					$style     = '';
+					$entry_ids = evf_get_entries_ids( $entries_table_list->form_id );
 
-					if ( defined( 'EFP_VERSION' ) && ( absint( $form_id ) === 0) || (  0 === count( $entry_ids ) ) ) {
+					if ( ( defined( 'EFP_VERSION' ) && absint( $form_id ) === 0 ) || 0 === count( $entry_ids ) ) {
 						$style = 'style="display:none;"';
 					}
 					?>
@@ -124,6 +139,7 @@ class EVF_Admin_Entries {
 								<?php esc_html_e( 'Entries', 'everest-forms' ); ?>
 							</button>
 						</li>
+						<?php if ( defined( 'EFP_VERSION' ) && count( $entry_ids ) > 0 && 'trash' !== $current_status ) : ?>
 						<li role="presentation">
 							<button
 								class="evf-tab-nav__btn"
@@ -141,6 +157,7 @@ class EVF_Admin_Entries {
 								<?php esc_html_e( 'Analytics', 'everest-forms' ); ?>
 							</button>
 						</li>
+						<?php endif; ?>
 					</ul>
 
 				</div><!-- /.evf-entries-tab-header -->
@@ -183,7 +200,6 @@ class EVF_Admin_Entries {
 									<?php // esc_html_e( 'Entries', 'everest-forms' ); ?>
 								</span>
 							</div>
-
 						</div>
 
 						<?php $entries_table_list->views(); ?>
