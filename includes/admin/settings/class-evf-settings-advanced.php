@@ -8,21 +8,21 @@
 
 defined( 'ABSPATH' ) || exit;
 
-if ( class_exists( 'EVF_Settings_Misc', false ) ) {
-	return new EVF_Settings_Misc();
+if ( class_exists( 'EVF_Settings_Advanced', false ) ) {
+	return new EVF_Settings_Advanced();
 }
 
 /**
- * EVF_Settings_Misc.
+ * EVF_Settings_Advanced.
  */
-class EVF_Settings_Misc extends EVF_Settings_Page {
+class EVF_Settings_Advanced extends EVF_Settings_Page {
 
 	/**
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->id    = 'misc';
-		$this->label = esc_html__( 'Misc', 'everest-forms' );
+		$this->id    = 'advanced';
+		$this->label = esc_html__( 'Advanced', 'everest-forms' );
 
 		parent::__construct();
 	}
@@ -115,4 +115,4 @@ class EVF_Settings_Misc extends EVF_Settings_Page {
 	}
 }
 
-return new EVF_Settings_Misc();
+return new EVF_Settings_Advanced();
