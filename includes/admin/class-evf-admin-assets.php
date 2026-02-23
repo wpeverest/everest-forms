@@ -219,6 +219,18 @@ class EVF_Admin_Assets {
 
 		// Builder upgrade.
 		wp_register_script( 'evf-upgrade', evf()->plugin_url() . '/assets/js/admin/upgrade.js', array( 'jquery', 'jquery-confirm' ), EVF_VERSION, false );
+		// BUGFIX: `assets/js/admin/upgrade.js` reads global `evf_data` (for example in `limit_file_upload()`).
+		// On non-builder screens this caused `evf_data is not defined` because it was only localized to `evf-form-builder`.
+		// Localize the required `evf_data` keys directly to `evf-upgrade` to satisfy the script contract everywhere it runs.
+		wp_localize_script(
+			'evf-upgrade',
+			'evf_data',
+			array(
+				'is_pro'     => defined( 'EFP_PLUGIN_FILE' ),
+				'i18n_ok'    => esc_html__( 'OK', 'everest-forms' ),
+				'i18n_close' => esc_html__( 'Close', 'everest-forms' ),
+			)
+		);
 		wp_localize_script(
 			'evf-upgrade',
 			'evf_upgrade',

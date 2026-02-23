@@ -14,6 +14,7 @@ use EverestForms\Addons\StyleCustomizer\StyleCustomizer;
 use EverestForms\Addons\DiviBuilder\DiviBuilder;
 use EverestForms\Addons\BeaverBuilder\BeaverBuilder;
 use EverestForms\Addons\CleanTalk\CleanTalk;
+use EverestForms\Addons\ShieldSilentCaptcha\ShieldSilentCaptcha;
 use EverestForms\Addons\WPBakeryBuilder\WPBakeryBuilder;
 use EverestForms\Traits\Singleton;
 
@@ -88,7 +89,8 @@ class Addons {
 	 */
 	public function not_addons_init() {
 		$addons = array(
-			'clean-talk' => CleanTalk::class,
+			'clean-talk'            => CleanTalk::class,
+			'shield-silent-captcha' => ShieldSilentCaptcha::class,
 		);
 
 		foreach ( $addons as $key => $class_name ) {
