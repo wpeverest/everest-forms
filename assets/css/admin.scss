@@ -15,8 +15,8 @@
 
 // Components
 @import 'components/badge', 'components/forms', 'components/buttons',
-	'components/card', 'components/table', 'components/entries-views',
-	'components/toast', 'components/accordion';
+'components/card', 'components/table', 'components/entries-views',
+'components/toast', 'components/accordion';
 
 @import 'colors';
 @import 'containers';
@@ -46,14 +46,29 @@ body[class*='everest-forms_page_'] {
 		padding-left: 0;
 	}
 
+	#wpbody-content {
+		font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+
+		#evf-react-header-root {
+			a {
+				font-size: 14px;
+				color: #383838;
+				display: flex;
+				padding: 0 4px;
+				text-decoration: none;
+				position: relative;
+				transition: all .3s;
+				font-weight: 500;
+				height: 100%;
+				align-items: center;
+			}
+		}
+	}
+
 	#setting-error-bulk_action,
 	#message.updated.notice {
 		display: none !important;
 	}
-}
-
-#everest-forms-entries-list {
-	// margin-top: 32px;
 }
 
 .blockUI.blockOverlay {
@@ -118,6 +133,7 @@ body[class*='everest-forms_page_'] {
 	}
 
 	.plugin-card {
+
 		.name,
 		.desc {
 			margin-right: 0;
@@ -193,6 +209,7 @@ body[class*='everest-forms_page_'] {
 
 				.action-buttons {
 					.button.updating-message {
+
 						&::before,
 						&::after {
 							margin-top: -1px;
@@ -617,7 +634,7 @@ body.everest-forms-builder {
 				max-width: 100%;
 
 				&:hover {
-					& + .everest-forms-welcome-video__button {
+					&+.everest-forms-welcome-video__button {
 						visibility: visible;
 						opacity: 1;
 					}
@@ -699,7 +716,7 @@ body.everest-forms-builder {
 			z-index: 1;
 
 			&:checked {
-				+ .slider {
+				+.slider {
 					//  background-color: $green;
 					background-color: $evf_primary-color;
 
@@ -764,7 +781,7 @@ body.everest-forms-builder {
 				position: absolute;
 
 				&:checked {
-					+ .evf-toggle-switch-wrap {
+					+.evf-toggle-switch-wrap {
 						background-color: #11a0d2;
 						border: 2px solid #11a0d2;
 						border: 9px solid transparent;
@@ -785,7 +802,7 @@ body.everest-forms-builder {
 						}
 					}
 
-					~ .evf-toggle-switch-control {
+					~.evf-toggle-switch-control {
 						background-color: #fff;
 						border-width: 0;
 						transform: translateX(18px) translateY(-50%);
@@ -797,7 +814,7 @@ body.everest-forms-builder {
 				}
 
 				&:focus {
-					+ .evf-toggle-switch-wrap {
+					+.evf-toggle-switch-wrap {
 						box-shadow:
 							0 0 0 2px #fff,
 							0 0 0 3px #6c7781;
@@ -999,14 +1016,13 @@ body.everest-forms-builder {
 					color: #7545bb;
 
 					.evf-nav-icon {
+
 						&.fields,
 						&.settings,
 						&.integrations,
 						&.payments {
 							&::before {
-								filter: brightness(0) saturate(100%) invert(26%) sepia(77%)
-									saturate(1950%) hue-rotate(249deg) brightness(84%)
-									contrast(81%);
+								filter: brightness(0) saturate(100%) invert(26%) sepia(77%) saturate(1950%) hue-rotate(249deg) brightness(84%) contrast(81%);
 							}
 						}
 					}
@@ -1527,6 +1543,7 @@ body.everest-forms-builder {
 				}
 
 				&.loading {
+
 					.evf-button,
 					.evf-button::before,
 					.evf-button::after {
@@ -1570,6 +1587,7 @@ body.everest-forms-builder {
 					}
 
 					@-webkit-keyframes load1 {
+
 						0%,
 						80%,
 						100% {
@@ -1584,6 +1602,7 @@ body.everest-forms-builder {
 					}
 
 					@keyframes load1 {
+
 						0%,
 						80%,
 						100% {
@@ -1838,6 +1857,7 @@ body.everest-forms-builder {
 
 // Entries page
 #evf-dashboard-analytisc-body {
+
 	&::after,
 	&::before {
 		display: none;
@@ -1850,6 +1870,7 @@ p.search-box {
 
 #evf-dashboard-analytics {
 	margin-bottom: 32px;
+
 	.evf-container {
 		margin-left: 0;
 		margin-right: 0;
@@ -1879,20 +1900,20 @@ p.search-box {
 .evf-entries-tab-header {
 	display: flex;
 	align-items: center;
-	background: #fff;
-	min-height: 50px;
-	gap: 12px;
+	// min-height: 50px;
+	gap: 16px;
 
 	.evf-entries-tab-header-title {
 		font-size: 22px;
+		line-height: 40px;
 		font-weight: 600;
 	}
 
 	.evf-entries-form-selector {
 		display: flex;
 		align-items: center;
-		flex: 0 0 auto;
-		padding: 8px 0;
+		// flex: 0 0 auto;
+		// padding: 8px 0;
 
 		label.screen-reader-text {
 			clip: rect(1px, 1px, 1px, 1px);
@@ -1934,13 +1955,10 @@ p.search-box {
 				transition: border-color 0.2s ease;
 
 				.select2-selection__rendered {
-					line-height: 34px;
-					padding-left: 10px;
+					line-height: 36px;
+					padding-left: 12px;
 					color: #383838;
-				}
-
-				.select2-selection__arrow {
-					// height: 34px;
+					font-size: 14px;
 				}
 			}
 
@@ -2099,6 +2117,7 @@ p.search-box {
 		opacity: 0;
 		transform: translateY(4px);
 	}
+
 	to {
 		opacity: 1;
 		transform: translateY(0);
@@ -2107,6 +2126,7 @@ p.search-box {
 
 #evf-panel-analytics {
 	padding: 0;
+
 	#evf-dashboard-analytics,
 	#evf-form-analytics {
 		margin-left: 0 !important;
@@ -2135,6 +2155,7 @@ p.search-box {
 
 	.everest-forms-panel-content-wrap {
 		.everest-forms-panel-content {
+
 			.evf-content-section,
 			.evf-panel-content-section {
 				min-height: calc(100vh - 155px);
@@ -2221,6 +2242,7 @@ p.search-box {
 				}
 
 				.everest-forms-panel-field {
+
 					input,
 					textarea,
 					select {
@@ -2285,6 +2307,7 @@ p.search-box {
 
 	.everest-forms-panel-content-wrap {
 		.everest-forms-panel-content {
+
 			.evf-content-section,
 			.evf-panel-content-section {
 				min-height: calc(100vh - 155px);
@@ -2305,6 +2328,7 @@ p.search-box {
 				}
 
 				.everest-forms-panel-field {
+
 					input,
 					textarea,
 					select {
@@ -2338,6 +2362,7 @@ p.search-box {
 }
 
 .everest-forms_page_evf-builder {
+
 	.everest-forms-add-fields-group,
 	.everest-forms-field-option-group {
 		.handlediv {
@@ -2657,8 +2682,7 @@ p.search-box {
 						transition: all 0.35s ease 0s;
 
 						&:focus {
-							box-shadow: 0 0 0 2px
-								adjust-color($everestforms, $saturation: 39%, $lightness: +18%);
+							box-shadow: 0 0 0 2px adjust-color($everestforms, $saturation: 39%, $lightness: +18%);
 						}
 					}
 
@@ -2968,12 +2992,8 @@ p.search-box {
 				}
 
 				&:has(.evf-conditional-confirmation-body[style*='display: none;']),
-				&:has(
-						.evf-field-confirmation-conditional-container[style*='display: none;']
-					),
-				&:has(
-						.evf-conditional-confirmation-active-toggle[style*='display: none;']
-					) {
+				&:has(.evf-field-confirmation-conditional-container[style*='display: none;']),
+				&:has(.evf-conditional-confirmation-active-toggle[style*='display: none;']) {
 					min-height: unset;
 
 					.evf-content-section-title {
@@ -3277,6 +3297,7 @@ p.search-box {
 							}
 
 							svg {
+
 								.cls-1,
 								.cls-2,
 								.cls-3 {
@@ -3313,6 +3334,7 @@ p.search-box {
 							z-index: 99999;
 
 							svg {
+
 								.cls-1,
 								.cls-2,
 								.cls-3 {
@@ -3324,6 +3346,7 @@ p.search-box {
 
 					.evf-setting--checkbox,
 					.evf-field-option--checkbox {
+
 						input,
 						label {
 							width: auto;
@@ -3345,7 +3368,7 @@ p.search-box {
 						.everest-forms-border-container {
 							.everest-forms-field-option-row {
 								&.everest-forms-field-option-row-date_format {
-									> .inline {
+									>.inline {
 										margin-left: 0;
 										margin-right: 10px;
 
@@ -3435,12 +3458,9 @@ p.search-box {
 
 							// Email/Password Confirmation.
 							&.everest-forms-confirm-disabled,
-							&.everest-forms-field-option-email:not(
-									.everest-forms-confirm-enabled
-								),
-							&.everest-forms-field-option-password:not(
-									.everest-forms-confirm-enabled
-								) {
+							&.everest-forms-field-option-email:not(.everest-forms-confirm-enabled),
+							&.everest-forms-field-option-password:not(.everest-forms-confirm-enabled) {
+
 								.everest-forms-field-option-row-sublabel_hide,
 								.everest-forms-field-option-row-confirmation_placeholder {
 									display: none;
@@ -3448,6 +3468,7 @@ p.search-box {
 							}
 
 							&-group {
+
 								&-basic,
 								&-advanced,
 								&-conditionals,
@@ -3491,6 +3512,7 @@ p.search-box {
 						}
 
 						.everest-forms-field-option-group {
+
 							&-basic,
 							&-advanced,
 							&-conditionals,
@@ -3833,6 +3855,7 @@ p.search-box {
 				}
 
 				.everest-forms-field-option-date-time {
+
 					.format-selected-date .everest-forms-time,
 					.format-selected-time .everest-forms-date {
 						display: none;
@@ -3856,6 +3879,7 @@ p.search-box {
 				}
 
 				.everest-forms-field-option-address {
+
 					.default,
 					.placeholder {
 						width: 44%;
@@ -4023,7 +4047,7 @@ p.search-box {
 								z-index: -1;
 							}
 
-							> span {
+							>span {
 								color: $color_gray-base;
 								display: block;
 							}
@@ -4196,6 +4220,7 @@ p.search-box {
 				}
 
 				.everest-forms-field-payment-single {
+
 					.widefat,
 					.item-price-hidden {
 						display: none;
@@ -4369,6 +4394,7 @@ p.search-box {
 					}
 
 					input {
+
 						&[type='text'],
 						&[type='email'] {
 							margin-bottom: 5px;
@@ -4664,6 +4690,7 @@ p.search-box {
 				}
 
 				input {
+
 					&[type='checkbox'],
 					&[type='radio'] {
 						margin-right: 10px;
@@ -5495,7 +5522,7 @@ p.search-box {
 						&.everst-forms-name-editing {
 							pointer-events: all;
 
-							& + .evf-icon {
+							&+.evf-icon {
 								background: $everestforms;
 								color: $color-white;
 								border-radius: 4px 0 0 4px;
@@ -5642,6 +5669,7 @@ p.search-box {
 		}
 
 		.everest-forms-panel-sidebar {
+
 			.everest-forms-add-fields,
 			.everest-forms-field-options {
 				background-color: #ffff;
@@ -5846,6 +5874,7 @@ p.search-box {
 
 		// Ignore nested inputs.
 		table {
+
 			select,
 			textarea,
 			input[type='text'],
@@ -5903,7 +5932,7 @@ p.search-box {
 			color: $color_gray-base;
 		}
 
-		th label + .everest-forms-help-tip {
+		th label+.everest-forms-help-tip {
 			position: absolute;
 			margin: 0;
 			right: 0;
@@ -6558,6 +6587,7 @@ table.wp-list-table {
 
 	.column-title {
 		width: 25% !important;
+
 		.locate-form {
 			margin: 2px 0 0;
 			font-size: 11px;
@@ -6670,6 +6700,7 @@ table.wp-list-table {
 	}
 
 	#poststuff {
+
 		#everest-forms-entry-fields,
 		#everest-forms-entry-details,
 		#everest-forms-entry-actions,
@@ -6691,6 +6722,7 @@ table.wp-list-table {
 
 				.everest-forms-edit-entry-field {
 					.evf-field {
+
 						input[type='text'],
 						input[type='date'],
 						input[type='date'],
@@ -7330,8 +7362,7 @@ img.ui-datepicker-trigger {
 			right: 1px;
 			height: 28px;
 			width: 23px;
-			background: url(data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M5%206l5%205%205-5%202%201-7%207-7-7%202-1z%22%20fill%3D%22%23555%22%2F%3E%3C%2Fsvg%3E)
-				no-repeat right 5px top 55%;
+			background: url(data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M5%206l5%205%205-5%202%201-7%207-7-7%202-1z%22%20fill%3D%22%23555%22%2F%3E%3C%2Fsvg%3E) no-repeat right 5px top 55%;
 			background-size: 16px 16px;
 
 			@media only screen and (max-width: 782px) {
@@ -7420,43 +7451,41 @@ img.ui-datepicker-trigger {
 		light: #04a4cc,
 	);
 
-	@each $name, $color in $wp_admin_colors {
-		&-#{$name} {
-			.select2-dropdown {
-				border-color: $color;
-			}
+@each $name, $color in $wp_admin_colors {
+	&-#{$name} {
+		.select2-dropdown {
+			border-color: $color;
+		}
 
-			.select2-dropdown--below {
-				box-shadow:
-					0 0 0 1px $color,
-					0 2px 1px rgba(0, 0, 0, 0.1);
-			}
+		.select2-dropdown--below {
+			box-shadow:
+				0 0 0 1px $color,
+				0 2px 1px rgba(0, 0, 0, 0.1);
+		}
 
-			.select2-dropdown--above {
-				box-shadow:
-					0 0 0 1px $color,
-					0 -2px 1px rgba(0, 0, 0, 0.1);
-			}
+		.select2-dropdown--above {
+			box-shadow:
+				0 0 0 1px $color,
+				0 -2px 1px rgba(0, 0, 0, 0.1);
+		}
 
-			.select2-selection--single .select2-selection__rendered:hover {
-				color: #7545bb;
-			}
+		.select2-selection--single .select2-selection__rendered:hover {
+			color: #7545bb;
+		}
 
-			.select2-container.select2-container--focus .select2-selection--single,
-			.select2-container.select2-container--open .select2-selection--single,
-			.select2-container.select2-container--open .select2-selection--multiple {
-				border-color: #7545bb;
-				box-shadow: 0 0 0 1px #7545bb;
-			}
+		.select2-container.select2-container--focus .select2-selection--single,
+		.select2-container.select2-container--open .select2-selection--single,
+		.select2-container.select2-container--open .select2-selection--multiple {
+			border-color: #7545bb;
+			box-shadow: 0 0 0 1px #7545bb;
+		}
 
-			.select2-container--default
-				.select2-results__option--highlighted[aria-selected],
-			.select2-container--default
-				.select2-results__option--highlighted[data-selected] {
-				background-color: $color;
-			}
+		.select2-container--default .select2-results__option--highlighted[aria-selected],
+		.select2-container--default .select2-results__option--highlighted[data-selected] {
+			background-color: $color;
 		}
 	}
+}
 }
 
 .everest-forms {
@@ -7618,6 +7647,7 @@ img.ui-datepicker-trigger {
 								}
 
 								a {
+
 									&.add,
 									&.remove {
 										width: 40px;
@@ -7688,6 +7718,7 @@ img.ui-datepicker-trigger {
 	   * Optimisation for screens 600px and smaller.
 	   */
 @media screen and (max-width: 600px) {
+
 	.everest-forms_page_evf-builder,
 	.everest-forms_page_evf-settings {
 		.everest-forms {
@@ -7738,6 +7769,7 @@ img.ui-datepicker-trigger {
 						position: relative;
 
 						.evf-admin-grid {
+
 							&.evf-grid-1,
 							&.evf-grid-2,
 							&.evf-grid-3,
@@ -8207,7 +8239,7 @@ img.ui-datepicker-trigger {
 				}
 
 				.everest_forms_hide_container {
-					> p {
+					>p {
 						padding-left: 20px;
 						padding-right: 20px;
 					}
@@ -8362,8 +8394,7 @@ img.ui-datepicker-trigger {
 			right: 1px;
 			height: 28px;
 			width: 23px;
-			background: url(data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M5%206l5%205%205-5%202%201-7%207-7-7%202-1z%22%20fill%3D%22%23555%22%2F%3E%3C%2Fsvg%3E)
-				no-repeat right 5px top 55%;
+			background: url(data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M5%206l5%205%205-5%202%201-7%207-7-7%202-1z%22%20fill%3D%22%23555%22%2F%3E%3C%2Fsvg%3E) no-repeat right 5px top 55%;
 			background-size: 16px 16px;
 			right: 3px;
 			height: 30px;
@@ -8692,7 +8723,7 @@ img.ui-datepicker-trigger {
 			height: 26px;
 			position: absolute;
 			top: 6px;
-			right: 1px;
+			right: 6px;
 			width: 20px;
 
 			b {
@@ -8789,7 +8820,7 @@ img.ui-datepicker-trigger {
 	}
 
 	.select2-results {
-		> .select2-results__options {
+		>.select2-results__options {
 			max-height: 200px;
 			overflow-y: auto;
 		}
@@ -9090,7 +9121,7 @@ img.ui-datepicker-trigger {
 	}
 
 	.select2-results {
-		> .select2-results__options {
+		>.select2-results__options {
 			max-height: 200px;
 			overflow-y: auto;
 		}
@@ -9316,6 +9347,7 @@ img.ui-datepicker-trigger {
 					display: contents;
 
 					&:hover {
+
 						&::before,
 						&::after {
 							transform: translate(-50%, -50%) scale(1.1);
@@ -9394,7 +9426,7 @@ img.ui-datepicker-trigger {
 					max-width: 800px;
 					border: 1px solid transparent;
 
-					> div > label {
+					>div>label {
 						padding: 0 10px;
 						margin: 0 0 10px -10px;
 						background: $color-white;
@@ -9510,6 +9542,7 @@ img.ui-datepicker-trigger {
 
 		// Likert-table and Scale rating table
 		table {
+
 			&.everest-forms-likert-table,
 			&.everest-froms-likert-field-preview,
 			&.everest-forms-scale-rating-table {
@@ -9548,7 +9581,7 @@ img.ui-datepicker-trigger {
 				}
 
 				input[type='radio'] {
-					+ label {
+					+label {
 						&::before {
 							border-radius: 50%;
 						}
@@ -9599,6 +9632,7 @@ img.ui-datepicker-trigger {
 						}
 
 						&:nth-child(even) {
+
 							th,
 							td {
 								background: $color_gray-light-skin;
@@ -9976,6 +10010,7 @@ img.ui-datepicker-trigger {
 		tbody {
 			tr {
 				&:nth-child(even) {
+
 					th,
 					td {
 						background: $color_gray-light-skin;
@@ -9991,6 +10026,7 @@ img.ui-datepicker-trigger {
 		}
 
 		&.evf-likert-chart-table {
+
 			th,
 			td {
 				text-align: center;
@@ -10475,7 +10511,7 @@ img.ui-datepicker-trigger {
 							opacity: 1;
 							transition: all 0.4s ease-in-out;
 
-							> p {
+							>p {
 								width: 100%;
 								margin: 0;
 								font-size: 15px;
@@ -10516,7 +10552,7 @@ img.ui-datepicker-trigger {
 								}
 
 								&-label {
-									> p {
+									>p {
 										color: #7545bb;
 									}
 
@@ -10577,9 +10613,7 @@ img.ui-datepicker-trigger {
 
 							.evf-nav-icon {
 								img {
-									filter: brightness(0) saturate(100%) invert(100%) sepia(0%)
-										saturate(7487%) hue-rotate(137deg) brightness(89%)
-										contrast(114%);
+									filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(7487%) hue-rotate(137deg) brightness(89%) contrast(114%);
 								}
 							}
 						}
@@ -10670,6 +10704,7 @@ img.ui-datepicker-trigger {
 							&.current {
 								color: #7545bb;
 								font-weight: 600;
+
 								&::before {
 									background: #7545bb;
 									width: 10px;
@@ -10719,7 +10754,7 @@ img.ui-datepicker-trigger {
 							position: relative;
 
 							// Main vertical connecting line
-							> .evf-scroll-ui::before {
+							>.evf-scroll-ui::before {
 								content: '';
 								position: absolute;
 								left: 28px;
@@ -10858,6 +10893,7 @@ img.ui-datepicker-trigger {
 						opacity: 0;
 						transform: translateY(-10px);
 					}
+
 					to {
 						opacity: 1;
 						transform: translateY(0);
@@ -10889,6 +10925,7 @@ img.ui-datepicker-trigger {
 				opacity: 0;
 				transform: translateY(-10px);
 			}
+
 			to {
 				opacity: 1;
 				transform: translateY(0);
@@ -11008,7 +11045,7 @@ img.ui-datepicker-trigger {
 						align-items: flex-start;
 					}
 
-					> label {
+					>label {
 						color: #383838;
 						font-size: 15px;
 						font-weight: 500;
@@ -11032,9 +11069,7 @@ img.ui-datepicker-trigger {
 							}
 
 							&:hover::after {
-								filter: brightness(0) saturate(100%) invert(26%) sepia(77%)
-									saturate(1950%) hue-rotate(249deg) brightness(84%)
-									contrast(81%);
+								filter: brightness(0) saturate(100%) invert(26%) sepia(77%) saturate(1950%) hue-rotate(249deg) brightness(84%) contrast(81%);
 							}
 						}
 					}
@@ -11061,7 +11096,7 @@ img.ui-datepicker-trigger {
 						}
 
 						fieldset {
-							> label {
+							>label {
 								font-size: 14px;
 								line-height: 22px;
 								font-weight: 400;
@@ -11097,7 +11132,7 @@ img.ui-datepicker-trigger {
 								li {
 									margin-bottom: 0;
 
-									> label {
+									>label {
 										display: flex;
 										align-items: center;
 										gap: 6px;
@@ -11116,7 +11151,7 @@ img.ui-datepicker-trigger {
 										margin-bottom: 0;
 
 										li {
-											> label {
+											>label {
 												display: flex;
 												flex-direction: row;
 												align-items: center;
@@ -11148,7 +11183,7 @@ img.ui-datepicker-trigger {
 											input[type='radio'] {
 												display: none !important;
 
-												&:checked ~ label {
+												&:checked~label {
 													background: #f6f5f8;
 													border-color: #7545bb;
 												}
@@ -11226,7 +11261,7 @@ img.ui-datepicker-trigger {
 										input {
 											display: none;
 
-											&:checked ~ label {
+											&:checked~label {
 												border: 1px solid #7545bb;
 											}
 										}
@@ -11413,6 +11448,7 @@ img.ui-datepicker-trigger {
 										display: contents;
 
 										&:hover {
+
 											&::before,
 											&::after {
 												transform: translate(-50%, -50%) scale(1.1);
@@ -11448,7 +11484,7 @@ img.ui-datepicker-trigger {
 				}
 			}
 
-			> p {
+			>p {
 				margin: 0;
 				font-size: 14px;
 				line-height: 24px;
@@ -11523,7 +11559,7 @@ everest-forms-field-option-row-rating-icon {
 		}
 
 		input:checked {
-			+ label {
+			+label {
 				color: $color-white;
 				background: $everestforms;
 				border-color: $everestforms;
@@ -11679,6 +11715,7 @@ body {
 						}
 
 						.everest-forms-tab-content {
+
 							.everest-forms-import-form,
 							.everest-forms-import-entries-wrapper,
 							.everest-forms-export-form,
@@ -11824,6 +11861,7 @@ body {
 
 							.evf-tools-export-entries {
 								.evf-tools-entries-export-options {
+
 									&-fields,
 									&-additional-info,
 									&-format,
@@ -11865,10 +11903,8 @@ body {
 
 										&-options {
 											display: grid;
-											grid-template-columns: repeat(
-												auto-fit,
-												minmax(200px, 1fr)
-											);
+											grid-template-columns: repeat(auto-fit,
+													minmax(200px, 1fr));
 											gap: 12px;
 
 											select,
@@ -12460,6 +12496,7 @@ body {
 
 		thead {
 			tr {
+
 				td,
 				th {
 					border-bottom-color: #dcdcdc;
@@ -12966,7 +13003,7 @@ button#show-settings-link {
 	}
 }
 
-#evf-react-header-root > div {
+#evf-react-header-root>div {
 	top: 0px !important;
 }
 
