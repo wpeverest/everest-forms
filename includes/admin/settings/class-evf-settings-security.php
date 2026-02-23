@@ -8,21 +8,21 @@
 
 defined( 'ABSPATH' ) || exit;
 
-if ( class_exists( 'EVF_Settings_reCAPTCHA', false ) ) {
-	return new EVF_Settings_reCAPTCHA();
+if ( class_exists( 'EVF_Settings_Security', false ) ) {
+	return new EVF_Settings_Security();
 }
 
 /**
- * EVF_Settings_reCAPTCHA.
+ * EVF_Settings_Security.
  */
-class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
+class EVF_Settings_Security extends EVF_Settings_Page {
 
 	/**
 	 * Constructor.
 	 */
 	public function __construct() {
 		$this->id    = 'recaptcha';
-		$this->label = esc_html__( 'CAPTCHA', 'everest-forms' );
+		$this->label = esc_html__( 'Security', 'everest-forms' );
 
 		parent::__construct();
 		add_action( 'everest_forms_sections_' . $this->id, array( $this, 'output_sections' ) );
@@ -75,6 +75,8 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 
 	/**
 	 * Handle CAPTCHA enable toggle to ensure only one is active.
+	 * CleanTalk is NOT included here — it has no enable toggle, it is
+	 * "connected" purely based on whether the access key is saved.
 	 */
 	public function handle_captcha_enable_toggle() {
 		if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'everest-forms-settings' ) ) {
@@ -98,17 +100,15 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 		$enabled_captcha   = '';
 		$validation_errors = array();
 
-		// Check reCAPTCHA v2
+		// Check reCAPTCHA v2.
 		if ( isset( $_POST['everest_forms_recaptcha_v2_enable'] ) ) {
 			$v2_enable = sanitize_text_field( wp_unslash( $_POST['everest_forms_recaptcha_v2_enable'] ) );
 			if ( 'yes' === $v2_enable ) {
 				$enabled_captcha = 'v2';
 
-				// Check for invisible mode
 				$invisible = isset( $_POST['everest_forms_recaptcha_v2_invisible'] ) ? sanitize_text_field( wp_unslash( $_POST['everest_forms_recaptcha_v2_invisible'] ) ) : 'no';
 
 				if ( 'yes' === $invisible ) {
-					// Validate invisible keys
 					$invisible_site_key   = isset( $_POST['everest_forms_recaptcha_v2_invisible_site_key'] ) ? sanitize_text_field( wp_unslash( $_POST['everest_forms_recaptcha_v2_invisible_site_key'] ) ) : '';
 					$invisible_secret_key = isset( $_POST['everest_forms_recaptcha_v2_invisible_secret_key'] ) ? sanitize_text_field( wp_unslash( $_POST['everest_forms_recaptcha_v2_invisible_secret_key'] ) ) : '';
 
@@ -116,7 +116,6 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 						$validation_errors[] = __( 'Please enter both Site Key and Secret Key for Invisible reCAPTCHA v2.', 'everest-forms' );
 					}
 				} else {
-					// Validate regular v2 keys
 					$site_key   = isset( $_POST['everest_forms_recaptcha_v2_site_key'] ) ? sanitize_text_field( wp_unslash( $_POST['everest_forms_recaptcha_v2_site_key'] ) ) : '';
 					$secret_key = isset( $_POST['everest_forms_recaptcha_v2_secret_key'] ) ? sanitize_text_field( wp_unslash( $_POST['everest_forms_recaptcha_v2_secret_key'] ) ) : '';
 
@@ -127,7 +126,7 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 			}
 		}
 
-		// Check reCAPTCHA v3
+		// Check reCAPTCHA v3.
 		if ( empty( $enabled_captcha ) && isset( $_POST['everest_forms_recaptcha_v3_enable'] ) ) {
 			$v3_enable = sanitize_text_field( wp_unslash( $_POST['everest_forms_recaptcha_v3_enable'] ) );
 			if ( 'yes' === $v3_enable ) {
@@ -142,7 +141,7 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 			}
 		}
 
-		// Check hCaptcha
+		// Check hCaptcha.
 		if ( empty( $enabled_captcha ) && isset( $_POST['everest_forms_recaptcha_hcaptcha_enable'] ) ) {
 			$hcaptcha_enable = sanitize_text_field( wp_unslash( $_POST['everest_forms_recaptcha_hcaptcha_enable'] ) );
 			if ( 'yes' === $hcaptcha_enable ) {
@@ -157,7 +156,7 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 			}
 		}
 
-		// Check Cloudflare Turnstile
+		// Check Cloudflare Turnstile.
 		if ( empty( $enabled_captcha ) && isset( $_POST['everest_forms_recaptcha_turnstile_enable'] ) ) {
 			$turnstile_enable = sanitize_text_field( wp_unslash( $_POST['everest_forms_recaptcha_turnstile_enable'] ) );
 			if ( 'yes' === $turnstile_enable ) {
@@ -173,7 +172,6 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 		}
 
 		if ( ! empty( $validation_errors ) ) {
-
 			foreach ( $captcha_types as $type ) {
 				update_option( 'everest_forms_recaptcha_' . $type . '_enable', 'no' );
 			}
@@ -205,7 +203,7 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 	 * Add toast message and redirect.
 	 *
 	 * @param string $message The message to display.
-	 * @param string $type The type of toast (success, error, warning, info).
+	 * @param string $type    The type of toast (success, error, warning, info).
 	 */
 	private function add_toast_redirect( $message, $type = 'error' ) {
 		$redirect_url = add_query_arg(
@@ -223,9 +221,26 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 		exit;
 	}
 
+	/**
+	 * Check whether the CleanTalk integration addon is currently loaded.
+	 * Used to conditionally show the CleanTalk submenu and settings.
+	 *
+	 * @return bool
+	 */
+	private function is_cleantalk_available() {
+		if ( ! isset( evf()->integrations ) ) {
+			return false;
+		}
+
+		$integrations = evf()->integrations->get_integrations();
+
+		return isset( $integrations['clean-talk'] );
+	}
 
 	/**
-	 * Get sections for CAPTCHA tab.
+	 * Get sections for the Security tab.
+	 * CleanTalk submenu only appears when the addon is active — zero impact
+	 * on existing users who don't have the addon installed.
 	 *
 	 * @return array
 	 */
@@ -234,6 +249,11 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 			'integration' => esc_html__( 'Integration', 'everest-forms' ),
 			'language'    => esc_html__( 'Language', 'everest-forms' ),
 		);
+
+		// Only show CleanTalk submenu when the addon is loaded.
+		if ( $this->is_cleantalk_available() ) {
+			$sections['cleantalk'] = esc_html__( 'CleanTalk', 'everest-forms' );
+		}
 
 		return apply_filters( 'everest_forms_get_sections_' . $this->id, $sections );
 	}
@@ -271,7 +291,7 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 	}
 
 	/**
-	 * Get settings array.
+	 * Get settings array — routes to the correct section handler.
 	 *
 	 * @return array
 	 */
@@ -282,7 +302,10 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 
 		if ( 'language' === $current_section ) {
 			$settings = $this->get_language_settings();
+		} elseif ( 'cleantalk' === $current_section ) {
+			$settings = $this->get_cleantalk_settings();
 		} else {
+			// Default: 'integration' section.
 			$settings = $this->get_integration_settings();
 		}
 
@@ -291,12 +314,12 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 
 	/**
 	 * Get CAPTCHA integration settings (all CAPTCHA providers as accordions).
+	 * Unchanged from the original — no CleanTalk here.
 	 *
 	 * @return array
 	 */
 	public function get_integration_settings() {
-		$recaptcha_type = get_option( 'everest_forms_recaptcha_type', 'v2' );
-		$invisible      = get_option( 'everest_forms_recaptcha_v2_invisible', 'no' );
+		$invisible = get_option( 'everest_forms_recaptcha_v2_invisible', 'no' );
 
 		$v2_enabled        = get_option( 'everest_forms_recaptcha_v2_enable', 'no' );
 		$v3_enabled        = get_option( 'everest_forms_recaptcha_v3_enable', 'no' );
@@ -316,6 +339,7 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 				array(
 					'type'  => 'accordion',
 					'items' => array(
+						// ---- reCAPTCHA v2 ----
 						array(
 							'title'      => esc_html__( 'reCAPTCHA v2', 'everest-forms' ),
 							'icon'       => plugins_url( 'assets/images/captcha/reCAPTCHA-v2-v3.png', EVF_PLUGIN_FILE ),
@@ -377,6 +401,7 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 								),
 							),
 						),
+						// ---- reCAPTCHA v3 ----
 						array(
 							'title'      => esc_html__( 'reCAPTCHA v3', 'everest-forms' ),
 							'icon'       => plugins_url( 'assets/images/captcha/reCAPTCHA-v2-v3.png', EVF_PLUGIN_FILE ),
@@ -423,6 +448,7 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 								),
 							),
 						),
+						// ---- hCaptcha ----
 						array(
 							'title'      => esc_html__( 'hCaptcha', 'everest-forms' ),
 							'icon'       => plugins_url( 'assets/images/captcha/hCAPTCHA-logo.png', EVF_PLUGIN_FILE ),
@@ -456,6 +482,7 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 								),
 							),
 						),
+						// ---- Cloudflare Turnstile ----
 						array(
 							'title'      => esc_html__( 'Cloudflare Turnstile', 'everest-forms' ),
 							'icon'       => plugins_url( 'assets/images/captcha/cloudflare-logo.png', EVF_PLUGIN_FILE ),
@@ -517,6 +544,67 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 	}
 
 	/**
+	 * Get CleanTalk settings as a single accordion item.
+	 *
+	 * Shown only when section=cleantalk. Identical accordion UI to the
+	 * CAPTCHA providers above. The option key
+	 * 'everest_forms_recaptcha_cleantalk_access_key' is intentionally
+	 * unchanged so existing users keep their saved access key.
+	 *
+	 * @return array
+	 */
+	public function get_cleantalk_settings() {
+		$cleantalk_connected = ! empty( get_option( 'everest_forms_recaptcha_cleantalk_access_key', '' ) );
+
+		$cleantalk_icon = '';
+		if ( isset( evf()->integrations ) ) {
+			$integrations = evf()->integrations->get_integrations();
+			if ( isset( $integrations['clean-talk'] ) ) {
+				$cleantalk_icon = $integrations['clean-talk']->icon;
+			}
+		}
+
+		$settings = array(
+			array(
+				'title' => esc_html__( 'CleanTalk', 'everest-forms' ),
+				'type'  => 'title',
+				'desc'  => esc_html__( 'Configure CleanTalk anti-spam protection for your forms.', 'everest-forms' ),
+				'id'    => 'cleantalk_options',
+			),
+			array(
+				'type'  => 'accordion',
+				'items' => array(
+					array(
+						'title'      => esc_html__( 'CleanTalk', 'everest-forms' ),
+						'icon'       => $cleantalk_icon,
+						'is_enabled' => $cleantalk_connected,
+						'fields'     => array(
+							array(
+								'title'    => esc_html__( 'Access Key', 'everest-forms' ),
+								'type'     => 'text',
+								'desc'     => sprintf(
+									/* translators: %s - CleanTalk dashboard URL */
+									esc_html__( 'Enter your CleanTalk Access Key. You can find it in your <a href="%s" target="_blank">CleanTalk dashboard</a>.', 'everest-forms' ),
+									esc_url( 'https://cleantalk.org/my/' )
+								),
+								'id'       => 'everest_forms_recaptcha_cleantalk_access_key',
+								'default'  => '',
+								'desc_tip' => true,
+							),
+						),
+					),
+				),
+			),
+			array(
+				'type' => 'sectionend',
+				'id'   => 'cleantalk_options',
+			),
+		);
+
+		return apply_filters( 'everest_forms_recaptcha_cleantalk_settings', $settings );
+	}
+
+	/**
 	 * Get CAPTCHA language settings.
 	 *
 	 * @return array
@@ -527,7 +615,7 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 		$lang_options = array();
 
 		foreach ( $languages['languages'] as $key => $value ) {
-			/* translators: %1$s - Langauge Name */
+			/* translators: %1$s - Language Name */
 			$lang_options[ $value['Value'] ] = sprintf( esc_html__( '%s', 'everest-forms' ), $value['Language'] );
 		}
 
@@ -567,4 +655,4 @@ class EVF_Settings_reCAPTCHA extends EVF_Settings_Page {
 	}
 }
 
-return new EVF_Settings_reCAPTCHA();
+return new EVF_Settings_Security();
