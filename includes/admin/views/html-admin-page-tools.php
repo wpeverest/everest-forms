@@ -65,14 +65,14 @@ if ( 'yes' === get_option( 'everest_forms_enable_log', 'no' ) ) {
 							<?php
 						}
 						?>
-						<button id="evf-settings-collapse" class="nav-tab evf-nav__link">
+						<!-- <button id="evf-settings-collapse" class="nav-tab evf-nav__link">
 							<span class="evf-nav-icon">
-								<img src="<?php echo esc_url( evf()->plugin_url() . '/assets/images/icons/collapse-line.svg' ); ?>"
+								<img src="<?php //echo esc_url( evf()->plugin_url() . '/assets/images/icons/collapse-line.svg' ); ?>"
 									alt="">
 							</span>
 							<span class="evf-nav__link-label">
-								<?php esc_html_e( 'Collapse Menu', 'everest-forms' ); ?>
-							</span>
+								<?php //esc_html_e( 'Collapse Menu', 'everest-forms' ); ?>
+							</span> -->
 						</button>
 					</nav>
 				</div>

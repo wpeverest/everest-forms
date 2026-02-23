@@ -69,14 +69,7 @@ class EVF_Settings_Advanced extends EVF_Settings_Page {
 					'default'  => 'no',
 					'desc_tip' => true,
 				),
-				array(
-					'title'    => esc_html__( 'Load Fonts Locally', 'everest-forms' ),
-					'desc'     => __( 'Load all the necessary fonts from local server for GDPR compliance.', 'everest-forms' ),
-					'id'       => 'everest_forms_load_fonts_locally',
-					'type'     => 'toggle',
-					'default'  => 'no',
-					'desc_tip' => true,
-				),
+			
 				array(
 					'title'    => esc_html__( 'Enable RestApi', 'everest-forms' ),
 					'desc'     => __( 'Allow the other to use the rest api.', 'everest-forms' ),

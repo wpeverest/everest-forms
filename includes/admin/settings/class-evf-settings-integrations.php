@@ -32,17 +32,6 @@ class EVF_Settings_Integrations extends EVF_Settings_Page {
 	/**
 	 * Returns the map of integration ID to category label.
 	 *
-	 * Addons hook 'everest_forms_integration_categories' to register their
-	 * own integration under a category. Any integration ID not present in
-	 * this map falls into the "Other" bucket so nothing is ever lost.
-	 *
-	 * Example usage in an addon:
-	 *
-	 *   add_filter( 'everest_forms_integration_categories', function( $map ) {
-	 *       $map['my-addon-id'] = esc_html__( 'CRM', 'my-addon' );
-	 *       return $map;
-	 *   } );
-	 *
 	 * @since  x.x.x
 	 * @return array [ integration_id => category_label ]
 	 */
@@ -53,12 +42,6 @@ class EVF_Settings_Integrations extends EVF_Settings_Page {
 			'google-drive'  => esc_html__( 'Cloud Storage', 'everest-forms' ),
 		);
 
-		/**
-		 * Filter the integration ID to category label map.
-		 *
-		 * @since x.x.x
-		 * @param array;
-		 */
 		return apply_filters( 'everest_forms_integration_categories', $map );
 	}
 
@@ -84,12 +67,6 @@ class EVF_Settings_Integrations extends EVF_Settings_Page {
 			esc_html__( 'Other', 'everest-forms' ),
 		);
 
-		/**
-		 * Filter the display order of integration categories in the sidebar.
-		 *
-		 * @since x.x.x
-		 * @param array $order Ordered list of category label strings.
-		 */
 		return apply_filters( 'everest_forms_integration_category_order', $order );
 	}
 
@@ -168,14 +145,6 @@ class EVF_Settings_Integrations extends EVF_Settings_Page {
 	/**
 	 * Ensures an integration's client property is initialised before rendering.
 	 *
-	 * Integrations only call get_client() inside their constructor when
-	 * is_integration_page() returns true. On the category listing page that
-	 * condition is false, so $integration->client is null. This method force-
-	 * initialises it via get_client() when the property exists and is empty,
-	 * preventing "Call to a member function on null" fatals in output_connection_form().
-	 *
-	 * Wrapped in a try/catch so a broken addon client never crashes the page.
-	 *
 	 * @since x.x.x
 	 * @param object $integration Integration instance.
 	 */
@@ -188,22 +157,13 @@ class EVF_Settings_Integrations extends EVF_Settings_Page {
 			try {
 				$integration->client = $integration->get_client();
 			} catch ( \Throwable $e ) {
-				// Silently ignore — output_connection_form() must guard against null client too.
+				// Silently ignore.
 			}
 		}
 	}
 
 	/**
 	 * Safely renders an integration's inline form inside the accordion body.
-	 *
-	 * Applies a three-level fallback so a partial addon update never causes a fatal:
-	 *
-	 *  1. output_connection_form() exists and is public  → call it directly.
-	 *  2. output_connection_form() exists but is protected → fall through.
-	 *  3. output_integration() → always available, always public on EVF_Integration.
-	 *
-	 * Every path is wrapped in try/catch so a single broken addon cannot crash
-	 * the entire category page.
 	 *
 	 * @since x.x.x
 	 * @param object $integration Integration instance.
@@ -238,14 +198,9 @@ class EVF_Settings_Integrations extends EVF_Settings_Page {
 
 	/**
 	 * Output the settings.
-	 *
-	 * When a real integration section is active (deep-link or bookmark) it
-	 * renders that integration's own output_integration() for full backward
-	 * compatibility. Otherwise the category page is shown with all integrations
-	 * expanded as inline accordions — no extra navigation step needed.
 	 */
 	public function output() {
-		global $current_section, $hide_save_button;
+		global $current_section;
 
 		$GLOBALS['hide_save_button'] = true;
 
@@ -260,6 +215,62 @@ class EVF_Settings_Integrations extends EVF_Settings_Page {
 		}
 
 		$this->output_integrations( $integrations );
+
+		// Re-enforce after output in case any integration set it to false.
+		$GLOBALS['hide_save_button'] = true;
+	}
+
+	/**
+	 * Suppress the global page-level Save button entirely.
+	 * Each integration renders its own Save button if needed.
+	 */
+	public function save_button() {
+		// Do nothing.
+	}
+
+	/**
+	 * Handle saving for integrations.
+	 *
+	 * @since x.x.x
+	 */
+	public function save() {
+		global $current_section;
+
+		if ( empty( $current_section ) || ! str_starts_with( $current_section, 'cat-' ) ) {
+			return;
+		}
+
+		if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( sanitize_key( $_POST['_wpnonce'] ), 'everest-forms-settings' ) ) {
+			return;
+		}
+
+		$integrations = evf()->integrations->get_integrations();
+		$grouped      = $this->group_integrations_by_category( $integrations );
+
+		$active_category = null;
+		foreach ( array_keys( $grouped ) as $category ) {
+			if ( $this->category_to_slug( $category ) === $current_section ) {
+				$active_category = $category;
+				break;
+			}
+		}
+
+		if ( null === $active_category || empty( $grouped[ $active_category ] ) ) {
+			return;
+		}
+
+		$submitted_id = isset( $_POST['_evf_integration_id'] )
+			? sanitize_text_field( wp_unslash( $_POST['_evf_integration_id'] ) )
+			: '';
+
+		foreach ( $grouped[ $active_category ] as $integration ) {
+			if ( $submitted_id && $integration->id !== $submitted_id ) {
+				continue;
+			}
+			if ( method_exists( $integration, 'save' ) ) {
+				$integration->save();
+			}
+		}
 	}
 
 	/**
@@ -298,10 +309,7 @@ class EVF_Settings_Integrations extends EVF_Settings_Page {
 	}
 
 	/**
-	 * Renders each integration in the active category as an inline accordion.
-	 *
-	 * Uses render_integration_form() for every item so a partial addon update
-	 * never causes a fatal on this page.
+	 * Renders integrations in the active category.
 	 *
 	 * @since x.x.x
 	 * @param array $integrations All loaded integration objects.
@@ -324,17 +332,47 @@ class EVF_Settings_Integrations extends EVF_Settings_Page {
 
 		$items = isset( $grouped[ $active_category ] ) ? $grouped[ $active_category ] : array();
 		?>
-		<div class="everest-forms-options-header">
-			<div class="everest-forms-options-header--top">
-				<span class="evf-forms-options-header-header--top-icon"><?php echo evf_file_get_contents( '/assets/images/settings-icons/integration.svg' ); // phpcs:ignore ?></span>
-				<h3><?php echo esc_html( $active_category ); ?></h3>
-			</div>
+	<div class="everest-forms-options-header">
+		<div class="everest-forms-options-header--top">
+            <span class="evf-forms-options-header-header--top-icon"><?php echo evf_file_get_contents( '/assets/images/settings-icons/integration.svg' ); // phpcs:ignore ?></span>
+			<h3><?php echo esc_html( $active_category ); ?></h3>
 		</div>
+	</div>
 
-		<div class="everest-forms-accordion-wrapper">
-			<?php foreach ( $items as $integration ) : ?>
+		<?php foreach ( $items as $integration ) : ?>
+			<?php
+			$GLOBALS['hide_save_button'] = true;
+
+			$form_action = add_query_arg(
+				array(
+					'page'    => 'evf-settings',
+					'tab'     => $this->id,
+					'section' => $active_slug,
+				),
+				admin_url( 'admin.php' )
+			);
+			?>
+
+			<?php if ( ! empty( $integration->use_post_form ) ) : ?>
+			<form method="post" action="<?php echo esc_url( $form_action ); ?>">
+				<input type="hidden" name="_evf_integration_id" value="<?php echo esc_attr( $integration->id ); ?>">
+				<?php
+				$this->render_integration_form( $integration );
+
+				if ( empty( $GLOBALS['hide_save_button'] ) ) :
+					wp_nonce_field( 'everest-forms-settings' );
+					?>
+					<p class="submit">
+						<button type="submit" name="save" value="1" class="button-primary button">
+							<?php esc_html_e( 'Save Changes', 'everest-forms' ); ?>
+						</button>
+					</p>
+				<?php endif; ?>
+			</form>
+
+		<?php else : ?>
+			<div class="everest-forms-accordion-wrapper">
 				<div class="everest-forms-accordion-item is-open">
-
 					<div class="everest-forms-accordion-header">
 						<span class="everest-forms-accordion-icon">
 							<img src="<?php echo esc_url( $integration->icon ); ?>" alt="<?php echo esc_attr( $integration->method_title ); ?>">
@@ -348,16 +386,20 @@ class EVF_Settings_Integrations extends EVF_Settings_Page {
 							</svg>
 						</span>
 					</div>
-
 					<div class="everest-forms-accordion-content">
 						<div class="everest-forms-accordion-content-inner">
 							<?php $this->render_integration_form( $integration ); ?>
 						</div>
 					</div>
-
 				</div>
-			<?php endforeach; ?>
-		</div>
+			</div>
+		<?php endif; ?>
+
+			<?php
+	endforeach;
+
+		$GLOBALS['hide_save_button'] = true;
+		?>
 		<?php
 	}
 }

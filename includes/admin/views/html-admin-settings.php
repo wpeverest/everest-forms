@@ -70,14 +70,14 @@ $use_react_header = apply_filters( 'everest_forms_use_react_header', true, $curr
 								}
 								do_action( 'everest_forms_settings_tabs' );
 								?>
-								<button id="evf-settings-collapse" class="nav-tab evf-nav__link">
+								<!-- <button id="evf-settings-collapse" class="nav-tab evf-nav__link">
 									<span class="evf-nav-icon">
-										<img src="<?php echo esc_url( evf()->plugin_url() . '/assets/images/icons/collapse-line.svg' ); ?>" alt="">
+										<img src="<?php //echo esc_url( evf()->plugin_url() . '/assets/images/icons/collapse-line.svg' ); ?>" alt="">
 									</span>
 									<span class="evf-nav__link-label">
-										<?php esc_html_e( 'Collapse Menu', 'everest-forms' ); ?>
+										<?php //esc_html_e( 'Collapse Menu', 'everest-forms' ); ?>
 									</span>
-								</button>
+								</button> -->
 							</nav>
 						</div>
 					</header>

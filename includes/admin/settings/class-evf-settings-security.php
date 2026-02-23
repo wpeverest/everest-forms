@@ -32,8 +32,9 @@ class EVF_Settings_Security extends EVF_Settings_Page {
 	}
 
 	/**
-	 * Migrate legacy CAPTCHA settings to new accordion format.
-	 * Only runs once when transitioning from old to new format.
+	 * Migrates legacy CAPTCHA settings to the new accordion format.
+	 *
+	 * Only runs once when transitioning from the old to the new format.
 	 */
 	private function maybe_migrate_legacy_settings() {
 		$migration_complete = get_option( 'everest_forms_recaptcha_migration_v2_complete', false );
@@ -74,9 +75,10 @@ class EVF_Settings_Security extends EVF_Settings_Page {
 	}
 
 	/**
-	 * Handle CAPTCHA enable toggle to ensure only one is active.
-	 * CleanTalk is NOT included here — it has no enable toggle, it is
-	 * "connected" purely based on whether the access key is saved.
+	 * Handles the CAPTCHA enable toggle to ensure only one provider is active.
+	 *
+	 * CleanTalk is not included here — it has no enable toggle and is
+	 * considered connected purely based on whether the access key is saved.
 	 */
 	public function handle_captcha_enable_toggle() {
 		if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'everest-forms-settings' ) ) {
@@ -100,13 +102,11 @@ class EVF_Settings_Security extends EVF_Settings_Page {
 		$enabled_captcha   = '';
 		$validation_errors = array();
 
-		// Check reCAPTCHA v2.
 		if ( isset( $_POST['everest_forms_recaptcha_v2_enable'] ) ) {
 			$v2_enable = sanitize_text_field( wp_unslash( $_POST['everest_forms_recaptcha_v2_enable'] ) );
 			if ( 'yes' === $v2_enable ) {
 				$enabled_captcha = 'v2';
-
-				$invisible = isset( $_POST['everest_forms_recaptcha_v2_invisible'] ) ? sanitize_text_field( wp_unslash( $_POST['everest_forms_recaptcha_v2_invisible'] ) ) : 'no';
+				$invisible       = isset( $_POST['everest_forms_recaptcha_v2_invisible'] ) ? sanitize_text_field( wp_unslash( $_POST['everest_forms_recaptcha_v2_invisible'] ) ) : 'no';
 
 				if ( 'yes' === $invisible ) {
 					$invisible_site_key   = isset( $_POST['everest_forms_recaptcha_v2_invisible_site_key'] ) ? sanitize_text_field( wp_unslash( $_POST['everest_forms_recaptcha_v2_invisible_site_key'] ) ) : '';
@@ -126,14 +126,12 @@ class EVF_Settings_Security extends EVF_Settings_Page {
 			}
 		}
 
-		// Check reCAPTCHA v3.
 		if ( empty( $enabled_captcha ) && isset( $_POST['everest_forms_recaptcha_v3_enable'] ) ) {
 			$v3_enable = sanitize_text_field( wp_unslash( $_POST['everest_forms_recaptcha_v3_enable'] ) );
 			if ( 'yes' === $v3_enable ) {
 				$enabled_captcha = 'v3';
-
-				$site_key   = isset( $_POST['everest_forms_recaptcha_v3_site_key'] ) ? sanitize_text_field( wp_unslash( $_POST['everest_forms_recaptcha_v3_site_key'] ) ) : '';
-				$secret_key = isset( $_POST['everest_forms_recaptcha_v3_secret_key'] ) ? sanitize_text_field( wp_unslash( $_POST['everest_forms_recaptcha_v3_secret_key'] ) ) : '';
+				$site_key        = isset( $_POST['everest_forms_recaptcha_v3_site_key'] ) ? sanitize_text_field( wp_unslash( $_POST['everest_forms_recaptcha_v3_site_key'] ) ) : '';
+				$secret_key      = isset( $_POST['everest_forms_recaptcha_v3_secret_key'] ) ? sanitize_text_field( wp_unslash( $_POST['everest_forms_recaptcha_v3_secret_key'] ) ) : '';
 
 				if ( empty( $site_key ) || empty( $secret_key ) ) {
 					$validation_errors[] = __( 'Please enter both Site Key and Secret Key for reCAPTCHA v3.', 'everest-forms' );
@@ -141,14 +139,12 @@ class EVF_Settings_Security extends EVF_Settings_Page {
 			}
 		}
 
-		// Check hCaptcha.
 		if ( empty( $enabled_captcha ) && isset( $_POST['everest_forms_recaptcha_hcaptcha_enable'] ) ) {
 			$hcaptcha_enable = sanitize_text_field( wp_unslash( $_POST['everest_forms_recaptcha_hcaptcha_enable'] ) );
 			if ( 'yes' === $hcaptcha_enable ) {
 				$enabled_captcha = 'hcaptcha';
-
-				$site_key   = isset( $_POST['everest_forms_recaptcha_hcaptcha_site_key'] ) ? sanitize_text_field( wp_unslash( $_POST['everest_forms_recaptcha_hcaptcha_site_key'] ) ) : '';
-				$secret_key = isset( $_POST['everest_forms_recaptcha_hcaptcha_secret_key'] ) ? sanitize_text_field( wp_unslash( $_POST['everest_forms_recaptcha_hcaptcha_secret_key'] ) ) : '';
+				$site_key        = isset( $_POST['everest_forms_recaptcha_hcaptcha_site_key'] ) ? sanitize_text_field( wp_unslash( $_POST['everest_forms_recaptcha_hcaptcha_site_key'] ) ) : '';
+				$secret_key      = isset( $_POST['everest_forms_recaptcha_hcaptcha_secret_key'] ) ? sanitize_text_field( wp_unslash( $_POST['everest_forms_recaptcha_hcaptcha_secret_key'] ) ) : '';
 
 				if ( empty( $site_key ) || empty( $secret_key ) ) {
 					$validation_errors[] = __( 'Please enter both Site Key and Secret Key for hCaptcha.', 'everest-forms' );
@@ -156,14 +152,12 @@ class EVF_Settings_Security extends EVF_Settings_Page {
 			}
 		}
 
-		// Check Cloudflare Turnstile.
 		if ( empty( $enabled_captcha ) && isset( $_POST['everest_forms_recaptcha_turnstile_enable'] ) ) {
 			$turnstile_enable = sanitize_text_field( wp_unslash( $_POST['everest_forms_recaptcha_turnstile_enable'] ) );
 			if ( 'yes' === $turnstile_enable ) {
 				$enabled_captcha = 'turnstile';
-
-				$site_key   = isset( $_POST['everest_forms_recaptcha_turnstile_site_key'] ) ? sanitize_text_field( wp_unslash( $_POST['everest_forms_recaptcha_turnstile_site_key'] ) ) : '';
-				$secret_key = isset( $_POST['everest_forms_recaptcha_turnstile_secret_key'] ) ? sanitize_text_field( wp_unslash( $_POST['everest_forms_recaptcha_turnstile_secret_key'] ) ) : '';
+				$site_key        = isset( $_POST['everest_forms_recaptcha_turnstile_site_key'] ) ? sanitize_text_field( wp_unslash( $_POST['everest_forms_recaptcha_turnstile_site_key'] ) ) : '';
+				$secret_key      = isset( $_POST['everest_forms_recaptcha_turnstile_secret_key'] ) ? sanitize_text_field( wp_unslash( $_POST['everest_forms_recaptcha_turnstile_secret_key'] ) ) : '';
 
 				if ( empty( $site_key ) || empty( $secret_key ) ) {
 					$validation_errors[] = __( 'Please enter both Site Key and Secret Key for Cloudflare Turnstile.', 'everest-forms' );
@@ -200,10 +194,10 @@ class EVF_Settings_Security extends EVF_Settings_Page {
 	}
 
 	/**
-	 * Add toast message and redirect.
+	 * Adds a toast message and redirects back to the settings page.
 	 *
 	 * @param string $message The message to display.
-	 * @param string $type    The type of toast (success, error, warning, info).
+	 * @param string $type    Toast type: success, error, warning, or info.
 	 */
 	private function add_toast_redirect( $message, $type = 'error' ) {
 		$redirect_url = add_query_arg(
@@ -222,8 +216,7 @@ class EVF_Settings_Security extends EVF_Settings_Page {
 	}
 
 	/**
-	 * Check whether the CleanTalk integration addon is currently loaded.
-	 * Used to conditionally show the CleanTalk submenu and settings.
+	 * Checks whether the CleanTalk integration addon is currently loaded.
 	 *
 	 * @return bool
 	 */
@@ -238,28 +231,26 @@ class EVF_Settings_Security extends EVF_Settings_Page {
 	}
 
 	/**
-	 * Get sections for the Security tab.
-	 * CleanTalk submenu only appears when the addon is active — zero impact
-	 * on existing users who don't have the addon installed.
+	 * Returns the sections for the Security tab.
+	 *
+	 * General is the default landing section for security-wide settings.
+	 * Integration contains all CAPTCHA providers and CleanTalk.
+	 * Language controls the CAPTCHA display language.
 	 *
 	 * @return array
 	 */
 	public function get_sections() {
 		$sections = array(
+			'general'     => esc_html__( 'General', 'everest-forms' ),
 			'integration' => esc_html__( 'Integration', 'everest-forms' ),
 			'language'    => esc_html__( 'Language', 'everest-forms' ),
 		);
-
-		// Only show CleanTalk submenu when the addon is loaded.
-		if ( $this->is_cleantalk_available() ) {
-			$sections['cleantalk'] = esc_html__( 'CleanTalk', 'everest-forms' );
-		}
 
 		return apply_filters( 'everest_forms_get_sections_' . $this->id, $sections );
 	}
 
 	/**
-	 * Output sections in navigation sidebar.
+	 * Outputs section navigation links in the sidebar.
 	 */
 	public function output_sections() {
 		global $current_section;
@@ -282,7 +273,7 @@ class EVF_Settings_Security extends EVF_Settings_Page {
 				admin_url( 'admin.php' )
 			);
 
-			$current_section = isset( $_GET['section'] ) ? sanitize_text_field( wp_unslash( $_GET['section'] ) ) : 'integration';
+			$current_section = isset( $_GET['section'] ) ? sanitize_text_field( wp_unslash( $_GET['section'] ) ) : 'general';
 
 			echo '<li><a href="' . esc_url( $url ) . '" class="' . ( $current_section === $id ? 'current' : '' ) . '">' . esc_html( $label ) . '</a></li>';
 		}
@@ -291,30 +282,65 @@ class EVF_Settings_Security extends EVF_Settings_Page {
 	}
 
 	/**
-	 * Get settings array — routes to the correct section handler.
+	 * Returns settings for the active section.
+	 *
+	 * Routes to general, integration, or language settings based on the
+	 * current section. Defaults to general when no section is set.
 	 *
 	 * @return array
 	 */
 	public function get_settings() {
 		global $current_section;
 
-		$current_section = isset( $_GET['section'] ) ? sanitize_text_field( wp_unslash( $_GET['section'] ) ) : 'integration';
+		$current_section = isset( $_GET['section'] ) ? sanitize_text_field( wp_unslash( $_GET['section'] ) ) : 'general';
 
-		if ( 'language' === $current_section ) {
-			$settings = $this->get_language_settings();
-		} elseif ( 'cleantalk' === $current_section ) {
-			$settings = $this->get_cleantalk_settings();
-		} else {
-			// Default: 'integration' section.
+		if ( 'integration' === $current_section ) {
 			$settings = $this->get_integration_settings();
+		} elseif ( 'language' === $current_section ) {
+			$settings = $this->get_language_settings();
+		} else {
+			$settings = $this->get_general_settings();
 		}
 
 		return apply_filters( 'everest_forms_get_settings_' . $this->id, $settings, $current_section );
 	}
 
 	/**
-	 * Get CAPTCHA integration settings (all CAPTCHA providers as accordions).
-	 * Unchanged from the original — no CleanTalk here.
+	 * Returns General security settings.
+	 *
+	 * Add any security-wide settings here that do not belong to a specific
+	 * CAPTCHA provider. Third-party addons can hook
+	 * 'everest_forms_security_general_settings' to append their own fields.
+	 *
+	 * @return array
+	 */
+	public function get_general_settings() {
+		$settings = apply_filters(
+			'everest_forms_security_general_settings',
+			array(
+				array(
+					'title' => esc_html__( 'General', 'everest-forms' ),
+					'type'  => 'title',
+					// 'desc'  => esc_html__( 'General security settings for your forms.', 'everest-forms' ),
+					'id'    => 'security_general_options',
+				),
+				// Add your general security settings fields here.
+				array(
+					'type' => 'sectionend',
+					'id'   => 'security_general_options',
+				),
+			)
+		);
+
+		return $settings;
+	}
+
+	/**
+	 * Returns CAPTCHA integration settings.
+	 *
+	 * All CAPTCHA providers and CleanTalk are rendered as accordion items
+	 * in a single unified Integration section. CleanTalk is only appended
+	 * when the CleanTalk addon is active.
 	 *
 	 * @return array
 	 */
@@ -326,212 +352,250 @@ class EVF_Settings_Security extends EVF_Settings_Page {
 		$hcaptcha_enabled  = get_option( 'everest_forms_recaptcha_hcaptcha_enable', 'no' );
 		$turnstile_enabled = get_option( 'everest_forms_recaptcha_turnstile_enable', 'no' );
 
+		$accordion_items = array(
+			// ---- reCAPTCHA v2 ----
+			array(
+				'title'      => esc_html__( 'reCAPTCHA v2', 'everest-forms' ),
+				'icon'       => plugins_url( 'assets/images/captcha/reCAPTCHA-v2-v3.png', EVF_PLUGIN_FILE ),
+				'is_enabled' => 'yes' === $v2_enabled,
+				'fields'     => array(
+					array(
+						'title'    => esc_html__( 'Enable reCAPTCHA v2', 'everest-forms' ),
+						'type'     => 'toggle',
+						'desc'     => esc_html__( 'Enable reCAPTCHA v2. Note: Enabling this will automatically disable other CAPTCHA providers.', 'everest-forms' ),
+						'id'       => 'everest_forms_recaptcha_v2_enable',
+						'default'  => 'no',
+						'desc_tip' => true,
+					),
+					array(
+						'title'    => esc_html__( 'Invisible reCAPTCHA', 'everest-forms' ),
+						'type'     => 'toggle',
+						'desc'     => esc_html__( 'Enable Invisible reCAPTCHA.', 'everest-forms' ),
+						'id'       => 'everest_forms_recaptcha_v2_invisible',
+						'default'  => 'no',
+						'desc_tip' => true,
+					),
+					array(
+						'title'    => esc_html__( 'Site Key (reCAPTCHA V2)', 'everest-forms' ),
+						'type'     => 'text',
+						/* translators: %1$s - Google reCAPTCHA docs url */
+						'desc'     => sprintf( esc_html__( 'Please enter your site key for your reCAPTCHA v2. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/how-to-integrate-google-recaptcha/' ) ),
+						'id'       => 'everest_forms_recaptcha_v2_site_key',
+						'default'  => '',
+						'desc_tip' => true,
+					),
+					array(
+						'title'    => esc_html__( 'Secret Key (reCAPTCHA V2)', 'everest-forms' ),
+						'type'     => 'text',
+						/* translators: %1$s - Google reCAPTCHA docs url */
+						'desc'     => sprintf( esc_html__( 'Please enter your secret key for your reCAPTCHA v2. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/how-to-integrate-google-recaptcha/' ) ),
+						'id'       => 'everest_forms_recaptcha_v2_secret_key',
+						'default'  => '',
+						'desc_tip' => true,
+					),
+					array(
+						'title'      => esc_html__( 'Invisible Site Key', 'everest-forms' ),
+						'type'       => 'text',
+						/* translators: %1$s - Google reCAPTCHA docs url */
+						'desc'       => sprintf( esc_html__( 'Please enter your site key for invisible reCAPTCHA v2. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/how-to-integrate-google-recaptcha/' ) ),
+						'id'         => 'everest_forms_recaptcha_v2_invisible_site_key',
+						'is_visible' => 'yes' === $invisible,
+						'default'    => '',
+						'desc_tip'   => true,
+					),
+					array(
+						'title'      => esc_html__( 'Invisible Secret Key', 'everest-forms' ),
+						'type'       => 'text',
+						/* translators: %1$s - Google reCAPTCHA docs url */
+						'desc'       => sprintf( esc_html__( 'Please enter your secret key for invisible reCAPTCHA v2. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/how-to-integrate-google-recaptcha/' ) ),
+						'id'         => 'everest_forms_recaptcha_v2_invisible_secret_key',
+						'is_visible' => 'yes' === $invisible,
+						'default'    => '',
+						'desc_tip'   => true,
+					),
+				),
+			),
+			// ---- reCAPTCHA v3 ----
+			array(
+				'title'      => esc_html__( 'reCAPTCHA v3', 'everest-forms' ),
+				'icon'       => plugins_url( 'assets/images/captcha/reCAPTCHA-v2-v3.png', EVF_PLUGIN_FILE ),
+				'is_enabled' => 'yes' === $v3_enabled,
+				'fields'     => array(
+					array(
+						'title'    => esc_html__( 'Enable reCAPTCHA v3', 'everest-forms' ),
+						'type'     => 'toggle',
+						'desc'     => esc_html__( 'Enable reCAPTCHA v3. Note: Enabling this will automatically disable other CAPTCHA providers.', 'everest-forms' ),
+						'id'       => 'everest_forms_recaptcha_v3_enable',
+						'default'  => 'no',
+						'desc_tip' => true,
+					),
+					array(
+						'title'    => esc_html__( 'Site Key (reCAPTCHA V3)', 'everest-forms' ),
+						'type'     => 'text',
+						/* translators: %1$s - Google reCAPTCHA docs url */
+						'desc'     => sprintf( esc_html__( 'Please enter your site key for your reCAPTCHA v3. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/how-to-integrate-google-recaptcha/' ) ),
+						'id'       => 'everest_forms_recaptcha_v3_site_key',
+						'default'  => '',
+						'desc_tip' => true,
+					),
+					array(
+						'title'    => esc_html__( 'Secret Key (reCAPTCHA V3)', 'everest-forms' ),
+						'type'     => 'text',
+						/* translators: %1$s - Google reCAPTCHA docs url */
+						'desc'     => sprintf( esc_html__( 'Please enter your secret key for your reCAPTCHA v3. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/how-to-integrate-google-recaptcha/' ) ),
+						'id'       => 'everest_forms_recaptcha_v3_secret_key',
+						'default'  => '',
+						'desc_tip' => true,
+					),
+					array(
+						'title'             => esc_html__( 'Threshold Score', 'everest-forms' ),
+						'type'              => 'number',
+						'desc'              => esc_html__( 'reCAPTCHA v3 returns a score (1.0 is very likely a good interaction, 0.0 is very likely a bot). If the score is less than or equal to this threshold, the form submission will be blocked.', 'everest-forms' ),
+						'id'                => 'everest_forms_recaptcha_v3_threshold_score',
+						'custom_attributes' => array(
+							'step' => '0.1',
+							'min'  => '0.0',
+							'max'  => '1.0',
+						),
+						'default'           => '0.4',
+						'desc_tip'          => true,
+					),
+				),
+			),
+			// ---- hCaptcha ----
+			array(
+				'title'      => esc_html__( 'hCaptcha', 'everest-forms' ),
+				'icon'       => plugins_url( 'assets/images/captcha/hCAPTCHA-logo.png', EVF_PLUGIN_FILE ),
+				'is_enabled' => 'yes' === $hcaptcha_enabled,
+				'fields'     => array(
+					array(
+						'title'    => esc_html__( 'Enable hCaptcha', 'everest-forms' ),
+						'type'     => 'toggle',
+						'desc'     => esc_html__( 'Enable hCaptcha. Note: Enabling this will automatically disable other CAPTCHA providers.', 'everest-forms' ),
+						'id'       => 'everest_forms_recaptcha_hcaptcha_enable',
+						'default'  => 'no',
+						'desc_tip' => true,
+					),
+					array(
+						'title'    => esc_html__( 'Site Key (hCaptcha)', 'everest-forms' ),
+						'type'     => 'text',
+						/* translators: %1$s - hCaptcha docs url */
+						'desc'     => sprintf( esc_html__( 'Please enter your site key for your hCaptcha. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/how-to-integrate-hcaptcha/' ) ),
+						'id'       => 'everest_forms_recaptcha_hcaptcha_site_key',
+						'default'  => '',
+						'desc_tip' => true,
+					),
+					array(
+						'title'    => esc_html__( 'Secret Key (hCaptcha)', 'everest-forms' ),
+						'type'     => 'text',
+						/* translators: %1$s - hCaptcha docs url */
+						'desc'     => sprintf( esc_html__( 'Please enter your secret key for your hCaptcha. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/how-to-integrate-hcaptcha/' ) ),
+						'id'       => 'everest_forms_recaptcha_hcaptcha_secret_key',
+						'default'  => '',
+						'desc_tip' => true,
+					),
+				),
+			),
+			// ---- Cloudflare Turnstile ----
+			array(
+				'title'      => esc_html__( 'Cloudflare Turnstile', 'everest-forms' ),
+				'icon'       => plugins_url( 'assets/images/captcha/cloudflare-logo.png', EVF_PLUGIN_FILE ),
+				'is_enabled' => 'yes' === $turnstile_enabled,
+				'fields'     => array(
+					array(
+						'title'    => esc_html__( 'Enable Cloudflare Turnstile', 'everest-forms' ),
+						'type'     => 'toggle',
+						'desc'     => esc_html__( 'Enable Cloudflare Turnstile. Note: Enabling this will automatically disable other CAPTCHA providers.', 'everest-forms' ),
+						'id'       => 'everest_forms_recaptcha_turnstile_enable',
+						'default'  => 'no',
+						'desc_tip' => true,
+					),
+					array(
+						'title'    => esc_html__( 'Site Key (Cloudflare Turnstile)', 'everest-forms' ),
+						'type'     => 'text',
+						/* translators: %1$s - Cloudflare Turnstile docs url */
+						'desc'     => sprintf( esc_html__( 'Please enter your site key for your Cloudflare Turnstile. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/how-to-integrate-cloudflare-turnstile-with-the-everest-forms/' ) ),
+						'id'       => 'everest_forms_recaptcha_turnstile_site_key',
+						'default'  => '',
+						'desc_tip' => true,
+					),
+					array(
+						'title'    => esc_html__( 'Secret Key (Cloudflare Turnstile)', 'everest-forms' ),
+						'type'     => 'text',
+						/* translators: %1$s - Cloudflare Turnstile docs url */
+						'desc'     => sprintf( esc_html__( 'Please enter your secret key for your Cloudflare Turnstile. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/how-to-integrate-cloudflare-turnstile-with-the-everest-forms/' ) ),
+						'id'       => 'everest_forms_recaptcha_turnstile_secret_key',
+						'default'  => '',
+						'desc_tip' => true,
+					),
+					array(
+						'title'    => esc_html__( 'Theme', 'everest-forms' ),
+						'type'     => 'select',
+						/* translators: %1$s - Cloudflare Turnstile docs url */
+						'desc'     => sprintf( esc_html__( 'Please select theme mode for your Cloudflare Turnstile. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/how-to-integrate-cloudflare-turnstile-with-the-everest-forms/' ) ),
+						'id'       => 'everest_forms_recaptcha_turnstile_theme',
+						'options'  => array(
+							'auto'  => esc_html__( 'Auto', 'everest-forms' ),
+							'light' => esc_html__( 'Light', 'everest-forms' ),
+							'dark'  => esc_html__( 'Dark', 'everest-forms' ),
+						),
+						'default'  => 'auto',
+						'class'    => 'evf-enhanced-select',
+						'desc_tip' => true,
+					),
+				),
+			),
+		);
+
+		// Append CleanTalk accordion item only when the addon is active.
+		if ( $this->is_cleantalk_available() ) {
+			$cleantalk_connected = ! empty( get_option( 'everest_forms_recaptcha_cleantalk_access_key', '' ) );
+			$cleantalk_icon      = '';
+			$integrations        = evf()->integrations->get_integrations();
+
+			if ( isset( $integrations['clean-talk'] ) ) {
+				$cleantalk_icon = $integrations['clean-talk']->icon;
+			}
+
+			$accordion_items[] = array(
+				'title'      => esc_html__( 'CleanTalk', 'everest-forms' ),
+				'icon'       => $cleantalk_icon,
+				'is_enabled' => $cleantalk_connected,
+				'fields'     => array(
+					array(
+						'title'    => esc_html__( 'Access Key', 'everest-forms' ),
+						'type'     => 'text',
+						/* translators: %s - CleanTalk dashboard URL */
+						'desc'     => sprintf(
+							esc_html__( 'Enter your CleanTalk Access Key. You can find it in your <a href="%s" target="_blank">CleanTalk dashboard</a>.', 'everest-forms' ),
+							esc_url( 'https://cleantalk.org/my/' )
+						),
+						'id'       => 'everest_forms_recaptcha_cleantalk_access_key',
+						'default'  => '',
+						'desc_tip' => true,
+					),
+				),
+			);
+		}
+
 		$settings = apply_filters(
 			'everest_forms_recaptcha_integration_settings',
 			array(
 				array(
 					'title' => esc_html__( 'CAPTCHA Integration', 'everest-forms' ),
 					'type'  => 'title',
-					/* translators: %1$s - reCAPTCHA Integration Doc URL, %2$s - hCaptcha Integration Doc URL, %3$s - Cloudflare Turnstile Integration Doc URL */
-					'desc'  => sprintf( __( 'Get detailed documentation on integrating <a href="%1$s" target="_blank">reCAPTCHA</a>, <a href="%2$s" target="_blank">hCaptcha</a> and <a href="%3$s" target="_blank">Cloudflare Turnstile</a> with Everest forms.', 'everest-forms' ), 'https://docs.everestforms.net/docs/how-to-integrate-google-recaptcha/', 'https://docs.everestforms.net/docs/how-to-integrate-hcaptcha/', 'https://docs.everestforms.net/docs/how-to-integrate-cloudflare-turnstile-with-the-everest-forms/' ),
+					/* translators: %1$s - reCAPTCHA doc URL, %2$s - hCaptcha doc URL, %3$s - Turnstile doc URL */
+					'desc'  => sprintf(
+						__( 'Get detailed documentation on integrating <a href="%1$s" target="_blank">reCAPTCHA</a>, <a href="%2$s" target="_blank">hCaptcha</a> and <a href="%3$s" target="_blank">Cloudflare Turnstile</a> with Everest forms.', 'everest-forms' ),
+						'https://docs.everestforms.net/docs/how-to-integrate-google-recaptcha/',
+						'https://docs.everestforms.net/docs/how-to-integrate-hcaptcha/',
+						'https://docs.everestforms.net/docs/how-to-integrate-cloudflare-turnstile-with-the-everest-forms/'
+					),
 					'id'    => 'integration_options',
 				),
 				array(
 					'type'  => 'accordion',
-					'items' => array(
-						// ---- reCAPTCHA v2 ----
-						array(
-							'title'      => esc_html__( 'reCAPTCHA v2', 'everest-forms' ),
-							'icon'       => plugins_url( 'assets/images/captcha/reCAPTCHA-v2-v3.png', EVF_PLUGIN_FILE ),
-							'is_enabled' => 'yes' === $v2_enabled,
-							'fields'     => array(
-								array(
-									'title'    => esc_html__( 'Enable reCAPTCHA v2', 'everest-forms' ),
-									'type'     => 'toggle',
-									'desc'     => esc_html__( 'Enable reCAPTCHA v2. Note: Enabling this will automatically disable other CAPTCHA providers.', 'everest-forms' ),
-									'id'       => 'everest_forms_recaptcha_v2_enable',
-									'default'  => 'no',
-									'desc_tip' => true,
-								),
-								array(
-									'title'    => esc_html__( 'Invisible reCAPTCHA', 'everest-forms' ),
-									'type'     => 'toggle',
-									'desc'     => esc_html__( 'Enable Invisible reCAPTCHA.', 'everest-forms' ),
-									'id'       => 'everest_forms_recaptcha_v2_invisible',
-									'default'  => 'no',
-									'desc_tip' => true,
-								),
-								array(
-									'title'    => esc_html__( 'Site Key (reCAPTCHA V2)', 'everest-forms' ),
-									'type'     => 'text',
-									/* translators: %1$s - Google reCAPTCHA docs url */
-									'desc'     => sprintf( esc_html__( 'Please enter your site key for your reCAPTCHA v2. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/how-to-integrate-google-recaptcha/' ) ),
-									'id'       => 'everest_forms_recaptcha_v2_site_key',
-									'default'  => '',
-									'desc_tip' => true,
-								),
-								array(
-									'title'    => esc_html__( 'Secret Key (reCAPTCHA V2)', 'everest-forms' ),
-									'type'     => 'text',
-									/* translators: %1$s - Google reCAPTCHA docs url */
-									'desc'     => sprintf( esc_html__( 'Please enter your secret key for your reCAPTCHA v2. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/how-to-integrate-google-recaptcha/' ) ),
-									'id'       => 'everest_forms_recaptcha_v2_secret_key',
-									'default'  => '',
-									'desc_tip' => true,
-								),
-								array(
-									'title'      => esc_html__( 'Invisible Site Key', 'everest-forms' ),
-									'type'       => 'text',
-									/* translators: %1$s - Google reCAPTCHA docs url */
-									'desc'       => sprintf( esc_html__( 'Please enter your site key for invisible reCAPTCHA v2. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/how-to-integrate-google-recaptcha/' ) ),
-									'id'         => 'everest_forms_recaptcha_v2_invisible_site_key',
-									'is_visible' => 'yes' === $invisible,
-									'default'    => '',
-									'desc_tip'   => true,
-								),
-								array(
-									'title'      => esc_html__( 'Invisible Secret Key', 'everest-forms' ),
-									'type'       => 'text',
-									/* translators: %1$s - Google reCAPTCHA docs url */
-									'desc'       => sprintf( esc_html__( 'Please enter your secret key for invisible reCAPTCHA v2. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/how-to-integrate-google-recaptcha/' ) ),
-									'id'         => 'everest_forms_recaptcha_v2_invisible_secret_key',
-									'is_visible' => 'yes' === $invisible,
-									'default'    => '',
-									'desc_tip'   => true,
-								),
-							),
-						),
-						// ---- reCAPTCHA v3 ----
-						array(
-							'title'      => esc_html__( 'reCAPTCHA v3', 'everest-forms' ),
-							'icon'       => plugins_url( 'assets/images/captcha/reCAPTCHA-v2-v3.png', EVF_PLUGIN_FILE ),
-							'is_enabled' => 'yes' === $v3_enabled,
-							'fields'     => array(
-								array(
-									'title'    => esc_html__( 'Enable reCAPTCHA v3', 'everest-forms' ),
-									'type'     => 'toggle',
-									'desc'     => esc_html__( 'Enable reCAPTCHA v3. Note: Enabling this will automatically disable other CAPTCHA providers.', 'everest-forms' ),
-									'id'       => 'everest_forms_recaptcha_v3_enable',
-									'default'  => 'no',
-									'desc_tip' => true,
-								),
-								array(
-									'title'    => esc_html__( 'Site Key (reCAPTCHA V3)', 'everest-forms' ),
-									'type'     => 'text',
-									/* translators: %1$s - Google reCAPTCHA docs url */
-									'desc'     => sprintf( esc_html__( 'Please enter your site key for your reCAPTCHA v3. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/how-to-integrate-google-recaptcha/' ) ),
-									'id'       => 'everest_forms_recaptcha_v3_site_key',
-									'default'  => '',
-									'desc_tip' => true,
-								),
-								array(
-									'title'    => esc_html__( 'Secret Key (reCAPTCHA V3)', 'everest-forms' ),
-									'type'     => 'text',
-									/* translators: %1$s - Google reCAPTCHA docs url */
-									'desc'     => sprintf( esc_html__( 'Please enter your secret key for your reCAPTCHA v3. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/how-to-integrate-google-recaptcha/' ) ),
-									'id'       => 'everest_forms_recaptcha_v3_secret_key',
-									'default'  => '',
-									'desc_tip' => true,
-								),
-								array(
-									'title'             => esc_html__( 'Threshold Score', 'everest-forms' ),
-									'type'              => 'number',
-									'desc'              => esc_html__( 'reCAPTCHA v3 returns a score (1.0 is very likely a good interaction, 0.0 is very likely a bot). If the score is less than or equal to this threshold, the form submission will be blocked.', 'everest-forms' ),
-									'id'                => 'everest_forms_recaptcha_v3_threshold_score',
-									'custom_attributes' => array(
-										'step' => '0.1',
-										'min'  => '0.0',
-										'max'  => '1.0',
-									),
-									'default'           => '0.4',
-									'desc_tip'          => true,
-								),
-							),
-						),
-						// ---- hCaptcha ----
-						array(
-							'title'      => esc_html__( 'hCaptcha', 'everest-forms' ),
-							'icon'       => plugins_url( 'assets/images/captcha/hCAPTCHA-logo.png', EVF_PLUGIN_FILE ),
-							'is_enabled' => 'yes' === $hcaptcha_enabled,
-							'fields'     => array(
-								array(
-									'title'    => esc_html__( 'Enable hCaptcha', 'everest-forms' ),
-									'type'     => 'toggle',
-									'desc'     => esc_html__( 'Enable hCaptcha. Note: Enabling this will automatically disable other CAPTCHA providers.', 'everest-forms' ),
-									'id'       => 'everest_forms_recaptcha_hcaptcha_enable',
-									'default'  => 'no',
-									'desc_tip' => true,
-								),
-								array(
-									'title'    => esc_html__( 'Site Key (hCaptcha)', 'everest-forms' ),
-									'type'     => 'text',
-									/* translators: %1$s - hCaptcha docs url */
-									'desc'     => sprintf( esc_html__( 'Please enter your site key for your hCaptcha. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/how-to-integrate-hcaptcha/' ) ),
-									'id'       => 'everest_forms_recaptcha_hcaptcha_site_key',
-									'default'  => '',
-									'desc_tip' => true,
-								),
-								array(
-									'title'    => esc_html__( 'Secret Key (hCaptcha)', 'everest-forms' ),
-									'type'     => 'text',
-									/* translators: %1$s - hCaptcha docs url */
-									'desc'     => sprintf( esc_html__( 'Please enter your secret key for your hCaptcha. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/how-to-integrate-hcaptcha/' ) ),
-									'id'       => 'everest_forms_recaptcha_hcaptcha_secret_key',
-									'default'  => '',
-									'desc_tip' => true,
-								),
-							),
-						),
-						// ---- Cloudflare Turnstile ----
-						array(
-							'title'      => esc_html__( 'Cloudflare Turnstile', 'everest-forms' ),
-							'icon'       => plugins_url( 'assets/images/captcha/cloudflare-logo.png', EVF_PLUGIN_FILE ),
-							'is_enabled' => 'yes' === $turnstile_enabled,
-							'fields'     => array(
-								array(
-									'title'    => esc_html__( 'Enable Cloudflare Turnstile', 'everest-forms' ),
-									'type'     => 'toggle',
-									'desc'     => esc_html__( 'Enable Cloudflare Turnstile. Note: Enabling this will automatically disable other CAPTCHA providers.', 'everest-forms' ),
-									'id'       => 'everest_forms_recaptcha_turnstile_enable',
-									'default'  => 'no',
-									'desc_tip' => true,
-								),
-								array(
-									'title'    => esc_html__( 'Site Key (Cloudflare Turnstile)', 'everest-forms' ),
-									'type'     => 'text',
-									/* translators: %1$s - Cloudflare Turnstile docs url */
-									'desc'     => sprintf( esc_html__( 'Please enter your site key for your Cloudflare Turnstile. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/how-to-integrate-cloudflare-turnstile-with-the-everest-forms/' ) ),
-									'id'       => 'everest_forms_recaptcha_turnstile_site_key',
-									'default'  => '',
-									'desc_tip' => true,
-								),
-								array(
-									'title'    => esc_html__( 'Secret Key (Cloudflare Turnstile)', 'everest-forms' ),
-									'type'     => 'text',
-									/* translators: %1$s - Cloudflare Turnstile docs url */
-									'desc'     => sprintf( esc_html__( 'Please enter your secret key for your Cloudflare Turnstile. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/how-to-integrate-cloudflare-turnstile-with-the-everest-forms/' ) ),
-									'id'       => 'everest_forms_recaptcha_turnstile_secret_key',
-									'default'  => '',
-									'desc_tip' => true,
-								),
-								array(
-									'title'    => esc_html__( 'Theme', 'everest-forms' ),
-									'type'     => 'select',
-									/* translators: %1$s - Cloudflare Turnstile docs url */
-									'desc'     => sprintf( esc_html__( 'Please select theme mode for your Cloudflare Turnstile. <a href="%1$s" target="_blank">Learn More</a>', 'everest-forms' ), esc_url( 'https://docs.everestforms.net/docs/how-to-integrate-cloudflare-turnstile-with-the-everest-forms/' ) ),
-									'id'       => 'everest_forms_recaptcha_turnstile_theme',
-									'options'  => array(
-										'auto'  => esc_html__( 'Auto', 'everest-forms' ),
-										'light' => esc_html__( 'Light', 'everest-forms' ),
-										'dark'  => esc_html__( 'Dark', 'everest-forms' ),
-									),
-									'default'  => 'auto',
-									'class'    => 'evf-enhanced-select',
-									'desc_tip' => true,
-								),
-							),
-						),
-					),
+					'items' => $accordion_items,
 				),
 				array(
 					'type' => 'sectionend',
@@ -544,68 +608,7 @@ class EVF_Settings_Security extends EVF_Settings_Page {
 	}
 
 	/**
-	 * Get CleanTalk settings as a single accordion item.
-	 *
-	 * Shown only when section=cleantalk. Identical accordion UI to the
-	 * CAPTCHA providers above. The option key
-	 * 'everest_forms_recaptcha_cleantalk_access_key' is intentionally
-	 * unchanged so existing users keep their saved access key.
-	 *
-	 * @return array
-	 */
-	public function get_cleantalk_settings() {
-		$cleantalk_connected = ! empty( get_option( 'everest_forms_recaptcha_cleantalk_access_key', '' ) );
-
-		$cleantalk_icon = '';
-		if ( isset( evf()->integrations ) ) {
-			$integrations = evf()->integrations->get_integrations();
-			if ( isset( $integrations['clean-talk'] ) ) {
-				$cleantalk_icon = $integrations['clean-talk']->icon;
-			}
-		}
-
-		$settings = array(
-			array(
-				'title' => esc_html__( 'CleanTalk', 'everest-forms' ),
-				'type'  => 'title',
-				'desc'  => esc_html__( 'Configure CleanTalk anti-spam protection for your forms.', 'everest-forms' ),
-				'id'    => 'cleantalk_options',
-			),
-			array(
-				'type'  => 'accordion',
-				'items' => array(
-					array(
-						'title'      => esc_html__( 'CleanTalk', 'everest-forms' ),
-						'icon'       => $cleantalk_icon,
-						'is_enabled' => $cleantalk_connected,
-						'fields'     => array(
-							array(
-								'title'    => esc_html__( 'Access Key', 'everest-forms' ),
-								'type'     => 'text',
-								'desc'     => sprintf(
-									/* translators: %s - CleanTalk dashboard URL */
-									esc_html__( 'Enter your CleanTalk Access Key. You can find it in your <a href="%s" target="_blank">CleanTalk dashboard</a>.', 'everest-forms' ),
-									esc_url( 'https://cleantalk.org/my/' )
-								),
-								'id'       => 'everest_forms_recaptcha_cleantalk_access_key',
-								'default'  => '',
-								'desc_tip' => true,
-							),
-						),
-					),
-				),
-			),
-			array(
-				'type' => 'sectionend',
-				'id'   => 'cleantalk_options',
-			),
-		);
-
-		return apply_filters( 'everest_forms_recaptcha_cleantalk_settings', $settings );
-	}
-
-	/**
-	 * Get CAPTCHA language settings.
+	 * Returns CAPTCHA language settings.
 	 *
 	 * @return array
 	 */
@@ -646,7 +649,7 @@ class EVF_Settings_Security extends EVF_Settings_Page {
 	}
 
 	/**
-	 * Save settings.
+	 * Saves settings for the active section.
 	 */
 	public function save() {
 		$settings = $this->get_settings();
