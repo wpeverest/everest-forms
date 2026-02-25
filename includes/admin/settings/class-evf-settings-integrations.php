@@ -372,7 +372,7 @@ class EVF_Settings_Integrations extends EVF_Settings_Page {
 
 		<?php else : ?>
 			<div class="everest-forms-accordion-wrapper">
-				<div class="everest-forms-accordion-item is-open">
+				<div class="everest-forms-accordion-item ">
 					<div class="everest-forms-accordion-header">
 						<span class="everest-forms-accordion-icon">
 							<img src="<?php echo esc_url( $integration->icon ); ?>" alt="<?php echo esc_attr( $integration->method_title ); ?>">
