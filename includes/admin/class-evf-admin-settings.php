@@ -48,12 +48,42 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 				$settings[] = include 'settings/class-evf-settings-general.php';
 				$settings[] = include 'settings/class-evf-settings-security.php';
 				$settings[] = include 'settings/class-evf-settings-email.php';
-				// $settings[] = include 'settings/class-evf-settings-validation.php';
 				$settings[] = include 'settings/class-evf-settings-integrations.php';
-				$settings[] = include 'settings/class-evf-settings-reporting.php';
-				$settings[] = include 'settings/class-evf-settings-advanced.php';
 
-				self::$settings = apply_filters( 'everest_forms_get_settings_pages', $settings );
+				$settings = apply_filters( 'everest_forms_get_settings_pages', $settings );
+
+				$advanced = include 'settings/class-evf-settings-advanced.php';
+				$pinned   = array();
+				$rest     = array();
+
+				foreach ( $settings as $setting ) {
+					$arr = (array) $setting;
+					$id  = '';
+
+					foreach ( $arr as $key => $value ) {
+						if ( str_ends_with( $key, 'id' ) ) {
+							$id = $value;
+							break;
+						}
+					}
+
+					if ( in_array( $id, array( 'license', 'analytics' ), true ) ) {
+						$pinned[ $id ] = $setting;
+					} else {
+						$rest[] = $setting;
+					}
+				}
+
+				$rest[] = $advanced;
+
+				if ( isset( $pinned['license'] ) ) {
+					$rest[] = $pinned['license'];
+				}
+				if ( isset( $pinned['analytics'] ) ) {
+					$rest[] = $pinned['analytics'];
+				}
+
+				self::$settings = $rest;
 			}
 
 			return self::$settings;
