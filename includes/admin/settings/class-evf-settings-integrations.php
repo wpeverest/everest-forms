@@ -62,8 +62,6 @@ class EVF_Settings_Integrations extends EVF_Settings_Page {
 			esc_html__( 'OpenAI', 'everest-forms' ),
 			esc_html__( 'PDF Submissions', 'everest-forms' ),
 			esc_html__( 'Google Calendar', 'everest-forms' ),
-			esc_html__( 'Payments', 'everest-forms' ),
-			esc_html__( 'Anti-Spam', 'everest-forms' ),
 			esc_html__( 'Other', 'everest-forms' ),
 		);
 
