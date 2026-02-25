@@ -46,7 +46,9 @@ class Addons {
 	 */
 	public function add_integration( $integrations ) {
 
-		$no_module_classes = array();
+		$no_module_classes = array(
+			'clean-talk' => 'EverestForms\Addons\CleanTalk\Settings\Settings',
+		);
 
 		foreach ( $no_module_classes as $key => $class_name ) {
 			$integrations[] = $class_name;

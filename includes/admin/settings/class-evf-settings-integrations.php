@@ -80,6 +80,9 @@ class EVF_Settings_Integrations extends EVF_Settings_Page {
 		$grouped      = array();
 
 		foreach ( $integrations as $id => $integration ) {
+			if ( 'clean-talk' === $id ) {
+				continue;
+			}
 			$category               = isset( $category_map[ $id ] )
 				? $category_map[ $id ]
 				: esc_html__( 'Other', 'everest-forms' );
