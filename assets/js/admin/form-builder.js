@@ -4135,19 +4135,31 @@
 					$(this)
 						.children('*')
 						.each(function () {
-							grids.append($(this).clone()); // "this" is the current element in the loop
+							grids.append($(this).clone());
 						});
 				});
-				$this_single_row.find('.evf-admin-grid').remove();
-				$this_single_row.find('.evf-clear ').remove();
-				$this_single_row.append('<div class="clear evf-clear"></div>');
+
+				// Build the grid-lists container with grids + inner clear div inside it
+				var $gridLists = $('<div class="evf-grid-lists"></div>');
 
 				for (var $grid_number = 1; $grid_number <= grid_id; $grid_number++) {
 					grid_node.attr('data-grid-id', $grid_number);
-					$this_single_row.append(grid_node.clone());
+					$gridLists.append(grid_node.clone());
 				}
+				$gridLists.append('<div class="clear evf-clear"></div>'); // ✅ inner clear inside evf-grid-lists
+
+				// Remove old elements
+				$this_single_row.find('.evf-grid-lists').remove();
+				$this_single_row.find('.evf-admin-grid').remove();
+				$this_single_row.find('.evf-clear').remove();
+
+				// Append outer clear + grid-lists to the row
 				$this_single_row.append('<div class="clear evf-clear"></div>');
+				$this_single_row.append($gridLists);
+
+				// Restore existing field content into first grid
 				$this_single_row.find('.evf-admin-grid').eq(0).append(grids.html());
+
 				$this_single_row.find('.evf-grid-selector').removeClass('active');
 				$(this).addClass('active');
 				EVFPanelBuilder.bindFields();
@@ -5602,7 +5614,7 @@ jQuery(function ($) {
 			$(this)
 				.closest('tr')
 				.find('td')
-				.not('.has-row-actions, .column-enabled') 
+				.not('.has-row-actions, .column-enabled')
 				.removeClass('evf-disable-row');
 		}
 	});
