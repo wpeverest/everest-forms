@@ -958,7 +958,6 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 	<div class="everest-forms-accordion-wrapper">
 						<?php foreach ( $value['items'] as $index => $item ) : ?>
 							<?php
-							$is_open      = isset( $item['is_open'] ) && $item['is_open'];
 							$is_connected = false;
 							if ( isset( $item['is_enabled'] ) ) {
 								$is_connected = $item['is_enabled'];
@@ -1000,9 +999,6 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 							}
 
 							$item_classes = array( 'everest-forms-accordion-item' );
-							if ( $is_open ) {
-								$item_classes[] = 'is-open';
-							}
 							if ( $is_connected ) {
 								$item_classes[] = 'is-connected';
 							}
