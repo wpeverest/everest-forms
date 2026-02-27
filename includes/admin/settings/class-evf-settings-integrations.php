@@ -372,9 +372,14 @@ class EVF_Settings_Integrations extends EVF_Settings_Page {
 			</form>
 
 		<?php else : ?>
+			<?php error_log( print_r( $integration, true ) ); ?>
+			<div class="everest-forms-card">
 			<div class="everest-forms-accordion-wrapper">
 				<div class="everest-forms-accordion-item ">
 					<div class="everest-forms-accordion-header">
+						<div class="everest-forms-accordion-status">
+							<span class="toggle-switch-outer <?php echo esc_attr( $integration->account_status ); ?>"></span>
+						</div>
 						<span class="everest-forms-accordion-icon">
 							<img src="<?php echo esc_url( $integration->icon ); ?>" alt="<?php echo esc_attr( $integration->method_title ); ?>">
 						</span>
@@ -393,6 +398,7 @@ class EVF_Settings_Integrations extends EVF_Settings_Page {
 						</div>
 					</div>
 				</div>
+			</div>
 			</div>
 		<?php endif; ?>
 
