@@ -92,34 +92,34 @@ const UserDisplayModal = ({ wp_roles, context = "", value = {}, setUserAdded=fal
 		fontSize: "14px",
 		color: "#FFFFFF",
 	};
-	const editButtonStyle = {
-		color: "#475BB2",
-		fontWeight: "400",
-		fontSize: "13px",
-		backgroundColor: "#ffffff",
-		padding: 0,
-	};
 
 	return (
 		<>
-			<Button
-				style={context === "edit" ? editButtonStyle : addButtonStyles}
-				onClick={onOpen}
-			>
-				{context === "edit" ? (
-					"Edit"
-				) : (
-					<>
-						<AddIcon
-							height={"9.95px"}
-							width={"9.9px"}
-							fontWeight={"500"}
-							color={"#FFFFFF"}
-						/>{" "}
-						Add User
-					</>
-				)}
-			</Button>
+			{context === "edit" ? (
+				<Button
+					variant="link"
+					color="gray.500"
+					fontWeight="400"
+					fontSize="13px"
+					minW="auto"
+					height="auto"
+					padding={0}
+					_hover={{ color: "blue.500", textDecoration: "none" }}
+					onClick={onOpen}
+				>
+					Edit
+				</Button>
+			) : (
+				<Button style={addButtonStyles} onClick={onOpen}>
+					<AddIcon
+						height={"9.95px"}
+						width={"9.9px"}
+						fontWeight={"500"}
+						color={"#FFFFFF"}
+					/>{" "}
+					Add User
+				</Button>
+			)}
 
 			<Modal isOpen={isOpen} onClose={onClose} isCentered size={"lg"}>
 				<ModalOverlay
