@@ -61,25 +61,34 @@ import UserDisplayModal from './UserDisplayModal';
 
 const VISIBLE_PERM_COUNT = 4;
 
+const PermTag = ({ children }) => (
+	<Text
+		as="span"
+		margin="0"
+		display="inline-flex"
+		alignItems="center"
+		fontSize="12px"
+		fontWeight="500"
+		bg="primary.25"
+		color="primary.500"
+		border="1px solid"
+		borderColor="primary.100"
+		padding="2px 10px"
+		borderRadius="full"
+		lineHeight="1.6"
+	>
+		{children}
+	</Text>
+);
+
 const PermissionCell = ({ permissionKeys, permissionLabels }) => {
 	const visible = permissionKeys.slice(0, VISIBLE_PERM_COUNT);
 	const hidden = permissionKeys.slice(VISIBLE_PERM_COUNT);
 
 	return (
-		<Flex gap="4px" flexWrap="wrap" alignItems="center">
+		<Flex gap="6px" flexWrap="wrap" alignItems="center">
 			{visible.map((perm, i) => (
-				<Text
-					key={i}
-					margin="0"
-					fontSize="13px"
-					fontWeight="400"
-					backgroundColor="#EDEDED"
-					color="#383838"
-					padding="2px 6px"
-					borderRadius="5px"
-				>
-					{permissionLabels[perm]}
-				</Text>
+				<PermTag key={i}>{permissionLabels[perm]}</PermTag>
 			))}
 			{hidden.length > 0 && (
 				<Popover placement="bottom-start" isLazy>
@@ -87,8 +96,8 @@ const PermissionCell = ({ permissionKeys, permissionLabels }) => {
 						<Button
 							variant="link"
 							color="primary.400"
-							fontWeight="400"
-							fontSize="13px"
+							fontWeight="500"
+							fontSize="12px"
 							minW="auto"
 							height="auto"
 							padding={0}
@@ -96,7 +105,7 @@ const PermissionCell = ({ permissionKeys, permissionLabels }) => {
 							+{hidden.length} more
 						</Button>
 					</PopoverTrigger>
-					<PopoverContent minW="260px" maxW="340px">
+					<PopoverContent minW="260px" maxW="360px">
 						<PopoverArrow />
 						<PopoverCloseButton />
 						<PopoverHeader fontSize="14px" fontWeight="600">
@@ -105,18 +114,7 @@ const PermissionCell = ({ permissionKeys, permissionLabels }) => {
 						<PopoverBody>
 							<Flex gap="6px" flexWrap="wrap">
 								{permissionKeys.map((perm, i) => (
-									<Text
-										key={i}
-										margin="0"
-										fontSize="13px"
-										fontWeight="400"
-										backgroundColor="#EDEDED"
-										color="#383838"
-										padding="2px 6px"
-										borderRadius="5px"
-									>
-										{permissionLabels[perm]}
-									</Text>
+									<PermTag key={i}>{permissionLabels[perm]}</PermTag>
 								))}
 							</Flex>
 						</PopoverBody>
@@ -345,7 +343,7 @@ const UserRoleTable = () => {
 				<Flex gap="10px" alignItems="center">
 					<Box minW="170px">
 						<Select
-							size="md"
+							size="sm"
 							placeholder={__('Bulk Actions', 'everest-forms')}
 							options={[
 								{ label: __('Delete', 'everest-forms'), value: 'delete' },
@@ -353,6 +351,11 @@ const UserRoleTable = () => {
 							isClearable
 							isSearchable={false}
 							onChange={(opt) => setBulkDelete(opt?.value || '')}
+							chakraStyles={{
+								placeholder: (p) => ({ ...p, fontSize: '13px' }),
+								singleValue: (p) => ({ ...p, fontSize: '13px' }),
+								option: (p) => ({ ...p, fontSize: '13px' }),
+							}}
 						/>
 					</Box>
 					<Button
