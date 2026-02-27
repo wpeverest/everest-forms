@@ -16,7 +16,7 @@
 // Components
 @import 'components/badge', 'components/forms', 'components/buttons',
 	'components/card', 'components/table', 'components/entries-views',
-	'components/toast', 'components/accordion';
+	'components/toast', 'components/accordion', 'components/evf-header-skeleton';
 
 @import 'colors';
 @import 'containers';
@@ -10398,7 +10398,7 @@ img.ui-datepicker-trigger {
 					&:has(.evf-scroll-ui) {
 						.nav-tab-active {
 							.evf-nav__link-label svg {
-								transform: rotate(90deg);
+								// transform: rotate(90deg);
 							}
 						}
 					}
@@ -10593,8 +10593,8 @@ img.ui-datepicker-trigger {
 				}
 
 				.evf-scroll-ui {
-					max-height: 300px;
-					overflow-y: auto;
+					// max-height: 300px;
+					// overflow-y: auto;
 					padding: 0;
 					margin-top: 0;
 					animation: slideDown 0.3s ease;

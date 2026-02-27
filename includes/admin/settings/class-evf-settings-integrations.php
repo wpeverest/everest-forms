@@ -55,13 +55,12 @@ class EVF_Settings_Integrations extends EVF_Settings_Page {
 		$order = array(
 			esc_html__( 'CRM', 'everest-forms' ),
 			esc_html__( 'Email Marketing', 'everest-forms' ),
-			esc_html__( 'Google Sheets', 'everest-forms' ),
 			esc_html__( 'Cloud Storage', 'everest-forms' ),
 			esc_html__( 'SMS Notifications', 'everest-forms' ),
+			esc_html__( 'Google Sheets', 'everest-forms' ),
+			esc_html__( 'Google Calendar', 'everest-forms' ),
 			esc_html__( 'Geolocation', 'everest-forms' ),
 			esc_html__( 'OpenAI', 'everest-forms' ),
-			esc_html__( 'PDF Submissions', 'everest-forms' ),
-			esc_html__( 'Google Calendar', 'everest-forms' ),
 			esc_html__( 'Other', 'everest-forms' ),
 		);
 
@@ -361,11 +360,17 @@ class EVF_Settings_Integrations extends EVF_Settings_Page {
 				$this->render_integration_form( $integration );
 
 				if ( empty( $GLOBALS['hide_save_button'] ) ) :
+						$everest_forms_setting_save_label = apply_filters( 'everest_forms_setting_save_label', esc_attr__( 'Save Changes', 'everest-forms' ) );
 					wp_nonce_field( 'everest-forms-settings' );
 					?>
 					<p class="submit">
-						<button type="submit" name="save" value="1" class="button-primary button">
-							<?php esc_html_e( 'Save Changes', 'everest-forms' ); ?>
+						<button
+							name="save"
+							class="everest-forms-btn everest-forms-btn-primary everest-forms-save-button"
+							type="submit"
+							value="<?php echo esc_attr( $everest_forms_setting_save_label ); ?>"
+								>
+						<?php echo esc_html( $everest_forms_setting_save_label ); ?>
 						</button>
 					</p>
 				<?php endif; ?>
