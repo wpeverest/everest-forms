@@ -1,0 +1,165 @@
+$evf-purple: #7c3aed;
+$evf-purple-bg: #f5f3ff;
+$evf-text: #111827;
+$evf-text-muted: #6b7280;
+$evf-text-body: #374151;
+$evf-border: #e5e7eb;
+$evf-border-lt: #f3f4f6;
+$evf-white: #ffffff;
+$evf-bg-faint: #fafafa;
+$evf-radius: 10px;
+$evf-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+
+.evf-upsell-integration-card {
+	background: $evf-white;
+	border: 1.5px solid $evf-border;
+	border-radius: $evf-radius;
+	padding: 24px;
+	margin-bottom: 16px;
+	box-shadow: $evf-shadow;
+}
+
+.evf-upsell-badge {
+	display: inline-block;
+	background: $evf-purple;
+	color: $evf-white;
+	font-size: 10px;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	padding: 2px 8px;
+	border-radius: 20px;
+	margin-bottom: 12px;
+	text-transform: uppercase;
+}
+
+.evf-upsell-card-header {
+	display: flex;
+	align-items: flex-start;
+	gap: 12px;
+	margin-bottom: 16px;
+}
+
+.evf-upsell-icon img {
+	width: 40px;
+	height: 40px;
+	object-fit: contain;
+	border-radius: 6px;
+	border: 1px solid $evf-border-lt;
+	padding: 4px;
+	background: $evf-bg-faint;
+	display: block;
+}
+
+.evf-upsell-card-heading {
+	flex: 1;
+
+	h3 {
+		margin: 0 0 3px;
+		font-size: 15px;
+		font-weight: 600;
+		color: $evf-text;
+	}
+}
+
+.evf-upsell-description {
+	margin: 0;
+	font-size: 13px;
+	color: $evf-text-muted;
+	line-height: 1.5;
+}
+
+.evf-upsell-lock-icon {
+	color: #9ca3af;
+	flex-shrink: 0;
+	margin-top: 2px;
+	line-height: 0;
+}
+
+.evf-upsell-divider {
+	border: none;
+	border-top: 1px solid $evf-border;
+	margin: 0 0 16px;
+}
+
+.evf-upsell-features {
+	list-style: none;
+	margin: 0 0 20px;
+	padding: 0;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 8px 16px;
+
+	@media (max-width: 640px) {
+		grid-template-columns: 1fr;
+	}
+
+	li {
+		display: flex;
+		align-items: flex-start;
+		gap: 7px;
+		font-size: 13px;
+		color: $evf-text-body;
+		line-height: 1.45;
+
+		svg {
+			flex-shrink: 0;
+			color: $evf-purple;
+			margin-top: 2px;
+		}
+	}
+}
+
+.evf-upsell-actions {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 8px;
+}
+
+.evf-upsell-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	font-size: 13px;
+	font-weight: 500;
+	border-radius: 6px;
+	padding: 7px 14px;
+	text-decoration: none !important;
+	cursor: pointer;
+	line-height: 1.4;
+	transition:
+		background 0.15s,
+		border-color 0.15s;
+
+	&-primary {
+		background: $evf-purple;
+		color: $evf-white !important;
+		border: none;
+
+		&:hover {
+			background: darken($evf-purple, 7%);
+		}
+	}
+
+	&-secondary {
+		background: $evf-white;
+		color: $evf-text-body !important;
+		border: 1.5px solid $evf-border;
+
+		&:hover {
+			border-color: #9ca3af;
+		}
+	}
+
+	&-ghost {
+		background: transparent;
+		color: $evf-purple !important;
+		border: none;
+		padding-left: 0;
+		padding-right: 0;
+
+		&:hover {
+			text-decoration: underline !important;
+		}
+	}
+}

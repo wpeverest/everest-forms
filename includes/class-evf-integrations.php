@@ -26,16 +26,12 @@ class EVF_Integrations {
 	 * Initialize integrations.
 	 */
 	public function __construct() {
-
 		do_action( 'everest_forms_integrations_init' );
 
 		$load_integrations = apply_filters( 'everest_forms_integrations', array() );
 
-		// Load integration classes.
 		foreach ( $load_integrations as $integration ) {
-
-			$load_integration = new $integration();
-
+			$load_integration                            = new $integration();
 			$this->integrations[ $load_integration->id ] = $load_integration;
 		}
 	}
@@ -47,55 +43,108 @@ class EVF_Integrations {
 	 */
 	public function get_integrations() {
 		$default_integrations = array();
+
 		if ( ! defined( 'EFP_PLUGIN_FILE' ) ) {
 			$default_integrations = array(
+
 				'dropbox'       => (object) array(
 					'id'                 => 'dropbox',
+					'category'           => esc_html__( 'Cloud Storage', 'everest-forms' ),
 					'method_title'       => 'Dropbox',
 					'icon'               => plugins_url( 'assets/images/integration-image/dropbox.png', EVF_PLUGIN_FILE ),
-					'method_description' => 'Dropbox Integration with Everest Forms',
+					'method_description' => esc_html__( 'Automatically upload form attachments and entries straight to your Dropbox.', 'everest-forms' ),
 					'account_status'     => 'upgrade-modal',
 					'upgrade'            => 'upgrade',
 					'vedio_id'           => '5Vt82fN0swo',
+					'upgrade_url'        => 'https://wpeverest.com/wordpress-plugins/everest-forms/pricing/',
+					'docs_url'           => 'https://docs.wpeverest.com/everest-forms/docs/dropbox-integration/',
+					'features'           => array(
+						esc_html__( 'Auto-upload files on every form submission', 'everest-forms' ),
+						esc_html__( 'Organise uploads into custom folder structures', 'everest-forms' ),
+						esc_html__( 'Map form fields to file names dynamically', 'everest-forms' ),
+						esc_html__( 'Supports multiple Dropbox accounts', 'everest-forms' ),
+					),
 				),
+
 				'google_drive'  => (object) array(
 					'id'                 => 'google_drive',
+					'category'           => esc_html__( 'Cloud Storage', 'everest-forms' ),
 					'method_title'       => 'Google Drive',
 					'icon'               => plugins_url( 'assets/images/integration-image/google-drive.png', EVF_PLUGIN_FILE ),
-					'method_description' => 'Google Drive Integration with Everest Forms',
+					'method_description' => esc_html__( 'Save form entries and uploaded files directly to Google Drive, organised your way.', 'everest-forms' ),
 					'account_status'     => 'upgrade-modal',
 					'upgrade'            => 'upgrade',
 					'vedio_id'           => '0g-dfhMy1Yo',
+					'upgrade_url'        => 'https://wpeverest.com/wordpress-plugins/everest-forms/pricing/',
+					'docs_url'           => 'https://docs.wpeverest.com/everest-forms/docs/google-drive-integration/',
+					'features'           => array(
+						esc_html__( 'Send attachments to Drive on submission', 'everest-forms' ),
+						esc_html__( 'Create sub-folders from form field values', 'everest-forms' ),
+						esc_html__( 'Works with Shared Drives (Team Drives)', 'everest-forms' ),
+						esc_html__( 'OAuth 2.0 — no passwords stored', 'everest-forms' ),
+					),
 				),
+
 				'mailchimp'     => (object) array(
 					'id'                 => 'mailchimp',
+					'category'           => esc_html__( 'Email Marketing', 'everest-forms' ),
 					'method_title'       => 'MailChimp',
 					'icon'               => plugins_url( 'assets/images/integration-image/mailchimp.png', EVF_PLUGIN_FILE ),
-					'method_description' => 'MailChimp Integration with Everest Forms',
+					'method_description' => esc_html__( 'Grow your Mailchimp audience automatically from every form submission.', 'everest-forms' ),
 					'account_status'     => 'upgrade-modal',
 					'upgrade'            => 'upgrade',
 					'vedio_id'           => 'FhFsHdAIXwE',
+					'upgrade_url'        => 'https://wpeverest.com/wordpress-plugins/everest-forms/pricing/',
+					'docs_url'           => 'https://docs.wpeverest.com/everest-forms/docs/mailchimp-integration/',
+					'features'           => array(
+						esc_html__( 'Subscribe users to lists on form submission', 'everest-forms' ),
+						esc_html__( 'Map any form field to Mailchimp merge tags', 'everest-forms' ),
+						esc_html__( 'Support for groups, tags, and double opt-in', 'everest-forms' ),
+						esc_html__( 'Connect multiple Mailchimp accounts', 'everest-forms' ),
+					),
 				),
+
 				'google_sheets' => (object) array(
 					'id'                 => 'google_sheets',
+					'category'           => esc_html__( 'Google Sheets', 'everest-forms' ),
 					'method_title'       => 'Google Sheets',
 					'icon'               => plugins_url( 'assets/images/integration-image/google-sheets.png', EVF_PLUGIN_FILE ),
-					'method_description' => 'Google Sheets Integration with Everest Forms',
+					'method_description' => esc_html__( 'Stream form submissions into a Google Sheet in real time — no copy-paste needed.', 'everest-forms' ),
 					'account_status'     => 'upgrade-modal',
 					'upgrade'            => 'upgrade',
 					'vedio_id'           => 'tvS6Y_rNBfs',
+					'upgrade_url'        => 'https://wpeverest.com/wordpress-plugins/everest-forms/pricing/',
+					'docs_url'           => 'https://docs.wpeverest.com/everest-forms/docs/google-sheets-integration/',
+					'features'           => array(
+						esc_html__( 'Auto-append a new row for each submission', 'everest-forms' ),
+						esc_html__( 'Map form fields to specific sheet columns', 'everest-forms' ),
+						esc_html__( 'Works with any existing or new spreadsheet', 'everest-forms' ),
+						esc_html__( 'Secure OAuth 2.0 connection', 'everest-forms' ),
+					),
 				),
+
 				'convertkit'    => (object) array(
 					'id'                 => 'convertkit',
+					'category'           => esc_html__( 'Email Marketing', 'everest-forms' ),
 					'method_title'       => 'ConvertKit',
 					'icon'               => plugins_url( 'assets/images/integration-image/convertkit.png', EVF_PLUGIN_FILE ),
-					'method_description' => 'Marketing automation can be hard to wrap your brain around, but with ConvertKit, it’s easy.',
+					'method_description' => esc_html__( 'Add subscribers to ConvertKit sequences and tags straight from your forms.', 'everest-forms' ),
 					'account_status'     => 'upgrade-modal',
 					'upgrade'            => 'upgrade',
 					'vedio_id'           => 'GvqPVCK7Ws8',
+					'upgrade_url'        => 'https://wpeverest.com/wordpress-plugins/everest-forms/pricing/',
+					'docs_url'           => 'https://docs.wpeverest.com/everest-forms/docs/convertkit-integration/',
+					'features'           => array(
+						esc_html__( 'Subscribe to forms, sequences, and tags', 'everest-forms' ),
+						esc_html__( 'Map custom fields to ConvertKit subscriber data', 'everest-forms' ),
+						esc_html__( 'Conditional logic support per form', 'everest-forms' ),
+						esc_html__( 'Works with multiple ConvertKit accounts', 'everest-forms' ),
+					),
 				),
+
 			);
 		}
+
 		$this->integrations = array_merge( $this->integrations, $default_integrations );
 
 		return $this->integrations;
