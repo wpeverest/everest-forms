@@ -408,7 +408,7 @@ const UserRoleTable = () => {
 									onChange={(e) => handleSelectAll(e.target.checked)}
 								/>
 							</Th>
-							<Th textTransform="none">
+							<Th textTransform="none" width="220px">
 								<Text
 									fontWeight="600"
 									fontSize="14px"
@@ -531,7 +531,6 @@ const UserRoleTable = () => {
 										/>
 									</Td>
 
-									{/* Name — row actions appear on hover */}
 									<Td verticalAlign="top" fontSize="14px">
 										<Box>
 											<Text lineHeight="1.4">
