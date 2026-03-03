@@ -5,7 +5,6 @@ import {
 	Flex,
 	FormControl,
 	FormLabel,
-	Input,
 	Modal,
 	ModalBody,
 	ModalCloseButton,
@@ -17,10 +16,30 @@ import {
 	useDisclosure,
 	useToast,
 } from '@chakra-ui/react';
+import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
 import { __ } from '@wordpress/i18n';
 import { Select } from 'chakra-react-select';
-import { useEffect, useMemo, useState } from 'react';
-import { addManagerRole } from './RoleAndPermissionAPI';
+import { debounce } from 'lodash';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { addManagerRole, getWPUsers } from './RoleAndPermissionAPI';
+
+const selectChakraStyles = {
+	dropdownIndicator: (provided) => ({ ...provided, bg: 'transparent' }),
+	indicatorSeparator: (provided) => ({ ...provided, display: 'none' }),
+	option: (provided) => ({ ...provided, fontSize: '13px' }),
+	input: (base) => ({
+		...base,
+		border: 'none',
+		outline: 'none',
+		boxShadow: 'none',
+		padding: 0,
+		margin: 0,
+		background: 'transparent',
+		height: 'auto',
+		minHeight: 0,
+		width: 0,
+	}),
+};
 
 const UserDisplayModal = ({
 	wp_roles,
@@ -29,60 +48,102 @@ const UserDisplayModal = ({
 	setUserAdded = false,
 }) => {
 	const { isOpen, onOpen, onClose } = useDisclosure();
-	const [userEmail, setUserEmail] = useState('');
+	const queryClient = useQueryClient();
+	const [selectedUser, setSelectedUser] = useState(null);
 	const [permissions, setPermissions] = useState([]);
 	const [errors, setErrors] = useState([]);
+	const [isSubmitting, setIsSubmitting] = useState(false);
+	const [searchTerm, setSearchTerm] = useState('');
 	const toast = useToast();
 
-	useEffect(() => {
-		if (context === 'edit') {
-			setUserEmail(value.email || '');
-			setPermissions(value.permission || []);
-		}
-	}, [context, value]);
+	const debouncedSetSearch = useRef(
+		debounce((val) => setSearchTerm(val), 400),
+	).current;
 
-	const selectedPermissions = useMemo(() => {
-		return (
+	useEffect(() => () => debouncedSetSearch.cancel(), [debouncedSetSearch]);
+
+	useEffect(() => {
+		if (!isOpen) return;
+		if (context === 'edit') {
+			setSelectedUser(
+				value.email ? { value: value.email, label: value.email } : null,
+			);
+			setPermissions(value.permission || []);
+		} else {
+			setSelectedUser(null);
+			setPermissions([]);
+			setSearchTerm('');
+		}
+		setErrors([]);
+	}, [isOpen]); // eslint-disable-line react-hooks/exhaustive-deps
+
+	const {
+		data: usersData,
+		fetchNextPage,
+		hasNextPage,
+		isFetchingNextPage,
+		isLoading: isUsersLoading,
+	} = useInfiniteQuery({
+		queryKey: ['wp-users', searchTerm],
+		queryFn: ({ pageParam = 1 }) =>
+			getWPUsers({ page: pageParam, search: searchTerm }),
+		getNextPageParam: (lastPage, allPages) =>
+			lastPage.has_more ? allPages.length + 1 : undefined,
+		enabled: isOpen && context !== 'edit',
+		staleTime: 30 * 1000,
+		keepPreviousData: true,
+	});
+
+	const userOptions = useMemo(
+		() => usersData?.pages.flatMap((page) => page.users) ?? [],
+		[usersData],
+	);
+
+	const handleInputChange = (val) => {
+		debouncedSetSearch(val);
+	};
+
+	const selectedPermissions = useMemo(
+		() =>
 			permissions?.map((val) => ({
 				value: val,
 				label: value.permission_details?.[val],
-			})) || []
-		);
-	}, [permissions, value.permission_details]);
+			})) ?? [],
+		[permissions, value.permission_details],
+	);
 
-	const all_permissions = useMemo(() => {
-		return Object.entries(wp_roles).map(([key, label]) => ({
-			label: label,
-			value: key,
-		}));
-	}, [wp_roles]);
+	const allPermissionOptions = useMemo(
+		() =>
+			Object.entries(wp_roles).map(([key, label]) => ({
+				label,
+				value: key,
+			})),
+		[wp_roles],
+	);
 
 	const handleMultiplePermission = (selectedOptions) => {
-		const selectedValues = selectedOptions
-			? selectedOptions.map((option) => option.value)
-			: [];
-		setPermissions(selectedValues);
+		setPermissions(selectedOptions ? selectedOptions.map((o) => o.value) : []);
 	};
 
-	const handleAddManager = (email, assignedPermissions) => {
-		addManagerRole(email, assignedPermissions).then((res) => {
-			setErrors([]);
-			if (!res.success) {
-				const errorList = Object.entries(res.message).map(([key, message]) => ({
-					key,
-					message,
-				}));
-				setErrors(errorList);
-			} else {
-				setUserAdded(true);
-				onClose();
-				toast({
-					title: res.message,
-					status: 'success',
-					duration: 3000,
-				});
-			}
-		});
+	const handleAddManager = () => {
+		const email = selectedUser?.value;
+		setIsSubmitting(true);
+		addManagerRole(email, permissions)
+			.then((res) => {
+				setErrors([]);
+				if (!res.success) {
+					const errorList = Object.entries(res.message).map(
+						([key, message]) => ({ key, message }),
+					);
+					setErrors(errorList);
+				} else {
+					setUserAdded(true);
+					onClose();
+					toast({ title: res.message, status: 'success', duration: 3000 });
+					queryClient.invalidateQueries(['managers']);
+				}
+			})
+			.finally(() => setIsSubmitting(false));
 	};
 
 	const addButtonStyles = {
@@ -108,7 +169,7 @@ const UserDisplayModal = ({
 					minW="auto"
 					height="auto"
 					padding={0}
-					_hover={{ color: 'blue.500', textDecoration: 'none' }}
+					_hover={{ color: 'primary.400', textDecoration: 'none' }}
 					onClick={onOpen}
 				>
 					{__('Edit', 'everest-forms')}
@@ -116,21 +177,23 @@ const UserDisplayModal = ({
 			) : (
 				<Button style={addButtonStyles} onClick={onOpen}>
 					<AddIcon
-						height={'9.95px'}
-						width={'9.9px'}
-						fontWeight={'500'}
-						color={'#FFFFFF'}
+						height="9.95px"
+						width="9.9px"
+						fontWeight="500"
+						color="#FFFFFF"
 					/>{' '}
 					{__('Add User', 'everest-forms')}
 				</Button>
 			)}
 
-			<Modal isOpen={isOpen} onClose={onClose} isCentered size={'lg'}>
+			<Modal isOpen={isOpen} onClose={onClose} isCentered size="lg">
 				<ModalOverlay />
 				<ModalContent p={2}>
 					<ModalHeader>
-						{context === 'edit' ? 'Edit User' : 'Add User'}
-						<Text mt={1}>
+						{context === 'edit'
+							? __('Edit User', 'everest-forms')
+							: __('Add User', 'everest-forms')}
+						<Text mt={1} fontSize="sm" fontWeight="400" color="gray.500">
 							{__(
 								'View and manage the list of current managers, their assigned roles, and permissions.',
 								'everest-forms',
@@ -138,23 +201,43 @@ const UserDisplayModal = ({
 						</Text>
 					</ModalHeader>
 					<ModalCloseButton />
-					<ModalBody paddingTop={'0'}>
+
+					<ModalBody paddingTop="0">
 						<FormControl>
-							<Stack gap={'28px'}>
+							<Stack gap="28px">
 								<Stack>
 									<FormLabel display="flex" alignItems="center" fontSize="14px">
 										{__('User Email', 'everest-forms')}
 									</FormLabel>
-									<Input
-										required
-										type="email"
-										placeholder="User Email Address"
-										value={userEmail}
-										onChange={(e) => setUserEmail(e.target.value)}
+
+									<Select
+										placeholder={__('Select a user', 'everest-forms')}
+										options={userOptions}
+										value={selectedUser}
+										onChange={setSelectedUser}
+										onInputChange={handleInputChange}
+										filterOption={() => true}
+										isLoading={isUsersLoading || isFetchingNextPage}
+										isDisabled={context === 'edit'}
+										isClearable
+										isSearchable={false}
+										onMenuScrollToBottom={() => {
+											if (hasNextPage && !isFetchingNextPage) {
+												fetchNextPage();
+											}
+										}}
+										noOptionsMessage={() =>
+											isUsersLoading
+												? __('Loading…', 'everest-forms')
+												: __('No users found', 'everest-forms')
+										}
+										loadingMessage={() => __('Loading…', 'everest-forms')}
+										chakraStyles={selectChakraStyles}
 									/>
+
 									{errors.map((error, index) =>
 										error.key === 'user_email' ? (
-											<Alert borderRadius={'4px'} key={index} status="error">
+											<Alert borderRadius="4px" key={index} status="error">
 												{error.message}
 											</Alert>
 										) : null,
@@ -165,8 +248,8 @@ const UserDisplayModal = ({
 									<FormLabel display="flex" alignItems="center" fontSize="14px">
 										{__('User Permission', 'everest-forms')}
 									</FormLabel>
+
 									<Select
-										required
 										isMulti
 										size="md"
 										placeholder={__('Select user permission', 'everest-forms')}
@@ -175,47 +258,45 @@ const UserDisplayModal = ({
 												? Object.entries(value.permission_details || {}).map(
 														([key, label]) => ({
 															value: key,
-															label: label,
+															label,
 														}),
 													)
-												: all_permissions
+												: allPermissionOptions
 										}
 										value={context === 'edit' ? selectedPermissions : undefined}
 										onChange={handleMultiplePermission}
 										isClearable
 										isSearchable={false}
+										chakraStyles={selectChakraStyles}
 									/>
+
 									{errors.map((error, index) =>
 										error.key === 'assigned_permission' ? (
-											<Alert borderRadius={'4px'} key={index} status="error">
+											<Alert borderRadius="4px" key={index} status="error">
 												{error.message}
 											</Alert>
 										) : null,
 									)}
 								</Stack>
 							</Stack>
-							<Flex justifyContent={'flex-end'} mt={'6'} gap={3}>
-								<Button
-									fontWeight={'600'}
-									lineHeight={'24px'}
-									onClick={onClose}
-									variant="outline"
-								>
-									{__('Back', 'learning-management-system')}
+
+							<Flex justifyContent="flex-end" mt="6" gap={3}>
+								<Button onClick={onClose} variant="outline">
+									{__('Back', 'everest-forms')}
 								</Button>
 								<Button
-									color={'#FFFFFF'}
-									fontWeight={'500'}
-									backgroundColor={'#7545BB'}
-									padding={'10px 16px'}
-									borderRadius={'4px'}
-									border={'1px solid #7545BB'}
-									width={'94px'}
-									height={'39px'}
+									color="#FFFFFF"
+									backgroundColor="#7545BB"
+									padding="10px 16px"
+									borderRadius="4px"
+									border="1px solid #7545BB"
+									width="94px"
+									height="39px"
 									_hover={{ backgroundColor: '#7545BB' }}
-									onClick={(e) => handleAddManager(userEmail, permissions)}
+									onClick={handleAddManager}
+									isLoading={isSubmitting}
 								>
-									{__('Confirm', 'learning-management-system')}
+									{__('Confirm', 'everest-forms')}
 								</Button>
 							</Flex>
 						</FormControl>

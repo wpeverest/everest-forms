@@ -151,7 +151,7 @@ const UserRoleTable = () => {
 	} = usePagination({
 		total: totalManagers,
 		limits: { outer: outerLimit, inner: innerLimit },
-		initialState: { pageSize: 5, isDisabled: false, currentPage: 1 },
+		initialState: { pageSize: 10, isDisabled: false, currentPage: 1 },
 	});
 
 	const managersQuery = useQuery({
@@ -165,7 +165,7 @@ const UserRoleTable = () => {
 
 	const managers = managersQuery.data?.managers ?? [];
 	const permissions = managersQuery.data?.permissions?.permissions ?? {};
-	const isLoading = managersQuery.isLoading;
+	const isLoading = managersQuery.isLoading || managersQuery.isFetching;
 
 	const wpRolesQuery = useQuery({
 		queryKey: ['wpRoles'],
@@ -453,22 +453,26 @@ const UserRoleTable = () => {
 
 					<Tbody>
 						{isLoading ? (
-							[1, 2, 3, 4, 5].map((i) => (
-								<Tr key={i} bg={i % 2 === 0 ? 'white' : 'primary.15'}>
-									<Td verticalAlign="top" pt="14px">
-										<Skeleton h="14px" w="14px" borderRadius="2px" />
+							[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => (
+								<Tr
+									key={i}
+									bg={i % 2 === 0 ? 'white' : 'primary.15'}
+									height="64px"
+								>
+									<Td verticalAlign="top" pt="12px">
+										<Skeleton h="12px" w="12px" borderRadius="2px" />
 									</Td>
-									<Td verticalAlign="top" pt="14px">
-										<Skeleton h="14px" w="120px" />
+									<Td verticalAlign="top" pt="12px">
+										<Skeleton h="12px" w="120px" />
 									</Td>
-									<Td verticalAlign="top" pt="14px">
-										<Skeleton h="14px" w="160px" />
+									<Td verticalAlign="top" pt="12px">
+										<Skeleton h="12px" w="160px" />
 									</Td>
-									<Td verticalAlign="top" pt="14px">
-										<Skeleton h="14px" w="80px" />
+									<Td verticalAlign="top" pt="12px">
+										<Skeleton h="12px" w="80px" />
 									</Td>
-									<Td verticalAlign="top" pt="14px">
-										<Skeleton h="14px" w="100px" />
+									<Td verticalAlign="top" pt="12px">
+										<Skeleton h="12px" w="100px" />
 									</Td>
 								</Tr>
 							))
