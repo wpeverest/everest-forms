@@ -40,7 +40,9 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 		 * Include the settings page classes.
 		 */
 		public static function get_settings_pages() {
+
 			if ( empty( self::$settings ) ) {
+
 				$settings = array();
 
 				include_once __DIR__ . '/settings/class-evf-settings-page.php';
@@ -53,37 +55,28 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 				$settings = apply_filters( 'everest_forms_get_settings_pages', $settings );
 
 				$advanced = include 'settings/class-evf-settings-advanced.php';
-				$pinned   = array();
-				$rest     = array();
+
+				$ordered = array();
 
 				foreach ( $settings as $setting ) {
-					$arr = (array) $setting;
-					$id  = '';
-
-					foreach ( $arr as $key => $value ) {
-						if ( str_ends_with( $key, 'id' ) ) {
-							$id = $value;
-							break;
-						}
-					}
-
-					if ( in_array( $id, array( 'license', 'analytics' ), true ) ) {
-						$pinned[ $id ] = $setting;
-					} else {
-						$rest[] = $setting;
+					$id = method_exists( $setting, 'get_id' ) ? $setting->get_id() : '';
+error_log( print_r( $setting, true ) );
+					if ( 'license' !== $id ) {
+						$ordered[] = $setting;
 					}
 				}
 
-				$rest[] = $advanced;
+				$ordered[] = $advanced;
 
-				if ( isset( $pinned['license'] ) ) {
-					$rest[] = $pinned['license'];
-				}
-				if ( isset( $pinned['analytics'] ) ) {
-					$rest[] = $pinned['analytics'];
+				foreach ( $settings as $setting ) {
+					$id = method_exists( $setting, 'get_id' ) ? $setting->get_id() : '';
+
+					if ( 'license' === $id ) {
+						$ordered[] = $setting;
+					}
 				}
 
-				self::$settings = $rest;
+				self::$settings = $ordered;
 			}
 
 			return self::$settings;
