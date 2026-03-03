@@ -340,10 +340,9 @@ const UserRoleTable = () => {
 			</Stack>
 
 			<Flex justifyContent="space-between" alignItems="center">
-				<Flex gap="10px" alignItems="center">
+				<Stack direction="row" gap="16px">
 					<Box minW="170px">
 						<Select
-							size="sm"
 							placeholder={__('Bulk Actions', 'everest-forms')}
 							options={[
 								{ label: __('Delete', 'everest-forms'), value: 'delete' },
@@ -352,21 +351,24 @@ const UserRoleTable = () => {
 							isSearchable={false}
 							onChange={(opt) => setBulkDelete(opt?.value || '')}
 							chakraStyles={{
-								placeholder: (p) => ({ ...p, fontSize: '13px' }),
-								singleValue: (p) => ({ ...p, fontSize: '13px' }),
-								option: (p) => ({ ...p, fontSize: '13px' }),
+								dropdownIndicator: (provided) => ({
+									...provided,
+									bg: 'transparent',
+								}),
+								indicatorSeparator: (provided) => ({
+									...provided,
+									display: 'none',
+								}),
+								option: (provided, state) => ({
+									...provided,
+									fontSize: '13px',
+								}),
 							}}
 						/>
 					</Box>
 					<Button
-						minW="64px"
-						minH="36px"
-						borderRadius="3px"
-						padding="8px 14px"
-						type="button"
+						colorScheme="primary"
 						variant={'outline'}
-						bg="primary.15"
-						color="primary.500"
 						onClick={handleBulkDelete}
 						isLoading={bulkRemoveMutation.isLoading}
 					>
@@ -374,7 +376,7 @@ const UserRoleTable = () => {
 							{__('Apply', 'everest-forms')}
 						</Text>
 					</Button>
-				</Flex>
+				</Stack>
 
 				<InputGroup w="220px">
 					<InputLeftElement pointerEvents="none">

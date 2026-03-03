@@ -1,39 +1,42 @@
-import React, { useState, useEffect, useMemo } from "react";
-import { AddIcon, InfoIcon } from "@chakra-ui/icons";
+import { AddIcon } from '@chakra-ui/icons';
 import {
-	Modal,
-	ModalOverlay,
-	ModalContent,
-	ModalHeader,
-	ModalBody,
-	ModalCloseButton,
-	useDisclosure,
+	Alert,
 	Button,
-	Text,
+	Flex,
 	FormControl,
 	FormLabel,
 	Input,
-	Tooltip,
-	Icon,
+	Modal,
+	ModalBody,
+	ModalCloseButton,
+	ModalContent,
+	ModalHeader,
+	ModalOverlay,
 	Stack,
-	Alert,
-	Flex,
+	Text,
+	useDisclosure,
 	useToast,
-} from "@chakra-ui/react";
-import { Select } from "chakra-react-select";
-import { __ } from "@wordpress/i18n";
-import { addManagerRole } from "./RoleAndPermissionAPI";
+} from '@chakra-ui/react';
+import { __ } from '@wordpress/i18n';
+import { Select } from 'chakra-react-select';
+import { useEffect, useMemo, useState } from 'react';
+import { addManagerRole } from './RoleAndPermissionAPI';
 
-const UserDisplayModal = ({ wp_roles, context = "", value = {}, setUserAdded=false }) => {
+const UserDisplayModal = ({
+	wp_roles,
+	context = '',
+	value = {},
+	setUserAdded = false,
+}) => {
 	const { isOpen, onOpen, onClose } = useDisclosure();
-	const [userEmail, setUserEmail] = useState("");
+	const [userEmail, setUserEmail] = useState('');
 	const [permissions, setPermissions] = useState([]);
 	const [errors, setErrors] = useState([]);
 	const toast = useToast();
 
 	useEffect(() => {
-		if (context === "edit") {
-			setUserEmail(value.email || "");
+		if (context === 'edit') {
+			setUserEmail(value.email || '');
 			setPermissions(value.permission || []);
 		}
 	}, [context, value]);
@@ -65,16 +68,17 @@ const UserDisplayModal = ({ wp_roles, context = "", value = {}, setUserAdded=fal
 		addManagerRole(email, assignedPermissions).then((res) => {
 			setErrors([]);
 			if (!res.success) {
-				const errorList = Object.entries(res.message).map(
-					([key, message]) => ({ key, message })
-				);
+				const errorList = Object.entries(res.message).map(([key, message]) => ({
+					key,
+					message,
+				}));
 				setErrors(errorList);
 			} else {
 				setUserAdded(true);
 				onClose();
 				toast({
 					title: res.message,
-					status: "success",
+					status: 'success',
 					duration: 3000,
 				});
 			}
@@ -82,20 +86,20 @@ const UserDisplayModal = ({ wp_roles, context = "", value = {}, setUserAdded=fal
 	};
 
 	const addButtonStyles = {
-		width: "113px",
-		height: "41px",
-		backgroundColor: "#7545BB",
-		padding: "10px 16px",
-		gap: "6px",
-		fontWeight: "500",
-		lineHeight: "21px",
-		fontSize: "14px",
-		color: "#FFFFFF",
+		width: '113px',
+		height: '41px',
+		backgroundColor: '#7545BB',
+		padding: '10px 16px',
+		gap: '6px',
+		fontWeight: '500',
+		lineHeight: '21px',
+		fontSize: '14px',
+		color: '#FFFFFF',
 	};
 
 	return (
 		<>
-			{context === "edit" ? (
+			{context === 'edit' ? (
 				<Button
 					variant="link"
 					color="gray.500"
@@ -104,58 +108,42 @@ const UserDisplayModal = ({ wp_roles, context = "", value = {}, setUserAdded=fal
 					minW="auto"
 					height="auto"
 					padding={0}
-					_hover={{ color: "blue.500", textDecoration: "none" }}
+					_hover={{ color: 'blue.500', textDecoration: 'none' }}
 					onClick={onOpen}
 				>
-					Edit
+					{__('Edit', 'everest-forms')}
 				</Button>
 			) : (
 				<Button style={addButtonStyles} onClick={onOpen}>
 					<AddIcon
-						height={"9.95px"}
-						width={"9.9px"}
-						fontWeight={"500"}
-						color={"#FFFFFF"}
-					/>{" "}
-					Add User
+						height={'9.95px'}
+						width={'9.9px'}
+						fontWeight={'500'}
+						color={'#FFFFFF'}
+					/>{' '}
+					{__('Add User', 'everest-forms')}
 				</Button>
 			)}
 
-			<Modal isOpen={isOpen} onClose={onClose} isCentered size={"lg"}>
-				<ModalOverlay
-					bg="none"
-					backdropFilter="auto"
-					backdropInvert="0%"
-					backdropBlur="2px"
-				/>
-				<ModalContent>
+			<Modal isOpen={isOpen} onClose={onClose} isCentered size={'lg'}>
+				<ModalOverlay />
+				<ModalContent p={2}>
 					<ModalHeader>
-						{context === "edit" ? "Edit User" : "Add User"}
-						<Text>
-							View and manage the list of current managers, their assigned roles,
-							and permissions.
+						{context === 'edit' ? 'Edit User' : 'Add User'}
+						<Text mt={1}>
+							{__(
+								'View and manage the list of current managers, their assigned roles, and permissions.',
+								'everest-forms',
+							)}
 						</Text>
 					</ModalHeader>
 					<ModalCloseButton />
-					<ModalBody paddingTop={"0"}>
+					<ModalBody paddingTop={'0'}>
 						<FormControl>
-							<Stack gap={"28px"}>
+							<Stack gap={'28px'}>
 								<Stack>
 									<FormLabel display="flex" alignItems="center" fontSize="14px">
-										User Email
-										<Tooltip label="User email" fontSize="sm">
-											<Icon
-												as={InfoIcon}
-												ml={2}
-												boxSize={4}
-												background="#BABABA"
-												color="#FFFFFF"
-												borderRadius="50%"
-												padding="2px"
-												border={"none"}
-												_hover={{ cursor: "pointer" }}
-											/>
-										</Tooltip>
+										{__('User Email', 'everest-forms')}
 									</FormLabel>
 									<Input
 										required
@@ -165,99 +153,69 @@ const UserDisplayModal = ({ wp_roles, context = "", value = {}, setUserAdded=fal
 										onChange={(e) => setUserEmail(e.target.value)}
 									/>
 									{errors.map((error, index) =>
-										error.key === "user_email" ? (
-											<Alert
-												borderRadius={"4px"}
-												key={index}
-												status="error"
-											>
+										error.key === 'user_email' ? (
+											<Alert borderRadius={'4px'} key={index} status="error">
 												{error.message}
 											</Alert>
-										) : null
+										) : null,
 									)}
 								</Stack>
 
 								<Stack>
 									<FormLabel display="flex" alignItems="center" fontSize="14px">
-										User Permission
-										<Tooltip label="User permission" fontSize="sm">
-											<Icon
-												as={InfoIcon}
-												ml={2}
-												boxSize={4}
-												background="#BABABA"
-												color="#FFFFFF"
-												borderRadius="50%"
-												padding="2px"
-												border={"none"}
-												_hover={{ cursor: "pointer" }}
-											/>
-										</Tooltip>
+										{__('User Permission', 'everest-forms')}
 									</FormLabel>
 									<Select
 										required
 										isMulti
 										size="md"
-										placeholder={__(
-											"Select user permission",
-											"everest-forms"
-										)}
+										placeholder={__('Select user permission', 'everest-forms')}
 										options={
-											context === "edit"
+											context === 'edit'
 												? Object.entries(value.permission_details || {}).map(
 														([key, label]) => ({
 															value: key,
 															label: label,
-														})
-												  )
+														}),
+													)
 												: all_permissions
 										}
-										value={context === "edit" ? selectedPermissions : undefined}
+										value={context === 'edit' ? selectedPermissions : undefined}
 										onChange={handleMultiplePermission}
 										isClearable
 										isSearchable={false}
 									/>
 									{errors.map((error, index) =>
-										error.key === "assigned_permission" ? (
-											<Alert
-												borderRadius={"4px"}
-												key={index}
-												status="error"
-											>
+										error.key === 'assigned_permission' ? (
+											<Alert borderRadius={'4px'} key={index} status="error">
 												{error.message}
 											</Alert>
-										) : null
+										) : null,
 									)}
 								</Stack>
 							</Stack>
-							<Flex justifyContent={"flex-end"} marginTop={"24px"}>
+							<Flex justifyContent={'flex-end'} mt={'6'} gap={3}>
 								<Button
-									_hover={{ backgroundColor: "#FFFFF" }}
-									color={"#6B6B6B"}
-									fontWeight={"600"}
-									fontSize={"16px"}
-									lineHeight={"24px"}
-									mr={3}
+									fontWeight={'600'}
+									lineHeight={'24px'}
 									onClick={onClose}
+									variant="outline"
 								>
-									Back
+									{__('Back', 'learning-management-system')}
 								</Button>
 								<Button
-									color={"#FFFFFF"}
-									fontWeight={"500"}
-									fontSize={"16px"}
-									backgroundColor={"#7545BB"}
-									padding={"10px 16px"}
-									borderRadius={"4px"}
-									border={"1px solid #7545BB"}
-									width={"94px"}
-									height={"39px"}
-									_hover={{ backgroundColor: "#7545BB" }}
-									onClick={(e) =>
-										handleAddManager(userEmail, permissions)
-									}
+									color={'#FFFFFF'}
+									fontWeight={'500'}
+									backgroundColor={'#7545BB'}
+									padding={'10px 16px'}
+									borderRadius={'4px'}
+									border={'1px solid #7545BB'}
+									width={'94px'}
+									height={'39px'}
+									_hover={{ backgroundColor: '#7545BB' }}
+									onClick={(e) => handleAddManager(userEmail, permissions)}
 								>
-									Confirm
+									{__('Confirm', 'learning-management-system')}
 								</Button>
 							</Flex>
 						</FormControl>
