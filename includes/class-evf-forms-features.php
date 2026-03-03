@@ -50,7 +50,6 @@ class EVF_Forms_Features {
 			'EVF_Field_Payment_Quantity',
 			'EVF_Field_Payment_Total',
 			'EVF_Field_Payment_Subtotal',
-			'EVF_Field_Payment_Coupon',
 			'EVF_Field_Payment_Square',
 			'EVF_Field_Payment_Subscription_Plan',
 			'EVF_Field_Credit_Card',
@@ -64,6 +63,12 @@ class EVF_Forms_Features {
 			'EVF_Field_Lookup',
 
 		);
+
+		$enabled_features = get_option( 'everest_forms_enabled_features', array() );
+
+		if ( ! empty( $enabled_features ) && in_array( 'everest-forms-coupons', $enabled_features, true ) ) {
+			$pro_fields[] = 'EVF_Field_Payment_Coupon';
+		}
 
 		return array_merge( $fields, $pro_fields );
 	}
