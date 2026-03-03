@@ -27,10 +27,14 @@ class Helper {
 	public static function is_divi_active() {
 		$active_theme_details = wp_get_theme();
 		$theme_name           = $active_theme_details->Name;
+		$parent_theme         = $active_theme_details->parent();
+		$parent_theme_name    = $parent_theme ? $parent_theme->Name : '';
 
-		if ( 'Divi' === $theme_name ) {
+		if ( 'Divi' === $theme_name || 'Divi' === $parent_theme_name ) {
 			return true;
 		}
+
+		return false;
 	}
 
 	/**

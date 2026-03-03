@@ -1,0 +1,1674 @@
+// Entry View Styles - Modern Design
+// =============================================================================
+
+// Variables
+$primary-color: #7c3aed;
+$text-dark: #1f2937;
+$text-medium: #6b7280;
+$text-light: #9ca3af;
+$text-muted: #6b6b6b;
+$border-color: #e5e7eb;
+$bg-light: #f9fafb;
+$bg-white: #ffffff;
+$danger-color: #f25656;
+$success-color: #10b981;
+$warning-color: #f59e0b;
+$info-color: #3b82f6;
+
+$border-radius: 4px;
+$border-radius-sm: 6px;
+$border-radius-md: 8px;
+$spacing-xs: 8px;
+$spacing-sm: 12px;
+$spacing-md: 16px;
+$spacing-lg: 20px;
+$spacing-xl: 24px;
+
+// Mixins
+@mixin card-shadow {
+	box-shadow:
+		0 1px 3px 0 rgba(0, 0, 0, 0.1),
+		0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+
+@mixin hover-shadow {
+	box-shadow:
+		0 4px 6px -1px rgba(0, 0, 0, 0.1),
+		0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+@mixin transition($property: all) {
+	transition: $property 0.2s ease-in-out;
+}
+
+// Main Wrapper
+.evf-entry-view-wrapper {
+	background-color: $bg-light;
+	padding: $spacing-lg;
+	margin: 0 0 0 -20px;
+	min-height: 100vh;
+
+	// Override default WordPress admin styles
+	.wp-heading-inline {
+		display: none;
+	}
+
+	.wp-header-end {
+		display: none;
+	}
+}
+
+// Header Section
+.evf-entry-header {
+	background-color: $bg-white;
+	padding: $spacing-md $spacing-xl;
+	border-radius: $border-radius;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	border-bottom: 1px solid $border-color;
+	height: 70px;
+	// @include card-shadow;
+
+	.evf-entry-header-left {
+		display: flex;
+		align-items: center;
+		gap: $spacing-md;
+	}
+
+	.evf-back-link {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 22px;
+		height: 22px;
+		background-color: transparent;
+		border-radius: $border-radius-sm;
+		text-decoration: none;
+		color: $text-medium;
+		@include transition;
+
+		.dashicons {
+			font-size: 20px;
+			width: 20px;
+			height: 20px;
+		}
+
+		&:hover {
+			background-color: $bg-light;
+			color: $text-dark;
+		}
+	}
+
+	.evf-entry-title {
+		margin: 0;
+		font-size: 18px;
+		font-weight: 500;
+		color: $text-dark;
+		padding: 0;
+		line-height: 1.2;
+	}
+
+	.evf-entry-header-right {
+		display: flex;
+		align-items: center;
+		gap: $spacing-sm;
+	}
+
+	.evf-nav-btn {
+		display: inline-flex;
+		align-items: center;
+		gap: $spacing-xs;
+		padding: $spacing-xs $spacing-md;
+		background-color: $bg-white;
+		border: 1px solid $border-color;
+		border-radius: $border-radius;
+		color: $text-dark;
+		font-size: 14px;
+		font-weight: 500;
+		text-decoration: none;
+		cursor: pointer;
+		@include transition;
+
+		.dashicons {
+			font-size: 16px;
+			width: 16px;
+			height: 16px;
+		}
+
+		&:hover:not([disabled]) {
+			background-color: #faf8fc;
+			border-color: $evf-primary;
+			color: $evf-primary;
+		}
+
+		&:active {
+			background-color: #faf8fc;
+			border-color: $evf-primary;
+			color: $evf-primary;
+		}
+		&:focus {
+			border-color: $evf-primary;
+			outline: none;
+			box-shadow: none;
+		}
+
+		&[disabled] {
+			opacity: 0.5;
+			cursor: not-allowed;
+			pointer-events: none;
+		}
+	}
+}
+
+// Content Wrapper
+.evf-entry-content-wrapper {
+	display: grid;
+	grid-template-columns: 1fr 320px;
+	gap: $spacing-xl;
+	align-items: flex-start;
+	padding: 24px;
+}
+
+// Main Content
+.evf-entry-main-content {
+	display: flex;
+	flex-direction: column;
+	gap: $spacing-lg;
+}
+
+// Entry Section (Card)
+.evf-entry-section {
+	background-color: $bg-white;
+	border-radius: $border-radius;
+	overflow: hidden;
+	@include card-shadow;
+
+	.evf-section-header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 0;
+		min-height: auto;
+		gap: $spacing-xl;
+		flex-wrap: nowrap;
+	}
+
+	// The h2 title — flex so any hook-injected icon sits inline with text
+	.evf-section-title {
+		margin: 0;
+		font-size: 18px;
+		font-weight: 600;
+		padding-bottom: 24px;
+		color: $text-dark;
+		display: flex;
+		align-items: center;
+		gap: $spacing-xs;
+		flex: 1;
+		min-width: 0;
+		border-bottom: none;
+
+		// Any icon/link injected by do_action() inside the <h2>
+		a,
+		svg,
+		img,
+		span {
+			display: inline-flex;
+			align-items: center;
+			vertical-align: middle;
+		}
+
+		// Stray edit icon rendered by everest_forms_before_entry_details_hndle
+		> a:first-child {
+			line-height: 1;
+			flex-shrink: 0;
+
+			svg {
+				width: 18px;
+				height: 18px;
+				fill: $text-medium;
+			}
+		}
+	}
+
+	// Right side of card header: Hide Empty Fields + Edit
+	.evf-section-header-actions {
+		display: flex;
+		align-items: center;
+		gap: $spacing-lg;
+		flex-shrink: 0;
+		flex-wrap: nowrap;
+
+		// "Hide Empty Fields" toggle — never wrap
+		// NOTE: this element also carries .dashicons .dashicons-visibility classes
+		// which use ::before pseudo-content; we must neutralize their layout side-effects
+		.everest-forms-empty-field-toggle {
+			white-space: nowrap;
+			display: inline-flex !important; // override dashicons display:inline-block
+			align-items: center;
+			gap: 6px;
+			color: $primary-color;
+			// font-family: inherit;
+			font-size: 14px !important;
+			font-weight: 500 !important;
+			text-decoration: none;
+			line-height: 1 !important;
+			cursor: pointer;
+			position: static !important; // neutralize any dashicons positioning
+			vertical-align: middle;
+			width: auto !important; // dashicons forces width/height — reset
+			height: auto !important;
+			@include transition;
+
+			// The ::before eye icon from dashicons
+			&::before {
+				font-size: 18px !important;
+				width: 18px !important;
+				height: 18px !important;
+				line-height: 1 !important;
+				display: inline-flex !important;
+				align-items: center;
+				flex-shrink: 0;
+				margin-right: 0; // let the gap property handle spacing
+			}
+
+			&:hover {
+				text-decoration: underline;
+				color: darken($primary-color, 10%);
+			}
+		}
+
+		// "Edit" link
+		.everest-forms-edit-entry-update {
+			white-space: nowrap;
+			display: inline-flex;
+			align-items: center;
+			gap: 6px;
+			font-size: 14px;
+			font-weight: 500;
+			color: $text-muted;
+			text-decoration: none;
+			line-height: 1;
+			cursor: pointer;
+			@include transition;
+
+			svg {
+				width: 16px;
+				height: 16px;
+				flex-shrink: 0;
+				fill: $text-muted;
+			}
+
+			&:hover,
+			&:active {
+				color: darken($primary-color, 10%);
+
+				svg,
+				svg * {
+					fill: $primary-color !important;
+				}
+			}
+		}
+	}
+
+	.evf-edit-link {
+		display: inline-flex;
+		align-items: center;
+		gap: $spacing-xs;
+		color: $primary-color;
+		font-size: 14px;
+		font-weight: 500;
+		text-decoration: none;
+		@include transition;
+
+		.dashicons {
+			font-size: 16px;
+			width: 16px;
+			height: 16px;
+		}
+
+		&:hover {
+			color: darken($primary-color, 10%);
+		}
+	}
+
+	.evf-section-content {
+		padding-top: $spacing-xl;
+	}
+}
+
+// ==============================================================================
+// EDIT ENTRY — POSTBOX HEADER (Show Empty Fields toggle inside h2.hndle)
+// The edit entry form uses WordPress's native .postbox structure, not
+// .evf-section-header. The toggle sits inside <h2 class="hndle"> alongside
+// the title <span>.
+// ==============================================================================
+
+.everest-forms-edit-entry-container {
+	.postbox {
+		border: none;
+		box-shadow: none;
+		background: transparent;
+		margin: 0;
+		border-radius: $border-radius-sm;
+	}
+	.evf-field-container {
+		padding: 0 !important;
+	}
+
+	.postbox-header {
+		border-bottom: 1px solid $border-color;
+		padding: 0;
+		background: transparent;
+		// Override WP's default postbox-header flex that can misalign children
+		display: flex;
+		align-items: stretch;
+		margin-bottom: 20px;
+	}
+
+	// The h2 inside postbox-header acts as our card header row
+	.hndle {
+		display: flex !important;
+		align-items: center !important;
+		justify-content: space-between !important;
+		width: 100%;
+		// min-height: 56px;
+		font-size: 18px !important;
+		font-weight: 600 !important;
+		color: $text-dark !important;
+		border: none !important;
+		background: transparent !important;
+		cursor: default;
+		gap: $spacing-xl;
+		padding-bottom: 20px;
+
+		// The title text span — takes available space
+		> span:first-child {
+			flex: 1;
+			min-width: 0;
+			font-size: 18px;
+			font-weight: 600;
+			color: $text-dark;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+
+		// The "Show/Hide Empty Fields" toggle inside the h2
+		// It has .dashicons applied directly — must neutralise those styles
+		.everest-forms-empty-field-toggle {
+			display: inline-flex !important;
+			align-items: center !important;
+			gap: 6px !important;
+			white-space: nowrap !important;
+			flex-shrink: 0 !important;
+			// Reset dashicons dimension overrides
+			width: auto !important;
+			height: auto !important;
+			line-height: 1 !important;
+			position: static !important;
+			vertical-align: middle !important;
+			// Styling
+			color: $text-muted !important;
+			font-size: 14px !important;
+			font-family: inherit;
+			font-weight: 500 !important;
+			text-decoration: none;
+			cursor: pointer;
+			@include transition;
+
+			&::before {
+				font-size: 18px !important;
+				width: 18px !important;
+				height: 18px !important;
+				line-height: 1 !important;
+				display: inline-flex !important;
+				align-items: center;
+				flex-shrink: 0;
+			}
+
+			&:hover {
+				color: darken($primary-color, 10%) !important;
+				text-decoration: underline;
+			}
+		}
+	}
+}
+
+// ==============================================================================
+// EDIT ENTRY FORM STYLES
+// ==============================================================================
+
+.everest-forms-edit-entry-container {
+	background-color: $bg-white;
+	border-radius: $border-radius;
+	border: 1px solid $border-color;
+
+	form {
+		padding: 0;
+	}
+
+	// Main form title (reusing section header style)
+	> h2,
+	.evf-edit-form-title {
+		font-size: 18px;
+		font-weight: 600;
+		color: $text-dark;
+		margin: 0;
+		padding: $spacing-lg $spacing-xl;
+		border-bottom: 1px solid $border-color;
+		background-color: $bg-white;
+	}
+
+	.postbox {
+		border: none;
+		box-shadow: none;
+		margin: 0;
+		padding: 24px 24px 0 24px !important;
+		border-radius: $border-radius-sm !important;
+	}
+
+	.evf-frontend-row {
+		border: none;
+		box-shadow: none;
+	}
+
+	// Form content wrapper
+	.evf-edit-form-content,
+	form > div:not(.evf-entry-edit-actions) {
+		padding: $spacing-xl;
+	}
+
+	// Form fields
+	.evf-field,
+	.everest-forms-edit-entry-field,
+	.evf-frontend-row {
+		margin-bottom: $spacing-lg;
+		background-color: $bg-white !important;
+
+		&:last-of-type {
+			margin-bottom: 0;
+		}
+
+		// Hide empty fields
+		&.empty {
+			display: none;
+
+			&.show-empty {
+				display: block;
+			}
+		}
+	}
+
+	// Field labels
+	label,
+	.evf-field-label,
+	.everest-forms-field-label {
+		display: block;
+		font-size: 14px;
+		font-weight: 600;
+		color: $text-dark;
+		margin-bottom: $spacing-xs;
+		line-height: 1.4;
+
+		.required,
+		.evf-required {
+			color: $danger-color;
+			margin-left: 2px;
+			font-weight: 700;
+		}
+	}
+
+	// Text inputs, textareas, selects
+	input[type='text'],
+	input[type='email'],
+	input[type='url'],
+	input[type='tel'],
+	input[type='number'],
+	input[type='date'],
+	input[type='time'],
+	input[type='password'],
+	textarea,
+	select,
+	.evf-field input,
+	.evf-field textarea,
+	.evf-field select {
+		width: 100%;
+		padding: $spacing-sm $spacing-md;
+		font-size: 15px;
+		line-height: 1.5;
+		color: $text-dark;
+		background-color: $bg-white;
+		border: 1px solid $border-color;
+		border-radius: $border-radius-sm;
+		@include transition(border-color);
+		box-shadow: none;
+
+		&:hover {
+			border-color: darken($border-color, 5%);
+		}
+
+		&:focus {
+			outline: none;
+			border-color: $primary-color;
+			box-shadow: 0 0 0 3px rgba($primary-color, 0.1);
+		}
+
+		&::placeholder {
+			color: $text-light;
+		}
+
+		&:disabled,
+		&[readonly] {
+			background-color: $bg-light;
+			cursor: not-allowed;
+			opacity: 0.7;
+		}
+	}
+
+	textarea {
+		min-height: 100px;
+		resize: vertical;
+		font-family: inherit;
+	}
+
+	select {
+		cursor: pointer;
+		appearance: none;
+		background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b7280' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+		background-repeat: no-repeat;
+		background-position: right $spacing-sm center;
+		padding-right: $spacing-xl;
+	}
+
+	// Checkboxes and Radio buttons styling
+	.evf-field-checkbox,
+	.evf-field-radio,
+	.evf-field-payment-checkbox,
+	.evf-field-payment-multiple {
+		.evf-field-label {
+			margin-bottom: $spacing-sm;
+		}
+
+		ul {
+			list-style: none;
+			margin: 0;
+			padding: 0;
+		}
+
+		li {
+			margin-bottom: $spacing-sm;
+
+			&:last-child {
+				margin-bottom: 0;
+			}
+		}
+	}
+
+	input[type='checkbox'],
+	input[type='radio'] {
+		width: 18px;
+		height: 18px;
+		margin-right: $spacing-xs;
+		cursor: pointer;
+		flex-shrink: 0;
+		border: 1px solid $border-color;
+		@include transition;
+
+		&:hover {
+			border-color: $primary-color;
+		}
+
+		&:focus {
+			outline: none;
+			box-shadow: 0 0 0 3px rgba($primary-color, 0.1);
+		}
+
+		&:checked {
+			background-color: $primary-color;
+			border-color: $primary-color;
+		}
+	}
+
+	input[type='radio'] {
+		border-radius: 50%;
+	}
+
+	.evf-field-choice,
+	.everest-forms-field-label-inline {
+		display: flex;
+		align-items: flex-start;
+		padding: $spacing-xs 0;
+
+		label {
+			margin: 0;
+			font-weight: 400;
+			cursor: pointer;
+			line-height: 1.5;
+			padding-top: 1px;
+		}
+	}
+
+	// File upload
+	input[type='file'] {
+		width: 100%;
+		padding: $spacing-sm;
+		font-size: 14px;
+		border: 2px dashed $border-color;
+		border-radius: $border-radius-sm;
+		background-color: $bg-light;
+		cursor: pointer;
+		@include transition;
+
+		&:hover {
+			border-color: darken($border-color, 15%);
+			background-color: darken($bg-light, 2%);
+		}
+
+		&:focus {
+			outline: none;
+			border-color: $primary-color;
+			background-color: rgba($primary-color, 0.02);
+		}
+	}
+
+	// Field descriptions / help text
+	.evf-field-description,
+	.description,
+	.everest-forms-field-description {
+		font-size: 13px;
+		color: $text-medium;
+		margin-top: $spacing-xs;
+		line-height: 1.5;
+		font-style: italic;
+	}
+
+	// Error messages
+	.evf-error,
+	.everest-forms-error {
+		font-size: 13px;
+		color: $danger-color;
+		margin-top: $spacing-xs;
+		display: flex;
+		align-items: center;
+		gap: 4px;
+
+		&::before {
+			content: '⚠';
+			font-size: 14px;
+		}
+	}
+
+	// Required field message
+	.required-field-message,
+	.evf-required-notice {
+		font-size: 13px;
+		color: $text-medium;
+		font-style: italic;
+		margin-top: $spacing-lg;
+		padding-top: $spacing-md;
+		border-top: 1px solid $border-color;
+		display: flex;
+		align-items: center;
+		gap: $spacing-xs;
+
+		&::before {
+			content: '*';
+			color: $danger-color;
+			font-size: 16px;
+			font-weight: 700;
+		}
+	}
+
+	// Field rows with grid layout
+	.evf-field-row-2,
+	.evf-field-row-3 {
+		display: grid;
+		gap: $spacing-lg;
+	}
+
+	.evf-field-row-2 {
+		grid-template-columns: 1fr 1fr;
+	}
+
+	.evf-field-row-3 {
+		grid-template-columns: 1fr 1fr 1fr;
+	}
+}
+
+// Inline edit footer (Cancel + Save inside main card)
+.evf-entry-edit-actions {
+	margin: 0;
+	padding: 0 $spacing-xl $spacing-xl 0;
+	display: flex;
+	justify-content: flex-end;
+
+	#publishing-action,
+	.evf-edit-actions-wrapper {
+		margin: 0;
+		padding: 0;
+		border: none;
+		display: flex;
+		align-items: center;
+		gap: $spacing-md;
+
+		.button-primary {
+			min-height: 36px;
+			padding: 0 20px;
+			border-radius: 4px;
+			font-size: 14px;
+			line-height: 24px;
+			font-weight: 500;
+			box-shadow: none;
+			text-shadow: none;
+			background-color: #7545bb;
+			cursor: pointer;
+			@include transition;
+		}
+
+		// Cancel – subtle button
+		.button-secondary,
+		.everest-forms-edit-entry-cancel {
+			background: none !important;
+			border: none !important;
+			color: $text-muted;
+			font-size: 14px;
+
+			&:hover {
+				background-color: none;
+				border-color: none;
+			}
+		}
+
+		// Save – purple primary
+		.button-primary,
+		.everest-forms-edit-entry-update,
+		input[type='submit'] {
+			background-color: $primary-color;
+			border: 1px solid $primary-color;
+			color: #ffffff;
+
+			&:hover {
+				background-color: darken($primary-color, 8%);
+				border-color: darken($primary-color, 8%);
+			}
+
+			&:focus {
+				outline: none;
+				box-shadow: 0 0 0 3px rgba($primary-color, 0.2);
+			}
+		}
+	}
+}
+
+// Field Rows (VIEW mode)
+.evf-field-row {
+	margin-bottom: $spacing-lg;
+
+	&:last-child {
+		margin-bottom: 0;
+	}
+
+	&.evf-field-empty {
+		display: none;
+
+		&.show-empty {
+			display: block;
+		}
+	}
+}
+
+.evf-field-label {
+	font-size: 14px;
+	font-family: inherit;
+	font-weight: 400;
+	color: $text-medium;
+	margin-bottom: $spacing-xs;
+	text-transform: capitalize;
+}
+
+.evf-field-value {
+	font-size: 15px;
+	color: $text-dark;
+	line-height: 1.6;
+	background-color: $bg-light;
+	padding: $spacing-sm $spacing-md;
+	border-radius: $border-radius-sm;
+	border: 1px solid $border-color;
+
+	.evf-empty-value {
+		color: $text-light;
+		font-style: italic;
+	}
+}
+
+// Answer Badges
+.evf-answer-badge {
+	display: inline-block;
+	padding: 4px $spacing-sm;
+	border-radius: $border-radius-sm;
+	font-size: 13px;
+	font-weight: 500;
+	margin-right: $spacing-xs;
+	margin-bottom: $spacing-xs;
+
+	&.evf-answer-correct,
+	&.correct_answer {
+		background-color: #d1fae5;
+		color: #065f46;
+	}
+
+	&.evf-answer-wrong,
+	&.wrong_answer {
+		background-color: #fee2e2;
+		color: #991b1b;
+	}
+}
+
+// Entry Details Table
+.evf-details-table-wrapper {
+	overflow-x: auto;
+	border-radius: $border-radius-sm;
+	border: 1px solid $border-color;
+}
+
+.evf-details-table {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 14px;
+	border: none !important;
+
+	thead {
+		background-color: $bg-light;
+
+		th {
+			padding: $spacing-sm $spacing-md;
+			text-align: left;
+			font-weight: 600;
+			color: $text-medium;
+			border-bottom: 1px solid $border-color;
+			background-color: $bg-white;
+		}
+	}
+
+	tbody {
+		tr {
+			border-bottom: 1px solid $border-color;
+
+			&:last-child {
+				border-bottom: none;
+				background: #faf8fc;
+			}
+
+			&:hover {
+				background-color: lighten($bg-light, 2%);
+			}
+		}
+
+		td {
+			padding: $spacing-md;
+			color: $text-dark;
+		}
+	}
+}
+
+// Status Badge
+.evf-status-badge {
+	display: inline-block;
+	padding: 4px $spacing-sm;
+	border-radius: 12px;
+	font-size: 12px;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+
+	&.evf-status-completed {
+		background-color: #d1fae5;
+		color: #065f46;
+	}
+
+	&.evf-status-pending {
+		background-color: #fef3c7;
+		color: #92400e;
+	}
+
+	&.evf-status-denied {
+		background-color: #fee2e2;
+		color: #991b1b;
+	}
+
+	&.evf-status-publish {
+		color: #2271b1;
+		font-size: 13px;
+		padding: 0;
+		text-transform: capitalize;
+		letter-spacing: 0;
+	}
+}
+
+// Referer Link
+.evf-referer-link {
+	color: $primary-color;
+	text-decoration: none;
+	font-weight: 500;
+	@include transition;
+
+	&:hover {
+		text-decoration: underline;
+	}
+}
+
+// Sidebar
+.evf-entry-sidebar {
+	position: sticky;
+	top: $spacing-lg;
+}
+
+// Actions Section
+.evf-actions-section {
+	.evf-section-content {
+		padding: $spacing-md;
+	}
+}
+
+.evf-actions-list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.evf-action-item {
+	margin-bottom: 2px;
+
+	&:last-child {
+		margin-bottom: 0;
+	}
+}
+
+.evf-action-link {
+	display: flex;
+	align-items: center;
+	gap: $spacing-sm;
+	padding: $spacing-sm;
+	border-radius: $border-radius-sm;
+	color: $text-dark;
+	text-decoration: none;
+	font-size: 14px;
+	font-weight: 500;
+	@include transition;
+
+	.dashicons {
+		font-size: 18px;
+		width: 18px;
+		height: 18px;
+		color: $text-medium;
+	}
+
+	.evf-action-text {
+		flex: 1;
+	}
+
+	&:hover {
+		background-color: $bg-light;
+
+		.dashicons {
+			color: $primary-color;
+		}
+	}
+
+	&.evf-action-delete {
+		color: $danger-color;
+
+		.dashicons {
+			color: $danger-color;
+		}
+
+		&:hover {
+			background-color: #fef2f2;
+		}
+	}
+}
+
+// No Fields Message
+.evf-no-fields {
+	color: $text-light;
+	font-style: italic;
+	text-align: center;
+	padding: $spacing-xl 0;
+}
+
+.evf-entry-sidebar .stuffbox,
+#everest-forms-entry-payment,
+#everest-forms-entry-actions,
+#everest-forms-entry-subscription,
+.evf-entry-sidebar > div {
+	background-color: $bg-white;
+	border-radius: $border-radius-sm;
+	overflow: hidden;
+	margin-bottom: $spacing-lg;
+	border: 1px solid $border-color;
+	box-shadow: none !important;
+	padding: $spacing-xl;
+
+	&:last-child {
+		margin-bottom: 0;
+	}
+
+	.evf-entry-actions-header,
+	.evf-section-header-actions {
+		margin: 0;
+		// padding: $spacing-md $spacing-lg;
+		font-size: 16px;
+		font-weight: 600;
+		color: $text-dark;
+		border-bottom: 1px solid $border-color;
+		background: transparent;
+		padding-bottom: $spacing-lg;
+		margin-bottom: $spacing-xl;
+	}
+
+	.inside {
+		margin: 0;
+	}
+}
+
+// Payment Details Section
+.everest-forms-entry-payment-meta {
+	p {
+		margin: 0 0 $spacing-sm 0;
+		font-size: 14px;
+		color: $text-dark;
+		line-height: 1.6;
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+
+	strong {
+		font-weight: 600;
+		color: $text-dark;
+	}
+
+	a {
+		color: $primary-color;
+		text-decoration: none;
+		@include transition;
+
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+}
+
+// Quiz Scores Section
+.evf-entry-sidebar .stuffbox .inside .everest-forms-entry-details-meta {
+	padding: 0;
+
+	p {
+		margin: 0 0 $spacing-sm 0;
+		padding: 0 0 0 10px;
+		font-size: 14px;
+		color: $text-dark;
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+
+	strong {
+		font-weight: 600;
+		color: $primary-color;
+	}
+}
+
+// Entry Actions Section
+.everest-forms-entry-actions-meta {
+	padding: 0;
+
+	p {
+		margin: 0 0 4px 0;
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+
+		a {
+			svg {
+				width: 18px;
+				height: 18px;
+				fill: $text-muted;
+			}
+			// svg:hover {
+			// 	fill:red;
+			// }
+		}
+	}
+
+	a,
+	.everest-forms-print-entry {
+		display: flex;
+		align-items: center;
+		gap: $spacing-sm;
+		padding: 10px $spacing-sm;
+		border-radius: $border-radius-sm;
+		color: $text-dark;
+		text-decoration: none;
+		font-size: 14px;
+		font-family: inherit;
+		font-weight: 400;
+		@include transition;
+
+		.dashicons {
+			font-size: 18px;
+			width: 18px;
+			height: 18px;
+			color: $text-medium;
+			flex-shrink: 0;
+		}
+
+		&:hover {
+			background-color: #faf8fc;
+			color: $primary-color;
+
+			svg,
+			svg * {
+				fill: $primary-color !important;
+			}
+
+			.dashicons {
+				color: $primary-color;
+			}
+		}
+		&:focus {
+			box-shadow: none;
+			outline: none;
+		}
+	}
+
+	// Delete Entry Action - Red Styling
+	.everest-forms-entry-delete a,
+	p.everest-forms-entry-delete a {
+		color: $danger-color;
+		font-weight: 400;
+
+		.dashicons {
+			color: transparent;
+		}
+
+		&:hover {
+			background-color: #fff4f4;
+			color: darken($danger-color, 10%);
+
+			.dashicons {
+				color: transparent;
+			}
+		}
+	}
+}
+
+.everest-forms-print-entry {
+	cursor: pointer;
+}
+
+// Subscription Details Section
+.everest-forms-entry-subscription-meta {
+	p {
+		margin: 0 0 $spacing-sm 0;
+		font-size: 14px;
+		color: $text-dark;
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+
+	strong {
+		font-weight: 600;
+	}
+
+	a {
+		color: $primary-color;
+		text-decoration: none;
+		@include transition;
+
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+}
+
+// Edit/Update Buttons in Sidebar (old meta-box style)
+#major-publishing-actions {
+	padding: $spacing-md 0 0 0;
+	margin: $spacing-md 0 0 0;
+	border-top: 1px solid $border-color;
+}
+
+// scoped to sidebar only
+.evf-entry-sidebar #publishing-action {
+	margin-bottom: $spacing-sm;
+
+	.button {
+		width: 100%;
+		justify-content: center;
+		padding: 10px $spacing-md;
+		font-size: 14px;
+		font-weight: 500;
+		border-radius: $border-radius-sm;
+		@include transition;
+
+		&.button-primary {
+			background-color: $primary-color;
+			border-color: $primary-color;
+			color: #ffffff;
+
+			&:hover {
+				background-color: darken($primary-color, 10%);
+				border-color: darken($primary-color, 10%);
+			}
+		}
+
+		&.button-secondary {
+			margin-top: $spacing-xs;
+		}
+	}
+}
+
+#delete-action {
+	float: none;
+	text-align: left;
+	padding-top: $spacing-sm;
+	margin-top: $spacing-sm;
+	border-top: 1px solid $border-color;
+
+	.submitdelete {
+		color: $danger-color;
+		text-decoration: none;
+		font-size: 14px;
+		@include transition;
+
+		&:hover {
+			text-decoration: underline;
+			color: darken($danger-color, 10%);
+		}
+	}
+}
+
+// Entry Meta Section (for compatibility)
+#everest-forms-entry-details.evf-entry-meta-section {
+	display: block !important;
+}
+
+.everest-forms-entry-details-meta {
+	p {
+		display: flex;
+		align-items: flex-start;
+		gap: 10px;
+		margin: 0 0 14px 0;
+		font-size: 14px;
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+
+	.dashicons {
+		color: $text-medium;
+		margin-top: 2px;
+		flex-shrink: 0;
+	}
+
+	strong {
+		font-weight: 500;
+		color: $text-dark;
+	}
+
+	a {
+		color: $primary-color;
+		text-decoration: none;
+		@include transition;
+
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+}
+
+// Toggle Empty Fields Link (global, outside card context)
+.evf-toggle-empty {
+	// font-family: 'Inter', sans-serif !important;
+}
+.everest-forms-empty-field-toggle {
+	white-space: nowrap;
+	display: inline-flex;
+	align-items: flex-start;
+	gap: 6px;
+	color: $primary-color;
+	text-decoration: none;
+	font-size: 14px !important;
+	font-weight: 500 !important;
+	cursor: pointer;
+	@include transition;
+
+	.dashicons {
+		color: transparent;
+	}
+
+	&:hover {
+		text-decoration: underline;
+		color: darken($primary-color, 10%);
+	}
+	&:focus {
+		box-shadow: none;
+		outline: none;
+	}
+}
+
+// Notices
+.evf-entry-view-wrapper .notice,
+.evf-entry-view-wrapper .updated {
+	background-color: $bg-white;
+	border-left: 4px solid $success-color;
+	border-radius: $border-radius-sm;
+	padding: $spacing-sm $spacing-md;
+	margin: 0 0 $spacing-lg 0;
+	box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+
+	p {
+		margin: 0;
+		font-size: 14px;
+		color: $text-dark;
+	}
+}
+
+// Field Row Variations for Old Template Compatibility
+.everest-forms-entry-field.field-name,
+.everest-forms-entry-field.field-value {
+	padding: 0;
+	background: none;
+	border: none;
+
+	th,
+	td {
+		padding: $spacing-sm 0;
+		border: none;
+		background: none;
+	}
+}
+
+// Answer Badges - Additional Compatibility
+.list.correct_answer,
+.evf-answer-badge.correct_answer {
+	background-color: #d1fae5;
+	color: #065f46;
+}
+
+.list.wrong_answer,
+.evf-answer-badge.wrong_answer {
+	background-color: #fee2e2;
+	color: #991b1b;
+}
+
+.list:not(.correct_answer):not(.wrong_answer):not(.evf-answer-badge) {
+	display: inline-block;
+	padding: 4px $spacing-sm;
+	background-color: #f3f4f6;
+	color: $text-dark;
+	border-radius: $border-radius-sm;
+	margin-right: $spacing-xs;
+	margin-bottom: $spacing-xs;
+	font-size: 13px;
+}
+
+.evf-entry-main-content .stuffbox {
+	background-color: $bg-white;
+	border-radius: $border-radius-sm;
+	overflow: hidden;
+	border: 1px solid $border-color;
+	box-shadow: none;
+	padding: $spacing-xl;
+	margin: 0;
+
+	h2 {
+		margin: 0;
+		padding-bottom: $spacing-lg;
+		font-size: 18px;
+		font-weight: 600;
+		color: $text-dark;
+		border-bottom: none;
+		background: transparent;
+	}
+
+	.inside {
+		// padding-top: $spacing-xl;
+		margin: 0;
+		border-top: 1px solid $border-color;
+	}
+}
+
+// Delete Entry Button
+#everest-forms-delete-entry {
+	margin-top: $spacing-lg;
+}
+
+.evf-delete-entry-link {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	padding: $spacing-sm $spacing-lg;
+	background-color: $bg-white;
+	border: 2px solid $danger-color;
+	border-radius: $border-radius-sm;
+	color: $danger-color;
+	text-decoration: none;
+	font-size: 14px;
+	font-weight: 600;
+	@include transition;
+	width: 100%;
+	text-align: center;
+
+	.dashicons {
+		font-size: 18px;
+		width: 18px;
+		height: 18px;
+	}
+
+	&:hover {
+		background-color: $danger-color;
+		color: #ffffff;
+		text-decoration: none;
+	}
+
+	&:focus {
+		outline: 2px solid $danger-color;
+		outline-offset: 2px;
+	}
+}
+
+// Edit Entry Button (old sidebar meta box)
+#everest-forms-edit-entry-action .inside {
+	padding: $spacing-md $spacing-lg;
+}
+
+.evf-edit-action-wrapper {
+	#publishing-action {
+		margin: 0;
+		padding: 0;
+		border: none;
+
+		.button {
+			width: 100%;
+			justify-content: center;
+			padding: $spacing-sm $spacing-lg;
+			font-size: 14px;
+			font-weight: 600;
+			border-radius: $border-radius-sm;
+			@include transition;
+
+			&.button-primary {
+				background-color: $primary-color;
+				border-color: $primary-color;
+				color: #ffffff;
+				box-shadow: none;
+				text-shadow: none;
+
+				&:hover {
+					background-color: darken($primary-color, 10%);
+					border-color: darken($primary-color, 10%);
+				}
+			}
+
+			&.button-secondary {
+				margin-top: 10px;
+				border-color: $border-color;
+				color: $text-dark;
+
+				&:hover {
+					background-color: $bg-light;
+					border-color: darken($border-color, 10%);
+				}
+			}
+		}
+	}
+}
+
+// Responsive Design
+@media screen and (max-width: 1200px) {
+	.evf-entry-content-wrapper {
+		grid-template-columns: 1fr;
+	}
+
+	.evf-entry-sidebar {
+		position: static;
+	}
+
+	.everest-forms-edit-entry-container {
+		.evf-field-row-2,
+		.evf-field-row-3 {
+			grid-template-columns: 1fr;
+		}
+	}
+}
+
+@media screen and (max-width: 768px) {
+	.evf-entry-view-wrapper {
+		padding: $spacing-sm;
+		margin: 0;
+	}
+
+	.evf-entry-header {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: $spacing-md;
+
+		.evf-entry-header-right {
+			width: 100%;
+			justify-content: flex-end;
+		}
+	}
+
+	.evf-entry-section {
+		.evf-section-header {
+			flex-direction: column;
+			align-items: flex-start;
+			gap: $spacing-sm;
+			min-height: auto;
+			padding: $spacing-md $spacing-lg;
+
+			.evf-section-header-actions {
+				width: 100%;
+				justify-content: flex-start;
+			}
+		}
+
+		.evf-section-content {
+			padding-top: $spacing-md;
+		}
+	}
+
+	.evf-entry-edit-actions {
+		padding: $spacing-md;
+		flex-direction: column-reverse;
+
+		#publishing-action,
+		.evf-edit-actions-wrapper {
+			width: 100%;
+			flex-direction: column-reverse;
+
+			.button {
+				width: 100%;
+			}
+		}
+	}
+
+	.everest-forms-edit-entry-container {
+		form > div:not(.evf-entry-edit-actions) {
+			padding: $spacing-md 0 $spacing-md $spacing-md;
+		}
+
+		> h2,
+		.evf-edit-form-title {
+			padding: $spacing-md;
+		}
+	}
+
+	.evf-details-table-wrapper {
+		font-size: 13px;
+	}
+
+	.evf-details-table {
+		thead th,
+		tbody td {
+			padding: $spacing-xs $spacing-sm;
+		}
+	}
+}
+
+@media screen and (max-width: 480px) {
+	.evf-entry-header {
+		.evf-entry-title {
+			font-size: 18px;
+		}
+
+		.evf-nav-btn {
+			font-size: 13px;
+			padding: $spacing-xs $spacing-sm;
+
+			.dashicons {
+				font-size: 14px;
+				width: 14px;
+				height: 14px;
+			}
+		}
+	}
+
+	.evf-field-label,
+	.everest-forms-edit-entry-container label {
+		font-size: 13px;
+	}
+
+	.evf-field-value,
+	.everest-forms-edit-entry-container input,
+	.everest-forms-edit-entry-container textarea,
+	.everest-forms-edit-entry-container select {
+		font-size: 14px;
+		padding: $spacing-xs $spacing-sm;
+	}
+}
+.everest-forms-entry-delete {
+	span.dashicons.dashicons-trash {
+		&::before {
+			width: 18px;
+			height: 18px;
+			display: block;
+			background-size: contain;
+			color: none !important;
+			background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M9 17v-6a1 1 0 1 1 2 0v6a1 1 0 1 1-2 0m4 0v-6a1 1 0 1 1 2 0v6a1 1 0 1 1-2 0'/%3E%3Cpath d='M4 20V6a1 1 0 0 1 2 0v14a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V6a1 1 0 1 1 2 0v14a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3'/%3E%3Cpath d='M21 5a1 1 0 1 1 0 2H3a1 1 0 0 1 0-2z'/%3E%3Cpath d='M15 6V4a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v2a1 1 0 0 1-2 0V4a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v2a1 1 0 1 1-2 0'/%3E%3C/svg%3E");
+			background-repeat: none;
+			filter: brightness(0) saturate(100%) invert(58%) sepia(92%)
+				saturate(5900%) hue-rotate(330deg) brightness(98%) contrast(95%);
+		}
+	}
+}

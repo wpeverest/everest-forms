@@ -1,0 +1,655 @@
+/**
+ * Accordion Component - Clean & Minimal Design
+ * Fixed version with proper spacing and improved UI/UX
+ * Handles both single-wrapper and multi-wrapper scenarios
+ */
+
+$accordion-border-color: #e1e1e1;
+$accordion-bg-white: #ffffff;
+$accordion-bg-page: #f0f0f1;
+$accordion-text-primary: #1e1e1e;
+$accordion-text-secondary: #666666;
+$accordion-primary-color: #5b6edb;
+$accordion-success-color: #46b450;
+
+$accordion-spacing: 18px;
+$accordion-spacing-sm: 14px;
+$accordion-gap: 12px;
+$card-gap: 16px;
+
+$accordion-icon-size: 40px;
+$accordion-border-radius: 4px;
+
+$breakpoint-mobile: 782px;
+
+.everest-forms-card {
+	background: #fafafa;
+	border: 1px solid $accordion-border-color;
+	border-radius: $accordion-border-radius;
+	padding: $accordion-gap;
+	margin-bottom: $card-gap;
+
+	&:last-child {
+		margin-bottom: 0;
+	}
+
+	.everest-forms-accordion-wrapper {
+		padding: 0;
+		margin: 0;
+		gap: $accordion-gap;
+
+		.everest-forms-accordion-item {
+			border: 1px solid $accordion-border-color;
+			border-radius: $accordion-border-radius;
+			background: $accordion-bg-white;
+
+			&.is-open {
+				border-color: darken($accordion-border-color, 5%);
+				box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+			}
+		}
+	}
+}
+
+// Standalone accordion wrapper (not inside a card)
+.everest-forms-accordion-wrapper {
+	display: flex;
+	flex-direction: column;
+	gap: $accordion-gap;
+	margin: 0 0 $card-gap 0;
+	padding: 0;
+
+	&:last-child {
+		margin-bottom: 0;
+	}
+}
+
+.everest-forms-accordion-item {
+	background: $accordion-bg-white;
+	border: 1px solid $accordion-border-color;
+	border-radius: $accordion-border-radius;
+	overflow: hidden;
+	transition: all 0.2s ease;
+
+	&.is-open {
+		border-color: darken($accordion-border-color, 5%);
+		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+
+		.everest-forms-accordion-header {
+			border-bottom: 1px solid $accordion-border-color;
+			// background: #fafafa;
+
+			.everest-forms-accordion-toggle {
+				svg {
+					transform: rotate(180deg);
+				}
+			}
+		}
+
+		.everest-forms-accordion-content {
+			max-height: 3000px;
+		}
+	}
+
+	&.disabled {
+		opacity: 0.6;
+		pointer-events: none;
+	}
+}
+
+.everest-forms-accordion-header {
+	display: flex;
+	align-items: center;
+	padding: 16px $accordion-spacing;
+	cursor: pointer;
+	background: $accordion-bg-white;
+	border-bottom: 1px solid transparent;
+	user-select: none;
+	transition: all 0.2s ease;
+
+	&:hover {
+		// background: #fafafa;
+	}
+}
+
+.everest-forms-accordion-status {
+	position: relative;
+
+	.toggle-switch-outer {
+		width: 20px;
+		height: 20px;
+		display: block;
+		position: relative;
+		border-radius: 3px;
+		border: 1px solid #ced4da;
+
+		&::before {
+			left: 0;
+			top: 50%;
+			right: 0;
+			content: '';
+			width: 10px;
+			height: 10px;
+			display: block;
+			margin: 0 auto;
+			border-radius: 2px;
+			position: absolute;
+			background-color: #ced4da;
+			transform: translateY(-50%);
+		}
+
+		&.connected {
+			border-color: #4bce61;
+
+			&::before {
+				background-color: #4bce61;
+			}
+		}
+
+		&.disconnected {
+			border-color: #ced4da;
+
+			&::before {
+				background-color: #ced4da;
+			}
+		}
+	}
+}
+
+.everest-forms-accordion-icon {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: $accordion-icon-size;
+	height: $accordion-icon-size;
+	margin-right: 14px;
+	margin-left: 10px;
+	flex-shrink: 0;
+
+	img {
+		max-width: 100%;
+		max-height: 100%;
+		object-fit: contain;
+	}
+
+	svg {
+		width: 32px;
+		height: 32px;
+	}
+}
+
+.everest-forms-accordion-title {
+	flex: 1;
+	margin: 0;
+	font-size: 15px;
+	font-weight: 600;
+	color: $accordion-text-primary;
+	line-height: 1.4;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.everest-forms-accordion-toggle {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 24px;
+	height: 24px;
+	margin-left: auto;
+	flex-shrink: 0;
+	color: $accordion-text-secondary;
+
+	svg {
+		display: block;
+		width: 20px;
+		height: 20px;
+		transition: transform 0.3s ease;
+	}
+}
+
+.everest-forms-accordion-content {
+	max-height: 0;
+	overflow: hidden;
+	transition: max-height 0.4s ease;
+}
+
+.everest-forms-accordion-content-inner {
+	padding: 24px $accordion-spacing; // Increased from 20px
+	// background: #fafafa;
+
+	.everest-forms-global-settings,
+	.everest-forms-panel-field {
+		display: flex;
+		align-items: center;
+		margin-bottom: 28px !important;
+		gap: 20px;
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+
+		> label {
+			width: 220px;
+			flex-shrink: 0;
+			margin: 0;
+			font-size: 14px;
+			font-weight: 500;
+			color: $accordion-text-primary;
+			display: flex;
+			align-items: center;
+			gap: 8px;
+			line-height: 1.5;
+
+			.everest-forms-help-tip {
+				margin: 0;
+				width: 16px;
+				height: 16px;
+				flex-shrink: 0;
+
+				&::after {
+					font-size: 14px;
+					color: $accordion-text-secondary;
+				}
+			}
+		}
+
+		// Handle forminp wrappers
+		.forminp-text,
+		.forminp-password,
+		.forminp-email,
+		.forminp-number,
+		.forminp-select,
+		.forminp-textarea,
+		.forminp-toggle {
+			display: flex;
+			align-items: stretch;
+			width: 100%;
+			position: relative;
+		}
+
+		&--field,
+		.everest-forms-global-settings--field {
+			flex: 1;
+			min-width: 0;
+			max-width: 100%;
+			position: relative;
+			display: flex;
+			align-items: center;
+			gap: 8px;
+
+			&.has-action,
+			.input-with-action {
+				display: flex;
+				align-items: stretch;
+				gap: 0;
+
+				input {
+					flex: 1;
+					border-radius: $accordion-border-radius 0 0 $accordion-border-radius;
+					border-right: 0;
+				}
+
+				.input-action-button,
+				.evf-password-toggle,
+				.copy-button {
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					min-width: 40px;
+					padding: 0 12px;
+					background: #f5f5f5;
+					border: 1px solid $accordion-border-color;
+					border-left: 0;
+					border-radius: 0 $accordion-border-radius $accordion-border-radius 0;
+					color: $accordion-text-secondary;
+					cursor: pointer;
+					transition: all 0.2s ease;
+
+					&:hover {
+						background: #ebebeb;
+						color: $accordion-text-primary;
+					}
+
+					&:active {
+						background: #e0e0e0;
+					}
+
+					svg {
+						width: 18px;
+						height: 18px;
+					}
+				}
+			}
+
+			input[type='text'],
+			input[type='email'],
+			input[type='password'],
+			input[type='number'],
+			select {
+				width: 100%;
+				height: 42px;
+				padding: 0 14px;
+				border: 1px solid $accordion-border-color;
+				border-radius: $accordion-border-radius;
+				font-size: 14px;
+				color: $accordion-text-primary;
+				background: $accordion-bg-white;
+				transition: all 0.2s ease;
+				line-height: 1.5;
+				box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+
+				&:hover {
+					border-color: darken($accordion-border-color, 10%);
+				}
+
+				&:focus {
+					border-color: $accordion-primary-color;
+					outline: none;
+					box-shadow: 0 0 0 3px rgba($accordion-primary-color, 0.1);
+				}
+
+				&::placeholder {
+					color: #999999;
+				}
+			}
+
+			select {
+				cursor: pointer;
+				appearance: none;
+				background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23666666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+				background-repeat: no-repeat;
+				background-position: right 14px center;
+				padding-right: 40px;
+			}
+
+			textarea {
+				width: 100%;
+				min-height: 100px;
+				padding: 12px 14px;
+				border: 1px solid $accordion-border-color;
+				border-radius: $accordion-border-radius;
+				font-size: 14px;
+				color: $accordion-text-primary;
+				background: $accordion-bg-white;
+				resize: vertical;
+				line-height: 1.5;
+				font-family: inherit;
+				transition: all 0.2s ease;
+				box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+
+				&:hover {
+					border-color: darken($accordion-border-color, 10%);
+				}
+
+				&:focus {
+					border-color: $accordion-primary-color;
+					outline: none;
+					box-shadow: 0 0 0 3px rgba($accordion-primary-color, 0.1);
+				}
+
+				&::placeholder {
+					color: #999999;
+				}
+			}
+		}
+	}
+
+	// Generic styles for any action button/icon next to inputs
+	.forminp-text,
+	.forminp-password,
+	.forminp-email,
+	.forminp-number {
+		> button,
+		> a,
+		> span.action-icon,
+		> span.toggle-icon,
+		> .dashicons {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			min-width: 40px;
+			height: 40px;
+			padding: 0 10px;
+			margin-left: -1px;
+			background: #f5f5f5;
+			border: 1px solid $accordion-border-color;
+			border-left: 0;
+			border-radius: 0 $accordion-border-radius $accordion-border-radius 0;
+			color: $accordion-text-secondary;
+			cursor: pointer;
+			transition: all 0.2s ease;
+			flex-shrink: 0;
+
+			&:hover {
+				background: #ebebeb;
+				color: $accordion-text-primary;
+			}
+
+			&:active {
+				background: #e0e0e0;
+			}
+
+			svg,
+			.dashicons {
+				width: 18px;
+				height: 18px;
+			}
+		}
+
+		// When input has adjacent button, adjust input border radius
+		input + button,
+		input + a,
+		input + span.action-icon,
+		input + span.toggle-icon,
+		input + .dashicons {
+			~ input {
+				border-radius: $accordion-border-radius 0 0 $accordion-border-radius;
+			}
+		}
+
+		input:not(:last-child) {
+			border-radius: $accordion-border-radius 0 0 $accordion-border-radius;
+			border-right: 0;
+		}
+	}
+
+	.everest-forms-panel-field-toggle {
+		.evf-toggle-section {
+			margin: 0;
+
+			.everest-forms-toggle-form {
+				margin: 0;
+				width: 44px;
+				height: 24px;
+				position: relative;
+
+				input[type='checkbox'] {
+					& + .slider {
+						background-color: #ddd;
+						transition: all 0.3s ease;
+
+						&::before {
+							width: 18px;
+							height: 18px;
+							bottom: 3px;
+							left: 3px;
+							transition: all 0.3s ease;
+						}
+					}
+
+					&:checked + .slider {
+						background-color: $accordion-success-color;
+
+						&::before {
+							transform: translateX(20px);
+						}
+					}
+
+					&:focus + .slider {
+						box-shadow: 0 0 0 3px rgba($accordion-success-color, 0.1);
+					}
+				}
+
+				.slider {
+					border-radius: 24px;
+
+					&::before {
+						border-radius: 50%;
+						box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+					}
+				}
+			}
+		}
+	}
+
+	.evf-reset-keys,
+	.everest-forms-reset-link {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		padding: 8px 0;
+		margin-top: 10px;
+		color: $accordion-text-secondary;
+		font-size: 14px;
+		text-decoration: none;
+		cursor: pointer;
+		transition: all 0.2s ease;
+
+		&:hover {
+			color: $accordion-primary-color;
+		}
+
+		svg {
+			width: 16px;
+			height: 16px;
+		}
+	}
+
+	.everest-forms-save-button,
+	.everest-forms-btn-primary {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		min-width: 100px;
+		height: 40px;
+		padding: 0 24px;
+		margin-top: 16px;
+		background: $accordion-primary-color;
+		border: 0;
+		border-radius: $accordion-border-radius;
+		color: $accordion-bg-white;
+		font-size: 14px;
+		font-weight: 500;
+		cursor: pointer;
+		transition: all 0.2s ease;
+		float: right;
+		box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+
+		&:hover {
+			background: darken($accordion-primary-color, 8%);
+			box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+			transform: translateY(-1px);
+		}
+
+		&:active {
+			transform: translateY(0);
+			box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+		}
+
+		&:focus {
+			outline: none;
+			box-shadow: 0 0 0 3px rgba($accordion-primary-color, 0.2);
+		}
+	}
+}
+
+.everest-forms-hidden {
+	display: none !important;
+}
+
+.everest-forms-help-tip {
+	width: 16px;
+	height: 16px;
+	cursor: help;
+
+	&::after {
+		font-size: 14px;
+		color: $accordion-text-secondary;
+	}
+}
+
+@media screen and (max-width: $breakpoint-mobile) {
+	.everest-forms-card {
+		margin-bottom: 12px;
+
+		.everest-forms-accordion-wrapper {
+			.everest-forms-accordion-item {
+				&:first-child {
+					.everest-forms-accordion-header {
+						border-radius: $accordion-border-radius $accordion-border-radius 0 0;
+					}
+				}
+
+				&:last-child {
+					.everest-forms-accordion-header {
+						border-radius: 0 0 $accordion-border-radius $accordion-border-radius;
+					}
+				}
+			}
+		}
+	}
+
+	.everest-forms-accordion-wrapper {
+		gap: 8px;
+		margin-bottom: 12px;
+	}
+
+	.everest-forms-accordion-header {
+		padding: 14px;
+	}
+
+	.everest-forms-accordion-icon {
+		width: 32px;
+		height: 32px;
+		margin-right: 10px;
+		margin-left: 10px;
+
+		img {
+			max-width: 28px;
+			max-height: 28px;
+		}
+	}
+
+	.everest-forms-accordion-title {
+		font-size: 14px;
+		gap: 8px;
+	}
+
+	.everest-forms-accordion-content-inner {
+		padding: 20px 14px; // Updated mobile padding
+
+		.everest-forms-global-settings,
+		.everest-forms-panel-field {
+			flex-direction: column;
+			align-items: flex-start;
+			gap: 8px;
+			margin-bottom: 24px; // Updated to match better spacing
+
+			> label {
+				width: 100%;
+			}
+
+			&--field,
+			.everest-forms-global-settings--field {
+				input[type='text'],
+				input[type='email'],
+				input[type='password'],
+				input[type='number'],
+				select {
+					height: 44px; // Larger touch target on mobile
+				}
+			}
+		}
+	}
+}

@@ -28,7 +28,7 @@ Thumbs.db
 
 
 # Build
-build/
+/build/
 everest-forms.zip
 
 # Unit tests
@@ -43,6 +43,3 @@ phpunit-watcher.yml
 
 #Release
 /release/
-
-# Composer
-/vendor/

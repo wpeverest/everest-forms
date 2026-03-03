@@ -29,7 +29,7 @@ class EVF_Admin_Menus {
 		add_action( 'admin_menu', array( $this, 'entries_menu' ), 30 );
 		add_action( 'admin_menu', array( $this, 'settings_menu' ), 50 );
 		add_action( 'admin_menu', array( $this, 'tools_menu' ), 60 );
-		add_action( 'admin_menu', array( $this, 'smtp_menu' ), 65 );
+		add_action( 'admin_menu', array( $this, 'smtp_menu' ), 75 );
 		// Add admin topbar menu.
 		add_action( 'admin_bar_menu', array( $this, 'admin_top_menu_bar' ), 100 );
 
@@ -157,26 +157,26 @@ class EVF_Admin_Menus {
 	 * Add dashboard sub menu.
 	 */
 	public function dashboard_menu() {
+
+		$site_assistant_data = get_option( 'everest_forms_site_assistant', array() );
+		$all_steps_completed = isset( $site_assistant_data['all_steps_completed'] ) && $site_assistant_data['all_steps_completed'];
 		add_submenu_page(
 			'everest-forms',
-			__( 'Everest Forms Dashboard', 'everest-forms' ),
-			__( 'Dashboard', 'everest-forms' ),
+			__( 'Site Assistant', 'everest-forms' ),
+			__( 'Site Assistant', 'everest-forms' ),
 			'manage_everest_forms',
 			'evf-dashboard',
-			array(
-				$this,
-				'dashboard_page',
-			),
+			array( $this, 'dashboard_page' ),
 			-1
 		);
+
 	}
+
 	/**
 	 * Add menu items.
 	 */
 	public function builder_menu() {
 		$builder_page = add_submenu_page( 'everest-forms', esc_html__( 'Everest Forms Builder', 'everest-forms' ), esc_html__( 'All Forms', 'everest-forms' ), current_user_can( 'everest_forms_create_forms' ) ? 'everest_forms_create_forms' : 'everest_forms_view_forms', 'evf-builder', array( $this, 'builder_page' ) );
-
-		add_submenu_page( 'everest-forms', esc_html__( 'Everest Forms Setup', 'everest-forms' ), esc_html__( 'Add New', 'everest-forms' ), current_user_can( 'everest_forms_create_forms' ) ? 'everest_forms_create_forms' : 'everest_forms_edit_forms', 'evf-builder&create-form=1', array( $this, 'builder_page' ) );
 
 		add_action( 'load-' . $builder_page, array( $this, 'builder_page_init' ) );
 
@@ -336,7 +336,7 @@ class EVF_Admin_Menus {
 	 * Addons menu item.
 	 */
 	public function addons_menu() {
-		add_submenu_page( 'everest-forms', esc_html__( 'Everest Forms Add-ons', 'everest-forms' ), esc_html__( 'Add-ons', 'everest-forms' ), 'manage_everest_forms', esc_url_raw( admin_url( 'admin.php?page=evf-dashboard#/features' ) ) );
+		add_submenu_page( 'everest-forms', esc_html__( 'Everest Forms Add-ons', 'everest-forms' ), esc_html__( 'Addons', 'everest-forms' ), 'manage_everest_forms', esc_url_raw( admin_url( 'admin.php?page=evf-dashboard#/features' ) ) );
 	}
 
 	/**

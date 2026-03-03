@@ -20,22 +20,28 @@ $tabs        = apply_filters(
 );
 $current_tab = ! empty( $_REQUEST['tab'] ) ? sanitize_title( wp_unslash( $_REQUEST['tab'] ) ) : 'import'; // phpcs:ignore WordPress.Security.NonceVerification
 
+$use_react_header = apply_filters( 'everest_forms_use_react_header', true, $current_tab );
+
+
 if ( 'yes' === get_option( 'everest_forms_enable_log', 'no' ) ) {
 	$tabs['logs'] = __( 'Logs', 'everest-forms' ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 }
 
 
 ?>
+	<?php if ( $use_react_header ) : ?>
+	<div id="evf-react-header-root"></div>
+	<?php endif; ?>
 <div class="everest-forms">
 	<div class="everest-forms-settings">
 		<div class="everest-forms-settings-wrapper">
 			<header class="everest-forms-header">
-				<div class="everest-forms-header--top">
+				<!-- <div class="everest-forms-header--top">
 					<div class="everest-forms-header--top-logo">
 						<img src="<?php echo esc_url( evf()->plugin_url() . '/assets/images/icons/Everest-forms-Logo.png' ); ?>"
 							alt="">
 					</div>
-				</div>
+				</div> -->
 				<div class="everest-forms-header--nav">
 					<nav class="nav-tab-wrapper evf-nav-tab-wrapper">
 						<?php

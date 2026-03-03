@@ -289,7 +289,7 @@ class EVF_Form_Task {
 			// If validation issues occur, send the results accordingly.
 			if ( $ajax_form_submission && count( $this->ajax_err ) ) {
 				$response_data['error']    = $this->ajax_err;
-				$response_data['message']  = __( 'Form has not been submitted, please see the errors below.', 'everest-forms' );
+				$response_data['message']  = apply_filters(	 'everest_forms_process_form_error_header', __( 'Form has not been submitted, please see the errors below.', 'everest-forms' ) );
 				$response_data['response'] = 'error';
 				$logger->error(
 					__( 'Form has not been submitted.', 'everest-forms' ),
@@ -328,10 +328,10 @@ class EVF_Form_Task {
 
 					if (
 						( ! empty( $site_key ) && ! empty( $secret_key ) &&
-						  isset( $this->form_data['settings']['recaptcha_support'] ) &&
-						  '1' === $this->form_data['settings']['recaptcha_support'] &&
-						  ! isset( $_POST['__amp_form_verify'] ) &&
-						  ( 'v3' === $recaptcha_type || ! evf_is_amp() )
+							isset( $this->form_data['settings']['recaptcha_support'] ) &&
+							'1' === $this->form_data['settings']['recaptcha_support'] &&
+							! isset( $_POST['__amp_form_verify'] ) &&
+							( 'v3' === $recaptcha_type || ! evf_is_amp() )
 						)
 						||
 						( ! empty( $site_key ) && ! empty( $secret_key ) && in_array( $field_type, $captcha, true ) )
@@ -470,7 +470,7 @@ class EVF_Form_Task {
 			}
 			if ( ! empty( $errors[ $form_id ] ) ) {
 				if ( empty( $errors[ $form_id ]['header'] ) ) {
-					$errors[ $form_id ]['header'] = __( 'Form has not been submitted, please see the errors below.', 'everest-forms' );
+					$errors[ $form_id ]['header'] = apply_filters( 'everest_forms_process_form_error_header', __( 'Form has not been submitted, please see the errors below.', 'everest-forms' ) );
 					$logger->error(
 						$errors[ $form_id ]['header'],
 						array( 'source' => 'form-submission' )
@@ -612,7 +612,7 @@ class EVF_Form_Task {
 			// One last error check - don't proceed if there are any errors.
 			if ( ! empty( $this->errors[ $form_id ] ) ) {
 				if ( empty( $this->errors[ $form_id ]['header'] ) ) {
-					$this->errors[ $form_id ]['header'] = esc_html__( 'Form has not been submitted, please see the errors below.', 'everest-forms' );
+					$this->errors[ $form_id ]['header'] = 	apply_filters( 'everest_forms_process_form_error_header', esc_html__( 'Form has not been submitted, please see the errors below.', 'everest-forms' ) );
 				}
 				$logger->error(
 					__( 'Form has not been submitted', 'everest-forms' ),
@@ -792,7 +792,7 @@ class EVF_Form_Task {
 					} else {
 						$redirect_url = get_page_link( $settings['custom_page'] );
 					}
-					$response_data['redirect_url']               = ! empty( $redirect_url ) ? esc_url( $redirect_url ) : 'undefined';
+					$response_data['redirect_url'] = ! empty( $redirect_url ) ? esc_url( $redirect_url ) : 'undefined';
 
 				}
 			} else {
@@ -1022,7 +1022,7 @@ class EVF_Form_Task {
 				</script>
 			<?php
 		} elseif ( isset( $settings['redirect_to'] ) && 'external_url' === $settings['redirect_to'] ) {
-			$new_tab      = ! empty( $settings['enable_redirect_in_new_tab'] ); // More reliable check
+			$new_tab = ! empty( $settings['enable_redirect_in_new_tab'] ); // More reliable check
 
 			if ( isset( $settings['enable_redirect_query_string'] ) && '1' === $settings['enable_redirect_query_string'] ) {
 				parse_str( $settings['query_string'], $output );
@@ -1914,23 +1914,23 @@ class EVF_Form_Task {
 
 		$entry_data = $this->evf_get_entry_data_for_cleantalk( $this->form_data['form_fields'], $entry );
 
-        $all_headers = null;
+		$all_headers = null;
 
-        if ( function_exists('apache_request_headers') ) {
-            $all_headers = array_filter(
-                apache_request_headers(),
-                function ($value, $key) {
-                    return strtolower($key) !== 'cookie';
-                },
-                ARRAY_FILTER_USE_BOTH
-            );
-            $all_headers = json_encode($all_headers);
-            $all_headers = false !== $all_headers ? $all_headers : null;
-        }
+		if ( function_exists( 'apache_request_headers' ) ) {
+			$all_headers = array_filter(
+				apache_request_headers(),
+				function ( $value, $key ) {
+					return strtolower( $key ) !== 'cookie';
+				},
+				ARRAY_FILTER_USE_BOTH
+			);
+			$all_headers = json_encode( $all_headers );
+			$all_headers = false !== $all_headers ? $all_headers : null;
+		}
 
 		$clean_talk_request = array(
 			'method_name'     => 'check_message',
-			'all_headers'	  => $all_headers,
+			'all_headers'     => $all_headers,
 			'auth_key'        => $access_key,
 			'sender_ip'       => $_SERVER['REMOTE_ADDR'],
 			'sender_info'     => json_encode(
@@ -2068,57 +2068,57 @@ class EVF_Form_Task {
 	}
 
 	/**
-     * @param array $maybe_form_fields
-     * @param array $post_entry
-     *
+	 * @param array $maybe_form_fields
+	 * @param array $post_entry
+	 *
 	 * @since 3.3.0
 	 *
-     * @return array
-     */
-    private function evf_get_entry_data_for_cleantalk( $maybe_form_fields, $post_entry ) {
-        $entry_data = array(
-            'sender_nickname' => array(),
-            'sender_email'    => '',
-            'message'         => array(),
-        );
-        $list_of_ct_expected_fields = array(
-            'fullname',
-            'first-name',
-            'last-name',
-            'email',
-            'text',
-            'textarea',
-        );
-        $list_of_ct_expected_fields = apply_filters( 'evf_cleantalk_expected_fields', $list_of_ct_expected_fields, $maybe_form_fields );
-        foreach ( $post_entry['form_fields'] as $key => $value ) {
-            if ( isset( $maybe_form_fields[$key]['type'] ) ) {
-                switch ( $maybe_form_fields[$key]['type'] ) {
-                    case 'first-name':
-                    case 'last-name':
-                    case 'fullname':
-                        $entry_data['sender_nickname'][] = isset( $value ) ? $value : '';
-                        break;
-                    case 'email':
-                        empty($entry_data['sender_email']) && $entry_data['sender_email'] = isset( $value ) ? $value : '';
-                        break;
-                    case 'text':
-                    case 'textarea':
-                        $entry_data['message'][] = isset( $value ) ? $value : '';
-                        break;
-                    default:
-                        if ( in_array( $maybe_form_fields[$key]['type'], $list_of_ct_expected_fields, true ) ) {
-                            $entry_data['message'][] = isset( $value ) ? $value : '';
-                        }
-                }
-            }
-        }
-        $entry_data = apply_filters( 'evf_entry_cleantalk_entry_data', $entry_data, $post_entry, $maybe_form_fields );
-        if ( isset($entry_data['message'] ) && is_array( $entry_data['message'] ) ) {
-            $entry_data['message'] = implode( ' ', $entry_data['message'] );
-        }
-        if (isset( $entry_data['sender_nickname']) && is_array( $entry_data['sender_nickname'] ) ) {
-            $entry_data['sender_nickname'] = implode( ' ', $entry_data['sender_nickname'] );
-        }
-        return $entry_data;
-    }
+	 * @return array
+	 */
+	private function evf_get_entry_data_for_cleantalk( $maybe_form_fields, $post_entry ) {
+		$entry_data                 = array(
+			'sender_nickname' => array(),
+			'sender_email'    => '',
+			'message'         => array(),
+		);
+		$list_of_ct_expected_fields = array(
+			'fullname',
+			'first-name',
+			'last-name',
+			'email',
+			'text',
+			'textarea',
+		);
+		$list_of_ct_expected_fields = apply_filters( 'evf_cleantalk_expected_fields', $list_of_ct_expected_fields, $maybe_form_fields );
+		foreach ( $post_entry['form_fields'] as $key => $value ) {
+			if ( isset( $maybe_form_fields[ $key ]['type'] ) ) {
+				switch ( $maybe_form_fields[ $key ]['type'] ) {
+					case 'first-name':
+					case 'last-name':
+					case 'fullname':
+						$entry_data['sender_nickname'][] = isset( $value ) ? $value : '';
+						break;
+					case 'email':
+						empty( $entry_data['sender_email'] ) && $entry_data['sender_email'] = isset( $value ) ? $value : '';
+						break;
+					case 'text':
+					case 'textarea':
+						$entry_data['message'][] = isset( $value ) ? $value : '';
+						break;
+					default:
+						if ( in_array( $maybe_form_fields[ $key ]['type'], $list_of_ct_expected_fields, true ) ) {
+							$entry_data['message'][] = isset( $value ) ? $value : '';
+						}
+				}
+			}
+		}
+		$entry_data = apply_filters( 'evf_entry_cleantalk_entry_data', $entry_data, $post_entry, $maybe_form_fields );
+		if ( isset( $entry_data['message'] ) && is_array( $entry_data['message'] ) ) {
+			$entry_data['message'] = implode( ' ', $entry_data['message'] );
+		}
+		if ( isset( $entry_data['sender_nickname'] ) && is_array( $entry_data['sender_nickname'] ) ) {
+			$entry_data['sender_nickname'] = implode( ' ', $entry_data['sender_nickname'] );
+		}
+		return $entry_data;
+	}
 }

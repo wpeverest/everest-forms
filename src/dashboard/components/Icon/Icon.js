@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
-import React from "react";
-import { chakra } from "@chakra-ui/react";
+import { chakra } from '@chakra-ui/react';
+import React from 'react';
 
 export const Logo = React.forwardRef((props, ref) => (
 	<chakra.svg
@@ -26,7 +26,7 @@ export const Shortcode = React.forwardRef((props, ref) => (
 		{...props}
 	>
 		<path
-			fill="#2563EB"
+			fill="#7545bb"
 			fillRule="evenodd"
 			d="M20.287 5.632a1 1 0 0 0-1.909-.597l-6.667 21.333a1 1 0 0 0 1.91.597l6.666-21.333ZM8.707 9.96a1 1 0 0 1 0 1.414L4.08 16.001l4.626 4.626a1 1 0 1 1-1.414 1.414L1.96 16.708a1 1 0 0 1 0-1.414L7.292 9.96a1 1 0 0 1 1.414 0Zm14.586 0a1 1 0 0 1 1.414 0l5.333 5.333a1 1 0 0 1 0 1.415l-5.333 5.333a1 1 0 1 1-1.414-1.414L27.919 16l-4.626-4.627a1 1 0 0 1 0-1.414Z"
 			clipRule="evenodd"
@@ -42,7 +42,7 @@ export const SmartTag = React.forwardRef((props, ref) => (
 		{...props}
 	>
 		<path
-			fill="#2563EB"
+			fill="#7545bb"
 			fillRule="evenodd"
 			d="M8 1.667a3.667 3.667 0 0 0-3.666 3.667v5.333a1 1 0 1 0 2 0V5.334a1.667 1.667 0 0 1 1.667-1.667h9.665V8a3.667 3.667 0 0 0 3.667 3.667h4.334v15a1.667 1.667 0 0 1-1.666 1.667H5.334a1 1 0 1 0 0 2h18.667a3.667 3.667 0 0 0 3.666-3.667V9.334a1 1 0 0 0-.293-.707L20.708 1.96A1 1 0 0 0 20 1.667H8Zm11.666 2.08V8a1.667 1.667 0 0 0 1.667 1.667h4.253l-5.92-5.92ZM3.683 15.683A2.333 2.333 0 0 1 5.333 15a1 1 0 1 1 0 2 .333.333 0 0 0-.334.333v1.334c0 .48-.148.944-.418 1.333.27.389.418.853.418 1.333v1.334a.333.333 0 0 0 .334.333 1 1 0 1 1 0 2 2.333 2.333 0 0 1-2.334-2.333v-1.334A.333.333 0 0 0 2.666 21a1 1 0 1 1 0-2 .333.333 0 0 0 .333-.333v-1.334c0-.618.246-1.212.684-1.65ZM10.666 15a1 1 0 1 0 0 2 .333.333 0 0 1 .333.333v1.334c0 .48.148.944.419 1.333-.27.389-.419.853-.419 1.333v1.334a.333.333 0 0 1-.333.333 1 1 0 1 0 0 2 2.333 2.333 0 0 0 2.333-2.333v-1.334a.333.333 0 0 1 .334-.333 1 1 0 1 0 0-2 .333.333 0 0 1-.334-.333v-1.334A2.333 2.333 0 0 0 10.666 15Z"
 			clipRule="evenodd"
@@ -660,7 +660,7 @@ export const Blockart = React.forwardRef((props, ref) => (
 		ref={ref}
 	>
 		<path
-			fill="#2563EB"
+			fill="#7545bb"
 			fillRule="evenodd"
 			d="M0 36h38V0H0v36Zm35.946-2.057H2.054V2.057h33.892v31.886Zm-16.611-28.8 2.548 8.561-5.108.023 2.56-8.584Zm-4.232 14.242h8.475l1.508 7.662.14 2.782H13.222l.105-2.816 1.777-7.628Z"
 			clipRule="evenodd"
@@ -690,14 +690,14 @@ export const MagazineBlocks = React.forwardRef((props, ref) => (
 export const EVF = React.forwardRef((props, ref) => (
 	<chakra.svg
 		viewBox="0 0 40 40"
-		xmlns="https://www.w3.org/2000/svg"
-		{...props}
+		xmlns="http://www.w3.org/2000/svg"
+		fill="none"
 		ref={ref}
+		{...props}
 	>
-		<rect width="40" height="40" fill="#7545BB" rx="3.636" />
 		<path
-			fill="#fff"
-			d="M26.72 11h-4.31l1.32 2.224h4.309L26.72 11Zm2.71 4.447h-4.308l1.39 2.224h4.308l-1.39-2.224Zm-.069 11.119h-16.4l6.88-11.258 2.849 4.587h-2.85l-1.32 2.223h8.13l-6.81-10.98L9 28.79h21.751l-1.39-2.223Z"
+			fill="#5317aa"
+			d="M30.517 6.188h-6.69l2.05 3.453h6.69zm4.209 6.906h-6.69l2.157 3.453h6.69zm-.108 17.266H9.15l10.683-17.482L24.258 20h-4.424l-2.05 3.453h12.625L19.834 6.403 3 33.813h33.776z"
 		/>
 	</chakra.svg>
 ));
@@ -1042,60 +1042,87 @@ export const Megaphone = React.forwardRef((props, ref) => (
 	</chakra.svg>
 ));
 
-Logo.displayName = "Logo";
-Shortcode.displayName = "Shortcode";
-SmartTag.displayName = "SmartTag";
-ArrowRight.displayName = "ArrowRight";
-Lock.displayName = "Lock";
-Megaphone.displayName = "Megaphone";
-Notice.displayName = "Notice";
-Testimonial.displayName = "Testimonial";
-Map.displayName = "Map";
-Slider.displayName = "Slider";
-CTA.displayName = "CTA";
-Progress.displayName = "Progress";
-Timeline.displayName = "Timeline";
-Blockquote.displayName = "Blockquote";
-Headphones.displayName = "Headphones";
-EVF.displayName = "EVF";
-MagazineBlocks.displayName = "MagazineBlocks";
-Blockart.displayName = "Blockart";
-Masteriyo.displayName = "Masteriyo";
-UR.displayName = "UR";
-Chat.displayName = "Chat";
-Bulb.displayName = "Bulb";
-Star.displayName = "Star";
-Video.displayName = "Video";
-DocsLines.displayName = "DocsLines";
-Docs.displayName = "Docs";
-ExternalLink.displayName = "ExternalLink";
-CirclesInsideCircle.displayName = "CirclesInsideCircle";
-DotsHorizontal.displayName = "DotsHorizontal";
-Search.displayName = "Search";
-Cog.displayName = "Cog";
-Meter.displayName = "Meter";
-ArrowsRepeat.displayName = "ArrowsRepeat";
-ArrowsUpDown.displayName = "ArrowsUpDown";
-Links.displayName = "Links";
-ArrowRightFill.displayName = "ArrowRightFill";
-ArrowLeftFill.displayName = "ArrowLeftFill";
-QuestionCircleFill.displayName = "QuestionCircleFill";
-Buttons.displayName = "Buttons";
-Countdown.displayName = "Countdown";
-Counter.displayName = "Counter";
-Minus.displayName = "Minus";
-Add.displayName = "Add";
-Heading.displayName = "Heading";
-Paragraph.displayName = "Paragraph";
-Section.displayName = "Section";
-Spacing.displayName = "Spacing";
-Tabs.displayName = "Tabs";
-Lottie.displayName = "Lottie";
-InfoBox.displayName = "InfoBox";
-Image.displayName = "Image";
-TableOfContents.displayName = "TableOfContents";
-SocialShare.displayName = "SocialShare";
-Team.displayName = "Team";
-ThreeCircleNodes.displayName = "ThreeCircleNodes";
-IconList.displayName = "IconList";
-Icon.displayName = "Icon";
+export const PageNotFound = (props) => (
+	<chakra.svg
+		xmlns="http://www.w3.org/2000/svg"
+		width="60px"
+		height="60px"
+		viewBox="0 0 60 60"
+		fill="none"
+	>
+		<g clipPath="url(#clip0_6182_31901)">
+			<path
+				d="M58.2669 58.2843C57.5643 58.9862 56.6117 59.3805 55.6185 59.3805C54.6252 59.3805 53.6727 58.9862 52.97 58.2843L40.9512 46.2618L46.2481 40.9648L58.2669 53.002C58.9644 53.704 59.3559 54.6535 59.3559 55.6431C59.3559 56.6327 58.9644 57.5822 58.2669 58.2843Z"
+				fill="#D3D3D3"
+			/>
+			<path
+				d="M7.60839 7.627C3.97368 11.2654 1.49924 15.8997 0.497831 20.9441C-0.503575 25.9885 0.0130159 31.2166 1.98231 35.9675C3.9516 40.7184 7.28518 44.7788 11.5617 47.6355C15.8382 50.4921 20.8656 52.0168 26.0084 52.0168C31.1513 52.0168 36.1787 50.4921 40.4552 47.6355C44.7317 44.7788 48.0653 40.7184 50.0346 35.9675C52.0038 31.2166 52.5204 25.9885 51.519 20.9441C50.5176 15.8997 48.0432 11.2654 44.4085 7.627C41.993 5.20911 39.1247 3.29099 35.9675 1.98229C32.8103 0.673599 29.4261 0 26.0084 0C22.5907 0 19.2066 0.673599 16.0494 1.98229C12.8922 3.29099 10.0238 5.20911 7.60839 7.627ZM42.9066 42.9252C39.5648 46.2669 35.3072 48.5426 30.6721 49.4646C26.0369 50.3865 21.2325 49.9133 16.8663 48.1047C12.5002 46.2962 8.76833 43.2335 6.14276 39.3041C3.51719 35.3746 2.1158 30.7548 2.1158 26.0289C2.1158 21.303 3.51719 16.6832 6.14276 12.7537C8.76833 8.82423 12.5002 5.76157 16.8663 3.95302C21.2325 2.14447 26.0369 1.67125 30.6721 2.5932C35.3072 3.51515 39.5648 5.79086 42.9066 9.13256C45.1255 11.3514 46.8856 13.9856 48.0864 16.8846C49.2873 19.7837 49.9053 22.8909 49.9053 26.0289C49.9053 29.1668 49.2873 32.274 48.0864 35.1731C46.8856 38.0722 45.1255 40.7064 42.9066 42.9252Z"
+				fill="#D3D3D3"
+			/>
+		</g>
+		<defs>
+			<clipPath id="clip0_6182_31901">
+				<rect width="60" height="60" fill="white" />
+			</clipPath>
+		</defs>
+	</chakra.svg>
+);
+
+Logo.displayName = 'Logo';
+Shortcode.displayName = 'Shortcode';
+SmartTag.displayName = 'SmartTag';
+ArrowRight.displayName = 'ArrowRight';
+Lock.displayName = 'Lock';
+Megaphone.displayName = 'Megaphone';
+Notice.displayName = 'Notice';
+Testimonial.displayName = 'Testimonial';
+Map.displayName = 'Map';
+Slider.displayName = 'Slider';
+CTA.displayName = 'CTA';
+Progress.displayName = 'Progress';
+Timeline.displayName = 'Timeline';
+Blockquote.displayName = 'Blockquote';
+Headphones.displayName = 'Headphones';
+EVF.displayName = 'EVF';
+MagazineBlocks.displayName = 'MagazineBlocks';
+Blockart.displayName = 'Blockart';
+Masteriyo.displayName = 'Masteriyo';
+UR.displayName = 'UR';
+Chat.displayName = 'Chat';
+Bulb.displayName = 'Bulb';
+Star.displayName = 'Star';
+Video.displayName = 'Video';
+DocsLines.displayName = 'DocsLines';
+Docs.displayName = 'Docs';
+ExternalLink.displayName = 'ExternalLink';
+CirclesInsideCircle.displayName = 'CirclesInsideCircle';
+DotsHorizontal.displayName = 'DotsHorizontal';
+Search.displayName = 'Search';
+Cog.displayName = 'Cog';
+Meter.displayName = 'Meter';
+ArrowsRepeat.displayName = 'ArrowsRepeat';
+ArrowsUpDown.displayName = 'ArrowsUpDown';
+Links.displayName = 'Links';
+ArrowRightFill.displayName = 'ArrowRightFill';
+ArrowLeftFill.displayName = 'ArrowLeftFill';
+QuestionCircleFill.displayName = 'QuestionCircleFill';
+Buttons.displayName = 'Buttons';
+Countdown.displayName = 'Countdown';
+Counter.displayName = 'Counter';
+Minus.displayName = 'Minus';
+Add.displayName = 'Add';
+Heading.displayName = 'Heading';
+Paragraph.displayName = 'Paragraph';
+Section.displayName = 'Section';
+Spacing.displayName = 'Spacing';
+Tabs.displayName = 'Tabs';
+Lottie.displayName = 'Lottie';
+InfoBox.displayName = 'InfoBox';
+Image.displayName = 'Image';
+TableOfContents.displayName = 'TableOfContents';
+SocialShare.displayName = 'SocialShare';
+Team.displayName = 'Team';
+ThreeCircleNodes.displayName = 'ThreeCircleNodes';
+IconList.displayName = 'IconList';
+Icon.displayName = 'Icon';
+PageNotFound.displayName = 'PageNotFound';

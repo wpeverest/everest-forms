@@ -2,9 +2,9 @@
 Contributors:everestforms,WPEverest
 Tags: contact form, custom form, form builder, forms, survey
 Requires at least: 5.5
-Tested up to: 6.8.2
+Tested up to: 6.9.1
 Requires PHP: 7.2
-Stable tag: 3.4.1
+Stable tag: 3.4.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -338,6 +338,26 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/f788d7f0-ea8a-4fd5-bcae-81a5d09a476c)
 
 == Changelog ==
+
+= 3.4.3       - 19-02-2026
+* Enhancement - Improved Addons page.
+* Enhancement - Improved reCAPTCHA and Payment page.
+* Enhancement - Improved Entry page.
+* Enhancement - Improved Form Builder page.
+* Enhancement - Improved table consistency across admin pages.
+* Dev         - Added filters for form submit error messages.
+* Fix         - Fixed Section Title customization issue in Style Customizer add-on when no color palette is selected.
+* Fix         - Added Divi child theme support.
+* Fix         - Fixed issue where Send Test Email notice was not displaying.
+
+= 3.4.2.1 - 26-01-2026
+* Fix - Vendor file issue.
+
+= 3.4.2 - 26-01-2026
+* Enhance - Site assistant added.
+* Dev - Added filters for form submit error messages.
+* Fix - IP Address & Details Handling.
+* Fix - Divi integration support for child theme.
 
 = 3.4.1      - 18-09-2025
 * Enhance - Sanitization and Escaping.
