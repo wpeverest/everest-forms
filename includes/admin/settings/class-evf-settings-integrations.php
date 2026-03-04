@@ -17,12 +17,6 @@ if ( class_exists( 'EVF_Settings_Integrations', false ) ) {
  *
  * Pure renderer — owns no data. Every string, URL, icon, category and feature
  * list is read directly from the integration object supplied by EVF_Integrations.
- *
- * Category resolution priority (most-specific wins):
- *   1. $integration->category  — set on upsell placeholders in EVF_Integrations.
- *   2. everest_forms_integration_categories filter — used by Pro addons via
- *      register_category() hook (backward-compatible).
- *   3. "Other" — final fallback.
  */
 class EVF_Settings_Integrations extends EVF_Settings_Page {
 
@@ -38,18 +32,10 @@ class EVF_Settings_Integrations extends EVF_Settings_Page {
 		}
 	}
 
-	// =========================================================================
-	// Grouping & navigation helpers
-	// =========================================================================
 
 	/**
 	 * Returns the filter-based ID → category map.
 	 *
-	 * This exists solely for backward compatibility with Pro addon classes that
-	 * register their category via:
-	 *   add_filter( 'everest_forms_integration_categories', [ $this, 'register_category' ] );
-	 *
-	 * New upsell placeholders carry a `category` property instead and never
 	 * touch this map.
 	 *
 	 * @since  x.x.x
@@ -84,11 +70,6 @@ class EVF_Settings_Integrations extends EVF_Settings_Page {
 
 	/**
 	 * Groups integrations by category, respecting the preferred display order.
-	 *
-	 * Category resolution per integration (first match wins):
-	 *   1. $integration->category        — upsell placeholders (EVF_Integrations).
-	 *   2. Legacy filter map by ID       — Pro addon register_category() hooks.
-	 *   3. esc_html__( 'Other', ... )    — safe fallback.
 	 *
 	 * @since  x.x.x
 	 * @param  array $integrations Keyed by integration ID.
@@ -166,9 +147,36 @@ class EVF_Settings_Integrations extends EVF_Settings_Page {
 		return $first ? $this->category_to_slug( $first ) : '';
 	}
 
-	// =========================================================================
-	// Upsell rendering
-	// =========================================================================
+	/**
+	 * Returns true when the Pro addon is active.
+	 *
+	 * Checks for the EFP_VERSION constant which is defined only when the
+	 * Everest Forms Pro plugin is loaded.
+	 *
+	 * @since  x.x.x
+	 * @return bool
+	 */
+	protected function is_pro_active() {
+		return defined( 'EFP_VERSION' );
+	}
+
+	/**
+	 * Returns true when every integration in a category group is an upsell placeholder.
+	 *
+	 * Used to decide whether to show the lock badge on a sidebar category.
+	 *
+	 * @since  x.x.x
+	 * @param  object[] $integrations
+	 * @return bool
+	 */
+	protected function category_is_all_upsell( array $integrations ) {
+		foreach ( $integrations as $integration ) {
+			if ( ! $this->is_upsell_integration( $integration ) ) {
+				return false;
+			}
+		}
+		return true;
+	}
 
 	/**
 	 * Returns true when an integration is a free-tier upsell placeholder.
@@ -196,7 +204,7 @@ class EVF_Settings_Integrations extends EVF_Settings_Page {
 		$icon        = $integration->icon ?? '';
 		$video_id    = $integration->vedio_id ?? ''; // typo in source data — kept as-is
 		$upgrade_url = $integration->upgrade_url ?? 'https://wpeverest.com/wordpress-plugins/everest-forms/pricing/';
-		$docs_url    = $integration->docs_url ?? 'https://docs.wpeverest.com/everest-forms/docs/';
+		$docs_url    = $integration->docs_url ?? 'https://docs.everestforms.net/docs/';
 		$features    = $integration->features ?? array();
 		?>
 		<div class="evf-upsell-integration-card">
@@ -212,12 +220,11 @@ class EVF_Settings_Integrations extends EVF_Settings_Page {
 				</div>
 
 				<span class="evf-upsell-lock-icon">
-					<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-						fill="none" stroke="currentColor" stroke-width="2"
-						stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-						<rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-						<path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-					</svg>
+			<svg  width="14" height="14" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle;margin-left:5px;flex-shrink:0;" aria-hidden="true">
+			<path d="M0 2C0 0.895431 0.895431 0 2 0H18C19.1046 0 20 0.895431 20 2V18C20 19.1046 19.1046 20 18 20H2C0.895431 20 0 19.1046 0 18V2Z" fill="#FF8C39"></path>
+			<path d="M10 4.1666L13.5 13.4999H6.5L10 4.1666Z" fill="#EFEFEF"></path>
+			<path d="M14.9994 15.833H4.99939V14.167H14.9994V15.833ZM15.0004 13.5H5.00037L4.16638 6.5L10.0004 11.3125L15.8334 6.5L15.0004 13.5Z" fill="white"></path>
+		</svg>
 				</span>
 			</div>
 
@@ -294,9 +301,6 @@ class EVF_Settings_Integrations extends EVF_Settings_Page {
 		echo '</ul>';
 	}
 
-	// =========================================================================
-	// Pro integration rendering
-	// =========================================================================
 
 	/**
 	 * Ensures a Pro integration's API client is ready before rendering.
@@ -447,16 +451,26 @@ class EVF_Settings_Integrations extends EVF_Settings_Page {
 	public function output_sections() {
 		$grouped     = $this->group_integrations_by_category( evf()->integrations->get_integrations() );
 		$active_slug = $this->get_active_category_slug( $grouped );
+		$is_pro      = $this->is_pro_active();
 
 		if ( empty( $grouped ) ) {
 			return;
 		}
 
+		$lock_icon = '<svg class="evf-sidebar-upsell-icon" width="14" height="14" viewBox="0 0 20 20"
+			fill="none" xmlns="http://www.w3.org/2000/svg"
+			style="vertical-align:middle;margin-left:5px;flex-shrink:0;" aria-hidden="true">
+			<path d="M0 2C0 0.895431 0.895431 0 2 0H18C19.1046 0 20 0.895431 20 2V18C20 19.1046 19.1046 20 18 20H2C0.895431 20 0 19.1046 0 18V2Z" fill="#FF8C39"/>
+			<path d="M10 4.1666L13.5 13.4999H6.5L10 4.1666Z" fill="#EFEFEF"/>
+			<path d="M14.9994 15.833H4.99939V14.167H14.9994V15.833ZM15.0004 13.5H5.00037L4.16638 6.5L10.0004 11.3125L15.8334 6.5L15.0004 13.5Z" fill="white"/>
+		</svg>';
+
 		echo '<ul class="evf-subsections">';
 
-		foreach ( array_keys( $grouped ) as $category ) {
-			$slug = $this->category_to_slug( $category );
-			$url  = add_query_arg(
+		foreach ( $grouped as $category => $items ) {
+			$slug      = $this->category_to_slug( $category );
+			$show_lock = ! $is_pro && $this->category_is_all_upsell( $items );
+			$url       = add_query_arg(
 				array(
 					'page'    => 'evf-settings',
 					'tab'     => $this->id,
@@ -466,10 +480,12 @@ class EVF_Settings_Integrations extends EVF_Settings_Page {
 			);
 
 			printf(
-				'<li><a href="%s" class="%s">%s</a></li>',
+				'<li><a href="%s" class="%s" style="%s">%s%s</a></li>',
 				esc_url( $url ),
-				$active_slug === $slug ? 'current' : '',
-				esc_html( $category )
+				esc_attr( $active_slug === $slug ? 'current' : '' ),
+				$show_lock,
+				esc_html( $category ),
+				$show_lock ? $lock_icon : '' // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			);
 		}
 

@@ -41,45 +41,46 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 		 */
 		public static function get_settings_pages() {
 
-			if ( empty( self::$settings ) ) {
+			$settings = array();
 
-				$settings = array();
+			include_once __DIR__ . '/settings/class-evf-settings-page.php';
 
-				include_once __DIR__ . '/settings/class-evf-settings-page.php';
+			$settings[] = include 'settings/class-evf-settings-general.php';
+			$settings[] = include 'settings/class-evf-settings-security.php';
+			$settings[] = include 'settings/class-evf-settings-email.php';
+			$settings[] = include 'settings/class-evf-settings-integrations.php';
+			$settings[] = include 'settings/class-evf-settings-advanced.php';
 
-				$settings[] = include 'settings/class-evf-settings-general.php';
-				$settings[] = include 'settings/class-evf-settings-security.php';
-				$settings[] = include 'settings/class-evf-settings-email.php';
-				$settings[] = include 'settings/class-evf-settings-integrations.php';
+			$settings = apply_filters( 'everest_forms_get_settings_pages', $settings );
 
-				$settings = apply_filters( 'everest_forms_get_settings_pages', $settings );
+			add_filter( 'everest_forms_settings_tabs_array', array( __CLASS__, 'reorder_settings_tabs' ), 9999 );
 
-				$advanced = include 'settings/class-evf-settings-advanced.php';
+			return $settings;
+		}
 
-				$ordered = array();
+		public static function reorder_settings_tabs( $tabs ) {
+			$advanced = null;
+			$license  = null;
 
-				foreach ( $settings as $setting ) {
-					$id = method_exists( $setting, 'get_id' ) ? $setting->get_id() : '';
-error_log( print_r( $setting, true ) );
-					if ( 'license' !== $id ) {
-						$ordered[] = $setting;
-					}
-				}
-
-				$ordered[] = $advanced;
-
-				foreach ( $settings as $setting ) {
-					$id = method_exists( $setting, 'get_id' ) ? $setting->get_id() : '';
-
-					if ( 'license' === $id ) {
-						$ordered[] = $setting;
-					}
-				}
-
-				self::$settings = $ordered;
+			if ( isset( $tabs['advanced'] ) ) {
+				$advanced = $tabs['advanced'];
+				unset( $tabs['advanced'] );
 			}
 
-			return self::$settings;
+			if ( isset( $tabs['license'] ) ) {
+				$license = $tabs['license'];
+				unset( $tabs['license'] );
+			}
+
+			if ( null !== $advanced ) {
+				$tabs['advanced'] = $advanced;
+			}
+
+			if ( null !== $license ) {
+				$tabs['license'] = $license;
+			}
+
+			return $tabs;
 		}
 
 		/**

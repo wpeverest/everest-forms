@@ -57,7 +57,7 @@ class EVF_Integrations {
 					'upgrade'            => 'upgrade',
 					'vedio_id'           => '5Vt82fN0swo',
 					'upgrade_url'        => 'https://wpeverest.com/wordpress-plugins/everest-forms/pricing/',
-					'docs_url'           => 'https://docs.wpeverest.com/everest-forms/docs/dropbox-integration/',
+					'docs_url'           => 'https://docs.everestforms.net/docs/how-to-upload-files-to-google-drive-or-dropbox/#4-toc-title',
 					'features'           => array(
 						esc_html__( 'Auto-upload files on every form submission', 'everest-forms' ),
 						esc_html__( 'Organise uploads into custom folder structures', 'everest-forms' ),
@@ -76,7 +76,7 @@ class EVF_Integrations {
 					'upgrade'            => 'upgrade',
 					'vedio_id'           => '0g-dfhMy1Yo',
 					'upgrade_url'        => 'https://wpeverest.com/wordpress-plugins/everest-forms/pricing/',
-					'docs_url'           => 'https://docs.wpeverest.com/everest-forms/docs/google-drive-integration/',
+					'docs_url'           => 'https://docs.everestforms.net/docs/how-to-upload-files-to-google-drive-or-dropbox/#0-toc-title',
 					'features'           => array(
 						esc_html__( 'Send attachments to Drive on submission', 'everest-forms' ),
 						esc_html__( 'Create sub-folders from form field values', 'everest-forms' ),
@@ -95,7 +95,7 @@ class EVF_Integrations {
 					'upgrade'            => 'upgrade',
 					'vedio_id'           => 'FhFsHdAIXwE',
 					'upgrade_url'        => 'https://wpeverest.com/wordpress-plugins/everest-forms/pricing/',
-					'docs_url'           => 'https://docs.wpeverest.com/everest-forms/docs/mailchimp-integration/',
+					'docs_url'           => 'https://docs.everestforms.net/docs/mailchimp/',
 					'features'           => array(
 						esc_html__( 'Subscribe users to lists on form submission', 'everest-forms' ),
 						esc_html__( 'Map any form field to Mailchimp merge tags', 'everest-forms' ),
@@ -114,7 +114,7 @@ class EVF_Integrations {
 					'upgrade'            => 'upgrade',
 					'vedio_id'           => 'tvS6Y_rNBfs',
 					'upgrade_url'        => 'https://wpeverest.com/wordpress-plugins/everest-forms/pricing/',
-					'docs_url'           => 'https://docs.wpeverest.com/everest-forms/docs/google-sheets-integration/',
+					'docs_url'           => 'https://docs.everestforms.net/docs/google-sheets/',
 					'features'           => array(
 						esc_html__( 'Auto-append a new row for each submission', 'everest-forms' ),
 						esc_html__( 'Map form fields to specific sheet columns', 'everest-forms' ),
@@ -133,7 +133,7 @@ class EVF_Integrations {
 					'upgrade'            => 'upgrade',
 					'vedio_id'           => 'GvqPVCK7Ws8',
 					'upgrade_url'        => 'https://wpeverest.com/wordpress-plugins/everest-forms/pricing/',
-					'docs_url'           => 'https://docs.wpeverest.com/everest-forms/docs/convertkit-integration/',
+					'docs_url'           => 'https://docs.everestforms.net/docs/convertkit/',
 					'features'           => array(
 						esc_html__( 'Subscribe to forms, sequences, and tags', 'everest-forms' ),
 						esc_html__( 'Map custom fields to ConvertKit subscriber data', 'everest-forms' ),

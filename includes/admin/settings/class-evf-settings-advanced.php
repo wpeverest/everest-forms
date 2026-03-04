@@ -69,7 +69,7 @@ class EVF_Settings_Advanced extends EVF_Settings_Page {
 					'default'  => 'no',
 					'desc_tip' => true,
 				),
-			
+
 				array(
 					'title'    => esc_html__( 'Enable RestApi', 'everest-forms' ),
 					'desc'     => __( 'Allow the other to use the rest api.', 'everest-forms' ),
