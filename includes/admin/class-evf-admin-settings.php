@@ -49,6 +49,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 			$settings[] = include 'settings/class-evf-settings-security.php';
 			$settings[] = include 'settings/class-evf-settings-email.php';
 			$settings[] = include 'settings/class-evf-settings-integrations.php';
+			$settings[] = include 'settings/class-evf-setting-utilities.php';
 			$settings[] = include 'settings/class-evf-settings-advanced.php';
 
 			$settings = apply_filters( 'everest_forms_get_settings_pages', $settings );

@@ -202,7 +202,7 @@ class EVF_Settings_Integrations extends EVF_Settings_Page {
 		$title       = $integration->method_title ?? '';
 		$description = $integration->method_description ?? '';
 		$icon        = $integration->icon ?? '';
-		$video_id    = $integration->vedio_id ?? ''; // typo in source data — kept as-is
+		$video_id    = $integration->vedio_id ?? ''; 
 		$upgrade_url = $integration->upgrade_url ?? 'https://wpeverest.com/wordpress-plugins/everest-forms/pricing/';
 		$docs_url    = $integration->docs_url ?? 'https://docs.everestforms.net/docs/';
 		$features    = $integration->features ?? array();
