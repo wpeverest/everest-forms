@@ -19,6 +19,11 @@ class EVF_Addon_Upsell {
 	 * @return array
 	 */
 	private static function get_registry() {
+
+		if ( defined( 'EFP_PLUGIN_FILE' ) ) {
+			return array();
+		}
+		
 		return apply_filters(
 			'everest_forms_addon_upsell_registry',
 			array(

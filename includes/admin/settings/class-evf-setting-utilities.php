@@ -23,7 +23,7 @@ class EVF_Settings_Utilities extends EVF_Settings_Page {
 	public function __construct() {
 		$this->id    = 'utilities';
 		$this->label = __( 'Utilities', 'everest-forms' );
-		
+
 
 		parent::__construct();
 
@@ -47,14 +47,6 @@ class EVF_Settings_Utilities extends EVF_Settings_Page {
 	/**
 	 * Get sections.
 	 *
-	 * Active addons register themselves via the everest_forms_utilities_sections
-	 * filter. Inactive addons are filled in automatically as upsell entries by
-	 * EVF_Addon_Upsell so they always appear in the nav.
-	 *
-	 * Section values can be:
-	 *   - string                          Plain label for a standard settings section.
-	 *   - array( 'label', 'url' )         External link — nav item redirects to given URL.
-	 *   - array( 'label', 'upsell=true' ) Upsell placeholder — renders upgrade card.
 	 *
 	 * @return array
 	 */
