@@ -43,7 +43,7 @@ $use_react_header = apply_filters( 'everest_forms_use_react_header', true, $curr
 								<div class="evf-nav__tab-item">
 									<a href="<?php echo esc_url( admin_url( 'admin.php?page=evf-settings&tab=' . $slug ) ); ?>" class="nav-tab evf-nav__link <?php echo ( $current_tab === $slug ? 'nav-tab-active is-active' : '' ); ?>">
 										<span class="evf-nav__link-icon">
-											<?php echo evf_file_get_contents( '/assets/images/settings-icons/' . $slug . '.svg' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+											<?php echo evf_file_get_contents( '/assets/images/settings-icons/' . $git  . '.svg' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 										</span>
 										<span class="evf-nav__link-label">
 											<p><?php echo esc_html( $label ); ?></p>
