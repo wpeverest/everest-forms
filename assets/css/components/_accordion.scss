@@ -36,7 +36,7 @@ $breakpoint-mobile: 782px;
 	.everest-forms-accordion-wrapper {
 		padding: 0;
 		margin: 0;
-		gap: $accordion-gap;
+		gap: 16px;
 
 		.everest-forms-accordion-item {
 			border: 1px solid $accordion-border-color;
@@ -213,8 +213,6 @@ $breakpoint-mobile: 782px;
 	transition: max-height 0.4s ease;
 
 	&-inner {
-		padding: 24px;
-
 		.evf-account-connect {
 			h3 {
 				margin: 0 0 4px;
@@ -247,7 +245,7 @@ $breakpoint-mobile: 782px;
 				}
 			}
 
-			> div {
+			>div {
 				p {
 					margin-bottom: 12px;
 				}
@@ -363,19 +361,19 @@ $breakpoint-mobile: 782px;
 }
 
 .everest-forms-accordion-content-inner {
+
 	.everest-forms-global-settings,
 	.everest-forms-panel-field {
 		display: flex;
-		align-items: center;
-		margin-bottom: 28px !important;
+		align-items: center !important;
+		margin-bottom: 24px !important;
 		gap: 20px;
 
 		&:last-child {
 			margin-bottom: 0;
 		}
 
-		> label {
-			width: 220px;
+		>label {
 			flex-shrink: 0;
 			margin: 0;
 			font-size: 14px;
@@ -384,7 +382,8 @@ $breakpoint-mobile: 782px;
 			display: flex;
 			align-items: center;
 			gap: 8px;
-			line-height: 1.5;
+			line-height: 24px;
+			padding-top: 0 !important;
 
 			.everest-forms-help-tip {
 				margin: 0;
@@ -545,11 +544,12 @@ $breakpoint-mobile: 782px;
 	.forminp-password,
 	.forminp-email,
 	.forminp-number {
-		> button,
-		> a,
-		> span.action-icon,
-		> span.toggle-icon,
-		> .dashicons {
+
+		>button,
+		>a,
+		>span.action-icon,
+		>span.toggle-icon,
+		>.dashicons {
 			display: flex;
 			align-items: center;
 			justify-content: center;
@@ -583,12 +583,12 @@ $breakpoint-mobile: 782px;
 		}
 
 		// When input has adjacent button, adjust input border radius
-		input + button,
-		input + a,
-		input + span.action-icon,
-		input + span.toggle-icon,
-		input + .dashicons {
-			~ input {
+		input+button,
+		input+a,
+		input+span.action-icon,
+		input+span.toggle-icon,
+		input+.dashicons {
+			~input {
 				border-radius: $accordion-border-radius 0 0 $accordion-border-radius;
 			}
 		}
@@ -610,7 +610,7 @@ $breakpoint-mobile: 782px;
 				position: relative;
 
 				input[type='checkbox'] {
-					& + .slider {
+					&+.slider {
 						background-color: #ddd;
 						transition: all 0.3s ease;
 
@@ -623,7 +623,7 @@ $breakpoint-mobile: 782px;
 						}
 					}
 
-					&:checked + .slider {
+					&:checked+.slider {
 						background-color: $accordion-success-color;
 
 						&::before {
@@ -631,7 +631,7 @@ $breakpoint-mobile: 782px;
 						}
 					}
 
-					&:focus + .slider {
+					&:focus+.slider {
 						box-shadow: 0 0 0 3px rgba($accordion-success-color, 0.1);
 					}
 				}
@@ -786,12 +786,13 @@ $breakpoint-mobile: 782px;
 			gap: 8px;
 			margin-bottom: 24px; // Updated to match better spacing
 
-			> label {
+			>label {
 				width: 100%;
 			}
 
 			&--field,
 			.everest-forms-global-settings--field {
+
 				input[type='text'],
 				input[type='email'],
 				input[type='password'],
