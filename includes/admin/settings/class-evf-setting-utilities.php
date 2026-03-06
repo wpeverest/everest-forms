@@ -23,6 +23,7 @@ class EVF_Settings_Utilities extends EVF_Settings_Page {
 	public function __construct() {
 		$this->id    = 'utilities';
 		$this->label = __( 'Utilities', 'everest-forms' );
+		
 
 		parent::__construct();
 
