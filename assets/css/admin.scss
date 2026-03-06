@@ -1048,7 +1048,6 @@ body.everest-forms-builder {
 						}
 
 						&.settings::before {
-							// content: '\e92c';
 							background-repeat: no-repeat;
 							background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M17.983 12a3.34 3.34 0 0 1 1.422-2.735 1.34 1.34 0 0 0-1.343-2.303 3.34 3.34 0 0 1-4.728-2.738 1.343 1.343 0 0 0-1.333-1.207 1.34 1.34 0 0 0-1.334 1.213 1 1 0 0 1-.015.099 3.34 3.34 0 0 1-1.644 2.494 3.34 3.34 0 0 1-3.08.135A1.34 1.34 0 0 0 4.604 9.27a3.34 3.34 0 0 1 1.037 4.269 3.34 3.34 0 0 1-1.038 1.187v.001a1.34 1.34 0 0 0 1.334 2.31 3.34 3.34 0 0 1 4.729 2.73 1.34 1.34 0 0 0 2.669 0 3.34 3.34 0 0 1 4.727-2.73l.116.046a1.342 1.342 0 0 0 1.749-1.55 1.34 1.34 0 0 0-.53-.806A3.34 3.34 0 0 1 17.983 12m2 0a1.34 1.34 0 0 0 .445.996l.126.1.008.006a3.34 3.34 0 0 1-3.326 5.756l-.01-.004a1.34 1.34 0 0 0-1.9 1.097v.007a3.34 3.34 0 0 1-6.65 0l-.001-.007a1.34 1.34 0 0 0-1.9-1.097l-.01.004a3.34 3.34 0 0 1-3.326-5.756l.008-.005a1.34 1.34 0 0 0 0-2.195l-.009-.006a3.34 3.34 0 0 1 3.037-5.87l.288.114.01.004a1.34 1.34 0 0 0 1.9-1.096 1 1 0 0 1 .018-.122 3.338 3.338 0 0 1 6.591-.192l.044.308v.006a1.34 1.34 0 0 0 1.9 1.096l.01-.003a3.34 3.34 0 0 1 3.325 5.756l-.007.005a1.34 1.34 0 0 0-.57 1.098'/%3E%3Cpath d='M14 12a2 2 0 1 0-4 0 2 2 0 0 0 4 0m2 0a4 4 0 1 1-8 0 4 4 0 0 1 8 0'/%3E%3C/svg%3E");
 						}
@@ -1161,44 +1160,10 @@ body.everest-forms-builder {
 					}
 				}
 
-				//  &.nav-tab-active {
-				// 	 margin-bottom: 0;
-				// 	 background-color: adjust-color($everestforms, $saturation: +20%, $lightness: +6%);
-
-				// 	 &:focus {
-				// 		 box-shadow: none;
-				// 	 }
-				//  }
-
 				&:focus {
+					outline: none;
 					box-shadow: none;
 				}
-
-				//  &:hover:not(.nav-tab-active) {
-				// 	 background-color: adjust-color($everestforms, $saturation: -4%, $lightness: -4%);
-				//  }
-
-				//  &::before {
-				// 	 content: "";
-				// 	 background: #8c3eeb;
-				// 	 position: absolute;
-				// 	 z-index: -1;
-				// 	 width: 100%;
-				// 	 height: 100%;
-				// 	 top: 0;
-				// 	 left: 0;
-				// 	 opacity: 0;
-				// 	 border-radius: 0 0 7px 7px;
-				// 	 transition: all 0.3s ease-in-out;
-				//  }
-
-				//  &:hover,
-				//  &.nav-tab-active {
-				// 	 &::before {
-				// 		 top: -7px;
-				// 		 opacity: 1;
-				// 	 }
-				//  }
 			}
 		}
 
@@ -10522,7 +10487,7 @@ img.ui-datepicker-trigger {
 						display: flex;
 						padding: 16px 20px;
 						align-items: center;
-						gap: 20px;
+						gap: 16px;
 						min-height: 54px;
 						border-bottom: 1px solid #ededed;
 						position: relative;
@@ -10719,7 +10684,7 @@ img.ui-datepicker-trigger {
 				.evf-subsections {
 					list-style: none;
 					margin: 0;
-					padding: 0;
+					padding: 8px 0;
 					background: transparent;
 					position: relative;
 

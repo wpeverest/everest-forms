@@ -348,9 +348,14 @@ $breakpoint-mobile: 782px;
 							}
 
 							.disconnect {
-								font-size: 14px;
-								line-height: 24px;
+								font-size: 13px;
+								line-height: 20px;
 								color: #f25656;
+
+								&:focus {
+									outline: none;
+									box-shadow: none;
+								}
 							}
 						}
 					}
