@@ -181,7 +181,7 @@ class EVF_Settings_General extends EVF_Settings_Page {
 				array(
 					'title' => esc_html__( 'Validation Messages', 'everest-forms' ),
 					'type'  => 'title',
-					'desc'  => 'Validation Messages for Form Fields.',
+					'desc'  => '',
 					'id'    => 'validation_options',
 				),
 				array(

@@ -375,7 +375,7 @@ $breakpoint-mobile: 782px;
 		gap: 20px;
 
 		&:last-child {
-			margin-bottom: 0;
+			margin-bottom: 0 !important;
 		}
 
 		>label {

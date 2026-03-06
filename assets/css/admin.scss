@@ -53,6 +53,12 @@ body[class*='everest-forms_page_'] {
 			#everest-forms-builder-form {
 				font-family: -apple-system, BlinkMacSystemFont, Inter, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 			}
+
+			.wrap {
+				border-radius: 0;
+				border: 0;
+				border-bottom: 1px solid #e1e1e1;
+			}
 		}
 	}
 
@@ -10369,7 +10375,7 @@ img.ui-datepicker-trigger {
 // Everest Forms Global Settings Design ReVamp CSS
 #wpcontent {
 	#wpbody-content {
-		padding-bottom: 25px;
+		padding-bottom: 42px;
 	}
 }
 
@@ -11106,6 +11112,14 @@ img.ui-datepicker-trigger {
 						flex: 1;
 
 						&.forminp-input_test_button {
+							.everest_forms_send_email_test {
+								min-height: 36px;
+								padding: 0 16px;
+								font-size: 14px;
+								line-height: 24px;
+								align-content: center;
+							}
+
 							@media screen and (max-width: 782px) {
 								display: flex;
 								flex-direction: column;
