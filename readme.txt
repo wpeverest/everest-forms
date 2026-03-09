@@ -340,7 +340,8 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 == Changelog ==
 
 = 3.4.4       - xx-xx-2026
-* Refactor - Everest Forms Global Settings.
+* Refactor    - Everest Forms Global Settings.
+* Enhancement - Form Builder.
 
 = 3.4.3       - 19-02-2026
 * Enhancement - Improved Addons page.
