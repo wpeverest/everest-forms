@@ -4652,7 +4652,6 @@ p.search-box {
 				line-height: 24px;
 				margin-bottom: 8px;
 				color: #222;
-				display: block;
 				font-weight: 500;
 				// max-width: 300px;
 				// width: 100%;
@@ -11103,8 +11102,8 @@ img.ui-datepicker-trigger {
 						font-size: 14px;
 						font-weight: 500;
 						line-height: 24px;
-						// max-width: 300px;
-						// width: 100%;
+						max-width: 300px;
+						width: 100%;
 						flex: unset;
 						display: flex;
 						align-items: center;
