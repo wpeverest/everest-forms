@@ -11035,8 +11035,8 @@ img.ui-datepicker-trigger {
 
 				p {
 					a {
-						color: #2271b1;
-						text-decoration: underline !important;
+						color: #5b6edb;
+						text-decoration: underline;
 					}
 				}
 			}
@@ -11202,6 +11202,23 @@ img.ui-datepicker-trigger {
 										line-height: 24px;
 										font-weight: 400;
 										color: #383838;
+									}
+								}
+							}
+
+							fieldset {
+								>ul {
+									display: flex;
+									align-items: center;
+									gap: 30px;
+
+									li {
+										>label {
+											font-size: 14px;
+											line-height: 24px;
+											color: #383838;
+											font-weight: 500;
+										}
 									}
 								}
 							}
