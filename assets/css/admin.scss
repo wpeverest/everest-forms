@@ -50,8 +50,22 @@ body[class*='everest-forms_page_'] {
 
 			#evf-react-header-root,
 			.wrap,
-			#everest-forms-builder-form {
+			#everest-forms-builder-form,
+			#everest-forms-dashboard {
 				font-family: -apple-system, BlinkMacSystemFont, Inter, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+
+				h1,
+				h2,
+				h3,
+				h4,
+				h5,
+				h6,
+				p,
+				small,
+				label,
+				table {
+					font-family: -apple-system, BlinkMacSystemFont, Inter, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+				}
 			}
 
 			.wrap {
