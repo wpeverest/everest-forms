@@ -64,7 +64,7 @@ class Settings extends \EVF_Integration {
 			<div class="integration-connection-detail">
 				<div class="evf-connection-list">
 				<!-- Toggle Row -->
-				 <form method="post" action="" id="everest-forms-clean-talk-settings-form">
+				<form method="post" action="" id="everest-forms-clean-talk-settings-form">
 						<!-- Access Key -->
 						<div class="evf-clean-talk-access-key">
 							<div>
@@ -75,8 +75,8 @@ class Settings extends \EVF_Integration {
 						</div>
 						<div class="evf-clean-talk-message" style="display: none;"></div>
 					</div>
-					<button style="margin-top: 12px;" type="submit" id="everest-forms-clean-talk-save-settings" class="everest-forms-btn everest-forms-btn-primary" ><?php echo __('Save Settings', 'everest-forms') ?></button>
-				 </form>
+					<button style="margin-top: 12px;" type="submit" id="everest-forms-clean-talk-save-settings" class="everest-forms-btn everest-forms-btn-primary" ><?php echo __( 'Save Settings', 'everest-forms' ); ?></button>
+				</form>
 
 				</div>
 			</div>

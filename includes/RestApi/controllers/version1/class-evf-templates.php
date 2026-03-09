@@ -138,7 +138,7 @@ class Everest_Forms_Template_Section_Data {
 		if ( isset( $query_params['refresh'] ) ) {
 			delete_transient( 'everest_forms_templates_data' );
 		}
-		$template_url      = 'https://d3m99fsxk070py.cloudfront.net/';
+		$template_url      = 'https://assets.wpeverest.com/everestforms/forms/';
 		$template_json_url = $template_url . 'templates1.json';
 		$transient_key     = 'everest_forms_templates_data';
 		$cache_expiration  = DAY_IN_SECONDS;
