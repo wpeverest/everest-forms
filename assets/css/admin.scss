@@ -718,8 +718,8 @@ body.everest-forms-builder {
 
 			&:checked {
 				+.slider {
-					//  background-color: $green;
-					background-color: $evf_primary-color;
+					// background: $evf_primary-color;
+					background: #4cc741;
 
 					&::before {
 						transform: translateX(100%);
@@ -736,7 +736,7 @@ body.everest-forms-builder {
 			right: 0;
 			bottom: 0;
 			transition: 0.4s;
-			background-color: #cdd0d2;
+			background: #cdd0d2;
 
 			&::before {
 				content: '';
@@ -746,7 +746,7 @@ body.everest-forms-builder {
 				left: 2px;
 				bottom: 2px;
 				transition: 0.4s;
-				background-color: $color-white;
+				background: $color-white;
 			}
 
 			&.round {
@@ -783,8 +783,7 @@ body.everest-forms-builder {
 
 				&:checked {
 					+.evf-toggle-switch-wrap {
-						background-color: #11a0d2;
-						border: 2px solid #11a0d2;
+						background: #11a0d2;
 						border: 9px solid transparent;
 
 						&::before {
@@ -804,7 +803,7 @@ body.everest-forms-builder {
 					}
 
 					~.evf-toggle-switch-control {
-						background-color: #fff;
+						background: #fff;
 						border-width: 0;
 						transform: translateX(18px) translateY(-50%);
 					}
@@ -827,7 +826,7 @@ body.everest-forms-builder {
 				width: 36px;
 				height: 18px;
 				display: inline-flex;
-				background-color: #fff;
+				background: #fff;
 				border: 2px solid #6c7781;
 				border-radius: 9px;
 				transition: 0.2s background ease;
@@ -855,7 +854,7 @@ body.everest-forms-builder {
 				height: 10px;
 				border-radius: 50%;
 				transition: 0.1s transform ease;
-				background-color: #6c7781;
+				background: #6c7781;
 				border: 5px solid #6c7781;
 				transform: translateY(-50%);
 			}
@@ -984,7 +983,7 @@ body.everest-forms-builder {
 			//  margin: 0 0 1.5em;
 			position: relative;
 			border-bottom: none;
-			background-color: #fff;
+			background: #fff;
 
 			a.nav-tab {
 				// Builder nav
@@ -1009,12 +1008,12 @@ body.everest-forms-builder {
 				border-radius: 4px;
 				border: none transparent;
 				// max-height: 38px !important;
-				// transition: 0.3s background-color ease-in-out;
+				// transition: 0.3s background ease-in-out;
 				background: none;
 
 				&:hover,
 				&.nav-tab-active {
-					background-color: #f6f3fa;
+					background: #f6f3fa;
 					color: #7545bb;
 
 					.evf-nav-icon {
@@ -1031,7 +1030,7 @@ body.everest-forms-builder {
 				}
 
 				&:hover {
-					// background-color: #8546d3;
+					// background: #8546d3;
 				}
 
 				span {
@@ -1295,7 +1294,7 @@ body.everest-forms-builder {
 		flex-wrap: wrap;
 		align-items: center;
 		padding: 0 16px;
-		background-color: $color-white;
+		background: $color-white;
 		border-bottom: 1px solid $color_gray-lighten;
 
 		@media only screen and (max-width: 768px) {
@@ -1493,14 +1492,14 @@ body.everest-forms-builder {
 
 			.evf-template-overlay {
 				position: absolute;
-				background-color: rgba(0, 0, 0, 0.5);
+				background: rgba(0, 0, 0, 0.5);
 				top: 0;
 				left: 0;
 				right: 0;
 				bottom: 0;
 				opacity: 0;
 				visibility: hidden;
-				transition: 0.5s background-color ease-in-out;
+				transition: 0.5s background ease-in-out;
 				color: $color-white;
 				text-align: center;
 				padding: 40% 0;
@@ -1594,7 +1593,7 @@ body.everest-forms-builder {
 			.evf-button {
 				display: inline-block;
 				padding: 15px 22px;
-				background-color: $color-white;
+				background: $color-white;
 				color: #000;
 				font-size: 12px;
 				text-transform: uppercase;
@@ -2034,7 +2033,7 @@ p.search-box {
 // 	transition:
 // 		color 0.2s ease,
 // 		border-color 0.2s ease,
-// 		background-color 0.2s ease;
+// 		background 0.2s ease;
 // 	// Reset any WP button defaults
 // 	box-shadow: none !important;
 // 	outline: none;
@@ -2131,7 +2130,7 @@ p.search-box {
 				min-height: calc(100vh - 155px);
 
 				&.active {
-					padding: 18px 32px 32px;
+					padding: 24px 32px 32px;
 					background: #ffffff;
 					border-radius: 13px;
 					border: 1px solid #e1e1e1;
@@ -2179,7 +2178,7 @@ p.search-box {
 											border-color: #7545bb;
 
 											&::before {
-												background-color: #7545bb;
+												background: #7545bb;
 
 												@media screen and (max-width: 782px) {
 													width: 0.5rem;
@@ -2208,7 +2207,6 @@ p.search-box {
 					font-size: 22px;
 					line-height: 130%;
 					color: #222222;
-					padding-top: 6px;
 				}
 
 				.everest-forms-panel-field {
@@ -2283,18 +2281,16 @@ p.search-box {
 				min-height: calc(100vh - 155px);
 
 				&.active {
-					padding: 18px 32px 32px;
+					padding: 24px 32px 32px;
 					background: #ffffff;
 					border-radius: 13px;
 					border: 1px solid #e1e1e1;
-					// box-shadow: 0px 7px 29px 0px rgba(100, 100, 111, 0.09);
 				}
 
 				&-title {
 					font-size: 22px;
 					line-height: 130%;
 					color: #222222;
-					padding-top: 6px;
 				}
 
 				.everest-forms-panel-field {
@@ -2572,7 +2568,7 @@ p.search-box {
 						border-radius: 0 3px 3px 0;
 						// border: 1px solid #e1e1e1;
 						// border-left: none;
-						background-color: #f6f3fa;
+						background: #f6f3fa;
 
 						&.copy-shortcode {
 							//  font-size: 16px;
@@ -3039,7 +3035,7 @@ p.search-box {
 					width: 400px;
 					height: calc(100vh - 105px);
 					position: relative;
-					background-color: #ffff;
+					background: #ffff;
 					border-right: 1px solid #e1e1e1;
 
 					@media screen and (max-width: 1226px) {
@@ -3113,7 +3109,7 @@ p.search-box {
 					}
 
 					.everest-forms-input-group {
-						background-color: $color-white;
+						background: $color-white;
 						border: 1px solid $input-border-color;
 						border-radius: 4px;
 
@@ -3204,7 +3200,7 @@ p.search-box {
 						font-size: 12px;
 						transition: all 0.3s ease-in-out;
 						text-align: center;
-						background-color: #fbfbfd;
+						background: #fbfbfd;
 						line-height: 150%;
 						max-height: fit-content;
 
@@ -3299,7 +3295,7 @@ p.search-box {
 						&.ui-draggable-dragging {
 							margin: 0;
 							width: 105px !important;
-							background-color: $color-white;
+							background: $color-white;
 							position: relative;
 							z-index: 99999;
 
@@ -3332,7 +3328,7 @@ p.search-box {
 					}
 
 					.everest-forms-field-options {
-						background-color: #ffffff;
+						background: #ffffff;
 						display: none;
 
 						.everest-forms-border-container {
@@ -3508,7 +3504,7 @@ p.search-box {
 						}
 
 						.everest-forms-field-option-group-toggle {
-							background-color: $color_gray-light-skin;
+							background: $color_gray-light-skin;
 							border-bottom: 1px solid $color_gray-lighten;
 							padding: 15px 0;
 							font-size: 14px;
@@ -3531,12 +3527,12 @@ p.search-box {
 						font-size: 14px;
 						font-weight: 600;
 						color: $color_gray-dark;
-						// background-color: adjust-color(
+						// background: adjust-color(
 						// 	$color_gray-more-lighten,
 						// 	$saturation: -1,
 						// 	$lightness: +2
 						// );
-						background-color: none;
+						background: none;
 						border-bottom: 1px solid #e1e1e1;
 						position: relative;
 						transition: all 0.3s ease-in-out;
@@ -3567,7 +3563,7 @@ p.search-box {
 						&.active {
 							position: relative;
 							color: $everestforms;
-							background-color: $color-white;
+							background: $color-white;
 
 							&::before {
 								opacity: 1;
@@ -3895,11 +3891,11 @@ p.search-box {
 					position: relative;
 					margin-bottom: 15px;
 					padding: 20px !important;
-					background-color: transparent;
+					background: transparent;
 					border: 1px solid transparent;
 					transition:
 						0.5s border,
-						0.5s background-color;
+						0.5s background;
 
 					&:last-child {
 						margin-bottom: 0;
@@ -3921,7 +3917,7 @@ p.search-box {
 							&:hover {
 								span {
 									&.dashicons {
-										background-color: $green;
+										background: $green;
 									}
 								}
 							}
@@ -3938,7 +3934,7 @@ p.search-box {
 							&:hover {
 								span {
 									&.dashicons {
-										background-color: $red;
+										background: $red;
 									}
 								}
 							}
@@ -3955,7 +3951,7 @@ p.search-box {
 							&:hover {
 								span {
 									&.dashicons {
-										background-color: $blue;
+										background: $blue;
 									}
 								}
 							}
@@ -3986,11 +3982,11 @@ p.search-box {
 							text-align: center;
 							right: -10px;
 							border-radius: 5px;
-							background-color: $color-white;
+							background: $color-white;
 							font-weight: 600;
 							font-size: 12px;
 							top: 35px;
-							transition: 0.9s background-color;
+							transition: 0.9s background;
 							border: 1px solid $color-gray-lighten;
 							box-shadow: 1px 2px 10px 0 transparentize($color_gray-dark, 0.85);
 
@@ -4061,7 +4057,7 @@ p.search-box {
 					}
 
 					&.evf-hover {
-						// background-color: lighten($blue, 48%);
+						// background: lighten($blue, 48%);
 						// border: 1px dashed $blue;
 						background: #fcfcfc;
 						border: 1px solid #e7e7e7;
@@ -4086,7 +4082,7 @@ p.search-box {
 						border: 1px solid transparent;
 						transition:
 							0.5s border,
-							0.5s background-color;
+							0.5s background;
 						text-align: left;
 
 						&.evf-hover {
@@ -4165,7 +4161,7 @@ p.search-box {
 						.ui-sortable-placeholder {
 							width: 100%;
 							visibility: visible !important;
-							background-color: lighten($green, 42%);
+							background: lighten($green, 42%);
 							border: 1px dashed lighten($green, 15%);
 						}
 
@@ -4459,12 +4455,12 @@ p.search-box {
 							}
 
 							&.everest-forms-field-delete:hover {
-								background-color: $red;
+								background: $red;
 							}
 
 							&:hover {
 								color: #fff;
-								background-color: $blue;
+								background: $blue;
 							}
 						}
 
@@ -4533,7 +4529,7 @@ p.search-box {
 						height: auto !important;
 						left: -20px;
 						right: -20px;
-						background-color: $color-white;
+						background: $color-white;
 
 						&:hover {
 							.evf-field-action {
@@ -4555,7 +4551,7 @@ p.search-box {
 				.file-uploader {
 					width: 100%;
 					border: 2px dashed $color_gray-lighten;
-					background-color: $color_gray-light-skin;
+					background: $color_gray-light-skin;
 					border-radius: 3px;
 					cursor: pointer;
 					text-align: center;
@@ -4609,7 +4605,7 @@ p.search-box {
 						&::before {
 							content: '';
 							width: 45px;
-							background-color: $blue;
+							background: $blue;
 							height: 1px;
 							display: block;
 							left: 50%;
@@ -4632,7 +4628,7 @@ p.search-box {
 					color: $color-white;
 					padding: 15px 20px;
 					border: 0 none;
-					background-color: $green;
+					background: $green;
 					border-radius: 3px;
 				}
 			}
@@ -4756,13 +4752,13 @@ p.search-box {
 				gap: 24px;
 				// margin-left: -1.5%;
 				// margin-right: 1.5%;
-				background-color: transparent;
+				background: transparent;
 				display: flex;
 
 				.evf-grid-lists-item {
 					padding-left: 1.5%;
 					padding-right: 1.5%;
-					background-color: $color-white;
+					background: $color-white;
 				}
 			}
 
@@ -4804,9 +4800,14 @@ p.search-box {
 				position: relative;
 				margin-bottom: 20px;
 				max-width: 100%;
-				// display: flex;
-				align-items: baseline;
-				gap: 30px;
+
+				&-text,
+				&-textarea,
+				&-select {
+					display: flex;
+					align-items: baseline;
+					gap: 30px;
+				}
 
 				&.everest-forms-panel-field-toggle {
 					display: flex;
@@ -5211,7 +5212,7 @@ p.search-box {
 			font-size: 12px;
 			text-align: center;
 			margin: 0;
-			background-color: $color-white;
+			background: $color-white;
 			border: 1px solid $color_gray-lighten;
 			color: $color_gray-normal;
 
@@ -5238,7 +5239,7 @@ p.search-box {
 		.everest-forms-field.ui-draggable-dragging {
 			margin: 0;
 			width: 105px !important;
-			background-color: $color-white;
+			background: $color-white;
 			text-align: center;
 			font-size: 12px !important;
 
@@ -5373,9 +5374,8 @@ p.search-box {
 				.everest-forms-preview-wrap {
 					background: #ffffff;
 					padding: 28px 32px;
-					border-radius: 9px;
+					border-radius: 13px;
 					border: 1px solid #e1e1e1;
-					// box-shadow: 0px 7px 29px 0px rgba(100, 100, 111, 0.09);
 				}
 
 				.evf-content-sms-notifications-settings {
@@ -5518,7 +5518,7 @@ p.search-box {
 					gap: 20px;
 
 					.evf-sortable-placeholder {
-						background-color: transparentize($green, 0.95);
+						background: transparentize($green, 0.95);
 						border: 1px dashed transparentize($green, 0.75);
 					}
 				}
@@ -5616,24 +5616,25 @@ p.search-box {
 			a {
 				width: 50%;
 				display: block;
-				padding: 15px 0;
+				padding: 12px 0 16px;
 				font-size: 14px;
 				line-height: 150%;
 				font-weight: 500;
 				text-align: center;
 				color: $color_gray-dark;
 				background: #f6f7f9;
+				border-top: 3px solid transparent;
+				transition: all .3s ease-in-out;
 				// border-bottom: 1px solid $color_gray-lighten;
 
 				&.active {
 					background: $color-white;
 					color: #7545bb;
-					border-top: 3px solid #7545bb;
-					border-bottom: none;
+					border-top-color: #7545bb;
 				}
 
-				&:first-child {
-					// border-right: 1px solid $color_gray-lighten;
+				&:hover {
+					color: #7545bb;
 				}
 			}
 		}
@@ -5642,7 +5643,7 @@ p.search-box {
 
 			.everest-forms-add-fields,
 			.everest-forms-field-options {
-				background-color: #ffff;
+				background: #ffff;
 				padding: 16px 14px;
 			}
 
@@ -5981,7 +5982,7 @@ p.search-box {
 		}
 
 		.iris-error {
-			background-color: #ffafaf;
+			background: #ffafaf;
 		}
 
 		.colorpickpreview {
@@ -6047,7 +6048,7 @@ p.search-box {
 							border-color: $green;
 
 							&::before {
-								background-color: $green;
+								background: $green;
 							}
 						}
 
@@ -6062,7 +6063,7 @@ p.search-box {
 							margin: 0 auto;
 							border-radius: 2px;
 							position: absolute;
-							background-color: #ced4da;
+							background: #ced4da;
 							transform: translateY(-50%);
 						}
 					}
@@ -6140,14 +6141,14 @@ p.search-box {
 								height: 18px;
 								width: 18px;
 								bottom: 2px;
-								background-color: $color-white;
+								background: $color-white;
 								-webkit-transition: 0.4s;
 								transition: 0.4s;
 							}
 						}
 
 						&.inactive {
-							background-color: #ced4da;
+							background: #ced4da;
 
 							&::before {
 								left: 2px;
@@ -6155,7 +6156,7 @@ p.search-box {
 						}
 
 						&.active {
-							background-color: $everestforms;
+							background: $everestforms;
 
 							&::before {
 								right: 2px;
@@ -6210,7 +6211,7 @@ p.search-box {
 
 	.everest-forms-integration-content {
 		display: flex;
-		background-color: $color-white;
+		background: $color-white;
 		border: 1px solid #ced4da;
 
 		.integration-addon-detail {
@@ -6463,12 +6464,12 @@ p.search-box {
 
 							.evf-fm-import-single {
 								padding: 8px;
-								background-color: #e9ebf1;
+								background: #e9ebf1;
 								border-radius: 4px;
 								border: none;
 
 								&:hover {
-									background-color: #7e3bd0;
+									background: #7e3bd0;
 									color: #fff;
 									border: none;
 									cursor: pointer;
@@ -6477,14 +6478,14 @@ p.search-box {
 
 							.evf-fm-import-entry {
 								padding: 8px;
-								background-color: #b5facd;
+								background: #b5facd;
 								border-radius: 4px;
 								border: none;
 								display: inline;
 								margin-left: 8px;
 
 								&:not(:disabled):hover {
-									background-color: #7e3bd0;
+									background: #7e3bd0;
 									color: #fff;
 									border: none;
 									cursor: pointer;
@@ -6502,13 +6503,13 @@ p.search-box {
 						cursor: pointer;
 
 						&:hover {
-							background-color: #7e3bd0;
+							background: #7e3bd0;
 							color: #fff;
 							border: none;
 						}
 
 						&.evf-fm-btn-active {
-							background-color: #7e3bd0;
+							background: #7e3bd0;
 							color: #fff;
 							border: none;
 						}
@@ -6526,13 +6527,13 @@ p.search-box {
 				.evf-fm-import-selected-btn {
 					margin-top: 16px;
 					padding: 8px;
-					background-color: #e9ebf1;
+					background: #e9ebf1;
 					border-radius: 4px;
 					border: none;
 					align-items: right;
 
 					&:hover {
-						background-color: #7e3bd0;
+						background: #7e3bd0;
 						color: #fff;
 						border: none;
 						cursor: pointer;
@@ -6873,26 +6874,26 @@ table.wp-list-table {
 		   */
 	.log-level--emergency,
 	.log-level--alert {
-		background-color: #ff4136;
+		background: #ff4136;
 	}
 
 	.log-level--critical,
 	.log-level--error {
-		background-color: #ff851b;
+		background: #ff851b;
 	}
 
 	.log-level--warning,
 	.log-level--notice {
 		color: #222;
-		background-color: #ffdc00;
+		background: #ffdc00;
 	}
 
 	.log-level--info {
-		background-color: #0074d9;
+		background: #0074d9;
 	}
 
 	.log-level--debug {
-		background-color: #3d9970;
+		background: #3d9970;
 	}
 
 	// Adjust log table columns only when table is not collapsed.
@@ -7452,7 +7453,7 @@ img.ui-datepicker-trigger {
 
 		.select2-container--default .select2-results__option--highlighted[aria-selected],
 		.select2-container--default .select2-results__option--highlighted[data-selected] {
-			background-color: $color;
+			background: $color;
 		}
 	}
 }
@@ -7961,7 +7962,7 @@ img.ui-datepicker-trigger {
 .everest-forms-builder {
 	.evf-registered-item.ui-draggable.ui-draggable-handle.ui-draggable-dragging {
 		font-size: 12px !important;
-		background-color: #fff;
+		background: #fff;
 		border: 1px solid #cdd0d8;
 		color: #6c7680;
 
@@ -7996,7 +7997,7 @@ img.ui-datepicker-trigger {
 
 				span {
 					border: 1px solid #3498db;
-					background-color: #3498db13;
+					background: #3498db13;
 					padding: 4px 0;
 					width: 40px;
 					border-radius: 2px;
@@ -8013,11 +8014,11 @@ img.ui-datepicker-trigger {
 		border: 1px solid #3498db;
 		margin-bottom: 8px;
 		border-radius: 2px;
-		background-color: #f5fbff;
+		background: #f5fbff;
 		line-height: 1.8em;
 
 		&:hover {
-			background-color: #3498db;
+			background: #3498db;
 			color: #fff;
 			cursor: pointer;
 		}
@@ -8198,7 +8199,7 @@ img.ui-datepicker-trigger {
 				button {
 					&.btn-confirm {
 						margin: 0;
-						// background-color: $everestforms;
+						// background: $everestforms;
 					}
 				}
 			}
@@ -8509,7 +8510,7 @@ img.ui-datepicker-trigger {
 }
 
 .select2-dropdown {
-	background-color: #fff;
+	background: #fff;
 	border: 1px solid #aaa;
 	border-radius: 4px;
 	box-sizing: border-box;
@@ -8653,7 +8654,7 @@ img.ui-datepicker-trigger {
 	width: auto;
 	opacity: 0;
 	z-index: 99;
-	background-color: #fff;
+	background: #fff;
 }
 
 .select2-hidden-accessible {
@@ -8669,7 +8670,7 @@ img.ui-datepicker-trigger {
 
 .select2-container--default {
 	.select2-selection--single {
-		background-color: #fff;
+		background: #fff;
 		border: 1px solid #e1e1e1;
 		border-radius: 4px;
 		min-height: 38px;
@@ -8712,7 +8713,7 @@ img.ui-datepicker-trigger {
 	}
 
 	.select2-selection--multiple {
-		background-color: #fff;
+		background: #fff;
 		border: 1px solid #aaa;
 		border-radius: 4px;
 		cursor: text;
@@ -8750,7 +8751,7 @@ img.ui-datepicker-trigger {
 		}
 
 		.select2-selection__choice {
-			background-color: #e4e4e4;
+			background: #e4e4e4;
 			border: 1px solid #aaa;
 			border-radius: 4px;
 			cursor: default;
@@ -8805,11 +8806,11 @@ img.ui-datepicker-trigger {
 	}
 
 	.select2-results__option[aria-selected='true'] {
-		background-color: #ddd;
+		background: #ddd;
 	}
 
 	.select2-results__option[data-selected='true'] {
-		background-color: #ddd;
+		background: #ddd;
 	}
 
 	.select2-results__option {
@@ -8849,12 +8850,12 @@ img.ui-datepicker-trigger {
 
 	.select2-results__option--highlighted[aria-selected] {
 		color: #fff;
-		background-color: #0073aa;
+		background: #0073aa;
 	}
 
 	.select2-results__option--highlighted[data-selected] {
 		color: #222;
-		background-color: #eee8f7;
+		background: #eee8f7;
 	}
 
 	.select2-results__group {
@@ -8900,7 +8901,7 @@ img.ui-datepicker-trigger {
 
 .select2-container--default.select2-container--disabled {
 	.select2-selection--single {
-		background-color: #eee;
+		background: #eee;
 		cursor: default;
 
 		.select2-selection__clear {
@@ -8909,7 +8910,7 @@ img.ui-datepicker-trigger {
 	}
 
 	.select2-selection--multiple {
-		background-color: #eee;
+		background: #eee;
 		cursor: default;
 	}
 
@@ -8962,7 +8963,7 @@ img.ui-datepicker-trigger {
 
 .select2-container--classic {
 	.select2-selection--single {
-		background-color: #f7f7f7;
+		background: #f7f7f7;
 		border: 1px solid #aaa;
 		border-radius: 4px;
 		outline: 0;
@@ -8990,7 +8991,7 @@ img.ui-datepicker-trigger {
 		}
 
 		.select2-selection__arrow {
-			background-color: #ddd;
+			background: #ddd;
 			border: none;
 			border-left: 1px solid #aaa;
 			border-top-right-radius: 4px;
@@ -9019,7 +9020,7 @@ img.ui-datepicker-trigger {
 	}
 
 	.select2-selection--multiple {
-		background-color: #fff;
+		background: #fff;
 		border: 1px solid #aaa;
 		border-radius: 4px;
 		cursor: text;
@@ -9040,7 +9041,7 @@ img.ui-datepicker-trigger {
 		}
 
 		.select2-selection__choice {
-			background-color: #e4e4e4;
+			background: #e4e4e4;
 			border: 1px solid #aaa;
 			border-radius: 4px;
 			cursor: default;
@@ -9078,7 +9079,7 @@ img.ui-datepicker-trigger {
 	}
 
 	.select2-dropdown {
-		background-color: #fff;
+		background: #fff;
 		border: 1px solid transparent;
 	}
 
@@ -9106,12 +9107,12 @@ img.ui-datepicker-trigger {
 	}
 
 	.select2-results__option--highlighted[aria-selected] {
-		background-color: #3875d7;
+		background: #3875d7;
 		color: #fff;
 	}
 
 	.select2-results__option--highlighted[data-selected] {
-		background-color: #3875d7;
+		background: #3875d7;
 		color: #fff;
 	}
 
@@ -9419,12 +9420,12 @@ img.ui-datepicker-trigger {
 							margin-bottom: 20px;
 							border-radius: 4px;
 							border: 1px solid $color_gray-lighten;
-							background-color: #fcfcfd;
+							background: #fcfcfd;
 
 							input {
 								&.score_from {
 									pointer-events: none;
-									background-color: $color_gray-light-skin;
+									background: $color_gray-light-skin;
 								}
 							}
 
@@ -9433,7 +9434,7 @@ img.ui-datepicker-trigger {
 
 								input {
 									pointer-events: none;
-									background-color: $color_gray-light-skin;
+									background: $color_gray-light-skin;
 								}
 							}
 
@@ -9496,7 +9497,7 @@ img.ui-datepicker-trigger {
 							display: block;
 							text-align: right;
 							margin-left: auto;
-							background-color: #7e3bd0;
+							background: #7e3bd0;
 							padding: 6px 16px;
 							border: none;
 							border-radius: 3px;
@@ -10122,7 +10123,7 @@ img.ui-datepicker-trigger {
 					height: 5px;
 					display: flex;
 					overflow: hidden;
-					background-color: $color_gray-lighten;
+					background: $color_gray-lighten;
 					border-radius: 3px;
 
 					.progress-bar {
@@ -10132,7 +10133,7 @@ img.ui-datepicker-trigger {
 						color: $color-white;
 						text-align: center;
 						white-space: nowrap;
-						background-color: $everestforms;
+						background: $everestforms;
 						transition: width 0.6s ease;
 					}
 				}
@@ -10163,12 +10164,12 @@ img.ui-datepicker-trigger {
 	*/
 #everest-forms-entry-fields:not(.postbox) {
 	.correct_answer {
-		background-color: rgba(0, 255, 43, 0.1);
+		background: rgba(0, 255, 43, 0.1);
 		padding: 7px;
 	}
 
 	.wrong_answer {
-		background-color: rgba(255, 0, 0, 0.1);
+		background: rgba(255, 0, 0, 0.1);
 		padding: 7px;
 	}
 
@@ -10212,12 +10213,12 @@ img.ui-datepicker-trigger {
 
 				&:nth-child(1) {
 					outline-color: #008000;
-					background-color: #eeffee;
+					background: #eeffee;
 				}
 
 				&:nth-child(2) {
 					outline-color: #fa5252;
-					background-color: #fff1f1;
+					background: #fff1f1;
 				}
 			}
 		}
@@ -10242,7 +10243,7 @@ img.ui-datepicker-trigger {
 		flex: 1;
 		padding: 20px;
 		// background: inherit;
-		// background-color: #f4f4f4 !important;
+		// background: #f4f4f4 !important;
 		box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 
 		.everest-forms-options-header {
@@ -10255,7 +10256,7 @@ img.ui-datepicker-trigger {
 		}
 
 		.everest-forms-card {
-			background-color: #f1f1f1;
+			background: #f1f1f1;
 			border-radius: 5px;
 			padding: 20px;
 			margin-bottom: 20px;
@@ -10360,12 +10361,12 @@ img.ui-datepicker-trigger {
 				font-size: 16px;
 				border-radius: 5px;
 				cursor: pointer;
-				background-color: #6c63ff;
+				background: #6c63ff;
 				color: #fff;
 				border: none;
 
 				&:hover {
-					background-color: #5b52e6;
+					background: #5b52e6;
 				}
 			}
 		}
@@ -11656,7 +11657,7 @@ body {
 }
 
 #everest-forms-dashboard {
-	background-color: #fafafc;
+	background: #fafafc;
 }
 
 .evf-oxy-element {
@@ -12517,7 +12518,7 @@ body {
 }
 
 #everest-forms-list-table__container {
-	background-color: #ffffff;
+	background: #ffffff;
 	// padding: 24px;
 	// margin: 25px auto;
 	border-radius: 7px;
@@ -12953,7 +12954,7 @@ button#show-settings-link {
 		cursor: pointer;
 		text-decoration: underline;
 		padding: 5px;
-		background-color: #ffffff;
+		background: #ffffff;
 		width: 30px;
 		height: 30px;
 	}
@@ -12982,7 +12983,7 @@ button#show-settings-link {
 .evf-meta-key-warning {
 	margin-top: 8px;
 	padding: 10px;
-	background-color: #fff7f1;
+	background: #fff7f1;
 	border-left: 3px solid orange;
 	color: #6b4d00;
 	font-size: 14px;
@@ -13041,7 +13042,7 @@ button#show-settings-link {
 		max-width: 740px;
 		border-radius: 8px;
 		padding: 22px 22px 0 22px;
-		background-color: #fcfcfd;
+		background: #fcfcfd;
 		border: 1px solid #f4f4f4;
 	}
 }
@@ -13058,7 +13059,7 @@ button#show-settings-link {
 .jconfirm-buttons .evf_entries_save_action {
 	font-size: 15px;
 	font-weight: 600;
-	background-color: #7545bb;
+	background: #7545bb;
 	color: #fff;
 	border-radius: 4px;
 	padding: 10px 20px;
