@@ -36,7 +36,7 @@ $breakpoint-mobile: 782px;
 	.everest-forms-accordion-wrapper {
 		padding: 0;
 		margin: 0;
-		gap: $accordion-gap;
+		gap: 16px;
 
 		.everest-forms-accordion-item {
 			border: 1px solid $accordion-border-color;
@@ -44,8 +44,9 @@ $breakpoint-mobile: 782px;
 			background: $accordion-bg-white;
 
 			&.is-open {
-				border-color: darken($accordion-border-color, 5%);
-				box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+				// border-color: darken($accordion-border-color, 5%);
+				border-color: #e1e1e1;
+				// box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 			}
 		}
 	}
@@ -55,8 +56,7 @@ $breakpoint-mobile: 782px;
 .everest-forms-accordion-wrapper {
 	display: flex;
 	flex-direction: column;
-	gap: $accordion-gap;
-	margin: 0 0 $card-gap 0;
+	gap: 24px;
 	padding: 0;
 
 	&:last-child {
@@ -72,12 +72,10 @@ $breakpoint-mobile: 782px;
 	transition: all 0.2s ease;
 
 	&.is-open {
-		border-color: darken($accordion-border-color, 5%);
-		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+		border-color: #e1e1e1;
 
 		.everest-forms-accordion-header {
 			border-bottom: 1px solid $accordion-border-color;
-			// background: #fafafa;
 
 			.everest-forms-accordion-toggle {
 				svg {
@@ -157,7 +155,7 @@ $breakpoint-mobile: 782px;
 }
 
 .everest-forms-accordion-icon {
-	display: flex;
+	display: flex !important;
 	align-items: center;
 	justify-content: center;
 	width: $accordion-icon-size;
@@ -191,7 +189,7 @@ $breakpoint-mobile: 782px;
 }
 
 .everest-forms-accordion-toggle {
-	display: flex;
+	display: inline-flex;
 	align-items: center;
 	justify-content: center;
 	width: 24px;
@@ -209,28 +207,178 @@ $breakpoint-mobile: 782px;
 }
 
 .everest-forms-accordion-content {
+	padding: 0;
 	max-height: 0;
 	overflow: hidden;
 	transition: max-height 0.4s ease;
+
+	&-inner {
+		.evf-account-connect {
+			h3 {
+				margin: 0 0 4px;
+				font-size: 16px;
+				line-height: 26px;
+				color: #383838;
+			}
+
+			p,
+			ol {
+				font-size: 14px;
+				line-height: 24px;
+				color: #484848;
+				margin: 0 0 20px;
+			}
+
+			ol {
+				padding-left: 16px;
+				margin-bottom: 12px;
+
+				li {
+					a {
+						color: $accordion-primary-color;
+						transition: all 0.3s ease;
+
+						&:hover {
+							text-decoration: underline;
+						}
+					}
+				}
+			}
+
+			>div {
+				p {
+					margin-bottom: 12px;
+				}
+			}
+
+			form {
+				.evf-connection-form {
+					display: flex;
+					flex-direction: column;
+					gap: 24px;
+
+					&.hidden,
+					&.everest-forms-hidden {
+						display: none !important;
+					}
+
+					.evf-connection-field {
+						label {
+							display: flex;
+							align-items: center;
+						}
+
+						strong {
+							display: block;
+							max-width: 300px;
+							width: 100%;
+							color: #383838;
+							font-size: 14px;
+							font-weight: 500;
+							line-height: 24px;
+						}
+
+						input {
+							flex: 1;
+							height: 36px;
+							border-radius: 4px;
+							width: 100%;
+							background: #ffffff;
+							border-color: #e1e1e1;
+							padding-left: 12px;
+							padding-right: 12px;
+							color: #383838;
+							margin: 0;
+
+							&:focus {
+								outline: none;
+								box-shadow: none;
+								border-color: #7e3bd0;
+							}
+						}
+					}
+				}
+
+				.everest-forms-btn-primary {
+					margin-top: 30px;
+
+					&:hover {
+						transform: translateY(0);
+					}
+				}
+			}
+		}
+
+		.evf-connection-list {
+			margin-top: 30px;
+
+			&-table {
+				width: 100%;
+
+				tbody {
+					tr {
+						display: grid;
+						grid-template-columns: auto 1fr auto;
+						border: 1px solid #e1e1e1;
+						padding: 12px 16px;
+						margin-bottom: 12px;
+						border-radius: 4px;
+
+						&:last-child {
+							margin-bottom: 0;
+						}
+
+						td {
+							font-size: 13px;
+							line-height: 24px;
+							color: #888888;
+
+							&:first-of-type {
+								margin-right: 6px;
+							}
+
+							&:last-child {
+								text-align: right;
+							}
+
+							strong {
+								font-size: 14px;
+								line-height: 24px;
+								color: #383838;
+							}
+
+							.disconnect {
+								font-size: 13px;
+								line-height: 20px;
+								color: #f25656;
+
+								&:focus {
+									outline: none;
+									box-shadow: none;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 }
 
 .everest-forms-accordion-content-inner {
-	padding: 24px $accordion-spacing; // Increased from 20px
-	// background: #fafafa;
 
 	.everest-forms-global-settings,
 	.everest-forms-panel-field {
 		display: flex;
-		align-items: center;
-		margin-bottom: 28px !important;
+		align-items: center !important;
+		margin-bottom: 24px !important;
 		gap: 20px;
 
 		&:last-child {
-			margin-bottom: 0;
+			margin-bottom: 0 !important;
 		}
 
-		> label {
-			width: 220px;
+		>label {
 			flex-shrink: 0;
 			margin: 0;
 			font-size: 14px;
@@ -239,7 +387,8 @@ $breakpoint-mobile: 782px;
 			display: flex;
 			align-items: center;
 			gap: 8px;
-			line-height: 1.5;
+			line-height: 24px;
+			padding-top: 0 !important;
 
 			.everest-forms-help-tip {
 				margin: 0;
@@ -400,11 +549,12 @@ $breakpoint-mobile: 782px;
 	.forminp-password,
 	.forminp-email,
 	.forminp-number {
-		> button,
-		> a,
-		> span.action-icon,
-		> span.toggle-icon,
-		> .dashicons {
+
+		>button,
+		>a,
+		>span.action-icon,
+		>span.toggle-icon,
+		>.dashicons {
 			display: flex;
 			align-items: center;
 			justify-content: center;
@@ -438,12 +588,12 @@ $breakpoint-mobile: 782px;
 		}
 
 		// When input has adjacent button, adjust input border radius
-		input + button,
-		input + a,
-		input + span.action-icon,
-		input + span.toggle-icon,
-		input + .dashicons {
-			~ input {
+		input+button,
+		input+a,
+		input+span.action-icon,
+		input+span.toggle-icon,
+		input+.dashicons {
+			~input {
 				border-radius: $accordion-border-radius 0 0 $accordion-border-radius;
 			}
 		}
@@ -465,7 +615,7 @@ $breakpoint-mobile: 782px;
 				position: relative;
 
 				input[type='checkbox'] {
-					& + .slider {
+					&+.slider {
 						background-color: #ddd;
 						transition: all 0.3s ease;
 
@@ -478,7 +628,7 @@ $breakpoint-mobile: 782px;
 						}
 					}
 
-					&:checked + .slider {
+					&:checked+.slider {
 						background-color: $accordion-success-color;
 
 						&::before {
@@ -486,7 +636,7 @@ $breakpoint-mobile: 782px;
 						}
 					}
 
-					&:focus + .slider {
+					&:focus+.slider {
 						box-shadow: 0 0 0 3px rgba($accordion-success-color, 0.1);
 					}
 				}
@@ -528,10 +678,12 @@ $breakpoint-mobile: 782px;
 
 	.everest-forms-save-button,
 	.everest-forms-btn-primary {
-		display: inline-flex;
+		display: flex;
 		align-items: center;
 		justify-content: center;
-		min-width: 100px;
+		// min-width: 100px;
+		width: max-content;
+		margin-left: auto;
 		height: 40px;
 		padding: 0 24px;
 		margin-top: 16px;
@@ -540,26 +692,29 @@ $breakpoint-mobile: 782px;
 		border-radius: $accordion-border-radius;
 		color: $accordion-bg-white;
 		font-size: 14px;
+		line-height: 24px;
 		font-weight: 500;
 		cursor: pointer;
-		transition: all 0.2s ease;
-		float: right;
-		box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+		transition: all 0.3s ease;
+		// float: right;
+		// box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 
 		&:hover {
 			background: darken($accordion-primary-color, 8%);
-			box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-			transform: translateY(-1px);
+			// box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+			box-shadow: none;
+			// transform: translateY(-1px);
 		}
 
 		&:active {
-			transform: translateY(0);
-			box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+			// transform: translateY(0);
+			// box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 		}
 
 		&:focus {
 			outline: none;
-			box-shadow: 0 0 0 3px rgba($accordion-primary-color, 0.2);
+			box-shadow: none;
+			// box-shadow: 0 0 0 3px rgba($accordion-primary-color, 0.2);
 		}
 	}
 }
@@ -636,12 +791,13 @@ $breakpoint-mobile: 782px;
 			gap: 8px;
 			margin-bottom: 24px; // Updated to match better spacing
 
-			> label {
+			>label {
 				width: 100%;
 			}
 
 			&--field,
 			.everest-forms-global-settings--field {
+
 				input[type='text'],
 				input[type='email'],
 				input[type='password'],
