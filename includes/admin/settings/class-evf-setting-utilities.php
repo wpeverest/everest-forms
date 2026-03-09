@@ -118,7 +118,7 @@ class EVF_Settings_Utilities extends EVF_Settings_Page {
 		$sections        = $this->get_sections();
 		$current_section = $this->get_current_section();
 
-		if ( empty( $sections ) || 1 === count( $sections ) ) {
+		if ( empty( $sections ) ) {
 			return;
 		}
 
