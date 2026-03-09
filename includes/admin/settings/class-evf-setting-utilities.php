@@ -24,7 +24,6 @@ class EVF_Settings_Utilities extends EVF_Settings_Page {
 		$this->id    = 'utilities';
 		$this->label = __( 'Utilities', 'everest-forms' );
 
-
 		parent::__construct();
 
 		add_action( 'everest_forms_sections_' . $this->id, array( $this, 'output_sections' ) );
@@ -47,7 +46,6 @@ class EVF_Settings_Utilities extends EVF_Settings_Page {
 	/**
 	 * Get sections.
 	 *
-	 *
 	 * @return array
 	 */
 	public function get_sections() {
@@ -61,6 +59,24 @@ class EVF_Settings_Utilities extends EVF_Settings_Page {
 		}
 
 		return apply_filters( 'everest_forms_get_sections_' . $this->id, $sections );
+	}
+
+	/**
+	 * Returns true if at least one real (non-upsell) section exists.
+	 *
+	 * @return bool
+	 */
+	public function has_real_sections() {
+		if ( ! defined( 'EFP_PLUGIN_FILE' ) ) {
+			return true;
+		}
+
+		foreach ( $this->get_sections() as $section ) {
+			if ( ! $this->is_upsell_section( $section ) ) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -167,7 +183,6 @@ class EVF_Settings_Utilities extends EVF_Settings_Page {
 	 * @param array $section Section config array.
 	 */
 	private function render_upsell_card( array $section ) {
-		error_log( print_r( $section, true ) );
 		$title       = $section['label'] ?? '';
 		$description = $section['description'] ?? '';
 		$icon        = $section['icon'] ?? '';
@@ -229,9 +244,9 @@ class EVF_Settings_Utilities extends EVF_Settings_Page {
 						<polyline points="7 7 17 7 17 17"/>
 					</svg>
 				</a>
-					<?php if ( $video_id ) : ?>
+				<?php if ( $video_id ) : ?>
 					<a href="<?php echo esc_url( 'https://www.youtube.com/watch?v=' . $video_id ); ?>"
-						class="evf-upsell-btn  evf-upsell-upgrade-trigger"
+						class="evf-upsell-btn evf-upsell-upgrade-trigger"
 						data-name="<?php echo esc_attr( $title ); ?>"
 						data-links="<?php echo esc_attr( $video_id ); ?>"
 						data-upgrade-url="<?php echo esc_url( $upgrade_url ); ?>">
