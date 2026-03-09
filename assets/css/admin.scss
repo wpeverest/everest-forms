@@ -718,8 +718,8 @@ body.everest-forms-builder {
 
 			&:checked {
 				+.slider {
-					//  background-color: $green;
-					background-color: $evf_primary-color;
+					// background: $evf_primary-color;
+					background: #4cc741;
 
 					&::before {
 						transform: translateX(100%);
@@ -736,7 +736,7 @@ body.everest-forms-builder {
 			right: 0;
 			bottom: 0;
 			transition: 0.4s;
-			background-color: #cdd0d2;
+			background: #cdd0d2;
 
 			&::before {
 				content: '';
@@ -3444,11 +3444,11 @@ p.search-box {
 								&-conditionals,
 								&-calculations,
 								&-quiz {
-									// background: #fbfbfd;
 									background: $color-white;
 									border: 1px solid #e1e1e1;
-									border-radius: 2px;
-									margin-bottom: 16px;
+									border-radius: 4px;
+									margin-bottom: 12px;
+									overflow: hidden;
 
 									.everest-forms-field-option-group-toggle {
 										padding: 16px 14px;
@@ -3488,11 +3488,11 @@ p.search-box {
 							&-conditionals,
 							&-calculations,
 							&-quiz {
-								// background: #fbfbfd;
 								background: $color-white;
 								border: 1px solid #e1e1e1;
-								border-radius: 2px;
-								margin-bottom: 16px;
+								border-radius: 4px;
+								margin-bottom: 12px;
+								overflow: hidden;
 
 								.everest-forms-field-option-group-toggle {
 									padding: 16px 14px;
@@ -4804,9 +4804,14 @@ p.search-box {
 				position: relative;
 				margin-bottom: 20px;
 				max-width: 100%;
-				// display: flex;
-				align-items: baseline;
-				gap: 30px;
+
+				&-text,
+				&-textarea,
+				&-select {
+					display: flex;
+					align-items: baseline;
+					gap: 30px;
+				}
 
 				&.everest-forms-panel-field-toggle {
 					display: flex;
@@ -5616,24 +5621,24 @@ p.search-box {
 			a {
 				width: 50%;
 				display: block;
-				padding: 15px 0;
+				padding: 12px 0 16px;
 				font-size: 14px;
 				line-height: 150%;
 				font-weight: 500;
 				text-align: center;
 				color: $color_gray-dark;
 				background: #f6f7f9;
-				// border-bottom: 1px solid $color_gray-lighten;
+				border-top: 3px solid transparent;
+				transition: all .3s ease-in-out;
 
 				&.active {
 					background: $color-white;
 					color: #7545bb;
-					border-top: 3px solid #7545bb;
-					border-bottom: none;
+					border-top-color: #7545bb;
 				}
 
-				&:first-child {
-					// border-right: 1px solid $color_gray-lighten;
+				&:hover {
+					color: #7545bb;
 				}
 			}
 		}
