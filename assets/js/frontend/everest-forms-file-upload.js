@@ -232,6 +232,8 @@
 			dz.loading--;
 			toggleSubmit( dz );
 			updateInputValue( dz );
+			var $td = $( dz.element ).closest('.evf-field').closest('td');
+			$td.find('.evf-error').remove();
 		};
 	}
 
