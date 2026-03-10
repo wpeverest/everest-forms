@@ -940,31 +940,34 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 						break;
 
 					case 'restapi_key':
-						$key = $value['value'];
+						$key                   = $value['value'];
+						$key                   = $value['value'];
+						$restapi_enabled       = get_option( 'everest_forms_enable_restapi', 'no' );
+						$restapi_wrapper_style = ( 'yes' === $restapi_enabled ) ? '' : 'display:none;';
 
 						?>
-<div class="everest-forms-global-settings evf-restapi-key-wrapper">
-	<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?>
-						<?php echo wp_kses_post( $tooltip_html ); ?></label>
-	<div class="everest-forms-global-settings--field forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>"
-		style="display:flex; gap:2px">
-						<?php echo wp_kses_post( $description ); ?>
-		<input type="text" style="" id="<?php echo esc_attr( $value['id'] ); ?>"
-			name="<?php echo esc_attr( $value['id'] ); ?>" style="<?php echo esc_attr( $value['css'] ); ?> "
-			class="<?php echo esc_attr( $value['class'] ); ?> help_tip tooltipstered"
-			value="<?php echo esc_attr( $key ); ?>" data-tip="Copy ApiKey" data-copied="Copied!" readonly />
-		<div>
-						<?php
-						$unique_id = isset( $value['id'] ) ? $value['id'] : '';
-						if ( '' === $key ) {
-							echo '<button type="button" id="' . $unique_id . '" data-id="' . $unique_id . '" class="everest-forms-btn everest-forms-btn-primary  everest-forms-generate-api-key">generate</button>';
-						} else {
-							echo '<button type="button" id="' . $unique_id . '" data-id="' . $unique_id . '" class="everest-forms-btn everest-forms-btn-primary  everest-forms-generate-api-key ' . $unique_id . '">regenerate</button>';
-						}
-						?>
-		</div>
-	</div>
-</div>
+							<div class="everest-forms-global-settings evf-restapi-key-wrapper" style="<?php echo esc_attr( $restapi_wrapper_style ); ?>">
+							<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?>
+												<?php echo wp_kses_post( $tooltip_html ); ?></label>
+							<div class="everest-forms-global-settings--field forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>"
+								style="display:flex; gap:2px">
+												<?php echo wp_kses_post( $description ); ?>
+								<input type="text" style="" id="<?php echo esc_attr( $value['id'] ); ?>"
+									name="<?php echo esc_attr( $value['id'] ); ?>" style="<?php echo esc_attr( $value['css'] ); ?> "
+									class="<?php echo esc_attr( $value['class'] ); ?> help_tip tooltipstered"
+									value="<?php echo esc_attr( $key ); ?>" data-tip="Copy ApiKey" data-copied="Copied!" readonly />
+								<div>
+												<?php
+												$unique_id = isset( $value['id'] ) ? $value['id'] : '';
+												if ( '' === $key ) {
+													echo '<button type="button" id="' . $unique_id . '" data-id="' . $unique_id . '" class="everest-forms-btn everest-forms-btn-primary  everest-forms-generate-api-key">generate</button>';
+												} else {
+													echo '<button type="button" id="' . $unique_id . '" data-id="' . $unique_id . '" class="everest-forms-btn everest-forms-btn-primary  everest-forms-generate-api-key ' . $unique_id . '">regenerate</button>';
+												}
+												?>
+								</div>
+							</div>
+						</div>
 						<?php
 						break;
 
