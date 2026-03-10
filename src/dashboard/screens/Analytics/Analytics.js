@@ -1,29 +1,64 @@
 /**
  * External Dependencies
  */
-import { Box, Button, Text } from '@chakra-ui/react';
 import { applyFilters } from '@wordpress/hooks';
 import { __ } from '@wordpress/i18n';
 import { useEffect, useState } from 'react';
 
 import analyticsPreview from '../../images/analytics-preview.png';
 
+/* global _EVF_DASHBOARD_ */
+
+// ── Icons ─────────────────────────────────────────────────────────────────────
+
+const CrownIcon = () => (
+	<svg
+		xmlns="http://www.w3.org/2000/svg"
+		viewBox="0 0 24 24"
+		fill="none"
+		stroke="currentColor"
+		strokeWidth="2"
+		strokeLinecap="round"
+		strokeLinejoin="round"
+	>
+		<path d="M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.734H5.81a1 1 0 0 1-.957-.734L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z" />
+		<path d="M5 21h14" />
+	</svg>
+);
+
 const ChevronDownIcon = () => (
 	<svg
 		xmlns="http://www.w3.org/2000/svg"
-		width="20"
-		height="20"
 		viewBox="0 0 24 24"
 		fill="none"
 		stroke="#6b7280"
 		strokeWidth="2"
 		strokeLinecap="round"
 		strokeLinejoin="round"
-		style={{ flexShrink: 0, pointerEvents: 'none' }}
 	>
 		<polyline points="6 9 12 15 18 9" />
 	</svg>
 );
+
+const CalendarIcon = () => (
+	<svg
+		xmlns="http://www.w3.org/2000/svg"
+		viewBox="0 0 24 24"
+		fill="none"
+		stroke="#6b7280"
+		strokeWidth="2"
+		strokeLinecap="round"
+		strokeLinejoin="round"
+		style={{ opacity: 0.6 }}
+	>
+		<rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+		<line x1="16" y1="2" x2="16" y2="6" />
+		<line x1="8" y1="2" x2="8" y2="6" />
+		<line x1="3" y1="10" x2="21" y2="10" />
+	</svg>
+);
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
 
 const getStaticDateRange = () => {
 	const now = new Date();
@@ -38,26 +73,6 @@ const getStaticDateRange = () => {
 	return `${fmt(from)} – ${fmt(now)}`;
 };
 
-const TRIGGER_STYLE = {
-	display: 'inline-flex',
-	alignItems: 'center',
-	gap: '8px',
-	padding: '10px 14px',
-	minHeight: '42px',
-	fontSize: '14px',
-	fontWeight: 500,
-	lineHeight: '1.2rem',
-	border: 0,
-	boxShadow: 'none',
-	backgroundColor: 'transparent',
-	color: '#111827',
-	borderRadius: '4px',
-	cursor: 'default',
-	userSelect: 'none',
-	whiteSpace: 'nowrap',
-	outline: 'none',
-};
-
 const METRIC_BOXES = [
 	{ label: __('Total Submissions', 'everest-forms') },
 	{ label: __('Complete Submissions', 'everest-forms') },
@@ -65,6 +80,19 @@ const METRIC_BOXES = [
 	{ label: __('Impressions', 'everest-forms') },
 ];
 
+// ── Free Analytics Content ────────────────────────────────────────────────────
+
+/**
+ * FreeAnalyticsContent
+ *
+ * Shows a non-interactive header (filters + metric boxes showing 0) that
+ * mirrors the Pro analytics UI, then a blurred Pro screenshot with an
+ * "Unlock Advanced Analytics" upgrade overlay.
+ *
+ * All styles live in assets/css/admin.scss under .EVF-Free-Analytics.
+ * When the Pro plugin is active it replaces this entirely via the
+ * `everest-forms-analytics` WordPress filter.
+ */
 const FreeAnalyticsContent = () => {
 	const upgradeURL =
 		typeof _EVF_DASHBOARD_ !== 'undefined' && _EVF_DASHBOARD_.upgradeURL
@@ -74,37 +102,35 @@ const FreeAnalyticsContent = () => {
 	const dateRange = getStaticDateRange();
 
 	return (
-		<div
-			style={{
-				backgroundColor: '#fff',
-				fontFamily: 'inherit',
-				padding: '24px 32px 16px',
-			}}
-		>
-			<div
-				style={{
-					display: 'flex',
-					alignItems: 'center',
-					gap: '16px',
-					flexWrap: 'wrap',
-				}}
-			>
-				<div style={{ marginLeft: '-12px' }}>
-					<button style={TRIGGER_STYLE} disabled tabIndex={-1}>
+		<div className="EVF-Free-Analytics">
+			{/* ── Filter bar ── */}
+			<div className="EVF-Free-Analytics__Filters">
+				<div>
+					<button
+						className="EVF-Free-Analytics__FilterTrigger"
+						disabled
+						tabIndex={-1}
+					>
 						{__('All Forms', 'everest-forms')}
 						<ChevronDownIcon />
 					</button>
 				</div>
-
 				<div>
-					<button style={TRIGGER_STYLE} disabled tabIndex={-1}>
+					<button
+						className="EVF-Free-Analytics__FilterTrigger"
+						disabled
+						tabIndex={-1}
+					>
 						<span>{dateRange}</span>
 						<ChevronDownIcon />
 					</button>
 				</div>
-
 				<div>
-					<button style={TRIGGER_STYLE} disabled tabIndex={-1}>
+					<button
+						className="EVF-Free-Analytics__FilterTrigger"
+						disabled
+						tabIndex={-1}
+					>
 						{__('Day', 'everest-forms')}
 						<ChevronDownIcon />
 					</button>
@@ -112,161 +138,57 @@ const FreeAnalyticsContent = () => {
 			</div>
 
 			{/* ── Metric boxes ── */}
-			<div
-				style={{
-					display: 'flex',
-					flexWrap: 'wrap',
-					width: '100%',
-					borderTop: '1px solid #e5e7eb',
-					marginTop: '16px',
-				}}
-			>
-				{METRIC_BOXES.map((metric, index) => (
-					<div
-						key={metric.label}
-						style={{
-							flex: '1 1 0',
-							minWidth: 0,
-							padding: index !== 0 ? '16px 24px' : '16px 24px 16px 0px',
-							borderBottom: '1px solid #e5e7eb',
-							borderRight:
-								index < METRIC_BOXES.length - 1 ? '1px solid #e5e7eb' : 'none',
-						}}
-					>
-						<div
-							style={{
-								display: 'flex',
-								alignItems: 'center',
-								marginBottom: '8px',
-							}}
-						>
-							<div style={{ marginLeft: '-12px' }}>
-								<button style={TRIGGER_STYLE} disabled tabIndex={-1}>
-									<span
-										style={{
-											fontSize: '14px',
-											fontWeight: 500,
-											color: '#111827',
-										}}
-									>
-										{metric.label}
-									</span>
-								</button>
-							</div>
-						</div>
-
-						{/* Value */}
-						<div
-							style={{
-								fontSize: '24px',
-								fontWeight: 600,
-								color: '#111827',
-								lineHeight: 1.5,
-							}}
-						>
-							0
-							<span
-								style={{
-									display: 'inline-flex',
-									alignItems: 'center',
-									gap: '2px',
-									fontWeight: 500,
-									fontSize: '14px',
-									marginLeft: '8px',
-									color: '#16a34a',
-								}}
+			<div className="EVF-Free-Analytics__Metrics">
+				{METRIC_BOXES.map((metric) => (
+					<div key={metric.label} className="EVF-Free-Analytics__Metric">
+						<div className="EVF-Free-Analytics__MetricHeader">
+							<button
+								className="EVF-Free-Analytics__MetricLabel"
+								disabled
+								tabIndex={-1}
 							>
-								▲ 0%
-							</span>
+								<span>{metric.label}</span>
+								<ChevronDownIcon />
+							</button>
 						</div>
-
-						<div
-							style={{
-								fontSize: '14px',
-								fontWeight: 400,
-								color: '#6b7280',
-								lineHeight: 1.5,
-								marginTop: '4px',
-							}}
-						>
+						<div className="EVF-Free-Analytics__MetricValue">
+							0<span className="EVF-Free-Analytics__MetricDelta">▲ 0%</span>
+						</div>
+						<div className="EVF-Free-Analytics__MetricComparison">
 							{__('vs. 0 last period', 'everest-forms')}
 						</div>
 					</div>
 				))}
 			</div>
 
-			<Box
-				style={{ position: 'relative', overflow: 'hidden', marginTop: '20px' }}
-			>
-				<Box
-					as="img"
+			{/* ── Blurred preview + upgrade overlay ── */}
+			<div className="EVF-Free-Analytics__Preview">
+				<img
+					className="EVF-Free-Analytics__PreviewImage"
 					src={analyticsPreview}
 					alt=""
-					style={{
-						display: 'block',
-						width: '100%',
-						filter: 'blur(2px)',
-						transform: 'scale(1.02)',
-						transformOrigin: 'top left',
-						userSelect: 'none',
-						pointerEvents: 'none',
-					}}
 				/>
-
-				<Box
-					style={{
-						position: 'absolute',
-						top: '40%',
-						left: '50%',
-						transform: 'translate(-50%, -50%)',
-						backgroundColor: '#ffffff',
-						borderRadius: '16px',
-						boxShadow: '0 8px 48px rgba(0,0,0,0.18)',
-						padding: '56px 48px',
-						textAlign: 'center',
-						maxWidth: '520px',
-						width: '90%',
-						zIndex: 10,
-					}}
-				>
-					<Text
-						style={{
-							fontSize: '26px',
-							fontWeight: '700',
-							color: '#111827',
-							marginBottom: '14px',
-							lineHeight: 1.3,
-						}}
-					>
+				<div className="EVF-Free-Analytics__Overlay">
+					<h3 className="EVF-Free-Analytics__OverlayTitle">
 						{__('Unlock Advanced Analytics', 'everest-forms')}
-					</Text>
-					<Text
-						style={{
-							fontSize: '15px',
-							color: '#6b7280',
-							lineHeight: 1.7,
-							marginBottom: '32px',
-						}}
-					>
+					</h3>
+					<p className="EVF-Free-Analytics__OverlayText">
 						{__(
 							'Get powerful analytics with submission tracking, form insights, conversion analysis, and advanced visualizations.',
 							'everest-forms',
 						)}
-					</Text>
-					<Button
-						as="a"
-						href={upgradeURL}
-						colorScheme="primary"
-						_hover={{ textDecoration: 'none', opacity: 0.88, color: 'white' }}
-						_active={{ opacity: 0.8 }}
-					>
+					</p>
+					<a href={upgradeURL} className="EVF-Free-Analytics__UpgradeBtn">
+						<CrownIcon />
 						{__('Upgrade to Pro', 'everest-forms')}
-					</Button>
-				</Box>
-			</Box>
+					</a>
+				</div>
+			</div>
 		</div>
 	);
 };
+
+// ── Analytics Screen ──────────────────────────────────────────────────────────
 
 /**
  * Analytics Screen Component
