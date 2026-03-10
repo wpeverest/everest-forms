@@ -392,17 +392,26 @@ jQuery( function( $ ) {
 			});
 		},
 		limit_file_upload: function () {
-			if (!evf_data.is_pro) {
-				$(document.body)
-					.find(
-						'.everest-forms-field-option-row-max_file_number input[type="number"]',
-					)
-					.on('input', function () {
-						var $this = $(this);
-						$this.val(1);
-						evf_upgrade_actions.evf_one_file_limit_message();
-					});
-			}
+			$(document).ready(function () {
+				if (typeof evf_data === 'undefined') {
+					console.error(
+						'evf_data is not localized. Check wp_localize_script().',
+					);
+					return;
+				}
+
+				if (!evf_data.is_pro) {
+					$(document.body)
+						.find(
+							'.everest-forms-field-option-row-max_file_number input[type="number"]',
+						)
+						.on('input', function () {
+							var $this = $(this);
+							$this.val(1);
+							evf_upgrade_actions.evf_one_file_limit_message();
+						});
+				}
+			});
 		},
 		upgrade_integration: function (name, links, $el) {
 			name = name || '';

@@ -2722,16 +2722,23 @@
 		removeRow: function (row) {
 			$.each(row.find('.everest-forms-field'), function () {
 				var field_id = $(this).attr('data-field-id'),
+					field_type = $(this).attr('data-field-type'),
 					field_options = $('#everest-forms-field-option-' + field_id);
 
-				// Remove form field.
+				// Trigger before-delete event so addons can react.
+				$(document.body).trigger('evf_before_field_deleted', [field_id]);
+
+				// Remove conditional logic references for this field.
+				EVFPanelBuilder.conditionalLogicRemoveField(field_id);
+				EVFPanelBuilder.conditionalLogicRemoveFieldIntegration(field_id);
+				EVFPanelBuilder.paymentFieldRemoveFromQuantity(field_id);
+				EVFPanelBuilder.oneTimeDraggableRemoveField(field_type);
+
 				$(this).remove();
 
-				// Remove field options.
 				field_options.remove();
 			});
 
-			// Remove row.
 			row.remove();
 		},
 		bindRemoveRow: function () {
