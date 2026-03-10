@@ -120,7 +120,6 @@ const FreeAnalyticsContent = () => {
 								tabIndex={-1}
 							>
 								<span>{metric.label}</span>
-								<ChevronDownIcon />
 							</button>
 						</div>
 						<div className="EVF-Free-Analytics__MetricValue">
