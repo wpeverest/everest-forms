@@ -20,14 +20,14 @@ if ( ! class_exists( 'EVF_Settings_Page', false ) ) :
 		 *
 		 * @var string
 		 */
-		protected $id = '';
+		public $id = '';
 
 		/**
 		 * Setting page label.
 		 *
 		 * @var string
 		 */
-		protected $label = '';
+		public $label = '';
 
 		/**
 		 * Constructor.

@@ -77,6 +77,13 @@
 		}
 	});
 
+	 $('.evf-search input[type="search"]').on('keypress', function (e) {
+        if (e.which === 13) {
+            e.preventDefault();
+            $(this).closest('form').submit();
+        }
+    });
+
 	// Function to handle changes in the reporting frequency while sending the entries stat report.
 	$(document).ready(function () {
 		var urlParams = new URLSearchParams(window.location.search);
@@ -174,7 +181,7 @@
 				$(window).trigger('resize');
 			});
 
-			
+
 			$('.evf-tab-nav__btn', $wrapper).first().trigger('click');
 		}
 
@@ -224,7 +231,6 @@
 			$form.submit();
 		});
 
-		// Auto-submit on forms status dropdown change (forms page).
 		$(document).on('change', '#filter-by-form-status', function () {
 			var status = $(this).val();
 			var url = new URL(window.location.href);
