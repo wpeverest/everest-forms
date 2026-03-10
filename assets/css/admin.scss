@@ -90,6 +90,20 @@ body[class*='everest-forms_page_'] {
 	}
 }
 
+body.everest-forms_page_evf-settings {
+	#wpcontent {
+		#wpbody-content {
+			.wrap {
+				padding: 0;
+				margin: 0;
+				border-radius: 0;
+				background: transparent;
+				border: 0;
+			}
+		}
+	}
+}
+
 #everest-forms-entries-list {
 	// margin-top: 32px;
 }
