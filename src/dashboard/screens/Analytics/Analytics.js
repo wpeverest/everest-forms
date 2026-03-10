@@ -7,10 +7,6 @@ import { useEffect, useState } from 'react';
 
 import analyticsPreview from '../../images/analytics-preview.png';
 
-/* global _EVF_DASHBOARD_ */
-
-// ── Icons ─────────────────────────────────────────────────────────────────────
-
 const CrownIcon = () => (
 	<svg
 		xmlns="http://www.w3.org/2000/svg"
@@ -40,26 +36,6 @@ const ChevronDownIcon = () => (
 	</svg>
 );
 
-const CalendarIcon = () => (
-	<svg
-		xmlns="http://www.w3.org/2000/svg"
-		viewBox="0 0 24 24"
-		fill="none"
-		stroke="#6b7280"
-		strokeWidth="2"
-		strokeLinecap="round"
-		strokeLinejoin="round"
-		style={{ opacity: 0.6 }}
-	>
-		<rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-		<line x1="16" y1="2" x2="16" y2="6" />
-		<line x1="8" y1="2" x2="8" y2="6" />
-		<line x1="3" y1="10" x2="21" y2="10" />
-	</svg>
-);
-
-// ── Helpers ───────────────────────────────────────────────────────────────────
-
 const getStaticDateRange = () => {
 	const now = new Date();
 	const from = new Date(now);
@@ -79,8 +55,6 @@ const METRIC_BOXES = [
 	{ label: __('Incomplete Submissions', 'everest-forms') },
 	{ label: __('Impressions', 'everest-forms') },
 ];
-
-// ── Free Analytics Content ────────────────────────────────────────────────────
 
 /**
  * FreeAnalyticsContent
@@ -103,7 +77,6 @@ const FreeAnalyticsContent = () => {
 
 	return (
 		<div className="EVF-Free-Analytics">
-			{/* ── Filter bar ── */}
 			<div className="EVF-Free-Analytics__Filters">
 				<div>
 					<button
@@ -137,7 +110,6 @@ const FreeAnalyticsContent = () => {
 				</div>
 			</div>
 
-			{/* ── Metric boxes ── */}
 			<div className="EVF-Free-Analytics__Metrics">
 				{METRIC_BOXES.map((metric) => (
 					<div key={metric.label} className="EVF-Free-Analytics__Metric">
@@ -161,7 +133,6 @@ const FreeAnalyticsContent = () => {
 				))}
 			</div>
 
-			{/* ── Blurred preview + upgrade overlay ── */}
 			<div className="EVF-Free-Analytics__Preview">
 				<img
 					className="EVF-Free-Analytics__PreviewImage"
@@ -187,8 +158,6 @@ const FreeAnalyticsContent = () => {
 		</div>
 	);
 };
-
-// ── Analytics Screen ──────────────────────────────────────────────────────────
 
 /**
  * Analytics Screen Component
