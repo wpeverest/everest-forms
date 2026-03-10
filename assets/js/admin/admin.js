@@ -77,6 +77,13 @@
 		}
 	});
 
+	 $('.evf-search input[type="search"]').on('keypress', function (e) {
+        if (e.which === 13) {
+            e.preventDefault();
+            $(this).closest('form').submit();
+        }
+    });
+
 	// Function to handle changes in the reporting frequency while sending the entries stat report.
 	$(document).ready(function () {
 		var urlParams = new URLSearchParams(window.location.search);
