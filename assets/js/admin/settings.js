@@ -276,9 +276,15 @@
 				'.everest-forms-accordion-content',
 			);
 
-			$accordionItem.toggleClass('is-open');
-
-			$accordionContent.slideToggle(300);
+			if ($accordionItem.hasClass('is-open')) {
+				$accordionItem.removeClass('is-open');
+				$accordionContent.css('max-height', '0');
+				$accordionContent.css('padding', '0 24px');
+			} else {
+				$accordionItem.addClass('is-open');
+				$accordionContent.css('max-height', '3000px');
+				$accordionContent.css('padding', '24px');
+			}
 		},
 	);
 
@@ -287,11 +293,14 @@
 		// Initialize accordion items
 		$('.everest-forms-accordion-item').each(function () {
 			if (!$(this).hasClass('is-open')) {
-				$(this).find('.everest-forms-accordion-content').hide();
+				$(this).find('.everest-forms-accordion-content').css('max-height', '0');
+			} else {
+				$(this)
+					.find('.everest-forms-accordion-content')
+					.css('max-height', '3000px');
 			}
 		});
 
-		// Handle CAPTCHA enable/disable toggles - ensure only one can be enabled
 		$(document).on(
 			'change',
 			'#everest_forms_recaptcha_v2_enable, #everest_forms_recaptcha_v3_enable, #everest_forms_recaptcha_hcaptcha_enable, #everest_forms_recaptcha_turnstile_enable',

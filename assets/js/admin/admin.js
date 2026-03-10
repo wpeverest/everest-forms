@@ -231,7 +231,6 @@
 			$form.submit();
 		});
 
-		// Auto-submit on forms status dropdown change (forms page).
 		$(document).on('change', '#filter-by-form-status', function () {
 			var status = $(this).val();
 			var url = new URL(window.location.href);

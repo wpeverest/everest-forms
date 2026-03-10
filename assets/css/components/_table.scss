@@ -633,7 +633,7 @@ $status-trash-text: #991b1b;
 			}
 
 			&.column-shortcode {
-				width: 22em !important;
+				width: 22em;
 			}
 
 			&.column-enabled {
@@ -1114,13 +1114,32 @@ $status-trash-text: #991b1b;
 	}
 }
 
+body.everest-forms_page_evf-email-templates {
+	.everest-forms-table-container {
+		.evf-base-list-table {
+			thead th,
+			tbody td {
+				&.column-title {
+					width: 33% !important;
+				}
+				&.column-author {
+					width: 32% !important;
+				}
+				&.column-date {
+					width: 32% !important;
+				}
+			}
+		}
+	}
+}
+
 body {
 	&:not(&.everest-forms_page_evf-builder) {
 		.everest-forms-table-container {
 			.evf-base-list-table {
 				thead {
 					th {
-						width: auto !important;
+						width: auto;
 					}
 				}
 			}

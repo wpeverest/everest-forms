@@ -193,7 +193,7 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 			}
 			foreach ( $entry_columns as $id ) {
 				// Check to make sure the field as not been removed.
-				$status =  defined( 'EFP_VERSION' ) ? true : false;
+				$status = defined( 'EFP_VERSION' ) ? true : false;
 				$status = apply_filters( 'everest_forms_plugin_active_status', $status );
 				if ( empty( $this->form_data['form_fields'][ $id ] ) ) {
 					if ( $status ) {
@@ -694,9 +694,7 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 			'starred' => 0, // Add starred count
 		);
 
-
 		$results = $wpdb->get_results( "SELECT status, COUNT(*) as count FROM {$wpdb->prefix}evf_entries GROUP BY status" );
-
 
 		foreach ( $results as $row ) {
 			$counts[ $row->status ] = (int) $row->count;
@@ -1091,47 +1089,48 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 	 * Display a status dropdown for filtering entries.
 	 */
 	public function status_dropdown( $num_entries ) {
-    $current_status = isset( $_REQUEST['status'] ) ? sanitize_key( wp_unslash( $_REQUEST['status'] ) ) : '';
+		$current_status = isset( $_REQUEST['status'] ) ? sanitize_key( wp_unslash( $_REQUEST['status'] ) ) : '';
 
-    $statuses = array(
-        'all'    => __( 'All', 'everest-forms' ),
-        'unread' => __( 'Unread', 'everest-forms' ),
-        'read'   => __( 'Read', 'everest-forms' ),
-        'spam'   => __( 'Spam', 'everest-forms' ),
-        'trash'  => __( 'Trash', 'everest-forms' ),
-    );
+		$statuses = array(
+			'all'    => __( 'All', 'everest-forms' ),
+			'unread' => __( 'Unread', 'everest-forms' ),
+			'read'   => __( 'Read', 'everest-forms' ),
+			'spam'   => __( 'Spam', 'everest-forms' ),
+			'trash'  => __( 'Trash', 'everest-forms' ),
+		);
 
-    if ( ! empty( $this->form_data ) ) {
-        $extra_statuses = evf_get_entry_statuses( $this->form_data );
-        foreach ( $extra_statuses as $key => $label ) {
-            if ( ! isset( $statuses[ $key ] ) && 'publish' !== $key ) {
-                $statuses[ $key ] = $label;
-            }
-        }
-    }
+		if ( ! empty( $this->form_data ) ) {
+			$extra_statuses = evf_get_entry_statuses( $this->form_data );
+			foreach ( $extra_statuses as $key => $label ) {
+				if ( ! isset( $statuses[ $key ] ) && 'publish' !== $key ) {
+					$statuses[ $key ] = $label;
+				}
+			}
+		}
 
-    // Map status keys to count keys.
-    $count_map = array(
-        'all'    => 'publish',
-        'unread' => 'unread',
-        'read'   => 'read',
-        'spam'   => 'spam',
-        'trash'  => 'trash',
-    );
-    ?>
-    <select name="status" id="filter-by-status" class="evf-enhanced-normal-select evf-auto-filter">
-        <?php foreach ( $statuses as $key => $label ) :
-            $count_key = isset( $count_map[ $key ] ) ? $count_map[ $key ] : $key;
-            $count     = isset( $num_entries[ $count_key ] ) ? (int) $num_entries[ $count_key ] : 0;
-          $display = sprintf( '%s (%d)', $label, $count );
-        ?>
-            <option value="<?php echo esc_attr( $key ); ?>" <?php selected( $current_status, $key ); ?>>
-                <?php echo esc_html( $display ); ?>
-            </option>
-        <?php endforeach; ?>
-    </select>
-    <?php
-}
+		// Map status keys to count keys.
+		$count_map = array(
+			'all'    => 'publish',
+			'unread' => 'unread',
+			'read'   => 'read',
+			'spam'   => 'spam',
+			'trash'  => 'trash',
+		);
+		?>
+	<select name="status" id="filter-by-status" class="evf-enhanced-normal-select evf-auto-filter">
+		<?php
+		foreach ( $statuses as $key => $label ) :
+			$count_key = isset( $count_map[ $key ] ) ? $count_map[ $key ] : $key;
+			$count     = isset( $num_entries[ $count_key ] ) ? (int) $num_entries[ $count_key ] : 0;
+			$display   = sprintf( '%s (%d)', $label, $count );
+			?>
+			<option value="<?php echo esc_attr( $key ); ?>" <?php selected( $current_status, $key ); ?>>
+				<?php echo esc_html( $display ); ?>
+			</option>
+		<?php endforeach; ?>
+	</select>
+		<?php
+	}
 
 
 	/**
@@ -1149,8 +1148,9 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 			'offset'  => $per_page * ( $current_page - 1 ),
 		);
 
-		if ( ! empty( $_REQUEST['status'] ) ) {
-			$status = sanitize_key( wp_unslash( $_REQUEST['status'] ) );
+		// Handle the status query.
+		if ( ! empty( $_REQUEST['status'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+			$status = sanitize_key( wp_unslash( $_REQUEST['status'] ) ); // phpcs:ignore WordPress.Security.NonceVerification
 
 			if ( 'unread' === $status ) {
 				$args['status'] = 'publish';
@@ -1158,14 +1158,11 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 			} elseif ( 'read' === $status ) {
 				$args['status'] = 'publish';
 				$args['viewed'] = 1;
+			} elseif ( 'all' === $status ) {
+				$args['status'] = 'publish';
 			} else {
 				$args['status'] = $status;
 			}
-		}
-
-		// Handle the status query.
-		if ( ! empty( $_REQUEST['status'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
-			$args['status'] = sanitize_key( wp_unslash( $_REQUEST['status'] ) ); // phpcs:ignore WordPress.Security.NonceVerification
 		}
 
 		// Handle the search query.
