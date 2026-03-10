@@ -4,6 +4,7 @@
 * Refactor 		   - Everest Forms Global Settings.
 * Enhancement      - Form Builder.
 * Fix              - Notice Consistency
+* Fix              - Search on clicking enter.
 
 = 3.4.3       - 19-02-2026
 * Enhancement - Improved Addons page.
