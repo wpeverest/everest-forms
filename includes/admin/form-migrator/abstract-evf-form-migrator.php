@@ -255,7 +255,7 @@ abstract class EVF_Admin_Form_Migrator {
 			return;
 		}
 		?>
-			<div class="notice notice-info is-dismissible evf-fm-notice">
+			<div class="notice notice-info is-dismissible evf-fm-notice inline">
 				<p><?php printf( wp_kses_post( 'Hey, it seems that you have <strong>%s</strong> installed. Are you interested in <strong>migrating</strong> your forms to Everest Form?', 'everest-forms' ), wp_kses_post( $this->name ) ); ?></p>
 				<p>
 					<a href="<?php printf( esc_url( admin_url( 'admin.php?page=evf-tools&tab=form_migrator' ) ) ); ?>" class="button button-primary evf-fm-<?php echo esc_attr( $this->slug ); ?>" id="evf-fm-<?php echo esc_attr( $this->slug ); ?>"><?php esc_html_e( 'Form Migrator', 'everest-forms' ); ?></a>
