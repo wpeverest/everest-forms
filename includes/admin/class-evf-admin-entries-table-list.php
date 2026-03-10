@@ -1001,6 +1001,14 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 			}
 			$sendback = remove_query_arg( array( 'action', 'action2' ), $sendback );
 
+			$sendback = add_query_arg(
+				array(
+					'bulk_action' => $doaction,
+					'bulk_count'  => $count,
+				),
+				$sendback
+			);
+
 			wp_safe_redirect( $sendback );
 			exit();
 		} elseif ( ! empty( $_REQUEST['_wp_http_referer'] ) && isset( $_SERVER['REQUEST_URI'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification

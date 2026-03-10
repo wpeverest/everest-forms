@@ -118,7 +118,42 @@ class EVF_Admin_Entries {
 		?>
 
 		<div id="everest-forms-entries-list" class="wrap">
-			<?php settings_errors(); ?>
+			<?php
+			if ( isset( $_GET['bulk_action'], $_GET['bulk_count'] ) ) {
+
+				$action = sanitize_key( $_GET['bulk_action'] );
+				$count  = intval( $_GET['bulk_count'] );
+
+				$messages = array(
+					'star'    => __( '%d entry starred.', 'everest-forms' ),
+					'unstar'  => __( '%d entry unstarred.', 'everest-forms' ),
+					'read'    => __( '%d entry marked as read.', 'everest-forms' ),
+					'unread'  => __( '%d entry marked as unread.', 'everest-forms' ),
+					'trash'   => __( '%d entry moved to Trash.', 'everest-forms' ),
+					'untrash' => __( '%d entry restored from Trash.', 'everest-forms' ),
+					'delete'  => __( '%d entry permanently deleted.', 'everest-forms' ),
+					'spam'    => __( '%d entry marked as spam.', 'everest-forms' ),
+					'unspam'  => __( '%d entry removed from spam.', 'everest-forms' ),
+					'approved'=> __( '%d entry approved.', 'everest-forms' ),
+					'denied'  => __( '%d entry denied.', 'everest-forms' ),
+				);
+
+				if ( isset( $messages[ $action ] ) ) {
+
+					$message = sprintf(
+						_n(
+							$messages[$action],
+							str_replace( 'entry', 'entries', $messages[ $action ] ),
+							$count,
+							'everest-forms'
+						),
+						$count
+					);
+
+					echo '<div class="notice notice-success is-dismissible"><p>' . esc_html( $message ) . '</p></div>';
+				}
+			}
+			?>
 			<div class="evf-entries-tab-wrapper">
 				<div class="evf-entries-tab-header">
 					<div class="evf-entries-tab-header-title">
