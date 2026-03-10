@@ -42,6 +42,11 @@
 
 body[class*='everest-forms_page_'] {
 	background: #f4f4f4 !important;
+	overflow-x: hidden;
+
+	[class*='jconfirm-everest-forms-'] {
+		font-family: -apple-system, BlinkMacSystemFont, Inter, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+	}
 
 	#wpcontent {
 		padding-left: 0;
@@ -69,9 +74,12 @@ body[class*='everest-forms_page_'] {
 			}
 
 			.wrap {
-				border-radius: 0;
-				border: 0;
-				border-bottom: 1px solid #e1e1e1;
+				max-width: 100%;
+				margin: 24px;
+				padding: 24px 28px;
+				border-radius: 13px;
+				background: #ffffff;
+				border: 1px solid #e1e1e1;
 			}
 		}
 	}
@@ -450,7 +458,7 @@ img.help_tip {
 
 		input[type='text'] {
 			min-height: 38px;
-			font-size: 13px;
+			font-size: 14px;
 			line-height: 20px;
 			width: -webkit-fill-available;
 			padding: 0 12px;
@@ -1205,7 +1213,7 @@ body.everest-forms-builder {
 				}
 
 				th {
-					padding-top: 31px;
+					padding-top: 32px;
 
 					.everest-forms-help-tip {
 						margin: 0;
@@ -13114,4 +13122,41 @@ button#show-settings-link {
 	border-radius: 4px;
 	padding: 10px 20px;
 	text-transform: capitalize;
+}
+
+.jconfirm {
+	&-everest-forms-coupon__left {
+		.jconfirm-box {
+			max-width: 700px;
+			width: 100%;
+
+			.jconfirm-title-c {
+				text-align: left !important;
+			}
+
+			.jconfirm-content-pane {
+				margin-bottom: 0 !important;
+
+				.everest-forms-coupons__form {
+					margin-bottom: 24px;
+
+					.everest-forms-coupons__create-coupon {
+						width: auto;
+						flex: 1;
+						cursor: pointer;
+
+						>label {
+							cursor: pointer;
+						}
+
+						.everest-forms-coupon__description {
+							font-size: 14px;
+							line-height: 24px;
+							margin: 0;
+						}
+					}
+				}
+			}
+		}
+	}
 }
