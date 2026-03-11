@@ -350,6 +350,7 @@ final class EverestForms {
 		 */
 		include_once EVF_ABSPATH . 'includes/class-evf-cron.php';
 		include_once EVF_ABSPATH . 'includes/stats/class-evf-stats.php';
+		include_once EVF_ABSPATH . 'includes/class-evf-email-entries-report.php';
 
 		/**
 		 * External Libraries
@@ -357,6 +358,8 @@ final class EverestForms {
 		 * @return void
 		 */
 		include_once EVF_ABSPATH . 'includes/libraries/wptt-webfont-loader.php';
+
+
 	}
 
 	/**
