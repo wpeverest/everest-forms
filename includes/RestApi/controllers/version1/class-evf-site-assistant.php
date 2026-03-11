@@ -412,7 +412,7 @@ class EVF_Site_Assistant {
 	 * @return bool|WP_Error True if permitted, WP_Error otherwise.
 	 */
 	public function check_admin_permissions( $request ) {
-		if ( ! current_user_can( 'manage_options' ) ) {
+		if ( ! current_user_can( 'manage_options' ) && ! current_user_can( 'manage_everest_forms' ) ) {
 			return new \WP_Error(
 				'rest_forbidden',
 				__( 'Sorry, you are not allowed to access this resource.', 'everest-forms' ),
