@@ -6,6 +6,7 @@ import { __ } from '@wordpress/i18n';
 import { useEffect, useState } from 'react';
 
 import analyticsPreview from '../../images/analytics-preview.png';
+import './main.scss';
 
 const CrownIcon = () => (
 	<svg
@@ -63,7 +64,7 @@ const METRIC_BOXES = [
  * mirrors the Pro analytics UI, then a blurred Pro screenshot with an
  * "Unlock Advanced Analytics" upgrade overlay.
  *
- * All styles live in assets/css/admin.scss under .EVF-Free-Analytics.
+ * All styles live in ./main.scss under .EVF-Free-Analytics.
  * When the Pro plugin is active it replaces this entirely via the
  * `everest-forms-analytics` WordPress filter.
  */

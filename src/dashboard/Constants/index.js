@@ -25,8 +25,9 @@ let ROUTES = [
 		key: 'siteAssistant',
 	},
 	{
-		route: '/analytics',
+		route: `${cleanAdminURL}/admin.php?page=evf-analytics`,
 		label: __('Analytics', 'everest-forms'),
+		external: true,
 	},
 	{
 		route: `${cleanAdminURL}/admin.php?page=evf-builder`,
@@ -60,18 +61,6 @@ let ROUTES = [
 		key: 'help',
 	},
 ];
-
-if (isPro && showAnalyticsTab) {
-	ROUTES = [
-		ROUTES[0],
-		{
-			route: `${cleanAdminURL}/admin.php?page=everest-forms-analytics`,
-			label: __('Analytics', 'everest-forms'),
-			external: true,
-		},
-		...ROUTES.slice(1),
-	];
-}
 
 if (!isPro) {
 	ROUTES = [
@@ -188,11 +177,8 @@ export const isRouteActive = (route, currentPath, pageType) => {
 	const urlParams = new URLSearchParams(window.location.search);
 	const currentPage = urlParams.get('page');
 
-	// Check for WordPress admin pages by URL parameter
-	if (
-		currentPage === 'everest-forms-analytics' &&
-		route.includes('everest-forms-analytics')
-	) {
+	// Check for analytics page
+	if (currentPage === 'evf-analytics' && route.includes('evf-analytics')) {
 		return true;
 	}
 
