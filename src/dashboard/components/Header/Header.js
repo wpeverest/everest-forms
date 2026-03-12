@@ -174,7 +174,6 @@ const Header = ({ hideSiteAssistant = false }) => {
 				borderBottom="1px solid #E9E9E9"
 				width="100%"
 				position={'relative'}
-				zIndex="10"
 			>
 				<Container maxW="full">
 					<Stack direction="row" minH="70px" justify="space-between">
