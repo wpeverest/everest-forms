@@ -1211,55 +1211,46 @@ class EVF_AJAX {
 	 */
 	public static function send_routine_report_test_email() {
 		try {
-			// Capability check BEFORE nonce — fail fast on non-admins.
 			if ( ! current_user_can( 'manage_options' ) ) {
 				wp_send_json_error( array( 'message' => __( 'Unauthorized.', 'everest-forms' ) ), 401 );
 			}
 
 			check_ajax_referer( 'process-ajax-nonce', 'security' );
 
-			// Resolve frequency with fallback.
 			$frequency = get_option( 'everest_forms_entries_reporting_frequency', 'Weekly' );
 			if ( ! in_array( $frequency, array( 'Daily', 'Weekly', 'Monthly' ), true ) ) {
 				$frequency = 'Weekly';
 			}
 
-			// Resolve form list.
 			$form_ids = get_option( 'everest_forms_reporting_form_lists', array() );
 			if ( ! is_array( $form_ids ) ) {
 				$form_ids = array();
 			}
 
-			// Resolve test recipient — dedicated test field, NOT the scheduled recipient.
 			$test_email = sanitize_email( get_option( 'everest_forms_routine_report_send_email_test_to', '' ) );
 			if ( empty( $test_email ) ) {
 				$test_email = sanitize_email( get_bloginfo( 'admin_email' ) );
 			}
 
-			// Resolve subject and prepend [TEST] tag.
 			$subject = get_option( 'everest_forms_entries_reporting_subject', __( 'Everest Forms - Entries summary statistics', 'everest-forms' ) );
 			if ( empty( trim( $subject ) ) ) {
 				$subject = __( 'Everest Forms - Entries summary statistics', 'everest-forms' );
 			}
 			$subject = sprintf(
-				/* translators: %s: original email subject */
+			/* translators: %s: original email subject */
 				__( '[TEST] %s', 'everest-forms' ),
 				$subject
 			);
 
-			// Build and render with is_test = true (adds warning banner inside template).
 			$email_builder = new EVF_Email_Entries_Report( $frequency, $form_ids, true );
 			$html_message  = $email_builder->render_html();
-			$plain_message = $email_builder->render_plain_text();
 
-			$mailer = new EVF_Emails();
-			$sent   = $mailer->send(
-				$test_email,
-				$subject,
-				$html_message,
-				$plain_message,
-				array( 'Content-Type: text/html; charset=UTF-8' )
+			$headers = array(
+				'Content-Type: text/html; charset=UTF-8',
+				'From: ' . wp_specialchars_decode( get_bloginfo( 'name' ) ) . ' <' . get_option( 'admin_email' ) . '>',
 			);
+
+			$sent = wp_mail( $test_email, $subject, $html_message, $headers );
 
 			if ( $sent ) {
 				wp_send_json_success(
@@ -1293,7 +1284,7 @@ class EVF_AJAX {
 		 */
 	public static function send_manual_report() {
 		try {
-			// Capability check BEFORE nonce.
+
 			if ( ! current_user_can( 'manage_options' ) ) {
 				wp_send_json_error( array( 'message' => __( 'Unauthorized.', 'everest-forms' ) ), 401 );
 			}
@@ -1304,7 +1295,6 @@ class EVF_AJAX {
 			$sent = $cron->evf_report_form_statistics_send( false );
 
 			if ( $sent ) {
-				// Log as a manual send in report history.
 				$frequency = get_option( 'everest_forms_entries_reporting_frequency', 'Weekly' );
 				$form_ids  = get_option( 'everest_forms_reporting_form_lists', array() );
 				$recipient = get_option( 'everest_forms_entries_reporting_email', '{admin_email}' );

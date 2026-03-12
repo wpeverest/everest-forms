@@ -1,27 +1,13 @@
 <?php
 /**
- * Entries Report HTML Email Template — EverestForms Brand
+ * Entries Report HTML Email Template
  *
- * Variables available:
  * @var array  $entries_data
  * @var array  $summary
  * @var array  $highlights
  * @var array  $footer
  * @var string $period_label
  * @var bool   $is_test
- *
- * Developer filter hooks:
- *
- * // Change any color:
- * add_filter( 'evf_report_email_colors', function( $c ) {
- *     $c['accent'] = '#e11d48'; // swap purple to rose
- *     return $c;
- * });
- *
- * // Swap entire template file:
- * add_filter( 'evf_report_email_template', function( $path ) {
- *     return get_stylesheet_directory() . '/my-evf-report.php';
- * });
  *
  * @package EverestForms\Emails\Templates
  * @since   2.0.9
@@ -30,24 +16,24 @@
 defined( 'ABSPATH' ) || exit;
 
 $colors = (array) apply_filters( 'evf_report_email_colors', array(
-	'accent'         => '#7c4dbd',          // EVF purple — primary actions, header bg
-	'accent_hover'   => '#6a3da8',          // slightly darker purple
-	'accent_light'   => '#f3eeff',          // purple tint for unread badges
-	'accent_border'  => '#d4b8f0',          // purple badge border
-	'bg_outer'       => '#f0eff5',          // page background
-	'bg_card'        => '#ffffff',          // section / card background
-	'bg_alt'         => '#fafafa',          // highlights section background
-	'bg_footer'      => '#f5f4f9',          // footer background
-	'text_primary'   => '#1a1033',          // headings and bold values
-	'text_secondary' => '#6b7280',          // labels and meta
-	'text_tertiary'  => '#9ca3af',          // very muted / placeholders
-	'text_on_accent' => '#ffffff',          // text on purple header
-	'border'         => '#e5e7eb',          // card / row borders
-	'positive'       => '#16a34a',          // ▲ growth
-	'negative'       => '#dc2626',          // ▼ decline
-	'unread'         => '#d97706',          // unread counter (amber)
-	'dot_active'     => '#16a34a',          // green status dot
-	'dot_inactive'   => '#d1d5db',          // grey status dot
+	'accent'         => '#7c4dbd',
+	'accent_hover'   => '#6a3da8',
+	'accent_light'   => '#f3eeff',
+	'accent_border'  => '#d4b8f0',
+	'bg_outer'       => '#f0eff5',
+	'bg_card'        => '#ffffff',
+	'bg_alt'         => '#fafafa',
+	'bg_footer'      => '#f5f4f9',
+	'text_primary'   => '#1a1033',
+	'text_secondary' => '#6b7280',
+	'text_tertiary'  => '#9ca3af',
+	'text_on_accent' => '#ffffff',
+	'border'         => '#e5e7eb',
+	'positive'       => '#16a34a',
+	'negative'       => '#dc2626',
+	'unread'         => '#d97706',
+	'dot_active'     => '#16a34a',
+	'dot_inactive'   => '#d1d5db',
 ) );
 
 /**
@@ -101,7 +87,6 @@ body{margin:0!important;padding:0!important;width:100%!important}
 <table class="wrapper" border="0" cellpadding="0" cellspacing="0" width="580" style="max-width:580px;width:100%;">
 
 <?php if ( $is_test ) : ?>
-<!-- ── TEST BANNER ── -->
 <tr>
 <td style="background:#fffbeb;border:1px solid #fcd34d;border-radius:8px 8px 0 0;padding:10px 24px;text-align:center;">
   <p style="margin:0;font-family:Arial,sans-serif;font-size:11px;font-weight:700;color:#92400e;letter-spacing:0.06em;text-transform:uppercase;">
@@ -111,9 +96,6 @@ body{margin:0!important;padding:0!important;width:100%!important}
 </tr>
 <?php endif; ?>
 
-<!-- ══════════════════════════════════════
-     HEADER — EVF purple
-     ══════════════════════════════════════ -->
 <tr>
 <td style="background:<?php echo esc_attr( $colors['accent'] ); ?>;
            border-radius:<?php echo $is_test ? '0 0' : '10px 10px'; ?> 0 0;
@@ -161,9 +143,6 @@ body{margin:0!important;padding:0!important;width:100%!important}
 </td>
 </tr>
 
-<!-- ══════════════════════════════════════
-     SUMMARY BAR
-     ══════════════════════════════════════ -->
 <tr>
 <td style="background:<?php echo esc_attr( $colors['bg_card'] ); ?>;
            border-left:1px solid <?php echo esc_attr( $colors['border'] ); ?>;
@@ -171,7 +150,6 @@ body{margin:0!important;padding:0!important;width:100%!important}
   <table border="0" cellpadding="0" cellspacing="0" width="100%">
   <tr>
 
-    <!-- Total Entries -->
     <td class="stat-cell" width="33%" valign="top"
         style="padding:22px 24px;border-right:1px solid <?php echo esc_attr( $colors['border'] ); ?>;">
       <p style="margin:0 0 6px;font-family:Arial,sans-serif;font-size:10px;font-weight:700;
@@ -186,15 +164,14 @@ body{margin:0!important;padding:0!important;width:100%!important}
         <?php echo evf_report_change_html( $summary['overall_change'], $colors ); ?>
         <span style="font-family:Arial,sans-serif;font-size:11px;color:<?php echo esc_attr( $colors['text_tertiary'] ); ?>;margin-left:3px;">
           <?php
-          if ( 'Daily' === $frequency )        esc_html_e( 'vs yesterday', 'everest-forms' );
-          elseif ( 'Monthly' === $frequency )  esc_html_e( 'vs last month', 'everest-forms' );
-          else                                 esc_html_e( 'vs last week', 'everest-forms' );
+          if ( 'Daily' === $frequency )       esc_html_e( 'vs yesterday', 'everest-forms' );
+          elseif ( 'Monthly' === $frequency ) esc_html_e( 'vs last month', 'everest-forms' );
+          else                                esc_html_e( 'vs last week', 'everest-forms' );
           ?>
         </span>
       </p>
     </td>
 
-    <!-- Active Forms -->
     <td class="stat-cell" width="33%" valign="top"
         style="padding:22px 24px;border-right:1px solid <?php echo esc_attr( $colors['border'] ); ?>;">
       <p style="margin:0 0 6px;font-family:Arial,sans-serif;font-size:10px;font-weight:700;
@@ -213,7 +190,6 @@ body{margin:0!important;padding:0!important;width:100%!important}
       </p>
     </td>
 
-    <!-- Unread -->
     <td class="stat-cell" width="34%" valign="top" style="padding:22px 24px;">
       <p style="margin:0 0 6px;font-family:Arial,sans-serif;font-size:10px;font-weight:700;
                 text-transform:uppercase;letter-spacing:0.08em;color:<?php echo esc_attr( $colors['text_secondary'] ); ?>;">
@@ -233,14 +209,10 @@ body{margin:0!important;padding:0!important;width:100%!important}
 </td>
 </tr>
 
-<!-- Purple accent stripe -->
 <tr>
 <td style="height:3px;background:<?php echo esc_attr( $colors['accent'] ); ?>;font-size:0;line-height:0;">&nbsp;</td>
 </tr>
 
-<!-- ══════════════════════════════════════
-     FORM BREAKDOWN TABLE
-     ══════════════════════════════════════ -->
 <tr>
 <td class="pad" style="background:<?php echo esc_attr( $colors['bg_card'] ); ?>;
            border:1px solid <?php echo esc_attr( $colors['border'] ); ?>;
@@ -260,8 +232,6 @@ body{margin:0!important;padding:0!important;width:100%!important}
   <?php else : ?>
 
   <table border="0" cellpadding="0" cellspacing="0" width="100%">
-
-    <!-- Column headers -->
     <tr style="border-bottom:2px solid <?php echo esc_attr( $colors['border'] ); ?>;">
       <td width="42%" style="padding:0 0 9px;font-family:Arial,sans-serif;font-size:10px;font-weight:700;
                              text-transform:uppercase;letter-spacing:0.08em;color:<?php echo esc_attr( $colors['text_tertiary'] ); ?>;">
@@ -287,7 +257,6 @@ body{margin:0!important;padding:0!important;width:100%!important}
     ?>
     <tr style="border-bottom:1px solid <?php echo esc_attr( $colors['border'] ); ?>;opacity:<?php echo $is_active ? '1' : '0.4'; ?>;">
 
-      <!-- Name + dot -->
       <td valign="middle" style="padding:13px 0;">
         <table border="0" cellpadding="0" cellspacing="0">
         <tr>
@@ -305,18 +274,15 @@ body{margin:0!important;padding:0!important;width:100%!important}
         </table>
       </td>
 
-      <!-- Count -->
       <td align="right" valign="middle" style="padding:13px 0;font-family:Arial,sans-serif;font-size:16px;
                font-weight:700;color:<?php echo esc_attr( $colors['text_primary'] ); ?>;">
         <?php echo esc_html( number_format( $form['current'] ) ); ?>
       </td>
 
-      <!-- Change -->
       <td align="right" valign="middle" style="padding:13px 0;">
         <?php echo evf_report_change_html( $form['change'], $colors ); ?>
       </td>
 
-      <!-- Unread badge -->
       <td align="right" valign="middle" style="padding:13px 0;">
         <?php if ( $form['unread'] > 0 ) : ?>
           <span style="display:inline-block;background:<?php echo esc_attr( $colors['accent_light'] ); ?>;
@@ -331,7 +297,6 @@ body{margin:0!important;padding:0!important;width:100%!important}
         <?php endif; ?>
       </td>
 
-      <!-- View link -->
       <td align="right" valign="middle" style="padding:13px 0;">
         <a href="<?php echo esc_url( $form['view_url'] ); ?>"
            style="font-family:Arial,sans-serif;font-size:11px;font-weight:700;
@@ -349,11 +314,8 @@ body{margin:0!important;padding:0!important;width:100%!important}
 </td>
 </tr>
 
-<!-- ══════════════════════════════════════
-     HIGHLIGHTS
-     ══════════════════════════════════════ -->
 <?php if ( ! empty( $highlights ) ) :
-  $icons          = array(
+  $icons = array(
     'top_form'       => '🏆',
     'most_improved'  => '📈',
     'unread_alert'   => '🔔',
@@ -378,7 +340,6 @@ body{margin:0!important;padding:0!important;width:100%!important}
   <?php for ( $i = 0; $i < $h_count; $i += 2 ) : ?>
   <tr>
 
-    <!-- Left card -->
     <td class="hi-cell" width="50%" valign="top" style="padding:0 5px 8px 0;">
       <table border="0" cellpadding="0" cellspacing="0" width="100%"><tr>
       <td style="background:<?php echo esc_attr( $colors['bg_card'] ); ?>;
@@ -395,7 +356,6 @@ body{margin:0!important;padding:0!important;width:100%!important}
       </tr></table>
     </td>
 
-    <!-- Right card -->
     <?php if ( isset( $highlight_list[ $i + 1 ] ) ) : ?>
     <td class="hi-cell" width="50%" valign="top" style="padding:0 0 8px 5px;">
       <table border="0" cellpadding="0" cellspacing="0" width="100%"><tr>
@@ -424,9 +384,6 @@ body{margin:0!important;padding:0!important;width:100%!important}
 </tr>
 <?php endif; ?>
 
-<!-- ══════════════════════════════════════
-     CTA BUTTON
-     ══════════════════════════════════════ -->
 <tr>
 <td style="background:<?php echo esc_attr( $colors['bg_card'] ); ?>;
            border:1px solid <?php echo esc_attr( $colors['border'] ); ?>;
@@ -442,9 +399,6 @@ body{margin:0!important;padding:0!important;width:100%!important}
 </td>
 </tr>
 
-<!-- ══════════════════════════════════════
-     FOOTER
-     ══════════════════════════════════════ -->
 <tr>
 <td style="background:<?php echo esc_attr( $colors['bg_footer'] ); ?>;
            border:1px solid <?php echo esc_attr( $colors['border'] ); ?>;

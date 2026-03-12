@@ -151,7 +151,7 @@ class EVF_Email_Entries_Report {
 				continue;
 			}
 
-			// Current period: all non-trash, non-draft entries.
+			
 			$current = (int) $wpdb->get_var(
 				$wpdb->prepare(
 					"SELECT COUNT(*)
@@ -169,7 +169,7 @@ class EVF_Email_Entries_Report {
 				)
 			);
 
-			// Previous period: same window length, immediately before current.
+
 			$previous = (int) $wpdb->get_var(
 				$wpdb->prepare(
 					"SELECT COUNT(*)
@@ -187,8 +187,6 @@ class EVF_Email_Entries_Report {
 				)
 			);
 
-			// Unread: status is not trash/draft AND viewed = 0.
-			// Mirrors the 'unread' branch in evf_search_entries().
 			$unread = (int) $wpdb->get_var(
 				$wpdb->prepare(
 					"SELECT COUNT(*)
