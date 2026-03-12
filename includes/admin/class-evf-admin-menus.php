@@ -27,6 +27,7 @@ class EVF_Admin_Menus {
 		add_action( 'admin_menu', array( $this, 'dashboard_menu' ), 9 );
 		add_action( 'admin_menu', array( $this, 'builder_menu' ), 20 );
 		add_action( 'admin_menu', array( $this, 'entries_menu' ), 30 );
+		add_action( 'admin_menu', array( $this, 'analytics_menu' ), 10 );
 		add_action( 'admin_menu', array( $this, 'settings_menu' ), 50 );
 		add_action( 'admin_menu', array( $this, 'tools_menu' ), 60 );
 		add_action( 'admin_menu', array( $this, 'smtp_menu' ), 75 );
@@ -259,6 +260,30 @@ class EVF_Admin_Menus {
 		}
 
 		do_action( 'everest_forms_entries_page_init' );
+	}
+
+	/**
+	 * Add Analytics sub menu (free version only; Pro plugin registers its own evf-analytics page).
+	 */
+	public function analytics_menu() {
+		if ( defined( 'EFP_PLUGIN_FILE' ) ) {
+			return;
+		}
+		add_submenu_page(
+			'everest-forms',
+			esc_html__( 'Analytics', 'everest-forms' ),
+			esc_html__( 'Analytics', 'everest-forms' ),
+			'manage_everest_forms',
+			'evf-analytics',
+			array( $this, 'analytics_page' )
+		);
+	}
+
+	/**
+	 * Analytics page callback (free version).
+	 */
+	public function analytics_page() {
+		echo '<div id="evf-react-header-root"></div><div class="wrap"><div id="evf-analytics-root"></div></div>';
 	}
 
 	/**

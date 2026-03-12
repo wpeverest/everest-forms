@@ -500,11 +500,28 @@ class EVF_Admin_Assets {
 
 			$script_handle = 'evf-dashboard-header';
 
+		// Enqueue dashboard app on free analytics page so FreeAnalyticsContent mounts on #evf-analytics-root.
+		if ( 'evf-analytics' === $current_page && ! defined( 'EFP_PLUGIN_FILE' ) ) {
+			wp_enqueue_style(
+				'evf-dashboard-style',
+				evf()->plugin_url() . '/dist/dashboard.css',
+				array(),
+				EVF_VERSION
+			);
+			wp_enqueue_script(
+				'evf-dashboard-script',
+				evf()->plugin_url() . '/dist/dashboard.min.js',
+				array( 'wp-element', 'wp-hooks', 'react', 'react-dom' ),
+				EVF_VERSION,
+				true
+			);
+		}
+
 		if ( 'evf-entries' === $current_page ) {
 			$page_type = 'entries';
 		} elseif ( 'evf-settings' === $current_page ) {
 			$page_type = 'settings';
-		} elseif ( 'everest-forms-analytics' === $current_page ) {
+		} elseif ( 'everest-forms-analytics' === $current_page || 'evf-analytics' === $current_page ) {
 			$page_type = 'analytics';
 		} else {
 			$page_type = $current_page;

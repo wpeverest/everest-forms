@@ -206,3 +206,15 @@
 		}
 	}
 }
+
+// ── Analytics page z-index fixes ──────────────────────────────────────────────
+// Lower the React header stacking context so select dropdowns render above it.
+.wp-admin.everest-forms_page_evf-analytics {
+	[data-radix-popper-content-wrapper] {
+		z-index: 2147483647 !important;
+	}
+
+	#evf-react-header-root > * {
+		z-index: 1 !important;
+	}
+}
