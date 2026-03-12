@@ -13,7 +13,7 @@ $update_url = wp_nonce_url(
 	'evf_db_update_nonce'
 );
 ?>
-<div id="message" class="updated everest-forms-message evf-connect">
+<div id="message" class="updated everest-forms-message evf-connect inline">
 	<p>
 		<strong><?php esc_html_e( 'Everest Forms database update required', 'everest-forms' ); ?></strong>
 	</p>

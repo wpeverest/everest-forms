@@ -7,6 +7,7 @@
  * Styling begins
  */
 div.jconfirm {
+
 	*,
 	*::before,
 	*::after {
@@ -23,7 +24,7 @@ div.jconfirm {
 
 		.jconfirm-box {
 			div.jconfirm-content-pane {
-				margin-bottom: 20px;
+				margin-bottom: 20px !important;
 				display: block;
 
 				.jconfirm-content {
@@ -41,14 +42,32 @@ div.jconfirm {
 					margin: 0 0 16px;
 					font-size: 16px;
 				}
+
+				>div {
+					font-weight: 500;
+				}
 			}
 
 			input[type='text'] {
-				width: 99%;
-				padding: 10px;
+				width: 100%;
+				min-height: 38px;
+				padding: 0 12px;
+				border-radius: 4px;
 				box-shadow: none;
-				margin: 20px auto 0 auto;
-				border: 1px solid #d6d6d6;
+				margin: 8px 0 0;
+				font-weight: 400;
+				border: 1px solid #e1e1e1;
+				color: #383838;
+
+				&::placeholder {
+					color: #b8b8b8;
+				}
+
+				&:focus {
+					outline: none;
+					box-shadow: none;
+					border-color: #7545bb;
+				}
 			}
 
 			#evf-embed-shortcode {

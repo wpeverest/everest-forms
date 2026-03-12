@@ -1148,8 +1148,9 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 			'offset'  => $per_page * ( $current_page - 1 ),
 		);
 
-		if ( ! empty( $_REQUEST['status'] ) ) {
-			$status = sanitize_key( wp_unslash( $_REQUEST['status'] ) );
+		// Handle the status query.
+		if ( ! empty( $_REQUEST['status'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+			$status = sanitize_key( wp_unslash( $_REQUEST['status'] ) ); // phpcs:ignore WordPress.Security.NonceVerification
 
 			if ( 'unread' === $status ) {
 				$args['status'] = 'publish';
@@ -1157,14 +1158,11 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 			} elseif ( 'read' === $status ) {
 				$args['status'] = 'publish';
 				$args['viewed'] = 1;
+			} elseif ( 'all' === $status ) {
+				$args['status'] = 'publish';
 			} else {
 				$args['status'] = $status;
 			}
-		}
-
-		// Handle the status query.
-		if ( ! empty( $_REQUEST['status'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
-			$args['status'] = sanitize_key( wp_unslash( $_REQUEST['status'] ) ); // phpcs:ignore WordPress.Security.NonceVerification
 		}
 
 		// Handle the search query.
