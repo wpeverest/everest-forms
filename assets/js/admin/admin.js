@@ -217,15 +217,24 @@
 		$(document).on('change', '#filter-by-status', function () {
 			var $form = $(this).closest('form');
 			var status = $(this).val();
+			var $search = $form.find('input[name="s"]');
+
 			$form.find('input[name="status"]').remove();
+
+			$form.find('select[name="action"]').val('-1');
+			$form.find('select[name="action2"]').val('-1');
+
+			$form.find('input[name="bulk_action"]').prop('disabled', true);
 
 			if (status !== '') {
 				$form.append(
-					'<input type="hidden" name="status" value="' + status + '" />',
+					'<input type="hidden" name="status" value="' + status + '" />'
 				);
 			}
 
-			// Remove the select itself so it doesn't send a duplicate.
+			if ($search.length && !$search.val().trim()) {
+				$search.prop('disabled', true);
+			}
 			$(this).prop('disabled', true);
 
 			$form.submit();
