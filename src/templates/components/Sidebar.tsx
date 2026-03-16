@@ -74,7 +74,7 @@ const Sidebar: React.FC<SidebarProps> = React.memo(({ categories, selectedCatego
             bg={selectedCategory === category.name ? "#f5f5f5" : "transparent"}
             onClick={() => onCategorySelect(category.name)}
           >
-            <Text color="#383838" color={selectedCategory === category.name ? "#7545BB" : ""} fontSize="14px" lineHeight="22px" fontWeight="medium" margin="0px">{category.name}</Text>
+            <Text color={selectedCategory === category.name ? "#7545BB" : "#4d4d4d"} fontSize="14px" lineHeight="22px" fontWeight="medium" margin="0px">{category.name}</Text>
             <Spacer />
             <Badge className="badge" display="flex" alignItems="center" justifyContent="center" fontWeight="semibold" width="32px" height="24px" padding="0px" borderRadius="6px" color={selectedCategory === category.name ? "#7545BB" : ""} bg={selectedCategory === category.name ? "white" : "#F5F5F5"} >{category.count}</Badge>
           </HStack>
