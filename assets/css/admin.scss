@@ -733,7 +733,7 @@ body.everest-forms-builder {
 	}
 
 	.clearfix {
-		height: 80px;
+		// height: 80px;
 	}
 
 	// Toggle switch.
@@ -3902,6 +3902,8 @@ p.search-box {
 						width: 44%;
 						float: left;
 						margin-right: 2%;
+						display: flex;
+						flex-direction: column;
 
 						input {
 							width: 99%;
