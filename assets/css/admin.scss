@@ -10478,6 +10478,10 @@ img.ui-datepicker-trigger {
 				box-shadow: unset;
 				margin-top: 0;
 				margin-bottom: 20px;
+
+				&.error {
+					border-left-color: #d63638 !important;
+				}
 			}
 		}
 
