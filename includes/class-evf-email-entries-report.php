@@ -127,7 +127,7 @@ class EVF_Email_Entries_Report {
 	}
 
 	/**
-	 * Get human-readable period label.
+	 * Period label.
 	 *
 	 * @since 2.0.9
 	 * @return string
@@ -151,7 +151,8 @@ class EVF_Email_Entries_Report {
 			case 'Weekly':
 			default:
 				return sprintf(
-					__( 'Weekly Report: %1$s \u{2013} %2$s', 'everest-forms' ),
+					/* translators: 1: Start date, 2: End date */
+					__( 'Weekly Report: %1$s – %2$s', 'everest-forms' ),
 					date_i18n( $date_format, strtotime( $this->period_start ) ),
 					date_i18n( $date_format, strtotime( $this->period_end ) )
 				);
@@ -159,8 +160,7 @@ class EVF_Email_Entries_Report {
 	}
 
 	/**
-	 * Resolve form IDs to report on.
-	 * Empty saved list means all published forms.
+	 * Resolve the form IDs to include in the report.
 	 *
 	 * @since 2.0.9
 	 * @return int[]
@@ -183,12 +183,7 @@ class EVF_Email_Entries_Report {
 		}
 
 		return array_values(
-			array_unique(
-				array_merge(
-					array_intersect( $this->form_ids, $all_published ),
-					$all_published
-				)
-			)
+			array_intersect( $this->form_ids, $all_published )
 		);
 	}
 
@@ -326,7 +321,8 @@ class EVF_Email_Entries_Report {
 				array_filter(
 					$entries_data,
 					function ( $f ) {
-						return $f['current'] > 0; }
+						return $f['current'] > 0;
+					}
 				)
 			),
 		);
@@ -398,7 +394,8 @@ class EVF_Email_Entries_Report {
 						', ',
 						array_map(
 							function ( $f ) {
-								return $f['form_name']; },
+								return $f['form_name'];
+							},
 							$inactive_forms
 						)
 					)

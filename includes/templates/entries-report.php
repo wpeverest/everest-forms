@@ -20,19 +20,19 @@ $frequency        = get_option( 'everest_forms_entries_reporting_frequency', 'We
 $show_total_forms = count( $entries_data ) > 1;
 
 if ( ! function_exists( 'evf_report_change_inline' ) ) :
-function evf_report_change_inline( $change ) {
-	if ( is_null( $change ) ) {
-		return '';
+	function evf_report_change_inline( $change ) {
+		if ( is_null( $change ) ) {
+			return '';
+		}
+		$base = 'font-family:Arial,sans-serif;font-size:12px;font-weight:bold;';
+		if ( $change > 0 ) {
+			return '<span style="' . $base . 'color:#16a34a;">&#9650; +' . esc_html( $change ) . '%</span>';
+		}
+		if ( $change < 0 ) {
+			return '<span style="' . $base . 'color:#dc2626;">&#9660; ' . esc_html( $change ) . '%</span>';
+		}
+		return '<span style="' . $base . 'color:#9ca3af;">&#8212; 0%</span>';
 	}
-	$base = 'font-family:Arial,sans-serif;font-size:12px;font-weight:bold;';
-	if ( $change > 0 ) {
-		return '<span style="' . $base . 'color:#16a34a;">&#9650; +' . esc_html( $change ) . '%</span>';
-	}
-	if ( $change < 0 ) {
-		return '<span style="' . $base . 'color:#dc2626;">&#9660; ' . esc_html( $change ) . '%</span>';
-	}
-	return '<span style="' . $base . 'color:#9ca3af;">&#8212; 0%</span>';
-}
 endif;
 
 if ( 'Daily' === $frequency ) {
@@ -59,8 +59,10 @@ table,td{mso-table-lspace:0pt;mso-table-rspace:0pt}
 img{-ms-interpolation-mode:bicubic;border:0;height:auto;line-height:100%;outline:none;text-decoration:none}
 body{margin:0!important;padding:0!important;width:100%!important;background-color:#f9fafb}
 @media screen and (max-width:600px){
-	.stat-col{display:block!important;width:100%!important;padding-bottom:12px!important;box-sizing:border-box!important}
-	.spacer-col{display:none!important}
+	.stat-cards-table{width:100%!important}
+	.stat-card-wrapper{display:block!important;width:100%!important;padding-bottom:12px!important}
+	.stat-card-wrapper td{display:block!important}
+	.spacer-col{display:none!important;width:0!important;max-width:0!important;overflow:hidden!important;font-size:0!important;line-height:0!important}
 }
 </style>
 </head>
@@ -122,7 +124,13 @@ body{margin:0!important;padding:0!important;width:100%!important;background-colo
 				</svg>
 			</td>
 			<td valign="middle" style="font-family:Arial,sans-serif;font-size:12px;color:#6b7280;">
-				<?php echo esc_html( $period_label ); ?>
+				<?php
+				/*
+				 * FIX 1: Decode unicode escapes (e.g. \u{2013} en-dash) that may arrive
+				 * as literal backslash-u sequences in $period_label.
+				 */
+				echo esc_html( html_entity_decode( $period_label, ENT_QUOTES | ENT_HTML5, 'UTF-8' ) );
+				?>
 			</td>
 		</tr>
 		</table>
@@ -132,73 +140,87 @@ body{margin:0!important;padding:0!important;width:100%!important;background-colo
 <tr><td style="height:1px;background-color:#f3f4f6;font-size:0;line-height:0;padding:0;">&nbsp;</td></tr>
 <tr><td style="height:20px;font-size:0;line-height:0;">&nbsp;</td></tr>
 
-<!-- Stat cards -->
+
 <tr>
 	<td>
-		<table border="0" cellpadding="0" cellspacing="0" width="100%">
+		<table class="stat-cards-table" border="0" cellpadding="0" cellspacing="0" width="100%">
 		<tr>
 
 			<?php if ( $show_total_forms ) : ?>
-			<td class="stat-col" valign="top" width="48%" style="border:1px solid #e5e7eb;border-radius:12px;padding:16px;">
-				<table border="0" cellpadding="0" cellspacing="0" width="100%">
+			<!-- Total Forms card -->
+			<td class="stat-card-wrapper" valign="top" width="48%" style="vertical-align:top;padding-bottom:0;">
+				<table border="0" cellpadding="0" cellspacing="0" width="100%" style="border:1px solid #e5e7eb;border-radius:12px;">
 				<tr>
-					<td valign="middle" width="52" style="padding-right:12px;">
-						<table border="0" cellpadding="0" cellspacing="0" width="40">
+					<td style="padding:16px;">
+						<table border="0" cellpadding="0" cellspacing="0" width="100%">
 						<tr>
-							<td width="40" height="40" align="center" valign="middle" style="background-color:#f3f0ff;border-radius:10px;width:40px;height:40px;">
-								<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;margin:auto;">
-									<rect x="3.5" y="1.5" width="13" height="17" rx="2" stroke="#7c3aed" stroke-width="1.4" fill="none"/>
-									<path d="M6.5 6.5h7M6.5 10h7M6.5 13.5h4.5" stroke="#7c3aed" stroke-width="1.3" stroke-linecap="round"/>
-								</svg>
+							<td valign="middle" width="52" style="padding-right:12px;">
+								<table border="0" cellpadding="0" cellspacing="0" width="40">
+								<tr>
+									<td width="40" height="40" align="center" valign="middle" style="background-color:#f3f0ff;border-radius:10px;width:40px;height:40px;">
+										<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;margin:auto;">
+											<rect x="3.5" y="1.5" width="13" height="17" rx="2" stroke="#7c3aed" stroke-width="1.4" fill="none"/>
+											<path d="M6.5 6.5h7M6.5 10h7M6.5 13.5h4.5" stroke="#7c3aed" stroke-width="1.3" stroke-linecap="round"/>
+										</svg>
+									</td>
+								</tr>
+								</table>
+							</td>
+							<td valign="middle">
+								<p style="margin:0 0 4px;font-family:Arial,sans-serif;font-size:12px;color:#6b7280;"><?php esc_html_e( 'Total Forms', 'everest-forms' ); ?></p>
+								<p style="margin:0;font-family:Arial,sans-serif;font-size:26px;font-weight:bold;color:#111827;line-height:1;"><?php echo esc_html( $summary['total_forms'] ); ?></p>
 							</td>
 						</tr>
 						</table>
-					</td>
-					<td valign="middle">
-						<p style="margin:0 0 4px;font-family:Arial,sans-serif;font-size:12px;color:#6b7280;"><?php esc_html_e( 'Total Forms', 'everest-forms' ); ?></p>
-						<p style="margin:0;font-family:Arial,sans-serif;font-size:26px;font-weight:bold;color:#111827;line-height:1;"><?php echo esc_html( $summary['total_forms'] ); ?></p>
 					</td>
 				</tr>
 				</table>
 			</td>
-			<td class="spacer-col" width="4%">&nbsp;</td>
+			<!-- Spacer between cards (hidden on mobile via .spacer-col) -->
+			<td class="spacer-col" width="4%" style="font-size:0;line-height:0;">&nbsp;</td>
 			<?php endif; ?>
 
-			<td class="stat-col" valign="top" width="<?php echo $show_total_forms ? '48%' : '100%'; ?>" style="border:1px solid #e5e7eb;border-radius:12px;padding:16px;">
-				<table border="0" cellpadding="0" cellspacing="0" width="100%">
+			<td class="stat-card-wrapper" valign="top" width="<?php echo $show_total_forms ? '48%' : '100%'; ?>" style="vertical-align:top;padding-bottom:0;">
+				<table border="0" cellpadding="0" cellspacing="0" width="100%" style="border:1px solid #e5e7eb;border-radius:12px;">
 				<tr>
-					<td valign="middle" width="52" style="padding-right:12px;">
-						<table border="0" cellpadding="0" cellspacing="0" width="40">
+					<td style="padding:16px;">
+						<table border="0" cellpadding="0" cellspacing="0" width="100%">
 						<tr>
-							<td width="40" height="40" align="center" valign="middle" style="background-color:#f3f0ff;border-radius:10px;width:40px;height:40px;">
-								<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;margin:auto;">
-									<rect x="2.5" y="2.5" width="15" height="15" rx="2" stroke="#7c3aed" stroke-width="1.4" fill="none"/>
-									<path d="M2.5 8.5h15M8.5 2.5v15" stroke="#7c3aed" stroke-width="1.3"/>
-								</svg>
+							<td valign="middle" width="52" style="padding-right:12px;">
+								<table border="0" cellpadding="0" cellspacing="0" width="40">
+								<tr>
+									<td width="40" height="40" align="center" valign="middle" style="background-color:#f3f0ff;border-radius:10px;width:40px;height:40px;">
+										<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;margin:auto;">
+											<rect x="2.5" y="2.5" width="15" height="15" rx="2" stroke="#7c3aed" stroke-width="1.4" fill="none"/>
+											<path d="M2.5 8.5h15M8.5 2.5v15" stroke="#7c3aed" stroke-width="1.3"/>
+										</svg>
+									</td>
+								</tr>
+								</table>
 							</td>
-						</tr>
-						</table>
-					</td>
-					<td valign="middle">
-						<p style="margin:0 0 4px;font-family:Arial,sans-serif;font-size:12px;color:#6b7280;"><?php esc_html_e( 'Total Entries', 'everest-forms' ); ?></p>
-						<table border="0" cellpadding="0" cellspacing="0">
-						<tr>
-							<td valign="baseline" style="font-family:Arial,sans-serif;font-size:26px;font-weight:bold;color:#111827;line-height:1;padding-right:8px;">
-								<?php echo esc_html( number_format( $summary['total_entries'] ) ); ?>
+							<td valign="middle">
+								<p style="margin:0 0 4px;font-family:Arial,sans-serif;font-size:12px;color:#6b7280;"><?php esc_html_e( 'Total Entries', 'everest-forms' ); ?></p>
+								<table border="0" cellpadding="0" cellspacing="0">
+								<tr>
+									<td valign="baseline" style="font-family:Arial,sans-serif;font-size:26px;font-weight:bold;color:#111827;line-height:1;padding-right:8px;">
+										<?php echo esc_html( number_format( $summary['total_entries'] ) ); ?>
+									</td>
+									<?php if ( ! is_null( $summary['overall_change'] ) ) : ?>
+									<td valign="middle" style="padding-right:4px;white-space:nowrap;">
+										<?php echo evf_report_change_inline( $summary['overall_change'] ); ?>
+									</td>
+									<td valign="middle" style="font-family:Arial,sans-serif;font-size:12px;color:#9ca3af;padding-right:8px;white-space:nowrap;">
+										<?php echo esc_html( $vs_label ); ?>
+									</td>
+									<?php endif; ?>
+									<?php if ( ! is_null( $summary['prev_overall_change'] ) ) : ?>
+									<td valign="middle" style="white-space:nowrap;">
+										<?php echo evf_report_change_inline( $summary['prev_overall_change'] ); ?>
+									</td>
+									<?php endif; ?>
+								</tr>
+								</table>
 							</td>
-							<?php if ( ! is_null( $summary['overall_change'] ) ) : ?>
-							<td valign="middle" style="padding-right:4px;white-space:nowrap;">
-								<?php echo evf_report_change_inline( $summary['overall_change'] ); ?>
-							</td>
-							<td valign="middle" style="font-family:Arial,sans-serif;font-size:12px;color:#9ca3af;padding-right:8px;white-space:nowrap;">
-								<?php echo esc_html( $vs_label ); ?>
-							</td>
-							<?php endif; ?>
-							<?php if ( ! is_null( $summary['prev_overall_change'] ) ) : ?>
-							<td valign="middle" style="white-space:nowrap;">
-								<?php echo evf_report_change_inline( $summary['prev_overall_change'] ); ?>
-							</td>
-							<?php endif; ?>
 						</tr>
 						</table>
 					</td>
@@ -247,7 +269,7 @@ body{margin:0!important;padding:0!important;width:100%!important;background-colo
 				$row_border   = $is_last ? '' : 'border-bottom:1px solid #f3f4f6;';
 				$radius_left  = $is_last ? 'border-radius:0 0 0 12px;' : '';
 				$radius_right = $is_last ? 'border-radius:0 0 12px 0;' : '';
-			?>
+				?>
 			<tr>
 				<td style="padding:13px 18px;font-family:Arial,sans-serif;font-size:13px;color:#111827;<?php echo $row_border . $radius_left; ?>"><?php echo esc_html( $form['form_name'] ); ?></td>
 				<td style="padding:13px 18px;font-family:Arial,sans-serif;font-size:13px;color:#111827;<?php echo $row_border; ?>"><?php echo esc_html( number_format( $form['current'] ) ); ?></td>

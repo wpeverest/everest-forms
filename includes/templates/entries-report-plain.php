@@ -64,7 +64,7 @@ $footer = wp_parse_args(
 $separator = str_repeat( '-', 60 );
 
 ?>
-<?php echo esc_html( strtoupper( get_bloginfo( 'name' ) ) ); ?> — <?php echo esc_html( strtoupper( $period_label ) ); ?>
+<?php echo esc_html( strtoupper( get_bloginfo( 'name' ) ) ); ?> — <?php echo esc_html( html_entity_decode( $period_label, ENT_QUOTES | ENT_HTML5, 'UTF-8' ) ); ?>
 
 <?php echo esc_html( $separator ); ?>
 
