@@ -1222,11 +1222,6 @@ class EVF_AJAX {
 				$frequency = 'Weekly';
 			}
 
-			$form_ids = get_option( 'everest_forms_reporting_form_lists', array() );
-			if ( ! is_array( $form_ids ) ) {
-				$form_ids = array();
-			}
-
 			$test_email = sanitize_email( get_option( 'everest_forms_routine_report_send_email_test_to', '' ) );
 			if ( empty( $test_email ) ) {
 				$test_email = sanitize_email( get_bloginfo( 'admin_email' ) );
@@ -1236,13 +1231,9 @@ class EVF_AJAX {
 			if ( empty( trim( $subject ) ) ) {
 				$subject = __( 'Everest Forms - Entries summary statistics', 'everest-forms' );
 			}
-			$subject = sprintf(
-			/* translators: %s: original email subject */
-				__( '[TEST] %s', 'everest-forms' ),
-				$subject
-			);
+			$subject = sprintf( __( '[TEST] %s', 'everest-forms' ), $subject );
 
-			$email_builder = new EVF_Email_Entries_Report( $frequency, $form_ids, true );
+			$email_builder = new EVF_Email_Entries_Report( $frequency, null, true );
 			$html_message  = $email_builder->render_html();
 
 			$headers = array(
@@ -1256,18 +1247,13 @@ class EVF_AJAX {
 				wp_send_json_success(
 					array(
 						'message' => sprintf(
-							/* translators: %s: recipient email address */
 							__( 'Test report sent to %s. Please check your inbox.', 'everest-forms' ),
 							$test_email
 						),
 					)
 				);
 			} else {
-				wp_send_json_error(
-					array(
-						'message' => __( 'Test email could not be sent. Please check your site email configuration.', 'everest-forms' ),
-					)
-				);
+				wp_send_json_error( array( 'message' => __( 'Test email could not be sent. Please check your site email configuration.', 'everest-forms' ) ) );
 			}
 		} catch ( Exception $e ) {
 			wp_send_json_error( array( 'message' => $e->getMessage() ) );
@@ -1284,7 +1270,6 @@ class EVF_AJAX {
 		 */
 	public static function send_manual_report() {
 		try {
-
 			if ( ! current_user_can( 'manage_options' ) ) {
 				wp_send_json_error( array( 'message' => __( 'Unauthorized.', 'everest-forms' ) ), 401 );
 			}
@@ -1295,36 +1280,9 @@ class EVF_AJAX {
 			$sent = $cron->evf_report_form_statistics_send( false );
 
 			if ( $sent ) {
-				$frequency = get_option( 'everest_forms_entries_reporting_frequency', 'Weekly' );
-				$form_ids  = get_option( 'everest_forms_reporting_form_lists', array() );
-				$recipient = get_option( 'everest_forms_entries_reporting_email', '{admin_email}' );
-				$recipient = str_replace( '{admin_email}', get_bloginfo( 'admin_email' ), $recipient );
-
-				$email_builder = new EVF_Email_Entries_Report(
-					$frequency,
-					is_array( $form_ids ) ? $form_ids : array()
-				);
-
-				$cron->log_report_sent(
-					array(
-						'frequency' => $frequency,
-						'email'     => sanitize_email( $recipient ),
-						'entries'   => $email_builder->get_entries_data(),
-						'type'      => 'manual',
-					)
-				);
-
-				wp_send_json_success(
-					array(
-						'message' => __( 'Report sent successfully.', 'everest-forms' ),
-					)
-				);
+				wp_send_json_success( array( 'message' => __( 'Report sent successfully.', 'everest-forms' ) ) );
 			} else {
-				wp_send_json_error(
-					array(
-						'message' => __( 'Report could not be sent. Please check your settings and email configuration.', 'everest-forms' ),
-					)
-				);
+				wp_send_json_error( array( 'message' => __( 'Report could not be sent. Please check your settings and email configuration.', 'everest-forms' ) ) );
 			}
 		} catch ( Exception $e ) {
 			wp_send_json_error( array( 'message' => $e->getMessage() ) );

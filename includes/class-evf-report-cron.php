@@ -30,11 +30,8 @@ class EVF_Report_Cron {
 	/**
 	 * Schedule the report cron event.
 	 *
-	 * Calculates the next run timestamp from current settings and
-	 * registers it with wp_schedule_event if not already scheduled.
-	 *
 	 * @since 2.0.9
-	 * @return bool True if scheduled, false if already existed or settings missing.
+	 * @return bool
 	 */
 	public function evf_schedule_add() {
 		if ( wp_next_scheduled( self::HOOK ) ) {
@@ -51,8 +48,8 @@ class EVF_Report_Cron {
 				break;
 
 			case 'Weekly':
-				$day    = get_option( 'everest_forms_entries_reporting_day', 'monday' );
-				$offset = 'next ' . $day;
+				$day        = get_option( 'everest_forms_entries_reporting_day', 'monday' );
+				$offset     = 'next ' . $day;
 				$recurrence = 'weekly';
 				break;
 
@@ -62,7 +59,6 @@ class EVF_Report_Cron {
 				break;
 
 			default:
-				// Unknown frequency — do not schedule.
 				evf_get_logger()->warning(
 					sprintf(
 						/* translators: %s: frequency value */
@@ -74,7 +70,6 @@ class EVF_Report_Cron {
 				return false;
 		}
 
-		// Build next run: midnight of offset date in site timezone, then add send hour.
 		$midnight_local = gmdate( 'Y-m-d 00:00:00', strtotime( $offset ) );
 		$midnight_utc   = get_gmt_from_date( $midnight_local );
 		$next_run       = strtotime( $midnight_utc ) + ( $send_hour * HOUR_IN_SECONDS );
@@ -85,14 +80,12 @@ class EVF_Report_Cron {
 	}
 
 	/**
-	 * Clear all scheduled report events from the cron array.
+	 * Clear all scheduled report events.
 	 *
 	 * @since 2.0.7
-	 * @return void
 	 */
 	public function evf_schedule_clear_all() {
 		$timestamp = wp_next_scheduled( self::HOOK );
-
 		while ( $timestamp ) {
 			wp_unschedule_event( $timestamp, self::HOOK );
 			$timestamp = wp_next_scheduled( self::HOOK );
@@ -100,17 +93,14 @@ class EVF_Report_Cron {
 	}
 
 	/**
-	 * Clear and reschedule in one call.
-	 * Used after settings are saved.
+	 * Clear and reschedule. Called after settings are saved.
 	 *
 	 * @since 2.0.9
-	 * @return void
 	 */
 	public function evf_reschedule() {
 		$this->evf_schedule_clear_all();
 
-		$enabled = get_option( 'everest_forms_enable_entries_reporting', 'no' );
-		if ( 'yes' === $enabled ) {
+		if ( 'yes' === get_option( 'everest_forms_enable_entries_reporting', 'no' ) ) {
 			$this->evf_schedule_add();
 		}
 	}
@@ -119,7 +109,6 @@ class EVF_Report_Cron {
 	 * Handle schedule cleanup on plugin deactivation.
 	 *
 	 * @since 2.0.7
-	 * @return void
 	 */
 	public function deactivate() {
 		$this->evf_schedule_clear_all();
@@ -128,37 +117,25 @@ class EVF_Report_Cron {
 	/**
 	 * Build and send the report email.
 	 *
-	 * Resolves recipient, subject, form list, and frequency from options,
-	 * delegates content building to EVF_Email_Entries_Report, and
-	 * dispatches via EVF_Emails. Logs the send on success.
-	 *
 	 * @since 2.0.9
 	 * @param bool $is_test Whether this is a manual test send.
-	 * @return bool True on successful dispatch, false otherwise.
+	 * @return bool
 	 */
 	public function evf_report_form_statistics_send( $is_test = false ) {
-		// Resolve recipient.
 		$recipient = get_option( 'everest_forms_entries_reporting_email', '{admin_email}' );
-		$recipient = str_replace( '{admin_email}', get_bloginfo( 'admin_email' ), $recipient );
-		$recipient = sanitize_email( $recipient );
+		$recipient = sanitize_email( str_replace( '{admin_email}', get_bloginfo( 'admin_email' ), $recipient ) );
 
 		if ( empty( $recipient ) ) {
-			$recipient = get_bloginfo( 'admin_email' );
+			$recipient = sanitize_email( get_bloginfo( 'admin_email' ) );
 		}
 
-		// Resolve subject.
-		$subject = get_option(
-			'everest_forms_entries_reporting_subject',
-			__( 'Everest Forms - Entries summary statistics', 'everest-forms' )
-		);
-		if ( empty( $subject ) ) {
+		$subject = get_option( 'everest_forms_entries_reporting_subject', __( 'Everest Forms - Entries summary statistics', 'everest-forms' ) );
+		if ( empty( trim( $subject ) ) ) {
 			$subject = __( 'Everest Forms - Entries summary statistics', 'everest-forms' );
 		}
 
-		// Resolve frequency.
 		$frequency = get_option( 'everest_forms_entries_reporting_frequency', 'Weekly' );
-		$valid_frequencies = array( 'Daily', 'Weekly', 'Monthly' );
-		if ( ! in_array( $frequency, $valid_frequencies, true ) ) {
+		if ( ! in_array( $frequency, array( 'Daily', 'Weekly', 'Monthly' ), true ) ) {
 			evf_get_logger()->warning(
 				sprintf(
 					/* translators: %s: frequency value */
@@ -170,32 +147,24 @@ class EVF_Report_Cron {
 			return false;
 		}
 
-		// Resolve form list.
-		$form_ids = get_option( 'everest_forms_reporting_form_lists', array() );
-		if ( ! is_array( $form_ids ) ) {
-			$form_ids = array();
-		}
-
-		// Build email.
-		$email_builder = new EVF_Email_Entries_Report( $frequency, $form_ids, $is_test );
+		$email_builder = new EVF_Email_Entries_Report( $frequency, null, $is_test );
+		$entries_data  = $email_builder->get_entries_data();
 		$html_message  = $email_builder->render_html();
-		$plain_message = $email_builder->render_plain_text();
 
-		// Send via EVF_Emails.
-		$mailer  = new EVF_Emails();
 		$headers = array(
 			'Content-Type: text/html; charset=UTF-8',
+			'From: ' . wp_specialchars_decode( get_bloginfo( 'name' ) ) . ' <' . sanitize_email( get_option( 'admin_email' ) ) . '>',
 		);
 
-		$sent = $mailer->send( $recipient, $subject, $html_message, $plain_message, $headers );
+		$sent = wp_mail( $recipient, $subject, $html_message, $headers );
 
 		if ( $sent && ! $is_test ) {
 			$this->log_report_sent(
 				array(
-					'frequency'     => $frequency,
-					'email'         => $recipient,
-					'entries'       => $email_builder->get_entries_data(),
-					'type'          => 'scheduled',
+					'frequency' => $frequency,
+					'email'     => $recipient,
+					'entries'   => $entries_data,
+					'type'      => 'scheduled',
 				)
 			);
 		}
@@ -204,13 +173,10 @@ class EVF_Report_Cron {
 	}
 
 	/**
-	 * Log a report send to the history option.
-	 *
-	 * Keeps the last 30 records only.
+	 * Log a report send to the history option. Keeps the last 30 records.
 	 *
 	 * @since 2.0.9
 	 * @param array $data Keys: frequency, email, entries, type.
-	 * @return void
 	 */
 	public function log_report_sent( $data ) {
 		$history = get_option( 'everest_forms_report_history', array() );
@@ -218,24 +184,20 @@ class EVF_Report_Cron {
 			$history = array();
 		}
 
-		$entry_count = 0;
-		if ( ! empty( $data['entries'] ) && is_array( $data['entries'] ) ) {
-			$entry_count = array_sum( array_column( $data['entries'], 'current' ) );
-		}
+		$entry_count = ( ! empty( $data['entries'] ) && is_array( $data['entries'] ) )
+			? array_sum( array_column( $data['entries'], 'current' ) )
+			: 0;
 
 		$history[] = array(
-			'sent_at'      => current_time( 'mysql' ),
-			'frequency'    => isset( $data['frequency'] ) ? $data['frequency'] : '',
-			'recipient'    => isset( $data['email'] ) ? $data['email'] : '',
-			'form_count'   => ! empty( $data['entries'] ) ? count( $data['entries'] ) : 0,
-			'total_entries'=> $entry_count,
-			'type'         => isset( $data['type'] ) ? $data['type'] : 'scheduled',
+			'sent_at'       => current_time( 'mysql' ),
+			'frequency'     => isset( $data['frequency'] ) ? $data['frequency'] : '',
+			'recipient'     => isset( $data['email'] ) ? $data['email'] : '',
+			'form_count'    => ! empty( $data['entries'] ) ? count( $data['entries'] ) : 0,
+			'total_entries' => $entry_count,
+			'type'          => isset( $data['type'] ) ? $data['type'] : 'scheduled',
 		);
 
-		// Keep last 30.
-		$history = array_slice( $history, -30 );
-
-		update_option( 'everest_forms_report_history', $history );
+		update_option( 'everest_forms_report_history', array_slice( $history, -30 ) );
 	}
 
 	/**

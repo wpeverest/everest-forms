@@ -28,7 +28,7 @@ class EVF_Settings_Advanced extends EVF_Settings_Page {
 	}
 
 	/**
-	 * Get sections for advanced tab.
+	 * Get sections.
 	 *
 	 * @return array
 	 */
@@ -42,7 +42,7 @@ class EVF_Settings_Advanced extends EVF_Settings_Page {
 	}
 
 	/**
-	 * Output sections in navigation sidebar.
+	 * Output sections.
 	 */
 	public function output_sections() {
 		global $current_section;
@@ -92,8 +92,6 @@ class EVF_Settings_Advanced extends EVF_Settings_Page {
 				break;
 		}
 
-		// FIX: Apply filter only once here. The individual getters no longer apply
-		// it themselves, preventing the triple-application that existed before.
 		return apply_filters( 'everest_forms_get_settings_' . $this->id, $settings, $current_section );
 	}
 
@@ -113,9 +111,6 @@ class EVF_Settings_Advanced extends EVF_Settings_Page {
 			)
 		);
 
-		// FIX: Removed the apply_filters( 'everest_forms_misc_settings', ... ) wrapper
-		// and the trailing apply_filters( 'everest_forms_get_settings_advanced', ... )
-		// — the single application in get_settings() above is the correct place.
 		return array(
 			array(
 				'title' => esc_html__( 'Advanced Options', 'everest-forms' ),
@@ -171,21 +166,14 @@ class EVF_Settings_Advanced extends EVF_Settings_Page {
 	 */
 	public function get_entry_reports_settings() {
 		$evf_form_lists = evf_get_all_forms();
-
-		// FIX: Use the canonical option key everest_forms_routine_report_send_email_test_to
-		// for the test-send field. The original used everest_forms_email_send_to which
-		// is a different (and incorrect) key for this purpose.
 		$evf_test_email = get_option( 'everest_forms_routine_report_send_email_test_to', '' );
 
-		// FIX: Fetch schedule health from EVF_Report_Cron so it can be shown inline.
 		$schedule_status = '';
 		if ( class_exists( 'EVF_Report_Cron' ) ) {
 			$cron            = new EVF_Report_Cron();
 			$schedule_status = $cron->get_schedule_status();
 		}
 
-		// FIX: Removed the trailing apply_filters( 'everest_forms_get_settings_advanced', ... )
-		// — the single application in get_settings() above is the correct place.
 		return array(
 			array(
 				'title' => esc_html__( 'Forms Entries Statistics Reporting', 'everest-forms' ),
@@ -227,8 +215,6 @@ class EVF_Settings_Advanced extends EVF_Settings_Page {
 					'saturday'  => esc_html__( 'Saturday', 'everest-forms' ),
 				),
 				'id'       => 'everest_forms_entries_reporting_day',
-				// FIX: Default was 'Monday' (capitalized) but option values are all lowercase.
-				// Mismatched default meant the saved value never matched a valid option key.
 				'default'  => 'monday',
 				'desc'     => esc_html__( 'What day of the week should the weekly report be sent?', 'everest-forms' ),
 				'desc_tip' => true,
@@ -236,8 +222,6 @@ class EVF_Settings_Advanced extends EVF_Settings_Page {
 			array(
 				'title'    => esc_html__( 'Email To', 'everest-forms' ),
 				'desc_tip' => esc_html__( 'Email address to send the routine report. Use {admin_email} for the site admin address.', 'everest-forms' ),
-				// FIX: Consolidated to single canonical option key. The original used
-				// three different keys across the codebase for the same field.
 				'id'       => 'everest_forms_entries_reporting_email',
 				'default'  => '{admin_email}',
 				'type'     => 'text',
@@ -252,8 +236,6 @@ class EVF_Settings_Advanced extends EVF_Settings_Page {
 			array(
 				'title'       => esc_html__( 'Send Test Report', 'everest-forms' ),
 				'desc'        => esc_html__( 'Enter the email address to receive the test email for the routine summary report.', 'everest-forms' ),
-				// FIX: input_id aligned with the canonical test-send option key so the
-				// value is actually read and saved under the right key.
 				'input_id'    => 'everest_forms_routine_report_send_email_test_to',
 				'input_type'  => 'email',
 				'input_css'   => 'margin-right:0.5rem',
@@ -273,7 +255,8 @@ class EVF_Settings_Advanced extends EVF_Settings_Page {
 			array(
 				'title'    => esc_html__( 'Report Form Lists', 'everest-forms' ),
 				'id'       => 'everest_forms_reporting_form_lists',
-				'desc'     => esc_html__( 'Select which forms to include in the report. Leave empty to include all forms.', 'everest-forms' ),
+				'default'  => array(),
+				'desc'     => esc_html__( 'Select specific forms to include in the report. Leave empty to include all published forms.', 'everest-forms' ),
 				'desc_tip' => true,
 				'type'     => 'multiselect',
 				'options'  => ! empty( $evf_form_lists ) ? $evf_form_lists : array(),
@@ -287,20 +270,21 @@ class EVF_Settings_Advanced extends EVF_Settings_Page {
 	}
 
 	/**
-	 * Save settings and reschedule the report cron if reporting settings changed.
+	 * Save settings.
 	 */
 	public function save() {
 		global $current_section;
 
 		$current_section = isset( $_GET['section'] ) ? sanitize_text_field( wp_unslash( $_GET['section'] ) ) : 'general';
 
-		$settings = $this->get_settings();
+		if ( 'entry_reports' === $current_section && empty( $_POST['everest_forms_reporting_form_lists'] ) ) {
+			update_option( 'everest_forms_reporting_form_lists', array() );
+		}
 
-		EVF_Admin_Settings::save_fields( $settings );
+		EVF_Admin_Settings::save_fields( $this->get_settings() );
 
 		if ( 'entry_reports' === $current_section && class_exists( 'EVF_Report_Cron' ) ) {
-			$cron = new EVF_Report_Cron();
-			$cron->evf_reschedule();
+			( new EVF_Report_Cron() )->evf_reschedule();
 		}
 	}
 }
