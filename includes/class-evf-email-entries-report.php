@@ -138,13 +138,13 @@ class EVF_Email_Entries_Report {
 		switch ( $this->frequency ) {
 			case 'Daily':
 				return sprintf(
-					__( 'Daily Report for %s', 'everest-forms' ),
+					__( ' %s', 'everest-forms' ),
 					date_i18n( $date_format, strtotime( $this->period_start ) )
 				);
 
 			case 'Monthly':
 				return sprintf(
-					__( 'Monthly Report: %s', 'everest-forms' ),
+					__( ' %s', 'everest-forms' ),
 					date_i18n( 'F Y', strtotime( $this->period_start ) )
 				);
 
@@ -152,7 +152,7 @@ class EVF_Email_Entries_Report {
 			default:
 				return sprintf(
 					/* translators: 1: Start date, 2: End date */
-					__( 'Weekly Report: %1$s – %2$s', 'everest-forms' ),
+					__( '%1$s – %2$s', 'everest-forms' ),
 					date_i18n( $date_format, strtotime( $this->period_start ) ),
 					date_i18n( $date_format, strtotime( $this->period_end ) )
 				);

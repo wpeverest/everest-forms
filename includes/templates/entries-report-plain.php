@@ -2,28 +2,6 @@
 /**
  * Entries Report Plain Text Email Template
  *
- * Variables passed by EVF_Email_Entries_Report::render_plain_text():
- *
- * @var string $period_label  Human-readable period, e.g. "Weekly Report: Mar 3 – Mar 10, 2026".
- * @var bool   $is_test       True when sent as a test email.
- * @var array  $summary {
- *     @type int        $total_entries  Total entries in period.
- *     @type int|null   $overall_change Percentage change vs previous period, or null if unavailable.
- *     @type int        $active_forms   Number of forms with at least one entry.
- *     @type int        $total_forms    Total number of forms in report scope.
- *     @type int        $total_unread   Total unread entries across all forms.
- * }
- * @var array  $entries_data  Array of per-form rows. Each row: form_name, current, change, unread.
- * @var array  $highlights    Associative array of highlight strings (already translated).
- * @var array  $footer {
- *     @type string $entries_url     Admin entries URL.
- *     @type string $settings_url    Admin settings URL.
- *     @type string $unsubscribe_url Unsubscribe URL with nonce.
- *     @type string $generated_at    Formatted datetime string.
- *     @type string $plugin_version  EVF version string.
- *     @type string $site_url        Site home URL.
- * }
- *
  * @package EverestForms\Emails\Templates
  * @since   2.0.9
  */

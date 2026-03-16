@@ -59,9 +59,11 @@ table,td{mso-table-lspace:0pt;mso-table-rspace:0pt}
 img{-ms-interpolation-mode:bicubic;border:0;height:auto;line-height:100%;outline:none;text-decoration:none}
 body{margin:0!important;padding:0!important;width:100%!important;background-color:#f9fafb}
 @media screen and (max-width:600px){
+	/* FIX: Use table-level collapse so td stacking works in email clients */
 	.stat-cards-table{width:100%!important}
 	.stat-card-wrapper{display:block!important;width:100%!important;padding-bottom:12px!important}
-	.stat-card-wrapper td{display:block!important}
+	/* Keep icon cell from stretching — constrain it to its natural 52px width */
+	.stat-icon-cell{width:52px!important;max-width:52px!important;min-width:52px!important}
 	.spacer-col{display:none!important;width:0!important;max-width:0!important;overflow:hidden!important;font-size:0!important;line-height:0!important}
 }
 </style>
@@ -140,7 +142,6 @@ body{margin:0!important;padding:0!important;width:100%!important;background-colo
 <tr><td style="height:1px;background-color:#f3f4f6;font-size:0;line-height:0;padding:0;">&nbsp;</td></tr>
 <tr><td style="height:20px;font-size:0;line-height:0;">&nbsp;</td></tr>
 
-
 <tr>
 	<td>
 		<table class="stat-cards-table" border="0" cellpadding="0" cellspacing="0" width="100%">
@@ -154,10 +155,10 @@ body{margin:0!important;padding:0!important;width:100%!important;background-colo
 					<td style="padding:16px;">
 						<table border="0" cellpadding="0" cellspacing="0" width="100%">
 						<tr>
-							<td valign="middle" width="52" style="padding-right:12px;">
-								<table border="0" cellpadding="0" cellspacing="0" width="40">
+							<td class="stat-icon-cell" valign="middle" width="52" style="width:52px;max-width:52px;min-width:52px;padding-right:12px;">
+								<table border="0" cellpadding="0" cellspacing="0" width="40" style="width:40px;min-width:40px;">
 								<tr>
-									<td width="40" height="40" align="center" valign="middle" style="background-color:#f3f0ff;border-radius:10px;width:40px;height:40px;">
+									<td width="40" height="40" align="center" valign="middle" style="background-color:#f3f0ff;border-radius:10px;width:40px;height:40px;min-width:40px;">
 										<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;margin:auto;">
 											<rect x="3.5" y="1.5" width="13" height="17" rx="2" stroke="#7c3aed" stroke-width="1.4" fill="none"/>
 											<path d="M6.5 6.5h7M6.5 10h7M6.5 13.5h4.5" stroke="#7c3aed" stroke-width="1.3" stroke-linecap="round"/>
@@ -176,9 +177,10 @@ body{margin:0!important;padding:0!important;width:100%!important;background-colo
 				</tr>
 				</table>
 			</td>
-			<!-- Spacer between cards (hidden on mobile via .spacer-col) -->
+
 			<td class="spacer-col" width="4%" style="font-size:0;line-height:0;">&nbsp;</td>
 			<?php endif; ?>
+
 
 			<td class="stat-card-wrapper" valign="top" width="<?php echo $show_total_forms ? '48%' : '100%'; ?>" style="vertical-align:top;padding-bottom:0;">
 				<table border="0" cellpadding="0" cellspacing="0" width="100%" style="border:1px solid #e5e7eb;border-radius:12px;">
@@ -186,10 +188,10 @@ body{margin:0!important;padding:0!important;width:100%!important;background-colo
 					<td style="padding:16px;">
 						<table border="0" cellpadding="0" cellspacing="0" width="100%">
 						<tr>
-							<td valign="middle" width="52" style="padding-right:12px;">
-								<table border="0" cellpadding="0" cellspacing="0" width="40">
+							<td class="stat-icon-cell" valign="middle" width="52" style="width:52px;max-width:52px;min-width:52px;padding-right:12px;">
+								<table border="0" cellpadding="0" cellspacing="0" width="40" style="width:40px;min-width:40px;">
 								<tr>
-									<td width="40" height="40" align="center" valign="middle" style="background-color:#f3f0ff;border-radius:10px;width:40px;height:40px;">
+									<td width="40" height="40" align="center" valign="middle" style="background-color:#f3f0ff;border-radius:10px;width:40px;height:40px;min-width:40px;">
 										<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;margin:auto;">
 											<rect x="2.5" y="2.5" width="15" height="15" rx="2" stroke="#7c3aed" stroke-width="1.4" fill="none"/>
 											<path d="M2.5 8.5h15M8.5 2.5v15" stroke="#7c3aed" stroke-width="1.3"/>
