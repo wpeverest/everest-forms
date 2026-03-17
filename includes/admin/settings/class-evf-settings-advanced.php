@@ -34,9 +34,20 @@ class EVF_Settings_Advanced extends EVF_Settings_Page {
 	 */
 	public function get_sections() {
 		$sections = array(
-			'general'       => esc_html__( 'General', 'everest-forms' ),
-			'entry_reports' => esc_html__( 'Entry Reports & Summaries', 'everest-forms' ),
+			'general'           => esc_html__( 'General', 'everest-forms' ),
+			'entry_reports'     => esc_html__( 'Entry Reports & Summaries', 'everest-forms' ),
+			'plugin_management' => esc_html__( 'Plugin Management', 'everest-forms' ),
 		);
+
+		$entries_settings = apply_filters( 'everest_forms_entries_management_settings', array() );
+		if ( ! empty( $entries_settings ) ) {
+			$sections = array(
+				'general'            => esc_html__( 'General', 'everest-forms' ),
+				'entries_management' => esc_html__( 'Entries Management', 'everest-forms' ),
+				'entry_reports'      => esc_html__( 'Entry Reports & Summaries', 'everest-forms' ),
+				'plugin_management'  => esc_html__( 'Plugin Management', 'everest-forms' ),
+			);
+		}
 
 		return apply_filters( 'everest_forms_get_sections_' . $this->id, $sections );
 	}
@@ -84,8 +95,14 @@ class EVF_Settings_Advanced extends EVF_Settings_Page {
 		$current_section = isset( $_GET['section'] ) ? sanitize_text_field( wp_unslash( $_GET['section'] ) ) : 'general';
 
 		switch ( $current_section ) {
+			case 'entries_management':
+				$settings = $this->get_entries_management_settings();
+				break;
 			case 'entry_reports':
 				$settings = $this->get_entry_reports_settings();
+				break;
+			case 'plugin_management':
+				$settings = $this->get_plugin_management_settings();
 				break;
 			default:
 				$settings = $this->get_advanced_default_settings();
@@ -96,21 +113,35 @@ class EVF_Settings_Advanced extends EVF_Settings_Page {
 	}
 
 	/**
+	 * Get entries management settings.
+	 *
+	 * @return array
+	 */
+	public function get_entries_management_settings() {
+		$base_settings = array(
+			array(
+				'title' => esc_html__( 'Advanced Options', 'everest-forms' ),
+				'type'  => 'title',
+				'desc'  => '',
+				'id'    => 'misc_options',
+			),
+			array(
+				'type' => 'sectionend',
+				'id'   => 'misc_options',
+			),
+		);
+
+		$settings = apply_filters( 'everest_forms_entries_management_settings', $base_settings );
+
+		return apply_filters( 'everest_forms_get_settings_' . $this->id, $settings );
+	}
+
+	/**
 	 * Get advanced default settings.
 	 *
 	 * @return array
 	 */
 	public function get_advanced_default_settings() {
-		$allow_usage_notice_msg = wp_kses(
-			__( 'Help us improve the plugin\'s features by sharing <a href="https://docs.everestforms.net/docs/misc-settings-4/#2-toc-title" target="_blank">non-sensitive plugin data</a> with us.', 'everest-forms' ),
-			array(
-				'a' => array(
-					'href'   => array(),
-					'target' => array(),
-				),
-			)
-		);
-
 		$settings = apply_filters(
 			'everest_forms_misc_settings',
 			array(
@@ -119,22 +150,6 @@ class EVF_Settings_Advanced extends EVF_Settings_Page {
 					'type'  => 'title',
 					'desc'  => '',
 					'id'    => 'misc_options',
-				),
-				array(
-					'title'    => esc_html__( 'Uninstall Everest Forms', 'everest-forms' ),
-					'desc'     => __( '<strong>Heads Up!</strong> Check this if you would like to remove ALL Everest Forms data upon plugin deletion.', 'everest-forms' ),
-					'id'       => 'everest_forms_uninstall_option',
-					'default'  => 'no',
-					'type'     => 'toggle',
-					'desc_tip' => true,
-				),
-				array(
-					'title'    => esc_html__( 'Allow Usage Tracking', 'everest-forms' ),
-					'desc'     => $allow_usage_notice_msg,
-					'id'       => 'everest_forms_allow_usage_tracking',
-					'type'     => 'toggle',
-					'default'  => 'no',
-					'desc_tip' => true,
 				),
 				array(
 					'title'    => esc_html__( 'Enable RestApi', 'everest-forms' ),
@@ -265,6 +280,57 @@ class EVF_Settings_Advanced extends EVF_Settings_Page {
 				array(
 					'type' => 'sectionend',
 					'id'   => 'reporting_options',
+				),
+			)
+		);
+
+		return apply_filters( 'everest_forms_get_settings_' . $this->id, $settings );
+	}
+
+	/**
+	 * Get plugin management settings.
+	 *
+	 * @return array
+	 */
+	public function get_plugin_management_settings() {
+		$allow_usage_notice_msg = wp_kses(
+			__( 'Help us improve the plugin\'s features by sharing <a href="https://docs.everestforms.net/docs/misc-settings-4/#2-toc-title" target="_blank">non-sensitive plugin data</a> with us.', 'everest-forms' ),
+			array(
+				'a' => array(
+					'href'   => array(),
+					'target' => array(),
+				),
+			)
+		);
+
+		$settings = apply_filters(
+			'everest_forms_plugin_management_settings',
+			array(
+				array(
+					'title' => esc_html__( 'Advanced Options', 'everest-forms' ),
+					'type'  => 'title',
+					'desc'  => '',
+					'id'    => 'misc_options',
+				),
+				array(
+					'title'    => esc_html__( 'Uninstall Everest Forms', 'everest-forms' ),
+					'desc'     => __( '<strong>Heads Up!</strong> Check this if you would like to remove ALL Everest Forms data upon plugin deletion.', 'everest-forms' ),
+					'id'       => 'everest_forms_uninstall_option',
+					'default'  => 'no',
+					'type'     => 'toggle',
+					'desc_tip' => true,
+				),
+				array(
+					'title'    => esc_html__( 'Allow Usage Tracking', 'everest-forms' ),
+					'desc'     => $allow_usage_notice_msg,
+					'id'       => 'everest_forms_allow_usage_tracking',
+					'type'     => 'toggle',
+					'default'  => 'no',
+					'desc_tip' => true,
+				),
+				array(
+					'type' => 'sectionend',
+					'id'   => 'misc_options',
 				),
 			)
 		);
