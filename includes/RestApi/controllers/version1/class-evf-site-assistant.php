@@ -412,12 +412,16 @@ class EVF_Site_Assistant {
 	 * @return bool|WP_Error True if permitted, WP_Error otherwise.
 	 */
 	public function check_admin_permissions( $request ) {
-		if ( ! current_user_can( 'manage_options' ) ) {
-			return new \WP_Error(
-				'rest_forbidden',
-				__( 'Sorry, you are not allowed to access this resource.', 'everest-forms' ),
-				array( 'status' => 403 )
-			);
+		$referer = $request->get_header( 'referer' );
+
+		if ( $referer && strpos( $referer, 'page=evf-dashboard' ) !== false ) {
+			if ( ! current_user_can( 'manage_options' ) && ! current_user_can( 'manage_everest_forms' ) ) {
+				return new \WP_Error(
+					'rest_forbidden',
+					__( 'Sorry, you are not allowed to access this resource.', 'everest-forms' ),
+					array( 'status' => 403 )
+				);
+			}
 		}
 
 		return true;

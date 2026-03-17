@@ -105,7 +105,7 @@ if ( false !== $entry_index ) {
 					$entry_meta = apply_filters( 'everest_forms_entry_single_data', $entry->meta, $entry, $form_data );
 
 					$field_type_by_meta_key = array();
-					$exclude_fields_array   = array( 'private-note' );
+					$exclude_fields_array   = array( 'captcha', 'recaptcha', 'hcaptcha', 'turnstile', 'private-note', 'authorize-net' );
 
 					$exclude_fields_array = apply_filters( 'everest_forms_view_entry_exclude_fields', $exclude_fields_array, $entry_meta, $form_data );
 

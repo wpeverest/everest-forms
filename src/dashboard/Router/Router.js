@@ -13,12 +13,12 @@ import { Route, Routes, useLocation } from 'react-router-dom';
  */
 import { Header } from '../components';
 import {
+	Analytics,
 	FreeVsPro,
 	Help,
 	Modules,
 	Products,
 	Settings,
-
 	SiteAssistant,
 } from '../screens';
 import SiteAssistantSkeleton from '../skeleton/SiteAssistantSkeleton';
@@ -35,7 +35,6 @@ const Router = () => {
 		restURL,
 		allStepsCompleted,
 		adminURL,
-		showAnalyticsTab,
 	} =
 		typeof _EVF_DASHBOARD_ !== 'undefined'
 			? _EVF_DASHBOARD_
@@ -45,7 +44,6 @@ const Router = () => {
 					evfRestApiNonce: '',
 					restURL: '',
 					adminURL: '',
-					showAnalyticsTab: false,
 				};
 
 	const siteAssistantQuery = useQuery({
@@ -102,8 +100,8 @@ const Router = () => {
 		}
 
 		if (isAllStepsCompleted) {
-			if (isPro && showAnalyticsTab) {
-				return <RedirectToPhpPage page="everest-forms-analytics" />;
+			if (isPro) {
+				return <RedirectToPhpPage page="evf-analytics" />;
 			} else {
 				return <RedirectToPhpPage page="evf-entries" />;
 			}
@@ -141,7 +139,6 @@ const Router = () => {
 						size="xl"
 					/>
 				</Box>
-				{/* Hidden routes to execute redirect */}
 				<Box display="none">
 					<Routes>
 						<Route path="/" element={<DefaultRedirect />} />
@@ -152,12 +149,21 @@ const Router = () => {
 		);
 	}
 
-	// Normal rendering when not redirecting
 	return (
 		<>
 			{shouldShowHeader && <Header hideSiteAssistant={isAllStepsCompleted} />}
 			<Routes>
 				<Route path="/" element={<DefaultRedirect />} />
+				<Route
+					path="/analytics"
+					element={
+						isPro ? (
+							<RedirectToPhpPage page="evf-analytics" />
+						) : (
+							<Analytics />
+						)
+					}
+				/>
 				<Route path="/settings" element={<Settings to={settingsURL} />} />
 				<Route path="/features" element={<Modules />} />
 				{!isPro && <Route path="/free-vs-pro" element={<FreeVsPro />} />}

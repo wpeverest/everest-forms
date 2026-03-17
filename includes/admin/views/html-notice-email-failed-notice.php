@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 
-<div class="notice notice-warning is-dismissible" id="everest-forms-email-failed-notice">
+<div class="notice notice-warning is-dismissible inline" id="everest-forms-email-failed-notice">
 	<p>
 		<strong><?php esc_html_e( 'Everest Forms Email Send Error', 'everest-forms' ); ?></strong><br/>
 		<?php esc_html_e( 'The last email sent from the Everest Forms Plugin was not delivered to the user.', 'everest-forms' ); ?>

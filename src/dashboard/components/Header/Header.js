@@ -1,5 +1,5 @@
 /**
- *  External Dependencies
+ * External Dependencies
  */
 import {
 	Box,
@@ -25,7 +25,7 @@ import { useEffect, useMemo, useRef } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 
 /**
- *  Internal Dependencies
+ * Internal Dependencies
  */
 import ROUTES, {
 	convertRoute,
@@ -49,13 +49,28 @@ const Header = ({ hideSiteAssistant = false }) => {
 	const isSettingsPage = pageType === 'settings';
 	const isEntriesPage = pageType === 'entries';
 	const isAnalyticsPage = pageType === 'analytics';
-	// Check if we're on any page that's not the main dashboard
 	const isNonDashboardPage =
 		isSettingsPage ||
 		isEntriesPage ||
 		isAnalyticsPage ||
 		(currentPage && currentPage !== 'evf-dashboard');
 
+	// ------------------------------------------------------------------
+	// Dismiss PHP skeleton once React has painted.
+	// requestAnimationFrame guarantees the browser has rendered this
+	// component before we remove the skeleton — prevents any white flash.
+	// ------------------------------------------------------------------
+	useEffect(() => {
+		requestAnimationFrame(() => {
+			if (typeof window.evfHeaderReady === 'function') {
+				window.evfHeaderReady();
+			}
+		});
+	}, []); // runs once on mount only.
+
+	// ------------------------------------------------------------------
+	// Keep existing modal body-class logic unchanged.
+	// ------------------------------------------------------------------
 	useEffect(() => {
 		if (isOpen) {
 			document.body.classList.add('ur-modal-open');
@@ -90,7 +105,7 @@ const Header = ({ hideSiteAssistant = false }) => {
 	const renderNavLink = (route, label, external, showExternalIcon = false) => {
 		const convertedRoute = convertRoute(route, isNonDashboardPage, adminURL);
 		const isExternal = external || isExternalRoute(convertedRoute);
-	const isActive = isRouteActive(route, location.pathname, pageType);
+		const isActive = isRouteActive(route, location.pathname, pageType);
 		const shouldUseExternalLink = isNonDashboardPage || isExternal;
 		const shouldShowIcon = showExternalIcon;
 
@@ -107,12 +122,8 @@ const Header = ({ hideSiteAssistant = false }) => {
 				borderBottom={isActive ? '3px solid' : 'none'}
 				borderColor={isActive ? 'primary.500' : 'transparent'}
 				marginBottom={isActive ? '-2px' : '0'}
-				_hover={{
-					color: 'primary.500',
-				}}
-				_focus={{
-					boxShadow: 'none',
-				}}
+				_hover={{ color: 'primary.500' }}
+				_focus={{ boxShadow: 'none' }}
 				display="inline-flex"
 				alignItems="center"
 				gap="1"
@@ -134,12 +145,8 @@ const Header = ({ hideSiteAssistant = false }) => {
 				fontWeight="semibold"
 				lineHeight="150%"
 				color="#383838"
-				_hover={{
-					color: 'primary.500',
-				}}
-				_focus={{
-					boxShadow: 'none',
-				}}
+				_hover={{ color: 'primary.500' }}
+				_focus={{ boxShadow: 'none' }}
 				_activeLink={{
 					color: 'primary.500',
 					borderBottom: '3px solid',
@@ -167,11 +174,10 @@ const Header = ({ hideSiteAssistant = false }) => {
 				borderBottom="1px solid #E9E9E9"
 				width="100%"
 				position={'relative'}
-				zIndex="10"
 			>
 				<Container maxW="full">
 					<Stack direction="row" minH="70px" justify="space-between">
-						{/* Left Side - Logo and Main Navigation */}
+						{/* Left Side — Logo and Main Navigation */}
 						<Stack direction="row" align="center" gap="7">
 							<Box>
 								<EVF h="10" w="10" />
@@ -183,6 +189,7 @@ const Header = ({ hideSiteAssistant = false }) => {
 							</IntersectObserver>
 						</Stack>
 
+						{/* Right Side */}
 						<Stack direction="row" align="center" spacing="12px">
 							<Stack direction="row" align="center" gap="1" h={'full'}>
 								{rightRoutes.map(({ route, label, external }) =>
@@ -196,31 +203,28 @@ const Header = ({ hideSiteAssistant = false }) => {
 							</Stack>
 
 							{rightRoutes.length > 0 && (
-								<>
-									<Center height="18px">
-										<Divider orientation="vertical" />
-									</Center>
-								</>
+								<Center height="18px">
+									<Divider orientation="vertical" />
+								</Center>
 							)}
+
 							{!isPro && (
-								<>
-									<Link
-										color="orange"
-										fontSize="15px"
-										height="18px"
-										href={
-											upgradeURL +
-											'utm_medium=evf-dashboard&utm_source=evf-free&utm_campaign=header-upgrade-btn&utm_content=Upgrade%20to%20Pro'
-										}
-										isExternal
-										display="inline-flex"
-										alignItems="center"
-										gap="1"
-									>
-										{__('Upgrade To Pro', 'everest-forms')}
-										<ExternalLink w="16px" h="16px" fill="currentColor" />
-									</Link>
-								</>
+								<Link
+									color="orange"
+									fontSize="15px"
+									height="18px"
+									href={
+										upgradeURL +
+										'utm_medium=evf-dashboard&utm_source=evf-free&utm_campaign=header-upgrade-btn&utm_content=Upgrade%20to%20Pro'
+									}
+									isExternal
+									display="inline-flex"
+									alignItems="center"
+									gap="1"
+								>
+									{__('Upgrade To Pro', 'everest-forms')}
+									<ExternalLink w="16px" h="16px" fill="currentColor" />
+								</Link>
 							)}
 
 							<Tooltip
@@ -231,6 +235,7 @@ const Header = ({ hideSiteAssistant = false }) => {
 									),
 									(isPro && 'Pro ') + 'v' + version,
 								)}
+								maxW={'180px'}
 							>
 								<Tag
 									display={'inline-flex !important'}
@@ -271,6 +276,7 @@ const Header = ({ hideSiteAssistant = false }) => {
 					</Stack>
 				</Container>
 			</Box>
+
 			<Drawer
 				isOpen={isOpen}
 				placement="right"

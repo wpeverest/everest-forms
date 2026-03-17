@@ -410,7 +410,11 @@ function everest_forms_panel_field($option, $panel, $field, $form_data, $label, 
 		// Select.
 		case 'select':
 			$is_multiple = isset($args['multiple']) && true === $args['multiple'];
-			if (empty($args['options']) && empty($args['field_map'])) {
+
+			$input_class    = isset( $args['input_class'] ) ? (string) $args['input_class'] : '';
+			$is_tags_select = false !== strpos( $input_class, 'form-tags-select2' );
+
+			if ( ! $is_tags_select && empty( $args['options'] ) && empty( $args['field_map'] ) ) {
 				return '';
 			}
 

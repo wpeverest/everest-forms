@@ -332,11 +332,6 @@ const FreeVsPro = () => {
 					free: true,
 					pro: true,
 				},
-				{
-					title: __("Advanced Form Analytics", "everest-forms"),
-					free: false,
-					pro: true,
-				},
 			],
 		},
 	]);

@@ -82,7 +82,7 @@ interface Props {
 const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 	const dashboardData =
 		typeof _EVF_DASHBOARD_ !== 'undefined' ? _EVF_DASHBOARD_ : {};
-	const { utmCampaign, evfRestApiNonce, restURL, adminEmail, adminURL } =
+	const { utmCampaign, evfRestApiNonce, restURL, adminEmail, adminURL, isPro } =
 		dashboardData;
 
 	const toast = useToast();
@@ -874,6 +874,16 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 			setOpen((prev) => ({ ...prev, [firstStepId]: true }));
 		}
 	}, [firstStepId]);
+
+	useEffect(() => {
+		if (!isLoading && siteData && visibleSteps.length === 0) {
+			let cleanURL = adminURL || '';
+			if (cleanURL.endsWith('/')) cleanURL = cleanURL.slice(0, -1);
+			if (cleanURL.endsWith('/admin.php')) cleanURL = cleanURL.slice(0, -10);
+			const targetPage = isPro ? 'evf-analytics' : 'evf-entries';
+			window.location.href = `${cleanURL}/admin.php?page=${targetPage}`;
+		}
+	}, [visibleSteps.length, isLoading, siteData]);
 
 	if (isLoading) {
 		return <SiteAssistantSkeleton />;

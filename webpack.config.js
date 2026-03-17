@@ -46,6 +46,10 @@ const webpackConfig = {
 				},
 			},
 			{
+				test: /.scss$/,
+				use: ['style-loader', 'css-loader', 'sass-loader'],
+			},
+			{
 				test: /\.(png|svg|jpg|jpeg|gif|webp)$/i,
 				use: [
 					{
@@ -78,6 +82,7 @@ const webpackConfig = {
 		'@wordpress/components': ['wp', 'components'],
 		'@wordpress/block-editor': ['wp', 'blockEditor'],
 		'@wordpress/server-side-render': ['wp', 'serverSideRender'],
+		'@wordpress/hooks': ['wp', 'hooks'],
 		react: ['React'],
 	},
 	resolve: {

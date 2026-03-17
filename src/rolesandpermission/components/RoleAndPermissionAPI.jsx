@@ -1,108 +1,121 @@
-import apiFetch from "@wordpress/api-fetch";
+import apiFetch from '@wordpress/api-fetch';
 
 const { restURL, security } =
-	typeof evf_roles_and_permission !== "undefined" && evf_roles_and_permission;
-const base = restURL + "everest-forms/v1/roels_and_permission/";
+	typeof evf_roles_and_permission !== 'undefined' && evf_roles_and_permission;
+const base = restURL + 'everest-forms/v1/roels_and_permission/';
 
 const urls = {
-	bulkAssignPermission: base + "bulk-assign-permission-based-on-role",
-	getWPRoles: base + "get-wp-roles",
-	addUserManager : base + "add-user-manager",
-	getManagers : base + "get-managers",
-	removeManager: base + "remove-manager",
-	bulkRemoveManager : base + "bulk-remove-managers"
+	bulkAssignPermission: base + 'bulk-assign-permission-based-on-role',
+	getWPRoles: base + 'get-wp-roles',
+	addUserManager: base + 'add-user-manager',
+	getManagers: base + 'get-managers',
+	removeManager: base + 'remove-manager',
+	bulkRemoveManager: base + 'bulk-remove-managers',
+	getWPUsers: base + 'get-wp-users',
 };
 
-export const bulkAssignPermission = async ( checkedItems ) => {
+export const bulkAssignPermission = async (checkedItems) => {
 	return apiFetch({
 		path: urls.bulkAssignPermission,
-		method: "POST",
+		method: 'POST',
 		headers: {
-			"X-WP-Nonce": security,
+			'X-WP-Nonce': security,
 		},
-		data : {
+		data: {
 			request: {
-
-				checked_roles : checkedItems
-			}
-		}
+				checked_roles: checkedItems,
+			},
+		},
 	}).then((res) => res);
 };
 
 export const getWPRoles = async () => {
 	return apiFetch({
 		path: urls.getWPRoles,
-		method: "get",
+		method: 'get',
 		headers: {
-			"X-WP-Nonce": security,
+			'X-WP-Nonce': security,
 		},
-	}).then((res)=> res);
-}
+	}).then((res) => res);
+};
 
-export const addManagerRole = async ( user_email, assignedPermissions ) => {
+export const addManagerRole = async (user_email, assignedPermissions) => {
 	return apiFetch({
-		path : urls.addUserManager,
-		method : "POST",
-		headers : {
-			"X-WP-Nonce" : security,
+		path: urls.addUserManager,
+		method: 'POST',
+		headers: {
+			'X-WP-Nonce': security,
 		},
 		data: {
 			request: {
-				user_email : user_email,
-				assigned_permission : assignedPermissions
+				user_email: user_email,
+				assigned_permission: assignedPermissions,
 			},
 		},
 	}).then((res) => res);
-}
+};
 
-export const getManagers = async ( offset="", pageSize="", searchManager="" ) =>{
-	return apiFetch(
-		{
-			path: urls.getManagers,
-			method: "POST",
-			headers : {
-				"X-WP-Nonce" : security,
+export const getManagers = async (
+	offset = '',
+	pageSize = '',
+	searchManager = '',
+) => {
+	return apiFetch({
+		path: urls.getManagers,
+		method: 'POST',
+		headers: {
+			'X-WP-Nonce': security,
+		},
+		data: {
+			request: {
+				offset: offset,
+				page_size: pageSize,
+				search_manager: searchManager,
 			},
-			data:{
-				request: {
-					offset: offset,
-					page_size: pageSize,
-					search_manager: searchManager,
-				}
-			}
-		}
-	).then( (res) => res );
- }
+		},
+	}).then((res) => res);
+};
 
- export const removeManager = async ( userID ) => {
-	return apiFetch(
-		{
-			path: urls.removeManager,
-			method: "POST",
-			headers: {
-				"X-WP-Nonce" : security,
+export const removeManager = async (userID) => {
+	return apiFetch({
+		path: urls.removeManager,
+		method: 'POST',
+		headers: {
+			'X-WP-Nonce': security,
+		},
+		data: {
+			request: {
+				user_id: userID,
 			},
-			data: {
-				request: {
-					user_id : userID,
-				},
-			},
-		}
-	).then( (res) => res );
- }
+		},
+	}).then((res) => res);
+};
 
+export const getWPUsers = async ({ page = 1, search = '' } = {}) => {
+	const params = new URLSearchParams({ page });
+	if (search) {
+		params.set('search', search);
+	}
+	return apiFetch({
+		path: `${urls.getWPUsers}?${params.toString()}`,
+		method: 'GET',
+		headers: {
+			'X-WP-Nonce': security,
+		},
+	}).then((res) => res);
+};
 
- export const bulkRemoveManager = async ( userIDs ) => {
-		return apiFetch({
-			path: urls.bulkRemoveManager,
-			method: "POST",
-			headers: {
-				"X-WP-Nonce" : security,
+export const bulkRemoveManager = async (userIDs) => {
+	return apiFetch({
+		path: urls.bulkRemoveManager,
+		method: 'POST',
+		headers: {
+			'X-WP-Nonce': security,
+		},
+		data: {
+			request: {
+				user_ids: userIDs,
 			},
-			data: {
-				request: {
-					user_ids : userIDs,
-				},
-			},
-		})
- }
+		},
+	});
+};

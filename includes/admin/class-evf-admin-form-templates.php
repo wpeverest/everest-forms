@@ -37,7 +37,7 @@ class EVF_Admin_Form_Templates {
 	public static function get_template_data() {
 		$template_data = get_transient( 'evf_template_section_list' );
 
-		$template_url = 'https://d3m99fsxk070py.cloudfront.net/';
+		$template_url = 'https://assets.wpeverest.com/everestforms/forms/';
 
 		if ( false === $template_data ) {
 
