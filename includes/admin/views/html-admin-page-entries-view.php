@@ -130,7 +130,7 @@ if ( false !== $entry_index ) {
 							$meta_value = is_serialized( $meta_value ) ? $meta_value : wp_strip_all_tags( $meta_value );
 
 							if ( is_serialized( $meta_value ) ) {
-								$raw_meta_val = unserialize( $meta_value ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_unserialize
+								$raw_meta_val = evf_maybe_unserialize( $meta_value ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_unserialize
 
 								$field_type_array = apply_filters(
 									'everest_forms_serialized_value_field_type',
