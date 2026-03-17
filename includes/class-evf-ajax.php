@@ -542,6 +542,27 @@ class EVF_AJAX {
 			unset( $data['settings']['clean_talk_access_key'] );
 		}
 
+		if( ! empty( $data['payments']['square']['enable_square'] ) ){
+			$form_fields = $data[ 'form_fields' ];
+			$has_square_credit_card = false;
+
+			foreach( $form_fields as $field ){
+				if( 'square-payment' === $field['type'] ){
+					$has_square_credit_card = true;
+				}
+			}
+
+			if( ! $has_square_credit_card ){
+				wp_send_json_error(
+					array(
+						'errorTitle'   => esc_html__( 'Square payment requires a credit card.', 'everest-forms' ),
+						/* translators: %s: empty meta data */
+						'errorMessage' => esc_html__( 'Please add a Square credit card field.', 'everest-forms' ),
+					)
+				);
+			}
+		}
+
 		/**
 		 * Creating the form tags taxonomy.
 		 *

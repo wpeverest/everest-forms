@@ -94,6 +94,8 @@ final class EverestForms {
 	 */
 	public $integrations = null;
 
+	public $addons = null;
+
 	/**
 	 * UTM Campaign.
 	 *
@@ -306,6 +308,7 @@ final class EverestForms {
 		include_once EVF_ABSPATH . 'includes/class-evf-ajax.php';
 		include_once EVF_ABSPATH . 'includes/class-evf-emails.php';
 		include_once EVF_ABSPATH . 'includes/class-evf-integrations.php';
+		include_once EVF_ABSPATH . 'includes/class-evf-addon-upsell.php';
 		include_once EVF_ABSPATH . 'includes/class-evf-cache-helper.php';
 		include_once EVF_ABSPATH . 'includes/class-evf-deprecated-action-hooks.php';
 		include_once EVF_ABSPATH . 'includes/class-evf-deprecated-filter-hooks.php';
@@ -395,6 +398,7 @@ final class EverestForms {
 		$this->load_plugin_textdomain();
 
 		// Load class instances.
+		$this->addons                              = new EVF_Addon_Upsell();
 		$this->integrations                        = new EVF_Integrations();
 		$this->deprecated_hook_handlers['actions'] = new EVF_Deprecated_Action_Hooks();
 		$this->deprecated_hook_handlers['filters'] = new EVF_Deprecated_Filter_Hooks();

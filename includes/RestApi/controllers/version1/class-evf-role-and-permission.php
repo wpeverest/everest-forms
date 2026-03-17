@@ -89,6 +89,26 @@ class EVF_Roles_And_Permission {
 				'permission_callback' => array( __CLASS__, 'check_admin_permissions' ),
 			)
 		);
+		register_rest_route(
+			$this->namespace,
+			'/' . $this->rest_base . '/get-wp-users',
+			array(
+				'methods'             => 'GET',
+				'callback'            => array( __CLASS__, 'get_wp_users_list' ),
+				'permission_callback' => array( __CLASS__, 'check_admin_permissions' ),
+				'args'                => array(
+					'page'   => array(
+						'type'    => 'integer',
+						'default' => 1,
+						'minimum' => 1,
+					),
+					'search' => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+				),
+			)
+		);
 	}
 
 	/**
@@ -633,6 +653,57 @@ class EVF_Roles_And_Permission {
 			array(
 				'success' => true,
 				'message' => __( 'Managers deleted successfully.', 'everest-forms' ),
+			),
+			200
+		);
+	}
+
+	/**
+	 * Get a paginated, searchable list of WordPress users (excludes admins and current user).
+	 *
+	 * @since 3.0.8
+	 *
+	 * @param WP_REST_Request $request Full data about the request.
+	 * @return WP_REST_Response
+	 */
+	public static function get_wp_users_list( $request ) {
+		$per_page = 10;
+		$page     = max( 1, (int) $request->get_param( 'page' ) );
+		$search   = sanitize_text_field( $request->get_param( 'search' ) );
+		$offset   = ( $page - 1 ) * $per_page;
+
+		$query_args = array(
+			'number'      => $per_page,
+			'offset'      => $offset,
+			'exclude'     => array( get_current_user_id() ),
+			'orderby'     => 'display_name',
+			'order'       => 'ASC',
+			'count_total' => true,
+		);
+
+		if ( ! empty( $search ) ) {
+			$query_args['search']         = '*' . $search . '*';
+			$query_args['search_columns'] = array( 'user_login', 'user_email', 'display_name' );
+		}
+
+		$query = new \WP_User_Query( $query_args );
+		$total = $query->get_total();
+		$users = array();
+
+		foreach ( $query->get_results() as $user ) {
+			$label   = trim( $user->display_name );
+			$users[] = array(
+				'value' => $user->user_email,
+				'label' => $label ? "{$label} ({$user->user_email})" : $user->user_email,
+			);
+		}
+
+		return new \WP_REST_Response(
+			array(
+				'success'  => true,
+				'users'    => $users,
+				'total'    => $total,
+				'has_more' => ( $offset + $per_page ) < $total,
 			),
 			200
 		);
