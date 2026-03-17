@@ -56,7 +56,8 @@ body[class*='everest-forms_page_'] {
 			#evf-react-header-root,
 			.wrap,
 			#everest-forms-builder-form,
-			#everest-forms-dashboard {
+			#everest-forms-dashboard,
+			#evf-templates {
 				font-family: -apple-system, BlinkMacSystemFont, Inter, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 
 				h1,
@@ -732,7 +733,7 @@ body.everest-forms-builder {
 	}
 
 	.clearfix {
-		height: 80px;
+		// height: 80px;
 	}
 
 	// Toggle switch.
@@ -3901,6 +3902,8 @@ p.search-box {
 						width: 44%;
 						float: left;
 						margin-right: 2%;
+						display: flex;
+						flex-direction: column;
 
 						input {
 							width: 99%;
@@ -10478,6 +10481,10 @@ img.ui-datepicker-trigger {
 				box-shadow: unset;
 				margin-top: 0;
 				margin-bottom: 20px;
+
+				&.error {
+					border-left-color: #d63638 !important;
+				}
 			}
 		}
 
