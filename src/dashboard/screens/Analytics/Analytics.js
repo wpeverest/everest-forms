@@ -149,7 +149,7 @@ const FreeAnalyticsContent = () => {
 							'everest-forms',
 						)}
 					</p>
-					<a href={upgradeURL} className="EVF-Free-Analytics__UpgradeBtn">
+					<a href={upgradeURL} className="EVF-Free-Analytics__UpgradeBtn" >
 						<CrownIcon />
 						{__('Upgrade to Pro', 'everest-forms')}
 					</a>
