@@ -188,7 +188,7 @@ const Main: React.FC<{ filter: string }> = ({ filter }) => {
 				</Box>
 				<Box
 					width="1px"
-					bg="linear-gradient(90deg, #CDD0D8 0%, rgba(255, 255, 255, 0) 158.04%)"
+					bg="#e1e1e1"
 					mx="4"
 					marginRight="28px"
 				/>

@@ -293,16 +293,16 @@ const TemplateList: React.FC<TemplateListProps> = ({
 	}));
 
 	return (
-		<Box>
+		<Box padding="5px 0">
 			<Heading
 				as="h3"
 				fontSize="18px"
 				lineHeight="26px"
-				letterSpacing="0.4px"
+				letterSpacing="0.2px"
 				fontWeight="semibold"
 				m="0px 0px 32px"
 				color="#26262E"
-				borderBottom="1px solid #CDD0D8"
+				borderBottom="1px solid #e1e1e1"
 				paddingBottom="12px"
 			>
 				{selectedCategory}
@@ -332,7 +332,9 @@ const TemplateList: React.FC<TemplateListProps> = ({
 									left: 0,
 									width: '100%',
 									height: '250px',
-									bg: 'rgba(0, 0, 0, 0.4)',
+									// bg: 'rgba(0, 0, 0, 0.4)',
+									bg: "#181818",
+									opacity: ".5",
 									zIndex: 1,
 								},
 								'& > div > .template-title': {
@@ -347,10 +349,11 @@ const TemplateList: React.FC<TemplateListProps> = ({
 									display="flex"
 									justifyContent="center"
 									alignItems="center"
-									bg="#F7F4FB"
+									// bg="#F7F4FB"
+									bg="#f5f5f5"
 									pt="80px"
 									height="250px"
-									borderRadius="4px 4px 0px 0px"
+									borderRadius="6px 6px 0px 0px"
 									overflow="hidden"
 									transition="all .3s"
 								>
@@ -368,7 +371,7 @@ const TemplateList: React.FC<TemplateListProps> = ({
 											position="absolute"
 											bottom="12px"
 											right="12px"
-											borderRadius="4px"
+											borderRadius="6px"
 											fontSize="12px"
 											p="2px 6px"
 											textTransform="capitalize"
@@ -381,7 +384,8 @@ const TemplateList: React.FC<TemplateListProps> = ({
 									{/* Hover Buttons */}
 									{hoverCardId === template.id && (
 										<VStack
-											spacing={4}
+											spacing={3}
+											flexDirection="row"
 											position="absolute"
 											top="50%"
 											left="50%"
@@ -389,19 +393,27 @@ const TemplateList: React.FC<TemplateListProps> = ({
 											zIndex={2}
 										>
 											<Button
-												borderRadius="50px"
-												leftIcon={<IoPlayOutline />}
+												borderRadius="4px"
+												fontSize="14px"
+												lineHeight="24px"
+												fontWeight="medium"
+												// leftIcon={<IoPlayOutline />}
 												colorScheme="purple"
 												onClick={() => handleTemplateClick(template)}
 											>
-												{__('Get Started', 'everest-forms')}
+												{__('Use Template', 'everest-forms')}
 											</Button>
 											{template.preview_link && (
 												<Button
-													borderRadius="50px"
-													leftIcon={<MdOutlineRemoveRedEye />}
-													color="white"
-													variant="outline"
+													borderRadius="4px"
+													fontSize="14px"
+													lineHeight="24px"
+													fontWeight="medium"
+													// leftIcon={<MdOutlineRemoveRedEye />}
+													color="#0f0f1a"
+													background="#f4f4f4"
+													border="1px solid rgba(0,0,0,0.12)"
+													// variant="outline"
 													onClick={() =>
 														window.open(template.preview_link, '_blank')
 													}
@@ -421,18 +433,21 @@ const TemplateList: React.FC<TemplateListProps> = ({
 									onClick={() => handleFavoriteToggle(template.slug)}
 									aria-label={`Toggle favorite for ${template.title}`}
 									position="absolute"
-									top={2}
-									right={2}
+									top={3}
+									right={3}
 									zIndex={3}
 									bg="transparent"
 									border="none"
+									display="flex"
+									alignItems="center"
+									justifyContent="center"
 									_hover={{ color: 'red.600' }}
 								>
 									<Icon
 										as={
 											favorites.includes(template.slug) ? FaHeart : FaRegHeart
 										}
-										boxSize={6}
+										boxSize={5}
 										color={favorites.includes(template.slug) ? 'red' : 'white'}
 									/>
 								</Box>
