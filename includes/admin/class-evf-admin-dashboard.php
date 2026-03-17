@@ -74,8 +74,7 @@ class EVF_Admin_Dashboard {
 			return;
 		}
 		if ( ! empty( $_GET['page'] ) && 'evf-dashboard' === $_GET['page'] ) { //phpcs:ignore WordPress.Security.NonceVerification
-			wp_enqueue_script( 'evf-dashboard-script', EVF()->plugin_url() . '/dist/dashboard.min.js', array( 'wp-element', 'react', 'react-dom' ), EVF()->version, true );
-
+			wp_enqueue_script( 'evf-dashboard-script', EVF()->plugin_url() . '/dist/dashboard.min.js', array( 'wp-element', 'wp-hooks', 'react', 'react-dom' ), EVF()->version, true );
 			if ( ! function_exists( 'get_plugins' ) ) {
 				require_once ABSPATH . 'wp-admin/includes/plugin.php';
 			}
@@ -178,6 +177,10 @@ class EVF_Admin_Dashboard {
 			wp_print_media_templates();
 		}
 		wp_print_footer_scripts();
+
+		// Action hook for pro/addons to print scripts BEFORE the dashboard script.
+		do_action( 'everest_forms_dashboard_scripts' );
+
 		wp_print_scripts( 'evf-dashboard-script' );
 		?>
 
