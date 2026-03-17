@@ -342,6 +342,19 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 = 3.4.4       - xx-xx-2026
 * Refactor    - Everest Forms Global Settings.
 * Enhancement - Form Builder.
+* Fix 		  - Unserialize issue.
+* Fix         - Notice Consistency
+* Fix         - Search on clicking enter.
+* Fix         - Payment issue when no credit card found.
+* Fix         - Validation message for the file uploads in edit entry.
+* Fix         - Blank tags appearing in Form Builder settings.
+* Fix         - Switch filter redirection issue.
+* Fix         - Role and permission issue when creating a form.
+* Fix         - License API issue causing excessive requests.
+* Fix         - Excluded Captcha and Authorize.Net fields from View Entries.
+* Fix         - Address Field advanced setting design issue.
+* Fix         - Phone field flag disappears in forms below hidden form via Elementor responsive visibility.
+* Dev         - Analytics report.
 
 = 3.4.3       - 19-02-2026
 * Enhancement - Improved Addons page.
