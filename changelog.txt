@@ -11,6 +11,9 @@
 * Fix         - Switch filter redirection issue.
 * Fix         - Role and permission issue when creating a form.
 * Fix         - License API issue causing excessive requests.
+* Fix         - Excluded Captcha and Authorize.Net fields from View Entries.
+* Fix         - Address Field advanced setting design issue.
+* Fix         - Phone field flag disappears in forms below hidden form via Elementor responsive visibility.
 * Dev         - Analytics report.
 
 
