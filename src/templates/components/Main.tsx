@@ -175,9 +175,13 @@ const Main: React.FC<{ filter: string }> = ({ filter }) => {
 		<Box>
 			<Flex direction={{ base: 'column', md: 'row' }}>
 				<Box
-					width={sidebarWidth}
-					mr={{ base: 0, md: 4 }}
-					mb={{ base: 4, md: 0 }}
+					maxWidth="310px"
+					width="100%"
+					p="30px 28px"
+					boxSizing="border-box"
+					// width={sidebarWidth}
+					// mr={{ base: 0, md: 4 }}
+					// mb={{ base: 4, md: 0 }}
 				>
 					<Sidebar
 						categories={categories}
@@ -189,10 +193,11 @@ const Main: React.FC<{ filter: string }> = ({ filter }) => {
 				<Box
 					width="1px"
 					bg="#e1e1e1"
-					mx="4"
-					marginRight="28px"
+					display="none"
+					// mx="4"
+					// marginRight="28px"
 				/>
-				<Box flex={1}>
+				<Box borderLeft="1px solid #e1e1e1" p="30px 30px" flex={1}>
 					<TemplateList
 						selectedCategory={selectedCategory}
 						templates={filteredTemplates}

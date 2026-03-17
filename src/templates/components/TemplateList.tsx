@@ -4,6 +4,7 @@ import {
 	Button,
 	Center,
 	Heading,
+	HStack,
 	Icon,
 	Image,
 	Input,
@@ -294,6 +295,62 @@ const TemplateList: React.FC<TemplateListProps> = ({
 
 	return (
 		<Box padding="5px 0">
+			<HStack>
+				<VStack 
+					position="relative"
+					bg="white"
+					border="1px solid rgba(0, 0, 0, 0.08)"
+					borderRadius="13px"
+					p="26px 30px"
+					mb="32px"
+					overflow="hidden"
+					display="flex"
+					alignItems="flex-start"
+					width="100%"
+					sx={{
+						'::before': {
+						content: '""',
+						position: "absolute",
+						inset: "0",
+						bg: "radial-gradient(ellipse 60% 120% at 100% 50%, rgba(96, 64, 240, 0.07) 0%, transparent 70%), radial-gradient(ellipse 40% 80% at 80% 20%, rgba(61, 126, 245, 0.06) 0%, transparent 60%)",
+						pointerEvents: "none",
+						},
+					}}
+					>
+					<Text 
+						display="inline-block"
+						alignItems="center"
+						gap="6px"
+						bg="rgba(118, 64, 240, 0.08)"
+						border="1px solid rgba(155, 64, 240, 0.2)"
+						borderRadius="20px"
+						p="4px 12px"
+						fontSize="12px"
+						fontWeight="medium"
+						// color="#6040f0"
+						color="#6b46c1"
+						letterSpacing="0.23px"
+						m="0 0 12px"
+					>✦ {__('Ready-made templates', 'everest-forms')}</Text>
+					<Heading 
+						fontSize="26px"
+						fontWeight="700"
+						letterSpacing="-0.5px"
+						color="#0f0f1a"
+						lineHeight="1.2"
+						margin="0 0 8px"
+					>{__('Build faster with beautiful templates', 'everest-forms')}</Heading>
+					<Text 
+						fontSize="14px"
+						// color="#6b6b85"
+						color="gray.600"
+						lineHeight="1.6"
+						maxWidth="480px"
+						m="0"
+					>{__('Pick from 49 professionally designed form templates. Customize, deploy, and start collecting responses in minutes.', 'everest-forms')}</Text>
+				</VStack>
+			</HStack>
+			
 			<Heading
 				as="h3"
 				fontSize="18px"
@@ -308,13 +365,13 @@ const TemplateList: React.FC<TemplateListProps> = ({
 				{selectedCategory}
 			</Heading>
 			{templates?.length ? (
-				<SimpleGrid columns={{ base: 1, md: 2, lg: 3, xl: 4 }} spacing={6}>
+				<SimpleGrid gridTemplateColumns="repeat(auto-fill, minmax(280px, 1fr))" spacing={6}>
 					{templates.map((template) => (
 						<Box
 							key={template.slug}
-							borderWidth="2px"
-							borderRadius="8px"
-							borderColor="#F6F4FA"
+							borderWidth="1px"
+							borderRadius="7px"
+							borderColor="#e1e1e1"
 							overflow="hidden"
 							position="relative"
 							onMouseOver={() => setHoverCardId(template.id)}
@@ -325,6 +382,7 @@ const TemplateList: React.FC<TemplateListProps> = ({
 							transition="all .3s"
 							_hover={{
 								boxShadow: '0px 5px 24px rgba(58, 34, 93, 0.12)',
+								borderColor: 'transparent',
 								'::before': {
 									content: '""',
 									position: 'absolute',

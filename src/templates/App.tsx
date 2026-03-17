@@ -75,18 +75,18 @@ const App = () => {
 
   return (
     <ChakraProvider>
-      <Box bg="white" margin="24px" border="1px solid #e1e1e1" borderRadius="13px" padding="24px 28px">
+      <Box bg="white" margin="24px" border="1px solid #e1e1e1" borderRadius="13px" overflow="hidden">
         <HStack
           spacing={{ base: 4, md: 6 }}
           align="center"
           mb={0}
 		      borderBottom="1px solid #e1e1e1"
-          paddingBottom="20px"
+          // p="20px 24px"
+          p="0px 24px"
           direction={{ base: "column", md: "row" }}
         >
           <EVFIcon boxSize="12" />
-          <Divider orientation="vertical" height="40px" borderColor="#CDD0D8" />
-          <Text fontSize="18px" fontWeight="semibold" lineHeight="26px" color="#383838" textAlign={{ base: "center", md: "left" }} margin="0px">
+          <Text borderLeft="1px solid #e1e1e1" p="27px 0 27px 24px" fontSize="18px" fontWeight="semibold" lineHeight="26px" color="#383838" textAlign={{ base: "center", md: "left" }} margin="0px">
             {__("Add New Form", "everest-forms")}
           </Text>
           <Button
@@ -95,11 +95,11 @@ const App = () => {
             onClick={handleRefreshTemplates}
             width={{ base: "full", md: "auto" }}
             display={{ base: "none", md: "inline-flex" }}
-			fontSize= "15px"
+			fontSize= "14px"
 			lineHeight="20px"
 			padding="8px 16px"
       fontWeight="medium"
-			height="auto"
+			height="34px"
 			borderRadius="4px"
           >
             {__("Refresh Templates", "everest-forms")}
@@ -109,7 +109,7 @@ const App = () => {
 
         {/* Main Content Area */}
         <Box bg="white" >
-          <VStack align="start" padding="24px 0px 32px"  gap="6px">
+          <VStack align="start" padding="24px 0px 32px"  gap="6px" display="none">
             <Heading as="h1" color="#383838" fontSize="20px"lineHeight="28px" letterSpacing="0.2px" fontWeight="medium" m={0}>
               {__("Select a Template", "everest-forms")}
             </Heading>

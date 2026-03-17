@@ -66,16 +66,20 @@ const Sidebar: React.FC<SidebarProps> = React.memo(({ categories, selectedCatego
 				bg: "#f5f5f5",
 				"& > .badge": {
 				  bg: selectedCategory === category.name ? "#FFFFFF" : "#FFFFFF"
-			}
+				},
+				
+				"& > .evf-category-list": {
+				  color: "#383838"
+				}
 			}}
             borderRadius="md"
             cursor="pointer"
-
+			justifyContent="space-between"
             bg={selectedCategory === category.name ? "#f5f5f5" : "transparent"}
             onClick={() => onCategorySelect(category.name)}
           >
-            <Text color={selectedCategory === category.name ? "#7545BB" : "#4d4d4d"} fontSize="14px" lineHeight="22px" fontWeight="medium" margin="0px">{category.name}</Text>
-            <Spacer />
+            <Text className="evf-category-list" color={selectedCategory === category.name ? "#7545BB" : "gray.600"} fontSize="14px" lineHeight="22px" fontWeight="medium" margin="0px">{category.name}</Text>
+            
             <Badge className="badge" display="flex" alignItems="center" justifyContent="center" fontWeight="semibold" width="32px" height="24px" padding="0px" borderRadius="6px" color={selectedCategory === category.name ? "#7545BB" : ""} bg={selectedCategory === category.name ? "white" : "#F5F5F5"} >{category.count}</Badge>
           </HStack>
         ))}
@@ -89,10 +93,10 @@ const Sidebar: React.FC<SidebarProps> = React.memo(({ categories, selectedCatego
 				boxShadow="none"
 				>
 				<CardHeader padding="0px" marginBottom="12px">
-					<Heading fontSize="15px" color="#0f0f1a" lineHeight="25px" fontWeight="semibold"  padding="0px" margin="0px 0px 6px">
+					<Heading as="h5" fontSize="16px" color="#0f0f1a" lineHeight="26px" fontWeight="semibold"  padding="0px" margin="0px 0px 6px">
 					{__("Can't find a template?", "everest-forms")}
 					</Heading>
-					<Text fontSize="14px" lineHeight="22px" color="#6b6b85" margin="0">Request a custom template built for your needs.</Text>
+					<Text fontSize="14px" lineHeight="22px" color="#6b6b85" margin="0">{__('Request a custom template built for your needs.', 'everest-forms')}</Text>
 				</CardHeader>
 				<CardFooter padding="0" width="100%">
 				<a
@@ -119,7 +123,7 @@ const Sidebar: React.FC<SidebarProps> = React.memo(({ categories, selectedCatego
 							e.currentTarget.style.boxShadow = "none";
 						}}									
 						>
-							{__("✦ Request Template","everest-forms")}
+							✦ {__("Request Template","everest-forms")}
 					</a>
 				</CardFooter>
 				</Card>
