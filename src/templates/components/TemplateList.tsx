@@ -294,7 +294,7 @@ const TemplateList: React.FC<TemplateListProps> = ({
 	}));
 
 	return (
-		<Box padding="5px 0">
+		<Box padding="0">
 			<HStack>
 				<VStack 
 					position="relative"
@@ -370,7 +370,7 @@ const TemplateList: React.FC<TemplateListProps> = ({
 						<Box
 							key={template.slug}
 							borderWidth="1px"
-							borderRadius="7px"
+							borderRadius="13px"
 							borderColor="#e1e1e1"
 							overflow="hidden"
 							position="relative"
@@ -414,12 +414,14 @@ const TemplateList: React.FC<TemplateListProps> = ({
 									borderRadius="6px 6px 0px 0px"
 									overflow="hidden"
 									transition="all .3s"
+									borderBottom="1px solid #e1e1e1"
 								>
 									<Image
-										boxShadow="0px 3px 12px rgba(58, 34, 93, 0.12)"
+										boxShadow="0px 4px 24px rgba(10, 10, 10, 0.15)"
 										src={template.imageUrl}
 										alt={template.title}
 										objectFit="contain"
+										borderRadius="7px"
 									/>
 
 									{template.isPro && (
