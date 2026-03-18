@@ -15,7 +15,7 @@
 * Fix         - License API issue causing excessive requests.
 * Fix         - Excluded Captcha and Authorize.Net fields from View Entries.
 * Fix         - Address Field advanced setting design issue.
-* Fix         - Phone field flag disappears in forms below hidden form via Elementor responsive visibility.
+* Fix         - Phone field flag disappears in forms below hidden form via responsive visibility.
 * Dev         - Analytics report.
 
 

@@ -23,7 +23,7 @@ class EVF_Addon_Upsell {
 		if ( defined( 'EFP_PLUGIN_FILE' ) ) {
 			return array();
 		}
-		
+
 		return apply_filters(
 			'everest_forms_addon_upsell_registry',
 			array(
@@ -60,24 +60,6 @@ class EVF_Addon_Upsell {
 						esc_html__( 'Assign default user roles automatically', 'everest-forms' ),
 						esc_html__( 'Multi social login support', 'everest-forms' ),
 						esc_html__( 'Built-in forgot password flow', 'everest-forms' ),
-					),
-				),
-
-				'coupons'           => array(
-					'category'     => 'utilities',
-					'label'        => esc_html__( 'Coupons', 'everest-forms' ),
-					'icon'         => plugins_url( 'assets/extensions-json/sections/images/Coupons.png', EVF_PLUGIN_FILE ),
-					'description'  => esc_html__( 'Create and manage discount coupons for your payment forms.', 'everest-forms' ),
-					'vedio_id'     => 'GSYQIiyntW0',
-					'active_check' => 'EverestForms\\Pro\\Addons\\Coupons\\Process\\Process',
-					'upgrade_url'  => 'https://wpeverest.com/wordpress-plugins/everest-forms/pricing/',
-					'docs_url'     => 'https://docs.everestforms.net/docs/coupons/',
-					'features'     => array(
-						esc_html__( 'Fixed and percentage discount types', 'everest-forms' ),
-						esc_html__( 'Set start and end dates per coupon', 'everest-forms' ),
-						esc_html__( 'Restrict coupons to specific forms', 'everest-forms' ),
-						esc_html__( 'Bulk coupon code generation', 'everest-forms' ),
-						esc_html__( 'Real-time coupon validation on frontend', 'everest-forms' ),
 					),
 				),
 			)
