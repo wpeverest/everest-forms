@@ -105,7 +105,7 @@ if ( false !== $entry_index ) {
 					$entry_meta = apply_filters( 'everest_forms_entry_single_data', $entry->meta, $entry, $form_data );
 
 					$field_type_by_meta_key = array();
-					$exclude_fields_array   = array( 'private-note' );
+					$exclude_fields_array   = array( 'captcha', 'recaptcha', 'hcaptcha', 'turnstile', 'private-note', 'authorize-net' );
 
 					$exclude_fields_array = apply_filters( 'everest_forms_view_entry_exclude_fields', $exclude_fields_array, $entry_meta, $form_data );
 
@@ -130,7 +130,7 @@ if ( false !== $entry_index ) {
 							$meta_value = is_serialized( $meta_value ) ? $meta_value : wp_strip_all_tags( $meta_value );
 
 							if ( is_serialized( $meta_value ) ) {
-								$raw_meta_val = unserialize( $meta_value ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_unserialize
+								$raw_meta_val = evf_maybe_unserialize( $meta_value ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_unserialize
 
 								$field_type_array = apply_filters(
 									'everest_forms_serialized_value_field_type',

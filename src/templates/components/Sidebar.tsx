@@ -42,63 +42,88 @@ const Sidebar: React.FC<SidebarProps> = React.memo(({ categories, selectedCatego
 			placeholder={__("Search Templates", "everest-forms")}
 			value={searchTerm}
 			onChange={handleSearchChange}
+			fontSize="14px"
+			lineHeight="24px"
+			border="1px solid #e1e1e1"
+			borderRadius="4px"
+			height="38px"
+			padding="0 12px 0 40px"
 			_focus={{
 			borderColor: "#7545BB",
 			outline: "none",
-			boxShadow: "none"
+			boxShadow: "none",
 			}}
 		/>
 		</InputGroup>
 
-      <VStack align="stretch" gap="2px">
+      <VStack align="stretch" gap="4px">
         {orderedCategories.map((category) => (
           <HStack
             key={category.name}
-            p="12px"
+			p="10px 10px 10px 16px"
+			background="#f5f5f5"
             _hover={{
-				bg: "#F7F4FB",
+				bg: "#f5f5f5",
 				"& > .badge": {
 				  bg: selectedCategory === category.name ? "#FFFFFF" : "#FFFFFF"
-			}
+				},
+				
+				"& > .evf-category-list": {
+				  color: "#383838"
+				}
 			}}
             borderRadius="md"
             cursor="pointer"
-
-            bg={selectedCategory === category.name ? "#F7F4FB" : "transparent"}
+			justifyContent="space-between"
+            bg={selectedCategory === category.name ? "#f5f5f5" : "transparent"}
             onClick={() => onCategorySelect(category.name)}
           >
-            <Text color={selectedCategory === category.name ? "#7545BB" : ""} fontWeight="semibold" margin="0px">{category.name}</Text>
-            <Spacer />
-            <Badge  className="badge" display="flex" alignItems="center" justifyContent="center" width="32px" height="32px" padding="0px" borderRadius="8px" color={selectedCategory === category.name ? "#7545BB" : ""} bg={selectedCategory === category.name ? "white" : "#F2F2F2"} >{category.count}</Badge>
+            <Text className="evf-category-list" color={selectedCategory === category.name ? "#7545BB" : "gray.600"} fontSize="14px" lineHeight="22px" fontWeight="medium" margin="0px">{category.name}</Text>
+            
+            <Badge className="badge" display="flex" alignItems="center" justifyContent="center" fontWeight="semibold" width="32px" height="24px" padding="0px" borderRadius="6px" color={selectedCategory === category.name ? "#7545BB" : ""} bg={selectedCategory === category.name ? "white" : "#F5F5F5"} >{category.count}</Badge>
           </HStack>
         ))}
 		<Card
 				align='center'
-				bg="linear-gradient(90.62deg, rgba(76, 21, 155, 0.7) 0.2%, rgba(76, 21, 155, 0.7) 0.21%, rgba(140, 100, 198, 0.7) 99.25%)"
-				padding="40px 24px"
 				marginTop="26px"
+				padding="16px"
+				bg="linear-gradient(135deg, rgba(96,64,240,0.08), rgba(61,126,245,0.06))"
+				border="1px solid rgba(96,64,240,0.18)"
+				borderRadius="9px"
+				boxShadow="none"
 				>
-				<CardHeader padding="0px">
-					<Heading fontSize="18px" color="white" lineHeight="28px" padding="0px" margin="0px 0px 20px" textAlign="center">
-					{__("Can't Find The Form Template You Need?", "everest-forms")}
+				<CardHeader padding="0px" marginBottom="12px">
+					<Heading as="h5" fontSize="16px" color="#0f0f1a" lineHeight="26px" fontWeight="semibold"  padding="0px" margin="0px 0px 6px">
+					{__("Can't find a template?", "everest-forms")}
 					</Heading>
+					<Text fontSize="14px" lineHeight="22px" color="#6b6b85" margin="0">{__('Request a custom template built for your needs.', 'everest-forms')}</Text>
 				</CardHeader>
 				<CardFooter padding="0" width="100%">
 				<a
 						href="https://everestforms.net/request-template"
 						target="_blank"
 						rel="noopener noreferrer"
-						style={{ width: "inherit" }}
+						className="evf-custom-template"
+						style={{
+							display: "flex",
+							alignItems: "center",
+							justifyContent: "center",
+							borderRadius:"4px",
+							width: "100%",
+							padding: "0px 12px",
+							background: "linear-gradient(135deg, #8c40f0, #7d3df5)",
+							color: "white",
+							fontSize: "14px",
+							lineHeight: "24px",
+							fontWeight: "medium",
+							height: "34px"							
+						}}
+						onFocus={(e) => {
+							e.currentTarget.style.outline = "none";
+							e.currentTarget.style.boxShadow = "none";
+						}}									
 						>
-					<Button
-						backgroundColor="#FFFFFF"
-						color="#7545BB"
-						padding="12px 10px"
-						borderRadius="4px"
-						width="inherit"
-					>
-						{__("Request Template","everest-forms")}
-					</Button>
+							✦ {__("Request Template","everest-forms")}
 					</a>
 				</CardFooter>
 				</Card>
