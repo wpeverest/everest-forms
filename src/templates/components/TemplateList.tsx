@@ -427,15 +427,23 @@ const TemplateList: React.FC<TemplateListProps> = ({
 									{template.isPro && (
 										<Badge
 											bg="#4BCE61"
-											color="white"
+											// color="white"
 											position="absolute"
 											bottom="12px"
 											right="12px"
-											borderRadius="6px"
-											fontSize="12px"
-											p="2px 6px"
-											textTransform="capitalize"
+											// borderRadius="6px"
+											// fontSize="12px"
+											// p="2px 6px"
+											// textTransform="capitalize"
 											zIndex="2"
+											border="1px solid #ff8c39"
+											background="#fffaf5"
+											color="#ff8c39"
+											fontWeight="semibold"
+											textTransform="uppercase"
+											p="4px 8px"
+											borderRadius="4px"
+											fontSize="11px"
 										>
 											{__('Pro', 'everest-forms')}
 										</Badge>
