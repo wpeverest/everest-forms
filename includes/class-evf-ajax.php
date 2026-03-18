@@ -28,7 +28,7 @@ class EVF_AJAX {
 	 * Hook in ajax handlers.
 	 */
 	public static function init() {
-		 add_action( 'init', array( __CLASS__, 'define_ajax' ), 0 );
+		add_action( 'init', array( __CLASS__, 'define_ajax' ), 0 );
 		add_action( 'template_redirect', array( __CLASS__, 'do_evf_ajax' ), 0 );
 		self::add_ajax_events();
 		add_action( 'init', array( __CLASS__, 'init_background_process' ), 5 );
@@ -133,6 +133,7 @@ class EVF_AJAX {
 			'embed_form'                      => false,
 			'goto_edit_page'                  => false,
 			'send_routine_report_test_email'  => false,
+			'send_manual_report'              => false,
 			'map_csv'                         => false,
 			'import_entries'                  => false,
 			'generate_restapi_key'            => false,
@@ -388,7 +389,6 @@ class EVF_AJAX {
 
 					$sanitized_meta_key = sanitize_key( $field['meta-key'] );
 
-
 					if ( $sanitized_meta_key !== $field['meta-key'] ) {
 						$logger->error(
 							__( 'Invalid meta-key characters detected.', 'everest-forms' ),
@@ -542,17 +542,17 @@ class EVF_AJAX {
 			unset( $data['settings']['clean_talk_access_key'] );
 		}
 
-		if( ! empty( $data['payments']['square']['enable_square'] ) ){
-			$form_fields = $data[ 'form_fields' ];
+		if ( ! empty( $data['payments']['square']['enable_square'] ) ) {
+			$form_fields            = $data['form_fields'];
 			$has_square_credit_card = false;
 
-			foreach( $form_fields as $field ){
-				if( 'square-payment' === $field['type'] ){
+			foreach ( $form_fields as $field ) {
+				if ( 'square-payment' === $field['type'] ) {
 					$has_square_credit_card = true;
 				}
 			}
 
-			if( ! $has_square_credit_card ){
+			if ( ! $has_square_credit_card ) {
 				wp_send_json_error(
 					array(
 						'errorTitle'   => esc_html__( 'Square payment requires a credit card.', 'everest-forms' ),
@@ -613,11 +613,11 @@ class EVF_AJAX {
 		 * @since xx.xx.xx
 		 */
 		if ( isset( $data['settings']['show_immediate_feedback_to_guests'] ) && ! empty( $data['settings']['show_immediate_feedback_to_guests'] ) ) {
-			$show_or_hide          = sanitize_text_field( $data['settings']['show_immediate_feedback_to_guests'] );
+			$show_or_hide = sanitize_text_field( $data['settings']['show_immediate_feedback_to_guests'] );
 			if ( $show_or_hide ) {
 				update_post_meta( $form_id, 'everest_forms_show_immediate_feedback_to_guests', $show_or_hide );
 			}
-		}else{
+		} else {
 			update_post_meta( $form_id, 'everest_forms_show_immediate_feedback_to_guests', '' );
 		}
 
@@ -667,7 +667,7 @@ class EVF_AJAX {
 	 * Ajax handler for form submission.
 	 */
 	public static function ajax_form_submission() {
-//		check_ajax_referer( 'everest_forms_ajax_form_submission', 'security' );
+		// check_ajax_referer( 'everest_forms_ajax_form_submission', 'security' );
 
 		if ( ! empty( $_POST['everest_forms']['id'] ) ) {
 			$process = evf()->task->ajax_form_submission( evf_sanitize_entry( wp_unslash( $_POST['everest_forms'] ) ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
@@ -1116,7 +1116,7 @@ class EVF_AJAX {
 	 * Triggered when clicking the form toggle.
 	 */
 	public static function enabled_form() {
-		 // Run a security check.
+		// Run a security check.
 		check_ajax_referer( 'everest_forms_enabled_form', 'security' );
 
 		$form_id = isset( $_POST['form_id'] ) ? absint( $_POST['form_id'] ) : 0;
@@ -1178,10 +1178,10 @@ class EVF_AJAX {
 			$email = sanitize_email( isset( $_POST['email'] ) ? wp_unslash( $_POST['email'] ) : '' );
 
 			/* translators: %s: from address */
-			$subject  = 'Everest Form: ' . sprintf( esc_html__( 'Test email from %s', 'everest-forms' ), $from );
-			$header   = "Reply-To: {{from}} \r\n";
-			$header  .= 'Content-Type: text/html; charset=UTF-8';
-			$message  = sprintf(
+			$subject    = 'Everest Form: ' . sprintf( esc_html__( 'Test email from %s', 'everest-forms' ), $from );
+			$header     = "Reply-To: {{from}} \r\n";
+			$header    .= 'Content-Type: text/html; charset=UTF-8';
+			$message    = sprintf(
 				'%s <br /> %s <br /> %s <br /> %s <br /> %s',
 				__( 'Congratulations,', 'everest-forms' ),
 				__( 'Your test email has been received successfully.', 'everest-forms' ),
@@ -1189,7 +1189,7 @@ class EVF_AJAX {
 				__( 'Regards,', 'everest-forms' ),
 				__( 'Everest Forms Team', 'everest-forms' )
 			);
-			  $status = wp_mail( $email, $subject, $message, $header );
+				$status = wp_mail( $email, $subject, $message, $header );
 			if ( $status ) {
 				wp_send_json_success( array( 'message' => __( 'Test email was sent successfully! Please check your inbox to make sure it is delivered.', 'everest-forms' ) ) );
 			} else {
@@ -1216,69 +1216,76 @@ class EVF_AJAX {
 			}
 
 			check_ajax_referer( 'process-ajax-nonce', 'security' );
-			$from                                = esc_attr( get_bloginfo( 'name', 'display' ) );
-			$email                               = esc_attr( get_bloginfo( 'admin_email' ) );
-			$evf_routine_report_frequency        = get_option( 'everest_forms_entries_reporting_frequency' );
-			$evf_routine_report_day              = get_option( 'everest_forms_entries_reporting_day' );
-			$evf_routine_entries_reporting_email = get_option( 'everest_forms_entries_reporting_email' );
-			$subject                             = get_option( 'everest_forms_entries_reporting_subject', 'Test email from ' . $from );
-			$evf_routine_reporting_send_to       = get_option( 'everest_forms_email_send_to' );
-			$evf_routine_reporting_forms         = get_option( 'everest_forms_reporting_form_lists' );
-			$evf_routine_reporting_test_email    = get_option( 'everest_forms_routine_report_send_email_test_to' );
 
-			switch ( $evf_routine_report_frequency ) {
-				case 'Daily':
-					$evf_summary_duration = esc_html__( 'in the past week', 'everest-forms' );
-					break;
-
-				case 'Weekly':
-					$evf_summary_duration = esc_html__( 'yesterday', 'everest-forms' );
-					break;
-
-				case 'Monthly':
-					$evf_summary_duration = esc_html__( 'in the past month', 'everest-forms' );
-					break;
+			$frequency = get_option( 'everest_forms_entries_reporting_frequency', 'Weekly' );
+			if ( ! in_array( $frequency, array( 'Daily', 'Weekly', 'Monthly' ), true ) ) {
+				$frequency = 'Weekly';
 			}
-			/* translators: %s: from address */
-			$subject  = 'Everest Form: ' . sprintf( esc_html( $subject ) );
-			$header   = "Reply-To: {{from}} \r\n";
-			$header  .= 'Content-Type: text/html; charset=UTF-8';
-			$message  = '<div class="everest-forms-message-text">';
-			$message .= '<h3 style="text-align:center; color: #ffc107;">' . esc_html( 'PS. This is just the sample data' ) . '</h3>';
-			$message .= '<p><strong>' . esc_html__( 'Hi there!', 'everest-forms' ) . ' 👋</strong></p>';
-			/* translators: %s: Routine email summary duration */
-			$message .= '<p>' . sprintf( esc_html__( 'Let\'s see how your forms performed %s.', 'everest-forms' ), esc_html( $evf_summary_duration ) ) . '</p>';
-			$message .= '<br/>';
-			$message .= '<p><strong>' . esc_html__( 'Forms Stats', 'everest-forms' ) . '</strong></p>';
-			$message .= '<table align="left" border="0" cellpadding="0" cellspacing="0" width="100%" style="solid #dddddd; display:block;min-width: 100%;border-collapse: collapse;width:100%; display:table; padding-bottom:2rem" class="evf_entries_summary_table">';
-			$message .= '<thead style="display:block; background:#7e3bd0; color:#fff; padding:1rem;">';
-			$message .= '<tr style="display:flex; justify-content:space-between; paddiing:1rem">';
-			$message .= '<th>' . esc_html__( 'Form Name', 'everest-forms' ) . '</th>';
-			$message .= '<th>' . esc_html__( 'Entries', 'everest-forms' ) . '</th>';
-			$message .= '</tr>';
-			$message .= '</thead>';
-			$message .= '<tbody style="display:block;">';
-			$message .= '<tr style="display:flex; justify-content:space-between; color:#000; padding:1rem">';
-			$message .= '<td>' . esc_html( 'Sample Contact Form' ) . '</td>';
-			$message .= '<td>' . esc_html( '10' ) . '</td>';
-			$message .= '</tr>';
-			$message .= '</tbody>';
-			$message .= '</table>';
-			$message .= '</div>';
 
-			$status = wp_mail( $email, $subject, $message, $header );
+			$test_email = sanitize_email( get_option( 'everest_forms_routine_report_send_email_test_to', '' ) );
+			if ( empty( $test_email ) ) {
+				$test_email = sanitize_email( get_bloginfo( 'admin_email' ) );
+			}
 
-			if ( $status ) {
-				wp_send_json_success( array( 'message' => __( 'Test email was sent successfully! Please check your inbox to make sure it is delivered.', 'everest-forms' ) ) );
+			$subject = get_option( 'everest_forms_entries_reporting_subject', __( 'Everest Forms - Entries summary statistics', 'everest-forms' ) );
+			if ( empty( trim( $subject ) ) ) {
+				$subject = __( 'Everest Forms - Entries summary statistics', 'everest-forms' );
+			}
+			$subject = sprintf( __( '[TEST] %s', 'everest-forms' ), $subject );
+
+			$email_builder = new EVF_Email_Entries_Report( $frequency, null, true );
+			$html_message  = $email_builder->render_html();
+
+			$headers = array(
+				'Content-Type: text/html; charset=UTF-8',
+				'From: ' . wp_specialchars_decode( get_bloginfo( 'name' ) ) . ' <' . get_option( 'admin_email' ) . '>',
+			);
+
+			$sent = wp_mail( $test_email, $subject, $html_message, $headers );
+
+			if ( $sent ) {
+				wp_send_json_success(
+					array(
+						'message' => sprintf(
+							__( 'Test report sent to %s. Please check your inbox.', 'everest-forms' ),
+							$test_email
+						),
+					)
+				);
 			} else {
-				wp_send_json_error( array( 'message' => __( 'Test email was unsuccessful! Something went wrong.', 'everest-forms' ) ) );
+				wp_send_json_error( array( 'message' => __( 'Test email could not be sent. Please check your site email configuration.', 'everest-forms' ) ) );
 			}
 		} catch ( Exception $e ) {
-			wp_send_json_error(
-				array(
-					'message' => $e->getMessage(),
-				)
-			);
+			wp_send_json_error( array( 'message' => $e->getMessage() ) );
+		}
+	}
+
+		/**
+		 * Manually trigger a full entries report send immediately.
+		 *
+		 * Sends to the configured scheduled recipient (not the test address).
+		 * Logged to report history as type 'manual'.
+		 *
+		 * @since 2.0.9
+		 */
+	public static function send_manual_report() {
+		try {
+			if ( ! current_user_can( 'manage_options' ) ) {
+				wp_send_json_error( array( 'message' => __( 'Unauthorized.', 'everest-forms' ) ), 401 );
+			}
+
+			check_ajax_referer( 'process-ajax-nonce', 'security' );
+
+			$cron = new EVF_Report_Cron();
+			$sent = $cron->evf_report_form_statistics_send( false );
+
+			if ( $sent ) {
+				wp_send_json_success( array( 'message' => __( 'Report sent successfully.', 'everest-forms' ) ) );
+			} else {
+				wp_send_json_error( array( 'message' => __( 'Report could not be sent. Please check your settings and email configuration.', 'everest-forms' ) ) );
+			}
+		} catch ( Exception $e ) {
+			wp_send_json_error( array( 'message' => $e->getMessage() ) );
 		}
 	}
 
@@ -2099,7 +2106,7 @@ class EVF_AJAX {
 	 * @since 3.2.0
 	 */
 	public static function delete_form_tags() {
-		 check_ajax_referer( 'ajax_manage_tags_nonce', 'security' );
+		check_ajax_referer( 'ajax_manage_tags_nonce', 'security' );
 
 		if ( ! current_user_can( 'manage_options' ) ) {
 			wp_send_json_error( array( 'message' => __( 'You do not have permission.', 'everest-forms' ) ) );
@@ -2172,7 +2179,7 @@ class EVF_AJAX {
 	 * @since 3.2.0
 	 */
 	public static function save_clean_talk_settings() {
-		 check_ajax_referer( 'everest_forms_clean_talk_nonce', 'security' );
+		check_ajax_referer( 'everest_forms_clean_talk_nonce', 'security' );
 
 		if ( ! current_user_can( 'manage_options' ) ) {
 			wp_send_json_error( array( 'message' => __( 'You do not have permission.', 'everest-forms' ) ) );

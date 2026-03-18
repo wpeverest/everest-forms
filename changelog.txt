@@ -3,6 +3,7 @@
 = 3.4.4       - xx-xx-2026
 * Refactor    - Everest Forms Global Settings.
 * Enhancement - Form Builder.
+* Enhancement - Email summary.
 * Fix 		  - Unserialize issue.
 * Fix         - Notice Consistency
 * Fix         - Search on clicking enter.
