@@ -329,7 +329,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 		do_action( 'everest_forms_inline_submit_settings', $this, 'submit', 'connection_1' );
 		echo '</div>';
 		do_action( 'everest_forms_inline_integrations_settings', $this->form_data, $settings );
-			echo '<div class="everest-forms-border-container"><h4 class="everest-forms-border-container-title">' . esc_html__( 'Advance', 'everest-forms' ) . '</h4>';
+			echo '<div class="everest-forms-border-container"><h4 class="everest-forms-border-container-title">' . esc_html__( 'Advanced', 'everest-forms' ) . '</h4>';
 		everest_forms_panel_field(
 			'toggle',
 			'settings',
