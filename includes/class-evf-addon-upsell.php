@@ -37,11 +37,10 @@ class EVF_Addon_Upsell {
 					'upgrade_url'  => 'https://wpeverest.com/wordpress-plugins/everest-forms/pricing/',
 					'docs_url'     => 'https://docs.everestforms.net/docs/pdf-form-submission/',
 					'features'     => array(
-						esc_html__( 'Auto-generate PDFs on every form submission', 'everest-forms' ),
-						esc_html__( 'Customise header, footer, fonts and colours', 'everest-forms' ),
-						esc_html__( 'Attach PDF to submission email notifications', 'everest-forms' ),
-						esc_html__( 'Support for portrait and landscape layouts', 'everest-forms' ),
-						esc_html__( 'RTL language support', 'everest-forms' ),
+						esc_html__( 'Send submitted form data as a PDF attachment', 'everest-forms' ),
+						esc_html__( 'Print or share submission details more easily', 'everest-forms' ),
+						esc_html__( 'Store important form data in a professional format ', 'everest-forms' ),
+						esc_html__( 'Make record-keeping much simpler', 'everest-forms' ),
 					),
 				),
 
@@ -55,11 +54,10 @@ class EVF_Addon_Upsell {
 					'upgrade_url'  => 'https://wpeverest.com/wordpress-plugins/everest-forms/pricing/',
 					'docs_url'     => 'https://docs.everestforms.net/docs/user-registration/',
 					'features'     => array(
-						esc_html__( 'Create WordPress user accounts on submission', 'everest-forms' ),
-						esc_html__( 'Social login via Google, Facebook and LinkedIn', 'everest-forms' ),
-						esc_html__( 'Assign default user roles automatically', 'everest-forms' ),
-						esc_html__( 'Multi social login support', 'everest-forms' ),
-						esc_html__( 'Built-in forgot password flow', 'everest-forms' ),
+						esc_html__( 'Let people register from the front end of your site ', 'everest-forms' ),
+						esc_html__( 'Create WordPress user accounts from form submissions', 'everest-forms' ),
+						esc_html__( 'Map form fields to user account details', 'everest-forms' ),
+						esc_html__( 'Use one form for both data collection and signup', 'everest-forms' ),
 					),
 				),
 			)
