@@ -966,7 +966,7 @@
         "themegrill agency"
       ],
       "category": "Form Elements",
-      "setting_url": "admin.php?page=evf-settings&tab=user_registration",
+      "setting_url": "admin.php?page=evf-settings&tab=utilities&section=user_registration",
       "demo_video_url": "MEyuznG2Tok",
       "popular_rank": 12
     },
