@@ -395,11 +395,11 @@ const AddonCard = ({ addon, showToast, onModuleToggle }) => {
 							px={{ base: '3', sm: '4' }}
 							h={{ base: '28px', sm: '32px' }}
 							_hover={{
-								bg: '#3a4a8f',
-								borderColor: '#3a4a8f',
+								bg: '#7545bb',
+								borderColor: '#7545bb',
 							}}
 							_active={{
-								bg: '#2d3b70',
+								bg: '#7545bb',
 							}}
 							onClick={handleUpgradePlan}
 						>
