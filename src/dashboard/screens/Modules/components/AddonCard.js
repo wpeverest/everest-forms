@@ -377,10 +377,10 @@ const AddonCard = ({ addon, showToast, onModuleToggle }) => {
 							size="md"
 							sx={{
 								'& .chakra-switch__track': {
-									bg: isActive ? '#7545bb' : 'gray.300',
+									bg: isActive ? '#4cc741' : 'gray.300',
 								},
 								'& .chakra-switch__track[data-checked]': {
-									bg: '#7545bb',
+									bg: '#4cc741',
 								},
 							}}
 						/>
