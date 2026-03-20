@@ -244,10 +244,19 @@ const Header = ({ hideSiteAssistant = false }) => {
 								<Tag
 									display={'inline-flex !important'}
 									variant="outline"
-									colorScheme="primary"
-									borderRadius="xl"
+									// colorScheme="primary"
+									// borderRadius="xl"
 									bgColor="#F8FAFF"
-									fontSize="xs"
+									// fontSize="xs"
+									p="2px 6px"
+									fontWeight="medium"
+									borderRadius="4px"
+									fontSize="12px"
+									color="#8f8f8f"
+									bg="#f3f3f3"
+									border="1px solid #e1e1e1"
+									outline="none"
+									boxShadow="none"
 								>
 									{'v' + version}
 								</Tag>
