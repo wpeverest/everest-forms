@@ -40,7 +40,7 @@ $breakpoint-mobile: 782px;
 
 		.everest-forms-accordion-item {
 			border: 1px solid $accordion-border-color;
-			border-radius: $accordion-border-radius;
+			border-radius: 7px;
 			background: $accordion-bg-white;
 
 			&.is-open {
