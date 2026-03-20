@@ -327,6 +327,18 @@ class EVF_Roles_And_Permission {
 		}
 
 		foreach ( $users_data as $user ) {
+			if ( user_can( $user, 'manage_options' ) ) {
+				return new \WP_REST_Response(
+					array(
+						'success' => false,
+						'message' => array(
+							'user_email' => esc_html__( 'Cannot modify permissions for administrator users.', 'everest-forms' ),
+						),
+					),
+					200
+				);
+			}
+
 			self::attach_permission( $user, $assigned_permission );
 
 			update_user_meta( $user->ID, '_everest_forms_has_role', 1 );
@@ -511,6 +523,7 @@ class EVF_Roles_And_Permission {
 				'email'       => $user->user_email,
 				'permissions' => self::get_user_permissions( $user ),
 				'roles'       => self::get_user_roles( $user->ID ),
+				'role_keys'   => array_values( $user->roles ),
 			);
 		}
 

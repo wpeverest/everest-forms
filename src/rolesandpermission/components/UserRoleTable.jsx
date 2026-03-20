@@ -8,33 +8,29 @@ import {
 	PaginationSeparator,
 	usePagination,
 } from '@ajna/pagination';
-import { SearchIcon } from '@chakra-ui/icons';
+import { LockIcon, SearchIcon } from '@chakra-ui/icons';
 import {
+	Alert,
+	AlertIcon,
 	Box,
 	Button,
 	Checkbox,
-	Divider,
 	Flex,
 	Heading,
 	IconButton,
 	Input,
 	InputGroup,
 	InputLeftElement,
-	Popover,
-	PopoverArrow,
-	PopoverBody,
-	PopoverCloseButton,
-	PopoverContent,
-	PopoverHeader,
-	PopoverTrigger,
 	Skeleton,
 	Stack,
+	Switch,
 	Table,
 	Tbody,
 	Td,
 	Text,
 	Th,
 	Thead,
+	Tooltip,
 	Tr,
 	useToast,
 } from '@chakra-ui/react';
@@ -42,7 +38,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { __ } from '@wordpress/i18n';
 import { Select } from 'chakra-react-select';
 import { debounce } from 'lodash';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
 	FaAngleDoubleLeft,
 	FaAngleDoubleRight,
@@ -91,42 +87,38 @@ const PermissionCell = ({ permissionKeys, permissionLabels }) => {
 				<PermTag key={i}>{permissionLabels[perm]}</PermTag>
 			))}
 			{hidden.length > 0 && (
-				<Popover placement="bottom-start" isLazy>
-					<PopoverTrigger>
-						<Button
-							variant="link"
-							color="primary.400"
-							fontWeight="500"
-							fontSize="12px"
-							minW="auto"
-							height="auto"
-							padding={0}
-						>
-							+{hidden.length} more
-						</Button>
-					</PopoverTrigger>
-					<PopoverContent minW="260px" maxW="360px">
-						<PopoverArrow />
-						<PopoverCloseButton />
-						<PopoverHeader fontSize="14px" fontWeight="600">
-							{__('All Permissions', 'everest-forms')}
-						</PopoverHeader>
-						<PopoverBody>
-							<Flex gap="6px" flexWrap="wrap">
-								{permissionKeys.map((perm, i) => (
-									<PermTag key={i}>{permissionLabels[perm]}</PermTag>
-								))}
-							</Flex>
-						</PopoverBody>
-					</PopoverContent>
-				</Popover>
+				<Tooltip
+					label={
+						<Stack gap="4px" py="2px">
+							{hidden.map((perm, i) => (
+								<Text key={i} fontSize="12px">
+									{permissionLabels[perm] || perm}
+								</Text>
+							))}
+						</Stack>
+					}
+					placement="bottom-start"
+					hasArrow
+					bg="white"
+					color="gray.700"
+				>
+					<Text
+						as="span"
+						color="primary.400"
+						fontWeight="500"
+						fontSize="12px"
+						cursor="default"
+						_hover={{ textDecoration: 'underline' }}
+					>
+						+{hidden.length} more
+					</Text>
+				</Tooltip>
 			)}
 		</Flex>
 	);
 };
 
 const UserRoleTable = () => {
-	const [isAllChecked, setIsAllChecked] = useState(false);
 	const [checkedItems, setCheckedItems] = useState({});
 	const [firstLoad, setFirstLoad] = useState(true);
 	const [selectedRows, setSelectedRows] = useState([]);
@@ -158,6 +150,8 @@ const UserRoleTable = () => {
 		queryKey: ['managers', offset, pageSize, searchManager],
 		queryFn: () => getManagers(offset, pageSize, searchManager),
 		keepPreviousData: true,
+		staleTime: 60 * 1000,
+		refetchOnWindowFocus: false,
 		onSuccess: (data) => {
 			setTotalManagers(data?.total ?? 0);
 		},
@@ -170,6 +164,8 @@ const UserRoleTable = () => {
 	const wpRolesQuery = useQuery({
 		queryKey: ['wpRoles'],
 		queryFn: getWPRoles,
+		staleTime: 5 * 60 * 1000,
+		refetchOnWindowFocus: false,
 	});
 
 	const wpRoles = wpRolesQuery.data?.data?.roles ?? {};
@@ -183,7 +179,6 @@ const UserRoleTable = () => {
 				return acc;
 			}, {});
 			setCheckedItems(initial);
-			setIsAllChecked(Object.values(initial).every(Boolean));
 		}
 	}, [wpRolesQuery.data]);
 
@@ -191,7 +186,12 @@ const UserRoleTable = () => {
 		mutationFn: removeManager,
 		onSuccess: (res) => {
 			if (res.success) {
-				toast({ title: res.message, status: 'success', duration: 3000 });
+				toast({
+					title: res.message,
+					status: 'success',
+					duration: 3000,
+					isClosable: true,
+				});
 				managersQuery.refetch();
 			}
 		},
@@ -201,11 +201,21 @@ const UserRoleTable = () => {
 		mutationFn: bulkRemoveManager,
 		onSuccess: (res) => {
 			if (res.success) {
-				toast({ title: res.message, status: 'success', duration: 3000 });
+				toast({
+					title: res.message,
+					status: 'success',
+					duration: 3000,
+					isClosable: true,
+				});
 				setSelectedRows([]);
 				managersQuery.refetch();
 			} else {
-				toast({ title: res.message, status: 'error', duration: 3000 });
+				toast({
+					title: res.message,
+					status: 'error',
+					duration: 3000,
+					isClosable: true,
+				});
 			}
 		},
 	});
@@ -214,12 +224,18 @@ const UserRoleTable = () => {
 		mutationFn: bulkAssignPermission,
 		onSuccess: (res) => {
 			if (res.success) {
-				toast({ title: res.message, status: 'success', duration: 3000 });
+				toast({
+					title: res.message,
+					status: 'success',
+					duration: 3000,
+					isClosable: true,
+				});
 			} else {
 				toast({
 					title: res.message || 'Something went wrong',
 					status: 'error',
 					duration: 3000,
+					isClosable: true,
 				});
 			}
 		},
@@ -254,16 +270,24 @@ const UserRoleTable = () => {
 	const isIndeterminate =
 		selectedRows.length > 0 && selectedRows.length < managers.length;
 
-	const handleCheckAll = (e) => {
-		setFirstLoad(false);
-		const checked = e.target.checked;
-		setIsAllChecked(checked);
-		const updated = Object.keys(wpRoles).reduce((acc, role) => {
-			acc[role] = checked;
-			return acc;
-		}, {});
-		setCheckedItems(updated);
-		assignPermissionMutation.mutate(updated);
+	const checkedRoleKeys = useMemo(() => {
+		const keys = new Set();
+		Object.entries(firstLoad ? wpRoles : checkedItems).forEach(([key, val]) => {
+			const isChecked = firstLoad ? val?.checked : val;
+			if (isChecked) keys.add(key);
+		});
+		return keys;
+	}, [checkedItems, firstLoad, wpRoles]);
+
+	const isAdmin = (manager) => {
+		if (!manager.role_keys || !Array.isArray(manager.role_keys)) return false;
+		return manager.role_keys.includes('administrator');
+	};
+
+	const isRoleManaged = (manager) => {
+		if (isAdmin(manager)) return true;
+		if (!manager.role_keys || !Array.isArray(manager.role_keys)) return false;
+		return manager.role_keys.some((key) => checkedRoleKeys.has(key));
 	};
 
 	const handleIndividualCheck = (role, checked) => {
@@ -271,7 +295,6 @@ const UserRoleTable = () => {
 		const updated = { ...checkedItems, [role]: checked };
 		setCheckedItems(updated);
 		assignPermissionMutation.mutate(updated);
-		setIsAllChecked(Object.values(updated).every(Boolean));
 	};
 
 	const handleBulkDelete = () => {
@@ -280,6 +303,7 @@ const UserRoleTable = () => {
 				title: 'Please select user.',
 				status: 'error',
 				duration: 3000,
+				isClosable: true,
 			});
 		}
 		if (!bulkDelete) {
@@ -287,6 +311,7 @@ const UserRoleTable = () => {
 				title: 'Please choose bulk action.',
 				status: 'error',
 				duration: 3000,
+				isClosable: true,
 			});
 		}
 		bulkRemoveMutation.mutate(selectedRows);
@@ -294,50 +319,94 @@ const UserRoleTable = () => {
 
 	return (
 		<Stack gap="20px">
-			<Stack padding="10px 0px 10px 0px" gap="8px" direction="column">
-				<Flex justifyContent="space-between" alignItems="flex-start">
-					<Heading
-						fontWeight="600"
-						fontSize="20px"
-						lineHeight="normal"
-						color="#222222"
-					>
-						{__('Role Based', 'everest-forms')}
-					</Heading>
-					<UserDisplayModal
-						wp_roles={evfPermission}
-						setUserAdded={() => managersQuery.refetch()}
-					/>
-				</Flex>
-				<Text fontWeight="400" fontSize="14px" color="#454545">
-					{__(
-						'By selecting additional roles below, you can give access to other user roles.',
-						'everest-forms',
-					)}
-				</Text>
-				<Divider borderColor="#DFDFDF" />
-			</Stack>
-
-			<Stack borderBottom="1px solid #DCDCDC" paddingBottom="24px">
-				<Checkbox
-					width="374px"
-					isChecked={isAllChecked}
-					onChange={handleCheckAll}
+			<Flex justifyContent="space-between" alignItems="center">
+				<Heading
+					fontWeight="600"
+					fontSize="20px"
+					lineHeight="normal"
+					color="#222222"
 				>
-					{__('Check All', 'everest-forms')}
-				</Checkbox>
-				<Flex marginTop="8px" gap="18px">
-					{Object.entries(wpRoles).map(([roleKey, roleName]) => (
-						<Checkbox
-							key={roleKey}
-							isChecked={firstLoad ? roleName.checked : checkedItems[roleKey]}
-							onChange={(e) => handleIndividualCheck(roleKey, e.target.checked)}
-						>
-							{roleName.name}
-						</Checkbox>
+					{__('Role Based Access', 'everest-forms')}
+				</Heading>
+				<UserDisplayModal wp_roles={evfPermission} />
+			</Flex>
+
+			{wpRolesQuery.isLoading ? (
+				<Flex gap="12px">
+					{[80, 70, 90].map((w, i) => (
+						<Skeleton key={i} h="36px" w={`${w}px`} borderRadius="md" />
 					))}
 				</Flex>
-			</Stack>
+			) : (
+				<Flex gap="12px" flexWrap="wrap" alignItems="center">
+					{Object.entries(wpRoles).map(([roleKey, roleName]) => {
+						const isChecked = firstLoad
+							? roleName.checked
+							: checkedItems[roleKey];
+						return (
+							<Flex
+								key={roleKey}
+								as="label"
+								alignItems="center"
+								gap="8px"
+								border="1px solid"
+								borderColor={isChecked ? 'primary.200' : 'gray.200'}
+								bg={isChecked ? 'primary.25' : 'white'}
+								borderRadius="md"
+								px="14px"
+								py="8px"
+								cursor="pointer"
+								transition="all 0.15s"
+								_hover={{ borderColor: 'primary.300' }}
+							>
+								<Switch
+									isChecked={!!isChecked}
+									onChange={(e) =>
+										handleIndividualCheck(roleKey, e.target.checked)
+									}
+									size="sm"
+									sx={{
+										'& .chakra-switch__track': { bg: 'gray.300' },
+										'& .chakra-switch__track[data-checked]': { bg: '#7545bb' },
+									}}
+								/>
+								<Text fontSize="13px" fontWeight="500" color="#222222">
+									{roleName.name}
+								</Text>
+							</Flex>
+						);
+					})}
+				</Flex>
+			)}
+
+			{wpRolesQuery.isLoading ? (
+				<Skeleton h="48px" w="100%" borderRadius="md" />
+			) : (
+				<Alert status="info" borderRadius="md" px="16px" py="12px">
+					<AlertIcon boxSize="16px" mt="1px" alignSelf="flex-start" />
+					<Text fontSize="13px" lineHeight="1.5">
+						{checkedRoleKeys.size > 0 ? (
+							<>
+								<Text as="span" fontWeight="600">
+									{Object.entries(wpRoles)
+										.filter(([key]) => checkedRoleKeys.has(key))
+										.map(([, val]) => val.name)
+										.join(', ')}
+								</Text>{' '}
+								{checkedRoleKeys.size === 1
+									? __('role has', 'everest-forms')
+									: __('roles have', 'everest-forms')}{' '}
+								{__('full Everest Forms access.', 'everest-forms')}
+							</>
+						) : (
+							__(
+								'No roles are currently enabled. Enable a role above to grant all Everest Forms permissions to users with that role.',
+								'everest-forms',
+							)
+						)}
+					</Text>
+				</Alert>
+			)}
 
 			<Flex justifyContent="space-between" alignItems="center">
 				<Stack direction="row" gap="16px">
@@ -453,26 +522,37 @@ const UserRoleTable = () => {
 
 					<Tbody>
 						{isLoading ? (
-							[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => (
+							Array.from({ length: 5 }).map((_, i) => (
 								<Tr
 									key={i}
 									bg={i % 2 === 0 ? 'white' : 'primary.15'}
-									height="64px"
+									height="56px"
 								>
-									<Td verticalAlign="top" pt="12px">
-										<Skeleton h="12px" w="12px" borderRadius="2px" />
+									<Td>
+										<Skeleton h="14px" w="14px" borderRadius="2px" />
 									</Td>
-									<Td verticalAlign="top" pt="12px">
-										<Skeleton h="12px" w="120px" />
+									<Td>
+										<Stack gap="6px">
+											<Skeleton
+												h="10px"
+												w="70%"
+												maxW="110px"
+												borderRadius="sm"
+											/>
+											<Skeleton h="8px" w="40%" maxW="50px" borderRadius="sm" />
+										</Stack>
 									</Td>
-									<Td verticalAlign="top" pt="12px">
-										<Skeleton h="12px" w="160px" />
+									<Td>
+										<Skeleton h="10px" w="80%" maxW="170px" borderRadius="sm" />
 									</Td>
-									<Td verticalAlign="top" pt="12px">
-										<Skeleton h="12px" w="80px" />
+									<Td>
+										<Skeleton h="10px" w="60%" maxW="70px" borderRadius="sm" />
 									</Td>
-									<Td verticalAlign="top" pt="12px">
-										<Skeleton h="12px" w="100px" />
+									<Td>
+										<Flex gap="6px">
+											<Skeleton h="22px" w="90px" borderRadius="full" />
+											<Skeleton h="22px" w="70px" borderRadius="full" />
+										</Flex>
 									</Td>
 								</Tr>
 							))
@@ -515,76 +595,136 @@ const UserRoleTable = () => {
 								</Td>
 							</Tr>
 						) : (
-							managers?.map((value, rowIndex) => (
-								<Tr
-									key={value.id}
-									role="group"
-									textAlign="left"
-									bg={rowIndex % 2 === 0 ? 'white' : 'primary.15'}
-								>
-									<Td verticalAlign="top" pt="14px">
-										<Checkbox
-											isChecked={selectedRows.includes(value.id)}
-											onChange={(e) =>
-												handleSelectRow(value.id, e.target.checked)
-											}
-										/>
-									</Td>
+							managers?.map((value, rowIndex) => {
+								const managed = isRoleManaged(value);
+								return (
+									<Tr
+										key={value.id}
+										role="group"
+										textAlign="left"
+										bg={rowIndex % 2 === 0 ? 'white' : 'primary.15'}
+									>
+										<Td verticalAlign="top" pt="14px">
+											<Checkbox
+												isChecked={selectedRows.includes(value.id)}
+												onChange={(e) =>
+													handleSelectRow(value.id, e.target.checked)
+												}
+												isDisabled={managed}
+											/>
+										</Td>
 
-									<Td verticalAlign="top" fontSize="14px">
-										<Box>
-											<Text lineHeight="1.4">
-												{`${value.first_name} ${value.last_name}`}
-											</Text>
-											<Flex
-												alignItems="center"
-												gap="4px"
-												mt="2px"
-												visibility="hidden"
-												_groupHover={{ visibility: 'visible' }}
-											>
-												<Text color="gray.500" fontSize="xs" userSelect="none">
-													ID: {value.id}
+										<Td verticalAlign="top" fontSize="14px">
+											<Box>
+												<Text lineHeight="1.4">
+													{`${value.first_name} ${value.last_name}`}
 												</Text>
-												<Text color="gray.300" fontSize="xs" userSelect="none">
-													|
-												</Text>
-												<UserDisplayModal
-													wp_roles={wpRoles}
-													context="edit"
-													value={{
-														permission: value.permissions,
-														email: value.email,
-														permission_details: permissions,
-													}}
-													setUserAdded={() => managersQuery.refetch()}
-												/>
-												<Text color="gray.300" fontSize="xs" userSelect="none">
-													|
-												</Text>
-												<TrashUserRoleModel
-													deleteManager={() =>
-														deleteManagerMutation.mutate(value.id)
+												<Flex
+													alignItems="center"
+													gap="4px"
+													mt="2px"
+													visibility="hidden"
+													_groupHover={{ visibility: 'visible' }}
+												>
+													<Text
+														color="gray.500"
+														fontSize="xs"
+														userSelect="none"
+													>
+														ID: {value.id}
+													</Text>
+													{!managed && (
+														<>
+															<Text
+																color="gray.300"
+																fontSize="xs"
+																userSelect="none"
+															>
+																|
+															</Text>
+															<UserDisplayModal
+																wp_roles={permissions}
+																context="edit"
+																value={{
+																	permission: value.permissions,
+																	email: value.email,
+																}}
+															/>
+															<Text
+																color="gray.300"
+																fontSize="xs"
+																userSelect="none"
+															>
+																|
+															</Text>
+															<TrashUserRoleModel
+																deleteManager={() =>
+																	deleteManagerMutation.mutate(value.id)
+																}
+															/>
+														</>
+													)}
+												</Flex>
+											</Box>
+										</Td>
+
+										<Td verticalAlign="top" fontSize="14px">
+											{value.email}
+										</Td>
+										<Td verticalAlign="top" fontSize="14px">
+											{value.roles}
+										</Td>
+										<Td verticalAlign="top">
+											{managed ? (
+												<Tooltip
+													label={
+														isAdmin(value)
+															? __(
+																	'Administrators have full access by default.',
+																	'everest-forms',
+																)
+															: __(
+																	'Permissions are managed via role-based access. Disable the role toggle above to edit individually.',
+																	'everest-forms',
+																)
 													}
+													fontSize="xs"
+													placement="top"
+													hasArrow
+													bg={'white'}
+													color={'gray.700'}
+												>
+													<Flex
+														alignItems="center"
+														gap="6px"
+														cursor="help"
+														display="inline-flex"
+													>
+														<LockIcon color="gray.400" boxSize="10px" />
+														<Text
+															fontSize="12px"
+															fontWeight="500"
+															color="gray.500"
+														>
+															{isAdmin(value)
+																? __('All permissions (admin)', 'everest-forms')
+																: __(
+																		'All permissions (via role)',
+																		'everest-forms',
+																	)}
+														</Text>
+													</Flex>
+												</Tooltip>
+											) : (
+												<PermissionCell
+													permissionKeys={value.permissions}
+													permissionLabels={permissions}
 												/>
-											</Flex>
-										</Box>
-									</Td>
-
-									<Td verticalAlign="top" fontSize="14px">
-										{value.email}
-									</Td>
-									<Td verticalAlign="top" fontSize="14px">
-										{value.roles}
-									</Td>
-									<Td verticalAlign="top">
-										<PermissionCell
-											permissionKeys={value.permissions}
-											permissionLabels={permissions}
-										/>
-									</Td>
-								</Tr>
-							))
+											)}
+										</Td>
+									</Tr>
+								);
+							})
 						)}
 					</Tbody>
 				</Table>
