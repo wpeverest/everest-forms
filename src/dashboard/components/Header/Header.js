@@ -115,13 +115,14 @@ const Header = ({ hideSiteAssistant = false }) => {
 				key={route}
 				href={convertedRoute}
 				isExternal={route === 'https://everestforms.net/free-vs-pro/'}
-				fontSize="15px"
-				fontWeight="semibold"
+				fontSize="14px"
+				fontWeight="medium"
 				lineHeight="150%"
 				color={isActive ? 'primary.500' : '#383838'}
-				borderBottom={isActive ? '3px solid' : 'none'}
+				borderBottom="2px solid"
+				// borderBottom={isActive ? '3px solid' : 'none'}
 				borderColor={isActive ? 'primary.500' : 'transparent'}
-				marginBottom={isActive ? '-2px' : '0'}
+				// marginBottom={isActive ? '-2px' : '0'}
 				_hover={{ color: 'primary.500' }}
 				_focus={{ boxShadow: 'none' }}
 				display="inline-flex"
@@ -141,17 +142,19 @@ const Header = ({ hideSiteAssistant = false }) => {
 				key={route}
 				as={NavLink}
 				to={route}
-				fontSize="15px"
-				fontWeight="semibold"
+				fontSize="14px"
+				fontWeight="medium"
 				lineHeight="150%"
 				color="#383838"
+				borderBottom="2px solid"
+				borderColor={isActive ? 'primary.500' : 'transparent'}
 				_hover={{ color: 'primary.500' }}
 				_focus={{ boxShadow: 'none' }}
 				_activeLink={{
 					color: 'primary.500',
-					borderBottom: '3px solid',
+					// borderBottom: '3px solid',
 					borderColor: 'primary.500',
-					marginBottom: '-2px',
+					// marginBottom: '-2px',
 				}}
 				display="inline-flex"
 				alignItems="center"
@@ -170,13 +173,14 @@ const Header = ({ hideSiteAssistant = false }) => {
 	return (
 		<>
 			<Box
-				bg={'white'}
-				borderBottom="1px solid #E9E9E9"
+				// bg={'white'}
+				bg="white"
+				borderBottom="1px solid #e1e1e1"
 				width="100%"
 				position={'relative'}
 			>
 				<Container maxW="full">
-					<Stack direction="row" minH="70px" justify="space-between">
+					<Stack direction="row" minH="60px" justify="space-between">
 						{/* Left Side — Logo and Main Navigation */}
 						<Stack direction="row" align="center" gap="7">
 							<Box>
