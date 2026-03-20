@@ -182,9 +182,9 @@ const Header = ({ hideSiteAssistant = false }) => {
 				<Container maxW="full">
 					<Stack direction="row" minH="60px" justify="space-between">
 						{/* Left Side — Logo and Main Navigation */}
-						<Stack direction="row" align="center" gap="7">
+						<Stack direction="row" align="center" gap="16px">
 							<Box>
-								<EVF h="10" w="10" />
+								<EVF h="36px" w="36px" />
 							</Box>
 							<IntersectObserver routes={leftRoutes}>
 								{leftRoutes.map(({ route, label, external }) =>
