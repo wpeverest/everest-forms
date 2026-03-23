@@ -193,7 +193,7 @@ body{margin:0!important;padding:0!important;width:100%!important;background-colo
 										<?php echo esc_html( $vs_label ); ?>
 									</td>
 									<?php endif; ?>
-									<?php if ( ! is_null( $summary['prev_overall_change'] ) ) : ?>
+									<?php if ( array_key_exists( 'prev_overall_change', $summary ) && ! is_null( $summary['prev_overall_change'] ) ) : ?>
 									<td valign="middle" style="padding-right:4px;white-space:nowrap;">
 										<?php echo evf_report_change_inline( $summary['prev_overall_change'] ); ?>
 									</td>
