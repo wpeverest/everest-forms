@@ -101,6 +101,10 @@ const AddonCard = ({ addon, showToast, onModuleToggle }) => {
 			title: __("Email Templates", "everest-forms"),
 			page: "evf-email-templates",
 		},
+		'everest-forms-frontend-listing':{
+			title: __("Frontend List", "everest-forms"),
+			page: "evf-frontend-list",
+		}
 	};
 
 	const appendEverestFormsSubmenu = function (title, pageSlug) {
