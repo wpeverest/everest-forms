@@ -802,6 +802,7 @@ const UserRoleTable = () => {
 													color: 'white',
 													fontWeight: '500',
 													borderRadius: 'md',
+													_hover: { bg: 'primary.500' },
 												}}
 											/>
 										))}
