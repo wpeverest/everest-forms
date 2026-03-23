@@ -67,7 +67,7 @@
         "themegrill agency"
       ],
       "category": "Cloud & Storage",
-      "setting_url": "admin.php?page=evf-settings&tab=pdf-submission",
+      "setting_url": "admin.php?page=evf-settings&tab=utilities&section=pdf_submission",
       "demo_video_url": "37CtaxJzYis",
       "popular_rank": 4
     },
