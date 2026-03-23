@@ -144,15 +144,6 @@ class EVF_Roles_And_Permission {
 			foreach ( $checked_roles as $role => $checked ) {
 				$permission = self::get_evf_permissions();
 				if ( $checked ) {
-					if ( 'subscriber' == strtolower( $role ) ) {
-						return new \WP_REST_Response(
-							array(
-								'success' => false,
-								'message' => esc_html__( 'Sorry, you can not give access to the Subscriber role.', 'everest-forms' ),
-							),
-							200
-						);
-					}
 					$wp_role = $wp_roles->get_role( $role );
 
 					foreach ( array_keys( $permission['permissions'] ) as $value ) {
@@ -196,7 +187,7 @@ class EVF_Roles_And_Permission {
 		$permissions = self::get_evf_permissions();
 
 		$roles              = array();
-		$ignore_roles       = apply_filters( 'everest_forms_ignore_roles_to_give_permissions', array( 'administrator', 'subscriber' ) );
+		$ignore_roles       = apply_filters( 'everest_forms_ignore_roles_to_give_permissions', array( 'administrator' ) );
 		$role_based_list    = get_option( '_everest_forms_permission', array() );
 		$checked_roles_list = array();
 
