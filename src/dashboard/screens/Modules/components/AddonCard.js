@@ -92,15 +92,89 @@ const AddonCard = ({ addon, showToast, onModuleToggle }) => {
 		setIsActive(addon.status === 'active');
 	}, [addon.status]);
 
+	const MENU_MAP = {
+		'everest-forms-coupons' : {
+			title: __('Coupons', 'everest-forms'),
+			page: "evf-coupons",
+		},
+		'everest-forms-email-templates': {
+			title: __("Email Templates", "everest-forms"),
+			page: "evf-email-templates",
+		},
+	};
+
+	const appendEverestFormsSubmenu = function (title, pageSlug) {
+		const submenu = document.querySelector(
+			"#toplevel_page_everest-forms .wp-submenu"
+		);
+
+		if (!submenu) return;
+
+		var exists = submenu.querySelector(
+			'a[href="admin.php?page=' + pageSlug + '"]'
+		);
+		if (exists) return;
+
+		var li = document.createElement("li");
+		var a = document.createElement("a");
+
+		a.href = "admin.php?page=" + pageSlug;
+		a.textContent = title;
+
+		li.appendChild(a);
+
+		var settings = submenu.querySelector(
+			'a[href="admin.php?page=evf-settings"]'
+		);
+
+		if (settings && settings.parentElement) {
+			submenu.insertBefore(li, settings.parentElement);
+		} else {
+			submenu.appendChild(li);
+		}
+	};
+
+	const removeEverestFormsSubmenu = function (pageSlug) {
+		const submenu = document.querySelector(
+			"#toplevel_page_everest-forms .wp-submenu"
+		);
+
+		if (!submenu) return;
+
+		var link = submenu.querySelector(
+			'a[href="admin.php?page=' + pageSlug + '"]'
+		);
+
+		if (link && link.parentElement) {
+			link.parentElement.remove();
+		}
+	};
+
+	const syncSidebarMenu = function (slug, enabled) {
+		var config = MENU_MAP[slug];
+		if (!config) return;
+
+		if (enabled) {
+			appendEverestFormsSubmenu(config.title, config.page);
+		} else {
+			removeEverestFormsSubmenu(config.page);
+		}
+	};
+
 	const handleToggle = async () => {
 		setIsLoading(true);
 		try {
 			let response;
+
 			if (isActive) {
 				response = await deactivateModule(addon.slug, addon.type);
+
 				if (response.success) {
 					setIsActive(false);
 					onModuleToggle?.(addon.slug, 'inactive');
+
+					syncSidebarMenu(response.slug || addon.slug, false);
+
 					showToast(
 						response.message || 'Module deactivated successfully',
 						'success',
@@ -116,6 +190,9 @@ const AddonCard = ({ addon, showToast, onModuleToggle }) => {
 				if (response.success) {
 					setIsActive(true);
 					onModuleToggle?.(addon.slug, 'active');
+
+					syncSidebarMenu(response.slug || addon.slug, true);
+
 					showToast(
 						response.message || 'Module activated successfully',
 						'success',
