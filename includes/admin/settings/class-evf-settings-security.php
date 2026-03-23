@@ -568,7 +568,7 @@ class EVF_Settings_Security extends EVF_Settings_Page {
 					'title' => esc_html__( 'Integration', 'everest-forms' ),
 					'type'  => 'title',
 					'desc'  => sprintf(
-						__( 'Get detailed documentation on integrating <a href="%1$s" target="_blank">reCAPTCHA</a>, <a href="%2$s" target="_blank">hCaptcha</a>,<a href="%3$s" target="_blank">Cloudflare Turnstile</a> and <a href="%4$s" target="_blank">CleanTalk</a> with Everest forms.', 'everest-forms' ),
+						__( 'Get detailed documentation on integrating <a href="%1$s" target="_blank">reCAPTCHA</a>, <a href="%2$s" target="_blank">hCaptcha</a>,<a href="%3$s" target="_blank"> Cloudflare Turnstile</a> and <a href="%4$s" target="_blank"> CleanTalk</a> with Everest forms.', 'everest-forms' ),
 						'https://docs.everestforms.net/docs/how-to-integrate-google-recaptcha/',
 						'https://docs.everestforms.net/docs/how-to-integrate-hcaptcha/',
 						'https://docs.everestforms.net/docs/how-to-integrate-cloudflare-turnstile-with-the-everest-forms/',
