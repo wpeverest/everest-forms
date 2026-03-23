@@ -610,7 +610,6 @@ const UserRoleTable = () => {
 												onChange={(e) =>
 													handleSelectRow(value.id, e.target.checked)
 												}
-												isDisabled={managed}
 											/>
 										</Td>
 
@@ -650,20 +649,21 @@ const UserRoleTable = () => {
 																	email: value.email,
 																}}
 															/>
-															<Text
-																color="gray.300"
-																fontSize="xs"
-																userSelect="none"
-															>
-																|
-															</Text>
-															<TrashUserRoleModel
-																deleteManager={() =>
-																	deleteManagerMutation.mutate(value.id)
-																}
-															/>
 														</>
 													)}
+
+													<Text
+														color="gray.300"
+														fontSize="xs"
+														userSelect="none"
+													>
+														|
+													</Text>
+													<TrashUserRoleModel
+														deleteManager={() =>
+															deleteManagerMutation.mutate(value.id)
+														}
+													/>
 												</Flex>
 											</Box>
 										</Td>
