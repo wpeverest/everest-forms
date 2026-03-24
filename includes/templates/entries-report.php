@@ -70,7 +70,8 @@ body{margin:0!important;padding:0!important;width:100%!important;background-colo
 <tr>
 	<td style="background-color:#fffbeb;border:1px solid #fcd34d;border-radius:8px;padding:10px 20px;text-align:center;">
 		<p style="margin:0;font-family:Inter,Arial,sans-serif;font-size:11px;font-weight:bold;color:#92400e;letter-spacing:0.06em;text-transform:uppercase;">
-			&#9888;&nbsp;&nbsp;<?php esc_html_e( 'Test Send — live data, triggered manually', 'everest-forms' ); ?>
+			<span style="display:inline-block;width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-bottom:9px solid #b45309;vertical-align:middle;margin-right:6px;line-height:0;font-size:0;"></span>
+			<?php esc_html_e( 'Test Send — live data, triggered manually', 'everest-forms' ); ?>
 		</p>
 	</td>
 </tr>
@@ -104,12 +105,27 @@ body{margin:0!important;padding:0!important;width:100%!important;background-colo
 	<td style="padding-bottom:20px;">
 		<table border="0" cellpadding="0" cellspacing="0">
 		<tr>
-			<td valign="middle" width="18" style="padding-right:5px;">
-				<svg width="13" height="13" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;">
-					<rect x="1.5" y="3" width="13" height="11.5" rx="2" stroke="#6b7280" stroke-width="1.2" fill="none"/>
-					<path d="M5 1.5V4M11 1.5V4" stroke="#6b7280" stroke-width="1.2" stroke-linecap="round"/>
-					<path d="M1.5 7H14.5" stroke="#6b7280" stroke-width="1.2"/>
-				</svg>
+			<td valign="middle" width="18" style="padding-right:6px;">
+				<!--
+					Calendar icon: pure HTML table boxes — outer border = calendar frame,
+					top strip = header bar, inner cells = date grid. No SVG, no images.
+				-->
+				<table border="0" cellpadding="0" cellspacing="0" width="13" style="width:13px;border-collapse:collapse;">
+				<!-- Calendar header (dark bar) -->
+				<tr>
+					<td colspan="3" style="height:4px;background-color:#6b7280;border-radius:2px 2px 0 0;font-size:0;line-height:0;">&nbsp;</td>
+				</tr>
+				<!-- Two hook lines on top of calendar -->
+				<tr>
+					<td width="4" style="width:4px;height:3px;border-left:1.5px solid #6b7280;font-size:0;line-height:0;">&nbsp;</td>
+					<td style="font-size:0;line-height:0;">&nbsp;</td>
+					<td width="4" style="width:4px;height:3px;border-right:1.5px solid #6b7280;font-size:0;line-height:0;">&nbsp;</td>
+				</tr>
+				<!-- Calendar body -->
+				<tr>
+					<td colspan="3" style="height:6px;border:1.5px solid #6b7280;border-top:none;border-radius:0 0 2px 2px;font-size:0;line-height:0;">&nbsp;</td>
+				</tr>
+				</table>
 			</td>
 			<td valign="middle" style="font-family:Inter,Arial,sans-serif;font-size:12px;color:#6b7280;">
 				<?php echo esc_html( html_entity_decode( $period_label, ENT_QUOTES | ENT_HTML5, 'UTF-8' ) ); ?>
@@ -138,10 +154,20 @@ body{margin:0!important;padding:0!important;width:100%!important;background-colo
 								<table border="0" cellpadding="0" cellspacing="0" width="40" height="40" style="width:40px;min-width:40px;height:40px;">
 								<tr>
 									<td width="40" height="40" align="center" valign="middle" style="background-color:#f3f0ff;border-radius:10px;width:40px;height:40px;min-width:40px;">
-										<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;margin:auto;">
-											<rect x="3.5" y="1.5" width="13" height="17" rx="2" stroke="#7c3aed" stroke-width="1.4" fill="none"/>
-											<path d="M6.5 6.5h7M6.5 10h7M6.5 13.5h4.5" stroke="#7c3aed" stroke-width="1.3" stroke-linecap="round"/>
-										</svg>
+
+										<table border="0" cellpadding="0" cellspacing="0" style="margin:auto;border-collapse:collapse;">
+										<tr>
+											<td style="width:14px;padding:3px 2px;border:1.5px solid #7c3aed;border-radius:3px;">
+												<table border="0" cellpadding="0" cellspacing="0" width="100%">
+												<tr><td style="height:2px;background-color:#7c3aed;border-radius:1px;font-size:0;line-height:0;">&nbsp;</td></tr>
+												<tr><td style="height:2px;font-size:0;">&nbsp;</td></tr>
+												<tr><td style="height:2px;background-color:#7c3aed;border-radius:1px;font-size:0;line-height:0;">&nbsp;</td></tr>
+												<tr><td style="height:2px;font-size:0;">&nbsp;</td></tr>
+												<tr><td width="7" style="width:7px;height:2px;background-color:#7c3aed;border-radius:1px;font-size:0;line-height:0;">&nbsp;</td></tr>
+												</table>
+											</td>
+										</tr>
+										</table>
 									</td>
 								</tr>
 								</table>
@@ -170,10 +196,17 @@ body{margin:0!important;padding:0!important;width:100%!important;background-colo
 								<table border="0" cellpadding="0" cellspacing="0" width="40" height="40" style="width:40px;min-width:40px;height:40px;">
 								<tr>
 									<td width="40" height="40" align="center" valign="middle" style="background-color:#f3f0ff;border-radius:10px;width:40px;height:40px;min-width:40px;">
-										<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;margin:auto;">
-											<rect x="2.5" y="2.5" width="15" height="15" rx="2" stroke="#7c3aed" stroke-width="1.4" fill="none"/>
-											<path d="M2.5 8.5h15M8.5 2.5v15" stroke="#7c3aed" stroke-width="1.3"/>
-										</svg>
+										
+										<table border="0" cellpadding="2" cellspacing="2" style="margin:auto;border-collapse:separate;border-spacing:2px;">
+										<tr>
+											<td style="width:6px;height:6px;background-color:#7c3aed;border-radius:1px;font-size:0;line-height:0;">&nbsp;</td>
+											<td style="width:6px;height:6px;background-color:#7c3aed;border-radius:1px;font-size:0;line-height:0;">&nbsp;</td>
+										</tr>
+										<tr>
+											<td style="width:6px;height:6px;background-color:#7c3aed;border-radius:1px;font-size:0;line-height:0;">&nbsp;</td>
+											<td style="width:6px;height:6px;background-color:#7c3aed;border-radius:1px;font-size:0;line-height:0;">&nbsp;</td>
+										</tr>
+										</table>
 									</td>
 								</tr>
 								</table>
