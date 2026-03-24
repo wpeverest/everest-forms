@@ -1057,6 +1057,9 @@
 				$select.append(newOption).trigger('change');
 			}
 		});
+
+			var $searchField = $select.next('.select2').find('.select2-search__field');
+			$searchField.css('min-width', '120px');
 	});
 
 	$('.evf-bulk-form-tags-select').trigger('evf-enhanced-tags-select-init');
