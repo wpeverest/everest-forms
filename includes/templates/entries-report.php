@@ -82,7 +82,7 @@ body{margin:0!important;padding:0!important;width:100%!important;background-colo
 	<td style="padding-bottom:6px;">
 		<table border="0" cellpadding="0" cellspacing="0" width="100%">
 		<tr>
-			<td valign="middle" style="font-family:Inter,Georgia,serif;font-size:24px;font-weight:bold;color:#111827;">
+			<td valign="middle" style="font-family:Inter,Arial,serif;font-size:24px;font-weight:bold;color:#111827;">
 				<?php esc_html_e( 'Entries Summary Report', 'everest-forms' ); ?>
 			</td>
 			<td valign="middle" align="right" width="80" style="white-space:nowrap;">
@@ -196,7 +196,7 @@ body{margin:0!important;padding:0!important;width:100%!important;background-colo
 								<table border="0" cellpadding="0" cellspacing="0" width="40" height="40" style="width:40px;min-width:40px;height:40px;">
 								<tr>
 									<td width="40" height="40" align="center" valign="middle" style="background-color:#f3f0ff;border-radius:10px;width:40px;height:40px;min-width:40px;">
-										
+
 										<table border="0" cellpadding="2" cellspacing="2" style="margin:auto;border-collapse:separate;border-spacing:2px;">
 										<tr>
 											<td style="width:6px;height:6px;background-color:#7c3aed;border-radius:1px;font-size:0;line-height:0;">&nbsp;</td>
