@@ -321,8 +321,8 @@ body.everest-forms_page_evf-settings {
 		max-width: 650px;
 		padding: 10px 14px;
 		border: 0;
-		border-left: 3px solid #17a2b8;
-		background: #edf8fa;
+		border-left: 3px solid #7545bb;
+		background: #f6f3fa;
 		border-radius: 0;
 		color: #383838;
 		display: flex;
@@ -332,8 +332,8 @@ body.everest-forms_page_evf-settings {
 
 		&::before {
 			// color: $blue;
-			color: #17a2b8;
-			margin-right: 0;
+			color: #7545bb;
+			margin-top: 2px;
 		}
 	}
 
@@ -2085,6 +2085,8 @@ p.search-box {
 			background: #fff;
 			border: 1px solid #7545bb;
 			color: #7545bb;
+			height: 38px;
+    		margin-top: 2px;
 
 			&:hover {
 				background: #f5f3ff;
@@ -11245,6 +11247,9 @@ img.ui-datepicker-trigger {
 								font-size: 14px;
 								line-height: 24px;
 								align-content: center;
+								background: #f6f3fa;
+								border: 1px solid #7545bb;
+								color: #7545bb;
 							}
 
 							@media screen and (max-width: 782px) {
@@ -13277,4 +13282,19 @@ button#show-settings-link {
 		filter: brightness(0) saturate(100%) invert(26%) sepia(77%) saturate(1950%)
 			hue-rotate(249deg) brightness(84%) contrast(81%);
 	}
+}
+
+.evf-tools-export-entries {
+	.select2-container {
+		min-width: 400px !important;
+			.select2-selection {
+				min-width: 400px !important;
+				color: #383838 !important;
+
+				.select2-selection__rendered{
+					min-width: 400px;
+				}
+
+		}
+    }
 }
