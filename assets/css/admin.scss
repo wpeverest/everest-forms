@@ -8333,11 +8333,30 @@ img.ui-datepicker-trigger {
 						}
 
 						&.everest-forms-select-existing-page {
-							margin-right: 10px;
+							margin: 16px 16px 0 0;
+							background: none;
+							color: #6b6b6b;
+							font-size: 15px;
+							font-weight: 400;
+							letter-spacing: 0.3px;
+
+							&:hover {
+								text-decoration: underline;
+								color: #7545bb;
+							}
 						}
 
 						&.everest-forms-create-new-page {
-							margin-left: 10px;
+							padding: 10px 16px;
+							border-radius: 4px;
+							background: #7545bb;
+							font-size: 15px;
+							font-weight: 400;
+							letter-spacing: 0.3px;
+
+							&:hover {
+								background: #9159e3;
+							}
 						}
 					}
 				}
@@ -13222,5 +13241,41 @@ button#show-settings-link {
 				}
 			}
 		}
+	}
+}
+
+.everest-forms-import-entries-wrapper {
+	.evf-form-and-csv-upload {
+		.select2-container {
+			margin-bottom: 0 !important;
+			margin-top: -15px !important;
+			.select2-dropdown {
+				border: 1px solid #e1e1e1 !important;
+			}
+
+			.select2-selection {
+				min-width: 400px !important;
+				color: #383838 !important;
+
+				.select2-selection__rendered:hover {
+					color: #7545bb !important;
+				}
+			}
+		}
+	}
+}
+
+.everest-forms-help-tooltip {
+	color: transparent !important;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M21 12a9 9 0 1 0-18 0 9 9 0 0 0 18 0m2 0c0 6.075-4.925 11-11 11S1 18.075 1 12 5.925 1 12 1s11 4.925 11 11' fill='%23383838'/%3E%3Cpath d='M11 12V8a1 1 0 1 1 2 0v4a1 1 0 1 1-2 0m1.01 3a1 1 0 1 1 0 2H12a1 1 0 1 1 0-2z' fill='%23383838'/%3E%3C/svg%3E");
+	background-repeat: no-repeat !important;
+	height: 14px !important;
+	width: 14px !important;
+	margin-left: 2px;
+	display: inline-block;
+
+	&:hover {
+		filter: brightness(0) saturate(100%) invert(26%) sepia(77%) saturate(1950%)
+			hue-rotate(249deg) brightness(84%) contrast(81%);
 	}
 }

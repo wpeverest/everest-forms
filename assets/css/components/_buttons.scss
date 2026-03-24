@@ -26,12 +26,12 @@ button.everest-forms-btn {
 	}
 
 	&.everest-forms-btn-primary {
-		background-color: $everestforms;
+		background-color: #7545bb;
 		color: $color-white;
 
 		&:hover {
 			color: $color-white;
-			background-color: darken($everestforms, 10%);
+			background-color: #9159e3;
 		}
 	}
 
