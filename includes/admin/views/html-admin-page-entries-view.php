@@ -209,8 +209,30 @@ if ( false !== $entry_index ) {
 									}
 									echo '<span class="list evf-answer-badge ' . esc_attr( $answer_class ) . '">' . esc_html( wp_strip_all_tags( $field_value ) ) . '</span>';
 								} else {
-									// Output plain field value safely.
-									echo nl2br( esc_html( $field_value ) );
+									$field_type = isset( $field_type_by_meta_key[ $meta_key ] ) ? $field_type_by_meta_key[ $meta_key ] : '';
+
+									if ( 'file-upload' === $field_type ) {
+										$raw_value = (string) $field_value;
+										$file_url  = '';
+
+										if ( preg_match( '/href=["\']([^"\']+)["\']/', $raw_value, $matches ) ) {
+											$file_url = $matches[1];
+										} else {
+											$file_url = trim( wp_strip_all_tags( $raw_value ) );
+										}
+
+										if ( ! empty( $file_url ) && wp_http_validate_url( $file_url ) ) {
+											$file_name = wp_basename( wp_parse_url( $file_url, PHP_URL_PATH ) );
+
+											echo '<a href="' . esc_url( $file_url ) . '" target="_blank" rel="noopener noreferrer">';
+											echo esc_html( $file_name ? $file_name : $file_url );
+											echo '</a>';
+										} else {
+											echo esc_html( wp_strip_all_tags( $raw_value ) );
+										}
+									} else {
+										echo nl2br( esc_html( wp_strip_all_tags( (string) $field_value ) ) );
+									}
 								}
 							} else {
 								echo '<span class="evf-empty-value">' . esc_html__( 'Empty', 'everest-forms' ) . '</span>';
