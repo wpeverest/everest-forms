@@ -231,7 +231,7 @@ if ( false !== $entry_index ) {
 											echo esc_html( wp_strip_all_tags( $raw_value ) );
 										}
 									} else {
-										echo nl2br( esc_html( wp_strip_all_tags( (string) $field_value ) ) );
+										echo nl2br( esc_html( (string) $field_value ) );
 									}
 								}
 							} else {
