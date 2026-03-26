@@ -337,6 +337,7 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 	public function column_form_field( $entry, $column_name ) {
 		$field_id = str_replace( 'evf_field_', '', $column_name );
 		$meta_key = isset( $this->form_data['form_fields'][ $field_id ]['meta-key'] ) ? strtolower( $this->form_data['form_fields'][ $field_id ]['meta-key'] ) : $field_id;
+		$field_type = isset( $this->form_data['form_fields'][ $field_id ]['type'] ) ? $this->form_data['form_fields'][ $field_id ]['type'] : '';
 
 		if ( ! empty( $entry->meta[ $meta_key ] ) || ( isset( $entry->meta[ $meta_key ] ) && is_numeric( $entry->meta[ $meta_key ] ) ) ) {
 			$value = $entry->meta[ $meta_key ];
@@ -376,7 +377,33 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 
 				$value = nl2br( wp_strip_all_tags( trim( $value ) ) );
 			}
-			return apply_filters( 'everest_forms_html_field_value', $value, $entry->meta[ $meta_key ], $entry, 'entry-table', $meta_key );
+
+			$value = apply_filters( 'everest_forms_html_field_value', $value, $entry->meta[ $meta_key ], $entry, 'entry-table', $meta_key );
+
+			if ( 'file-upload' === $field_type ) {
+				$raw_value = (string) $value;
+				$file_url  = '';
+
+				if ( preg_match( '/href=["\']([^"\']+)["\']/', $raw_value, $matches ) ) {
+					$file_url = $matches[1];
+				} else {
+					$file_url = trim( wp_strip_all_tags( $raw_value ) );
+				}
+
+				if ( ! empty( $file_url ) && wp_http_validate_url( $file_url ) ) {
+					$file_name = wp_basename( wp_parse_url( $file_url, PHP_URL_PATH ) );
+
+					$value  = '<a href="' . esc_url( $file_url ) . '" target="_blank" rel="noopener noreferrer">';
+					$value .= esc_html( $file_name ? $file_name : $file_url );
+					$value .= '</a>';
+				} else {
+					$value = esc_html( wp_strip_all_tags( $raw_value ) );
+				}
+			} else {
+				$value = nl2br( esc_html( (string) $value ) );
+			}
+
+			return $value;
 		} else {
 			return '<span class="na">&mdash;</span>';
 		}
