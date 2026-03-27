@@ -46,45 +46,16 @@ jobs:
           composer install
           npm run build --legacy-peer-deps --force
           composer install --no-dev
-          mkdir everest-forms
+          mkdir -p everest-forms || true
           rsync -rc --exclude-from="./.distignore" "./" "./everest-forms" --delete --delete-excluded
 
-      - name: Create ZIP Archive
-        run: zip -r everest-forms.zip everest-forms 
-        
-      - name: remove the plugin file from server
+      - name: Copy plugin file to server
         env:
           Srv_IP: ${{ secrets.QA_AUTOMATION_SERVER_IP }}
           Srv_UsrName: ${{ secrets.QA_AUTOMATION_SERVER_USERNAME }}
           Server_PASS: ${{ secrets.QA_AUTOMATION_SERVER_PASS }}
         run: |
-          pwd
-          sshpass -p "$Server_PASS" ssh -o StrictHostKeyChecking=no $Srv_UsrName@$Srv_IP << EOF
-          cd applications/ycrdmckpsu/public_html/evftest/wp-content/plugins/
-          rm -rf everest-forms
-          EOF
-
-      - name: Upload Plugin ZIP to Server Temp Folder
-        env:
-          Srv_IP: ${{ secrets.QA_AUTOMATION_SERVER_IP }}
-          Srv_UsrName: ${{ secrets.QA_AUTOMATION_SERVER_USERNAME }}
-          Server_PASS: ${{ secrets.QA_AUTOMATION_SERVER_PASS }}
-        run: |
-          pwd
-          sshpass -p "$Server_PASS" scp -r -o StrictHostKeyChecking=no everest-forms.zip $Srv_UsrName@$Srv_IP:applications/ycrdmckpsu/public_html/temp/
-
-      - name: Install and Activate Plugin via WP-CLI
-        env:
-          Srv_IP: ${{ secrets.QA_AUTOMATION_SERVER_IP }}
-          Srv_UsrName: ${{ secrets.QA_AUTOMATION_SERVER_USERNAME }}
-          Server_PASS: ${{ secrets.QA_AUTOMATION_SERVER_PASS }}
-        run: |
-          pwd
-          sshpass -p "$Server_PASS" ssh -o StrictHostKeyChecking=no $Srv_UsrName@$Srv_IP << EOF
-          cd applications/ycrdmckpsu/public_html/evftest
-          wp plugin install ../temp/everest-forms.zip --activate --debug
-          rm -f ../temp/everest-forms.zip
-          EOF
+          sshpass -p "$Server_PASS" rsync -ahPz -e "ssh -o StrictHostKeyChecking=no" everest-forms $Srv_UsrName@$Srv_IP:/var/www/evfautomation.wp1.site/wp-content/plugins
 
       - name: Setup Chrome
         uses: browser-actions/setup-chrome@v1
@@ -122,61 +93,10 @@ jobs:
           Srv_UsrName: ${{ secrets.QA_AUTOMATION_SERVER_USERNAME }}
           Server_PASS: ${{ secrets.QA_AUTOMATION_SERVER_PASS }}
         run: |
-          pwd
-          sshpass -p "$Server_PASS" ssh -o StrictHostKeyChecking=no $Srv_UsrName@$Srv_IP 'rm -rf applications/ycrdmckpsu/public_html/evftest/reports/*'
-          sshpass -p "$Server_PASS" scp -o StrictHostKeyChecking=no -r python-code/results/* $Srv_UsrName@$Srv_IP:applications/ycrdmckpsu/public_html/evftest/reports/
-          sshpass -p "$Server_PASS" ssh -o StrictHostKeyChecking=no $Srv_UsrName@$Srv_IP 'chmod 755 -R applications/ycrdmckpsu/public_html/evftest/reports/'
-          echo "https://qatest.wptests.net/evftest/reports/report.html"
-          
+          REPORT_DIR=/var/www/evfautomation.wp1.site/reports
 
-      - name: Send Email Notification (Custom Python Code)
-        run: |
-          python - <<EOF
-          import smtplib
-          from email.mime.multipart import MIMEMultipart
-          from email.mime.text import MIMEText
-          import os
-          
-          # Gather environment variables from GitHub Actions inputs
-          smtp_server = os.getenv('SMTP_SERVER')
-          smtp_port = os.getenv('SMTP_PORT')
-          smtp_username = os.getenv('SMTP_USERNAME')
-          smtp_password = os.getenv('SMTP_PASSWORD')
-          to_email = os.getenv('TO_EMAIL')
-          subject = os.getenv('SUBJECT')
-          body = os.getenv('BODY')
-          from_email = os.getenv('FROM_EMAIL')
-          msg = MIMEMultipart()
-          msg['From'] = from_email
-          msg['To'] = to_email
-          msg['Subject'] = subject
-          msg.attach(MIMEText(body, "html"))
-          
-          try:
-              # Connect to the SMTP server and send the email
-              with smtplib.SMTP(smtp_server, smtp_port) as server:
-                  server.starttls()  # Secure the connection
-                  server.login(smtp_username, smtp_password)
-                  server.sendmail(from_email, to_email, msg.as_string())
-                  print("Email sent successfully.")
-          except Exception as e:
-              print(f"Error sending email: {e}")
-          EOF
-        env:
-          SMTP_SERVER: ${{ secrets.SMTP_SERVER }}
-          SMTP_PORT: ${{ secrets.SMTP_PORT }}
-          SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
-          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
-          TO_EMAIL: ${{ secrets.NOTIFICATION_EMAIL }}
-          FROM_EMAIL: ${{ secrets.FROM_EMAIL }}
-          SUBJECT: "Test Completed - EVF Staging QA Report"
-          BODY: |
-            <p>Test completed. View the report here:</p>
-            <a href="https://qatest.wptests.net/evftest/reports/report.html" 
-               style="display: inline-block; padding: 10px 20px; font-size: 16px; 
-                      color: #fff; background-color: #008000; text-decoration: none; 
-                      border-radius: 5px;">
-               View Report
-            </a>
-      
-                
+          sshpass -p "$Server_PASS" ssh -o StrictHostKeyChecking=no $Srv_UsrName@$Srv_IP "mkdir -p $REPORT_DIR && rm -rf $REPORT_DIR/*"
+          sshpass -p "$Server_PASS" scp -o StrictHostKeyChecking=no -r python-code/results/* $Srv_UsrName@$Srv_IP:$REPORT_DIR/
+          sshpass -p "$Server_PASS" ssh -o StrictHostKeyChecking=no $Srv_UsrName@$Srv_IP "chmod 755 -R $REPORT_DIR"
+
+          echo "https://evfautomation.wp1.site/reports/report.html"
