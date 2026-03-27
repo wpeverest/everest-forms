@@ -45,11 +45,11 @@ jobs:
 
       - name: NPM, Composer Install & NPM Build
         run: |
-          npm install  --legacy-peer-deps
+          npm install --legacy-peer-deps --force
           composer install
-          npm run build
+          npm run build:core
           composer install --no-dev
-          mkdir everest-forms
+          mkdir -p everest-forms || true
           rsync -rc --exclude-from="./.distignore" "./" "./everest-forms" --delete --delete-excluded
 
       - name: Copy plugin file to server
