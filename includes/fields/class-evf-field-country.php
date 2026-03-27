@@ -26,7 +26,6 @@ class EVF_Field_Country extends EVF_Form_Fields {
 			'basic-options'    => array(
 				'field_options' => array(
 					'label',
-					'meta',
 					'description',
 					'required',
 					'required_field_message_setting',
@@ -37,6 +36,7 @@ class EVF_Field_Country extends EVF_Form_Fields {
 			'advanced-options' => array(
 				'field_options' => array(
 					'placeholder',
+					'meta',
 					'default_country',
 					'label_hide',
 					'css',
@@ -148,7 +148,7 @@ class EVF_Field_Country extends EVF_Form_Fields {
 		$countries = evf_get_countries();
 
 		if ( is_serialized( $field_val ) || in_array( $context, array( 'email-plain', 'email-html', 'export-csv', 'export-pdf' ), true ) ) {
-			$value = maybe_unserialize( $field_val );
+			$value = evf_maybe_unserialize( $field_val );
 
 			if ( isset( $value['type'], $value['country_code'] ) && $value['type'] === $this->type ) {
 				$country_code = $value['country_code'];

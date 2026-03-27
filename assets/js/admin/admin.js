@@ -1,6 +1,57 @@
 /* global everest_forms_admin, PerfectScrollbar */
 ( function( $, params ) {
 
+	function evfGetToastContainer() {
+		var $container = $('#evf-toast-container');
+
+		if (!$container.length) {
+			$container = $('<div id="evf-toast-container"></div>');
+			$('body').append($container);
+		}
+
+		return $container;
+	}
+
+	window.evfShowToast = function (message, type, duration) {
+		type = type || 'info';
+		duration = typeof duration === 'number' ? duration : 4000;
+
+		var $container = evfGetToastContainer();
+
+		var $toast = $(
+			'<div class="evf-toast evf-toast-' +
+				type +
+				'">' +
+				'<button type="button" class="evf-toast-close" aria-label="Close">&times;</button>' +
+				'<div class="evf-toast-content"></div>' +
+				'</div>',
+		);
+
+		$toast.find('.evf-toast-content').html(message);
+		$container.append($toast);
+
+		setTimeout(function () {
+			$toast.addClass('is-visible');
+		}, 10);
+
+		if (duration > 0) {
+			setTimeout(function () {
+				hideToast($toast);
+			}, duration);
+		}
+
+		$toast.on('click', '.evf-toast-close', function () {
+			hideToast($toast);
+		});
+
+		function hideToast($el) {
+			$el.removeClass('is-visible');
+			setTimeout(function () {
+				$el.remove();
+			}, 250);
+		}
+	};
+
 	// Colorpicker.
 	$( document ).on( 'click', '.everest-forms-field.everest-forms-field-rating', function() {
 		$( '.everest-forms-field-option-row-icon_color input.evf-colorpicker' ).wpColorPicker({
@@ -26,28 +77,188 @@
 		}
 	});
 
+	 $('.evf-search input[type="search"]').on('keypress', function (e) {
+        if (e.which === 13) {
+            e.preventDefault();
+            $(this).closest('form').submit();
+        }
+    });
+
 	// Function to handle changes in the reporting frequency while sending the entries stat report.
 	$(document).ready(function () {
+		var urlParams = new URLSearchParams(window.location.search);
+		var toastMessage = urlParams.get('evf_toast');
+		var toastType = urlParams.get('evf_toast_type') || 'success';
+
+		if (toastMessage) {
+			try {
+				window.evfShowToast(
+					atob(decodeURIComponent(toastMessage)),
+					toastType,
+					5000,
+				);
+
+				urlParams.delete('evf_toast');
+				urlParams.delete('evf_toast_type');
+
+				window.history.replaceState(
+					{},
+					document.title,
+					window.location.pathname +
+						(urlParams.toString() ? '?' + urlParams.toString() : ''),
+				);
+			} catch (e) {}
+		}
+
+		var $evfNotice = $('#setting-error-bulk_action.notice');
+
+		if ($evfNotice.length) {
+			var toastType = 'info';
+
+			if (
+				$evfNotice.hasClass('notice-success') ||
+				$evfNotice.hasClass('updated')
+			) {
+				toastType = 'success';
+			} else if (
+				$evfNotice.hasClass('notice-error') ||
+				$evfNotice.hasClass('error')
+			) {
+				toastType = 'error';
+			} else if ($evfNotice.hasClass('notice-warning')) {
+				toastType = 'warning';
+			}
+
+			var message = $evfNotice.find('p').text().trim();
+
+			if (message) {
+				$evfNotice.remove();
+				window.evfShowToast(message, toastType, 5000);
+			}
+		}
+
 		function handleReportingFrequencyChange() {
-			var everest_forms_entries_reporting_frequency = $('#everest_forms_entries_reporting_frequency').val();
-				if ('Weekly' !== everest_forms_entries_reporting_frequency) {
-				$('#everest_forms_entries_reporting_day').closest('.everest-forms-global-settings').hide();
+			var everest_forms_entries_reporting_frequency = $(
+				'#everest_forms_entries_reporting_frequency',
+			).val();
+			if ('Weekly' !== everest_forms_entries_reporting_frequency) {
+				$('#everest_forms_entries_reporting_day')
+					.closest('.everest-forms-global-settings')
+					.hide();
 			} else {
-				$('#everest_forms_entries_reporting_day').closest('.everest-forms-global-settings').show();
+				$('#everest_forms_entries_reporting_day')
+					.closest('.everest-forms-global-settings')
+					.show();
 			}
 		}
 
 		// Execute the function on page load
 		handleReportingFrequencyChange();
 
+		//Entries tab
+		var $wrapper = $('.evf-entries-tab-wrapper');
+
+		if ($wrapper.length) {
+			// Click handler.
+			$wrapper.on('click', '.evf-tab-nav__btn', function () {
+				var $btn = $(this);
+				var target = $btn.data('tab');
+
+				$('.evf-tab-nav__btn', $wrapper)
+					.removeClass('evf-tab--active')
+					.attr('aria-selected', 'false');
+
+				$btn.addClass('evf-tab--active').attr('aria-selected', 'true');
+
+				$('.evf-tab-panel', $wrapper)
+					.removeClass('evf-tab-panel--active')
+					.attr('hidden', true);
+
+				$('#' + target, $wrapper)
+					.addClass('evf-tab-panel--active')
+					.removeAttr('hidden');
+
+				$(window).trigger('resize');
+			});
 
 
-		// Add an event listener for changes and on the click in the reporting frequency
-		$(document).on('change click', '#everest_forms_entries_reporting_frequency', handleReportingFrequencyChange);
+			$('.evf-tab-nav__btn', $wrapper).first().trigger('click');
+		}
 
+		$(document).on(
+			'change click',
+			'#everest_forms_entries_reporting_frequency',
+			handleReportingFrequencyChange,
+		);
 
-		$('#evf-form-listing__screen-options').on('click', function() {
-			$("#show-settings-link").click();
+		$(document).ready(function () {
+			$(document).on('change', '#filter-by-form', function () {
+				var $form = $(this).val();
+				var url = new URL(window.location.href);
+
+				if ($form !== '') {
+					url.searchParams.set('form_id', $form);
+				} else {
+					url.searchParams.delete('form_id');
+				}
+				window.location.href = url.toString();
+			});
+
+			$(document).on(
+				'select2:select select2:unselect',
+				'#filter-by-form',
+				function () {
+					$(this).trigger('change');
+				},
+			);
+		});
+
+		// Auto-submit on status dropdown change (entries page).
+		$(document).on('change', '#filter-by-status', function () {
+			var $form = $(this).closest('form');
+			var status = $(this).val();
+			var $search = $form.find('input[name="s"]');
+
+			$form.find('input[name="status"]').remove();
+
+			$form.find('select[name="action"]').val('-1');
+			$form.find('select[name="action2"]').val('-1');
+
+			$form.find('input[name="bulk_action"]').prop('disabled', true);
+
+			if (status !== '') {
+				$form.append(
+					'<input type="hidden" name="status" value="' + status + '" />'
+				);
+			}
+
+			if ($search.length && !$search.val().trim()) {
+				$search.prop('disabled', true);
+			}
+			$(this).prop('disabled', true);
+
+			$form.submit();
+		});
+
+		$(document).on('change', '#filter-by-form-status', function () {
+			var status = $(this).val();
+			var url = new URL(window.location.href);
+
+			if (status !== '') {
+				url.searchParams.set('status', status);
+			} else {
+				url.searchParams.delete('status');
+			}
+
+			url.searchParams.set('page', 'evf-builder');
+
+			url.searchParams.delete('paged');
+
+			window.location.href = url.toString();
+		});
+
+		$('#evf-form-listing__screen-options').on('click', function () {
+			$('#show-settings-link').click();
 		});
 	});
 
@@ -59,10 +270,10 @@
 				document.cookie = 'isPremiumSidebarEnabled=' + isCheckboxChecked + '; path=/;';
 				if (isCheckboxChecked) {
 					$('body').removeClass('evf-premium-sidebar-hidden').addClass('evf-premium-sidebar-show');
-					$('.everest-forms-toggle-text').text('Show Sidebar');
+					$('.everest-forms-toggle-text').text('Hide Sidebar');
 				} else {
 					$('body').removeClass('evf-premium-sidebar-show').addClass('evf-premium-sidebar-hidden');
-					$('.everest-forms-toggle-text').text('Hide Sidebar');
+					$('.everest-forms-toggle-text').text('Show Sidebar');
 				}
 			}
 			$(document).on('change', '#everest-forms-enable-premium-sidebar', handlePremiumSidebar);
@@ -483,36 +694,51 @@
 			},
 			success: function(response) {
 				var len = Object.keys(response.data).length;
-				if(len>0) {
-					var add_tag = '<div class = "locate-form"><span>'+everest_forms_admin_locate.form_found+'</span>';
+
+				if (len > 0) {
+					var add_tag =
+						'<div class="locate-form"><span>' +
+						everest_forms_admin_locate.form_found +
+						'</span>';
 					var i = 1;
-					$.each(response.data, function(index, value) {
-						if(i > 1) {
-							add_tag +=", ";
+
+					$.each(response.data, function (index, value) {
+						if (i > 1) {
+							add_tag += ', ';
 						}
-						let wordsArray = index.split(" ");
-						if(wordsArray.length > 4 ) {
+						let wordsArray = index.split(' ');
+						if (wordsArray.length > 4) {
 							let slicedArray = wordsArray.slice(0, 4);
-							index = slicedArray.join(" ");
-							index = index + "...";
+							index = slicedArray.join(' ') + '...';
 						}
-						add_tag+=' <a href="'+value+'" target="_blank">'+index+'</a>';
+						add_tag +=
+							' <a href="' + value + '" target="_blank">' + index + '</a>';
 						i++;
 					});
-					add_tag +="</div>";
-					if($(target_tag).find('.locate-form').length !=0) {
-						$(target_tag).find('.locate-form').remove();
-					}
-					$(target_tag).find('span:first').prepend(add_tag);
 
-				} else {
-					if($(target_tag).find('.locate-form').length !=0) {
-						$(target_tag).find('.locate-form').remove();
+					add_tag += '</div>';
+
+					if ($(target_tag).prev('.locate-form').length !== 0) {
+						$(target_tag).prev('.locate-form').remove();
 					}
-					$(target_tag).find('span:first').prepend('<div class = "locate-form"><span>'+everest_forms_admin_locate.form_found_error+'</span></div>');
+
+					// ⬇️ insert BEFORE .row-actions
+					$(target_tag).before(add_tag);
+				} else {
+					if ($(target_tag).prev('.locate-form').length !== 0) {
+						$(target_tag).prev('.locate-form').remove();
+					}
+
+					$(target_tag).before(
+						'<div class="locate-form"><span>' +
+							everest_forms_admin_locate.form_found_error +
+							'</span></div>',
+					);
 				}
+
 				$(target_tag).find('.evf-loading').remove();
 			}
+
 
 		})
 	});
@@ -619,6 +845,8 @@
 		} );
 	});
 	$('.everest-forms-generate-api-key, .everest-forms-regenerate-api-key').on('click', function(){
+		let dataId = $(this).data('id');
+
 		let data = {
 			action: "everest_forms_generate_restapi_key",
 			security: everest_forms_admin_generate_restapi_key.ajax_restapi_key_nonce,
@@ -628,7 +856,7 @@
 			type: "post",
 			data:data,
 			success:(res)=>{
-				$(document).find('#everest_forms_restapi_keys').val(res.data);
+				$(document).find('#' + dataId).val(res.data);
 			}
 		})
 	});
@@ -685,4 +913,180 @@
 
 		}
 	});
+
+	/**
+	 * Manage tags.
+	 *
+	 * @since 3.2.0
+	 */
+	$(document).on('click', '.evf-manage-tags', function(e){
+		e.preventDefault();
+		var tags = $('#filter-by-tags').val();
+
+		if(!tags || tags.length ===0) {
+			 return;
+		}
+
+		$.confirm( {
+			title: 'Delete Tags',
+			theme: 'modern',
+			type: 'red',
+			boxClass:'evf-delete-tags-popup',
+			boxWidth: '25%',
+			useBootstrap: false,
+			backgroundDismiss: true,
+			content: evf_admin_manage_tags.manage_tags_title +
+			'<br>' +
+			'<div style="color: #ff4d4f; padding-top: 20px; padding-bottom:20px">' +
+				'<i class="fa fa-exclamation-triangle" aria-hidden="true" style="margin-right: 2px;"></i>' +
+				 evf_admin_manage_tags.manage_tags_desc  +
+			'</div>',
+			buttons:{
+				confirm:{
+					text:'Delete',
+					btnClass:'btn-red',
+					action:function() {
+						$.ajax({
+							type: 'POST',
+							url: evf_admin_manage_tags.ajax_url,
+							data: {
+								action: 'everest_forms_delete_form_tags',
+								tags: tags,
+								security : evf_admin_manage_tags.ajax_manage_tags_nonce
+							},
+							success: function(res) {
+								//for log.
+							}
+						});
+
+						window.location.reload();
+					}
+
+				},
+				cancel:{
+					text:'Cancel',
+					btnClass:'btn-gray'
+				}
+			},
+			type: 'blue',
+			boxWidth: '565px',
+			boxHeight:'200px'
+		} );
+
+	});
+
+	var $tagsSelect = $('#filter-by-tags');
+	var $manageTagsBtn = $('.evf-manage-tags');
+
+	$manageTagsBtn.prop('disabled', !$tagsSelect.val() || $tagsSelect.val().length === 0);
+
+	$tagsSelect.on('change', function() {
+		$manageTagsBtn.prop('disabled', !$(this).val() || $(this).val().length === 0);
+	});
+
+	$('.form-tags-select2').each(function() {
+		var $select = $(this);
+		var placeholder = ($select.data('placeholder') || '').trim();
+
+		$select.select2({
+			placeholder: placeholder,
+			tags: true,
+			createTag: function(params) {
+				var term = (params.term || '').trim();
+
+				if (term === '') {
+					return null;
+				}
+
+				if (placeholder && term === placeholder) {
+					return null;
+				}
+
+				var exists = false;
+				$select.find('option').each(function() {
+					if ($(this).text().trim() === term || $(this).val().trim() === term) {
+						exists = true;
+						return false;
+					}
+				});
+
+				if (exists) {
+					return null;
+				}
+
+				return {
+					id: term,
+					text: term,
+					isNew: true
+				};
+			},
+			templateResult: function(data) {
+				var $result = $('<span></span>');
+				$result.text(data.text);
+
+				if (data.isNew) {
+					$result.append(' <em>(new)</em>');
+				}
+
+				return $result;
+			}
+		}).on('select2:select', function(e) {
+			if (!e.params || !e.params.data) {
+				return;
+			}
+
+			var selectedText = (e.params.data.text || '').trim();
+
+			if (placeholder && selectedText === placeholder) {
+				$select.val(null).trigger('change');
+				return;
+			}
+
+			if (e.params.data.isNew) {
+				var newValue = selectedText;
+
+				$select.find('option').filter(function() {
+					return $(this).val() === newValue && !$(this).prop('selected');
+				}).remove();
+
+				$select.find('option').filter(function() {
+					return $(this).val() === newValue && $(this).data('select2-tag');
+				}).remove();
+
+				var newOption = new Option(newValue, newValue, true, true);
+				$select.append(newOption).trigger('change');
+			}
+		});
+
+			var $searchField = $select.next('.select2').find('.select2-search__field');
+			$searchField.css('min-width', '120px');
+	});
+
+	$('.evf-bulk-form-tags-select').trigger('evf-enhanced-tags-select-init');
+
+	$(document).on('click', '.evf-update-bulk-tags', function(){
+		var container = $(this).closest('.evf-bulk-edit-forms-tags-container'),
+		 forms = $(container).find('#bulk_tag_forms').val(),
+		 tags = $(container).find('#bulk_tags').val();
+
+		if(!forms || 0 === forms.length) {
+			return
+		}
+
+		$.ajax({
+			type: 'POST',
+			url: evf_admin_manage_tags.ajax_url,
+			data: {
+				action: 'everest_forms_update_tags_in_bulk',
+				tags: tags,
+				forms:forms,
+				security : evf_admin_manage_tags.ajax_manage_tags_nonce
+			},
+			success: function(res) {
+				window.location.reload();
+			}
+		});
+
+	})
+
 })( jQuery, everest_forms_admin );

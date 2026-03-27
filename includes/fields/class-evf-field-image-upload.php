@@ -30,7 +30,6 @@ class EVF_Field_Image_Upload extends EVF_Form_Fields_Upload {
 			'basic-options'    => array(
 				'field_options' => array(
 					'label',
-					'meta',
 					'description',
 					'upload_message',
 					'limit_message',
@@ -44,6 +43,7 @@ class EVF_Field_Image_Upload extends EVF_Form_Fields_Upload {
 			),
 			'advanced-options' => array(
 				'field_options' => array(
+					'meta',
 					'label_hide',
 					'media_library',
 					'css',

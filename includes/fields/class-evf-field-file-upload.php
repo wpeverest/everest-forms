@@ -14,6 +14,23 @@ defined( 'ABSPATH' ) || exit;
 class EVF_Field_File_Upload extends EVF_Form_Fields_Upload {
 
 	/**
+	 * Field id.
+	 *
+	 * @since 3.2.1
+	 *
+	 * @var sting
+	 */
+	public $field_id;
+
+	/**
+	 * Field data.
+	 *
+	 * @since 3.2.1
+	 * @var array
+	 */
+	public $field_data;
+
+	/**
 	 * Constructor.
 	 */
 	public function __construct() {
@@ -26,7 +43,6 @@ class EVF_Field_File_Upload extends EVF_Form_Fields_Upload {
 			'basic-options'    => array(
 				'field_options' => array(
 					'label',
-					'meta',
 					'description',
 					'upload_message',
 					'limit_message',
@@ -41,6 +57,7 @@ class EVF_Field_File_Upload extends EVF_Form_Fields_Upload {
 			),
 			'advanced-options' => array(
 				'field_options' => array(
+					'meta',
 					'label_hide',
 					'media_library',
 					'css',

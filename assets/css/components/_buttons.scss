@@ -8,7 +8,7 @@ button.everest-forms-btn {
 	cursor: pointer;
 	overflow: hidden;
 	font-family: inherit;
-	padding: 10px 15px;
+	padding: 8px 15px;
 	border-radius: 3px;
 	line-height: 1.25;
 	position: relative;
@@ -26,12 +26,12 @@ button.everest-forms-btn {
 	}
 
 	&.everest-forms-btn-primary {
-		background-color: $everestforms;
+		background-color: #7545bb;
 		color: $color-white;
 
 		&:hover {
 			color: $color-white;
-			background-color: darken($everestforms, 10%);
+			background-color: #9159e3;
 		}
 	}
 

@@ -28,7 +28,7 @@ Thumbs.db
 
 
 # Build
-build/
+/build/
 everest-forms.zip
 
 # Unit tests

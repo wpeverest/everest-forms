@@ -26,7 +26,6 @@ class EVF_Field_Privacy_Policy extends EVF_Form_Fields {
 			'basic-options'    => array(
 				'field_options' => array(
 					'label',
-					'meta',
 					'description',
 					'consent_message',
 					'add_local_page',
@@ -38,6 +37,7 @@ class EVF_Field_Privacy_Policy extends EVF_Form_Fields {
 			),
 			'advanced-options' => array(
 				'field_options' => array(
+					'meta',
 					'label_hide',
 					'css',
 				),

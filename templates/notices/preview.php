@@ -58,6 +58,12 @@ if ( $messages ) :
 			),
 		),
 		'br'    => true,
+		'span' => array(
+			'class' => array(),
+			'style' => array(
+				'type' => array(),
+			),
+		),
 	);
 	foreach ( $messages as $message ) :
 		?>

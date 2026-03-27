@@ -1,11 +1,17 @@
- /**
+/**
   * Row
   **/
- .evf-row {
-	 @include create-row();
- }
+.evf-row {
+	@include create-row();
 
- /**
+	&#evf-dashboard-analytisc-body {
+		.evf-col-md-4 {
+			padding-bottom: 24px;
+		}
+	}
+}
+
+/**
   * Columns
   **/
- @include make-grid-columns();
+@include make-grid-columns();

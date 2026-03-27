@@ -40,23 +40,84 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 		 * Include the settings page classes.
 		 */
 		public static function get_settings_pages() {
-			if ( empty( self::$settings ) ) {
-				$settings = array();
 
-				include_once __DIR__ . '/settings/class-evf-settings-page.php';
+			$settings = array();
 
-				$settings[] = include 'settings/class-evf-settings-general.php';
-				$settings[] = include 'settings/class-evf-settings-recaptcha.php';
-				$settings[] = include 'settings/class-evf-settings-email.php';
-				$settings[] = include 'settings/class-evf-settings-validation.php';
-				$settings[] = include 'settings/class-evf-settings-misc.php';
-				$settings[] = include 'settings/class-evf-settings-integrations.php';
-				$settings[] = include 'settings/class-evf-settings-reporting.php';
+			include_once __DIR__ . '/settings/class-evf-settings-page.php';
 
-				self::$settings = apply_filters( 'everest_forms_get_settings_pages', $settings );
+			$settings[] = include 'settings/class-evf-settings-general.php';
+			$settings[] = include 'settings/class-evf-settings-security.php';
+			$settings[] = include 'settings/class-evf-settings-email.php';
+			$settings[] = include 'settings/class-evf-settings-integrations.php';
+			$settings[] = include 'settings/class-evf-setting-utilities.php';
+			$settings[] = include 'settings/class-evf-settings-advanced.php';
+
+			// Store settings pages before and after filter so reorder_settings_tabs
+			// can reference them to check has_real_sections().
+			self::$settings = $settings;
+
+			$settings = apply_filters( 'everest_forms_get_settings_pages', $settings );
+
+			self::$settings = $settings;
+
+			add_filter( 'everest_forms_settings_tabs_array', array( __CLASS__, 'reorder_settings_tabs' ), 9999 );
+
+			return $settings;
+		}
+
+		/**
+		 * Reorder settings tabs and hide tabs with no real content.
+		 *
+		 * Removes the Utilities tab entirely when the only available sections
+		 * are upsell placeholders (i.e. Pro is active but no utility addons
+		 * are installed).
+		 *
+		 * @param array $tabs Registered settings tabs.
+		 * @return array
+		 */
+		public static function reorder_settings_tabs( $tabs ) {
+
+			// Hide Utilities tab if it has no real (non-upsell) sections.
+			if ( isset( $tabs['utilities'] ) ) {
+				$utilities_page = null;
+
+				foreach ( self::$settings as $page ) {
+					if ( isset( $page->id ) && 'utilities' === $page->id ) {
+						$utilities_page = $page;
+						break;
+					}
+				}
+
+				if ( $utilities_page && method_exists( $utilities_page, 'has_real_sections' ) ) {
+					if ( ! $utilities_page->has_real_sections() ) {
+						unset( $tabs['utilities'] );
+					}
+				}
 			}
 
-			return self::$settings;
+			// Keep Advanced and License always at the end.
+			$advanced = null;
+			$license  = null;
+
+			if ( isset( $tabs['advanced'] ) ) {
+				$advanced = $tabs['advanced'];
+				unset( $tabs['advanced'] );
+			}
+
+			if ( isset( $tabs['license'] ) ) {
+				$license = $tabs['license'];
+				unset( $tabs['license'] );
+			}
+
+			if ( null !== $advanced ) {
+				$tabs['advanced'] = $advanced;
+			}
+
+			if ( null !== $license ) {
+				$tabs['license'] = $license;
+			}
+
+			return $tabs;
 		}
 
 		/**
@@ -262,15 +323,8 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 							echo '<div class="everest-forms-options-header ' . esc_attr( $class_for_title ) . '">
 							<div class="everest-forms-options-header--top">';
 
-							// For now icon is ignored.
 							if ( isset( $value['image_name'] ) && ! empty( $value['image_name'] ) ) {
-
-								/**
-								 * Icon for Settings tab with different icon.
-								 *
-								 * @since 1.7.9
-								 */
-
+								// Icon for Settings tab with different icon.
 								// echo '<span class="evf-forms-options-header-header--top-icon">' . evf_file_get_contents( '/assets/images/settings-icons/' . $value['image_name'] . '.svg' ) . '</span>';
 							} else {
 								foreach ( $tabs_array as $icon_key => $icon_value ) {
@@ -390,7 +444,8 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 						wp_enqueue_media();
 						wp_enqueue_script( 'evf-file-uploader' );
 						break;
-							// Color picker.
+
+					// Color picker.
 					case 'color':
 						$option_value = $value['value'];
 
@@ -418,7 +473,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 						<?php
 						break;
 
-							// Textarea.
+					// Textarea.
 					case 'textarea':
 						$option_value = $value['value'];
 
@@ -446,7 +501,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 						<?php
 						break;
 
-							// timyMCE.
+					// TinyMCE.
 					case 'tinymce':
 						$option_value = $value['value'];
 						?>
@@ -478,7 +533,8 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 
 						<?php
 						break;
-							// Select boxes.
+
+					// Select boxes.
 					case 'select':
 					case 'multiselect':
 						$option_value = $value['value'];
@@ -525,7 +581,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 						<?php
 						break;
 
-							// Radio inputs.
+					// Radio inputs.
 					case 'radio':
 						$option_value = $value['value'];
 
@@ -564,7 +620,8 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 </div>
 						<?php
 						break;
-							// Toggle input.
+
+					// Toggle input.
 					case 'toggle':
 						$option_value = $value['value'];
 
@@ -590,6 +647,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 
 						<?php
 						break;
+
 					// Radio image inputs.
 					case 'radio-image':
 						$option_value = $value['value'];
@@ -641,7 +699,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 							<?php
 						break;
 
-							// Checkbox input.
+					// Checkbox input.
 					case 'checkbox':
 						$option_value     = $value['value'];
 						$visibility_class = array();
@@ -690,7 +748,8 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 					<input name="<?php echo esc_attr( $value['id'] ); ?>" id="<?php echo esc_attr( $value['id'] ); ?>"
 						type="checkbox"
 						class="<?php echo esc_attr( isset( $value['class'] ) ? $value['class'] : '' ); ?>" value="1"
-						<?php checked( $option_value, 'yes' ); ?> <?php
+						<?php checked( $option_value, 'yes' ); ?>
+						<?php
 						if ( ! empty( $value['custom_attributes'] ) && is_array( $value['custom_attributes'] ) ) {
 							foreach ( $value['custom_attributes'] as $attribute => $attribute_value ) {
 								echo esc_attr( $attribute ) . '="' . esc_attr( $attribute_value ) . '"';
@@ -715,7 +774,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 						}
 						break;
 
-							// Single page selects.
+					// Single page selects.
 					case 'single_select_page':
 						$args = array(
 							'name'             => $value['id'],
@@ -745,7 +804,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 						<?php
 						break;
 
-							// Days/months/years selector.
+					// Days/months/years selector.
 					case 'relative_date_selector':
 						$periods      = array(
 							'days'   => __( 'Day(s)', 'everest-forms' ),
@@ -783,7 +842,8 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 </div>
 						<?php
 						break;
-							// For anchor tag.
+
+					// For anchor tag.
 					case 'link':
 						?>
 <div class="everest-forms-global-settings">
@@ -818,6 +878,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 </div>
 						<?php
 						break;
+
 					case 'input_test_button':
 						$option_value     = $value['value'];
 						$visibility_class = array();
@@ -877,33 +938,39 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 </div>
 						<?php
 						break;
+
 					case 'restapi_key':
-						$key = $value['value'];
+						$key                   = $value['value'];
+						$key                   = $value['value'];
+						$restapi_enabled       = get_option( 'everest_forms_enable_restapi', 'no' );
+						$restapi_wrapper_style = ( 'yes' === $restapi_enabled ) ? '' : 'display:none;';
 
 						?>
-<div class="everest-forms-global-settings evf-restapi-key-wrapper">
-	<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?>
-						<?php echo wp_kses_post( $tooltip_html ); ?></label>
-	<div class="everest-forms-global-settings--field forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>"
-		style="display:flex; gap:2px">
-						<?php echo wp_kses_post( $description ); ?>
-		<input type="text" style="" id="<?php echo esc_attr( $value['id'] ); ?>"
-			name="<?php echo esc_attr( $value['id'] ); ?>" style="<?php echo esc_attr( $value['css'] ); ?> "
-			class="<?php echo esc_attr( $value['class'] ); ?> help_tip tooltipstered"
-			value="<?php echo esc_attr( $key ); ?>" data-tip="Copy ApiKey" data-copied="Copied!" readonly />
-		<div>
-						<?php
-						if ( '' === $key ) {
-							echo '<button type="button" class="everest-forms-btn everest-forms-btn-primary  everest-forms-generate-api-key">generate</button>';
-						} else {
-							echo '<button type="button" class="everest-forms-btn everest-forms-btn-primary  everest-forms-generate-api-key">regenerate</button>';
-						}
-						?>
-		</div>
-	</div>
-</div>
+							<div class="everest-forms-global-settings evf-restapi-key-wrapper" style="<?php echo esc_attr( $restapi_wrapper_style ); ?>">
+							<label for="<?php echo esc_attr( $value['id'] ); ?>"><?php echo esc_html( $value['title'] ); ?>
+												<?php echo wp_kses_post( $tooltip_html ); ?></label>
+							<div class="everest-forms-global-settings--field forminp-<?php echo esc_attr( sanitize_title( $value['type'] ) ); ?>"
+								style="display:flex; gap:2px">
+												<?php echo wp_kses_post( $description ); ?>
+								<input type="text" style="" id="<?php echo esc_attr( $value['id'] ); ?>"
+									name="<?php echo esc_attr( $value['id'] ); ?>" style="<?php echo esc_attr( $value['css'] ); ?> "
+									class="<?php echo esc_attr( $value['class'] ); ?> help_tip tooltipstered"
+									value="<?php echo esc_attr( $key ); ?>" data-tip="Copy ApiKey" data-copied="Copied!" readonly />
+								<div>
+												<?php
+												$unique_id = isset( $value['id'] ) ? $value['id'] : '';
+												if ( '' === $key ) {
+													echo '<button type="button" id="' . $unique_id . '" data-id="' . $unique_id . '" class="everest-forms-btn everest-forms-btn-primary  everest-forms-generate-api-key">generate</button>';
+												} else {
+													echo '<button type="button" id="' . $unique_id . '" data-id="' . $unique_id . '" class="everest-forms-btn everest-forms-btn-primary  everest-forms-generate-api-key ' . $unique_id . '">regenerate</button>';
+												}
+												?>
+								</div>
+							</div>
+						</div>
 						<?php
 						break;
+
 					case 'display_div':
 						?>
 <div class="everest-forms-global-settings">
@@ -918,7 +985,98 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 </div>
 						<?php
 						break;
-					// Default: run an action.
+
+					case 'accordion':
+						if ( ! isset( $value['items'] ) || ! is_array( $value['items'] ) ) {
+							break;
+						}
+						?>
+	<div class="everest-forms-accordion-wrapper">
+						<?php foreach ( $value['items'] as $index => $item ) : ?>
+							<?php
+							$is_connected = false;
+							if ( isset( $item['is_enabled'] ) ) {
+								$is_connected = $item['is_enabled'];
+							} elseif ( isset( $item['connection_check'] ) ) {
+								$connection_check = $item['connection_check'];
+
+								// Handle grouped checks (test OR live credentials).
+								if ( isset( $connection_check['groups'] ) && is_array( $connection_check['groups'] ) ) {
+									$mode         = isset( $connection_check['mode'] ) ? $connection_check['mode'] : 'any_group';
+									$is_connected = false;
+
+									foreach ( $connection_check['groups'] as $group_name => $group_fields ) {
+										$group_complete = true;
+										foreach ( $group_fields as $field_id ) {
+											$field_value = get_option( $field_id, '' );
+											if ( empty( $field_value ) ) {
+												$group_complete = false;
+												break;
+											}
+										}
+
+										if ( $group_complete ) {
+											$is_connected = true;
+											if ( 'any_group' === $mode ) {
+												break;
+											}
+										}
+									}
+								} elseif ( is_array( $connection_check ) ) {
+									$is_connected = true;
+									foreach ( $connection_check as $field_id ) {
+										$field_value = get_option( $field_id, '' );
+										if ( empty( $field_value ) ) {
+											$is_connected = false;
+											break;
+										}
+									}
+								}
+							}
+
+							$item_classes = array( 'everest-forms-accordion-item' );
+							if ( $is_connected ) {
+								$item_classes[] = 'is-connected';
+							}
+							?>
+			<div class="<?php echo esc_attr( implode( ' ', $item_classes ) ); ?>" data-accordion-index="<?php echo esc_attr( $index ); ?>">
+
+				<div class="everest-forms-accordion-header">
+					<div class="everest-forms-accordion-status">
+						<span class="toggle-switch-outer <?php echo $is_connected ? 'connected' : 'disconnected'; ?>"></span>
+					</div>
+
+							<?php if ( isset( $item['icon'] ) ) : ?>
+						<span class="everest-forms-accordion-icon">
+							<img src="<?php echo esc_url( $item['icon'] ); ?>" alt="<?php echo esc_attr( $item['title'] ); ?>">
+						</span>
+					<?php endif; ?>
+
+					<h3 class="everest-forms-accordion-title">
+							<?php echo esc_html( $item['title'] ); ?>
+					</h3>
+
+					<span class="everest-forms-accordion-toggle">
+						<svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+							<path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+						</svg>
+					</span>
+				</div>
+				<div class="everest-forms-accordion-content">
+					<div class="everest-forms-accordion-content-inner">
+							<?php
+							if ( isset( $item['fields'] ) && is_array( $item['fields'] ) ) {
+								self::output_fields( $item['fields'] );
+							}
+							?>
+					</div>
+				</div>
+			</div>
+		<?php endforeach; ?>
+	</div>
+						<?php
+						break;
+
 					default:
 						do_action( 'everest_forms_admin_field_' . $value['type'], $value );
 						break;
@@ -926,14 +1084,14 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 			}
 		}
 
-			/**
-			 * Helper function to get the formatted description and tip HTML for a
-			 * given form field. Plugins can call this when implementing their own custom
-			 * settings types.
-			 *
-			 * @param  array $value The form field value array.
-			 * @return array The description and tip as a 2 element array.
-			 */
+		/**
+		 * Helper function to get the formatted description and tip HTML for a
+		 * given form field. Plugins can call this when implementing their own custom
+		 * settings types.
+		 *
+		 * @param  array $value The form field value array.
+		 * @return array The description and tip as a 2 element array.
+		 */
 		public static function get_field_description( $value ) {
 			$description  = '';
 			$tooltip_html = '';
@@ -967,15 +1125,15 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 			);
 		}
 
-			/**
-			 * Save admin fields.
-			 *
-			 * Loops though the everest-forms options array and outputs each field.
-			 *
-			 * @param array $options Options array to output.
-			 * @param array $data    Optional. Data to use for saving. Defaults to $_POST.
-			 * @return bool
-			 */
+		/**
+		 * Save admin fields.
+		 *
+		 * Loops though the everest-forms options array and outputs each field.
+		 *
+		 * @param array $options Options array to output.
+		 * @param array $data    Optional. Data to use for saving. Defaults to $_POST.
+		 * @return bool
+		 */
 		public static function save_fields( $options, $data = null ) {
 			if ( is_null( $data ) ) {
 				$data = $_POST; // phpcs:ignore WordPress.Security.NonceVerification
@@ -984,12 +1142,22 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 				return false;
 			}
 
-			// Options to update will be stored here and saved later.
 			$update_options   = array();
 			$autoload_options = array();
 
-			// Loop options and get values to save.
 			foreach ( $options as $option ) {
+
+				if ( isset( $option['type'] ) && 'accordion' === $option['type'] ) {
+					if ( isset( $option['items'] ) && is_array( $option['items'] ) ) {
+						foreach ( $option['items'] as $item ) {
+							if ( isset( $item['fields'] ) && is_array( $item['fields'] ) ) {
+								self::save_fields( $item['fields'], $data );
+							}
+						}
+					}
+					continue;
+				}
+
 				if ( ! isset( $option['id'] ) || ! isset( $option['type'] ) || ( isset( $option['is_option'] ) && false === $option['is_option'] ) ) {
 					continue;
 				}
@@ -1029,7 +1197,8 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 						break;
 					default:
 						if ( is_string( $raw_value ) ) {
-							$value = evf_clean( html_entity_decode( $raw_value ) );
+							$decoded_value = html_entity_decode( html_entity_decode( $raw_value ) );
+							$value         = wp_kses_post( $decoded_value );
 						} else {
 							$value = evf_clean( $raw_value );
 						}

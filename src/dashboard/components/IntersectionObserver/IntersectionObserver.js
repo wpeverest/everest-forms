@@ -5,6 +5,7 @@ import React, { useEffect, useRef, useState } from "react";
 import {
 	HStack,
 	IconButton,
+	Link,
 	Menu,
 	MenuButton,
 	MenuItem,
@@ -17,6 +18,7 @@ import PropTypes from "prop-types";
  *  Internal Dependencies
  */
 import { DotsHorizontal } from "../Icon/Icon";
+import { convertRoute, isExternalRoute } from "../../Constants";
 
 const IntersectionStyles = {
 	visible: {
@@ -52,6 +54,14 @@ const IntersectObserver = ({ children, routes }) => {
 	const selectedHiddenRoute = hiddenRoutes.find(
 		(h) => h.route === location.pathname
 	);
+
+	const { pageType, adminURL } =
+		typeof _EVF_DASHBOARD_ !== "undefined" && _EVF_DASHBOARD_;
+	const isSettingsPage = pageType === "settings";
+	const isEntriesPage = pageType === "entries";
+    const isFormsPage = pageType === "forms";
+	const isAnalyticsPage = pageType === "analytics";
+	const isNonDashboardPage = isSettingsPage || isEntriesPage || isAnalyticsPage || isFormsPage;
 
 	useEffect(() => {
 		if (!ref.current) return;
@@ -113,57 +123,6 @@ const IntersectObserver = ({ children, routes }) => {
 				});
 			})}
 
-			{shouldShowMenu && (
-				<Menu>
-					<MenuButton
-						as={IconButton}
-						aria-label="Options"
-						sx={IntersectionStyles.overflowStyle}
-						style={{
-							background: "#FFFFFF",
-							boxShadow: "none",
-							marginLeft: "0px",
-						}}
-						color={
-							!!selectedHiddenRoute ? "primary.500" : "#383838"
-						}
-						visibility={"visible"}
-						icon={<DotsHorizontal w="24px" h="24px" />}
-					></MenuButton>
-					<MenuList display="flex" flexDirection="column">
-						{hiddenRoutes.map(({ label, route }) => {
-							return (
-								<MenuItem
-									key={route}
-									as={NavLink}
-									to={route}
-									marginBottom={"0px"}
-									data-target={route}
-									fontSize="sm"
-									fontWeight="semibold"
-									lineHeight="150%"
-									color="#383838"
-									_hover={{
-										color: "primary.500",
-									}}
-									_focus={{
-										boxShadow: "none",
-									}}
-									_activeLink={{
-										color: "primary.500",
-									}}
-									display="inline-flex"
-									alignItems="center"
-									px="2"
-									py="10px"
-								>
-									{label}
-								</MenuItem>
-							);
-						})}
-					</MenuList>
-				</Menu>
-			)}
 		</HStack>
 	);
 };

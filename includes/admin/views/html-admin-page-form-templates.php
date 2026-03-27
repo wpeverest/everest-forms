@@ -18,7 +18,7 @@ defined( 'ABSPATH' ) || exit;
 	<div class="everest-forms-setup everest-forms-setup--form everest-forms-form-template-wrapper" >
 		<div class="everest-forms-setup-header">
 			<div class="everest-forms-logo">
-				<svg xmlns="http://www.w3.org/2000/svg" height="32" width="32" viewBox="0 0 24 24"><path fill="#7e3bd0" d="M21.23,10H17.79L16.62,8h3.46ZM17.77,4l1.15,2H15.48L14.31,4Zm-15,16L12,4l5.77,10H10.85L12,12h2.31L12,8,6.23,18H20.08l1.16,2Z"/></svg>
+				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 40 40"><path fill="#5317aa" d="M30.517 6.188h-6.69l2.05 3.453h6.69zm4.209 6.906h-6.69l2.157 3.453h6.69zm-.108 17.266H9.15l10.683-17.482L24.258 20h-4.424l-2.05 3.453h12.625L19.834 6.403 3 33.813h33.776z"/></svg>
 			</div>
 			<h4><?php esc_html_e( 'Add New Form', 'everest-forms' ); ?></h4>
 			<?php if ( apply_filters( 'everest_forms_refresh_templates', true ) ) : ?>

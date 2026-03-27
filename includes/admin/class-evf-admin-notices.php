@@ -302,7 +302,6 @@ class EVF_Admin_Notices {
 		}
 
 		return $status;
-
 	}
 
 	/**

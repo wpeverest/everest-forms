@@ -1,0 +1,220 @@
+.EVF-Free-Analytics {
+	background-color: #fff;
+	font-family: inherit;
+	padding: 24px 32px 16px;
+
+	&__Filters {
+		display: flex;
+		align-items: center;
+		gap: 16px;
+		flex-wrap: wrap;
+
+		> :first-child {
+			margin-left: -12px;
+		}
+	}
+
+	&__FilterTrigger {
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		padding: 10px 14px;
+		min-height: 42px;
+		font-size: 14px;
+		font-weight: 500;
+		line-height: 1.2rem;
+		border: 0;
+		box-shadow: none;
+		background-color: transparent;
+		color: #111827;
+		border-radius: 4px;
+		cursor: default;
+		user-select: none;
+		white-space: nowrap;
+		outline: none;
+		font-family: inherit;
+
+		svg {
+			flex-shrink: 0;
+			pointer-events: none;
+			width: 20px;
+			height: 20px;
+		}
+	}
+
+	&__Metrics {
+		display: flex;
+		flex-wrap: wrap;
+		width: 100%;
+		margin-top: 16px;
+	}
+
+	&__Metric {
+		flex: 1 1 0;
+		min-width: 0;
+		padding: 16px 24px;
+		border-bottom: 1px solid #e5e7eb;
+		border-right: 1px solid #e5e7eb;
+
+		&:first-child {
+			padding-left: 0;
+		}
+
+		&:last-child {
+			border-right: none;
+		}
+	}
+
+	&__MetricHeader {
+		display: flex;
+		align-items: center;
+		margin-bottom: 8px;
+		margin-left: -12px;
+	}
+
+	&__MetricLabel {
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		padding: 10px 14px;
+		min-height: 42px;
+		font-size: 14px;
+		font-weight: 500;
+		line-height: 1.2rem;
+		border: 0;
+		box-shadow: none;
+		background-color: transparent;
+		color: #111827;
+		border-radius: 4px;
+		cursor: default;
+		user-select: none;
+		white-space: nowrap;
+		outline: none;
+		font-family: inherit;
+
+		svg {
+			flex-shrink: 0;
+			pointer-events: none;
+			width: 20px;
+			height: 20px;
+		}
+	}
+
+	&__MetricValue {
+		font-size: 24px;
+		font-weight: 600;
+		color: #111827;
+		line-height: 1.5;
+	}
+
+	&__MetricDelta {
+		display: inline-flex;
+		align-items: center;
+		gap: 2px;
+		font-weight: 500;
+		font-size: 14px;
+		margin-left: 8px;
+		color: #16a34a;
+	}
+
+	&__MetricComparison {
+		font-size: 14px;
+		font-weight: 400;
+		color: #6b7280;
+		line-height: 1.5;
+		margin-top: 4px;
+	}
+
+	&__Preview {
+		position: relative;
+		overflow: hidden;
+		margin-top: 20px;
+	}
+
+	&__PreviewImage {
+		display: block;
+		width: 100%;
+		filter: blur(2px);
+		transform: scale(1.02);
+		transform-origin: top left;
+		user-select: none;
+		pointer-events: none;
+	}
+
+	&__Overlay {
+		position: absolute;
+		top: 30%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		background-color: #fff;
+		border-radius: 16px;
+		box-shadow: 0 8px 48px rgba(0, 0, 0, 0.18);
+		padding: 56px 48px;
+		text-align: center;
+		max-width: 520px;
+		width: 90%;
+		z-index: 10;
+	}
+
+	&__OverlayTitle {
+		font-size: 26px;
+		font-weight: 700;
+		color: #111827;
+		margin: 0 0 14px;
+		line-height: 1.3;
+	}
+
+	&__OverlayText {
+		font-size: 15px;
+		color: #6b7280;
+		line-height: 1.7;
+		margin: 0 0 32px;
+	}
+
+	&__UpgradeBtn {
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		padding: 12px 24px;
+		font-size: 16px;
+		font-weight: 500;
+		color: #fff;
+		background-color: #7545bb;
+		border: none;
+		border-radius: 4px;
+		text-decoration: none;
+		cursor: pointer;
+		transition: opacity 0.2s;
+		font-family: inherit;
+
+		svg {
+			flex-shrink: 0;
+			pointer-events: none;
+			width: 16px;
+			height: 16px;
+		}
+
+		&:hover,
+		&:focus {
+			opacity: 0.88;
+			color: #fff;
+			text-decoration: none;
+		}
+
+		&:active {
+			opacity: 0.8;
+		}
+	}
+}
+
+// ── Analytics page z-index fixes ──────────────────────────────────────────────
+// Lower the React header stacking context so select dropdowns render above it.
+.wp-admin.everest-forms_page_evf-analytics {
+	[data-radix-popper-content-wrapper] {
+		z-index: 2147483647 !important;
+	}
+
+	#evf-react-header-root > * {
+		z-index: 1 !important;
+	}
+}

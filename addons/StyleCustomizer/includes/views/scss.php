@@ -35,6 +35,13 @@ if ( isset( $_REQUEST['customized'] ) ) {
 	}
 }
 
+if ( null === $palette_key && ! isset( $_REQUEST['customized'] ) && ! isset( $_REQUEST['action'] ) ) {
+	if ( isset( $styles[ $form_id ]['color_palette'] ) && is_array( $styles[ $form_id ]['color_palette'] ) ) {
+		$colorPaletteKeys = array_keys( $styles[ $form_id ]['color_palette'] );
+		$colorPaletteKey  = $colorPaletteKeys[0];
+		$palette_key      = $colorPaletteKey;
+	}
+}
 
 
 if ( $form_id && $palette_key && isset( $current_color_palette[ "everest_forms_styles[$form_id][color_palette][$palette_key]" ] ) ) {
@@ -44,10 +51,9 @@ if ( $form_id && $palette_key && isset( $current_color_palette[ "everest_forms_s
 	);
 }
 
-
 if ( isset( $styles[ $form_id ] ) && is_array( $styles[ $form_id ] ) ) {
 	$styles[ $form_id ] = array_map(
-		function( $styles ) {
+		function ( $styles ) {
 			if ( is_array( $styles ) ) {
 				return array_filter( $styles );
 			} else {
@@ -90,22 +96,32 @@ if ( ! empty( $backward_compatibility_color_key ) ) {
 		$colorPaletteKey  = $colorPaletteKeys[0];
 		$palette_key      = $colorPaletteKey;
 	} else {
-		$palette_key                                     = 'color_13';
-		$values[ $form_id ]['color_palette']['color_13'] = array(
-			'form_background'   => '',
-			'field_background'  => '',
-			'field_label'       => '',
-			'field_sublabel'    => '',
-			'button_text'       => '',
-			'button_background' => '',
-		);
+		$palette_key = 'color_13';
+		if ( function_exists( 'get_theme_mod' ) ) {
+			$values['color_palette']['color_13'] = array(
+				'form_background'   => '#' . get_theme_mod( 'background_color', 'ffffff' ),
+				'field_background'  => '#' . get_theme_mod( 'background_color', 'ffffff' ),
+				'field_label'       => get_theme_mod( 'text_color', '#333333' ),
+				'field_sublabel'    => get_theme_mod( 'text_color', '#666666' ),
+				'button_text'       => get_theme_mod( 'button_text_color', '#ffffff' ),
+				'button_background' => get_theme_mod( 'primary_color', '#0073aa' ),
+			);
+		} else {
+			$values['color_palette']['color_13'] = array(
+				'form_background'   => '#ffffff',
+				'field_background'  => '#ffffff',
+				'field_label'       => '#333333',
+				'field_sublabel'    => '#666666',
+				'button_text'       => '#ffffff',
+				'button_background' => '#0073aa',
+			);
+		}
 	}
 }
 
-if ( isset( $_COOKIE['color_palette_save'] ) ) {
+if ( null === $palette_key && isset( $_COOKIE['color_palette_save'] ) ) {
 	$palette_key = $_COOKIE['color_palette_save'];
 }
-
 
 // Form data.
 $form_data = EVF()->form->get( $form_id, array( 'content_only' => true ) );
@@ -201,7 +217,6 @@ $success_message_background_color: <?php echo evf_clean( $values['success_messag
 $success_message_border_type: <?php echo evf_clean( $values['success_message']['border_type'] ); ?>;
 $success_message_border_color: <?php echo evf_clean( $values['success_message']['border_color'] ); ?>;
 
-// Error Message styles variables.
 $error_message_font_size: <?php echo evf_clean( $values['error_message']['font_size'] ); ?>;
 $error_message_text_alignment: <?php echo evf_clean( $values['error_message']['text_alignment'] ); ?>;
 $error_message_font_color: <?php echo evf_clean( $values['error_message']['font_color'] ); ?>;
@@ -260,16 +275,16 @@ $validation_message_border_color: <?php echo evf_clean( $values['validation_mess
 				<?php if ( '' !== $values['form_container']['opacity'] ) : ?>
 					opacity: <?php echo evf_clean( $values['form_container']['opacity'] ); ?>;
 				<?php endif; ?>
-				<?php if ( isset( $values['form_container']['background_position_x'], $values['form_container']['background_position_y'] ) ) : ?>
-					<?php printf( 'background-position: %s %s;', evf_clean( $values['form_container']['background_position_x'] ), evf_clean( $values['form_container']['background_position_y'] ) ); ?>
+				<?php if ( ! empty( $values['form_container']['background_position_x'] ) && ! empty( $values['form_container']['background_position_y'] ) ) : ?>
+					<?php printf( 'background-position: %s %s;', empty( evf_clean( $values['form_container']['background_position_x'] ) ) ? '' : evf_clean( $values['form_container']['background_position_x'] ), empty( evf_clean( $values['form_container']['background_position_y'] ) ) ? '' : evf_clean( $values['form_container']['background_position_y'] ) ); ?>
 				<?php endif; ?>
 				<?php foreach ( array( 'background_repeat', 'background_attachment' ) as $background_prop ) : ?>
-					<?php if ( '' !== $values['form_container'][ $background_prop ] ) : ?>
+					<?php if ( ! empty( $values['form_container'][ $background_prop ] ) ) : ?>
 						<?php printf( '%s: %s;', str_replace( '_', '-', $background_prop ), evf_clean( $values['form_container'][ $background_prop ] ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 					<?php endif; ?>
 				<?php endforeach; ?>
 			<?php endif; ?>
-			<?php if ( isset( $values['form_container']['border_type'] ) ) : ?>
+			<?php if ( ! empty( $values['form_container']['border_type'] ) ) : ?>
 				border-style: $container_border_type;
 				<?php if ( 'none' !== $values['form_container']['border_type'] ) : ?>
 					border-color: $container__border_color;
@@ -596,7 +611,7 @@ $validation_message_border_color: <?php echo evf_clean( $values['validation_mess
 
 			}
 
-		.evf-field-description {
+			.evf-field-description {
 				color: $field_description_font_color;
 				font-size: $field_description_font_size + 'px';
 				<?php foreach ( $font_styles as $prop => $value ) : ?>
@@ -615,31 +630,29 @@ $validation_message_border_color: <?php echo evf_clean( $values['validation_mess
 				<?php endforeach; ?>
 			}
 
-
-		}
-
-		.evf-field-title h3 {
-				<?php if ( '' !== $values['font']['font_family'] ) : ?>
-					font-family: <?php echo evf_clean( $values['font']['font_family'] ); ?>;
-				<?php endif; ?>
-				font-size: $section_title_font_size + 'px';
-				color: $section_title_font_color;
-				text-align: $section_title_alignment;
-				line-height: $section_title_line_height;
-				<?php foreach ( $font_styles as $prop => $value ) : ?>
-					<?php if ( 'yes' === evf_bool_to_string( $values['typography']['section_title_font_style'][ $value ] ) ) : ?>
-						<?php printf( '%s: %s;', $prop, evf_clean( $value ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+			.evf-field-title h3 {
+					<?php if ( '' !== $values['font']['font_family'] ) : ?>
+						font-family: <?php echo evf_clean( $values['font']['font_family'] ); ?>;
 					<?php endif; ?>
-				<?php endforeach; ?>
-				<?php foreach ( array( 'section_title_margin', 'section_title_padding' ) as $separator_type ) : ?>
-					<?php foreach ( $values['typography'][ $separator_type ] as $device => $value ) : ?>
-						<?php if ( in_array( $device, array( 'desktop', 'tablet', 'mobille' ), true ) ) : ?>
-							<?php printf( '@include responsive-media(%s, %s, %s);', preg_replace( '/.*_/', '', $separator_type ), $device, evf_sanitize_dimension_unit( $value, 'px' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+					font-size: $section_title_font_size + 'px';
+					color: $section_title_font_color;
+					text-align: $section_title_alignment;
+					line-height: $section_title_line_height;
+					<?php foreach ( $font_styles as $prop => $value ) : ?>
+						<?php if ( 'yes' === evf_bool_to_string( $values['typography']['section_title_font_style'][ $value ] ) ) : ?>
+							<?php printf( '%s: %s;', $prop, evf_clean( $value ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 						<?php endif; ?>
 					<?php endforeach; ?>
-				<?php endforeach; ?>
-		}
+					<?php foreach ( array( 'section_title_margin', 'section_title_padding' ) as $separator_type ) : ?>
+						<?php foreach ( $values['typography'][ $separator_type ] as $device => $value ) : ?>
+							<?php if ( in_array( $device, array( 'desktop', 'tablet', 'mobille' ), true ) ) : ?>
+								<?php printf( '@include responsive-media(%s, %s, %s);', preg_replace( '/.*_/', '', $separator_type ), $device, evf_sanitize_dimension_unit( $value, 'px' ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+							<?php endif; ?>
+						<?php endforeach; ?>
+					<?php endforeach; ?>
+			}
 
+		}
 
 		.evf-submit-container,
 		.everest-forms-multi-part-actions {

@@ -1,0 +1,194 @@
+.evf-clean-talk-label-1{
+	font-size: 16px;
+	font-weight: 500;
+}
+.evf-clean-talk-label-2{
+	font-size: 13px;
+	font-weight: 400
+}
+
+#evf-clean-talk-section-container{
+	.evf-clean-talk-radio{
+		display:flex;
+		margin: 12px 0;
+		gap:24px;
+		align-items: center
+	}
+}
+
+.everest-forms-border-container{
+	.everest-forms-clean-talk-setting-container{
+		display: flex;
+		justify-content: space-between;
+		height: 39px;
+		border-bottom: 1px solid #E9E9E9;
+		margin-bottom: 24px;
+
+		.everest-forms-border-container-title{
+			border-bottom: 0px !important;
+		}
+
+		.everest-forms-update-clean-talk-key-button{
+			background-color: #ffff;
+			color: #2271B1;
+			border: none;
+			cursor: pointer;
+			margin-right: 12px;
+			font-size: 13px;
+			font-style: normal;
+			font-weight: 400;
+			line-height: 150%;
+			text-decoration: underline !important;
+		}
+
+		.everest-forms-learn-more-link-cleantalk{
+			color: #2271B1;
+			text-align: right;
+			font-size: 13px;
+			font-style: normal;
+			font-weight: 400;
+			line-height: 150%;
+			text-decoration: underline !important;
+		}
+	}
+	.everest-forms-warning-container{
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		padding: 10px 11px;
+		border-left: 3px solid #EE9936;
+		background: #FFFAF5;
+		align-self: stretch;
+		height: 40px;
+		height: 40px;
+		margin: 20px 0;
+	}
+
+	.everest-forms-warning-text{
+		color: #383838;
+		font-size: 13px;
+		font-style: normal;
+		font-weight: 400;
+		line-height: 150%;
+	}
+
+	.everest-forms-warning-text-link{
+		color: #2271B1;
+		font-size: 13px;
+		font-style: normal;
+		font-weight: 400;
+		line-height: 150%;
+		text-decoration-line: underline !important;
+		text-decoration-style: solid;
+		text-decoration-skip-ink: none;
+		text-decoration-thickness: auto;
+		text-underline-offset: auto;
+		cursor: pointer;
+	}
+}
+
+.everest-forms-clean-talk-form-container{
+	.clean-talk-form-group{
+		margin: 24px;
+		.everest-forms-clean-talk-error-message-container{
+			padding: 10px 11px;
+			display: flex;
+			margin: 16px 0;
+		}
+		.everest-forms-clean-talk-error-message-container.evf-error-message{
+			color: #383838;
+			font-size: 13px;
+			font-style: normal;
+			font-weight: 400;
+			line-height: 150%;
+			border-left: 3px solid #F25656;
+			background: #FFF4F4;
+		}
+
+		.everest-forms-clean-talk-error-message-container.evf-success-message{
+			 color:  #383838;
+			font-size: 13px;
+			font-style: normal;
+			font-weight: 400;
+			line-height: 150%;
+			border-left: 3px solid  #4CC741;
+			background:#F5FFF4;
+		}
+
+		.everest-forms-clean-talk-message-box{
+			margin-left: 8px;
+		}
+
+		.everest-forms-clean-talk-access-key-title{
+			text-align: left;
+			margin-bottom: 12px;
+			font-size: 15px;
+			font-weight: 500;
+			line-height: 120%
+		}
+		.everest-forms-clean-talk-access-key{
+			height:38px;
+			margin: 0;
+			width: 100%;
+		}
+
+		.everest-forms-clean-talk-note{
+			text-align: left;
+			background: #f3f6fb;
+			padding: 10px;
+			border-left: 3px solid #4584FF;
+			display: flex;
+
+			svg{
+				margin-right: 8px !important;
+				margin-top: 2px !important;
+			}
+
+			p{
+				color: #383838 !important;
+				font-size: 13px !important;
+				font-style: normal !important;
+				font-weight: 400 !important;
+				line-height: 150% !important;
+			}
+		}
+	}
+}
+
+.everest-forms-clean_talk__submit {
+    margin-right: 24px !important;
+	padding: 10px 16px !important;
+	color: #FFF !important;
+	font-size: 14px !important;
+	font-style: normal !important;
+	font-weight: 400 !important;
+	line-height: 120% !important;
+	margin-bottom: 24px !important;
+	text-transform: capitalize !important;
+}
+
+
+.evf-clean-talk-message.evf-success-message{
+	color:  #383838;
+	font-size: 13px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: 150%;
+	border-left: 3px solid  #4CC741;
+	background:#F5FFF4;
+}
+
+.evf-clean-talk-message{
+	padding: 10px 11px;
+	display: flex;
+	margin: 16px 0;
+}
+.evf-clean-talk-message.evf-error-message{
+	color: #383838;
+	font-size: 13px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: 150%;
+	border-left: 3px solid #F25656;
+	background: #FFF4F4;
+}

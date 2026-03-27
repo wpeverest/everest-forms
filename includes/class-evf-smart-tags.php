@@ -241,9 +241,25 @@ class EVF_Smart_Tags {
 						}
 
 						if ( ! empty( $value ) ) {
+							$styles = array(
+								'width'      => '150px',
+								'height'     => '80px',
+								'max-width'  => '100px',
+								'max-height' => '200px',
+							);
+
+							$styles = apply_filters( 'everest_forms_export_signature_style', $styles, $fields[ $mixed_field_id[1] ] );
+
+							// Convert styles array to inline style string
+							$style_string = '';
+							foreach ( $styles as $key => $val ) {
+								$style_string .= $key . ':' . $val . ';';
+							}
+
 							$value = sprintf(
-								'<img src="%s" style="width:150px;height:80px;max-height:200px;max-width:100px;"/>',
-								$value
+								'<img src="%s" style="%s"/>',
+								esc_url( $value ),
+								esc_attr( $style_string )
 							);
 						}
 					}
@@ -294,9 +310,13 @@ class EVF_Smart_Tags {
 
 								if ( ! empty( $value ) ) {
 									$files .= sprintf(
-										'<a href="%s">%s</a> ' . "\n",
-										$files_value['value'],
-										$files_value['name']
+										apply_filters(
+											'everest_forms_smart_tags_file_upload',
+											'<a href="%s">%s</a>' . "\n",
+											$files_value
+										),
+										esc_url( $files_value['value'] ),
+										esc_html( $files_value['name'] )
 									);
 								}
 							}
@@ -374,6 +394,7 @@ class EVF_Smart_Tags {
 
 					case 'user_ip_address':
 						$user_ip_add = evf_get_ip_address();
+						$user_ip_add = preg_replace( '/[\[\]]/', '', $user_ip_add );
 						$content     = str_replace( '{' . $other_tag . '}', $user_ip_add, $content );
 						break;
 
@@ -433,13 +454,16 @@ class EVF_Smart_Tags {
 						break;
 
 					case 'referrer_url':
-						$referer = ! empty( $_SERVER['HTTP_REFERER'] ) ? $_SERVER['HTTP_REFERER'] : ''; // @codingStandardsIgnoreLine
+						$referer = ! empty( $_SERVER['HTTP_REFERER'] ) ? $_SERVER['HTTP_REFERER'] : ''; //@codingStandardsIgnoreLine
+						$referer = preg_replace( '/[\[\]]/', '', $referer );
 						$content = str_replace( '{' . $other_tag . '}', sanitize_text_field( $referer ), $content );
 						break;
+
 					case 'current_date':
 						$current_date = date_i18n( get_option( 'date_format' ) );
 						$content      = str_replace( '{' . $other_tag . '}', sanitize_text_field( $current_date ), $content );
 						break;
+
 					case 'current_time':
 						$current_time = date_i18n( get_option( 'time_format' ) );
 						$content      = str_replace( '{' . $other_tag . '}', sanitize_text_field( $current_time ), $content );
@@ -540,7 +564,16 @@ class EVF_Smart_Tags {
 						break;
 					case 'user_agent':
 						$user_agent = evf_get_user_agent();
-						$content   = str_replace( '{' . $other_tag . '}', $user_agent, $content );
+						$user_agent = preg_replace( '/[\[\]]/', '', $user_agent );
+						$content    = str_replace( '{' . $other_tag . '}', $user_agent, $content );
+						break;
+
+					case 'entry_id':
+						$content = str_replace( '{' . $other_tag . '}', $entry_id, $content );
+						break;
+
+					default:
+						$content = apply_filters( 'everest_forms_custom_smart_tag', $content, $other_tag, $entry_id );
 						break;
 				}
 			}

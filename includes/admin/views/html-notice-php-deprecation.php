@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 
-<div class="notice notice-warning is-dismissible" id="everest-forms-php-deprecation-notice">
+<div class="notice notice-warning is-dismissible inline" id="everest-forms-php-deprecation-notice ">
 	<p>
 		<strong><?php esc_html_e( 'Warning!', 'everest-forms' ); ?></strong>
 		<?php _e( "Your website is running on an outdated version of PHP ( v$php_version ) that might not be supported by <strong>Everest Forms</strong> plugin in future updates.", 'everest-forms' ); //phpcs:ignore ?>

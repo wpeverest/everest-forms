@@ -4,8 +4,12 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit11b556de92789ded0f435d9d0dda273a
+class ComposerStaticInit9a2cf263d30e5ab5059048903ceb21ec
 {
+    public static $files = array (
+        '7f7d6b9566ba49ef6196f84d55ab1c22' => __DIR__ . '/..' . '/themegrill/themegrill-sdk/load.php',
+    );
+
     public static $prefixLengthsPsr4 = array (
         'S' => 
         array (
@@ -14,6 +18,7 @@ class ComposerStaticInit11b556de92789ded0f435d9d0dda273a
         'E' => 
         array (
             'EverestForms\\Traits\\' => 20,
+            'EverestForms\\Helpers\\' => 21,
             'EverestForms\\Addons\\' => 20,
         ),
         'C' => 
@@ -30,6 +35,10 @@ class ComposerStaticInit11b556de92789ded0f435d9d0dda273a
         'EverestForms\\Traits\\' => 
         array (
             0 => __DIR__ . '/../..' . '/traits',
+        ),
+        'EverestForms\\Helpers\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/includes/Helpers',
         ),
         'EverestForms\\Addons\\' => 
         array (
@@ -48,9 +57,9 @@ class ComposerStaticInit11b556de92789ded0f435d9d0dda273a
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit11b556de92789ded0f435d9d0dda273a::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit11b556de92789ded0f435d9d0dda273a::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit11b556de92789ded0f435d9d0dda273a::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit9a2cf263d30e5ab5059048903ceb21ec::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit9a2cf263d30e5ab5059048903ceb21ec::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit9a2cf263d30e5ab5059048903ceb21ec::$classMap;
 
         }, null, ClassLoader::class);
     }

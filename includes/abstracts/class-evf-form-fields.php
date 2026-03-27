@@ -252,9 +252,10 @@ abstract class EVF_Form_Fields {
 			$args['attrs']['min'] = esc_attr( $args['min'] );
 			unset( $args['min'] );
 		}
+
 		if ( ! empty( $args['max'] ) ) {
 			$args['attrs']['max'] = esc_attr( $args['max'] );
-			unset( $args['min'] );
+			unset( $args['max'] );
 		}
 		if ( ! empty( $args['required'] ) && $args['required'] ) {
 			$args['attrs']['required'] = 'required';
@@ -305,7 +306,22 @@ abstract class EVF_Form_Fields {
 					$class .= ' has-before';
 				}
 
-				$output = sprintf( '%s<input type="%s" class="widefat %s" id="everest-forms-field-option-%s-%s" name="form_fields[%s][%s]" value="%s" placeholder="%s" %s %s>', $before, $type, $class, $id, $slug, $id, $slug, esc_attr( $args['value'] ), $placeholder, $data, apply_filters( 'evf_field_readonly_attribute', ( 'meta-key' === $args['slug'] ? 'readonly' : '' ), $args ) );
+				$output = sprintf( '%s<input type="%s" class="widefat %s" id="everest-forms-field-option-%s-%s" name="form_fields[%s][%s]" value="%s" placeholder="%s" %s %s>', $before, $type, $class, $id, $slug, $id, $slug, esc_attr( $args['value'] ), $placeholder,  $data, apply_filters( 'evf_field_readonly_attribute', ( 'meta-key' === $args['slug'] ? 'readonly' : '' ), $args ) );
+
+				break;
+
+			// Number input.
+			case 'number':
+				$type        = ! empty( $args['type'] ) ? esc_attr( $args['type'] ) : 'text';
+				$placeholder = ! empty( $args['placeholder'] ) ? esc_attr( $args['placeholder'] ) : '';
+				$min         = ! empty( $args['attrs']['min'] ) ? 'min="' . esc_attr( $args['attrs']['min'] ) . '"' : '';
+				$max         = ! empty( $args['attrs']['max'] ) ? 'max="' . esc_attr( $args['attrs']['max'] ) . '"' : '';
+				$before      = ! empty( $args['before'] ) ? '<span class="before-input">' . esc_html( $args['before'] ) . '</span>' : '';
+				if ( ! empty( $before ) ) {
+					$class .= ' has-before';
+				}
+
+				$output = sprintf( '%s<input type="%s" class="widefat %s" id="everest-forms-field-option-%s-%s" name="form_fields[%s][%s]" value="%s" placeholder="%s" %s %s %s %s>', $before, $type, $class, $id, $slug, $id, $slug, esc_attr( $args['value'] ), $placeholder, $min, $max, $data, apply_filters( 'evf_field_readonly_attribute', ( 'meta-key' === $args['slug'] ? 'readonly' : '' ), $args ) );
 
 				break;
 
@@ -1205,7 +1221,7 @@ abstract class EVF_Form_Fields {
 			/*
 			 * Plan Choices.
 			 *
-			 * @since xx.xx.xx
+			 * @since 3.2.2
 			 */
 			case 'plan_choices':
 				$class      = array();
@@ -1596,9 +1612,18 @@ abstract class EVF_Form_Fields {
 				$exclude_fields = array( 'rating', 'number', 'range-slider', 'payment-quantity', 'reset' );
 
 				if ( ! in_array( $field['type'], $exclude_fields, true ) ) {
-					$output .= '<a href="#" class="evf-toggle-smart-tag-display" data-type="other"><span class="dashicons dashicons-editor-code"></span></a>';
+					$output .= '<a href="#" class="evf-toggle-smart-tag-display" data-type="all"><span class="dashicons dashicons-editor-code"></span></a>';
 					$output .= '<div class="evf-smart-tag-lists" style="display: none">';
-					$output .= '<div class="smart-tag-title other-tag-title">Others</div><ul class="evf-others"></ul></div>';
+
+					$output .= '<div class="smart-tag-title">';
+					$output .= esc_html__( 'Available Fields', 'everest-forms' );
+					$output .= '</div><ul class="evf-fields"></ul>';
+
+					$output .= '<div class="smart-tag-title other-tag-title">';
+					$output .= esc_html__( 'Others', 'everest-forms' );
+					$output .= '</div><ul class="evf-others"></ul>';
+
+					$output .= '</div>';
 				}
 
 				$output = $this->field_element(
@@ -2243,7 +2268,7 @@ abstract class EVF_Form_Fields {
 
 		switch ( $option ) {
 			case 'label':
-				$label = isset( $field['label'] ) && ! empty( $field['label'] ) ? $field['label'] : '';
+				$label = isset( $field['label'] ) && ! empty( $field['label'] ) ? $field['label'] . ( 'private-note' === $field['type'] ? ( ' (Admin Only)' ) : '' ) : '';
 				if ( $echo ) {
 					printf( '<label class="label-title %s"><span class="text">%s</span><span class="required">%s</span></label>', esc_attr( $class ), esc_html( $label ), esc_html( apply_filters( 'everest_form_get_required_type', '*', $field, $form_data ) ) );
 				} else {
@@ -2582,7 +2607,7 @@ abstract class EVF_Form_Fields {
 			$field['properties'] = $this->get_single_field_property_value( $value, 'primary', $field['properties'], $field );
 		}
 
-		$this->field_display( $field, null, $form_data );
+		$this->field_display( $field, $entry_field, $form_data );
 	}
 
 	/**
@@ -2602,7 +2627,12 @@ abstract class EVF_Form_Fields {
 			return $properties;
 		}
 
-		$get_value = wp_unslash( sanitize_text_field( $raw_value ) );
+		if ( isset( $field['type'] ) && 'signature' === $field['type'] ) {
+			$get_value = sanitize_text_field( $raw_value ); // Sanitize (but keeps slashes)
+		} else {
+			// Standard text field (unslash first, then sanitize)
+			$get_value = sanitize_text_field( wp_unslash( $raw_value ) );
+		}
 
 		if ( ! empty( $field['choices'] ) && is_array( $field['choices'] ) ) {
 			$properties = $this->get_single_field_property_value_choices( $get_value, $properties, $field );
@@ -2695,15 +2725,22 @@ abstract class EVF_Form_Fields {
 	 * @param array  $field Field data and settings.
 	 */
 	public function field_display_error( $key, $field ) {
-		// Need an error.
-		if ( empty( $field['properties']['error']['value'][ $key ] ) ) {
+		$error_value = isset( $field['properties']['error']['value'][ $key ] )
+			? $field['properties']['error']['value'][ $key ]
+			: '';
+
+		$input_id = isset( $field['properties']['inputs'][ $key ]['id'] )
+			? $field['properties']['inputs'][ $key ]['id']
+			: '';
+
+		if ( '' === $error_value || '' === $input_id ) {
 			return;
 		}
 
 		printf(
 			'<label class="everest-forms-error evf-error" for="%s">%s</label>',
-			esc_attr( $field['properties']['inputs'][ $key ]['id'] ),
-			esc_html( $field['properties']['error']['value'][ $key ] )
+			esc_attr( $input_id ),
+			esc_html( $error_value )
 		);
 	}
 
@@ -2843,7 +2880,7 @@ abstract class EVF_Form_Fields {
 					$mode            = isset( $form_data['form_fields'][ $field_id ]['date_mode'] ) ? $form_data['form_fields'][ $field_id ]['date_mode'] : '';
 					$time_interval   = isset( $form_data['form_fields'][ $field_id ]['time_interval'] ) ? $form_data['form_fields'][ $field_id ]['time_interval'] : '';
 					$datetime_arr    = parse_datetime_values( $field_submit, $datetime_format, $date_format, $mode, $time_interval );
-					$booked_slot     = maybe_unserialize( get_option( 'evf_booked_slot', '' ) );
+					$booked_slot     = evf_maybe_unserialize( get_option( 'evf_booked_slot', '' ) );
 					$form_id         = $form_data['id'];
 					$is_booked       = false;
 					if ( ! empty( $booked_slot ) && array_key_exists( $form_id, $booked_slot ) ) {

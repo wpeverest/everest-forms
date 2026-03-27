@@ -1,35 +1,35 @@
 /**
  *  External Dependencies
  */
-import React, { useState, useEffect } from "react";
 import {
-	Box,
 	Accordion,
-	AccordionItem,
 	AccordionButton,
+	AccordionItem,
 	AccordionPanel,
-	Stack,
-	Text,
+	Box,
 	Button,
+	HStack,
+	IconButton,
+	Stack,
 	Table,
 	Tbody,
 	Td,
-	Tr,
+	Text,
 	Thead,
-	HStack,
-	IconButton,
 	Tooltip,
+	Tr,
 	useClipboard,
-	useToast
-} from "@chakra-ui/react";
+	useToast,
+} from '@chakra-ui/react';
 import { __ } from "@wordpress/i18n";
+import { useEffect, useState } from 'react';
 
 import { CopyIcon } from '@chakra-ui/icons';
 
 /**
  *  Internal Dependencies
  */
-import { ArrowLeftFill, Add, Minus } from "../../../../components/Icon/Icon";
+import { Add, ArrowLeftFill, Minus } from '../../../../components/Icon/Icon';
 
 const ShortcodesLists = ({ setIsListViewerOpen }) => {
 	const ShortcodeList = [
@@ -221,12 +221,7 @@ const ShortcodesLists = ({ setIsListViewerOpen }) => {
 			<Stack direction="row">
 				<Button
 					leftIcon={
-						<ArrowLeftFill
-							w="30"
-							h="30"
-							position="relative"
-							top="2px"
-						/>
+						<ArrowLeftFill w="30" h="30" position="relative" top="2px" />
 					}
 					variant="outline"
 					border="none"
@@ -236,7 +231,7 @@ const ShortcodesLists = ({ setIsListViewerOpen }) => {
 					onClick={() => setIsListViewerOpen(false)}
 					boxShadow="none !important"
 				>
-					{__("All Shortcodes", "everest-forms")}
+					{__('All Shortcodes', 'everest-forms')}
 				</Button>
 			</Stack>
 			<Accordion allowMultiple>
@@ -244,7 +239,7 @@ const ShortcodesLists = ({ setIsListViewerOpen }) => {
 					<AccordionItem key={shortcode.id} p="16px">
 						<AccordionButton
 							justifyContent="space-between"
-							_expanded={{ bg: "#F8F8FE" }}
+							_expanded={{ bg: '#F8F8FE' }}
 							onClick={() => {
 								handleAccordionToggle(shortcode.id);
 							}}
@@ -254,7 +249,7 @@ const ShortcodesLists = ({ setIsListViewerOpen }) => {
 								flex="1"
 								textAlign="left"
 								bgColor="#EDEFF7"
-								color="#2563EB"
+								color="#7545bb"
 								maxWidth="fit-content"
 								p="4px 8px"
 								fontWeight="600"
@@ -262,22 +257,20 @@ const ShortcodesLists = ({ setIsListViewerOpen }) => {
 							>
 								{shortcode.id}
 							</Box>
-							<Box
-								textAlign="right"
-							>
+							<Box textAlign="right">
 								<HStack>
 									<IconButton
-										size='md'
-										icon = {<CopyIcon />}
+										size="md"
+										icon={<CopyIcon />}
 										onClick={(event) => handleCopyClick(shortcode.id, event)}
 									/>
-									{hasCopied && isShortcodeCopied[shortcode.id] ?
-										<Tooltip
-											hasArrow={true}
-											closeDelay = {2000}
-										>
-										{__('Copied!','everest-forms')}</Tooltip> : ''
-									}
+									{hasCopied && isShortcodeCopied[shortcode.id] ? (
+										<Tooltip hasArrow={true} closeDelay={2000}>
+											{__('Copied!', 'everest-forms')}
+										</Tooltip>
+									) : (
+										''
+									)}
 									{isAccordionOpen[shortcode.id] ? (
 										<Minus h="5" w="5" />
 									) : (
@@ -290,9 +283,9 @@ const ShortcodesLists = ({ setIsListViewerOpen }) => {
 							pb={4}
 							bgColor="#F8F8FE"
 							sx={{
-								display: "flex",
-								flexDirection: "column",
-								gap: "20px",
+								display: 'flex',
+								flexDirection: 'column',
+								gap: '20px',
 							}}
 						>
 							<Text fontSize="14px">{shortcode.description}</Text>
@@ -302,54 +295,40 @@ const ShortcodesLists = ({ setIsListViewerOpen }) => {
 									fontSize="14px"
 									size="sm"
 									sx={{
-										display: "flex",
-										flexDirection: "column",
-										gap: "16px",
+										display: 'flex',
+										flexDirection: 'column',
+										gap: '16px',
 									}}
 								>
 									<Thead>
 										<Tr border="none">
 											<Td
 												sx={{
-													fontWeight: "600",
-													paddingLeft: "0px",
-													border: "none",
+													fontWeight: '600',
+													paddingLeft: '0px',
+													border: 'none',
 												}}
 											>
-												{__(
-													"Parameters:",
-													"everest-forms"
-												)}
+												{__('Parameters:', 'everest-forms')}
 											</Td>
 										</Tr>
 									</Thead>
 									<Tbody
 										sx={{
-											display: "flex",
-											flexDirection: "column",
-											gap: "12px",
+											display: 'flex',
+											flexDirection: 'column',
+											gap: '12px',
 										}}
 									>
 										{shortcode.params.map(
-											(
-												{
-													param_name,
-													param_description,
-													required,
-												},
-												key
-											) => (
+											({ param_name, param_description, required }, key) => (
 												<Tr key={key}>
-													<Td
-														px="0px"
-														borderBottom="0px"
-														width="200px"
-													>
+													<Td px="0px" borderBottom="0px" width="200px">
 														<Box
 															flex="1"
 															textAlign="left"
 															bgColor="#EDEFF7"
-															color="#2563EB"
+															color="#7545bb"
 															maxWidth="fit-content"
 															p="4px 8px"
 															fontWeight="600"
@@ -361,17 +340,14 @@ const ShortcodesLists = ({ setIsListViewerOpen }) => {
 														<Text>
 															{required && (
 																<strong>
-																	{__(
-																		"REQUIRED.",
-																		"everest-forms"
-																	)}
+																	{__('REQUIRED.', 'everest-forms')}
 																</strong>
-															)}{" "}
+															)}{' '}
 															{param_description}
 														</Text>
 													</Td>
 												</Tr>
-											)
+											),
 										)}
 									</Tbody>
 								</Table>
@@ -382,42 +358,33 @@ const ShortcodesLists = ({ setIsListViewerOpen }) => {
 									fontSize="14px"
 									size="sm"
 									sx={{
-										display: "flex",
-										flexDirection: "column",
-										gap: "16px",
+										display: 'flex',
+										flexDirection: 'column',
+										gap: '16px',
 									}}
 								>
 									<Thead>
 										<Tr>
 											<Td
 												sx={{
-													fontWeight: "600",
-													paddingLeft: "0px",
-													border: "none",
+													fontWeight: '600',
+													paddingLeft: '0px',
+													border: 'none',
 												}}
 											>
-												{__(
-													"Examples:",
-													"everest-forms"
-												)}
+												{__('Examples:', 'everest-forms')}
 											</Td>
 										</Tr>
 									</Thead>
 									<Tbody
 										sx={{
-											display: "flex",
-											flexDirection: "column",
-											gap: "12px",
+											display: 'flex',
+											flexDirection: 'column',
+											gap: '12px',
 										}}
 									>
 										{shortcode.example.map(
-											(
-												{
-													example_name,
-													example_description,
-												},
-												key
-											) => (
+											({ example_name, example_description }, key) => (
 												<>
 													<Tr key={key}>
 														<Td
@@ -430,32 +397,38 @@ const ShortcodesLists = ({ setIsListViewerOpen }) => {
 																flex="1"
 																textAlign="left"
 																bgColor="#EDEFF7"
-																color="#2563EB"
+																color="#7545bb"
 																maxWidth="fit-content"
 																p="4px 8px"
 																fontWeight="600"
 															>
 																{example_name}
 															</Box>
-															</Td>
-															<Td>
-																{example_name =='[everest_forms_user_login redirect_url="sample_page" recaptcha="true"]' &&
-																	<Box>
-																		<IconButton
-																		size='md'
-																		icon = {<CopyIcon />}
-																		onClick={(event) => handleExampleShortcodeCopy(example_name, event)}
-																		/>
-																		{isExampleShortcodeCopied ?
-																			<Tooltip
-																				hasArrow={true}
-																				closeDelay = {1000}
-																			>
-																			{__('Copied!','everest-forms')}</Tooltip> : ''
+														</Td>
+														<Td>
+															{example_name ==
+																'[everest_forms_user_login redirect_url="sample_page" recaptcha="true"]' && (
+																<Box>
+																	<IconButton
+																		size="md"
+																		icon={<CopyIcon />}
+																		onClick={(event) =>
+																			handleExampleShortcodeCopy(
+																				example_name,
+																				event,
+																			)
 																		}
-																	</Box>
-																}
-															</Td>
+																	/>
+																	{isExampleShortcodeCopied ? (
+																		<Tooltip hasArrow={true} closeDelay={1000}>
+																			{__('Copied!', 'everest-forms')}
+																		</Tooltip>
+																	) : (
+																		''
+																	)}
+																</Box>
+															)}
+														</Td>
 													</Tr>
 													<Tr>
 														<Td
@@ -464,13 +437,11 @@ const ShortcodesLists = ({ setIsListViewerOpen }) => {
 															paddingBottom="2"
 															borderBottom="0px"
 														>
-															{
-																example_description
-															}
+															{example_description}
 														</Td>
 													</Tr>
 												</>
-											)
+											),
 										)}
 									</Tbody>
 								</Table>

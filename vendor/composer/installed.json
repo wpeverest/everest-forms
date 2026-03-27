@@ -188,8 +188,8 @@
             "type": "library",
             "extra": {
                 "bamarni-bin": {
-                    "forward-command": false,
-                    "bin-links": false
+                    "bin-links": false,
+                    "forward-command": false
                 }
             },
             "installation-source": "dist",
@@ -228,6 +228,48 @@
                 "source": "https://github.com/scssphp/scssphp/tree/v1.13.0"
             },
             "install-path": "../scssphp/scssphp"
+        },
+        {
+            "name": "themegrill/themegrill-sdk",
+            "version": "1.0.1",
+            "version_normalized": "1.0.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/themegrill/themegrill-sdk.git",
+                "reference": "bdcd3b56256ce3126054d0dabb22fe8563b0becc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/themegrill/themegrill-sdk/zipball/bdcd3b56256ce3126054d0dabb22fe8563b0becc",
+                "reference": "bdcd3b56256ce3126054d0dabb22fe8563b0becc",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2.24"
+            },
+            "require-dev": {
+                "yoast/phpunit-polyfills": "^4.0"
+            },
+            "time": "2025-11-12T11:45:29+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "themegrill",
+                    "email": "team@themegrill.com",
+                    "homepage": "https://themegrill.com"
+                }
+            ],
+            "description": "ThemeGrill SDK",
+            "support": {
+                "issues": "https://github.com/themegrill/themegrill-sdk/issues",
+                "source": "https://github.com/themegrill/themegrill-sdk/tree/v1.0.1"
+            },
+            "install-path": "../themegrill/themegrill-sdk"
         }
     ],
     "dev": false,
