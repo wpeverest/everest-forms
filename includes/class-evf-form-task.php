@@ -1419,6 +1419,10 @@ class EVF_Form_Task {
 		}
 		$data = ! empty( $_POST['everest_forms']['form_fields'][ $field['id'] ] ) ? wp_unslash( $_POST['everest_forms']['form_fields'][ $field['id'] ] ) : array(); // phpcs:ignore WordPress.Security.NonceVerification, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 
+		if ( 'file-upload' === $field['type'] || 'image-upload' === $field['type'] ) {
+			return $properties;
+		}
+
 		if ( 'checkbox' === $field['type'] ) {
 			foreach ( $field['choices'] as $key => $option_value ) {
 				$selected = ! empty( $option_value['default'] ) ? $option_value['default'] : '';
