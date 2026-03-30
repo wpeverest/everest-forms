@@ -391,18 +391,13 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 				}
 
 				if ( ! empty( $file_url ) && wp_http_validate_url( $file_url ) ) {
-					if ( 'image-upload' === $field_type ) {
-						$value  = '<a href="' . esc_url( $file_url ) . '" target="_blank" rel="noopener noreferrer">';
-						$value .= '<img src="' . esc_url( $file_url ) . '" alt="" style="max-width:80px;height:auto;cursor:pointer;" />';
-						$value .= '</a>';
-					} else {
-						$file_name = wp_basename( wp_parse_url( $file_url, PHP_URL_PATH ) );
-						$file_name = preg_replace( '/-[a-f0-9]{32}(?=\.)/i', '', $file_name );
+					$file_name = wp_basename( wp_parse_url( $file_url, PHP_URL_PATH ) );
 
-						$value  = '<a href="' . esc_url( $file_url ) . '" target="_blank" rel="noopener noreferrer">';
-						$value .= esc_html( $file_name ? $file_name : $file_url );
-						$value .= '</a>';
-					}
+					$file_name = preg_replace( '/-[a-f0-9]{32}(-\d+)?(?=\.[^.]+$)/i', '', $file_name );
+
+					$value  = '<a href="' . esc_url( $file_url ) . '" target="_blank" rel="noopener noreferrer">';
+					$value .= esc_html( $file_name ? $file_name : $file_url );
+					$value .= '</a>';
 				} else {
 					$value = esc_html( wp_strip_all_tags( $raw_value ) );
 				}
