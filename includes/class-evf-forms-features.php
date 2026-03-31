@@ -51,7 +51,6 @@ class EVF_Forms_Features {
 			'EVF_Field_Payment_Total',
 			'EVF_Field_Payment_Subtotal',
 			'EVF_Field_Payment_Subscription_Plan',
-			'EVF_Field_Credit_Card',
 			'EVF_Field_Payment_Authorize_Net',
 			'EVF_Field_Rating',
 			'EVF_Field_Likert',
@@ -74,6 +73,11 @@ class EVF_Forms_Features {
 			if ( in_array( $feature, $enabled_features, true ) ) {
 				$pro_fields[] = $class;
 			}
+		}
+		if (
+			is_plugin_active( 'everest-forms-stripe/everest-forms-stripe.php' )
+		) {
+			$pro_fields[] = 'EVF_Field_Credit_Card';
 		}
 
 		return array_merge( $fields, $pro_fields );
