@@ -429,6 +429,8 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 				} else {
 					$value = esc_html( wp_strip_all_tags( $raw_value ) );
 				}
+			} elseif ( in_array( $field_type, [ 'rating', 'country', 'likert' ], true ) ) {
+				$value = wp_kses_post( (string) $value );
 			} else {
 				$value = nl2br( esc_html( (string) $value ) );
 			}

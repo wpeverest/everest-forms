@@ -254,6 +254,8 @@ if ( false !== $entry_index ) {
 										} else {
 											echo esc_html( wp_strip_all_tags( $raw_value ) );
 										}
+									}elseif ( in_array( $field_type, [ 'rating', 'country', 'likert' ], true ) ) {
+										echo wp_kses_post( $field_value );
 									} else {
 										echo nl2br( esc_html( wp_strip_all_tags( $raw_value ) ) );
 									}
