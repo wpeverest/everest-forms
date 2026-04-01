@@ -210,10 +210,10 @@ if ( false !== $entry_index ) {
 									echo '<span class="list evf-answer-badge ' . esc_attr( $answer_class ) . '">' . esc_html( wp_strip_all_tags( $field_value ) ) . '</span>';
 								} else {
 									$field_type = isset( $field_type_by_meta_key[ $meta_key ] ) ? $field_type_by_meta_key[ $meta_key ] : '';
+									$raw_value  = (string) $entry_meta[ $meta_key ];
 
 									if ( in_array( $field_type, array( 'file-upload', 'image-upload' ), true ) ) {
-										$raw_value = (string) $field_value;
-										$file_url  = '';
+										$file_url = '';
 
 										if ( preg_match( '/href=["\']([^"\']+)["\']/', $raw_value, $matches ) ) {
 											$file_url = $matches[1];
@@ -222,14 +222,12 @@ if ( false !== $entry_index ) {
 										}
 
 										if ( ! empty( $file_url ) && wp_http_validate_url( $file_url ) ) {
-
 											if ( 'image-upload' === $field_type ) {
 												echo '<a href="' . esc_url( $file_url ) . '" target="_blank" rel="noopener noreferrer">';
 												echo '<img src="' . esc_url( $file_url ) . '" alt="" style="max-width:150px;height:auto;cursor:pointer;" />';
 												echo '</a>';
 											} else {
 												$file_name = wp_basename( wp_parse_url( $file_url, PHP_URL_PATH ) );
-
 												echo '<a href="' . esc_url( $file_url ) . '" target="_blank" rel="noopener noreferrer">';
 												echo esc_html( $file_name ? $file_name : $file_url );
 												echo '</a>';
@@ -237,8 +235,18 @@ if ( false !== $entry_index ) {
 										} else {
 											echo esc_html( wp_strip_all_tags( $raw_value ) );
 										}
+									} elseif ( 'wysiwyg' === $field_type ) {
+										echo wp_kses_post( $field_value );
+									} elseif ( 'color' === $field_type ) {
+										if ( preg_match( '/#(?:[A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})\b/', $raw_value, $matches ) ) {
+											$color = $matches[0];
+											echo '<span style="display:inline-block;width:18px;height:18px;border-radius:3px;margin-right:6px;background-color:' . esc_attr( $color ) . ';"></span>';
+											echo esc_html( $color );
+										} else {
+											echo esc_html( wp_strip_all_tags( $raw_value ) );
+										}
 									} else {
-										echo nl2br( esc_html( (string) $field_value ) );
+										echo nl2br( esc_html( wp_strip_all_tags( $raw_value ) ) );
 									}
 								}
 							} else {

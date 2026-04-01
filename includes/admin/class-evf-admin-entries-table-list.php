@@ -401,6 +401,26 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 				} else {
 					$value = esc_html( wp_strip_all_tags( $raw_value ) );
 				}
+			} elseif ( 'wysiwyg' === $field_type ) {
+				if ( is_array( $value ) && isset( $value['value'] ) ) {
+					$value = wp_kses_post( $value['value'] );
+				} else {
+					$value = wp_kses_post( (string) $value );
+				}
+			} elseif ( 'color' === $field_type ) {
+				$raw_value = is_array( $value ) && isset( $value['value'] ) ? $value['value'] : (string) $value;
+				$color     = '';
+
+				if ( preg_match( '/#(?:[A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})\b/', $raw_value, $matches ) ) {
+					$color = $matches[0];
+				}
+
+				if ( ! empty( $color ) ) {
+					$value  = '<span style="display:inline-block;width:18px;height:18px;border-radius:3px;margin-right:6px;vertical-align:middle;background-color:' . esc_attr( $color ) . ';"></span>';
+					$value .= esc_html( $color );
+				} else {
+					$value = esc_html( wp_strip_all_tags( $raw_value ) );
+				}
 			} else {
 				$value = nl2br( esc_html( (string) $value ) );
 			}
