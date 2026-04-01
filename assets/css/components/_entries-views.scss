@@ -61,7 +61,7 @@ $spacing-xl: 24px;
 // Header Section
 .evf-entry-header {
 	background-color: $bg-white;
-	padding: $spacing-md $spacing-xl;
+	padding: $spacing-md 0px;
 	border-radius: $border-radius;
 	display: flex;
 	align-items: center;
@@ -167,7 +167,7 @@ $spacing-xl: 24px;
 	grid-template-columns: 1fr 320px;
 	gap: $spacing-xl;
 	align-items: flex-start;
-	padding: 24px;
+	padding: 24px 0px;
 }
 
 // Main Content
@@ -239,24 +239,21 @@ $spacing-xl: 24px;
 		flex-shrink: 0;
 		flex-wrap: nowrap;
 
-		// "Hide Empty Fields" toggle — never wrap
-		// NOTE: this element also carries .dashicons .dashicons-visibility classes
-		// which use ::before pseudo-content; we must neutralize their layout side-effects
 		.everest-forms-empty-field-toggle {
 			white-space: nowrap;
 			display: inline-flex !important; // override dashicons display:inline-block
 			align-items: center;
 			gap: 6px;
 			color: $primary-color;
-			// font-family: inherit;
+			font-family: inherit;
 			font-size: 14px !important;
 			font-weight: 500 !important;
 			text-decoration: none;
 			line-height: 1 !important;
 			cursor: pointer;
-			position: static !important; // neutralize any dashicons positioning
+			position: static !important;
 			vertical-align: middle;
-			width: auto !important; // dashicons forces width/height — reset
+			width: auto !important;
 			height: auto !important;
 			@include transition;
 
@@ -269,7 +266,8 @@ $spacing-xl: 24px;
 				display: inline-flex !important;
 				align-items: center;
 				flex-shrink: 0;
-				margin-right: 0; // let the gap property handle spacing
+				margin-right: 0;
+				font-family: 'dashicons' !important;
 			}
 
 			&:hover {

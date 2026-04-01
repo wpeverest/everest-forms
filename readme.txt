@@ -339,9 +339,10 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Changelog ==
 
-= 3.4.4       - xx-xx-2026
+= 3.4.4       - 24-03-2026
 * Refactor    - Everest Forms Global Settings.
 * Enhancement - Form Builder.
+* Enhancement - Email summary.
 * Fix 		  - Unserialize issue.
 * Fix         - Notice Consistency
 * Fix         - Search on clicking enter.
@@ -353,7 +354,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 * Fix         - License API issue causing excessive requests.
 * Fix         - Excluded Captcha and Authorize.Net fields from View Entries.
 * Fix         - Address Field advanced setting design issue.
-* Fix         - Phone field flag disappears in forms below hidden form via Elementor responsive visibility.
+* Fix         - Phone field flag disappears in forms below hidden form via responsive visibility.
 * Dev         - Analytics report.
 
 = 3.4.3       - 19-02-2026

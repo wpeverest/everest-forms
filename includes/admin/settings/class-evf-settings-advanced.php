@@ -159,6 +159,14 @@ class EVF_Settings_Advanced extends EVF_Settings_Page {
 				'desc'  => '',
 				'id'    => 'misc_options',
 			),
+				array(
+					'title'    => esc_html__( 'Enable Log', 'everest-forms' ),
+					'desc'     => esc_html__( 'Enable storing the logs.', 'everest-forms' ),
+					'id'       => 'everest_forms_enable_log',
+					'default'  => 'no',
+					'type'     => 'toggle',
+					'desc_tip' => true,
+				),
 			array(
 				'title'    => esc_html__( 'Enable RestApi', 'everest-forms' ),
 				'desc'     => __( 'Allow the other to use the rest api.', 'everest-forms' ),

@@ -382,9 +382,14 @@ const UserRoleTable = () => {
 			{wpRolesQuery.isLoading ? (
 				<Skeleton h="48px" w="100%" borderRadius="md" />
 			) : (
-				<Alert status="info" borderRadius="md" px="16px" py="12px">
-					<AlertIcon boxSize="16px" mt="1px" alignSelf="flex-start" />
-					<Text fontSize="13px" lineHeight="1.5">
+				<Alert status="info" borderRadius="md" px="16px" py="12px" bg={"#f6f3fa"}>
+					<AlertIcon boxSize="16px" mt="1px" alignSelf="flex-start" color="#7545bb"/>
+					<Text
+						fontSize="13px"
+						lineHeight="1.5"
+						borderRadius="0"
+						color="#383838"
+					>
 						{checkedRoleKeys.size > 0 ? (
 							<>
 								<Text as="span" fontWeight="600">
