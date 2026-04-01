@@ -380,14 +380,22 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 
 			$value = apply_filters( 'everest_forms_html_field_value', $value, $entry->meta[ $meta_key ], $entry, 'entry-table', $meta_key );
 
-			if ( in_array( $field_type, array( 'file-upload', 'image-upload' ), true ) ) {
+			if ( in_array( $field_type, array( 'file-upload', 'image-upload', 'signature' ), true ) ) {
 				$raw_value = (string) $value;
 				$file_url  = '';
 
-				if ( preg_match( '/href=["\']([^"\']+)["\']/', $raw_value, $matches ) ) {
-					$file_url = $matches[1];
+				if ( 'signature' === $field_type ) {
+					if ( preg_match( '/src=["\']([^"\']+)["\']/', $raw_value, $matches ) ) {
+						$file_url = $matches[1];
+					}
 				} else {
-					$file_url = trim( wp_strip_all_tags( $raw_value ) );
+					if ( preg_match( '/href=["\']([^"\']+)["\']/', $raw_value, $matches ) ) {
+						$file_url = $matches[1];
+					} elseif ( wp_http_validate_url( trim( $raw_value ) ) ) {
+						$file_url = trim( $raw_value );
+					} else {
+						$file_url = trim( wp_strip_all_tags( $raw_value ) );
+					}
 				}
 
 				if ( ! empty( $file_url ) && wp_http_validate_url( $file_url ) ) {
