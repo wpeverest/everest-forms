@@ -4237,6 +4237,28 @@
 
 			EVFPanelBuilder.populateRowPopover();
 
+			// Compute viewport-safe {top, left} for the fixed-position popover.
+			var positionPopover = function ($anchor, $pop) {
+				var offset     = $anchor.offset(),
+					scrollLeft = $(window).scrollLeft(),
+					scrollTop  = $(window).scrollTop(),
+					vpW        = window.innerWidth,
+					vpH        = window.innerHeight,
+					popW       = $pop.outerWidth(),
+					popH       = $pop.outerHeight(),
+					margin     = 8,
+					top        = offset.top  - scrollTop  + $anchor.outerHeight() + 6,
+					left       = offset.left - scrollLeft - popW / 2 + $anchor.outerWidth() / 2;
+
+				// Clamp horizontal so the popover never bleeds past either edge.
+				left = Math.min( Math.max( margin, left ), vpW - popW - margin );
+				// Flip above the anchor if there isn't enough room below.
+				if ( top + popH > vpH - margin ) {
+					top = offset.top - scrollTop - popH - 6;
+				}
+				return { top: top, left: left };
+			};
+
 			// Show/hide scroll arrows based on current tabs overflow.
 			var updateTabArrows = function () {
 				var tabs = document.querySelector(
@@ -4295,10 +4317,6 @@
 					return;
 				}
 
-				var offset = $btn.offset(),
-					left =
-						offset.left - $popover.outerWidth() / 2 + $btn.outerWidth() / 2;
-
 				EVFPanelBuilder.populateRowPopover();
 
 				// Clear any previous open-row state.
@@ -4311,13 +4329,11 @@
 				// CSS on evf-popover-open handles visibility directly — no evf-hover dependency.
 				$row.addClass('evf-popover-open');
 
+				var pos = positionPopover($btn, $popover);
 				$popover
 					.data('target-row', $row)
 					.data('insert-after-field', null)
-					.css({
-						top: offset.top + $btn.outerHeight() + 6,
-						left: Math.max(4, left),
-					})
+					.css(pos)
 					.show();
 
 				updateTabArrows();
@@ -4346,10 +4362,6 @@
 					return;
 				}
 
-				var offset = $btn.offset(),
-					left =
-						offset.left - $popover.outerWidth() / 2 + $btn.outerWidth() / 2;
-
 				EVFPanelBuilder.populateRowPopover();
 
 				// Clear any previous open-row/field state.
@@ -4363,13 +4375,11 @@
 				$row.addClass('evf-popover-open');
 				$field.addClass('evf-field-popover-open');
 
+				var pos = positionPopover($btn, $popover);
 				$popover
 					.data('target-row', $row)
 					.data('insert-after-field', $field)
-					.css({
-						top: offset.top + $btn.outerHeight() + 6,
-						left: Math.max(4, left),
-					})
+					.css(pos)
 					.show();
 
 				updateTabArrows();
