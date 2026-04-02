@@ -2086,7 +2086,7 @@ p.search-box {
 			border: 1px solid #7545bb;
 			color: #7545bb;
 			height: 38px;
-    		margin-top: 2px;
+			margin-top: 2px;
 
 			&:hover {
 				background: #f5f3ff;
@@ -13287,14 +13287,55 @@ button#show-settings-link {
 .evf-tools-export-entries {
 	.select2-container {
 		min-width: 400px !important;
-			.select2-selection {
-				min-width: 400px !important;
-				color: #383838 !important;
+		.select2-selection {
+			min-width: 400px !important;
+			color: #383838 !important;
 
-				.select2-selection__rendered{
-					min-width: 400px;
-				}
-
+			.select2-selection__rendered {
+				min-width: 400px;
+			}
 		}
-    }
+	}
+}
+
+// Layout container buttons in the form builder sidebar.
+.evf-layout-container-btn {
+	padding: 20px 8px;
+	border: 1px solid #edeff7;
+	width: 30.3%;
+	color: #383838;
+	font-weight: 400;
+	cursor: pointer;
+	border-radius: 4px;
+	font-size: 12px;
+	transition: all 0.3s ease-in-out;
+	text-align: center;
+	background: #fbfbfd;
+	line-height: 150%;
+	display: inline-flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 8px;
+
+	svg {
+		width: 36px;
+		height: 24px;
+		display: block;
+		opacity: 0.55;
+		transition: opacity 0.3s ease-in-out;
+	}
+
+	&:hover {
+		color: $evf_primary-color;
+		border-color: $evf_primary-color;
+		background: #ffffff;
+
+		svg {
+			opacity: 1;
+		}
+	}
+
+	&:focus {
+		outline: none;
+	}
 }

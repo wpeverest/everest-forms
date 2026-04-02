@@ -884,6 +884,8 @@
 			EVFPanelBuilder.bindEmbedOption();
 			EVFPanelBuilder.bindSaveOptionWithKeyEvent();
 			EVFPanelBuilder.bindOpenShortcutKeysModalWithKeyEvent();
+			EVFPanelBuilder.bindLayoutContainers();
+			EVFPanelBuilder.bindAddRowColumnPicker();
 			EVFPanelBuilder.bindAddNewRow();
 			EVFPanelBuilder.bindRemoveRow();
 			EVFPanelBuilder.bindFormSettings();
@@ -2816,6 +2818,232 @@
 				}
 			});
 		},
+		/**
+		 * Add a new row with a specific column layout.
+		 *
+		 * @param {number}      columns    Number of columns (1–4).
+		 * @param {jQuery|null} $afterRow  Insert after this row; omit to append to bottom.
+		 */
+		addLayoutContainer: function (columns, $afterRow) {
+			var wrapper = $('.evf-admin-field-wrapper'),
+				row_ids = $('.evf-admin-row')
+					.map(function () {
+						return $(this).data('row-id');
+					})
+					.get(),
+				max_row_id = row_ids.length ? Math.max.apply(Math, row_ids) : 0,
+				row_clone = $('.evf-admin-row').eq(0).clone(),
+				total_rows =
+					parseInt($('.evf-add-row').first().attr('data-total-rows'), 10) || 0;
+
+			max_row_id++;
+			total_rows++;
+
+			row_clone.find('.evf-admin-grid').html('');
+			row_clone.attr('data-row-id', max_row_id);
+
+			$('.evf-add-row').attr('data-total-rows', total_rows);
+			$('.evf-add-row').attr('data-next-row-id', max_row_id);
+
+			if ($afterRow && $afterRow.length) {
+				$afterRow.after(row_clone);
+			} else {
+				wrapper.append(row_clone);
+			}
+
+			row_clone
+				.find('.evf-grid-selector[data-evf-grid="' + columns + '"]')
+				.trigger('click');
+
+			EVFPanelBuilder.bindFields();
+			EVFPanelBuilder.checkEmptyGrid();
+
+			$('html, body').animate({ scrollTop: row_clone.offset().top - 100 }, 400);
+		},
+		bindLayoutContainers: function () {
+			$('body').on('click', '.evf-layout-container-btn', function () {
+				EVFPanelBuilder.addLayoutContainer(
+					parseInt($(this).data('columns'), 10),
+				);
+			});
+		},
+		bindAddRowColumnPicker: function () {
+			if (!$('#evf-add-row-picker').length) {
+				var $pickerGrid = $('<div></div>').css({
+					display: 'grid',
+					'grid-template-columns': 'repeat(4, 1fr)',
+					gap: '6px',
+				});
+
+				$('.evf-layout-container-btn').each(function () {
+					var $btn = $(this),
+						cols = parseInt($btn.data('columns'), 10),
+						label = $btn.text().trim(),
+						svgHtml = $btn.find('svg').prop('outerHTML') || '';
+
+					var $pickerBtn = $('<button type="button"></button>')
+						.attr('data-columns', cols)
+						.css({
+							display: 'flex',
+							'flex-direction': 'column',
+							'align-items': 'center',
+							'justify-content': 'center',
+							padding: '10px 8px',
+							border: '1px solid #edeff7',
+							'border-radius': '4px',
+							cursor: 'pointer',
+							'font-size': '11px',
+							'text-align': 'center',
+							background: '#fbfbfd',
+							color: '#383838',
+							gap: '4px',
+							'min-width': '80px',
+							transition: 'border-color .12s,color .12s,background .12s',
+						})
+						.append(
+							$('<span></span>')
+								.css({ display: 'block', 'line-height': '1' })
+								.html(svgHtml),
+						)
+						.append($('<span></span>').text(label));
+
+					$pickerGrid.append($pickerBtn);
+				});
+
+				$('body').append(
+					$('<div id="evf-add-row-picker"></div>')
+						.css({
+							display: 'none',
+							position: 'fixed',
+							background: '#fff',
+							border: '1px solid #edeff7',
+							'border-radius': '8px',
+							'box-shadow': '0 8px 24px rgba(0,0,0,.08)',
+							'z-index': '999999',
+							padding: '10px',
+							overflow: 'visible',
+						})
+						.append(
+							'<div id="evf-add-row-picker-arrow" style="position:absolute;left:50%;transform:translateX(-50%);width:14px;height:8px;pointer-events:none;"></div>',
+						)
+						.append($pickerGrid),
+				);
+
+				$('head').append(
+					'<style id="evf-add-row-picker-style">' +
+						'#evf-add-row-picker-arrow::before,#evf-add-row-picker-arrow::after{content:"";position:absolute;left:0;border-left:7px solid transparent;border-right:7px solid transparent}' +
+						'#evf-add-row-picker-arrow::before{border-top:8px solid #edeff7;top:0}' +
+						'#evf-add-row-picker-arrow::after{border-top:8px solid #fff;top:-1px}' +
+						'#evf-add-row-picker-arrow.evf-arrow-down::before{border-top:none;border-bottom:8px solid #edeff7;top:auto;bottom:0}' +
+						'#evf-add-row-picker-arrow.evf-arrow-down::after{border-top:none;border-bottom:8px solid #fff;bottom:1px}' +
+						'</style>',
+				);
+
+				$('#evf-add-row-picker svg').css({
+					width: '24px',
+					height: '24px',
+					display: 'block',
+				});
+			}
+
+			// Intercept Add Row click (non-repeater) before bindAddNewRow fires.
+			$('body').on(
+				'click',
+				'.evf-add-row:not(.repeater-row) span',
+				function (e) {
+					e.stopImmediatePropagation();
+					var $span = $(this),
+						$picker = $('#evf-add-row-picker'),
+						$arrow = $('#evf-add-row-picker-arrow');
+
+					if ($picker.is(':visible')) {
+						$picker.hide();
+						return;
+					}
+
+					var offset = $span.offset(),
+						scrollLeft = $(window).scrollLeft(),
+						scrollTop = $(window).scrollTop(),
+						spanCX = offset.left - scrollLeft + $span.outerWidth() / 2,
+						margin = 8;
+
+					$picker.show();
+
+					var pickerH = $picker.outerHeight(),
+						pickerW = $picker.outerWidth(),
+						top = offset.top - scrollTop - pickerH - 8,
+						flipped = false;
+
+					if (top < margin) {
+						top = offset.top - scrollTop + $span.outerHeight() + 8;
+						flipped = true;
+					}
+
+					var left = spanCX - pickerW / 2;
+					left = Math.min(
+						Math.max(margin, left),
+						window.innerWidth - pickerW - margin,
+					);
+
+					// Arrow: points toward the button
+					var arrowX = spanCX - left - 7;
+					arrowX = Math.min(Math.max(14, arrowX), pickerW - 28);
+					if (flipped) {
+						// Picker is below button — arrow at top pointing up toward button
+						$arrow
+							.addClass('evf-arrow-down')
+							.css({ top: '-8px', bottom: 'auto', left: arrowX + 'px' });
+					} else {
+						// Picker is above button — arrow at bottom pointing down toward button
+						$arrow
+							.removeClass('evf-arrow-down')
+							.css({ bottom: '-8px', top: 'auto', left: arrowX + 'px' });
+					}
+
+					$picker.css({ top: top, left: left });
+				},
+			);
+
+			$(document.body).on(
+				'click',
+				'#evf-add-row-picker button[data-columns]',
+				function () {
+					var cols = parseInt($(this).data('columns'), 10);
+					$('#evf-add-row-picker').hide();
+					EVFPanelBuilder.addLayoutContainer(cols);
+				},
+			);
+
+			$(document.body)
+				.on(
+					'mouseenter',
+					'#evf-add-row-picker button[data-columns]',
+					function () {
+						$(this).css({
+							'border-color': '#8c64c6',
+							color: '#8c64c6',
+							background: '#fff',
+						});
+					},
+				)
+				.on(
+					'mouseleave',
+					'#evf-add-row-picker button[data-columns]',
+					function () {
+						$(this).css({
+							'border-color': '#edeff7',
+							color: '#383838',
+							background: '#fbfbfd',
+						});
+					},
+				);
+
+			$(document).on('click.evf-add-row-picker', function (e) {
+				if (!$(e.target).closest('#evf-add-row-picker, .evf-add-row').length) {
+					$('#evf-add-row-picker').hide();
+				}
+			});
+		},
 		bindAddNewRow: function () {
 			$('body').on('click', '.evf-add-row span', function () {
 				$('#add-fields').trigger('click');
@@ -4003,7 +4231,9 @@
 				})
 				.disableSelection();
 
-			$('.evf-registered-buttons button.evf-registered-item')
+			$(
+				'.evf-registered-buttons button.evf-registered-item:not(.evf-layout-container-btn)',
+			)
 				.draggable({
 					delay: 200,
 					cancel: false,
@@ -4104,6 +4334,11 @@
 			);
 
 			$('.everest-forms-add-fields-group').each(function () {
+				// Exclude the layout group from the field-picker popover entirely.
+				if ($(this).hasClass('evf-layout-group')) {
+					return;
+				}
+
 				var $heading = $(this).find('.everest-forms-add-fields-heading'),
 					groupKey = $heading.data('group'),
 					groupLabel = $heading.clone().children().remove().end().text().trim();
@@ -4130,6 +4365,11 @@
 							isBlocked = blocked.some(function (cls) {
 								return $btn.hasClass(cls);
 							});
+
+						// Skip items with no field type or no label — avoids blank popover entries.
+						if (!fieldType || !fieldLabel) {
+							return;
+						}
 
 						$fields.append(
 							$(
@@ -4204,6 +4444,7 @@
 						'.evf-popover-field-item{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px 6px 8px;border:1px solid #edeff7;border-radius:4px;cursor:pointer;font-size:11px;text-align:center;gap:4px;background:#fbfbfd;color:#383838;transition:border-color .12s,color .12s,background .12s;line-height:1.4}' +
 						'.evf-popover-field-item:hover{border-color:#8c64c6;color:#8c64c6;background:#fff}' +
 						'.evf-popover-field-item .evf-popover-field-icon i{font-size:18px}' +
+						'.evf-popover-field-item .evf-popover-field-icon svg{width:24px;height:24px;display:block}' +
 						'.evf-popover-field-item.evf-field-blocked{opacity:.45;cursor:default;pointer-events:none}' +
 						'.evf-popover-no-results{grid-column:1/-1;text-align:center;padding:20px 0;color:#999;font-size:12px}' +
 						'.evf-field-loading-wrap{display:flex;align-items:center;justify-content:center;gap:8px;padding:12px}' +
@@ -4524,6 +4765,25 @@
 					$('.everest-forms-field.evf-field-popover-open').removeClass(
 						'evf-field-popover-open',
 					);
+				},
+			);
+
+			// Handle layout container items clicked inside the popover.
+			$(document.body).on(
+				'click',
+				'#evf-row-field-popover .evf-layout-container-item',
+				function () {
+					var columns = parseInt($(this).data('columns'), 10),
+						$popover = $('#evf-row-field-popover'),
+						$targetRow = $popover.data('target-row');
+
+					$popover.hide().removeData('insert-into-grid');
+					$('.evf-admin-row.evf-popover-open').removeClass('evf-popover-open');
+					$('.everest-forms-field.evf-field-popover-open').removeClass(
+						'evf-field-popover-open',
+					);
+
+					EVFPanelBuilder.addLayoutContainer(columns, $targetRow);
 				},
 			);
 		},
