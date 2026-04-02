@@ -4175,7 +4175,14 @@
 						'.everest-forms-field:hover>.evf-add-field-below,.everest-forms-field.evf-field-popover-open>.evf-add-field-below{opacity:1;visibility:visible}' +
 						'.evf-add-field-below span.dashicons{background:#e9e9e9;color:#666;border-radius:50%;font-size:16px;width:28px;height:28px;display:flex;align-items:center;justify-content:center}' +
 						'.evf-add-field-below:hover span.dashicons,.evf-add-field-below:focus span.dashicons{background:#7e3bd0;color:#fff}' +
-						'.evf-row-field-popover{position:fixed;background:#fff;border:1px solid #edeff7;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.08);width:480px;z-index:999999;display:none;overflow:hidden}' +
+						'.evf-row-field-popover{position:fixed;background:#fff;border:1px solid #edeff7;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.08);width:480px;z-index:999999;display:none;overflow:visible}' +
+						'.evf-popover-arrow{position:absolute;bottom:100%;width:14px;height:8px;pointer-events:none;margin-bottom:-1px}' +
+						'.evf-popover-arrow::before,.evf-popover-arrow::after{content:"";position:absolute;left:0;border-left:7px solid transparent;border-right:7px solid transparent}' +
+						'.evf-popover-arrow::before{border-bottom:8px solid #edeff7;top:0}' +
+						'.evf-popover-arrow::after{border-bottom:8px solid #fff;top:1px}' +
+						'.evf-row-field-popover.evf-popover-flipped .evf-popover-arrow{bottom:auto;top:100%;margin-bottom:0;margin-top:-1px}' +
+						'.evf-row-field-popover.evf-popover-flipped .evf-popover-arrow::before{border-bottom:none;border-top:8px solid #edeff7;top:auto;bottom:0}' +
+						'.evf-row-field-popover.evf-popover-flipped .evf-popover-arrow::after{border-bottom:none;border-top:8px solid #fff;top:auto;bottom:1px}' +
 						'.evf-popover-search-wrap{padding:10px 12px;border-bottom:1px solid #f0f0f1;display:flex;align-items:center;gap:6px}' +
 						'.evf-popover-search-wrap .dashicons{color:#c3c3c3;flex-shrink:0;font-size:16px}' +
 						'#evf-popover-search{border:1px solid #e1e1e1;border-radius:4px;padding:5px 8px;width:100%;font-size:12px;outline:none;box-shadow:none;color:#383838}' +
@@ -4213,10 +4220,10 @@
 				);
 			}
 
-			// Create singleton popover DOM.
 			if (!$('#evf-row-field-popover').length) {
 				$('body').append(
 					'<div id="evf-row-field-popover" class="evf-row-field-popover">' +
+						'<div class="evf-popover-arrow"></div>' +
 						'<div class="evf-popover-search-wrap">' +
 						'<span class="dashicons dashicons-search"></span>' +
 						'<input type="text" id="evf-popover-search" placeholder="Search for a field" autocomplete="off" />' +
@@ -4243,15 +4250,27 @@
 					popW = $pop.outerWidth(),
 					popH = $pop.outerHeight(),
 					margin = 8,
+					anchorCX = offset.left - scrollLeft + $anchor.outerWidth() / 2,
 					top = offset.top - scrollTop + $anchor.outerHeight() + 6,
-					left = offset.left - scrollLeft - popW / 2 + $anchor.outerWidth() / 2;
+					left = anchorCX - popW / 2,
+					flipped = false;
 
 				// Clamp horizontal so the popover never bleeds past either edge.
 				left = Math.min(Math.max(margin, left), vpW - popW - margin);
 				// Flip above the anchor if there isn't enough room below.
 				if (top + popH > vpH - margin) {
 					top = offset.top - scrollTop - popH - 6;
+					flipped = true;
 				}
+
+				// Position arrow to point at the anchor's horizontal center.
+				var arrowX = anchorCX - left - 7; // 7 = half of 14px arrow width
+				arrowX = Math.min(Math.max(14, arrowX), popW - 28);
+				$pop
+					.toggleClass('evf-popover-flipped', flipped)
+					.find('.evf-popover-arrow')
+					.css('left', arrowX + 'px');
+
 				return { top: top, left: left };
 			};
 
