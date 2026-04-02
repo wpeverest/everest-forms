@@ -4045,7 +4045,8 @@
 					if ('mouseenter' === event.type) {
 						$(this).addClass('evf-hover');
 					} else {
-						$('.evf-admin-row').removeClass('evf-hover');
+						// Keep evf-hover on any row that has an open popover.
+						$('.evf-admin-row:not(.evf-popover-open)').removeClass('evf-hover');
 					}
 				}
 			});
@@ -4066,6 +4067,17 @@
 								'<span class="dashicons dashicons-plus" title="Add Field to Row"></span>' +
 								'</div>',
 						);
+				}
+			});
+
+			// Add "+" button at the bottom of each existing field for field-level insertion.
+			$('.evf-admin-field-wrapper .everest-forms-field').each(function () {
+				if (!$(this).find('.evf-add-field-below').length) {
+					$(this).append(
+						'<div class="evf-add-field-below">' +
+							'<span class="dashicons dashicons-plus" title="Add Field Below"></span>' +
+							'</div>',
+					);
 				}
 			});
 		},
@@ -4155,22 +4167,52 @@
 				$('head').append(
 					'<style id="evf-row-popover-style">' +
 						'.evf-add-field-to-row{cursor:pointer}' +
-						'.evf-add-field-to-row:hover span.dashicons{background:#2271b1;color:#fff}' +
-						'.evf-row-field-popover{position:fixed;background:#fff;border:1px solid #ddd;border-radius:6px;box-shadow:0 4px 20px rgba(0,0,0,.15);width:320px;z-index:999999;display:none}' +
-						'.evf-popover-search-wrap{padding:10px 12px;border-bottom:1px solid #eee;display:flex;align-items:center;gap:6px}' +
-						'.evf-popover-search-wrap .dashicons{color:#999;flex-shrink:0}' +
-						'#evf-popover-search{border:1px solid #ddd;border-radius:4px;padding:6px 8px;width:100%;font-size:13px;outline:none;box-shadow:none}' +
-						'#evf-popover-search:focus{border-color:#2271b1;box-shadow:0 0 0 1px #2271b1}' +
-						'.evf-popover-tabs{display:flex;gap:4px;padding:8px 10px;border-bottom:1px solid #eee;overflow-x:auto;scrollbar-width:thin}' +
-						'.evf-popover-tab{background:#f0f0f1;border:1px solid #ddd;border-radius:3px;padding:4px 10px;font-size:12px;cursor:pointer;white-space:nowrap;color:#2c2c2c}' +
-						'.evf-popover-tab.active{background:#2271b1;color:#fff;border-color:#2271b1}' +
-						'.evf-popover-fields-wrap{max-height:240px;overflow-y:auto;padding:8px}' +
-						'.evf-popover-fields{display:grid;grid-template-columns:repeat(3,1fr);gap:4px}' +
-						'.evf-popover-field-item{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px 4px;border:1px solid #eee;border-radius:4px;cursor:pointer;font-size:11px;text-align:center;gap:4px;background:#fff}' +
-						'.evf-popover-field-item:hover{border-color:#2271b1;color:#2271b1}' +
+						'.evf-add-field-to-row span.dashicons{border-right:1px solid rgba(255,255,255,.2)}' +
+						'.evf-add-field-to-row:hover span.dashicons{background:#0095ff;color:#fff}' +
+						/* Keep the container row's toolbar visible independently of evf-hover so
+						   hover-out timing issues cannot remove focus while the popover is open. */
+						'.evf-admin-row.evf-popover-open .evf-toggle-row{opacity:1!important;visibility:visible!important}' +
+						'.everest-forms-field.evf-field-popover-open .evf-field-action{opacity:1!important;visibility:visible!important}' +
+						'.everest-forms-field{position:relative}' +
+						'.evf-add-field-below{position:absolute;bottom:-15px;left:50%;transform:translateX(-50%);z-index:10;cursor:pointer;line-height:1;opacity:0;visibility:hidden;transition:opacity .15s,visibility .15s}' +
+						'.everest-forms-field:hover>.evf-add-field-below,.everest-forms-field.evf-field-popover-open>.evf-add-field-below{opacity:1;visibility:visible}' +
+						'.evf-add-field-below span.dashicons{background:#e9e9e9;color:#666;border-radius:50%;font-size:16px;width:28px;height:28px;display:flex;align-items:center;justify-content:center}' +
+						'.evf-add-field-below:hover span.dashicons,.evf-add-field-below:focus span.dashicons{background:#7e3bd0;color:#fff}' +
+						/* Popover shell — subtle shadow, EVF border tone, clean radius */
+						'.evf-row-field-popover{position:fixed;background:#fff;border:1px solid #edeff7;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.08);width:480px;z-index:999999;display:none;overflow:hidden}' +
+						/* Search row */
+						'.evf-popover-search-wrap{padding:10px 12px;border-bottom:1px solid #f0f0f1;display:flex;align-items:center;gap:6px}' +
+						'.evf-popover-search-wrap .dashicons{color:#c3c3c3;flex-shrink:0;font-size:16px}' +
+						'#evf-popover-search{border:1px solid #e1e1e1;border-radius:4px;padding:5px 8px;width:100%;font-size:12px;outline:none;box-shadow:none;color:#383838}' +
+						'#evf-popover-search:focus{border-color:#7e3bd0;box-shadow:0 0 0 2px rgba(126,59,208,.1)}' +
+						/* Category tabs — horizontal scroll with floating nav arrows */
+						'.evf-popover-tabs-nav{position:relative;border-bottom:1px solid #f0f0f1}' +
+						'.evf-popover-tabs{display:flex;flex-wrap:nowrap;gap:3px;padding:8px 12px;overflow-x:auto;scrollbar-width:none;scroll-behavior:smooth}' +
+						'.evf-popover-tabs::-webkit-scrollbar{display:none}' +
+						'.evf-tabs-arrow{position:absolute;top:0;bottom:0;width:32px;display:none;align-items:center;justify-content:center;border:none;padding:0;cursor:pointer;z-index:2}' +
+						'.evf-tabs-arrow.evf-tabs-arrow-visible{display:flex}' +
+						'.evf-tabs-arrow-left{left:0;background:linear-gradient(to right,#fff 55%,transparent)}' +
+						'.evf-tabs-arrow-right{right:0;background:linear-gradient(to left,#fff 55%,transparent)}' +
+						'.evf-tabs-arrow .dashicons{font-size:14px;color:#888;pointer-events:none}' +
+						'.evf-tabs-arrow:hover .dashicons{color:#7e3bd0}' +
+						'.evf-popover-tab{background:transparent;border:none;border-radius:20px;padding:3px 10px;font-size:12px;cursor:pointer;white-space:nowrap;color:#666;transition:background .12s,color .12s}' +
+						'.evf-popover-tab:hover{background:#f5f5f7;color:#383838}' +
+						'.evf-popover-tab.active{background:rgba(126,59,208,.1);color:#7e3bd0;font-weight:600}' +
+						/* Field grid — mirrors sidebar item style */
+						'.evf-popover-fields-wrap{max-height:320px;overflow-y:auto;padding:10px 12px}' +
+						'.evf-popover-fields-wrap::-webkit-scrollbar{width:4px}' +
+						'.evf-popover-fields-wrap::-webkit-scrollbar-track{background:transparent}' +
+						'.evf-popover-fields-wrap::-webkit-scrollbar-thumb{background:#e1e1e1;border-radius:4px}' +
+						'.evf-popover-fields{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}' +
+						'.evf-popover-field-item{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px 6px 8px;border:1px solid #edeff7;border-radius:4px;cursor:pointer;font-size:11px;text-align:center;gap:4px;background:#fbfbfd;color:#383838;transition:border-color .12s,color .12s,background .12s;line-height:1.4}' +
+						'.evf-popover-field-item:hover{border-color:#8c64c6;color:#8c64c6;background:#fff}' +
 						'.evf-popover-field-item .evf-popover-field-icon i{font-size:18px}' +
-						'.evf-popover-field-item.evf-field-blocked{opacity:.5;cursor:default;pointer-events:none}' +
-						'.evf-popover-no-results{grid-column:1/-1;text-align:center;padding:16px;color:#777;font-size:12px}' +
+						'.evf-popover-field-item.evf-field-blocked{opacity:.45;cursor:default;pointer-events:none}' +
+						'.evf-popover-no-results{grid-column:1/-1;text-align:center;padding:20px 0;color:#999;font-size:12px}' +
+						/* Loading state */
+						'.evf-field-loading-wrap{display:flex;align-items:center;justify-content:center;gap:8px;padding:12px}' +
+						'.evf-field-loading-wrap .spinner{float:none;margin:0}' +
+						'.evf-field-loading-label{font-size:12px;color:#666}' +
 						'</style>',
 				);
 			}
@@ -4183,7 +4225,11 @@
 						'<span class="dashicons dashicons-search"></span>' +
 						'<input type="text" id="evf-popover-search" placeholder="Search for a field" autocomplete="off" />' +
 						'</div>' +
+						'<div class="evf-popover-tabs-nav">' +
+						'<button type="button" class="evf-tabs-arrow evf-tabs-arrow-left" aria-label="Scroll left"><span class="dashicons dashicons-arrow-left-alt2"></span></button>' +
 						'<div class="evf-popover-tabs"></div>' +
+						'<button type="button" class="evf-tabs-arrow evf-tabs-arrow-right" aria-label="Scroll right"><span class="dashicons dashicons-arrow-right-alt2"></span></button>' +
+						'</div>' +
 						'<div class="evf-popover-fields-wrap"><div class="evf-popover-fields"></div></div>' +
 						'</div>',
 				);
@@ -4191,35 +4237,169 @@
 
 			EVFPanelBuilder.populateRowPopover();
 
-			// Open.
+			// Show/hide scroll arrows based on current tabs overflow.
+			var updateTabArrows = function () {
+				var tabs = document.querySelector(
+					'#evf-row-field-popover .evf-popover-tabs',
+				);
+				if (!tabs) return;
+				$('.evf-tabs-arrow-left').toggleClass(
+					'evf-tabs-arrow-visible',
+					tabs.scrollLeft > 1,
+				);
+				$('.evf-tabs-arrow-right').toggleClass(
+					'evf-tabs-arrow-visible',
+					Math.ceil(tabs.scrollLeft + tabs.clientWidth) < tabs.scrollWidth,
+				);
+			};
+
+			// Scroll tabs on arrow click.
+			$(document.body).on(
+				'click',
+				'#evf-row-field-popover .evf-tabs-arrow',
+				function (e) {
+					e.stopPropagation();
+					var tabs = document.querySelector(
+						'#evf-row-field-popover .evf-popover-tabs',
+					);
+					if (!tabs) return;
+					var step = 120;
+					tabs.scrollLeft += $(this).hasClass('evf-tabs-arrow-left')
+						? -step
+						: step;
+					setTimeout(updateTabArrows, 200);
+				},
+			);
+
+			// Update arrows as tabs are scrolled.
+			$(document.body).on(
+				'scroll',
+				'#evf-row-field-popover .evf-popover-tabs',
+				updateTabArrows,
+			);
+
+			// Open from container row "+" button.
 			$(document.body).on('click', '.evf-add-field-to-row', function (e) {
 				e.stopPropagation();
 				var $btn = $(this),
 					$row = $btn.closest('.evf-admin-row'),
-					$popover = $('#evf-row-field-popover'),
-					offset = $btn.offset(),
+					$popover = $('#evf-row-field-popover');
+
+				// Toggle: close if already open for this row.
+				if ($popover.is(':visible') && $row.hasClass('evf-popover-open')) {
+					$popover.hide();
+					$row.removeClass('evf-popover-open');
+					$('.everest-forms-field.evf-field-popover-open').removeClass(
+						'evf-field-popover-open',
+					);
+					return;
+				}
+
+				var offset = $btn.offset(),
 					left =
 						offset.left - $popover.outerWidth() / 2 + $btn.outerWidth() / 2;
 
 				EVFPanelBuilder.populateRowPopover();
+
+				// Clear any previous open-row state.
+				$('.evf-admin-row.evf-popover-open').removeClass('evf-popover-open');
+				$('.everest-forms-field.evf-field-popover-open').removeClass(
+					'evf-field-popover-open',
+				);
+
+				// Mark row so its toggle toolbar stays visible while popover is open.
+				// CSS on evf-popover-open handles visibility directly — no evf-hover dependency.
+				$row.addClass('evf-popover-open');
+
 				$popover
 					.data('target-row', $row)
+					.data('insert-after-field', null)
 					.css({
 						top: offset.top + $btn.outerHeight() + 6,
 						left: Math.max(4, left),
 					})
 					.show();
 
+				updateTabArrows();
+				$('#evf-popover-search').val('').trigger('input').focus();
+			});
+
+			// Open from field-level "+" button.
+			$(document.body).on('click', '.evf-add-field-below', function (e) {
+				e.stopPropagation();
+				var $btn = $(this),
+					$field = $btn.closest('.everest-forms-field'),
+					$row = $field.closest('.evf-admin-row'),
+					$popover = $('#evf-row-field-popover');
+
+				// Toggle: close if already open for this exact field.
+				var $prevField = $popover.data('insert-after-field');
+				if (
+					$popover.is(':visible') &&
+					$row.hasClass('evf-popover-open') &&
+					$prevField &&
+					$prevField[0] === $field[0]
+				) {
+					$popover.hide();
+					$row.removeClass('evf-popover-open');
+					$field.removeClass('evf-field-popover-open');
+					return;
+				}
+
+				var offset = $btn.offset(),
+					left =
+						offset.left - $popover.outerWidth() / 2 + $btn.outerWidth() / 2;
+
+				EVFPanelBuilder.populateRowPopover();
+
+				// Clear any previous open-row/field state.
+				$('.evf-admin-row.evf-popover-open').removeClass('evf-popover-open');
+				$('.everest-forms-field.evf-field-popover-open').removeClass(
+					'evf-field-popover-open',
+				);
+
+				// Mark row and field so their toolbars stay visible while popover is open.
+				// CSS on evf-popover-open / evf-field-popover-open handles visibility directly.
+				$row.addClass('evf-popover-open');
+				$field.addClass('evf-field-popover-open');
+
+				$popover
+					.data('target-row', $row)
+					.data('insert-after-field', $field)
+					.css({
+						top: offset.top + $btn.outerHeight() + 6,
+						left: Math.max(4, left),
+					})
+					.show();
+
+				updateTabArrows();
 				$('#evf-popover-search').val('').trigger('input').focus();
 			});
 
 			// Close on outside click.
 			$(document).on('click.evf-row-popover', function (e) {
 				if (
-					!$(e.target).closest('#evf-row-field-popover, .evf-add-field-to-row')
-						.length
+					!$(e.target).closest(
+						'#evf-row-field-popover, .evf-add-field-to-row, .evf-add-field-below',
+					).length
 				) {
 					$('#evf-row-field-popover').hide();
+					$('.evf-admin-row.evf-popover-open').removeClass('evf-popover-open');
+					$('.everest-forms-field.evf-field-popover-open').removeClass(
+						'evf-field-popover-open',
+					);
+				}
+			});
+
+			// Add field-level "+" button to newly appended fields.
+			$(document.body).on('evf_after_field_append', function (e, fieldId) {
+				var $field = $('#' + fieldId);
+				if ($field.length && !$field.find('.evf-add-field-below').length) {
+					$field.append(
+						'<div class="evf-add-field-below">' +
+							'<span class="dashicons dashicons-plus" title="Add Field Below"></span>' +
+							'</div>',
+					);
 				}
 			});
 
@@ -4259,6 +4439,13 @@
 						);
 					});
 					$('.evf-popover-no-results').remove();
+					// Keep clicked tab in view and refresh arrow state.
+					this.scrollIntoView({
+						behavior: 'smooth',
+						block: 'nearest',
+						inline: 'nearest',
+					});
+					setTimeout(updateTabArrows, 200);
 				},
 			);
 
@@ -4267,20 +4454,31 @@
 				'click',
 				'#evf-row-field-popover .evf-popover-field-item:not(.evf-field-blocked)',
 				function () {
-					var fieldType = $(this).data('field-type'),
+					var $item = $(this),
+						fieldType = $item.data('field-type'),
+						fieldLabel = $item.data('field-label'),
 						$popover = $('#evf-row-field-popover'),
-						$targetGrid = $popover
+						$insertAfterField = $popover.data('insert-after-field'),
+						$placeholder = $('<button class="evf-registered-item" />')
+							.attr('data-field-type', fieldType)
+							.attr('data-field-label', fieldLabel);
+
+					if ($insertAfterField && $insertAfterField.length) {
+						$insertAfterField.after($placeholder);
+					} else {
+						$popover
 							.data('target-row')
 							.find('.evf-admin-grid')
-							.last(),
-						$placeholder = $('<button class="evf-registered-item" />').attr(
-							'data-field-type',
-							fieldType,
-						);
+							.last()
+							.append($placeholder);
+					}
 
-					$targetGrid.append($placeholder);
 					EVFPanelBuilder.fieldDrop($placeholder);
 					$popover.hide();
+					$('.evf-admin-row.evf-popover-open').removeClass('evf-popover-open');
+					$('.everest-forms-field.evf-field-popover-open').removeClass(
+						'evf-field-popover-open',
+					);
 				},
 			);
 		},
@@ -4440,12 +4638,22 @@
 				$('.evf-admin-grid').last().append(field);
 			}
 
+			var fieldLoadingLabel = field.attr('data-field-label');
 			field
 				.css({
 					left: '0',
 					width: '100%',
 				})
-				.append('<i class="spinner is-active"></i>');
+				.append(
+					'<span class="evf-field-loading-wrap">' +
+						'<i class="spinner is-active"></i>' +
+						(fieldLoadingLabel
+							? '<span class="evf-field-loading-label">' +
+								fieldLoadingLabel +
+								'</span>'
+							: '') +
+						'</span>',
+				);
 
 			$.ajax({
 				url: evf_data.ajax_url,
