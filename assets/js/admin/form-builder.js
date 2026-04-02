@@ -879,6 +879,7 @@
 			EVFPanelBuilder.bindFieldSettings();
 			EVFPanelBuilder.bindFieldDelete();
 			EVFPanelBuilder.bindFieldDeleteWithKeyEvent();
+			EVFPanelBuilder.bindFieldMultiSelect();
 			EVFPanelBuilder.bindCloneField();
 			EVFPanelBuilder.bindSaveOption();
 			EVFPanelBuilder.bindEmbedOption();
@@ -2858,6 +2859,34 @@
 			EVFPanelBuilder.bindFields();
 			EVFPanelBuilder.checkEmptyGrid();
 
+			if ($('.everest-forms-row-options').length) {
+				var _row_id = max_row_id,
+					_evf_data = window.evf_data;
+				$.ajax({
+					url: _evf_data.ajax_url,
+					type: 'POST',
+					data: {
+						action: 'everest_forms_new_row',
+						security: _evf_data.evf_add_row_nonce,
+						form_id: _evf_data.form_id,
+						row_id: _row_id,
+					},
+					success: function (xhr) {
+						if (true === xhr.success && 'undefined' !== typeof xhr.data.html) {
+							$(document)
+								.find('.everest-forms-row-option-group')
+								.append(xhr.data.html);
+							EVFPanelBuilder.conditionalLogicAppendRow(_row_id);
+							$(
+								'#everest-forms-panel-field-form_rows-connection_row_' +
+									_row_id +
+									'-conditional_logic_status',
+							).prop('checked', false);
+						}
+					},
+				});
+			}
+
 			$('html, body').animate({ scrollTop: row_clone.offset().top - 100 }, 400);
 		},
 		bindLayoutContainers: function () {
@@ -3499,6 +3528,166 @@
 					}
 				},
 			);
+		},
+		bindFieldMultiSelect: function () {
+			if (!$('#evf-multi-select-style').length) {
+				$('head').append(
+					'<style id="evf-multi-select-style">' +
+						'.evf-field-selected{box-shadow:0 0 0 2px #7e3bd0!important;z-index:2;position:relative;border-radius:4px}' +
+						'.evf-field-selected::after{content:"\\2713";position:absolute;top:-8px;right:-8px;width:18px;height:18px;background:#7e3bd0;border-radius:50%;color:#fff;font-size:10px;font-weight:700;line-height:18px;text-align:center;pointer-events:none;z-index:10}' +
+						'#evf-bulk-action-bar{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#fff;border:1px solid #edeff7;border-radius:8px;padding:8px 12px;display:none;align-items:center;gap:6px;z-index:999999;box-shadow:0 8px 24px rgba(0,0,0,.08);white-space:nowrap;font-size:12px;color:#383838}' +
+						'#evf-bulk-action-bar .evf-bulk-count{color:#7e3bd0;font-weight:600;font-size:12px;padding-right:2px}' +
+						'#evf-bulk-action-bar .evf-bulk-sep{width:1px;height:20px;background:#edeff7;flex-shrink:0}' +
+						'#evf-bulk-action-bar button{background:#fbfbfd;border:1px solid #edeff7;color:#383838;cursor:pointer;display:flex;align-items:center;gap:4px;padding:5px 10px;border-radius:4px;font-size:12px;transition:border-color .12s,color .12s,background .12s;line-height:1}' +
+						'#evf-bulk-action-bar button:hover{border-color:#8c64c6;color:#8c64c6;background:#fff}' +
+						'#evf-bulk-action-bar .evf-bulk-delete:hover{border-color:#dc3545;color:#dc3545;background:#fff}' +
+						'#evf-bulk-action-bar .evf-bulk-deselect{background:transparent;border-color:transparent;color:#999;padding:5px 6px}' +
+						'#evf-bulk-action-bar .evf-bulk-deselect:hover{border-color:#edeff7;color:#383838;background:#fbfbfd}' +
+						'#evf-bulk-action-bar button .dashicons{font-size:14px;width:14px;height:14px;line-height:14px}' +
+						'</style>',
+				);
+			}
+
+			if (!$('#evf-bulk-action-bar').length) {
+				$('body').append(
+					'<div id="evf-bulk-action-bar" role="toolbar">' +
+						'<span class="evf-bulk-count"></span>' +
+						'<div class="evf-bulk-sep"></div>' +
+						'<button class="evf-bulk-move-up"><span class="dashicons dashicons-arrow-up-alt2"></span>Move Up</button>' +
+						'<button class="evf-bulk-move-down"><span class="dashicons dashicons-arrow-down-alt2"></span>Move Down</button>' +
+						'<div class="evf-bulk-sep"></div>' +
+						'<button class="evf-bulk-delete"><span class="dashicons dashicons-trash"></span>Delete</button>' +
+						'<div class="evf-bulk-sep"></div>' +
+						'<button class="evf-bulk-deselect" title="Clear selection"><span class="dashicons dashicons-no-alt"></span></button>' +
+						'</div>',
+				);
+			}
+
+			$(document.body).on(
+				'click',
+				'.everest-forms-preview .everest-forms-field',
+				function (e) {
+					if (!e.shiftKey) return;
+					e.preventDefault();
+					e.stopPropagation();
+					$(this).toggleClass('evf-field-selected');
+					EVFPanelBuilder.updateBulkActionBar();
+				},
+			);
+
+			$(document.body).on(
+				'click',
+				'#evf-bulk-action-bar .evf-bulk-deselect',
+				function () {
+					$('.evf-field-selected').removeClass('evf-field-selected');
+					EVFPanelBuilder.updateBulkActionBar();
+				},
+			);
+
+			$(document.body).on(
+				'click',
+				'#evf-bulk-action-bar .evf-bulk-move-up',
+				function () {
+					$('.everest-forms-preview .evf-field-selected').each(function () {
+						var $prev = $(this)
+							.prevAll('.everest-forms-field:not(.evf-field-selected)')
+							.first();
+						if ($prev.length) {
+							$prev.before($(this));
+						}
+					});
+					$(document).trigger('evf_sort_update_complete', {
+						event: null,
+						ui: null,
+					});
+				},
+			);
+
+			$(document.body).on(
+				'click',
+				'#evf-bulk-action-bar .evf-bulk-move-down',
+				function () {
+					$(
+						$('.everest-forms-preview .evf-field-selected').toArray().reverse(),
+					).each(function () {
+						var $next = $(this)
+							.nextAll('.everest-forms-field:not(.evf-field-selected)')
+							.first();
+						if ($next.length) {
+							$next.after($(this));
+						}
+					});
+					$(document).trigger('evf_sort_update_complete', {
+						event: null,
+						ui: null,
+					});
+				},
+			);
+
+			$(document.body).on(
+				'click',
+				'#evf-bulk-action-bar .evf-bulk-delete',
+				function () {
+					var $selected = $('.everest-forms-preview .evf-field-selected'),
+						count = $selected.length;
+					$.confirm({
+						title: false,
+						content:
+							'Delete ' +
+							count +
+							' selected field' +
+							(count > 1 ? 's' : '') +
+							'?',
+						type: 'red',
+						closeIcon: false,
+						backgroundDismiss: false,
+						icon: 'dashicons dashicons-warning',
+						buttons: {
+							confirm: {
+								text: 'Delete',
+								btnClass: 'btn-danger',
+								action: function () {
+									$selected.each(function () {
+										var $field = $(this),
+											fieldId = $field.data('field-id');
+										$field.fadeOut(200, function () {
+											$(this).remove();
+											$('#everest-forms-field-option-' + fieldId).remove();
+										});
+									});
+									setTimeout(function () {
+										EVFPanelBuilder.checkEmptyGrid();
+									}, 250);
+									$('#evf-bulk-action-bar').hide();
+								},
+							},
+							cancel: {
+								text: evf_data.i18n_close,
+								btnClass: 'btn-default',
+							},
+						},
+					});
+				},
+			);
+
+			$(document).on('keydown.evf-multi-select', function (e) {
+				if (27 === e.keyCode && $('.evf-field-selected').length) {
+					$('.evf-field-selected').removeClass('evf-field-selected');
+					EVFPanelBuilder.updateBulkActionBar();
+				}
+			});
+		},
+		updateBulkActionBar: function () {
+			var $bar = $('#evf-bulk-action-bar'),
+				count = $('.evf-field-selected').length;
+			if (count > 0) {
+				$bar
+					.find('.evf-bulk-count')
+					.text(count + ' field' + (count > 1 ? 's' : '') + ' selected');
+				$bar.css('display', 'flex');
+			} else {
+				$bar.hide();
+			}
 		},
 		bindFieldDeleteWithKeyEvent: function () {
 			$('body').on('keyup', function (e) {
