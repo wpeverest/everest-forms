@@ -4162,15 +4162,12 @@
 		 * Bind the row-level "+" button and its field-picker popover.
 		 */
 		bindRowFieldPopover: function () {
-			// Inject styles once.
 			if (!$('#evf-row-popover-style').length) {
 				$('head').append(
 					'<style id="evf-row-popover-style">' +
 						'.evf-add-field-to-row{cursor:pointer}' +
 						'.evf-add-field-to-row span.dashicons{border-right:1px solid rgba(255,255,255,.2)}' +
 						'.evf-add-field-to-row:hover span.dashicons{background:#0095ff;color:#fff}' +
-						/* Keep the container row's toolbar visible independently of evf-hover so
-						   hover-out timing issues cannot remove focus while the popover is open. */
 						'.evf-admin-row.evf-popover-open .evf-toggle-row{opacity:1!important;visibility:visible!important}' +
 						'.everest-forms-field.evf-field-popover-open .evf-field-action{opacity:1!important;visibility:visible!important}' +
 						'.everest-forms-field{position:relative}' +
@@ -4178,14 +4175,11 @@
 						'.everest-forms-field:hover>.evf-add-field-below,.everest-forms-field.evf-field-popover-open>.evf-add-field-below{opacity:1;visibility:visible}' +
 						'.evf-add-field-below span.dashicons{background:#e9e9e9;color:#666;border-radius:50%;font-size:16px;width:28px;height:28px;display:flex;align-items:center;justify-content:center}' +
 						'.evf-add-field-below:hover span.dashicons,.evf-add-field-below:focus span.dashicons{background:#7e3bd0;color:#fff}' +
-						/* Popover shell — subtle shadow, EVF border tone, clean radius */
 						'.evf-row-field-popover{position:fixed;background:#fff;border:1px solid #edeff7;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.08);width:480px;z-index:999999;display:none;overflow:hidden}' +
-						/* Search row */
 						'.evf-popover-search-wrap{padding:10px 12px;border-bottom:1px solid #f0f0f1;display:flex;align-items:center;gap:6px}' +
 						'.evf-popover-search-wrap .dashicons{color:#c3c3c3;flex-shrink:0;font-size:16px}' +
 						'#evf-popover-search{border:1px solid #e1e1e1;border-radius:4px;padding:5px 8px;width:100%;font-size:12px;outline:none;box-shadow:none;color:#383838}' +
 						'#evf-popover-search:focus{border-color:#7e3bd0;box-shadow:0 0 0 2px rgba(126,59,208,.1)}' +
-						/* Category tabs — horizontal scroll with floating nav arrows */
 						'.evf-popover-tabs-nav{position:relative;border-bottom:1px solid #f0f0f1}' +
 						'.evf-popover-tabs{display:flex;flex-wrap:nowrap;gap:3px;padding:8px 12px;overflow-x:auto;scrollbar-width:none;scroll-behavior:smooth}' +
 						'.evf-popover-tabs::-webkit-scrollbar{display:none}' +
@@ -4198,7 +4192,6 @@
 						'.evf-popover-tab{background:transparent;border:none;border-radius:20px;padding:3px 10px;font-size:12px;cursor:pointer;white-space:nowrap;color:#666;transition:background .12s,color .12s}' +
 						'.evf-popover-tab:hover{background:#f5f5f7;color:#383838}' +
 						'.evf-popover-tab.active{background:rgba(126,59,208,.1);color:#7e3bd0;font-weight:600}' +
-						/* Field grid — mirrors sidebar item style */
 						'.evf-popover-fields-wrap{max-height:320px;overflow-y:auto;padding:10px 12px}' +
 						'.evf-popover-fields-wrap::-webkit-scrollbar{width:4px}' +
 						'.evf-popover-fields-wrap::-webkit-scrollbar-track{background:transparent}' +
@@ -4209,10 +4202,11 @@
 						'.evf-popover-field-item .evf-popover-field-icon i{font-size:18px}' +
 						'.evf-popover-field-item.evf-field-blocked{opacity:.45;cursor:default;pointer-events:none}' +
 						'.evf-popover-no-results{grid-column:1/-1;text-align:center;padding:20px 0;color:#999;font-size:12px}' +
-						/* Loading state */
 						'.evf-field-loading-wrap{display:flex;align-items:center;justify-content:center;gap:8px;padding:12px}' +
 						'.evf-field-loading-wrap .spinner{float:none;margin:0}' +
 						'.evf-field-loading-label{font-size:12px;color:#666}' +
+						'.evf-admin-grid.evf-empty-grid,.evf-admin-grid.evf-empty-grid::before{cursor:pointer!important}' +
+						'.evf-admin-row.evf-popover-open .evf-admin-grid.evf-empty-grid::before{color:#7e3bd0}' +
 						'</style>',
 				);
 			}
@@ -4239,21 +4233,21 @@
 
 			// Compute viewport-safe {top, left} for the fixed-position popover.
 			var positionPopover = function ($anchor, $pop) {
-				var offset     = $anchor.offset(),
+				var offset = $anchor.offset(),
 					scrollLeft = $(window).scrollLeft(),
-					scrollTop  = $(window).scrollTop(),
-					vpW        = window.innerWidth,
-					vpH        = window.innerHeight,
-					popW       = $pop.outerWidth(),
-					popH       = $pop.outerHeight(),
-					margin     = 8,
-					top        = offset.top  - scrollTop  + $anchor.outerHeight() + 6,
-					left       = offset.left - scrollLeft - popW / 2 + $anchor.outerWidth() / 2;
+					scrollTop = $(window).scrollTop(),
+					vpW = window.innerWidth,
+					vpH = window.innerHeight,
+					popW = $pop.outerWidth(),
+					popH = $pop.outerHeight(),
+					margin = 8,
+					top = offset.top - scrollTop + $anchor.outerHeight() + 6,
+					left = offset.left - scrollLeft - popW / 2 + $anchor.outerWidth() / 2;
 
 				// Clamp horizontal so the popover never bleeds past either edge.
-				left = Math.min( Math.max( margin, left ), vpW - popW - margin );
+				left = Math.min(Math.max(margin, left), vpW - popW - margin);
 				// Flip above the anchor if there isn't enough room below.
-				if ( top + popH > vpH - margin ) {
+				if (top + popH > vpH - margin) {
 					top = offset.top - scrollTop - popH - 6;
 				}
 				return { top: top, left: left };
@@ -4386,14 +4380,60 @@
 				$('#evf-popover-search').val('').trigger('input').focus();
 			});
 
+			// Open from empty grid column "+" pseudo-element (click lands on the grid element).
+			$(document.body).on(
+				'click',
+				'.evf-admin-grid.evf-empty-grid',
+				function (e) {
+					e.stopPropagation();
+					var $grid = $(this),
+						$row = $grid.closest('.evf-admin-row'),
+						$popover = $('#evf-row-field-popover');
+
+					// Toggle: close if already open for this exact grid.
+					var $prevGrid = $popover.data('insert-into-grid');
+					if (
+						$popover.is(':visible') &&
+						$row.hasClass('evf-popover-open') &&
+						$prevGrid &&
+						$prevGrid[0] === $grid[0]
+					) {
+						$popover.hide().removeData('insert-into-grid');
+						$row.removeClass('evf-popover-open');
+						return;
+					}
+
+					EVFPanelBuilder.populateRowPopover();
+
+					// Clear any previous open-row/field state.
+					$('.evf-admin-row.evf-popover-open').removeClass('evf-popover-open');
+					$('.everest-forms-field.evf-field-popover-open').removeClass(
+						'evf-field-popover-open',
+					);
+
+					$row.addClass('evf-popover-open');
+
+					var pos = positionPopover($grid, $popover);
+					$popover
+						.data('target-row', $row)
+						.data('insert-after-field', null)
+						.data('insert-into-grid', $grid)
+						.css(pos)
+						.show();
+
+					updateTabArrows();
+					$('#evf-popover-search').val('').trigger('input').focus();
+				},
+			);
+
 			// Close on outside click.
 			$(document).on('click.evf-row-popover', function (e) {
 				if (
 					!$(e.target).closest(
-						'#evf-row-field-popover, .evf-add-field-to-row, .evf-add-field-below',
+						'#evf-row-field-popover, .evf-add-field-to-row, .evf-add-field-below, .evf-admin-grid.evf-empty-grid',
 					).length
 				) {
-					$('#evf-row-field-popover').hide();
+					$('#evf-row-field-popover').hide().removeData('insert-into-grid');
 					$('.evf-admin-row.evf-popover-open').removeClass('evf-popover-open');
 					$('.everest-forms-field.evf-field-popover-open').removeClass(
 						'evf-field-popover-open',
@@ -4469,12 +4509,15 @@
 						fieldLabel = $item.data('field-label'),
 						$popover = $('#evf-row-field-popover'),
 						$insertAfterField = $popover.data('insert-after-field'),
+						$insertIntoGrid = $popover.data('insert-into-grid'),
 						$placeholder = $('<button class="evf-registered-item" />')
 							.attr('data-field-type', fieldType)
 							.attr('data-field-label', fieldLabel);
 
 					if ($insertAfterField && $insertAfterField.length) {
 						$insertAfterField.after($placeholder);
+					} else if ($insertIntoGrid && $insertIntoGrid.length) {
+						$insertIntoGrid.append($placeholder);
 					} else {
 						$popover
 							.data('target-row')
@@ -4484,7 +4527,7 @@
 					}
 
 					EVFPanelBuilder.fieldDrop($placeholder);
-					$popover.hide();
+					$popover.hide().removeData('insert-into-grid');
 					$('.evf-admin-row.evf-popover-open').removeClass('evf-popover-open');
 					$('.everest-forms-field.evf-field-popover-open').removeClass(
 						'evf-field-popover-open',
