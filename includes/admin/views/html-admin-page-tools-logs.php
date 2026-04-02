@@ -43,6 +43,21 @@ defined( 'ABSPATH' ) || exit;
 		<?php echo esc_html( $viewed_log ); ?>
 	</div>
 	<div class="alignright" style="display: flex; gap: 10px;">
+		<!-- Copy Log Button -->
+		<?php if ( ! empty( $viewed_log ) ) : ?>
+		<button type="button" id="evf-copy-log-btn" class="button button-secondary"
+			style="border-color: #475BB2; color: #475BB2; font-size: 14px; line-height: 20px; padding: 8px 14px; font-weight: 500;">
+			<?php esc_html_e( 'Copy Log', 'everest-forms' ); ?>
+		</button>
+		<?php endif; ?>
+		<!-- Download Log Button -->
+		<?php if ( ! empty( $viewed_log ) ) : ?>
+		<a href="<?php echo esc_url( wp_nonce_url( add_query_arg( array( 'handle_download' => sanitize_title( $viewed_log ) ), admin_url( 'admin.php?page=evf-tools&tab=logs' ) ), 'download_log' ) ); ?>"
+			class="button button-secondary"
+			style="border-color: #7545BB; color: #7545BB; font-size: 14px; line-height: 20px; padding: 8px 14px; font-weight: 500;">
+			<?php esc_html_e( 'Download Log', 'everest-forms' ); ?>
+		</a>
+		<?php endif; ?>
 		<!-- Delete All Logs Button -->
 		<?php if ( 1 < count( $logs ) ) : ?>
 		<a href="<?php echo esc_url( wp_nonce_url( add_query_arg( array( 'handle_all' => 'delete-all-logs' ), admin_url( 'admin.php?page=evf-tools&tab=logs' ) ), 'remove_all_logs' ) ); ?>"
@@ -63,9 +78,50 @@ defined( 'ABSPATH' ) || exit;
 <!-- Log Viewer Content -->
 <div id="log-viewer"
 	style="border: 1px solid #ddd; padding: 15px; border-radius: 4px; background: #ffffff; font-size: 13px;">
-	<pre
+	<pre id="evf-log-content"
 		style="white-space: pre-wrap; word-wrap: break-word; margin: 0;"><?php echo esc_html( file_get_contents( EVF_LOG_DIR . $viewed_log ) ); ?></pre>
 </div>
+
+<script>
+( function() {
+	var btn = document.getElementById( 'evf-copy-log-btn' );
+	if ( ! btn ) {
+		return;
+	}
+	btn.addEventListener( 'click', function() {
+		var content = document.getElementById( 'evf-log-content' );
+		if ( ! content ) {
+			return;
+		}
+		var originalLabel = btn.textContent;
+		if ( navigator.clipboard && navigator.clipboard.writeText ) {
+			navigator.clipboard.writeText( content.textContent ).then( function() {
+				btn.textContent = '<?php echo esc_js( __( 'Copied!', 'everest-forms' ) ); ?>';
+				setTimeout( function() { btn.textContent = originalLabel; }, 2000 );
+			} ).catch( function() {
+				fallbackCopy( content.textContent );
+			} );
+		} else {
+			fallbackCopy( content.textContent );
+		}
+		function fallbackCopy( text ) {
+			var ta = document.createElement( 'textarea' );
+			ta.value = text;
+			ta.style.position = 'fixed';
+			ta.style.opacity  = '0';
+			document.body.appendChild( ta );
+			ta.focus();
+			ta.select();
+			try {
+				document.execCommand( 'copy' );
+				btn.textContent = '<?php echo esc_js( __( 'Copied!', 'everest-forms' ) ); ?>';
+				setTimeout( function() { btn.textContent = originalLabel; }, 2000 );
+			} catch ( e ) {}
+			document.body.removeChild( ta );
+		}
+	} );
+} )();
+</script>
 
 <?php else : ?>
 <!-- No Logs Found -->
