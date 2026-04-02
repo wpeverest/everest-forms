@@ -775,26 +775,53 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 					if ( 'image-upload' === $fields_data['type'] ) {
 						$val = '';
 						foreach ( $field_val['field_value']['value_raw'] as $key => $value ) {
-							$val .= '<a href="' . esc_url( $value['value'] ) . '" target="_blank"><img src="' . esc_url( $value['value'] ) . '" style="width:200px;" /></a>';
+							$image_url = isset( $value['value'] ) ? esc_url( $value['value'] ) : '';
+
+							$val .= sprintf(
+								'<a href="%1$s" target="_blank" rel="noopener noreferrer"><img src="%1$s" style="width:200px;" alt="" /></a>',
+								$image_url
+							);
 						}
+
 						return $val;
 					}
+
 					if ( 'file-upload' === $fields_data['type'] ) {
 						$count = count( $field_val['field_value']['value_raw'] );
 						$val   = '';
+
 						if ( $count > 1 ) {
 							foreach ( $field_val['field_value']['value_raw'] as $key => $value ) {
-								if ( 1 === $count ) {
-									$val .= '<a href="' . esc_url( $value['value'] ) . '" target="_blank">' . esc_html( $value['name'] ) . '</a>';
-								} else {
-									$val .= '<a href="' . esc_url( $value['value'] ) . '" target="_blank">' . esc_html( $value['name'] ) . '</a>, ';
+								$file_url  = isset( $value['value'] ) ? esc_url( $value['value'] ) : '';
+								$file_name = isset( $value['name'] ) ? esc_html( $value['name'] ) : '';
 
+								if ( 1 === $count ) {
+									$val .= sprintf(
+										'<a href="%1$s" target="_blank" rel="noopener noreferrer">%2$s</a>',
+										$file_url,
+										$file_name
+									);
+								} else {
+									$val .= sprintf(
+										'<a href="%1$s" target="_blank" rel="noopener noreferrer">%2$s</a>, ',
+										$file_url,
+										$file_name
+									);
 								}
+
 								--$count;
 							}
 						} else {
-							$val .= '<a href="' . esc_url( $field_val['value'] ) . '" target="_blank">' . esc_html( $field_val['field_value']['value_raw'][0]['name'] ) . '</a>';
+							$file_url  = isset( $field_val['value'] ) ? esc_url( $field_val['value'] ) : '';
+							$file_name = isset( $field_val['field_value']['value_raw'][0]['name'] ) ? esc_html( $field_val['field_value']['value_raw'][0]['name'] ) : '';
+
+							$val .= sprintf(
+								'<a href="%1$s" target="_blank" rel="noopener noreferrer">%2$s</a>',
+								$file_url,
+								$file_name
+							);
 						}
+
 						return $val;
 					}
 				}
@@ -835,35 +862,38 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 							$output[ $meta_key ] = '';
 						}
 
+						$file_url      = esc_url( $file['value'] );
+						$file_original = esc_html( $file['file_original'] );
+
 						if ( 'export-csv' === $context ) {
-							$output[ $meta_key ][] = esc_url( $file['value'] );
+							$output[ $meta_key ][] = $file_url;
 						} elseif ( 'image-upload' === $field['type'] ) {
 							if ( 'email-html' === $context ) {
 								$output[ $meta_key ][] = apply_filters(
 									'everest_forms_image_value',
 									sprintf(
-										'<a href="%1$s" rel="noopener noreferrer" target="_blank"><img src="%1$s" style="width:200px;" /></a>',
-										esc_url( $file['value'] )
+										'<a href="%1$s" rel="noopener noreferrer" target="_blank"><img src="%1$s" style="width:200px;" alt="" /></a>',
+										$file_url
 									),
-									esc_url( $file['value'] )
+									$file_url
 								);
 							} elseif ( 'entry-single' === $context ) {
 								$output[ $meta_key ][] = sprintf(
-									'<a href="%1$s" rel="noopener noreferrer" target="_blank"><img src="%1$s" style="width:200px;" /></a>',
-									esc_url( $file['value'] )
+									'<a href="%1$s" rel="noopener noreferrer" target="_blank"><img src="%1$s" style="width:200px;" alt="" /></a>',
+									$file_url
 								);
 							} else {
 								$output[ $meta_key ][] = sprintf(
-									'<a href="%s" rel="noopener noreferrer" target="_blank">%s</a>',
-									esc_url( $file['value'] ),
-									esc_html( $file['file_original'] )
+									'<a href="%1$s" rel="noopener noreferrer" target="_blank">%2$s</a>',
+									$file_url,
+									$file_original
 								);
 							}
 						} else {
 							$output[ $meta_key ][] = sprintf(
-								'<a href="%s" rel="noopener noreferrer" target="_blank">%s</a>',
-								esc_url( $file['value'] ),
-								esc_html( $file['file_original'] )
+								'<a href="%1$s" rel="noopener noreferrer" target="_blank">%2$s</a>',
+								$file_url,
+								$file_original
 							);
 						}
 					}
@@ -881,22 +911,44 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 			}
 
 			if ( isset( $value['type'], $value['file_url'] ) && $value['type'] === $this->type ) {
-				$file = $uploads['basedir'] . str_replace( '/uploads/', '/', str_replace( content_url(), '', esc_url( $value['file_url'] ) ) );
+				$file = $uploads['basedir'] . str_replace( '/uploads/', '/', str_replace( content_url(), '', esc_url_raw( $value['file_url'] ) ) );
+
 				switch ( $this->type ) {
 					case 'image-upload':
 						if ( '' !== $value['file_url'] ) {
+							$file_url      = esc_url( $value['file_url'] );
+							$file_original = isset( $value['file_original'] ) ? esc_html( $value['file_original'] ) : '';
+
 							if ( 'export-pdf' === $context ) {
-								$val = sprintf( '<img src="%s" style="width:200px;height:100px;" />', $file );
+								$val = sprintf(
+									'<img src="%s" style="width:200px;height:100px;" alt="" />',
+									esc_attr( $file )
+								);
 							} elseif ( 'entry-single' === $context ) {
-								$val = sprintf( '<a href="%1$s" rel="noopener noreferrer" target="_blank"><img src="%1$s" style="width:200px;" /></a>', esc_url( $value['file_url'] ) );
+								$val = sprintf(
+									'<a href="%1$s" rel="noopener noreferrer" target="_blank"><img src="%1$s" style="width:200px;" alt="" /></a>',
+									$file_url
+								);
 							} else {
-								$val = sprintf( '<a href="%1$s" target="_blank" class="image">%2$s</a>', esc_url( $value['file_url'] ), sanitize_text_field( $value['file_original'] ) );
+								$val = sprintf(
+									'<a href="%1$s" target="_blank" rel="noopener noreferrer" class="image">%2$s</a>',
+									$file_url,
+									$file_original
+								);
 							}
 						}
 						break;
+
 					default:
 						if ( '' !== $value['file_url'] ) {
-							$val = sprintf( '<a href="%1$s" target="_blank">%2$s</a>', esc_url( $value['file_url'] ), sanitize_text_field( $value['file_original'] ) );
+							$file_url      = esc_url( $value['file_url'] );
+							$file_original = isset( $value['file_original'] ) ? esc_html( $value['file_original'] ) : '';
+
+							$val = sprintf(
+								'<a href="%1$s" target="_blank" rel="noopener noreferrer">%2$s</a>',
+								$file_url,
+								$file_original
+							);
 						}
 						break;
 				}
