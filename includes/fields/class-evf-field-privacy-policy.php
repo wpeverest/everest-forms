@@ -98,7 +98,7 @@ class EVF_Field_Privacy_Policy extends EVF_Form_Fields {
 				$meta_key = array_search( $field_value, $submitted_form_data->meta, true );
 			} elseif ( 'export-csv' === $context && is_object( $submitted_form_data ) ) {
 				$meta_key = array_search( $field_value, $submitted_form_data->meta, true );
-				$fields   = json_decode( $submitted_form_data->fields, true );
+				$fields   = json_decode( wp_unslash( (string) $submitted_form_data->fields ), true );
 			}
 
 			$entry = $entry_id ? evf_get_entry( $entry_id, true ) : false;
@@ -109,11 +109,15 @@ class EVF_Field_Privacy_Policy extends EVF_Form_Fields {
 
 			if ( is_array( $fields ) ) {
 				foreach ( $fields as $field ) {
-					if ( $this->type === $field['type'] && $meta_key === $field['meta_key'] && ! empty( $field_value ) ) {
+					$field_type     = isset( $field['type'] ) ? sanitize_text_field( wp_unslash( (string) $field['type'] ) ) : '';
+					$field_meta_key = isset( $field['meta_key'] ) ? sanitize_text_field( wp_unslash( (string) $field['meta_key'] ) ) : '';
+
+					if ( $this->type === $field_type && $meta_key === $field_meta_key && ! empty( $field_value ) ) {
 						if ( 'export-csv' === $context ) {
-							return evf_process_hyperlink_syntax( $field_value, true );
+							return evf_process_hyperlink_syntax( sanitize_text_field( wp_unslash( (string) $field_value ) ), true );
 						}
-						return evf_process_syntaxes( $field_value );
+
+						return wp_kses_post( evf_process_syntaxes( sanitize_text_field( wp_unslash( (string) $field_value ) ) ) );
 					}
 				}
 			}
