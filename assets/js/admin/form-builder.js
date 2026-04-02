@@ -4167,7 +4167,7 @@
 					'<style id="evf-row-popover-style">' +
 						'.evf-add-field-to-row{cursor:pointer}' +
 						'.evf-add-field-to-row span.dashicons{border-right:1px solid rgba(255,255,255,.2)}' +
-						'.evf-add-field-to-row:hover span.dashicons{background:#0095ff;color:#fff}' +
+						'.evf-add-field-to-row:hover span.dashicons{background:#0095ff!important;color:#fff!important}' +
 						'.evf-admin-row.evf-popover-open .evf-toggle-row{opacity:1!important;visibility:visible!important}' +
 						'.everest-forms-field.evf-field-popover-open .evf-field-action{opacity:1!important;visibility:visible!important}' +
 						'.everest-forms-field{position:relative}' +
@@ -4206,7 +4206,9 @@
 						'.evf-field-loading-wrap .spinner{float:none;margin:0}' +
 						'.evf-field-loading-label{font-size:12px;color:#666}' +
 						'.evf-admin-grid.evf-empty-grid,.evf-admin-grid.evf-empty-grid::before{cursor:pointer!important}' +
-						'.evf-admin-row.evf-popover-open .evf-admin-grid.evf-empty-grid::before{color:#7e3bd0}' +
+						'.evf-admin-grid.evf-empty-grid::before{width:36px!important;height:36px!important;border-radius:50%!important;background:#e9e9e9!important;color:#666!important;font-size:20px!important;display:flex!important;align-items:center!important;justify-content:center!important;line-height:1!important}' +
+						'.evf-admin-grid.evf-empty-grid:hover::before{background:rgba(126,59,208,.12)!important;color:#7e3bd0!important}' +
+						'.evf-admin-row.evf-popover-open .evf-admin-grid.evf-empty-grid::before{background:rgba(126,59,208,.12)!important;color:#7e3bd0!important}' +
 						'</style>',
 				);
 			}
