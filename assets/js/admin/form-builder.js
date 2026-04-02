@@ -4045,7 +4045,6 @@
 					if ('mouseenter' === event.type) {
 						$(this).addClass('evf-hover');
 					} else {
-						// Keep evf-hover on any row that has an open popover.
 						$('.evf-admin-row:not(.evf-popover-open)').removeClass('evf-hover');
 					}
 				}
@@ -4057,7 +4056,6 @@
 				$('.evf-admin-field-wrapper').sortable('refreshPositions');
 			});
 
-			// Add "+" button inside each row's toggle bar for the row field popover.
 			$('.evf-admin-field-wrapper .evf-admin-row').each(function () {
 				if (!$(this).find('.evf-add-field-to-row').length) {
 					$(this)
@@ -4070,7 +4068,6 @@
 				}
 			});
 
-			// Add "+" button at the bottom of each existing field for field-level insertion.
 			$('.evf-admin-field-wrapper .everest-forms-field').each(function () {
 				if (!$(this).find('.evf-add-field-below').length) {
 					$(this).append(
@@ -4240,7 +4237,6 @@
 
 			EVFPanelBuilder.populateRowPopover();
 
-			// Compute viewport-safe {top, left} for the fixed-position popover.
 			var positionPopover = function ($anchor, $pop) {
 				var offset = $anchor.offset(),
 					scrollLeft = $(window).scrollLeft(),
@@ -4255,16 +4251,13 @@
 					left = anchorCX - popW / 2,
 					flipped = false;
 
-				// Clamp horizontal so the popover never bleeds past either edge.
 				left = Math.min(Math.max(margin, left), vpW - popW - margin);
-				// Flip above the anchor if there isn't enough room below.
 				if (top + popH > vpH - margin) {
 					top = offset.top - scrollTop - popH - 6;
 					flipped = true;
 				}
 
-				// Position arrow to point at the anchor's horizontal center.
-				var arrowX = anchorCX - left - 7; // 7 = half of 14px arrow width
+				var arrowX = anchorCX - left - 7;
 				arrowX = Math.min(Math.max(14, arrowX), popW - 28);
 				$pop
 					.toggleClass('evf-popover-flipped', flipped)
@@ -4274,7 +4267,6 @@
 				return { top: top, left: left };
 			};
 
-			// Show/hide scroll arrows based on current tabs overflow.
 			var updateTabArrows = function () {
 				var tabs = document.querySelector(
 					'#evf-row-field-popover .evf-popover-tabs',
@@ -4290,7 +4282,6 @@
 				);
 			};
 
-			// Scroll tabs on arrow click.
 			$(document.body).on(
 				'click',
 				'#evf-row-field-popover .evf-tabs-arrow',
@@ -4308,21 +4299,18 @@
 				},
 			);
 
-			// Update arrows as tabs are scrolled.
 			$(document.body).on(
 				'scroll',
 				'#evf-row-field-popover .evf-popover-tabs',
 				updateTabArrows,
 			);
 
-			// Open from container row "+" button.
 			$(document.body).on('click', '.evf-add-field-to-row', function (e) {
 				e.stopPropagation();
 				var $btn = $(this),
 					$row = $btn.closest('.evf-admin-row'),
 					$popover = $('#evf-row-field-popover');
 
-				// Toggle: close if already open for this row.
 				if ($popover.is(':visible') && $row.hasClass('evf-popover-open')) {
 					$popover.hide();
 					$row.removeClass('evf-popover-open');
@@ -4334,14 +4322,11 @@
 
 				EVFPanelBuilder.populateRowPopover();
 
-				// Clear any previous open-row state.
 				$('.evf-admin-row.evf-popover-open').removeClass('evf-popover-open');
 				$('.everest-forms-field.evf-field-popover-open').removeClass(
 					'evf-field-popover-open',
 				);
 
-				// Mark row so its toggle toolbar stays visible while popover is open.
-				// CSS on evf-popover-open handles visibility directly — no evf-hover dependency.
 				$row.addClass('evf-popover-open');
 
 				var pos = positionPopover($btn, $popover);
@@ -4355,7 +4340,6 @@
 				$('#evf-popover-search').val('').trigger('input').focus();
 			});
 
-			// Open from field-level "+" button.
 			$(document.body).on('click', '.evf-add-field-below', function (e) {
 				e.stopPropagation();
 				var $btn = $(this),
@@ -4363,7 +4347,6 @@
 					$row = $field.closest('.evf-admin-row'),
 					$popover = $('#evf-row-field-popover');
 
-				// Toggle: close if already open for this exact field.
 				var $prevField = $popover.data('insert-after-field');
 				if (
 					$popover.is(':visible') &&
@@ -4379,14 +4362,11 @@
 
 				EVFPanelBuilder.populateRowPopover();
 
-				// Clear any previous open-row/field state.
 				$('.evf-admin-row.evf-popover-open').removeClass('evf-popover-open');
 				$('.everest-forms-field.evf-field-popover-open').removeClass(
 					'evf-field-popover-open',
 				);
 
-				// Mark row and field so their toolbars stay visible while popover is open.
-				// CSS on evf-popover-open / evf-field-popover-open handles visibility directly.
 				$row.addClass('evf-popover-open');
 				$field.addClass('evf-field-popover-open');
 
@@ -4401,7 +4381,6 @@
 				$('#evf-popover-search').val('').trigger('input').focus();
 			});
 
-			// Open from empty grid column "+" pseudo-element (click lands on the grid element).
 			$(document.body).on(
 				'click',
 				'.evf-admin-grid.evf-empty-grid',
@@ -4411,7 +4390,6 @@
 						$row = $grid.closest('.evf-admin-row'),
 						$popover = $('#evf-row-field-popover');
 
-					// Toggle: close if already open for this exact grid.
 					var $prevGrid = $popover.data('insert-into-grid');
 					if (
 						$popover.is(':visible') &&
@@ -4426,7 +4404,6 @@
 
 					EVFPanelBuilder.populateRowPopover();
 
-					// Clear any previous open-row/field state.
 					$('.evf-admin-row.evf-popover-open').removeClass('evf-popover-open');
 					$('.everest-forms-field.evf-field-popover-open').removeClass(
 						'evf-field-popover-open',
@@ -4447,7 +4424,6 @@
 				},
 			);
 
-			// Close on outside click.
 			$(document).on('click.evf-row-popover', function (e) {
 				if (
 					!$(e.target).closest(
@@ -4462,7 +4438,6 @@
 				}
 			});
 
-			// Add field-level "+" button to newly appended fields.
 			$(document.body).on('evf_after_field_append', function (e, fieldId) {
 				var $field = $('#' + fieldId);
 				if ($field.length && !$field.find('.evf-add-field-below').length) {
@@ -4474,7 +4449,6 @@
 				}
 			});
 
-			// Search.
 			$(document.body).on('input', '#evf-popover-search', function () {
 				var term = $(this).val().toLowerCase().trim();
 				$('#evf-row-field-popover .evf-popover-field-item').each(function () {
@@ -4495,7 +4469,6 @@
 				}
 			});
 
-			// Tab switch.
 			$(document.body).on(
 				'click',
 				'#evf-row-field-popover .evf-popover-tab',
@@ -4510,7 +4483,6 @@
 						);
 					});
 					$('.evf-popover-no-results').remove();
-					// Keep clicked tab in view and refresh arrow state.
 					this.scrollIntoView({
 						behavior: 'smooth',
 						block: 'nearest',
@@ -4520,7 +4492,6 @@
 				},
 			);
 
-			// Insert field into the target row on selection.
 			$(document.body).on(
 				'click',
 				'#evf-row-field-popover .evf-popover-field-item:not(.evf-field-blocked)',
@@ -4656,25 +4627,21 @@
 						});
 				});
 
-				// Build the grid-lists container with grids + inner clear div inside it
 				var $gridLists = $('<div class="evf-grid-lists"></div>');
 
 				for (var $grid_number = 1; $grid_number <= grid_id; $grid_number++) {
 					grid_node.attr('data-grid-id', $grid_number);
 					$gridLists.append(grid_node.clone());
 				}
-				$gridLists.append('<div class="clear evf-clear"></div>'); // ✅ inner clear inside evf-grid-lists
+				$gridLists.append('<div class="clear evf-clear"></div>');
 
-				// Remove old elements
 				$this_single_row.find('.evf-grid-lists').remove();
 				$this_single_row.find('.evf-admin-grid').remove();
 				$this_single_row.find('.evf-clear').remove();
 
-				// Append outer clear + grid-lists to the row
 				$this_single_row.append('<div class="clear evf-clear"></div>');
 				$this_single_row.append($gridLists);
 
-				// Restore existing field content into first grid
 				$this_single_row.find('.evf-admin-grid').eq(0).append(grids.html());
 
 				$this_single_row.find('.evf-grid-selector').removeClass('active');
