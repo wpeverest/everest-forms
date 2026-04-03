@@ -122,11 +122,31 @@ class EVF_Report_Cron {
 	 * @return bool
 	 */
 	public function evf_report_form_statistics_send( $is_test = false ) {
-		$recipient = get_option( 'everest_forms_entries_reporting_email', '{admin_email}' );
-		$recipient = sanitize_email( str_replace( '{admin_email}', get_bloginfo( 'admin_email' ), $recipient ) );
+		$recipient_option = get_option( 'everest_forms_entries_reporting_email', '{admin_email}' );
+		$admin_email      = sanitize_email( get_bloginfo( 'admin_email' ) );
 
-		if ( empty( $recipient ) ) {
-			$recipient = sanitize_email( get_bloginfo( 'admin_email' ) );
+		if ( '{admin_email}' === $recipient_option ) {
+			$recipient = array(
+				$admin_email
+			);
+		} else {
+			$recipient_string = str_replace( '{admin_email}', $admin_email, $recipient_option );
+
+			$recipient_emails = array();
+			foreach ( explode( ',', $recipient_string ) as $email ) {
+				$email = sanitize_email( trim( $email ) );
+				if ( ! empty( $email ) ) {
+					$recipient_emails[] = $email;
+				}
+			}
+
+			if ( empty( $recipient_emails ) ) {
+				$recipient = $admin_email;
+			} elseif ( 1 === count( $recipient_emails ) ) {
+				$recipient = $recipient_emails[0];
+			} else {
+				$recipient = $recipient_emails;
+			}
 		}
 
 		$subject = get_option( 'everest_forms_entries_reporting_subject', __( 'Everest Forms - Entries summary statistics', 'everest-forms' ) );
@@ -138,7 +158,7 @@ class EVF_Report_Cron {
 		if ( ! in_array( $frequency, array( 'Daily', 'Weekly', 'Monthly' ), true ) ) {
 			evf_get_logger()->warning(
 				sprintf(
-					/* translators: %s: frequency value */
+				/* translators: %s: frequency value */
 					__( 'EVF Report: invalid frequency "%s" at send time.', 'everest-forms' ),
 					$frequency
 				),
