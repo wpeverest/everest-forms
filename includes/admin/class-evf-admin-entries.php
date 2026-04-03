@@ -405,6 +405,7 @@ class EVF_Admin_Entries {
 	public static function update_status( $entry_id, $status = 'publish' ) {
 		global $wpdb;
 
+		$update         = false;
 		$is_bulk_action = isset( $_GET['bulk_action'] ) && 'Apply' == $_GET['bulk_action'] ? true : false; // phpcs:ignore WordPress.Security.NonceVerification
 		if ( in_array( $status, array( 'star', 'unstar' ), true ) ) {
 			$update = $wpdb->update(
@@ -585,6 +586,10 @@ class EVF_Admin_Entries {
 				array( '%s' ),
 				array( '%d' )
 			);
+		}
+
+		if ( false !== $update && $update > 0 ) {
+			do_action( 'everest_forms_entry_status_updated', $entry_id, $status );
 		}
 
 		return $update;
