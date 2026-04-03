@@ -3534,6 +3534,7 @@
 				$('head').append(
 					'<style id="evf-multi-select-style">' +
 						'.evf-field-selected{box-shadow:0 0 0 2px #7e3bd0!important;z-index:2;position:relative;border-radius:4px}' +
+						'.evf-field-selected:hover{border:1px solid transparent!important;background:transparent!important}' +
 						'.evf-field-selected::after{content:"\\2713";position:absolute;top:-8px;right:-8px;width:18px;height:18px;background:#7e3bd0;border-radius:50%;color:#fff;font-size:10px;font-weight:700;line-height:18px;text-align:center;pointer-events:none;z-index:10}' +
 						'#evf-bulk-action-bar{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#fff;border:1px solid #edeff7;border-radius:8px;padding:8px 12px;display:none;align-items:center;gap:6px;z-index:999999;box-shadow:0 8px 24px rgba(0,0,0,.08);white-space:nowrap;font-size:12px;color:#383838}' +
 						'#evf-bulk-action-bar .evf-bulk-count{color:#7e3bd0;font-weight:600;font-size:12px;padding-right:2px}' +
