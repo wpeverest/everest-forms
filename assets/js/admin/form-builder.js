@@ -4668,7 +4668,7 @@
 
 			EVFPanelBuilder.populateRowPopover();
 
-			var positionPopover = function ($anchor, $pop) {
+			var positionPopover = function ($anchor, $pop, forceFlipped) {
 				var offset = $anchor.offset(),
 					scrollLeft = $(window).scrollLeft(),
 					scrollTop = $(window).scrollTop(),
@@ -4683,7 +4683,12 @@
 					flipped = false;
 
 				left = Math.min(Math.max(margin, left), vpW - popW - margin);
-				if (top + popH > vpH - margin) {
+				if (forceFlipped !== undefined) {
+					flipped = forceFlipped;
+					if (flipped) {
+						top = offset.top - scrollTop - popH - 6;
+					}
+				} else if (top + popH > vpH - margin) {
 					top = offset.top - scrollTop - popH - 6;
 					flipped = true;
 				}
@@ -4764,6 +4769,7 @@
 				$popover
 					.data('target-row', $row)
 					.data('insert-after-field', null)
+					.data('anchor', $btn)
 					.css(pos)
 					.show();
 
@@ -4805,6 +4811,7 @@
 				$popover
 					.data('target-row', $row)
 					.data('insert-after-field', $field)
+					.data('anchor', $btn)
 					.css(pos)
 					.show();
 
@@ -4847,6 +4854,7 @@
 						.data('target-row', $row)
 						.data('insert-after-field', null)
 						.data('insert-into-grid', $grid)
+						.data('anchor', $grid)
 						.css(pos)
 						.show();
 
@@ -4914,6 +4922,17 @@
 						);
 					});
 					$('.evf-popover-no-results').remove();
+					var $pop = $('#evf-row-field-popover'),
+						$storedAnchor = $pop.data('anchor');
+					if ($storedAnchor && $storedAnchor.length) {
+						$pop.css(
+							positionPopover(
+								$storedAnchor,
+								$pop,
+								$pop.hasClass('evf-popover-flipped'),
+							),
+						);
+					}
 					this.scrollIntoView({
 						behavior: 'smooth',
 						block: 'nearest',
