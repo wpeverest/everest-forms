@@ -209,8 +209,19 @@ if ( false !== $entry_index ) {
 									}
 									echo '<span class="list evf-answer-badge ' . esc_attr( $answer_class ) . '">' . esc_html( wp_strip_all_tags( $field_value ) ) . '</span>';
 								} else {
-									// Output plain field value safely.
-									echo nl2br( esc_html( $field_value ) );
+									$allow_html_types = apply_filters(
+										'everest_forms_entry_view_field_types_allowing_html',
+										array( 'wysiwyg', 'repeater-fields' ),
+										$meta_key,
+										$form_data
+									);
+									$meta_field_type  = isset( $field_type_by_meta_key[ $meta_key ] ) ? $field_type_by_meta_key[ $meta_key ] : '';
+									if ( is_string( $field_value ) && in_array( $meta_field_type, $allow_html_types, true ) ) {
+										echo wp_kses_post( $field_value );
+									} else {
+										// Output plain field value safely.
+										echo nl2br( esc_html( $field_value ) );
+									}
 								}
 							} else {
 								echo '<span class="evf-empty-value">' . esc_html__( 'Empty', 'everest-forms' ) . '</span>';

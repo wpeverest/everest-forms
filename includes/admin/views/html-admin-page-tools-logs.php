@@ -13,7 +13,7 @@ defined( 'ABSPATH' ) || exit;
 
 <!-- Log Selection Dropdown -->
 <div id="log-viewer-select"
-	style="margin-bottom: 24px; padding: 0 0 24px; border-bottom: 1px solid #DCDCDC;">
+	style="margin-bottom: 24px; padding: 0 0 24px; border-bottom: 1px solid #DCDCDC; flex-wrap: wrap; gap: 12px;">
 	<form action="<?php echo esc_url( admin_url( 'admin.php?page=evf-tools&tab=logs' ) ); ?>" method="post"
 		style="display: flex; gap: 10px; align-items: center;">
 		<select name="log_file"
@@ -38,11 +38,11 @@ defined( 'ABSPATH' ) || exit;
 
 <!-- Top Toolbar -->
 <div id="log-viewer-toolbar"
-	style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+	style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
 	<div class="alignleft" style="font-size: 16px; font-weight: 500;">
 		<?php echo esc_html( $viewed_log ); ?>
 	</div>
-	<div class="alignright" style="display: flex; gap: 10px;">
+	<div class="alignright" style="display: flex; gap: 10px; flex-wrap: wrap;">
 		<!-- Copy Log Button -->
 		<?php if ( ! empty( $viewed_log ) ) : ?>
 		<button type="button" id="evf-copy-log-btn" class="button button-secondary"
