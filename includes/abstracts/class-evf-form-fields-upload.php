@@ -1157,7 +1157,7 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 			$value = json_decode( wp_unslash( $_POST[ $input_name ] ), true ); // phpcs:ignore WordPress.Security
 		}
 
-		if ( ! empty( $old_input_name ) ) {
+		if ( ! empty( $old_input_name ) && ! empty( $_POST[ $old_input_name ] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
 			$value  = wp_unslash( $_POST[ $old_input_name ] );
 		}
 
