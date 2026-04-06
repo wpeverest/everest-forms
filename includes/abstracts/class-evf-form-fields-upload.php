@@ -1145,7 +1145,8 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 		$visible          = apply_filters( 'everest_forms_visible_fields', true, $form_data['form_fields'][ $field_id ], $entry, $form_data );
 		$required_message = isset( $form_data['form_fields'][ $field_id ]['required-field-message'], $form_data['form_fields'][ $field_id ]['required_field_message_setting'] ) && 'individual' == $form_data['form_fields'][ $field_id ]['required_field_message_setting'] ? $form_data['form_fields'][ $field_id ]['required-field-message'] : get_option( 'everest_forms_required_validation' );
 
-		$input_name = sprintf( 'everest_forms_%d_%s', $this->form_id, $this->field_id );
+		$input_name  	= sprintf( 'everest_forms_%d_%s', $this->form_id, $this->field_id );
+		$old_input_name = sprintf( 'everest_forms_%d_old_%s', $this->form_id, $this->field_id );
 
 		if ( false === $visible || empty( $this->field_data['required'] ) ) {
 			return;
@@ -1154,6 +1155,10 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 		$value = '';
 		if ( ! empty( $_POST[ $input_name ] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
 			$value = json_decode( wp_unslash( $_POST[ $input_name ] ), true ); // phpcs:ignore WordPress.Security
+		}
+
+		if ( ! empty( $old_input_name ) ) {
+			$value  = wp_unslash( $_POST[ $old_input_name ] );
 		}
 
 		if ( empty( $value ) ) {
