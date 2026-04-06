@@ -4770,12 +4770,6 @@ function evf_sanitize_entry($entry = array())
 				case 'file-upload':
 				case 'signature':
 				case 'image-upload':
-					error_log( print_r( 'sanitize the entry', true ) );
-					error_log( print_r( $entry, true ) );
-					/*
-					* Never trust nested client-supplied upload metadata from public submissions.
-					* Array-based upload state must be rebuilt later from trusted sources only.
-					*/
 					if ( is_array( $entry['form_fields'][ $key ] ) ) {
 						$entry['form_fields'][ $key ] = array();
 					} else {

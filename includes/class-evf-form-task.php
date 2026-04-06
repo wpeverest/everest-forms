@@ -543,19 +543,12 @@ class EVF_Form_Task {
 				$field_submit = isset( $entry['form_fields'][ $field_id ] ) ? $entry['form_fields'][ $field_id ] : array();
 
 				// Handle file uploads for save continue.
-				// Handle file uploads for save continue.
 				if ( in_array( $field_type, array( 'file-upload', 'image-upload' ), true ) ) {
 
-					/*
-					* Never trust nested upload state from the public form payload.
-					*/
 					if ( is_array( $field_submit ) ) {
 						unset( $field_submit['old_files'], $field_submit['new_files'] );
 					}
 
-					/*
-					* Only restore upload state from dedicated save-and-continue inputs.
-					*/
 					if ( defined( 'EVF_SAVE_AND_CONTINUE_VERSION' ) ) {
 						if ( ! is_array( $field_submit ) ) {
 							$field_submit = array();
