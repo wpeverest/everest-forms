@@ -1303,18 +1303,30 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 			}
 		}
 
-		if ( isset( $field_submit['old_files'] ) ) {
+		if ( isset( $field_submit['old_files'] ) && is_array( $field_submit['old_files'] ) ) {
 
-			$old_data = array_map(
-				function ( $file ) {
-					$decoded = json_decode( $file, true );
+			$validated_old_data = array();
 
-					return is_array( $decoded ) ? $decoded : array();
-				},
-				$field_submit['old_files']
-			);
+			foreach ( $field_submit['old_files'] as $file ) {
+				$decoded = json_decode( $file, true );
 
-			$data = array_merge( $data, $old_data );
+				if ( ! is_array( $decoded ) || empty( $decoded['value'] ) || ! is_string( $decoded['value'] ) ) {
+					continue;
+				}
+
+				$resolved_path = $this->resolve_uploads_file_from_url( $decoded['value'] );
+
+				if ( false === $resolved_path ) {
+					continue;
+				}
+
+				$decoded['value'] = esc_url_raw( $decoded['value'] );
+				$validated_old_data[] = $decoded;
+			}
+
+			if ( ! empty( $validated_old_data ) ) {
+				$data = array_merge( $data, $validated_old_data );
+			}
 		}
 
 		if ( ! empty( $data ) ) {
@@ -1574,11 +1586,11 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 					if ( isset( $meta_value['type'] ) && ( 'file-upload' === $meta_value['type'] && isset( $meta_value['value_raw'] ) || 'image-upload' === $meta_value['type'] && isset( $meta_value['value_raw'] ) ) ) {
 						foreach ( $meta_value['value_raw'] as $file_data ) {
 							if ( isset( $file_data['value'] ) ) {
-								$file_url = $file_data['value'];
+								$file_url = isset( $file_data['value'] ) && is_string( $file_data['value'] ) ? $file_data['value'] : '';
+								$resolved = $this->resolve_uploads_file_from_url( $file_url );
 
-								$uploaded_file = ABSPATH . preg_replace( '/.*wp-content/', 'wp-content', wp_parse_url( $file_url, PHP_URL_PATH ) );
-								if ( file_exists( $uploaded_file ) ) {
-									unlink( $uploaded_file );
+								if ( false !== $resolved && ! in_array( $resolved, $entry_files, true ) ) {
+									$entry_files[] = $resolved;
 								}
 							}
 						}
@@ -1676,6 +1688,50 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 		return $entry_files;
 	}
 
+	/**
+	 * Resolve a file URL to a real local uploads path.
+	 *
+	 * @param string $file_url File URL.
+	 * @return string|false
+	 */
+	protected function resolve_uploads_file_from_url( $file_url ) {
+		if ( empty( $file_url ) || ! is_string( $file_url ) ) {
+			return false;
+		}
+
+		$file_url = esc_url_raw( $file_url );
+
+		$upload_dir      = wp_get_upload_dir();
+		$uploads_baseurl = trailingslashit( $upload_dir['baseurl'] );
+		$uploads_basedir = wp_normalize_path( trailingslashit( $upload_dir['basedir'] ) );
+
+		if ( 0 !== strpos( $file_url, $uploads_baseurl ) ) {
+			return false;
+		}
+
+		$path      = wp_parse_url( $file_url, PHP_URL_PATH );
+		$base_path = wp_parse_url( $uploads_baseurl, PHP_URL_PATH );
+
+		if ( ! is_string( $path ) || ! is_string( $base_path ) || 0 !== strpos( $path, $base_path ) ) {
+			return false;
+		}
+
+		$relative_path = ltrim( substr( $path, strlen( $base_path ) ), '/' );
+		$candidate     = wp_normalize_path( $uploads_basedir . $relative_path );
+		$resolved_path = realpath( $candidate );
+
+		if ( false === $resolved_path ) {
+			return false;
+		}
+
+		$resolved_path = wp_normalize_path( $resolved_path );
+
+		if ( 0 !== strpos( $resolved_path, $uploads_basedir ) || ! is_file( $resolved_path ) ) {
+			return false;
+		}
+
+		return $resolved_path;
+	}
 
 	/**
 	 * Attach the csv file.
