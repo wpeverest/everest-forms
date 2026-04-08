@@ -4256,7 +4256,7 @@
 					items: '.evf-admin-row',
 					axis: 'y',
 					cursor: 'move',
-					opacity: 0.65,
+					opacity: 1,
 					scrollSensitivity: 40,
 					forcePlaceholderSize: true,
 					placeholder: 'evf-sortable-placeholder',
@@ -4280,6 +4280,51 @@
 					delay: 100,
 					opacity: 0.65,
 					cursor: 'move',
+					helper: function (event, $item) {
+						var $dragItem =
+							$item && $item.length
+								? $item
+								: $(this).hasClass('everest-forms-field')
+									? $(this)
+									: $(event && event.target).closest('.everest-forms-field');
+						if (!$dragItem || !$dragItem.length) {
+							$dragItem = $(this).find('.everest-forms-field').first();
+						}
+						var labelText = $.trim($dragItem.find('.label-title .text').first().text());
+						if (!labelText) {
+							labelText = $.trim($dragItem.find('.label-title span').first().text());
+						}
+						if (!labelText) {
+							labelText = $.trim(
+								$dragItem.find('.evf-registered-item-name, .evf-field-name').first().text(),
+							);
+						}
+						if (!labelText) {
+							labelText = 'Field';
+						}
+						var iconClass = 'dashicons dashicons-move';
+						var $helper = $(
+							'<div class="evf-drag-helper"><i class="' +
+								iconClass +
+								'"></i><span class="evf-drag-helper__label"></span></div>',
+						);
+						$helper.find('.evf-drag-helper__label').text(labelText);
+						$helper.css({
+							width: '200px',
+							maxWidth: '200px',
+							maxWidth: '40px',
+							height: '40px',
+							minHeight: '40px',
+							display: 'flex',
+							alignItems: 'center',
+							justifyContent: 'center',
+							gap: '6px',
+							boxSizing: 'border-box',
+							lineHeight: '16px',
+						});
+						return $helper;
+					},
+					cursorAt: { left: 20, top: 14 },
 					scrollSensitivity: 40,
 					forcePlaceholderSize: true,
 					dropOnEmpty: true,
@@ -4289,6 +4334,16 @@
 					containment: '.everest-forms-field-wrap',
 
 					start: function () {
+						if (!$('#evf-existing-field-drag-helper-style').length) {
+							$('head').append(
+								'<style id="evf-existing-field-drag-helper-style">' +
+									'.evf-drag-helper{' +
+									'display:flex;align-items:center;justify-content:center;gap:6px;visibility:visible;opacity:1;z-index:100200;pointer-events:none;background:#fff;border:1px solid #9aa0a6;box-shadow:0 8px 18px rgba(0,0,0,.14);border-radius:4px;padding:6px 8px;height:100px;min-height:100px;max-height:100px;width:100px;min-width:100px;max-width:100px;font-size:13px;color:#1f2937;font-weight:500;line-height:16px;box-sizing:border-box;overflow:hidden;}' +
+									'.evf-drag-helper i{margin-right:0;font-size:14px;line-height:14px;vertical-align:middle;color:#6b7280;flex:0 0 auto;}' +
+									'.evf-drag-helper__label{display:block;max-width:calc(100% - 20px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;vertical-align:middle;}' +
+									'</style>',
+							);
+						}
 						EVFPanelBuilder.clearFrozenColumnDrop();
 						EVFPanelBuilder.bindColumnDropPointerTracking();
 						EVFPanelBuilder._canvasSortLastIntent = null;
