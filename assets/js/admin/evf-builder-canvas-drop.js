@@ -1034,14 +1034,30 @@
 			scrollSensitivity: 40,
 			forcePlaceholderSize: true,
 			appendTo: 'body',
+			zIndex: 100200,
 			helper: function () {
-				return $(this)
+				var $h = $(this)
 					.clone()
 					.insertAfter(
 						$(this)
 							.closest('.everest-forms-tab-content')
 							.siblings('.everest-forms-fields-tab'),
 					);
+				$h.addClass('evf-drag-helper');
+				$h.css({
+					display: 'block',
+					visibility: 'visible',
+					opacity: 0.95,
+					position: 'fixed',
+					zIndex: 100200,
+					pointerEvents: 'none',
+					background: '#fff',
+					border: '1px solid #cdd0d8',
+					boxShadow: '0 8px 24px rgba(0,0,0,0.12)',
+					padding: '12px 14px',
+					minHeight: '40px',
+				});
+				return $h;
 			},
 			start: function (e) {
 				var $btn = $(this);
@@ -1051,6 +1067,10 @@
 				dragState.pointer.x = ev0.clientX;
 				dragState.pointer.y = ev0.clientY;
 				$btn.addClass('field-dragged');
+				$('.evf-drag-helper').css({
+					display: 'block',
+					visibility: 'visible',
+				});
 				$(document).on(
 					'mousemove.evfCanvasDrop drag.evfCanvasDrop',
 					function (ev) {
@@ -1067,22 +1087,6 @@
 						dragState.pointer.y,
 					);
 				var accepted = false;
-
-				if (!intent) {
-					var $sec = getSectionRoots().first();
-					if ($sec && $sec.length) {
-						var $lastRow = $sec.find('.evf-admin-row').last();
-						var $g = $lastRow.find('.evf-admin-grid').last();
-						if ($g.length) {
-							intent = {
-								type: 'intoGrid',
-								section: sectionRefFrom$($sec),
-								$row: $lastRow,
-								$grid: $g,
-							};
-						}
-					}
-				}
 
 				if (intent && intent.type === 'newRow') {
 					handleNewRowDrop(builder, $btn, intent);
