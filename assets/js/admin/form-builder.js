@@ -4407,7 +4407,12 @@
 							// Never treat “drop onto itself” as an intent.
 							if (intent.$field && intent.$field.length) {
 								var targetId = intent.$field.attr('data-field-id');
-								if (targetId && targetId === droppedFieldId) {
+								var selfDropSensitiveIntent =
+									intent.type === 'fieldSibling' ||
+									intent.type === 'intoGrid' ||
+									intent.type === 'horizontalSplit';
+								// Keep expandRow valid even if hovered field is the same dragged field.
+								if (selfDropSensitiveIntent && targetId && targetId === droppedFieldId) {
 									intent = null;
 								}
 							}
@@ -4478,16 +4483,20 @@
 								EVFPanelBuilder.bindFields();
 								EVFPanelBuilder.checkEmptyGrid();
 							} else if (intent.type === 'expandRow' && intent.$row && intent.$row.length) {
-								var $grids = window.EVFCanvasDrop.expandRowColumns(
+								var expandResult = window.EVFCanvasDrop.expandRowColumns(
 									EVFPanelBuilder,
 									intent.$row,
 									intent.side,
+									intent.$grid,
 								);
-								if ($grids && $grids.length) {
-									var $target =
-										intent.side === 'left'
-											? $grids.eq(0)
-											: $grids.eq($grids.length - 1);
+								if (
+									expandResult &&
+									expandResult.$grids &&
+									expandResult.$grids.length
+								) {
+									var $target = expandResult.$grids.eq(
+										expandResult.insertIndex,
+									);
 									if (window.EVFCanvasDrop.insertIntoGridAtY && typeof intent.clientY === 'number') {
 										window.EVFCanvasDrop.insertIntoGridAtY($target, intent.clientY, ui.item);
 									} else {
@@ -4496,6 +4505,15 @@
 								}
 								EVFPanelBuilder.bindFields();
 								EVFPanelBuilder.checkEmptyGrid();
+							}
+						}
+						// Ensure move semantics for existing field drags: keep only one node per field id.
+						if (droppedFieldId) {
+							var $sameFieldNodes = $(
+								'.everest-forms-field[data-field-id="' + droppedFieldId + '"]',
+							);
+							if ($sameFieldNodes.length > 1) {
+								$sameFieldNodes.not(ui.item).remove();
 							}
 						}
 						var $rowAfterMove = ui.item.closest('.evf-admin-row');
