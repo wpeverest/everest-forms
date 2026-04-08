@@ -1035,27 +1035,36 @@
 			forcePlaceholderSize: true,
 			appendTo: 'body',
 			zIndex: 100200,
+			cursorAt: { left: 20, top: 14 },
 			helper: function () {
-				var $h = $(this)
-					.clone()
-					.insertAfter(
-						$(this)
-							.closest('.everest-forms-tab-content')
-							.siblings('.everest-forms-fields-tab'),
-					);
+				var $src = $(this);
+				var iconClass = $src.find('i').attr('class') || 'dashicons dashicons-plus-alt2';
+				var label = $.trim($src.clone().children().remove().end().text());
+				var $h = $(
+					'<div class="evf-drag-helper"><i class="' +
+						iconClass +
+						'"></i><span class="evf-drag-helper__label"></span></div>',
+				);
+				$h.find('.evf-drag-helper__label').text(label || 'Field');
+				$('body').append($h);
 				$h.addClass('evf-drag-helper');
 				$h.css({
 					display: 'block',
 					visibility: 'visible',
-					opacity: 0.95,
-					position: 'fixed',
+					opacity: 1,
 					zIndex: 100200,
 					pointerEvents: 'none',
 					background: '#fff',
-					border: '1px solid #cdd0d8',
-					boxShadow: '0 8px 24px rgba(0,0,0,0.12)',
-					padding: '12px 14px',
-					minHeight: '40px',
+					border: '1px solid #9aa0a6',
+					boxShadow: '0 10px 28px rgba(0,0,0,0.18)',
+					borderRadius: '4px',
+					padding: '8px 10px',
+					minHeight: '34px',
+					minWidth: '120px',
+					fontSize: '13px',
+					color: '#1f2937',
+					fontWeight: 500,
+					lineHeight: '18px',
 				});
 				return $h;
 			},
@@ -1071,21 +1080,18 @@
 					display: 'block',
 					visibility: 'visible',
 				});
-				$(document).on(
-					'mousemove.evfCanvasDrop drag.evfCanvasDrop',
-					function (ev) {
-						onPaletteDragMove(ev, builder);
-					},
-				);
+				$(document).on('mousemove.evfCanvasDrop', function (ev) {
+					onPaletteDragMove(ev, builder);
+				});
 			},
 			stop: function () {
 				var $btn = $(this);
-				var intent =
-					dragState.lastIntent ||
-					computeDropIntent(
-						dragState.pointer.x,
-						dragState.pointer.y,
-					);
+				var intent = dragState.lastIntent;
+				// Recompute at drop point for accurate far-right/last-column targeting.
+				if (typeof computeDropIntent === 'function') {
+					intent =
+						computeDropIntent(dragState.pointer.x, dragState.pointer.y) || intent;
+				}
 				var accepted = false;
 
 				if (intent && intent.type === 'newRow') {
@@ -1107,6 +1113,7 @@
 				}
 
 				onPaletteDragStop(builder, accepted, $btn);
+				$('.evf-drag-helper').remove();
 			},
 			opacity: 0.75,
 			containment: '#everest-forms-builder',
