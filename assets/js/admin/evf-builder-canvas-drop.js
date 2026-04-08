@@ -661,6 +661,10 @@
 			intent.$field &&
 			intent.$field.length
 		) {
+			// At max columns, suppress left-edge drop area indicator.
+			if (intent.edge === 'left' && rowColCount >= 4) {
+				return;
+			}
 			// Right edge is shown only for "add new column on the last column" case.
 			var allowRightEdge =
 				intent.edge === 'right' &&
