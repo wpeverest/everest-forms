@@ -594,6 +594,8 @@ class EVF_Form_Task {
 				$field_id        = $field['id'];
 				$field_type      = $field['type'];
 
+				$field_submit = isset( $entry['form_fields'][ $field_id ] ) ? $entry['form_fields'][ $field_id ] : '';
+
 				if ( 'payment-coupon' === $field_type ) {
 					$logger->info(
 						"Everest Forms Process coupon validating {$field_type}.",
