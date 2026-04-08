@@ -14,6 +14,11 @@ if ( class_exists( 'EVF_Builder_Fields', false ) ) {
 
 /**
  * EVF_Builder_Fields class.
+ *
+ * Simplified builder (default): single-column rows, no row toolbar, no Add Row button.
+ * Re-enable classic UI with:
+ * - add_filter( 'everest_forms_builder_show_row_controls', '__return_true' );
+ * - add_filter( 'everest_forms_builder_show_add_row_button', '__return_true' );
  */
 class EVF_Builder_Fields extends EVF_Builder_Page {
 
@@ -271,7 +276,8 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 			$row_grid    = isset( $form_data['structure'][ 'row_' . $row ] ) ? $form_data['structure'][ 'row_' . $row ] : array();
 			$form_grid   = apply_filters( 'everest_forms_default_form_grid', 4 );
 			$total_grid  = $form_grid;
-			$active_grid = ( count( $row_grid ) > 0 ) ? count( $row_grid ) : ( isset( $this->form_data['settings']['recaptcha_support'] ) && '1' === $this->form_data['settings']['recaptcha_support'] ? 1 : 2 );
+			// Default new/empty rows to a single column; saved structure still defines column count.
+			$active_grid = ( count( $row_grid ) > 0 ) ? count( $row_grid ) : 1;
 			$active_grid = $active_grid > $total_grid ? $total_grid : $active_grid;
 
 			/**
@@ -281,44 +287,58 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 
 			$repeater_field = apply_filters( 'everest_forms_display_repeater_fields', false, $row_grid, $fields );
 
-			echo '<div class="evf-admin-row" data-row-id="' . absint( $row ) . '"' . ( ! empty( $repeater_field ) ? esc_attr( $repeater_field ) : '' ) . '>';
-			echo '<div class="evf-toggle-row">';
-			if ( empty( $repeater_field ) ) {
-				echo '<div class="evf-duplicate-row"><span class="dashicons dashicons-media-default" title="Duplicate Row"></span></div>';
-				echo '<div class="evf-delete-row"><span class="dashicons dashicons-trash" title="Delete Row"></span></div>';
-				echo '<div class="evf-show-grid"><span class="dashicons dashicons-edit" title="Edit"></span></div>';
-				if ( defined( 'EFP_VERSION' ) ) {
-					echo '<div class="evf-row-setting"><span class="dashicons dashicons-admin-settings" title="Row Setting"></span></div>';
-				}
+			$show_row_controls = apply_filters( 'everest_forms_builder_show_row_controls', true );
+			$row_classes       = 'evf-admin-row';
+			if ( ! $show_row_controls ) {
+				$row_classes .= ' evf-row-toolbar-hidden';
 			}
-			echo '<div class="evf-toggle-row-content">';
-			echo '<span>' . esc_html__( 'Row Settings', 'everest-forms' ) . '</span>';
-			echo '<small>' . esc_html__( 'Select the type of row', 'everest-forms' ) . '</small>';
-			echo '<div class="clear"></div>';
 
-			for ( $grid_active = 1; $grid_active <= $total_grid; $grid_active++ ) {
-				$class = 'evf-grid-selector';
+			echo '<div class="' . esc_attr( $row_classes ) . '" data-row-id="' . absint( $row ) . '"' . ( ! empty( $repeater_field ) ? esc_attr( $repeater_field ) : '' ) . '>';
 
-				if ( $grid_active === $active_grid ) {
-					$class .= ' active';
+			if ( $show_row_controls ) {
+				$show_row_layout_picker = apply_filters( 'everest_forms_builder_show_row_layout_picker', false );
+				echo '<div class="evf-toggle-row">';
+				if ( empty( $repeater_field ) ) {
+					echo '<div class="evf-duplicate-row"><span class="dashicons dashicons-media-default" title="Duplicate Row"></span></div>';
+					echo '<div class="evf-delete-row"><span class="dashicons dashicons-trash" title="Delete Row"></span></div>';
+					if ( $show_row_layout_picker ) {
+						echo '<div class="evf-show-grid"><span class="dashicons dashicons-edit" title="Edit"></span></div>';
+					}
+					if ( defined( 'EFP_VERSION' ) ) {
+						echo '<div class="evf-row-setting"><span class="dashicons dashicons-admin-settings" title="Row Setting"></span></div>';
+					}
 				}
+				if ( $show_row_layout_picker ) {
+					echo '<div class="evf-toggle-row-content">';
+					echo '<span>' . esc_html__( 'Row Settings', 'everest-forms' ) . '</span>';
+					echo '<small>' . esc_html__( 'Select the type of row', 'everest-forms' ) . '</small>';
+					echo '<div class="clear"></div>';
 
-				echo '<div class="' . esc_attr( $class ) . '" data-evf-grid="' . absint( $grid_active ) . '">';
+					for ( $grid_active = 1; $grid_active <= $total_grid; $grid_active++ ) {
+						$class = 'evf-grid-selector';
 
-				$gaps   = 15;
-				$width  = ( 100 - $gaps ) / $grid_active;
-				$margin = ( $gaps / $grid_active ) / 2;
+						if ( $grid_active === $active_grid ) {
+							$class .= ' active';
+						}
 
-				for ( $row_icon = 1; $row_icon <= $grid_active; $row_icon++ ) {
-					echo '<span style="width:' . (float) $width . '%; margin-left:' . (float) $margin . '%; margin-right:' . (float) $margin . '%"></span>';
+						echo '<div class="' . esc_attr( $class ) . '" data-evf-grid="' . absint( $grid_active ) . '">';
+
+						$gaps   = 15;
+						$width  = ( 100 - $gaps ) / $grid_active;
+						$margin = ( $gaps / $grid_active ) / 2;
+
+						for ( $row_icon = 1; $row_icon <= $grid_active; $row_icon++ ) {
+							echo '<span style="width:' . (float) $width . '%; margin-left:' . (float) $margin . '%; margin-right:' . (float) $margin . '%"></span>';
+						}
+
+						echo '</div>';
+					}
+
+					echo '</div>';
 				}
-
 				echo '</div>';
+				echo '<div class="clear evf-clear"></div>';
 			}
-
-			echo '</div>';
-			echo '</div>';
-			echo '<div class="clear evf-clear"></div>';
 			echo '<div class="evf-grid-lists">';
 			$grid_class = 'evf-admin-grid evf-grid-' . ( $active_grid );
 			for ( $grid_start = 1; $grid_start <= $active_grid; $grid_start++ ) {
@@ -370,7 +390,13 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 			echo '<div class="evf-repeater-row-wrapper">'; // Repeater Row Wrapper starts.
 		}
 
-		echo '<div class="evf-add-row" data-total-rows="' . count( $structure ) . '" data-next-row-id="' . (int) max( $row_ids ) . '"><span class="everest-forms-btn everest-forms-btn-primary dashicons dashicons-plus-alt">' . esc_html__( 'Add Row', 'everest-forms' ) . '</span></div>';
+		$show_add_row = apply_filters( 'everest_forms_builder_show_add_row_button', false );
+		if ( $show_add_row ) {
+			echo '<div class="evf-add-row" data-total-rows="' . count( $structure ) . '" data-next-row-id="' . (int) max( $row_ids ) . '"><span class="everest-forms-btn everest-forms-btn-primary dashicons dashicons-plus-alt">' . esc_html__( 'Add Row', 'everest-forms' ) . '</span></div>';
+		} else {
+			// Hidden target so builder scripts can read row counts and programmatically add rows (e.g. canvas drop).
+			echo '<div class="evf-add-row evf-add-row--hidden" style="height:0;width:0;margin:0;padding:0;overflow:hidden;border:0;clip:rect(0,0,0,0);position:absolute;left:-9999px;" data-total-rows="' . count( $structure ) . '" data-next-row-id="' . (int) max( $row_ids ) . '" aria-hidden="true"><span></span></div>';
+		}
 
 		if ( defined( 'EVF_REPEATER_FIELDS_VERSION' ) ) {
 			echo '<div class="evf-add-row repeater-row" data-total-rows="' . count( $structure ) . '" data-next-row-id="' . (int) max( $row_ids ) . '"><span class="everest-forms-btn everest-forms-btn-primary dashicons dashicons-plus-alt">' . esc_html__( 'Add Repeater Row', 'everest-forms' ) . '</span></div>';

@@ -2832,6 +2832,9 @@
 
 				// Row clone.
 				row_clone.find('.evf-admin-grid').html('');
+				if (row_clone.find('.evf-admin-grid').length !== 1) {
+					EVFPanelBuilder.setRowGridCount(row_clone, 1);
+				}
 				row_clone.attr('data-row-id', max_row_id);
 
 				// Row infos.
@@ -3231,6 +3234,7 @@
 											]);
 											$field.remove();
 											option_field.remove();
+											EVFPanelBuilder.normalizeRowColumnsAfterChange(grid.closest('.evf-admin-row'));
 											EVFPanelBuilder.checkEmptyGrid();
 											$('.everest-forms-fields-tab')
 												.find('a')
@@ -3315,6 +3319,7 @@
 											]);
 											$field.remove();
 											option_field.remove();
+											EVFPanelBuilder.normalizeRowColumnsAfterChange(grid.closest('.evf-admin-row'));
 											EVFPanelBuilder.checkEmptyGrid();
 											$('.everest-forms-fields-tab')
 												.find('a')
@@ -3751,6 +3756,321 @@
 			});
 			return fields;
 		},
+
+		/**
+		 * Drag near left/right edge of a field in a single-column row → split into two columns on drop (Formidable-style).
+		 */
+		_horizontalDropPending: null,
+		_frozenHorizontalDrop: null,
+		_$columnDropIndicator: null,
+
+		getColumnDropTargetFromPoint: function (clientX, clientY) {
+			var els = document.elementsFromPoint(clientX, clientY);
+			var i,
+				$f,
+				$row,
+				el;
+			for (i = 0; i < els.length; i++) {
+				el = els[i];
+				if ($(el).closest('.ui-sortable-helper').length) {
+					continue;
+				}
+				$f = $(el).closest('.everest-forms-field');
+				if (!$f.length || $f.attr('data-field-type') === 'repeater-fields') {
+					continue;
+				}
+				$row = $f.closest('.evf-admin-row');
+				if (
+					!$row.length ||
+					$row.hasClass('evf-repeater-fields') ||
+					$f.closest('.everest-forms-field-repeater-fields').length ||
+					$row.find('.evf-admin-grid').length !== 1
+				) {
+					continue;
+				}
+				return { $field: $f, $row: $row };
+			}
+			return null;
+		},
+
+		refreshColumnDropIntent: function (e) {
+			var ev = e && e.originalEvent ? e.originalEvent : e,
+				clientX = ev && typeof ev.clientX === 'number' ? ev.clientX : null,
+				clientY = ev && typeof ev.clientY === 'number' ? ev.clientY : null,
+				hit,
+				rect,
+				ratio,
+				mode = null;
+			EVFPanelBuilder._horizontalDropPending = null;
+			if (clientX === null || clientY === null) {
+				EVFPanelBuilder.hideColumnDropIndicator();
+				return;
+			}
+			hit = EVFPanelBuilder.getColumnDropTargetFromPoint(clientX, clientY);
+			if (!hit) {
+				EVFPanelBuilder.hideColumnDropIndicator();
+				return;
+			}
+			rect = hit.$field[0].getBoundingClientRect();
+			if (rect.width <= 0) {
+				EVFPanelBuilder.hideColumnDropIndicator();
+				return;
+			}
+			ratio = (clientX - rect.left) / rect.width;
+			if (ratio < 0.22) {
+				mode = 'before';
+			} else if (ratio > 0.78) {
+				mode = 'after';
+			}
+			if (!mode) {
+				EVFPanelBuilder.hideColumnDropIndicator();
+				return;
+			}
+			EVFPanelBuilder._horizontalDropPending = {
+				mode: mode,
+				targetId: hit.$field.attr('data-field-id'),
+				$row: hit.$row,
+			};
+			EVFPanelBuilder.showColumnDropIndicator(hit.$field, mode);
+		},
+
+		showColumnDropIndicator: function ($field, mode) {
+			var rect = $field[0].getBoundingClientRect(),
+				$ind = EVFPanelBuilder._$columnDropIndicator,
+				left =
+					'before' === mode
+						? Math.round(rect.left - 2)
+						: Math.round(rect.right - 2);
+			if (!$ind || !$ind.length) {
+				$ind = $('<div class="evf-drag-column-indicator" aria-hidden="true" />');
+				$('body').append($ind);
+				EVFPanelBuilder._$columnDropIndicator = $ind;
+			}
+			$ind.css({
+				display: 'block',
+				position: 'fixed',
+				width: '3px',
+				zIndex: 100100,
+				pointerEvents: 'none',
+				background: '#2271b1',
+				borderRadius: '1px',
+				boxShadow: '0 0 0 1px rgba(255,255,255,0.9)',
+				top: Math.round(rect.top) + 'px',
+				left: left + 'px',
+				height: Math.round(rect.height) + 'px',
+			});
+		},
+
+		hideColumnDropIndicator: function () {
+			if (EVFPanelBuilder._$columnDropIndicator) {
+				EVFPanelBuilder._$columnDropIndicator.css('display', 'none');
+			}
+		},
+
+		freezeColumnDropIntent: function (event) {
+			if (event) {
+				EVFPanelBuilder.refreshColumnDropIntent(event);
+			}
+			var p = EVFPanelBuilder._horizontalDropPending;
+			EVFPanelBuilder._frozenHorizontalDrop = p
+				? { mode: p.mode, targetId: p.targetId, $row: p.$row }
+				: null;
+		},
+
+		clearFrozenColumnDrop: function () {
+			EVFPanelBuilder._frozenHorizontalDrop = null;
+			EVFPanelBuilder._horizontalDropPending = null;
+			EVFPanelBuilder.hideColumnDropIndicator();
+		},
+
+		bindColumnDropPointerTracking: function () {
+			$(document).on('mousemove.evfColDrop', function (e) {
+				EVFPanelBuilder.refreshColumnDropIntent(e);
+			});
+		},
+
+		unbindColumnDropPointerTracking: function () {
+			$(document).off('mousemove.evfColDrop');
+		},
+
+		/**
+		 * Rebuild row grids (same as row settings UI). Caller should run bindFields if omitted internally.
+		 *
+		 * @param {jQuery} $row Row container.
+		 * @param {number} grid_id Number of columns (1–4).
+		 */
+		setRowGridCount: function ($row, grid_id) {
+			var max_number_of_grid = 4;
+			if (grid_id > max_number_of_grid || grid_id < 1) {
+				return;
+			}
+			var grid_node = $(
+					'<div class="evf-admin-grid evf-grid-' +
+						grid_id +
+						' ui-sortable evf-empty-grid" />',
+				),
+				grids = $('<div/>');
+
+			$.each($row.find('.evf-admin-grid'), function () {
+				$(this)
+					.children('*')
+					.each(function () {
+						grids.append($(this).clone());
+					});
+			});
+
+			var $gridLists = $('<div class="evf-grid-lists"></div>'),
+				$grid_number;
+			for ($grid_number = 1; $grid_number <= grid_id; $grid_number++) {
+				grid_node.attr('data-grid-id', $grid_number);
+				$gridLists.append(grid_node.clone());
+			}
+			$gridLists.append('<div class="clear evf-clear"></div>');
+
+			$row.find('.evf-grid-lists').remove();
+			$row.find('.evf-admin-grid').remove();
+			$row.find('.evf-clear').remove();
+
+			$row.append('<div class="clear evf-clear"></div>');
+			$row.append($gridLists);
+
+			$row.find('.evf-admin-grid').eq(0).append(grids.html());
+
+			$row.find('.evf-grid-selector').removeClass('active');
+			$row.find('.evf-grid-selector[data-evf-grid="' + grid_id + '"]').addClass(
+				'active',
+			);
+
+			EVFPanelBuilder.bindFields();
+		},
+
+		applyHorizontalColumnSplit: function (mode, targetId, draggedId) {
+			var frozen = EVFPanelBuilder._frozenHorizontalDrop,
+				$row,
+				$singleGrid,
+				ids,
+				ti,
+				leftIds,
+				rightIds,
+				$g1,
+				$g2;
+			if (!mode || !targetId || !draggedId || targetId === draggedId) {
+				return;
+			}
+			$row =
+				frozen && frozen.$row && frozen.$row.length
+					? frozen.$row
+					: $('#everest-forms-field-' + targetId).closest('.evf-admin-row');
+			if (
+				!$row.length ||
+				$row.hasClass('evf-repeater-fields') ||
+				$row.closest('.everest-forms-field-repeater-fields').length ||
+				$row.find('.evf-admin-grid').length !== 1
+			) {
+				return;
+			}
+			$singleGrid = $row.find('.evf-admin-grid').eq(0);
+			ids = [];
+			$singleGrid.children('.everest-forms-field').each(function () {
+				ids.push($(this).attr('data-field-id'));
+			});
+			ti = ids.indexOf(targetId);
+			if (ti < 0 || ids.indexOf(draggedId) < 0) {
+				return;
+			}
+			if ('before' === mode) {
+				leftIds = ids.slice(0, ti).filter(function (id) {
+					return id !== draggedId;
+				});
+				leftIds.push(draggedId);
+				rightIds = ids.slice(ti);
+			} else {
+				leftIds = ids.slice(0, ti + 1).filter(function (id) {
+					return id !== draggedId;
+				});
+				rightIds = [draggedId].concat(
+					ids.slice(ti + 1).filter(function (id) {
+						return id !== draggedId;
+					}),
+				);
+			}
+			EVFPanelBuilder.setRowGridCount($row, 2);
+			$g1 = $row.find('.evf-admin-grid').eq(0);
+			$g2 = $row.find('.evf-admin-grid').eq(1);
+			$.each(leftIds, function (_, id) {
+				var $el = $('#everest-forms-field-' + id);
+				if ($el.length) {
+					$g1.append($el);
+				}
+			});
+			$.each(rightIds, function (_, id) {
+				var $el = $('#everest-forms-field-' + id);
+				if ($el.length) {
+					$g2.append($el);
+				}
+			});
+			EVFPanelBuilder.bindFields();
+			EVFPanelBuilder.checkEmptyGrid();
+		},
+
+		normalizeRowColumnsAfterChange: function ($row) {
+			if (
+				!$row ||
+				!$row.length ||
+				$row.hasClass('evf-repeater-fields') ||
+				$row.closest('.everest-forms-field-repeater-fields').length
+			) {
+				return;
+			}
+
+			var $grids = $row.find('.evf-grid-lists > .evf-admin-grid');
+			if (!$grids.length) {
+				$grids = $row.find('.evf-admin-grid').not('.evf-repeatable-grid');
+			}
+			if ($grids.length <= 1) {
+				return;
+			}
+
+			var cols = [];
+			$grids.each(function () {
+				var ids = [];
+				$(this)
+					.children('.everest-forms-field')
+					.each(function () {
+						ids.push($(this).attr('data-field-id'));
+					});
+				cols.push(ids);
+			});
+
+			// Remove empty columns and compact left.
+			var nonEmpty = cols.filter(function (ids) {
+				return ids.length > 0;
+			});
+			var nextCount = Math.max(1, nonEmpty.length);
+			if (nextCount === cols.length) {
+				return;
+			}
+
+			EVFPanelBuilder.setRowGridCount($row, nextCount);
+
+			var $newGrids = $row.find('.evf-grid-lists > .evf-admin-grid');
+			if (!$newGrids.length) {
+				$newGrids = $row.find('.evf-admin-grid').not('.evf-repeatable-grid');
+			}
+
+			$.each(nonEmpty, function (gi, ids) {
+				$.each(ids, function (_, id) {
+					var $el = $('#everest-forms-field-' + id);
+					if ($el.length) {
+						$newGrids.eq(gi).append($el);
+					}
+				});
+			});
+
+			EVFPanelBuilder.bindFields();
+			EVFPanelBuilder.checkEmptyGrid();
+		},
+
 		checkEmptyGrid: function ($force) {
 			$.each($('.evf-admin-grid'), function () {
 				var $fields = $(this).find(
@@ -3920,6 +4240,17 @@
 			}
 		},
 		bindFields: function () {
+			if (!EVFPanelBuilder._gridDropTargetStylesInjected) {
+				$('head').append(
+					'<style id="evf-admin-grid-drop-target-fix">' +
+						'.everest-forms-field-wrap .evf-grid-lists{align-items:stretch}' +
+						'.everest-forms-field-wrap .evf-grid-lists>.evf-admin-grid{flex:1 1 0;min-width:0;align-self:stretch}' +
+						'.everest-forms-field-wrap .evf-admin-grid.evf-empty-grid{min-height:160px;box-sizing:border-box}' +
+						'</style>',
+				);
+				EVFPanelBuilder._gridDropTargetStylesInjected = true;
+			}
+
 			$('.evf-admin-field-wrapper')
 				.sortable({
 					items: '.evf-admin-row',
@@ -3944,16 +4275,25 @@
 
 			$('.evf-admin-grid')
 				.sortable({
-					items: '> .everest-forms-field[data-field-type!="repeater-fields"]',
+					items:
+						'> .everest-forms-field[data-field-type!="repeater-fields"], > .evf-registered-item',
 					delay: 100,
 					opacity: 0.65,
 					cursor: 'move',
 					scrollSensitivity: 40,
 					forcePlaceholderSize: true,
+					dropOnEmpty: true,
+					tolerance: 'pointer',
 					connectWith: '.evf-admin-grid',
 					appendTo: document.body,
 					containment: '.everest-forms-field-wrap',
 
+					start: function () {
+						EVFPanelBuilder.clearFrozenColumnDrop();
+						EVFPanelBuilder.bindColumnDropPointerTracking();
+						EVFPanelBuilder._canvasSortLastIntent = null;
+						EVFPanelBuilder._evfExistingFieldDrag = true;
+					},
 					out: function (event) {
 						$('.evf-admin-grid').removeClass('evf-hover');
 						$(event.target).removeClass('evf-item-hover');
@@ -3970,7 +4310,13 @@
 						EVFPanelBuilder.checkEmptyGrid();
 					},
 					receive: function (event, ui) {
-						if (ui.sender.is('button')) {
+						var $sender = ui.sender;
+						if (
+							$sender &&
+							$sender.length &&
+							($sender.is('button') ||
+								$sender.hasClass('evf-registered-item'))
+						) {
 							EVFPanelBuilder.fieldDrop(ui.helper);
 						}
 					},
@@ -3980,7 +4326,69 @@
 							ui: ui,
 						});
 					},
+					sort: function (event, ui) {
+						if (
+							window.EVFCanvasDrop &&
+							typeof window.EVFCanvasDrop.computeDropIntent === 'function'
+						) {
+							var ev = event && event.originalEvent ? event.originalEvent : event;
+							var x = ev && typeof ev.clientX === 'number' ? ev.clientX : null;
+							var y = ev && typeof ev.clientY === 'number' ? ev.clientY : null;
+							if (x !== null && y !== null) {
+								EVFPanelBuilder._canvasSortLastIntent =
+									window.EVFCanvasDrop.computeDropIntent(x, y);
+								if (typeof window.EVFCanvasDrop.renderDropIndicator === 'function') {
+									window.EVFCanvasDrop.renderDropIndicator(
+										EVFPanelBuilder._canvasSortLastIntent,
+										EVFPanelBuilder,
+									);
+								}
+							}
+						}
+					},
+					beforeStop: function (event, ui) {
+						EVFPanelBuilder.freezeColumnDropIntent(event);
+					},
 					stop: function (event, ui) {
+						var $rowBeforeMove = ui.item.closest('.evf-admin-row');
+						var $fallbackGrid = $rowBeforeMove.find('.evf-admin-grid').not('.evf-repeatable-grid').first();
+						EVFPanelBuilder.unbindColumnDropPointerTracking();
+						EVFPanelBuilder.hideColumnDropIndicator();
+						if (
+							window.EVFCanvasDrop &&
+							typeof window.EVFCanvasDrop.hideIndicators === 'function'
+						) {
+							window.EVFCanvasDrop.hideIndicators();
+						}
+						var intent = EVFPanelBuilder._canvasSortLastIntent;
+						// Recompute intent at drop time (cached intent can be stale while containers refresh).
+						if (
+							window.EVFCanvasDrop &&
+							typeof window.EVFCanvasDrop.computeDropIntent === 'function'
+						) {
+							var evStop = event && event.originalEvent ? event.originalEvent : event;
+							if (
+								evStop &&
+								typeof evStop.clientX === 'number' &&
+								typeof evStop.clientY === 'number'
+							) {
+								intent =
+									window.EVFCanvasDrop.computeDropIntent(evStop.clientX, evStop.clientY) ||
+									intent;
+							}
+						}
+						var fr = EVFPanelBuilder._frozenHorizontalDrop,
+							droppedFieldId = ui.item.attr('data-field-id');
+						if (fr && fr.mode && fr.targetId && droppedFieldId) {
+							EVFPanelBuilder.applyHorizontalColumnSplit(
+								fr.mode,
+								fr.targetId,
+								droppedFieldId,
+							);
+							EVFPanelBuilder.clearFrozenColumnDrop();
+						} else if (droppedFieldId) {
+							EVFPanelBuilder.clearFrozenColumnDrop();
+						}
 						if (!ui.item.hasClass('required')) {
 							const labelTitle = ui.item.find('.label-title');
 							if (labelTitle.length > 0) {
@@ -3989,6 +4397,134 @@
 						}
 						ui.item.removeAttr('style');
 						EVFPanelBuilder.checkEmptyGrid();
+
+						// Existing-field “readjust” using canvas intent (edge drop / cross-column / expand row / new row).
+						if (
+							intent &&
+							ui.item.hasClass('everest-forms-field') &&
+							window.EVFCanvasDrop
+						) {
+							// Never treat “drop onto itself” as an intent.
+							if (intent.$field && intent.$field.length) {
+								var targetId = intent.$field.attr('data-field-id');
+								if (targetId && targetId === droppedFieldId) {
+									intent = null;
+								}
+							}
+							if (
+								intent.type === 'horizontalSplit' &&
+								intent.$field &&
+								intent.$field.length
+							) {
+								// Make existing-field behave like palette split: 1-column row becomes 2 columns on edge drop.
+								EVFPanelBuilder._frozenHorizontalDrop = {
+									mode: intent.mode,
+									targetId: intent.$field.attr('data-field-id'),
+									$row: intent.$row,
+								};
+								EVFPanelBuilder.applyHorizontalColumnSplit(
+									intent.mode,
+									intent.$field.attr('data-field-id'),
+									ui.item.attr('data-field-id'),
+								);
+								EVFPanelBuilder.clearFrozenColumnDrop();
+							} else if (intent.type === 'newRow') {
+								if (intent.position === 'before' && intent.$nextRow && intent.$nextRow.length) {
+									window.EVFCanvasDrop.insertRowBefore(intent.$nextRow, EVFPanelBuilder, function ($nr) {
+										var $g = $nr.find('.evf-admin-grid').first();
+										if (window.EVFCanvasDrop.insertIntoGridAtY && typeof intent.clientY === 'number') {
+											window.EVFCanvasDrop.insertIntoGridAtY($g, intent.clientY, ui.item);
+										} else {
+											$g.append(ui.item);
+										}
+									});
+								} else if (intent.$anchorRow && intent.$anchorRow.length) {
+									window.EVFCanvasDrop.insertRowAfter(intent.$anchorRow, EVFPanelBuilder, function ($nr) {
+										var $g = $nr.find('.evf-admin-grid').first();
+										if (window.EVFCanvasDrop.insertIntoGridAtY && typeof intent.clientY === 'number') {
+											window.EVFCanvasDrop.insertIntoGridAtY($g, intent.clientY, ui.item);
+										} else {
+											$g.append(ui.item);
+										}
+									});
+								}
+								EVFPanelBuilder.bindFields();
+								EVFPanelBuilder.checkEmptyGrid();
+							} else if (intent.type === 'fieldSibling' && intent.$field && intent.$field.length) {
+								if (intent.sibling === 'before') {
+									intent.$field.before(ui.item);
+								} else {
+									intent.$field.after(ui.item);
+								}
+								EVFPanelBuilder.bindFields();
+								EVFPanelBuilder.checkEmptyGrid();
+							} else if (intent.type === 'intoGrid' && intent.$grid && intent.$grid.length) {
+								if (intent.gridEdge === 'top') {
+									intent.$grid.prepend(ui.item);
+								} else if (intent.gridEdge === 'bottom') {
+									intent.$grid.append(ui.item);
+								} else if (
+									window.EVFCanvasDrop.insertIntoGridAtY &&
+									typeof intent.clientY === 'number'
+								) {
+									window.EVFCanvasDrop.insertIntoGridAtY(
+										intent.$grid,
+										intent.clientY,
+										ui.item,
+									);
+								} else {
+									intent.$grid.append(ui.item);
+								}
+								EVFPanelBuilder.bindFields();
+								EVFPanelBuilder.checkEmptyGrid();
+							} else if (intent.type === 'expandRow' && intent.$row && intent.$row.length) {
+								var $grids = window.EVFCanvasDrop.expandRowColumns(
+									EVFPanelBuilder,
+									intent.$row,
+									intent.side,
+								);
+								if ($grids && $grids.length) {
+									var $target =
+										intent.side === 'left'
+											? $grids.eq(0)
+											: $grids.eq($grids.length - 1);
+									if (window.EVFCanvasDrop.insertIntoGridAtY && typeof intent.clientY === 'number') {
+										window.EVFCanvasDrop.insertIntoGridAtY($target, intent.clientY, ui.item);
+									} else {
+										$target.append(ui.item);
+									}
+								}
+								EVFPanelBuilder.bindFields();
+								EVFPanelBuilder.checkEmptyGrid();
+							}
+						}
+						var $rowAfterMove = ui.item.closest('.evf-admin-row');
+						if (EVFPanelBuilder.normalizeRowColumnsAfterChange) {
+							EVFPanelBuilder.normalizeRowColumnsAfterChange($rowBeforeMove);
+							if ($rowAfterMove.length && (!$rowBeforeMove.length || $rowAfterMove[0] !== $rowBeforeMove[0])) {
+								EVFPanelBuilder.normalizeRowColumnsAfterChange($rowAfterMove);
+							}
+						}
+
+						// Safety net: never allow the dragged field to end up detached.
+						setTimeout(function () {
+							if (!ui.item || !ui.item.length) {
+								return;
+							}
+							var inDom = ui.item.closest('body').length > 0;
+							var hasGrid = ui.item.closest('.evf-admin-grid').length > 0;
+							if (!inDom || !hasGrid) {
+								if ($fallbackGrid && $fallbackGrid.length) {
+									$fallbackGrid.append(ui.item);
+								} else {
+									$('.evf-admin-grid').not('.evf-repeatable-grid').first().append(ui.item);
+								}
+								EVFPanelBuilder.bindFields();
+								EVFPanelBuilder.checkEmptyGrid();
+							}
+						}, 0);
+						EVFPanelBuilder._canvasSortLastIntent = null;
+						EVFPanelBuilder._evfExistingFieldDrag = false;
 					},
 				})
 				.disableSelection();
@@ -4003,6 +4539,11 @@
 					forcePlaceholderSize: true,
 					start: function () {
 						$(this).addClass('field-dragged');
+						EVFPanelBuilder.clearFrozenColumnDrop();
+						EVFPanelBuilder.bindColumnDropPointerTracking();
+					},
+					drag: function (event) {
+						EVFPanelBuilder.refreshColumnDropIntent(event);
 					},
 					helper: function () {
 						return $(this)
@@ -4015,6 +4556,9 @@
 					},
 					stop: function () {
 						$(this).removeClass('field-dragged');
+						EVFPanelBuilder.unbindColumnDropPointerTracking();
+						EVFPanelBuilder.hideColumnDropIndicator();
+						EVFPanelBuilder._horizontalDropPending = null;
 					},
 					opacity: 0.75,
 					containment: '#everest-forms-builder',
@@ -4045,6 +4589,13 @@
 				$('.evf-admin-grid').sortable('refreshPositions');
 				$('.evf-admin-field-wrapper').sortable('refreshPositions');
 			});
+
+			if (
+				window.EVFCanvasDrop &&
+				typeof window.EVFCanvasDrop.hookAfterBindFields === 'function'
+			) {
+				window.EVFCanvasDrop.hookAfterBindFields(EVFPanelBuilder);
+			}
 		},
 
 		/**
@@ -4131,45 +4682,7 @@
 					return;
 				}
 
-				var grid_node = $(
-					'<div class="evf-admin-grid evf-grid-' +
-						grid_id +
-						' ui-sortable evf-empty-grid" />',
-				);
-				var grids = $('<div/>');
-
-				$.each($this_single_row.find('.evf-admin-grid'), function () {
-					$(this)
-						.children('*')
-						.each(function () {
-							grids.append($(this).clone());
-						});
-				});
-
-				// Build the grid-lists container with grids + inner clear div inside it
-				var $gridLists = $('<div class="evf-grid-lists"></div>');
-
-				for (var $grid_number = 1; $grid_number <= grid_id; $grid_number++) {
-					grid_node.attr('data-grid-id', $grid_number);
-					$gridLists.append(grid_node.clone());
-				}
-				$gridLists.append('<div class="clear evf-clear"></div>'); // ✅ inner clear inside evf-grid-lists
-
-				// Remove old elements
-				$this_single_row.find('.evf-grid-lists').remove();
-				$this_single_row.find('.evf-admin-grid').remove();
-				$this_single_row.find('.evf-clear').remove();
-
-				// Append outer clear + grid-lists to the row
-				$this_single_row.append('<div class="clear evf-clear"></div>');
-				$this_single_row.append($gridLists);
-
-				// Restore existing field content into first grid
-				$this_single_row.find('.evf-admin-grid').eq(0).append(grids.html());
-
-				$this_single_row.find('.evf-grid-selector').removeClass('active');
-				$(this).addClass('active');
-				EVFPanelBuilder.bindFields();
+				EVFPanelBuilder.setRowGridCount($this_single_row, grid_id);
 			});
 		},
 		fieldDrop: function (field) {
@@ -4345,7 +4858,19 @@
 						field_preview,
 						field_options,
 					]);
+					var frDrop = EVFPanelBuilder._frozenHorizontalDrop;
+					if (frDrop && frDrop.mode && frDrop.targetId) {
+						EVFPanelBuilder.applyHorizontalColumnSplit(
+							frDrop.mode,
+							frDrop.targetId,
+							dragged_field_id,
+						);
+					}
+					EVFPanelBuilder.clearFrozenColumnDrop();
 					EVFPanelBuilder.checkEmptyGrid();
+				},
+				error: function () {
+					EVFPanelBuilder.clearFrozenColumnDrop();
 				},
 			});
 		},

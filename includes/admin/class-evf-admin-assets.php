@@ -144,7 +144,12 @@ class EVF_Admin_Assets {
 				'i18n_unselect_all'         => _x( 'Unselect All', 'enhanced select', 'everest-forms' ),
 			)
 		);
-		wp_register_script( 'evf-form-builder', evf()->plugin_url() . '/assets/js/admin/form-builder' . $suffix . '.js', array( 'jquery', 'jquery-blockui', 'tooltipster', 'jquery-ui-sortable', 'jquery-ui-widget', 'jquery-ui-core', 'jquery-ui-tabs', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-datepicker', 'jquery-confirm', 'evf-clipboard', 'flatpickr' ), EVF_VERSION, true );
+		$evf_canvas_drop_js = 'evf-builder-canvas-drop' . $suffix . '.js';
+		if ( ! file_exists( evf()->plugin_path() . '/assets/js/admin/' . $evf_canvas_drop_js ) ) {
+			$evf_canvas_drop_js = 'evf-builder-canvas-drop.js';
+		}
+		wp_register_script( 'evf-builder-canvas-drop', evf()->plugin_url() . '/assets/js/admin/' . $evf_canvas_drop_js, array( 'jquery', 'jquery-ui-draggable', 'jquery-ui-sortable' ), EVF_VERSION, true );
+		wp_register_script( 'evf-form-builder', evf()->plugin_url() . '/assets/js/admin/form-builder' . $suffix . '.js', array( 'jquery', 'jquery-blockui', 'tooltipster', 'jquery-ui-sortable', 'jquery-ui-widget', 'jquery-ui-core', 'jquery-ui-tabs', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-datepicker', 'jquery-confirm', 'evf-clipboard', 'flatpickr', 'evf-builder-canvas-drop' ), EVF_VERSION, true );
 		wp_localize_script(
 			'evf-form-builder',
 			'evf_data',
@@ -154,6 +159,7 @@ class EVF_Admin_Assets {
 					'post_id'                             => isset( $post->ID ) ? $post->ID : '',
 					'ajax_url'                            => admin_url( 'admin-ajax.php' ),
 					'tab'                                 => isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : '', // phpcs:ignore WordPress.Security.NonceVerification.
+					'enable_canvas_drop'                  => apply_filters( 'everest_forms_enable_canvas_drop', '1' ),
 					'evf_field_drop_nonce'                => wp_create_nonce( 'everest_forms_field_drop' ),
 					'evf_add_row_nonce'                   => wp_create_nonce( 'everest_forms_add_row' ),
 					'evf_save_form'                       => wp_create_nonce( 'everest_forms_save_form' ),
