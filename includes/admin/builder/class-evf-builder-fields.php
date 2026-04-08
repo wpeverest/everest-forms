@@ -390,7 +390,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 			echo '<div class="evf-repeater-row-wrapper">'; // Repeater Row Wrapper starts.
 		}
 
-		$show_add_row = apply_filters( 'everest_forms_builder_show_add_row_button', false );
+		$show_add_row = apply_filters( 'everest_forms_builder_show_add_row_button', true );
 		if ( $show_add_row ) {
 			echo '<div class="evf-add-row" data-total-rows="' . count( $structure ) . '" data-next-row-id="' . (int) max( $row_ids ) . '"><span class="everest-forms-btn everest-forms-btn-primary dashicons dashicons-plus-alt">' . esc_html__( 'Add Row', 'everest-forms' ) . '</span></div>';
 		} else {
