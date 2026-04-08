@@ -69,6 +69,10 @@
 		return { $el: $root, id: String(id) };
 	}
 
+	function isExistingFieldDragging() {
+		return $('.everest-forms-field.ui-sortable-helper').length > 0;
+	}
+
 	function pickFieldUnderPoint(clientX, clientY) {
 		var stack = document.elementsFromPoint(clientX, clientY);
 		var i,
@@ -159,7 +163,7 @@
 	 * This fixes the UX gap when there is only one row (no between-row gap),
 	 * and provides a reliable area to add a new row at the top/bottom.
 	 */
-	function pickRowEdgeIntent(clientX, clientY, $section) {
+	function pickRowEdgeIntent(clientX, clientY, $section, includeInsideBand) {
 		var $rows = $section.find('.evf-admin-row');
 		if ($rows.length < 1) {
 			return null;
@@ -178,14 +182,23 @@
 		}
 
 		// Above first row.
-		// Only trigger when pointer is OUTSIDE the row (prevents “top padding” inside a row from creating a new row).
-		if (y >= first.top - ROW_GAP_PX && y < first.top) {
+		// For new-field drags, allow an easier band that also includes the top area inside row.
+		if (
+			(includeInsideBand &&
+				y >= first.top - ROW_GAP_PX &&
+				y <= first.top + ROW_GAP_PX) ||
+			(!includeInsideBand && y >= first.top - ROW_GAP_PX && y < first.top)
+		) {
 			return { position: 'before', $nextRow: $rows.first() };
 		}
 
 		// Below last row.
-		// Only trigger when pointer is OUTSIDE the row.
-		if (y > last.bottom && y <= last.bottom + ROW_GAP_PX) {
+		if (
+			(includeInsideBand &&
+				y >= last.bottom - ROW_GAP_PX &&
+				y <= last.bottom + ROW_GAP_PX) ||
+			(!includeInsideBand && y > last.bottom && y <= last.bottom + ROW_GAP_PX)
+		) {
 			return { position: 'after', $anchorRow: $rows.last() };
 		}
 
@@ -310,6 +323,7 @@
 			$grid,
 			colCount;
 
+		var existingDrag = isExistingFieldDragging();
 		for (s = 0; s < $sections.length; s++) {
 			$sec = $sections.eq(s);
 			secRef = sectionRefFrom$($sec);
@@ -327,7 +341,7 @@
 				return { type: 'emptySection', section: secRef, $section: $sec };
 			}
 
-			var edge = pickRowEdgeIntent(clientX, clientY, $sec);
+			var edge = pickRowEdgeIntent(clientX, clientY, $sec, !existingDrag);
 			if (edge) {
 				return {
 					type: 'newRow',
@@ -359,7 +373,7 @@
 				if (isRepeaterContext($field)) {
 					return null;
 				}
-				edge = pickRowEdgeIntent(clientX, clientY, $sec);
+				edge = pickRowEdgeIntent(clientX, clientY, $sec, !existingDrag);
 				if (edge) {
 					return {
 						type: 'newRow',
