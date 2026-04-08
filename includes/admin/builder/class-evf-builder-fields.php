@@ -296,7 +296,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 			echo '<div class="' . esc_attr( $row_classes ) . '" data-row-id="' . absint( $row ) . '"' . ( ! empty( $repeater_field ) ? esc_attr( $repeater_field ) : '' ) . '>';
 
 			if ( $show_row_controls ) {
-				$show_row_layout_picker = apply_filters( 'everest_forms_builder_show_row_layout_picker', false );
+				$show_row_layout_picker = apply_filters( 'everest_forms_builder_show_row_layout_picker', true );
 				echo '<div class="evf-toggle-row">';
 				if ( empty( $repeater_field ) ) {
 					echo '<div class="evf-duplicate-row"><span class="dashicons dashicons-media-default" title="Duplicate Row"></span></div>';
