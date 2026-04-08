@@ -267,7 +267,7 @@
 		}
 	}
 
-	function expandRowColumns(builder, $row, side) {
+	function expandRowColumns(builder, $row, side, $anchorGrid) {
 		if (!builder || !builder.setRowGridCount) {
 			return null;
 		}
@@ -278,25 +278,25 @@
 			return null;
 		}
 
-		// Build new column model, optionally shifting right when adding on the left.
-		var nextCols = [];
-		var i;
-		if (side === 'left') {
-			nextCols.push([]); // new empty first column
-			for (i = 0; i < prevCols.length; i++) {
-				nextCols.push(prevCols[i]);
+		// Insert the new column relative to the hovered column.
+		var nextCols = prevCols.slice(0);
+		var insertIdx = side === 'left' ? 0 : nextCols.length;
+		if ($anchorGrid && $anchorGrid.length) {
+			var anchorIdx = getRowGrids($row).index($anchorGrid);
+			if (anchorIdx >= 0) {
+				insertIdx = side === 'left' ? anchorIdx : anchorIdx + 1;
 			}
-		} else {
-			for (i = 0; i < prevCols.length; i++) {
-				nextCols.push(prevCols[i]);
-			}
-			nextCols.push([]); // new empty last column
 		}
+		insertIdx = Math.max(0, Math.min(insertIdx, nextCols.length));
+		nextCols.splice(insertIdx, 0, []);
 
 		builder.setRowGridCount($row, nextCount);
 		restoreRowColumns($row, nextCols);
 		builder.bindFields();
-		return getRowGrids($row);
+		return {
+			$grids: getRowGrids($row),
+			insertIndex: insertIdx,
+		};
 	}
 
 	/**
@@ -428,18 +428,10 @@
 					};
 				}
 				if (colCount >= 2) {
+					var isLastCol = gridIdx === colCount - 1;
+					var canExpandRight = isLastCol && colCount < 4;
+					var rightExpandThreshold = 1 - Math.max(EDGE_X, 0.28);
 					if (rx < EDGE_X) {
-						if (gridIdx > 0) {
-							return {
-								type: 'intoGrid',
-								edge: 'left',
-								clientY: clientY,
-								section: secRef,
-								$row: $row,
-								$grid: $grids.eq(gridIdx - 1),
-								$field: $field,
-							};
-						}
 						if (colCount < 4) {
 							return {
 								type: 'expandRow',
@@ -452,10 +444,33 @@
 								$field: $field,
 							};
 						}
+						if (gridIdx > 0) {
+							return {
+								type: 'intoGrid',
+								edge: 'left',
+								clientY: clientY,
+								section: secRef,
+								$row: $row,
+								$grid: $grids.eq(gridIdx - 1),
+								$field: $field,
+							};
+						}
 						return {
 							type: 'fieldSibling',
 							sibling: 'before',
 							edge: 'left',
+							clientY: clientY,
+							section: secRef,
+							$row: $row,
+							$grid: $grid,
+							$field: $field,
+						};
+					}
+					if (canExpandRight && rx > rightExpandThreshold) {
+						return {
+							type: 'expandRow',
+							side: 'right',
+							edge: 'right',
 							clientY: clientY,
 							section: secRef,
 							$row: $row,
@@ -560,6 +575,11 @@
 	var $vBar = null;
 
 	function ensureIndicators() {
+		if (!$('#evf-canvas-row-border-style').length) {
+			$('head').append(
+				'<style id="evf-canvas-row-border-style">.evf-admin-row.evf-canvas-row-hover{border:1px dashed #8bd18a !important;border-radius:5px;}</style>',
+			);
+		}
 		if (!$rowBar || !$rowBar.length) {
 			$rowBar = $(
 				'<div class="evf-canvas-drop-indicator evf-canvas-drop-indicator--row" aria-hidden="true" />',
@@ -581,6 +601,7 @@
 		if ($vBar) {
 			$vBar.css('display', 'none');
 		}
+		$('.evf-canvas-row-hover').removeClass('evf-canvas-row-hover');
 	}
 
 	// Hard teardown used on drop/end to avoid “stuck” fixed-position nodes.
@@ -594,6 +615,7 @@
 		$rowBar = null;
 		$vBar = null;
 		$('.evf-canvas-drop-indicator').remove();
+		$('.evf-canvas-row-hover').removeClass('evf-canvas-row-hover');
 	}
 
 	/**
@@ -609,14 +631,22 @@
 			}
 			return;
 		}
+		if (intent.$row && intent.$row.length) {
+			intent.$row.addClass('evf-canvas-row-hover');
+		}
+		var rowColCount = intent.$row && intent.$row.length ? getRowGrids(intent.$row).length : 0;
+		var isLastGrid =
+			!!(
+				intent.$row &&
+				intent.$row.length &&
+				intent.$grid &&
+				intent.$grid.length &&
+				getRowGrids(intent.$row).index(intent.$grid) === rowColCount - 1
+			);
 		var existingFieldDrag = !!(builder && builder._evfExistingFieldDrag);
 		if (intent.type === 'horizontalSplit' && builder && builder.showColumnDropIndicator) {
-			// Only show left-side split indicator (hide right-side indicator).
-			if (intent.mode === 'before') {
-				builder.showColumnDropIndicator(intent.$field, intent.mode);
-			} else if (builder.hideColumnDropIndicator) {
-				builder.hideColumnDropIndicator();
-			}
+			// In single-column rows, allow both left/right split indicators.
+			builder.showColumnDropIndicator(intent.$field, intent.mode);
 			return;
 		}
 		if (builder && builder.hideColumnDropIndicator) {
@@ -631,8 +661,15 @@
 			intent.$field &&
 			intent.$field.length
 		) {
-			// Only show left edge indicator (hide right-side drop zone indicator).
-			if (intent.edge !== 'left') {
+			// Right edge is shown only for "add new column on the last column" case.
+			var allowRightEdge =
+				intent.edge === 'right' &&
+				intent.type === 'expandRow' &&
+				intent.side === 'right' &&
+				isLastGrid &&
+				rowColCount > 0 &&
+				rowColCount < 4;
+			if (intent.edge !== 'left' && !allowRightEdge) {
 				return;
 			}
 			var er = intent.$field[0].getBoundingClientRect();
@@ -914,10 +951,14 @@
 			}
 		} else if (intent.type === 'expandRow') {
 			// Add a column (up to 4) and place into the new column.
-			var $grids = expandRowColumns(builder, intent.$row, intent.side);
-			if ($grids && $grids.length) {
-				var $targetGrid =
-					intent.side === 'left' ? $grids.eq(0) : $grids.eq($grids.length - 1);
+			var expandResult = expandRowColumns(
+				builder,
+				intent.$row,
+				intent.side,
+				intent.$grid,
+			);
+			if (expandResult && expandResult.$grids && expandResult.$grids.length) {
+				var $targetGrid = expandResult.$grids.eq(expandResult.insertIndex);
 				if (typeof intent.clientY === 'number') {
 					insertIntoGridAtY($targetGrid, intent.clientY, $clone);
 				} else {
