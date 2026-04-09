@@ -13298,3 +13298,68 @@ button#show-settings-link {
 		}
     }
 }
+
+.evf-builder-get-started {
+	padding: 28px 24px;
+
+	h3 {
+		margin: 0 0 8px;
+		font-size: 26px;
+		line-height: 1.2;
+		font-weight: 600;
+		color: #1f1f1f;
+	}
+
+	> p {
+		margin: 0;
+		font-size: 15px;
+		line-height: 26px;
+		color: #6b6b6b;
+	}
+
+	.evf-builder-get-started-steps {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		margin: 22px 0 24px;
+
+		.step {
+			display: inline-flex;
+			align-items: center;
+			gap: 10px;
+			font-size: 14px;
+			line-height: 1.2;
+			color: #2d2d2d;
+
+			span {
+				display: inline-flex;
+				align-items: center;
+				justify-content: center;
+				width: 26px;
+				height: 26px;
+				border-radius: 6px;
+				background: #f4f4f4;
+				color: #383838;
+				font-size: 11px;
+				font-style: normal;
+				font-weight: 600;
+				border: 1px solid #e1e1e1;
+			}
+
+			&:not(:last-child)::after {
+				content: '';
+				width: 74px;
+				height: 1px;
+				background: #d9d9d9;
+				margin-left: 10px;
+			}
+		}
+	}
+
+	.everest-forms-btn.everest-forms-btn-primary {
+		padding: 12px 20px;
+		font-size: 13px;
+		line-height: 1.2;
+		font-weight: 600; 
+	}
+}
