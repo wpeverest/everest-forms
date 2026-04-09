@@ -2898,6 +2898,10 @@
 
 						row_clone.find('i').remove();
 
+						// Re-init after spinner row is revealed (row HTML may differ from clone).
+						EVFPanelBuilder.bindFields();
+						EVFPanelBuilder.checkEmptyGrid();
+
 						// Trigger event after row add.
 						$this.trigger('everest-forms-after-add-row', row_clone);
 					});
@@ -4941,9 +4945,14 @@
 					}
 					EVFPanelBuilder.clearFrozenColumnDrop();
 					EVFPanelBuilder.checkEmptyGrid();
+					// New row + palette drop: DOM is replaced after async; re-init sortables/draggables.
+					EVFPanelBuilder.bindFields();
 				},
 				error: function () {
 					EVFPanelBuilder.clearFrozenColumnDrop();
+					field.remove();
+					EVFPanelBuilder.bindFields();
+					EVFPanelBuilder.checkEmptyGrid();
 				},
 			});
 		},
