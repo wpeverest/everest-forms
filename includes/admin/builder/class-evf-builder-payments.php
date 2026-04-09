@@ -34,17 +34,22 @@ class EVF_Builder_Payments extends EVF_Builder_Page {
 	public function output_sidebar() {
 		$payments = apply_filters( 'everest_forms_available_payments', array() );
 
+		if ( ! defined( 'EFP_PLUGIN_FILE' ) ) {
+			$payments = $this->get_free_payments_catalog();
+		}
+
 		if ( ! empty( $payments ) ) {
 			foreach ( $payments as $payment ) {
-				// In free, show locked rows and trigger upgrade modal on click.
 				if ( ! defined( 'EFP_PLUGIN_FILE' ) ) {
-					$pro_icon = plugins_url( 'assets/images/icons/evf-pro-icon.png', EVF_PLUGIN_FILE );
-					echo '<a href="#" class="evf-panel-tab evf-payments-panel everest-forms-panel-sidebar-section everest-forms-panel-sidebar-section-' . esc_attr( $payment['id'] ) . ' upgrade-addons-settings" data-section="' . esc_attr( $payment['id'] ) . '" data-name="' . esc_attr( $payment['name'] ) . '" data-links="' . esc_attr( isset( $payment['video_id'] ) ? $payment['video_id'] : '' ) . '">';
+					$video_id = isset( $payment['video_id'] ) ? $payment['video_id'] : ( isset( $payment['vedio_id'] ) ? $payment['vedio_id'] : '' );
+					echo '<a href="#" class="integration-name evf-panel-tab evf-payments-panel everest-forms-panel-sidebar-section everest-forms-panel-sidebar-section-' . esc_attr( $payment['id'] ) . ' upgrade-addons-settings" data-section="' . esc_attr( $payment['id'] ) . '" data-name="' . esc_attr( $payment['name'] ) . '" data-links="' . esc_attr( $video_id ) . '">';
+					echo '<div style="display: flex; align-items: center; gap: 12px;">';
 					if ( ! empty( $payment['icon'] ) ) {
 						echo '<figure class="logo"><img src="' . esc_url( $payment['icon'] ) . '"></figure>';
 					}
-					echo esc_html( $payment['name'] );
-					echo '<i class="dashicons" style="background-image: url(' . esc_url( $pro_icon ) . '); background-size: cover; display: inline-block; color: #ccd1d6;"></i>';
+					echo '<span>' . esc_html( $payment['name'] ) . '</span>';
+					echo '</div>';
+					echo '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18"><rect width="16.889" height="16.889" x=".444" y=".444" fill="#ff8c39" stroke="#ff8c39" stroke-width=".889" rx="2.222"/><path fill="#efefef" d="m8.89 4.444 2.666 7.111H6.223z"/><path fill="#fff" fill-rule="evenodd" d="m4.445 6.222.635 5.333h7.619l.635-5.333-4.445 3.666zm8.254 5.841h-7.62v1.27h7.62z" clip-rule="evenodd"/></svg>';
 					echo '</a>';
 				} else {
 					$this->add_sidebar_tab( $payment['name'], $payment['id'], $payment['icon'], $this->id );
@@ -52,6 +57,54 @@ class EVF_Builder_Payments extends EVF_Builder_Page {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Get free payments catalog from extensions JSON.
+	 *
+	 * @return array
+	 */
+	private function get_free_payments_catalog() {
+		$catalog = array();
+		$file    = dirname( EVF_PLUGIN_FILE ) . '/assets/extensions-json/sections/all_extensions.json';
+
+		if ( file_exists( $file ) ) {
+			$content = file_get_contents( $file ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
+			$data    = json_decode( $content, true );
+
+			if ( isset( $data['products'] ) && is_array( $data['products'] ) ) {
+				$data['features'] = isset( $data['features'] ) && is_array( $data['features'] ) ? $data['features'] : array();
+				$items            = array_merge( $data['products'], $data['features'] );
+
+				foreach ( $items as $item ) {
+					$category = isset( $item['category'] ) ? $item['category'] : '';
+					if ( 'Payment Gateways' !== $category ) {
+						continue;
+					}
+
+					$slug = isset( $item['slug'] ) ? $item['slug'] : '';
+					$id   = str_replace( 'everest-forms-', '', $slug );
+					$name = isset( $item['name'] ) ? $item['name'] : '';
+					$name = str_replace( 'Everest Forms - ', '', $name );
+					$name = str_replace( 'Everest Forms- ', '', $name );
+					$name = str_replace( 'Everest Forms-', '', $name );
+					$name = str_replace( 'Everest Forms ', '', $name );
+					$name = trim( $name );
+
+					$image = isset( $item['image'] ) ? $item['image'] : '';
+					$icon  = ! empty( $image ) ? plugins_url( 'assets/' . ltrim( $image, '/' ), EVF_PLUGIN_FILE ) : '';
+
+					$catalog[ $id ] = array(
+						'id'       => $id,
+						'name'     => $name,
+						'icon'     => $icon,
+						'video_id' => isset( $item['demo_video_url'] ) ? $item['demo_video_url'] : '',
+					);
+				}
+			}
+		}
+
+		return array_values( $catalog );
 	}
 
 	/**

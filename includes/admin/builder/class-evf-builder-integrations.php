@@ -34,20 +34,9 @@ class EVF_Builder_Integrations extends EVF_Builder_Page {
 	public function output_sidebar() {
 		$integrations = apply_filters( 'everest_forms_available_integrations', array() );
 
-		// In free, fallback to built-in locked integrations list if no addons are registered.
-		if ( empty( $integrations ) && ! defined( 'EFP_PLUGIN_FILE' ) && isset( evf()->integrations ) ) {
-			$default_integrations = evf()->integrations->get_integrations();
-
-			if ( is_array( $default_integrations ) ) {
-				foreach ( $default_integrations as $integration ) {
-					$integrations[] = array(
-						'id'       => isset( $integration->id ) ? $integration->id : '',
-						'name'     => isset( $integration->method_title ) ? $integration->method_title : '',
-						'icon'     => isset( $integration->icon ) ? $integration->icon : '',
-						'video_id' => isset( $integration->vedio_id ) ? $integration->vedio_id : '',
-					);
-				}
-			}
+		// In free, always show the full built-in integrations catalog.
+		if ( ! defined( 'EFP_PLUGIN_FILE' ) ) {
+			$integrations = $this->get_free_integrations_catalog();
 		}
 
 		if ( ! empty( $integrations ) ) {
@@ -73,6 +62,54 @@ class EVF_Builder_Integrations extends EVF_Builder_Page {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Get free integrations catalog from extensions JSON.
+	 *
+	 * @return array
+	 */
+	private function get_free_integrations_catalog() {
+		$catalog = array();
+		$file    = dirname( EVF_PLUGIN_FILE ) . '/assets/extensions-json/sections/all_extensions.json';
+
+		if ( file_exists( $file ) ) {
+			$content = file_get_contents( $file ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
+			$data    = json_decode( $content, true );
+
+			if ( isset( $data['products'] ) && is_array( $data['products'] ) ) {
+				$data['features'] = isset( $data['features'] ) && is_array( $data['features'] ) ? $data['features'] : array();
+				$items            = array_merge( $data['products'], $data['features'] );
+
+				foreach ( $items as $item ) {
+					$category = isset( $item['category'] ) ? $item['category'] : '';
+					if ( ! in_array( $category, array( 'Integrations', 'Email Marketing', 'CRM Integrations' ), true ) ) {
+						continue;
+					}
+
+					$slug = isset( $item['slug'] ) ? $item['slug'] : '';
+					$id   = str_replace( 'everest-forms-', '', $slug );
+					$name = isset( $item['name'] ) ? $item['name'] : '';
+					$name = str_replace( 'Everest Forms - ', '', $name );
+					$name = str_replace( 'Everest Forms- ', '', $name );
+					$name = str_replace( 'Everest Forms-', '', $name );
+					$name = str_replace( 'Everest Forms ', '', $name );
+					$name = trim( $name );
+
+					$image = isset( $item['image'] ) ? $item['image'] : '';
+					$icon  = ! empty( $image ) ? plugins_url( 'assets/' . ltrim( $image, '/' ), EVF_PLUGIN_FILE ) : '';
+
+					$catalog[ $id ] = array(
+						'id'       => $id,
+						'name'     => $name,
+						'icon'     => $icon,
+						'video_id' => isset( $item['demo_video_url'] ) ? $item['demo_video_url'] : '',
+					);
+				}
+			}
+		}
+
+		return array_values( $catalog );
 	}
 
 	/**
