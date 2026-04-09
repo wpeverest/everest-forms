@@ -590,6 +590,12 @@ class EVF_Form_Task {
 				'entry'       => $entry,
 				'form_data'   => $this->form_data,
 			);
+
+			if ( ! empty( $_POST[ 'applied_coupons_data' ] ) ) {
+				$applied_coupons_data = json_decode( wp_unslash( $_POST[ 'applied_coupons_data' ] ), true );
+				$all_data['applied_coupons_data'] = $applied_coupons_data;
+			}
+
 			foreach ( $this->form_data['form_fields'] as $field ) {
 				$field_id        = $field['id'];
 				$field_type      = $field['type'];
