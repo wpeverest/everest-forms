@@ -29,6 +29,32 @@ class EVF_Builder_Payments extends EVF_Builder_Page {
 	}
 
 	/**
+	 * Outputs the builder sidebar.
+	 */
+	public function output_sidebar() {
+		$payments = apply_filters( 'everest_forms_available_payments', array() );
+
+		if ( ! empty( $payments ) ) {
+			foreach ( $payments as $payment ) {
+				// In free, show locked rows and trigger upgrade modal on click.
+				if ( ! defined( 'EFP_PLUGIN_FILE' ) ) {
+					$pro_icon = plugins_url( 'assets/images/icons/evf-pro-icon.png', EVF_PLUGIN_FILE );
+					echo '<a href="#" class="evf-panel-tab evf-payments-panel everest-forms-panel-sidebar-section everest-forms-panel-sidebar-section-' . esc_attr( $payment['id'] ) . ' upgrade-addons-settings" data-section="' . esc_attr( $payment['id'] ) . '" data-name="' . esc_attr( $payment['name'] ) . '" data-links="' . esc_attr( isset( $payment['video_id'] ) ? $payment['video_id'] : '' ) . '">';
+					if ( ! empty( $payment['icon'] ) ) {
+						echo '<figure class="logo"><img src="' . esc_url( $payment['icon'] ) . '"></figure>';
+					}
+					echo esc_html( $payment['name'] );
+					echo '<i class="dashicons" style="background-image: url(' . esc_url( $pro_icon ) . '); background-size: cover; display: inline-block; color: #ccd1d6;"></i>';
+					echo '</a>';
+				} else {
+					$this->add_sidebar_tab( $payment['name'], $payment['id'], $payment['icon'], $this->id );
+					do_action( 'everest_forms_payment_connections_' . $payment['id'], $payment );
+				}
+			}
+		}
+	}
+
+	/**
 	 * Outputs the builder content.
 	 */
 	public function output_content() {

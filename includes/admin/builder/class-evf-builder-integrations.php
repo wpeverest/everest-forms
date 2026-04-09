@@ -28,6 +28,52 @@ class EVF_Builder_Integrations extends EVF_Builder_Page {
 		parent::__construct();
 	}
 
+	/**
+	 * Outputs the builder sidebar.
+	 */
+	public function output_sidebar() {
+		$integrations = apply_filters( 'everest_forms_available_integrations', array() );
+
+		// In free, fallback to built-in locked integrations list if no addons are registered.
+		if ( empty( $integrations ) && ! defined( 'EFP_PLUGIN_FILE' ) && isset( evf()->integrations ) ) {
+			$default_integrations = evf()->integrations->get_integrations();
+
+			if ( is_array( $default_integrations ) ) {
+				foreach ( $default_integrations as $integration ) {
+					$integrations[] = array(
+						'id'       => isset( $integration->id ) ? $integration->id : '',
+						'name'     => isset( $integration->method_title ) ? $integration->method_title : '',
+						'icon'     => isset( $integration->icon ) ? $integration->icon : '',
+						'video_id' => isset( $integration->vedio_id ) ? $integration->vedio_id : '',
+					);
+				}
+			}
+		}
+
+		if ( ! empty( $integrations ) ) {
+			foreach ( $integrations as $integration ) {
+				// In free, show locked rows and trigger upgrade modal on click.
+				if ( ! defined( 'EFP_PLUGIN_FILE' ) ) {
+					$pro_icon = plugins_url( 'assets/images/icons/evf-pro-icon.png', EVF_PLUGIN_FILE );
+					$video_id = isset( $integration['video_id'] ) ? $integration['video_id'] : ( isset( $integration['vedio_id'] ) ? $integration['vedio_id'] : '' );
+					echo '<a href="#" class="integration-name evf-panel-tab evf-integrations-panel everest-forms-panel-sidebar-section everest-forms-panel-sidebar-section-' . esc_attr( $integration['id'] ) . ' upgrade-addons-settings" data-section="' . esc_attr( $integration['id'] ) . '" data-name="' . esc_attr( $integration['name'] ) . '" data-links="' . esc_attr( $video_id ) . '">';
+					
+					echo  '<div style="display: flex; align-items: center; gap: 12px;">';
+					if ( ! empty( $integration['icon'] ) ) {
+						echo '<figure class="logo"><img src="' . esc_url( $integration['icon'] ) . '"></figure>';
+					}
+					echo '<span>' . esc_html($integration['name']) . '</span>';
+					echo '</div>';
+					echo '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18"><rect width="16.889" height="16.889" x=".444" y=".444" fill="#ff8c39" stroke="#ff8c39" stroke-width=".889" rx="2.222"/><path fill="#efefef" d="m8.89 4.444 2.666 7.111H6.223z"/><path fill="#fff" fill-rule="evenodd" d="m4.445 6.222.635 5.333h7.619l.635-5.333-4.445 3.666zm8.254 5.841h-7.62v1.27h7.62z" clip-rule="evenodd"/></svg>';
+					echo '</a>';
+
+				} else {
+					$this->add_sidebar_tab( $integration['name'], $integration['id'], $integration['icon'], $this->id );
+					do_action( 'everest_forms_integration_connections_' . $integration['id'], $integration );
+				}
+			}
+		}
+	}
 
 	/**
 	 * Outputs the builder content.

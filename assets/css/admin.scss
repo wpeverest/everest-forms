@@ -13363,3 +13363,62 @@ button#show-settings-link {
 		font-weight: 600; 
 	}
 }
+
+#everest-forms-panel-integrations,
+#everest-forms-panel-payments {
+	.integration-name {
+		display: flex;
+		align-items: center;
+		gap: 16px;
+		justify-content: space-between;
+
+		svg {
+			width: 16px;
+			height: 16px;
+		}
+	}
+
+	.evf-panel-tab {
+		min-height: 86px;
+		background: #f4f4f4;
+		border-bottom: 1px solid #e1e1e1;
+
+		.logo {
+			width: 38px;
+			height: 38px;
+			flex: 0 0 38px;  
+			margin: 0;
+			border: 1px solid #E1E1E1;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			border-radius: 5px;
+
+			img {
+				width: 28px;
+				height: 28px;
+			}
+		}
+
+		&.upgrade-addons-settings {
+			opacity: 0.8 !important;
+			color: #4a4a4a;
+
+			&:hover {
+				background: #f0f0f0;
+				color: #2f2f2f;
+			}
+
+			i.dashicons {
+				width: 18px;
+				height: 18px;
+				min-width: 18px;
+				background-color: #f4b25e;
+				border-radius: 3px;
+				background-position: center;
+				background-repeat: no-repeat;
+				background-size: 11px;
+			}
+		}
+	}
+}
