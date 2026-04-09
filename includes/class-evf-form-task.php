@@ -684,6 +684,13 @@ class EVF_Form_Task {
 				__( 'Everest Forms Process Completed.', 'everest-forms' ),
 				array( 'source' => 'form-submission' )
 			);
+
+			if ( ! empty( $_POST[ 'applied_coupons_data' ] ) ) {
+				$applied_coupons_data = json_decode( wp_unslash( $_POST[ 'applied_coupons_data' ] ), true );
+
+				$this->form_data['applied_coupons_data'] = $applied_coupons_data;
+			}
+
 			do_action( 'everest_forms_process_complete', $this->form_fields, $entry, $this->form_data, $entry_id );
 			$logger->info(
 				"Everest Forms Process Completed {$form_id}.",
