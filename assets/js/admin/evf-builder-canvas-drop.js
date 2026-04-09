@@ -13,6 +13,9 @@
 	var EDGE_Y_BOTTOM = 0.28;
 	/** Min half-height of the “insert row” band between two rows (px). */
 	var ROW_GAP_PX = 36;
+	// Set by `hookAfterBindFields(builder)` so we can reliably detect
+	// “existing field move” drags vs palette “new field” drags.
+	var _canvasDropBuilder = null;
 
 	/**
 	 * @typedef {Object} EVFCanvasSectionRef
@@ -70,7 +73,12 @@
 	}
 
 	function isExistingFieldDragging() {
-		return $('.everest-forms-field.ui-sortable-helper').length > 0;
+		if (_canvasDropBuilder && _canvasDropBuilder._evfExistingFieldDrag) {
+			return true;
+		}
+
+		// Fallback: existing field moves use jQuery UI `sortable` and a helper (`.evf-drag-helper`).
+		return $('.evf-drag-helper.ui-sortable-helper').length > 0;
 	}
 
 	function pickFieldUnderPoint(clientX, clientY) {
@@ -163,11 +171,20 @@
 	 * This fixes the UX gap when there is only one row (no between-row gap),
 	 * and provides a reliable area to add a new row at the top/bottom.
 	 */
-	function pickRowEdgeIntent(clientX, clientY, $section, includeInsideBand) {
+	function pickRowEdgeIntent(
+		clientX,
+		clientY,
+		$section,
+		includeInsideBand,
+		rowGapPxOverride,
+	) {
 		var $rows = $section.find('.evf-admin-row');
 		if ($rows.length < 1) {
 			return null;
 		}
+
+		var rowGapPx =
+			typeof rowGapPxOverride === 'number' ? rowGapPxOverride : ROW_GAP_PX;
 
 		var x = clientX;
 		var y = clientY;
@@ -185,9 +202,9 @@
 		// For new-field drags, allow an easier band that also includes the top area inside row.
 		if (
 			(includeInsideBand &&
-				y >= first.top - ROW_GAP_PX &&
-				y <= first.top + ROW_GAP_PX) ||
-			(!includeInsideBand && y >= first.top - ROW_GAP_PX && y < first.top)
+				y >= first.top - rowGapPx &&
+				y <= first.top + rowGapPx) ||
+			(!includeInsideBand && y >= first.top - rowGapPx && y < first.top)
 		) {
 			return { position: 'before', $nextRow: $rows.first() };
 		}
@@ -195,9 +212,9 @@
 		// Below last row.
 		if (
 			(includeInsideBand &&
-				y >= last.bottom - ROW_GAP_PX &&
-				y <= last.bottom + ROW_GAP_PX) ||
-			(!includeInsideBand && y > last.bottom && y <= last.bottom + ROW_GAP_PX)
+				y >= last.bottom - rowGapPx &&
+				y <= last.bottom + rowGapPx) ||
+			(!includeInsideBand && y > last.bottom && y <= last.bottom + rowGapPx)
 		) {
 			return { position: 'after', $anchorRow: $rows.last() };
 		}
@@ -324,6 +341,9 @@
 			colCount;
 
 		var existingDrag = isExistingFieldDragging();
+		// Existing field moves should be less sensitive to row-edge bands
+		// to avoid accidental “insert new row” when dropping into a column.
+		var edgeRowGapPx = existingDrag ? 12 : ROW_GAP_PX;
 		for (s = 0; s < $sections.length; s++) {
 			$sec = $sections.eq(s);
 			secRef = sectionRefFrom$($sec);
@@ -341,39 +361,17 @@
 				return { type: 'emptySection', section: secRef, $section: $sec };
 			}
 
-			var edge = pickRowEdgeIntent(clientX, clientY, $sec, !existingDrag);
-			if (edge) {
-				return {
-					type: 'newRow',
-					position: edge.position,
-					section: secRef,
-					$section: $sec,
-					$anchorRow: edge.$anchorRow,
-					$nextRow: edge.$nextRow,
-				};
-			}
-
-			gap = pickRowGapIntent(clientX, clientY, $sec);
-			if (gap) {
-				return {
-					type: 'newRow',
-					position: 'between',
-					clientY: clientY,
-					section: secRef,
-					$section: $sec,
-					$anchorRow: gap.$anchorRow,
-					$nextRow: gap.$nextRow,
-				};
-			}
-
-			$field = pickFieldUnderPoint(clientX, clientY);
-			if ($field.length && $sec.find($field).length) {
-				$row = $field.closest('.evf-admin-row');
-				$grid = $field.closest('.evf-admin-grid');
-				if (isRepeaterContext($field)) {
-					return null;
-				}
-				edge = pickRowEdgeIntent(clientX, clientY, $sec, !existingDrag);
+			// Existing-field moves: never create “new row” as a side-effect.
+			// Moving a field should only affect grids/columns, not insert rows.
+			// (Palette fields keep their existing row/edge behavior.)
+			if (!existingDrag) {
+				var edge = pickRowEdgeIntent(
+					clientX,
+					clientY,
+					$sec,
+					!existingDrag,
+					edgeRowGapPx,
+				);
 				if (edge) {
 					return {
 						type: 'newRow',
@@ -384,17 +382,49 @@
 						$nextRow: edge.$nextRow,
 					};
 				}
+
 				gap = pickRowGapIntent(clientX, clientY, $sec);
 				if (gap) {
 					return {
 						type: 'newRow',
 						position: 'between',
+						clientY: clientY,
 						section: secRef,
 						$section: $sec,
 						$anchorRow: gap.$anchorRow,
 						$nextRow: gap.$nextRow,
 					};
 				}
+			}
+
+			$field = pickFieldUnderPoint(clientX, clientY);
+			if ($field.length && $sec.find($field).length) {
+				$row = $field.closest('.evf-admin-row');
+				$grid = $field.closest('.evf-admin-grid');
+				if (isRepeaterContext($field)) {
+					return null;
+				}
+				// Palette-field only: row-edge insertion.
+				if (!existingDrag) {
+					edge = pickRowEdgeIntent(
+						clientX,
+						clientY,
+						$sec,
+						!existingDrag,
+						edgeRowGapPx,
+					);
+					if (edge) {
+						return {
+							type: 'newRow',
+							position: edge.position,
+							section: secRef,
+							$section: $sec,
+							$anchorRow: edge.$anchorRow,
+							$nextRow: edge.$nextRow,
+						};
+					}
+				}
+				// (between-row inserts are already disabled above for existing drags)
 				fr = $field[0].getBoundingClientRect();
 				rx = (clientX - fr.left) / fr.width;
 				ry = (clientY - fr.top) / fr.height;
@@ -1058,6 +1088,9 @@
 		if (!canvasDropEnabled()) {
 			return;
 		}
+		// Used by `computeDropIntent()` to reliably distinguish
+		// existing-field drags from palette drags.
+		_canvasDropBuilder = builder;
 
 		var $buttons = $(
 			'.evf-registered-buttons button.evf-registered-item',
