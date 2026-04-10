@@ -3,7 +3,7 @@
  * EverestForms Builder Integrations
  *
  * @package EverestForms\Admin
- * @since   1.0.0
+ * @since
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -34,19 +34,17 @@ class EVF_Builder_Integrations extends EVF_Builder_Page {
 	public function output_sidebar() {
 		$integrations = apply_filters( 'everest_forms_available_integrations', array() );
 
-		// In free, always show the full built-in integrations catalog.
 		if ( ! defined( 'EFP_PLUGIN_FILE' ) ) {
 			$integrations = $this->get_free_integrations_catalog();
 		}
 
 		if ( ! empty( $integrations ) ) {
 			foreach ( $integrations as $integration ) {
-				// In free, show locked rows and trigger upgrade modal on click.
 				if ( ! defined( 'EFP_PLUGIN_FILE' ) ) {
 					$pro_icon = plugins_url( 'assets/images/icons/evf-pro-icon.png', EVF_PLUGIN_FILE );
 					$video_id = isset( $integration['video_id'] ) ? $integration['video_id'] : ( isset( $integration['vedio_id'] ) ? $integration['vedio_id'] : '' );
 					echo '<a href="#" class="integration-name evf-panel-tab evf-integrations-panel everest-forms-panel-sidebar-section everest-forms-panel-sidebar-section-' . esc_attr( $integration['id'] ) . ' upgrade-addons-settings" data-section="' . esc_attr( $integration['id'] ) . '" data-name="' . esc_attr( $integration['name'] ) . '" data-links="' . esc_attr( $video_id ) . '">';
-					
+
 					echo  '<div style="display: flex; align-items: center; gap: 12px;">';
 					if ( ! empty( $integration['icon'] ) ) {
 						echo '<figure class="logo"><img src="' . esc_url( $integration['icon'] ) . '"></figure>';
