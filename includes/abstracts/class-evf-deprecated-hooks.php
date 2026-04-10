@@ -44,7 +44,7 @@ abstract class EVF_Deprecated_Hooks {
 					}
 
 					$field = (string) $field;
-
+					
 					$new_dynamic_hooks = str_replace( '{field_type}', $field, $new_hook );
 					$old_dynamic_hooks = str_replace( '{field_type}', $field, $old_hook );
 
