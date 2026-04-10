@@ -39,6 +39,12 @@ abstract class EVF_Deprecated_Hooks {
 		foreach ( $this->deprecated_hooks as $new_hook => $old_hook ) {
 			if ( is_string( $old_hook ) && false !== strpos( $new_hook, '{field_type}' ) ) {
 				foreach ( $fields as $field ) {
+					if ( null === $field || '' === $field ) {
+						continue;
+					}
+
+					$field = (string) $field;
+					
 					$new_dynamic_hooks = str_replace( '{field_type}', $field, $new_hook );
 					$old_dynamic_hooks = str_replace( '{field_type}', $field, $old_hook );
 
