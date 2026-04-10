@@ -20,7 +20,7 @@ defined( 'ABSPATH' ) || exit;
 			<?php
 			printf(
 				wp_kses(
-					__( 'Help us improve the plugin\'s features by sharing <a href="https://docs.everestforms.net/docs/misc-settings-4/#2-toc-title" target="_blank">non-sensitive plugin data</a> with us.', 'everest-forms' ),
+					__( 'Help us improve the plugin\'s features by sharing <a href="https://docs.everestforms.net/docs/global-general-settings/#8-toc-title" target="_blank">non-sensitive plugin data</a> with us.', 'everest-forms' ),
 					array(
 						'a' => array(
 							'href'   => array(),
