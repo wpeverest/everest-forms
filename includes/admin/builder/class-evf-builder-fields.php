@@ -15,10 +15,6 @@ if ( class_exists( 'EVF_Builder_Fields', false ) ) {
 /**
  * EVF_Builder_Fields class.
  *
- * Simplified builder (default): single-column rows, no row toolbar, no Add Row button.
- * Re-enable classic UI with:
- * - add_filter( 'everest_forms_builder_show_row_controls', '__return_true' );
- * - add_filter( 'everest_forms_builder_show_add_row_button', '__return_true' );
  */
 class EVF_Builder_Fields extends EVF_Builder_Page {
 
@@ -276,7 +272,6 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 			$row_grid    = isset( $form_data['structure'][ 'row_' . $row ] ) ? $form_data['structure'][ 'row_' . $row ] : array();
 			$form_grid   = apply_filters( 'everest_forms_default_form_grid', 4 );
 			$total_grid  = $form_grid;
-			// Default new/empty rows to a single column; saved structure still defines column count.
 			$active_grid = ( count( $row_grid ) > 0 ) ? count( $row_grid ) : 1;
 			$active_grid = $active_grid > $total_grid ? $total_grid : $active_grid;
 
@@ -394,7 +389,6 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 		if ( $show_add_row ) {
 			echo '<div class="evf-add-row" data-total-rows="' . count( $structure ) . '" data-next-row-id="' . (int) max( $row_ids ) . '"><span class="everest-forms-btn everest-forms-btn-primary dashicons dashicons-plus-alt">' . esc_html__( 'Add Row', 'everest-forms' ) . '</span></div>';
 		} else {
-			// Hidden target so builder scripts can read row counts and programmatically add rows (e.g. canvas drop).
 			echo '<div class="evf-add-row evf-add-row--hidden" style="height:0;width:0;margin:0;padding:0;overflow:hidden;border:0;clip:rect(0,0,0,0);position:absolute;left:-9999px;" data-total-rows="' . count( $structure ) . '" data-next-row-id="' . (int) max( $row_ids ) . '" aria-hidden="true"><span></span></div>';
 		}
 

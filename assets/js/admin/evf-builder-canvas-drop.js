@@ -11,10 +11,7 @@
 	var EDGE_X = 0.22;
 	var EDGE_Y_TOP = 0.28;
 	var EDGE_Y_BOTTOM = 0.28;
-	/** Min half-height of the “insert row” band between two rows (px). */
 	var ROW_GAP_PX = 36;
-	// Set by `hookAfterBindFields(builder)` so we can reliably detect
-	// “existing field move” drags vs palette “new field” drags.
 	var _canvasDropBuilder = null;
 
 	/**
@@ -77,7 +74,6 @@
 			return true;
 		}
 
-		// Fallback: existing field moves use jQuery UI `sortable` and a helper (`.evf-drag-helper`).
 		return $('.evf-drag-helper.ui-sortable-helper').length > 0;
 	}
 
@@ -198,8 +194,6 @@
 			return null;
 		}
 
-		// Above first row.
-		// For new-field drags, allow an easier band that also includes the top area inside row.
 		if (
 			(includeInsideBand &&
 				y >= first.top - rowGapPx &&
@@ -209,7 +203,6 @@
 			return { position: 'before', $nextRow: $rows.first() };
 		}
 
-		// Below last row.
 		if (
 			(includeInsideBand &&
 				y >= last.bottom - rowGapPx &&
@@ -295,7 +288,6 @@
 			return null;
 		}
 
-		// Insert the new column relative to the hovered column.
 		var nextCols = prevCols.slice(0);
 		var insertIdx = side === 'left' ? 0 : nextCols.length;
 		if ($anchorGrid && $anchorGrid.length) {
@@ -341,8 +333,6 @@
 			colCount;
 
 		var existingDrag = isExistingFieldDragging();
-		// Existing field moves should be less sensitive to row-edge bands
-		// to avoid accidental “insert new row” when dropping into a column.
 		var edgeRowGapPx = existingDrag ? 12 : ROW_GAP_PX;
 		for (s = 0; s < $sections.length; s++) {
 			$sec = $sections.eq(s);
@@ -361,9 +351,6 @@
 				return { type: 'emptySection', section: secRef, $section: $sec };
 			}
 
-			// Existing-field moves: never create “new row” as a side-effect.
-			// Moving a field should only affect grids/columns, not insert rows.
-			// (Palette fields keep their existing row/edge behavior.)
 			if (!existingDrag) {
 				var edge = pickRowEdgeIntent(
 					clientX,
@@ -404,7 +391,6 @@
 				if (isRepeaterContext($field)) {
 					return null;
 				}
-				// Palette-field only: row-edge insertion.
 				if (!existingDrag) {
 					edge = pickRowEdgeIntent(
 						clientX,
@@ -424,7 +410,6 @@
 						};
 					}
 				}
-				// (between-row inserts are already disabled above for existing drags)
 				fr = $field[0].getBoundingClientRect();
 				rx = (clientX - fr.left) / fr.width;
 				ry = (clientY - fr.top) / fr.height;
@@ -634,7 +619,6 @@
 		$('.evf-canvas-row-hover').removeClass('evf-canvas-row-hover');
 	}
 
-	// Hard teardown used on drop/end to avoid “stuck” fixed-position nodes.
 	function destroyIndicators() {
 		if ($rowBar && $rowBar.length) {
 			$rowBar.remove();
@@ -675,14 +659,12 @@
 			);
 		var existingFieldDrag = !!(builder && builder._evfExistingFieldDrag);
 		if (intent.type === 'horizontalSplit' && builder && builder.showColumnDropIndicator) {
-			// In single-column rows, allow both left/right split indicators.
 			builder.showColumnDropIndicator(intent.$field, intent.mode);
 			return;
 		}
 		if (builder && builder.hideColumnDropIndicator) {
 			builder.hideColumnDropIndicator();
 		}
-		// Edge targeting (multi-column rows): show a vertical bar, even when staying in same column.
 		if (
 			(intent.type === 'intoGrid' ||
 				intent.type === 'fieldSibling' ||
@@ -691,11 +673,9 @@
 			intent.$field &&
 			intent.$field.length
 		) {
-			// At max columns, suppress left-edge drop area indicator.
 			if (intent.edge === 'left' && rowColCount >= 4) {
 				return;
 			}
-			// Right edge is shown only for "add new column on the last column" case.
 			var allowRightEdge =
 				intent.edge === 'right' &&
 				intent.type === 'expandRow' &&
@@ -725,7 +705,6 @@
 			return;
 		}
 		if (existingFieldDrag) {
-			// For existing-field drags, suppress top/bottom/row insertion indicators.
 			return;
 		}
 		if (intent.type === 'newRow' && intent.$anchorRow && intent.$anchorRow.length) {
@@ -977,14 +956,12 @@
 				intent.$field.after($clone);
 			}
 		} else if (intent.type === 'intoGrid') {
-			// If we have a pointer Y, insert at nearest vertical position for better “before/after” feel.
 			if (typeof intent.clientY === 'number') {
 				insertIntoGridAtY(intent.$grid, intent.clientY, $clone);
 			} else {
 				intent.$grid.append($clone);
 			}
 		} else if (intent.type === 'expandRow') {
-			// Add a column (up to 4) and place into the new column.
 			var expandResult = expandRowColumns(
 				builder,
 				intent.$row,
@@ -999,7 +976,6 @@
 					$targetGrid.append($clone);
 				}
 			} else {
-				// fallback: insert before/after within same grid
 				if (intent.edge === 'left') {
 					intent.$field.before($clone);
 				} else {
@@ -1007,7 +983,6 @@
 				}
 			}
 		} else if (intent.type === 'newRow') {
-			/* async */
 			return false;
 		} else if (intent.type === 'emptySection') {
 			return false;
@@ -1032,7 +1007,6 @@
 			return;
 		}
 
-		// between / after defaults: insert after anchor row (or last row).
 		insertRowAfter(intent.$anchorRow, builder, function ($nr) {
 			var $g = $nr.find('.evf-admin-grid').first();
 			var $clone = $button.clone(false, false);
@@ -1088,8 +1062,6 @@
 		if (!canvasDropEnabled()) {
 			return;
 		}
-		// Used by `computeDropIntent()` to reliably distinguish
-		// existing-field drags from palette drags.
 		_canvasDropBuilder = builder;
 
 		var $buttons = $(
@@ -1165,7 +1137,6 @@
 			stop: function () {
 				var $btn = $(this);
 				var intent = dragState.lastIntent;
-				// Recompute at drop point for accurate far-right/last-column targeting.
 				if (typeof computeDropIntent === 'function') {
 					intent =
 						computeDropIntent(dragState.pointer.x, dragState.pointer.y) || intent;

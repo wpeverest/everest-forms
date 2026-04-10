@@ -3898,7 +3898,7 @@
 		},
 
 		/**
-		 * Rebuild row grids (same as row settings UI). Caller should run bindFields if omitted internally.
+		 * Rebuild row grids
 		 *
 		 * @param {jQuery} $row Row container.
 		 * @param {number} grid_id Number of columns (1–4).
@@ -4420,7 +4420,6 @@
 							window.EVFCanvasDrop.hideIndicators();
 						}
 						var intent = EVFPanelBuilder._canvasSortLastIntent;
-						// Recompute intent at drop time (cached intent can be stale while containers refresh).
 						if (
 							window.EVFCanvasDrop &&
 							typeof window.EVFCanvasDrop.computeDropIntent === 'function'
@@ -4457,20 +4456,17 @@
 						ui.item.removeAttr('style');
 						EVFPanelBuilder.checkEmptyGrid();
 
-						// Existing-field “readjust” using canvas intent (edge drop / cross-column / expand row / new row).
 						if (
 							intent &&
 							ui.item.hasClass('everest-forms-field') &&
 							window.EVFCanvasDrop
 						) {
-							// Never treat “drop onto itself” as an intent.
 							if (intent.$field && intent.$field.length) {
 								var targetId = intent.$field.attr('data-field-id');
 								var selfDropSensitiveIntent =
 									intent.type === 'fieldSibling' ||
 									intent.type === 'intoGrid' ||
 									intent.type === 'horizontalSplit';
-								// Keep expandRow valid even if hovered field is the same dragged field.
 								if (selfDropSensitiveIntent && targetId && targetId === droppedFieldId) {
 									intent = null;
 								}
@@ -4480,7 +4476,6 @@
 								intent.$field &&
 								intent.$field.length
 							) {
-								// Make existing-field behave like palette split: 1-column row becomes 2 columns on edge drop.
 								EVFPanelBuilder._frozenHorizontalDrop = {
 									mode: intent.mode,
 									targetId: intent.$field.attr('data-field-id'),
@@ -4566,7 +4561,6 @@
 								EVFPanelBuilder.checkEmptyGrid();
 							}
 						}
-						// Ensure move semantics for existing field drags: keep only one node per field id.
 						if (droppedFieldId) {
 							var $sameFieldNodes = $(
 								'.everest-forms-field[data-field-id="' + droppedFieldId + '"]',
@@ -4945,7 +4939,6 @@
 					}
 					EVFPanelBuilder.clearFrozenColumnDrop();
 					EVFPanelBuilder.checkEmptyGrid();
-					// New row + palette drop: DOM is replaced after async; re-init sortables/draggables.
 					EVFPanelBuilder.bindFields();
 				},
 				error: function () {
