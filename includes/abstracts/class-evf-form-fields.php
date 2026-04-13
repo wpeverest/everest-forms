@@ -459,7 +459,7 @@ abstract class EVF_Form_Fields {
 					$output = '</div></div>';
 				}
 				break;
-				
+
 			/**
 			 * Payment Summary Description.
 			 */
@@ -493,6 +493,33 @@ abstract class EVF_Form_Fields {
 					$field,
 					array(
 						'slug'    => 'payment_summary_description',
+						'content' => $output,
+					),
+					$echo
+				);
+				break;
+
+			case 'show_hide_payment_summary':
+				$value   = ! empty( $field['show_hide_payment_summary'] ) ? esc_attr( $field['show_hide_payment_summary'] ) : 'No payment items has been selected yet';
+				$tooltip = esc_html__( 'Show close button for closing Payment Summary', 'everest-forms' );
+
+				$output = $this->field_element(
+					'toggle',
+					$field,
+					array(
+						'slug'    => 'show_hide_payment_summary',
+						'value'   => $value,
+						'desc'    => esc_html__( 'Show close button on Payment Summary', 'everest-forms' ),
+						'tooltip' => $tooltip,
+					),
+					false
+				);
+
+				$output = $this->field_element(
+					'row',
+					$field,
+					array(
+						'slug'    => 'show_hide_payment_summary',
 						'content' => $output,
 					),
 					$echo
