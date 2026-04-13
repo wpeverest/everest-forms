@@ -60,7 +60,6 @@ class EVF_Forms_Features {
 			'EVF_Field_Color',
 			'EVF_Field_Reset',
 			'EVF_Field_Lookup',
-			'EVF_Field_Net_Promoter_Score',
 
 		);
 
