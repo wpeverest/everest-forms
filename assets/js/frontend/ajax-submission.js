@@ -116,7 +116,15 @@ jQuery( function( $ ) {
 					})
 					.done( function ( xhr, textStatus, errorThrown ) {
 						var redirect_url = ( xhr.data && xhr.data.redirect_url ) ? xhr.data.redirect_url : '';
-						if ( redirect_url && 'stripe' !== formTuple.find( ".everest-forms-gateway[data-gateway='stripe']" ).data( 'gateway' ) && 'square' !== formTuple.find( ".everest-forms-gateway[data-gateway='square']" ).data( 'gateway' )) {
+						var selectedGateway = formTuple.find( '.evf-payment-gateway-radio:checked' ).data( 'evf-gateway' );
+						if ( undefined === selectedGateway ) {
+							if ( 'none' !== formTuple.find( ".everest-forms-gateway[data-gateway='square']" ).closest( '.evf-field' ).css( 'display' ) ) {
+								selectedGateway = 'square';
+							} else if ( 'none' !== formTuple.find( ".everest-forms-gateway[data-gateway='stripe']" ).closest( '.evf-field' ).css( 'display' ) ) {
+								selectedGateway = 'stripe';
+							}
+						}
+						if ( redirect_url && 'stripe' !== selectedGateway && 'square' !== selectedGateway ) {
 							formTuple.trigger( 'reset' );
 							var new_tab = xhr.data.enable_redirect_in_new_tab ? xhr.data.enable_redirect_in_new_tab : false;
 
@@ -188,7 +196,7 @@ jQuery( function( $ ) {
 								formTuple.trigger( 'evf_process_payment', xhr.data );
 								return;
 							}
-							if( 'square' === formTuple.find( ".everest-forms-gateway[data-gateway='square']" ).data('gateway') ){
+							if( 'square' === selectedGateway ){
 
 								formTuple.trigger( 'everest_forms_frontend_payment_before_success_message', xhr.data );
 								return;

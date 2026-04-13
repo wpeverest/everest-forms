@@ -547,8 +547,12 @@ class EVF_AJAX {
 			$has_square_credit_card = false;
 
 			foreach ( $form_fields as $field ) {
-				if ( 'square-payment' === $field['type'] ) {
+				if ( empty( $field['type'] ) ) {
+					continue;
+				}
+				if ( in_array( $field['type'], array( 'square-payment', 'payment-gateway-selector' ), true ) ) {
 					$has_square_credit_card = true;
+					break;
 				}
 			}
 
