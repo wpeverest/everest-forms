@@ -459,6 +459,45 @@ abstract class EVF_Form_Fields {
 					$output = '</div></div>';
 				}
 				break;
+				
+			/**
+			 * Payment Summary Description.
+			 */
+			case 'payment_summary_description':
+				$value   = ! empty( $field['payment_summary_description'] ) ? esc_attr( $field['payment_summary_description'] ) : 'No payment items has been selected yet';
+				$tooltip = esc_html__( 'Empty Payment Selected Text.', 'everest-forms' );
+
+				$output  = $this->field_element(
+					'label',
+					$field,
+					array(
+						'slug'    => 'payment_summary_description',
+						'value'   => esc_html__( 'Empty Payment Selected Text', 'everest-forms' ),
+						'tooltip' => $tooltip,
+					),
+					false
+				);
+
+				$output .= $this->field_element(
+					'textarea',
+					$field,
+					array(
+						'slug'  => 'payment_summary_description',
+						'value' => $value,
+					),
+					false
+				);
+
+				$output = $this->field_element(
+					'row',
+					$field,
+					array(
+						'slug'    => 'payment_summary_description',
+						'content' => $output,
+					),
+					$echo
+				);
+				break;
 
 			/*
 			 * Field Label.
