@@ -2267,6 +2267,7 @@ p.search-box {
 										margin-right: 8px;
 										vertical-align: middle;
 										border-color: #bababa;
+										background-color: white !important;
 
 										&:checked {
 											border-color: #7545bb;
@@ -3498,6 +3499,33 @@ p.search-box {
 								&[type='checkbox'],
 								&[type='radio'] {
 									height: 16px;
+								}
+							}
+
+							input[type='radio'] {
+								margin-top: -2px;
+								margin-right: 8px;
+								vertical-align: middle;
+								border-color: #bababa;
+								background-color: white !important;
+
+								&:checked {
+									border-color: #7545bb;
+
+									&::before {
+										background: #7545bb;
+
+										@media screen and (max-width: 782px) {
+											width: 0.5rem;
+											height: 0.5rem;
+											margin: 0.1875rem;
+										}
+									}
+								}
+
+								@media screen and (max-width: 782px) {
+									width: 1rem;
+									height: 1rem;
 								}
 							}
 
