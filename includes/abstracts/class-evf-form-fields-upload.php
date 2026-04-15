@@ -911,7 +911,7 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 			}
 
 			if ( isset( $value['type'], $value['file_url'] ) && $value['type'] === $this->type ) {
-				$file = $uploads['basedir'] . str_replace( '/uploads/', '/', str_replace( content_url(), '', esc_url_raw( $value['file_url'] ) ) );
+				$file = $uploads['basedir'] . str_replace( '/uploads/', '/', str_replace( content_url(), '', esc_url( $value['file_url'] ) ) );
 
 				switch ( $this->type ) {
 					case 'image-upload':
@@ -925,9 +925,13 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 									esc_attr( $file )
 								);
 							} elseif ( 'entry-single' === $context ) {
+								$alt_text = esc_attr( basename( $file_url ) );
 								$val = sprintf(
-									'<a href="%1$s" rel="noopener noreferrer" target="_blank"><img src="%1$s" style="width:200px;" alt="" /></a>',
-									$file_url
+									'<a href="%1$s" rel="noopener noreferrer" target="_blank">
+										<img src="%1$s" style="width:200px;" alt="%2$s" />
+									</a>',
+									esc_url( $file_url ),
+									$alt_text
 								);
 							} else {
 								$val = sprintf(

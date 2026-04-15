@@ -383,11 +383,13 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 				return nl2br( make_clickable( $value ) );
 			}elseif( 'address' === $field_type ){
 				$allowed_tags = array(
-					'br' => array(),
+					'br'   => array(),
+					'span' => array(),
+					'p'    => array(),
 				);
 
-				$output = wp_kses( $value, $allowed_tags );
-				return nl2br( $output );
+				$output = nl2br( $value );
+				return wp_kses( $output, $allowed_tags );
 			}
 			else{
 				return esc_html( $value );

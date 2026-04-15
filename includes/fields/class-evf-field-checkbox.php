@@ -105,7 +105,7 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 				) {
 					$items = array();
 
-					if ( ! empty( $field_value['label'] ) && is_array( $field_value['label'] ) ) {
+					if ( is_array( $field_value['label'] ) && ! empty( $field_value['label'] ) ) {
 						foreach ( $field_value['label'] as $key => $item_value ) {
 							$label_text = esc_html( wp_unslash( (string) $item_value ) );
 
