@@ -379,9 +379,17 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 			}
 			$value = apply_filters( 'everest_forms_html_field_value', $value, $entry->meta[ $meta_key ], $entry, 'entry-table', $meta_key );
 
-			if ( in_array( $field_type, array( 'file-upload', 'image-upload', 'signature', 'wysiwyg', 'color', 'rating', 'country', 'likert', 'checkbox', 'radio', 'repeater-fields', 'address' ), true ) ) {
+			if ( in_array( $field_type, array( 'file-upload', 'image-upload', 'signature', 'wysiwyg', 'color', 'rating', 'country', 'likert', 'checkbox', 'radio', 'repeater-fields' ), true ) ) {
 				return nl2br( make_clickable( $value ) );
-			}else{
+			}elseif( 'address' === $field_type ){
+				$allowed_tags = array(
+					'br' => array(),
+				);
+
+				$output = wp_kses( $value, $allowed_tags );
+				return nl2br( $output );
+			}
+			else{
 				return esc_html( $value );
 			}
 		} else {

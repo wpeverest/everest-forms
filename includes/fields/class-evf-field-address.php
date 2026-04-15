@@ -80,20 +80,6 @@ class EVF_Field_Address extends EVF_Form_Fields {
 	public function init_hooks() {
 		add_filter( 'everest_forms_field_properties_' . $this->type, array( $this, 'field_properties' ), 5, 3 );
 		add_filter( 'everest_forms_field_exporter_' . $this->type, array( $this, 'field_exporter' ) );
-		add_filter( 'everest_forms_html_field_value', array( $this, 'html_field_value' ), 10, 4 );
-	}
-
-	/**
-	 * Format html value.
-	 */
-	public function html_field_value( $value, $field, $form_data = array(), $context = '' ){
-		$allowed_tags = array(
-			'br' => array(),
-		);
-
-		$output = wp_kses($input, $allowed_tags);
-
-		return $output;
 	}
 
 	/**
