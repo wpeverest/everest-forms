@@ -4675,23 +4675,53 @@
 					vpW = window.innerWidth,
 					vpH = window.innerHeight,
 					popW = $pop.outerWidth(),
-					popH = $pop.outerHeight(),
+					$fieldsWrap = $pop.find('.evf-popover-fields-wrap'),
+					defaultFieldsMaxHeight = 320,
+					popH,
 					margin = 8,
 					anchorCX = offset.left - scrollLeft + $anchor.outerWidth() / 2,
-					top = offset.top - scrollTop + $anchor.outerHeight() + 6,
+					anchorTop = offset.top - scrollTop,
+					belowTop = anchorTop + $anchor.outerHeight() + 6,
+					aboveTop,
+					top,
 					left = anchorCX - popW / 2,
 					flipped = false;
 
+				$fieldsWrap.css('max-height', defaultFieldsMaxHeight + 'px');
+				popH = $pop.outerHeight();
+				var maxPopoverHeight = vpH - margin * 2;
+				if (popH > maxPopoverHeight) {
+					var staticHeight = popH - $fieldsWrap.outerHeight();
+					$fieldsWrap.css(
+						'max-height',
+						Math.max(140, maxPopoverHeight - staticHeight) + 'px',
+					);
+					popH = $pop.outerHeight();
+				}
+
+				aboveTop = anchorTop - popH - 6;
 				left = Math.min(Math.max(margin, left), vpW - popW - margin);
+				var fitsBelow = belowTop + popH <= vpH - margin,
+					fitsAbove = aboveTop >= margin;
 				if (forceFlipped !== undefined) {
 					flipped = forceFlipped;
-					if (flipped) {
-						top = offset.top - scrollTop - popH - 6;
+					if (flipped && !fitsAbove && fitsBelow) {
+						flipped = false;
+					} else if (!flipped && !fitsBelow && fitsAbove) {
+						flipped = true;
 					}
-				} else if (top + popH > vpH - margin) {
-					top = offset.top - scrollTop - popH - 6;
+				} else if (fitsBelow) {
+					flipped = false;
+				} else if (fitsAbove) {
 					flipped = true;
+				} else {
+					var spaceBelow = vpH - margin - belowTop,
+						spaceAbove = anchorTop - margin - 6;
+					flipped = spaceAbove > spaceBelow;
 				}
+
+				top = flipped ? aboveTop : belowTop;
+				top = Math.max(margin, Math.min(top, vpH - popH - margin));
 
 				var arrowX = anchorCX - left - 7;
 				arrowX = Math.min(Math.max(14, arrowX), popW - 28);
