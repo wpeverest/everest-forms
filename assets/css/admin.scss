@@ -13326,3 +13326,12 @@ button#show-settings-link {
 		}
     }
 }
+
+input,
+select,
+textarea {
+  &:disabled,
+  &.disabled {
+    background-color: #ffff;
+  }
+}
