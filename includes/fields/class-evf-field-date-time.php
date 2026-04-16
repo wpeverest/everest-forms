@@ -1099,17 +1099,18 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 	 * @return string
 	 */
 	public function entry_html( $value, $entry_meta, $entry, $type, $meta_key = '' ) {
+		$field_metas = isset( $entry->meta ) && is_array( $entry->meta ) ? $entry->meta : array();
 
-		$field_metas = isset( $entry->meta ) ? $entry->meta : array();
-
-		$timezone_key = isset( $meta_key['meta_key'] ) ? $meta_key['meta_key'] . '_timezone' : $meta_key . '_timezone';
+		$timezone_key = isset( $meta_key['meta_key'] )
+			? sanitize_key( $meta_key['meta_key'] ) . '_timezone'
+			: sanitize_key( (string) $meta_key ) . '_timezone';
 
 		if ( isset( $meta_key['meta_key'], $field_metas[ $timezone_key ] ) && ! empty( $meta_key['meta_key'] ) ) {
-			$timezone_value = $field_metas[ $timezone_key ];
+			$timezone_value = sanitize_text_field( wp_unslash( (string) $field_metas[ $timezone_key ] ) );
 			$all_timezones  = $this->get_timezones();
 
-			if ( isset( $all_timezones[ $timezone_value ] ) ) {
-				$value .= '<p>' . $all_timezones[ $timezone_value ] . '</p>';
+			if ( is_array( $all_timezones ) && isset( $all_timezones[ $timezone_value ] ) ) {
+				$value .= '<p>' . esc_html( $all_timezones[ $timezone_value ] ) . '</p>';
 			}
 		}
 

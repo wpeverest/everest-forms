@@ -100,6 +100,12 @@ class EVF_Admin_Assets {
 		wp_register_script( 'progress_bar', evf()->plugin_url() . "/assets/js/admin/progressbar{$suffix}.js", array(), EVF_VERSION, true );
 		wp_register_script( 'evf-import-entries-form-csv', evf()->plugin_url() . '/assets/js/admin/tool-import-entries' . $suffix . '.js', array( 'jquery' ), EVF_VERSION, true );
 
+		//Disable drag for jquery confirm.
+		// wp_add_inline_script(
+		// 	'jquery-confirm',
+		// 	'(function($){if(window.Jconfirm&&window.Jconfirm.prototype){window.Jconfirm.prototype.initDraggable=function(){this.draggable=false;this.resetDrag();};}})(jQuery);',
+		// 	'after'
+		// );
 		/**
 		 * Roles and permission.
 		 *
@@ -373,7 +379,7 @@ class EVF_Admin_Assets {
 
 			wp_enqueue_script( 'wp-codemirror' );
 			// Enqueue additional scripts for hints if not included by default.
-			wp_enqueue_script( 'codemirror-hint', evf()->plugin_url() . '/assets/js/code-mirror/show-hint' . $suffix . '.js', array( 'wp-codemirror' ), EVF_VERSION, true );
+			// wp_enqueue_script( 'codemirror-hint', evf()->plugin_url() . '/assets/js/code-mirror/show-hint' . $suffix . '.js', array( 'wp-codemirror' ), EVF_VERSION, true );
 
 			// De-register scripts.
 			wp_dequeue_script( 'colorpick' );

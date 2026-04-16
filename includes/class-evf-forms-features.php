@@ -60,7 +60,6 @@ class EVF_Forms_Features {
 			'EVF_Field_Color',
 			'EVF_Field_Reset',
 			'EVF_Field_Lookup',
-
 		);
 
 		$enabled_features = get_option( 'everest_forms_enabled_features', array() );
