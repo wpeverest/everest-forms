@@ -4334,7 +4334,8 @@ p.search-box {
 							&[type="week"] {
 								padding: 0 8px;
 								line-height: 2;
-								min-height: 30px
+								min-height: 30px;
+								border-radius: 4px;
 							}
 						}
 
