@@ -3450,6 +3450,7 @@
 				newFieldCloned,
 				newOption,
 			]);
+			EVFPanelBuilder.updateBulkActionBar();
 		},
 		bindFieldDelete: function () {
 			$('body').on(
