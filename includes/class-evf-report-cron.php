@@ -135,18 +135,12 @@ class EVF_Report_Cron {
 			$recipient_emails = array();
 			foreach ( explode( ',', $recipient_string ) as $email ) {
 				$email = sanitize_email( trim( $email ) );
-				if ( ! empty( $email ) ) {
+				if ( is_email( $email ) ) {
 					$recipient_emails[] = $email;
 				}
 			}
 
-			if ( empty( $recipient_emails ) ) {
-				$recipient = $admin_email;
-			} elseif ( 1 === count( $recipient_emails ) ) {
-				$recipient = $recipient_emails[0];
-			} else {
-				$recipient = $recipient_emails;
-			}
+			$recipient = ! empty( $recipient_emails ) ? $recipient_emails : array( $admin_email );
 		}
 
 		$subject = get_option( 'everest_forms_entries_reporting_subject', __( 'Everest Forms - Entries summary statistics', 'everest-forms' ) );
