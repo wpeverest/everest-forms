@@ -367,7 +367,9 @@ class EVF_Settings_Advanced extends EVF_Settings_Page {
 
 		if ( 'entry_reports' === $current_section && isset( $_POST['everest_forms_routine_report_send_email_test_to'] ) ) {
 			$test_email = sanitize_email( wp_unslash( $_POST['everest_forms_routine_report_send_email_test_to'] ) );
-			update_option( 'everest_forms_routine_report_send_email_test_to', $test_email );
+			if ( '' === $test_email || is_email( $test_email ) ) {
+				update_option( 'everest_forms_routine_report_send_email_test_to', $test_email );
+			}
 		}
 
 		EVF_Admin_Settings::save_fields( $this->get_settings() );
