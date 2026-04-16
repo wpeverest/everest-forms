@@ -151,10 +151,10 @@ class EVF_Field_Country extends EVF_Form_Fields {
 			$value = evf_maybe_unserialize( $field_val );
 
 			if ( isset( $value['type'], $value['country_code'] ) && $value['type'] === $this->type ) {
-				$country_code = $value['country_code'];
+				$country_code = sanitize_text_field( wp_unslash( (string) $value['country_code'] ) );
 
 				if ( isset( $countries[ $country_code ] ) ) {
-					return $countries[ $country_code ];
+					return sanitize_text_field( wp_unslash( (string) $countries[ $country_code ] ) );
 				}
 			}
 		}
