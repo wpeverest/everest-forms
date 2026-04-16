@@ -1,5 +1,8 @@
 == Changelog ==
 
+= 3.4.5       - 16-04-2026
+* Fix 		  - Popup draggable.
+
 = 3.4.4       - 24-03-2026
 * Refactor    - Everest Forms Global Settings.
 * Enhancement - Form Builder.
