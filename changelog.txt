@@ -2,6 +2,7 @@
 
 = 3.4.5       - 16-04-2026
 * Fix 		  - Popup draggable.
+* Fix 		  - File upload issue.
 * Fix 		  - Parsing issue on entry table and view entry.
 
 = 3.4.4       - 24-03-2026
