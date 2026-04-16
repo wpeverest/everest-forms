@@ -3649,18 +3649,39 @@
 								text: 'Delete',
 								btnClass: 'btn-danger',
 								action: function () {
+									var pending = $selected.length;
+									$('.evf-panel-fields-button').trigger('click');
 									$selected.each(function () {
 										var $field = $(this),
-											fieldId = $field.data('field-id');
+											fieldId = $field.attr('data-field-id'),
+											field_type = $field.attr('data-field-type');
 										$field.fadeOut(200, function () {
-											$(this).remove();
+											$(document.body).trigger('evf_before_field_deleted', [
+												fieldId,
+											]);
+											$field.remove();
 											$('#everest-forms-field-option-' + fieldId).remove();
+											EVFPanelBuilder.conditionalLogicRemoveField(fieldId);
+											EVFPanelBuilder.conditionalLogicRemoveFieldIntegration(
+												fieldId,
+											);
+											EVFPanelBuilder.paymentFieldRemoveFromQuantity(fieldId);
+											EVFPanelBuilder.oneTimeDraggableRemoveField(field_type);
+											pending--;
+											if (0 === pending) {
+												EVFPanelBuilder.checkEmptyGrid();
+												$('.everest-forms-fields-tab')
+													.find('a')
+													.removeClass('active');
+												$('.everest-forms-fields-tab')
+													.find('a')
+													.first()
+													.addClass('active');
+												$('.everest-forms-add-fields').show();
+												$('#evf-bulk-action-bar').hide();
+											}
 										});
 									});
-									setTimeout(function () {
-										EVFPanelBuilder.checkEmptyGrid();
-									}, 250);
-									$('#evf-bulk-action-bar').hide();
 								},
 							},
 							cancel: {
