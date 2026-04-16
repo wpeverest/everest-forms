@@ -224,7 +224,6 @@ class EVF_Admin_Tools {
 			wp_die( esc_html__( 'Action failed. Please refresh the page and retry.', 'everest-forms' ) );
 		}
 
-		if ( ! empty( $_REQUEST['handle_download'] ) ) {
 			$logs    = self::scan_log_files();
 			$log_key = sanitize_title( wp_unslash( $_REQUEST['handle_download'] ) );
 
@@ -244,13 +243,12 @@ class EVF_Admin_Tools {
 
 			header( 'Content-Description: File Transfer' );
 			header( 'Content-Type: text/plain' );
-			header( 'Content-Disposition: attachment; filename="' . basename( $log_file ) . '"' );
+			header( 'Content-Disposition: attachment; filename="' . sanitize_file_name( basename( $log_file )  ) . '"' );
 			header( 'Content-Length: ' . filesize( $log_file ) );
 			header( 'Cache-Control: must-revalidate' );
 			header( 'Pragma: public' );
 			readfile( $log_file ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_readfile
 			exit();
-		}
 	}
 
 	/**
