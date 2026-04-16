@@ -57,8 +57,18 @@ jQuery( function( $ ) {
 
 					var errors = formTuple.find( '.evf-error:visible' );
 
-					if( $(".everest-forms-authorize_net[data-gateway='authorize-net']").length ) {
-						const cardData =  window.EverestFormsAuthorizeNet.getCardData(formTuple);
+					var authorizeNetHidden = formTuple.find( ".everest-forms-authorize_net[data-gateway='authorize-net']" );
+					var selectedPayGateway = formTuple.find( '.evf-payment-gateway-radio:checked' ).data( 'evf-gateway' );
+					var hasPaymentGatewaySelector = formTuple.find( '.evf-payment-gateway-radio' ).length > 0;
+					var legacyAuthorizeFieldVisible = ! hasPaymentGatewaySelector && formTuple.find( '.evf-field-authorize-net' ).is( ':visible' );
+					var shouldTokenizeAuthorizeNet = authorizeNetHidden.length &&
+						window.EverestFormsAuthorizeNet &&
+						typeof window.EverestFormsAuthorizeNet.getCardData === 'function' &&
+						typeof window.EverestFormsAuthorizeNet.authorizeNetAjaxSubmitHandler === 'function' &&
+						( 'authorize_net' === selectedPayGateway || ( ! hasPaymentGatewaySelector && legacyAuthorizeFieldVisible ) );
+
+					if ( shouldTokenizeAuthorizeNet ) {
+						const cardData = window.EverestFormsAuthorizeNet.getCardData( formTuple );
 
 						if( ! Object.values(cardData).some(value => !value ) ) {
 
@@ -77,6 +87,7 @@ jQuery( function( $ ) {
 									);
 								}
 							} catch (error) {
+								btn.attr( 'disabled', false ).html( everest_forms_ajax_submission_params.submit );
 								return;
 							}
 
@@ -88,6 +99,7 @@ jQuery( function( $ ) {
 					}
 
 					if ( errors.length > 0 ) {
+						btn.attr( 'disabled', false ).html( everest_forms_ajax_submission_params.submit );
 						$( [document.documentElement, document.body] ).animate({
 							scrollTop: errors.last().offset().top
 						}, 800 );
