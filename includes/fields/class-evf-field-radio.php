@@ -92,7 +92,7 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 	public function html_field_value( $value, $field, $form_data = array(), $context = '' ) {
 		if ( is_serialized( $field ) || in_array( $context, array( 'email-html', 'export-pdf' ), true ) ) {
 			$field_value = evf_maybe_unserialize( $field );
-			$field_type  = isset( $field_value['type'] ) ? sanitize_text_field( $field_value['type'] ) : 'radio';
+			$field_type  = isset( $field_value['type'] ) ? sanitize_text_field( wp_unslash( (string) $field_value['type'] ) ) : 'radio';
 
 			if ( $field_type === $this->type ) {
 				if (
@@ -102,12 +102,12 @@ class EVF_Field_Radio extends EVF_Form_Fields {
 					&& apply_filters( 'everest_forms_checkbox_field_html_value_images', true, $context )
 				) {
 					return sprintf(
-						'<span style="max-width:200px;display:block;margin:0 0 5px 0;"><img src="%s" style="max-width:100%%;display:block;margin:0;"></span>%s',
+						'<span style="max-width:200px;display:block;margin:0 0 5px 0;"><img src="%1$s" style="max-width:100%%;display:block;margin:0;" alt="" /></span>%2$s',
 						esc_url( $field_value['image'] ),
-						esc_html( $field_value['label'] )
+						esc_html( wp_unslash( (string) $field_value['label'] ) )
 					);
 				} elseif ( isset( $field_value['label'] ) ) {
-					return esc_html( $field_value['label'] );
+					return esc_html( wp_unslash( (string) $field_value['label'] ) );
 				}
 			}
 		}

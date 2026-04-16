@@ -4317,6 +4317,35 @@ p.search-box {
 								color: $color_gray-lighten;
 							}
 						}
+
+						input {
+							&[type="text"],
+							&[type="password"],
+							&[type="date"],
+							&[type="datetime"],
+							&[type="datetime-local"],
+							&[type="email"],
+							&[type="month"],
+							&[type="number"],
+							&[type="search"],
+							&[type="tel"],
+							&[type="time"],
+							&[type="url"],
+							&[type="week"] {
+								padding: 0 8px;
+								line-height: 2;
+								min-height: 30px
+							}
+						}
+
+						input,
+						select,
+						textarea {
+						&:disabled,
+						&.disabled {
+							background-color: #ffff !important;
+						}
+						}
 					}
 				}
 

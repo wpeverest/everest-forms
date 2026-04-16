@@ -208,8 +208,9 @@ if ( false !== $entry_index ) {
 										$answer_class = 'wrong_answer';
 									}
 									echo '<span class="list evf-answer-badge ' . esc_attr( $answer_class ) . '">' . esc_html( wp_strip_all_tags( $field_value ) ) . '</span>';
-								} else {
-									// Output plain field value safely.
+								} elseif( in_array( $field_type_by_meta_key[ $meta_key ], array( 'file-upload', 'image-upload', 'signature', 'wysiwyg', 'color', 'rating', 'country', 'likert', 'checkbox', 'radio', 'repeater-fields' ), true ) ) {
+									echo nl2br( make_clickable( $field_value ) );
+								}else{
 									echo nl2br( esc_html( $field_value ) );
 								}
 							} else {
