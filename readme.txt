@@ -341,6 +341,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 = 3.4.5       - 16-04-2026
 * Fix 		  - Popup draggable.
+* Fix 		  - Parsing issue on entry table and view entry.
 
 = 3.4.4       - 24-03-2026
 * Refactor    - Everest Forms Global Settings.
