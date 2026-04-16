@@ -41,12 +41,7 @@ const selectChakraStyles = {
 	}),
 };
 
-const UserDisplayModal = ({
-	wp_roles,
-	context = '',
-	value = {},
-	setUserAdded = false,
-}) => {
+const UserDisplayModal = ({ wp_roles, context = '', value = {} }) => {
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const queryClient = useQueryClient();
 	const [selectedUser, setSelectedUser] = useState(null);
@@ -68,7 +63,9 @@ const UserDisplayModal = ({
 			setSelectedUser(
 				value.email ? { value: value.email, label: value.email } : null,
 			);
-			setPermissions(value.permission || []);
+			setPermissions(
+				Array.isArray(value.permission) ? [...value.permission] : [],
+			);
 		} else {
 			setSelectedUser(null);
 			setPermissions([]);
@@ -103,15 +100,6 @@ const UserDisplayModal = ({
 		debouncedSetSearch(val);
 	};
 
-	const selectedPermissions = useMemo(
-		() =>
-			permissions?.map((val) => ({
-				value: val,
-				label: value.permission_details?.[val],
-			})) ?? [],
-		[permissions, value.permission_details],
-	);
-
 	const allPermissionOptions = useMemo(
 		() =>
 			Object.entries(wp_roles).map(([key, label]) => ({
@@ -137,10 +125,32 @@ const UserDisplayModal = ({
 					);
 					setErrors(errorList);
 				} else {
-					setUserAdded(true);
 					onClose();
-					toast({ title: res.message, status: 'success', duration: 3000 });
-					queryClient.invalidateQueries(['managers']);
+					toast({
+						title: res.message,
+						status: 'success',
+						duration: 3000,
+						isClosable: true,
+					});
+
+					if (context === 'edit') {
+						queryClient.setQueriesData(
+							{ queryKey: ['managers'] },
+							(oldData) => {
+								if (!oldData?.managers) return oldData;
+								return {
+									...oldData,
+									managers: oldData.managers.map((m) =>
+										m.email === email
+											? { ...m, permissions: [...permissions] }
+											: m,
+									),
+								};
+							},
+						);
+					}
+
+					queryClient.invalidateQueries({ queryKey: ['managers'] });
 				}
 			})
 			.finally(() => setIsSubmitting(false));
@@ -212,15 +222,21 @@ const UserDisplayModal = ({
 
 									<Select
 										placeholder={__('Select a user', 'everest-forms')}
-										options={userOptions}
+										options={context === 'edit' ? [] : userOptions}
 										value={selectedUser}
 										onChange={setSelectedUser}
-										onInputChange={handleInputChange}
+										onInputChange={
+											context === 'edit' ? undefined : handleInputChange
+										}
 										filterOption={() => true}
-										isLoading={isUsersLoading || isFetchingNextPage}
+										isLoading={
+											context !== 'edit' &&
+											(isUsersLoading || isFetchingNextPage)
+										}
 										isDisabled={context === 'edit'}
-										isClearable
+										isClearable={context !== 'edit'}
 										isSearchable={false}
+										menuIsOpen={context === 'edit' ? false : undefined}
 										onMenuScrollToBottom={() => {
 											if (hasNextPage && !isFetchingNextPage) {
 												fetchNextPage();
@@ -253,17 +269,11 @@ const UserDisplayModal = ({
 										isMulti
 										size="md"
 										placeholder={__('Select user permission', 'everest-forms')}
-										options={
-											context === 'edit'
-												? Object.entries(value.permission_details || {}).map(
-														([key, label]) => ({
-															value: key,
-															label,
-														}),
-													)
-												: allPermissionOptions
-										}
-										value={context === 'edit' ? selectedPermissions : undefined}
+										options={allPermissionOptions}
+										value={permissions.map((val) => ({
+											value: val,
+											label: wp_roles[val] || val,
+										}))}
 										onChange={handleMultiplePermission}
 										isClearable
 										isSearchable={false}

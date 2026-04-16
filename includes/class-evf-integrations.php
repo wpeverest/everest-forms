@@ -59,10 +59,10 @@ class EVF_Integrations {
 					'upgrade_url'        => 'https://wpeverest.com/wordpress-plugins/everest-forms/pricing/',
 					'docs_url'           => 'https://docs.everestforms.net/docs/how-to-upload-files-to-google-drive-or-dropbox/#4-toc-title',
 					'features'           => array(
-						esc_html__( 'Auto-upload files on every form submission', 'everest-forms' ),
-						esc_html__( 'Organise uploads into custom folder structures', 'everest-forms' ),
-						esc_html__( 'Map form fields to file names dynamically', 'everest-forms' ),
-						esc_html__( 'Supports multiple Dropbox accounts', 'everest-forms' ),
+						esc_html__( 'Store uploaded form files directly in Dropbox', 'everest-forms' ),
+						esc_html__( 'Keep important files backed up in your usual storage tool', 'everest-forms' ),
+						esc_html__( 'Avoid filling up your website server with uploads', 'everest-forms' ),
+						esc_html__( 'Keep your file workflow simple and familiar', 'everest-forms' ),
 					),
 				),
 
@@ -78,10 +78,10 @@ class EVF_Integrations {
 					'upgrade_url'        => 'https://wpeverest.com/wordpress-plugins/everest-forms/pricing/',
 					'docs_url'           => 'https://docs.everestforms.net/docs/how-to-upload-files-to-google-drive-or-dropbox/#0-toc-title',
 					'features'           => array(
-						esc_html__( 'Send attachments to Drive on submission', 'everest-forms' ),
-						esc_html__( 'Create sub-folders from form field values', 'everest-forms' ),
-						esc_html__( 'Works with Shared Drives (Team Drives)', 'everest-forms' ),
-						esc_html__( 'OAuth 2.0 — no passwords stored', 'everest-forms' ),
+						esc_html__( 'Save uploaded files to Google Drive automatically', 'everest-forms' ),
+						esc_html__( 'Reduce storage use on your website', 'everest-forms' ),
+						esc_html__( 'Make files easier to access for your team', 'everest-forms' ),
+						esc_html__( 'Stay organized without changing your workflow', 'everest-forms' ),
 					),
 				),
 
@@ -97,10 +97,10 @@ class EVF_Integrations {
 					'upgrade_url'        => 'https://wpeverest.com/wordpress-plugins/everest-forms/pricing/',
 					'docs_url'           => 'https://docs.everestforms.net/docs/mailchimp/',
 					'features'           => array(
-						esc_html__( 'Subscribe users to lists on form submission', 'everest-forms' ),
-						esc_html__( 'Map any form field to Mailchimp merge tags', 'everest-forms' ),
-						esc_html__( 'Support for groups, tags, and double opt-in', 'everest-forms' ),
-						esc_html__( 'Connect multiple Mailchimp accounts', 'everest-forms' ),
+						esc_html__( 'Add form subscribers to your Mailchimp list', 'everest-forms' ),
+						esc_html__( 'Map form fields to Mailchimp list fields', 'everest-forms' ),
+						esc_html__( 'Grow your email list without extra manual work', 'everest-forms' ),
+						esc_html__( 'Keep your leads and subscribers organized ', 'everest-forms' ),
 					),
 				),
 
@@ -116,10 +116,10 @@ class EVF_Integrations {
 					'upgrade_url'        => 'https://wpeverest.com/wordpress-plugins/everest-forms/pricing/',
 					'docs_url'           => 'https://docs.everestforms.net/docs/google-sheets/',
 					'features'           => array(
-						esc_html__( 'Auto-append a new row for each submission', 'everest-forms' ),
-						esc_html__( 'Map form fields to specific sheet columns', 'everest-forms' ),
-						esc_html__( 'Works with any existing or new spreadsheet', 'everest-forms' ),
-						esc_html__( 'Secure OAuth 2.0 connection', 'everest-forms' ),
+						esc_html__( 'Save new submissions to Google Sheets', 'everest-forms' ),
+						esc_html__( 'View and manage form data in a familiar spreadsheet', 'everest-forms' ),
+						esc_html__( 'Share entries easily with your team', 'everest-forms' ),
+						esc_html__( 'Keep records updated in real time ', 'everest-forms' ),
 					),
 				),
 
@@ -135,10 +135,10 @@ class EVF_Integrations {
 					'upgrade_url'        => 'https://wpeverest.com/wordpress-plugins/everest-forms/pricing/',
 					'docs_url'           => 'https://docs.everestforms.net/docs/convertkit/',
 					'features'           => array(
-						esc_html__( 'Subscribe to forms, sequences, and tags', 'everest-forms' ),
-						esc_html__( 'Map custom fields to ConvertKit subscriber data', 'everest-forms' ),
-						esc_html__( 'Conditional logic support per form', 'everest-forms' ),
-						esc_html__( 'Works with multiple ConvertKit accounts', 'everest-forms' ),
+						esc_html__( 'Add new subscribers automatically from form submissions', 'everest-forms' ),
+						esc_html__( 'Turn your forms into lead collection tools', 'everest-forms' ),
+						esc_html__( 'Save time by reducing manual export and import work', 'everest-forms' ),
+						esc_html__( 'Keep subscriber list growing in the background', 'everest-forms' ),
 					),
 				),
 

@@ -32,12 +32,25 @@ class EVF_Form_Handler {
 		}
 
 		if ( ! isset( $args['cap'] ) && ( is_admin() && ! wp_doing_ajax() ) ) {
-			$args['cap'] = 'everest_forms_view_form';
+			$args['cap'] = array(
+				'everest_forms_view_form',
+				'everest_forms_create_forms',
+			);
 		}
 
 		if ( ! empty( $id ) ) {
-			if ( ! empty( $args['cap'] ) && ! current_user_can( $args['cap'], $id ) ) {
-				return false;
+			if ( ! empty( $args['cap'] ) ) {
+				$caps = (array) $args['cap'];
+				$has_cap = false;
+				foreach ( $caps as $cap ) {
+					if ( current_user_can( $cap, $id ) ) {
+						$has_cap = true;
+						break;
+					}
+				}
+				if ( ! $has_cap ) {
+					return false;
+				}
 			}
 
 			$the_post = get_post( absint( $id ) );

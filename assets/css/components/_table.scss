@@ -636,8 +636,8 @@ $status-trash-text: #991b1b;
 			}
 
 			&.column-shortcode {
-				// width: 22em;
-				width: auto;
+				width: 22em;
+				// width: auto;
 			}
 
 			&.column-enabled {
@@ -657,7 +657,7 @@ $status-trash-text: #991b1b;
 			}
 
 			&.column-date {
-				width: 10%;
+				width: 16%;
 			}
 
 			&.column-entry {
@@ -1189,7 +1189,7 @@ body {
 			.evf-base-list-table {
 				thead {
 					th {
-						width: auto;
+						width: auto !important;
 					}
 				}
 			}

@@ -22,7 +22,7 @@ $form_entries = array_map(
 	$form_entries
 );
 
-$entry_index    = array_search( $entry_id, $form_entries ); //phpcs:ignore
+$entry_index    = array_search( $entry_id, $form_entries ); // phpcs:ignore WordPress.PHP.StrictInArray
 $prev_entry     = '';
 $next_entry     = '';
 $prev_entry_url = '#';
@@ -52,7 +52,6 @@ if ( false !== $entry_index ) {
 			</a>
 			<span class="evf-entry-title">
 				<?php
-				/* translators: %s: Entry ID */
 				printf( esc_html__( '%1$s: Entry #%2$s', 'everest-forms' ), esc_html( _draft_or_post_title( $form_id ) ), absint( $entry_id ) );
 				?>
 			</span>
@@ -84,10 +83,9 @@ if ( false !== $entry_index ) {
 						<?php do_action( 'everest_forms_after_entry_details_hndle', $entry ); ?>
 					</div>
 					<div class="evf-section-header-actions">
-					<a href="#"
+						<a href="#"
 							class="evf-toggle-empty everest-forms-empty-field-toggle password_preview dashicons <?php echo $hide_empty ? 'dashicons-hidden' : 'dashicons-visibility'; ?>"
 							title="<?php echo $hide_empty ? esc_attr__( 'Show empty fields', 'everest-forms' ) : esc_attr__( 'Hide empty fields', 'everest-forms' ); ?>">
-
 							<?php
 							echo $hide_empty
 								? esc_html__( 'Show Empty Fields', 'everest-forms' )
@@ -105,9 +103,8 @@ if ( false !== $entry_index ) {
 					$entry_meta = apply_filters( 'everest_forms_entry_single_data', $entry->meta, $entry, $form_data );
 
 					$field_type_by_meta_key = array();
-					$exclude_fields_array   = array( 'private-note' );
-
-					$exclude_fields_array = apply_filters( 'everest_forms_view_entry_exclude_fields', $exclude_fields_array, $entry_meta, $form_data );
+					$exclude_fields_array   = array( 'captcha', 'recaptcha', 'hcaptcha', 'turnstile', 'private-note', 'authorize-net' );
+					$exclude_fields_array   = apply_filters( 'everest_forms_view_entry_exclude_fields', $exclude_fields_array, $entry_meta, $form_data );
 
 					foreach ( $form_data['form_fields'] as $field ) {
 						if ( isset( $field['meta-key'] ) ) {
@@ -127,10 +124,11 @@ if ( false !== $entry_index ) {
 								continue;
 							}
 
-							$meta_value = is_serialized( $meta_value ) ? $meta_value : wp_strip_all_tags( $meta_value );
+							// Escape plain text values; leave serialized data untouched for further processing.
+							$meta_value = is_serialized( $meta_value ) ? $meta_value : esc_html( $meta_value );
 
 							if ( is_serialized( $meta_value ) ) {
-								$raw_meta_val = unserialize( $meta_value ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_unserialize
+								$raw_meta_val = evf_maybe_unserialize( $meta_value );
 
 								$field_type_array = apply_filters(
 									'everest_forms_serialized_value_field_type',
@@ -200,7 +198,8 @@ if ( false !== $entry_index ) {
 											echo '<span class="list evf-answer-badge ' . esc_attr( $answer_class ) . '">' . esc_html( wp_strip_all_tags( $value ) ) . '</span>';
 										}
 									} else {
-										echo nl2br( make_clickable( $field_label_val ) ); // @codingStandardsIgnoreLine
+										// Output serialized non-array label value safely.
+										echo nl2br( esc_html( $field_label_val ) );
 									}
 								} elseif ( $correct_answers && false !== $correct_answers ) {
 									if ( in_array( $field_value, $correct_answers, true ) ) {
@@ -210,7 +209,8 @@ if ( false !== $entry_index ) {
 									}
 									echo '<span class="list evf-answer-badge ' . esc_attr( $answer_class ) . '">' . esc_html( wp_strip_all_tags( $field_value ) ) . '</span>';
 								} else {
-									echo nl2br( make_clickable( $field_value ) ); // @codingStandardsIgnoreLine
+									// Output plain field value safely.
+									echo nl2br( esc_html( $field_value ) );
 								}
 							} else {
 								echo '<span class="evf-empty-value">' . esc_html__( 'Empty', 'everest-forms' ) . '</span>';
@@ -224,9 +224,7 @@ if ( false !== $entry_index ) {
 				</div>
 			</div>
 
-			<?php
-			do_action( 'everest_forms_entry_details_content', $entry, $form_id );
-			?>
+			<?php do_action( 'everest_forms_entry_details_content', $entry, $form_id ); ?>
 
 			<!-- Entry Details Section -->
 			<div id="everest-forms-entry-details-table" class="evf-entry-section evf-entry-details-section stuffbox">
@@ -245,7 +243,7 @@ if ( false !== $entry_index ) {
 									<th><?php esc_html_e( 'Status', 'everest-forms' ); ?></th>
 									<th><?php esc_html_e( 'Submitted Date', 'everest-forms' ); ?></th>
 									<?php if ( ! empty( $entry->date_modified ) ) : ?>
-									<th><?php esc_html_e( 'Modified Date', 'everest-forms' ); ?></th>
+										<th><?php esc_html_e( 'Modified Date', 'everest-forms' ); ?></th>
 									<?php endif; ?>
 									<th><?php esc_html_e( 'Referer Link', 'everest-forms' ); ?></th>
 								</tr>
@@ -282,7 +280,7 @@ if ( false !== $entry_index ) {
 									</td>
 									<td><?php echo esc_html( date_i18n( 'Y-m-d H:i:s', strtotime( $entry->date_created ) + ( get_option( 'gmt_offset' ) * 3600 ) ) ); ?></td>
 									<?php if ( ! empty( $entry->date_modified ) ) : ?>
-									<td><?php echo esc_html( date_i18n( 'Y-m-d H:i:s', strtotime( $entry->date_modified ) + ( get_option( 'gmt_offset' ) * 3600 ) ) ); ?></td>
+										<td><?php echo esc_html( date_i18n( 'Y-m-d H:i:s', strtotime( $entry->date_modified ) + ( get_option( 'gmt_offset' ) * 3600 ) ) ); ?></td>
 									<?php endif; ?>
 									<td>
 										<?php if ( ! empty( $entry->referer ) ) : ?>
@@ -305,21 +303,12 @@ if ( false !== $entry_index ) {
 
 		<!-- Right Sidebar -->
 		<div class="evf-entry-sidebar">
-			<!-- Edit Entry Button -->
-
-
-			<!-- Entry Actions Section (FREE - Hardcoded in template) -->
 			<div id="everest-forms-entry-actions" class="stuffbox">
 				<div class="evf-entry-actions-header"><?php esc_html_e( 'Entry Actions', 'everest-forms' ); ?></div>
 				<div class="inside">
 					<div class="everest-forms-entry-actions-meta">
-						<?php
-						// Hook for PRO features (Star, Unread, Approve, Deny, Export, Print, etc.)
-						// These appear FIRST
-						do_action( 'everest_forms_entry_details_sidebar_actions', $entry, $form_data );
-						?>
+						<?php do_action( 'everest_forms_entry_details_sidebar_actions', $entry, $form_data ); ?>
 
-						<!-- Delete Entry (FREE FEATURE - Always visible, appears LAST inside Entry Actions) -->
 						<?php if ( current_user_can( 'everest_forms_delete_entry', $entry->entry_id ) ) : ?>
 							<?php
 							$trash_link = wp_nonce_url(
@@ -343,10 +332,7 @@ if ( false !== $entry_index ) {
 				</div>
 			</div>
 
-			<?php
-			// Payment Details, Quiz Scores, etc.
-			do_action( 'everest_forms_after_entry_details', $entry, $entry_meta, $form_data );
-			?>
+			<?php do_action( 'everest_forms_after_entry_details', $entry, $entry_meta, $form_data ); ?>
 		</div>
 	</div>
 </div>
@@ -380,9 +366,9 @@ jQuery(document).on('click', '.everest-forms-empty-field-toggle', function (even
 	}
 });
 
-	jQuery( document ).ready( function( $ ) {
-		if ( wpCookies.get( 'everest_forms_entry_hide_empty' ) === 'true' ) {
-			$( '.evf-field-empty' ).hide();
-		}
-	});
+jQuery(document).ready(function($) {
+	if (wpCookies.get('everest_forms_entry_hide_empty') === 'true') {
+		$('.evf-field-empty').hide();
+	}
+});
 </script>

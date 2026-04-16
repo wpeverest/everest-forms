@@ -1,244 +1,240 @@
 <?php
 /**
- * Entries Summary report
- *
- * Sends the entries summary report the routine basis.
+ * Entries Summary Report Cron
  *
  * @package EverestForms\Classes
- * @version 2.0.9
+ * @since   2.0.9
  */
 
 defined( 'ABSPATH' ) || exit;
 
 /**
- * EverestForms Entries Summary Class.
+ * EVF_Report_Cron Class.
  */
 class EVF_Report_Cron {
+
 	/**
-	 * EVF_Report_Cron Constructor
+	 * Hook name for the scheduled event.
+	 *
+	 * @var string
+	 */
+	const HOOK = 'everest_forms_stats_report_schedule';
+
+	/**
+	 * Constructor.
 	 *
 	 * @since 2.0.9
 	 */
-	public function __construct() {
-	}
+	public function __construct() {}
 
 	/**
-	 * Function for implementing cron job for reporting.
+	 * Schedule the report cron event.
 	 *
 	 * @since 2.0.9
+	 * @return bool
 	 */
-
-
-	/**
-	 * Function to add email schedule task.
-	 *
-	 * @since 2.0.7
-	 *
-	 * @param  string $evf_recurrence The recurrence time frame for the events.
-	 * @param  bool   $evf_report_next_run The time for running event.
-	 * @return void.
-	 */
-	public function evf_schedule_add( $evf_recurrence, $evf_report_next_run = false ) {
-		if ( false === $evf_report_next_run ) {
-			$evf_report_next_run = time();
-		}
-		$evf_weekly_day = get_option( 'everest_forms_entries_reporting_day' );
-		if ( ! wp_next_scheduled( 'everest_forms_stats_report_schedule' ) ) {
-			switch ( $evf_recurrence ) {
-				case 'daily':
-					$next_run_time = strtotime( '+1 day', $evf_report_next_run );
-					break;
-				case 'weekly':
-					// Schedule event weekly .
-					switch ( $evf_weekly_day ) {
-						case 'sunday':
-							$next_run_time = strtotime( 'next Sunday', $evf_report_next_run );
-							break;
-						case 'monday':
-							$next_run_time = strtotime( 'next Monday', $evf_report_next_run );
-							break;
-						case 'tuesday':
-							$next_run_time = strtotime( 'next Tuesday', $evf_report_next_run );
-							break;
-						case 'wednesday':
-							$next_run_time = strtotime( 'next Wednesday', $evf_report_next_run );
-							break;
-						case 'thursday':
-							$next_run_time = strtotime( 'next Thursday', $evf_report_next_run );
-							break;
-						case 'friday':
-							$next_run_time = strtotime( 'next Friday', $evf_report_next_run );
-							break;
-						case 'saturday':
-							$next_run_time = strtotime( 'next Saturday', $evf_report_next_run );
-							break;
-						default:
-							return;
-					}
-					break;
-				case 'monthly':
-					$next_run_time = strtotime( '+30 days', $evf_report_next_run );
-					break;
-				default:
-					return;
-			}
-			wp_schedule_event( $next_run_time, $evf_recurrence, 'everest_forms_stats_report_schedule' );
+	public function evf_schedule_add() {
+		if ( wp_next_scheduled( self::HOOK ) ) {
+			return false;
 		}
 
+		$frequency = get_option( 'everest_forms_entries_reporting_frequency', '' );
+		$send_hour = (int) get_option( 'everest_forms_reporting_send_hour', 8 );
+
+		switch ( $frequency ) {
+			case 'Daily':
+				$offset     = '+1 day';
+				$recurrence = 'daily';
+				break;
+
+			case 'Weekly':
+				$day        = get_option( 'everest_forms_entries_reporting_day', 'monday' );
+				$offset     = 'next ' . $day;
+				$recurrence = 'weekly';
+				break;
+
+			case 'Monthly':
+				$offset     = 'first day of next month';
+				$recurrence = 'monthly';
+				break;
+
+			default:
+				evf_get_logger()->warning(
+					sprintf(
+						/* translators: %s: frequency value */
+						__( 'EVF Report: unknown frequency "%s", cannot schedule.', 'everest-forms' ),
+						$frequency
+					),
+					array( 'source' => 'evf-reporting' )
+				);
+				return false;
+		}
+
+		$midnight_local = gmdate( 'Y-m-d 00:00:00', strtotime( $offset ) );
+		$midnight_utc   = get_gmt_from_date( $midnight_local );
+		$next_run       = strtotime( $midnight_utc ) + ( $send_hour * HOUR_IN_SECONDS );
+
+		wp_schedule_event( $next_run, $recurrence, self::HOOK );
+
+		return true;
 	}
 
-
 	/**
-	 * Clears all the scheduled task need to be done when plugin is deactivated and the setting is changed.
+	 * Clear all scheduled report events.
 	 *
 	 * @since 2.0.7
-	 * @return void.
 	 */
 	public function evf_schedule_clear_all() {
-
-		$evf_scheduled_events = _get_cron_array();
-
-		// If there are no scheduled events, return.
-		if ( empty( $evf_scheduled_events ) ) {
-			return; }
-
-		// Run through each scheduled event.
-		foreach ( $evf_scheduled_events as $timestamp => $cron ) {
-
-			// Check the cron foe everest forms report scheduling. Skips it if not of Everest forms.
-			if ( ! isset( $cron['everest_forms_stats_report_schedule'] ) ) {
-				continue;
-			}
-
-			// Delete this scheduled event.
-			unset( $evf_scheduled_events[ $timestamp ]['everest_forms_stats_report_schedule'] );
-
-			// If this time stamp is now empty, delete it in its entirety.
-			if ( empty( $evf_scheduled_events[ $timestamp ] ) ) {
-
-				unset( $evf_scheduled_events[ $timestamp ] );
-			}
+		$timestamp = wp_next_scheduled( self::HOOK );
+		while ( $timestamp ) {
+			wp_unschedule_event( $timestamp, self::HOOK );
+			$timestamp = wp_next_scheduled( self::HOOK );
 		}
-
-		// Save the scheduled events back.
-		_set_cron_array( $evf_scheduled_events );
 	}
 
 	/**
-	 * Handles the schedule on deactivation.
+	 * Clear and reschedule. Called after settings are saved.
+	 *
+	 * @since 2.0.9
+	 */
+	public function evf_reschedule() {
+		$this->evf_schedule_clear_all();
+
+		if ( 'yes' === get_option( 'everest_forms_enable_entries_reporting', 'no' ) ) {
+			$this->evf_schedule_add();
+		}
+	}
+
+	/**
+	 * Handle schedule cleanup on plugin deactivation.
 	 *
 	 * @since 2.0.7
 	 */
 	public function deactivate() {
-		self::evf_schedule_clear_all();
+		$this->evf_schedule_clear_all();
 	}
 
 	/**
-	 * Schedule form statistics report email
-	 *
-	 * @since 2.0.7
-	 * @return void.
-	 */
-	public function evf_report_form_statistics_schedule() {
-
-		// Clear from report schedule (we need to do this in case the scheduling is changed).
-		$this->evf_schedule_clear_all( 'everest_forms_stats_report_schedule' );
-
-		// Check if the routine emailing for form entries is enabled or not.
-		$everest_forms_enable_routine_entries_reporting = get_option( 'everest_forms_enable_entries_reporting' );
-		$everest_forms_entries_reporting_frequency      = '';
-		$everest_forms_entries_reporting_day            = '';
-
-		if ( isset( $everest_forms_enable_routine_entries_reporting ) && 'yes' === $everest_forms_enable_routine_entries_reporting ) {
-
-			// Get the frequency of sending the summary of routine basis.
-			$everest_forms_entries_reporting_frequency = get_option( 'everest_forms_entries_reporting_frequency' );
-
-			switch ( $everest_forms_entries_reporting_frequency ) {
-
-				case 'Daily':
-					$evf_entries_report_summary_offset = '+1 day';
-					$evf_recurrence                    = 'daily';
-					break;
-
-				case 'Weekly':
-					$everest_forms_entries_reporting_day = get_option( 'everest_forms_entries_reporting_day' );
-
-					switch ( $everest_forms_entries_reporting_day ) {
-
-						case 'tuesday':
-							$evf_entries_report_summary_offset = 'next tuesday';
-							break;
-						case 'wednesday':
-							$evf_entries_report_summary_offset = 'next wednesday';
-							break;
-						case 'thursday':
-							$evf_entries_report_summary_offset = 'next thursday';
-							break;
-						case 'friday':
-							$evf_entries_report_summary_offset = 'next friday';
-							break;
-						case 'saturday':
-							$evf_entries_report_summary_offset = 'next saturday';
-							break;
-						case 'sunday':
-							$evf_entries_report_summary_offset = 'next sunday';
-							break;
-						default:
-							$evf_entries_report_summary_offset = 'next monday';
-					}
-
-					$evf_recurrence = 'weekly';
-					break;
-
-				case 'Monthly':
-					$evf_entries_report_summary_offset = 'first day of next month';
-					$evf_recurrence                    = 'monthly';
-					break;
-			}
-
-			// Get midnight time of offset.
-			$evf_midnight_time_offset = gmdate( 'Y-m-d 00:00:00', strtotime( $evf_entries_report_summary_offset ) );
-
-			// Get UTC time of offset.
-			$evf_midnight_time_offset_utc = get_gmt_from_date( $evf_midnight_time_offset );
-
-			// Get next run.
-			$evf_report_next_run = strtotime( $evf_midnight_time_offset_utc . ' +6 hours' );
-
-			// Add to report schedule.
-			$this->evf_schedule_add( $evf_recurrence, $evf_report_next_run );
-		}
-	}
-
-	/**
-	 * Report stat data.
+	 * Build and send the report email.
 	 *
 	 * @since 2.0.9
+	 * @param bool $is_test Whether this is a manual test send.
+	 * @return bool
 	 */
-	public function evf_report_form_statistics_send() {
-		$evf_headers = array( 'Content-Type: text/html; charset=UTF-8' );
+	public function evf_report_form_statistics_send( $is_test = false ) {
+		$recipient = get_option( 'everest_forms_entries_reporting_email', '{admin_email}' );
+		$recipient = sanitize_email( str_replace( '{admin_email}', get_bloginfo( 'admin_email' ), $recipient ) );
 
-		$evf_stat_subject = get_option( 'everest_forms_entries_reporting_subject' );
-
-		if ( '' === $evf_stat_subject ) {
-			$evf_stat_subject = esc_html__( 'Everest Forms - Entries summary statistics', 'everest-forms' );
+		if ( empty( $recipient ) ) {
+			$recipient = sanitize_email( get_bloginfo( 'admin_email' ) );
 		}
 
-		$evf_stat_email = get_option( 'everest_forms_entries_reporting_email' );
-		if ( '{admin_email}' === $evf_stat_email ) {
-			$evf_stat_email = str_replace( $evf_stat_email, '{admin_email}', get_bloginfo( 'admin_email' ) );
-		}
-		if ( '' === $evf_stat_email && empty( $evf_stat_email ) ) {
-			$evf_stat_email = get_bloginfo( 'admin_email' );
+		$subject = get_option( 'everest_forms_entries_reporting_subject', __( 'Everest Forms - Entries summary statistics', 'everest-forms' ) );
+		if ( empty( trim( $subject ) ) ) {
+			$subject = __( 'Everest Forms - Entries summary statistics', 'everest-forms' );
 		}
 
-		// Sending the stat email.
-		$evf_stat_message    = '';
-		$evf_send_stat_email = new EVF_Emails();
-		$test                = EVF_Reporting::evf_schedule_entries_report_email();
-		$evf_send_stat_email->send( $evf_stat_email, $evf_stat_subject, $evf_stat_message, '', '' );
+		$frequency = get_option( 'everest_forms_entries_reporting_frequency', 'Weekly' );
+		if ( ! in_array( $frequency, array( 'Daily', 'Weekly', 'Monthly' ), true ) ) {
+			evf_get_logger()->warning(
+				sprintf(
+					/* translators: %s: frequency value */
+					__( 'EVF Report: invalid frequency "%s" at send time.', 'everest-forms' ),
+					$frequency
+				),
+				array( 'source' => 'evf-reporting' )
+			);
+			return false;
+		}
+
+		$email_builder = new EVF_Email_Entries_Report( $frequency, null, $is_test );
+		$entries_data  = $email_builder->get_entries_data();
+		$html_message  = $email_builder->render_html();
+
+		$headers = array(
+			'Content-Type: text/html; charset=UTF-8',
+			'From: ' . wp_specialchars_decode( get_bloginfo( 'name' ) ) . ' <' . sanitize_email( get_option( 'admin_email' ) ) . '>',
+		);
+
+		$sent = wp_mail( $recipient, $subject, $html_message, $headers );
+
+		if ( $sent && ! $is_test ) {
+			$this->log_report_sent(
+				array(
+					'frequency' => $frequency,
+					'email'     => $recipient,
+					'entries'   => $entries_data,
+					'type'      => 'scheduled',
+				)
+			);
+		}
+
+		return $sent;
+	}
+
+	/**
+	 * Log a report send to the history option. Keeps the last 30 records.
+	 *
+	 * @since 2.0.9
+	 * @param array $data Keys: frequency, email, entries, type.
+	 */
+	public function log_report_sent( $data ) {
+		$history = get_option( 'everest_forms_report_history', array() );
+		if ( ! is_array( $history ) ) {
+			$history = array();
+		}
+
+		$entry_count = ( ! empty( $data['entries'] ) && is_array( $data['entries'] ) )
+			? array_sum( array_column( $data['entries'], 'current' ) )
+			: 0;
+
+		$history[] = array(
+			'sent_at'       => current_time( 'mysql' ),
+			'frequency'     => isset( $data['frequency'] ) ? $data['frequency'] : '',
+			'recipient'     => isset( $data['email'] ) ? $data['email'] : '',
+			'form_count'    => ! empty( $data['entries'] ) ? count( $data['entries'] ) : 0,
+			'total_entries' => $entry_count,
+			'type'          => isset( $data['type'] ) ? $data['type'] : 'scheduled',
+		);
+
+		update_option( 'everest_forms_report_history', array_slice( $history, -30 ) );
+	}
+
+	/**
+	 * Get the schedule health status for display in settings.
+	 *
+	 * @since 2.0.9
+	 * @return array { status: string, message: string }
+	 */
+	public function get_schedule_status() {
+		$enabled = get_option( 'everest_forms_enable_entries_reporting', 'no' );
+
+		if ( 'yes' !== $enabled ) {
+			return array(
+				'status'  => 'disabled',
+				'message' => __( 'Entry reporting is currently disabled.', 'everest-forms' ),
+			);
+		}
+
+		$next = wp_next_scheduled( self::HOOK );
+
+		if ( ! $next ) {
+			return array(
+				'status'  => 'not_scheduled',
+				'message' => __( 'Reporting is enabled but no report is scheduled. Try saving settings again.', 'everest-forms' ),
+			);
+		}
+
+		return array(
+			'status'  => 'active',
+			'message' => sprintf(
+				/* translators: %s: next send date/time */
+				__( 'Next report scheduled for %s.', 'everest-forms' ),
+				get_date_from_gmt(
+					gmdate( 'Y-m-d H:i:s', $next ),
+					get_option( 'date_format' ) . ' ' . get_option( 'time_format' )
+				)
+			),
+		);
 	}
 }
-
-	new EVF_Report_Cron();

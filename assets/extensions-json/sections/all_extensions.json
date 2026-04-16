@@ -67,7 +67,7 @@
         "themegrill agency"
       ],
       "category": "Cloud & Storage",
-      "setting_url": "admin.php?page=evf-settings&tab=pdf-submission",
+      "setting_url": "admin.php?page=evf-settings&tab=utilities&section=pdf_submission",
       "demo_video_url": "37CtaxJzYis",
       "popular_rank": 4
     },
@@ -322,23 +322,6 @@
       "setting_url": "",
       "demo_video_url": "yXE4ydYfkic",
       "popular_rank": 23
-    },
-    {
-      "title": "Advanced Form Analytics",
-      "slug": "everest-forms-form-analytics",
-      "name": "Everest Forms Advanced Form Analytics",
-      "image": "extensions-json/sections/images/form-analytics.png",
-      "excerpt": "Analyze how users interact with forms by monitoring impressions, conversions, abandonments, and bounce rate.",
-      "link": "https://docs.everestforms.net/docs/form-analytics/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
-      "released_date": "30/08/2023",
-      "plan": [
-        "personal",
-        "agency",
-        "themegrill agency"
-      ],
-      "category": "Marketing & Analytics",
-      "setting_url": "admin.php?page=evf-settings&tab=analytics",
-      "demo_video_url": "BCT7c8EmQfg"
     },
     {
       "title": "Hubspot",
@@ -983,7 +966,7 @@
         "themegrill agency"
       ],
       "category": "Form Elements",
-      "setting_url": "admin.php?page=evf-settings&tab=user_registration",
+      "setting_url": "admin.php?page=evf-settings&tab=utilities&section=user_registration",
       "demo_video_url": "MEyuznG2Tok",
       "popular_rank": 12
     },

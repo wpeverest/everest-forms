@@ -330,14 +330,6 @@ const Modules = () => {
 			status,
 			duration: 3000,
 			isClosable: true,
-			position: 'top',
-			containerStyle: {
-				marginTop: '120px',
-				width: '100%',
-				display: 'flex',
-				justifyContent: 'center',
-				zIndex: 9999,
-			},
 		});
 	};
 

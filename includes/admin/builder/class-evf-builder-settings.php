@@ -242,14 +242,10 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 			array(
 				'default'     => '',
 				'tooltip'     => esc_html__( 'Please choose a tags from the list, or type in a new tag if you\'d like to add one.', 'everest-forms' ),
-				'options'     => array_merge(
-					array(
-						'' => esc_html__( '', 'everest-forms' ),
-					),
-					FormHelper::get_all_form_tags()
-				),
+				'options'     => FormHelper::get_all_form_tags(),
 				'input_class' => 'form-tags-select2',
 				'multiple'    => true,
+				'placeholder' => esc_html__( 'Select or type tags', 'everest-forms' ),
 			)
 		);
 
@@ -333,7 +329,7 @@ class EVF_Builder_Settings extends EVF_Builder_Page {
 		do_action( 'everest_forms_inline_submit_settings', $this, 'submit', 'connection_1' );
 		echo '</div>';
 		do_action( 'everest_forms_inline_integrations_settings', $this->form_data, $settings );
-			echo '<div class="everest-forms-border-container"><h4 class="everest-forms-border-container-title">' . esc_html__( 'Advance', 'everest-forms' ) . '</h4>';
+			echo '<div class="everest-forms-border-container"><h4 class="everest-forms-border-container-title">' . esc_html__( 'Advanced', 'everest-forms' ) . '</h4>';
 		everest_forms_panel_field(
 			'toggle',
 			'settings',

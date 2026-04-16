@@ -2725,15 +2725,22 @@ abstract class EVF_Form_Fields {
 	 * @param array  $field Field data and settings.
 	 */
 	public function field_display_error( $key, $field ) {
-		// Need an error.
-		if ( empty( $field['properties']['error']['value'][ $key ] ) ) {
+		$error_value = isset( $field['properties']['error']['value'][ $key ] )
+			? $field['properties']['error']['value'][ $key ]
+			: '';
+
+		$input_id = isset( $field['properties']['inputs'][ $key ]['id'] )
+			? $field['properties']['inputs'][ $key ]['id']
+			: '';
+
+		if ( '' === $error_value || '' === $input_id ) {
 			return;
 		}
 
 		printf(
 			'<label class="everest-forms-error evf-error" for="%s">%s</label>',
-			esc_attr( $field['properties']['inputs'][ $key ]['id'] ),
-			esc_html( $field['properties']['error']['value'][ $key ] )
+			esc_attr( $input_id ),
+			esc_html( $error_value )
 		);
 	}
 

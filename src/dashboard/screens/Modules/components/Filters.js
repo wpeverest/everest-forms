@@ -40,7 +40,7 @@ const Filters = ({
 			width: '140px',
 			minHeight: '38px',
 			cursor: 'pointer',
-			borderRadius: '8px',
+			borderRadius: '4px',
 			fontSize: '14px',
 			pointerEvents: 'auto',
 			boxShadow: 'none',
@@ -84,7 +84,7 @@ const Filters = ({
 		}),
 		menu: (base) => ({
 			...base,
-			borderRadius: '8px',
+			borderRadius: '4px',
 			boxShadow: 'none',
 			border: '1px solid #E5E7EB',
 			overflow: 'hidden',
@@ -180,7 +180,7 @@ const Filters = ({
 						bg="gray.700"
 						color="white"
 						fontSize="xs"
-						borderRadius="md"
+						borderRadius="4px"
 						px="3"
 						py="2"
 					>
@@ -192,7 +192,7 @@ const Filters = ({
 							bg="white"
 							borderColor="#E5E7EB"
 							color="gray.600"
-							borderRadius="8px"
+							borderRadius="4px"
 							height="38px"
 							width="38px"
 							minW="38px"
@@ -223,16 +223,18 @@ const Filters = ({
 							value={searchValue}
 							onChange={onSearchChange}
 							bg="white"
-							borderColor="#E5E7EB"
-							borderRadius="8px"
+							borderColor="#e1e1e1"
+							borderRadius="4px"
 							height="38px"
 							fontSize="14px"
+							p="0px 12px 0 32px"
 							_hover={{
-								borderColor: '#D1D5DB',
+								borderColor: "#D1D5DB",
 							}}
 							_focus={{
 								borderColor: '#7545bb',
 								outline: 'none',
+								boxShadow: "none",
 							}}
 							_placeholder={{
 								color: '#9CA3AF',

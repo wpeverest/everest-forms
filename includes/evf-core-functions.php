@@ -1622,43 +1622,73 @@ function evf_get_required_label()
  * @since  1.2.0
  * @return bool|string Plan on success, false on failure.
  */
-function evf_get_license_plan()
-{
-	$license_key = get_option('everest-forms-pro_license_key');
+function evf_get_license_plan() {
+	if (
+		( defined( 'REST_REQUEST' ) && REST_REQUEST ) ||
+		( defined( 'DOING_CRON' )   && DOING_CRON   ) ||
+		( defined( 'DOING_AJAX' )   && DOING_AJAX   )
+	) {
+		return evf_handle_license_plan_compatibility(
+			get_option( 'evf_saved_license_plan', 'personal' )
+		);
+	}
 
-	if (! function_exists('is_plugin_active')) {
+	$license_key = get_option( 'everest-forms-pro_license_key' );
+
+	if ( ! function_exists( 'is_plugin_active' ) ) {
 		include_once ABSPATH . 'wp-admin/includes/plugin.php';
 	}
 
-	if ($license_key && is_plugin_active('everest-forms-pro/everest-forms-pro.php')) {
-		$license_data = get_transient('evf_pro_license_plan');
-		if (false === $license_data) {
-			$license_response = EVF_Updater_Key_API::check(array('license' => $license_key));
-
-			if (! $license_response) {
-				$license_plan = get_option('evf_saved_license_plan', 'unknown');
-				return evf_handle_license_plan_compatibility($license_plan);
-			}
-
-			$license_data     = json_decode($license_response);
-
-			if (! empty($license_data->item_name)) {
-				$license_data->item_plan = strtolower($license_data->item_name);
-				$license_data->item_plan = str_replace(
-					array('everest forms', 'lifetime', '-lifetime'),
-					'',
-					$license_data->item_plan
-				);
-				$license_data->item_plan = trim($license_data->item_plan);
-				update_option('evf_saved_license_plan', $license_data->item_plan);
-				set_transient('evf_pro_license_plan', $license_data, WEEK_IN_SECONDS);
-			}
-		}
-		$license_plan = isset($license_data->item_plan) ? $license_data->item_plan : get_option('evf_saved_license_plan', 'unknown');
-		return evf_handle_license_plan_compatibility($license_plan);
+	if ( ! $license_key || ! is_plugin_active( 'everest-forms-pro/everest-forms-pro.php' ) ) {
+		return false;
 	}
 
-	return false;
+	$license_data = get_transient( 'evf_pro_license_plan' );
+
+	if ( false !== $license_data ) {
+		$license_plan = isset( $license_data->item_plan )
+			? $license_data->item_plan
+			: get_option( 'evf_saved_license_plan', 'personal' );
+
+		return evf_handle_license_plan_compatibility( $license_plan );
+	}
+
+	$license_response = EVF_Updater_Key_API::check( array( 'license' => $license_key ) );
+
+	if ( ! $license_response ) {
+		$saved_plan = get_option( 'evf_saved_license_plan', 'personal' );
+		set_transient( 'evf_pro_license_plan', (object) array( 'item_plan' => $saved_plan ), HOUR_IN_SECONDS );
+
+		return evf_handle_license_plan_compatibility( $saved_plan );
+	}
+
+	$license_data = json_decode( $license_response );
+
+	if ( empty( $license_data ) || ! is_object( $license_data ) ) {
+		$saved_plan = get_option( 'evf_saved_license_plan', 'personal' );
+		set_transient( 'evf_pro_license_plan', (object) array( 'item_plan' => $saved_plan ), HOUR_IN_SECONDS );
+
+		return evf_handle_license_plan_compatibility( $saved_plan );
+	}
+
+	if ( ! empty( $license_data->item_name ) ) {
+		$item_plan = trim( str_replace(
+			array( 'everest forms', 'lifetime', '-lifetime' ),
+			'',
+			strtolower( $license_data->item_name )
+		) );
+
+		$license_data->item_plan = $item_plan;
+
+		update_option( 'evf_saved_license_plan', $item_plan );
+		set_transient( 'evf_pro_license_plan', $license_data, WEEK_IN_SECONDS );
+	}
+
+	$license_plan = isset( $license_data->item_plan )
+		? $license_data->item_plan
+		: get_option( 'evf_saved_license_plan', 'personal' );
+
+	return evf_handle_license_plan_compatibility( $license_plan );
 }
 
 add_action('admin_init', 'evf_handle_force_update');
@@ -5226,74 +5256,6 @@ if (! function_exists('evf_summary_end_offset_time')) {
 }
 
 
-if (! function_exists('evf_entries_summaries')) {
-	/**
-	 * Function to extract the entries summary from the database.
-	 *
-	 * @since 2.0.9.
-	 * @return array $evf_stat_data_output Statistics data from the database as an output.
-	 */
-	function evf_entries_summaries()
-	{
-		// Get options.
-		$evf_report_frequency = get_option('everest_forms_entries_reporting_frequency', 'Weekly');
-		$offset_from          = '';
-		$offset_to            = '';
-
-		// Set everest forms reporting frequency specific variables.
-		switch ($evf_report_frequency) {
-
-			case 'Daily':
-				$evf_report_email_title = __('Everest Forms Daily Entries Statistics Report', 'everest-forms');
-				$offset_from            = '-1 days';
-				$offset_to              = '-1 day';
-				break;
-
-			case 'Weekly':
-				$evf_report_email_title = __('Everest Forms Weekly Entries Statistics Report', 'everest-forms');
-				$offset_from            = '-8 days';
-				$offset_to              = '-1 day';
-				break;
-
-			case 'Monthly':
-				$evf_report_email_title = __('Everest Forms Monthly Entries Statistics Report', 'everest-forms');
-				$offset_from            = '-1 month -1 day';
-				$offset_to              = '-1 day';
-				break;
-		}
-
-		global $wpdb;
-
-		$evf_date_format         = 'Y-m-d H:i:s';
-		$evf_stat_start          = evf_get_utc_time_from($offset_from, $evf_date_format, true);
-		$evf_stat_end            = evf_get_utc_time_to($offset_to, $evf_date_format, true);
-		$evf_stat_selected_forms = get_option('everest_forms_reporting_form_lists', array());
-		$evf_stat_data_output    = '';
-		foreach ($evf_stat_selected_forms as $evf_stat_selected_form) {
-			$evf_stat_data_output = $wpdb->get_results(
-				$wpdb->prepare(
-					"SELECT
-				{$wpdb->prefix}posts.post_title,
-				{$wpdb->prefix}evf_entries.form_id,
-				COUNT(form_id) AS entries_count
-			FROM
-			{$wpdb->prefix}posts
-			INNER JOIN
-			{$wpdb->prefix}evf_entries ON {$wpdb->prefix}posts.id = {$wpdb->prefix}evf_entries.form_id
-			WHERE
-			{$wpdb->prefix}evf_entries.date_created BETWEEN '%1s' AND '%2s'
-			GROUP BY
-			{$wpdb->prefix}evf_entries.form_id",
-					$evf_stat_start,
-					$evf_stat_end
-				)
-			);
-			break;
-		}
-		return $evf_stat_data_output;
-	}
-}
-
 if (! function_exists('evf_process_all_fields_smart_tag')) {
 	/**
 	 * Return email content wrapped in email template if {all_fields} is there in email content.
@@ -5673,6 +5635,3 @@ function evf_form_confirmation_backward_compatibility($form_data)
 
 	return $form_data;
 }
-
-
-
