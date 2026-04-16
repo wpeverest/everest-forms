@@ -60,7 +60,6 @@ class EVF_Forms_Features {
 			'EVF_Field_Color',
 			'EVF_Field_Reset',
 			'EVF_Field_Lookup',
-
 		);
 
 		if ( defined( 'EVF_VERSION' ) && version_compare( EVF_VERSION, '3.4.4', '>=' ) ) {

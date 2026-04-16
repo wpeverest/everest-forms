@@ -4770,7 +4770,11 @@ function evf_sanitize_entry($entry = array())
 				case 'file-upload':
 				case 'signature':
 				case 'image-upload':
-					$entry['form_fields'][$key] = is_array($entry['form_fields'][$key]) ? $entry['form_fields'][$key] : esc_url_raw($entry['form_fields'][$key]);
+					if ( is_array( $entry['form_fields'][ $key ] ) ) {
+						$entry['form_fields'][ $key ] = array();
+					} else {
+						$entry['form_fields'][ $key ] = esc_url_raw( $entry['form_fields'][ $key ] );
+					}
 					break;
 				case 'textarea':
 				case 'html':
