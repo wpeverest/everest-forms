@@ -100,11 +100,12 @@ class EVF_Admin_Assets {
 		wp_register_script( 'progress_bar', evf()->plugin_url() . "/assets/js/admin/progressbar{$suffix}.js", array(), EVF_VERSION, true );
 		wp_register_script( 'evf-import-entries-form-csv', evf()->plugin_url() . '/assets/js/admin/tool-import-entries' . $suffix . '.js', array( 'jquery' ), EVF_VERSION, true );
 
-		wp_add_inline_script(
-			'jquery-confirm',
-			'(function($){if(window.Jconfirm&&window.Jconfirm.prototype){window.Jconfirm.prototype.initDraggable=function(){this.draggable=false;this.resetDrag();};}})(jQuery);',
-			'after'
-		);
+		//Disable drag for jquery confirm.
+		// wp_add_inline_script(
+		// 	'jquery-confirm',
+		// 	'(function($){if(window.Jconfirm&&window.Jconfirm.prototype){window.Jconfirm.prototype.initDraggable=function(){this.draggable=false;this.resetDrag();};}})(jQuery);',
+		// 	'after'
+		// );
 		/**
 		 * Roles and permission.
 		 *
