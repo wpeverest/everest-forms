@@ -1729,7 +1729,7 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 					if ( file_exists( $meta_value ) ) {
 						$entry_files[] = $meta_value;
 					}
-				} elseif ( isset( $meta_value['type'] ) && ( 'file-upload' === $meta_value['type'] && isset( $meta_value['value_raw'] ) || 'image-upload' === $meta_value['type'] && isset( $meta_value['value_raw'] ) ) ) {
+				} elseif ( isset( $meta_value['type'] ) && ( 'file-upload' === $meta_value['type'] && ! empty( $meta_value['value_raw'] ) || 'image-upload' === $meta_value['type'] && isset( $meta_value['value_raw'] ) ) ) {
 					foreach ( $meta_value['value_raw'] as $file_data ) {
 						$file_url = isset( $file_data['value'] ) && is_string( $file_data['value'] ) ? $file_data['value'] : '';
 						$resolved = $this->resolve_uploads_file_from_url( $file_url );
