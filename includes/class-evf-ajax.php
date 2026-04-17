@@ -314,6 +314,9 @@ class EVF_AJAX {
 				$data = array_replace_recursive( $data, $new_post_data );
 			}
 		}
+
+		$data = apply_filters( 'everest_forms_builder_save_form_data', $data );
+
 		// Check for empty meta key.
 		$logger->info(
 			__( 'Check for empty meta key.', 'everest-forms' ),
