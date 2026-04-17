@@ -22,7 +22,7 @@ class EVF_Builder_Integrations extends EVF_Builder_Page {
 	 */
 	public function __construct() {
 		$this->id      = 'integrations';
-		$this->label   = __( 'Integrations', 'everest-forms-pro' );
+		$this->label   = __( 'Integrations', 'everest-forms' );
 		$this->sidebar = true;
 
 		parent::__construct();
