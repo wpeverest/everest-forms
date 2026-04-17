@@ -50,6 +50,15 @@ jQuery( function( $ ) {
 						return false;
 					}
 
+					var selectedPayGateway = formTuple.find( '.evf-payment-gateway-radio:checked' ).data( 'evf-gateway' );
+					var hasPaymentGatewaySelector = formTuple.find( '.evf-payment-gateway-radio' ).length > 0;
+					var hasRazorpayGatewayMarker = formTuple.find( "[data-gateway='razorpay']" ).length > 0;
+					var shouldBypassAjaxForRazorpay = hasRazorpayGatewayMarker && ( 'razorpay' === selectedPayGateway || ! hasPaymentGatewaySelector );
+
+					if ( shouldBypassAjaxForRazorpay ) {
+						return true;
+					}
+
 					var data = formTuple.serializeArray();
 					e.preventDefault();
 					// We let the bubbling events in form play itself out.
@@ -58,8 +67,6 @@ jQuery( function( $ ) {
 					var errors = formTuple.find( '.evf-error:visible' );
 
 					var authorizeNetHidden = formTuple.find( ".everest-forms-authorize_net[data-gateway='authorize-net']" );
-					var selectedPayGateway = formTuple.find( '.evf-payment-gateway-radio:checked' ).data( 'evf-gateway' );
-					var hasPaymentGatewaySelector = formTuple.find( '.evf-payment-gateway-radio' ).length > 0;
 					var legacyAuthorizeFieldVisible = ! hasPaymentGatewaySelector && formTuple.find( '.evf-field-authorize-net' ).is( ':visible' );
 					var shouldTokenizeAuthorizeNet = authorizeNetHidden.length &&
 						window.EverestFormsAuthorizeNet &&
