@@ -301,9 +301,12 @@ class EVF_Field_Rating extends EVF_Form_Fields {
 	public function html_rating_value( $val, $field_val, $form_data = array(), $context = '' ) {
 		if ( is_serialized( $field_val ) ) {
 			$value = evf_maybe_unserialize( $field_val );
-			if ( isset( $value['type'] ) && $value['type'] === $this->type ) {
+
+			if ( is_array( $value ) && isset( $value['type'] ) && sanitize_text_field( wp_unslash( (string) $value['type'] ) ) === $this->type ) {
 				// Icons ref: https://emojipedia.org/.
-				switch ( $value['icon'] ) {
+				$icon = isset( $value['icon'] ) ? sanitize_text_field( wp_unslash( (string) $value['icon'] ) ) : '';
+
+				switch ( $icon ) {
 					case 'smiley':
 						$emoji = '🙂';
 						break;
@@ -321,29 +324,32 @@ class EVF_Field_Rating extends EVF_Form_Fields {
 						break;
 				}
 
+				$rating_value     = isset( $value['value'] ) ? absint( $value['value'] ) : 0;
+				$number_of_rating = isset( $value['number_of_rating'] ) ? absint( $value['number_of_rating'] ) : 0;
+
 				if ( 'entry-table' === $context ) {
 					// For the entry list table, changed the text color of rating.
 					return sprintf(
-						'%s <span style="color:#ccc;">(%d/%d)</span>',
-						str_repeat( $emoji, absint( $value['value'] ) ),
-						absint( $value['value'] ),
-						absint( $value['number_of_rating'] )
+						'%1$s <span style="color:#ccc;">(%2$d/%3$d)</span>',
+						esc_html( str_repeat( $emoji, $rating_value ) ),
+						$rating_value,
+						$number_of_rating
 					);
 				}
 
 				if ( 'export-pdf' === $context || 'email-html' === $context ) {
 					return sprintf(
-						'<span>(%d/%d)</span>',
-						absint( $value['value'] ),
-						absint( $value['number_of_rating'] )
+						'<span>(%1$d/%2$d)</span>',
+						$rating_value,
+						$number_of_rating
 					);
 				}
 
 				return sprintf(
-					'%s (%d/%d)',
-					str_repeat( $emoji, absint( $value['value'] ) ),
-					absint( $value['value'] ),
-					absint( $value['number_of_rating'] )
+					'%1$s (%2$d/%3$d)',
+					esc_html( str_repeat( $emoji, $rating_value ) ),
+					$rating_value,
+					$number_of_rating
 				);
 			}
 		}
