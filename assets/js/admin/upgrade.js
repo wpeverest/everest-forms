@@ -552,6 +552,14 @@ jQuery( function( $ ) {
 			var title = evf_upgrade.evf_one_time_draggable_title;
 			var content = evf_upgrade.evf_one_time_draggable_message;
 			if (
+				$item.hasClass('evf-payment-method-dependent-disabled') &&
+				$.inArray(fieldType, ['credit-card', 'square-payment', 'authorize-net']) >=
+					0
+			) {
+				title = evf_upgrade.evf_payment_method_dependency_title;
+				content = evf_upgrade.evf_payment_method_dependency_message;
+			}
+			if (
 				'payment-gateway-selector' === fieldType &&
 				typeof evf_upgrade.evf_one_time_payment_gateway_message !== 'undefined'
 			) {

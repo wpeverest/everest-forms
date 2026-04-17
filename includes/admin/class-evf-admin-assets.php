@@ -256,6 +256,8 @@ class EVF_Admin_Assets {
 				'evf_one_time_draggable_message'          => esc_html__( 'field can only be used once. To use it multiple times, please upgrade to the pro version.', 'everest-forms' ),
 				'evf_one_time_payment_gateway_title'     => esc_html__( 'Payment Gateway', 'everest-forms' ),
 				'evf_one_time_payment_gateway_message'     => esc_html__( 'Only one Payment Gateway field is allowed per form.', 'everest-forms' ),
+				'evf_payment_method_dependency_title'      => esc_html__( 'Payment Method Field', 'everest-forms' ),
+				'evf_payment_method_dependency_message'    => esc_html__( 'Remove Payment Method field to use this field.', 'everest-forms' ),
 				'evf_file_upload_free_file_limit_message' => esc_html__( 'You can upload only one file at a time. To upload more than one file at a time, please upgrade to the pro version.', 'everest-forms' ),
 
 			)

@@ -195,6 +195,7 @@
 					'evf-one-time-draggable-field',
 				);
 			}
+			EVFPanelBuilder.syncPaymentMethodDependentFields();
 
 			if (!$('evf-panel-payments-button a').hasClass('active')) {
 				$('#everest-forms-panel-payments')
@@ -1173,6 +1174,8 @@
 					$('#everest-forms-panel-field-stripe-interval_count-wrap').hide();
 					$('#everest-forms-panel-field-stripe-period-wrap').hide();
 				}
+
+				EVFPanelBuilder.syncPaymentMethodDependentFields();
 			});
 
 			$(document.body).on('evf_before_field_deleted', function (e, element_id) {
@@ -1187,6 +1190,11 @@
 					$('#everest-forms-panel-field-stripe-interval_count-wrap').hide();
 					$('#everest-forms-panel-field-stripe-period-wrap').hide();
 				}
+
+				// Run after DOM removal to accurately detect selector presence.
+				setTimeout(function () {
+					EVFPanelBuilder.syncPaymentMethodDependentFields();
+				}, 0);
 			});
 
 			var isRecurringEnable = $('#everest-forms-panel-field-paypal-recurring');
@@ -4738,6 +4746,48 @@
 				dragged_field_id.removeClass('upgrade-modal');
 				dragged_field_id.removeClass('evf-one-time-draggable-field');
 			}
+		},
+
+		syncPaymentMethodDependentFields: function () {
+			var $builder = $('#everest-forms-builder');
+			var hasPaymentMethodField =
+				$builder.find('.everest-forms-field-payment-gateway-selector').length > 0;
+			var dependentFields = [
+				{
+					type: 'credit-card',
+					selector: '.everest-forms-field-credit-card',
+				},
+				{
+					type: 'square-payment',
+					selector: '.everest-forms-field-square-payment',
+				},
+				{
+					type: 'authorize-net',
+					selector: '.everest-forms-field-authorize-net',
+				},
+			];
+
+			$.each(dependentFields, function (index, field) {
+				var $addButton = $('#everest-forms-add-fields-' + field.type);
+				if (!$addButton.length) {
+					return;
+				}
+
+				if (hasPaymentMethodField) {
+					$addButton.addClass('evf-one-time-draggable-field');
+					$addButton.addClass('evf-payment-method-dependent-disabled');
+					return;
+				}
+
+				// Keep one-time state untouched when that field already exists in the builder.
+				if ($builder.find(field.selector).length > 0) {
+					$addButton.removeClass('evf-payment-method-dependent-disabled');
+					return;
+				}
+
+				$addButton.removeClass('evf-one-time-draggable-field');
+				$addButton.removeClass('evf-payment-method-dependent-disabled');
+			});
 		},
 
 		bindFieldSettings: function () {
