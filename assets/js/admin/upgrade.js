@@ -547,9 +547,20 @@ jQuery( function( $ ) {
 		},
 		evf_one_time_draggable_field: function (e) {
 			e.preventDefault();
+			var $item = $(e.currentTarget).closest('.evf-registered-item');
+			var fieldType = $item.data('field-type');
+			var title = evf_upgrade.evf_one_time_draggable_title;
+			var content = evf_upgrade.evf_one_time_draggable_message;
+			if (
+				'payment-gateway-selector' === fieldType &&
+				typeof evf_upgrade.evf_one_time_payment_gateway_message !== 'undefined'
+			) {
+				title = evf_upgrade.evf_one_time_payment_gateway_title;
+				content = evf_upgrade.evf_one_time_payment_gateway_message;
+			}
 			$.alert({
-				title: evf_upgrade.evf_one_time_draggable_title,
-				content: evf_upgrade.evf_one_time_draggable_message,
+				title: title,
+				content: content,
 				icon: 'dashicons dashicons-info',
 				type: 'blue',
 				buttons: {

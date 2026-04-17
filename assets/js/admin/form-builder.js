@@ -186,6 +186,16 @@
 				}
 			}
 
+			if (
+				$('#everest-forms-builder').find(
+					'.everest-forms-field-payment-gateway-selector',
+				).length > 0
+			) {
+				$('#everest-forms-add-fields-payment-gateway-selector').addClass(
+					'evf-one-time-draggable-field',
+				);
+			}
+
 			if (!$('evf-panel-payments-button a').hasClass('active')) {
 				$('#everest-forms-panel-payments')
 					.find('.everest-forms-panel-sidebar a')

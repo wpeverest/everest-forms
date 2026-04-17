@@ -3317,6 +3317,26 @@ p.search-box {
 							cursor: not-allowed;
 						}
 
+						&.evf-one-time-draggable-field {
+							cursor: not-allowed;
+							opacity: 0.55;
+							color: #6d6d6d;
+							background: #f3f4f6;
+							border-color: #d2d5db;
+							box-shadow: none;
+
+							.evf-icon {
+								opacity: 0.55;
+							}
+
+							&:hover {
+								opacity: 0.58;
+								color: #6d6d6d;
+								border-color: #d2d5db;
+								background: #f3f4f6;
+							}
+						}
+
 						//  &.evf-upgrade-addon,
 						&.recaptcha_empty_key_validate,
 						&.turnstile_empty_key_validate,
