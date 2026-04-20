@@ -94,6 +94,11 @@ class EVF_Admin_Tools {
 			self::remove_all_logs();
 		}
 
+		// Download Log.
+		if ( ! empty( $_REQUEST['handle_download'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+			self::download_log();
+		}
+
 		include_once 'views/html-admin-page-tools-logs.php';
 	}
 
@@ -209,6 +214,41 @@ class EVF_Admin_Tools {
 
 		wp_safe_redirect( esc_url_raw( admin_url( 'admin.php?page=evf-tools&tab=logs' ) ) );
 		exit();
+	}
+
+	/**
+	 * Download the chosen log file.
+	 */
+	public static function download_log() {
+		if ( empty( $_REQUEST['_wpnonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ), 'download_log' ) ) {
+			wp_die( esc_html__( 'Action failed. Please refresh the page and retry.', 'everest-forms' ) );
+		}
+
+			$logs    = self::scan_log_files();
+			$log_key = sanitize_title( wp_unslash( $_REQUEST['handle_download'] ) );
+
+			if ( ! isset( $logs[ $log_key ] ) ) {
+				wp_die( esc_html__( 'Log file not found.', 'everest-forms' ) );
+			}
+
+			$log_file = EVF_LOG_DIR . $logs[ $log_key ];
+
+			if ( ! file_exists( $log_file ) ) {
+				wp_die( esc_html__( 'Log file not found.', 'everest-forms' ) );
+			}
+
+			while ( ob_get_level() ) {
+				ob_end_clean();
+			}
+
+			header( 'Content-Description: File Transfer' );
+			header( 'Content-Type: text/plain' );
+			header( 'Content-Disposition: attachment; filename="' . sanitize_file_name( basename( $log_file )  ) . '"' );
+			header( 'Content-Length: ' . filesize( $log_file ) );
+			header( 'Cache-Control: must-revalidate' );
+			header( 'Pragma: public' );
+			readfile( $log_file ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_readfile
+			exit();
 	}
 
 	/**
