@@ -337,6 +337,7 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 	public function column_form_field( $entry, $column_name ) {
 		$field_id = str_replace( 'evf_field_', '', $column_name );
 		$meta_key = isset( $this->form_data['form_fields'][ $field_id ]['meta-key'] ) ? strtolower( $this->form_data['form_fields'][ $field_id ]['meta-key'] ) : $field_id;
+		$field_type = isset( $this->form_data['form_fields'][ $field_id ]['type'] ) ? $this->form_data['form_fields'][ $field_id ]['type'] : '';
 
 		if ( ! empty( $entry->meta[ $meta_key ] ) || ( isset( $entry->meta[ $meta_key ] ) && is_numeric( $entry->meta[ $meta_key ] ) ) ) {
 			$value = $entry->meta[ $meta_key ];
@@ -376,7 +377,23 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 
 				$value = nl2br( wp_strip_all_tags( trim( $value ) ) );
 			}
-			return apply_filters( 'everest_forms_html_field_value', $value, $entry->meta[ $meta_key ], $entry, 'entry-table', $meta_key );
+			$value = apply_filters( 'everest_forms_html_field_value', $value, $entry->meta[ $meta_key ], $entry, 'entry-table', $meta_key );
+
+			if ( in_array( $field_type, array( 'file-upload', 'image-upload', 'signature', 'wysiwyg', 'color', 'rating', 'country', 'likert', 'checkbox', 'radio', 'repeater-fields' ), true ) ) {
+				return nl2br( make_clickable( $value ) );
+			}elseif( 'address' === $field_type ){
+				$allowed_tags = array(
+					'br'   => array(),
+					'span' => array(),
+					'p'    => array(),
+				);
+
+				$output = nl2br( $value );
+				return wp_kses( $output, $allowed_tags );
+			}
+			else{
+				return esc_html( $value );
+			}
 		} else {
 			return '<span class="na">&mdash;</span>';
 		}
