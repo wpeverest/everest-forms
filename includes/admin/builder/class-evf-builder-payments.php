@@ -8,10 +8,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-if ( class_exists( 'EVF_Builder_Payments', false ) ) {
-	return new EVF_Builder_Payments();
-}
-
+if ( ! class_exists( 'EVF_Builder_Payments' ) ) {
 /**
  * EVF_Builder_Payments class.
  */
@@ -136,3 +133,5 @@ class EVF_Builder_Payments extends EVF_Builder_Page {
 }
 
 return new EVF_Builder_Payments();
+
+}
