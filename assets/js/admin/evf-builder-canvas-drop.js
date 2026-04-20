@@ -168,8 +168,8 @@
 	 * and provides a reliable area to add a new row at the top/bottom.
 	 */
 	function pickRowEdgeIntent(
-		clientX,
-		clientY,
+		clientX, 
+		clientY, 
 		$section,
 		includeInsideBand,
 		rowGapPxOverride,
