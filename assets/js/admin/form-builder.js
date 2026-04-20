@@ -3512,6 +3512,7 @@
 							title: $title,
 							content: modelContent,
 							type: 'blue',
+							draggable:false,
 							onContentReady: function () {
 								var $formId = $('.everest-forms-embed-button').attr(
 									'data-form_id',

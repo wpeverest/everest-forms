@@ -71,8 +71,15 @@ class EVF_Field_Wysiwyg extends EVF_Form_Fields {
 	public function html_field_value( $value, $field, $form_data = array(), $context = '' ) {
 		if ( is_serialized( $field ) || in_array( $context, array( 'email-html', 'export-pdf' ), true ) ) {
 			$field_value = evf_maybe_unserialize( $field );
-			if ( ! empty( $field_value['type'] ) && $this->type === $field_value['type'] ) {
-				return ! empty( $field_value['value'] ) ? $field_value['value'] : '';
+
+			if (
+				is_array( $field_value )
+				&& ! empty( $field_value['type'] )
+				&& $this->type === sanitize_text_field( wp_unslash( (string) $field_value['type'] ) )
+			) {
+				return ! empty( $field_value['value'] )
+					? wp_kses_post( wp_unslash( (string) $field_value['value'] ) )
+					: '';
 			}
 		}
 		return $value;
