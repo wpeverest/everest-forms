@@ -8,13 +8,11 @@
 
 defined( 'ABSPATH' ) || exit;
 
-if ( class_exists( 'EVF_Builder_Integrations', false ) ) {
-	return new EVF_Builder_Integrations();
-}
-
 /**
  * EVF_Builder_Integrations class.
  */
+if ( ! class_exists( 'EVF_Builder_Integrations' ) ) {
+
 class EVF_Builder_Integrations extends EVF_Builder_Page {
 
 	/**
@@ -143,3 +141,5 @@ class EVF_Builder_Integrations extends EVF_Builder_Page {
 }
 
 return new EVF_Builder_Integrations();
+
+}
