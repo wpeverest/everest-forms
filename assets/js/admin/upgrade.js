@@ -457,6 +457,10 @@ jQuery( function( $ ) {
 		},
 		enable_stripe_model: function (e) {
 			e.preventDefault();
+			var $item = $(e.currentTarget).closest('.evf-registered-item');
+			if ($item.hasClass('evf-payment-method-dependent-disabled')) {
+				return;
+			}
 			var $button = $('#everest-forms-add-fields-credit-card');
 			if ($button.hasClass('recurring-payment')) {
 				return;
@@ -478,6 +482,10 @@ jQuery( function( $ ) {
 		},
 		enable_authorize_net_model: function (e) {
 			e.preventDefault();
+			var $item = $(e.currentTarget).closest('.evf-registered-item');
+			if ($item.hasClass('evf-payment-method-dependent-disabled')) {
+				return;
+			}
 			$.alert({
 				title: evf_upgrade.enable_authorize_net_title,
 				content: evf_upgrade.enable_authorize_net_message,
@@ -494,6 +502,10 @@ jQuery( function( $ ) {
 		},
 		enable_square_model: function (e) {
 			e.preventDefault();
+			var $item = $(e.currentTarget).closest('.evf-registered-item');
+			if ($item.hasClass('evf-payment-method-dependent-disabled')) {
+				return;
+			}
 			$.alert({
 				title: evf_upgrade.enable_square_title,
 				content: evf_upgrade.enable_square_message,
@@ -556,8 +568,28 @@ jQuery( function( $ ) {
 				$.inArray(fieldType, ['credit-card', 'square-payment', 'authorize-net']) >=
 					0
 			) {
-				title = evf_upgrade.evf_payment_method_dependency_title;
-				content = evf_upgrade.evf_payment_method_dependency_message;
+				if (
+					'credit-card' === fieldType &&
+					$item.hasClass('enable-stripe-model')
+				) {
+					title = evf_upgrade.enable_stripe_title;
+					content = evf_upgrade.enable_stripe_message;
+				} else if (
+					'square-payment' === fieldType &&
+					$item.hasClass('enable-square-model')
+				) {
+					title = evf_upgrade.enable_square_title;
+					content = evf_upgrade.enable_square_message;
+				} else if (
+					'authorize-net' === fieldType &&
+					$item.hasClass('enable-authorize-net-model')
+				) {
+					title = evf_upgrade.enable_authorize_net_title;
+					content = evf_upgrade.enable_authorize_net_message;
+				} else {
+					title = evf_upgrade.evf_payment_method_dependency_title;
+					content = evf_upgrade.evf_payment_method_dependency_message;
+				}
 			}
 			if (
 				'payment-gateway-selector' === fieldType &&
