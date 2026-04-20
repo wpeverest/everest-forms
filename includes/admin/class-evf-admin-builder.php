@@ -33,6 +33,10 @@ if ( ! class_exists( 'EVF_Admin_Builder', false ) ) :
 
 				$builder[] = include 'builder/class-evf-builder-fields.php';
 				$builder[] = include 'builder/class-evf-builder-settings.php';
+				if ( ! defined( 'EFP_PLUGIN_FILE' ) ) {
+					$builder[] = include 'builder/class-evf-builder-integrations.php';
+					$builder[] = include 'builder/class-evf-builder-payments.php';
+				}
 
 				self::$builder = apply_filters( 'everest_forms_get_builder_pages', $builder );
 			}

@@ -13356,3 +13356,127 @@ button#show-settings-link {
 		}
     }
 }
+
+.evf-builder-get-started {
+	padding: 28px 24px;
+
+	h3 {
+		margin: 0 0 8px;
+		font-size: 26px;
+		line-height: 1.2;
+		font-weight: 600;
+		color: #1f1f1f;
+	}
+
+	> p {
+		margin: 0;
+		font-size: 15px;
+		line-height: 26px;
+		color: #6b6b6b;
+	}
+
+	.evf-builder-get-started-steps {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		margin: 22px 0 24px;
+
+		.step {
+			display: inline-flex;
+			align-items: center;
+			gap: 10px;
+			font-size: 14px;
+			line-height: 1.2;
+			color: #2d2d2d;
+
+			span {
+				display: inline-flex;
+				align-items: center;
+				justify-content: center;
+				width: 26px;
+				height: 26px;
+				border-radius: 6px;
+				background: #f4f4f4;
+				color: #383838;
+				font-size: 11px;
+				font-style: normal;
+				font-weight: 600;
+				border: 1px solid #e1e1e1;
+			}
+
+			&:not(:last-child)::after {
+				content: '';
+				width: 74px;
+				height: 1px;
+				background: #d9d9d9;
+				margin-left: 10px;
+			}
+		}
+	}
+
+	.everest-forms-btn.everest-forms-btn-primary {
+		padding: 12px 20px;
+		font-size: 13px;
+		line-height: 1.2;
+		font-weight: 600; 
+	}
+}
+
+#everest-forms-panel-integrations,
+#everest-forms-panel-payments {
+	.integration-name {
+		display: flex;
+		align-items: center;
+		gap: 16px;
+		justify-content: space-between;
+
+		svg {
+			width: 16px;
+			height: 16px;
+		}
+	}
+
+	.evf-panel-tab {
+		min-height: 86px;
+		background: #f4f4f4;
+		border-bottom: 1px solid #e1e1e1;
+
+		.logo {
+			width: 38px;
+			height: 38px;
+			flex: 0 0 38px;  
+			margin: 0;
+			border: 1px solid #E1E1E1;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			border-radius: 5px;
+
+			img {
+				width: 28px;
+				height: 28px;
+			}
+		}
+
+		&.upgrade-addons-settings {
+			opacity: 0.7 !important;
+			color: #4a4a4a;
+
+			&:hover {
+				background: #f0f0f0;
+				color: #2f2f2f; 
+			}
+
+			i.dashicons {
+				width: 18px;
+				height: 18px;
+				min-width: 18px;
+				background-color: #f4b25e;
+				border-radius: 3px;
+				background-position: center;
+				background-repeat: no-repeat;
+				background-size: 11px;
+			}
+		}
+	}
+}
