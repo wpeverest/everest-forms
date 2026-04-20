@@ -543,18 +543,71 @@ class EVF_Form_Task {
 				$field_submit = isset( $entry['form_fields'][ $field_id ] ) ? $entry['form_fields'][ $field_id ] : array();
 
 				// Handle file uploads for save continue.
-				if ( in_array( $field_type, array( 'file-upload', 'image-upload' ) ) && defined( 'EVF_SAVE_AND_CONTINUE_VERSION' ) ) {
-					$field_submit['new_files'] = isset( $_POST[ 'everest_forms_' . $form_id . '_' . $field_id ] ) ? stripslashes_deep( $_POST[ 'everest_forms_' . $form_id . '_' . $field_id ] ) : array();
-					$field_submit['old_files'] = isset( $_POST[ 'everest_forms_' . $form_id . '_old_' . $field_id ] ) ? stripslashes_deep( $_POST[ 'everest_forms_' . $form_id . '_old_' . $field_id ] ) : array();
+				if ( in_array( $field_type, array( 'file-upload', 'image-upload' ), true ) ) {
+					if ( is_array( $field_submit ) ) {
+						unset( $field_submit['old_files'], $field_submit['new_files'] );
+					}
 
-					$deleted_files = isset( $_POST[ 'everest_forms_' . $form_id . '_delete_' . $field_id ] ) ? stripslashes_deep( $_POST[ 'everest_forms_' . $form_id . '_delete_' . $field_id ] ) : '';
+					if ( defined( 'EVF_SAVE_AND_CONTINUE_VERSION' ) ) {
+						if ( ! is_array( $field_submit ) ) {
+							$field_submit = array();
+						}
 
-					if ( ! empty( $deleted_files ) ) {
-						$deleted_files = json_decode( $deleted_files, true );
-						foreach ( $deleted_files as $file ) {
-							$file = json_decode( $file, true );
-							if ( ! empty( $file ) ) {
-								FormHelper::remove_file( $file['value'] );
+						$field_submit['new_files'] = isset( $_POST[ 'everest_forms_' . $form_id . '_' . $field_id ] )
+							? stripslashes_deep( $_POST[ 'everest_forms_' . $form_id . '_' . $field_id ] )
+							: array();
+						$field_submit['old_files'] = isset( $_POST[ 'everest_forms_' . $form_id . '_old_' . $field_id ] )
+							? stripslashes_deep( $_POST[ 'everest_forms_' . $form_id . '_old_' . $field_id ] )
+							: array();
+
+						$deleted_files = isset( $_POST[ 'everest_forms_' . $form_id . '_delete_' . $field_id ] )
+							? stripslashes_deep( $_POST[ 'everest_forms_' . $form_id . '_delete_' . $field_id ] )
+							: '';
+
+						if ( ! empty( $deleted_files ) ) {
+							$deleted_files = json_decode( $deleted_files, true );
+
+							if ( is_array( $deleted_files ) ) {
+								$upload_dir      = wp_get_upload_dir();
+								$uploads_baseurl = trailingslashit( $upload_dir['baseurl'] );
+								$uploads_basedir = wp_normalize_path( trailingslashit( $upload_dir['basedir'] ) );
+
+								foreach ( $deleted_files as $file ) {
+									$file = json_decode( $file, true );
+
+									if ( empty( $file['value'] ) || ! is_string( $file['value'] ) ) {
+										continue;
+									}
+
+									$file_url = esc_url_raw( $file['value'] );
+
+									if ( 0 !== strpos( $file_url, $uploads_baseurl ) ) {
+										continue;
+									}
+
+									$path      = wp_parse_url( $file_url, PHP_URL_PATH );
+									$base_path = wp_parse_url( $uploads_baseurl, PHP_URL_PATH );
+
+									if ( ! is_string( $path ) || ! is_string( $base_path ) || 0 !== strpos( $path, $base_path ) ) {
+										continue;
+									}
+
+									$relative_path = ltrim( substr( $path, strlen( $base_path ) ), '/' );
+									$candidate     = wp_normalize_path( $uploads_basedir . $relative_path );
+									$resolved_path = realpath( $candidate );
+
+									if ( false === $resolved_path ) {
+										continue;
+									}
+
+									$resolved_path = wp_normalize_path( $resolved_path );
+
+									if ( 0 !== strpos( $resolved_path, $uploads_basedir ) ) {
+										continue;
+									}
+
+									FormHelper::remove_file( $file_url );
+								}
 							}
 						}
 					}
