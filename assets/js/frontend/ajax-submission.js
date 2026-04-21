@@ -27,16 +27,20 @@ jQuery( function( $ ) {
 					}
 
 					//For square payment credit card validation.
-					var squareMsgContainer = formTuple.find(".everest-forms-gateway[data-gateway='square']").find('.sq-card-message-error');
-					if ( squareMsgContainer.length > 0 ) {
-						var squareErrorMsg = squareMsgContainer.text();
-						$( document ).ready( function() {
-							$( '#card-errors' ).html( squareErrorMsg ).show();
-							$( '.evf-submit' ).text( 'Submit' );
-							$( '.evf-submit' ).attr( 'disabled', false);
-						});
-						formTuple.trigger( 'focusout' ).trigger( 'change' ).trigger( 'submit' );
-						return false;
+					var squareSelectedGateway = formTuple.find( '.evf-payment-gateway-radio:checked' ).data( 'evf-gateway' );
+					var squareIsSelected = 'square' === squareSelectedGateway || ( undefined === squareSelectedGateway && 'none' !== formTuple.find( ".everest-forms-gateway[data-gateway='square']" ).closest( '.evf-field' ).css( 'display' ) );
+					if ( squareIsSelected ) {
+						var squareMsgContainer = formTuple.find(".everest-forms-gateway[data-gateway='square']").find('.sq-card-message-error');
+						if ( squareMsgContainer.length > 0 ) {
+							var squareErrorMsg = squareMsgContainer.text();
+							$( document ).ready( function() {
+								$( '#card-errors' ).html( squareErrorMsg ).show();
+								$( '.evf-submit' ).text( 'Submit' );
+								$( '.evf-submit' ).attr( 'disabled', false);
+							});
+							formTuple.trigger( 'focusout' ).trigger( 'change' ).trigger( 'submit' );
+							return false;
+						}
 					}
 
 					if ( typeof tinyMCE !== 'undefined' ) {
@@ -136,7 +140,8 @@ jQuery( function( $ ) {
 					.done( function ( xhr, textStatus, errorThrown ) {
 						var redirect_url = ( xhr.data && xhr.data.redirect_url ) ? xhr.data.redirect_url : '';
 						var selectedGateway = formTuple.find( '.evf-payment-gateway-radio:checked' ).data( 'evf-gateway' );
-						if ( undefined === selectedGateway ) {
+						var hasPaymentGatewayField = formTuple.find( '.evf-payment-gateway-radio' ).length > 0;
+						if ( undefined === selectedGateway && ! hasPaymentGatewayField ) {
 							if ( 'none' !== formTuple.find( ".everest-forms-gateway[data-gateway='square']" ).closest( '.evf-field' ).css( 'display' ) ) {
 								selectedGateway = 'square';
 							} else if ( 'none' !== formTuple.find( ".everest-forms-gateway[data-gateway='stripe']" ).closest( '.evf-field' ).css( 'display' ) ) {
