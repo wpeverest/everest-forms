@@ -26,9 +26,14 @@ jQuery( function( $ ) {
 						return false;
 					}
 
-					//For square payment credit card validation.
+					var hasPaymentGatewaySelector = formTuple.find( '.evf-payment-gateway-radio' ).length > 0;
+
+					// For square payment credit card validation.
+					// If payment method selector exists, only run Square validation when square is explicitly selected.
 					var squareSelectedGateway = formTuple.find( '.evf-payment-gateway-radio:checked' ).data( 'evf-gateway' );
-					var squareIsSelected = 'square' === squareSelectedGateway || ( undefined === squareSelectedGateway && 'none' !== formTuple.find( ".everest-forms-gateway[data-gateway='square']" ).closest( '.evf-field' ).css( 'display' ) );
+					var squareIsSelected = hasPaymentGatewaySelector
+						? 'square' === squareSelectedGateway
+						: 'square' === squareSelectedGateway || ( undefined === squareSelectedGateway && 'none' !== formTuple.find( ".everest-forms-gateway[data-gateway='square']" ).closest( '.evf-field' ).css( 'display' ) );
 					if ( squareIsSelected ) {
 						var squareMsgContainer = formTuple.find(".everest-forms-gateway[data-gateway='square']").find('.sq-card-message-error');
 						if ( squareMsgContainer.length > 0 ) {
@@ -55,7 +60,6 @@ jQuery( function( $ ) {
 					}
 
 					var selectedPayGateway = formTuple.find( '.evf-payment-gateway-radio:checked' ).data( 'evf-gateway' );
-					var hasPaymentGatewaySelector = formTuple.find( '.evf-payment-gateway-radio' ).length > 0;
 					var hasRazorpayGatewayMarker = formTuple.find( "[data-gateway='razorpay']" ).length > 0;
 					var shouldBypassAjaxForRazorpay = hasRazorpayGatewayMarker && ( 'razorpay' === selectedPayGateway || ! hasPaymentGatewaySelector );
 
