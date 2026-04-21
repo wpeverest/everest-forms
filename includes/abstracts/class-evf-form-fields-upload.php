@@ -775,26 +775,53 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 					if ( 'image-upload' === $fields_data['type'] ) {
 						$val = '';
 						foreach ( $field_val['field_value']['value_raw'] as $key => $value ) {
-							$val .= '<a href="' . esc_url( $value['value'] ) . '" target="_blank"><img src="' . esc_url( $value['value'] ) . '" style="width:200px;" /></a>';
+							$image_url = isset( $value['value'] ) ? esc_url( $value['value'] ) : '';
+
+							$val .= sprintf(
+								'<a href="%1$s" target="_blank" rel="noopener noreferrer"><img src="%1$s" style="width:200px;" alt="" /></a>',
+								$image_url
+							);
 						}
+
 						return $val;
 					}
+
 					if ( 'file-upload' === $fields_data['type'] ) {
 						$count = count( $field_val['field_value']['value_raw'] );
 						$val   = '';
+
 						if ( $count > 1 ) {
 							foreach ( $field_val['field_value']['value_raw'] as $key => $value ) {
-								if ( 1 === $count ) {
-									$val .= '<a href="' . esc_url( $value['value'] ) . '" target="_blank">' . esc_html( $value['name'] ) . '</a>';
-								} else {
-									$val .= '<a href="' . esc_url( $value['value'] ) . '" target="_blank">' . esc_html( $value['name'] ) . '</a>, ';
+								$file_url  = isset( $value['value'] ) ? esc_url( $value['value'] ) : '';
+								$file_name = isset( $value['name'] ) ? esc_html( $value['name'] ) : '';
 
+								if ( 1 === $count ) {
+									$val .= sprintf(
+										'<a href="%1$s" target="_blank" rel="noopener noreferrer">%2$s</a>',
+										$file_url,
+										$file_name
+									);
+								} else {
+									$val .= sprintf(
+										'<a href="%1$s" target="_blank" rel="noopener noreferrer">%2$s</a>, ',
+										$file_url,
+										$file_name
+									);
 								}
+
 								--$count;
 							}
 						} else {
-							$val .= '<a href="' . esc_url( $field_val['value'] ) . '" target="_blank">' . esc_html( $field_val['field_value']['value_raw'][0]['name'] ) . '</a>';
+							$file_url  = isset( $field_val['value'] ) ? esc_url( $field_val['value'] ) : '';
+							$file_name = isset( $field_val['field_value']['value_raw'][0]['name'] ) ? esc_html( $field_val['field_value']['value_raw'][0]['name'] ) : '';
+
+							$val .= sprintf(
+								'<a href="%1$s" target="_blank" rel="noopener noreferrer">%2$s</a>',
+								$file_url,
+								$file_name
+							);
 						}
+
 						return $val;
 					}
 				}
@@ -835,35 +862,38 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 							$output[ $meta_key ] = '';
 						}
 
+						$file_url      = esc_url( $file['value'] );
+						$file_original = esc_html( $file['file_original'] );
+
 						if ( 'export-csv' === $context ) {
-							$output[ $meta_key ][] = esc_url( $file['value'] );
+							$output[ $meta_key ][] = $file_url;
 						} elseif ( 'image-upload' === $field['type'] ) {
 							if ( 'email-html' === $context ) {
 								$output[ $meta_key ][] = apply_filters(
 									'everest_forms_image_value',
 									sprintf(
-										'<a href="%1$s" rel="noopener noreferrer" target="_blank"><img src="%1$s" style="width:200px;" /></a>',
-										esc_url( $file['value'] )
+										'<a href="%1$s" rel="noopener noreferrer" target="_blank"><img src="%1$s" style="width:200px;" alt="" /></a>',
+										$file_url
 									),
-									esc_url( $file['value'] )
+									$file_url
 								);
 							} elseif ( 'entry-single' === $context ) {
 								$output[ $meta_key ][] = sprintf(
-									'<a href="%1$s" rel="noopener noreferrer" target="_blank"><img src="%1$s" style="width:200px;" /></a>',
-									esc_url( $file['value'] )
+									'<a href="%1$s" rel="noopener noreferrer" target="_blank"><img src="%1$s" style="width:200px;" alt="" /></a>',
+									$file_url
 								);
 							} else {
 								$output[ $meta_key ][] = sprintf(
-									'<a href="%s" rel="noopener noreferrer" target="_blank">%s</a>',
-									esc_url( $file['value'] ),
-									esc_html( $file['file_original'] )
+									'<a href="%1$s" rel="noopener noreferrer" target="_blank">%2$s</a>',
+									$file_url,
+									$file_original
 								);
 							}
 						} else {
 							$output[ $meta_key ][] = sprintf(
-								'<a href="%s" rel="noopener noreferrer" target="_blank">%s</a>',
-								esc_url( $file['value'] ),
-								esc_html( $file['file_original'] )
+								'<a href="%1$s" rel="noopener noreferrer" target="_blank">%2$s</a>',
+								$file_url,
+								$file_original
 							);
 						}
 					}
@@ -882,21 +912,47 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 
 			if ( isset( $value['type'], $value['file_url'] ) && $value['type'] === $this->type ) {
 				$file = $uploads['basedir'] . str_replace( '/uploads/', '/', str_replace( content_url(), '', esc_url( $value['file_url'] ) ) );
+
 				switch ( $this->type ) {
 					case 'image-upload':
 						if ( '' !== $value['file_url'] ) {
+							$file_url      = esc_url( $value['file_url'] );
+							$file_original = isset( $value['file_original'] ) ? esc_html( $value['file_original'] ) : '';
+
 							if ( 'export-pdf' === $context ) {
-								$val = sprintf( '<img src="%s" style="width:200px;height:100px;" />', $file );
+								$val = sprintf(
+									'<img src="%s" style="width:200px;height:100px;" alt="" />',
+									esc_attr( $file )
+								);
 							} elseif ( 'entry-single' === $context ) {
-								$val = sprintf( '<a href="%1$s" rel="noopener noreferrer" target="_blank"><img src="%1$s" style="width:200px;" /></a>', esc_url( $value['file_url'] ) );
+								$alt_text = esc_attr( basename( $file_url ) );
+								$val = sprintf(
+									'<a href="%1$s" rel="noopener noreferrer" target="_blank">
+										<img src="%1$s" style="width:200px;" alt="%2$s" />
+									</a>',
+									esc_url( $file_url ),
+									$alt_text
+								);
 							} else {
-								$val = sprintf( '<a href="%1$s" target="_blank" class="image">%2$s</a>', esc_url( $value['file_url'] ), sanitize_text_field( $value['file_original'] ) );
+								$val = sprintf(
+									'<a href="%1$s" target="_blank" rel="noopener noreferrer" class="image">%2$s</a>',
+									$file_url,
+									$file_original
+								);
 							}
 						}
 						break;
+
 					default:
 						if ( '' !== $value['file_url'] ) {
-							$val = sprintf( '<a href="%1$s" target="_blank">%2$s</a>', esc_url( $value['file_url'] ), sanitize_text_field( $value['file_original'] ) );
+							$file_url      = esc_url( $value['file_url'] );
+							$file_original = isset( $value['file_original'] ) ? esc_html( $value['file_original'] ) : '';
+
+							$val = sprintf(
+								'<a href="%1$s" target="_blank" rel="noopener noreferrer">%2$s</a>',
+								$file_url,
+								$file_original
+							);
 						}
 						break;
 				}
@@ -1303,18 +1359,30 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 			}
 		}
 
-		if ( isset( $field_submit['old_files'] ) ) {
+		if ( isset( $field_submit['old_files'] ) && is_array( $field_submit['old_files'] ) ) {
 
-			$old_data = array_map(
-				function ( $file ) {
-					$decoded = json_decode( $file, true );
+			$validated_old_data = array();
 
-					return is_array( $decoded ) ? $decoded : array();
-				},
-				$field_submit['old_files']
-			);
+			foreach ( $field_submit['old_files'] as $file ) {
+				$decoded = json_decode( $file, true );
 
-			$data = array_merge( $data, $old_data );
+				if ( ! is_array( $decoded ) || empty( $decoded['value'] ) || ! is_string( $decoded['value'] ) ) {
+					continue;
+				}
+
+				$resolved_path = $this->resolve_uploads_file_from_url( $decoded['value'] );
+
+				if ( false === $resolved_path ) {
+					continue;
+				}
+
+				$decoded['value']     = esc_url_raw( $decoded['value'] );
+				$validated_old_data[] = $decoded;
+			}
+
+			if ( ! empty( $validated_old_data ) ) {
+				$data = array_merge( $data, $validated_old_data );
+			}
 		}
 
 		if ( ! empty( $data ) ) {
@@ -1571,7 +1639,8 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 						unlink( $meta_value );
 					}
 
-					if ( isset( $meta_value['type'] ) && ( 'file-upload' === $meta_value['type'] && isset( $meta_value['value_raw'] ) || 'image-upload' === $meta_value['type'] && isset( $meta_value['value_raw'] ) ) ) {
+					if ( isset( $meta_value['type'] ) && ( 'file-upload' === $meta_value['type'] && ! empty( $meta_value['value_raw'] ) || 'image-upload' === $meta_value['type'] && isset( $meta_value['value_raw'] ) ) ) {
+
 						foreach ( $meta_value['value_raw'] as $file_data ) {
 							if ( isset( $file_data['value'] ) ) {
 								$file_url = $file_data['value'];
@@ -1627,10 +1696,12 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 					}
 				} else {
 					$files = explode( "\n", $meta_value );
+
 					foreach ( $files as $file ) {
-						$uploaded_file = ABSPATH . preg_replace( '/.*wp-content/', 'wp-content', wp_parse_url( $file, PHP_URL_PATH ) );
-						if ( ! in_array( $uploaded_file, $entry_files ) && file_exists( $uploaded_file ) ) {
-							$entry_files [] = $uploaded_file;
+						$resolved = $this->resolve_uploads_file_from_url( $file );
+
+						if ( false !== $resolved && ! in_array( $resolved, $entry_files, true ) ) {
+							$entry_files[] = $resolved;
 						}
 					}
 				}
@@ -1658,15 +1729,13 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 					if ( file_exists( $meta_value ) ) {
 						$entry_files[] = $meta_value;
 					}
-				} elseif ( isset( $meta_value['type'] ) && ( 'file-upload' === $meta_value['type'] && isset( $meta_value['value_raw'] ) || 'image-upload' === $meta_value['type'] && isset( $meta_value['value_raw'] ) ) ) {
+				} elseif ( isset( $meta_value['type'] ) && ( 'file-upload' === $meta_value['type'] && ! empty( $meta_value['value_raw'] ) || 'image-upload' === $meta_value['type'] && isset( $meta_value['value_raw'] ) ) ) {
 					foreach ( $meta_value['value_raw'] as $file_data ) {
-						if ( isset( $file_data['value'] ) ) {
-							$file_url      = $file_data['value'];
-							$uploaded_file = ABSPATH . preg_replace( '/.*wp-content/', 'wp-content', wp_parse_url( $file_url, PHP_URL_PATH ) );
+						$file_url = isset( $file_data['value'] ) && is_string( $file_data['value'] ) ? $file_data['value'] : '';
+						$resolved = $this->resolve_uploads_file_from_url( $file_url );
 
-							if ( ! in_array( $uploaded_file, $entry_files ) && file_exists( $uploaded_file ) ) {
-								$entry_files[] = $uploaded_file;
-							}
+						if ( false !== $resolved && ! in_array( $resolved, $entry_files, true ) ) {
+							$entry_files[] = $resolved;
 						}
 					}
 				}
@@ -1676,6 +1745,54 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 		return $entry_files;
 	}
 
+
+	/**
+	 * Resolve a file URL to a real local uploads path.
+	 *
+	 * Validates that the URL belongs to this site's uploads directory and that
+	 * the resolved real path stays within that directory (no traversal). Returns
+	 * the canonical filesystem path on success, or false on failure.
+	 *
+	 * @param string $file_url File URL to resolve.
+	 * @return string|false
+	 */
+	protected function resolve_uploads_file_from_url( $file_url ) {
+		if ( empty( $file_url ) || ! is_string( $file_url ) ) {
+			return false;
+		}
+
+		$file_url        = esc_url_raw( $file_url );
+		$upload_dir      = wp_get_upload_dir();
+		$uploads_baseurl = trailingslashit( $upload_dir['baseurl'] );
+		$uploads_basedir = wp_normalize_path( trailingslashit( $upload_dir['basedir'] ) );
+
+		if ( 0 !== strpos( $file_url, $uploads_baseurl ) ) {
+			return false;
+		}
+
+		$path      = wp_parse_url( $file_url, PHP_URL_PATH );
+		$base_path = wp_parse_url( $uploads_baseurl, PHP_URL_PATH );
+
+		if ( ! is_string( $path ) || ! is_string( $base_path ) || 0 !== strpos( $path, $base_path ) ) {
+			return false;
+		}
+
+		$relative_path = ltrim( substr( $path, strlen( $base_path ) ), '/' );
+		$candidate     = wp_normalize_path( $uploads_basedir . $relative_path );
+		$resolved_path = realpath( $candidate );
+
+		if ( false === $resolved_path ) {
+			return false;
+		}
+
+		$resolved_path = wp_normalize_path( $resolved_path );
+
+		if ( 0 !== strpos( $resolved_path, $uploads_basedir ) || ! is_file( $resolved_path ) ) {
+			return false;
+		}
+
+		return $resolved_path;
+	}
 
 	/**
 	 * Attach the csv file.

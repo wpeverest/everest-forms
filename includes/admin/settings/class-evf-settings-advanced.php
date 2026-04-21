@@ -365,6 +365,13 @@ class EVF_Settings_Advanced extends EVF_Settings_Page {
 			update_option( 'everest_forms_reporting_form_lists', array() );
 		}
 
+		if ( 'entry_reports' === $current_section && isset( $_POST['everest_forms_routine_report_send_email_test_to'] ) ) {
+			$test_email = sanitize_email( wp_unslash( $_POST['everest_forms_routine_report_send_email_test_to'] ) );
+			if ( '' === $test_email || is_email( $test_email ) ) {
+				update_option( 'everest_forms_routine_report_send_email_test_to', $test_email );
+			}
+		}
+
 		EVF_Admin_Settings::save_fields( $this->get_settings() );
 
 		if ( 'entry_reports' === $current_section && class_exists( 'EVF_Report_Cron' ) ) {
