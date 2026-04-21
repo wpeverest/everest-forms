@@ -60,6 +60,7 @@ class EVF_Forms_Features {
 			'EVF_Field_Color',
 			'EVF_Field_Reset',
 			'EVF_Field_Lookup',
+
 		);
 
 		if ( class_exists( 'EVF_Field_Payment_Summary' ) ) {
