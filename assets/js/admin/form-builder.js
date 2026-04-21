@@ -890,11 +890,14 @@
 			EVFPanelBuilder.bindFieldSettings();
 			EVFPanelBuilder.bindFieldDelete();
 			EVFPanelBuilder.bindFieldDeleteWithKeyEvent();
+			EVFPanelBuilder.bindFieldMultiSelect();
 			EVFPanelBuilder.bindCloneField();
 			EVFPanelBuilder.bindSaveOption();
 			EVFPanelBuilder.bindEmbedOption();
 			EVFPanelBuilder.bindSaveOptionWithKeyEvent();
 			EVFPanelBuilder.bindOpenShortcutKeysModalWithKeyEvent();
+			EVFPanelBuilder.bindLayoutContainers();
+			EVFPanelBuilder.bindAddRowColumnPicker();
 			EVFPanelBuilder.bindAddNewRow();
 			EVFPanelBuilder.bindRemoveRow();
 			EVFPanelBuilder.bindFormSettings();
@@ -928,6 +931,16 @@
 					EVFPanelBuilder.fieldDrop($(this).clone());
 				},
 			);
+
+			$(document.body).on(
+				'click',
+				'.evf-registered-buttons .evf-registered-item:not(.upgrade-modal):not(.evf-upgrade-addon):not(.enable-stripe-model):not(.enable-authorize-net-model):not(.enable-payment-subscription-plan):not(.everest-forms-pro-is_square_install):not(.enable-square-model):not(.evf-one-time-draggable-field):not(.recaptcha_empty_key_validate):not(.hcaptcha_empty_key_validate):not(.turnstile_empty_key_validate)',
+				function () {
+					EVFPanelBuilder.fieldDrop($(this).clone());
+				},
+			);
+
+			EVFPanelBuilder.bindRowFieldPopover();
 		},
 		/**
 		 * Bind user action handlers for the Add Bulk Options feature.
@@ -2692,6 +2705,11 @@
 		},
 		bindFormIntegrations: function () {
 			$('body').on('click', '.evf-integrations-panel', function (e) {
+				if ($(this).hasClass('upgrade-addons-settings')) {
+					e.preventDefault();
+					return;
+				}
+
 				var data_setting_section = $(this).attr('data-section');
 				$('.evf-integrations-panel').removeClass('active');
 				$('#everest-forms-panel-integrations')
@@ -2720,6 +2738,11 @@
 		},
 		bindFormPayment: function () {
 			$('body').on('click', '.evf-payments-panel', function (e) {
+				if ($(this).hasClass('upgrade-addons-settings')) {
+					e.preventDefault();
+					return;
+				}
+
 				var data_setting_section = $(this).attr('data-section');
 				$('.evf-payments-panel').removeClass('active');
 				$(this).siblings().removeClass('icon active');
@@ -2821,6 +2844,260 @@
 							},
 						},
 					});
+				}
+			});
+		},
+		/**
+		 * Add a new row with a specific column layout.
+		 *
+		 * @param {number}      columns    Number of columns (1–4).
+		 * @param {jQuery|null} $afterRow  Insert after this row; omit to append to bottom.
+		 */
+		addLayoutContainer: function (columns, $afterRow) {
+			var wrapper = $('.evf-admin-field-wrapper'),
+				row_ids = $('.evf-admin-row')
+					.map(function () {
+						return $(this).data('row-id');
+					})
+					.get(),
+				max_row_id = row_ids.length ? Math.max.apply(Math, row_ids) : 0,
+				row_clone = $('.evf-admin-row').eq(0).clone(),
+				total_rows =
+					parseInt($('.evf-add-row').first().attr('data-total-rows'), 10) || 0;
+
+			max_row_id++;
+			total_rows++;
+
+			row_clone.find('.evf-admin-grid').html('');
+			row_clone.attr('data-row-id', max_row_id);
+
+			$('.evf-add-row').attr('data-total-rows', total_rows);
+			$('.evf-add-row').attr('data-next-row-id', max_row_id);
+
+			if ($afterRow && $afterRow.length) {
+				$afterRow.after(row_clone);
+			} else {
+				wrapper.append(row_clone);
+			}
+
+			row_clone
+				.find('.evf-grid-selector[data-evf-grid="' + columns + '"]')
+				.trigger('click');
+
+			EVFPanelBuilder.bindFields();
+			EVFPanelBuilder.checkEmptyGrid();
+
+			if ($('.everest-forms-row-options').length) {
+				var _row_id = max_row_id,
+					_evf_data = window.evf_data;
+				$.ajax({
+					url: _evf_data.ajax_url,
+					type: 'POST',
+					data: {
+						action: 'everest_forms_new_row',
+						security: _evf_data.evf_add_row_nonce,
+						form_id: _evf_data.form_id,
+						row_id: _row_id,
+					},
+					success: function (xhr) {
+						if (true === xhr.success && 'undefined' !== typeof xhr.data.html) {
+							$(document)
+								.find('.everest-forms-row-option-group')
+								.append(xhr.data.html);
+							EVFPanelBuilder.conditionalLogicAppendRow(_row_id);
+							$(
+								'#everest-forms-panel-field-form_rows-connection_row_' +
+									_row_id +
+									'-conditional_logic_status',
+							).prop('checked', false);
+						}
+					},
+				});
+			}
+
+			$('html, body').animate({ scrollTop: row_clone.offset().top - 100 }, 400);
+		},
+		bindLayoutContainers: function () {
+			$('body').on('click', '.evf-layout-container-btn', function () {
+				EVFPanelBuilder.addLayoutContainer(
+					parseInt($(this).data('columns'), 10),
+				);
+			});
+		},
+		bindAddRowColumnPicker: function () {
+			if (!$('#evf-add-row-picker').length) {
+				var $pickerGrid = $('<div></div>').css({
+					display: 'grid',
+					'grid-template-columns': 'repeat(4, 1fr)',
+					gap: '6px',
+				});
+
+				$('.evf-layout-container-btn').each(function () {
+					var $btn = $(this),
+						cols = parseInt($btn.data('columns'), 10),
+						label = $btn.text().trim(),
+						svgHtml = $btn.find('svg').prop('outerHTML') || '';
+
+					var $pickerBtn = $('<button type="button"></button>')
+						.attr('data-columns', cols)
+						.css({
+							display: 'flex',
+							'flex-direction': 'column',
+							'align-items': 'center',
+							'justify-content': 'center',
+							padding: '10px 8px',
+							border: '1px solid #edeff7',
+							'border-radius': '4px',
+							cursor: 'pointer',
+							'font-size': '11px',
+							'text-align': 'center',
+							background: '#fbfbfd',
+							color: '#383838',
+							gap: '4px',
+							'min-width': '80px',
+							transition: 'border-color .12s,color .12s,background .12s',
+						})
+						.append(
+							$('<span></span>')
+								.css({ display: 'block', 'line-height': '1' })
+								.html(svgHtml),
+						)
+						.append($('<span></span>').text(label));
+
+					$pickerGrid.append($pickerBtn);
+				});
+
+				$('body').append(
+					$('<div id="evf-add-row-picker"></div>')
+						.css({
+							display: 'none',
+							position: 'fixed',
+							background: '#fff',
+							border: '1px solid #edeff7',
+							'border-radius': '8px',
+							'box-shadow': '0 8px 24px rgba(0,0,0,.08)',
+							'z-index': '999999',
+							padding: '10px',
+							overflow: 'visible',
+						})
+						.append(
+							'<div id="evf-add-row-picker-arrow" style="position:absolute;left:50%;transform:translateX(-50%);width:14px;height:8px;pointer-events:none;"></div>',
+						)
+						.append($pickerGrid),
+				);
+
+				$('head').append(
+					'<style id="evf-add-row-picker-style">' +
+						'#evf-add-row-picker-arrow::before,#evf-add-row-picker-arrow::after{content:"";position:absolute;left:0;border-left:7px solid transparent;border-right:7px solid transparent}' +
+						'#evf-add-row-picker-arrow::before{border-top:8px solid #edeff7;top:0}' +
+						'#evf-add-row-picker-arrow::after{border-top:8px solid #fff;top:-1px}' +
+						'#evf-add-row-picker-arrow.evf-arrow-down::before{border-top:none;border-bottom:8px solid #edeff7;top:auto;bottom:0}' +
+						'#evf-add-row-picker-arrow.evf-arrow-down::after{border-top:none;border-bottom:8px solid #fff;bottom:1px}' +
+						'</style>',
+				);
+
+				$('#evf-add-row-picker svg').css({
+					width: '24px',
+					height: '24px',
+					display: 'block',
+				});
+			}
+
+			// Intercept Add Row click (non-repeater) before bindAddNewRow fires.
+			$('body').on(
+				'click',
+				'.evf-add-row:not(.repeater-row) span',
+				function (e) {
+					e.stopImmediatePropagation();
+					var $span = $(this),
+						$picker = $('#evf-add-row-picker'),
+						$arrow = $('#evf-add-row-picker-arrow');
+
+					if ($picker.is(':visible')) {
+						$picker.hide();
+						return;
+					}
+
+					var offset = $span.offset(),
+						scrollLeft = $(window).scrollLeft(),
+						scrollTop = $(window).scrollTop(),
+						spanCX = offset.left - scrollLeft + $span.outerWidth() / 2,
+						margin = 8;
+
+					$picker.show();
+
+					var pickerH = $picker.outerHeight(),
+						pickerW = $picker.outerWidth(),
+						top = offset.top - scrollTop - pickerH - 8,
+						flipped = false;
+
+					if (top < margin) {
+						top = offset.top - scrollTop + $span.outerHeight() + 8;
+						flipped = true;
+					}
+
+					var left = spanCX - pickerW / 2;
+					left = Math.min(
+						Math.max(margin, left),
+						window.innerWidth - pickerW - margin,
+					);
+
+					// Arrow: points toward the button
+					var arrowX = spanCX - left - 7;
+					arrowX = Math.min(Math.max(14, arrowX), pickerW - 28);
+					if (flipped) {
+						// Picker is below button — arrow at top pointing up toward button
+						$arrow
+							.addClass('evf-arrow-down')
+							.css({ top: '-8px', bottom: 'auto', left: arrowX + 'px' });
+					} else {
+						// Picker is above button — arrow at bottom pointing down toward button
+						$arrow
+							.removeClass('evf-arrow-down')
+							.css({ bottom: '-8px', top: 'auto', left: arrowX + 'px' });
+					}
+
+					$picker.css({ top: top, left: left });
+				},
+			);
+
+			$(document.body).on(
+				'click',
+				'#evf-add-row-picker button[data-columns]',
+				function () {
+					var cols = parseInt($(this).data('columns'), 10);
+					$('#evf-add-row-picker').hide();
+					EVFPanelBuilder.addLayoutContainer(cols);
+				},
+			);
+
+			$(document.body)
+				.on(
+					'mouseenter',
+					'#evf-add-row-picker button[data-columns]',
+					function () {
+						$(this).css({
+							'border-color': '#8c64c6',
+							color: '#8c64c6',
+							background: '#fff',
+						});
+					},
+				)
+				.on(
+					'mouseleave',
+					'#evf-add-row-picker button[data-columns]',
+					function () {
+						$(this).css({
+							'border-color': '#edeff7',
+							color: '#383838',
+							background: '#fbfbfd',
+						});
+					},
+				);
+
+			$(document).on('click.evf-add-row-picker', function (e) {
+				if (!$(e.target).closest('#evf-add-row-picker, .evf-add-row').length) {
+					$('#evf-add-row-picker').hide();
 				}
 			});
 		},
@@ -3201,6 +3478,7 @@
 				newFieldCloned,
 				newOption,
 			]);
+			EVFPanelBuilder.updateBulkActionBar();
 		},
 		bindFieldDelete: function () {
 			$('body').on(
@@ -3279,6 +3557,188 @@
 					}
 				},
 			);
+		},
+		bindFieldMultiSelect: function () {
+			if (!$('#evf-multi-select-style').length) {
+				$('head').append(
+					'<style id="evf-multi-select-style">' +
+						'.evf-field-selected{box-shadow:0 0 0 2px #7e3bd0!important;z-index:2;position:relative;border-radius:4px}' +
+						'.evf-field-selected:hover{border:1px solid transparent!important;background:transparent!important}' +
+						'.evf-field-selected::after{content:"\\2713";position:absolute;top:-8px;right:-8px;width:18px;height:18px;background:#7e3bd0;border-radius:50%;color:#fff;font-size:10px;font-weight:700;line-height:18px;text-align:center;pointer-events:none;z-index:10}' +
+						'#evf-bulk-action-bar{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#fff;border:1px solid #edeff7;border-radius:8px;padding:8px 12px;display:none;align-items:center;gap:6px;z-index:999999;box-shadow:0 8px 24px rgba(0,0,0,.08);white-space:nowrap;font-size:12px;color:#383838}' +
+						'#evf-bulk-action-bar .evf-bulk-count{color:#7e3bd0;font-weight:600;font-size:12px;padding-right:2px}' +
+						'#evf-bulk-action-bar .evf-bulk-sep{width:1px;height:20px;background:#edeff7;flex-shrink:0}' +
+						'#evf-bulk-action-bar button{background:#fbfbfd;border:1px solid #edeff7;color:#383838;cursor:pointer;display:flex;align-items:center;gap:4px;padding:5px 10px;border-radius:4px;font-size:12px;transition:border-color .12s,color .12s,background .12s;line-height:1}' +
+						'#evf-bulk-action-bar button:hover{border-color:#8c64c6;color:#8c64c6;background:#fff}' +
+						'#evf-bulk-action-bar .evf-bulk-delete:hover{border-color:#dc3545;color:#dc3545;background:#fff}' +
+						'#evf-bulk-action-bar .evf-bulk-deselect{background:transparent;border-color:transparent;color:#999;padding:5px 6px}' +
+						'#evf-bulk-action-bar .evf-bulk-deselect:hover{border-color:#edeff7;color:#383838;background:#fbfbfd}' +
+						'#evf-bulk-action-bar button .dashicons{font-size:14px;width:14px;height:14px;line-height:14px}' +
+						'</style>',
+				);
+			}
+
+			if (!$('#evf-bulk-action-bar').length) {
+				$('body').append(
+					'<div id="evf-bulk-action-bar" role="toolbar">' +
+						'<span class="evf-bulk-count"></span>' +
+						'<div class="evf-bulk-sep"></div>' +
+						'<button class="evf-bulk-move-up"><span class="dashicons dashicons-arrow-up-alt2"></span>Move Up</button>' +
+						'<button class="evf-bulk-move-down"><span class="dashicons dashicons-arrow-down-alt2"></span>Move Down</button>' +
+						'<div class="evf-bulk-sep"></div>' +
+						'<button class="evf-bulk-delete"><span class="dashicons dashicons-trash"></span>Delete</button>' +
+						'<div class="evf-bulk-sep"></div>' +
+						'<button class="evf-bulk-deselect" title="Clear selection"><span class="dashicons dashicons-no-alt"></span></button>' +
+						'</div>',
+				);
+			}
+
+			$(document.body).on(
+				'click',
+				'.everest-forms-preview .everest-forms-field',
+				function (e) {
+					if (!e.shiftKey) return;
+					e.preventDefault();
+					e.stopPropagation();
+					$(this).toggleClass('evf-field-selected');
+					EVFPanelBuilder.updateBulkActionBar();
+				},
+			);
+
+			$(document.body).on(
+				'click',
+				'#evf-bulk-action-bar .evf-bulk-deselect',
+				function () {
+					$('.evf-field-selected').removeClass('evf-field-selected');
+					EVFPanelBuilder.updateBulkActionBar();
+				},
+			);
+
+			$(document.body).on(
+				'click',
+				'#evf-bulk-action-bar .evf-bulk-move-up',
+				function () {
+					$('.everest-forms-preview .evf-field-selected').each(function () {
+						var $prev = $(this)
+							.prevAll('.everest-forms-field:not(.evf-field-selected)')
+							.first();
+						if ($prev.length) {
+							$prev.before($(this));
+						}
+					});
+					$(document).trigger('evf_sort_update_complete', {
+						event: null,
+						ui: null,
+					});
+				},
+			);
+
+			$(document.body).on(
+				'click',
+				'#evf-bulk-action-bar .evf-bulk-move-down',
+				function () {
+					$(
+						$('.everest-forms-preview .evf-field-selected').toArray().reverse(),
+					).each(function () {
+						var $next = $(this)
+							.nextAll('.everest-forms-field:not(.evf-field-selected)')
+							.first();
+						if ($next.length) {
+							$next.after($(this));
+						}
+					});
+					$(document).trigger('evf_sort_update_complete', {
+						event: null,
+						ui: null,
+					});
+				},
+			);
+
+			$(document.body).on(
+				'click',
+				'#evf-bulk-action-bar .evf-bulk-delete',
+				function () {
+					var $selected = $('.everest-forms-preview .evf-field-selected'),
+						count = $selected.length;
+					$.confirm({
+						title: false,
+						content:
+							'Delete ' +
+							count +
+							' selected field' +
+							(count > 1 ? 's' : '') +
+							'?',
+						type: 'red',
+						closeIcon: false,
+						backgroundDismiss: false,
+						icon: 'dashicons dashicons-warning',
+						buttons: {
+							confirm: {
+								text: 'Delete',
+								btnClass: 'btn-danger',
+								action: function () {
+									var pending = $selected.length;
+									$('.evf-panel-fields-button').trigger('click');
+									$selected.each(function () {
+										var $field = $(this),
+											fieldId = $field.attr('data-field-id'),
+											field_type = $field.attr('data-field-type');
+										$field.fadeOut(200, function () {
+											$(document.body).trigger('evf_before_field_deleted', [
+												fieldId,
+											]);
+											$field.remove();
+											$('#everest-forms-field-option-' + fieldId).remove();
+											EVFPanelBuilder.conditionalLogicRemoveField(fieldId);
+											EVFPanelBuilder.conditionalLogicRemoveFieldIntegration(
+												fieldId,
+											);
+											EVFPanelBuilder.paymentFieldRemoveFromQuantity(fieldId);
+											EVFPanelBuilder.oneTimeDraggableRemoveField(field_type);
+											pending--;
+											if (0 === pending) {
+												EVFPanelBuilder.checkEmptyGrid();
+												$('.everest-forms-fields-tab')
+													.find('a')
+													.removeClass('active');
+												$('.everest-forms-fields-tab')
+													.find('a')
+													.first()
+													.addClass('active');
+												$('.everest-forms-add-fields').show();
+												$('#evf-bulk-action-bar').hide();
+											}
+										});
+									});
+								},
+							},
+							cancel: {
+								text: evf_data.i18n_close,
+								btnClass: 'btn-default',
+							},
+						},
+					});
+				},
+			);
+
+			$(document).on('keydown.evf-multi-select', function (e) {
+				if (27 === e.keyCode && $('.evf-field-selected').length) {
+					$('.evf-field-selected').removeClass('evf-field-selected');
+					EVFPanelBuilder.updateBulkActionBar();
+				}
+			});
+		},
+		updateBulkActionBar: function () {
+			var $bar = $('#evf-bulk-action-bar'),
+				count = $('.evf-field-selected').length;
+			if (count > 0) {
+				$bar
+					.find('.evf-bulk-count')
+					.text(count + ' field' + (count > 1 ? 's' : '') + ' selected');
+				$bar.css('display', 'flex');
+			} else {
+				$bar.hide();
+			}
 		},
 		bindFieldDeleteWithKeyEvent: function () {
 			$('body').on('keyup', function (e) {
@@ -3521,6 +3981,7 @@
 							title: $title,
 							content: modelContent,
 							type: 'blue',
+							draggable:false,
 							onContentReady: function () {
 								var $formId = $('.everest-forms-embed-button').attr(
 									'data-form_id',
@@ -4011,7 +4472,9 @@
 				})
 				.disableSelection();
 
-			$('.evf-registered-buttons button.evf-registered-item')
+			$(
+				'.evf-registered-buttons button.evf-registered-item:not(.evf-layout-container-btn)',
+			)
 				.draggable({
 					delay: 200,
 					cancel: false,
@@ -4053,7 +4516,7 @@
 					if ('mouseenter' === event.type) {
 						$(this).addClass('evf-hover');
 					} else {
-						$('.evf-admin-row').removeClass('evf-hover');
+						$('.evf-admin-row:not(.evf-popover-open)').removeClass('evf-hover');
 					}
 				}
 			});
@@ -4063,6 +4526,556 @@
 				$('.evf-admin-grid').sortable('refreshPositions');
 				$('.evf-admin-field-wrapper').sortable('refreshPositions');
 			});
+
+			$('.evf-admin-field-wrapper .evf-admin-row').each(function () {
+				if (!$(this).find('.evf-add-field-to-row').length) {
+					$(this)
+						.find('.evf-toggle-row')
+						.prepend(
+							'<div class="evf-add-field-to-row">' +
+								'<span class="dashicons dashicons-plus" title="Add Field to Row"></span>' +
+								'</div>',
+						);
+				}
+			});
+
+			$('.evf-admin-field-wrapper .everest-forms-field').each(function () {
+				if (!$(this).find('.evf-add-field-below').length) {
+					$(this).append(
+						'<div class="evf-add-field-below">' +
+							'<span class="dashicons dashicons-plus" title="Add Field Below"></span>' +
+							'</div>',
+					);
+				}
+			});
+		},
+
+		/**
+		 * Populate the row field popover with tabs and field items from the sidebar.
+		 */
+		populateRowPopover: function () {
+			var $tabs = $('#evf-row-field-popover .evf-popover-tabs').empty(),
+				$fields = $('#evf-row-field-popover .evf-popover-fields').empty(),
+				blocked = [
+					'upgrade-modal',
+					'evf-upgrade-addon',
+					'enable-stripe-model',
+					'enable-authorize-net-model',
+					'enable-payment-subscription-plan',
+					'everest-forms-pro-is_square_install',
+					'enable-square-model',
+					'evf-one-time-draggable-field',
+					'recaptcha_empty_key_validate',
+					'hcaptcha_empty_key_validate',
+					'turnstile_empty_key_validate',
+				];
+
+			$tabs.append(
+				'<button type="button" class="evf-popover-tab active" data-group="all">All</button>',
+			);
+
+			$('.everest-forms-add-fields-group').each(function () {
+				// Exclude the layout group from the field-picker popover entirely.
+				if ($(this).hasClass('evf-layout-group')) {
+					return;
+				}
+
+				var $heading = $(this).find('.everest-forms-add-fields-heading'),
+					groupKey = $heading.data('group'),
+					groupLabel = $heading.clone().children().remove().end().text().trim();
+
+				if (groupKey) {
+					$tabs.append(
+						'<button type="button" class="evf-popover-tab" data-group="' +
+							groupKey +
+							'">' +
+							groupLabel +
+							'</button>',
+					);
+				}
+
+				$(this)
+					.find('.evf-registered-item')
+					.each(function () {
+						var $btn = $(this),
+							fieldType = $btn.data('field-type'),
+							fieldLabel = $btn.text().trim(),
+							iconHtml = $btn.find('i').length
+								? $btn.find('i').prop('outerHTML')
+								: '',
+							isBlocked = blocked.some(function (cls) {
+								return $btn.hasClass(cls);
+							});
+
+						// Skip items with no field type or no label — avoids blank popover entries.
+						if (!fieldType || !fieldLabel) {
+							return;
+						}
+
+						$fields.append(
+							$(
+								'<div class="evf-popover-field-item' +
+									(isBlocked ? ' evf-field-blocked' : '') +
+									'"></div>',
+							)
+								.attr('data-field-type', fieldType)
+								.attr('data-field-label', fieldLabel)
+								.attr('data-field-group', groupKey || '')
+								.append(
+									'<span class="evf-popover-field-icon">' +
+										iconHtml +
+										'</span>',
+								)
+								.append(
+									'<span class="evf-popover-field-label">' +
+										fieldLabel +
+										'</span>',
+								),
+						);
+					});
+			});
+		},
+
+		/**
+		 * Bind the row-level "+" button and its field-picker popover.
+		 */
+		bindRowFieldPopover: function () {
+			if (!$('#evf-row-popover-style').length) {
+				$('head').append(
+					'<style id="evf-row-popover-style">' +
+						'.evf-add-field-to-row{cursor:pointer}' +
+						'.evf-add-field-to-row span.dashicons{border-right:1px solid rgba(255,255,255,.2)}' +
+						'.evf-add-field-to-row:hover span.dashicons{background:#0095ff!important;color:#fff!important}' +
+						'.evf-admin-row.evf-popover-open .evf-toggle-row{opacity:1!important;visibility:visible!important}' +
+						'.everest-forms-field.evf-field-popover-open .evf-field-action{opacity:1!important;visibility:visible!important}' +
+						'.everest-forms-field{position:relative}' +
+						'.evf-add-field-below{position:absolute;bottom:-15px;left:50%;transform:translateX(-50%);z-index:10;cursor:pointer;line-height:1;opacity:0;visibility:hidden;transition:opacity .15s,visibility .15s}' +
+						'.everest-forms-field:hover>.evf-add-field-below,.everest-forms-field.evf-field-popover-open>.evf-add-field-below{opacity:1;visibility:visible}' +
+						'.evf-add-field-below span.dashicons{background:#e9e9e9;color:#666;border-radius:50%;font-size:16px;width:28px;height:28px;display:flex;align-items:center;justify-content:center}' +
+						'.evf-add-field-below:hover span.dashicons,.evf-add-field-below:focus span.dashicons{background:#7e3bd0;color:#fff}' +
+						'.evf-row-field-popover{position:fixed;background:#fff;border:1px solid #edeff7;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.08);width:480px;z-index:999999;display:none;overflow:visible}' +
+						'.evf-popover-arrow{position:absolute;bottom:100%;width:14px;height:8px;pointer-events:none;margin-bottom:-1px}' +
+						'.evf-popover-arrow::before,.evf-popover-arrow::after{content:"";position:absolute;left:0;border-left:7px solid transparent;border-right:7px solid transparent}' +
+						'.evf-popover-arrow::before{border-bottom:8px solid #edeff7;top:0}' +
+						'.evf-popover-arrow::after{border-bottom:8px solid #fff;top:1px}' +
+						'.evf-row-field-popover.evf-popover-flipped .evf-popover-arrow{bottom:auto;top:100%;margin-bottom:0;margin-top:-1px}' +
+						'.evf-row-field-popover.evf-popover-flipped .evf-popover-arrow::before{border-bottom:none;border-top:8px solid #edeff7;top:auto;bottom:0}' +
+						'.evf-row-field-popover.evf-popover-flipped .evf-popover-arrow::after{border-bottom:none;border-top:8px solid #fff;top:auto;bottom:1px}' +
+						'.evf-popover-search-wrap{padding:10px 12px;border-bottom:1px solid #f0f0f1;display:flex;align-items:center;gap:6px}' +
+						'.evf-popover-search-wrap .dashicons{color:#c3c3c3;flex-shrink:0;font-size:16px}' +
+						'#evf-popover-search{border:1px solid #e1e1e1;border-radius:4px;padding:5px 8px;width:100%;font-size:12px;outline:none;box-shadow:none;color:#383838}' +
+						'#evf-popover-search:focus{border-color:#7e3bd0;box-shadow:0 0 0 2px rgba(126,59,208,.1)}' +
+						'.evf-popover-tabs-nav{position:relative;border-bottom:1px solid #f0f0f1}' +
+						'.evf-popover-tabs{display:flex;flex-wrap:nowrap;gap:3px;padding:8px 12px;overflow-x:auto;scrollbar-width:none;scroll-behavior:smooth}' +
+						'.evf-popover-tabs::-webkit-scrollbar{display:none}' +
+						'.evf-tabs-arrow{position:absolute;top:0;bottom:0;width:32px;display:none;align-items:center;justify-content:center;border:none;padding:0;cursor:pointer;z-index:2}' +
+						'.evf-tabs-arrow.evf-tabs-arrow-visible{display:flex}' +
+						'.evf-tabs-arrow-left{left:0;background:linear-gradient(to right,#fff 55%,transparent)}' +
+						'.evf-tabs-arrow-right{right:0;background:linear-gradient(to left,#fff 55%,transparent)}' +
+						'.evf-tabs-arrow .dashicons{font-size:14px;color:#888;pointer-events:none}' +
+						'.evf-tabs-arrow:hover .dashicons{color:#7e3bd0}' +
+						'.evf-popover-tab{background:transparent;border:none;border-radius:20px;padding:3px 10px;font-size:12px;cursor:pointer;white-space:nowrap;color:#666;transition:background .12s,color .12s}' +
+						'.evf-popover-tab:hover{background:#f5f5f7;color:#383838}' +
+						'.evf-popover-tab.active{background:rgba(126,59,208,.1);color:#7e3bd0;font-weight:600}' +
+						'.evf-popover-fields-wrap{max-height:320px;overflow-y:auto;padding:10px 12px}' +
+						'.evf-popover-fields-wrap::-webkit-scrollbar{width:4px}' +
+						'.evf-popover-fields-wrap::-webkit-scrollbar-track{background:transparent}' +
+						'.evf-popover-fields-wrap::-webkit-scrollbar-thumb{background:#e1e1e1;border-radius:4px}' +
+						'.evf-popover-fields{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}' +
+						'.evf-popover-field-item{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px 6px 8px;border:1px solid #edeff7;border-radius:4px;cursor:pointer;font-size:11px;text-align:center;gap:4px;background:#fbfbfd;color:#383838;transition:border-color .12s,color .12s,background .12s;line-height:1.4}' +
+						'.evf-popover-field-item:hover{border-color:#8c64c6;color:#8c64c6;background:#fff}' +
+						'.evf-popover-field-item .evf-popover-field-icon i{font-size:18px}' +
+						'.evf-popover-field-item .evf-popover-field-icon svg{width:24px;height:24px;display:block}' +
+						'.evf-popover-field-item.evf-field-blocked{opacity:.45;cursor:default;pointer-events:none}' +
+						'.evf-popover-no-results{grid-column:1/-1;text-align:center;padding:20px 0;color:#999;font-size:12px}' +
+						'.evf-field-loading-wrap{display:flex;align-items:center;justify-content:center;gap:8px;padding:12px}' +
+						'.evf-field-loading-wrap .spinner{float:none;margin:0}' +
+						'.evf-field-loading-label{font-size:12px;color:#666}' +
+						'.evf-admin-grid.evf-empty-grid,.evf-admin-grid.evf-empty-grid::before{cursor:pointer!important}' +
+						'.evf-admin-grid.evf-empty-grid::before{width:36px!important;height:36px!important;border-radius:50%!important;background:#e9e9e9!important;color:#666!important;font-size:20px!important;display:flex!important;align-items:center!important;justify-content:center!important;line-height:1!important}' +
+						'.evf-admin-grid.evf-empty-grid:hover::before{background:rgba(126,59,208,.12)!important;color:#7e3bd0!important}' +
+						'.evf-admin-row.evf-popover-open .evf-admin-grid.evf-empty-grid::before{background:rgba(126,59,208,.12)!important;color:#7e3bd0!important}' +
+						'</style>',
+				);
+			}
+
+			if (!$('#evf-row-field-popover').length) {
+				$('body').append(
+					'<div id="evf-row-field-popover" class="evf-row-field-popover">' +
+						'<div class="evf-popover-arrow"></div>' +
+						'<div class="evf-popover-search-wrap">' +
+						'<span class="dashicons dashicons-search"></span>' +
+						'<input type="text" id="evf-popover-search" placeholder="Search for a field" autocomplete="off" />' +
+						'</div>' +
+						'<div class="evf-popover-tabs-nav">' +
+						'<button type="button" class="evf-tabs-arrow evf-tabs-arrow-left" aria-label="Scroll left"><span class="dashicons dashicons-arrow-left-alt2"></span></button>' +
+						'<div class="evf-popover-tabs"></div>' +
+						'<button type="button" class="evf-tabs-arrow evf-tabs-arrow-right" aria-label="Scroll right"><span class="dashicons dashicons-arrow-right-alt2"></span></button>' +
+						'</div>' +
+						'<div class="evf-popover-fields-wrap"><div class="evf-popover-fields"></div></div>' +
+						'</div>',
+				);
+			}
+
+			EVFPanelBuilder.populateRowPopover();
+
+			var positionPopover = function ($anchor, $pop, forceFlipped) {
+				var offset = $anchor.offset(),
+					scrollLeft = $(window).scrollLeft(),
+					scrollTop = $(window).scrollTop(),
+					vpW = window.innerWidth,
+					vpH = window.innerHeight,
+					popW = $pop.outerWidth(),
+					$fieldsWrap = $pop.find('.evf-popover-fields-wrap'),
+					defaultFieldsMaxHeight = 320,
+					popH,
+					margin = 8,
+					anchorCX = offset.left - scrollLeft + $anchor.outerWidth() / 2,
+					anchorTop = offset.top - scrollTop,
+					belowTop = anchorTop + $anchor.outerHeight() + 6,
+					aboveTop,
+					top,
+					left = anchorCX - popW / 2,
+					flipped = false;
+
+				$fieldsWrap.css('max-height', defaultFieldsMaxHeight + 'px');
+				popH = $pop.outerHeight();
+				var maxPopoverHeight = vpH - margin * 2;
+				if (popH > maxPopoverHeight) {
+					var staticHeight = popH - $fieldsWrap.outerHeight();
+					$fieldsWrap.css(
+						'max-height',
+						Math.max(140, maxPopoverHeight - staticHeight) + 'px',
+					);
+					popH = $pop.outerHeight();
+				}
+
+				aboveTop = anchorTop - popH - 6;
+				left = Math.min(Math.max(margin, left), vpW - popW - margin);
+				var fitsBelow = belowTop + popH <= vpH - margin,
+					fitsAbove = aboveTop >= margin;
+				if (forceFlipped !== undefined) {
+					flipped = forceFlipped;
+					if (flipped && !fitsAbove && fitsBelow) {
+						flipped = false;
+					} else if (!flipped && !fitsBelow && fitsAbove) {
+						flipped = true;
+					}
+				} else if (fitsBelow) {
+					flipped = false;
+				} else if (fitsAbove) {
+					flipped = true;
+				} else {
+					var spaceBelow = vpH - margin - belowTop,
+						spaceAbove = anchorTop - margin - 6;
+					flipped = spaceAbove > spaceBelow;
+				}
+
+				top = flipped ? aboveTop : belowTop;
+				top = Math.max(margin, Math.min(top, vpH - popH - margin));
+
+				var arrowX = anchorCX - left - 7;
+				arrowX = Math.min(Math.max(14, arrowX), popW - 28);
+				$pop
+					.toggleClass('evf-popover-flipped', flipped)
+					.find('.evf-popover-arrow')
+					.css('left', arrowX + 'px');
+
+				return { top: top, left: left };
+			};
+
+			var updateTabArrows = function () {
+				var tabs = document.querySelector(
+					'#evf-row-field-popover .evf-popover-tabs',
+				);
+				if (!tabs) return;
+				$('.evf-tabs-arrow-left').toggleClass(
+					'evf-tabs-arrow-visible',
+					tabs.scrollLeft > 1,
+				);
+				$('.evf-tabs-arrow-right').toggleClass(
+					'evf-tabs-arrow-visible',
+					Math.ceil(tabs.scrollLeft + tabs.clientWidth) < tabs.scrollWidth,
+				);
+			};
+
+			$(document.body).on(
+				'click',
+				'#evf-row-field-popover .evf-tabs-arrow',
+				function (e) {
+					e.stopPropagation();
+					var tabs = document.querySelector(
+						'#evf-row-field-popover .evf-popover-tabs',
+					);
+					if (!tabs) return;
+					var step = 120;
+					tabs.scrollLeft += $(this).hasClass('evf-tabs-arrow-left')
+						? -step
+						: step;
+					setTimeout(updateTabArrows, 200);
+				},
+			);
+
+			$(document.body).on(
+				'scroll',
+				'#evf-row-field-popover .evf-popover-tabs',
+				updateTabArrows,
+			);
+
+			$(document.body).on('click', '.evf-add-field-to-row', function (e) {
+				e.stopPropagation();
+				var $btn = $(this),
+					$row = $btn.closest('.evf-admin-row'),
+					$popover = $('#evf-row-field-popover');
+
+				if ($popover.is(':visible') && $row.hasClass('evf-popover-open')) {
+					$popover.hide();
+					$row.removeClass('evf-popover-open');
+					$('.everest-forms-field.evf-field-popover-open').removeClass(
+						'evf-field-popover-open',
+					);
+					return;
+				}
+
+				EVFPanelBuilder.populateRowPopover();
+
+				$('.evf-admin-row.evf-popover-open').removeClass('evf-popover-open');
+				$('.everest-forms-field.evf-field-popover-open').removeClass(
+					'evf-field-popover-open',
+				);
+
+				$row.addClass('evf-popover-open');
+
+				var pos = positionPopover($btn, $popover);
+				$popover
+					.data('target-row', $row)
+					.data('insert-after-field', null)
+					.data('anchor', $btn)
+					.css(pos)
+					.show();
+
+				updateTabArrows();
+				$('#evf-popover-search').val('').trigger('input').focus();
+			});
+
+			$(document.body).on('click', '.evf-add-field-below', function (e) {
+				e.stopPropagation();
+				var $btn = $(this),
+					$field = $btn.closest('.everest-forms-field'),
+					$row = $field.closest('.evf-admin-row'),
+					$popover = $('#evf-row-field-popover');
+
+				var $prevField = $popover.data('insert-after-field');
+				if (
+					$popover.is(':visible') &&
+					$row.hasClass('evf-popover-open') &&
+					$prevField &&
+					$prevField[0] === $field[0]
+				) {
+					$popover.hide();
+					$row.removeClass('evf-popover-open');
+					$field.removeClass('evf-field-popover-open');
+					return;
+				}
+
+				EVFPanelBuilder.populateRowPopover();
+
+				$('.evf-admin-row.evf-popover-open').removeClass('evf-popover-open');
+				$('.everest-forms-field.evf-field-popover-open').removeClass(
+					'evf-field-popover-open',
+				);
+
+				$row.addClass('evf-popover-open');
+				$field.addClass('evf-field-popover-open');
+
+				var pos = positionPopover($btn, $popover);
+				$popover
+					.data('target-row', $row)
+					.data('insert-after-field', $field)
+					.data('anchor', $btn)
+					.css(pos)
+					.show();
+
+				updateTabArrows();
+				$('#evf-popover-search').val('').trigger('input').focus();
+			});
+
+			$(document.body).on(
+				'click',
+				'.evf-admin-grid.evf-empty-grid',
+				function (e) {
+					e.stopPropagation();
+					var $grid = $(this),
+						$row = $grid.closest('.evf-admin-row'),
+						$popover = $('#evf-row-field-popover');
+
+					var $prevGrid = $popover.data('insert-into-grid');
+					if (
+						$popover.is(':visible') &&
+						$row.hasClass('evf-popover-open') &&
+						$prevGrid &&
+						$prevGrid[0] === $grid[0]
+					) {
+						$popover.hide().removeData('insert-into-grid');
+						$row.removeClass('evf-popover-open');
+						return;
+					}
+
+					EVFPanelBuilder.populateRowPopover();
+
+					$('.evf-admin-row.evf-popover-open').removeClass('evf-popover-open');
+					$('.everest-forms-field.evf-field-popover-open').removeClass(
+						'evf-field-popover-open',
+					);
+
+					$row.addClass('evf-popover-open');
+
+					var pos = positionPopover($grid, $popover);
+					$popover
+						.data('target-row', $row)
+						.data('insert-after-field', null)
+						.data('insert-into-grid', $grid)
+						.data('anchor', $grid)
+						.css(pos)
+						.show();
+
+					updateTabArrows();
+					$('#evf-popover-search').val('').trigger('input').focus();
+				},
+			);
+
+			$(document).on('click.evf-row-popover', function (e) {
+				if (
+					!$(e.target).closest(
+						'#evf-row-field-popover, .evf-add-field-to-row, .evf-add-field-below, .evf-admin-grid.evf-empty-grid',
+					).length
+				) {
+					$('#evf-row-field-popover').hide().removeData('insert-into-grid');
+					$('.evf-admin-row.evf-popover-open').removeClass('evf-popover-open');
+					$('.everest-forms-field.evf-field-popover-open').removeClass(
+						'evf-field-popover-open',
+					);
+				}
+			});
+
+			$(document.body).on('evf_after_field_append', function (e, fieldId) {
+				var $field = $('#' + fieldId);
+				if ($field.length && !$field.find('.evf-add-field-below').length) {
+					$field.append(
+						'<div class="evf-add-field-below">' +
+							'<span class="dashicons dashicons-plus" title="Add Field Below"></span>' +
+							'</div>',
+					);
+				}
+			});
+
+			$(document.body).on('input', '#evf-popover-search', function () {
+				var term = $(this).val().toLowerCase().trim();
+				$('#evf-row-field-popover .evf-popover-field-item').each(function () {
+					$(this).toggle(
+						!term ||
+							$(this).data('field-label').toLowerCase().indexOf(term) >= 0,
+					);
+				});
+				$('.evf-popover-tab').removeClass('active');
+				$('.evf-popover-tab[data-group="all"]').addClass('active');
+				$('.evf-popover-no-results').remove();
+				if (
+					!$('#evf-row-field-popover .evf-popover-field-item:visible').length
+				) {
+					$('#evf-row-field-popover .evf-popover-fields').append(
+						'<div class="evf-popover-no-results">No fields found.</div>',
+					);
+				}
+			});
+
+			$(document.body).on(
+				'click',
+				'#evf-row-field-popover .evf-popover-tab',
+				function () {
+					var group = $(this).data('group');
+					$('.evf-popover-tab').removeClass('active');
+					$(this).addClass('active');
+					$('#evf-popover-search').val('');
+					$('#evf-row-field-popover .evf-popover-field-item').each(function () {
+						$(this).toggle(
+							'all' === group || $(this).data('field-group') === group,
+						);
+					});
+					$('.evf-popover-no-results').remove();
+					var $pop = $('#evf-row-field-popover'),
+						$storedAnchor = $pop.data('anchor');
+					if ($storedAnchor && $storedAnchor.length) {
+						$pop.css(
+							positionPopover(
+								$storedAnchor,
+								$pop,
+								$pop.hasClass('evf-popover-flipped'),
+							),
+						);
+					}
+					this.scrollIntoView({
+						behavior: 'smooth',
+						block: 'nearest',
+						inline: 'nearest',
+					});
+					setTimeout(updateTabArrows, 200);
+				},
+			);
+
+			$(document.body).on(
+				'click',
+				'#evf-row-field-popover .evf-popover-field-item:not(.evf-field-blocked)',
+				function () {
+					var $item = $(this),
+						fieldType = $item.data('field-type'),
+						fieldLabel = $item.data('field-label'),
+						$popover = $('#evf-row-field-popover'),
+						$insertAfterField = $popover.data('insert-after-field'),
+						$insertIntoGrid = $popover.data('insert-into-grid'),
+						$placeholder = $('<button class="evf-registered-item" />')
+							.attr('data-field-type', fieldType)
+							.attr('data-field-label', fieldLabel);
+
+					if ($insertAfterField && $insertAfterField.length) {
+						$insertAfterField.after($placeholder);
+					} else if ($insertIntoGrid && $insertIntoGrid.length) {
+						$insertIntoGrid.append($placeholder);
+					} else {
+						$popover
+							.data('target-row')
+							.find('.evf-admin-grid')
+							.last()
+							.append($placeholder);
+					}
+
+					EVFPanelBuilder.fieldDrop($placeholder);
+					$popover.hide().removeData('insert-into-grid');
+					$('.evf-admin-row.evf-popover-open').removeClass('evf-popover-open');
+					$('.everest-forms-field.evf-field-popover-open').removeClass(
+						'evf-field-popover-open',
+					);
+				},
+			);
+
+			// Handle layout container items clicked inside the popover.
+			$(document.body).on(
+				'click',
+				'#evf-row-field-popover .evf-layout-container-item',
+				function () {
+					var columns = parseInt($(this).data('columns'), 10),
+						$popover = $('#evf-row-field-popover'),
+						$targetRow = $popover.data('target-row');
+
+					$popover.hide().removeData('insert-into-grid');
+					$('.evf-admin-row.evf-popover-open').removeClass('evf-popover-open');
+					$('.everest-forms-field.evf-field-popover-open').removeClass(
+						'evf-field-popover-open',
+					);
+
+					EVFPanelBuilder.addLayoutContainer(columns, $targetRow);
+				},
+			);
 		},
 
 		/**
@@ -4164,25 +5177,21 @@
 						});
 				});
 
-				// Build the grid-lists container with grids + inner clear div inside it
 				var $gridLists = $('<div class="evf-grid-lists"></div>');
 
 				for (var $grid_number = 1; $grid_number <= grid_id; $grid_number++) {
 					grid_node.attr('data-grid-id', $grid_number);
 					$gridLists.append(grid_node.clone());
 				}
-				$gridLists.append('<div class="clear evf-clear"></div>'); // ✅ inner clear inside evf-grid-lists
+				$gridLists.append('<div class="clear evf-clear"></div>');
 
-				// Remove old elements
 				$this_single_row.find('.evf-grid-lists').remove();
 				$this_single_row.find('.evf-admin-grid').remove();
 				$this_single_row.find('.evf-clear').remove();
 
-				// Append outer clear + grid-lists to the row
 				$this_single_row.append('<div class="clear evf-clear"></div>');
 				$this_single_row.append($gridLists);
 
-				// Restore existing field content into first grid
 				$this_single_row.find('.evf-admin-grid').eq(0).append(grids.html());
 
 				$this_single_row.find('.evf-grid-selector').removeClass('active');
@@ -4216,12 +5225,26 @@
 				return false;
 			}
 
+			if (!$.contains(document.body, field[0])) {
+				$('.evf-admin-grid').last().append(field);
+			}
+
+			var fieldLoadingLabel = field.attr('data-field-label');
 			field
 				.css({
 					left: '0',
 					width: '100%',
 				})
-				.append('<i class="spinner is-active"></i>');
+				.append(
+					'<span class="evf-field-loading-wrap">' +
+						'<i class="spinner is-active"></i>' +
+						(fieldLoadingLabel
+							? '<span class="evf-field-loading-label">' +
+								fieldLoadingLabel +
+								'</span>'
+							: '') +
+						'</span>',
+				);
 
 			$.ajax({
 				url: evf_data.ajax_url,
@@ -4263,7 +5286,11 @@
 						},
 					});
 
-					field.after(field_preview);
+					if ($.contains(document.body, field[0])) {
+						field.after(field_preview);
+					} else {
+						$('.evf-admin-grid').last().append(field_preview);
+					}
 
 					if (
 						null !== $('#everest-forms-panel-field-settings-enable_survey') &&

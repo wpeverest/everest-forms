@@ -13,7 +13,7 @@ defined( 'ABSPATH' ) || exit;
 
 <!-- Log Selection Dropdown -->
 <div id="log-viewer-select"
-	style="margin-bottom: 24px; padding: 0 0 24px; border-bottom: 1px solid #DCDCDC;">
+	style="margin-bottom: 24px; padding: 0 0 24px; border-bottom: 1px solid #DCDCDC; flex-wrap: wrap; gap: 12px;">
 	<form action="<?php echo esc_url( admin_url( 'admin.php?page=evf-tools&tab=logs' ) ); ?>" method="post"
 		style="display: flex; gap: 10px; align-items: center;">
 		<select name="log_file"
@@ -38,11 +38,24 @@ defined( 'ABSPATH' ) || exit;
 
 <!-- Top Toolbar -->
 <div id="log-viewer-toolbar"
-	style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+	style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
 	<div class="alignleft" style="font-size: 16px; font-weight: 500;">
 		<?php echo esc_html( $viewed_log ); ?>
 	</div>
-	<div class="alignright" style="display: flex; gap: 10px;">
+	<div class="alignright" style="display: flex; gap: 10px; flex-wrap: wrap;">
+		<?php if ( ! empty( $viewed_log ) ) : ?>
+			<!-- Copy Log Button -->
+			<button type="button" id="evf-copy-log-btn" class="button button-secondary"
+				style="border-color: #475BB2; color: #475BB2; font-size: 14px; line-height: 20px; padding: 8px 14px; font-weight: 500;">
+				<?php esc_html_e( 'Copy Log', 'everest-forms' ); ?>
+			</button>
+			<!-- Download Log Button -->
+			<a href="<?php echo esc_url( wp_nonce_url( add_query_arg( array( 'handle_download' => sanitize_title( $viewed_log ) ), admin_url( 'admin.php?page=evf-tools&tab=logs' ) ), 'download_log' ) ); ?>"
+				class="button button-secondary"
+				style="border-color: #7545BB; color: #7545BB; font-size: 14px; line-height: 20px; padding: 8px 14px; font-weight: 500;">
+				<?php esc_html_e( 'Download Log', 'everest-forms' ); ?>
+			</a>
+		<?php endif; ?>
 		<!-- Delete All Logs Button -->
 		<?php if ( 1 < count( $logs ) ) : ?>
 		<a href="<?php echo esc_url( wp_nonce_url( add_query_arg( array( 'handle_all' => 'delete-all-logs' ), admin_url( 'admin.php?page=evf-tools&tab=logs' ) ), 'remove_all_logs' ) ); ?>"
@@ -63,7 +76,7 @@ defined( 'ABSPATH' ) || exit;
 <!-- Log Viewer Content -->
 <div id="log-viewer"
 	style="border: 1px solid #ddd; padding: 15px; border-radius: 4px; background: #ffffff; font-size: 13px;">
-	<pre
+	<pre id="evf-log-content"
 		style="white-space: pre-wrap; word-wrap: break-word; margin: 0;"><?php echo esc_html( file_get_contents( EVF_LOG_DIR . $viewed_log ) ); ?></pre>
 </div>
 

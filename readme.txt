@@ -2,9 +2,9 @@
 Contributors:everestforms,WPEverest
 Tags: contact form, custom form, form builder, forms, survey
 Requires at least: 5.5
-Tested up to: 6.9.1
+Tested up to: 6.9.4
 Requires PHP: 7.2
-Stable tag: 3.4.4
+Stable tag: 3.4.6
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -338,6 +338,22 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/f788d7f0-ea8a-4fd5-bcae-81a5d09a476c)
 
 == Changelog ==
+
+= 3.4.6       - xx-xx-2026
+* Feature - Added option to copy and download logs.
+* Feature - Added layout options including one-column and two-column containers.
+* Enhancement - Improved UI for Integrations and Payments tabs.
+* Enhancement - Added popover to insert fields directly into rows.
+* Enhancement - Revamped form settings design.
+* Enhancement - Performance optimizations.
+* Fix - Email summaries supported only one recipient and lacked test report flexibility issue.
+* Dev - Added Payment Summary field.
+* Dev - Added coupon limits and support for stackable coupons.
+
+= 3.4.5       - 16-04-2026
+* Fix 		  - Popup draggable.
+* Fix 		  - File upload issue.
+* Fix 		  - Parsing issue on entry table and view entry.
 
 = 3.4.4       - 24-03-2026
 * Refactor    - Everest Forms Global Settings.
