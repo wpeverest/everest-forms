@@ -2674,6 +2674,11 @@
 		},
 		bindFormIntegrations: function () {
 			$('body').on('click', '.evf-integrations-panel', function (e) {
+				if ($(this).hasClass('upgrade-addons-settings')) {
+					e.preventDefault();
+					return;
+				}
+
 				var data_setting_section = $(this).attr('data-section');
 				$('.evf-integrations-panel').removeClass('active');
 				$('#everest-forms-panel-integrations')
@@ -2702,6 +2707,11 @@
 		},
 		bindFormPayment: function () {
 			$('body').on('click', '.evf-payments-panel', function (e) {
+				if ($(this).hasClass('upgrade-addons-settings')) {
+					e.preventDefault();
+					return;
+				}
+
 				var data_setting_section = $(this).attr('data-section');
 				$('.evf-payments-panel').removeClass('active');
 				$(this).siblings().removeClass('icon active');

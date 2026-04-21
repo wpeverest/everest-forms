@@ -202,7 +202,7 @@ if ( ! class_exists( 'EVF_Builder_Page', false ) ) :
 			}
 			echo esc_html( $name );
 			if ( ! empty( $icon_url ) ) {
-				echo '<i class="dashicons" style="background-image: url(' . esc_url( $icon_url ) . '); background-size: cover; display: inline-block;  color: #ccd1d6;"></i>';
+				echo '<svg width="18" height="18" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18"><rect width="16.889" height="16.889" x=".444" y=".444" fill="#ff8c39" stroke="#ff8c39" stroke-width=".889" rx="2.222"/><path fill="#efefef" d="m8.89 4.444 2.666 7.111H6.223z"/><path fill="#fff" fill-rule="evenodd" d="m4.445 6.222.635 5.333h7.619l.635-5.333-4.445 3.666zm8.254 5.841h-7.62v1.27h7.62z" clip-rule="evenodd"/></svg>';
 			} else {
 				echo '<i class="dashicons dashicons-arrow-right-alt2 everest-forms-toggle-arrow"></i>';
 			}
