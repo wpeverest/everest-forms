@@ -341,6 +341,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 = 3.4.6       - xx-xx-2026
 * Dev 		  - Payment Summary Field.
+* Dev         - Coupon limit, stackable coupon.
 
 = 3.4.5       - 16-04-2026
 * Fix 		  - Popup draggable.
