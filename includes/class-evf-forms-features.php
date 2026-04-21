@@ -62,10 +62,10 @@ class EVF_Forms_Features {
 			'EVF_Field_Lookup',
 		);
 
-		if ( defined( 'EVF_VERSION' ) && version_compare( EVF_VERSION, '3.4.4', '>=' ) ) {
+		if ( class_exists( 'EVF_Field_Payment_Summary' ) ) {
 			$pro_fields[] = 'EVF_Field_Payment_Summary';
 		}
-		
+
 		$enabled_features = get_option( 'everest_forms_enabled_features', array() );
 
 		$feature_map = array(
