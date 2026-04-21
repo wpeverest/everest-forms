@@ -311,7 +311,8 @@ const AddonCard = ({ addon, showToast, onModuleToggle }) => {
 				justify="space-between"
 				align="center"
 				mt="auto"
-				pt={{ base: '2', sm: '3' }}
+				// pt={{ base: '2', sm: '3' }}
+				pt="16px"
 				borderTop="1px solid"
 				borderColor="gray.100"
 				flexWrap={{ base: 'wrap', sm: 'nowrap' }}
@@ -377,10 +378,21 @@ const AddonCard = ({ addon, showToast, onModuleToggle }) => {
 							size="md"
 							sx={{
 								'& .chakra-switch__track': {
-									bg: isActive ? '#7545bb' : 'gray.300',
+									bg: isActive ? '#4cc741' : 'gray.300',
+									width:"28px",
+									height:"16px",
+									p:"2px",
+									boxSizing:"border-box",
 								},
 								'& .chakra-switch__track[data-checked]': {
-									bg: '#7545bb',
+									bg: '#4cc741',
+								},
+								'& .chakra-switch__thumb': {
+									width:"12px",
+									height:"12px",
+								},
+								'& .chakra-switch__thumb[data-checked]': {
+									transform:"translateX(12px)",
 								},
 							}}
 						/>
@@ -395,11 +407,11 @@ const AddonCard = ({ addon, showToast, onModuleToggle }) => {
 							px={{ base: '3', sm: '4' }}
 							h={{ base: '28px', sm: '32px' }}
 							_hover={{
-								bg: '#3a4a8f',
-								borderColor: '#3a4a8f',
+								bg: '#7545bb',
+								borderColor: '#7545bb',
 							}}
 							_active={{
-								bg: '#2d3b70',
+								bg: '#7545bb',
 							}}
 							onClick={handleUpgradePlan}
 						>

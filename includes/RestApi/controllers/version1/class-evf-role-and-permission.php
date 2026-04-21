@@ -89,6 +89,26 @@ class EVF_Roles_And_Permission {
 				'permission_callback' => array( __CLASS__, 'check_admin_permissions' ),
 			)
 		);
+		register_rest_route(
+			$this->namespace,
+			'/' . $this->rest_base . '/get-wp-users',
+			array(
+				'methods'             => 'GET',
+				'callback'            => array( __CLASS__, 'get_wp_users_list' ),
+				'permission_callback' => array( __CLASS__, 'check_admin_permissions' ),
+				'args'                => array(
+					'page'   => array(
+						'type'    => 'integer',
+						'default' => 1,
+						'minimum' => 1,
+					),
+					'search' => array(
+						'type'    => 'string',
+						'default' => '',
+					),
+				),
+			)
+		);
 	}
 
 	/**
@@ -124,15 +144,6 @@ class EVF_Roles_And_Permission {
 			foreach ( $checked_roles as $role => $checked ) {
 				$permission = self::get_evf_permissions();
 				if ( $checked ) {
-					if ( 'subscriber' == strtolower( $role ) ) {
-						return new \WP_REST_Response(
-							array(
-								'success' => false,
-								'message' => esc_html__( 'Sorry, you can not give access to the Subscriber role.', 'everest-forms' ),
-							),
-							200
-						);
-					}
 					$wp_role = $wp_roles->get_role( $role );
 
 					foreach ( array_keys( $permission['permissions'] ) as $value ) {
@@ -176,7 +187,7 @@ class EVF_Roles_And_Permission {
 		$permissions = self::get_evf_permissions();
 
 		$roles              = array();
-		$ignore_roles       = apply_filters( 'everest_forms_ignore_roles_to_give_permissions', array( 'administrator', 'subscriber' ) );
+		$ignore_roles       = apply_filters( 'everest_forms_ignore_roles_to_give_permissions', array( 'administrator' ) );
 		$role_based_list    = get_option( '_everest_forms_permission', array() );
 		$checked_roles_list = array();
 
@@ -307,6 +318,18 @@ class EVF_Roles_And_Permission {
 		}
 
 		foreach ( $users_data as $user ) {
+			if ( user_can( $user, 'manage_options' ) ) {
+				return new \WP_REST_Response(
+					array(
+						'success' => false,
+						'message' => array(
+							'user_email' => esc_html__( 'Cannot modify permissions for administrator users.', 'everest-forms' ),
+						),
+					),
+					200
+				);
+			}
+
 			self::attach_permission( $user, $assigned_permission );
 
 			update_user_meta( $user->ID, '_everest_forms_has_role', 1 );
@@ -491,6 +514,7 @@ class EVF_Roles_And_Permission {
 				'email'       => $user->user_email,
 				'permissions' => self::get_user_permissions( $user ),
 				'roles'       => self::get_user_roles( $user->ID ),
+				'role_keys'   => array_values( $user->roles ),
 			);
 		}
 
@@ -633,6 +657,57 @@ class EVF_Roles_And_Permission {
 			array(
 				'success' => true,
 				'message' => __( 'Managers deleted successfully.', 'everest-forms' ),
+			),
+			200
+		);
+	}
+
+	/**
+	 * Get a paginated, searchable list of WordPress users (excludes admins and current user).
+	 *
+	 * @since 3.0.8
+	 *
+	 * @param WP_REST_Request $request Full data about the request.
+	 * @return WP_REST_Response
+	 */
+	public static function get_wp_users_list( $request ) {
+		$per_page = 10;
+		$page     = max( 1, (int) $request->get_param( 'page' ) );
+		$search   = sanitize_text_field( $request->get_param( 'search' ) );
+		$offset   = ( $page - 1 ) * $per_page;
+
+		$query_args = array(
+			'number'      => $per_page,
+			'offset'      => $offset,
+			'exclude'     => array( get_current_user_id() ),
+			'orderby'     => 'display_name',
+			'order'       => 'ASC',
+			'count_total' => true,
+		);
+
+		if ( ! empty( $search ) ) {
+			$query_args['search']         = '*' . $search . '*';
+			$query_args['search_columns'] = array( 'user_login', 'user_email', 'display_name' );
+		}
+
+		$query = new \WP_User_Query( $query_args );
+		$total = $query->get_total();
+		$users = array();
+
+		foreach ( $query->get_results() as $user ) {
+			$label   = trim( $user->display_name );
+			$users[] = array(
+				'value' => $user->user_email,
+				'label' => $label ? "{$label} ({$user->user_email})" : $user->user_email,
+			);
+		}
+
+		return new \WP_REST_Response(
+			array(
+				'success'  => true,
+				'users'    => $users,
+				'total'    => $total,
+				'has_more' => ( $offset + $per_page ) < $total,
 			),
 			200
 		);

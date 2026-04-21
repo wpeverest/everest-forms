@@ -4,6 +4,7 @@ import {
 	Button,
 	Center,
 	Heading,
+	HStack,
 	Icon,
 	Image,
 	Input,
@@ -293,28 +294,84 @@ const TemplateList: React.FC<TemplateListProps> = ({
 	}));
 
 	return (
-		<Box>
+		<Box padding="0">
+			<HStack>
+				<VStack 
+					position="relative"
+					bg="white"
+					border="1px solid rgba(0, 0, 0, 0.08)"
+					borderRadius="13px"
+					p="26px 30px"
+					mb="32px"
+					overflow="hidden"
+					display="flex"
+					alignItems="flex-start"
+					width="100%"
+					sx={{
+						'::before': {
+						content: '""',
+						position: "absolute",
+						inset: "0",
+						bg: "radial-gradient(ellipse 60% 120% at 100% 50%, rgba(96, 64, 240, 0.07) 0%, transparent 70%), radial-gradient(ellipse 40% 80% at 80% 20%, rgba(61, 126, 245, 0.06) 0%, transparent 60%)",
+						pointerEvents: "none",
+						},
+					}}
+					>
+					<Text 
+						display="inline-block"
+						alignItems="center"
+						gap="6px"
+						bg="rgba(118, 64, 240, 0.08)"
+						border="1px solid rgba(155, 64, 240, 0.2)"
+						borderRadius="20px"
+						p="4px 12px"
+						fontSize="12px"
+						fontWeight="medium"
+						// color="#6040f0"
+						color="#6b46c1"
+						letterSpacing="0.23px"
+						m="0 0 12px"
+					>✦ {__('Ready-made templates', 'everest-forms')}</Text>
+					<Heading 
+						fontSize="26px"
+						fontWeight="700"
+						letterSpacing="-0.5px"
+						color="#0f0f1a"
+						lineHeight="1.2"
+						margin="0 0 8px"
+					>{__('Build faster with beautiful templates', 'everest-forms')}</Heading>
+					<Text 
+						fontSize="14px"
+						// color="#6b6b85"
+						color="gray.600"
+						lineHeight="1.6"
+						maxWidth="480px"
+						m="0"
+					>{__('Pick from 49 professionally designed form templates. Customize, deploy, and start collecting responses in minutes.', 'everest-forms')}</Text>
+				</VStack>
+			</HStack>
+			
 			<Heading
 				as="h3"
 				fontSize="18px"
 				lineHeight="26px"
-				letterSpacing="0.4px"
+				letterSpacing="0.2px"
 				fontWeight="semibold"
 				m="0px 0px 32px"
 				color="#26262E"
-				borderBottom="1px solid #CDD0D8"
+				borderBottom="1px solid #e1e1e1"
 				paddingBottom="12px"
 			>
 				{selectedCategory}
 			</Heading>
 			{templates?.length ? (
-				<SimpleGrid columns={{ base: 1, md: 2, lg: 3, xl: 4 }} spacing={6}>
+				<SimpleGrid gridTemplateColumns="repeat(auto-fill, minmax(280px, 1fr))" spacing={6}>
 					{templates.map((template) => (
 						<Box
 							key={template.slug}
-							borderWidth="2px"
-							borderRadius="8px"
-							borderColor="#F6F4FA"
+							borderWidth="1px"
+							borderRadius="13px"
+							borderColor="#e1e1e1"
 							overflow="hidden"
 							position="relative"
 							onMouseOver={() => setHoverCardId(template.id)}
@@ -325,6 +382,7 @@ const TemplateList: React.FC<TemplateListProps> = ({
 							transition="all .3s"
 							_hover={{
 								boxShadow: '0px 5px 24px rgba(58, 34, 93, 0.12)',
+								borderColor: 'transparent',
 								'::before': {
 									content: '""',
 									position: 'absolute',
@@ -332,7 +390,9 @@ const TemplateList: React.FC<TemplateListProps> = ({
 									left: 0,
 									width: '100%',
 									height: '250px',
-									bg: 'rgba(0, 0, 0, 0.4)',
+									// bg: 'rgba(0, 0, 0, 0.4)',
+									bg: "#181818",
+									opacity: ".5",
 									zIndex: 1,
 								},
 								'& > div > .template-title': {
@@ -347,32 +407,43 @@ const TemplateList: React.FC<TemplateListProps> = ({
 									display="flex"
 									justifyContent="center"
 									alignItems="center"
-									bg="#F7F4FB"
+									// bg="#F7F4FB"
+									bg="#f5f5f5"
 									pt="80px"
 									height="250px"
-									borderRadius="4px 4px 0px 0px"
+									borderRadius="6px 6px 0px 0px"
 									overflow="hidden"
 									transition="all .3s"
+									borderBottom="1px solid #e1e1e1"
 								>
 									<Image
-										boxShadow="0px 3px 12px rgba(58, 34, 93, 0.12)"
+										boxShadow="0px 4px 24px rgba(10, 10, 10, 0.15)"
 										src={template.imageUrl}
 										alt={template.title}
 										objectFit="contain"
+										borderRadius="7px"
 									/>
 
 									{template.isPro && (
 										<Badge
 											bg="#4BCE61"
-											color="white"
+											// color="white"
 											position="absolute"
 											bottom="12px"
 											right="12px"
-											borderRadius="4px"
-											fontSize="12px"
-											p="2px 6px"
-											textTransform="capitalize"
+											// borderRadius="6px"
+											// fontSize="12px"
+											// p="2px 6px"
+											// textTransform="capitalize"
 											zIndex="2"
+											border="1px solid #ff8c39"
+											background="#fffaf5"
+											color="#ff8c39"
+											fontWeight="semibold"
+											textTransform="uppercase"
+											p="4px 8px"
+											borderRadius="4px"
+											fontSize="11px"
 										>
 											{__('Pro', 'everest-forms')}
 										</Badge>
@@ -381,7 +452,8 @@ const TemplateList: React.FC<TemplateListProps> = ({
 									{/* Hover Buttons */}
 									{hoverCardId === template.id && (
 										<VStack
-											spacing={4}
+											spacing={3}
+											flexDirection="row"
 											position="absolute"
 											top="50%"
 											left="50%"
@@ -389,19 +461,27 @@ const TemplateList: React.FC<TemplateListProps> = ({
 											zIndex={2}
 										>
 											<Button
-												borderRadius="50px"
-												leftIcon={<IoPlayOutline />}
+												borderRadius="4px"
+												fontSize="14px"
+												lineHeight="24px"
+												fontWeight="medium"
+												// leftIcon={<IoPlayOutline />}
 												colorScheme="purple"
 												onClick={() => handleTemplateClick(template)}
 											>
-												{__('Get Started', 'everest-forms')}
+												{__('Use Template', 'everest-forms')}
 											</Button>
 											{template.preview_link && (
 												<Button
-													borderRadius="50px"
-													leftIcon={<MdOutlineRemoveRedEye />}
-													color="white"
-													variant="outline"
+													borderRadius="4px"
+													fontSize="14px"
+													lineHeight="24px"
+													fontWeight="medium"
+													// leftIcon={<MdOutlineRemoveRedEye />}
+													color="#0f0f1a"
+													background="#f4f4f4"
+													border="1px solid rgba(0,0,0,0.12)"
+													// variant="outline"
 													onClick={() =>
 														window.open(template.preview_link, '_blank')
 													}
@@ -421,18 +501,21 @@ const TemplateList: React.FC<TemplateListProps> = ({
 									onClick={() => handleFavoriteToggle(template.slug)}
 									aria-label={`Toggle favorite for ${template.title}`}
 									position="absolute"
-									top={2}
-									right={2}
+									top={3}
+									right={3}
 									zIndex={3}
 									bg="transparent"
 									border="none"
+									display="flex"
+									alignItems="center"
+									justifyContent="center"
 									_hover={{ color: 'red.600' }}
 								>
 									<Icon
 										as={
 											favorites.includes(template.slug) ? FaHeart : FaRegHeart
 										}
-										boxSize={6}
+										boxSize={5}
 										color={favorites.includes(template.slug) ? 'red' : 'white'}
 									/>
 								</Box>

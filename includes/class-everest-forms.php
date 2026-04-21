@@ -23,7 +23,7 @@ final class EverestForms {
 	 *
 	 * @var string
 	 */
-	public $version = '3.4.3';
+	public $version = '3.4.6';
 
 	/**
 	 * The single instance of the class.
@@ -93,6 +93,8 @@ final class EverestForms {
 	 * @var EVF_Integrations
 	 */
 	public $integrations = null;
+
+	public $addons = null;
 
 	/**
 	 * UTM Campaign.
@@ -306,6 +308,7 @@ final class EverestForms {
 		include_once EVF_ABSPATH . 'includes/class-evf-ajax.php';
 		include_once EVF_ABSPATH . 'includes/class-evf-emails.php';
 		include_once EVF_ABSPATH . 'includes/class-evf-integrations.php';
+		include_once EVF_ABSPATH . 'includes/class-evf-addon-upsell.php';
 		include_once EVF_ABSPATH . 'includes/class-evf-cache-helper.php';
 		include_once EVF_ABSPATH . 'includes/class-evf-deprecated-action-hooks.php';
 		include_once EVF_ABSPATH . 'includes/class-evf-deprecated-filter-hooks.php';
@@ -347,6 +350,7 @@ final class EverestForms {
 		 */
 		include_once EVF_ABSPATH . 'includes/class-evf-cron.php';
 		include_once EVF_ABSPATH . 'includes/stats/class-evf-stats.php';
+		include_once EVF_ABSPATH . 'includes/class-evf-email-entries-report.php';
 
 		/**
 		 * External Libraries
@@ -354,6 +358,8 @@ final class EverestForms {
 		 * @return void
 		 */
 		include_once EVF_ABSPATH . 'includes/libraries/wptt-webfont-loader.php';
+
+
 	}
 
 	/**
@@ -395,6 +401,7 @@ final class EverestForms {
 		$this->load_plugin_textdomain();
 
 		// Load class instances.
+		$this->addons                              = new EVF_Addon_Upsell();
 		$this->integrations                        = new EVF_Integrations();
 		$this->deprecated_hook_handlers['actions'] = new EVF_Deprecated_Action_Hooks();
 		$this->deprecated_hook_handlers['filters'] = new EVF_Deprecated_Filter_Hooks();

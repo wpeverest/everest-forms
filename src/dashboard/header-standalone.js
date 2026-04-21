@@ -65,7 +65,7 @@ function HeaderWithQuery() {
 	if (siteAssistantQuery.isLoading) {
 		return (
 			<Box
-				bg="white"
+				// bg="white"
 				borderBottom="1px solid #E9E9E9"
 				width="100%"
 				position="relative"

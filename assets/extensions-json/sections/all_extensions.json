@@ -67,7 +67,7 @@
         "themegrill agency"
       ],
       "category": "Cloud & Storage",
-      "setting_url": "admin.php?page=evf-settings&tab=pdf-submission",
+      "setting_url": "admin.php?page=evf-settings&tab=utilities&section=pdf_submission",
       "demo_video_url": "37CtaxJzYis",
       "popular_rank": 4
     },
@@ -139,7 +139,7 @@
         "themegrill agency"
       ],
       "category": "Integrations",
-      "setting_url": "admin.php?page=evf-settings&tab=integration&section=google_sheets",
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=cat-email-marketing",
       "demo_video_url": "tvS6Y_rNBfs",
       "popular_rank": 9
     },
@@ -324,23 +324,6 @@
       "popular_rank": 23
     },
     {
-      "title": "Advanced Form Analytics",
-      "slug": "everest-forms-form-analytics",
-      "name": "Everest Forms Advanced Form Analytics",
-      "image": "extensions-json/sections/images/form-analytics.png",
-      "excerpt": "Analyze how users interact with forms by monitoring impressions, conversions, abandonments, and bounce rate.",
-      "link": "https://docs.everestforms.net/docs/form-analytics/?utm_source=dashboard-all-feature&utm_medium=card-documentation-link",
-      "released_date": "30/08/2023",
-      "plan": [
-        "personal",
-        "agency",
-        "themegrill agency"
-      ],
-      "category": "Marketing & Analytics",
-      "setting_url": "admin.php?page=evf-settings&tab=analytics",
-      "demo_video_url": "BCT7c8EmQfg"
-    },
-    {
       "title": "Hubspot",
       "slug": "everest-forms-hubspot",
       "name": "Everest Forms Hubspot",
@@ -354,7 +337,7 @@
         "themegrill agency"
       ],
       "category": "CRM Integrations",
-      "setting_url": "admin.php?page=evf-settings&tab=integration&section=hubspot",
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=cat-crm",
       "demo_video_url": "mOhJkZpBMPY",
       "popular_rank": 28
     },
@@ -372,7 +355,7 @@
         "themegrill agency"
       ],
       "category": "CRM Integrations",
-      "setting_url": "admin.php?page=evf-settings&tab=integration&section=salesforce",
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=cat-crm",
       "demo_video_url": "1VsyUu4NAhk",
       "popular_rank": 30
     },
@@ -426,7 +409,7 @@
         "themegrill agency"
       ],
       "category": "CRM Integrations",
-      "setting_url": "admin.php?page=evf-settings&tab=integration&section=zoho",
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=cat-crm",
       "demo_video_url": "sfHFiUIHpg0",
       "popular_rank": 34
     }
@@ -480,7 +463,7 @@
         "themegrill agency"
       ],
       "category": "Integrations",
-      "setting_url": "admin.php?page=evf-settings&tab=integration&section=trello",
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=cat-email-marketing",
       "demo_video_url": "9ouI1v9KScY"
     },
     {
@@ -497,7 +480,7 @@
         "themegrill agency"
       ],
       "category": "Email Marketing",
-      "setting_url": "admin.php?page=evf-settings&tab=integration&section=icontact",
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=cat-email-marketing",
       "demo_video_url": "Lqdh-LujsUA"
     },
     {
@@ -531,7 +514,7 @@
         "themegrill agency"
       ],
       "category": "Email Marketing",
-      "setting_url": "admin.php?page=evf-settings&tab=integration&section=moosend",
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=cat-email-marketing",
       "demo_video_url": "xeTf9YP9cpM"
     },
     {
@@ -548,7 +531,7 @@
         "themegrill agency"
       ],
       "category": "Email Marketing",
-      "setting_url": "admin.php?page=evf-settings&tab=integration&section=mailpoet",
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=cat-email-marketing",
       "demo_video_url": "yFf3loV_azY"
     },
     {
@@ -565,7 +548,7 @@
         "themegrill agency"
       ],
       "category": "CRM Integrations",
-      "setting_url": "admin.php?page=evf-settings&tab=integration&section=onepagecrm",
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=cat-crm",
       "demo_video_url": "42EUj-Dlnr0"
     },
     {
@@ -582,7 +565,7 @@
         "themegrill agency"
       ],
       "category": "Integrations",
-      "setting_url": "admin.php?page=evf-settings&tab=integration&section=telegram",
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=cat-email-marketing",
       "demo_video_url": "lAI-wh2EPfs"
     },
     {
@@ -599,7 +582,7 @@
         "themegrill agency"
       ],
       "category": "Email Marketing",
-      "setting_url": "admin.php?page=evf-settings&tab=integration&section=sendinblue",
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=cat-email-marketing",
       "demo_video_url": "d2Ujl82OJuA",
       "popular_rank": 26
     },
@@ -617,7 +600,7 @@
         "themegrill agency"
       ],
       "category": "Email Marketing",
-      "setting_url": "admin.php?page=evf-settings&tab=integration&section=drip",
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=cat-email-marketing",
       "demo_video_url": "4BBKgRelpgE",
       "popular_rank": 35
     },
@@ -635,7 +618,7 @@
         "themegrill agency"
       ],
       "category": "Email Marketing",
-      "setting_url": "admin.php?page=evf-settings&tab=integration&section=convertkit",
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=cat-email-marketing",
       "demo_video_url": "9_JboNu_uaE",
       "popular_rank": 17
     },
@@ -653,7 +636,7 @@
         "themegrill agency"
       ],
       "category": "Email Marketing",
-      "setting_url": "admin.php?page=evf-settings&tab=integration&section=getresponse",
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=cat-email-marketing",
       "demo_video_url": "bXrjALmtADw"
     },
     {
@@ -670,7 +653,7 @@
         "themegrill agency"
       ],
       "category": "CRM Integrations",
-      "setting_url": "admin.php?page=evf-settings&tab=integration&section=salesflare",
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=cat-crm",
       "demo_video_url": "IpXwi2Jc2uE"
     },
     {
@@ -687,7 +670,7 @@
         "themegrill agency"
       ],
       "category": "Email Marketing",
-      "setting_url": "admin.php?page=evf-settings&tab=integration&section=constant_contact",
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=cat-email-marketing",
       "demo_video_url": "SSovJr5-8b0",
       "popular_rank": 33
     },
@@ -705,7 +688,7 @@
         "themegrill agency"
       ],
       "category": "CRM Integrations",
-      "setting_url": "admin.php?page=evf-settings&tab=integration&section=pipedrive",
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=cat-crm",
       "demo_video_url": "84cGKj07g4g",
       "popular_rank": 32
     },
@@ -740,7 +723,7 @@
         "themegrill agency"
       ],
       "category": "Integrations",
-      "setting_url": "admin.php?page=evf-settings&tab=integration&section=airtable",
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=cat-email-marketing",
       "demo_video_url": "SS_N2OoT5wU"
     },
     {
@@ -757,7 +740,7 @@
         "themegrill agency"
       ],
       "category": "Email Marketing",
-      "setting_url": "admin.php?page=evf-settings&tab=integration&section=mailerlite",
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=cat-email-marketing",
       "demo_video_url": "JqdNsPFKg5o",
       "popular_rank": 27
     },
@@ -775,7 +758,7 @@
         "themegrill agency"
       ],
       "category": "Email Marketing",
-      "setting_url": "admin.php?page=evf-settings&tab=integration&section=mailchimp",
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=cat-email-marketing",
       "demo_video_url": "FhFsHdAIXwE",
       "popular_rank": 6
     },
@@ -827,7 +810,7 @@
         "themegrill agency"
       ],
       "category": "Email Marketing",
-      "setting_url": "admin.php?page=evf-settings&tab=integration&section=aweber",
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=cat-email-marketing",
       "demo_video_url": ""
     },
     {
@@ -947,7 +930,7 @@
         "themegrill agency"
       ],
       "category": "Email Marketing",
-      "setting_url": "admin.php?page=evf-settings&tab=integration&section=activecampaign",
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=cat-email-marketing",
       "demo_video_url": "6b9q89cUMzE",
       "popular_rank": 25
     },
@@ -965,7 +948,7 @@
         "themegrill agency"
       ],
       "category": "Email Marketing",
-      "setting_url": "admin.php?page=evf-settings&tab=integration&section=getgist",
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=cat-email-marketing",
       "demo_video_url": "",
       "popular_rank": "xx"
     },
@@ -983,7 +966,7 @@
         "themegrill agency"
       ],
       "category": "Form Elements",
-      "setting_url": "admin.php?page=evf-settings&tab=user_registration",
+      "setting_url": "admin.php?page=evf-settings&tab=utilities&section=user_registration",
       "demo_video_url": "MEyuznG2Tok",
       "popular_rank": 12
     },
@@ -1001,7 +984,7 @@
         "themegrill agency"
       ],
       "category": "Email Marketing",
-      "setting_url": "admin.php?page=evf-settings&tab=integration&section=campaign_monitor",
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=cat-email-marketing",
       "demo_video_url": "GBJMxmCurzw",
       "popular_rank": 29
     },
@@ -1019,7 +1002,7 @@
         "themegrill agency"
       ],
       "category": "Email Marketing",
-      "setting_url": "admin.php?page=evf-settings&tab=integration&section=cleverreach",
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=cat-email-marketing",
       "demo_video_url": ""
     },
     {
@@ -1053,7 +1036,7 @@
         "themegrill agency"
       ],
       "category": "Integrations",
-      "setting_url": "admin.php?page=evf-settings&tab=integration&section=sms_notifications",
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=cat-email-marketing",
       "demo_video_url": "tz4UKBX9WxM",
       "popular_rank": 22
     },
@@ -1088,7 +1071,7 @@
         "themegrill agency"
       ],
       "category": "CRM Integrations",
-      "setting_url": "admin.php?page=evf-settings&tab=integration&section=amocrm",
+      "setting_url": "admin.php?page=evf-settings&tab=integration&section=cat-crm",
       "demo_video_url": ""
     }
   ]

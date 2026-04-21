@@ -460,6 +460,72 @@ abstract class EVF_Form_Fields {
 				}
 				break;
 
+			/**
+			 * Payment Summary Description.
+			 */
+			case 'payment_summary_description':
+				$value   = ! empty( $field['payment_summary_description'] ) ? esc_attr( $field['payment_summary_description'] ) : 'No payment items has been selected yet';
+				$tooltip = esc_html__( 'Empty Payment Selected Text.', 'everest-forms' );
+
+				$output  = $this->field_element(
+					'label',
+					$field,
+					array(
+						'slug'    => 'payment_summary_description',
+						'value'   => esc_html__( 'Empty Payment Selected Text', 'everest-forms' ),
+						'tooltip' => $tooltip,
+					),
+					false
+				);
+
+				$output .= $this->field_element(
+					'textarea',
+					$field,
+					array(
+						'slug'  => 'payment_summary_description',
+						'value' => $value,
+					),
+					false
+				);
+
+				$output = $this->field_element(
+					'row',
+					$field,
+					array(
+						'slug'    => 'payment_summary_description',
+						'content' => $output,
+					),
+					$echo
+				);
+				break;
+
+			case 'show_hide_payment_summary':
+				$value   = ! empty( $field['show_hide_payment_summary'] ) ? esc_attr( $field['show_hide_payment_summary'] ) : 'No payment items has been selected yet';
+				$tooltip = esc_html__( 'Show close button for closing Payment Summary', 'everest-forms' );
+
+				$output = $this->field_element(
+					'toggle',
+					$field,
+					array(
+						'slug'    => 'show_hide_payment_summary',
+						'value'   => $value,
+						'desc'    => esc_html__( 'Show close button on Payment Summary', 'everest-forms' ),
+						'tooltip' => $tooltip,
+					),
+					false
+				);
+
+				$output = $this->field_element(
+					'row',
+					$field,
+					array(
+						'slug'    => 'show_hide_payment_summary',
+						'content' => $output,
+					),
+					$echo
+				);
+				break;
+
 			/*
 			 * Field Label.
 			 */
@@ -2725,15 +2791,22 @@ abstract class EVF_Form_Fields {
 	 * @param array  $field Field data and settings.
 	 */
 	public function field_display_error( $key, $field ) {
-		// Need an error.
-		if ( empty( $field['properties']['error']['value'][ $key ] ) ) {
+		$error_value = isset( $field['properties']['error']['value'][ $key ] )
+			? $field['properties']['error']['value'][ $key ]
+			: '';
+
+		$input_id = isset( $field['properties']['inputs'][ $key ]['id'] )
+			? $field['properties']['inputs'][ $key ]['id']
+			: '';
+
+		if ( '' === $error_value || '' === $input_id ) {
 			return;
 		}
 
 		printf(
 			'<label class="everest-forms-error evf-error" for="%s">%s</label>',
-			esc_attr( $field['properties']['inputs'][ $key ]['id'] ),
-			esc_html( $field['properties']['error']['value'][ $key ] )
+			esc_attr( $input_id ),
+			esc_html( $error_value )
 		);
 	}
 

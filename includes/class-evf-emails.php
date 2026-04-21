@@ -276,35 +276,20 @@ class EVF_Emails {
 
 		ob_start();
 
-		if ( defined( 'DOING_CRON' ) ) {
-			evf_get_template( 'emails/summary-email-header-' . $this->get_template() . '.php' );
+		evf_get_template( 'emails/header-' . $this->get_template() . '.php' );
 
-			// Hooks into the summary email header.
-			do_action( 'everest_forms_summary_email_header', $this );
+		// Hooks into the email header.
+		do_action( 'everest_forms_email_header', $this );
 
-			evf_get_template( 'emails/summary-email-body-' . $this->get_template() . '.php' );
-			// Hooks into the summary email body.
-			do_action( 'everest_forms_summary_email_body', $this );
+		evf_get_template( 'emails/body-' . $this->get_template() . '.php' );
 
-			evf_get_template( 'emails/summary-email-footer-' . $this->get_template() . '.php' );
-			// Hooks inot the summary email footer.
-			do_action( 'everest_forms_summary_email_footer', $this );
-		} else {
-			evf_get_template( 'emails/header-' . $this->get_template() . '.php' );
+		// Hooks into the email body.
+		do_action( 'everest_forms_email_body', $this );
 
-			// Hooks into the email header.
-			do_action( 'everest_forms_email_header', $this );
+		evf_get_template( 'emails/footer-' . $this->get_template() . '.php' );
 
-			evf_get_template( 'emails/body-' . $this->get_template() . '.php' );
-
-			// Hooks into the email body.
-			do_action( 'everest_forms_email_body', $this );
-
-			evf_get_template( 'emails/footer-' . $this->get_template() . '.php' );
-
-			// Hooks into the email footer.
-			do_action( 'everest_forms_email_footer', $this );
-		}
+		// Hooks into the email footer.
+		do_action( 'everest_forms_email_footer', $this );
 
 		$message = $this->process_tag( $message, false );
 
@@ -377,8 +362,8 @@ class EVF_Emails {
 
 		if ( ! $sent ) {
 			$error_message = apply_filters( 'everest_forms_email_send_failed_message', '' );
-			$failed_data  = get_transient( 'everest_forms_mail_send_failed_count' );
-			$failed_count = $failed_data && isset( $failed_data['failed_count'] ) ? $failed_data['failed_count'] : 0;
+			$failed_data   = get_transient( 'everest_forms_mail_send_failed_count' );
+			$failed_count  = $failed_data && isset( $failed_data['failed_count'] ) ? $failed_data['failed_count'] : 0;
 			++$failed_count;
 			set_transient(
 				'everest_forms_mail_send_failed_count',

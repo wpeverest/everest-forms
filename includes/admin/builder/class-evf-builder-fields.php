@@ -111,6 +111,50 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 	 * Output fields group buttons.
 	 */
 	public function output_fields() {
+		$containers = apply_filters(
+			'everest_forms_builder_layout_containers',
+			array(
+				array(
+					'type'    => 'layout_one_col',
+					'label'   => __( 'One Column', 'everest-forms' ),
+					'columns' => 1,
+					'icon'    => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 24">
+			<rect x="2" y="2" width="32" height="20" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/>
+		</svg>',
+				),
+				array(
+					'type'    => 'layout_two_col',
+					'label'   => __( 'Two Column', 'everest-forms' ),
+					'columns' => 2,
+					'icon'    => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 24">
+			<rect x="2" y="2" width="14.5" height="20" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/>
+			<rect x="19.5" y="2" width="14.5" height="20" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/>
+		</svg>',
+				),
+				array(
+					'type'    => 'layout_three_col',
+					'label'   => __( 'Three Column', 'everest-forms' ),
+					'columns' => 3,
+					'icon'    => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 24">
+			<rect x="2" y="2" width="8.5" height="20" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/>
+			<rect x="13.75" y="2" width="8.5" height="20" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/>
+			<rect x="25" y="2" width="9" height="20" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/>
+		</svg>',
+				),
+				array(
+					'type'    => 'layout_four_col',
+					'label'   => __( 'Four Column', 'everest-forms' ),
+					'columns' => 4,
+					'icon'    => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 24">
+			<rect x="2" y="2" width="5.75" height="20" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+			<rect x="10.25" y="2" width="5.75" height="20" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+			<rect x="18.5" y="2" width="5.75" height="20" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+			<rect x="27" y="2" width="7" height="20" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+		</svg>',
+				),
+			)
+		);
+
 		$form_fields = evf()->form_fields->form_fields();
 
 		if ( ! empty( $form_fields ) ) {
@@ -135,6 +179,25 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 					</div>
 				</div>
 				<?php
+
+				if ( 'advanced' === $group ) {
+					?>
+					<div class="everest-forms-add-fields-group open evf-layout-group">
+						<a href="#" class="everest-forms-add-fields-heading" data-group="layout"><?php esc_html_e( 'Layout', 'everest-forms' ); ?><i class="handlediv"></i></a>
+						<div class="evf-registered-buttons">
+							<?php foreach ( $containers as $container ) : ?>
+							<button type="button"
+								class="evf-layout-container-btn"
+								data-columns="<?php echo absint( $container['columns'] ); ?>"
+								data-field-type="<?php echo esc_attr( $container['type'] ); ?>">
+								<?php echo $container['icon']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+								<?php echo esc_html( $container['label'] ); ?>
+							</button>
+							<?php endforeach; ?>
+						</div>
+					</div>
+					<?php
+				}
 			}
 		}
 	}
@@ -319,7 +382,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 			echo '</div>';
 			echo '</div>';
 			echo '<div class="clear evf-clear"></div>';
-
+			echo '<div class="evf-grid-lists">';
 			$grid_class = 'evf-admin-grid evf-grid-' . ( $active_grid );
 			for ( $grid_start = 1; $grid_start <= $active_grid; $grid_start++ ) {
 				echo '<div class="' . esc_attr( $grid_class ) . ' " data-grid-id="' . absint( $grid_start ) . '">';
@@ -345,6 +408,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 				}
 				echo '</div>';
 			}
+			echo '</div >';
 			echo '<div class="clear evf-clear"></div>';
 			echo '</div >';
 

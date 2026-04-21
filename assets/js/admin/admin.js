@@ -77,6 +77,13 @@
 		}
 	});
 
+	 $('.evf-search input[type="search"]').on('keypress', function (e) {
+        if (e.which === 13) {
+            e.preventDefault();
+            $(this).closest('form').submit();
+        }
+    });
+
 	// Function to handle changes in the reporting frequency while sending the entries stat report.
 	$(document).ready(function () {
 		var urlParams = new URLSearchParams(window.location.search);
@@ -174,7 +181,7 @@
 				$(window).trigger('resize');
 			});
 
-			
+
 			$('.evf-tab-nav__btn', $wrapper).first().trigger('click');
 		}
 
@@ -210,21 +217,29 @@
 		$(document).on('change', '#filter-by-status', function () {
 			var $form = $(this).closest('form');
 			var status = $(this).val();
+			var $search = $form.find('input[name="s"]');
+
 			$form.find('input[name="status"]').remove();
+
+			$form.find('select[name="action"]').val('-1');
+			$form.find('select[name="action2"]').val('-1');
+
+			$form.find('input[name="bulk_action"]').prop('disabled', true);
 
 			if (status !== '') {
 				$form.append(
-					'<input type="hidden" name="status" value="' + status + '" />',
+					'<input type="hidden" name="status" value="' + status + '" />'
 				);
 			}
 
-			// Remove the select itself so it doesn't send a duplicate.
+			if ($search.length && !$search.val().trim()) {
+				$search.prop('disabled', true);
+			}
 			$(this).prop('disabled', true);
 
 			$form.submit();
 		});
 
-		// Auto-submit on forms status dropdown change (forms page).
 		$(document).on('change', '#filter-by-form-status', function () {
 			var status = $(this).val();
 			var url = new URL(window.location.href);
@@ -971,18 +986,25 @@
 
 	$('.form-tags-select2').each(function() {
 		var $select = $(this);
+		var placeholder = ($select.data('placeholder') || '').trim();
 
 		$select.select2({
-			placeholder:$(this).data('placeholder'),
+			placeholder: placeholder,
 			tags: true,
 			createTag: function(params) {
-				if (params.term.trim() === '') {
+				var term = (params.term || '').trim();
+
+				if (term === '') {
+					return null;
+				}
+
+				if (placeholder && term === placeholder) {
 					return null;
 				}
 
 				var exists = false;
 				$select.find('option').each(function() {
-					if ($(this).text() === params.term) {
+					if ($(this).text().trim() === term || $(this).val().trim() === term) {
 						exists = true;
 						return false;
 					}
@@ -993,8 +1015,8 @@
 				}
 
 				return {
-					id: params.term,
-					text: params.term,
+					id: term,
+					text: term,
 					isNew: true
 				};
 			},
@@ -1009,10 +1031,19 @@
 				return $result;
 			}
 		}).on('select2:select', function(e) {
-			if (!e.params) return;
+			if (!e.params || !e.params.data) {
+				return;
+			}
+
+			var selectedText = (e.params.data.text || '').trim();
+
+			if (placeholder && selectedText === placeholder) {
+				$select.val(null).trigger('change');
+				return;
+			}
 
 			if (e.params.data.isNew) {
-				var newValue = e.params.data.text;
+				var newValue = selectedText;
 
 				$select.find('option').filter(function() {
 					return $(this).val() === newValue && !$(this).prop('selected');
@@ -1022,14 +1053,13 @@
 					return $(this).val() === newValue && $(this).data('select2-tag');
 				}).remove();
 
-				// Create a proper selected option
 				var newOption = new Option(newValue, newValue, true, true);
 				$select.append(newOption).trigger('change');
-
-				// Force Select2 to update
-				$select.trigger('select2:select');
 			}
 		});
+
+			var $searchField = $select.next('.select2').find('.select2-search__field');
+			$searchField.css('min-width', '120px');
 	});
 
 	$('.evf-bulk-form-tags-select').trigger('evf-enhanced-tags-select-init');
@@ -1058,5 +1088,50 @@
 		});
 
 	})
+
+
+	var $copyLogBtn = $( '#evf-copy-log-btn' );
+	if ( ! $copyLogBtn.length ) {
+		return;
+	}
+	var copiedLabel = params && params.i18n_log_copied ? params.i18n_log_copied : 'Copied!';
+	$copyLogBtn.on( 'click', function() {
+		var $btn = $( this );
+		var $content = $( '#evf-log-content' );
+		if ( ! $content.length ) {
+			return;
+		}
+		var text = $content.text();
+		var originalLabel = $btn.text();
+
+		function showCopied() {
+			$btn.text( copiedLabel );
+			setTimeout( function() {
+				$btn.text( originalLabel );
+			}, 2000 );
+		}
+
+		function fallbackCopy( copyText ) {
+			var $ta = $( '<textarea>' );
+			$ta.val( copyText );
+			$ta.css( { position: 'fixed', opacity: '0' } );
+			$( 'body' ).append( $ta );
+			$ta.trigger( 'focus' );
+			$ta[0].select();
+			try {
+				document.execCommand( 'copy' );
+				showCopied();
+			} catch ( e ) {}
+			$ta.remove();
+		}
+
+		if ( navigator.clipboard && navigator.clipboard.writeText ) {
+			navigator.clipboard.writeText( text ).then( showCopied ).catch( function() {
+				fallbackCopy( text );
+			} );
+		} else {
+			fallbackCopy( text );
+		}
+	} );
 
 })( jQuery, everest_forms_admin );

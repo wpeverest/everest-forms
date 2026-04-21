@@ -1,263 +1,312 @@
-import React, { useState, useEffect, useMemo } from "react";
-import { AddIcon, InfoIcon } from "@chakra-ui/icons";
+import { AddIcon } from '@chakra-ui/icons';
 import {
-	Modal,
-	ModalOverlay,
-	ModalContent,
-	ModalHeader,
-	ModalBody,
-	ModalCloseButton,
-	useDisclosure,
+	Alert,
 	Button,
-	Text,
+	Flex,
 	FormControl,
 	FormLabel,
-	Input,
-	Tooltip,
-	Icon,
+	Modal,
+	ModalBody,
+	ModalCloseButton,
+	ModalContent,
+	ModalHeader,
+	ModalOverlay,
 	Stack,
-	Alert,
-	Flex,
+	Text,
+	useDisclosure,
 	useToast,
-} from "@chakra-ui/react";
-import { Select } from "chakra-react-select";
-import { __ } from "@wordpress/i18n";
-import { addManagerRole } from "./RoleAndPermissionAPI";
+} from '@chakra-ui/react';
+import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
+import { __ } from '@wordpress/i18n';
+import { Select } from 'chakra-react-select';
+import { debounce } from 'lodash';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { addManagerRole, getWPUsers } from './RoleAndPermissionAPI';
 
-const UserDisplayModal = ({ wp_roles, context = "", value = {}, setUserAdded=false }) => {
+const selectChakraStyles = {
+	dropdownIndicator: (provided) => ({ ...provided, bg: 'transparent' }),
+	indicatorSeparator: (provided) => ({ ...provided, display: 'none' }),
+	option: (provided) => ({ ...provided, fontSize: '13px' }),
+	input: (base) => ({
+		...base,
+		border: 'none',
+		outline: 'none',
+		boxShadow: 'none',
+		padding: 0,
+		margin: 0,
+		background: 'transparent',
+		height: 'auto',
+		minHeight: 0,
+		width: 0,
+	}),
+};
+
+const UserDisplayModal = ({ wp_roles, context = '', value = {} }) => {
 	const { isOpen, onOpen, onClose } = useDisclosure();
-	const [userEmail, setUserEmail] = useState("");
+	const queryClient = useQueryClient();
+	const [selectedUser, setSelectedUser] = useState(null);
 	const [permissions, setPermissions] = useState([]);
 	const [errors, setErrors] = useState([]);
+	const [isSubmitting, setIsSubmitting] = useState(false);
+	const [searchTerm, setSearchTerm] = useState('');
 	const toast = useToast();
 
+	const debouncedSetSearch = useRef(
+		debounce((val) => setSearchTerm(val), 400),
+	).current;
+
+	useEffect(() => () => debouncedSetSearch.cancel(), [debouncedSetSearch]);
+
 	useEffect(() => {
-		if (context === "edit") {
-			setUserEmail(value.email || "");
-			setPermissions(value.permission || []);
+		if (!isOpen) return;
+		if (context === 'edit') {
+			setSelectedUser(
+				value.email ? { value: value.email, label: value.email } : null,
+			);
+			setPermissions(
+				Array.isArray(value.permission) ? [...value.permission] : [],
+			);
+		} else {
+			setSelectedUser(null);
+			setPermissions([]);
+			setSearchTerm('');
 		}
-	}, [context, value]);
+		setErrors([]);
+	}, [isOpen]); // eslint-disable-line react-hooks/exhaustive-deps
 
-	const selectedPermissions = useMemo(() => {
-		return (
-			permissions?.map((val) => ({
-				value: val,
-				label: value.permission_details?.[val],
-			})) || []
-		);
-	}, [permissions, value.permission_details]);
+	const {
+		data: usersData,
+		fetchNextPage,
+		hasNextPage,
+		isFetchingNextPage,
+		isLoading: isUsersLoading,
+	} = useInfiniteQuery({
+		queryKey: ['wp-users', searchTerm],
+		queryFn: ({ pageParam = 1 }) =>
+			getWPUsers({ page: pageParam, search: searchTerm }),
+		getNextPageParam: (lastPage, allPages) =>
+			lastPage.has_more ? allPages.length + 1 : undefined,
+		enabled: isOpen && context !== 'edit',
+		staleTime: 30 * 1000,
+		keepPreviousData: true,
+	});
 
-	const all_permissions = useMemo(() => {
-		return Object.entries(wp_roles).map(([key, label]) => ({
-			label: label,
-			value: key,
-		}));
-	}, [wp_roles]);
+	const userOptions = useMemo(
+		() => usersData?.pages.flatMap((page) => page.users) ?? [],
+		[usersData],
+	);
 
-	const handleMultiplePermission = (selectedOptions) => {
-		const selectedValues = selectedOptions
-			? selectedOptions.map((option) => option.value)
-			: [];
-		setPermissions(selectedValues);
+	const handleInputChange = (val) => {
+		debouncedSetSearch(val);
 	};
 
-	const handleAddManager = (email, assignedPermissions) => {
-		addManagerRole(email, assignedPermissions).then((res) => {
-			setErrors([]);
-			if (!res.success) {
-				const errorList = Object.entries(res.message).map(
-					([key, message]) => ({ key, message })
-				);
-				setErrors(errorList);
-			} else {
-				setUserAdded(true);
-				onClose();
-				toast({
-					title: res.message,
-					status: "success",
-					duration: 3000,
-				});
-			}
-		});
+	const allPermissionOptions = useMemo(
+		() =>
+			Object.entries(wp_roles).map(([key, label]) => ({
+				label,
+				value: key,
+			})),
+		[wp_roles],
+	);
+
+	const handleMultiplePermission = (selectedOptions) => {
+		setPermissions(selectedOptions ? selectedOptions.map((o) => o.value) : []);
+	};
+
+	const handleAddManager = () => {
+		const email = selectedUser?.value;
+		setIsSubmitting(true);
+		addManagerRole(email, permissions)
+			.then((res) => {
+				setErrors([]);
+				if (!res.success) {
+					const errorList = Object.entries(res.message).map(
+						([key, message]) => ({ key, message }),
+					);
+					setErrors(errorList);
+				} else {
+					onClose();
+					toast({
+						title: res.message,
+						status: 'success',
+						duration: 3000,
+						isClosable: true,
+					});
+
+					if (context === 'edit') {
+						queryClient.setQueriesData(
+							{ queryKey: ['managers'] },
+							(oldData) => {
+								if (!oldData?.managers) return oldData;
+								return {
+									...oldData,
+									managers: oldData.managers.map((m) =>
+										m.email === email
+											? { ...m, permissions: [...permissions] }
+											: m,
+									),
+								};
+							},
+						);
+					}
+
+					queryClient.invalidateQueries({ queryKey: ['managers'] });
+				}
+			})
+			.finally(() => setIsSubmitting(false));
 	};
 
 	const addButtonStyles = {
-		width: "113px",
-		height: "41px",
-		backgroundColor: "#7545BB",
-		padding: "10px 16px",
-		gap: "6px",
-		fontWeight: "500",
-		lineHeight: "21px",
-		fontSize: "14px",
-		color: "#FFFFFF",
-	};
-	const editButtonStyle = {
-		color: "#475BB2",
-		fontWeight: "400",
-		fontSize: "13px",
-		backgroundColor: "#ffffff",
-		padding: 0,
+		width: '113px',
+		height: '41px',
+		backgroundColor: '#7545BB',
+		padding: '10px 16px',
+		gap: '6px',
+		fontWeight: '500',
+		lineHeight: '21px',
+		fontSize: '14px',
+		color: '#FFFFFF',
 	};
 
 	return (
 		<>
-			<Button
-				style={context === "edit" ? editButtonStyle : addButtonStyles}
-				onClick={onOpen}
-			>
-				{context === "edit" ? (
-					"Edit"
-				) : (
-					<>
-						<AddIcon
-							height={"9.95px"}
-							width={"9.9px"}
-							fontWeight={"500"}
-							color={"#FFFFFF"}
-						/>{" "}
-						Add User
-					</>
-				)}
-			</Button>
+			{context === 'edit' ? (
+				<Button
+					variant="link"
+					color="gray.500"
+					fontWeight="400"
+					fontSize="13px"
+					minW="auto"
+					height="auto"
+					padding={0}
+					_hover={{ color: 'primary.400', textDecoration: 'none' }}
+					onClick={onOpen}
+				>
+					{__('Edit', 'everest-forms')}
+				</Button>
+			) : (
+				<Button style={addButtonStyles} onClick={onOpen}>
+					<AddIcon
+						height="9.95px"
+						width="9.9px"
+						fontWeight="500"
+						color="#FFFFFF"
+					/>{' '}
+					{__('Add User', 'everest-forms')}
+				</Button>
+			)}
 
-			<Modal isOpen={isOpen} onClose={onClose} isCentered size={"lg"}>
-				<ModalOverlay
-					bg="none"
-					backdropFilter="auto"
-					backdropInvert="0%"
-					backdropBlur="2px"
-				/>
-				<ModalContent>
+			<Modal isOpen={isOpen} onClose={onClose} isCentered size="lg">
+				<ModalOverlay />
+				<ModalContent p={2}>
 					<ModalHeader>
-						{context === "edit" ? "Edit User" : "Add User"}
-						<Text>
-							View and manage the list of current managers, their assigned roles,
-							and permissions.
+						{context === 'edit'
+							? __('Edit User', 'everest-forms')
+							: __('Add User', 'everest-forms')}
+						<Text mt={1} fontSize="sm" fontWeight="400" color="gray.500">
+							{__(
+								'View and manage the list of current managers, their assigned roles, and permissions.',
+								'everest-forms',
+							)}
 						</Text>
 					</ModalHeader>
 					<ModalCloseButton />
-					<ModalBody paddingTop={"0"}>
+
+					<ModalBody paddingTop="0">
 						<FormControl>
-							<Stack gap={"28px"}>
+							<Stack gap="28px">
 								<Stack>
 									<FormLabel display="flex" alignItems="center" fontSize="14px">
-										User Email
-										<Tooltip label="User email" fontSize="sm">
-											<Icon
-												as={InfoIcon}
-												ml={2}
-												boxSize={4}
-												background="#BABABA"
-												color="#FFFFFF"
-												borderRadius="50%"
-												padding="2px"
-												border={"none"}
-												_hover={{ cursor: "pointer" }}
-											/>
-										</Tooltip>
+										{__('User Email', 'everest-forms')}
 									</FormLabel>
-									<Input
-										required
-										type="email"
-										placeholder="User Email Address"
-										value={userEmail}
-										onChange={(e) => setUserEmail(e.target.value)}
+
+									<Select
+										placeholder={__('Select a user', 'everest-forms')}
+										options={context === 'edit' ? [] : userOptions}
+										value={selectedUser}
+										onChange={setSelectedUser}
+										onInputChange={
+											context === 'edit' ? undefined : handleInputChange
+										}
+										filterOption={() => true}
+										isLoading={
+											context !== 'edit' &&
+											(isUsersLoading || isFetchingNextPage)
+										}
+										isDisabled={context === 'edit'}
+										isClearable={context !== 'edit'}
+										isSearchable={false}
+										menuIsOpen={context === 'edit' ? false : undefined}
+										onMenuScrollToBottom={() => {
+											if (hasNextPage && !isFetchingNextPage) {
+												fetchNextPage();
+											}
+										}}
+										noOptionsMessage={() =>
+											isUsersLoading
+												? __('Loading…', 'everest-forms')
+												: __('No users found', 'everest-forms')
+										}
+										loadingMessage={() => __('Loading…', 'everest-forms')}
+										chakraStyles={selectChakraStyles}
 									/>
+
 									{errors.map((error, index) =>
-										error.key === "user_email" ? (
-											<Alert
-												borderRadius={"4px"}
-												key={index}
-												status="error"
-											>
+										error.key === 'user_email' ? (
+											<Alert borderRadius="4px" key={index} status="error">
 												{error.message}
 											</Alert>
-										) : null
+										) : null,
 									)}
 								</Stack>
 
 								<Stack>
 									<FormLabel display="flex" alignItems="center" fontSize="14px">
-										User Permission
-										<Tooltip label="User permission" fontSize="sm">
-											<Icon
-												as={InfoIcon}
-												ml={2}
-												boxSize={4}
-												background="#BABABA"
-												color="#FFFFFF"
-												borderRadius="50%"
-												padding="2px"
-												border={"none"}
-												_hover={{ cursor: "pointer" }}
-											/>
-										</Tooltip>
+										{__('User Permission', 'everest-forms')}
 									</FormLabel>
+
 									<Select
-										required
 										isMulti
 										size="md"
-										placeholder={__(
-											"Select user permission",
-											"everest-forms"
-										)}
-										options={
-											context === "edit"
-												? Object.entries(value.permission_details || {}).map(
-														([key, label]) => ({
-															value: key,
-															label: label,
-														})
-												  )
-												: all_permissions
-										}
-										value={context === "edit" ? selectedPermissions : undefined}
+										placeholder={__('Select user permission', 'everest-forms')}
+										options={allPermissionOptions}
+										value={permissions.map((val) => ({
+											value: val,
+											label: wp_roles[val] || val,
+										}))}
 										onChange={handleMultiplePermission}
 										isClearable
 										isSearchable={false}
+										chakraStyles={selectChakraStyles}
 									/>
+
 									{errors.map((error, index) =>
-										error.key === "assigned_permission" ? (
-											<Alert
-												borderRadius={"4px"}
-												key={index}
-												status="error"
-											>
+										error.key === 'assigned_permission' ? (
+											<Alert borderRadius="4px" key={index} status="error">
 												{error.message}
 											</Alert>
-										) : null
+										) : null,
 									)}
 								</Stack>
 							</Stack>
-							<Flex justifyContent={"flex-end"} marginTop={"24px"}>
-								<Button
-									_hover={{ backgroundColor: "#FFFFF" }}
-									color={"#6B6B6B"}
-									fontWeight={"600"}
-									fontSize={"16px"}
-									lineHeight={"24px"}
-									mr={3}
-									onClick={onClose}
-								>
-									Back
+
+							<Flex justifyContent="flex-end" mt="6" gap={3}>
+								<Button onClick={onClose} variant="outline">
+									{__('Back', 'everest-forms')}
 								</Button>
 								<Button
-									color={"#FFFFFF"}
-									fontWeight={"500"}
-									fontSize={"16px"}
-									backgroundColor={"#7545BB"}
-									padding={"10px 16px"}
-									borderRadius={"4px"}
-									border={"1px solid #7545BB"}
-									width={"94px"}
-									height={"39px"}
-									_hover={{ backgroundColor: "#7545BB" }}
-									onClick={(e) =>
-										handleAddManager(userEmail, permissions)
-									}
+									color="#FFFFFF"
+									backgroundColor="#7545BB"
+									padding="10px 16px"
+									borderRadius="4px"
+									border="1px solid #7545BB"
+									width="94px"
+									height="39px"
+									_hover={{ backgroundColor: '#7545BB' }}
+									onClick={handleAddManager}
+									isLoading={isSubmitting}
 								>
-									Confirm
+									{__('Confirm', 'everest-forms')}
 								</Button>
 							</Flex>
 						</FormControl>

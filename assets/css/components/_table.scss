@@ -8,8 +8,7 @@ $evf-border: #e1e1e1;
 $evf-bg-white: #ffffff;
 $evf-bg-light: #f9fafb;
 $evf-bg-hover: #f9fafb;
-$evf-shadow-sm:
-	0 1px 3px 0 rgba(0, 0, 0, 0.1),
+$evf-shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1),
 	0 1px 2px 0 rgba(0, 0, 0, 0.06);
 $evf-shadow-hover: 0 2px 4px rgba(126, 59, 208, 0.04);
 $evf-radius-sm: 4px;
@@ -28,7 +27,6 @@ $status-pending-text: #92400e;
 $status-trash-bg: #fee2e2;
 $status-trash-text: #991b1b;
 
-.wrap,
 #everest-forms-entries-list,
 .everest-forms-admin-page {
 	max-width: 100%;
@@ -117,7 +115,7 @@ $status-trash-text: #991b1b;
 	min-height: 40px;
 	margin-top: 28px;
 
-	> .alignleft.actions.bulkactions {
+	>.alignleft.actions.bulkactions {
 		order: 1;
 		display: flex;
 		gap: 10px;
@@ -195,7 +193,7 @@ $status-trash-text: #991b1b;
 		}
 	}
 
-	> .everest-forms-extra-table-nav {
+	>.everest-forms-extra-table-nav {
 		order: 2;
 		margin-left: auto;
 		display: flex;
@@ -501,6 +499,7 @@ $status-trash-text: #991b1b;
 			color: #fff;
 			border-color: $evf-primary;
 		}
+
 		&:active {
 			min-height: 38px;
 			border: 1px solid $evf-primary;
@@ -518,6 +517,7 @@ $status-trash-text: #991b1b;
 			align-items: center;
 			gap: 6px;
 		}
+
 		&:focus {
 			box-shadow: none;
 			outline: none;
@@ -622,18 +622,22 @@ $status-trash-text: #991b1b;
 			&.column-indicators {
 				width: 2.2em !important;
 			}
+
 			&.column-id {
 				width: 6%;
 			}
+
 			&.column-sn {
 				width: 6%;
 			}
+
 			&.column-status {
 				width: 10%;
 			}
 
 			&.column-shortcode {
-				width: 22em !important;
+				width: 22em;
+				// width: auto;
 			}
 
 			&.column-enabled {
@@ -653,7 +657,7 @@ $status-trash-text: #991b1b;
 			}
 
 			&.column-date {
-				width: 10%;
+				width: 16%;
 			}
 
 			&.column-entry {
@@ -673,6 +677,7 @@ $status-trash-text: #991b1b;
 				gap: 8px;
 				padding: 0;
 			}
+
 			// Sortable columns
 			&.sortable,
 			&.sorted {
@@ -778,7 +783,7 @@ $status-trash-text: #991b1b;
 
 					strong,
 					strong a,
-					> a {
+					>a {
 						color: $evf-primary !important;
 					}
 				}
@@ -824,12 +829,6 @@ $status-trash-text: #991b1b;
 			td {
 				padding: 14px 16px;
 				color: $evf-text-primary;
-				font-family:
-					Inter,
-					-apple-system,
-					BlinkMacSystemFont,
-					'Segoe UI',
-					sans-serif;
 				font-size: 14px;
 				font-weight: 400;
 				line-height: normal;
@@ -1023,6 +1022,7 @@ $status-trash-text: #991b1b;
 
 				&.status,
 				&.column-status {
+
 					.badge,
 					.evf-badge {
 						display: inline-flex;
@@ -1091,6 +1091,53 @@ $status-trash-text: #991b1b;
 					font-weight: 400;
 					color: $evf-text-primary;
 				}
+
+				.evf-no-coupons {
+					display: flex;
+					align-items: center;
+					flex-direction: column;
+					gap: 24px;
+
+					img {
+						width: 260px;
+						height: auto;
+					}
+				}
+
+				.evf-shortcode-field {
+					display: flex;
+					align-items: center;
+
+					input[type="text"] {
+						flex: 1;
+						min-height: 36px;
+						padding: 0 8px;
+						border: 1px solid #e1e1e1;
+						background: #ffffff;
+						border-radius: 4px 0 0 4px;
+						border-right: 0;
+					}
+
+					.button.evf-copy-shortcode {
+						padding: 0;
+						height: 36px;
+						width: 38px;
+						display: flex;
+						align-items: center;
+						justify-content: center;
+						border: 1px solid #e1e1e1;
+						background: #f4f4f4;
+						border-radius: 0 4px 4px 0;
+						border-left: 0;
+						margin-left: -2px;
+
+						svg {
+							width: 18px;
+							height: 18px;
+							margin: 0;
+						}
+					}
+				}
 			}
 
 			.toggle-row {
@@ -1111,6 +1158,28 @@ $status-trash-text: #991b1b;
 
 	tfoot {
 		display: none;
+	}
+}
+
+body.everest-forms_page_evf-email-templates {
+	.everest-forms-table-container {
+		.evf-base-list-table {
+
+			thead th,
+			tbody td {
+				&.column-title {
+					width: 33% !important;
+				}
+
+				&.column-author {
+					width: 32% !important;
+				}
+
+				&.column-date {
+					width: 32% !important;
+				}
+			}
+		}
 	}
 }
 
@@ -1315,6 +1384,7 @@ body {
 		padding: 16px 0;
 
 		&.top {
+
 			.alignleft,
 			.everest-forms-extra-table-nav {
 				width: 100%;
@@ -1364,6 +1434,7 @@ body {
 	}
 
 	.tablenav-pages .pagination-links {
+
 		.page-numbers,
 		.first-page,
 		.last-page,
@@ -1455,6 +1526,7 @@ body {
 			border: 1px solid #7545bb;
 		}
 	}
+
 	svg {
 		color: #999999 !important;
 	}
@@ -1473,8 +1545,10 @@ body {
 	margin-top: 20px;
 	align-items: center;
 	gap: 16px;
+
 	.tags-selects {
 		display: block;
+
 		.label {
 			margin-right: 10px;
 			font-size: 13px;

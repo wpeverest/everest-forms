@@ -95,8 +95,8 @@ class CleanTalk {
 		$output .= '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: text-bottom; margin-right: 5px;">';
 		$output .= '<path fill-rule="evenodd" clip-rule="evenodd" d="M8 1.45455C4.38505 1.45455 1.45455 4.38505 1.45455 8C1.45455 11.615 4.38505 14.5455 8 14.5455C11.615 14.5455 14.5455 11.615 14.5455 8C14.5455 4.38505 11.615 1.45455 8 1.45455ZM0 8C0 3.58172 3.58172 0 8 0C12.4183 0 16 3.58172 16 8C16 12.4183 12.4183 16 8 16C3.58172 16 0 12.4183 0 8ZM8 7.27273C8.40166 7.27273 8.72727 7.59834 8.72727 8V10.9091C8.72727 11.3108 8.40166 11.6364 8 11.6364C7.59834 11.6364 7.27273 11.3108 7.27273 10.9091V8C7.27273 7.59834 7.59834 7.27273 8 7.27273ZM8 4.36364C7.59834 4.36364 7.27273 4.68925 7.27273 5.09091C7.27273 5.49257 7.59834 5.81818 8 5.81818H8.00727C8.40894 5.81818 8.73455 5.49257 8.73455 5.09091C8.73455 4.68925 8.40894 4.36364 8.00727 4.36364H8Z" fill="#4584FF"/>';
 		$output .= '</svg>';
-		$output .= '<p><strong>Note : </strong>' . __( "This will update the CleanTalk Access Key globally. You can check here on ", 'everest-forms' );
-		$output .= '<a href="' . esc_url( admin_url( 'admin.php?page=evf-settings&tab=integration&section=clean-talk') ) . '" target="__blank">' . __( "Settings &gt; Integration &gt; CleanTalk", 'everest-forms' ) .'</a>.</p>';
+		$output .= '<p><strong>Note : </strong>' . __( 'This will update the CleanTalk Access Key globally. You can check here on ', 'everest-forms' );
+		$output .= '<a href="' . esc_url( admin_url( 'admin.php?page=evf-settings&tab=recaptcha&section=integration') ) . '" target="__blank">' . __( 'Settings &gt; Security &gt; Integration &gt; CleanTalk', 'everest-forms' ) .'</a>.</p>';
 		$output .= '</div>';
 
 		$output .= '</div>';

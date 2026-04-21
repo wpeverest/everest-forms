@@ -69,7 +69,10 @@ const CardsGrid = ({ modules, selectedCategory, showToast, onModuleToggle }) => 
 							mb={{ base: '4', sm: '5', md: '6' }}
 							bg="white"
 							p={{ base: '4', sm: '5', md: '6', lg: '8' }}
-							borderRadius="lg"
+							borderRadius="13px"
+							borderWidth="1px"
+							borderStyle="solid"
+							borderColor="#e1e1e1"
 						>
 							<HStack
 								justify="space-between"
@@ -96,12 +99,15 @@ const CardsGrid = ({ modules, selectedCategory, showToast, onModuleToggle }) => 
 								</Text>
 							</HStack>
 							<Divider
-								mb={{ base: '4', sm: '5', md: '6' }}
-								borderColor="gray.200"
+								mb={{ base: '5', sm: '6', md: '7' }}
+								borderColor="#e1e1e1"
+								opacity="1"
+								pb="4px"
 							/>
 
 							<SimpleGrid
-								columns={{ base: 1, md: 2, lg: 3 }}
+								gridTemplateColumns="repeat(auto-fill, minmax(320px, 1fr))"
+								// columns={{ base: 1, md: 2, lg: 3 }}
 								spacing={{ base: '4', sm: '5', md: '6' }}
 							>
 								{categoryModules.map((addon) => (
@@ -133,7 +139,10 @@ const CardsGrid = ({ modules, selectedCategory, showToast, onModuleToggle }) => 
 				mb={{ base: '4', sm: '5', md: '6' }}
 				bg="white"
 				p={{ base: '4', sm: '5', md: '6', lg: '8' }}
-				borderRadius="lg"
+				borderRadius="13px"
+				borderWidth="1px"
+				borderStyle="solid"
+				borderColor="#e1e1e1"
 			>
 				<HStack
 					justify="space-between"
@@ -158,11 +167,14 @@ const CardsGrid = ({ modules, selectedCategory, showToast, onModuleToggle }) => 
 						{modules.length} {modules.length === 1 ? 'Item' : 'Items'}
 					</Text>
 				</HStack>
-				<Divider mb={{ base: '4', sm: '5', md: '6' }} borderColor="gray.200" />
+				<Divider mb={{ base: '5', sm: '6', md: '7' }} borderColor="#e1e1e1" opacity="1" pb="4px" />
 
 				{modules.length > 0 ? (
 					<SimpleGrid
-						columns={{ base: 1, md: 2, lg: 3 }}
+						// columns={{ base: 1, md: 2, lg: 3 }}
+						// spacing={{ base: '4', sm: '5', md: '6' }}
+
+						gridTemplateColumns="repeat(auto-fill, minmax(320px, 1fr))"
 						spacing={{ base: '4', sm: '5', md: '6' }}
 					>
 						{modules.map((addon) => (
