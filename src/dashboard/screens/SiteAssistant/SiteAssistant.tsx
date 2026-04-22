@@ -78,7 +78,6 @@ interface StepConfig {
 	id: string;
 	title: string;
 	isCompleted: (data: SiteAssistantData | undefined) => boolean;
-	renderContent: () => JSX.Element;
 }
 
 interface Props {
@@ -96,7 +95,6 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 
 	const [open, setOpen] = useState<Record<string, boolean>>({});
 	const [testEmail, setTestEmail] = useState<string>(adminEmail || '');
-	const [emailStatus, setEmailStatus] = useState<'idle' | 'sent' | 'failed'>('idle');
 	const [isInstallingSmtp, setIsInstallingSmtp] = useState(false);
 	const [smtpInstallError, setSmtpInstallError] = useState<string | null>(null);
 
@@ -180,18 +178,37 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 				data: {
 					...old?.data,
 					email_sent: data.data.email_sent,
+					test_email_sent: data.data.test_email_sent,
 					last_form_email_status: data.data.last_form_email_status,
 					is_smart_smtp_installed: data.data.is_smart_smtp_installed,
 					is_smart_smtp_active: data.data.is_smart_smtp_active,
 				},
 			}));
-			setEmailStatus(data.data.email_sent ? 'sent' : 'failed');
 		},
 		onError: (error: any) => {
 			console.error('Error sending test email:', error);
-			setEmailStatus('failed');
 		},
 	});
+
+	const resolvedSmtpInstalled =
+		sendTestEmailMutation.data?.data?.is_smart_smtp_installed ??
+		siteData?.data?.is_smart_smtp_installed;
+	const resolvedSmtpActive =
+		sendTestEmailMutation.data?.data?.is_smart_smtp_active ??
+		siteData?.data?.is_smart_smtp_active;
+	const resolvedEmailSent =
+		sendTestEmailMutation.data?.data?.email_sent ?? siteData?.data?.test_email_sent;
+	const resolvedLastFormEmailStatus =
+		sendTestEmailMutation.data?.data?.last_form_email_status ??
+		siteData?.data?.last_form_email_status;
+
+	const emailStatus: 'idle' | 'sent' | 'failed' = sendTestEmailMutation.isError
+		? 'failed'
+		: resolvedEmailSent
+		? 'sent'
+		: resolvedLastFormEmailStatus === 'failed'
+		? 'failed'
+		: 'idle';
 
 	const skipSendTestEmailMutation = useMutation({
 		mutationFn: async () => {
@@ -253,10 +270,14 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 		setIsInstallingSmtp(true);
 		setSmtpInstallError(null);
 		try {
+			const normalizedAdminUrl = (adminURL || '').endsWith('/')
+				? (adminURL || '').slice(0, -1)
+				: adminURL || '';
+			const ajaxEndpoint = ajaxURL || `${normalizedAdminUrl}/admin-ajax.php`;
 			const formData = new FormData();
-			formData.append('action', 'install_and_activate_smart_smtp');
+			formData.append('action', 'everest_forms_install_and_activate_smart_smtp');
 			formData.append('security', smartSmtpNonce || '');
-			const response = await fetch(ajaxURL || '', {
+			const response = await fetch(ajaxEndpoint, {
 				method: 'POST',
 				body: formData,
 			});
@@ -270,6 +291,9 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 						is_smart_smtp_active: true,
 					},
 				}));
+				if (result.data?.redirection_url) {
+					window.location.href = result.data.redirection_url;
+				}
 			} else {
 				setSmtpInstallError(
 					result.data?.message ||
@@ -604,12 +628,7 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 					<Heading as="h3" fontSize="19px" fontWeight="600" color="grey.500">
 						{__('Send Test Email', 'everest-forms')}
 					</Heading>
-					{siteData?.data?.test_email_sent && (
-						<Text fontSize="sm" color="green.500" fontWeight="medium">
-							{__('✓ Completed', 'everest-forms')}
-						</Text>
-					)}
-				</HStack>
+					</HStack>
 				<IconButton
 					aria-label={'sendTestEmail'}
 					icon={
@@ -663,7 +682,7 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 						</Alert>
 					)}
 					{(emailStatus === 'failed' || emailStatus === 'sent') &&
-						!siteData?.data?.is_smart_smtp_active && (
+						!resolvedSmtpActive && (
 							<Box
 								p={4}
 								border="1px"
@@ -724,9 +743,9 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 										loadingText={__('Installing...', 'everest-forms')}
 										flexShrink={0}
 									>
-										{siteData?.data?.is_smart_smtp_installed
-											? __('Activate Plugin', 'everest-forms')
-											: __('Install Plugin', 'everest-forms')}
+										{resolvedSmtpInstalled
+											? __('Activate SmartSMTP', 'everest-forms')
+											: __('Install & Activate SmartSMTP', 'everest-forms')}
 									</Button>
 								</Flex>
 							</Box>
@@ -827,16 +846,6 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 			setTestEmail(adminEmail);
 		}
 	}, [adminEmail]);
-
-	useEffect(() => {
-		if (
-			siteData?.data?.last_form_email_status === 'failed' &&
-			!siteData?.data?.test_email_sent &&
-			emailStatus === 'idle'
-		) {
-			setEmailStatus('failed');
-		}
-	}, [siteData?.data?.last_form_email_status]);
 
 	const renderSpamProtectionContent = () => (
 		<Stack
@@ -970,7 +979,6 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 				title: __('Start Creating Forms', 'everest-forms'),
 				isCompleted: (data) =>
 					!!data?.skipped_steps?.includes('create_form') || !!data?.has_forms,
-				renderContent: renderCreateFormContent,
 			});
 		}
 
@@ -980,27 +988,17 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 				title: __('Send Test Email', 'everest-forms'),
 				isCompleted: (data) =>
 					!!data?.skipped_steps?.includes('send_test_email'),
-				renderContent: renderSendTestEmailContent,
 			},
 			{
 				id: 'spamProtection',
 				title: __('Spam Protection', 'everest-forms'),
 				isCompleted: (data) =>
 					!!data?.skipped_steps?.includes('spam_protection'),
-				renderContent: renderSpamProtectionContent,
 			},
 		);
 
 		return steps;
-	}, [
-		open,
-		testEmail,
-		sendTestEmailMutation.isLoading,
-		skipSpamProtectionMutation.isLoading,
-		skipCreateFormMutation.isLoading,
-		skipSendTestEmailMutation.isLoading,
-		siteData,
-	]);
+	}, [siteData]);
 
 	const visibleSteps = useMemo(() => {
 		return stepsConfig.filter((step) => !step.isCompleted(siteData?.data));
@@ -1042,7 +1040,9 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 				<Stack gap="6">
 					{visibleSteps.map((step) => (
 						<React.Fragment key={step.id}>
-							{step.renderContent()}
+							{step.id === 'createForm' && renderCreateFormContent()}
+							{step.id === 'sendTestEmail' && renderSendTestEmailContent()}
+							{step.id === 'spamProtection' && renderSpamProtectionContent()}
 						</React.Fragment>
 					))}
 				</Stack>

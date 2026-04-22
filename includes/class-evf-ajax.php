@@ -2025,7 +2025,7 @@ class EVF_AJAX {
 
 			$installed_plugins = get_plugins();
 
-			if ( in_array( 'smart-smtp/smart-smtp.php', $installed_plugins ) ) {
+			if ( array_key_exists( 'smart-smtp/smart-smtp.php', $installed_plugins ) ) {
 				$activate_result = activate_plugin( 'smart-smtp/smart-smtp.php' );
 				if ( is_wp_error( $activate_result ) ) {
 					$error_message = $activate_result->get_error_message();
