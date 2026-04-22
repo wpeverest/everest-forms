@@ -380,7 +380,7 @@ class EVF_Admin_Assets {
 
 			wp_enqueue_script( 'wp-codemirror' );
 			// Enqueue additional scripts for hints if not included by default.
-			 wp_enqueue_script( 'codemirror-hint', evf()->plugin_url() . '/assets/js/code-mirror/show-hint' . $suffix . '.js', array( 'wp-codemirror' ), EVF_VERSION, true );
+			//  wp_enqueue_script( 'codemirror-hint', evf()->plugin_url() . '/assets/js/code-mirror/show-hint' . $suffix . '.js', array( 'wp-codemirror' ), EVF_VERSION, true );
 
 			// De-register scripts.
 			wp_dequeue_script( 'colorpick' );
