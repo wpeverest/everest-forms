@@ -970,8 +970,9 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 				id: 'sendTestEmail',
 				title: __('Send Test Email', 'everest-forms'),
 				isCompleted: (data) =>
-					!!data?.test_email_sent ||
-					!!data?.skipped_steps?.includes('send_test_email'),
+					emailStatus === 'idle' &&
+					(!!data?.test_email_sent ||
+						!!data?.skipped_steps?.includes('send_test_email')),
 				renderContent: renderSendTestEmailContent,
 			},
 			{
@@ -987,6 +988,7 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 	}, [
 		open,
 		testEmail,
+		emailStatus,
 		sendTestEmailMutation.isLoading,
 		skipSpamProtectionMutation.isLoading,
 		skipCreateFormMutation.isLoading,
