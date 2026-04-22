@@ -656,9 +656,9 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 				<Stack gap={5} minWidth="0" width="100%">
 					<Divider color={'gray.200'} />
 					{emailStatus === 'failed' && (
-						<Alert status="error" borderRadius="md" fontSize="sm">
+						<Alert status="error" borderRadius="md" fontSize="sm" sx={{ backgroundColor: '#F2565612 !important' }} >
 							<AlertIcon />
-							<Text fontSize="sm">
+							<Text fontSize="sm" color="#F04242!important">
 								{__(
 									"Test Email Failed - Your server's default mail function appears unreliable. A dedicated SMTP plugin will fix this.",
 									'everest-forms',
@@ -667,9 +667,14 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 						</Alert>
 					)}
 					{emailStatus === 'sent' && (
-						<Alert status="success" borderRadius="md" fontSize="sm">
+						<Alert
+						status="success"
+						borderRadius="md"
+						fontSize="sm"
+						sx={{ backgroundColor: '#4CC74114 !important' }} 
+					  >
 							<AlertIcon />
-							<Text fontSize="sm">
+							<Text fontSize="sm" color="#389E2E!important">
 								{__(
 									'Test Email Sent Successfully - Your email delivery is working. Form notifications should reach your inbox reliably.',
 									'everest-forms',
@@ -695,7 +700,44 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 											flexShrink={0}
 											mt="1px"
 										>
-											<Icon as={BiEnvelope} fontSize="xl" color="primary.500" />
+											<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
+												<path d="M10.3588 8.88574H28.2297V21.0705L10.3588 21.0705V8.88574Z" fill="url(#paint0_linear_10119_3622)" stroke="url(#paint1_linear_10119_3622)" stroke-width="0.812315"/>
+												<path d="M28.6358 21.4769L9.95259 8.47986V21.4769H28.6358Z" fill="url(#paint2_linear_10119_3622)"/>
+												<path d="M19.8124 15.1899L27.8234 8.48005L19.8124 3.30237L10.7648 8.48005L19.8124 15.1899Z" fill="url(#paint3_linear_10119_3622)" stroke="url(#paint4_linear_10119_3622)" stroke-width="1.05601"/>
+												<path d="M3.06884 16.2518L20.3557 16.2517L20.5126 27.9754H3.06884V16.2518Z" fill="url(#paint5_linear_10119_3622)" stroke="url(#paint6_linear_10119_3622)" stroke-width="0.812315"/>
+												<path d="M19.3879 16.1967H3.9625L11.3976 21.0705L19.3879 16.1967Z" fill="#0062CC" stroke="#0062CC" stroke-width="0.812315"/>
+												<path d="M27.896 9.03432L12.5214 23.2993L7.55934 19.2333L2.69446 15.8498L11.5771 20.6643L17.4664 16.6027L23.3557 12.5411L27.896 9.03432Z" fill="white"/>
+												<defs>
+												<linearGradient id="paint0_linear_10119_3622" x1="19.2942" y1="8.88574" x2="19.2942" y2="21.0705" gradientUnits="userSpaceOnUse">
+												<stop offset="0.389" stop-color="#3395FF"/>
+												<stop offset="1" stop-color="#004A99"/>
+												</linearGradient>
+												<linearGradient id="paint1_linear_10119_3622" x1="19.2942" y1="8.88574" x2="19.2942" y2="21.0705" gradientUnits="userSpaceOnUse">
+												<stop stop-color="#3396FF"/>
+												<stop offset="1" stop-color="#004A99"/>
+												</linearGradient>
+												<linearGradient id="paint2_linear_10119_3622" x1="9.95259" y1="8.47986" x2="19.6859" y2="20.3432" gradientUnits="userSpaceOnUse">
+												<stop stop-color="#004A99" stop-opacity="0.76"/>
+												<stop offset="0.974" stop-color="#3395FF"/>
+												</linearGradient>
+												<linearGradient id="paint3_linear_10119_3622" x1="19.2941" y1="1.16922" x2="19.2941" y2="14.9786" gradientUnits="userSpaceOnUse">
+												<stop offset="0.404" stop-color="#3396FF"/>
+												<stop offset="0.759" stop-color="#004A99"/>
+												</linearGradient>
+												<linearGradient id="paint4_linear_10119_3622" x1="19.2941" y1="1.16922" x2="19.2941" y2="14.9786" gradientUnits="userSpaceOnUse">
+												<stop offset="0.4" stop-color="#3395FF"/>
+												<stop offset="0.76" stop-color="#004A99"/>
+												</linearGradient>
+												<linearGradient id="paint5_linear_10119_3622" x1="11.5772" y1="15.7907" x2="11.5772" y2="27.9755" gradientUnits="userSpaceOnUse">
+												<stop offset="0.344" stop-color="#3395FF"/>
+												<stop offset="0.939" stop-color="#004A99"/>
+												</linearGradient>
+												<linearGradient id="paint6_linear_10119_3622" x1="11.5772" y1="15.7907" x2="11.5772" y2="27.9755" gradientUnits="userSpaceOnUse">
+												<stop offset="0.364" stop-color="#3396FF"/>
+												<stop offset="1" stop-color="#004794"/>
+												</linearGradient>
+												</defs>
+												</svg>
 										</Box>
 										<Box>
 											<HStack spacing={1} mb={1}>
@@ -710,7 +752,22 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 													color="primary.500"
 													fontSize="sm"
 												>
-													{'↗'}
+													<svg
+														xmlns="http://www.w3.org/2000/svg"
+														viewBox="0 0 14 14"
+														width="14"
+														height="14"
+														style={{
+															width: '14px',
+															minWidth: '14px',
+															height: '14px',
+															display: 'inline-block',
+															flex: '0 0 14px',
+															marginRight: '6px',
+														}}
+													>
+														<path d="M1.167 11.083V4.667a1.75 1.75 0 0 1 1.75-1.75h3.5a.583.583 0 0 1 0 1.166h-3.5a.585.585 0 0 0-.584.584v6.416a.585.585 0 0 0 .584.584h6.416a.585.585 0 0 0 .584-.584v-3.5a.583.583 0 0 1 1.166 0v3.5a1.75 1.75 0 0 1-1.75 1.75H2.917a1.75 1.75 0 0 1-1.75-1.75M12.833 5.25a.583.583 0 1 1-1.166 0V3.157L6.247 8.58a.584.584 0 0 1-.826-.825l5.422-5.421H8.75a.583.583 0 1 1 0-1.166h3.5c.322 0 .583.26.583.583z" />
+													</svg>
 												</Link>
 											</HStack>
 											<Text fontSize="xs" color="grey.350" lineHeight="1.5">
@@ -811,7 +868,38 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 							isLoading={sendTestEmailMutation.isLoading}
 							loadingText={__('Sending...', 'everest-forms')}
 						>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								viewBox="0 0 14 14"
+								width="14"
+								height="14"
+								style={{
+									width: '14px',
+									minWidth: '14px',
+									height: '14px',
+									display: 'inline-block',
+									flex: '0 0 14px',
+									marginRight: '6px',
+								}}
+							>
+								<g clipPath="url(#a)">
+									<path
+										fill="currentColor"
+										d="m12.613.584.122.019.12.035q.114.044.214.118l.094.081.08.094q.075.099.12.215l.034.119.019.122q.014.182-.048.353l.002.001-3.792 11.084a.876.876 0 0 1-1.581.162l-.059-.12-1.855-4.626-.055-.104a.6.6 0 0 0-.165-.165l-.104-.055-4.626-1.855a.875.875 0 0 1-.55-.834l.014-.133a.9.9 0 0 1 .156-.362L.84 4.63a.9.9 0 0 1 .335-.209L12.259.63v.002a.9.9 0 0 1 .354-.048M2.295 5.271l3.898 1.563a1.75 1.75 0 0 1 .899.81l.074.162 1.562 3.898 3.344-9.777z"
+									/>
+									<path
+										fill="currentColor"
+										d="M12.335.84a.584.584 0 0 1 .825.825L6.78 8.046a.584.584 0 0 1-.825-.825z"
+									/>
+								</g>
+								<defs>
+									<clipPath id="a">
+										<path d="M0 0h14v14H0z" />
+									</clipPath>
+								</defs>
+							</svg>
 							{__('Send Test Email', 'everest-forms')}
+
 						</Button>
 						</Flex>
 					</FormControl>
