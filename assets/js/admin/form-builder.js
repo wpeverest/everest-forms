@@ -7216,6 +7216,29 @@ jQuery(function ($) {
 
 jQuery(function ($) {
 	$(document).ready(function () {
+
+		// Add "Add Field Below" button to repeater field.
+		var observer = new MutationObserver(function (mutations) {
+			mutations.forEach(function (mutation) {
+				$(mutation.addedNodes).each(function () {
+					if ($(this).hasClass('everest-forms-field')) {
+						if (!$(this).find('.evf-add-field-below').length) {
+							$(this).append(
+								'<div class="evf-add-field-below">' +
+									'<span class="dashicons dashicons-plus" title="Add Field Below"></span>' +
+								'</div>'
+							);
+						}
+					}
+				});
+			});
+		});
+
+		observer.observe(document.body, {
+			childList: true,
+			subtree: true
+		});
+
 		// Custom CSS
 		const customCssElement = $(
 			'#everest-forms-panel-field-settings-evf-custom-css',
