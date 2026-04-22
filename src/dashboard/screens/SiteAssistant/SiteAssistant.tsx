@@ -65,6 +65,7 @@ interface SiteAssistantData {
 	has_forms: boolean;
 	email_sent?: boolean;
 	last_form_email_status: 'success' | 'failed' | '';
+	is_smtp_active: boolean;
 	is_smart_smtp_installed: boolean;
 	is_smart_smtp_active: boolean;
 }
@@ -180,6 +181,7 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 					email_sent: data.data.email_sent,
 					test_email_sent: data.data.test_email_sent,
 					last_form_email_status: data.data.last_form_email_status,
+					is_smtp_active: data.data.is_smtp_active,
 					is_smart_smtp_installed: data.data.is_smart_smtp_installed,
 					is_smart_smtp_active: data.data.is_smart_smtp_active,
 				},
@@ -194,8 +196,7 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 		sendTestEmailMutation.data?.data?.is_smart_smtp_installed ??
 		siteData?.data?.is_smart_smtp_installed;
 	const resolvedSmtpActive =
-		sendTestEmailMutation.data?.data?.is_smart_smtp_active ??
-		siteData?.data?.is_smart_smtp_active;
+		sendTestEmailMutation.data?.data?.is_smtp_active ?? siteData?.data?.is_smtp_active;
 	const resolvedEmailSent =
 		sendTestEmailMutation.data?.data?.email_sent ?? siteData?.data?.test_email_sent;
 	const resolvedLastFormEmailStatus =
@@ -290,6 +291,7 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 						...old?.data,
 						is_smart_smtp_installed: true,
 						is_smart_smtp_active: true,
+						is_smtp_active: true,
 					},
 				}));
 				if (result.data?.redirection_url) {
@@ -684,7 +686,7 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 						</Alert>
 					)}
 					{(emailStatus === 'failed' || emailStatus === 'sent') &&
-						!resolvedSmtpActive && (
+						resolvedSmtpActive && (
 							<Box
 								p={4}
 								border="1px"

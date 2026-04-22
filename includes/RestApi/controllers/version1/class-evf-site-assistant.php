@@ -199,6 +199,18 @@ class EVF_Site_Assistant {
 	}
 
 	/**
+	 * Check if SMTP transport is active (runtime).
+	 *
+	 * This reflects the transport that WordPress used most recently when we sent a test email,
+	 * captured via the `phpmailer_init` hook in `process_test_email()`.
+	 *
+	 * @return bool
+	 */
+	protected function is_smtp_active() {
+		return (bool) get_option( 'everest_forms_runtime_smtp_active', false );
+	}
+
+	/**
 	 * Check if any forms exist.
 	 *
 	 * @return bool True if forms exist, false otherwise.
@@ -242,6 +254,7 @@ class EVF_Site_Assistant {
 			'all_steps_completed'        => $this->are_all_steps_completed(),
 			'has_forms'                  => $this->has_forms(),
 			'last_form_email_status'     => get_option( 'everest_forms_last_form_email_status', '' ),
+			'is_smtp_active'             => $this->is_smtp_active(),
 			'is_smart_smtp_installed'    => $this->is_smart_smtp_installed(),
 			'is_smart_smtp_active'       => $this->is_smart_smtp_active(),
 		);
@@ -331,6 +344,7 @@ class EVF_Site_Assistant {
 					'all_steps_completed'        => $this->are_all_steps_completed(),
 					'has_forms'                  => $this->has_forms(),
 					'last_form_email_status'     => get_option( 'everest_forms_last_form_email_status', '' ),
+					'is_smtp_active'             => $this->is_smtp_active(),
 					'is_smart_smtp_installed'    => $this->is_smart_smtp_installed(),
 					'is_smart_smtp_active'       => $this->is_smart_smtp_active(),
 				),
@@ -391,6 +405,7 @@ class EVF_Site_Assistant {
 						'all_steps_completed'     => $this->are_all_steps_completed(),
 						'has_forms'               => $this->has_forms(),
 						'last_form_email_status'  => get_option( 'everest_forms_last_form_email_status', '' ),
+						'is_smtp_active'          => $this->is_smtp_active(),
 						'is_smart_smtp_installed' => $this->is_smart_smtp_installed(),
 						'is_smart_smtp_active'    => $this->is_smart_smtp_active(),
 					),
@@ -408,6 +423,7 @@ class EVF_Site_Assistant {
 						'all_steps_completed'     => $this->are_all_steps_completed(),
 						'has_forms'               => $this->has_forms(),
 						'last_form_email_status'  => get_option( 'everest_forms_last_form_email_status', '' ),
+						'is_smtp_active'          => $this->is_smtp_active(),
 						'is_smart_smtp_installed' => $this->is_smart_smtp_installed(),
 						'is_smart_smtp_active'    => $this->is_smart_smtp_active(),
 					),
