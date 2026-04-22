@@ -187,6 +187,11 @@ class EVF_Site_Assistant {
 	 * @return bool
 	 */
 	protected function is_smart_smtp_active() {
+		$runtime_smtp_active = get_option( 'everest_forms_runtime_smtp_active', null );
+		if ( null !== $runtime_smtp_active ) {
+			return (bool) $runtime_smtp_active;
+		}
+
 		if ( ! function_exists( 'is_plugin_active' ) ) {
 			require_once ABSPATH . 'wp-admin/includes/plugin.php';
 		}
@@ -432,7 +437,18 @@ class EVF_Site_Assistant {
 			__( 'Everest Forms Team', 'everest-forms' )
 		);
 
-		return wp_mail( $to, $subject, $message, $header );
+		$mailer_transport = '';
+		$capture_mailer   = static function ( $phpmailer ) use ( &$mailer_transport ) {
+			$mailer_transport = strtolower( (string) $phpmailer->Mailer );
+		};
+
+		add_action( 'phpmailer_init', $capture_mailer, 999 );
+		$sent = wp_mail( $to, $subject, $message, $header );
+		remove_action( 'phpmailer_init', $capture_mailer, 999 );
+
+		update_option( 'everest_forms_runtime_smtp_active', 'smtp' === $mailer_transport );
+
+		return $sent;
 	}
 
 	/**

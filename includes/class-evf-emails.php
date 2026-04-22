@@ -357,8 +357,25 @@ class EVF_Emails {
 		$this->attachments = apply_filters( 'everest_forms_email_attachments', $this->attachments, $this );
 		$subject           = evf_decode_string( $this->process_tag( $subject ) );
 
+		// Capture runtime mail transport only during first form submission email send.
+		$mailer_transport = '';
+		$capture_mailer   = static function ( $phpmailer ) use ( &$mailer_transport ) {
+			$mailer_transport = strtolower( (string) $phpmailer->Mailer );
+		};
+		$should_capture   = ! get_option( 'everest_forms_first_form_smtp_checked', false );
+
+		if ( $should_capture ) {
+			add_action( 'phpmailer_init', $capture_mailer, 999 );
+		}
+
 		// Let's do this.
 		$sent = wp_mail( $to, $subject, $message, $this->get_headers(), $this->attachments );
+
+		if ( $should_capture ) {
+			remove_action( 'phpmailer_init', $capture_mailer, 999 );
+			update_option( 'everest_forms_runtime_smtp_active', 'smtp' === $mailer_transport );
+			update_option( 'everest_forms_first_form_smtp_checked', true );
+		}
 
 		if ( ! $sent ) {
 			$error_message = apply_filters( 'everest_forms_email_send_failed_message', '' );

@@ -201,10 +201,11 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 	const resolvedLastFormEmailStatus =
 		sendTestEmailMutation.data?.data?.last_form_email_status ??
 		siteData?.data?.last_form_email_status;
+	const hasSuccessfulFormDelivery = resolvedLastFormEmailStatus === 'success';
 
 	const emailStatus: 'idle' | 'sent' | 'failed' = sendTestEmailMutation.isError
 		? 'failed'
-		: resolvedEmailSent
+		: resolvedEmailSent || hasSuccessfulFormDelivery
 		? 'sent'
 		: resolvedLastFormEmailStatus === 'failed'
 		? 'failed'
@@ -689,7 +690,7 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 								border="1px"
 								borderColor="gray.200"
 								borderRadius="md"
-								bg="gray.50"
+								bg="#007BFF0D"
 							>
 								<Flex justify="space-between" align="center" gap={4}>
 									<HStack align="flex-start" spacing={3} flex={1}>
