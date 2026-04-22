@@ -175,7 +175,16 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 			return response as ApiResponse;
 		},
 		onSuccess: (data) => {
-			queryClient.setQueryData(['siteAssistant'], data);
+			queryClient.setQueryData(['siteAssistant'], (old: any) => ({
+				...old,
+				data: {
+					...old?.data,
+					email_sent: data.data.email_sent,
+					last_form_email_status: data.data.last_form_email_status,
+					is_smart_smtp_installed: data.data.is_smart_smtp_installed,
+					is_smart_smtp_active: data.data.is_smart_smtp_active,
+				},
+			}));
 			setEmailStatus(data.data.email_sent ? 'sent' : 'failed');
 		},
 		onError: (error: any) => {
@@ -970,9 +979,7 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 				id: 'sendTestEmail',
 				title: __('Send Test Email', 'everest-forms'),
 				isCompleted: (data) =>
-					emailStatus === 'idle' &&
-					(!!data?.test_email_sent ||
-						!!data?.skipped_steps?.includes('send_test_email')),
+					!!data?.skipped_steps?.includes('send_test_email'),
 				renderContent: renderSendTestEmailContent,
 			},
 			{
@@ -988,7 +995,6 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 	}, [
 		open,
 		testEmail,
-		emailStatus,
 		sendTestEmailMutation.isLoading,
 		skipSpamProtectionMutation.isLoading,
 		skipCreateFormMutation.isLoading,
