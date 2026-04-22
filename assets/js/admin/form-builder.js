@@ -3109,8 +3109,6 @@
 				max_row_id++;
 				total_rows++;
 
-				console.log('current', current_part);
-
 				if (current_part) {
 					wrapper = $('.evf-admin-field-wrapper').find('#part_' + current_part);
 				}
