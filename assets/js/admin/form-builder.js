@@ -2847,6 +2847,12 @@
 				total_rows =
 					parseInt($('.evf-add-row').first().attr('data-total-rows'), 10) || 0;
 
+			var current_part = $('.evf-admin-field-container').attr('data-current-part');
+
+			if (current_part) {
+				wrapper = $('.evf-admin-field-wrapper').find('#part_' + current_part);
+			}
+
 			max_row_id++;
 			total_rows++;
 
@@ -3103,8 +3109,12 @@
 				max_row_id++;
 				total_rows++;
 
+				console.log('current', current_part);
+
 				if (current_part) {
 					wrapper = $('.evf-admin-field-wrapper').find('#part_' + current_part);
+					console.log('wrapper', wrapper);
+
 				}
 
 				// Row clone.
