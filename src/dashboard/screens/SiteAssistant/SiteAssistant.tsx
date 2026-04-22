@@ -659,10 +659,8 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 						<Alert status="error" borderRadius="md" fontSize="sm">
 							<AlertIcon />
 							<Text fontSize="sm">
-								<strong>{__('Test Email Failed', 'everest-forms')}</strong>
-								{' – '}
 								{__(
-									"Your server's default mail function appears unreliable. A dedicated SMTP plugin will fix this.",
+									"Test Email Failed - Your server's default mail function appears unreliable. A dedicated SMTP plugin will fix this.",
 									'everest-forms',
 								)}
 							</Text>
@@ -672,10 +670,8 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 						<Alert status="success" borderRadius="md" fontSize="sm">
 							<AlertIcon />
 							<Text fontSize="sm">
-								<strong>{__('Test Email Sent Successfully', 'everest-forms')}</strong>
-								{' – '}
 								{__(
-									'Your email delivery is working. Form notifications should reach your inbox reliably.',
+									'Test Email Sent Successfully - Your email delivery is working. Form notifications should reach your inbox reliably.',
 									'everest-forms',
 								)}
 							</Text>
@@ -770,16 +766,19 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 						sx={{ overflow: 'hidden' }}
 						padding="0px 1px"
 					>
-						<HStack align="center" spacing={4} width="100%">
-							<Text
+						<Box marginBottom="12px">
+						<Text
 								fontSize="15px"
-								fontWeight="600"
+								fontWeight="600" 
 								color="grey.500"
 								whiteSpace="nowrap"
 								flexShrink={0}
 							>
 								{__('Your Email Address', 'everest-forms')}
 							</Text>
+						</Box>
+						<Flex display="flex" gap={3} align="center" direction="row" width="100%">
+							
 							<Input
 								placeholder={__(
 									'Enter the address where the test email should be delivered.',
@@ -805,11 +804,7 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 									fontSize: '14px !important',
 								}}
 							/>
-						</HStack>
-					</FormControl>
-
-					<Flex justify="space-between" align="center">
-						<Button
+							<Button
 							width={'fit-content'}
 							colorScheme="primary"
 							onClick={handleSendTestEmail}
@@ -818,6 +813,11 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 						>
 							{__('Send Test Email', 'everest-forms')}
 						</Button>
+						</Flex>
+					</FormControl>
+
+					<Flex justifyContent="flex-end">
+
 						<Link
 							fontSize="13px"
 							fontWeight="400"
