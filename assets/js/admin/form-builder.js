@@ -3113,8 +3113,6 @@
 
 				if (current_part) {
 					wrapper = $('.evf-admin-field-wrapper').find('#part_' + current_part);
-					console.log('wrapper', wrapper);
-
 				}
 
 				// Row clone.
