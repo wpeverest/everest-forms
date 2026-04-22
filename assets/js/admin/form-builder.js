@@ -5274,6 +5274,62 @@
 						},
 					});
 
+					if ( field_type === 'repeater-fields' ) {
+						field.remove();
+						$(document.body).trigger('init_tooltips');
+						$(document.body).trigger('init_field_options_toggle');
+						$(document.body).trigger('evf_after_field_append', [dragged_el_id]);
+						EVFPanelBuilder.conditionalLogicAppendField(dragged_el_id);
+						EVFPanelBuilder.conditionalLogicAppendFieldIntegration(dragged_el_id);
+						EVFPanelBuilder.paymentFieldAppendToQuantity(dragged_el_id);
+						EVFPanelBuilder.paymentFieldAppendToDropdown(dragged_field_id, field_type);
+						EVFPanelBuilder.oneTimeDraggableField(dragged_field_id, field_type);
+						EVFPanelBuilder.init_datepickers();
+						EVFPanelBuilder.init_payment_subscription_plan_field();
+						$(
+							'#everest-forms-field-option-' +
+								dragged_field_id +
+								'-enable_min_max_time',
+						).hide();
+						$(
+							'label[for=everest-forms-field-option-' +
+								dragged_field_id +
+								'-enable_min_max_time]',
+						).hide();
+						$(
+							'label[for=everest-forms-field-option-' +
+								dragged_field_id +
+								'-select_min_time]',
+						).hide();
+						$(
+							'label[for=everest-forms-field-option-' +
+								dragged_field_id +
+								'-select_max_time]',
+						).hide();
+						$(
+							'#everest-forms-field-option-' +
+								dragged_field_id +
+								'-min_time_hour',
+						)
+							.parent()
+							.hide();
+						$(
+							'#everest-forms-field-option-' +
+								dragged_field_id +
+								'-max_time_hour',
+						)
+							.parent()
+							.hide();
+						$(document.body).trigger('evf_field_drop_complete', [
+							field_type,
+							dragged_field_id,
+							field_preview,
+							field_options,
+						]);
+						EVFPanelBuilder.checkEmptyGrid();
+						return;
+					}
+
 					if ($.contains(document.body, field[0])) {
 						field.after(field_preview);
 					} else {
