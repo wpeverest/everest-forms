@@ -15,7 +15,7 @@ jQuery( function( $ ) {
 						paymentMethod = formTuple.find( ".everest-forms-gateway[data-gateway='stripe']" ).data( 'gateway' );
 					}
 
-					if (formTuple.find( ".everest-forms-gateway[data-gateway='stripe']").hasClass('StripeElement--empty') && $(".evf-field-credit-card ").is(':visible') ){
+					if (formTuple.find( ".everest-forms-gateway[data-gateway='stripe']").hasClass('StripeElement--empty') && formTuple.find( '.evf-field-credit-card' ).is(':visible') ){
 						$(document).ready(function() {
 							$('#card-errors').html('This field is required').show();
 							$('.evf-submit').text('Submit');
