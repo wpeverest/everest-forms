@@ -86,5 +86,5 @@ class EVF_Cache_Helper {
 		}
 	}
 }
-
+delete_transient( 'evf_unread_entry_count' );
 EVF_Cache_Helper::init();
