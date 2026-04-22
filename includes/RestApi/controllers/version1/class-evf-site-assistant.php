@@ -169,6 +169,29 @@ class EVF_Site_Assistant {
 		return ! empty( $site_key ) && ! empty( $secret_key );
 	}
 
+	/**
+	 * Check if Smart SMTP plugin is installed (not necessarily active).
+	 *
+	 * @return bool
+	 */
+	protected function is_smart_smtp_installed() {
+		if ( ! function_exists( 'get_plugins' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/plugin.php';
+		}
+		return isset( get_plugins()['smart-smtp/smart-smtp.php'] );
+	}
+
+	/**
+	 * Check if Smart SMTP plugin is active.
+	 *
+	 * @return bool
+	 */
+	protected function is_smart_smtp_active() {
+		if ( ! function_exists( 'is_plugin_active' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/plugin.php';
+		}
+		return is_plugin_active( 'smart-smtp/smart-smtp.php' );
+	}
 
 	/**
 	 * Check if any forms exist.
@@ -213,6 +236,9 @@ class EVF_Site_Assistant {
 			'spam_protection_configured' => $this->is_spam_protection_configured(),
 			'all_steps_completed'        => $this->are_all_steps_completed(),
 			'has_forms'                  => $this->has_forms(),
+			'last_form_email_status'     => get_option( 'everest_forms_last_form_email_status', '' ),
+			'is_smart_smtp_installed'    => $this->is_smart_smtp_installed(),
+			'is_smart_smtp_active'       => $this->is_smart_smtp_active(),
 		);
 
 		return rest_ensure_response(
@@ -299,6 +325,9 @@ class EVF_Site_Assistant {
 					'spam_protection_configured' => $this->is_spam_protection_configured(),
 					'all_steps_completed'        => $this->are_all_steps_completed(),
 					'has_forms'                  => $this->has_forms(),
+					'last_form_email_status'     => get_option( 'everest_forms_last_form_email_status', '' ),
+					'is_smart_smtp_installed'    => $this->is_smart_smtp_installed(),
+					'is_smart_smtp_active'       => $this->is_smart_smtp_active(),
 				),
 			)
 		);
@@ -329,40 +358,55 @@ class EVF_Site_Assistant {
 
 		$email_sent = $this->process_test_email( $email );
 
+		$skipped_steps           = array();
+		$spam_protection_skipped = $this->is_spam_protection_completed();
+		$create_form_skipped     = (bool) get_option( self::CREATE_FORM_SKIPPED, false );
+
+		if ( $spam_protection_skipped ) {
+			$skipped_steps[] = 'spam_protection';
+		}
+
+		if ( $create_form_skipped ) {
+			$skipped_steps[] = 'create_form';
+		}
+
 		if ( $email_sent ) {
 			update_option( self::TEST_EMAIL_SENT, true );
 			do_action( 'everest_forms_test_email_sent', $email );
 
-			$skipped_steps           = array();
-			$spam_protection_skipped = $this->is_spam_protection_completed();
-			$create_form_skipped     = (bool) get_option( self::CREATE_FORM_SKIPPED, false );
-
-			if ( $spam_protection_skipped ) {
-				$skipped_steps[] = 'spam_protection';
-			}
-
-			if ( $create_form_skipped ) {
-				$skipped_steps[] = 'create_form';
-			}
-
 			return rest_ensure_response(
 				array(
 					'success' => true,
-					'message' => __( 'Test email sent successfully. Didn’t receive it? Please check your Spam or Junk folder.', 'everest-forms' ),
+					'message' => __( 'Test email sent successfully. Didn\'t receive it? Please check your Spam or Junk folder.', 'everest-forms' ),
 					'data'    => array(
-						'test_email_sent'            => true,
-						'skipped_steps'              => $skipped_steps,
+						'email_sent'              => true,
+						'test_email_sent'         => true,
+						'skipped_steps'           => $skipped_steps,
 						'spam_protection_configured' => $this->is_spam_protection_configured(),
-						'all_steps_completed'        => $this->are_all_steps_completed(),
-						'has_forms'                  => $this->has_forms(),
+						'all_steps_completed'     => $this->are_all_steps_completed(),
+						'has_forms'               => $this->has_forms(),
+						'last_form_email_status'  => get_option( 'everest_forms_last_form_email_status', '' ),
+						'is_smart_smtp_installed' => $this->is_smart_smtp_installed(),
+						'is_smart_smtp_active'    => $this->is_smart_smtp_active(),
 					),
 				)
 			);
 		} else {
-			return new \WP_Error(
-				'email_send_failed',
-				__( 'Failed to send test email. Please check your email configuration.', 'everest-forms' ),
-				array( 'status' => 500 )
+			return rest_ensure_response(
+				array(
+					'success' => true,
+					'data'    => array(
+						'email_sent'              => false,
+						'test_email_sent'         => false,
+						'skipped_steps'           => $skipped_steps,
+						'spam_protection_configured' => $this->is_spam_protection_configured(),
+						'all_steps_completed'     => $this->are_all_steps_completed(),
+						'has_forms'               => $this->has_forms(),
+						'last_form_email_status'  => get_option( 'everest_forms_last_form_email_status', '' ),
+						'is_smart_smtp_installed' => $this->is_smart_smtp_installed(),
+						'is_smart_smtp_active'    => $this->is_smart_smtp_active(),
+					),
+				)
 			);
 		}
 	}

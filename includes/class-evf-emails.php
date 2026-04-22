@@ -376,6 +376,8 @@ class EVF_Emails {
 		// Hooks after the email is sent.
 		do_action( 'everest_forms_email_send_after', $this );
 
+		update_option( 'everest_forms_last_form_email_status', $sent ? 'success' : 'failed' );
+
 		return $sent;
 	}
 
