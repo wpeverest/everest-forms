@@ -2,6 +2,8 @@
  *  External Dependencies
  */
 import {
+	Alert,
+	AlertIcon,
 	Box,
 	Button,
 	Collapse,
@@ -29,7 +31,7 @@ import {
 import apiFetch from '@wordpress/api-fetch';
 import { __ } from '@wordpress/i18n';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { BiChevronDown, BiChevronUp } from 'react-icons/bi';
+import { BiChevronDown, BiChevronUp, BiEnvelope } from 'react-icons/bi';
 
 /**
  *  Internal Dependencies
@@ -61,6 +63,10 @@ interface SiteAssistantData {
 	skipped_steps: string[];
 	test_email_sent: boolean;
 	has_forms: boolean;
+	email_sent?: boolean;
+	last_form_email_status: 'success' | 'failed' | '';
+	is_smart_smtp_installed: boolean;
+	is_smart_smtp_active: boolean;
 }
 
 interface ApiResponse {
@@ -82,7 +88,7 @@ interface Props {
 const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 	const dashboardData =
 		typeof _EVF_DASHBOARD_ !== 'undefined' ? _EVF_DASHBOARD_ : {};
-	const { utmCampaign, evfRestApiNonce, restURL, adminEmail, adminURL, isPro } =
+	const { utmCampaign, evfRestApiNonce, restURL, adminEmail, adminURL, isPro, ajaxURL, smartSmtpNonce } =
 		dashboardData;
 
 	const toast = useToast();
@@ -90,6 +96,9 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 
 	const [open, setOpen] = useState<Record<string, boolean>>({});
 	const [testEmail, setTestEmail] = useState<string>(adminEmail || '');
+	const [emailStatus, setEmailStatus] = useState<'idle' | 'sent' | 'failed'>('idle');
+	const [isInstallingSmtp, setIsInstallingSmtp] = useState(false);
+	const [smtpInstallError, setSmtpInstallError] = useState<string | null>(null);
 
 	const toggleOpen = useCallback((id: string) => {
 		setOpen((prev) => ({ ...prev, [id]: !prev[id] }));
@@ -167,28 +176,11 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 		},
 		onSuccess: (data) => {
 			queryClient.setQueryData(['siteAssistant'], data);
-			toast({
-				title: __('Success', 'everest-forms'),
-				description: __(
-					"Test email sent successfully. Didn't receive it? Please check your Spam or Junk folder.",
-					'everest-forms',
-				),
-				status: 'success',
-				duration: 3000,
-				isClosable: true,
-			});
-			setTestEmail('');
+			setEmailStatus(data.data.email_sent ? 'sent' : 'failed');
 		},
 		onError: (error: any) => {
 			console.error('Error sending test email:', error);
-			toast({
-				title: __('Error', 'everest-forms'),
-				description:
-					error?.message || __('Failed to send test email.', 'everest-forms'),
-				status: 'error',
-				duration: 3000,
-				isClosable: true,
-			});
+			setEmailStatus('failed');
 		},
 	});
 
@@ -246,6 +238,40 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 			return;
 		}
 		sendTestEmailMutation.mutate(testEmail);
+	};
+
+	const handleInstallSmtpPlugin = async () => {
+		setIsInstallingSmtp(true);
+		setSmtpInstallError(null);
+		try {
+			const formData = new FormData();
+			formData.append('action', 'install_and_activate_smart_smtp');
+			formData.append('security', smartSmtpNonce || '');
+			const response = await fetch(ajaxURL || '', {
+				method: 'POST',
+				body: formData,
+			});
+			const result = await response.json();
+			if (result.success) {
+				queryClient.setQueryData(['siteAssistant'], (old: any) => ({
+					...old,
+					data: {
+						...old?.data,
+						is_smart_smtp_installed: true,
+						is_smart_smtp_active: true,
+					},
+				}));
+			} else {
+				setSmtpInstallError(
+					result.data?.message ||
+						__('Installation failed. Please try manually.', 'everest-forms'),
+				);
+			}
+		} catch {
+			setSmtpInstallError(__('Installation failed. Please try manually.', 'everest-forms'));
+		} finally {
+			setIsInstallingSmtp(false);
+		}
 	};
 
 	const formCategories = [
@@ -601,6 +627,101 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 			<Collapse in={open?.sendTestEmail}>
 				<Stack gap={5} minWidth="0" width="100%">
 					<Divider color={'gray.200'} />
+					{emailStatus === 'failed' && (
+						<Alert status="error" borderRadius="md" fontSize="sm">
+							<AlertIcon />
+							<Text fontSize="sm">
+								<strong>{__('Test Email Failed', 'everest-forms')}</strong>
+								{' – '}
+								{__(
+									"Your server's default mail function appears unreliable. A dedicated SMTP plugin will fix this.",
+									'everest-forms',
+								)}
+							</Text>
+						</Alert>
+					)}
+					{emailStatus === 'sent' && (
+						<Alert status="success" borderRadius="md" fontSize="sm">
+							<AlertIcon />
+							<Text fontSize="sm">
+								<strong>{__('Test Email Sent Successfully', 'everest-forms')}</strong>
+								{' – '}
+								{__(
+									'Your email delivery is working. Form notifications should reach your inbox reliably.',
+									'everest-forms',
+								)}
+							</Text>
+						</Alert>
+					)}
+					{(emailStatus === 'failed' || emailStatus === 'sent') &&
+						!siteData?.data?.is_smart_smtp_active && (
+							<Box
+								p={4}
+								border="1px"
+								borderColor="gray.200"
+								borderRadius="md"
+								bg="gray.50"
+							>
+								<Flex justify="space-between" align="center" gap={4}>
+									<HStack align="flex-start" spacing={3} flex={1}>
+										<Box
+											p={2}
+											bg="primary.15"
+											borderRadius="md"
+											flexShrink={0}
+											mt="1px"
+										>
+											<Icon as={BiEnvelope} fontSize="xl" color="primary.500" />
+										</Box>
+										<Box>
+											<HStack spacing={1} mb={1}>
+												<Text fontSize="sm" fontWeight="600" color="grey.500">
+													{emailStatus === 'failed'
+														? __('Fix this with SmartSMTP', 'everest-forms')
+														: __('Want more reliable delivery?', 'everest-forms')}
+												</Text>
+												<Link
+													href="https://wordpress.org/plugins/smart-smtp/"
+													isExternal
+													color="primary.500"
+													fontSize="sm"
+												>
+													{'↗'}
+												</Link>
+											</HStack>
+											<Text fontSize="xs" color="grey.350" lineHeight="1.5">
+												{emailStatus === 'failed'
+													? __(
+															'SmartSMTP sends emails through a proper mail service instead of your hosting server.',
+															'everest-forms',
+														)
+													: __(
+															"SmartSMTP adds proper email authentication so your notifications don't end up in spam.",
+															'everest-forms',
+														)}
+											</Text>
+											{smtpInstallError && (
+												<Text fontSize="xs" color="red.500" mt={1}>
+													{smtpInstallError}
+												</Text>
+											)}
+										</Box>
+									</HStack>
+									<Button
+										colorScheme="blue"
+										size="sm"
+										onClick={handleInstallSmtpPlugin}
+										isLoading={isInstallingSmtp}
+										loadingText={__('Installing...', 'everest-forms')}
+										flexShrink={0}
+									>
+										{siteData?.data?.is_smart_smtp_installed
+											? __('Activate Plugin', 'everest-forms')
+											: __('Install Plugin', 'everest-forms')}
+									</Button>
+								</Flex>
+							</Box>
+						)}
 					<HStack align="flex-start" gap={3}>
 						<Text
 							fontSize="14px"
@@ -697,6 +818,16 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 			setTestEmail(adminEmail);
 		}
 	}, [adminEmail]);
+
+	useEffect(() => {
+		if (
+			siteData?.data?.last_form_email_status === 'failed' &&
+			!siteData?.data?.test_email_sent &&
+			emailStatus === 'idle'
+		) {
+			setEmailStatus('failed');
+		}
+	}, [siteData?.data?.last_form_email_status]);
 
 	const renderSpamProtectionContent = () => (
 		<Stack
@@ -836,19 +967,19 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 
 		steps.push(
 			{
-				id: 'spamProtection',
-				title: __('Spam Protection', 'everest-forms'),
-				isCompleted: (data) =>
-					!!data?.skipped_steps?.includes('spam_protection'),
-				renderContent: renderSpamProtectionContent,
-			},
-			{
 				id: 'sendTestEmail',
 				title: __('Send Test Email', 'everest-forms'),
 				isCompleted: (data) =>
 					!!data?.test_email_sent ||
 					!!data?.skipped_steps?.includes('send_test_email'),
 				renderContent: renderSendTestEmailContent,
+			},
+			{
+				id: 'spamProtection',
+				title: __('Spam Protection', 'everest-forms'),
+				isCompleted: (data) =>
+					!!data?.skipped_steps?.includes('spam_protection'),
+				renderContent: renderSpamProtectionContent,
 			},
 		);
 
