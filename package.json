@@ -72,7 +72,7 @@
     "stylelint": "14.11.0",
     "stylelint-config-wordpress": "17.0.0",
     "typescript": "5.9.3",
-    "webpack": "5.93.0",
+    "webpack": "5.104.1",
     "webpack-cli": "4.10.0",
     "webpack-mode": "^1.1.0",
     "webpackbar": "^5.0.2"
