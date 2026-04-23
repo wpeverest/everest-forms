@@ -146,7 +146,6 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 			});
 		},
 		onError: (error: any) => {
-			console.error('Error skipping spam protection:', error);
 			toast({
 				title: __('Error', 'everest-forms'),
 				description:
@@ -197,6 +196,7 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 		siteData?.data?.is_smart_smtp_installed;
 	const resolvedSmtpActive =
 		sendTestEmailMutation.data?.data?.is_smtp_active ?? siteData?.data?.is_smtp_active;
+	console.log( resolvedSmtpActive, 'SMTP Active Status');
 	const resolvedEmailSent =
 		sendTestEmailMutation.data?.data?.email_sent ?? siteData?.data?.test_email_sent;
 	const resolvedLastFormEmailStatus =
@@ -207,10 +207,10 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 	const emailStatus: 'idle' | 'sent' | 'failed' = sendTestEmailMutation.isError
 		? 'failed'
 		: resolvedEmailSent || hasSuccessfulFormDelivery
-		? 'sent'
-		: resolvedLastFormEmailStatus === 'failed'
-		? 'failed'
-		: 'idle';
+			? 'sent'
+			: resolvedLastFormEmailStatus === 'failed'
+				? 'failed'
+				: 'idle';
 
 	const skipSendTestEmailMutation = useMutation({
 		mutationFn: async () => {
@@ -300,7 +300,7 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 			} else {
 				setSmtpInstallError(
 					result.data?.message ||
-						__('Installation failed. Please try manually.', 'everest-forms'),
+					__('Installation failed. Please try manually.', 'everest-forms'),
 				);
 			}
 		} catch {
@@ -631,7 +631,7 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 					<Heading as="h3" fontSize="19px" fontWeight="600" color="grey.500">
 						{__('Send Test Email', 'everest-forms')}
 					</Heading>
-					</HStack>
+				</HStack>
 				<IconButton
 					aria-label={'sendTestEmail'}
 					icon={
@@ -671,11 +671,11 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 					)}
 					{emailStatus === 'sent' && (
 						<Alert
-						status="success"
-						borderRadius="md"
-						fontSize="sm"
-						sx={{ backgroundColor: '#4CC74114 !important' }} 
-					  >
+							status="success"
+							borderRadius="md"
+							fontSize="sm"
+							sx={{ backgroundColor: '#4CC74114 !important' }}
+						>
 							<AlertIcon />
 							<Text fontSize="sm" color="#389E2E!important">
 								{__(
@@ -684,9 +684,9 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 								)}
 							</Text>
 						</Alert>
-					)}
+					)} 
 					{(emailStatus === 'failed' || emailStatus === 'sent') &&
-						resolvedSmtpActive && (
+						! resolvedSmtpActive && (
 							<Box
 								p={4}
 								border="1px"
@@ -711,36 +711,36 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 												<path d="M19.3879 16.1967H3.9625L11.3976 21.0705L19.3879 16.1967Z" fill="#0062CC" stroke="#0062CC" stroke-width="0.812315"/>
 												<path d="M27.896 9.03432L12.5214 23.2993L7.55934 19.2333L2.69446 15.8498L11.5771 20.6643L17.4664 16.6027L23.3557 12.5411L27.896 9.03432Z" fill="white"/>
 												<defs>
-												<linearGradient id="paint0_linear_10119_3622" x1="19.2942" y1="8.88574" x2="19.2942" y2="21.0705" gradientUnits="userSpaceOnUse">
-												<stop offset="0.389" stop-color="#3395FF"/>
-												<stop offset="1" stop-color="#004A99"/>
-												</linearGradient>
-												<linearGradient id="paint1_linear_10119_3622" x1="19.2942" y1="8.88574" x2="19.2942" y2="21.0705" gradientUnits="userSpaceOnUse">
-												<stop stop-color="#3396FF"/>
-												<stop offset="1" stop-color="#004A99"/>
-												</linearGradient>
-												<linearGradient id="paint2_linear_10119_3622" x1="9.95259" y1="8.47986" x2="19.6859" y2="20.3432" gradientUnits="userSpaceOnUse">
-												<stop stop-color="#004A99" stop-opacity="0.76"/>
-												<stop offset="0.974" stop-color="#3395FF"/>
-												</linearGradient>
-												<linearGradient id="paint3_linear_10119_3622" x1="19.2941" y1="1.16922" x2="19.2941" y2="14.9786" gradientUnits="userSpaceOnUse">
-												<stop offset="0.404" stop-color="#3396FF"/>
-												<stop offset="0.759" stop-color="#004A99"/>
-												</linearGradient>
-												<linearGradient id="paint4_linear_10119_3622" x1="19.2941" y1="1.16922" x2="19.2941" y2="14.9786" gradientUnits="userSpaceOnUse">
-												<stop offset="0.4" stop-color="#3395FF"/>
-												<stop offset="0.76" stop-color="#004A99"/>
-												</linearGradient>
-												<linearGradient id="paint5_linear_10119_3622" x1="11.5772" y1="15.7907" x2="11.5772" y2="27.9755" gradientUnits="userSpaceOnUse">
-												<stop offset="0.344" stop-color="#3395FF"/>
-												<stop offset="0.939" stop-color="#004A99"/>
-												</linearGradient>
-												<linearGradient id="paint6_linear_10119_3622" x1="11.5772" y1="15.7907" x2="11.5772" y2="27.9755" gradientUnits="userSpaceOnUse">
-												<stop offset="0.364" stop-color="#3396FF"/>
-												<stop offset="1" stop-color="#004794"/>
-												</linearGradient>
+													<linearGradient id="paint0_linear_10119_3622" x1="19.2942" y1="8.88574" x2="19.2942" y2="21.0705" gradientUnits="userSpaceOnUse">
+														<stop offset="0.389" stop-color="#3395FF"/>
+														<stop offset="1" stop-color="#004A99"/>
+													</linearGradient>
+													<linearGradient id="paint1_linear_10119_3622" x1="19.2942" y1="8.88574" x2="19.2942" y2="21.0705" gradientUnits="userSpaceOnUse">
+														<stop stop-color="#3396FF"/>
+														<stop offset="1" stop-color="#004A99"/>
+													</linearGradient>
+													<linearGradient id="paint2_linear_10119_3622" x1="9.95259" y1="8.47986" x2="19.6859" y2="20.3432" gradientUnits="userSpaceOnUse">
+														<stop stop-color="#004A99" stop-opacity="0.76"/>
+														<stop offset="0.974" stop-color="#3395FF"/>
+													</linearGradient>
+													<linearGradient id="paint3_linear_10119_3622" x1="19.2941" y1="1.16922" x2="19.2941" y2="14.9786" gradientUnits="userSpaceOnUse">
+														<stop offset="0.404" stop-color="#3396FF"/>
+														<stop offset="0.759" stop-color="#004A99"/>
+													</linearGradient>
+													<linearGradient id="paint4_linear_10119_3622" x1="19.2941" y1="1.16922" x2="19.2941" y2="14.9786" gradientUnits="userSpaceOnUse">
+														<stop offset="0.4" stop-color="#3395FF"/>
+														<stop offset="0.76" stop-color="#004A99"/>
+													</linearGradient>
+													<linearGradient id="paint5_linear_10119_3622" x1="11.5772" y1="15.7907" x2="11.5772" y2="27.9755" gradientUnits="userSpaceOnUse">
+														<stop offset="0.344" stop-color="#3395FF"/>
+														<stop offset="0.939" stop-color="#004A99"/>
+													</linearGradient>
+													<linearGradient id="paint6_linear_10119_3622" x1="11.5772" y1="15.7907" x2="11.5772" y2="27.9755" gradientUnits="userSpaceOnUse">
+														<stop offset="0.364" stop-color="#3396FF"/>
+														<stop offset="1" stop-color="#004794"/>
+													</linearGradient>
 												</defs>
-												</svg>
+											</svg>
 										</Box>
 										<Box>
 											<HStack spacing={1} mb={1}>
@@ -776,13 +776,13 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 											<Text fontSize="xs" color="grey.350" lineHeight="1.5">
 												{emailStatus === 'failed'
 													? __(
-															'SmartSMTP sends emails through a proper mail service instead of your hosting server.',
-															'everest-forms',
-														)
+														'SmartSMTP sends emails through a proper mail service instead of your hosting server.',
+														'everest-forms',
+													)
 													: __(
-															"SmartSMTP adds proper email authentication so your notifications don't end up in spam.",
-															'everest-forms',
-														)}
+														"SmartSMTP adds proper email authentication so your notifications don't end up in spam.",
+														'everest-forms',
+													)}
 											</Text>
 											{smtpInstallError && (
 												<Text fontSize="xs" color="red.500" mt={1}>
@@ -827,9 +827,9 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 						padding="0px 1px"
 					>
 						<Box marginBottom="12px">
-						<Text
+							<Text
 								fontSize="15px"
-								fontWeight="600" 
+								fontWeight="600"
 								color="grey.500"
 								whiteSpace="nowrap"
 								flexShrink={0}
@@ -838,7 +838,7 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 							</Text>
 						</Box>
 						<Flex display="flex" gap={3} align="center" direction="row" width="100%">
-							
+
 							<Input
 								placeholder={__(
 									'Enter the address where the test email should be delivered.',
@@ -865,45 +865,45 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 								}}
 							/>
 							<Button
-							width={'fit-content'}
-							colorScheme="primary"
-							onClick={handleSendTestEmail}
-							isLoading={sendTestEmailMutation.isLoading}
-							loadingText={__('Sending...', 'everest-forms')}
-						>
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								viewBox="0 0 14 14"
-								width="14"
-								height="14"
-								style={{
-									width: '14px',
-									minWidth: '14px',
-									height: '14px',
-									display: 'inline-block',
-									flex: '0 0 14px',
-									marginRight: '6px',
-								}}
+								width={'fit-content'}
+								colorScheme="primary"
+								onClick={handleSendTestEmail}
+								isLoading={sendTestEmailMutation.isLoading}
+								loadingText={__('Sending...', 'everest-forms')}
 							>
-								<g clipPath="url(#a)">
-									<path
-										fill="currentColor"
-										d="m12.613.584.122.019.12.035q.114.044.214.118l.094.081.08.094q.075.099.12.215l.034.119.019.122q.014.182-.048.353l.002.001-3.792 11.084a.876.876 0 0 1-1.581.162l-.059-.12-1.855-4.626-.055-.104a.6.6 0 0 0-.165-.165l-.104-.055-4.626-1.855a.875.875 0 0 1-.55-.834l.014-.133a.9.9 0 0 1 .156-.362L.84 4.63a.9.9 0 0 1 .335-.209L12.259.63v.002a.9.9 0 0 1 .354-.048M2.295 5.271l3.898 1.563a1.75 1.75 0 0 1 .899.81l.074.162 1.562 3.898 3.344-9.777z"
-									/>
-									<path
-										fill="currentColor"
-										d="M12.335.84a.584.584 0 0 1 .825.825L6.78 8.046a.584.584 0 0 1-.825-.825z"
-									/>
-								</g>
-								<defs>
-									<clipPath id="a">
-										<path d="M0 0h14v14H0z" />
-									</clipPath>
-								</defs>
-							</svg>
-							{__('Send Test Email', 'everest-forms')}
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									viewBox="0 0 14 14"
+									width="14"
+									height="14"
+									style={{
+										width: '14px',
+										minWidth: '14px',
+										height: '14px',
+										display: 'inline-block',
+										flex: '0 0 14px',
+										marginRight: '6px',
+									}}
+								>
+									<g clipPath="url(#a)">
+										<path
+											fill="currentColor"
+											d="m12.613.584.122.019.12.035q.114.044.214.118l.094.081.08.094q.075.099.12.215l.034.119.019.122q.014.182-.048.353l.002.001-3.792 11.084a.876.876 0 0 1-1.581.162l-.059-.12-1.855-4.626-.055-.104a.6.6 0 0 0-.165-.165l-.104-.055-4.626-1.855a.875.875 0 0 1-.55-.834l.014-.133a.9.9 0 0 1 .156-.362L.84 4.63a.9.9 0 0 1 .335-.209L12.259.63v.002a.9.9 0 0 1 .354-.048M2.295 5.271l3.898 1.563a1.75 1.75 0 0 1 .899.81l.074.162 1.562 3.898 3.344-9.777z"
+										/>
+										<path
+											fill="currentColor"
+											d="M12.335.84a.584.584 0 0 1 .825.825L6.78 8.046a.584.584 0 0 1-.825-.825z"
+										/>
+									</g>
+									<defs>
+										<clipPath id="a">
+											<path d="M0 0h14v14H0z" />
+										</clipPath>
+									</defs>
+								</svg>
+								{__('Send Test Email', 'everest-forms')}
 
-						</Button>
+							</Button>
 						</Flex>
 					</FormControl>
 
