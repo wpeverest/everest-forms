@@ -348,6 +348,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 * Enhance	  - Performance optimizations.
 * Dev 		  - Added Payment Summary field.
 * Dev 		  - Added coupon limits and support for stackable coupons.
+* Fix 		  - Email authorization.
 * Fix 		  - Email summaries supported only one recipient and lacked test report flexibility issue.
 
 = 3.4.5       - 16-04-2026
