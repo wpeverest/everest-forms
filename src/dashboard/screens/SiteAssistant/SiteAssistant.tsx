@@ -633,6 +633,9 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 			overflow="hidden"
 			width="100%"
 			minWidth="0"
+			borderTopWidth="2px"
+			borderTopColor="#7545BB"
+			borderStyle="solid" 
 		>
 			<HStack
 				justify={'space-between'}
@@ -642,6 +645,23 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 				<HStack alignItems="center">
 					<Heading as="h3" fontSize="19px" fontWeight="600" color="grey.500">
 						{__('Send Test Email', 'everest-forms')}
+						<Box as="span" fontSize="inherit" fontWeight="inherit" color="inherit">
+							{' '}
+							<Box
+								as="span"
+								display="inline-flex"
+								alignItems="center"
+								justifyContent="center"
+								w="8px"
+								h="8px"
+								bg="7545BB"
+								borderRadius="full"
+								lineHeight="1" 
+								verticalAlign="middle"
+								transform="translateY(-1px)" 
+							>
+							</Box>
+						</Box>
 					</Heading>
 				</HStack>
 				<IconButton
@@ -671,7 +691,9 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 				<Stack gap={5} minWidth="0" width="100%">
 					<Divider color={'gray.200'} />
 					{emailStatus === 'failed' && (
-						<Alert status="error" borderRadius="md" fontSize="sm" sx={{ backgroundColor: '#F2565612 !important' }} >
+						<Alert status="error" border="1px"
+						borderColor="#F04242 !important"
+						borderStyle="solid" borderRadius="md" fontSize="sm" sx={{ backgroundColor: '#F2565612 !important' }} >
 							<AlertIcon />
 							<Text fontSize="sm" color="#F04242!important">
 								{__(
@@ -685,6 +707,9 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 						<Alert
 							status="success"
 							borderRadius="md"
+							border="1px"
+							borderColor="#389E2E !important"
+							borderStyle="solid"
 							fontSize="sm"
 							sx={{ backgroundColor: '#4CC74114 !important' }}
 						>
@@ -714,6 +739,8 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 											borderRadius="md"
 											flexShrink={0}
 											mt="1px"
+											border="1px"
+											borderColor="#EBEBEB"
 										>
 											<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
 												<path d="M10.3588 8.88574H28.2297V21.0705L10.3588 21.0705V8.88574Z" fill="url(#paint0_linear_10119_3622)" stroke="url(#paint1_linear_10119_3622)" stroke-width="0.812315"/>
@@ -804,7 +831,8 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 										</Box>
 									</HStack>
 									<Button
-										colorScheme="blue"
+										bgColor="#007BFF !important"
+										color="white"
 										size="sm"
 										onClick={handleInstallSmtpPlugin}
 										isLoading={isInstallingSmtp}
@@ -840,7 +868,7 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 					>
 						<Box marginBottom="12px">
 							<Text
-								fontSize="15px"
+								fontSize="14px"
 								fontWeight="600"
 								color="grey.500"
 								whiteSpace="nowrap"
@@ -857,6 +885,7 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 									'everest-forms',
 								)}
 								type="email"
+								bgColor="#ECECF033 !important"
 								value={testEmail}
 								onChange={(e) => setTestEmail(e.target.value)}
 								isDisabled={sendTestEmailMutation.isLoading}
@@ -879,6 +908,7 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 							<Button
 								width={'fit-content'}
 								colorScheme="primary"
+								fontSize="13px" fontWeight="500"
 								onClick={handleSendTestEmail}
 								isLoading={sendTestEmailMutation.isLoading}
 								loadingText={__('Sending...', 'everest-forms')}
