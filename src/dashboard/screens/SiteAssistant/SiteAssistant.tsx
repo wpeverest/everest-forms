@@ -185,6 +185,18 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 					is_smart_smtp_active: data.data.is_smart_smtp_active,
 				},
 			}));
+			if (data?.data?.email_sent && data?.data?.is_smtp_active) {
+				toast({
+					title: __('Success', 'everest-forms'),
+					description: __(
+						'Test email sent successfully and SMTP is active.',
+						'everest-forms',
+					),
+					status: 'success',
+					duration: 3000,
+					isClosable: true,
+				});
+			}
 		},
 		onError: (error: any) => {
 			console.error('Error sending test email:', error);
@@ -684,7 +696,7 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 								)}
 							</Text>
 						</Alert>
-					)} 
+					)}
 					{(emailStatus === 'failed' || emailStatus === 'sent') &&
 						! resolvedSmtpActive && (
 							<Box
@@ -814,7 +826,7 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 							lineHeight="19.3px"
 						>
 							{__(
-								"This tool sends a real test email to confirm your website can deliver messages. If you don't receive it, your email settings may need to be configured.",
+								"Verify that your site can send emails. Enter your address and we'll send a quick test.",
 								'everest-forms',
 							)}
 						</Text>
@@ -1078,7 +1090,8 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 				id: 'sendTestEmail',
 				title: __('Send Test Email', 'everest-forms'),
 				isCompleted: (data) =>
-					!!data?.skipped_steps?.includes('send_test_email'),
+					!!data?.skipped_steps?.includes('send_test_email') ||
+					(!!data?.is_smtp_active && !!data?.test_email_sent),
 			},
 			{
 				id: 'spamProtection',
