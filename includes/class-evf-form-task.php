@@ -269,7 +269,9 @@ class EVF_Form_Task {
 						"Everest Forms Process Before validate {$field_type}.",
 						array( 'source' => 'form-submission' )
 					);
-					do_action( "everest_forms_process_validate_{$field_type}", $field_id, $field_submit, $this->form_data, $field_type );
+					if ( 'payment-coupon' != $field_type ) {
+						do_action( "everest_forms_process_validate_{$field_type}", $field_id, $field_submit, $this->form_data, $field_type );
+					}
 				}
 
 				if ( 'credit-card' === $field_type && isset( $_POST['everest_form_stripe_payment_intent_id'] ) ) {
@@ -543,18 +545,71 @@ class EVF_Form_Task {
 				$field_submit = isset( $entry['form_fields'][ $field_id ] ) ? $entry['form_fields'][ $field_id ] : array();
 
 				// Handle file uploads for save continue.
-				if ( in_array( $field_type, array( 'file-upload', 'image-upload' ) ) && defined( 'EVF_SAVE_AND_CONTINUE_VERSION' ) ) {
-					$field_submit['new_files'] = isset( $_POST[ 'everest_forms_' . $form_id . '_' . $field_id ] ) ? stripslashes_deep( $_POST[ 'everest_forms_' . $form_id . '_' . $field_id ] ) : array();
-					$field_submit['old_files'] = isset( $_POST[ 'everest_forms_' . $form_id . '_old_' . $field_id ] ) ? stripslashes_deep( $_POST[ 'everest_forms_' . $form_id . '_old_' . $field_id ] ) : array();
+				if ( in_array( $field_type, array( 'file-upload', 'image-upload' ), true ) ) {
+					if ( is_array( $field_submit ) ) {
+						unset( $field_submit['old_files'], $field_submit['new_files'] );
+					}
 
-					$deleted_files = isset( $_POST[ 'everest_forms_' . $form_id . '_delete_' . $field_id ] ) ? stripslashes_deep( $_POST[ 'everest_forms_' . $form_id . '_delete_' . $field_id ] ) : '';
+					if ( defined( 'EVF_SAVE_AND_CONTINUE_VERSION' ) ) {
+						if ( ! is_array( $field_submit ) ) {
+							$field_submit = array();
+						}
 
-					if ( ! empty( $deleted_files ) ) {
-						$deleted_files = json_decode( $deleted_files, true );
-						foreach ( $deleted_files as $file ) {
-							$file = json_decode( $file, true );
-							if ( ! empty( $file ) ) {
-								FormHelper::remove_file( $file['value'] );
+						$field_submit['new_files'] = isset( $_POST[ 'everest_forms_' . $form_id . '_' . $field_id ] )
+							? stripslashes_deep( $_POST[ 'everest_forms_' . $form_id . '_' . $field_id ] )
+							: array();
+						$field_submit['old_files'] = isset( $_POST[ 'everest_forms_' . $form_id . '_old_' . $field_id ] )
+							? stripslashes_deep( $_POST[ 'everest_forms_' . $form_id . '_old_' . $field_id ] )
+							: array();
+
+						$deleted_files = isset( $_POST[ 'everest_forms_' . $form_id . '_delete_' . $field_id ] )
+							? stripslashes_deep( $_POST[ 'everest_forms_' . $form_id . '_delete_' . $field_id ] )
+							: '';
+
+						if ( ! empty( $deleted_files ) ) {
+							$deleted_files = json_decode( $deleted_files, true );
+
+							if ( is_array( $deleted_files ) ) {
+								$upload_dir      = wp_get_upload_dir();
+								$uploads_baseurl = trailingslashit( $upload_dir['baseurl'] );
+								$uploads_basedir = wp_normalize_path( trailingslashit( $upload_dir['basedir'] ) );
+
+								foreach ( $deleted_files as $file ) {
+									$file = json_decode( $file, true );
+
+									if ( empty( $file['value'] ) || ! is_string( $file['value'] ) ) {
+										continue;
+									}
+
+									$file_url = esc_url_raw( $file['value'] );
+
+									if ( 0 !== strpos( $file_url, $uploads_baseurl ) ) {
+										continue;
+									}
+
+									$path      = wp_parse_url( $file_url, PHP_URL_PATH );
+									$base_path = wp_parse_url( $uploads_baseurl, PHP_URL_PATH );
+
+									if ( ! is_string( $path ) || ! is_string( $base_path ) || 0 !== strpos( $path, $base_path ) ) {
+										continue;
+									}
+
+									$relative_path = ltrim( substr( $path, strlen( $base_path ) ), '/' );
+									$candidate     = wp_normalize_path( $uploads_basedir . $relative_path );
+									$resolved_path = realpath( $candidate );
+
+									if ( false === $resolved_path ) {
+										continue;
+									}
+
+									$resolved_path = wp_normalize_path( $resolved_path );
+
+									if ( 0 !== strpos( $resolved_path, $uploads_basedir ) ) {
+										continue;
+									}
+
+									FormHelper::remove_file( $file_url );
+								}
 							}
 						}
 					}
@@ -582,6 +637,41 @@ class EVF_Form_Task {
 			// because at this point we have completed all field validation and
 			// formatted the data.
 			$this->form_fields = apply_filters( 'everest_forms_process_filter', $this->form_fields, $entry, $this->form_data );
+
+			$all_data = array(
+				'form_fields' => $this->form_fields,
+				'entry'       => $entry,
+				'form_data'   => $this->form_data,
+			);
+
+			if ( ! empty( $_POST[ 'applied_coupons_data' ] ) ) {
+				$applied_coupons_data = json_decode( wp_unslash( $_POST[ 'applied_coupons_data' ] ), true );
+				$all_data['applied_coupons_data'] = $applied_coupons_data;
+			}
+
+			foreach ( $this->form_data['form_fields'] as $field ) {
+				$field_id        = $field['id'];
+				$field_type      = $field['type'];
+
+				$field_submit = isset( $entry['form_fields'][ $field_id ] ) ? $entry['form_fields'][ $field_id ] : '';
+
+				if ( 'payment-coupon' === $field_type ) {
+					$logger->info(
+						"Everest Forms Process coupon validating {$field_type}.",
+						array( 'source' => 'form-submission' )
+					);
+					do_action( "everest_forms_process_validate_{$field_type}", $field_id, $field_submit, $all_data);
+				}
+
+				if ( 'yes' === get_option( 'evf_validation_error' ) && $ajax_form_submission ) {
+					if ( count( $this->errors ) ) {
+						foreach ( $this->errors as $_error ) {
+							$this->ajax_err [] = $_error;
+						}
+					}
+					update_option( 'evf_validation_error', '' );
+				}
+			}
 			$logger->notice( sprintf( 'Everest Form Process: %s', evf_print_r( $this->form_fields, true ) ) );
 
 			$logger->info(
@@ -653,6 +743,13 @@ class EVF_Form_Task {
 				__( 'Everest Forms Process Completed.', 'everest-forms' ),
 				array( 'source' => 'form-submission' )
 			);
+
+			if ( ! empty( $_POST[ 'applied_coupons_data' ] ) ) {
+				$applied_coupons_data = json_decode( wp_unslash( $_POST[ 'applied_coupons_data' ] ), true );
+
+				$this->form_data['applied_coupons_data'] = $applied_coupons_data;
+			}
+
 			do_action( 'everest_forms_process_complete', $this->form_fields, $entry, $this->form_data, $entry_id );
 			$logger->info(
 				"Everest Forms Process Completed {$form_id}.",

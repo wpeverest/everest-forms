@@ -422,11 +422,11 @@ class EVF_AJAX {
 					);
 				}
 
-				if ( empty( $field['meta-key'] ) && ! in_array( $field['type'], array( 'html', 'title', 'captcha', 'divider', 'reset', 'recaptcha', 'hcaptcha', 'turnstile' ), true ) ) {
+				if ( empty( $field['meta-key'] ) && ! in_array( $field['type'], array( 'html', 'title', 'captcha', 'divider', 'reset', 'recaptcha', 'hcaptcha', 'turnstile', 'payment_summary' ), true ) ) {
 					$empty_meta_data[] = $field['label'];
 				}
 
-				if ( empty( $field['label'] ) && ! in_array( $field['type'], array( 'html', 'title', 'captcha', 'divider', 'reset', 'recaptcha', 'hcaptcha', 'turnstile' ), true ) ) {
+				if ( empty( $field['label'] ) && ! in_array( $field['type'], array( 'html', 'title', 'captcha', 'divider', 'reset', 'recaptcha', 'hcaptcha', 'turnstile', 'payment_summary' ), true ) ) {
 					$empty_field_label[] = $field['id'];
 				}
 
