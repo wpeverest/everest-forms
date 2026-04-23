@@ -1949,7 +1949,7 @@ p.search-box {
 			margin: 0 !important;
 
 			.select2-selection--single {
-				height: 36px;
+				height: 38px;
 				border-color: #e1e1e1;
 				border-radius: 4px;
 				transition: border-color 0.2s ease;
@@ -3293,7 +3293,7 @@ p.search-box {
 					}
 
 					.evf-registered-item {
-						padding: 20px 8px;
+						padding: 18px 8px;
 						border: 1px solid #edeff7;
 						width: 30.3%;
 						z-index: 999;
@@ -4319,19 +4319,19 @@ p.search-box {
 						}
 
 						input {
-							&[type="text"],
-							&[type="password"],
-							&[type="date"],
-							&[type="datetime"],
-							&[type="datetime-local"],
-							&[type="email"],
-							&[type="month"],
-							&[type="number"],
-							&[type="search"],
-							&[type="tel"],
-							&[type="time"],
-							&[type="url"],
-							&[type="week"] {
+							&[type='text'],
+							&[type='password'],
+							&[type='date'],
+							&[type='datetime'],
+							&[type='datetime-local'],
+							&[type='email'],
+							&[type='month'],
+							&[type='number'],
+							&[type='search'],
+							&[type='tel'],
+							&[type='time'],
+							&[type='url'],
+							&[type='week'] {
 								padding: 0 8px;
 								line-height: 2;
 								min-height: 30px;
@@ -4342,10 +4342,10 @@ p.search-box {
 						input,
 						select,
 						textarea {
-						&:disabled,
-						&.disabled {
-							background-color: #ffff !important;
-						}
+							&:disabled,
+							&.disabled {
+								background-color: #ffff !important;
+							}
 						}
 					}
 				}
@@ -5385,7 +5385,7 @@ p.search-box {
 			.evf-icon {
 				color: #6b6b6b;
 				display: block;
-				font-size: 26px;
+				font-size: 24px;
 				text-align: center;
 				margin-bottom: 6px;
 				padding: 0;
@@ -7487,7 +7487,7 @@ img.ui-datepicker-trigger {
 			}
 
 			&:hover {
-				color: #007cba;
+				color: #7545bb;
 			}
 		}
 
@@ -8856,7 +8856,7 @@ img.ui-datepicker-trigger {
 		background: #fff;
 		border: 1px solid #e1e1e1;
 		border-radius: 4px;
-		min-height: 38px;
+		min-height: 36px;
 
 		.select2-selection__rendered {
 			color: #444;
@@ -9037,7 +9037,8 @@ img.ui-datepicker-trigger {
 	}
 
 	.select2-results__option--highlighted[data-selected] {
-		color: #222;
+		/* dropdown on hover */
+		color: #7545bb;
 		background: #eee8f7;
 	}
 
@@ -10505,6 +10506,15 @@ img.ui-datepicker-trigger {
 							font-size: 14px;
 							line-height: 24px;
 							align-content: center;
+							background: #faf8fc;
+							border: 1px solid #7545bb;
+							color: #7545bb;
+
+							&:focus {
+								box-shadow: none;
+								outline: none;
+								outline-offset: 0;
+							}
 						}
 					}
 
@@ -11283,7 +11293,7 @@ img.ui-datepicker-trigger {
 							&::after {
 								// settings help icon
 								color: transparent;
-								background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M21 12a9 9 0 1 0-18 0 9 9 0 0 0 18 0m2 0c0 6.075-4.925 11-11 11S1 18.075 1 12 5.925 1 12 1s11 4.925 11 11' fill='%23383838'/%3E%3Cpath d='M11 12V8a1 1 0 1 1 2 0v4a1 1 0 1 1-2 0m1.01 3a1 1 0 1 1 0 2H12a1 1 0 1 1 0-2z' fill='%23383838'/%3E%3C/svg%3E");
+								background-image: url("data:image/svg+xml,%3Csvg width='14' height='14' viewBox='0 0 14 14' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cg clip-path='url(%23clip0_10032_3233)'%3E%3Cpath d='M12.25 6.99967C12.25 9.89917 9.89949 12.2497 6.99999 12.2497C4.1005 12.2497 1.74999 9.89917 1.74999 6.99967C1.74999 4.10018 4.1005 1.74967 6.99999 1.74967C9.89949 1.74967 12.25 4.10018 12.25 6.99967ZM13.4167 6.99967C13.4167 3.45585 10.5438 0.583008 6.99999 0.583008C3.45617 0.583008 0.583328 3.45585 0.583328 6.99967C0.583328 10.5435 3.45617 13.4163 6.99999 13.4163C10.5438 13.4163 13.4167 10.5435 13.4167 6.99967Z' fill='%23383838'/%3E%3Cpath d='M6.41666 6.99967V9.33301C6.41666 9.65517 6.67783 9.91634 6.99999 9.91634C7.32216 9.91634 7.58333 9.65517 7.58333 9.33301V6.99967C7.58333 6.67751 7.32216 6.41634 6.99999 6.41634C6.67783 6.41634 6.41666 6.67751 6.41666 6.99967Z' fill='%23383838'/%3E%3Cpath d='M7.00569 5.24967C7.32786 5.24967 7.58902 4.98851 7.58902 4.66634C7.58902 4.34417 7.32786 4.08301 7.00569 4.08301H6.99999C6.67783 4.08301 6.41666 4.34417 6.41666 4.66634C6.41666 4.98851 6.67783 5.24967 6.99999 5.24967H7.00569Z' fill='%23383838'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_10032_3233'%3E%3Crect width='14' height='14' fill='white' transform='matrix(1 0 0 -1 0 14)'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E%0A");
 								background-repeat: no-repeat;
 							}
 
@@ -12292,7 +12302,7 @@ body {
 							margin-bottom: 20px;
 
 							i {
-								color: #646970;
+								display: none;
 							}
 						}
 
@@ -13329,7 +13339,7 @@ button#show-settings-link {
 
 .everest-forms-help-tooltip {
 	color: transparent !important;
-	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M21 12a9 9 0 1 0-18 0 9 9 0 0 0 18 0m2 0c0 6.075-4.925 11-11 11S1 18.075 1 12 5.925 1 12 1s11 4.925 11 11' fill='%23383838'/%3E%3Cpath d='M11 12V8a1 1 0 1 1 2 0v4a1 1 0 1 1-2 0m1.01 3a1 1 0 1 1 0 2H12a1 1 0 1 1 0-2z' fill='%23383838'/%3E%3C/svg%3E");
+	background-image: url("data:image/svg+xml,%3Csvg width='14' height='14' viewBox='0 0 14 14' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cg clip-path='url(%23clip0_10032_3233)'%3E%3Cpath d='M12.25 6.99967C12.25 9.89917 9.89949 12.2497 6.99999 12.2497C4.1005 12.2497 1.74999 9.89917 1.74999 6.99967C1.74999 4.10018 4.1005 1.74967 6.99999 1.74967C9.89949 1.74967 12.25 4.10018 12.25 6.99967ZM13.4167 6.99967C13.4167 3.45585 10.5438 0.583008 6.99999 0.583008C3.45617 0.583008 0.583328 3.45585 0.583328 6.99967C0.583328 10.5435 3.45617 13.4163 6.99999 13.4163C10.5438 13.4163 13.4167 10.5435 13.4167 6.99967Z' fill='%23383838'/%3E%3Cpath d='M6.41666 6.99967V9.33301C6.41666 9.65517 6.67783 9.91634 6.99999 9.91634C7.32216 9.91634 7.58333 9.65517 7.58333 9.33301V6.99967C7.58333 6.67751 7.32216 6.41634 6.99999 6.41634C6.67783 6.41634 6.41666 6.67751 6.41666 6.99967Z' fill='%23383838'/%3E%3Cpath d='M7.00569 5.24967C7.32786 5.24967 7.58902 4.98851 7.58902 4.66634C7.58902 4.34417 7.32786 4.08301 7.00569 4.08301H6.99999C6.67783 4.08301 6.41666 4.34417 6.41666 4.66634C6.41666 4.98851 6.67783 5.24967 6.99999 5.24967H7.00569Z' fill='%23383838'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_10032_3233'%3E%3Crect width='14' height='14' fill='white' transform='matrix(1 0 0 -1 0 14)'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E%0A");
 	background-repeat: no-repeat !important;
 	height: 14px !important;
 	width: 14px !important;
@@ -13459,7 +13469,7 @@ button#show-settings-link {
 		padding: 12px 20px;
 		font-size: 13px;
 		line-height: 1.2;
-		font-weight: 600; 
+		font-weight: 600;
 	}
 }
 
@@ -13485,9 +13495,9 @@ button#show-settings-link {
 		.logo {
 			width: 38px;
 			height: 38px;
-			flex: 0 0 38px;  
+			flex: 0 0 38px;
 			margin: 0;
-			border: 1px solid #E1E1E1;
+			border: 1px solid #e1e1e1;
 			display: flex;
 			align-items: center;
 			justify-content: center;
@@ -13505,7 +13515,7 @@ button#show-settings-link {
 
 			&:hover {
 				background: #f0f0f0;
-				color: #2f2f2f; 
+				color: #2f2f2f;
 			}
 
 			i.dashicons {
