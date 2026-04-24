@@ -320,15 +320,31 @@ const UserRoleTable = () => {
 	return (
 		<Stack gap="20px">
 			<Flex justifyContent="space-between" alignItems="center">
-				<Heading
-					fontWeight="600"
-					fontSize="20px"
-					lineHeight="normal"
-					color="#222222"
-				>
-					{__('Role Based Access', 'everest-forms')}
-				</Heading>
-				<UserDisplayModal wp_roles={evfPermission} />
+				<Flex alignItems="center" gap="16px">
+					<Heading
+						fontWeight="600"
+						fontSize="20px"
+						lineHeight="normal"
+						color="#222222"
+						margin="0"
+					>
+						{__('Role Based Access', 'everest-forms')}
+					</Heading>
+					<UserDisplayModal wp_roles={evfPermission} />
+				</Flex>
+
+				<InputGroup w="220px">
+					<InputLeftElement pointerEvents="none">
+						<SearchIcon color="gray.400" />
+					</InputLeftElement>
+					<Input
+						placeholder={__('Search...', 'everest-forms')}
+						_placeholder={{ color: '#222222' }}
+						focusBorderColor="primary.400"
+						borderRadius="4px"
+						onChange={(e) => debounceSearch(e.target.value)}
+					/>
+				</InputGroup>
 			</Flex>
 
 			{wpRolesQuery.isLoading ? (
@@ -425,6 +441,16 @@ const UserRoleTable = () => {
 							isSearchable={false}
 							onChange={(opt) => setBulkDelete(opt?.value || '')}
 							chakraStyles={{
+								control: (provided) => ({
+									...provided,
+									borderRadius: '4px',
+									borderColor: 'gray.200',
+									fontSize: '14px',
+									color: '#222222',
+									_hover: {
+										borderColor: 'primary.400',
+									},
+								}),
 								dropdownIndicator: (provided) => ({
 									...provided,
 									bg: 'transparent',
@@ -433,7 +459,17 @@ const UserRoleTable = () => {
 									...provided,
 									display: 'none',
 								}),
-								option: (provided, state) => ({
+								placeholder: (provided) => ({
+									...provided,
+									fontSize: '14px',
+									color: '#222222',
+								}),
+								singleValue: (provided) => ({
+									...provided,
+									fontSize: '14px',
+									color: '#222222',
+								}),
+								option: (provided) => ({
 									...provided,
 									fontSize: '13px',
 								}),
@@ -451,18 +487,6 @@ const UserRoleTable = () => {
 						</Text>
 					</Button>
 				</Stack>
-
-				<InputGroup w="220px">
-					<InputLeftElement pointerEvents="none">
-						<SearchIcon color="gray.400" />
-					</InputLeftElement>
-					<Input
-						placeholder={__('Search...', 'everest-forms')}
-						focusBorderColor="primary.400"
-						borderRadius="4px"
-						onChange={(e) => debounceSearch(e.target.value)}
-					/>
-				</InputGroup>
 			</Flex>
 
 			<Box
@@ -487,7 +511,7 @@ const UserRoleTable = () => {
 									fontWeight="600"
 									fontSize="14px"
 									lineHeight="24px"
-									color="#383838"
+									color="#222222"
 								>
 									{__('Name', 'everest-forms')}
 								</Text>
@@ -497,7 +521,7 @@ const UserRoleTable = () => {
 									fontWeight="600"
 									fontSize="14px"
 									lineHeight="24px"
-									color="#383838"
+									color="#222222"
 								>
 									{__('Email', 'everest-forms')}
 								</Text>
@@ -736,7 +760,7 @@ const UserRoleTable = () => {
 			</Box>
 
 			{/* ── Pagination ────────────────────────────────────── */}
-			{!isLoading && totalManagers > 0 && (
+			{!isLoading && totalManagers > 10 && (
 				<Box borderTop="1px solid" borderColor="gray.200" px={2} py={2} mt={3}>
 					<Flex alignItems="center" justify="space-between">
 						<Text fontSize="sm" color="gray.500">

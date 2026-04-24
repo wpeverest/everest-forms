@@ -340,15 +340,16 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 == Changelog ==
 
 = 3.4.6       - xx-xx-2026
-* Feature - Added option to copy and download logs.
-* Feature - Added layout options including one-column and two-column containers.
-* Enhancement - Improved UI for Integrations and Payments tabs.
-* Enhancement - Added popover to insert fields directly into rows.
-* Enhancement - Revamped form settings design.
-* Enhancement - Performance optimizations.
-* Fix - Email summaries supported only one recipient and lacked test report flexibility issue.
-* Dev - Added Payment Summary field.
-* Dev - Added coupon limits and support for stackable coupons.
+* Feature 	  - Added option to copy and download logs.
+* Feature 	  - Added layout options including one-column and two-column containers.
+* Enhance	  - Improved UI for Integrations and Payments tabs.
+* Enhance	  - Added popover to insert fields directly into rows.
+* Enhance	  - Revamped form settings design.
+* Enhance	  - Performance optimizations.
+* Dev 		  - Added Payment Summary field.
+* Dev 		  - Added coupon limits and support for stackable coupons.
+* Fix         - Email authorization.
+* Fix 		  - Email summaries supported only one recipient and lacked test report flexibility issue.
 
 = 3.4.5       - 16-04-2026
 * Fix 		  - Popup draggable.

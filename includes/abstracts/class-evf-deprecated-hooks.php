@@ -35,7 +35,9 @@ abstract class EVF_Deprecated_Hooks {
 	public function __construct() {
 		$fields = evf()->form_fields->get_form_field_types();
 
-		// Adapt dynamic fields hook deprecation with version support.
+		
+		$fields = array_filter( $fields, 'is_string' );
+
 		foreach ( $this->deprecated_hooks as $new_hook => $old_hook ) {
 			if ( is_string( $old_hook ) && false !== strpos( $new_hook, '{field_type}' ) ) {
 				foreach ( $fields as $field ) {
@@ -48,12 +50,10 @@ abstract class EVF_Deprecated_Hooks {
 					$new_dynamic_hooks = str_replace( '{field_type}', $field, $new_hook );
 					$old_dynamic_hooks = str_replace( '{field_type}', $field, $old_hook );
 
-					// Set the new deprecated field specific hooks with its version.
 					$this->deprecated_hooks[ $new_dynamic_hooks ]   = $old_dynamic_hooks;
 					$this->deprecated_version[ $old_dynamic_hooks ] = $this->get_deprecated_version( $old_hook );
 				}
 
-				// Remove the unused dynamic fields hooks.
 				unset( $this->deprecated_hooks[ $new_hook ] );
 				unset( $this->deprecated_version[ $old_hook ] );
 			}

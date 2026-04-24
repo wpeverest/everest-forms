@@ -2847,6 +2847,12 @@
 				total_rows =
 					parseInt($('.evf-add-row').first().attr('data-total-rows'), 10) || 0;
 
+			var current_part = $('.evf-admin-field-container').attr('data-current-part');
+
+			if (current_part) {
+				wrapper = $('.evf-admin-field-wrapper').find('#part_' + current_part);
+			}
+
 			max_row_id++;
 			total_rows++;
 
@@ -5268,6 +5274,62 @@
 						},
 					});
 
+					if ( field_type === 'repeater-fields' ) {
+						field.remove();
+						$(document.body).trigger('init_tooltips');
+						$(document.body).trigger('init_field_options_toggle');
+						$(document.body).trigger('evf_after_field_append', [dragged_el_id]);
+						EVFPanelBuilder.conditionalLogicAppendField(dragged_el_id);
+						EVFPanelBuilder.conditionalLogicAppendFieldIntegration(dragged_el_id);
+						EVFPanelBuilder.paymentFieldAppendToQuantity(dragged_el_id);
+						EVFPanelBuilder.paymentFieldAppendToDropdown(dragged_field_id, field_type);
+						EVFPanelBuilder.oneTimeDraggableField(dragged_field_id, field_type);
+						EVFPanelBuilder.init_datepickers();
+						EVFPanelBuilder.init_payment_subscription_plan_field();
+						$(
+							'#everest-forms-field-option-' +
+								dragged_field_id +
+								'-enable_min_max_time',
+						).hide();
+						$(
+							'label[for=everest-forms-field-option-' +
+								dragged_field_id +
+								'-enable_min_max_time]',
+						).hide();
+						$(
+							'label[for=everest-forms-field-option-' +
+								dragged_field_id +
+								'-select_min_time]',
+						).hide();
+						$(
+							'label[for=everest-forms-field-option-' +
+								dragged_field_id +
+								'-select_max_time]',
+						).hide();
+						$(
+							'#everest-forms-field-option-' +
+								dragged_field_id +
+								'-min_time_hour',
+						)
+							.parent()
+							.hide();
+						$(
+							'#everest-forms-field-option-' +
+								dragged_field_id +
+								'-max_time_hour',
+						)
+							.parent()
+							.hide();
+						$(document.body).trigger('evf_field_drop_complete', [
+							field_type,
+							dragged_field_id,
+							field_preview,
+							field_options,
+						]);
+						EVFPanelBuilder.checkEmptyGrid();
+						return;
+					}
+
 					if ($.contains(document.body, field[0])) {
 						field.after(field_preview);
 					} else {
@@ -7154,6 +7216,29 @@ jQuery(function ($) {
 
 jQuery(function ($) {
 	$(document).ready(function () {
+
+		// Add "Add Field Below" button to repeater field.
+		var observer = new MutationObserver(function (mutations) {
+			mutations.forEach(function (mutation) {
+				$(mutation.addedNodes).each(function () {
+					if ($(this).hasClass('everest-forms-field')) {
+						if (!$(this).find('.evf-add-field-below').length) {
+							$(this).append(
+								'<div class="evf-add-field-below">' +
+									'<span class="dashicons dashicons-plus" title="Add Field Below"></span>' +
+								'</div>'
+							);
+						}
+					}
+				});
+			});
+		});
+
+		observer.observe(document.body, {
+			childList: true,
+			subtree: true
+		});
+
 		// Custom CSS
 		const customCssElement = $(
 			'#everest-forms-panel-field-settings-evf-custom-css',

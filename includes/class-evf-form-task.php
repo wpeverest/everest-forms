@@ -717,6 +717,31 @@ class EVF_Form_Task {
 				__( 'Entry Added to Database.', 'everest-forms' ),
 				array( 'source' => 'form-submission' )
 			);
+			
+			$applied_coupons_data = ! empty( $_POST['applied_coupons_data'] ) ? $_POST['applied_coupons_data'] : '';
+			$this->form_data['applied_coupons_data'] = $applied_coupons_data;
+
+			if ( ! empty( $applied_coupons_data ) ) {
+				$decoded_coupons = $applied_coupons_data;
+				if ( is_string( $decoded_coupons ) ) {
+					$decoded = json_decode( wp_unslash( $decoded_coupons ), true );
+					if ( is_array( $decoded ) ) {
+						$decoded_coupons = $decoded;
+					}
+				}
+
+				if ( is_array( $decoded_coupons ) ) {
+					foreach ( $decoded_coupons as $coupon ) {
+						$field_id = isset( $coupon['field_id'] ) ? $coupon['field_id'] : '';
+						if ( ! empty( $field_id ) && isset( $this->form_fields[ $field_id ] ) ) {
+							if ( ! is_array( $this->form_fields[ $field_id ]['value'] ) ) {
+								$this->form_fields[ $field_id ]['value'] = array();
+							}
+							$this->form_fields[ $field_id ]['value'][] = $coupon;
+						}
+					}
+				}
+			}
 			$entry_id = $this->entry_save( $this->form_fields, $entry, $this->form_data['id'], $this->form_data );
 			$logger->notice( sprintf( 'Entry is Saved to DataBase' ) );
 
