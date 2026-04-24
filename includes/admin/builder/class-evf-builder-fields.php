@@ -174,7 +174,6 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 							<?php foreach ( $containers as $container ) : ?>
 							<button type="button"
 								class="evf-layout-container-btn"
-								style="background: #ffffff; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;     border: 1px solid #edeff7; border-radius: 4px; padding: 20px 8px; width: 30.3%;"
 								data-columns="<?php echo absint( $container['columns'] ); ?>"
 								data-field-type="<?php echo esc_attr( $container['type'] ); ?>">
 								<?php echo $container['icon']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>

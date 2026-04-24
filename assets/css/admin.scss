@@ -13394,6 +13394,15 @@ button#show-settings-link {
 	flex-direction: column;
 	align-items: center;
 	gap: 8px;
+	background: #ffffff; 
+	display: flex; 
+	flex-direction: column; 
+	align-items: center; 
+	justify-content: center; gap: 10px;     
+	border: 1px solid #edeff7; 
+	border-radius: 4px; 
+	padding: 20px 8px; 
+	width: 30.3%; 
 
 	svg {
 		width: 36px;
@@ -13401,12 +13410,14 @@ button#show-settings-link {
 		display: block;
 		opacity: 0.55;
 		transition: opacity 0.3s ease-in-out;
+		color: $evf_primary-color;
 	}
 
 	&:hover {
 		color: $evf_primary-color;
-		border-color: $evf_primary-color;
+		border-color: $evf_primary-color !important;
 		background: #ffffff;
+		cursor: pointer; 
 
 		svg {
 			opacity: 1;
