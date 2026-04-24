@@ -4599,8 +4599,6 @@
 				.disableSelection();
 
 			// Layout presets (sidebar): draggable onto canvas only — always creates a new row (never a grid cell).
-			// Pointer sync: appendTo body breaks jQuery UI's offsetParent math; drive position from clientX/Y
-			// each frame (droppables use tolerance: pointer → event.pageX/Y, so drops still work).
 			$('.evf-layout-container-btn').each(function () {
 				var $btn = $(this);
 				if ($btn.data('ui-draggable')) {
@@ -4631,7 +4629,6 @@
 							pointerEvents: 'none',
 							boxSizing: 'border-box',
 						});
-						// Internal _mouseDrag(true) runs after start and overwrites position; fix next tick.
 						setTimeout(function () {
 							ui.helper.css({ left: cx, top: cy });
 						}, 0);

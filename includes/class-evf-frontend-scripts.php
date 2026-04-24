@@ -203,7 +203,7 @@ class EVF_Frontend_Scripts {
 				'version' => EVF_VERSION,
 			),
 			'everest-forms-ajax-submission'          => array(
-				'src'     => self::get_asset_url( 'assets/js/frontend/ajax-submission.js' ),
+				'src'     => self::get_asset_url( 'assets/js/frontend/ajax-submission' . $suffix . '.js' ),
 				'deps'    => array( 'jquery', 'inputmask', 'jquery-validate' ),
 				'version' => EVF_VERSION,
 			),

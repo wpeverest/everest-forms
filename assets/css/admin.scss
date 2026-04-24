@@ -13398,15 +13398,15 @@ button#show-settings-link {
 	flex-direction: column;
 	align-items: center;
 	gap: 8px;
-	background: #ffffff; 
-	display: flex; 
-	flex-direction: column; 
-	align-items: center; 
-	justify-content: center; gap: 10px;     
-	border: 1px solid #edeff7; 
-	border-radius: 4px; 
-	padding: 20px 8px; 
-	width: 30.3%; 
+	background: #ffffff;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center; gap: 10px;
+	border: 1px solid #edeff7;
+	border-radius: 4px;
+	padding: 20px 8px;
+	width: 30.3%;
 
 	svg {
 		width: 36px;
@@ -13435,20 +13435,17 @@ button#show-settings-link {
 	}
 }
 
-// Row / add-strip targets while dragging a layout preset from the sidebar.
 .evf-layout-drop-target-hover {
 	outline: none;
 	background-color: transparent;
 }
 
-// Hide empty-grid plus icon while the grid is active drop target.
 #everest-forms-builder .evf-admin-grid.evf-empty-grid.evf-item-hover::before {
 	display: none !important;
 }
 
-// Precise insertion line for layout drop (top/bottom).
 .evf-admin-row.evf-layout-insert-before,
-.evf-admin-row.evf-layout-insert-after { 
+.evf-admin-row.evf-layout-insert-after {
 	position: relative;
 }
 
@@ -13471,7 +13468,7 @@ button#show-settings-link {
 .evf-admin-row.evf-layout-insert-after::after {
 	bottom: -8px;
 }
- 
+
 .evf-admin-field-wrapper.evf-layout-insert-empty,
 [id^='part_'].evf-layout-insert-empty {
 	position: relative;
@@ -13491,7 +13488,6 @@ button#show-settings-link {
 	z-index: 10000;
 }
 
-// Add-row strip shows bottom insertion line.
 .evf-add-row.evf-layout-insert-after-all {
 	position: relative;
 }
@@ -13509,7 +13505,6 @@ button#show-settings-link {
 	z-index: 10000;
 }
 
-// While dragging a layout preset, show each existing row boundary in the canvas.
 #everest-forms-builder.evf-is-dragging-layout-container {
 	.evf-admin-field-container {
 		.evf-admin-row {
@@ -13583,7 +13578,7 @@ button#show-settings-link {
 		padding: 12px 20px;
 		font-size: 13px;
 		line-height: 1.2;
-		font-weight: 600; 
+		font-weight: 600;
 	}
 }
 
@@ -13609,7 +13604,7 @@ button#show-settings-link {
 		.logo {
 			width: 38px;
 			height: 38px;
-			flex: 0 0 38px;  
+			flex: 0 0 38px;
 			margin: 0;
 			border: 1px solid #E1E1E1;
 			display: flex;
@@ -13629,7 +13624,7 @@ button#show-settings-link {
 
 			&:hover {
 				background: #f0f0f0;
-				color: #2f2f2f; 
+				color: #2f2f2f;
 			}
 
 			i.dashicons {

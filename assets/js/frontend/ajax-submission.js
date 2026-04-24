@@ -21,8 +21,6 @@ jQuery( function( $ ) {
 			return;
 		}
 
-		// eslint-disable-next-line no-console
-		console.log( '[EVF Payment Debug] ' + stage, payload || {} );
 	};
 
 	var evf_ajax_submission_init = function(){
@@ -61,7 +59,6 @@ jQuery( function( $ ) {
 					var hasPaymentGatewaySelector = formTuple.find( '.evf-payment-gateway-radio' ).length > 0;
 
 					// For square payment credit card validation.
-					// If payment method selector exists, only run Square validation when square is explicitly selected.
 					var squareSelectedGateway = formTuple.find( '.evf-payment-gateway-radio:checked' ).data( 'evf-gateway' );
 					var squareIsSelected = hasPaymentGatewaySelector
 						? 'square' === squareSelectedGateway
