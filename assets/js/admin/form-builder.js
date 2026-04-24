@@ -4553,6 +4553,9 @@
 					appendTo: 'body',
 					start: function () {
 						$(this).addClass('field-dragged');
+						$('#everest-forms-builder').addClass(
+							'evf-is-dragging-layout-container',
+						);
 					},
 					helper: function () {
 						return $(this)
@@ -4563,6 +4566,9 @@
 					},
 					stop: function () {
 						$(this).removeClass('field-dragged');
+						$('#everest-forms-builder').removeClass(
+							'evf-is-dragging-layout-container',
+						);
 						$('.evf-layout-drop-target-hover').removeClass(
 							'evf-layout-drop-target-hover',
 						);
