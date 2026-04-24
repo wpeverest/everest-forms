@@ -7,10 +7,16 @@ jQuery( function( $ ) {
 			if ( window.evfPaymentDebug === true ) {
 				return true;
 			}
+			if (
+				window.everest_forms_ajax_submission_params &&
+				'1' === String( window.everest_forms_ajax_submission_params.payment_debug || '' )
+			) {
+				return true;
+			}
 			if ( formTuple && formTuple.length && '1' === String( formTuple.data( 'evfPaymentDebug' ) || '' ) ) {
 				return true;
 			}
-			return '1' === window.localStorage.getItem( 'evf_payment_debug' );
+			return false;
 		} catch ( e ) {
 			return false;
 		}

@@ -350,6 +350,7 @@ class EVF_Frontend_Scripts {
 					'pdf_download'        => esc_html__( 'Click here to download your pdf submission', 'everest-forms' ),
 					'evf_checked_image_url' 			   => esc_url( self::get_asset_url( 'assets/images/evf-checked.png' ) ),
 					'i18n_evf_success_text'				    => esc_html__( 'Success!', 'everest-forms' ),
+					'payment_debug'       => ( defined( 'EVF_PAYMENT_DEBUG' ) && constant( 'EVF_PAYMENT_DEBUG' ) ) ? '1' : '0',
 				);
 				break;
 			case 'everest-forms-survey-polls-quiz-script':
