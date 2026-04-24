@@ -6016,6 +6016,27 @@
 				$addButton.removeClass('evf-one-time-draggable-field');
 				$addButton.removeClass('evf-payment-method-dependent-disabled');
 			});
+
+			var hasLegacyPaymentField =
+				$builder.find('.everest-forms-field-credit-card').length > 0 ||
+				$builder.find('.everest-forms-field-authorize-net').length > 0 ||
+				$builder.find('.everest-forms-field-square-payment').length > 0;
+			var $paymentGatewayAdd = $(
+				'#everest-forms-add-fields-payment-gateway-selector',
+			);
+			if ($paymentGatewayAdd.length) {
+				if (hasLegacyPaymentField) {
+					$paymentGatewayAdd.addClass('evf-one-time-draggable-field');
+					$paymentGatewayAdd.addClass('evf-payment-method-dependent-disabled');
+				} else {
+					$paymentGatewayAdd.removeClass(
+						'evf-payment-method-dependent-disabled',
+					);
+					if (!hasPaymentMethodField) {
+						$paymentGatewayAdd.removeClass('evf-one-time-draggable-field');
+					}
+				}
+			}
 		},
 
 		bindFieldSettings: function () {

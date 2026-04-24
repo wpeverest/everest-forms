@@ -557,6 +557,38 @@ jQuery( function( $ ) {
 				},
 			});
 		},
+		/**
+		 * Labels of Credit Card / Authorize.Net / Square fields on the builder canvas.
+		 *
+		 * @return {string[]}
+		 */
+		getLegacyPaymentFieldDisplayNames: function () {
+			var $b = $('#everest-forms-builder');
+			var names = [];
+			if (!$b.length) {
+				return names;
+			}
+			var fallbacks = {
+				'credit-card': evf_upgrade.evf_legacy_payment_label_credit_card,
+				'authorize-net': evf_upgrade.evf_legacy_payment_label_authorize_net,
+				'square-payment': evf_upgrade.evf_legacy_payment_label_square,
+			};
+			$b
+				.find(
+					'.everest-forms-field-credit-card, .everest-forms-field-authorize-net, .everest-forms-field-square-payment',
+				)
+				.each(function () {
+					var $f = $(this);
+					var label = $f.find('.label-title .text').first().text().trim();
+					var type = $f.attr('data-field-type') || '';
+					if (!label) {
+						label = fallbacks[type] || type;
+					}
+					names.push(label);
+				});
+			return names;
+		},
+
 		evf_one_time_draggable_field: function (e) {
 			e.preventDefault();
 			var $item = $(e.currentTarget).closest('.evf-registered-item');
@@ -592,6 +624,42 @@ jQuery( function( $ ) {
 				}
 			}
 			if (
+				'payment-gateway-selector' === fieldType &&
+				$item.hasClass('evf-payment-method-dependent-disabled') &&
+				typeof evf_upgrade.evf_legacy_payment_blocks_gateway_message !==
+					'undefined'
+			) {
+				title = evf_upgrade.evf_legacy_payment_blocks_gateway_title;
+				var legacyNames =
+					evf_upgrade_actions.getLegacyPaymentFieldDisplayNames();
+				var strongName = function (name) {
+					return (
+						'<strong>' +
+						$('<div/>').text(name).html() +
+						'</strong>'
+					);
+				};
+				var placeholder;
+				if (legacyNames.length === 0) {
+					placeholder =
+						'the ' +
+						strongName(
+							[
+								evf_upgrade.evf_legacy_payment_label_credit_card,
+								evf_upgrade.evf_legacy_payment_label_authorize_net,
+								evf_upgrade.evf_legacy_payment_label_square,
+							].join(', '),
+						);
+				} else if (legacyNames.length === 1) {
+					placeholder = 'the ' + strongName(legacyNames[0]);
+				} else {
+					placeholder = legacyNames.map(strongName).join(' and ');
+				}
+				content = evf_upgrade.evf_legacy_payment_blocks_gateway_message.replace(
+					'%s',
+					placeholder,
+				);
+			} else if (
 				'payment-gateway-selector' === fieldType &&
 				typeof evf_upgrade.evf_one_time_payment_gateway_message !== 'undefined'
 			) {
