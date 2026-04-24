@@ -339,6 +339,7 @@ const UserRoleTable = () => {
 					</InputLeftElement>
 					<Input
 						placeholder={__('Search...', 'everest-forms')}
+						_placeholder={{ color: '#222222' }}
 						focusBorderColor="primary.400"
 						borderRadius="4px"
 						onChange={(e) => debounceSearch(e.target.value)}
@@ -445,7 +446,7 @@ const UserRoleTable = () => {
 									borderRadius: '4px',
 									borderColor: 'gray.200',
 									fontSize: '14px',
-									color: '#383838',
+									color: '#222222',
 									_hover: {
 										borderColor: 'primary.400',
 									},
@@ -461,12 +462,12 @@ const UserRoleTable = () => {
 								placeholder: (provided) => ({
 									...provided,
 									fontSize: '14px',
-									color: 'gray.400',
+									color: '#222222',
 								}),
 								singleValue: (provided) => ({
 									...provided,
 									fontSize: '14px',
-									color: '#383838',
+									color: '#222222',
 								}),
 								option: (provided) => ({
 									...provided,
@@ -510,7 +511,7 @@ const UserRoleTable = () => {
 									fontWeight="600"
 									fontSize="14px"
 									lineHeight="24px"
-									color="#383838"
+									color="#222222"
 								>
 									{__('Name', 'everest-forms')}
 								</Text>
@@ -520,7 +521,7 @@ const UserRoleTable = () => {
 									fontWeight="600"
 									fontSize="14px"
 									lineHeight="24px"
-									color="#383838"
+									color="#222222"
 								>
 									{__('Email', 'everest-forms')}
 								</Text>
