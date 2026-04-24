@@ -13412,9 +13412,9 @@ button#show-settings-link {
 		width: 36px;
 		height: 24px;
 		display: block;
-		opacity: 0.55;
 		transition: opacity 0.3s ease-in-out;
 		color: $evf_primary-color;
+		fill: #6b6b6b;
 	}
 
 	&:hover {
@@ -13425,6 +13425,8 @@ button#show-settings-link {
 
 		svg {
 			opacity: 1;
+		  fill: $evf_primary-color !important;
+
 		}
 	}
 
