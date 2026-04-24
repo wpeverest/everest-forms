@@ -325,7 +325,7 @@ const UserRoleTable = () => {
 						fontWeight="600"
 						fontSize="20px"
 						lineHeight="normal"
-						color="#222222"
+						color="#383838"
 						margin="0"
 					>
 						{__('Role Based Access', 'everest-forms')}
@@ -339,9 +339,12 @@ const UserRoleTable = () => {
 					</InputLeftElement>
 					<Input
 						placeholder={__('Search...', 'everest-forms')}
-						_placeholder={{ color: '#222222' }}
+						_placeholder={{ color: '#383838' }}
+						borderColor="#e1e1e1"
 						focusBorderColor="primary.400"
 						borderRadius="4px"
+						fontSize="14px"
+						color="#383838"
 						onChange={(e) => debounceSearch(e.target.value)}
 					/>
 				</InputGroup>
@@ -444,9 +447,9 @@ const UserRoleTable = () => {
 								control: (provided) => ({
 									...provided,
 									borderRadius: '4px',
-									borderColor: 'gray.200',
+									borderColor: '#e1e1e1',
 									fontSize: '14px',
-									color: '#222222',
+									color: '#383838',
 									_hover: {
 										borderColor: 'primary.400',
 									},
@@ -462,12 +465,12 @@ const UserRoleTable = () => {
 								placeholder: (provided) => ({
 									...provided,
 									fontSize: '14px',
-									color: '#222222',
+									color: '#383838',
 								}),
 								singleValue: (provided) => ({
 									...provided,
 									fontSize: '14px',
-									color: '#222222',
+									color: '#383838',
 								}),
 								option: (provided) => ({
 									...provided,
@@ -511,7 +514,7 @@ const UserRoleTable = () => {
 									fontWeight="600"
 									fontSize="14px"
 									lineHeight="24px"
-									color="#222222"
+									color="#383838"
 								>
 									{__('Name', 'everest-forms')}
 								</Text>
@@ -521,7 +524,7 @@ const UserRoleTable = () => {
 									fontWeight="600"
 									fontSize="14px"
 									lineHeight="24px"
-									color="#222222"
+									color="#383838"
 								>
 									{__('Email', 'everest-forms')}
 								</Text>
