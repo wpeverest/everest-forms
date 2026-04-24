@@ -4539,30 +4539,56 @@
 				.disableSelection();
 
 			// Layout presets (sidebar): draggable onto canvas only — always creates a new row (never a grid cell).
+			// Pointer sync: appendTo body breaks jQuery UI's offsetParent math; drive position from clientX/Y
+			// each frame (droppables use tolerance: pointer → event.pageX/Y, so drops still work).
 			$('.evf-layout-container-btn').each(function () {
 				var $btn = $(this);
 				if ($btn.data('ui-draggable')) {
 					$btn.draggable('destroy');
 				}
+				var cursorLeft = Math.round($btn.outerWidth() / 2),
+					cursorTop = Math.round($btn.outerHeight() / 2);
 				$btn.draggable({
-					delay: 200,
+					delay: 0,
+					distance: 2,
 					cancel: false,
 					scroll: false,
 					revert: 'invalid',
-					scrollSensitivity: 40,
 					appendTo: 'body',
-					start: function () {
+					zIndex: 100050,
+					start: function (event, ui) {
 						$(this).addClass('field-dragged');
 						$('#everest-forms-builder').addClass(
 							'evf-is-dragging-layout-container',
 						);
+						var cx = event.clientX - cursorLeft,
+							cy = event.clientY - cursorTop;
+						ui.helper.css({
+							position: 'fixed',
+							margin: 0,
+							left: cx,
+							top: cy,
+							pointerEvents: 'none',
+							boxSizing: 'border-box',
+						});
+						// Internal _mouseDrag(true) runs after start and overwrites position; fix next tick.
+						setTimeout(function () {
+							ui.helper.css({ left: cx, top: cy });
+						}, 0);
 					},
 					helper: function () {
 						return $(this)
 							.clone()
 							.addClass('evf-layout-container-drag-helper')
-							.css({ width: $(this).outerWidth() })
-							.appendTo('body');
+							.css({
+								width: $(this).outerWidth(),
+								boxSizing: 'border-box',
+							})
+							.appendTo(document.body);
+					},
+					drag: function (event, ui) {
+						ui.position.left = event.clientX - cursorLeft;
+						ui.position.top = event.clientY - cursorTop;
 					},
 					stop: function () {
 						$(this).removeClass('field-dragged');
@@ -4573,13 +4599,15 @@
 							'evf-layout-drop-target-hover',
 						);
 					},
-					opacity: 0.85,
-					containment: '#everest-forms-builder',
+					opacity: 0.92,
 				});
 			});
 
 			var layoutDropAccept = function (draggable) {
 				return $(draggable).hasClass('evf-layout-container-btn');
+			};
+			var queueLayoutInsert = function (callback) {
+				window.setTimeout(callback, 0);
 			};
 
 			EVFPanelBuilder.getLayoutDropZones().each(function () {
@@ -4590,7 +4618,7 @@
 				$zone.droppable({
 					accept: layoutDropAccept,
 					tolerance: 'pointer',
-					greedy: true,
+					greedy: false,
 					over: function () {
 						$(this).addClass('evf-layout-drop-target-hover');
 					},
@@ -4621,26 +4649,32 @@
 						});
 
 						if ($beforeRow && $beforeRow.length) {
-							EVFPanelBuilder.addLayoutContainer(
-								columns,
-								null,
-								$beforeRow,
-								$z,
-							);
+							queueLayoutInsert(function () {
+								EVFPanelBuilder.addLayoutContainer(
+									columns,
+									null,
+									$beforeRow,
+									$z,
+								);
+							});
 						} else if ($afterRow && $afterRow.length) {
-							EVFPanelBuilder.addLayoutContainer(
-								columns,
-								$afterRow,
-								null,
-								$z,
-							);
+							queueLayoutInsert(function () {
+								EVFPanelBuilder.addLayoutContainer(
+									columns,
+									$afterRow,
+									null,
+									$z,
+								);
+							});
 						} else {
-							EVFPanelBuilder.addLayoutContainer(
-								columns,
-								null,
-								null,
-								$z,
-							);
+							queueLayoutInsert(function () {
+								EVFPanelBuilder.addLayoutContainer(
+									columns,
+									null,
+									null,
+									$z,
+								);
+							});
 						}
 					},
 				});
@@ -4681,19 +4715,23 @@
 
 						var $last = wrapper.children('.evf-admin-row').last();
 						if ($last.length) {
-							EVFPanelBuilder.addLayoutContainer(
-								columns,
-								$last,
-								null,
-								$ctx,
-							);
+							queueLayoutInsert(function () {
+								EVFPanelBuilder.addLayoutContainer(
+									columns,
+									$last,
+									null,
+									$ctx,
+								);
+							});
 						} else {
-							EVFPanelBuilder.addLayoutContainer(
-								columns,
-								null,
-								null,
-								$ctx,
-							);
+							queueLayoutInsert(function () {
+								EVFPanelBuilder.addLayoutContainer(
+									columns,
+									null,
+									null,
+									$ctx,
+								);
+							});
 						}
 					},
 				});
