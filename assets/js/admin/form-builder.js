@@ -2848,14 +2848,47 @@
 			});
 		},
 		/**
+		 * Row/canvas zones where layout presets can be dropped (main wrapper or multi-part #part_*).
+		 *
+		 * @return {jQuery}
+		 */
+		getLayoutDropZones: function () {
+			var $collection = $();
+			$('.evf-admin-field-wrapper').each(function () {
+				var $w = $(this);
+				var $parts = $w.children('[id^="part_"]');
+				if ($parts.length) {
+					$collection = $collection.add($parts);
+				} else {
+					$collection = $collection.add($w);
+				}
+			});
+			return $collection;
+		},
+		/**
 		 * Add a new row with a specific column layout.
 		 *
-		 * @param {number}      columns    Number of columns (1–4).
-		 * @param {jQuery|null} $afterRow  Insert after this row; omit to append to bottom.
+		 * @param {number}      columns      Number of columns (1–4).
+		 * @param {jQuery|null} $afterRow    Insert after this row.
+		 * @param {jQuery|null} $beforeRow   Insert before this row (takes precedence over $afterRow).
+		 * @param {jQuery|null} $dropContext Element inside the builder (e.g. drop zone) to resolve multi-part wrapper.
 		 */
-		addLayoutContainer: function (columns, $afterRow) {
-			var wrapper = $('.evf-admin-field-wrapper'),
-				row_ids = $('.evf-admin-row')
+		addLayoutContainer: function (columns, $afterRow, $beforeRow, $dropContext) {
+			var wrapper = $('.evf-admin-field-wrapper');
+
+			if ($dropContext && $dropContext.length) {
+				var current_part = $dropContext
+					.closest('.evf-admin-field-container')
+					.attr('data-current-part');
+				if (current_part) {
+					var $partWrap = wrapper.find('#part_' + current_part);
+					if ($partWrap.length) {
+						wrapper = $partWrap;
+					}
+				}
+			}
+
+			var row_ids = $('.evf-admin-row')
 					.map(function () {
 						return $(this).data('row-id');
 					})
@@ -2874,7 +2907,9 @@
 			$('.evf-add-row').attr('data-total-rows', total_rows);
 			$('.evf-add-row').attr('data-next-row-id', max_row_id);
 
-			if ($afterRow && $afterRow.length) {
+			if ($beforeRow && $beforeRow.length) {
+				$beforeRow.before(row_clone);
+			} else if ($afterRow && $afterRow.length) {
 				$afterRow.after(row_clone);
 			} else {
 				wrapper.append(row_clone);
@@ -4503,6 +4538,161 @@
 				})
 				.disableSelection();
 
+			// Layout presets (sidebar): draggable onto canvas only — always creates a new row (never a grid cell).
+			$('.evf-layout-container-btn').each(function () {
+				var $btn = $(this);
+				if ($btn.data('ui-draggable')) {
+					$btn.draggable('destroy');
+				}
+				$btn.draggable({
+					delay: 200,
+					cancel: false,
+					scroll: false,
+					revert: 'invalid',
+					scrollSensitivity: 40,
+					appendTo: 'body',
+					start: function () {
+						$(this).addClass('field-dragged');
+					},
+					helper: function () {
+						return $(this)
+							.clone()
+							.addClass('evf-layout-container-drag-helper')
+							.css({ width: $(this).outerWidth() })
+							.appendTo('body');
+					},
+					stop: function () {
+						$(this).removeClass('field-dragged');
+						$('.evf-layout-drop-target-hover').removeClass(
+							'evf-layout-drop-target-hover',
+						);
+					},
+					opacity: 0.85,
+					containment: '#everest-forms-builder',
+				});
+			});
+
+			var layoutDropAccept = function (draggable) {
+				return $(draggable).hasClass('evf-layout-container-btn');
+			};
+
+			EVFPanelBuilder.getLayoutDropZones().each(function () {
+				var $zone = $(this);
+				if ($zone.data('ui-droppable')) {
+					$zone.droppable('destroy');
+				}
+				$zone.droppable({
+					accept: layoutDropAccept,
+					tolerance: 'pointer',
+					greedy: true,
+					over: function () {
+						$(this).addClass('evf-layout-drop-target-hover');
+					},
+					out: function () {
+						$(this).removeClass('evf-layout-drop-target-hover');
+					},
+					drop: function (event, ui) {
+						$(this).removeClass('evf-layout-drop-target-hover');
+						var columns = parseInt(ui.draggable.data('columns'), 10);
+						if (!columns || columns < 1) {
+							return;
+						}
+						var $z = $(this),
+							y = event.pageY,
+							$rows = $z.children('.evf-admin-row'),
+							$beforeRow = null,
+							$afterRow = null;
+
+						$rows.each(function () {
+							var $r = $(this),
+								top = $r.offset().top,
+								mid = top + $r.outerHeight() / 2;
+							if (y < mid) {
+								$beforeRow = $r;
+								return false;
+							}
+							$afterRow = $r;
+						});
+
+						if ($beforeRow && $beforeRow.length) {
+							EVFPanelBuilder.addLayoutContainer(
+								columns,
+								null,
+								$beforeRow,
+								$z,
+							);
+						} else if ($afterRow && $afterRow.length) {
+							EVFPanelBuilder.addLayoutContainer(
+								columns,
+								$afterRow,
+								null,
+								$z,
+							);
+						} else {
+							EVFPanelBuilder.addLayoutContainer(
+								columns,
+								null,
+								null,
+								$z,
+							);
+						}
+					},
+				});
+			});
+
+			$('.evf-add-row:not(.repeater-row)').each(function () {
+				var $addStrip = $(this);
+				if ($addStrip.data('ui-droppable')) {
+					$addStrip.droppable('destroy');
+				}
+				$addStrip.droppable({
+					accept: layoutDropAccept,
+					tolerance: 'pointer',
+					over: function () {
+						$(this).addClass('evf-layout-drop-target-hover');
+					},
+					out: function () {
+						$(this).removeClass('evf-layout-drop-target-hover');
+					},
+					drop: function (event, ui) {
+						$(this).removeClass('evf-layout-drop-target-hover');
+						var columns = parseInt(ui.draggable.data('columns'), 10);
+						if (!columns || columns < 1) {
+							return;
+						}
+						var $ctx = $(this),
+							wrapper = $('.evf-admin-field-wrapper'),
+							current_part = $ctx
+								.closest('.evf-admin-field-container')
+								.attr('data-current-part');
+
+						if (current_part) {
+							var $pw = wrapper.find('#part_' + current_part);
+							if ($pw.length) {
+								wrapper = $pw;
+							}
+						}
+
+						var $last = wrapper.children('.evf-admin-row').last();
+						if ($last.length) {
+							EVFPanelBuilder.addLayoutContainer(
+								columns,
+								$last,
+								null,
+								$ctx,
+							);
+						} else {
+							EVFPanelBuilder.addLayoutContainer(
+								columns,
+								null,
+								null,
+								$ctx,
+							);
+						}
+					},
+				});
+			});
+
 			// Repeatable grid connect to sortable setter.
 			$('.evf-registered-item.evf-repeater-field').draggable(
 				'option',
@@ -5073,7 +5263,12 @@
 						'evf-field-popover-open',
 					);
 
-					EVFPanelBuilder.addLayoutContainer(columns, $targetRow);
+					EVFPanelBuilder.addLayoutContainer(
+						columns,
+						$targetRow,
+						null,
+						$targetRow,
+					);
 				},
 			);
 		},

@@ -13383,7 +13383,11 @@ button#show-settings-link {
 	width: 30.3%;
 	color: #383838;
 	font-weight: 400;
-	cursor: pointer;
+	cursor: grab;
+
+	&:active {
+		cursor: grabbing;
+	}
 	border-radius: 4px;
 	font-size: 12px;
 	transition: all 0.3s ease-in-out;
@@ -13417,7 +13421,7 @@ button#show-settings-link {
 		color: $evf_primary-color;
 		border-color: $evf_primary-color !important;
 		background: #ffffff;
-		cursor: pointer; 
+		cursor: grab;
 
 		svg {
 			opacity: 1;
@@ -13427,6 +13431,13 @@ button#show-settings-link {
 	&:focus {
 		outline: none;
 	}
+}
+
+// Row / add-strip targets while dragging a layout preset from the sidebar.
+.evf-layout-drop-target-hover {
+	outline: 2px dashed $evf_primary-color;
+	outline-offset: 2px;
+	background-color: rgba(93, 150, 238, 0.06);
 }
 
 .evf-builder-get-started {
