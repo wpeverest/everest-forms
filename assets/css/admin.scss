@@ -13435,9 +13435,71 @@ button#show-settings-link {
 
 // Row / add-strip targets while dragging a layout preset from the sidebar.
 .evf-layout-drop-target-hover {
-	outline: 2px dashed $evf_primary-color;
-	outline-offset: 2px;
-	background-color: rgba(93, 150, 238, 0.06);
+	outline: none;
+	background-color: transparent;
+}
+
+// Precise insertion line for layout drop (top/bottom).
+.evf-admin-row.evf-layout-insert-before,
+.evf-admin-row.evf-layout-insert-after { 
+	position: relative;
+}
+
+.evf-admin-row.evf-layout-insert-before::before,
+.evf-admin-row.evf-layout-insert-after::after {
+	content: '';
+	position: absolute;
+	left: 8px;
+	right: 8px;
+	height: 2px;
+	background: $evf_primary-color;
+	border-radius: 3px;
+	z-index: 10000;
+}
+
+.evf-admin-row.evf-layout-insert-before::before {
+	top: -8px;
+}
+
+.evf-admin-row.evf-layout-insert-after::after {
+	bottom: -8px;
+}
+ 
+.evf-admin-field-wrapper.evf-layout-insert-empty,
+[id^='part_'].evf-layout-insert-empty {
+	position: relative;
+}
+
+.evf-admin-field-wrapper.evf-layout-insert-empty::before,
+[id^='part_'].evf-layout-insert-empty::before {
+	content: '';
+	position: absolute;
+	left: 8px;
+	right: 8px;
+	top: 0;
+	height: 3px;
+	background: $evf_primary-color;
+	border-radius: 3px;
+	box-shadow: 0 0 0 2px rgba(93, 150, 238, 0.12);
+	z-index: 10000;
+}
+
+// Add-row strip shows bottom insertion line.
+.evf-add-row.evf-layout-insert-after-all {
+	position: relative;
+}
+
+.evf-add-row.evf-layout-insert-after-all::after {
+	content: '';
+	position: absolute;
+	left: 8px;
+	right: 8px;
+	bottom: -2px;
+	height: 3px;
+	background: $evf_primary-color;
+	border-radius: 3px;
+	box-shadow: 0 0 0 2px rgba(93, 150, 238, 0.12);
+	z-index: 10000;
 }
 
 // While dragging a layout preset, show each existing row boundary in the canvas.

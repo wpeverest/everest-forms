@@ -2954,9 +2954,39 @@
 		},
 		bindLayoutContainers: function () {
 			$('body').on('click', '.evf-layout-container-btn', function () {
-				EVFPanelBuilder.addLayoutContainer(
-					parseInt($(this).data('columns'), 10),
-				);
+				var columns = parseInt($(this).data('columns'), 10),
+					$fieldContainer = $('.evf-admin-field-container:visible').first();
+
+				if (!$fieldContainer.length) {
+					$fieldContainer = $('.evf-admin-field-container').first();
+				}
+
+				var wrapper = $('.evf-admin-field-wrapper'),
+					current_part = $fieldContainer.attr('data-current-part');
+
+				if (current_part) {
+					var $partWrap = wrapper.find('#part_' + current_part);
+					if ($partWrap.length) {
+						wrapper = $partWrap;
+					}
+				}
+
+				var $lastRow = wrapper.children('.evf-admin-row').last();
+				if ($lastRow.length) {
+					EVFPanelBuilder.addLayoutContainer(
+						columns,
+						$lastRow,
+						null,
+						$fieldContainer,
+					);
+				} else {
+					EVFPanelBuilder.addLayoutContainer(
+						columns,
+						null,
+						null,
+						$fieldContainer,
+					);
+				}
 			});
 		},
 		bindAddRowColumnPicker: function () {
@@ -3102,7 +3132,37 @@
 				function () {
 					var cols = parseInt($(this).data('columns'), 10);
 					$('#evf-add-row-picker').hide();
-					EVFPanelBuilder.addLayoutContainer(cols);
+					var $fieldContainer = $('.evf-admin-field-container:visible').first();
+					if (!$fieldContainer.length) {
+						$fieldContainer = $('.evf-admin-field-container').first();
+					}
+
+					var wrapper = $('.evf-admin-field-wrapper'),
+						current_part = $fieldContainer.attr('data-current-part');
+
+					if (current_part) {
+						var $partWrap = wrapper.find('#part_' + current_part);
+						if ($partWrap.length) {
+							wrapper = $partWrap;
+						}
+					}
+
+					var $lastRow = wrapper.children('.evf-admin-row').last();
+					if ($lastRow.length) {
+						EVFPanelBuilder.addLayoutContainer(
+							cols,
+							$lastRow,
+							null,
+							$fieldContainer,
+						);
+					} else {
+						EVFPanelBuilder.addLayoutContainer(
+							cols,
+							null,
+							null,
+							$fieldContainer,
+						);
+					}
 				},
 			);
 
@@ -4589,15 +4649,25 @@
 					drag: function (event, ui) {
 						ui.position.left = event.clientX - cursorLeft;
 						ui.position.top = event.clientY - cursorTop;
+						var $activeZone = $('#everest-forms-builder').data(
+							'evf-layout-active-drop-zone',
+						);
+						if ($activeZone && $activeZone.length) {
+							updateLayoutDropIndicator($activeZone, event.pageY);
+						}
 					},
 					stop: function () {
 						$(this).removeClass('field-dragged');
 						$('#everest-forms-builder').removeClass(
 							'evf-is-dragging-layout-container',
 						);
+						$('#everest-forms-builder').removeData(
+							'evf-layout-active-drop-zone',
+						);
 						$('.evf-layout-drop-target-hover').removeClass(
 							'evf-layout-drop-target-hover',
 						);
+						clearLayoutDropIndicators();
 					},
 					opacity: 0.92,
 				});
@@ -4605,6 +4675,44 @@
 
 			var layoutDropAccept = function (draggable) {
 				return $(draggable).hasClass('evf-layout-container-btn');
+			};
+			var clearLayoutDropIndicators = function () {
+				$('.evf-admin-row').removeClass(
+					'evf-layout-insert-before evf-layout-insert-after',
+				);
+				$(
+					'.evf-admin-field-wrapper, [id^="part_"], .evf-add-row:not(.repeater-row)',
+				).removeClass('evf-layout-insert-empty evf-layout-insert-after-all');
+			};
+			var updateLayoutDropIndicator = function ($zone, pageY) {
+				var $rows = $zone.children('.evf-admin-row'),
+					$beforeRow = null,
+					$afterRow = null;
+
+				$rows.removeClass('evf-layout-insert-before evf-layout-insert-after');
+				$zone.removeClass('evf-layout-insert-empty');
+
+				if (!$rows.length) {
+					$zone.addClass('evf-layout-insert-empty');
+					return;
+				}
+
+				$rows.each(function () {
+					var $r = $(this),
+						top = $r.offset().top,
+						mid = top + $r.outerHeight() / 2;
+					if (pageY < mid) {
+						$beforeRow = $r;
+						return false;
+					}
+					$afterRow = $r;
+				});
+
+				if ($beforeRow && $beforeRow.length) {
+					$beforeRow.addClass('evf-layout-insert-before');
+				} else if ($afterRow && $afterRow.length) {
+					$afterRow.addClass('evf-layout-insert-after');
+				}
 			};
 			var queueLayoutInsert = function (callback) {
 				window.setTimeout(callback, 0);
@@ -4619,14 +4727,28 @@
 					accept: layoutDropAccept,
 					tolerance: 'pointer',
 					greedy: false,
-					over: function () {
-						$(this).addClass('evf-layout-drop-target-hover');
+					over: function (event) {
+						var $zone = $(this);
+						$zone.addClass('evf-layout-drop-target-hover');
+						$('#everest-forms-builder').data(
+							'evf-layout-active-drop-zone',
+							$zone,
+						);
+						updateLayoutDropIndicator($zone, event.pageY);
 					},
 					out: function () {
 						$(this).removeClass('evf-layout-drop-target-hover');
+						$('#everest-forms-builder').removeData(
+							'evf-layout-active-drop-zone',
+						);
+						clearLayoutDropIndicators();
 					},
 					drop: function (event, ui) {
 						$(this).removeClass('evf-layout-drop-target-hover');
+						$('#everest-forms-builder').removeData(
+							'evf-layout-active-drop-zone',
+						);
+						clearLayoutDropIndicators();
 						var columns = parseInt(ui.draggable.data('columns'), 10);
 						if (!columns || columns < 1) {
 							return;
@@ -4690,12 +4812,16 @@
 					tolerance: 'pointer',
 					over: function () {
 						$(this).addClass('evf-layout-drop-target-hover');
+						$(this).addClass('evf-layout-insert-after-all');
 					},
 					out: function () {
 						$(this).removeClass('evf-layout-drop-target-hover');
+						$(this).removeClass('evf-layout-insert-after-all');
 					},
 					drop: function (event, ui) {
 						$(this).removeClass('evf-layout-drop-target-hover');
+						$(this).removeClass('evf-layout-insert-after-all');
+						clearLayoutDropIndicators();
 						var columns = parseInt(ui.draggable.data('columns'), 10);
 						if (!columns || columns < 1) {
 							return;
