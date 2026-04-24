@@ -44,8 +44,8 @@ $spacing-xl: 24px;
 // Main Wrapper
 .evf-entry-view-wrapper {
 	background-color: $bg-light;
-	padding: $spacing-lg;
-	margin: 0 0 0 -20px;
+	padding: 0 !important;
+	margin: 0 !important;
 	min-height: 100vh;
 
 	// Override default WordPress admin styles
@@ -61,8 +61,7 @@ $spacing-xl: 24px;
 // Header Section
 .evf-entry-header {
 	background-color: $bg-white;
-	padding: $spacing-md 0px;
-	border-radius: $border-radius;
+	padding: $spacing-md 24px;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -167,7 +166,8 @@ $spacing-xl: 24px;
 	grid-template-columns: 1fr 320px;
 	gap: $spacing-xl;
 	align-items: flex-start;
-	padding: 24px 0px;
+	padding: 24px;
+	background-color: #f4f4f4;
 }
 
 // Main Content
@@ -1041,7 +1041,7 @@ $spacing-xl: 24px;
 #everest-forms-entry-subscription,
 .evf-entry-sidebar > div {
 	background-color: $bg-white;
-	border-radius: $border-radius-sm;
+	border-radius: $border-radius-md;
 	overflow: hidden;
 	margin-bottom: $spacing-lg;
 	border: 1px solid $border-color;
@@ -1421,7 +1421,7 @@ $spacing-xl: 24px;
 
 .evf-entry-main-content .stuffbox {
 	background-color: $bg-white;
-	border-radius: $border-radius-sm;
+	border-radius: $border-radius-md;
 	overflow: hidden;
 	border: 1px solid $border-color;
 	box-shadow: none;

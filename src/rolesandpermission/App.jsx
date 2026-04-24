@@ -13,7 +13,6 @@ const App = () => {
 				<Stack
 					direction="column"
 					gap="16px"
-					padding="20px 20px 40px 20px"
 					bg="white"
 				>
 					<UserRoleTable />

@@ -1039,12 +1039,6 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 	<div class="everest-forms-extra-table-nav">
 		<?php
 		if ( ! empty( $this->forms ) && 'top' === $which ) {
-			?>
-			<div class="search-box" style="flex: 0 0 auto; margin: 0; right: 0;">
-				<?php $entries_table_list->search_box( esc_html__( 'Search Entries', 'everest-forms' ), 'everest-forms' ); ?>
-			</div>
-			<?php
-
 			if ( defined( 'EFP_VERSION' ) && $this->form_id > 0 ) {
 				?>
 			<button
