@@ -5055,6 +5055,7 @@
 						'.evf-admin-grid.evf-empty-grid::before{width:36px!important;height:36px!important;border-radius:50%!important;background:#e9e9e9!important;color:#666!important;font-size:20px!important;display:flex!important;align-items:center!important;justify-content:center!important;line-height:1!important}' +
 						'.evf-admin-grid.evf-empty-grid:hover::before{background:rgba(126,59,208,.12)!important;color:#7e3bd0!important}' +
 						'.evf-admin-row.evf-popover-open .evf-admin-grid.evf-empty-grid::before{background:rgba(126,59,208,.12)!important;color:#7e3bd0!important}' +
+						'.evf-admin-grid.evf-empty-grid.evf-item-hover::before{display:none!important}' +
 						'</style>',
 				);
 			}

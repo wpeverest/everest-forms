@@ -13439,6 +13439,11 @@ button#show-settings-link {
 	background-color: transparent;
 }
 
+// Hide empty-grid plus icon while the grid is active drop target.
+#everest-forms-builder .evf-admin-grid.evf-empty-grid.evf-item-hover::before {
+	display: none !important;
+}
+
 // Precise insertion line for layout drop (top/bottom).
 .evf-admin-row.evf-layout-insert-before,
 .evf-admin-row.evf-layout-insert-after { 
