@@ -4974,6 +4974,10 @@ p.search-box {
 					display: none;
 				}
 
+				&.evf-field-webhook-headers-container {
+					display: block;
+				}
+
 				&:last-child {
 					margin-bottom: 0;
 				}
