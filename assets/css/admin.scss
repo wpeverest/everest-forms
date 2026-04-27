@@ -2247,7 +2247,7 @@ p.search-box {
 							.radio-list {
 								display: flex;
 								align-items: center;
-								flex-wrap: wrap;
+								width: 100%;
 								gap: 16px;
 
 								.inline {
@@ -2324,9 +2324,8 @@ p.search-box {
 					&.everest-forms-panel-field-toggle {
 						display: flex;
 						align-items: center;
-						justify-content: flex-end;
-						flex-direction: row-reverse;
-						gap: 8px;
+						justify-content: flex-start;
+						gap: 30px;
 
 						label,
 						.evf-toggle-section {
@@ -2833,7 +2832,7 @@ p.search-box {
 				right: 4px;
 				width: 28px;
 				height: 28px;
-				top: 36px;
+				top: 5px;
 
 				.dashicons-editor-code {
 					&::before {
@@ -4802,8 +4801,8 @@ p.search-box {
 				margin-bottom: 8px;
 				color: #222;
 				font-weight: 500;
-				// max-width: 300px;
-				// width: 100%;
+				 max-width: 300px;
+				 width: 100%;
 				display: flex;
 				align-items: center;
 				gap: 4px;
@@ -4812,7 +4811,7 @@ p.search-box {
 					color: $color_gray-light;
 					font-size: 16px;
 					line-height: 1.2;
-					// margin-top: 3px;
+					 margin-top: 3px;
 					margin-top: 0;
 					width: 14px;
 					height: 18px;
@@ -4967,9 +4966,13 @@ p.search-box {
 				position: relative;
 				margin-bottom: 20px;
 				max-width: 100%;
-				// display: flex;
-				// align-items: baseline;
-				// gap: 30px;
+				 display: flex;
+				 align-items: baseline;
+				 gap: 30px;
+
+				&.evf-field-conditional-container {
+					display: none;
+				}
 
 				&:last-child {
 					margin-bottom: 0;
@@ -13459,7 +13462,7 @@ button#show-settings-link {
 		padding: 12px 20px;
 		font-size: 13px;
 		line-height: 1.2;
-		font-weight: 600; 
+		font-weight: 600;
 	}
 }
 
@@ -13485,7 +13488,7 @@ button#show-settings-link {
 		.logo {
 			width: 38px;
 			height: 38px;
-			flex: 0 0 38px;  
+			flex: 0 0 38px;
 			margin: 0;
 			border: 1px solid #E1E1E1;
 			display: flex;
@@ -13505,7 +13508,7 @@ button#show-settings-link {
 
 			&:hover {
 				background: #f0f0f0;
-				color: #2f2f2f; 
+				color: #2f2f2f;
 			}
 
 			i.dashicons {
