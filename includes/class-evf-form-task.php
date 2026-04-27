@@ -239,7 +239,7 @@ class EVF_Form_Task {
 						$field_submit = isset( $field_submit['signature_image'] ) ? $field_submit['signature_image'] : '';
 					}
 
-					$exclude = array( 'title', 'html', 'captcha', 'image-upload', 'file-upload', 'divider', 'reset', 'recaptcha', 'hcaptcha', 'turnstile', 'private-note' );
+					$exclude = array( 'title', 'html', 'captcha', 'image-upload', 'file-upload', 'divider', 'reset', 'recaptcha', 'hcaptcha', 'turnstile', 'private-note', 'payment_summary' );
 
 					if ( ! in_array( $field_type, $exclude, true ) ) {
 
@@ -717,7 +717,7 @@ class EVF_Form_Task {
 				__( 'Entry Added to Database.', 'everest-forms' ),
 				array( 'source' => 'form-submission' )
 			);
-			
+
 			$applied_coupons_data = ! empty( $_POST['applied_coupons_data'] ) ? $_POST['applied_coupons_data'] : '';
 			$this->form_data['applied_coupons_data'] = $applied_coupons_data;
 
