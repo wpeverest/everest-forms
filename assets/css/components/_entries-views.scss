@@ -1670,14 +1670,15 @@ $spacing-xl: 24px;
 		}
 	}
 }
-.everest-forms-entry-payment,
-h2 {
-	margin: 0;
-	font-size: 16px;
-	font-weight: 600;
-	color: #1f2937;
-	border-bottom: 1px solid #e5e7eb;
-	background: 0 0;
-	padding-bottom: 20px;
-	margin-bottom: 24px 0;
+.everest-forms-entry-payment{
+	h2 {
+		margin: 0;
+		font-size: 16px;
+		font-weight: 600;
+		color: #1f2937;
+		border-bottom: 1px solid #e5e7eb;
+		background: 0 0;
+		padding-bottom: 20px;
+		margin-bottom: 24px 0;
+	}
 }
