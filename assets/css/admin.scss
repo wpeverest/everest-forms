@@ -4340,11 +4340,19 @@ p.search-box {
 
 							&::before {
 								content: '\f132';
-								font-size: 40px;
 								font-family: dashicons;
-								line-height: 1.2;
 								cursor: all-scroll;
 								color: $color_gray-lighten;
+								width: 30px !important;
+								height: 30px !important;
+								border-radius: 50% !important;
+								background: #e9e9ea !important;
+								color: #6b6b6b !important;
+								font-size: 16px !important;
+								display: flex !important;
+								align-items: center !important;
+								justify-content: center !important;
+								line-height: 6 !important;
 							}
 						}
 
@@ -13613,4 +13621,31 @@ button#show-settings-link {
 			}
 		}
 	}
+}
+
+// Popover Fields
+.evf-popover-fields {
+	gap: 12px !important;
+}
+.evf-popover-field-item {
+	padding: 14px 10px !important;
+}
+.evf-popover-tab {
+	border-radius: 4px !important;
+	padding: 6px 12px !important;
+}
+.evf-popover-search-wrap .dashicons {
+	display: none !important;
+}
+#evf-popover-search:focus {
+	box-shadow: none !important;
+}
+.evf-popover-tabs {
+	gap: 4px !important;
+}
+.evf-tabs-arrow-right {
+	top: 16% !important;
+}
+.evf-tabs-arrow-left {
+	top: 16% !important;
 }
