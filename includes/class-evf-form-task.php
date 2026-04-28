@@ -743,6 +743,9 @@ class EVF_Form_Task {
 				}
 			}
 			$entry_id = $this->entry_save( $this->form_fields, $entry, $this->form_data['id'], $this->form_data );
+
+			do_action( 'everest_forms_process_user_registration', $this->form_fields, $entry, $this->form_data, $entry_id );
+
 			$logger->notice( sprintf( 'Entry is Saved to DataBase' ) );
 
 			$logger->notice( sprintf( 'Sending Email' ) );
