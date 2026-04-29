@@ -1689,3 +1689,26 @@ $spacing-xl: 24px;
 		margin-bottom: 24px !important;
 	}
 }
+.payment_status {
+	color: #28a745 !important;
+	font-size: 13px !important;
+	font-weight: 500 !important;
+	white-space: nowrap;
+}
+
+.payment_status img {
+	display: none !important;
+}
+
+.payment_status::before {
+	content: none !important;
+	display: none !important;
+}
+
+.payment_status {
+	display: table-cell !important;
+}
+
+.payment_status:not(:empty) {
+	text-align: left;
+}
