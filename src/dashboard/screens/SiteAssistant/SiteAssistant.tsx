@@ -208,7 +208,9 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 		siteData?.data?.is_smart_smtp_installed;
 	const resolvedSmtpActive =
 		sendTestEmailMutation.data?.data?.is_smtp_active ?? siteData?.data?.is_smtp_active;
-	console.log( resolvedSmtpActive, 'SMTP Active Status');
+	const resolvedSmtpPluginActive =
+		sendTestEmailMutation.data?.data?.is_smart_smtp_active ??
+		siteData?.data?.is_smart_smtp_active;
 	const resolvedEmailSent =
 		sendTestEmailMutation.data?.data?.email_sent ?? siteData?.data?.test_email_sent;
 	const resolvedLastFormEmailStatus =
@@ -635,7 +637,7 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 			minWidth="0"
 			borderTopWidth="2px"
 			borderTopColor="#7545BB"
-			borderStyle="solid" 
+			borderStyle="solid"
 		>
 			<HStack
 				justify={'space-between'}
@@ -656,9 +658,9 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 								h="8px"
 								bg="7545BB"
 								borderRadius="full"
-								lineHeight="1" 
+								lineHeight="1"
 								verticalAlign="middle"
-								transform="translateY(-1px)" 
+								transform="translateY(-1px)"
 							>
 							</Box>
 						</Box>
@@ -723,7 +725,7 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 						</Alert>
 					)}
 					{(emailStatus === 'failed' || emailStatus === 'sent') &&
-						! resolvedSmtpActive && (
+						! resolvedSmtpActive && ! resolvedSmtpPluginActive && (
 							<Box
 								p={4}
 								border="1px"
