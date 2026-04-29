@@ -5659,8 +5659,10 @@ p.search-box {
 				.everest-forms-title-desc {
 					display: inline-flex;
 					align-items: center;
-					flex-direction: row-reverse;
+					flex-direction: row;
 					position: relative;
+					width: 100%;
+					max-width: 100%;
 					margin-bottom: 32px;
 
 					.evf-icon {
@@ -5673,6 +5675,7 @@ p.search-box {
 						border-radius: 3px;
 						color: #7545bb;
 						background: #f6f3fa;
+						order: -1;
 
 						&::after {
 							content: '';
@@ -5697,8 +5700,12 @@ p.search-box {
 						background: none;
 						z-index: 1;
 						padding: 0 12px;
+						min-width: 0;
+						max-width: calc(100% - 38px);
 
 						&.everst-forms-name-editing {
+							flex: 1 1 auto;
+							width: calc(100% - 38px);
 							pointer-events: all;
 
 							& + .evf-icon {
@@ -13740,33 +13747,5 @@ button#show-settings-link {
 		display: flex;
 		align-items: center;
 		gap: 6px;
-	}
-}
-
-@media (max-width: 1366px) {
-	.everest-forms_page_evf-builder {
-		#everest-forms-builder {
-			.everest-forms-nav-wrapper {
-				.evf-forms-nav-right {
-					.evf-shortcode-field {
-						display: inline-flex !important;
-						align-items: center;
-
-						input {
-							display: block !important;
-							width: clamp(170px, 24vw, 225px);
-							max-width: 225px;
-							overflow: hidden;
-							text-overflow: ellipsis;
-							white-space: nowrap;
-						}
-
-						button {
-							border-radius: 0 3px 3px 0;
-						}
-					}
-				}
-			}
-		}
 	}
 }
