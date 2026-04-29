@@ -347,6 +347,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 * Enhance	  - Revamped form settings design.
 * Enhance	  - Performance optimizations.
 * Dev 		  - Added Payment Summary field.
+* Dev 		  - User id not updating on entry when auto login.
 * Dev 		  - Added coupon limits and support for stackable coupons.
 * Fix         - Email authorization.
 * Fix 		  - Email summaries supported only one recipient and lacked test report flexibility issue.
