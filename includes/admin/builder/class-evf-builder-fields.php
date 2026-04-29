@@ -111,6 +111,36 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 	 * Output fields group buttons.
 	 */
 	public function output_fields() {
+		$containers = apply_filters(
+			'everest_forms_builder_layout_containers',
+			array(
+				array(
+					'type'    => 'layout_one_col',
+					'label'   => __( 'One Column', 'everest-forms' ),
+					'columns' => 1,
+					'icon'    => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.645 3.795a.28.28 0 0 0-.066-.181.21.21 0 0 0-.16-.076H6.581a.21.21 0 0 0-.16.076.28.28 0 0 0-.066.18v16.411c0 .068.024.133.066.181a.21.21 0 0 0 .16.076h10.838a.21.21 0 0 0 .16-.076.28.28 0 0 0 .066-.18zM19 20.205c0 .476-.167.933-.463 1.27a1.5 1.5 0 0 1-1.118.525H6.581c-.42 0-.821-.19-1.118-.526A1.93 1.93 0 0 1 5 20.205V3.795c0-.476.167-.933.463-1.27A1.5 1.5 0 0 1 6.581 2h10.838c.42 0 .822.19 1.118.526S19 3.319 19 3.795z"/></svg>',
+				),
+				array(
+					'type'    => 'layout_two_col',
+					'label'   => __( 'Two Column', 'everest-forms' ),
+					'columns' => 2,
+					'icon'    => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.25 4a.25.25 0 0 0-.25-.25h-7.25v16.5H20a.25.25 0 0 0 .25-.25zM3.75 20a.25.25 0 0 0 .25.25h7.25V3.75H4a.25.25 0 0 0-.25.25zm18 0A1.75 1.75 0 0 1 20 21.75H4A1.75 1.75 0 0 1 2.25 20V4A1.75 1.75 0 0 1 4 2.25h16A1.75 1.75 0 0 1 21.75 4z"/></svg>',
+				),
+				array(
+					'type'    => 'layout_three_col',
+					'label'   => __( 'Three Column', 'everest-forms' ),
+					'columns' => 3,
+					'icon'    => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.25 4a.25.25 0 0 0-.25-.25h-4.25v16.5H20a.25.25 0 0 0 .25-.25zM9.75 20.25h4.5V3.75h-4.5zm-6-.25a.25.25 0 0 0 .25.25h4.25V3.75H4a.25.25 0 0 0-.25.25zm18 0A1.75 1.75 0 0 1 20 21.75H4A1.75 1.75 0 0 1 2.25 20V4A1.75 1.75 0 0 1 4 2.25h16A1.75 1.75 0 0 1 21.75 4z"/></svg>',
+				),
+				array(
+					'type'    => 'layout_four_col',
+					'label'   => __( 'Four Column', 'everest-forms' ),
+					'columns' => 4,
+					'icon'    => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6.75 21V3a.75.75 0 0 1 1.5 0v18a.75.75 0 0 1-1.5 0m4.5 0V3a.75.75 0 0 1 1.5 0v18a.75.75 0 0 1-1.5 0m4.5 0V3a.75.75 0 0 1 1.5 0v18a.75.75 0 0 1-1.5 0"/><path d="M20.2 20.5V22H3.8v-1.5zm.3-.3V3.8a.3.3 0 0 0-.3-.3H3.8a.3.3 0 0 0-.3.3v16.4a.3.3 0 0 0 .3.3V22a1.8 1.8 0 0 1-1.79-1.616L2 20.2V3.8A1.8 1.8 0 0 1 3.8 2h16.4l.184.01A1.8 1.8 0 0 1 22 3.8v16.4l-.01.184a1.8 1.8 0 0 1-1.606 1.606L20.2 22v-1.5a.3.3 0 0 0 .3-.3"/></svg>',
+				),
+			)
+		);
+
 		$form_fields = evf()->form_fields->form_fields();
 
 		if ( ! empty( $form_fields ) ) {
@@ -135,6 +165,25 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 					</div>
 				</div>
 				<?php
+
+				if ( 'advanced' === $group ) {
+					?>
+					<div class="everest-forms-add-fields-group open evf-layout-group">
+						<a href="#" class="everest-forms-add-fields-heading" data-group="layout"><?php esc_html_e( 'Layout', 'everest-forms' ); ?><i class="handlediv"></i></a>
+						<div class="evf-registered-buttons">
+							<?php foreach ( $containers as $container ) : ?>
+							<button type="button"
+								class="evf-layout-container-btn"
+								data-columns="<?php echo absint( $container['columns'] ); ?>"
+								data-field-type="<?php echo esc_attr( $container['type'] ); ?>">
+								<?php echo $container['icon']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+								<?php echo esc_html( $container['label'] ); ?>
+							</button>
+							<?php endforeach; ?>
+						</div>
+					</div>
+					<?php
+				}
 			}
 		}
 	}

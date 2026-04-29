@@ -239,7 +239,7 @@ class EVF_Form_Task {
 						$field_submit = isset( $field_submit['signature_image'] ) ? $field_submit['signature_image'] : '';
 					}
 
-					$exclude = array( 'title', 'html', 'captcha', 'image-upload', 'file-upload', 'divider', 'reset', 'recaptcha', 'hcaptcha', 'turnstile', 'private-note' );
+					$exclude = array( 'title', 'html', 'captcha', 'image-upload', 'file-upload', 'divider', 'reset', 'recaptcha', 'hcaptcha', 'turnstile', 'private-note', 'payment_summary' );
 
 					if ( ! in_array( $field_type, $exclude, true ) ) {
 
@@ -269,7 +269,9 @@ class EVF_Form_Task {
 						"Everest Forms Process Before validate {$field_type}.",
 						array( 'source' => 'form-submission' )
 					);
-					do_action( "everest_forms_process_validate_{$field_type}", $field_id, $field_submit, $this->form_data, $field_type );
+					if ( 'payment-coupon' != $field_type ) {
+						do_action( "everest_forms_process_validate_{$field_type}", $field_id, $field_submit, $this->form_data, $field_type );
+					}
 				}
 
 				if ( 'credit-card' === $field_type && isset( $_POST['everest_form_stripe_payment_intent_id'] ) ) {
@@ -635,6 +637,41 @@ class EVF_Form_Task {
 			// because at this point we have completed all field validation and
 			// formatted the data.
 			$this->form_fields = apply_filters( 'everest_forms_process_filter', $this->form_fields, $entry, $this->form_data );
+
+			$all_data = array(
+				'form_fields' => $this->form_fields,
+				'entry'       => $entry,
+				'form_data'   => $this->form_data,
+			);
+
+			if ( ! empty( $_POST[ 'applied_coupons_data' ] ) ) {
+				$applied_coupons_data = json_decode( wp_unslash( $_POST[ 'applied_coupons_data' ] ), true );
+				$all_data['applied_coupons_data'] = $applied_coupons_data;
+			}
+
+			foreach ( $this->form_data['form_fields'] as $field ) {
+				$field_id        = $field['id'];
+				$field_type      = $field['type'];
+
+				$field_submit = isset( $entry['form_fields'][ $field_id ] ) ? $entry['form_fields'][ $field_id ] : '';
+
+				if ( 'payment-coupon' === $field_type ) {
+					$logger->info(
+						"Everest Forms Process coupon validating {$field_type}.",
+						array( 'source' => 'form-submission' )
+					);
+					do_action( "everest_forms_process_validate_{$field_type}", $field_id, $field_submit, $all_data);
+				}
+
+				if ( 'yes' === get_option( 'evf_validation_error' ) && $ajax_form_submission ) {
+					if ( count( $this->errors ) ) {
+						foreach ( $this->errors as $_error ) {
+							$this->ajax_err [] = $_error;
+						}
+					}
+					update_option( 'evf_validation_error', '' );
+				}
+			}
 			$logger->notice( sprintf( 'Everest Form Process: %s', evf_print_r( $this->form_fields, true ) ) );
 
 			$logger->info(
@@ -680,7 +717,35 @@ class EVF_Form_Task {
 				__( 'Entry Added to Database.', 'everest-forms' ),
 				array( 'source' => 'form-submission' )
 			);
+
+			$applied_coupons_data = ! empty( $_POST['applied_coupons_data'] ) ? $_POST['applied_coupons_data'] : '';
+			$this->form_data['applied_coupons_data'] = $applied_coupons_data;
+
+			if ( ! empty( $applied_coupons_data ) ) {
+				$decoded_coupons = $applied_coupons_data;
+				if ( is_string( $decoded_coupons ) ) {
+					$decoded = json_decode( wp_unslash( $decoded_coupons ), true );
+					if ( is_array( $decoded ) ) {
+						$decoded_coupons = $decoded;
+					}
+				}
+
+				if ( is_array( $decoded_coupons ) ) {
+					foreach ( $decoded_coupons as $coupon ) {
+						$field_id = isset( $coupon['field_id'] ) ? $coupon['field_id'] : '';
+						if ( ! empty( $field_id ) && isset( $this->form_fields[ $field_id ] ) ) {
+							if ( ! is_array( $this->form_fields[ $field_id ]['value'] ) ) {
+								$this->form_fields[ $field_id ]['value'] = array();
+							}
+							$this->form_fields[ $field_id ]['value'][] = $coupon;
+						}
+					}
+				}
+			}
 			$entry_id = $this->entry_save( $this->form_fields, $entry, $this->form_data['id'], $this->form_data );
+
+			do_action( 'everest_forms_process_user_registration', $this->form_fields, $entry, $this->form_data, $entry_id );
+
 			$logger->notice( sprintf( 'Entry is Saved to DataBase' ) );
 
 			$logger->notice( sprintf( 'Sending Email' ) );
@@ -706,6 +771,13 @@ class EVF_Form_Task {
 				__( 'Everest Forms Process Completed.', 'everest-forms' ),
 				array( 'source' => 'form-submission' )
 			);
+
+			if ( ! empty( $_POST[ 'applied_coupons_data' ] ) ) {
+				$applied_coupons_data = json_decode( wp_unslash( $_POST[ 'applied_coupons_data' ] ), true );
+
+				$this->form_data['applied_coupons_data'] = $applied_coupons_data;
+			}
+
 			do_action( 'everest_forms_process_complete', $this->form_fields, $entry, $this->form_data, $entry_id );
 			$logger->info(
 				"Everest Forms Process Completed {$form_id}.",

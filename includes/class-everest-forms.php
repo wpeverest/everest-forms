@@ -23,7 +23,7 @@ final class EverestForms {
 	 *
 	 * @var string
 	 */
-	public $version = '3.4.5';
+	public $version = '3.4.6';
 
 	/**
 	 * The single instance of the class.
@@ -187,6 +187,7 @@ final class EverestForms {
 		add_action( 'switch_blog', array( $this, 'wpdb_table_fix' ), 0 );
 		add_filter( 'everest_forms_entry_bulk_actions', array( $this, 'everest_forms_entry_bulk_actions' ) );
 		add_action( 'init', array( $this, 'evf_register_inactive_post_status' ) );
+		add_action( 'current_screen', array( $this, 'maybe_load_integrations' ) );
 	}
 
 	/**
@@ -358,8 +359,6 @@ final class EverestForms {
 		 * @return void
 		 */
 		include_once EVF_ABSPATH . 'includes/libraries/wptt-webfont-loader.php';
-
-
 	}
 
 	/**
@@ -402,7 +401,6 @@ final class EverestForms {
 
 		// Load class instances.
 		$this->addons                              = new EVF_Addon_Upsell();
-		$this->integrations                        = new EVF_Integrations();
 		$this->deprecated_hook_handlers['actions'] = new EVF_Deprecated_Action_Hooks();
 		$this->deprecated_hook_handlers['filters'] = new EVF_Deprecated_Filter_Hooks();
 
@@ -416,6 +414,27 @@ final class EverestForms {
 
 		// Init action.
 		do_action( 'everest_forms_init' );
+	}
+
+	public function maybe_load_integrations( $screen ) {
+
+		if ( ! is_admin() ) {
+			return;
+		}
+
+		if ( ! $screen ) {
+			return;
+		}
+
+		if ( ! in_array( $screen->id, evf_get_screen_ids(), true ) ) {
+			return;
+		}
+
+		if ( $this->integrations ) {
+			return;
+		}
+
+		$this->integrations = new EVF_Integrations();
 	}
 
 	/**
