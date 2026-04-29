@@ -423,6 +423,7 @@ $spacing-xl: 24px;
 				display: inline-flex !important;
 				align-items: center;
 				flex-shrink: 0;
+				font-family: dashicons !important;
 			}
 
 			&:hover {
@@ -1670,15 +1671,15 @@ $spacing-xl: 24px;
 		}
 	}
 }
-.everest-forms-entry-payment{
+#everest-forms-entry-payment {
 	h2 {
-		margin: 0;
-		font-size: 16px;
-		font-weight: 600;
-		color: #1f2937;
-		border-bottom: 1px solid #e5e7eb;
-		background: 0 0;
-		padding-bottom: 20px;
-		margin-bottom: 24px 0;
+		margin: 0 !important;
+		font-size: 16px !important;
+		font-weight: 600 !important;
+		color: #1f2937 !important;
+		border-bottom: 1px solid #e5e7eb !important;
+		background: none;
+		padding-bottom: 20px !important;
+		margin-bottom: 24px !important;
 	}
 }
