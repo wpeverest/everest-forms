@@ -15,9 +15,9 @@
 
 // Components
 @import 'components/badge', 'components/forms', 'components/buttons',
-'components/card', 'components/table', 'components/entries-views',
-'components/toast', 'components/accordion', 'components/evf-header-skeleton',
-'components/evf-pro-upsell';
+	'components/card', 'components/table', 'components/entries-views',
+	'components/toast', 'components/accordion', 'components/evf-header-skeleton',
+	'components/evf-pro-upsell';
 
 @import 'colors';
 @import 'containers';
@@ -46,7 +46,7 @@ body[class*='everest-forms_page_'] {
 
 	[class*='jconfirm-everest-forms-'] {
 		font-family: -apple-system, BlinkMacSystemFont, Inter, 'Segoe UI', Roboto,
-		Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+			Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
 	}
 
 	#wpcontent {
@@ -59,7 +59,7 @@ body[class*='everest-forms_page_'] {
 			#everest-forms-dashboard,
 			#evf-templates {
 				font-family: -apple-system, BlinkMacSystemFont, Inter, 'Segoe UI',
-				Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+					Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
 
 				h1,
 				h2,
@@ -72,7 +72,7 @@ body[class*='everest-forms_page_'] {
 				label,
 				table {
 					font-family: -apple-system, BlinkMacSystemFont, Inter, 'Segoe UI',
-					Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+						Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
 				}
 			}
 
@@ -1060,8 +1060,8 @@ body.everest-forms-builder {
 						&.payments {
 							&::before {
 								filter: brightness(0) saturate(100%) invert(26%) sepia(77%)
-								saturate(1950%) hue-rotate(249deg) brightness(84%)
-								contrast(81%);
+									saturate(1950%) hue-rotate(249deg) brightness(84%)
+									contrast(81%);
 							}
 						}
 					}
@@ -2247,7 +2247,7 @@ p.search-box {
 							.radio-list {
 								display: flex;
 								align-items: center;
-								flex-wrap: wrap;
+								width: 100%;
 								gap: 16px;
 
 								.inline {
@@ -2324,9 +2324,8 @@ p.search-box {
 					&.everest-forms-panel-field-toggle {
 						display: flex;
 						align-items: center;
-						justify-content: flex-end;
-						flex-direction: row-reverse;
-						gap: 8px;
+						justify-content: flex-start;
+						gap: 30px;
 
 						label,
 						.evf-toggle-section {
@@ -2748,7 +2747,7 @@ p.search-box {
 
 						&:focus {
 							box-shadow: 0 0 0 2px
-							adjust-color($everestforms, $saturation: 39%, $lightness: +18%);
+								adjust-color($everestforms, $saturation: 39%, $lightness: +18%);
 						}
 					}
 
@@ -2833,7 +2832,7 @@ p.search-box {
 				right: 4px;
 				width: 28px;
 				height: 28px;
-				top: 36px;
+				top: 5px;
 
 				.dashicons-editor-code {
 					&::before {
@@ -3481,7 +3480,7 @@ p.search-box {
 
 							.inline {
 								margin-bottom: 0;
-								display: inline-block;
+								// display: inline-block;
 								vertical-align: top;
 								margin-left: 5px;
 							}
@@ -4339,19 +4338,19 @@ p.search-box {
 						}
 
 						input {
-							&[type="text"],
-							&[type="password"],
-							&[type="date"],
-							&[type="datetime"],
-							&[type="datetime-local"],
-							&[type="email"],
-							&[type="month"],
-							&[type="number"],
-							&[type="search"],
-							&[type="tel"],
-							&[type="time"],
-							&[type="url"],
-							&[type="week"] {
+							&[type='text'],
+							&[type='password'],
+							&[type='date'],
+							&[type='datetime'],
+							&[type='datetime-local'],
+							&[type='email'],
+							&[type='month'],
+							&[type='number'],
+							&[type='search'],
+							&[type='tel'],
+							&[type='time'],
+							&[type='url'],
+							&[type='week'] {
 								padding: 0 8px;
 								line-height: 2;
 								min-height: 30px;
@@ -4822,8 +4821,8 @@ p.search-box {
 				margin-bottom: 8px;
 				color: #222;
 				font-weight: 500;
-				// max-width: 300px;
-				// width: 100%;
+				max-width: 300px;
+				width: 100%;
 				display: flex;
 				align-items: center;
 				gap: 4px;
@@ -4832,7 +4831,7 @@ p.search-box {
 					color: $color_gray-light;
 					font-size: 16px;
 					line-height: 1.2;
-					// margin-top: 3px;
+					margin-top: 3px;
 					margin-top: 0;
 					width: 14px;
 					height: 18px;
@@ -4963,7 +4962,7 @@ p.search-box {
 				border-bottom: 1px solid #e9e9e9;
 
 				.evf-title {
-					margin-right: 20px;
+					// margin-right: 20px;
 				}
 
 				.evf-enable-email-toggle,
@@ -4987,9 +4986,34 @@ p.search-box {
 				position: relative;
 				margin-bottom: 20px;
 				max-width: 100%;
-				// display: flex;
-				// align-items: baseline;
-				// gap: 30px;
+				display: flex;
+				align-items: baseline;
+				gap: 30px;
+
+				&.evf-field-conditional-container {
+					display: none;
+				}
+
+				&.evf-field-webhook-headers-container,
+				&.evf-field-confirmation-conditional-container {
+					display: block;
+				}
+
+				&.evf-toggle-section-wrapper {
+					display: block;
+
+					.evf-toggle-section {
+						display: flex;
+						gap: 30px;
+						flex-direction: row-reverse;
+						justify-content: flex-end;
+
+						.tooltipstered {
+							margin-top: 5px;
+							margin-left: 10px;
+						}
+					}
+				}
 
 				&:last-child {
 					margin-bottom: 0;
@@ -5092,7 +5116,6 @@ p.search-box {
 				&.evf_conditional_logic_container {
 					label {
 						margin-bottom: 0;
-						display: inline-block;
 					}
 				}
 			}
@@ -7516,7 +7539,7 @@ img.ui-datepicker-trigger {
 			height: 28px;
 			width: 23px;
 			background: url(data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M5%206l5%205%205-5%202%201-7%207-7-7%202-1z%22%20fill%3D%22%23555%22%2F%3E%3C%2Fsvg%3E)
-			no-repeat right 5px top 55%;
+				no-repeat right 5px top 55%;
 			background-size: 16px 16px;
 
 			@media only screen and (max-width: 782px) {
@@ -7624,7 +7647,7 @@ img.ui-datepicker-trigger {
 			}
 
 			.select2-selection--single .select2-selection__rendered:hover {
-				color: #7545bb;
+				color: #7545bb !important;
 			}
 
 			.select2-container.select2-container--focus .select2-selection--single,
@@ -7635,9 +7658,9 @@ img.ui-datepicker-trigger {
 			}
 
 			.select2-container--default
-			.select2-results__option--highlighted[aria-selected],
+				.select2-results__option--highlighted[aria-selected],
 			.select2-container--default
-			.select2-results__option--highlighted[data-selected] {
+				.select2-results__option--highlighted[data-selected] {
 				background: $color;
 			}
 		}
@@ -8568,7 +8591,7 @@ img.ui-datepicker-trigger {
 			height: 28px;
 			width: 23px;
 			background: url(data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M5%206l5%205%205-5%202%201-7%207-7-7%202-1z%22%20fill%3D%22%23555%22%2F%3E%3C%2Fsvg%3E)
-			no-repeat right 5px top 55%;
+				no-repeat right 5px top 55%;
 			background-size: 16px 16px;
 			right: 3px;
 			height: 30px;
@@ -10853,8 +10876,8 @@ img.ui-datepicker-trigger {
 							.evf-nav-icon {
 								img {
 									filter: brightness(0) saturate(100%) invert(100%) sepia(0%)
-									saturate(7487%) hue-rotate(137deg) brightness(89%)
-									contrast(114%);
+										saturate(7487%) hue-rotate(137deg) brightness(89%)
+										contrast(114%);
 								}
 							}
 						}
@@ -11309,8 +11332,8 @@ img.ui-datepicker-trigger {
 
 							&:hover::after {
 								filter: brightness(0) saturate(100%) invert(26%) sepia(77%)
-								saturate(1950%) hue-rotate(249deg) brightness(84%)
-								contrast(81%);
+									saturate(1950%) hue-rotate(249deg) brightness(84%)
+									contrast(81%);
 							}
 						}
 					}
@@ -13259,11 +13282,11 @@ button#show-settings-link {
 	padding: 20px;
 	border: 1px solid #e9e9e9;
 	border-radius: 8px;
-	width: 773px;
+	width: 100%;
 
 	.everest-forms-inner-wrapper-setting-body {
 		margin-bottom: 20px;
-		max-width: 740px;
+		max-width: 100%;
 		border-radius: 8px;
 		padding: 22px 22px 0 22px;
 		background: #fcfcfd;
@@ -13358,7 +13381,7 @@ button#show-settings-link {
 
 	&:hover {
 		filter: brightness(0) saturate(100%) invert(26%) sepia(77%) saturate(1950%)
-		hue-rotate(249deg) brightness(84%) contrast(81%);
+			hue-rotate(249deg) brightness(84%) contrast(81%);
 	}
 }
 
@@ -13402,7 +13425,8 @@ button#show-settings-link {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	justify-content: center; gap: 10px;
+	justify-content: center;
+	gap: 10px;
 	border: 1px solid #edeff7;
 	border-radius: 4px;
 	padding: 20px 8px;
@@ -13426,7 +13450,6 @@ button#show-settings-link {
 		svg {
 			opacity: 1;
 			fill: $evf_primary-color !important;
-
 		}
 	}
 
@@ -13611,7 +13634,7 @@ button#show-settings-link {
 			height: 38px;
 			flex: 0 0 38px;
 			margin: 0;
-			border: 1px solid #E1E1E1;
+			border: 1px solid #e1e1e1;
 			display: flex;
 			align-items: center;
 			justify-content: center;
@@ -13644,4 +13667,32 @@ button#show-settings-link {
 			}
 		}
 	}
+}
+
+.everest-forms-panel-field-tinymce {
+	.wp-editor-wrap {
+		width: 100%;
+	}
+
+	.evf-toggle-smart-tag-display {
+		top: 4px !important;
+	}
+}
+
+.everest-forms-panel-field-textarea {
+	.CodeMirror {
+		width: 100%;
+		border: 1px solid #e1e1e1;
+		border-radius: 4px;
+	}
+}
+
+.evf-content-section-body
+	.everest-forms-panel-field-radio-image
+	.everest-forms-layout {
+	display: flex;
+}
+
+.evf-content-form-landing-pages-settings-body {
+	width: 100%;
 }
