@@ -2770,7 +2770,7 @@ p.search-box {
 					}
 
 					&:hover {
-						background: #5317aa;
+						background: #9159e3;
 					}
 				}
 
@@ -8446,29 +8446,49 @@ img.ui-datepicker-trigger {
 						}
 
 						&.everest-forms-select-existing-page {
-							margin: 16px 16px 0 0;
+							margin: 16px 0;
 							background: none;
 							color: #6b6b6b;
 							font-size: 15px;
 							font-weight: 400;
 							letter-spacing: 0.3px;
+							width: 100%;
+							text-align: left;
+							padding: 14px 16px;
+							border: 1px solid #e1e1e1;
+							border-radius: 4px;
+							line-height: 20px;
+							background-image: url("data:image/svg+xml,%3Csvg width='10' height='14' viewBox='0 0 10 14' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M3 2L8 7L3 12' stroke='%236b6b6b' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+							background-repeat: no-repeat;
+							background-position: right 12px center;
+							background-size: 14px 12px;
 
 							&:hover {
-								text-decoration: underline;
-								color: #7545bb;
+								border: 1px solid #7545bb;
 							}
 						}
 
 						&.everest-forms-create-new-page {
 							padding: 10px 16px;
 							border-radius: 4px;
-							background: #7545bb;
+							background: transparent;
 							font-size: 15px;
+							width: 100%;
+							text-align: left;
+							padding: 14px 16px;
+							border: 1px solid #e1e1e1;
 							font-weight: 400;
+							border-radius: 4px;
 							letter-spacing: 0.3px;
+							color: #6b6b6b;
+							line-height: 20px;
+							background-image: url("data:image/svg+xml,%3Csvg width='10' height='14' viewBox='0 0 10 14' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M3 2L8 7L3 12' stroke='%236b6b6b' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+							background-repeat: no-repeat;
+							background-position: right 12px center;
+							background-size: 14px 12px;
 
 							&:hover {
-								background: #9159e3;
+								border: 1px solid #7545bb;
 							}
 						}
 					}
@@ -8476,15 +8496,38 @@ img.ui-datepicker-trigger {
 
 				.everest-forms-show-exist-page {
 					select {
-						width: 70%;
-						height: 35px;
-						padding-left: 10px;
-						border-color: #d5d5d5;
-						color: #383838;
+						// width: 70%;
+						// height: 35px;
+						// padding-left: 10px;
+						// border-color: #d5d5d5;
+						// color: #383838;
+						border-radius: 4px;
+						background: transparent;
+						font-size: 15px;
+						width: 100%;
+						text-align: left;
+						padding: 14px 16px;
+						border: 1px solid #e1e1e1;
+						font-weight: 400;
+						border-radius: 4px;
+						letter-spacing: 0.3px;
+						color: #6b6b6b;
+						line-height: 20px;
+						margin: 16px 0;
+
+						appearance: none;
+						-webkit-appearance: none;
+						-moz-appearance: none;
+
+						background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%236b7280' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+						background-repeat: no-repeat;
+						background-position: right 12px center;
+						background-size: 12px 8px;
 
 						&:focus {
 							box-shadow: none;
-							border-color: #8c5aca;
+							border-color: #7545bb;
+							background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%237545bb' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
 						}
 					}
 
@@ -8536,11 +8579,14 @@ img.ui-datepicker-trigger {
 
 				.everest-forms-select-existing-post-container {
 					input[type='text'] {
-						width: 70%;
-						padding: 3px 12px;
+						width: 100%;
+						padding: 14px 16px;
+						margin: 16px 0;
+						font-size: 15px;
+						line-height: 20px;
 
 						&:focus {
-							border-color: #8c5aca;
+							border-color: #7545bb;
 						}
 					}
 				}
