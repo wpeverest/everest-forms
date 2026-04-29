@@ -2247,7 +2247,7 @@ p.search-box {
 							.radio-list {
 								display: flex;
 								align-items: center;
-								flex-wrap: wrap;
+								width: 100%;
 								gap: 16px;
 
 								.inline {
@@ -2324,9 +2324,8 @@ p.search-box {
 					&.everest-forms-panel-field-toggle {
 						display: flex;
 						align-items: center;
-						justify-content: flex-end;
-						flex-direction: row-reverse;
-						gap: 8px;
+						justify-content: flex-start;
+						gap: 30px;
 
 						label,
 						.evf-toggle-section {
@@ -2833,7 +2832,7 @@ p.search-box {
 				right: 4px;
 				width: 28px;
 				height: 28px;
-				top: 36px;
+				top: 5px;
 
 				.dashicons-editor-code {
 					&::before {
@@ -4822,8 +4821,8 @@ p.search-box {
 				margin-bottom: 8px;
 				color: #222;
 				font-weight: 500;
-				// max-width: 300px;
-				// width: 100%;
+				 max-width: 300px;
+				 width: 100%;
 				display: flex;
 				align-items: center;
 				gap: 4px;
@@ -4832,7 +4831,7 @@ p.search-box {
 					color: $color_gray-light;
 					font-size: 16px;
 					line-height: 1.2;
-					// margin-top: 3px;
+					 margin-top: 3px;
 					margin-top: 0;
 					width: 14px;
 					height: 18px;
@@ -4987,9 +4986,33 @@ p.search-box {
 				position: relative;
 				margin-bottom: 20px;
 				max-width: 100%;
-				// display: flex;
-				// align-items: baseline;
-				// gap: 30px;
+				 display: flex;
+				 align-items: baseline;
+				 gap: 30px;
+
+				&.evf-field-conditional-container {
+					display: none;
+				}
+
+				&.evf-field-webhook-headers-container,&.evf-field-confirmation-conditional-container {
+					display: block;
+				}
+
+				&.evf-toggle-section-wrapper {
+					display: block;
+
+					.evf-toggle-section {
+						display: flex;
+						gap: 30px;
+						flex-direction: row-reverse;
+						justify-content: flex-end;
+
+						.tooltipstered {
+							margin-top: 5px;
+							margin-left: 10px;
+						}
+					}
+				}
 
 				&:last-child {
 					margin-bottom: 0;
@@ -13644,4 +13667,30 @@ button#show-settings-link {
 			}
 		}
 	}
+}
+
+.everest-forms-panel-field-tinymce {
+	.wp-editor-wrap {
+		width: 100%;
+	}
+
+	.evf-toggle-smart-tag-display {
+		top: 4px !important;
+	}
+}
+
+.everest-forms-panel-field-textarea {
+	.CodeMirror {
+		width: 100%;
+		border: 1px solid #e1e1e1;
+		border-radius: 4px;
+	}
+}
+
+.evf-content-section-body .everest-forms-panel-field-radio-image .everest-forms-layout {
+	display: flex;
+}
+
+.evf-content-form-landing-pages-settings-body {
+	width: 100%;
 }
