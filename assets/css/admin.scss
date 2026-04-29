@@ -5116,7 +5116,6 @@ p.search-box {
 				&.evf_conditional_logic_container {
 					label {
 						margin-bottom: 0;
-						display: inline-block;
 					}
 				}
 			}
@@ -13283,11 +13282,11 @@ button#show-settings-link {
 	padding: 20px;
 	border: 1px solid #e9e9e9;
 	border-radius: 8px;
-	width: 773px;
+	width: 100%;
 
 	.everest-forms-inner-wrapper-setting-body {
 		margin-bottom: 20px;
-		max-width: 740px;
+		max-width: 100%;
 		border-radius: 8px;
 		padding: 22px 22px 0 22px;
 		background: #fcfcfd;
