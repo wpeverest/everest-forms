@@ -30,7 +30,7 @@ import {
 } from '@tanstack/react-query';
 import apiFetch from '@wordpress/api-fetch';
 import { __ } from '@wordpress/i18n';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { BiChevronDown, BiChevronUp, BiEnvelope } from 'react-icons/bi';
 
 /**
@@ -225,6 +225,38 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 			: resolvedLastFormEmailStatus === 'failed'
 				? 'failed'
 				: 'idle';
+
+	const hideTestEmailCard =
+		emailStatus === 'sent' && !!resolvedSmtpPluginActive;
+
+	console.log(
+		'[SiteAssistant] hideTestEmailCard debug:',
+		'emailStatus=' + emailStatus,
+		'| resolvedSmtpActive=' + resolvedSmtpActive,
+		'| resolvedSmtpPluginActive=' + resolvedSmtpPluginActive,
+		'| mutationSmtpActive=' + sendTestEmailMutation.data?.data?.is_smtp_active,
+		'| mutationPluginActive=' + sendTestEmailMutation.data?.data?.is_smart_smtp_active,
+		'| siteSmtpActive=' + siteData?.data?.is_smtp_active,
+		'| sitePluginActive=' + siteData?.data?.is_smart_smtp_active,
+		'| hide=' + hideTestEmailCard,
+	);
+
+	const hideToastFiredRef = useRef(false);
+	useEffect(() => {
+		if (hideTestEmailCard && !hideToastFiredRef.current) {
+			hideToastFiredRef.current = true;
+			toast({
+				title: __('Success', 'everest-forms'),
+				description: __(
+					'Email is working and Smart SMTP is active. Your setup is complete.',
+					'everest-forms',
+				),
+				status: 'success',
+				duration: 3000,
+				isClosable: true,
+			});
+		}
+	}, [hideTestEmailCard]);
 
 	const skipSendTestEmailMutation = useMutation({
 		mutationFn: async () => {
@@ -692,7 +724,7 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 			<Collapse in={open?.sendTestEmail}>
 				<Stack gap={5} minWidth="0" width="100%">
 					<Divider color={'gray.200'} />
-					{emailStatus === 'failed' && (
+					{emailStatus === 'failed' || emailStatus === 'idle' && (
 						<Alert status="error" border="1px"
 						borderColor="#F04242 !important"
 						borderStyle="solid" borderRadius="md" fontSize="sm" sx={{ backgroundColor: '#F2565612 !important' }} >
@@ -724,7 +756,7 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 							</Text>
 						</Alert>
 					)}
-					{(emailStatus === 'failed' || emailStatus === 'sent') &&
+					{(emailStatus === 'failed' || emailStatus === 'idle' || emailStatus === 'sent') &&
 						! resolvedSmtpActive && ! resolvedSmtpPluginActive && (
 							<Box
 								p={4}
@@ -1177,7 +1209,7 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 					{visibleSteps.map((step) => (
 						<React.Fragment key={step.id}>
 							{step.id === 'createForm' && renderCreateFormContent()}
-							{step.id === 'sendTestEmail' && renderSendTestEmailContent()}
+							{step.id === 'sendTestEmail' && !hideTestEmailCard && renderSendTestEmailContent()}
 							{step.id === 'spamProtection' && renderSpamProtectionContent()}
 						</React.Fragment>
 					))}
