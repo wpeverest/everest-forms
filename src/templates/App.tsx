@@ -13,15 +13,13 @@ import {
   Divider,
   VStack,
   Heading,
+  Link,
 } from "@chakra-ui/react";
 import Main from "./components/Main";
 
-const EVFIcon = (props) => (
-  <Icon viewBox="0 0 24 24" {...props}>
-    <path
-      fill="#7e3bd0"
-      d="M21.23,10H17.79L16.62,8h3.46ZM17.77,4l1.15,2H15.48L14.31,4Zm-15,16L12,4l5.77,10H10.85L12,12h2.31L12,8,6.23,18H20.08l1.16,2Z"
-    />
+const BackIcon = (props) => (
+  <Icon viewBox="0 0 22 22" {...props}>
+    <path d="M10.352 3.935a.917.917 0 0 1 1.296 1.297l-5.769 5.767 5.769 5.77a.916.916 0 1 1-1.296 1.296l-6.417-6.417a.917.917 0 0 1 0-1.296z"/><path d="M17.416 10.083a.917.917 0 0 1 0 1.834H4.583a.917.917 0 0 1 0-1.834z"/>
   </Icon>
 );
 
@@ -75,52 +73,59 @@ const App = () => {
 
   return (
     <ChakraProvider>
-      <Box bg="white" margin="24px" border="1px solid #e1e1e1" borderRadius="13px" overflow="hidden">
+      <Box bg="#f5f5f5">
+        {/* Header Section */}
         <HStack
-          spacing={{ base: 4, md: 6 }}
+          spacing={4}
           align="center"
-          mb={0}
-		      borderBottom="1px solid #e1e1e1"
-          // p="20px 24px"
-          p="0px 24px"
-          direction={{ base: "column", md: "row" }}
+          justify="space-between"
+          borderBottom="1px solid #e1e1e1"
+          p="14px 24px"
+          bg="white"
+          width="100%"
         >
-          <EVFIcon boxSize="12" />
-          <Text borderLeft="1px solid #e1e1e1" p="27px 0 27px 24px" fontSize="18px" fontWeight="semibold" lineHeight="26px" color="#383838" textAlign={{ base: "center", md: "left" }} margin="0px">
-            {__("Add New Form", "everest-forms")}
-          </Text>
-          <Button
-            colorScheme="purple"
-            variant="outline"
-            onClick={handleRefreshTemplates}
-            width={{ base: "full", md: "auto" }}
-            display={{ base: "none", md: "inline-flex" }}
-			fontSize= "14px"
-			lineHeight="20px"
-			padding="8px 16px"
-      fontWeight="medium"
-			height="34px"
-			borderRadius="4px"
-          >
-            {__("Refresh Templates", "everest-forms")}
-          </Button>
-          <TabFilters onTabChange={handleTabChange} />
+          <HStack spacing={4}>
+            <Link
+              href="admin.php?page=evf-builder"
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              width="34px"
+              height="34px"
+              borderRadius="4px"
+              border="1px solid transparent"
+              color="#383838"
+              _hover={{ bg: "#faf8fc", borderColor: "#eee8f7" }}
+            >
+              <BackIcon boxSize="5" />
+            </Link>
+            <Text fontSize="18px" fontWeight="semibold" lineHeight="26px" color="#383838" margin={'0'}>
+              {__("Add New Form", "everest-forms")}
+            </Text>
+            <Button
+              colorScheme="purple"
+              variant="outline"
+              onClick={handleRefreshTemplates}
+              fontSize="14px"
+              fontWeight="medium"
+              height="34px"
+              borderRadius="4px"
+              padding="0 16px"
+            >
+              {__("Refresh Templates", "everest-forms")}
+            </Button>
+          </HStack>
+
+          <HStack spacing={3}>
+            <TabFilters onTabChange={handleTabChange} />
+          </HStack>
         </HStack>
 
-        {/* Main Content Area */}
-        <Box bg="white" >
-          <VStack align="start" padding="24px 0px 32px"  gap="6px" display="none">
-            <Heading as="h1" color="#383838" fontSize="20px"lineHeight="28px" letterSpacing="0.2px" fontWeight="medium" m={0}>
-              {__("Select a Template", "everest-forms")}
-            </Heading>
-            <Text fontSize="14px" lineHeight="24px" color="#4D4D4D" fontWeight="400" margin="0px" >
-              {__(
-                "To get started quickly, you can pick from our ready-made templates, begin with a blank form, or design your own.",
-                "everest-forms"
-              )}
-            </Text>
-          </VStack>
-          <Main filter={selectedTab} />
+        {/* Main Content Area with Margin */}
+        <Box p="24px">
+          <Box bg="white" border="1px solid #e1e1e1" borderRadius="13px" overflow="hidden">
+            <Main filter={selectedTab} />
+          </Box>
         </Box>
       </Box>
     </ChakraProvider>

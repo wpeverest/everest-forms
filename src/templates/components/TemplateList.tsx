@@ -296,7 +296,7 @@ const TemplateList: React.FC<TemplateListProps> = ({
 	return (
 		<Box padding="0">
 			<HStack>
-				<VStack 
+				<VStack
 					position="relative"
 					bg="white"
 					border="1px solid rgba(0, 0, 0, 0.08)"
@@ -317,7 +317,7 @@ const TemplateList: React.FC<TemplateListProps> = ({
 						},
 					}}
 					>
-					<Text 
+					<Text
 						display="inline-block"
 						alignItems="center"
 						gap="6px"
@@ -332,7 +332,7 @@ const TemplateList: React.FC<TemplateListProps> = ({
 						letterSpacing="0.23px"
 						m="0 0 12px"
 					>✦ {__('Ready-made templates', 'everest-forms')}</Text>
-					<Heading 
+					<Heading
 						fontSize="26px"
 						fontWeight="700"
 						letterSpacing="-0.5px"
@@ -340,7 +340,7 @@ const TemplateList: React.FC<TemplateListProps> = ({
 						lineHeight="1.2"
 						margin="0 0 8px"
 					>{__('Build faster with beautiful templates', 'everest-forms')}</Heading>
-					<Text 
+					<Text
 						fontSize="14px"
 						// color="#6b6b85"
 						color="gray.600"
@@ -350,7 +350,7 @@ const TemplateList: React.FC<TemplateListProps> = ({
 					>{__('Pick from 49 professionally designed form templates. Customize, deploy, and start collecting responses in minutes.', 'everest-forms')}</Text>
 				</VStack>
 			</HStack>
-			
+
 			<Heading
 				as="h3"
 				fontSize="18px"
@@ -366,11 +366,54 @@ const TemplateList: React.FC<TemplateListProps> = ({
 			</Heading>
 			{templates?.length ? (
 				<SimpleGrid gridTemplateColumns="repeat(auto-fill, minmax(280px, 1fr))" spacing={6}>
-					{templates.map((template) => (
+					{templates.map((template) => {
+						if (template.slug === 'blank') {
+							return (
+								<Box
+									key={template.slug}
+									borderWidth="2px"
+									borderStyle="dashed"
+									borderColor="#c3aee9"
+									borderRadius="13px"
+									bg="white"
+									display="flex"
+									flexDirection="column"
+									alignItems="center"
+									justifyContent="center"
+									cursor="pointer"
+									transition="all .3s"
+									onClick={() => handleTemplateClick(template)}
+									_hover={{
+										borderColor: '#7545BB',
+										boxShadow: '0px 5px 24px rgba(58, 34, 93, 0.12)',
+									}}
+								>
+									<Center
+										bg="#f3edfd"
+										borderRadius="50%"
+										w="48px"
+										h="48px"
+										mb="16px"
+									>
+										<Icon viewBox="0 0 24 24" boxSize={6} color="#7545BB">
+											<path fill="currentColor" d="M19 11h-6V5a1 1 0 0 0-2 0v6H5a1 1 0 0 0 0 2h6v6a1 1 0 0 0 2 0v-6h6a1 1 0 0 0 0-2z" />
+										</Icon>
+									</Center>
+									<Heading fontSize="18px" fontWeight="600" mb="8px" color="#0f0f1a">
+										{__('Start Blank', 'everest-forms')}
+									</Heading>
+									<Text fontSize="14px" color="gray.500" m={0}>
+										{__('Create from scratch', 'everest-forms')}
+									</Text>
+								</Box>
+							);
+						}
+
+						return (
 						<Box
 							key={template.slug}
 							borderWidth="1px"
-							borderRadius="13px"
+							borderRadius="8px"
 							borderColor="#e1e1e1"
 							overflow="hidden"
 							position="relative"
@@ -407,9 +450,8 @@ const TemplateList: React.FC<TemplateListProps> = ({
 									display="flex"
 									justifyContent="center"
 									alignItems="center"
-									// bg="#F7F4FB"
-									bg="#f5f5f5"
-									pt="80px"
+									bg= { 'linear-gradient(129deg, #F3F2F8 2.83%, #F7F5F9 110.96%)' }
+									p="10px 18px 0 18px"
 									height="250px"
 									borderRadius="6px 6px 0px 0px"
 									overflow="hidden"
@@ -417,11 +459,12 @@ const TemplateList: React.FC<TemplateListProps> = ({
 									borderBottom="1px solid #e1e1e1"
 								>
 									<Image
-										boxShadow="0px 4px 24px rgba(10, 10, 10, 0.15)"
+										boxShadow="0 6px 14px 0 #E5E1EF !important"
 										src={template.imageUrl}
 										alt={template.title}
 										objectFit="contain"
-										borderRadius="7px"
+										borderRadius="6px"
+										marginTop="18px"
 									/>
 
 									{template.isPro && (
@@ -430,7 +473,7 @@ const TemplateList: React.FC<TemplateListProps> = ({
 											// color="white"
 											position="absolute"
 											bottom="12px"
-											right="12px"
+											right="18px"
 											// borderRadius="6px"
 											// fontSize="12px"
 											// p="2px 6px"
@@ -543,7 +586,7 @@ const TemplateList: React.FC<TemplateListProps> = ({
 								</Text>
 							</VStack>
 						</Box>
-					))}
+					)})}
 				</SimpleGrid>
 			) : (
 				<Box

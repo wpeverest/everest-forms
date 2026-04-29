@@ -44,8 +44,8 @@ $spacing-xl: 24px;
 // Main Wrapper
 .evf-entry-view-wrapper {
 	background-color: $bg-light;
-	padding: $spacing-lg;
-	margin: 0 0 0 -20px;
+	padding: 0 !important;
+	margin: 0 !important;
 	min-height: 100vh;
 
 	// Override default WordPress admin styles
@@ -61,8 +61,7 @@ $spacing-xl: 24px;
 // Header Section
 .evf-entry-header {
 	background-color: $bg-white;
-	padding: $spacing-md 0px;
-	border-radius: $border-radius;
+	padding: $spacing-md 24px;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -167,7 +166,8 @@ $spacing-xl: 24px;
 	grid-template-columns: 1fr 320px;
 	gap: $spacing-xl;
 	align-items: flex-start;
-	padding: 24px 0px;
+	padding: 24px;
+	background-color: #f4f4f4;
 }
 
 // Main Content
@@ -423,6 +423,7 @@ $spacing-xl: 24px;
 				display: inline-flex !important;
 				align-items: center;
 				flex-shrink: 0;
+				font-family: dashicons !important;
 			}
 
 			&:hover {
@@ -1041,7 +1042,7 @@ $spacing-xl: 24px;
 #everest-forms-entry-subscription,
 .evf-entry-sidebar > div {
 	background-color: $bg-white;
-	border-radius: $border-radius-sm;
+	border-radius: $border-radius-md;
 	overflow: hidden;
 	margin-bottom: $spacing-lg;
 	border: 1px solid $border-color;
@@ -1421,7 +1422,7 @@ $spacing-xl: 24px;
 
 .evf-entry-main-content .stuffbox {
 	background-color: $bg-white;
-	border-radius: $border-radius-sm;
+	border-radius: $border-radius-md;
 	overflow: hidden;
 	border: 1px solid $border-color;
 	box-shadow: none;
@@ -1668,5 +1669,17 @@ $spacing-xl: 24px;
 			filter: brightness(0) saturate(100%) invert(58%) sepia(92%)
 				saturate(5900%) hue-rotate(330deg) brightness(98%) contrast(95%);
 		}
+	}
+}
+#everest-forms-entry-payment {
+	h2 {
+		margin: 0 !important;
+		font-size: 16px !important;
+		font-weight: 600 !important;
+		color: #1f2937 !important;
+		border-bottom: 1px solid #e5e7eb !important;
+		background: none;
+		padding-bottom: 20px !important;
+		margin-bottom: 24px !important;
 	}
 }

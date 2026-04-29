@@ -28,6 +28,7 @@ function evf_get_screen_ids()
 		$evf_screen_id . '_page_evf-email-templates',
 		$evf_screen_id . '_page_smart-smtp',
 		$evf_screen_id . '_page_evf-smart-smtp',
+		$evf_screen_id . '_page_evf-analytics',
 	);
 
 	return apply_filters('everest_forms_screen_ids', $screen_ids);
