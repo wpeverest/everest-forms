@@ -1689,26 +1689,39 @@ $spacing-xl: 24px;
 		margin-bottom: 24px !important;
 	}
 }
-.payment_status {
-	color: #28a745 !important;
-	font-size: 13px !important;
-	font-weight: 500 !important;
+td.column-payment_status {
+	text-align: left;
+}
+
+td.column-payment_status > span.payment_status {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	border-radius: 20px;
+	padding: 5px 12px;
+	font-size: 12px !important;
+	font-weight: 600 !important;
 	white-space: nowrap;
+	letter-spacing: 0.3x;
+
+	&.failed {
+		color: #dc3545;
+		border: 1px solid #dc3545;
+		background: #faf5f5;
+	}
+
+	&.complete {
+		color: #28a745;
+		border: 1px solid #28a745;
+		background: #fbfffc;
+	}
 }
 
 .payment_status img {
 	display: none !important;
 }
 
-.payment_status::before {
+td.column-payment_status > span.payment_status::before {
 	content: none !important;
 	display: none !important;
-}
-
-.payment_status {
-	display: table-cell !important;
-}
-
-.payment_status:not(:empty) {
-	text-align: left;
 }
