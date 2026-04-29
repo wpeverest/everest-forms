@@ -97,6 +97,12 @@ $spacing-xl: 24px;
 			background-color: $bg-light;
 			color: $text-dark;
 		}
+		&:focus {
+			background-color: #faf8fc;
+			border: none;
+			box-shadow: none;
+			outline: none;
+		}
 	}
 
 	.evf-entry-title {
