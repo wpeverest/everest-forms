@@ -261,7 +261,7 @@ $status-trash-text: #991b1b;
 
 			&:focus {
 				outline: none;
-				box-shadow: 0 0 0 3px rgba($evf-primary, 0.1);
+				border: 1px solid #7545bb;
 			}
 		}
 
