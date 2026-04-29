@@ -13809,6 +13809,11 @@ button#show-settings-link {
 	color: #7545bb !important;
 	border-radius: 4px !important;
 }
+.evf-popover-tab.hover {
+	background: #f4f4f4 !important;
+	color: #6b6b6b !important;
+	border-radius: 4px !important;
+}
 .evf-popover-tabs {
 	padding: 12px 12px !important;
 }
@@ -13830,4 +13835,12 @@ button#show-settings-link {
 }
 .evf-popover-search-wrap {
 	gap: 0 !important;
+}
+.evf-popover-field-icon .evf-icon {
+	padding: 0 !important;
+	width: 18px !important;
+	height: 18px !important;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
 }
