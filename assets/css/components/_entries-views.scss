@@ -1703,6 +1703,7 @@ td.column-payment_status > span.payment_status {
 	font-weight: 600 !important;
 	white-space: nowrap;
 	letter-spacing: 0.3x;
+	margin: 0;
 
 	&.failed {
 		color: #dc3545;
@@ -1714,6 +1715,7 @@ td.column-payment_status > span.payment_status {
 		color: #28a745;
 		border: 1px solid #28a745;
 		background: #fbfffc;
+		padding: 0;
 	}
 }
 
