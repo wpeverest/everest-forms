@@ -94,7 +94,7 @@ $spacing-xl: 24px;
 		}
 
 		&:hover {
-			background-color: $bg-light;
+			background-color: #faf8fc;
 			color: $text-dark;
 		}
 		&:focus {
@@ -1342,7 +1342,7 @@ $spacing-xl: 24px;
 
 // Toggle Empty Fields Link (global, outside card context)
 .evf-toggle-empty {
-	// font-family: 'Inter', sans-serif !important;
+	margin: 0;
 }
 .everest-forms-empty-field-toggle {
 	white-space: nowrap;

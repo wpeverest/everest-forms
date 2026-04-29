@@ -4821,8 +4821,8 @@ p.search-box {
 				margin-bottom: 8px;
 				color: #222;
 				font-weight: 500;
-				 max-width: 300px;
-				 width: 100%;
+				max-width: 300px;
+				width: 100%;
 				display: flex;
 				align-items: center;
 				gap: 4px;
@@ -4831,7 +4831,7 @@ p.search-box {
 					color: $color_gray-light;
 					font-size: 16px;
 					line-height: 1.2;
-					 margin-top: 3px;
+					margin-top: 3px;
 					margin-top: 0;
 					width: 14px;
 					height: 18px;
@@ -4986,15 +4986,16 @@ p.search-box {
 				position: relative;
 				margin-bottom: 20px;
 				max-width: 100%;
-				 display: flex;
-				 align-items: baseline;
-				 gap: 30px;
+				display: flex;
+				align-items: baseline;
+				gap: 30px;
 
 				&.evf-field-conditional-container {
 					display: none;
 				}
 
-				&.evf-field-webhook-headers-container,&.evf-field-confirmation-conditional-container {
+				&.evf-field-webhook-headers-container,
+				&.evf-field-confirmation-conditional-container {
 					display: block;
 				}
 
@@ -13687,7 +13688,9 @@ button#show-settings-link {
 	}
 }
 
-.evf-content-section-body .everest-forms-panel-field-radio-image .everest-forms-layout {
+.evf-content-section-body
+	.everest-forms-panel-field-radio-image
+	.everest-forms-layout {
 	display: flex;
 }
 
