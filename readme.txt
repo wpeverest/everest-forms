@@ -339,7 +339,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Changelog ==
 
-= 3.4.6       - xx-xx-2026
+= 3.4.6       - 29-04-2026
 * Feature 	  - Added option to copy and download logs.
 * Feature 	  - Added layout options including one-column and two-column containers.
 * Enhance	  - Improved UI for Integrations and Payments tabs.
