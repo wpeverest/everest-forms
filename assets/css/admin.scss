@@ -13696,3 +13696,49 @@ button#show-settings-link {
 .evf-content-form-landing-pages-settings-body {
 	width: 100%;
 }
+
+@media (max-width: 1366px) {
+	.everest-forms-nav-wrapper {
+		display: flex !important;
+		flex-wrap: wrap !important;
+		align-items: center !important;
+		height: auto !important;
+		min-height: 70px !important;
+		padding: 10px 20px !important;
+	}
+
+	.evf-tab-wrapper {
+		width: 100% !important;
+		flex: 0 0 100% !important;
+		order: 1 !important;
+		display: flex !important;
+		align-items: center !important;
+		gap: 12px !important;
+	}
+
+	.evf-forms-nav-right {
+		width: 100% !important;
+		flex: 0 0 100% !important;
+		order: 2 !important;
+		display: flex !important;
+		align-items: center !important;
+		justify-content: flex-end !important;
+		gap: 8px !important;
+		margin-top: 8px !important;
+	}
+}
+
+@media (max-width: 1366px) {
+	.evf-forms-nav-right .everest-forms-shortcode input {
+		max-width: 120px;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	.evf-forms-nav-right .everest-forms-shortcode {
+		display: flex;
+		align-items: center;
+		gap: 6px;
+	}
+}
