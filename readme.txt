@@ -337,7 +337,7 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 
 You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/f788d7f0-ea8a-4fd5-bcae-81a5d09a476c)
 
-== Changelog ==
+== Changelog == 
 
 = 3.4.6       - 29-04-2026
 * Feature 	  - Added option to copy and download logs.
