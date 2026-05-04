@@ -177,7 +177,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 								data-columns="<?php echo absint( $container['columns'] ); ?>"
 								data-field-type="<?php echo esc_attr( $container['type'] ); ?>">
 								<?php echo $container['icon']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-								<span><?php echo esc_html( $container['label'] ); ?></span>
+								<?php echo esc_html( $container['label'] ); ?>
 							</button>
 							<?php endforeach; ?>
 						</div>

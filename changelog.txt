@@ -1,6 +1,6 @@
 == Changelog ==
 
-= 3.4.6       - xx-xx-2026
+= 3.4.6       - 29-04-2026
 * Feature 	  - Added option to copy and download logs.
 * Feature 	  - Added layout options including one-column and two-column containers.
 * Enhance	  - Improved UI for Integrations and Payments tabs.
@@ -8,6 +8,7 @@
 * Enhance	  - Revamped form settings design.
 * Enhance	  - Performance optimizations.
 * Dev 		  - Added Payment Summary field.
+* Dev 		  - User id not updating on entry when auto login.
 * Dev 		  - Added coupon limits and support for stackable coupons.
 * Fix         - Email authorization.
 * Fix 		  - Email summaries supported only one recipient and lacked test report flexibility issue.

@@ -198,12 +198,12 @@ $status-trash-text: #991b1b;
 		order: 2;
 		margin-left: auto;
 		display: flex;
-		align-items: center;
+		// align-items: center;
 		gap: 10px;
 
 		.select2-container {
 			width: 114px !important;
-			height: 35px !important;
+			height: 38px !important;
 			z-index: 4 !important;
 		}
 
@@ -261,7 +261,7 @@ $status-trash-text: #991b1b;
 
 			&:focus {
 				outline: none;
-				box-shadow: 0 0 0 3px rgba($evf-primary, 0.1);
+				border: 1px solid #7545bb;
 			}
 		}
 
@@ -902,7 +902,7 @@ $status-trash-text: #991b1b;
 								color: #fbbf24;
 
 								&:hover {
-									// background: #fef3c7;
+									background: none;
 								}
 							}
 						}

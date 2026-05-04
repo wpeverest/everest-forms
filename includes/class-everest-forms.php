@@ -338,6 +338,7 @@ final class EverestForms {
 		}
 
 		if ( $this->is_request( 'admin' ) ) {
+			include_once EVF_ABSPATH . 'includes/admin/evf-admin-functions.php';
 			include_once EVF_ABSPATH . 'includes/admin/class-evf-admin.php';
 			include_once EVF_ABSPATH . 'includes/admin/class-evf-admin-embed-wizard.php';
 		}

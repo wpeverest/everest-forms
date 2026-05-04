@@ -28,6 +28,7 @@ function evf_get_screen_ids()
 		$evf_screen_id . '_page_evf-email-templates',
 		$evf_screen_id . '_page_smart-smtp',
 		$evf_screen_id . '_page_evf-smart-smtp',
+		$evf_screen_id . '_page_evf-analytics',
 	);
 
 	return apply_filters('everest_forms_screen_ids', $screen_ids);
@@ -338,6 +339,13 @@ function everest_forms_panel_field($option, $panel, $field, $form_data, $label, 
 			ob_start();
 			wp_editor($value, $id, $arguments);
 			$output = ob_get_clean();
+			if ( ! empty( $args['after'] ) ) {
+				$pos = strrpos( $output, '</div>' );
+				if ( false !== $pos ) {
+					$output = substr( $output, 0, $pos ) . $args['after'] . substr( $output, $pos );
+				}
+				$args['after'] = '';
+			}
 			break;
 
 		// Checkbox.
