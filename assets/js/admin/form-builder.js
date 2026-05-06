@@ -197,6 +197,56 @@
 			}
 			EVFPanelBuilder.syncPaymentMethodDependentFields();
 
+			// Keep Payment Gateway field availability in sync with Payments tab toggles.
+			$(document).on(
+				'change click',
+				[
+					'#everest-forms-panel-field-paymentsstripe-enable_stripe',
+					'#everest-forms-panel-field-paypal-enable_paypal',
+					'#everest-forms-panel-field-paymentsrazorpay-enable_razorpay',
+					'#everest-forms-panel-field-authorize_net-enable_authorize_net',
+					'#everest-forms-panel-field-square-enable_square',
+					'#everest-forms-panel-field-paymentsmollie-enable_mollie',
+				].join(','),
+				function () {
+					EVFPanelBuilder.syncPaymentMethodDependentFields();
+				},
+			);
+
+			// If Payment Gateway field is disabled due to enabled payments, show a clear notice.
+			$(document).on(
+				'click',
+				'#everest-forms-add-fields-payment-gateway-selector.evf-payment-method-dependent-disabled',
+				function (e) {
+					var $btn = $(this);
+					if ($btn.attr('data-evf-disabled-reason') !== 'enabled-payments') {
+						return;
+					}
+
+					e.preventDefault();
+					e.stopPropagation();
+
+					if (typeof $.confirm === 'function') {
+						$.confirm({
+							title:
+								(evf_data && evf_data.i18n_field_locked) ||
+								'Field disabled',
+							content:
+								'Payment Gateway field is disabled because one or more payments are enabled in the Payments tab. Please disable the enabled payment(s) first, then add the Payment Gateway field.',
+							buttons: {
+								close: {
+									text: (evf_data && evf_data.i18n_close) || 'Close',
+								},
+							},
+						});
+					} else {
+						window.alert(
+							'Payment Gateway field is disabled because one or more payments are enabled in the Payments tab. Please disable the enabled payment(s) first.',
+						);
+					}
+				},
+			);
+
 			if (!$('evf-panel-payments-button a').hasClass('active')) {
 				$('#everest-forms-panel-payments')
 					.find('.everest-forms-panel-sidebar a')
@@ -6277,6 +6327,20 @@
 				'#everest-forms-add-fields-payment-gateway-selector',
 			);
 			if ($paymentGatewayAdd.length) {
+				var hasEnabledPayments =
+					EVFPanelBuilder.isAnyPaymentEnabled &&
+					EVFPanelBuilder.isAnyPaymentEnabled();
+
+				// If any payment is enabled in Payments tab, force-disable Payment Gateway field.
+				if (hasEnabledPayments) {
+					$paymentGatewayAdd.addClass('evf-one-time-draggable-field');
+					$paymentGatewayAdd.addClass('evf-payment-method-dependent-disabled');
+					$paymentGatewayAdd.attr('data-evf-disabled-reason', 'enabled-payments');
+					return;
+				}
+
+				$paymentGatewayAdd.removeAttr('data-evf-disabled-reason');
+
 				if (hasLegacyPaymentField) {
 					$paymentGatewayAdd.addClass('evf-one-time-draggable-field');
 					$paymentGatewayAdd.addClass('evf-payment-method-dependent-disabled');
@@ -6289,6 +6353,33 @@
 					}
 				}
 			}
+		},
+
+		/**
+		 * Whether any payment gateway is enabled in the Payments tab.
+		 *
+		 * This is used to restrict the Payment Gateway (selector) field: if a gateway is already enabled,
+		 * the selector field must stay off until those toggles are disabled.
+		 *
+		 * @return {boolean}
+		 */
+		isAnyPaymentEnabled: function () {
+			var selectors = [
+				'#everest-forms-panel-field-paymentsstripe-enable_stripe',
+				'#everest-forms-panel-field-paypal-enable_paypal',
+				'#everest-forms-panel-field-paymentsrazorpay-enable_razorpay',
+				'#everest-forms-panel-field-authorize_net-enable_authorize_net',
+				'#everest-forms-panel-field-square-enable_square',
+				'#everest-forms-panel-field-paymentsmollie-enable_mollie',
+			];
+
+			for (var i = 0; i < selectors.length; i++) {
+				var $el = $(selectors[i]);
+				if ($el.length && $el.is(':checked')) {
+					return true;
+				}
+			}
+			return false;
 		},
 
 		bindFieldSettings: function () {
