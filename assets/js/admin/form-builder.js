@@ -203,7 +203,10 @@
 				[
 					'#everest-forms-panel-field-paymentsstripe-enable_stripe',
 					'#everest-forms-panel-field-paypal-enable_paypal',
+					// Razorpay toggle id varies by version/addon; support both.
 					'#everest-forms-panel-field-paymentsrazorpay-enable_razorpay',
+					'#everest-forms-panel-field-razorpay-enable_razorpay',
+					'input[name*="[razorpay]"][name*="enable_razorpay"]',
 					'#everest-forms-panel-field-authorize_net-enable_authorize_net',
 					'#everest-forms-panel-field-square-enable_square',
 					'#everest-forms-panel-field-paymentsmollie-enable_mollie',
@@ -212,6 +215,138 @@
 					EVFPanelBuilder.syncPaymentMethodDependentFields();
 				},
 			);
+
+			// Hard-block enabling any payment gateway when Payment Gateway field is present.
+			// Some addons use custom toggle wrappers that can still flip even if the underlying checkbox is disabled,
+			// so we intercept the interaction and immediately revert.
+			(function () {
+				var blockedSelectors = [
+					'#everest-forms-panel-field-paymentsstripe-enable_stripe',
+					'#everest-forms-panel-field-paypal-enable_paypal',
+					// Razorpay toggle id varies by version/addon; support both.
+					'#everest-forms-panel-field-paymentsrazorpay-enable_razorpay',
+					'#everest-forms-panel-field-razorpay-enable_razorpay',
+					'input[name*="[razorpay]"][name*="enable_razorpay"]',
+					'#everest-forms-panel-field-authorize_net-enable_authorize_net',
+					'#everest-forms-panel-field-square-enable_square',
+					'#everest-forms-panel-field-paymentsmollie-enable_mollie',
+				];
+
+				// Capture-phase blocker: prevents addon handlers from running at all,
+				// avoiding a brief UI flash (settings rows showing) before our popup appears.
+				// We also guard "change" to catch programmatic enables.
+				if (!window.__evfPgwPaymentsToggleCaptureBound) {
+					window.__evfPgwPaymentsToggleCaptureBound = true;
+
+					function evfPgwFieldPresent() {
+						return (
+							$('#everest-forms-builder')
+								.find('.everest-forms-field-payment-gateway-selector')
+								.length > 0
+						);
+					}
+
+					function evfFindBlockedRootFromEvent(evt) {
+						if (!evt || !evt.target || !evt.target.closest) {
+							return null;
+						}
+						return evt.target.closest(blockedSelectors.join(','));
+					}
+
+					function evfFindCheckbox($root) {
+						if (!$root || !$root.length) {
+							return $();
+						}
+						if ($root.is('input[type="checkbox"]')) {
+							return $root;
+						}
+						var $in = $root.find('input[type="checkbox"]').first();
+						if ($in.length) {
+							return $in;
+						}
+						return $root.closest('li').find('input[type="checkbox"]').first();
+					}
+
+					function evfShowPopup() {
+						var title = 'Field Unable';
+						var closeText = (evf_data && evf_data.i18n_close) || 'Close';
+						var content =
+							'You have used Payment Gateway field to use it remove the Payment Gateway.';
+
+						if (typeof $.confirm === 'function') {
+							$.confirm({
+								title: title,
+								content: content,
+								buttons: {
+									close: {
+										text: closeText,
+									},
+								},
+							});
+						} else {
+							window.alert(content);
+						}
+					}
+
+					function evfBlockEnable(evt) {
+						if (!evfPgwFieldPresent()) {
+							return;
+						}
+
+						var root = evfFindBlockedRootFromEvent(evt);
+						if (!root) {
+							return;
+						}
+
+						var $checkbox = evfFindCheckbox($(root));
+
+						// Only show notice when enabling (unchecked -> checked).
+						// If already checked, user is disabling; allow silently.
+						if ($checkbox.length && $checkbox.is(':checked')) {
+							return;
+						}
+
+						evt.preventDefault();
+						evt.stopPropagation();
+
+						if ($checkbox.length) {
+							$checkbox.prop('checked', false);
+						}
+
+						evfShowPopup();
+					}
+
+					['pointerdown', 'mousedown', 'click'].forEach(function (type) {
+						document.addEventListener(type, evfBlockEnable, true);
+					});
+
+					// Catch programmatic enables (change fires after state flips).
+					document.addEventListener(
+						'change',
+						function (evt) {
+							if (!evfPgwFieldPresent()) {
+								return;
+							}
+							var root = evfFindBlockedRootFromEvent(evt);
+							if (!root) {
+								return;
+							}
+							var $checkbox = evfFindCheckbox($(root));
+							if ($checkbox.length && $checkbox.is(':checked')) {
+								evt.preventDefault();
+								evt.stopPropagation();
+								$checkbox.prop('checked', false);
+								evfShowPopup();
+							}
+						},
+						true,
+					);
+				}
+
+				// Note: we intentionally rely on the capture-phase blocker above.
+				// A bubble-phase handler can run after the checkbox state flips, which would show the
+				// notice when DISABLING. Capture-phase guarantees we only block ENABLE attempts.
+			})();
 
 			// If Payment Gateway field is disabled due to enabled payments, show a clear notice.
 			$(document).on(
@@ -321,6 +456,10 @@
 				'evf_field_drop_complete',
 				function (e, field_type, dragged_field_id) {
 					EVFPanelBuilder.bindEditMetaKey(dragged_field_id);
+					// Keep Payment Gateway ↔ Payments tab constraints in sync after any field drop.
+					if (EVFPanelBuilder.syncPaymentMethodDependentFields) {
+						EVFPanelBuilder.syncPaymentMethodDependentFields();
+					}
 
 					// Set defaults in privacy policy field.
 					if ('privacy-policy' === field_type) {
@@ -6282,47 +6421,8 @@
 			var $builder = $('#everest-forms-builder');
 			var hasPaymentMethodField =
 				$builder.find('.everest-forms-field-payment-gateway-selector').length > 0;
-			var dependentFields = [
-				{
-					type: 'credit-card',
-					selector: '.everest-forms-field-credit-card',
-				},
-				{
-					type: 'square-payment',
-					selector: '.everest-forms-field-square-payment',
-				},
-				{
-					type: 'authorize-net',
-					selector: '.everest-forms-field-authorize-net',
-				},
-			];
-
-			$.each(dependentFields, function (index, field) {
-				var $addButton = $('#everest-forms-add-fields-' + field.type);
-				if (!$addButton.length) {
-					return;
-				}
-
-				if (hasPaymentMethodField) {
-					$addButton.addClass('evf-one-time-draggable-field');
-					$addButton.addClass('evf-payment-method-dependent-disabled');
-					return;
-				}
-
-				// Keep one-time state untouched when that field already exists in the builder.
-				if ($builder.find(field.selector).length > 0) {
-					$addButton.removeClass('evf-payment-method-dependent-disabled');
-					return;
-				}
-
-				$addButton.removeClass('evf-one-time-draggable-field');
-				$addButton.removeClass('evf-payment-method-dependent-disabled');
-			});
-
-			var hasLegacyPaymentField =
-				$builder.find('.everest-forms-field-credit-card').length > 0 ||
-				$builder.find('.everest-forms-field-authorize-net').length > 0 ||
-				$builder.find('.everest-forms-field-square-payment').length > 0;
+			// Remove field-level dependency: Payment Gateway field does not disable
+			// Credit Card / Authorize.Net / Square fields (and vice-versa).
 			var $paymentGatewayAdd = $(
 				'#everest-forms-add-fields-payment-gateway-selector',
 			);
@@ -6340,18 +6440,17 @@
 				}
 
 				$paymentGatewayAdd.removeAttr('data-evf-disabled-reason');
-
-				if (hasLegacyPaymentField) {
-					$paymentGatewayAdd.addClass('evf-one-time-draggable-field');
-					$paymentGatewayAdd.addClass('evf-payment-method-dependent-disabled');
-				} else {
-					$paymentGatewayAdd.removeClass(
-						'evf-payment-method-dependent-disabled',
-					);
-					if (!hasPaymentMethodField) {
-						$paymentGatewayAdd.removeClass('evf-one-time-draggable-field');
-					}
+				$paymentGatewayAdd.removeClass(
+					'evf-payment-method-dependent-disabled',
+				);
+				if (!hasPaymentMethodField) {
+					$paymentGatewayAdd.removeClass('evf-one-time-draggable-field');
 				}
+			}
+
+			// If Payment Gateway field is used, block enabling payment gateways from Payments tab.
+			if (EVFPanelBuilder.syncPaymentsTabEnableToggles) {
+				EVFPanelBuilder.syncPaymentsTabEnableToggles(hasPaymentMethodField);
 			}
 		},
 
@@ -6367,7 +6466,10 @@
 			var selectors = [
 				'#everest-forms-panel-field-paymentsstripe-enable_stripe',
 				'#everest-forms-panel-field-paypal-enable_paypal',
+				// Razorpay toggle id varies by version/addon; support both.
 				'#everest-forms-panel-field-paymentsrazorpay-enable_razorpay',
+				'#everest-forms-panel-field-razorpay-enable_razorpay',
+				'input[name*="[razorpay]"][name*="enable_razorpay"]',
 				'#everest-forms-panel-field-authorize_net-enable_authorize_net',
 				'#everest-forms-panel-field-square-enable_square',
 				'#everest-forms-panel-field-paymentsmollie-enable_mollie',
