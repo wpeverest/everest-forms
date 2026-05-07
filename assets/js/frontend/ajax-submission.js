@@ -240,11 +240,9 @@ jQuery( function( $ ) {
 								return;
 							}
 						}
-					if (xhr && xhr.payment_method && xhr.payment_method === 'paypal' && xhr.redirect) {
-						if ('paypal' === xhr.payment_method) {
-							window.location.href = xhr.redirect;
-							return;
-						}
+					if (xhr && xhr.payment_method && xhr.redirect) {
+						window.location.href = xhr.redirect;
+						return;
 					}
 
 					if ( 'success' === xhr.data.response || true === xhr.success ) {

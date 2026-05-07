@@ -217,10 +217,11 @@ class EVF_Form_Task {
 			);
 			do_action( "everest_forms_process_before_{$form_id}", $entry, $this->form_data );
 
-			$ajax_form_submission = isset( $this->form_data['settings']['ajax_form_submission'] ) ? $this->form_data['settings']['ajax_form_submission'] : 0;
-			if ( ( isset( $this->form_data['payments']['stripe']['enable_stripe'] ) && '1' === $this->form_data['payments']['stripe']['enable_stripe'] ) || ( isset( $this->form_data['payments']['square']['enable_square'] ) && '1' === $this->form_data['payments']['square']['enable_square'] ) ) {
-				$ajax_form_submission = '1';
-			}
+		$ajax_form_submission = isset( $this->form_data['settings']['ajax_form_submission'] ) ? $this->form_data['settings']['ajax_form_submission'] : 0;
+		$stripe_via_selector  = function_exists( 'evf_is_gateway_in_selector_allowlist' ) && evf_is_gateway_in_selector_allowlist( array( 'form_data' => $this->form_data, 'gateway' => 'stripe' ) );
+		if ( ( isset( $this->form_data['payments']['stripe']['enable_stripe'] ) && '1' === $this->form_data['payments']['stripe']['enable_stripe'] ) || $stripe_via_selector || ( isset( $this->form_data['payments']['square']['enable_square'] ) && '1' === $this->form_data['payments']['square']['enable_square'] ) ) {
+			$ajax_form_submission = '1';
+		}
 			if ( '1' === $ajax_form_submission ) {
 				// For the sake of validation we completely remove the validator option.
 				update_option( 'evf_validation_error', '' );
