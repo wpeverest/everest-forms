@@ -131,7 +131,7 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 			);
 		}
 
-		return $sortable_columns;
+		return apply_filters( 'everest_forms_entries_table_sortable_columns', $sortable_columns );
 	}
 
 	/**

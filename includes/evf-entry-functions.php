@@ -223,7 +223,7 @@ function evf_search_entries( $args ) {
 		$query[] = $wpdb->prepare( 'AND `status` <> %s', 'draft' );
 	}
 
-	$valid_fields = array( 'date', 'form_id', 'title', 'status' );
+	$valid_fields = array( 'date', 'date_created', 'form_id', 'title', 'status' );
 	$orderby      = in_array( $args['orderby'], $valid_fields, true ) ? $args['orderby'] : 'entry_id';
 	$order        = 'DESC' === strtoupper( $args['order'] ) ? 'DESC' : 'ASC';
 	$orderby_sql  = sanitize_sql_orderby( "{$orderby} {$order}" );
