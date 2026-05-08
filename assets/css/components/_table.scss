@@ -712,29 +712,7 @@ $status-trash-text: #991b1b;
 				}
 
 				&.sorted {
-					background: $evf-primary-light;
 					color: $evf-primary;
-
-					&.asc,
-					&.desc {
-						a::after {
-							content: '';
-							display: inline-block;
-							width: 0;
-							height: 0;
-							margin-left: 4px;
-							border-left: 4px solid transparent;
-							border-right: 4px solid transparent;
-						}
-					}
-
-					&.asc a::after {
-						border-bottom: 4px solid $evf-primary;
-					}
-
-					&.desc a::after {
-						border-top: 4px solid $evf-primary;
-					}
 				}
 			}
 		}
