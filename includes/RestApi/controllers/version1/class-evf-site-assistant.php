@@ -187,11 +187,6 @@ class EVF_Site_Assistant {
 	 * @return bool
 	 */
 	protected function is_smart_smtp_active() {
-		$runtime_smtp_active = get_option( 'everest_forms_runtime_smtp_active', null );
-		if ( null !== $runtime_smtp_active ) {
-			return (bool) $runtime_smtp_active;
-		}
-
 		if ( ! function_exists( 'is_plugin_active' ) ) {
 			require_once ABSPATH . 'wp-admin/includes/plugin.php';
 		}
@@ -199,10 +194,9 @@ class EVF_Site_Assistant {
 	}
 
 	/**
-	 * Check if SMTP transport is active (runtime).
+	 * Check if SMTP transport was used for the last outbound mail from this flow.
 	 *
-	 * This reflects the transport that WordPress used most recently when we sent a test email,
-	 * captured via the `phpmailer_init` hook in `process_test_email()`.
+	 * `process_test_email()` records the PHPMailer transport in `everest_forms_runtime_smtp_active`.
 	 *
 	 * @return bool
 	 */
