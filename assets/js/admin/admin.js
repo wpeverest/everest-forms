@@ -1057,6 +1057,9 @@
 				$select.append(newOption).trigger('change');
 			}
 		});
+
+			var $searchField = $select.next('.select2').find('.select2-search__field');
+			$searchField.css('min-width', '120px');
 	});
 
 	$('.evf-bulk-form-tags-select').trigger('evf-enhanced-tags-select-init');
@@ -1085,5 +1088,50 @@
 		});
 
 	})
+
+
+	var $copyLogBtn = $( '#evf-copy-log-btn' );
+	if ( ! $copyLogBtn.length ) {
+		return;
+	}
+	var copiedLabel = params && params.i18n_log_copied ? params.i18n_log_copied : 'Copied!';
+	$copyLogBtn.on( 'click', function() {
+		var $btn = $( this );
+		var $content = $( '#evf-log-content' );
+		if ( ! $content.length ) {
+			return;
+		}
+		var text = $content.text();
+		var originalLabel = $btn.text();
+
+		function showCopied() {
+			$btn.text( copiedLabel );
+			setTimeout( function() {
+				$btn.text( originalLabel );
+			}, 2000 );
+		}
+
+		function fallbackCopy( copyText ) {
+			var $ta = $( '<textarea>' );
+			$ta.val( copyText );
+			$ta.css( { position: 'fixed', opacity: '0' } );
+			$( 'body' ).append( $ta );
+			$ta.trigger( 'focus' );
+			$ta[0].select();
+			try {
+				document.execCommand( 'copy' );
+				showCopied();
+			} catch ( e ) {}
+			$ta.remove();
+		}
+
+		if ( navigator.clipboard && navigator.clipboard.writeText ) {
+			navigator.clipboard.writeText( text ).then( showCopied ).catch( function() {
+				fallbackCopy( text );
+			} );
+		} else {
+			fallbackCopy( text );
+		}
+	} );
 
 })( jQuery, everest_forms_admin );

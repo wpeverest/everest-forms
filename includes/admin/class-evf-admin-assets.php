@@ -45,15 +45,17 @@ class EVF_Admin_Assets {
 		wp_style_add_data( 'everest-forms-admin', 'rtl', 'replace' );
 		wp_style_add_data( 'everest-forms-admin-menu', 'rtl', 'replace' );
 
-		// Show hint in codemirror.
-		wp_enqueue_style( 'wp-codemirror' );
-		wp_enqueue_style( 'codemirror-hint-css', evf()->plugin_url() . '/assets/css/code-mirror/show-hint.min.css', array( 'wp-codemirror' ), EVF_VERSION );
+
 
 		// Sitewide menu CSS.
-		wp_enqueue_style( 'everest-forms-admin-menu' );
+
 
 		// Admin styles for EVF pages only.
 		if ( in_array( $screen_id, evf_get_screen_ids(), true ) ) {
+				// Show hint in codemirror.
+			wp_enqueue_style( 'wp-codemirror' );
+			wp_enqueue_style( 'codemirror-hint-css', evf()->plugin_url() . '/assets/css/code-mirror/show-hint.min.css', array( 'wp-codemirror' ), EVF_VERSION );
+			wp_enqueue_style( 'everest-forms-admin-menu' );
 			wp_enqueue_style( 'everest-forms-admin' );
 			wp_enqueue_style( 'jquery-confirm' );
 			wp_enqueue_style( 'jquery-ui-style' );
@@ -100,6 +102,12 @@ class EVF_Admin_Assets {
 		wp_register_script( 'progress_bar', evf()->plugin_url() . "/assets/js/admin/progressbar{$suffix}.js", array(), EVF_VERSION, true );
 		wp_register_script( 'evf-import-entries-form-csv', evf()->plugin_url() . '/assets/js/admin/tool-import-entries' . $suffix . '.js', array( 'jquery' ), EVF_VERSION, true );
 
+		//Disable drag for jquery confirm.
+		// wp_add_inline_script(
+		// 	'jquery-confirm',
+		// 	'(function($){if(window.Jconfirm&&window.Jconfirm.prototype){window.Jconfirm.prototype.initDraggable=function(){this.draggable=false;this.resetDrag();};}})(jQuery);',
+		// 	'after'
+		// );
 		/**
 		 * Roles and permission.
 		 *
@@ -298,6 +306,7 @@ class EVF_Admin_Assets {
 					'i18n_field_def_value_greater'  => esc_html__( 'Default value is greater than Maximum value.', 'everest-forms' ),
 					'i18n_field_def_value_smaller'  => esc_html__( 'Default value is smaller than Minimum value.', 'everest-forms' ),
 					'i18n_form_export_action_error' => esc_html__( 'Please select a form which you want to export.', 'everest-forms' ),
+					'i18n_log_copied' => esc_html__( 'Copied!', 'everest-forms' ),
 					'smart_smtp_install_and_activate_nonce' => wp_create_nonce( 'everest-forms-smart-smtp-installation-nonce' ),
 				)
 			);
@@ -373,7 +382,7 @@ class EVF_Admin_Assets {
 
 			wp_enqueue_script( 'wp-codemirror' );
 			// Enqueue additional scripts for hints if not included by default.
-			wp_enqueue_script( 'codemirror-hint', evf()->plugin_url() . '/assets/js/code-mirror/show-hint' . $suffix . '.js', array( 'wp-codemirror' ), EVF_VERSION, true );
+			//  wp_enqueue_script( 'codemirror-hint', evf()->plugin_url() . '/assets/js/code-mirror/show-hint' . $suffix . '.js', array( 'wp-codemirror' ), EVF_VERSION, true );
 
 			// De-register scripts.
 			wp_dequeue_script( 'colorpick' );
@@ -485,6 +494,11 @@ class EVF_Admin_Assets {
 	 * Enqueue dashboard scripts (React).
 	 */
 	public function enqueue_dashboard_scripts() {
+		$screen_id = get_current_screen()->id;
+		if ( ! in_array( $screen_id, evf_get_screen_ids(), true ) ) {
+			return;
+		}
+
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		$current_page = isset( $_GET['page'] ) ? sanitize_text_field( wp_unslash( $_GET['page'] ) ) : '';
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended

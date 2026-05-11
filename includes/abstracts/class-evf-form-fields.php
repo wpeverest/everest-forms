@@ -460,6 +460,72 @@ abstract class EVF_Form_Fields {
 				}
 				break;
 
+			/**
+			 * Payment Summary Description.
+			 */
+			case 'payment_summary_description':
+				$value   = ! empty( $field['payment_summary_description'] ) ? esc_attr( $field['payment_summary_description'] ) : 'No payment items has been selected yet';
+				$tooltip = esc_html__( 'Empty Payment Selected Text.', 'everest-forms' );
+
+				$output  = $this->field_element(
+					'label',
+					$field,
+					array(
+						'slug'    => 'payment_summary_description',
+						'value'   => esc_html__( 'Empty Payment Selected Text', 'everest-forms' ),
+						'tooltip' => $tooltip,
+					),
+					false
+				);
+
+				$output .= $this->field_element(
+					'textarea',
+					$field,
+					array(
+						'slug'  => 'payment_summary_description',
+						'value' => $value,
+					),
+					false
+				);
+
+				$output = $this->field_element(
+					'row',
+					$field,
+					array(
+						'slug'    => 'payment_summary_description',
+						'content' => $output,
+					),
+					$echo
+				);
+				break;
+
+			case 'show_hide_payment_summary':
+				$value   = ! empty( $field['show_hide_payment_summary'] ) ? esc_attr( $field['show_hide_payment_summary'] ) : 'No payment items has been selected yet';
+				$tooltip = esc_html__( 'Show close button for closing Payment Summary', 'everest-forms' );
+
+				$output = $this->field_element(
+					'toggle',
+					$field,
+					array(
+						'slug'    => 'show_hide_payment_summary',
+						'value'   => $value,
+						'desc'    => esc_html__( 'Show close button on Payment Summary', 'everest-forms' ),
+						'tooltip' => $tooltip,
+					),
+					false
+				);
+
+				$output = $this->field_element(
+					'row',
+					$field,
+					array(
+						'slug'    => 'show_hide_payment_summary',
+						'content' => $output,
+					),
+					$echo
+				);
+				break;
+
 			/*
 			 * Field Label.
 			 */
@@ -1282,7 +1348,7 @@ abstract class EVF_Form_Fields {
 					$field_content .= '<a class="remove" href="#"><i class="dashicons dashicons-dismiss"></i></a>';
 					$field_content .= '<div class="evf-subscription-plan-sub-details">';
 					// Recurring Details.
-					$field_content .= sprintf( '<h2>%s</h2>', __( 'Recurring Details', 'everest-forms-pro' ) );
+					$field_content .= sprintf( '<h2>%s</h2>', __( 'Recurring Details', 'everest-forms' ) );
 					$field_content .= '<input value="' . esc_attr( $interval_count ) . '" type="number" name="' . sprintf( 'form_fields[%s][choices][%s][%s]', $field['id'], $key, 'interval_count' ) . '" >';
 					$field_content .= '<select  name="' . sprintf( 'form_fields[%s][choices][%s][%s]', $field['id'], $key, 'recurring_period' ) . '">';
 					$periods        = array(

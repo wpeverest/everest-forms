@@ -105,16 +105,20 @@ class EVF_Field_Checkbox extends EVF_Form_Fields {
 				) {
 					$items = array();
 
-					if ( ! empty( $field_value['label'] ) ) {
-						foreach ( $field_value['label'] as $key => $value ) {
+					if ( is_array( $field_value['label'] ) && ! empty( $field_value['label'] ) ) {
+						foreach ( $field_value['label'] as $key => $item_value ) {
+							$label_text = esc_html( wp_unslash( (string) $item_value ) );
+
 							if ( ! empty( $field_value['images'][ $key ] ) ) {
+								$image_url = esc_url( $field_value['images'][ $key ] );
+
 								$items[] = sprintf(
-									'<span style="max-width:200px;display:block;margin:0 0 5px 0;"><img src="%s" style="max-width:100%%;display:block;margin:0;"></span>%s',
-									esc_url( $field_value['images'][ $key ] ),
-									esc_html( $value )
+									'<span style="max-width:200px;display:block;margin:0 0 5px 0;"><img src="%1$s" style="max-width:100%%;display:block;margin:0;" alt="" /></span>%2$s',
+									$image_url,
+									$label_text
 								);
 							} else {
-								$items[] = esc_html( $value );
+								$items[] = $label_text;
 							}
 						}
 					}

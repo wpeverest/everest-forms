@@ -67,7 +67,7 @@ const Sidebar: React.FC<SidebarProps> = React.memo(({ categories, selectedCatego
 				"& > .badge": {
 				  bg: selectedCategory === category.name ? "#FFFFFF" : "#FFFFFF"
 				},
-				
+
 				"& > .evf-category-list": {
 				  color: "#383838"
 				}
@@ -79,8 +79,8 @@ const Sidebar: React.FC<SidebarProps> = React.memo(({ categories, selectedCatego
             onClick={() => onCategorySelect(category.name)}
           >
             <Text className="evf-category-list" color={selectedCategory === category.name ? "#7545BB" : "gray.600"} fontSize="14px" lineHeight="22px" fontWeight="medium" margin="0px">{category.name}</Text>
-            
-            <Badge className="badge" display="flex" alignItems="center" justifyContent="center" fontWeight="semibold" width="32px" height="24px" padding="0px" borderRadius="6px" color={selectedCategory === category.name ? "#7545BB" : ""} bg={selectedCategory === category.name ? "white" : "#F5F5F5"} >{category.count}</Badge>
+
+            <Badge className="badge" display="flex" alignItems="center" justifyContent="center" fontWeight="semibold" width="32px" height="26px" padding="0px" borderRadius="4px" color={selectedCategory === category.name ? "#7545BB" : ""} bg={selectedCategory === category.name ? "white" : "#F5F5F5"} >{category.count}</Badge>
           </HStack>
         ))}
 		<Card
@@ -116,12 +116,12 @@ const Sidebar: React.FC<SidebarProps> = React.memo(({ categories, selectedCatego
 							fontSize: "14px",
 							lineHeight: "24px",
 							fontWeight: "medium",
-							height: "34px"							
+							height: "34px"
 						}}
 						onFocus={(e) => {
 							e.currentTarget.style.outline = "none";
 							e.currentTarget.style.boxShadow = "none";
-						}}									
+						}}
 						>
 							✦ {__("Request Template","everest-forms")}
 					</a>

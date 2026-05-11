@@ -159,6 +159,14 @@ class EVF_Settings_Advanced extends EVF_Settings_Page {
 				'desc'  => '',
 				'id'    => 'misc_options',
 			),
+				array(
+					'title'    => esc_html__( 'Enable Log', 'everest-forms' ),
+					'desc'     => esc_html__( 'Enable storing the logs.', 'everest-forms' ),
+					'id'       => 'everest_forms_enable_log',
+					'default'  => 'no',
+					'type'     => 'toggle',
+					'desc_tip' => true,
+				),
 			array(
 				'title'    => esc_html__( 'Enable RestApi', 'everest-forms' ),
 				'desc'     => __( 'Allow the other to use the rest api.', 'everest-forms' ),
@@ -355,6 +363,13 @@ class EVF_Settings_Advanced extends EVF_Settings_Page {
 
 		if ( 'entry_reports' === $current_section && empty( $_POST['everest_forms_reporting_form_lists'] ) ) {
 			update_option( 'everest_forms_reporting_form_lists', array() );
+		}
+
+		if ( 'entry_reports' === $current_section && isset( $_POST['everest_forms_routine_report_send_email_test_to'] ) ) {
+			$test_email = sanitize_email( wp_unslash( $_POST['everest_forms_routine_report_send_email_test_to'] ) );
+			if ( '' === $test_email || is_email( $test_email ) ) {
+				update_option( 'everest_forms_routine_report_send_email_test_to', $test_email );
+			}
 		}
 
 		EVF_Admin_Settings::save_fields( $this->get_settings() );

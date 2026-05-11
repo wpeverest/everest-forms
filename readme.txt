@@ -2,9 +2,9 @@
 Contributors:everestforms,WPEverest
 Tags: contact form, custom form, form builder, forms, survey
 Requires at least: 5.5
-Tested up to: 6.9.1
+Tested up to: 6.9.4
 Requires PHP: 7.2
-Stable tag: 3.4.4
+Stable tag: 3.4.6
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -339,9 +339,28 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Changelog ==
 
-= 3.4.4       - xx-xx-2026
+= 3.4.6       - 29-04-2026
+* Feature 	  - Added option to copy and download logs.
+* Feature 	  - Added layout options including one-column and two-column containers.
+* Enhance	  - Improved UI for Integrations and Payments tabs.
+* Enhance	  - Added popover to insert fields directly into rows.
+* Enhance	  - Revamped form settings design.
+* Enhance	  - Performance optimizations.
+* Dev 		  - Added Payment Summary field.
+* Dev 		  - User id not updating on entry when auto login.
+* Dev 		  - Added coupon limits and support for stackable coupons.
+* Fix         - Email authorization.
+* Fix 		  - Email summaries supported only one recipient and lacked test report flexibility issue.
+
+= 3.4.5       - 16-04-2026
+* Fix 		  - Popup draggable.
+* Fix 		  - File upload issue.
+* Fix 		  - Parsing issue on entry table and view entry.
+
+= 3.4.4       - 24-03-2026
 * Refactor    - Everest Forms Global Settings.
 * Enhancement - Form Builder.
+* Enhancement - Email summary.
 * Fix 		  - Unserialize issue.
 * Fix         - Notice Consistency
 * Fix         - Search on clicking enter.
@@ -353,7 +372,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 * Fix         - License API issue causing excessive requests.
 * Fix         - Excluded Captcha and Authorize.Net fields from View Entries.
 * Fix         - Address Field advanced setting design issue.
-* Fix         - Phone field flag disappears in forms below hidden form via Elementor responsive visibility.
+* Fix         - Phone field flag disappears in forms below hidden form via responsive visibility.
 * Dev         - Analytics report.
 
 = 3.4.3       - 19-02-2026

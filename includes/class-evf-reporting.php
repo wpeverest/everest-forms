@@ -64,5 +64,3 @@ class EVF_Reporting {
 		$this->cron->evf_report_form_statistics_send( false );
 	}
 }
-
-new EVF_Reporting();

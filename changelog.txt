@@ -1,9 +1,27 @@
 == Changelog ==
 
-= 3.4.4       - xx-xx-2026
+= 3.4.6       - 29-04-2026
+* Feature 	  - Added option to copy and download logs.
+* Feature 	  - Added layout options including one-column and two-column containers.
+* Enhance	  - Improved UI for Integrations and Payments tabs.
+* Enhance	  - Added popover to insert fields directly into rows.
+* Enhance	  - Revamped form settings design.
+* Enhance	  - Performance optimizations.
+* Dev 		  - Added Payment Summary field.
+* Dev 		  - User id not updating on entry when auto login.
+* Dev 		  - Added coupon limits and support for stackable coupons.
+* Fix         - Email authorization.
+* Fix 		  - Email summaries supported only one recipient and lacked test report flexibility issue.
+
+= 3.4.5       - 16-04-2026
+* Fix 		  - Popup draggable.
+* Fix 		  - File upload issue.
+* Fix 		  - Parsing issue on entry table and view entry.
+
+= 3.4.4       - 24-03-2026
 * Refactor    - Everest Forms Global Settings.
-* Enhancement - Form Builder.
-* Enhancement - Email summary.
+* Enhance	  - Form Builder.
+* Enhance	  - Email summary.
 * Fix 		  - Unserialize issue.
 * Fix         - Notice Consistency
 * Fix         - Search on clicking enter.
