@@ -268,10 +268,10 @@
 					}
 
 					function evfShowPopup() {
-						var title = 'Field Unable';
+						var title = 'Field Unavailable';
 						var closeText = (evf_data && evf_data.i18n_close) || 'Close';
 						var content =
-							'You have used Payment Gateway field to use it remove the Payment Gateway.';
+							'Payment Gateway is currently in use. Remove Payment Gateway to enable this field.';
 
 						if (typeof $.confirm === 'function') {
 							$.confirm({

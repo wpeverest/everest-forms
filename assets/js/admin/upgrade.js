@@ -630,8 +630,11 @@ jQuery( function( $ ) {
 					'undefined'
 			) {
 				title = evf_upgrade.evf_legacy_payment_blocks_gateway_title;
-				var legacyNames =
-					evf_upgrade_actions.getLegacyPaymentFieldDisplayNames();
+				var isEnabledPaymentsDisable =
+					$item.attr('data-evf-disabled-reason') === 'enabled-payments';
+				var legacyNames = isEnabledPaymentsDisable
+					? []
+					: evf_upgrade_actions.getLegacyPaymentFieldDisplayNames();
 				var strongName = function (name) {
 					return (
 						'<strong>' +
@@ -640,7 +643,39 @@ jQuery( function( $ ) {
 					);
 				};
 				var placeholder;
-				if (legacyNames.length === 0) {
+				if (isEnabledPaymentsDisable) {
+					// Payments tab can have multiple enabled gateways; show them as the "%s" placeholder.
+					// Prefer name-based detection (IDs can vary by addon/version).
+					var enabled = [];
+					if (
+						$('input[type="checkbox"][name="payments[stripe][enable_stripe]"]').is(
+							':checked',
+						) ||
+						$('#everest-forms-panel-field-paymentsstripe-enable_stripe').is(
+							':checked',
+						)
+					) {
+						enabled.push(
+							evf_upgrade.evf_legacy_payment_label_credit_card || 'Stripe',
+						);
+					}
+					if (
+						$('input[type="checkbox"][name="payments[paypal][enable_paypal]"]').is(
+							':checked',
+						) ||
+						$('#everest-forms-panel-field-paypal-enable_paypal').is(':checked')
+					) {
+						enabled.push('PayPal');
+					}
+
+					if (enabled.length === 0) {
+						placeholder = strongName('payments');
+					} else if (enabled.length === 1) {
+						placeholder = strongName(enabled[0]);
+					} else {
+						placeholder = enabled.map(strongName).join(' and ');
+					}
+				} else if (legacyNames.length === 0) {
 					placeholder =
 						'the ' +
 						strongName(
@@ -658,6 +693,17 @@ jQuery( function( $ ) {
 				content = evf_upgrade.evf_legacy_payment_blocks_gateway_message.replace(
 					'%s',
 					placeholder,
+				);
+				// Emphasize where the user needs to go.
+				// The copy may say "Payment tab" or "Payments tab" depending on version/translation.
+				content = content.replace(
+					/\bPayments?\s+tab\b/i,
+					function (match) {
+						// Some admin themes reset <strong> styles; inline weight is more reliable.
+						return (
+							'<span style="font-weight:700;">' + match + '</span>'
+						);
+					},
 				);
 			} else if (
 				'payment-gateway-selector' === fieldType &&
