@@ -1691,8 +1691,11 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 				}
 
 				if ( preg_match( '/signature_/', $meta_key ) ) {
-					if ( file_exists( $meta_value ) ) {
-						$entry_files [] = $meta_value;
+					$uploads_dir     = wp_upload_dir();
+					$uploads_basedir = trailingslashit( realpath( $uploads_dir['basedir'] ) );
+					$real_meta       = is_string( $meta_value ) ? realpath( $meta_value ) : false;
+					if ( $real_meta && strncmp( $real_meta, $uploads_basedir, strlen( $uploads_basedir ) ) === 0 && is_file( $real_meta ) ) {
+						$entry_files[] = $real_meta;
 					}
 				} else {
 					$files = explode( "\n", $meta_value );
@@ -1726,8 +1729,11 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 				}
 
 				if ( preg_match( '/signature_/', $meta_key ) ) {
-					if ( file_exists( $meta_value ) ) {
-						$entry_files[] = $meta_value;
+					$uploads_dir     = wp_upload_dir();
+					$uploads_basedir = trailingslashit( realpath( $uploads_dir['basedir'] ) );
+					$real_meta       = is_string( $meta_value ) ? realpath( $meta_value ) : false;
+					if ( $real_meta && strncmp( $real_meta, $uploads_basedir, strlen( $uploads_basedir ) ) === 0 && is_file( $real_meta ) ) {
+						$entry_files[] = $real_meta;
 					}
 				} elseif ( isset( $meta_value['type'] ) && ( 'file-upload' === $meta_value['type'] && ! empty( $meta_value['value_raw'] ) || 'image-upload' === $meta_value['type'] && isset( $meta_value['value_raw'] ) ) ) {
 					foreach ( $meta_value['value_raw'] as $file_data ) {
