@@ -1726,8 +1726,16 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 				}
 
 				if ( preg_match( '/signature_/', $meta_key ) ) {
-					if ( file_exists( $meta_value ) ) {
-						$entry_files[] = $meta_value;
+					if ( is_string( $meta_value ) && '' !== $meta_value ) {
+						$upload_dir      = wp_get_upload_dir();
+						$uploads_basedir = wp_normalize_path( trailingslashit( $upload_dir['basedir'] ) );
+						$resolved_path   = realpath( $meta_value );
+						if ( false !== $resolved_path ) {
+							$resolved_path = wp_normalize_path( $resolved_path );
+							if ( 0 === strpos( $resolved_path, $uploads_basedir ) && is_file( $resolved_path ) ) {
+								$entry_files[] = $resolved_path;
+							}
+						}
 					}
 				} elseif ( isset( $meta_value['type'] ) && ( 'file-upload' === $meta_value['type'] && ! empty( $meta_value['value_raw'] ) || 'image-upload' === $meta_value['type'] && isset( $meta_value['value_raw'] ) ) ) {
 					foreach ( $meta_value['value_raw'] as $file_data ) {
