@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/laragon/www/evf/wp-content/plugins/**)",
+      "Bash(dir C:/laragon/www/evf/wp-content/plugins/)",
+      "Bash(xargs grep -l \"mollie\" -i)",
+      "Bash(git *)",
+      "Bash(node *)"
+    ]
+  }
+}

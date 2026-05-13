@@ -1375,12 +1375,21 @@
 					$('#everest-forms-panel-field-stripe-plan_name-wrap').hide();
 					$('#everest-forms-panel-field-stripe-interval_count-wrap').hide();
 					$('#everest-forms-panel-field-stripe-period-wrap').hide();
+
+					$('#everest-forms-panel-field-mollie-subscription_description-wrap').hide();
+					$('#everest-forms-panel-field-mollie-interval_count-wrap').hide();
+					$('#everest-forms-panel-field-mollie-interval-wrap').hide();
 				}
 
 				EVFPanelBuilder.syncPaymentMethodDependentFields();
+				EVFPanelBuilder.refreshFieldMapSelectsFromField('add', element_id);
 			});
 
 			$(document.body).on('evf_before_field_deleted', function (e, element_id) {
+				EVFPanelBuilder.refreshFieldMapSelectsFromField(
+					'remove',
+					element_id,
+				);
 				var $field = $('#everest-forms-field-' + element_id);
 				var field_type = $field.attr('data-field-type');
 
@@ -1391,6 +1400,10 @@
 					$('#everest-forms-panel-field-stripe-plan_name-wrap').hide();
 					$('#everest-forms-panel-field-stripe-interval_count-wrap').hide();
 					$('#everest-forms-panel-field-stripe-period-wrap').hide();
+
+					$('#everest-forms-panel-field-mollie-subscription_description-wrap').show();
+					$('#everest-forms-panel-field-mollie-interval_count-wrap').show();
+					$('#everest-forms-panel-field-mollie-interval-wrap').show();
 				}
 
 				// Run after DOM removal to accurately detect selector presence.
@@ -1441,6 +1454,10 @@
 					$('#everest-forms-panel-field-stripe-interval_count-wrap').hide();
 					$('#everest-forms-panel-field-stripe-period-wrap').hide();
 				}
+
+				$('#everest-forms-panel-field-mollie-subscription_description-wrap').hide();
+				$('#everest-forms-panel-field-mollie-interval_count-wrap').hide();
+				$('#everest-forms-panel-field-mollie-interval-wrap').hide();
 			}
 			$(isStripeRecurringEnable).on('click', function (e) {
 				if (
@@ -6407,6 +6424,71 @@
 				id +
 				' ]',
 			).remove();
+		},
+
+		/**
+		 * Keep Payments / gateway panel field-map selects in sync when fields are added or removed
+		 * (e.g. phone appears for Stripe "customer_phone" mapping without reloading).
+		 *
+		 * @param {string} action       'add' or 'remove'.
+		 * @param {string} fieldRef     For add: preview element id (e.g. everest-forms-field-12). For remove: data-field-id.
+		 */
+		refreshFieldMapSelectsFromField: function (action, fieldRef) {
+			var $form = $('form#everest-forms-builder-form');
+			if (!$form.length) {
+				return;
+			}
+
+			if ('remove' === action) {
+				var rid = String(fieldRef);
+				$form
+					.find('select.everest-forms-field-map-select')
+					.each(function () {
+						$(this).find('option[value="' + rid + '"]').remove();
+					});
+				return;
+			}
+
+			var raw = String(fieldRef || '').replace(/^#/, '');
+			var $field = $('#' + raw);
+			if (!$field.length && /^\d+$/.test(raw)) {
+				$field = $('#everest-forms-field-' + raw);
+			}
+			if (!$field.length) {
+				return;
+			}
+
+			var field_type = $field.attr('data-field-type');
+			var element_id = $field.attr('data-field-id');
+			if (!field_type || !element_id) {
+				return;
+			}
+
+			var label = $field.find('.label-title .text').first().text();
+			if (!label) {
+				label = '#' + element_id;
+			}
+
+			$form.find('select.everest-forms-field-map-select').each(function () {
+				var $select = $(this);
+				var allowedAttr = $select.attr('data-field-map-allowed');
+				if (!allowedAttr) {
+					return;
+				}
+				var field_allowed = allowedAttr.split(/\s+/);
+				if (
+					field_allowed.indexOf(field_type) === -1 &&
+					field_allowed.indexOf('all-fields') === -1
+				) {
+					return;
+				}
+				if ($select.find('option[value="' + element_id + '"]').length) {
+					return;
+				}
+				$select.append(
+					$('<option></option>').attr('value', element_id).text(label),
+				);
+			});
 		},
 
 		oneTimeDraggableRemoveField: function (field_type) {
