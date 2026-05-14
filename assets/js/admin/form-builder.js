@@ -348,39 +348,6 @@
 				// notice when DISABLING. Capture-phase guarantees we only block ENABLE attempts.
 			})();
 
-			// If Payment Gateway field is disabled due to enabled payments, show a clear notice.
-			$(document).on(
-				'click',
-				'#everest-forms-add-fields-payment-gateway-selector.evf-payment-method-dependent-disabled',
-				function (e) {
-					var $btn = $(this);
-					if ($btn.attr('data-evf-disabled-reason') !== 'enabled-payments') {
-						return;
-					}
-
-					e.preventDefault();
-					e.stopPropagation();
-
-					if (typeof $.confirm === 'function') {
-						$.confirm({
-							title:
-								(evf_data && evf_data.i18n_field_locked) ||
-								'Field disabled',
-							content:
-								'Payment Gateway field is disabled because one or more payments are enabled in the Payments tab. Please disable the enabled payment(s) first, then add the Payment Gateway field.',
-							buttons: {
-								close: {
-									text: (evf_data && evf_data.i18n_close) || 'Close',
-								},
-							},
-						});
-					} else {
-						window.alert(
-							'Payment Gateway field is disabled because one or more payments are enabled in the Payments tab. Please disable the enabled payment(s) first.',
-						);
-					}
-				},
-			);
 
 			if (!$('evf-panel-payments-button a').hasClass('active')) {
 				$('#everest-forms-panel-payments')
@@ -388,7 +355,7 @@
 					.first()
 					.addClass('active');
 				$('.everest-forms-panel-content')
-					.find('.evf-payment-setting-content')
+					.find('.evf-payment-setting-content') 
 					.first()
 					.addClass('active');
 			}
@@ -487,6 +454,15 @@
 						)
 							.find('select.evf-select2-multiple > option')
 							.prop('selected', true);
+					}
+
+					// Payment Gateway field: server-rendered field-map options use saved form data;
+					// repopulate from the builder canvas so existing fields appear without reload.
+					if ('payment-gateway-selector' === field_type) {
+						EVFPanelBuilder.refreshFieldMapSelectsInContainer(
+							'#everest-forms-field-option-' + dragged_field_id,
+							dragged_field_id,
+						);
 					}
 				},
 			);
@@ -6489,6 +6465,96 @@
 					$('<option></option>').attr('value', element_id).text(label),
 				);
 			});
+		},
+
+		/**
+		 * Rebuild every field-map select inside a container from fields currently on the builder canvas.
+		 *
+		 * @param {string|jQuery} container      Field option root, e.g. #everest-forms-field-option-{id}.
+		 * @param {string}        excludeFieldId Optional data-field-id to omit (e.g. the gateway selector itself).
+		 */
+		refreshFieldMapSelectsInContainer: function (container, excludeFieldId) {
+			var $container =
+				container instanceof jQuery ? container : $(container);
+			if (!$container.length) {
+				return;
+			}
+
+			var exclude = excludeFieldId ? String(excludeFieldId) : '';
+			var $canvasFields = $('#everest-forms-builder').find(
+				'.evf-admin-field-wrapper .everest-forms-field',
+			);
+
+			$container
+				.find('select.everest-forms-field-map-select')
+				.each(function () {
+					var $select = $(this);
+					var allowedAttr = $select.attr('data-field-map-allowed');
+					if (!allowedAttr) {
+						return;
+					}
+					var fieldAllowed = allowedAttr.split(/\s+/).filter(Boolean);
+					var currentVal = $select.val();
+					var placeholder = $select.attr('data-field-map-placeholder');
+
+					if ($select.hasClass('select2-hidden-accessible')) {
+						try {
+							$select.selectWoo('destroy');
+						} catch (err) {
+							// Ignore if selectWoo was not initialized.
+						}
+						$select.removeClass('enhanced');
+					}
+
+					$select.empty();
+					if (placeholder) {
+						$select.append(
+							$('<option></option>').attr('value', '').text(placeholder),
+						);
+					} else {
+						$select.append($('<option></option>').attr('value', ''));
+					}
+
+					$canvasFields.each(function () {
+						var $f = $(this);
+						var ft = $f.attr('data-field-type');
+						var fid = String($f.attr('data-field-id') || '');
+						if (!ft || !fid) {
+							return;
+						}
+						if (exclude && fid === exclude) {
+							return;
+						}
+						if (
+							fieldAllowed.indexOf(ft) === -1 &&
+							fieldAllowed.indexOf('all-fields') === -1
+						) {
+							return;
+						}
+						var lbl = $f.find('.label-title .text').first().text();
+						if (!lbl) {
+							lbl = '#' + fid;
+						}
+						$select.append(
+							$('<option></option>').attr('value', fid).text(lbl),
+						);
+					});
+
+					if (currentVal) {
+						var match = false;
+						$select.find('option').each(function () {
+							if ($(this).val() === String(currentVal)) {
+								match = true;
+								return false;
+							}
+						});
+						if (match) {
+							$select.val(currentVal);
+						}
+					}
+				});
+
+			$(document.body).trigger('evf-enhanced-select-init');
 		},
 
 		oneTimeDraggableRemoveField: function (field_type) {
