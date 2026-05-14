@@ -794,9 +794,10 @@ class EVF_Form_Task {
 				array( 'source' => 'form-submission' )
 			);
 			if ( '1' === $ajax_form_submission ) {
-				$this->errors[]            = $e->getMessage();
-				$response_data['message']  = $this->errors;
 				$response_data['response'] = 'error';
+				$response_data['message']  = wp_strip_all_tags( $e->getMessage() );
+				$response_data['error']    = array();
+				$response_data['form_id']  = $form_id;
 				return $response_data;
 			}
 		}
