@@ -589,6 +589,92 @@ jQuery( function( $ ) {
 			return names;
 		},
 
+		/**
+		 * Human-readable names of gateways currently enabled on the builder Payments tab.
+		 * Mirrors EVFPanelBuilder.isAnyPaymentEnabled() selector coverage (Stripe, PayPal, Razorpay, Authorize.Net, Square, Mollie).
+		 *
+		 * @return {string[]}
+		 */
+		getEnabledPaymentsTabGatewayDisplayNames: function () {
+			var gateways = [
+				{
+					selectors: [
+						'input[type="checkbox"][name="payments[stripe][enable_stripe]"]',
+						'#everest-forms-panel-field-paymentsstripe-enable_stripe',
+					],
+					label:
+						typeof evf_upgrade.evf_legacy_payment_label_credit_card !==
+						'undefined'
+							? evf_upgrade.evf_legacy_payment_label_credit_card
+							: 'Stripe',
+				},
+				{
+					selectors: [
+						'input[type="checkbox"][name="payments[paypal][enable_paypal]"]',
+						'#everest-forms-panel-field-paypal-enable_paypal',
+					],
+					label:
+						typeof evf_upgrade.evf_legacy_payment_label_paypal !== 'undefined'
+							? evf_upgrade.evf_legacy_payment_label_paypal
+							: 'PayPal',
+				},
+				{
+					selectors: [
+						'#everest-forms-panel-field-paymentsrazorpay-enable_razorpay',
+						'#everest-forms-panel-field-razorpay-enable_razorpay',
+						'input[name*="[razorpay]"][name*="enable_razorpay"]',
+					],
+					label:
+						typeof evf_upgrade.evf_legacy_payment_label_razorpay !== 'undefined'
+							? evf_upgrade.evf_legacy_payment_label_razorpay
+							: 'Razorpay',
+				},
+				{
+					selectors: [
+						'#everest-forms-panel-field-authorize_net-enable_authorize_net',
+					],
+					label:
+						typeof evf_upgrade.evf_legacy_payment_label_authorize_net !==
+						'undefined'
+							? evf_upgrade.evf_legacy_payment_label_authorize_net
+							: 'Authorize.Net',
+				},
+				{
+					selectors: ['#everest-forms-panel-field-square-enable_square'],
+					label:
+						typeof evf_upgrade.evf_legacy_payment_label_square !== 'undefined'
+							? evf_upgrade.evf_legacy_payment_label_square
+							: 'Square',
+				},
+				{
+					selectors: [
+						'#everest-forms-panel-field-paymentsmollie-enable_mollie',
+					],
+					label:
+						typeof evf_upgrade.evf_legacy_payment_label_mollie !== 'undefined'
+							? evf_upgrade.evf_legacy_payment_label_mollie
+							: 'Mollie',
+				},
+			];
+			var enabled = [];
+			var g, s, $el, on;
+
+			for (g = 0; g < gateways.length; g++) {
+				on = false;
+				for (s = 0; s < gateways[g].selectors.length; s++) {
+					$el = $(gateways[g].selectors[s]);
+					if ($el.length && $el.is(':checked')) {
+						on = true;
+						break;
+					}
+				}
+				if (on) {
+					enabled.push(gateways[g].label);
+				}
+			}
+			return enabled;
+		},
+
 		evf_one_time_draggable_field: function (e) {
 			e.preventDefault();
 			var $item = $(e.currentTarget).closest('.evf-registered-item');
@@ -625,86 +711,76 @@ jQuery( function( $ ) {
 			}
 			if (
 				'payment-gateway-selector' === fieldType &&
-				$item.hasClass('evf-payment-method-dependent-disabled') &&
-				typeof evf_upgrade.evf_legacy_payment_blocks_gateway_message !==
-					'undefined'
+				$item.hasClass('evf-payment-method-dependent-disabled')
 			) {
 				title = evf_upgrade.evf_legacy_payment_blocks_gateway_title;
-				var isEnabledPaymentsDisable =
-					$item.attr('data-evf-disabled-reason') === 'enabled-payments';
-				var legacyNames = isEnabledPaymentsDisable
-					? []
-					: evf_upgrade_actions.getLegacyPaymentFieldDisplayNames();
-				var strongName = function (name) {
-					return (
-						'<strong>' +
-						$('<div/>').text(name).html() +
-						'</strong>'
-					);
-				};
-				var placeholder;
-				if (isEnabledPaymentsDisable) {
-					// Payments tab can have multiple enabled gateways; show them as the "%s" placeholder.
-					// Prefer name-based detection (IDs can vary by addon/version).
-					var enabled = [];
-					if (
-						$('input[type="checkbox"][name="payments[stripe][enable_stripe]"]').is(
-							':checked',
-						) ||
-						$('#everest-forms-panel-field-paymentsstripe-enable_stripe').is(
-							':checked',
-						)
-					) {
-						enabled.push(
-							evf_upgrade.evf_legacy_payment_label_credit_card || 'Stripe',
-						);
-					}
-					if (
-						$('input[type="checkbox"][name="payments[paypal][enable_paypal]"]').is(
-							':checked',
-						) ||
-						$('#everest-forms-panel-field-paypal-enable_paypal').is(':checked')
-					) {
-						enabled.push('PayPal');
-					}
-
-					if (enabled.length === 0) {
-						placeholder = strongName('payments');
-					} else if (enabled.length === 1) {
-						placeholder = strongName(enabled[0]);
-					} else {
-						placeholder = enabled.map(strongName).join(' and ');
-					}
-				} else if (legacyNames.length === 0) {
-					placeholder =
-						'the ' +
-						strongName(
-							[
-								evf_upgrade.evf_legacy_payment_label_credit_card,
-								evf_upgrade.evf_legacy_payment_label_authorize_net,
-								evf_upgrade.evf_legacy_payment_label_square,
-							].join(', '),
-						);
-				} else if (legacyNames.length === 1) {
-					placeholder = 'the ' + strongName(legacyNames[0]);
-				} else {
-					placeholder = legacyNames.map(strongName).join(' and ');
-				}
-				content = evf_upgrade.evf_legacy_payment_blocks_gateway_message.replace(
-					'%s',
-					placeholder,
-				);
-				// Emphasize where the user needs to go.
-				// The copy may say "Payment tab" or "Payments tab" depending on version/translation.
-				content = content.replace(
-					/\bPayments?\s+tab\b/i,
-					function (match) {
-						// Some admin themes reset <strong> styles; inline weight is more reliable.
+				var disabledReason = $item.attr('data-evf-disabled-reason') || '';
+				if (
+					'credit-card-field' === disabledReason &&
+					typeof evf_upgrade.evf_credit_card_blocks_gateway_message !==
+						'undefined'
+				) {
+					content = evf_upgrade.evf_credit_card_blocks_gateway_message;
+				} else if (
+					typeof evf_upgrade.evf_legacy_payment_blocks_gateway_message !==
+					'undefined'
+				) {
+					var isEnabledPaymentsDisable =
+						disabledReason === 'enabled-payments';
+					var legacyNames = isEnabledPaymentsDisable
+						? []
+						: evf_upgrade_actions.getLegacyPaymentFieldDisplayNames();
+					var strongName = function (name) {
 						return (
-							'<span style="font-weight:700;">' + match + '</span>'
+							'<strong>' +
+							$('<div/>').text(name).html() +
+							'</strong>'
 						);
-					},
-				);
+					};
+					var placeholder;
+					if (isEnabledPaymentsDisable) {
+						// Payments tab can have multiple enabled gateways; list every enabled one in %s.
+						var enabled =
+							evf_upgrade_actions.getEnabledPaymentsTabGatewayDisplayNames();
+
+						if (enabled.length === 0) {
+							placeholder = strongName('payments');
+						} else if (enabled.length === 1) {
+							placeholder = strongName(enabled[0]);
+						} else {
+							placeholder = enabled.map(strongName).join(', ');
+						}
+					} else if (legacyNames.length === 0) {
+						placeholder =
+							'the ' +
+							strongName(
+								[
+									evf_upgrade.evf_legacy_payment_label_credit_card,
+									evf_upgrade.evf_legacy_payment_label_authorize_net,
+									evf_upgrade.evf_legacy_payment_label_square,
+								].join(', '),
+							);
+					} else if (legacyNames.length === 1) {
+						placeholder = 'the ' + strongName(legacyNames[0]);
+					} else {
+						placeholder = legacyNames.map(strongName).join(', ');
+					}
+					content = evf_upgrade.evf_legacy_payment_blocks_gateway_message.replace(
+						'%s',
+						placeholder,
+					);
+					// Emphasize where the user needs to go.
+					// The copy may say "Payment tab" or "Payments tab" depending on version/translation.
+					content = content.replace(
+						/\bPayments?\s+tab\b/i,
+						function (match) {
+							// Some admin themes reset <strong> styles; inline weight is more reliable.
+							return (
+								'<span style="font-weight:700;">' + match + '</span>'
+							);
+						},
+					);
+				}
 			} else if (
 				'payment-gateway-selector' === fieldType &&
 				typeof evf_upgrade.evf_one_time_payment_gateway_message !== 'undefined'

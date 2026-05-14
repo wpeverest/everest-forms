@@ -267,10 +267,14 @@ class EVF_Admin_Assets {
 				'evf_payment_method_dependency_title'      => esc_html__( 'Payment Gateway Field', 'everest-forms' ),
 				'evf_payment_method_dependency_message'    => esc_html__( 'Remove Payment Gateway field to use this field.', 'everest-forms' ),
 				'evf_legacy_payment_blocks_gateway_title'    => esc_html__( 'Payment Gateway field unavailable', 'everest-forms' ),
-					'evf_legacy_payment_blocks_gateway_message' => esc_html__( 'To add a Payment Gateway field, first disable %s in the Payment tab.', 'everest-forms' ),
-					'evf_legacy_payment_label_credit_card'      => esc_html__( 'Stripe', 'everest-forms' ),
+				'evf_legacy_payment_blocks_gateway_message' => esc_html__( 'To add a Payment Gateway field, first disable %s in the Payments tab.', 'everest-forms' ),
+				'evf_credit_card_blocks_gateway_message'   => esc_html__( 'To add a Payment Gateway field, first remove the Credit Card field.', 'everest-forms' ),
+				'evf_legacy_payment_label_credit_card'      => esc_html__( 'Stripe', 'everest-forms' ),
+				'evf_legacy_payment_label_paypal'           => esc_html__( 'PayPal', 'everest-forms' ),
 				'evf_legacy_payment_label_authorize_net'    => esc_html__( 'Authorize.Net', 'everest-forms' ),
 				'evf_legacy_payment_label_square'           => esc_html__( 'Square', 'everest-forms' ),
+				'evf_legacy_payment_label_razorpay'          => esc_html__( 'Razorpay', 'everest-forms' ),
+				'evf_legacy_payment_label_mollie'           => esc_html__( 'Mollie', 'everest-forms' ),
 				'evf_file_upload_free_file_limit_message' => esc_html__( 'You can upload only one file at a time. To upload more than one file at a time, please upgrade to the pro version.', 'everest-forms' ),
 
 			)

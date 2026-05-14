@@ -6569,8 +6569,9 @@
 			var $builder = $('#everest-forms-builder');
 			var hasPaymentMethodField =
 				$builder.find('.everest-forms-field-payment-gateway-selector').length > 0;
-			// Remove field-level dependency: Payment Gateway field does not disable
-			// Credit Card / Authorize.Net / Square fields (and vice-versa).
+			// Credit Card (Stripe) on the canvas blocks adding Payment Gateway; Payments tab
+			// toggles can also block it. Legacy Credit Card / Authorize.Net / Square fields are
+			// not mutually disabled with Payment Gateway for drag purposes beyond this.
 			var $paymentGatewayAdd = $(
 				'#everest-forms-add-fields-payment-gateway-selector',
 			);
@@ -6584,6 +6585,19 @@
 					$paymentGatewayAdd.addClass('evf-one-time-draggable-field');
 					$paymentGatewayAdd.addClass('evf-payment-method-dependent-disabled');
 					$paymentGatewayAdd.attr('data-evf-disabled-reason', 'enabled-payments');
+					return;
+				}
+
+				var hasCreditCardField =
+					$builder.find('.everest-forms-field-credit-card').length > 0;
+
+				if (hasCreditCardField) {
+					$paymentGatewayAdd.addClass('evf-one-time-draggable-field');
+					$paymentGatewayAdd.addClass('evf-payment-method-dependent-disabled');
+					$paymentGatewayAdd.attr(
+						'data-evf-disabled-reason',
+						'credit-card-field',
+					);
 					return;
 				}
 
