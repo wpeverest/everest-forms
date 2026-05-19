@@ -589,12 +589,6 @@ jQuery( function( $ ) {
 			return names;
 		},
 
-		/**
-		 * Human-readable names of gateways currently enabled on the builder Payments tab.
-		 * Mirrors EVFPanelBuilder.isAnyPaymentEnabled() selector coverage (Stripe, PayPal, Razorpay, Authorize.Net, Square, Mollie).
-		 *
-		 * @return {string[]}
-		 */
 		getEnabledPaymentsTabGatewayDisplayNames: function () {
 			var gateways = [
 				{
@@ -739,7 +733,6 @@ jQuery( function( $ ) {
 					};
 					var placeholder;
 					if (isEnabledPaymentsDisable) {
-						// Payments tab can have multiple enabled gateways; list every enabled one in %s.
 						var enabled =
 							evf_upgrade_actions.getEnabledPaymentsTabGatewayDisplayNames();
 
@@ -769,12 +762,9 @@ jQuery( function( $ ) {
 						'%s',
 						placeholder,
 					);
-					// Emphasize where the user needs to go.
-					// The copy may say "Payment tab" or "Payments tab" depending on version/translation.
 					content = content.replace(
 						/\bPayments?\s+tab\b/i,
 						function (match) {
-							// Some admin themes reset <strong> styles; inline weight is more reliable.
 							return (
 								'<span style="font-weight:700;">' + match + '</span>'
 							);

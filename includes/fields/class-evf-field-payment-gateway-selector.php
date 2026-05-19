@@ -1,8 +1,6 @@
 <?php
 /**
- * Payment Gateway / Payment Method field (Pro)
- *
- * Stub in Free: visible in the builder as a locked field; full behavior requires Pro.
+ * Payment Gateway (Pro)
  *
  * @package EverestForms\Fields
  * @since   1.9.15
@@ -10,7 +8,6 @@
 
 defined( 'ABSPATH' ) || exit;
 
-// Pro loads this class from the Pro plugin before fields init; avoid redeclaration.
 if ( class_exists( 'EVF_Field_Payment_Gateway_Selector', false ) ) {
 	return;
 }
