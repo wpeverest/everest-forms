@@ -212,7 +212,12 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 		$name         = sanitize_file_name( wp_unslash( $_FILES['file']['name'] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated
 		$extension    = strtolower( pathinfo( $name, PATHINFO_EXTENSION ) );
 		$errors       = $this->ajax_validate( $error, $extension, $path, $name );
-		$name_of_file = isset( $this->field_data['custom_file_name'] ) && ! empty( $this->field_data['custom_file_name'] ) ? sanitize_file_name( $this->field_data['custom_file_name'] ) . '_' . uniqid( '', true ) . '.' . $extension : sanitize_file_name( wp_unslash( $_FILES['file']['name'] ) );  // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated
+		if ( isset( $this->field_data['custom_file_name'] ) && ! empty( $this->field_data['custom_file_name'] ) ) {
+			$custom_file_name = apply_filters( 'everest_forms_process_smart_tags', $this->field_data['custom_file_name'], $this->form_data );
+			$name_of_file     = sanitize_file_name( $custom_file_name ) . '_' . uniqid( '', true ) . '.' . $extension;
+		} else {
+			$name_of_file = sanitize_file_name( wp_unslash( $_FILES['file']['name'] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated
+		}
 
 		if ( count( $errors ) ) {
 			wp_send_json_error( implode( ',', $errors ), 400 );
@@ -605,7 +610,7 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 			array(
 				'slug'    => 'custom_file_name',
 				'value'   => esc_html__( 'Custom File Name', 'everest-forms' ),
-				'tooltip' => esc_html__( 'Enter text to be displayed as file name.', 'everest-forms' ),
+				'tooltip' => esc_html__( 'Enter text to be displayed as file name. Supports smart tags.', 'everest-forms' ),
 			),
 			false
 		);
@@ -618,9 +623,17 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 			),
 			false
 		);
+
+		$smart_tag_toggle  = '<a href="#" class="evf-toggle-smart-tag-display" data-type="all"><span class="dashicons dashicons-editor-code"></span></a>';
+		$smart_tag_toggle .= '<div class="evf-smart-tag-lists" style="display: none">';
+		$smart_tag_toggle .= '<div class="smart-tag-title">' . esc_html__( 'Available Fields', 'everest-forms' ) . '</div><ul class="evf-fields"></ul>';
+		$smart_tag_toggle .= '<div class="smart-tag-title other-tag-title">' . esc_html__( 'Others', 'everest-forms' ) . '</div><ul class="evf-others"></ul>';
+		$smart_tag_toggle .= '</div>';
+
 		$args = array(
 			'slug'    => 'custom_file_name',
-			'content' => $lbl . $fld,
+			'content' => $lbl . $fld . $smart_tag_toggle,
+			'class'   => 'evf_smart_tag',
 		);
 
 		$this->field_element( 'row', $field, $args );
@@ -1453,8 +1466,15 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 		}
 
 		// Data for no media case.
-		$file_ext              = pathinfo( $file['name'], PATHINFO_EXTENSION );
-		$file_base             = wp_basename( $file['name'], ".$file_ext" );
+		$file_ext = pathinfo( $file['name'], PATHINFO_EXTENSION );
+
+		if ( ! empty( $this->field_data['custom_file_name'] ) ) {
+			$processed_custom_name = apply_filters( 'everest_forms_process_smart_tags', $this->field_data['custom_file_name'], $this->form_data, evf()->task->form_fields );
+			$file_base             = sanitize_file_name( $processed_custom_name );
+		} else {
+			$file_base = wp_basename( $file['name'], ".$file_ext" );
+		}
+
 		$file['file_name_new'] = apply_filters(
 			'everest_forms_modify_file_name',
 			sprintf('%s-%s.%s', $file_base, wp_hash($dir['path'] . $this->form_data['id'] . $this->field_id), strtolower($file_ext)),
