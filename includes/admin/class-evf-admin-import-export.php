@@ -217,8 +217,9 @@ class EVF_Admin_Import_Export {
 		$post_id       = wp_insert_post( $new_form );
 
 		// Set new form ID.
-		$new_form_data['id'] = absint( $post_id );
-		$form                = array(
+		$new_form_data['id']          = absint( $post_id );
+		$new_form_data['is_new_form'] = false;
+		$form                         = array(
 			'ID'           => $post_id,
 			'post_content' => evf_encode( $new_form_data ),
 		);

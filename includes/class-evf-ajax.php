@@ -317,6 +317,10 @@ class EVF_AJAX {
 
 		$data = apply_filters( 'everest_forms_builder_save_form_data', $data );
 
+		if ( is_array( $data ) ) {
+			$data['is_new_form'] = false;
+		}
+
 		// Check for empty meta key.
 		$logger->info(
 			__( 'Check for empty meta key.', 'everest-forms' ),

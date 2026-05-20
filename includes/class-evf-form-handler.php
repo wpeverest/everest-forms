@@ -241,6 +241,7 @@ class EVF_Form_Handler {
 			$form_content['id']                      = $form_id;
 			$form_content['settings']['form_title']  = $title;
 			$form_content['imported_form_templates'] = $template;
+			$form_content['is_new_form']             = true;
 
 			$form_data = wp_parse_args(
 				$args,
@@ -440,7 +441,8 @@ class EVF_Form_Handler {
 			$new_form_data['settings']['form_title'] .= ' (ID #' . absint( $new_form_id ) . ')';
 
 			// Set new form ID.
-			$new_form_data['id'] = absint( $new_form_id );
+			$new_form_data['id']          = absint( $new_form_id );
+			$new_form_data['is_new_form'] = true;
 
 			// Update new duplicate form.
 			$new_form_id = $this->update( $new_form_id, $new_form_data );
