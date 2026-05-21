@@ -461,24 +461,23 @@ jQuery( function( $ ) {
 			if ($item.hasClass('evf-payment-method-dependent-disabled')) {
 				return;
 			}
-			var $button = $('#everest-forms-add-fields-credit-card');
-			if ($button.hasClass('recurring-payment')) {
+			// Recurring-only lock uses .recurring-payment + stripe-admin handler, not this modal.
+			if ($item.hasClass('recurring-payment')) {
 				return;
-			} else {
-				$.alert({
-					title: evf_upgrade.enable_stripe_title,
-					content: evf_upgrade.enable_stripe_message,
-					icon: 'dashicons dashicons-info',
-					type: 'blue',
-					buttons: {
-						confirm: {
-							text: evf_data.i18n_close,
-							btnClass: 'btn-confirm',
-							keys: ['enter'],
-						},
-					},
-				});
 			}
+			$.alert({
+				title: evf_upgrade.enable_stripe_title,
+				content: evf_upgrade.enable_stripe_message,
+				icon: 'dashicons dashicons-info',
+				type: 'blue',
+				buttons: {
+					confirm: {
+						text: evf_data.i18n_close,
+						btnClass: 'btn-confirm',
+						keys: ['enter'],
+					},
+				},
+			});
 		},
 		enable_authorize_net_model: function (e) {
 			e.preventDefault();
