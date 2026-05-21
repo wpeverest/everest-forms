@@ -6562,7 +6562,83 @@
 			if (dragged_field_id.hasClass('evf-one-time-draggable-field')) {
 				dragged_field_id.removeClass('upgrade-modal');
 				dragged_field_id.removeClass('evf-one-time-draggable-field');
+				EVFPanelBuilder.refreshRegisteredSidebarFieldDraggable(
+					dragged_field_id,
+				);
 			}
+		},
+
+		/**
+		 * Whether a sidebar field button should not be draggable (blocked state).
+		 *
+		 * @param {jQuery} $item Sidebar registered field button.
+		 * @return {boolean}
+		 */
+		isRegisteredSidebarFieldBlocked: function ($item) {
+			if (!$item || !$item.length) {
+				return true;
+			}
+
+			return $item.is(
+				'.upgrade-modal, .evf-upgrade-addon, .enable-stripe-model, .enable-authorize-net-model, .enable-payment-subscription-plan, .everest-forms-pro-is_square_install, .enable-square-model, .evf-one-time-draggable-field, .recaptcha_empty_key_validate, .hcaptcha_empty_key_validate, .turnstile_empty_key_validate',
+			);
+		},
+
+		/**
+		 * Apply or remove jQuery UI draggable on sidebar field buttons after dynamic class changes.
+		 *
+		 * @param {jQuery} [$items] Optional buttons to refresh; defaults to all registered sidebar fields.
+		 */
+		refreshRegisteredSidebarFieldDraggable: function ($items) {
+			if (!$items || !$items.length) {
+				$items = $(
+					'.evf-registered-buttons button.evf-registered-item:not(.evf-layout-container-btn)',
+				);
+			}
+
+			$items.each(function () {
+				var $btn = $(this);
+
+				if (EVFPanelBuilder.isRegisteredSidebarFieldBlocked($btn)) {
+					if ($btn.data('ui-draggable')) {
+						$btn.draggable('destroy');
+					}
+					return;
+				}
+
+				if ($btn.data('ui-draggable')) {
+					return;
+				}
+
+				$btn
+					.draggable({
+						delay: 200,
+						cancel: false,
+						scroll: false,
+						revert: 'invalid',
+						scrollSensitivity: 40,
+						forcePlaceholderSize: true,
+						start: function () {
+							$(this).addClass('field-dragged');
+						},
+						helper: function () {
+							return $(this)
+								.clone()
+								.insertAfter(
+									$(this)
+										.closest('.everest-forms-tab-content')
+										.siblings('.everest-forms-fields-tab'),
+								);
+						},
+						stop: function () {
+							$(this).removeClass('field-dragged');
+						},
+						opacity: 0.75,
+						containment: '#everest-forms-builder',
+						connectToSortable: '.evf-admin-grid',
+					})
+					.disableSelection();
+			});
 		},
 
 		syncPaymentMethodDependentFields: function () {
@@ -6585,34 +6661,50 @@
 					$paymentGatewayAdd.addClass('evf-one-time-draggable-field');
 					$paymentGatewayAdd.addClass('evf-payment-method-dependent-disabled');
 					$paymentGatewayAdd.attr('data-evf-disabled-reason', 'enabled-payments');
-					return;
+				} else {
+					var hasCreditCardField =
+						$builder.find('.everest-forms-field-credit-card').length > 0;
+
+					if (hasCreditCardField) {
+						$paymentGatewayAdd.addClass('evf-one-time-draggable-field');
+						$paymentGatewayAdd.addClass('evf-payment-method-dependent-disabled');
+						$paymentGatewayAdd.attr(
+							'data-evf-disabled-reason',
+							'credit-card-field',
+						);
+					} else {
+						$paymentGatewayAdd.removeAttr('data-evf-disabled-reason');
+						$paymentGatewayAdd.removeClass(
+							'evf-payment-method-dependent-disabled',
+						);
+						if (!hasPaymentMethodField) {
+							$paymentGatewayAdd.removeClass('evf-one-time-draggable-field');
+						}
+					}
 				}
 
-				var hasCreditCardField =
-					$builder.find('.everest-forms-field-credit-card').length > 0;
-
-				if (hasCreditCardField) {
-					$paymentGatewayAdd.addClass('evf-one-time-draggable-field');
-					$paymentGatewayAdd.addClass('evf-payment-method-dependent-disabled');
-					$paymentGatewayAdd.attr(
-						'data-evf-disabled-reason',
-						'credit-card-field',
-					);
-					return;
-				}
-
-				$paymentGatewayAdd.removeAttr('data-evf-disabled-reason');
-				$paymentGatewayAdd.removeClass(
-					'evf-payment-method-dependent-disabled',
+				EVFPanelBuilder.refreshRegisteredSidebarFieldDraggable(
+					$paymentGatewayAdd,
 				);
-				if (!hasPaymentMethodField) {
-					$paymentGatewayAdd.removeClass('evf-one-time-draggable-field');
-				}
 			}
 
 			// If Payment Gateway field is used, block enabling payment gateways from Payments tab.
 			if (EVFPanelBuilder.syncPaymentsTabEnableToggles) {
 				EVFPanelBuilder.syncPaymentsTabEnableToggles(hasPaymentMethodField);
+			}
+
+			// Payment Gateway selector replaces the legacy Credit Card field on the sidebar.
+			var $creditCardAdd = $('#everest-forms-add-fields-credit-card');
+			if ($creditCardAdd.length) {
+				if (hasPaymentMethodField) {
+					$creditCardAdd.addClass('enable-stripe-model');
+				} else if (
+					typeof EverestFormsProBuilder !== 'undefined' &&
+					EverestFormsProBuilder.checkEnabledPayments
+				) {
+					EverestFormsProBuilder.checkEnabledPayments();
+				}
+				EVFPanelBuilder.refreshRegisteredSidebarFieldDraggable($creditCardAdd);
 			}
 		},
 
