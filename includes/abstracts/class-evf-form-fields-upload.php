@@ -35,7 +35,7 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 	 */
 	public function init_hooks() {
 		add_action( 'everest_forms_shortcode_scripts', array( $this, 'load_assets' ) );
-		add_filter( 'everest_forms_html_field_value', array( $this, 'html_field_value' ), 10, 4 );
+		add_filter( 'everest_forms_html_field_value', array( $this, 'html_field_value' ), 10, 5 );
 		add_filter( 'everest_forms_plaintext_field_value', array( $this, 'plaintext_field_value' ), 10, 4 );
 		add_filter( 'everest_forms_field_exporter_' . $this->type, array( $this, 'field_exporter' ) );
 		add_filter( 'everest_forms_email_file_attachments', array( $this, 'send_file_as_email_attachment' ), 99, 6 );
@@ -777,7 +777,7 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 	 * @param  string $context   Value display context.
 	 * @return string $val       Html Value.
 	 */
-	public function html_field_value( $val, $field_val, $form_data = array(), $context = '' ) {
+	public function html_field_value( $val, $field_val, $form_data = array(), $context = '', $field_meta_key = '' ) {
 		$meta_key = '';
 		$entry_id = false;
 		$uploads  = wp_upload_dir();
@@ -843,7 +843,7 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 
 		if ( isset( $_GET['view-entry'] ) && 'entry-single' === $context ) { // phpcs:ignore WordPress.Security.NonceVerification
 			$entry_id = absint( $_GET['view-entry'] ); // phpcs:ignore WordPress.Security.NonceVerification
-			$meta_key = array_search( $val, $form_data, true );
+			$meta_key = ! empty( $field_meta_key ) ? evf_clean( $field_meta_key ) : array_search( $val, $form_data, true );
 		} elseif ( isset( $_GET['edit-entry'], $field_val['meta_key'] ) && 'entry-single' === $context ) { // phpcs:ignore WordPress.Security.NonceVerification
 			$entry_id = absint( $_GET['edit-entry'] ); // phpcs:ignore WordPress.Security.NonceVerification
 			$meta_key = evf_clean( $field_val['meta_key'] );
@@ -873,6 +873,7 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 					foreach ( $field['value_raw'] as $file ) {
 						if ( empty( $file['value'] ) || empty( $file['file_original'] ) ) {
 							$output[ $meta_key ] = '';
+							continue;
 						}
 
 						$file_url      = esc_url( $file['value'] );

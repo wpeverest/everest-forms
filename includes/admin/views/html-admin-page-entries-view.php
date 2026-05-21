@@ -162,7 +162,7 @@ if ( false !== $entry_index ) {
 								$meta_value = $meta_value['value'];
 							}
 
-							$field_value     = apply_filters( 'everest_forms_html_field_value', $meta_value, $entry_meta[ $meta_key ], $entry_meta, 'entry-single' );
+							$field_value     = apply_filters( 'everest_forms_html_field_value', $meta_value, $entry_meta[ $meta_key ], $entry_meta, 'entry-single', $meta_key );
 							$is_empty        = is_string( $field_value ) && ( '(empty)' === wp_strip_all_tags( $field_value ) || '' === $field_value );
 							$field_class     = $is_empty ? 'evf-field-empty' : '';
 							$correct_answers = false;
