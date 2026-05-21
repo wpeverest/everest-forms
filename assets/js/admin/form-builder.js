@@ -4784,7 +4784,7 @@
 				.disableSelection();
 
 			$(
-				'.evf-registered-buttons button.evf-registered-item:not(.evf-layout-container-btn)',
+				'.evf-registered-buttons button.evf-registered-item:not(.evf-layout-container-btn):not(.upgrade-modal):not(.evf-upgrade-addon):not(.enable-stripe-model):not(.enable-authorize-net-model):not(.enable-payment-subscription-plan):not(.everest-forms-pro-is_square_install):not(.enable-square-model):not(.evf-one-time-draggable-field):not(.recaptcha_empty_key_validate):not(.hcaptcha_empty_key_validate):not(.turnstile_empty_key_validate)',
 			)
 				.draggable({
 					delay: 200,
