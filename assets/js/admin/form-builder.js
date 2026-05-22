@@ -3199,8 +3199,6 @@
 				var trialOn     = $li.find('.evf-enable-trial-period').is(':checked');
 				var tCount      = parseInt($li.find('input[name*="[trail_interval_count]"]').val(), 10) || 1;
 				var tPeriod     = $li.find('select[name*="[trail_recurring_period]"]').val() || 'week';
-				var expiryOn    = $li.find('.evf-enable-expiry-date').is(':checked');
-				var expiryDate  = $li.find('.evf-radio-subscription-expiry-input').val() || '';
 				var isDefault   = $li.find('input.default').is(':checked');
 
 				var pStr = iCount > 1
@@ -3218,9 +3216,6 @@
 				if (trialOn) {
 					var tStr = tCount + ' ' + (tCount > 1 ? (periodPlural[tPeriod] || tPeriod) : (periodSingular[tPeriod] || tPeriod));
 					metaParts.push($('<span>').text(tStr + ' free trial').html());
-				}
-				if (expiryOn && expiryDate) {
-					metaParts.push($('<span>').text('expires at ' + expiryDate).html());
 				}
 				var metaHtml = metaParts.length
 					? '<span class="evf-plan-meta">' + metaParts.join(' &middot; ') + '</span>'
