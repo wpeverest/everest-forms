@@ -1407,7 +1407,7 @@ abstract class EVF_Form_Fields {
 					$field_content .= '</span>';
 					$field_content .= '</div>';
 					$field_content .= '<div class="evf-spt-panel-detail"' . ( $subscription_expiry_enable ? '' : ' style="display:none;"' ) . '>';
-					$field_content .= '<input type="text" value="' . esc_attr( $subscription_expiry_date ) . '" name="' . sprintf( 'form_fields[%s][choices][%s][%s]', $field['id'], $key, 'subscription_expiry_date' ) . '" data-field="options" class="evf-general-setting-field evf-radio-subscription-expiry-input evf-subscription-expiry-date evf-flatpickr-field regular-text without_icon flatpickr-input" data-date-format="Y-m-d" data-locale="en" readonly="readonly"/>';
+					$field_content .= '<input type="text" value="' . esc_attr( $subscription_expiry_date ) . '" name="' . sprintf( 'form_fields[%s][choices][%s][%s]', $field['id'], $key, 'subscription_expiry_date' ) . '" data-field="options" class="evf-general-setting-field evf-radio-subscription-expiry-input evf-subscription-expiry-date regular-text without_icon flatpickr-input" data-date-format="Y-m-d" data-locale="en" readonly="readonly" placeholder="' . esc_attr__( 'Select expiry date', 'everest-forms' ) . '"/>';
 					$field_content .= '</div>';
 					$field_content .= '</div>';
 

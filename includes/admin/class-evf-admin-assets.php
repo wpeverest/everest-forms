@@ -221,6 +221,8 @@ class EVF_Admin_Assets {
 					'i18n_privacy_policy_consent_message' => esc_html__( 'I allow this website to collect and store the submitted data.', 'everest-forms' ),
 					'is_pro'                              => ( ! defined( 'EFP_PLUGIN_FILE' ) ) ? false : true,
 					'select_form_tags_placeholder'        => __( 'Please choose a tags from the list, or type in a new tag if you\'d like to add one.', 'everest-forms' ),
+					'i18n_expiry_trial_min_date'          => esc_html__( 'Expiry must be on or after the trial ends (%s).', 'everest-forms' ),
+					'i18n_expiry_trial_blocked_day'       => esc_html__( 'This date is within the trial period and cannot be used as the expiry date.', 'everest-forms' ),
 				)
 			)
 		);

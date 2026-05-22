@@ -1283,23 +1283,333 @@
 			}
 		},
 		/**
+		 * Normalize a date to local midnight for day comparisons.
+		 *
+		 * @param {Date} date Input date.
+		 * @return {Date}
+		 */
+		normalize_subscription_expiry_day: function (date) {
+			var normalized = new Date(date.getTime());
+			normalized.setHours(0, 0, 0, 0);
+			return normalized;
+		},
+
+		/**
+		 * Whether a calendar day falls inside the active trial window (not past dates).
+		 *
+		 * @param {jQuery} $li     Plan choice row.
+		 * @param {Date}   dayDate Calendar day.
+		 * @return {boolean}
+		 */
+		is_subscription_expiry_trial_day: function ($li, dayDate) {
+			if (
+				!dayDate ||
+				!$li ||
+				!$li.length ||
+				!$li.find('.evf-enable-trial-period').is(':checked')
+			) {
+				return false;
+			}
+
+			var today = new Date();
+			today.setHours(0, 0, 0, 0);
+			var trialMin =
+				EVFPanelBuilder.get_subscription_expiry_min_date($li);
+			var day = EVFPanelBuilder.normalize_subscription_expiry_day(dayDate);
+
+			return (
+				day.getTime() >= today.getTime() &&
+				day.getTime() < trialMin.getTime()
+			);
+		},
+
+		/**
+		 * First allowed expiry date for a plan choice (matches SubscriptionSchedule billing_start_date).
+		 *
+		 * @param {jQuery} $li Plan choice row.
+		 * @return {Date} Midnight local date.
+		 */
+		get_subscription_expiry_min_date: function ($li) {
+			var min = new Date();
+			min.setHours(0, 0, 0, 0);
+
+			if (!$li || !$li.length) {
+				return min;
+			}
+
+			if (!$li.find('.evf-enable-trial-period').is(':checked')) {
+				return min;
+			}
+
+			var count = parseInt(
+				$li.find('.evf-spt-panel--trial input[type="number"]').val(),
+				10,
+			);
+			if (isNaN(count) || count < 1) {
+				count = 1;
+			}
+
+			var period =
+				$li.find('.evf-spt-panel--trial select').val() || 'day';
+
+			switch (period) {
+				case 'week':
+					min.setDate(min.getDate() + count * 7);
+					break;
+				case 'month':
+					min.setMonth(min.getMonth() + count);
+					break;
+				case 'year':
+					min.setFullYear(min.getFullYear() + count);
+					break;
+				case 'day':
+				default:
+					min.setDate(min.getDate() + count);
+					break;
+			}
+
+			return min;
+		},
+
+		/**
+		 * Show or hide expiry hint when trial blocks early dates.
+		 *
+		 * @param {jQuery} $li Plan choice row.
+		 * @param {Date}   minDate First selectable expiry date.
+		 */
+		sync_subscription_expiry_trial_hint: function ($li, minDate) {
+			var $detail = $li.find('.evf-spt-panel--expiry .evf-spt-panel-detail');
+			var $hint = $detail.find('.evf-expiry-trial-hint');
+
+			if (!$hint.length) {
+				$hint = $(
+					'<p class="evf-expiry-trial-hint description" role="note"></p>',
+				);
+				$detail.append($hint);
+			}
+
+			if (!$li.find('.evf-enable-trial-period').is(':checked')) {
+				$hint.hide().text('');
+				return;
+			}
+
+			var label =
+				typeof flatpickr !== 'undefined'
+					? flatpickr.formatDate(minDate, 'Y-m-d')
+					: minDate.toISOString().slice(0, 10);
+			var template =
+				(evf_data && evf_data.i18n_expiry_trial_min_date) ||
+				'Expiry must be on or after the trial ends (%s).';
+
+			$hint.text(template.replace('%s', label)).show();
+		},
+
+		/**
+		 * Close open subscription expiry flatpickr calendars.
+		 *
+		 * @param {HTMLElement|null} exceptInput Optional input to keep open.
+		 */
+		close_subscription_expiry_pickers: function (exceptInput) {
+			$('.evf-radio-subscription-expiry-input').each(function () {
+				if (exceptInput && this === exceptInput) {
+					return;
+				}
+
+				if (this._flatpickr && this._flatpickr.isOpen) {
+					this._flatpickr.close();
+				}
+
+				$(this).removeClass('active');
+			});
+		},
+
+		/**
+		 * Toggle flatpickr when the expiry input is clicked.
+		 *
+		 * @param {object} instance Flatpickr instance.
+		 */
+		bind_subscription_expiry_picker_toggle: function (instance) {
+			var $input = $(instance.input);
+
+			$input.off('click.evfExpiryPicker').on('click.evfExpiryPicker', function (e) {
+				e.preventDefault();
+				e.stopPropagation();
+
+				if (instance.isOpen) {
+					instance.close();
+					return;
+				}
+
+				EVFPanelBuilder.close_subscription_expiry_pickers(instance.input);
+				instance.open();
+			});
+		},
+
+		/**
+		 * Update minDate on open expiry pickers after trial settings change.
+		 *
+		 * @param {jQuery} $scope Optional plan choice row.
+		 */
+		update_subscription_expiry_min_dates: function ($scope) {
+			var $inputs =
+				$scope && $scope.length
+					? $scope.find('.evf-radio-subscription-expiry-input')
+					: $(
+							'.everest-forms-field-option-payment-subscription-plan .evf-radio-subscription-expiry-input',
+						);
+
+			$inputs.each(function () {
+				var el = this;
+				var $li = $(el).closest('li');
+
+				if (!el._flatpickr) {
+					return;
+				}
+
+				var minDate =
+					EVFPanelBuilder.get_subscription_expiry_min_date($li);
+
+				el._flatpickr.set('minDate', minDate);
+				EVFPanelBuilder.sync_subscription_expiry_trial_hint(
+					$li,
+					minDate,
+				);
+
+				if (
+					el._flatpickr.selectedDates[0] &&
+					el._flatpickr.selectedDates[0] < minDate
+				) {
+					el._flatpickr.clear();
+				}
+
+				el._flatpickr.redraw();
+			});
+		},
+
+		/**
+		 * Flatpickr for subscription plan expiry date (builder only).
+		 *
+		 * @param {jQuery} $scope Optional container (plan choice row).
+		 */
+		init_subscription_expiry_date_pickers: function ($scope) {
+			var $inputs =
+				$scope && $scope.length
+					? $scope.find('.evf-radio-subscription-expiry-input')
+					: $(
+							'.everest-forms-field-option-payment-subscription-plan:visible .evf-radio-subscription-expiry-input',
+						);
+
+			var blockedTitle =
+				(evf_data && evf_data.i18n_expiry_trial_blocked_day) ||
+				'This date is within the trial period and cannot be used as the expiry date.';
+
+			$inputs.each(function () {
+				var $input = $(this);
+				var el = this;
+				var $li = $input.closest('li');
+
+				if (el._flatpickr) {
+					el._flatpickr.destroy();
+				}
+
+				var dateFormat = $input.data('date-format') || 'Y-m-d';
+
+				$input.flatpickr({
+					dateFormat: dateFormat,
+					disableMobile: true,
+					allowInput: false,
+					clickOpens: false,
+					closeOnSelect: true,
+					appendTo: document.body,
+					position: 'auto',
+					animate: true,
+					minDate:
+						EVFPanelBuilder.get_subscription_expiry_min_date($li),
+					monthSelectorType: 'dropdown',
+					onOpen: function (selectedDates, dateStr, instance) {
+						$(instance.input).addClass('active');
+					},
+					onClose: function (selectedDates, dateStr, instance) {
+						$(instance.input).removeClass('active');
+					},
+					onDayCreate: function (dObj, dStr, fp, dayElem) {
+						var $choiceLi = $(fp.input).closest('li');
+						var dayDate = dayElem.dateObj;
+
+						dayElem.classList.remove('evf-expiry-trial-blocked');
+						dayElem.removeAttribute('title');
+
+						if (
+							EVFPanelBuilder.is_subscription_expiry_trial_day(
+								$choiceLi,
+								dayDate,
+							)
+						) {
+							dayElem.classList.add('evf-expiry-trial-blocked');
+							dayElem.setAttribute('title', blockedTitle);
+						}
+					},
+					onChange: function (selectedDates, dateStr, instance) {
+						var trialMin =
+							EVFPanelBuilder.get_subscription_expiry_min_date(
+								$(instance.input).closest('li'),
+							);
+
+						if (
+							selectedDates[0] &&
+							selectedDates[0] < trialMin
+						) {
+							instance.clear();
+						}
+					},
+					onReady: function (selectedDates, dateStr, instance) {
+						var $choiceLi = $(instance.input).closest('li');
+						var trialMin =
+							EVFPanelBuilder.get_subscription_expiry_min_date(
+								$choiceLi,
+							);
+
+						if (instance.calendarContainer) {
+							instance.calendarContainer.classList.add(
+								'evf-subscription-expiry-calendar',
+							);
+						}
+
+						EVFPanelBuilder.bind_subscription_expiry_picker_toggle(
+							instance,
+						);
+
+						EVFPanelBuilder.sync_subscription_expiry_trial_hint(
+							$choiceLi,
+							trialMin,
+						);
+
+						if (
+							instance.selectedDates[0] &&
+							instance.selectedDates[0] < trialMin
+						) {
+							instance.clear();
+						}
+					},
+				});
+			});
+		},
+
+		/**
 		 * For the subscription plan field.
 		 *
 		 * @since 3.0.9
 		 */
 		init_payment_subscription_plan_field: function () {
-			// Initialize flatpickr on expiry date inputs.
-			$('.evf-radio-subscription-expiry-input').each(function () {
-				if (!$(this).get(0)._flatpickr) {
-					$(this).flatpickr();
-				}
-			});
+			EVFPanelBuilder.init_subscription_expiry_date_pickers();
 
 			// Tab switching — delegated so it works for dynamically added choices.
 			$(document.body).on(
 				'click',
 				'.evf-spt-tab',
 				function () {
+					EVFPanelBuilder.close_subscription_expiry_pickers();
+
 					var $tab = $(this);
 					var $planTabs = $tab.closest('.evf-subscription-plan-tabs');
 					var targetTab = $tab.data('tab');
@@ -1311,6 +1621,12 @@
 
 					$planTabs.find('.evf-spt-panel').hide();
 					$planTabs.find('.evf-spt-panel--' + targetTab).show();
+
+					if ('expiry' === targetTab) {
+						EVFPanelBuilder.init_subscription_expiry_date_pickers(
+							$tab.closest('li'),
+						);
+					}
 				},
 			);
 
@@ -1323,6 +1639,18 @@
 					var isChecked = $(this).is(':checked');
 					$li.find('.evf-spt-panel--trial .evf-spt-panel-detail').toggle(isChecked);
 					$li.find('.evf-spt-tab--trial .evf-spt-dot').toggle(isChecked);
+					EVFPanelBuilder.update_subscription_expiry_min_dates($li);
+				},
+			);
+
+			// Trial length/period — block expiry dates that fall inside the trial window.
+			$(document.body).on(
+				'change input',
+				'.evf-spt-panel--trial input[type="number"], .evf-spt-panel--trial select',
+				function () {
+					EVFPanelBuilder.update_subscription_expiry_min_dates(
+						$(this).closest('li'),
+					);
 				},
 			);
 
@@ -1335,6 +1663,10 @@
 					var isChecked = $(this).is(':checked');
 					$li.find('.evf-spt-panel--expiry .evf-spt-panel-detail').toggle(isChecked);
 					$li.find('.evf-spt-tab--expiry .evf-spt-dot').toggle(isChecked);
+
+					if (isChecked) {
+						EVFPanelBuilder.init_subscription_expiry_date_pickers($li);
+					}
 				},
 			);
 

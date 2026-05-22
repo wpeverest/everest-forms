@@ -44,6 +44,204 @@ body[class*='everest-forms_page_'] {
 	background: #f4f4f4 !important;
 	overflow-x: hidden;
 
+	// Subscription plan expiry picker (calendar is appended to document.body).
+	.flatpickr-calendar.evf-subscription-expiry-calendar {
+		z-index: 1000001 !important;
+		width: 312 !important;
+		padding-top: 8px;
+		box-sizing: border-box;
+		overflow: visible;
+
+		// Misaligned when appendTo is body; month/year nav is enough.
+		&::before,
+		&::after {
+			display: none !important;
+		}
+
+		.flatpickr-months {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			position: relative;
+			height: auto;
+			min-height: 52px;
+			padding: 8px 12px;
+			box-sizing: border-box;
+			overflow: visible;
+		}
+
+		.flatpickr-months .flatpickr-prev-month,
+		.flatpickr-months .flatpickr-next-month {
+			position: absolute;
+			top: 50%;
+			transform: translateY(-50%);
+			height: 32px;
+			width: 32px;
+			padding: 8px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			box-sizing: border-box;
+			z-index: 2;
+		}
+
+		.flatpickr-months .flatpickr-prev-month {
+			left: 8px;
+		}
+
+		.flatpickr-months .flatpickr-next-month {
+			right: 8px;
+		}
+
+		.flatpickr-months .flatpickr-month {
+			flex: 1 1 auto;
+			width: 100%;
+			max-width: 100%;
+			overflow: visible !important;
+			height: auto;
+			min-height: 36px;
+			// Keep month/year clear of ‹ › arrows (they are position:absolute).
+			padding: 0 36px;
+			box-sizing: border-box;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+
+		// Past / before-min (disabled, no trial tooltip).
+		.flatpickr-day.flatpickr-disabled:not(.prevMonthDay):not(.nextMonthDay):not(
+				.evf-expiry-trial-blocked
+			) {
+			cursor: not-allowed !important;
+			opacity: 1 !important;
+			color: #a7aaad !important;
+			border-color: transparent !important;
+			font-weight: 400;
+		}
+
+		// Trial window only.
+		.flatpickr-day.evf-expiry-trial-blocked,
+		.flatpickr-day.evf-expiry-trial-blocked.flatpickr-disabled {
+			cursor: not-allowed !important;
+			opacity: 1 !important;
+			color: #8c8f94 !important;
+			border-color: transparent !important;
+			font-weight: 400;
+		}
+
+		.flatpickr-day.evf-expiry-trial-blocked:hover {
+			color: #8c8f94 !important;
+			background: #e2e4e7 !important;
+			cursor: not-allowed !important;
+		}
+
+		// Selectable dates in the current month read darker for contrast.
+		.flatpickr-day:not(.flatpickr-disabled):not(.prevMonthDay):not(.nextMonthDay) {
+			color: #1d2327;
+			font-weight: 500;
+		}
+
+		.flatpickr-current-month {
+			position: static !important;
+			width: auto !important;
+			max-width: 100%;
+			left: auto !important;
+			transform: none !important;
+			font-size: 14px !important;
+			font-weight: 500;
+			line-height: 1.4 !important;
+			height: auto !important;
+			min-height: 0;
+			padding: 0 !important;
+			margin: 0 !important;
+			display: inline-flex !important;
+			align-items: center;
+			justify-content: center;
+			gap: 10px;
+			flex-wrap: nowrap;
+			text-align: center;
+
+			.flatpickr-monthDropdown-months {
+				font-size: 14px !important;
+				line-height: 1.4 !important;
+				height: 32px !important;
+				width: 112px;
+				min-width: 112px;
+				max-width: 112px;
+				margin: 0 !important;
+				padding: 4px 24px 4px 12px !important;
+				border: 1px solid #dcdcde !important;
+				border-radius: 4px;
+				background: #fff !important;
+				box-sizing: border-box;
+				appearance: menulist;
+				cursor: pointer;
+				text-align: left;
+				vertical-align: middle;
+
+				&:focus,
+				&:focus-visible,
+				&:active {
+					border-color: #6c47e8 !important;
+					outline: none;
+					box-shadow: 0 0 0 1px #6c47e8;
+				}
+			}
+
+			.numInputWrapper {
+				display: inline-flex !important;
+				align-items: stretch;
+				width: 80px !important;
+				min-width: 80px;
+				max-width: 80px;
+				height: 40px !important;
+				flex-shrink: 0;
+				border-radius: 4px;
+				overflow: visible;
+				position: relative;
+
+				input.cur-year {
+					font-size: 14px !important;
+					line-height: 1.4 !important;
+					height: 40px !important;
+					width: 100% !important;
+					min-width: 0;
+					padding: 4px 22px 4px 10px !important;
+					border: 1px solid #dcdcde !important;
+					border-radius: 4px;
+					background: #fff !important;
+					box-sizing: border-box;
+					text-align: left;
+
+					&:focus,
+					&:focus-visible {
+						border-color: #6c47e8 !important;
+						outline: none;
+						box-shadow: 0 0 0 1px #6c47e8;
+					}
+				}
+
+				span.arrowUp,
+				span.arrowDown {
+					width: 18px;
+					right: 0;
+					opacity: 1 !important;
+					border-color: #dcdcde;
+					box-sizing: border-box;
+				}
+
+				span.arrowUp {
+					border-bottom: 0;
+					border-radius: 0 4px 0 0;
+				}
+
+				span.arrowDown {
+					border-radius: 0 0 4px 0;
+				}
+			}
+		}
+	}
+
 	[class*='jconfirm-everest-forms-'] {
 		font-family: -apple-system, BlinkMacSystemFont, Inter, 'Segoe UI', Roboto,
 			Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
@@ -5535,10 +5733,23 @@ p.search-box {
 								background: #fff;
 								box-sizing: border-box;
 							}
+
+							.evf-expiry-trial-hint {
+								margin: 6px 0 0;
+								font-size: 12px;
+								line-height: 1.4;
+								color: #646970;
+							}
+
+							.evf-spt-panel--expiry,
+							.evf-spt-panel-detail {
+								overflow: visible;
+							}
 						}
 					}
 				}
 			}
+
 
 			.evf-content-email-settings-inner {
 				display: none;
