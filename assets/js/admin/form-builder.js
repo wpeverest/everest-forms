@@ -1288,54 +1288,60 @@
 		 * @since 3.0.9
 		 */
 		init_payment_subscription_plan_field: function () {
-			// Initialize option's date pickers on the expiry date input.
+			// Initialize flatpickr on expiry date inputs.
 			$('.evf-radio-subscription-expiry-input').each(function () {
 				if (!$(this).get(0)._flatpickr) {
 					$(this).flatpickr();
 				}
 			});
 
-			var enableTrialPeriods = $('.evf-enable-trial-period');
-			var enableExpiryDates = $('.evf-enable-expiry-date');
+			// Tab switching — delegated so it works for dynamically added choices.
+			$(document.body).on(
+				'click',
+				'.evf-spt-tab',
+				function () {
+					var $tab = $(this);
+					var $planTabs = $tab.closest('.evf-subscription-plan-tabs');
+					var targetTab = $tab.data('tab');
 
-			$.each(enableTrialPeriods, function (index, enableTrailPeriod) {
-				if ($(enableTrailPeriod).is(':checked')) {
-					var trialPeriod = enableTrailPeriod.closest('li');
-					$(trialPeriod).find('.evf-subscription-trail-period-option').show();
-				} else {
-					var trialPeriod = enableTrailPeriod.closest('li');
+					$tab.closest('.evf-spt-strip')
+						.find('.evf-spt-tab')
+						.removeClass('evf-spt-tab--active');
+					$tab.addClass('evf-spt-tab--active');
 
-					$(trialPeriod).find('.evf-subscription-trail-period-option').hide();
-				}
+					$planTabs.find('.evf-spt-panel').hide();
+					$planTabs.find('.evf-spt-panel--' + targetTab).show();
+				},
+			);
 
-				$(enableTrailPeriod).on('click', function (e) {
-					var expriyDate = $(this).closest('li');
-					if ($(this).is(':checked')) {
-						$(expriyDate).find('.evf-subscription-trail-period-option').show();
-					} else {
-						$(expriyDate).find('.evf-subscription-trail-period-option').hide();
-					}
-				});
-			});
+			// Trial toggle — dim inputs and update dot indicator.
+			$(document.body).on(
+				'change',
+				'.evf-enable-trial-period',
+				function () {
+					var $li = $(this).closest('li');
+					var isChecked = $(this).is(':checked');
+					$li.find('.evf-spt-panel--trial .evf-spt-panel-detail').toggleClass(
+						'evf-spt-dimmed',
+						!isChecked,
+					);
+					$li.find('.evf-spt-tab--trial .evf-spt-dot').toggle(isChecked);
+				},
+			);
 
-			$.each(enableExpiryDates, function (index, enableExpiryDate) {
-				if ($(enableExpiryDate).is(':checked')) {
-					var expriyDate = enableExpiryDate.closest('li');
-					$(expriyDate).find('.evf-subscription-expiry-date').show();
-				} else {
-					var expriyDate = enableExpiryDate.closest('li');
-					$(expriyDate).find('.evf-subscription-expiry-date').hide();
-				}
-
-				$(enableExpiryDate).on('click', function (e) {
-					var expriyDate = $(this).closest('li');
-					if ($(this).is(':checked')) {
-						$(expriyDate).find('.evf-subscription-expiry-date').show();
-					} else {
-						$(expriyDate).find('.evf-subscription-expiry-date').hide();
-					}
-				});
-			});
+			// Expiry toggle — dim inputs and update dot indicator.
+			$(document.body).on(
+				'change',
+				'.evf-enable-expiry-date',
+				function () {
+					var $li = $(this).closest('li');
+					var isChecked = $(this).is(':checked');
+					$li.find(
+						'.evf-spt-panel--expiry .evf-spt-panel-detail',
+					).toggleClass('evf-spt-dimmed', !isChecked);
+					$li.find('.evf-spt-tab--expiry .evf-spt-dot').toggle(isChecked);
+				},
+			);
 
 			$(document.body).on('evf_after_field_append', function (e, element_id) {
 				var $field = $('#' + element_id);
