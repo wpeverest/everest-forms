@@ -14207,3 +14207,72 @@ button#show-settings-link {
 .evf-popover-search-wrap {
 	gap: 0 !important;
 }
+
+.everest-forms-field-payment-subscription-plan {
+	ul.primary-input {
+		list-style: none;
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+		margin: 0;
+		padding: 0;
+
+		li {
+			border: 1.5px solid #dcdcde;
+			border-radius: 6px;
+			padding: 10px 14px;
+			display: flex;
+			align-items: flex-start;
+			gap: 10px;
+			cursor: pointer;
+			transition: border-color 0.15s, background 0.15s;
+			margin: 0;
+
+			&:has(input:checked) {
+				border-color: #6c47e8;
+			}
+		}
+
+		input[type="radio"] {
+			margin-top: 3px;
+			flex-shrink: 0;
+		}
+
+		.everest-forms-field-label-inline {
+			flex: 1;
+			cursor: pointer;
+		}
+	}
+
+	.evf-plan-wrap {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+	}
+
+	.evf-plan-main {
+		display: flex;
+		justify-content: space-between;
+		align-items: baseline;
+		gap: 8px;
+	}
+
+	.evf-plan-name {
+		font-size: 13px;
+		font-weight: 500;
+	}
+
+	.evf-plan-price {
+		font-size: 13px;
+		font-weight: 700;
+		white-space: nowrap;
+	}
+
+	.evf-plan-meta {
+		display: block;
+		font-size: 0.80em;
+		color: #757575;
+		margin-top: 3px;
+		font-weight: 400;
+	}
+}

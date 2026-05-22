@@ -1670,6 +1670,42 @@
 				},
 			);
 
+			// Update builder preview when recurring interval or period changes.
+			$(document.body).on(
+				'change input',
+				'.evf-spt-panel--recurring input[type="number"], .evf-spt-panel--recurring select',
+				function () {
+					var fieldId = $(this).closest('.evf-choices-list').data('field-id');
+					if (fieldId) {
+						EVFPanelBuilder.subscriptionPlanChoiceUpdate(fieldId);
+					}
+				},
+			);
+
+			// Update builder preview when trial toggle, count, or period changes.
+			$(document.body).on(
+				'change input',
+				'.evf-enable-trial-period, .evf-spt-panel--trial input[type="number"], .evf-spt-panel--trial select',
+				function () {
+					var fieldId = $(this).closest('.evf-choices-list').data('field-id');
+					if (fieldId) {
+						EVFPanelBuilder.subscriptionPlanChoiceUpdate(fieldId);
+					}
+				},
+			);
+
+			// Update builder preview when expiry toggle or date changes.
+			$(document.body).on(
+				'change',
+				'.evf-enable-expiry-date, .evf-radio-subscription-expiry-input',
+				function () {
+					var fieldId = $(this).closest('.evf-choices-list').data('field-id');
+					if (fieldId) {
+						EVFPanelBuilder.subscriptionPlanChoiceUpdate(fieldId);
+					}
+				},
+			);
+
 			$(document.body).on('evf_after_field_append', function (e, element_id) {
 				var $field = $('#' + element_id);
 				var field_type = $field.attr('data-field-type');
@@ -3083,6 +3119,11 @@
 				return;
 			}
 
+			if ('payment-subscription-plan' === type) {
+				EVFPanelBuilder.subscriptionPlanChoiceUpdate(id);
+				return;
+			}
+
 			var new_choice;
 
 			if ('select' === type) {
@@ -3130,6 +3171,68 @@
 			} else {
 				return data.currency_symbol + ' ' + amount;
 			}
+		},
+
+		/**
+		 * Re-render the builder canvas preview for a subscription plan field.
+		 *
+		 * @param {string|number} fieldId The field ID.
+		 */
+		subscriptionPlanChoiceUpdate: function (fieldId) {
+			var $optionsList = $('#everest-forms-field-option-row-' + fieldId + '-choices .evf-choices-list');
+			var $preview = $('#everest-forms-field-' + fieldId + ' .primary-input');
+			if (!$preview.length) {
+				return;
+			}
+
+			var periodSingular = { day: 'day', week: 'week', month: 'month', year: 'year' };
+			var periodPlural   = { day: 'days', week: 'weeks', month: 'months', year: 'years' };
+
+			var html = '';
+
+			$optionsList.find('li').each(function () {
+				var $li         = $(this);
+				var label       = $li.find('input.label').val() || '';
+				var rawAmount   = $li.find('input.value').val() || '0';
+				var iCount      = parseInt($li.find('input[name*="[interval_count]"]').val(), 10) || 1;
+				var rPeriod     = $li.find('select[name*="[recurring_period]"]').val() || 'month';
+				var trialOn     = $li.find('.evf-enable-trial-period').is(':checked');
+				var tCount      = parseInt($li.find('input[name*="[trail_interval_count]"]').val(), 10) || 1;
+				var tPeriod     = $li.find('select[name*="[trail_recurring_period]"]').val() || 'week';
+				var expiryOn    = $li.find('.evf-enable-expiry-date').is(':checked');
+				var expiryDate  = $li.find('.evf-radio-subscription-expiry-input').val() || '';
+				var isDefault   = $li.find('input.default').is(':checked');
+
+				var pStr = iCount > 1
+					? (iCount + ' ' + (periodPlural[rPeriod] || rPeriod))
+					: (periodSingular[rPeriod] || rPeriod);
+				var periodSuffix = '/' + pStr;
+				var amountStr = EVFPanelBuilder.amountFilter(evf_data, rawAmount);
+
+				var mainHtml = '<span class="evf-plan-main">'
+					+ '<span class="evf-plan-name">' + $('<span>').text(label).html() + '</span>'
+					+ '<strong class="evf-plan-price">' + $('<span>').text(amountStr + periodSuffix).html() + '</strong>'
+					+ '</span>';
+
+				var metaParts = [];
+				if (trialOn) {
+					var tStr = tCount + ' ' + (tCount > 1 ? (periodPlural[tPeriod] || tPeriod) : (periodSingular[tPeriod] || tPeriod));
+					metaParts.push($('<span>').text(tStr + ' free trial').html());
+				}
+				if (expiryOn && expiryDate) {
+					metaParts.push($('<span>').text('expires at ' + expiryDate).html());
+				}
+				var metaHtml = metaParts.length
+					? '<span class="evf-plan-meta">' + metaParts.join(' &middot; ') + '</span>'
+					: '';
+
+				var liHtml = '<span class="evf-plan-wrap">' + mainHtml + metaHtml + '</span>';
+
+				var itemClass = isDefault ? 'everest-forms-selected' : '';
+				html += '<li class="' + itemClass + '"><input type="radio" disabled>' + liHtml + '</li>';
+			});
+
+			$preview.html(html);
 		},
 
 		bindFormSettings: function () {
