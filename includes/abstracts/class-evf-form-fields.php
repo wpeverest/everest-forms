@@ -1346,77 +1346,72 @@ abstract class EVF_Form_Fields {
 					$field_content .= '</div>';
 					$field_content .= '<a class="add" href="#"><i class="dashicons dashicons-plus-alt"></i></a>';
 					$field_content .= '<a class="remove" href="#"><i class="dashicons dashicons-dismiss"></i></a>';
-					$field_content .= '<div class="evf-subscription-plan-sub-details">';
-					// Recurring Details.
-					$field_content .= sprintf( '<h2>%s</h2>', __( 'Recurring Details', 'everest-forms' ) );
-					$field_content .= '<input value="' . esc_attr( $interval_count ) . '" type="number" name="' . sprintf( 'form_fields[%s][choices][%s][%s]', $field['id'], $key, 'interval_count' ) . '" >';
-					$field_content .= '<select  name="' . sprintf( 'form_fields[%s][choices][%s][%s]', $field['id'], $key, 'recurring_period' ) . '">';
-					$periods        = array(
-						'day'   => __( 'Day(s)', 'everest-forms' ),
-						'week'  => __( 'Week(s)', 'everest-forms' ),
-						'month' => __( 'Month(s)', 'everest-forms' ),
-						'year'  => __( 'Year(s)', 'everest-forms' ),
-					);
-					foreach ( $periods as $id => $label ) {
-						$selected = '';
-						if ( $recurring_period === $id ) {
-							$selected = 'selected=selected';
-						}
-						$field_content .= '<option value="' . esc_attr( $id ) . '" ' . $selected . '>' . esc_html( $label ) . '</option>';
-					}
-					$field_content .= '</select>';
-					$field_content .= '</div>';
-					// EnableTrail period.
-					$trail_period_enable = isset( $choice['trail_period_enable'] ) ? $choice['trail_period_enable'] : false;
-
-					$field_content .= '<div class="evf-toggle-section evf-form-builder-toggle evf-trail-period-wrapper">';
-					$field_content .= sprintf( '<label for="evf-toggle-type-trail-period">%s</label>', __( 'Enable Trial Period', 'everest-forms' ) );
-					$field_content .= sprintf( '<div><span class="everest-forms-toggle-form">' );
-					$field_content .= '<input class="evf-enable-trial-period" type="checkbox" value="1"  name="' . sprintf( 'form_fields[%s][choices][%s][%s]', $field['id'], $key, 'trail_period_enable' ) . '"';
-
-					$checked = checked( '1', $trail_period_enable, false );
-
-					$field_content .= '' . $checked . '/>';
-					$field_content .= '<span class="slider round"></span>';
-					$field_content .= '</span></div>';
-					$field_content .= '</div>';
-					// Trial period details.
-					$field_content .= '<div class="evf-subscription-plan-sub-details evf-subscription-trail-period-option" style="display:none;">';
-					$field_content .= sprintf( '<h2>%s</h2>', __( 'Trial Period Details', 'everest-forms' ) );
-					$field_content .= '<input value="' . esc_attr( $trail_interval_count ) . '" type="number" name="' . sprintf( 'form_fields[%s][choices][%s][%s]', $field['id'], $key, 'trail_interval_count' ) . '" >';
-
-					$field_content .= '<select  name="' . sprintf( 'form_fields[%s][choices][%s][%s]', $field['id'], $key, 'trail_recurring_period' ) . '">';
-					$periods        = array(
-						'day'   => __( 'Day(s)', 'everest-forms' ),
-						'week'  => __( 'Week(s)', 'everest-forms' ),
-						'month' => __( 'Month(s)', 'everest-forms' ),
-						'year'  => __( 'Year(s)', 'everest-forms' ),
-					);
-					foreach ( $periods as $id => $label ) {
-						$selected = '';
-						if ( $trail_recurring_period === $id ) {
-							$selected = 'selected=selected';
-						}
-						$field_content .= '<option value="' . esc_attr( $id ) . '" ' . $selected . '>' . esc_html( $label ) . '</option>';
-					}
-					$field_content .= '</select>';
-					$field_content .= '</div>';
-
-					// TO enable exact date for subscription expiry.
+					// Subscription plan tabs.
+					$trail_period_enable        = isset( $choice['trail_period_enable'] ) ? $choice['trail_period_enable'] : false;
 					$subscription_expiry_enable = isset( $choice['subscription_expiry_enable'] ) ? $choice['subscription_expiry_enable'] : false;
 					$subscription_expiry_date   = isset( $choice['subscription_expiry_date'] ) ? $choice['subscription_expiry_date'] : '';
 
-					$field_content .= '<div class="evf-toggle-section evf-form-builder-toggle evf-expiry-date-wrapper">';
-					$field_content .= sprintf( '<label for="evf-toggle-type-expiry-date">%s</label>', __( 'Enable Expiry Date', 'everest-forms' ) );
-					$field_content .= sprintf( '<span class="everest-forms-toggle-form">' );
-					$field_content .= '<input class="evf-enable-expiry-date" type="checkbox"  value="1"  name="' . sprintf( 'form_fields[%s][choices][%s][%s]', $field['id'], $key, 'subscription_expiry_enable' ) . '"';
-					$expiry_checked = checked( '1', $subscription_expiry_enable, false );
+					$field_content .= '<div class="evf-subscription-plan-tabs">';
 
-					$field_content .= '' . $expiry_checked . '/>';
-					$field_content .= '<span class="slider round"></span>';
+					// Tab strip.
+					$field_content .= '<div class="evf-spt-strip">';
+					$field_content .= '<div class="evf-spt-tab evf-spt-tab--recurring evf-spt-tab--active" data-tab="recurring">' . esc_html__( '↻ Recurring', 'everest-forms' ) . '</div>';
+					$field_content .= '<div class="evf-spt-tab evf-spt-tab--trial" data-tab="trial">' . esc_html__( 'Trial', 'everest-forms' ) . ' <span class="evf-spt-dot"' . ( $trail_period_enable ? '' : ' style="display:none;"' ) . '></span></div>';
+					$field_content .= '<div class="evf-spt-tab evf-spt-tab--expiry" data-tab="expiry">' . esc_html__( 'Expiry', 'everest-forms' ) . ' <span class="evf-spt-dot"' . ( $subscription_expiry_enable ? '' : ' style="display:none;"' ) . '></span></div>';
 					$field_content .= '</div>';
-					$field_content .= '<div class="evf-subscription-expiry-date-field evf-subscription-expiry-option"  >';
-					$field_content .= '<input type="text"  value="' . esc_attr( $subscription_expiry_date ) . '"   name="' . sprintf( 'form_fields[%s][choices][%s][%s]', $field['id'], $key, 'subscription_expiry_date' ) . '" data-field="options" class="evf-general-setting-field evf-radio-subscription-expiry-input evf-subscription-expiry-date evf-flatpickr-field regular-text without_icon flatpickr-input" data-date-format="Y-m-d" data-locale="en" readonly="readonly" />';
+
+					// Panel: Recurring (always visible).
+					$periods = array(
+						'day'   => __( 'Day(s)', 'everest-forms' ),
+						'week'  => __( 'Week(s)', 'everest-forms' ),
+						'month' => __( 'Month(s)', 'everest-forms' ),
+						'year'  => __( 'Year(s)', 'everest-forms' ),
+					);
+					$field_content .= '<div class="evf-spt-panel evf-spt-panel--recurring">';
+					$field_content .= '<span class="evf-spt-always-badge">' . esc_html__( '↻ Always active', 'everest-forms' ) . '</span>';
+					$field_content .= '<div class="evf-spt-input-row">';
+					$field_content .= '<input value="' . esc_attr( $interval_count ) . '" type="number" name="' . sprintf( 'form_fields[%s][choices][%s][%s]', $field['id'], $key, 'interval_count' ) . '">';
+					$field_content .= '<select name="' . sprintf( 'form_fields[%s][choices][%s][%s]', $field['id'], $key, 'recurring_period' ) . '">';
+					foreach ( $periods as $id => $label ) {
+						$field_content .= '<option value="' . esc_attr( $id ) . '"' . ( $recurring_period === $id ? ' selected="selected"' : '' ) . '>' . esc_html( $label ) . '</option>';
+					}
+					$field_content .= '</select>';
+					$field_content .= '</div>';
+					$field_content .= '</div>';
+
+					// Panel: Trial (hidden by default).
+					$field_content .= '<div class="evf-spt-panel evf-spt-panel--trial" style="display:none;">';
+					$field_content .= '<div class="evf-spt-toggle-row">';
+					$field_content .= '<label class="evf-spt-toggle-label">' . esc_html__( 'Enable Trial Period', 'everest-forms' ) . '</label>';
+					$field_content .= '<span class="everest-forms-toggle-form">';
+					$field_content .= '<input class="evf-enable-trial-period" type="checkbox" value="1" name="' . sprintf( 'form_fields[%s][choices][%s][%s]', $field['id'], $key, 'trail_period_enable' ) . '"' . checked( '1', $trail_period_enable, false ) . '/>';
+					$field_content .= '<span class="slider round"></span>';
+					$field_content .= '</span>';
+					$field_content .= '</div>';
+					$field_content .= '<div class="evf-spt-input-row evf-spt-panel-detail' . ( $trail_period_enable ? '' : ' evf-spt-dimmed' ) . '">';
+					$field_content .= '<input value="' . esc_attr( $trail_interval_count ) . '" type="number" name="' . sprintf( 'form_fields[%s][choices][%s][%s]', $field['id'], $key, 'trail_interval_count' ) . '">';
+					$field_content .= '<select name="' . sprintf( 'form_fields[%s][choices][%s][%s]', $field['id'], $key, 'trail_recurring_period' ) . '">';
+					foreach ( $periods as $id => $label ) {
+						$field_content .= '<option value="' . esc_attr( $id ) . '"' . ( $trail_recurring_period === $id ? ' selected="selected"' : '' ) . '>' . esc_html( $label ) . '</option>';
+					}
+					$field_content .= '</select>';
+					$field_content .= '</div>';
+					$field_content .= '</div>';
+
+					// Panel: Expiry (hidden by default).
+					$field_content .= '<div class="evf-spt-panel evf-spt-panel--expiry" style="display:none;">';
+					$field_content .= '<div class="evf-spt-toggle-row">';
+					$field_content .= '<label class="evf-spt-toggle-label">' . esc_html__( 'Enable Expiry Date', 'everest-forms' ) . '</label>';
+					$field_content .= '<span class="everest-forms-toggle-form">';
+					$field_content .= '<input class="evf-enable-expiry-date" type="checkbox" value="1" name="' . sprintf( 'form_fields[%s][choices][%s][%s]', $field['id'], $key, 'subscription_expiry_enable' ) . '"' . checked( '1', $subscription_expiry_enable, false ) . '/>';
+					$field_content .= '<span class="slider round"></span>';
+					$field_content .= '</span>';
+					$field_content .= '</div>';
+					$field_content .= '<div class="evf-spt-panel-detail' . ( $subscription_expiry_enable ? '' : ' evf-spt-dimmed' ) . '">';
+					$field_content .= '<input type="text" value="' . esc_attr( $subscription_expiry_date ) . '" name="' . sprintf( 'form_fields[%s][choices][%s][%s]', $field['id'], $key, 'subscription_expiry_date' ) . '" data-field="options" class="evf-general-setting-field evf-radio-subscription-expiry-input evf-subscription-expiry-date evf-flatpickr-field regular-text without_icon flatpickr-input" data-date-format="Y-m-d" data-locale="en" readonly="readonly"/>';
+					$field_content .= '</div>';
+					$field_content .= '</div>';
+
 					$field_content .= '</div>';
 
 					$field_content .= '<div class="everest-forms-attachment-media-view">';
