@@ -1321,10 +1321,7 @@
 				function () {
 					var $li = $(this).closest('li');
 					var isChecked = $(this).is(':checked');
-					$li.find('.evf-spt-panel--trial .evf-spt-panel-detail').toggleClass(
-						'evf-spt-dimmed',
-						!isChecked,
-					);
+					$li.find('.evf-spt-panel--trial .evf-spt-panel-detail').toggle(isChecked);
 					$li.find('.evf-spt-tab--trial .evf-spt-dot').toggle(isChecked);
 				},
 			);

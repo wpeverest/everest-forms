@@ -35,6 +35,11 @@ everest-forms.zip
 /tests/.env
 /tests/wordpress
 
+# Local agent / superpowers tooling
+.claude/settings.local.json
+.superpowers/
+docs/superpowers/plans/
+
 # Local overrides
 phpcs.xml
 phpunit.xml

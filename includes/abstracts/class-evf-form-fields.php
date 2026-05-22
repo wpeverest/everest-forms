@@ -1355,7 +1355,7 @@ abstract class EVF_Form_Fields {
 
 					// Tab strip.
 					$field_content .= '<div class="evf-spt-strip">';
-					$field_content .= '<div class="evf-spt-tab evf-spt-tab--recurring evf-spt-tab--active" data-tab="recurring">' . esc_html__( '↻ Recurring', 'everest-forms' ) . '</div>';
+					$field_content .= '<div class="evf-spt-tab evf-spt-tab--recurring evf-spt-tab--active" data-tab="recurring">' . esc_html__( 'Recurring', 'everest-forms' ) . '</div>';
 					$field_content .= '<div class="evf-spt-tab evf-spt-tab--trial" data-tab="trial">' . esc_html__( 'Trial', 'everest-forms' ) . ' <span class="evf-spt-dot"' . ( $trail_period_enable ? '' : ' style="display:none;"' ) . '></span></div>';
 					$field_content .= '<div class="evf-spt-tab evf-spt-tab--expiry" data-tab="expiry">' . esc_html__( 'Expiry', 'everest-forms' ) . ' <span class="evf-spt-dot"' . ( $subscription_expiry_enable ? '' : ' style="display:none;"' ) . '></span></div>';
 					$field_content .= '</div>';
@@ -1368,12 +1368,11 @@ abstract class EVF_Form_Fields {
 						'year'  => __( 'Year(s)', 'everest-forms' ),
 					);
 					$field_content .= '<div class="evf-spt-panel evf-spt-panel--recurring">';
-					$field_content .= '<span class="evf-spt-always-badge">' . esc_html__( '↻ Always active', 'everest-forms' ) . '</span>';
 					$field_content .= '<div class="evf-spt-input-row">';
 					$field_content .= '<input value="' . esc_attr( $interval_count ) . '" type="number" name="' . sprintf( 'form_fields[%s][choices][%s][%s]', $field['id'], $key, 'interval_count' ) . '">';
 					$field_content .= '<select name="' . sprintf( 'form_fields[%s][choices][%s][%s]', $field['id'], $key, 'recurring_period' ) . '">';
-					foreach ( $periods as $id => $label ) {
-						$field_content .= '<option value="' . esc_attr( $id ) . '"' . ( $recurring_period === $id ? ' selected="selected"' : '' ) . '>' . esc_html( $label ) . '</option>';
+					foreach ( $periods as $period_id => $period_label ) {
+						$field_content .= '<option value="' . esc_attr( $period_id ) . '"' . ( $recurring_period === $period_id ? ' selected="selected"' : '' ) . '>' . esc_html( $period_label ) . '</option>';
 					}
 					$field_content .= '</select>';
 					$field_content .= '</div>';
@@ -1388,11 +1387,11 @@ abstract class EVF_Form_Fields {
 					$field_content .= '<span class="slider round"></span>';
 					$field_content .= '</span>';
 					$field_content .= '</div>';
-					$field_content .= '<div class="evf-spt-input-row evf-spt-panel-detail' . ( $trail_period_enable ? '' : ' evf-spt-dimmed' ) . '">';
+					$field_content .= '<div class="evf-spt-input-row evf-spt-panel-detail"' . ( $trail_period_enable ? '' : ' style="display:none;"' ) . '>';
 					$field_content .= '<input value="' . esc_attr( $trail_interval_count ) . '" type="number" name="' . sprintf( 'form_fields[%s][choices][%s][%s]', $field['id'], $key, 'trail_interval_count' ) . '">';
 					$field_content .= '<select name="' . sprintf( 'form_fields[%s][choices][%s][%s]', $field['id'], $key, 'trail_recurring_period' ) . '">';
-					foreach ( $periods as $id => $label ) {
-						$field_content .= '<option value="' . esc_attr( $id ) . '"' . ( $trail_recurring_period === $id ? ' selected="selected"' : '' ) . '>' . esc_html( $label ) . '</option>';
+					foreach ( $periods as $period_id => $period_label ) {
+						$field_content .= '<option value="' . esc_attr( $period_id ) . '"' . ( $trail_recurring_period === $period_id ? ' selected="selected"' : '' ) . '>' . esc_html( $period_label ) . '</option>';
 					}
 					$field_content .= '</select>';
 					$field_content .= '</div>';
@@ -1407,7 +1406,7 @@ abstract class EVF_Form_Fields {
 					$field_content .= '<span class="slider round"></span>';
 					$field_content .= '</span>';
 					$field_content .= '</div>';
-					$field_content .= '<div class="evf-spt-panel-detail' . ( $subscription_expiry_enable ? '' : ' evf-spt-dimmed' ) . '">';
+					$field_content .= '<div class="evf-spt-panel-detail"' . ( $subscription_expiry_enable ? '' : ' style="display:none;"' ) . '>';
 					$field_content .= '<input type="text" value="' . esc_attr( $subscription_expiry_date ) . '" name="' . sprintf( 'form_fields[%s][choices][%s][%s]', $field['id'], $key, 'subscription_expiry_date' ) . '" data-field="options" class="evf-general-setting-field evf-radio-subscription-expiry-input evf-subscription-expiry-date evf-flatpickr-field regular-text without_icon flatpickr-input" data-date-format="Y-m-d" data-locale="en" readonly="readonly"/>';
 					$field_content .= '</div>';
 					$field_content .= '</div>';
