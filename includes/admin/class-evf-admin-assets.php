@@ -291,6 +291,19 @@ class EVF_Admin_Assets {
 			wp_enqueue_script( 'jquery-ui-autocomplete' );
 			wp_enqueue_script( 'evf-upgrade' );
 
+			// upgrade.js references evf_data in modal buttons; builder localizes the full object.
+			if ( 'everest-forms_page_evf-settings' === $screen_id && ! wp_script_is( 'evf-form-builder', 'enqueued' ) ) {
+				wp_localize_script(
+					'evf-upgrade',
+					'evf_data',
+					array(
+						'i18n_ok'    => esc_html__( 'OK', 'everest-forms' ),
+						'i18n_close' => esc_html__( 'Close', 'everest-forms' ),
+						'is_pro'     => defined( 'EFP_PLUGIN_FILE' ),
+					)
+				);
+			}
+
 			wp_localize_script(
 				'everest-forms-email-admin',
 				'evf_email_params',

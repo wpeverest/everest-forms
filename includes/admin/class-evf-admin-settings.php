@@ -188,7 +188,23 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 
 			do_action( 'everest_forms_settings_start' );
 
-			wp_enqueue_script( 'everest_forms_settings', evf()->plugin_url() . '/assets/js/admin/settings' . $suffix . '.js', array( 'jquery', 'jquery-confirm', 'jquery-ui-datepicker', 'jquery-ui-sortable', 'iris', 'selectWoo' ), evf()->version, true );
+			wp_enqueue_script( 'jquery-confirm' );
+			wp_enqueue_script( 'wp-color-picker' );
+
+			wp_enqueue_script(
+				'everest_forms_settings',
+				evf()->plugin_url() . '/assets/js/admin/settings' . $suffix . '.js',
+				array(
+					'jquery',
+					'jquery-confirm',
+					'jquery-ui-datepicker',
+					'jquery-ui-sortable',
+					'wp-color-picker',
+					'selectWoo',
+				),
+				evf()->version,
+				true
+			);
 
 			wp_localize_script(
 				'everest_forms_settings',

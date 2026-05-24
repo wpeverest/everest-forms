@@ -101,12 +101,16 @@
 				urlParams.delete('evf_toast');
 				urlParams.delete('evf_toast_type');
 
-				window.history.replaceState(
-					{},
-					document.title,
-					window.location.pathname +
-						(urlParams.toString() ? '?' + urlParams.toString() : ''),
-				);
+				try {
+					window.history.replaceState(
+						{},
+						document.title,
+						window.location.pathname +
+							(urlParams.toString() ? '?' + urlParams.toString() : ''),
+					);
+				} catch (historyError) {
+					// Ignore SecurityError when admin URL host differs from the browser (e.g. ngrok).
+				}
 			} catch (e) {}
 		}
 
