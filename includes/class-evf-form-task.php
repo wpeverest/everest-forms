@@ -787,6 +787,14 @@ class EVF_Form_Task {
 			);
 			do_action( "everest_forms_process_complete_{$form_id}", $this->form_fields, $entry, $this->form_data, $entry_id );
 			do_action( 'everest_forms_process_complete_send_data_to_zapier_app', $this->form_fields, $entry, $this->form_data, $entry_id );
+
+			// Payment gateways update entry meta during process_complete; do not return the success confirmation when payment failed.
+			if ( '1' === $ajax_form_submission && ! empty( $entry_id ) ) {
+				$payment_ajax_fail = $this->get_ajax_response_for_failed_payment_entry( absint( $entry_id ) );
+				if ( is_array( $payment_ajax_fail ) ) {
+					return $payment_ajax_fail;
+				}
+			}
 		} catch ( Exception $e ) {
 			evf_add_notice( $e->getMessage(), 'error' );
 			$logger->error(
@@ -1021,6 +1029,50 @@ class EVF_Form_Task {
 
 		do_action( 'everest_forms_ajax_submit_completed', $form_id, $response );
 		wp_send_json_success( $response );
+	}
+
+	/**
+	 * When AJAX submission is used, return an error payload if the entry was recorded as a failed payment.
+	 *
+	 * Gateways hook `everest_forms_process_complete` and call `evf_payment_entries()` after the entry is saved,
+	 * so payment meta is only reliable after those hooks run.
+	 *
+	 * @param int $entry_id Entry ID.
+	 * @return array|null Error response for `do_task` (response => error), or null if not a failed payment entry.
+	 */
+	private function get_ajax_response_for_failed_payment_entry( $entry_id ) {
+		if ( $entry_id <= 0 || ! function_exists( 'evf_get_entry' ) ) {
+			return null;
+		}
+
+		wp_cache_delete( $entry_id, 'evf-entry' );
+		wp_cache_delete( $entry_id, 'evf-entrymeta' );
+
+		$entry_obj = evf_get_entry( $entry_id );
+		if ( ! $entry_obj || empty( $entry_obj->meta ) || ! is_array( $entry_obj->meta ) ) {
+			return null;
+		}
+
+		$pay_type = isset( $entry_obj->meta['type'] ) ? (string) $entry_obj->meta['type'] : '';
+		$status   = isset( $entry_obj->meta['status'] ) ? (string) $entry_obj->meta['status'] : '';
+
+		if ( 'payment' !== $pay_type || 0 !== strcasecmp( 'failed', $status ) ) {
+			return null;
+		}
+
+		$message = apply_filters(
+			'everest_forms_payment_failed_submission_message',
+			__( 'Payment could not be completed. Please try again or use a different payment method.', 'everest-forms' ),
+			$entry_obj,
+			$this->form_data
+		);
+
+		return array(
+			'response' => 'error',
+			'message'  => $message,
+			'error'    => array(),
+			'form_id'  => isset( $this->form_data['id'] ) ? absint( $this->form_data['id'] ) : 0,
+		);
 	}
 
 	/**
