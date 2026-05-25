@@ -1507,15 +1507,44 @@
 				var $input = $(this);
 				var el = this;
 				var $li = $input.closest('li');
+				var savedDate = $.trim($input.val());
+				var dateFormat = $input.data('date-format') || 'Y-m-d';
 
 				if (el._flatpickr) {
-					el._flatpickr.destroy();
-				}
+					var minDate =
+						EVFPanelBuilder.get_subscription_expiry_min_date($li);
 
-				var dateFormat = $input.data('date-format') || 'Y-m-d';
+					el._flatpickr.set('minDate', minDate);
+
+					if (savedDate) {
+						el._flatpickr.setDate(savedDate, false);
+
+						if (el._flatpickr.selectedDates[0]) {
+							$input.val(
+								el._flatpickr.formatDate(
+									el._flatpickr.selectedDates[0],
+									dateFormat,
+								),
+							);
+						} else {
+							$input.val(savedDate);
+						}
+					}
+
+					EVFPanelBuilder.sync_subscription_expiry_trial_hint(
+						$li,
+						minDate,
+					);
+					el._flatpickr.redraw();
+					EVFPanelBuilder.bind_subscription_expiry_picker_toggle(
+						el._flatpickr,
+					);
+					return;
+				}
 
 				$input.flatpickr({
 					dateFormat: dateFormat,
+					defaultDate: savedDate || null,
 					disableMobile: true,
 					allowInput: false,
 					clickOpens: false,
@@ -1560,7 +1589,11 @@
 							selectedDates[0] < trialMin
 						) {
 							instance.clear();
+							$(instance.input).val('');
+							return;
 						}
+
+						$(instance.input).val(dateStr).trigger('change');
 					},
 					onReady: function (selectedDates, dateStr, instance) {
 						var $choiceLi = $(instance.input).closest('li');
@@ -1568,6 +1601,7 @@
 							EVFPanelBuilder.get_subscription_expiry_min_date(
 								$choiceLi,
 							);
+						var storedDate = $.trim($(instance.input).val());
 
 						if (instance.calendarContainer) {
 							instance.calendarContainer.classList.add(
@@ -1584,11 +1618,22 @@
 							trialMin,
 						);
 
+						if (storedDate) {
+							instance.setDate(storedDate, false);
+							$(instance.input).val(
+								instance.formatDate(
+									instance.selectedDates[0],
+									instance.config.dateFormat,
+								),
+							);
+						}
+
 						if (
 							instance.selectedDates[0] &&
 							instance.selectedDates[0] < trialMin
 						) {
 							instance.clear();
+							$(instance.input).val('');
 						}
 					},
 				});
