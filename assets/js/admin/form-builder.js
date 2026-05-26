@@ -3072,6 +3072,24 @@
 			$choice.find('.attachment-thumb').remove();
 			$choice.find('.button-add-media').show();
 
+			if ( 'payment-subscription-plan' === type ) {
+				var oldChoiceKey = $parent.data( 'key' );
+				$choice.find( 'input, select' ).each( function () {
+					var name = $( this ).attr( 'name' );
+					if ( name && name.indexOf( '[choices][' + oldChoiceKey + '][' ) !== -1 ) {
+						$( this ).attr( 'name', name.replace(
+							'[choices][' + oldChoiceKey + '][',
+							'[choices][' + nextID + ']['
+						) );
+					}
+				} );
+				$choice.find( '.evf-enable-trial-period' ).prop( 'checked', false );
+				$choice.find( '.evf-enable-expiry-date' ).prop( 'checked', false );
+				$choice.find( '[name*="[subscription_expiry_date]"]' ).val( '' );
+				$choice.find( '.evf-spt-panel-detail' ).hide();
+				$choice.find( '.evf-spt-dot' ).hide();
+			}
+
 			if (checked === true) {
 				$parent.find('input.default').prop('checked', true);
 			}
