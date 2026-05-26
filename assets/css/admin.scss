@@ -44,15 +44,20 @@ body[class*='everest-forms_page_'] {
 	background: #f4f4f4 !important;
 	overflow-x: hidden;
 
-	// Subscription plan expiry picker (calendar is appended to document.body).
+	// Subscription plan expiry picker (inline under the date input).
+	.evf-subscription-expiry-picker-anchor {
+		position: relative;
+		overflow: visible;
+	}
+
 	.flatpickr-calendar.evf-subscription-expiry-calendar {
 		z-index: 1000001 !important;
-		width: 312 !important;
+		width: 312px !important;
+		margin-top: 4px;
 		padding-top: 8px;
 		box-sizing: border-box;
 		overflow: visible;
 
-		// Misaligned when appendTo is body; month/year nav is enough.
 		&::before,
 		&::after {
 			display: none !important;
@@ -5732,6 +5737,26 @@ p.search-box {
 								color: #555d66;
 								background: #fff;
 								box-sizing: border-box;
+
+								&.active {
+									border-color: #7c5cfd;
+									box-shadow: 0 0 0 1px #7c5cfd;
+								}
+							}
+
+							.evf-subscription-expiry-picker-anchor {
+								.flatpickr-wrapper {
+									display: block;
+									width: 100%;
+								}
+
+								.flatpickr-calendar.evf-subscription-expiry-calendar {
+									position: relative !important;
+									top: auto !important;
+									left: auto !important;
+									right: auto !important;
+									box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+								}
 							}
 
 							.evf-expiry-trial-hint {

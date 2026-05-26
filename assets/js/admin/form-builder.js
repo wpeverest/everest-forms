@@ -1405,6 +1405,26 @@
 		},
 
 		/**
+		 * Anchor element for positioning the expiry calendar under the date input.
+		 *
+		 * @param {jQuery} $input Expiry date input.
+		 * @return {HTMLElement}
+		 */
+		get_subscription_expiry_picker_anchor: function ($input) {
+			var $anchor = $input.closest('.evf-spt-panel-detail');
+
+			if (!$anchor.length) {
+				$anchor = $input.closest('.evf-general-setting-field');
+			}
+
+			if (!$anchor.length) {
+				$anchor = $input.parent();
+			}
+
+			return $anchor[0];
+		},
+
+		/**
 		 * Close open subscription expiry flatpickr calendars.
 		 *
 		 * @param {HTMLElement|null} exceptInput Optional input to keep open.
@@ -1510,6 +1530,10 @@
 				var savedDate = $.trim($input.val());
 				var dateFormat = $input.data('date-format') || 'Y-m-d';
 
+				if (el._flatpickr && !el._flatpickr.config.static) {
+					el._flatpickr.destroy();
+				}
+
 				if (el._flatpickr) {
 					var minDate =
 						EVFPanelBuilder.get_subscription_expiry_min_date($li);
@@ -1542,6 +1566,9 @@
 					return;
 				}
 
+				var $anchor = $(EVFPanelBuilder.get_subscription_expiry_picker_anchor($input));
+				$anchor.addClass('evf-subscription-expiry-picker-anchor');
+
 				$input.flatpickr({
 					dateFormat: dateFormat,
 					defaultDate: savedDate || null,
@@ -1549,8 +1576,8 @@
 					allowInput: false,
 					clickOpens: false,
 					closeOnSelect: true,
-					appendTo: document.body,
-					position: 'auto',
+					static: true,
+					position: 'below',
 					animate: true,
 					minDate:
 						EVFPanelBuilder.get_subscription_expiry_min_date($li),
@@ -1699,7 +1726,7 @@
 				},
 			);
 
-			// Expiry toggle — dim inputs and update dot indicator.
+			// Expiry toggle — dim inputs, close calendar, update dot indicator.
 			$(document.body).on(
 				'change',
 				'.evf-enable-expiry-date',
@@ -1711,6 +1738,8 @@
 
 					if (isChecked) {
 						EVFPanelBuilder.init_subscription_expiry_date_pickers($li);
+					} else {
+						EVFPanelBuilder.close_subscription_expiry_pickers();
 					}
 				},
 			);
@@ -4632,12 +4661,56 @@
 				}
 			});
 		},
+		syncSubscriptionPlanChoiceFieldsBeforeSave: function () {
+			$(
+				'.everest-forms-field-option-payment-subscription-plan .evf-choices-list > li',
+			).each(function () {
+				var $li = $(this);
+				var $trialEnable = $li.find('.evf-enable-trial-period');
+				var $expiryEnable = $li.find('.evf-enable-expiry-date');
+				var trialOn = $trialEnable.length && $trialEnable.is(':checked');
+				var $expiryInput = $li.find('.evf-radio-subscription-expiry-input');
+				var expiryDate = $.trim($expiryInput.val());
+
+				// Exclude stale trial length fields when trial is off (prevents false trial in gateways).
+				$li.find('.evf-spt-panel--trial input, .evf-spt-panel--trial select').prop(
+					'disabled',
+					!trialOn,
+				);
+
+				if ($expiryInput.length && $expiryInput[0]._flatpickr) {
+					var fp = $expiryInput[0]._flatpickr;
+					if (fp.selectedDates && fp.selectedDates[0]) {
+						expiryDate = fp.formatDate(
+							fp.selectedDates[0],
+							$expiryInput.data('date-format') || 'Y-m-d',
+						);
+						$expiryInput.val(expiryDate);
+					}
+				}
+
+				if ($trialEnable.length) {
+					$trialEnable.prop('checked', !!trialOn);
+				}
+
+				if ($expiryEnable.length) {
+					var expiryOn = $expiryEnable.is(':checked') || !!expiryDate;
+					$expiryEnable.prop('checked', !!expiryOn);
+				}
+			});
+		},
 		bindSaveOption: function () {
 			$('body').on('click', '.everest-forms-save-button', function () {
 				var $this = $(this);
 				var $form = $('form#everest-forms-builder-form');
 				var structure = EVFPanelBuilder.getStructure();
+				EVFPanelBuilder.syncSubscriptionPlanChoiceFieldsBeforeSave();
 				var form_data = $form.serializeArray();
+
+				// Re-enable trial inputs so the builder UI stays interactive after save.
+				$(
+					'.everest-forms-field-option-payment-subscription-plan .evf-spt-panel--trial input, .everest-forms-field-option-payment-subscription-plan .evf-spt-panel--trial select',
+				).prop('disabled', false);
 				var form_title = $('#evf-edit-form-name').val().trim();
 
 				// Save form args.
