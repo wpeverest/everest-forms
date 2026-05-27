@@ -194,23 +194,30 @@ jQuery( function( $ ) {
 								return;
 							}
 
+							var formContainer = formTuple.closest( '.everest-forms' );
+
 							formTuple.trigger( 'reset' );
-							formTuple.closest('.everest-forms').find('.everest-forms-notice').remove();
+							formContainer.find( '.everest-forms-notice' ).remove();
+
+							// If the form state is hidden, scope the hide to this submitted form only.
+							if ( 'hide' === form_state_type && 'hide' !== message_location ) {
+								formTuple.find( '.evf-frontend-row, .evf-submit-container' ).hide();
+							}
 
 							if ( 'hide' === message_location ) {
-								formTuple.closest('.everest-forms').html(
+								formContainer.html(
 									'<div class="everest-forms-notice everest-forms-notice--success" role="alert">' +
 									xhr.data.message + pdf_download_message +
 									'</div>' + quiz_reporting + preview_confirmation
 								).focus();
 							} else if ( 'top' === message_location) {
-								formTuple.closest('.everest-forms').prepend(
+								formContainer.prepend(
 									'<div class="everest-forms-notice everest-forms-notice--success" role="alert">' +
 									xhr.data.message + pdf_download_message +
 									'</div>' + quiz_reporting + preview_confirmation
 								).focus();
 							} else if ( 'bottom' === message_location ) {
-								formTuple.closest('.everest-forms').append(
+								formContainer.append(
 									preview_confirmation + '<div class="everest-forms-notice everest-forms-notice--success" role="alert">' +
 									xhr.data.message + pdf_download_message +
 									'</div>' + quiz_reporting
@@ -242,13 +249,9 @@ jQuery( function( $ ) {
 									});
 								});
 
-								formTuple.closest('.everest-forms').append(
+								formContainer.append(
 									preview_confirmation + quiz_reporting
 								).focus();
-							}
-							//If the form state hide then hide the form.
-							if('hide' === form_state_type) {
-								$('.evf-frontend-row, .evf-submit-container ').hide();
 							}
 
 							btn.attr('disabled', false).html(everest_forms_ajax_submission_params.submit);
