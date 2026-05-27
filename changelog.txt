@@ -1,5 +1,10 @@
 == Changelog ==
 
+= 3.4.8       - 27-05-2026
+* Fix 		  - Missing capability check on test email.
+* Fix 		  - Confirmation not showing in first load.
+* Fix 		  - File and image upload not working on WooCommerce product page.
+
 = 3.4.7       - 05-05-2026
 * Fix 		  - Php warning on log.
 
