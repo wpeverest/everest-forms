@@ -43,6 +43,7 @@ class EVF_Admin_Tools {
 		$forms_object = array(
 			'contactform7' => class_exists( 'EVF_Fm_Contactform7' ) ? new EVF_Fm_Contactform7() : '',
 			'wpforms'      => class_exists( 'EVF_Fm_wpforms' ) ? new EVF_Fm_Wpforms() : '',
+			'fluentforms'  => class_exists( 'EVF_Fm_Fluentforms' ) ? new EVF_Fm_Fluentforms() : '',
 		);
 		// Forms status.
 		$forms_status = array();
