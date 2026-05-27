@@ -1173,6 +1173,10 @@ class EVF_AJAX {
 	 */
 	public static function send_test_email() {
 		try {
+			if ( ! current_user_can( 'manage_options' ) ) {
+				wp_send_json_error( array( 'message' => __( 'Unauthorized.', 'everest-forms' ) ), 401 );
+			}
+
 			check_ajax_referer( 'process-ajax-nonce', 'security' );
 			$from  = esc_attr( get_bloginfo( 'name', 'display' ) );
 			$email = sanitize_email( isset( $_POST['email'] ) ? wp_unslash( $_POST['email'] ) : '' );
