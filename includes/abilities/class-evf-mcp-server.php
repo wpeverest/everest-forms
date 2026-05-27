@@ -160,11 +160,42 @@ class EVF_MCP_Server {
 	protected static function tools_list() {
 		$tools = array();
 		foreach ( EVF_Abilities_Registry::instance()->all() as $id => $ability ) {
-			$meta = self::ability_meta( $ability );
+			$meta        = self::ability_meta( $ability );
+			$bare        = self::tool_name_from_id( $id );
+			$destructive = EVF_Abilities::is_destructive( $bare );
+
+			// MCP "annotations" hint to the client (Claude Desktop, etc.) how
+			// a tool behaves so the UI can render an appropriate confirmation
+			// prompt before invoking it. Without these, Claude Desktop treats
+			// every tool as safe and skips the Allow/Deny UI — which is what
+			// we want for read-only tools, but is dangerous for create/delete
+			// abilities.
+			//
+			// Spec: https://modelcontextprotocol.io/specification/server/tools#tool-annotations
+			$annotations = array(
+				'title'           => isset( $meta['label'] ) && '' !== $meta['label'] ? $meta['label'] : ucwords( str_replace( '-', ' ', $bare ) ),
+				'readOnlyHint'    => ! $destructive,
+				'destructiveHint' => $destructive,
+				// `idempotent` is true when calling the tool twice with the
+				// same args has no further effect. Read-only tools are
+				// idempotent by definition; for destructive ones we lean
+				// conservative and say no (better the client warns extra
+				// than warns too little).
+				'idempotentHint'  => ! $destructive,
+				// `openWorldHint` = true means the tool reaches outside the
+				// host system (e.g., the public internet). Most EVF
+				// abilities act only on the local DB — false. The
+				// exception is activate-addon, which can pull resources
+				// during plugin activation, but it stays on the local site
+				// so still false.
+				'openWorldHint'   => false,
+			);
+
 			$tools[] = array(
-				'name'        => self::tool_name_from_id( $id ),
+				'name'        => $bare,
 				'description' => $meta['description'],
 				'inputSchema' => $meta['input_schema'],
+				'annotations' => $annotations,
 			);
 		}
 		return $tools;
@@ -226,10 +257,14 @@ class EVF_MCP_Server {
 	protected static function ability_meta( $ability ) {
 		$description  = '';
 		$input_schema = array( 'type' => 'object' );
+		$label        = '';
 
 		if ( is_object( $ability ) ) {
 			if ( method_exists( $ability, 'get_description' ) ) {
 				$description = (string) $ability->get_description();
+			}
+			if ( method_exists( $ability, 'get_label' ) ) {
+				$label = (string) $ability->get_label();
 			}
 			if ( method_exists( $ability, 'get_input_schema' ) ) {
 				$schema = $ability->get_input_schema();
@@ -239,10 +274,12 @@ class EVF_MCP_Server {
 			}
 		} elseif ( is_array( $ability ) ) {
 			$description  = isset( $ability['description'] ) ? (string) $ability['description'] : '';
+			$label        = isset( $ability['label'] ) ? (string) $ability['label'] : '';
 			$input_schema = isset( $ability['input_schema'] ) ? $ability['input_schema'] : $input_schema;
 		}
 
 		return array(
+			'label'        => $label,
 			'description'  => $description,
 			'input_schema' => $input_schema,
 		);

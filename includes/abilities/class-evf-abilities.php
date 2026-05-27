@@ -22,6 +22,42 @@ class EVF_Abilities {
 	const NAMESPACE_ID = 'everest-forms';
 
 	/**
+	 * Bare ability names that modify site state.
+	 *
+	 * These flip the MCP `destructiveHint` annotation on `tools/list`, which
+	 * is how MCP clients (Claude Desktop, ChatGPT connectors, etc.) know to
+	 * show a confirmation prompt before invoking the tool. Without this list
+	 * the client treats every tool as safe and skips the approval UI.
+	 *
+	 * @var string[]
+	 */
+	const DESTRUCTIVE = array(
+		'create-form',
+		'update-form',
+		'delete-form',
+		'duplicate-form',
+		'update-form-status',
+		'activate-addon',
+		'create-entry',
+		'update-entry-fields',
+		'update-entry-status',
+		'delete-entry',
+		'bulk-delete-entries',
+		'set-entry-starred',
+		'set-entry-viewed',
+	);
+
+	/**
+	 * Whether a bare ability name (e.g. "delete-form") mutates site state.
+	 *
+	 * @param string $name Bare ability name.
+	 * @return bool
+	 */
+	public static function is_destructive( $name ) {
+		return in_array( (string) $name, self::DESTRUCTIVE, true );
+	}
+
+	/**
 	 * Init hooks.
 	 */
 	public static function init() {
