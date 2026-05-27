@@ -113,7 +113,6 @@ class EVF_Fm_Fluentforms extends EVF_Admin_Form_Migrator {
 			return null;
 		}
 
-		error_log( print_r( $value, true ) );
 		$decoded = json_decode( $value, true );
 		return ( JSON_ERROR_NONE === json_last_error() ) ? $decoded : $value;
 	}
@@ -449,22 +448,12 @@ class EVF_Fm_Fluentforms extends EVF_Admin_Form_Migrator {
 
 		switch ( $element ) {
 
-			// ── Simple text-like inputs ────────────────────────────────────
+			// ── Text / Textarea ────────────────────────────────────────────
 			case 'input_text':
-			case 'input_email':
-			case 'input_url':
-			case 'input_number':
 			case 'textarea':
-			case 'phone':
-				$type_map = array(
-					'input_text'   => 'text',
-					'input_email'  => 'email',
-					'input_url'    => 'url',
-					'input_number' => 'number',
-					'textarea'     => 'textarea',
-					'phone'        => 'phone-us',
-				);
-				$type = $type_map[ $element ];
+				$type          = ( 'textarea' === $element ) ? 'textarea' : 'text';
+				$maxlength     = isset( $attributes['maxlength'] ) && '' !== $attributes['maxlength'] ? absint( $attributes['maxlength'] ) : 0;
+				$limit_enabled = $maxlength > 0 ? '1' : '0';
 				$form['structure'][ 'row_' . $form['form_field_id'] ]['grid_1'][] = $field_id;
 				$form['form_fields'][ $field_id ] = array(
 					'id'                             => $field_id,
@@ -479,12 +468,126 @@ class EVF_Fm_Fluentforms extends EVF_Admin_Form_Migrator {
 					'label_hide'                     => '0',
 					'default_value'                  => $default_val,
 					'css'                            => $css_class,
+					'limit_enabled'                  => $limit_enabled,
+					'limit_count'                    => $maxlength > 0 ? (string) $maxlength : '1',
+					'limit_mode'                     => 'characters',
+					'min_length_count'               => '1',
+					'min_length_mode'                => 'characters',
+					'input_mask'                     => isset( $settings['temp_mask'] ) ? $settings['temp_mask'] : '',
+					'regex_value'                    => '',
+					'regex_message'                  => esc_html__( 'Please provide a valid value for this field.', 'everest-forms' ),
+					'ff_name'                        => $ff_name,
+				);
+				break;
+
+			// ── Email ──────────────────────────────────────────────────────
+			case 'input_email':
+				$is_unique = isset( $settings['is_unique'] ) && 'yes' === $settings['is_unique'] ? '1' : '0';
+				$form['structure'][ 'row_' . $form['form_field_id'] ]['grid_1'][] = $field_id;
+				$form['form_fields'][ $field_id ] = array(
+					'id'                             => $field_id,
+					'type'                           => 'email',
+					'label'                          => $label,
+					'meta-key'                       => 'email-' . $ff_name,
+					'description'                    => $description,
+					'required'                       => $required,
+					'required_field_message_setting' => 'global',
+					'required-field-message'         => '',
+					'placeholder'                    => $placeholder,
+					'label_hide'                     => '0',
+					'default_value'                  => $default_val,
+					'css'                            => $css_class,
 					'limit_enabled'                  => '0',
 					'limit_count'                    => '1',
 					'limit_mode'                     => 'characters',
 					'min_length_count'               => '1',
 					'min_length_mode'                => 'characters',
 					'input_mask'                     => '',
+					'regex_value'                    => '',
+					'regex_message'                  => esc_html__( 'Please provide a valid value for this field.', 'everest-forms' ),
+					'is_unique'                      => $is_unique,
+					'ff_name'                        => $ff_name,
+				);
+				break;
+
+			// ── URL ────────────────────────────────────────────────────────
+			case 'input_url':
+				$form['structure'][ 'row_' . $form['form_field_id'] ]['grid_1'][] = $field_id;
+				$form['form_fields'][ $field_id ] = array(
+					'id'                             => $field_id,
+					'type'                           => 'url',
+					'label'                          => $label,
+					'meta-key'                       => 'url-' . $ff_name,
+					'description'                    => $description,
+					'required'                       => $required,
+					'required_field_message_setting' => 'global',
+					'required-field-message'         => '',
+					'placeholder'                    => $placeholder,
+					'label_hide'                     => '0',
+					'default_value'                  => $default_val,
+					'css'                            => $css_class,
+					'limit_enabled'                  => '0',
+					'limit_count'                    => '1',
+					'limit_mode'                     => 'characters',
+					'min_length_count'               => '1',
+					'min_length_mode'                => 'characters',
+					'input_mask'                     => '',
+					'regex_value'                    => '',
+					'regex_message'                  => esc_html__( 'Please provide a valid value for this field.', 'everest-forms' ),
+					'ff_name'                        => $ff_name,
+				);
+				break;
+
+			// ── Number ────────────────────────────────────────────────────
+			case 'input_number':
+				$min_value = isset( $settings['validation_rules']['min']['value'] ) && '' !== $settings['validation_rules']['min']['value']
+					? $settings['validation_rules']['min']['value']
+					: '';
+				$max_value = isset( $settings['validation_rules']['max']['value'] ) && '' !== $settings['validation_rules']['max']['value']
+					? $settings['validation_rules']['max']['value']
+					: '';
+				$step      = isset( $settings['number_step'] ) && '' !== $settings['number_step']
+					? $settings['number_step']
+					: '0';
+				$form['structure'][ 'row_' . $form['form_field_id'] ]['grid_1'][] = $field_id;
+				$form['form_fields'][ $field_id ] = array(
+					'id'                             => $field_id,
+					'type'                           => 'number',
+					'label'                          => $label,
+					'meta-key'                       => 'number-' . $ff_name,
+					'description'                    => $description,
+					'required'                       => $required,
+					'required_field_message_setting' => 'global',
+					'required-field-message'         => '',
+					'placeholder'                    => $placeholder,
+					'label_hide'                     => '0',
+					'default_value'                  => $default_val,
+					'css'                            => $css_class,
+					'step'                           => $step,
+					'min_value'                      => $min_value,
+					'max_value'                      => $max_value,
+					'regex_value'                    => '',
+					'regex_message'                  => esc_html__( 'Please provide a valid value for this field.', 'everest-forms' ),
+					'ff_name'                        => $ff_name,
+				);
+				break;
+
+			// ── Phone ──────────────────────────────────────────────────────
+			case 'phone':
+				$form['structure'][ 'row_' . $form['form_field_id'] ]['grid_1'][] = $field_id;
+				$form['form_fields'][ $field_id ] = array(
+					'id'                             => $field_id,
+					'type'                           => 'phone-us',
+					'label'                          => $label,
+					'meta-key'                       => 'phone-us-' . $ff_name,
+					'description'                    => $description,
+					'required'                       => $required,
+					'required_field_message_setting' => 'global',
+					'required-field-message'         => '',
+					'placeholder'                    => $placeholder,
+					'label_hide'                     => '0',
+					'default_value'                  => $default_val,
+					'css'                            => $css_class,
 					'regex_value'                    => '',
 					'regex_message'                  => esc_html__( 'Please provide a valid value for this field.', 'everest-forms' ),
 					'ff_name'                        => $ff_name,

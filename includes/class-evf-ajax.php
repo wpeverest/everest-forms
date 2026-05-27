@@ -1616,15 +1616,26 @@ class EVF_AJAX {
 	public static function form_entry_migrator() {
 		try {
 			check_ajax_referer( 'evf_form_entry_migrator_nonce', 'security' );
-			if ( ! wpforms()->is_pro() ) {
+			$form_id   = isset( $_POST['form_id'] ) ? sanitize_text_field( wp_unslash( $_POST['form_id'] ) ) : '';
+			$form_slug = isset( $_POST['form_slug'] ) ? sanitize_text_field( wp_unslash( $_POST['form_slug'] ) ) : '';
+			if ( 'wpforms' === $form_slug && function_exists( 'wpforms' ) && ! wpforms()->is_pro() ) {
 				wp_send_json_error(
 					array(
 						'message' => esc_html__( 'Entries not available in WPForms Lite.', 'everest-forms' ),
 					)
 				);
 			}
-			$form_id   = isset( $_POST['form_id'] ) ? sanitize_text_field( wp_unslash( $_POST['form_id'] ) ) : '';
-			$form_slug = isset( $_POST['form_slug'] ) ? sanitize_text_field( wp_unslash( $_POST['form_slug'] ) ) : '';
+
+			if ( 'fluentforms' === $form_slug ) {
+				$ff_active = is_plugin_active( 'fluentform/fluentform.php' ) || is_plugin_active( 'fluentformpro/fluentformpro.php' );
+				if ( ! $ff_active ) {
+					wp_send_json_error(
+						array(
+							'message' => esc_html__( 'Fluent Forms plugin is not active. Please activate Fluent Forms to import entries.', 'everest-forms' ),
+						)
+					);
+				}
+			}
 
 			if ( empty( $form_id ) || empty( $form_slug ) ) {
 
