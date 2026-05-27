@@ -99,12 +99,22 @@ class EVF_Abilities_Handlers {
 			return new WP_Error( 'evf_form_not_found', 'Form not found.', array( 'status' => 404 ) );
 		}
 		$data = is_string( $form->post_content ) ? json_decode( $form->post_content, true ) : array();
+		if ( ! is_array( $data ) ) {
+			$data = array();
+		}
+		// Surface the parts of the post_content the LLM needs to make sensible
+		// follow-up edits: settings (incl. multi-part/conversational toggles),
+		// fields config, the structure map that says where each field lives,
+		// and the multi_part array when present. Without structure+multi_part
+		// the LLM can't reliably know how a form is laid out.
 		return array(
-			'id'       => (int) $form->ID,
-			'title'    => $form->post_title,
-			'status'   => $form->post_status,
-			'settings' => isset( $data['settings'] ) ? $data['settings'] : array(),
-			'fields'   => isset( $data['form_fields'] ) ? $data['form_fields'] : array(),
+			'id'         => (int) $form->ID,
+			'title'      => $form->post_title,
+			'status'     => $form->post_status,
+			'settings'   => isset( $data['settings'] ) ? $data['settings'] : array(),
+			'fields'     => isset( $data['form_fields'] ) ? $data['form_fields'] : array(),
+			'structure'  => isset( $data['structure'] ) ? $data['structure'] : array(),
+			'multi_part' => isset( $data['multi_part'] ) ? $data['multi_part'] : array(),
 		);
 	}
 
@@ -356,6 +366,13 @@ class EVF_Abilities_Handlers {
 			include_once ABSPATH . 'wp-admin/includes/plugin.php';
 		}
 
+		// Addons whose field types are gated by EVF's `everest_forms_enabled_features`
+		// option in addition to WP plugin activation. For these, the slug MUST be
+		// in enabled_features for the addon's fields to register. For everything
+		// else (PRO core, Multi-Part, Captcha, Conversational, etc.) the WP plugin
+		// active state alone determines operationality.
+		$feature_gated_slugs = array( 'everest-forms-coupons', 'everest-forms-square' );
+
 		$installed        = function_exists( 'get_plugins' ) ? (array) get_plugins() : array();
 		$enabled_features = (array) get_option( 'everest_forms_enabled_features', array() );
 		$out              = array();
@@ -364,17 +381,21 @@ class EVF_Abilities_Handlers {
 			$slug         = dirname( $file );
 			$active       = function_exists( 'is_plugin_active' ) ? is_plugin_active( $file ) : false;
 			$feature_on   = in_array( $slug, $enabled_features, true );
-			$out[]        = array(
-				'plugin'             => $file,
-				'name'               => $name,
-				'installed'          => $is_installed,
-				'active'             => $active,
-				// EVF maintains a second toggle beyond WP plugin activation;
-				// some addon-gated field types (payment-coupon, etc.) only
-				// register when their slug is in `everest_forms_enabled_features`.
-				'evf_feature_on'     => $feature_on,
-				'fully_operational'  => $is_installed && $active && $feature_on,
-				'version'            => $is_installed && isset( $installed[ $file ]['Version'] ) ? $installed[ $file ]['Version'] : null,
+			$gated        = in_array( $slug, $feature_gated_slugs, true );
+
+			// Compute correctly: feature-gated addons need installed+active+feature_on;
+			// non-gated addons just need installed+active.
+			$fully = $is_installed && $active && ( ! $gated || $feature_on );
+
+			$out[] = array(
+				'plugin'            => $file,
+				'name'              => $name,
+				'installed'         => $is_installed,
+				'active'            => $active,
+				'feature_gated'     => $gated,
+				'evf_feature_on'    => $feature_on,
+				'fully_operational' => $fully,
+				'version'           => $is_installed && isset( $installed[ $file ]['Version'] ) ? $installed[ $file ]['Version'] : null,
 			);
 		}
 		return $out;
@@ -391,11 +412,29 @@ class EVF_Abilities_Handlers {
 		}
 		$registered = EVF_Field_Schemas::registered_types();
 		$schema     = EVF_Field_Schemas::for_type( $type );
+		$addon      = EVF_Field_Schemas::addon_for( $type );
+
+		// `available` reflects whether the field class is registered in core
+		// (true even for likert/yes-no/rating whose stubs live in core but
+		// whose real behavior ships in an addon). `usable_now` is the more
+		// useful "will the form builder accept this right now?" flag,
+		// matching exactly what validate_field() in the builder enforces:
+		// class registered AND (no addon dependency OR addon plugin active).
+		$class_registered = isset( $registered[ $type ] );
+		$addon_active     = true;
+		if ( $addon && ! empty( $addon['plugin'] ) ) {
+			if ( ! function_exists( 'is_plugin_active' ) ) {
+				include_once ABSPATH . 'wp-admin/includes/plugin.php';
+			}
+			$addon_active = function_exists( 'is_plugin_active' ) ? is_plugin_active( $addon['plugin'] ) : false;
+		}
 
 		return array(
 			'type'             => $type,
-			'available'        => isset( $registered[ $type ] ),
-			'addon'            => EVF_Field_Schemas::addon_for( $type ),
+			'available'        => $class_registered,
+			'usable_now'       => $class_registered && $addon_active,
+			'addon'            => $addon,
+			'addon_active'     => $addon_active,
 			'accepted_keys'    => $schema ? $schema['accepted_keys'] : array(),
 			'requires_choices' => $schema ? $schema['requires_choices'] : false,
 			'known_to_builder' => null !== $schema,
@@ -729,31 +768,96 @@ class EVF_Abilities_Handlers {
 	 */
 	public static function create_entry( $input ) {
 		global $wpdb;
-		$form_id = (int) $input['form_id'];
-		$fields  = isset( $input['fields'] ) && is_array( $input['fields'] ) ? $input['fields'] : array();
-		$status  = isset( $input['status'] ) ? sanitize_key( $input['status'] ) : 'publish';
+		$form_id     = (int) $input['form_id'];
+		$input_flds  = isset( $input['fields'] ) && is_array( $input['fields'] ) ? $input['fields'] : array();
+		$status      = isset( $input['status'] ) ? sanitize_key( $input['status'] ) : 'publish';
+		$fire_hooks  = ! isset( $input['fire_hooks'] ) || ! empty( $input['fire_hooks'] ); // default true
 
-		if ( empty( $fields ) ) {
+		if ( empty( $input_flds ) ) {
 			return new WP_Error( 'evf_no_fields', 'No fields provided.', array( 'status' => 400 ) );
 		}
 		$post = get_post( $form_id );
 		if ( ! $post || 'everest_form' !== $post->post_type ) {
 			return new WP_Error( 'evf_form_not_found', 'Form not found.', array( 'status' => 404 ) );
 		}
-		// Per-form capability: the broad `everest_forms_edit_entries` was already
-		// gated in the ability's permission_callback. Re-check the per-form cap
-		// here so a user can be restricted to specific forms (EVF convention).
 		if ( ! current_user_can( 'everest_forms_view_form_entries', $form_id ) && ! current_user_can( 'manage_everest_forms' ) ) {
 			return new WP_Error( 'evf_form_forbidden', 'Not allowed to create entries for this form.', array( 'status' => 403 ) );
 		}
 
+		// Decode the form config so we can:
+		// (a) translate caller-friendly meta-key inputs into EVF's rich $fields
+		//     shape ({ field_id => { id, name, value, type, meta_key } }) that
+		//     upstream listeners (slot booking, email notifications, Zapier,
+		//     etc.) require, and
+		// (b) hand the same $form_data array to listeners.
+		$form_data = array();
+		if ( is_string( $post->post_content ) ) {
+			$decoded = json_decode( $post->post_content, true );
+			if ( is_array( $decoded ) ) {
+				$form_data = $decoded;
+			}
+		}
+		$form_fields_config = isset( $form_data['form_fields'] ) && is_array( $form_data['form_fields'] ) ? $form_data['form_fields'] : array();
+
+		// Build a meta-key → field-config index so the caller can refer to
+		// fields by either their generated meta-key ("email_4") or their
+		// human label ("Email") and we figure out the right field-id.
+		$by_meta_key = array();
+		$by_label    = array();
+		foreach ( $form_fields_config as $fid => $fcfg ) {
+			if ( ! is_array( $fcfg ) ) {
+				continue;
+			}
+			if ( isset( $fcfg['meta-key'] ) ) {
+				$by_meta_key[ (string) $fcfg['meta-key'] ] = $fid;
+			}
+			if ( isset( $fcfg['label'] ) ) {
+				$by_label[ strtolower( (string) $fcfg['label'] ) ] = $fid;
+			}
+		}
+
+		// Build EVF-shaped $fields ({ field_id => array(...) }) plus a meta-key
+		// map ({ meta_key => string-value }) for the entry row's `fields` blob.
+		$rich_fields = array();
+		$meta_map    = array();
+		foreach ( $input_flds as $key => $value ) {
+			$lookup = (string) $key;
+			$fid    = isset( $by_meta_key[ $lookup ] ) ? $by_meta_key[ $lookup ] : ( isset( $by_label[ strtolower( $lookup ) ] ) ? $by_label[ strtolower( $lookup ) ] : null );
+
+			$str_val = is_scalar( $value ) ? (string) $value : wp_json_encode( $value );
+
+			if ( null !== $fid && isset( $form_fields_config[ $fid ] ) ) {
+				$fcfg                  = $form_fields_config[ $fid ];
+				$meta_key              = isset( $fcfg['meta-key'] ) ? (string) $fcfg['meta-key'] : sanitize_key( $lookup );
+				$rich_fields[ $fid ]   = array(
+					'id'       => $fid,
+					'name'     => isset( $fcfg['label'] ) ? (string) $fcfg['label'] : '',
+					'value'    => $str_val,
+					'value_raw'=> $str_val,
+					'type'     => isset( $fcfg['type'] ) ? (string) $fcfg['type'] : '',
+					'meta_key' => $meta_key,
+				);
+				$meta_map[ $meta_key ] = $str_val;
+			} else {
+				// Caller passed a key that doesn't match any field. Persist
+				// the meta row but skip the rich-field hook payload entry
+				// (so downstream listeners that index by field_id don't trip).
+				$meta_key             = sanitize_key( $lookup );
+				$meta_map[ $meta_key ] = $str_val;
+			}
+		}
+
+		// EVF stores the rich field shape ({ field_id: {meta_key, value, ...} })
+		// in `evf_entries.fields` as JSON. evf_get_entry($id, true) decodes that
+		// and walks each entry expecting `meta_key`/`value` keys — if we stored
+		// a flat map here, get-entry would return empty fields.
 		$entry_row = array(
 			'user_id'         => get_current_user_id(),
 			'user_device'     => '',
 			'user_ip_address' => '',
 			'form_id'         => $form_id,
 			'referer'         => '',
-			'fields'          => wp_json_encode( $fields ),
+			'fields'          => wp_json_encode( $rich_fields ),
 			'status'          => $status,
 			'viewed'          => 0,
 			'starred'         => 0,
@@ -767,19 +871,31 @@ class EVF_Abilities_Handlers {
 		$entry_id = (int) $wpdb->insert_id;
 
 		$meta_table = $wpdb->prefix . 'evf_entrymeta';
-		foreach ( $fields as $field_id => $value ) {
+		foreach ( $meta_map as $meta_key => $meta_value ) {
 			$wpdb->insert(
 				$meta_table,
 				array(
 					'entry_id'   => $entry_id,
-					'meta_key'   => sanitize_key( (string) $field_id ),
-					'meta_value' => is_scalar( $value ) ? (string) $value : maybe_serialize( $value ),
+					'meta_key'   => $meta_key,
+					'meta_value' => $meta_value,
 				),
 				array( '%d', '%s', '%s' )
 			);
 		}
 
-		do_action( 'everest_forms_complete_entry_save', $entry_id, $fields, $form_id, array() );
+		// Fire the full upstream save action so email notifications, Zapier,
+		// Google Sheets, slot-booking, etc. all run normally. Signature must
+		// match: ($entry_id, $fields, $entry, $form_id, $form_data) — passing
+		// 4 args triggers a fatal in EVF_Form_Task::update_slot_booking_value().
+		if ( $fire_hooks ) {
+			$entry_for_action = (object) array(
+				'entry_id' => $entry_id,
+				'form_id'  => $form_id,
+				'fields'   => $rich_fields,
+				'status'   => $status,
+			);
+			do_action( 'everest_forms_complete_entry_save', $entry_id, $rich_fields, $entry_for_action, $form_id, $form_data );
+		}
 
 		return array(
 			'entry_id' => $entry_id,
