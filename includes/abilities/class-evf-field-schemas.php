@@ -165,6 +165,52 @@ class EVF_Field_Schemas {
 	}
 
 	/**
+	 * Setting keys that depend on a specific addon being active to actually
+	 * do anything.
+	 *
+	 * Writing `enable_save_and_continue: "1"` on a form whose Save and Continue
+	 * addon is inactive is a silent footgun: the option lands in post_content,
+	 * but the addon's hooks aren't loaded so the feature doesn't actually work.
+	 * The builder uses this map to short-circuit such writes with the same
+	 * structured-error envelope used for addon-gated field types.
+	 *
+	 * Only "boolean toggle" keys are listed — settings that are no-ops without
+	 * a specific addon. Generic configuration keys (e.g. text overrides on
+	 * an addon's confirmation message) are NOT gated, because writing them is
+	 * harmless even if the addon is inactive.
+	 *
+	 * @return array<string, array{addon: string, plugin: string}>
+	 */
+	public static function setting_addon_hints() {
+		return array(
+			'enable_save_and_continue' => array(
+				'addon'  => 'Save and Continue',
+				'plugin' => 'everest-forms-save-and-continue/everest-forms-save-and-continue.php',
+			),
+			'enable_calculation' => array(
+				'addon'  => 'Calculations',
+				'plugin' => 'everest-forms-calculations/everest-forms-calculations.php',
+			),
+			'pdf_enabled' => array(
+				'addon'  => 'PDF Submission',
+				'plugin' => 'everest-forms-pdf-submission/everest-forms-pdf-submission.php',
+			),
+			'pdf_submission' => array(
+				'addon'  => 'PDF Submission',
+				'plugin' => 'everest-forms-pdf-submission/everest-forms-pdf-submission.php',
+			),
+			'enable_send_pdf_dropbox' => array(
+				'addon'  => 'PDF Submission',
+				'plugin' => 'everest-forms-pdf-submission/everest-forms-pdf-submission.php',
+			),
+			'enable_send_pdf_google_drive' => array(
+				'addon'  => 'PDF Submission',
+				'plugin' => 'everest-forms-pdf-submission/everest-forms-pdf-submission.php',
+			),
+		);
+	}
+
+	/**
 	 * Set of field type ids currently registered at runtime, derived from the
 	 * EVF Fields registry. This is the authoritative "is this type usable now"
 	 * check; addon_hints() is only metadata for nicer errors.

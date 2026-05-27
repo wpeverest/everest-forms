@@ -101,6 +101,19 @@ class EVF_Form_Builder {
 			$data['settings']['form_desc'] = wp_kses_post( (string) $descriptor['description'] );
 		}
 		if ( isset( $descriptor['settings'] ) && is_array( $descriptor['settings'] ) ) {
+			// Before deep-merging caller-supplied settings, verify any addon-
+			// gated toggle (enable_save_and_continue, pdf_enabled, etc.) has
+			// the matching addon active. Otherwise the option lands in
+			// post_content silently and the feature is broken without the
+			// caller knowing — exactly the footgun Save and Continue hit.
+			$settings_check = self::check_settings_addons_available( $descriptor['settings'] );
+			if ( $settings_check ) {
+				return new WP_Error(
+					'evf_addon_required',
+					$settings_check['message'],
+					array( 'status' => 400, 'errors' => array( $settings_check ) )
+				);
+			}
 			$data['settings'] = self::deep_merge( $data['settings'], $descriptor['settings'] );
 		}
 
@@ -260,6 +273,57 @@ class EVF_Form_Builder {
 				? sprintf( 'Multi-step (page break) layout requires the "Multi-Part Forms" addon, which is installed but not active. Ask the user to confirm, then call the "activate-addon" ability with plugin="%s". If they decline, omit `multi_part`/row parts and proceed with a single-page form.', $plugin )
 				: 'Multi-step (page break) layout requires the "Multi-Part Forms" addon, which is not installed on this site. The user must install/purchase it from their Everest Forms account, or upgrade their plan if it isn\'t included. If they decline, omit `multi_part`/row parts and proceed with a single-page form.',
 		);
+	}
+
+	/**
+	 * Scan caller-supplied settings for addon-gated toggle keys whose
+	 * underlying addon isn't active. Returns the first offending entry
+	 * in the same error envelope as the field validator so the chat UI
+	 * can render the standard activation prompt.
+	 *
+	 * @param array $settings Caller-supplied settings block (the descriptor's
+	 *                        `settings`, not the post_content `settings`).
+	 * @return array|null
+	 */
+	protected static function check_settings_addons_available( array $settings ) {
+		$gated = EVF_Field_Schemas::setting_addon_hints();
+		if ( ! function_exists( 'is_plugin_active' ) ) {
+			include_once ABSPATH . 'wp-admin/includes/plugin.php';
+		}
+		$plugins = function_exists( 'get_plugins' ) ? (array) get_plugins() : array();
+
+		foreach ( $gated as $key => $hint ) {
+			if ( ! array_key_exists( $key, $settings ) ) {
+				continue;
+			}
+			$value = $settings[ $key ];
+			// Skip falsy values — the caller is *disabling* the toggle, which
+			// is safe regardless of addon state.
+			if ( empty( $value ) || '0' === (string) $value || 'false' === strtolower( (string) $value ) ) {
+				continue;
+			}
+
+			$plugin    = $hint['plugin'];
+			$installed = isset( $plugins[ $plugin ] );
+			$active    = function_exists( 'is_plugin_active' ) ? is_plugin_active( $plugin ) : false;
+			if ( $active ) {
+				continue;
+			}
+
+			$action = $installed ? 'activate' : 'install_or_upgrade';
+			return array(
+				'code'      => 'addon_required',
+				'feature'   => $key,
+				'addon'     => $hint,
+				'installed' => $installed,
+				'active'    => false,
+				'action'    => $action,
+				'message'   => $installed
+					? sprintf( 'Setting "%s" needs the "%s" addon, which is installed but not active. Ask the user to confirm, then call the "activate-addon" ability with plugin="%s". If they decline, omit `%s` from settings and proceed.', $key, $hint['addon'], $plugin, $key )
+					: sprintf( 'Setting "%s" needs the "%s" addon, which is not installed on this site. The user must install/purchase it from their Everest Forms account, or upgrade their plan if it isn\'t included. If they decline, omit `%s` from settings and proceed.', $key, $hint['addon'], $key ),
+			);
+		}
+		return null;
 	}
 
 	/**
