@@ -94,8 +94,14 @@ $spacing-xl: 24px;
 		}
 
 		&:hover {
-			background-color: $bg-light;
+			background-color: #faf8fc;
 			color: $text-dark;
+		}
+		&:focus {
+			background-color: #faf8fc;
+			border: none;
+			box-shadow: none;
+			outline: none;
 		}
 	}
 
@@ -423,6 +429,7 @@ $spacing-xl: 24px;
 				display: inline-flex !important;
 				align-items: center;
 				flex-shrink: 0;
+				font-family: dashicons !important;
 			}
 
 			&:hover {
@@ -1335,7 +1342,7 @@ $spacing-xl: 24px;
 
 // Toggle Empty Fields Link (global, outside card context)
 .evf-toggle-empty {
-	// font-family: 'Inter', sans-serif !important;
+	margin: 0;
 }
 .everest-forms-empty-field-toggle {
 	white-space: nowrap;
@@ -1670,15 +1677,57 @@ $spacing-xl: 24px;
 		}
 	}
 }
-.everest-forms-entry-payment{
+#everest-forms-entry-payment {
 	h2 {
-		margin: 0;
-		font-size: 16px;
-		font-weight: 600;
-		color: #1f2937;
-		border-bottom: 1px solid #e5e7eb;
-		background: 0 0;
-		padding-bottom: 20px;
-		margin-bottom: 24px 0;
+		margin: 0 !important;
+		font-size: 16px !important;
+		font-weight: 600 !important;
+		color: #1f2937 !important;
+		border-bottom: 1px solid #e5e7eb !important;
+		background: none;
+		padding-bottom: 20px !important;
+		margin-bottom: 24px !important;
 	}
+}
+td.column-payment_status {
+	text-align: left;
+}
+
+td.column-payment_status > span.payment_status {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	border-radius: 20px;
+	padding: 5px 12px;
+	font-size: 12px !important;
+	font-weight: 600 !important;
+	white-space: nowrap;
+	letter-spacing: 0.3x;
+
+	&.failed {
+		color: #dc3545;
+		border: 1px solid #dc3545;
+		background: #faf5f5;
+	}
+
+	&.pending {
+		color: #ff9800;
+		border: 1px solid #ff9800;
+		background: #fffaf5;
+	}
+
+	&.complete {
+		color: #28a745;
+		border: 1px solid #28a745;
+		background: #fbfffc;
+	}
+}
+
+.payment_status img {
+	display: none !important;
+}
+
+td.column-payment_status > span.payment_status::before {
+	content: none !important;
+	display: none !important;
 }

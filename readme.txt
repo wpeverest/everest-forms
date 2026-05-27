@@ -4,7 +4,7 @@ Tags: contact form, custom form, form builder, forms, survey
 Requires at least: 5.5
 Tested up to: 6.9.4
 Requires PHP: 7.2
-Stable tag: 3.4.6
+Stable tag: 3.4.7
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -339,7 +339,10 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Changelog ==
 
-= 3.4.6       - xx-xx-2026
+= 3.4.7       - 05-05-2026
+* Fix 		  - Php warning on log.
+
+= 3.4.6       - 29-04-2026
 * Feature 	  - Added option to copy and download logs.
 * Feature 	  - Added layout options including one-column and two-column containers.
 * Enhance	  - Improved UI for Integrations and Payments tabs.
@@ -347,6 +350,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 * Enhance	  - Revamped form settings design.
 * Enhance	  - Performance optimizations.
 * Dev 		  - Added Payment Summary field.
+* Dev 		  - User id not updating on entry when auto login.
 * Dev 		  - Added coupon limits and support for stackable coupons.
 * Fix         - Email authorization.
 * Fix 		  - Email summaries supported only one recipient and lacked test report flexibility issue.

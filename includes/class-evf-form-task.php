@@ -743,6 +743,9 @@ class EVF_Form_Task {
 				}
 			}
 			$entry_id = $this->entry_save( $this->form_fields, $entry, $this->form_data['id'], $this->form_data );
+
+			do_action( 'everest_forms_process_user_registration', $this->form_fields, $entry, $this->form_data, $entry_id );
+
 			$logger->notice( sprintf( 'Entry is Saved to DataBase' ) );
 
 			$logger->notice( sprintf( 'Sending Email' ) );
@@ -833,8 +836,11 @@ class EVF_Form_Task {
 				$preview_style = $submission_redirection_process['settings']['preview_confirmation_select'];
 			}
 			if ( '1' === $ajax_form_submission ) {
+				$preview_form_data = $this->form_data;
+				$preview_form_data['settings']['ajax_form_submission'] = '1';
+
 				$response_data['is_preview_confirmation'] = $is_preview_confirmation;
-				$response_data['preview_confirmation']    = apply_filters( 'everest_forms_preview_confirmation', $this->form_data, $this->form_fields, $preview_style );
+				$response_data['preview_confirmation']    = apply_filters( 'everest_forms_preview_confirmation', $preview_form_data, $this->form_fields, $preview_style );
 			} else {
 				do_action( 'everest_forms_preview_confirmation', $this->form_data, $this->form_fields, $preview_style );
 			}
