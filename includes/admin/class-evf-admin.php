@@ -62,6 +62,7 @@ class EVF_Admin {
 		include_once __DIR__ . '/form-migrator/class-evf-fm-wpforms.php';
 		include_once __DIR__ . '/form-migrator/class-evf-fm-fluentforms.php';
 		include_once __DIR__ . '/form-migrator/class-evf-fm-ninjaforms.php';
+		include_once __DIR__ . '/form-migrator/class-evf-fm-formidableforms.php';
 	}
 
 	/**

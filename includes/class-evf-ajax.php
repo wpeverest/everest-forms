@@ -1645,6 +1645,14 @@ class EVF_AJAX {
 				);
 			}
 
+			if ( 'formidable-forms' === $form_slug && ! is_plugin_active( 'formidable/formidable.php' ) ) {
+				wp_send_json_error(
+					array(
+						'message' => esc_html__( 'Formidable Forms plugin is not active. Please activate Formidable Forms to import entries.', 'everest-forms' ),
+					)
+				);
+			}
+
 			if ( empty( $form_id ) || empty( $form_slug ) ) {
 
 				wp_send_json_error(
