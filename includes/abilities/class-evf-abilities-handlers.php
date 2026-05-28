@@ -126,13 +126,19 @@ class EVF_Abilities_Handlers {
 		$title    = isset( $input['title'] ) ? sanitize_text_field( $input['title'] ) : '';
 		$template = isset( $input['template'] ) ? sanitize_key( $input['template'] ) : 'blank';
 		$dry_run  = ! empty( $input['dry_run'] );
-		// Default to 'draft' so AI-built forms don't go live until the user
-		// explicitly publishes them. The caller can opt into 'publish' but
-		// schema-enum keeps it to those two values.
-		$status   = isset( $input['status'] ) ? sanitize_key( (string) $input['status'] ) : 'draft';
-		if ( ! in_array( $status, array( 'draft', 'publish' ), true ) ) {
-			$status = 'draft';
+		// Default to inactive so AI-built forms don't go live until the user
+		// explicitly publishes them. EVF marks a form inactive with BOTH a
+		// custom `inactive` post_status AND `form_enabled = 0` in the form
+		// data (the toggle in the All Forms list reads form_enabled). Accept
+		// "draft" as an alias for "inactive".
+		$status   = isset( $input['status'] ) ? sanitize_key( (string) $input['status'] ) : 'inactive';
+		if ( 'draft' === $status ) {
+			$status = 'inactive';
 		}
+		if ( ! in_array( $status, array( 'inactive', 'publish' ), true ) ) {
+			$status = 'inactive';
+		}
+		$is_active = ( 'publish' === $status );
 
 		if ( '' === $title ) {
 			return new WP_Error( 'evf_invalid_title', 'A non-empty title is required.', array( 'status' => 400 ) );
@@ -179,20 +185,23 @@ class EVF_Abilities_Handlers {
 			wp_delete_post( $form_id, true );
 			return $merged;
 		}
-		$merged['id'] = (int) $form_id;
+		// EVF's "active/inactive" state lives in the top-level `form_enabled`
+		// flag (the toggle in the All Forms list reads it, defaulting to 1).
+		// Set it in the form data so the merged save persists the right state.
+		$merged['form_enabled'] = $is_active ? 1 : 0;
+		$merged['id']           = (int) $form_id;
 		evf()->form->update( $form_id, $merged );
 
-		// EVF's form->create() always publishes. If the caller asked for draft
-		// (the default for AI-created forms), flip the post_status now so the
-		// form doesn't start collecting submissions until the user confirms.
-		if ( 'publish' !== $status ) {
-			wp_update_post( array( 'ID' => (int) $form_id, 'post_status' => $status ) );
-		}
+		// EVF's form->create() always publishes. Mirror the active/inactive
+		// state into post_status too (EVF uses a custom `inactive` status,
+		// not `draft`), so both the toggle and the status filter agree.
+		wp_update_post( array( 'ID' => (int) $form_id, 'post_status' => $is_active ? 'publish' : 'inactive' ) );
 
 		return array(
 			'id'       => (int) $form_id,
 			'title'    => isset( $merged['settings']['form_title'] ) ? $merged['settings']['form_title'] : $title,
 			'status'   => $status,
+			'active'   => $is_active,
 			'fields'   => self::summarize_fields( $merged ),
 			'edit_url' => admin_url( 'admin.php?page=evf-builder&tab=fields&form_id=' . (int) $form_id ),
 		);
