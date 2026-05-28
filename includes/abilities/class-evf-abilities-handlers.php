@@ -126,6 +126,13 @@ class EVF_Abilities_Handlers {
 		$title    = isset( $input['title'] ) ? sanitize_text_field( $input['title'] ) : '';
 		$template = isset( $input['template'] ) ? sanitize_key( $input['template'] ) : 'blank';
 		$dry_run  = ! empty( $input['dry_run'] );
+		// Default to 'draft' so AI-built forms don't go live until the user
+		// explicitly publishes them. The caller can opt into 'publish' but
+		// schema-enum keeps it to those two values.
+		$status   = isset( $input['status'] ) ? sanitize_key( (string) $input['status'] ) : 'draft';
+		if ( ! in_array( $status, array( 'draft', 'publish' ), true ) ) {
+			$status = 'draft';
+		}
 
 		if ( '' === $title ) {
 			return new WP_Error( 'evf_invalid_title', 'A non-empty title is required.', array( 'status' => 400 ) );
@@ -175,9 +182,17 @@ class EVF_Abilities_Handlers {
 		$merged['id'] = (int) $form_id;
 		evf()->form->update( $form_id, $merged );
 
+		// EVF's form->create() always publishes. If the caller asked for draft
+		// (the default for AI-created forms), flip the post_status now so the
+		// form doesn't start collecting submissions until the user confirms.
+		if ( 'publish' !== $status ) {
+			wp_update_post( array( 'ID' => (int) $form_id, 'post_status' => $status ) );
+		}
+
 		return array(
 			'id'       => (int) $form_id,
 			'title'    => isset( $merged['settings']['form_title'] ) ? $merged['settings']['form_title'] : $title,
+			'status'   => $status,
 			'fields'   => self::summarize_fields( $merged ),
 			'edit_url' => admin_url( 'admin.php?page=evf-builder&tab=fields&form_id=' . (int) $form_id ),
 		);

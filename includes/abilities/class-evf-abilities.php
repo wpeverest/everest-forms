@@ -166,7 +166,7 @@ class EVF_Abilities {
 				'name' => 'create-form',
 				'args' => array(
 					'label'               => __( 'Create form', 'everest-forms' ),
-					'description'         => __( 'Create a new Everest Forms form. Accepts a flat `fields` array (one field per row), or a richer `layout` array of rows for multi-column layouts. Each layout row may carry `part: N` to assign it to a multi-step page; pass `multi_part: { parts: [{name:"..."}] }` to enable the Multi-Part Forms addon and label the steps. Pass `conversational: { enabled: true, slug, title, description }` to render the form one-question-at-a-time via the Conversational Forms addon (mutually exclusive with multi_part). Fields support `choices` (select/radio/checkbox/country), `default_value`, `description`, `placeholder`, `required`, `sublabels`, plus any type-specific keys. Unknown field types AND missing required addons (Multi-Part, Conversational Forms, Coupons, etc.) return a structured error naming what to activate. Pass `dry_run: true` to validate without persisting.', 'everest-forms' ),
+					'description'         => __( 'Create a new Everest Forms form. By default the new form is saved as **draft** (inactive) so it does not start collecting submissions until you explicitly publish it — pass `status: "publish"` to publish on creation. Accepts a flat `fields` array (one field per row), or a richer `layout` array of rows for multi-column layouts. Each layout row may carry `part: N` to assign it to a multi-step page; pass `multi_part: { parts: [{name:"..."}] }` to enable the Multi-Part Forms addon and label the steps. Pass `conversational: { enabled: true, slug, title, description }` to render the form one-question-at-a-time via the Conversational Forms addon (mutually exclusive with multi_part). Fields support `choices` (select/radio/checkbox/country), `default_value`, `description`, `placeholder`, `required`, `sublabels`, plus any type-specific keys. Unknown field types AND missing required addons (Multi-Part, Conversational Forms, Coupons, etc.) return a structured error naming what to activate. Pass `dry_run: true` to validate without persisting.', 'everest-forms' ),
 					'input_schema'        => array(
 						'type'       => 'object',
 						'required'   => array( 'title' ),
@@ -174,6 +174,7 @@ class EVF_Abilities {
 							'title'       => array( 'type' => 'string', 'minLength' => 1 ),
 							'description' => array( 'type' => 'string' ),
 							'template'    => array( 'type' => 'string', 'default' => 'blank' ),
+							'status'      => array( 'type' => 'string', 'enum' => array( 'draft', 'publish' ), 'default' => 'draft' ),
 							'settings'    => array( 'type' => 'object' ),
 							'fields'      => array(
 								'type'  => 'array',
