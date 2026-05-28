@@ -667,7 +667,7 @@ class EVF_AJAX {
 	 * Ajax handler for form submission.
 	 */
 	public static function ajax_form_submission() {
-		// check_ajax_referer( 'everest_forms_ajax_form_submission', 'security' );
+		check_ajax_referer( 'everest_forms_ajax_form_submission', 'security' );
 
 		if ( ! empty( $_POST['everest_forms']['id'] ) ) {
 			$process = evf()->task->ajax_form_submission( evf_sanitize_entry( wp_unslash( $_POST['everest_forms'] ) ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
@@ -2274,6 +2274,10 @@ class EVF_AJAX {
 	 * @since 3.3.0
 	 */
 	public static function get_form_update_nonce() {
+		if ( ! is_user_logged_in() || ! current_user_can( 'edit_posts' ) ) {
+			wp_die( __( 'Permission denied.', 'everest-forms' ), 403 );
+		}
+
 		$form_id = isset( $_POST['form_id'] ) ? absint( $_POST['form_id'] ) : 0;
 
 		if ( empty( $form_id ) ) {
@@ -2284,15 +2288,6 @@ class EVF_AJAX {
 
 		if ( empty( $form ) ) {
 			wp_die( __( 'Form not found!', 'everest-forms' ), 403 );
-		}
-
-		// Strict referer verification
-		$referer      = wp_get_referer();
-		$allowed_host = parse_url( home_url(), PHP_URL_HOST );
-		$referer_host = parse_url( $referer, PHP_URL_HOST );
-
-		if ( ! $referer || $referer_host !== $allowed_host ) {
-			wp_die( __( 'Invalid form submission source.', 'everest-forms' ), 403 );
 		}
 
 		wp_send_json_success( wp_create_nonce( 'everest-forms_process_submit' ) );
