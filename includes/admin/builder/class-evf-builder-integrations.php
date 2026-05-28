@@ -57,6 +57,24 @@ class EVF_Builder_Integrations extends EVF_Builder_Page {
 					do_action( 'everest_forms_integration_connections_' . $integration['id'], $integration );
 				}
 			}
+		} elseif ( defined( 'EFP_PLUGIN_FILE' ) ) {
+			$addons_url = admin_url( 'admin.php?page=evf-addons' );
+			foreach ( $this->get_free_integrations_catalog() as $integration ) {
+				echo '<a href="#" '
+					. 'class="integration-name evf-panel-tab evf-integrations-panel everest-forms-panel-sidebar-section everest-forms-panel-sidebar-section-' . esc_attr( $integration['id'] ) . ' evf-addon-install-trigger" '
+					. 'data-section="' . esc_attr( $integration['id'] ) . '" '
+					. 'data-name="' . esc_attr( $integration['name'] ) . '" '
+					. 'data-slug="' . esc_attr( $integration['slug'] ) . '" '
+					. 'data-description="' . esc_attr( $integration['excerpt'] ) . '" '
+					. 'data-addons-url="' . esc_url( $addons_url ) . '">';
+				echo '<div style="display: flex; align-items: center; gap: 12px;">';
+				if ( ! empty( $integration['icon'] ) ) {
+					echo '<figure class="logo"><img src="' . esc_url( $integration['icon'] ) . '"></figure>';
+				}
+				echo '<span>' . esc_html( $integration['name'] ) . '</span>';
+				echo '</div>';
+				echo '</a>';
+			}
 		}
 	}
 
@@ -97,9 +115,11 @@ class EVF_Builder_Integrations extends EVF_Builder_Page {
 
 					$catalog[ $id ] = array(
 						'id'       => $id,
+						'slug'     => $slug,
 						'name'     => $name,
 						'icon'     => $icon,
 						'video_id' => isset( $item['demo_video_url'] ) ? $item['demo_video_url'] : '',
+						'excerpt'  => isset( $item['excerpt'] ) ? $item['excerpt'] : '',
 					);
 				}
 			}
