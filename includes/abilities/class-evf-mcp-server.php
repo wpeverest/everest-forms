@@ -108,6 +108,12 @@ class EVF_MCP_Server {
 						'version' => defined( 'EVF_VERSION' ) ? EVF_VERSION : '0.0.0',
 					),
 					'capabilities'    => array( 'tools' => new stdClass() ),
+					// Server-level guidance the client prepends to the model's
+					// context. This is the cross-cutting "knowledge base" for
+					// behaviors that no single tool description can carry —
+					// e.g. "create forms inactive by default", enum value
+					// mappings, exact field-type names. See self::instructions().
+					'instructions'    => self::instructions(),
 				);
 				break;
 
@@ -199,6 +205,92 @@ class EVF_MCP_Server {
 			);
 		}
 		return $tools;
+	}
+
+	/**
+	 * Server-level instructions returned on `initialize`.
+	 *
+	 * The MCP client prepends this to the model's context for the whole
+	 * session. It's the home for cross-cutting rules that don't belong in any
+	 * single tool's description: safe defaults, value mappings the model can't
+	 * guess, and exact identifiers. Keep it tight — it costs tokens on every
+	 * conversation (though clients cache it).
+	 *
+	 * Filterable so PRO/addons can append their own guidance.
+	 *
+	 * @return string
+	 */
+	public static function instructions() {
+		$lines = array(
+			'You are operating Everest Forms (a WordPress form plugin) through these tools. Read these rules before calling any tool.',
+			'',
+			'## Identifiers — never guess',
+			'- Forms and entries are referenced by numeric ids. There is NO lookup-by-name. If the user names a form ("my contact form"), call list-forms first to find its id; do not invent one.',
+			'- To act on entries, get their ids from list-entries first. To inspect a form\'s fields/layout before editing, call get-form.',
+			'',
+			'## Form activation (IMPORTANT — strict default)',
+			'- Forms created with create-form are INACTIVE by default and must stay that way unless the user explicitly asks to publish, activate, or make the form live.',
+			'- Do NOT pass status:"publish" on create-form unless the user clearly requested it. When unsure, omit status (it defaults to inactive) and tell the user they can publish when ready.',
+			'- "Inactive" means the Active toggle is off (form_enabled=0) and post_status is "inactive"; the form will not accept submissions until published.',
+			'- Use update-form-status to move an existing form between publish / draft / trash.',
+			'',
+			'## Field types — use these EXACT ids (guessing causes errors)',
+			'- Core text: "text" (not "single-line"/"input"), "textarea" (not "paragraph"), "email", "url", "number", "phone".',
+			'- Names: "first-name" + "last-name" as two separate fields (there is no single "name" type).',
+			'- Choice types: "select" (not "dropdown"), "radio", "checkbox", "country" — these REQUIRE a non-empty `choices` array or validation fails.',
+			'- Structure/static: "date-time", "address", "file-upload", "image-upload", "hidden", "html", "divider", "title", "signature", "wysiwyg".',
+			'- Survey (needs Survey, Polls and Quiz addon): "likert", "scale-rating", "yes-no", "rating".',
+			'- Payment (needs PRO / Coupons): "payment-single", "payment-radio", "payment-checkbox", "payment-quantity", "payment-coupon", "payment-subtotal", "payment-total".',
+			'- If unsure a type exists or is usable on this site, call list-field-types or describe-field-type (check its usable_now flag) first.',
+			'',
+			'## Choices format (select / radio / checkbox / country)',
+			'- Pass `choices` as an array. Each item may be a bare string ("Red") or an object {label, value?, default?}.',
+			'- Example: choices: [ {"label":"Basic","value":"basic","default":true}, "Pro", "Enterprise" ].',
+			'',
+			'## Layout',
+			'- Prefer ONE create-form call with a complete `layout` over create-empty-then-patch. Cheaper and atomic.',
+			'- `layout` is an array of rows: [ { "row": [ field, field ] } ]. Single-field rows span full width.',
+			'- Side-by-side fields: put them in the same row with grid:1 / grid:2 (up to grid:3).',
+			'- Multi-step forms: set multi_part:{ enabled:true, parts:[{name:"Step 1"}, ...] } and tag each layout row with part:N. Needs the Multi-Part addon.',
+			'- Conversational (one question at a time): conversational:{ enabled:true, slug, title, description }. Needs the Conversational Forms addon.',
+			'- Multi-part and conversational are MUTUALLY EXCLUSIVE on the same form — never set both.',
+			'',
+			'## Addon-required errors — how to react',
+			'- action:"activate" -> addon is installed but inactive. Ask the user to confirm, then call activate-addon with the given plugin path, then retry the original call.',
+			'- action:"install_or_upgrade" -> addon is NOT installed. Do NOT call activate-addon (it will fail). Tell the user to install/purchase it from their Everest Forms account or upgrade their plan.',
+			'- If the user declines either, omit the offending field/setting and proceed with the rest.',
+			'- You can pre-check availability with list-addons (look at fully_operational) before building.',
+			'',
+			'## Setting value mappings (do NOT invent values)',
+			'- Save and Continue must be active to use; enable via settings.enable_save_and_continue = "1".',
+			'- Link expiration: settings.save_and_continue_time accepts only "week" | "two_weeks" | "month". Map natural language: ~7 days->"week", ~14 days->"two_weeks", ~30 days/1 month->"month".',
+			'- Entry status values: "publish", "approved", "denied", "pending", "spam", "trash".',
+			'- Form status values (update-form-status): "publish", "draft", "trash".',
+			'',
+			'## Entries',
+			'- create-entry / update-entry-fields accept field references by either meta-key (e.g. "email_3") OR the field human label (e.g. "Email"); the server resolves either.',
+			'- Pass fire_hooks:false on create-entry to skip email notifications/integrations (use for bulk/test imports).',
+			'- For deleting many entries, use bulk-delete-entries with an array of ids rather than many delete-entry calls.',
+			'- delete-entry / bulk-delete-entries default to permanent; pass permanent:false to move to trash instead.',
+			'',
+			'## Editing existing forms',
+			'- update-form deep-merges `settings` (it does not replace them) and appends `fields`/`layout`.',
+			'- To change one existing field without resending everything, use form_fields_patch:{ "<field_id>": { key:value } }. Get the field id from get-form first.',
+			'',
+			'## Safety & UX',
+			'- create / update / delete / activate operations modify the site; the client will prompt the user to approve each one.',
+			'- Use dry_run:true on create-form / update-form to preview the resulting fields + structure without saving.',
+			'- After a successful change, briefly summarize what changed and share the returned edit_url so the user can review it.',
+		);
+
+		$instructions = implode( "\n", $lines );
+
+		/**
+		 * Filter the MCP server instructions sent to AI clients on initialize.
+		 *
+		 * @param string $instructions The default instructions block.
+		 */
+		return (string) apply_filters( 'everest_forms_mcp_instructions', $instructions );
 	}
 
 	/**
