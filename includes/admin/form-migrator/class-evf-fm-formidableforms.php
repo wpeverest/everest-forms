@@ -331,7 +331,7 @@ class EVF_Fm_Formidableforms extends EVF_Admin_Form_Migrator {
 		$submit_text     = esc_html__( 'Submit', 'everest-forms' );
 
 		if ( ! empty( $frm_options['success_msg'] ) ) {
-			$success_message = wp_strip_all_tags( $frm_options['success_msg'] );
+			$success_message = $this->get_smarttags( wp_strip_all_tags( $frm_options['success_msg'] ), $form['form_fields'] );
 		}
 
 		if ( ! empty( $frm_options['submit_value'] ) ) {
@@ -366,6 +366,7 @@ class EVF_Fm_Formidableforms extends EVF_Admin_Form_Migrator {
 			'submit_button_text'                 => $submit_text,
 			'submit_button_processing_text'      => esc_html__( 'Processing...', 'everest-forms' ),
 			'submit_button_class'                => '',
+			'form_state_type'                    => 'hide',
 			'ajax_form_submission'               => ! empty( $frm_options['ajax_submit'] ) ? '1' : '0',
 			'disabled_entries'                   => '0',
 			'honeypot'                           => '1',
@@ -862,18 +863,128 @@ class EVF_Fm_Formidableforms extends EVF_Admin_Form_Migrator {
 				);
 				break;
 
-			// ── Unsupported ───────────────────────────────────────────────
+			// ── Address (Formidable Pro) ─────────────────────────────────
 			case 'address':
-			case 'time':
+				$form['structure'][ 'row_' . $form['form_field_id'] ]['grid_1'][] = $field_id;
+				$form['form_fields'][ $field_id ]                                 = array(
+					'id'                             => $field_id,
+					'type'                           => 'address',
+					'label'                          => $label,
+					'meta-key'                       => 'address-' . $frm_key,
+					'description'                    => $description,
+					'required'                       => $required,
+					'required_field_message_setting' => 'global',
+					'required-field-message'         => '',
+					'label_hide'                     => $label_hide,
+					'css'                            => $css_class,
+					'address1_label'                 => esc_html__( 'Address Line 1', 'everest-forms' ),
+					'address1_placeholder'           => '',
+					'address1_default'               => '',
+					'address1_hide'                  => '0',
+					'address2_label'                 => esc_html__( 'Address Line 2', 'everest-forms' ),
+					'address2_placeholder'           => '',
+					'address2_default'               => '',
+					'address2_hide'                  => '0',
+					'city_label'                     => esc_html__( 'City', 'everest-forms' ),
+					'city_placeholder'               => '',
+					'city_default'                   => '',
+					'city_hide'                      => '0',
+					'state_label'                    => esc_html__( 'State / Province / Region', 'everest-forms' ),
+					'state_placeholder'              => '',
+					'state_default'                  => '',
+					'state_hide'                     => '0',
+					'postal_label'                   => esc_html__( 'Zip / Postal Code', 'everest-forms' ),
+					'postal_placeholder'             => '',
+					'postal_default'                 => '',
+					'postal_hide'                    => '0',
+					'country_label'                  => esc_html__( 'Country', 'everest-forms' ),
+					'country_placeholder'            => '',
+					'country_default'                => '',
+					'country_hide'                   => '0',
+					'country_list'                   => array(),
+					'frm_field_key'                  => $frm_key,
+					'frm_field_id'                   => $frm_id,
+				);
+				break;
+
+			// ── Signature (Formidable Pro) ────────────────────────────
 			case 'signature':
-			case 'star':
+				$form['structure'][ 'row_' . $form['form_field_id'] ]['grid_1'][] = $field_id;
+				$form['form_fields'][ $field_id ]                                 = array(
+					'id'                             => $field_id,
+					'type'                           => 'signature',
+					'label'                          => $label,
+					'meta-key'                       => 'signature-' . $frm_key,
+					'description'                    => $description,
+					'required'                       => $required,
+					'required_field_message_setting' => 'global',
+					'required-field-message'         => '',
+					'label_hide'                     => $label_hide,
+					'css'                            => $css_class,
+					'frm_field_key'                  => $frm_key,
+					'frm_field_id'                   => $frm_id,
+				);
+				break;
+
+			// ── Scale Rating (Formidable Pro) ─────────────────────────
 			case 'scale':
+				$min_point    = isset( $field_opts['minnum'] ) ? (int) $field_opts['minnum'] : 1;
+				$max_point    = isset( $field_opts['maxnum'] ) ? (int) $field_opts['maxnum'] : 10;
+				$lowest_text  = ( isset( $field_opts['minlabel'] ) && '' !== $field_opts['minlabel'] ) ? $field_opts['minlabel'] : esc_html__( 'Worst', 'everest-forms' );
+				$highest_text = ( isset( $field_opts['maxlabel'] ) && '' !== $field_opts['maxlabel'] ) ? $field_opts['maxlabel'] : esc_html__( 'Best', 'everest-forms' );
+				$form['structure'][ 'row_' . $form['form_field_id'] ]['grid_1'][] = $field_id;
+				$form['form_fields'][ $field_id ]                                 = array(
+					'id'                             => $field_id,
+					'type'                           => 'scale-rating',
+					'label'                          => $label,
+					'meta-key'                       => 'scale-rating-' . $frm_key,
+					'description'                    => $description,
+					'required'                       => $required,
+					'required_field_message_setting' => 'global',
+					'required-field-message'         => '',
+					'label_hide'                     => $label_hide,
+					'css'                            => $css_class,
+					'lowest_rating_point'            => $min_point,
+					'highest_rating_point'           => $max_point,
+					'lowest_rating_text'             => $lowest_text,
+					'highest_rating_text'            => $highest_text,
+					'frm_field_key'                  => $frm_key,
+					'frm_field_id'                   => $frm_id,
+				);
+				break;
+
+			// ── Likert (Formidable Pro) ───────────────────────────────
+			case 'likert':
+				$likert_rows    = $this->build_likert_rows( $frm_field['options'] );
+				$likert_columns = $this->build_likert_columns( $field_opts );
+				$form['structure'][ 'row_' . $form['form_field_id'] ]['grid_1'][] = $field_id;
+				$form['form_fields'][ $field_id ]                                 = array(
+					'id'                             => $field_id,
+					'type'                           => 'likert',
+					'label'                          => $label,
+					'meta-key'                       => 'likert-' . $frm_key,
+					'description'                    => $description,
+					'required'                       => $required,
+					'required_field_message_setting' => 'global',
+					'required-field-message'         => '',
+					'label_hide'                     => $label_hide,
+					'css'                            => $css_class,
+					'input_type'                     => 'radio',
+					'likert_rows'                    => $likert_rows,
+					'likert_columns'                 => $likert_columns,
+					'frm_field_key'                  => $frm_key,
+					'frm_field_id'                   => $frm_id,
+				);
+				break;
+
+			// ── Unsupported ───────────────────────────────────────────
+			case 'time':
+			case 'star':
 			case 'range':
 			case 'tag':
 			case 'repeater':
 			case 'data':
 			case 'lookup':
-			case 'likert':
 			case 'nps':
 			case 'ranking':
 				$unsupported[] = $label ?: $frm_type;
@@ -925,6 +1036,67 @@ class EVF_Fm_Formidableforms extends EVF_Admin_Form_Migrator {
 		}
 
 		return $evf_choices;
+	}
+
+	/**
+	 * Build a 1-based likert rows array from Formidable field options.
+	 *
+	 * @param array $options Unserialized options from frm_fields.options.
+	 * @return array
+	 */
+	private function build_likert_rows( $options ) {
+		$rows = array();
+		$i    = 1;
+		if ( is_array( $options ) ) {
+			foreach ( $options as $option ) {
+				$option = (string) $option;
+				if ( '' === $option ) {
+					continue;
+				}
+				$rows[ $i++ ] = $option;
+			}
+		}
+		if ( empty( $rows ) ) {
+			$rows = array(
+				1 => esc_html__( 'Row 1', 'everest-forms' ),
+				2 => esc_html__( 'Row 2', 'everest-forms' ),
+			);
+		}
+		return $rows;
+	}
+
+	/**
+	 * Build a 1-based likert columns array from Formidable field_options.
+	 *
+	 * @param array $field_opts Unserialized field_options from frm_fields.field_options.
+	 * @return array
+	 */
+	private function build_likert_columns( $field_opts ) {
+		$cols = array();
+		if ( ! empty( $field_opts['columns'] ) ) {
+			$raw = $field_opts['columns'];
+			if ( is_string( $raw ) ) {
+				$raw = maybe_unserialize( $raw );
+			}
+			if ( is_array( $raw ) ) {
+				$i = 1;
+				foreach ( $raw as $col ) {
+					$col = (string) $col;
+					if ( '' !== $col ) {
+						$cols[ $i++ ] = $col;
+					}
+				}
+			}
+		}
+		if ( empty( $cols ) ) {
+			$cols = array(
+				1 => esc_html__( 'Very Unsatisfied', 'everest-forms' ),
+				2 => esc_html__( 'Unsatisfied', 'everest-forms' ),
+				3 => esc_html__( 'Neutral', 'everest-forms' ),
+				4 => esc_html__( 'Satisfied', 'everest-forms' ),
+			);
+		}
+		return $cols;
 	}
 
 	/**
@@ -1085,6 +1257,66 @@ class EVF_Fm_Formidableforms extends EVF_Admin_Form_Migrator {
 							'name'      => $field_name,
 							'value'     => is_array( $raw_value ) ? $raw_value : array( $raw_value ),
 							'value_raw' => is_array( $raw_value ) ? $raw_value : array( $raw_value ),
+						);
+						break;
+
+					case 'address':
+						$addr  = is_array( $raw_value ) ? $raw_value : array();
+						$a1    = isset( $addr['line1'] ) ? $addr['line1'] : ( isset( $addr['street'] ) ? $addr['street'] : ( isset( $addr['address1'] ) ? $addr['address1'] : '' ) );
+						$a2    = isset( $addr['line2'] ) ? $addr['line2'] : ( isset( $addr['street2'] ) ? $addr['street2'] : ( isset( $addr['address2'] ) ? $addr['address2'] : '' ) );
+						$city  = isset( $addr['city'] ) ? $addr['city'] : '';
+						$state = isset( $addr['state'] ) ? $addr['state'] : '';
+						$zip   = isset( $addr['zip'] ) ? $addr['zip'] : ( isset( $addr['postal'] ) ? $addr['postal'] : '' );
+						$cntry = isset( $addr['country'] ) ? $addr['country'] : '';
+						$entry = array(
+							'id'       => $field_key,
+							'type'     => $field_type,
+							'meta_key' => $field_meta_key,
+							'name'     => $field_name,
+							'value'    => implode( ', ', array_filter( array( $a1, $a2, $city, $state, $zip, $cntry ) ) ),
+							'address1' => $a1,
+							'address2' => $a2,
+							'city'     => $city,
+							'state'    => $state,
+							'postal'   => $zip,
+							'country'  => $cntry,
+						);
+						break;
+
+					case 'signature':
+						$entry = array(
+							'id'       => $field_key,
+							'type'     => $field_type,
+							'meta_key' => $field_meta_key,
+							'name'     => $field_name,
+							'value'    => is_string( $raw_value ) ? $raw_value : '',
+						);
+						break;
+
+					case 'scale-rating':
+						$entry = array(
+							'id'       => $field_key,
+							'type'     => $field_type,
+							'meta_key' => $field_meta_key,
+							'name'     => $field_name,
+							'value'    => is_array( $raw_value ) ? implode( ', ', $raw_value ) : (string) $raw_value,
+						);
+						break;
+
+					case 'likert':
+						$likert_pairs = array();
+						if ( is_array( $raw_value ) ) {
+							foreach ( $raw_value as $row_label => $col_label ) {
+								$likert_pairs[] = $row_label . ': ' . $col_label;
+							}
+						}
+						$entry = array(
+							'id'        => $field_key,
+							'type'      => $field_type,
+							'meta_key'  => $field_meta_key,
+							'name'      => $field_name,
+							'value'     => implode( ' | ', $likert_pairs ),
+							'value_raw' => wp_json_encode( $raw_value ),
 						);
 						break;
 

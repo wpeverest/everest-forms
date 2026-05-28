@@ -310,7 +310,7 @@ class EVF_Fm_Ninjaforms extends EVF_Admin_Form_Migrator {
 			if ( 'successmessage' === $action['type'] && ! empty( $action['active'] ) ) {
 				$msg = isset( $action['meta']['success_msg'] ) ? $action['meta']['success_msg'] : '';
 				if ( $msg ) {
-					$success_message = wp_strip_all_tags( $msg );
+					$success_message = $this->get_smarttags( wp_strip_all_tags( $msg ), $form['form_fields'] );
 				}
 			}
 			if ( 'redirect' === $action['type'] && ! empty( $action['active'] ) ) {
@@ -344,6 +344,7 @@ class EVF_Fm_Ninjaforms extends EVF_Admin_Form_Migrator {
 			'submit_button_text'                 => esc_html__( 'Submit', 'everest-forms' ),
 			'submit_button_processing_text'      => esc_html__( 'Processing...', 'everest-forms' ),
 			'submit_button_class'                => '',
+			'form_state_type'                    => 'hide',
 			'ajax_form_submission'               => '0',
 			'disabled_entries'                   => '0',
 			'honeypot'                           => '1',
@@ -796,7 +797,45 @@ class EVF_Fm_Ninjaforms extends EVF_Admin_Form_Migrator {
 				);
 				break;
 
-			// ── Unsupported ───────────────────────────────────────────────
+			// ── Color ─────────────────────────────────────────────────────
+			case 'color':
+				$form['structure'][ 'row_' . $form['form_field_id'] ]['grid_1'][] = $field_id;
+				$form['form_fields'][ $field_id ] = array(
+					'id'                             => $field_id,
+					'type'                           => 'color',
+					'label'                          => $label,
+					'meta-key'                       => 'color-' . $nf_key,
+					'description'                    => $description,
+					'required'                       => $required,
+					'required_field_message_setting' => 'global',
+					'required-field-message'         => '',
+					'placeholder'                    => $placeholder,
+					'label_hide'                     => '0',
+					'default_value'                  => $default_val,
+					'css'                            => $css_class,
+					'nf_key'                         => $nf_key,
+				);
+				break;
+
+			// ── Signature ─────────────────────────────────────────────
+			case 'signature':
+				$form['structure'][ 'row_' . $form['form_field_id'] ]['grid_1'][] = $field_id;
+				$form['form_fields'][ $field_id ] = array(
+					'id'                             => $field_id,
+					'type'                           => 'signature',
+					'label'                          => $label,
+					'meta-key'                       => 'signature-' . $nf_key,
+					'description'                    => $description,
+					'required'                       => $required,
+					'required_field_message_setting' => 'global',
+					'required-field-message'         => '',
+					'label_hide'                     => '0',
+					'css'                            => $css_class,
+					'nf_key'                         => $nf_key,
+				);
+				break;
+
+			// ── Unsupported ───────────────────────────────────────────
 			case 'address':
 			case 'address2':
 			case 'city':
@@ -804,9 +843,7 @@ class EVF_Fm_Ninjaforms extends EVF_Admin_Form_Migrator {
 			case 'listcountry':
 			case 'liststate':
 			case 'starrating':
-			case 'color':
 			case 'repeater':
-			case 'signature':
 				$unsupported[] = $label ?: $nf_type;
 				break;
 
@@ -1025,6 +1062,26 @@ class EVF_Fm_Ninjaforms extends EVF_Admin_Form_Migrator {
 							'name'      => $field_name,
 							'value'     => is_array( $raw_value ) ? $raw_value : array( $raw_value ),
 							'value_raw' => is_array( $raw_value ) ? $raw_value : array( $raw_value ),
+						);
+						break;
+
+					case 'color':
+						$entry = array(
+							'id'       => $field_key,
+							'type'     => $field_type,
+							'meta_key' => $field_meta_key,
+							'name'     => $field_name,
+							'value'    => is_array( $raw_value ) ? implode( ', ', $raw_value ) : $raw_value,
+						);
+						break;
+
+					case 'signature':
+						$entry = array(
+							'id'       => $field_key,
+							'type'     => $field_type,
+							'meta_key' => $field_meta_key,
+							'name'     => $field_name,
+							'value'    => is_string( $raw_value ) ? $raw_value : '',
 						);
 						break;
 

@@ -258,10 +258,13 @@ class EVF_Fm_Fluentforms extends EVF_Admin_Form_Migrator {
 		$form_settings = $this->get_form_meta( $ff_form_id, 'formSettings' );
 		$confirmation  = isset( $form_settings['confirmation'] ) ? $form_settings['confirmation'] : array();
 
-		$redirect_to     = 'same';
-		$custom_page     = '';
-		$external_url    = '';
-		$success_message = esc_html__( 'Thanks for contacting us! We will get in touch with you shortly.', 'everest-forms' );
+		$redirect_to         = 'same';
+		$custom_page         = '';
+		$external_url        = '';
+		$success_message     = esc_html__( 'Thanks for contacting us! We will get in touch with you shortly.', 'everest-forms' );
+		$form_state_type     = 'hide';
+		$enable_query_string = 0;
+		$query_string        = '';
 
 		if ( ! empty( $confirmation ) ) {
 			$redirect_type = isset( $confirmation['redirectTo'] ) ? $confirmation['redirectTo'] : 'samePage';
@@ -274,8 +277,20 @@ class EVF_Fm_Fluentforms extends EVF_Admin_Form_Migrator {
 				$external_url = isset( $confirmation['customUrl'] ) ? esc_url_raw( $confirmation['customUrl'] ) : '';
 			} else {
 				$redirect_to     = 'same';
-				$success_message = isset( $confirmation['messageToShow'] ) ? wp_strip_all_tags( $confirmation['messageToShow'] ) : $success_message;
+				$raw_msg         = isset( $confirmation['messageToShow'] ) ? wp_strip_all_tags( $confirmation['messageToShow'] ) : '';
+				$success_message = $raw_msg ? $this->get_smarttags( $raw_msg, $form['form_fields'] ) : $success_message;
 			}
+
+			// Map query string settings (applies to customPage and customUrl redirects).
+			if ( isset( $confirmation['enable_query_string'] ) && 'yes' === $confirmation['enable_query_string'] ) {
+				$enable_query_string = 1;
+				$raw_qs              = isset( $confirmation['query_strings'] ) ? $confirmation['query_strings'] : '';
+				$query_string        = $this->get_smarttags( $raw_qs, $form['form_fields'] );
+			}
+
+			// Map samePageFormBehavior → EVF form_state_type.
+			$page_behavior   = isset( $confirmation['samePageFormBehavior'] ) ? $confirmation['samePageFormBehavior'] : '';
+			$form_state_type = ( 'reset_form' === $page_behavior ) ? 'reset' : 'hide';
 		}
 
 		$form['settings'] = array(
@@ -293,13 +308,14 @@ class EVF_Fm_Fluentforms extends EVF_Admin_Form_Migrator {
 			'redirect_to'                        => $redirect_to,
 			'custom_page'                        => $custom_page,
 			'external_url'                       => $external_url,
-			'enable_redirect_query_string'       => 0,
-			'query_string'                       => '',
+			'enable_redirect_query_string'       => $enable_query_string,
+			'query_string'                       => $query_string,
 			'layout_class'                       => 'default',
 			'form_class'                         => '',
 			'submit_button_text'                 => esc_html__( 'Submit', 'everest-forms' ),
 			'submit_button_processing_text'      => esc_html__( 'Processing...', 'everest-forms' ),
 			'submit_button_class'                => '',
+			'form_state_type'                    => $form_state_type,
 			'ajax_form_submission'               => '0',
 			'disabled_entries'                   => '0',
 			'honeypot'                           => '1',
@@ -856,6 +872,24 @@ class EVF_Fm_Fluentforms extends EVF_Admin_Form_Migrator {
 				);
 				break;
 
+			// ── Signature (Fluent Forms Pro) ──────────────────────────────
+			case 'signature':
+				$form['structure'][ 'row_' . $form['form_field_id'] ]['grid_1'][] = $field_id;
+				$form['form_fields'][ $field_id ] = array(
+					'id'                             => $field_id,
+					'type'                           => 'signature',
+					'label'                          => $label,
+					'meta-key'                       => 'signature-' . $ff_name,
+					'description'                    => $description,
+					'required'                       => $required,
+					'required_field_message_setting' => 'global',
+					'required-field-message'         => '',
+					'label_hide'                     => '0',
+					'css'                            => $css_class,
+					'ff_name'                        => $ff_name,
+				);
+				break;
+
 			// ── Unsupported fields ─────────────────────────────────────────
 			case 'ratings':
 			case 'net_promoter_score':
@@ -1001,6 +1035,14 @@ class EVF_Fm_Fluentforms extends EVF_Admin_Form_Migrator {
 						$entry['name']      = $field_name;
 						$entry['value']     = is_array( $value ) ? $value : array( $value );
 						$entry['value_raw'] = is_array( $value ) ? $value : array( $value );
+						break;
+
+					case 'signature':
+						$entry['id']       = $field_key;
+						$entry['type']     = $field_type;
+						$entry['meta_key'] = $field_meta_key;
+						$entry['name']     = $field_name;
+						$entry['value']    = is_string( $value ) ? $value : '';
 						break;
 
 					default:
