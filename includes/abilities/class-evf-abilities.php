@@ -67,7 +67,10 @@ class EVF_Abilities {
 		add_action( 'plugins_loaded', array( __CLASS__, 'self_register' ), 20 );
 
 		// Additionally mirror into the WP Abilities API when present, so other
-		// Abilities-aware consumers (e.g. the official REST controller) see them.
+		// Abilities-aware consumers (e.g. the official REST controller + MCP
+		// adapters) see them. Categories MUST be registered on their own
+		// earlier hook; abilities reference the category on wp_abilities_api_init.
+		add_action( 'wp_abilities_api_categories_init', array( __CLASS__, 'register_category' ) );
 		add_action( 'wp_abilities_api_init', array( __CLASS__, 'register_abilities' ) );
 
 		add_action( 'rest_api_init', array( __CLASS__, 'register_mcp_route' ) );
@@ -103,14 +106,63 @@ class EVF_Abilities {
 	}
 
 	/**
-	 * Register abilities with the official Abilities API.
+	 * Category slug used when registering abilities with the WP Abilities API.
 	 */
+	const CATEGORY = 'everest-forms';
+
+	/**
+	 * Register abilities with the official WP Abilities API.
+	 *
+	 * Three things are required for abilities to surface through the Abilities
+	 * REST API and any MCP adapter plugin built on top of it:
+	 *   1. a registered `category` (Abilities API 6.9+ requires each ability to
+	 *      reference one),
+	 *   2. `meta.show_in_rest = true` — abilities default to NOT exposed in
+	 *      REST, so without this the Abilities REST API (and therefore any MCP
+	 *      adapter) returns ZERO abilities, even though they're registered,
+	 *   3. `meta.annotations` (readonly/destructive/idempotent) so the adapter
+	 *      can render the right confirmation UI.
+	 */
+	public static function register_category() {
+		if ( function_exists( 'wp_register_ability_category' ) ) {
+			wp_register_ability_category(
+				self::CATEGORY,
+				array(
+					'label'       => __( 'Everest Forms', 'everest-forms' ),
+					'description' => __( 'Form, entry, and analytics operations exposed by Everest Forms.', 'everest-forms' ),
+				)
+			);
+		}
+	}
+
 	public static function register_abilities() {
 		if ( ! self::has_abilities_api() ) {
 			return;
 		}
+
 		foreach ( self::ability_definitions() as $def ) {
-			wp_register_ability( self::NAMESPACE_ID . '/' . $def['name'], $def['args'] );
+			$args        = $def['args'];
+			$destructive = self::is_destructive( $def['name'] );
+
+			if ( ! isset( $args['category'] ) ) {
+				$args['category'] = self::CATEGORY;
+			}
+
+			// Ensure the ability is exposed via REST (default is false) and
+			// carries behavior annotations for adapter UIs.
+			$meta                = isset( $args['meta'] ) && is_array( $args['meta'] ) ? $args['meta'] : array();
+			$meta['show_in_rest'] = true;
+			$meta['annotations']  = wp_parse_args(
+				isset( $meta['annotations'] ) && is_array( $meta['annotations'] ) ? $meta['annotations'] : array(),
+				array(
+					'readonly'    => ! $destructive,
+					'destructive' => $destructive,
+					'idempotent'  => ! $destructive,
+				)
+			);
+			$args['meta'] = $meta;
+
+			wp_register_ability( self::NAMESPACE_ID . '/' . $def['name'], $args );
 		}
 	}
 
