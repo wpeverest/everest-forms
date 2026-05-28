@@ -332,12 +332,13 @@ class EVF_Abilities {
 				'name' => 'activate-addon',
 				'args' => array(
 					'label'               => __( 'Activate an Everest Forms addon', 'everest-forms' ),
-					'description'         => __( 'Activate an installed Everest Forms addon plugin by its plugin file (e.g. "everest-forms-survey-polls-quiz/everest-forms-survey-polls-quiz.php"). IMPORTANT: ask the user for explicit confirmation before calling this — activating plugins changes site state. If the plugin is not installed, the response will indicate the user needs to install/upgrade it from their Everest Forms account.', 'everest-forms' ),
+					'description'         => __( 'Activate an installed Everest Forms addon plugin by its plugin file (e.g. "everest-forms-survey-polls-quiz/everest-forms-survey-polls-quiz.php"). TWO-STEP: calling without confirm:true returns status:"confirmation_required" and does NOT activate — you must ask the user to confirm, then call again with confirm:true. Activating plugins changes site state, so never confirm on the user\'s behalf. If the plugin is not installed, the response indicates the user must install/upgrade it from their Everest Forms account.', 'everest-forms' ),
 					'input_schema'        => array(
 						'type'       => 'object',
 						'required'   => array( 'plugin' ),
 						'properties' => array(
-							'plugin' => array( 'type' => 'string', 'minLength' => 3 ),
+							'plugin'  => array( 'type' => 'string', 'minLength' => 3 ),
+							'confirm' => array( 'type' => 'boolean', 'default' => false, 'description' => 'Must be true to actually activate. Only set this after the user has explicitly agreed.' ),
 						),
 					),
 					'output_schema'       => array( 'type' => 'object' ),

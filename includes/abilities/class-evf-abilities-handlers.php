@@ -327,6 +327,23 @@ class EVF_Abilities_Handlers {
 			);
 		}
 
+		// Explicit-confirmation gate. Activating a plugin changes site state,
+		// so we never do it on the first call. The caller must come back with
+		// confirm:true after the user has actually agreed. This guarantees a
+		// confirmation step server-side, independent of whether the MCP client
+		// shows its own approval dialog (the user may have "always allow" set).
+		$confirmed = ! empty( $input['confirm'] ) && true === filter_var( $input['confirm'], FILTER_VALIDATE_BOOLEAN );
+		if ( ! $confirmed ) {
+			$name = isset( $installed[ $plugin ]['Name'] ) ? $installed[ $plugin ]['Name'] : $plugin;
+			return array(
+				'status'             => 'confirmation_required',
+				'plugin'             => $plugin,
+				'addon'              => $name,
+				'requires_confirm'   => true,
+				'message'            => sprintf( 'Activating the "%s" addon will change this site. Ask the user to confirm, then call activate-addon again with confirm:true to proceed. Do NOT activate without the user\'s explicit agreement.', $name ),
+			);
+		}
+
 		$result = activate_plugin( $plugin, '', false, false );
 		if ( is_wp_error( $result ) ) {
 			return new WP_Error(

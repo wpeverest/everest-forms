@@ -613,12 +613,17 @@ class EVF_Form_Builder {
 			: ucfirst( str_replace( array( '-', '_' ), ' ', $type ) );
 		$meta_key = sanitize_key( $label . '_' . $counter );
 
-		$out = array(
-			'id'       => $field_id,
-			'type'     => $type,
-			'label'    => $label,
-			'meta-key' => $meta_key,
-		);
+		// Seed with the field type's registered defaults so complex fields
+		// (likert, scale-rating, address, etc.) carry every key their render
+		// method expects. Without this, e.g. a likert field saves with no
+		// rows/columns and renders blank on the frontend even though it shows
+		// in the builder. Caller-supplied values below override these.
+		$out = self::field_type_defaults( $type );
+
+		$out['id']         = $field_id;
+		$out['type']       = $type;
+		$out['label']      = $label;
+		$out['meta-key']   = $meta_key;
 
 		if ( ! empty( $field['required'] ) ) {
 			$out['required'] = '1';
@@ -648,8 +653,25 @@ class EVF_Form_Builder {
 			}
 		}
 
+		// Likert: the field expects `likert_rows` / `likert_columns` as flat
+		// {index: "label"} maps and an `input_type`. Accept caller-friendly
+		// `rows` / `columns` (arrays of strings or {label} objects) and map them.
+		if ( 'likert' === $type ) {
+			if ( isset( $field['rows'] ) ) {
+				$out['likert_rows'] = self::flatten_label_map( $field['rows'] );
+			}
+			if ( isset( $field['columns'] ) ) {
+				$out['likert_columns'] = self::flatten_label_map( $field['columns'] );
+			}
+			if ( empty( $out['input_type'] ) ) {
+				$out['input_type'] = 'radio';
+			}
+		}
+
 		// Pass-through for anything else (numeric mins, formats, etc.) — sanitized scalars.
-		$skip = array( 'type', 'label', 'required', 'placeholder', 'description', 'default_value', 'css', 'choices', 'sublabels', 'grid' );
+		// `rows`/`columns` are consumed above for likert; skip them so we don't
+		// also write raw keys the field doesn't understand.
+		$skip = array( 'type', 'label', 'required', 'placeholder', 'description', 'default_value', 'css', 'choices', 'sublabels', 'grid', 'rows', 'columns' );
 		foreach ( $field as $k => $v ) {
 			if ( in_array( $k, $skip, true ) ) {
 				continue;
@@ -662,6 +684,50 @@ class EVF_Form_Builder {
 			}
 		}
 
+		return $out;
+	}
+
+	/**
+	 * Pull a registered field type's `defaults` array (e.g. likert_rows,
+	 * likert_columns, drop_down_choices). These seed the composed field so it
+	 * renders correctly even when the caller doesn't specify every key.
+	 *
+	 * @param string $type Field type id.
+	 * @return array
+	 */
+	protected static function field_type_defaults( $type ) {
+		$registry = function_exists( 'evf' ) ? evf()->form_fields : null;
+		$groups   = ( is_object( $registry ) && isset( $registry->form_fields ) ) ? (array) $registry->form_fields : array();
+		foreach ( $groups as $fields ) {
+			foreach ( (array) $fields as $f ) {
+				if ( is_object( $f ) && isset( $f->type ) && $f->type === $type && isset( $f->defaults ) && is_array( $f->defaults ) ) {
+					return $f->defaults;
+				}
+			}
+		}
+		return array();
+	}
+
+	/**
+	 * Flatten a caller-supplied label list into a 1-based {index: "label"} map.
+	 *
+	 * Accepts ["A","B"], {1:"A",2:"B"}, or [{label:"A"},{label:"B"}] and always
+	 * returns {1:"A", 2:"B"}. Used for likert rows/columns.
+	 *
+	 * @param mixed $input Input.
+	 * @return array
+	 */
+	protected static function flatten_label_map( $input ) {
+		$out = array();
+		$i   = 0;
+		foreach ( (array) $input as $v ) {
+			$i++;
+			if ( is_string( $v ) ) {
+				$out[ $i ] = sanitize_text_field( $v );
+			} elseif ( is_array( $v ) && isset( $v['label'] ) ) {
+				$out[ $i ] = sanitize_text_field( (string) $v['label'] );
+			}
+		}
 		return $out;
 	}
 

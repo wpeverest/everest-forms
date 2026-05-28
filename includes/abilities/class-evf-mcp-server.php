@@ -256,7 +256,7 @@ class EVF_MCP_Server {
 			'- Multi-part and conversational are MUTUALLY EXCLUSIVE on the same form — never set both.',
 			'',
 			'## Addon-required errors — how to react',
-			'- action:"activate" -> addon is installed but inactive. Ask the user to confirm, then call activate-addon with the given plugin path, then retry the original call.',
+			'- action:"activate" -> addon is installed but inactive. activate-addon is TWO-STEP: first call WITHOUT confirm returns confirmation_required and does nothing. You MUST ask the user to confirm, then call activate-addon again with confirm:true, then retry the original call. Never set confirm:true unless the user explicitly agreed in this conversation.',
 			'- action:"install_or_upgrade" -> addon is NOT installed. Do NOT call activate-addon (it will fail). Tell the user to install/purchase it from their Everest Forms account or upgrade their plan.',
 			'- If the user declines either, omit the offending field/setting and proceed with the rest.',
 			'- You can pre-check availability with list-addons (look at fully_operational) before building.',
