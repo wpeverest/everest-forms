@@ -118,6 +118,40 @@ class EVF_Fm_Fluentforms extends EVF_Admin_Form_Migrator {
 	}
 
 	/**
+	 * Get all meta rows for a given meta key (e.g. 'confirmations' — stored one row per entry).
+	 *
+	 * @param int    $form_id  Fluent Forms form ID.
+	 * @param string $meta_key Meta key.
+	 * @return array
+	 */
+	private function get_all_form_meta( $form_id, $meta_key ) {
+		global $wpdb;
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery
+		$rows = $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT value FROM {$wpdb->prefix}fluentform_form_meta WHERE form_id = %d AND meta_key = %s",
+				$form_id,
+				$meta_key
+			)
+		);
+
+		if ( empty( $rows ) ) {
+			return array();
+		}
+
+		$results = array();
+		foreach ( $rows as $row ) {
+			$decoded = json_decode( $row->value, true );
+			if ( JSON_ERROR_NONE === json_last_error() && is_array( $decoded ) ) {
+				$results[] = $decoded;
+			}
+		}
+
+		return $results;
+	}
+
+	/**
 	 * Convert Fluent Forms smart tags to EVF smart tags.
 	 *
 	 * @param string $string The string containing smart tags.
@@ -293,6 +327,8 @@ class EVF_Fm_Fluentforms extends EVF_Admin_Form_Migrator {
 			$form_state_type = ( 'reset_form' === $page_behavior ) ? 'reset' : 'hide';
 		}
 
+		$submission_redirection = $this->build_submission_redirection( $form, $ff_form_id );
+
 		$form['settings'] = array(
 			'email'                              => apply_filters(
 				'evf_fm_' . $this->slug . '_email_notification_settings',
@@ -333,7 +369,210 @@ class EVF_Fm_Fluentforms extends EVF_Admin_Form_Migrator {
 			),
 		);
 
+		if ( ! empty( $submission_redirection ) ) {
+			$form['settings']['submission_redirection'] = $submission_redirection;
+		}
+
 		return $form;
+	}
+
+	/**
+	 * Build EVF submission_redirection settings from Fluent Forms conditional confirmations.
+	 *
+	 * @param array $form       Partially built EVF form array (form_fields must be populated).
+	 * @param int   $ff_form_id Fluent Forms form ID.
+	 * @return array
+	 */
+	private function build_submission_redirection( $form, $ff_form_id ) {
+		// Each conditional confirmation is stored as a separate row in fluentform_form_meta.
+		$confirmations = $this->get_all_form_meta( $ff_form_id, 'confirmations' );
+
+		if ( empty( $confirmations ) ) {
+			return array();
+		}
+
+		$evf_rules  = array();
+		$rule_index = 0;
+
+		foreach ( $confirmations as $confirmation ) {
+			$conditionals = isset( $confirmation['conditionals'] ) ? $confirmation['conditionals'] : array();
+
+			if ( empty( $conditionals ) || empty( $conditionals['status'] ) ) {
+				continue;
+			}
+
+			$ff_conditions = isset( $conditionals['conditions'] ) ? $conditionals['conditions'] : array();
+			$logic_type    = isset( $conditionals['type'] ) ? $conditionals['type'] : 'any';
+
+			if ( empty( $ff_conditions ) ) {
+				continue;
+			}
+
+			$evf_groups = array();
+
+			if ( 'all' === $logic_type ) {
+				// All conditions AND'd → single group.
+				$group = array();
+				foreach ( $ff_conditions as $idx => $cond ) {
+					$evf_field_id = $this->find_evf_field_id( isset( $cond['field'] ) ? $cond['field'] : '', $form['form_fields'] );
+					if ( ! $evf_field_id ) {
+						continue;
+					}
+					$group[ $idx ] = array(
+						'field'    => $evf_field_id,
+						'operator' => $this->map_condition_operator( isset( $cond['operator'] ) ? $cond['operator'] : '=' ),
+						'value'    => isset( $cond['value'] ) ? $cond['value'] : '',
+					);
+				}
+				if ( ! empty( $group ) ) {
+					$evf_groups[0] = $group;
+				}
+			} else {
+				// Any conditions OR'd → each condition in its own group.
+				foreach ( $ff_conditions as $idx => $cond ) {
+					$evf_field_id = $this->find_evf_field_id( isset( $cond['field'] ) ? $cond['field'] : '', $form['form_fields'] );
+					if ( ! $evf_field_id ) {
+						continue;
+					}
+					$evf_groups[ $idx ] = array(
+						0 => array(
+							'field'    => $evf_field_id,
+							'operator' => $this->map_condition_operator( isset( $cond['operator'] ) ? $cond['operator'] : '=' ),
+							'value'    => isset( $cond['value'] ) ? $cond['value'] : '',
+						),
+					);
+				}
+			}
+
+			if ( empty( $evf_groups ) ) {
+				continue;
+			}
+
+			// Map redirect type.
+			$redirect_type     = isset( $confirmation['redirectTo'] ) ? $confirmation['redirectTo'] : 'samePage';
+			$conf_redirect_to  = 'same';
+			$conf_custom_page  = 0;
+			$conf_external_url = '';
+
+			if ( 'customPage' === $redirect_type ) {
+				$conf_redirect_to = 'custom_page';
+				$conf_custom_page = isset( $confirmation['customPage'] ) ? absint( $confirmation['customPage'] ) : 0;
+			} elseif ( 'customUrl' === $redirect_type ) {
+				$conf_redirect_to  = 'external_url';
+				$conf_external_url = isset( $confirmation['customUrl'] ) ? esc_url_raw( $confirmation['customUrl'] ) : '';
+			}
+
+			// Map success message with smart tag conversion.
+			$conf_message = '';
+			if ( isset( $confirmation['messageToShow'] ) ) {
+				$raw = wp_strip_all_tags( $confirmation['messageToShow'] );
+				$conf_message = $raw ? $this->get_smarttags( $raw, $form['form_fields'] ) : '';
+			}
+
+			// Map form state.
+			$page_behavior   = isset( $confirmation['samePageFormBehavior'] ) ? $confirmation['samePageFormBehavior'] : '';
+			$conf_form_state = ( 'reset_form' === $page_behavior ) ? 'reset' : 'hide';
+
+			// Map query string.
+			$conf_enable_qs = 0;
+			$conf_qs        = '';
+			if ( isset( $confirmation['enable_query_string'] ) && 'yes' === $confirmation['enable_query_string'] ) {
+				$conf_enable_qs = 1;
+				$raw_qs         = isset( $confirmation['query_strings'] ) ? $confirmation['query_strings'] : '';
+				if ( is_array( $raw_qs ) ) {
+					$qs_pairs = array();
+					foreach ( $raw_qs as $pair ) {
+						if ( ! empty( $pair['key'] ) ) {
+							$qs_val   = isset( $pair['value'] ) ? $this->get_smarttags( (string) $pair['value'], $form['form_fields'] ) : '';
+							$qs_pairs[] = sanitize_key( $pair['key'] ) . '=' . $qs_val;
+						}
+					}
+					$conf_qs = implode( '&', $qs_pairs );
+				} else {
+					$conf_qs = $this->get_smarttags( (string) $raw_qs, $form['form_fields'] );
+				}
+				$conf_qs = preg_replace( '/\{inputs\.[^}]+\}/', '', $conf_qs );
+			}
+
+			$rule_entry             = $evf_groups;
+			$rule_entry['settings'] = array(
+				'title'                              => isset( $confirmation['name'] ) ? sanitize_text_field( $confirmation['name'] ) : esc_html__( 'Conditional Confirmation', 'everest-forms' ),
+				'redirect_to'                        => $conf_redirect_to,
+				'custom_page'                        => $conf_custom_page,
+				'external_url'                       => $conf_external_url,
+				'enable_redirect_in_new_tab'         => 0,
+				'enable_redirect_query_string'       => $conf_enable_qs,
+				'query_string'                       => $conf_qs,
+				'successful_form_submission_message' => $conf_message,
+				'submission_message_scroll'          => 0,
+				'form_state_type'                    => $conf_form_state,
+				'preview_confirmation'               => 0,
+				'preview_confirmation_select'        => 'basic',
+				'message_display_location_of_hide'   => 'hide',
+				'message_display_location_of_reset'  => 'top',
+				'active'                             => 1,
+			);
+
+			$evf_rules[ $rule_index ] = $rule_entry;
+			$rule_index++;
+		}
+
+		if ( empty( $evf_rules ) ) {
+			return array();
+		}
+
+		return array(
+			'connection_1' => array(
+				'conditional_logic_status' => '1',
+				'conditionals'             => array(
+					'rules' => $evf_rules,
+				),
+			),
+		);
+	}
+
+	/**
+	 * Find an EVF field key by its original Fluent Forms field name (ff_name).
+	 *
+	 * @param string $ff_name    Fluent Forms field attribute name.
+	 * @param array  $form_fields EVF form_fields array.
+	 * @return string EVF field key, or empty string if not found.
+	 */
+	private function find_evf_field_id( $ff_name, $form_fields ) {
+		if ( empty( $ff_name ) ) {
+			return '';
+		}
+		foreach ( $form_fields as $field_key => $field ) {
+			if ( isset( $field['ff_name'] ) && $field['ff_name'] === $ff_name ) {
+				return $field_key;
+			}
+		}
+		return '';
+	}
+
+	/**
+	 * Map a Fluent Forms condition operator to the EVF equivalent.
+	 *
+	 * @param string $ff_op Fluent Forms operator string.
+	 * @return string EVF operator string.
+	 */
+	private function map_condition_operator( $ff_op ) {
+		$map = array(
+			'='           => 'is',
+			'!='          => 'is_not',
+			'>'           => 'greater_than',
+			'>='          => 'greater_than',
+			'<'           => 'less_than',
+			'<='          => 'less_than',
+			'contains'    => 'contains',
+			'notContains' => 'is_not',
+			'not_contains'=> 'is_not',
+			'startsWith'  => 'is',
+			'endsWith'    => 'is',
+			'is_empty'    => 'empty',
+			'is_not_empty'=> 'not_empty',
+		);
+		return isset( $map[ $ff_op ] ) ? $map[ $ff_op ] : 'is';
 	}
 
 	/**
