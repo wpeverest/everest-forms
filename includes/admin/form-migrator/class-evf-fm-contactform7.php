@@ -902,7 +902,7 @@ class EVF_Fm_Contactform7 extends EVF_Admin_Form_Migrator {
 			if ( ! empty( $cf7_properties['mail_2']['active'] ) ) {
 				$form['settings']['email']['connection_2'] = array(
 					'enable_email_notification' => '1',
-					'connection_name'           => esc_html__( 'Auto-reply', 'everest-forms' ),
+					'connection_name'           => esc_html__( 'Second Email', 'everest-forms' ),
 					'evf_to_email'              => '{admin_email}',
 					'evf_from_name'             => esc_html__( 'Everest Forms', 'everest-forms' ),
 					'evf_from_email'            => '{admin_email}',
