@@ -22,6 +22,10 @@ class EVF_Field_Payment_Quantity extends EVF_Form_Fields {
 		$this->order  = 40;
 		$this->group  = 'payment';
 		$this->is_pro = true;
+		$this->links  = array(
+			'image_id' => '',
+			'vedio_id' => 'JLRES75WeqM',
+		);
 
 		parent::__construct();
 	}

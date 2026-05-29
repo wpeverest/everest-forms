@@ -292,6 +292,14 @@ class EVF_Emails {
 		do_action( 'everest_forms_email_footer', $this );
 
 		$message = $this->process_tag( $message, false );
+
+		/**
+		 * Filter to modify the email message format before line break conversion.
+		 *
+		 * @since xx.xx.xx
+		 */
+		$message = apply_filters( 'everest_forms_email_message_pre_format', $message, $this );
+
 		$message = nl2br( $message );
 
 		$body    = ob_get_clean();
@@ -335,10 +343,14 @@ class EVF_Emails {
 		$message = apply_filters( 'everest_forms_entry_email__message', str_replace( '{entry_id}', absint( $this->entry_id ), $message ), $this );
 
 		// Email Template Enabled or not checked.
-		$email_template_included = ! empty( $this->form_data['settings']['email'][ $connection_id ]['choose_template'] ) ? true : false;
+		$email_template_included                   = ! empty( $this->form_data['settings']['email'][ $connection_id ]['choose_template'] ) ? true : false;
+		$save_and_continue_email_template_included = ! empty( $this->form_data['settings']['email']['connection_save_and_continue']['choose_template'] ) ? true : false;
+		$save_and_continue_enabled                 = ! empty( $this->form_data['settings']['email']['connection_save_and_continue']['enable_email_notification'] ) ? true : false;
 
 		if ( $email_template_included && true === $this->html ) {
 			$message = apply_filters( 'everest_forms_email_template_message', $message, $this, $connection_id );
+		} elseif ( ( $save_and_continue_email_template_included && true === $this->html ) && ( true === $save_and_continue_enabled ) ) {
+			$message = apply_filters( 'everest_forms_email_template_message', $message, $this, 'connection_save_and_continue' );
 		} else {
 			$message = $this->build_email( $message );
 		}
@@ -348,6 +360,19 @@ class EVF_Emails {
 		// Let's do this.
 		$sent = wp_mail( $to, $subject, $message, $this->get_headers(), $this->attachments );
 
+		if ( ! $sent ) {
+			$error_message = apply_filters( 'everest_forms_email_send_failed_message', '' );
+			$failed_data   = get_transient( 'everest_forms_mail_send_failed_count' );
+			$failed_count  = $failed_data && isset( $failed_data['failed_count'] ) ? $failed_data['failed_count'] : 0;
+			++$failed_count;
+			set_transient(
+				'everest_forms_mail_send_failed_count',
+				array(
+					'failed_count'  => $failed_count,
+					'error_message' => $error_message,
+				)
+			);
+		}
 		// Hooks after the email is sent.
 		do_action( 'everest_forms_email_send_after', $this );
 
@@ -430,6 +455,7 @@ class EVF_Emails {
 		$message = '';
 
 		if ( $html ) {
+
 			/*
 			 * HTML emails.
 			 */
@@ -445,6 +471,13 @@ class EVF_Emails {
 
 			$field_iterator = 1;
 			foreach ( $this->fields as $meta_id => $field ) {
+
+				if ( isset( $this->form_data['settings']['disabled_entries'] ) && '1' === $this->form_data['settings']['disabled_entries'] ) {
+					$types_to_remove = array( 'image-upload', 'file-upload', 'signature' );
+					if ( isset( $field['type'] ) && in_array( $field['type'], $types_to_remove, true ) ) {
+						continue;
+					}
+				}
 				if (
 					! apply_filters( 'everest_forms_email_display_empty_fields', false ) &&
 					( empty( $field['value'] ) && '0' !== $field['value'] )
@@ -457,16 +490,12 @@ class EVF_Emails {
 					continue;
 				}
 
-				if ( 'radio' === $field['type'] && empty( $field['value']['label'] ) ) {
-
+				if ( ( 'radio' === $field['type'] && empty( $field['value']['label'] ) ) || ( 'payment-multiple' === $field['type'] && empty( $field['value']['label'] ) ) ) {
 					continue;
-
 				}
 
-				if ( 'checkbox' === $field['type'] && empty( $field['value']['label'][0] ) ) {
-
+				if ( ( 'checkbox' === $field['type'] && empty( $field['value']['label'][0] ) ) || ( 'payment-checkbox' === $field['type'] && empty( $field['value']['label'] ) ) ) {
 					continue;
-
 				}
 
 				// If there's the export data filter, utilize that and re-loop promptly.
@@ -550,19 +579,27 @@ class EVF_Emails {
 				$field_item  = str_replace( '{field_value}', $field_value, $field_item );
 
 				$message .= wpautop( $field_item );
-				$field_iterator ++;
+				++$field_iterator;
 			}
 		} else {
 			/*
 			 * Plain Text emails.
 			 */
 			foreach ( $this->fields as $field ) {
+
+				if ( isset( $this->form_data['settings']['disabled_entries'] ) && '1' === $this->form_data['settings']['disabled_entries'] ) {
+					$types_to_remove = array( 'image-upload', 'file-upload', 'signature' );
+					if ( isset( $field['type'] ) && in_array( $field['type'], $types_to_remove, true ) ) {
+						continue;
+					}
+				}
+
 				if ( ! apply_filters( 'everest_forms_email_display_empty_fields', false ) && ( empty( $field['value'] ) && '0' !== $field['value'] ) ) {
 					continue;
 				}
 
 				$field_val  = empty( $field['value'] ) && '0' !== $field['value'] ? esc_html__( '(empty)', 'everest-forms' ) : $field['value'];
-				$field_name = $field['name'];
+				$field_name = isset( $field['name'] ) ? $field['name'] : '';
 
 				if ( is_array( $field_val ) ) {
 					$field_html = array();
@@ -571,7 +608,11 @@ class EVF_Emails {
 						$field_html[] = $meta_val;
 					}
 
-					$field_val = implode( ', ', $field_html );
+					if ( ! empty( $field_html ) && is_array( $field_html ) ) {
+						$field_val = implode( ', ', $field_html );
+					} else {
+						$field_val = '';
+					}
 				}
 
 				if ( empty( $field_name ) ) {

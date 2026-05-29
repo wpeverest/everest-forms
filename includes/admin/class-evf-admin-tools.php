@@ -17,22 +17,54 @@ class EVF_Admin_Tools {
 	 * Handles output of the reports page in admin.
 	 */
 	public static function output() {
-		include_once dirname( __FILE__ ) . '/views/html-admin-page-tools.php';
+		include_once __DIR__ . '/views/html-admin-page-tools.php';
 	}
 
 	/**
 	 * Show the import page.
 	 */
 	public static function import() {
-		include_once dirname( __FILE__ ) . '/views/html-admin-page-import.php';
+		include_once __DIR__ . '/views/html-admin-page-import.php';
 	}
 
 	/**
 	 * Show the export page.
 	 */
 	public static function export() {
-		include_once dirname( __FILE__ ) . '/views/html-admin-page-export.php';
+		include_once __DIR__ . '/views/html-admin-page-export.php';
 	}
+	/**
+	 * Show the Form migrator page.
+	 *
+	 * @since 2.0.6
+	 */
+	public static function form_migrator() {
+		// Form object list.
+		$forms_object = array(
+			'contactform7' => class_exists( 'EVF_Fm_Contactform7' ) ? new EVF_Fm_Contactform7() : '',
+			'wpforms'      => class_exists( 'EVF_Fm_wpforms' ) ? new EVF_Fm_Wpforms() : '',
+		);
+		// Forms status.
+		$forms_status = array();
+		foreach ( $forms_object as $form_id => $form_obj ) {
+			$forms_status[] = $form_obj->register( array() );
+			// For dismiss the notification.
+			if ( ! $form_obj->is_dimissed() ) {
+				$option_id = 'evf_fm_dismiss_xnotice_' . $form_obj->slug;
+				update_option( $option_id, true );
+			}
+		}
+
+		include_once __DIR__ . '/views/html-admin-page-form-migrator.php';
+	}
+
+	/**
+	 * Show the setting page.
+	 */
+	public static function setting() {
+		include_once __DIR__ . '/views/html-admin-page-setting.php';
+	}
+
 
 	/**
 	 * Show the logs page.
@@ -60,6 +92,11 @@ class EVF_Admin_Tools {
 		// Remove All Logs.
 		if ( ! empty( $_REQUEST['handle_all'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 			self::remove_all_logs();
+		}
+
+		// Download Log.
+		if ( ! empty( $_REQUEST['handle_download'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+			self::download_log();
 		}
 
 		include_once 'views/html-admin-page-tools-logs.php';
@@ -180,6 +217,41 @@ class EVF_Admin_Tools {
 	}
 
 	/**
+	 * Download the chosen log file.
+	 */
+	public static function download_log() {
+		if ( empty( $_REQUEST['_wpnonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ), 'download_log' ) ) {
+			wp_die( esc_html__( 'Action failed. Please refresh the page and retry.', 'everest-forms' ) );
+		}
+
+			$logs    = self::scan_log_files();
+			$log_key = sanitize_title( wp_unslash( $_REQUEST['handle_download'] ) );
+
+			if ( ! isset( $logs[ $log_key ] ) ) {
+				wp_die( esc_html__( 'Log file not found.', 'everest-forms' ) );
+			}
+
+			$log_file = EVF_LOG_DIR . $logs[ $log_key ];
+
+			if ( ! file_exists( $log_file ) ) {
+				wp_die( esc_html__( 'Log file not found.', 'everest-forms' ) );
+			}
+
+			while ( ob_get_level() ) {
+				ob_end_clean();
+			}
+
+			header( 'Content-Description: File Transfer' );
+			header( 'Content-Type: text/plain' );
+			header( 'Content-Disposition: attachment; filename="' . sanitize_file_name( basename( $log_file )  ) . '"' );
+			header( 'Content-Length: ' . filesize( $log_file ) );
+			header( 'Cache-Control: must-revalidate' );
+			header( 'Pragma: public' );
+			readfile( $log_file ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_readfile
+			exit();
+	}
+
+	/**
 	 * Remove/delete all logs.
 	 */
 	public static function remove_all_logs() {
@@ -196,4 +268,21 @@ class EVF_Admin_Tools {
 		exit();
 	}
 
+	/**
+	 * Roles and permission.
+	 *
+	 * @since 3.0.8
+	 */
+	public static function roles_and_permission() {
+		echo '<div id="evf-roles-and-permission"></div>';
+	}
+
+	/**
+	 * Handles output of the Smart SMTP Settings Page.
+	 *
+	 * @since 3.0.8
+	 */
+	public static function evf_smart_smtp_setup() {
+		include_once __DIR__ . '/views/html-admin-page-smart-smtp-setup.php';
+	}
 }

@@ -12,7 +12,7 @@
  * happen. When this occurs the version of the template file will be bumped and
  * the readme will list any important changes.
  *
- * @see     https://docs.wpeverest.com/docs/everest-forms/template-structure/
+ * @see     https://docs.everestforms.net/
  * @package EverestForms/Templates
  * @version 1.2.0
  */

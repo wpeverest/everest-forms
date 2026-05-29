@@ -23,6 +23,10 @@ class EVF_Field_Signature extends EVF_Form_Fields {
 		$this->order  = 100;
 		$this->group  = 'advanced';
 		$this->is_pro = true;
+		$this->links  = array(
+			'image_id' => '',
+			'vedio_id' => 'oF-9ooqfUpk',
+		);
 
 		parent::__construct();
 	}

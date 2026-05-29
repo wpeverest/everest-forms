@@ -1,0 +1,30 @@
+{
+  "$schema": "https://schemas.wp.org/block-json/1.1",
+  "apiVersion": 3,
+  "name": "everest-forms/user-login",
+  "version": "1.0.0",
+  "title": "User Login",
+  "category": "everest-forms",
+  "description": "Display login form.",
+  "keywords": [
+    "everest forms login form",
+    "loging form"
+  ],
+  "textdomain": "everest-forms",
+  "example": {
+    "attributes": {}
+  },
+  "supports": {},
+  "attributes": {
+    "redirect_url": {
+      "type": "string",
+      "default": ""
+    },
+    "recaptcha": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "editorScript": "everest-forms-block-editor",
+  "editorStyle": "everest-forms-block-editor"
+}

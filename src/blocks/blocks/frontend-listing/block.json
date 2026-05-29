@@ -1,0 +1,26 @@
+{
+  "$schema": "https://schemas.wp.org/block-json/1.1",
+  "apiVersion": 3,
+  "name": "everest-forms/frontend-listing",
+  "version": "1.0.0",
+  "title": "Frontend Listing",
+  "category": "everest-forms",
+  "description": "Select and display one of your frontend listing.",
+  "keywords": [
+    "everest forms frontend listing",
+    "frontend listing"
+  ],
+  "textdomain": "everest-forms",
+  "example": {
+    "attributes": {}
+  },
+  "supports": {},
+  "attributes": {
+    "id": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "editorScript": "everest-forms-block-editor",
+  "editorStyle": "everest-forms-block-editor"
+}

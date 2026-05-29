@@ -18,6 +18,7 @@ class EVF_Admin {
 	 */
 	public function __construct() {
 		add_action( 'init', array( $this, 'includes' ) );
+		add_action( 'current_screen', array( $this, 'maybe_load_integrations' ) );
 		add_action( 'admin_init', array( $this, 'buffer' ), 1 );
 		add_action( 'admin_init', array( $this, 'addon_actions' ) );
 		add_action( 'admin_init', array( $this, 'template_actions' ) );
@@ -38,24 +39,27 @@ class EVF_Admin {
 	 * Include any classes we need within admin.
 	 */
 	public function includes() {
-		include_once dirname( __FILE__ ) . '/evf-admin-functions.php';
-		include_once dirname( __FILE__ ) . '/class-evf-admin-menus.php';
-		include_once dirname( __FILE__ ) . '/class-evf-admin-notices.php';
-		include_once dirname( __FILE__ ) . '/class-evf-admin-assets.php';
-		include_once dirname( __FILE__ ) . '/class-evf-admin-editor.php';
-		include_once dirname( __FILE__ ) . '/class-evf-admin-forms.php';
-		include_once dirname( __FILE__ ) . '/class-evf-admin-entries.php';
-		include_once dirname( __FILE__ ) . '/class-evf-admin-import-export.php';
-		include_once dirname( __FILE__ ) . '/class-evf-admin-deactivation-feedback.php';
+		include_once __DIR__ . '/evf-admin-functions.php';
+		include_once __DIR__ . '/class-evf-admin-menus.php';
+		include_once __DIR__ . '/class-evf-admin-notices.php';
+		include_once __DIR__ . '/class-evf-admin-assets.php';
+		include_once __DIR__ . '/class-evf-admin-editor.php';
+		include_once __DIR__ . '/class-evf-admin-forms.php';
+		include_once __DIR__ . '/class-evf-admin-entries.php';
+		include_once __DIR__ . '/class-evf-admin-import-export.php';
 
 		// Setup/welcome.
 		if ( ! empty( $_GET['page'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 			switch ( $_GET['page'] ) { // phpcs:ignore WordPress.Security.NonceVerification
-				case 'evf-welcome':
-					include_once dirname( __FILE__ ) . '/class-evf-admin-welcome.php';
+				case 'evf-dashboard':
+					include_once __DIR__ . '/class-evf-admin-dashboard.php';
 					break;
 			}
 		}
+
+		include_once __DIR__ . '/form-migrator/abstract-evf-form-migrator.php';
+		include_once __DIR__ . '/form-migrator/class-evf-fm-contactform7.php';
+		include_once __DIR__ . '/form-migrator/class-evf-fm-wpforms.php';
 	}
 
 	/**
@@ -70,8 +74,7 @@ class EVF_Admin {
 				if ( empty( $_GET['evf-addons-nonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_GET['evf-addons-nonce'] ) ), 'refresh' ) ) {
 					wp_die( esc_html_e( 'Could not verify nonce', 'everest-forms' ) );
 				}
-
-				foreach ( array( 'evf_pro_license_plan', 'evf_addons_sections', 'evf_extensions_section' ) as $transient ) {
+				foreach ( array( 'evf_pro_license_plan', 'evf_addons_sections_list', 'evf_extensions_section_list' ) as $transient ) {
 					delete_transient( $transient );
 				}
 			}
@@ -94,6 +97,9 @@ class EVF_Admin {
 					check_admin_referer( 'deactivate-plugin_' . $plugin );
 
 					deactivate_plugins( $plugin );
+					$evf_stats_report_cron = new EVF_Report_Cron();
+					$evf_stats_report_cron->deactivate();
+
 				}
 			}
 
@@ -108,15 +114,15 @@ class EVF_Admin {
 	 */
 	public function template_actions() {
 		if ( isset( $_GET['page'], $_REQUEST['action'] ) && 'evf-builder' === $_GET['page'] ) {
-			$action     = sanitize_text_field( wp_unslash( $_REQUEST['action'] ) );
-			$templatres = evf_get_json_file_contents( 'assets/extensions-json/templates/all_templates.json' );
-
-			if ( 'evf-template-refresh' === $action && ! empty( $templatres ) ) {
+			$action    = sanitize_text_field( wp_unslash( $_REQUEST['action'] ) );
+			$templates = EVF_Admin_Form_Templates::get_template_data();
+			$templates = is_array( $templates ) ? $templates : array();
+			if ( 'evf-template-refresh' === $action ) {
 				if ( empty( $_GET['evf-template-nonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_GET['evf-template-nonce'] ) ), 'refresh' ) ) {
 					wp_die( esc_html_e( 'Could not verify nonce', 'everest-forms' ) );
 				}
 
-				foreach ( array( 'evf_pro_license_plan', 'evf_template_sections', 'evf_template_section' ) as $transient ) {
+				foreach ( array( 'evf_pro_license_plan', 'evf_template_sections', 'evf_template_section', 'evf_template_section_list' ) as $transient ) {
 					delete_transient( $transient );
 				}
 
@@ -128,7 +134,7 @@ class EVF_Admin {
 	}
 
 	/**
-	 * Handle redirects to setup/welcome page after install and updates.
+	 * Handle redirects to setup/dashboard page after install and updates.
 	 *
 	 * For setup wizard, transient must be present, the user must have access rights, and we must ignore the network/bulk plugin updaters.
 	 */
@@ -143,7 +149,7 @@ class EVF_Admin {
 		}
 
 		// Setup wizard redirect.
-		if ( get_transient( '_evf_activation_redirect' ) && apply_filters( 'everest_forms_show_welcome_page', true ) ) {
+		if ( get_transient( '_evf_activation_redirect' ) && apply_filters( 'everest_forms_show_dashboard_page', true ) ) {
 			$do_redirect  = true;
 			$current_page = isset( $_GET['page'] ) ? evf_clean( sanitize_text_field( wp_unslash( $_GET['page'] ) ) ) : false; // phpcs:ignore WordPress.Security.NonceVerification
 
@@ -153,14 +159,14 @@ class EVF_Admin {
 			}
 
 			// On these pages, or during these events, disable the redirect.
-			if ( 'evf-welcome' === $current_page || EVF_Admin_Notices::has_notice( 'install' ) || apply_filters( 'everest_forms_prevent_automatic_wizard_redirect', false ) || isset( $_GET['activate-multi'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+			if ( 'evf-dashboard' === $current_page || EVF_Admin_Notices::has_notice( 'install' ) || apply_filters( 'everest_forms_prevent_automatic_wizard_redirect', false ) || isset( $_GET['activate-multi'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 				delete_transient( '_evf_activation_redirect' );
 				$do_redirect = false;
 			}
 
 			if ( $do_redirect ) {
 				delete_transient( '_evf_activation_redirect' );
-				wp_safe_redirect( admin_url( 'index.php?page=evf-welcome' ) );
+				wp_safe_redirect( admin_url( 'admin.php?page=evf-dashboard' ) );
 				exit;
 			}
 		}
@@ -178,8 +184,19 @@ class EVF_Admin {
 			return $footer_text;
 		}
 		$current_screen = get_current_screen();
-		$evf_pages      = evf_get_screen_ids();
 
+		// Removing footer text from builder page.
+		if ( 'everest-forms_page_evf-builder' === $current_screen->id && isset( $_GET['form_id'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+			add_filter(
+				'update_footer',
+				function () {
+					return '';
+				}
+			);
+			return '';
+		}
+
+		$evf_pages = evf_get_screen_ids();
 		// Check to make sure we're on a EverestForms admin page.
 		if ( isset( $current_screen->id ) && apply_filters( 'everest_forms_display_admin_footer_text', in_array( $current_screen->id, $evf_pages, true ) ) ) {
 			// Change the footer text.
@@ -193,7 +210,10 @@ class EVF_Admin {
 				evf_enqueue_js(
 					"
 					jQuery( 'a.evf-rating-link' ).on( 'click', function() {
-						jQuery.post( '" . evf()->ajax_url() . "', { action: 'everest_forms_rated' } );
+						jQuery.post( '" . evf()->ajax_url() . "', {
+							action: 'everest_forms_rated',
+							security: '" . wp_create_nonce( 'everest_forms_rated' ) . "'
+						} );
 						jQuery( this ).parent().text( jQuery( this ).data( 'rated' ) );
 					});
 					"
@@ -222,6 +242,22 @@ class EVF_Admin {
 		}
 
 		return $classes;
+	}
+
+	public function maybe_load_integrations( $screen ) {
+		if ( ! $screen ) {
+			return;
+		}
+
+		if ( ! in_array( $screen->id, evf_get_screen_ids(), true ) ) {
+			return;
+		}
+
+		if ( EVF()->integrations ) {
+			return;
+		}
+
+		EVF()->integrations = new EVF_Integrations();
 	}
 }
 

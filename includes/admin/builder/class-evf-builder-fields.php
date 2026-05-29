@@ -111,6 +111,36 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 	 * Output fields group buttons.
 	 */
 	public function output_fields() {
+		$containers = apply_filters(
+			'everest_forms_builder_layout_containers',
+			array(
+				array(
+					'type'    => 'layout_one_col',
+					'label'   => __( 'One Column', 'everest-forms' ),
+					'columns' => 1,
+					'icon'    => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.645 3.795a.28.28 0 0 0-.066-.181.21.21 0 0 0-.16-.076H6.581a.21.21 0 0 0-.16.076.28.28 0 0 0-.066.18v16.411c0 .068.024.133.066.181a.21.21 0 0 0 .16.076h10.838a.21.21 0 0 0 .16-.076.28.28 0 0 0 .066-.18zM19 20.205c0 .476-.167.933-.463 1.27a1.5 1.5 0 0 1-1.118.525H6.581c-.42 0-.821-.19-1.118-.526A1.93 1.93 0 0 1 5 20.205V3.795c0-.476.167-.933.463-1.27A1.5 1.5 0 0 1 6.581 2h10.838c.42 0 .822.19 1.118.526S19 3.319 19 3.795z"/></svg>',
+				),
+				array(
+					'type'    => 'layout_two_col',
+					'label'   => __( 'Two Column', 'everest-forms' ),
+					'columns' => 2,
+					'icon'    => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.25 4a.25.25 0 0 0-.25-.25h-7.25v16.5H20a.25.25 0 0 0 .25-.25zM3.75 20a.25.25 0 0 0 .25.25h7.25V3.75H4a.25.25 0 0 0-.25.25zm18 0A1.75 1.75 0 0 1 20 21.75H4A1.75 1.75 0 0 1 2.25 20V4A1.75 1.75 0 0 1 4 2.25h16A1.75 1.75 0 0 1 21.75 4z"/></svg>',
+				),
+				array(
+					'type'    => 'layout_three_col',
+					'label'   => __( 'Three Column', 'everest-forms' ),
+					'columns' => 3,
+					'icon'    => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.25 4a.25.25 0 0 0-.25-.25h-4.25v16.5H20a.25.25 0 0 0 .25-.25zM9.75 20.25h4.5V3.75h-4.5zm-6-.25a.25.25 0 0 0 .25.25h4.25V3.75H4a.25.25 0 0 0-.25.25zm18 0A1.75 1.75 0 0 1 20 21.75H4A1.75 1.75 0 0 1 2.25 20V4A1.75 1.75 0 0 1 4 2.25h16A1.75 1.75 0 0 1 21.75 4z"/></svg>',
+				),
+				array(
+					'type'    => 'layout_four_col',
+					'label'   => __( 'Four Column', 'everest-forms' ),
+					'columns' => 4,
+					'icon'    => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6.75 21V3a.75.75 0 0 1 1.5 0v18a.75.75 0 0 1-1.5 0m4.5 0V3a.75.75 0 0 1 1.5 0v18a.75.75 0 0 1-1.5 0m4.5 0V3a.75.75 0 0 1 1.5 0v18a.75.75 0 0 1-1.5 0"/><path d="M20.2 20.5V22H3.8v-1.5zm.3-.3V3.8a.3.3 0 0 0-.3-.3H3.8a.3.3 0 0 0-.3.3v16.4a.3.3 0 0 0 .3.3V22a1.8 1.8 0 0 1-1.79-1.616L2 20.2V3.8A1.8 1.8 0 0 1 3.8 2h16.4l.184.01A1.8 1.8 0 0 1 22 3.8v16.4l-.01.184a1.8 1.8 0 0 1-1.606 1.606L20.2 22v-1.5a.3.3 0 0 0 .3-.3"/></svg>',
+				),
+			)
+		);
+
 		$form_fields = evf()->form_fields->form_fields();
 
 		if ( ! empty( $form_fields ) ) {
@@ -119,8 +149,13 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 				<div class="everest-forms-add-fields-group open">
 					<a href="#" class="everest-forms-add-fields-heading" data-group="<?php echo esc_attr( $group ); ?>"><?php echo esc_html( evf_get_fields_group( $group ) ); ?><i class="handlediv"></i></a>
 					<div class="evf-registered-buttons">
-						<?php foreach ( $form_field as $field ) : ?>
-							<button type="button" id="everest-forms-add-fields-<?php echo esc_attr( $field->type ); ?>" class="evf-registered-item <?php echo sanitize_html_class( $field->class ); ?>" data-field-type="<?php echo esc_attr( $field->type ); ?>">
+						<?php
+						foreach ( $form_field as $field ) :
+							$field_plan  = isset( $field->plan ) ? $field->plan : '';
+							$addon_slug  = isset( $field->addon ) ? $field->addon : '';
+							$field_links = isset( $field->links ) ? json_encode( $field->links ) : '';
+							?>
+							<button type="button" id="everest-forms-add-fields-<?php echo esc_attr( $field->type ); ?>" class="evf-registered-item <?php echo sanitize_html_class( $field->class ); ?>" data-field-type="<?php echo esc_attr( $field->type ); ?>" data-field-plan="<?php echo esc_attr( $field_plan ); ?>" data-addon-slug="<?php echo esc_attr( $addon_slug ); ?>" data-links="<?php echo esc_attr( $field_links ); ?>">
 								<?php if ( isset( $field->icon ) ) : ?>
 									<i class="<?php echo esc_attr( $field->icon ); ?>"></i>
 								<?php endif; ?>
@@ -130,6 +165,25 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 					</div>
 				</div>
 				<?php
+
+				if ( 'advanced' === $group ) {
+					?>
+					<div class="everest-forms-add-fields-group open evf-layout-group">
+						<a href="#" class="everest-forms-add-fields-heading" data-group="layout"><?php esc_html_e( 'Layout', 'everest-forms' ); ?><i class="handlediv"></i></a>
+						<div class="evf-registered-buttons">
+							<?php foreach ( $containers as $container ) : ?>
+							<button type="button"
+								class="evf-layout-container-btn"
+								data-columns="<?php echo absint( $container['columns'] ); ?>"
+								data-field-type="<?php echo esc_attr( $container['type'] ); ?>">
+								<?php echo $container['icon']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+								<?php echo esc_html( $container['label'] ); ?>
+							</button>
+							<?php endforeach; ?>
+						</div>
+					</div>
+					<?php
+				}
 			}
 		}
 	}
@@ -138,7 +192,19 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 	 * Output fields setting options.
 	 */
 	public function output_fields_options() {
-		$fields = isset( $this->form_data['form_fields'] ) ? $this->form_data['form_fields'] : array();
+		$fields         = isset( $this->form_data['form_fields'] ) ? $this->form_data['form_fields'] : array();
+		$recaptcha_type = get_option( 'everest_forms_recaptcha_type', 'v2' );
+		if ( isset( $this->form_data['settings']['recaptcha_support'] ) && '1' === $this->form_data['settings']['recaptcha_support'] ) {
+			if ( 'v2' === $recaptcha_type || 'v3' === $recaptcha_type ) {
+				$recaptcha_type = 'recaptcha';
+			}
+			$fields['IWX5HFxv2j-18'] = array(
+				'id'       => 'IWX5HFxv2j-18',
+				'type'     => $recaptcha_type,
+				'label'    => '',
+				'meta-key' => $recaptcha_type . '_7543',
+			);
+		}
 
 		if ( ! empty( $fields ) ) {
 			foreach ( $fields as $field ) {
@@ -177,7 +243,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 		$fields    = isset( $form_data['form_fields'] ) ? $form_data['form_fields'] : array();
 		$structure = isset( $form_data['structure'] ) ? $form_data['structure'] : array( 'row_1' => array() );
 		$row_ids   = array_map(
-			function( $row_id ) {
+			function ( $row_id ) {
 				return str_replace( 'row_', '', $row_id );
 			},
 			array_keys( $structure )
@@ -234,13 +300,27 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 		 * @hooked EverestForms_MultiPart::display_builder_fields_before() Multi-Part markup open.
 		 */
 		do_action( 'everest_forms_display_builder_fields_before', $form_data, $form_id );
+		if ( isset( $this->form_data['settings']['recaptcha_support'] ) && '1' === $this->form_data['settings']['recaptcha_support'] ) {
+			$num_rows = count( $structure );
+
+			// Create a new row with the next available row number.
+			$new_row_key = 'row_' . ( $num_rows + 1 );
+			$new_row     = array(
+				$new_row_key => array(
+					'grid_1' => array(
+						'IWX5HFxv2j-18',
+					),
+				),
+			);
+			$structure   = array_merge( $structure, $new_row );
+		}
 
 		foreach ( $structure as $row_id => $row_data ) {
 			$row         = str_replace( 'row_', '', $row_id );
 			$row_grid    = isset( $form_data['structure'][ 'row_' . $row ] ) ? $form_data['structure'][ 'row_' . $row ] : array();
 			$form_grid   = apply_filters( 'everest_forms_default_form_grid', 4 );
 			$total_grid  = $form_grid;
-			$active_grid = count( $row_grid ) > 0 ? count( $row_grid ) : 2;
+			$active_grid = ( count( $row_grid ) > 0 ) ? count( $row_grid ) : ( isset( $this->form_data['settings']['recaptcha_support'] ) && '1' === $this->form_data['settings']['recaptcha_support'] ? 1 : 2 );
 			$active_grid = $active_grid > $total_grid ? $total_grid : $active_grid;
 
 			/**
@@ -265,7 +345,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 			echo '<small>' . esc_html__( 'Select the type of row', 'everest-forms' ) . '</small>';
 			echo '<div class="clear"></div>';
 
-			for ( $grid_active = 1; $grid_active <= $total_grid; $grid_active ++ ) {
+			for ( $grid_active = 1; $grid_active <= $total_grid; $grid_active++ ) {
 				$class = 'evf-grid-selector';
 
 				if ( $grid_active === $active_grid ) {
@@ -278,7 +358,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 				$width  = ( 100 - $gaps ) / $grid_active;
 				$margin = ( $gaps / $grid_active ) / 2;
 
-				for ( $row_icon = 1; $row_icon <= $grid_active; $row_icon ++ ) {
+				for ( $row_icon = 1; $row_icon <= $grid_active; $row_icon++ ) {
 					echo '<span style="width:' . (float) $width . '%; margin-left:' . (float) $margin . '%; margin-right:' . (float) $margin . '%"></span>';
 				}
 
@@ -288,11 +368,25 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 			echo '</div>';
 			echo '</div>';
 			echo '<div class="clear evf-clear"></div>';
-
+			echo '<div class="evf-grid-lists">';
 			$grid_class = 'evf-admin-grid evf-grid-' . ( $active_grid );
-			for ( $grid_start = 1; $grid_start <= $active_grid; $grid_start ++ ) {
+			for ( $grid_start = 1; $grid_start <= $active_grid; $grid_start++ ) {
 				echo '<div class="' . esc_attr( $grid_class ) . ' " data-grid-id="' . absint( $grid_start ) . '">';
-				$grid_fields = isset( $row_grid[ 'grid_' . $grid_start ] ) && is_array( $row_grid[ 'grid_' . $grid_start ] ) ? $row_grid[ 'grid_' . $grid_start ] : array();
+				$grid_fields    = isset( $row_grid[ 'grid_' . $grid_start ] ) && is_array( $row_grid[ 'grid_' . $grid_start ] ) ? $row_grid[ 'grid_' . $grid_start ] : ( isset( $this->form_data['settings']['recaptcha_support'] ) && '1' === $this->form_data['settings']['recaptcha_support'] ? array(
+					'IWX5HFxv2j-18',
+				) : array() );
+				$recaptcha_type = get_option( 'everest_forms_recaptcha_type', 'v2' );
+				if ( isset( $this->form_data['settings']['recaptcha_support'] ) && '1' === $this->form_data['settings']['recaptcha_support'] ) {
+					if ( 'v2' === $recaptcha_type || 'v3' === $recaptcha_type ) {
+						$recaptcha_type = 'recaptcha';
+					}
+					$fields['IWX5HFxv2j-18'] = array(
+						'id'       => 'IWX5HFxv2j-18',
+						'type'     => $recaptcha_type,
+						'label'    => '',
+						'meta-key' => $recaptcha_type . '_7543',
+					);
+				}
 				foreach ( $grid_fields as $field_id ) {
 					if ( isset( $fields[ $field_id ] ) && ! in_array( $fields[ $field_id ]['type'], evf()->form_fields->get_pro_form_field_types(), true ) ) {
 						$this->field_preview( $fields[ $field_id ] );
@@ -300,6 +394,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 				}
 				echo '</div>';
 			}
+			echo '</div >';
 			echo '<div class="clear evf-clear"></div>';
 			echo '</div >';
 
@@ -347,7 +442,6 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 		$css .= ! empty( $field['input_columns'] ) && '3' === $field['input_columns'] ? ' everest-forms-list-3-columns' : '';
 		$css .= ! empty( $field['input_columns'] ) && 'inline' === $field['input_columns'] ? ' everest-forms-list-inline' : '';
 		$css  = apply_filters( 'everest_forms_field_preview_class', $css, $field );
-
 		printf( '<div class="everest-forms-field everest-forms-field-%1$s %2$s" id="everest-forms-field-%3$s" data-field-id="%3$s" data-field-type="%4$s">', esc_attr( $field['type'] ), esc_attr( $css ), esc_attr( $field['id'] ), esc_attr( $field['type'] ) );
 		printf( '<div class="evf-field-action">' );
 		if ( 'repeater-fields' !== $field['type'] ) {

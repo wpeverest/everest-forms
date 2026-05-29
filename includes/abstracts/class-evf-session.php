@@ -95,7 +95,7 @@ abstract class EVF_Session {
 	 */
 	public function get( $key, $default = null ) {
 		$key = sanitize_key( $key );
-		return isset( $this->_data[ $key ] ) ? maybe_unserialize( $this->_data[ $key ] ) : $default;
+		return isset( $this->_data[ $key ] ) ? evf_maybe_unserialize( $this->_data[ $key ] ) : $default;
 	}
 
 	/**

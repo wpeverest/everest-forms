@@ -10,7 +10,7 @@
  * happen. When this occurs the version of the template file will be bumped and
  * the readme will list any important changes.
  *
- * @see     https://docs.wpeverest.com/docs/everest-forms/template-structure/
+ * @see     https://docs.everestforms.net/
  * @package EverestForms/Templates
  * @version 1.0.0
  */
@@ -34,7 +34,7 @@ global $__everest_form_entry_id;
 		<div class="everest-forms-notice <?php echo esc_attr( implode( ' ', $classes ) ); ?>" role="alert">
 		<?php
 			echo wp_kses(
-				$message,
+				nl2br( $message ),
 				array(
 					'div'   => array(
 						'class' => true,
@@ -53,6 +53,7 @@ global $__everest_form_entry_id;
 					'li'    => array(
 						'class' => true,
 					),
+					'br'   => array(),
 				)
 			);
 

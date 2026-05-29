@@ -1,6 +1,6 @@
 <?php
 /**
- * EverestForms Entry Functions
+ * EverestForms Entry Functions - FIXED for All Forms View
  *
  * @package EverestForms\Functions
  * @since   1.1.0
@@ -33,7 +33,6 @@ function evf_get_entry( $id, $with_fields = false, $args = array() ) {
 		wp_cache_add( $id, $entry, 'evf-entry' );
 	}
 
-	// BW: Mark entry as read for older entries.
 	if ( is_null( $entry->fields ) && empty( $entry->viewed ) ) {
 		$is_viewed = $wpdb->update(
 			$wpdb->prefix . 'evf_entries',
@@ -67,7 +66,21 @@ function evf_get_entry( $id, $with_fields = false, $args = array() ) {
 			wp_cache_add( $id, $results, 'evf-entrymeta' );
 		}
 
-		$entry->meta = wp_list_pluck( $results, 'meta_value', 'meta_key' );
+		if ( $entry && is_object( $entry ) ) {
+			if ( ! empty( $results ) && is_array( $results ) ) {
+				$entry->meta = wp_list_pluck( $results, 'meta_value', 'meta_key' );
+			} else {
+				$entry->meta = array();
+			}
+		} else {
+			$logger = evf_get_logger();
+			$logger->critical(
+				$entry . PHP_EOL,
+				array(
+					'source' => 'fatal-errors',
+				)
+			);
+		}
 	}
 
 	return 0 !== $entry ? $entry : null;
@@ -104,16 +117,18 @@ function evf_get_entry_statuses( $form_data = array() ) {
 		array(
 			'publish' => esc_html__( 'Published', 'everest-forms' ),
 			'trash'   => esc_html__( 'Trash', 'everest-forms' ),
+			'spam'    => esc_html__( 'Spam', 'everest-forms' ),
 		),
 		$form_data
 	);
 }
 
+
 /**
  * Search entries.
  *
  * @param  array $args Search arguments.
- * @return array
+ * @return array       Array of entry IDs.
  */
 function evf_search_entries( $args ) {
 	global $wpdb;
@@ -133,49 +148,45 @@ function evf_search_entries( $args ) {
 		$args['cap'] = 'everest_forms_view_form_entries';
 	}
 
-	// Check if form ID is valid for entries.
-	if ( ! array_key_exists( $args['form_id'], evf_get_all_forms() ) ) {
-		return array();
+	if ( ! empty( $args['form_id'] ) ) {
+		$all_forms = evf_get_all_forms();
+
+		if ( ! array_key_exists( $args['form_id'], $all_forms ) ) {
+			return array();
+		}
+
+		if ( ! empty( $args['cap'] ) && ! current_user_can( $args['cap'], $args['form_id'] ) ) {
+			return array();
+		}
 	}
 
-	// Check permission if we can view form entries.
-	if ( ! empty( $args['cap'] ) && ! current_user_can( $args['cap'], $args['form_id'] ) ) {
-		return array();
-	}
-
-	// WHERE clause.
 	$where = array(
 		'default' => "{$wpdb->prefix}evf_entries.entry_id = {$wpdb->prefix}evf_entrymeta.entry_id",
 	);
 
-	$allowed_forms = implode(
-		',',
-		array_map(
-			'intval',
-			evf()->form->get(
-				'',
-				array(
-					'fields' => 'ids',
-					'cap'    => $args['cap'],
-				)
-			)
+	$allowed_form_ids = evf()->form->get(
+		'',
+		array(
+			'fields' => 'ids',
+			'cap'    => $args['cap'],
 		)
 	);
 
-	// Check if forms are allowed.
+	$allowed_forms = implode( ',', array_map( 'intval', (array) $allowed_form_ids ) );
+
 	if ( ! empty( $allowed_forms ) ) {
 		$where['arg_form_id'] = "{$wpdb->prefix}evf_entries.form_id IN ( {$allowed_forms} )";
 	} else {
 		$where = array( 'return_empty' => '1=0' );
 	}
 
-	// Give developers an ability to modify WHERE (unset clauses, add new, etc).
 	$where     = (array) apply_filters( 'everest_forms_search_entries_where', $where, $args );
 	$where_sql = implode( ' AND ', $where );
-
-	// Query object.
-	$query   = array();
-	$query[] = "SELECT DISTINCT {$wpdb->prefix}evf_entries.entry_id FROM {$wpdb->prefix}evf_entries INNER JOIN {$wpdb->prefix}evf_entrymeta WHERE {$where_sql}";
+	$query     = array();
+	$query[]   = "SELECT DISTINCT {$wpdb->prefix}evf_entries.entry_id
+	            FROM {$wpdb->prefix}evf_entries
+	            INNER JOIN {$wpdb->prefix}evf_entrymeta
+	            WHERE {$where_sql}";
 
 	if ( ! empty( $args['search'] ) ) {
 		$like    = '%' . $wpdb->esc_like( $args['search'] ) . '%';
@@ -191,12 +202,23 @@ function evf_search_entries( $args ) {
 			$query[] = $wpdb->prepare( 'AND `status` != %s AND `viewed` = 0', 'trash' );
 		} elseif ( 'starred' === $args['status'] ) {
 			$query[] = $wpdb->prepare( 'AND `status` != %s AND `starred` = 1', 'trash' );
+		} elseif ( 'read' === $args['status'] ) {
+			$query[] = $wpdb->prepare( 'AND `status` != %s AND `viewed` = 1', 'trash' );
+		} elseif ( 'pending' === $args['status'] ) {
+			$query[] = $wpdb->prepare( 'AND `status` = %s', 'pending' );
+		} elseif ( 'approved' === $args['status'] ) {
+			$query[] = $wpdb->prepare( 'AND `status` = %s', 'approved' );
+		} elseif ( 'denied' === $args['status'] ) {
+			$query[] = $wpdb->prepare( 'AND `status` = %s', 'denied' );
+		} elseif ( 'spam' === $args['status'] ) {
+			$query[] = $wpdb->prepare( 'AND `status` = %s', 'spam' );
+		} elseif ( 'unspam' === $args['status'] ) {
+			$query[] = $wpdb->prepare( 'AND `status` = %s', 'publish' );
 		} else {
 			$query[] = $wpdb->prepare( 'AND `status` = %s', $args['status'] );
 		}
 	}
 
-	// Removing Draft Entry (Save and Contd Add-on).
 	if ( empty( $args['status'] ) || 'draft' !== $args['status'] ) {
 		$query[] = $wpdb->prepare( 'AND `status` <> %s', 'draft' );
 	}
@@ -205,7 +227,8 @@ function evf_search_entries( $args ) {
 	$orderby      = in_array( $args['orderby'], $valid_fields, true ) ? $args['orderby'] : 'entry_id';
 	$order        = 'DESC' === strtoupper( $args['order'] ) ? 'DESC' : 'ASC';
 	$orderby_sql  = sanitize_sql_orderby( "{$orderby} {$order}" );
-	$query[]      = "ORDER BY {$orderby_sql}";
+
+	$query[] = "ORDER BY {$orderby_sql}";
 
 	if ( -1 < $args['limit'] ) {
 		$query[] = $wpdb->prepare( 'LIMIT %d', absint( $args['limit'] ) );
@@ -217,10 +240,9 @@ function evf_search_entries( $args ) {
 
 	$results = $wpdb->get_results( implode( ' ', $query ), ARRAY_A ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 
-	$ids = wp_list_pluck( $results, 'entry_id' );
-
-	return $ids;
+	return wp_list_pluck( $results, 'entry_id' );
 }
+
 
 /**
  * Get total entries counts by status.
@@ -280,10 +302,11 @@ function evf_get_count_entries_by_last_entry( $form_id, $last_entry ) {
  * @param int    $form_id    Form ID.
  * @param string $start_date Start date.
  * @param string $end_date   End date.
+ * @param bool   $hide_trashed   Exclude trashed entries.
  *
  * @return array of entries by form ID.
  */
-function evf_get_entries_by_form_id( $form_id, $start_date = '', $end_date = '' ) {
+function evf_get_entries_by_form_id( $form_id, $start_date = '', $end_date = '', $hide_trashed = false ) {
 	global $wpdb;
 
 	$query   = array();
@@ -298,6 +321,10 @@ function evf_get_entries_by_form_id( $form_id, $start_date = '', $end_date = '' 
 	}
 
 	$query[] = $wpdb->prepare( 'AND status != %s', 'draft' );
+
+	if ( $hide_trashed ) {
+		$query[] = $wpdb->prepare( 'AND status != %s', 'trash' );
+	}
 
 	$results = wp_cache_get( $form_id, 'evf-search-entries' );
 

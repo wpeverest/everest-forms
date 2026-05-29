@@ -46,6 +46,13 @@ class EVF_Shortcodes {
 			'after'  => null,
 		)
 	) {
+		$form_id        = isset( $atts['id'] ) ? $atts['id'] : '';
+		$is_theme_style = get_post_meta( $form_id, 'everest_forms_enable_theme_style', true );
+		if ( 'default' === $is_theme_style ) {
+			$wrapper['class'] .= ' evf-frontend-form-default';
+			wp_register_style( 'evf-frontend-default-css', EVF()->plugin_url() . '/assets/css/everest-forms-default-frontend.css', array(), EVF_VERSION );
+			wp_enqueue_style( 'evf-frontend-default-css' );
+		}
 		ob_start();
 
 		$wrap_before = empty( $wrapper['before'] ) ? '<div class="' . esc_attr( $wrapper['class'] ) . '">' : $wrapper['before'];

@@ -88,7 +88,9 @@ class EVF_Install {
 		add_action( 'init', array( __CLASS__, 'init_background_updater' ), 5 );
 		add_action( 'admin_init', array( __CLASS__, 'install_actions' ) );
 		add_filter( 'map_meta_cap', array( __CLASS__, 'filter_map_meta_cap' ), 10, 4 );
-		add_filter( 'plugin_action_links_' . EVF_PLUGIN_BASENAME, array( __CLASS__, 'plugin_action_links' ) );
+		if ( defined( 'EVF_PLUGIN_BASENAME' ) ) {
+			add_filter( 'plugin_action_links_' . EVF_PLUGIN_BASENAME, array( __CLASS__, 'plugin_action_links' ) );
+		}
 		add_filter( 'plugin_row_meta', array( __CLASS__, 'plugin_row_meta' ), 10, 2 );
 		add_filter( 'wpmu_drop_tables', array( __CLASS__, 'wpmu_drop_tables' ) );
 		add_filter( 'cron_schedules', array( __CLASS__, 'cron_schedules' ) );
@@ -98,7 +100,7 @@ class EVF_Install {
 	 * Init background updates
 	 */
 	public static function init_background_updater() {
-		include_once dirname( __FILE__ ) . '/class-evf-background-updater.php';
+		include_once __DIR__ . '/class-evf-background-updater.php';
 		self::$background_updater = new EVF_Background_Updater();
 	}
 
@@ -163,6 +165,7 @@ class EVF_Install {
 		self::maybe_add_activated_date();
 
 		delete_transient( 'evf_installing' );
+		delete_transient( 'evf_template_section_list' );
 
 		do_action( 'everest_forms_flush_rewrite_rules' );
 		do_action( 'everest_forms_installed' );
@@ -172,7 +175,7 @@ class EVF_Install {
 	 * Reset any notices added to admin.
 	 */
 	private static function remove_admin_notices() {
-		include_once dirname( __FILE__ ) . '/admin/class-evf-admin-notices.php';
+		include_once __DIR__ . '/admin/class-evf-admin-notices.php';
 		EVF_Admin_Notices::remove_all_notices();
 	}
 
@@ -326,14 +329,15 @@ class EVF_Install {
 	 */
 	private static function create_options() {
 		// Include settings so that we can run through defaults.
-		include_once dirname( __FILE__ ) . '/admin/class-evf-admin-settings.php';
+		include_once __DIR__ . '/admin/class-evf-admin-settings.php';
 
 		$settings = EVF_Admin_Settings::get_settings_pages();
 
 		foreach ( $settings as $section ) {
-			if ( ! method_exists( $section, 'get_settings' ) ) {
-				continue;
-			}
+			if ( ! is_object( $section ) || ! method_exists( $section, 'get_settings' ) ) {
+                continue;
+            }
+
 			$subsections = array_unique( array_merge( array( '' ), array_keys( $section->get_sections() ) ) );
 
 			foreach ( $subsections as $subsection ) {
@@ -592,7 +596,7 @@ class EVF_Install {
 		$forms_count = wp_count_posts( 'everest_form' );
 
 		if ( empty( $forms_count->publish ) ) {
-			include_once dirname( __FILE__ ) . '/templates/contact.php';
+			include_once __DIR__ . '/templates/contact.php';
 
 			// Create a form.
 			$form_id = wp_insert_post(
@@ -730,7 +734,7 @@ class EVF_Install {
 	public static function plugin_row_meta( $plugin_meta, $plugin_file ) {
 		if ( EVF_PLUGIN_BASENAME === $plugin_file ) {
 			$new_plugin_meta = array(
-				'docs'    => '<a href="' . esc_url( apply_filters( 'everest_forms_docs_url', 'https://docs.wpeverest.com/documentation/plugins/everest-forms/' ) ) . '" aria-label="' . esc_attr__( 'View Everest Forms documentation', 'everest-forms' ) . '">' . esc_html__( 'Docs', 'everest-forms' ) . '</a>',
+				'docs'    => '<a href="' . esc_url( apply_filters( 'everest_forms_docs_url', 'https://docs.everestforms.net/' ) ) . '" aria-label="' . esc_attr__( 'View Everest Forms documentation', 'everest-forms' ) . '">' . esc_html__( 'Docs', 'everest-forms' ) . '</a>',
 				'support' => '<a href="' . esc_url( apply_filters( 'everest_forms_support_url', 'https://wordpress.org/support/plugin/everest-forms/' ) ) . '" aria-label="' . esc_attr__( 'Visit free customer support', 'everest-forms' ) . '">' . esc_html__( 'Free support', 'everest-forms' ) . '</a>',
 			);
 

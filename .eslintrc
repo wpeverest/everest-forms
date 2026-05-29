@@ -1,23 +1,25 @@
 {
-	"root": true,
+	"parser": "babel-eslint",
+	"extends": "eslint",
 	"env": {
-		"es6": true,
 		"browser": true,
 		"node": true
 	},
-	"globals": {
-		"wp": true
+	"settings": {
+		"react": {
+			"version": "detect",
+			"max-len": [
+				2,
+				{
+					"code": 350
+				}
+			]
+		}
 	},
 	"rules": {
-		"camelcase": 0,
-		"indent": 0,
-		"max-len": [
+		"max-nested-callbacks": [
 			2,
-			{
-				"code": 485
-			}
-		],
-		"no-console": 1
-	},
-	"parser": "babel-eslint"
+			4
+		]
+	}
 }

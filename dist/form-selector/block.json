@@ -1,0 +1,61 @@
+{
+  "$schema": "https://schemas.wp.org/block-json/1.1",
+  "apiVersion": 3,
+  "name": "everest-forms/form-selector",
+  "version": "1.0.0",
+  "title": "Everest Forms",
+  "category": "everest-forms",
+  "description": "Select and display one of your forms.",
+  "keywords": [
+    "everest forms"
+  ],
+  "textdomain": "everest-forms",
+  "example": {
+    "attributes": {}
+  },
+  "supports": {},
+  "attributes": {
+    "formId": {
+      "type": "string",
+      "default": ""
+    },
+    "displayTitle": {
+      "type": "boolean",
+      "default": false
+    },
+    "displayDescription": {
+      "type": "boolean",
+      "default": false
+    },
+    "popupType": {
+      "type": "string",
+      "default": "none"
+    },
+    "popupHeaderDesc": {
+      "type": "string",
+      "default": ""
+    },
+    "popupHeaderTitle": {
+      "type": "string",
+      "default": ""
+    },
+    "popupFooterDesc": {
+      "type": "string",
+      "default": ""
+    },
+    "popupFooterTitle": {
+      "type": "string",
+      "default": ""
+    },
+    "popupButtonText": {
+      "type": "string",
+      "default": "View Form"
+    },
+    "popupSize": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "editorScript": "everest-forms-block-editor",
+  "editorStyle": "everest-forms-block-editor"
+}

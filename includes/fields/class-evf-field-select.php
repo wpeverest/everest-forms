@@ -43,7 +43,6 @@ class EVF_Field_Select extends EVF_Form_Fields {
 			'basic-options'    => array(
 				'field_options' => array(
 					'label',
-					'meta',
 					'choices',
 					'enhanced_select',
 					'description',
@@ -54,7 +53,9 @@ class EVF_Field_Select extends EVF_Form_Fields {
 			),
 			'advanced-options' => array(
 				'field_options' => array(
+					'meta',
 					'size',
+					'show_values',
 					'placeholder',
 					'label_hide',
 					'css',
@@ -144,6 +145,33 @@ class EVF_Field_Select extends EVF_Form_Fields {
 		return $properties;
 	}
 
+
+	/**
+	 * Show values field option.
+	 *
+	 * @param array $field Field Data.
+	 */
+	public function show_values( $field ) {
+		// Show Values toggle option. This option will only show if already used or if manually enabled by a filter.
+		if ( ! empty( $field['show_values'] ) || apply_filters( 'everest_forms_fields_show_options_setting', false ) ) {
+			$args = array(
+				'slug'    => 'show_values',
+				'content' => $this->field_element(
+					'checkbox',
+					$field,
+					array(
+						'slug'    => 'show_values',
+						'value'   => isset( $field['show_values'] ) ? $field['show_values'] : '0',
+						'desc'    => __( 'Show Values', 'everest-forms' ),
+						'tooltip' => __( 'Check this to manually set form field values.', 'everest-forms' ),
+					),
+					false
+				),
+			);
+			$this->field_element( 'row', $field, $args );
+		}
+	}
+
 	/**
 	 * Register/queue frontend scripts.
 	 *
@@ -180,7 +208,7 @@ class EVF_Field_Select extends EVF_Form_Fields {
 
 		// Enable enhanced select toggle field.
 		$enhanced_select = $this->field_element(
-			'checkbox',
+			'toggle',
 			$field,
 			array(
 				'slug'    => 'enhanced_select',

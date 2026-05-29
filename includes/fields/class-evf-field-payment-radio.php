@@ -23,6 +23,10 @@ class EVF_Field_Payment_Radio extends EVF_Form_Fields {
 		$this->order  = 20;
 		$this->group  = 'payment';
 		$this->is_pro = true;
+		$this->links  = array(
+			'image_id' => '',
+			'vedio_id' => 'Qr_5ZynFs_I',
+		);
 
 		parent::__construct();
 	}

@@ -25,10 +25,10 @@ none
 Thumbs.db
 
 # Composer
-/vendor/
+
 
 # Build
-build/
+/build/
 everest-forms.zip
 
 # Unit tests
@@ -40,3 +40,6 @@ phpcs.xml
 phpunit.xml
 phpunit-watcher.yml
 .wp-env.override.json
+
+#Release
+/release/

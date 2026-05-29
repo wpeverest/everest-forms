@@ -23,6 +23,10 @@ class EVF_Field_Payment_Subtotal extends EVF_Form_Fields {
 		$this->order  = 220;
 		$this->group  = 'payment';
 		$this->is_pro = true;
+		$this->links  = array(
+			'image_id' => '',
+			'vedio_id' => 'PpRGYqBTeoI',
+		);
 
 		parent::__construct();
 	}

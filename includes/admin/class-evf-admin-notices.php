@@ -26,10 +26,12 @@ class EVF_Admin_Notices {
 	 * @var array
 	 */
 	private static $core_notices = array(
-		'update'      => 'update_notice',
-		'review'      => 'review_notice',
-		'survey'      => 'survey_notice',
-		'allow_usage' => 'allow_usage_notice',
+		'update'          => 'update_notice',
+		'review'          => 'review_notice',
+		'survey'          => 'survey_notice',
+		'allow_usage'     => 'allow_usage_notice',
+		'php_deprecation' => 'php_deprecation_notice',
+		'email_failed'    => 'email_failed_notice',
 	);
 
 	/**
@@ -82,6 +84,8 @@ class EVF_Admin_Notices {
 		self::add_notice( 'review' );
 		self::add_notice( 'survey' );
 		self::add_notice( 'allow_usage' );
+		self::add_notice( 'php_deprecation' );
+		self::add_notice( 'email_failed' );
 	}
 
 	/**
@@ -298,7 +302,6 @@ class EVF_Admin_Notices {
 		}
 
 		return $status;
-
 	}
 
 	/**
@@ -319,6 +322,42 @@ class EVF_Admin_Notices {
 			include 'views/html-notice-allow-usage.php';
 		}
 	}
+
+	/**
+	 * Include PHp deprecation Notice
+	 */
+	public static function php_deprecation_notice() {
+		$php_version  = explode( '-', PHP_VERSION )[0];
+		$base_version = '7.2';
+		if ( version_compare( $php_version, $base_version, '<' ) ) {
+			$last_prompt_date = get_option( 'everest_forms_php_deprecated_notice_last_prompt_date', '' );
+			if ( empty( $last_prompt_date ) || strtotime( $last_prompt_date ) < strtotime( '-1 day' ) ) {
+				$prompt_limit = 3;
+				$prompt_count = get_option( 'everest_forms_php_deprecated_notice_prompt_count', 0 );
+
+				if ( $prompt_count < $prompt_limit ) {
+					include 'views/html-notice-php-deprecation.php';
+				}
+			}
+		}
+	}
+
+	/**
+	 * Email Failed  Notice
+	 */
+	public static function email_failed_notice() {
+		$failed_data   = get_transient( 'everest_forms_mail_send_failed_count' );
+		$failed_count  = isset( $failed_data['failed_count'] ) ? $failed_data['failed_count'] : 0;
+		$error_message = isset( $failed_data['error_message'] ) ? $failed_data['error_message'] : '';
+		$show_notice   = $failed_count > 5 ? true : false;
+		if ( $show_notice ) {
+			$is_dismissed = get_option( 'everest_forms_email_send_notice_dismiss', false );
+		}
+		if ( $show_notice && ! $is_dismissed ) {
+			include 'views/html-notice-email-failed-notice.php';
+		}
+	}
+
 
 	/**
 	 * Remove non-EverestForms notices from EverestForms pages.

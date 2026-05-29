@@ -25,13 +25,13 @@ You can see a [list of current feature requests which require votes here](https:
 We don't offer technical support on GitHub so we recommend using the following:
 
 **Reading our documentation**
-Usage docs can be found here: https://docs.wpeverest.com/docs/everest-forms/
+Usage docs can be found here: https://docs.everestforms.net/
 
 If you have a problem, you may want to start with the self help guide here: https://docs.wpeverest.com/docs/everest-forms/self-service-guide/
 
 **Technical support for premium addons or if you're a WPEverest.com customer**
  from a human being - submit a ticket via the helpdesk
-https://wpeverest.com/contact/
+https://everestforms.net/contact/
 
 **General usage and development questions**
 - WordPress.org Forums: https://wordpress.org/support/plugin/everest-forms

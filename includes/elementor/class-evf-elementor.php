@@ -21,7 +21,6 @@ class EVF_Elementor {
 	public function __construct() {
 
 		$this->init();
-
 	}
 
 	/**
@@ -73,8 +72,10 @@ class EVF_Elementor {
 		 * Load assets in the elementor document.
 		 */
 	public function editor_assets() {
-		wp_register_style( 'everest-forms-admin', evf()->plugin_url() . '/assets/css/admin.css', array(), EVF_VERSION );
-		wp_enqueue_style( 'everest-forms-admin' );
+		if ( ! defined( 'EVEREST_FORMS_ELEMENTOR' ) ) {
+			wp_register_style( 'everest-forms-admin', evf()->plugin_url() . '/assets/css/admin.css', array(), EVF_VERSION );
+			wp_enqueue_style( 'everest-forms-admin' );
+		}
 	}
 }
 

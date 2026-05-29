@@ -23,7 +23,10 @@ class EVF_Field_Progress extends EVF_Form_Fields {
 		$this->order  = 200;
 		$this->group  = 'advanced';
 		$this->is_pro = true;
-
+		$this->links  = array(
+			'image_id' => '',
+			'vedio_id' => 'yVlmlVU4Gyk',
+		);
 		parent::__construct();
 	}
 }

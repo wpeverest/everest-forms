@@ -26,7 +26,6 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 			'basic-options'    => array(
 				'field_options' => array(
 					'label',
-					'meta',
 					'choose_format',
 					'choose_style',
 					'description',
@@ -38,6 +37,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 			'advanced-options' => array(
 				'field_options' => array(
 					'placeholder',
+					'meta',
 					'datetime_options',
 					'label_hide',
 					'css',
@@ -54,6 +54,9 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 	public function init_hooks() {
 		add_action( 'everest_forms_shortcode_scripts', array( $this, 'load_assets' ) );
 		add_filter( 'everest_forms_field_properties_' . $this->type, array( $this, 'field_properties' ), 5, 3 );
+		add_filter( 'everest_forms_entry_save_fields', array( $this, 'save_timezone' ), 10, 3 );
+		add_filter( 'everest_forms_html_field_value', array( $this, 'entry_html' ), 10, 5 );
+		add_filter( 'everest_forms_date_time_properties', array( $this, 'set_default_timezone' ), 10, 2 );
 	}
 
 	/**
@@ -171,19 +174,33 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 				false
 			);
 
-			$date_format_select = $this->field_element(
+			$date_format_types = array(
+				'Y-m-d'  => date_i18n( 'Y-m-d' ) . ' (Y-m-d)',
+				'F j, Y' => date_i18n( 'F j, Y' ) . ' (F j, Y)',
+				'm/d/Y'  => date_i18n( 'm/d/Y' ) . ' (m/d/Y)',
+				'd/m/Y'  => date_i18n( 'd/m/Y' ) . ' (d/m/Y)',
+				'Y.m.d'  => date_i18n( 'Y.m.d' ) . ' (Y.m.d)',
+				'F,Y'    => date_i18n( 'F,Y' ) . ' (F,Y)',
+				'm.d.y'  => date_i18n( 'm.d.y' ) . ' (m.d.y)',
+				'd.m.y'  => date_i18n( 'd.m.y' ) . ' (d.m.y)',
+				'd.m.y'  => date_i18n( 'd.m.Y' ) . ' (d.m.Y)',
+				'm-d-y'  => date_i18n( 'm-d-y' ) . ' (m-d-y)',
+			);
+
+			/**
+			 * Filter to modify the date format options.
+			 *
+			 * @since 3.2.2
+			 */
+			$date_format_options = apply_filters( 'everest_forms_date_format_options', $date_format_types );
+			$date_format_select  = $this->field_element(
 				'select',
 				$field,
 				array(
 					'slug'    => 'date_format',
 					'value'   => isset( $field['date_format'] ) ? $field['date_format'] : 'Y-m-d',
 					'class'   => 'evf-date-format',
-					'options' => array(
-						'Y-m-d'  => date_i18n( 'Y-m-d' ) . ' (Y-m-d)',
-						'F j, Y' => date_i18n( 'F j, Y' ) . ' (F j, Y)',
-						'm/d/Y'  => date_i18n( 'm/d/Y' ) . ' (m/d/Y)',
-						'd/m/Y'  => date_i18n( 'd/m/Y' ) . ' (d/m/Y)',
-					),
+					'options' => $date_format_options,
 				),
 				false
 			);
@@ -314,8 +331,30 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 				false
 			);
 
+			$date_timezone_label = $this->field_element(
+				'label',
+				$field,
+				array(
+					'slug'    => 'date_timezone',
+					'value'   => esc_html__( 'Timezone', 'everest-forms' ),
+					'tooltip' => esc_html__( 'Choose a desired timezone to save datetime in.', 'everest-forms' ),
+				),
+				false
+			);
+
+			$date_timezone_select = $this->field_element(
+				'select',
+				$field,
+				array(
+					'slug'    => 'date_timezone',
+					'value'   => isset( $field['date_timezone'] ) ? $field['date_timezone'] : '',
+					'options' => $this->get_timezones(),
+				),
+				false
+			);
+
 			$current_date_default = $this->field_element(
-				'checkbox',
+				'toggle',
 				$field,
 				array(
 					'slug'    => 'date_default',
@@ -327,7 +366,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 			);
 
 			$enable_past_date_disable = $this->field_element(
-				'checkbox',
+				'toggle',
 				$field,
 				array(
 					'slug'    => 'past_date_disable',
@@ -339,7 +378,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 			);
 
 			$enable_min_max = $this->field_element(
-				'checkbox',
+				'toggle',
 				$field,
 				array(
 					'slug'    => 'enable_min_max',
@@ -395,7 +434,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 			);
 
 			$set_date_range = $this->field_element(
-				'checkbox',
+				'toggle',
 				$field,
 				array(
 					'slug'    => 'set_date_range',
@@ -454,7 +493,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 
 			$args = array(
 				'slug'    => 'date_format',
-				'content' => $date_format_label . $date_format_select . $disable_dates_label . $disable_dates . $date_localization_label . $date_localization_select . '<div class="everest-forms-checklist everest-forms-checklist-inline">' . $current_date_mode . '</div><div class="everest-forms-current-date-format">' . $current_date_default . '</div><div class="everest-forms-past-date-disable-format">' . $enable_past_date_disable . '</div><div class="everest-forms-min-max-date-format">' . $enable_min_max . '</div><div class="everest-forms-min-max-date-range-format ' . $class_name . '">' . $set_date_range . '</div><div class="everest-forms-min-max-date-option ' . $class_name . '">' . $min_date_label . $min_date . $max_date_label . $max_date . '</div><div class="everest-forms-min-max-date-range-option ' . $class_name . '">' . $min_date_range_level . $min_date_range . $max_date_range_label . $max_date_range . '</div>',
+				'content' => $date_format_label . $date_format_select . $disable_dates_label . $disable_dates . $date_localization_label . $date_localization_select . $date_timezone_label . $date_timezone_select . '<div class="everest-forms-checklist everest-forms-checklist-inline">' . $current_date_mode . '</div><div class="everest-forms-current-date-format">' . $current_date_default . '</div><div class="everest-forms-past-date-disable-format">' . $enable_past_date_disable . '</div><div class="everest-forms-min-max-date-format">' . $enable_min_max . '</div><div class="everest-forms-min-max-date-range-format ' . $class_name . '">' . $set_date_range . '</div><div class="everest-forms-min-max-date-option ' . $class_name . '">' . $min_date_label . $min_date . $max_date_label . $max_date . '</div><div class="everest-forms-min-max-date-range-option ' . $class_name . '">' . $min_date_range_level . $min_date_range . $max_date_range_label . $max_date_range . '</div>',
 			);
 			$this->field_element( 'row', $field, $args );
 
@@ -485,6 +524,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 					'options' => array(
 						'15' => esc_html__( '15 minutes', 'everest-forms' ),
 						'30' => esc_html__( '30 minutes', 'everest-forms' ),
+						'60' => esc_html__( '1 hour', 'everest-forms' ),
 					),
 				),
 				false
@@ -558,7 +598,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 		$enable_min_max_time = '<div class="input-group-col-2">';
 
 		$enable_min_max_time .= $this->field_element(
-			'checkbox',
+			'toggle',
 			$field,
 			array(
 				'slug'    => 'enable_min_max_time',
@@ -591,13 +631,35 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 			),
 			false
 		);
-
-		$args = array(
+		$args            = array(
 			'slug'    => 'time_interval_format',
 			'content' => $time_format_label . $time_interval_select . $time_format_select . $enable_min_max_time . $select_min_time . $min_time_select . $select_max_time . $max_time_select,
 		);
 		$this->field_element( 'row', $field, $args );
 
+		echo '</div>';
+		echo '<div class="everest-forms-border-container everest-forms-slot-booking">';
+		echo '<h4 class="everest-forms-border-container-title">' . esc_html__( 'Slot Booking', 'everest-forms' ) . '</h4>'; // phpcs:ignore WordPress.Security.NonceVerification
+
+		$slot_booking_toggle = $this->field_element(
+			'toggle',
+			$field,
+			array(
+				'slug'    => 'slot_booking_advanced',
+				'desc'    => esc_html__( 'Enable Slot Booking', 'everest-forms' ),
+				'value'   => isset( $field['slot_booking_advanced'] ) ? $field['slot_booking_advanced'] : false,
+				'tooltip' => esc_html__( 'Enable to use date/time field as slot booking.', 'everest-forms' ),
+				'class'   => 'slot-booking-advanced	',
+				'default' => false,
+			),
+			false
+		);
+
+		$args = array(
+			'slug'    => 'slot_booking_advanced_setting',
+			'content' => $slot_booking_toggle,
+		);
+		$this->field_element( 'row', $field, $args );
 		echo '</div>';
 		echo '</div>';
 	}
@@ -664,6 +726,12 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 			$properties['inputs']['primary']['attr']['data-disable-dates'] = esc_attr( $field['disable_dates'] );
 		}
 
+		// Input primary: Booked slot.
+		if ( isset( $field['slot_booking_advanced'] ) && evf_string_to_bool( $field['slot_booking_advanced'] ) ) {
+			$properties['inputs']['primary']['attr']['data-slot-booking'] = esc_attr( $field['slot_booking_advanced'] );
+			$properties['inputs']['primary']['attr']['data-form-id']      = esc_attr( $form_data['id'] );
+		}
+
 		// Input primary: data-date-time.
 		if ( ! empty( $field['datetime_format'] ) ) {
 			$properties['inputs']['primary']['attr']['data-date-time'] = esc_attr( $field['datetime_format'] );
@@ -696,7 +764,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 				case 'date':
 					$properties['inputs']['primary']['attr']['value']                  = isset( $field['date_default'] ) ? esc_attr( date_i18n( $field['date_format'] ) ) : '';
 					$properties['inputs']['primary']['attr']['data-date-format']       = ! empty( $field['date_format'] ) ? str_replace( 'g:i A', 'h:i K', esc_attr( $field['date_format'] ) ) : '';
-					$properties['inputs']['primary']['attr']['data-past-disable-date'] = isset( $field['past_date_disable'] ) ? esc_attr( date_i18n( 'Y-m-d' ) ) : '';
+					$properties['inputs']['primary']['attr']['data-past-disable-date'] = isset( $field['past_date_disable'] ) ? esc_attr( date_i18n( $field['date_format'] ) ) : '';
 					break;
 				case 'time':
 					$properties['inputs']['primary']['attr']['value']            = '';
@@ -707,17 +775,17 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 						$date_format                                      = esc_attr( $field['date_format'] ) . ' ' . esc_attr( $field['time_format'] );
 						$properties['inputs']['primary']['attr']['value'] = isset( $field['date_default'] ) ? esc_attr( date_i18n( $date_format ) ) : '';
 						$properties['inputs']['primary']['attr']['data-date-format']       = ! empty( $field['date_format'] ) ? str_replace( 'g:i A', 'h:i K', esc_attr( $date_format ) ) : '';
-						$properties['inputs']['primary']['attr']['data-past-disable-date'] = isset( $field['past_date_disable'] ) ? esc_attr( date_i18n( 'Y-m-d' ) ) : '';
+						$properties['inputs']['primary']['attr']['data-past-disable-date'] = isset( $field['past_date_disable'] ) ? esc_attr( date_i18n( $field['date_format'] ) ) : '';
 					} else {
 						$date_format                                      = esc_attr( $field['date_format'] ) . ' g:i A';
 						$properties['inputs']['primary']['attr']['value'] = isset( $field['date_default'] ) ? esc_attr( date_i18n( $date_format ) ) : '';
 						$properties['inputs']['primary']['attr']['data-date-format']       = ! empty( $field['date_format'] ) ? str_replace( 'g:i A', 'h:i K', esc_attr( $date_format ) ) : '';
-						$properties['inputs']['primary']['attr']['data-past-disable-date'] = isset( $field['past_date_disable'] ) ? esc_attr( date_i18n( 'Y-m-d' ) ) : '';
+						$properties['inputs']['primary']['attr']['data-past-disable-date'] = isset( $field['past_date_disable'] ) ? esc_attr( date_i18n( $field['date_format'] ) ) : '';
 					}
 					break;
 			}
 		}
-		return $properties;
+		return apply_filters( 'everest_forms_date_time_properties', $properties, $field );
 	}
 
 	/**
@@ -831,7 +899,6 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 
 			echo '</div>';
 		}
-
 	}
 
 	/**
@@ -847,7 +914,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 		if ( ! empty( $form_data['form_fields'] ) ) {
 			$data_i10ns = array();
 			foreach ( $form_data['form_fields'] as $form_field ) {
-				if ( 'date-time' === $form_field['type'] && 'picker' === $form_field['datetime_style'] ) {
+				if ( 'date-time' === $form_field['type'] && isset( $form_field['datetime_style'] ) && 'picker' === $form_field['datetime_style'] ) {
 					$data_i10n = isset( $form_field['date_localization'] ) ? $form_field['date_localization'] : 'en';
 
 					if ( ! in_array( $data_i10n, $data_i10ns, true ) && 'en' !== $data_i10n ) {
@@ -864,7 +931,6 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 				}
 			}
 		}
-
 	}
 
 	/**
@@ -945,5 +1011,174 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 			);
 		}
 		echo '</select>';
+	}
+
+
+
+	/**
+	 * Returns a list of all timezones.
+	 */
+	public function get_timezones() {
+
+		$utc_timezone    = new DateTimeZone( 'UTC' );
+		$timezones       = DateTimeZone::listIdentifiers();
+		$timezones_array = array(
+			'Default' => 'Default',
+		);
+
+		foreach ( $timezones as $timezone ) {
+			$dtz    = new DateTimeZone( $timezone );
+			$offset = $dtz->getOffset( new DateTime( 'now', $utc_timezone ) );
+
+			$offset_hours   = abs( intval( $offset / 3600 ) );
+			$offset_minutes = abs( intval( ( $offset % 3600 ) / 60 ) );
+			$offset_sign    = ( $offset < 0 ) ? '-' : '+';
+
+			$offset_string = sprintf( '%s%02d:%02d', $offset_sign, $offset_hours, $offset_minutes );
+
+			$timezone_parts = explode( '/', $timezone );
+			$timezone_parts = implode( '/', array_reverse( $timezone_parts ) );
+
+			$timezones_array[ $timezone ] = $timezone_parts . " ($offset_string)";
+		}
+
+		return $timezones_array;
+	}
+
+
+
+	/**
+	 * Save timezone data for datetime field.
+	 *
+	 * @param [array] $field Field.
+	 * @param [array] $form_data Form Data.
+	 * @param [int]   $entry_id Entry Id.
+	 * @return array
+	 */
+	public function save_timezone( $field, $form_data, $entry_id ) {
+		global $wpdb;
+
+		$field_id = isset( $field['id'] ) ? $field['id'] : 0;
+
+		if ( $field_id ) {
+			$fields_settings = $form_data['form_fields'];
+			$field_settings  = isset( $fields_settings[ $field_id ] ) ? $fields_settings[ $field_id ] : array();
+
+			if ( ! empty( $field_settings ) && isset( $field_settings['date_timezone'] ) ) {
+
+				$date_timezone = $field_settings['date_timezone'];
+
+				if ( ! empty( $date_timezone ) && 'Default' !== $date_timezone ) {
+
+					$entry_metadata = array(
+						'entry_id'   => $entry_id,
+						'meta_key'   => sanitize_key( $field_settings['meta-key'] . '_timezone' ),
+						'meta_value' => maybe_serialize( $date_timezone ), // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value
+					);
+
+					// Insert entry meta.
+					$wpdb->insert( $wpdb->prefix . 'evf_entrymeta', $entry_metadata );
+				}
+			}
+		}
+
+		return $field;
+	}
+
+
+
+	/**
+	 * Adds Timezone for datetime column in entries table if available.
+	 *
+	 * @param [string] $value Value.
+	 * @param [string] $entry_meta Entry Meta.
+	 * @param [array]  $entry Entry.
+	 * @param [string] $type Type.
+	 * @param [string] $meta_key Meta Key.
+	 *
+	 * @return string
+	 */
+	public function entry_html( $value, $entry_meta, $entry, $type, $meta_key = '' ) {
+		$field_metas = isset( $entry->meta ) && is_array( $entry->meta ) ? $entry->meta : array();
+
+		$timezone_key = isset( $meta_key['meta_key'] )
+			? sanitize_key( $meta_key['meta_key'] ) . '_timezone'
+			: sanitize_key( (string) $meta_key ) . '_timezone';
+
+		if ( isset( $meta_key['meta_key'], $field_metas[ $timezone_key ] ) && ! empty( $meta_key['meta_key'] ) ) {
+			$timezone_value = sanitize_text_field( wp_unslash( (string) $field_metas[ $timezone_key ] ) );
+			$all_timezones  = $this->get_timezones();
+
+			if ( is_array( $all_timezones ) && isset( $all_timezones[ $timezone_value ] ) ) {
+				$value .= '<p>' . esc_html( $all_timezones[ $timezone_value ] ) . '</p>';
+			}
+		}
+
+		return $value;
+	}
+
+
+
+	/**
+	 * Set default date time in frontend if timezone set.
+	 *
+	 * @param [array] $properties Properties array.
+	 * @param [array] $field Field properties.
+	 * @return array
+	 */
+	public function set_default_timezone( $properties, $field ) {
+		// Does not set default date time if default date feature is not enabled.`
+		if ( ! isset( $field['date_default'] ) || 1 !== absint( $field['date_default'] ) ) {
+			return $properties;
+		}
+
+		if ( ! empty( $field['date_timezone'] ) && 'Default' !== $field['date_timezone'] ) {
+			$timezone = $field['date_timezone'];
+
+			if ( in_array( $timezone, timezone_identifiers_list(), true ) ) {
+
+				$dtz      = new DateTimeZone( $timezone );
+				$datetime = new DateTime( 'now', $dtz );
+
+				switch ( $field['datetime_format'] ) {
+					case 'date':
+						$properties['inputs']['primary']['attr']['value'] = esc_attr( $datetime->format( $field['date_format'] ) );
+						break;
+
+					case 'date-time':
+						if ( ! empty( $field['time_format'] ) ) {
+							$date_format                                      = esc_attr( $field['date_format'] ) . ' ' . esc_attr( $field['time_format'] );
+							$properties['inputs']['primary']['attr']['value'] = esc_attr( $datetime->format( $date_format ) );
+						} else {
+							$date_format                                      = esc_attr( $field['date_format'] ) . ' g:i A';
+							$properties['inputs']['primary']['attr']['value'] = esc_attr( $datetime->format( $date_format ) );
+						}
+						break;
+				}
+			}
+		}
+
+		return $properties;
+	}
+	/**
+	 * Form's field list for google calendar.
+	 *
+	 * @param int $form_id form id.
+	 */
+	public static function get_form_fields( $form_id ) {
+		$text_field_name_option_list = array(
+			'' => __( '---Select Field---', 'everest-forms' ),
+		);
+		if ( ! empty( $form_id ) && 'none' !== $form_id ) {
+			$form       = json_decode( get_post_field( 'post_content', $form_id ) );
+			$text_field = apply_filters( 'evf_support_field_type_for_google_event', array( 'first-name', 'last-name', 'text', 'textarea' ) );
+			$form_arr   = isset( $form->form_fields ) ? (array) $form->form_fields : array();
+			foreach ( $form_arr as $key => $value ) {
+				if ( in_array( $value->type, $text_field, true ) ) {
+					$text_field_name_option_list[ $key ] = $value->label;
+				}
+			}
+		}
+		return $text_field_name_option_list;
 	}
 }

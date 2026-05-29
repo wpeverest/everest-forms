@@ -6,6 +6,8 @@
  * @since   1.0.0
  */
 
+use EverestForms\Addons\Addons;
+
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -21,7 +23,7 @@ final class EverestForms {
 	 *
 	 * @var string
 	 */
-	public $version = '1.9.8';
+	public $version = '3.4.8';
 
 	/**
 	 * The single instance of the class.
@@ -46,6 +48,30 @@ final class EverestForms {
 	public $form;
 
 	/**
+	 * The form task handler instance.
+	 *
+	 * @var EVF_Form_Task
+	 */
+	public $task;
+
+
+	/**
+	 * The smart tags handler instance.
+	 *
+	 * @var EVF_Smart_Tags
+	 */
+	public $smart_tags;
+
+	/**
+	 * The reporting handler instance.
+	 *
+	 * @since 2.0.9
+	 *
+	 * @var EVF_Reporting
+	 */
+	public $reporting;
+
+	/**
 	 * The entry data handler instance.
 	 *
 	 * @var EVF_Entry_Handler
@@ -67,6 +93,16 @@ final class EverestForms {
 	 * @var EVF_Integrations
 	 */
 	public $integrations = null;
+
+	public $addons = null;
+
+	/**
+	 * UTM Campaign.
+	 *
+	 * @since 2.0.8.1
+	 * @var string
+	 */
+	public $utm_campaign = 'lite-version';
 
 	/**
 	 * Array of deprecated hook handlers.
@@ -129,6 +165,7 @@ final class EverestForms {
 		$this->define_constants();
 		$this->define_tables();
 		$this->includes();
+		$this->init_addons();
 		$this->init_hooks();
 		add_action( 'plugins_loaded', array( $this, 'objects' ), 1 );
 
@@ -148,6 +185,8 @@ final class EverestForms {
 		add_action( 'init', array( $this, 'form_fields' ), 0 );
 		add_action( 'init', array( 'EVF_Shortcodes', 'init' ), 0 );
 		add_action( 'switch_blog', array( $this, 'wpdb_table_fix' ), 0 );
+		add_filter( 'everest_forms_entry_bulk_actions', array( $this, 'everest_forms_entry_bulk_actions' ) );
+		add_action( 'init', array( $this, 'evf_register_inactive_post_status' ) );
 	}
 
 	/**
@@ -181,6 +220,7 @@ final class EverestForms {
 		$this->define( 'EVF_LOG_DIR', $upload_dir['basedir'] . '/evf-logs/' );
 		$this->define( 'EVF_SESSION_CACHE_GROUP', 'evf_session_id' );
 		$this->define( 'EVF_TEMPLATE_DEBUG_MODE', false );
+		$this->define( 'EVF_DEV', false );
 	}
 
 	/**
@@ -255,6 +295,9 @@ final class EverestForms {
 		include_once EVF_ABSPATH . 'includes/abstracts/class-evf-session.php';
 		include_once EVF_ABSPATH . 'includes/abstracts/class-evf-form-fields.php';
 
+		if ( ( defined( 'EFP_VERSION' ) && version_compare( EFP_VERSION, '1.7.5', '>=' ) ) || ( defined( 'EVF_VERSION' ) && version_compare( EVF_VERSION, '3.0.0', '>=' ) && ! defined( 'EFP_VERSION' ) ) ) {
+			include_once EVF_ABSPATH . 'includes/abstracts/class-evf-form-fields-upload.php';
+		}
 		/**
 		 * Core classes.
 		 */
@@ -262,14 +305,29 @@ final class EverestForms {
 		include_once EVF_ABSPATH . 'includes/class-evf-post-types.php';
 		include_once EVF_ABSPATH . 'includes/class-evf-install.php';
 		include_once EVF_ABSPATH . 'includes/class-evf-ajax.php';
+		include_once EVF_ABSPATH . 'includes/class-evf-ajax.php';
 		include_once EVF_ABSPATH . 'includes/class-evf-emails.php';
-		include_once EVF_ABSPATH . 'includes/class-evf-form-block.php';
 		include_once EVF_ABSPATH . 'includes/class-evf-integrations.php';
+		include_once EVF_ABSPATH . 'includes/class-evf-addon-upsell.php';
 		include_once EVF_ABSPATH . 'includes/class-evf-cache-helper.php';
 		include_once EVF_ABSPATH . 'includes/class-evf-deprecated-action-hooks.php';
 		include_once EVF_ABSPATH . 'includes/class-evf-deprecated-filter-hooks.php';
 		include_once EVF_ABSPATH . 'includes/class-evf-forms-features.php';
 		include_once EVF_ABSPATH . 'includes/class-evf-privacy.php';
+
+		/**
+		 * Everest forms blocks class.
+		 */
+		include_once EVF_ABSPATH . 'includes/blocks/class-evf-blocks.php';
+		/**
+		 * Rest api classes.
+		 */
+		include_once EVF_ABSPATH . 'includes/RestApi/class-evf-rest-api.php';
+
+		/**
+		 * Preview Confirmation Class
+		 */
+		include_once EVF_ABSPATH . 'includes/admin/class-evf-admin-preview-confirmation.php';
 
 		/**
 		 * Elementor classes.
@@ -279,7 +337,9 @@ final class EverestForms {
 		}
 
 		if ( $this->is_request( 'admin' ) ) {
+			include_once EVF_ABSPATH . 'includes/admin/evf-admin-functions.php';
 			include_once EVF_ABSPATH . 'includes/admin/class-evf-admin.php';
+			include_once EVF_ABSPATH . 'includes/admin/class-evf-admin-embed-wizard.php';
 		}
 
 		if ( $this->is_request( 'frontend' ) ) {
@@ -291,6 +351,23 @@ final class EverestForms {
 		 */
 		include_once EVF_ABSPATH . 'includes/class-evf-cron.php';
 		include_once EVF_ABSPATH . 'includes/stats/class-evf-stats.php';
+		include_once EVF_ABSPATH . 'includes/class-evf-email-entries-report.php';
+
+		/**
+		 * External Libraries
+		 *
+		 * @return void
+		 */
+		include_once EVF_ABSPATH . 'includes/libraries/wptt-webfont-loader.php';
+	}
+
+	/**
+	 * Loaded the addons.
+	 *
+	 * @since 3.0.5
+	 */
+	public function init_addons() {
+		Addons::init();
 	}
 
 	/**
@@ -323,7 +400,7 @@ final class EverestForms {
 		$this->load_plugin_textdomain();
 
 		// Load class instances.
-		$this->integrations                        = new EVF_Integrations();
+		$this->addons                              = new EVF_Addon_Upsell();
 		$this->deprecated_hook_handlers['actions'] = new EVF_Deprecated_Action_Hooks();
 		$this->deprecated_hook_handlers['filters'] = new EVF_Deprecated_Filter_Hooks();
 
@@ -349,6 +426,7 @@ final class EverestForms {
 		$this->form       = new EVF_Form_Handler();
 		$this->task       = new EVF_Form_Task();
 		$this->smart_tags = new EVF_Smart_Tags();
+		$this->reporting  = new EVF_Reporting();
 	}
 
 	/**
@@ -427,5 +505,44 @@ final class EverestForms {
 	 */
 	public function form_fields() {
 		return EVF_Fields::instance();
+	}
+
+	/**
+	 * Bulk actions in the entries table
+	 *
+	 * @since 3.0.8
+	 *
+	 * @param  Array $actions Array of actions for bulk action.
+	 *
+	 * @return Array $actions Array of new bulk actions.
+	 */
+	public function everest_forms_entry_bulk_actions( $actions ) {
+		$actions['spam']   = esc_html__( 'Mark as Spam', 'everest-forms' );
+		$actions['unspam'] = esc_html__( 'Remove Entry from Spam', 'everest-forms' );
+
+		if ( isset( $_GET['status'] ) && sanitize_text_field( wp_unslash( $_GET['status'] ) ) === 'spam' ) {
+			unset( $actions['spam'] );
+		}
+
+		return $actions;
+	}
+	/**
+	 * Register the "inactive" post status.
+	 *
+	 * @since 3.2.0
+	 */
+	public function evf_register_inactive_post_status() {
+		register_post_status(
+			'inactive',
+			array(
+				'label'                     => _x( 'Inactive', 'post' ),
+				'public'                    => false, // This prevents it from being shown on the front-end.
+				'exclude_from_search'       => true, // Exclude from search results.
+				'show_ui'                   => true, // Show it in the admin UI.
+				'show_in_admin_all_list'    => true, // Display in the "All" view in the admin.
+				'show_in_admin_status_list' => true, // Show in the "Post Status" dropdown in admin.
+				'label_count'               => _n_noop( 'Inactive <span class="count">(%s)</span>', 'Inactive <span class="count">(%s)</span>' ),
+			)
+		);
 	}
 }

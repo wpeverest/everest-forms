@@ -79,8 +79,19 @@ class EVF_Entry_CSV_Exporter extends EVF_CSV_Exporter {
 		// Add whitelisted fields to export columns.
 		if ( ! empty( $form_data['form_fields'] ) ) {
 			foreach ( $form_data['form_fields'] as $field ) {
-				if ( ! in_array( $field['type'], array( 'html', 'title', 'captcha', 'divider' ), true ) ) {
-					$columns[ $field['id'] ] = evf_clean( $field['label'] );
+				if ( ! in_array( $field['type'], array( 'html', 'title', 'captcha', 'divider', 'payment_summary', 'private-note' ), true ) ) {
+					switch ( $field['type'] ) {
+						case 'likert':
+							$field_id = $field['id'];
+							foreach ( $field['likert_rows'] as $key => $col_row ) {
+								$col_row_key             = "$field_id-likert-$key";
+								$columns[ $col_row_key ] = $col_row;
+							}
+							break;
+						default:
+							$columns[ $field['id'] ] = evf_clean( $field['label'] );
+							break;
+					}
 				}
 			}
 		}
@@ -188,10 +199,10 @@ class EVF_Entry_CSV_Exporter extends EVF_CSV_Exporter {
 					} elseif ( 'radio' === $field['type'] ) {
 						$correct_answer_key = array_keys( $correct_answer )[0];
 						$correct_answer     = $field['choices'][ $correct_answer_key ]['label'];
-						$given_answer       = maybe_unserialize( $given_answer )['label'];
+						$given_answer       = evf_maybe_unserialize( $given_answer )['label'];
 						$is_correct         = ( $given_answer === $correct_answer );
 					} elseif ( 'checkbox' === $field['type'] ) {
-						$given_answer_data   = maybe_unserialize( $given_answer )['label'];
+						$given_answer_data   = evf_maybe_unserialize( $given_answer )['label'];
 						$is_correct          = true;
 						$choices             = $field['choices'];
 						$correct_answer_keys = array_keys( $correct_answer );
@@ -272,6 +283,12 @@ class EVF_Entry_CSV_Exporter extends EVF_CSV_Exporter {
 		$fields  = json_decode( $entry->fields, true );
 		foreach ( $columns as $column_id => $column_name ) {
 			$column_id = strstr( $column_id, ':' ) ? current( explode( ':', $column_id ) ) : $column_id;
+			$position  = strpos( $column_id, '-likert-' );
+
+			if ( $position !== false ) {
+				$column_id = substr( $column_id, 0, $position );
+			}
+
 			$value     = '';
 			$raw_value = '';
 
@@ -282,8 +299,12 @@ class EVF_Entry_CSV_Exporter extends EVF_CSV_Exporter {
 				switch ( $field_type ) {
 					case 'checkbox':
 					case 'payment-checkbox':
-						$value = $fields[ $column_id ]['value']['label'];
-						$value = implode( ', ', $value );
+						$value = isset( $fields[ $column_id ]['value']['label'] ) ? $fields[ $column_id ]['value']['label'] : '';
+						if ( is_array( $value ) ) {
+							$value = implode( ',', $value );
+						} else {
+							$value = $value;
+						}
 						break;
 					case 'radio':
 					case 'payment-multiple':
@@ -307,31 +328,115 @@ class EVF_Entry_CSV_Exporter extends EVF_CSV_Exporter {
 						$value = apply_filters( 'everest_forms_plaintext_field_value', $fields[ $column_id ]['value']['country_code'], $fields[ $column_id ]['value'], $entry, 'email-plain' );
 						break;
 					case 'repeater-fields':
-						$labels          = array();
-						$repeater_fields = array();
-
+						$labels               = array();
+						$repeater_fields      = array();
+						$repeater_accumulator = array();
 						foreach ( $fields[ $column_id ]['value_raw'] as $field_value ) {
 							foreach ( $field_value as $key => $val ) {
+								$repeater_field_value = '';
 								if ( isset( $repeater_fields[ $val['id'] ] ) ) {
-									$repeater_fields[ $val['id'] ]['value'] .= ', ' . $val['value'];
+									$repeater_field_type = isset( $repeater_fields[ $val['id'] ]['type'] ) ? $repeater_fields[ $val['id'] ]['type'] : '';
+									switch ( $repeater_field_type ) {
+										case 'checkbox':
+										case 'payment-checkbox':
+											$current_value = is_array( $val['value']['label'] ) ? implode( ', ', $val['value']['label'] ) : $val['value']['label'];
+
+											if ( ! isset( $repeater_accumulator[ $val['id'] ] ) ) {
+												$repeater_accumulator[ $val['id'] ] = array();
+											}
+
+											$repeater_accumulator[ $val['id'] ][] = $current_value;
+											$repeater_field_value                 = implode( ', ', $repeater_accumulator[ $val['id'] ] );
+											break;
+
+										case 'radio':
+										case 'payment-multiple':
+											$current_value = $val['value']['label'];
+
+											if ( ! isset( $repeater_accumulator[ $val['id'] ] ) ) {
+												$repeater_accumulator[ $val['id'] ] = array();
+											}
+
+											$repeater_accumulator[ $val['id'] ][] = $current_value;
+											$repeater_field_value                 = implode( ', ', $repeater_accumulator[ $val['id'] ] );
+											break;
+
+										case 'select':
+											$current_value = $val['value'];
+											if ( is_array( $current_value ) ) {
+												$current_value = implode( ', ', $current_value );
+											}
+
+											if ( ! isset( $repeater_accumulator[ $val['id'] ] ) ) {
+												$repeater_accumulator[ $val['id'] ] = array();
+											}
+
+											$repeater_accumulator[ $val['id'] ][] = $current_value;
+											$repeater_field_value                 = implode( ', ', $repeater_accumulator[ $val['id'] ] );
+											break;
+
+										default:
+											$current_value = $val['value'];
+
+											if ( ! isset( $repeater_accumulator[ $val['id'] ] ) ) {
+												$repeater_accumulator[ $val['id'] ] = array();
+											}
+
+											$repeater_accumulator[ $val['id'] ][] = $current_value;
+											$repeater_field_value                 = implode( ', ', $repeater_accumulator[ $val['id'] ] );
+											break;
+									}
 								} else {
 									$repeater_fields[ $val['id'] ] = $val;
+
+									$current_value = is_array( $val['value'] ) && isset( $val['value']['label'] )
+										? $val['value']['label']
+										: $val['value'];
+
+									if ( is_array( $current_value ) ) {
+										$current_value = implode( ', ', $current_value );
+									}
+
+									$repeater_accumulator[ $val['id'] ][] = $current_value;
+									$repeater_field_value                 = $current_value;
 								}
-								$fields[ $key ]['value'] = $repeater_fields[ $val['id'] ]['value'];
-								$labels []               = $val['name'];
+
+								$fields[ $key ]['value'] = $repeater_field_value;
+
+								$labels[] = isset( $val['name'] )
+									? $val['name']
+									: ( is_array( $val['value'] ) && isset( $val['value']['name'] )
+										? $val['value']['name']
+										: '' );
 							}
 						}
 
 						$labels = array_unique( $labels );
-						$value  = '';
 
-						foreach ( $labels as $val ) {
-							if ( end( $labels ) === $val ) {
-								$value .= $val;
+						$value = implode( ', ', array_filter( $labels ) );
+						$fields[ $column_id ]['value'] = $value;
+						break;
+					case 'likert':
+						$form            = evf()->form->get( $entry->form_id );
+						$form_data       = evf_decode( $form->post_content );
+						$form_fields     = $form_data['form_fields'];
+						$form_field      = '';
+						$selected_likert = array();
+						if ( array_key_exists( $column_id, $form_fields ) ) {
+							$form_field     = $form_fields[ $column_id ];
+							$likert_columns = $form_field['likert_columns'];
+							$likert_rows    = $form_field['likert_rows'];
+							if ( ! empty( $fields[ $column_id ]['value_raw'] ) ) {
+								foreach ( $fields[ $column_id ]['value_raw'] as $likert_key ) {
+									$selected_likert[] = $likert_columns[ $likert_key ];
+								}
 							} else {
-								$value .= $val . ' ,';
+								foreach ( $likert_rows as $likert_rows ) {
+									$selected_likert[] = '';
+								}
 							}
 						}
+						$value = $selected_likert;
 						break;
 					default:
 						$value = apply_filters( 'everest_forms_html_field_value', $fields[ $column_id ]['value'], $fields[ $column_id ], $entry, 'export-csv' );
@@ -342,8 +447,39 @@ class EVF_Entry_CSV_Exporter extends EVF_CSV_Exporter {
 				$value     = $this->{"get_column_value_{$column_id}"}( $entry );
 				$raw_value = $value;
 			}
-			$column_type       = $this->get_entry_type( $column_id, $entry );
-			$row[ $column_id ] = apply_filters( 'everest_forms_format_csv_field_data', preg_match( '/textarea/', $column_type ) ? sanitize_textarea_field( $value ) : sanitize_text_field( $value ), $raw_value, $column_id, $column_name, $columns, $entry );
+			$column_type = $this->get_entry_type( $column_id, $entry );
+			if ( is_array( $value ) && isset( $fields[ $column_id ], $fields[ $column_id ]['type'] ) && in_array( $fields[ $column_id ]['type'], array( 'likert' ), true ) ) {
+				foreach ( $value as $key => $val ) {
+					$key                 = $key + 1;
+					$col_row_key         = "$column_id-likert-$key";
+					$row[ $col_row_key ] = $val;
+				}
+			} else {
+				// It is done to display the currencies symbol instead of its HTML entities values.
+				$clean_value = html_entity_decode(
+					preg_match( '/textarea/', $column_type ) ? sanitize_textarea_field( $value ) : sanitize_text_field( $value ),
+					ENT_QUOTES,
+					'UTF-8'
+				);
+
+				$row[ $column_id ] = apply_filters(
+					'everest_forms_format_csv_field_data',
+					$clean_value,
+					$raw_value,
+					$column_id,
+					$column_name,
+					$columns,
+					$entry
+				);
+
+			}
+			if ( empty( $this->request_data ) ) {
+				$row['status'] = (
+				isset( $entry->meta['status'] ) && ! empty( $entry->meta['status'] )
+				? $entry->meta['status']
+				: ( isset( $row['status'] ) ? $row['status'] : '' )
+				);
+			}
 		}
 
 		return apply_filters( 'everest_forms_entry_export_row_data', $row, $entry, $this->request_data );

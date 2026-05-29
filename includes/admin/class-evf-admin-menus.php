@@ -24,13 +24,22 @@ class EVF_Admin_Menus {
 	public function __construct() {
 		// Add menus.
 		add_action( 'admin_menu', array( $this, 'admin_menu' ), 9 );
+		add_action( 'admin_menu', array( $this, 'dashboard_menu' ), 9 );
 		add_action( 'admin_menu', array( $this, 'builder_menu' ), 20 );
 		add_action( 'admin_menu', array( $this, 'entries_menu' ), 30 );
+		add_action( 'admin_menu', array( $this, 'analytics_menu' ), 10 );
 		add_action( 'admin_menu', array( $this, 'settings_menu' ), 50 );
 		add_action( 'admin_menu', array( $this, 'tools_menu' ), 60 );
+		add_action( 'admin_menu', array( $this, 'smtp_menu' ), 75 );
+		// Add admin topbar menu.
+		add_action( 'admin_bar_menu', array( $this, 'admin_top_menu_bar' ), 100 );
 
 		if ( apply_filters( 'everest_forms_show_addons_page', true ) ) {
 			add_action( 'admin_menu', array( $this, 'addons_menu' ), 70 );
+		}
+
+		if ( ! evf_get_license_plan() ) {
+			add_action( 'admin_menu', array( $this, 'upgrade_to_pro_menu' ), 80 );
 		}
 
 		add_action( 'admin_head', array( $this, 'menu_highlight' ) );
@@ -58,6 +67,87 @@ class EVF_Admin_Menus {
 	}
 
 	/**
+	 * Admin top menu bar.
+	 *
+	 * @param \WP_Admin_Bar $wp_admin_bar Instance of admin bar.
+	 */
+	public function admin_top_menu_bar( WP_Admin_Bar $wp_admin_bar ) {
+		if ( ! is_admin_bar_showing() || ! current_user_can( 'manage_everest_forms' ) ) {
+			return;
+		}
+
+		$wp_admin_bar->add_menu(
+			array(
+				'id'     => 'everest-forms-menu',
+				'parent' => null,
+				'group'  => null,
+				'title'  => 'Everest Forms', // you can use img tag with image link. it will show the image icon Instead of the title.
+				'href'   => admin_url( 'admin.php?page=evf-builder' ),
+			)
+		);
+
+		$wp_admin_bar->add_menu(
+			array(
+				'parent' => 'everest-forms-menu',
+				'id'     => 'everest-forms-all-forms',
+				'title'  => __( 'All Forms', 'everest-forms' ),
+				'href'   => admin_url( 'admin.php?page=evf-builder' ),
+			)
+		);
+
+		$wp_admin_bar->add_menu(
+			array(
+				'parent' => 'everest-forms-menu',
+				'id'     => 'everest-forms-add-new',
+				'title'  => __( 'Add New', 'everest-forms' ),
+				'href'   => admin_url( 'admin.php?page=evf-builder&create-form=1' ),
+			)
+		);
+
+		$wp_admin_bar->add_menu(
+			array(
+				'parent' => 'everest-forms-menu',
+				'id'     => 'everest-forms-entries',
+				'title'  => __( 'Entries', 'everest-forms' ),
+				'href'   => admin_url( 'admin.php?page=evf-entries' ),
+			)
+		);
+
+		$wp_admin_bar->add_menu(
+			array(
+				'parent' => 'everest-forms-menu',
+				'id'     => 'everest-forms-tools',
+				'title'  => __( 'Tools', 'everest-forms' ),
+				'href'   => admin_url( 'admin.php?page=evf-tools' ),
+			)
+		);
+
+		$href = add_query_arg(
+			array(
+				'utm_medium'  => 'admin-bar',
+				'utm_source'  => 'WordPress',
+				'utm_content' => 'Documentation',
+			),
+			'https://docs.everestforms.net/'
+		);
+
+		$wp_admin_bar->add_menu(
+			array(
+				'parent' => 'everest-forms-menu',
+				'id'     => 'everest-forms-docs',
+				'title'  => __( 'Docs', 'everest-forms' ),
+				'href'   => $href,
+				'meta'   => array(
+					'target' => '_blank',
+					'rel'    => 'noopener noreferrer',
+				),
+			)
+		);
+
+		do_action( 'everest_forms_top_admin_bar_menu', $wp_admin_bar );
+	}
+
+	/**
 	 * Add menu items.
 	 */
 	public function admin_menu() {
@@ -65,12 +155,30 @@ class EVF_Admin_Menus {
 	}
 
 	/**
+	 * Add dashboard sub menu.
+	 */
+	public function dashboard_menu() {
+
+		$site_assistant_data = get_option( 'everest_forms_site_assistant', array() );
+		$all_steps_completed = isset( $site_assistant_data['all_steps_completed'] ) && $site_assistant_data['all_steps_completed'];
+		add_submenu_page(
+			'everest-forms',
+			__( 'Site Assistant', 'everest-forms' ),
+			__( 'Site Assistant', 'everest-forms' ),
+			'manage_everest_forms',
+			'evf-dashboard',
+			array( $this, 'dashboard_page' ),
+			-1
+		);
+
+	}
+
+	/**
 	 * Add menu items.
 	 */
 	public function builder_menu() {
-		$builder_page = add_submenu_page( 'everest-forms', esc_html__( 'Everest Forms Builder', 'everest-forms' ), esc_html__( 'All Forms', 'everest-forms' ), current_user_can( 'everest_forms_create_forms' ) ? 'everest_forms_create_forms' : 'everest_forms_view_forms', 'evf-builder', array( $this, 'builder_page' ) );
-
-		add_submenu_page( 'everest-forms', esc_html__( 'Everest Forms Setup', 'everest-forms' ), esc_html__( 'Add New', 'everest-forms' ), current_user_can( 'everest_forms_create_forms' ) ? 'everest_forms_create_forms' : 'everest_forms_edit_forms', 'evf-builder&create-form=1', array( $this, 'builder_page' ) );
+		$capability = current_user_can( 'everest_forms_create_forms' ) ? 'everest_forms_create_forms' : ( current_user_can( 'manage_everest_forms' ) ? 'manage_everest_forms' : 'everest_forms_view_forms' );
+		$builder_page = add_submenu_page( 'everest-forms', esc_html__( 'Everest Forms Builder', 'everest-forms' ), esc_html__( 'All Forms', 'everest-forms' ), $capability, 'evf-builder', array( $this, 'builder_page' ) );
 
 		add_action( 'load-' . $builder_page, array( $this, 'builder_page_init' ) );
 
@@ -80,19 +188,19 @@ class EVF_Admin_Menus {
 		 * - If only `everest_forms_create_forms` roles - dont show view all forms list table.
 		 * - If only `everest_forms_view_forms` roles - dont show create new template selection.
 		 */
-		if ( ! current_user_can( 'manage_everest_forms' ) ) {
-			if ( ! current_user_can( 'everest_forms_create_forms' ) ) {
-				if ( isset( $_GET['page'], $_GET['create-form'] ) && 'evf-builder' === $_GET['page'] ) { // phpcs:ignore WordPress.Security.NonceVerification
-					wp_safe_redirect( admin_url( 'admin.php?page=evf-builder' ) );
-					exit;
-				}
-			} elseif ( ! current_user_can( 'everest_forms_view_forms' ) ) {
-				if ( ! isset( $_GET['create-form'] ) && ( ! empty( $_GET['page'] ) && 'evf-builder' === $_GET['page'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
-					wp_safe_redirect( admin_url( 'admin.php?page=evf-builder&create-form=1' ) );
-					exit;
-				}
-			}
-		}
+		// if ( ! current_user_can( 'manage_everest_forms' ) ) {
+		// 	if ( ! current_user_can( 'everest_forms_create_forms' ) ) {
+		// 		if ( isset( $_GET['page'], $_GET['create-form'] ) && 'evf-builder' === $_GET['page'] ) { // phpcs:ignore WordPress.Security.NonceVerification
+		// 			wp_safe_redirect( admin_url( 'admin.php?page=evf-builder' ) );
+		// 			exit;
+		// 		}
+		// 	} elseif ( ! current_user_can( 'everest_forms_view_forms' ) ) {
+		// 		if ( ! isset( $_GET['create-form'] ) && ( ! empty( $_GET['page'] ) && 'evf-builder' === $_GET['page'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+		// 			wp_safe_redirect( admin_url( 'admin.php?page=evf-builder&create-form=1' ) );
+		// 			exit;
+		// 		}
+		// 	}
+		// }
 	}
 
 	/**
@@ -156,6 +264,30 @@ class EVF_Admin_Menus {
 	}
 
 	/**
+	 * Add Analytics sub menu (free version only; Pro plugin registers its own evf-analytics page).
+	 */
+	public function analytics_menu() {
+		if ( defined( 'EFP_PLUGIN_FILE' ) ) {
+			return;
+		}
+		add_submenu_page(
+			'everest-forms',
+			esc_html__( 'Analytics', 'everest-forms' ),
+			esc_html__( 'Analytics', 'everest-forms' ),
+			'manage_everest_forms',
+			'evf-analytics',
+			array( $this, 'analytics_page' )
+		);
+	}
+
+	/**
+	 * Analytics page callback (free version).
+	 */
+	public function analytics_page() {
+		echo '<div id="evf-react-header-root"></div><div class="wrap"><div id="evf-analytics-root"></div></div>';
+	}
+
+	/**
 	 * Add menu item.
 	 */
 	public function settings_menu() {
@@ -195,6 +327,15 @@ class EVF_Admin_Menus {
 	}
 
 	/**
+	 * Adds SMTP into Everest Forms Menu.
+	 *
+	 * @since 3.0.9
+	 */
+	public function smtp_menu() {
+		add_submenu_page( 'everest-forms', esc_html__( 'SMTP', 'everest-forms' ), esc_html__( 'SMTP', 'everest-forms' ), 'manage_everest_forms', 'evf-smart-smtp', array( $this, 'smtp_page' ) );
+	}
+
+	/**
 	 * Add menu item.
 	 */
 	public function tools_menu() {
@@ -202,10 +343,26 @@ class EVF_Admin_Menus {
 	}
 
 	/**
+	 * Add menu item.
+	 */
+	public function upgrade_to_pro_menu() {
+		add_submenu_page(
+			'everest-forms',
+			esc_html__( 'Everest Forms Upgrade to Pro', 'everest-forms' ),
+			sprintf(
+				'<span style="color:#FF8C39; display:flex; font-weight: 600;"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: bottom;" ><rect x="0.5" y="0.5" width="19" height="19" rx="2.5" fill="#FF8C39" stroke="#FF8C39"/><path d="M10 5L13 13H7L10 5Z" fill="#EFEFEF"/><path fill="white" fill-rule="evenodd" d="M5 7L5.71429 13H14.2857L15 7L10 11.125L5 7ZM14.2857 13.5714H5.71427V15H14.2857V13.5714Z" clip-rule="evenodd"/></svg><span style="margin-left:5px;">%s</span></span>',
+				esc_html__( 'Upgrade to Pro', 'everest-forms' )
+			),
+			'manage_everest_forms',
+			esc_url_raw( 'https://everestforms.net/upgrade/?utm_medium=evf-dashboard&utm_source=evf-free&utm_campaign=dash-wp-sub-menu&utm_content=Upgrade%20to%20Pro' )
+		);
+	}
+
+	/**
 	 * Addons menu item.
 	 */
 	public function addons_menu() {
-		add_submenu_page( 'everest-forms', esc_html__( 'Everest Forms Add-ons', 'everest-forms' ), esc_html__( 'Add-ons', 'everest-forms' ), 'manage_everest_forms', 'evf-addons', array( $this, 'addons_page' ) );
+		add_submenu_page( 'everest-forms', esc_html__( 'Everest Forms Add-ons', 'everest-forms' ), esc_html__( 'Addons', 'everest-forms' ), 'manage_everest_forms', esc_url_raw( admin_url( 'admin.php?page=evf-dashboard#/features' ) ) );
 	}
 
 	/**
@@ -259,7 +416,7 @@ class EVF_Admin_Menus {
 		}
 
 		// Remove 'All Forms' sub menu item if a user can't read forms.
-		if ( ! current_user_can( 'everest_forms_view_forms' ) ) {
+		if ( ! current_user_can( 'everest_forms_view_forms' ) && ! current_user_can( 'everest_forms_create_forms' ) && ! current_user_can( 'manage_everest_forms' ) ) {
 			foreach ( $submenu['everest-forms'] as $key => $item ) {
 				if ( isset( $item[2] ) && 'evf-builder' === $item[2] ) {
 					unset( $submenu['everest-forms'][ $key ] );
@@ -307,6 +464,13 @@ class EVF_Admin_Menus {
 	/**
 	 * Init the settings page.
 	 */
+	public function dashboard_page() {
+		EVF_Admin_Dashboard::page_output();
+	}
+
+	/**
+	 * Init the settings page.
+	 */
 	public function builder_page() {
 		EVF_Admin_Forms::page_output();
 	}
@@ -333,10 +497,10 @@ class EVF_Admin_Menus {
 	}
 
 	/**
-	 * Init the addons page.
+	 * Smart SMTP page
 	 */
-	public function addons_page() {
-		EVF_Admin_Addons::output();
+	public function smtp_page() {
+		EVF_Admin_Tools::evf_smart_smtp_setup();
 	}
 }
 

@@ -26,7 +26,6 @@ class EVF_Field_Text extends EVF_Form_Fields {
 			'basic-options'    => array(
 				'field_options' => array(
 					'label',
-					'meta',
 					'description',
 					'required',
 					'required_field_message_setting',
@@ -36,12 +35,16 @@ class EVF_Field_Text extends EVF_Form_Fields {
 			'advanced-options' => array(
 				'field_options' => array(
 					'placeholder',
+					'meta',
 					'label_hide',
 					'limit_length',
 					'min_length',
 					'default_value',
 					'css',
 					'input_mask',
+					'regex_validation',
+					'regex_value',
+					'regex_message',
 				),
 			),
 		);
@@ -67,7 +70,7 @@ class EVF_Field_Text extends EVF_Form_Fields {
 		$args = array(
 			'slug'    => 'limit_enabled',
 			'content' => $this->field_element(
-				'checkbox',
+				'toggle',
 				$field,
 				array(
 					'slug'    => 'limit_enabled',
@@ -130,7 +133,7 @@ class EVF_Field_Text extends EVF_Form_Fields {
 		$args = array(
 			'slug'    => 'min_length_enabled',
 			'content' => $this->field_element(
-				'checkbox',
+				'toggle',
 				$field,
 				array(
 					'slug'    => 'min_length_enabled',
@@ -197,7 +200,7 @@ class EVF_Field_Text extends EVF_Form_Fields {
 				'slug'          => 'input_mask',
 				'value'         => esc_html__( 'Input Mask', 'everest-forms' ),
 				'tooltip'       => esc_html__( 'Enter your custom input mask.', 'everest-forms' ),
-				'after_tooltip' => '<a href="https://docs.wpeverest.com/docs/everest-forms/how-to-use-custom-input-mask/" class="after-label-description" target="_blank" rel="noopener noreferrer">' . esc_html__( 'See Examples & Docs', 'everest-forms' ) . '</a>',
+				'after_tooltip' => '<a href="https://docs.everestforms.net/docs/how-to-use-custom-input-mask/" class="after-label-description" target="_blank" rel="noopener noreferrer">' . esc_html__( 'See Examples & Docs', 'everest-forms' ) . '</a>',
 			),
 			false
 		);
@@ -308,7 +311,7 @@ class EVF_Field_Text extends EVF_Form_Fields {
 	 */
 	public function field_display( $field, $field_atts, $form_data ) {
 		// Define data.
-		$primary = $field['properties']['inputs']['primary'];
+		$primary = apply_filters( 'everest_forms_default_values', $field['properties']['inputs']['primary'] );
 
 		// Limit length.
 		if ( isset( $field['limit_enabled'] ) ) {

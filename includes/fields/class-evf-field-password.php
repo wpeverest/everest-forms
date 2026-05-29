@@ -23,6 +23,10 @@ class EVF_Field_Password extends EVF_Form_Fields {
 		$this->order  = 70;
 		$this->group  = 'advanced';
 		$this->is_pro = true;
+		$this->links  = array(
+			'image_id' => '',
+			'vedio_id' => 'OzSuWDyccFQ',
+		);
 
 		parent::__construct();
 	}

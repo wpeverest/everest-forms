@@ -26,7 +26,6 @@ class EVF_Field_Email extends EVF_Form_Fields {
 			'basic-options'    => array(
 				'field_options' => array(
 					'label',
-					'meta',
 					'description',
 					'required',
 					'required_field_message_setting',
@@ -38,11 +37,15 @@ class EVF_Field_Email extends EVF_Form_Fields {
 				'field_options' => array(
 					'size',
 					'placeholder',
+					'meta',
 					'confirmation_placeholder',
 					'label_hide',
 					'sublabel_hide',
 					'default_value',
 					'css',
+					'regex_validation',
+					'regex_value',
+					'regex_message',
 				),
 			),
 		);
@@ -196,7 +199,7 @@ class EVF_Field_Email extends EVF_Form_Fields {
 	 */
 	public function confirmation( $field ) {
 		$fld  = $this->field_element(
-			'checkbox',
+			'toggle',
 			$field,
 			array(
 				'slug'    => 'confirmation',

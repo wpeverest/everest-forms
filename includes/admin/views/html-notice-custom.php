@@ -8,7 +8,7 @@
 defined( 'ABSPATH' ) || exit;
 
 ?>
-<div id="message" class="updated everest-forms-message">
+<div id="message" class="updated everest-forms-message inline">
 	<a class="everest-forms-message-close notice-dismiss" href="<?php echo esc_url( wp_nonce_url( add_query_arg( 'evf-hide-notice', $notice ), 'everest_forms_hide_notices_nonce', '_evf_notice_nonce' ) ); ?>"><?php esc_html_e( 'Dismiss', 'everest-forms' ); ?></a>
 
 	<?php echo wp_kses_post( wpautop( $notice_html ) ); ?>

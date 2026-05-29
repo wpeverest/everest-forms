@@ -205,6 +205,9 @@ jQuery( function( $ ) {
 				$( '.evf-enhanced-select' ).filter( '.select2-hidden-accessible' ).selectWoo( 'close' );
 			}
 		} );
+		$('.evf-enhanced-normal-select').each(function () {
+			$(this).select2();
+		})
 	} catch( err ) {
 		// If select2 failed (conflict?) log the error but don't stop other scripts breaking.
 		window.console.log( err );

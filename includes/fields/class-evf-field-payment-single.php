@@ -23,6 +23,10 @@ class EVF_Field_Payment_Single extends EVF_Form_Fields {
 		$this->order  = 10;
 		$this->group  = 'payment';
 		$this->is_pro = true;
+		$this->links  = array(
+			'image_id' => '',
+			'vedio_id' => 'BccK3ye8tPs',
+		);
 
 		parent::__construct();
 	}
