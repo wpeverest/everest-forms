@@ -4576,6 +4576,9 @@
 						$(event.target).addClass('evf-item-hover');
 						$(event.target).closest('.evf-admin-row').addClass('evf-hover');
 						EVFPanelBuilder.checkEmptyGrid();
+						if (ui.item.is('button')) {
+							ui.item.css('width', $(event.target).width() + 'px');
+						}
 					},
 					receive: function (event, ui) {
 						if (ui.sender.is('button')) {
@@ -6982,11 +6985,9 @@ jQuery(function ($) {
 				}
 			});
 
-			$(this)
-				.parent('.everest-forms-field-option-group')
-				.toggleClass('closed')
-				.toggleClass('open');
-			$('.everest-forms-field-option-group.closed').each(function () {
+			var $currentGroup = $(this).parent('.everest-forms-field-option-group');
+			$currentGroup.toggleClass('closed').toggleClass('open');
+			$('.everest-forms-field-option-group.closed').not($currentGroup).each(function () {
 				$(this).find('.everest-forms-field-option-group-inner').hide();
 			});
 		},
