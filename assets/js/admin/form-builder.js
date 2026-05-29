@@ -4560,7 +4560,7 @@
 					forcePlaceholderSize: true,
 					connectWith: '.evf-admin-grid',
 					appendTo: document.body,
-					containment: '.everest-forms-field-wrap',
+					tolerance: 'pointer',
 
 					out: function (event) {
 						$('.evf-admin-grid').removeClass('evf-hover');
@@ -4576,9 +4576,27 @@
 						$(event.target).addClass('evf-item-hover');
 						$(event.target).closest('.evf-admin-row').addClass('evf-hover');
 						EVFPanelBuilder.checkEmptyGrid();
-						if (ui.item.is('button')) {
-							ui.item.css('width', $(event.target).width() + 'px');
+						// Resize helper to fit the target column on entry
+						if (ui.helper.data('origWidth') === undefined) {
+							ui.helper.data('origWidth', ui.helper.width());
 						}
+						var newWidth = Math.min(ui.helper.data('origWidth'), $(this).width());
+						ui.helper.css('width', newWidth + 'px');
+					},
+					sort: function (event, ui) {
+						// sort() fires continuously on the SOURCE grid on every mousemove.
+						// Use ui.placeholder to find the DESTINATION grid regardless of which
+						// grid's sort handler is executing, then pin helper to that column.
+						var dragInst = $.ui.ddmanager && $.ui.ddmanager.current;
+						if (!dragInst || !dragInst.offset || !dragInst.offset.click) return;
+						if (!ui.placeholder) return;
+						var destGrid = ui.placeholder.closest('.evf-admin-grid')[0];
+						if (!destGrid) return;
+						if (ui.helper.data('origWidth') === undefined) {
+							ui.helper.data('origWidth', ui.helper.width());
+						}
+						var colPageLeft = $(destGrid).offset().left;
+						dragInst.offset.click.left = Math.max(5, Math.min(event.pageX - colPageLeft, ui.helper.width() - 5));
 					},
 					receive: function (event, ui) {
 						if (ui.sender.is('button')) {
