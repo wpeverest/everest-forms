@@ -13725,6 +13725,193 @@ button#show-settings-link {
 	}
 }
 
+// Payments upsell — builder tab (no sidebar, full-width content area).
+#everest-forms-panel-payments {
+	.panel-wrap.everest-forms-panel-content-wrap {
+		background: #fff;
+	}
+
+	.everest-forms-panel-content {
+		width: 100%;
+		padding: 0;
+		background: #fff;
+	}
+}
+
+// Payments upsell — shared between builder tab and admin page.
+.evf-payment-upsell-page {
+	width: 100%;
+	padding: 48px 0;
+	text-align: center;
+
+	.evf-payment-upsell-header {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 10px;
+		margin-bottom: 14px;
+
+		.evf-payment-wave {
+			font-size: 32px;
+			line-height: 1;
+		}
+
+		h2 {
+			margin: 0;
+			font-size: 28px;
+			font-weight: 700;
+			color: #1f1f1f;
+			line-height: 1.2;
+		}
+	}
+
+	> h3 {
+		margin: 0 0 16px;
+		font-size: 18px;
+		font-weight: 600;
+		color: #1f1f1f;
+		line-height: 1.4;
+	}
+
+	> p {
+		margin: 0 auto 16px;
+		font-size: 14px;
+		line-height: 1.7;
+		color: #6b6b6b;
+		max-width: 540px;
+
+		a {
+			color: #7545bb;
+			text-decoration: underline;
+
+			&:hover {
+				color: #5317aa;
+			}
+		}
+	}
+
+	.evf-payment-upsell-illustration {
+		margin: 0 auto 16px;
+		max-width: 260px;
+		line-height: 0;
+
+		svg {
+			width: 100%;
+			height: auto;
+		}
+	}
+
+	.evf-payment-upsell-btn {
+		display: inline-block;
+		padding: 14px 36px;
+		background: #7545bb;
+		color: #fff;
+		font-size: 15px;
+		font-weight: 600;
+		line-height: 1.2;
+		border-radius: 5px;
+		text-decoration: none;
+		border: none;
+		cursor: pointer;
+		transition: background 0.2s ease;
+
+		&:hover {
+			background: #5317aa;
+			color: #fff;
+		}
+	}
+
+	.evf-payment-upsell-help {
+		margin: 20px 0 0;
+		font-size: 13px;
+		color: #6b6b6b;
+
+		a {
+			color: #7545bb;
+			text-decoration: underline;
+
+			&:hover {
+				color: #5317aa;
+			}
+		}
+	}
+}
+
+// Payments upsell — standalone admin page wrapper.
+.evf-payments-page-wrap {
+	min-height: calc(100vh - 80px);
+	background: #f0f0f1;
+
+	.evf-payments-upsell-card {
+		background: #fff;
+		width: 100%;
+		padding: 36px 48px;
+		box-sizing: border-box;
+		text-align: center;
+
+		.evf-payments-upsell-illustration {
+			margin: 0 auto 16px;
+			max-width: 260px;
+			line-height: 0;
+
+			svg {
+				width: 100%;
+				height: auto;
+			}
+		}
+
+		.evf-payments-desc {
+			margin: 0 auto 16px;
+			font-size: 14px;
+			line-height: 1.7;
+			color: #6b6b6b;
+			max-width: 540px;
+
+			a {
+				color: #7545bb;
+				text-decoration: underline;
+
+				&:hover {
+					color: #5317aa;
+				}
+			}
+		}
+
+		.evf-payments-upsell-btn {
+			display: inline-block;
+			padding: 14px 40px;
+			background: #7545bb;
+			color: #fff;
+			font-size: 15px;
+			font-weight: 600;
+			line-height: 1.2;
+			border-radius: 5px;
+			text-decoration: none;
+			transition: background 0.2s ease;
+
+			&:hover {
+				background: #5317aa;
+				color: #fff;
+			}
+		}
+
+		.evf-payments-upsell-help {
+			margin: 20px 0 0;
+			font-size: 13px;
+			color: #6b6b6b;
+
+			a {
+				color: #7545bb;
+				text-decoration: underline;
+
+				&:hover {
+					color: #5317aa;
+				}
+			}
+		}
+	}
+}
+
 .everest-forms-panel-field-tinymce {
 	.wp-editor-wrap {
 		width: 100%;
