@@ -29,7 +29,7 @@ function evf_get_screen_ids()
 		$evf_screen_id . '_page_smart-smtp',
 		$evf_screen_id . '_page_evf-smart-smtp',
 		$evf_screen_id . '_page_evf-analytics',
-		$evf_screen_id . '_page_evf-payments',
+		$evf_screen_id . '_page_evf-payment-log',
 	);
 
 	return apply_filters('everest_forms_screen_ids', $screen_ids);
