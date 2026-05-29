@@ -4590,13 +4590,23 @@
 						var dragInst = $.ui.ddmanager && $.ui.ddmanager.current;
 						if (!dragInst || !dragInst.offset || !dragInst.offset.click) return;
 						if (!ui.placeholder) return;
-						var destGrid = ui.placeholder.closest('.evf-admin-grid')[0];
-						if (!destGrid) return;
+
+						// Cache the destination grid and its offset to reduce DOM queries
+						if (!dragInst._evf_destGrid || dragInst._evf_destGrid !== ui.placeholder[0].parentElement) {
+							dragInst._evf_destGrid = ui.placeholder.closest('.evf-admin-grid')[0];
+							if (!dragInst._evf_destGrid) return;
+							dragInst._evf_destGridOffset = null; // Invalidate cached offset when grid changes
+						}
+
+						var destGrid = dragInst._evf_destGrid;
+						if (!dragInst._evf_destGridOffset) {
+							dragInst._evf_destGridOffset = $(destGrid).offset().left;
+						}
+
 						if (ui.helper.data('origWidth') === undefined) {
 							ui.helper.data('origWidth', ui.helper.width());
 						}
-						var colPageLeft = $(destGrid).offset().left;
-						dragInst.offset.click.left = Math.max(5, Math.min(event.pageX - colPageLeft, ui.helper.width() - 5));
+						dragInst.offset.click.left = Math.max(5, Math.min(event.pageX - dragInst._evf_destGridOffset, ui.helper.width() - 5));
 					},
 					receive: function (event, ui) {
 						if (ui.sender.is('button')) {
@@ -7004,7 +7014,12 @@ jQuery(function ($) {
 			});
 
 			var $currentGroup = $(this).parent('.everest-forms-field-option-group');
-			$currentGroup.toggleClass('closed').toggleClass('open');
+			// Properly sync the closed/open state: if closed, make open; if open, make closed
+			if ($currentGroup.hasClass('closed')) {
+				$currentGroup.removeClass('closed').addClass('open');
+			} else {
+				$currentGroup.removeClass('open').addClass('closed');
+			}
 			$('.everest-forms-field-option-group.closed').not($currentGroup).each(function () {
 				$(this).find('.everest-forms-field-option-group-inner').hide();
 			});
