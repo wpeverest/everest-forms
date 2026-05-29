@@ -60,6 +60,108 @@ class EVF_Addon_Upsell {
 						esc_html__( 'Use one form for both data collection and signup', 'everest-forms' ),
 					),
 				),
+
+				'paypal_standard' => array(
+					'category'     => 'payments',
+					'label'        => esc_html__( 'PayPal Standard', 'everest-forms' ),
+					'icon'         => plugins_url( 'assets/extensions-json/sections/images/payment-paypal.png', EVF_PLUGIN_FILE ),
+					'description'  => esc_html__( 'Integrate PayPal with Everest Forms to collect deposits, payments, and donations.', 'everest-forms' ),
+					'active_check' => 'EVF_PAYPAL_STANDARD_VERSION',
+					'vedio_id'     => 'pcwPjCt7N2I',
+					'upgrade_url'  => 'https://wpeverest.com/wordpress-plugins/everest-forms/pricing/',
+					'docs_url'     => 'https://docs.everestforms.net/docs/paypal-standard/',
+					'features'     => array(
+						esc_html__( 'Redirect users to PayPal to complete payments', 'everest-forms' ),
+						esc_html__( 'Accept PayPal balance, cards, and bank transfers', 'everest-forms' ),
+						esc_html__( 'Trusted by hundreds of millions of buyers worldwide', 'everest-forms' ),
+						esc_html__( 'Automatic payment confirmation synced to entries', 'everest-forms' ),
+					),
+				),
+
+				'stripe'          => array(
+					'category'     => 'payments',
+					'label'        => esc_html__( 'Stripe', 'everest-forms' ),
+					'icon'         => plugins_url( 'assets/extensions-json/sections/images/payment-stripe.png', EVF_PLUGIN_FILE ),
+					'description'  => esc_html__( 'Accept credit and debit card payments with Stripe.', 'everest-forms' ),
+					'active_check' => 'EVF_STRIPE_VERSION',
+					'vedio_id'     => 'wZXnaxLxdz4',
+					'upgrade_url'  => 'https://wpeverest.com/wordpress-plugins/everest-forms/pricing/',
+					'docs_url'     => 'https://docs.everestforms.net/docs/stripe/',
+					'features'     => array(
+						esc_html__( 'Accept one-time and recurring Stripe payments', 'everest-forms' ),
+						esc_html__( 'Supports credit cards, Apple Pay, and Google Pay', 'everest-forms' ),
+						esc_html__( 'Real-time payment status updates in entries', 'everest-forms' ),
+						esc_html__( 'PCI-compliant card collection via Stripe Elements', 'everest-forms' ),
+					),
+				),
+
+				'square'          => array(
+					'category'     => 'payments',
+					'label'        => esc_html__( 'Square', 'everest-forms' ),
+					'icon'         => plugins_url( 'assets/extensions-json/sections/images/square-payment.png', EVF_PLUGIN_FILE ),
+					'description'  => esc_html__( 'Process payments securely through Square.', 'everest-forms' ),
+					'active_check' => 'EVF_SQUARE_VERSION',
+					'vedio_id'     => '5ymZV-S0mMs',
+					'upgrade_url'  => 'https://wpeverest.com/wordpress-plugins/everest-forms/pricing/',
+					'docs_url'     => 'https://docs.everestforms.net/docs/square/',
+					'features'     => array(
+						esc_html__( 'Accept debit and credit card payments', 'everest-forms' ),
+						esc_html__( 'Seamless Square dashboard integration', 'everest-forms' ),
+						esc_html__( 'Supports one-time payments in your forms', 'everest-forms' ),
+						esc_html__( 'Secure, PCI-compliant card processing', 'everest-forms' ),
+					),
+				),
+
+				'authorize_net'   => array(
+					'category'     => 'payments',
+					'label'        => esc_html__( 'Authorize.Net', 'everest-forms' ),
+					'icon'         => plugins_url( 'assets/extensions-json/sections/images/authorize-net.png', EVF_PLUGIN_FILE ),
+					'description'  => esc_html__( 'Accept payments via Authorize.Net payment gateway.', 'everest-forms' ),
+					'active_check' => 'EVF_AUTHORIZE_NET_VERSION',
+					'vedio_id'     => 'a5EcKjwWD1A',
+					'upgrade_url'  => 'https://wpeverest.com/wordpress-plugins/everest-forms/pricing/',
+					'docs_url'     => 'https://docs.everestforms.net/docs/authorize-net/',
+					'features'     => array(
+						esc_html__( 'Process credit cards and e-checks directly in your forms', 'everest-forms' ),
+						esc_html__( 'Trusted by thousands of merchants worldwide', 'everest-forms' ),
+						esc_html__( 'Advanced fraud detection and security', 'everest-forms' ),
+						esc_html__( 'Works with your existing Authorize.Net account', 'everest-forms' ),
+					),
+				),
+
+				'razorpay'        => array(
+					'category'     => 'payments',
+					'label'        => esc_html__( 'Razorpay', 'everest-forms' ),
+					'icon'         => plugins_url( 'assets/extensions-json/sections/images/Razorpay.png', EVF_PLUGIN_FILE ),
+					'description'  => esc_html__( 'Add Razorpay payment to your forms to accept payments from India.', 'everest-forms' ),
+					'active_check' => 'EVF_RAZORPAY_VERSION',
+					'vedio_id'     => '2Og6b1JXDWs',
+					'upgrade_url'  => 'https://wpeverest.com/wordpress-plugins/everest-forms/pricing/',
+					'docs_url'     => 'https://docs.everestforms.net/docs/razorpay/',
+					'features'     => array(
+						esc_html__( 'Accept payments in INR via cards, UPI, and net banking', 'everest-forms' ),
+						esc_html__( 'Ideal for businesses targeting Indian customers', 'everest-forms' ),
+						esc_html__( 'Supports one-time and recurring payments', 'everest-forms' ),
+						esc_html__( 'Automatic payment status synced to form entries', 'everest-forms' ),
+					),
+				),
+
+				'mollie'          => array(
+					'category'     => 'payments',
+					'label'        => esc_html__( 'Mollie', 'everest-forms' ),
+					'icon'         => plugins_url( 'assets/extensions-json/sections/images/Mollie.png', EVF_PLUGIN_FILE ),
+					'description'  => esc_html__( 'Collect payments using Mollie — ideal for European businesses.', 'everest-forms' ),
+					'active_check' => 'EVF_MOLLIE_VERSION',
+					'vedio_id'     => 'r263krbqzfo',
+					'upgrade_url'  => 'https://wpeverest.com/wordpress-plugins/everest-forms/pricing/',
+					'docs_url'     => 'https://docs.everestforms.net/docs/mollie/',
+					'features'     => array(
+						esc_html__( 'Supports iDEAL, credit cards, and more payment methods', 'everest-forms' ),
+						esc_html__( 'Popular across Europe and the Netherlands', 'everest-forms' ),
+						esc_html__( 'Simple API with no monthly fees', 'everest-forms' ),
+						esc_html__( 'Automatic payment status syncing with entries', 'everest-forms' ),
+					),
+				),
 			)
 		);
 	}
@@ -98,12 +200,13 @@ class EVF_Addon_Upsell {
 	}
 
 	/**
-	 * Get upsell entries for inactive addons in a given category.
+	 * Get upsell entries for addons in a given category.
 	 *
-	 * @param  string $category Category key e.g. 'utilities', 'payment'.
+	 * @param  string $category     Category key e.g. 'utilities', 'payments'.
+	 * @param  bool   $check_active Skip entries whose addon is already active when true.
 	 * @return array
 	 */
-	public static function get_upsells_for_category( $category ) {
+	public static function get_upsells_for_category( $category, $check_active = true ) {
 		$upsells = array();
 
 		foreach ( self::get_registry() as $id => $config ) {
@@ -111,7 +214,7 @@ class EVF_Addon_Upsell {
 				continue;
 			}
 
-			if ( self::is_active( $config['active_check'] ) ) {
+			if ( $check_active && self::is_active( $config['active_check'] ) ) {
 				continue;
 			}
 
