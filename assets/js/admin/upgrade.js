@@ -17,6 +17,11 @@ jQuery( function( $ ) {
 				this.evf_upgrade_addon,
 			);
 			$(document.body).on(
+				'click',
+				'#evf-row-field-popover .evf-popover-field-item.evf-field-blocked',
+				this.popover_field_upgrade,
+			);
+			$(document.body).on(
 				'click dragstart',
 				'.evf-registered-item.enable-stripe-model',
 				this.enable_stripe_model,
@@ -272,6 +277,23 @@ jQuery( function( $ ) {
 			evf_upgrade_actions.upgrade_modal(
 				$(this).data('feature') ? $(this).data('feature') : $(this).text(),
 			);
+		},
+		popover_field_upgrade: function () {
+			var $item = $(this),
+				fieldType = $item.data('field-type'),
+				fieldLabel =
+					$item.data('field-label') ||
+					$item.find('.evf-popover-field-label').text().trim(),
+				$sidebarBtn = $(
+					'.evf-registered-item[data-field-type="' + fieldType + '"]',
+				),
+				links = $sidebarBtn.length ? $sidebarBtn.data('links') : '';
+			$('#evf-row-field-popover').hide().removeData('insert-into-grid');
+			$('.evf-admin-row.evf-popover-open').removeClass('evf-popover-open');
+			$('.everest-forms-field.evf-field-popover-open').removeClass(
+				'evf-field-popover-open',
+			);
+			evf_upgrade_actions.upgrade_modal(fieldLabel + ' field', links || '');
 		},
 		field_upgrade: function (e) {
 			e.preventDefault();

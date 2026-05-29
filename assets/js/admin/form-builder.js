@@ -5031,6 +5031,19 @@
 		 * Bind the row-level "+" button and its field-picker popover.
 		 */
 		bindRowFieldPopover: function () {
+			var proIconUrl = ( function () {
+				var locked = document.querySelector(
+					'.evf-registered-item.upgrade-modal, .evf-registered-item.evf-upgrade-addon',
+				);
+				if ( ! locked ) {
+					return '';
+				}
+				return window
+					.getComputedStyle( locked, '::before' )
+					.backgroundImage.replace( /^url\(["']?/, '' )
+					.replace( /["']?\)$/, '' );
+			}() );
+
 			if (!$('#evf-row-popover-style').length) {
 				$('head').append(
 					'<style id="evf-row-popover-style">' +
@@ -5077,7 +5090,9 @@
 					'.evf-popover-field-item:hover{border-color:#8c64c6;color:#8c64c6;background:#fff}' +
 					'.evf-popover-field-item .evf-popover-field-icon i{font-size:18px}' +
 					'.evf-popover-field-item .evf-popover-field-icon svg{width:24px;height:24px;display:block}' +
-					'.evf-popover-field-item.evf-field-blocked{opacity:.45;cursor:default;pointer-events:none}' +
+					'.evf-popover-field-item.evf-field-blocked{opacity:.55;cursor:pointer;position:relative}' +
+					'.evf-popover-field-item.evf-field-blocked:hover{opacity:1;border-color:#e6a817;background:#fffdf5}' +
+					( proIconUrl ? '.evf-popover-field-item.evf-field-blocked::before{content:"";background-image:url("' + proIconUrl + '");background-repeat:no-repeat;background-position:center;background-size:100%;position:absolute;width:14px;height:14px;top:4px;right:4px}' : '' ) +
 					'.evf-popover-no-results{grid-column:1/-1;text-align:center;padding:20px 0;color:#999;font-size:12px}' +
 					'.evf-field-loading-wrap{display:flex;align-items:center;justify-content:center;gap:8px;padding:12px}' +
 					'.evf-field-loading-wrap .spinner{float:none;margin:0}' +
