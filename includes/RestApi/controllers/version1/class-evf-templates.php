@@ -182,6 +182,11 @@ class Everest_Forms_Template_Section_Data {
 						$temp->imageUrl = untrailingslashit( plugin_dir_url( EVF_PLUGIN_FILE ) ) . '/assets/images/templates/' . $temp->slug . '.png';
 					}
 
+					// Redirect deprecated demo.wpeverest.com preview links to the everestforms.net templates listing.
+					if ( isset( $temp->preview_link ) && false !== strpos( $temp->preview_link, 'demo.wpeverest.com' ) ) {
+						$temp->preview_link = 'https://everestforms.net/form-templates/';
+					}
+
 					$user_id = get_current_user_id();
 					if ( $user_id ) {
 						$user_favorites = get_option( 'user_favorites', array() );

@@ -69,6 +69,11 @@ class EVF_Admin_Form_Templates {
 					if ( $exists ) {
 						$template_tuple->image = untrailingslashit( plugin_dir_url( EVF_PLUGIN_FILE ) ) . '/assets/images/templates/' . untrailingslashit( $template_tuple->slug ) . '.png';
 					}
+
+					// Redirect deprecated demo.wpeverest.com preview links to the everestforms.net templates listing.
+					if ( isset( $template_tuple->preview_link ) && false !== strpos( $template_tuple->preview_link, 'demo.wpeverest.com' ) ) {
+						$template_tuple->preview_link = 'https://everestforms.net/form-templates/';
+					}
 				}
 
 				set_transient( 'evf_template_section_list', $template_data, WEEK_IN_SECONDS );
