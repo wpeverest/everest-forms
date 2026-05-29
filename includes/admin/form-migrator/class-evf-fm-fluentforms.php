@@ -1129,14 +1129,79 @@ class EVF_Fm_Fluentforms extends EVF_Admin_Form_Migrator {
 				);
 				break;
 
-			// ── Unsupported fields ─────────────────────────────────────────
+			// ── Ratings ────────────────────────────────────────────────────
 			case 'ratings':
+				$ff_options      = isset( $ff_field['options'] ) && is_array( $ff_field['options'] ) ? $ff_field['options'] : array();
+				$number_of_stars = ! empty( $ff_options ) ? (int) max( array_keys( $ff_options ) ) : 5;
+				$form['structure'][ 'row_' . $form['form_field_id'] ]['grid_1'][] = $field_id;
+				$form['form_fields'][ $field_id ] = array(
+					'id'                             => $field_id,
+					'type'                           => 'rating',
+					'label'                          => $label,
+					'meta-key'                       => 'rating-' . $ff_name,
+					'description'                    => $description,
+					'required'                       => $required,
+					'required_field_message_setting' => 'global',
+					'required-field-message'         => '',
+					'label_hide'                     => '0',
+					'css'                            => $css_class,
+					'number_of_stars'                => $number_of_stars,
+					'rating-icon'                    => 'star',
+					'icon_color'                     => '#f2b01e',
+					'ff_name'                        => $ff_name,
+				);
+				break;
+
+			// ── Address (Fluent Forms Pro) ─────────────────────────────────
+			case 'address':
+				$addr_sub = isset( $ff_field['fields'] ) && is_array( $ff_field['fields'] ) ? $ff_field['fields'] : array();
+				$form['structure'][ 'row_' . $form['form_field_id'] ]['grid_1'][] = $field_id;
+				$form['form_fields'][ $field_id ] = array(
+					'id'                             => $field_id,
+					'type'                           => 'address',
+					'label'                          => $label,
+					'meta-key'                       => 'address-' . $ff_name,
+					'description'                    => $description,
+					'required'                       => $required,
+					'required_field_message_setting' => 'global',
+					'required-field-message'         => '',
+					'label_hide'                     => '0',
+					'css'                            => $css_class,
+					'address1_label'                 => isset( $addr_sub['address_line_1']['settings']['label'] ) ? $addr_sub['address_line_1']['settings']['label'] : esc_html__( 'Address Line 1', 'everest-forms' ),
+					'address1_placeholder'           => isset( $addr_sub['address_line_1']['attributes']['placeholder'] ) ? $addr_sub['address_line_1']['attributes']['placeholder'] : '',
+					'address1_default'               => '',
+					'address1_hide'                  => ( isset( $addr_sub['address_line_1']['settings']['visible'] ) && ! $addr_sub['address_line_1']['settings']['visible'] ) ? '1' : '0',
+					'address2_label'                 => isset( $addr_sub['address_line_2']['settings']['label'] ) ? $addr_sub['address_line_2']['settings']['label'] : esc_html__( 'Address Line 2', 'everest-forms' ),
+					'address2_placeholder'           => isset( $addr_sub['address_line_2']['attributes']['placeholder'] ) ? $addr_sub['address_line_2']['attributes']['placeholder'] : '',
+					'address2_default'               => '',
+					'address2_hide'                  => ( isset( $addr_sub['address_line_2']['settings']['visible'] ) && ! $addr_sub['address_line_2']['settings']['visible'] ) ? '1' : '0',
+					'city_label'                     => isset( $addr_sub['city']['settings']['label'] ) ? $addr_sub['city']['settings']['label'] : esc_html__( 'City', 'everest-forms' ),
+					'city_placeholder'               => isset( $addr_sub['city']['attributes']['placeholder'] ) ? $addr_sub['city']['attributes']['placeholder'] : '',
+					'city_default'                   => '',
+					'city_hide'                      => ( isset( $addr_sub['city']['settings']['visible'] ) && ! $addr_sub['city']['settings']['visible'] ) ? '1' : '0',
+					'state_label'                    => isset( $addr_sub['state']['settings']['label'] ) ? $addr_sub['state']['settings']['label'] : esc_html__( 'State / Province / Region', 'everest-forms' ),
+					'state_placeholder'              => isset( $addr_sub['state']['attributes']['placeholder'] ) ? $addr_sub['state']['attributes']['placeholder'] : '',
+					'state_default'                  => '',
+					'state_hide'                     => ( isset( $addr_sub['state']['settings']['visible'] ) && ! $addr_sub['state']['settings']['visible'] ) ? '1' : '0',
+					'postal_label'                   => isset( $addr_sub['zip']['settings']['label'] ) ? $addr_sub['zip']['settings']['label'] : esc_html__( 'ZIP / Postal Code', 'everest-forms' ),
+					'postal_placeholder'             => isset( $addr_sub['zip']['attributes']['placeholder'] ) ? $addr_sub['zip']['attributes']['placeholder'] : '',
+					'postal_default'                 => '',
+					'postal_hide'                    => ( isset( $addr_sub['zip']['settings']['visible'] ) && ! $addr_sub['zip']['settings']['visible'] ) ? '1' : '0',
+					'country_label'                  => isset( $addr_sub['country']['settings']['label'] ) ? $addr_sub['country']['settings']['label'] : esc_html__( 'Country', 'everest-forms' ),
+					'country_placeholder'            => isset( $addr_sub['country']['attributes']['placeholder'] ) ? $addr_sub['country']['attributes']['placeholder'] : '',
+					'country_default'                => '',
+					'country_hide'                   => ( isset( $addr_sub['country']['settings']['visible'] ) && ! $addr_sub['country']['settings']['visible'] ) ? '1' : '0',
+					'country_list'                   => array(),
+					'ff_name'                        => $ff_name,
+				);
+				break;
+
+			// ── Unsupported fields ─────────────────────────────────────────
 			case 'net_promoter_score':
 			case 'tabular_grid':
 			case 'chained_select':
 			case 'repeater_field':
 			case 'quiz_score':
-			case 'address':
 				$unsupported[] = $label ?: $element;
 				break;
 
@@ -1282,6 +1347,30 @@ class EVF_Fm_Fluentforms extends EVF_Admin_Form_Migrator {
 						$entry['meta_key'] = $field_meta_key;
 						$entry['name']     = $field_name;
 						$entry['value']    = is_string( $value ) ? $value : '';
+						break;
+
+					case 'rating':
+						$entry['id']       = $field_key;
+						$entry['type']     = $field_type;
+						$entry['meta_key'] = $field_meta_key;
+						$entry['name']     = $field_name;
+						$entry['value']    = is_numeric( $value ) ? (string) $value : '';
+						break;
+
+					case 'address':
+						$addr             = is_array( $value ) ? $value : array();
+						$entry['id']      = $field_key;
+						$entry['type']    = $field_type;
+						$entry['meta_key'] = $field_meta_key;
+						$entry['name']    = $field_name;
+						$entry['value']   = array(
+							'address1' => isset( $addr['address_line_1'] ) ? $addr['address_line_1'] : '',
+							'address2' => isset( $addr['address_line_2'] ) ? $addr['address_line_2'] : '',
+							'city'     => isset( $addr['city'] ) ? $addr['city'] : '',
+							'state'    => isset( $addr['state'] ) ? $addr['state'] : '',
+							'postal'   => isset( $addr['zip'] ) ? $addr['zip'] : '',
+							'country'  => isset( $addr['country'] ) ? $addr['country'] : '',
+						);
 						break;
 
 					default:
