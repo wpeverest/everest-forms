@@ -276,7 +276,7 @@ class EVF_Admin_Menus {
 			esc_html__( 'Payments', 'everest-forms' ),
 			esc_html__( 'Payments', 'everest-forms' ),
 			'manage_everest_forms',
-			'evf-payments',
+			'evf-payment-log',
 			array( $this, 'payments_page' )
 		);
 	}
