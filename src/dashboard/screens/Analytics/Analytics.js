@@ -23,6 +23,60 @@ const CrownIcon = () => (
 	</svg>
 );
 
+const BarChartIcon = () => (
+	<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+		<line x1="18" y1="20" x2="18" y2="10" />
+		<line x1="12" y1="20" x2="12" y2="4" />
+		<line x1="6" y1="20" x2="6" y2="14" />
+	</svg>
+);
+
+const DownloadIcon = () => (
+	<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+		<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+		<polyline points="7 10 12 15 17 10" />
+		<line x1="12" y1="15" x2="12" y2="3" />
+	</svg>
+);
+
+const PrinterIcon = () => (
+	<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+		<polyline points="6 9 6 2 18 2 18 9" />
+		<path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+		<rect x="6" y="14" width="12" height="8" />
+	</svg>
+);
+
+const LockIcon = () => (
+	<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+		<rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+		<path d="M7 11V7a5 5 0 0 1 10 0v4" />
+	</svg>
+);
+
+const UpgradeModal = ( { onClose, upgradeURL } ) => (
+	<div className="EVF-Free-Analytics__ModalBackdrop" onClick={ onClose }>
+		<div className="EVF-Free-Analytics__ModalBox" onClick={ ( e ) => e.stopPropagation() }>
+			<button className="EVF-Free-Analytics__ModalClose" onClick={ onClose } aria-label="Close">
+				&times;
+			</button>
+			<h3 className="EVF-Free-Analytics__OverlayTitle">
+				{ __( 'Unlock Advanced Analytics', 'everest-forms' ) }
+			</h3>
+			<p className="EVF-Free-Analytics__OverlayText">
+				{ __(
+					'Get powerful analytics with submission tracking, form insights, conversion analysis, and advanced visualizations.',
+					'everest-forms',
+				) }
+			</p>
+			<a href={ upgradeURL } className="EVF-Free-Analytics__UpgradeBtn" target="_blank" rel="noopener noreferrer">
+				<CrownIcon />
+				{ __( 'Upgrade to Pro', 'everest-forms' ) }
+			</a>
+		</div>
+	</div>
+);
+
 const ChevronDownIcon = () => (
 	<svg
 		xmlns="http://www.w3.org/2000/svg"
@@ -69,6 +123,8 @@ const METRIC_BOXES = [
  * `everest-forms-analytics` WordPress filter.
  */
 const FreeAnalyticsContent = () => {
+	const [ showModal, setShowModal ] = useState( false );
+
 	const upgradeURL =
 		typeof _EVF_DASHBOARD_ !== 'undefined' && _EVF_DASHBOARD_.upgradeURL
 			? `${_EVF_DASHBOARD_.upgradeURL}utm_medium=evf-dashboard&utm_source=evf-free&utm_campaign=analytics-upgrade-btn&utm_content=Upgrade+to+Pro`
@@ -76,8 +132,19 @@ const FreeAnalyticsContent = () => {
 
 	const dateRange = getStaticDateRange();
 
+	const openModal = ( e ) => {
+		e.preventDefault();
+		setShowModal( true );
+	};
+
 	return (
 		<div className="EVF-Free-Analytics">
+			{ showModal && (
+				<UpgradeModal
+					onClose={ () => setShowModal( false ) }
+					upgradeURL={ upgradeURL }
+				/>
+			) }
 			<div className="EVF-Free-Analytics__Filters">
 				<div>
 					<button
@@ -107,6 +174,23 @@ const FreeAnalyticsContent = () => {
 					>
 						{__('Day', 'everest-forms')}
 						<ChevronDownIcon />
+					</button>
+				</div>
+				<div className="EVF-Free-Analytics__Actions">
+					<button className="EVF-Free-Analytics__ActionBtn" onClick={ openModal }>
+						<BarChartIcon />
+						{ __( 'Survey Report', 'everest-forms' ) }
+						<LockIcon />
+					</button>
+					<button className="EVF-Free-Analytics__ActionBtn" onClick={ openModal }>
+						<DownloadIcon />
+						{ __( 'Export', 'everest-forms' ) }
+						<LockIcon />
+					</button>
+					<button className="EVF-Free-Analytics__ActionBtn" onClick={ openModal }>
+						<PrinterIcon />
+						{ __( 'Print', 'everest-forms' ) }
+						<LockIcon />
 					</button>
 				</div>
 			</div>
