@@ -399,7 +399,7 @@ class EVF_Fm_Contactform7 extends EVF_Admin_Form_Migrator {
 			'form_title'                         => sanitize_text_field( $cf7_form_name ),
 			'form_description'                   => '',
 			'form_disable_message'               => esc_html__( 'This form is disabled.', 'everest-forms' ),
-			'successful_form_submission_message' => esc_html__( 'Thanks for contacting us! We will be in touch with you shortly.', 'everest-forms' ),
+			'successful_form_submission_message' => ! empty( $cf7_form->message( 'mail_sent_ok' ) ) ? sanitize_text_field( $cf7_form->message( 'mail_sent_ok' ) ) : esc_html__( 'Thanks for contacting us! We will be in touch with you shortly.', 'everest-forms' ),
 			'submission_message_scroll'          => '1',
 			'redirect_to'                        => 'same',
 			'custom_page'                        => '',
@@ -452,7 +452,7 @@ class EVF_Fm_Contactform7 extends EVF_Admin_Form_Migrator {
 			$cf7_recaptcha      = false;
 			$fields_pro_plan    = array( 'tel', 'file', 'acceptance', 'quiz' );
 			$fields_pro_omit    = array();
-			$fields_unsupported = array( 'hidden' );
+			$fields_unsupported = array();
 			$upgrade_plan       = array();
 			$upgrade_omit       = array();
 			$unsupported        = array();
@@ -493,11 +493,11 @@ class EVF_Fm_Contactform7 extends EVF_Admin_Form_Migrator {
 
 					continue;
 				}
-				if ( ! defined( 'EFP_VERSION' ) && '1.7.1' <= 'EFP_VERSION' && in_array( $cf7_field->basetype, $fields_pro_plan, true ) ) {
+				if ( ( ! defined( 'EFP_VERSION' ) || version_compare( EFP_VERSION, '1.7.1', '<' ) ) && in_array( $cf7_field->basetype, $fields_pro_plan, true ) ) {
 					$upgrade_plan[] = $label;
 					continue;
 				}
-				if ( ! defined( 'EFP_VERSION' ) && '1.7.1' <= 'EFP_VERSION' && in_array( $cf7_field->basetype, $fields_pro_omit, true ) ) {
+				if ( ( ! defined( 'EFP_VERSION' ) || version_compare( EFP_VERSION, '1.7.1', '<' ) ) && in_array( $cf7_field->basetype, $fields_pro_omit, true ) ) {
 					$upgrade_omit[] = $label;
 
 					continue;
@@ -814,6 +814,19 @@ class EVF_Fm_Contactform7 extends EVF_Admin_Form_Migrator {
 							'css'         => $cf7_field_classes,
 						);
 						break;
+					case 'hidden':
+						$type                                   = 'hidden';
+						$form['structure']['row_1']['grid_1'][] = $field_id;
+						$form['form_fields'][ $field_id ]       = array(
+							'id'            => $field_id,
+							'type'          => $type,
+							'label'         => $label,
+							'meta-key'      => $cf7_field->name,
+							'default_value' => (string) reset( $cf7_field->values ),
+							'css'           => $cf7_field_classes,
+							'cf7_name'      => $cf7_field->name,
+						);
+						break;
 					// ReCAPTCHA field.
 					case 'recaptcha':
 						$cf7_recaptcha = true;
@@ -884,6 +897,46 @@ class EVF_Fm_Contactform7 extends EVF_Admin_Form_Migrator {
 					$form['settings']['email']['connection_1']['evf_from_email'] = $sender['address'];
 				}
 			}
+
+			// Setup mail_2 (auto-reply) notification if active.
+			if ( ! empty( $cf7_properties['mail_2']['active'] ) ) {
+				$form['settings']['email']['connection_2'] = array(
+					'enable_email_notification' => '1',
+					'connection_name'           => esc_html__( 'Auto-reply', 'everest-forms' ),
+					'evf_to_email'              => '{admin_email}',
+					'evf_from_name'             => esc_html__( 'Everest Forms', 'everest-forms' ),
+					'evf_from_email'            => '{admin_email}',
+					'evf_reply_to'              => '',
+					'evf_email_subject'         => sprintf( '%s - %s', esc_html__( 'New Form Entry', 'everest-forms' ), esc_attr( $cf7_form_name ) ),
+					'evf_email_message'         => '{all_fields}',
+				);
+
+				if ( ! empty( $cf7_properties['mail_2']['subject'] ) ) {
+					$form['settings']['email']['connection_2']['evf_email_subject'] = $this->get_smarttags( $cf7_properties['mail_2']['subject'], $form['form_fields'] );
+				}
+
+				if ( ! empty( $cf7_properties['mail_2']['recipient'] ) ) {
+					$form['settings']['email']['connection_2']['evf_to_email'] = $this->get_smarttags( $cf7_properties['mail_2']['recipient'], $form['form_fields'] );
+				}
+
+				if ( ! empty( $cf7_properties['mail_2']['body'] ) ) {
+					$form['settings']['email']['connection_2']['evf_email_message'] = $this->get_smarttags( $cf7_properties['mail_2']['body'], $form['form_fields'] );
+				}
+
+				if ( ! empty( $cf7_properties['mail_2']['additional_headers'] ) ) {
+					$form['settings']['email']['connection_2']['evf_reply_to'] = $this->get_replyto( $cf7_properties['mail_2']['additional_headers'], $form['form_fields'] );
+				}
+
+				if ( ! empty( $cf7_properties['mail_2']['sender'] ) ) {
+					$sender = $this->get_sender_details( $cf7_properties['mail_2']['sender'], $form['form_fields'] );
+
+					if ( $sender ) {
+						$form['settings']['email']['connection_2']['evf_from_name']  = $sender['name'];
+						$form['settings']['email']['connection_2']['evf_from_email'] = $sender['address'];
+					}
+				}
+			}
+
 			$form = apply_filters( 'evf_fm_' . $this->slug . '_form_after_fields_mapping', $form, $cf7_form_id, $cf7_form );
 
 			$response = $this->import_form( $form, $unsupported, $upgrade_plan, $upgrade_omit );
