@@ -13844,3 +13844,68 @@ button#show-settings-link {
 	align-items: center;
 	justify-content: center;
 }
+
+// Conditional Logic upsell panel (free version only).
+.evf-cl-upsell-group {
+	> .everest-forms-field-option-group-toggle {
+		color: #999 !important;
+	}
+}
+
+.evf-cl-pro-badge {
+	display: inline-block;
+	background: #7545bb;
+	color: #fff;
+	font-size: 9px;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	padding: 2px 5px;
+	border-radius: 3px;
+	margin-left: 5px;
+	vertical-align: middle;
+	text-transform: uppercase;
+	position: relative;
+	top: -1px;
+}
+
+.evf-cl-upgrade-notice {
+	background: #f5f3ff;
+	border-left: 3px solid #7545bb;
+	padding: 11px 13px;
+	margin-bottom: 14px;
+	border-radius: 0 4px 4px 0;
+
+	p {
+		margin: 0 0 9px;
+		color: #3c3c3c;
+		font-size: 12px;
+		line-height: 1.6;
+	}
+}
+
+.evf-cl-upgrade-btn {
+	display: inline-block;
+	background: #7545bb;
+	color: #fff !important;
+	font-size: 12px;
+	font-weight: 600;
+	padding: 6px 13px;
+	border-radius: 4px;
+	text-decoration: none !important;
+	transition: background 0.2s ease;
+
+	&:hover {
+		background: #9159e3;
+		color: #fff !important;
+	}
+}
+
+.evf-cl-preview-ui {
+	opacity: 0.6;
+	pointer-events: none;
+	user-select: none;
+}
+
+.evf-cl-enable-row {
+	margin-bottom: 4px;
+}
