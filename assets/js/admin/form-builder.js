@@ -1444,6 +1444,21 @@
 		},
 
 		/**
+		 * Clear subscription plan expiry date input and flatpickr state.
+		 *
+		 * @param {jQuery} $li Plan choice row.
+		 */
+		clear_subscription_plan_expiry_date: function ($li) {
+			var $expiryInput = $li.find('.evf-radio-subscription-expiry-input');
+
+			$expiryInput.val('');
+
+			if ($expiryInput.length && $expiryInput[0]._flatpickr) {
+				$expiryInput[0]._flatpickr.clear();
+			}
+		},
+
+		/**
 		 * Toggle flatpickr when the expiry input is clicked.
 		 *
 		 * @param {object} instance Flatpickr instance.
@@ -1739,6 +1754,7 @@
 					if (isChecked) {
 						EVFPanelBuilder.init_subscription_expiry_date_pickers($li);
 					} else {
+						EVFPanelBuilder.clear_subscription_plan_expiry_date($li);
 						EVFPanelBuilder.close_subscription_expiry_pickers();
 					}
 				},
@@ -4669,8 +4685,8 @@
 				var $trialEnable = $li.find('.evf-enable-trial-period');
 				var $expiryEnable = $li.find('.evf-enable-expiry-date');
 				var trialOn = $trialEnable.length && $trialEnable.is(':checked');
+				var expiryOn = $expiryEnable.length && $expiryEnable.is(':checked');
 				var $expiryInput = $li.find('.evf-radio-subscription-expiry-input');
-				var expiryDate = $.trim($expiryInput.val());
 
 				// Exclude stale trial length fields when trial is off (prevents false trial in gateways).
 				$li.find('.evf-spt-panel--trial input, .evf-spt-panel--trial select').prop(
@@ -4678,24 +4694,25 @@
 					!trialOn,
 				);
 
-				if ($expiryInput.length && $expiryInput[0]._flatpickr) {
+				// Exclude stale expiry date when expiry is off (do not infer enable from date alone).
+				$expiryInput.prop('disabled', !expiryOn);
+
+				if (!expiryOn) {
+					EVFPanelBuilder.clear_subscription_plan_expiry_date($li);
+				} else if ($expiryInput.length && $expiryInput[0]._flatpickr) {
 					var fp = $expiryInput[0]._flatpickr;
 					if (fp.selectedDates && fp.selectedDates[0]) {
-						expiryDate = fp.formatDate(
-							fp.selectedDates[0],
-							$expiryInput.data('date-format') || 'Y-m-d',
+						$expiryInput.val(
+							fp.formatDate(
+								fp.selectedDates[0],
+								$expiryInput.data('date-format') || 'Y-m-d',
+							),
 						);
-						$expiryInput.val(expiryDate);
 					}
 				}
 
 				if ($trialEnable.length) {
 					$trialEnable.prop('checked', !!trialOn);
-				}
-
-				if ($expiryEnable.length) {
-					var expiryOn = $expiryEnable.is(':checked') || !!expiryDate;
-					$expiryEnable.prop('checked', !!expiryOn);
 				}
 			});
 		},
@@ -4707,9 +4724,12 @@
 				EVFPanelBuilder.syncSubscriptionPlanChoiceFieldsBeforeSave();
 				var form_data = $form.serializeArray();
 
-				// Re-enable trial inputs so the builder UI stays interactive after save.
+				// Re-enable trial/expiry inputs so the builder UI stays interactive after save.
 				$(
 					'.everest-forms-field-option-payment-subscription-plan .evf-spt-panel--trial input, .everest-forms-field-option-payment-subscription-plan .evf-spt-panel--trial select',
+				).prop('disabled', false);
+				$(
+					'.everest-forms-field-option-payment-subscription-plan .evf-radio-subscription-expiry-input',
 				).prop('disabled', false);
 				var form_title = $('#evf-edit-form-name').val().trim();
 
