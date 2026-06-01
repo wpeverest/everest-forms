@@ -4994,9 +4994,15 @@
 							iconHtml = $btn.find('i').length
 								? $btn.find('i').prop('outerHTML')
 								: '',
-							isBlocked = blocked.some(function (cls) {
-								return $btn.hasClass(cls);
-							});
+							blockedClass = (function () {
+								for (var i = 0; i < blocked.length; i++) {
+									if ($btn.hasClass(blocked[i])) {
+										return blocked[i];
+									}
+								}
+								return '';
+							}()),
+							isBlocked = blockedClass !== '';
 
 						// Skip items with no field type or no label — avoids blank popover entries.
 						if (!fieldType || !fieldLabel) {
@@ -5012,6 +5018,7 @@
 								.attr('data-field-type', fieldType)
 								.attr('data-field-label', fieldLabel)
 								.attr('data-field-group', groupKey || '')
+								.attr('data-blocked-class', blockedClass || null)
 								.append(
 									'<span class="evf-popover-field-icon">' +
 									iconHtml +
@@ -5033,7 +5040,7 @@
 		bindRowFieldPopover: function () {
 			var proIconUrl = ( function () {
 				var locked = document.querySelector(
-					'.evf-registered-item.upgrade-modal, .evf-registered-item.evf-upgrade-addon',
+					'.evf-registered-item.upgrade-modal',
 				);
 				if ( ! locked ) {
 					return '';

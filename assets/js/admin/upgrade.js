@@ -293,10 +293,16 @@ jQuery( function( $ ) {
 			$('.everest-forms-field.evf-field-popover-open').removeClass(
 				'evf-field-popover-open',
 			);
+			if (evf_data && evf_data.is_pro) {
+				return;
+			}
 			evf_upgrade_actions.upgrade_modal(fieldLabel + ' field', links || '');
 		},
 		field_upgrade: function (e) {
 			e.preventDefault();
+			if (evf_data && evf_data.is_pro) {
+				return;
+			}
 			evf_upgrade_actions.upgrade_modal(
 				$(this).data('feature')
 					? $(this).data('feature')
