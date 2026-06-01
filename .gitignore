@@ -10,6 +10,7 @@ project.properties
 *.sublime-project
 *.sublime-workspace
 .sublimelinterrc
+.claude/**
 
 # Grunt
 /node_modules/
