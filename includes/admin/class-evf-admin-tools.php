@@ -44,6 +44,7 @@ class EVF_Admin_Tools {
 			'contactform7' => class_exists( 'EVF_Fm_Contactform7' ) ? new EVF_Fm_Contactform7() : '',
 			'wpforms'      => class_exists( 'EVF_Fm_wpforms' ) ? new EVF_Fm_Wpforms() : '',
 			'fluentforms'  => class_exists( 'EVF_Fm_Fluentforms' ) ? new EVF_Fm_Fluentforms() : '',
+			'ninjaforms'   => class_exists( 'EVF_Fm_Ninjaforms' ) ? new EVF_Fm_Ninjaforms() : '',
 		);
 		// Forms status.
 		$forms_status = array();
