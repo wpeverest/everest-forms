@@ -303,6 +303,7 @@ final class EverestForms {
 		 * Core classes.
 		 */
 		include_once EVF_ABSPATH . 'includes/evf-core-functions.php';
+		include_once EVF_ABSPATH . 'includes/traits/trait-evf-subscription-schedule-choices.php';
 		include_once EVF_ABSPATH . 'includes/class-evf-post-types.php';
 		include_once EVF_ABSPATH . 'includes/class-evf-install.php';
 		include_once EVF_ABSPATH . 'includes/class-evf-ajax.php';
