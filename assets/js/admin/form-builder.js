@@ -355,7 +355,7 @@
 					.first()
 					.addClass('active');
 				$('.everest-forms-panel-content')
-					.find('.evf-payment-setting-content') 
+					.find('.evf-payment-setting-content')
 					.first()
 					.addClass('active');
 			}
