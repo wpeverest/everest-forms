@@ -49,10 +49,6 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 			add_action( 'everest_forms_builder_fields', array( $this, 'output_fields' ) );
 			add_action( 'everest_forms_builder_fields_options', array( $this, 'output_fields_options' ) );
 			add_action( 'everest_forms_builder_fields_preview', array( $this, 'output_fields_preview' ) );
-
-			if ( ! defined( 'EFP_PLUGIN_FILE' ) ) {
-				add_action( 'everest_forms_field_options_after_advanced-options', array( $this, 'output_conditional_logic_upsell' ), 10, 2 );
-			}
 		}
 	}
 
@@ -430,51 +426,6 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 			echo '</div>'; // Repeater Row Wrapper ends.
 		}
 		echo '</div >';
-	}
-
-	/**
-	 * Output conditional logic upsell panel after advanced options (free users only).
-	 *
-	 * @param array  $field     Field data.
-	 * @param object $field_obj Field class instance.
-	 */
-	public function output_conditional_logic_upsell( $field, $field_obj ) {
-		$field_id    = esc_attr( $field['id'] );
-		$upgrade_url = 'https://everestforms.net/pricing/?utm_source=WordPress&utm_medium=evf-field-options&utm_campaign=conditional-logic-upsell&utm_content=Upgrade+to+Pro';
-		?>
-		<div class="everest-forms-field-option-group everest-forms-field-option-group-advanced everest-forms-hide closed evf-cl-upsell-group"
-		     id="everest-forms-field-option-conditional-logic-<?php echo $field_id; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>">
-			<a href="#" class="everest-forms-field-option-group-toggle">
-				<?php esc_html_e( 'Conditional Logic', 'everest-forms' ); ?>
-				<span class="evf-cl-pro-badge"><?php esc_html_e( 'PRO', 'everest-forms' ); ?></span>
-				<i class="handlediv"></i>
-			</a>
-			<div class="everest-forms-field-option-group-inner">
-
-				<div class="evf-cl-upgrade-notice">
-					<p><?php esc_html_e( 'Conditional Logic is a Pro feature. Upgrade to Pro to use conditional logic in your forms.', 'everest-forms' ); ?></p>
-					<a href="<?php echo esc_url( $upgrade_url ); ?>" target="_blank" rel="noopener noreferrer" class="evf-cl-upgrade-btn">
-						<?php esc_html_e( 'Upgrade to Pro', 'everest-forms' ); ?>
-					</a>
-				</div>
-
-				<div class="evf-cl-preview-ui">
-					<div class="evf-cl-enable-row everest-forms-field-option-row">
-						<div class="evf-toggle-section">
-							<span class="everest-forms-toggle-form">
-								<input type="checkbox" class="widefat" disabled>
-								<span class="slider round"></span>
-							</span>
-							<label class="inline">
-								<?php esc_html_e( 'Enable Conditional Logic', 'everest-forms' ); ?>
-							</label>
-						</div>
-					</div>
-				</div>
-
-			</div>
-		</div>
-		<?php
 	}
 
 	/**
