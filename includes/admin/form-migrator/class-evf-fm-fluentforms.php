@@ -659,7 +659,7 @@ class EVF_Fm_Fluentforms extends EVF_Admin_Form_Migrator {
 			// Skip non-input / structural elements.
 			if ( in_array(
 				$element,
-				array( 'button', 'section_break', 'custom_html', 'recaptcha', 'hcaptcha', 'turnstile', 'form_step', 'action_hook', 'shortcode', 'save_progress_button' ),
+				array( 'button', 'recaptcha', 'hcaptcha', 'turnstile', 'form_step', 'action_hook', 'shortcode', 'save_progress_button' ),
 				true
 			) ) {
 				continue;
@@ -832,9 +832,9 @@ class EVF_Fm_Fluentforms extends EVF_Admin_Form_Migrator {
 				$form['structure'][ 'row_' . $form['form_field_id'] ]['grid_1'][] = $field_id;
 				$form['form_fields'][ $field_id ] = array(
 					'id'                             => $field_id,
-					'type'                           => 'phone-us',
+					'type'                           => 'phone',
 					'label'                          => $label,
-					'meta-key'                       => 'phone-us-' . $ff_name,
+					'meta-key'                       => 'phone-' . $ff_name,
 					'description'                    => $description,
 					'required'                       => $required,
 					'required_field_message_setting' => 'global',
@@ -842,9 +842,8 @@ class EVF_Fm_Fluentforms extends EVF_Admin_Form_Migrator {
 					'placeholder'                    => $placeholder,
 					'label_hide'                     => '0',
 					'default_value'                  => $default_val,
+					'phone_format'                   => 'smart',
 					'css'                            => $css_class,
-					'regex_value'                    => '',
-					'regex_message'                  => esc_html__( 'Please provide a valid value for this field.', 'everest-forms' ),
 					'ff_name'                        => $ff_name,
 				);
 				break;
@@ -1196,6 +1195,70 @@ class EVF_Fm_Fluentforms extends EVF_Admin_Form_Migrator {
 				);
 				break;
 
+			// ── Custom HTML ───────────────────────────────────────────────
+			case 'custom_html':
+				$form['structure'][ 'row_' . $form['form_field_id'] ]['grid_1'][] = $field_id;
+				$form['form_fields'][ $field_id ] = array(
+					'id'      => $field_id,
+					'type'    => 'html',
+					'code'    => isset( $settings['html_codes'] ) ? $settings['html_codes'] : '',
+					'css'     => $css_class,
+					'ff_name' => $ff_name,
+				);
+				break;
+
+			// ── Section Break / Divider ────────────────────────────────────
+			case 'section_break':
+				$form['structure'][ 'row_' . $form['form_field_id'] ]['grid_1'][] = $field_id;
+				$form['form_fields'][ $field_id ] = array(
+					'id'           => $field_id,
+					'type'         => 'divider',
+					'divider_type' => 'default',
+					'css'          => $css_class,
+					'ff_name'      => $ff_name,
+				);
+				break;
+
+			// ── Color Picker ───────────────────────────────────────────────
+			case 'color_picker':
+				$form['structure'][ 'row_' . $form['form_field_id'] ]['grid_1'][] = $field_id;
+				$form['form_fields'][ $field_id ] = array(
+					'id'                             => $field_id,
+					'type'                           => 'color',
+					'label'                          => $label,
+					'meta-key'                       => 'color-' . $ff_name,
+					'description'                    => $description,
+					'required'                       => $required,
+					'required_field_message_setting' => 'global',
+					'required-field-message'         => '',
+					'placeholder'                    => $placeholder,
+					'label_hide'                     => '0',
+					'css'                            => $css_class,
+					'ff_name'                        => $ff_name,
+				);
+				break;
+
+			// ── Country ───────────────────────────────────────────────────
+			case 'select_country':
+				$form['structure'][ 'row_' . $form['form_field_id'] ]['grid_1'][] = $field_id;
+				$form['form_fields'][ $field_id ] = array(
+					'id'                             => $field_id,
+					'type'                           => 'country',
+					'label'                          => $label,
+					'meta-key'                       => 'country-' . $ff_name,
+					'description'                    => $description,
+					'required'                       => $required,
+					'required_field_message_setting' => 'global',
+					'required-field-message'         => '',
+					'placeholder'                    => $placeholder,
+					'label_hide'                     => '0',
+					'css'                            => $css_class,
+					'enable_country_flag'            => '0',
+					'default'                        => array(),
+					'ff_name'                        => $ff_name,
+				);
+				break;
+
 			// ── Unsupported fields ─────────────────────────────────────────
 			case 'net_promoter_score':
 			case 'tabular_grid':
@@ -1371,6 +1434,14 @@ class EVF_Fm_Fluentforms extends EVF_Admin_Form_Migrator {
 							'postal'   => isset( $addr['zip'] ) ? $addr['zip'] : '',
 							'country'  => isset( $addr['country'] ) ? $addr['country'] : '',
 						);
+						break;
+
+					case 'country':
+						$entry['id']       = $field_key;
+						$entry['type']     = $field_type;
+						$entry['meta_key'] = $field_meta_key;
+						$entry['name']     = $field_name;
+						$entry['value']    = is_string( $value ) ? $value : '';
 						break;
 
 					default:
