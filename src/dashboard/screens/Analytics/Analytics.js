@@ -61,11 +61,11 @@ const UpgradeModal = ( { onClose, upgradeURL } ) => (
 				&times;
 			</button>
 			<h3 className="EVF-Free-Analytics__OverlayTitle">
-				{ __( 'Unlock Advanced Analytics', 'everest-forms' ) }
+				{ __( 'Unlock Survey Reports', 'everest-forms' ) }
 			</h3>
 			<p className="EVF-Free-Analytics__OverlayText">
 				{ __(
-					'Get powerful analytics with submission tracking, form insights, conversion analysis, and advanced visualizations.',
+					'Visualize survey responses with charts and graphs, analyze answer distributions, and gain deeper insights from your survey data.',
 					'everest-forms',
 				) }
 			</p>
