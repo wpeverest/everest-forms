@@ -1,6 +1,8 @@
 == Changelog ==
 
 = 3.4.8       - 27-05-2026
+* Fix 		  - Validate submitted payment gateway against form settings on the server; AJAX submission uses posted radio values instead of data attributes alone.
+* Dev 		  - Documented `is_new_form` in encoded form data: `true` when a form is created or duplicated (until the first builder save), `false` after save or on import. Add-ons should read it via `evf_decode( $form->post_content )` and treat imported/saved forms as existing configuration, not blank builder forms.
 * Fix 		  - Missing capability check on test email.
 * Fix 		  - Confirmation not showing in first load.
 * Fix 		  - File and image upload not working on WooCommerce product page.

@@ -2,32 +2,94 @@
 jQuery( function( $ ) {
 	'use strict';
 
-	var isPaymentDebugEnabled = function( formTuple ) {
+	var isPaymentDebugEnabled = function() {
 		try {
-			if ( window.evfPaymentDebug === true ) {
-				return true;
-			}
-			if (
+			return (
 				window.everest_forms_ajax_submission_params &&
 				'1' === String( window.everest_forms_ajax_submission_params.payment_debug || '' )
-			) {
-				return true;
-			}
-			if ( formTuple && formTuple.length && '1' === String( formTuple.data( 'evfPaymentDebug' ) || '' ) ) {
-				return true;
-			}
-			return false;
+			);
 		} catch ( e ) {
 			return false;
 		}
 	};
 
+	var getSafePaymentDebugErrorMessage = function( error ) {
+		if ( ! error ) {
+			return '';
+		}
+		if ( 'string' === typeof error ) {
+			return error;
+		}
+		if ( error.messages && error.messages.message ) {
+			var messages = error.messages.message;
+			if ( Array.isArray( messages ) && messages.length && messages[ 0 ].text ) {
+				return String( messages[ 0 ].text );
+			}
+		}
+		if ( error.message ) {
+			return String( error.message );
+		}
+		return 'Payment request failed.';
+	};
+
+	var sanitizePaymentDebugPayload = function( payload ) {
+		if ( null === payload || undefined === payload ) {
+			return {};
+		}
+		if ( 'object' !== typeof payload || Array.isArray( payload ) ) {
+			return payload;
+		}
+
+		var safe = {};
+		Object.keys( payload ).forEach( function( key ) {
+			if ( 'error' === key ) {
+				safe.error = getSafePaymentDebugErrorMessage( payload.error );
+				return;
+			}
+			if ( 'response' === key ) {
+				safe.response =
+					'string' === typeof payload.response
+						? payload.response
+						: payload.response
+							? '[redacted]'
+							: undefined;
+				return;
+			}
+			safe[ key ] = payload[ key ];
+		} );
+		return safe;
+	};
+
 	var paymentDebugLog = function( formTuple, stage, payload ) {
-		if ( ! isPaymentDebugEnabled( formTuple ) ) {
+		if ( ! isPaymentDebugEnabled() ) {
 			return;
 		}
 
+		try {
+			// eslint-disable-next-line no-console
+			console.log(
+				'[EVF Payment Debug] ' + String( stage || '' ),
+				sanitizePaymentDebugPayload( payload )
+			);
+		} catch ( e ) {
+			// no-op
+		}
 	};
+
+	/**
+	 * Selected gateway slug from posted radio value (not data-evf-gateway / CSS alone).
+	 *
+	 * @param {jQuery} formTuple Form wrapper.
+	 * @return {string|undefined}
+	 */
+	function getSelectedPaymentGatewayFromForm( formTuple ) {
+		var $checked = formTuple.find( '.evf-payment-gateway-radio:checked' );
+		if ( ! $checked.length ) {
+			return undefined;
+		}
+		var value = $checked.val();
+		return value ? String( value ) : undefined;
+	}
 
 	var evf_ajax_submission_init = function(){
 		var form = $( 'form[data-ajax_submission="1"]' );
@@ -38,7 +100,7 @@ jQuery( function( $ ) {
 				 	 razorpayForms = formTuple.find( "[data-gateway='razorpay']" );
 
 				btn.on( 'click', async function( e ) {
-					var selectedGatewayFromSelector = formTuple.find( '.evf-payment-gateway-radio:checked' ).data( 'evf-gateway' );
+					var selectedGatewayFromSelector = getSelectedPaymentGatewayFromForm( formTuple );
 					var paymentMethod = selectedGatewayFromSelector;
 					if(undefined === paymentMethod) {
 						paymentMethod = formTuple.find( ".everest-forms-stripe-gateways-tabs .evf-tab" ).has( 'a.active' ).data( 'gateway' );
@@ -65,7 +127,7 @@ jQuery( function( $ ) {
 					var hasPaymentGatewaySelector = formTuple.find( '.evf-payment-gateway-radio' ).length > 0;
 
 					// For square payment credit card validation.
-					var squareSelectedGateway = formTuple.find( '.evf-payment-gateway-radio:checked' ).data( 'evf-gateway' );
+					var squareSelectedGateway = getSelectedPaymentGatewayFromForm( formTuple );
 					var squareIsSelected = hasPaymentGatewaySelector
 						? 'square' === squareSelectedGateway
 						: 'square' === squareSelectedGateway || ( undefined === squareSelectedGateway && 'none' !== formTuple.find( ".everest-forms-gateway[data-gateway='square']" ).closest( '.evf-field' ).css( 'display' ) );
@@ -102,7 +164,7 @@ jQuery( function( $ ) {
 						return false;
 					}
 
-					var selectedPayGateway = formTuple.find( '.evf-payment-gateway-radio:checked' ).data( 'evf-gateway' );
+					var selectedPayGateway = getSelectedPaymentGatewayFromForm( formTuple );
 					var hasRazorpayGatewayMarker = formTuple.find( "[data-gateway='razorpay']" ).length > 0;
 					var shouldBypassAjaxForRazorpay = hasRazorpayGatewayMarker && ( 'razorpay' === selectedPayGateway || ! hasPaymentGatewaySelector );
 					paymentDebugLog( formTuple, 'payment_gateway_pre_ajax', {
@@ -163,7 +225,7 @@ jQuery( function( $ ) {
 								}
 							} catch (error) {
 								paymentDebugLog( formTuple, 'authorize_net_tokenization_failed', {
-									error: error
+									errorMessage: getSafePaymentDebugErrorMessage( error )
 								} );
 								btn.attr( 'disabled', false ).html( everest_forms_ajax_submission_params.submit );
 								return;
@@ -210,7 +272,7 @@ jQuery( function( $ ) {
 					})
 					.done( function ( xhr, textStatus, errorThrown ) {
 						var redirect_url = ( xhr.data && xhr.data.redirect_url ) ? xhr.data.redirect_url : '';
-						var selectedGateway = formTuple.find( '.evf-payment-gateway-radio:checked' ).data( 'evf-gateway' );
+						var selectedGateway = getSelectedPaymentGatewayFromForm( formTuple );
 						var hasPaymentGatewayField = formTuple.find( '.evf-payment-gateway-radio' ).length > 0;
 						paymentDebugLog( formTuple, 'ajax_done', {
 							textStatus: textStatus,

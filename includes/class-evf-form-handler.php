@@ -241,6 +241,8 @@ class EVF_Form_Handler {
 			$form_content['id']                      = $form_id;
 			$form_content['settings']['form_title']  = $title;
 			$form_content['imported_form_templates'] = $template;
+			// Mark as a fresh builder form (not yet saved in the editor). Cleared on first builder save.
+			// Add-ons may read this from encoded post_content to skip legacy setup UI for brand-new forms.
 			$form_content['is_new_form']             = true;
 
 			$form_data = wp_parse_args(
@@ -441,7 +443,8 @@ class EVF_Form_Handler {
 			$new_form_data['settings']['form_title'] .= ' (ID #' . absint( $new_form_id ) . ')';
 
 			// Set new form ID.
-			$new_form_data['id']          = absint( $new_form_id );
+			$new_form_data['id'] = absint( $new_form_id );
+			// Duplicates are new posts; treat like template creation until the builder saves once.
 			$new_form_data['is_new_form'] = true;
 
 			// Update new duplicate form.

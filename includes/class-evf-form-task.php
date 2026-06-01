@@ -290,6 +290,24 @@ class EVF_Form_Task {
 				}
 			}
 
+			if ( function_exists( 'evf_validate_submitted_payment_gateway' ) && function_exists( 'evf_get_total_payment' ) ) {
+				$payment_total = evf_sanitize_amount( evf_get_total_payment( $this->form_fields, $entry, $this->form_data ) );
+				if ( $payment_total > 0 ) {
+					$gateway_validation = evf_validate_submitted_payment_gateway( $this->form_data, $entry );
+					if ( is_wp_error( $gateway_validation ) ) {
+						$this->errors[ $form_id ]['header'] = $gateway_validation->get_error_message();
+						$logger->error(
+							$gateway_validation->get_error_message(),
+							array( 'source' => 'form-submission' )
+						);
+						if ( $ajax_form_submission ) {
+							$this->ajax_err[] = $this->errors[ $form_id ];
+							update_option( 'evf_validation_error', 'yes' );
+						}
+					}
+				}
+			}
+
 			// If validation issues occur, send the results accordingly.
 			if ( $ajax_form_submission && count( $this->ajax_err ) ) {
 				$response_data['error']    = $this->ajax_err;

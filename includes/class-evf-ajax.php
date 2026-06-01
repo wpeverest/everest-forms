@@ -318,6 +318,7 @@ class EVF_AJAX {
 		$data = apply_filters( 'everest_forms_builder_save_form_data', $data );
 
 		if ( is_array( $data ) ) {
+			// First builder save: form is no longer "fresh"; add-ons can show full/legacy UI if needed.
 			$data['is_new_form'] = false;
 		}
 
