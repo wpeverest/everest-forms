@@ -38,6 +38,7 @@ interface CreateFormResponse {
 const Main: React.FC<{ onCreateWithAI?: () => void }> = ({ onCreateWithAI }) => {
 	const toast = useToast();
 	const [filter, setFilter] = useState(__('All', 'everest-forms'));
+	const [isCreatingBlank, setIsCreatingBlank] = useState(false);
 	const [state, setState] = useState({
 		selectedCategory: __('All Forms', 'everest-forms'),
 		searchTerm: '',
@@ -186,6 +187,7 @@ const Main: React.FC<{ onCreateWithAI?: () => void }> = ({ onCreateWithAI }) => 
 	};
 
 	const handleCreateBlank = async () => {
+		setIsCreatingBlank(true);
 		try {
 			const response = (await apiFetch({
 				path: `${restURL}everest-forms/v1/templates/create`,
@@ -203,6 +205,7 @@ const Main: React.FC<{ onCreateWithAI?: () => void }> = ({ onCreateWithAI }) => 
 			if (response.success && response.data) {
 				window.location.href = response.data.redirect;
 			} else {
+				setIsCreatingBlank(false);
 				toast({
 					title: __('Error', 'everest-forms'),
 					description: response.message || __('Failed to create form.', 'everest-forms'),
@@ -214,6 +217,7 @@ const Main: React.FC<{ onCreateWithAI?: () => void }> = ({ onCreateWithAI }) => 
 				});
 			}
 		} catch (error) {
+			setIsCreatingBlank(false);
 			toast({
 				title: __('Error', 'everest-forms'),
 				description: __('An error occurred while creating the form.', 'everest-forms'),
@@ -232,6 +236,7 @@ const Main: React.FC<{ onCreateWithAI?: () => void }> = ({ onCreateWithAI }) => 
 				<CreateFormCTA
 					onCreateWithAI={handleCreateWithAI}
 					onCreateBlank={handleCreateBlank}
+					isCreatingBlank={isCreatingBlank}
 				/>
 			</Box>
 
