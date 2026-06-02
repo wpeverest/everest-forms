@@ -5,9 +5,10 @@ import {
   Box,
   HStack,
   Text,
-  Button,
   Icon,
+  Tooltip,
 } from "@chakra-ui/react";
+import { FiRefreshCw } from "react-icons/fi";
 import Main from "./components/Main";
 import CreateWithAI from "./components/CreateWithAI";
 
@@ -146,21 +147,17 @@ const App = () => {
                 {__("Add New Form", "everest-forms")}
               </Text>
             </HStack>
-            <Button
-              colorScheme="purple"
-              variant="outline"
-              onClick={handleRefreshTemplates}
-              width={{ base: "full", md: "auto" }}
-              display={{ base: "none", md: "inline-flex" }}
-              fontSize="14px"
-              lineHeight="20px"
-              padding="8px 16px"
-              fontWeight="medium"
-              height="34px"
-              borderRadius="4px"
-            >
-              {__("Refresh Templates", "everest-forms")}
-            </Button>
+            <Tooltip label={__("Refresh Templates", "everest-forms")} placement="left" hasArrow>
+              <Icon
+                as={FiRefreshCw}
+                boxSize="16px"
+                color="#999"
+                cursor="pointer"
+                _hover={{ color: '#7545BB' }}
+                onClick={handleRefreshTemplates}
+                transition="color 0.2s"
+              />
+            </Tooltip>
           </HStack>
 
           <Box bg="white">

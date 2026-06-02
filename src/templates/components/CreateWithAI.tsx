@@ -57,6 +57,12 @@ const shimmer = keyframes`
   100% { background-position:  400px 0; }
 `;
 
+const regenSweep = keyframes`
+  0%   { top: -40%; opacity: 0.9; }
+  80%  { opacity: 0.9; }
+  100% { top: 110%;   opacity: 0; }
+`;
+
 // ─── constants ───────────────────────────────────────────────────────────────
 
 const TYPE_CHIPS = [
@@ -229,7 +235,15 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 	const [genStep, setGenStep] = useState(-1);
 	const [showPreviewHint, setShowPreviewHint] = useState(false);
 	const [hintPos, setHintPos] = useState({ x: 0, y: 0 });
+	const [isRegenerating, setIsRegenerating] = useState(false);
 	const previewHintTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+	const regenTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+
+	const handleRegenerate = () => {
+		setIsRegenerating(true);
+		if (regenTimer.current) clearTimeout(regenTimer.current);
+		regenTimer.current = setTimeout(() => setIsRegenerating(false), 2400);
+	};
 
 	const handleFieldClick = (e: React.MouseEvent) => {
 		setHintPos({ x: e.clientX, y: e.clientY });
@@ -481,9 +495,9 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 								<Box
 									bg="#7545BB" color="white"
 									borderRadius="14px 14px 4px 14px"
-									px="13px" py="10px"
-									fontSize="13px" lineHeight="1.55"
-									maxW="220px"
+									px="14px" py="11px"
+									fontSize="14px" lineHeight="1.6"
+									maxW="260px"
 								>
 									{prompt}
 								</Box>
@@ -507,16 +521,16 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 									p="14px"
 									boxShadow="0 2px 10px rgba(117,69,187,0.06)"
 								>
-									<Text fontSize="13px" color="#444" lineHeight="1.65" margin="0 0 14px">
+									<Text fontSize="14px" color="#444" lineHeight="1.65" margin="0 0 14px">
 										{__("Here's your form! It includes name, email, a 5-star rating, open feedback, and a source question. Ready to use it?", 'everest-forms')}
 									</Text>
 
 									<Button
 										bg="#7545BB" color="white"
 										size="sm" borderRadius="7px"
-										fontSize="13px" fontWeight="600"
+										fontSize="14px" fontWeight="600"
 										_hover={{ bg: '#6a3daa' }}
-										width="100%" height="32px"
+										width="100%" height="34px"
 										mb="10px"
 									>
 										{__('Use This Form', 'everest-forms')}
@@ -530,10 +544,10 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 										<HStack
 											spacing="4px" cursor="pointer"
 											_hover={{ opacity: 0.65 }}
-											onClick={() => setGenState('generating')}
+											onClick={handleRegenerate}
 										>
-											<Icon as={FiRefreshCw} boxSize="12px" color="#aaa" />
-											<Text fontSize="12px" color="#aaa" margin="0">
+											<Icon as={FiRefreshCw} boxSize="13px" color="#aaa" />
+											<Text fontSize="13px" color="#aaa" margin="0">
 												{__('Regenerate', 'everest-forms')}
 											</Text>
 										</HStack>
@@ -571,25 +585,57 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 						{/* EVF builder-style canvas card */}
 						<Box
 							bg="white"
-							border="1px solid #e1e1e1"
+							border={isRegenerating ? '1px solid #c8a8f0' : '1px solid #e1e1e1'}
 							borderRadius="6px"
 							overflow="hidden"
 							mb="14px"
+							position="relative"
+							transition="border-color 0.3s"
 						>
-							{/* Form title bar — matches builder */}
+							{/* Subtle sweep overlay while regenerating */}
+							{isRegenerating && (
+								<Box
+									position="absolute" top="0" left="0" right="0" bottom="0"
+									pointerEvents="none" zIndex={5} overflow="hidden" borderRadius="6px"
+								>
+									<Box
+										position="absolute" left="0" right="0" h="60%"
+										sx={{
+											background: 'linear-gradient(to bottom, transparent 0%, rgba(117,69,187,0.06) 40%, rgba(117,69,187,0.10) 50%, rgba(117,69,187,0.06) 60%, transparent 100%)',
+											animation: `${regenSweep} 1.1s ease-in-out infinite`,
+										}}
+									/>
+								</Box>
+							)}
+
+							{/* Form title bar */}
 							<Flex
 								align="center" px="20px" py="12px"
 								borderBottom="1px solid #e1e1e1"
-								gap="8px"
+								justify="space-between"
 							>
-								<Icon as={FiEdit3} boxSize="15px" color="#7545BB" />
-								<Text fontSize="16px" fontWeight="600" color="#383838" margin="0">
-									Customer Feedback Survey
-								</Text>
+								<HStack spacing="8px">
+									<Icon as={FiEdit3} boxSize="15px" color="#7545BB" />
+									<Text fontSize="16px" fontWeight="600" color="#383838" margin="0">
+										Customer Feedback Survey
+									</Text>
+								</HStack>
+								{isRegenerating && (
+									<HStack spacing="5px" sx={{ animation: `${fadeUp} 0.2s ease` }}>
+										{[0, 1, 2].map(d => (
+											<Box key={d} w="5px" h="5px" borderRadius="full" bg="#7545BB"
+												sx={{ animation: `${dotBounce} 1.1s ease-in-out ${d * 0.2}s infinite` }}
+											/>
+										))}
+										<Text fontSize="11px" color="#7545BB" margin="0" fontWeight="500">
+											{__('Regenerating', 'everest-forms')}
+										</Text>
+									</HStack>
+								)}
 							</Flex>
 
 							{/* Fields section */}
-							<Box p="20px 24px">
+							<Box p="20px 24px" opacity={isRegenerating ? 0.45 : 1} transition="opacity 0.3s">
 								<VStack spacing="14px" align="stretch">
 									{MOCK_FIELDS.map(f => (
 										<Box
@@ -602,7 +648,6 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 									))}
 								</VStack>
 
-								{/* Submit button — matches builder purple style */}
 								<Button
 									bg="#7545BB" color="white"
 									borderRadius="3px" fontSize="14px"
