@@ -227,6 +227,16 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 	const [prompt, setPrompt] = useState('');
 	const [genState, setGenState] = useState<'idle' | 'generating' | 'generated'>('idle');
 	const [genStep, setGenStep] = useState(-1);
+	const [showPreviewHint, setShowPreviewHint] = useState(false);
+	const [hintPos, setHintPos] = useState({ x: 0, y: 0 });
+	const previewHintTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+
+	const handleFieldClick = (e: React.MouseEvent) => {
+		setHintPos({ x: e.clientX, y: e.clientY });
+		setShowPreviewHint(true);
+		if (previewHintTimer.current) clearTimeout(previewHintTimer.current);
+		previewHintTimer.current = setTimeout(() => setShowPreviewHint(false), 2600);
+	};
 	const hasPrompt = prompt.trim().length > 0;
 
 	useEffect(() => {
@@ -391,6 +401,47 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 	// ── generated state ───────────────────────────────────────────────────────
 	if (genState === 'generated') {
 		return (
+			<>
+			{/* Cursor-following preview tooltip — fixed, outside all scroll containers */}
+			{showPreviewHint && (
+				<Box
+					position="fixed"
+					top={`${hintPos.y + 14}px`}
+					left={`${hintPos.x}px`}
+					transform="translateX(-50%)"
+					bg="rgba(18,18,18,0.93)"
+					color="white"
+					borderRadius="8px"
+					px="14px"
+					py="10px"
+					textAlign="center"
+					pointerEvents="none"
+					zIndex={9999}
+					boxShadow="0 4px 20px rgba(0,0,0,0.2)"
+					maxW="260px"
+					sx={{ animation: `${fadeUp} 0.15s ease` }}
+				>
+					{/* Arrow */}
+					<Box
+						position="absolute"
+						top="-5px"
+						left="50%"
+						transform="translateX(-50%)"
+						width="0"
+						height="0"
+						borderLeft="5px solid transparent"
+						borderRight="5px solid transparent"
+						borderBottom="5px solid rgba(18,18,18,0.93)"
+					/>
+					<Text fontSize="12px" fontWeight="600" margin="0 0 3px" lineHeight="1.45">
+						{__('This is just a preview of your form.', 'everest-forms')}
+					</Text>
+					<Text fontSize="12px" color="rgba(255,255,255,0.65)" margin="0" lineHeight="1.45">
+						{__('Click "Use This Form" to start editing.', 'everest-forms')}
+					</Text>
+				</Box>
+			)}
+
 			<Flex
 				height="100vh"
 				overflow="hidden"
@@ -477,16 +528,12 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 											<Icon as={FiThumbsDown} boxSize="14px" color="#c8c8d4" cursor="pointer" _hover={{ color: '#e05050'  }} />
 										</HStack>
 										<HStack
-											spacing="5px" cursor="pointer"
-											border="1px solid #d0c0f0"
-											borderRadius="5px"
-											px="8px" py="4px"
-											_hover={{ bg: '#f5f0ff', borderColor: '#7545BB' }}
-											transition="all 0.15s"
+											spacing="4px" cursor="pointer"
+											_hover={{ opacity: 0.65 }}
 											onClick={() => setGenState('generating')}
 										>
-											<Icon as={FiRefreshCw} boxSize="12px" color="#7545BB" />
-											<Text fontSize="12px" color="#7545BB" fontWeight="500" margin="0">
+											<Icon as={FiRefreshCw} boxSize="12px" color="#aaa" />
+											<Text fontSize="12px" color="#aaa" margin="0">
 												{__('Regenerate', 'everest-forms')}
 											</Text>
 										</HStack>
@@ -545,7 +592,13 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 							<Box p="20px 24px">
 								<VStack spacing="14px" align="stretch">
 									{MOCK_FIELDS.map(f => (
-										<FieldPreview key={f.id} field={f} />
+										<Box
+											key={f.id}
+											cursor="default"
+											onClick={(e) => handleFieldClick(e)}
+										>
+											<FieldPreview field={f} />
+										</Box>
 									))}
 								</VStack>
 
@@ -587,6 +640,7 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 						</Flex>
 					</Box>
 				</Flex>
+		</>
 		);
 	}
 
