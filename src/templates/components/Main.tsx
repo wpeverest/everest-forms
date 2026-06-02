@@ -1,4 +1,4 @@
-import { Box, Divider, Flex, Heading, Spinner, Tab, TabList, Tabs, Text, useBreakpointValue, useToast } from '@chakra-ui/react';
+import { Box, Divider, Flex, Heading, Tab, TabList, Tabs, Text, keyframes, useBreakpointValue, useToast } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import apiFetch from '@wordpress/api-fetch';
 import { __ } from '@wordpress/i18n';
@@ -34,6 +34,98 @@ interface CreateFormResponse {
 	data?: { id: number; redirect: string; status: number };
 	message?: string;
 }
+
+const shimmer = keyframes`
+  0%   { background-position: -600px 0; }
+  100% { background-position:  600px 0; }
+`;
+
+const skimmerStyle = {
+	background: 'linear-gradient(90deg, #f0f0f0 25%, #e8e8e8 50%, #f0f0f0 75%)',
+	backgroundSize: '600px 100%',
+	animation: `${shimmer} 1.6s ease-in-out infinite`,
+	borderRadius: '4px',
+};
+
+const SkelBox: React.FC<{ w?: string; h?: string; mb?: string; br?: string }> = ({ w = '100%', h = '14px', mb = '0', br = '4px' }) => (
+	<Box w={w} h={h} mb={mb} borderRadius={br} sx={skimmerStyle} />
+);
+
+const TemplateCardSkeleton = () => (
+	<Box bg="white" borderRadius="13px" border="1px solid #e1e1e1" overflow="hidden">
+		<Box bg="#f5f5f5" h="250px" borderRadius="6px 6px 0 0" borderBottom="1px solid #e1e1e1" sx={skimmerStyle} />
+		<Box p="16px">
+			<SkelBox w="65%" h="16px" mb="10px" />
+			<SkelBox w="90%" h="13px" mb="5px" />
+			<SkelBox w="75%" h="13px" />
+		</Box>
+	</Box>
+);
+
+const TemplateSkeleton = () => (
+	<Box>
+		{/* CTA cards — exact padding from Main */}
+		<Box p="24px 30px 0px 30px">
+			<Flex gap="20px" align="stretch">
+				{/* AI card */}
+				<Box flex="2" bg="#f7f4fc" borderRadius="16px" p="20px 24px" border="1px solid #e5daf5">
+					<Flex justify="space-between" align="center" mb="12px">
+						<Box bg="#ede5f8" borderRadius="12px" w="44px" h="44px" sx={skimmerStyle} />
+						<Box borderRadius="5px" w="48px" h="24px" sx={skimmerStyle} />
+					</Flex>
+					<SkelBox w="55%" h="16px" mb="8px" />
+					<SkelBox w="90%" h="13px" mb="5px" />
+					<SkelBox w="72%" h="13px" mb="12px" />
+					<Flex justify="flex-end"><SkelBox w="88px" h="13px" /></Flex>
+				</Box>
+				{/* Scratch card */}
+				<Box flex="1" bg="white" borderRadius="16px" p="20px 24px" border="1px solid #e8e8e8">
+					<Box bg="#f0ecfa" borderRadius="12px" w="44px" h="44px" mb="12px" sx={skimmerStyle} />
+					<SkelBox w="60%" h="16px" mb="8px" />
+					<SkelBox w="90%" h="13px" mb="5px" />
+					<SkelBox w="78%" h="13px" mb="12px" />
+					<Flex justify="flex-end"><SkelBox w="68px" h="13px" /></Flex>
+				</Box>
+			</Flex>
+		</Box>
+
+		{/* OR divider — exact spacing from Main */}
+		<Box p="0px 30px" my="20px" position="relative">
+			<Divider borderColor="#e1e1e1" />
+			<Box position="absolute" top="50%" left="50%" transform="translate(-50%, -50%)" bg="white" px="16px">
+				<SkelBox w="18px" h="13px" />
+			</Box>
+		</Box>
+
+		{/* "All Templates" row — exact padding from Main */}
+		<Flex p="0px 30px 20px 30px" align="center" justify="space-between">
+			<SkelBox w="130px" h="18px" />
+			<Box bg="#f3f4f6" borderRadius="5px" w="200px" h="40px" sx={skimmerStyle} />
+		</Flex>
+
+		{/* Sidebar + grid — exact layout from Main */}
+		<Flex direction={{ base: 'column', md: 'row' }} gap="0">
+			<Box maxWidth="310px" width="100%" p="0px 28px 30px 28px" borderRight="1px solid #e1e1e1">
+				<Box h="38px" borderRadius="4px" mb="20px" sx={skimmerStyle} />
+				<SkelBox w="70px" h="11px" mb="10px" />
+				{[85, 70, 95, 60, 80, 65, 78, 55, 72, 68].map((w, i) => (
+					<Flex key={i} justify="space-between" align="center" mb="2px" px="12px" py="10px" borderRadius="8px">
+						<SkelBox w={`${w}%`} h="14px" />
+						<SkelBox w="28px" h="22px" br="4px" />
+					</Flex>
+				))}
+			</Box>
+			{/* Template grid — SimpleGrid matches TemplateList: minmax(280px,1fr) spacing=6 (24px) */}
+			<Box p="0px 30px 30px 30px" flex={1}>
+				<Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '24px' }}>
+					{Array.from({ length: 9 }).map((_, i) => (
+						<TemplateCardSkeleton key={i} />
+					))}
+				</Box>
+			</Box>
+		</Flex>
+	</Box>
+);
 
 const Main: React.FC<{ onCreateWithAI?: () => void }> = ({ onCreateWithAI }) => {
 	const toast = useToast();
@@ -174,12 +266,7 @@ const Main: React.FC<{ onCreateWithAI?: () => void }> = ({ onCreateWithAI }) => 
 
 	const sidebarWidth = useBreakpointValue({ base: '100%', md: '250px' });
 
-	if (isLoading)
-		return (
-			<Flex justify="center" align="center" height="100vh">
-				<Spinner size="xl" />
-			</Flex>
-		);
+	if (isLoading) return <TemplateSkeleton />;
 	if (error) return <div>{(error as Error).message}</div>;
 
 	const handleCreateWithAI = () => {
