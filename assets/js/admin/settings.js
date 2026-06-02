@@ -324,6 +324,27 @@
 			initAccordionItem($(this));
 		});
 
+		// Open accordion matching URL hash: #everest-forms-settings-id-{slug}
+		var hashMatch = window.location.hash.match( /^#everest-forms-settings-id-(.+)$/ );
+		if ( hashMatch ) {
+			var slug        = hashMatch[1].replace( /-/g, '_' );
+			var fieldPrefix = 'everest_forms_' + slug + '_';
+			var $target     = $( '.everest-forms-accordion-item' ).filter( function () {
+				return $( this ).find( 'input[id^="' + fieldPrefix + '"], select[id^="' + fieldPrefix + '"], textarea[id^="' + fieldPrefix + '"]' ).length > 0;
+			} ).first();
+
+			if ( $target.length && ! $target.hasClass( 'is-open' ) ) {
+				$target.addClass( 'is-open' );
+				$target.find( '.everest-forms-accordion-content' ).css( { 'max-height': '3000px', 'padding': '24px' } );
+			}
+
+			if ( $target.length ) {
+				setTimeout( function () {
+					$( 'html, body' ).animate( { scrollTop: $target.offset().top - 60 }, 300 );
+				}, 100 );
+			}
+		}
+
 		$(document).on(
 			'change',
 			'#everest_forms_recaptcha_v2_enable, #everest_forms_recaptcha_v3_enable, #everest_forms_recaptcha_hcaptcha_enable, #everest_forms_recaptcha_turnstile_enable',
