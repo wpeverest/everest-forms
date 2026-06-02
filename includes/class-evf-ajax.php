@@ -2070,7 +2070,7 @@ class EVF_AJAX {
 			wp_send_json_success(
 				array(
 					'message'         => 'SmartSMTP plugin installed and activated successfully!',
-					'redirection_url' => admin_url( 'admin.php?page=smart-smtp' ),
+					'redirection_url' => evf_get_smart_smtp_google_workspace_setup_url(),
 				)
 			);
 		} catch ( Exception $e ) {
