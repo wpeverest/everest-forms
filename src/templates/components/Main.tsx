@@ -1,4 +1,4 @@
-import { Box, Flex, Spinner, useBreakpointValue } from '@chakra-ui/react';
+import { Box, Flex, Spinner, useBreakpointValue, Heading } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import apiFetch from '@wordpress/api-fetch';
 import { __ } from '@wordpress/i18n';
@@ -194,6 +194,19 @@ const Main: React.FC<{ filter: string }> = ({ filter }) => {
 					onCreateBlank={handleCreateBlank}
 				/>
 			</Box>
+
+			<Box p="0px 30px 20px 30px" borderTop="1px solid #e1e1e1">
+				<Heading
+					as="h2"
+					fontSize="18px"
+					fontWeight="600"
+					color="#0f0f1a"
+					m="20px 0 0 0"
+				>
+					{__('Prebuilt Templates', 'everest-forms')}
+				</Heading>
+			</Box>
+
 			<Flex direction={{ base: 'column', md: 'row' }} gap="0">
 				<Box
 					maxWidth="310px"
