@@ -21,7 +21,6 @@ const EVFIcon = (props) => (
   </Icon>
 );
 
-// WordPress admin elements to hide in full-screen AI mode
 const WP_ELEMENTS = [
   '#wpadminbar',
   '#adminmenuwrap',
@@ -34,7 +33,7 @@ const enterFullscreen = () => {
     const el = document.querySelector<HTMLElement>(sel);
     if (el) el.style.display = 'none';
   });
-  // Remove left margin and top padding the WP shell adds
+  
   const wpContent = document.querySelector<HTMLElement>('#wpcontent');
   if (wpContent) {
     wpContent.dataset.origMargin = wpContent.style.marginLeft;
@@ -44,7 +43,7 @@ const enterFullscreen = () => {
   document.body.dataset.origPaddingTop = document.body.style.paddingTop;
   document.body.style.paddingTop = '0';
   document.body.style.marginTop = '0';
-  // html.wp-toolbar also carries padding-top via --wp-admin--admin-bar--height
+  
   document.documentElement.dataset.origPaddingTop = document.documentElement.style.paddingTop;
   document.documentElement.style.paddingTop = '0';
 };
@@ -70,14 +69,14 @@ const App = () => {
     return params.get('view') === 'ai' ? 'ai' : 'templates';
   });
 
-  // Apply / remove full-screen shell whenever the view changes
+  
   useEffect(() => {
     if (currentView === 'ai') {
       enterFullscreen();
     } else {
       exitFullscreen();
     }
-    // Restore on unmount (e.g. hard nav away)
+    
     return () => { if (currentView === 'ai') exitFullscreen(); };
   }, [currentView]);
 

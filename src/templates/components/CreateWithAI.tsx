@@ -34,8 +34,6 @@ import {
 	FiThumbsUp,
 } from 'react-icons/fi';
 
-// ─── animations ──────────────────────────────────────────────────────────────
-
 const pulseGlow = keyframes`
   0%   { box-shadow: 0 0 0 0 rgba(117,69,187,0.3); transform: scale(1); }
   50%  { box-shadow: 0 0 28px 10px rgba(117,69,187,0.12); transform: scale(1.06); }
@@ -57,13 +55,16 @@ const shimmer = keyframes`
   100% { background-position:  400px 0; }
 `;
 
+const tooltipIn = keyframes`
+  from { opacity: 0; transform: translateX(-50%) translateY(8px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+`;
+
 const regenSweep = keyframes`
   0%   { top: -40%; opacity: 0.9; }
   80%  { opacity: 0.9; }
   100% { top: 110%;   opacity: 0; }
 `;
-
-// ─── constants ───────────────────────────────────────────────────────────────
 
 const TYPE_CHIPS = [
 	{ label: 'Survey',         icon: FiFileText      },
@@ -111,13 +112,6 @@ const MOCK_FIELDS = [
 ];
 
 const MAX_CHARS = 500;
-
-// ─── field preview — exact Everest Forms builder styling ─────────────────────
-
-// Exact values from computed builder styles:
-//   input:    border 1px solid #e1e1e1, borderRadius 3px, height 38px, padding 4px 10px
-//   textarea: border 1px solid #cdd0d8, borderRadius 2px, height 120px, padding 8px 12px
-//   label:    fontSize 14px, fontWeight 500, color #222
 
 const EVFLabel: React.FC<{ text: string; required?: boolean }> = ({ text, required }) => (
 	<Box mb="5px">
@@ -200,8 +194,6 @@ const FieldPreview: React.FC<{ field: any }> = ({ field }) => {
 	);
 };
 
-// ─── skeleton field (generating preview) ─────────────────────────────────────
-
 const SkeletonField: React.FC<{ delay?: string }> = ({ delay = '0s' }) => (
 	<Box sx={{ animation: `${fadeUp} 0.4s ease ${delay} both` }}>
 		<Box
@@ -222,8 +214,6 @@ const SkeletonField: React.FC<{ delay?: string }> = ({ delay = '0s' }) => (
 		/>
 	</Box>
 );
-
-// ─── main component ───────────────────────────────────────────────────────────
 
 interface CreateWithAIProps {
 	onBack: () => void;
@@ -272,7 +262,7 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 		setGenState('generating');
 	};
 
-	// ── shared top bar (idle + generating only) ──────────────────────────────
+	
 	const topBar = (
 		<Flex align="center" px="32px" pt="10px" pb="6px" flexShrink={0}>
 			<HStack
@@ -291,19 +281,19 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 		</Flex>
 	);
 
-	// ── generating state ──────────────────────────────────────────────────────
+	
 	if (genState === 'generating') {
 		return (
 			<Flex height="100vh" overflow="hidden">
 
-				{/* Left panel — same width as aside in generated state */}
+				
 				<Flex
 					w="440px" flexShrink={0}
 					bg="white" borderRight="1px solid #ebebf0"
 					direction="column" align="center" justify="center"
 					px="36px" py="40px" gap="0"
 				>
-					{/* Orb */}
+					
 					<Box
 						w="64px" h="64px" borderRadius="full"
 						background="linear-gradient(135deg, #9c6de8 0%, #7545BB 100%)"
@@ -314,7 +304,7 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 						<Icon as={BsStars} boxSize={6} color="white" />
 					</Box>
 
-					{/* Headline */}
+					
 					<VStack spacing="5px" textAlign="center" mb="28px">
 						<Heading as="h2" fontSize="22px" fontWeight="700" color="#0f0f1a" margin="0" letterSpacing="-0.3px">
 							{__('Building your form…', 'everest-forms')}
@@ -324,7 +314,7 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 						</Text>
 					</VStack>
 
-					{/* Steps */}
+					
 					<Box
 						bg="#faf9ff" borderRadius="12px" border="1px solid #ede8f8"
 						p="20px 24px" width="100%" mb="20px"
@@ -374,19 +364,19 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 						</VStack>
 					</Box>
 
-					{/* Prompt echo */}
+					
 					<Text fontSize="12px" color="#c0c0cc" margin="0" textAlign="center" noOfLines={1} isTruncated width="100%">
 						"{prompt}"
 					</Text>
 				</Flex>
 
-				{/* Right panel — skeleton form preview, same bg as generated */}
+				
 				<Box flex={1} bg="#f1f1f1" overflowY="auto" p="20px 24px">
 					<Box
 						bg="white" border="1px solid #e1e1e1" borderRadius="6px" overflow="hidden" mb="14px"
 						sx={{ animation: `${fadeUp} 0.4s ease 0.15s both` }}
 					>
-						{/* Title bar skeleton */}
+						
 						<Flex align="center" px="20px" py="12px" borderBottom="1px solid #e1e1e1" gap="10px">
 							<Box h="14px" w="14px" borderRadius="2px"
 								sx={{ background: 'linear-gradient(90deg, #eeeeef 25%, #e4e4e8 50%, #eeeeef 75%)', backgroundSize: '400px 100%', animation: `${shimmer} 1.6s ease-in-out infinite` }}
@@ -395,7 +385,7 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 								sx={{ background: 'linear-gradient(90deg, #eeeeef 25%, #e4e4e8 50%, #eeeeef 75%)', backgroundSize: '400px 100%', animation: `${shimmer} 1.6s ease-in-out infinite` }}
 							/>
 						</Flex>
-						{/* Fields skeleton */}
+						
 						<Box p="20px 24px">
 							<VStack spacing="14px" align="stretch">
 								<SkeletonField delay="0.1s" />
@@ -411,11 +401,11 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 		);
 	}
 
-	// ── generated state ───────────────────────────────────────────────────────
+	
 	if (genState === 'generated') {
 		return (
 			<>
-			{/* Cursor-following preview tooltip — fixed, outside all scroll containers */}
+			
 			{hint.show && (
 				<Box
 					position="fixed"
@@ -434,7 +424,7 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 					maxW="260px"
 					sx={{ animation: `${fadeUp} 0.15s ease` }}
 				>
-					{/* Arrow */}
+					
 					<Box
 						position="absolute"
 						top="-5px"
@@ -460,13 +450,13 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 				overflow="hidden"
 				sx={{ animation: `${fadeUp} 0.4s ease` }}
 			>
-				{/* ── Left: conversation panel ── */}
+				
 				<Flex
 					w="440px" flexShrink={0}
 					bg="white" borderRight="1px solid #ebebf0"
 					direction="column"
 				>
-					{/* New Prompt button at top of aside */}
+					
 					<Flex
 						px="16px" py="12px"
 						borderBottom="1px solid #f0f0f4"
@@ -486,10 +476,10 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 						</HStack>
 					</Flex>
 
-					{/* Chat history */}
+					
 					<Box flex={1} p="20px" overflowY="auto">
 
-							{/* User bubble */}
+							
 							<Flex justify="flex-end" mb="18px">
 								<Box
 									bg="#7545BB" color="white"
@@ -502,7 +492,7 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 								</Box>
 							</Flex>
 
-							{/* AI response */}
+							
 							<HStack align="flex-start" spacing="10px">
 								<Flex
 									w="26px" h="26px" borderRadius="full"
@@ -555,7 +545,7 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 							</HStack>
 						</Box>
 
-						{/* Follow-up input */}
+						
 						<Box borderTop="1px solid #f0f0f4" p="12px 14px">
 							<Box
 								border="1px solid #e8e8f0" borderRadius="10px"
@@ -578,10 +568,10 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 						</Box>
 					</Flex>
 
-					{/* ── Right: form preview panel ── */}
+					
 					<Box flex={1} bg="#f1f1f1" overflowY="auto" p="20px 24px">
 
-						{/* EVF builder-style canvas card */}
+						
 						<Box
 							bg="white"
 							border={isRegenerating ? '1px solid #c8a8f0' : '1px solid #e1e1e1'}
@@ -591,7 +581,7 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 							position="relative"
 							transition="border-color 0.3s"
 						>
-							{/* Subtle sweep overlay while regenerating */}
+							
 							{isRegenerating && (
 								<Box
 									position="absolute" top="0" left="0" right="0" bottom="0"
@@ -607,7 +597,7 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 								</Box>
 							)}
 
-							{/* Form title bar */}
+							
 							<Flex
 								align="center" px="20px" py="12px"
 								borderBottom="1px solid #e1e1e1"
@@ -633,7 +623,7 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 								)}
 							</Flex>
 
-							{/* Fields section */}
+							
 							<Box p="20px 24px" opacity={isRegenerating ? 0.45 : 1} transition="opacity 0.3s">
 								<VStack spacing="14px" align="stretch">
 									{MOCK_FIELDS.map(f => (
@@ -658,7 +648,7 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 							</Box>
 						</Box>
 
-						{/* Open in Builder CTA */}
+						
 						<Flex
 							bg="white" borderRadius="6px"
 							border="1px solid #e1e1e1"
@@ -688,13 +678,13 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 		);
 	}
 
-	// ── idle state ────────────────────────────────────────────────────────────
+	
 	return (
 		<Box bg="#f3f3f5" minHeight="100vh">
 			{topBar}
 
 			<Box maxW="920px" mx="auto" px="24px" pt="16px" pb="20px">
-				{/* Hero */}
+				
 				<VStack spacing="10px" mb="20px" textAlign="center">
 					<Heading
 						as="h1" fontSize="38px" fontWeight="800"
@@ -707,7 +697,7 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 					</Text>
 				</VStack>
 
-				{/* Prompt box */}
+				
 				<Box bg="white" borderRadius="16px" border="1px solid #e2e2e2" overflow="hidden" mb="8px">
 					<Box position="relative" p="20px 20px 12px">
 						<Icon as={BsStars} boxSize={4} color="#c8c8d0" position="absolute" top="22px" left="20px" />
@@ -722,7 +712,7 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 						/>
 					</Box>
 
-					{/* Action bar */}
+					
 					<Flex px="16px" py="12px" align="center" justify="flex-end" borderTop="1px solid #f0f0f0">
 						<Button
 							
@@ -740,12 +730,12 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 					</Flex>
 				</Box>
 
-				{/* Char counter */}
+				
 				<Flex justify="flex-end" mb="16px">
 					<Text fontSize="12px" color="#b0b0b8" margin="0">{prompt.length}/{MAX_CHARS}</Text>
 				</Flex>
 
-				{/* Inspiration */}
+				
 				<Box>
 					<Flex justify="space-between" align="center" mb="12px">
 						<Heading as="h3" fontSize="20px" fontWeight="700" color="#0f0f1a" margin="0">
