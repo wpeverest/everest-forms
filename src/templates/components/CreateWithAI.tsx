@@ -271,138 +271,120 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 	// ── generating state ──────────────────────────────────────────────────────
 	if (genState === 'generating') {
 		return (
-			<Box bg="#f3f3f5" minHeight="100vh" display="flex" flexDirection="column">
-				{topBar}
+			<Flex height="100vh" overflow="hidden">
 
-				<Flex flex={1} align="center" justify="center" px="24px" pt="16px" pb="48px" gap="48px">
+				{/* Left panel — same width as aside in generated state */}
+				<Flex
+					w="440px" flexShrink={0}
+					bg="white" borderRight="1px solid #ebebf0"
+					direction="column" align="center" justify="center"
+					px="36px" py="40px" gap="0"
+				>
+					{/* Orb */}
+					<Box
+						w="64px" h="64px" borderRadius="full"
+						background="linear-gradient(135deg, #9c6de8 0%, #7545BB 100%)"
+						display="flex" alignItems="center" justifyContent="center"
+						mb="20px"
+						sx={{ animation: `${pulseGlow} 2s ease-in-out infinite` }}
+					>
+						<Icon as={BsStars} boxSize={6} color="white" />
+					</Box>
 
-					{/* Left: status panel */}
-					<VStack spacing="28px" maxW="400px" flex="0 0 auto">
-
-						{/* Pulsing AI orb */}
-						<Box
-							w="72px" h="72px" borderRadius="full"
-							background="linear-gradient(135deg, #9c6de8 0%, #7545BB 100%)"
-							display="flex" alignItems="center" justifyContent="center"
-							sx={{ animation: `${pulseGlow} 2s ease-in-out infinite` }}
-						>
-							<Icon as={BsStars} boxSize={7} color="white" />
-						</Box>
-
-						{/* Headline */}
-						<VStack spacing="6px" textAlign="center">
-							<Heading as="h2" fontSize="26px" fontWeight="700" color="#0f0f1a" margin="0" letterSpacing="-0.3px">
-								{__('Building your form…', 'everest-forms')}
-							</Heading>
-							<Text fontSize="14px" color="#a0a0b0" margin="0">
-								{__('This usually takes a few seconds', 'everest-forms')}
-							</Text>
-						</VStack>
-
-						{/* Steps card */}
-						<Box
-							bg="white" borderRadius="16px" border="1px solid #ebebf0"
-							p="22px 26px" width="100%"
-							sx={{ animation: `${fadeUp} 0.4s ease` }}
-						>
-							<VStack align="stretch" spacing="16px">
-								{GEN_STEPS.map((step, i) => {
-									const isDone   = i < genStep;
-									const isActive = i === genStep;
-									const isPending = i > genStep;
-									return (
-										<HStack key={i} spacing="14px" opacity={isPending ? 0.32 : 1} transition="opacity 0.4s">
-											{/* State circle */}
-											<Flex
-												w="22px" h="22px" borderRadius="full" flexShrink={0}
-												bg={isDone ? '#7545BB' : 'transparent'}
-												border={isDone ? 'none' : '2px solid'}
-												borderColor={isActive ? '#7545BB' : '#ddd'}
-												align="center" justify="center"
-												transition="all 0.35s"
-											>
-												{isDone && (
-													<Icon as={FiCheck} color="white" sx={{ width: '10px', height: '10px', strokeWidth: 3 }} />
-												)}
-												{isActive && (
-													<Box
-														w="7px" h="7px" borderRadius="full" bg="#7545BB"
-														sx={{ animation: `${dotBounce} 1.1s ease-in-out infinite` }}
-													/>
-												)}
-											</Flex>
-
-											<Text
-												flex={1}
-												fontSize="14px"
-												fontWeight={isActive ? '600' : isDone ? '500' : '400'}
-												color={isActive ? '#7545BB' : isDone ? '#2a2a3a' : '#c0c0cc'}
-												margin="0"
-												transition="all 0.35s"
-											>
-												{step}
-											</Text>
-
-											{/* Bouncing dots for active */}
-											{isActive && (
-												<HStack spacing="3px">
-													{[0, 1, 2].map(d => (
-														<Box
-															key={d}
-															w="4px" h="4px" borderRadius="full" bg="#7545BB"
-															sx={{ animation: `${dotBounce} 1.1s ease-in-out ${d * 0.18}s infinite` }}
-														/>
-													))}
-												</HStack>
-											)}
-										</HStack>
-									);
-								})}
-							</VStack>
-						</Box>
-
-						{/* Prompt echo */}
-						<Text
-							fontSize="12px" color="#c0c0cc" margin="0"
-							textAlign="center" maxW="340px" noOfLines={1} isTruncated
-						>
-							"{prompt}"
+					{/* Headline */}
+					<VStack spacing="5px" textAlign="center" mb="28px">
+						<Heading as="h2" fontSize="22px" fontWeight="700" color="#0f0f1a" margin="0" letterSpacing="-0.3px">
+							{__('Building your form…', 'everest-forms')}
+						</Heading>
+						<Text fontSize="13px" color="#a0a0b0" margin="0">
+							{__('This usually takes a few seconds', 'everest-forms')}
 						</Text>
 					</VStack>
 
-					{/* Right: skeleton preview */}
+					{/* Steps */}
 					<Box
-						bg="white" borderRadius="16px" border="1px solid #ebebf0"
-						p="28px 32px" w="320px" flexShrink={0}
-						sx={{ animation: `${fadeUp} 0.5s ease 0.2s both` }}
+						bg="#faf9ff" borderRadius="12px" border="1px solid #ede8f8"
+						p="20px 24px" width="100%" mb="20px"
 					>
-						{/* Skeleton title */}
-						<Box
-							h="16px" w="60%" mb="6px" borderRadius="4px"
-							sx={{
-								background: 'linear-gradient(90deg, #eeeeef 25%, #e4e4e8 50%, #eeeeef 75%)',
-								backgroundSize: '400px 100%',
-								animation: `${shimmer} 1.6s ease-in-out infinite`,
-							}}
-						/>
-						<Box
-							h="10px" w="35%" mb="24px" borderRadius="4px"
-							sx={{
-								background: 'linear-gradient(90deg, #f0f0f2 25%, #e8e8ec 50%, #f0f0f2 75%)',
-								backgroundSize: '400px 100%',
-								animation: `${shimmer} 1.6s ease-in-out infinite`,
-							}}
-						/>
-						<Divider borderColor="#f0f0f4" mb="22px" />
-						<VStack spacing="18px" align="stretch">
-							<SkeletonField delay="0.1s" />
-							<SkeletonField delay="0.25s" />
-							<SkeletonField delay="0.4s" />
-							<SkeletonField delay="0.55s" />
+						<VStack align="stretch" spacing="14px">
+							{GEN_STEPS.map((step, i) => {
+								const isDone    = i < genStep;
+								const isActive  = i === genStep;
+								const isPending = i > genStep;
+								return (
+									<HStack key={i} spacing="12px" opacity={isPending ? 0.3 : 1} transition="opacity 0.4s">
+										<Flex
+											w="20px" h="20px" borderRadius="full" flexShrink={0}
+											bg={isDone ? '#7545BB' : 'transparent'}
+											border={isDone ? 'none' : '2px solid'}
+											borderColor={isActive ? '#7545BB' : '#ddd'}
+											align="center" justify="center"
+											transition="all 0.35s"
+										>
+											{isDone && <Icon as={FiCheck} color="white" sx={{ width: '9px', height: '9px', strokeWidth: 3 }} />}
+											{isActive && (
+												<Box w="6px" h="6px" borderRadius="full" bg="#7545BB"
+													sx={{ animation: `${dotBounce} 1.1s ease-in-out infinite` }}
+												/>
+											)}
+										</Flex>
+										<Text
+											flex={1} fontSize="13px" margin="0"
+											fontWeight={isActive ? '600' : isDone ? '500' : '400'}
+											color={isActive ? '#7545BB' : isDone ? '#2a2a3a' : '#c0c0cc'}
+											transition="all 0.35s"
+										>
+											{step}
+										</Text>
+										{isActive && (
+											<HStack spacing="3px">
+												{[0, 1, 2].map(d => (
+													<Box key={d} w="4px" h="4px" borderRadius="full" bg="#7545BB"
+														sx={{ animation: `${dotBounce} 1.1s ease-in-out ${d * 0.18}s infinite` }}
+													/>
+												))}
+											</HStack>
+										)}
+									</HStack>
+								);
+							})}
 						</VStack>
 					</Box>
+
+					{/* Prompt echo */}
+					<Text fontSize="12px" color="#c0c0cc" margin="0" textAlign="center" noOfLines={1} isTruncated width="100%">
+						"{prompt}"
+					</Text>
 				</Flex>
-			</Box>
+
+				{/* Right panel — skeleton form preview, same bg as generated */}
+				<Box flex={1} bg="#f1f1f1" overflowY="auto" p="20px 24px">
+					<Box
+						bg="white" border="1px solid #e1e1e1" borderRadius="6px" overflow="hidden" mb="14px"
+						sx={{ animation: `${fadeUp} 0.4s ease 0.15s both` }}
+					>
+						{/* Title bar skeleton */}
+						<Flex align="center" px="20px" py="12px" borderBottom="1px solid #e1e1e1" gap="10px">
+							<Box h="14px" w="14px" borderRadius="2px"
+								sx={{ background: 'linear-gradient(90deg, #eeeeef 25%, #e4e4e8 50%, #eeeeef 75%)', backgroundSize: '400px 100%', animation: `${shimmer} 1.6s ease-in-out infinite` }}
+							/>
+							<Box h="14px" w="40%" borderRadius="3px"
+								sx={{ background: 'linear-gradient(90deg, #eeeeef 25%, #e4e4e8 50%, #eeeeef 75%)', backgroundSize: '400px 100%', animation: `${shimmer} 1.6s ease-in-out infinite` }}
+							/>
+						</Flex>
+						{/* Fields skeleton */}
+						<Box p="20px 24px">
+							<VStack spacing="14px" align="stretch">
+								<SkeletonField delay="0.1s" />
+								<SkeletonField delay="0.22s" />
+								<SkeletonField delay="0.34s" />
+								<SkeletonField delay="0.46s" />
+								<SkeletonField delay="0.58s" />
+							</VStack>
+						</Box>
+					</Box>
+				</Box>
+			</Flex>
 		);
 	}
 
