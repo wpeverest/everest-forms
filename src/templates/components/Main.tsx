@@ -185,15 +185,17 @@ const Main: React.FC = () => {
 
 	return (
 		<Box>
-			<CreateFormCTA
-				onCreateWithAI={handleCreateWithAI}
-				onCreateBlank={handleCreateBlank}
-			/>
+			<Box p="24px 30px">
+				<CreateFormCTA
+					onCreateWithAI={handleCreateWithAI}
+					onCreateBlank={handleCreateBlank}
+				/>
+			</Box>
 			<Flex direction={{ base: 'column', md: 'row' }} gap="0">
 				<Box
 					maxWidth="310px"
 					width="100%"
-					p="30px 28px"
+					p="0px 28px 30px 28px"
 					boxSizing="border-box"
 					borderRight="1px solid #e1e1e1"
 				>
@@ -204,7 +206,7 @@ const Main: React.FC = () => {
 						onSearchChange={handleSearchChange}
 					/>
 				</Box>
-				<Box p="30px 30px" flex={1}>
+				<Box p="0px 30px 30px 30px" flex={1}>
 					<TemplateList
 						selectedCategory={selectedCategory}
 						templates={filteredTemplates}

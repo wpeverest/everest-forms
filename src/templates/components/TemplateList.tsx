@@ -295,65 +295,6 @@ const TemplateList: React.FC<TemplateListProps> = ({
 
 	return (
 		<Box padding="0">
-			{/* Only show this section on first visit or when showing all categories */}
-			{selectedCategory === __('All Forms', 'everest-forms') && (
-				<VStack
-					position="relative"
-					bg="white"
-					border="1px solid #e1e1e1"
-					borderRadius="13px"
-					p="32px"
-					mb="32px"
-					overflow="hidden"
-					alignItems="flex-start"
-					width="100%"
-					spacing="16px"
-					sx={{
-						'::before': {
-							content: '""',
-							position: 'absolute',
-							inset: '0',
-							bg: 'radial-gradient(ellipse 60% 120% at 100% 50%, rgba(96, 64, 240, 0.07) 0%, transparent 70%), radial-gradient(ellipse 40% 80% at 80% 20%, rgba(61, 126, 245, 0.06) 0%, transparent 60%)',
-							pointerEvents: 'none',
-						},
-					}}
-				>
-					<Text
-						display="inline-block"
-						bg="rgba(118, 64, 240, 0.08)"
-						border="1px solid rgba(155, 64, 240, 0.2)"
-						borderRadius="20px"
-						p="6px 14px"
-						fontSize="11px"
-						fontWeight="600"
-						color="#7545BB"
-						letterSpacing="0.3px"
-						m="0"
-						textTransform="uppercase"
-					>
-						✦ {__('Ready-made templates', 'everest-forms')}
-					</Text>
-					<Heading
-						fontSize="24px"
-						fontWeight="700"
-						letterSpacing="-0.5px"
-						color="#0f0f1a"
-						lineHeight="1.2"
-						margin="0"
-					>
-						{__('Choose from 49+ professionally designed templates', 'everest-forms')}
-					</Heading>
-					<Text
-						fontSize="15px"
-						color="#6b6b85"
-						lineHeight="1.6"
-						maxWidth="580px"
-						m="0"
-					>
-						{__('Browse our curated collection, or use the sidebar to filter by category. Each template is fully customizable.', 'everest-forms')}
-					</Text>
-				</VStack>
-			)}
 			
 			<Heading
 				as="h3"
