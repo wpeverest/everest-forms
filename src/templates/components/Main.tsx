@@ -1,4 +1,4 @@
-import { Box, Flex, Heading, Spinner, Tab, TabList, Tabs, useBreakpointValue, useToast } from '@chakra-ui/react';
+import { Box, Divider, Flex, Heading, Spinner, Tab, TabList, Tabs, Text, useBreakpointValue, useToast } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import apiFetch from '@wordpress/api-fetch';
 import { __ } from '@wordpress/i18n';
@@ -228,14 +228,37 @@ const Main: React.FC<{ onCreateWithAI?: () => void }> = ({ onCreateWithAI }) => 
 
 	return (
 		<Box>
-			<Box p="24px 30px">
+			<Box p="24px 30px 0px 30px">
 				<CreateFormCTA
 					onCreateWithAI={handleCreateWithAI}
 					onCreateBlank={handleCreateBlank}
 				/>
 			</Box>
 
-			<Flex p="8px 30px 20px 30px" align="center" justify="space-between" borderTop="1px solid #f0f0f0">
+			<Box p="0px 30px" my="20px" position="relative">
+				<Divider borderColor="#e1e1e1" />
+				<Box
+					position="absolute"
+					top="50%"
+					left="50%"
+					transform="translate(-50%, -50%)"
+					bg="white"
+					px="16px"
+				>
+					<Text
+						fontSize="13px"
+						fontWeight="700"
+						color="#7545BB"
+						textTransform="uppercase"
+						letterSpacing="1px"
+						margin="0"
+					>
+						{__('or', 'everest-forms')}
+					</Text>
+				</Box>
+			</Box>
+
+			<Flex p="0px 30px 20px 30px" align="center" justify="space-between">
 				<Heading
 					as="h2"
 					fontSize="18px"

@@ -13,13 +13,13 @@ const CreateFormCTA: React.FC<CreateFormCTAProps> = ({
 	onCreateBlank,
 }) => {
 	return (
-		<Box p="24px 0" mb="24px">
+		<Box p="4px 0" mb="0">
 			<HStack spacing="20px" width="100%" align="stretch">
 				{/* Create with AI Card */}
 				<Box
 					bg="#f7f4fc"
 					borderRadius="16px"
-					p="32px"
+					p="20px 24px"
 					flex="2"
 					cursor="pointer"
 					onClick={onCreateWithAI}
@@ -29,7 +29,7 @@ const CreateFormCTA: React.FC<CreateFormCTAProps> = ({
 						borderColor: '#a87de0',
 					}}
 				>
-					<VStack align="flex-start" spacing="16px" height="100%">
+					<VStack align="flex-start" spacing="12px" height="100%">
 						<HStack width="100%" justify="space-between" align="center">
 							<Box
 								bg="#ede5f8"
@@ -56,10 +56,10 @@ const CreateFormCTA: React.FC<CreateFormCTAProps> = ({
 							</Badge>
 						</HStack>
 
-						<VStack align="flex-start" spacing="8px" flex="1">
+						<VStack align="flex-start" spacing="6px" flex="1">
 							<Heading
 								as="h3"
-								fontSize="18px"
+								fontSize="16px"
 								fontWeight="700"
 								color="#1a1a1a"
 								lineHeight="1.4"
@@ -102,7 +102,7 @@ const CreateFormCTA: React.FC<CreateFormCTAProps> = ({
 				<Box
 					bg="white"
 					borderRadius="16px"
-					p="32px"
+					p="20px 24px"
 					flex="1"
 					cursor="pointer"
 					onClick={onCreateBlank}
@@ -112,7 +112,7 @@ const CreateFormCTA: React.FC<CreateFormCTAProps> = ({
 						borderColor: '#b0b0b0',
 					}}
 				>
-					<VStack align="flex-start" spacing="16px" height="100%">
+					<VStack align="flex-start" spacing="12px" height="100%">
 						<Box
 							bg="#f0ecfa"
 							borderRadius="12px"
@@ -124,10 +124,10 @@ const CreateFormCTA: React.FC<CreateFormCTAProps> = ({
 							<Icon as={FiPenTool} boxSize={5} color="#7545BB" />
 						</Box>
 
-						<VStack align="flex-start" spacing="8px" flex="1">
+						<VStack align="flex-start" spacing="6px" flex="1">
 							<Heading
 								as="h3"
-								fontSize="18px"
+								fontSize="16px"
 								fontWeight="700"
 								color="#1a1a1a"
 								lineHeight="1.4"

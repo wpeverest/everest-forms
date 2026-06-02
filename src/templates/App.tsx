@@ -1,5 +1,5 @@
 import { __ } from '@wordpress/i18n';
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   ChakraProvider,
   Box,
@@ -21,7 +21,33 @@ const EVFIcon = (props) => (
 );
 
 const App = () => {
-  const [currentView, setCurrentView] = useState<'templates' | 'ai'>('templates');
+  const [currentView, setCurrentView] = useState<'templates' | 'ai'>(() => {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('view') === 'ai' ? 'ai' : 'templates';
+  });
+
+  useEffect(() => {
+    const onPopState = () => {
+      const params = new URLSearchParams(window.location.search);
+      setCurrentView(params.get('view') === 'ai' ? 'ai' : 'templates');
+    };
+    window.addEventListener('popstate', onPopState);
+    return () => window.removeEventListener('popstate', onPopState);
+  }, []);
+
+  const navigateToAI = () => {
+    const url = new URL(window.location.href);
+    url.searchParams.set('view', 'ai');
+    history.pushState({ view: 'ai' }, '', url.toString());
+    setCurrentView('ai');
+  };
+
+  const navigateBack = () => {
+    const url = new URL(window.location.href);
+    url.searchParams.delete('view');
+    history.pushState({ view: 'templates' }, '', url.toString());
+    setCurrentView('templates');
+  };
 
   const handleRefreshTemplates = () => {
     const url = new URL(window.location.href);
@@ -31,9 +57,15 @@ const App = () => {
 
   return (
     <ChakraProvider>
-      <Box bg="white" margin="24px" border="1px solid #e1e1e1" borderRadius="13px" overflow="hidden">
+      <Box
+        bg="white"
+        margin={currentView === 'ai' ? '0' : '24px'}
+        border={currentView === 'ai' ? 'none' : '1px solid #e1e1e1'}
+        borderRadius={currentView === 'ai' ? '0' : '13px'}
+        overflow="hidden"
+      >
         {currentView === 'ai' ? (
-          <CreateWithAI onBack={() => setCurrentView('templates')} />
+          <CreateWithAI onBack={navigateBack} />
         ) : (
           <>
             <HStack
@@ -77,7 +109,7 @@ const App = () => {
             </HStack>
 
             <Box bg="white">
-              <Main onCreateWithAI={() => setCurrentView('ai')} />
+              <Main onCreateWithAI={navigateToAI} />
             </Box>
           </>
         )}

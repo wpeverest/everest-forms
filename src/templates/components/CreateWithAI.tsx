@@ -70,38 +70,21 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 
 	return (
 		<Box bg="#f3f3f5" minHeight="600px">
-			{/* Header */}
-			<Flex
-				px="24px"
-				py="14px"
-				align="center"
-				justify="space-between"
-				bg="white"
-				borderBottom="1px solid #efefef"
-			>
-				<HStack spacing="10px" cursor="pointer" onClick={onBack} role="button" aria-label="Go back">
-					<Icon as={FiArrowLeft} boxSize={5} color="#1a1a1a" />
-					<Text fontSize="15px" fontWeight="600" color="#1a1a1a" margin="0">
-						{__('Create with AI', 'everest-forms')}
+			{/* Top bar: back arrow (left) + generation counter (right) */}
+			<Flex justify="space-between" align="center" px="32px" pt="20px">
+				<HStack
+					spacing="6px"
+					cursor="pointer"
+					onClick={onBack}
+					role="button"
+					aria-label="Go back"
+					_hover={{ opacity: 0.7 }}
+				>
+					<Icon as={FiArrowLeft} boxSize={4} color="#555" />
+					<Text fontSize="13px" color="#555" margin="0">
+						{__('Back', 'everest-forms')}
 					</Text>
 				</HStack>
-				<Button
-					bg="#7545BB"
-					color="white"
-					size="sm"
-					fontSize="13px"
-					fontWeight="600"
-					borderRadius="6px"
-					px="14px"
-					height="34px"
-					_hover={{ bg: '#6338a3' }}
-				>
-					{__('Upgrade to Pro', 'everest-forms')}
-				</Button>
-			</Flex>
-
-			{/* Generation counter */}
-			<Flex justify="flex-end" px="32px" pt="20px">
 				<HStack
 					bg="white"
 					border="1px solid #e4e4e4"
