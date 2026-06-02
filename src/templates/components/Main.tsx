@@ -1,4 +1,4 @@
-import { Box, Divider, Flex, Heading, Spinner, Text, useBreakpointValue, useToast } from '@chakra-ui/react';
+import { Box, Flex, Heading, Spinner, Tab, TabList, Tabs, useBreakpointValue, useToast } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import apiFetch from '@wordpress/api-fetch';
 import { __ } from '@wordpress/i18n';
@@ -35,8 +35,9 @@ interface CreateFormResponse {
 	message?: string;
 }
 
-const Main: React.FC<{ filter: string }> = ({ filter }) => {
+const Main: React.FC<{ onCreateWithAI?: () => void }> = ({ onCreateWithAI }) => {
 	const toast = useToast();
+	const [filter, setFilter] = useState(__('All', 'everest-forms'));
 	const [state, setState] = useState({
 		selectedCategory: __('All Forms', 'everest-forms'),
 		searchTerm: '',
@@ -156,9 +157,9 @@ const Main: React.FC<{ filter: string }> = ({ filter }) => {
 				(selectedCategory === __('All Forms', 'everest-forms') ||
 					template.categories.includes(selectedCategory)) &&
 				template.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
-				(filter === 'All' ||
-					(filter === 'Free' && !template.isPro) ||
-					(filter === 'Premium' && template.isPro)),
+				(filter === __('All', 'everest-forms') ||
+					(filter === __('Free', 'everest-forms') && !template.isPro) ||
+					(filter === __('Premium', 'everest-forms') && template.isPro)),
 		);
 	}, [selectedCategory, searchTerm, templates, filter]);
 
@@ -181,8 +182,7 @@ const Main: React.FC<{ filter: string }> = ({ filter }) => {
 	if (error) return <div>{(error as Error).message}</div>;
 
 	const handleCreateWithAI = () => {
-		// Route: #create-with-ai — will be updated to full AI builder route
-		window.location.href = '#create-with-ai';
+		if (onCreateWithAI) onCreateWithAI();
 	};
 
 	const handleCreateBlank = async () => {
@@ -235,40 +235,44 @@ const Main: React.FC<{ filter: string }> = ({ filter }) => {
 				/>
 			</Box>
 
-			<Box p="0px 30px" my="4px" position="relative">
-				<Divider borderColor="#e1e1e1" />
-				<Box
-					position="absolute"
-					top="50%"
-					left="50%"
-					transform="translate(-50%, -50%)"
-					bg="white"
-					px="16px"
-				>
-					<Text
-						fontSize="13px"
-						fontWeight="700"
-						color="#7545BB"
-						textTransform="uppercase"
-						letterSpacing="1px"
-						margin="0"
-					>
-						{__('or', 'everest-forms')}
-					</Text>
-				</Box>
-			</Box>
-
-			<Box p="0px 30px 20px 30px">
+			<Flex p="8px 30px 20px 30px" align="center" justify="space-between" borderTop="1px solid #f0f0f0">
 				<Heading
 					as="h2"
 					fontSize="18px"
 					fontWeight="600"
 					color="#0f0f1a"
-					m="20px 0 0 0"
+					margin="0"
 				>
-					{__('Prebuilt Templates', 'everest-forms')}
+					{__('All Templates', 'everest-forms')}
 				</Heading>
-			</Box>
+				<Tabs
+					variant="unstyled"
+					onChange={(index) => {
+						const filters = [__('All', 'everest-forms'), __('Free', 'everest-forms'), __('Premium', 'everest-forms')];
+						setFilter(filters[index]);
+					}}
+				>
+					<TabList background="#f3f4f6" gap="2px" borderRadius="5px" padding="4px">
+						{[__('All', 'everest-forms'), __('Free', 'everest-forms'), __('Premium', 'everest-forms')].map((label) => (
+							<Tab
+								key={label}
+								_selected={{ color: 'purple.500', background: 'white', boxShadow: '0 4px 24px 0 rgba(10,10,10,.06)' }}
+								fontSize="14px"
+								lineHeight="25px"
+								color="#646970"
+								borderBottom="2px solid transparent"
+								fontWeight="medium"
+								whiteSpace="nowrap"
+								height="32px"
+								borderRadius="4px"
+								padding="6px 16px"
+							>
+								{label}
+							</Tab>
+						))}
+					</TabList>
+				</Tabs>
+			</Flex>
 
 			<Flex direction={{ base: 'column', md: 'row' }} gap="0">
 				<Box

@@ -1,17 +1,15 @@
 import { __ } from '@wordpress/i18n';
-import React, { useState, useMemo } from "react";
+import React, { useState } from "react";
 import {
   ChakraProvider,
   Box,
   HStack,
   Text,
-  Tabs,
-  TabList,
-  Tab,
   Button,
   Icon,
 } from "@chakra-ui/react";
 import Main from "./components/Main";
+import CreateWithAI from "./components/CreateWithAI";
 
 const EVFIcon = (props) => (
   <Icon viewBox="0 0 24 24" {...props}>
@@ -22,49 +20,9 @@ const EVFIcon = (props) => (
   </Icon>
 );
 
-const TabFilters = ({ onTabChange }) => {
-  const filters = useMemo(() => [__("All", "everest-forms"), __("Free", "everest-forms"), __("Premium", "everest-forms")], []);
-
-  return (
-    <Tabs variant="unstyled" onChange={onTabChange}>
-      <TabList background="#f3f4f6" gap="2px" borderRadius="5px" padding="4px">
-        {filters.map((label) => (
-          <Tab
-            key={label}
-            _selected={{
-              color: "purple.500",
-              background: "white",
-              boxShadow: "0 4px 24px 0 rgba(10,10,10,.06)",
-            }}
-            fontSize="14px"
-            lineHeight="25px"
-            color="#646970"
-            borderBottom="2px solid transparent"
-            fontWeight="medium"
-            whiteSpace="nowrap"
-            height="32px"
-            borderRadius="4px"
-            padding="6px 16px"
-          >
-            {label}
-          </Tab>
-        ))}
-      </TabList>
-    </Tabs>
-  );
-};
-
-
 const App = () => {
-  const [selectedTab, setSelectedTab] = useState<string>(__("All", "everest-forms"));
+  const [currentView, setCurrentView] = useState<'templates' | 'ai'>('templates');
 
-  // Handle tab changes
-  const handleTabChange = (index: number) => {
-    const filters = [__("All", "everest-forms"), __("Free", "everest-forms"), __("Premium", "everest-forms")];
-    setSelectedTab(filters[index]);
-  };
-
-  // Handle refresh button click
   const handleRefreshTemplates = () => {
     const url = new URL(window.location.href);
     url.searchParams.set('refresh', Date.now().toString());
@@ -74,53 +32,55 @@ const App = () => {
   return (
     <ChakraProvider>
       <Box bg="white" margin="24px" border="1px solid #e1e1e1" borderRadius="13px" overflow="hidden">
-        <HStack
-          spacing={{ base: 4, md: 6 }}
-          align="center"
-          mb={0}
-          borderBottom="1px solid #e1e1e1"
-          p="0px 24px"
-          direction={{ base: "column", md: "row" }}
-          justify="space-between"
-        >
-          <HStack spacing={4} align="center">
-            <EVFIcon boxSize="12" />
-            <Text
-              borderLeft="1px solid #e1e1e1"
-              p="27px 0 27px 24px"
-              fontSize="18px"
-              fontWeight="semibold"
-              lineHeight="26px"
-              color="#383838"
-              margin="0px"
+        {currentView === 'ai' ? (
+          <CreateWithAI onBack={() => setCurrentView('templates')} />
+        ) : (
+          <>
+            <HStack
+              spacing={{ base: 4, md: 6 }}
+              align="center"
+              mb={0}
+              borderBottom="1px solid #e1e1e1"
+              p="0px 24px"
+              direction={{ base: "column", md: "row" }}
+              justify="space-between"
             >
-              {__("Add New Form", "everest-forms")}
-            </Text>
-          </HStack>
-          <HStack spacing={4} align="center">
-            <TabFilters onTabChange={handleTabChange} />
-            <Button
-              colorScheme="purple"
-              variant="outline"
-              onClick={handleRefreshTemplates}
-              width={{ base: "full", md: "auto" }}
-              display={{ base: "none", md: "inline-flex" }}
-              fontSize="14px"
-              lineHeight="20px"
-              padding="8px 16px"
-              fontWeight="medium"
-              height="34px"
-              borderRadius="4px"
-            >
-              {__("Refresh Templates", "everest-forms")}
-            </Button>
-          </HStack>
-        </HStack>
+              <HStack spacing={4} align="center">
+                <EVFIcon boxSize="12" />
+                <Text
+                  borderLeft="1px solid #e1e1e1"
+                  p="27px 0 27px 24px"
+                  fontSize="18px"
+                  fontWeight="semibold"
+                  lineHeight="26px"
+                  color="#383838"
+                  margin="0px"
+                >
+                  {__("Add New Form", "everest-forms")}
+                </Text>
+              </HStack>
+              <Button
+                colorScheme="purple"
+                variant="outline"
+                onClick={handleRefreshTemplates}
+                width={{ base: "full", md: "auto" }}
+                display={{ base: "none", md: "inline-flex" }}
+                fontSize="14px"
+                lineHeight="20px"
+                padding="8px 16px"
+                fontWeight="medium"
+                height="34px"
+                borderRadius="4px"
+              >
+                {__("Refresh Templates", "everest-forms")}
+              </Button>
+            </HStack>
 
-        {/* Main Content Area */}
-        <Box bg="white">
-          <Main filter={selectedTab} />
-        </Box>
+            <Box bg="white">
+              <Main onCreateWithAI={() => setCurrentView('ai')} />
+            </Box>
+          </>
+        )}
       </Box>
     </ChakraProvider>
   );
