@@ -56,31 +56,48 @@ const Sidebar: React.FC<SidebarProps> = React.memo(({ categories, selectedCatego
 		/>
 		</InputGroup>
 
-      <VStack align="stretch" gap="4px">
+      <VStack align="stretch" gap="2px">
         {orderedCategories.map((category) => (
           <HStack
             key={category.name}
-			p="10px 10px 10px 16px"
-			background="#f5f5f5"
+            p="12px 14px"
+            background={selectedCategory === category.name ? "#f0f0f0" : "transparent"}
             _hover={{
-				bg: "#f5f5f5",
-				"& > .badge": {
-				  bg: selectedCategory === category.name ? "#FFFFFF" : "#FFFFFF"
-				},
-				
-				"& > .evf-category-list": {
-				  color: "#383838"
-				}
-			}}
-            borderRadius="md"
+              bg: "#f5f5f5",
+            }}
+            borderRadius="8px"
             cursor="pointer"
-			justifyContent="space-between"
-            bg={selectedCategory === category.name ? "#f5f5f5" : "transparent"}
+            justifyContent="space-between"
             onClick={() => onCategorySelect(category.name)}
+            transition="all 0.2s"
           >
-            <Text className="evf-category-list" color={selectedCategory === category.name ? "#7545BB" : "gray.600"} fontSize="14px" lineHeight="22px" fontWeight="medium" margin="0px">{category.name}</Text>
-            
-            <Badge className="badge" display="flex" alignItems="center" justifyContent="center" fontWeight="semibold" width="32px" height="24px" padding="0px" borderRadius="6px" color={selectedCategory === category.name ? "#7545BB" : ""} bg={selectedCategory === category.name ? "white" : "#F5F5F5"} >{category.count}</Badge>
+            <Text
+              className="evf-category-list"
+              color={selectedCategory === category.name ? "#7545BB" : "#646970"}
+              fontSize="14px"
+              lineHeight="22px"
+              fontWeight={selectedCategory === category.name ? "600" : "500"}
+              margin="0px"
+            >
+              {category.name}
+            </Text>
+
+            <Badge
+              className="badge"
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              fontWeight="600"
+              fontSize="12px"
+              width="28px"
+              height="22px"
+              padding="0px"
+              borderRadius="4px"
+              color={selectedCategory === category.name ? "white" : "#646970"}
+              bg={selectedCategory === category.name ? "#7545BB" : "#e1e1e1"}
+            >
+              {category.count}
+            </Badge>
           </HStack>
         ))}
 		<Card

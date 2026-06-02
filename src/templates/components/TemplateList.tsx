@@ -295,61 +295,65 @@ const TemplateList: React.FC<TemplateListProps> = ({
 
 	return (
 		<Box padding="0">
-			<HStack>
-				<VStack 
+			{/* Only show this section on first visit or when showing all categories */}
+			{selectedCategory === __('All Forms', 'everest-forms') && (
+				<VStack
 					position="relative"
 					bg="white"
-					border="1px solid rgba(0, 0, 0, 0.08)"
+					border="1px solid #e1e1e1"
 					borderRadius="13px"
-					p="26px 30px"
+					p="32px"
 					mb="32px"
 					overflow="hidden"
-					display="flex"
 					alignItems="flex-start"
 					width="100%"
+					spacing="16px"
 					sx={{
 						'::before': {
-						content: '""',
-						position: "absolute",
-						inset: "0",
-						bg: "radial-gradient(ellipse 60% 120% at 100% 50%, rgba(96, 64, 240, 0.07) 0%, transparent 70%), radial-gradient(ellipse 40% 80% at 80% 20%, rgba(61, 126, 245, 0.06) 0%, transparent 60%)",
-						pointerEvents: "none",
+							content: '""',
+							position: 'absolute',
+							inset: '0',
+							bg: 'radial-gradient(ellipse 60% 120% at 100% 50%, rgba(96, 64, 240, 0.07) 0%, transparent 70%), radial-gradient(ellipse 40% 80% at 80% 20%, rgba(61, 126, 245, 0.06) 0%, transparent 60%)',
+							pointerEvents: 'none',
 						},
 					}}
-					>
-					<Text 
+				>
+					<Text
 						display="inline-block"
-						alignItems="center"
-						gap="6px"
 						bg="rgba(118, 64, 240, 0.08)"
 						border="1px solid rgba(155, 64, 240, 0.2)"
 						borderRadius="20px"
-						p="4px 12px"
-						fontSize="12px"
-						fontWeight="medium"
-						// color="#6040f0"
-						color="#6b46c1"
-						letterSpacing="0.23px"
-						m="0 0 12px"
-					>✦ {__('Ready-made templates', 'everest-forms')}</Text>
-					<Heading 
-						fontSize="26px"
+						p="6px 14px"
+						fontSize="11px"
+						fontWeight="600"
+						color="#7545BB"
+						letterSpacing="0.3px"
+						m="0"
+						textTransform="uppercase"
+					>
+						✦ {__('Ready-made templates', 'everest-forms')}
+					</Text>
+					<Heading
+						fontSize="24px"
 						fontWeight="700"
 						letterSpacing="-0.5px"
 						color="#0f0f1a"
 						lineHeight="1.2"
-						margin="0 0 8px"
-					>{__('Build faster with beautiful templates', 'everest-forms')}</Heading>
-					<Text 
-						fontSize="14px"
-						// color="#6b6b85"
-						color="gray.600"
+						margin="0"
+					>
+						{__('Choose from 49+ professionally designed templates', 'everest-forms')}
+					</Heading>
+					<Text
+						fontSize="15px"
+						color="#6b6b85"
 						lineHeight="1.6"
-						maxWidth="480px"
+						maxWidth="580px"
 						m="0"
-					>{__('Pick from 49 professionally designed form templates. Customize, deploy, and start collecting responses in minutes.', 'everest-forms')}</Text>
+					>
+						{__('Browse our curated collection, or use the sidebar to filter by category. Each template is fully customizable.', 'everest-forms')}
+					</Text>
 				</VStack>
-			</HStack>
+			)}
 			
 			<Heading
 				as="h3"

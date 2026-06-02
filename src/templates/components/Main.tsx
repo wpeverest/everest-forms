@@ -6,6 +6,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { templatesScriptData } from '../utils/global';
 import Sidebar from './Sidebar';
 import TemplateList from './TemplateList';
+import CreateFormCTA from './CreateFormCTA';
 
 const { restURL, security } = templatesScriptData;
 
@@ -28,7 +29,7 @@ const fetchTemplates = async () => {
 	}
 };
 
-const Main: React.FC<{ filter: string }> = ({ filter }) => {
+const Main: React.FC = () => {
 	const [state, setState] = useState({
 		selectedCategory: __('All Forms', 'everest-forms'),
 		searchTerm: '',
@@ -146,12 +147,9 @@ const Main: React.FC<{ filter: string }> = ({ filter }) => {
 			(template) =>
 				(selectedCategory === __('All Forms', 'everest-forms') ||
 					template.categories.includes(selectedCategory)) &&
-				template.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
-				(filter === 'All' ||
-					(filter === 'Free' && !template.isPro) ||
-					(filter === 'Premium' && template.isPro)),
+				template.title.toLowerCase().includes(searchTerm.toLowerCase()),
 		);
-	}, [selectedCategory, searchTerm, templates, filter]);
+	}, [selectedCategory, searchTerm, templates]);
 
 	const handleCategorySelect = useCallback((category: string) => {
 		setState((prevState) => ({ ...prevState, selectedCategory: category }));
@@ -171,17 +169,33 @@ const Main: React.FC<{ filter: string }> = ({ filter }) => {
 		);
 	if (error) return <div>{(error as Error).message}</div>;
 
+	const handleCreateWithAI = () => {
+		// AI form builder will be implemented here
+		window.location.href = '#';
+	};
+
+	const handleCreateBlank = () => {
+		// Create blank form
+		const blankFormTemplate = {
+			title: __('Blank Form', 'everest-forms'),
+			slug: 'blank',
+		};
+		window.location.href = '#';
+	};
+
 	return (
 		<Box>
-			<Flex direction={{ base: 'column', md: 'row' }}>
+			<CreateFormCTA
+				onCreateWithAI={handleCreateWithAI}
+				onCreateBlank={handleCreateBlank}
+			/>
+			<Flex direction={{ base: 'column', md: 'row' }} gap="0">
 				<Box
 					maxWidth="310px"
 					width="100%"
 					p="30px 28px"
 					boxSizing="border-box"
-					// width={sidebarWidth}
-					// mr={{ base: 0, md: 4 }}
-					// mb={{ base: 4, md: 0 }}
+					borderRight="1px solid #e1e1e1"
 				>
 					<Sidebar
 						categories={categories}
@@ -190,14 +204,7 @@ const Main: React.FC<{ filter: string }> = ({ filter }) => {
 						onSearchChange={handleSearchChange}
 					/>
 				</Box>
-				<Box
-					width="1px"
-					bg="#e1e1e1"
-					display="none"
-					// mx="4"
-					// marginRight="28px"
-				/>
-				<Box borderLeft="1px solid #e1e1e1" p="30px 30px" flex={1}>
+				<Box p="30px 30px" flex={1}>
 					<TemplateList
 						selectedCategory={selectedCategory}
 						templates={filteredTemplates}
