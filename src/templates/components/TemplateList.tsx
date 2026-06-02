@@ -295,20 +295,6 @@ const TemplateList: React.FC<TemplateListProps> = ({
 
 	return (
 		<Box padding="0">
-			
-			<Heading
-				as="h3"
-				fontSize="18px"
-				lineHeight="26px"
-				letterSpacing="0.2px"
-				fontWeight="semibold"
-				m="0px 0px 32px"
-				color="#26262E"
-				borderBottom="1px solid #e1e1e1"
-				paddingBottom="12px"
-			>
-				{selectedCategory}
-			</Heading>
 			{templates?.length ? (
 				<SimpleGrid gridTemplateColumns="repeat(auto-fill, minmax(280px, 1fr))" spacing={6}>
 					{templates.map((template) => (

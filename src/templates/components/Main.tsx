@@ -1,4 +1,4 @@
-import { Box, Flex, Spinner, useBreakpointValue, Heading } from '@chakra-ui/react';
+import { Box, Divider, Flex, Heading, Spinner, Text, useBreakpointValue, useToast } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import apiFetch from '@wordpress/api-fetch';
 import { __ } from '@wordpress/i18n';
@@ -29,7 +29,14 @@ const fetchTemplates = async () => {
 	}
 };
 
+interface CreateFormResponse {
+	success: boolean;
+	data?: { id: number; redirect: string; status: number };
+	message?: string;
+}
+
 const Main: React.FC<{ filter: string }> = ({ filter }) => {
+	const toast = useToast();
 	const [state, setState] = useState({
 		selectedCategory: __('All Forms', 'everest-forms'),
 		searchTerm: '',
@@ -145,6 +152,7 @@ const Main: React.FC<{ filter: string }> = ({ filter }) => {
 	const filteredTemplates = useMemo(() => {
 		return templates.filter(
 			(template) =>
+				template.slug !== 'blank' &&
 				(selectedCategory === __('All Forms', 'everest-forms') ||
 					template.categories.includes(selectedCategory)) &&
 				template.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
@@ -173,17 +181,49 @@ const Main: React.FC<{ filter: string }> = ({ filter }) => {
 	if (error) return <div>{(error as Error).message}</div>;
 
 	const handleCreateWithAI = () => {
-		// AI form builder will be implemented here
-		window.location.href = '#';
+		// Route: #create-with-ai — will be updated to full AI builder route
+		window.location.href = '#create-with-ai';
 	};
 
-	const handleCreateBlank = () => {
-		// Create blank form
-		const blankFormTemplate = {
-			title: __('Blank Form', 'everest-forms'),
-			slug: 'blank',
-		};
-		window.location.href = '#';
+	const handleCreateBlank = async () => {
+		try {
+			const response = (await apiFetch({
+				path: `${restURL}everest-forms/v1/templates/create`,
+				method: 'POST',
+				body: JSON.stringify({
+					title: __('Untitled', 'everest-forms'),
+					slug: 'blank',
+				}),
+				headers: {
+					'Content-Type': 'application/json',
+					'X-WP-Nonce': security,
+				},
+			})) as CreateFormResponse;
+
+			if (response.success && response.data) {
+				window.location.href = response.data.redirect;
+			} else {
+				toast({
+					title: __('Error', 'everest-forms'),
+					description: response.message || __('Failed to create form.', 'everest-forms'),
+					status: 'error',
+					position: 'bottom-right',
+					duration: 5000,
+					isClosable: true,
+					variant: 'subtle',
+				});
+			}
+		} catch (error) {
+			toast({
+				title: __('Error', 'everest-forms'),
+				description: __('An error occurred while creating the form.', 'everest-forms'),
+				status: 'error',
+				position: 'bottom-right',
+				duration: 5000,
+				isClosable: true,
+				variant: 'subtle',
+			});
+		}
 	};
 
 	return (
@@ -195,7 +235,30 @@ const Main: React.FC<{ filter: string }> = ({ filter }) => {
 				/>
 			</Box>
 
-			<Box p="0px 30px 20px 30px" borderTop="1px solid #e1e1e1">
+			<Box p="0px 30px" my="4px" position="relative">
+				<Divider borderColor="#e1e1e1" />
+				<Box
+					position="absolute"
+					top="50%"
+					left="50%"
+					transform="translate(-50%, -50%)"
+					bg="white"
+					px="16px"
+				>
+					<Text
+						fontSize="13px"
+						fontWeight="700"
+						color="#7545BB"
+						textTransform="uppercase"
+						letterSpacing="1px"
+						margin="0"
+					>
+						{__('or', 'everest-forms')}
+					</Text>
+				</Box>
+			</Box>
+
+			<Box p="0px 30px 20px 30px">
 				<Heading
 					as="h2"
 					fontSize="18px"

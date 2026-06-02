@@ -1,7 +1,7 @@
-import { Box, HStack, VStack, Text, Heading, Badge, Icon } from '@chakra-ui/react';
+import { Badge, Box, HStack, Heading, Icon, Text, VStack } from '@chakra-ui/react';
 import { __ } from '@wordpress/i18n';
 import React from 'react';
-import { FiZap, FiPenTool } from 'react-icons/fi';
+import { FiArrowRight, FiPenTool, FiZap } from 'react-icons/fi';
 
 interface CreateFormCTAProps {
 	onCreateWithAI?: () => void;
@@ -14,147 +14,155 @@ const CreateFormCTA: React.FC<CreateFormCTAProps> = ({
 }) => {
 	return (
 		<Box p="24px 0" mb="24px">
-			<HStack spacing="24px" width="100%" align="stretch">
-				{/* Create with AI Card - Larger */}
+			<HStack spacing="20px" width="100%" align="stretch">
+				{/* Create with AI Card */}
 				<Box
-					bg="#f7f5fb"
-					borderRadius="20px"
-					p="40px"
+					bg="#f7f4fc"
+					borderRadius="16px"
+					p="32px"
 					flex="2"
 					cursor="pointer"
 					onClick={onCreateWithAI}
+					border="1px solid #e5daf5"
+					transition="border-color 0.2s ease"
+					_hover={{
+						borderColor: '#a87de0',
+					}}
 				>
-					<VStack align="flex-start" spacing="20px" height="100%">
-						<HStack spacing="16px" align="flex-start" width="100%">
+					<VStack align="flex-start" spacing="16px" height="100%">
+						<HStack width="100%" justify="space-between" align="center">
 							<Box
-								bg="#7545BB"
-								borderRadius="14px"
-								p="14px"
+								bg="#ede5f8"
+								borderRadius="12px"
+								p="10px"
 								display="flex"
 								alignItems="center"
 								justifyContent="center"
-								flexShrink="0"
 							>
-								<Icon as={FiZap} boxSize={7} color="white" />
+								<Icon as={FiZap} boxSize={5} color="#7545BB" />
 							</Box>
 							<Badge
-								bg="#c0f0d9"
-								color="#1f6651"
+								bg="#16a34a"
+								color="white"
 								fontSize="11px"
 								fontWeight="700"
 								px="10px"
 								py="5px"
 								borderRadius="5px"
 								textTransform="uppercase"
-								letterSpacing="0.4px"
-								mt="4px"
+								letterSpacing="0.6px"
 							>
 								{__('New', 'everest-forms')}
 							</Badge>
 						</HStack>
 
-						<VStack align="flex-start" spacing="12px" flex="1">
+						<VStack align="flex-start" spacing="8px" flex="1">
 							<Heading
 								as="h3"
-								fontSize="20px"
+								fontSize="18px"
 								fontWeight="700"
 								color="#1a1a1a"
-								lineHeight="1.3"
+								lineHeight="1.4"
 								margin="0"
 							>
 								{__('Create Form Using AI', 'everest-forms')}
 							</Heading>
 							<Text
-								fontSize="15px"
-								color="#666666"
-								lineHeight="1.6"
+								fontSize="14px"
+								color="#6b6b6b"
+								lineHeight="1.65"
 								margin="0"
 							>
 								{__('Describe your form in plain words and let AI build the fields for you in seconds.', 'everest-forms')}
 							</Text>
 						</VStack>
 
-						<Box
-							as="button"
-							color="#7545BB"
-							fontSize="15px"
-							fontWeight="600"
-							mt="auto"
-							cursor="pointer"
-							bg="transparent"
-							border="none"
-							p="0"
-							display="flex"
-							alignItems="center"
-							gap="6px"
-							_active={{ opacity: 0.8 }}
-						>
-							{__('Get Started', 'everest-forms')} →
-						</Box>
+						<HStack width="100%" justify="flex-end">
+							<HStack
+								as="button"
+								color="#7545BB"
+								fontSize="13px"
+								fontWeight="600"
+								cursor="pointer"
+								bg="transparent"
+								border="none"
+								p="0"
+								spacing="4px"
+								_hover={{ opacity: 0.75 }}
+								_active={{ opacity: 0.6 }}
+							>
+								<Text margin="0">{__('Get Started', 'everest-forms')}</Text>
+								<Icon as={FiArrowRight} boxSize={3.5} />
+							</HStack>
+						</HStack>
 					</VStack>
 				</Box>
 
-				{/* Create from Scratch Card - Smaller */}
+				{/* Create from Scratch Card */}
 				<Box
 					bg="white"
-					borderRadius="20px"
-					p="40px"
+					borderRadius="16px"
+					p="32px"
 					flex="1"
 					cursor="pointer"
 					onClick={onCreateBlank}
 					border="1px solid #e8e8e8"
+					transition="border-color 0.2s ease"
+					_hover={{
+						borderColor: '#b0b0b0',
+					}}
 				>
-					<VStack align="flex-start" spacing="20px" height="100%">
+					<VStack align="flex-start" spacing="16px" height="100%">
 						<Box
-							bg="#e8dff5"
-							borderRadius="14px"
-							p="14px"
+							bg="#f0ecfa"
+							borderRadius="12px"
+							p="10px"
 							display="flex"
 							alignItems="center"
 							justifyContent="center"
-							flexShrink="0"
 						>
-							<Icon as={FiPenTool} boxSize={7} color="#7545BB" />
+							<Icon as={FiPenTool} boxSize={5} color="#7545BB" />
 						</Box>
 
-						<VStack align="flex-start" spacing="12px" flex="1">
+						<VStack align="flex-start" spacing="8px" flex="1">
 							<Heading
 								as="h3"
-								fontSize="20px"
+								fontSize="18px"
 								fontWeight="700"
 								color="#1a1a1a"
-								lineHeight="1.3"
+								lineHeight="1.4"
 								margin="0"
 							>
 								{__('Create from Scratch', 'everest-forms')}
 							</Heading>
 							<Text
-								fontSize="15px"
-								color="#666666"
-								lineHeight="1.6"
+								fontSize="14px"
+								color="#6b6b6b"
+								lineHeight="1.65"
 								margin="0"
 							>
 								{__('Start with a blank canvas and design your form field by field with full control.', 'everest-forms')}
 							</Text>
 						</VStack>
 
-						<Box
-							as="button"
-							color="#7545BB"
-							fontSize="15px"
-							fontWeight="600"
-							mt="auto"
-							cursor="pointer"
-							bg="transparent"
-							border="none"
-							p="0"
-							display="flex"
-							alignItems="center"
-							gap="6px"
-							_active={{ opacity: 0.8 }}
-						>
-							{__('Continue', 'everest-forms')} →
-						</Box>
+						<HStack width="100%" justify="flex-end">
+							<HStack
+								as="button"
+								color="#7545BB"
+								fontSize="13px"
+								fontWeight="600"
+								cursor="pointer"
+								bg="transparent"
+								border="none"
+								p="0"
+								spacing="4px"
+								_hover={{ opacity: 0.75 }}
+								_active={{ opacity: 0.6 }}
+							>
+								<Text margin="0">{__('Continue', 'everest-forms')}</Text>
+								<Icon as={FiArrowRight} boxSize={3.5} />
+							</HStack>
+						</HStack>
 					</VStack>
 				</Box>
 			</HStack>
