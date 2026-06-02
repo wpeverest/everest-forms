@@ -2755,6 +2755,7 @@
 				var $firstConn = $('#everest-forms-panel-integrations')
 					.find('.everest-forms-panel-sidebar a')
 					.not('.evf-addon-install-trigger')
+					.not('.upgrade-addons-settings')
 					.first();
 				if ($firstConn.length) {
 					$firstConn.trigger('click');
@@ -4543,6 +4544,7 @@
 				var $firstConnected = $panel
 					.find('.everest-forms-panel-sidebar a')
 					.not('.evf-addon-install-trigger')
+					.not('.upgrade-addons-settings')
 					.first();
 				if ($firstConnected.length) {
 					$firstConnected.trigger('click');
