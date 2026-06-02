@@ -156,6 +156,7 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 	const [open, setOpen] = useState<Record<string, boolean>>({});
 	const [testEmail, setTestEmail] = useState<string>(adminEmail || '');
 	const [isInstallingSmtp, setIsInstallingSmtp] = useState(false);
+	const [smtpLoadingPhase, setSmtpLoadingPhase] = useState<'installing' | 'activating' | null>(null);
 	const [smtpInstallError, setSmtpInstallError] = useState<string | null>(null);
 
 	const toggleOpen = useCallback((id: string) => {
@@ -366,10 +367,12 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 					: 'idle';
 
 	const handleInstallSmtpPlugin = async () => {
-
+		const isInstallFlow = !resolvedSmtpInstalled;
 		setIsInstallingSmtp(true);
+		setSmtpLoadingPhase(isInstallFlow ? 'installing' : 'activating');
 		setSmtpInstallError(null);
-		const loadingStart = Date.now();
+
+		let redirecting = false;
 		try {
 			const normalizedAdminUrl = (adminURL || '').endsWith('/')
 				? (adminURL || '').slice(0, -1)
@@ -385,34 +388,38 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 			});
 			const result = await response.json();
 			if (result.success) {
-				queryClient.setQueryData(['siteAssistant'], (old: ApiResponse | undefined) => {
-					const prev = old?.data;
-					const merged: SiteAssistantData = {
-						...prev,
-						is_smart_smtp_installed: true,
-						// Keep current active state until redirect completes, so the card
-						// remains visible while "Installing/Activating..." is in progress.
-						is_smart_smtp_active: prev?.is_smart_smtp_active ?? false,
-						skipped_steps: prev?.skipped_steps ?? [],
-						test_email_sent: prev?.test_email_sent ?? false,
-						has_forms: prev?.has_forms ?? false,
-					};
-					const next: ApiResponse = {
-						success: old?.success ?? true,
-						data: merged,
-					};
-					return next;
-				});
-				await queryClient.invalidateQueries({ queryKey: ['siteAssistant'] });
+				// PHP installed+activated — switch to "Activating..." for the install flow
+				// and hold it for at least 800ms so the user can read it.
+				if (isInstallFlow) {
+					setSmtpLoadingPhase('activating');
+					await new Promise((r) => window.setTimeout(r, 800));
+				}
 				if (result.data?.redirection_url) {
-					const minLoadingMs = 500;
-					const elapsedMs = Date.now() - loadingStart;
-					if (elapsedMs < minLoadingMs) {
-						await new Promise((resolve) =>
-							window.setTimeout(resolve, minLoadingMs - elapsedMs),
-						);
-					}
+					// Redirect: skip cache updates — new page loads fresh data.
+					// Any setQueryData/invalidateQueries here triggers re-renders that
+					// flash the idle button state before the page unloads.
+					redirecting = true;
 					window.location.href = result.data.redirection_url;
+				} else {
+					// No redirect — update cache so UI reflects installed state.
+					queryClient.setQueryData(
+						['siteAssistant'],
+						(old: ApiResponse | undefined) => {
+							const prev = old?.data;
+							return {
+								success: old?.success ?? true,
+								data: {
+									...prev,
+									is_smart_smtp_installed: true,
+									is_smart_smtp_active: true,
+									skipped_steps: prev?.skipped_steps ?? [],
+									test_email_sent: prev?.test_email_sent ?? false,
+									has_forms: prev?.has_forms ?? false,
+								} as SiteAssistantData,
+							} as ApiResponse;
+						},
+					);
+					void queryClient.invalidateQueries({ queryKey: ['siteAssistant'] });
 				}
 			} else {
 				setSmtpInstallError(
@@ -425,7 +432,10 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 				__('Installation failed. Please try manually.', 'everest-forms'),
 			);
 		} finally {
-			setIsInstallingSmtp(false);
+			if (!redirecting) {
+				setIsInstallingSmtp(false);
+				setSmtpLoadingPhase(null);
+			}
 		}
 	};
 
@@ -874,7 +884,7 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 										flexShrink={0}
 									>
 										{isInstallingSmtp
-											? resolvedSmtpInstalled
+											? smtpLoadingPhase === 'activating'
 												? __('Activating...', 'everest-forms')
 												: __('Installing...', 'everest-forms')
 											: resolvedSmtpInstalled
