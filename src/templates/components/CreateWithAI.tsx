@@ -27,8 +27,8 @@ import {
 	FiLayout,
 	FiList,
 	FiMessageSquare,
-	FiMic,
-	FiPaperclip,
+
+	FiEdit3,
 	FiRefreshCw,
 	FiThumbsDown,
 	FiThumbsUp,
@@ -97,33 +97,43 @@ const GEN_STEPS = [
 ];
 
 const MOCK_FIELDS = [
-	{ id: 1, type: 'name',     label: 'Full Name'                  },
-	{ id: 2, type: 'email',    label: 'Email Address'              },
-	{ id: 3, type: 'rating',   label: 'Overall Rating'             },
-	{ id: 4, type: 'textarea', label: 'Your Feedback'              },
-	{ id: 5, type: 'select',   label: 'How did you hear about us?' },
+	{ id: 1, type: 'name',     label: 'Full Name',                  required: true  },
+	{ id: 2, type: 'email',    label: 'Email Address',              required: true  },
+	{ id: 3, type: 'rating',   label: 'Overall Rating',             required: false },
+	{ id: 4, type: 'textarea', label: 'Your Feedback',              required: false },
+	{ id: 5, type: 'select',   label: 'How did you hear about us?', required: false },
 ];
 
 const MAX_CHARS = 500;
 
-// ─── field preview card ───────────────────────────────────────────────────────
+// ─── field preview — exact Everest Forms builder styling ─────────────────────
+
+// Exact values from computed builder styles:
+//   input:    border 1px solid #e1e1e1, borderRadius 3px, height 38px, padding 4px 10px
+//   textarea: border 1px solid #cdd0d8, borderRadius 2px, height 120px, padding 8px 12px
+//   label:    fontSize 14px, fontWeight 500, color #222
+
+const EVFLabel: React.FC<{ text: string; required?: boolean }> = ({ text, required }) => (
+	<Box mb="5px">
+		<Text as="span" fontSize="14px" fontWeight="500" color="#222">{text}</Text>
+		{required && <Text as="span" color="red.500" ml="2px" fontSize="13px"> *</Text>}
+	</Box>
+);
+
+const EVFInput = () => (
+	<Box h="38px" bg="white" border="1px solid #e1e1e1" borderRadius="3px" />
+);
 
 const FieldPreview: React.FC<{ field: any }> = ({ field }) => {
-	const label = (
-		<Text fontSize="13px" fontWeight="600" color="#3a3a4a" margin="0 0 7px">
-			{field.label}
-		</Text>
-	);
-
 	if (field.type === 'name') {
 		return (
 			<Box>
-				{label}
-				<HStack spacing="12px">
+				<EVFLabel text={field.label} />
+				<HStack spacing="10px">
 					{['First', 'Last'].map(sub => (
 						<Box key={sub} flex={1}>
-							<Box h="36px" bg="white" border="1px solid #dddde8" borderRadius="5px" />
-							<Text fontSize="11px" color="#c0c0ce" margin="4px 0 0">{sub}</Text>
+							<EVFInput />
+							<Text fontSize="11px" color="#999" margin="3px 0 0">{sub}</Text>
 						</Box>
 					))}
 				</HStack>
@@ -134,8 +144,12 @@ const FieldPreview: React.FC<{ field: any }> = ({ field }) => {
 	if (field.type === 'textarea') {
 		return (
 			<Box>
-				{label}
-				<Box h="76px" bg="white" border="1px solid #dddde8" borderRadius="5px" />
+				<EVFLabel text={field.label} />
+				<Box
+					h="120px" bg="white"
+					border="1px solid #cdd0d8"
+					borderRadius="2px"
+				/>
 			</Box>
 		);
 	}
@@ -143,10 +157,10 @@ const FieldPreview: React.FC<{ field: any }> = ({ field }) => {
 	if (field.type === 'rating') {
 		return (
 			<Box>
-				{label}
-				<HStack spacing="4px">
+				<EVFLabel text={field.label} />
+				<HStack spacing="3px">
 					{[1, 2, 3, 4, 5].map(n => (
-						<Text key={n} fontSize="22px" color={n <= 4 ? '#f59e0b' : '#e0e0ea'} lineHeight="1" margin="0">
+						<Text key={n} fontSize="24px" color={n <= 4 ? '#f59e0b' : '#e0e0e8'} lineHeight="1" margin="0">
 							★
 						</Text>
 					))}
@@ -158,13 +172,15 @@ const FieldPreview: React.FC<{ field: any }> = ({ field }) => {
 	if (field.type === 'select') {
 		return (
 			<Box>
-				{label}
+				<EVFLabel text={field.label} />
 				<Flex
-					h="36px" bg="white" border="1px solid #dddde8"
-					borderRadius="5px" px="12px" align="center" justify="space-between"
+					h="38px" bg="white"
+					border="1px solid #e1e1e1"
+					borderRadius="3px"
+					px="10px" align="center" justify="space-between"
 				>
-					<Text fontSize="13px" color="#c8c8d8" margin="0">Select an option</Text>
-					<Text fontSize="11px" color="#c8c8d8" margin="0">▾</Text>
+					<Text fontSize="14px" color="#bbb" margin="0">---</Text>
+					<Text fontSize="11px" color="#bbb" margin="0">▾</Text>
 				</Flex>
 			</Box>
 		);
@@ -172,8 +188,8 @@ const FieldPreview: React.FC<{ field: any }> = ({ field }) => {
 
 	return (
 		<Box>
-			{label}
-			<Box h="36px" bg="white" border="1px solid #dddde8" borderRadius="5px" />
+			<EVFLabel text={field.label} required={field.required} />
+			<EVFInput />
 		</Box>
 	);
 };
@@ -209,7 +225,6 @@ interface CreateWithAIProps {
 
 const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 	const [prompt, setPrompt] = useState('');
-	const [selectedType, setSelectedType] = useState<string | null>(null);
 	const [genState, setGenState] = useState<'idle' | 'generating' | 'generated'>('idle');
 	const [genStep, setGenStep] = useState(-1);
 	const hasPrompt = prompt.trim().length > 0;
@@ -476,11 +491,15 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 										</HStack>
 										<HStack
 											spacing="5px" cursor="pointer"
-											_hover={{ opacity: 0.65 }}
+											border="1px solid #d0c0f0"
+											borderRadius="5px"
+											px="8px" py="4px"
+											_hover={{ bg: '#f5f0ff', borderColor: '#7545BB' }}
+											transition="all 0.15s"
 											onClick={() => setGenState('generating')}
 										>
-											<Icon as={FiRefreshCw} boxSize="12px" color="#c8c8d4" />
-											<Text fontSize="12px" color="#c8c8d4" margin="0">
+											<Icon as={FiRefreshCw} boxSize="12px" color="#7545BB" />
+											<Text fontSize="12px" color="#7545BB" fontWeight="500" margin="0">
 												{__('Regenerate', 'everest-forms')}
 											</Text>
 										</HStack>
@@ -513,70 +532,72 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 					</Flex>
 
 					{/* ── Right: form preview panel ── */}
-					<Box flex={1} bg="white" overflowY="auto" p="16px 28px">
-						<Box>
+					<Box flex={1} bg="#f1f1f1" overflowY="auto" p="20px 24px">
 
-							{/* Title row */}
-							<HStack mb="2px" align="center">
-								<Heading as="h2" fontSize="20px" fontWeight="700" color="#0f0f1a" margin="0" flex={1}>
-									Customer Feedback Survey
-								</Heading>
-								<Box
-									bg="#f0ecfa" color="#7545BB"
-									fontSize="10px" fontWeight="700"
-									px="8px" py="3px" borderRadius="5px"
-									textTransform="uppercase" letterSpacing="0.7px"
-								>
-									AI
-								</Box>
-							</HStack>
-							<Text fontSize="13px" color="#b0b0be" margin="0 0 10px">
-								{__('Preview — AI-generated form', 'everest-forms')}
-							</Text>
-							<Divider borderColor="#e8e8f0" mb="14px" />
-
-							{/* Field previews */}
-							<VStack spacing="10px" align="stretch" mb="14px">
-								{MOCK_FIELDS.map(f => (
-									<FieldPreview key={f.id} field={f} />
-								))}
-							</VStack>
-
-							{/* Submit button preview */}
-							<Button
-								bg="#7545BB" color="white"
-								borderRadius="6px" fontSize="14px"
-								fontWeight="600" px="28px" height="36px"
-								_hover={{ bg: '#6a3daa' }} mb="14px"
-							>
-								{__('Submit', 'everest-forms')}
-							</Button>
-
-							{/* CTA footer */}
+						{/* EVF builder-style canvas card */}
+						<Box
+							bg="white"
+							border="1px solid #e1e1e1"
+							borderRadius="6px"
+							overflow="hidden"
+							mb="14px"
+						>
+							{/* Form title bar — matches builder */}
 							<Flex
-								bg="white" borderRadius="12px"
-								border="1px solid #ebebf0"
-								p="12px 16px"
-								align="center" justify="space-between" gap="16px"
+								align="center" px="20px" py="12px"
+								borderBottom="1px solid #e1e1e1"
+								gap="8px"
 							>
-								<Box>
-									<Text fontSize="14px" fontWeight="600" color="#1a1a1a" margin="0 0 3px">
-										{__('Happy with this form?', 'everest-forms')}
-									</Text>
-									<Text fontSize="13px" color="#a0a0b0" margin="0">
-										{__('Open it in the builder to customize fields and settings.', 'everest-forms')}
-									</Text>
-								</Box>
+								<Icon as={FiEdit3} boxSize="15px" color="#7545BB" />
+								<Text fontSize="16px" fontWeight="600" color="#383838" margin="0">
+									Customer Feedback Survey
+								</Text>
+							</Flex>
+
+							{/* Fields section */}
+							<Box p="20px 24px">
+								<VStack spacing="14px" align="stretch">
+									{MOCK_FIELDS.map(f => (
+										<FieldPreview key={f.id} field={f} />
+									))}
+								</VStack>
+
+								{/* Submit button — matches builder purple style */}
 								<Button
 									bg="#7545BB" color="white"
-									borderRadius="8px" fontSize="13px"
-									fontWeight="600" px="20px" height="36px"
-									flexShrink={0} _hover={{ bg: '#6a3daa' }}
+									borderRadius="3px" fontSize="14px"
+									fontWeight="500" px="20px" height="38px"
+									mt="20px" _hover={{ bg: '#6a3daa' }}
 								>
-									{__('Open in Builder', 'everest-forms')}
+									{__('Submit', 'everest-forms')}
 								</Button>
-							</Flex>
+							</Box>
 						</Box>
+
+						{/* Open in Builder CTA */}
+						<Flex
+							bg="white" borderRadius="6px"
+							border="1px solid #e1e1e1"
+							p="12px 16px"
+							align="center" justify="space-between" gap="16px"
+						>
+							<Box>
+								<Text fontSize="14px" fontWeight="600" color="#1a1a1a" margin="0 0 2px">
+									{__('Happy with this form?', 'everest-forms')}
+								</Text>
+								<Text fontSize="13px" color="#a0a0b0" margin="0">
+									{__('Open it in the builder to customize fields and settings.', 'everest-forms')}
+								</Text>
+							</Box>
+							<Button
+								bg="#7545BB" color="white"
+								borderRadius="3px" fontSize="13px"
+								fontWeight="500" px="20px" height="36px"
+								flexShrink={0} _hover={{ bg: '#6a3daa' }}
+							>
+								{__('Open in Builder', 'everest-forms')}
+							</Button>
+						</Flex>
 					</Box>
 				</Flex>
 			</Box>
@@ -618,55 +639,20 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 					</Box>
 
 					{/* Action bar */}
-					<Flex px="16px" py="10px" align="center" justify="space-between" borderTop="1px solid #f0f0f0">
-						<Icon as={FiPaperclip} boxSize={4} color="#aaa" cursor="pointer" _hover={{ color: '#777' }} />
-						<HStack spacing="10px">
-							<Icon as={FiMic} boxSize={4} color="#aaa" cursor="pointer" _hover={{ color: '#777' }} />
-							<Button
-								size="sm"
-								bg={hasPrompt ? '#1a1a1a' : '#e8e8ea'}
-								color={hasPrompt ? 'white' : '#aaaaaa'}
-								borderRadius="8px" fontSize="13px" fontWeight="600"
-								px="14px" height="32px"
-								cursor={hasPrompt ? 'pointer' : 'default'}
-								_hover={{ bg: hasPrompt ? '#333' : '#e8e8ea' }}
-								rightIcon={<Icon as={FiArrowUp} boxSize={3} />}
-								onClick={handleGenerate}
-							>
-								{__('Generate', 'everest-forms')}
-							</Button>
-						</HStack>
-					</Flex>
-
-					{/* TYPE chips */}
-					<Flex px="16px" py="10px" align="center" borderTop="1px solid #f0f0f0" gap="8px" flexWrap="wrap">
-						<Text
-							fontSize="11px" fontWeight="700" color="#aaa"
-							textTransform="uppercase" letterSpacing="0.6px" margin="0" mr="2px"
+					<Flex px="16px" py="10px" align="center" justify="flex-end" borderTop="1px solid #f0f0f0">
+						<Button
+							size="sm"
+							bg={hasPrompt ? '#1a1a1a' : '#e8e8ea'}
+							color={hasPrompt ? 'white' : '#aaaaaa'}
+							borderRadius="8px" fontSize="13px" fontWeight="600"
+							px="14px" height="32px"
+							cursor={hasPrompt ? 'pointer' : 'default'}
+							_hover={{ bg: hasPrompt ? '#333' : '#e8e8ea' }}
+							rightIcon={<Icon as={FiArrowUp} boxSize={3} />}
+							onClick={handleGenerate}
 						>
-							{__('TYPE', 'everest-forms')}
-						</Text>
-						{TYPE_CHIPS.map((chip) => {
-							const isSelected = selectedType === chip.label;
-							return (
-								<HStack
-									key={chip.label}
-									as="button" spacing="5px" px="10px" py="5px"
-									borderRadius="6px"
-									border={isSelected ? '1px solid #7545BB' : '1px solid #e0e0e0'}
-									bg={isSelected ? '#f5f0ff' : 'white'}
-									cursor="pointer"
-									onClick={() => setSelectedType(isSelected ? null : chip.label)}
-									transition="all 0.15s"
-									_hover={{ borderColor: '#7545BB' }}
-								>
-									<Icon as={chip.icon} boxSize={3} color={isSelected ? '#7545BB' : '#666'} />
-									<Text fontSize="12px" fontWeight="500" color={isSelected ? '#7545BB' : '#555'} margin="0">
-										{__(chip.label, 'everest-forms')}
-									</Text>
-								</HStack>
-							);
-						})}
+							{__('Generate', 'everest-forms')}
+						</Button>
 					</Flex>
 				</Box>
 
