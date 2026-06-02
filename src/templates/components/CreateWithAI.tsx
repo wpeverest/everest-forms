@@ -249,31 +249,20 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 		setGenState('generating');
 	};
 
-	// ── shared top bar ────────────────────────────────────────────────────────
+	// ── shared top bar (idle + generating only) ──────────────────────────────
 	const topBar = (
-		<Flex justify="space-between" align="center" px="32px" pt="10px" pb="6px" flexShrink={0}>
+		<Flex align="center" px="32px" pt="10px" pb="6px" flexShrink={0}>
 			<HStack
 				spacing="6px"
 				cursor="pointer"
-				onClick={genState === 'generated' ? () => setGenState('idle') : onBack}
+				onClick={onBack}
 				role="button"
 				_hover={{ opacity: 0.7 }}
 				transition="opacity 0.2s"
 			>
 				<Icon as={FiArrowLeft} boxSize={4} color="#555" />
 				<Text fontSize="13px" color="#555" margin="0">
-					{genState === 'generated' ? __('New Prompt', 'everest-forms') : __('Back', 'everest-forms')}
-				</Text>
-			</HStack>
-			<HStack bg="white" border="1px solid #e4e4e4" borderRadius="20px" px="14px" py="6px" spacing="8px">
-				<Flex
-					bg="#e8e8e8" borderRadius="full" w="20px" h="20px"
-					align="center" justify="center" fontSize="11px" fontWeight="700" color="#555"
-				>
-					5
-				</Flex>
-				<Text fontSize="13px" color="#555" margin="0">
-					{__('5 of 5 generations', 'everest-forms')}
+					{__('Back', 'everest-forms')}
 				</Text>
 			</HStack>
 		</Flex>
@@ -420,23 +409,39 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 	// ── generated state ───────────────────────────────────────────────────────
 	if (genState === 'generated') {
 		return (
-			<Box bg="#f3f3f5" display="flex" flexDirection="column" minHeight="100vh">
-				{topBar}
-
+			<Flex
+				height="100vh"
+				overflow="hidden"
+				sx={{ animation: `${fadeUp} 0.4s ease` }}
+			>
+				{/* ── Left: conversation panel ── */}
 				<Flex
-					flex={1} mt="0"
-					overflow="hidden"
-					height="calc(100vh - 56px)"
-					sx={{ animation: `${fadeUp} 0.4s ease` }}
+					w="440px" flexShrink={0}
+					bg="white" borderRight="1px solid #ebebf0"
+					direction="column"
 				>
-					{/* ── Left: conversation panel ── */}
+					{/* New Prompt button at top of aside */}
 					<Flex
-						w="440px" flexShrink={0}
-						bg="white" borderRight="1px solid #ebebf0"
-						direction="column"
+						px="16px" py="12px"
+						borderBottom="1px solid #f0f0f4"
+						flexShrink={0}
 					>
-						{/* Chat history */}
-						<Box flex={1} p="20px" overflowY="auto">
+						<HStack
+							spacing="6px"
+							cursor="pointer"
+							onClick={() => setGenState('idle')}
+							_hover={{ opacity: 0.7 }}
+							transition="opacity 0.2s"
+						>
+							<Icon as={FiArrowLeft} boxSize={4} color="#555" />
+							<Text fontSize="13px" color="#555" margin="0" fontWeight="500">
+								{__('New Prompt', 'everest-forms')}
+							</Text>
+						</HStack>
+					</Flex>
+
+					{/* Chat history */}
+					<Box flex={1} p="20px" overflowY="auto">
 
 							{/* User bubble */}
 							<Flex justify="flex-end" mb="18px">
@@ -600,7 +605,6 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 						</Flex>
 					</Box>
 				</Flex>
-			</Box>
 		);
 	}
 
@@ -639,16 +643,16 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 					</Box>
 
 					{/* Action bar */}
-					<Flex px="16px" py="10px" align="center" justify="flex-end" borderTop="1px solid #f0f0f0">
+					<Flex px="16px" py="12px" align="center" justify="flex-end" borderTop="1px solid #f0f0f0">
 						<Button
-							size="sm"
-							bg={hasPrompt ? '#1a1a1a' : '#e8e8ea'}
+							
+							bg={hasPrompt ? '#7545BB' : '#e8e8ea'}
 							color={hasPrompt ? 'white' : '#aaaaaa'}
-							borderRadius="8px" fontSize="13px" fontWeight="600"
-							px="14px" height="32px"
+							borderRadius="8px" fontSize="14px" fontWeight="600"
+							px="20px" height="40px"
 							cursor={hasPrompt ? 'pointer' : 'default'}
-							_hover={{ bg: hasPrompt ? '#333' : '#e8e8ea' }}
-							rightIcon={<Icon as={FiArrowUp} boxSize={3} />}
+							_hover={{ bg: hasPrompt ? '#6a3daa' : '#e8e8ea' }}
+							rightIcon={<Icon as={FiArrowUp} boxSize={4} />}
 							onClick={handleGenerate}
 						>
 							{__('Generate', 'everest-forms')}
