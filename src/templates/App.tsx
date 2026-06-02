@@ -10,9 +10,6 @@ import {
   Tab,
   Button,
   Icon,
-  Divider,
-  VStack,
-  Heading,
 } from "@chakra-ui/react";
 import Main from "./components/Main";
 
@@ -25,8 +22,48 @@ const EVFIcon = (props) => (
   </Icon>
 );
 
+const TabFilters = ({ onTabChange }) => {
+  const filters = useMemo(() => [__("All", "everest-forms"), __("Free", "everest-forms"), __("Premium", "everest-forms")], []);
+
+  return (
+    <Tabs variant="unstyled" onChange={onTabChange}>
+      <TabList background="#f3f4f6" gap="2px" borderRadius="5px" padding="4px">
+        {filters.map((label) => (
+          <Tab
+            key={label}
+            _selected={{
+              color: "purple.500",
+              background: "white",
+              boxShadow: "0 4px 24px 0 rgba(10,10,10,.06)",
+            }}
+            fontSize="14px"
+            lineHeight="25px"
+            color="#646970"
+            borderBottom="2px solid transparent"
+            fontWeight="medium"
+            whiteSpace="nowrap"
+            height="32px"
+            borderRadius="4px"
+            padding="6px 16px"
+          >
+            {label}
+          </Tab>
+        ))}
+      </TabList>
+    </Tabs>
+  );
+};
+
 
 const App = () => {
+  const [selectedTab, setSelectedTab] = useState<string>(__("All", "everest-forms"));
+
+  // Handle tab changes
+  const handleTabChange = (index: number) => {
+    const filters = [__("All", "everest-forms"), __("Free", "everest-forms"), __("Premium", "everest-forms")];
+    setSelectedTab(filters[index]);
+  };
+
   // Handle refresh button click
   const handleRefreshTemplates = () => {
     const url = new URL(window.location.href);
@@ -60,26 +97,29 @@ const App = () => {
               {__("Add New Form", "everest-forms")}
             </Text>
           </HStack>
-          <Button
-            colorScheme="purple"
-            variant="outline"
-            onClick={handleRefreshTemplates}
-            width={{ base: "full", md: "auto" }}
-            display={{ base: "none", md: "inline-flex" }}
-            fontSize="14px"
-            lineHeight="20px"
-            padding="8px 16px"
-            fontWeight="medium"
-            height="34px"
-            borderRadius="4px"
-          >
-            {__("Refresh Templates", "everest-forms")}
-          </Button>
+          <HStack spacing={4} align="center">
+            <TabFilters onTabChange={handleTabChange} />
+            <Button
+              colorScheme="purple"
+              variant="outline"
+              onClick={handleRefreshTemplates}
+              width={{ base: "full", md: "auto" }}
+              display={{ base: "none", md: "inline-flex" }}
+              fontSize="14px"
+              lineHeight="20px"
+              padding="8px 16px"
+              fontWeight="medium"
+              height="34px"
+              borderRadius="4px"
+            >
+              {__("Refresh Templates", "everest-forms")}
+            </Button>
+          </HStack>
         </HStack>
 
         {/* Main Content Area */}
         <Box bg="white">
-          <Main />
+          <Main filter={selectedTab} />
         </Box>
       </Box>
     </ChakraProvider>

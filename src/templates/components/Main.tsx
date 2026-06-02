@@ -29,7 +29,7 @@ const fetchTemplates = async () => {
 	}
 };
 
-const Main: React.FC = () => {
+const Main: React.FC<{ filter: string }> = ({ filter }) => {
 	const [state, setState] = useState({
 		selectedCategory: __('All Forms', 'everest-forms'),
 		searchTerm: '',
@@ -147,9 +147,12 @@ const Main: React.FC = () => {
 			(template) =>
 				(selectedCategory === __('All Forms', 'everest-forms') ||
 					template.categories.includes(selectedCategory)) &&
-				template.title.toLowerCase().includes(searchTerm.toLowerCase()),
+				template.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
+				(filter === 'All' ||
+					(filter === 'Free' && !template.isPro) ||
+					(filter === 'Premium' && template.isPro)),
 		);
-	}, [selectedCategory, searchTerm, templates]);
+	}, [selectedCategory, searchTerm, templates, filter]);
 
 	const handleCategorySelect = useCallback((category: string) => {
 		setState((prevState) => ({ ...prevState, selectedCategory: category }));
