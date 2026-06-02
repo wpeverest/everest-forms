@@ -5002,7 +5002,10 @@
 								}
 								return '';
 							}()),
-							isBlocked = blockedClass !== '';
+							isBlocked = blockedClass !== '',
+							isProLocked =
+								$btn.hasClass('upgrade-modal') ||
+								$btn.hasClass('evf-upgrade-addon');
 
 						// Skip items with no field type or no label — avoids blank popover entries.
 						if (!fieldType || !fieldLabel) {
@@ -5013,6 +5016,7 @@
 							$(
 								'<div class="evf-popover-field-item' +
 								(isBlocked ? ' evf-field-blocked' : '') +
+								(isProLocked ? ' evf-field-upgrade' : '') +
 								'"></div>',
 							)
 								.attr('data-field-type', fieldType)
@@ -5097,9 +5101,10 @@
 					'.evf-popover-field-item:hover{border-color:#8c64c6;color:#8c64c6;background:#fff}' +
 					'.evf-popover-field-item .evf-popover-field-icon i{font-size:18px}' +
 					'.evf-popover-field-item .evf-popover-field-icon svg{width:24px;height:24px;display:block}' +
-					'.evf-popover-field-item.evf-field-blocked{opacity:.55;cursor:pointer;position:relative}' +
-					'.evf-popover-field-item.evf-field-blocked:hover{opacity:1;border-color:#e6a817;background:#fffdf5}' +
-					( proIconUrl ? '.evf-popover-field-item.evf-field-blocked::before{content:"";background-image:url("' + proIconUrl + '");background-repeat:no-repeat;background-position:center;background-size:100%;position:absolute;width:14px;height:14px;top:4px;right:4px}' : '' ) +
+					'.evf-popover-field-item.evf-field-blocked{opacity:.45;cursor:default;pointer-events:none}' +
+					'.evf-popover-field-item.evf-field-upgrade{opacity:.55;cursor:pointer;pointer-events:auto;position:relative}' +
+					'.evf-popover-field-item.evf-field-upgrade:hover{opacity:1;border-color:#e6a817;background:#fffdf5}' +
+					( proIconUrl ? '.evf-popover-field-item.evf-field-upgrade::before{content:"";background-image:url("' + proIconUrl + '");background-repeat:no-repeat;background-position:center;background-size:100%;position:absolute;width:14px;height:14px;top:4px;right:4px}' : '' ) +
 					'.evf-popover-no-results{grid-column:1/-1;text-align:center;padding:20px 0;color:#999;font-size:12px}' +
 					'.evf-field-loading-wrap{display:flex;align-items:center;justify-content:center;gap:8px;padding:12px}' +
 					'.evf-field-loading-wrap .spinner{float:none;margin:0}' +

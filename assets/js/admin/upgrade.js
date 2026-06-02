@@ -18,7 +18,7 @@ jQuery( function( $ ) {
 			);
 			$(document.body).on(
 				'click',
-				'#evf-row-field-popover .evf-popover-field-item.evf-field-blocked',
+				'#evf-row-field-popover .evf-popover-field-item.evf-field-upgrade',
 				this.popover_field_upgrade,
 			);
 			$(document.body).on(
