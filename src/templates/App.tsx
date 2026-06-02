@@ -20,11 +20,65 @@ const EVFIcon = (props) => (
   </Icon>
 );
 
+// WordPress admin elements to hide in full-screen AI mode
+const WP_ELEMENTS = [
+  '#wpadminbar',
+  '#adminmenuwrap',
+  '#adminmenuback',
+  '#wpfooter',
+];
+
+const enterFullscreen = () => {
+  WP_ELEMENTS.forEach(sel => {
+    const el = document.querySelector<HTMLElement>(sel);
+    if (el) el.style.display = 'none';
+  });
+  // Remove left margin and top padding the WP shell adds
+  const wpContent = document.querySelector<HTMLElement>('#wpcontent');
+  if (wpContent) {
+    wpContent.dataset.origMargin = wpContent.style.marginLeft;
+    wpContent.style.marginLeft = '0';
+    wpContent.style.paddingTop = '0';
+  }
+  document.body.dataset.origPaddingTop = document.body.style.paddingTop;
+  document.body.style.paddingTop = '0';
+  document.body.style.marginTop = '0';
+  // html.wp-toolbar also carries padding-top via --wp-admin--admin-bar--height
+  document.documentElement.dataset.origPaddingTop = document.documentElement.style.paddingTop;
+  document.documentElement.style.paddingTop = '0';
+};
+
+const exitFullscreen = () => {
+  WP_ELEMENTS.forEach(sel => {
+    const el = document.querySelector<HTMLElement>(sel);
+    if (el) el.style.display = '';
+  });
+  const wpContent = document.querySelector<HTMLElement>('#wpcontent');
+  if (wpContent) {
+    wpContent.style.marginLeft = wpContent.dataset.origMargin ?? '';
+    wpContent.style.paddingTop = '';
+  }
+  document.body.style.paddingTop = document.body.dataset.origPaddingTop ?? '';
+  document.body.style.marginTop = '';
+  document.documentElement.style.paddingTop = document.documentElement.dataset.origPaddingTop ?? '';
+};
+
 const App = () => {
   const [currentView, setCurrentView] = useState<'templates' | 'ai'>(() => {
     const params = new URLSearchParams(window.location.search);
     return params.get('view') === 'ai' ? 'ai' : 'templates';
   });
+
+  // Apply / remove full-screen shell whenever the view changes
+  useEffect(() => {
+    if (currentView === 'ai') {
+      enterFullscreen();
+    } else {
+      exitFullscreen();
+    }
+    // Restore on unmount (e.g. hard nav away)
+    return () => { if (currentView === 'ai') exitFullscreen(); };
+  }, [currentView]);
 
   useEffect(() => {
     const onPopState = () => {
@@ -57,63 +111,63 @@ const App = () => {
 
   return (
     <ChakraProvider>
-      <Box
-        bg="white"
-        margin={currentView === 'ai' ? '0' : '24px'}
-        border={currentView === 'ai' ? 'none' : '1px solid #e1e1e1'}
-        borderRadius={currentView === 'ai' ? '0' : '13px'}
-        overflow="hidden"
-      >
-        {currentView === 'ai' ? (
+      {currentView === 'ai' ? (
+        <Box bg="#f3f3f5" minHeight="100vh">
           <CreateWithAI onBack={navigateBack} />
-        ) : (
-          <>
-            <HStack
-              spacing={{ base: 4, md: 6 }}
-              align="center"
-              mb={0}
-              borderBottom="1px solid #e1e1e1"
-              p="0px 24px"
-              direction={{ base: "column", md: "row" }}
-              justify="space-between"
-            >
-              <HStack spacing={4} align="center">
-                <EVFIcon boxSize="12" />
-                <Text
-                  borderLeft="1px solid #e1e1e1"
-                  p="27px 0 27px 24px"
-                  fontSize="18px"
-                  fontWeight="semibold"
-                  lineHeight="26px"
-                  color="#383838"
-                  margin="0px"
-                >
-                  {__("Add New Form", "everest-forms")}
-                </Text>
-              </HStack>
-              <Button
-                colorScheme="purple"
-                variant="outline"
-                onClick={handleRefreshTemplates}
-                width={{ base: "full", md: "auto" }}
-                display={{ base: "none", md: "inline-flex" }}
-                fontSize="14px"
-                lineHeight="20px"
-                padding="8px 16px"
-                fontWeight="medium"
-                height="34px"
-                borderRadius="4px"
+        </Box>
+      ) : (
+        <Box
+          bg="white"
+          margin="24px"
+          border="1px solid #e1e1e1"
+          borderRadius="13px"
+          overflow="hidden"
+        >
+          <HStack
+            spacing={{ base: 4, md: 6 }}
+            align="center"
+            mb={0}
+            borderBottom="1px solid #e1e1e1"
+            p="0px 24px"
+            direction={{ base: "column", md: "row" }}
+            justify="space-between"
+          >
+            <HStack spacing={4} align="center">
+              <EVFIcon boxSize="12" />
+              <Text
+                borderLeft="1px solid #e1e1e1"
+                p="27px 0 27px 24px"
+                fontSize="18px"
+                fontWeight="semibold"
+                lineHeight="26px"
+                color="#383838"
+                margin="0px"
               >
-                {__("Refresh Templates", "everest-forms")}
-              </Button>
+                {__("Add New Form", "everest-forms")}
+              </Text>
             </HStack>
+            <Button
+              colorScheme="purple"
+              variant="outline"
+              onClick={handleRefreshTemplates}
+              width={{ base: "full", md: "auto" }}
+              display={{ base: "none", md: "inline-flex" }}
+              fontSize="14px"
+              lineHeight="20px"
+              padding="8px 16px"
+              fontWeight="medium"
+              height="34px"
+              borderRadius="4px"
+            >
+              {__("Refresh Templates", "everest-forms")}
+            </Button>
+          </HStack>
 
-            <Box bg="white">
-              <Main onCreateWithAI={navigateToAI} />
-            </Box>
-          </>
-        )}
-      </Box>
+          <Box bg="white">
+            <Main onCreateWithAI={navigateToAI} />
+          </Box>
+        </Box>
+      )}
     </ChakraProvider>
   );
 };

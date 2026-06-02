@@ -1,22 +1,26 @@
 import {
 	Box,
 	Button,
+	Divider,
 	Flex,
 	HStack,
 	Heading,
 	Icon,
+	Input,
 	SimpleGrid,
 	Text,
 	Textarea,
 	VStack,
+	keyframes,
 } from '@chakra-ui/react';
 import { __ } from '@wordpress/i18n';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BsCalculator, BsGraduationCap, BsStars } from 'react-icons/bs';
 import {
 	FiArrowLeft,
 	FiArrowUp,
 	FiCalendar,
+	FiCheck,
 	FiCreditCard,
 	FiFileText,
 	FiHeart,
@@ -25,19 +29,43 @@ import {
 	FiMessageSquare,
 	FiMic,
 	FiPaperclip,
+	FiRefreshCw,
+	FiThumbsDown,
+	FiThumbsUp,
 } from 'react-icons/fi';
 
-interface CreateWithAIProps {
-	onBack: () => void;
-}
+// ─── animations ──────────────────────────────────────────────────────────────
+
+const pulseGlow = keyframes`
+  0%   { box-shadow: 0 0 0 0 rgba(117,69,187,0.3); transform: scale(1); }
+  50%  { box-shadow: 0 0 28px 10px rgba(117,69,187,0.12); transform: scale(1.06); }
+  100% { box-shadow: 0 0 0 0 rgba(117,69,187,0.3); transform: scale(1); }
+`;
+
+const dotBounce = keyframes`
+  0%, 80%, 100% { transform: scale(0.35); opacity: 0.3; }
+  40%            { transform: scale(1);    opacity: 1;   }
+`;
+
+const fadeUp = keyframes`
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0);    }
+`;
+
+const shimmer = keyframes`
+  0%   { background-position: -400px 0; }
+  100% { background-position:  400px 0; }
+`;
+
+// ─── constants ───────────────────────────────────────────────────────────────
 
 const TYPE_CHIPS = [
-	{ label: 'Survey', icon: FiFileText },
-	{ label: 'Payment', icon: FiCreditCard },
-	{ label: 'Calculator', icon: BsCalculator },
+	{ label: 'Survey',         icon: FiFileText      },
+	{ label: 'Payment',        icon: FiCreditCard    },
+	{ label: 'Calculator',     icon: BsCalculator    },
 	{ label: 'Conversational', icon: FiMessageSquare },
-	{ label: 'Quiz', icon: FiList },
-	{ label: 'Application', icon: FiLayout },
+	{ label: 'Quiz',           icon: FiList          },
+	{ label: 'Application',    icon: FiLayout        },
 ];
 
 const INSPIRATION_CARDS = [
@@ -61,69 +89,511 @@ const INSPIRATION_CARDS = [
 	},
 ];
 
+const GEN_STEPS = [
+	__('Understanding your prompt',         'everest-forms'),
+	__('Designing field structure',          'everest-forms'),
+	__('Configuring validation & logic',     'everest-forms'),
+	__('Finalizing your form',               'everest-forms'),
+];
+
+const MOCK_FIELDS = [
+	{ id: 1, type: 'name',     label: 'Full Name'                  },
+	{ id: 2, type: 'email',    label: 'Email Address'              },
+	{ id: 3, type: 'rating',   label: 'Overall Rating'             },
+	{ id: 4, type: 'textarea', label: 'Your Feedback'              },
+	{ id: 5, type: 'select',   label: 'How did you hear about us?' },
+];
+
 const MAX_CHARS = 500;
+
+// ─── field preview card ───────────────────────────────────────────────────────
+
+const FieldPreview: React.FC<{ field: any }> = ({ field }) => {
+	const label = (
+		<Text fontSize="13px" fontWeight="600" color="#3a3a4a" margin="0 0 7px">
+			{field.label}
+		</Text>
+	);
+
+	if (field.type === 'name') {
+		return (
+			<Box>
+				{label}
+				<HStack spacing="12px">
+					{['First', 'Last'].map(sub => (
+						<Box key={sub} flex={1}>
+							<Box h="36px" bg="white" border="1px solid #dddde8" borderRadius="5px" />
+							<Text fontSize="11px" color="#c0c0ce" margin="4px 0 0">{sub}</Text>
+						</Box>
+					))}
+				</HStack>
+			</Box>
+		);
+	}
+
+	if (field.type === 'textarea') {
+		return (
+			<Box>
+				{label}
+				<Box h="76px" bg="white" border="1px solid #dddde8" borderRadius="5px" />
+			</Box>
+		);
+	}
+
+	if (field.type === 'rating') {
+		return (
+			<Box>
+				{label}
+				<HStack spacing="4px">
+					{[1, 2, 3, 4, 5].map(n => (
+						<Text key={n} fontSize="22px" color={n <= 4 ? '#f59e0b' : '#e0e0ea'} lineHeight="1" margin="0">
+							★
+						</Text>
+					))}
+				</HStack>
+			</Box>
+		);
+	}
+
+	if (field.type === 'select') {
+		return (
+			<Box>
+				{label}
+				<Flex
+					h="36px" bg="white" border="1px solid #dddde8"
+					borderRadius="5px" px="12px" align="center" justify="space-between"
+				>
+					<Text fontSize="13px" color="#c8c8d8" margin="0">Select an option</Text>
+					<Text fontSize="11px" color="#c8c8d8" margin="0">▾</Text>
+				</Flex>
+			</Box>
+		);
+	}
+
+	return (
+		<Box>
+			{label}
+			<Box h="36px" bg="white" border="1px solid #dddde8" borderRadius="5px" />
+		</Box>
+	);
+};
+
+// ─── skeleton field (generating preview) ─────────────────────────────────────
+
+const SkeletonField: React.FC<{ delay?: string }> = ({ delay = '0s' }) => (
+	<Box sx={{ animation: `${fadeUp} 0.4s ease ${delay} both` }}>
+		<Box
+			h="12px" w="30%" mb="8px" borderRadius="4px"
+			sx={{
+				background: 'linear-gradient(90deg, #eeeeef 25%, #e4e4e8 50%, #eeeeef 75%)',
+				backgroundSize: '400px 100%',
+				animation: `${shimmer} 1.6s ease-in-out infinite`,
+			}}
+		/>
+		<Box
+			h="36px" borderRadius="6px"
+			sx={{
+				background: 'linear-gradient(90deg, #eeeeef 25%, #e4e4e8 50%, #eeeeef 75%)',
+				backgroundSize: '400px 100%',
+				animation: `${shimmer} 1.6s ease-in-out infinite`,
+			}}
+		/>
+	</Box>
+);
+
+// ─── main component ───────────────────────────────────────────────────────────
+
+interface CreateWithAIProps {
+	onBack: () => void;
+}
 
 const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 	const [prompt, setPrompt] = useState('');
 	const [selectedType, setSelectedType] = useState<string | null>(null);
+	const [genState, setGenState] = useState<'idle' | 'generating' | 'generated'>('idle');
+	const [genStep, setGenStep] = useState(-1);
 	const hasPrompt = prompt.trim().length > 0;
 
-	return (
-		<Box bg="#f3f3f5" minHeight="600px">
-			{/* Top bar: back arrow (left) + generation counter (right) */}
-			<Flex justify="space-between" align="center" px="32px" pt="20px">
-				<HStack
-					spacing="6px"
-					cursor="pointer"
-					onClick={onBack}
-					role="button"
-					aria-label="Go back"
-					_hover={{ opacity: 0.7 }}
-				>
-					<Icon as={FiArrowLeft} boxSize={4} color="#555" />
-					<Text fontSize="13px" color="#555" margin="0">
-						{__('Back', 'everest-forms')}
-					</Text>
-				</HStack>
-				<HStack
-					bg="white"
-					border="1px solid #e4e4e4"
-					borderRadius="20px"
-					px="14px"
-					py="6px"
-					spacing="8px"
-				>
-					<Flex
-						bg="#e8e8e8"
-						borderRadius="full"
-						w="20px"
-						h="20px"
-						align="center"
-						justify="center"
-						fontSize="11px"
-						fontWeight="700"
-						color="#555"
-					>
-						5
-					</Flex>
-					<Text fontSize="13px" color="#555555" margin="0">
-						{__('5 of 5 generations', 'everest-forms')}
-					</Text>
-				</HStack>
-			</Flex>
+	useEffect(() => {
+		if (genState !== 'generating') return;
+		setGenStep(-1);
+		let step = -1;
+		const id = setInterval(() => {
+			step += 1;
+			setGenStep(step);
+			if (step >= GEN_STEPS.length - 1) {
+				clearInterval(id);
+				setTimeout(() => setGenState('generated'), 700);
+			}
+		}, 950);
+		return () => clearInterval(id);
+	}, [genState]);
 
-			{/* Main content */}
-			<Box maxW="920px" mx="auto" px="24px" pt="44px" pb="60px">
+	const handleGenerate = () => {
+		if (!hasPrompt) return;
+		setGenState('generating');
+	};
+
+	// ── shared top bar ────────────────────────────────────────────────────────
+	const topBar = (
+		<Flex justify="space-between" align="center" px="32px" pt="10px" pb="6px" flexShrink={0}>
+			<HStack
+				spacing="6px"
+				cursor="pointer"
+				onClick={genState === 'generated' ? () => setGenState('idle') : onBack}
+				role="button"
+				_hover={{ opacity: 0.7 }}
+				transition="opacity 0.2s"
+			>
+				<Icon as={FiArrowLeft} boxSize={4} color="#555" />
+				<Text fontSize="13px" color="#555" margin="0">
+					{genState === 'generated' ? __('New Prompt', 'everest-forms') : __('Back', 'everest-forms')}
+				</Text>
+			</HStack>
+			<HStack bg="white" border="1px solid #e4e4e4" borderRadius="20px" px="14px" py="6px" spacing="8px">
+				<Flex
+					bg="#e8e8e8" borderRadius="full" w="20px" h="20px"
+					align="center" justify="center" fontSize="11px" fontWeight="700" color="#555"
+				>
+					5
+				</Flex>
+				<Text fontSize="13px" color="#555" margin="0">
+					{__('5 of 5 generations', 'everest-forms')}
+				</Text>
+			</HStack>
+		</Flex>
+	);
+
+	// ── generating state ──────────────────────────────────────────────────────
+	if (genState === 'generating') {
+		return (
+			<Box bg="#f3f3f5" minHeight="100vh" display="flex" flexDirection="column">
+				{topBar}
+
+				<Flex flex={1} align="center" justify="center" px="24px" pt="16px" pb="48px" gap="48px">
+
+					{/* Left: status panel */}
+					<VStack spacing="28px" maxW="400px" flex="0 0 auto">
+
+						{/* Pulsing AI orb */}
+						<Box
+							w="72px" h="72px" borderRadius="full"
+							background="linear-gradient(135deg, #9c6de8 0%, #7545BB 100%)"
+							display="flex" alignItems="center" justifyContent="center"
+							sx={{ animation: `${pulseGlow} 2s ease-in-out infinite` }}
+						>
+							<Icon as={BsStars} boxSize={7} color="white" />
+						</Box>
+
+						{/* Headline */}
+						<VStack spacing="6px" textAlign="center">
+							<Heading as="h2" fontSize="26px" fontWeight="700" color="#0f0f1a" margin="0" letterSpacing="-0.3px">
+								{__('Building your form…', 'everest-forms')}
+							</Heading>
+							<Text fontSize="14px" color="#a0a0b0" margin="0">
+								{__('This usually takes a few seconds', 'everest-forms')}
+							</Text>
+						</VStack>
+
+						{/* Steps card */}
+						<Box
+							bg="white" borderRadius="16px" border="1px solid #ebebf0"
+							p="22px 26px" width="100%"
+							sx={{ animation: `${fadeUp} 0.4s ease` }}
+						>
+							<VStack align="stretch" spacing="16px">
+								{GEN_STEPS.map((step, i) => {
+									const isDone   = i < genStep;
+									const isActive = i === genStep;
+									const isPending = i > genStep;
+									return (
+										<HStack key={i} spacing="14px" opacity={isPending ? 0.32 : 1} transition="opacity 0.4s">
+											{/* State circle */}
+											<Flex
+												w="22px" h="22px" borderRadius="full" flexShrink={0}
+												bg={isDone ? '#7545BB' : 'transparent'}
+												border={isDone ? 'none' : '2px solid'}
+												borderColor={isActive ? '#7545BB' : '#ddd'}
+												align="center" justify="center"
+												transition="all 0.35s"
+											>
+												{isDone && (
+													<Icon as={FiCheck} color="white" sx={{ width: '10px', height: '10px', strokeWidth: 3 }} />
+												)}
+												{isActive && (
+													<Box
+														w="7px" h="7px" borderRadius="full" bg="#7545BB"
+														sx={{ animation: `${dotBounce} 1.1s ease-in-out infinite` }}
+													/>
+												)}
+											</Flex>
+
+											<Text
+												flex={1}
+												fontSize="14px"
+												fontWeight={isActive ? '600' : isDone ? '500' : '400'}
+												color={isActive ? '#7545BB' : isDone ? '#2a2a3a' : '#c0c0cc'}
+												margin="0"
+												transition="all 0.35s"
+											>
+												{step}
+											</Text>
+
+											{/* Bouncing dots for active */}
+											{isActive && (
+												<HStack spacing="3px">
+													{[0, 1, 2].map(d => (
+														<Box
+															key={d}
+															w="4px" h="4px" borderRadius="full" bg="#7545BB"
+															sx={{ animation: `${dotBounce} 1.1s ease-in-out ${d * 0.18}s infinite` }}
+														/>
+													))}
+												</HStack>
+											)}
+										</HStack>
+									);
+								})}
+							</VStack>
+						</Box>
+
+						{/* Prompt echo */}
+						<Text
+							fontSize="12px" color="#c0c0cc" margin="0"
+							textAlign="center" maxW="340px" noOfLines={1} isTruncated
+						>
+							"{prompt}"
+						</Text>
+					</VStack>
+
+					{/* Right: skeleton preview */}
+					<Box
+						bg="white" borderRadius="16px" border="1px solid #ebebf0"
+						p="28px 32px" w="320px" flexShrink={0}
+						sx={{ animation: `${fadeUp} 0.5s ease 0.2s both` }}
+					>
+						{/* Skeleton title */}
+						<Box
+							h="16px" w="60%" mb="6px" borderRadius="4px"
+							sx={{
+								background: 'linear-gradient(90deg, #eeeeef 25%, #e4e4e8 50%, #eeeeef 75%)',
+								backgroundSize: '400px 100%',
+								animation: `${shimmer} 1.6s ease-in-out infinite`,
+							}}
+						/>
+						<Box
+							h="10px" w="35%" mb="24px" borderRadius="4px"
+							sx={{
+								background: 'linear-gradient(90deg, #f0f0f2 25%, #e8e8ec 50%, #f0f0f2 75%)',
+								backgroundSize: '400px 100%',
+								animation: `${shimmer} 1.6s ease-in-out infinite`,
+							}}
+						/>
+						<Divider borderColor="#f0f0f4" mb="22px" />
+						<VStack spacing="18px" align="stretch">
+							<SkeletonField delay="0.1s" />
+							<SkeletonField delay="0.25s" />
+							<SkeletonField delay="0.4s" />
+							<SkeletonField delay="0.55s" />
+						</VStack>
+					</Box>
+				</Flex>
+			</Box>
+		);
+	}
+
+	// ── generated state ───────────────────────────────────────────────────────
+	if (genState === 'generated') {
+		return (
+			<Box bg="#f3f3f5" display="flex" flexDirection="column" minHeight="100vh">
+				{topBar}
+
+				<Flex
+					flex={1} mt="0"
+					overflow="hidden"
+					height="calc(100vh - 56px)"
+					sx={{ animation: `${fadeUp} 0.4s ease` }}
+				>
+					{/* ── Left: conversation panel ── */}
+					<Flex
+						w="440px" flexShrink={0}
+						bg="white" borderRight="1px solid #ebebf0"
+						direction="column"
+					>
+						{/* Chat history */}
+						<Box flex={1} p="20px" overflowY="auto">
+
+							{/* User bubble */}
+							<Flex justify="flex-end" mb="18px">
+								<Box
+									bg="#7545BB" color="white"
+									borderRadius="14px 14px 4px 14px"
+									px="13px" py="10px"
+									fontSize="13px" lineHeight="1.55"
+									maxW="220px"
+								>
+									{prompt}
+								</Box>
+							</Flex>
+
+							{/* AI response */}
+							<HStack align="flex-start" spacing="10px">
+								<Flex
+									w="26px" h="26px" borderRadius="full"
+									bg="#f0ecfa" align="center" justify="center"
+									flexShrink={0} mt="2px"
+								>
+									<Icon as={BsStars} boxSize="12px" color="#7545BB" />
+								</Flex>
+
+								<Box
+									flex={1}
+									bg="#faf9ff"
+									border="1px solid #ede8f8"
+									borderRadius="4px 14px 14px 14px"
+									p="14px"
+									boxShadow="0 2px 10px rgba(117,69,187,0.06)"
+								>
+									<Text fontSize="13px" color="#444" lineHeight="1.65" margin="0 0 14px">
+										{__("Here's your form! It includes name, email, a 5-star rating, open feedback, and a source question. Ready to use it?", 'everest-forms')}
+									</Text>
+
+									<Button
+										bg="#7545BB" color="white"
+										size="sm" borderRadius="7px"
+										fontSize="13px" fontWeight="600"
+										_hover={{ bg: '#6a3daa' }}
+										width="100%" height="32px"
+										mb="10px"
+									>
+										{__('Use This Form', 'everest-forms')}
+									</Button>
+
+									<HStack justify="space-between" pt="2px">
+										<HStack spacing="10px">
+											<Icon as={FiThumbsUp}   boxSize="14px" color="#c8c8d4" cursor="pointer" _hover={{ color: '#7545BB'  }} />
+											<Icon as={FiThumbsDown} boxSize="14px" color="#c8c8d4" cursor="pointer" _hover={{ color: '#e05050'  }} />
+										</HStack>
+										<HStack
+											spacing="5px" cursor="pointer"
+											_hover={{ opacity: 0.65 }}
+											onClick={() => setGenState('generating')}
+										>
+											<Icon as={FiRefreshCw} boxSize="12px" color="#c8c8d4" />
+											<Text fontSize="12px" color="#c8c8d4" margin="0">
+												{__('Regenerate', 'everest-forms')}
+											</Text>
+										</HStack>
+									</HStack>
+								</Box>
+							</HStack>
+						</Box>
+
+						{/* Follow-up input */}
+						<Box borderTop="1px solid #f0f0f4" p="12px 14px">
+							<Box
+								border="1px solid #e8e8f0" borderRadius="10px"
+								bg="white" px="12px" pt="10px" pb="8px"
+								position="relative"
+								transition="border-color 0.2s"
+								_focusWithin={{ borderColor: '#7545BB' }}
+							>
+								<Textarea
+									placeholder={__('Refine or follow up…', 'everest-forms')}
+									border="none" fontSize="13px" color="#333"
+									_focus={{ boxShadow: 'none' }}
+									p="0" minHeight="60px" resize="none"
+									_placeholder={{ color: '#c8c8d4' }}
+								/>
+								<Flex justify="flex-end" mt="6px">
+									<Icon as={FiArrowUp} boxSize={4} color="#7545BB" cursor="pointer" />
+								</Flex>
+							</Box>
+						</Box>
+					</Flex>
+
+					{/* ── Right: form preview panel ── */}
+					<Box flex={1} bg="white" overflowY="auto" p="16px 28px">
+						<Box>
+
+							{/* Title row */}
+							<HStack mb="2px" align="center">
+								<Heading as="h2" fontSize="20px" fontWeight="700" color="#0f0f1a" margin="0" flex={1}>
+									Customer Feedback Survey
+								</Heading>
+								<Box
+									bg="#f0ecfa" color="#7545BB"
+									fontSize="10px" fontWeight="700"
+									px="8px" py="3px" borderRadius="5px"
+									textTransform="uppercase" letterSpacing="0.7px"
+								>
+									AI
+								</Box>
+							</HStack>
+							<Text fontSize="13px" color="#b0b0be" margin="0 0 10px">
+								{__('Preview — AI-generated form', 'everest-forms')}
+							</Text>
+							<Divider borderColor="#e8e8f0" mb="14px" />
+
+							{/* Field previews */}
+							<VStack spacing="10px" align="stretch" mb="14px">
+								{MOCK_FIELDS.map(f => (
+									<FieldPreview key={f.id} field={f} />
+								))}
+							</VStack>
+
+							{/* Submit button preview */}
+							<Button
+								bg="#7545BB" color="white"
+								borderRadius="6px" fontSize="14px"
+								fontWeight="600" px="28px" height="36px"
+								_hover={{ bg: '#6a3daa' }} mb="14px"
+							>
+								{__('Submit', 'everest-forms')}
+							</Button>
+
+							{/* CTA footer */}
+							<Flex
+								bg="white" borderRadius="12px"
+								border="1px solid #ebebf0"
+								p="12px 16px"
+								align="center" justify="space-between" gap="16px"
+							>
+								<Box>
+									<Text fontSize="14px" fontWeight="600" color="#1a1a1a" margin="0 0 3px">
+										{__('Happy with this form?', 'everest-forms')}
+									</Text>
+									<Text fontSize="13px" color="#a0a0b0" margin="0">
+										{__('Open it in the builder to customize fields and settings.', 'everest-forms')}
+									</Text>
+								</Box>
+								<Button
+									bg="#7545BB" color="white"
+									borderRadius="8px" fontSize="13px"
+									fontWeight="600" px="20px" height="36px"
+									flexShrink={0} _hover={{ bg: '#6a3daa' }}
+								>
+									{__('Open in Builder', 'everest-forms')}
+								</Button>
+							</Flex>
+						</Box>
+					</Box>
+				</Flex>
+			</Box>
+		);
+	}
+
+	// ── idle state ────────────────────────────────────────────────────────────
+	return (
+		<Box bg="#f3f3f5" minHeight="100vh">
+			{topBar}
+
+			<Box maxW="920px" mx="auto" px="24px" pt="16px" pb="20px">
 				{/* Hero */}
-				<VStack spacing="14px" mb="44px" textAlign="center">
+				<VStack spacing="10px" mb="20px" textAlign="center">
 					<Heading
-						as="h1"
-						fontSize="48px"
-						fontWeight="800"
-						color="#0f0f1a"
-						lineHeight="1.15"
-						margin="0"
-						letterSpacing="-0.5px"
+						as="h1" fontSize="38px" fontWeight="800"
+						color="#0f0f1a" lineHeight="1.15" margin="0" letterSpacing="-0.5px"
 					>
 						{__('What should we build today?', 'everest-forms')}
 					</Heading>
@@ -133,99 +603,46 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 				</VStack>
 
 				{/* Prompt box */}
-				<Box
-					bg="white"
-					borderRadius="16px"
-					border="1px solid #e2e2e2"
-					overflow="hidden"
-					mb="8px"
-				>
-					{/* Textarea area */}
+				<Box bg="white" borderRadius="16px" border="1px solid #e2e2e2" overflow="hidden" mb="8px">
 					<Box position="relative" p="20px 20px 12px">
-						<Icon
-							as={BsStars}
-							boxSize={4}
-							color="#c8c8d0"
-							position="absolute"
-							top="22px"
-							left="20px"
-						/>
+						<Icon as={BsStars} boxSize={4} color="#c8c8d0" position="absolute" top="22px" left="20px" />
 						<Textarea
 							value={prompt}
 							onChange={(e) => setPrompt(e.target.value.slice(0, MAX_CHARS))}
-							placeholder={__('A feedback form to learn how onboarding felt, with a 1–5 rating and one optional comment...', 'everest-forms')}
-							border="none"
-							resize="none"
-							fontSize="15px"
-							color="#1a1a1a"
-							pl="28px"
-							pr="4px"
-							pt="0"
-							pb="0"
-							minHeight="170px"
+							placeholder={__('A feedback form to learn how onboarding felt, with a 1–5 rating and one optional comment…', 'everest-forms')}
+							border="none" resize="none" fontSize="15px" color="#1a1a1a"
+							pl="28px" pr="4px" pt="0" pb="0" minHeight="220px"
 							_focus={{ boxShadow: 'none', border: 'none', outline: 'none' }}
 							_placeholder={{ color: '#c0c0cc' }}
 						/>
 					</Box>
 
-					{/* Bottom bar row 1: paperclip + mic + generate */}
-					<Flex
-						px="16px"
-						py="10px"
-						align="center"
-						justify="space-between"
-						borderTop="1px solid #f0f0f0"
-					>
-						<Icon
-							as={FiPaperclip}
-							boxSize={4}
-							color="#aaaaaa"
-							cursor="pointer"
-							_hover={{ color: '#777' }}
-						/>
+					{/* Action bar */}
+					<Flex px="16px" py="10px" align="center" justify="space-between" borderTop="1px solid #f0f0f0">
+						<Icon as={FiPaperclip} boxSize={4} color="#aaa" cursor="pointer" _hover={{ color: '#777' }} />
 						<HStack spacing="10px">
-							<Icon
-								as={FiMic}
-								boxSize={4}
-								color="#aaaaaa"
-								cursor="pointer"
-								_hover={{ color: '#777' }}
-							/>
+							<Icon as={FiMic} boxSize={4} color="#aaa" cursor="pointer" _hover={{ color: '#777' }} />
 							<Button
 								size="sm"
 								bg={hasPrompt ? '#1a1a1a' : '#e8e8ea'}
 								color={hasPrompt ? 'white' : '#aaaaaa'}
-								borderRadius="8px"
-								fontSize="13px"
-								fontWeight="600"
-								px="14px"
-								height="32px"
+								borderRadius="8px" fontSize="13px" fontWeight="600"
+								px="14px" height="32px"
 								cursor={hasPrompt ? 'pointer' : 'default'}
-								_hover={{ bg: hasPrompt ? '#333333' : '#e8e8ea' }}
+								_hover={{ bg: hasPrompt ? '#333' : '#e8e8ea' }}
 								rightIcon={<Icon as={FiArrowUp} boxSize={3} />}
+								onClick={handleGenerate}
 							>
 								{__('Generate', 'everest-forms')}
 							</Button>
 						</HStack>
 					</Flex>
 
-					{/* Bottom bar row 2: TYPE chips */}
-					<Flex
-						px="16px"
-						py="10px"
-						align="center"
-						borderTop="1px solid #f0f0f0"
-						gap="8px"
-						flexWrap="wrap"
-					>
+					{/* TYPE chips */}
+					<Flex px="16px" py="10px" align="center" borderTop="1px solid #f0f0f0" gap="8px" flexWrap="wrap">
 						<Text
-							fontSize="11px"
-							fontWeight="700"
-							color="#aaaaaa"
-							textTransform="uppercase"
-							letterSpacing="0.6px"
-							margin="0"
-							mr="2px"
+							fontSize="11px" fontWeight="700" color="#aaa"
+							textTransform="uppercase" letterSpacing="0.6px" margin="0" mr="2px"
 						>
 							{__('TYPE', 'everest-forms')}
 						</Text>
@@ -234,10 +651,7 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 							return (
 								<HStack
 									key={chip.label}
-									as="button"
-									spacing="5px"
-									px="10px"
-									py="5px"
+									as="button" spacing="5px" px="10px" py="5px"
 									borderRadius="6px"
 									border={isSelected ? '1px solid #7545BB' : '1px solid #e0e0e0'}
 									bg={isSelected ? '#f5f0ff' : 'white'}
@@ -246,17 +660,8 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 									transition="all 0.15s"
 									_hover={{ borderColor: '#7545BB' }}
 								>
-									<Icon
-										as={chip.icon}
-										boxSize={3}
-										color={isSelected ? '#7545BB' : '#666666'}
-									/>
-									<Text
-										fontSize="12px"
-										fontWeight="500"
-										color={isSelected ? '#7545BB' : '#555555'}
-										margin="0"
-									>
+									<Icon as={chip.icon} boxSize={3} color={isSelected ? '#7545BB' : '#666'} />
+									<Text fontSize="12px" fontWeight="500" color={isSelected ? '#7545BB' : '#555'} margin="0">
 										{__(chip.label, 'everest-forms')}
 									</Text>
 								</HStack>
@@ -266,22 +671,14 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 				</Box>
 
 				{/* Char counter */}
-				<Flex justify="flex-end" mb="48px">
-					<Text fontSize="12px" color="#b0b0b8" margin="0">
-						{prompt.length}/{MAX_CHARS}
-					</Text>
+				<Flex justify="flex-end" mb="16px">
+					<Text fontSize="12px" color="#b0b0b8" margin="0">{prompt.length}/{MAX_CHARS}</Text>
 				</Flex>
 
-				{/* Inspiration section */}
+				{/* Inspiration */}
 				<Box>
-					<Flex justify="space-between" align="center" mb="20px">
-						<Heading
-							as="h3"
-							fontSize="20px"
-							fontWeight="700"
-							color="#0f0f1a"
-							margin="0"
-						>
+					<Flex justify="space-between" align="center" mb="12px">
+						<Heading as="h3" fontSize="20px" fontWeight="700" color="#0f0f1a" margin="0">
 							{__('Need inspiration?', 'everest-forms')}
 						</Heading>
 						<Text fontSize="13px" color="#9999aa" margin="0">
@@ -293,37 +690,22 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 						{INSPIRATION_CARDS.map((card) => (
 							<Box
 								key={card.title}
-								bg="white"
-								borderRadius="12px"
-								border="1px solid #e8e8e8"
-								p="24px"
-								cursor="pointer"
+								bg="white" borderRadius="12px" border="1px solid #e8e8e8"
+								p="24px" cursor="pointer"
 								transition="border-color 0.2s ease"
 								_hover={{ borderColor: '#b89ee0' }}
 								onClick={() => setPrompt(card.prompt)}
 							>
 								<Box
-									bg="#ede8ff"
-									borderRadius="10px"
-									p="10px"
-									display="inline-flex"
-									alignItems="center"
-									justifyContent="center"
-									mb="16px"
+									bg="#ede8ff" borderRadius="10px" p="10px"
+									display="inline-flex" alignItems="center" justifyContent="center" mb="16px"
 								>
 									<Icon as={card.icon} boxSize={5} color="#7545BB" />
 								</Box>
-								<Heading
-									as="h4"
-									fontSize="15px"
-									fontWeight="700"
-									color="#0f0f1a"
-									margin="0 0 8px"
-									lineHeight="1.4"
-								>
+								<Heading as="h4" fontSize="15px" fontWeight="700" color="#0f0f1a" margin="0 0 8px" lineHeight="1.4">
 									{card.title}
 								</Heading>
-								<Text fontSize="13px" color="#777777" margin="0" lineHeight="1.6">
+								<Text fontSize="13px" color="#777" margin="0" lineHeight="1.6">
 									{card.description}
 								</Text>
 							</Box>
