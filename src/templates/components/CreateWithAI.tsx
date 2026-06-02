@@ -233,8 +233,7 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 	const [prompt, setPrompt] = useState('');
 	const [genState, setGenState] = useState<'idle' | 'generating' | 'generated'>('idle');
 	const [genStep, setGenStep] = useState(-1);
-	const [showPreviewHint, setShowPreviewHint] = useState(false);
-	const [hintPos, setHintPos] = useState({ x: 0, y: 0 });
+	const [hint, setHint] = useState({ show: false, x: 0, y: 0 });
 	const [isRegenerating, setIsRegenerating] = useState(false);
 	const previewHintTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 	const regenTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -246,10 +245,10 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 	};
 
 	const handleFieldClick = (e: React.MouseEvent) => {
-		setHintPos({ x: e.clientX, y: e.clientY });
-		setShowPreviewHint(true);
+		const { clientX, clientY } = e;
+		setHint({ show: true, x: clientX, y: clientY });
 		if (previewHintTimer.current) clearTimeout(previewHintTimer.current);
-		previewHintTimer.current = setTimeout(() => setShowPreviewHint(false), 2600);
+		previewHintTimer.current = setTimeout(() => setHint(h => ({ ...h, show: false })), 2600);
 	};
 	const hasPrompt = prompt.trim().length > 0;
 
@@ -417,11 +416,11 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 		return (
 			<>
 			{/* Cursor-following preview tooltip — fixed, outside all scroll containers */}
-			{showPreviewHint && (
+			{hint.show && (
 				<Box
 					position="fixed"
-					top={`${hintPos.y + 14}px`}
-					left={`${hintPos.x}px`}
+					top={`${hint.y + 14}px`}
+					left={`${hint.x}px`}
 					transform="translateX(-50%)"
 					bg="rgba(18,18,18,0.93)"
 					color="white"
