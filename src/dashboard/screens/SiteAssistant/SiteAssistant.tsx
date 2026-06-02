@@ -19,6 +19,7 @@ import {
 	Image,
 	Input,
 	Link,
+	Spinner,
 	Stack,
 	Text,
 	useToast,
@@ -106,6 +107,7 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 	const [open, setOpen] = useState<Record<string, boolean>>({});
 	const [testEmail, setTestEmail] = useState<string>(adminEmail || '');
 	const [isInstallingSmtp, setIsInstallingSmtp] = useState(false);
+	const [smtpInstallAction, setSmtpInstallAction] = useState<'install' | 'activate'>('install');
 	const [smtpInstallError, setSmtpInstallError] = useState<string | null>(null);
 
 	const toggleOpen = useCallback((id: string) => {
@@ -316,8 +318,10 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 					: 'idle';
 
 	const handleInstallSmtpPlugin = async () => {
+		setSmtpInstallAction(resolvedSmtpInstalled ? 'activate' : 'install');
 		setIsInstallingSmtp(true);
 		setSmtpInstallError(null);
+		const loadingStart = Date.now();
 		try {
 			const normalizedAdminUrl = (adminURL || '').endsWith('/')
 				? (adminURL || '').slice(0, -1)
@@ -338,7 +342,9 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 					const merged: SiteAssistantData = {
 						...prev,
 						is_smart_smtp_installed: true,
-						is_smart_smtp_active: true,
+						// Keep current active state until redirect completes, so the card
+						// remains visible while "Installing/Activating..." is in progress.
+						is_smart_smtp_active: prev?.is_smart_smtp_active ?? false,
 						skipped_steps: prev?.skipped_steps ?? [],
 						test_email_sent: prev?.test_email_sent ?? false,
 						has_forms: prev?.has_forms ?? false,
@@ -351,6 +357,13 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 				});
 				await queryClient.invalidateQueries({ queryKey: ['siteAssistant'] });
 				if (result.data?.redirection_url) {
+					const minLoadingMs = 500;
+					const elapsedMs = Date.now() - loadingStart;
+					if (elapsedMs < minLoadingMs) {
+						await new Promise((resolve) =>
+							window.setTimeout(resolve, minLoadingMs - elapsedMs),
+						);
+					}
 					window.location.href = result.data.redirection_url;
 				}
 			} else {
@@ -833,13 +846,27 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 											</svg>
 										</Box>
 										<Box>
-											<HStack spacing={1} mb={1}>
+											
 												<Text fontSize="sm" fontWeight="600" color="grey.500">
 													{emailStatus === 'failed'
-														? __('Fix this with SmartSMTP', 'everest-forms')
-														: __('Want more reliable delivery?', 'everest-forms')}
+														? __('Having trouble sending emails?', 'everest-forms')
+														: __('SmartSMTP helps your website send emails more reliably.', 'everest-forms')}
 												</Text>
-												<Link
+												
+												<HStack spacing={2} mb={1}>
+											<Text fontSize="xs" color="grey.350" lineHeight="1.5">
+												{emailStatus === 'failed'
+													? __(
+														'SmartSMTP helps your website send emails more reliably.',
+														'everest-forms',
+													)
+													: __(
+														"SmartSMTP adds proper email authentication so your notifications don't end up in spam.",
+														'everest-forms',
+													)}
+				
+											</Text>
+											<Link
 													href="https://wordpress.org/plugins/smart-smtp/"
 													isExternal
 													color="primary.500"
@@ -855,25 +882,16 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 															minWidth: '14px',
 															height: '14px',
 															display: 'inline-block',
-															flex: '0 0 14px',
+															flex: '0 0 14px', 
 															marginRight: '6px',
+															marginBottom: '-2px',  
 														}}
 													>
 														<path d="M1.167 11.083V4.667a1.75 1.75 0 0 1 1.75-1.75h3.5a.583.583 0 0 1 0 1.166h-3.5a.585.585 0 0 0-.584.584v6.416a.585.585 0 0 0 .584.584h6.416a.585.585 0 0 0 .584-.584v-3.5a.583.583 0 0 1 1.166 0v3.5a1.75 1.75 0 0 1-1.75 1.75H2.917a1.75 1.75 0 0 1-1.75-1.75M12.833 5.25a.583.583 0 1 1-1.166 0V3.157L6.247 8.58a.584.584 0 0 1-.826-.825l5.422-5.421H8.75a.583.583 0 1 1 0-1.166h3.5c.322 0 .583.26.583.583z" />
 													</svg>
-												</Link>
+												</Link> 
 											</HStack>
-											<Text fontSize="xs" color="grey.350" lineHeight="1.5">
-												{emailStatus === 'failed'
-													? __(
-														'SmartSMTP sends emails through a proper mail service instead of your hosting server.',
-														'everest-forms',
-													)
-													: __(
-														"SmartSMTP adds proper email authentication so your notifications don't end up in spam.",
-														'everest-forms',
-													)}
-											</Text>
+											
 											{smtpInstallError && (
 												<Text fontSize="xs" color="red.500" mt={1}>
 													{smtpInstallError}
@@ -886,13 +904,19 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 										color="white"
 										size="sm"
 										onClick={handleInstallSmtpPlugin}
-										isLoading={isInstallingSmtp}
-										loadingText={__('Installing...', 'everest-forms')}
+										isDisabled={isInstallingSmtp}
+										leftIcon={
+											isInstallingSmtp ? <Spinner size="xs" /> : undefined
+										}
 										flexShrink={0}
 									>
-										{resolvedSmtpInstalled
-											? __('Activate SmartSMTP', 'everest-forms')
-											: __('Install & Activate SmartSMTP', 'everest-forms')}
+										{isInstallingSmtp
+											? (smtpInstallAction === 'activate'
+												? __('Activating...', 'everest-forms')
+												: __('Installing...', 'everest-forms'))
+											: (resolvedSmtpInstalled
+												? __('Activate SmartSMTP', 'everest-forms')
+												: __('Install & Activate SmartSMTP', 'everest-forms'))}
 									</Button>
 								</Flex>
 							</Box>
