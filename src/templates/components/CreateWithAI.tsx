@@ -5,13 +5,17 @@ import {
 	Heading,
 	Icon,
 	SimpleGrid,
+	Spinner,
 	Text,
 	Textarea,
 	VStack,
 	keyframes,
+	useToast,
 } from '@chakra-ui/react';
+import apiFetch from '@wordpress/api-fetch';
 import { __ } from '@wordpress/i18n';
 import React, { useEffect, useState } from 'react';
+import { templatesScriptData } from '../utils/global';
 import { BsStars } from 'react-icons/bs';
 import {
 	FiArrowLeft,
@@ -90,13 +94,106 @@ const GEN_STEPS = [
 	__('Finalizing your form', 'everest-forms'),
 ];
 
-const MOCK_FIELDS = [
-	{ id: 1, type: 'name',     label: 'Full Name',                  required: true  },
-	{ id: 2, type: 'email',    label: 'Email Address',              required: true  },
-	{ id: 3, type: 'rating',   label: 'Overall Rating',             required: false },
-	{ id: 4, type: 'textarea', label: 'Your Feedback',              required: false },
-	{ id: 5, type: 'select',   label: 'How did you hear about us?', required: false },
-];
+// ── AI field type used by the mock response and create-from-ai endpoint ──────
+interface AIField {
+	type: string;
+	label: string;
+	required: boolean;
+	placeholder?: string;
+}
+
+interface AIGenerateResponse {
+	title: string;
+	fields: AIField[];
+}
+
+// Field presets keyed by keyword → used by the mock to return realistic fields.
+const FIELD_PRESETS: Record<string, AIField[]> = {
+	feedback: [
+		{ type: 'name',     label: 'Full Name',                  required: true  },
+		{ type: 'email',    label: 'Email Address',              required: true  },
+		{ type: 'rating',   label: 'Overall Rating',             required: false },
+		{ type: 'textarea', label: 'Your Feedback',              required: false },
+		{ type: 'select',   label: 'How did you hear about us?', required: false },
+	],
+	survey: [
+		{ type: 'name',     label: 'Name',              required: true  },
+		{ type: 'email',    label: 'Email',             required: true  },
+		{ type: 'radio',    label: 'Satisfaction Level', required: true  },
+		{ type: 'rating',   label: 'Rating',             required: false },
+		{ type: 'textarea', label: 'Comments',           required: false },
+	],
+	appointment: [
+		{ type: 'name',     label: 'Full Name',     required: true  },
+		{ type: 'email',    label: 'Email',         required: true  },
+		{ type: 'phone',    label: 'Phone Number',  required: true  },
+		{ type: 'date',     label: 'Preferred Date', required: true  },
+		{ type: 'select',   label: 'Service Type',  required: true  },
+		{ type: 'textarea', label: 'Notes',          required: false },
+	],
+	booking: [
+		{ type: 'name',     label: 'Full Name',     required: true  },
+		{ type: 'email',    label: 'Email',         required: true  },
+		{ type: 'phone',    label: 'Phone Number',  required: true  },
+		{ type: 'date',     label: 'Check-in Date', required: true  },
+		{ type: 'date',     label: 'Check-out Date', required: true  },
+		{ type: 'number',   label: 'Number of Guests', required: true },
+	],
+	registration: [
+		{ type: 'name',     label: 'Full Name',     required: true  },
+		{ type: 'email',    label: 'Email Address', required: true  },
+		{ type: 'phone',    label: 'Phone Number',  required: false },
+		{ type: 'select',   label: 'Course / Event', required: true  },
+		{ type: 'textarea', label: 'Special Requirements', required: false },
+	],
+	contact: [
+		{ type: 'name',     label: 'Full Name',    required: true  },
+		{ type: 'email',    label: 'Email',        required: true  },
+		{ type: 'phone',    label: 'Phone',        required: false },
+		{ type: 'text',     label: 'Subject',      required: true  },
+		{ type: 'textarea', label: 'Message',      required: true  },
+	],
+	job: [
+		{ type: 'name',     label: 'Full Name',          required: true  },
+		{ type: 'email',    label: 'Email Address',      required: true  },
+		{ type: 'phone',    label: 'Phone Number',       required: true  },
+		{ type: 'text',     label: 'Position Applied For', required: true },
+		{ type: 'textarea', label: 'Cover Letter',       required: false },
+	],
+	order: [
+		{ type: 'name',     label: 'Full Name',       required: true  },
+		{ type: 'email',    label: 'Email Address',   required: true  },
+		{ type: 'phone',    label: 'Phone Number',    required: true  },
+		{ type: 'select',   label: 'Product',         required: true  },
+		{ type: 'number',   label: 'Quantity',        required: true  },
+		{ type: 'address',  label: 'Shipping Address', required: true  },
+	],
+	default: [
+		{ type: 'name',     label: 'Full Name',    required: true  },
+		{ type: 'email',    label: 'Email Address', required: true  },
+		{ type: 'textarea', label: 'Message',       required: true  },
+	],
+};
+
+/**
+ * Mock call to the Python AI backend.
+ * Replace the URL/logic here when the real endpoint is ready.
+ * For now resolves after a realistic delay with keyword-matched fields.
+ */
+const mockAIGenerateForm = (userPrompt: string): Promise<AIGenerateResponse> => {
+	const lower = userPrompt.toLowerCase();
+	const match = Object.keys(FIELD_PRESETS).find(key => lower.includes(key)) ?? 'default';
+	const fields = FIELD_PRESETS[match];
+
+	// Derive a clean title from the prompt (first 60 chars, capitalized)
+	const raw = userPrompt.trim().replace(/[^a-zA-Z0-9 ]/g, '').slice(0, 60);
+	const title = raw.charAt(0).toUpperCase() + raw.slice(1) || 'AI Generated Form';
+
+	// Simulate network latency (~3.5 s, matching the generation animation)
+	return new Promise(resolve =>
+		setTimeout(() => resolve({ title, fields }), 3500)
+	);
+};
 
 const MAX_CHARS = 500;
 
@@ -222,14 +319,54 @@ interface CreateWithAIProps {
 	onBack: () => void;
 }
 
+const { restURL, security } = templatesScriptData;
+
 const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
+	const toast = useToast();
 	const [prompt, setPrompt] = useState('');
 	const [genState, setGenState] = useState<'idle' | 'generating' | 'generated'>('idle');
 	const [genStep, setGenStep] = useState(-1);
 	const [hint, setHint] = useState({ show: false, x: 0, y: 0 });
 	const [isRegenerating, setIsRegenerating] = useState(false);
+	const [isCreatingForm, setIsCreatingForm] = useState(false);
+	const [generatedFields, setGeneratedFields] = useState<AIField[]>([]);
+	const [generatedTitle, setGeneratedTitle] = useState('');
 	const previewHintTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 	const regenTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+	const aiResponseRef = React.useRef<AIGenerateResponse | null>(null);
+
+	// Send to EVF builder using the fields returned by the AI mock/API.
+	const handleUseThisForm = async () => {
+		if (isCreatingForm) return;
+		setIsCreatingForm(true);
+		const fields = generatedFields.length > 0 ? generatedFields : FIELD_PRESETS['default'];
+		const title  = generatedTitle || prompt || __('AI Generated Form', 'everest-forms');
+		try {
+			const response = (await apiFetch({
+				path: `${restURL}everest-forms/v1/templates/create-from-ai`,
+				method: 'POST',
+				data: { title, fields },
+				headers: { 'X-WP-Nonce': security },
+			})) as { success: boolean; data?: { id: number; redirect: string } };
+
+			if (response.success && response.data?.redirect) {
+				window.location.href = response.data.redirect;
+			} else {
+				throw new Error('Unexpected response');
+			}
+		} catch {
+			setIsCreatingForm(false);
+			toast({
+				title: __('Error', 'everest-forms'),
+				description: __('Could not create the form. Please try again.', 'everest-forms'),
+				status: 'error',
+				position: 'bottom-right',
+				duration: 5000,
+				isClosable: true,
+				variant: 'subtle',
+			});
+		}
+	};
 
 	const handleRegenerate = () => {
 		setIsRegenerating(true);
@@ -249,13 +386,34 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 	useEffect(() => {
 		if (genState !== 'generating') return;
 		setGenStep(-1);
+		aiResponseRef.current = null;
+
+		// Fire the mock AI call concurrently with the progress animation.
+		// Replace mockAIGenerateForm() with the real Python API URL when ready.
+		mockAIGenerateForm(prompt).then(data => {
+			aiResponseRef.current = data;
+		}).catch(() => {
+			// Fallback: use default fields if the API fails.
+			aiResponseRef.current = { title: prompt, fields: FIELD_PRESETS['default'] };
+		});
+
 		let step = -1;
 		const id = setInterval(() => {
 			step += 1;
 			setGenStep(step);
 			if (step >= GEN_STEPS.length - 1) {
 				clearInterval(id);
-				setTimeout(() => setGenState('generated'), 700);
+				// Wait for the AI response before transitioning, then store fields.
+				const finish = () => {
+					if (aiResponseRef.current) {
+						setGeneratedFields(aiResponseRef.current.fields);
+						setGeneratedTitle(aiResponseRef.current.title);
+						setGenState('generated');
+					} else {
+						setTimeout(finish, 200);
+					}
+				};
+				setTimeout(finish, 700);
 			}
 		}, 950);
 		return () => clearInterval(id);
@@ -459,19 +617,26 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 										display="flex"
 										alignItems="center"
 										justifyContent="center"
+										gap="8px"
 										h="36px"
 										borderRadius="8px"
-										bg="#7545BB"
+										bg={isCreatingForm ? '#9660db' : '#7545BB'}
 										color="white"
 										fontSize="13px"
 										fontWeight="600"
 										border="none"
-										cursor="pointer"
+										cursor={isCreatingForm ? 'not-allowed' : 'pointer'}
 										mb="12px"
-										_hover={{ bg: '#6a3daa' }}
-										transition="background 0.2s"
+										opacity={isCreatingForm ? 0.85 : 1}
+										onClick={handleUseThisForm}
+										_hover={{ bg: isCreatingForm ? '#9660db' : '#6a3daa' }}
+										transition="background 0.2s, opacity 0.2s"
 									>
-										{__('Use This Form', 'everest-forms')}
+										{isCreatingForm && <Spinner size="xs" color="white" thickness="2px" speed="0.65s" />}
+										{isCreatingForm
+											? __('Creating…', 'everest-forms')
+											: __('Use This Form', 'everest-forms')
+										}
 									</Box>
 
 									{/* Feedback row */}
@@ -588,12 +753,12 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 								)}
 							</Flex>
 
-							{/* Form fields */}
+							{/* Form fields — uses AI-returned fields, falls back to default preset */}
 							<Box p="24px" opacity={isRegenerating ? 0.45 : 1} transition="opacity 0.3s">
 								<VStack spacing="16px" align="stretch">
-									{MOCK_FIELDS.map(f => (
-										<Box key={f.id} cursor="default" onClick={(e) => handleFieldClick(e)}>
-											<FieldPreview field={f} />
+									{(generatedFields.length > 0 ? generatedFields : FIELD_PRESETS['default']).map((f, idx) => (
+										<Box key={idx} cursor="default" onClick={(e) => handleFieldClick(e)}>
+											<FieldPreview field={{ ...f, id: idx + 1 }} />
 										</Box>
 									))}
 								</VStack>

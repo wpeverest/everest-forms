@@ -57,6 +57,16 @@ class Everest_Forms_Template_Section_Data {
 
 		register_rest_route(
 			$this->namespace,
+			'/' . $this->rest_base . '/create-from-ai',
+			array(
+				'methods'             => 'POST',
+				'callback'            => array( $this, 'create_from_ai' ),
+				'permission_callback' => array( $this, 'check_admin_permissions' ),
+			)
+		);
+
+		register_rest_route(
+			$this->namespace,
 			'/' . $this->rest_base . '/favorite',
 			array(
 				'methods'             => 'POST',
@@ -277,6 +287,159 @@ class Everest_Forms_Template_Section_Data {
 	}
 
 
+
+	/**
+	 * Create a form from AI-generated field definitions.
+	 *
+	 * Accepts a simplified field list from the AI creation UI, builds a blank
+	 * EVF form, injects the field data, and returns the builder redirect URL.
+	 *
+	 * @param WP_REST_Request $request Full data about the request.
+	 * @return WP_REST_Response|WP_Error
+	 */
+	public function create_from_ai( WP_REST_Request $request ) {
+		$title  = sanitize_text_field( wp_unslash( $request->get_param( 'title' ) ) );
+		$fields = $request->get_param( 'fields' );
+
+		if ( empty( $title ) ) {
+			return new WP_Error( 'invalid_title', __( 'Form title is required.', 'everest-forms' ), array( 'status' => 400 ) );
+		}
+
+		// Prevent KSES / content filters from corrupting the JSON — same pattern as EVF_Form_Handler::create().
+		$has_kses = false !== has_filter( 'content_save_pre', 'wp_filter_post_kses' );
+		if ( $has_kses ) {
+			kses_remove_filters();
+		}
+		$has_link_rel = false !== has_filter( 'content_save_pre', 'wp_targeted_link_rel' );
+		if ( $has_link_rel ) {
+			wp_remove_targeted_link_rel_filters();
+		}
+
+		// Supported AI type → EVF field type map.
+		$type_map = array(
+			'name'     => 'name',
+			'email'    => 'email',
+			'text'     => 'text',
+			'textarea' => 'textarea',
+			'select'   => 'select',
+			'radio'    => 'radio',
+			'checkbox' => 'checkbox',
+			'number'   => 'number',
+			'phone'    => 'phone',
+			'url'      => 'url',
+			'date'     => 'date-time',
+			'rating'   => 'rating',
+			'address'  => 'address',
+			'hidden'   => 'hidden',
+		);
+
+		// Build form_fields from the AI field list.
+		$form_fields = array();
+		$field_index = 1;
+
+		if ( ! empty( $fields ) && is_array( $fields ) ) {
+			foreach ( $fields as $field_def ) {
+				$ai_type  = isset( $field_def['type'] ) ? sanitize_key( $field_def['type'] ) : 'text';
+				$evf_type = isset( $type_map[ $ai_type ] ) ? $type_map[ $ai_type ] : 'text';
+				$label    = isset( $field_def['label'] ) ? sanitize_text_field( $field_def['label'] ) : '';
+
+				if ( empty( $label ) ) {
+					continue;
+				}
+
+				// Field ID: 10-char hash + index, matching EVF's evf_get_random_string() pattern.
+				$field_id = substr( md5( uniqid( $label, true ) ), 0, 10 ) . '-' . $field_index;
+				$meta_key = sanitize_key( str_replace( ' ', '_', strtolower( $label ) ) ) . '_' . wp_rand( 1000, 9999 );
+
+				$form_fields[ $field_id ] = array(
+					'id'               => $field_id,
+					'type'             => $evf_type,
+					'label'            => $label,
+					'meta-key'         => $meta_key,
+					'description'      => '',
+					'required'         => ! empty( $field_def['required'] ) ? '1' : '',
+					'placeholder'      => isset( $field_def['placeholder'] ) ? sanitize_text_field( $field_def['placeholder'] ) : '',
+					'css'              => '',
+					'conditional_option' => 'show',
+					'conditionals'     => array(
+						'1' => array( '1' => array( 'field' => '---Select Field---', 'operator' => 'is', 'value' => '' ) ),
+					),
+				);
+
+				$field_index++;
+			}
+		}
+
+		// Build structure: one field per row, single grid column — matches the builder canvas layout.
+		$structure   = array();
+		$row_counter = 1;
+		foreach ( array_keys( $form_fields ) as $fid ) {
+			$structure[ 'row_' . $row_counter ] = array( 'grid_1' => array( $fid ) );
+			$row_counter++;
+		}
+
+		// Build the full form content structure.
+		$form_content = array(
+			'id'                      => 0, // will be set after insert
+			'form_enabled'            => '1',
+			'form_field_id'           => $field_index,
+			'form_fields'             => $form_fields,
+			'structure'               => $structure,
+			'settings'                => array(
+				'form_title'                       => $title,
+				'form_description'                 => '',
+				'form_disable_message'             => __( 'This form is disabled.', 'everest-forms' ),
+				'successful_form_submission_message' => __( 'Thanks for contacting us! We will be in touch with you shortly.', 'everest-forms' ),
+				'submission_type'                  => 'message',
+				'hide_title'                       => '0',
+			),
+		);
+
+		// Insert the post.
+		$form_id = wp_insert_post( array(
+			'post_title'   => esc_html( $title ),
+			'post_status'  => 'publish',
+			'post_type'    => 'everest_form',
+			'post_content' => '{}',
+		) );
+
+		if ( ! $form_id || is_wp_error( $form_id ) ) {
+			if ( $has_kses )    kses_init_filters();
+			if ( $has_link_rel ) wp_init_targeted_link_rel_filters();
+			return new WP_Error( 'form_creation_failed', __( 'Could not create form.', 'everest-forms' ), array( 'status' => 500 ) );
+		}
+
+		$form_content['id'] = $form_id;
+
+		wp_update_post( array(
+			'ID'           => $form_id,
+			'post_title'   => esc_html( $title ),
+			'post_content' => evf_encode( $form_content ),
+		) );
+
+		// Restore filters.
+		if ( $has_kses )    kses_init_filters();
+		if ( $has_link_rel ) wp_init_targeted_link_rel_filters();
+
+		do_action( 'everest_forms_create_form', $form_id, $form_content, array(), false );
+
+		return new WP_REST_Response(
+			array(
+				'success' => true,
+				'data'    => array(
+					'id'       => $form_id,
+					'redirect' => add_query_arg(
+						array(
+							'tab'     => 'fields',
+							'form_id' => $form_id,
+						),
+						admin_url( 'admin.php?page=evf-builder' )
+					),
+				),
+			),
+			200
+		);
+	}
 
 	/**
 	 * Check if a given request has access.
