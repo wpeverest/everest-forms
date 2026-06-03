@@ -4,22 +4,13 @@ import {
   ChakraProvider,
   Box,
   HStack,
-  Text,
   Icon,
+  Heading,
   Tooltip,
 } from "@chakra-ui/react";
-import { FiRefreshCw } from "react-icons/fi";
+import { FiRefreshCw, FiArrowLeft } from "react-icons/fi";
 import Main from "./components/Main";
 import CreateWithAI from "./components/CreateWithAI";
-
-const EVFIcon = (props) => (
-  <Icon viewBox="0 0 24 24" {...props}>
-    <path
-      fill="#7e3bd0"
-      d="M21.23,10H17.79L16.62,8h3.46ZM17.77,4l1.15,2H15.48L14.31,4Zm-15,16L12,4l5.77,10H10.85L12,12h2.31L12,8,6.23,18H20.08l1.16,2Z"
-    />
-  </Icon>
-);
 
 const WP_ELEMENTS = [
   '#wpadminbar',
@@ -33,7 +24,7 @@ const enterFullscreen = () => {
     const el = document.querySelector<HTMLElement>(sel);
     if (el) el.style.display = 'none';
   });
-  
+
   const wpContent = document.querySelector<HTMLElement>('#wpcontent');
   if (wpContent) {
     wpContent.dataset.origMargin = wpContent.style.marginLeft;
@@ -43,7 +34,7 @@ const enterFullscreen = () => {
   document.body.dataset.origPaddingTop = document.body.style.paddingTop;
   document.body.style.paddingTop = '0';
   document.body.style.marginTop = '0';
-  
+
   document.documentElement.dataset.origPaddingTop = document.documentElement.style.paddingTop;
   document.documentElement.style.paddingTop = '0';
 };
@@ -69,14 +60,13 @@ const App = () => {
     return params.get('view') === 'ai' ? 'ai' : 'templates';
   });
 
-  
   useEffect(() => {
     if (currentView === 'ai') {
       enterFullscreen();
     } else {
       exitFullscreen();
     }
-    
+
     return () => { if (currentView === 'ai') exitFullscreen(); };
   }, [currentView]);
 
@@ -109,6 +99,10 @@ const App = () => {
     window.location.href = url.toString();
   };
 
+  const handleBack = () => {
+    window.history.back();
+  };
+
   return (
     <ChakraProvider>
       {currentView === 'ai' ? (
@@ -118,33 +112,43 @@ const App = () => {
       ) : (
         <Box
           bg="white"
-          margin="24px"
-          border="1px solid #e1e1e1"
-          borderRadius="13px"
+          margin="20px"
+          border="1px solid #e2e8f0"
+          borderRadius="16px"
           overflow="hidden"
         >
+          {/* Header */}
           <HStack
-            spacing={{ base: 4, md: 6 }}
-            align="center"
-            mb={0}
-            borderBottom="1px solid #e1e1e1"
-            p="0px 24px"
-            direction={{ base: "column", md: "row" }}
+            as="header"
+            h="56px"
+            px="6"
+            borderBottom="1px solid #e2e8f0"
             justify="space-between"
+            align="center"
+            bg="white"
           >
-            <HStack spacing={4} align="center">
-              <EVFIcon boxSize="12" />
-              <Text
-                borderLeft="1px solid #e1e1e1"
-                p="27px 0 27px 24px"
-                fontSize="18px"
-                fontWeight="semibold"
-                lineHeight="26px"
+            <HStack spacing="3" align="center">
+              <Box
+                as="button"
+                w="32px"
+                h="32px"
+                display="inline-flex"
+                alignItems="center"
+                justifyContent="center"
+                borderRadius="8px"
+                border="1px solid #e2e8f0"
                 color="#383838"
-                margin="0px"
+                bg="transparent"
+                cursor="pointer"
+                onClick={handleBack}
+                _hover={{ bg: "#f8fafc" }}
+                transition="background 0.2s"
               >
+                <Icon as={FiArrowLeft} boxSize="4" />
+              </Box>
+              <Heading as="h1" fontSize="16px" fontWeight="500" color="#0e0e0e" m="0">
                 {__("Add New Form", "everest-forms")}
-              </Text>
+              </Heading>
             </HStack>
             <Tooltip label={__("Refresh Templates", "everest-forms")} placement="left" hasArrow>
               <Icon
@@ -159,7 +163,7 @@ const App = () => {
             </Tooltip>
           </HStack>
 
-          <Box bg="white">
+          <Box>
             <Main onCreateWithAI={navigateToAI} />
           </Box>
         </Box>

@@ -1,8 +1,24 @@
-import { Box, Divider, Flex, Heading, Tab, TabList, Tabs, Text, keyframes, useBreakpointValue, useToast } from '@chakra-ui/react';
+import {
+	Box,
+	Flex,
+	Heading,
+	Icon,
+	Input,
+	InputGroup,
+	InputLeftElement,
+	keyframes,
+	Tab,
+	TabList,
+	Tabs,
+	Text,
+	useToast,
+} from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import apiFetch from '@wordpress/api-fetch';
 import { __ } from '@wordpress/i18n';
+import debounce from 'lodash.debounce';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { IoSearchOutline } from 'react-icons/io5';
 import { templatesScriptData } from '../utils/global';
 import Sidebar from './Sidebar';
 import TemplateList from './TemplateList';
@@ -52,78 +68,71 @@ const SkelBox: React.FC<{ w?: string; h?: string; mb?: string; br?: string }> = 
 );
 
 const TemplateCardSkeleton = () => (
-	<Box bg="white" borderRadius="13px" border="1px solid #e1e1e1" overflow="hidden">
-		<Box bg="#f5f5f5" h="250px" borderRadius="6px 6px 0 0" borderBottom="1px solid #e1e1e1" sx={skimmerStyle} />
-		<Box p="16px">
-			<SkelBox w="65%" h="16px" mb="10px" />
-			<SkelBox w="90%" h="13px" mb="5px" />
-			<SkelBox w="75%" h="13px" />
+	<Box bg="white" borderRadius="12px" border="1px solid #e2e8f0" overflow="hidden">
+		<Box h="180px" borderRadius="6px 6px 0 0" borderBottom="1px solid #e2e8f0" sx={skimmerStyle} />
+		<Box p="20px">
+			<SkelBox w="65%" h="14px" mb="8px" />
+			<SkelBox w="90%" h="11px" mb="4px" />
+			<SkelBox w="75%" h="11px" />
 		</Box>
 	</Box>
 );
 
 const TemplateSkeleton = () => (
-	<Box>
-		{/* CTA cards — exact padding from Main */}
-		<Box p="24px 30px 0px 30px">
-			<Flex gap="20px" align="stretch">
-				{/* AI card */}
-				<Box flex="2" bg="#f7f4fc" borderRadius="16px" p="20px 24px" border="1px solid #e5daf5">
-					<Flex justify="space-between" align="center" mb="12px">
-						<Box bg="#ede5f8" borderRadius="12px" w="44px" h="44px" sx={skimmerStyle} />
-						<Box borderRadius="5px" w="48px" h="24px" sx={skimmerStyle} />
-					</Flex>
-					<SkelBox w="55%" h="16px" mb="8px" />
-					<SkelBox w="90%" h="13px" mb="5px" />
-					<SkelBox w="72%" h="13px" mb="12px" />
-					<Flex justify="flex-end"><SkelBox w="88px" h="13px" /></Flex>
+	<Box p="32px">
+		{/* CTA cards skeleton */}
+		<Flex gap="32px" mb="32px">
+			<Box flex="1" bg="white" borderRadius="16px" p="32px" border="1px solid #e2e8f0">
+				<Flex justify="space-between" align="center" mb="16px">
+					<Box borderRadius="12px" w="48px" h="48px" sx={skimmerStyle} />
+					<Box borderRadius="6px" w="48px" h="22px" sx={skimmerStyle} />
+				</Flex>
+				<SkelBox w="55%" h="16px" mb="8px" />
+				<SkelBox w="90%" h="12px" mb="4px" />
+				<SkelBox w="72%" h="12px" mb="24px" />
+				<SkelBox w="88px" h="12px" />
+			</Box>
+			<Box flex="1" bg="white" borderRadius="16px" p="32px" border="1px solid #e2e8f0">
+				<Box borderRadius="12px" w="48px" h="48px" mb="20px" sx={skimmerStyle} />
+				<SkelBox w="60%" h="16px" mb="8px" />
+				<SkelBox w="90%" h="12px" mb="4px" />
+				<SkelBox w="78%" h="12px" mb="24px" />
+				<SkelBox w="68px" h="12px" />
+			</Box>
+		</Flex>
+
+		{/* Template section skeleton */}
+		<Box bg="white" borderRadius="16px" border="1px solid #e2e8f0" overflow="hidden">
+			{/* Top bar skeleton */}
+			<Flex borderBottom="1px solid #e2e8f0">
+				<Box w="256px" p="20px" borderRight="1px solid #e2e8f0">
+					<Box h="36px" borderRadius="8px" sx={skimmerStyle} />
 				</Box>
-				{/* Scratch card */}
-				<Box flex="1" bg="white" borderRadius="16px" p="20px 24px" border="1px solid #e8e8e8">
-					<Box bg="#f0ecfa" borderRadius="12px" w="44px" h="44px" mb="12px" sx={skimmerStyle} />
-					<SkelBox w="60%" h="16px" mb="8px" />
-					<SkelBox w="90%" h="13px" mb="5px" />
-					<SkelBox w="78%" h="13px" mb="12px" />
-					<Flex justify="flex-end"><SkelBox w="68px" h="13px" /></Flex>
+				<Flex flex="1" px="28px" py="20px" align="center" justify="space-between">
+					<SkelBox w="160px" h="18px" />
+					<Box borderRadius="8px" w="160px" h="34px" sx={skimmerStyle} />
+				</Flex>
+			</Flex>
+			{/* Sidebar + grid skeleton */}
+			<Flex>
+				<Box w="256px" p="20px" pt="12px" borderRight="1px solid #e2e8f0">
+					<SkelBox w="70px" h="10px" mb="12px" />
+					{[85, 70, 95, 60, 80, 65, 78].map((w, i) => (
+						<Flex key={i} justify="space-between" align="center" mb="2px" px="12px" py="10px" borderRadius="8px">
+							<SkelBox w={`${w}%`} h="13px" />
+							<SkelBox w="24px" h="13px" br="4px" />
+						</Flex>
+					))}
+				</Box>
+				<Box p="28px" pt="12px" flex={1}>
+					<Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px' }}>
+						{Array.from({ length: 6 }).map((_, i) => (
+							<TemplateCardSkeleton key={i} />
+						))}
+					</Box>
 				</Box>
 			</Flex>
 		</Box>
-
-		{/* OR divider — exact spacing from Main */}
-		<Box p="0px 30px" my="20px" position="relative">
-			<Divider borderColor="#e1e1e1" />
-			<Box position="absolute" top="50%" left="50%" transform="translate(-50%, -50%)" bg="white" px="16px">
-				<SkelBox w="18px" h="13px" />
-			</Box>
-		</Box>
-
-		{/* "All Templates" row — exact padding from Main */}
-		<Flex p="0px 30px 20px 30px" align="center" justify="space-between">
-			<SkelBox w="130px" h="18px" />
-			<Box bg="#f3f4f6" borderRadius="5px" w="200px" h="40px" sx={skimmerStyle} />
-		</Flex>
-
-		{/* Sidebar + grid — exact layout from Main */}
-		<Flex direction={{ base: 'column', md: 'row' }} gap="0">
-			<Box maxWidth="310px" width="100%" p="0px 28px 30px 28px" borderRight="1px solid #e1e1e1">
-				<Box h="38px" borderRadius="4px" mb="20px" sx={skimmerStyle} />
-				<SkelBox w="70px" h="11px" mb="10px" />
-				{[85, 70, 95, 60, 80, 65, 78, 55, 72, 68].map((w, i) => (
-					<Flex key={i} justify="space-between" align="center" mb="2px" px="12px" py="10px" borderRadius="8px">
-						<SkelBox w={`${w}%`} h="14px" />
-						<SkelBox w="28px" h="22px" br="4px" />
-					</Flex>
-				))}
-			</Box>
-			{/* Template grid — SimpleGrid matches TemplateList: minmax(280px,1fr) spacing=6 (24px) */}
-			<Box p="0px 30px 30px 30px" flex={1}>
-				<Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '24px' }}>
-					{Array.from({ length: 9 }).map((_, i) => (
-						<TemplateCardSkeleton key={i} />
-					))}
-				</Box>
-			</Box>
-		</Flex>
 	</Box>
 );
 
@@ -131,6 +140,7 @@ const Main: React.FC<{ onCreateWithAI?: () => void }> = ({ onCreateWithAI }) => 
 	const toast = useToast();
 	const [filter, setFilter] = useState(__('All', 'everest-forms'));
 	const [isCreatingBlank, setIsCreatingBlank] = useState(false);
+	const [searchInputValue, setSearchInputValue] = useState('');
 	const [state, setState] = useState({
 		selectedCategory: __('All Forms', 'everest-forms'),
 		searchTerm: '',
@@ -182,20 +192,9 @@ const Main: React.FC<{ onCreateWithAI?: () => void }> = ({ onCreateWithAI }) => 
 			let matchedCategory = categories.find((cat) => {
 				const normalizedCatName = normalize(cat.name);
 
-				if (normalizedCatName === normalizedSlug) {
-					console.log(`Exact match: "${cat.name}"`);
-					return true;
-				}
-
-				if (normalizedCatName.startsWith(normalizedSlug)) {
-					console.log(`Starts with match: "${cat.name}"`);
-					return true;
-				}
-
-				if (normalizedSlug.startsWith(normalizedCatName)) {
-					console.log(`Reverse starts with match: "${cat.name}"`);
-					return true;
-				}
+				if (normalizedCatName === normalizedSlug) return true;
+				if (normalizedCatName.startsWith(normalizedSlug)) return true;
+				if (normalizedSlug.startsWith(normalizedCatName)) return true;
 
 				return false;
 			});
@@ -213,18 +212,12 @@ const Main: React.FC<{ onCreateWithAI?: () => void }> = ({ onCreateWithAI }) => 
 						),
 					);
 
-					if (hasMatchingWord) {
-						console.log(`Word match: "${cat.name}"`);
-						return true;
-					}
+					if (hasMatchingWord) return true;
 
 					if (
 						normalizedCatName.includes(normalizedSlug) ||
 						normalizedSlug.includes(normalizedCatName)
-					) {
-						console.log(`Contains match: "${cat.name}"`);
-						return true;
-					}
+					) return true;
 
 					return false;
 				});
@@ -260,11 +253,18 @@ const Main: React.FC<{ onCreateWithAI?: () => void }> = ({ onCreateWithAI }) => 
 		setState((prevState) => ({ ...prevState, selectedCategory: category }));
 	}, []);
 
-	const handleSearchChange = useCallback((searchTerm: string) => {
-		setState((prevState) => ({ ...prevState, searchTerm }));
-	}, []);
+	const debouncedSetSearch = useCallback(
+		debounce((value: string) => {
+			setState((prevState) => ({ ...prevState, searchTerm: value }));
+		}, 300),
+		[],
+	);
 
-	const sidebarWidth = useBreakpointValue({ base: '100%', md: '250px' });
+	const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const value = e.target.value;
+		setSearchInputValue(value);
+		debouncedSetSearch(value);
+	};
 
 	if (isLoading) return <TemplateSkeleton />;
 	if (error) return <div>{(error as Error).message}</div>;
@@ -317,9 +317,16 @@ const Main: React.FC<{ onCreateWithAI?: () => void }> = ({ onCreateWithAI }) => 
 		}
 	};
 
+	const filterLabels = [
+		__('All', 'everest-forms'),
+		__('Free', 'everest-forms'),
+		__('Premium', 'everest-forms'),
+	];
+
 	return (
-		<Box>
-			<Box p="24px 30px 0px 30px">
+		<Box p="32px">
+			{/* CTA Cards — 2-column equal-width grid */}
+			<Box mb="32px">
 				<CreateFormCTA
 					onCreateWithAI={handleCreateWithAI}
 					onCreateBlank={handleCreateBlank}
@@ -327,90 +334,137 @@ const Main: React.FC<{ onCreateWithAI?: () => void }> = ({ onCreateWithAI }) => 
 				/>
 			</Box>
 
-			<Box p="0px 30px" my="20px" position="relative">
-				<Divider borderColor="#e1e1e1" />
-				<Box
-					position="absolute"
-					top="50%"
-					left="50%"
-					transform="translate(-50%, -50%)"
-					bg="white"
-					px="16px"
+			{/* Template Section Card */}
+			<Box
+				bg="white"
+				borderRadius="16px"
+				border="1px solid #e2e8f0"
+				overflow="hidden"
+			>
+				{/* Top bar: search (left) | heading + filter tabs (right) */}
+				<Flex
+					align="center"
+					borderBottom="1px solid #e2e8f0"
+					direction={{ base: 'column', md: 'row' }}
 				>
-					<Text
-						fontSize="13px"
-						fontWeight="700"
-						color="#7545BB"
-						textTransform="uppercase"
-						letterSpacing="1px"
-						margin="0"
+					{/* Search area — aligned with sidebar width */}
+					<Box
+						w={{ base: '100%', md: '256px' }}
+						minW={{ md: '256px' }}
+						p="20px"
+						borderRight={{ base: 'none', md: '1px solid #e2e8f0' }}
+						borderBottom={{ base: '1px solid #e2e8f0', md: 'none' }}
 					>
-						{__('or', 'everest-forms')}
-					</Text>
-				</Box>
-			</Box>
-
-			<Flex p="0px 30px 20px 30px" align="center" justify="space-between">
-				<Heading
-					as="h2"
-					fontSize="18px"
-					fontWeight="600"
-					color="#0f0f1a"
-					margin="0"
-				>
-					{__('All Templates', 'everest-forms')}
-				</Heading>
-				<Tabs
-					variant="unstyled"
-					onChange={(index) => {
-						const filters = [__('All', 'everest-forms'), __('Free', 'everest-forms'), __('Premium', 'everest-forms')];
-						setFilter(filters[index]);
-					}}
-				>
-					<TabList background="#f3f4f6" gap="2px" borderRadius="5px" padding="4px">
-						{[__('All', 'everest-forms'), __('Free', 'everest-forms'), __('Premium', 'everest-forms')].map((label) => (
-							<Tab
-								key={label}
-								_selected={{ color: 'purple.500', background: 'white', boxShadow: '0 4px 24px 0 rgba(10,10,10,.06)' }}
+						<InputGroup>
+							<InputLeftElement pointerEvents="none" h="36px">
+								<Icon as={IoSearchOutline} boxSize="4" color="#999" />
+							</InputLeftElement>
+							<Input
+								placeholder={__('Search templates', 'everest-forms')}
+								value={searchInputValue}
+								onChange={handleSearchInputChange}
 								fontSize="14px"
-								lineHeight="25px"
-								color="#646970"
-								borderBottom="2px solid transparent"
-								fontWeight="medium"
-								whiteSpace="nowrap"
-								height="32px"
-								borderRadius="4px"
-								padding="6px 16px"
-							>
-								{label}
-							</Tab>
-						))}
-					</TabList>
-				</Tabs>
-			</Flex>
+								border="1px solid #e2e8f0"
+								borderRadius="8px"
+								h="36px"
+								pl="36px"
+								pr="12px"
+								_focus={{
+									borderColor: '#7545BB',
+									outline: 'none',
+									boxShadow: 'none',
+								}}
+								_placeholder={{ color: '#999' }}
+							/>
+						</InputGroup>
+					</Box>
 
-			<Flex direction={{ base: 'column', md: 'row' }} gap="0">
-				<Box
-					maxWidth="310px"
-					width="100%"
-					p="0px 28px 30px 28px"
-					boxSizing="border-box"
-					borderRight="1px solid #e1e1e1"
-				>
-					<Sidebar
-						categories={categories}
-						selectedCategory={state.selectedCategory}
-						onCategorySelect={handleCategorySelect}
-						onSearchChange={handleSearchChange}
-					/>
-				</Box>
-				<Box p="0px 30px 30px 30px" flex={1}>
-					<TemplateList
-						selectedCategory={selectedCategory}
-						templates={filteredTemplates}
-					/>
-				</Box>
-			</Flex>
+					{/* Heading + filter tabs */}
+					<Flex
+						flex="1"
+						align="center"
+						justify="space-between"
+						px={{ base: '20px', md: '28px' }}
+						py="20px"
+						wrap="wrap"
+						gap="12px"
+					>
+						<Heading
+							as="h2"
+							fontSize="20px"
+							fontWeight="500"
+							color="#0e0e0e"
+							m="0"
+							letterSpacing="-0.01em"
+						>
+							{__('Choose from Templates', 'everest-forms')}
+						</Heading>
+
+						{/* Filter tabs */}
+						<Tabs
+							variant="unstyled"
+							onChange={(index) => setFilter(filterLabels[index])}
+						>
+							<TabList
+								bg="#f1f5f9"
+								border="1px solid #e2e8f0"
+								borderRadius="8px"
+								p="4px"
+								gap="0"
+							>
+								{filterLabels.map((label) => (
+									<Tab
+										key={label}
+										px="12px"
+										py="6px"
+										borderRadius="6px"
+										fontSize="12px"
+										fontWeight="500"
+										color="#6b6b6b"
+										_selected={{
+											bg: 'white',
+											color: '#7445ba',
+											boxShadow: '0 1px 3px rgba(0,0,0,0.08)',
+										}}
+										_hover={{ color: '#0e0e0e' }}
+										transition="all 0.15s"
+									>
+										{label}
+									</Tab>
+								))}
+							</TabList>
+						</Tabs>
+					</Flex>
+				</Flex>
+
+				{/* Sidebar + Template Grid */}
+				<Flex direction={{ base: 'column', md: 'row' }}>
+					{/* Sidebar */}
+					<Box
+						w={{ base: '100%', md: '256px' }}
+						minW={{ md: '256px' }}
+						p="20px"
+						pt="12px"
+						borderRight={{ base: 'none', md: '1px solid #e2e8f0' }}
+						borderBottom={{ base: '1px solid #e2e8f0', md: 'none' }}
+					>
+						<Sidebar
+							categories={categories}
+							selectedCategory={state.selectedCategory}
+							onCategorySelect={handleCategorySelect}
+							onRequestTemplate={handleCreateWithAI}
+						/>
+					</Box>
+
+					{/* Template grid */}
+					<Box p={{ base: '20px', md: '28px' }} pt="12px" flex={1} minW="0">
+						<TemplateList
+							selectedCategory={selectedCategory}
+							templates={filteredTemplates}
+						/>
+					</Box>
+				</Flex>
+			</Box>
 		</Box>
 	);
 };

@@ -1,32 +1,16 @@
-import React, { useState, useCallback } from "react";
-import { Box, VStack, HStack, Text, Spacer, Input, InputLeftElement, InputGroup, Badge, Button } from "@chakra-ui/react";
-import { IoSearchOutline } from "react-icons/io5";
-import debounce from "lodash.debounce";
+import React from "react";
+import { Box, VStack, HStack, Text, Icon } from "@chakra-ui/react";
+import { LuSparkles } from 'react-icons/lu';
 import { __ } from '@wordpress/i18n';
 
 interface SidebarProps {
   categories: { name: string; count: number }[];
   selectedCategory: string;
   onCategorySelect: (category: string) => void;
-  onSearchChange: (searchTerm: string) => void;
+  onRequestTemplate?: () => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = React.memo(({ categories, selectedCategory, onCategorySelect, onSearchChange }) => {
-  const [searchTerm, setSearchTerm] = useState<string>("");
-
-  const debouncedSearchChange = useCallback(
-    debounce((value: string) => {
-      onSearchChange(value);
-    }, 300),
-    [onSearchChange]
-  );
-
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setSearchTerm(value);
-    debouncedSearchChange(value);
-  };
-
+const Sidebar: React.FC<SidebarProps> = React.memo(({ categories, selectedCategory, onCategorySelect, onRequestTemplate }) => {
   const favorites = categories.find(cat => cat.name === 'Favorites');
 
   const orderedCategories = favorites && favorites.count > 0
@@ -34,86 +18,106 @@ const Sidebar: React.FC<SidebarProps> = React.memo(({ categories, selectedCatego
     : categories;
 
   return (
-    <Box>
-      <InputGroup mb="20px">
-        <InputLeftElement pointerEvents="none" padding="0px 0px 0px 8px" borderRadius="8px" borderColor="#B0B0B0">
-          <IoSearchOutline style={{ width: "18px", height: "18px" }} color="#737373" />
-        </InputLeftElement>
-        <Input
-          placeholder={__("Search templates", "everest-forms")}
-          value={searchTerm}
-          onChange={handleSearchChange}
-          fontSize="14px"
-          lineHeight="24px"
-          border="1px solid #e1e1e1"
-          borderRadius="4px"
-          height="38px"
-          padding="0 12px 0 40px"
-          _focus={{
-            borderColor: "#7545BB",
-            outline: "none",
-            boxShadow: "none",
-          }}
-        />
-      </InputGroup>
-
+    <Box display="flex" flexDirection="column">
+      {/* Categories label */}
       <Text
         fontSize="11px"
-        fontWeight="700"
-        color="#9999aa"
+        fontWeight="600"
+        color="#9a9a9a"
         textTransform="uppercase"
-        letterSpacing="0.6px"
-        margin="0 0 8px 2px"
+        letterSpacing="0.12em"
+        mb="2"
+        px="2"
+        pb="3"
+        margin="0 0 8px 0"
       >
         {__("Categories", "everest-forms")}
       </Text>
 
-      <VStack align="stretch" gap="2px">
+      {/* Category list */}
+      <VStack align="stretch" spacing="0.5">
         {orderedCategories.map((category) => {
           const isActive = selectedCategory === category.name;
           return (
             <HStack
               key={category.name}
-              p="10px 12px"
-              background={isActive ? "#7545BB" : "transparent"}
-              _hover={{ bg: isActive ? "#6a3daa" : "#f5f5f5" }}
+              py="12px"
+              px="3"
+              bg={isActive ? "rgba(117,69,187,0.1)" : "transparent"}
+              _hover={{ bg: isActive ? "rgba(117,69,187,0.1)" : "#f8fafc" }}
               borderRadius="8px"
               cursor="pointer"
-              justifyContent="space-between"
+              justify="space-between"
               onClick={() => onCategorySelect(category.name)}
-              transition="all 0.2s"
+              transition="background 0.15s"
             >
               <Text
-                className="evf-category-list"
-                color={isActive ? "white" : "#646970"}
+                color={isActive ? "#7545BB" : "#383838"}
                 fontSize="14px"
-                lineHeight="22px"
-                fontWeight={isActive ? "600" : "500"}
-                margin="0px"
+                fontWeight={isActive ? "500" : "400"}
+                margin="0"
               >
                 {category.name}
               </Text>
-
-              <Badge
-                className="badge"
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-                fontWeight="600"
+              <Text
                 fontSize="12px"
-                width="28px"
-                height="22px"
-                padding="0px"
-                borderRadius="4px"
-                color={isActive ? "white" : "#646970"}
-                bg={isActive ? "rgba(255,255,255,0.2)" : "#e8e8e8"}
+                color={isActive ? "rgba(117,69,187,0.7)" : "#999999"}
+                margin="0"
               >
                 {category.count}
-              </Badge>
+              </Text>
             </HStack>
           );
         })}
       </VStack>
+
+      {/* Can't find a template? CTA */}
+      <Box
+        mt="20px"
+        borderRadius="12px"
+        border="1px solid #e2e8f0"
+        bgGradient="linear(to-br, rgba(117,69,187,0.06), rgba(117,69,187,0.02))"
+        p="16px"
+      >
+        <Text
+          fontSize="14px"
+          fontWeight="600"
+          color="#0e0e0e"
+          margin="0 0 4px 0"
+        >
+          {__("Can't find a template?", "everest-forms")}
+        </Text>
+        <Text
+          fontSize="12px"
+          color="#6b6b6b"
+          lineHeight="1.5"
+          margin="0 0 12px 0"
+        >
+          {__("Request a custom template built for your needs.", "everest-forms")}
+        </Text>
+        <Box
+          as="button"
+          width="100%"
+          display="inline-flex"
+          alignItems="center"
+          justifyContent="center"
+          gap="6px"
+          height="36px"
+          borderRadius="8px"
+          bg="#7545BB"
+          color="white"
+          fontSize="13px"
+          fontWeight="500"
+          border="none"
+          cursor="pointer"
+          onClick={onRequestTemplate}
+          _hover={{ bg: "rgba(117,69,187,0.88)" }}
+          transition="background 0.2s"
+        >
+          <Icon as={LuSparkles} boxSize="3.5" />
+          {__("Request Template", "everest-forms")}
+        </Box>
+      </Box>
     </Box>
   );
 });

@@ -1,10 +1,8 @@
 import {
-	Badge,
 	Box,
 	Button,
 	Center,
 	Heading,
-	HStack,
 	Icon,
 	Image,
 	Input,
@@ -15,7 +13,6 @@ import {
 	ModalFooter,
 	ModalHeader,
 	ModalOverlay,
-	SimpleGrid,
 	Text,
 	useDisclosure,
 	useToast,
@@ -26,8 +23,6 @@ import apiFetch from '@wordpress/api-fetch';
 import { __, sprintf } from '@wordpress/i18n';
 import React, { useEffect, useState } from 'react';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
-import { IoPlayOutline } from 'react-icons/io5';
-import { MdOutlineRemoveRedEye } from 'react-icons/md';
 import notFoundImage from '../images/not-found-image.png';
 import { templatesScriptData } from '../utils/global';
 import PluginStatus from './PluginStatus';
@@ -88,7 +83,6 @@ const TemplateList: React.FC<TemplateListProps> = ({
 	const [isPluginModalOpen, setIsPluginModalOpen] = useState(false);
 
 	const openModal = () => onOpen();
-	const closeModal = () => onClose();
 	const openPluginModal = () => setIsPluginModalOpen(true);
 	const closePluginModal = () => setIsPluginModalOpen(false);
 
@@ -283,9 +277,9 @@ const TemplateList: React.FC<TemplateListProps> = ({
 
 	const addonEntries = previewTemplate?.addons
 		? Object.entries(previewTemplate.addons).map(([key, value]) => ({
-				key,
-				value,
-			}))
+			key,
+			value,
+		}))
 		: [];
 
 	const requiredPlugins = addonEntries.map((addon) => ({
@@ -296,199 +290,234 @@ const TemplateList: React.FC<TemplateListProps> = ({
 	return (
 		<Box padding="0">
 			{templates?.length ? (
-				<SimpleGrid gridTemplateColumns="repeat(auto-fill, minmax(280px, 1fr))" spacing={6}>
-					{templates.map((template) => (
-						<Box
-							key={template.slug}
-							borderWidth="1px"
-							borderRadius="13px"
-							borderColor="#e1e1e1"
-							overflow="hidden"
-							position="relative"
-							onMouseOver={() => setHoverCardId(template.id)}
-							onMouseLeave={() => setHoverCardId(null)}
-							textAlign="center"
-							bg="white"
-							p={0}
-							transition="all .3s"
-							_hover={{
-								boxShadow: '0px 5px 24px rgba(58, 34, 93, 0.12)',
-								borderColor: 'transparent',
-								'::before': {
-									content: '""',
-									position: 'absolute',
-									top: 0,
-									left: 0,
-									width: '100%',
-									height: '250px',
-									// bg: 'rgba(0, 0, 0, 0.4)',
-									bg: "#181818",
-									opacity: ".5",
-									zIndex: 1,
-								},
-								'& > div > .template-title': {
-									color: '#7545BB',
-								},
-							}}
-						>
-							<Center mb={0}>
+				<Box
+					sx={{
+						display: 'grid',
+						gridTemplateColumns: 'repeat(2, 1fr)',
+						gap: '16px',
+						'@media (min-width: 1280px)': {
+							gridTemplateColumns: 'repeat(3, 1fr)',
+						},
+						'@media (max-width: 640px)': {
+							gridTemplateColumns: '1fr',
+						},
+					}}
+				>
+					{templates.map((template) => {
+						const isHovered = hoverCardId === template.id;
+						return (
+							<Box
+								key={template.slug}
+								borderRadius="12px"
+								border="1px solid #e2e8f0"
+								overflow="hidden"
+								position="relative"
+								onMouseEnter={() => setHoverCardId(template.id)}
+								onMouseLeave={() => setHoverCardId(null)}
+								bg="white"
+								display="flex"
+								flexDirection="column"
+								transition="all 0.25s"
+								_hover={{
+									borderColor: 'rgba(117,69,187,0.4)',
+									boxShadow: '0 8px 24px -12px rgba(117,69,187,0.18)',
+									transform: 'translateY(-2px)',
+								}}
+							>
+								{/* Image area */}
 								<Box
 									position="relative"
-									width="100%"
+									borderBottom="1px solid #e2e8f0"
+									pt="20px"
+									px="20px"
+									pb="0"
 									display="flex"
+									alignItems="flex-start"
 									justifyContent="center"
-									alignItems="center"
-									// bg="#F7F4FB"
-									bg="#f5f5f5"
-									pt="80px"
-									height="250px"
-									borderRadius="6px 6px 0px 0px"
 									overflow="hidden"
-									transition="all .3s"
-									borderBottom="1px solid #e1e1e1"
+									background="linear-gradient(129deg, #F3F2F8 2.83%, #F7F5F9 110.96%)"
+									minH="160px"
 								>
-									<Image
-										boxShadow="0px 4px 24px rgba(10, 10, 10, 0.15)"
-										src={template.imageUrl}
-										alt={template.title}
-										objectFit="contain"
-										borderRadius="7px"
-									/>
-
-									{template.isPro && (
-										<Badge
-											bg="#4BCE61"
-											// color="white"
-											position="absolute"
-											bottom="12px"
-											right="12px"
-											// borderRadius="6px"
-											// fontSize="12px"
-											// p="2px 6px"
-											// textTransform="capitalize"
-											zIndex="2"
-											border="1px solid #ff8c39"
-											background="#fffaf5"
-											color="#ff8c39"
-											fontWeight="semibold"
-											textTransform="uppercase"
-											p="4px 8px"
-											borderRadius="4px"
-											fontSize="11px"
-										>
-											{__('Pro', 'everest-forms')}
-										</Badge>
-									)}
-
-									{/* Hover Buttons */}
-									{hoverCardId === template.id && (
-										<VStack
-											spacing={3}
-											flexDirection="row"
-											position="absolute"
-											top="50%"
-											left="50%"
-											transform="translate(-50%, -50%)"
-											zIndex={2}
-										>
-											<Button
+									{/* Image wrapper — white card with shadow */}
+									<Box
+										position="relative"
+										w="100%"
+										bg="white"
+										borderRadius="8px 8px 0 0"
+										border="1px solid #e2e8f0"
+										borderBottom="none"
+										overflow="hidden"
+										boxShadow="0 6px 24px 0 #E5E1EF"
+									>
+										{/* Pro badge inside image wrapper */}
+										{template.isPro && (
+											<Box
+												as="span"
+												position="absolute"
+												top="10px"
+												right="10px"
+												fontSize="10px"
+												fontWeight="700"
+												textTransform="uppercase"
+												letterSpacing="0.06em"
+												color="#FF8C39"
+												bg="white"
+												border="1.5px solid #FFD8B8"
+												px="8px"
+												py="2px"
 												borderRadius="4px"
-												fontSize="14px"
-												lineHeight="24px"
-												fontWeight="medium"
-												// leftIcon={<IoPlayOutline />}
-												colorScheme="purple"
-												onClick={() => handleTemplateClick(template)}
+												zIndex={2}
+												display="inline-flex"
+												alignItems="center"
 											>
-												{__('Use Template', 'everest-forms')}
+												{__('Pro', 'everest-forms')}
+											</Box>
+										)}
+										<Image
+											src={template.imageUrl}
+											alt={template.title}
+											display="block"
+											w="100%"
+											h="auto"
+											objectFit="cover"
+											objectPosition="top"
+											borderRadius="6px"
+											loading="lazy"
+										/>
+									</Box>
+
+									{/* Hover overlay — dark gradient */}
+									<Box
+										position="absolute"
+										inset="0"
+										bgGradient="linear(to-b, rgba(14,14,14,0.2), rgba(14,14,14,0.4), rgba(14,14,14,0.6))"
+										opacity={isHovered ? 1 : 0}
+										transition="opacity 0.3s"
+										display="flex"
+										flexDirection="column"
+										alignItems="center"
+										justifyContent="center"
+										gap="8px"
+										px="20px"
+										zIndex={2}
+									>
+										{/* Favorite button */}
+										<Box
+											as="button"
+											onClick={(e) => {
+												e.stopPropagation();
+												handleFavoriteToggle(template.slug);
+											}}
+											aria-label={`Toggle favorite for ${template.title}`}
+											position="absolute"
+											top="12px"
+											right="12px"
+											w="28px"
+											h="28px"
+											display="inline-flex"
+											alignItems="center"
+											justifyContent="center"
+											borderRadius="full"
+											bg={favorites.includes(template.slug) ? 'white' : 'rgba(255,255,255,0.15)'}
+											backdropFilter="blur(4px)"
+											color={favorites.includes(template.slug) ? 'red.500' : 'white'}
+											border="none"
+											cursor="pointer"
+											_hover={{
+												bg: 'white',
+												color: 'red.500',
+											}}
+											transition="all 0.2s"
+										>
+											<Icon
+												as={favorites.includes(template.slug) ? FaHeart : FaRegHeart}
+												boxSize="3.5"
+											/>
+										</Box>
+
+										{/* Use Template button */}
+										<Button
+											w="170px"
+											h="36px"
+											borderRadius="8px"
+											bg="#7545BB"
+											color="white"
+											fontSize="14px"
+											fontWeight="500"
+											boxShadow="0 6px 18px -6px rgba(117,69,187,0.55)"
+											_hover={{ bg: 'rgba(117,69,187,0.9)' }}
+											opacity={isHovered ? 1 : 0}
+											transform={isHovered ? 'translateY(0)' : 'translateY(8px)'}
+											transition="all 0.3s"
+											onClick={() => handleTemplateClick(template)}
+										>
+											{__('Use this template', 'everest-forms')}
+										</Button>
+
+										{/* Preview button */}
+										{template.preview_link && (
+											<Button
+												w="170px"
+												h="36px"
+												borderRadius="8px"
+												bg="transparent"
+												border="1px solid rgba(255,255,255,0.4)"
+												color="white"
+												fontSize="14px"
+												fontWeight="500"
+												_hover={{ bg: 'rgba(255,255,255,0.1)' }}
+												opacity={isHovered ? 1 : 0}
+												transform={isHovered ? 'translateY(0)' : 'translateY(8px)'}
+												transition="all 0.3s 0.06s"
+												onClick={() => window.open(template.preview_link, '_blank')}
+											>
+												{__('Preview', 'everest-forms')}
 											</Button>
-											{template.preview_link && (
-												<Button
-													borderRadius="4px"
-													fontSize="14px"
-													lineHeight="24px"
-													fontWeight="medium"
-													// leftIcon={<MdOutlineRemoveRedEye />}
-													color="#0f0f1a"
-													background="#f4f4f4"
-													border="1px solid rgba(0,0,0,0.12)"
-													// variant="outline"
-													onClick={() =>
-														window.open(template.preview_link, '_blank')
-													}
-													_hover={{ color: 'black', bg: 'white' }}
-												>
-													{__('Preview', 'everest-forms')}
-												</Button>
-											)}
-										</VStack>
-									)}
+										)}
+									</Box>
 								</Box>
-							</Center>
 
-							{hoverCardId === template.id && (
-								<Box
-									as="button"
-									onClick={() => handleFavoriteToggle(template.slug)}
-									aria-label={`Toggle favorite for ${template.title}`}
-									position="absolute"
-									top={3}
-									right={3}
-									zIndex={3}
-									bg="transparent"
-									border="none"
-									display="flex"
-									alignItems="center"
-									justifyContent="center"
-									_hover={{ color: 'red.600' }}
-								>
-									<Icon
-										as={
-											favorites.includes(template.slug) ? FaHeart : FaRegHeart
-										}
-										boxSize={5}
-										color={favorites.includes(template.slug) ? 'red' : 'white'}
-									/>
+								{/* Card info */}
+								<Box p="20px" flex="1" display="flex" flexDirection="column">
+									<Text
+										className="template-title"
+										fontSize="14px"
+										fontWeight="600"
+										color="#0e0e0e"
+										mb="4px"
+										margin="0 0 4px 0"
+										transition="color 0.2s"
+										sx={{ '.template-card:hover &': { color: '#7545BB' } }}
+									>
+										{template.title}
+									</Text>
+									<Text
+										fontSize="12px"
+										color="#6b6b6b"
+										lineHeight="1.6"
+										margin="0"
+										flex="1"
+									>
+										{template.description}
+									</Text>
 								</Box>
-							)}
-
-							<VStack padding="16px">
-								<Heading
-									className="template-title"
-									width="100%"
-									textAlign="left"
-									fontWeight="bold"
-									fontSize="16px"
-									margin="0px"
-								>
-									{template.title}
-								</Heading>
-								<Text
-									textAlign="left"
-									margin="0px"
-									fontSize="14px"
-									fontWeight="400"
-									color="gray.600"
-								>
-									{template.description}
-								</Text>
-							</VStack>
-						</Box>
-					))}
-				</SimpleGrid>
+							</Box>
+						);
+					})}
+				</Box>
 			) : (
 				<Box
 					display="flex"
 					flexDirection="column"
 					justifyContent="center"
 					alignItems="center"
-					height="80vh"
+					minH="400px"
 					width="100%"
 				>
 					<Image
 						src={notFoundImage}
 						alt={__('Not Found', 'everest-forms')}
-						boxSize="300px"
+						boxSize="260px"
 						objectFit="cover"
 					/>
 					<Text mt={4} fontSize="lg" fontWeight="bold" textAlign="center">
@@ -502,6 +531,8 @@ const TemplateList: React.FC<TemplateListProps> = ({
 					</Text>
 				</Box>
 			)}
+
+			{/* Plugin required modal */}
 			<Modal
 				isCentered={true}
 				isOpen={isPluginModalOpen}
@@ -558,6 +589,7 @@ const TemplateList: React.FC<TemplateListProps> = ({
 				</ModalContent>
 			</Modal>
 
+			{/* Template name + plugin status modal */}
 			<Modal isCentered isOpen={isOpen} onClose={onClose} size="xl">
 				<ModalOverlay />
 				<ModalContent borderRadius="8px" padding="40px">
