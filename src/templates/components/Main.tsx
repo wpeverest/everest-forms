@@ -67,65 +67,110 @@ const SkelBox: React.FC<{ w?: string; h?: string; mb?: string; br?: string }> = 
 	<Box w={w} h={h} mb={mb} borderRadius={br} sx={skimmerStyle} />
 );
 
+// Template card skeleton — matches actual card: gradient image bg + white inner wrapper + info section
 const TemplateCardSkeleton = () => (
-	<Box bg="white" borderRadius="12px" border="1px solid #e2e8f0" overflow="hidden">
-		<Box h="180px" borderRadius="6px 6px 0 0" borderBottom="1px solid #e2e8f0" sx={skimmerStyle} />
-		<Box p="20px">
-			<SkelBox w="65%" h="14px" mb="8px" />
+	<Box bg="white" borderRadius="12px" border="1px solid #e2e8f0" overflow="hidden" display="flex" flexDirection="column">
+		{/* Image area: gradient bg + white inner card (matching actual card structure) */}
+		<Box
+			position="relative"
+			borderBottom="1px solid #e2e8f0"
+			pt="20px" px="20px" pb="0"
+			overflow="hidden"
+			background="linear-gradient(129deg, #F3F2F8 2.83%, #F7F5F9 110.96%)"
+			minH="160px"
+		>
+			<Box
+				w="100%"
+				borderRadius="8px 8px 0 0"
+				border="1px solid #e2e8f0"
+				borderBottom="none"
+				overflow="hidden"
+				h="140px"
+				sx={skimmerStyle}
+				opacity={0.6}
+			/>
+		</Box>
+		{/* Info section */}
+		<Box p="20px" flex="1">
+			<SkelBox w="62%" h="13px" mb="6px" />
 			<SkelBox w="90%" h="11px" mb="4px" />
-			<SkelBox w="75%" h="11px" />
+			<SkelBox w="76%" h="11px" />
 		</Box>
 	</Box>
 );
 
 const TemplateSkeleton = () => (
 	<Box p="32px">
-		{/* CTA cards skeleton */}
-		<Flex gap="32px" mb="32px">
-			<Box flex="1" bg="white" borderRadius="16px" p="32px" border="1px solid #e2e8f0">
+		{/* CTA cards — 2-col equal-width grid, matching CreateFormCTA layout */}
+		<Flex gap="32px" mb="32px" direction={{ base: 'column', md: 'row' }}>
+			{/* AI card: icon + badge row, then title/desc/link */}
+			<Box flex="1" bg="white" borderRadius="16px" p="32px" border="1px solid #e2e8f0" display="flex" flexDirection="column">
 				<Flex justify="space-between" align="center" mb="16px">
 					<Box borderRadius="12px" w="48px" h="48px" sx={skimmerStyle} />
-					<Box borderRadius="6px" w="48px" h="22px" sx={skimmerStyle} />
+					<Box borderRadius="6px" w="44px" h="22px" sx={skimmerStyle} />
 				</Flex>
-				<SkelBox w="55%" h="16px" mb="8px" />
-				<SkelBox w="90%" h="12px" mb="4px" />
-				<SkelBox w="72%" h="12px" mb="24px" />
-				<SkelBox w="88px" h="12px" />
+				<SkelBox w="58%" h="17px" mb="8px" />
+				<SkelBox w="92%" h="12px" mb="4px" />
+				<SkelBox w="76%" h="12px" mb="24px" />
+				<SkelBox w="86px" h="13px" />
 			</Box>
-			<Box flex="1" bg="white" borderRadius="16px" p="32px" border="1px solid #e2e8f0">
+			{/* Scratch card: standalone icon, then title/desc/link */}
+			<Box flex="1" bg="white" borderRadius="16px" p="32px" border="1px solid #e2e8f0" display="flex" flexDirection="column">
 				<Box borderRadius="12px" w="48px" h="48px" mb="20px" sx={skimmerStyle} />
-				<SkelBox w="60%" h="16px" mb="8px" />
-				<SkelBox w="90%" h="12px" mb="4px" />
-				<SkelBox w="78%" h="12px" mb="24px" />
-				<SkelBox w="68px" h="12px" />
+				<SkelBox w="62%" h="17px" mb="8px" />
+				<SkelBox w="92%" h="12px" mb="4px" />
+				<SkelBox w="80%" h="12px" mb="24px" />
+				<SkelBox w="70px" h="13px" />
 			</Box>
 		</Flex>
 
-		{/* Template section skeleton */}
+		{/* Template section card */}
 		<Box bg="white" borderRadius="16px" border="1px solid #e2e8f0" overflow="hidden">
-			{/* Top bar skeleton */}
-			<Flex borderBottom="1px solid #e2e8f0">
-				<Box w="256px" p="20px" borderRight="1px solid #e2e8f0">
+
+			{/* Top bar: search (left, w-256px) | heading + filter tabs (right) */}
+			<Flex borderBottom="1px solid #e2e8f0" direction={{ base: 'column', md: 'row' }}>
+				<Box w={{ base: '100%', md: '256px' }} minW={{ md: '256px' }} p="20px" borderRight={{ base: 'none', md: '1px solid #e2e8f0' }}>
+					{/* Search input shimmer */}
 					<Box h="36px" borderRadius="8px" sx={skimmerStyle} />
 				</Box>
 				<Flex flex="1" px="28px" py="20px" align="center" justify="space-between">
-					<SkelBox w="160px" h="18px" />
-					<Box borderRadius="8px" w="160px" h="34px" sx={skimmerStyle} />
+					{/* "Choose from Templates" heading */}
+					<SkelBox w="190px" h="19px" />
+					{/* Filter tabs pill */}
+					<Box borderRadius="8px" w="150px" h="34px" sx={skimmerStyle} />
 				</Flex>
 			</Flex>
-			{/* Sidebar + grid skeleton */}
-			<Flex>
-				<Box w="256px" p="20px" pt="12px" borderRight="1px solid #e2e8f0">
-					<SkelBox w="70px" h="10px" mb="12px" />
-					{[85, 70, 95, 60, 80, 65, 78].map((w, i) => (
-						<Flex key={i} justify="space-between" align="center" mb="2px" px="12px" py="10px" borderRadius="8px">
-							<SkelBox w={`${w}%`} h="13px" />
-							<SkelBox w="24px" h="13px" br="4px" />
+
+			{/* Sidebar + template grid */}
+			<Flex direction={{ base: 'column', md: 'row' }}>
+				{/* Sidebar: CATEGORIES label + rows + Can't find card */}
+				<Box w={{ base: '100%', md: '256px' }} minW={{ md: '256px' }} p="20px" pt="12px" borderRight={{ base: 'none', md: '1px solid #e2e8f0' }}>
+					{/* "CATEGORIES" label */}
+					<Box w="72px" h="10px" mb="10px" sx={skimmerStyle} borderRadius="3px" />
+					{/* Category rows */}
+					{[78, 62, 88, 55, 72, 60, 70, 52, 65, 58].map((w, i) => (
+						<Flex key={i} justify="space-between" align="center" mb="2px" px="12px" py="12px" borderRadius="8px">
+							<Box w={`${w}%`} h="13px" sx={skimmerStyle} borderRadius="3px" />
+							<Box w="20px" h="13px" sx={skimmerStyle} borderRadius="3px" />
 						</Flex>
 					))}
+					{/* "Can't find a template?" card */}
+					<Box mt="20px" borderRadius="12px" border="1px solid #e2e8f0" p="16px">
+						<SkelBox w="68%" h="13px" mb="6px" />
+						<SkelBox w="92%" h="11px" mb="4px" />
+						<SkelBox w="80%" h="11px" mb="12px" />
+						<Box h="36px" borderRadius="8px" sx={skimmerStyle} />
+					</Box>
 				</Box>
-				<Box p="28px" pt="12px" flex={1}>
-					<Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px' }}>
+
+				{/* Template grid: 2-col (xl: 3-col) matching TemplateList */}
+				<Box p={{ base: '20px', md: '28px' }} pt="12px" flex={1} minW="0">
+					<Box sx={{
+						display: 'grid',
+						gridTemplateColumns: 'repeat(2, 1fr)',
+						gap: '16px',
+						'@media (min-width: 1280px)': { gridTemplateColumns: 'repeat(3, 1fr)' },
+					}}>
 						{Array.from({ length: 6 }).map((_, i) => (
 							<TemplateCardSkeleton key={i} />
 						))}
@@ -461,6 +506,7 @@ const Main: React.FC<{ onCreateWithAI?: () => void }> = ({ onCreateWithAI }) => 
 						<TemplateList
 							selectedCategory={selectedCategory}
 							templates={filteredTemplates}
+							onCreateWithAI={handleCreateWithAI}
 						/>
 					</Box>
 				</Flex>

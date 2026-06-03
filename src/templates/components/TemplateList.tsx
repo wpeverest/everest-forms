@@ -23,6 +23,7 @@ import apiFetch from '@wordpress/api-fetch';
 import { __, sprintf } from '@wordpress/i18n';
 import React, { useEffect, useState } from 'react';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
+import { LuSparkles } from 'react-icons/lu';
 import notFoundImage from '../images/not-found-image.png';
 import { templatesScriptData } from '../utils/global';
 import PluginStatus from './PluginStatus';
@@ -42,6 +43,7 @@ interface Template {
 interface TemplateListProps {
 	selectedCategory: string;
 	templates: Template[];
+	onCreateWithAI?: () => void;
 }
 
 const { restURL, security } = templatesScriptData;
@@ -71,6 +73,7 @@ interface CreateTemplateResponse {
 const TemplateList: React.FC<TemplateListProps> = ({
 	selectedCategory,
 	templates,
+	onCreateWithAI,
 }) => {
 	const [previewTemplate, setPreviewTemplate] = useState<Template | null>(null);
 	const [formTemplateName, setFormTemplateName] = useState<string>('');
@@ -454,6 +457,26 @@ const TemplateList: React.FC<TemplateListProps> = ({
 											{__('Use this template', 'everest-forms')}
 										</Button>
 
+										{/* Edit with AI button */}
+										<Button
+											w="170px"
+											h="36px"
+											borderRadius="8px"
+											bg="rgba(255,255,255,0.95)"
+											color="#0e0e0e"
+											fontSize="14px"
+											fontWeight="500"
+											boxShadow="0 1px 3px rgba(0,0,0,0.1)"
+											leftIcon={<Icon as={LuSparkles} boxSize="3.5" />}
+											_hover={{ bg: 'white', color: '#7545BB' }}
+											opacity={isHovered ? 1 : 0}
+											transform={isHovered ? 'translateY(0)' : 'translateY(8px)'}
+											transition="all 0.3s 0.06s"
+											onClick={() => onCreateWithAI && onCreateWithAI()}
+										>
+											{__('Edit with AI', 'everest-forms')}
+										</Button>
+
 										{/* Preview button */}
 										{template.preview_link && (
 											<Button
@@ -468,7 +491,7 @@ const TemplateList: React.FC<TemplateListProps> = ({
 												_hover={{ bg: 'rgba(255,255,255,0.1)' }}
 												opacity={isHovered ? 1 : 0}
 												transform={isHovered ? 'translateY(0)' : 'translateY(8px)'}
-												transition="all 0.3s 0.06s"
+												transition="all 0.3s 0.12s"
 												onClick={() => window.open(template.preview_link, '_blank')}
 											>
 												{__('Preview', 'everest-forms')}
