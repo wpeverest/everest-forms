@@ -288,7 +288,18 @@ jQuery( function( $ ) {
 								selectedGateway = 'stripe';
 							}
 						}
-						if ( redirect_url && 'stripe' !== selectedGateway && 'square' !== selectedGateway ) {
+						if (
+							redirect_url &&
+							'undefined' !== redirect_url &&
+							(
+								'paypal' === selectedGateway ||
+								( 'stripe' !== selectedGateway && 'square' !== selectedGateway )
+							)
+						) {
+							paymentDebugLog( formTuple, 'gateway_redirect_url', {
+								redirectUrl: redirect_url,
+								selectedGateway: selectedGateway,
+							} );
 							formTuple.trigger( 'reset' );
 							var new_tab = xhr.data.enable_redirect_in_new_tab ? xhr.data.enable_redirect_in_new_tab : false;
 
@@ -302,8 +313,20 @@ jQuery( function( $ ) {
 								return;
 							}
 						}
-					if (xhr && xhr.payment_method && xhr.redirect) {
-						window.location.href = xhr.redirect;
+					var paypalRedirect =
+						( xhr && xhr.redirect ) ||
+						( xhr && xhr.data && xhr.data.redirect );
+					var isPayPalRedirect =
+						( xhr && 'paypal' === xhr.payment_method ) ||
+						( xhr && xhr.data && 'paypal' === xhr.data.payment_method ) ||
+						'paypal' === selectedGateway;
+
+					if ( paypalRedirect && isPayPalRedirect ) {
+						paymentDebugLog( formTuple, 'paypal_redirect', {
+							redirectUrl: paypalRedirect,
+							selectedGateway: selectedGateway,
+						} );
+						window.location.href = paypalRedirect;
 						return;
 					}
 
