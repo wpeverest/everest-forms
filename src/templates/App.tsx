@@ -3,6 +3,8 @@ import React, { useState, useEffect } from "react";
 import {
   ChakraProvider,
   Box,
+  Flex,
+  Heading,
   Icon,
   Tooltip,
 } from "@chakra-ui/react";
@@ -112,6 +114,31 @@ const App = () => {
           borderRadius="16px"
           overflow="hidden"
         >
+          {/* Page title */}
+          <Flex
+            align="center"
+            justify="space-between"
+            px="8"
+            py="5"
+            borderBottom="1px solid #e2e8f0"
+          >
+            <Heading as="h2" fontSize="18px" fontWeight="600" color="#0e0e0e" m="0" letterSpacing="-0.01em">
+              {__("Add New Form", "everest-forms")}
+            </Heading>
+            <Tooltip label={__("Refresh Templates", "everest-forms")} placement="left" hasArrow>
+              <Icon
+                as={FiRefreshCw}
+                boxSize="15px"
+                color={isFetching ? '#7545BB' : '#9ca3af'}
+                cursor={isFetching ? 'default' : 'pointer'}
+                onClick={!isFetching ? handleRefreshTemplates : undefined}
+                transition="color 0.2s"
+                _hover={!isFetching ? { color: '#7545BB' } : {}}
+                sx={isFetching ? { animation: 'spin 0.8s linear infinite', '@keyframes spin': { from: { transform: 'rotate(0deg)' }, to: { transform: 'rotate(360deg)' } } } : {}}
+              />
+            </Tooltip>
+          </Flex>
+
           <Box>
             <Main onCreateWithAI={navigateToAI} />
           </Box>
