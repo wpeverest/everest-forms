@@ -19,6 +19,8 @@ $evf_current_page = isset( $_GET['page'] ) ? sanitize_text_field( wp_unslash( $_
 $evf_active_nav = 'settings';
 if ( 'everest-forms' === $evf_current_page ) {
 	$evf_active_nav = 'forms';
+} elseif ( 'evf-builder' === $evf_current_page ) {
+	$evf_active_nav = 'forms';
 } elseif ( 'evf-entries' === $evf_current_page ) {
 	$evf_active_nav = 'entries';
 } elseif ( 'evf-addons' === $evf_current_page ) {
