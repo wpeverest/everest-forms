@@ -99,16 +99,6 @@ class EVF_Admin_Form_Templates {
 			)
 		);
 		wp_enqueue_script( 'evf-templates' );
-
-		// Show a spinner via CSS :empty while the JS bundle loads on first visit.
-		// Zero maintenance — no HTML to keep in sync with React.
-		wp_add_inline_style(
-			'everest-forms-admin',
-			'#evf-templates:empty{display:flex;align-items:center;justify-content:center;min-height:60vh}' .
-			'#evf-templates:empty::after{content:"";width:28px;height:28px;border:3px solid #e2e8f0;border-top-color:#7545BB;border-radius:50%;animation:evf-t-spin .75s linear infinite}' .
-			'@keyframes evf-t-spin{to{transform:rotate(360deg)}}'
-		);
-
 		echo '<div id="evf-templates"></div>';
 	}
 
