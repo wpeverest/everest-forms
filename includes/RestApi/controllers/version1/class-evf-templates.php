@@ -55,6 +55,11 @@ class Everest_Forms_Template_Section_Data {
 			)
 		);
 
+		// TODO: REMOVE — Temporary PHP fallback for AI form creation.
+		// The Python AI backend will handle field generation and call the EVF
+		// create-from-ai endpoint (or a native EVF save endpoint) directly.
+		// Once the Python API is integrated end-to-end, delete this route
+		// registration AND the create_from_ai() method below.
 		register_rest_route(
 			$this->namespace,
 			'/' . $this->rest_base . '/create-from-ai',
@@ -64,6 +69,7 @@ class Everest_Forms_Template_Section_Data {
 				'permission_callback' => array( $this, 'check_admin_permissions' ),
 			)
 		);
+		// END TODO: REMOVE
 
 		register_rest_route(
 			$this->namespace,
@@ -288,6 +294,11 @@ class Everest_Forms_Template_Section_Data {
 
 
 
+	// TODO: REMOVE — See route registration note above.
+	// This entire method is a temporary PHP bridge while the Python AI API is
+	// being built. When the Python backend is live, remove this method and its
+	// route registration, and point the frontend directly at the Python endpoint
+	// (or whichever native EVF endpoint replaces it).
 	/**
 	 * Create a form from AI-generated field definitions.
 	 *
@@ -440,6 +451,7 @@ class Everest_Forms_Template_Section_Data {
 			200
 		);
 	}
+	// END TODO: REMOVE (create_from_ai method)
 
 	/**
 	 * Check if a given request has access.
