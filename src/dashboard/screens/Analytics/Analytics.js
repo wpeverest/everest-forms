@@ -47,13 +47,6 @@ const PrinterIcon = () => (
 	</svg>
 );
 
-const LockIcon = () => (
-	<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-		<rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-		<path d="M7 11V7a5 5 0 0 1 10 0v4" />
-	</svg>
-);
-
 const UpgradeModal = ( { onClose, upgradeURL } ) => (
 	<div className="EVF-Free-Analytics__ModalBackdrop" onClick={ onClose }>
 		<div className="EVF-Free-Analytics__ModalBox" onClick={ ( e ) => e.stopPropagation() }>
@@ -61,11 +54,11 @@ const UpgradeModal = ( { onClose, upgradeURL } ) => (
 				&times;
 			</button>
 			<h3 className="EVF-Free-Analytics__OverlayTitle">
-				{ __( 'Unlock Survey Reports', 'everest-forms' ) }
+				{ __( 'Unlock Export & Print', 'everest-forms' ) }
 			</h3>
 			<p className="EVF-Free-Analytics__OverlayText">
 				{ __(
-					'Visualize survey responses with charts and graphs, analyze answer distributions, and gain deeper insights from your survey data.',
+					'Export your analytics data as CSV and print detailed reports with submission tracking, form insights, and conversion analysis.',
 					'everest-forms',
 				) }
 			</p>
@@ -178,19 +171,14 @@ const FreeAnalyticsContent = () => {
 				</div>
 				<div className="EVF-Free-Analytics__Actions">
 					<button className="EVF-Free-Analytics__ActionBtn" onClick={ openModal }>
-						<BarChartIcon />
-						{ __( 'Survey Report', 'everest-forms' ) }
-						<LockIcon />
-					</button>
-					<button className="EVF-Free-Analytics__ActionBtn" onClick={ openModal }>
 						<DownloadIcon />
 						{ __( 'Export', 'everest-forms' ) }
-						<LockIcon />
+						<CrownIcon />
 					</button>
 					<button className="EVF-Free-Analytics__ActionBtn" onClick={ openModal }>
 						<PrinterIcon />
 						{ __( 'Print', 'everest-forms' ) }
-						<LockIcon />
+						<CrownIcon />
 					</button>
 				</div>
 			</div>
