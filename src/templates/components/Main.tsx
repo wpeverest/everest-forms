@@ -197,6 +197,7 @@ const Main: React.FC<{ onCreateWithAI?: () => void }> = ({ onCreateWithAI }) => 
 	const {
 		data: templates = [],
 		isLoading,
+		isFetching,
 		error,
 	} = useQuery(['templates'], fetchTemplates);
 
@@ -385,7 +386,45 @@ const Main: React.FC<{ onCreateWithAI?: () => void }> = ({ onCreateWithAI }) => 
 				borderRadius="16px"
 				border="1px solid #e2e8f0"
 				overflow="hidden"
+				position="relative"
 			>
+				{/* Subtle refetch indicator — thin animated bar at top */}
+				{isFetching && !isLoading && (
+					<Box
+						position="absolute"
+						top="0"
+						left="0"
+						right="0"
+						h="2px"
+						zIndex={10}
+						borderRadius="16px 16px 0 0"
+						overflow="hidden"
+					>
+						<Box
+							position="absolute"
+							top="0"
+							left="0"
+							right="0"
+							h="100%"
+							bg="rgba(117,69,187,0.15)"
+						/>
+						<Box
+							position="absolute"
+							top="0"
+							h="100%"
+							w="40%"
+							bg="#7545BB"
+							sx={{
+								animation: 'refetch-slide 1s ease-in-out infinite',
+								'@keyframes refetch-slide': {
+									'0%':   { left: '-40%' },
+									'100%': { left: '140%' },
+								},
+							}}
+						/>
+					</Box>
+				)}
+
 				{/* Top bar: search (left) | heading + filter tabs (right) */}
 				<Flex
 					align="center"
@@ -502,7 +541,15 @@ const Main: React.FC<{ onCreateWithAI?: () => void }> = ({ onCreateWithAI }) => 
 					</Box>
 
 					{/* Template grid */}
-					<Box p={{ base: '20px', md: '28px' }} pt="12px" flex={1} minW="0">
+					<Box
+						p={{ base: '20px', md: '28px' }}
+						pt="12px"
+						flex={1}
+						minW="0"
+						opacity={isFetching && !isLoading ? 0.55 : 1}
+						transition="opacity 0.25s ease"
+						pointerEvents={isFetching && !isLoading ? 'none' : 'auto'}
+					>
 						<TemplateList
 							selectedCategory={selectedCategory}
 							templates={filteredTemplates}

@@ -8,7 +8,7 @@ import {
   Heading,
   Tooltip,
 } from "@chakra-ui/react";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQueryClient, useIsFetching } from "@tanstack/react-query";
 import { FiRefreshCw, FiArrowLeft } from "react-icons/fi";
 import Main from "./components/Main";
 import CreateWithAI from "./components/CreateWithAI";
@@ -57,6 +57,7 @@ const exitFullscreen = () => {
 
 const App = () => {
   const queryClient = useQueryClient();
+  const isFetching = useIsFetching() > 0;
   const [currentView, setCurrentView] = useState<'templates' | 'ai'>(() => {
     const params = new URLSearchParams(window.location.search);
     return params.get('view') === 'ai' ? 'ai' : 'templates';
@@ -154,11 +155,12 @@ const App = () => {
               <Icon
                 as={FiRefreshCw}
                 boxSize="16px"
-                color="#999"
-                cursor="pointer"
-                _hover={{ color: '#7545BB' }}
-                onClick={handleRefreshTemplates}
+                color={isFetching ? '#7545BB' : '#999'}
+                cursor={isFetching ? 'default' : 'pointer'}
+                onClick={!isFetching ? handleRefreshTemplates : undefined}
                 transition="color 0.2s"
+                _hover={!isFetching ? { color: '#7545BB' } : {}}
+                sx={isFetching ? { animation: 'spin 0.8s linear infinite', '@keyframes spin': { from: { transform: 'rotate(0deg)' }, to: { transform: 'rotate(360deg)' } } } : {}}
               />
             </Tooltip>
           </HStack>
