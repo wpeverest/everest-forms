@@ -90,7 +90,8 @@ class EVF_Admin_Form_Templates {
 			<div id="evf-react-header-root" data-active-menu="forms"></div>
 			<?php
 		}
-		echo "<div id='evf-templates'></div>";
+		?><style>#evf-templates:empty{display:flex;align-items:center;justify-content:center;min-height:60vh}#evf-templates:empty::after{content:'';width:28px;height:28px;border:3px solid #e2e8f0;border-top-color:#7545BB;border-radius:50%;animation:evf-t-spin .75s linear infinite}@keyframes evf-t-spin{to{transform:rotate(360deg)}}</style>
+		<div id="evf-templates"></div><?php
 		wp_register_script( 'evf-templates', plugins_url( 'dist/templates.min.js', EVF_PLUGIN_FILE ), array( 'wp-element', 'react', 'react-dom', 'wp-api-fetch', 'wp-i18n', 'wp-blocks' ), EVF_VERSION, true );
 		wp_localize_script(
 			'evf-templates',

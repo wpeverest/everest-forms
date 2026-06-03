@@ -18,6 +18,7 @@ const WP_ELEMENTS = [
   '#adminmenuwrap',
   '#adminmenuback',
   '#wpfooter',
+  '#evf-react-header-root',
 ];
 
 const enterFullscreen = () => {
