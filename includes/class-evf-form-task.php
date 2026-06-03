@@ -815,18 +815,40 @@ class EVF_Form_Task {
 				}
 			}
 		} catch ( Exception $e ) {
-			evf_add_notice( $e->getMessage(), 'error' );
+			$raw_message   = $e->getMessage();
+			$decoded_error = json_decode( $raw_message, true );
+
+			// Detect Google OAuth / API errors (UNAUTHENTICATED 401).
+			$is_google_auth_error = (
+				JSON_ERROR_NONE === json_last_error() &&
+				isset( $decoded_error['error']['status'] ) &&
+				'UNAUTHENTICATED' === $decoded_error['error']['status']
+			) || false !== strpos( $raw_message, 'UNAUTHENTICATED' );
+
+			if ( $is_google_auth_error ) {
+				$display_message = class_exists( '\EverestForms\AuthorizeNet\Helpers' )
+					? \EverestForms\AuthorizeNet\Helpers::pgw_selector_subscription_mapping_error_message()
+					: esc_html__( 'Something error occur', 'everest-forms' );
+			} elseif ( JSON_ERROR_NONE === json_last_error() && ! empty( $decoded_error['error']['message'] ) ) {
+				$display_message = $decoded_error['error']['message'];
+			} else {
+				$display_message = $raw_message;
+			}
+
+			evf_add_notice( $display_message, 'error' );
 			$logger->error(
-				$e->getMessage(),
+				$raw_message,
 				array( 'source' => 'form-submission' )
 			);
 			if ( '1' === $ajax_form_submission ) {
 				$response_data['response'] = 'error';
-				$response_data['message']  = wp_strip_all_tags( $e->getMessage() );
+				$response_data['message']  = wp_strip_all_tags( $display_message );
 				$response_data['error']    = array();
 				$response_data['form_id']  = $form_id;
 				return $response_data;
 			}
+			// Non-AJAX: return early so the success message is not shown.
+			return $response_data;
 		}
 		// For form confirmation backward compatilibity.
 		$this->form_data = evf_form_confirmation_backward_compatibility( $this->form_data );
