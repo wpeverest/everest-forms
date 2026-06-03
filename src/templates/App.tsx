@@ -8,6 +8,7 @@ import {
   Heading,
   Tooltip,
 } from "@chakra-ui/react";
+import { useQueryClient } from "@tanstack/react-query";
 import { FiRefreshCw, FiArrowLeft } from "react-icons/fi";
 import Main from "./components/Main";
 import CreateWithAI from "./components/CreateWithAI";
@@ -55,6 +56,7 @@ const exitFullscreen = () => {
 };
 
 const App = () => {
+  const queryClient = useQueryClient();
   const [currentView, setCurrentView] = useState<'templates' | 'ai'>(() => {
     const params = new URLSearchParams(window.location.search);
     return params.get('view') === 'ai' ? 'ai' : 'templates';
@@ -94,9 +96,7 @@ const App = () => {
   };
 
   const handleRefreshTemplates = () => {
-    const url = new URL(window.location.href);
-    url.searchParams.set('refresh', Date.now().toString());
-    window.location.href = url.toString();
+    queryClient.invalidateQueries(['templates']);
   };
 
   const handleBack = () => {
