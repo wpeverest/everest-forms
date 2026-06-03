@@ -617,79 +617,75 @@ const TemplateList: React.FC<TemplateListProps> = ({
 
 						{/* ── Choose state ── */}
 						{modalState === 'choose' && (
-							<VStack align="stretch" spacing="10px">
-								{/* Use this template option */}
+							<VStack align="stretch" spacing="16px">
+								{/* Primary: Use this template */}
 								<Box
 									as="button"
 									w="100%"
-									textAlign="left"
-									p="16px"
-									border="1.5px solid #e2e8f0"
-									borderRadius="12px"
-									bg="white"
+									h="44px"
+									display="inline-flex"
+									alignItems="center"
+									justifyContent="center"
+									gap="8px"
+									borderRadius="10px"
+									bg="#7545BB"
+									color="white"
+									fontSize="15px"
+									fontWeight="600"
+									border="none"
 									cursor={isCreating ? 'not-allowed' : 'pointer'}
-									opacity={isCreating ? 0.65 : 1}
+									opacity={isCreating ? 0.7 : 1}
 									onClick={!isCreating ? handleCreateForm : undefined}
-									transition="all 0.2s"
-									_hover={!isCreating ? { borderColor: '#7545BB', bg: '#faf9ff' } : {}}
+									transition="background 0.2s, opacity 0.2s"
+									_hover={!isCreating ? { bg: '#6a3daa' } : {}}
 								>
-									<HStack spacing="12px" align="center">
+									{isCreating ? (
 										<Box
-											w="36px" h="36px" borderRadius="8px"
-											bg="rgba(117,69,187,0.08)"
-											display="flex" alignItems="center" justifyContent="center"
-											flexShrink={0}
-										>
-											<Icon as={FiArrowRight} boxSize="16px" color="#7545BB" />
-										</Box>
-										<Box flex="1" minW="0">
-											<Text fontSize="14px" fontWeight="600" color="#0e0e0e" m="0 0 2px">
-												{__('Use this template', 'everest-forms')}
-											</Text>
-											<Text fontSize="12px" color="#6b7280" m="0" lineHeight="1.4">
-												{__('Start with the pre-built form structure', 'everest-forms')}
-											</Text>
-										</Box>
-										{isCreating && (
-											<Box w="16px" h="16px" border="2px solid #7545BB" borderTopColor="transparent" borderRadius="full"
-												sx={{ animation: 'spin 0.7s linear infinite', '@keyframes spin': { from: { transform: 'rotate(0deg)' }, to: { transform: 'rotate(360deg)' } } }}
-											/>
-										)}
-									</HStack>
+											w="16px" h="16px"
+											border="2px solid rgba(255,255,255,0.4)"
+											borderTopColor="white"
+											borderRadius="full"
+											sx={{ animation: 'spin 0.7s linear infinite', '@keyframes spin': { from: { transform: 'rotate(0deg)' }, to: { transform: 'rotate(360deg)' } } }}
+										/>
+									) : (
+										<Icon as={FiArrowRight} boxSize="4" />
+									)}
+									<Text margin="0" color="white">
+										{isCreating ? __('Creating…', 'everest-forms') : __('Use this template', 'everest-forms')}
+									</Text>
 								</Box>
 
-								{/* Edit with AI option */}
+								{/* OR divider */}
+								<Flex align="center" gap="12px">
+									<Box flex="1" h="1px" bg="#e2e8f0" />
+									<Text fontSize="12px" fontWeight="500" color="#9ca3af" m="0" textTransform="uppercase" letterSpacing="0.05em">
+										{__('or', 'everest-forms')}
+									</Text>
+									<Box flex="1" h="1px" bg="#e2e8f0" />
+								</Flex>
+
+								{/* Secondary: Edit with AI */}
 								<Box
 									as="button"
 									w="100%"
-									textAlign="left"
-									p="16px"
-									border="1.5px solid #e2e8f0"
-									borderRadius="12px"
-									bg="white"
+									display="inline-flex"
+									alignItems="center"
+									justifyContent="center"
+									gap="8px"
+									py="10px"
+									borderRadius="10px"
+									bg="transparent"
+									border="none"
+									color="#7545BB"
+									fontSize="14px"
+									fontWeight="500"
 									cursor="pointer"
 									onClick={() => { onClose(); onCreateWithAI && onCreateWithAI(); }}
-									transition="all 0.2s"
-									_hover={{ borderColor: '#7545BB', bg: '#faf9ff' }}
+									transition="color 0.2s"
+									_hover={{ color: '#6a3daa' }}
 								>
-									<HStack spacing="12px" align="center">
-										<Box
-											w="36px" h="36px" borderRadius="8px"
-											bgGradient="linear(135deg, rgba(117,69,187,0.12) 0%, rgba(150,96,219,0.08) 100%)"
-											display="flex" alignItems="center" justifyContent="center"
-											flexShrink={0}
-										>
-											<Icon as={LuSparkles} boxSize="16px" color="#7545BB" />
-										</Box>
-										<Box flex="1" minW="0">
-											<Text fontSize="14px" fontWeight="600" color="#0e0e0e" m="0 0 2px">
-												{__('Edit with AI', 'everest-forms')}
-											</Text>
-											<Text fontSize="12px" color="#6b7280" m="0" lineHeight="1.4">
-												{__('Customize this template using AI assistance', 'everest-forms')}
-											</Text>
-										</Box>
-									</HStack>
+									<Icon as={LuSparkles} boxSize="4" />
+									<Text margin="0">{__('Edit with AI', 'everest-forms')}</Text>
 								</Box>
 							</VStack>
 						)}
