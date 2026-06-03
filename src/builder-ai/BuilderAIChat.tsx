@@ -57,23 +57,18 @@ const BuilderAIChat: React.FC = () => {
 		{ role: 'assistant', text: GREETING },
 	]);
 	const [loading, setLoading]   = useState(false);
-	const [collapsed, setCollapsed] = useState(false);
 	const messagesEndRef = useRef<HTMLDivElement>(null);
 	const inputRef       = useRef<HTMLTextAreaElement>(null);
 
 	// Auto-scroll to latest message.
 	useEffect(() => {
-		if (open && !collapsed) {
-			messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-		}
-	}, [messages, open, collapsed]);
+		if (open) messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+	}, [messages, open]);
 
 	// Focus input when panel opens.
 	useEffect(() => {
-		if (open && !collapsed) {
-			setTimeout(() => inputRef.current?.focus(), 120);
-		}
-	}, [open, collapsed]);
+		if (open) setTimeout(() => inputRef.current?.focus(), 120);
+	}, [open]);
 
 	const sendMessage = async (text: string) => {
 		if (!text.trim() || loading) return;
@@ -162,10 +157,10 @@ const BuilderAIChat: React.FC = () => {
 				<div
 					style={{
 						position: 'fixed',
-						bottom: 128,   /* same baseline as the trigger button */
+						bottom: 128,
 						right: 22,
 						width: 440,
-						height: collapsed ? 56 : 640,
+						height: 640,
 						borderRadius: 16,
 						background: '#fff',
 						boxShadow: '0 8px 40px rgba(0,0,0,.18)',
@@ -177,7 +172,7 @@ const BuilderAIChat: React.FC = () => {
 						transition: 'height .25s ease',
 					}}
 				>
-					{/* Header — click to expand when minimised; X minimises when open, closes when already minimised */}
+					{/* Header */}
 					<div
 						style={{
 							display: 'flex',
@@ -187,10 +182,7 @@ const BuilderAIChat: React.FC = () => {
 							height: 56,
 							background: 'linear-gradient(135deg,#7545BB 0%,#9660db 100%)',
 							flexShrink: 0,
-							cursor: collapsed ? 'pointer' : 'default',
-							userSelect: 'none',
 						}}
-						onClick={() => { if (collapsed) setCollapsed(false); }}
 					>
 						<div
 							style={{
@@ -210,23 +202,13 @@ const BuilderAIChat: React.FC = () => {
 							<div style={{ fontSize: 14, fontWeight: 600, color: '#fff', lineHeight: 1.2 }}>
 								AI Form Assistant
 							</div>
-							{!collapsed && (
-								<div style={{ fontSize: 11, color: 'rgba(255,255,255,.7)', lineHeight: 1.2 }}>
-									Powered by AI
-								</div>
-							)}
+							<div style={{ fontSize: 11, color: 'rgba(255,255,255,.7)', lineHeight: 1.2 }}>
+								Powered by AI
+							</div>
 						</div>
-						{/* X: minimise when open → close fully when already minimised */}
+						{/* X closes the panel — trigger button reappears */}
 						<button
-							onClick={e => {
-								e.stopPropagation();
-								if (collapsed) {
-									setOpen(false);
-									setCollapsed(false);
-								} else {
-									setCollapsed(true);
-								}
-							}}
+							onClick={() => setOpen(false)}
 							style={{
 								background: 'none',
 								border: 'none',
@@ -237,7 +219,7 @@ const BuilderAIChat: React.FC = () => {
 								alignItems: 'center',
 								transition: 'color .15s',
 							}}
-							title={collapsed ? 'Close' : 'Minimise'}
+							title="Close"
 							onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.color = '#fff'; }}
 							onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.color = 'rgba(255,255,255,.8)'; }}
 						>
@@ -245,9 +227,7 @@ const BuilderAIChat: React.FC = () => {
 						</button>
 					</div>
 
-					{/* Body (hidden when collapsed) */}
-					{!collapsed && (
-						<>
+					<>
 							{/* Messages */}
 							<div
 								style={{
