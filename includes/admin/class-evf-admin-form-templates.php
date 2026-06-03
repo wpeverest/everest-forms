@@ -84,6 +84,10 @@ class EVF_Admin_Form_Templates {
 	 * @since 1.0.0
 	 */
 	public static function load_template_view() {
+		$use_react_header = apply_filters( 'everest_forms_use_react_header', true, 'forms' );
+		if ( $use_react_header ) {
+			include __DIR__ . '/views/html-admin-header-skeleton.php';
+		}
 		echo "<div id='evf-templates'></div>";
 		wp_register_script( 'evf-templates', plugins_url( 'dist/templates.min.js', EVF_PLUGIN_FILE ), array( 'wp-element', 'react', 'react-dom', 'wp-api-fetch', 'wp-i18n', 'wp-blocks' ), EVF_VERSION, true );
 		wp_localize_script(

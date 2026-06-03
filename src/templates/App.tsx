@@ -3,9 +3,7 @@ import React, { useState, useEffect } from "react";
 import {
   ChakraProvider,
   Box,
-  HStack,
   Icon,
-  Heading,
   Tooltip,
 } from "@chakra-ui/react";
 import { useQueryClient, useIsFetching } from "@tanstack/react-query";
@@ -114,59 +112,6 @@ const App = () => {
           borderRadius="16px"
           overflow="hidden"
         >
-          {/* Global header */}
-          <HStack
-            as="header"
-            h="64px"
-            px="7"
-            borderBottom="1px solid #e2e8f0"
-            justify="space-between"
-            align="center"
-            bg="white"
-          >
-            {/* Brand + title */}
-            <HStack spacing="4" align="center">
-              {/* EVF icon mark */}
-              <Box
-                w="32px"
-                h="32px"
-                borderRadius="8px"
-                bgGradient="linear(135deg, #7545BB 0%, #9660db 100%)"
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-                flexShrink={0}
-              >
-                <Icon viewBox="0 0 24 24" boxSize="18px" color="white">
-                  <path
-                    fill="currentColor"
-                    d="M21.23,10H17.79L16.62,8h3.46ZM17.77,4l1.15,2H15.48L14.31,4Zm-15,16L12,4l5.77,10H10.85L12,12h2.31L12,8,6.23,18H20.08l1.16,2Z"
-                  />
-                </Icon>
-              </Box>
-              {/* Divider */}
-              <Box w="1px" h="28px" bg="#e2e8f0" />
-              {/* Page title */}
-              <Heading as="h1" fontSize="20px" fontWeight="600" color="#0e0e0e" m="0" letterSpacing="-0.01em">
-                {__("Add New Form", "everest-forms")}
-              </Heading>
-            </HStack>
-
-            {/* Refresh */}
-            <Tooltip label={__("Refresh Templates", "everest-forms")} placement="left" hasArrow>
-              <Icon
-                as={FiRefreshCw}
-                boxSize="16px"
-                color={isFetching ? '#7545BB' : '#9ca3af'}
-                cursor={isFetching ? 'default' : 'pointer'}
-                onClick={!isFetching ? handleRefreshTemplates : undefined}
-                transition="color 0.2s"
-                _hover={!isFetching ? { color: '#7545BB' } : {}}
-                sx={isFetching ? { animation: 'spin 0.8s linear infinite', '@keyframes spin': { from: { transform: 'rotate(0deg)' }, to: { transform: 'rotate(360deg)' } } } : {}}
-              />
-            </Tooltip>
-          </HStack>
-
           <Box>
             <Main onCreateWithAI={navigateToAI} />
           </Box>
