@@ -1,16 +1,14 @@
 import {
 	Box,
 	Button,
-	Center,
-	Heading,
+	Flex,
+	HStack,
 	Icon,
 	Image,
-	Input,
 	Modal,
 	ModalBody,
 	ModalCloseButton,
 	ModalContent,
-	ModalFooter,
 	ModalHeader,
 	ModalOverlay,
 	Text,
@@ -20,9 +18,10 @@ import {
 } from '@chakra-ui/react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import apiFetch from '@wordpress/api-fetch';
-import { __, sprintf } from '@wordpress/i18n';
+import { __ } from '@wordpress/i18n';
 import React, { useEffect, useState } from 'react';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
+import { FiArrowRight, FiCrown } from 'react-icons/fi';
 import { LuSparkles } from 'react-icons/lu';
 import notFoundImage from '../images/not-found-image.png';
 import { templatesScriptData } from '../utils/global';
@@ -48,17 +47,6 @@ interface TemplateListProps {
 
 const { restURL, security } = templatesScriptData;
 
-const LockIcon = (props) => (
-	<Icon viewBox="0 0 24 24" {...props}>
-		<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 54 54">
-			<rect width="54" height="54" fill="#FA5252" rx="27" />
-			<path
-				fill="#fff"
-				d="M34 22.334h-1.166v-1.167A5.84 5.84 0 0 0 27 15.334a5.84 5.84 0 0 0-5.833 5.833v1.167H20a2.333 2.333 0 0 0-2.333 2.333v11.667A2.333 2.333 0 0 0 20 38.667h14a2.333 2.333 0 0 0 2.334-2.333V24.667A2.333 2.333 0 0 0 34 22.334Zm-10.5-1.167c0-1.93 1.57-3.5 3.5-3.5s3.5 1.57 3.5 3.5v1.167h-7v-1.167Zm4.667 10.177v2.657h-2.333v-2.657a2.323 2.323 0 0 1-.484-3.66 2.333 2.333 0 0 1 3.984 1.65c0 .861-.473 1.605-1.167 2.01Z"
-			/>
-		</svg>
-	</Icon>
-);
 
 interface CreateTemplateResponse {
 	success: boolean;
@@ -76,16 +64,17 @@ const TemplateList: React.FC<TemplateListProps> = ({
 	onCreateWithAI,
 }) => {
 	const [previewTemplate, setPreviewTemplate] = useState<Template | null>(null);
-	const [formTemplateName, setFormTemplateName] = useState<string>('');
 	const [selectedTemplateSlug, setSelectedTemplateSlug] = useState<string>('');
+	const [modalState, setModalState] = useState<'addons' | 'choose'>('choose');
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const [hoverCardId, setHoverCardId] = useState<number | null>(null);
 	const [favorites, setFavorites] = useState<string[]>([]);
+	const [isCreating, setIsCreating] = useState(false);
 	const toast = useToast();
 	const queryClient = useQueryClient();
 	const [isPluginModalOpen, setIsPluginModalOpen] = useState(false);
+	const [lockedTemplateName, setLockedTemplateName] = useState('');
 
-	const openModal = () => onOpen();
 	const openPluginModal = () => setIsPluginModalOpen(true);
 	const closePluginModal = () => setIsPluginModalOpen(false);
 
@@ -119,107 +108,76 @@ const TemplateList: React.FC<TemplateListProps> = ({
 	}, []);
 
 	const handleTemplateClick = async (template: Template) => {
-		const requiredPlugins = template.addons ? Object.keys(template.addons) : [];
+		const addonKeys = template.addons ? Object.keys(template.addons) : [];
 
 		try {
 			const response = await apiFetch({
 				path: `${restURL}everest-forms/v1/plugin/upgrade`,
 				method: 'POST',
-				body: JSON.stringify({ requiredPlugins }),
-				headers: {
-					'Content-Type': 'application/json',
-					'X-WP-Nonce': security,
-				},
+				body: JSON.stringify({ requiredPlugins: addonKeys }),
+				headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': security },
 			});
 
-			const { plugin_status } = response as {
-				plugin_status: Record<string, string>;
-			};
+			const { plugin_status } = response as { plugin_status: Record<string, string> };
 
 			if (!plugin_status) {
-				setFormTemplateName(template.title);
+				setLockedTemplateName(template.title);
 				openPluginModal();
 				return;
 			}
 
 			setSelectedTemplateSlug(template.slug);
 			setPreviewTemplate(template);
-			setFormTemplateName(template.title);
-			openModal();
+
+			// No addons required → go straight to the choose state
+			if (addonKeys.length === 0) {
+				setModalState('choose');
+			} else {
+				setModalState('addons');
+			}
+			onOpen();
 		} catch (error) {
 			toast({
 				title: __('Error', 'everest-forms'),
-				description: __(
-					'An error occurred while checking the plugin status. Please try again.',
-					'everest-forms',
-				),
-				status: 'error',
-				position: 'bottom-right',
-				duration: 5000,
-				isClosable: true,
-				variant: 'subtle',
+				description: __('An error occurred while checking the plugin status. Please try again.', 'everest-forms'),
+				status: 'error', position: 'bottom-right', duration: 5000, isClosable: true, variant: 'subtle',
 			});
 		}
 	};
 
-	const handleFormTemplateSave = async () => {
-		if (!formTemplateName) {
-			toast({
-				title: __('Form name required', 'everest-forms'),
-				description: __(
-					'Please provide a name for your form.',
-					'everest-forms',
-				),
-				status: 'warning',
-				position: 'bottom-right',
-				duration: 5000,
-				isClosable: true,
-				variant: 'subtle',
-			});
-			return;
-		}
+	// Called when all addons are active — transition to the choose view
+	const handleAddonsReady = () => {
+		setModalState('choose');
+	};
 
+	// Creates the form using the template title as name
+	const handleCreateForm = async () => {
+		if (!previewTemplate) return;
+		setIsCreating(true);
 		try {
 			const response = (await apiFetch({
 				path: `${restURL}everest-forms/v1/templates/create`,
 				method: 'POST',
-				body: JSON.stringify({
-					title: formTemplateName,
-					slug: selectedTemplateSlug,
-				}),
-				headers: {
-					'Content-Type': 'application/json',
-					'X-WP-Nonce': security,
-				},
+				body: JSON.stringify({ title: previewTemplate.title, slug: selectedTemplateSlug }),
+				headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': security },
 			})) as CreateTemplateResponse;
 
 			if (response.success && response.data) {
 				window.location.href = response.data.redirect;
 			} else {
+				setIsCreating(false);
 				toast({
 					title: __('Error', 'everest-forms'),
-					description:
-						response.message ||
-						__('Failed to create form template.', 'everest-forms'),
-					status: 'error',
-					position: 'bottom-right',
-					duration: 5000,
-					isClosable: true,
-					variant: 'subtle',
+					description: response.message || __('Failed to create form template.', 'everest-forms'),
+					status: 'error', position: 'bottom-right', duration: 5000, isClosable: true, variant: 'subtle',
 				});
 			}
 		} catch (error) {
+			setIsCreating(false);
 			toast({
 				title: __('Error', 'everest-forms'),
-				description: __(
-					'An error occurred while creating the form template.',
-					'everest-forms',
-				),
-				status: 'error',
-				position: 'bottom-right',
-				duration: 5000,
-				isClosable: true,
-				variant: 'subtle',
+				description: __('An error occurred while creating the form template.', 'everest-forms'),
+				status: 'error', position: 'bottom-right', duration: 5000, isClosable: true, variant: 'subtle',
 			});
 		}
 	};
@@ -278,17 +236,9 @@ const TemplateList: React.FC<TemplateListProps> = ({
 		mutation.mutate(slug);
 	};
 
-	const addonEntries = previewTemplate?.addons
-		? Object.entries(previewTemplate.addons).map(([key, value]) => ({
-			key,
-			value,
-		}))
+	const requiredPlugins = previewTemplate?.addons
+		? Object.entries(previewTemplate.addons).map(([key, value]) => ({ key, value }))
 		: [];
-
-	const requiredPlugins = addonEntries.map((addon) => ({
-		key: addon.key,
-		value: addon.value,
-	}));
 
 	return (
 		<Box padding="0">
@@ -555,105 +505,214 @@ const TemplateList: React.FC<TemplateListProps> = ({
 				</Box>
 			)}
 
-			{/* Plugin required modal */}
-			<Modal
-				isCentered={true}
-				isOpen={isPluginModalOpen}
-				onClose={closePluginModal}
-				size="lg"
-			>
-				<ModalOverlay />
-				<ModalContent borderRadius="8px" padding="20px">
-					<ModalHeader
-						padding="0px"
-						textAlign="center"
-						fontSize="20px"
-						lineHeight="28px"
-						color="#26262E"
-					>
-						<LockIcon boxSize={10} />
-						<Heading
-							as="h2"
-							margin="10px 0px 0px 0px"
-							fontSize="20px"
-							lineHeight="28px"
-							fontWeight="bold"
+			{/* ── Premium / locked template modal ────────────────────────────── */}
+			<Modal isCentered isOpen={isPluginModalOpen} onClose={closePluginModal} size="md">
+				<ModalOverlay bg="rgba(0,0,0,0.45)" backdropFilter="blur(2px)" />
+				<ModalContent borderRadius="16px" p="0" overflow="hidden" boxShadow="0 20px 60px rgba(0,0,0,0.15)">
+					<ModalHeader p="0">
+						{/* Gradient header band */}
+						<Box
+							bgGradient="linear(135deg, #7545BB 0%, #9660db 100%)"
+							px="28px" pt="28px" pb="24px"
 						>
-							{sprintf(
-								__('%s is a Premium Template', 'everest-forms'),
-								formTemplateName,
-							)}
-						</Heading>
+							<Box
+								w="48px" h="48px" borderRadius="12px"
+								bg="rgba(255,255,255,0.15)"
+								display="flex" alignItems="center" justifyContent="center"
+								mb="14px"
+							>
+								<Icon as={FiCrown} boxSize="22px" color="white" />
+							</Box>
+							<Text fontSize="18px" fontWeight="700" color="white" m="0" lineHeight="1.3">
+								{__('Premium Template', 'everest-forms')}
+							</Text>
+							<Text fontSize="13px" color="rgba(255,255,255,0.75)" m="4px 0 0" lineHeight="1.4">
+								{lockedTemplateName}
+							</Text>
+						</Box>
 					</ModalHeader>
-					<ModalCloseButton top="12px" right="12px" />
-					<ModalBody padding="0px" marginTop="16px" textAlign="center">
-						<Text margin="0px" fontSize="16px" lineHeight="24px" mb="20px">
-							{__(
-								'This template requires premium addons. Please upgrade to the Premium to unlock all these awesome templates.',
-								'everest-forms',
-							)}
+					<ModalCloseButton top="16px" right="16px" color="white" _hover={{ bg: 'rgba(255,255,255,0.15)' }} />
+
+					<ModalBody px="28px" py="24px">
+						<Text fontSize="14px" color="#374151" lineHeight="1.65" m="0">
+							{__('This template requires a premium plan. Upgrade to unlock all premium templates and features.', 'everest-forms')}
 						</Text>
 					</ModalBody>
-					<ModalFooter justifyContent="flex-end" padding="0px">
-						<Button variant="ghost" onClick={closePluginModal}>
-							{__('OK', 'everest-forms')}
-						</Button>
-						<a
-							href="https://everestforms.net/upgrade/?utm_medium=evf-template-page&utm_source=evf-free&utm_campaign=template-premium-popup"
-							target="_blank"
-							rel="noopener noreferrer"
-							style={{ width: 'inherit' }}
-						>
-							<Button colorScheme="blue" ml={3}>
+
+					<Box px="28px" pb="24px">
+						<Flex gap="10px">
+							<Box
+								as="button"
+								flex="1"
+								h="40px"
+								borderRadius="8px"
+								border="1px solid #e2e8f0"
+								bg="white"
+								color="#374151"
+								fontSize="14px"
+								fontWeight="500"
+								cursor="pointer"
+								onClick={closePluginModal}
+								_hover={{ bg: '#f8fafc' }}
+								transition="background 0.2s"
+							>
+								{__('Cancel', 'everest-forms')}
+							</Box>
+							<Box
+								as="a"
+								href="https://everestforms.net/upgrade/?utm_medium=evf-template-page&utm_source=evf-free&utm_campaign=template-premium-popup"
+								target="_blank"
+								rel="noopener noreferrer"
+								flex="1"
+								h="40px"
+								borderRadius="8px"
+								bg="#7545BB"
+								color="white"
+								fontSize="14px"
+								fontWeight="500"
+								cursor="pointer"
+								display="flex"
+								alignItems="center"
+								justifyContent="center"
+								gap="6px"
+								_hover={{ bg: '#6a3daa' }}
+								transition="background 0.2s"
+								textDecoration="none"
+							>
+								<Icon as={FiCrown} boxSize="14px" />
 								{__('Upgrade Plan', 'everest-forms')}
-							</Button>
-						</a>
-					</ModalFooter>
+							</Box>
+						</Flex>
+					</Box>
 				</ModalContent>
 			</Modal>
 
-			{/* Template name + plugin status modal */}
-			<Modal isCentered isOpen={isOpen} onClose={onClose} size="xl">
-				<ModalOverlay />
-				<ModalContent borderRadius="8px" padding="40px">
-					<ModalHeader
-						padding="0px"
-						textAlign="left"
-						fontSize="20px"
-						lineHeight="28px"
-						color="#26262E"
-					>
-						{__(
-							'Uplift your form experience to the next level.',
-							'everest-forms',
-						)}
-					</ModalHeader>
-					<ModalCloseButton top="12px" right="12px" />
-					<ModalBody padding="0px" marginTop="16px">
-						<Box mb="20px" padding="0px">
-							<Text margin="0px 0px 6px" fontSize="16px" lineHeight="29px">
-								{__('Give it a name', 'everest-forms')}
-							</Text>
-							<Input
-								width={'full'}
-								value={formTemplateName}
-								onChange={(e) => setFormTemplateName(e.target.value)}
-								placeholder="Give it a name."
-								size="md"
-								_focus={{
-									borderColor: '#7545BB',
-									outline: 'none',
-									boxShadow: 'none',
-								}}
-							/>
-						</Box>
+			{/* ── Template addon / choose modal ───────────────────────────────── */}
+			<Modal isCentered isOpen={isOpen} onClose={onClose} size="md">
+				<ModalOverlay bg="rgba(0,0,0,0.4)" backdropFilter="blur(2px)" />
+				<ModalContent borderRadius="16px" p="0" overflow="hidden" boxShadow="0 20px 60px rgba(0,0,0,0.12)">
 
-						<Box overflow="hidden" mb="0px" padding="0px">
-							<PluginStatus
-								requiredPlugins={requiredPlugins}
-								onActivateAndContinue={handleFormTemplateSave}
-							/>
-						</Box>
+					{/* Header */}
+					<ModalHeader px="24px" pt="22px" pb="16px" borderBottom="1px solid #f1f5f9" p="0">
+						<Flex align="center" gap="12px" px="24px" pt="22px" pb="16px" borderBottom="1px solid #f1f5f9">
+							<Box
+								w="36px" h="36px" borderRadius="8px"
+								bg="rgba(117,69,187,0.1)"
+								display="flex" alignItems="center" justifyContent="center"
+								flexShrink={0}
+							>
+								<Icon as={LuSparkles} boxSize="16px" color="#7545BB" />
+							</Box>
+							<Box flex="1" minW="0">
+								<Text fontSize="15px" fontWeight="600" color="#0e0e0e" m="0" noOfLines={1}>
+									{previewTemplate?.title}
+								</Text>
+								<Text fontSize="12px" color="#9ca3af" m="0">
+									{modalState === 'addons'
+										? __('Required addons', 'everest-forms')
+										: __('Ready to use', 'everest-forms')}
+								</Text>
+							</Box>
+						</Flex>
+					</ModalHeader>
+					<ModalCloseButton top="14px" right="16px" size="sm" borderRadius="6px" _hover={{ bg: '#f1f5f9' }} />
+
+					<ModalBody px="24px" py="20px">
+
+						{/* ── Addons state ── */}
+						{modalState === 'addons' && (
+							<VStack align="stretch" spacing="0">
+								<HStack spacing="8px" mb="16px">
+									<Box w="4px" h="4px" borderRadius="full" bg="#7545BB" flexShrink={0} mt="1px" />
+									<Text fontSize="13px" color="#6b7280" m="0" lineHeight="1.55">
+										{__('This template requires the following addons to be installed and activated:', 'everest-forms')}
+									</Text>
+								</HStack>
+								<PluginStatus
+									requiredPlugins={requiredPlugins}
+									onActivateAndContinue={handleAddonsReady}
+								/>
+							</VStack>
+						)}
+
+						{/* ── Choose state ── */}
+						{modalState === 'choose' && (
+							<VStack align="stretch" spacing="10px">
+								{/* Use this template option */}
+								<Box
+									as="button"
+									w="100%"
+									textAlign="left"
+									p="16px"
+									border="1.5px solid #e2e8f0"
+									borderRadius="12px"
+									bg="white"
+									cursor={isCreating ? 'not-allowed' : 'pointer'}
+									opacity={isCreating ? 0.65 : 1}
+									onClick={!isCreating ? handleCreateForm : undefined}
+									transition="all 0.2s"
+									_hover={!isCreating ? { borderColor: '#7545BB', bg: '#faf9ff' } : {}}
+								>
+									<HStack spacing="12px" align="center">
+										<Box
+											w="36px" h="36px" borderRadius="8px"
+											bg="rgba(117,69,187,0.08)"
+											display="flex" alignItems="center" justifyContent="center"
+											flexShrink={0}
+										>
+											<Icon as={FiArrowRight} boxSize="16px" color="#7545BB" />
+										</Box>
+										<Box flex="1" minW="0">
+											<Text fontSize="14px" fontWeight="600" color="#0e0e0e" m="0 0 2px">
+												{__('Use this template', 'everest-forms')}
+											</Text>
+											<Text fontSize="12px" color="#6b7280" m="0" lineHeight="1.4">
+												{__('Start with the pre-built form structure', 'everest-forms')}
+											</Text>
+										</Box>
+										{isCreating && (
+											<Box w="16px" h="16px" border="2px solid #7545BB" borderTopColor="transparent" borderRadius="full"
+												sx={{ animation: 'spin 0.7s linear infinite', '@keyframes spin': { from: { transform: 'rotate(0deg)' }, to: { transform: 'rotate(360deg)' } } }}
+											/>
+										)}
+									</HStack>
+								</Box>
+
+								{/* Edit with AI option */}
+								<Box
+									as="button"
+									w="100%"
+									textAlign="left"
+									p="16px"
+									border="1.5px solid #e2e8f0"
+									borderRadius="12px"
+									bg="white"
+									cursor="pointer"
+									onClick={() => { onClose(); onCreateWithAI && onCreateWithAI(); }}
+									transition="all 0.2s"
+									_hover={{ borderColor: '#7545BB', bg: '#faf9ff' }}
+								>
+									<HStack spacing="12px" align="center">
+										<Box
+											w="36px" h="36px" borderRadius="8px"
+											bgGradient="linear(135deg, rgba(117,69,187,0.12) 0%, rgba(150,96,219,0.08) 100%)"
+											display="flex" alignItems="center" justifyContent="center"
+											flexShrink={0}
+										>
+											<Icon as={LuSparkles} boxSize="16px" color="#7545BB" />
+										</Box>
+										<Box flex="1" minW="0">
+											<Text fontSize="14px" fontWeight="600" color="#0e0e0e" m="0 0 2px">
+												{__('Edit with AI', 'everest-forms')}
+											</Text>
+											<Text fontSize="12px" color="#6b7280" m="0" lineHeight="1.4">
+												{__('Customize this template using AI assistance', 'everest-forms')}
+											</Text>
+										</Box>
+									</HStack>
+								</Box>
+							</VStack>
+						)}
 					</ModalBody>
 				</ModalContent>
 			</Modal>
