@@ -202,7 +202,6 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 	// Bumped after an update so the preview re-fetches for the same form id.
 	const [previewVersion, setPreviewVersion] = useState(0);
 	const previewHintTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
-	const regenTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 	const aiResponseRef = React.useRef<any>(null);
 
 	// Publish the AI-generated draft form and open it in the builder.
@@ -237,12 +236,22 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 	// Regenerate / refine the current draft via the AI update endpoint, then
 	// re-fetch the preview. Used by the "Regenerate" link (original prompt) and
 	// the "Refine or follow up…" input (follow-up prompt).
-	const handleUpdate = async (text: string) => {
-		const refine = (text || '').trim();
-		if (isRegenerating || ! formId || ! refine) return;
+	//
+	// mode="regenerate": give the form a fresh take based on the original prompt.
+	//   AI may freely add/remove/improve fields to enhance the form.
+	// mode="refine": apply a specific user instruction on top of the current form.
+	//   AI changes only what was asked, keeps everything else.
+	// refinePromptText: extra instruction typed by user (empty string for Regenerate).
+	// Gateway decides mode from this: non-empty → refine, empty → regenerate.
+	const handleUpdate = async (refinePromptText: string = '') => {
+		if (isRegenerating || ! formId || ! prompt.trim()) return;
 		setIsRegenerating(true);
 		try {
-			const res = await callAi('evf_ai_update_form', { form_id: formId, prompt: refine });
+			const res = await callAi('evf_ai_update_form', {
+				form_id:       formId,
+				prompt,                                     // always the original prompt
+				refine_prompt: (refinePromptText || '').trim(), // extra instruction or ''
+			});
 			if (res?.success) {
 				setRefinePrompt('');
 				// Re-render the preview for the (same) updated draft.
@@ -265,8 +274,8 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 		}
 	};
 
-	// "Regenerate" re-runs the AI on the original prompt.
-	const handleRegenerate = () => handleUpdate(prompt);
+	// "Regenerate" — no extra instruction, gateway uses original prompt + current form.
+	const handleRegenerate = () => handleUpdate();
 
 	const handleFieldClick = (e: React.MouseEvent) => {
 		const { clientX, clientY } = e;

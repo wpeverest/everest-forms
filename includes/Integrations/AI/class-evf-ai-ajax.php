@@ -30,8 +30,9 @@ class EVF_AI_Ajax {
 			wp_send_json_error( [ 'message' => __( 'You do not have permission to use this feature.', 'everest-forms' ) ], 403 );
 		}
 
-		$form_id = absint( $_POST['form_id'] ?? 0 );
-		$prompt  = sanitize_textarea_field( wp_unslash( $_POST['prompt'] ?? '' ) );
+		$form_id       = absint( $_POST['form_id'] ?? 0 );
+		$prompt        = sanitize_textarea_field( wp_unslash( $_POST['prompt'] ?? '' ) );
+		$refine_prompt = sanitize_textarea_field( wp_unslash( $_POST['refine_prompt'] ?? '' ) );
 
 		if ( ! $form_id ) {
 			wp_send_json_error( [ 'message' => __( 'Invalid form ID.', 'everest-forms' ) ] );
@@ -52,7 +53,7 @@ class EVF_AI_Ajax {
 			] );
 		}
 
-		$ai_response = EVF_AI_API::update_form( $prompt, $form_id );
+		$ai_response = EVF_AI_API::update_form( $prompt, $form_id, $refine_prompt );
 
 		if ( is_wp_error( $ai_response ) ) {
 			wp_send_json_error( [

@@ -71,22 +71,31 @@ class EVF_AI_API {
 	 * @param int    $form_id The draft form being refined.
 	 * @return array|WP_Error  Decoded AI form schema on success.
 	 */
-	public static function update_form( string $prompt, int $form_id = 0 ) {
+	public static function update_form( string $prompt, int $form_id = 0, string $refine_prompt = '' ) {
 		$token = EVF_AI_Registration::get_site_token();
 		if ( ! $token ) {
 			return new WP_Error( 'not_registered', __( 'AI features are not yet active on this site.', 'everest-forms' ) );
 		}
 
-		$response = self::request(
-			'POST',
-			'/ai/v1/update',
-			array(
-				'prompt'      => $prompt,
-				'form_id'     => $form_id,
-				'license_key' => self::get_license_key(),
-			),
-			$token
+		$body = array(
+			'prompt'        => $prompt,
+			'refine_prompt' => $refine_prompt,
+			'form_id'       => $form_id,
+			'license_key'   => self::get_license_key(),
+			'current_form'  => self::get_current_form_context( $form_id ),
 		);
+
+		$response = self::request( 'POST', '/ai/v1/update', $body, $token );
+
+		// Auto-heal stale token — same pattern as generate_form
+		if ( is_wp_error( $response ) && 'api_error' === $response->get_error_code()
+			&& false !== strpos( $response->get_error_message(), 'Invalid token' ) ) {
+
+			EVF_AI_Registration::clear_credentials();
+			EVF_AI_Registration::register();
+			$token    = EVF_AI_Registration::get_site_token();
+			$response = self::request( 'POST', '/ai/v1/update', $body, $token );
+		}
 
 		if ( is_wp_error( $response ) ) {
 			return $response;
@@ -97,6 +106,43 @@ class EVF_AI_API {
 		}
 
 		return $response['form'];
+	}
+
+	/**
+	 * Extract a lightweight form context for the AI (type + label only).
+	 * Keeps extra token cost to ~100-200 tokens for a typical form.
+	 *
+	 * @param int $form_id
+	 * @return array  { form_title, fields: [ { type, label } ] }
+	 */
+	private static function get_current_form_context( int $form_id ): array {
+		if ( ! $form_id ) {
+			return [];
+		}
+
+		$post = get_post( $form_id );
+		if ( ! $post || 'everest_form' !== $post->post_type ) {
+			return [];
+		}
+
+		$data    = evf_decode( $post->post_content );
+		$summary = [];
+
+		foreach ( ( $data['form_fields'] ?? [] ) as $field ) {
+			$type = $field['type'] ?? '';
+			if ( in_array( $type, [ 'hidden', 'html', 'divider' ], true ) ) {
+				continue;
+			}
+			$summary[] = [
+				'type'  => $type,
+				'label' => $field['label'] ?? '',
+			];
+		}
+
+		return [
+			'form_title' => $post->post_title,
+			'fields'     => $summary,
+		];
 	}
 
 	/**
