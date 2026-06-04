@@ -47,7 +47,13 @@ class EVF_Admin_Assets {
 		     id="everest-forms-field-option-conditional-logic-<?php echo $field_id; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>">
 			<a href="#" class="everest-forms-field-option-group-toggle">
 				<?php esc_html_e( 'Conditional Logic', 'everest-forms' ); ?>
-				<span class="evf-cl-pro-badge"><?php esc_html_e( 'PRO', 'everest-forms' ); ?></span>
+				<span class="evf-cl-pro-badge">
+					<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+						<rect x="0.5" y="0.5" width="19" height="19" rx="2.5" fill="#FF8C39" stroke="#FF8C39"/>
+						<path d="M10 5L13 13H7L10 5Z" fill="#EFEFEF"/>
+						<path fill="white" fill-rule="evenodd" d="M5 7L5.71429 13H14.2857L15 7L10 11.125L5 7ZM14.2857 13.5714H5.71427V15H14.2857V13.5714Z" clip-rule="evenodd"/>
+					</svg>
+				</span>
 				<i class="handlediv"></i>
 			</a>
 			<div class="everest-forms-field-option-group-inner" style="display:none;">
@@ -55,23 +61,32 @@ class EVF_Admin_Assets {
 				<div class="evf-cl-upgrade-notice">
 					<p><?php esc_html_e( 'Conditional Logic is a Pro feature. Upgrade to Pro to use conditional logic in your forms.', 'everest-forms' ); ?></p>
 					<a href="<?php echo esc_url( $upgrade_url ); ?>" target="_blank" rel="noopener noreferrer" class="evf-cl-upgrade-btn">
+						<svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+							<path d="M10 5L13 13H7L10 5Z" fill="rgba(255,255,255,0.8)"/>
+							<path fill="white" fill-rule="evenodd" d="M5 7L5.71429 13H14.2857L15 7L10 11.125L5 7ZM14.2857 13.5714H5.71427V15H14.2857V13.5714Z" clip-rule="evenodd"/>
+						</svg>
 						<?php esc_html_e( 'Upgrade to Pro', 'everest-forms' ); ?>
 					</a>
 				</div>
 
-				<div class="evf-cl-preview-ui">
-					<div class="evf-cl-enable-row everest-forms-field-option-row">
-						<div class="evf-toggle-section">
-							<span class="everest-forms-toggle-form">
-								<input type="checkbox" class="widefat" disabled>
-								<span class="slider round"></span>
-							</span>
-							<label class="inline">
-								<?php esc_html_e( 'Enable Conditional Logic', 'everest-forms' ); ?>
-							</label>
-						</div>
-					</div>
-				</div>
+				<ul class="evf-cl-features">
+					<?php
+					$features = array(
+						__( 'Show or hide fields based on user answers', 'everest-forms' ),
+						__( 'Combine multiple rules with AND / OR logic', 'everest-forms' ),
+						__( 'Support for text, select, checkbox &amp; more', 'everest-forms' ),
+					);
+					foreach ( $features as $feature ) :
+					?>
+					<li>
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+							<path fill-rule="evenodd" d="M16.707 5.293a1 1 0 0 1 0 1.414l-8 8a1 1 0 0 1-1.414 0l-4-4a1 1 0 0 1 1.414-1.414L8 12.586l7.293-7.293a1 1 0 0 1 1.414 0z" clip-rule="evenodd"/>
+						</svg>
+						<?php echo wp_kses_post( $feature ); ?>
+					</li>
+					<?php endforeach; ?>
+				</ul>
+
 
 			</div>
 		</div>

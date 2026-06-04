@@ -13853,19 +13853,17 @@ button#show-settings-link {
 }
 
 .evf-cl-pro-badge {
-	display: inline-block;
-	background: #7545bb;
-	color: #fff;
-	font-size: 9px;
-	font-weight: 700;
-	letter-spacing: 0.08em;
-	padding: 2px 5px;
-	border-radius: 3px;
+	display: inline-flex;
+	align-items: center;
 	margin-left: 5px;
 	vertical-align: middle;
-	text-transform: uppercase;
 	position: relative;
 	top: -1px;
+
+	svg {
+		width: 18px;
+		height: 18px;
+	}
 }
 
 .evf-cl-upgrade-notice {
@@ -13884,7 +13882,9 @@ button#show-settings-link {
 }
 
 .evf-cl-upgrade-btn {
-	display: inline-block;
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
 	background: #7545bb;
 	color: #fff !important;
 	font-size: 12px;
@@ -13894,18 +13894,41 @@ button#show-settings-link {
 	text-decoration: none !important;
 	transition: background 0.2s ease;
 
+	svg {
+		width: 14px;
+		height: 14px;
+		flex-shrink: 0;
+	}
+
 	&:hover {
 		background: #9159e3;
 		color: #fff !important;
 	}
 }
 
-.evf-cl-preview-ui {
-	opacity: 0.6;
-	pointer-events: none;
-	user-select: none;
+.evf-cl-features {
+	list-style: none;
+	margin: 0 0 14px;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 7px;
+
+	li {
+		display: flex;
+		align-items: flex-start;
+		gap: 7px;
+		font-size: 12px;
+		line-height: 1.5;
+		color: #3c3c3c;
+
+		svg {
+			flex-shrink: 0;
+			width: 14px;
+			height: 14px;
+			margin-top: 2px;
+			color: #7545bb;
+		}
+	}
 }
 
-.evf-cl-enable-row {
-	margin-bottom: 4px;
-}
