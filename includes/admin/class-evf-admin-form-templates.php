@@ -94,8 +94,13 @@ class EVF_Admin_Form_Templates {
 			'evf-templates',
 			'evf_templates_script',
 			array(
-				'security' => wp_create_nonce( 'wp_rest' ),
-				'restURL'  => rest_url(),
+				'security'     => wp_create_nonce( 'wp_rest' ),
+				'restURL'      => rest_url(),
+				// ThemeGrill AI Cloud (Python gateway) — used by the Create with AI flow.
+				'ajaxUrl'      => admin_url( 'admin-ajax.php' ),
+				'aiNonce'      => wp_create_nonce( 'evf_ai_nonce' ),
+				'aiRegistered' => class_exists( 'EVF_AI_Registration' ) ? EVF_AI_Registration::is_registered() : false,
+				'aiTier'       => class_exists( 'EVF_AI_Registration' ) ? EVF_AI_Registration::get_tier() : 'free',
 			)
 		);
 		wp_enqueue_script( 'evf-templates' );

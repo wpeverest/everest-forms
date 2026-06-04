@@ -94,146 +94,6 @@ const GEN_STEPS = [
 	__('Finalizing your form', 'everest-forms'),
 ];
 
-// ── AI field type used by the mock response and create-from-ai endpoint ──────
-interface AIField {
-	type: string;
-	label: string;
-	required: boolean;
-	placeholder?: string;
-}
-
-interface AIGenerateResponse {
-	title: string;
-	fields: AIField[];
-}
-
-// Field presets keyed by keyword → used by the mock to return realistic fields.
-const FIELD_PRESETS: Record<string, AIField[]> = {
-	feedback: [
-		{ type: 'name',     label: 'Full Name',                  required: true  },
-		{ type: 'email',    label: 'Email Address',              required: true  },
-		{ type: 'rating',   label: 'Overall Rating',             required: false },
-		{ type: 'textarea', label: 'Your Feedback',              required: false },
-		{ type: 'select',   label: 'How did you hear about us?', required: false },
-	],
-	survey: [
-		{ type: 'name',     label: 'Name',              required: true  },
-		{ type: 'email',    label: 'Email',             required: true  },
-		{ type: 'radio',    label: 'Satisfaction Level', required: true  },
-		{ type: 'rating',   label: 'Rating',             required: false },
-		{ type: 'textarea', label: 'Comments',           required: false },
-	],
-	appointment: [
-		{ type: 'name',     label: 'Full Name',     required: true  },
-		{ type: 'email',    label: 'Email',         required: true  },
-		{ type: 'phone',    label: 'Phone Number',  required: true  },
-		{ type: 'date',     label: 'Preferred Date', required: true  },
-		{ type: 'select',   label: 'Service Type',  required: true  },
-		{ type: 'textarea', label: 'Notes',          required: false },
-	],
-	booking: [
-		{ type: 'name',     label: 'Full Name',     required: true  },
-		{ type: 'email',    label: 'Email',         required: true  },
-		{ type: 'phone',    label: 'Phone Number',  required: true  },
-		{ type: 'date',     label: 'Check-in Date', required: true  },
-		{ type: 'date',     label: 'Check-out Date', required: true  },
-		{ type: 'number',   label: 'Number of Guests', required: true },
-	],
-	registration: [
-		{ type: 'name',     label: 'Full Name',     required: true  },
-		{ type: 'email',    label: 'Email Address', required: true  },
-		{ type: 'phone',    label: 'Phone Number',  required: false },
-		{ type: 'select',   label: 'Course / Event', required: true  },
-		{ type: 'textarea', label: 'Special Requirements', required: false },
-	],
-	contact: [
-		{ type: 'name',     label: 'Full Name',    required: true  },
-		{ type: 'email',    label: 'Email',        required: true  },
-		{ type: 'phone',    label: 'Phone',        required: false },
-		{ type: 'text',     label: 'Subject',      required: true  },
-		{ type: 'textarea', label: 'Message',      required: true  },
-	],
-	job: [
-		{ type: 'name',     label: 'Full Name',          required: true  },
-		{ type: 'email',    label: 'Email Address',      required: true  },
-		{ type: 'phone',    label: 'Phone Number',       required: true  },
-		{ type: 'text',     label: 'Position Applied For', required: true },
-		{ type: 'textarea', label: 'Cover Letter',       required: false },
-	],
-	order: [
-		{ type: 'name',     label: 'Full Name',       required: true  },
-		{ type: 'email',    label: 'Email Address',   required: true  },
-		{ type: 'phone',    label: 'Phone Number',    required: true  },
-		{ type: 'select',   label: 'Product',         required: true  },
-		{ type: 'number',   label: 'Quantity',        required: true  },
-		{ type: 'address',  label: 'Shipping Address', required: true  },
-	],
-	default: [
-		{ type: 'name',     label: 'Full Name',    required: true  },
-		{ type: 'email',    label: 'Email Address', required: true  },
-		{ type: 'textarea', label: 'Message',       required: true  },
-	],
-};
-
-// Demo form used by the mock: a deliberate mix of FREE and PRO/addon fields so
-// the locked-field upsell (PRO badge + locked settings) can be verified end to
-// end. Types are real EVF field-type slugs — the create-from-ai / ai-preview
-// endpoints map any registered type directly, and Pro types render locked.
-const DEMO_FIELDS: AIField[] = [
-	// ── Free fields ──────────────────────────────────────────────
-	{ type: 'first-name',   label: 'Full Name',                  required: true  },
-	{ type: 'email',        label: 'Email Address',              required: true  },
-	{ type: 'phone',        label: 'Phone Number',               required: false },
-	{ type: 'textarea',     label: 'Your Message',               required: false },
-	{ type: 'select',       label: 'How did you hear about us?', required: false },
-	// ── Survey fields (free in core, owned by the Survey/Polls/Quiz addon) ──
-	{ type: 'rating',       label: 'Overall Rating',             required: false },
-	{ type: 'yes-no',       label: 'Would you recommend us?',    required: false },
-	{ type: 'likert',       label: 'Rate the following',         required: false },
-	{ type: 'scale-rating', label: 'Satisfaction (1–10)',        required: false },
-	// ── Pro / advanced fields → render LOCKED ────────────────────
-	{ type: 'signature',                  label: 'Signature',          required: false },
-	{ type: 'range-slider',               label: 'Budget Range',       required: false },
-	{ type: 'color',                      label: 'Favourite Colour',   required: false },
-	{ type: 'password',                   label: 'Create Password',    required: false },
-	{ type: 'lookup',                     label: 'Lookup',             required: false },
-	{ type: 'progress',                   label: 'Progress',           required: false },
-	{ type: 'reset',                      label: 'Reset',              required: false },
-	{ type: 'repeater-fields',            label: 'Repeater',           required: false },
-	{ type: 'captcha',                    label: 'Captcha',            required: false },
-	// ── Pro / payment fields → render LOCKED ─────────────────────
-	{ type: 'payment-single',             label: 'Single Item',        required: false },
-	{ type: 'payment-multiple',           label: 'Multiple Items',     required: false },
-	{ type: 'payment-checkbox',           label: 'Checkbox Items',     required: false },
-	{ type: 'payment-quantity',           label: 'Quantity',           required: false },
-	{ type: 'payment-subtotal',           label: 'Subtotal',           required: false },
-	{ type: 'payment-total',              label: 'Total',              required: false },
-	{ type: 'payment-subscription-plan',  label: 'Subscription Plan',  required: false },
-	{ type: 'payment-coupon',             label: 'Coupon',             required: false },
-	{ type: 'credit-card',                label: 'Credit Card',        required: false },
-	{ type: 'authorize-net',              label: 'Authorize.Net',      required: false },
-];
-
-/**
- * Mock call to the Python AI backend.
- * Replace the URL/logic here when the real endpoint is ready.
- *
- * For now it returns a demo form containing both free and Pro/addon fields so
- * the locked-field upsell can be verified. (FIELD_PRESETS is retained for the
- * eventual keyword-based behaviour.)
- */
-const mockAIGenerateForm = (userPrompt: string): Promise<AIGenerateResponse> => {
-	const fields = DEMO_FIELDS;
-
-	// Derive a clean title from the prompt (first 60 chars, capitalized)
-	const raw = userPrompt.trim().replace(/[^a-zA-Z0-9 ]/g, '').slice(0, 60);
-	const title = raw.charAt(0).toUpperCase() + raw.slice(1) || 'AI Generated Form';
-
-	// Simulate network latency (~3.5 s, matching the generation animation)
-	return new Promise(resolve =>
-		setTimeout(() => resolve({ title, fields }), 3500)
-	);
-};
 
 const MAX_CHARS = 500;
 
@@ -296,7 +156,30 @@ interface CreateWithAIProps {
 	onBack: () => void;
 }
 
-const { restURL, security } = templatesScriptData;
+const { restURL, security, ajaxUrl, aiNonce } = templatesScriptData;
+
+/**
+ * Call a ThemeGrill AI Cloud (Python gateway) action via admin-ajax.
+ * Mirrors the builder modal's $.post( evfAI.ajaxUrl, { action, nonce, ... } ).
+ */
+const callAi = async (
+	action: string,
+	data: Record<string, string | number> = {},
+): Promise<any> => {
+	const body = new URLSearchParams();
+	body.append('action', action);
+	body.append('nonce', aiNonce);
+	Object.entries(data).forEach(([key, value]) => body.append(key, String(value)));
+
+	const response = await fetch(ajaxUrl, {
+		method: 'POST',
+		credentials: 'same-origin',
+		headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+		body: body.toString(),
+	});
+
+	return response.json();
+};
 
 const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 	const toast = useToast();
@@ -306,40 +189,38 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 	const [hint, setHint] = useState({ show: false, x: 0, y: 0 });
 	const [isRegenerating, setIsRegenerating] = useState(false);
 	const [isCreatingForm, setIsCreatingForm] = useState(false);
-	const [generatedFields, setGeneratedFields] = useState<AIField[]>([]);
-	const [generatedTitle, setGeneratedTitle] = useState('');
 	// Server-rendered builder-canvas HTML for the preview (guarantees parity with
 	// the builder shown after import). Empty until the ai-preview endpoint responds.
 	const [previewHTML, setPreviewHTML] = useState('');
 	const [isPreviewLoading, setIsPreviewLoading] = useState(false);
+	// The AI gateway creates a DRAFT form on generate; we preview it by id and
+	// publish it on "Use This Form".
+	const [formId, setFormId] = useState(0);
+	const [editUrl, setEditUrl] = useState('');
 	const previewHintTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 	const regenTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
-	const aiResponseRef = React.useRef<AIGenerateResponse | null>(null);
+	const aiResponseRef = React.useRef<any>(null);
 
-	// Send to EVF builder using the fields returned by the AI mock/API.
+	// Publish the AI-generated draft form and open it in the builder.
 	const handleUseThisForm = async () => {
-		if (isCreatingForm) return;
+		if (isCreatingForm || ! formId) return;
 		setIsCreatingForm(true);
-		const fields = generatedFields.length > 0 ? generatedFields : FIELD_PRESETS['default'];
-		const title  = generatedTitle || prompt || __('AI Generated Form', 'everest-forms');
 		try {
-			const response = (await apiFetch({
-				path: `${restURL}everest-forms/v1/templates/create-from-ai`,
-				method: 'POST',
-				data: { title, fields },
-				headers: { 'X-WP-Nonce': security },
-			})) as { success: boolean; data?: { id: number; redirect: string } };
+			const res = await callAi('evf_ai_activate_form', { form_id: formId });
 
-			if (response.success && response.data?.redirect) {
-				window.location.href = response.data.redirect;
+			if (res?.success && res.data?.edit_url) {
+				window.location.href = res.data.edit_url;
+			} else if (editUrl) {
+				// Fallback: the draft already exists, open it directly.
+				window.location.href = editUrl;
 			} else {
-				throw new Error('Unexpected response');
+				throw new Error(res?.data?.message || 'Unexpected response');
 			}
-		} catch {
+		} catch (e: any) {
 			setIsCreatingForm(false);
 			toast({
 				title: __('Error', 'everest-forms'),
-				description: __('Could not create the form. Please try again.', 'everest-forms'),
+				description: e?.message || __('Could not open the form. Please try again.', 'everest-forms'),
 				status: 'error',
 				position: 'bottom-right',
 				duration: 5000,
@@ -369,35 +250,74 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 		setGenStep(-1);
 		aiResponseRef.current = null;
 
-		// Fire the mock AI call concurrently with the progress animation.
-		// Replace mockAIGenerateForm() with the real Python API URL when ready.
-		mockAIGenerateForm(prompt).then(data => {
-			aiResponseRef.current = data;
-		}).catch(() => {
-			// Fallback: use default fields if the API fails.
-			aiResponseRef.current = { title: prompt, fields: FIELD_PRESETS['default'] };
-		});
+		let cancelled = false;
+		let intervalId: ReturnType<typeof setInterval> | null = null;
+
+		// Bail out of the "Building your form…" screen immediately and surface the
+		// error — no waiting for the progress animation to finish.
+		const showError = (message: string) => {
+			if (cancelled) return;
+			if (intervalId) clearInterval(intervalId);
+			setGenState('idle');
+			toast({
+				title: __('AI generation failed', 'everest-forms'),
+				description: message,
+				status: 'error',
+				position: 'bottom-right',
+				duration: 6000,
+				isClosable: true,
+				variant: 'subtle',
+			});
+		};
+
+		// Fire the real AI generation (ThemeGrill AI Cloud / Python gateway) via
+		// admin-ajax, concurrently with the progress animation. The gateway builds
+		// the form server-side and returns its draft id + field summary.
+		callAi('evf_ai_generate_form', { prompt })
+			.then((res: any) => {
+				if (res?.success && res.data?.form_id) {
+					aiResponseRef.current = {
+						ok: true,
+						formId: res.data.form_id,
+						editUrl: res.data.edit_url || '',
+					};
+				} else {
+					showError( res?.data?.message || __('Something went wrong. Please try again.', 'everest-forms') );
+				}
+			})
+			.catch(() => {
+				showError( __('Could not reach the AI service. Please try again.', 'everest-forms') );
+			});
 
 		let step = -1;
-		const id = setInterval(() => {
+		intervalId = setInterval(() => {
 			step += 1;
 			setGenStep(step);
 			if (step >= GEN_STEPS.length - 1) {
-				clearInterval(id);
-				// Wait for the AI response before transitioning, then store fields.
+				if (intervalId) clearInterval(intervalId);
+				// Animation done — transition once a successful response is in.
+				// (Errors are handled instantly by showError, not here.)
 				const finish = () => {
-					if (aiResponseRef.current) {
-						setGeneratedFields(aiResponseRef.current.fields);
-						setGeneratedTitle(aiResponseRef.current.title);
-						setGenState('generated');
-					} else {
+					if (cancelled) return;
+					const result = aiResponseRef.current;
+					if (! result) {
 						setTimeout(finish, 200);
+						return;
+					}
+					if (result.ok) {
+						setFormId(result.formId);
+						setEditUrl(result.editUrl);
+						setGenState('generated');
 					}
 				};
 				setTimeout(finish, 700);
 			}
 		}, 950);
-		return () => clearInterval(id);
+
+		return () => {
+			cancelled = true;
+			if (intervalId) clearInterval(intervalId);
+		};
 	}, [genState]);
 
 	// Fetch the real builder-canvas preview HTML whenever the generated fields
@@ -405,15 +325,15 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 	// guarantees the preview matches the builder pixel-for-pixel, including the
 	// PRO badge on locked fields.
 	useEffect(() => {
-		if (genState !== 'generated') return;
-		const fields = generatedFields.length > 0 ? generatedFields : FIELD_PRESETS['default'];
-		const title  = generatedTitle || prompt || __('AI Generated Form', 'everest-forms');
+		if (genState !== 'generated' || ! formId) return;
 		let cancelled = false;
 		setIsPreviewLoading(true);
+		// Preview the actual AI-generated draft form (by id) so the preview is
+		// byte-identical to the form that gets published on "Use This Form".
 		apiFetch({
 			path: `${restURL}everest-forms/v1/templates/ai-preview`,
 			method: 'POST',
-			data: { title, fields },
+			data: { form_id: formId },
 			headers: { 'X-WP-Nonce': security },
 		})
 			.then((res: any) => {
@@ -424,7 +344,7 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 			.catch(() => { /* Falls back to the loading state; non-fatal. */ })
 			.finally(() => { if (!cancelled) setIsPreviewLoading(false); });
 		return () => { cancelled = true; };
-	}, [genState, generatedFields, generatedTitle]);
+	}, [genState, formId]);
 
 	const handleGenerate = () => {
 		if (!hasPrompt) return;

@@ -19,13 +19,11 @@ add_action( 'everest_forms_loaded', static function () {
 	require_once $ai_dir . 'class-evf-ai-api.php';
 	require_once $ai_dir . 'class-evf-ai-form-builder.php';
 	require_once $ai_dir . 'class-evf-ai-ajax.php';
-	require_once $ai_dir . 'class-evf-ai-builder-ui.php';
 
-	// Boot AJAX handlers (all requests)
+	// Boot AJAX handlers (all requests). These power the "Create with AI" flow in
+	// the templates UI (src/templates/components/CreateWithAI.tsx).
 	new EVF_AI_Ajax();
 
-	// Boot builder UI — admin only
-	if ( is_admin() ) {
-		new EVF_AI_Builder_UI();
-	}
+	// NOTE: The in-builder "Generate Form with AI" modal (EVF_AI_Builder_UI) has
+	// been removed — its Python gateway calls now live in the Create with AI UI.
 } );

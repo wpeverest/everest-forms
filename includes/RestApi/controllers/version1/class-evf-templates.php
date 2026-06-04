@@ -550,14 +550,29 @@ class Everest_Forms_Template_Section_Data {
 	 * @return WP_REST_Response|WP_Error
 	 */
 	public function get_ai_preview( WP_REST_Request $request ) {
-		$title  = sanitize_text_field( wp_unslash( (string) $request->get_param( 'title' ) ) );
-		$fields = $request->get_param( 'fields' );
+		$form_id = absint( $request->get_param( 'form_id' ) );
 
-		if ( empty( $title ) ) {
-			$title = __( 'AI Generated Form', 'everest-forms' );
+		if ( $form_id ) {
+			// Preview an existing (AI-generated draft) form by its stored content,
+			// so the preview is byte-identical to the form that gets activated.
+			$post = get_post( $form_id );
+			if ( ! $post || 'everest_form' !== $post->post_type ) {
+				return new WP_Error( 'invalid_form', __( 'Form not found.', 'everest-forms' ), array( 'status' => 404 ) );
+			}
+			$form_content = evf_decode( $post->post_content );
+			if ( empty( $form_content ) || ! is_array( $form_content ) ) {
+				return new WP_Error( 'invalid_form', __( 'Form content is empty.', 'everest-forms' ), array( 'status' => 422 ) );
+			}
+		} else {
+			$title  = sanitize_text_field( wp_unslash( (string) $request->get_param( 'title' ) ) );
+			$fields = $request->get_param( 'fields' );
+
+			if ( empty( $title ) ) {
+				$title = __( 'AI Generated Form', 'everest-forms' );
+			}
+
+			$form_content = $this->build_form_content( $title, is_array( $fields ) ? $fields : array() );
 		}
-
-		$form_content = $this->build_form_content( $title, is_array( $fields ) ? $fields : array() );
 
 		// Load the builder field renderer (mirrors EVF_Admin_Builder bootstrap).
 		if ( ! class_exists( 'EVF_Builder_Fields', false ) ) {
