@@ -8,35 +8,9 @@
 
 defined( 'ABSPATH' ) || exit;
 
-if ( ! function_exists( 'evf_sanitize_amount' ) ) {
-	/**
-	 * Sanitize a price amount. Builder-scope fallback for the free plugin; the
-	 * real currency-aware helper ships in Everest Forms Pro. Only defined when the
-	 * Pro helper is absent so the locked payment fields can render their read-only
-	 * builder options without fataling.
-	 *
-	 * @param string $amount Amount value.
-	 * @return string
-	 */
-	function evf_sanitize_amount( $amount ) {
-		return is_numeric( $amount ) ? $amount : preg_replace( '/[^0-9.\-]/', '', (string) $amount );
-	}
-}
-
-if ( ! function_exists( 'evf_format_amount' ) ) {
-	/**
-	 * Format a price amount. Builder-scope fallback for the free plugin; the real
-	 * currency-aware helper ships in Everest Forms Pro. Only defined when the Pro
-	 * helper is absent.
-	 *
-	 * @param mixed $amount   Amount value.
-	 * @param bool  $currency Whether to prepend a currency symbol (ignored in the fallback).
-	 * @return string
-	 */
-	function evf_format_amount( $amount, $currency = false ) {
-		return number_format( (float) $amount, 2, '.', '' );
-	}
-}
+// Currency-aware amount helpers (mirror the Pro evf_format_amount/evf_sanitize_amount
+// so the locked preview matches the real Pro field exactly, incl. the currency symbol).
+require_once __DIR__ . '/payment-amount-helpers.php';
 
 /**
  * EVF_Field_Payment_Checkbox Class.

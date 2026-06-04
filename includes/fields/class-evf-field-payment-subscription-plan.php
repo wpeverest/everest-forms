@@ -9,6 +9,9 @@
 
 defined( 'ABSPATH' ) || exit;
 
+// Currency-aware amount helper so the choices preview matches the real Pro field.
+require_once __DIR__ . '/payment-amount-helpers.php';
+
 /**
  * EVF_Field_Payment_Subscription_Plan Class.
  *
@@ -84,12 +87,19 @@ class EVF_Field_Payment_Subscription_Plan extends EVF_Form_Fields {
 		parent::__construct();
 	}
 
-	/*
-	 * NOTE: field_preview() is intentionally omitted. The Pro implementation
-	 * renders the choices preview, which routes through the abstract's payment
-	 * choice rendering and calls evf_format_amount() — a Pro-only helper not
-	 * present in the free plugin. Calling it here fatals, so the builder falls
-	 * back to the synthesized preview. The settings above still render the full
-	 * read-only option panel for the locked upsell.
+	/**
+	 * Field preview inside the builder (matches the Pro Subscription Plan field).
+	 *
+	 * @param array $field Field data and settings.
 	 */
+	public function field_preview( $field ) {
+		// Label.
+		$this->field_preview_option( 'label', $field );
+
+		// Choices.
+		$this->field_preview_option( 'choices', $field );
+
+		// Description.
+		$this->field_preview_option( 'description', $field );
+	}
 }

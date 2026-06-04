@@ -47,7 +47,6 @@ interface TemplateListProps {
 
 const { restURL, security } = templatesScriptData;
 
-
 interface CreateTemplateResponse {
 	success: boolean;
 	data?: {
@@ -118,7 +117,9 @@ const TemplateList: React.FC<TemplateListProps> = ({
 				headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': security },
 			});
 
-			const { plugin_status } = response as { plugin_status: Record<string, string> };
+			const { plugin_status } = response as {
+				plugin_status: Record<string, string>;
+			};
 
 			if (!plugin_status) {
 				setLockedTemplateName(template.title);
@@ -139,8 +140,15 @@ const TemplateList: React.FC<TemplateListProps> = ({
 		} catch (error) {
 			toast({
 				title: __('Error', 'everest-forms'),
-				description: __('An error occurred while checking the plugin status. Please try again.', 'everest-forms'),
-				status: 'error', position: 'bottom-right', duration: 5000, isClosable: true, variant: 'subtle',
+				description: __(
+					'An error occurred while checking the plugin status. Please try again.',
+					'everest-forms',
+				),
+				status: 'error',
+				position: 'bottom-right',
+				duration: 5000,
+				isClosable: true,
+				variant: 'subtle',
 			});
 		}
 	};
@@ -160,7 +168,11 @@ const TemplateList: React.FC<TemplateListProps> = ({
 			const response = (await apiFetch({
 				path: `${restURL}everest-forms/v1/templates/create`,
 				method: 'POST',
-				body: JSON.stringify({ title: template.title, slug: template.slug, draft: true }),
+				body: JSON.stringify({
+					title: template.title,
+					slug: template.slug,
+					draft: true,
+				}),
 				headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': security },
 			})) as CreateTemplateResponse;
 
@@ -174,8 +186,15 @@ const TemplateList: React.FC<TemplateListProps> = ({
 			setAiCreatingSlug('');
 			toast({
 				title: __('Error', 'everest-forms'),
-				description: __('Could not start AI editing. Please try again.', 'everest-forms'),
-				status: 'error', position: 'bottom-right', duration: 5000, isClosable: true, variant: 'subtle',
+				description: __(
+					'Could not start AI editing. Please try again.',
+					'everest-forms',
+				),
+				status: 'error',
+				position: 'bottom-right',
+				duration: 5000,
+				isClosable: true,
+				variant: 'subtle',
 			});
 		}
 	};
@@ -188,7 +207,10 @@ const TemplateList: React.FC<TemplateListProps> = ({
 			const response = (await apiFetch({
 				path: `${restURL}everest-forms/v1/templates/create`,
 				method: 'POST',
-				body: JSON.stringify({ title: previewTemplate.title, slug: selectedTemplateSlug }),
+				body: JSON.stringify({
+					title: previewTemplate.title,
+					slug: selectedTemplateSlug,
+				}),
 				headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': security },
 			})) as CreateTemplateResponse;
 
@@ -198,16 +220,29 @@ const TemplateList: React.FC<TemplateListProps> = ({
 				setIsCreating(false);
 				toast({
 					title: __('Error', 'everest-forms'),
-					description: response.message || __('Failed to create form template.', 'everest-forms'),
-					status: 'error', position: 'bottom-right', duration: 5000, isClosable: true, variant: 'subtle',
+					description:
+						response.message ||
+						__('Failed to create form template.', 'everest-forms'),
+					status: 'error',
+					position: 'bottom-right',
+					duration: 5000,
+					isClosable: true,
+					variant: 'subtle',
 				});
 			}
 		} catch (error) {
 			setIsCreating(false);
 			toast({
 				title: __('Error', 'everest-forms'),
-				description: __('An error occurred while creating the form template.', 'everest-forms'),
-				status: 'error', position: 'bottom-right', duration: 5000, isClosable: true, variant: 'subtle',
+				description: __(
+					'An error occurred while creating the form template.',
+					'everest-forms',
+				),
+				status: 'error',
+				position: 'bottom-right',
+				duration: 5000,
+				isClosable: true,
+				variant: 'subtle',
 			});
 		}
 	};
@@ -267,7 +302,10 @@ const TemplateList: React.FC<TemplateListProps> = ({
 	};
 
 	const requiredPlugins = previewTemplate?.addons
-		? Object.entries(previewTemplate.addons).map(([key, value]) => ({ key, value }))
+		? Object.entries(previewTemplate.addons).map(([key, value]) => ({
+				key,
+				value,
+			}))
 		: [];
 
 	return (
@@ -401,9 +439,15 @@ const TemplateList: React.FC<TemplateListProps> = ({
 											alignItems="center"
 											justifyContent="center"
 											borderRadius="full"
-											bg={favorites.includes(template.slug) ? 'white' : 'rgba(255,255,255,0.15)'}
+											bg={
+												favorites.includes(template.slug)
+													? 'white'
+													: 'rgba(255,255,255,0.15)'
+											}
 											backdropFilter="blur(4px)"
-											color={favorites.includes(template.slug) ? 'red.500' : 'white'}
+											color={
+												favorites.includes(template.slug) ? 'red.500' : 'white'
+											}
 											border="none"
 											cursor="pointer"
 											_hover={{
@@ -413,7 +457,11 @@ const TemplateList: React.FC<TemplateListProps> = ({
 											transition="all 0.2s"
 										>
 											<Icon
-												as={favorites.includes(template.slug) ? FaHeart : FaRegHeart}
+												as={
+													favorites.includes(template.slug)
+														? FaHeart
+														: FaRegHeart
+												}
 												boxSize="3.5"
 											/>
 										</Box>
@@ -430,7 +478,9 @@ const TemplateList: React.FC<TemplateListProps> = ({
 											boxShadow="0 6px 18px -6px rgba(117,69,187,0.55)"
 											_hover={{ bg: 'rgba(117,69,187,0.9)' }}
 											opacity={isHovered ? 1 : 0}
-											transform={isHovered ? 'translateY(0)' : 'translateY(8px)'}
+											transform={
+												isHovered ? 'translateY(0)' : 'translateY(8px)'
+											}
 											transition="all 0.3s"
 											onClick={() => handleTemplateClick(template)}
 										>
@@ -450,9 +500,13 @@ const TemplateList: React.FC<TemplateListProps> = ({
 												fontWeight="500"
 												_hover={{ bg: 'rgba(255,255,255,0.1)' }}
 												opacity={isHovered ? 1 : 0}
-												transform={isHovered ? 'translateY(0)' : 'translateY(8px)'}
+												transform={
+													isHovered ? 'translateY(0)' : 'translateY(8px)'
+												}
 												transition="all 0.3s 0.06s"
-												onClick={() => window.open(template.preview_link, '_blank')}
+												onClick={() =>
+													window.open(template.preview_link, '_blank')
+												}
 											>
 												{__('Preview', 'everest-forms')}
 											</Button>
@@ -516,36 +570,66 @@ const TemplateList: React.FC<TemplateListProps> = ({
 			)}
 
 			{/* ── Premium / locked template modal ────────────────────────────── */}
-			<Modal isCentered isOpen={isPluginModalOpen} onClose={closePluginModal} size="md">
+			<Modal
+				isCentered
+				isOpen={isPluginModalOpen}
+				onClose={closePluginModal}
+				size="md"
+			>
 				<ModalOverlay bg="rgba(0,0,0,0.45)" backdropFilter="blur(2px)" />
-				<ModalContent borderRadius="16px" p="0" overflow="hidden" boxShadow="0 20px 60px rgba(0,0,0,0.15)">
+				<ModalContent
+					borderRadius="16px"
+					p="0"
+					overflow="hidden"
+					boxShadow="0 20px 60px rgba(0,0,0,0.15)"
+				>
 					<ModalHeader p="0">
 						{/* Gradient header band */}
-						<Box
-							bg="#7545BB"
-							px="28px" pt="28px" pb="24px"
-						>
+						<Box bg="#7545BB" px="28px" pt="28px" pb="24px">
 							<Box
-								w="48px" h="48px" borderRadius="12px"
+								w="48px"
+								h="48px"
+								borderRadius="12px"
 								bg="rgba(255,255,255,0.15)"
-								display="flex" alignItems="center" justifyContent="center"
+								display="flex"
+								alignItems="center"
+								justifyContent="center"
 								mb="14px"
 							>
 								<Icon as={FiCrown} boxSize="22px" color="white" />
 							</Box>
-							<Text fontSize="18px" fontWeight="700" color="white" m="0" lineHeight="1.3">
+							<Text
+								fontSize="18px"
+								fontWeight="700"
+								color="white"
+								m="0"
+								lineHeight="1.3"
+							>
 								{__('Premium Template', 'everest-forms')}
 							</Text>
-							<Text fontSize="13px" color="rgba(255,255,255,0.75)" m="4px 0 0" lineHeight="1.4">
+							<Text
+								fontSize="13px"
+								color="rgba(255,255,255,0.75)"
+								m="4px 0 0"
+								lineHeight="1.4"
+							>
 								{lockedTemplateName}
 							</Text>
 						</Box>
 					</ModalHeader>
-					<ModalCloseButton top="16px" right="16px" color="white" _hover={{ bg: 'rgba(255,255,255,0.15)' }} />
+					<ModalCloseButton
+						top="16px"
+						right="16px"
+						color="white"
+						_hover={{ bg: 'rgba(255,255,255,0.15)' }}
+					/>
 
 					<ModalBody px="28px" py="24px">
 						<Text fontSize="14px" color="#374151" lineHeight="1.65" m="0">
-							{__('This template requires a premium plan. Upgrade to unlock all premium templates and features.', 'everest-forms')}
+							{__(
+								'This template requires a premium plan. Upgrade to unlock all premium templates and features.',
+								'everest-forms',
+							)}
 						</Text>
 					</ModalBody>
 
@@ -585,7 +669,7 @@ const TemplateList: React.FC<TemplateListProps> = ({
 								alignItems="center"
 								justifyContent="center"
 								gap="6px"
-								_hover={{ bg: '#6a3daa' }}
+								_hover={{ bg: '#6a3daa', color: 'white' }}
 								transition="background 0.2s"
 								textDecoration="none"
 							>
@@ -600,21 +684,48 @@ const TemplateList: React.FC<TemplateListProps> = ({
 			{/* ── Template addon / choose modal ───────────────────────────────── */}
 			<Modal isCentered isOpen={isOpen} onClose={onClose} size="md">
 				<ModalOverlay bg="rgba(0,0,0,0.4)" backdropFilter="blur(2px)" />
-				<ModalContent borderRadius="16px" p="0" overflow="hidden" boxShadow="0 20px 60px rgba(0,0,0,0.12)">
-
+				<ModalContent
+					borderRadius="16px"
+					p="0"
+					overflow="hidden"
+					boxShadow="0 20px 60px rgba(0,0,0,0.12)"
+				>
 					{/* Header */}
-					<ModalHeader px="24px" pt="22px" pb="16px" borderBottom="1px solid #f1f5f9" p="0">
-						<Flex align="center" gap="12px" px="24px" pt="22px" pb="16px" borderBottom="1px solid #f1f5f9">
+					<ModalHeader
+						px="24px"
+						pt="22px"
+						pb="16px"
+						borderBottom="1px solid #f1f5f9"
+						p="0"
+					>
+						<Flex
+							align="center"
+							gap="12px"
+							px="24px"
+							pt="22px"
+							pb="16px"
+							borderBottom="1px solid #f1f5f9"
+						>
 							<Box
-								w="36px" h="36px" borderRadius="8px"
+								w="36px"
+								h="36px"
+								borderRadius="8px"
 								bg="rgba(117,69,187,0.1)"
-								display="flex" alignItems="center" justifyContent="center"
+								display="flex"
+								alignItems="center"
+								justifyContent="center"
 								flexShrink={0}
 							>
 								<Icon as={LuSparkles} boxSize="16px" color="#7545BB" />
 							</Box>
 							<Box flex="1" minW="0">
-								<Text fontSize="15px" fontWeight="600" color="#0e0e0e" m="0" noOfLines={1}>
+								<Text
+									fontSize="15px"
+									fontWeight="600"
+									color="#0e0e0e"
+									m="0"
+									noOfLines={1}
+								>
 									{previewTemplate?.title}
 								</Text>
 								<Text fontSize="12px" color="#9ca3af" m="0">
@@ -625,17 +736,32 @@ const TemplateList: React.FC<TemplateListProps> = ({
 							</Box>
 						</Flex>
 					</ModalHeader>
-					<ModalCloseButton top="14px" right="16px" size="sm" borderRadius="6px" _hover={{ bg: '#f1f5f9' }} />
+					<ModalCloseButton
+						top="14px"
+						right="16px"
+						size="sm"
+						borderRadius="6px"
+						_hover={{ bg: '#f1f5f9' }}
+					/>
 
 					<ModalBody px="24px" py="20px">
-
 						{/* ── Addons state ── */}
 						{modalState === 'addons' && (
 							<VStack align="stretch" spacing="0">
 								<HStack spacing="8px" mb="16px">
-									<Box w="4px" h="4px" borderRadius="full" bg="#7545BB" flexShrink={0} mt="1px" />
+									<Box
+										w="4px"
+										h="4px"
+										borderRadius="full"
+										bg="#7545BB"
+										flexShrink={0}
+										mt="1px"
+									/>
 									<Text fontSize="13px" color="#6b7280" m="0" lineHeight="1.55">
-										{__('This template requires the following addons to be installed and activated:', 'everest-forms')}
+										{__(
+											'This template requires the following addons to be installed and activated:',
+											'everest-forms',
+										)}
 									</Text>
 								</HStack>
 								<PluginStatus
@@ -671,24 +797,40 @@ const TemplateList: React.FC<TemplateListProps> = ({
 								>
 									{isCreating ? (
 										<Box
-											w="16px" h="16px"
+											w="16px"
+											h="16px"
 											border="2px solid rgba(255,255,255,0.4)"
 											borderTopColor="white"
 											borderRadius="full"
-											sx={{ animation: 'spin 0.7s linear infinite', '@keyframes spin': { from: { transform: 'rotate(0deg)' }, to: { transform: 'rotate(360deg)' } } }}
+											sx={{
+												animation: 'spin 0.7s linear infinite',
+												'@keyframes spin': {
+													from: { transform: 'rotate(0deg)' },
+													to: { transform: 'rotate(360deg)' },
+												},
+											}}
 										/>
 									) : (
 										<Icon as={FiArrowRight} boxSize="4" />
 									)}
 									<Text margin="0" color="white">
-										{isCreating ? __('Creating…', 'everest-forms') : __('Use this template', 'everest-forms')}
+										{isCreating
+											? __('Creating…', 'everest-forms')
+											: __('Use this template', 'everest-forms')}
 									</Text>
 								</Box>
 
 								{/* OR divider */}
 								<Flex align="center" gap="12px">
 									<Box flex="1" h="1px" bg="#e2e8f0" />
-									<Text fontSize="12px" fontWeight="500" color="#9ca3af" m="0" textTransform="uppercase" letterSpacing="0.05em">
+									<Text
+										fontSize="12px"
+										fontWeight="500"
+										color="#9ca3af"
+										m="0"
+										textTransform="uppercase"
+										letterSpacing="0.05em"
+									>
 										{__('or', 'everest-forms')}
 									</Text>
 									<Box flex="1" h="1px" bg="#e2e8f0" />
@@ -711,13 +853,18 @@ const TemplateList: React.FC<TemplateListProps> = ({
 									fontWeight="500"
 									cursor={aiCreatingSlug ? 'not-allowed' : 'pointer'}
 									opacity={aiCreatingSlug ? 0.7 : 1}
-									onClick={() => { if (!aiCreatingSlug && previewTemplate) handleEditWithAI(previewTemplate); }}
+									onClick={() => {
+										if (!aiCreatingSlug && previewTemplate)
+											handleEditWithAI(previewTemplate);
+									}}
 									transition="color 0.2s"
 									_hover={{ color: '#6a3daa' }}
 								>
 									<Icon as={LuSparkles} boxSize="4" />
 									<Text margin="0">
-										{aiCreatingSlug ? __('Loading…', 'everest-forms') : __('Edit with AI', 'everest-forms')}
+										{aiCreatingSlug
+											? __('Loading…', 'everest-forms')
+											: __('Edit with AI', 'everest-forms')}
 									</Text>
 								</Box>
 							</VStack>

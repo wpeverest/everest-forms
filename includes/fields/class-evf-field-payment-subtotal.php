@@ -8,6 +8,9 @@
 
 defined( 'ABSPATH' ) || exit;
 
+// Currency-aware amount helper so the preview matches the real Pro field.
+require_once __DIR__ . '/payment-amount-helpers.php';
+
 /**
  * EVF_Field_Payment_Subtotal Class.
  *
@@ -115,11 +118,19 @@ class EVF_Field_Payment_Subtotal extends EVF_Form_Fields {
 		);
 	}
 
-	/*
-	 * NOTE: field_preview() is intentionally omitted. The Pro implementation
-	 * renders the live subtotal via evf_format_amount(), which is a Pro-only
-	 * helper not present in the free plugin. Calling it here fatals, so the
-	 * builder falls back to the synthesized preview. The settings and the
-	 * map_field option above still render the full read-only option panel.
+	/**
+	 * Field preview inside the builder (matches the Pro Subtotal field).
+	 *
+	 * @param array $field Field data and settings.
 	 */
+	public function field_preview( $field ) {
+		// Label.
+		$this->field_preview_option( 'label', $field );
+
+		// Primary field.
+		echo '<div>' . evf_format_amount( 0, true ) . '</div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+
+		// Description.
+		$this->field_preview_option( 'description', $field );
+	}
 }

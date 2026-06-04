@@ -8,6 +8,9 @@
 
 defined( 'ABSPATH' ) || exit;
 
+// Currency-aware amount helper so the preview matches the real Pro field.
+require_once __DIR__ . '/payment-amount-helpers.php';
+
 /**
  * EVF_Field_Payment_Total Class.
  *
@@ -54,11 +57,19 @@ class EVF_Field_Payment_Total extends EVF_Form_Fields {
 		parent::__construct();
 	}
 
-	/*
-	 * NOTE: field_preview() is intentionally omitted. The Pro implementation
-	 * renders the live total via evf_format_amount(), which is a Pro-only
-	 * helper not present in the free plugin. Calling it here fatals, so the
-	 * builder falls back to the synthesized preview. The settings above still
-	 * render the full read-only option panel for the locked upsell.
+	/**
+	 * Field preview inside the builder (matches the Pro Total field).
+	 *
+	 * @param array $field Field data and settings.
 	 */
+	public function field_preview( $field ) {
+		// Label.
+		$this->field_preview_option( 'label', $field );
+
+		// Primary field.
+		echo '<div>' . evf_format_amount( 0, true ) . '</div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+
+		// Description.
+		$this->field_preview_option( 'description', $field );
+	}
 }
