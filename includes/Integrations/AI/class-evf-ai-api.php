@@ -61,6 +61,45 @@ class EVF_AI_API {
 	}
 
 	/**
+	 * Regenerate / refine an existing AI form from a follow-up prompt.
+	 *
+	 * NOTE: the gateway does not implement /ai/v1/update yet — this wires the call
+	 * so it works the moment the Python endpoint ships. Until then it returns the
+	 * gateway's error (surfaced to the user).
+	 *
+	 * @param string $prompt  Refinement / follow-up prompt (or the original to regenerate).
+	 * @param int    $form_id The draft form being refined.
+	 * @return array|WP_Error  Decoded AI form schema on success.
+	 */
+	public static function update_form( string $prompt, int $form_id = 0 ) {
+		$token = EVF_AI_Registration::get_site_token();
+		if ( ! $token ) {
+			return new WP_Error( 'not_registered', __( 'AI features are not yet active on this site.', 'everest-forms' ) );
+		}
+
+		$response = self::request(
+			'POST',
+			'/ai/v1/update',
+			array(
+				'prompt'      => $prompt,
+				'form_id'     => $form_id,
+				'license_key' => self::get_license_key(),
+			),
+			$token
+		);
+
+		if ( is_wp_error( $response ) ) {
+			return $response;
+		}
+
+		if ( empty( $response['success'] ) || empty( $response['form'] ) ) {
+			return new WP_Error( 'bad_response', __( 'Unexpected response from AI service.', 'everest-forms' ) );
+		}
+
+		return $response['form'];
+	}
+
+	/**
 	 * Register this site with the ThemeGrill AI Cloud gateway (free tier).
 	 * Called once on plugin activation — silent, no admin action required.
 	 *

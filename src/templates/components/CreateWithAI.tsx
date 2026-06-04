@@ -197,6 +197,10 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 	// publish it on "Use This Form".
 	const [formId, setFormId] = useState(0);
 	const [editUrl, setEditUrl] = useState('');
+	// Follow-up / refine prompt shown in the preview sidebar.
+	const [refinePrompt, setRefinePrompt] = useState('');
+	// Bumped after an update so the preview re-fetches for the same form id.
+	const [previewVersion, setPreviewVersion] = useState(0);
 	const previewHintTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 	const regenTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 	const aiResponseRef = React.useRef<any>(null);
@@ -230,11 +234,39 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 		}
 	};
 
-	const handleRegenerate = () => {
+	// Regenerate / refine the current draft via the AI update endpoint, then
+	// re-fetch the preview. Used by the "Regenerate" link (original prompt) and
+	// the "Refine or follow up…" input (follow-up prompt).
+	const handleUpdate = async (text: string) => {
+		const refine = (text || '').trim();
+		if (isRegenerating || ! formId || ! refine) return;
 		setIsRegenerating(true);
-		if (regenTimer.current) clearTimeout(regenTimer.current);
-		regenTimer.current = setTimeout(() => setIsRegenerating(false), 2400);
+		try {
+			const res = await callAi('evf_ai_update_form', { form_id: formId, prompt: refine });
+			if (res?.success) {
+				setRefinePrompt('');
+				// Re-render the preview for the (same) updated draft.
+				setPreviewVersion(v => v + 1);
+			} else {
+				throw new Error(res?.data?.message || __('Could not update the form. Please try again.', 'everest-forms'));
+			}
+		} catch (e: any) {
+			toast({
+				title: __('Update failed', 'everest-forms'),
+				description: e?.message || __('Could not update the form. Please try again.', 'everest-forms'),
+				status: 'error',
+				position: 'bottom-right',
+				duration: 6000,
+				isClosable: true,
+				variant: 'subtle',
+			});
+		} finally {
+			setIsRegenerating(false);
+		}
 	};
+
+	// "Regenerate" re-runs the AI on the original prompt.
+	const handleRegenerate = () => handleUpdate(prompt);
 
 	const handleFieldClick = (e: React.MouseEvent) => {
 		const { clientX, clientY } = e;
@@ -344,7 +376,7 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 			.catch(() => { /* Falls back to the loading state; non-fatal. */ })
 			.finally(() => { if (!cancelled) setIsPreviewLoading(false); });
 		return () => { cancelled = true; };
-	}, [genState, formId]);
+	}, [genState, formId, previewVersion]);
 
 	const handleGenerate = () => {
 		if (!hasPrompt) return;
@@ -603,20 +635,35 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 									minHeight="56px"
 									resize="none"
 									_placeholder={{ color: '#c0c0cc' }}
+									value={refinePrompt}
+									isDisabled={isRegenerating}
+									onChange={(e) => setRefinePrompt(e.target.value.slice(0, MAX_CHARS))}
+									onKeyDown={(e) => {
+										if (e.key === 'Enter' && !e.shiftKey) {
+											e.preventDefault();
+											handleUpdate(refinePrompt);
+										}
+									}}
 								/>
 								<Flex justify="flex-end" px="12px" pb="10px">
 									<Box
+										as="button"
 										w="28px" h="28px"
-										bg="#7545BB"
+										bg={refinePrompt.trim() && !isRegenerating ? '#7545BB' : '#c9bce4'}
 										borderRadius="6px"
 										display="inline-flex"
 										alignItems="center"
 										justifyContent="center"
-										cursor="pointer"
-										_hover={{ bg: '#6a3daa' }}
+										border="none"
+										cursor={refinePrompt.trim() && !isRegenerating ? 'pointer' : 'not-allowed'}
+										_hover={{ bg: refinePrompt.trim() && !isRegenerating ? '#6a3daa' : '#c9bce4' }}
 										transition="background 0.2s"
+										onClick={() => handleUpdate(refinePrompt)}
 									>
-										<Icon as={FiArrowUp} boxSize="3.5" color="white" />
+										{isRegenerating
+											? <Spinner size="xs" color="white" thickness="2px" speed="0.65s" />
+											: <Icon as={FiArrowUp} boxSize="3.5" color="white" />
+										}
 									</Box>
 								</Flex>
 							</Box>

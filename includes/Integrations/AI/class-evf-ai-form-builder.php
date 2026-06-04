@@ -61,6 +61,39 @@ class EVF_AI_Form_Builder {
 	}
 
 	/**
+	 * Rebuild an existing (draft) AI form in place from a refined AI response.
+	 * Keeps the same form id/status so the preview and builder stay in sync.
+	 *
+	 * @param int   $form_id     Existing draft form id.
+	 * @param array $ai_response Refined AI form schema.
+	 * @return int|WP_Error      The form id on success.
+	 */
+	public static function update_form( int $form_id, array $ai_response ) {
+		$post = get_post( $form_id );
+		if ( ! $post || 'everest_form' !== $post->post_type ) {
+			return new WP_Error( 'invalid_form', __( 'Form not found.', 'everest-forms' ) );
+		}
+
+		$fields = $ai_response['fields'] ?? [];
+		if ( empty( $fields ) ) {
+			return new WP_Error( 'no_fields', __( 'No fields were generated.', 'everest-forms' ) );
+		}
+
+		remove_all_filters( 'content_save_pre' );
+
+		$title     = sanitize_text_field( $ai_response['form_title'] ?? get_the_title( $form_id ) );
+		$form_data = self::build_form_data( $form_id, $ai_response );
+
+		wp_update_post( [
+			'ID'           => $form_id,
+			'post_title'   => $title,
+			'post_content' => evf_encode( $form_data ),
+		] );
+
+		return $form_id;
+	}
+
+	/**
 	 * Publish a draft AI form — called when user clicks "Use This Form".
 	 *
 	 * @param int $form_id
