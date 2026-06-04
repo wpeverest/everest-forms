@@ -13850,17 +13850,15 @@ button#show-settings-link {
 		text-align: center;
 
 		.evf-payments-icon-wrap {
-			display: inline-flex;
-			align-items: center;
+			display: flex;
 			justify-content: center;
-			width: 80px;
-			height: 80px;
-			background: #ede9fe;
-			border-radius: 16px;
 			margin-bottom: 20px;
 
-			svg {
+			img {
 				display: block;
+				width: 80px;
+				height: 80px;
+				object-fit: contain;
 			}
 		}
 
@@ -13903,18 +13901,11 @@ button#show-settings-link {
 			line-height: 1;
 
 			.evf-payments-gateway-icon {
-				display: inline-flex;
-				align-items: center;
-				justify-content: center;
-				width: 16px;
-				height: 16px;
-				border-radius: 50%;
-				font-size: 9px;
-				font-weight: 800;
-				color: #fff;
+				display: block;
+				width: 18px;
+				height: 18px;
 				flex-shrink: 0;
-				font-style: normal;
-				line-height: 1;
+				object-fit: contain;
 			}
 
 			&.evf-payments-gateway-badge--more {
