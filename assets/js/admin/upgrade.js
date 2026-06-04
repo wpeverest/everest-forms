@@ -56,6 +56,11 @@ jQuery( function( $ ) {
 				this.feature_upgrade,
 			);
 			$(document.body).on(
+				'click',
+				'.everest-forms-locked-field-cta',
+				this.locked_field_upgrade,
+			);
+			$(document.body).on(
 				'click dragstart',
 				'.evf-upgradable-feature, .everest-forms-btn-group span.upgrade-modal',
 				this.feature_upgrade,
@@ -272,6 +277,29 @@ jQuery( function( $ ) {
 			evf_upgrade_actions.upgrade_modal(
 				$(this).data('feature') ? $(this).data('feature') : $(this).text(),
 			);
+		},
+		/**
+		 * Handle clicks on a locked (Pro/addon) field placed in the form - both
+		 * the canvas PRO badge and the settings-panel overlay. Routes to the
+		 * addon install/activate flow when licensed, otherwise the upgrade modal.
+		 */
+		locked_field_upgrade: function (e) {
+			e.preventDefault();
+			// Prevent the click from also opening the field's settings panel.
+			e.stopPropagation();
+
+			var $el = $(this);
+
+			if ('evf-upgrade-addon' === $el.data('field-class')) {
+				evf_upgrade_actions.evf_upgrade_addon.call(this, e);
+				return;
+			}
+
+			var name = $el.data('field-name')
+				? $el.data('field-name') + ' field'
+				: $el.text();
+
+			evf_upgrade_actions.upgrade_modal(name, $el.data('links') || '');
 		},
 		field_upgrade: function (e) {
 			e.preventDefault();

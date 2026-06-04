@@ -1,0 +1,209 @@
+/**
+ * evf-locked-fields.scss
+ *
+ * Styles for LOCKED (Pro / addon) fields shown as an upsell by "Create with AI"
+ * and in the builder. Kept in a dedicated stylesheet (not admin.scss) so the
+ * rules stay at the top level and are not accidentally nested under another
+ * selector. Compiled by grunt-sass to evf-locked-fields.css and enqueued on
+ * Everest Forms admin screens.
+ */
+
+/* ==========================================================================
+   1. Canvas / AI-preview: locked field block + PRO ribbon
+   ========================================================================== */
+.everest-forms-field.everest-forms-field-locked {
+	position: relative;
+
+	&::after {
+		content: "";
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		pointer-events: none;
+		border: 1px dashed #d7c7f5;
+		border-radius: 6px;
+	}
+}
+
+/* Orange "Pro" marker shown INLINE right after the field label — same icon as
+   the fields sidebar (everest-form-pro-icon.png), placed side-by-side with the
+   label instead of a corner badge. */
+.everest-forms-field.everest-forms-field-locked .label-title::after,
+.everest-forms-field.everest-forms-field-locked .evf-locked-field-label::after {
+	content: "";
+	display: inline-block;
+	width: 15px;
+	height: 15px;
+	margin-left: 6px;
+	vertical-align: -3px;
+	background: url(../images/icons/everest-form-pro-icon.png) no-repeat center;
+	background-size: contain;
+}
+
+/* Synthesized preview card (fallback for fields whose real preview needs Pro code). */
+.evf-locked-field-label {
+	display: block;
+	margin: 0 0 6px;
+	font-size: 13px;
+	font-weight: 500;
+	color: #374151;
+
+	.evf-locked-field-required {
+		color: #ef4444;
+		margin-left: 2px;
+	}
+}
+
+.evf-locked-field-placeholder {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	min-height: 44px;
+	padding: 12px 14px;
+	color: #6b7280;
+	font-size: 13px;
+	background: #faf8fe;
+	border: 1px dashed #d7c7f5;
+	border-radius: 6px;
+
+	.dashicons {
+		color: #7e3bd0;
+		width: 18px;
+		height: 18px;
+		font-size: 18px;
+	}
+}
+
+/* ==========================================================================
+   2. Field Options panel: readable but NOT editable
+   ========================================================================== */
+
+/* The setting GROUPS are greyed + non-interactive. Inputs are intentionally NOT
+   given the HTML `disabled` attribute (disabled inputs are not POSTed), so the
+   field data still round-trips on save and the field works the instant the user
+   upgrades. The banner is rendered OUTSIDE the groups, so it stays interactive. */
+.everest-forms-field-option-locked {
+	.everest-forms-field-option-group {
+		position: relative;
+		pointer-events: none;
+		user-select: none;
+		opacity: 0.65;
+		cursor: not-allowed;
+	}
+
+	/* Force every group (incl. the normally-collapsed "Advanced Options") open
+	   so ALL settings stay readable while locked. */
+	.everest-forms-field-option-group.everest-forms-hide,
+	.everest-forms-field-option-group.closed {
+		display: block !important;
+	}
+
+	.everest-forms-field-option-group-inner {
+		display: block !important;
+	}
+
+	/* Make the inputs themselves read clearly as disabled. */
+	.everest-forms-field-option-group input,
+	.everest-forms-field-option-group select,
+	.everest-forms-field-option-group textarea {
+		background-color: #f3f4f6 !important;
+		color: #6b7280 !important;
+		cursor: not-allowed !important;
+	}
+}
+
+/* ==========================================================================
+   3. PRO showcase banner (settings panel header)
+   ========================================================================== */
+.everest-forms-field-option-locked-banner {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 10px;
+	margin: 0 0 18px;
+	padding: 16px;
+	/* Neutral card so the orange "Pro" tag stands out (matches sidebar accent). */
+	background: #faf9fb;
+	border: 1px solid #e8e6ee;
+	border-radius: 8px;
+	/* Stays interactive even though the surrounding panel groups are locked. */
+	pointer-events: auto;
+
+	.evf-locked-banner-tag {
+		display: inline-flex;
+		align-items: center;
+		gap: 4px;
+		padding: 4px 8px;
+		font-size: 11px;
+		font-weight: 700;
+		letter-spacing: 0.05em;
+		color: #fff;
+		/* Orange Pro accent — same family as the fields sidebar pro icon. */
+		background: #ff8c39;
+		border-radius: 4px;
+
+		.dashicons {
+			width: 13px;
+			height: 13px;
+			font-size: 13px;
+		}
+	}
+
+	.evf-locked-banner-text {
+		margin: 0;
+		font-size: 13px;
+		line-height: 1.5;
+		color: #4b4b57;
+
+		strong {
+			color: #2b2b38;
+		}
+	}
+
+	.evf-locked-banner-cta {
+		margin: 2px 0 0;
+		padding: 8px 20px;
+		font-size: 13px;
+		font-weight: 600;
+		line-height: 1.2;
+		/* Match EVF brand button. */
+		background: #7e3bd0;
+		border-color: #7e3bd0;
+		color: #fff;
+		border-radius: 4px;
+		cursor: pointer;
+
+		&:hover {
+			background: #6c2fbb;
+			border-color: #6c2fbb;
+			color: #fff;
+		}
+	}
+}
+
+/* ==========================================================================
+   4. AI preview canvas — hide the builder's editing chrome
+   ========================================================================== */
+.evf-ai-preview-canvas {
+	.evf-toggle-row,
+	.evf-add-row,
+	.evf-show-grid,
+	.evf-duplicate-row,
+	.evf-delete-row,
+	.evf-row-setting,
+	.evf-field-action,
+	.evf-repeater-row-wrapper > .evf-add-row {
+		display: none !important;
+	}
+
+	.evf-admin-row {
+		margin: 0 0 16px;
+		padding: 0;
+	}
+
+	.everest-forms-field {
+		cursor: default;
+	}
+}

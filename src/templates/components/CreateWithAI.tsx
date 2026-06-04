@@ -175,15 +175,55 @@ const FIELD_PRESETS: Record<string, AIField[]> = {
 	],
 };
 
+// Demo form used by the mock: a deliberate mix of FREE and PRO/addon fields so
+// the locked-field upsell (PRO badge + locked settings) can be verified end to
+// end. Types are real EVF field-type slugs — the create-from-ai / ai-preview
+// endpoints map any registered type directly, and Pro types render locked.
+const DEMO_FIELDS: AIField[] = [
+	// ── Free fields ──────────────────────────────────────────────
+	{ type: 'first-name',   label: 'Full Name',                  required: true  },
+	{ type: 'email',        label: 'Email Address',              required: true  },
+	{ type: 'phone',        label: 'Phone Number',               required: false },
+	{ type: 'textarea',     label: 'Your Message',               required: false },
+	{ type: 'select',       label: 'How did you hear about us?', required: false },
+	// ── Survey fields (free in core, owned by the Survey/Polls/Quiz addon) ──
+	{ type: 'rating',       label: 'Overall Rating',             required: false },
+	{ type: 'yes-no',       label: 'Would you recommend us?',    required: false },
+	{ type: 'likert',       label: 'Rate the following',         required: false },
+	{ type: 'scale-rating', label: 'Satisfaction (1–10)',        required: false },
+	// ── Pro / advanced fields → render LOCKED ────────────────────
+	{ type: 'signature',                  label: 'Signature',          required: false },
+	{ type: 'range-slider',               label: 'Budget Range',       required: false },
+	{ type: 'color',                      label: 'Favourite Colour',   required: false },
+	{ type: 'password',                   label: 'Create Password',    required: false },
+	{ type: 'lookup',                     label: 'Lookup',             required: false },
+	{ type: 'progress',                   label: 'Progress',           required: false },
+	{ type: 'reset',                      label: 'Reset',              required: false },
+	{ type: 'repeater-fields',            label: 'Repeater',           required: false },
+	{ type: 'captcha',                    label: 'Captcha',            required: false },
+	// ── Pro / payment fields → render LOCKED ─────────────────────
+	{ type: 'payment-single',             label: 'Single Item',        required: false },
+	{ type: 'payment-multiple',           label: 'Multiple Items',     required: false },
+	{ type: 'payment-checkbox',           label: 'Checkbox Items',     required: false },
+	{ type: 'payment-quantity',           label: 'Quantity',           required: false },
+	{ type: 'payment-subtotal',           label: 'Subtotal',           required: false },
+	{ type: 'payment-total',              label: 'Total',              required: false },
+	{ type: 'payment-subscription-plan',  label: 'Subscription Plan',  required: false },
+	{ type: 'payment-coupon',             label: 'Coupon',             required: false },
+	{ type: 'credit-card',                label: 'Credit Card',        required: false },
+	{ type: 'authorize-net',              label: 'Authorize.Net',      required: false },
+];
+
 /**
  * Mock call to the Python AI backend.
  * Replace the URL/logic here when the real endpoint is ready.
- * For now resolves after a realistic delay with keyword-matched fields.
+ *
+ * For now it returns a demo form containing both free and Pro/addon fields so
+ * the locked-field upsell can be verified. (FIELD_PRESETS is retained for the
+ * eventual keyword-based behaviour.)
  */
 const mockAIGenerateForm = (userPrompt: string): Promise<AIGenerateResponse> => {
-	const lower = userPrompt.toLowerCase();
-	const match = Object.keys(FIELD_PRESETS).find(key => lower.includes(key)) ?? 'default';
-	const fields = FIELD_PRESETS[match];
+	const fields = DEMO_FIELDS;
 
 	// Derive a clean title from the prompt (first 60 chars, capitalized)
 	const raw = userPrompt.trim().replace(/[^a-zA-Z0-9 ]/g, '').slice(0, 60);
@@ -197,73 +237,10 @@ const mockAIGenerateForm = (userPrompt: string): Promise<AIGenerateResponse> => 
 
 const MAX_CHARS = 500;
 
-// ── Field preview components ──────────────────────────────────────────────────
-
-const EVFLabel: React.FC<{ text: string; required?: boolean }> = ({ text, required }) => (
-	<Box mb="6px">
-		<Text as="span" fontSize="13px" fontWeight="500" color="#374151">{text}</Text>
-		{required && <Text as="span" color="#ef4444" ml="2px" fontSize="13px"> *</Text>}
-	</Box>
-);
-
-const EVFInput = () => (
-	<Box h="36px" bg="white" border="1px solid #d1d5db" borderRadius="6px" />
-);
-
-const FieldPreview: React.FC<{ field: any }> = ({ field }) => {
-	if (field.type === 'name') {
-		return (
-			<Box>
-				<EVFLabel text={field.label} />
-				<HStack spacing="10px">
-					{['First', 'Last'].map(sub => (
-						<Box key={sub} flex={1}>
-							<EVFInput />
-							<Text fontSize="11px" color="#9ca3af" margin="3px 0 0">{sub}</Text>
-						</Box>
-					))}
-				</HStack>
-			</Box>
-		);
-	}
-	if (field.type === 'textarea') {
-		return (
-			<Box>
-				<EVFLabel text={field.label} />
-				<Box h="90px" bg="white" border="1px solid #d1d5db" borderRadius="6px" />
-			</Box>
-		);
-	}
-	if (field.type === 'rating') {
-		return (
-			<Box>
-				<EVFLabel text={field.label} />
-				<HStack spacing="3px">
-					{[1, 2, 3, 4, 5].map(n => (
-						<Text key={n} fontSize="22px" color={n <= 4 ? '#f59e0b' : '#e5e7eb'} lineHeight="1" margin="0">★</Text>
-					))}
-				</HStack>
-			</Box>
-		);
-	}
-	if (field.type === 'select') {
-		return (
-			<Box>
-				<EVFLabel text={field.label} />
-				<Flex h="36px" bg="white" border="1px solid #d1d5db" borderRadius="6px" px="12px" align="center" justify="space-between">
-					<Text fontSize="13px" color="#9ca3af" margin="0">---</Text>
-					<Text fontSize="10px" color="#9ca3af" margin="0">▾</Text>
-				</Flex>
-			</Box>
-		);
-	}
-	return (
-		<Box>
-			<EVFLabel text={field.label} required={field.required} />
-			<EVFInput />
-		</Box>
-	);
-};
+// The form preview is rendered server-side via the templates/ai-preview REST
+// endpoint, which returns the builder's own field markup (output_fields_preview).
+// This guarantees the preview is pixel-identical to the builder shown after
+// import — so there is intentionally no parallel React field-preview component.
 
 const SkeletonField: React.FC<{ delay?: string }> = ({ delay = '0s' }) => (
 	<Box sx={{ animation: `${fadeUp} 0.4s ease ${delay} both` }}>
@@ -331,6 +308,10 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 	const [isCreatingForm, setIsCreatingForm] = useState(false);
 	const [generatedFields, setGeneratedFields] = useState<AIField[]>([]);
 	const [generatedTitle, setGeneratedTitle] = useState('');
+	// Server-rendered builder-canvas HTML for the preview (guarantees parity with
+	// the builder shown after import). Empty until the ai-preview endpoint responds.
+	const [previewHTML, setPreviewHTML] = useState('');
+	const [isPreviewLoading, setIsPreviewLoading] = useState(false);
 	const previewHintTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 	const regenTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 	const aiResponseRef = React.useRef<AIGenerateResponse | null>(null);
@@ -418,6 +399,32 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 		}, 950);
 		return () => clearInterval(id);
 	}, [genState]);
+
+	// Fetch the real builder-canvas preview HTML whenever the generated fields
+	// change. Rendering the server markup (rather than a parallel React preview)
+	// guarantees the preview matches the builder pixel-for-pixel, including the
+	// PRO badge on locked fields.
+	useEffect(() => {
+		if (genState !== 'generated') return;
+		const fields = generatedFields.length > 0 ? generatedFields : FIELD_PRESETS['default'];
+		const title  = generatedTitle || prompt || __('AI Generated Form', 'everest-forms');
+		let cancelled = false;
+		setIsPreviewLoading(true);
+		apiFetch({
+			path: `${restURL}everest-forms/v1/templates/ai-preview`,
+			method: 'POST',
+			data: { title, fields },
+			headers: { 'X-WP-Nonce': security },
+		})
+			.then((res: any) => {
+				if (!cancelled && res?.success && res?.data?.html) {
+					setPreviewHTML(res.data.html);
+				}
+			})
+			.catch(() => { /* Falls back to the loading state; non-fatal. */ })
+			.finally(() => { if (!cancelled) setIsPreviewLoading(false); });
+		return () => { cancelled = true; };
+	}, [genState, generatedFields, generatedTitle]);
 
 	const handleGenerate = () => {
 		if (!hasPrompt) return;
@@ -753,15 +760,23 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 								)}
 							</Flex>
 
-							{/* Form fields — uses AI-returned fields, falls back to default preset */}
+							{/* Form fields — server-rendered builder-canvas HTML so the preview
+							    matches the builder pixel-for-pixel (locked Pro fields included). */}
 							<Box p="24px" opacity={isRegenerating ? 0.45 : 1} transition="opacity 0.3s">
-								<VStack spacing="16px" align="stretch">
-									{(generatedFields.length > 0 ? generatedFields : FIELD_PRESETS['default']).map((f, idx) => (
-										<Box key={idx} cursor="default" onClick={(e) => handleFieldClick(e)}>
-											<FieldPreview field={{ ...f, id: idx + 1 }} />
-										</Box>
-									))}
-								</VStack>
+								{previewHTML ? (
+									<Box
+										className="evf-ai-preview-canvas"
+										onClick={(e) => handleFieldClick(e)}
+										dangerouslySetInnerHTML={{ __html: previewHTML }}
+									/>
+								) : (
+									<VStack spacing="16px" align="stretch">
+										{(isPreviewLoading ? Array.from({ length: 4 }) : []).map((_, idx) => (
+											<Box key={idx} h="56px" bg="#eef0f4" borderRadius="6px"
+												sx={{ animation: `${fadeUp} 0.3s ease` }} />
+										))}
+									</VStack>
+								)}
 
 								{/* Submit button */}
 								<Box

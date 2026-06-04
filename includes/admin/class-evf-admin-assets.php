@@ -34,7 +34,16 @@ class EVF_Admin_Assets {
 		$screen_id = $screen ? $screen->id : '';
 
 		// Register admin styles.
-		wp_register_style( 'everest-forms-admin', evf()->plugin_url() . '/assets/css/admin.css', array(), EVF_VERSION );
+		$admin_css_path = evf()->plugin_path() . '/assets/css/admin.css';
+		$admin_css_ver  = file_exists( $admin_css_path ) ? filemtime( $admin_css_path ) : EVF_VERSION;
+		wp_register_style( 'everest-forms-admin', evf()->plugin_url() . '/assets/css/admin.css', array(), $admin_css_ver );
+
+		// Locked (Pro/addon) field upsell styles — kept in a dedicated file so the
+		// rules are not accidentally nested inside admin.scss's structure.
+		$locked_css_path = evf()->plugin_path() . '/assets/css/evf-locked-fields.css';
+		$locked_css_ver  = file_exists( $locked_css_path ) ? filemtime( $locked_css_path ) : EVF_VERSION;
+		wp_register_style( 'everest-forms-locked-fields', evf()->plugin_url() . '/assets/css/evf-locked-fields.css', array( 'everest-forms-admin' ), $locked_css_ver );
+
 		wp_register_style( 'everest-forms-admin-menu', evf()->plugin_url() . '/assets/css/menu.css', array(), EVF_VERSION );
 		wp_register_style( 'jquery-ui-style', evf()->plugin_url() . '/assets/css/jquery-ui/jquery-ui.min.css', array(), EVF_VERSION );
 		wp_register_style( 'jquery-confirm', evf()->plugin_url() . '/assets/css/jquery-confirm/jquery-confirm.min.css', array(), '3.3.0' );
@@ -55,6 +64,7 @@ class EVF_Admin_Assets {
 		// Admin styles for EVF pages only.
 		if ( in_array( $screen_id, evf_get_screen_ids(), true ) ) {
 			wp_enqueue_style( 'everest-forms-admin' );
+			wp_enqueue_style( 'everest-forms-locked-fields' );
 			wp_enqueue_style( 'jquery-confirm' );
 			wp_enqueue_style( 'jquery-ui-style' );
 			wp_enqueue_style( 'wp-color-picker' );

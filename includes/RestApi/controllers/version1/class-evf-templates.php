@@ -69,6 +69,18 @@ class Everest_Forms_Template_Section_Data {
 				'permission_callback' => array( $this, 'check_admin_permissions' ),
 			)
 		);
+		// Render a pixel-perfect builder-canvas preview of an AI form schema.
+		// Uses the SAME schema builder + field renderer as create-from-ai, so the
+		// preview is identical to what the builder shows after import.
+		register_rest_route(
+			$this->namespace,
+			'/' . $this->rest_base . '/ai-preview',
+			array(
+				'methods'             => 'POST',
+				'callback'            => array( $this, 'get_ai_preview' ),
+				'permission_callback' => array( $this, 'check_admin_permissions' ),
+			)
+		);
 		// END TODO: REMOVE
 
 		register_rest_route(
@@ -326,85 +338,9 @@ class Everest_Forms_Template_Section_Data {
 			wp_remove_targeted_link_rel_filters();
 		}
 
-		// Supported AI type → EVF field type map.
-		$type_map = array(
-			'name'     => 'name',
-			'email'    => 'email',
-			'text'     => 'text',
-			'textarea' => 'textarea',
-			'select'   => 'select',
-			'radio'    => 'radio',
-			'checkbox' => 'checkbox',
-			'number'   => 'number',
-			'phone'    => 'phone',
-			'url'      => 'url',
-			'date'     => 'date-time',
-			'rating'   => 'rating',
-			'address'  => 'address',
-			'hidden'   => 'hidden',
-		);
-
-		// Build form_fields from the AI field list.
-		$form_fields = array();
-		$field_index = 1;
-
-		if ( ! empty( $fields ) && is_array( $fields ) ) {
-			foreach ( $fields as $field_def ) {
-				$ai_type  = isset( $field_def['type'] ) ? sanitize_key( $field_def['type'] ) : 'text';
-				$evf_type = isset( $type_map[ $ai_type ] ) ? $type_map[ $ai_type ] : 'text';
-				$label    = isset( $field_def['label'] ) ? sanitize_text_field( $field_def['label'] ) : '';
-
-				if ( empty( $label ) ) {
-					continue;
-				}
-
-				// Field ID: 10-char hash + index, matching EVF's evf_get_random_string() pattern.
-				$field_id = substr( md5( uniqid( $label, true ) ), 0, 10 ) . '-' . $field_index;
-				$meta_key = sanitize_key( str_replace( ' ', '_', strtolower( $label ) ) ) . '_' . wp_rand( 1000, 9999 );
-
-				$form_fields[ $field_id ] = array(
-					'id'               => $field_id,
-					'type'             => $evf_type,
-					'label'            => $label,
-					'meta-key'         => $meta_key,
-					'description'      => '',
-					'required'         => ! empty( $field_def['required'] ) ? '1' : '',
-					'placeholder'      => isset( $field_def['placeholder'] ) ? sanitize_text_field( $field_def['placeholder'] ) : '',
-					'css'              => '',
-					'conditional_option' => 'show',
-					'conditionals'     => array(
-						'1' => array( '1' => array( 'field' => '---Select Field---', 'operator' => 'is', 'value' => '' ) ),
-					),
-				);
-
-				$field_index++;
-			}
-		}
-
-		// Build structure: one field per row, single grid column — matches the builder canvas layout.
-		$structure   = array();
-		$row_counter = 1;
-		foreach ( array_keys( $form_fields ) as $fid ) {
-			$structure[ 'row_' . $row_counter ] = array( 'grid_1' => array( $fid ) );
-			$row_counter++;
-		}
-
-		// Build the full form content structure.
-		$form_content = array(
-			'id'                      => 0, // will be set after insert
-			'form_enabled'            => '1',
-			'form_field_id'           => $field_index,
-			'form_fields'             => $form_fields,
-			'structure'               => $structure,
-			'settings'                => array(
-				'form_title'                       => $title,
-				'form_description'                 => '',
-				'form_disable_message'             => __( 'This form is disabled.', 'everest-forms' ),
-				'successful_form_submission_message' => __( 'Thanks for contacting us! We will be in touch with you shortly.', 'everest-forms' ),
-				'submission_type'                  => 'message',
-				'hide_title'                       => '0',
-			),
-		);
+		// Build the form content (fields, structure, settings) from the AI schema.
+		// This is the SINGLE source of truth shared with the ai-preview endpoint.
+		$form_content = $this->build_form_content( $title, is_array( $fields ) ? $fields : array() );
 
 		// Insert the post.
 		$form_id = wp_insert_post( array(
@@ -446,6 +382,204 @@ class Everest_Forms_Template_Section_Data {
 						),
 						admin_url( 'admin.php?page=evf-builder' )
 					),
+				),
+			),
+			200
+		);
+	}
+
+	/**
+	 * Build an EVF form_content array from an AI field schema.
+	 *
+	 * Shared by create_from_ai() (import) and get_ai_preview() (preview) so the
+	 * preview the user approves is byte-for-byte the form that gets created.
+	 *
+	 * Any registered field type is supported (free or Pro/locked); Pro fields
+	 * are included so they render as a locked upsell in both the preview and the
+	 * builder. Each field is seeded with its field class defaults (e.g. choices)
+	 * so its settings render realistically.
+	 *
+	 * @param string $title  Form title.
+	 * @param array  $fields AI field definitions ( type, label, required, placeholder ).
+	 * @return array Form content ( form_fields, structure, settings, ... ).
+	 */
+	public function build_form_content( $title, $fields ) {
+		// Legacy AI type aliases → EVF field types. Any type already registered
+		// in EVF is used as-is, so all Pro/addon field slugs work out of the box.
+		$type_map = array(
+			'date'    => 'date-time',
+			'name'    => 'first-name',
+			'tel'     => 'phone',
+			'url'     => 'url',
+		);
+
+		$registered = evf()->form_fields->get_form_field_types();
+
+		$form_fields = array();
+		$field_index = 1;
+
+		foreach ( $fields as $field_def ) {
+			$ai_type = isset( $field_def['type'] ) ? sanitize_key( $field_def['type'] ) : 'text';
+
+			if ( in_array( $ai_type, $registered, true ) ) {
+				$evf_type = $ai_type;
+			} elseif ( isset( $type_map[ $ai_type ] ) && in_array( $type_map[ $ai_type ], $registered, true ) ) {
+				$evf_type = $type_map[ $ai_type ];
+			} else {
+				$evf_type = 'text';
+			}
+
+			$label = isset( $field_def['label'] ) ? sanitize_text_field( $field_def['label'] ) : '';
+
+			if ( empty( $label ) ) {
+				continue;
+			}
+
+			// Field ID: 10-char hash + index, matching EVF's evf_get_random_string() pattern.
+			$field_id = substr( md5( uniqid( $label, true ) ), 0, 10 ) . '-' . $field_index;
+			$meta_key = sanitize_key( str_replace( ' ', '_', strtolower( $label ) ) ) . '_' . wp_rand( 1000, 9999 );
+
+			$field = array(
+				'id'                 => $field_id,
+				'type'               => $evf_type,
+				'label'              => $label,
+				'meta-key'           => $meta_key,
+				'description'        => '',
+				'required'           => ! empty( $field_def['required'] ) ? '1' : '',
+				'placeholder'        => isset( $field_def['placeholder'] ) ? sanitize_text_field( $field_def['placeholder'] ) : '',
+				'css'                => '',
+				'conditional_option' => 'show',
+				'conditionals'       => array(
+					'1' => array(
+						'1' => array(
+							'field'    => '---Select Field---',
+							'operator' => 'is',
+							'value'    => '',
+						),
+					),
+				),
+			);
+
+			// Seed the field class defaults (e.g. choices for select/radio/checkbox)
+			// so the rendered settings look complete and the form works once unlocked.
+			$field = $this->seed_field_defaults( $evf_type, $field );
+
+			/**
+			 * Filter an individual AI-generated field's data before it is added.
+			 *
+			 * @since 3.2.0
+			 *
+			 * @param array  $field     The built EVF field data.
+			 * @param array  $field_def The raw AI field definition.
+			 * @param string $evf_type  Resolved EVF field type.
+			 */
+			$form_fields[ $field_id ] = apply_filters( 'everest_forms_ai_field_data', $field, $field_def, $evf_type );
+
+			$field_index++;
+		}
+
+		// Build structure: one field per row, single grid column — matches the builder canvas layout.
+		$structure   = array();
+		$row_counter = 1;
+		foreach ( array_keys( $form_fields ) as $fid ) {
+			$structure[ 'row_' . $row_counter ] = array( 'grid_1' => array( $fid ) );
+			$row_counter++;
+		}
+
+		return array(
+			'id'            => 0, // Set after insert (0 for preview).
+			'form_enabled'  => '1',
+			'form_field_id' => $field_index,
+			'form_fields'   => $form_fields,
+			'structure'     => $structure,
+			'settings'      => array(
+				'form_title'                          => $title,
+				'form_description'                    => '',
+				'form_disable_message'                => __( 'This form is disabled.', 'everest-forms' ),
+				'successful_form_submission_message'  => __( 'Thanks for contacting us! We will be in touch with you shortly.', 'everest-forms' ),
+				'submission_type'                     => 'message',
+				'hide_title'                          => '0',
+			),
+		);
+	}
+
+	/**
+	 * Seed a field's defaults from its registered field class (e.g. choices).
+	 *
+	 * @param string $evf_type EVF field type.
+	 * @param array  $field    Field data being built.
+	 * @return array Field data with defaults merged in.
+	 */
+	protected function seed_field_defaults( $evf_type, $field ) {
+		$field_obj = $this->get_field_object( $evf_type );
+
+		if ( $field_obj && ! empty( $field_obj->defaults ) && is_array( $field_obj->defaults ) ) {
+			$field['choices'] = $field_obj->defaults;
+		}
+
+		return $field;
+	}
+
+	/**
+	 * Locate the registered field object for a given type.
+	 *
+	 * @param string $evf_type EVF field type.
+	 * @return EVF_Form_Fields|null
+	 */
+	protected function get_field_object( $evf_type ) {
+		foreach ( evf()->form_fields->form_fields() as $group_fields ) {
+			foreach ( $group_fields as $field_obj ) {
+				if ( isset( $field_obj->type ) && $field_obj->type === $evf_type ) {
+					return $field_obj;
+				}
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * Render a pixel-perfect builder-canvas preview of an AI form schema.
+	 *
+	 * Builds the form content with build_form_content() and renders it through
+	 * the builder's own EVF_Builder_Fields::output_fields_preview(), guaranteeing
+	 * the preview is identical to the post-import builder canvas (locked Pro
+	 * fields included).
+	 *
+	 * @param WP_REST_Request $request Full data about the request.
+	 * @return WP_REST_Response|WP_Error
+	 */
+	public function get_ai_preview( WP_REST_Request $request ) {
+		$title  = sanitize_text_field( wp_unslash( (string) $request->get_param( 'title' ) ) );
+		$fields = $request->get_param( 'fields' );
+
+		if ( empty( $title ) ) {
+			$title = __( 'AI Generated Form', 'everest-forms' );
+		}
+
+		$form_content = $this->build_form_content( $title, is_array( $fields ) ? $fields : array() );
+
+		// Load the builder field renderer (mirrors EVF_Admin_Builder bootstrap).
+		if ( ! class_exists( 'EVF_Builder_Fields', false ) ) {
+			include_once dirname( EVF_PLUGIN_FILE ) . '/includes/admin/builder/class-evf-builder-page.php';
+			include_once dirname( EVF_PLUGIN_FILE ) . '/includes/admin/builder/class-evf-builder-fields.php';
+		}
+
+		if ( ! class_exists( 'EVF_Builder_Fields', false ) ) {
+			return new WP_Error( 'preview_unavailable', __( 'Form preview is unavailable.', 'everest-forms' ), array( 'status' => 500 ) );
+		}
+
+		$builder            = new EVF_Builder_Fields();
+		$builder->form_data = $form_content;
+
+		// Read-only, edit-chrome-free render (same per-field markup as the builder).
+		$html = $builder->render_ai_preview( $form_content );
+
+		return new WP_REST_Response(
+			array(
+				'success' => true,
+				'data'    => array(
+					'html' => $html,
 				),
 			),
 			200

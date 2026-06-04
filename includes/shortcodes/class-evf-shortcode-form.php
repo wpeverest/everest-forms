@@ -410,7 +410,7 @@ class EVF_Shortcode_Form {
 					$field = isset( $form_data['form_fields'][ $field_key ] ) ? $form_data['form_fields'][ $field_key ] : array();
 					$field = apply_filters( 'everest_forms_field_data', $field, $form_data );
 
-					if ( empty( $field ) || in_array( $field['type'], evf()->form_fields->get_pro_form_field_types(), true ) ) {
+					if ( empty( $field ) || evf_is_field_locked( $field['type'] ) ) {
 						continue;
 					}
 

@@ -4114,6 +4114,36 @@ function evf_get_fields_group($type = '')
 }
 
 /**
+ * Determine whether a field type is "locked" for the current site.
+ *
+ * A locked field is a registered Pro/addon field that the user cannot
+ * currently use (no license or required addon inactive). Locked fields are
+ * shown in the builder for upsell (with all settings visible but not editable)
+ * and are excluded from the published form until unlocked. The state is
+ * derived, never stored, so fields auto-unlock once the addon/license becomes
+ * available - no data migration required.
+ *
+ * @since 3.2.0
+ *
+ * @param string $type Field type slug (e.g. 'signature').
+ * @return bool True when the field type is locked.
+ */
+function evf_is_field_locked($type)
+{
+	$locked = in_array($type, evf()->form_fields->get_pro_form_field_types(), true);
+
+	/**
+	 * Filter whether a given field type is locked.
+	 *
+	 * @since 3.2.0
+	 *
+	 * @param bool   $locked Whether the field type is locked.
+	 * @param string $type   Field type slug.
+	 */
+	return (bool) apply_filters('everest_forms_is_field_locked', $locked, $type);
+}
+
+/**
  * Get all fields settings.
  *
  * @return array Settings data.

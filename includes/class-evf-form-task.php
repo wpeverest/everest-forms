@@ -202,6 +202,18 @@ class EVF_Form_Task {
 			// Formatted form data for hooks.
 			$this->form_data = apply_filters( 'everest_forms_process_before_form_data', evf_decode( $form->post_content ), $entry );
 
+			// Remove locked (Pro/addon) fields from processing. They are shown in the
+			// builder for upsell but never rendered on the published form, so they must
+			// not be validated, formatted, or stored as entries (a required locked field
+			// would otherwise block every submission).
+			if ( ! empty( $this->form_data['form_fields'] ) ) {
+				foreach ( $this->form_data['form_fields'] as $field_key => $field ) {
+					if ( isset( $field['type'] ) && evf_is_field_locked( $field['type'] ) ) {
+						unset( $this->form_data['form_fields'][ $field_key ] );
+					}
+				}
+			}
+
 			// Pre-process/validate hooks and filter. Data is not validated or cleaned yet so use with caution.
 			$entry                      = apply_filters( 'everest_forms_process_before_filter', $entry, $this->form_data );
 			$this->form_data['page_id'] = array_key_exists( 'post_id', $entry ) ? $entry['post_id'] : $form_id;
