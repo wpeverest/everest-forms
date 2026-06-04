@@ -33,7 +33,7 @@ class EVF_AI_Ajax {
 			wp_send_json_error( [ 'message' => __( 'Prompt is too short. Please provide more detail.', 'everest-forms' ) ] );
 		}
 
-		// Auto-register on first use (silent, non-blocking on local)
+		// Auto-register on first use
 		if ( ! EVF_AI_Registration::is_registered() ) {
 			EVF_AI_Registration::register();
 		}
@@ -47,6 +47,16 @@ class EVF_AI_Ajax {
 
 		// Call gateway
 		$ai_response = EVF_AI_API::generate_form( $prompt );
+
+		// "Invalid token" means the stored token is stale (gateway restarted, URL changed, etc.)
+		// Auto-heal: clear credentials, re-register, and retry once — transparent to the user.
+		if ( is_wp_error( $ai_response ) && 'api_error' === $ai_response->get_error_code()
+			&& false !== strpos( $ai_response->get_error_message(), 'Invalid token' ) ) {
+
+			EVF_AI_Registration::clear_credentials();
+			EVF_AI_Registration::register();
+			$ai_response = EVF_AI_API::generate_form( $prompt );
+		}
 
 		if ( is_wp_error( $ai_response ) ) {
 			$code = $ai_response->get_error_code();

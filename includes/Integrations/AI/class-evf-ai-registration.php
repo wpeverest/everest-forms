@@ -41,6 +41,16 @@ class EVF_AI_Registration {
 	}
 
 	/**
+	 * Clear stored credentials and registration lock.
+	 * Called automatically when the gateway returns "Invalid token" so the
+	 * site re-registers transparently on the next request.
+	 */
+	public static function clear_credentials(): void {
+		delete_option( self::OPTION_KEY );
+		delete_transient( self::LOCK_TRANSIENT );
+	}
+
+	/**
 	 * Register this site with the gateway (called silently on first AI use).
 	 * Uses a transient lock to prevent concurrent registration attempts.
 	 *
