@@ -570,6 +570,14 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 		}
 
 		ob_start();
+		// Reproduce the builder's exact ancestor chain so the canvas field CSS
+		// (scoped to `#everest-forms-builder .evf-tab-content
+		// .everest-forms-panel-content-wrap .everest-forms-panel-content …`) applies
+		// identically in the AI preview. The preview stylesheet neutralises these
+		// containers' own layout (absolute positioning / sidebar width) so they
+		// don't disturb the preview pane. See .evf-ai-preview-canvas in
+		// assets/css/evf-locked-fields.css.
+		echo '<div id="everest-forms-builder"><div class="evf-tab-content"><div class="everest-forms-panel-content-wrap"><div class="everest-forms-panel-content">';
 		echo '<div class="evf-admin-field-container"><div class="evf-admin-field-wrapper">';
 
 		foreach ( $structure as $row_data ) {
@@ -597,6 +605,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 		}
 
 		echo '</div></div>'; // .evf-admin-field-wrapper .evf-admin-field-container
+		echo '</div></div></div></div>'; // .everest-forms-panel-content .everest-forms-panel-content-wrap .evf-tab-content #everest-forms-builder
 
 		return ob_get_clean();
 	}

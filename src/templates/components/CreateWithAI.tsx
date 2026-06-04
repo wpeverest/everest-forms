@@ -745,20 +745,27 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 								display="inline-flex"
 								alignItems="center"
 								justifyContent="center"
+								gap="8px"
 								px="20px"
 								h="40px"
 								borderRadius="8px"
-								bg="#7545BB"
+								bg={isCreatingForm ? '#9660db' : '#7545BB'}
 								color="white"
 								fontSize="14px"
 								fontWeight="500"
 								border="none"
-								cursor="pointer"
+								cursor={isCreatingForm ? 'not-allowed' : 'pointer'}
 								flexShrink={0}
-								_hover={{ bg: '#6a3daa' }}
-								transition="background 0.2s"
+								opacity={isCreatingForm ? 0.85 : 1}
+								onClick={handleUseThisForm}
+								_hover={{ bg: isCreatingForm ? '#9660db' : '#6a3daa' }}
+								transition="background 0.2s, opacity 0.2s"
 							>
-								{__('Open in Builder', 'everest-forms')}
+								{isCreatingForm && <Spinner size="xs" color="white" thickness="2px" speed="0.65s" />}
+								{isCreatingForm
+									? __('Opening…', 'everest-forms')
+									: __('Open in Builder', 'everest-forms')
+								}
 							</Box>
 						</Flex>
 					</Box>
