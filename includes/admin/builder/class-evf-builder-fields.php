@@ -577,15 +577,23 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 		// containers' own layout (absolute positioning / sidebar width) so they
 		// don't disturb the preview pane. See .evf-ai-preview-canvas in
 		// assets/css/evf-locked-fields.css.
-		echo '<div id="everest-forms-builder"><div class="evf-tab-content"><div class="everest-forms-panel-content-wrap"><div class="everest-forms-panel-content">';
+		// Inline styles guarantee the builder container's own layout (absolute
+		// positioning / 100vh height) is neutralised regardless of stylesheet load
+		// order or caching, so the preview expands to its full content height.
+		echo '<div id="everest-forms-builder" style="position:static !important;inset:auto !important;min-height:0 !important;height:auto !important;width:100% !important;"><div class="evf-tab-content"><div class="everest-forms-panel-content-wrap"><div class="everest-forms-panel-content">';
 		echo '<div class="evf-admin-field-container"><div class="evf-admin-field-wrapper">';
 
+		$row_index = 0;
 		foreach ( $structure as $row_data ) {
 			$grids       = is_array( $row_data ) ? $row_data : array();
 			$active_grid = max( 1, count( $grids ) );
 
-			echo '<div class="evf-admin-row">';
+			// --evf-row-index drives a staggered "field appears" animation in the
+			// preview (see .evf-ai-preview-canvas in evf-locked-fields.css), so the
+			// form reveals field-by-field on generate / regenerate.
+			printf( '<div class="evf-admin-row" style="--evf-row-index:%d;">', absint( $row_index ) );
 			echo '<div class="evf-grid-lists">';
+			$row_index++;
 
 			$grid_index = 1;
 			foreach ( $grids as $grid ) {
@@ -704,14 +712,18 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 			/* translators: 1: field name, 2: addon name. */
 			$message   = sprintf( esc_html__( '%1$s needs the %2$s add-on. Activate it to use this field.', 'everest-forms' ), $field_strong, $addon_strong );
 			$cta_label = esc_html__( 'Activate add-on', 'everest-forms' );
+			$tag_label = esc_html__( 'ADD-ON', 'everest-forms' );
+			$tag_icon  = 'dashicons-admin-plugins';
 		} else {
 			/* translators: %s: field name. */
 			$message   = sprintf( esc_html__( '%s is a premium field — settings are read-only until you upgrade.', 'everest-forms' ), $field_strong );
 			$cta_label = esc_html__( 'Unlock', 'everest-forms' );
+			$tag_label = esc_html__( 'PRO', 'everest-forms' );
+			$tag_icon  = 'dashicons-lock';
 		}
 		?>
 		<div class="everest-forms-field-option-locked-banner everest-forms-locked-field-cta <?php echo esc_attr( $data['trigger'] ); ?>"<?php echo $data['attr']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Pre-escaped in get_locked_field_trigger(). ?>>
-			<span class="evf-locked-banner-tag"><span class="dashicons dashicons-lock"></span><?php esc_html_e( 'PRO', 'everest-forms' ); ?></span>
+			<span class="evf-locked-banner-tag"><span class="dashicons <?php echo esc_attr( $tag_icon ); ?>"></span><?php echo esc_html( $tag_label ); ?></span>
 			<span class="evf-locked-banner-text">
 				<?php echo wp_kses( $message, array( 'strong' => array() ) ); ?>
 			</span>

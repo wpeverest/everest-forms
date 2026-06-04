@@ -23,8 +23,6 @@ import {
 	FiCheck,
 	FiEdit3,
 	FiRefreshCw,
-	FiThumbsDown,
-	FiThumbsUp,
 } from 'react-icons/fi';
 
 const pulseGlow = keyframes`
@@ -156,6 +154,13 @@ interface CreateWithAIProps {
 	onBack: () => void;
 }
 
+// A single entry in the preview-sidebar chat history.
+interface ChatMessage {
+	role: 'user' | 'assistant';
+	text: string;
+	loading?: boolean;
+}
+
 const { restURL, security, ajaxUrl, aiNonce } = templatesScriptData;
 
 /**
@@ -201,8 +206,19 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 	const [refinePrompt, setRefinePrompt] = useState('');
 	// Bumped after an update so the preview re-fetches for the same form id.
 	const [previewVersion, setPreviewVersion] = useState(0);
+	// Running chat history for the current session (prompt + each regenerate/refine).
+	const [messages, setMessages] = useState<ChatMessage[]>([]);
 	const previewHintTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 	const aiResponseRef = React.useRef<any>(null);
+	const promptInputRef = React.useRef<HTMLTextAreaElement | null>(null);
+
+	// Focus the prompt input on the "What should we build today?" screen (on mount
+	// and whenever we return to the idle state).
+	useEffect(() => {
+		if (genState !== 'idle') return;
+		const t = setTimeout(() => promptInputRef.current?.focus(), 50);
+		return () => clearTimeout(t);
+	}, [genState]);
 
 	// Publish the AI-generated draft form and open it in the builder.
 	const handleUseThisForm = async () => {
@@ -243,26 +259,51 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 	//   AI changes only what was asked, keeps everything else.
 	// refinePromptText: extra instruction typed by user (empty string for Regenerate).
 	// Gateway decides mode from this: non-empty → refine, empty → regenerate.
+	// Replace the trailing loading placeholder with a final assistant reply.
+	const resolveLoading = (text: string) =>
+		setMessages(m => {
+			const next = [...m];
+			for (let i = next.length - 1; i >= 0; i--) {
+				if (next[i].role === 'assistant' && next[i].loading) {
+					next[i] = { role: 'assistant', text };
+					break;
+				}
+			}
+			return next;
+		});
+
 	const handleUpdate = async (refinePromptText: string = '') => {
 		if (isRegenerating || ! formId || ! prompt.trim()) return;
+		const refine   = (refinePromptText || '').trim();
+		const userText = refine || __('Regenerate the form', 'everest-forms');
+
+		// Append the new turn to the chat history + a loading placeholder.
+		setMessages(m => [...m, { role: 'user', text: userText }, { role: 'assistant', text: '', loading: true }]);
+		setRefinePrompt('');
 		setIsRegenerating(true);
 		try {
 			const res = await callAi('evf_ai_update_form', {
 				form_id:       formId,
-				prompt,                                     // always the original prompt
-				refine_prompt: (refinePromptText || '').trim(), // extra instruction or ''
+				prompt,                  // always the original prompt
+				refine_prompt: refine,   // extra instruction or '' (regenerate)
 			});
 			if (res?.success) {
-				setRefinePrompt('');
+				resolveLoading(
+					refine
+						? __( "Done — I've updated your form. Check the preview on the right.", 'everest-forms' )
+						: __( "Here's a fresh version of your form.", 'everest-forms' )
+				);
 				// Re-render the preview for the (same) updated draft.
 				setPreviewVersion(v => v + 1);
 			} else {
 				throw new Error(res?.data?.message || __('Could not update the form. Please try again.', 'everest-forms'));
 			}
 		} catch (e: any) {
+			const message = e?.message || __('Could not update the form. Please try again.', 'everest-forms');
+			resolveLoading(message);
 			toast({
 				title: __('Update failed', 'everest-forms'),
-				description: e?.message || __('Could not update the form. Please try again.', 'everest-forms'),
+				description: message,
 				status: 'error',
 				position: 'bottom-right',
 				duration: 6000,
@@ -348,6 +389,11 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 					if (result.ok) {
 						setFormId(result.formId);
 						setEditUrl(result.editUrl);
+						// Seed the chat history with this session's first turn.
+						setMessages([
+							{ role: 'user', text: prompt },
+							{ role: 'assistant', text: __( "Here's your form! Review the preview on the right and click \"Use This Form\" when you're happy with it.", 'everest-forms' ) },
+						]);
 						setGenState('generated');
 					}
 				};
@@ -399,7 +445,7 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 				<Flex flex="1" overflow="hidden" sx={{ animation: `${fadeUp} 0.3s ease` }}>
 					{/* Left: progress panel */}
 					<Flex
-						w="400px" flexShrink={0}
+						w="480px" flexShrink={0}
 						bg="white" borderRight="1px solid #e2e8f0"
 						direction="column" align="center" justify="center"
 						px="36px" py="40px" gap="0"
@@ -501,6 +547,9 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 
 	// ── Generated state ───────────────────────────────────────────────────────
 	if (genState === 'generated') {
+		// Index of the most recent assistant reply (gets the "Use This Form" button).
+		let lastAssistantIdx = -1;
+		messages.forEach((m, i) => { if (m.role === 'assistant') lastAssistantIdx = i; });
 		return (
 			<PageShell onBack={() => setGenState('idle')} backLabel={__('New Prompt', 'everest-forms')}>
 				{/* Hint tooltip */}
@@ -535,94 +584,118 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 
 					{/* Left: chat conversation panel */}
 					<Flex
-						w="380px" flexShrink={0}
+						w="480px" flexShrink={0}
 						bg="white" borderRight="1px solid #e2e8f0"
 						direction="column"
 						overflow="hidden"
 					>
 						{/* Conversation area */}
 						<Box flex={1} p="20px" overflowY="auto">
-							{/* User prompt bubble */}
-							<Flex justify="flex-end" mb="16px">
-								<Box
-									bg="#7545BB" color="white"
-									borderRadius="16px 16px 4px 16px"
-									px="14px" py="10px"
-									fontSize="14px" lineHeight="1.6"
-									maxW="260px"
-									boxShadow="0 2px 8px rgba(117,69,187,0.2)"
-								>
-									{prompt}
-								</Box>
-							</Flex>
+							{/* Conversation history for the current session */}
+								{messages.map((msg, idx) => {
+									if (msg.role === 'user') {
+										return (
+											<Flex key={idx} justify="flex-end" mb="16px">
+												<Box
+													bg="#7545BB" color="white"
+													borderRadius="16px 16px 4px 16px"
+													px="14px" py="10px"
+													fontSize="14px" lineHeight="1.6"
+													maxW="340px"
+													boxShadow="0 2px 8px rgba(117,69,187,0.2)"
+												>
+													{msg.text}
+												</Box>
+											</Flex>
+										);
+									}
 
-							{/* AI response bubble */}
-							<HStack align="flex-start" spacing="10px">
-								<Flex
-									w="28px" h="28px" borderRadius="full"
-									bg="rgba(117,69,187,0.1)" align="center" justify="center"
-									flexShrink={0} mt="2px"
-								>
-									<Icon as={BsStars} boxSize="13px" color="#7545BB" />
-								</Flex>
+									const isLastAssistant = idx === lastAssistantIdx;
+									return (
+										<HStack key={idx} align="flex-start" spacing="10px" mb="16px">
+											<Flex
+												w="28px" h="28px" borderRadius="full"
+												bg="rgba(117,69,187,0.1)" align="center" justify="center"
+												flexShrink={0} mt="2px"
+											>
+												<Icon as={BsStars} boxSize="13px" color="#7545BB" />
+											</Flex>
 
-								<Box
-									flex={1}
-									bg="#faf9ff"
-									border="1px solid #ede8f8"
-									borderRadius="4px 16px 16px 16px"
-									p="16px"
-									boxShadow="0 2px 10px rgba(117,69,187,0.06)"
-								>
-									<Text fontSize="14px" color="#444" lineHeight="1.65" margin="0 0 14px">
-										{__("Here's your form! It includes name, email, a 5-star rating, open feedback, and a source question. Ready to use it?", 'everest-forms')}
-									</Text>
+											<Box
+												flex={1}
+												bg="#faf9ff"
+												border="1px solid #ede8f8"
+												borderRadius="4px 16px 16px 16px"
+												p="16px"
+												boxShadow="0 2px 10px rgba(117,69,187,0.06)"
+											>
+												{msg.loading ? (
+													<HStack spacing="8px">
+														<Spinner size="xs" color="#7545BB" thickness="2px" speed="0.65s" />
+														<Text fontSize="14px" color="#7545BB" margin="0" fontWeight="500">
+															{__('Updating your form…', 'everest-forms')}
+														</Text>
+													</HStack>
+												) : (
+													<>
+														<Text fontSize="14px" color="#444" lineHeight="1.65" margin={isLastAssistant ? '0 0 14px' : '0'}>
+															{msg.text}
+														</Text>
 
-									{/* Use This Form button */}
-									<Box
-										as="button"
-										w="100%"
-										display="flex"
-										alignItems="center"
-										justifyContent="center"
-										gap="8px"
-										h="36px"
-										borderRadius="8px"
-										bg={isCreatingForm ? '#9660db' : '#7545BB'}
-										color="white"
-										fontSize="13px"
-										fontWeight="600"
-										border="none"
-										cursor={isCreatingForm ? 'not-allowed' : 'pointer'}
-										mb="12px"
-										opacity={isCreatingForm ? 0.85 : 1}
-										onClick={handleUseThisForm}
-										_hover={{ bg: isCreatingForm ? '#9660db' : '#6a3daa' }}
-										transition="background 0.2s, opacity 0.2s"
-									>
-										{isCreatingForm && <Spinner size="xs" color="white" thickness="2px" speed="0.65s" />}
-										{isCreatingForm
-											? __('Creating…', 'everest-forms')
-											: __('Use This Form', 'everest-forms')
-										}
-									</Box>
+														{isLastAssistant && (
+															<Box
+																as="button"
+																w="100%"
+																display="flex"
+																alignItems="center"
+																justifyContent="center"
+																gap="8px"
+																h="36px"
+																borderRadius="8px"
+																bg={isCreatingForm ? '#9660db' : '#7545BB'}
+																color="white"
+																fontSize="13px"
+																fontWeight="600"
+																border="none"
+																cursor={isCreatingForm ? 'not-allowed' : 'pointer'}
+																mb="12px"
+																opacity={isCreatingForm ? 0.85 : 1}
+																onClick={handleUseThisForm}
+																_hover={{ bg: isCreatingForm ? '#9660db' : '#6a3daa' }}
+																transition="background 0.2s, opacity 0.2s"
+															>
+																{isCreatingForm && <Spinner size="xs" color="white" thickness="2px" speed="0.65s" />}
+																{isCreatingForm
+																	? __('Creating…', 'everest-forms')
+																	: __('Use This Form', 'everest-forms')
+																}
+															</Box>
+														)}
 
-									{/* Feedback row */}
-									<HStack justify="space-between" pt="2px">
-										<HStack spacing="10px">
-											<Icon as={FiThumbsUp}   boxSize="14px" color="#c8c8d4" cursor="pointer" _hover={{ color: '#7545BB' }} />
-											<Icon as={FiThumbsDown} boxSize="14px" color="#c8c8d4" cursor="pointer" _hover={{ color: '#e05050' }} />
+														<HStack justify="flex-end" pt="2px">
+															<HStack
+																spacing="5px"
+																cursor={isRegenerating ? 'not-allowed' : 'pointer'}
+																opacity={isRegenerating ? 0.5 : 1}
+																_hover={{ opacity: isRegenerating ? 0.5 : 0.65 }}
+																onClick={isRegenerating ? undefined : handleRegenerate}
+															>
+																{isRegenerating && isLastAssistant
+																	? <Spinner size="xs" color="#9ca3af" thickness="2px" speed="0.65s" />
+																	: <Icon as={FiRefreshCw} boxSize="12px" color="#9ca3af" />
+																}
+																<Text fontSize="12px" color="#9ca3af" margin="0" fontWeight="500">
+																	{__('Redo', 'everest-forms')}
+																</Text>
+															</HStack>
+														</HStack>
+													</>
+												)}
+											</Box>
 										</HStack>
-										<HStack spacing="5px" cursor="pointer" _hover={{ opacity: 0.65 }} onClick={handleRegenerate}>
-											<Icon as={FiRefreshCw} boxSize="12px" color="#9ca3af" />
-											<Text fontSize="12px" color="#9ca3af" margin="0" fontWeight="500">
-												{__('Regenerate', 'everest-forms')}
-											</Text>
-										</HStack>
-									</HStack>
-								</Box>
-							</HStack>
-						</Box>
+									);
+								})}
+							</Box>
 
 						{/* Refine input */}
 						<Box borderTop="1px solid #e2e8f0" p="16px">
@@ -737,8 +810,10 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 							</Flex>
 
 							{/* Form fields — server-rendered builder-canvas HTML so the preview
-							    matches the builder pixel-for-pixel (locked Pro fields included). */}
-							<Box p="24px" opacity={isRegenerating ? 0.45 : 1} transition="opacity 0.3s">
+							    matches the builder pixel-for-pixel (locked Pro fields included).
+							    No padding here: the builder's own panel padding (20px) is the
+							    single source of outer spacing, so it matches the canvas exactly. */}
+							<Box p="0" opacity={isRegenerating ? 0.45 : 1} transition="opacity 0.3s">
 								{previewHTML ? (
 									<Box
 										className="evf-ai-preview-canvas"
@@ -758,6 +833,8 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 								<Box
 									as="button"
 									mt="24px"
+									ml="20px"
+									mb="20px"
 									display="inline-flex"
 									alignItems="center"
 									justifyContent="center"
@@ -881,6 +958,8 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 								flexShrink={0}
 							/>
 							<Textarea
+								ref={promptInputRef}
+								autoFocus
 								value={prompt}
 								onChange={(e) => setPrompt(e.target.value.slice(0, MAX_CHARS))}
 								placeholder={__('A feedback form to learn how onboarding felt, with a 1–5 rating and one optional comment…', 'everest-forms')}

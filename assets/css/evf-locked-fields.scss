@@ -192,6 +192,9 @@
 	   so the canvas field CSS applies identically. Neutralise those containers'
 	   own layout (absolute positioning + sidebar-offset width) so they sit inline
 	   inside the preview pane. */
+	/* Only neutralise the containers' own layout (absolute positioning, 100vh
+	   height, sidebar-offset width). Their PADDING/MARGINS are left untouched so
+	   the field/row spacing is byte-identical to the builder canvas. */
 	#everest-forms-builder {
 		position: static !important;
 		top: auto !important;
@@ -206,8 +209,6 @@
 	.everest-forms-panel-content-wrap,
 	.everest-forms-panel-content {
 		width: 100% !important;
-		padding: 0 !important;
-		margin: 0 !important;
 		overflow: visible !important;
 		min-height: 0 !important;
 		height: auto !important;
@@ -226,12 +227,26 @@
 		display: none !important;
 	}
 
-	.evf-admin-row {
-		margin: 0 0 16px;
-		padding: 0;
-	}
-
 	.everest-forms-field {
 		cursor: default;
+	}
+
+	/* Staggered "field is being added" reveal — replays every time the preview
+	   HTML is (re)injected, i.e. on generate and regenerate. Visual only.
+	   --evf-row-index is set per row in render_ai_preview(). */
+	.evf-admin-row {
+		animation: evf-ai-field-in 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+		animation-delay: calc(var(--evf-row-index, 0) * 0.12s);
+	}
+}
+
+@keyframes evf-ai-field-in {
+	from {
+		opacity: 0;
+		transform: translateY(12px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
 	}
 }
