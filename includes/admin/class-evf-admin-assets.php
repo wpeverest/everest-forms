@@ -391,6 +391,18 @@ class EVF_Admin_Assets {
 				EVF_VERSION,
 				true
 			);
+
+			$evf_ai_form_id = absint( $_GET['form_id'] ); // phpcs:ignore WordPress.Security.NonceVerification
+			wp_localize_script(
+				'evf-builder-ai',
+				'evfBuilderAI',
+				array(
+					'ajaxUrl'   => admin_url( 'admin-ajax.php' ),
+					'nonce'     => wp_create_nonce( 'evf_ai_nonce' ),
+					'formId'    => $evf_ai_form_id,
+					'formTitle' => get_the_title( $evf_ai_form_id ),
+				)
+			);
 		}
 
 		// EverestForms builder pages.

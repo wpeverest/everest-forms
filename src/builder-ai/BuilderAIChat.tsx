@@ -25,27 +25,55 @@ const EDIT_SUGGESTIONS = [
 const GREETING =
 	"Hi! I'm your AI form assistant. Tell me how to improve this form — or pick a suggestion below.";
 
-// Mock: simulate a Python AI backend response for edit-form actions.
-const mockEditFormResponse = (userPrompt: string): Promise<string> => {
-	const lower = userPrompt.toLowerCase();
+// Builder context (form id + nonce) localized by class-evf-admin-assets.php.
+interface BuilderAIConfig {
+	ajaxUrl?: string;
+	nonce?: string;
+	formId?: number;
+	formTitle?: string;
+}
+const cfg: BuilderAIConfig = ( window as any ).evfBuilderAI || {};
 
-	const responses: [RegExp, string][] = [
-		[/phone/i,       "Got it! I've added a phone number field after the email field."],
-		[/require/i,     "Done — all fields are now set to required."],
-		[/date/i,        "Added a date picker field to your form."],
-		[/file|upload/i, "A file upload field has been added to the form."],
-		[/dropdown|yes.*no|no.*yes/i, "Added a Yes / No dropdown field."],
-		[/remove|delete/i, "The last field has been removed from the form."],
-		[/address/i,     "An address section with street, city, and zip fields has been added."],
-		[/multi.*line|paragraph|textarea/i, "A multi-line text area has been added."],
-	];
+// Edit the current builder form via the ThemeGrill AI Cloud (Python) gateway.
+// Reuses the evf_ai_update_form action: the chat instruction is sent as the
+// refine prompt along with the current form context; the gateway returns the
+// updated form which is rebuilt in place server-side.
+const editFormViaAi = async (
+	instruction: string,
+): Promise<{ ok: boolean; message: string }> => {
+	if ( ! cfg.ajaxUrl || ! cfg.nonce || ! cfg.formId ) {
+		return { ok: false, message: 'AI assistant is unavailable on this screen.' };
+	}
 
-	const match = responses.find(([re]) => re.test(lower));
-	const reply = match
-		? match[1]
-		: "I've noted your request and updated the form structure accordingly. Check the canvas for the changes.";
+	const body = new URLSearchParams();
+	body.append( 'action', 'evf_ai_update_form' );
+	body.append( 'nonce', cfg.nonce );
+	body.append( 'form_id', String( cfg.formId ) );
+	// Gateway requires a non-empty original prompt — use the form title as context.
+	body.append( 'prompt', cfg.formTitle || 'Edit this form' );
+	body.append( 'refine_prompt', instruction );
 
-	return new Promise(resolve => setTimeout(() => resolve(reply), 1400));
+	try {
+		const resp = await fetch( cfg.ajaxUrl, {
+			method: 'POST',
+			credentials: 'same-origin',
+			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+			body: body.toString(),
+		} );
+		const json = await resp.json();
+		if ( json?.success ) {
+			return {
+				ok: true,
+				message: "Done — I've updated your form. Refreshing the canvas…",
+			};
+		}
+		return {
+			ok: false,
+			message: json?.data?.message || 'Sorry, I could not update the form. Please try again.',
+		};
+	} catch {
+		return { ok: false, message: 'Could not reach the AI service. Please try again.' };
+	}
 };
 
 // ── Component ─────────────────────────────────────────────────────────────────
@@ -79,27 +107,25 @@ const BuilderAIChat: React.FC = () => {
 		setLoading(true);
 		setMessages(prev => [...prev, { role: 'assistant', text: '', loading: true }]);
 
-		try {
-			const reply = await mockEditFormResponse(userText);
-			setMessages(prev => {
-				const copy = [...prev];
-				const last = copy[copy.length - 1];
-				if (last?.loading) copy[copy.length - 1] = { role: 'assistant', text: reply };
-				return copy;
-			});
-		} catch {
-			setMessages(prev => {
-				const copy = [...prev];
-				const last = copy[copy.length - 1];
-				if (last?.loading)
-					copy[copy.length - 1] = {
-						role: 'assistant',
-						text: 'Sorry, something went wrong. Please try again.',
-					};
-				return copy;
-			});
-		} finally {
-			setLoading(false);
+		const result = await editFormViaAi(userText);
+		setMessages(prev => {
+			const copy = [...prev];
+			const last = copy[copy.length - 1];
+			if (last?.loading) copy[copy.length - 1] = { role: 'assistant', text: result.message };
+			return copy;
+		});
+		setLoading(false);
+
+		// On success the form was rebuilt server-side. Refresh the builder canvas +
+		// options in place (no full page reload) via the hook exposed by
+		// form-builder.js; fall back to a reload if it isn't available.
+		if (result.ok) {
+			const w = window as any;
+			if (typeof w.evfReloadBuilderFields === 'function' && cfg.formId && cfg.nonce) {
+				w.evfReloadBuilderFields(cfg.formId, cfg.nonce, () => {});
+			} else {
+				setTimeout(() => window.location.reload(), 1500);
+			}
 		}
 	};
 
@@ -419,7 +445,7 @@ const BuilderAIChat: React.FC = () => {
 									</button>
 								</div>
 								<p style={{ fontSize: 11, color: '#9ca3af', margin: '6px 0 0', textAlign: 'center' }}>
-									AI suggestions are previewed — save the form to apply.
+									AI edits update your form and refresh the canvas.
 								</p>
 							</div>
 						</>

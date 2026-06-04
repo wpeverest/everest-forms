@@ -12,6 +12,55 @@ class EVF_AI_Ajax {
 		add_action( 'wp_ajax_evf_ai_update_form',    [ $this, 'update_form' ] );
 		add_action( 'wp_ajax_evf_ai_get_usage',      [ $this, 'get_usage' ] );
 		add_action( 'wp_ajax_evf_ai_activate_form',  [ $this, 'activate_form' ] );
+		add_action( 'wp_ajax_evf_ai_render_fields',  [ $this, 'render_fields' ] );
+	}
+
+	/**
+	 * Return the builder's freshly-rendered fields canvas + options panel HTML for
+	 * a form, so the in-builder AI chat can refresh the builder in place (no full
+	 * page reload) after an AI edit.
+	 */
+	public function render_fields() {
+		check_ajax_referer( 'evf_ai_nonce', 'nonce' );
+
+		if ( ! current_user_can( 'manage_everest_forms' ) ) {
+			wp_send_json_error( [ 'message' => __( 'You do not have permission to use this feature.', 'everest-forms' ) ], 403 );
+		}
+
+		$form_id = absint( $_POST['form_id'] ?? 0 );
+		$post    = $form_id ? get_post( $form_id ) : null;
+		if ( ! $post || 'everest_form' !== $post->post_type ) {
+			wp_send_json_error( [ 'message' => __( 'Form not found.', 'everest-forms' ) ] );
+		}
+
+		// EVF_Builder_Page reads the form from $_GET['form_id'] in its constructor.
+		$_GET['form_id'] = $form_id; // phpcs:ignore WordPress.Security.NonceVerification
+
+		if ( ! class_exists( 'EVF_Builder_Fields', false ) ) {
+			include_once dirname( EVF_PLUGIN_FILE ) . '/includes/admin/builder/class-evf-builder-page.php';
+			include_once dirname( EVF_PLUGIN_FILE ) . '/includes/admin/builder/class-evf-builder-fields.php';
+		}
+
+		if ( ! class_exists( 'EVF_Builder_Fields', false ) ) {
+			wp_send_json_error( [ 'message' => __( 'Builder is unavailable.', 'everest-forms' ) ] );
+		}
+
+		$builder = new EVF_Builder_Fields();
+
+		ob_start();
+		$builder->output_fields_preview();
+		$preview = ob_get_clean();
+
+		ob_start();
+		$builder->output_fields_options();
+		$options = ob_get_clean();
+
+		wp_send_json_success(
+			[
+				'preview' => $preview,
+				'options' => $options,
+			]
+		);
 	}
 
 	/**
