@@ -28,7 +28,7 @@ const CreateFormCTA: React.FC<CreateFormCTAProps> = ({
 				display="flex"
 				flexDirection="column"
 				cursor="pointer"
-				onClick={onCreateWithAI}
+				onClick={() => onCreateWithAI && onCreateWithAI()}
 				transition="border-color 0.2s, box-shadow 0.2s"
 				_hover={{
 					borderColor: 'rgba(117,69,187,0.4)',

@@ -42,7 +42,7 @@ interface Template {
 interface TemplateListProps {
 	selectedCategory: string;
 	templates: Template[];
-	onCreateWithAI?: () => void;
+	onCreateWithAI?: (formId?: number, title?: string) => void;
 }
 
 const { restURL, security } = templatesScriptData;
@@ -148,6 +148,36 @@ const TemplateList: React.FC<TemplateListProps> = ({
 	// Called when all addons are active — transition to the choose view
 	const handleAddonsReady = () => {
 		setModalState('choose');
+	};
+
+	// "Edit with AI": create a DRAFT form from the template, then open the AI
+	// preview with it loaded so the user can refine it by prompting.
+	const [aiCreatingSlug, setAiCreatingSlug] = useState('');
+	const handleEditWithAI = async (template: Template) => {
+		if (aiCreatingSlug) return;
+		setAiCreatingSlug(template.slug);
+		try {
+			const response = (await apiFetch({
+				path: `${restURL}everest-forms/v1/templates/create`,
+				method: 'POST',
+				body: JSON.stringify({ title: template.title, slug: template.slug, draft: true }),
+				headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': security },
+			})) as CreateTemplateResponse;
+
+			if (response.success && response.data?.id) {
+				// Navigate into the AI flow with the draft loaded (component unmounts).
+				onCreateWithAI?.(response.data.id, template.title);
+			} else {
+				throw new Error(response.message || 'create_failed');
+			}
+		} catch (error) {
+			setAiCreatingSlug('');
+			toast({
+				title: __('Error', 'everest-forms'),
+				description: __('Could not start AI editing. Please try again.', 'everest-forms'),
+				status: 'error', position: 'bottom-right', duration: 5000, isClosable: true, variant: 'subtle',
+			});
+		}
 	};
 
 	// Creates the form using the template title as name
@@ -313,9 +343,9 @@ const TemplateList: React.FC<TemplateListProps> = ({
 												fontWeight="700"
 												textTransform="uppercase"
 												letterSpacing="0.06em"
-												color="#FF8C39"
-												bg="white"
-												border="1.5px solid #FFD8B8"
+												color="#7545BB"
+												bg="#f3eefc"
+												border="1px solid #e6ddf6"
 												px="8px"
 												py="2px"
 												borderRadius="4px"
@@ -492,7 +522,7 @@ const TemplateList: React.FC<TemplateListProps> = ({
 					<ModalHeader p="0">
 						{/* Gradient header band */}
 						<Box
-							bgGradient="linear(135deg, #7545BB 0%, #9660db 100%)"
+							bg="#7545BB"
 							px="28px" pt="28px" pb="24px"
 						>
 							<Box
@@ -679,13 +709,16 @@ const TemplateList: React.FC<TemplateListProps> = ({
 									color="#7545BB"
 									fontSize="14px"
 									fontWeight="500"
-									cursor="pointer"
-									onClick={() => { onClose(); onCreateWithAI && onCreateWithAI(); }}
+									cursor={aiCreatingSlug ? 'not-allowed' : 'pointer'}
+									opacity={aiCreatingSlug ? 0.7 : 1}
+									onClick={() => { if (!aiCreatingSlug && previewTemplate) handleEditWithAI(previewTemplate); }}
 									transition="color 0.2s"
 									_hover={{ color: '#6a3daa' }}
 								>
 									<Icon as={LuSparkles} boxSize="4" />
-									<Text margin="0">{__('Edit with AI', 'everest-forms')}</Text>
+									<Text margin="0">
+										{aiCreatingSlug ? __('Loading…', 'everest-forms') : __('Edit with AI', 'everest-forms')}
+									</Text>
 								</Box>
 							</VStack>
 						)}

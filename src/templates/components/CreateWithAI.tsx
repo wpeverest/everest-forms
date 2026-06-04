@@ -13,7 +13,7 @@ import {
 	useToast,
 } from '@chakra-ui/react';
 import apiFetch from '@wordpress/api-fetch';
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 import React, { useEffect, useState } from 'react';
 import { templatesScriptData } from '../utils/global';
 import { BsStars } from 'react-icons/bs';
@@ -152,6 +152,10 @@ const PageShell: React.FC<{ onBack: () => void; backLabel?: string; children: Re
 
 interface CreateWithAIProps {
 	onBack: () => void;
+	// When opened from a template's "Edit with AI", the draft form to load
+	// straight into the refine/preview (generated) state.
+	initialFormId?: number;
+	initialTitle?: string;
 }
 
 // A single entry in the preview-sidebar chat history.
@@ -186,7 +190,7 @@ const callAi = async (
 	return response.json();
 };
 
-const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
+const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, initialTitle }) => {
 	const toast = useToast();
 	const [prompt, setPrompt] = useState('');
 	const [genState, setGenState] = useState<'idle' | 'generating' | 'generated'>('idle');
@@ -219,6 +223,28 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack }) => {
 		const t = setTimeout(() => promptInputRef.current?.focus(), 50);
 		return () => clearTimeout(t);
 	}, [genState]);
+
+	// Opened from a template's "Edit with AI": load the draft form straight into
+	// the generated (preview + refine) state so the user can change it via prompts.
+	useEffect(() => {
+		// Only preload when a real form id is provided; otherwise stay on the
+		// blank prompt screen (Create with AI).
+		if (typeof initialFormId !== 'number' || initialFormId <= 0) return;
+		setFormId(initialFormId);
+		// The gateway's update endpoint needs a non-empty original prompt as context.
+		setPrompt(initialTitle || __('this form', 'everest-forms'));
+		setMessages([
+			{
+				role: 'assistant',
+				text: initialTitle
+					/* translators: %s: template name. */
+					? sprintf( __( 'Loaded the “%s” template. Tell me what to change — add fields, reword labels, or anything else.', 'everest-forms' ), initialTitle )
+					: __( 'Loaded your form. Tell me what to change.', 'everest-forms' ),
+			},
+		]);
+		setGenState('generated');
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [initialFormId]);
 
 	// Publish the AI-generated draft form and open it in the builder.
 	const handleUseThisForm = async () => {

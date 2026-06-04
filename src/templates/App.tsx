@@ -63,6 +63,10 @@ const App = () => {
     const params = new URLSearchParams(window.location.search);
     return params.get('view') === 'ai' ? 'ai' : 'templates';
   });
+  // When entering the AI view from a template's "Edit with AI", the draft form to
+  // preload (0 = fresh "Create with AI").
+  const [aiFormId, setAiFormId] = useState(0);
+  const [aiTitle, setAiTitle] = useState('');
 
   useEffect(() => {
     if (currentView === 'ai') {
@@ -83,7 +87,13 @@ const App = () => {
     return () => window.removeEventListener('popstate', onPopState);
   }, []);
 
-  const navigateToAI = () => {
+  const navigateToAI = (formId: number = 0, title: string = '') => {
+    // Coerce: only a real positive form id loads a prefilled form; anything else
+    // (e.g. a stray click event passed by a button) opens the blank prompt screen.
+    const id = typeof formId === 'number' && Number.isFinite(formId) && formId > 0 ? formId : 0;
+    const t  = typeof title === 'string' ? title : '';
+    setAiFormId(id);
+    setAiTitle(t);
     const url = new URL(window.location.href);
     url.searchParams.set('view', 'ai');
     history.pushState({ view: 'ai' }, '', url.toString());
@@ -91,6 +101,8 @@ const App = () => {
   };
 
   const navigateBack = () => {
+    setAiFormId(0);
+    setAiTitle('');
     const url = new URL(window.location.href);
     url.searchParams.delete('view');
     history.pushState({ view: 'templates' }, '', url.toString());
@@ -105,7 +117,7 @@ const App = () => {
     <ChakraProvider>
       {currentView === 'ai' ? (
         <Box bg="#f3f3f5" minHeight="100vh">
-          <CreateWithAI onBack={navigateBack} />
+          <CreateWithAI onBack={navigateBack} initialFormId={aiFormId} initialTitle={aiTitle} />
         </Box>
       ) : (
         <Box

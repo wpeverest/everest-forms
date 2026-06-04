@@ -271,8 +271,13 @@ class Everest_Forms_Template_Section_Data {
 			);
 		}
 
+		// When "Edit with AI" is used, create the form as a DRAFT so it only
+		// becomes a real form once the user clicks "Use This Form" in the AI flow.
+		$draft = evf_string_to_bool( $request->get_param( 'draft' ) );
+		$args  = $draft ? array( 'post_status' => 'draft' ) : array();
+
 		// Create the form using the title and slug.
-		$form_id = evf()->form->create( $title, $slug );
+		$form_id = evf()->form->create( $title, $slug, $args );
 
 		// Check if form creation was successful.
 		if ( $form_id ) {

@@ -110,7 +110,7 @@ const Sidebar: React.FC<SidebarProps> = React.memo(({ categories, selectedCatego
           fontWeight="500"
           border="none"
           cursor="pointer"
-          onClick={onRequestTemplate}
+          onClick={() => onRequestTemplate && onRequestTemplate()}
           _hover={{ bg: "rgba(117,69,187,0.88)" }}
           transition="background 0.2s"
         >

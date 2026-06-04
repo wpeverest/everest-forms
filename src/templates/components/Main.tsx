@@ -181,7 +181,7 @@ const TemplateSkeleton = () => (
 	</Box>
 );
 
-const Main: React.FC<{ onCreateWithAI?: () => void }> = ({ onCreateWithAI }) => {
+const Main: React.FC<{ onCreateWithAI?: (formId?: number, title?: string) => void }> = ({ onCreateWithAI }) => {
 	const toast = useToast();
 	const [filter, setFilter] = useState(__('All', 'everest-forms'));
 	const [isCreatingBlank, setIsCreatingBlank] = useState(false);
@@ -315,8 +315,8 @@ const Main: React.FC<{ onCreateWithAI?: () => void }> = ({ onCreateWithAI }) => 
 	if (isLoading) return <TemplateSkeleton />;
 	if (error) return <div>{(error as Error).message}</div>;
 
-	const handleCreateWithAI = () => {
-		if (onCreateWithAI) onCreateWithAI();
+	const handleCreateWithAI = (formId?: number, title?: string) => {
+		if (onCreateWithAI) onCreateWithAI(formId, title);
 	};
 
 	const handleCreateBlank = async () => {

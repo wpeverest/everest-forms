@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class EVF_Admin_Form_Templates {
 
 	/**
-	 * Get default template.
+	 * Get default template.q
 	 *
 	 * @return array
 	 */
@@ -35,6 +35,7 @@ class EVF_Admin_Form_Templates {
 	 * @return array
 	 */
 	public static function get_template_data() {
+		$template_data = get_transient( 'evf_template_section_list' );
 		$template_data = get_transient( 'evf_template_section_list' );
 
 		$template_url = 'https://assets.wpeverest.com/everestforms/forms/';
@@ -89,7 +90,9 @@ class EVF_Admin_Form_Templates {
 			include __DIR__ . '/views/html-admin-header-skeleton.php';
 		}
 
-		wp_register_script( 'evf-templates', plugins_url( 'dist/templates.min.js', EVF_PLUGIN_FILE ), array( 'wp-element', 'react', 'react-dom', 'wp-api-fetch', 'wp-i18n', 'wp-blocks' ), EVF_VERSION, true );
+		$templates_js_path = evf()->plugin_path() . '/dist/templates.min.js';
+		$templates_js_ver  = file_exists( $templates_js_path ) ? filemtime( $templates_js_path ) : EVF_VERSION;
+		wp_register_script( 'evf-templates', plugins_url( 'dist/templates.min.js', EVF_PLUGIN_FILE ), array( 'wp-element', 'react', 'react-dom', 'wp-api-fetch', 'wp-i18n', 'wp-blocks' ), $templates_js_ver, true );
 		wp_localize_script(
 			'evf-templates',
 			'evf_templates_script',
