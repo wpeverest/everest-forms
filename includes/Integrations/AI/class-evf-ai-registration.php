@@ -116,15 +116,4 @@ class EVF_AI_Registration {
 		return 'pro' === $creds['tier'];
 	}
 
-	/**
-	 * Environment check — mirrors wp_get_environment_type() check in WPForms.
-	 * Blocks registration on local/staging to prevent spam registrations.
-	 */
-	public static function is_production(): bool {
-		// Allow override for local testing
-		if ( defined( 'EVF_AI_FORCE_REGISTER' ) && EVF_AI_FORCE_REGISTER ) {
-			return true;
-		}
-		return 'production' === wp_get_environment_type();
-	}
 }
