@@ -873,25 +873,29 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 						</Box>
 
 						{/* Multi-part tab bar — sticky at the bottom of the scrollable right
-						    panel, visually attached to the preview card (no bottom radius on
-						    card when shown). Pixel-perfect match to the builder's
-						    .everest-forms-multi-part-tabs bar. */}
+						    panel. Pixel-perfect match to .everest-forms-multi-part-tabs:
+						    container h=42px bg=#fafafa borderTop only; UL h=41px borderBottom
+						    1px solid #ccc; active LI bg=#eeeeee; inactive LI bg=#f7f7f7;
+						    links h=40px p=10px fontWeight=600 color=#7e3bd0/#555 */}
 						{multiPartSteps.length > 0 && (
 							<Box
 								position="sticky"
 								bottom="0"
 								zIndex="10"
 								bg="#fafafa"
-								border="1px solid #d5d9e2"
 								borderTop="1px solid #d5d9e2"
+								borderLeft="1px solid #d5d9e2"
+								borderRight="1px solid #d5d9e2"
+								borderBottom="1px solid #d5d9e2"
 								borderRadius="0 0 16px 16px"
 								display="flex"
-								alignItems="center"
-								minH="42px"
+								alignItems="stretch"
+								h="42px"
 								mb="24px"
+								overflow="hidden"
 								pointerEvents={isRegenerating || isCreatingForm ? 'none' : 'auto'}
 							>
-								{/* Tab list */}
+								{/* Tab list — matches .everest-forms-tabs ul */}
 								<Box
 									as="ul"
 									display="flex"
@@ -899,19 +903,20 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 									m="0"
 									p="0"
 									flex="1"
+									h="41px"
+									alignSelf="flex-start"
 									overflow="hidden"
-									minH="42px"
-									alignItems="center"
+									borderBottom="1px solid #cccccc"
 								>
 									{multiPartSteps.map((step, idx) => (
 										<Box
 											as="li"
 											key={idx}
-											display="inline-flex"
-											alignItems="center"
+											display="block"
 											flexShrink={0}
-											bg={activePartTab === idx ? '#eeeeee' : 'transparent'}
-											borderRadius={idx === 0 ? '0 0 0 16px' : idx === multiPartSteps.length - 1 ? '0 0 16px 0' : '0'}
+											h="40px"
+											bg={activePartTab === idx ? '#eeeeee' : '#f7f7f7'}
+											borderRadius={idx === 0 ? '0' : idx === multiPartSteps.length - 1 ? '0 0 16px 0' : '0'}
 											cursor="pointer"
 											onClick={() => setActivePartTab(idx)}
 										>
@@ -921,14 +926,14 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 												onClick={(e: React.MouseEvent) => e.preventDefault()}
 												display="inline-flex"
 												alignItems="center"
+												h="40px"
 												px="10px"
-												py="10px"
 												fontSize="13px"
 												fontWeight="600"
-												lineHeight="20px"
+												lineHeight="1"
 												color={activePartTab === idx ? '#7e3bd0' : '#555555'}
 												textDecoration="none"
-												_hover={{ color: activePartTab === idx ? '#7e3bd0' : '#333333' }}
+												_hover={{ color: activePartTab === idx ? '#7e3bd0' : '#333333', textDecoration: 'none' }}
 											>
 												<Text margin="0" fontSize="13px" fontWeight="600" color="inherit">
 													{step}
