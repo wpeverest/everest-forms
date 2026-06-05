@@ -526,6 +526,17 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 		$type_name = isset( $meta[ $field['type'] ]['name'] ) ? $meta[ $field['type'] ]['name'] : $field['type'];
 		$label     = ! empty( $field['label'] ) ? $field['label'] : $type_name;
 		$required  = ! empty( $field['required'] ) && '1' === $field['required'];
+
+		// When the user is already licensed but the field's required add-on is
+		// inactive, prompt to activate the add-on instead of upselling Pro.
+		$trigger = $this->get_locked_field_trigger( $field['type'] );
+		if ( ! empty( $trigger['licensed'] ) && ! empty( $trigger['addon'] ) ) {
+			/* translators: %s: add-on name (e.g. Stripe). */
+			$message = sprintf( esc_html__( 'Activate the %s add-on to use this field', 'everest-forms' ), esc_html( $this->humanize_addon( $trigger['addon'] ) ) );
+		} else {
+			/* translators: %s: field type name (e.g. Signature). */
+			$message = sprintf( esc_html__( '%s is a premium field', 'everest-forms' ), esc_html( $type_name ) );
+		}
 		?>
 		<label class="evf-locked-field-label">
 			<?php echo esc_html( $label ); ?>
@@ -535,12 +546,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 		</label>
 		<div class="evf-locked-field-placeholder">
 			<span class="dashicons dashicons-lock"></span>
-			<span>
-				<?php
-				/* translators: %s: field type name (e.g. Signature). */
-				printf( esc_html__( '%s is a premium field', 'everest-forms' ), esc_html( $type_name ) );
-				?>
-			</span>
+			<span><?php echo esc_html( $message ); ?></span>
 		</div>
 		<?php
 	}

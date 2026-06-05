@@ -46,11 +46,6 @@ const shimmer = keyframes`
   100% { background-position:  400px 0; }
 `;
 
-const regenSweep = keyframes`
-  0%   { top: -40%; opacity: 0.9; }
-  80%  { opacity: 0.9; }
-  100% { top: 110%;   opacity: 0; }
-`;
 
 const INSPIRATION_CARDS = [
 	{
@@ -784,26 +779,13 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 						{/* Form preview card */}
 						<Box
 							bg="white"
-							border={isRegenerating ? '1px solid rgba(117,69,187,0.4)' : '1px solid #e2e8f0'}
+							border="1px solid #e2e8f0"
 							borderRadius="16px"
 							overflow="hidden"
 							mb="16px"
 							position="relative"
 							transition="border-color 0.3s"
 						>
-							{/* Regen sweep overlay */}
-							{isRegenerating && (
-								<Box position="absolute" inset="0" pointerEvents="none" zIndex={5} overflow="hidden" borderRadius="16px">
-									<Box
-										position="absolute" left="0" right="0" h="60%"
-										sx={{
-											background: 'linear-gradient(to bottom, transparent 0%, rgba(117,69,187,0.05) 40%, rgba(117,69,187,0.09) 50%, rgba(117,69,187,0.05) 60%, transparent 100%)',
-											animation: `${regenSweep} 1.1s ease-in-out infinite`,
-										}}
-									/>
-								</Box>
-							)}
-
 							{/* Card header */}
 							<Flex align="center" px="24px" py="16px" borderBottom="1px solid #e2e8f0" justify="space-between">
 								<HStack spacing="10px">
@@ -839,7 +821,7 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 							    matches the builder pixel-for-pixel (locked Pro fields included).
 							    No padding here: the builder's own panel padding (20px) is the
 							    single source of outer spacing, so it matches the canvas exactly. */}
-							<Box p="0" opacity={isRegenerating ? 0.45 : 1} transition="opacity 0.3s">
+							<Box p="0" opacity={isRegenerating ? 0.7 : 1} transition="opacity 0.3s">
 								{previewHTML ? (
 									<Box
 										className="evf-ai-preview-canvas"
@@ -855,78 +837,9 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 									</VStack>
 								)}
 
-								{/* Submit button */}
-								<Box
-									as="button"
-									mt="24px"
-									ml="20px"
-									mb="20px"
-									display="inline-flex"
-									alignItems="center"
-									justifyContent="center"
-									px="24px"
-									h="40px"
-									borderRadius="8px"
-									bg="#7545BB"
-									color="white"
-									fontSize="14px"
-									fontWeight="500"
-									border="none"
-									cursor="pointer"
-									_hover={{ bg: '#6a3daa' }}
-									transition="background 0.2s"
-								>
-									{__('Submit', 'everest-forms')}
-								</Box>
 							</Box>
 						</Box>
 
-						{/* "Happy with this form?" CTA */}
-						<Flex
-							bg="white"
-							borderRadius="12px"
-							border="1px solid #e2e8f0"
-							p="20px 24px"
-							align="center"
-							justify="space-between"
-							gap="16px"
-						>
-							<Box>
-								<Text fontSize="15px" fontWeight="600" color="#0e0e0e" margin="0 0 4px">
-									{__('Happy with this form?', 'everest-forms')}
-								</Text>
-								<Text fontSize="13px" color="#6b7280" margin="0" lineHeight="1.5">
-									{__('Open it in the builder to customize fields and settings.', 'everest-forms')}
-								</Text>
-							</Box>
-							<Box
-								as="button"
-								display="inline-flex"
-								alignItems="center"
-								justifyContent="center"
-								gap="8px"
-								px="20px"
-								h="40px"
-								borderRadius="8px"
-								bg={isCreatingForm ? '#9660db' : '#7545BB'}
-								color="white"
-								fontSize="14px"
-								fontWeight="500"
-								border="none"
-								cursor={isCreatingForm ? 'not-allowed' : 'pointer'}
-								flexShrink={0}
-								opacity={isCreatingForm ? 0.85 : 1}
-								onClick={handleUseThisForm}
-								_hover={{ bg: isCreatingForm ? '#9660db' : '#6a3daa' }}
-								transition="background 0.2s, opacity 0.2s"
-							>
-								{isCreatingForm && <Spinner size="xs" color="white" thickness="2px" speed="0.65s" />}
-								{isCreatingForm
-									? __('Opening…', 'everest-forms')
-									: __('Open in Builder', 'everest-forms')
-								}
-							</Box>
-						</Flex>
 					</Box>
 				</Flex>
 			</PageShell>

@@ -55,7 +55,9 @@ class EVF_Field_Payment_Authorize_Net extends EVF_Form_Fields {
 
 	/**
 	 * Field preview inside the builder (ported from the Authorize.Net addon, minus
-	 * its is_plugin_active() guard, so the locked upsell shows the real field).
+	 * its is_plugin_active() guard) so the locked Pro showcase is pixel-identical
+	 * to the real field. The "Activate add-on" CTA lives in the locked settings
+	 * panel, not on the canvas.
 	 *
 	 * @param array $field Field data and settings.
 	 */

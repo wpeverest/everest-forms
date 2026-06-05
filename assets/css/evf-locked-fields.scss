@@ -250,3 +250,47 @@
 		transform: translateY(0);
 	}
 }
+
+/* Credit Card locked preview — compact layout. The real inline layout ships with
+   the Stripe addon CSS (absent in free), so without this the inputs stack into a
+   tall column. This keeps the free Pro-showcase compact. */
+.everest-forms-field-credit-card .everest-forms-credit-card-cardnumber {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 8px;
+
+	.everest-forms-card-icon {
+		flex: 0 0 auto;
+		line-height: 0;
+
+		svg {
+			width: 28px;
+			height: auto;
+		}
+	}
+
+	input {
+		height: 38px;
+		border: 1px solid #e1e1e1;
+		border-radius: 4px;
+		padding: 0 10px;
+		background: #fff;
+		margin: 0;
+	}
+
+	.card-number {
+		flex: 1 1 200px;
+		min-width: 0;
+	}
+
+	.card-expiration {
+		flex: 1 1 120px;
+		min-width: 0;
+	}
+
+	.card-cvc {
+		flex: 1 1 90px;
+		min-width: 0;
+	}
+}

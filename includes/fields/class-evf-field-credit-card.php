@@ -51,13 +51,20 @@ class EVF_Field_Credit_Card extends EVF_Form_Fields {
 			),
 		);
 
+		// The required Stripe add-on supplies this field. Mark it so the locked
+		// settings panel shows an "Activate Stripe" CTA when already licensed.
+		$this->addon = 'everest-forms-stripe';
+
 		parent::__construct();
 	}
 
 	/**
 	 * Field preview inside the builder.
 	 *
-	 * @since 1.0.0
+	 * Renders the same card layout the real (Stripe-active) field shows in the
+	 * builder, so the locked Pro showcase is pixel-identical to the actual field
+	 * — just non-interactive. The "Activate Stripe" CTA lives in the locked
+	 * settings panel, not on the canvas.
 	 *
 	 * @param array $field Field data and settings.
 	 */
@@ -70,7 +77,7 @@ class EVF_Field_Credit_Card extends EVF_Form_Fields {
 			</div>
 			<input class="card-number" type="text" placeholder="Card Number" disabled>
 			<input class="card-expiration" type="text" placeholder="MM / YY" disabled>
-			<input class ="card-cvc" type="text" placeholder="CVC" disabled>
+			<input class="card-cvc" type="text" placeholder="CVC" disabled>
 		</div>
 		<?php
 		// Description.
