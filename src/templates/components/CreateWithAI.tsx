@@ -14,7 +14,7 @@ import {
 } from '@chakra-ui/react';
 import apiFetch from '@wordpress/api-fetch';
 import { __, sprintf } from '@wordpress/i18n';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { templatesScriptData } from '../utils/global';
 import { BsStars } from 'react-icons/bs';
 import {
@@ -213,6 +213,19 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 	const previewHintTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 	const aiResponseRef = React.useRef<any>(null);
 	const promptInputRef = React.useRef<HTMLTextAreaElement | null>(null);
+	const canvasRef = useRef<HTMLDivElement | null>(null);
+
+	// Show only the active part's rows when multi-part tabs are used.
+	// PHP stamps data-part-id="N" (1-based) on each .evf-admin-row.
+	useEffect(() => {
+		if (!canvasRef.current || multiPartSteps.length === 0) return;
+		const rows = canvasRef.current.querySelectorAll<HTMLElement>('.evf-admin-row[data-part-id]');
+		const target = activePartTab + 1; // 1-based
+		rows.forEach(row => {
+			const pid = parseInt(row.dataset.partId || '1', 10);
+			row.style.display = pid === target ? '' : 'none';
+		});
+	}, [activePartTab, previewHTML, multiPartSteps]);
 
 	// Focus the prompt input on the "What should we build today?" screen (on mount
 	// and whenever we return to the idle state).
@@ -783,16 +796,17 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 						</Box>
 					</Flex>
 
-					{/* Right: form preview panel */}
-					<Box flex={1} bg="#f6f6f8" overflowY="auto" p="24px">
+					{/* Right: form preview panel — overflowY scroll so the tab bar can be sticky */}
+					<Box flex={1} bg="#f6f6f8" overflowY="auto" p="24px" pb={multiPartSteps.length > 0 ? '0' : '24px'} position="relative">
 
-						{/* Form preview card */}
+						{/* Form preview card — bottom radius removed when multi-part tab bar is shown */}
 						<Box
 							bg="white"
 							border="1px solid #e2e8f0"
-							borderRadius="16px"
+							borderRadius={multiPartSteps.length > 0 ? '16px 16px 0 0' : '16px'}
+							borderBottom={multiPartSteps.length > 0 ? 'none' : '1px solid #e2e8f0'}
 							overflow="hidden"
-							mb="16px"
+							mb="0"
 							position="relative"
 							transition="border-color 0.3s"
 						>
@@ -829,11 +843,12 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 
 							{/* Form fields — server-rendered builder-canvas HTML so the preview
 							    matches the builder pixel-for-pixel (locked Pro fields included).
-							    No padding here: the builder's own panel padding (20px) is the
-							    single source of outer spacing, so it matches the canvas exactly. */}
+							    PHP stamps data-part-id on each row; canvasRef useEffect
+							    shows/hides rows based on the active multi-part tab. */}
 							<Box p="0" opacity={isRegenerating ? 0.7 : 1} transition="opacity 0.3s" pointerEvents={isRegenerating || isCreatingForm ? 'none' : 'auto'}>
 								{previewHTML ? (
 									<Box
+										ref={canvasRef}
 										className="evf-ai-preview-canvas"
 										onClick={(e) => handleFieldClick(e)}
 										dangerouslySetInnerHTML={{ __html: previewHTML }}
@@ -847,69 +862,75 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 									</VStack>
 								)}
 							</Box>
+						</Box>
 
-							{/* Multi-part tab bar — pixel-perfect match to the builder's
-							    .everest-forms-multi-part-tabs bar (bottom of fields panel).
-							    Shows when the AI generated a multi-page form. */}
-							{multiPartSteps.length > 0 && (
+						{/* Multi-part tab bar — sticky at the bottom of the scrollable right
+						    panel, visually attached to the preview card (no bottom radius on
+						    card when shown). Pixel-perfect match to the builder's
+						    .everest-forms-multi-part-tabs bar. */}
+						{multiPartSteps.length > 0 && (
+							<Box
+								position="sticky"
+								bottom="0"
+								zIndex="10"
+								bg="#fafafa"
+								border="1px solid #d5d9e2"
+								borderTop="1px solid #d5d9e2"
+								borderRadius="0 0 16px 16px"
+								display="flex"
+								alignItems="center"
+								minH="42px"
+								mb="24px"
+								pointerEvents={isRegenerating || isCreatingForm ? 'none' : 'auto'}
+							>
+								{/* Tab list */}
 								<Box
-									borderTop="1px solid #d5d9e2"
-									bg="#fafafa"
+									as="ul"
 									display="flex"
-									alignItems="center"
-									justifyContent="space-between"
+									listStyleType="none"
+									m="0"
+									p="0"
+									flex="1"
+									overflow="hidden"
 									minH="42px"
-									pointerEvents={isRegenerating || isCreatingForm ? 'none' : 'auto'}
+									alignItems="center"
 								>
-									{/* Tab list */}
-									<Box
-										as="ul"
-										display="flex"
-										listStyleType="none"
-										m="0"
-										p="0"
-										flex="1"
-										overflow="hidden"
-										borderRight="1px solid #d5d9e2"
-										minH="42px"
-									>
-										{multiPartSteps.map((step, idx) => (
+									{multiPartSteps.map((step, idx) => (
+										<Box
+											as="li"
+											key={idx}
+											display="inline-flex"
+											alignItems="center"
+											flexShrink={0}
+											bg={activePartTab === idx ? '#eeeeee' : 'transparent'}
+											borderRadius={idx === 0 ? '0 0 0 16px' : idx === multiPartSteps.length - 1 ? '0 0 16px 0' : '0'}
+											cursor="pointer"
+											onClick={() => setActivePartTab(idx)}
+										>
 											<Box
-												as="li"
-												key={idx}
+												as="a"
+												href="#"
+												onClick={(e: React.MouseEvent) => e.preventDefault()}
 												display="inline-flex"
 												alignItems="center"
-												flexShrink={0}
-												position="relative"
-												bg={activePartTab === idx ? '#eee' : 'transparent'}
-												cursor="pointer"
-												onClick={() => setActivePartTab(idx)}
+												px="10px"
+												py="10px"
+												fontSize="13px"
+												fontWeight="600"
+												lineHeight="20px"
+												color={activePartTab === idx ? '#7e3bd0' : '#555555'}
+												textDecoration="none"
+												_hover={{ color: activePartTab === idx ? '#7e3bd0' : '#333333' }}
 											>
-												<Box
-													as="a"
-													href="#"
-													onClick={(e: React.MouseEvent) => e.preventDefault()}
-													display="inline-flex"
-													alignItems="center"
-													px="10px"
-													py="10px"
-													fontSize="13px"
-													fontWeight="600"
-													lineHeight="20px"
-													color={activePartTab === idx ? '#7e3bd0' : '#555555'}
-													textDecoration="none"
-													_hover={{ color: activePartTab === idx ? '#7e3bd0' : '#333' }}
-												>
-													<Text margin="0" fontSize="13px" fontWeight="600" color="inherit">
-														{step}
-													</Text>
-												</Box>
+												<Text margin="0" fontSize="13px" fontWeight="600" color="inherit">
+													{step}
+												</Text>
 											</Box>
-										))}
-									</Box>
+										</Box>
+									))}
 								</Box>
-							)}
-						</Box>
+							</Box>
+						)}
 
 					</Box>
 				</Flex>

@@ -575,6 +575,19 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 			}
 		}
 
+		// Multi-part: build a row_key → 1-based part number map so React can
+		// show/hide rows per active tab (data-part-id attribute on each row div).
+		$is_multipart = isset( $form_data['settings']['enable_multi_part'] )
+			&& evf_string_to_bool( $form_data['settings']['enable_multi_part'] );
+		$row_to_part  = array();
+		if ( $is_multipart && ! empty( $form_data['multi_part'] ) ) {
+			foreach ( array_values( $form_data['multi_part'] ) as $part_idx => $part ) {
+				foreach ( ( $part['rows'] ?? array() ) as $row_key ) {
+					$row_to_part[ $row_key ] = $part_idx + 1; // 1-based
+				}
+			}
+		}
+
 		ob_start();
 		// Reproduce the builder's exact ancestor chain so the canvas field CSS
 		// (scoped to `#everest-forms-builder .evf-tab-content
@@ -589,15 +602,29 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 		echo '<div id="everest-forms-builder" style="position:static !important;inset:auto !important;min-height:0 !important;height:auto !important;width:100% !important;"><div class="evf-tab-content"><div class="everest-forms-panel-content-wrap"><div class="everest-forms-panel-content">';
 		echo '<div class="evf-admin-field-container"><div class="evf-admin-field-wrapper">';
 
-		$row_index = 0;
-		foreach ( $structure as $row_data ) {
+		$row_index    = 0;
+		$current_part = 0; // tracks last assigned part, defaults rows to part 1 when no map entry
+		foreach ( $structure as $row_key => $row_data ) {
 			$grids       = is_array( $row_data ) ? $row_data : array();
 			$active_grid = max( 1, count( $grids ) );
+
+			// Determine which part this row belongs to (default 1 for non-multipart forms).
+			if ( $is_multipart && ! empty( $row_to_part ) ) {
+				$part_id      = $row_to_part[ $row_key ] ?? $current_part ?: 1;
+				$current_part = $part_id;
+			} else {
+				$part_id = 1;
+			}
 
 			// --evf-row-index drives a staggered "field appears" animation in the
 			// preview (see .evf-ai-preview-canvas in evf-locked-fields.css), so the
 			// form reveals field-by-field on generate / regenerate.
-			printf( '<div class="evf-admin-row" style="--evf-row-index:%d;">', absint( $row_index ) );
+			// data-part-id lets React show/hide rows when tabs are clicked.
+			printf(
+				'<div class="evf-admin-row" data-part-id="%d" style="--evf-row-index:%d;">',
+				absint( $part_id ),
+				absint( $row_index )
+			);
 			echo '<div class="evf-grid-lists">';
 			$row_index++;
 
