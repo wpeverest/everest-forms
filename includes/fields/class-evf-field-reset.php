@@ -143,6 +143,9 @@ class EVF_Field_Reset extends EVF_Form_Fields {
 	 */
 	public function field_preview( $field ) {
 
+		// Label.
+		$this->field_preview_option( 'label', $field );
+
 		// Define data.
 		$button_label = ! empty( $field['button_text'] ) ? esc_attr( $field['button_text'] ) : __( 'Reset', 'everest-forms' );
 

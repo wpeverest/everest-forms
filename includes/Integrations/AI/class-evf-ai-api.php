@@ -41,13 +41,12 @@ class EVF_AI_API {
 			'POST',
 			'/ai/v1/generate',
 			array(
-				'prompt'      => $prompt,
-				'license_key' => $license_key,
+				'prompt'           => $prompt,
+				'license_key'      => $license_key,
+				'available_fields' => implode( ',', evf()->form_fields->get_form_field_types() ),
 			),
 			$token
 		);
-
-		error_log( print_r( $response, true ) );
 
 		if ( is_wp_error( $response ) ) {
 			return $response;

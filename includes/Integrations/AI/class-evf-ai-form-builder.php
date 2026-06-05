@@ -250,6 +250,18 @@ class EVF_AI_Form_Builder {
 			return null;
 		}
 
+		// Normalize: gateway may return `html` with reset-button HTML when user
+		// asks for a reset button. Convert to the proper EVF `reset` type and
+		// clear the raw description so it doesn't leak as display text.
+		if ( 'html' === $type ) {
+			$raw_desc = $ai_field['description'] ?? '';
+			if ( preg_match( '/<button[^>]+type=["\']?reset["\']?/i', $raw_desc ) ) {
+				$type                        = 'reset';
+				$label                       = $label ?: __( 'Reset', 'everest-forms' );
+				$ai_field['description']     = '';
+			}
+		}
+
 		// Base keys every field has
 		$field = [
 			'id'                             => $field_id,
@@ -363,6 +375,15 @@ class EVF_AI_Form_Builder {
 
 			case 'hidden':
 				$field['default_value'] = '';
+				break;
+
+			case 'captcha':
+				$field['format']   = 'math';
+				$field['required'] = '1';
+				break;
+
+			case 'reset':
+				$field['button_text'] = $label ?: __( 'Reset', 'everest-forms' );
 				break;
 
 			case 'html':
