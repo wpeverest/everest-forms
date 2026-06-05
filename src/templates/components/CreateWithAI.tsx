@@ -200,7 +200,10 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 	// The AI gateway creates a DRAFT form on generate; we preview it by id and
 	// publish it on "Use This Form".
 	const [formId, setFormId] = useState(0);
+	const [formTitle, setFormTitle] = useState(initialTitle || '');
 	const [editUrl, setEditUrl] = useState('');
+	const [multiPartSteps, setMultiPartSteps] = useState<string[]>([]);
+	const [activePartTab, setActivePartTab] = useState(0);
 	// Follow-up / refine prompt shown in the preview sidebar.
 	const [refinePrompt, setRefinePrompt] = useState('');
 	// Bumped after an update so the preview re-fetches for the same form id.
@@ -309,6 +312,8 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 				refine_prompt: refine,   // extra instruction or '' (regenerate)
 			});
 			if (res?.success) {
+				if (res.data?.form_title) setFormTitle(res.data.form_title);
+				if (res.data?.multi_part_steps) { setMultiPartSteps(res.data.multi_part_steps); setActivePartTab(0); }
 				resolveLoading(
 					refine
 						? __( "Done — I've updated your form. Check the preview on the right.", 'everest-forms' )
@@ -382,7 +387,9 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 					aiResponseRef.current = {
 						ok: true,
 						formId: res.data.form_id,
+						formTitle: res.data.form_title || '',
 						editUrl: res.data.edit_url || '',
+						multiPartSteps: res.data.multi_part_steps || [],
 					};
 				} else {
 					showError( res?.data?.message || __('Something went wrong. Please try again.', 'everest-forms') );
@@ -409,7 +416,10 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 					}
 					if (result.ok) {
 						setFormId(result.formId);
+						setFormTitle(result.formTitle || '');
 						setEditUrl(result.editUrl);
+						setMultiPartSteps(result.multiPartSteps || []);
+						setActivePartTab(0);
 						// Seed the chat history with this session's first turn.
 						setMessages([
 							{ role: 'user', text: prompt },
@@ -800,7 +810,7 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 										<Icon as={FiEdit3} boxSize="15px" color="#7545BB" />
 									</Box>
 									<Text fontSize="16px" fontWeight="600" color="#0e0e0e" margin="0">
-										Customer Feedback Survey
+										{formTitle || __('AI Generated Form', 'everest-forms')}
 									</Text>
 								</HStack>
 								{isRegenerating && (
@@ -836,8 +846,69 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 										))}
 									</VStack>
 								)}
-
 							</Box>
+
+							{/* Multi-part tab bar — pixel-perfect match to the builder's
+							    .everest-forms-multi-part-tabs bar (bottom of fields panel).
+							    Shows when the AI generated a multi-page form. */}
+							{multiPartSteps.length > 0 && (
+								<Box
+									borderTop="1px solid #d5d9e2"
+									bg="#fafafa"
+									display="flex"
+									alignItems="center"
+									justifyContent="space-between"
+									minH="42px"
+									pointerEvents={isRegenerating || isCreatingForm ? 'none' : 'auto'}
+								>
+									{/* Tab list */}
+									<Box
+										as="ul"
+										display="flex"
+										listStyleType="none"
+										m="0"
+										p="0"
+										flex="1"
+										overflow="hidden"
+										borderRight="1px solid #d5d9e2"
+										minH="42px"
+									>
+										{multiPartSteps.map((step, idx) => (
+											<Box
+												as="li"
+												key={idx}
+												display="inline-flex"
+												alignItems="center"
+												flexShrink={0}
+												position="relative"
+												bg={activePartTab === idx ? '#eee' : 'transparent'}
+												cursor="pointer"
+												onClick={() => setActivePartTab(idx)}
+											>
+												<Box
+													as="a"
+													href="#"
+													onClick={(e: React.MouseEvent) => e.preventDefault()}
+													display="inline-flex"
+													alignItems="center"
+													px="10px"
+													py="10px"
+													fontSize="13px"
+													fontWeight="600"
+													lineHeight="20px"
+													color={activePartTab === idx ? '#7e3bd0' : '#555555'}
+													textDecoration="none"
+													_hover={{ color: activePartTab === idx ? '#7e3bd0' : '#333' }}
+												>
+													<Text margin="0" fontSize="13px" fontWeight="600" color="inherit">
+														{step}
+													</Text>
+												</Box>
+											</Box>
+										))}
+									</Box>
+								</Box>
+							)}
 						</Box>
 
 					</Box>

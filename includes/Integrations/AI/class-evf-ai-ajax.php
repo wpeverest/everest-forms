@@ -123,9 +123,11 @@ class EVF_AI_Ajax {
 
 		wp_send_json_success(
 			array(
-				'form_id'    => $form_id,
-				'form_title' => get_the_title( $form_id ),
-				'fields'     => EVF_AI_Form_Builder::get_field_summary( $form_id ),
+				'form_id'          => $form_id,
+				'form_title'       => get_the_title( $form_id ),
+				'fields'           => EVF_AI_Form_Builder::get_field_summary( $form_id ),
+				'required_addons'  => $ai_response['required_addons'] ?? array(),
+				'multi_part_steps' => self::get_multi_part_steps( $form_id ),
 			)
 		);
 	}
@@ -196,12 +198,13 @@ class EVF_AI_Ajax {
 
 		wp_send_json_success(
 			array(
-				'form_id'         => $form_id,
-				'form_title'      => get_the_title( $form_id ),
-				'edit_url'        => admin_url( 'admin.php?page=evf-builder&tab=fields&form_id=' . $form_id ),
-				'tier'            => EVF_AI_Registration::get_tier(),
-				'fields'          => EVF_AI_Form_Builder::get_field_summary( $form_id ),
-				'required_addons' => $ai_response['required_addons'] ?? array(),
+				'form_id'          => $form_id,
+				'form_title'       => get_the_title( $form_id ),
+				'edit_url'         => admin_url( 'admin.php?page=evf-builder&tab=fields&form_id=' . $form_id ),
+				'tier'             => EVF_AI_Registration::get_tier(),
+				'fields'           => EVF_AI_Form_Builder::get_field_summary( $form_id ),
+				'required_addons'  => $ai_response['required_addons'] ?? array(),
+				'multi_part_steps' => self::get_multi_part_steps( $form_id ),
 			)
 		);
 	}
@@ -251,5 +254,31 @@ class EVF_AI_Ajax {
 		}
 
 		wp_send_json_success( $usage );
+	}
+
+	/**
+	 * Return ordered array of multi-part step names for a given form, or empty
+	 * array if the form is not a multi-part form.
+	 *
+	 * @param int $form_id
+	 * @return string[]
+	 */
+	private static function get_multi_part_steps( int $form_id ): array {
+		$post = get_post( $form_id );
+		if ( ! $post ) {
+			return array();
+		}
+		$data = evf_decode( $post->post_content );
+		if ( empty( $data['settings']['enable_multi_part'] ) || ! evf_string_to_bool( $data['settings']['enable_multi_part'] ) ) {
+			return array();
+		}
+		if ( empty( $data['multi_part'] ) ) {
+			return array();
+		}
+		$steps = array();
+		foreach ( array_values( $data['multi_part'] ) as $part ) {
+			$steps[] = sanitize_text_field( $part['name'] ?? '' );
+		}
+		return $steps;
 	}
 }

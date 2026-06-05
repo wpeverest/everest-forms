@@ -449,7 +449,6 @@ const BuilderAIChat: React.FC = () => {
 								</p>
 							</div>
 						</>
-					)}
 				</div>
 			)}
 
