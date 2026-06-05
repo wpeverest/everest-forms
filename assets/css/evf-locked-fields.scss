@@ -184,17 +184,11 @@
 }
 
 /* ==========================================================================
-   4. AI preview canvas — hide the builder's editing chrome
+   4. AI preview canvas — exact visual match to the form builder canvas
    ========================================================================== */
 .evf-ai-preview-canvas {
-	/* The preview reproduces the builder's ancestor chain (#everest-forms-builder
-	   › .evf-tab-content › .everest-forms-panel-content-wrap › .everest-forms-panel-content)
-	   so the canvas field CSS applies identically. Neutralise those containers'
-	   own layout (absolute positioning + sidebar-offset width) so they sit inline
-	   inside the preview pane. */
-	/* Only neutralise the containers' own layout (absolute positioning, 100vh
-	   height, sidebar-offset width). Their PADDING/MARGINS are left untouched so
-	   the field/row spacing is byte-identical to the builder canvas. */
+	/* Neutralize the builder containers' absolute positioning / fixed dimensions
+	   so they render inline inside the preview card. */
 	#everest-forms-builder {
 		position: static !important;
 		top: auto !important;
@@ -206,13 +200,26 @@
 		height: auto !important;
 	}
 
-	.everest-forms-panel-content-wrap,
+	.everest-forms-panel-content-wrap {
+		width: 100% !important;
+		overflow: visible !important;
+		min-height: 0 !important;
+		height: auto !important;
+		position: static !important;
+		background: #fff !important;
+		padding: 0 !important;
+	}
+
+	/* Exact match: builder's .everest-forms-panel-content has padding:30px and a
+	   grey bg — keep the 30px spacing but use white for the preview. */
 	.everest-forms-panel-content {
 		width: 100% !important;
 		overflow: visible !important;
 		min-height: 0 !important;
 		height: auto !important;
 		position: static !important;
+		background: #fff !important;
+		padding: 30px !important;
 	}
 
 	/* Builder-only edit chrome is not shown in the read-only preview. */
@@ -227,16 +234,57 @@
 		display: none !important;
 	}
 
-	.everest-forms-field {
-		cursor: default;
-	}
-
-	/* Staggered "field is being added" reveal — replays every time the preview
-	   HTML is (re)injected, i.e. on generate and regenerate. Visual only.
-	   --evf-row-index is set per row in render_ai_preview(). */
+	/* ---- Row — exact match to builder (.evf-admin-row) ---- */
+	/* Staggered reveal animation: --evf-row-index is set per row in render_ai_preview(). */
 	.evf-admin-row {
+		display: flex !important;
+		margin-bottom: 15px !important;
+		background: transparent !important;
+		border: 1px solid transparent !important;
+		border-radius: 5px !important;
+		padding: 20px !important;
+		transition: border 0.5s, background 0.5s !important;
 		animation: evf-ai-field-in 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
 		animation-delay: calc(var(--evf-row-index, 0) * 0.12s);
+
+		&:last-child {
+			margin-bottom: 0 !important;
+		}
+
+		/* Hover — exact match to builder's .evf-admin-row.evf-hover */
+		&:hover {
+			background: #fcfcfc !important;
+			border-color: #e7e7e7 !important;
+			border-radius: 5px !important;
+
+			/* Grid turns transparent on row hover so the row's #fcfcfc shows through —
+			   same as builder's .evf-admin-row.evf-hover .evf-admin-grid { background: 0 0 } */
+			.evf-admin-grid {
+				background: transparent !important;
+			}
+		}
+	}
+
+	/* ---- Grid (field column) — exact match to builder (.evf-admin-grid) ---- */
+	.evf-admin-grid {
+		padding: 20px !important;
+		background: #fff !important;
+		border: 1px solid transparent !important;
+		transition: border 0.5s, background 0.5s !important;
+	}
+
+	/* ---- Field — matches builder field hover (dashed primary border + light tint) ---- */
+	.everest-forms-field {
+		cursor: default !important;
+		padding: 15px !important;
+		border: 1px solid transparent !important;
+		border-radius: 3px !important;
+
+		&:hover {
+			border: 1px dashed #8c64c6 !important;
+			background: rgba(126, 59, 208, 0.02) !important;
+			border-radius: 3px !important;
+		}
 	}
 }
 

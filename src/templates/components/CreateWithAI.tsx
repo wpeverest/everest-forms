@@ -15,7 +15,6 @@ import {
 import apiFetch from '@wordpress/api-fetch';
 import { __, sprintf } from '@wordpress/i18n';
 import React, { useEffect, useState } from 'react';
-import { templatesScriptData } from '../utils/global';
 import { BsStars } from 'react-icons/bs';
 import {
 	FiArrowLeft,
@@ -24,6 +23,7 @@ import {
 	FiEdit3,
 	FiRefreshCw,
 } from 'react-icons/fi';
+import { templatesScriptData } from '../utils/global';
 
 const pulseGlow = keyframes`
   0%   { box-shadow: 0 0 0 0 rgba(117,69,187,0.3); transform: scale(1); }
@@ -46,47 +46,69 @@ const shimmer = keyframes`
   100% { background-position:  400px 0; }
 `;
 
-
 const INSPIRATION_CARDS = [
 	{
 		title: __('Customer feedback survey', 'everest-forms'),
-		description: __('A 1–5 rating, NPS question, and one open comment field for product teams.', 'everest-forms'),
-		prompt: 'A customer feedback survey with a 1-5 rating scale, NPS question, and one open comment field for product teams.',
+		description: __(
+			'A 1–5 rating, NPS question, and one open comment field for product teams.',
+			'everest-forms',
+		),
+		prompt:
+			'A customer feedback survey with a 1-5 rating scale, NPS question, and one open comment field for product teams.',
 	},
 	{
 		title: __('Appointment booking', 'everest-forms'),
-		description: __('Name, contact, preferred date and time, and service type selection.', 'everest-forms'),
-		prompt: 'An appointment booking form with name, contact details, preferred date and time, and service type selection.',
+		description: __(
+			'Name, contact, preferred date and time, and service type selection.',
+			'everest-forms',
+		),
+		prompt:
+			'An appointment booking form with name, contact details, preferred date and time, and service type selection.',
 	},
 	{
 		title: __('Course registration', 'everest-forms'),
-		description: __('Student details, course selection, and payment information in one flow.', 'everest-forms'),
-		prompt: 'A course registration form with student details, course selection, and payment information in one flow.',
+		description: __(
+			'Student details, course selection, and payment information in one flow.',
+			'everest-forms',
+		),
+		prompt:
+			'A course registration form with student details, course selection, and payment information in one flow.',
 	},
 	{
 		title: __('Event RSVP', 'everest-forms'),
-		description: __('Guest name, attendance, plus-ones, and dietary preferences.', 'everest-forms'),
-		prompt: 'An event RSVP form with guest name, attendance confirmation, plus-ones count, and dietary preferences.',
+		description: __(
+			'Guest name, attendance, plus-ones, and dietary preferences.',
+			'everest-forms',
+		),
+		prompt:
+			'An event RSVP form with guest name, attendance confirmation, plus-ones count, and dietary preferences.',
 	},
 	{
 		title: __('Job application', 'everest-forms'),
-		description: __('Personal info, resume upload, work experience, and a short cover letter.', 'everest-forms'),
-		prompt: 'A job application form with personal info, resume upload, work experience, and a short cover letter.',
+		description: __(
+			'Personal info, resume upload, work experience, and a short cover letter.',
+			'everest-forms',
+		),
+		prompt:
+			'A job application form with personal info, resume upload, work experience, and a short cover letter.',
 	},
 	{
 		title: __('Product order form', 'everest-forms'),
-		description: __('Product selection, quantity, shipping address, and payment details.', 'everest-forms'),
-		prompt: 'A product order form with product selection, quantity, shipping address, and payment details.',
+		description: __(
+			'Product selection, quantity, shipping address, and payment details.',
+			'everest-forms',
+		),
+		prompt:
+			'A product order form with product selection, quantity, shipping address, and payment details.',
 	},
 ];
 
 const GEN_STEPS = [
-	__('Understanding your prompt', 'everest-forms'),
-	__('Designing field structure', 'everest-forms'),
-	__('Configuring validation & logic', 'everest-forms'),
-	__('Finalizing your form', 'everest-forms'),
+	__('Analysing your prompt', 'everest-forms'),
+	__('Creating form fields', 'everest-forms'),
+	__('Applying labels & settings', 'everest-forms'),
+	__('Preparing your form', 'everest-forms'),
 ];
-
 
 const MAX_CHARS = 500;
 
@@ -97,17 +119,39 @@ const MAX_CHARS = 500;
 
 const SkeletonField: React.FC<{ delay?: string }> = ({ delay = '0s' }) => (
 	<Box sx={{ animation: `${fadeUp} 0.4s ease ${delay} both` }}>
-		<Box h="12px" w="30%" mb="8px" borderRadius="4px" sx={{ background: 'linear-gradient(90deg, #eeeeef 25%, #e4e4e8 50%, #eeeeef 75%)', backgroundSize: '400px 100%', animation: `${shimmer} 1.6s ease-in-out infinite` }} />
-		<Box h="36px" borderRadius="6px" sx={{ background: 'linear-gradient(90deg, #eeeeef 25%, #e4e4e8 50%, #eeeeef 75%)', backgroundSize: '400px 100%', animation: `${shimmer} 1.6s ease-in-out infinite` }} />
+		<Box
+			h="12px"
+			w="30%"
+			mb="8px"
+			borderRadius="4px"
+			sx={{
+				background:
+					'linear-gradient(90deg, #eeeeef 25%, #e4e4e8 50%, #eeeeef 75%)',
+				backgroundSize: '400px 100%',
+				animation: `${shimmer} 1.6s ease-in-out infinite`,
+			}}
+		/>
+		<Box
+			h="36px"
+			borderRadius="6px"
+			sx={{
+				background:
+					'linear-gradient(90deg, #eeeeef 25%, #e4e4e8 50%, #eeeeef 75%)',
+				backgroundSize: '400px 100%',
+				animation: `${shimmer} 1.6s ease-in-out infinite`,
+			}}
+		/>
 	</Box>
 );
 
 // ── Shared page shell ─────────────────────────────────────────────────────────
 
-const PageShell: React.FC<{ onBack: () => void; backLabel?: string; children: React.ReactNode }> = ({
-	onBack, backLabel, children,
-}) => (
-	<Flex direction="column" height="100vh" overflow="hidden" bg="#f6f6f8">
+const PageShell: React.FC<{
+	onBack: () => void;
+	backLabel?: string;
+	children: React.ReactNode;
+}> = ({ onBack, backLabel, children }) => (
+	<Flex direction="column" height="100vh" overflow="hidden" bg="white">
 		{/* Purple accent line */}
 		<Box h="4px" bg="#7545BB" flexShrink={0} />
 		{/* Header */}
@@ -123,10 +167,15 @@ const PageShell: React.FC<{ onBack: () => void; backLabel?: string; children: Re
 			<HStack spacing="12px" flex="1">
 				<Box
 					as="button"
-					w="32px" h="32px"
-					display="inline-flex" alignItems="center" justifyContent="center"
+					w="32px"
+					h="32px"
+					display="inline-flex"
+					alignItems="center"
+					justifyContent="center"
 					borderRadius="8px"
-					color="#383838" bg="transparent" border="none"
+					color="#383838"
+					bg="transparent"
+					border="none"
 					cursor="pointer"
 					onClick={onBack}
 					_hover={{ bg: '#f8fafc' }}
@@ -173,7 +222,9 @@ const callAi = async (
 	const body = new URLSearchParams();
 	body.append('action', action);
 	body.append('nonce', aiNonce);
-	Object.entries(data).forEach(([key, value]) => body.append(key, String(value)));
+	Object.entries(data).forEach(([key, value]) =>
+		body.append(key, String(value)),
+	);
 
 	const response = await fetch(ajaxUrl, {
 		method: 'POST',
@@ -185,10 +236,16 @@ const callAi = async (
 	return response.json();
 };
 
-const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, initialTitle }) => {
+const CreateWithAI: React.FC<CreateWithAIProps> = ({
+	onBack,
+	initialFormId,
+	initialTitle,
+}) => {
 	const toast = useToast();
 	const [prompt, setPrompt] = useState('');
-	const [genState, setGenState] = useState<'idle' | 'generating' | 'generated'>('idle');
+	const [genState, setGenState] = useState<'idle' | 'generating' | 'generated'>(
+		'idle',
+	);
 	const [genStep, setGenStep] = useState(-1);
 	const [hint, setHint] = useState({ show: false, x: 0, y: 0 });
 	const [isRegenerating, setIsRegenerating] = useState(false);
@@ -207,7 +264,9 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 	const [previewVersion, setPreviewVersion] = useState(0);
 	// Running chat history for the current session (prompt + each regenerate/refine).
 	const [messages, setMessages] = useState<ChatMessage[]>([]);
-	const previewHintTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+	const previewHintTimer = React.useRef<ReturnType<typeof setTimeout> | null>(
+		null,
+	);
 	const aiResponseRef = React.useRef<any>(null);
 	const promptInputRef = React.useRef<HTMLTextAreaElement | null>(null);
 
@@ -232,9 +291,15 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 			{
 				role: 'assistant',
 				text: initialTitle
-					/* translators: %s: template name. */
-					? sprintf( __( 'Loaded the “%s” template. Tell me what to change — add fields, reword labels, or anything else.', 'everest-forms' ), initialTitle )
-					: __( 'Loaded your form. Tell me what to change.', 'everest-forms' ),
+					? /* translators: %s: template name. */
+						sprintf(
+							__(
+								'Loaded the “%s” template. Tell me what to change — add fields, reword labels, or anything else.',
+								'everest-forms',
+							),
+							initialTitle,
+						)
+					: __('Loaded your form. Tell me what to change.', 'everest-forms'),
 			},
 		]);
 		setGenState('generated');
@@ -243,7 +308,7 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 
 	// Publish the AI-generated draft form and open it in the builder.
 	const handleUseThisForm = async () => {
-		if (isCreatingForm || ! formId) return;
+		if (isCreatingForm || !formId) return;
 		setIsCreatingForm(true);
 		try {
 			const res = await callAi('evf_ai_activate_form', { form_id: formId });
@@ -260,7 +325,9 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 			setIsCreatingForm(false);
 			toast({
 				title: __('Error', 'everest-forms'),
-				description: e?.message || __('Could not open the form. Please try again.', 'everest-forms'),
+				description:
+					e?.message ||
+					__('Could not open the form. Please try again.', 'everest-forms'),
 				status: 'error',
 				position: 'bottom-right',
 				duration: 5000,
@@ -282,7 +349,7 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 	// Gateway decides mode from this: non-empty → refine, empty → regenerate.
 	// Replace the trailing loading placeholder with a final assistant reply.
 	const resolveLoading = (text: string) =>
-		setMessages(m => {
+		setMessages((m) => {
 			const next = [...m];
 			for (let i = next.length - 1; i >= 0; i--) {
 				if (next[i].role === 'assistant' && next[i].loading) {
@@ -294,33 +361,45 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 		});
 
 	const handleUpdate = async (refinePromptText: string = '') => {
-		if (isRegenerating || ! formId || ! prompt.trim()) return;
-		const refine   = (refinePromptText || '').trim();
+		if (isRegenerating || !formId || !prompt.trim()) return;
+		const refine = (refinePromptText || '').trim();
 		const userText = refine || __('Regenerate the form', 'everest-forms');
 
 		// Append the new turn to the chat history + a loading placeholder.
-		setMessages(m => [...m, { role: 'user', text: userText }, { role: 'assistant', text: '', loading: true }]);
+		setMessages((m) => [
+			...m,
+			{ role: 'user', text: userText },
+			{ role: 'assistant', text: '', loading: true },
+		]);
 		setRefinePrompt('');
 		setIsRegenerating(true);
 		try {
 			const res = await callAi('evf_ai_update_form', {
-				form_id:       formId,
-				prompt,                  // always the original prompt
-				refine_prompt: refine,   // extra instruction or '' (regenerate)
+				form_id: formId,
+				prompt, // always the original prompt
+				refine_prompt: refine, // extra instruction or '' (regenerate)
 			});
 			if (res?.success) {
 				resolveLoading(
 					refine
-						? __( "Done — I've updated your form. Check the preview on the right.", 'everest-forms' )
-						: __( "Here's a fresh version of your form.", 'everest-forms' )
+						? __(
+								"Done — I've updated your form. Check the preview on the right.",
+								'everest-forms',
+							)
+						: __("Here's a fresh version of your form.", 'everest-forms'),
 				);
 				// Re-render the preview for the (same) updated draft.
-				setPreviewVersion(v => v + 1);
+				setPreviewVersion((v) => v + 1);
 			} else {
-				throw new Error(res?.data?.message || __('Could not update the form. Please try again.', 'everest-forms'));
+				throw new Error(
+					res?.data?.message ||
+						__('Could not update the form. Please try again.', 'everest-forms'),
+				);
 			}
 		} catch (e: any) {
-			const message = e?.message || __('Could not update the form. Please try again.', 'everest-forms');
+			const message =
+				e?.message ||
+				__('Could not update the form. Please try again.', 'everest-forms');
 			resolveLoading(message);
 			toast({
 				title: __('Update failed', 'everest-forms'),
@@ -343,7 +422,10 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 		const { clientX, clientY } = e;
 		setHint({ show: true, x: clientX, y: clientY });
 		if (previewHintTimer.current) clearTimeout(previewHintTimer.current);
-		previewHintTimer.current = setTimeout(() => setHint(h => ({ ...h, show: false })), 2600);
+		previewHintTimer.current = setTimeout(
+			() => setHint((h) => ({ ...h, show: false })),
+			2600,
+		);
 	};
 
 	const hasPrompt = prompt.trim().length > 0;
@@ -385,11 +467,19 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 						editUrl: res.data.edit_url || '',
 					};
 				} else {
-					showError( res?.data?.message || __('Something went wrong. Please try again.', 'everest-forms') );
+					showError(
+						res?.data?.message ||
+							__('Something went wrong. Please try again.', 'everest-forms'),
+					);
 				}
 			})
 			.catch(() => {
-				showError( __('Could not reach the AI service. Please try again.', 'everest-forms') );
+				showError(
+					__(
+						'Could not reach the AI service. Please try again.',
+						'everest-forms',
+					),
+				);
 			});
 
 		let step = -1;
@@ -403,7 +493,7 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 				const finish = () => {
 					if (cancelled) return;
 					const result = aiResponseRef.current;
-					if (! result) {
+					if (!result) {
 						setTimeout(finish, 200);
 						return;
 					}
@@ -413,7 +503,13 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 						// Seed the chat history with this session's first turn.
 						setMessages([
 							{ role: 'user', text: prompt },
-							{ role: 'assistant', text: __( "Here's your form! Review the preview on the right and click \"Use This Form\" when you're happy with it.", 'everest-forms' ) },
+							{
+								role: 'assistant',
+								text: __(
+									'Here\'s your form! Review the preview on the right and click "Use This Form" when you\'re happy with it.',
+									'everest-forms',
+								),
+							},
 						]);
 						setGenState('generated');
 					}
@@ -433,7 +529,7 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 	// guarantees the preview matches the builder pixel-for-pixel, including the
 	// PRO badge on locked fields.
 	useEffect(() => {
-		if (genState !== 'generated' || ! formId) return;
+		if (genState !== 'generated' || !formId) return;
 		let cancelled = false;
 		setIsPreviewLoading(true);
 		// Preview the actual AI-generated draft form (by id) so the preview is
@@ -449,9 +545,15 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 					setPreviewHTML(res.data.html);
 				}
 			})
-			.catch(() => { /* Falls back to the loading state; non-fatal. */ })
-			.finally(() => { if (!cancelled) setIsPreviewLoading(false); });
-		return () => { cancelled = true; };
+			.catch(() => {
+				/* Falls back to the loading state; non-fatal. */
+			})
+			.finally(() => {
+				if (!cancelled) setIsPreviewLoading(false);
+			});
+		return () => {
+			cancelled = true;
+		};
 	}, [genState, formId, previewVersion]);
 
 	const handleGenerate = () => {
@@ -463,18 +565,32 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 	if (genState === 'generating') {
 		return (
 			<PageShell onBack={onBack}>
-				<Flex flex="1" overflow="hidden" sx={{ animation: `${fadeUp} 0.3s ease` }}>
+				<Flex
+					flex="1"
+					overflow="hidden"
+					sx={{ animation: `${fadeUp} 0.3s ease` }}
+				>
 					{/* Left: progress panel */}
 					<Flex
-						w="480px" flexShrink={0}
-						bg="white" borderRight="1px solid #e2e8f0"
-						direction="column" align="center" justify="center"
-						px="36px" py="40px" gap="0"
+						w="480px"
+						flexShrink={0}
+						bg="white"
+						borderRight="1px solid #e2e8f0"
+						direction="column"
+						align="center"
+						justify="center"
+						px="36px"
+						py="40px"
+						gap="0"
 					>
 						<Box
-							w="60px" h="60px" borderRadius="full"
+							w="60px"
+							h="60px"
+							borderRadius="full"
 							background="linear-gradient(135deg, #9c6de8 0%, #7545BB 100%)"
-							display="flex" alignItems="center" justifyContent="center"
+							display="flex"
+							alignItems="center"
+							justifyContent="center"
 							mb="20px"
 							sx={{ animation: `${pulseGlow} 2s ease-in-out infinite` }}
 						>
@@ -482,7 +598,14 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 						</Box>
 
 						<VStack spacing="4px" textAlign="center" mb="24px">
-							<Heading as="h2" fontSize="20px" fontWeight="700" color="#0e0e0e" margin="0" letterSpacing="-0.3px">
+							<Heading
+								as="h2"
+								fontSize="20px"
+								fontWeight="700"
+								color="#0e0e0e"
+								margin="0"
+								letterSpacing="-0.3px"
+							>
 								{__('Building your form…', 'everest-forms')}
 							</Heading>
 							<Text fontSize="13px" color="#9a9a9a" margin="0">
@@ -491,40 +614,80 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 						</VStack>
 
 						<Box
-							bg="#faf9ff" borderRadius="12px" border="1px solid #ede8f8"
-							p="20px 24px" width="100%" mb="20px"
+							bg="#faf9ff"
+							borderRadius="12px"
+							border="1px solid #ede8f8"
+							p="20px 24px"
+							width="100%"
+							mb="20px"
 						>
 							<VStack align="stretch" spacing="14px">
 								{GEN_STEPS.map((step, i) => {
-									const isDone    = i < genStep;
-									const isActive  = i === genStep;
+									const isDone = i < genStep;
+									const isActive = i === genStep;
 									const isPending = i > genStep;
 									return (
-										<HStack key={i} spacing="12px" opacity={isPending ? 0.3 : 1} transition="opacity 0.4s">
+										<HStack
+											key={i}
+											spacing="12px"
+											opacity={isPending ? 0.3 : 1}
+											transition="opacity 0.4s"
+										>
 											<Flex
-												w="20px" h="20px" borderRadius="full" flexShrink={0}
+												w="20px"
+												h="20px"
+												borderRadius="full"
+												flexShrink={0}
 												bg={isDone ? '#7545BB' : 'transparent'}
 												border={isDone ? 'none' : '2px solid'}
 												borderColor={isActive ? '#7545BB' : '#ddd'}
-												align="center" justify="center"
+												align="center"
+												justify="center"
 												transition="all 0.35s"
 											>
-												{isDone && <Icon as={FiCheck} color="white" sx={{ width: '9px', height: '9px', strokeWidth: 3 }} />}
-												{isActive && <Box w="6px" h="6px" borderRadius="full" bg="#7545BB" sx={{ animation: `${dotBounce} 1.1s ease-in-out infinite` }} />}
+												{isDone && (
+													<Icon
+														as={FiCheck}
+														color="white"
+														sx={{ width: '9px', height: '9px', strokeWidth: 3 }}
+													/>
+												)}
+												{isActive && (
+													<Box
+														w="6px"
+														h="6px"
+														borderRadius="full"
+														bg="#7545BB"
+														sx={{
+															animation: `${dotBounce} 1.1s ease-in-out infinite`,
+														}}
+													/>
+												)}
 											</Flex>
 											<Text
-												flex={1} fontSize="13px" margin="0"
+												flex={1}
+												fontSize="13px"
+												margin="0"
 												fontWeight={isActive ? '600' : isDone ? '500' : '400'}
-												color={isActive ? '#7545BB' : isDone ? '#1a1a1a' : '#c0c0cc'}
+												color={
+													isActive ? '#7545BB' : isDone ? '#1a1a1a' : '#c0c0cc'
+												}
 												transition="all 0.35s"
 											>
 												{step}
 											</Text>
 											{isActive && (
 												<HStack spacing="3px">
-													{[0, 1, 2].map(d => (
-														<Box key={d} w="4px" h="4px" borderRadius="full" bg="#7545BB"
-															sx={{ animation: `${dotBounce} 1.1s ease-in-out ${d * 0.18}s infinite` }}
+													{[0, 1, 2].map((d) => (
+														<Box
+															key={d}
+															w="4px"
+															h="4px"
+															borderRadius="full"
+															bg="#7545BB"
+															sx={{
+																animation: `${dotBounce} 1.1s ease-in-out ${d * 0.18}s infinite`,
+															}}
 														/>
 													))}
 												</HStack>
@@ -535,20 +698,51 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 							</VStack>
 						</Box>
 
-						<Text fontSize="12px" color="#c0c0cc" margin="0" textAlign="center" noOfLines={1} isTruncated width="100%">
+						<Text
+							fontSize="12px"
+							color="#c0c0cc"
+							margin="0"
+							textAlign="center"
+							noOfLines={1}
+							isTruncated
+							width="100%"
+						>
 							"{prompt}"
 						</Text>
 					</Flex>
 
 					{/* Right: skeleton preview */}
-					<Box flex={1} bg="#f6f6f8" overflowY="auto" p="24px">
+					<Box flex={1} bg="white" overflowY="auto" p="24px">
 						<Box
-							bg="white" border="1px solid #e2e8f0" borderRadius="16px" overflow="hidden"
+							bg="white"
+							border="1px solid #e2e8f0"
+							borderRadius="16px"
+							overflow="hidden"
 							sx={{ animation: `${fadeUp} 0.4s ease 0.15s both` }}
 						>
-							<Flex align="center" px="24px" py="16px" borderBottom="1px solid #e2e8f0" gap="10px">
-								<Box w="32px" h="32px" borderRadius="8px" sx={{ background: 'linear-gradient(90deg, #eeeeef 25%, #e4e4e8 50%, #eeeeef 75%)', backgroundSize: '400px 100%', animation: `${shimmer} 1.6s ease-in-out infinite` }} />
-								<Box h="14px" w="40%" borderRadius="4px" sx={{ background: 'linear-gradient(90deg, #eeeeef 25%, #e4e4e8 50%, #eeeeef 75%)', backgroundSize: '400px 100%', animation: `${shimmer} 1.6s ease-in-out infinite` }} />
+							<Flex align="center" px="24px" py="16px" gap="10px">
+								<Box
+									w="32px"
+									h="32px"
+									borderRadius="8px"
+									sx={{
+										background:
+											'linear-gradient(90deg, #eeeeef 25%, #e4e4e8 50%, #eeeeef 75%)',
+										backgroundSize: '400px 100%',
+										animation: `${shimmer} 1.6s ease-in-out infinite`,
+									}}
+								/>
+								<Box
+									h="14px"
+									w="40%"
+									borderRadius="4px"
+									sx={{
+										background:
+											'linear-gradient(90deg, #eeeeef 25%, #e4e4e8 50%, #eeeeef 75%)',
+										backgroundSize: '400px 100%',
+										animation: `${shimmer} 1.6s ease-in-out infinite`,
+									}}
+								/>
 							</Flex>
 							<Box p="24px">
 								<VStack spacing="16px" align="stretch">
@@ -570,9 +764,14 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 	if (genState === 'generated') {
 		// Index of the most recent assistant reply (gets the "Use This Form" button).
 		let lastAssistantIdx = -1;
-		messages.forEach((m, i) => { if (m.role === 'assistant') lastAssistantIdx = i; });
+		messages.forEach((m, i) => {
+			if (m.role === 'assistant') lastAssistantIdx = i;
+		});
 		return (
-			<PageShell onBack={() => setGenState('idle')} backLabel={__('New Prompt', 'everest-forms')}>
+			<PageShell
+				onBack={() => setGenState('idle')}
+				backLabel={__('New Prompt', 'everest-forms')}
+			>
 				{/* Hint tooltip */}
 				{hint.show && (
 					<Box
@@ -583,7 +782,8 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 						bg="rgba(18,18,18,0.93)"
 						color="white"
 						borderRadius="8px"
-						px="14px" py="10px"
+						px="14px"
+						py="10px"
 						textAlign="center"
 						pointerEvents="none"
 						zIndex={9999}
@@ -591,132 +791,209 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 						maxW="260px"
 						sx={{ animation: `${fadeUp} 0.15s ease` }}
 					>
-						<Box position="absolute" top="-5px" left="50%" transform="translateX(-50%)" width="0" height="0" borderLeft="5px solid transparent" borderRight="5px solid transparent" borderBottom="5px solid rgba(18,18,18,0.93)" />
-						<Text fontSize="12px" fontWeight="600" margin="0 0 3px" lineHeight="1.45">
+						<Box
+							position="absolute"
+							top="-5px"
+							left="50%"
+							transform="translateX(-50%)"
+							width="0"
+							height="0"
+							borderLeft="5px solid transparent"
+							borderRight="5px solid transparent"
+							borderBottom="5px solid rgba(18,18,18,0.93)"
+						/>
+						<Text
+							fontSize="12px"
+							fontWeight="600"
+							margin="0 0 3px"
+							lineHeight="1.45"
+						>
 							{__('This is just a preview of your form.', 'everest-forms')}
 						</Text>
-						<Text fontSize="12px" color="rgba(255,255,255,0.65)" margin="0" lineHeight="1.45">
+						<Text
+							fontSize="12px"
+							color="rgba(255,255,255,0.65)"
+							margin="0"
+							lineHeight="1.45"
+						>
 							{__('Click "Use This Form" to start editing.', 'everest-forms')}
 						</Text>
 					</Box>
 				)}
 
-				<Flex flex="1" overflow="hidden" sx={{ animation: `${fadeUp} 0.35s ease` }}>
-
+				<Flex
+					flex="1"
+					overflow="hidden"
+					sx={{ animation: `${fadeUp} 0.35s ease` }}
+				>
 					{/* Left: chat conversation panel */}
 					<Flex
-						w="480px" flexShrink={0}
-						bg="white" borderRight="1px solid #e2e8f0"
+						w="480px"
+						flexShrink={0}
+						bg="white"
+						borderRight="1px solid #e2e8f0"
 						direction="column"
 						overflow="hidden"
 					>
 						{/* Conversation area */}
 						<Box flex={1} p="20px" overflowY="auto">
 							{/* Conversation history for the current session */}
-								{messages.map((msg, idx) => {
-									if (msg.role === 'user') {
-										return (
-											<Flex key={idx} justify="flex-end" mb="16px">
-												<Box
-													bg="#7545BB" color="white"
-													borderRadius="16px 16px 4px 16px"
-													px="14px" py="10px"
-													fontSize="14px" lineHeight="1.6"
-													maxW="340px"
-													boxShadow="0 2px 8px rgba(117,69,187,0.2)"
-												>
-													{msg.text}
-												</Box>
-											</Flex>
-										);
-									}
-
-									const isLastAssistant = idx === lastAssistantIdx;
+							{messages.map((msg, idx) => {
+								if (msg.role === 'user') {
 									return (
-										<HStack key={idx} align="flex-start" spacing="10px" mb="16px">
-											<Flex
-												w="28px" h="28px" borderRadius="full"
-												bg="rgba(117,69,187,0.1)" align="center" justify="center"
-												flexShrink={0} mt="2px"
-											>
-												<Icon as={BsStars} boxSize="13px" color="#7545BB" />
-											</Flex>
-
+										<Flex key={idx} justify="flex-end" mb="16px">
 											<Box
-												flex={1}
-												bg="#faf9ff"
-												border="1px solid #ede8f8"
-												borderRadius="4px 16px 16px 16px"
-												p="16px"
-												boxShadow="0 2px 10px rgba(117,69,187,0.06)"
+												bg="#7545BB"
+												color="white"
+												borderRadius="16px 16px 4px 16px"
+												px="14px"
+												py="10px"
+												fontSize="14px"
+												lineHeight="1.6"
+												maxW="340px"
+												boxShadow="0 2px 8px rgba(117,69,187,0.2)"
 											>
-												{msg.loading ? (
-													<HStack spacing="8px">
-														<Spinner size="xs" color="#7545BB" thickness="2px" speed="0.65s" />
-														<Text fontSize="14px" color="#7545BB" margin="0" fontWeight="500">
-															{__('Updating your form…', 'everest-forms')}
-														</Text>
-													</HStack>
-												) : (
-													<>
-														<Text fontSize="14px" color="#444" lineHeight="1.65" margin={isLastAssistant ? '0 0 14px' : '0'}>
-															{msg.text}
-														</Text>
-
-														{isLastAssistant && (
-															<Box
-																as="button"
-																w="100%"
-																display="flex"
-																alignItems="center"
-																justifyContent="center"
-																gap="8px"
-																h="36px"
-																borderRadius="8px"
-																bg={isCreatingForm ? '#9660db' : '#7545BB'}
-																color="white"
-																fontSize="13px"
-																fontWeight="600"
-																border="none"
-																cursor={isCreatingForm ? 'not-allowed' : 'pointer'}
-																mb="12px"
-																opacity={isCreatingForm ? 0.85 : 1}
-																onClick={handleUseThisForm}
-																_hover={{ bg: isCreatingForm ? '#9660db' : '#6a3daa' }}
-																transition="background 0.2s, opacity 0.2s"
-															>
-																{isCreatingForm && <Spinner size="xs" color="white" thickness="2px" speed="0.65s" />}
-																{isCreatingForm
-																	? __('Creating…', 'everest-forms')
-																	: __('Use This Form', 'everest-forms')
-																}
-															</Box>
-														)}
-
-														<HStack justify="flex-end" pt="2px">
-															<HStack
-																spacing="5px"
-																cursor={isRegenerating ? 'not-allowed' : 'pointer'}
-																opacity={isRegenerating ? 0.5 : 1}
-																_hover={{ opacity: isRegenerating ? 0.5 : 0.65 }}
-																onClick={isRegenerating ? undefined : handleRegenerate}
-															>
-																{isRegenerating && isLastAssistant
-																	? <Spinner size="xs" color="#9ca3af" thickness="2px" speed="0.65s" />
-																	: <Icon as={FiRefreshCw} boxSize="12px" color="#9ca3af" />
-																}
-																<Text fontSize="12px" color="#9ca3af" margin="0" fontWeight="500">
-																	{__('Redo', 'everest-forms')}
-																</Text>
-															</HStack>
-														</HStack>
-													</>
-												)}
+												{msg.text}
 											</Box>
-										</HStack>
+										</Flex>
 									);
-								})}
-							</Box>
+								}
+
+								const isLastAssistant = idx === lastAssistantIdx;
+								return (
+									<HStack key={idx} align="flex-start" spacing="10px" mb="16px">
+										<Flex
+											w="28px"
+											h="28px"
+											borderRadius="full"
+											bg="rgba(117,69,187,0.1)"
+											align="center"
+											justify="center"
+											flexShrink={0}
+											mt="2px"
+										>
+											<Icon as={BsStars} boxSize="13px" color="#7545BB" />
+										</Flex>
+
+										<Box
+											flex={1}
+											bg="#faf9ff"
+											border="1px solid #ede8f8"
+											borderRadius="4px 16px 16px 16px"
+											p="16px"
+											boxShadow="0 2px 10px rgba(117,69,187,0.06)"
+										>
+											{msg.loading ? (
+												<HStack spacing="8px">
+													<Spinner
+														size="xs"
+														color="#7545BB"
+														thickness="2px"
+														speed="0.65s"
+													/>
+													<Text
+														fontSize="14px"
+														color="#7545BB"
+														margin="0"
+														fontWeight="500"
+													>
+														{__('Updating your form…', 'everest-forms')}
+													</Text>
+												</HStack>
+											) : (
+												<>
+													<Text
+														fontSize="14px"
+														color="#444"
+														lineHeight="1.65"
+														margin={isLastAssistant ? '0 0 14px' : '0'}
+													>
+														{msg.text}
+													</Text>
+
+													{isLastAssistant && (
+														<Box
+															as="button"
+															w="100%"
+															display="flex"
+															alignItems="center"
+															justifyContent="center"
+															gap="8px"
+															h="36px"
+															borderRadius="8px"
+															bg={isCreatingForm ? '#9660db' : '#7545BB'}
+															color="white"
+															fontSize="13px"
+															fontWeight="600"
+															border="none"
+															cursor={
+																isCreatingForm ? 'not-allowed' : 'pointer'
+															}
+															mb="12px"
+															opacity={isCreatingForm ? 0.85 : 1}
+															onClick={handleUseThisForm}
+															_hover={{
+																bg: isCreatingForm ? '#9660db' : '#6a3daa',
+															}}
+															transition="background 0.2s, opacity 0.2s"
+														>
+															{isCreatingForm && (
+																<Spinner
+																	size="xs"
+																	color="white"
+																	thickness="2px"
+																	speed="0.65s"
+																/>
+															)}
+															{isCreatingForm
+																? __('Creating…', 'everest-forms')
+																: __('Use This Form', 'everest-forms')}
+														</Box>
+													)}
+
+													<HStack justify="flex-end" pt="2px">
+														<HStack
+															spacing="5px"
+															cursor={
+																isRegenerating ? 'not-allowed' : 'pointer'
+															}
+															opacity={isRegenerating ? 0.7 : 1}
+															_hover={{ opacity: isRegenerating ? 0.7 : 0.65 }}
+															onClick={
+																isRegenerating ? undefined : handleRegenerate
+															}
+														>
+															{isRegenerating && isLastAssistant ? (
+																<Spinner
+																	size="xs"
+																	color="#9ca3af"
+																	thickness="2px"
+																	speed="0.65s"
+																/>
+															) : (
+																<Icon
+																	as={FiRefreshCw}
+																	boxSize="12px"
+																	color="#9ca3af"
+																/>
+															)}
+															<Text
+																fontSize="12px"
+																color="#9ca3af"
+																margin="0"
+																fontWeight="500"
+															>
+																{__('Redo', 'everest-forms')}
+															</Text>
+														</HStack>
+													</HStack>
+												</>
+											)}
+										</Box>
+									</HStack>
+								);
+							})}
+						</Box>
 
 						{/* Refine input */}
 						<Box borderTop="1px solid #e2e8f0" p="16px">
@@ -740,7 +1017,9 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 									_placeholder={{ color: '#c0c0cc' }}
 									value={refinePrompt}
 									isDisabled={isRegenerating}
-									onChange={(e) => setRefinePrompt(e.target.value.slice(0, MAX_CHARS))}
+									onChange={(e) =>
+										setRefinePrompt(e.target.value.slice(0, MAX_CHARS))
+									}
 									onKeyDown={(e) => {
 										if (e.key === 'Enter' && !e.shiftKey) {
 											e.preventDefault();
@@ -751,22 +1030,42 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 								<Flex justify="flex-end" px="12px" pb="10px">
 									<Box
 										as="button"
-										w="28px" h="28px"
-										bg={refinePrompt.trim() && !isRegenerating ? '#7545BB' : '#c9bce4'}
+										w="28px"
+										h="28px"
+										bg={
+											refinePrompt.trim() && !isRegenerating
+												? '#7545BB'
+												: '#c9bce4'
+										}
 										borderRadius="6px"
 										display="inline-flex"
 										alignItems="center"
 										justifyContent="center"
 										border="none"
-										cursor={refinePrompt.trim() && !isRegenerating ? 'pointer' : 'not-allowed'}
-										_hover={{ bg: refinePrompt.trim() && !isRegenerating ? '#6a3daa' : '#c9bce4' }}
+										cursor={
+											refinePrompt.trim() && !isRegenerating
+												? 'pointer'
+												: 'not-allowed'
+										}
+										_hover={{
+											bg:
+												refinePrompt.trim() && !isRegenerating
+													? '#6a3daa'
+													: '#c9bce4',
+										}}
 										transition="background 0.2s"
 										onClick={() => handleUpdate(refinePrompt)}
 									>
-										{isRegenerating
-											? <Spinner size="xs" color="white" thickness="2px" speed="0.65s" />
-											: <Icon as={FiArrowUp} boxSize="3.5" color="white" />
-										}
+										{isRegenerating ? (
+											<Spinner
+												size="xs"
+												color="white"
+												thickness="2px"
+												speed="0.65s"
+											/>
+										) : (
+											<Icon as={FiArrowUp} boxSize="3.5" color="white" />
+										)}
 									</Box>
 								</Flex>
 							</Box>
@@ -774,8 +1073,7 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 					</Flex>
 
 					{/* Right: form preview panel */}
-					<Box flex={1} bg="#f6f6f8" overflowY="auto" p="24px">
-
+					<Box flex={1} bg="white" overflowY="auto" p="24px">
 						{/* Form preview card */}
 						<Box
 							bg="white"
@@ -787,10 +1085,11 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 							transition="border-color 0.3s"
 						>
 							{/* Card header */}
-							<Flex align="center" px="24px" py="16px" borderBottom="1px solid #e2e8f0" justify="space-between">
+							<Flex align="center" px="24px" py="16px" justify="space-between">
 								<HStack spacing="10px">
 									<Box
-										w="32px" h="32px"
+										w="32px"
+										h="32px"
 										bg="rgba(117,69,187,0.1)"
 										borderRadius="8px"
 										display="flex"
@@ -799,18 +1098,38 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 									>
 										<Icon as={FiEdit3} boxSize="15px" color="#7545BB" />
 									</Box>
-									<Text fontSize="16px" fontWeight="600" color="#0e0e0e" margin="0">
+									<Text
+										fontSize="16px"
+										fontWeight="600"
+										color="#0e0e0e"
+										margin="0"
+									>
 										Customer Feedback Survey
 									</Text>
 								</HStack>
 								{isRegenerating && (
-									<HStack spacing="5px" sx={{ animation: `${fadeUp} 0.2s ease` }}>
-										{[0, 1, 2].map(d => (
-											<Box key={d} w="5px" h="5px" borderRadius="full" bg="#7545BB"
-												sx={{ animation: `${dotBounce} 1.1s ease-in-out ${d * 0.2}s infinite` }}
+									<HStack
+										spacing="5px"
+										sx={{ animation: `${fadeUp} 0.2s ease` }}
+									>
+										{[0, 1, 2].map((d) => (
+											<Box
+												key={d}
+												w="5px"
+												h="5px"
+												borderRadius="full"
+												bg="#7545BB"
+												sx={{
+													animation: `${dotBounce} 1.1s ease-in-out ${d * 0.2}s infinite`,
+												}}
 											/>
 										))}
-										<Text fontSize="11px" color="#7545BB" margin="0" fontWeight="500">
+										<Text
+											fontSize="11px"
+											color="#7545BB"
+											margin="0"
+											fontWeight="500"
+										>
 											{__('Regenerating', 'everest-forms')}
 										</Text>
 									</HStack>
@@ -821,25 +1140,47 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 							    matches the builder pixel-for-pixel (locked Pro fields included).
 							    No padding here: the builder's own panel padding (20px) is the
 							    single source of outer spacing, so it matches the canvas exactly. */}
-							<Box p="0" opacity={isRegenerating ? 0.7 : 1} transition="opacity 0.3s">
-								{previewHTML ? (
+							<Box p="0" position="relative">
+								{isRegenerating && (
 									<Box
-										className="evf-ai-preview-canvas"
-										onClick={(e) => handleFieldClick(e)}
-										dangerouslySetInnerHTML={{ __html: previewHTML }}
+										position="absolute"
+										inset="0"
+										bg="rgba(255,255,255,0.72)"
+										zIndex={1}
+										borderRadius="0 0 16px 16px"
+										cursor="not-allowed"
+										transition="opacity 0.35s"
 									/>
-								) : (
-									<VStack spacing="16px" align="stretch">
-										{(isPreviewLoading ? Array.from({ length: 4 }) : []).map((_, idx) => (
-											<Box key={idx} h="56px" bg="#eef0f4" borderRadius="6px"
-												sx={{ animation: `${fadeUp} 0.3s ease` }} />
-										))}
-									</VStack>
 								)}
-
+								<Box
+									opacity={isRegenerating ? 0.7 : 1}
+									transition="opacity 0.35s"
+									pointerEvents={isRegenerating ? 'none' : 'auto'}
+								>
+									{previewHTML ? (
+										<Box
+											className="evf-ai-preview-canvas"
+											onClick={(e) => handleFieldClick(e)}
+											dangerouslySetInnerHTML={{ __html: previewHTML }}
+										/>
+									) : (
+										<VStack spacing="16px" align="stretch">
+											{(isPreviewLoading ? Array.from({ length: 4 }) : []).map(
+												(_, idx) => (
+													<Box
+														key={idx}
+														h="56px"
+														bg="#eef0f4"
+														borderRadius="6px"
+														sx={{ animation: `${fadeUp} 0.3s ease` }}
+													/>
+												),
+											)}
+										</VStack>
+									)}
+								</Box>
 							</Box>
 						</Box>
-
 					</Box>
 				</Flex>
 			</PageShell>
@@ -860,7 +1201,6 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 				overflow="hidden"
 			>
 				<Box width="100%" maxW="896px">
-
 					{/* Title + subtitle */}
 					<VStack spacing="8px" mb="14px" textAlign="center">
 						<Heading
@@ -875,7 +1215,10 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 							{__('What should we build today?', 'everest-forms')}
 						</Heading>
 						<Text fontSize="15px" color="#6b6b6b" m="0" lineHeight="1.55">
-							{__("Describe your form in your own words. We'll handle the fields, logic and layout — in seconds.", 'everest-forms')}
+							{__(
+								"Describe your form in your own words. We'll handle the fields, logic and layout — in seconds.",
+								'everest-forms',
+							)}
 						</Text>
 					</VStack>
 
@@ -901,7 +1244,10 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 								autoFocus
 								value={prompt}
 								onChange={(e) => setPrompt(e.target.value.slice(0, MAX_CHARS))}
-								placeholder={__('A feedback form to learn how onboarding felt, with a 1–5 rating and one optional comment…', 'everest-forms')}
+								placeholder={__(
+									'A feedback form to learn how onboarding felt, with a 1–5 rating and one optional comment…',
+									'everest-forms',
+								)}
 								border="none"
 								resize="none"
 								fontSize="15px"
@@ -951,7 +1297,11 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 									justifyContent="center"
 									bg={hasPrompt ? '#6a3daa' : '#d5d0e0'}
 								>
-									<Icon as={FiArrowUp} boxSize="3.5" color={hasPrompt ? 'white' : '#9a9a9a'} />
+									<Icon
+										as={FiArrowUp}
+										boxSize="3.5"
+										color={hasPrompt ? 'white' : '#9a9a9a'}
+									/>
 								</Box>
 							</Box>
 						</Flex>
@@ -1019,7 +1369,12 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 									>
 										{card.title}
 									</Text>
-									<Text fontSize="12.5px" color="#6b6b6b" m="0" lineHeight="1.4">
+									<Text
+										fontSize="12.5px"
+										color="#6b6b6b"
+										m="0"
+										lineHeight="1.4"
+									>
 										{card.description}
 									</Text>
 								</Box>
