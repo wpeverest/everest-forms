@@ -505,6 +505,52 @@ class EVF_Field_Range_Slider extends EVF_Form_Fields {
 	}
 
 	/**
+	 * Field preview inside the builder.
+	 *
+	 * Renders a static HTML/CSS slider that mirrors the IonRangeSlider output
+	 * produced by the Pro class — no JS dependency needed for the locked preview.
+	 *
+	 * @param array $field Field data and settings.
+	 */
+	public function field_preview( $field ) {
+		// Label.
+		$this->field_preview_option( 'label', $field );
+
+		$min     = isset( $field['min_value'] ) && '' !== $field['min_value'] ? (float) $field['min_value'] : 0;
+		$max     = isset( $field['max_value'] ) && '' !== $field['max_value'] ? (float) $field['max_value'] : 10;
+		$default = isset( $field['default_value'] ) && '' !== $field['default_value'] ? (float) $field['default_value'] : $min;
+
+		// Clamp default to [min, max] and convert to a percentage position.
+		$default = max( $min, min( $max, $default ) );
+		$range   = ( $max - $min ) > 0 ? ( $max - $min ) : 1;
+		$pct     = round( ( $default - $min ) / $range * 100 );
+
+		$handle_color    = ! empty( $field['handle_color'] ) ? esc_attr( $field['handle_color'] ) : '#5b8ced';
+		$highlight_color = ! empty( $field['highlight_color'] ) ? esc_attr( $field['highlight_color'] ) : '#5b8ced';
+		?>
+		<div class="everest-forms-range-slider">
+			<div class="evf-slider-group">
+				<div class="evf-slider" style="position:relative;padding:28px 10px 10px;">
+					<div style="position:relative;height:4px;background:#e2e8f0;border-radius:4px;">
+						<div style="position:absolute;left:0;width:<?php echo esc_attr( $pct ); ?>%;height:100%;background:<?php echo esc_attr( $highlight_color ); ?>;border-radius:4px;"></div>
+						<div style="position:absolute;left:<?php echo esc_attr( $pct ); ?>%;top:50%;transform:translate(-50%,-50%);width:18px;height:18px;background:<?php echo esc_attr( $handle_color ); ?>;border-radius:50%;box-shadow:0 2px 5px rgba(0,0,0,.18);">
+							<div style="position:absolute;bottom:calc(100% + 7px);left:50%;transform:translateX(-50%);background:<?php echo esc_attr( $handle_color ); ?>;color:#fff;border-radius:4px;padding:1px 7px;font-size:11px;font-weight:500;white-space:nowrap;"><?php echo esc_html( $default ); ?></div>
+						</div>
+					</div>
+					<div style="display:flex;justify-content:space-between;margin-top:6px;font-size:11px;color:#8a8a8a;">
+						<span><?php echo esc_html( $min ); ?></span>
+						<span><?php echo esc_html( $max ); ?></span>
+					</div>
+				</div>
+				<span class="evf-range-slider-reset-icon dashicons dashicons-image-rotate"></span>
+			</div>
+		</div>
+		<?php
+		// Description.
+		$this->field_preview_option( 'description', $field );
+	}
+
+	/**
 	 * Enable payment slider.
 	 *
 	 * @since 1.3.3

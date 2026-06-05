@@ -15,7 +15,7 @@ class EVF_AI_Form_Builder {
 	public static $pro_fields = [
 		'password', 'color', 'range-slider', 'signature', 'repeater',
 		'lookup', 'progress',
-		'payment-single', 'payment-checkbox', 'payment-radio',
+		'payment-single', 'payment-checkbox', 'payment-multiple',
 		'payment-quantity', 'payment-subtotal', 'payment-total',
 		'payment-coupon', 'credit-card', 'payment-square',
 		'payment-authorize-net', 'payment-subscription-plan',
@@ -256,10 +256,27 @@ class EVF_AI_Form_Builder {
 		if ( 'html' === $type ) {
 			$raw_desc = $ai_field['description'] ?? '';
 			if ( preg_match( '/<button[^>]+type=["\']?reset["\']?/i', $raw_desc ) ) {
-				$type                        = 'reset';
-				$label                       = $label ?: __( 'Reset', 'everest-forms' );
-				$ai_field['description']     = '';
+				$type                    = 'reset';
+				$label                   = $label ?: __( 'Reset', 'everest-forms' );
+				$ai_field['description'] = '';
 			}
+		}
+
+		// Normalize: gateway may return `text` (or a non-existent `math` type)
+		// for captcha requests — detect by type or by label/description containing
+		// the word "captcha" and convert to the proper EVF `captcha` type.
+		if ( 'captcha' !== $type ) {
+			$combined = strtolower( $label . ' ' . ( $ai_field['description'] ?? '' ) );
+			if ( 'math' === $type || false !== strpos( $combined, 'captcha' ) ) {
+				$type  = 'captcha';
+				$label = $label ?: __( 'Math Captcha', 'everest-forms' );
+			}
+		}
+
+		// Normalize: EVF's payment-radio field is registered internally as
+		// `payment-multiple`. Map the intuitive gateway name to the real type.
+		if ( 'payment-radio' === $type ) {
+			$type = 'payment-multiple';
 		}
 
 		// Base keys every field has
@@ -377,15 +394,6 @@ class EVF_AI_Form_Builder {
 				$field['default_value'] = '';
 				break;
 
-			case 'captcha':
-				$field['format']   = 'math';
-				$field['required'] = '1';
-				break;
-
-			case 'reset':
-				$field['button_text'] = $label ?: __( 'Reset', 'everest-forms' );
-				break;
-
 			case 'html':
 			case 'title':
 			case 'divider':
@@ -395,6 +403,28 @@ class EVF_AI_Form_Builder {
 			case 'privacy-policy':
 				$field['choices']    = self::build_choices( [ __( 'I agree to the privacy policy', 'everest-forms' ) ] );
 				$field['show_values']= '0';
+				break;
+
+			case 'payment-multiple':
+				$field['choices']        = self::build_payment_choices( $ai_field['options'] ?? [] );
+				$field['input_columns']  = '';
+				$field['choices_images'] = '0';
+				break;
+
+			case 'payment-checkbox':
+				$field['choices']        = self::build_payment_choices( $ai_field['options'] ?? [] );
+				$field['input_columns']  = '';
+				$field['choices_images'] = '0';
+				$field['select_all']     = '0';
+				break;
+
+			case 'captcha':
+				$field['format']   = 'math';
+				$field['required'] = '1';
+				break;
+
+			case 'reset':
+				$field['button_text'] = $label ?: __( 'Reset', 'everest-forms' );
 				break;
 		}
 
@@ -415,6 +445,64 @@ class EVF_AI_Form_Builder {
 			];
 		}
 		return $choices;
+	}
+
+	/**
+	 * Build choices for payment-multiple / payment-checkbox fields.
+	 * Value must be a numeric price string (e.g. "10.00"), not the label text.
+	 * If the gateway supplies a price in the option (array with 'value', or a
+	 * string like "VIP - $50"), extract it; otherwise assign ascending defaults.
+	 */
+	private static function build_payment_choices( array $options ): array {
+		$defaults = [ '10.00', '20.00', '30.00', '40.00', '50.00' ];
+		$choices  = [];
+
+		foreach ( $options as $i => $opt ) {
+			if ( is_array( $opt ) ) {
+				$label = sanitize_text_field( $opt['label'] ?? '' );
+				$price = self::extract_price( $opt['value'] ?? '' ) ?? $defaults[ $i ] ?? '10.00';
+			} else {
+				$raw   = sanitize_text_field( $opt );
+				// Try to pull a dollar/numeric price out of strings like "VIP – $50" or "General ($20.00)"
+				$price = self::extract_price( $raw ) ?? $defaults[ $i ] ?? '10.00';
+				// Strip the price annotation from the label so it doesn't duplicate.
+				$label = trim( preg_replace( '/[\(\-–—]*\s*\$[\d,]+(\.\d{1,2})?\s*[\)]*/', '', $raw ) );
+				$label = $label ?: $raw;
+			}
+
+			$choices[] = [
+				'label'   => $label,
+				'value'   => $price,
+				'image'   => '',
+				'default' => '',
+			];
+		}
+
+		// If no options came from the gateway, use the field's own defaults.
+		if ( empty( $choices ) ) {
+			foreach ( [ 'Option 1', 'Option 2', 'Option 3' ] as $i => $lbl ) {
+				$choices[] = [
+					'label'   => $lbl,
+					'value'   => $defaults[ $i ],
+					'image'   => '',
+					'default' => '',
+				];
+			}
+		}
+
+		return $choices;
+	}
+
+	/** Extract a numeric price string from a value or annotated label. Returns null on failure. */
+	private static function extract_price( string $raw ): ?string {
+		// Accept plain numbers ("25", "25.00") or dollar-prefixed ("$25", "$25.00")
+		if ( preg_match( '/\$?([\d,]+(?:\.\d{1,2})?)/', $raw, $m ) ) {
+			$num = (float) str_replace( ',', '', $m[1] );
+			if ( $num > 0 ) {
+				return number_format( $num, 2, '.', '' );
+			}
+		}
+		return null;
 	}
 
 	// ── Address sublabels ─────────────────────────────────────────────────────
