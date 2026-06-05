@@ -167,24 +167,39 @@ class EVF_AI_Form_Builder {
 		$built_fields   = [];
 		$email_field_id = null;
 
+		// Pre-compute which step each field index belongs to (for multipart pairing)
+		$field_step_map = [];
+		foreach ( ( $ai['multipart_steps'] ?? [] ) as $step_idx => $step ) {
+			foreach ( ( $step['field_indices'] ?? [] ) as $fi ) {
+				$field_step_map[ $fi ] = $step_idx;
+			}
+		}
+
 		// Build all field objects first so we can look ahead for smart pairing
-		$field_list = [];
+		$field_list  = [];
+		$field_index = 0;
 		foreach ( ( $ai['fields'] ?? [] ) as $ai_field ) {
 			$field_id  = self::generate_field_id();
 			$evf_field = self::build_field( $field_id, $ai_field );
 			if ( ! $evf_field ) {
+				$field_index++;
 				continue;
 			}
 			$built_fields[ $field_id ] = $evf_field;
 			if ( 'email' === $evf_field['type'] && null === $email_field_id ) {
 				$email_field_id = $field_id;
 			}
-			$field_list[] = [ 'id' => $field_id, 'type' => $evf_field['type'] ];
+			$field_list[] = [
+				'id'    => $field_id,
+				'type'  => $evf_field['type'],
+				'width' => sanitize_key( $ai_field['width'] ?? '' ), // 'full'|'half'|''
+				'step'  => $field_step_map[ $field_index ] ?? -1,    // -1 = no multipart
+			];
+			$field_index++;
 		}
 
-		$structure = self::build_structure( $field_list );
-
-		return [
+		$structure  = self::build_structure( $field_list );
+		$form_data  = [
 			'id'             => $form_id,
 			'form_field_id'  => (string) count( $built_fields ),
 			'form_enabled'   => '1',
@@ -192,6 +207,17 @@ class EVF_AI_Form_Builder {
 			'settings'       => self::build_settings( $ai, $email_field_id ),
 			'structure'      => $structure,
 		];
+
+		// Multipart — inject step data mapping field indices → row IDs from structure
+		if ( 'multipart' === ( $ai['form_type'] ?? '' ) && ! empty( $ai['multipart_steps'] ) ) {
+			$form_data['multi_part'] = self::build_multipart_data(
+				$ai['multipart_steps'],
+				array_keys( $built_fields ),
+				$structure
+			);
+		}
+
+		return $form_data;
 	}
 
 	/**
@@ -212,14 +238,26 @@ class EVF_AI_Form_Builder {
 			$current = $field_list[ $i ];
 			$next    = $field_list[ $i + 1 ] ?? null;
 
+			// Explicit AI width override takes priority over auto-pairing logic
+			$current_width = $current['width'] ?? '';
+			$next_width    = $next['width'] ?? '';
+			$force_full    = 'full' === $current_width;
+			$force_half    = 'half' === $current_width && $next && 'half' === $next_width;
+
 			$is_narrow      = in_array( $current['type'], self::$narrow_types, true );
 			$next_is_narrow = $next && in_array( $next['type'], self::$narrow_types, true );
 
-			// Forced pair (first-name ↔ last-name)
+			// Forced pair (first-name ↔ last-name) by type
 			$forced_next_type = self::$forced_pairs[ $current['type'] ] ?? null;
 			$is_forced_pair   = $forced_next_type && $next && $next['type'] === $forced_next_type;
 
-			if ( $is_forced_pair || ( $is_narrow && $next_is_narrow ) ) {
+			// Never pair fields from different multipart steps (would share a row across parts)
+			$same_step = ( -1 === ( $current['step'] ?? -1 ) )
+				|| ! isset( $next['step'] )
+				|| $current['step'] === $next['step'];
+
+			// Two-column: explicit half+half OR auto-pair (unless force_full or cross-step)
+			if ( ! $force_full && $same_step && ( $force_half || $is_forced_pair || ( $is_narrow && $next_is_narrow ) ) ) {
 				// Two columns
 				$structure[ 'row_' . $row ] = [
 					'grid_1' => [ $current['id'] ],
@@ -544,6 +582,9 @@ class EVF_AI_Form_Builder {
 			? '{field_id="' . $email_field_id . '"}'
 			: '{admin_email}';
 
+		$is_multipart       = 'multipart' === ( $ai['form_type'] ?? '' );
+		$is_conversational  = 'conversational' === ( $ai['form_type'] ?? '' );
+
 		$settings = [
 			'form_title'                         => sanitize_text_field( $ai['form_title'] ?? '' ),
 			'form_desc'                          => sanitize_text_field( $ai['form_desc'] ?? '' ),
@@ -558,20 +599,36 @@ class EVF_AI_Form_Builder {
 			'form_class'                         => '',
 			'ajax_form_submission'               => '1',
 			'disabled_entries'                   => '0',
-			'honeypot'                           => '1',
-			'recaptcha_support'                  => '0',
+			// Anti-spam: AI always enables honeypot; reCAPTCHA if AI says so
+			'honeypot'                           => ! empty( $ai['enable_honeypot'] ) ? '1' : '1',
+			'recaptcha_support'                  => ! empty( $ai['enable_recaptcha'] ) ? '1' : '0',
+			// Multipart — enable_multi_part flag + indicator/nav settings read by builder
+			'enable_multi_part' => $is_multipart ? '1' : '0',
+			'multi_part'        => $is_multipart ? array(
+				'indicator'       => 'progress',
+				'indicator_color' => '#7e3bd0',
+				'nav_align'       => 'center',
+			) : array(),
+			// Conversational — enable flag + sub-settings read by conversational forms plugin
+			'enable_conversational_forms' => $is_conversational ? '1' : '0',
+			'conversational_forms'        => $is_conversational ? array(
+				'conversational_forms_url'                                   => sanitize_title( $ai['conversational_url'] ?? sanitize_title( $ai['form_title'] ?? '' ) ),
+				'enable_welcome_message'                                     => 'no',
+				'enable_page_navigation'                                     => '1',
+				'enable_branding'                                            => '1',
+				'everest_forms_conversational_forms_color_picker'            => '#7e3bd0',
+				'everest_forms_conversational_form_background_layout'        => 'default',
+				'everest_forms_conversational_forms_background_image'        => '',
+				'everest_forms_conversational_forms_opacity'                 => '',
+				'everest_forms_conversational_forms_themes'                  => '',
+			) : array(),
 		];
 
-		// Email notification — use AI-generated subject if provided
+		// Admin email notification
 		if ( ! empty( $ai['send_email_notification'] ) ) {
-			$default_subject = sprintf(
-				/* translators: %s: form title */
-				__( 'New submission: %s', 'everest-forms' ),
-				$ai['form_title'] ?? 'Form'
-			);
 			$email_subject = ! empty( $ai['notification_subject'] )
 				? sanitize_text_field( $ai['notification_subject'] )
-				: $default_subject;
+				: sprintf( __( 'New submission: %s', 'everest-forms' ), $ai['form_title'] ?? 'Form' );
 
 			$settings['email'] = [
 				'connection_1' => [
@@ -587,9 +644,92 @@ class EVF_AI_Form_Builder {
 					'evf_email_bcc'             => '',
 				],
 			];
+
+			// User confirmation email — when AI says to send one + email field found
+			if ( ! empty( $ai['send_user_confirmation'] ) && $email_field_id ) {
+				$confirm_subject = ! empty( $ai['user_confirmation_subject'] )
+					? sanitize_text_field( $ai['user_confirmation_subject'] )
+					: sprintf( __( 'Thank you for your submission — %s', 'everest-forms' ), $ai['form_title'] ?? 'Form' );
+				$confirm_message = ! empty( $ai['user_confirmation_message'] )
+					? sanitize_textarea_field( $ai['user_confirmation_message'] )
+					: __( 'Thank you! We have received your submission and will be in touch shortly.', 'everest-forms' );
+
+				$settings['email']['connection_2'] = [
+					'enable_email_notification' => '1',
+					'connection_name'           => __( 'User Confirmation', 'everest-forms' ),
+					'evf_to_email'              => '{field_id="' . $email_field_id . '"}',
+					'evf_from_name'             => get_bloginfo( 'name' ),
+					'evf_from_email'            => '{admin_email}',
+					'evf_reply_to'              => '{admin_email}',
+					'evf_email_subject'         => $confirm_subject,
+					'evf_email_message'         => $confirm_message,
+					'evf_email_cc'              => '',
+					'evf_email_bcc'             => '',
+				];
+			}
 		}
 
 		return $settings;
+	}
+
+	// ── Multipart ─────────────────────────────────────────────────────────────
+
+	/**
+	 * Build EVF multi_part structure from AI step definitions.
+	 *
+	 * The multipart plugin splits the form at row boundaries — it renders rows
+	 * sequentially and opens a new <div id="part_N"> when the last row of a part
+	 * is reached (line 943 in class-everest-forms-multi-part.php). So each part
+	 * needs `rows` (row IDs from the structure object), not just field IDs.
+	 *
+	 * @param array $steps       AI multipart_steps: [{ title, field_indices[] }, ...]
+	 * @param array $field_ids   Ordered list of actual field IDs
+	 * @param array $structure   EVF structure object (row_X => [grid_1 => [field_id, ...]])
+	 * @return array             EVF multi_part format
+	 */
+	private static function build_multipart_data( array $steps, array $field_ids, array $structure ): array {
+		// Build reverse map: field_id → row_key
+		$field_to_row = [];
+		foreach ( $structure as $row_key => $grids ) {
+			foreach ( $grids as $grid ) {
+				foreach ( (array) $grid as $fid ) {
+					$field_to_row[ $fid ] = $row_key;
+				}
+			}
+		}
+
+		$multi_part = [];
+		foreach ( $steps as $step_index => $step ) {
+			$part_id  = $step_index + 1;
+			$part_key = 'part_' . $part_id;
+			$indices  = $step['field_indices'] ?? [];
+
+			// Collect the row IDs for every field in this step (unique, preserving order)
+			$step_rows = [];
+			$step_fids = [];
+			foreach ( $indices as $idx ) {
+				if ( ! isset( $field_ids[ $idx ] ) ) {
+					continue;
+				}
+				$fid       = $field_ids[ $idx ];
+				$step_fids[] = $fid;
+				$row_key   = $field_to_row[ $fid ] ?? null;
+				if ( $row_key && ! in_array( $row_key, $step_rows, true ) ) {
+					$step_rows[] = $row_key;
+				}
+			}
+
+			$step_title = sanitize_text_field( $step['title'] ?? sprintf( __( 'Part %d', 'everest-forms' ), $part_id ) );
+			$multi_part[ $part_key ] = [
+				'id'     => (string) $part_id,
+				'name'   => $step_title,
+				'next'   => __( 'Next', 'everest-forms' ),
+				'prev'   => __( 'Previous', 'everest-forms' ),
+				'rows'   => $step_rows,   // row IDs — plugin uses this to split the form
+				'fields' => $step_fids,   // field IDs — used by builder admin UI
+			];
+		}
+		return $multi_part;
 	}
 
 	// ── Helpers ───────────────────────────────────────────────────────────────
