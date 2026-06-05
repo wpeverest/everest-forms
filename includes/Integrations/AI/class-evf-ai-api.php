@@ -138,9 +138,30 @@ class EVF_AI_API {
 			];
 		}
 
+		// Detect form type so the gateway can preserve it during refine/regenerate
+		$form_type = 'standard';
+		if ( ! empty( $data['settings']['enable_multi_part'] ) && '1' === $data['settings']['enable_multi_part'] ) {
+			$form_type = 'multipart';
+		} elseif ( ! empty( $data['settings']['enable_conversational_forms'] ) && '1' === $data['settings']['enable_conversational_forms'] ) {
+			$form_type = 'conversational';
+		}
+
+		// Include multipart step titles so AI can preserve/extend them
+		$multipart_steps = [];
+		if ( 'multipart' === $form_type ) {
+			foreach ( ( $data['multi_part'] ?? [] ) as $part ) {
+				$multipart_steps[] = [
+					'title'       => $part['name'] ?? '',
+					'field_count' => count( $part['fields'] ?? [] ),
+				];
+			}
+		}
+
 		return [
-			'form_title' => $post->post_title,
-			'fields'     => $summary,
+			'form_title'      => $post->post_title,
+			'form_type'       => $form_type,
+			'multipart_steps' => $multipart_steps,
+			'fields'          => $summary,
 		];
 	}
 
