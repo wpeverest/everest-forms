@@ -821,7 +821,7 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 							    matches the builder pixel-for-pixel (locked Pro fields included).
 							    No padding here: the builder's own panel padding (20px) is the
 							    single source of outer spacing, so it matches the canvas exactly. */}
-							<Box p="0" opacity={isRegenerating ? 0.7 : 1} transition="opacity 0.3s">
+							<Box p="0" opacity={isRegenerating ? 0.7 : 1} transition="opacity 0.3s" pointerEvents={isRegenerating || isCreatingForm ? 'none' : 'auto'}>
 								{previewHTML ? (
 									<Box
 										className="evf-ai-preview-canvas"
