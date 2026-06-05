@@ -843,11 +843,19 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 
 							{/* Form fields — server-rendered builder-canvas HTML so the preview
 							    matches the builder pixel-for-pixel (locked Pro fields included).
-							    PHP stamps data-part-id on each row; canvasRef useEffect
-							    shows/hides rows based on the active multi-part tab. */}
+							    PHP stamps data-part-id="N" (1-based) on every .evf-admin-row.
+							    The <style> below hides all rows except the active part;
+							    the canvasRef useEffect does the same imperatively so both
+							    fire regardless of rendering order. */}
+							{multiPartSteps.length > 0 && (
+								<style dangerouslySetInnerHTML={{ __html: `
+									.evf-ai-preview-canvas .evf-admin-row[data-part-id] { display: none !important; }
+									.evf-ai-preview-canvas .evf-admin-row[data-part-id="${activePartTab + 1}"] { display: flex !important; margin-bottom: 15px !important; }
+								`}} />
+							)}
 							<Box p="0" opacity={isRegenerating ? 0.7 : 1} transition="opacity 0.3s" pointerEvents={isRegenerating || isCreatingForm ? 'none' : 'auto'}>
 								{previewHTML ? (
-									<Box
+									<div
 										ref={canvasRef}
 										className="evf-ai-preview-canvas"
 										onClick={(e) => handleFieldClick(e)}
