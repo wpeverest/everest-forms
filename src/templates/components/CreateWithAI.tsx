@@ -796,8 +796,11 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 						</Box>
 					</Flex>
 
-					{/* Right: form preview panel — overflowY scroll so the tab bar can be sticky */}
-					<Box flex={1} bg="#f6f6f8" overflowY="auto" p="24px" pb={multiPartSteps.length > 0 ? '0' : '24px'} position="relative">
+					{/* Right: form preview panel — flex column so tab bar is always pinned to bottom */}
+					<Box flex={1} bg="#f6f6f8" display="flex" flexDirection="column" overflow="hidden">
+
+					{/* Scrollable area — grows to fill, form card scrolls within it */}
+					<Box flex={1} overflowY="auto" p="24px" pb={multiPartSteps.length > 0 ? '0' : '24px'}>
 
 						{/* Form preview card — bottom radius removed when multi-part tab bar is shown */}
 						<Box
@@ -872,29 +875,28 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 							</Box>
 						</Box>
 
-						{/* Multi-part tab bar — sticky at the bottom of the scrollable right
-						    panel. Pixel-perfect match to .everest-forms-multi-part-tabs:
-						    container h=42px bg=#fafafa borderTop only; UL h=41px borderBottom
-						    1px solid #ccc; active LI bg=#eeeeee; inactive LI bg=#f7f7f7;
-						    links h=40px p=10px fontWeight=600 color=#7e3bd0/#555 */}
-						{multiPartSteps.length > 0 && (
-							<Box
-								position="sticky"
-								bottom="0"
-								zIndex="10"
-								bg="#fafafa"
-								borderTop="1px solid #d5d9e2"
-								borderLeft="1px solid #d5d9e2"
-								borderRight="1px solid #d5d9e2"
-								borderBottom="1px solid #d5d9e2"
-								borderRadius="0 0 16px 16px"
-								display="flex"
-								alignItems="stretch"
-								h="42px"
-								mb="24px"
-								overflow="hidden"
-								pointerEvents={isRegenerating || isCreatingForm ? 'none' : 'auto'}
-							>
+					</Box>{/* end scrollable inner area */}
+
+					{/* Multi-part tab bar — natural flex child at bottom of the column,
+					    always visible regardless of scroll. Pixel-perfect match to the
+					    builder's .everest-forms-multi-part-tabs. */}
+					{multiPartSteps.length > 0 && (
+						<Box
+							bg="#fafafa"
+							borderTop="1px solid #d5d9e2"
+							borderLeft="1px solid #d5d9e2"
+							borderRight="1px solid #d5d9e2"
+							borderBottom="1px solid #d5d9e2"
+							borderRadius="0 0 16px 16px"
+							display="flex"
+							alignItems="stretch"
+							h="42px"
+							mx="24px"
+							mb="24px"
+							overflow="hidden"
+							flexShrink={0}
+							pointerEvents={isRegenerating || isCreatingForm ? 'none' : 'auto'}
+						>
 								{/* Tab list — matches .everest-forms-tabs ul */}
 								<Box
 									as="ul"
