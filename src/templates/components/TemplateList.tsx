@@ -21,7 +21,7 @@ import apiFetch from '@wordpress/api-fetch';
 import { __ } from '@wordpress/i18n';
 import React, { useEffect, useState } from 'react';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
-import { FiArrowRight, FiCrown } from 'react-icons/fi';
+import { FiArrowRight } from 'react-icons/fi';
 import { LuSparkles } from 'react-icons/lu';
 import notFoundImage from '../images/not-found-image.png';
 import { templatesScriptData } from '../utils/global';
@@ -576,56 +576,60 @@ const TemplateList: React.FC<TemplateListProps> = ({
 				onClose={closePluginModal}
 				size="md"
 			>
-				<ModalOverlay bg="rgba(0,0,0,0.45)" backdropFilter="blur(2px)" />
+				<ModalOverlay bg="rgba(0,0,0,0.35)" backdropFilter="blur(2px)" />
 				<ModalContent
 					borderRadius="16px"
 					p="0"
 					overflow="hidden"
-					boxShadow="0 20px 60px rgba(0,0,0,0.15)"
+					boxShadow="0 8px 32px rgba(0,0,0,0.1)"
 				>
 					<ModalHeader p="0">
-						{/* Gradient header band */}
-						<Box bg="#7545BB" px="28px" pt="28px" pb="24px">
+						<Flex
+							align="center"
+							gap="12px"
+							px="24px"
+							pt="22px"
+							pb="16px"
+							borderBottom="1px solid #f1f5f9"
+						>
 							<Box
-								w="48px"
-								h="48px"
-								borderRadius="12px"
-								bg="rgba(255,255,255,0.15)"
+								w="36px"
+								h="36px"
+								borderRadius="8px"
+								bg="rgba(117,69,187,0.1)"
 								display="flex"
 								alignItems="center"
 								justifyContent="center"
-								mb="14px"
+								flexShrink={0}
 							>
-								<Icon as={FiCrown} boxSize="22px" color="white" />
+								<Icon as={LuSparkles} boxSize="16px" color="#7545BB" />
 							</Box>
-							<Text
-								fontSize="18px"
-								fontWeight="700"
-								color="white"
-								m="0"
-								lineHeight="1.3"
-							>
-								{__('Premium Template', 'everest-forms')}
-							</Text>
-							<Text
-								fontSize="13px"
-								color="rgba(255,255,255,0.75)"
-								m="4px 0 0"
-								lineHeight="1.4"
-							>
-								{lockedTemplateName}
-							</Text>
-						</Box>
+							<Box flex="1" minW="0">
+								<Text
+									fontSize="15px"
+									fontWeight="600"
+									color="#0e0e0e"
+									m="0"
+									noOfLines={1}
+								>
+									{lockedTemplateName}
+								</Text>
+								<Text fontSize="12px" color="#9ca3af" m="0">
+									{__('Premium Template', 'everest-forms')}
+								</Text>
+							</Box>
+						</Flex>
 					</ModalHeader>
 					<ModalCloseButton
-						top="16px"
+						top="14px"
 						right="16px"
-						color="white"
-						_hover={{ bg: 'rgba(255,255,255,0.15)' }}
+						size="sm"
+						borderRadius="6px"
+						_hover={{ bg: '#f1f5f9' }}
 					/>
 
-					<ModalBody px="28px" py="24px">
-						<Text fontSize="14px" color="#374151" lineHeight="1.65" m="0">
+					<ModalBody px="24px" py="20px">
+						<Text fontSize="13px" color="#6b7280" lineHeight="1.65" m="0">
 							{__(
 								'This template requires a premium plan. Upgrade to unlock all premium templates and features.',
 								'everest-forms',
@@ -633,17 +637,17 @@ const TemplateList: React.FC<TemplateListProps> = ({
 						</Text>
 					</ModalBody>
 
-					<Box px="28px" pb="24px">
+					<Box px="24px" pb="22px">
 						<Flex gap="10px">
 							<Box
 								as="button"
 								flex="1"
-								h="40px"
+								h="38px"
 								borderRadius="8px"
 								border="1px solid #e2e8f0"
 								bg="white"
 								color="#374151"
-								fontSize="14px"
+								fontSize="13px"
 								fontWeight="500"
 								cursor="pointer"
 								onClick={closePluginModal}
@@ -658,11 +662,11 @@ const TemplateList: React.FC<TemplateListProps> = ({
 								target="_blank"
 								rel="noopener noreferrer"
 								flex="1"
-								h="40px"
+								h="38px"
 								borderRadius="8px"
 								bg="#7545BB"
 								color="white"
-								fontSize="14px"
+								fontSize="13px"
 								fontWeight="500"
 								cursor="pointer"
 								display="flex"
@@ -673,7 +677,6 @@ const TemplateList: React.FC<TemplateListProps> = ({
 								transition="background 0.2s"
 								textDecoration="none"
 							>
-								<Icon as={FiCrown} boxSize="14px" />
 								{__('Upgrade Plan', 'everest-forms')}
 							</Box>
 						</Flex>
