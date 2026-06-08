@@ -5,11 +5,7 @@ import {
   Box,
   Flex,
   Heading,
-  Icon,
-  Tooltip,
 } from "@chakra-ui/react";
-import { useQueryClient, useIsFetching } from "@tanstack/react-query";
-import { FiRefreshCw } from "react-icons/fi";
 import Main from "./components/Main";
 import CreateWithAI from "./components/CreateWithAI";
 
@@ -57,8 +53,6 @@ const exitFullscreen = () => {
 };
 
 const App = () => {
-  const queryClient = useQueryClient();
-  const isFetching = useIsFetching() > 0;
   const [currentView, setCurrentView] = useState<'templates' | 'ai'>(() => {
     const params = new URLSearchParams(window.location.search);
     return params.get('view') === 'ai' ? 'ai' : 'templates';
@@ -109,10 +103,6 @@ const App = () => {
     setCurrentView('templates');
   };
 
-  const handleRefreshTemplates = () => {
-    queryClient.invalidateQueries(['templates']);
-  };
-
   return (
     <ChakraProvider>
       {currentView === 'ai' ? (
@@ -130,7 +120,6 @@ const App = () => {
           {/* Page title */}
           <Flex
             align="center"
-            justify="space-between"
             px="8"
             py="5"
             borderBottom="1px solid #e2e8f0"
@@ -138,18 +127,6 @@ const App = () => {
             <Heading as="h2" fontSize="18px" fontWeight="600" color="#0e0e0e" m="0" letterSpacing="-0.01em">
               {__("Add New Form", "everest-forms")}
             </Heading>
-            <Tooltip label={__("Refresh Templates", "everest-forms")} placement="left" hasArrow>
-              <Icon
-                as={FiRefreshCw}
-                boxSize="15px"
-                color={isFetching ? '#7545BB' : '#9ca3af'}
-                cursor={isFetching ? 'default' : 'pointer'}
-                onClick={!isFetching ? handleRefreshTemplates : undefined}
-                transition="color 0.2s"
-                _hover={!isFetching ? { color: '#7545BB' } : {}}
-                sx={isFetching ? { animation: 'spin 0.8s linear infinite', '@keyframes spin': { from: { transform: 'rotate(0deg)' }, to: { transform: 'rotate(360deg)' } } } : {}}
-              />
-            </Tooltip>
           </Flex>
 
           <Box>

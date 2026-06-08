@@ -183,10 +183,11 @@ const BuilderAIChat: React.FC = () => {
 				<div
 					style={{
 						position: 'fixed',
-						bottom: 128,
+						bottom: 22,
 						right: 22,
 						width: 440,
 						height: 640,
+						maxHeight: 'calc(100vh - 80px)',
 						borderRadius: 16,
 						background: '#fff',
 						boxShadow: '0 8px 40px rgba(0,0,0,.18)',
@@ -256,6 +257,7 @@ const BuilderAIChat: React.FC = () => {
 					<>
 							{/* Messages */}
 							<div
+								className="evf-ai-messages"
 								style={{
 									flex: 1,
 									overflowY: 'auto',
@@ -339,16 +341,18 @@ const BuilderAIChat: React.FC = () => {
 
 							{/* Suggestions strip */}
 							<div
+								className="evf-ai-suggestions"
 								style={{
-									padding: '0 14px 8px',
+									padding: '0 14px 10px',
 									display: 'flex',
 									gap: 6,
 									overflowX: 'auto',
 									flexShrink: 0,
-									scrollbarWidth: 'none',
+									scrollbarWidth: 'thin',
+									scrollbarColor: '#d4c5f0 transparent',
 								}}
 							>
-								{EDIT_SUGGESTIONS.slice(0, 4).map(s => (
+								{EDIT_SUGGESTIONS.map(s => (
 									<button
 										key={s}
 										onClick={() => sendMessage(s)}
@@ -452,11 +456,29 @@ const BuilderAIChat: React.FC = () => {
 				</div>
 			)}
 
-			{/* Dot-bounce keyframes */}
+			{/* Dot-bounce keyframes + minimal scrollbar styles */}
 			<style>{`
 				@keyframes evf-ai-dot {
 					0%,80%,100%{transform:scale(.4);opacity:.4}
 					40%{transform:scale(1);opacity:1}
+				}
+				.evf-ai-messages::-webkit-scrollbar,
+				.evf-ai-suggestions::-webkit-scrollbar {
+					width: 4px;
+					height: 4px;
+				}
+				.evf-ai-messages::-webkit-scrollbar-track,
+				.evf-ai-suggestions::-webkit-scrollbar-track {
+					background: transparent;
+				}
+				.evf-ai-messages::-webkit-scrollbar-thumb,
+				.evf-ai-suggestions::-webkit-scrollbar-thumb {
+					background: #d4c5f0;
+					border-radius: 4px;
+				}
+				.evf-ai-messages::-webkit-scrollbar-thumb:hover,
+				.evf-ai-suggestions::-webkit-scrollbar-thumb:hover {
+					background: #b89ee0;
 				}
 			`}</style>
 		</>

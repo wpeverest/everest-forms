@@ -19,6 +19,7 @@ import { __ } from '@wordpress/i18n';
 import debounce from 'lodash.debounce';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { IoSearchOutline } from 'react-icons/io5';
+import { FiRefreshCw } from 'react-icons/fi';
 import { templatesScriptData } from '../utils/global';
 import Sidebar from './Sidebar';
 import TemplateList from './TemplateList';
@@ -54,6 +55,11 @@ interface CreateFormResponse {
 const shimmer = keyframes`
   0%   { background-position: -600px 0; }
   100% { background-position:  600px 0; }
+`;
+
+const spin = keyframes`
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
 `;
 
 const skimmerStyle = {
@@ -198,6 +204,7 @@ const Main: React.FC<{ onCreateWithAI?: (formId?: number, title?: string) => voi
 		data: templates = [],
 		isLoading,
 		isFetching,
+		refetch,
 		error,
 	} = useQuery(['templates'], fetchTemplates);
 
@@ -484,40 +491,69 @@ const Main: React.FC<{ onCreateWithAI?: (formId?: number, title?: string) => voi
 							{__('Choose from Templates', 'everest-forms')}
 						</Heading>
 
-						{/* Filter tabs */}
-						<Tabs
-							variant="unstyled"
-							onChange={(index) => setFilter(filterLabels[index])}
-						>
-							<TabList
-								bg="#f1f5f9"
-								border="1px solid #e2e8f0"
+						{/* Refetch button + Filter tabs */}
+						<Flex align="center" gap="10px">
+							<Box
+								as="button"
+								display="inline-flex"
+								alignItems="center"
+								gap="6px"
+								px="10px"
+								py="6px"
 								borderRadius="8px"
-								p="4px"
-								gap="0"
+								border="1px solid #e2e8f0"
+								bg="white"
+								fontSize="12px"
+								fontWeight="500"
+								color="#6b6b6b"
+								cursor={isFetching ? 'not-allowed' : 'pointer'}
+								onClick={() => { if (!isFetching) refetch(); }}
+								_hover={{ borderColor: '#7545BB', color: '#7545BB' }}
+								transition="all 0.15s"
+								title={__('Refresh templates', 'everest-forms')}
 							>
-								{filterLabels.map((label) => (
-									<Tab
-										key={label}
-										px="12px"
-										py="6px"
-										borderRadius="6px"
-										fontSize="12px"
-										fontWeight="500"
-										color="#6b6b6b"
-										_selected={{
-											bg: 'white',
-											color: '#7445ba',
-											boxShadow: '0 1px 3px rgba(0,0,0,0.08)',
-										}}
-										_hover={{ color: '#0e0e0e' }}
-										transition="all 0.15s"
-									>
-										{label}
-									</Tab>
-								))}
-							</TabList>
-						</Tabs>
+								<Icon
+									as={FiRefreshCw}
+									boxSize="12px"
+									sx={isFetching ? { animation: `${spin} 0.7s linear infinite` } : {}}
+								/>
+								{__('Refetch', 'everest-forms')}
+							</Box>
+
+							<Tabs
+								variant="unstyled"
+								onChange={(index) => setFilter(filterLabels[index])}
+							>
+								<TabList
+									bg="#f1f5f9"
+									border="1px solid #e2e8f0"
+									borderRadius="8px"
+									p="4px"
+									gap="0"
+								>
+									{filterLabels.map((label) => (
+										<Tab
+											key={label}
+											px="12px"
+											py="6px"
+											borderRadius="6px"
+											fontSize="12px"
+											fontWeight="500"
+											color="#6b6b6b"
+											_selected={{
+												bg: 'white',
+												color: '#7445ba',
+												boxShadow: '0 1px 3px rgba(0,0,0,0.08)',
+											}}
+											_hover={{ color: '#0e0e0e' }}
+											transition="all 0.15s"
+										>
+											{label}
+										</Tab>
+									))}
+								</TabList>
+							</Tabs>
+						</Flex>
 					</Flex>
 				</Flex>
 

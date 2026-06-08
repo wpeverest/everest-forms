@@ -214,6 +214,11 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 	const aiResponseRef = React.useRef<any>(null);
 	const promptInputRef = React.useRef<HTMLTextAreaElement | null>(null);
 	const canvasRef = useRef<HTMLDivElement | null>(null);
+	// Tracks a pre-fetch of the preview HTML that starts as soon as the AI
+	// returns a form_id (while the progress animation is still playing).
+	// previewHTMLRef mirrors the previewHTML state for effect-safe reads.
+	const previewHTMLRef = React.useRef('');
+	const previewFetchStartedRef = React.useRef(false);
 
 	// Show only the active part's rows when multi-part tabs are used.
 	// PHP stamps data-part-id="N" (1-based) on each .evf-admin-row.
@@ -370,6 +375,10 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 		if (genState !== 'generating') return;
 		setGenStep(-1);
 		aiResponseRef.current = null;
+		// Reset pre-fetch state for this generation run.
+		previewHTMLRef.current = '';
+		previewFetchStartedRef.current = false;
+		setPreviewHTML('');
 
 		let cancelled = false;
 		let intervalId: ReturnType<typeof setInterval> | null = null;
@@ -404,6 +413,33 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 						editUrl: res.data.edit_url || '',
 						multiPartSteps: res.data.multi_part_steps || [],
 					};
+					// Pre-fetch the preview while the progress animation is still
+					// playing so the preview is ready (or nearly ready) the moment
+					// the user lands on the generated screen.
+					const fid = res.data.form_id;
+					previewFetchStartedRef.current = true;
+					setIsPreviewLoading(true);
+					apiFetch({
+						path: `${restURL}everest-forms/v1/templates/ai-preview`,
+						method: 'POST',
+						data: { form_id: fid },
+						headers: { 'X-WP-Nonce': security },
+					})
+						.then((previewRes: any) => {
+							if (previewRes?.success && previewRes?.data?.html) {
+								previewHTMLRef.current = previewRes.data.html;
+								setPreviewHTML(previewRes.data.html);
+								setIsPreviewLoading(false);
+							} else {
+								// Non-fatal: let the generated-state useEffect retry.
+								previewFetchStartedRef.current = false;
+								setIsPreviewLoading(false);
+							}
+						})
+						.catch(() => {
+							previewFetchStartedRef.current = false;
+							setIsPreviewLoading(false);
+						});
 				} else {
 					showError( res?.data?.message || __('Something went wrong. Please try again.', 'everest-forms') );
 				}
@@ -455,8 +491,14 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 	// change. Rendering the server markup (rather than a parallel React preview)
 	// guarantees the preview matches the builder pixel-for-pixel, including the
 	// PRO badge on locked fields.
+	//
+	// For the initial render (previewVersion === 0), a pre-fetch was already
+	// started during the generating animation — skip the duplicate request if
+	// it succeeded or is still in flight.
 	useEffect(() => {
 		if (genState !== 'generated' || ! formId) return;
+		// Pre-fetch already returned HTML, or is still in progress — don't duplicate.
+		if (previewVersion === 0 && (previewHTMLRef.current || previewFetchStartedRef.current)) return;
 		let cancelled = false;
 		setIsPreviewLoading(true);
 		// Preview the actual AI-generated draft form (by id) so the preview is
@@ -469,6 +511,7 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 		})
 			.then((res: any) => {
 				if (!cancelled && res?.success && res?.data?.html) {
+					previewHTMLRef.current = res.data.html;
 					setPreviewHTML(res.data.html);
 				}
 			})
@@ -865,12 +908,13 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 										dangerouslySetInnerHTML={{ __html: previewHTML }}
 									/>
 								) : (
-									<VStack spacing="16px" align="stretch">
-										{(isPreviewLoading ? Array.from({ length: 4 }) : []).map((_, idx) => (
-											<Box key={idx} h="56px" bg="#eef0f4" borderRadius="6px"
-												sx={{ animation: `${fadeUp} 0.3s ease` }} />
-										))}
-									</VStack>
+									<Box p="24px">
+										<VStack spacing="20px" align="stretch">
+											{Array.from({ length: 5 }).map((_, idx) => (
+												<SkeletonField key={idx} delay={`${idx * 0.1}s`} />
+											))}
+										</VStack>
+									</Box>
 								)}
 							</Box>
 						</Box>
@@ -972,10 +1016,10 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 					<VStack spacing="8px" mb="14px" textAlign="center">
 						<Heading
 							as="h1"
-							fontSize={{ base: '32px', md: '44px' }}
+							fontSize={{ base: '24px', md: '32px' }}
 							fontWeight="600"
 							color="#0e0e0e"
-							lineHeight="1.08"
+							lineHeight="1.15"
 							m="0"
 							letterSpacing="-0.02em"
 						>
@@ -1015,7 +1059,7 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 								lineHeight="1.6"
 								color="#181818"
 								p="0"
-								minH="130px"
+								minH="90px"
 								bg="transparent"
 								_focus={{ boxShadow: 'none', outline: 'none', border: 'none' }}
 								_placeholder={{ color: '#9a9a9a' }}
