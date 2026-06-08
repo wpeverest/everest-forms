@@ -840,7 +840,7 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 					</Flex>
 
 					{/* Right: form preview panel — flex column so tab bar is always pinned to bottom */}
-					<Box flex={1} bg="#f6f6f8" display="flex" flexDirection="column" overflow="hidden">
+					<Box flex={1} bg="#f6f6f8" display="flex" flexDirection="column" overflow="hidden" opacity={isRegenerating ? 0.5 : 1} transition="opacity 0.3s">
 
 					{/* Scrollable area — grows to fill, form card scrolls within it */}
 					<Box flex={1} overflowY="auto" p="24px" pb={multiPartSteps.length > 0 ? '0' : '24px'}>
@@ -899,7 +899,7 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 									.evf-ai-preview-canvas .evf-admin-row[data-part-id="${activePartTab + 1}"] { display: flex !important; margin-bottom: 15px !important; }
 								`}} />
 							)}
-							<Box p="0" opacity={isRegenerating ? 0.7 : 1} transition="opacity 0.3s" pointerEvents={isRegenerating || isCreatingForm ? 'none' : 'auto'}>
+							<Box p="0" pointerEvents={isRegenerating || isCreatingForm ? 'none' : 'auto'}>
 								{previewHTML ? (
 									<div
 										ref={canvasRef}
