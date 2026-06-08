@@ -35,9 +35,6 @@ interface BuilderAIConfig {
 const cfg: BuilderAIConfig = ( window as any ).evfBuilderAI || {};
 
 // Edit the current builder form via the ThemeGrill AI Cloud (Python) gateway.
-// Reuses the evf_ai_update_form action: the chat instruction is sent as the
-// refine prompt along with the current form context; the gateway returns the
-// updated form which is rebuilt in place server-side.
 const editFormViaAi = async (
 	instruction: string,
 ): Promise<{ ok: boolean; message: string }> => {
@@ -49,7 +46,6 @@ const editFormViaAi = async (
 	body.append( 'action', 'evf_ai_update_form' );
 	body.append( 'nonce', cfg.nonce );
 	body.append( 'form_id', String( cfg.formId ) );
-	// Gateway requires a non-empty original prompt — use the form title as context.
 	body.append( 'prompt', cfg.formTitle || 'Edit this form' );
 	body.append( 'refine_prompt', instruction );
 
@@ -79,14 +75,37 @@ const editFormViaAi = async (
 // ── Component ─────────────────────────────────────────────────────────────────
 
 const BuilderAIChat: React.FC = () => {
-	const [open, setOpen]         = useState(false);
-	const [input, setInput]       = useState('');
-	const [messages, setMessages] = useState<Message[]>([
+	const [open, setOpen]             = useState(false);
+	const [input, setInput]           = useState('');
+	const [messages, setMessages]     = useState<Message[]>([
 		{ role: 'assistant', text: GREETING },
 	]);
-	const [loading, setLoading]   = useState(false);
+	const [loading, setLoading]       = useState(false);
+	const [showTooltip, setShowTooltip] = useState(false);
+	// Read the customizer button's actual CSS bottom so we stack correctly even
+	// in multi-part mode (where the customizer moves up to 62px). Falls back to
+	// null when the addon is not active — AI button then sits at bottom: 22px.
+	const [customizerBottom, setCustomizerBottom] = useState<number | null>(null);
 	const messagesEndRef = useRef<HTMLDivElement>(null);
 	const inputRef       = useRef<HTMLTextAreaElement>(null);
+
+	useEffect(() => {
+		const read = () => {
+			const el = document.querySelector<HTMLElement>('.everest-forms-designer-icon');
+			if (el) {
+				const v = parseInt(window.getComputedStyle(el).bottom, 10);
+				setCustomizerBottom(isNaN(v) ? null : v);
+			} else {
+				setCustomizerBottom(null);
+			}
+		};
+		read();
+		// Re-read when builder classes change (multi-part toggle adds/removes class).
+		const observer = new MutationObserver(read);
+		const builder = document.getElementById('everest-forms-builder');
+		if (builder) observer.observe(builder, { attributes: true, attributeFilter: ['class'] });
+		return () => observer.disconnect();
+	}, []);
 
 	// Auto-scroll to latest message.
 	useEffect(() => {
@@ -116,9 +135,6 @@ const BuilderAIChat: React.FC = () => {
 		});
 		setLoading(false);
 
-		// On success the form was rebuilt server-side. Refresh the builder canvas +
-		// options in place (no full page reload) via the hook exposed by
-		// form-builder.js; fall back to a reload if it isn't available.
 		if (result.ok) {
 			const w = window as any;
 			if (typeof w.evfReloadBuilderFields === 'function' && cfg.formId && cfg.nonce) {
@@ -136,46 +152,108 @@ const BuilderAIChat: React.FC = () => {
 		}
 	};
 
+	// Bottom offset of the trigger button.
+	// When the customizer is active we sit 8px above its top edge;
+	// otherwise we share the same bottom baseline (22px).
+	const BTN_SIZE     = 55;
+	const BTN_RIGHT    = 22;
+	const BTN_BOTTOM   = customizerBottom !== null ? customizerBottom + BTN_SIZE + 8 : 22;
+	// Modal sits 8px above the top edge of the trigger button.
+	const MODAL_BOTTOM = BTN_BOTTOM + BTN_SIZE + 8;
+
 	// ── Render ──────────────────────────────────────────────────────────────
 
 	return (
 		<>
-			{/* ── Floating trigger button ──
-			     Customizer sits at bottom:65 / right:22 / 55×55px.
-			     We place this button 8px above it: bottom = 65+55+8 = 128px.
-			     Match width/height (55px) and right-alignment (22px). ── */}
-			{!open && (
-				<button
-					onClick={() => setOpen(true)}
-					title="AI Form Assistant"
+			{/* ── Floating trigger button (always rendered) ────────────────────
+			     Shows sparkles when closed, X when open.
+			     zIndex sits above the chat panel so it's always clickable. ── */}
+			<button
+				onClick={() => setOpen(o => !o)}
+				style={{
+					position: 'fixed',
+					bottom: BTN_BOTTOM,
+					right: BTN_RIGHT,
+					width: BTN_SIZE,
+					height: BTN_SIZE,
+					borderRadius: '50%',
+					background: open
+						? 'linear-gradient(135deg,#5c329c 0%,#7545BB 100%)'
+						: 'linear-gradient(135deg,#7545BB 0%,#9660db 100%)',
+					border: 'none',
+					cursor: 'pointer',
+					display: 'flex',
+					alignItems: 'center',
+					justifyContent: 'center',
+					boxShadow: '0 4px 16px rgba(117,69,187,.45)',
+					zIndex: 10000,
+					transition: 'transform .2s,box-shadow .2s,background .2s',
+				}}
+				onMouseEnter={e => {
+					if (!open) setShowTooltip(true);
+					(e.currentTarget as HTMLButtonElement).style.transform = 'scale(1.08)';
+					(e.currentTarget as HTMLButtonElement).style.boxShadow = '0 6px 22px rgba(117,69,187,.55)';
+				}}
+				onMouseLeave={e => {
+					setShowTooltip(false);
+					(e.currentTarget as HTMLButtonElement).style.transform = 'scale(1)';
+					(e.currentTarget as HTMLButtonElement).style.boxShadow = '0 4px 16px rgba(117,69,187,.45)';
+				}}
+			>
+				{open ? <LuX size={22} color="white" /> : <LuSparkles size={24} color="white" />}
+			</button>
+
+			{/* ── Tooltip — matches tooltipster style exactly, appears above the button ── */}
+			{showTooltip && !open && (
+				<div
 					style={{
 						position: 'fixed',
-						bottom: 128,
-						right: 22,
-						width: 55,
-						height: 55,
-						borderRadius: '50%',
-						background: 'linear-gradient(135deg,#7545BB 0%,#9660db 100%)',
-						border: 'none',
-						cursor: 'pointer',
-						display: 'flex',
-						alignItems: 'center',
-						justifyContent: 'center',
-						boxShadow: '0 4px 16px rgba(117,69,187,.45)',
-						zIndex: 9999,
-						transition: 'transform .2s,box-shadow .2s',
-					}}
-					onMouseEnter={e => {
-						(e.currentTarget as HTMLButtonElement).style.transform = 'scale(1.08)';
-						(e.currentTarget as HTMLButtonElement).style.boxShadow = '0 6px 22px rgba(117,69,187,.55)';
-					}}
-					onMouseLeave={e => {
-						(e.currentTarget as HTMLButtonElement).style.transform = 'scale(1)';
-						(e.currentTarget as HTMLButtonElement).style.boxShadow = '0 4px 16px rgba(117,69,187,.45)';
+						// Sit 8px above the trigger button top edge
+						bottom: BTN_BOTTOM + BTN_SIZE + 8,
+						// Place right edge at button center, then translateX(50%) to center tooltip over button
+						right: BTN_RIGHT + Math.round(BTN_SIZE / 2),
+						transform: 'translateX(50%)',
+						pointerEvents: 'none',
+						zIndex: 10001,
 					}}
 				>
-					<LuSparkles size={24} color="white" />
-				</button>
+					{/* Box — matches tooltipster-box */}
+					<div style={{
+						background: '#fff',
+						border: '0.8px solid #e1e1e1',
+						borderRadius: 3,
+						padding: '16px 20px',
+						fontSize: 13,
+						color: '#222',
+						whiteSpace: 'nowrap',
+						position: 'relative',
+					}}>
+						AI Form Assistant
+					</div>
+					{/* Down-pointing arrow centered under tooltip, pointing to button */}
+					{/* Outer arrow — border colour */}
+					<div style={{
+						position: 'absolute',
+						bottom: -8,
+						left: '50%',
+						marginLeft: -7,
+						width: 0, height: 0,
+						borderLeft: '7px solid transparent',
+						borderRight: '7px solid transparent',
+						borderTop: '8px solid #e1e1e1',
+					}} />
+					{/* Inner arrow — white fill */}
+					<div style={{
+						position: 'absolute',
+						bottom: -6,
+						left: '50%',
+						marginLeft: -6,
+						width: 0, height: 0,
+						borderLeft: '6px solid transparent',
+						borderRight: '6px solid transparent',
+						borderTop: '7px solid #fff',
+					}} />
+				</div>
 			)}
 
 			{/* ── Chat panel ── */}
@@ -183,11 +261,11 @@ const BuilderAIChat: React.FC = () => {
 				<div
 					style={{
 						position: 'fixed',
-						bottom: 22,
-						right: 22,
+						bottom: MODAL_BOTTOM,
+						right: BTN_RIGHT,
 						width: 440,
-						height: 640,
-						maxHeight: 'calc(100vh - 80px)',
+						height: 520,
+						maxHeight: `calc(100vh - ${MODAL_BOTTOM + 40}px)`,
 						borderRadius: 16,
 						background: '#fff',
 						boxShadow: '0 8px 40px rgba(0,0,0,.18)',
@@ -196,7 +274,6 @@ const BuilderAIChat: React.FC = () => {
 						flexDirection: 'column',
 						overflow: 'hidden',
 						zIndex: 9999,
-						transition: 'height .25s ease',
 					}}
 				>
 					{/* Header */}
@@ -206,15 +283,15 @@ const BuilderAIChat: React.FC = () => {
 							alignItems: 'center',
 							gap: 10,
 							padding: '0 16px',
-							height: 56,
+							height: 52,
 							background: 'linear-gradient(135deg,#7545BB 0%,#9660db 100%)',
 							flexShrink: 0,
 						}}
 					>
 						<div
 							style={{
-								width: 30,
-								height: 30,
+								width: 28,
+								height: 28,
 								borderRadius: '50%',
 								background: 'rgba(255,255,255,.15)',
 								display: 'flex',
@@ -223,7 +300,7 @@ const BuilderAIChat: React.FC = () => {
 								flexShrink: 0,
 							}}
 						>
-							<LuSparkles size={15} color="white" />
+							<LuSparkles size={14} color="white" />
 						</div>
 						<div style={{ flex: 1, minWidth: 0 }}>
 							<div style={{ fontSize: 14, fontWeight: 600, color: '#fff', lineHeight: 1.2 }}>
@@ -233,226 +310,203 @@ const BuilderAIChat: React.FC = () => {
 								Powered by AI
 							</div>
 						</div>
-						{/* X closes the panel — trigger button reappears */}
-						<button
-							onClick={() => setOpen(false)}
-							style={{
-								background: 'none',
-								border: 'none',
-								cursor: 'pointer',
-								color: 'rgba(255,255,255,.8)',
-								padding: 4,
-								display: 'flex',
-								alignItems: 'center',
-								transition: 'color .15s',
-							}}
-							title="Close"
-							onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.color = '#fff'; }}
-							onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.color = 'rgba(255,255,255,.8)'; }}
-						>
-							<LuX size={18} />
-						</button>
 					</div>
 
-					<>
-							{/* Messages */}
+					{/* Messages */}
+					<div
+						className="evf-ai-messages"
+						style={{
+							flex: 1,
+							overflowY: 'auto',
+							padding: '16px 14px',
+							display: 'flex',
+							flexDirection: 'column',
+							gap: 10,
+						}}
+					>
+						{messages.map((msg, i) => (
 							<div
-								className="evf-ai-messages"
+								key={i}
 								style={{
-									flex: 1,
-									overflowY: 'auto',
-									padding: '16px 14px',
 									display: 'flex',
-									flexDirection: 'column',
-									gap: 10,
+									flexDirection: msg.role === 'user' ? 'row-reverse' : 'row',
+									alignItems: 'flex-end',
+									gap: 8,
 								}}
 							>
-								{messages.map((msg, i) => (
+								{msg.role === 'assistant' && (
 									<div
-										key={i}
 										style={{
-											display: 'flex',
-											flexDirection: msg.role === 'user' ? 'row-reverse' : 'row',
-											alignItems: 'flex-end',
-											gap: 8,
-										}}
-									>
-										{/* Avatar for assistant */}
-										{msg.role === 'assistant' && (
-											<div
-												style={{
-													width: 26,
-													height: 26,
-													borderRadius: '50%',
-													background: 'rgba(117,69,187,.1)',
-													display: 'flex',
-													alignItems: 'center',
-													justifyContent: 'center',
-													flexShrink: 0,
-												}}
-											>
-												<LuSparkles size={13} color="#7545BB" />
-											</div>
-										)}
-
-										<div
-											style={{
-												maxWidth: '82%',
-												padding: '9px 12px',
-												borderRadius:
-													msg.role === 'user'
-														? '14px 14px 4px 14px'
-														: '4px 14px 14px 14px',
-												background:
-													msg.role === 'user' ? '#7545BB' : '#f4f0fb',
-												color: msg.role === 'user' ? '#fff' : '#1a1a2e',
-												fontSize: 13,
-												lineHeight: 1.55,
-												boxShadow:
-													msg.role === 'user'
-														? '0 2px 8px rgba(117,69,187,.2)'
-														: 'none',
-											}}
-										>
-											{msg.loading ? (
-												<div style={{ display: 'flex', gap: 4, padding: '2px 0' }}>
-													{[0, 1, 2].map(d => (
-														<span
-															key={d}
-															style={{
-																width: 6,
-																height: 6,
-																borderRadius: '50%',
-																background: '#9660db',
-																display: 'inline-block',
-																animation: `evf-ai-dot 1.1s ease-in-out ${d * 0.18}s infinite`,
-															}}
-														/>
-													))}
-												</div>
-											) : (
-												msg.text
-											)}
-										</div>
-									</div>
-								))}
-								<div ref={messagesEndRef} />
-							</div>
-
-							{/* Suggestions strip */}
-							<div
-								className="evf-ai-suggestions"
-								style={{
-									padding: '0 14px 10px',
-									display: 'flex',
-									gap: 6,
-									overflowX: 'auto',
-									flexShrink: 0,
-									scrollbarWidth: 'thin',
-									scrollbarColor: '#d4c5f0 transparent',
-								}}
-							>
-								{EDIT_SUGGESTIONS.map(s => (
-									<button
-										key={s}
-										onClick={() => sendMessage(s)}
-										style={{
-											flexShrink: 0,
-											padding: '5px 10px',
-											borderRadius: 20,
-											border: '1px solid #e2e8f0',
-											background: '#faf9ff',
-											color: '#7545BB',
-											fontSize: 11.5,
-											fontWeight: 500,
-											cursor: 'pointer',
-											whiteSpace: 'nowrap',
-											transition: 'background .15s,border-color .15s',
-										}}
-										onMouseEnter={e => {
-											(e.currentTarget as HTMLButtonElement).style.background = '#f0ebfa';
-											(e.currentTarget as HTMLButtonElement).style.borderColor = '#b89ee0';
-										}}
-										onMouseLeave={e => {
-											(e.currentTarget as HTMLButtonElement).style.background = '#faf9ff';
-											(e.currentTarget as HTMLButtonElement).style.borderColor = '#e2e8f0';
-										}}
-									>
-										{s}
-									</button>
-								))}
-							</div>
-
-							{/* Input bar */}
-							<div
-								style={{
-									padding: '10px 14px 14px',
-									borderTop: '1px solid #f1f5f9',
-									flexShrink: 0,
-								}}
-							>
-								<div
-									style={{
-										display: 'flex',
-										alignItems: 'flex-end',
-										gap: 8,
-										border: '1.5px solid #e2e8f0',
-										borderRadius: 12,
-										padding: '8px 10px 8px 14px',
-										background: '#fff',
-										transition: 'border-color .2s',
-									}}
-									onFocus={() => {}}
-								>
-									<textarea
-										ref={inputRef}
-										value={input}
-										onChange={e => setInput(e.target.value)}
-										onKeyDown={handleKeyDown}
-										placeholder="Describe what to change…"
-										rows={1}
-										style={{
-											flex: 1,
-											border: 'none',
-											outline: 'none',
-											resize: 'none',
-											fontSize: 13,
-											color: '#1a1a2e',
-											background: 'transparent',
-											lineHeight: 1.5,
-											maxHeight: 80,
-											overflowY: 'auto',
-											fontFamily: 'inherit',
-										}}
-									/>
-									<button
-										onClick={() => sendMessage(input)}
-										disabled={!input.trim() || loading}
-										style={{
-											width: 32,
-											height: 32,
-											borderRadius: 8,
-											border: 'none',
-											background: input.trim() && !loading ? '#7545BB' : '#e6e3ee',
-											cursor: input.trim() && !loading ? 'pointer' : 'not-allowed',
+											width: 26,
+											height: 26,
+											borderRadius: '50%',
+											background: 'rgba(117,69,187,.1)',
 											display: 'flex',
 											alignItems: 'center',
 											justifyContent: 'center',
 											flexShrink: 0,
-											transition: 'background .2s',
 										}}
 									>
-										<LuSend
-											size={15}
-											color={input.trim() && !loading ? '#fff' : '#9a9a9a'}
-										/>
-									</button>
+										<LuSparkles size={13} color="#7545BB" />
+									</div>
+								)}
+
+								<div
+									style={{
+										maxWidth: '82%',
+										padding: '9px 12px',
+										borderRadius:
+											msg.role === 'user'
+												? '14px 14px 4px 14px'
+												: '4px 14px 14px 14px',
+										background:
+											msg.role === 'user' ? '#7545BB' : '#f4f0fb',
+										color: msg.role === 'user' ? '#fff' : '#1a1a2e',
+										fontSize: 13,
+										lineHeight: 1.55,
+										boxShadow:
+											msg.role === 'user'
+												? '0 2px 8px rgba(117,69,187,.2)'
+												: 'none',
+									}}
+								>
+									{msg.loading ? (
+										<div style={{ display: 'flex', gap: 4, padding: '2px 0' }}>
+											{[0, 1, 2].map(d => (
+												<span
+													key={d}
+													style={{
+														width: 6,
+														height: 6,
+														borderRadius: '50%',
+														background: '#9660db',
+														display: 'inline-block',
+														animation: `evf-ai-dot 1.1s ease-in-out ${d * 0.18}s infinite`,
+													}}
+												/>
+											))}
+										</div>
+									) : (
+										msg.text
+									)}
 								</div>
-								<p style={{ fontSize: 11, color: '#9ca3af', margin: '6px 0 0', textAlign: 'center' }}>
-									AI edits update your form and refresh the canvas.
-								</p>
 							</div>
-						</>
+						))}
+						<div ref={messagesEndRef} />
+					</div>
+
+					{/* Suggestions strip */}
+					<div
+						className="evf-ai-suggestions"
+						style={{
+							padding: '0 14px 10px',
+							display: 'flex',
+							gap: 6,
+							overflowX: 'auto',
+							flexShrink: 0,
+							scrollbarWidth: 'thin',
+							scrollbarColor: '#d4c5f0 transparent',
+						}}
+					>
+						{EDIT_SUGGESTIONS.map(s => (
+							<button
+								key={s}
+								onClick={() => sendMessage(s)}
+								style={{
+									flexShrink: 0,
+									padding: '5px 10px',
+									borderRadius: 20,
+									border: '1px solid #e2e8f0',
+									background: '#faf9ff',
+									color: '#7545BB',
+									fontSize: 11.5,
+									fontWeight: 500,
+									cursor: 'pointer',
+									whiteSpace: 'nowrap',
+									transition: 'background .15s,border-color .15s',
+								}}
+								onMouseEnter={e => {
+									(e.currentTarget as HTMLButtonElement).style.background = '#f0ebfa';
+									(e.currentTarget as HTMLButtonElement).style.borderColor = '#b89ee0';
+								}}
+								onMouseLeave={e => {
+									(e.currentTarget as HTMLButtonElement).style.background = '#faf9ff';
+									(e.currentTarget as HTMLButtonElement).style.borderColor = '#e2e8f0';
+								}}
+							>
+								{s}
+							</button>
+						))}
+					</div>
+
+					{/* Input bar */}
+					<div
+						style={{
+							padding: '10px 14px 14px',
+							borderTop: '1px solid #f1f5f9',
+							flexShrink: 0,
+						}}
+					>
+						<div
+							style={{
+								display: 'flex',
+								alignItems: 'flex-end',
+								gap: 8,
+								border: '1.5px solid #e2e8f0',
+								borderRadius: 12,
+								padding: '8px 10px 8px 14px',
+								background: '#fff',
+								transition: 'border-color .2s',
+							}}
+						>
+							<textarea
+								ref={inputRef}
+								value={input}
+								onChange={e => setInput(e.target.value)}
+								onKeyDown={handleKeyDown}
+								placeholder="Describe what to change…"
+								rows={1}
+								style={{
+									flex: 1,
+									border: 'none',
+									outline: 'none',
+									resize: 'none',
+									fontSize: 13,
+									color: '#1a1a2e',
+									background: 'transparent',
+									lineHeight: 1.5,
+									maxHeight: 80,
+									overflowY: 'auto',
+									fontFamily: 'inherit',
+								}}
+							/>
+							<button
+								onClick={() => sendMessage(input)}
+								disabled={!input.trim() || loading}
+								style={{
+									width: 32,
+									height: 32,
+									borderRadius: 8,
+									border: 'none',
+									background: input.trim() && !loading ? '#7545BB' : '#e6e3ee',
+									cursor: input.trim() && !loading ? 'pointer' : 'not-allowed',
+									display: 'flex',
+									alignItems: 'center',
+									justifyContent: 'center',
+									flexShrink: 0,
+									transition: 'background .2s',
+								}}
+							>
+								<LuSend
+									size={15}
+									color={input.trim() && !loading ? '#fff' : '#9a9a9a'}
+								/>
+							</button>
+						</div>
+						<p style={{ fontSize: 11, color: '#9ca3af', margin: '6px 0 0', textAlign: 'center' }}>
+							AI edits update your form and refresh the canvas.
+						</p>
+					</div>
 				</div>
 			)}
 
