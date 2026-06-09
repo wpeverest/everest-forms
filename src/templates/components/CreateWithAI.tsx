@@ -107,6 +107,14 @@ const SkeletonField: React.FC<{ delay?: string }> = ({ delay = '0s' }) => (
 const PageShell: React.FC<{ onBack: () => void; backLabel?: string; headerRight?: React.ReactNode; children: React.ReactNode }> = ({
 	onBack, backLabel, headerRight, children,
 }) => {
+	// WP's #wpbody-content has padding-bottom:42px which makes the body
+	// slightly overflow behind our fixed overlay, producing a second scrollbar.
+	// Lock body overflow for the lifetime of this component to suppress it.
+	useEffect(() => {
+		const prev = document.body.style.overflow;
+		document.body.style.overflow = 'hidden';
+		return () => { document.body.style.overflow = prev; };
+	}, []);
 	return (
 	// Full-viewport overlay (z-index above WP admin bar). Header stays pinned;
 	// only the content area below it scrolls via the inner Box.
