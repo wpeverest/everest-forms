@@ -725,6 +725,16 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 			}
 		}
 
+		// Last resort: check the addon-requirements filter. Covers fields whose
+		// class never registers when the addon is absent (e.g. credit-card bails
+		// in __construct() when Stripe is inactive), so get_field_object() returns
+		// null. Pro/addons hook everest_forms_field_addon_requirements to declare
+		// these dependencies from always-loaded code.
+		if ( empty( $addon ) ) {
+			$requirements = apply_filters( 'everest_forms_field_addon_requirements', array() );
+			$addon        = isset( $requirements[ $type ] ) ? $requirements[ $type ] : '';
+		}
+
 		$licensed = false !== evf_get_license_plan();
 		$trigger  = ( $licensed && ! empty( $addon ) ) ? 'evf-upgrade-addon' : 'upgrade-modal';
 
