@@ -472,6 +472,10 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 		$is_locked = evf_is_field_locked( $field['type'] );
 		if ( $is_locked ) {
 			$css .= ' everest-forms-field-locked';
+			$lock_data = $this->get_locked_field_trigger( $field['type'] );
+			if ( 'evf-upgrade-addon' === $lock_data['trigger'] ) {
+				$css .= ' everest-forms-field-locked-addon';
+			}
 		}
 		$css  = apply_filters( 'everest_forms_field_preview_class', $css, $field );
 		printf( '<div class="everest-forms-field everest-forms-field-%1$s %2$s" id="everest-forms-field-%3$s" data-field-id="%3$s" data-field-type="%4$s">', esc_attr( $field['type'] ), esc_attr( $css ), esc_attr( $field['id'] ), esc_attr( $field['type'] ) );

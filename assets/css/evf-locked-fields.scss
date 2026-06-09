@@ -42,6 +42,23 @@
 	background-size: contain;
 }
 
+/* Addon fields: replace crown image with a blue "ADD-ON" text pill. */
+.everest-forms-field.everest-forms-field-locked-addon .label-title::after,
+.everest-forms-field.everest-forms-field-locked-addon .evf-locked-field-label::after {
+	content: "ADD-ON";
+	width: auto;
+	height: auto;
+	background: #3b82f6;
+	background-image: none;
+	color: #fff;
+	font-size: 9px;
+	font-weight: 700;
+	letter-spacing: 0.05em;
+	padding: 2px 5px;
+	border-radius: 3px;
+	vertical-align: 2px;
+}
+
 /* Synthesized preview card (fallback for fields whose real preview needs Pro code). */
 .evf-locked-field-label {
 	display: block;
@@ -149,6 +166,11 @@
 			height: 13px;
 			font-size: 13px;
 		}
+	}
+
+	/* Addon fields use blue instead of the orange PRO accent. */
+	&.evf-upgrade-addon .evf-locked-banner-tag {
+		background: #3b82f6;
 	}
 
 	.evf-locked-banner-text {

@@ -3344,7 +3344,9 @@ p.search-box {
 							background: #fafbfc;
 							border-color: #e3e6ea;
 							color: #ccd1d6;
+						}
 
+						&.upgrade-modal {
 							&::before {
 								content: '';
 								background-image: url(../images/icons/everest-form-pro-icon.png);
@@ -3357,6 +3359,35 @@ p.search-box {
 								height: 16px;
 								top: 7px;
 								right: 7px;
+							}
+						}
+
+						&.evf-upgrade-addon {
+							&::before {
+								content: '';
+								background: #3b82f6;
+								background-image: none;
+								position: absolute;
+								border-radius: 3px;
+								width: 16px;
+								height: 16px;
+								top: 7px;
+								right: 7px;
+							}
+
+							&::after {
+								content: '+';
+								position: absolute;
+								top: 7px;
+								right: 7px;
+								width: 16px;
+								height: 16px;
+								color: #fff;
+								font-size: 14px;
+								font-weight: 700;
+								line-height: 16px;
+								text-align: center;
+								pointer-events: none;
 							}
 						}
 
