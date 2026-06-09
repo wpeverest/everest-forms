@@ -107,15 +107,19 @@ const SkeletonField: React.FC<{ delay?: string }> = ({ delay = '0s' }) => (
 const PageShell: React.FC<{ onBack: () => void; backLabel?: string; headerRight?: React.ReactNode; children: React.ReactNode }> = ({
 	onBack, backLabel, headerRight, children,
 }) => {
-	// #wpbody-content has padding-bottom: 42px which makes the body scrollable and
-	// shows a second scrollbar alongside the intentional inner one. Suppress it.
-	useEffect(() => {
-		const prev = document.body.style.overflow;
-		document.body.style.overflow = 'hidden';
-		return () => { document.body.style.overflow = prev; };
-	}, []);
 	return (
-	<Flex direction="column" height="100vh" overflow="hidden" bg="#f6f6f8">
+	// position:fixed anchored below the WP admin bar so the header is never
+	// clipped. overflowY:auto lets the page scroll when content is taller
+	// than the viewport (e.g. idle state with many inspiration cards).
+	<Flex
+		position="fixed"
+		top="var(--wp-admin--admin-bar--height, 32px)"
+		left="0" right="0" bottom="0"
+		zIndex={9999}
+		direction="column"
+		overflowY="auto"
+		bg="#f6f6f8"
+	>
 		{/* Purple accent line */}
 		<Box h="4px" bg="#7545BB" flexShrink={0} />
 		{/* Header */}
@@ -1027,10 +1031,10 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 		);
 	}
 
-	// ── Idle state — pixel-perfect match to reference, no scroll ─────────────
+	// ── Idle state ───────────────────────────────────────────────────────────
 	return (
 		<PageShell onBack={onBack}>
-			{/* Main content — vertically centered, no scroll */}
+			{/* Main content — vertically centered, scrollable */}
 			<Flex
 				flex="1"
 				direction="column"
@@ -1038,7 +1042,6 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 				justify="center"
 				px="24px"
 				py="16px"
-				overflow="hidden"
 			>
 				<Box width="100%" maxW="896px">
 
