@@ -622,20 +622,15 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 
 	// ── Generated state ───────────────────────────────────────────────────────
 	if (genState === 'generated') {
-		// Track last two non-loading assistant message indices.
+		// Last assistant message (for Redo spinner) and last *successful* one (for the button).
 		let lastAssistantIdx = -1;
-		let prevAssistantIdx = -1;
+		let useThisFormIdx = -1;
 		messages.forEach((m, i) => {
 			if (m.role === 'assistant' && !m.loading) {
-				prevAssistantIdx = lastAssistantIdx;
 				lastAssistantIdx = i;
+				if (!m.error) useThisFormIdx = i;
 			}
 		});
-		// If the latest assistant message is an error, show "Use This Form" on the
-		// previous successful message instead so it stays reachable.
-		const useThisFormIdx = (lastAssistantIdx >= 0 && messages[lastAssistantIdx]?.error)
-			? prevAssistantIdx
-			: lastAssistantIdx;
 		return (
 			<PageShell
 			onBack={() => setGenState('idle')}
