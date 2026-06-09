@@ -17,6 +17,11 @@ jQuery( function( $ ) {
 				this.evf_upgrade_addon,
 			);
 			$(document.body).on(
+				'click',
+				'#evf-row-field-popover .evf-popover-field-item.evf-field-upgrade',
+				this.popover_field_upgrade,
+			);
+			$(document.body).on(
 				'click dragstart',
 				'.evf-registered-item.enable-stripe-model',
 				this.enable_stripe_model,
@@ -273,8 +278,20 @@ jQuery( function( $ ) {
 				$(this).data('feature') ? $(this).data('feature') : $(this).text(),
 			);
 		},
+		popover_field_upgrade: function () {
+			var fieldType = $(this).data('field-type'),
+				$sidebarBtn = $(
+					'.evf-registered-item[data-field-type="' + fieldType + '"]',
+				);
+			if ($sidebarBtn.length) {
+				$sidebarBtn.trigger('click');
+			}
+		},
 		field_upgrade: function (e) {
 			e.preventDefault();
+			if (evf_data && evf_data.is_pro) {
+				return;
+			}
 			evf_upgrade_actions.upgrade_modal(
 				$(this).data('feature')
 					? $(this).data('feature')

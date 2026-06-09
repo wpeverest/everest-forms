@@ -1,4 +1,4 @@
-/* global evf_data, jconfirm, PerfectScrollbar, evfSetClipboard, evfClearClipboard */
+﻿/* global evf_data, jconfirm, PerfectScrollbar, evfSetClipboard, evfClearClipboard */
 (function ($, evf_data) {
 	var $builder;
 
@@ -2636,6 +2636,7 @@
 				e.preventDefault();
 			});
 
+
 			$('.evf-setting-panel').eq(0).trigger('click');
 		},
 		bindFormEmail: function () {
@@ -2710,6 +2711,11 @@
 					return;
 				}
 
+				if ($(this).hasClass('evf-addon-install-trigger')) {
+					e.preventDefault();
+					return;
+				}
+
 				var data_setting_section = $(this).attr('data-section');
 				$('.evf-integrations-panel').removeClass('active');
 				$('#everest-forms-panel-integrations')
@@ -2733,7 +2739,6 @@
 				);
 				e.preventDefault();
 			});
-
 			$('.evf-setting-panel').eq(0).trigger('click');
 		},
 		bindFormPayment: function () {
@@ -4390,7 +4395,21 @@
 				.removeClass('active');
 			$panel.addClass('active');
 
-			if ('integrations' === panel || 'payments' === panel) {
+			if ('integrations' === panel) {
+				var $firstConnected = $panel
+					.find('.everest-forms-panel-sidebar a')
+					.not('.evf-addon-install-trigger')
+					.not('.upgrade-addons-settings')
+					.first();
+				if ($firstConnected.length) {
+					$firstConnected.trigger('click');
+				} else {
+					$panel
+						.find('.everest-forms-panel-sidebar a')
+						.first()
+						.addClass('active');
+				}
+			} else if ('payments' === panel) {
 				if (!$panel.find('.everest-forms-panel-sidebar a').hasClass('active')) {
 					$panel
 						.find('.everest-forms-panel-sidebar a')
@@ -4994,9 +5013,18 @@
 							iconHtml = $btn.find('i').length
 								? $btn.find('i').prop('outerHTML')
 								: '',
-							isBlocked = blocked.some(function (cls) {
-								return $btn.hasClass(cls);
-							});
+							blockedClass = (function () {
+								for (var i = 0; i < blocked.length; i++) {
+									if ($btn.hasClass(blocked[i])) {
+										return blocked[i];
+									}
+								}
+								return '';
+							}()),
+							isBlocked = blockedClass !== '',
+							isProLocked =
+								$btn.hasClass('upgrade-modal') ||
+								$btn.hasClass('evf-upgrade-addon');
 
 						// Skip items with no field type or no label — avoids blank popover entries.
 						if (!fieldType || !fieldLabel) {
@@ -5007,11 +5035,13 @@
 							$(
 								'<div class="evf-popover-field-item' +
 								(isBlocked ? ' evf-field-blocked' : '') +
+								(isProLocked ? ' evf-field-upgrade' : '') +
 								'"></div>',
 							)
 								.attr('data-field-type', fieldType)
 								.attr('data-field-label', fieldLabel)
 								.attr('data-field-group', groupKey || '')
+								.attr('data-blocked-class', blockedClass || null)
 								.append(
 									'<span class="evf-popover-field-icon">' +
 									iconHtml +
@@ -5031,6 +5061,19 @@
 		 * Bind the row-level "+" button and its field-picker popover.
 		 */
 		bindRowFieldPopover: function () {
+			var proIconUrl = ( function () {
+				var locked = document.querySelector(
+					'.evf-registered-item.upgrade-modal',
+				);
+				if ( ! locked ) {
+					return '';
+				}
+				return window
+					.getComputedStyle( locked, '::before' )
+					.backgroundImage.replace( /^url\(["']?/, '' )
+					.replace( /["']?\)$/, '' );
+			}() );
+
 			if (!$('#evf-row-popover-style').length) {
 				$('head').append(
 					'<style id="evf-row-popover-style">' +
@@ -5078,6 +5121,9 @@
 					'.evf-popover-field-item .evf-popover-field-icon i{font-size:18px}' +
 					'.evf-popover-field-item .evf-popover-field-icon svg{width:24px;height:24px;display:block}' +
 					'.evf-popover-field-item.evf-field-blocked{opacity:.45;cursor:default;pointer-events:none}' +
+					'.evf-popover-field-item.evf-field-upgrade{opacity:.55;cursor:pointer;pointer-events:auto;position:relative}' +
+					'.evf-popover-field-item.evf-field-upgrade:hover{opacity:1;border-color:#e6a817;background:#fffdf5}' +
+					( proIconUrl ? '.evf-popover-field-item.evf-field-upgrade::before{content:"";background-image:url("' + proIconUrl + '");background-repeat:no-repeat;background-position:center;background-size:100%;position:absolute;width:14px;height:14px;top:4px;right:4px}' : '' ) +
 					'.evf-popover-no-results{grid-column:1/-1;text-align:center;padding:20px 0;color:#999;font-size:12px}' +
 					'.evf-field-loading-wrap{display:flex;align-items:center;justify-content:center;gap:8px;padding:12px}' +
 					'.evf-field-loading-wrap .spinner{float:none;margin:0}' +
