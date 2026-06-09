@@ -343,6 +343,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 * Fix         - Updated tooltips.
 * Fix 		  - Form fields icon mis match.
 * Fix 		  - Design issue on integration tab.
+* Fix 		  - Design issue for radio buttons in Survey polls Quiz settings.
 * Added 	  - Upsell on the payments inside the global settings.
 * Added 	  - Showcase conditional logic as a pro feature in field settings panel.
 
