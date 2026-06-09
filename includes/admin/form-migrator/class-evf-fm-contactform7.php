@@ -124,6 +124,21 @@ class EVF_Fm_Contactform7 extends EVF_Admin_Form_Migrator {
 			}
 		}
 
+		// Second pass: label on a separate line immediately before the field tag.
+		preg_match( '/<label[^>]*>(.*?)<\/label>\s*\n\s*\[' . preg_quote( $type ) . '[* ]+' . preg_quote( $name ) . '/s', $form, $sep_match );
+		if ( ! empty( $sep_match[1] ) ) {
+			return sanitize_text_field( trim( strip_tags( $sep_match[1] ) ) );
+		}
+
+		// Third pass: inline text before the field tag on the same line (e.g. <li>Label [type name]</li>).
+		preg_match( '/([^<>\[\]\n\r]+?)\s+\[' . preg_quote( $type ) . '[* ]+' . preg_quote( $name ) . '[\s\]]/s', $form, $inline_match );
+		if ( ! empty( $inline_match[1] ) ) {
+			$inline_label = sanitize_text_field( trim( strip_tags( $inline_match[1] ) ) );
+			if ( ! empty( $inline_label ) ) {
+				return $inline_label;
+			}
+		}
+
 		$label = sprintf( /* translators: %1$s - field type, %2$s - field name if available. */
 			esc_html__( '%1$s Field %2$s', 'everest-forms' ),
 			ucfirst( $type ),
@@ -450,7 +465,7 @@ class EVF_Fm_Contactform7 extends EVF_Admin_Form_Migrator {
 			$cf7_fields         = $cf7_form->scan_form_tags();
 			$cf7_properties     = $cf7_form->get_properties();
 			$cf7_recaptcha      = false;
-			$fields_pro_plan    = array( 'tel', 'file', 'acceptance', 'quiz' );
+			$fields_pro_plan    = array( 'quiz' );
 			$fields_pro_omit    = array();
 			$fields_unsupported = array();
 			$upgrade_plan       = array();
