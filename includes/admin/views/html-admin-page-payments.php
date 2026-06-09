@@ -47,8 +47,8 @@ $premium_url = plugins_url( 'assets/images/evf-premium-icon.png', EVF_PLUGIN_FIL
 		</div>
 
 		<a href="<?php echo esc_url( $upgrade_url ); ?>" class="evf-payments-upsell-btn" target="_blank" rel="noopener noreferrer">
-			<img src="<?php echo esc_url( $premium_url ); ?>" alt="" width="18" height="18" aria-hidden="true">
 			<?php esc_html_e( 'Upgrade to Pro', 'everest-forms' ); ?>
+			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14" width="14" height="14" aria-hidden="true" focusable="false"><path fill="#efefef" d="m7 1.167 3.5 9.333h-7z"></path><path fill="#fff" fill-rule="evenodd" d="M12 12.834H2v-1.667h10zm0-2.334H2l-.833-7L7 8.312 12.833 3.5z" clip-rule="evenodd"></path></svg>
 		</a>
 
 	</div>

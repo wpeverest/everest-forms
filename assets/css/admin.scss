@@ -13840,7 +13840,7 @@ button#show-settings-link {
 // Payments upsell — standalone admin page wrapper.
 .evf-payments-page-wrap {
 	min-height: calc(100vh - 80px);
-	background: #f0f0f1;
+	padding: 24px;
 
 	.evf-payments-upsell-card {
 		background: #fff;
@@ -13848,6 +13848,8 @@ button#show-settings-link {
 		padding: 60px 48px;
 		box-sizing: border-box;
 		text-align: center;
+		border-radius: 12px;
+		border: 1px solid #e1e1e1;
 
 		.evf-payments-icon-wrap {
 			display: flex;
@@ -13856,22 +13858,23 @@ button#show-settings-link {
 
 			img {
 				display: block;
-				width: 80px;
-				height: 80px;
+				width: 75px;
+				height: 75px;
 				object-fit: contain;
+				border-radius: 6px;
 			}
 		}
 
 		h3 {
-			margin: 0 0 12px;
-			font-size: 20px;
+			margin: 0 0 8px;
+			font-size: 22px;
 			font-weight: 700;
 			color: #1a1a1a;
 			line-height: 1.3;
 		}
 
 		.evf-payments-desc {
-			margin: 0 auto 20px;
+			margin: 0 auto 18px;
 			font-size: 14px;
 			line-height: 1.7;
 			color: #6b6b6b;
@@ -13884,21 +13887,20 @@ button#show-settings-link {
 			justify-content: center;
 			flex-wrap: wrap;
 			gap: 8px;
-			margin-bottom: 28px;
+			margin-bottom: 40px;
 		}
 
 		.evf-payments-gateway-badge {
 			display: inline-flex;
 			align-items: center;
 			gap: 6px;
-			padding: 6px 14px;
-			border: 1.5px solid #e5e7eb;
+			padding: 4px 14px;
+			border: 1px solid #e5e7eb;
 			border-radius: 100px;
-			font-size: 13px;
+			font-size: 12px;
 			font-weight: 500;
 			color: #374151;
-			background: #fff;
-			line-height: 1;
+			background: #f5f5f5;
 
 			.evf-payments-gateway-icon {
 				display: block;
@@ -13910,7 +13912,8 @@ button#show-settings-link {
 
 			&.evf-payments-gateway-badge--more {
 				color: #6b7280;
-				border-color: #d1d5db;
+				border-color: #e5e7eb;
+				line-height: 1.5;
 			}
 		}
 
@@ -13918,19 +13921,23 @@ button#show-settings-link {
 			display: inline-flex;
 			align-items: center;
 			gap: 8px;
-			padding: 12px 28px;
+			padding: 12px 24px;
 			background: #7545bb;
 			color: #fff;
-			font-size: 15px;
+			font-size: 14px;
 			font-weight: 600;
 			line-height: 1.2;
-			border-radius: 6px;
+			border-radius: 4px;
 			text-decoration: none;
 			transition: background 0.2s ease;
 
 			&:hover {
-				background: #5317aa;
+				background: #9159e3;
 				color: #fff;
+			}
+			&:focus {
+				box-shadow: none !important;
+				outline: none !important;
 			}
 		}
 	}
@@ -14054,4 +14061,8 @@ button#show-settings-link {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
+}
+
+.evf-payments-upsell-btn svg {
+	margin-top: -3px;
 }
