@@ -340,6 +340,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 == Changelog ==
 
 = 3.4.9       - 09-06-2026
+* Fix         - Updated tooltips.
 * Fix 		  - Form fields icon mis match.
 * Fix 		  - Design issue on integration tab.
 * Added 	  - Upsell on the payments inside the global settings.
