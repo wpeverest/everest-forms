@@ -117,17 +117,18 @@ class EVF_Fm_Contactform7 extends EVF_Admin_Form_Migrator {
 		foreach ( $matches[1] as $match ) {
 			$match = trim( str_replace( "\n", '', $match ) );
 
-			preg_match( '/\[(?:' . preg_quote( $type ) . ') ' . $name . '(?:[ ](.*?))?(?:[\r\n\t ](\/))?\]/', $match, $input_match );
+			preg_match( '/\[(?:' . preg_quote( $type ) . ')\*? ' . $name . '(?:[ ](.*?))?(?:[\r\n\t ](\/))?\]/', $match, $input_match );
 
 			if ( ! empty( $input_match[0] ) ) {
 				return strip_shortcodes( sanitize_text_field( str_replace( $input_match[0], '', $match ) ) );
 			}
 		}
 
-		// Second pass: label on a separate line immediately before the field tag.
-		preg_match( '/<label[^>]*>(.*?)<\/label>\s*\n\s*\[' . preg_quote( $type ) . '[* ]+' . preg_quote( $name ) . '/s', $form, $sep_match );
+		// Second pass: plain-text <label> on a separate line immediately before the field tag.
+		// [^<\[] ensures the label contains no HTML tags and no shortcodes (pure text labels only).
+		preg_match( '/<label[^>]*>([^<\[]*)<\/label>\s*\n\s*\[' . preg_quote( $type ) . '[* ]+' . preg_quote( $name ) . '/', $form, $sep_match );
 		if ( ! empty( $sep_match[1] ) ) {
-			return sanitize_text_field( trim( strip_tags( $sep_match[1] ) ) );
+			return sanitize_text_field( trim( $sep_match[1] ) );
 		}
 
 		// Third pass: inline text before the field tag on the same line (e.g. <li>Label [type name]</li>).
@@ -136,6 +137,16 @@ class EVF_Fm_Contactform7 extends EVF_Admin_Form_Migrator {
 			$inline_label = sanitize_text_field( trim( strip_tags( $inline_match[1] ) ) );
 			if ( ! empty( $inline_label ) ) {
 				return $inline_label;
+			}
+		}
+
+		// Fourth pass: text before the shortcode in the same HTML block, ignoring tags between them.
+		// Example: <p>Phone *<br /> [select* phone "iPhone"]</p> → "Phone"
+		preg_match( '/(?:^|>)\s*([^<\[\n\r]+?)\s*(?:<[^>]*>\s*)*\[' . preg_quote( $type ) . '[* ]+' . preg_quote( $name ) . '[\s\]]/', $form, $block_match );
+		if ( ! empty( $block_match[1] ) ) {
+			$block_label = sanitize_text_field( trim( preg_replace( '/\s*\*\s*$/', '', trim( $block_match[1] ) ) ) );
+			if ( ! empty( $block_label ) ) {
+				return $block_label;
 			}
 		}
 
@@ -499,7 +510,7 @@ class EVF_Fm_Contactform7 extends EVF_Admin_Form_Migrator {
 				}
 
 				// Try to determine field label to use.
-				$label = $this->get_field_label( $cf7_properties['form'], $cf7_field->type, $cf7_field->name );
+				$label = $this->get_field_label( $cf7_properties['form'], $cf7_field->basetype, $cf7_field->name );
 
 				// Next, check if field is unsupported. If supported make note and
 				// then continue to the next field.
