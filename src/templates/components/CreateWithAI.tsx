@@ -108,21 +108,19 @@ const PageShell: React.FC<{ onBack: () => void; backLabel?: string; headerRight?
 	onBack, backLabel, headerRight, children,
 }) => {
 	return (
-	// position:fixed anchored below the WP admin bar so the header is never
-	// clipped. overflowY:auto lets the page scroll when content is taller
-	// than the viewport (e.g. idle state with many inspiration cards).
+	// Full-viewport overlay (z-index above WP admin bar). Header stays pinned;
+	// only the content area below it scrolls via the inner Box.
 	<Flex
 		position="fixed"
-		top="var(--wp-admin--admin-bar--height, 32px)"
-		left="0" right="0" bottom="0"
-		zIndex={9999}
+		top="0" left="0" right="0" bottom="0"
+		zIndex={100000}
 		direction="column"
-		overflowY="auto"
+		overflow="hidden"
 		bg="#f6f6f8"
 	>
 		{/* Purple accent line */}
 		<Box h="4px" bg="#7545BB" flexShrink={0} />
-		{/* Header */}
+		{/* Header — always pinned */}
 		<Flex
 			as="header"
 			align="center"
@@ -152,7 +150,10 @@ const PageShell: React.FC<{ onBack: () => void; backLabel?: string; headerRight?
 			</HStack>
 			{headerRight}
 		</Flex>
-		{children}
+		{/* Content — scrollable only when it genuinely overflows */}
+		<Box flex={1} overflowY="auto" display="flex" flexDirection="column">
+			{children}
+		</Box>
 	</Flex>
 	);
 };
