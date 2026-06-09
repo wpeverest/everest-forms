@@ -61,7 +61,7 @@ class EVF_Settings_Email extends EVF_Settings_Page {
 				),
 				array(
 					'title'    => esc_html__( 'Enable copies', 'everest-forms' ),
-					'desc'     => esc_html__( 'Email addresses for Cc and Bcc can be applied from the form notification settings.', 'everest-forms' ),
+					'desc'     => esc_html__( ' Enable this option to send email copies to additional recipients using CC (visible) or BCC (hidden).', 'everest-forms' ),
 					'id'       => 'everest_forms_enable_email_copies',
 					'default'  => 'no',
 					'type'     => 'toggle',
