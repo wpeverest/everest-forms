@@ -107,15 +107,19 @@ const SkeletonField: React.FC<{ delay?: string }> = ({ delay = '0s' }) => (
 const PageShell: React.FC<{ onBack: () => void; backLabel?: string; headerRight?: React.ReactNode; children: React.ReactNode }> = ({
 	onBack, backLabel, headerRight, children,
 }) => {
-	// #wpbody-content has padding-bottom: 42px which makes the body scrollable and
-	// shows a second scrollbar alongside the intentional inner one. Suppress it.
-	useEffect(() => {
-		const prev = document.body.style.overflow;
-		document.body.style.overflow = 'hidden';
-		return () => { document.body.style.overflow = prev; };
-	}, []);
 	return (
-	<Flex direction="column" height="100vh" overflow="hidden" bg="#f6f6f8">
+	// position: fixed so we sit below the WP admin bar (which is ~32px and uses
+	// --wp-admin--admin-bar--height). height: 100vh would start at 0 and clip
+	// the header behind the admin bar — fixed + top/bottom avoids that entirely.
+	<Flex
+		position="fixed"
+		top="var(--wp-admin--admin-bar--height, 32px)"
+		left="0" right="0" bottom="0"
+		zIndex={9999}
+		direction="column"
+		overflow="hidden"
+		bg="#f6f6f8"
+	>
 		{/* Purple accent line */}
 		<Box h="4px" bg="#7545BB" flexShrink={0} />
 		{/* Header */}
