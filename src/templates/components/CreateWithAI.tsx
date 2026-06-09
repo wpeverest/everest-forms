@@ -638,18 +638,18 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 					h="32px"
 					px="14px"
 					borderRadius="8px"
-					border="1px solid #7545BB"
-					bg="transparent"
-					color="#7545BB"
+					border="none"
+					bg={isCreatingForm ? '#9660db' : '#7545BB'}
+					color="white"
 					fontSize="13px"
-					fontWeight="500"
+					fontWeight="600"
 					cursor={isCreatingForm ? 'not-allowed' : 'pointer'}
-					opacity={isCreatingForm ? 0.7 : 1}
+					opacity={isCreatingForm ? 0.85 : 1}
 					onClick={handleUseThisForm}
-					_hover={{ bg: isCreatingForm ? 'transparent' : 'rgba(117,69,187,0.06)' }}
+					_hover={{ bg: isCreatingForm ? '#9660db' : '#6a3daa' }}
 					transition="background 0.2s, opacity 0.2s"
 				>
-					{isCreatingForm && <Spinner size="xs" color="#7545BB" thickness="2px" speed="0.65s" />}
+					{isCreatingForm && <Spinner size="xs" color="white" thickness="2px" speed="0.65s" />}
 					{isCreatingForm ? __('Creating…', 'everest-forms') : __('Use This Form', 'everest-forms')}
 				</Box>
 			}
