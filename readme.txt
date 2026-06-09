@@ -341,6 +341,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 = 3.4.9       - 09-06-2026
 * Fix 		  - Design issue on integration tab.
+* Added 	  - Upsell on the payments inside the global settings.
 
 = 3.4.8       - 27-05-2026
 * Fix 		  - Missing capability check on test email.
