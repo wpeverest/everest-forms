@@ -19,7 +19,7 @@ class EVF_Field_Credit_Card extends EVF_Form_Fields {
 	public function __construct() {
 		$this->name   = esc_html__( 'Credit Card', 'everest-forms' );
 		$this->type   = 'credit-card';
-		$this->icon   = 'evf-icon evf-icon-payment';
+		$this->icon   = 'evf-icon evf-icon-credit-card';
 		$this->order  = 50;
 		$this->group  = 'payment';
 		$this->is_pro = true;
