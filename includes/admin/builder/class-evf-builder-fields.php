@@ -224,6 +224,14 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 			foreach ( $fields as $field ) {
 				$is_locked = evf_is_field_locked( $field['type'] );
 
+				// Also treat fields whose required addon is inactive as locked — even
+				// when EVF Pro is active (which removes is_pro, bypassing the normal
+				// lock check). Without this, e.g. credit-card with Stripe absent
+				// renders a completely empty options panel with no CTA.
+				if ( ! $is_locked ) {
+					$is_locked = ! empty( evf_field_inactive_addon( $field['type'] ) );
+				}
+
 				$field_option_class = apply_filters(
 					'everest_forms_builder_field_option_class',
 					array(
@@ -470,8 +478,16 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 		$css .= ! empty( $field['input_columns'] ) && '3' === $field['input_columns'] ? ' everest-forms-list-3-columns' : '';
 		$css .= ! empty( $field['input_columns'] ) && 'inline' === $field['input_columns'] ? ' everest-forms-list-inline' : '';
 		$is_locked = evf_is_field_locked( $field['type'] );
+
+		// Catch fields whose required addon is inactive even when not plan-locked
+		// (e.g. EVF Pro registers credit-card without is_pro, removing it from the
+		// normal lock check, but the Stripe addon may still be absent).
+		if ( ! $is_locked ) {
+			$is_locked = ! empty( evf_field_inactive_addon( $field['type'] ) );
+		}
+
 		if ( $is_locked ) {
-			$css .= ' everest-forms-field-locked';
+			$css      .= ' everest-forms-field-locked';
 			$lock_data = $this->get_locked_field_trigger( $field['type'] );
 			if ( 'evf-upgrade-addon' === $lock_data['trigger'] ) {
 				$css .= ' everest-forms-field-locked-addon';
@@ -670,13 +686,45 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 	 *     @type string $attr    Pre-escaped HTML data attributes.
 	 * }
 	 */
+	/**
+	 * Find and return the registered field object for a given type slug, or null.
+	 *
+	 * @param string $type Field type slug.
+	 * @return object|null
+	 */
+	protected function get_field_object( $type ) {
+		foreach ( evf()->form_fields->form_fields() as $group ) {
+			foreach ( $group as $field_obj ) {
+				if ( $field_obj->type === $type ) {
+					return $field_obj;
+				}
+			}
+		}
+		return null;
+	}
+
 	protected function get_locked_field_trigger( $type ) {
-		$meta     = evf()->form_fields->get_pro_fields_meta();
-		$info     = isset( $meta[ $type ] ) ? $meta[ $type ] : array();
-		$addon    = isset( $info['addon'] ) ? $info['addon'] : '';
-		$plan     = isset( $info['plan'] ) ? $info['plan'] : '';
-		$links    = isset( $info['links'] ) ? $info['links'] : array();
-		$name     = isset( $info['name'] ) ? $info['name'] : $type;
+		$meta  = evf()->form_fields->get_pro_fields_meta();
+		$info  = isset( $meta[ $type ] ) ? $meta[ $type ] : array();
+		$addon = isset( $info['addon'] ) ? $info['addon'] : '';
+		$plan  = isset( $info['plan'] ) ? $info['plan'] : '';
+		$links = isset( $info['links'] ) ? $info['links'] : array();
+		$name  = isset( $info['name'] ) ? $info['name'] : $type;
+
+		// get_pro_fields_meta() only covers fields with is_pro = true. When EVF Pro
+		// registers the full field class (removing is_pro), the entry is absent.
+		// Fall back to the live field object so addon/name/plan are still resolved.
+		if ( empty( $addon ) ) {
+			$obj   = $this->get_field_object( $type );
+			$addon = $obj && isset( $obj->addon ) ? $obj->addon : '';
+			if ( ( empty( $name ) || $name === $type ) && $obj && isset( $obj->name ) ) {
+				$name = $obj->name;
+			}
+			if ( empty( $plan ) && $obj && isset( $obj->plan ) ) {
+				$plan = $obj->plan;
+			}
+		}
+
 		$licensed = false !== evf_get_license_plan();
 		$trigger  = ( $licensed && ! empty( $addon ) ) ? 'evf-upgrade-addon' : 'upgrade-modal';
 

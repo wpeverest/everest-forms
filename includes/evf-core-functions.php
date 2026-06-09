@@ -4144,6 +4144,38 @@ function evf_is_field_locked($type)
 }
 
 /**
+ * Return the addon slug required by a field if that addon is currently inactive.
+ *
+ * This covers a gap that evf_is_field_locked() cannot: when EVF Pro is active it
+ * registers the full field class (without is_pro), so the field is no longer
+ * plan-locked — but the specific addon the field depends on (e.g. Stripe for the
+ * credit-card field) may not be installed. In that case the builder preview renders
+ * blank, giving the user no feedback. This function detects that state so the
+ * builder can show the ADD-ON badge and a proper "Activate add-on" CTA.
+ *
+ * @since 3.4.6
+ *
+ * @param string $type Field type slug (e.g. 'credit-card').
+ * @return string Addon slug (e.g. 'everest-forms-stripe') when the field needs an
+ *               inactive addon, or empty string when no addon is required / addon
+ *               is already active.
+ */
+function evf_field_inactive_addon( $type ) {
+	foreach ( evf()->form_fields->form_fields() as $group ) {
+		foreach ( $group as $field_obj ) {
+			if ( $field_obj->type === $type ) {
+				if ( empty( $field_obj->addon ) ) {
+					return '';
+				}
+				$plugin_file = $field_obj->addon . '/' . $field_obj->addon . '.php';
+				return is_plugin_active( $plugin_file ) ? '' : $field_obj->addon;
+			}
+		}
+	}
+	return '';
+}
+
+/**
  * Get all fields settings.
  *
  * @return array Settings data.
