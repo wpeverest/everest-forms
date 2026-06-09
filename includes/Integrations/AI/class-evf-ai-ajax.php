@@ -59,6 +59,7 @@ class EVF_AI_Ajax {
 			array(
 				'preview' => $preview,
 				'options' => $options,
+				'title'   => get_the_title( $form_id ),
 			)
 		);
 	}
