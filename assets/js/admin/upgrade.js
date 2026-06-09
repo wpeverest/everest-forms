@@ -312,9 +312,19 @@ jQuery( function( $ ) {
 		},
 		evf_upgrade_addon: function (e) {
 			e.preventDefault();
-			var fieldType = $(this).data('field-type'),
-				fieldPlan = $(this).data('field-plan'),
-				addonSlug = $(this).data('addon-slug');
+
+			var $el = $(this);
+
+			// Guard against double-clicks: ignore if a request is already in flight.
+			if ($el.data('evf-addon-ajax')) {
+				return;
+			}
+			$el.data('evf-addon-ajax', true);
+
+			var fieldType = $el.data('field-type'),
+				fieldPlan = $el.data('field-plan'),
+				addonSlug = $el.data('addon-slug');
+
 			$.ajax({
 				type: 'POST',
 				url: evf_upgrade.ajax_url,
@@ -324,6 +334,9 @@ jQuery( function( $ ) {
 					field_type: fieldType,
 					addon_slug: addonSlug,
 					security: evf_upgrade.evf_install_and_active_nonce,
+				},
+				complete: function () {
+					$el.removeData('evf-addon-ajax');
 				},
 				success: function (res) {
 					if (res.success === true) {
@@ -345,8 +358,15 @@ jQuery( function( $ ) {
 						});
 					}
 					if (res.success === false) {
+						// res.data.addon may be absent when the server throws before
+						// reaching the addon lookup (e.g. empty field_plan). Fall back
+						// to the addon slug so the modal still has a meaningful title.
+						var addonName =
+							res.data && res.data.addon && res.data.addon.name
+								? res.data.addon.name
+								: addonSlug;
 						$.alert({
-							title: res.data.addon.name + ' ' + evf_upgrade.upgrade_plan_title,
+							title: addonName + ' ' + evf_upgrade.upgrade_plan_title,
 							theme: 'jconfirm-modern jconfirm-everest-forms',
 							icon: 'dashicons dashicons-lock',
 							backgroundDismiss: false,
