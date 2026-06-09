@@ -1,4 +1,4 @@
-import {
+﻿import {
 	Box,
 	Flex,
 	HStack,
@@ -104,8 +104,8 @@ const SkeletonField: React.FC<{ delay?: string }> = ({ delay = '0s' }) => (
 
 // ── Shared page shell ─────────────────────────────────────────────────────────
 
-const PageShell: React.FC<{ onBack: () => void; backLabel?: string; children: React.ReactNode }> = ({
-	onBack, backLabel, children,
+const PageShell: React.FC<{ onBack: () => void; backLabel?: string; headerRight?: React.ReactNode; children: React.ReactNode }> = ({
+	onBack, backLabel, headerRight, children,
 }) => {
 	// #wpbody-content has padding-bottom: 42px which makes the body scrollable and
 	// shows a second scrollbar alongside the intentional inner one. Suppress it.
@@ -146,6 +146,7 @@ const PageShell: React.FC<{ onBack: () => void; backLabel?: string; children: Re
 					{backLabel || __('Create with AI', 'everest-forms')}
 				</Heading>
 			</HStack>
+			{headerRight}
 		</Flex>
 		{children}
 	</Flex>
@@ -625,7 +626,34 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 		let lastAssistantIdx = -1;
 		messages.forEach((m, i) => { if (m.role === 'assistant') lastAssistantIdx = i; });
 		return (
-			<PageShell onBack={() => setGenState('idle')} backLabel={__('New Prompt', 'everest-forms')}>
+			<PageShell
+			onBack={() => setGenState('idle')}
+			backLabel={__('New Prompt', 'everest-forms')}
+			headerRight={
+				<Box
+					as="button"
+					display="inline-flex"
+					alignItems="center"
+					gap="6px"
+					h="32px"
+					px="14px"
+					borderRadius="8px"
+					border="1px solid #7545BB"
+					bg="transparent"
+					color="#7545BB"
+					fontSize="13px"
+					fontWeight="500"
+					cursor={isCreatingForm ? 'not-allowed' : 'pointer'}
+					opacity={isCreatingForm ? 0.7 : 1}
+					onClick={handleUseThisForm}
+					_hover={{ bg: isCreatingForm ? 'transparent' : 'rgba(117,69,187,0.06)' }}
+					transition="background 0.2s, opacity 0.2s"
+				>
+					{isCreatingForm && <Spinner size="xs" color="#7545BB" thickness="2px" speed="0.65s" />}
+					{isCreatingForm ? __('Creating…', 'everest-forms') : __('Use This Form', 'everest-forms')}
+				</Box>
+			}
+		>
 				{/* Hint tooltip */}
 				{hint.show && (
 					<Box
@@ -712,11 +740,11 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 													</HStack>
 												) : (
 													<>
-														<Text fontSize="14px" color={msg.error ? '#c0392b' : '#444'} lineHeight="1.65" margin={isLastAssistant && !msg.error ? '0 0 14px' : '0'}>
+														<Text fontSize="14px" color={msg.error ? '#c0392b' : '#444'} lineHeight="1.65" margin={isLastAssistant ? '0 0 14px' : '0'}>
 															{msg.text}
 														</Text>
 
-														{isLastAssistant && !msg.error && (
+														{isLastAssistant && (
 															<Box
 																as="button"
 																w="100%"
