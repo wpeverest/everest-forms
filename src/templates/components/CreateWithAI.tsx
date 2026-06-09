@@ -622,9 +622,20 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 
 	// ── Generated state ───────────────────────────────────────────────────────
 	if (genState === 'generated') {
-		// Index of the most recent assistant reply (gets the "Use This Form" button).
+		// Track last two non-loading assistant message indices.
 		let lastAssistantIdx = -1;
-		messages.forEach((m, i) => { if (m.role === 'assistant') lastAssistantIdx = i; });
+		let prevAssistantIdx = -1;
+		messages.forEach((m, i) => {
+			if (m.role === 'assistant' && !m.loading) {
+				prevAssistantIdx = lastAssistantIdx;
+				lastAssistantIdx = i;
+			}
+		});
+		// If the latest assistant message is an error, show "Use This Form" on the
+		// previous successful message instead so it stays reachable.
+		const useThisFormIdx = (lastAssistantIdx >= 0 && messages[lastAssistantIdx]?.error)
+			? prevAssistantIdx
+			: lastAssistantIdx;
 		return (
 			<PageShell
 			onBack={() => setGenState('idle')}
@@ -713,6 +724,7 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 									}
 
 									const isLastAssistant = idx === lastAssistantIdx;
+									const isUseThisFormMsg = idx === useThisFormIdx;
 									return (
 										<HStack key={idx} align="flex-start" spacing="10px" mb="16px">
 											<Flex
@@ -740,11 +752,11 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 													</HStack>
 												) : (
 													<>
-														<Text fontSize="14px" color={msg.error ? '#c0392b' : '#444'} lineHeight="1.65" margin={isLastAssistant ? '0 0 14px' : '0'}>
+														<Text fontSize="14px" color={msg.error ? '#c0392b' : '#444'} lineHeight="1.65" margin={isUseThisFormMsg ? '0 0 14px' : '0'}>
 															{msg.text}
 														</Text>
 
-														{isLastAssistant && (
+														{isUseThisFormMsg && (
 															<Box
 																as="button"
 																w="100%"
