@@ -234,7 +234,6 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 	// previewHTMLRef mirrors the previewHTML state for effect-safe reads.
 	const previewHTMLRef = React.useRef('');
 	const previewFetchStartedRef = React.useRef(false);
-	const chatBottomRef = useRef<HTMLDivElement | null>(null);
 
 	// Show only the active part's rows when multi-part tabs are used.
 	// PHP stamps data-part-id="N" (1-based) on each .evf-admin-row.
@@ -277,11 +276,6 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 		setGenState('generated');
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [initialFormId]);
-
-	// Scroll to the bottom of the chat whenever a new message is added.
-	useEffect(() => {
-		chatBottomRef.current?.scrollIntoView({ behavior: 'smooth' });
-	}, [messages]);
 
 	// Publish the AI-generated draft form and open it in the builder.
 	const handleUseThisForm = async () => {
@@ -814,7 +808,6 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 										</HStack>
 									);
 								})}
-								<div ref={chatBottomRef} />
 							</Box>
 
 						{/* Refine input */}
