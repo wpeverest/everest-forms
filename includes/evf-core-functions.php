@@ -4161,6 +4161,18 @@ function evf_is_field_locked($type)
  *               is already active.
  */
 function evf_field_inactive_addon( $type ) {
+	// Pro/addons declare field→addon dependencies here when the field class
+	// itself doesn't register while the addon is absent (e.g. credit-card
+	// requires Stripe, but the class bails in its constructor when Stripe is
+	// inactive, so it never appears in form_fields()).
+	$requirements = apply_filters( 'everest_forms_field_addon_requirements', array() );
+	if ( isset( $requirements[ $type ] ) ) {
+		$addon       = $requirements[ $type ];
+		$plugin_file = $addon . '/' . $addon . '.php';
+		return is_plugin_active( $plugin_file ) ? '' : $addon;
+	}
+
+	// Fallback: field registered itself in the registry with an addon property.
 	foreach ( evf()->form_fields->form_fields() as $group ) {
 		foreach ( $group as $field_obj ) {
 			if ( $field_obj->type === $type ) {
