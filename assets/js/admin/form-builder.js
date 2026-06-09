@@ -1,4 +1,4 @@
-/* global evf_data, jconfirm, PerfectScrollbar, evfSetClipboard, evfClearClipboard */
+﻿/* global evf_data, jconfirm, PerfectScrollbar, evfSetClipboard, evfClearClipboard */
 (function ($, evf_data) {
 	var $builder;
 
@@ -2713,7 +2713,6 @@
 
 				if ($(this).hasClass('evf-addon-install-trigger')) {
 					e.preventDefault();
-					EVFPanelBuilder.openAddonInstallDialog($(this), e);
 					return;
 				}
 
@@ -2740,151 +2739,7 @@
 				);
 				e.preventDefault();
 			});
-
-			$('body').on('click keypress', '.evf-addon-catalog-item', function (e) {
-				if (e.type === 'keypress' && e.which !== 13) {
-					return;
-				}
-				e.preventDefault();
-				EVFPanelBuilder.openAddonInstallDialog($(this), e);
-			});
-
-
-			// If the page was loaded directly on the integrations tab, activate the first connected integration.
-			if ($('#everest-forms-panel-integrations').hasClass('active')) {
-				var $firstConn = $('#everest-forms-panel-integrations')
-					.find('.everest-forms-panel-sidebar a')
-					.not('.evf-addon-install-trigger')
-					.not('.upgrade-addons-settings')
-					.first();
-				if ($firstConn.length) {
-					$firstConn.trigger('click');
-				}
-			}
-
 			$('.evf-setting-panel').eq(0).trigger('click');
-		},
-		openAddonInstallDialog: function ($el, event) {
-			if (typeof wp === 'undefined' || typeof wp.updates === 'undefined') {
-				return;
-			}
-
-			var name      = $el.data('name') || '';
-			var slug      = $el.data('slug') || '';
-			var status    = $el.data('status') || 'not-installed';
-			var addonsUrl = $el.data('addons-url') || '';
-			var strings   = typeof evf_setup_params !== 'undefined' ? evf_setup_params : {};
-
-			if ( ! slug ) {
-				return;
-			}
-
-			var isInactive = status === 'inactive';
-			var title      = isInactive ? 'Addon Activation Required' : 'Addon Installation Required';
-			var message    = isInactive
-				? 'Please activate ' + name + ' addon to use this integration.'
-				: 'Please install ' + name + ' addon to use this integration.';
-			var btnText    = isInactive ? 'Activate' : 'Install Addon';
-
-			$.alert({
-				title:                   title,
-				theme:                   'jconfirm-modern jconfirm-everest-forms',
-				icon:                    'dashicons dashicons-lock',
-				backgroundDismiss:       false,
-				scrollToPreviousElement: false,
-				content:                 message,
-				type:                    'blue',
-				buttons: {
-					confirm: {
-						text:     btnText,
-						btnClass: 'btn-confirm',
-						keys:     ['enter'],
-						action:   function () {
-							EVFPanelBuilder.runAddonInstall( name, slug, addonsUrl, strings );
-						},
-					},
-				},
-			});
-		},
-		runAddonInstall: function ( name, slug, addonsUrl, strings ) {
-			var progressAlert = $.alert({
-				title:                   'Activating...',
-				theme:                   'jconfirm-modern jconfirm-everest-forms',
-				icon:                    'dashicons dashicons-admin-plugins',
-				backgroundDismiss:       false,
-				scrollToPreviousElement: false,
-				content:                 strings.installing_message || 'Please wait while the addon is being activated.',
-				type:                    'blue',
-				buttons:                 false,
-			});
-
-			wp.updates.maybeRequestFilesystemCredentials( {} );
-
-			wp.updates.queue.push({
-				action: 'everest_forms_install_extension',
-				data: {
-					page: pagenow,
-					name: name,
-					slug: slug,
-				},
-			});
-
-			$(document).off('.evf-catalog-install');
-			$(document).on(
-				'wp-plugin-install-success.evf-catalog-install wp-plugin-install-error.evf-catalog-install',
-				function ( event, response ) {
-					if ( response.slug !== slug ) {
-						return;
-					}
-
-					$(document).off('.evf-catalog-install');
-					progressAlert.close();
-
-					var hasError = typeof response.errorMessage !== 'undefined' && response.errorMessage.length > 0;
-
-					if ( hasError ) {
-						var errLink = addonsUrl
-							? ' <a href="' + addonsUrl + '" target="_blank">Visit Addons page</a>'
-							: '';
-						$.alert({
-							title:   strings.download_failed || 'Download Failed',
-							content: response.errorMessage + errLink,
-							icon:    'dashicons dashicons-lock',
-							type:    'red',
-							theme:   'jconfirm-modern jconfirm-everest-forms',
-						});
-					} else {
-						$.confirm({
-							title:                   strings.install_confirmation_title || 'Installation Successful.',
-							theme:                   'jconfirm-modern jconfirm-everest-forms',
-							icon:                    'dashicons dashicons-lock',
-							backgroundDismiss:       false,
-							scrollToPreviousElement: false,
-							content:                 strings.install_confirmation_message || 'Addon installed and activated. Please reload to start using the integration.',
-							type:                    'green',
-							buttons: {
-								confirm: {
-									text:     strings.save_changes_text || 'Save & Reload',
-									btnClass: 'btn-warning',
-									action:   function () {
-										$( '.everest-forms-save-button' ).trigger( 'click' );
-										location.reload();
-									},
-								},
-								cancel: {
-									text:     strings.reload_text || 'Just Reload',
-									btnClass: 'btn-warning',
-									action:   function () {
-										location.reload();
-									},
-								},
-							},
-						});
-					}
-				}
-			);
-
-			wp.updates.queueChecker();
 		},
 		bindFormPayment: function () {
 			$('body').on('click', '.evf-payments-panel', function (e) {
