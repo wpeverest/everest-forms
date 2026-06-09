@@ -74,7 +74,7 @@ class EVF_Addon_Upsell {
 						esc_html__( 'One-time payments and recurring subscriptions', 'everest-forms' ),
 						esc_html__( 'Trusted buyer protection and established security', 'everest-forms' ),
 						esc_html__( 'Multiple subscription plans with trial periods', 'everest-forms' ),
-						esc_html__( 'Conditional logic to offer multiple gateways', 'everest-forms' ),
+						esc_html__( 'Map customer email field for subscription billing', 'everest-forms' ),
 					),
 				),
 
@@ -91,7 +91,7 @@ class EVF_Addon_Upsell {
 						esc_html__( 'One-time charges and recurring subscriptions with trials', 'everest-forms' ),
 						esc_html__( 'SCA compliant for EU payment regulation', 'everest-forms' ),
 						esc_html__( 'Accepts credit cards and iDEAL payments', 'everest-forms' ),
-						esc_html__( 'Conditional logic for multi-gateway checkout', 'everest-forms' ),
+						esc_html__( 'Map form fields to Stripe customer profile', 'everest-forms' ),
 					),
 				),
 
@@ -99,7 +99,7 @@ class EVF_Addon_Upsell {
 					'category'     => 'payments',
 					'label'        => esc_html__( 'Square', 'everest-forms' ),
 					'icon'         => plugins_url( 'assets/extensions-json/sections/images/square-payment.png', EVF_PLUGIN_FILE ),
-					'description'  => esc_html__( 'Accept Square payments inside your forms — no off-site redirect.', 'everest-forms' ),
+					'description'  => esc_html__( 'Accept Square payments directly inside your WordPress forms.', 'everest-forms' ),
 					'active_check' => 'EVF_SQUARE_VERSION',
 					'vedio_id'     => '5ymZV-S0mMs',
 					'upgrade_url'  => 'https://wpeverest.com/wordpress-plugins/everest-forms/pricing/',
@@ -108,7 +108,7 @@ class EVF_Addon_Upsell {
 						esc_html__( 'On-site payments — no off-site redirect', 'everest-forms' ),
 						esc_html__( 'Sandbox and production credentials supported', 'everest-forms' ),
 						esc_html__( 'Test Mode toggle for safe pre-launch testing', 'everest-forms' ),
-						esc_html__( 'Works with any Everest Forms form', 'everest-forms' ),
+						esc_html__( 'Map form fields to Square customer details', 'everest-forms' ),
 					),
 				),
 
@@ -116,7 +116,7 @@ class EVF_Addon_Upsell {
 					'category'     => 'payments',
 					'label'        => esc_html__( 'Authorize.Net', 'everest-forms' ),
 					'icon'         => plugins_url( 'assets/extensions-json/sections/images/authorize-net.png', EVF_PLUGIN_FILE ),
-					'description'  => esc_html__( 'Accept credit cards and recurring payments on-site via Authorize.Net.', 'everest-forms' ),
+					'description'  => esc_html__( 'Accept credit cards and recurring subscriptions via Authorize.Net.', 'everest-forms' ),
 					'active_check' => 'EVF_AUTHORIZE_NET_VERSION',
 					'vedio_id'     => 'a5EcKjwWD1A',
 					'upgrade_url'  => 'https://wpeverest.com/wordpress-plugins/everest-forms/pricing/',
@@ -125,7 +125,7 @@ class EVF_Addon_Upsell {
 						esc_html__( 'On-site card processing — users never leave your site', 'everest-forms' ),
 						esc_html__( 'Recurring billing with customizable plans and schedules', 'everest-forms' ),
 						esc_html__( 'Live and sandbox modes for safe testing', 'everest-forms' ),
-						esc_html__( 'Conditional logic for rule-based payment flows', 'everest-forms' ),
+						esc_html__( 'Map form fields to customer billing details', 'everest-forms' ),
 					),
 				),
 
@@ -156,8 +156,8 @@ class EVF_Addon_Upsell {
 					'upgrade_url'  => 'https://wpeverest.com/wordpress-plugins/everest-forms/pricing/',
 					'docs_url'     => 'https://docs.everestforms.net/docs/mollie/',
 					'features'     => array(
-						esc_html__( 'Accept online payments inside your forms', 'everest-forms' ),
 						esc_html__( 'Recurring billing for memberships and services', 'everest-forms' ),
+						esc_html__( 'Map form fields to subscription customer details', 'everest-forms' ),
 						esc_html__( 'Custom confirmation page after payment', 'everest-forms' ),
 						esc_html__( 'Test and live modes for development and production', 'everest-forms' ),
 					),
