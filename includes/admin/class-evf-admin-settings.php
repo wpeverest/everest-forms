@@ -79,11 +79,11 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 		public static function reorder_settings_tabs( $tabs ) {
 
 			// Hide Payments tab if it has no real (non-upsell) sections.
-			if ( isset( $tabs['payments'] ) ) {
+			if ( isset( $tabs['payment'] ) ) {
 				$payments_page = null;
 
 				foreach ( self::$settings as $page ) {
-					if ( isset( $page->id ) && 'payments' === $page->id ) {
+					if ( isset( $page->id ) && 'payment' === $page->id ) {
 						$payments_page = $page;
 						break;
 					}
@@ -91,7 +91,7 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 
 				if ( $payments_page && method_exists( $payments_page, 'has_real_sections' ) ) {
 					if ( ! $payments_page->has_real_sections() ) {
-						unset( $tabs['payments'] );
+						unset( $tabs['payment'] );
 					}
 				}
 			}
