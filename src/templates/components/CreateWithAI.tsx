@@ -167,6 +167,7 @@ interface ChatMessage {
 	role: 'user' | 'assistant';
 	text: string;
 	loading?: boolean;
+	error?: boolean;
 }
 
 const { restURL, security, ajaxUrl, aiNonce } = templatesScriptData;
@@ -311,12 +312,12 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 	// refinePromptText: extra instruction typed by user (empty string for Regenerate).
 	// Gateway decides mode from this: non-empty → refine, empty → regenerate.
 	// Replace the trailing loading placeholder with a final assistant reply.
-	const resolveLoading = (text: string) =>
+	const resolveLoading = (text: string, isError = false) =>
 		setMessages(m => {
 			const next = [...m];
 			for (let i = next.length - 1; i >= 0; i--) {
 				if (next[i].role === 'assistant' && next[i].loading) {
-					next[i] = { role: 'assistant', text };
+					next[i] = { role: 'assistant', text, error: isError };
 					break;
 				}
 			}
@@ -358,16 +359,7 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 			}
 		} catch (e: any) {
 			const message = e?.message || __('Could not update the form. Please try again.', 'everest-forms');
-			resolveLoading(message);
-			toast({
-				title: __('Update failed', 'everest-forms'),
-				description: message,
-				status: 'error',
-				position: 'bottom-right',
-				duration: 6000,
-				isClosable: true,
-				variant: 'subtle',
-			});
+			resolveLoading(message, true);
 		} finally {
 			setIsRegenerating(false);
 		}
@@ -705,11 +697,11 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 
 											<Box
 												flex={1}
-												bg="#faf9ff"
-												border="1px solid #ede8f8"
+												bg={msg.error ? '#fff8f8' : '#faf9ff'}
+												border={msg.error ? '1px solid #fcd5d5' : '1px solid #ede8f8'}
 												borderRadius="4px 16px 16px 16px"
 												p="16px"
-												boxShadow="0 2px 10px rgba(117,69,187,0.06)"
+												boxShadow={msg.error ? 'none' : '0 2px 10px rgba(117,69,187,0.06)'}
 											>
 												{msg.loading ? (
 													<HStack spacing="8px">
@@ -720,11 +712,11 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 													</HStack>
 												) : (
 													<>
-														<Text fontSize="14px" color="#444" lineHeight="1.65" margin={isLastAssistant ? '0 0 14px' : '0'}>
+														<Text fontSize="14px" color={msg.error ? '#c0392b' : '#444'} lineHeight="1.65" margin={isLastAssistant && !msg.error ? '0 0 14px' : '0'}>
 															{msg.text}
 														</Text>
 
-														{isLastAssistant && (
+														{isLastAssistant && !msg.error && (
 															<Box
 																as="button"
 																w="100%"

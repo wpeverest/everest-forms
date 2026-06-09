@@ -90,6 +90,12 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 
 	const [open, setOpen] = useState<Record<string, boolean>>({});
 	const [testEmail, setTestEmail] = useState<string>(adminEmail || '');
+	const [mutationErrors, setMutationErrors] = useState<Record<string, string>>({});
+
+	const setMutationError = (key: string, msg: string) =>
+		setMutationErrors(prev => ({ ...prev, [key]: msg }));
+	const clearMutationError = (key: string) =>
+		setMutationErrors(prev => { const n = { ...prev }; delete n[key]; return n; });
 
 	const toggleOpen = useCallback((id: string) => {
 		setOpen((prev) => ({ ...prev, [id]: !prev[id] }));
@@ -129,25 +135,10 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 		},
 		onSuccess: (data) => {
 			queryClient.setQueryData(['siteAssistant'], data);
-			toast({
-				title: __('Success', 'everest-forms'),
-				description: __('Spam protection setup skipped.', 'everest-forms'),
-				status: 'success',
-				duration: 3000,
-				isClosable: true,
-			});
+			clearMutationError('skipSpam');
 		},
 		onError: (error: any) => {
-			console.error('Error skipping spam protection:', error);
-			toast({
-				title: __('Error', 'everest-forms'),
-				description:
-					error?.message ||
-					__('Failed to skip spam protection setup.', 'everest-forms'),
-				status: 'error',
-				duration: 3000,
-				isClosable: true,
-			});
+			setMutationError('skipSpam', error?.message || __('Failed to skip spam protection setup.', 'everest-forms'));
 		},
 	});
 
@@ -167,28 +158,11 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 		},
 		onSuccess: (data) => {
 			queryClient.setQueryData(['siteAssistant'], data);
-			toast({
-				title: __('Success', 'everest-forms'),
-				description: __(
-					"Test email sent successfully. Didn't receive it? Please check your Spam or Junk folder.",
-					'everest-forms',
-				),
-				status: 'success',
-				duration: 3000,
-				isClosable: true,
-			});
+			clearMutationError('sendEmail');
 			setTestEmail('');
 		},
 		onError: (error: any) => {
-			console.error('Error sending test email:', error);
-			toast({
-				title: __('Error', 'everest-forms'),
-				description:
-					error?.message || __('Failed to send test email.', 'everest-forms'),
-				status: 'error',
-				duration: 3000,
-				isClosable: true,
-			});
+			setMutationError('sendEmail', error?.message || __('Failed to send test email.', 'everest-forms'));
 		},
 	});
 
@@ -208,25 +182,10 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 		},
 		onSuccess: (data) => {
 			queryClient.setQueryData(['siteAssistant'], data);
-			toast({
-				title: __('Success', 'everest-forms'),
-				description: __('Send test email step skipped.', 'everest-forms'),
-				status: 'success',
-				duration: 3000,
-				isClosable: true,
-			});
+			clearMutationError('skipEmail');
 		},
 		onError: (error: any) => {
-			console.error('Error skipping send test email:', error);
-			toast({
-				title: __('Error', 'everest-forms'),
-				description:
-					error?.message ||
-					__('Failed to skip send test email step.', 'everest-forms'),
-				status: 'error',
-				duration: 3000,
-				isClosable: true,
-			});
+			setMutationError('skipEmail', error?.message || __('Failed to skip send test email step.', 'everest-forms'));
 		},
 	});
 
@@ -317,25 +276,10 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 		},
 		onSuccess: (data) => {
 			queryClient.setQueryData(['siteAssistant'], data);
-			toast({
-				title: __('Success', 'everest-forms'),
-				description: __('Form creation step skipped.', 'everest-forms'),
-				status: 'success',
-				duration: 3000,
-				isClosable: true,
-			});
+			clearMutationError('skipCreate');
 		},
 		onError: (error: any) => {
-			console.error('Error skipping create form:', error);
-			toast({
-				title: __('Error', 'everest-forms'),
-				description:
-					error?.message ||
-					__('Failed to skip create form step.', 'everest-forms'),
-				status: 'error',
-				duration: 3000,
-				isClosable: true,
-			});
+			setMutationError('skipCreate', error?.message || __('Failed to skip create form step.', 'everest-forms'));
 		},
 	});
 
@@ -365,15 +309,7 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 			}
 		},
 		onError: (error: any) => {
-			console.error('Error creating blank form:', error);
-			toast({
-				title: __('Error', 'everest-forms'),
-				description:
-					error?.message || __('Failed to create blank form.', 'everest-forms'),
-				status: 'error',
-				duration: 3000,
-				isClosable: true,
-			});
+			setMutationError('createForm', error?.message || __('Failed to create blank form.', 'everest-forms'));
 		},
 	});
 
@@ -444,6 +380,9 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 					>
 						{__('Create New Form', 'everest-forms')}
 					</Button>
+					{mutationErrors.createForm && (
+						<Text fontSize="12px" color="#c0392b" mt="-2">{mutationErrors.createForm}</Text>
+					)}
 					<Box>
 						<HStack justify="space-between" mb={4}>
 							<Text
@@ -543,6 +482,9 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 								: __('Skip Setup', 'everest-forms')}
 						</Link>
 					</Flex>
+					{mutationErrors.skipCreate && (
+						<Text fontSize="12px" color="#c0392b">{mutationErrors.skipCreate}</Text>
+					)}
 				</Stack>
 			</Collapse>
 		</Stack>
@@ -669,6 +611,9 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 						>
 							{__('Send Test Email', 'everest-forms')}
 						</Button>
+						{mutationErrors.sendEmail && (
+							<Text fontSize="12px" color="#c0392b" alignSelf="center">{mutationErrors.sendEmail}</Text>
+						)}
 						<Link
 							fontSize="13px"
 							fontWeight="400"
@@ -687,6 +632,9 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 								: __('Skip Setup', 'everest-forms')}
 						</Link>
 					</Flex>
+					{mutationErrors.skipEmail && (
+						<Text fontSize="12px" color="#c0392b">{mutationErrors.skipEmail}</Text>
+					)}
 				</Stack>
 			</Collapse>
 		</Stack>
@@ -816,6 +764,9 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 								: __('Skip Setup', 'everest-forms')}
 						</Link>
 					</HStack>
+					{mutationErrors.skipSpam && (
+						<Text fontSize="12px" color="#c0392b">{mutationErrors.skipSpam}</Text>
+					)}
 				</Stack>
 			</Collapse>
 		</Stack>
