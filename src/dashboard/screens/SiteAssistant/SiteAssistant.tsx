@@ -1,4 +1,4 @@
-/**
+﻿/**
  *  External Dependencies
  */
 import {
@@ -381,7 +381,7 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 						{__('Create New Form', 'everest-forms')}
 					</Button>
 					{mutationErrors.createForm && (
-						<Text fontSize="12px" color="#c0392b" mt="-2">{mutationErrors.createForm}</Text>
+						<Box bg="#fff8f8" border="1px solid #fcd5d5" borderRadius="6px" px="10px" py="6px" mt="-2"><Text fontSize="12px" color="#c0392b" margin="0">{mutationErrors.createForm}</Text></Box>
 					)}
 					<Box>
 						<HStack justify="space-between" mb={4}>
@@ -483,7 +483,7 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 						</Link>
 					</Flex>
 					{mutationErrors.skipCreate && (
-						<Text fontSize="12px" color="#c0392b">{mutationErrors.skipCreate}</Text>
+						<Box bg="#fff8f8" border="1px solid #fcd5d5" borderRadius="6px" px="10px" py="6px"><Text fontSize="12px" color="#c0392b" margin="0">{mutationErrors.skipCreate}</Text></Box>
 					)}
 				</Stack>
 			</Collapse>
@@ -612,7 +612,7 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 							{__('Send Test Email', 'everest-forms')}
 						</Button>
 						{mutationErrors.sendEmail && (
-							<Text fontSize="12px" color="#c0392b" alignSelf="center">{mutationErrors.sendEmail}</Text>
+							<Box bg="#fff8f8" border="1px solid #fcd5d5" borderRadius="6px" px="10px" py="6px" alignSelf="center"><Text fontSize="12px" color="#c0392b" margin="0">{mutationErrors.sendEmail}</Text></Box>
 						)}
 						<Link
 							fontSize="13px"
@@ -633,7 +633,7 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 						</Link>
 					</Flex>
 					{mutationErrors.skipEmail && (
-						<Text fontSize="12px" color="#c0392b">{mutationErrors.skipEmail}</Text>
+						<Box bg="#fff8f8" border="1px solid #fcd5d5" borderRadius="6px" px="10px" py="6px"><Text fontSize="12px" color="#c0392b" margin="0">{mutationErrors.skipEmail}</Text></Box>
 					)}
 				</Stack>
 			</Collapse>
@@ -765,7 +765,7 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 						</Link>
 					</HStack>
 					{mutationErrors.skipSpam && (
-						<Text fontSize="12px" color="#c0392b">{mutationErrors.skipSpam}</Text>
+						<Box bg="#fff8f8" border="1px solid #fcd5d5" borderRadius="6px" px="10px" py="6px"><Text fontSize="12px" color="#c0392b" margin="0">{mutationErrors.skipSpam}</Text></Box>
 					)}
 				</Stack>
 			</Collapse>
