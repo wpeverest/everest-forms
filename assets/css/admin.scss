@@ -3360,7 +3360,9 @@ p.search-box {
 							background: #fafbfc;
 							border-color: #e3e6ea;
 							color: #ccd1d6;
+						}
 
+						&.upgrade-modal {
 							&::before {
 								content: '';
 								background-image: url(../images/icons/everest-form-pro-icon.png);
