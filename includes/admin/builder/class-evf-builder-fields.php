@@ -735,8 +735,12 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 			$addon        = isset( $requirements[ $type ] ) ? $requirements[ $type ] : '';
 		}
 
-		$licensed = false !== evf_get_license_plan();
-		$trigger  = ( $licensed && ! empty( $addon ) ) ? 'evf-upgrade-addon' : 'upgrade-modal';
+		$licensed      = false !== evf_get_license_plan();
+		// Use the addon-install trigger only when the user is licensed AND the field
+		// is NOT plan-locked (is_pro = false). If the field itself requires a Pro plan
+		// upgrade, always show the upgrade-modal regardless of addon status.
+		$is_plan_locked = evf_is_field_locked( $type );
+		$trigger        = ( $licensed && ! $is_plan_locked && ! empty( $addon ) ) ? 'evf-upgrade-addon' : 'upgrade-modal';
 
 		$attr = sprintf(
 			' data-field-type="%1$s" data-field-name="%2$s" data-field-plan="%3$s" data-addon-slug="%4$s" data-field-class="%5$s" data-links="%6$s"',

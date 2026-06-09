@@ -346,8 +346,13 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 						? __( "Done — I've updated your form. Check the preview on the right.", 'everest-forms' )
 						: __( "Here's a fresh version of your form.", 'everest-forms' )
 				);
-				// Re-render the preview for the (same) updated draft.
-				setPreviewVersion(v => v + 1);
+				// Use inline preview HTML when available; fall back to re-fetching via REST.
+				if (res.data?.preview_html) {
+					previewHTMLRef.current = res.data.preview_html;
+					setPreviewHTML(res.data.preview_html);
+				} else {
+					setPreviewVersion(v => v + 1);
+				}
 			} else {
 				throw new Error(res?.data?.message || __('Could not update the form. Please try again.', 'everest-forms'));
 			}
@@ -415,6 +420,14 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 		callAi('evf_ai_generate_form', { prompt })
 			.then((res: any) => {
 				if (res?.success && res.data?.form_id) {
+					// Preview HTML is included inline in the AJAX response — no second round trip needed.
+					const html = res.data.preview_html || '';
+					if (html) {
+						previewHTMLRef.current = html;
+						previewFetchStartedRef.current = true; // mark as already fetched
+						setPreviewHTML(html);
+						setIsPreviewLoading(false);
+					}
 					aiResponseRef.current = {
 						ok: true,
 						formId: res.data.form_id,
@@ -422,33 +435,6 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 						editUrl: res.data.edit_url || '',
 						multiPartSteps: res.data.multi_part_steps || [],
 					};
-					// Pre-fetch the preview while the progress animation is still
-					// playing so the preview is ready (or nearly ready) the moment
-					// the user lands on the generated screen.
-					const fid = res.data.form_id;
-					previewFetchStartedRef.current = true;
-					setIsPreviewLoading(true);
-					apiFetch({
-						path: `${restURL}everest-forms/v1/templates/ai-preview`,
-						method: 'POST',
-						data: { form_id: fid },
-						headers: { 'X-WP-Nonce': security },
-					})
-						.then((previewRes: any) => {
-							if (previewRes?.success && previewRes?.data?.html) {
-								previewHTMLRef.current = previewRes.data.html;
-								setPreviewHTML(previewRes.data.html);
-								setIsPreviewLoading(false);
-							} else {
-								// Non-fatal: let the generated-state useEffect retry.
-								previewFetchStartedRef.current = false;
-								setIsPreviewLoading(false);
-							}
-						})
-						.catch(() => {
-							previewFetchStartedRef.current = false;
-							setIsPreviewLoading(false);
-						});
 				} else {
 					showError( res?.data?.message || __('Something went wrong. Please try again.', 'everest-forms') );
 				}
