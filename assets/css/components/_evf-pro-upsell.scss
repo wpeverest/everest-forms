@@ -138,12 +138,21 @@ $evf-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
 
 	&-primary {
 		background: $evf-purple;
-		color: $evf-white;
+		color: $evf-white !important;
 		border: none;
 
 		&:hover {
-			color: $evf-white;
+			color: $evf-white !important;
 			background: #9159e3;
+			box-shadow: none;
+		}
+
+		&:active,
+		&:focus,
+		&:visited {
+			color: $evf-white !important;
+			background: $evf-purple;
+			box-shadow: none;
 		}
 	}
 

@@ -1,4 +1,4 @@
-/* global evf_data, jconfirm, PerfectScrollbar, evfSetClipboard, evfClearClipboard */
+﻿/* global evf_data, jconfirm, PerfectScrollbar, evfSetClipboard, evfClearClipboard */
 (function ($, evf_data) {
 	var $builder;
 
@@ -2636,6 +2636,7 @@
 				e.preventDefault();
 			});
 
+
 			$('.evf-setting-panel').eq(0).trigger('click');
 		},
 		bindFormEmail: function () {
@@ -2710,6 +2711,11 @@
 					return;
 				}
 
+				if ($(this).hasClass('evf-addon-install-trigger')) {
+					e.preventDefault();
+					return;
+				}
+
 				var data_setting_section = $(this).attr('data-section');
 				$('.evf-integrations-panel').removeClass('active');
 				$('#everest-forms-panel-integrations')
@@ -2733,7 +2739,6 @@
 				);
 				e.preventDefault();
 			});
-
 			$('.evf-setting-panel').eq(0).trigger('click');
 		},
 		bindFormPayment: function () {
@@ -4390,7 +4395,21 @@
 				.removeClass('active');
 			$panel.addClass('active');
 
-			if ('integrations' === panel || 'payments' === panel) {
+			if ('integrations' === panel) {
+				var $firstConnected = $panel
+					.find('.everest-forms-panel-sidebar a')
+					.not('.evf-addon-install-trigger')
+					.not('.upgrade-addons-settings')
+					.first();
+				if ($firstConnected.length) {
+					$firstConnected.trigger('click');
+				} else {
+					$panel
+						.find('.everest-forms-panel-sidebar a')
+						.first()
+						.addClass('active');
+				}
+			} else if ('payments' === panel) {
 				if (!$panel.find('.everest-forms-panel-sidebar a').hasClass('active')) {
 					$panel
 						.find('.everest-forms-panel-sidebar a')
