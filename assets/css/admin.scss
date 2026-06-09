@@ -13623,7 +13623,7 @@ button#show-settings-link {
 		display: flex;
 		align-items: center;
 		gap: 12px;
-		margin: 22px 0 24px;
+		margin: 24px 0;
 
 		.step {
 			display: inline-flex;
@@ -13637,15 +13637,15 @@ button#show-settings-link {
 				display: inline-flex;
 				align-items: center;
 				justify-content: center;
-				width: 26px;
-				height: 26px;
+				width: 28px !important;
+				height: 28px !important;
 				border-radius: 6px;
-				background: #f4f4f4;
+				background: #f4f4f4 !important;
 				color: #383838;
 				font-size: 11px;
 				font-style: normal;
 				font-weight: 600;
-				border: 1px solid #e1e1e1;
+				border: 1px solid #e1e1e1 !important;
 			}
 
 			&:not(:last-child)::after {
@@ -13675,8 +13675,8 @@ button#show-settings-link {
 		justify-content: space-between;
 
 		svg {
-			width: 16px;
-			height: 16px;
+			width: 19px;
+			height: 19px;
 		}
 	}
 
@@ -13843,13 +13843,6 @@ button#show-settings-link {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-}
-
-// Conditional Logic upsell panel (free version only).
-.evf-cl-upsell-group {
-	> .everest-forms-field-option-group-toggle {
-		color: #999 !important;
-	}
 }
 
 .evf-cl-pro-badge {
