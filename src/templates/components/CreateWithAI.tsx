@@ -106,7 +106,15 @@ const SkeletonField: React.FC<{ delay?: string }> = ({ delay = '0s' }) => (
 
 const PageShell: React.FC<{ onBack: () => void; backLabel?: string; children: React.ReactNode }> = ({
 	onBack, backLabel, children,
-}) => (
+}) => {
+	// #wpbody-content has padding-bottom: 42px which makes the body scrollable and
+	// shows a second scrollbar alongside the intentional inner one. Suppress it.
+	useEffect(() => {
+		const prev = document.body.style.overflow;
+		document.body.style.overflow = 'hidden';
+		return () => { document.body.style.overflow = prev; };
+	}, []);
+	return (
 	<Flex direction="column" height="100vh" overflow="hidden" bg="#f6f6f8">
 		{/* Purple accent line */}
 		<Box h="4px" bg="#7545BB" flexShrink={0} />
@@ -141,7 +149,8 @@ const PageShell: React.FC<{ onBack: () => void; backLabel?: string; children: Re
 		</Flex>
 		{children}
 	</Flex>
-);
+	);
+};
 
 // ── Main component ────────────────────────────────────────────────────────────
 
@@ -893,6 +902,14 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 							    The <style> below hides all rows except the active part;
 							    the canvasRef useEffect does the same imperatively so both
 							    fire regardless of rendering order. */}
+							{/* Prevent double scrollbar: neutralise the builder's fixed-height
+							    scrollable panel so only the outer preview Box scrolls. */}
+							<style dangerouslySetInnerHTML={{ __html: `
+								.evf-ai-preview-canvas .everest-forms-panel-content {
+									height: auto !important;
+									overflow: visible !important;
+								}
+							`}} />
 							{multiPartSteps.length > 0 && (
 								<style dangerouslySetInnerHTML={{ __html: `
 									.evf-ai-preview-canvas .evf-admin-row[data-part-id] { display: none !important; }
