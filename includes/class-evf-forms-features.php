@@ -52,6 +52,7 @@ class EVF_Forms_Features {
 			'EVF_Field_Payment_Subtotal',
 			'EVF_Field_Payment_Subscription_Plan',
 			'EVF_Field_Credit_Card',
+			'EVF_Field_Payment_Gateway_Selector',
 			'EVF_Field_Payment_Authorize_Net',
 			'EVF_Field_Rating',
 			'EVF_Field_Likert',

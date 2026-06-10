@@ -288,6 +288,8 @@ class EVF_Admin_Assets {
 					'i18n_privacy_policy_consent_message' => esc_html__( 'I allow this website to collect and store the submitted data.', 'everest-forms' ),
 					'is_pro'                              => ( ! defined( 'EFP_PLUGIN_FILE' ) ) ? false : true,
 					'select_form_tags_placeholder'        => __( 'Please choose a tags from the list, or type in a new tag if you\'d like to add one.', 'everest-forms' ),
+					'i18n_expiry_trial_min_date'          => esc_html__( 'Expiry must be on or after the trial ends (%s).', 'everest-forms' ),
+					'i18n_expiry_trial_blocked_day'       => esc_html__( 'This date is within the trial period and cannot be used as the expiry date.', 'everest-forms' ),
 				)
 			)
 		);
@@ -329,6 +331,19 @@ class EVF_Admin_Assets {
 				),
 				'evf_one_time_draggable_title'            => esc_html__( 'File upload', 'everest-forms' ),
 				'evf_one_time_draggable_message'          => esc_html__( 'field can only be used once. To use it multiple times, please upgrade to the pro version.', 'everest-forms' ),
+				'evf_one_time_payment_gateway_title'     => esc_html__( 'Payment Gateway', 'everest-forms' ),
+				'evf_one_time_payment_gateway_message'     => esc_html__( 'Only one Payment Gateway field is allowed per form.', 'everest-forms' ),
+				'evf_payment_method_dependency_title'      => esc_html__( 'Payment Gateway Field', 'everest-forms' ),
+				'evf_payment_method_dependency_message'    => esc_html__( 'Remove Payment Gateway field to use this field.', 'everest-forms' ),
+				'evf_legacy_payment_blocks_gateway_title'    => esc_html__( 'Payment Gateway field unavailable', 'everest-forms' ),
+				'evf_legacy_payment_blocks_gateway_message' => esc_html__( 'To add a Payment Gateway field, first disable %s in the Payments tab.', 'everest-forms' ),
+				'evf_credit_card_blocks_gateway_message'   => esc_html__( 'To add a Payment Gateway field, first remove the Credit Card field.', 'everest-forms' ),
+				'evf_legacy_payment_label_credit_card'      => esc_html__( 'Stripe', 'everest-forms' ),
+				'evf_legacy_payment_label_paypal'           => esc_html__( 'PayPal', 'everest-forms' ),
+				'evf_legacy_payment_label_authorize_net'    => esc_html__( 'Authorize.Net', 'everest-forms' ),
+				'evf_legacy_payment_label_square'           => esc_html__( 'Square', 'everest-forms' ),
+				'evf_legacy_payment_label_razorpay'          => esc_html__( 'Razorpay', 'everest-forms' ),
+				'evf_legacy_payment_label_mollie'           => esc_html__( 'Mollie', 'everest-forms' ),
 				'evf_file_upload_free_file_limit_message' => esc_html__( 'You can upload only one file at a time. To upload more than one file at a time, please upgrade to the pro version.', 'everest-forms' ),
 
 			)
@@ -342,6 +357,19 @@ class EVF_Admin_Assets {
 			wp_enqueue_script( 'jquery-ui-sortable' );
 			wp_enqueue_script( 'jquery-ui-autocomplete' );
 			wp_enqueue_script( 'evf-upgrade' );
+
+			// upgrade.js references evf_data in modal buttons; builder localizes the full object.
+			if ( 'everest-forms_page_evf-settings' === $screen_id && ! wp_script_is( 'evf-form-builder', 'enqueued' ) ) {
+				wp_localize_script(
+					'evf-upgrade',
+					'evf_data',
+					array(
+						'i18n_ok'    => esc_html__( 'OK', 'everest-forms' ),
+						'i18n_close' => esc_html__( 'Close', 'everest-forms' ),
+						'is_pro'     => defined( 'EFP_PLUGIN_FILE' ),
+					)
+				);
+			}
 
 			wp_localize_script(
 				'everest-forms-email-admin',

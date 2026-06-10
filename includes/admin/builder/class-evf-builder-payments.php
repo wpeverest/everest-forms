@@ -26,6 +26,23 @@ class EVF_Builder_Payments extends EVF_Builder_Page {
 	}
 
 	/**
+	 * Add this page to builder tabs.
+	 *
+	 * Hides the Payments tab on new forms in the free version — no payment
+	 * gateways are available yet so showing it just adds noise.
+	 *
+	 * @param array $pages Builder pages.
+	 * @return array
+	 */
+	public function add_builder_page( $pages ) {
+		if ( ! defined( 'EFP_PLUGIN_FILE' ) && ! empty( $this->form_data['is_new_form'] ) ) {
+			return $pages;
+		}
+
+		return parent::add_builder_page( $pages );
+	}
+
+	/**
 	 * Outputs the builder sidebar.
 	 */
 	public function output_sidebar() {

@@ -27,6 +27,7 @@ class EVF_Admin_Menus {
 		add_action( 'admin_menu', array( $this, 'dashboard_menu' ), 9 );
 		add_action( 'admin_menu', array( $this, 'builder_menu' ), 20 );
 		add_action( 'admin_menu', array( $this, 'entries_menu' ), 30 );
+		add_action( 'admin_menu', array( $this, 'payments_menu' ), 35 );
 		add_action( 'admin_menu', array( $this, 'analytics_menu' ), 10 );
 		add_action( 'admin_menu', array( $this, 'settings_menu' ), 50 );
 		add_action( 'admin_menu', array( $this, 'tools_menu' ), 60 );
@@ -261,6 +262,30 @@ class EVF_Admin_Menus {
 		}
 
 		do_action( 'everest_forms_entries_page_init' );
+	}
+
+	/**
+	 * Add Payments sub menu (free version only; Pro plugin registers its own evf-payments page).
+	 */
+	public function payments_menu() {
+		if ( defined( 'EFP_PLUGIN_FILE' ) ) {
+			return;
+		}
+		add_submenu_page(
+			'everest-forms',
+			esc_html__( 'Payment', 'everest-forms' ),
+			esc_html__( 'Payment', 'everest-forms' ),
+			'manage_everest_forms',
+			'evf-payment-log',
+			array( $this, 'payments_page' )
+		);
+	}
+
+	/**
+	 * Payments upsell page callback (free version).
+	 */
+	public function payments_page() {
+		include dirname( __FILE__ ) . '/views/html-admin-page-payments.php';
 	}
 
 	/**

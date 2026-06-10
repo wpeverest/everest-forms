@@ -340,9 +340,16 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 == Changelog ==
 
 = 3.4.9       - 09-06-2026
+* Enhance	  - Contact Form 7 migration.
+* Fix         - Updated tooltips.
+* Fix 		  - Form fields icon mis match.
 * Fix 		  - Design issue on integration tab.
+* Fix 		  - Design issue for radio buttons in Survey polls Quiz settings.
+* Added       - Payments overview page inside the payments menu.
 * Added 	  - Upsell on the payments inside the global settings.
+* Added       - Missing the export and print in the free version of analytics page.
 * Added 	  - Showcase conditional logic as a pro feature in field settings panel.
+* Added 	  - Upsell prompt when free users click locked fields in the add fields modal.
 
 = 3.4.8       - 27-05-2026
 * Fix 		  - Missing capability check on test email.

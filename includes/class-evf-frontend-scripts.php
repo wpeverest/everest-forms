@@ -279,6 +279,15 @@ class EVF_Frontend_Scripts {
 	}
 
 	/**
+	 * Whether payment debug logging is enabled for the current request.
+	 *
+	 * @return bool
+	 */
+	private static function is_payment_debug_enabled() {
+		return current_user_can( 'manage_options' );
+	}
+
+	/**
 	 * Localize a EVF script once.
 	 *
 	 * @param string $handle Script handle the data will be attached to.
@@ -350,6 +359,7 @@ class EVF_Frontend_Scripts {
 					'pdf_download'        => esc_html__( 'Click here to download your pdf submission', 'everest-forms' ),
 					'evf_checked_image_url' 			   => esc_url( self::get_asset_url( 'assets/images/evf-checked.png' ) ),
 					'i18n_evf_success_text'				    => esc_html__( 'Success!', 'everest-forms' ),
+					'payment_debug'       => self::is_payment_debug_enabled() ? '1' : '0',
 				);
 				break;
 			case 'everest-forms-survey-polls-quiz-script':

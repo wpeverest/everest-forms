@@ -10,6 +10,7 @@ project.properties
 *.sublime-project
 *.sublime-workspace
 .sublimelinterrc
+.claude/**
 
 # Grunt
 /node_modules/
@@ -34,6 +35,11 @@ everest-forms.zip
 # Unit tests
 /tests/.env
 /tests/wordpress
+
+# Local agent / superpowers tooling
+.claude/settings.local.json
+.superpowers/
+docs/superpowers/plans/
 
 # Local overrides
 phpcs.xml
