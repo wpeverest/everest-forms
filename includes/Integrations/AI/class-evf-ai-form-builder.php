@@ -175,6 +175,21 @@ class EVF_AI_Form_Builder {
 			}
 		}
 
+		// Promote explicit recaptcha/hcaptcha/turnstile field requests to the form-level
+		// recaptcha_support setting. The AI sometimes returns these as a field type rather
+		// than setting enable_recaptcha, so we detect and convert them here.
+		foreach ( ( $ai['fields'] ?? [] ) as $ai_field ) {
+			$t = strtolower( sanitize_key( $ai_field['type'] ?? '' ) );
+			$l = strtolower( $ai_field['label'] ?? '' );
+			if ( in_array( $t, [ 'recaptcha', 'hcaptcha', 'turnstile' ], true )
+				|| false !== strpos( $l, 'recaptcha' )
+				|| false !== strpos( $l, 'hcaptcha' )
+				|| false !== strpos( $l, 'turnstile' ) ) {
+				$ai['enable_recaptcha'] = true;
+				break;
+			}
+		}
+
 		// Build all field objects first so we can look ahead for smart pairing
 		$field_list  = [];
 		$field_index = 0;
@@ -300,9 +315,19 @@ class EVF_AI_Form_Builder {
 			}
 		}
 
+		// reCAPTCHA, hCaptcha, and Turnstile are form-level settings, not draggable
+		// fields. build_form_data() already promoted the request to enable_recaptcha
+		// via its pre-scan; skip field creation here.
+		$lc_label = strtolower( $label );
+		if ( in_array( $type, [ 'recaptcha', 'hcaptcha', 'turnstile' ], true )
+			|| false !== strpos( $lc_label, 'recaptcha' )
+			|| false !== strpos( $lc_label, 'hcaptcha' )
+			|| false !== strpos( $lc_label, 'turnstile' ) ) {
+			return null;
+		}
+
 		// Normalize: gateway may return `text` (or a non-existent `math` type)
-		// for captcha requests — detect by type or by label/description containing
-		// the word "captcha" and convert to the proper EVF `captcha` type.
+		// for math-captcha requests — convert to the proper EVF `captcha` type.
 		if ( 'captcha' !== $type ) {
 			$combined = strtolower( $label . ' ' . ( $ai_field['description'] ?? '' ) );
 			if ( 'math' === $type || false !== strpos( $combined, 'captcha' ) ) {
@@ -599,9 +624,9 @@ class EVF_AI_Form_Builder {
 			'form_class'                         => '',
 			'ajax_form_submission'               => '1',
 			'disabled_entries'                   => '0',
-			// Anti-spam: AI always enables honeypot; reCAPTCHA if AI says so
+			// Anti-spam: AI always enables honeypot; reCAPTCHA only if AI says so AND it's configured.
 			'honeypot'                           => ! empty( $ai['enable_honeypot'] ) ? '1' : '1',
-			'recaptcha_support'                  => ! empty( $ai['enable_recaptcha'] ) ? '1' : '0',
+			'recaptcha_support'                  => ! empty( $ai['enable_recaptcha'] ) && self::is_recaptcha_configured() ? '1' : '0',
 			// Multipart — enable_multi_part flag + indicator/nav settings read by builder
 			'enable_multi_part' => $is_multipart ? '1' : '0',
 			'multi_part'        => $is_multipart ? array(
@@ -733,6 +758,27 @@ class EVF_AI_Form_Builder {
 	}
 
 	// ── Helpers ───────────────────────────────────────────────────────────────
+
+	/**
+	 * Check whether reCAPTCHA (any type) has a site key configured in EVF settings.
+	 * Used to avoid enabling recaptcha_support when no key is set up.
+	 */
+	public static function is_recaptcha_configured(): bool {
+		$type = get_option( 'everest_forms_recaptcha_type', 'v2' );
+		switch ( $type ) {
+			case 'v2':
+				return (bool) get_option( 'everest_forms_recaptcha_v2_site_key' );
+			case 'v2_invisible':
+				return (bool) get_option( 'everest_forms_recaptcha_v2_invisible_site_key' );
+			case 'v3':
+				return (bool) get_option( 'everest_forms_recaptcha_v3_site_key' );
+			case 'hcaptcha':
+				return (bool) get_option( 'everest_forms_recaptcha_hcaptcha_site_key' );
+			case 'turnstile':
+				return (bool) get_option( 'everest_forms_recaptcha_turnstile_site_key' );
+		}
+		return false;
+	}
 
 	/**
 	 * Generate a unique field ID in EVF format: 8 random alphanumeric chars.

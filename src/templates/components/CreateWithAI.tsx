@@ -4,6 +4,11 @@
 	HStack,
 	Heading,
 	Icon,
+	Popover,
+	PopoverArrow,
+	PopoverBody,
+	PopoverContent,
+	PopoverTrigger,
 	SimpleGrid,
 	Spinner,
 	Text,
@@ -89,6 +94,8 @@ const GEN_STEPS = [
 
 
 const MAX_CHARS = 500;
+
+const UPGRADE_URL = 'https://everestforms.net/upgrade/?utm_source=evf-free&utm_medium=ai-form-builder&utm_campaign=ai-rate-limit&utm_content=Upgrade+to+Pro';
 
 // The form preview is rendered server-side via the templates/ai-preview REST
 // endpoint, which returns the builder's own field markup (output_fields_preview).
@@ -181,7 +188,9 @@ interface ChatMessage {
 	role: 'user' | 'assistant';
 	text: string;
 	loading?: boolean;
-	error?: boolean;
+	error?: boolean;     // true = real error, form NOT created — hides "Use This Form"
+	notice?: boolean;    // true = form created but Pro feature needs attention — shows "Use This Form"
+	noticeUrl?: string;  // upgrade / addons URL shown as a link button inside the notice bubble
 }
 
 const { restURL, security, ajaxUrl, aiNonce } = templatesScriptData;
@@ -212,6 +221,7 @@ const callAi = async (
 const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, initialTitle }) => {
 	const toast = useToast();
 	const [prompt, setPrompt] = useState('');
+	const [isRateLimited, setIsRateLimited] = useState(false);
 	const [genState, setGenState] = useState<'idle' | 'generating' | 'generated'>('idle');
 	const [genStep, setGenStep] = useState(-1);
 	const [hint, setHint] = useState({ show: false, x: 0, y: 0 });
@@ -326,12 +336,12 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 	// refinePromptText: extra instruction typed by user (empty string for Regenerate).
 	// Gateway decides mode from this: non-empty → refine, empty → regenerate.
 	// Replace the trailing loading placeholder with a final assistant reply.
-	const resolveLoading = (text: string, isError = false) =>
+	const resolveLoading = (text: string, isError = false, isNotice = false, noticeUrl = '') =>
 		setMessages(m => {
 			const next = [...m];
 			for (let i = next.length - 1; i >= 0; i--) {
 				if (next[i].role === 'assistant' && next[i].loading) {
-					next[i] = { role: 'assistant', text, error: isError };
+					next[i] = { role: 'assistant', text, error: isError, notice: isNotice, noticeUrl };
 					break;
 				}
 			}
@@ -356,10 +366,16 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 			if (res?.success) {
 				if (res.data?.form_title) setFormTitle(res.data.form_title);
 				if (res.data?.multi_part_steps) { setMultiPartSteps(res.data.multi_part_steps); setActivePartTab(0); }
+				const notice    = res.data?.notice    || '';
+				const noticeUrl = res.data?.notice_url || '';
 				resolveLoading(
-					refine
+					notice ||
+					( refine
 						? __( "Done — I've updated your form. Check the preview on the right.", 'everest-forms' )
-						: __( "Here's a fresh version of your form.", 'everest-forms' )
+						: __( "Here's a fresh version of your form.", 'everest-forms' ) ),
+					false,      // not an error — form was created
+					!! notice,  // notice = Pro feature info, still shows "Use This Form"
+					noticeUrl
 				);
 				// Use inline preview HTML when available; fall back to re-fetching via REST.
 				if (res.data?.preview_html) {
@@ -369,6 +385,9 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 					setPreviewVersion(v => v + 1);
 				}
 			} else {
+				if (res?.data?.code === 'rate_limited') {
+					setIsRateLimited(true);
+				}
 				throw new Error(res?.data?.message || __('Could not update the form. Please try again.', 'everest-forms'));
 			}
 		} catch (e: any) {
@@ -405,18 +424,38 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 
 		// Bail out of the "Building your form…" screen immediately and surface the
 		// error — no waiting for the progress animation to finish.
-		const showError = (message: string) => {
+		// containerStyle z-index must exceed PageShell's z-index (100000).
+		const showError = (message: string, isRateLimit = false) => {
 			if (cancelled) return;
 			if (intervalId) clearInterval(intervalId);
+			if (isRateLimit) setIsRateLimited(true);
 			setGenState('idle');
 			toast({
-				title: __('AI generation failed', 'everest-forms'),
-				description: message,
+				title: isRateLimit
+					? __('Daily limit reached', 'everest-forms')
+					: __('AI generation failed', 'everest-forms'),
+				description: isRateLimit ? (
+					<Box>
+						<Text mb={1}>{message}</Text>
+						<Box
+							as="a"
+							href={UPGRADE_URL}
+							target="_blank"
+							rel="noopener noreferrer"
+							fontWeight="600"
+							textDecoration="underline"
+							_hover={{ opacity: 0.8 }}
+						>
+							{__('Upgrade to Pro for unlimited access →', 'everest-forms')}
+						</Box>
+					</Box>
+				) : message,
 				status: 'error',
 				position: 'bottom-right',
-				duration: 6000,
+				duration: isRateLimit ? null : 6000,
 				isClosable: true,
 				variant: 'subtle',
+				containerStyle: { zIndex: 200000 },
 			});
 		};
 
@@ -440,9 +479,14 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 						formTitle: res.data.form_title || '',
 						editUrl: res.data.edit_url || '',
 						multiPartSteps: res.data.multi_part_steps || [],
+						notice: res.data.notice || '',
+						noticeUrl: res.data.notice_url || '',
 					};
 				} else {
-					showError( res?.data?.message || __('Something went wrong. Please try again.', 'everest-forms') );
+					showError(
+						res?.data?.message || __('Something went wrong. Please try again.', 'everest-forms'),
+						res?.data?.code === 'rate_limited'
+					);
 				}
 			})
 			.catch(() => {
@@ -473,7 +517,12 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 						// Seed the chat history with this session's first turn.
 						setMessages([
 							{ role: 'user', text: prompt },
-							{ role: 'assistant', text: __( "Here's your form! Review the preview on the right and click \"Use This Form\" when you're happy with it.", 'everest-forms' ) },
+							{
+								role: 'assistant',
+								text: result.notice || __( "Here's your form! Review the preview on the right and click \"Use This Form\" when you're happy with it.", 'everest-forms' ),
+								notice:    !! result.notice,
+								noticeUrl: result.noticeUrl || '',
+							},
 						]);
 						setGenState('generated');
 					}
@@ -745,11 +794,11 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 
 											<Box
 												flex={1}
-												bg={msg.error ? '#fff8f8' : '#faf9ff'}
-												border={msg.error ? '1px solid #fcd5d5' : '1px solid #ede8f8'}
+												bg={msg.error || msg.notice ? '#fff8f8' : '#faf9ff'}
+												border={msg.error || msg.notice ? '1px solid #fcd5d5' : '1px solid #ede8f8'}
 												borderRadius="4px 16px 16px 16px"
 												p="16px"
-												boxShadow={msg.error ? 'none' : '0 2px 10px rgba(117,69,187,0.06)'}
+												boxShadow={msg.error || msg.notice ? 'none' : '0 2px 10px rgba(117,69,187,0.06)'}
 											>
 												{msg.loading ? (
 													<HStack spacing="8px">
@@ -760,9 +809,33 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 													</HStack>
 												) : (
 													<>
-														<Text fontSize="14px" color={msg.error ? '#c0392b' : '#444'} lineHeight="1.65" margin={isUseThisFormMsg ? '0 0 14px' : '0'}>
+														<Text fontSize="14px" color={msg.error || msg.notice ? '#c0392b' : '#444'} lineHeight="1.65" margin={isUseThisFormMsg ? '0 0 14px' : msg.noticeUrl ? '0 0 10px' : '0'}>
 															{msg.text}
 														</Text>
+
+														{msg.noticeUrl && (
+															<Box
+																as="a"
+																href={msg.noticeUrl}
+																target="_blank"
+																rel="noopener noreferrer"
+																display="inline-flex"
+																alignItems="center"
+																gap="4px"
+																mb={isUseThisFormMsg ? '10px' : '0'}
+																bg="#7545BB"
+																color="white"
+																fontSize="12px"
+																fontWeight="600"
+																px="10px"
+																py="5px"
+																borderRadius="6px"
+																_hover={{ bg: '#6a3daa', textDecoration: 'none' }}
+																transition="background 0.2s"
+															>
+																{__('Upgrade to Pro →', 'everest-forms')}
+															</Box>
+														)}
 
 														{isUseThisFormMsg && (
 															<Box
@@ -795,21 +868,50 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 														)}
 
 														<HStack justify="flex-end" pt="2px">
-															<HStack
-																spacing="5px"
-																cursor={isRegenerating ? 'not-allowed' : 'pointer'}
-																opacity={isRegenerating ? 0.5 : 1}
-																_hover={{ opacity: isRegenerating ? 0.5 : 0.65 }}
-																onClick={isRegenerating ? undefined : handleRegenerate}
-															>
-																{isRegenerating && isLastAssistant
-																	? <Spinner size="xs" color="#9ca3af" thickness="2px" speed="0.65s" />
-																	: <Icon as={FiRefreshCw} boxSize="12px" color="#9ca3af" />
-																}
-																<Text fontSize="12px" color="#9ca3af" margin="0" fontWeight="500">
-																	{__('Redo', 'everest-forms')}
-																</Text>
-															</HStack>
+															{isRateLimited ? (
+																<Popover trigger="hover" placement="top" isLazy>
+																	<PopoverTrigger>
+																		<HStack spacing="5px" cursor="not-allowed" opacity={0.5}>
+																			<Icon as={FiRefreshCw} boxSize="12px" color="#9ca3af" />
+																			<Text fontSize="12px" color="#9ca3af" margin="0" fontWeight="500">
+																				{__('Redo', 'everest-forms')}
+																			</Text>
+																		</HStack>
+																	</PopoverTrigger>
+																	<PopoverContent w="auto" maxW="220px" zIndex={200000} _focus={{ outline: 'none' }}>
+																		<PopoverArrow />
+																		<PopoverBody p={3}>
+																			<Text fontSize="12px" color="#555" mb={2} lineHeight="1.5">
+																				{__("You've reached your daily free limit.", 'everest-forms')}
+																			</Text>
+																			<Box as="a" href={UPGRADE_URL} target="_blank" rel="noopener noreferrer"
+																				display="inline-flex" alignItems="center" gap="4px"
+																				bg="#7545BB" color="white" fontSize="11px" fontWeight="600"
+																				px="8px" py="4px" borderRadius="5px"
+																				_hover={{ bg: '#6a3daa', textDecoration: 'none' }} transition="background 0.2s"
+																			>
+																				{__('Upgrade to Pro →', 'everest-forms')}
+																			</Box>
+																		</PopoverBody>
+																	</PopoverContent>
+																</Popover>
+															) : (
+																<HStack
+																	spacing="5px"
+																	cursor={isRegenerating ? 'not-allowed' : 'pointer'}
+																	opacity={isRegenerating ? 0.5 : 1}
+																	_hover={{ opacity: isRegenerating ? 0.5 : 0.65 }}
+																	onClick={isRegenerating ? undefined : handleRegenerate}
+																>
+																	{isRegenerating && isLastAssistant
+																		? <Spinner size="xs" color="#9ca3af" thickness="2px" speed="0.65s" />
+																		: <Icon as={FiRefreshCw} boxSize="12px" color="#9ca3af" />
+																	}
+																	<Text fontSize="12px" color="#9ca3af" margin="0" fontWeight="500">
+																		{__('Redo', 'everest-forms')}
+																	</Text>
+																</HStack>
+															)}
 														</HStack>
 													</>
 												)}
@@ -843,32 +945,61 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 									isDisabled={isRegenerating}
 									onChange={(e) => setRefinePrompt(e.target.value.slice(0, MAX_CHARS))}
 									onKeyDown={(e) => {
-										if (e.key === 'Enter' && !e.shiftKey) {
+										if (e.key === 'Enter' && !e.shiftKey && !isRateLimited) {
 											e.preventDefault();
 											handleUpdate(refinePrompt);
 										}
 									}}
 								/>
 								<Flex justify="flex-end" px="12px" pb="10px">
-									<Box
-										as="button"
-										w="28px" h="28px"
-										bg={refinePrompt.trim() && !isRegenerating ? '#7545BB' : '#c9bce4'}
-										borderRadius="6px"
-										display="inline-flex"
-										alignItems="center"
-										justifyContent="center"
-										border="none"
-										cursor={refinePrompt.trim() && !isRegenerating ? 'pointer' : 'not-allowed'}
-										_hover={{ bg: refinePrompt.trim() && !isRegenerating ? '#6a3daa' : '#c9bce4' }}
-										transition="background 0.2s"
-										onClick={() => handleUpdate(refinePrompt)}
-									>
-										{isRegenerating
-											? <Spinner size="xs" color="white" thickness="2px" speed="0.65s" />
-											: <Icon as={FiArrowUp} boxSize="3.5" color="white" />
-										}
-									</Box>
+									{isRateLimited ? (
+										<Popover trigger="hover" placement="top" isLazy>
+											<PopoverTrigger>
+												<Box as="button" w="28px" h="28px" bg="#c9bce4" borderRadius="6px"
+													display="inline-flex" alignItems="center" justifyContent="center"
+													border="none" cursor="not-allowed" transition="background 0.2s"
+												>
+													<Icon as={FiArrowUp} boxSize="3.5" color="white" />
+												</Box>
+											</PopoverTrigger>
+											<PopoverContent w="auto" maxW="220px" zIndex={200000} _focus={{ outline: 'none' }}>
+												<PopoverArrow />
+												<PopoverBody p={3}>
+													<Text fontSize="12px" color="#555" mb={2} lineHeight="1.5">
+														{__("You've reached your daily free limit.", 'everest-forms')}
+													</Text>
+													<Box as="a" href={UPGRADE_URL} target="_blank" rel="noopener noreferrer"
+														display="inline-flex" alignItems="center" gap="4px"
+														bg="#7545BB" color="white" fontSize="11px" fontWeight="600"
+														px="8px" py="4px" borderRadius="5px"
+														_hover={{ bg: '#6a3daa', textDecoration: 'none' }} transition="background 0.2s"
+													>
+														{__('Upgrade to Pro →', 'everest-forms')}
+													</Box>
+												</PopoverBody>
+											</PopoverContent>
+										</Popover>
+									) : (
+										<Box
+											as="button"
+											w="28px" h="28px"
+											bg={refinePrompt.trim() && !isRegenerating ? '#7545BB' : '#c9bce4'}
+											borderRadius="6px"
+											display="inline-flex"
+											alignItems="center"
+											justifyContent="center"
+											border="none"
+											cursor={refinePrompt.trim() && !isRegenerating ? 'pointer' : 'not-allowed'}
+											_hover={{ bg: refinePrompt.trim() && !isRegenerating ? '#6a3daa' : '#c9bce4' }}
+											transition="background 0.2s"
+											onClick={() => handleUpdate(refinePrompt)}
+										>
+											{isRegenerating
+												? <Spinner size="xs" color="white" thickness="2px" speed="0.65s" />
+												: <Icon as={FiArrowUp} boxSize="3.5" color="white" />
+											}
+										</Box>
+									)}
 								</Flex>
 							</Box>
 						</Box>
@@ -1113,40 +1244,77 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 
 						{/* Toolbar — NO mic/media icons, just Generate */}
 						<Flex align="center" justify="flex-end" px="16px" py="12px">
-							<Box
-								as="button"
-								display="inline-flex"
-								alignItems="center"
-								gap="8px"
-								fontSize="14px"
-								fontWeight="500"
-								pl="16px"
-								pr="8px"
-								py="8px"
-								borderRadius="8px"
-								bg={hasPrompt ? '#7545BB' : '#e6e3ee'}
-								color={hasPrompt ? 'white' : '#9a9a9a'}
-								cursor={hasPrompt ? 'pointer' : 'not-allowed'}
-								border="none"
-								onClick={hasPrompt ? handleGenerate : undefined}
-								_hover={hasPrompt ? { bg: '#6a3daa' } : {}}
-								transition="background 0.2s"
-							>
-								<Text margin="0" color={hasPrompt ? 'white' : '#9a9a9a'}>
-									{__('Generate', 'everest-forms')}
-								</Text>
+							{isRateLimited ? (
+								/* Rate-limited: wrap in Popover so hover shows the upgrade hint */
+								<Popover trigger="hover" placement="top" isLazy>
+									<PopoverTrigger>
+										<Box
+											as="button"
+											display="inline-flex"
+											alignItems="center"
+											gap="8px"
+											fontSize="14px"
+											fontWeight="500"
+											pl="16px"
+											pr="8px"
+											py="8px"
+											borderRadius="8px"
+											bg="#e6e3ee"
+											color="#9a9a9a"
+											cursor="not-allowed"
+											border="none"
+											transition="background 0.2s"
+										>
+											<Text margin="0" color="#9a9a9a">{__('Generate', 'everest-forms')}</Text>
+											<Box w="24px" h="24px" borderRadius="6px" display="inline-flex" alignItems="center" justifyContent="center" bg="#d5d0e0">
+												<Icon as={FiArrowUp} boxSize="3.5" color="#9a9a9a" />
+											</Box>
+										</Box>
+									</PopoverTrigger>
+									<PopoverContent w="auto" maxW="220px" zIndex={200000} _focus={{ outline: 'none' }}>
+										<PopoverArrow />
+										<PopoverBody p={3}>
+											<Text fontSize="12px" color="#555" mb={2} lineHeight="1.5">
+												{__("You've reached your daily free limit.", 'everest-forms')}
+											</Text>
+											<Box as="a" href={UPGRADE_URL} target="_blank" rel="noopener noreferrer"
+												display="inline-flex" alignItems="center" gap="4px"
+												bg="#7545BB" color="white" fontSize="11px" fontWeight="600"
+												px="8px" py="4px" borderRadius="5px"
+												_hover={{ bg: '#6a3daa', textDecoration: 'none' }} transition="background 0.2s"
+											>
+												{__('Upgrade to Pro →', 'everest-forms')}
+											</Box>
+										</PopoverBody>
+									</PopoverContent>
+								</Popover>
+							) : (
+								/* Normal: standalone button — no Popover wrapper, click is never intercepted */
 								<Box
-									w="24px"
-									h="24px"
-									borderRadius="6px"
+									as="button"
 									display="inline-flex"
 									alignItems="center"
-									justifyContent="center"
-									bg={hasPrompt ? '#6a3daa' : '#d5d0e0'}
+									gap="8px"
+									fontSize="14px"
+									fontWeight="500"
+									pl="16px"
+									pr="8px"
+									py="8px"
+									borderRadius="8px"
+									bg={hasPrompt ? '#7545BB' : '#e6e3ee'}
+									color={hasPrompt ? 'white' : '#9a9a9a'}
+									cursor={hasPrompt ? 'pointer' : 'not-allowed'}
+									border="none"
+									onClick={hasPrompt ? handleGenerate : undefined}
+									_hover={hasPrompt ? { bg: '#6a3daa' } : {}}
+									transition="background 0.2s"
 								>
-									<Icon as={FiArrowUp} boxSize="3.5" color={hasPrompt ? 'white' : '#9a9a9a'} />
+									<Text margin="0" color={hasPrompt ? 'white' : '#9a9a9a'}>{__('Generate', 'everest-forms')}</Text>
+									<Box w="24px" h="24px" borderRadius="6px" display="inline-flex" alignItems="center" justifyContent="center" bg={hasPrompt ? '#6a3daa' : '#d5d0e0'}>
+										<Icon as={FiArrowUp} boxSize="3.5" color={hasPrompt ? 'white' : '#9a9a9a'} />
+									</Box>
 								</Box>
-							</Box>
+							)}
 						</Flex>
 					</Box>
 

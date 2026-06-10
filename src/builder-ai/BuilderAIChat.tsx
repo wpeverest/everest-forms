@@ -7,6 +7,7 @@ interface Message {
 	role: 'user' | 'assistant';
 	text: string;
 	loading?: boolean;
+	notice?: boolean;
 }
 
 // Edit-form prompt suggestions shown inside the chat panel.
@@ -60,7 +61,8 @@ const editFormViaAi = async (
 		if ( json?.success ) {
 			return {
 				ok: true,
-				message: "Done — I've updated your form. Refreshing the canvas…",
+				message: json?.data?.notice || "Done — I've updated your form. Refreshing the canvas…",
+				isNotice: !! json?.data?.notice,
 			};
 		}
 		return {
@@ -130,7 +132,7 @@ const BuilderAIChat: React.FC = () => {
 		setMessages(prev => {
 			const copy = [...prev];
 			const last = copy[copy.length - 1];
-			if (last?.loading) copy[copy.length - 1] = { role: 'assistant', text: result.message };
+			if (last?.loading) copy[copy.length - 1] = { role: 'assistant', text: result.message, notice: result.isNotice || ! result.ok };
 			return copy;
 		});
 		setLoading(false);
@@ -360,8 +362,9 @@ const BuilderAIChat: React.FC = () => {
 												? '14px 14px 4px 14px'
 												: '4px 14px 14px 14px',
 										background:
-											msg.role === 'user' ? '#7545BB' : '#f4f0fb',
-										color: msg.role === 'user' ? '#fff' : '#1a1a2e',
+											msg.role === 'user' ? '#7545BB' : msg.notice ? '#fff8f8' : '#f4f0fb',
+										color: msg.role === 'user' ? '#fff' : msg.notice ? '#c0392b' : '#1a1a2e',
+										border: msg.notice ? '1px solid #fca5a5' : 'none',
 										fontSize: 13,
 										lineHeight: 1.55,
 										boxShadow:

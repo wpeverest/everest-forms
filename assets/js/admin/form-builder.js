@@ -6240,6 +6240,10 @@
 				if (ok) {
 					$builder.find('.everest-forms-field-wrap').html(res.data.preview);
 					$builder.find('.everest-forms-field-options').html(res.data.options);
+					if (res.data.title) {
+						$('#evf-edit-form-name').val(res.data.title);
+						$('#everest-forms-panel-field-settings-form_title').val(res.data.title);
+					}
 					try {
 						EVFPanelBuilder.bindFields();
 					} catch (e) {
