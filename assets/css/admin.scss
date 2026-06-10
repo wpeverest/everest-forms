@@ -44,6 +44,209 @@ body[class*='everest-forms_page_'] {
 	background: #f4f4f4 !important;
 	overflow-x: hidden;
 
+	// Subscription plan expiry picker (inline under the date input).
+	.evf-subscription-expiry-picker-anchor {
+		position: relative;
+		overflow: visible;
+	}
+
+	.flatpickr-calendar.evf-subscription-expiry-calendar {
+		z-index: 1000001 !important;
+		width: 312px !important;
+		margin-top: 4px;
+		padding-top: 8px;
+		box-sizing: border-box;
+		overflow: visible;
+
+		&::before,
+		&::after {
+			display: none !important;
+		}
+
+		.flatpickr-months {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			position: relative;
+			height: auto;
+			min-height: 52px;
+			padding: 8px 12px;
+			box-sizing: border-box;
+			overflow: visible;
+		}
+
+		.flatpickr-months .flatpickr-prev-month,
+		.flatpickr-months .flatpickr-next-month {
+			position: absolute;
+			top: 50%;
+			transform: translateY(-50%);
+			height: 32px;
+			width: 32px;
+			padding: 8px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			box-sizing: border-box;
+			z-index: 2;
+		}
+
+		.flatpickr-months .flatpickr-prev-month {
+			left: 8px;
+		}
+
+		.flatpickr-months .flatpickr-next-month {
+			right: 8px;
+		}
+
+		.flatpickr-months .flatpickr-month {
+			flex: 1 1 auto;
+			width: 100%;
+			max-width: 100%;
+			overflow: visible !important;
+			height: auto;
+			min-height: 36px;
+			// Keep month/year clear of ‹ › arrows (they are position:absolute).
+			padding: 0 36px;
+			box-sizing: border-box;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+
+		// Past / before-min (disabled, no trial tooltip).
+		.flatpickr-day.flatpickr-disabled:not(.prevMonthDay):not(.nextMonthDay):not(
+				.evf-expiry-trial-blocked
+			) {
+			cursor: not-allowed !important;
+			opacity: 1 !important;
+			color: #a7aaad !important;
+			border-color: transparent !important;
+			font-weight: 400;
+		}
+
+		// Trial window only.
+		.flatpickr-day.evf-expiry-trial-blocked,
+		.flatpickr-day.evf-expiry-trial-blocked.flatpickr-disabled {
+			cursor: not-allowed !important;
+			opacity: 1 !important;
+			color: #8c8f94 !important;
+			border-color: transparent !important;
+			font-weight: 400;
+		}
+
+		.flatpickr-day.evf-expiry-trial-blocked:hover {
+			color: #8c8f94 !important;
+			background: #e2e4e7 !important;
+			cursor: not-allowed !important;
+		}
+
+		// Selectable dates in the current month read darker for contrast.
+		.flatpickr-day:not(.flatpickr-disabled):not(.prevMonthDay):not(.nextMonthDay) {
+			color: #1d2327;
+			font-weight: 500;
+		}
+
+		.flatpickr-current-month {
+			position: static !important;
+			width: auto !important;
+			max-width: 100%;
+			left: auto !important;
+			transform: none !important;
+			font-size: 14px !important;
+			font-weight: 500;
+			line-height: 1.4 !important;
+			height: auto !important;
+			min-height: 0;
+			padding: 0 !important;
+			margin: 0 !important;
+			display: inline-flex !important;
+			align-items: center;
+			justify-content: center;
+			gap: 10px;
+			flex-wrap: nowrap;
+			text-align: center;
+
+			.flatpickr-monthDropdown-months {
+				font-size: 14px !important;
+				line-height: 1.4 !important;
+				height: 32px !important;
+				width: 112px;
+				min-width: 112px;
+				max-width: 112px;
+				margin: 0 !important;
+				padding: 4px 24px 4px 12px !important;
+				border: 1px solid #dcdcde !important;
+				border-radius: 4px;
+				background: #fff !important;
+				box-sizing: border-box;
+				appearance: menulist;
+				cursor: pointer;
+				text-align: left;
+				vertical-align: middle;
+
+				&:focus,
+				&:focus-visible,
+				&:active {
+					border-color: #6c47e8 !important;
+					outline: none;
+					box-shadow: 0 0 0 1px #6c47e8;
+				}
+			}
+
+			.numInputWrapper {
+				display: inline-flex !important;
+				align-items: stretch;
+				width: 80px !important;
+				min-width: 80px;
+				max-width: 80px;
+				height: 40px !important;
+				flex-shrink: 0;
+				border-radius: 4px;
+				overflow: visible;
+				position: relative;
+
+				input.cur-year {
+					font-size: 14px !important;
+					line-height: 1.4 !important;
+					height: 40px !important;
+					width: 100% !important;
+					min-width: 0;
+					padding: 4px 22px 4px 10px !important;
+					border: 1px solid #dcdcde !important;
+					border-radius: 4px;
+					background: #fff !important;
+					box-sizing: border-box;
+					text-align: left;
+
+					&:focus,
+					&:focus-visible {
+						border-color: #6c47e8 !important;
+						outline: none;
+						box-shadow: 0 0 0 1px #6c47e8;
+					}
+				}
+
+				span.arrowUp,
+				span.arrowDown {
+					width: 18px;
+					right: 0;
+					opacity: 1 !important;
+					border-color: #dcdcde;
+					box-sizing: border-box;
+				}
+
+				span.arrowUp {
+					border-bottom: 0;
+					border-radius: 0 4px 0 0;
+				}
+
+				span.arrowDown {
+					border-radius: 0 0 4px 0;
+				}
+			}
+		}
+	}
+
 	[class*='jconfirm-everest-forms-'] {
 		font-family: -apple-system, BlinkMacSystemFont, Inter, 'Segoe UI', Roboto,
 			Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
@@ -738,7 +941,7 @@ body.everest-forms-builder {
 
 	// Toggle switch.
 	.everest-forms-toggle-form {
-		width: 28px;
+		width: 31px;
 		height: 16px;
 		float: left;
 		margin-top: 3px;
@@ -1949,7 +2152,7 @@ p.search-box {
 			margin: 0 !important;
 
 			.select2-selection--single {
-				height: 36px;
+				height: 38px;
 				border-color: #e1e1e1;
 				border-radius: 4px;
 				transition: border-color 0.2s ease;
@@ -2809,6 +3012,36 @@ p.search-box {
 				overflow: unset !important;
 			}
 		}
+		@media (max-width: 1366px) {
+			.everest-forms-nav-wrapper {
+				display: flex !important;
+				flex-wrap: wrap !important;
+				align-items: center !important;
+				height: auto !important;
+				min-height: 70px !important;
+				padding: 10px 20px !important;
+			}
+
+			.evf-tab-wrapper {
+				width: 100% !important;
+				flex: 0 0 100% !important;
+				order: 1 !important;
+				display: flex !important;
+				align-items: center !important;
+				gap: 12px !important;
+			}
+
+			.evf-forms-nav-right {
+				width: 100% !important;
+				flex: 0 0 100% !important;
+				order: 2 !important;
+				display: flex !important;
+				align-items: center !important;
+				justify-content: flex-end !important;
+				gap: 8px !important;
+				margin-top: 8px !important;
+			}
+		}
 
 		.evf-tab-content {
 			h5 {
@@ -3292,7 +3525,7 @@ p.search-box {
 					}
 
 					.evf-registered-item {
-						padding: 20px 8px;
+						padding: 18px 4px;
 						border: 1px solid #edeff7;
 						width: 30.3%;
 						z-index: 999;
@@ -3360,7 +3593,9 @@ p.search-box {
 							background: #fafbfc;
 							border-color: #e3e6ea;
 							color: #ccd1d6;
+						}
 
+						&.upgrade-modal {
 							&::before {
 								content: '';
 								background-image: url(../images/icons/everest-form-pro-icon.png);
@@ -3511,9 +3746,14 @@ p.search-box {
 								}
 							}
 
+							input {
+								border-radius: 6px;
+							}
+
 							input,
 							select {
 								height: 36px;
+								border-color: #e1e1e1;
 
 								&[type='checkbox'],
 								&[type='radio'] {
@@ -4990,8 +5230,7 @@ p.search-box {
 				margin-bottom: 20px;
 				max-width: 100%;
 				display: flex;
-				align-items: baseline;
-				gap: 30px;
+				gap: 12px;
 
 				&.evf-field-conditional-container {
 					display: none;
@@ -5179,6 +5418,7 @@ p.search-box {
 								display: inline-block;
 								margin: 0 0 0 auto;
 								flex: 0 0 22%;
+								border-radius: 6px;
 							}
 						}
 					}
@@ -5372,17 +5612,170 @@ p.search-box {
 							}
 						}
 
-						.evf-trail-period-wrapper,
-						.evf-expiry-date-wrapper {
-							margin-top: 10px;
+					}
+				}
+			}
+
+			.everest-forms-field-option-payment-subscription-plan {
+				.everest-forms-field-option-row {
+					li {
+						.evf-subscription-plan-tabs {
+							margin-top: 8px;
 							width: 100%;
-							display: flex;
-							justify-content: space-between;
-							align-content: center;
+
+							.evf-spt-strip {
+								display: flex;
+								background: #e4e4e66e;
+								border-radius: 4px;
+								padding: 2px;
+								gap: 1px;
+								margin-bottom: 0;
+							}
+
+							.evf-spt-tab {
+								flex: 1;
+								padding: 8px;
+								text-align: center;
+								font-size: 13px;
+								font-weight: 600;
+								color: #8c8f94;
+								cursor: pointer;
+								border-radius: 4px;
+								display: flex;
+								align-items: center;
+								justify-content: center;
+								gap: 3px;
+								line-height: 1.2;
+								transition: background 0.15s, color 0.15s, box-shadow 0.15s;
+
+								&.evf-spt-tab--active {
+									background: #fff;
+									color: #6c47e8;
+									box-shadow: 0 1px 3px rgba(0, 0, 0, 0.13), 0 0 0 0.5px rgba(0, 0, 0, 0.06);
+								}
+
+								.evf-spt-dot {
+									width: 5px;
+									height: 5px;
+									border-radius: 50%;
+									background: #2fb344;
+									flex-shrink: 0;
+									display: inline-block;
+								}
+							}
+
+							.evf-spt-panel {
+								padding: 10px 0 4px;
+							}
+
+							.evf-spt-always-badge {
+								display: inline-flex;
+								align-items: center;
+								gap: 4px;
+								font-size: 10px;
+								font-weight: 600;
+								background: #ede9fe;
+								color: #6c47e8;
+								border-radius: 3px;
+								padding: 2px 6px;
+								margin-bottom: 7px;
+								letter-spacing: 0.2px;
+							}
+
+							.evf-spt-input-row {
+								display: flex;
+								gap: 7px;
+								align-items: center;
+
+								input[type='number'] {
+									width: 62px;
+									border: 1px solid #dcdcde;
+									border-radius: 4px;
+									padding: 5px 7px;
+									font-size: 13px;
+									color: #2c3338;
+									background: #fff;
+								}
+
+								select {
+									flex: 1;
+									border: 1px solid #dcdcde;
+									border-radius: 4px;
+									padding: 5px 7px;
+									font-size: 13px;
+									color: #2c3338;
+									background: #fff;
+									line-height: 1.6;
+								}
+							}
+
+							.evf-spt-toggle-row {
+								display: flex;
+								align-items: center;
+								justify-content: space-between;
+								margin-bottom: 8px;
+
+								.evf-spt-toggle-label {
+									font-size: 14px;
+									font-weight: 500;
+									color: #3c434a;
+								}
+							}
+
+							.evf-spt-panel-detail {
+								&.evf-spt-dimmed {
+									opacity: 0.38;
+									pointer-events: none;
+								}
+							}
+
+							.evf-radio-subscription-expiry-input {
+								width: 100%;
+								border: 1px solid #dcdcde;
+								border-radius: 4px;
+								padding: 5px 8px;
+								font-size: 13px;
+								color: #555d66;
+								background: #fff;
+								box-sizing: border-box;
+
+								&.active {
+									border-color: #7c5cfd;
+									box-shadow: 0 0 0 1px #7c5cfd;
+								}
+							}
+
+							.evf-subscription-expiry-picker-anchor {
+								.flatpickr-wrapper {
+									display: block;
+									width: 100%;
+								}
+
+								.flatpickr-calendar.evf-subscription-expiry-calendar {
+									position: relative !important;
+									top: auto !important;
+									left: auto !important;
+									right: auto !important;
+									box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+								}
+							}
+
+							.evf-expiry-trial-hint {
+								margin: 6px 0 0;
+								font-size: 12px;
+								line-height: 1.4;
+								color: #646970;
+							}
+
+							.evf-spt-panel--expiry,
+							.evf-spt-panel-detail {
+								overflow: visible;
+							}
 						}
 					}
 				}
 			}
+
 
 			.evf-content-email-settings-inner {
 				display: none;
@@ -5667,6 +6060,7 @@ p.search-box {
 					width: 100%;
 					max-width: 100%;
 					margin-bottom: 32px;
+					width: 100%;
 
 					.evf-icon {
 						display: flex;
@@ -5685,7 +6079,7 @@ p.search-box {
 							border-radius: 3px;
 							position: absolute;
 							left: 32px;
-							right: calc(100% - 36px);
+							right: 0;
 							height: 30px;
 							border-radius: 0 3px 3px 0;
 							transition: all 0.3s ease 0s;
@@ -6747,7 +7141,6 @@ p.search-box {
 					background: #e9ebf1;
 					border-radius: 4px;
 					border: none;
-					align-items: right;
 
 					&:hover {
 						background: #7e3bd0;
@@ -7540,7 +7933,7 @@ img.ui-datepicker-trigger {
 			}
 
 			&:hover {
-				color: #007cba;
+				color: #7545bb;
 			}
 		}
 
@@ -8532,10 +8925,10 @@ img.ui-datepicker-trigger {
 					}
 
 					.everest-forms-lets-go-btn {
-						background: #8c5aca;
+						background: #7545bb;
 						color: #fff;
 						font-weight: 500;
-						border: 1px solid #8c5aca;
+						border: 1px solid #7545bb;
 						padding: 6px 16px;
 						border-radius: 4px;
 						vertical-align: middle;
@@ -8955,7 +9348,7 @@ img.ui-datepicker-trigger {
 		background: #fff;
 		border: 1px solid #e1e1e1;
 		border-radius: 4px;
-		min-height: 38px;
+		min-height: 36px;
 
 		.select2-selection__rendered {
 			color: #444;
@@ -9136,7 +9529,8 @@ img.ui-datepicker-trigger {
 	}
 
 	.select2-results__option--highlighted[data-selected] {
-		color: #222;
+		/* dropdown on hover */
+		color: #7545bb;
 		background: #eee8f7;
 	}
 
@@ -9654,22 +10048,46 @@ img.ui-datepicker-trigger {
 			}
 
 			.evf-quiz-reporting {
-				.everest-forms-panel-field-radio {
-					.row {
-						display: flex;
-						align-items: center;
-						margin-bottom: 10px;
+    .everest-forms-panel-field-radio {
+        .row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
 
-						input {
-							margin: 0 4px 0 0;
-						}
+            input {
+                margin: 0 4px 0 0;
+            }
 
-						label {
-							margin-bottom: 0;
-						}
-					}
-				}
-			}
+            input[type=radio] {
+                position: relative !important;
+
+                &:checked {
+                   background: #f6f5f8;
+													border-color: #7545bb;
+
+                    &::before {
+                        content: "" !important;
+												position: absolute !important;
+												inset: 0 !important;
+												margin: auto !important;
+												float: none !important;
+												display: block !important;
+												border-radius: 50% !important;
+												width: 0.5rem !important;
+												height: 0.5rem !important;
+												background: #fff !important;
+												background-color: #7545bb !important;
+												outline: 4px solid transparent !important;
+                    }
+                }
+            }
+
+            label {
+                margin-bottom: 0;
+            }
+        }
+    }
+}
 
 			.evf-quiz-settings {
 				padding-left: 20px;
@@ -9738,12 +10156,12 @@ img.ui-datepicker-trigger {
 										position: relative;
 
 										input {
-											padding-right: 30px;
+											padding-right: 40px;
 										}
 
 										span {
-											width: 30px;
-											height: 30px;
+											width: 40px;
+											height: 40px;
 											display: flex;
 											align-items: center;
 											justify-content: center;
@@ -10604,6 +11022,15 @@ img.ui-datepicker-trigger {
 							font-size: 14px;
 							line-height: 24px;
 							align-content: center;
+							background: #faf8fc;
+							border: 1px solid #7545bb;
+							color: #7545bb;
+
+							&:focus {
+								box-shadow: none;
+								outline: none;
+								outline-offset: 0;
+							}
 						}
 					}
 
@@ -12391,7 +12818,7 @@ body {
 							margin-bottom: 20px;
 
 							i {
-								color: #646970;
+								display: none;
 							}
 						}
 
@@ -13481,8 +13908,7 @@ button#show-settings-link {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	justify-content: center;
-	gap: 10px;
+	justify-content: center; gap: 10px;
 	border: 1px solid #edeff7;
 	border-radius: 4px;
 	padding: 20px 8px;
@@ -13720,6 +14146,30 @@ button#show-settings-link {
 				background-position: center;
 				background-repeat: no-repeat;
 				background-size: 11px;
+			}
+		}
+
+		&.evf-addon-install-trigger {
+			opacity: 0.65;
+
+			.logo {
+				filter: grayscale(50%);
+			}
+
+			.evf-integration-inactive-badge {
+				font-size: 10px;
+				font-weight: 600;
+				color: #888;
+				background: #e1e1e1;
+				border-radius: 3px;
+				padding: 2px 6px;
+				text-transform: uppercase;
+				letter-spacing: 0.3px;
+				white-space: nowrap;
+			}
+
+			&:hover {
+				opacity: 0.85;
 			}
 		}
 	}
@@ -14065,4 +14515,159 @@ button#show-settings-link {
 
 .evf-payments-upsell-btn svg {
 	margin-top: -3px;
+}
+
+.everest-forms-field-payment-subscription-plan {
+	ul.primary-input {
+		list-style: none;
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+		margin: 0;
+		padding: 0;
+
+		li {
+			border: 1.5px solid #dcdcde;
+			border-radius: 6px;
+			padding: 10px 14px;
+			display: flex;
+			align-items: flex-start;
+			gap: 10px;
+			cursor: pointer;
+			transition: border-color 0.15s, background 0.15s;
+			margin: 0;
+
+			&:has(input:checked) {
+				border-color: #6c47e8;
+			}
+		}
+
+		input[type="radio"] {
+			margin-top: 3px;
+			flex-shrink: 0;
+		}
+
+		.everest-forms-field-label-inline {
+			flex: 1;
+			cursor: pointer;
+		}
+	}
+
+	.evf-plan-wrap {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+	}
+
+	.evf-plan-main {
+		display: flex;
+		justify-content: space-between;
+		align-items: baseline;
+		gap: 8px;
+	}
+
+	.evf-plan-name {
+		font-size: 13px;
+		font-weight: 500;
+	}
+
+	.evf-plan-price {
+		font-size: 13px;
+		font-weight: 700;
+		white-space: nowrap;
+	}
+
+	.evf-plan-meta {
+		display: block;
+		font-size: 0.80em;
+		color: #757575;
+		margin-top: 3px;
+		font-weight: 400;
+	}
+}
+// Conditional Logic upsell panel (free version only).
+.evf-cl-upsell-group {
+	> .everest-forms-field-option-group-toggle {
+		color: #999 !important;
+	}
+}
+
+.evf-cl-pro-badge {
+	display: inline-flex;
+	align-items: center;
+	margin-left: 5px;
+	vertical-align: middle;
+	position: relative;
+	top: -1px;
+
+	svg {
+		width: 18px;
+		height: 18px;
+	}
+}
+
+.evf-cl-upgrade-notice {
+	background: #f5f3ff;
+	border-left: 3px solid #7545bb;
+	padding: 11px 13px;
+	margin-bottom: 14px;
+	border-radius: 0 4px 4px 0;
+
+	p {
+		margin: 0 0 9px;
+		color: #3c3c3c;
+		font-size: 12px;
+		line-height: 1.6;
+	}
+}
+
+.evf-cl-upgrade-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	background: #7545bb;
+	color: #fff !important;
+	font-size: 12px;
+	font-weight: 600;
+	padding: 6px 13px;
+	border-radius: 4px;
+	text-decoration: none !important;
+	transition: background 0.2s ease;
+
+	svg {
+		width: 14px;
+		height: 14px;
+		flex-shrink: 0;
+	}
+
+	&:hover {
+		background: #9159e3;
+		color: #fff !important;
+	}
+}
+
+.evf-cl-features {
+	list-style: none;
+	margin: 0 0 14px;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 7px;
+
+	li {
+		display: flex;
+		align-items: flex-start;
+		gap: 7px;
+		font-size: 12px;
+		line-height: 1.5;
+		color: #3c3c3c;
+
+		svg {
+			flex-shrink: 0;
+			width: 14px;
+			height: 14px;
+			margin-top: 2px;
+			color: #7545bb;
+		}
+	}
 }

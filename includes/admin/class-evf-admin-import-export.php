@@ -218,7 +218,9 @@ class EVF_Admin_Import_Export {
 
 		// Set new form ID.
 		$new_form_data['id'] = absint( $post_id );
-		$form                = array(
+		// Imported forms carry existing configuration; not a blank builder form (see is_new_form in form JSON).
+		$new_form_data['is_new_form'] = false;
+		$form                         = array(
 			'ID'           => $post_id,
 			'post_content' => evf_encode( $new_form_data ),
 		);

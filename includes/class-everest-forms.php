@@ -23,7 +23,7 @@ final class EverestForms {
 	 *
 	 * @var string
 	 */
-	public $version = '3.4.8';
+	public $version = '3.4.9';
 
 	/**
 	 * The single instance of the class.
@@ -187,6 +187,7 @@ final class EverestForms {
 		add_action( 'switch_blog', array( $this, 'wpdb_table_fix' ), 0 );
 		add_filter( 'everest_forms_entry_bulk_actions', array( $this, 'everest_forms_entry_bulk_actions' ) );
 		add_action( 'init', array( $this, 'evf_register_inactive_post_status' ) );
+		add_action( 'current_screen', array( $this, 'maybe_load_integrations' ) );
 	}
 
 	/**
@@ -302,6 +303,7 @@ final class EverestForms {
 		 * Core classes.
 		 */
 		include_once EVF_ABSPATH . 'includes/evf-core-functions.php';
+		include_once EVF_ABSPATH . 'includes/traits/trait-evf-subscription-schedule-choices.php';
 		include_once EVF_ABSPATH . 'includes/class-evf-post-types.php';
 		include_once EVF_ABSPATH . 'includes/class-evf-install.php';
 		include_once EVF_ABSPATH . 'includes/class-evf-ajax.php';
@@ -323,6 +325,17 @@ final class EverestForms {
 		 * Rest api classes.
 		 */
 		include_once EVF_ABSPATH . 'includes/RestApi/class-evf-rest-api.php';
+
+		/**
+		 * Abilities API + MCP integration.
+		 */
+		include_once EVF_ABSPATH . 'includes/abilities/class-evf-abilities-registry.php';
+		include_once EVF_ABSPATH . 'includes/abilities/class-evf-field-schemas.php';
+		include_once EVF_ABSPATH . 'includes/abilities/class-evf-form-builder.php';
+		include_once EVF_ABSPATH . 'includes/abilities/class-evf-abilities-handlers.php';
+		include_once EVF_ABSPATH . 'includes/abilities/class-evf-mcp-server.php';
+		include_once EVF_ABSPATH . 'includes/abilities/class-evf-abilities.php';
+		EVF_Abilities::init();
 
 		/**
 		 * Preview Confirmation Class
@@ -414,6 +427,27 @@ final class EverestForms {
 
 		// Init action.
 		do_action( 'everest_forms_init' );
+	}
+
+	public function maybe_load_integrations( $screen ) {
+
+		if ( ! is_admin() ) {
+			return;
+		}
+
+		if ( ! $screen ) {
+			return;
+		}
+
+		if ( ! in_array( $screen->id, evf_get_screen_ids(), true ) ) {
+			return;
+		}
+
+		if ( $this->integrations ) {
+			return;
+		}
+
+		$this->integrations = new EVF_Integrations();
 	}
 
 	/**

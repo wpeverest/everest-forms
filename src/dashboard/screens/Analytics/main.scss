@@ -14,6 +14,52 @@
 		}
 	}
 
+	&__Actions {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		margin-left: auto;
+	}
+
+	&__ActionBtn {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		padding: 8px 14px;
+		font-size: 13px;
+		font-weight: 500;
+		color: #374151;
+		background-color: #fff;
+		border: 1px solid #d1d5db;
+		border-radius: 6px;
+		cursor: pointer;
+		transition: background-color 0.15s, border-color 0.15s;
+		font-family: inherit;
+		white-space: nowrap;
+		opacity: 0.75;
+
+		svg {
+			flex-shrink: 0;
+			width: 15px;
+			height: 15px;
+			pointer-events: none;
+
+			&:last-child {
+				width: 13px;
+				height: 13px;
+				color: #9ca3af;
+			}
+		}
+
+		&:hover,
+		&:focus {
+			background-color: #f9fafb;
+			border-color: #9ca3af;
+			outline: none;
+			opacity: 1;
+		}
+	}
+
 	&__FilterTrigger {
 		display: inline-flex;
 		align-items: center;
@@ -203,6 +249,46 @@
 
 		&:active {
 			opacity: 0.8;
+		}
+	}
+
+	&__ModalBackdrop {
+		position: fixed;
+		inset: 0;
+		background-color: rgba(0, 0, 0, 0.5);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		z-index: 99999;
+	}
+
+	&__ModalBox {
+		position: relative;
+		background-color: #fff;
+		border-radius: 16px;
+		box-shadow: 0 8px 48px rgba(0, 0, 0, 0.18);
+		padding: 56px 48px;
+		text-align: center;
+		max-width: 520px;
+		width: 90%;
+	}
+
+	&__ModalClose {
+		position: absolute;
+		top: 16px;
+		right: 20px;
+		background: none;
+		border: none;
+		font-size: 22px;
+		line-height: 1;
+		color: #6b7280;
+		cursor: pointer;
+		padding: 4px 8px;
+		border-radius: 4px;
+
+		&:hover {
+			color: #111827;
+			background-color: #f3f4f6;
 		}
 	}
 }
