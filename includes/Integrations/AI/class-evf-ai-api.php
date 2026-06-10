@@ -239,9 +239,10 @@ class EVF_AI_API {
 		if ( $status < 200 || $status >= 300 ) {
 			$detail = is_array( $body ) ? ( $body['detail'] ?? $body['message'] ?? '' ) : '';
 			// FastAPI 400s send detail as an object: {"error": "...", "message": "..."}.
-			$msg = is_array( $detail ) ? ( $detail['message'] ?? $detail['error'] ?? '' ) : $detail;
+			$msg  = is_array( $detail ) ? ( $detail['message'] ?? $detail['error'] ?? '' ) : $detail;
+			$code = ( is_array( $detail ) && ! empty( $detail['error'] ) ) ? $detail['error'] : 'api_error';
 			return new WP_Error(
-				'api_error',
+				$code,
 				$msg ?: sprintf( __( 'AI service returned an error (%d).', 'everest-forms' ), $status )
 			);
 		}
