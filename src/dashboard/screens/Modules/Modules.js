@@ -14,6 +14,7 @@ import {
 	useState,
 } from 'react';
 import { FaArrowUp } from 'react-icons/fa';
+import { useSearchParams } from 'react-router-dom';
 
 import { PageNotFound } from './../../components/Icon/Icon';
 import DashboardContext from './../../context/DashboardContext';
@@ -27,6 +28,7 @@ import { getAllModules } from './components/modules-api';
 const Modules = () => {
 	const toast = useToast();
 	const [{ allModules }, dispatch] = useContext(DashboardContext);
+	const [searchParams] = useSearchParams();
 
 	const [state, setState] = useState({
 		modules: [],
@@ -283,14 +285,17 @@ const Modules = () => {
 				allModules: deduplicatedModules,
 			});
 
+			const categoryParam = searchParams.get('category') || 'All';
+
 			setState((prev) => ({
 				...prev,
 				originalModules: deduplicatedModules,
 				modulesLoaded: true,
+				selectedCategory: categoryParam,
 			}));
 
 			setTimeout(() => {
-				filterModules(deduplicatedModules, 'All', false);
+				filterModules(deduplicatedModules, categoryParam, false);
 			}, 0);
 		}
 	}, [modulesData, dispatch]);

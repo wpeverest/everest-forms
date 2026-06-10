@@ -197,6 +197,158 @@
 			}
 			EVFPanelBuilder.syncPaymentMethodDependentFields();
 
+			// Keep Payment Gateway field availability in sync with Payments tab toggles.
+			$(document).on(
+				'change click',
+				[
+					'#everest-forms-panel-field-paymentsstripe-enable_stripe',
+					'#everest-forms-panel-field-paypal-enable_paypal',
+					// Razorpay toggle id varies by version/addon; support both.
+					'#everest-forms-panel-field-paymentsrazorpay-enable_razorpay',
+					'#everest-forms-panel-field-razorpay-enable_razorpay',
+					'input[name*="[razorpay]"][name*="enable_razorpay"]',
+					'#everest-forms-panel-field-authorize_net-enable_authorize_net',
+					'#everest-forms-panel-field-square-enable_square',
+					'#everest-forms-panel-field-paymentsmollie-enable_mollie',
+				].join(','),
+				function () {
+					EVFPanelBuilder.syncPaymentMethodDependentFields();
+				},
+			);
+
+			// Hard-block enabling any payment gateway when Payment Gateway field is present.
+			// Some addons use custom toggle wrappers that can still flip even if the underlying checkbox is disabled,
+			// so we intercept the interaction and immediately revert.
+			(function () {
+				var blockedSelectors = [
+					'#everest-forms-panel-field-paymentsstripe-enable_stripe',
+					'#everest-forms-panel-field-paypal-enable_paypal',
+					// Razorpay toggle id varies by version/addon; support both.
+					'#everest-forms-panel-field-paymentsrazorpay-enable_razorpay',
+					'#everest-forms-panel-field-razorpay-enable_razorpay',
+					'input[name*="[razorpay]"][name*="enable_razorpay"]',
+					'#everest-forms-panel-field-authorize_net-enable_authorize_net',
+					'#everest-forms-panel-field-square-enable_square',
+					'#everest-forms-panel-field-paymentsmollie-enable_mollie',
+				];
+
+				// Capture-phase blocker: prevents addon handlers from running at all,
+				// avoiding a brief UI flash (settings rows showing) before our popup appears.
+				// We also guard "change" to catch programmatic enables.
+				if (!window.__evfPgwPaymentsToggleCaptureBound) {
+					window.__evfPgwPaymentsToggleCaptureBound = true;
+
+					function evfPgwFieldPresent() {
+						return (
+							$('#everest-forms-builder')
+								.find('.everest-forms-field-payment-gateway-selector')
+								.length > 0
+						);
+					}
+
+					function evfFindBlockedRootFromEvent(evt) {
+						if (!evt || !evt.target || !evt.target.closest) {
+							return null;
+						}
+						return evt.target.closest(blockedSelectors.join(','));
+					}
+
+					function evfFindCheckbox($root) {
+						if (!$root || !$root.length) {
+							return $();
+						}
+						if ($root.is('input[type="checkbox"]')) {
+							return $root;
+						}
+						var $in = $root.find('input[type="checkbox"]').first();
+						if ($in.length) {
+							return $in;
+						}
+						return $root.closest('li').find('input[type="checkbox"]').first();
+					}
+
+					function evfShowPopup() {
+						var title = 'Field Unavailable';
+						var closeText = (evf_data && evf_data.i18n_close) || 'Close';
+						var content =
+							'Payment Gateway is currently in use. Remove Payment Gateway to enable this field.';
+
+						if (typeof $.confirm === 'function') {
+							$.confirm({
+								title: title,
+								content: content,
+								buttons: {
+									close: {
+										text: closeText,
+									},
+								},
+							});
+						} else {
+							window.alert(content);
+						}
+					}
+
+					function evfBlockEnable(evt) {
+						if (!evfPgwFieldPresent()) {
+							return;
+						}
+
+						var root = evfFindBlockedRootFromEvent(evt);
+						if (!root) {
+							return;
+						}
+
+						var $checkbox = evfFindCheckbox($(root));
+
+						// Only show notice when enabling (unchecked -> checked).
+						// If already checked, user is disabling; allow silently.
+						if ($checkbox.length && $checkbox.is(':checked')) {
+							return;
+						}
+
+						evt.preventDefault();
+						evt.stopPropagation();
+
+						if ($checkbox.length) {
+							$checkbox.prop('checked', false);
+						}
+
+						evfShowPopup();
+					}
+
+					['pointerdown', 'mousedown', 'click'].forEach(function (type) {
+						document.addEventListener(type, evfBlockEnable, true);
+					});
+
+					// Catch programmatic enables (change fires after state flips).
+					document.addEventListener(
+						'change',
+						function (evt) {
+							if (!evfPgwFieldPresent()) {
+								return;
+							}
+							var root = evfFindBlockedRootFromEvent(evt);
+							if (!root) {
+								return;
+							}
+							var $checkbox = evfFindCheckbox($(root));
+							if ($checkbox.length && $checkbox.is(':checked')) {
+								evt.preventDefault();
+								evt.stopPropagation();
+								$checkbox.prop('checked', false);
+								evfShowPopup();
+							}
+						},
+						true,
+					);
+				}
+
+				// Note: we intentionally rely on the capture-phase blocker above.
+				// A bubble-phase handler can run after the checkbox state flips, which would show the
+				// notice when DISABLING. Capture-phase guarantees we only block ENABLE attempts.
+			})();
+
+
 			if (!$('evf-panel-payments-button a').hasClass('active')) {
 				$('#everest-forms-panel-payments')
 					.find('.everest-forms-panel-sidebar a')
@@ -271,6 +423,10 @@
 				'evf_field_drop_complete',
 				function (e, field_type, dragged_field_id) {
 					EVFPanelBuilder.bindEditMetaKey(dragged_field_id);
+					// Keep Payment Gateway ↔ Payments tab constraints in sync after any field drop.
+					if (EVFPanelBuilder.syncPaymentMethodDependentFields) {
+						EVFPanelBuilder.syncPaymentMethodDependentFields();
+					}
 
 					// Set defaults in privacy policy field.
 					if ('privacy-policy' === field_type) {
@@ -298,6 +454,15 @@
 						)
 							.find('select.evf-select2-multiple > option')
 							.prop('selected', true);
+					}
+
+					// Payment Gateway field: server-rendered field-map options use saved form data;
+					// repopulate from the builder canvas so existing fields appear without reload.
+					if ('payment-gateway-selector' === field_type) {
+						EVFPanelBuilder.refreshFieldMapSelectsInContainer(
+							'#everest-forms-field-option-' + dragged_field_id,
+							dragged_field_id,
+						);
 					}
 				},
 			);
@@ -1118,59 +1283,518 @@
 			}
 		},
 		/**
+		 * Normalize a date to local midnight for day comparisons.
+		 *
+		 * @param {Date} date Input date.
+		 * @return {Date}
+		 */
+		normalize_subscription_expiry_day: function (date) {
+			var normalized = new Date(date.getTime());
+			normalized.setHours(0, 0, 0, 0);
+			return normalized;
+		},
+
+		/**
+		 * Whether a calendar day falls inside the active trial window (not past dates).
+		 *
+		 * @param {jQuery} $li     Plan choice row.
+		 * @param {Date}   dayDate Calendar day.
+		 * @return {boolean}
+		 */
+		is_subscription_expiry_trial_day: function ($li, dayDate) {
+			if (
+				!dayDate ||
+				!$li ||
+				!$li.length ||
+				!$li.find('.evf-enable-trial-period').is(':checked')
+			) {
+				return false;
+			}
+
+			var today = new Date();
+			today.setHours(0, 0, 0, 0);
+			var trialMin =
+				EVFPanelBuilder.get_subscription_expiry_min_date($li);
+			var day = EVFPanelBuilder.normalize_subscription_expiry_day(dayDate);
+
+			return (
+				day.getTime() >= today.getTime() &&
+				day.getTime() < trialMin.getTime()
+			);
+		},
+
+		/**
+		 * First allowed expiry date for a plan choice (matches SubscriptionSchedule billing_start_date).
+		 *
+		 * @param {jQuery} $li Plan choice row.
+		 * @return {Date} Midnight local date.
+		 */
+		get_subscription_expiry_min_date: function ($li) {
+			var min = new Date();
+			min.setHours(0, 0, 0, 0);
+
+			if (!$li || !$li.length) {
+				return min;
+			}
+
+			if (!$li.find('.evf-enable-trial-period').is(':checked')) {
+				return min;
+			}
+
+			var count = parseInt(
+				$li.find('.evf-spt-panel--trial input[type="number"]').val(),
+				10,
+			);
+			if (isNaN(count) || count < 1) {
+				count = 1;
+			}
+
+			var period =
+				$li.find('.evf-spt-panel--trial select').val() || 'day';
+
+			switch (period) {
+				case 'week':
+					min.setDate(min.getDate() + count * 7);
+					break;
+				case 'month':
+					min.setMonth(min.getMonth() + count);
+					break;
+				case 'year':
+					min.setFullYear(min.getFullYear() + count);
+					break;
+				case 'day':
+				default:
+					min.setDate(min.getDate() + count);
+					break;
+			}
+
+			return min;
+		},
+
+		/**
+		 * Show or hide expiry hint when trial blocks early dates.
+		 *
+		 * @param {jQuery} $li Plan choice row.
+		 * @param {Date}   minDate First selectable expiry date.
+		 */
+		sync_subscription_expiry_trial_hint: function ($li, minDate) {
+			var $detail = $li.find('.evf-spt-panel--expiry .evf-spt-panel-detail');
+			var $hint = $detail.find('.evf-expiry-trial-hint');
+
+			if (!$hint.length) {
+				$hint = $(
+					'<p class="evf-expiry-trial-hint description" role="note"></p>',
+				);
+				$detail.append($hint);
+			}
+
+			if (!$li.find('.evf-enable-trial-period').is(':checked')) {
+				$hint.hide().text('');
+				return;
+			}
+
+			var label =
+				typeof flatpickr !== 'undefined'
+					? flatpickr.formatDate(minDate, 'Y-m-d')
+					: minDate.toISOString().slice(0, 10);
+			var template =
+				(evf_data && evf_data.i18n_expiry_trial_min_date) ||
+				'Expiry must be on or after the trial ends (%s).';
+
+			$hint.text(template.replace('%s', label)).show();
+		},
+
+		/**
+		 * Anchor element for positioning the expiry calendar under the date input.
+		 *
+		 * @param {jQuery} $input Expiry date input.
+		 * @return {HTMLElement}
+		 */
+		get_subscription_expiry_picker_anchor: function ($input) {
+			var $anchor = $input.closest('.evf-spt-panel-detail');
+
+			if (!$anchor.length) {
+				$anchor = $input.closest('.evf-general-setting-field');
+			}
+
+			if (!$anchor.length) {
+				$anchor = $input.parent();
+			}
+
+			return $anchor[0];
+		},
+
+		/**
+		 * Close open subscription expiry flatpickr calendars.
+		 *
+		 * @param {HTMLElement|null} exceptInput Optional input to keep open.
+		 */
+		close_subscription_expiry_pickers: function (exceptInput) {
+			$('.evf-radio-subscription-expiry-input').each(function () {
+				if (exceptInput && this === exceptInput) {
+					return;
+				}
+
+				if (this._flatpickr && this._flatpickr.isOpen) {
+					this._flatpickr.close();
+				}
+
+				$(this).removeClass('active');
+			});
+		},
+
+		/**
+		 * Clear subscription plan expiry date input and flatpickr state.
+		 *
+		 * @param {jQuery} $li Plan choice row.
+		 */
+		clear_subscription_plan_expiry_date: function ($li) {
+			var $expiryInput = $li.find('.evf-radio-subscription-expiry-input');
+
+			$expiryInput.val('');
+
+			if ($expiryInput.length && $expiryInput[0]._flatpickr) {
+				$expiryInput[0]._flatpickr.clear();
+			}
+		},
+
+		/**
+		 * Toggle flatpickr when the expiry input is clicked.
+		 *
+		 * @param {object} instance Flatpickr instance.
+		 */
+		bind_subscription_expiry_picker_toggle: function (instance) {
+			var $input = $(instance.input);
+
+			$input.off('click.evfExpiryPicker').on('click.evfExpiryPicker', function (e) {
+				e.preventDefault();
+				e.stopPropagation();
+
+				if (instance.isOpen) {
+					instance.close();
+					return;
+				}
+
+				EVFPanelBuilder.close_subscription_expiry_pickers(instance.input);
+				instance.open();
+			});
+		},
+
+		/**
+		 * Update minDate on open expiry pickers after trial settings change.
+		 *
+		 * @param {jQuery} $scope Optional plan choice row.
+		 */
+		update_subscription_expiry_min_dates: function ($scope) {
+			var $inputs =
+				$scope && $scope.length
+					? $scope.find('.evf-radio-subscription-expiry-input')
+					: $(
+							'.everest-forms-field-option-payment-subscription-plan .evf-radio-subscription-expiry-input',
+						);
+
+			$inputs.each(function () {
+				var el = this;
+				var $li = $(el).closest('li');
+
+				if (!el._flatpickr) {
+					return;
+				}
+
+				var minDate =
+					EVFPanelBuilder.get_subscription_expiry_min_date($li);
+
+				el._flatpickr.set('minDate', minDate);
+				EVFPanelBuilder.sync_subscription_expiry_trial_hint(
+					$li,
+					minDate,
+				);
+
+				if (
+					el._flatpickr.selectedDates[0] &&
+					el._flatpickr.selectedDates[0] < minDate
+				) {
+					el._flatpickr.clear();
+				}
+
+				el._flatpickr.redraw();
+			});
+		},
+
+		/**
+		 * Flatpickr for subscription plan expiry date (builder only).
+		 *
+		 * @param {jQuery} $scope Optional container (plan choice row).
+		 */
+		init_subscription_expiry_date_pickers: function ($scope) {
+			var $inputs =
+				$scope && $scope.length
+					? $scope.find('.evf-radio-subscription-expiry-input')
+					: $(
+							'.everest-forms-field-option-payment-subscription-plan:visible .evf-radio-subscription-expiry-input',
+						);
+
+			var blockedTitle =
+				(evf_data && evf_data.i18n_expiry_trial_blocked_day) ||
+				'This date is within the trial period and cannot be used as the expiry date.';
+
+			$inputs.each(function () {
+				var $input = $(this);
+				var el = this;
+				var $li = $input.closest('li');
+				var savedDate = $.trim($input.val());
+				var dateFormat = $input.data('date-format') || 'Y-m-d';
+
+				if (el._flatpickr && !el._flatpickr.config.static) {
+					el._flatpickr.destroy();
+				}
+
+				if (el._flatpickr) {
+					var minDate =
+						EVFPanelBuilder.get_subscription_expiry_min_date($li);
+
+					el._flatpickr.set('minDate', minDate);
+
+					if (savedDate) {
+						el._flatpickr.setDate(savedDate, false);
+
+						if (el._flatpickr.selectedDates[0]) {
+							$input.val(
+								el._flatpickr.formatDate(
+									el._flatpickr.selectedDates[0],
+									dateFormat,
+								),
+							);
+						} else {
+							$input.val(savedDate);
+						}
+					}
+
+					EVFPanelBuilder.sync_subscription_expiry_trial_hint(
+						$li,
+						minDate,
+					);
+					el._flatpickr.redraw();
+					EVFPanelBuilder.bind_subscription_expiry_picker_toggle(
+						el._flatpickr,
+					);
+					return;
+				}
+
+				var $anchor = $(EVFPanelBuilder.get_subscription_expiry_picker_anchor($input));
+				$anchor.addClass('evf-subscription-expiry-picker-anchor');
+
+				$input.flatpickr({
+					dateFormat: dateFormat,
+					defaultDate: savedDate || null,
+					disableMobile: true,
+					allowInput: false,
+					clickOpens: false,
+					closeOnSelect: true,
+					static: true,
+					position: 'below',
+					animate: true,
+					minDate:
+						EVFPanelBuilder.get_subscription_expiry_min_date($li),
+					monthSelectorType: 'dropdown',
+					onOpen: function (selectedDates, dateStr, instance) {
+						$(instance.input).addClass('active');
+					},
+					onClose: function (selectedDates, dateStr, instance) {
+						$(instance.input).removeClass('active');
+					},
+					onDayCreate: function (dObj, dStr, fp, dayElem) {
+						var $choiceLi = $(fp.input).closest('li');
+						var dayDate = dayElem.dateObj;
+
+						dayElem.classList.remove('evf-expiry-trial-blocked');
+						dayElem.removeAttribute('title');
+
+						if (
+							EVFPanelBuilder.is_subscription_expiry_trial_day(
+								$choiceLi,
+								dayDate,
+							)
+						) {
+							dayElem.classList.add('evf-expiry-trial-blocked');
+							dayElem.setAttribute('title', blockedTitle);
+						}
+					},
+					onChange: function (selectedDates, dateStr, instance) {
+						var trialMin =
+							EVFPanelBuilder.get_subscription_expiry_min_date(
+								$(instance.input).closest('li'),
+							);
+
+						if (
+							selectedDates[0] &&
+							selectedDates[0] < trialMin
+						) {
+							instance.clear();
+							$(instance.input).val('');
+							return;
+						}
+
+						$(instance.input).val(dateStr).trigger('change');
+					},
+					onReady: function (selectedDates, dateStr, instance) {
+						var $choiceLi = $(instance.input).closest('li');
+						var trialMin =
+							EVFPanelBuilder.get_subscription_expiry_min_date(
+								$choiceLi,
+							);
+						var storedDate = $.trim($(instance.input).val());
+
+						if (instance.calendarContainer) {
+							instance.calendarContainer.classList.add(
+								'evf-subscription-expiry-calendar',
+							);
+						}
+
+						EVFPanelBuilder.bind_subscription_expiry_picker_toggle(
+							instance,
+						);
+
+						EVFPanelBuilder.sync_subscription_expiry_trial_hint(
+							$choiceLi,
+							trialMin,
+						);
+
+						if (storedDate) {
+							instance.setDate(storedDate, false);
+							$(instance.input).val(
+								instance.formatDate(
+									instance.selectedDates[0],
+									instance.config.dateFormat,
+								),
+							);
+						}
+
+						if (
+							instance.selectedDates[0] &&
+							instance.selectedDates[0] < trialMin
+						) {
+							instance.clear();
+							$(instance.input).val('');
+						}
+					},
+				});
+			});
+		},
+
+		/**
 		 * For the subscription plan field.
 		 *
 		 * @since 3.0.9
 		 */
 		init_payment_subscription_plan_field: function () {
-			// Initialize option's date pickers on the expiry date input.
-			$('.evf-radio-subscription-expiry-input').each(function () {
-				if (!$(this).get(0)._flatpickr) {
-					$(this).flatpickr();
-				}
-			});
+			EVFPanelBuilder.init_subscription_expiry_date_pickers();
 
-			var enableTrialPeriods = $('.evf-enable-trial-period');
-			var enableExpiryDates = $('.evf-enable-expiry-date');
+			// Tab switching — delegated so it works for dynamically added choices.
+			$(document.body).on(
+				'click',
+				'.evf-spt-tab',
+				function () {
+					EVFPanelBuilder.close_subscription_expiry_pickers();
 
-			$.each(enableTrialPeriods, function (index, enableTrailPeriod) {
-				if ($(enableTrailPeriod).is(':checked')) {
-					var trialPeriod = enableTrailPeriod.closest('li');
-					$(trialPeriod).find('.evf-subscription-trail-period-option').show();
-				} else {
-					var trialPeriod = enableTrailPeriod.closest('li');
+					var $tab = $(this);
+					var $planTabs = $tab.closest('.evf-subscription-plan-tabs');
+					var targetTab = $tab.data('tab');
 
-					$(trialPeriod).find('.evf-subscription-trail-period-option').hide();
-				}
+					$tab.closest('.evf-spt-strip')
+						.find('.evf-spt-tab')
+						.removeClass('evf-spt-tab--active');
+					$tab.addClass('evf-spt-tab--active');
 
-				$(enableTrailPeriod).on('click', function (e) {
-					var expriyDate = $(this).closest('li');
-					if ($(this).is(':checked')) {
-						$(expriyDate).find('.evf-subscription-trail-period-option').show();
-					} else {
-						$(expriyDate).find('.evf-subscription-trail-period-option').hide();
+					$planTabs.find('.evf-spt-panel').hide();
+					$planTabs.find('.evf-spt-panel--' + targetTab).show();
+
+					if ('expiry' === targetTab) {
+						EVFPanelBuilder.init_subscription_expiry_date_pickers(
+							$tab.closest('li'),
+						);
 					}
-				});
-			});
+				},
+			);
 
-			$.each(enableExpiryDates, function (index, enableExpiryDate) {
-				if ($(enableExpiryDate).is(':checked')) {
-					var expriyDate = enableExpiryDate.closest('li');
-					$(expriyDate).find('.evf-subscription-expiry-date').show();
-				} else {
-					var expriyDate = enableExpiryDate.closest('li');
-					$(expriyDate).find('.evf-subscription-expiry-date').hide();
-				}
+			// Trial toggle — dim inputs and update dot indicator.
+			$(document.body).on(
+				'change',
+				'.evf-enable-trial-period',
+				function () {
+					var $li = $(this).closest('li');
+					var isChecked = $(this).is(':checked');
+					$li.find('.evf-spt-panel--trial .evf-spt-panel-detail').toggle(isChecked);
+					$li.find('.evf-spt-tab--trial .evf-spt-dot').toggle(isChecked);
+					EVFPanelBuilder.update_subscription_expiry_min_dates($li);
+				},
+			);
 
-				$(enableExpiryDate).on('click', function (e) {
-					var expriyDate = $(this).closest('li');
-					if ($(this).is(':checked')) {
-						$(expriyDate).find('.evf-subscription-expiry-date').show();
+			// Trial length/period — block expiry dates that fall inside the trial window.
+			$(document.body).on(
+				'change input',
+				'.evf-spt-panel--trial input[type="number"], .evf-spt-panel--trial select',
+				function () {
+					EVFPanelBuilder.update_subscription_expiry_min_dates(
+						$(this).closest('li'),
+					);
+				},
+			);
+
+			// Expiry toggle — dim inputs, close calendar, update dot indicator.
+			$(document.body).on(
+				'change',
+				'.evf-enable-expiry-date',
+				function () {
+					var $li = $(this).closest('li');
+					var isChecked = $(this).is(':checked');
+					$li.find('.evf-spt-panel--expiry .evf-spt-panel-detail').toggle(isChecked);
+					$li.find('.evf-spt-tab--expiry .evf-spt-dot').toggle(isChecked);
+
+					if (isChecked) {
+						EVFPanelBuilder.init_subscription_expiry_date_pickers($li);
 					} else {
-						$(expriyDate).find('.evf-subscription-expiry-date').hide();
+						EVFPanelBuilder.clear_subscription_plan_expiry_date($li);
+						EVFPanelBuilder.close_subscription_expiry_pickers();
 					}
-				});
-			});
+				},
+			);
+
+			// Update builder preview when recurring interval or period changes.
+			$(document.body).on(
+				'change input',
+				'.evf-spt-panel--recurring input[type="number"], .evf-spt-panel--recurring select',
+				function () {
+					var fieldId = $(this).closest('.evf-choices-list').data('field-id');
+					if (fieldId) {
+						EVFPanelBuilder.subscriptionPlanChoiceUpdate(fieldId);
+					}
+				},
+			);
+
+			// Update builder preview when trial toggle, count, or period changes.
+			$(document.body).on(
+				'change input',
+				'.evf-enable-trial-period, .evf-spt-panel--trial input[type="number"], .evf-spt-panel--trial select',
+				function () {
+					var fieldId = $(this).closest('.evf-choices-list').data('field-id');
+					if (fieldId) {
+						EVFPanelBuilder.subscriptionPlanChoiceUpdate(fieldId);
+					}
+				},
+			);
+
+			// Update builder preview when expiry toggle or date changes.
+			$(document.body).on(
+				'change',
+				'.evf-enable-expiry-date, .evf-radio-subscription-expiry-input',
+				function () {
+					var fieldId = $(this).closest('.evf-choices-list').data('field-id');
+					if (fieldId) {
+						EVFPanelBuilder.subscriptionPlanChoiceUpdate(fieldId);
+					}
+				},
+			);
 
 			$(document.body).on('evf_after_field_append', function (e, element_id) {
 				var $field = $('#' + element_id);
@@ -1186,12 +1810,21 @@
 					$('#everest-forms-panel-field-stripe-plan_name-wrap').hide();
 					$('#everest-forms-panel-field-stripe-interval_count-wrap').hide();
 					$('#everest-forms-panel-field-stripe-period-wrap').hide();
+
+					$('#everest-forms-panel-field-mollie-subscription_description-wrap').hide();
+					$('#everest-forms-panel-field-mollie-interval_count-wrap').hide();
+					$('#everest-forms-panel-field-mollie-interval-wrap').hide();
 				}
 
 				EVFPanelBuilder.syncPaymentMethodDependentFields();
+				EVFPanelBuilder.refreshFieldMapSelectsFromField('add', element_id);
 			});
 
 			$(document.body).on('evf_before_field_deleted', function (e, element_id) {
+				EVFPanelBuilder.refreshFieldMapSelectsFromField(
+					'remove',
+					element_id,
+				);
 				var $field = $('#everest-forms-field-' + element_id);
 				var field_type = $field.attr('data-field-type');
 
@@ -1202,6 +1835,10 @@
 					$('#everest-forms-panel-field-stripe-plan_name-wrap').hide();
 					$('#everest-forms-panel-field-stripe-interval_count-wrap').hide();
 					$('#everest-forms-panel-field-stripe-period-wrap').hide();
+
+					$('#everest-forms-panel-field-mollie-subscription_description-wrap').show();
+					$('#everest-forms-panel-field-mollie-interval_count-wrap').show();
+					$('#everest-forms-panel-field-mollie-interval-wrap').show();
 				}
 
 				// Run after DOM removal to accurately detect selector presence.
@@ -1252,6 +1889,10 @@
 					$('#everest-forms-panel-field-stripe-interval_count-wrap').hide();
 					$('#everest-forms-panel-field-stripe-period-wrap').hide();
 				}
+
+				$('#everest-forms-panel-field-mollie-subscription_description-wrap').hide();
+				$('#everest-forms-panel-field-mollie-interval_count-wrap').hide();
+				$('#everest-forms-panel-field-mollie-interval-wrap').hide();
 			}
 			$(isStripeRecurringEnable).on('click', function (e) {
 				if (
@@ -2476,6 +3117,24 @@
 			$choice.find('.attachment-thumb').remove();
 			$choice.find('.button-add-media').show();
 
+			if ( 'payment-subscription-plan' === type ) {
+				var oldChoiceKey = $parent.data( 'key' );
+				$choice.find( 'input, select' ).each( function () {
+					var name = $( this ).attr( 'name' );
+					if ( name && name.indexOf( '[choices][' + oldChoiceKey + '][' ) !== -1 ) {
+						$( this ).attr( 'name', name.replace(
+							'[choices][' + oldChoiceKey + '][',
+							'[choices][' + nextID + ']['
+						) );
+					}
+				} );
+				$choice.find( '.evf-enable-trial-period' ).prop( 'checked', false );
+				$choice.find( '.evf-enable-expiry-date' ).prop( 'checked', false );
+				$choice.find( '[name*="[subscription_expiry_date]"]' ).val( '' );
+				$choice.find( '.evf-spt-panel-detail' ).hide();
+				$choice.find( '.evf-spt-dot' ).hide();
+			}
+
 			if (checked === true) {
 				$parent.find('input.default').prop('checked', true);
 			}
@@ -2568,6 +3227,11 @@
 				return;
 			}
 
+			if ('payment-subscription-plan' === type) {
+				EVFPanelBuilder.subscriptionPlanChoiceUpdate(id);
+				return;
+			}
+
 			var new_choice;
 
 			if ('select' === type) {
@@ -2615,6 +3279,63 @@
 			} else {
 				return data.currency_symbol + ' ' + amount;
 			}
+		},
+
+		/**
+		 * Re-render the builder canvas preview for a subscription plan field.
+		 *
+		 * @param {string|number} fieldId The field ID.
+		 */
+		subscriptionPlanChoiceUpdate: function (fieldId) {
+			var $optionsList = $('#everest-forms-field-option-row-' + fieldId + '-choices .evf-choices-list');
+			var $preview = $('#everest-forms-field-' + fieldId + ' .primary-input');
+			if (!$preview.length) {
+				return;
+			}
+
+			var periodSingular = { day: 'day', week: 'week', month: 'month', year: 'year' };
+			var periodPlural   = { day: 'days', week: 'weeks', month: 'months', year: 'years' };
+
+			var html = '';
+
+			$optionsList.find('li').each(function () {
+				var $li         = $(this);
+				var label       = $li.find('input.label').val() || '';
+				var rawAmount   = $li.find('input.value').val() || '0';
+				var iCount      = parseInt($li.find('input[name*="[interval_count]"]').val(), 10) || 1;
+				var rPeriod     = $li.find('select[name*="[recurring_period]"]').val() || 'month';
+				var trialOn     = $li.find('.evf-enable-trial-period').is(':checked');
+				var tCount      = parseInt($li.find('input[name*="[trail_interval_count]"]').val(), 10) || 1;
+				var tPeriod     = $li.find('select[name*="[trail_recurring_period]"]').val() || 'week';
+				var isDefault   = $li.find('input.default').is(':checked');
+
+				var pStr = iCount > 1
+					? (iCount + ' ' + (periodPlural[rPeriod] || rPeriod))
+					: (periodSingular[rPeriod] || rPeriod);
+				var periodSuffix = '/' + pStr;
+				var amountStr = EVFPanelBuilder.amountFilter(evf_data, rawAmount);
+
+				var mainHtml = '<span class="evf-plan-main">'
+					+ '<span class="evf-plan-name">' + $('<span>').text(label).html() + '</span>'
+					+ '<strong class="evf-plan-price">' + $('<span>').text(amountStr + periodSuffix).html() + '</strong>'
+					+ '</span>';
+
+				var metaParts = [];
+				if (trialOn) {
+					var tStr = tCount + ' ' + (tCount > 1 ? (periodPlural[tPeriod] || tPeriod) : (periodSingular[tPeriod] || tPeriod));
+					metaParts.push($('<span>').text(tStr + ' free trial').html());
+				}
+				var metaHtml = metaParts.length
+					? '<span class="evf-plan-meta">' + metaParts.join(' &middot; ') + '</span>'
+					: '';
+
+				var liHtml = '<span class="evf-plan-wrap">' + mainHtml + metaHtml + '</span>';
+
+				var itemClass = isDefault ? 'everest-forms-selected' : '';
+				html += '<li class="' + itemClass + '"><input type="radio" disabled>' + liHtml + '</li>';
+			});
+
+			$preview.html(html);
 		},
 
 		bindFormSettings: function () {
@@ -3961,12 +4682,60 @@
 				}
 			});
 		},
+		syncSubscriptionPlanChoiceFieldsBeforeSave: function () {
+			$(
+				'.everest-forms-field-option-payment-subscription-plan .evf-choices-list > li',
+			).each(function () {
+				var $li = $(this);
+				var $trialEnable = $li.find('.evf-enable-trial-period');
+				var $expiryEnable = $li.find('.evf-enable-expiry-date');
+				var trialOn = $trialEnable.length && $trialEnable.is(':checked');
+				var expiryOn = $expiryEnable.length && $expiryEnable.is(':checked');
+				var $expiryInput = $li.find('.evf-radio-subscription-expiry-input');
+
+				// Exclude stale trial length fields when trial is off (prevents false trial in gateways).
+				$li.find('.evf-spt-panel--trial input, .evf-spt-panel--trial select').prop(
+					'disabled',
+					!trialOn,
+				);
+
+				// Exclude stale expiry date when expiry is off (do not infer enable from date alone).
+				$expiryInput.prop('disabled', !expiryOn);
+
+				if (!expiryOn) {
+					EVFPanelBuilder.clear_subscription_plan_expiry_date($li);
+				} else if ($expiryInput.length && $expiryInput[0]._flatpickr) {
+					var fp = $expiryInput[0]._flatpickr;
+					if (fp.selectedDates && fp.selectedDates[0]) {
+						$expiryInput.val(
+							fp.formatDate(
+								fp.selectedDates[0],
+								$expiryInput.data('date-format') || 'Y-m-d',
+							),
+						);
+					}
+				}
+
+				if ($trialEnable.length) {
+					$trialEnable.prop('checked', !!trialOn);
+				}
+			});
+		},
 		bindSaveOption: function () {
 			$('body').on('click', '.everest-forms-save-button', function () {
 				var $this = $(this);
 				var $form = $('form#everest-forms-builder-form');
 				var structure = EVFPanelBuilder.getStructure();
+				EVFPanelBuilder.syncSubscriptionPlanChoiceFieldsBeforeSave();
 				var form_data = $form.serializeArray();
+
+				// Re-enable trial/expiry inputs so the builder UI stays interactive after save.
+				$(
+					'.everest-forms-field-option-payment-subscription-plan .evf-spt-panel--trial input, .everest-forms-field-option-payment-subscription-plan .evf-spt-panel--trial select',
+				).prop('disabled', false);
+				$(
+					'.everest-forms-field-option-payment-subscription-plan .evf-radio-subscription-expiry-input',
+				).prop('disabled', false);
 				var form_title = $('#evf-edit-form-name').val().trim();
 
 				// Save form args.
@@ -4621,7 +5390,7 @@
 				.disableSelection();
 
 			$(
-				'.evf-registered-buttons button.evf-registered-item:not(.evf-layout-container-btn)',
+				'.evf-registered-buttons button.evf-registered-item:not(.evf-layout-container-btn):not(.upgrade-modal):not(.evf-upgrade-addon):not(.enable-stripe-model):not(.enable-authorize-net-model):not(.enable-payment-subscription-plan):not(.everest-forms-pro-is_square_install):not(.enable-square-model):not(.evf-one-time-draggable-field):not(.recaptcha_empty_key_validate):not(.hcaptcha_empty_key_validate):not(.turnstile_empty_key_validate)',
 			)
 				.draggable({
 					delay: 200,
@@ -5680,13 +6449,13 @@
 				})
 				.append(
 					'<span class="evf-field-loading-wrap">' +
-					'<i class="spinner is-active"></i>' +
-					(fieldLoadingLabel
-						? '<span class="evf-field-loading-label">' +
-						fieldLoadingLabel +
-						'</span>'
-						: '') +
-					'</span>',
+						'<i class="spinner is-active"></i>' +
+						(fieldLoadingLabel
+							? '<span class="evf-field-loading-label">' +
+								fieldLoadingLabel +
+								'</span>'
+							: '') +
+						'</span>',
 				);
 
 			$.ajax({
@@ -5743,35 +6512,35 @@
 						EVFPanelBuilder.init_payment_subscription_plan_field();
 						$(
 							'#everest-forms-field-option-' +
-							dragged_field_id +
-							'-enable_min_max_time',
+								dragged_field_id +
+								'-enable_min_max_time',
 						).hide();
 						$(
 							'label[for=everest-forms-field-option-' +
-							dragged_field_id +
-							'-enable_min_max_time]',
+								dragged_field_id +
+								'-enable_min_max_time]',
 						).hide();
 						$(
 							'label[for=everest-forms-field-option-' +
-							dragged_field_id +
-							'-select_min_time]',
+								dragged_field_id +
+								'-select_min_time]',
 						).hide();
 						$(
 							'label[for=everest-forms-field-option-' +
-							dragged_field_id +
-							'-select_max_time]',
+								dragged_field_id +
+								'-select_max_time]',
 						).hide();
 						$(
 							'#everest-forms-field-option-' +
-							dragged_field_id +
-							'-min_time_hour',
+								dragged_field_id +
+								'-min_time_hour',
 						)
 							.parent()
 							.hide();
 						$(
 							'#everest-forms-field-option-' +
-							dragged_field_id +
-							'-max_time_hour',
+								dragged_field_id +
+								'-max_time_hour',
 						)
 							.parent()
 							.hide();
@@ -6266,75 +7035,340 @@
 			).remove();
 		},
 
+		/**
+		 * Keep Payments / gateway panel field-map selects in sync when fields are added or removed
+		 * (e.g. phone appears for Stripe "customer_phone" mapping without reloading).
+		 *
+		 * @param {string} action       'add' or 'remove'.
+		 * @param {string} fieldRef     For add: preview element id (e.g. everest-forms-field-12). For remove: data-field-id.
+		 */
+		refreshFieldMapSelectsFromField: function (action, fieldRef) {
+			var $form = $('form#everest-forms-builder-form');
+			if (!$form.length) {
+				return;
+			}
+
+			if ('remove' === action) {
+				var rid = String(fieldRef);
+				$form
+					.find('select.everest-forms-field-map-select')
+					.each(function () {
+						$(this).find('option[value="' + rid + '"]').remove();
+					});
+				return;
+			}
+
+			var raw = String(fieldRef || '').replace(/^#/, '');
+			var $field = $('#' + raw);
+			if (!$field.length && /^\d+$/.test(raw)) {
+				$field = $('#everest-forms-field-' + raw);
+			}
+			if (!$field.length) {
+				return;
+			}
+
+			var field_type = $field.attr('data-field-type');
+			var element_id = $field.attr('data-field-id');
+			if (!field_type || !element_id) {
+				return;
+			}
+
+			var label = $field.find('.label-title .text').first().text();
+			if (!label) {
+				label = '#' + element_id;
+			}
+
+			$form.find('select.everest-forms-field-map-select').each(function () {
+				var $select = $(this);
+				var allowedAttr = $select.attr('data-field-map-allowed');
+				if (!allowedAttr) {
+					return;
+				}
+				var field_allowed = allowedAttr.split(/\s+/);
+				if (
+					field_allowed.indexOf(field_type) === -1 &&
+					field_allowed.indexOf('all-fields') === -1
+				) {
+					return;
+				}
+				if ($select.find('option[value="' + element_id + '"]').length) {
+					return;
+				}
+				$select.append(
+					$('<option></option>').attr('value', element_id).text(label),
+				);
+			});
+		},
+
+		/**
+		 * Rebuild every field-map select inside a container from fields currently on the builder canvas.
+		 *
+		 * @param {string|jQuery} container      Field option root, e.g. #everest-forms-field-option-{id}.
+		 * @param {string}        excludeFieldId Optional data-field-id to omit (e.g. the gateway selector itself).
+		 */
+		refreshFieldMapSelectsInContainer: function (container, excludeFieldId) {
+			var $container =
+				container instanceof jQuery ? container : $(container);
+			if (!$container.length) {
+				return;
+			}
+
+			var exclude = excludeFieldId ? String(excludeFieldId) : '';
+			var $canvasFields = $('#everest-forms-builder').find(
+				'.evf-admin-field-wrapper .everest-forms-field',
+			);
+
+			$container
+				.find('select.everest-forms-field-map-select')
+				.each(function () {
+					var $select = $(this);
+					var allowedAttr = $select.attr('data-field-map-allowed');
+					if (!allowedAttr) {
+						return;
+					}
+					var fieldAllowed = allowedAttr.split(/\s+/).filter(Boolean);
+					var currentVal = $select.val();
+					var placeholder = $select.attr('data-field-map-placeholder');
+
+					if ($select.hasClass('select2-hidden-accessible')) {
+						try {
+							$select.selectWoo('destroy');
+						} catch (err) {
+							// Ignore if selectWoo was not initialized.
+						}
+						$select.removeClass('enhanced');
+					}
+
+					$select.empty();
+					if (placeholder) {
+						$select.append(
+							$('<option></option>').attr('value', '').text(placeholder),
+						);
+					} else {
+						$select.append($('<option></option>').attr('value', ''));
+					}
+
+					$canvasFields.each(function () {
+						var $f = $(this);
+						var ft = $f.attr('data-field-type');
+						var fid = String($f.attr('data-field-id') || '');
+						if (!ft || !fid) {
+							return;
+						}
+						if (exclude && fid === exclude) {
+							return;
+						}
+						if (
+							fieldAllowed.indexOf(ft) === -1 &&
+							fieldAllowed.indexOf('all-fields') === -1
+						) {
+							return;
+						}
+						var lbl = $f.find('.label-title .text').first().text();
+						if (!lbl) {
+							lbl = '#' + fid;
+						}
+						$select.append(
+							$('<option></option>').attr('value', fid).text(lbl),
+						);
+					});
+
+					if (currentVal) {
+						var match = false;
+						$select.find('option').each(function () {
+							if ($(this).val() === String(currentVal)) {
+								match = true;
+								return false;
+							}
+						});
+						if (match) {
+							$select.val(currentVal);
+						}
+					}
+				});
+
+			$(document.body).trigger('evf-enhanced-select-init');
+		},
+
 		oneTimeDraggableRemoveField: function (field_type) {
 			var dragged_field_id = $('#everest-forms-add-fields-' + field_type);
 			if (dragged_field_id.hasClass('evf-one-time-draggable-field')) {
 				dragged_field_id.removeClass('upgrade-modal');
 				dragged_field_id.removeClass('evf-one-time-draggable-field');
+				EVFPanelBuilder.refreshRegisteredSidebarFieldDraggable(
+					dragged_field_id,
+				);
 			}
+		},
+
+		/**
+		 * Whether a sidebar field button should not be draggable (blocked state).
+		 *
+		 * @param {jQuery} $item Sidebar registered field button.
+		 * @return {boolean}
+		 */
+		isRegisteredSidebarFieldBlocked: function ($item) {
+			if (!$item || !$item.length) {
+				return true;
+			}
+
+			return $item.is(
+				'.upgrade-modal, .evf-upgrade-addon, .enable-stripe-model, .enable-authorize-net-model, .enable-payment-subscription-plan, .everest-forms-pro-is_square_install, .enable-square-model, .evf-one-time-draggable-field, .recaptcha_empty_key_validate, .hcaptcha_empty_key_validate, .turnstile_empty_key_validate',
+			);
+		},
+
+		/**
+		 * Apply or remove jQuery UI draggable on sidebar field buttons after dynamic class changes.
+		 *
+		 * @param {jQuery} [$items] Optional buttons to refresh; defaults to all registered sidebar fields.
+		 */
+		refreshRegisteredSidebarFieldDraggable: function ($items) {
+			if (!$items || !$items.length) {
+				$items = $(
+					'.evf-registered-buttons button.evf-registered-item:not(.evf-layout-container-btn)',
+				);
+			}
+
+			$items.each(function () {
+				var $btn = $(this);
+
+				if (EVFPanelBuilder.isRegisteredSidebarFieldBlocked($btn)) {
+					if ($btn.data('ui-draggable')) {
+						$btn.draggable('destroy');
+					}
+					return;
+				}
+
+				if ($btn.data('ui-draggable')) {
+					return;
+				}
+
+				$btn
+					.draggable({
+						delay: 200,
+						cancel: false,
+						scroll: false,
+						revert: 'invalid',
+						scrollSensitivity: 40,
+						forcePlaceholderSize: true,
+						start: function () {
+							$(this).addClass('field-dragged');
+						},
+						helper: function () {
+							return $(this)
+								.clone()
+								.insertAfter(
+									$(this)
+										.closest('.everest-forms-tab-content')
+										.siblings('.everest-forms-fields-tab'),
+								);
+						},
+						stop: function () {
+							$(this).removeClass('field-dragged');
+						},
+						opacity: 0.75,
+						containment: '#everest-forms-builder',
+						connectToSortable: '.evf-admin-grid',
+					})
+					.disableSelection();
+			});
 		},
 
 		syncPaymentMethodDependentFields: function () {
 			var $builder = $('#everest-forms-builder');
 			var hasPaymentMethodField =
 				$builder.find('.everest-forms-field-payment-gateway-selector').length > 0;
-			var dependentFields = [
-				{
-					type: 'credit-card',
-					selector: '.everest-forms-field-credit-card',
-				},
-				{
-					type: 'square-payment',
-					selector: '.everest-forms-field-square-payment',
-				},
-				{
-					type: 'authorize-net',
-					selector: '.everest-forms-field-authorize-net',
-				},
-			];
-
-			$.each(dependentFields, function (index, field) {
-				var $addButton = $('#everest-forms-add-fields-' + field.type);
-				if (!$addButton.length) {
-					return;
-				}
-
-				if (hasPaymentMethodField) {
-					$addButton.addClass('evf-one-time-draggable-field');
-					$addButton.addClass('evf-payment-method-dependent-disabled');
-					return;
-				}
-
-				// Keep one-time state untouched when that field already exists in the builder.
-				if ($builder.find(field.selector).length > 0) {
-					$addButton.removeClass('evf-payment-method-dependent-disabled');
-					return;
-				}
-
-				$addButton.removeClass('evf-one-time-draggable-field');
-				$addButton.removeClass('evf-payment-method-dependent-disabled');
-			});
-
-			var hasLegacyPaymentField =
-				$builder.find('.everest-forms-field-credit-card').length > 0 ||
-				$builder.find('.everest-forms-field-authorize-net').length > 0 ||
-				$builder.find('.everest-forms-field-square-payment').length > 0;
+			// Credit Card (Stripe) on the canvas blocks adding Payment Gateway; Payments tab
+			// toggles can also block it. Legacy Credit Card / Authorize.Net / Square fields are
+			// not mutually disabled with Payment Gateway for drag purposes beyond this.
 			var $paymentGatewayAdd = $(
 				'#everest-forms-add-fields-payment-gateway-selector',
 			);
 			if ($paymentGatewayAdd.length) {
-				if (hasLegacyPaymentField) {
+				var hasEnabledPayments =
+					EVFPanelBuilder.isAnyPaymentEnabled &&
+					EVFPanelBuilder.isAnyPaymentEnabled();
+
+				// If any payment is enabled in Payments tab, force-disable Payment Gateway field.
+				if (hasEnabledPayments) {
 					$paymentGatewayAdd.addClass('evf-one-time-draggable-field');
 					$paymentGatewayAdd.addClass('evf-payment-method-dependent-disabled');
+					$paymentGatewayAdd.attr('data-evf-disabled-reason', 'enabled-payments');
 				} else {
-					$paymentGatewayAdd.removeClass(
-						'evf-payment-method-dependent-disabled',
-					);
-					if (!hasPaymentMethodField) {
-						$paymentGatewayAdd.removeClass('evf-one-time-draggable-field');
+					var hasCreditCardField =
+						$builder.find('.everest-forms-field-credit-card').length > 0;
+
+					if (hasCreditCardField) {
+						$paymentGatewayAdd.addClass('evf-one-time-draggable-field');
+						$paymentGatewayAdd.addClass('evf-payment-method-dependent-disabled');
+						$paymentGatewayAdd.attr(
+							'data-evf-disabled-reason',
+							'credit-card-field',
+						);
+					} else {
+						$paymentGatewayAdd.removeAttr('data-evf-disabled-reason');
+						$paymentGatewayAdd.removeClass(
+							'evf-payment-method-dependent-disabled',
+						);
+						if (!hasPaymentMethodField) {
+							$paymentGatewayAdd.removeClass('evf-one-time-draggable-field');
+						}
 					}
 				}
+
+				EVFPanelBuilder.refreshRegisteredSidebarFieldDraggable(
+					$paymentGatewayAdd,
+				);
 			}
+
+			// If Payment Gateway field is used, block enabling payment gateways from Payments tab.
+			if (EVFPanelBuilder.syncPaymentsTabEnableToggles) {
+				EVFPanelBuilder.syncPaymentsTabEnableToggles(hasPaymentMethodField);
+			}
+
+			// Payment Gateway selector replaces the legacy Credit Card field on the sidebar.
+			var $creditCardAdd = $('#everest-forms-add-fields-credit-card');
+			if ($creditCardAdd.length) {
+				if (hasPaymentMethodField) {
+					$creditCardAdd.addClass('enable-stripe-model');
+				} else if (
+					typeof EverestFormsProBuilder !== 'undefined' &&
+					EverestFormsProBuilder.checkEnabledPayments
+				) {
+					EverestFormsProBuilder.checkEnabledPayments();
+				}
+				EVFPanelBuilder.refreshRegisteredSidebarFieldDraggable($creditCardAdd);
+			}
+		},
+
+		/**
+		 * Whether any payment gateway is enabled in the Payments tab.
+		 *
+		 * This is used to restrict the Payment Gateway (selector) field: if a gateway is already enabled,
+		 * the selector field must stay off until those toggles are disabled.
+		 *
+		 * @return {boolean}
+		 */
+		isAnyPaymentEnabled: function () {
+			var selectors = [
+				'#everest-forms-panel-field-paymentsstripe-enable_stripe',
+				'#everest-forms-panel-field-paypal-enable_paypal',
+				// Razorpay toggle id varies by version/addon; support both.
+				'#everest-forms-panel-field-paymentsrazorpay-enable_razorpay',
+				'#everest-forms-panel-field-razorpay-enable_razorpay',
+				'input[name*="[razorpay]"][name*="enable_razorpay"]',
+				'#everest-forms-panel-field-authorize_net-enable_authorize_net',
+				'#everest-forms-panel-field-square-enable_square',
+				'#everest-forms-panel-field-paymentsmollie-enable_mollie',
+			];
+
+			for (var i = 0; i < selectors.length; i++) {
+				var $el = $(selectors[i]);
+				if ($el.length && $el.is(':checked')) {
+					return true;
+				}
+			}
+			return false;
 		},
 
 		bindFieldSettings: function () {
