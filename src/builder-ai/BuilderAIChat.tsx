@@ -65,6 +65,12 @@ const editFormViaAi = async (
 				isNotice: !! json?.data?.notice,
 			};
 		}
+		if ( json?.data?.code === 'off_topic_prompt' ) {
+			return {
+				ok: false,
+				message: "That prompt isn't related to form editing. Try something like 'Add a phone number field' or 'Make all fields required'.",
+			};
+		}
 		return {
 			ok: false,
 			message: json?.data?.message || 'Sorry, I could not update the form. Please try again.',
