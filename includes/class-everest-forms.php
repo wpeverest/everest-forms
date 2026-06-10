@@ -23,7 +23,7 @@ final class EverestForms {
 	 *
 	 * @var string
 	 */
-	public $version = '3.4.8';
+	public $version = '3.4.9';
 
 	/**
 	 * The single instance of the class.
@@ -325,6 +325,17 @@ final class EverestForms {
 		 * Rest api classes.
 		 */
 		include_once EVF_ABSPATH . 'includes/RestApi/class-evf-rest-api.php';
+
+		/**
+		 * Abilities API + MCP integration.
+		 */
+		include_once EVF_ABSPATH . 'includes/abilities/class-evf-abilities-registry.php';
+		include_once EVF_ABSPATH . 'includes/abilities/class-evf-field-schemas.php';
+		include_once EVF_ABSPATH . 'includes/abilities/class-evf-form-builder.php';
+		include_once EVF_ABSPATH . 'includes/abilities/class-evf-abilities-handlers.php';
+		include_once EVF_ABSPATH . 'includes/abilities/class-evf-mcp-server.php';
+		include_once EVF_ABSPATH . 'includes/abilities/class-evf-abilities.php';
+		EVF_Abilities::init();
 
 		/**
 		 * Preview Confirmation Class

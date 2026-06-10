@@ -117,10 +117,36 @@ class EVF_Fm_Contactform7 extends EVF_Admin_Form_Migrator {
 		foreach ( $matches[1] as $match ) {
 			$match = trim( str_replace( "\n", '', $match ) );
 
-			preg_match( '/\[(?:' . preg_quote( $type ) . ') ' . $name . '(?:[ ](.*?))?(?:[\r\n\t ](\/))?\]/', $match, $input_match );
+			preg_match( '/\[(?:' . preg_quote( $type ) . ')\*? ' . $name . '(?:[ ](.*?))?(?:[\r\n\t ](\/))?\]/', $match, $input_match );
 
 			if ( ! empty( $input_match[0] ) ) {
 				return strip_shortcodes( sanitize_text_field( str_replace( $input_match[0], '', $match ) ) );
+			}
+		}
+
+		// Second pass: plain-text <label> on a separate line immediately before the field tag.
+		// [^<\[] ensures the label contains no HTML tags and no shortcodes (pure text labels only).
+		preg_match( '/<label[^>]*>([^<\[]*)<\/label>\s*\n\s*\[' . preg_quote( $type ) . '[* ]+' . preg_quote( $name ) . '/', $form, $sep_match );
+		if ( ! empty( $sep_match[1] ) ) {
+			return sanitize_text_field( trim( $sep_match[1] ) );
+		}
+
+		// Third pass: inline text before the field tag on the same line (e.g. <li>Label [type name]</li>).
+		preg_match( '/([^<>\[\]\n\r]+?)\s+\[' . preg_quote( $type ) . '[* ]+' . preg_quote( $name ) . '[\s\]]/s', $form, $inline_match );
+		if ( ! empty( $inline_match[1] ) ) {
+			$inline_label = sanitize_text_field( trim( strip_tags( $inline_match[1] ) ) );
+			if ( ! empty( $inline_label ) ) {
+				return $inline_label;
+			}
+		}
+
+		// Fourth pass: text before the shortcode in the same HTML block, ignoring tags between them.
+		// Example: <p>Phone *<br /> [select* phone "iPhone"]</p> → "Phone"
+		preg_match( '/(?:^|>)\s*([^<\[\n\r]+?)\s*(?:<[^>]*>\s*)*\[' . preg_quote( $type ) . '[* ]+' . preg_quote( $name ) . '[\s\]]/', $form, $block_match );
+		if ( ! empty( $block_match[1] ) ) {
+			$block_label = sanitize_text_field( trim( preg_replace( '/\s*\*\s*$/', '', trim( $block_match[1] ) ) ) );
+			if ( ! empty( $block_label ) ) {
+				return $block_label;
 			}
 		}
 
@@ -399,7 +425,7 @@ class EVF_Fm_Contactform7 extends EVF_Admin_Form_Migrator {
 			'form_title'                         => sanitize_text_field( $cf7_form_name ),
 			'form_description'                   => '',
 			'form_disable_message'               => esc_html__( 'This form is disabled.', 'everest-forms' ),
-			'successful_form_submission_message' => esc_html__( 'Thanks for contacting us! We will be in touch with you shortly.', 'everest-forms' ),
+			'successful_form_submission_message' => ! empty( $cf7_form->message( 'mail_sent_ok' ) ) ? sanitize_text_field( $cf7_form->message( 'mail_sent_ok' ) ) : esc_html__( 'Thanks for contacting us! We will be in touch with you shortly.', 'everest-forms' ),
 			'submission_message_scroll'          => '1',
 			'redirect_to'                        => 'same',
 			'custom_page'                        => '',
@@ -450,9 +476,9 @@ class EVF_Fm_Contactform7 extends EVF_Admin_Form_Migrator {
 			$cf7_fields         = $cf7_form->scan_form_tags();
 			$cf7_properties     = $cf7_form->get_properties();
 			$cf7_recaptcha      = false;
-			$fields_pro_plan    = array( 'tel', 'file', 'acceptance', 'quiz' );
+			$fields_pro_plan    = array( 'quiz' );
 			$fields_pro_omit    = array();
-			$fields_unsupported = array( 'hidden' );
+			$fields_unsupported = array();
 			$upgrade_plan       = array();
 			$upgrade_omit       = array();
 			$unsupported        = array();
@@ -484,7 +510,7 @@ class EVF_Fm_Contactform7 extends EVF_Admin_Form_Migrator {
 				}
 
 				// Try to determine field label to use.
-				$label = $this->get_field_label( $cf7_properties['form'], $cf7_field->type, $cf7_field->name );
+				$label = $this->get_field_label( $cf7_properties['form'], $cf7_field->basetype, $cf7_field->name );
 
 				// Next, check if field is unsupported. If supported make note and
 				// then continue to the next field.
@@ -493,11 +519,11 @@ class EVF_Fm_Contactform7 extends EVF_Admin_Form_Migrator {
 
 					continue;
 				}
-				if ( ! defined( 'EFP_VERSION' ) && '1.7.1' <= 'EFP_VERSION' && in_array( $cf7_field->basetype, $fields_pro_plan, true ) ) {
+				if ( ( ! defined( 'EFP_VERSION' ) || version_compare( EFP_VERSION, '1.7.1', '<' ) ) && in_array( $cf7_field->basetype, $fields_pro_plan, true ) ) {
 					$upgrade_plan[] = $label;
 					continue;
 				}
-				if ( ! defined( 'EFP_VERSION' ) && '1.7.1' <= 'EFP_VERSION' && in_array( $cf7_field->basetype, $fields_pro_omit, true ) ) {
+				if ( ( ! defined( 'EFP_VERSION' ) || version_compare( EFP_VERSION, '1.7.1', '<' ) ) && in_array( $cf7_field->basetype, $fields_pro_omit, true ) ) {
 					$upgrade_omit[] = $label;
 
 					continue;
@@ -814,6 +840,19 @@ class EVF_Fm_Contactform7 extends EVF_Admin_Form_Migrator {
 							'css'         => $cf7_field_classes,
 						);
 						break;
+					case 'hidden':
+						$type                                   = 'hidden';
+						$form['structure']['row_1']['grid_1'][] = $field_id;
+						$form['form_fields'][ $field_id ]       = array(
+							'id'            => $field_id,
+							'type'          => $type,
+							'label'         => $label,
+							'meta-key'      => $cf7_field->name,
+							'default_value' => (string) reset( $cf7_field->values ),
+							'css'           => $cf7_field_classes,
+							'cf7_name'      => $cf7_field->name,
+						);
+						break;
 					// ReCAPTCHA field.
 					case 'recaptcha':
 						$cf7_recaptcha = true;
@@ -884,6 +923,46 @@ class EVF_Fm_Contactform7 extends EVF_Admin_Form_Migrator {
 					$form['settings']['email']['connection_1']['evf_from_email'] = $sender['address'];
 				}
 			}
+
+			// Setup mail_2 (auto-reply) notification if active.
+			if ( ! empty( $cf7_properties['mail_2']['active'] ) ) {
+				$form['settings']['email']['connection_2'] = array(
+					'enable_email_notification' => '1',
+					'connection_name'           => esc_html__( 'Second Email', 'everest-forms' ),
+					'evf_to_email'              => '{admin_email}',
+					'evf_from_name'             => esc_html__( 'Everest Forms', 'everest-forms' ),
+					'evf_from_email'            => '{admin_email}',
+					'evf_reply_to'              => '',
+					'evf_email_subject'         => sprintf( '%s - %s', esc_html__( 'New Form Entry', 'everest-forms' ), esc_attr( $cf7_form_name ) ),
+					'evf_email_message'         => '{all_fields}',
+				);
+
+				if ( ! empty( $cf7_properties['mail_2']['subject'] ) ) {
+					$form['settings']['email']['connection_2']['evf_email_subject'] = $this->get_smarttags( $cf7_properties['mail_2']['subject'], $form['form_fields'] );
+				}
+
+				if ( ! empty( $cf7_properties['mail_2']['recipient'] ) ) {
+					$form['settings']['email']['connection_2']['evf_to_email'] = $this->get_smarttags( $cf7_properties['mail_2']['recipient'], $form['form_fields'] );
+				}
+
+				if ( ! empty( $cf7_properties['mail_2']['body'] ) ) {
+					$form['settings']['email']['connection_2']['evf_email_message'] = $this->get_smarttags( $cf7_properties['mail_2']['body'], $form['form_fields'] );
+				}
+
+				if ( ! empty( $cf7_properties['mail_2']['additional_headers'] ) ) {
+					$form['settings']['email']['connection_2']['evf_reply_to'] = $this->get_replyto( $cf7_properties['mail_2']['additional_headers'], $form['form_fields'] );
+				}
+
+				if ( ! empty( $cf7_properties['mail_2']['sender'] ) ) {
+					$sender = $this->get_sender_details( $cf7_properties['mail_2']['sender'], $form['form_fields'] );
+
+					if ( $sender ) {
+						$form['settings']['email']['connection_2']['evf_from_name']  = $sender['name'];
+						$form['settings']['email']['connection_2']['evf_from_email'] = $sender['address'];
+					}
+				}
+			}
+
 			$form = apply_filters( 'evf_fm_' . $this->slug . '_form_after_fields_mapping', $form, $cf7_form_id, $cf7_form );
 
 			$response = $this->import_form( $form, $unsupported, $upgrade_plan, $upgrade_omit );
