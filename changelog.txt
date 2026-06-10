@@ -10,7 +10,6 @@
 * Added 	  - Upsell on the payments inside the global settings.
 * Added       - Missing the export and print in the free version of analytics page.
 * Added 	  - Showcase conditional logic as a pro feature in field settings panel.
-* Added 	  - Showcase conditional logic as a pro feature in field settings panel.
 * Added 	  - Upsell prompt when free users click locked fields in the add fields modal.
 
 = 3.4.8       - 27-05-2026
