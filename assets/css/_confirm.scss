@@ -7,7 +7,6 @@
  * Styling begins
  */
 div.jconfirm {
-
 	*,
 	*::before,
 	*::after {
@@ -40,10 +39,11 @@ div.jconfirm {
 
 				p {
 					margin: 0 0 16px;
-					font-size: 16px;
+					font-size: 15px;
+					font-weight: 400;
 				}
 
-				>div {
+				> div {
 					font-weight: 500;
 				}
 			}
@@ -82,12 +82,14 @@ div.jconfirm {
 			}
 
 			button.btn-confirm {
-				background-color: $blue;
+				background-color: #7545bb;
 				color: $color-white;
 				outline: none;
+				text-transform: capitalize;
+				font-size: 14px;
 
 				&:hover {
-					background-color: transparentize($blue, 0.2);
+					background-color: #9159e3 !important;
 				}
 			}
 

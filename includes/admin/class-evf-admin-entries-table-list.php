@@ -343,7 +343,20 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 			$value = $entry->meta[ $meta_key ];
 			if ( evf_is_json( $value ) ) {
 				$field_value = json_decode( $value, true );
-				$value       = $field_value['value'];
+				$decoded     = isset( $field_value['value'] ) ? $field_value['value'] : $field_value;
+
+				// Coupons field stores data on array.
+				if ( is_array( $decoded ) ) {
+					$codes = array();
+					foreach ( $decoded as $item ) {
+						if ( is_array( $item ) && ! empty( $item['code'] ) ) {
+							$codes[] = esc_html( $item['code'] );
+						}
+					}
+					$value = ! empty( $codes ) ? implode( ', ', $codes ) : implode( ', ', array_filter( array_map( 'strval', $decoded ) ) );
+				} else {
+					$value = $decoded;
+				}
 			}
 
 			if ( is_serialized( $value ) ) {
@@ -352,17 +365,26 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 
 				$field_label = ! empty( $field_value['label'] ) ? evf_clean( $field_value['label'] ) : $field_value;
 				if ( is_array( $field_label ) ) {
-					foreach ( $field_label as $value ) {
-						$field_html[] = esc_html( $value );
+					foreach ( $field_label as $item ) {
+						// Coupon field: each item is an array with 'code', 'discount_type', etc.
+						if ( is_array( $item ) ) {
+							if ( ! empty( $item['code'] ) ) {
+								$field_html[] = esc_html( $item['code'] );
+							}
+						} else {
+							$field_html[] = esc_html( $item );
+						}
 					}
 
-					$value = implode( ' | ', $field_html );
+					$value = implode( ', ', $field_html );
 				} else {
 					$value = esc_html( $field_label );
 				}
 			}
 
-			$value = isset( $value['label'] ) && is_array( $value['label'] ) ? implode( ', ', $value['label'] ) : $value;
+			$value = isset( $value['label'] ) && is_array( $value['label'] ) ? implode( ', ', $value['label'] ) : ( is_array( $value ) ? implode( ', ', $value ) : $value );
+
+			$value = (string) $value;
 
 			if ( false === strpos( $value, 'http' ) ) {
 				$lines = explode( "\n", $value );
@@ -379,7 +401,7 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 			}
 			$value = apply_filters( 'everest_forms_html_field_value', $value, $entry->meta[ $meta_key ], $entry, 'entry-table', $meta_key );
 
-			if ( in_array( $field_type, array( 'file-upload', 'image-upload', 'signature', 'wysiwyg', 'color', 'rating', 'country', 'likert', 'checkbox', 'radio', 'repeater-fields' ), true ) ) {
+			if ( in_array( $field_type, array( 'file-upload', 'image-upload', 'signature', 'wysiwyg', 'color', 'rating', 'country', 'likert', 'checkbox', 'radio', 'repeater-fields', 'payment-checkbox' ), true ) ) {
 				return nl2br( make_clickable( $value ) );
 			}elseif( 'address' === $field_type ){
 				$allowed_tags = array(
@@ -1039,12 +1061,6 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 	<div class="everest-forms-extra-table-nav">
 		<?php
 		if ( ! empty( $this->forms ) && 'top' === $which ) {
-			?>
-			<div class="search-box" style="flex: 0 0 auto; margin: 0; right: 0;">
-				<?php $entries_table_list->search_box( esc_html__( 'Search Entries', 'everest-forms' ), 'everest-forms' ); ?>
-			</div>
-			<?php
-
 			if ( defined( 'EFP_VERSION' ) && $this->form_id > 0 ) {
 				?>
 			<button

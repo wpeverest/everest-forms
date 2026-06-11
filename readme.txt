@@ -2,9 +2,9 @@
 Contributors:everestforms,WPEverest
 Tags: contact form, custom form, form builder, forms, survey
 Requires at least: 5.5
-Tested up to: 6.9.4
+Tested up to: 7.0
 Requires PHP: 7.2
-Stable tag: 3.4.6
+Stable tag: 3.4.9
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -339,16 +339,40 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Changelog ==
 
-= 3.4.6       - xx-xx-2026
-* Feature - Added option to copy and download logs.
-* Feature - Added layout options including one-column and two-column containers.
-* Enhancement - Improved UI for Integrations and Payments tabs.
-* Enhancement - Added popover to insert fields directly into rows.
-* Enhancement - Revamped form settings design.
-* Enhancement - Performance optimizations.
-* Fix - Email summaries supported only one recipient and lacked test report flexibility issue.
-* Dev - Added Payment Summary field.
-* Dev - Added coupon limits and support for stackable coupons.
+= 3.4.9       - 09-06-2026
+* Enhance	  - Contact Form 7 migration.
+* Fix         - Updated tooltips.
+* Fix 		  - Form fields icon mis match.
+* Fix 		  - Design issue on integration tab.
+* Fix 		  - Design issue for radio buttons in Survey polls Quiz settings.
+* Fix         - Coupons and frontend listing addon menus do not update dynamically.
+* Added       - Payments overview page inside the payments menu.
+* Added 	  - Upsell on the payments inside the global settings.
+* Added       - Missing the export and print in the free version of analytics page.
+* Added 	  - Showcase conditional logic as a pro feature in field settings panel.
+* Added 	  - Upsell prompt when free users click locked fields in the add fields modal.
+
+= 3.4.8       - 27-05-2026
+* Fix 		  - Missing capability check on test email.
+* Fix 		  - Confirmation not showing in first load.
+* Fix 		  - File and image upload not working on WooCommerce product page.
+
+
+= 3.4.7       - 05-05-2026
+* Fix 		  - Php warning on log.
+
+= 3.4.6       - 29-04-2026
+* Feature 	  - Added option to copy and download logs.
+* Feature 	  - Added layout options including one-column and two-column containers.
+* Enhance	  - Improved UI for Integrations and Payments tabs.
+* Enhance	  - Added popover to insert fields directly into rows.
+* Enhance	  - Revamped form settings design.
+* Enhance	  - Performance optimizations.
+* Dev 		  - Added Payment Summary field.
+* Dev 		  - User id not updating on entry when auto login.
+* Dev 		  - Added coupon limits and support for stackable coupons.
+* Fix         - Email authorization.
+* Fix 		  - Email summaries supported only one recipient and lacked test report flexibility issue.
 
 = 3.4.5       - 16-04-2026
 * Fix 		  - Popup draggable.

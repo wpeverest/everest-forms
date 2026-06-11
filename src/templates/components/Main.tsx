@@ -177,7 +177,7 @@ const Main: React.FC<{ filter: string }> = ({ filter }) => {
 				<Box
 					maxWidth="310px"
 					width="100%"
-					p="30px 28px"
+					p="24px"
 					boxSizing="border-box"
 					// width={sidebarWidth}
 					// mr={{ base: 0, md: 4 }}
@@ -197,7 +197,7 @@ const Main: React.FC<{ filter: string }> = ({ filter }) => {
 					// mx="4"
 					// marginRight="28px"
 				/>
-				<Box borderLeft="1px solid #e1e1e1" p="30px 30px" flex={1}>
+				<Box borderLeft="1px solid #e1e1e1" p="24px" flex={1}>
 					<TemplateList
 						selectedCategory={selectedCategory}
 						templates={filteredTemplates}

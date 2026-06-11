@@ -217,10 +217,13 @@ class EVF_Form_Task {
 			);
 			do_action( "everest_forms_process_before_{$form_id}", $entry, $this->form_data );
 
-			$ajax_form_submission = isset( $this->form_data['settings']['ajax_form_submission'] ) ? $this->form_data['settings']['ajax_form_submission'] : 0;
-			if ( ( isset( $this->form_data['payments']['stripe']['enable_stripe'] ) && '1' === $this->form_data['payments']['stripe']['enable_stripe'] ) || ( isset( $this->form_data['payments']['square']['enable_square'] ) && '1' === $this->form_data['payments']['square']['enable_square'] ) ) {
-				$ajax_form_submission = '1';
-			}
+		$ajax_form_submission = isset( $this->form_data['settings']['ajax_form_submission'] ) ? $this->form_data['settings']['ajax_form_submission'] : 0;
+		$stripe_via_selector  = function_exists( 'evf_is_gateway_in_selector_allowlist' ) && evf_is_gateway_in_selector_allowlist( array( 'form_data' => $this->form_data, 'gateway' => 'stripe' ) );
+		$square_via_selector  = function_exists( 'evf_is_gateway_in_selector_allowlist' ) && evf_is_gateway_in_selector_allowlist( array( 'form_data' => $this->form_data, 'gateway' => 'square' ) );
+		$paypal_via_selector  = function_exists( 'evf_is_gateway_in_selector_allowlist' ) && evf_is_gateway_in_selector_allowlist( array( 'form_data' => $this->form_data, 'gateway' => 'paypal' ) );
+		if ( ( isset( $this->form_data['payments']['stripe']['enable_stripe'] ) && '1' === $this->form_data['payments']['stripe']['enable_stripe'] ) || $stripe_via_selector || ( isset( $this->form_data['payments']['square']['enable_square'] ) && '1' === $this->form_data['payments']['square']['enable_square'] ) || $square_via_selector || $paypal_via_selector ) {
+			$ajax_form_submission = '1';
+		}
 			if ( '1' === $ajax_form_submission ) {
 				// For the sake of validation we completely remove the validator option.
 				update_option( 'evf_validation_error', '' );
@@ -239,7 +242,7 @@ class EVF_Form_Task {
 						$field_submit = isset( $field_submit['signature_image'] ) ? $field_submit['signature_image'] : '';
 					}
 
-					$exclude = array( 'title', 'html', 'captcha', 'image-upload', 'file-upload', 'divider', 'reset', 'recaptcha', 'hcaptcha', 'turnstile', 'private-note' );
+					$exclude = array( 'title', 'html', 'captcha', 'image-upload', 'file-upload', 'divider', 'reset', 'recaptcha', 'hcaptcha', 'turnstile', 'private-note', 'payment_summary' );
 
 					if ( ! in_array( $field_type, $exclude, true ) ) {
 
@@ -285,6 +288,24 @@ class EVF_Form_Task {
 						}
 					}
 					update_option( 'evf_validation_error', '' );
+				}
+			}
+
+			if ( function_exists( 'evf_validate_submitted_payment_gateway' ) && function_exists( 'evf_get_total_payment' ) ) {
+				$payment_total = evf_sanitize_amount( evf_get_total_payment( $this->form_fields, $entry, $this->form_data ) );
+				if ( $payment_total > 0 ) {
+					$gateway_validation = evf_validate_submitted_payment_gateway( $this->form_data, $entry );
+					if ( is_wp_error( $gateway_validation ) ) {
+						$this->errors[ $form_id ]['header'] = $gateway_validation->get_error_message();
+						$logger->error(
+							$gateway_validation->get_error_message(),
+							array( 'source' => 'form-submission' )
+						);
+						if ( $ajax_form_submission ) {
+							$this->ajax_err[] = $this->errors[ $form_id ];
+							update_option( 'evf_validation_error', 'yes' );
+						}
+					}
 				}
 			}
 
@@ -717,7 +738,35 @@ class EVF_Form_Task {
 				__( 'Entry Added to Database.', 'everest-forms' ),
 				array( 'source' => 'form-submission' )
 			);
+
+			$applied_coupons_data = ! empty( $_POST['applied_coupons_data'] ) ? $_POST['applied_coupons_data'] : '';
+			$this->form_data['applied_coupons_data'] = $applied_coupons_data;
+
+			if ( ! empty( $applied_coupons_data ) ) {
+				$decoded_coupons = $applied_coupons_data;
+				if ( is_string( $decoded_coupons ) ) {
+					$decoded = json_decode( wp_unslash( $decoded_coupons ), true );
+					if ( is_array( $decoded ) ) {
+						$decoded_coupons = $decoded;
+					}
+				}
+
+				if ( is_array( $decoded_coupons ) ) {
+					foreach ( $decoded_coupons as $coupon ) {
+						$field_id = isset( $coupon['field_id'] ) ? $coupon['field_id'] : '';
+						if ( ! empty( $field_id ) && isset( $this->form_fields[ $field_id ] ) ) {
+							if ( ! is_array( $this->form_fields[ $field_id ]['value'] ) ) {
+								$this->form_fields[ $field_id ]['value'] = array();
+							}
+							$this->form_fields[ $field_id ]['value'][] = $coupon;
+						}
+					}
+				}
+			}
 			$entry_id = $this->entry_save( $this->form_fields, $entry, $this->form_data['id'], $this->form_data );
+
+			do_action( 'everest_forms_process_user_registration', $this->form_fields, $entry, $this->form_data, $entry_id );
+
 			$logger->notice( sprintf( 'Entry is Saved to DataBase' ) );
 
 			$logger->notice( sprintf( 'Sending Email' ) );
@@ -757,18 +806,49 @@ class EVF_Form_Task {
 			);
 			do_action( "everest_forms_process_complete_{$form_id}", $this->form_fields, $entry, $this->form_data, $entry_id );
 			do_action( 'everest_forms_process_complete_send_data_to_zapier_app', $this->form_fields, $entry, $this->form_data, $entry_id );
+
+			// Payment gateways update entry meta during process_complete; do not return the success confirmation when payment failed.
+			if ( '1' === $ajax_form_submission && ! empty( $entry_id ) ) {
+				$payment_ajax_fail = $this->get_ajax_response_for_failed_payment_entry( absint( $entry_id ) );
+				if ( is_array( $payment_ajax_fail ) ) {
+					return $payment_ajax_fail;
+				}
+			}
 		} catch ( Exception $e ) {
-			evf_add_notice( $e->getMessage(), 'error' );
+			$raw_message   = $e->getMessage();
+			$decoded_error = json_decode( $raw_message, true );
+
+			// Detect Google OAuth / API errors (UNAUTHENTICATED 401).
+			$is_google_auth_error = (
+				JSON_ERROR_NONE === json_last_error() &&
+				isset( $decoded_error['error']['status'] ) &&
+				'UNAUTHENTICATED' === $decoded_error['error']['status']
+			) || false !== strpos( $raw_message, 'UNAUTHENTICATED' );
+
+			if ( $is_google_auth_error ) {
+				$display_message = class_exists( '\EverestForms\AuthorizeNet\Helpers' )
+					? \EverestForms\AuthorizeNet\Helpers::pgw_selector_subscription_mapping_error_message()
+					: esc_html__( 'Something error occur', 'everest-forms' );
+			} elseif ( JSON_ERROR_NONE === json_last_error() && ! empty( $decoded_error['error']['message'] ) ) {
+				$display_message = $decoded_error['error']['message'];
+			} else {
+				$display_message = $raw_message;
+			}
+
+			evf_add_notice( $display_message, 'error' );
 			$logger->error(
-				$e->getMessage(),
+				$raw_message,
 				array( 'source' => 'form-submission' )
 			);
 			if ( '1' === $ajax_form_submission ) {
-				$this->errors[]            = $e->getMessage();
-				$response_data['message']  = $this->errors;
 				$response_data['response'] = 'error';
+				$response_data['message']  = wp_strip_all_tags( $display_message );
+				$response_data['error']    = array();
+				$response_data['form_id']  = $form_id;
 				return $response_data;
 			}
+			// Non-AJAX: return early so the success message is not shown.
+			return $response_data;
 		}
 		// For form confirmation backward compatilibity.
 		$this->form_data = evf_form_confirmation_backward_compatibility( $this->form_data );
@@ -808,8 +888,11 @@ class EVF_Form_Task {
 				$preview_style = $submission_redirection_process['settings']['preview_confirmation_select'];
 			}
 			if ( '1' === $ajax_form_submission ) {
+				$preview_form_data = $this->form_data;
+				$preview_form_data['settings']['ajax_form_submission'] = '1';
+
 				$response_data['is_preview_confirmation'] = $is_preview_confirmation;
-				$response_data['preview_confirmation']    = apply_filters( 'everest_forms_preview_confirmation', $this->form_data, $this->form_fields, $preview_style );
+				$response_data['preview_confirmation']    = apply_filters( 'everest_forms_preview_confirmation', $preview_form_data, $this->form_fields, $preview_style );
 			} else {
 				do_action( 'everest_forms_preview_confirmation', $this->form_data, $this->form_fields, $preview_style );
 			}
@@ -990,6 +1073,50 @@ class EVF_Form_Task {
 
 		do_action( 'everest_forms_ajax_submit_completed', $form_id, $response );
 		wp_send_json_success( $response );
+	}
+
+	/**
+	 * When AJAX submission is used, return an error payload if the entry was recorded as a failed payment.
+	 *
+	 * Gateways hook `everest_forms_process_complete` and call `evf_payment_entries()` after the entry is saved,
+	 * so payment meta is only reliable after those hooks run.
+	 *
+	 * @param int $entry_id Entry ID.
+	 * @return array|null Error response for `do_task` (response => error), or null if not a failed payment entry.
+	 */
+	private function get_ajax_response_for_failed_payment_entry( $entry_id ) {
+		if ( $entry_id <= 0 || ! function_exists( 'evf_get_entry' ) ) {
+			return null;
+		}
+
+		wp_cache_delete( $entry_id, 'evf-entry' );
+		wp_cache_delete( $entry_id, 'evf-entrymeta' );
+
+		$entry_obj = evf_get_entry( $entry_id );
+		if ( ! $entry_obj || empty( $entry_obj->meta ) || ! is_array( $entry_obj->meta ) ) {
+			return null;
+		}
+
+		$pay_type = isset( $entry_obj->meta['type'] ) ? (string) $entry_obj->meta['type'] : '';
+		$status   = isset( $entry_obj->meta['status'] ) ? (string) $entry_obj->meta['status'] : '';
+
+		if ( 'payment' !== $pay_type || 0 !== strcasecmp( 'failed', $status ) ) {
+			return null;
+		}
+
+		$message = apply_filters(
+			'everest_forms_payment_failed_submission_message',
+			__( 'Payment could not be completed. Please try again or use a different payment method.', 'everest-forms' ),
+			$entry_obj,
+			$this->form_data
+		);
+
+		return array(
+			'response' => 'error',
+			'message'  => $message,
+			'error'    => array(),
+			'form_id'  => isset( $this->form_data['id'] ) ? absint( $this->form_data['id'] ) : 0,
+		);
 	}
 
 	/**

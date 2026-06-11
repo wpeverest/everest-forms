@@ -30,8 +30,8 @@ class Settings extends \EVF_Integration {
 	public function __construct() {
 		$this->id                 = 'clean-talk';
 		$this->icon               = plugins_url( 'addons/CleanTalk/assets/images/CleanTalk.png', EVF_PLUGIN_FILE );
-		$this->method_title       = esc_html__( 'CleanTalk', 'everest-forms-pro' );
-		$this->method_description = esc_html__( 'CleanTalk Integration with Everest Forms', 'everest-forms-pro' );
+		$this->method_title       = esc_html__( 'CleanTalk', 'everest-forms' );
+		$this->method_description = esc_html__( 'CleanTalk Integration with Everest Forms', 'everest-forms' );
 		$connected_lists          = get_option( 'everest_forms_integrations', array() );
 		if ( ! empty( get_option( 'everest_forms_recaptcha_cleantalk_access_key' ) ) ) {
 			$this->account_status = 'connected';
@@ -46,7 +46,7 @@ class Settings extends \EVF_Integration {
 	public function output_integration() {
 		?>
 		<a href="<?php echo esc_url( admin_url( 'admin.php?page=evf-settings&tab=integration' ) ); ?>" class="everest-forms-integration-back-button">
-			<span><?php echo esc_html__( 'Back', 'everest-forms-pro' ); ?></span>
+			<span><?php echo esc_html__( 'Back', 'everest-forms' ); ?></span>
 		</a>
 		<div class="everest-forms-integration-content">
 			<div class="integration-addon-detail">
