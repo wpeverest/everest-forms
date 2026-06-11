@@ -368,15 +368,26 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 				if (res.data?.multi_part_steps) { setMultiPartSteps(res.data.multi_part_steps); setActivePartTab(0); }
 				const notice    = res.data?.notice    || '';
 				const noticeUrl = res.data?.notice_url || '';
-				resolveLoading(
-					notice ||
-					( refine
-						? __( "Done — I've updated your form. Check the preview on the right.", 'everest-forms' )
-						: __( "Here's a fresh version of your form.", 'everest-forms' ) ),
-					false,      // not an error — form was created
-					!! notice,  // notice = Pro feature info, still shows "Use This Form"
-					noticeUrl
-				);
+				const doneText  = refine
+					? __( "Done — I've updated your form. Check the preview on the right.", 'everest-forms' )
+					: __( "Here's a fresh version of your form.", 'everest-forms' );
+
+				if ( notice && ! messages.some( m => m.notice ) ) {
+					// First notice: show "Done" bubble then notice bubble separately.
+					setMessages( m => {
+						const next = [ ...m ];
+						for ( let i = next.length - 1; i >= 0; i-- ) {
+							if ( next[ i ].role === 'assistant' && next[ i ].loading ) {
+								next[ i ] = { role: 'assistant', text: doneText };
+								break;
+							}
+						}
+						return [ ...next, { role: 'assistant', text: notice, notice: true, noticeUrl } ];
+					} );
+				} else {
+					// Notice already shown or no notice — just confirm the update.
+					resolveLoading( doneText, false, false, '' );
+				}
 				// Use inline preview HTML when available; fall back to re-fetching via REST.
 				if (res.data?.preview_html) {
 					previewHTMLRef.current = res.data.preview_html;
@@ -385,7 +396,7 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 					setPreviewVersion(v => v + 1);
 				}
 			} else {
-				if (res?.data?.code === 'rate_limited') {
+				if (res?.data?.code === 'daily_limit_reached') {
 					setIsRateLimited(true);
 				}
 				throw new Error(res?.data?.message || __('Could not update the form. Please try again.', 'everest-forms'));
@@ -485,7 +496,7 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 				} else {
 					showError(
 						res?.data?.message || __('Something went wrong. Please try again.', 'everest-forms'),
-						res?.data?.code === 'rate_limited'
+						res?.data?.code === 'daily_limit_reached'
 					);
 				}
 			})

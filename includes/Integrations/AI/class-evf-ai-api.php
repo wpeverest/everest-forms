@@ -230,10 +230,13 @@ class EVF_AI_API {
 		$body   = json_decode( wp_remote_retrieve_body( $wp_response ), true );
 
 		if ( 429 === $status ) {
-			$msg = is_array( $body ) && isset( $body['detail']['message'] )
+			$msg  = is_array( $body ) && isset( $body['detail']['message'] )
 				? $body['detail']['message']
 				: __( 'Request limit reached. Please try again later.', 'everest-forms' );
-			return new WP_Error( 'rate_limited', $msg );
+			$code = is_array( $body ) && isset( $body['detail']['error'] )
+				? $body['detail']['error']
+				: 'rate_limited';
+			return new WP_Error( $code, $msg );
 		}
 
 		if ( $status < 200 || $status >= 300 ) {
