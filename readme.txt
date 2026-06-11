@@ -345,6 +345,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 * Fix 		  - Form fields icon mis match.
 * Fix 		  - Design issue on integration tab.
 * Fix 		  - Design issue for radio buttons in Survey polls Quiz settings.
+* Fix         - Coupons and frontend listing addon menus do not update dynamically.
 * Added       - Payments overview page inside the payments menu.
 * Added 	  - Upsell on the payments inside the global settings.
 * Added       - Missing the export and print in the free version of analytics page.
