@@ -51,4 +51,3 @@ phpunit-watcher.yml
 /release/
 
 /.idea/
-/vendor/
