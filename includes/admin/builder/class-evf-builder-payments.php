@@ -35,11 +35,7 @@ class EVF_Builder_Payments extends EVF_Builder_Page {
 	 * @return array
 	 */
 	public function add_builder_page( $pages ) {
-		if ( ! defined( 'EFP_PLUGIN_FILE' ) && ! empty( $this->form_data['is_new_form'] ) ) {
-			return $pages;
-		}
-
-		return parent::add_builder_page( $pages );
+		return $pages;
 	}
 
 	/**
