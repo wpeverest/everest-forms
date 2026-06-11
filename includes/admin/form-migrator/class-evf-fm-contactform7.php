@@ -808,14 +808,15 @@ class EVF_Fm_Contactform7 extends EVF_Admin_Form_Migrator {
 						break;
 					case 'acceptance':
 						$type                                   = 'privacy-policy';
+						$acceptance_text                        = $this->get_field_acceptance_label( $cf7_properties['form'], $cf7_field->name );
 						$form['structure']['row_1']['grid_1'][] = $field_id;
 						$form['form_fields'][ $field_id ]       = array(
 							'id'                     => $field_id,
 							'type'                   => $type,
-							'label'                  => $label,
+							'label'                  => ! empty( $acceptance_text ) ? $acceptance_text : $label,
 							'meta-key'               => $cf7_field->name,
 							'description'            => '',
-							'consent_message'        => $this->get_field_acceptance_label( $cf7_properties['form'], $cf7_field->name ),
+							'consent_message'        => $acceptance_text,
 							'add_local_page'         => '',
 							'add_custom_link_label'  => '',
 							'add_custom_link_url'    => '',

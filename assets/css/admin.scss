@@ -7112,21 +7112,31 @@ p.search-box {
 
 				.evf-fm-pagination {
 					padding-top: 16px;
+					display: flex;
+					flex-direction: row;
+					align-items: center;
+					gap: 4px;
 
 					button {
 						margin: 2px;
 						cursor: pointer;
+						border: 1px solid #ddd;
+						background: #fff;
+						color: #555;
+						padding: 4px 10px;
+						border-radius: 3px;
+						min-width: 30px;
 
 						&:hover {
 							background: #7e3bd0;
 							color: #fff;
-							border: none;
+							border-color: #7e3bd0;
 						}
 
 						&.evf-fm-btn-active {
 							background: #7e3bd0;
 							color: #fff;
-							border: none;
+							border-color: #7e3bd0;
 						}
 					}
 				}
