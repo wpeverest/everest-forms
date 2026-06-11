@@ -372,8 +372,8 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 					? __( "Done — I've updated your form. Check the preview on the right.", 'everest-forms' )
 					: __( "Here's a fresh version of your form.", 'everest-forms' );
 
-				if ( notice && ! messages.some( m => m.notice ) ) {
-					// First notice: show "Done" bubble then notice bubble separately.
+				if ( notice && ! messages.some( m => m.notice && m.text === notice ) ) {
+					// New or different notice: show "Done" bubble then notice bubble separately.
 					setMessages( m => {
 						const next = [ ...m ];
 						for ( let i = next.length - 1; i >= 0; i-- ) {
@@ -385,7 +385,7 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 						return [ ...next, { role: 'assistant', text: notice, notice: true, noticeUrl } ];
 					} );
 				} else {
-					// Notice already shown or no notice — just confirm the update.
+					// No notice or identical notice already shown — just confirm the update.
 					resolveLoading( doneText, false, false, '' );
 				}
 				// Use inline preview HTML when available; fall back to re-fetching via REST.
