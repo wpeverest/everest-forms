@@ -143,6 +143,9 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 
 		$form_fields = evf()->form_fields->form_fields();
 
+		$hide_for_new = ! defined( 'EFP_PLUGIN_FILE' ) && ! empty( $this->form_data['is_new_form'] );
+		$new_form_hidden_types = array( 'credit-card', 'authorize-net', 'square-payment' );
+
 		if ( ! empty( $form_fields ) ) {
 			foreach ( $form_fields as $group => $form_field ) {
 				?>
@@ -151,6 +154,9 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 					<div class="evf-registered-buttons">
 						<?php
 						foreach ( $form_field as $field ) :
+							if ( $hide_for_new && in_array( $field->type, $new_form_hidden_types, true ) ) {
+								continue;
+							}
 							$field_plan  = isset( $field->plan ) ? $field->plan : '';
 							$addon_slug  = isset( $field->addon ) ? $field->addon : '';
 							$field_links = isset( $field->links ) ? json_encode( $field->links ) : '';

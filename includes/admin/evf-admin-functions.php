@@ -29,6 +29,7 @@ function evf_get_screen_ids()
 		$evf_screen_id . '_page_smart-smtp',
 		$evf_screen_id . '_page_evf-smart-smtp',
 		$evf_screen_id . '_page_evf-analytics',
+		$evf_screen_id . '_page_evf-payment-log',
 	);
 
 	return apply_filters('everest_forms_screen_ids', $screen_ids);
@@ -590,6 +591,9 @@ function everest_forms_panel_field($option, $panel, $field, $form_data, $label, 
 			sanitize_html_class($field),
 			$label
 		);
+		if (! empty($args['before_tooltip'])) {
+			$field_label .= $args['before_tooltip'];
+		}
 		if (! empty($args['tooltip'])) {
 			$field_label .= sprintf(' <i class="dashicons dashicons-editor-help everest-forms-help-tooltip" title="%s"></i>', esc_attr($args['tooltip']));
 		}
