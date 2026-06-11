@@ -27,7 +27,7 @@ class EVF_Admin_Menus {
 		add_action( 'admin_menu', array( $this, 'dashboard_menu' ), 9 );
 		add_action( 'admin_menu', array( $this, 'builder_menu' ), 20 );
 		add_action( 'admin_menu', array( $this, 'entries_menu' ), 30 );
-		add_action( 'admin_menu', array( $this, 'payments_menu' ), 35 );
+		add_action( 'admin_menu', array( $this, 'payments_menu' ), 55 );
 		add_action( 'admin_menu', array( $this, 'analytics_menu' ), 10 );
 		add_action( 'admin_menu', array( $this, 'settings_menu' ), 50 );
 		add_action( 'admin_menu', array( $this, 'tools_menu' ), 60 );
