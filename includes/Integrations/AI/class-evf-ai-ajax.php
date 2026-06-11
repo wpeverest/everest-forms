@@ -409,6 +409,12 @@ class EVF_AI_Ajax {
 		$has_license   = self::has_active_license();
 		$pro_installed = self::is_pro_installed();
 
+		if ( EVF_AI_Form_Builder::$file_upload_limited ) {
+			if ( ! $has_license ) {
+				return __( 'Only one file upload field is included — the free plan allows one per form. Upgrade to EVF Pro to add more.', 'everest-forms' );
+			}
+		}
+
 		if ( ! empty( $settings['enable_multi_part'] ) && evf_string_to_bool( $settings['enable_multi_part'] ) ) {
 			if ( ! $has_license ) {
 				if ( $pro_installed ) {

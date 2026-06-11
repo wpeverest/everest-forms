@@ -21,6 +21,9 @@ class EVF_AI_Form_Builder {
 		'payment-authorize-net', 'payment-subscription-plan',
 	];
 
+	/** Set to true when a file-upload field was dropped because the free-tier limit (1) was reached. */
+	public static $file_upload_limited = false;
+
 	/**
 	 * Create a new EVF form from the AI gateway response.
 	 * Saved as DRAFT — user must click "Use This Form" to publish.
@@ -164,6 +167,7 @@ class EVF_AI_Form_Builder {
 	];
 
 	private static function build_form_data( int $form_id, array $ai ): array {
+		self::$file_upload_limited = false;
 		$built_fields   = [];
 		$email_field_id = null;
 
@@ -199,6 +203,7 @@ class EVF_AI_Form_Builder {
 			// Free tier: only one file-upload field is allowed per form.
 			if ( ! $is_pro_active && 'file-upload' === ( $ai_field['type'] ?? '' ) ) {
 				if ( $file_upload_count >= 1 ) {
+					self::$file_upload_limited = true;
 					$field_index++;
 					continue;
 				}
