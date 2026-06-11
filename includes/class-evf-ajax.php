@@ -930,6 +930,13 @@ class EVF_AJAX {
 			);
 		}
 
+		// EVF_Integrations is normally loaded on current_screen (admin page loads only).
+		// During AJAX requests that hook never fires, so integration action hooks are never
+		// registered. Instantiate it here so provider connect handlers are available.
+		if ( ! EVF()->integrations ) {
+			EVF()->integrations = new EVF_Integrations();
+		}
+
 		do_action( 'everest_forms_integration_account_connect_' . ( isset( $_POST['source'] ) ? sanitize_text_field( wp_unslash( $_POST['source'] ) ) : '' ), $_POST );
 	}
 

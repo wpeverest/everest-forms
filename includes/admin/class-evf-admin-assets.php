@@ -48,33 +48,22 @@ class EVF_Admin_Assets {
 			<a href="#" class="everest-forms-field-option-group-toggle">
 				<?php esc_html_e( 'Conditional Logic', 'everest-forms' ); ?>
 				<span class="evf-cl-pro-badge">
-					<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-						<rect x="0.5" y="0.5" width="19" height="19" rx="2.5" fill="#FF8C39" stroke="#FF8C39"/>
-						<path d="M10 5L13 13H7L10 5Z" fill="#EFEFEF"/>
-						<path fill="white" fill-rule="evenodd" d="M5 7L5.71429 13H14.2857L15 7L10 11.125L5 7ZM14.2857 13.5714H5.71427V15H14.2857V13.5714Z" clip-rule="evenodd"/>
-					</svg>
+					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18" aria-hidden="true" focusable="false"><rect width="16.889" height="16.889" x=".444" y=".444" fill="#ff8c39" stroke="#ff8c39" stroke-width=".889" rx="2.222"></rect><path fill="#efefef" d="m8.89 4.444 2.666 7.111H6.223z"></path><path fill="#fff" fill-rule="evenodd" d="m4.445 6.222.635 5.333h7.619l.635-5.333-4.445 3.666zm8.254 5.841h-7.62v1.27h7.62z" clip-rule="evenodd"></path></svg>
 				</span>
 				<i class="handlediv"></i>
 			</a>
 			<div class="everest-forms-field-option-group-inner" style="display:none;">
 
 				<div class="evf-cl-upgrade-notice">
-					<p><?php esc_html_e( 'Conditional Logic is a Pro feature. Upgrade to Pro to use conditional logic in your forms.', 'everest-forms' ); ?></p>
-					<a href="<?php echo esc_url( $upgrade_url ); ?>" target="_blank" rel="noopener noreferrer" class="evf-cl-upgrade-btn">
-						<svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-							<path d="M10 5L13 13H7L10 5Z" fill="rgba(255,255,255,0.8)"/>
-							<path fill="white" fill-rule="evenodd" d="M5 7L5.71429 13H14.2857L15 7L10 11.125L5 7ZM14.2857 13.5714H5.71427V15H14.2857V13.5714Z" clip-rule="evenodd"/>
-						</svg>
-						<?php esc_html_e( 'Upgrade to Pro', 'everest-forms' ); ?>
-					</a>
+					<p><?php esc_html_e( 'Upgrade to Pro to use conditional logic in your forms.', 'everest-forms' ); ?></p>
 				</div>
 
 				<ul class="evf-cl-features">
 					<?php
 					$features = array(
 						__( 'Show or hide fields based on user answers', 'everest-forms' ),
-						__( 'Combine multiple rules with AND / OR logic', 'everest-forms' ),
-						__( 'Support for text, select, checkbox &amp; more', 'everest-forms' ),
+						__( 'Combine rules with AND / OR logic', 'everest-forms' ),
+						__( 'Works with text, select, checkbox &amp; more', 'everest-forms' ),
 					);
 					foreach ( $features as $feature ) :
 					?>
@@ -87,6 +76,10 @@ class EVF_Admin_Assets {
 					<?php endforeach; ?>
 				</ul>
 
+				<a href="<?php echo esc_url( $upgrade_url ); ?>" target="_blank" rel="noopener noreferrer" class="evf-cl-upgrade-btn">
+					<?php esc_html_e( 'Upgrade to Pro', 'everest-forms' ); ?>
+					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14" width="14" height="14" aria-hidden="true" focusable="false"><path fill="#efefef" d="m7 1.167 3.5 9.333h-7z"></path><path fill="#fff" fill-rule="evenodd" d="M12 12.834H2v-1.667h10zm0-2.334H2l-.833-7L7 8.312 12.833 3.5z" clip-rule="evenodd"></path></svg>
+				</a>
 
 			</div>
 		</div>
@@ -296,6 +289,18 @@ class EVF_Admin_Assets {
 
 		// Builder upgrade.
 		wp_register_script( 'evf-upgrade', evf()->plugin_url() . '/assets/js/admin/upgrade.js', array( 'jquery', 'jquery-confirm' ), EVF_VERSION, false );
+		// BUGFIX: `assets/js/admin/upgrade.js` reads global `evf_data` (for example in `limit_file_upload()`).
+		// On non-builder screens this caused `evf_data is not defined` because it was only localized to `evf-form-builder`.
+		// Localize the required `evf_data` keys directly to `evf-upgrade` to satisfy the script contract everywhere it runs.
+		wp_localize_script(
+			'evf-upgrade',
+			'evf_data',
+			array(
+				'is_pro'     => defined( 'EFP_PLUGIN_FILE' ),
+				'i18n_ok'    => esc_html__( 'OK', 'everest-forms' ),
+				'i18n_close' => esc_html__( 'Close', 'everest-forms' ),
+			)
+		);
 		wp_localize_script(
 			'evf-upgrade',
 			'evf_upgrade',

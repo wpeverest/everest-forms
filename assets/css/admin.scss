@@ -6158,7 +6158,7 @@ p.search-box {
 						margin: 0 auto;
 						gap: 6px;
 						font-size: 14px;
-						background: #7e3bd0;
+						background: #7545bb;
 						transition: all 0.3s ease-in-out;
 
 						&.dashicons {
@@ -14054,7 +14054,7 @@ button#show-settings-link {
 		display: flex;
 		align-items: center;
 		gap: 12px;
-		margin: 22px 0 24px;
+		margin: 24px 0;
 
 		.step {
 			display: inline-flex;
@@ -14068,15 +14068,15 @@ button#show-settings-link {
 				display: inline-flex;
 				align-items: center;
 				justify-content: center;
-				width: 26px;
-				height: 26px;
+				width: 28px !important;
+				height: 28px !important;
 				border-radius: 6px;
-				background: #f4f4f4;
+				background: #f4f4f4 !important;
 				color: #383838;
 				font-size: 11px;
 				font-style: normal;
 				font-weight: 600;
-				border: 1px solid #e1e1e1;
+				border: 1px solid #e1e1e1 !important;
 			}
 
 			&:not(:last-child)::after {
@@ -14106,8 +14106,8 @@ button#show-settings-link {
 		justify-content: space-between;
 
 		svg {
-			width: 16px;
-			height: 16px;
+			width: 19px;
+			height: 19px;
 		}
 	}
 
@@ -14518,6 +14518,7 @@ button#show-settings-link {
 	justify-content: center;
 }
 
+<<<<<<< HEAD
 .evf-payments-upsell-btn svg {
 	margin-top: -3px;
 }
@@ -14599,6 +14600,8 @@ button#show-settings-link {
 	}
 }
 
+=======
+>>>>>>> efcf0a3da4ed590fcb489a5456e6c462bb001851
 .evf-cl-pro-badge {
 	display: inline-flex;
 	align-items: center;
@@ -14610,21 +14613,20 @@ button#show-settings-link {
 	svg {
 		width: 18px;
 		height: 18px;
+		margin-top: 2px;
 	}
 }
 
 .evf-cl-upgrade-notice {
-	background: #f5f3ff;
-	border-left: 3px solid #7545bb;
-	padding: 11px 13px;
+	background: transparent;
 	margin-bottom: 14px;
-	border-radius: 0 4px 4px 0;
 
 	p {
-		margin: 0 0 9px;
+		margin: 0;
 		color: #3c3c3c;
-		font-size: 12px;
-		line-height: 1.6;
+		font-size: 13px;
+		line-height: 24px;
+		font-weight: 500;
 	}
 }
 
@@ -14634,9 +14636,9 @@ button#show-settings-link {
 	gap: 6px;
 	background: #7545bb;
 	color: #fff !important;
-	font-size: 12px;
+	font-size: 13px;
 	font-weight: 600;
-	padding: 6px 13px;
+	padding: 10px 16px;
 	border-radius: 4px;
 	text-decoration: none !important;
 	transition: background 0.2s ease;
@@ -14659,13 +14661,13 @@ button#show-settings-link {
 	padding: 0;
 	display: flex;
 	flex-direction: column;
-	gap: 7px;
+	gap: 4px;
 
 	li {
 		display: flex;
 		align-items: flex-start;
 		gap: 7px;
-		font-size: 12px;
+		font-size: 13px;
 		line-height: 1.5;
 		color: #3c3c3c;
 

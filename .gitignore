@@ -49,3 +49,5 @@ phpunit-watcher.yml
 
 #Release
 /release/
+
+/.idea/
