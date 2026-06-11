@@ -8,6 +8,7 @@ interface Message {
 	text: string;
 	loading?: boolean;
 	notice?: boolean;
+	noticeUrl?: string;
 }
 
 // Edit-form prompt suggestions shown inside the chat panel.
@@ -38,7 +39,7 @@ const cfg: BuilderAIConfig = ( window as any ).evfBuilderAI || {};
 // Edit the current builder form via the ThemeGrill AI Cloud (Python) gateway.
 const editFormViaAi = async (
 	instruction: string,
-): Promise<{ ok: boolean; message: string }> => {
+): Promise<{ ok: boolean; message: string; isNotice?: boolean; noticeUrl?: string; needsReload?: boolean }> => {
 	if ( ! cfg.ajaxUrl || ! cfg.nonce || ! cfg.formId ) {
 		return { ok: false, message: 'AI assistant is unavailable on this screen.' };
 	}
@@ -60,14 +61,19 @@ const editFormViaAi = async (
 		const json = await resp.json();
 		if ( json?.success ) {
 			return {
-				ok: true,
-				message: json?.data?.notice || "Done — I've updated your form. Refreshing the canvas…",
-				isNotice: !! json?.data?.notice,
+				ok:          true,
+				message:     json?.data?.notice || "Done — I've updated your form. Refreshing the canvas…",
+				isNotice:    !! json?.data?.notice,
+				noticeUrl:   json?.data?.notice_url || '',
+				needsReload: !! json?.data?.needs_reload,
 			};
 		}
 		return {
-			ok: false,
-			message: json?.data?.message || 'Sorry, I could not update the form. Please try again.',
+			ok:        false,
+			message:   json?.data?.message || 'Sorry, I could not update the form. Please try again.',
+			noticeUrl: json?.data?.code === 'rate_limited'
+				? 'https://everestforms.net/upgrade/?utm_source=evf-free&utm_medium=ai-chat&utm_campaign=daily-limit&utm_content=Upgrade+to+Pro'
+				: '',
 		};
 	} catch {
 		return { ok: false, message: 'Could not reach the AI service. Please try again.' };
@@ -82,8 +88,12 @@ const BuilderAIChat: React.FC = () => {
 	const [messages, setMessages]     = useState<Message[]>([
 		{ role: 'assistant', text: GREETING },
 	]);
-	const [loading, setLoading]       = useState(false);
-	const [showTooltip, setShowTooltip] = useState(false);
+	const [loading, setLoading]         = useState(false);
+	const [buttonHovered, setButtonHovered]   = useState(false);
+	const [tooltipHovered, setTooltipHovered] = useState(false);
+	const [rateLimited, setRateLimited] = useState(false);
+	const [upgradeUrl, setUpgradeUrl]   = useState('');
+	const showTooltip = !open && (buttonHovered || tooltipHovered);
 	// Read the customizer button's actual CSS bottom so we stack correctly even
 	// in multi-part mode (where the customizer moves up to 62px). Falls back to
 	// null when the addon is not active — AI button then sits at bottom: 22px.
@@ -129,10 +139,52 @@ const BuilderAIChat: React.FC = () => {
 		setMessages(prev => [...prev, { role: 'assistant', text: '', loading: true }]);
 
 		const result = await editFormViaAi(userText);
+
+		// Track rate limit so the trigger button tooltip updates.
+		if (!result.ok && result.noticeUrl) {
+			setRateLimited(true);
+			setUpgradeUrl(result.noticeUrl);
+		}
+
+		// Show the notice at most once per chat session.
+		if (result.isNotice && messages.some(m => m.notice)) {
+			result.isNotice = false;
+			result.noticeUrl = '';
+			result.message = "Done — I've updated your form. Refreshing the canvas…";
+		}
+
+		// Prompt for a page reload when the form type changed to Multi-Part and the
+		// feature is fully active (the canvas refresh won't show the new step layout).
+		if (result.ok && result.needsReload && !result.isNotice) {
+			result.message = "Done — your form layout has been updated. Please reload the page to see the new multi-part structure.";
+		}
+
 		setMessages(prev => {
 			const copy = [...prev];
 			const last = copy[copy.length - 1];
-			if (last?.loading) copy[copy.length - 1] = { role: 'assistant', text: result.message, notice: result.isNotice || ! result.ok };
+			if (!last?.loading) return copy;
+
+			if (result.ok && result.isNotice) {
+				// Edit succeeded but there's a Pro/addon notice — show "Done" first,
+				// then a separate notice bubble below so the user knows the edit applied.
+				copy[copy.length - 1] = {
+					role: 'assistant',
+					text: "Done — I've updated your form. Refreshing the canvas…",
+				};
+				copy.push({
+					role:      'assistant',
+					text:      result.message,
+					notice:    true,
+					noticeUrl: result.noticeUrl || '',
+				});
+			} else {
+				copy[copy.length - 1] = {
+					role:      'assistant',
+					text:      result.message,
+					notice:    result.isNotice || ! result.ok,
+					noticeUrl: result.noticeUrl || '',
+				};
+			}
 			return copy;
 		});
 		setLoading(false);
@@ -192,12 +244,12 @@ const BuilderAIChat: React.FC = () => {
 					transition: 'transform .2s,box-shadow .2s,background .2s',
 				}}
 				onMouseEnter={e => {
-					if (!open) setShowTooltip(true);
+					setButtonHovered(true);
 					(e.currentTarget as HTMLButtonElement).style.transform = 'scale(1.08)';
 					(e.currentTarget as HTMLButtonElement).style.boxShadow = '0 6px 22px rgba(117,69,187,.55)';
 				}}
 				onMouseLeave={e => {
-					setShowTooltip(false);
+					setButtonHovered(false);
 					(e.currentTarget as HTMLButtonElement).style.transform = 'scale(1)';
 					(e.currentTarget as HTMLButtonElement).style.boxShadow = '0 4px 16px rgba(117,69,187,.45)';
 				}}
@@ -206,8 +258,10 @@ const BuilderAIChat: React.FC = () => {
 			</button>
 
 			{/* ── Tooltip — matches tooltipster style exactly, appears above the button ── */}
-			{showTooltip && !open && (
+			{showTooltip && (
 				<div
+					onMouseEnter={() => setTooltipHovered(true)}
+					onMouseLeave={() => setTooltipHovered(false)}
 					style={{
 						position: 'fixed',
 						// Sit 8px above the trigger button top edge
@@ -215,7 +269,7 @@ const BuilderAIChat: React.FC = () => {
 						// Place right edge at button center, then translateX(50%) to center tooltip over button
 						right: BTN_RIGHT + Math.round(BTN_SIZE / 2),
 						transform: 'translateX(50%)',
-						pointerEvents: 'none',
+						pointerEvents: rateLimited ? 'auto' : 'none',
 						zIndex: 10001,
 					}}
 				>
@@ -230,7 +284,23 @@ const BuilderAIChat: React.FC = () => {
 						whiteSpace: 'nowrap',
 						position: 'relative',
 					}}>
-						AI Form Assistant
+						{rateLimited ? (
+							<>
+								<div style={{ marginBottom: 8 }}>You've reached your daily free limit.</div>
+								<a
+									href={upgradeUrl}
+									target="_blank"
+									rel="noopener noreferrer"
+									style={{ color: '#7545BB', fontWeight: 600, fontSize: 12, textDecoration: 'none' }}
+									onMouseEnter={e => (e.currentTarget.style.textDecoration = 'underline')}
+									onMouseLeave={e => (e.currentTarget.style.textDecoration = 'none')}
+								>
+									Upgrade to Pro →
+								</a>
+							</>
+						) : (
+							'AI Form Assistant'
+						)}
 					</div>
 					{/* Down-pointing arrow centered under tooltip, pointing to button */}
 					{/* Outer arrow — border colour */}
@@ -390,7 +460,21 @@ const BuilderAIChat: React.FC = () => {
 											))}
 										</div>
 									) : (
-										msg.text
+										<>
+											{msg.text}
+											{msg.notice && msg.noticeUrl && (
+												<div style={{ marginTop: 6 }}>
+													<a
+														href={msg.noticeUrl}
+														target="_blank"
+														rel="noopener noreferrer"
+														style={{ color: '#c0392b', fontWeight: 600, fontSize: 12, textDecoration: 'underline' }}
+													>
+														Upgrade to Pro ↗
+													</a>
+												</div>
+											)}
+										</>
 									)}
 								</div>
 							</div>

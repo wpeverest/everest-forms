@@ -125,6 +125,12 @@ class EVF_AI_Ajax {
 			);
 		}
 
+		// Snapshot form type before the update to detect type changes afterwards.
+		$before_post     = get_post( $form_id );
+		$before_data     = $before_post ? evf_decode( $before_post->post_content ) : array();
+		$before_settings = $before_data['settings'] ?? array();
+		$was_multipart   = ! empty( $before_settings['enable_multi_part'] ) && evf_string_to_bool( $before_settings['enable_multi_part'] );
+
 		$result = EVF_AI_Form_Builder::update_form( $form_id, $ai_response );
 
 		if ( is_wp_error( $result ) ) {
@@ -142,6 +148,20 @@ class EVF_AI_Ajax {
 			}
 		}
 
+		// Detect whether the form type changed to multi-part in this update.
+		// When Multi-Part is fully active (Pro license + addon), the builder layout
+		// requires a full page reload to render the new step structure.
+		$needs_reload = false;
+		if ( self::has_active_license() && class_exists( 'EverestForms_MultiPart' ) ) {
+			$after_post     = get_post( $form_id );
+			$after_data     = $after_post ? evf_decode( $after_post->post_content ) : array();
+			$after_settings = $after_data['settings'] ?? array();
+			$now_multipart  = ! empty( $after_settings['enable_multi_part'] ) && evf_string_to_bool( $after_settings['enable_multi_part'] );
+			if ( ! $was_multipart && $now_multipart ) {
+				$needs_reload = true;
+			}
+		}
+
 		wp_send_json_success(
 			array(
 				'form_id'          => $form_id,
@@ -150,6 +170,7 @@ class EVF_AI_Ajax {
 				'required_addons'  => $ai_response['required_addons'] ?? array(),
 				'multi_part_steps' => self::get_multi_part_steps( $form_id ),
 				'preview_html'     => self::render_preview_html( $form_id ),
+				'needs_reload'     => $needs_reload,
 				'notice'           => $notice,
 				'notice_url'       => '' !== $notice ? self::get_notice_upgrade_url() : '',
 			)
@@ -389,26 +410,29 @@ class EVF_AI_Ajax {
 		$pro_installed = self::is_pro_installed();
 
 		if ( ! empty( $settings['enable_multi_part'] ) && evf_string_to_bool( $settings['enable_multi_part'] ) ) {
-			if ( ! class_exists( 'EverestForms_MultiPart' ) || ! $has_license ) {
-				if ( $has_license ) {
-					return __( 'Your form is set up as Multi-Part. To activate it, please install the Multi-Part Forms addon from Everest Forms > Addons.', 'everest-forms' );
-				}
+			if ( ! $has_license ) {
 				if ( $pro_installed ) {
 					return __( 'Your form is set up as Multi-Part. To activate it, please activate your Everest Forms Pro license under Everest Forms > Settings > License.', 'everest-forms' );
 				}
 				return __( 'Your form is set up as Multi-Part. This feature requires Everest Forms Pro — please upgrade to enable it.', 'everest-forms' );
 			}
+			if ( ! class_exists( 'EverestForms_MultiPart' ) ) {
+				return __( 'Your form is set up as Multi-Part, but the Multi-Part addon is not active. Please install and activate it from Everest Forms > Addons.', 'everest-forms' );
+			}
 		}
 
 		if ( ! empty( $settings['enable_conversational_forms'] ) && evf_string_to_bool( $settings['enable_conversational_forms'] ) ) {
-			if ( ! class_exists( 'EverestForms\ConversationalForms\ConversationalForms' ) || ! $has_license ) {
-				if ( $has_license ) {
-					return __( 'Your form is set up as Conversational. To activate it, please install the Conversational Forms addon from Everest Forms > Addons.', 'everest-forms' );
-				}
+			if ( ! $has_license ) {
 				if ( $pro_installed ) {
 					return __( 'Your form is set up as Conversational. To activate it, please activate your Everest Forms Pro license under Everest Forms > Settings > License.', 'everest-forms' );
 				}
 				return __( 'Your form is set up as Conversational. This feature requires Everest Forms Pro — please upgrade to enable it.', 'everest-forms' );
+			}
+			if ( ! function_exists( 'is_plugin_active' ) ) {
+				include_once ABSPATH . 'wp-admin/includes/plugin.php';
+			}
+			if ( ! is_plugin_active( 'everest-forms-conversational-forms/everest-forms-conversational-forms.php' ) ) {
+				return __( 'Your form is set up as Conversational, but the Conversational Forms addon is not active. Please install and activate it from Everest Forms > Addons.', 'everest-forms' );
 			}
 		}
 
@@ -425,34 +449,38 @@ class EVF_AI_Ajax {
 	 * @return WP_Error|null
 	 */
 	private static function check_pro_feature_from_prompt( string $prompt ): ?WP_Error {
-		$has_license    = self::has_active_license();
-		$pro_installed  = self::is_pro_installed();
+		$has_license   = self::has_active_license();
+		$pro_installed = self::is_pro_installed();
+
+		if ( ! function_exists( 'is_plugin_active' ) ) {
+			include_once ABSPATH . 'wp-admin/includes/plugin.php';
+		}
 
 		if ( preg_match( '/multi[\s\-]?part|multi[\s\-]?step|wizard|step[\s\-]?by[\s\-]?step/i', $prompt ) ) {
-			$addon_active = class_exists( 'EverestForms_MultiPart' );
-			if ( ! $addon_active || ! $has_license ) {
-				if ( $has_license ) {
-					$message = __( 'Multi-Part Forms addon is not active. Please install and activate it from Everest Forms > Addons.', 'everest-forms' );
-				} elseif ( $pro_installed ) {
+			if ( ! $has_license ) {
+				if ( $pro_installed ) {
 					$message = __( 'Multi-Part Form requires an active Everest Forms Pro license. Please activate your license under Everest Forms > Settings > License.', 'everest-forms' );
 				} else {
 					$message = __( 'Multi-Part Form is a Pro feature. Please upgrade to Everest Forms Pro to use this feature.', 'everest-forms' );
 				}
 				return new WP_Error( 'pro_feature_required', $message );
 			}
+			if ( ! class_exists( 'EverestForms_MultiPart' ) ) {
+				return new WP_Error( 'pro_feature_required', __( 'Multi-Part Forms addon is not active. Please install and activate it from Everest Forms > Addons.', 'everest-forms' ) );
+			}
 		}
 
 		if ( preg_match( '/conversational|one[\s\-]?question[\s\-]?at[\s\-]?a[\s\-]?time/i', $prompt ) ) {
-			$addon_active = class_exists( 'EverestForms\ConversationalForms\ConversationalForms' );
-			if ( ! $addon_active || ! $has_license ) {
-				if ( $has_license ) {
-					$message = __( 'Conversational Forms addon is not active. Please install and activate it from Everest Forms > Addons.', 'everest-forms' );
-				} elseif ( $pro_installed ) {
+			if ( ! $has_license ) {
+				if ( $pro_installed ) {
 					$message = __( 'Conversational Form requires an active Everest Forms Pro license. Please activate your license under Everest Forms > Settings > License.', 'everest-forms' );
 				} else {
 					$message = __( 'Conversational Form is a Pro feature. Please upgrade to Everest Forms Pro to use this feature.', 'everest-forms' );
 				}
 				return new WP_Error( 'pro_feature_required', $message );
+			}
+			if ( ! is_plugin_active( 'everest-forms-conversational-forms/everest-forms-conversational-forms.php' ) ) {
+				return new WP_Error( 'pro_feature_required', __( 'Conversational Forms addon is not active. Please install and activate it from Everest Forms > Addons.', 'everest-forms' ) );
 			}
 		}
 
@@ -523,7 +551,10 @@ class EVF_AI_Ajax {
 		}
 
 		if ( $is_conversational ) {
-			$addon_active = class_exists( 'EverestForms\ConversationalForms\ConversationalForms' );
+			if ( ! function_exists( 'is_plugin_active' ) ) {
+				include_once ABSPATH . 'wp-admin/includes/plugin.php';
+			}
+			$addon_active = is_plugin_active( 'everest-forms-conversational-forms/everest-forms-conversational-forms.php' );
 			if ( ! $addon_active || ! $has_license ) {
 				if ( $has_license ) {
 					$message = __( 'Conversational Forms addon is not active. Please install and activate it from Everest Forms > Addons.', 'everest-forms' );

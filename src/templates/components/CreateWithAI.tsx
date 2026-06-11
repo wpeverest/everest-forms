@@ -446,7 +446,7 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 							textDecoration="underline"
 							_hover={{ opacity: 0.8 }}
 						>
-							{__('Upgrade to Pro for unlimited access →', 'everest-forms')}
+							{__('Upgrade to Pro →', 'everest-forms')}
 						</Box>
 					</Box>
 				) : message,
@@ -885,10 +885,8 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 																				{__("You've reached your daily free limit.", 'everest-forms')}
 																			</Text>
 																			<Box as="a" href={UPGRADE_URL} target="_blank" rel="noopener noreferrer"
-																				display="inline-flex" alignItems="center" gap="4px"
-																				bg="#7545BB" color="white" fontSize="11px" fontWeight="600"
-																				px="8px" py="4px" borderRadius="5px"
-																				_hover={{ bg: '#6a3daa', textDecoration: 'none' }} transition="background 0.2s"
+																				color="#7545BB" fontSize="12px" fontWeight="600"
+																				_hover={{ textDecoration: 'underline' }}
 																			>
 																				{__('Upgrade to Pro →', 'everest-forms')}
 																			</Box>
@@ -969,10 +967,8 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 														{__("You've reached your daily free limit.", 'everest-forms')}
 													</Text>
 													<Box as="a" href={UPGRADE_URL} target="_blank" rel="noopener noreferrer"
-														display="inline-flex" alignItems="center" gap="4px"
-														bg="#7545BB" color="white" fontSize="11px" fontWeight="600"
-														px="8px" py="4px" borderRadius="5px"
-														_hover={{ bg: '#6a3daa', textDecoration: 'none' }} transition="background 0.2s"
+														color="#7545BB" fontSize="12px" fontWeight="600"
+														_hover={{ textDecoration: 'underline' }}
 													>
 														{__('Upgrade to Pro →', 'everest-forms')}
 													</Box>
@@ -1278,10 +1274,8 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 												{__("You've reached your daily free limit.", 'everest-forms')}
 											</Text>
 											<Box as="a" href={UPGRADE_URL} target="_blank" rel="noopener noreferrer"
-												display="inline-flex" alignItems="center" gap="4px"
-												bg="#7545BB" color="white" fontSize="11px" fontWeight="600"
-												px="8px" py="4px" borderRadius="5px"
-												_hover={{ bg: '#6a3daa', textDecoration: 'none' }} transition="background 0.2s"
+												color="#7545BB" fontSize="12px" fontWeight="600"
+												_hover={{ textDecoration: 'underline' }}
 											>
 												{__('Upgrade to Pro →', 'everest-forms')}
 											</Box>

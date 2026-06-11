@@ -13,7 +13,7 @@ class EVF_AI_Form_Builder {
 
 	/** Pro-only field types — visible in builder but locked for free users. */
 	public static $pro_fields = [
-		'password', 'color', 'range-slider', 'signature', 'repeater',
+		'password', 'color', 'range-slider', 'signature', 'repeater-fields',
 		'lookup', 'progress',
 		'payment-single', 'payment-checkbox', 'payment-multiple',
 		'payment-quantity', 'payment-subtotal', 'payment-total',
@@ -191,9 +191,20 @@ class EVF_AI_Form_Builder {
 		}
 
 		// Build all field objects first so we can look ahead for smart pairing
-		$field_list  = [];
-		$field_index = 0;
+		$field_list        = [];
+		$field_index       = 0;
+		$file_upload_count = 0;
+		$is_pro_active     = defined( 'EVF_PRO_VERSION' ) || class_exists( 'EVF_Pro' );
 		foreach ( ( $ai['fields'] ?? [] ) as $ai_field ) {
+			// Free tier: only one file-upload field is allowed per form.
+			if ( ! $is_pro_active && 'file-upload' === ( $ai_field['type'] ?? '' ) ) {
+				if ( $file_upload_count >= 1 ) {
+					$field_index++;
+					continue;
+				}
+				$file_upload_count++;
+			}
+
 			$field_id  = self::generate_field_id();
 			$evf_field = self::build_field( $field_id, $ai_field );
 			if ( ! $evf_field ) {
@@ -212,6 +223,26 @@ class EVF_AI_Form_Builder {
 			];
 			$field_index++;
 		}
+
+		// Ensure every field has a unique meta-key within this form.
+		$used_keys = [];
+		foreach ( $built_fields as &$field ) {
+			if ( ! isset( $field['meta-key'] ) ) {
+				continue;
+			}
+			$base = $field['meta-key'];
+			if ( ! in_array( $base, $used_keys, true ) ) {
+				$used_keys[] = $base;
+				continue;
+			}
+			$n = 2;
+			while ( in_array( $base . '_' . $n, $used_keys, true ) ) {
+				$n++;
+			}
+			$field['meta-key'] = $base . '_' . $n;
+			$used_keys[]       = $field['meta-key'];
+		}
+		unset( $field );
 
 		$structure  = self::build_structure( $field_list );
 		$form_data  = [
@@ -340,6 +371,11 @@ class EVF_AI_Form_Builder {
 		// `payment-multiple`. Map the intuitive gateway name to the real type.
 		if ( 'payment-radio' === $type ) {
 			$type = 'payment-multiple';
+		}
+
+		// Normalize: the repeater field is registered as `repeater-fields` internally.
+		if ( 'repeater' === $type ) {
+			$type = 'repeater-fields';
 		}
 
 		// Base keys every field has
@@ -479,6 +515,13 @@ class EVF_AI_Form_Builder {
 				$field['input_columns']  = '';
 				$field['choices_images'] = '0';
 				$field['select_all']     = '0';
+				break;
+
+			case 'repeater-fields':
+				$field['repeater_field_hide']          = '0';
+				$field['repeater_repeat_limit']        = '';
+				$field['repeater_button_add_new_label']= 'Add';
+				$field['repeater_button_remove_label'] = 'Remove';
 				break;
 
 			case 'captcha':
