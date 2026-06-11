@@ -74,7 +74,6 @@ class EVF_Addon_Upsell {
 						esc_html__( 'One-time payments and recurring subscriptions', 'everest-forms' ),
 						esc_html__( 'Trusted buyer protection and established security', 'everest-forms' ),
 						esc_html__( 'Multiple subscription plans with trial periods', 'everest-forms' ),
-						esc_html__( 'Map customer email field for subscription billing', 'everest-forms' ),
 					),
 				),
 
