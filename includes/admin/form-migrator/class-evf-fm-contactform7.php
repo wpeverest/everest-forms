@@ -513,6 +513,27 @@ class EVF_Fm_Contactform7 extends EVF_Admin_Form_Migrator {
 				// Try to determine field label to use.
 				$label = $this->get_field_label( $cf7_properties['form'], $cf7_field->basetype, $cf7_field->name );
 
+				// If no label found, fall back to placeholder, then default value, then clean generic.
+				$generic_label = trim(
+					sprintf(
+						/* translators: %1$s - field type, %2$s - field name if available. */
+						esc_html__( '%1$s Field %2$s', 'everest-forms' ),
+						ucfirst( $cf7_field->basetype ),
+						! empty( $cf7_field->name ) ? "({$cf7_field->name})" : ''
+					)
+				);
+				if ( $label === $generic_label ) {
+					$placeholder = $this->get_field_placeholder_default( $cf7_field );
+					$default_val = $this->get_field_placeholder_default( $cf7_field, 'default' );
+					if ( ! empty( $placeholder ) ) {
+						$label = $placeholder;
+					} elseif ( ! empty( $default_val ) && ! filter_var( $default_val, FILTER_VALIDATE_URL ) ) {
+						$label = $default_val;
+					} elseif ( preg_match( '/^' . preg_quote( $cf7_field->basetype, '/' ) . '-\d+$/', $cf7_field->name ) ) {
+						$label = trim( sprintf( esc_html__( '%s', 'everest-forms' ), ucfirst( $cf7_field->basetype ) ) );
+					}
+				}
+
 				// Next, check if field is unsupported. If supported make note and
 				// then continue to the next field.
 				if ( in_array( $cf7_field->basetype, $fields_unsupported, true ) ) {
