@@ -56,7 +56,7 @@ class EVF_Settings_Payments extends EVF_Settings_Page {
 		$sections = apply_filters( 'everest_forms_payments_sections', array() );
 
 		if ( ! isset( $sections['payment'] ) ) {
-			$sections = array_merge( array( 'payment' => __( 'Payment Method', 'everest-forms' ) ), $sections );
+			$sections = array_merge( array( 'payment' => array( 'label' => __( 'Payment Method', 'everest-forms' ), 'upsell' => true ) ), $sections );
 		}
 
 		return apply_filters( 'everest_forms_get_sections_' . $this->id, $sections );

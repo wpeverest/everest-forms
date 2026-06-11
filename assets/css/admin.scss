@@ -141,7 +141,9 @@ body[class*='everest-forms_page_'] {
 		}
 
 		// Selectable dates in the current month read darker for contrast.
-		.flatpickr-day:not(.flatpickr-disabled):not(.prevMonthDay):not(.nextMonthDay) {
+		.flatpickr-day:not(.flatpickr-disabled):not(.prevMonthDay):not(
+				.nextMonthDay
+			) {
 			color: #1d2327;
 			font-weight: 500;
 		}
@@ -311,7 +313,7 @@ body.everest-forms_page_evf-settings {
 }
 
 #everest-forms-entries-list {
-	// margin-top: 32px;
+	margin-top: 0;
 }
 
 .blockUI.blockOverlay {
@@ -329,7 +331,6 @@ body.everest-forms_page_evf-settings {
 	width: 20px;
 	height: 20px;
 	margin: 2px 0 0 5px;
-	float: right;
 
 	&.evf-loading-active {
 		visibility: visible;
@@ -1271,7 +1272,7 @@ body.everest-forms-builder {
 				}
 
 				&:hover {
-					// background: #8546d3;
+					background: none;
 				}
 
 				span {
@@ -5611,7 +5612,6 @@ p.search-box {
 								// flex: 0 0 23%;
 							}
 						}
-
 					}
 				}
 			}
@@ -5646,12 +5646,17 @@ p.search-box {
 								justify-content: center;
 								gap: 3px;
 								line-height: 1.2;
-								transition: background 0.15s, color 0.15s, box-shadow 0.15s;
+								transition:
+									background 0.15s,
+									color 0.15s,
+									box-shadow 0.15s;
 
 								&.evf-spt-tab--active {
 									background: #fff;
 									color: #6c47e8;
-									box-shadow: 0 1px 3px rgba(0, 0, 0, 0.13), 0 0 0 0.5px rgba(0, 0, 0, 0.06);
+									box-shadow:
+										0 1px 3px rgba(0, 0, 0, 0.13),
+										0 0 0 0.5px rgba(0, 0, 0, 0.06);
 								}
 
 								.evf-spt-dot {
@@ -5775,7 +5780,6 @@ p.search-box {
 					}
 				}
 			}
-
 
 			.evf-content-email-settings-inner {
 				display: none;
@@ -10048,46 +10052,46 @@ img.ui-datepicker-trigger {
 			}
 
 			.evf-quiz-reporting {
-    .everest-forms-panel-field-radio {
-        .row {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
+				.everest-forms-panel-field-radio {
+					.row {
+						display: flex;
+						align-items: center;
+						margin-bottom: 10px;
 
-            input {
-                margin: 0 4px 0 0;
-            }
+						input {
+							margin: 0 4px 0 0;
+						}
 
-            input[type=radio] {
-                position: relative !important;
+						input[type='radio'] {
+							position: relative !important;
 
-                &:checked {
-                   background: #f6f5f8;
-													border-color: #7545bb;
+							&:checked {
+								background: #f6f5f8;
+								border-color: #7545bb;
 
-                    &::before {
-                        content: "" !important;
-												position: absolute !important;
-												inset: 0 !important;
-												margin: auto !important;
-												float: none !important;
-												display: block !important;
-												border-radius: 50% !important;
-												width: 0.5rem !important;
-												height: 0.5rem !important;
-												background: #fff !important;
-												background-color: #7545bb !important;
-												outline: 4px solid transparent !important;
-                    }
-                }
-            }
+								&::before {
+									content: '' !important;
+									position: absolute !important;
+									inset: 0 !important;
+									margin: auto !important;
+									float: none !important;
+									display: block !important;
+									border-radius: 50% !important;
+									width: 0.5rem !important;
+									height: 0.5rem !important;
+									background: #fff !important;
+									background-color: #7545bb !important;
+									outline: 4px solid transparent !important;
+								}
+							}
+						}
 
-            label {
-                margin-bottom: 0;
-            }
-        }
-    }
-}
+						label {
+							margin-bottom: 0;
+						}
+					}
+				}
+			}
 
 			.evf-quiz-settings {
 				padding-left: 20px;
@@ -13908,7 +13912,8 @@ button#show-settings-link {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	justify-content: center; gap: 10px;
+	justify-content: center;
+	gap: 10px;
 	border: 1px solid #edeff7;
 	border-radius: 4px;
 	padding: 20px 8px;
@@ -14513,6 +14518,90 @@ button#show-settings-link {
 	justify-content: center;
 }
 
+<<<<<<< HEAD
+.evf-payments-upsell-btn svg {
+	margin-top: -3px;
+}
+
+.everest-forms-field-payment-subscription-plan {
+	ul.primary-input {
+		list-style: none;
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+		margin: 0;
+		padding: 0;
+
+		li {
+			border: 1.5px solid #dcdcde;
+			border-radius: 6px;
+			padding: 10px 14px;
+			display: flex;
+			align-items: flex-start;
+			gap: 10px;
+			cursor: pointer;
+			transition:
+				border-color 0.15s,
+				background 0.15s;
+			margin: 0;
+
+			&:has(input:checked) {
+				border-color: #6c47e8;
+			}
+		}
+
+		input[type='radio'] {
+			margin-top: 3px;
+			flex-shrink: 0;
+		}
+
+		.everest-forms-field-label-inline {
+			flex: 1;
+			cursor: pointer;
+		}
+	}
+
+	.evf-plan-wrap {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+	}
+
+	.evf-plan-main {
+		display: flex;
+		justify-content: space-between;
+		align-items: baseline;
+		gap: 8px;
+	}
+
+	.evf-plan-name {
+		font-size: 13px;
+		font-weight: 500;
+	}
+
+	.evf-plan-price {
+		font-size: 13px;
+		font-weight: 700;
+		white-space: nowrap;
+	}
+
+	.evf-plan-meta {
+		display: block;
+		font-size: 0.8em;
+		color: #757575;
+		margin-top: 3px;
+		font-weight: 400;
+	}
+}
+// Conditional Logic upsell panel (free version only).
+.evf-cl-upsell-group {
+	> .everest-forms-field-option-group-toggle {
+		color: #999 !important;
+	}
+}
+
+=======
+>>>>>>> efcf0a3da4ed590fcb489a5456e6c462bb001851
 .evf-cl-pro-badge {
 	display: inline-flex;
 	align-items: center;

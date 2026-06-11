@@ -343,6 +343,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 * Feature	  - Shield silentCAPTCHA integration.
 * Enhance	  - Contact Form 7 migration.
 * Fix         - Updated tooltips.
+* Fix 		  - Brevo connection issue.
 * Fix 		  - Form fields icon mis match.
 * Fix 		  - Design issue on integration tab.
 * Fix 		  - Design issue for radio buttons in Survey polls Quiz settings.

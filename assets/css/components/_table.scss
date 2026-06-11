@@ -564,6 +564,16 @@ $status-trash-text: #991b1b;
 	margin-top: 32px;
 	margin-bottom: 0;
 	margin-top: 30px;
+
+	a {
+		color: inherit;
+		outline: none;
+
+		&:focus {
+			outline: none;
+			box-shadow: none;
+		}
+	}
 	// min-width: 900px;
 
 	thead th.column-more,
@@ -947,10 +957,17 @@ $status-trash-text: #991b1b;
 
 					a {
 						font-weight: 500;
+						color: inherit;
+						outline: none;
 
 						&:hover {
 							color: darken($evf-primary, 10%);
 							text-decoration: underline;
+						}
+
+						&:focus {
+							outline: none;
+							box-shadow: none;
 						}
 					}
 
@@ -1092,6 +1109,16 @@ $status-trash-text: #991b1b;
 				&.column-entries {
 					font-weight: 400;
 					color: $evf-text-primary;
+
+					a {
+						color: inherit;
+					}
+				}
+
+				&.column-author {
+					a {
+						color: inherit;
+					}
 				}
 
 				.evf-no-coupons {
@@ -1174,6 +1201,10 @@ body.everest-forms_page_evf-email-templates {
 
 				&.column-author {
 					width: 32% !important;
+
+					a {
+						color: inherit;
+					}
 				}
 
 				&.column-date {
@@ -1534,7 +1565,6 @@ body {
 .everest-forms-table-wrapper {
 	position: relative;
 	overflow: visible;
-	padding-bottom: 50px;
 }
 
 // Edit Tags //

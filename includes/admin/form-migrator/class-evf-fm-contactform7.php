@@ -120,7 +120,8 @@ class EVF_Fm_Contactform7 extends EVF_Admin_Form_Migrator {
 			preg_match( '/\[(?:' . preg_quote( $type ) . ')\*? ' . $name . '(?:[ ](.*?))?(?:[\r\n\t ](\/))?\]/', $match, $input_match );
 
 			if ( ! empty( $input_match[0] ) ) {
-				return strip_shortcodes( sanitize_text_field( str_replace( $input_match[0], '', $match ) ) );
+				$label_text = preg_replace( '/\[[^\]]+\]/', '', str_replace( $input_match[0], '', $match ) );
+				return sanitize_text_field( trim( $label_text ) );
 			}
 		}
 
