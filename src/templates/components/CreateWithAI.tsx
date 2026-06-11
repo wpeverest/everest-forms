@@ -819,19 +819,12 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 																href={msg.noticeUrl}
 																target="_blank"
 																rel="noopener noreferrer"
-																display="inline-flex"
-																alignItems="center"
-																gap="4px"
+																display="inline-block"
 																mb={isUseThisFormMsg ? '10px' : '0'}
-																bg="#7545BB"
-																color="white"
+																color="#7545BB"
 																fontSize="12px"
 																fontWeight="600"
-																px="10px"
-																py="5px"
-																borderRadius="6px"
-																_hover={{ bg: '#6a3daa', textDecoration: 'none' }}
-																transition="background 0.2s"
+																_hover={{ textDecoration: 'underline' }}
 															>
 																{__('Upgrade to Pro →', 'everest-forms')}
 															</Box>
