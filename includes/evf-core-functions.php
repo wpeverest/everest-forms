@@ -4114,6 +4114,80 @@ function evf_get_fields_group($type = '')
 }
 
 /**
+ * Determine whether a field type is "locked" for the current site.
+ *
+ * A locked field is a registered Pro/addon field that the user cannot
+ * currently use (no license or required addon inactive). Locked fields are
+ * shown in the builder for upsell (with all settings visible but not editable)
+ * and are excluded from the published form until unlocked. The state is
+ * derived, never stored, so fields auto-unlock once the addon/license becomes
+ * available - no data migration required.
+ *
+ * @since 3.2.0
+ *
+ * @param string $type Field type slug (e.g. 'signature').
+ * @return bool True when the field type is locked.
+ */
+function evf_is_field_locked($type)
+{
+	$locked = in_array($type, evf()->form_fields->get_pro_form_field_types(), true);
+
+	/**
+	 * Filter whether a given field type is locked.
+	 *
+	 * @since 3.2.0
+	 *
+	 * @param bool   $locked Whether the field type is locked.
+	 * @param string $type   Field type slug.
+	 */
+	return (bool) apply_filters('everest_forms_is_field_locked', $locked, $type);
+}
+
+/**
+ * Return the addon slug required by a field if that addon is currently inactive.
+ *
+ * This covers a gap that evf_is_field_locked() cannot: when EVF Pro is active it
+ * registers the full field class (without is_pro), so the field is no longer
+ * plan-locked — but the specific addon the field depends on (e.g. Stripe for the
+ * credit-card field) may not be installed. In that case the builder preview renders
+ * blank, giving the user no feedback. This function detects that state so the
+ * builder can show the ADD-ON badge and a proper "Activate add-on" CTA.
+ *
+ * @since 3.4.6
+ *
+ * @param string $type Field type slug (e.g. 'credit-card').
+ * @return string Addon slug (e.g. 'everest-forms-stripe') when the field needs an
+ *               inactive addon, or empty string when no addon is required / addon
+ *               is already active.
+ */
+function evf_field_inactive_addon( $type ) {
+	// Pro/addons declare field→addon dependencies here when the field class
+	// itself doesn't register while the addon is absent (e.g. credit-card
+	// requires Stripe, but the class bails in its constructor when Stripe is
+	// inactive, so it never appears in form_fields()).
+	$requirements = apply_filters( 'everest_forms_field_addon_requirements', array() );
+	if ( isset( $requirements[ $type ] ) ) {
+		$addon       = $requirements[ $type ];
+		$plugin_file = $addon . '/' . $addon . '.php';
+		return is_plugin_active( $plugin_file ) ? '' : $addon;
+	}
+
+	// Fallback: field registered itself in the registry with an addon property.
+	foreach ( evf()->form_fields->form_fields() as $group ) {
+		foreach ( $group as $field_obj ) {
+			if ( $field_obj->type === $type ) {
+				if ( empty( $field_obj->addon ) ) {
+					return '';
+				}
+				$plugin_file = $field_obj->addon . '/' . $field_obj->addon . '.php';
+				return is_plugin_active( $plugin_file ) ? '' : $field_obj->addon;
+			}
+		}
+	}
+	return '';
+}
+
+/**
  * Get all fields settings.
  *
  * @return array Settings data.

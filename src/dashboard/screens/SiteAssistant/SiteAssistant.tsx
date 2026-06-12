@@ -1,4 +1,4 @@
-/**
+﻿/**
  *  External Dependencies
  */
 import {
@@ -946,15 +946,15 @@ const SiteAssistant: React.FC<Props> = ({ siteAssistantQuery }) => {
 								sx={{
 									padding: '0 12px !important',
 									paddingRight: '12px !important',
-									boxSizing: 'border-box !important',  
+									boxSizing: 'border-box !important',
 									width: '100% !important',
-									maxWidth: '100% !important',  
+									maxWidth: '100% !important',
 									border: '1px solid #e1e1e1 !important',
 									fontSize: '14px !important',
 									'&:focus, &:focus-visible': {
 										outline: 'none !important',
 										boxShadow: 'none !important',
-										borderColor: '#e1e1e1 !important', 
+										borderColor: '#e1e1e1 !important',
 									},
 								}}
 								outline="none"

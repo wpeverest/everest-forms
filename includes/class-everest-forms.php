@@ -360,6 +360,11 @@ final class EverestForms {
 		}
 
 		/**
+		 * ThemeGrill AI Cloud integration.
+		 */
+		include_once EVF_ABSPATH . 'includes/Integrations/AI/class-evf-ai-loader.php';
+
+		/**
 		 *Usage Tracking.
 		 */
 		include_once EVF_ABSPATH . 'includes/class-evf-cron.php';

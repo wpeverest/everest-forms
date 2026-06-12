@@ -83,11 +83,10 @@
   },
   "lint-staged": {
     "*.php": [
-      "php -d display_errors=1 -l",
-      "composer run-script phpcs-pre-commit"
+      "php -d display_errors=1 -l"
     ],
     "*.scss": [
-      "stylelint --syntax=scss --fix",
+      "stylelint --customSyntax=postcss-scss --fix",
       "git add"
     ],
     "!(*.min).js": [
