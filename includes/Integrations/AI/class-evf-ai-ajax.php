@@ -159,8 +159,11 @@ class EVF_AI_Ajax {
 		// appear to the user as if they had no effect.
 		$needs_reload = false;
 
-		// Form-level settings that are visible in the Settings tab.
-		$watched_keys = array( 'redirect_to', 'external_url', 'custom_page', 'successful_form_submission_message' );
+		// Only watch settings that are stable (won't change on pure field edits).
+		// Excluded intentionally:
+		//   - successful_form_submission_message: AI regenerates wording on every refine
+		//   - evf_email_message / evf_email_subject: same reason — always regenerated
+		$watched_keys = array( 'redirect_to', 'external_url', 'custom_page' );
 		foreach ( $watched_keys as $key ) {
 			$before_val = $before_settings[ $key ] ?? '';
 			$after_val  = $after_settings[ $key ] ?? '';
@@ -170,13 +173,14 @@ class EVF_AI_Ajax {
 			}
 		}
 
-		// Email notification changes (from_name, reply_to, message, subject).
+		// Email sender identity — only set when user explicitly asks ("send from Support Team").
+		// Subject and message body are excluded: AI rewrites them on every refine.
 		if ( ! $needs_reload ) {
-			$email_keys = array( 'evf_from_name', 'evf_reply_to', 'evf_email_message', 'evf_email_subject' );
+			$email_identity_keys = array( 'evf_from_name', 'evf_reply_to' );
 			foreach ( array( 'connection_1', 'connection_2' ) as $conn ) {
 				$before_conn = $before_settings['email'][ $conn ] ?? array();
 				$after_conn  = $after_settings['email'][ $conn ] ?? array();
-				foreach ( $email_keys as $k ) {
+				foreach ( $email_identity_keys as $k ) {
 					if ( ( $before_conn[ $k ] ?? '' ) !== ( $after_conn[ $k ] ?? '' ) ) {
 						$needs_reload = true;
 						break 2;
