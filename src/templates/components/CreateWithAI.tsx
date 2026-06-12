@@ -270,7 +270,7 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 				title: __('Error', 'everest-forms'),
 				description: e?.message || __('Could not open the form. Please try again.', 'everest-forms'),
 				status: 'error',
-				position: 'bottom-right',
+				position: 'bottom',
 				duration: 5000,
 				isClosable: true,
 				variant: 'subtle',
@@ -395,8 +395,8 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 					</Box>
 				) : message,
 				status: 'error',
-				position: 'bottom-right',
-				duration: isRateLimit ? null : 6000,
+				position: 'bottom',
+				duration: 5000,
 				isClosable: true,
 				variant: 'subtle',
 			});

@@ -104,6 +104,8 @@ class EVF_Admin_Form_Templates {
 				'aiNonce'      => wp_create_nonce( 'evf_ai_nonce' ),
 				'aiRegistered' => class_exists( 'EVF_AI_Registration' ) ? EVF_AI_Registration::is_registered() : false,
 				'aiTier'       => class_exists( 'EVF_AI_Registration' ) ? EVF_AI_Registration::get_tier() : 'free',
+				// Create with AI is disabled on local / development sites (gateway cannot verify ownership).
+				'aiEnabled'    => class_exists( 'EVF_AI_Registration' ) && ! EVF_AI_Registration::is_local_site(),
 			)
 		);
 		wp_enqueue_script( 'evf-templates' );

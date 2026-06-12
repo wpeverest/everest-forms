@@ -92,6 +92,15 @@ class EVF_AI_Ajax {
 			wp_send_json_error( array( 'message' => __( 'Please describe what you want to change.', 'everest-forms' ) ) );
 		}
 
+		if ( EVF_AI_Registration::is_local_site() ) {
+			wp_send_json_error(
+				array(
+					'message' => __( 'AI features are not available on local or staging sites.', 'everest-forms' ),
+					'code'    => 'not_registered',
+				)
+			);
+		}
+
 		if ( ! EVF_AI_Registration::is_registered() ) {
 			EVF_AI_Registration::register();
 		}
@@ -255,6 +264,15 @@ class EVF_AI_Ajax {
 
 		if ( strlen( $prompt ) < 5 ) {
 			wp_send_json_error( array( 'message' => __( 'Prompt is too short. Please provide more detail.', 'everest-forms' ) ) );
+		}
+
+		if ( EVF_AI_Registration::is_local_site() ) {
+			wp_send_json_error(
+				array(
+					'message' => __( 'AI features are not available on local or staging sites.', 'everest-forms' ),
+					'code'    => 'not_registered',
+				)
+			);
 		}
 
 		// Auto-register on first use

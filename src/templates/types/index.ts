@@ -9,4 +9,6 @@ export type TemplatesScriptData = {
 	aiRegistered: boolean;
 	/** Current AI tier ("free" | "pro"). */
 	aiTier: string;
+	/** Whether the "Create with AI" feature is available (false on local/dev sites). */
+	aiEnabled: boolean;
 };

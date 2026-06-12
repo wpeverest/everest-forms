@@ -3,12 +3,17 @@ import { __ } from '@wordpress/i18n';
 import React from 'react';
 import { FiArrowRight } from 'react-icons/fi';
 import { LuPencilLine, LuSparkles } from 'react-icons/lu';
+import { templatesScriptData } from '../utils/global';
 
 interface CreateFormCTAProps {
 	onCreateWithAI?: () => void;
 	onCreateBlank?: () => void;
 	isCreatingBlank?: boolean;
 }
+
+// "Create with AI" is disabled (shown greyed-out, not clickable) on local /
+// development sites where the AI gateway is unavailable.
+const AI_ENABLED = !!templatesScriptData?.aiEnabled;
 
 const CreateFormCTA: React.FC<CreateFormCTAProps> = ({
 	onCreateWithAI,
@@ -27,13 +32,14 @@ const CreateFormCTA: React.FC<CreateFormCTAProps> = ({
 				p="32px"
 				display="flex"
 				flexDirection="column"
-				cursor="pointer"
-				onClick={() => onCreateWithAI && onCreateWithAI()}
+				cursor={AI_ENABLED ? 'pointer' : 'not-allowed'}
+				opacity={AI_ENABLED ? 1 : 0.6}
+				onClick={() => AI_ENABLED && onCreateWithAI && onCreateWithAI()}
 				transition="border-color 0.2s, box-shadow 0.2s"
-				_hover={{
+				_hover={AI_ENABLED ? {
 					borderColor: 'rgba(117,69,187,0.4)',
 					boxShadow: '0 10px 30px -15px rgba(117,69,187,0.25)',
-				}}
+				} : {}}
 			>
 				{/* Gradient overlay decorations */}
 				<Box
@@ -125,14 +131,20 @@ const CreateFormCTA: React.FC<CreateFormCTAProps> = ({
 				{/* CTA link */}
 				<HStack
 					spacing="6px"
-					color="#7545BB"
+					color={AI_ENABLED ? '#7545BB' : '#9ca3af'}
 					fontSize="14px"
 					fontWeight="500"
 					position="relative"
 					mt="auto"
 				>
-					<Text margin="0">{__('Get Started', 'everest-forms')}</Text>
-					<Icon as={FiArrowRight} boxSize="4" />
+					{AI_ENABLED ? (
+						<>
+							<Text margin="0">{__('Get Started', 'everest-forms')}</Text>
+							<Icon as={FiArrowRight} boxSize="4" />
+						</>
+					) : (
+						<Text margin="0">{__('Not available on local sites', 'everest-forms')}</Text>
+					)}
 				</HStack>
 			</Box>
 

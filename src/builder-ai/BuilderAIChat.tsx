@@ -34,8 +34,13 @@ interface BuilderAIConfig {
 	nonce?: string;
 	formId?: number;
 	formTitle?: string;
+	aiDisabled?: boolean;
 }
 const cfg: BuilderAIConfig = ( window as any ).evfBuilderAI || {};
+
+// On local / development sites the AI gateway is unavailable — the assistant is
+// shown but disabled (greyed trigger, opens nothing, explains why on hover).
+const AI_DISABLED = !! cfg.aiDisabled;
 
 // Edit the current builder form via the ThemeGrill AI Cloud (Python) gateway.
 const editFormViaAi = async (
@@ -231,7 +236,7 @@ const BuilderAIChat: React.FC = () => {
 			     Shows sparkles when closed, X when open.
 			     zIndex sits above the chat panel so it's always clickable. ── */}
 			<button
-				onClick={() => setOpen(o => !o)}
+				onClick={() => { if (!AI_DISABLED) setOpen(o => !o); }}
 				style={{
 					position: 'fixed',
 					bottom: BTN_BOTTOM,
@@ -239,11 +244,13 @@ const BuilderAIChat: React.FC = () => {
 					width: BTN_SIZE,
 					height: BTN_SIZE,
 					borderRadius: '50%',
-					background: open
+					background: AI_DISABLED
+						? 'linear-gradient(135deg,#b4a8cc 0%,#c8bce0 100%)'
+						: open
 						? 'linear-gradient(135deg,#5c329c 0%,#7545BB 100%)'
 						: 'linear-gradient(135deg,#7545BB 0%,#9660db 100%)',
 					border: 'none',
-					cursor: 'pointer',
+					cursor: AI_DISABLED ? 'not-allowed' : 'pointer',
 					display: 'flex',
 					alignItems: 'center',
 					justifyContent: 'center',
@@ -253,6 +260,7 @@ const BuilderAIChat: React.FC = () => {
 				}}
 				onMouseEnter={e => {
 					setButtonHovered(true);
+					if (AI_DISABLED) return;
 					(e.currentTarget as HTMLButtonElement).style.transform = 'scale(1.08)';
 					(e.currentTarget as HTMLButtonElement).style.boxShadow = '0 6px 22px rgba(117,69,187,.55)';
 				}}
@@ -306,6 +314,8 @@ const BuilderAIChat: React.FC = () => {
 									Upgrade to Pro →
 								</a>
 							</>
+						) : AI_DISABLED ? (
+							'Not available on local sites'
 						) : (
 							'AI Form Assistant'
 						)}

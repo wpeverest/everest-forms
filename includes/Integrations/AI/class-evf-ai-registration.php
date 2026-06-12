@@ -43,6 +43,49 @@ class EVF_AI_Registration {
 	}
 
 	/**
+	 * True if this is a local / development site where the AI features
+	 * (Create with AI, in-builder AI Assistant) should be disabled.
+	 *
+	 * The gateway cannot verify domain ownership for non-public hosts, so the
+	 * AI features can never work on local installs — we hide them entirely
+	 * instead of letting the user hit a "not available" error.
+	 *
+	 * Detection: WP environment type "local" OR a non-public host
+	 * (localhost / loopback IP / .local / .test / .localhost TLD).
+	 *
+	 * @return bool
+	 */
+	public static function is_local_site(): bool {
+		if ( function_exists( 'wp_get_environment_type' ) && 'local' === wp_get_environment_type() ) {
+			return true;
+		}
+
+		$host = wp_parse_url( site_url(), PHP_URL_HOST );
+		if ( empty( $host ) ) {
+			return false;
+		}
+		$host = strtolower( $host );
+
+		if ( in_array( $host, array( 'localhost', '127.0.0.1', '::1' ), true ) ) {
+			return true;
+		}
+
+		foreach ( array( '.local', '.test', '.localhost' ) as $suffix ) {
+			if ( substr( $host, -strlen( $suffix ) ) === $suffix ) {
+				return true;
+			}
+		}
+
+		/**
+		 * Filter whether the current site is treated as local for AI features.
+		 *
+		 * @param bool   $is_local Whether the site is considered local.
+		 * @param string $host     The detected site host.
+		 */
+		return (bool) apply_filters( 'everest_forms_ai_is_local_site', false, $host );
+	}
+
+	/**
 	 * Clear stored credentials and registration lock.
 	 * Called automatically when the gateway returns "Invalid token" so the
 	 * site re-registers transparently on the next request.

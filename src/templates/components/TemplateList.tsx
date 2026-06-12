@@ -47,6 +47,9 @@ interface TemplateListProps {
 
 const { restURL, security } = templatesScriptData;
 
+// "Edit with AI" is disabled (shown greyed-out) on local / development sites where the AI gateway is unavailable.
+const AI_ENABLED = !!templatesScriptData?.aiEnabled;
+
 interface CreateTemplateResponse {
 	success: boolean;
 	data?: {
@@ -854,14 +857,16 @@ const TemplateList: React.FC<TemplateListProps> = ({
 									color="#7545BB"
 									fontSize="14px"
 									fontWeight="500"
-									cursor={aiCreatingSlug ? 'not-allowed' : 'pointer'}
-									opacity={aiCreatingSlug ? 0.7 : 1}
+									disabled={!AI_ENABLED}
+									title={AI_ENABLED ? undefined : __('Not available on local sites', 'everest-forms')}
+									cursor={!AI_ENABLED || aiCreatingSlug ? 'not-allowed' : 'pointer'}
+									opacity={!AI_ENABLED ? 0.6 : aiCreatingSlug ? 0.7 : 1}
 									onClick={() => {
-										if (!aiCreatingSlug && previewTemplate)
+										if (AI_ENABLED && !aiCreatingSlug && previewTemplate)
 											handleEditWithAI(previewTemplate);
 									}}
 									transition="color 0.2s"
-									_hover={{ color: '#6a3daa' }}
+									_hover={AI_ENABLED ? { color: '#6a3daa' } : {}}
 								>
 									<Icon as={LuSparkles} boxSize="4" />
 									<Text margin="0">
