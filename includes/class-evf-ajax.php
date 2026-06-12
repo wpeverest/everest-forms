@@ -2048,7 +2048,7 @@ class EVF_AJAX {
 
 			$installed_plugins = get_plugins();
 
-			if ( in_array( 'smart-smtp/smart-smtp.php', $installed_plugins ) ) {
+			if ( array_key_exists( 'smart-smtp/smart-smtp.php', $installed_plugins ) ) {
 				$activate_result = activate_plugin( 'smart-smtp/smart-smtp.php' );
 				if ( is_wp_error( $activate_result ) ) {
 					$error_message = $activate_result->get_error_message();
@@ -2093,7 +2093,7 @@ class EVF_AJAX {
 			wp_send_json_success(
 				array(
 					'message'         => 'SmartSMTP plugin installed and activated successfully!',
-					'redirection_url' => admin_url( 'admin.php?page=smart-smtp' ),
+					'redirection_url' => evf_get_smart_smtp_google_workspace_setup_url(),
 				)
 			);
 		} catch ( Exception $e ) {

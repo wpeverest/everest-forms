@@ -1,0 +1,255 @@
+<h2>Design — EVF Sidebar Style</h2>
+<p class="subtitle">Matches actual EVF form builder UI. Left = Toggle OFF, Right = Toggle ON.</p>
+
+<style>
+  /* EVF sidebar simulation */
+  .evf-sidebar {
+    width: 282px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 13px;
+    color: #3c434a;
+  }
+
+  /* Choice row */
+  .choice-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 10px;
+    border-bottom: 1px solid #f0f0f0;
+    background: #fafafa;
+  }
+  .choice-row .drag { color: #bbb; font-size: 14px; letter-spacing: -2px; }
+  .choice-row input[type=radio] { margin: 0; flex-shrink: 0; }
+  .choice-row .lbl-input {
+    flex: 1;
+    border: 1px solid #8c8f94;
+    border-radius: 3px;
+    padding: 4px 7px;
+    font-size: 13px;
+    color: #2c3338;
+    background: #fff;
+    min-width: 0;
+  }
+  .choice-row .price-input {
+    width: 55px;
+    border: 1px solid #8c8f94;
+    border-radius: 3px;
+    padding: 4px 7px;
+    font-size: 13px;
+    color: #2c3338;
+    background: #fff;
+    text-align: right;
+  }
+  .choice-row .btns { display: flex; gap: 3px; flex-shrink: 0; }
+  .choice-row .btns button {
+    width: 22px; height: 22px;
+    border: 1px solid #bbb; border-radius: 50%;
+    background: #fff; cursor: pointer;
+    font-size: 14px; line-height: 1;
+    color: #555; display: flex; align-items: center; justify-content: center;
+    padding: 0;
+  }
+
+  /* Sub-details area */
+  .sub-details { padding: 0 10px 10px; }
+
+  /* Recurring section — always active, distinct */
+  .section-recurring {
+    margin-top: 10px;
+    background: #f6fff8;
+    border-left: 3px solid #2fb344;
+    border-radius: 0 3px 3px 0;
+    padding: 8px 10px;
+  }
+  .section-recurring .sec-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: #1e7a2f;
+    margin-bottom: 7px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .section-recurring .sec-title .badge {
+    font-size: 10px;
+    font-weight: 500;
+    background: #2fb344;
+    color: #fff;
+    border-radius: 2px;
+    padding: 1px 5px;
+    letter-spacing: 0;
+  }
+
+  /* Toggle section cards */
+  .section-toggle {
+    margin-top: 8px;
+    border: 1px solid #dcdcde;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .section-toggle .toggle-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 7px 10px;
+    background: #f6f7f7;
+    border-bottom: 1px solid #dcdcde;
+  }
+  .section-toggle.is-off .toggle-header { border-bottom: none; background: #f6f7f7; }
+  .toggle-header .sec-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: #3c434a;
+    margin: 0;
+  }
+  .section-toggle .toggle-body {
+    padding: 8px 10px;
+    background: #fff;
+  }
+
+  /* Input row */
+  .input-row { display: flex; gap: 7px; align-items: center; }
+  .input-row input[type=number] {
+    width: 60px;
+    border: 1px solid #8c8f94;
+    border-radius: 3px;
+    padding: 4px 7px;
+    font-size: 13px;
+    color: #2c3338;
+    background: #fff;
+  }
+  .input-row select {
+    flex: 1;
+    border: 1px solid #8c8f94;
+    border-radius: 3px;
+    padding: 4px 7px;
+    font-size: 13px;
+    color: #2c3338;
+    background: #fff;
+  }
+
+  /* Date input */
+  .date-input {
+    width: 100%;
+    border: 1px solid #8c8f94;
+    border-radius: 3px;
+    padding: 4px 8px;
+    font-size: 13px;
+    color: #555;
+    background: #fff;
+    box-sizing: border-box;
+  }
+
+  /* Toggle switch — EVF style */
+  .evf-toggle { position: relative; display: inline-block; width: 34px; height: 18px; flex-shrink: 0; }
+  .evf-toggle .track {
+    position: absolute; inset: 0;
+    background: #ccc; border-radius: 18px;
+  }
+  .evf-toggle .track.on { background: #2fb344; }
+  .evf-toggle .thumb {
+    position: absolute;
+    left: 3px; top: 3px;
+    width: 12px; height: 12px;
+    background: #fff; border-radius: 50%;
+  }
+  .evf-toggle .track.on + .thumb, .evf-toggle .on .thumb { left: auto; right: 3px; }
+
+  .split { gap: 28px; align-items: flex-start; }
+  .mockup { flex: 1; }
+</style>
+
+<div class="split">
+  <!-- STATE: Toggles OFF -->
+  <div class="mockup" data-choice="off-state" onclick="toggleSelect(this)">
+    <div class="mockup-header">Toggles OFF</div>
+    <div class="mockup-body" style="padding: 14px; background: #f0f0f1; display:flex; justify-content:center;">
+      <div class="evf-sidebar">
+        <div class="choice-row">
+          <span class="drag">⠿</span>
+          <input type="radio" readonly>
+          <input type="text" class="lbl-input" value="First tt Choice" readonly>
+          <input type="text" class="price-input" value="7.00" readonly>
+          <div class="btns"><button>+</button><button>×</button></div>
+        </div>
+        <div class="sub-details">
+          <!-- Recurring — always on -->
+          <div class="section-recurring">
+            <div class="sec-title">Recurring Details <span class="badge">Always active</span></div>
+            <div class="input-row">
+              <input type="number" value="1" readonly>
+              <select><option>Week(s)</option></select>
+            </div>
+          </div>
+          <!-- Trial — OFF, collapsed -->
+          <div class="section-toggle is-off">
+            <div class="toggle-header">
+              <span class="sec-title">Enable Trial Period</span>
+              <div class="evf-toggle"><div class="track"></div><div class="thumb"></div></div>
+            </div>
+          </div>
+          <!-- Expiry — OFF, collapsed -->
+          <div class="section-toggle is-off">
+            <div class="toggle-header">
+              <span class="sec-title">Enable Expiry Date</span>
+              <div class="evf-toggle"><div class="track"></div><div class="thumb"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STATE: Toggles ON -->
+  <div class="mockup" data-choice="on-state" onclick="toggleSelect(this)">
+    <div class="mockup-header">Toggles ON</div>
+    <div class="mockup-body" style="padding: 14px; background: #f0f0f1; display:flex; justify-content:center;">
+      <div class="evf-sidebar">
+        <div class="choice-row">
+          <span class="drag">⠿</span>
+          <input type="radio" readonly>
+          <input type="text" class="lbl-input" value="First tt Choice" readonly>
+          <input type="text" class="price-input" value="7.00" readonly>
+          <div class="btns"><button>+</button><button>×</button></div>
+        </div>
+        <div class="sub-details">
+          <!-- Recurring — always on -->
+          <div class="section-recurring">
+            <div class="sec-title">Recurring Details <span class="badge">Always active</span></div>
+            <div class="input-row">
+              <input type="number" value="1" readonly>
+              <select><option>Week(s)</option></select>
+            </div>
+          </div>
+          <!-- Trial — ON, expanded -->
+          <div class="section-toggle">
+            <div class="toggle-header">
+              <span class="sec-title">Enable Trial Period</span>
+              <div class="evf-toggle"><div class="track on"></div><div class="thumb" style="left:auto;right:3px;"></div></div>
+            </div>
+            <div class="toggle-body">
+              <div class="input-row">
+                <input type="number" value="2" readonly>
+                <select><option>Week(s)</option></select>
+              </div>
+            </div>
+          </div>
+          <!-- Expiry — ON, expanded -->
+          <div class="section-toggle">
+            <div class="toggle-header">
+              <span class="sec-title">Enable Expiry Date</span>
+              <div class="evf-toggle"><div class="track on"></div><div class="thumb" style="left:auto;right:3px;"></div></div>
+            </div>
+            <div class="toggle-body">
+              <input class="date-input" value="2026-05-20" readonly>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
