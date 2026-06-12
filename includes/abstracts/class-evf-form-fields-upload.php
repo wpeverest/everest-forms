@@ -1860,7 +1860,9 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 			// WordPress upload folder path.
 			$upload_dir = WP_CONTENT_DIR . '/uploads/Everes-Froms-Entries-CSV-file/';
 			if ( ! is_dir( $upload_dir ) ) {
-				mkdir( $upload_dir, 0777, true );
+				mkdir( $upload_dir, 0755, true );
+				file_put_contents( $upload_dir . '.htaccess', "deny from all\n" ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_file_put_contents
+				file_put_contents( $upload_dir . 'index.php', "<?php\n// Silence is golden.\n" ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_file_put_contents
 			}
 			$csv_path = $upload_dir . 'Entry data-' . $get_entry->entry_id . '.csv';
 

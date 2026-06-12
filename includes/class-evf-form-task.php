@@ -1434,10 +1434,10 @@ class EVF_Form_Task {
 				$emails->send( trim( $address ), $email['subject'], $email['message'], '', $connection_id );
 			}
 
+			if ( isset( $attachment ) ) {
+				do_action( 'everest_forms_remove_attachments_after_send_email', $attachment, $fields, $form_data, 'entry-email', $connection_id, $entry_id );
+			}
 			endforeach;
-		if ( isset( $attachment ) ) {
-			do_action( 'everest_forms_remove_attachments_after_send_email', $attachment, $fields, $form_data, 'entry-email', $connection_id, $entry_id );
-		}
 	}
 
 	/**
