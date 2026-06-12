@@ -264,7 +264,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 		$form_data = $this->form_data;
 		$form_id   = absint( $form_data['id'] );
 		$fields    = isset( $form_data['form_fields'] ) ? $form_data['form_fields'] : array();
-		$structure = isset( $form_data['structure'] ) ? $form_data['structure'] : array( 'row_1' => array() );
+		$structure = ! empty( $form_data['structure'] ) ? $form_data['structure'] : array( 'row_1' => array() );
 		$row_ids   = array_map(
 			function ( $row_id ) {
 				return str_replace( 'row_', '', $row_id );
@@ -444,10 +444,11 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 			echo '<div class="evf-repeater-row-wrapper">'; // Repeater Row Wrapper starts.
 		}
 
-		echo '<div class="evf-add-row" data-total-rows="' . count( $structure ) . '" data-next-row-id="' . (int) max( $row_ids ) . '"><span class="everest-forms-btn everest-forms-btn-primary dashicons dashicons-plus-alt">' . esc_html__( 'Add Row', 'everest-forms' ) . '</span></div>';
+		$next_row_id = $row_ids ? max( $row_ids ) : 1;
+		echo '<div class="evf-add-row" data-total-rows="' . count( $structure ) . '" data-next-row-id="' . (int) $next_row_id . '"><span class="everest-forms-btn everest-forms-btn-primary dashicons dashicons-plus-alt">' . esc_html__( 'Add Row', 'everest-forms' ) . '</span></div>';
 
 		if ( defined( 'EVF_REPEATER_FIELDS_VERSION' ) ) {
-			echo '<div class="evf-add-row repeater-row" data-total-rows="' . count( $structure ) . '" data-next-row-id="' . (int) max( $row_ids ) . '"><span class="everest-forms-btn everest-forms-btn-primary dashicons dashicons-plus-alt">' . esc_html__( 'Add Repeater Row', 'everest-forms' ) . '</span></div>';
+			echo '<div class="evf-add-row repeater-row" data-total-rows="' . count( $structure ) . '" data-next-row-id="' . (int) $next_row_id . '"><span class="everest-forms-btn everest-forms-btn-primary dashicons dashicons-plus-alt">' . esc_html__( 'Add Repeater Row', 'everest-forms' ) . '</span></div>';
 			echo '</div>'; // Repeater Row Wrapper ends.
 		}
 		echo '</div >';

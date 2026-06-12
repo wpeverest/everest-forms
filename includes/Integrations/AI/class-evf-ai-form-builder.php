@@ -35,10 +35,6 @@ class EVF_AI_Form_Builder {
 		$title  = sanitize_text_field( $ai_response['form_title'] ?? __( 'AI Generated Form', 'everest-forms' ) );
 		$fields = $ai_response['fields'] ?? [];
 
-		if ( empty( $fields ) ) {
-			return new WP_Error( 'no_fields', __( 'No fields were generated.', 'everest-forms' ) );
-		}
-
 		remove_all_filters( 'content_save_pre' );
 
 		// Saved as DRAFT — becomes active only when user clicks "Use This Form"
@@ -78,9 +74,6 @@ class EVF_AI_Form_Builder {
 		}
 
 		$fields = $ai_response['fields'] ?? [];
-		if ( empty( $fields ) ) {
-			return new WP_Error( 'no_fields', __( 'No fields were generated.', 'everest-forms' ) );
-		}
 
 		remove_all_filters( 'content_save_pre' );
 
@@ -708,7 +701,7 @@ class EVF_AI_Form_Builder {
 
 			$notif_from_name = ! empty( $ai['notification_from_name'] )
 				? sanitize_text_field( $ai['notification_from_name'] )
-				: get_bloginfo( 'name' );
+				: '';
 			$notif_reply_to  = self::resolve_reply_to( $ai['notification_reply_to'] ?? 'auto', $reply_to );
 			$notif_message   = ! empty( $ai['notification_message'] )
 				? wp_kses_post( $ai['notification_message'] )
@@ -740,7 +733,7 @@ class EVF_AI_Form_Builder {
 
 				$ucfm_from_name = ! empty( $ai['user_confirmation_from_name'] )
 					? sanitize_text_field( $ai['user_confirmation_from_name'] )
-					: get_bloginfo( 'name' );
+					: '';
 				$ucfm_reply_to  = self::resolve_reply_to( $ai['user_confirmation_reply_to'] ?? 'auto', '{admin_email}' );
 
 				$settings['email']['connection_2'] = [

@@ -159,32 +159,57 @@ class EVF_AI_Ajax {
 		// appear to the user as if they had no effect.
 		$needs_reload = false;
 
-		// Only watch settings that are stable (won't change on pure field edits).
-		// Excluded intentionally:
-		//   - successful_form_submission_message: AI regenerates wording on every refine
-		//   - evf_email_message / evf_email_subject: same reason — always regenerated
-		$watched_keys = array( 'redirect_to', 'external_url', 'custom_page' );
-		foreach ( $watched_keys as $key ) {
-			$before_val = $before_settings[ $key ] ?? '';
-			$after_val  = $after_settings[ $key ] ?? '';
-			if ( $before_val !== $after_val ) {
+		// Detect whether the refine prompt explicitly asks for a settings change
+		// that requires a full page reload to become visible in the builder.
+		// Pure field operations never contain these terms, eliminating false positives.
+		$prompt_lower = strtolower( $refine_prompt );
+
+		// Email keywords: keyword match alone is sufficient — if the user asks to
+		// set up / change email notifications, the Settings tab will have changed
+		// regardless of which specific value differed.
+		$email_keywords = array(
+			'send mail', 'send email', 'send an email', 'email notification',
+			'email to admin', 'mail to admin', 'notify admin',
+			'notification email', 'admin notification',
+			'from name', 'send from', 'sender name', 'email from',
+			'email subject', 'mail subject',
+		);
+		foreach ( $email_keywords as $kw ) {
+			if ( false !== strpos( $prompt_lower, $kw ) ) {
 				$needs_reload = true;
 				break;
 			}
 		}
 
-		// Email sender identity — only set when user explicitly asks ("send from Support Team").
-		// Subject and message body are excluded: AI rewrites them on every refine.
+		// Redirect keywords: run before/after comparison to confirm the redirect
+		// setting actually changed (avoids triggering reload when AI preserves it).
 		if ( ! $needs_reload ) {
-			$email_identity_keys = array( 'evf_from_name', 'evf_reply_to' );
-			foreach ( array( 'connection_1', 'connection_2' ) as $conn ) {
-				$before_conn = $before_settings['email'][ $conn ] ?? array();
-				$after_conn  = $after_settings['email'][ $conn ] ?? array();
-				foreach ( $email_identity_keys as $k ) {
-					if ( ( $before_conn[ $k ] ?? '' ) !== ( $after_conn[ $k ] ?? '' ) ) {
-						$needs_reload = true;
-						break 2;
-					}
+			$redirect_keywords = array(
+				'redirect', 'external url', 'custom page',
+				'thank you page', 'confirmation page',
+				'after submit', 'after submission',
+			);
+			$prompt_has_redirect = false;
+			foreach ( $redirect_keywords as $kw ) {
+				if ( false !== strpos( $prompt_lower, $kw ) ) {
+					$prompt_has_redirect = true;
+					break;
+				}
+			}
+
+			if ( $prompt_has_redirect ) {
+				// redirect_to: '' and 'same' are equivalent.
+				$normalize_redirect = static function ( string $val ): string {
+					return '' === $val ? 'same' : $val;
+				};
+				if ( $normalize_redirect( $before_settings['redirect_to'] ?? '' ) !== $normalize_redirect( $after_settings['redirect_to'] ?? '' ) ) {
+					$needs_reload = true;
+				}
+				if ( ! $needs_reload && ( $before_settings['external_url'] ?? '' ) !== ( $after_settings['external_url'] ?? '' ) ) {
+					$needs_reload = true;
+				}
+				if ( ! $needs_reload && (int) ( $before_settings['custom_page'] ?? 0 ) !== (int) ( $after_settings['custom_page'] ?? 0 ) ) {
+					$needs_reload = true;
 				}
 			}
 		}
