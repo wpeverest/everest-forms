@@ -14,10 +14,10 @@ defined( 'ABSPATH' ) || exit;
 
 class EVF_AI_Registration {
 
-	const OPTION_KEY          = 'evf_ai_credentials';
-	const LOCK_TRANSIENT      = 'evf_ai_registration_lock';
-	const VERIFY_PREFIX       = 'evf_ai_verify_';  // transient prefix for ownership tokens
-	const VERIFY_TTL          = 300;               // 5 minutes
+	const OPTION_KEY     = 'evf_ai_credentials';
+	const LOCK_TRANSIENT = 'evf_ai_registration_lock';
+	const VERIFY_PREFIX  = 'evf_ai_verify_';  // transient prefix for ownership tokens
+	const VERIFY_TTL     = 300;               // 5 minutes
 
 	/**
 	 * Get the stored site token, or null if not yet registered.
@@ -56,7 +56,6 @@ class EVF_AI_Registration {
 	 * @return bool
 	 */
 	public static function is_local_site(): bool {
-		return false;
 		if ( function_exists( 'wp_get_environment_type' ) && 'local' === wp_get_environment_type() ) {
 			return true;
 		}
@@ -164,7 +163,7 @@ class EVF_AI_Registration {
 			return false;
 		}
 
-		$creds         = get_option( self::OPTION_KEY, [] );
+		$creds         = get_option( self::OPTION_KEY, array() );
 		$creds['tier'] = sanitize_key( $response['tier'] );
 		$creds['plan'] = sanitize_key( $response['plan'] ?? '' );
 		update_option( self::OPTION_KEY, $creds );
@@ -216,5 +215,4 @@ class EVF_AI_Registration {
 
 		return new WP_REST_Response( array( 'valid' => true ), 200 );
 	}
-
 }
