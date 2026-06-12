@@ -56,6 +56,7 @@ class EVF_AI_Registration {
 	 * @return bool
 	 */
 	public static function is_local_site(): bool {
+		return false;
 		if ( function_exists( 'wp_get_environment_type' ) && 'local' === wp_get_environment_type() ) {
 			return true;
 		}

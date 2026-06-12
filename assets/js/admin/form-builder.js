@@ -7894,6 +7894,18 @@
 					}
 					try {
 						EVFPanelBuilder.bindFields();
+						$(document.body).trigger('evf-enhanced-select-init');
+
+						// Select the first field by default so the field options
+						// tab isn't left empty after the builder refreshes.
+						var $firstField = $builder
+							.find('.evf-admin-field-wrapper .everest-forms-field')
+							.first();
+						if ($firstField.length) {
+							EVFPanelBuilder.switchToFieldOptionPanel(
+								$firstField.attr('data-field-id'),
+							);
+						}
 					} catch (e) {
 						// Re-init is best-effort; the swapped DOM is still usable.
 					}

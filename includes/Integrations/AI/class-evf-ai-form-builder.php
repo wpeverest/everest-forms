@@ -19,6 +19,7 @@ class EVF_AI_Form_Builder {
 		'payment-quantity', 'payment-subtotal', 'payment-total',
 		'payment-coupon', 'credit-card', 'payment-square',
 		'payment-authorize-net', 'payment-subscription-plan',
+		'payment-gateway-selector',
 	];
 
 	/** Set to true when a file-upload field was dropped because the free-tier limit (1) was reached. */
@@ -73,9 +74,13 @@ class EVF_AI_Form_Builder {
 			return new WP_Error( 'invalid_form', __( 'Form not found.', 'everest-forms' ) );
 		}
 
-		$fields = $ai_response['fields'] ?? [];
-
 		remove_all_filters( 'content_save_pre' );
+
+		// Preserve per-field settings (e.g. label_hide) that were applied by a prior AI
+		// request but may be absent from this AI response. Merge before building form data.
+		$existing_data  = evf_decode( $post->post_content );
+		$existing_index = self::index_fields_by_label_type( $existing_data['form_fields'] ?? array() );
+		$ai_response    = self::merge_field_settings( $ai_response, $existing_index );
 
 		$title     = sanitize_text_field( $ai_response['form_title'] ?? get_the_title( $form_id ) );
 		$form_data = self::build_form_data( $form_id, $ai_response );
@@ -369,6 +374,15 @@ class EVF_AI_Form_Builder {
 		// `payment-multiple`. Map the intuitive gateway name to the real type.
 		if ( 'payment-radio' === $type ) {
 			$type = 'payment-multiple';
+		}
+
+		// Normalize: `credit-card` (and the per-gateway square/authorize-net fields)
+		// are legacy types now unified into the single Payment Gateway field. The
+		// gateway prompt no longer emits them, but remap defensively so any cached
+		// or older AI response still produces the modern, frontend-rendering field.
+		if ( in_array( $type, array( 'credit-card', 'payment-square', 'payment-authorize-net' ), true ) ) {
+			$type  = 'payment-gateway-selector';
+			$label = $label ?: __( 'Payment Gateway', 'everest-forms' );
 		}
 
 		// Normalize: the repeater field is registered as `repeater-fields` internally.
@@ -815,6 +829,75 @@ class EVF_AI_Form_Builder {
 	}
 
 	// ── Helpers ───────────────────────────────────────────────────────────────
+
+	/**
+	 * Build a lookup of existing form fields indexed by "type||label".
+	 *
+	 * @param array $form_fields Raw form_fields array from EVF form data.
+	 * @return array
+	 */
+	private static function index_fields_by_label_type( array $form_fields ): array {
+		$index = array();
+		foreach ( $form_fields as $field ) {
+			$key           = ( $field['type'] ?? '' ) . '||' . ( $field['label'] ?? '' );
+			$index[ $key ] = $field;
+		}
+		return $index;
+	}
+
+	/**
+	 * Merge per-field settings from the existing saved form into the AI response.
+	 *
+	 * When the AI returns a field matching an existing one (by type+label), settings
+	 * from the existing field are restored to prevent subsequent AI requests from
+	 * silently resetting them.
+	 *
+	 * Two strategies are used:
+	 *
+	 * - Sticky flags (label_hide, sublabel_hide): if the existing field has these
+	 *   enabled ('1'), always force them back — the AI frequently returns the default
+	 *   (false) for unchanged fields, which would otherwise reset them.
+	 *
+	 * - Scalar settings (description, placeholder, css, required): only copied when
+	 *   the AI omitted the key entirely, so explicit AI changes are still honoured.
+	 *
+	 * @param array $ai_response    Decoded AI gateway response.
+	 * @param array $existing_index Existing fields indexed by "type||label".
+	 * @return array Modified $ai_response with merged field settings.
+	 */
+	private static function merge_field_settings( array $ai_response, array $existing_index ): array {
+		// Sticky flags: if existing is active ('1'), always restore — the AI returns
+		// false by default for unchanged fields, which would silently reset them.
+		$sticky_flags = array( 'label_hide', 'sublabel_hide' );
+
+		// Scalar settings: only restore when AI omitted the key entirely.
+		$preservable = array( 'required', 'description', 'placeholder', 'css' );
+
+		foreach ( ( $ai_response['fields'] ?? array() ) as $i => $ai_field ) {
+			$key = ( $ai_field['type'] ?? '' ) . '||' . ( $ai_field['label'] ?? '' );
+			if ( ! isset( $existing_index[ $key ] ) ) {
+				continue;
+			}
+
+			$existing = $existing_index[ $key ];
+
+			foreach ( $sticky_flags as $flag ) {
+				if ( '1' === ( $existing[ $flag ] ?? '0' ) ) {
+					$ai_response['fields'][ $i ][ $flag ] = '1';
+				}
+			}
+
+			foreach ( $preservable as $prop ) {
+				if ( ! array_key_exists( $prop, $ai_field )
+					&& ! empty( $existing[ $prop ] )
+					&& '0' !== (string) $existing[ $prop ] ) {
+					$ai_response['fields'][ $i ][ $prop ] = $existing[ $prop ];
+				}
+			}
+		}
+
+		return $ai_response;
+	}
 
 	/**
 	 * Validate redirect_to — only accept known values, fall back to 'same'.

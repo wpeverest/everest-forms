@@ -108,11 +108,12 @@ class EVF_AI_API {
 	}
 
 	/**
-	 * Extract a lightweight form context for the AI (type + label only).
-	 * Keeps extra token cost to ~100-200 tokens for a typical form.
+	 * Extract a lightweight form context for the AI.
+	 * Includes type, label, and any non-default field settings so that subsequent
+	 * AI requests preserve changes made by earlier ones (e.g. label_hide, required).
 	 *
 	 * @param int $form_id
-	 * @return array  { form_title, fields: [ { type, label } ] }
+	 * @return array  { form_title, fields: [ { type, label, ...settings } ] }
 	 */
 	private static function get_current_form_context( int $form_id ): array {
 		if ( ! $form_id ) {
@@ -132,10 +133,34 @@ class EVF_AI_API {
 			if ( in_array( $type, [ 'hidden', 'html', 'divider' ], true ) ) {
 				continue;
 			}
-			$summary[] = [
+
+			$entry = [
 				'type'  => $type,
 				'label' => $field['label'] ?? '',
 			];
+
+			// Include non-default field settings so the AI can preserve them on
+			// subsequent requests without the user having to repeat their instructions.
+			if ( ! empty( $field['label_hide'] ) && '1' === $field['label_hide'] ) {
+				$entry['label_hide'] = true;
+			}
+			if ( ! empty( $field['required'] ) && '1' === $field['required'] ) {
+				$entry['required'] = true;
+			}
+			if ( ! empty( $field['description'] ) ) {
+				$entry['description'] = $field['description'];
+			}
+			if ( ! empty( $field['placeholder'] ) ) {
+				$entry['placeholder'] = $field['placeholder'];
+			}
+			if ( ! empty( $field['sublabel_hide'] ) && '1' === $field['sublabel_hide'] ) {
+				$entry['sublabel_hide'] = true;
+			}
+			if ( ! empty( $field['css'] ) ) {
+				$entry['css'] = $field['css'];
+			}
+
+			$summary[] = $entry;
 		}
 
 		// Detect form type so the gateway can preserve it during refine/regenerate
