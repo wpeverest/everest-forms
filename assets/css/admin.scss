@@ -1,4 +1,4 @@
-/**
+﻿/**
  * admin.scss
  * General EverestForms admin styles.
  */
@@ -389,7 +389,6 @@ body.everest-forms_page_evf-settings {
 			.plugin-desc {
 				overflow: hidden;
 				display: -webkit-box;
-				-webkit-line-clamp: 4;
 				-webkit-box-orient: vertical;
 			}
 
@@ -610,7 +609,7 @@ body.everest-forms_page_evf-settings {
 		}
 
 		&[type='number'] {
-			-moz-appearance: textfield;
+			margin: 0;
 		}
 	}
 }
@@ -937,7 +936,7 @@ body.everest-forms-builder {
 	}
 
 	.clearfix {
-		// height: 80px;
+		margin: 0px;
 	}
 
 	// Toggle switch.
@@ -7230,8 +7229,18 @@ table.wp-list-table {
 	}
 
 	.submitdelete {
+		border: none;
+
 		&:hover {
 			color: #a00;
+			border: none;
+		}
+
+		&:focus {
+			color: #b91c1c;
+			outline: none;
+			box-shadow: none;
+			border: none;
 		}
 	}
 
@@ -7291,6 +7300,13 @@ table.wp-list-table {
 			color: #a00;
 			padding: 1px 2px;
 			text-decoration: none;
+
+			&:focus {
+				color: #b91c1c;
+				outline: none;
+				box-shadow: none;
+				border: none;
+			}
 		}
 	}
 
@@ -14528,7 +14544,6 @@ button#show-settings-link {
 	justify-content: center;
 }
 
-<<<<<<< HEAD
 .evf-payments-upsell-btn svg {
 	margin-top: -3px;
 }
@@ -14610,8 +14625,6 @@ button#show-settings-link {
 	}
 }
 
-=======
->>>>>>> efcf0a3da4ed590fcb489a5456e6c462bb001851
 .evf-cl-pro-badge {
 	display: inline-flex;
 	align-items: center;
