@@ -17,6 +17,11 @@ jQuery( function( $ ) {
 				this.evf_upgrade_addon,
 			);
 			$(document.body).on(
+				'click',
+				'#evf-row-field-popover .evf-popover-field-item.evf-field-upgrade',
+				this.popover_field_upgrade,
+			);
+			$(document.body).on(
 				'click dragstart',
 				'.evf-registered-item.enable-stripe-model',
 				this.enable_stripe_model,
@@ -301,8 +306,20 @@ jQuery( function( $ ) {
 
 			evf_upgrade_actions.upgrade_modal(name, $el.data('links') || '');
 		},
+		popover_field_upgrade: function () {
+			var fieldType = $(this).data('field-type'),
+				$sidebarBtn = $(
+					'.evf-registered-item[data-field-type="' + fieldType + '"]',
+				);
+			if ($sidebarBtn.length) {
+				$sidebarBtn.trigger('click');
+			}
+		},
 		field_upgrade: function (e) {
 			e.preventDefault();
+			if (evf_data && evf_data.is_pro) {
+				return;
+			}
 			evf_upgrade_actions.upgrade_modal(
 				$(this).data('feature')
 					? $(this).data('feature')
@@ -505,27 +522,34 @@ jQuery( function( $ ) {
 		},
 		enable_stripe_model: function (e) {
 			e.preventDefault();
-			var $button = $('#everest-forms-add-fields-credit-card');
-			if ($button.hasClass('recurring-payment')) {
+			var $item = $(e.currentTarget).closest('.evf-registered-item');
+			if ($item.hasClass('evf-payment-method-dependent-disabled')) {
 				return;
-			} else {
-				$.alert({
-					title: evf_upgrade.enable_stripe_title,
-					content: evf_upgrade.enable_stripe_message,
-					icon: 'dashicons dashicons-info',
-					type: 'blue',
-					buttons: {
-						confirm: {
-							text: evf_data.i18n_close,
-							btnClass: 'btn-confirm',
-							keys: ['enter'],
-						},
-					},
-				});
 			}
+			// Recurring-only lock uses .recurring-payment + stripe-admin handler, not this modal.
+			if ($item.hasClass('recurring-payment')) {
+				return;
+			}
+			$.alert({
+				title: evf_upgrade.enable_stripe_title,
+				content: evf_upgrade.enable_stripe_message,
+				icon: 'dashicons dashicons-info',
+				type: 'blue',
+				buttons: {
+					confirm: {
+						text: evf_data.i18n_close,
+						btnClass: 'btn-confirm',
+						keys: ['enter'],
+					},
+				},
+			});
 		},
 		enable_authorize_net_model: function (e) {
 			e.preventDefault();
+			var $item = $(e.currentTarget).closest('.evf-registered-item');
+			if ($item.hasClass('evf-payment-method-dependent-disabled')) {
+				return;
+			}
 			$.alert({
 				title: evf_upgrade.enable_authorize_net_title,
 				content: evf_upgrade.enable_authorize_net_message,
@@ -542,6 +566,10 @@ jQuery( function( $ ) {
 		},
 		enable_square_model: function (e) {
 			e.preventDefault();
+			var $item = $(e.currentTarget).closest('.evf-registered-item');
+			if ($item.hasClass('evf-payment-method-dependent-disabled')) {
+				return;
+			}
 			$.alert({
 				title: evf_upgrade.enable_square_title,
 				content: evf_upgrade.enable_square_message,
@@ -593,11 +621,230 @@ jQuery( function( $ ) {
 				},
 			});
 		},
+		/**
+		 * Labels of Credit Card / Authorize.Net / Square fields on the builder canvas.
+		 *
+		 * @return {string[]}
+		 */
+		getLegacyPaymentFieldDisplayNames: function () {
+			var $b = $('#everest-forms-builder');
+			var names = [];
+			if (!$b.length) {
+				return names;
+			}
+			var fallbacks = {
+				'credit-card': evf_upgrade.evf_legacy_payment_label_credit_card,
+				'authorize-net': evf_upgrade.evf_legacy_payment_label_authorize_net,
+				'square-payment': evf_upgrade.evf_legacy_payment_label_square,
+			};
+			$b
+				.find(
+					'.everest-forms-field-credit-card, .everest-forms-field-authorize-net, .everest-forms-field-square-payment',
+				)
+				.each(function () {
+					var $f = $(this);
+					var label = $f.find('.label-title .text').first().text().trim();
+					var type = $f.attr('data-field-type') || '';
+					if (!label) {
+						label = fallbacks[type] || type;
+					}
+					names.push(label);
+				});
+			return names;
+		},
+
+		getEnabledPaymentsTabGatewayDisplayNames: function () {
+			var gateways = [
+				{
+					selectors: [
+						'input[type="checkbox"][name="payments[stripe][enable_stripe]"]',
+						'#everest-forms-panel-field-paymentsstripe-enable_stripe',
+					],
+					label:
+						typeof evf_upgrade.evf_legacy_payment_label_credit_card !==
+						'undefined'
+							? evf_upgrade.evf_legacy_payment_label_credit_card
+							: 'Stripe',
+				},
+				{
+					selectors: [
+						'input[type="checkbox"][name="payments[paypal][enable_paypal]"]',
+						'#everest-forms-panel-field-paypal-enable_paypal',
+					],
+					label:
+						typeof evf_upgrade.evf_legacy_payment_label_paypal !== 'undefined'
+							? evf_upgrade.evf_legacy_payment_label_paypal
+							: 'PayPal',
+				},
+				{
+					selectors: [
+						'#everest-forms-panel-field-paymentsrazorpay-enable_razorpay',
+						'#everest-forms-panel-field-razorpay-enable_razorpay',
+						'input[name*="[razorpay]"][name*="enable_razorpay"]',
+					],
+					label:
+						typeof evf_upgrade.evf_legacy_payment_label_razorpay !== 'undefined'
+							? evf_upgrade.evf_legacy_payment_label_razorpay
+							: 'Razorpay',
+				},
+				{
+					selectors: [
+						'#everest-forms-panel-field-authorize_net-enable_authorize_net',
+					],
+					label:
+						typeof evf_upgrade.evf_legacy_payment_label_authorize_net !==
+						'undefined'
+							? evf_upgrade.evf_legacy_payment_label_authorize_net
+							: 'Authorize.Net',
+				},
+				{
+					selectors: ['#everest-forms-panel-field-square-enable_square'],
+					label:
+						typeof evf_upgrade.evf_legacy_payment_label_square !== 'undefined'
+							? evf_upgrade.evf_legacy_payment_label_square
+							: 'Square',
+				},
+				{
+					selectors: [
+						'#everest-forms-panel-field-paymentsmollie-enable_mollie',
+					],
+					label:
+						typeof evf_upgrade.evf_legacy_payment_label_mollie !== 'undefined'
+							? evf_upgrade.evf_legacy_payment_label_mollie
+							: 'Mollie',
+				},
+			];
+			var enabled = [];
+			var g, s, $el, on;
+
+			for (g = 0; g < gateways.length; g++) {
+				on = false;
+				for (s = 0; s < gateways[g].selectors.length; s++) {
+					$el = $(gateways[g].selectors[s]);
+					if ($el.length && $el.is(':checked')) {
+						on = true;
+						break;
+					}
+				}
+				if (on) {
+					enabled.push(gateways[g].label);
+				}
+			}
+			return enabled;
+		},
+
 		evf_one_time_draggable_field: function (e) {
 			e.preventDefault();
+			var $item = $(e.currentTarget).closest('.evf-registered-item');
+			var fieldType = $item.data('field-type');
+			var title = evf_upgrade.evf_one_time_draggable_title;
+			var content = evf_upgrade.evf_one_time_draggable_message;
+			if (
+				$item.hasClass('evf-payment-method-dependent-disabled') &&
+				$.inArray(fieldType, ['credit-card', 'square-payment', 'authorize-net']) >=
+					0
+			) {
+				if (
+					'credit-card' === fieldType &&
+					$item.hasClass('enable-stripe-model')
+				) {
+					title = evf_upgrade.enable_stripe_title;
+					content = evf_upgrade.enable_stripe_message;
+				} else if (
+					'square-payment' === fieldType &&
+					$item.hasClass('enable-square-model')
+				) {
+					title = evf_upgrade.enable_square_title;
+					content = evf_upgrade.enable_square_message;
+				} else if (
+					'authorize-net' === fieldType &&
+					$item.hasClass('enable-authorize-net-model')
+				) {
+					title = evf_upgrade.enable_authorize_net_title;
+					content = evf_upgrade.enable_authorize_net_message;
+				} else {
+					title = evf_upgrade.evf_payment_method_dependency_title;
+					content = evf_upgrade.evf_payment_method_dependency_message;
+				}
+			}
+			if (
+				'payment-gateway-selector' === fieldType &&
+				$item.hasClass('evf-payment-method-dependent-disabled')
+			) {
+				title = evf_upgrade.evf_legacy_payment_blocks_gateway_title;
+				var disabledReason = $item.attr('data-evf-disabled-reason') || '';
+				if (
+					'credit-card-field' === disabledReason &&
+					typeof evf_upgrade.evf_credit_card_blocks_gateway_message !==
+						'undefined'
+				) {
+					content = evf_upgrade.evf_credit_card_blocks_gateway_message;
+				} else if (
+					typeof evf_upgrade.evf_legacy_payment_blocks_gateway_message !==
+					'undefined'
+				) {
+					var isEnabledPaymentsDisable =
+						disabledReason === 'enabled-payments';
+					var legacyNames = isEnabledPaymentsDisable
+						? []
+						: evf_upgrade_actions.getLegacyPaymentFieldDisplayNames();
+					var strongName = function (name) {
+						return (
+							'<strong>' +
+							$('<div/>').text(name).html() +
+							'</strong>'
+						);
+					};
+					var placeholder;
+					if (isEnabledPaymentsDisable) {
+						var enabled =
+							evf_upgrade_actions.getEnabledPaymentsTabGatewayDisplayNames();
+
+						if (enabled.length === 0) {
+							placeholder = strongName('payments');
+						} else if (enabled.length === 1) {
+							placeholder = strongName(enabled[0]);
+						} else {
+							placeholder = enabled.map(strongName).join(', ');
+						}
+					} else if (legacyNames.length === 0) {
+						placeholder =
+							'the ' +
+							strongName(
+								[
+									evf_upgrade.evf_legacy_payment_label_credit_card,
+									evf_upgrade.evf_legacy_payment_label_authorize_net,
+									evf_upgrade.evf_legacy_payment_label_square,
+								].join(', '),
+							);
+					} else if (legacyNames.length === 1) {
+						placeholder = 'the ' + strongName(legacyNames[0]);
+					} else {
+						placeholder = legacyNames.map(strongName).join(', ');
+					}
+					content = evf_upgrade.evf_legacy_payment_blocks_gateway_message.replace(
+						'%s',
+						placeholder,
+					);
+					content = content.replace(
+						/\bPayments?\s+tab\b/i,
+						function (match) {
+							return (
+								'<span style="font-weight:700;">' + match + '</span>'
+							);
+						},
+					);
+				}
+			} else if (
+				'payment-gateway-selector' === fieldType &&
+				typeof evf_upgrade.evf_one_time_payment_gateway_message !== 'undefined'
+			) {
+				title = evf_upgrade.evf_one_time_payment_gateway_title;
+				content = evf_upgrade.evf_one_time_payment_gateway_message;
+			}
 			$.alert({
-				title: evf_upgrade.evf_one_time_draggable_title,
-				content: evf_upgrade.evf_one_time_draggable_message,
+				title: title,
+				content: content,
 				icon: 'dashicons dashicons-info',
 				type: 'blue',
 				buttons: {

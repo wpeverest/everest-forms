@@ -24,6 +24,66 @@ class EVF_Admin_Assets {
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_styles' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_scripts' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_dashboard_scripts' ), 1 );
+
+		if ( ! defined( 'EFP_PLUGIN_FILE' ) ) {
+			add_action( 'everest_forms_field_options_after_advanced-options', array( $this, 'output_conditional_logic_upsell' ), 10, 2 );
+		}
+	}
+
+	/**
+	 * Output the Conditional Logic upsell panel for free users.
+	 *
+	 * Hooked into everest_forms_field_options_after_advanced-options so it fires
+	 * for both page-rendered fields and AJAX-dropped fields.
+	 *
+	 * @param array  $field     Field data.
+	 * @param object $field_obj Field class instance.
+	 */
+	public function output_conditional_logic_upsell( $field, $field_obj ) {
+		$field_id    = esc_attr( $field['id'] );
+		$upgrade_url = 'https://everestforms.net/pricing/?utm_source=WordPress&utm_medium=evf-field-options&utm_campaign=conditional-logic-upsell&utm_content=Upgrade+to+Pro';
+		?>
+		<div class="everest-forms-field-option-group everest-forms-field-option-group-advanced everest-forms-hide closed evf-cl-upsell-group"
+		     id="everest-forms-field-option-conditional-logic-<?php echo $field_id; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>">
+			<a href="#" class="everest-forms-field-option-group-toggle">
+				<?php esc_html_e( 'Conditional Logic', 'everest-forms' ); ?>
+				<span class="evf-cl-pro-badge">
+					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18" aria-hidden="true" focusable="false"><rect width="16.889" height="16.889" x=".444" y=".444" fill="#ff8c39" stroke="#ff8c39" stroke-width=".889" rx="2.222"></rect><path fill="#efefef" d="m8.89 4.444 2.666 7.111H6.223z"></path><path fill="#fff" fill-rule="evenodd" d="m4.445 6.222.635 5.333h7.619l.635-5.333-4.445 3.666zm8.254 5.841h-7.62v1.27h7.62z" clip-rule="evenodd"></path></svg>
+				</span>
+				<i class="handlediv"></i>
+			</a>
+			<div class="everest-forms-field-option-group-inner" style="display:none;">
+
+				<div class="evf-cl-upgrade-notice">
+					<p><?php esc_html_e( 'Upgrade to Pro to use conditional logic in your forms.', 'everest-forms' ); ?></p>
+				</div>
+
+				<ul class="evf-cl-features">
+					<?php
+					$features = array(
+						__( 'Show or hide fields based on user answers', 'everest-forms' ),
+						__( 'Combine rules with AND / OR logic', 'everest-forms' ),
+						__( 'Works with text, select, checkbox &amp; more', 'everest-forms' ),
+					);
+					foreach ( $features as $feature ) :
+					?>
+					<li>
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+							<path fill-rule="evenodd" d="M16.707 5.293a1 1 0 0 1 0 1.414l-8 8a1 1 0 0 1-1.414 0l-4-4a1 1 0 0 1 1.414-1.414L8 12.586l7.293-7.293a1 1 0 0 1 1.414 0z" clip-rule="evenodd"/>
+						</svg>
+						<?php echo wp_kses_post( $feature ); ?>
+					</li>
+					<?php endforeach; ?>
+				</ul>
+
+				<a href="<?php echo esc_url( $upgrade_url ); ?>" target="_blank" rel="noopener noreferrer" class="evf-cl-upgrade-btn">
+					<?php esc_html_e( 'Upgrade to Pro', 'everest-forms' ); ?>
+					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14" width="14" height="14" aria-hidden="true" focusable="false"><path fill="#efefef" d="m7 1.167 3.5 9.333h-7z"></path><path fill="#fff" fill-rule="evenodd" d="M12 12.834H2v-1.667h10zm0-2.334H2l-.833-7L7 8.312 12.833 3.5z" clip-rule="evenodd"></path></svg>
+				</a>
+
+			</div>
+		</div>
+		<?php
 	}
 
 	/**
@@ -54,15 +114,17 @@ class EVF_Admin_Assets {
 		wp_style_add_data( 'everest-forms-admin', 'rtl', 'replace' );
 		wp_style_add_data( 'everest-forms-admin-menu', 'rtl', 'replace' );
 
-		// Show hint in codemirror.
-		wp_enqueue_style( 'wp-codemirror' );
-		wp_enqueue_style( 'codemirror-hint-css', evf()->plugin_url() . '/assets/css/code-mirror/show-hint.min.css', array( 'wp-codemirror' ), EVF_VERSION );
+
 
 		// Sitewide menu CSS.
-		wp_enqueue_style( 'everest-forms-admin-menu' );
+
 
 		// Admin styles for EVF pages only.
 		if ( in_array( $screen_id, evf_get_screen_ids(), true ) ) {
+				// Show hint in codemirror.
+			wp_enqueue_style( 'wp-codemirror' );
+			wp_enqueue_style( 'codemirror-hint-css', evf()->plugin_url() . '/assets/css/code-mirror/show-hint.min.css', array( 'wp-codemirror' ), EVF_VERSION );
+			wp_enqueue_style( 'everest-forms-admin-menu' );
 			wp_enqueue_style( 'everest-forms-admin' );
 			wp_enqueue_style( 'everest-forms-locked-fields' );
 			wp_enqueue_style( 'jquery-confirm' );
@@ -229,12 +291,26 @@ class EVF_Admin_Assets {
 					'i18n_privacy_policy_consent_message' => esc_html__( 'I allow this website to collect and store the submitted data.', 'everest-forms' ),
 					'is_pro'                              => ( ! defined( 'EFP_PLUGIN_FILE' ) ) ? false : true,
 					'select_form_tags_placeholder'        => __( 'Please choose a tags from the list, or type in a new tag if you\'d like to add one.', 'everest-forms' ),
+					'i18n_expiry_trial_min_date'          => esc_html__( 'Expiry must be on or after the trial ends (%s).', 'everest-forms' ),
+					'i18n_expiry_trial_blocked_day'       => esc_html__( 'This date is within the trial period and cannot be used as the expiry date.', 'everest-forms' ),
 				)
 			)
 		);
 
 		// Builder upgrade.
 		wp_register_script( 'evf-upgrade', evf()->plugin_url() . '/assets/js/admin/upgrade.js', array( 'jquery', 'jquery-confirm' ), EVF_VERSION, false );
+		// BUGFIX: `assets/js/admin/upgrade.js` reads global `evf_data` (for example in `limit_file_upload()`).
+		// On non-builder screens this caused `evf_data is not defined` because it was only localized to `evf-form-builder`.
+		// Localize the required `evf_data` keys directly to `evf-upgrade` to satisfy the script contract everywhere it runs.
+		wp_localize_script(
+			'evf-upgrade',
+			'evf_data',
+			array(
+				'is_pro'     => defined( 'EFP_PLUGIN_FILE' ),
+				'i18n_ok'    => esc_html__( 'OK', 'everest-forms' ),
+				'i18n_close' => esc_html__( 'Close', 'everest-forms' ),
+			)
+		);
 		wp_localize_script(
 			'evf-upgrade',
 			'evf_upgrade',
@@ -270,6 +346,19 @@ class EVF_Admin_Assets {
 				),
 				'evf_one_time_draggable_title'            => esc_html__( 'File upload', 'everest-forms' ),
 				'evf_one_time_draggable_message'          => esc_html__( 'field can only be used once. To use it multiple times, please upgrade to the pro version.', 'everest-forms' ),
+				'evf_one_time_payment_gateway_title'     => esc_html__( 'Payment Gateway', 'everest-forms' ),
+				'evf_one_time_payment_gateway_message'     => esc_html__( 'Only one Payment Gateway field is allowed per form.', 'everest-forms' ),
+				'evf_payment_method_dependency_title'      => esc_html__( 'Payment Gateway Field', 'everest-forms' ),
+				'evf_payment_method_dependency_message'    => esc_html__( 'Remove Payment Gateway field to use this field.', 'everest-forms' ),
+				'evf_legacy_payment_blocks_gateway_title'    => esc_html__( 'Payment Gateway field unavailable', 'everest-forms' ),
+				'evf_legacy_payment_blocks_gateway_message' => esc_html__( 'To add a Payment Gateway field, first disable %s in the Payments tab.', 'everest-forms' ),
+				'evf_credit_card_blocks_gateway_message'   => esc_html__( 'To add a Payment Gateway field, first remove the Credit Card field.', 'everest-forms' ),
+				'evf_legacy_payment_label_credit_card'      => esc_html__( 'Stripe', 'everest-forms' ),
+				'evf_legacy_payment_label_paypal'           => esc_html__( 'PayPal', 'everest-forms' ),
+				'evf_legacy_payment_label_authorize_net'    => esc_html__( 'Authorize.Net', 'everest-forms' ),
+				'evf_legacy_payment_label_square'           => esc_html__( 'Square', 'everest-forms' ),
+				'evf_legacy_payment_label_razorpay'          => esc_html__( 'Razorpay', 'everest-forms' ),
+				'evf_legacy_payment_label_mollie'           => esc_html__( 'Mollie', 'everest-forms' ),
 				'evf_file_upload_free_file_limit_message' => esc_html__( 'You can upload only one file at a time. To upload more than one file at a time, please upgrade to the pro version.', 'everest-forms' ),
 
 			)
@@ -283,6 +372,19 @@ class EVF_Admin_Assets {
 			wp_enqueue_script( 'jquery-ui-sortable' );
 			wp_enqueue_script( 'jquery-ui-autocomplete' );
 			wp_enqueue_script( 'evf-upgrade' );
+
+			// upgrade.js references evf_data in modal buttons; builder localizes the full object.
+			if ( 'everest-forms_page_evf-settings' === $screen_id && ! wp_script_is( 'evf-form-builder', 'enqueued' ) ) {
+				wp_localize_script(
+					'evf-upgrade',
+					'evf_data',
+					array(
+						'i18n_ok'    => esc_html__( 'OK', 'everest-forms' ),
+						'i18n_close' => esc_html__( 'Close', 'everest-forms' ),
+						'is_pro'     => defined( 'EFP_PLUGIN_FILE' ),
+					)
+				);
+			}
 
 			wp_localize_script(
 				'everest-forms-email-admin',
@@ -413,7 +515,7 @@ class EVF_Admin_Assets {
 
 			wp_enqueue_script( 'wp-codemirror' );
 			// Enqueue additional scripts for hints if not included by default.
-			 wp_enqueue_script( 'codemirror-hint', evf()->plugin_url() . '/assets/js/code-mirror/show-hint' . $suffix . '.js', array( 'wp-codemirror' ), EVF_VERSION, true );
+			//  wp_enqueue_script( 'codemirror-hint', evf()->plugin_url() . '/assets/js/code-mirror/show-hint' . $suffix . '.js', array( 'wp-codemirror' ), EVF_VERSION, true );
 
 			// De-register scripts.
 			wp_dequeue_script( 'colorpick' );
@@ -525,6 +627,11 @@ class EVF_Admin_Assets {
 	 * Enqueue dashboard scripts (React).
 	 */
 	public function enqueue_dashboard_scripts() {
+		$screen_id = get_current_screen()->id;
+		if ( ! in_array( $screen_id, evf_get_screen_ids(), true ) ) {
+			return;
+		}
+
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		$current_page = isset( $_GET['page'] ) ? sanitize_text_field( wp_unslash( $_GET['page'] ) ) : '';
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended

@@ -18,6 +18,7 @@ class EVF_Admin {
 	 */
 	public function __construct() {
 		add_action( 'init', array( $this, 'includes' ) );
+		add_action( 'current_screen', array( $this, 'maybe_load_integrations' ) );
 		add_action( 'admin_init', array( $this, 'buffer' ), 1 );
 		add_action( 'admin_init', array( $this, 'addon_actions' ) );
 		add_action( 'admin_init', array( $this, 'template_actions' ) );
@@ -241,6 +242,22 @@ class EVF_Admin {
 		}
 
 		return $classes;
+	}
+
+	public function maybe_load_integrations( $screen ) {
+		if ( ! $screen ) {
+			return;
+		}
+
+		if ( ! in_array( $screen->id, evf_get_screen_ids(), true ) ) {
+			return;
+		}
+
+		if ( EVF()->integrations ) {
+			return;
+		}
+
+		EVF()->integrations = new EVF_Integrations();
 	}
 }
 

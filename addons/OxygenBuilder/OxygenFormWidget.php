@@ -161,7 +161,7 @@ class OxygenFormWidget extends OxygenElement {
 		);
 
 		$selector = '.evf-field-label';
-		$section_label->typographySection( __( 'Typography','everest-forms' ), $selector, $this );
+		$section_label->typographySection( __( 'Typography', 'everest-forms' ), $selector, $this );
 		$section_label->addStyleControls(
 			array(
 				array(
@@ -260,7 +260,7 @@ class OxygenFormWidget extends OxygenElement {
 	 */
 	public function render( $options, $defaults, $content ) {
 
-		$content = sprintf( '<div class="evf-widget">%s</div>', esc_html__( 'Everest Forms','everest-forms' ) );
+		$content = sprintf( '<div class="evf-widget">%s</div>', esc_html__( 'Everest Forms', 'everest-forms' ) );
 
 		if ( ! isset( $options['evf_form'] ) || empty( $options['evf_form'] ) ) {
 

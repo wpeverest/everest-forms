@@ -7,11 +7,11 @@
 /**
  * Imports
  */
-@import "mixins/mixins";
-@import "variables/variables";
-@import "animation";
-@import "fonts";
-@import "clearings";
+@import 'mixins/mixins';
+@import 'variables/variables';
+@import 'animation';
+@import 'fonts';
+@import 'clearings';
 
 /**
  * Global styles
@@ -215,7 +215,7 @@ i.icon-wpb-vc_everest_forms {
 
 				&::before,
 				&::after {
-					content: "";
+					content: '';
 					height: 14px;
 					width: 2px;
 					display: block;
@@ -303,40 +303,42 @@ i.icon-wpb-vc_everest_forms {
 		}
 	}
 
-	input[type="text"],
-	input[type="date"],
-	input[type="date"],
-	input[type="datetime-local"],
-	input[type="email"],
-	input[type="file"],
-	input[type="image"],
-	input[type="month"],
-	input[type="number"],
-	input[type="password"],
-	input[type="range"],
-	input[type="search"],
-	input[type="tel"],
-	input[type="time"],
-	input[type="url"],
-	input[type="week"],
+	input[type='text'],
+	input[type='date'],
+	input[type='date'],
+	input[type='datetime-local'],
+	input[type='email'],
+	input[type='file'],
+	input[type='image'],
+	input[type='month'],
+	input[type='number'],
+	input[type='password'],
+	input[type='range'],
+	input[type='search'],
+	input[type='tel'],
+	input[type='time'],
+	input[type='url'],
+	input[type='week'],
 	select,
 	textarea,
 	.StripeElement,
 	canvas.evf-signature-canvas {
 		width: 100%;
-		height: auto;
+		min-height: 38px;
 		font-size: 14px;
+		line-height: 20px;
 		outline: none;
 		box-shadow: none;
 		margin-bottom: 10px;
 		padding: 6px 12px;
 		color: $color_gray-base;
-		border: 1px solid $color_gray-light;
+		border: 1px solid #e1e1e1;
+		border-radius: 4px;
 		margin-left: 0;
 		margin-right: 0;
 	}
-	input[type="checkbox"],
-	input[type="radio"] {
+	input[type='checkbox'],
+	input[type='radio'] {
 		&::after,
 		&::before {
 			display: none;
@@ -380,13 +382,13 @@ i.icon-wpb-vc_everest_forms {
 	textarea {
 		&:focus {
 			outline: none;
-			border: 1px solid $blue;
+			border: 1px solid #7545bb;
 		}
 	}
 
 	.everest-form {
 		&::after {
-			content: "";
+			content: '';
 			clear: both;
 			display: table;
 		}
@@ -395,7 +397,7 @@ i.icon-wpb-vc_everest_forms {
 	.everest-forms-field-row {
 		&::before,
 		&::after {
-			content: "";
+			content: '';
 			clear: both;
 			display: table;
 		}
@@ -491,12 +493,13 @@ i.icon-wpb-vc_everest_forms {
 								margin: 0;
 							}
 
-							input[type="checkbox"],
-							input[type="radio"] {
+							input[type='checkbox'],
+							input[type='radio'] {
 								padding: 0;
 								margin-top: 4px;
 								margin-right: 8px;
-								width: 20px;
+								width: 16px;
+								accent-color: #7545bb;
 							}
 						}
 					}
@@ -695,8 +698,8 @@ i.icon-wpb-vc_everest_forms {
 						}
 
 						input {
-							&[type="radio"],
-							&[type="checkbox"] {
+							&[type='radio'],
+							&[type='checkbox'] {
 								display: none;
 							}
 						}
@@ -731,20 +734,20 @@ i.icon-wpb-vc_everest_forms {
 			}
 
 			input {
-				&[type="checkbox"],
-				&[type="radio"] {
+				&[type='checkbox'],
+				&[type='radio'] {
 					box-shadow: none;
 				}
 
-				&[type="checkbox"] {
+				&[type='checkbox'] {
 					appearance: checkbox;
 				}
 
-				&[type="radio"] {
+				&[type='radio'] {
 					appearance: radio;
 				}
 
-				&[type="checkbox"]:checked {
+				&[type='checkbox']:checked {
 					background-color: $blue;
 
 					&::before {
@@ -753,7 +756,7 @@ i.icon-wpb-vc_everest_forms {
 					}
 				}
 
-				&[type="radio"]:checked {
+				&[type='radio']:checked {
 					&::before {
 						background-color: $blue;
 					}
@@ -784,8 +787,8 @@ i.icon-wpb-vc_everest_forms {
 		}
 	}
 
-	input[type="submit"],
-	button[type="submit"],
+	input[type='submit'],
+	button[type='submit'],
 	a.button:not(.button-large),
 	button.button:not(.button-large),
 	.everest-forms-part-button {
@@ -870,7 +873,7 @@ i.icon-wpb-vc_everest_forms {
 
 		&::before {
 			font-family: dashicons;
-			content: "\f348";
+			content: '\f348';
 			position: absolute;
 			top: 1em;
 			left: 1.5em;
@@ -907,8 +910,7 @@ i.icon-wpb-vc_everest_forms {
 		padding: 1em 1.6em;
 		color: $color_gray-base;
 		background: lighten($blue, 47%);
-		border: 1px solid
-			adjust-color($blue, $saturation: -15%, $lightness: +20%);
+		border: 1px solid adjust-color($blue, $saturation: -15%, $lightness: +20%);
 
 		&::before {
 			visibility: hidden;
@@ -941,7 +943,7 @@ i.icon-wpb-vc_everest_forms {
 		background-color: $green;
 
 		&::before {
-			content: "\f147";
+			content: '\f147';
 		}
 	}
 
@@ -953,7 +955,7 @@ i.icon-wpb-vc_everest_forms {
 		background-color: $red;
 
 		&::before {
-			content: "\f534";
+			content: '\f534';
 			color: inherit;
 		}
 
@@ -1011,7 +1013,7 @@ div.evf-gutenberg-form-selector .evf-frontend-row textarea:disabled,
 div.evf-gutenberg-form-selector .evf-frontend-row select:disabled,
 div.evf-gutenberg-form-selector
 	.evf-frontend-row
-	button[type="submit"]:disabled {
+	button[type='submit']:disabled {
 	cursor: not-allowed;
 }
 
@@ -1494,7 +1496,7 @@ $background-color_1: #f9f9f9;
 					&::before {
 						height: 17px;
 						width: 17px;
-						content: "";
+						content: '';
 						border: 1px solid #adb5bd;
 						transition: all 0.25s ease 0s;
 					}
@@ -1507,7 +1509,7 @@ $background-color_1: #f9f9f9;
 				}
 
 				input {
-					&[type="radio"] {
+					&[type='radio'] {
 						+ label {
 							&::before {
 								border-radius: 50%;
@@ -1515,11 +1517,11 @@ $background-color_1: #f9f9f9;
 						}
 					}
 
-					&[type="checkbox"],
-					&[type="radio"] {
+					&[type='checkbox'],
+					&[type='radio'] {
 						+ label {
 							&::after {
-								content: "";
+								content: '';
 								position: absolute;
 								height: 5px;
 								width: 9px;
@@ -1640,7 +1642,7 @@ $background-color_1: #f9f9f9;
 				input {
 					display: none;
 
-					&[type="radio"] {
+					&[type='radio'] {
 						&:hover,
 						&:checked {
 							+ label {
@@ -1739,8 +1741,8 @@ $background-color_1: #f9f9f9;
 				margin-bottom: 5px;
 
 				input {
-					&[type="radio"],
-					&[type="checkbox"] {
+					&[type='radio'],
+					&[type='checkbox'] {
 						margin-right: 10px;
 					}
 				}
@@ -1877,7 +1879,7 @@ $background-color_1: #f9f9f9;
 	}
 }
 .everest-forms-field-rating-container {
-	input[type="radio"] {
+	input[type='radio'] {
 		display: none;
 	}
 
@@ -2036,13 +2038,13 @@ $background-color_1: #f9f9f9;
 				ul {
 					> li.everest_forms_divi_builder {
 						&:before {
-							content: "";
-							background-image: url("data:image/svg+xml,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20viewBox%3D%220%200%2020%2020%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M15.4553%202.87459H12.0039L13.0616%204.65593H16.513L15.4553%202.87459Z%22%20fill%3D%22black%22%2F%3E%3Cpath%20d%3D%22M17.6262%206.43721H14.1748L15.2882%208.21856H18.7395L17.6262%206.43721Z%22%20fill%3D%22black%22%2F%3E%3Cpath%20d%3D%22M17.5703%2015.3441H17.0693H15.5106H4.4328L9.94387%206.32597L12.2262%2010H11.7252H9.94387L8.88619%2011.7814H9.94387H10.6675H15.3993L9.94387%202.98592L1.25977%2017.1254H2.81845H17.0693H18.6836L17.5703%2015.3441Z%22%20fill%3D%22black%22%2F%3E%3C%2Fsvg%3E");
+							content: '';
+							background-image: url('data:image/svg+xml,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20viewBox%3D%220%200%2020%2020%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M15.4553%202.87459H12.0039L13.0616%204.65593H16.513L15.4553%202.87459Z%22%20fill%3D%22black%22%2F%3E%3Cpath%20d%3D%22M17.6262%206.43721H14.1748L15.2882%208.21856H18.7395L17.6262%206.43721Z%22%20fill%3D%22black%22%2F%3E%3Cpath%20d%3D%22M17.5703%2015.3441H17.0693H15.5106H4.4328L9.94387%206.32597L12.2262%2010H11.7252H9.94387L8.88619%2011.7814H9.94387H10.6675H15.3993L9.94387%202.98592L1.25977%2017.1254H2.81845H17.0693H18.6836L17.5703%2015.3441Z%22%20fill%3D%22black%22%2F%3E%3C%2Fsvg%3E');
 							height: 16px;
 							background-repeat: no-repeat;
 							background-position: center;
-							filter: invert(47%) sepia(92%) saturate(2271%)
-								hue-rotate(187deg) brightness(91%) contrast(86%);
+							filter: invert(47%) sepia(92%) saturate(2271%) hue-rotate(187deg)
+								brightness(91%) contrast(86%);
 						}
 					}
 				}
@@ -2114,7 +2116,7 @@ body .everest-forms-popup-overlay {
 	justify-content: center;
 	z-index: 99999999;
 	&::after {
-		content: "";
+		content: '';
 		position: absolute;
 		background-color: #0000005b;
 		inset: 0;
@@ -2213,20 +2215,20 @@ body .everest-forms-popup-overlay {
 }
 
 .evf-popup-type-premium-label {
-  position: relative;
-  display: inline-block;
-  padding-right: 20px; /* make room for the icon */
+	position: relative;
+	display: inline-block;
+	padding-right: 20px; /* make room for the icon */
 }
 
 .evf-popup-type-premium-label::before {
-  content: "";
-  background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTMiIHZpZXdCb3g9IjAgMCAxMiAxMyIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3QgeD0iMC42ODc1IiB5PSIxLjE4NzUiIHdpZHRoPSIxMC42MjUiIGhlaWdodD0iMTAuNjI1IiByeD0iMS41NjI1IiBmaWxsPSIjNzU0NUJCIiBzdHJva2U9IiM3NTQ1QkIiIHN0cm9rZS13aWR0aD0iMC42MjUiLz4KPHBhdGggZD0iTTYuMDAwMjggMy43MjE5NUw3LjY2Njk1IDguMTY2NEg0LjMzMzYyTDYuMDAwMjggMy43MjE5NVoiIGZpbGw9IiNFRkVGRUYiLz4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkZCIgY2xpcC1ydWxlPSJldmVub2RkZCIgZD0iTTMuMjIyNTMgNC44MzMwNkwzLjYxOTM2IDguMTY2M0g4LjM4MTI2TDguNzc4MDkgNC44MzMwNkw2LjAwMDMxIDcuMTI0NzNMMy4yMjI1MyA0LjgzMzA2Wk04LjM4MTIzIDguNDgzODVIMy42MTkzMlY5LjI3NzVIOC4zODEyM1Y4LjQ4Mzg1WiIgZmlsbD0id2hpdGUiLz4KPC9zdmc+");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
-  position: absolute;
-  width: 16px;
-  height: 16px;
-  top: 0;
-  right: 0;
+	content: '';
+	background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTMiIHZpZXdCb3g9IjAgMCAxMiAxMyIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3QgeD0iMC42ODc1IiB5PSIxLjE4NzUiIHdpZHRoPSIxMC42MjUiIGhlaWdodD0iMTAuNjI1IiByeD0iMS41NjI1IiBmaWxsPSIjNzU0NUJCIiBzdHJva2U9IiM3NTQ1QkIiIHN0cm9rZS13aWR0aD0iMC42MjUiLz4KPHBhdGggZD0iTTYuMDAwMjggMy43MjE5NUw3LjY2Njk1IDguMTY2NEg0LjMzMzYyTDYuMDAwMjggMy43MjE5NVoiIGZpbGw9IiNFRkVGRUYiLz4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkZCIgY2xpcC1ydWxlPSJldmVub2RkZCIgZD0iTTMuMjIyNTMgNC44MzMwNkwzLjYxOTM2IDguMTY2M0g4LjM4MTI2TDguNzc4MDkgNC44MzMwNkw2LjAwMDMxIDcuMTI0NzNMMy4yMjI1MyA0LjgzMzA2Wk04LjM4MTIzIDguNDgzODVIMy42MTkzMlY5LjI3NzVIOC4zODEyM1Y4LjQ4Mzg1WiIgZmlsbD0id2hpdGUiLz4KPC9zdmc+');
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: contain;
+	position: absolute;
+	width: 16px;
+	height: 16px;
+	top: 0;
+	right: 0;
 }

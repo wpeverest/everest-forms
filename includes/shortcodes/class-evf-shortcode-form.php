@@ -1040,8 +1040,11 @@ class EVF_Shortcode_Form {
 		$form_enabled    = isset( $form_data['form_enabled'] ) ? absint( $form_data['form_enabled'] ) : 1;
 		$kff_enabled     = isset( $settings['keyboard_friendly_form'] ) ? absint( $settings['keyboard_friendly_form'] ) : 0;
 		$disable_message = isset( $form_data['settings']['form_disable_message'] ) ? evf_string_translation( $form_data['id'], 'form_disable_message', $form_data['settings']['form_disable_message'] ) : __( 'This form is disabled.', 'everest-forms' );
-		if ( ( isset( $form_data['payments']['stripe']['enable_stripe'] ) && '1' === $form_data['payments']['stripe']['enable_stripe'] ) || ( isset( $form_data['payments']['square']['enable_square'] ) && '1' === $form_data['payments']['square']['enable_square'] ) ) {
-			$ajax_form_submission = isset( $settings['ajax_form_submission'] ) ? 1 : 0;
+		$stripe_via_selector = function_exists( 'evf_is_gateway_in_selector_allowlist' ) && evf_is_gateway_in_selector_allowlist( array( 'form_data' => $form_data, 'gateway' => 'stripe' ) );
+		$square_via_selector = function_exists( 'evf_is_gateway_in_selector_allowlist' ) && evf_is_gateway_in_selector_allowlist( array( 'form_data' => $form_data, 'gateway' => 'square' ) );
+		$paypal_via_selector = function_exists( 'evf_is_gateway_in_selector_allowlist' ) && evf_is_gateway_in_selector_allowlist( array( 'form_data' => $form_data, 'gateway' => 'paypal' ) );
+		if ( ( isset( $form_data['payments']['stripe']['enable_stripe'] ) && '1' === $form_data['payments']['stripe']['enable_stripe'] ) || $stripe_via_selector || ( isset( $form_data['payments']['square']['enable_square'] ) && '1' === $form_data['payments']['square']['enable_square'] ) || $square_via_selector || $paypal_via_selector ) {
+			$ajax_form_submission = 1;
 		} else {
 			$ajax_form_submission = isset( $settings['ajax_form_submission'] ) ? $settings['ajax_form_submission'] : 0;
 		}
