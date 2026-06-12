@@ -1,0 +1,242 @@
+<h2>Premium — Compact</h2>
+<p class="subtitle">Same premium feel, tighter vertical footprint. Left = OFF, Right = ON.</p>
+
+<style>
+  .evf-sidebar {
+    width: 282px;
+    background: #fff;
+    border-radius: 6px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 13px;
+    color: #2c3338;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+    overflow: hidden;
+  }
+
+  /* Choice row */
+  .choice-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 10px;
+    background: #f9f9fa;
+    border-bottom: 1px solid #e5e5e5;
+  }
+  .choice-row .drag { color: #c3c4c7; font-size: 13px; letter-spacing: -1px; }
+  .choice-row input[type=radio] { margin: 0; flex-shrink: 0; accent-color: #6c47e8; }
+  .choice-row .lbl-input {
+    flex: 1; min-width: 0;
+    border: 1px solid #dcdcde; border-radius: 4px;
+    padding: 4px 7px; font-size: 13px; color: #2c3338; background: #fff;
+  }
+  .choice-row .price-input {
+    width: 52px;
+    border: 1px solid #dcdcde; border-radius: 4px;
+    padding: 4px 6px; font-size: 13px; color: #2c3338; background: #fff; text-align: right;
+  }
+  .choice-row .btns { display: flex; gap: 3px; flex-shrink: 0; }
+  .choice-row .btns button {
+    width: 21px; height: 21px;
+    border: 1px solid #dcdcde; border-radius: 50%;
+    background: #fff; font-size: 14px; color: #50575e;
+    display: flex; align-items: center; justify-content: center; cursor: pointer;
+  }
+
+  /* Sub-details wrapper — tight gap */
+  .sub-details { padding: 7px 10px; display: flex; flex-direction: column; gap: 5px; }
+
+  /* ── Recurring ── */
+  .section-recurring {
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 0 0 1px rgba(108,71,232,.22), 0 1px 3px rgba(108,71,232,.10);
+  }
+  .rec-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 5px 9px;
+    background: linear-gradient(135deg, #f5f2ff 0%, #ede9fe 100%);
+    border-bottom: 1px solid rgba(108,71,232,.13);
+  }
+  .rec-title {
+    font-size: 10.5px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: .6px;
+    color: #5b35c5;
+    display: flex; align-items: center; gap: 5px;
+  }
+  .badge {
+    font-size: 9.5px; font-weight: 600;
+    background: #6c47e8; color: #fff;
+    border-radius: 20px; padding: 1px 6px;
+    text-transform: none; letter-spacing: .1px;
+  }
+  .rec-body { padding: 6px 9px; background: #fff; }
+
+  /* ── Toggle cards ── */
+  .section-toggle {
+    border-radius: 4px; overflow: hidden;
+    box-shadow: 0 0 0 1px #e5e5e5, 0 1px 2px rgba(0,0,0,.05);
+  }
+  .section-toggle.is-on {
+    box-shadow: 0 0 0 1px #d0d0d0, 0 1px 4px rgba(0,0,0,.08);
+  }
+  .toggle-header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 6px 9px;
+    background: #f9f9fa;
+    cursor: pointer;
+  }
+  .section-toggle.is-on .toggle-header {
+    background: #f4f5f9;
+    border-bottom: 1px solid #eaeaeb;
+  }
+  .toggle-title {
+    font-size: 12px; font-weight: 600; color: #3c434a;
+    display: flex; align-items: center; gap: 5px;
+  }
+  .section-toggle.is-on .toggle-title { color: #2c3338; }
+  .toggle-body { padding: 6px 9px; background: #fff; }
+
+  /* ── Inputs ── */
+  .input-row { display: flex; gap: 6px; align-items: center; }
+  .input-row input[type=number] {
+    width: 58px; border: 1px solid #dcdcde; border-radius: 4px;
+    padding: 4px 7px; font-size: 13px; color: #2c3338; background: #fff;
+  }
+  .input-row select {
+    flex: 1; border: 1px solid #dcdcde; border-radius: 4px;
+    padding: 4px 7px; font-size: 13px; color: #2c3338; background: #fff;
+  }
+  .date-input {
+    width: 100%; border: 1px solid #dcdcde; border-radius: 4px;
+    padding: 4px 8px; font-size: 13px; color: #555d66; background: #fff;
+    box-sizing: border-box;
+  }
+
+  /* ── Toggle switch ── */
+  .evf-toggle { position: relative; width: 34px; height: 18px; flex-shrink: 0; }
+  .evf-toggle .track { position: absolute; inset: 0; background: #dcdcde; border-radius: 18px; }
+  .evf-toggle .track.on { background: #2fb344; }
+  .evf-toggle .thumb {
+    position: absolute; top: 3px; left: 3px;
+    width: 12px; height: 12px;
+    background: #fff; border-radius: 50%;
+    box-shadow: 0 1px 2px rgba(0,0,0,.2);
+  }
+  .evf-toggle .on-thumb { left: 19px; }
+
+  .split { gap: 24px; align-items: flex-start; }
+  .mockup { flex: 1; }
+</style>
+
+<div class="split">
+  <!-- OFF -->
+  <div class="mockup" data-choice="off" onclick="toggleSelect(this)">
+    <div class="mockup-header">Toggles OFF</div>
+    <div class="mockup-body" style="padding:14px;background:#f0f0f1;display:flex;justify-content:center;">
+      <div class="evf-sidebar">
+        <div class="choice-row">
+          <span class="drag">⠿</span>
+          <input type="radio" readonly>
+          <input type="text" class="lbl-input" value="First tt Choice" readonly>
+          <input type="text" class="price-input" value="7.00" readonly>
+          <div class="btns"><button>+</button><button>×</button></div>
+        </div>
+        <div class="sub-details">
+          <div class="section-recurring">
+            <div class="rec-header">
+              <div class="rec-title">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
+                Recurring Details
+              </div>
+              <span class="badge">Always on</span>
+            </div>
+            <div class="rec-body">
+              <div class="input-row">
+                <input type="number" value="1" readonly>
+                <select><option>Week(s)</option></select>
+              </div>
+            </div>
+          </div>
+          <div class="section-toggle">
+            <div class="toggle-header">
+              <span class="toggle-title">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#8c8f94" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                Enable Trial Period
+              </span>
+              <div class="evf-toggle"><div class="track"></div><div class="thumb"></div></div>
+            </div>
+          </div>
+          <div class="section-toggle">
+            <div class="toggle-header">
+              <span class="toggle-title">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#8c8f94" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                Enable Expiry Date
+              </span>
+              <div class="evf-toggle"><div class="track"></div><div class="thumb"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ON -->
+  <div class="mockup" data-choice="on" onclick="toggleSelect(this)">
+    <div class="mockup-header">Toggles ON</div>
+    <div class="mockup-body" style="padding:14px;background:#f0f0f1;display:flex;justify-content:center;">
+      <div class="evf-sidebar">
+        <div class="choice-row">
+          <span class="drag">⠿</span>
+          <input type="radio" readonly>
+          <input type="text" class="lbl-input" value="First tt Choice" readonly>
+          <input type="text" class="price-input" value="7.00" readonly>
+          <div class="btns"><button>+</button><button>×</button></div>
+        </div>
+        <div class="sub-details">
+          <div class="section-recurring">
+            <div class="rec-header">
+              <div class="rec-title">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
+                Recurring Details
+              </div>
+              <span class="badge">Always on</span>
+            </div>
+            <div class="rec-body">
+              <div class="input-row">
+                <input type="number" value="1" readonly>
+                <select><option>Week(s)</option></select>
+              </div>
+            </div>
+          </div>
+          <div class="section-toggle is-on">
+            <div class="toggle-header">
+              <span class="toggle-title">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#6c47e8" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                Enable Trial Period
+              </span>
+              <div class="evf-toggle"><div class="track on"></div><div class="thumb on-thumb"></div></div>
+            </div>
+            <div class="toggle-body">
+              <div class="input-row">
+                <input type="number" value="2" readonly>
+                <select><option>Week(s)</option></select>
+              </div>
+            </div>
+          </div>
+          <div class="section-toggle is-on">
+            <div class="toggle-header">
+              <span class="toggle-title">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#6c47e8" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                Enable Expiry Date
+              </span>
+              <div class="evf-toggle"><div class="track on"></div><div class="thumb on-thumb"></div></div>
+            </div>
+            <div class="toggle-body">
+              <input class="date-input" value="2026-05-20" readonly>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
