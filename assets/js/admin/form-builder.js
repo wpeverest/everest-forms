@@ -7869,6 +7869,46 @@
 		bindFormTags: function () {},
 	};
 
+	/**
+	 * Re-render the builder's fields canvas + options panel in place (no full page
+	 * reload). Used by the in-builder AI chat after it edits the form via the AI
+	 * gateway. Because all field interactions are delegated on $builder (which is
+	 * NOT replaced), only sortables need re-initialising via bindFields().
+	 *
+	 * @param {number}   formId Form ID to re-render.
+	 * @param {string}   nonce  evf_ai_nonce.
+	 * @param {function} done   Callback(success:boolean).
+	 */
+	window.evfReloadBuilderFields = function (formId, nonce, done) {
+		$.post(
+			window.ajaxurl,
+			{ action: 'evf_ai_render_fields', nonce: nonce, form_id: formId },
+			function (res) {
+				var ok = !!(res && res.success && res.data);
+				if (ok) {
+					$builder.find('.everest-forms-field-wrap').html(res.data.preview);
+					$builder.find('.everest-forms-field-options').html(res.data.options);
+					if (res.data.title) {
+						$('#evf-edit-form-name').val(res.data.title);
+						$('#everest-forms-panel-field-settings-form_title').val(res.data.title);
+					}
+					try {
+						EVFPanelBuilder.bindFields();
+					} catch (e) {
+						// Re-init is best-effort; the swapped DOM is still usable.
+					}
+				}
+				if (typeof done === 'function') {
+					done(ok);
+				}
+			}
+		).fail(function () {
+			if (typeof done === 'function') {
+				done(false);
+			}
+		});
+	};
+
 	EVFPanelBuilder.init();
 })(jQuery, window.evf_data);
 

@@ -94,7 +94,16 @@ class EVF_Admin_Assets {
 		$screen_id = $screen ? $screen->id : '';
 
 		// Register admin styles.
-		wp_register_style( 'everest-forms-admin', evf()->plugin_url() . '/assets/css/admin.css', array(), EVF_VERSION );
+		$admin_css_path = evf()->plugin_path() . '/assets/css/admin.css';
+		$admin_css_ver  = file_exists( $admin_css_path ) ? filemtime( $admin_css_path ) : EVF_VERSION;
+		wp_register_style( 'everest-forms-admin', evf()->plugin_url() . '/assets/css/admin.css', array(), $admin_css_ver );
+
+		// Locked (Pro/addon) field upsell styles — kept in a dedicated file so the
+		// rules are not accidentally nested inside admin.scss's structure.
+		$locked_css_path = evf()->plugin_path() . '/assets/css/evf-locked-fields.css';
+		$locked_css_ver  = file_exists( $locked_css_path ) ? filemtime( $locked_css_path ) : EVF_VERSION;
+		wp_register_style( 'everest-forms-locked-fields', evf()->plugin_url() . '/assets/css/evf-locked-fields.css', array( 'everest-forms-admin' ), $locked_css_ver );
+
 		wp_register_style( 'everest-forms-admin-menu', evf()->plugin_url() . '/assets/css/menu.css', array(), EVF_VERSION );
 		wp_register_style( 'jquery-ui-style', evf()->plugin_url() . '/assets/css/jquery-ui/jquery-ui.min.css', array(), EVF_VERSION );
 		wp_register_style( 'jquery-confirm', evf()->plugin_url() . '/assets/css/jquery-confirm/jquery-confirm.min.css', array(), '3.3.0' );
@@ -117,6 +126,7 @@ class EVF_Admin_Assets {
 			wp_enqueue_style( 'codemirror-hint-css', evf()->plugin_url() . '/assets/css/code-mirror/show-hint.min.css', array( 'wp-codemirror' ), EVF_VERSION );
 			wp_enqueue_style( 'everest-forms-admin-menu' );
 			wp_enqueue_style( 'everest-forms-admin' );
+			wp_enqueue_style( 'everest-forms-locked-fields' );
 			wp_enqueue_style( 'jquery-confirm' );
 			wp_enqueue_style( 'jquery-ui-style' );
 			wp_enqueue_style( 'wp-color-picker' );
@@ -470,6 +480,32 @@ class EVF_Admin_Assets {
 				array(
 					'evf_fm_dismiss_notice_nonce' => wp_create_nonce( 'evf_fm_dismiss_notice_nonce' ),
 					'ajax_url'                    => admin_url( 'admin-ajax.php', 'relative' ),
+				)
+			);
+		}
+
+		// AI chat assistant — only on the form editor (form_id present), not on the template selection screen.
+		if ( in_array( $screen_id, array( 'everest-forms_page_evf-builder' ), true ) && isset( $_GET['form_id'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+			wp_enqueue_script(
+				'evf-builder-ai',
+				evf()->plugin_url() . '/dist/builderAI.min.js',
+				array( 'wp-element', 'react', 'react-dom' ),
+				EVF_VERSION,
+				true
+			);
+
+			$evf_ai_form_id = absint( $_GET['form_id'] ); // phpcs:ignore WordPress.Security.NonceVerification
+			wp_localize_script(
+				'evf-builder-ai',
+				'evfBuilderAI',
+				array(
+					'ajaxUrl'    => admin_url( 'admin-ajax.php' ),
+					'nonce'      => wp_create_nonce( 'evf_ai_nonce' ),
+					'formId'     => $evf_ai_form_id,
+					'formTitle'  => get_the_title( $evf_ai_form_id ),
+					// On local / development sites the AI gateway is unavailable: the
+					// assistant is shown but disabled rather than hidden.
+					'aiDisabled' => class_exists( 'EVF_AI_Registration' ) && EVF_AI_Registration::is_local_site(),
 				)
 			);
 		}

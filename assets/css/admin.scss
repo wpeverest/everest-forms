@@ -719,6 +719,8 @@ img.help_tip {
 
 body.everest-forms-builder {
 	&.everest-forms_page_evf-builder {
+		overflow-x: hidden;
+
 		#wpcontent {
 			padding-left: 0;
 		}
@@ -1189,11 +1191,12 @@ body.everest-forms-builder {
 			z-index: 99999;
 			overflow: hidden;
 			background: #f1f1f1;
-			position: absolute;
+			position: fixed;
 			top: 0;
+			left: 0;
+			right: 0;
 			bottom: 0;
-			height: auto;
-			min-height: 100vh;
+			height: 100vh;
 
 			.everest-forms-overlay-content {
 				position: absolute;
