@@ -112,13 +112,12 @@ class EVF_Fm_Contactform7 extends EVF_Admin_Form_Migrator {
 	 */
 	private function get_field_label( $form, $type, $name = '' ) {
 
+		// First pass: <label> tag wrapping the shortcode.
 		preg_match_all( '/<label>([ \w\S\r\n\t]+?)<\/label>/', $form, $matches );
 
 		foreach ( $matches[1] as $match ) {
 			$match = trim( str_replace( "\n", '', $match ) );
-
 			preg_match( '/\[(?:' . preg_quote( $type ) . ')\*? ' . $name . '(?:[ ](.*?))?(?:[\r\n\t ](\/))?\]/', $match, $input_match );
-
 			if ( ! empty( $input_match[0] ) ) {
 				$label_text = preg_replace( '/\[[^\]]+\]/', '', str_replace( $input_match[0], '', $match ) );
 				return sanitize_text_field( trim( $label_text ) );
@@ -126,7 +125,6 @@ class EVF_Fm_Contactform7 extends EVF_Admin_Form_Migrator {
 		}
 
 		// Second pass: plain-text <label> on a separate line immediately before the field tag.
-		// [^<\[] ensures the label contains no HTML tags and no shortcodes (pure text labels only).
 		preg_match( '/<label[^>]*>([^<\[]*)<\/label>\s*\n\s*\[' . preg_quote( $type ) . '[* ]+' . preg_quote( $name ) . '/', $form, $sep_match );
 		if ( ! empty( $sep_match[1] ) ) {
 			return sanitize_text_field( trim( $sep_match[1] ) );
@@ -141,13 +139,23 @@ class EVF_Fm_Contactform7 extends EVF_Admin_Form_Migrator {
 			}
 		}
 
-		// Fourth pass: text before the shortcode in the same HTML block, ignoring tags between them.
+		// Fourth pass: text before shortcode in same block, ignoring HTML tags between them.
 		// Example: <p>Phone *<br /> [select* phone "iPhone"]</p> → "Phone"
 		preg_match( '/(?:^|>)\s*([^<\[\n\r]+?)\s*(?:<[^>]*>\s*)*\[' . preg_quote( $type ) . '[* ]+' . preg_quote( $name ) . '[\s\]]/', $form, $block_match );
 		if ( ! empty( $block_match[1] ) ) {
 			$block_label = sanitize_text_field( trim( preg_replace( '/\s*\*\s*$/', '', trim( $block_match[1] ) ) ) );
 			if ( ! empty( $block_label ) ) {
 				return $block_label;
+			}
+		}
+
+		// Fifth pass: text after the shortcode on the same line.
+		// Example: <p>[checkbox quickdelivery] Quick delivery (1 day)</p> → "Quick delivery (1 day)"
+		preg_match( '/\[' . preg_quote( $type ) . '[* ]*' . preg_quote( $name ) . '[^\]]*\]\s*([^<\[\n\r]+)/', $form, $after_match );
+		if ( ! empty( $after_match[1] ) ) {
+			$after_label = sanitize_text_field( trim( $after_match[1] ) );
+			if ( ! empty( $after_label ) ) {
+				return $after_label;
 			}
 		}
 
@@ -530,7 +538,7 @@ class EVF_Fm_Contactform7 extends EVF_Admin_Form_Migrator {
 					} elseif ( ! empty( $default_val ) && ! filter_var( $default_val, FILTER_VALIDATE_URL ) ) {
 						$label = $default_val;
 					} elseif ( preg_match( '/^' . preg_quote( $cf7_field->basetype, '/' ) . '-\d+$/', $cf7_field->name ) ) {
-						$label = trim( sprintf( esc_html__( '%s', 'everest-forms' ), ucfirst( $cf7_field->basetype ) ) );
+						$label = trim( sprintf( esc_html__( '%s Field', 'everest-forms' ), ucfirst( $cf7_field->basetype ) ) );
 					}
 				}
 

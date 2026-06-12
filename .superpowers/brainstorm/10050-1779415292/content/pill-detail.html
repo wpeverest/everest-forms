@@ -1,0 +1,221 @@
+<h2>Pill Tabs — All 3 States</h2>
+<p class="subtitle">Each panel shown side by side. Click to approve or comment below.</p>
+
+<style>
+  * { box-sizing: border-box; }
+
+  .evf-sidebar {
+    width: 278px;
+    background: #fff;
+    border-radius: 6px;
+    font-size: 13px;
+    color: #2c3338;
+    box-shadow: 0 2px 8px rgba(0,0,0,.10);
+    overflow: hidden;
+  }
+
+  .choice-row {
+    display: flex; align-items: center; gap: 5px;
+    padding: 7px 10px;
+    background: #f9f9fa;
+    border-bottom: 1px solid #e5e5e5;
+  }
+  .drag { color: #c3c4c7; font-size: 12px; letter-spacing: -1px; }
+  .lbl-input { flex: 1; min-width: 0; border: 1px solid #dcdcde; border-radius: 4px; padding: 4px 7px; font-size: 13px; color: #2c3338; background: #fff; }
+  .price-input { width: 50px; border: 1px solid #dcdcde; border-radius: 4px; padding: 4px 6px; font-size: 13px; color: #2c3338; background: #fff; text-align: right; }
+  .btns { display: flex; gap: 3px; }
+  .btns button { width: 20px; height: 20px; border: 1px solid #dcdcde; border-radius: 50%; background: #fff; font-size: 13px; color: #50575e; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+
+  /* Pill tab strip */
+  .tabs-pill-wrap {
+    padding: 7px 10px 0;
+    background: #f5f5f6;
+    border-bottom: 1px solid #e5e5e5;
+  }
+  .tabs-pill {
+    display: flex;
+    background: #e4e4e6;
+    border-radius: 6px;
+    padding: 2px;
+    gap: 1px;
+    margin-bottom: -1px;
+  }
+  .tab {
+    flex: 1; padding: 5px 4px;
+    text-align: center;
+    font-size: 11px; font-weight: 600; color: #8c8f94;
+    cursor: pointer; border-radius: 4px;
+    display: flex; align-items: center; justify-content: center; gap: 3px;
+    line-height: 1.2;
+    position: relative;
+  }
+  .tab.active {
+    background: #fff;
+    color: #6c47e8;
+    box-shadow: 0 1px 3px rgba(0,0,0,.13), 0 0 0 0.5px rgba(0,0,0,.06);
+  }
+  .tab .dot {
+    width: 5px; height: 5px; border-radius: 50%;
+    background: #2fb344; flex-shrink: 0;
+  }
+
+  /* Tab panels */
+  .tab-panel { padding: 10px 11px; background: #fff; min-height: 60px; }
+
+  .input-row { display: flex; gap: 7px; align-items: center; }
+  .num-input { width: 62px; border: 1px solid #dcdcde; border-radius: 4px; padding: 5px 7px; font-size: 13px; color: #2c3338; background: #fff; }
+  .per-select { flex: 1; border: 1px solid #dcdcde; border-radius: 4px; padding: 5px 7px; font-size: 13px; color: #2c3338; background: #fff; }
+  .date-input { width: 100%; border: 1px solid #dcdcde; border-radius: 4px; padding: 5px 8px; font-size: 13px; color: #555d66; background: #fff; }
+
+  /* Recurring panel badge */
+  .rec-badge {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 10px; font-weight: 600;
+    background: #ede9fe; color: #6c47e8;
+    border-radius: 3px; padding: 2px 6px;
+    margin-bottom: 7px;
+    letter-spacing: .2px;
+  }
+
+  /* Toggle */
+  .toggle-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+  .toggle-lbl { font-size: 12px; font-weight: 500; color: #3c434a; }
+  .mini-toggle { position: relative; width: 34px; height: 18px; flex-shrink: 0; }
+  .mini-toggle .track { position: absolute; inset: 0; border-radius: 18px; background: #dcdcde; }
+  .mini-toggle .track.on { background: #2fb344; }
+  .mini-toggle .thumb { position: absolute; top: 3px; left: 3px; width: 12px; height: 12px; border-radius: 50%; background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.2); }
+  .mini-toggle .thumb.on { left: 19px; }
+
+  /* Disabled state for trial/expiry panel when toggle off */
+  .panel-off .input-row { opacity: .38; pointer-events: none; }
+  .panel-off .date-input { opacity: .38; pointer-events: none; }
+
+  .split { gap: 18px; align-items: flex-start; flex-wrap: wrap; justify-content: center; }
+  .mockup { width: 278px; flex: none; }
+</style>
+
+<div class="split">
+
+  <!-- Panel: Recurring (active) -->
+  <div class="mockup" data-choice="recurring-panel" onclick="toggleSelect(this)">
+    <div class="mockup-header">Tab: Recurring</div>
+    <div class="mockup-body" style="padding:14px;background:#f0f0f1;display:flex;justify-content:center;">
+      <div class="evf-sidebar">
+        <div class="choice-row">
+          <span class="drag">⠿</span><input type="radio" readonly>
+          <input type="text" class="lbl-input" value="First tt Choice" readonly>
+          <input type="text" class="price-input" value="7.00" readonly>
+          <div class="btns"><button>+</button><button>×</button></div>
+        </div>
+        <div class="tabs-pill-wrap">
+          <div class="tabs-pill">
+            <div class="tab active">↻ Recurring</div>
+            <div class="tab">Trial <span class="dot"></span></div>
+            <div class="tab">Expiry <span class="dot"></span></div>
+          </div>
+        </div>
+        <div class="tab-panel">
+          <div class="rec-badge">↻ Always active</div>
+          <div class="input-row">
+            <input type="number" class="num-input" value="1" readonly>
+            <select class="per-select"><option>Week(s)</option></select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Panel: Trial ON -->
+  <div class="mockup" data-choice="trial-panel" onclick="toggleSelect(this)">
+    <div class="mockup-header">Tab: Trial (ON)</div>
+    <div class="mockup-body" style="padding:14px;background:#f0f0f1;display:flex;justify-content:center;">
+      <div class="evf-sidebar">
+        <div class="choice-row">
+          <span class="drag">⠿</span><input type="radio" readonly>
+          <input type="text" class="lbl-input" value="First tt Choice" readonly>
+          <input type="text" class="price-input" value="7.00" readonly>
+          <div class="btns"><button>+</button><button>×</button></div>
+        </div>
+        <div class="tabs-pill-wrap">
+          <div class="tabs-pill">
+            <div class="tab">↻ Recurring</div>
+            <div class="tab active">Trial <span class="dot"></span></div>
+            <div class="tab">Expiry <span class="dot"></span></div>
+          </div>
+        </div>
+        <div class="tab-panel">
+          <div class="toggle-row">
+            <span class="toggle-lbl">Enable Trial Period</span>
+            <div class="mini-toggle"><div class="track on"></div><div class="thumb on"></div></div>
+          </div>
+          <div class="input-row">
+            <input type="number" class="num-input" value="2" readonly>
+            <select class="per-select"><option>Week(s)</option></select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Panel: Trial OFF -->
+  <div class="mockup" data-choice="trial-off-panel" onclick="toggleSelect(this)">
+    <div class="mockup-header">Tab: Trial (OFF)</div>
+    <div class="mockup-body" style="padding:14px;background:#f0f0f1;display:flex;justify-content:center;">
+      <div class="evf-sidebar">
+        <div class="choice-row">
+          <span class="drag">⠿</span><input type="radio" readonly>
+          <input type="text" class="lbl-input" value="First tt Choice" readonly>
+          <input type="text" class="price-input" value="7.00" readonly>
+          <div class="btns"><button>+</button><button>×</button></div>
+        </div>
+        <div class="tabs-pill-wrap">
+          <div class="tabs-pill">
+            <div class="tab">↻ Recurring</div>
+            <div class="tab active">Trial</div>
+            <div class="tab">Expiry</div>
+          </div>
+        </div>
+        <div class="tab-panel panel-off">
+          <div class="toggle-row">
+            <span class="toggle-lbl">Enable Trial Period</span>
+            <div class="mini-toggle"><div class="track"></div><div class="thumb"></div></div>
+          </div>
+          <div class="input-row">
+            <input type="number" class="num-input" value="2" readonly>
+            <select class="per-select"><option>Week(s)</option></select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Panel: Expiry ON -->
+  <div class="mockup" data-choice="expiry-panel" onclick="toggleSelect(this)">
+    <div class="mockup-header">Tab: Expiry (ON)</div>
+    <div class="mockup-body" style="padding:14px;background:#f0f0f1;display:flex;justify-content:center;">
+      <div class="evf-sidebar">
+        <div class="choice-row">
+          <span class="drag">⠿</span><input type="radio" readonly>
+          <input type="text" class="lbl-input" value="First tt Choice" readonly>
+          <input type="text" class="price-input" value="7.00" readonly>
+          <div class="btns"><button>+</button><button>×</button></div>
+        </div>
+        <div class="tabs-pill-wrap">
+          <div class="tabs-pill">
+            <div class="tab">↻ Recurring</div>
+            <div class="tab">Trial <span class="dot"></span></div>
+            <div class="tab active">Expiry <span class="dot"></span></div>
+          </div>
+        </div>
+        <div class="tab-panel">
+          <div class="toggle-row">
+            <span class="toggle-lbl">Enable Expiry Date</span>
+            <div class="mini-toggle"><div class="track on"></div><div class="thumb on"></div></div>
+          </div>
+          <input class="date-input" value="2026-05-20" readonly>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

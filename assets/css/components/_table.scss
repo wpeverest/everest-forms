@@ -1,4 +1,4 @@
-$evf-primary: #7545bb;
+﻿$evf-primary: #7545bb;
 $evf-primary-hover: #8c5aca;
 $evf-primary-light: #faf8fc;
 $evf-text-primary: #222;
@@ -780,13 +780,20 @@ $status-trash-text: #991b1b;
 				}
 			}
 
-			&:hover {
+			&:hover,
+			&.evf-row-hover {
 				// background: $evf-bg-hover;
 				// box-shadow: $evf-shadow-hover;
 
 				.row-actions {
+					position: static !important;
+					left: auto !important;
 					visibility: visible !important;
 					opacity: 1 !important;
+					pointer-events: auto !important;
+					transition:
+						opacity 0.15s ease,
+						visibility 0.15s ease;
 				}
 
 				.column-primary,
@@ -974,15 +981,13 @@ $status-trash-text: #991b1b;
 					.row-actions {
 						visibility: hidden;
 						opacity: 0;
+						pointer-events: none;
 						margin-top: 4px;
 						display: flex;
-						flex-wrap: wrap;
+						flex-wrap: nowrap;
 						gap: 4px;
 						font-size: 12px;
 						font-weight: 400;
-						transition:
-							opacity 0.2s ease,
-							visibility 0.2s ease;
 						white-space: nowrap;
 						// overflow: hidden;
 
@@ -1005,16 +1010,23 @@ $status-trash-text: #991b1b;
 								transition: $evf-transition;
 								white-space: nowrap;
 
-								&:hover {
+								&:hover,
+								&:focus {
 									color: #000;
 									text-decoration: underline;
+									outline: none;
+									box-shadow: none;
 								}
 
 								&.submitdelete {
-									// color: #dc2626;
+									color: #dc2626;
 
-									&:hover {
+									&:hover,
+									&:focus {
 										color: #b91c1c;
+										outline: none;
+										box-shadow: none;
+										border: none;
 									}
 								}
 							}
@@ -1025,6 +1037,21 @@ $status-trash-text: #991b1b;
 								font-weight: 400;
 							}
 						}
+					}
+				}
+
+				&.column-primary:hover,
+				&.column-title:hover,
+				&.entry:hover {
+					.row-actions {
+						position: static !important;
+						left: auto !important;
+						visibility: visible !important;
+						opacity: 1 !important;
+						pointer-events: auto !important;
+						transition:
+							opacity 0.15s ease,
+							visibility 0.15s ease;
 					}
 				}
 

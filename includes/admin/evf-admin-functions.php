@@ -36,6 +36,25 @@ function evf_get_screen_ids()
 }
 
 /**
+ * SmartSMTP admin URL: primary connection with Google Workspace setup highlighted.
+ *
+ * @since 3.3.0
+ *
+ * @return string
+ */
+function evf_get_smart_smtp_google_workspace_setup_url() {
+	$url = add_query_arg(
+		array(
+			'page'      => 'smart-smtp',
+			'evf_setup' => 'google_workspace',
+		),
+		admin_url( 'admin.php' )
+	);
+
+	return apply_filters( 'everest_forms_smart_smtp_google_workspace_setup_url', $url . '#/primary-connection' );
+}
+
+/**
  * Create a page and store the ID in an option.
  *
  * @param mixed  $slug         Slug for the new page.
