@@ -340,7 +340,9 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 == Changelog ==
 
 = 3.4.9       - 09-06-2026
+* Feature 	  - Create form with AI.
 * Feature	  - Shield silentCAPTCHA integration.
+* Feature	  - Exposed full CRUD abilities for Forms, Entries, Discovery Addons and Analytics via the WP Abilities API.
 * Enhance	  - Contact Form 7 migration.
 * Fix         - Updated tooltips.
 * Fix 		  - Brevo connection issue.
