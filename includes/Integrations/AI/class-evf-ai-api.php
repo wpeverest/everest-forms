@@ -157,11 +157,28 @@ class EVF_AI_API {
 			}
 		}
 
+		$email_conns = $data['settings']['email'] ?? [];
+		$conn1       = $email_conns['connection_1'] ?? [];
+
 		return [
-			'form_title'      => $post->post_title,
-			'form_type'       => $form_type,
-			'multipart_steps' => $multipart_steps,
-			'fields'          => $summary,
+			'form_title'              => $post->post_title,
+			'form_type'               => $form_type,
+			'multipart_steps'         => $multipart_steps,
+			'fields'                  => $summary,
+			// Settings context so the gateway preserves them on refine
+			'redirect_to'             => $data['settings']['redirect_to'] ?? 'same',
+			'redirect_custom_page_id' => absint( $data['settings']['custom_page'] ?? 0 ),
+			'redirect_external_url'   => $data['settings']['external_url'] ?? '',
+			'notification'            => [
+				'from_name' => $conn1['evf_from_name'] ?? '',
+				'reply_to'  => $conn1['evf_reply_to'] ?? 'auto',
+				'message'   => $conn1['evf_email_message'] ?? '{all_fields}',
+				'subject'   => $conn1['evf_email_subject'] ?? '',
+			],
+			'user_confirmation'       => ! empty( $email_conns['connection_2'] ) ? [
+				'from_name' => $email_conns['connection_2']['evf_from_name'] ?? '',
+				'reply_to'  => $email_conns['connection_2']['evf_reply_to'] ?? 'auto',
+			] : [],
 		];
 	}
 
@@ -169,19 +186,22 @@ class EVF_AI_API {
 	 * Register this site with the ThemeGrill AI Cloud gateway (free tier).
 	 * Called once on plugin activation — silent, no admin action required.
 	 *
+	 * @param string $verify_token One-time ownership token; gateway calls back to confirm.
 	 * @return array|WP_Error  { site_token, tier, product }
 	 */
-	public static function register_site() {
-		return self::request(
-			'POST',
-			'/ai/v1/register',
-			array(
-				'domain'      => self::get_domain(),
-				'admin_email' => get_bloginfo( 'admin_email' ),
-				'wp_version'  => get_bloginfo( 'version' ),
-				'product'     => self::PRODUCT,
-			)
+	public static function register_site( string $verify_token = '' ) {
+		$payload = array(
+			'domain'      => self::get_domain(),
+			'admin_email' => get_bloginfo( 'admin_email' ),
+			'wp_version'  => get_bloginfo( 'version' ),
+			'product'     => self::PRODUCT,
 		);
+
+		if ( $verify_token ) {
+			$payload['verify_token'] = $verify_token;
+		}
+
+		return self::request( 'POST', '/ai/v1/register', $payload );
 	}
 
 	/**

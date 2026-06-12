@@ -392,9 +392,9 @@ class EVF_AI_Form_Builder {
 			'required'                       => ! empty( $ai_field['required'] ) ? '1' : '',
 			'required_field_message_setting' => 'global',
 			'required-field-message'         => '',
-			'label_hide'                     => '0',
+			'label_hide'                     => ! empty( $ai_field['label_hide'] ) ? '1' : '0',
 			'description'                    => sanitize_text_field( $ai_field['description'] ?? '' ),
-			'css'                            => '',
+			'css'                            => sanitize_text_field( $ai_field['css'] ?? '' ),
 		];
 
 		// Placeholder (not all field types use it)
@@ -409,7 +409,7 @@ class EVF_AI_Form_Builder {
 			case 'last-name':
 			case 'url':
 			case 'number':
-				$field['default_value']     = '';
+				$field['default_value']     = sanitize_text_field( $ai_field['default_value'] ?? '' );
 				$field['limit_enabled']     = '0';
 				$field['limit_count']       = '100';
 				$field['limit_mode']        = 'characters';
@@ -420,20 +420,20 @@ class EVF_AI_Form_Builder {
 				break;
 
 			case 'textarea':
-				$field['default_value'] = '';
+				$field['default_value'] = sanitize_textarea_field( $ai_field['default_value'] ?? '' );
 				$field['limit_enabled'] = '0';
 				$field['limit_count']   = '500';
 				$field['limit_mode']    = 'characters';
 				break;
 
 			case 'email':
-				$field['default_value']              = '';
-				$field['confirmation_placeholder']   = '';
-				$field['sublabel_hide']              = '';
+				$field['default_value']            = sanitize_text_field( $ai_field['default_value'] ?? '' );
+				$field['confirmation_placeholder'] = '';
+				$field['sublabel_hide']            = ! empty( $ai_field['sublabel_hide'] ) ? '1' : '';
 				break;
 
 			case 'phone':
-				$field['default_value'] = '';
+				$field['default_value'] = sanitize_text_field( $ai_field['default_value'] ?? '' );
 				$field['phone_format']  = 'smart';
 				$field['input_mask']    = '';
 				break;
@@ -471,6 +471,9 @@ class EVF_AI_Form_Builder {
 
 			case 'address':
 				$field += self::address_sublabels();
+				if ( ! empty( $ai_field['sublabel_hide'] ) ) {
+					$field['sublabel_hide'] = '1';
+				}
 				break;
 
 			case 'file-upload':
@@ -495,7 +498,7 @@ class EVF_AI_Form_Builder {
 				break;
 
 			case 'hidden':
-				$field['default_value'] = '';
+				$field['default_value'] = sanitize_text_field( $ai_field['default_value'] ?? '' );
 				break;
 
 			case 'html':
@@ -665,9 +668,9 @@ class EVF_AI_Form_Builder {
 			'submit_button_processing_text'      => __( 'Processing...', 'everest-forms' ),
 			'successful_form_submission_message' => sanitize_text_field( $ai['success_message'] ?? __( 'Thanks for contacting us! We will be in touch shortly.', 'everest-forms' ) ),
 			'submission_message_scroll'          => '1',
-			'redirect_to'                        => 'same',
-			'custom_page'                        => '',
-			'external_url'                       => '',
+			'redirect_to'                        => self::validate_redirect_to( $ai['redirect_to'] ?? 'same' ),
+			'custom_page'                        => absint( $ai['redirect_custom_page_id'] ?? 0 ),
+			'external_url'                       => esc_url_raw( $ai['redirect_external_url'] ?? '' ),
 			'layout_class'                       => 'default',
 			'form_class'                         => '',
 			'ajax_form_submission'               => '1',
@@ -703,16 +706,24 @@ class EVF_AI_Form_Builder {
 				? sanitize_text_field( $ai['notification_subject'] )
 				: sprintf( __( 'New submission: %s', 'everest-forms' ), $ai['form_title'] ?? 'Form' );
 
+			$notif_from_name = ! empty( $ai['notification_from_name'] )
+				? sanitize_text_field( $ai['notification_from_name'] )
+				: get_bloginfo( 'name' );
+			$notif_reply_to  = self::resolve_reply_to( $ai['notification_reply_to'] ?? 'auto', $reply_to );
+			$notif_message   = ! empty( $ai['notification_message'] )
+				? wp_kses_post( $ai['notification_message'] )
+				: '{all_fields}';
+
 			$settings['email'] = [
 				'connection_1' => [
 					'enable_email_notification' => '1',
 					'connection_name'           => __( 'Admin Notification', 'everest-forms' ),
 					'evf_to_email'              => '{admin_email}',
-					'evf_from_name'             => get_bloginfo( 'name' ),
+					'evf_from_name'             => $notif_from_name,
 					'evf_from_email'            => '{admin_email}',
-					'evf_reply_to'              => $reply_to,
+					'evf_reply_to'              => $notif_reply_to,
 					'evf_email_subject'         => $email_subject,
-					'evf_email_message'         => '{all_fields}',
+					'evf_email_message'         => $notif_message,
 					'evf_email_cc'              => '',
 					'evf_email_bcc'             => '',
 				],
@@ -727,13 +738,18 @@ class EVF_AI_Form_Builder {
 					? sanitize_textarea_field( $ai['user_confirmation_message'] )
 					: __( 'Thank you! We have received your submission and will be in touch shortly.', 'everest-forms' );
 
+				$ucfm_from_name = ! empty( $ai['user_confirmation_from_name'] )
+					? sanitize_text_field( $ai['user_confirmation_from_name'] )
+					: get_bloginfo( 'name' );
+				$ucfm_reply_to  = self::resolve_reply_to( $ai['user_confirmation_reply_to'] ?? 'auto', '{admin_email}' );
+
 				$settings['email']['connection_2'] = [
 					'enable_email_notification' => '1',
 					'connection_name'           => __( 'User Confirmation', 'everest-forms' ),
 					'evf_to_email'              => '{field_id="' . $email_field_id . '"}',
-					'evf_from_name'             => get_bloginfo( 'name' ),
+					'evf_from_name'             => $ucfm_from_name,
 					'evf_from_email'            => '{admin_email}',
-					'evf_reply_to'              => '{admin_email}',
+					'evf_reply_to'              => $ucfm_reply_to,
 					'evf_email_subject'         => $confirm_subject,
 					'evf_email_message'         => $confirm_message,
 					'evf_email_cc'              => '',
@@ -806,6 +822,25 @@ class EVF_AI_Form_Builder {
 	}
 
 	// ── Helpers ───────────────────────────────────────────────────────────────
+
+	/**
+	 * Validate redirect_to — only accept known values, fall back to 'same'.
+	 */
+	private static function validate_redirect_to( string $val ): string {
+		return in_array( $val, array( 'same', 'custom_page', 'external_url' ), true ) ? $val : 'same';
+	}
+
+	/**
+	 * Resolve AI reply_to value.
+	 * "auto" or empty → use $default (auto-detected email field smart tag or admin email).
+	 * Anything else   → sanitize and use as-is (explicit email or smart tag).
+	 */
+	private static function resolve_reply_to( string $val, string $default ): string {
+		if ( '' === $val || 'auto' === $val ) {
+			return $default;
+		}
+		return sanitize_text_field( $val );
+	}
 
 	/**
 	 * Check whether reCAPTCHA (any type) has a site key configured in EVF settings.

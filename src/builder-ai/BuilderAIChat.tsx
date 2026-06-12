@@ -9,6 +9,7 @@ interface Message {
 	loading?: boolean;
 	notice?: boolean;
 	noticeUrl?: string;
+	reload?: boolean;
 }
 
 // Edit-form prompt suggestions shown inside the chat panel.
@@ -153,10 +154,10 @@ const BuilderAIChat: React.FC = () => {
 			result.message = "Done — I've updated your form. Refreshing the canvas…";
 		}
 
-		// Prompt for a page reload when the form type changed to Multi-Part and the
-		// feature is fully active (the canvas refresh won't show the new step layout).
+		// When settings changed (redirect, email, message, etc.) set a clean done text.
+		// The reload link is rendered inside the bubble; no auto-reload happens.
 		if (result.ok && result.needsReload && !result.isNotice) {
-			result.message = "Done — your form layout has been updated. Please reload the page to see the new multi-part structure.";
+			result.message = "Done — your form settings have been updated.";
 		}
 
 		setMessages(prev => {
@@ -169,13 +170,16 @@ const BuilderAIChat: React.FC = () => {
 				// then a separate notice bubble below so the user knows the edit applied.
 				copy[copy.length - 1] = {
 					role: 'assistant',
-					text: "Done — I've updated your form. Refreshing the canvas…",
+					text: result.needsReload
+						? "Done — your form settings have been updated."
+						: "Done — I've updated your form. Refreshing the canvas…",
 				};
 				copy.push({
 					role:      'assistant',
 					text:      result.message,
 					notice:    true,
 					noticeUrl: result.noticeUrl || '',
+					reload:    !! result.needsReload,
 				});
 			} else {
 				copy[copy.length - 1] = {
@@ -183,6 +187,7 @@ const BuilderAIChat: React.FC = () => {
 					text:      result.message,
 					notice:    result.isNotice || ! result.ok,
 					noticeUrl: result.noticeUrl || '',
+					reload:    result.ok && !! result.needsReload,
 				};
 			}
 			return copy;
@@ -191,7 +196,10 @@ const BuilderAIChat: React.FC = () => {
 
 		if (result.ok) {
 			const w = window as any;
-			if (typeof w.evfReloadBuilderFields === 'function' && cfg.formId && cfg.nonce) {
+			if (result.needsReload) {
+				// Settings changed — don't auto-reload; the bubble shows a manual
+				// "Refresh the page" link so the user can reload when ready.
+			} else if (typeof w.evfReloadBuilderFields === 'function' && cfg.formId && cfg.nonce) {
 				w.evfReloadBuilderFields(cfg.formId, cfg.nonce, () => {});
 			} else {
 				setTimeout(() => window.location.reload(), 1500);
@@ -462,6 +470,17 @@ const BuilderAIChat: React.FC = () => {
 									) : (
 										<>
 											{msg.text}
+											{msg.reload && (
+												<div style={{ marginTop: 6 }}>
+													<a
+														href="#"
+														onClick={e => { e.preventDefault(); window.location.reload(); }}
+														style={{ color: '#7545BB', fontWeight: 600, fontSize: 12, textDecoration: 'underline', cursor: 'pointer' }}
+													>
+														Refresh the page ↻
+													</a>
+												</div>
+											)}
 											{msg.notice && msg.noticeUrl && (
 												<div style={{ marginTop: 6 }}>
 													<a

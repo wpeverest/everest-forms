@@ -148,15 +148,46 @@ class EVF_AI_Ajax {
 			}
 		}
 
-		// Detect whether the form type changed to multi-part in this update.
-		// When Multi-Part is fully active (Pro license + addon), the builder layout
-		// requires a full page reload to render the new step structure.
+		// Read the saved form data once and reuse for all post-update checks.
+		$after_post     = get_post( $form_id );
+		$after_data     = $after_post ? evf_decode( $after_post->post_content ) : array();
+		$after_settings = $after_data['settings'] ?? array();
+
+		// A full page reload is needed whenever non-field settings changed — the fast
+		// canvas refresh (evfReloadBuilderFields) only updates the fields panel and
+		// doesn't refresh the Settings tab, so redirect/email/message changes would
+		// appear to the user as if they had no effect.
 		$needs_reload = false;
-		if ( self::has_active_license() && class_exists( 'EverestForms_MultiPart' ) ) {
-			$after_post     = get_post( $form_id );
-			$after_data     = $after_post ? evf_decode( $after_post->post_content ) : array();
-			$after_settings = $after_data['settings'] ?? array();
-			$now_multipart  = ! empty( $after_settings['enable_multi_part'] ) && evf_string_to_bool( $after_settings['enable_multi_part'] );
+
+		// Form-level settings that are visible in the Settings tab.
+		$watched_keys = array( 'redirect_to', 'external_url', 'custom_page', 'successful_form_submission_message' );
+		foreach ( $watched_keys as $key ) {
+			$before_val = $before_settings[ $key ] ?? '';
+			$after_val  = $after_settings[ $key ] ?? '';
+			if ( $before_val !== $after_val ) {
+				$needs_reload = true;
+				break;
+			}
+		}
+
+		// Email notification changes (from_name, reply_to, message, subject).
+		if ( ! $needs_reload ) {
+			$email_keys = array( 'evf_from_name', 'evf_reply_to', 'evf_email_message', 'evf_email_subject' );
+			foreach ( array( 'connection_1', 'connection_2' ) as $conn ) {
+				$before_conn = $before_settings['email'][ $conn ] ?? array();
+				$after_conn  = $after_settings['email'][ $conn ] ?? array();
+				foreach ( $email_keys as $k ) {
+					if ( ( $before_conn[ $k ] ?? '' ) !== ( $after_conn[ $k ] ?? '' ) ) {
+						$needs_reload = true;
+						break 2;
+					}
+				}
+			}
+		}
+
+		// Multi-part type change also requires a full reload (existing behaviour).
+		if ( ! $needs_reload && self::has_active_license() && class_exists( 'EverestForms_MultiPart' ) ) {
+			$now_multipart = ! empty( $after_settings['enable_multi_part'] ) && evf_string_to_bool( $after_settings['enable_multi_part'] );
 			if ( ! $was_multipart && $now_multipart ) {
 				$needs_reload = true;
 			}

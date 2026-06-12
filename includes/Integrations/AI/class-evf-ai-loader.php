@@ -24,6 +24,10 @@ add_action( 'everest_forms_loaded', static function () {
 	// the templates UI (src/templates/components/CreateWithAI.tsx).
 	new EVF_AI_Ajax();
 
+	// Public REST endpoint the gateway calls back to during domain ownership verification.
+	// No auth required — security is provided by the one-time transient token.
+	add_action( 'rest_api_init', array( 'EVF_AI_Registration', 'register_verify_endpoint' ) );
+
 	// NOTE: The in-builder "Generate Form with AI" modal (EVF_AI_Builder_UI) has
 	// been removed — its Python gateway calls now live in the Create with AI UI.
 } );

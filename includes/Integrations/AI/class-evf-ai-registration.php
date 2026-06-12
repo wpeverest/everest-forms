@@ -14,8 +14,10 @@ defined( 'ABSPATH' ) || exit;
 
 class EVF_AI_Registration {
 
-	const OPTION_KEY    = 'evf_ai_credentials';
-	const LOCK_TRANSIENT = 'evf_ai_registration_lock';
+	const OPTION_KEY          = 'evf_ai_credentials';
+	const LOCK_TRANSIENT      = 'evf_ai_registration_lock';
+	const VERIFY_PREFIX       = 'evf_ai_verify_';  // transient prefix for ownership tokens
+	const VERIFY_TTL          = 300;               // 5 minutes
 
 	/**
 	 * Get the stored site token, or null if not yet registered.
@@ -68,17 +70,27 @@ class EVF_AI_Registration {
 		}
 		set_transient( self::LOCK_TRANSIENT, true, 60 );
 
-		$response = EVF_AI_API::register_site();
+		// Generate a one-time ownership token the gateway will call back to verify.
+		// The gateway hits /wp-json/everest-forms/v1/gateway-verify?token=... and we
+		// confirm the transient exists — proving this WordPress install issued the request.
+		$verify_token = wp_generate_password( 32, false );
+		set_transient( self::VERIFY_PREFIX . $verify_token, 1, self::VERIFY_TTL );
+
+		$response = EVF_AI_API::register_site( $verify_token );
 
 		if ( is_wp_error( $response ) || empty( $response['site_token'] ) ) {
+			delete_transient( self::VERIFY_PREFIX . $verify_token );
 			return false;
 		}
 
-		update_option( self::OPTION_KEY, [
-			'site_token'    => sanitize_text_field( $response['site_token'] ),
-			'tier'          => sanitize_key( $response['tier'] ?? 'free' ),
-			'registered_at' => time(),
-		] );
+		update_option(
+			self::OPTION_KEY,
+			array(
+				'site_token'    => sanitize_text_field( $response['site_token'] ),
+				'tier'          => sanitize_key( $response['tier'] ?? 'free' ),
+				'registered_at' => time(),
+			)
+		);
 
 		delete_transient( self::LOCK_TRANSIENT );
 		return true;
@@ -114,6 +126,51 @@ class EVF_AI_Registration {
 		update_option( self::OPTION_KEY, $creds );
 
 		return 'pro' === $creds['tier'];
+	}
+
+	/**
+	 * Register the public REST endpoint the gateway calls to verify domain ownership.
+	 * Hooked to rest_api_init from class-evf-ai-loader.php.
+	 */
+	public static function register_verify_endpoint(): void {
+		register_rest_route(
+			'everest-forms/v1',
+			'/gateway-verify',
+			array(
+				'methods'             => WP_REST_Server::READABLE,
+				'callback'            => array( __CLASS__, 'handle_verify_request' ),
+				'permission_callback' => '__return_true',
+			)
+		);
+	}
+
+	/**
+	 * Respond to the gateway's ownership callback.
+	 *
+	 * The gateway sends the same verify_token we generated in register().
+	 * We check the transient (one-time, 5-minute TTL) and delete it on success
+	 * so the token cannot be reused.
+	 *
+	 * @param WP_REST_Request $request Incoming REST request.
+	 * @return WP_REST_Response
+	 */
+	public static function handle_verify_request( WP_REST_Request $request ): WP_REST_Response {
+		$token = sanitize_text_field( $request->get_param( 'token' ) );
+
+		if ( ! $token ) {
+			return new WP_REST_Response( array( 'valid' => false ), 400 );
+		}
+
+		$stored = get_transient( self::VERIFY_PREFIX . $token );
+
+		if ( ! $stored ) {
+			return new WP_REST_Response( array( 'valid' => false ), 403 );
+		}
+
+		// One-time use — delete immediately so the token cannot be replayed.
+		delete_transient( self::VERIFY_PREFIX . $token );
+
+		return new WP_REST_Response( array( 'valid' => true ), 200 );
 	}
 
 }
