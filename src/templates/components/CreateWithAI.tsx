@@ -51,7 +51,6 @@ const shimmer = keyframes`
   100% { background-position:  400px 0; }
 `;
 
-
 const INSPIRATION_CARDS = [
 	{
 		title: __('Online store checkout', 'everest-forms'),
@@ -92,15 +91,9 @@ const GEN_STEPS = [
 	__('Finalizing your form', 'everest-forms'),
 ];
 
-
 const MAX_CHARS = 500;
 
 const UPGRADE_URL = 'https://everestforms.net/upgrade/?utm_source=evf-free&utm_medium=ai-form-builder&utm_campaign=ai-rate-limit&utm_content=Upgrade+to+Pro';
-
-// The form preview is rendered server-side via the templates/ai-preview REST
-// endpoint, which returns the builder's own field markup (output_fields_preview).
-// This guarantees the preview is pixel-identical to the builder shown after
-// import — so there is intentionally no parallel React field-preview component.
 
 const SkeletonField: React.FC<{ delay?: string }> = ({ delay = '0s' }) => (
 	<Box sx={{ animation: `${fadeUp} 0.4s ease ${delay} both` }}>
@@ -109,22 +102,15 @@ const SkeletonField: React.FC<{ delay?: string }> = ({ delay = '0s' }) => (
 	</Box>
 );
 
-// ── Shared page shell ─────────────────────────────────────────────────────────
-
 const PageShell: React.FC<{ onBack: () => void; backLabel?: string; headerRight?: React.ReactNode; children: React.ReactNode }> = ({
 	onBack, backLabel, headerRight, children,
 }) => {
-	// WP's #wpbody-content has padding-bottom:42px which makes the body
-	// slightly overflow behind our fixed overlay, producing a second scrollbar.
-	// Lock body overflow for the lifetime of this component to suppress it.
 	useEffect(() => {
 		const prev = document.body.style.overflow;
 		document.body.style.overflow = 'hidden';
 		return () => { document.body.style.overflow = prev; };
 	}, []);
 	return (
-	// Full-viewport overlay (z-index above WP admin bar). Header stays pinned;
-	// only the content area below it scrolls via the inner Box.
 	<Flex
 		position="fixed"
 		top="0" left="0" right="0" bottom="0"
@@ -133,9 +119,7 @@ const PageShell: React.FC<{ onBack: () => void; backLabel?: string; headerRight?
 		overflow="hidden"
 		bg="#f6f6f8"
 	>
-		{/* Purple accent line */}
 		<Box h="4px" bg="#7545BB" flexShrink={0} />
-		{/* Header — always pinned */}
 		<Flex
 			as="header"
 			align="center"
@@ -165,7 +149,6 @@ const PageShell: React.FC<{ onBack: () => void; backLabel?: string; headerRight?
 			</HStack>
 			{headerRight}
 		</Flex>
-		{/* Content — scrollable only when it genuinely overflows */}
 		<Box flex={1} overflowY="auto" display="flex" flexDirection="column">
 			{children}
 		</Box>
@@ -173,32 +156,23 @@ const PageShell: React.FC<{ onBack: () => void; backLabel?: string; headerRight?
 	);
 };
 
-// ── Main component ────────────────────────────────────────────────────────────
-
 interface CreateWithAIProps {
 	onBack: () => void;
-	// When opened from a template's "Edit with AI", the draft form to load
-	// straight into the refine/preview (generated) state.
 	initialFormId?: number;
 	initialTitle?: string;
 }
 
-// A single entry in the preview-sidebar chat history.
 interface ChatMessage {
 	role: 'user' | 'assistant';
 	text: string;
 	loading?: boolean;
-	error?: boolean;     // true = real error, form NOT created — hides "Use This Form"
-	notice?: boolean;    // true = form created but Pro feature needs attention — shows "Use This Form"
-	noticeUrl?: string;  // upgrade / addons URL shown as a link button inside the notice bubble
+	error?: boolean;
+	notice?: boolean;
+	noticeUrl?: string;
 }
 
 const { restURL, security, ajaxUrl, aiNonce } = templatesScriptData;
 
-/**
- * Call a ThemeGrill AI Cloud (Python gateway) action via admin-ajax.
- * Mirrors the builder modal's $.post( evfAI.ajaxUrl, { action, nonce, ... } ).
- */
 const callAi = async (
 	action: string,
 	data: Record<string, string | number> = {},
@@ -227,61 +201,42 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 	const [hint, setHint] = useState({ show: false, x: 0, y: 0 });
 	const [isRegenerating, setIsRegenerating] = useState(false);
 	const [isCreatingForm, setIsCreatingForm] = useState(false);
-	// Server-rendered builder-canvas HTML for the preview (guarantees parity with
-	// the builder shown after import). Empty until the ai-preview endpoint responds.
 	const [previewHTML, setPreviewHTML] = useState('');
 	const [isPreviewLoading, setIsPreviewLoading] = useState(false);
-	// The AI gateway creates a DRAFT form on generate; we preview it by id and
-	// publish it on "Use This Form".
 	const [formId, setFormId] = useState(0);
 	const [formTitle, setFormTitle] = useState(initialTitle || '');
 	const [editUrl, setEditUrl] = useState('');
 	const [multiPartSteps, setMultiPartSteps] = useState<string[]>([]);
 	const [activePartTab, setActivePartTab] = useState(0);
-	// Follow-up / refine prompt shown in the preview sidebar.
 	const [refinePrompt, setRefinePrompt] = useState('');
-	// Bumped after an update so the preview re-fetches for the same form id.
 	const [previewVersion, setPreviewVersion] = useState(0);
-	// Running chat history for the current session (prompt + each regenerate/refine).
 	const [messages, setMessages] = useState<ChatMessage[]>([]);
 	const previewHintTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 	const aiResponseRef = React.useRef<any>(null);
 	const promptInputRef = React.useRef<HTMLTextAreaElement | null>(null);
 	const canvasRef = useRef<HTMLDivElement | null>(null);
-	// Tracks a pre-fetch of the preview HTML that starts as soon as the AI
-	// returns a form_id (while the progress animation is still playing).
-	// previewHTMLRef mirrors the previewHTML state for effect-safe reads.
 	const previewHTMLRef = React.useRef('');
 	const previewFetchStartedRef = React.useRef(false);
 
-	// Show only the active part's rows when multi-part tabs are used.
-	// PHP stamps data-part-id="N" (1-based) on each .evf-admin-row.
 	useEffect(() => {
 		if (!canvasRef.current || multiPartSteps.length === 0) return;
 		const rows = canvasRef.current.querySelectorAll<HTMLElement>('.evf-admin-row[data-part-id]');
-		const target = activePartTab + 1; // 1-based
+		const target = activePartTab + 1;
 		rows.forEach(row => {
 			const pid = parseInt(row.dataset.partId || '1', 10);
 			row.style.display = pid === target ? '' : 'none';
 		});
 	}, [activePartTab, previewHTML, multiPartSteps]);
 
-	// Focus the prompt input on the "What should we build today?" screen (on mount
-	// and whenever we return to the idle state).
 	useEffect(() => {
 		if (genState !== 'idle') return;
 		const t = setTimeout(() => promptInputRef.current?.focus(), 50);
 		return () => clearTimeout(t);
 	}, [genState]);
 
-	// Opened from a template's "Edit with AI": load the draft form straight into
-	// the generated (preview + refine) state so the user can change it via prompts.
 	useEffect(() => {
-		// Only preload when a real form id is provided; otherwise stay on the
-		// blank prompt screen (Create with AI).
 		if (typeof initialFormId !== 'number' || initialFormId <= 0) return;
 		setFormId(initialFormId);
-		// The gateway's update endpoint needs a non-empty original prompt as context.
 		setPrompt(initialTitle || __('this form', 'everest-forms'));
 		setMessages([
 			{
@@ -296,7 +251,6 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [initialFormId]);
 
-	// Publish the AI-generated draft form and open it in the builder.
 	const handleUseThisForm = async () => {
 		if (isCreatingForm || ! formId) return;
 		setIsCreatingForm(true);
@@ -306,7 +260,6 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 			if (res?.success && res.data?.edit_url) {
 				window.location.href = res.data.edit_url;
 			} else if (editUrl) {
-				// Fallback: the draft already exists, open it directly.
 				window.location.href = editUrl;
 			} else {
 				throw new Error(res?.data?.message || 'Unexpected response');
@@ -325,17 +278,6 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 		}
 	};
 
-	// Regenerate / refine the current draft via the AI update endpoint, then
-	// re-fetch the preview. Used by the "Regenerate" link (original prompt) and
-	// the "Refine or follow up…" input (follow-up prompt).
-	//
-	// mode="regenerate": give the form a fresh take based on the original prompt.
-	//   AI may freely add/remove/improve fields to enhance the form.
-	// mode="refine": apply a specific user instruction on top of the current form.
-	//   AI changes only what was asked, keeps everything else.
-	// refinePromptText: extra instruction typed by user (empty string for Regenerate).
-	// Gateway decides mode from this: non-empty → refine, empty → regenerate.
-	// Replace the trailing loading placeholder with a final assistant reply.
 	const resolveLoading = (text: string, isError = false, isNotice = false, noticeUrl = '') =>
 		setMessages(m => {
 			const next = [...m];
@@ -353,15 +295,14 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 		const refine   = (refinePromptText || '').trim();
 		const userText = refine || __('Regenerate the form', 'everest-forms');
 
-		// Append the new turn to the chat history + a loading placeholder.
 		setMessages(m => [...m, { role: 'user', text: userText }, { role: 'assistant', text: '', loading: true }]);
 		setRefinePrompt('');
 		setIsRegenerating(true);
 		try {
 			const res = await callAi('evf_ai_update_form', {
 				form_id:       formId,
-				prompt,                  // always the original prompt
-				refine_prompt: refine,   // extra instruction or '' (regenerate)
+				prompt,
+				refine_prompt: refine,
 			});
 			if (res?.success) {
 				if (res.data?.form_title) setFormTitle(res.data.form_title);
@@ -373,7 +314,6 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 					: __( "Here's a fresh version of your form.", 'everest-forms' );
 
 				if ( notice && ! messages.some( m => m.notice && m.text === notice ) ) {
-					// New or different notice: show "Done" bubble then notice bubble separately.
 					setMessages( m => {
 						const next = [ ...m ];
 						for ( let i = next.length - 1; i >= 0; i-- ) {
@@ -385,10 +325,8 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 						return [ ...next, { role: 'assistant', text: notice, notice: true, noticeUrl } ];
 					} );
 				} else {
-					// No notice or identical notice already shown — just confirm the update.
 					resolveLoading( doneText, false, false, '' );
 				}
-				// Use inline preview HTML when available; fall back to re-fetching via REST.
 				if (res.data?.preview_html) {
 					previewHTMLRef.current = res.data.preview_html;
 					setPreviewHTML(res.data.preview_html);
@@ -409,7 +347,6 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 		}
 	};
 
-	// "Regenerate" — no extra instruction, gateway uses original prompt + current form.
 	const handleRegenerate = () => handleUpdate();
 
 	const handleFieldClick = (e: React.MouseEvent) => {
@@ -425,7 +362,6 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 		if (genState !== 'generating') return;
 		setGenStep(-1);
 		aiResponseRef.current = null;
-		// Reset pre-fetch state for this generation run.
 		previewHTMLRef.current = '';
 		previewFetchStartedRef.current = false;
 		setPreviewHTML('');
@@ -433,9 +369,6 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 		let cancelled = false;
 		let intervalId: ReturnType<typeof setInterval> | null = null;
 
-		// Bail out of the "Building your form…" screen immediately and surface the
-		// error — no waiting for the progress animation to finish.
-		// containerStyle z-index must exceed PageShell's z-index (100000).
 		const showError = (message: string, isRateLimit = false) => {
 			if (cancelled) return;
 			if (intervalId) clearInterval(intervalId);
@@ -466,21 +399,16 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 				duration: isRateLimit ? null : 6000,
 				isClosable: true,
 				variant: 'subtle',
-				containerStyle: { zIndex: 200000 },
 			});
 		};
 
-		// Fire the real AI generation (ThemeGrill AI Cloud / Python gateway) via
-		// admin-ajax, concurrently with the progress animation. The gateway builds
-		// the form server-side and returns its draft id + field summary.
 		callAi('evf_ai_generate_form', { prompt })
 			.then((res: any) => {
 				if (res?.success && res.data?.form_id) {
-					// Preview HTML is included inline in the AJAX response — no second round trip needed.
 					const html = res.data.preview_html || '';
 					if (html) {
 						previewHTMLRef.current = html;
-						previewFetchStartedRef.current = true; // mark as already fetched
+						previewFetchStartedRef.current = true;
 						setPreviewHTML(html);
 						setIsPreviewLoading(false);
 					}
@@ -510,8 +438,6 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 			setGenStep(step);
 			if (step >= GEN_STEPS.length - 1) {
 				if (intervalId) clearInterval(intervalId);
-				// Animation done — transition once a successful response is in.
-				// (Errors are handled instantly by showError, not here.)
 				const finish = () => {
 					if (cancelled) return;
 					const result = aiResponseRef.current;
@@ -525,7 +451,6 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 						setEditUrl(result.editUrl);
 						setMultiPartSteps(result.multiPartSteps || []);
 						setActivePartTab(0);
-						// Seed the chat history with this session's first turn.
 						setMessages([
 							{ role: 'user', text: prompt },
 							{
@@ -548,22 +473,11 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 		};
 	}, [genState]);
 
-	// Fetch the real builder-canvas preview HTML whenever the generated fields
-	// change. Rendering the server markup (rather than a parallel React preview)
-	// guarantees the preview matches the builder pixel-for-pixel, including the
-	// PRO badge on locked fields.
-	//
-	// For the initial render (previewVersion === 0), a pre-fetch was already
-	// started during the generating animation — skip the duplicate request if
-	// it succeeded or is still in flight.
 	useEffect(() => {
 		if (genState !== 'generated' || ! formId) return;
-		// Pre-fetch already returned HTML, or is still in progress — don't duplicate.
 		if (previewVersion === 0 && (previewHTMLRef.current || previewFetchStartedRef.current)) return;
 		let cancelled = false;
 		setIsPreviewLoading(true);
-		// Preview the actual AI-generated draft form (by id) so the preview is
-		// byte-identical to the form that gets published on "Use This Form".
 		apiFetch({
 			path: `${restURL}everest-forms/v1/templates/ai-preview`,
 			method: 'POST',
@@ -576,7 +490,7 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 					setPreviewHTML(res.data.html);
 				}
 			})
-			.catch(() => { /* Falls back to the loading state; non-fatal. */ })
+			.catch(() => {})
 			.finally(() => { if (!cancelled) setIsPreviewLoading(false); });
 		return () => { cancelled = true; };
 	}, [genState, formId, previewVersion]);
@@ -586,12 +500,10 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 		setGenState('generating');
 	};
 
-	// ── Generating state ──────────────────────────────────────────────────────
 	if (genState === 'generating') {
 		return (
 			<PageShell onBack={onBack}>
 				<Flex flex="1" overflow="hidden" sx={{ animation: `${fadeUp} 0.3s ease` }}>
-					{/* Left: progress panel */}
 					<Flex
 						w="480px" flexShrink={0}
 						bg="white" borderRight="1px solid #e2e8f0"
@@ -667,7 +579,6 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 						</Text>
 					</Flex>
 
-					{/* Right: skeleton preview */}
 					<Box flex={1} bg="#f6f6f8" overflowY="auto" p="24px">
 						<Box
 							bg="white" border="1px solid #e2e8f0" borderRadius="16px" overflow="hidden"
@@ -693,9 +604,7 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 		);
 	}
 
-	// ── Generated state ───────────────────────────────────────────────────────
 	if (genState === 'generated') {
-		// Last assistant message (for Redo spinner) and last *successful* one (for the button).
 		let lastAssistantIdx = -1;
 		let useThisFormIdx = -1;
 		messages.forEach((m, i) => {
@@ -733,7 +642,6 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 				</Box>
 			}
 		>
-				{/* Hint tooltip */}
 				{hint.show && (
 					<Box
 						position="fixed"
@@ -763,16 +671,13 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 
 				<Flex flex="1" overflow="hidden" sx={{ animation: `${fadeUp} 0.35s ease` }}>
 
-					{/* Left: chat conversation panel */}
 					<Flex
 						w="480px" flexShrink={0}
 						bg="white" borderRight="1px solid #e2e8f0"
 						direction="column"
 						overflow="hidden"
 					>
-						{/* Conversation area */}
 						<Box flex={1} p="20px" overflowY="auto">
-							{/* Conversation history for the current session */}
 								{messages.map((msg, idx) => {
 									if (msg.role === 'user') {
 										return (
@@ -923,7 +828,6 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 								})}
 							</Box>
 
-						{/* Refine input */}
 						<Box borderTop="1px solid #e2e8f0" p="16px">
 							<Box
 								border="1px solid #e2e8f0"
@@ -1005,13 +909,10 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 						</Box>
 					</Flex>
 
-					{/* Right: form preview panel — flex column so tab bar is always pinned to bottom */}
 					<Box flex={1} bg="#f6f6f8" display="flex" flexDirection="column" overflow="hidden" opacity={isRegenerating ? 0.5 : 1} transition="opacity 0.3s">
 
-					{/* Scrollable area — grows to fill, form card scrolls within it */}
 					<Box flex={1} overflowY="auto" p="24px" pb={multiPartSteps.length > 0 ? '0' : '24px'}>
 
-						{/* Form preview card — bottom radius removed when multi-part tab bar is shown */}
 						<Box
 							bg="white"
 							border="1px solid #e2e8f0"
@@ -1022,7 +923,6 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 							position="relative"
 							transition="border-color 0.3s"
 						>
-							{/* Card header */}
 							<Flex align="center" px="24px" py="16px" borderBottom="1px solid #e2e8f0" justify="space-between">
 								<HStack spacing="10px">
 									<Box
@@ -1053,14 +953,6 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 								)}
 							</Flex>
 
-							{/* Form fields — server-rendered builder-canvas HTML so the preview
-							    matches the builder pixel-for-pixel (locked Pro fields included).
-							    PHP stamps data-part-id="N" (1-based) on every .evf-admin-row.
-							    The <style> below hides all rows except the active part;
-							    the canvasRef useEffect does the same imperatively so both
-							    fire regardless of rendering order. */}
-							{/* Prevent double scrollbar: neutralise the builder's fixed-height
-							    scrollable panel so only the outer preview Box scrolls. */}
 							<style dangerouslySetInnerHTML={{ __html: `
 								.evf-ai-preview-canvas .everest-forms-panel-content {
 									height: auto !important;
@@ -1093,11 +985,8 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 							</Box>
 						</Box>
 
-					</Box>{/* end scrollable inner area */}
+					</Box>
 
-					{/* Multi-part tab bar — natural flex child at bottom of the column,
-					    always visible regardless of scroll. Pixel-perfect match to the
-					    builder's .everest-forms-multi-part-tabs. */}
 					{multiPartSteps.length > 0 && (
 						<Box
 							bg="#fafafa"
@@ -1115,7 +1004,6 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 							flexShrink={0}
 							pointerEvents={isRegenerating || isCreatingForm ? 'none' : 'auto'}
 						>
-								{/* Tab list — matches .everest-forms-tabs ul */}
 								<Box
 									as="ul"
 									display="flex"
@@ -1171,10 +1059,8 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 		);
 	}
 
-	// ── Idle state ───────────────────────────────────────────────────────────
 	return (
 		<PageShell onBack={onBack}>
-			{/* Main content — vertically centered, scrollable */}
 			<Flex
 				flex="1"
 				direction="column"
@@ -1185,7 +1071,6 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 			>
 				<Box width="100%" maxW="896px">
 
-					{/* Title + subtitle */}
 					<VStack spacing="8px" mb="14px" textAlign="center">
 						<Heading
 							as="h1"
@@ -1203,7 +1088,6 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 						</Text>
 					</VStack>
 
-					{/* Textarea card */}
 					<Box
 						borderRadius="16px"
 						border="1px solid #e2e8f0"
@@ -1211,7 +1095,6 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 						boxShadow="0 1px 2px rgba(15,15,15,0.04)"
 						mb="8px"
 					>
-						{/* Input area with sparkles icon */}
 						<Flex align="flex-start" gap="12px" px="20px" pt="20px">
 							<Icon
 								as={BsStars}
@@ -1239,13 +1122,11 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 							/>
 						</Flex>
 
-						{/* Divider */}
 						<Box mx="20px" borderTop="1px solid #f1f5f9" />
 
-						{/* Toolbar — NO mic/media icons, just Generate */}
 						<Flex align="center" justify="flex-end" px="16px" py="12px">
 							{isRateLimited ? (
-								/* Rate-limited: wrap in Popover so hover shows the upgrade hint */
+								
 								<Popover trigger="hover" placement="top" isLazy>
 									<PopoverTrigger>
 										<Box
@@ -1287,7 +1168,7 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 									</PopoverContent>
 								</Popover>
 							) : (
-								/* Normal: standalone button — no Popover wrapper, click is never intercepted */
+								
 								<Box
 									as="button"
 									display="inline-flex"
@@ -1316,7 +1197,6 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 						</Flex>
 					</Box>
 
-					{/* Character count */}
 					<Text
 						textAlign="right"
 						fontSize="11px"
@@ -1328,7 +1208,6 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 						{prompt.length}/{MAX_CHARS}
 					</Text>
 
-					{/* Inspiration section */}
 					<Box>
 						<Flex align="flex-end" justify="space-between" mb="10px">
 							<Heading
@@ -1346,7 +1225,6 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 							</Text>
 						</Flex>
 
-						{/* 2-column grid — NO icons, just title + description */}
 						<SimpleGrid columns={{ base: 1, sm: 2 }} spacing="8px">
 							{INSPIRATION_CARDS.map((card) => (
 								<Box

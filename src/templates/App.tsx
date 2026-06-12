@@ -10,6 +10,14 @@ import {
 import Main from "./components/Main";
 import CreateWithAI from "./components/CreateWithAI";
 
+// The AI view's PageShell is a fixed full-viewport overlay at z-index 100000.
+// Chakra's toast manager renders into a portal on document.body at
+// `zIndex: var(--toast-z-index, 5500)` — well below the overlay — so toasts
+// fired from that screen were painted underneath and never seen. Chakra does
+// NOT bind --toast-z-index to the theme, so the only fix is to set the CSS
+// variable on an ancestor of the portal (the <html> element).
+const TOAST_Z_INDEX = 200001;
+
 const WP_ELEMENTS = [
   '#wpadminbar',
   '#adminmenuwrap',
@@ -62,6 +70,19 @@ const App = () => {
   // preload (0 = fresh "Create with AI").
   const [aiFormId, setAiFormId] = useState(0);
   const [aiTitle, setAiTitle] = useState('');
+
+  // Lift Chakra's toast layer above the AI overlay (PageShell, z-index 100000).
+  // The toast portal mounts on document.body, so the --toast-z-index variable
+  // must live on an ancestor of it — set it on <html> for the App's lifetime.
+  useEffect(() => {
+    const root = document.documentElement;
+    const prev = root.style.getPropertyValue('--toast-z-index');
+    root.style.setProperty('--toast-z-index', String(TOAST_Z_INDEX));
+    return () => {
+      if (prev) root.style.setProperty('--toast-z-index', prev);
+      else root.style.removeProperty('--toast-z-index');
+    };
+  }, []);
 
   useEffect(() => {
     if (currentView === 'ai') {
