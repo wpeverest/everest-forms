@@ -1,15 +1,42 @@
 == Changelog ==
 
-= 3.4.6       - xx-xx-2026
-* Feature - Added option to copy and download logs.
-* Feature - Added layout options including one-column and two-column containers.
-* Enhancement - Improved UI for Integrations and Payments tabs.
-* Enhancement - Added popover to insert fields directly into rows.
-* Enhancement - Revamped form settings design.
-* Enhancement - Performance optimizations.
-* Fix - Email summaries supported only one recipient and lacked test report flexibility issue.
-* Dev - Added Payment Summary field.
-* Dev - Added coupon limits and support for stackable coupons.
+= 3.4.9       - 09-06-2026
+* Feature	  - Shield silentCAPTCHA integration.
+* Enhance	  - Contact Form 7 migration.
+* Fix         - Updated tooltips.
+* Fix 		  - Brevo connection issue.
+* Fix 		  - Form fields icon mis match.
+* Fix 		  - Design issue on integration tab.
+* Fix 		  - Design issue for radio buttons in Survey polls Quiz settings.
+* Fix         - Coupons and frontend listing addon menus do not update dynamically.
+* Added       - Payments overview page inside the payments menu.
+* Added 	  - Upsell on the payments inside the global settings.
+* Added       - Missing the export and print in the free version of analytics page.
+* Added 	  - Showcase conditional logic as a pro feature in field settings panel.
+* Added 	  - Upsell prompt when free users click locked fields in the add fields modal.
+
+= 3.4.8       - 27-05-2026
+* Fix 		  - Validate submitted payment gateway against form settings on the server; AJAX submission uses posted radio values instead of data attributes alone.
+* Dev 		  - Documented `is_new_form` in encoded form data: `true` when a form is created or duplicated (until the first builder save), `false` after save or on import. Add-ons should read it via `evf_decode( $form->post_content )` and treat imported/saved forms as existing configuration, not blank builder forms.
+* Fix 		  - Missing capability check on test email.
+* Fix 		  - Confirmation not showing in first load.
+* Fix 		  - File and image upload not working on WooCommerce product page.
+
+= 3.4.7       - 05-05-2026
+* Fix 		  - Php warning on log.
+
+= 3.4.6       - 29-04-2026
+* Feature 	  - Added option to copy and download logs.
+* Feature 	  - Added layout options including one-column and two-column containers.
+* Enhance	  - Improved UI for Integrations and Payments tabs.
+* Enhance	  - Added popover to insert fields directly into rows.
+* Enhance	  - Revamped form settings design.
+* Enhance	  - Performance optimizations.
+* Dev 		  - Added Payment Summary field.
+* Dev 		  - User id not updating on entry when auto login.
+* Dev 		  - Added coupon limits and support for stackable coupons.
+* Fix         - Email authorization.
+* Fix 		  - Email summaries supported only one recipient and lacked test report flexibility issue.
 
 = 3.4.5       - 16-04-2026
 * Fix 		  - Popup draggable.
@@ -18,8 +45,8 @@
 
 = 3.4.4       - 24-03-2026
 * Refactor    - Everest Forms Global Settings.
-* Enhancement - Form Builder.
-* Enhancement - Email summary.
+* Enhance	  - Form Builder.
+* Enhance	  - Email summary.
 * Fix 		  - Unserialize issue.
 * Fix         - Notice Consistency
 * Fix         - Search on clicking enter.

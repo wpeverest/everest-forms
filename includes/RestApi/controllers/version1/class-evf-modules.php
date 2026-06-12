@@ -191,9 +191,9 @@ class EVF_Modules {
 		$slug = is_array( $request['slug'] ) ? current( $request['slug'] ) : $request['slug'];
 		$type = isset( $request['type'] ) ? $request['type'] : '';
 
-		$slug        = sanitize_key( wp_unslash( $request['name'] ) );
-		$name        = sanitize_text_field( $request['name'] );
-		$plugin_slug = wp_unslash( $request['slug'] ) . '/' . wp_unslash( $request['slug'] ) . '.php'; // phpcs:ignore
+		$slug        = sanitize_text_field( wp_unslash( $slug ) );
+		$name        = sanitize_text_field( wp_unslash( $request['name'] ) );
+		$plugin_slug = $slug . '/' . $slug . '.php';
 		$plugin      = plugin_basename( sanitize_text_field( $plugin_slug ) );
 
 		$status = array();
@@ -218,6 +218,7 @@ class EVF_Modules {
 			return new \WP_REST_Response(
 				array(
 					'success' => true,
+					'slug'    => $slug,
 					'message' => __( 'Module activated successfully', 'everest-forms' ),
 				),
 				200
@@ -435,6 +436,8 @@ class EVF_Modules {
 
 		$status = array();
 
+		$org_slug = sanitize_text_field( wp_unslash( $slug ) );
+
 		if ( 'addon' === $type ) {
 			$slug   = $slug . '/' . $slug . '.php';
 			$status = self::deactivate_addon( $slug );
@@ -454,6 +457,7 @@ class EVF_Modules {
 			return new \WP_REST_Response(
 				array(
 					'success' => true,
+					'slug'    => $org_slug,
 					'message' => esc_html__( 'Module deactivated successfully', 'everest-forms' ),
 				),
 				200

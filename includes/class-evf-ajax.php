@@ -314,6 +314,14 @@ class EVF_AJAX {
 				$data = array_replace_recursive( $data, $new_post_data );
 			}
 		}
+
+		$data = apply_filters( 'everest_forms_builder_save_form_data', $data );
+
+		if ( is_array( $data ) ) {
+			// First builder save: form is no longer "fresh"; add-ons can show full/legacy UI if needed.
+			$data['is_new_form'] = false;
+		}
+
 		// Check for empty meta key.
 		$logger->info(
 			__( 'Check for empty meta key.', 'everest-forms' ),
@@ -547,8 +555,12 @@ class EVF_AJAX {
 			$has_square_credit_card = false;
 
 			foreach ( $form_fields as $field ) {
+				if ( empty( $field['type'] ) ) {
+					continue;
+				}
 				if ( 'square-payment' === $field['type'] ) {
 					$has_square_credit_card = true;
+					break;
 				}
 			}
 
@@ -918,6 +930,13 @@ class EVF_AJAX {
 			);
 		}
 
+		// EVF_Integrations is normally loaded on current_screen (admin page loads only).
+		// During AJAX requests that hook never fires, so integration action hooks are never
+		// registered. Instantiate it here so provider connect handlers are available.
+		if ( ! EVF()->integrations ) {
+			EVF()->integrations = new EVF_Integrations();
+		}
+
 		do_action( 'everest_forms_integration_account_connect_' . ( isset( $_POST['source'] ) ? sanitize_text_field( wp_unslash( $_POST['source'] ) ) : '' ), $_POST );
 	}
 
@@ -1173,6 +1192,10 @@ class EVF_AJAX {
 	 */
 	public static function send_test_email() {
 		try {
+			if ( ! current_user_can( 'manage_options' ) ) {
+				wp_send_json_error( array( 'message' => __( 'Unauthorized.', 'everest-forms' ) ), 401 );
+			}
+
 			check_ajax_referer( 'process-ajax-nonce', 'security' );
 			$from  = esc_attr( get_bloginfo( 'name', 'display' ) );
 			$email = sanitize_email( isset( $_POST['email'] ) ? wp_unslash( $_POST['email'] ) : '' );

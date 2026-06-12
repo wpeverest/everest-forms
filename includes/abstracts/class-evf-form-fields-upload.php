@@ -35,7 +35,7 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 	 */
 	public function init_hooks() {
 		add_action( 'everest_forms_shortcode_scripts', array( $this, 'load_assets' ) );
-		add_filter( 'everest_forms_html_field_value', array( $this, 'html_field_value' ), 10, 4 );
+		add_filter( 'everest_forms_html_field_value', array( $this, 'html_field_value' ), 10, 5 );
 		add_filter( 'everest_forms_plaintext_field_value', array( $this, 'plaintext_field_value' ), 10, 4 );
 		add_filter( 'everest_forms_field_exporter_' . $this->type, array( $this, 'field_exporter' ) );
 		add_filter( 'everest_forms_email_file_attachments', array( $this, 'send_file_as_email_attachment' ), 99, 6 );
@@ -81,7 +81,13 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 			)
 		);
 
-		$form_id     = isset( $atts['id'] ) ? absint( $atts['id'] ) : 0;
+		if ( 'everest_forms_woocommerce_js' === current_action() ) {
+			wp_enqueue_script( 'dropzone' );
+			wp_enqueue_script( 'everest-forms-file-upload' );
+			return;
+		}
+
+		$form_id     = is_array( $atts ) && isset( $atts['id'] ) ? absint( $atts['id'] ) : ( is_numeric( $atts ) ? absint( $atts ) : 0 );
 		$form_fields = evf_get_form_fields( $form_id );
 		$form_data   = EVF()->form->get( $form_id, array( 'content_only' => true ) );
 		$form_fields = isset( $form_data['form_fields'] ) ? $form_data['form_fields'] : array();
@@ -212,7 +218,12 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 		$name         = sanitize_file_name( wp_unslash( $_FILES['file']['name'] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated
 		$extension    = strtolower( pathinfo( $name, PATHINFO_EXTENSION ) );
 		$errors       = $this->ajax_validate( $error, $extension, $path, $name );
-		$name_of_file = isset( $this->field_data['custom_file_name'] ) && ! empty( $this->field_data['custom_file_name'] ) ? sanitize_file_name( $this->field_data['custom_file_name'] ) . '_' . uniqid( '', true ) . '.' . $extension : sanitize_file_name( wp_unslash( $_FILES['file']['name'] ) );  // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated
+		if ( isset( $this->field_data['custom_file_name'] ) && ! empty( $this->field_data['custom_file_name'] ) ) {
+			$custom_file_name = apply_filters( 'everest_forms_process_smart_tags', $this->field_data['custom_file_name'], $this->form_data );
+			$name_of_file     = sanitize_file_name( $custom_file_name ) . '_' . uniqid( '', true ) . '.' . $extension;
+		} else {
+			$name_of_file = sanitize_file_name( wp_unslash( $_FILES['file']['name'] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated
+		}
 
 		if ( count( $errors ) ) {
 			wp_send_json_error( implode( ',', $errors ), 400 );
@@ -605,7 +616,7 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 			array(
 				'slug'    => 'custom_file_name',
 				'value'   => esc_html__( 'Custom File Name', 'everest-forms' ),
-				'tooltip' => esc_html__( 'Enter text to be displayed as file name.', 'everest-forms' ),
+				'tooltip' => esc_html__( 'Enter text to be displayed as file name. Supports smart tags.', 'everest-forms' ),
 			),
 			false
 		);
@@ -618,9 +629,17 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 			),
 			false
 		);
+
+		$smart_tag_toggle  = '<a href="#" class="evf-toggle-smart-tag-display" data-type="all"><span class="dashicons dashicons-editor-code"></span></a>';
+		$smart_tag_toggle .= '<div class="evf-smart-tag-lists" style="display: none">';
+		$smart_tag_toggle .= '<div class="smart-tag-title">' . esc_html__( 'Available Fields', 'everest-forms' ) . '</div><ul class="evf-fields"></ul>';
+		$smart_tag_toggle .= '<div class="smart-tag-title other-tag-title">' . esc_html__( 'Others', 'everest-forms' ) . '</div><ul class="evf-others"></ul>';
+		$smart_tag_toggle .= '</div>';
+
 		$args = array(
 			'slug'    => 'custom_file_name',
-			'content' => $lbl . $fld,
+			'content' => $lbl . $fld . $smart_tag_toggle,
+			'class'   => 'evf_smart_tag',
 		);
 
 		$this->field_element( 'row', $field, $args );
@@ -764,7 +783,7 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 	 * @param  string $context   Value display context.
 	 * @return string $val       Html Value.
 	 */
-	public function html_field_value( $val, $field_val, $form_data = array(), $context = '' ) {
+	public function html_field_value( $val, $field_val, $form_data = array(), $context = '', $field_meta_key = '' ) {
 		$meta_key = '';
 		$entry_id = false;
 		$uploads  = wp_upload_dir();
@@ -830,7 +849,7 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 
 		if ( isset( $_GET['view-entry'] ) && 'entry-single' === $context ) { // phpcs:ignore WordPress.Security.NonceVerification
 			$entry_id = absint( $_GET['view-entry'] ); // phpcs:ignore WordPress.Security.NonceVerification
-			$meta_key = array_search( $val, $form_data, true );
+			$meta_key = ! empty( $field_meta_key ) ? evf_clean( $field_meta_key ) : array_search( $val, $form_data, true );
 		} elseif ( isset( $_GET['edit-entry'], $field_val['meta_key'] ) && 'entry-single' === $context ) { // phpcs:ignore WordPress.Security.NonceVerification
 			$entry_id = absint( $_GET['edit-entry'] ); // phpcs:ignore WordPress.Security.NonceVerification
 			$meta_key = evf_clean( $field_val['meta_key'] );
@@ -860,6 +879,7 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 					foreach ( $field['value_raw'] as $file ) {
 						if ( empty( $file['value'] ) || empty( $file['file_original'] ) ) {
 							$output[ $meta_key ] = '';
+							continue;
 						}
 
 						$file_url      = esc_url( $file['value'] );
@@ -1453,8 +1473,15 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 		}
 
 		// Data for no media case.
-		$file_ext              = pathinfo( $file['name'], PATHINFO_EXTENSION );
-		$file_base             = wp_basename( $file['name'], ".$file_ext" );
+		$file_ext = pathinfo( $file['name'], PATHINFO_EXTENSION );
+
+		if ( ! empty( $this->field_data['custom_file_name'] ) ) {
+			$processed_custom_name = apply_filters( 'everest_forms_process_smart_tags', $this->field_data['custom_file_name'], $this->form_data, evf()->task->form_fields );
+			$file_base             = sanitize_file_name( $processed_custom_name );
+		} else {
+			$file_base = wp_basename( $file['name'], ".$file_ext" );
+		}
+
 		$file['file_name_new'] = apply_filters(
 			'everest_forms_modify_file_name',
 			sprintf('%s-%s.%s', $file_base, wp_hash($dir['path'] . $this->form_data['id'] . $this->field_id), strtolower($file_ext)),
@@ -1834,7 +1861,9 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 			// WordPress upload folder path.
 			$upload_dir = WP_CONTENT_DIR . '/uploads/Everes-Froms-Entries-CSV-file/';
 			if ( ! is_dir( $upload_dir ) ) {
-				mkdir( $upload_dir, 0777, true );
+				mkdir( $upload_dir, 0755, true );
+				file_put_contents( $upload_dir . '.htaccess', "deny from all\n" ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_file_put_contents
+				file_put_contents( $upload_dir . 'index.php', "<?php\n// Silence is golden.\n" ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_file_put_contents
 			}
 			$csv_path = $upload_dir . 'Entry data-' . $get_entry->entry_id . '.csv';
 

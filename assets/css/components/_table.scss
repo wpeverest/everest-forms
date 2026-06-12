@@ -1,4 +1,4 @@
-$evf-primary: #7545bb;
+﻿$evf-primary: #7545bb;
 $evf-primary-hover: #8c5aca;
 $evf-primary-light: #faf8fc;
 $evf-text-primary: #222;
@@ -8,7 +8,8 @@ $evf-border: #e1e1e1;
 $evf-bg-white: #ffffff;
 $evf-bg-light: #f9fafb;
 $evf-bg-hover: #f9fafb;
-$evf-shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1),
+$evf-shadow-sm:
+	0 1px 3px 0 rgba(0, 0, 0, 0.1),
 	0 1px 2px 0 rgba(0, 0, 0, 0.06);
 $evf-shadow-hover: 0 2px 4px rgba(126, 59, 208, 0.04);
 $evf-radius-sm: 4px;
@@ -115,7 +116,7 @@ $status-trash-text: #991b1b;
 	min-height: 40px;
 	margin-top: 28px;
 
-	>.alignleft.actions.bulkactions {
+	> .alignleft.actions.bulkactions {
 		order: 1;
 		display: flex;
 		gap: 10px;
@@ -193,16 +194,16 @@ $status-trash-text: #991b1b;
 		}
 	}
 
-	>.everest-forms-extra-table-nav {
+	> .everest-forms-extra-table-nav {
 		order: 2;
 		margin-left: auto;
 		display: flex;
-		align-items: center;
+		// align-items: center;
 		gap: 10px;
 
 		.select2-container {
 			width: 114px !important;
-			height: 35px !important;
+			height: 38px !important;
 			z-index: 4 !important;
 		}
 
@@ -219,6 +220,8 @@ $status-trash-text: #991b1b;
 			color: #7545bb !important;
 			border-color: #7545bb !important;
 			background-color: #faf8fc !important;
+			min-height: 36px;
+			margin: 2px 0 0;
 		}
 
 		.evf-manage-columns-btn,
@@ -258,7 +261,7 @@ $status-trash-text: #991b1b;
 
 			&:focus {
 				outline: none;
-				box-shadow: 0 0 0 3px rgba($evf-primary, 0.1);
+				border: 1px solid #7545bb;
 			}
 		}
 
@@ -426,9 +429,9 @@ $status-trash-text: #991b1b;
 		}
 
 		&:focus {
-			// outline: none;
-			border-color: 1px solid #7545bb !important;
-			// box-shadow: 0 0 0 3px rgba($evf-primary, 0.1);
+			outline: none;
+			border: 1px solid #7545bb !important;
+			box-shadow: none;
 		}
 
 		&::placeholder {
@@ -561,6 +564,16 @@ $status-trash-text: #991b1b;
 	margin-top: 32px;
 	margin-bottom: 0;
 	margin-top: 30px;
+
+	a {
+		color: inherit;
+		outline: none;
+
+		&:focus {
+			outline: none;
+			box-shadow: none;
+		}
+	}
 	// min-width: 900px;
 
 	thead th.column-more,
@@ -767,13 +780,20 @@ $status-trash-text: #991b1b;
 				}
 			}
 
-			&:hover {
+			&:hover,
+			&.evf-row-hover {
 				// background: $evf-bg-hover;
 				// box-shadow: $evf-shadow-hover;
 
 				.row-actions {
+					position: static !important;
+					left: auto !important;
 					visibility: visible !important;
 					opacity: 1 !important;
+					pointer-events: auto !important;
+					transition:
+						opacity 0.15s ease,
+						visibility 0.15s ease;
 				}
 
 				.column-primary,
@@ -783,7 +803,7 @@ $status-trash-text: #991b1b;
 
 					strong,
 					strong a,
-					>a {
+					> a {
 						color: $evf-primary !important;
 					}
 				}
@@ -899,7 +919,7 @@ $status-trash-text: #991b1b;
 								color: #fbbf24;
 
 								&:hover {
-									// background: #fef3c7;
+									background: none;
 								}
 							}
 						}
@@ -944,25 +964,30 @@ $status-trash-text: #991b1b;
 
 					a {
 						font-weight: 500;
+						color: inherit;
+						outline: none;
 
 						&:hover {
 							color: darken($evf-primary, 10%);
 							text-decoration: underline;
+						}
+
+						&:focus {
+							outline: none;
+							box-shadow: none;
 						}
 					}
 
 					.row-actions {
 						visibility: hidden;
 						opacity: 0;
+						pointer-events: none;
 						margin-top: 4px;
 						display: flex;
-						flex-wrap: wrap;
+						flex-wrap: nowrap;
 						gap: 4px;
 						font-size: 12px;
 						font-weight: 400;
-						transition:
-							opacity 0.2s ease,
-							visibility 0.2s ease;
 						white-space: nowrap;
 						// overflow: hidden;
 
@@ -985,16 +1010,23 @@ $status-trash-text: #991b1b;
 								transition: $evf-transition;
 								white-space: nowrap;
 
-								&:hover {
+								&:hover,
+								&:focus {
 									color: #000;
 									text-decoration: underline;
+									outline: none;
+									box-shadow: none;
 								}
 
 								&.submitdelete {
-									// color: #dc2626;
+									color: #dc2626;
 
-									&:hover {
+									&:hover,
+									&:focus {
 										color: #b91c1c;
+										outline: none;
+										box-shadow: none;
+										border: none;
 									}
 								}
 							}
@@ -1005,6 +1037,21 @@ $status-trash-text: #991b1b;
 								font-weight: 400;
 							}
 						}
+					}
+				}
+
+				&.column-primary:hover,
+				&.column-title:hover,
+				&.entry:hover {
+					.row-actions {
+						position: static !important;
+						left: auto !important;
+						visibility: visible !important;
+						opacity: 1 !important;
+						pointer-events: auto !important;
+						transition:
+							opacity 0.15s ease,
+							visibility 0.15s ease;
 					}
 				}
 
@@ -1022,7 +1069,6 @@ $status-trash-text: #991b1b;
 
 				&.status,
 				&.column-status {
-
 					.badge,
 					.evf-badge {
 						display: inline-flex;
@@ -1090,6 +1136,16 @@ $status-trash-text: #991b1b;
 				&.column-entries {
 					font-weight: 400;
 					color: $evf-text-primary;
+
+					a {
+						color: inherit;
+					}
+				}
+
+				&.column-author {
+					a {
+						color: inherit;
+					}
 				}
 
 				.evf-no-coupons {
@@ -1108,7 +1164,7 @@ $status-trash-text: #991b1b;
 					display: flex;
 					align-items: center;
 
-					input[type="text"] {
+					input[type='text'] {
 						flex: 1;
 						min-height: 36px;
 						padding: 0 8px;
@@ -1164,7 +1220,6 @@ $status-trash-text: #991b1b;
 body.everest-forms_page_evf-email-templates {
 	.everest-forms-table-container {
 		.evf-base-list-table {
-
 			thead th,
 			tbody td {
 				&.column-title {
@@ -1173,6 +1228,10 @@ body.everest-forms_page_evf-email-templates {
 
 				&.column-author {
 					width: 32% !important;
+
+					a {
+						color: inherit;
+					}
 				}
 
 				&.column-date {
@@ -1384,7 +1443,6 @@ body {
 		padding: 16px 0;
 
 		&.top {
-
 			.alignleft,
 			.everest-forms-extra-table-nav {
 				width: 100%;
@@ -1434,7 +1492,6 @@ body {
 	}
 
 	.tablenav-pages .pagination-links {
-
 		.page-numbers,
 		.first-page,
 		.last-page,
@@ -1535,7 +1592,6 @@ body {
 .everest-forms-table-wrapper {
 	position: relative;
 	overflow: visible;
-	padding-bottom: 50px;
 }
 
 // Edit Tags //

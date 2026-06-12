@@ -162,7 +162,7 @@ if ( false !== $entry_index ) {
 								$meta_value = $meta_value['value'];
 							}
 
-							$field_value     = apply_filters( 'everest_forms_html_field_value', $meta_value, $entry_meta[ $meta_key ], $entry_meta, 'entry-single' );
+							$field_value     = apply_filters( 'everest_forms_html_field_value', $meta_value, $entry_meta[ $meta_key ], $entry_meta, 'entry-single', $meta_key );
 							$is_empty        = is_string( $field_value ) && ( '(empty)' === wp_strip_all_tags( $field_value ) || '' === $field_value );
 							$field_class     = $is_empty ? 'evf-field-empty' : '';
 							$correct_answers = false;
@@ -218,7 +218,7 @@ if ( false !== $entry_index ) {
 									$meta_field_type = isset( $field_type_by_meta_key[ $meta_key ] ) ? $field_type_by_meta_key[ $meta_key ] : '';
 									if ( is_string( $field_value ) && in_array( $meta_field_type, $allow_html_types, true ) ) {
 										echo wp_kses_post( $field_value );
-									} elseif ( in_array( $meta_field_type, array( 'file-upload', 'image-upload', 'signature', 'color', 'rating', 'country', 'likert', 'checkbox', 'radio' ), true ) ) {
+									} elseif ( in_array( $meta_field_type, array( 'file-upload', 'image-upload', 'signature', 'color', 'rating', 'country', 'likert', 'checkbox', 'radio', 'payment-checkbox' ), true ) ) {
 										echo nl2br( make_clickable( $field_value ) );
 									} else {
 										// Output plain field value safely.
