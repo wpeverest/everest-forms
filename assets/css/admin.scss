@@ -521,7 +521,6 @@ body.everest-forms_page_evf-settings {
 	}
 
 	&.everest-forms-notice-info {
-		max-width: 650px;
 		padding: 10px 14px;
 		border: 0;
 		border-left: 3px solid #7545bb;
@@ -531,7 +530,6 @@ body.everest-forms_page_evf-settings {
 		display: flex;
 		align-items: center;
 		margin-top: 24px;
-		gap: 12px;
 
 		&::before {
 			// color: $blue;
@@ -985,7 +983,7 @@ body.everest-forms-builder {
 				width: 12px;
 				height: 12px;
 				position: absolute;
-				left: 2px;
+				left: 4px;
 				bottom: 2px;
 				transition: 0.4s;
 				background: $color-white;
@@ -2892,6 +2890,7 @@ p.search-box {
 								height: 18px;
 								fill: #383838;
 								margin-top: 4px;
+								margin-left: 7px;
 							}
 						}
 
