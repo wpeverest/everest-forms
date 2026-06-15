@@ -1,4 +1,4 @@
-=== Everest Forms – Contact Form, Payment Form, Quiz, Survey & Custom Form Builder ===
+=== Everest Forms – Contact Form, Payment Form, Quiz, Survey & Custom Form Builder with AI ===
 Contributors:everestforms,WPEverest
 Tags: contact form, custom form, form builder, forms, survey
 Requires at least: 5.5
@@ -12,7 +12,7 @@ The best WordPress form builder. Create contact forms, payment forms, conversati
 
 == Description ==
 
-**The Best Free WordPress Contact Form Builder**
+**AI form builder for WordPress. Build contact forms, payment forms, quiz, survey & conversational forms with built-in AI or drag & drop builder.**
 
 Build any form you need with a single plugin. Everest Forms combines a drag-and-drop form builder, AI-powered form creator, payment processor, quiz maker, and survey tool with 40+ form fields and unlimited submissions.
 
