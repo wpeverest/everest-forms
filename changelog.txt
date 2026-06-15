@@ -1,6 +1,6 @@
 == Changelog ==
 
-= 3.4.9       - 09-06-2026
+= 3.5.0       -15-06-2026
 * Feature 	  - Create form with AI.
 * Feature	  - Shield silentCAPTCHA integration.
 * Feature	  - Exposed full CRUD abilities for Forms, Entries, Discovery Addons and Analytics via the WP Abilities API.
