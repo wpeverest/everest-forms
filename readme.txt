@@ -14,7 +14,7 @@ The best WordPress form builder. Create contact forms, payment forms, conversati
 
 **AI form builder for WordPress. Build contact forms, payment forms, quiz, survey & conversational forms with built-in AI or drag & drop builder.**
 
-Everest Forms combines a drag-and-drop form builder, AI-powered form creator, payment processor, quiz maker, and survey tool with 40+ form fields and unlimited submissions.
+Everest Forms combines a drag-and-drop form builder, AI-powered form creator, payment processing, quiz builder, and survey tool, along with 40+ form fields and unlimited submissions, all in a single plugin.
 
 Over 100,000+ WordPress websites trust it for everything from simple contact forms to complex applications.
 
