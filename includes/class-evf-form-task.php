@@ -819,11 +819,20 @@ class EVF_Form_Task {
 			do_action( "everest_forms_process_complete_{$form_id}", $this->form_fields, $entry, $this->form_data, $entry_id );
 			do_action( 'everest_forms_process_complete_send_data_to_zapier_app', $this->form_fields, $entry, $this->form_data, $entry_id );
 
-			// Payment gateways update entry meta during process_complete; do not return the success confirmation when payment failed.
-			if ( '1' === $ajax_form_submission && ! empty( $entry_id ) ) {
-				$payment_ajax_fail = $this->get_ajax_response_for_failed_payment_entry( absint( $entry_id ) );
-				if ( is_array( $payment_ajax_fail ) ) {
-					return $payment_ajax_fail;
+			// Payment gateways update entry meta during process_complete; do not show success when payment failed.
+			if ( ! empty( $entry_id ) ) {
+				$payment_fail = $this->get_failed_payment_submission_result( absint( $entry_id ) );
+				if ( is_array( $payment_fail ) ) {
+					if ( '1' === $ajax_form_submission ) {
+						return $payment_fail;
+					}
+
+					if ( function_exists( 'evf_notice_count' ) && 0 === evf_notice_count( 'error' ) ) {
+						evf_add_notice( $payment_fail['message'], 'error' );
+					}
+
+					delete_option( 'everest_forms_overall_feedback_is_called' );
+					return $response_data;
 				}
 			}
 		} catch ( Exception $e ) {
@@ -1088,15 +1097,15 @@ class EVF_Form_Task {
 	}
 
 	/**
-	 * When AJAX submission is used, return an error payload if the entry was recorded as a failed payment.
+	 * Build an error submission result when the entry was recorded as a failed payment.
 	 *
 	 * Gateways hook `everest_forms_process_complete` and call `evf_payment_entries()` after the entry is saved,
 	 * so payment meta is only reliable after those hooks run.
 	 *
 	 * @param int $entry_id Entry ID.
-	 * @return array|null Error response for `do_task` (response => error), or null if not a failed payment entry.
+	 * @return array|null Error payload (response => error), or null if not a failed payment entry.
 	 */
-	private function get_ajax_response_for_failed_payment_entry( $entry_id ) {
+	private function get_failed_payment_submission_result( $entry_id ) {
 		if ( $entry_id <= 0 || ! function_exists( 'evf_get_entry' ) ) {
 			return null;
 		}
