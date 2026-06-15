@@ -430,11 +430,11 @@ class EVF_AJAX {
 					);
 				}
 
-				if ( empty( $field['meta-key'] ) && ! in_array( $field['type'], array( 'html', 'title', 'captcha', 'divider', 'reset', 'recaptcha', 'hcaptcha', 'turnstile', 'payment_summary' ), true ) ) {
-					$empty_meta_data[] = $field['label'];
+				if ( empty( $field['meta-key'] ) && ! in_array( $field['type'], array( 'html', 'title', 'captcha', 'divider', 'reset', 'recaptcha', 'hcaptcha', 'turnstile', 'payment_summary', 'payment-gateway-selector', 'payment-coupon' ), true ) ) {
+					$empty_meta_data[] = ! empty( $field['label'] ) ? $field['label'] : sprintf( /* translators: %s: field id */ esc_html__( 'Field #%s', 'everest-forms' ), isset( $field['id'] ) ? $field['id'] : '' );
 				}
 
-				if ( empty( $field['label'] ) && ! in_array( $field['type'], array( 'html', 'title', 'captcha', 'divider', 'reset', 'recaptcha', 'hcaptcha', 'turnstile', 'payment_summary' ), true ) ) {
+				if ( empty( $field['label'] ) && ! in_array( $field['type'], array( 'html', 'title', 'captcha', 'divider', 'reset', 'recaptcha', 'hcaptcha', 'turnstile', 'payment_summary', 'payment-gateway-selector', 'payment-coupon' ), true ) ) {
 					$empty_field_label[] = $field['id'];
 				}
 

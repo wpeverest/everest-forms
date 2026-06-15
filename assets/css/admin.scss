@@ -14732,3 +14732,10 @@ button#show-settings-link {
 		}
 	}
 }
+
+.evf-payment-gateway-selector-preview-note, .everest-forms-field-option-row-payment_gateway_choice{
+    a{
+        color: #2271b1 !important;
+        text-decoration: underline !important;
+    }
+}

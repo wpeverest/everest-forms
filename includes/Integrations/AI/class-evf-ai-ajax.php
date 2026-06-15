@@ -177,11 +177,21 @@ class EVF_AI_Ajax {
 		// set up / change email notifications, the Settings tab will have changed
 		// regardless of which specific value differed.
 		$email_keywords = array(
-			'send mail', 'send email', 'send an email', 'email notification',
-			'email to admin', 'mail to admin', 'notify admin',
-			'notification email', 'admin notification',
-			'from name', 'send from', 'sender name', 'email from',
-			'email subject', 'mail subject',
+			'send mail',
+			'send email',
+			'send an email',
+			'email notification',
+			'email to admin',
+			'mail to admin',
+			'notify admin',
+			'notification email',
+			'admin notification',
+			'from name',
+			'send from',
+			'sender name',
+			'email from',
+			'email subject',
+			'mail subject',
 		);
 		foreach ( $email_keywords as $kw ) {
 			if ( false !== strpos( $prompt_lower, $kw ) ) {
@@ -193,10 +203,14 @@ class EVF_AI_Ajax {
 		// Redirect keywords: run before/after comparison to confirm the redirect
 		// setting actually changed (avoids triggering reload when AI preserves it).
 		if ( ! $needs_reload ) {
-			$redirect_keywords = array(
-				'redirect', 'external url', 'custom page',
-				'thank you page', 'confirmation page',
-				'after submit', 'after submission',
+			$redirect_keywords   = array(
+				'redirect',
+				'external url',
+				'custom page',
+				'thank you page',
+				'confirmation page',
+				'after submit',
+				'after submission',
 			);
 			$prompt_has_redirect = false;
 			foreach ( $redirect_keywords as $kw ) {
