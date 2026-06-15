@@ -63,8 +63,13 @@ class EVF_Abilities {
 	public static function init() {
 		// Always populate our internal registry — MCP reads from it directly,
 		// which keeps tools/list deterministic regardless of the Abilities API
-		// lifecycle.
-		add_action( 'plugins_loaded', array( __CLASS__, 'self_register' ), 20 );
+		// lifecycle. Registered on `init` (not `plugins_loaded`) because the
+		// ability definitions contain translated labels/descriptions, and
+		// requesting translations before `init` triggers the WordPress 6.7+
+		// "translation loading was triggered too early" notice. Consumers run
+		// later (`wp_abilities_api_init`, `rest_api_init`), so `init` is early
+		// enough.
+		add_action( 'init', array( __CLASS__, 'self_register' ), 20 );
 
 		// Additionally mirror into the WP Abilities API when present, so other
 		// Abilities-aware consumers (e.g. the official REST controller + MCP
