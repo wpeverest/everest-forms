@@ -14,7 +14,7 @@ The best WordPress form builder. Create contact forms, payment forms, conversati
 
 **The Best Free WordPress Contact Form Builder**
 
-Build any form you need with a single plugin. Everest Forms combines a drag-and-drop form builder, payment processor, quiz maker, and survey tool with 40+ form fields and unlimited submissions.
+Build any form you need with a single plugin. Everest Forms combines a drag-and-drop form builder, AI-powered form creator, payment processor, quiz maker, and survey tool with 40+ form fields and unlimited submissions. 
 
 Over 100,000+ WordPress websites trust it for everything from simple contact forms to complex applications.
 
@@ -24,7 +24,7 @@ Everest Forms includes pro-level features like Form Entries, File Uploads, Admin
 
 [youtube https://youtu.be/AvK0KU2ycqc ]
 
-From contact forms to complex applications with Conditional Logic, Payment Processing, and Webhooks, Everest Forms grows alongside your business needs.
+From contact forms to complex applications with Conditional Logic, Payment Processing, and Webhooks, Everest Forms grows alongside your business needs. Now with AI Form Builder, you can describe any form in plain words and have it built for you in seconds — fields, logic, and layout included.
 
 [Explore All Features](https://everestforms.net/features/?utm_source=wporg&utm_medium=all-feature-link&utm_campaign=evf-readme) | [Upgrade to Everest Forms Pro](https://everestforms.net/pricing/?utm_source=wporg&utm_medium=docs-top-link&utm_campaign=evf-readme)
 
@@ -41,11 +41,16 @@ From contact forms to complex applications with Conditional Logic, Payment Proce
 * **Application & Submission Forms** Job application forms, volunteer application forms, membership application forms, proposal submission forms.
 * **Interactive & Engagement Forms** Quiz forms, poll forms, calculator forms, conversational forms, multi-step forms, personality test forms.
 
+Not sure where to start? Use the AI Form Builder — just describe what you need and get a ready-to-use form instantly.
+
 [View Form Templates](https://everestforms.net/form-templates/?utm_source=wporg&utm_medium=all-feature-link&utm_campaign=evf-readme)
 
 ### Why Everest Forms is the Best Choice for WordPress Forms
 
 Building WordPress forms should be simple, powerful, and affordable; Everest Forms delivers on all three.
+
+##AI Form Builder
+Describe your form in plain words — Everest Forms AI will handle the fields, logic, and layout in seconds. Whether it's a freelance contract with a digital signature, a health check-in with range sliders, or a multi-step application — just type it and it's built. Choose from inspiration prompts or write your own, then refine the result with a follow-up prompt before publishing.
 
 ## More Features in Free Version
 
@@ -57,7 +62,7 @@ Create payment forms with Stripe and PayPal, generate PDF submissions for invoic
 
 ## Designed for Speed and Simplicity
 
-Our intuitive drag-and-drop builder lets you create professional forms in under 5 minutes. Choose from 40+ pre-built templates or start from scratch.
+Our intuitive drag-and-drop builder lets you create professional forms in under 5 minutes. Or skip the builder entirely — use the AI Form Builder to describe your form and have it ready in seconds. Choose from 40+ pre-built templates or start from scratch.
 
 ## Enterprise Features at Startup Prices
 
@@ -90,6 +95,7 @@ Get advanced capabilities like multi-step forms, conversational forms, AI-powere
 
 * Unlimited Forms
 * Powerful Form Builder
+* AI Form Builder 
 * 35+ Form Fields
 * Style Customizer
 * Entry Management
