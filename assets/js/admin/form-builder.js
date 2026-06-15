@@ -1690,6 +1690,13 @@
 		init_payment_subscription_plan_field: function () {
 			EVFPanelBuilder.init_subscription_expiry_date_pickers();
 
+			$('.everest-forms-field-payment-subscription-plan').each(function () {
+				var fieldId = $(this).data('field-id');
+				if (fieldId) {
+					EVFPanelBuilder.subscriptionPlanChoiceUpdate(fieldId);
+				}
+			});
+
 			// Tab switching — delegated so it works for dynamically added choices.
 			$(document.body).on(
 				'click',
@@ -3329,7 +3336,7 @@
 					? '<span class="evf-plan-meta">' + metaParts.join(' &middot; ') + '</span>'
 					: '';
 
-				var liHtml = '<span class="evf-plan-wrap">' + mainHtml + metaHtml + '</span>';
+				var liHtml = '<label class="everest-forms-field-label-inline"><span class="evf-plan-wrap">' + mainHtml + metaHtml + '</span></label>';
 
 				var itemClass = isDefault ? 'everest-forms-selected' : '';
 				html += '<li class="' + itemClass + '"><input type="radio" disabled>' + liHtml + '</li>';
