@@ -6447,6 +6447,32 @@
 		},
 		fieldDrop: function (field) {
 			var field_type = field.attr('data-field-type');
+
+			// One-time-draggable fields (e.g. File Upload in the free version) are limited to a
+			// single instance per form. Reject any extra drop of the same field type, including
+			// rapid re-drops fired before the first field finishes loading (AJAX still in flight).
+			var oneTimeDraggableFields = evf_data.form_one_time_draggable_fields || [];
+			var isOneTimeDraggableField =
+				$.inArray(field_type, oneTimeDraggableFields) >= 0;
+			if (isOneTimeDraggableField) {
+				if (
+					$('#everest-forms-add-fields-' + field_type).hasClass(
+						'evf-one-time-draggable-field',
+					)
+				) {
+					field.remove();
+					EVFPanelBuilder.checkEmptyGrid();
+					return false;
+				}
+				// Lock the sidebar field immediately so concurrent drops during the
+				// loading state are blocked by the check above. The draggable itself is
+				// torn down later in the AJAX success handler (oneTimeDraggableField),
+				// once the drop event has fully settled.
+				$('#everest-forms-add-fields-' + field_type).addClass(
+					'evf-one-time-draggable-field',
+				);
+			}
+
 			var invalid_fields = ['payment-total'];
 			if (
 				invalid_fields.includes(field_type) &&
@@ -6503,6 +6529,15 @@
 				},
 				beforeSend: function () {
 					$(document.body).trigger('init_field_options_toggle');
+				},
+				error: function () {
+					// Adding the field failed; remove the loading placeholder and unlock the
+					// sidebar field so a one-time-draggable field can be dragged again.
+					field.remove();
+					if (isOneTimeDraggableField) {
+						EVFPanelBuilder.oneTimeDraggableRemoveField(field_type);
+					}
+					EVFPanelBuilder.checkEmptyGrid();
 				},
 				success: function (response) {
 					var field_preview = response.data.preview,
@@ -6952,6 +6987,11 @@
 				draggedFieldElement.length
 			) {
 				draggedFieldElement.addClass('evf-one-time-draggable-field');
+				// Destroy the jQuery UI draggable so the locked sidebar field can no longer
+				// be dragged onto the canvas (mirrors oneTimeDraggableRemoveField).
+				EVFPanelBuilder.refreshRegisteredSidebarFieldDraggable(
+					draggedFieldElement,
+				);
 			}
 		},
 
