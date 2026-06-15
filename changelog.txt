@@ -5,12 +5,11 @@
 * Feature	  - Shield silentCAPTCHA integration.
 * Feature	  - Exposed full CRUD abilities for Forms, Entries, Discovery Addons and Analytics via the WP Abilities API.
 * Enhance	  - Contact Form 7 migration.
-* Enhance     - Removed legacy Payments header tab and legacy payment fields (Credit Card, Authorize.Net, Square) from the builder for newly created forms; existing forms are unaffected and continue to work.
-* Enhance     - Legacy payment fields will be deprecated in a future release. New forms should use the Payment Gateway field available in Everest Forms Pro.
 * Fix         - Updated tooltips.
 * Fix 		  - Brevo connection issue.
 * Fix 		  - Form fields icon mis match.
 * Fix 		  - Design issue on integration tab.
+* Fix         - Security issue on evf entries table.
 * Fix 		  - Design issue for radio buttons in Survey polls Quiz settings.
 * Fix         - Coupons and frontend listing addon menus do not update dynamically.
 * Added       - Payments overview page inside the payments menu.

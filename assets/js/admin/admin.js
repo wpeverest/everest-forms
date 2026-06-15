@@ -27,7 +27,7 @@
 				'</div>',
 		);
 
-		$toast.find('.evf-toast-content').html(message);
+		$toast.find('.evf-toast-content').text(message);
 		$container.append($toast);
 
 		setTimeout(function () {

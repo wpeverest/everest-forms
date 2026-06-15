@@ -14,7 +14,7 @@ The best WordPress form builder. Create contact forms, payment forms, conversati
 
 **The Best Free WordPress Contact Form Builder**
 
-Build any form you need with a single plugin. Everest Forms combines a drag-and-drop form builder, AI-powered form creator, payment processor, quiz maker, and survey tool with 40+ form fields and unlimited submissions. 
+Build any form you need with a single plugin. Everest Forms combines a drag-and-drop form builder, AI-powered form creator, payment processor, quiz maker, and survey tool with 40+ form fields and unlimited submissions.
 
 Over 100,000+ WordPress websites trust it for everything from simple contact forms to complex applications.
 
@@ -95,7 +95,7 @@ Get advanced capabilities like multi-step forms, conversational forms, AI-powere
 
 * Unlimited Forms
 * Powerful Form Builder
-* AI Form Builder 
+* AI Form Builder
 * 35+ Form Fields
 * Style Customizer
 * Entry Management
@@ -354,6 +354,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 * Fix 		  - Brevo connection issue.
 * Fix 		  - Form fields icon mis match.
 * Fix 		  - Design issue on integration tab.
+* Fix         - Security issue on evf entries table.
 * Fix 		  - Design issue for radio buttons in Survey polls Quiz settings.
 * Fix         - Coupons and frontend listing addon menus do not update dynamically.
 * Added       - Payments overview page inside the payments menu.
