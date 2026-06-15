@@ -10386,6 +10386,33 @@ img.ui-datepicker-trigger {
 	}
 }
 
+#everest-forms-builder {
+	.everest-forms-panel-field-radio {
+		.row {
+			input[type='radio'] {
+				position: relative;
+
+				&:checked {
+					border-color: #7545bb;
+
+					&::before {
+						content: '';
+						position: absolute;
+						inset: 0;
+						margin: auto;
+						display: block;
+						border-radius: 50%;
+						width: 0.5rem;
+						height: 0.5rem;
+						background-color: #7545bb;
+						border: none;
+					}
+				}
+			}
+		}
+	}
+}
+
 .evf-survey-choices {
 	&[data-choice-type='drop_down_choices'] {
 		input[type='text'] {

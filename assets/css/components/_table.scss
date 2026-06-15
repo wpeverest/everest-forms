@@ -984,11 +984,10 @@ $status-trash-text: #991b1b;
 						pointer-events: none;
 						margin-top: 4px;
 						display: flex;
-						flex-wrap: nowrap;
+						flex-wrap: wrap;
 						gap: 4px;
 						font-size: 12px;
 						font-weight: 400;
-						white-space: nowrap;
 						// overflow: hidden;
 
 						span {
