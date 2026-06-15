@@ -104,6 +104,10 @@ const BuilderAIChat: React.FC = () => {
 	// in multi-part mode (where the customizer moves up to 62px). Falls back to
 	// null when the addon is not active — AI button then sits at bottom: 22px.
 	const [customizerBottom, setCustomizerBottom] = useState<number | null>(null);
+	// Show the assistant only on the Builder (Fields) tab — mirror the Style
+	// Customizer button, which lives inside the Fields panel and is hidden when
+	// other tabs (Settings, Integrations, …) are active.
+	const [onBuilderTab, setOnBuilderTab] = useState(true);
 	const messagesEndRef = useRef<HTMLDivElement>(null);
 	const inputRef       = useRef<HTMLTextAreaElement>(null);
 
@@ -124,6 +128,23 @@ const BuilderAIChat: React.FC = () => {
 		if (builder) observer.observe(builder, { attributes: true, attributeFilter: ['class'] });
 		return () => observer.disconnect();
 	}, []);
+
+	// Track the active builder tab. Switching tabs toggles the `active` class on
+	// the Fields panel; we only render the assistant while that panel is active.
+	useEffect(() => {
+		const panel = document.getElementById('everest-forms-panel-fields');
+		const read = () => setOnBuilderTab(panel ? panel.classList.contains('active') : true);
+		read();
+		if (!panel) return;
+		const observer = new MutationObserver(read);
+		observer.observe(panel, { attributes: true, attributeFilter: ['class'] });
+		return () => observer.disconnect();
+	}, []);
+
+	// Close the chat panel when navigating away from the Builder tab.
+	useEffect(() => {
+		if (!onBuilderTab) setOpen(false);
+	}, [onBuilderTab]);
 
 	// Auto-scroll to latest message.
 	useEffect(() => {
@@ -229,6 +250,9 @@ const BuilderAIChat: React.FC = () => {
 	const MODAL_BOTTOM = BTN_BOTTOM + BTN_SIZE + 8;
 
 	// ── Render ──────────────────────────────────────────────────────────────
+
+	// Hidden outside the Builder (Fields) tab.
+	if (!onBuilderTab) return null;
 
 	return (
 		<>
