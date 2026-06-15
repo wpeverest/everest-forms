@@ -574,9 +574,6 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 							</VStack>
 						</Box>
 
-						<Text fontSize="12px" color="#c0c0cc" margin="0" textAlign="center" noOfLines={1} isTruncated width="100%">
-							"{prompt}"
-						</Text>
 					</Flex>
 
 					<Box flex={1} bg="#f6f6f8" overflowY="auto" p="24px">
@@ -1126,7 +1123,7 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 
 						<Flex align="center" justify="flex-end" px="16px" py="12px">
 							{isRateLimited ? (
-								
+
 								<Popover trigger="hover" placement="top" isLazy>
 									<PopoverTrigger>
 										<Box
@@ -1168,7 +1165,7 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({ onBack, initialFormId, init
 									</PopoverContent>
 								</Popover>
 							) : (
-								
+
 								<Box
 									as="button"
 									display="inline-flex"
