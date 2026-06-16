@@ -1027,7 +1027,12 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 		);
 
 		foreach ( $timezones as $timezone ) {
-			$dtz    = new DateTimeZone( $timezone );
+			try {
+				$dtz = new DateTimeZone( $timezone );
+			} catch ( Exception $e ) {
+				// Skip identifiers that the system timezone database does not recognize.
+				continue;
+			}
 			$offset = $dtz->getOffset( new DateTime( 'now', $utc_timezone ) );
 
 			$offset_hours   = abs( intval( $offset / 3600 ) );

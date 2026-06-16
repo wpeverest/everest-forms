@@ -53,6 +53,7 @@ class EVF_Forms_Features {
 			'EVF_Field_Payment_Subscription_Plan',
 			'EVF_Field_Credit_Card',
 			'EVF_Field_Payment_Gateway_Selector',
+			'EVF_Field_Payment_Coupon',
 			'EVF_Field_Payment_Authorize_Net',
 			'EVF_Field_Rating',
 			'EVF_Field_Likert',
@@ -71,8 +72,7 @@ class EVF_Forms_Features {
 		$enabled_features = get_option( 'everest_forms_enabled_features', array() );
 
 		$feature_map = array(
-			'everest-forms-coupons' => 'EVF_Field_Payment_Coupon',
-			'everest-forms-square'  => 'EVF_Field_Payment_Square',
+			'everest-forms-square' => 'EVF_Field_Payment_Square',
 		);
 
 		foreach ( $feature_map as $feature => $class ) {

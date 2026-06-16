@@ -8,11 +8,11 @@ Stable tag: 3.5.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-The best WordPress form builder. Create contact forms, payment forms, conversational forms, custom forms, surveys, & quizzes using drag and drop.
+AI form builder for WordPress. Build contact forms, payment forms, quiz, survey & conversational forms with built-in AI or drag & drop builder.
 
 == Description ==
 
-**AI form builder for WordPress. Build contact forms, payment forms, quiz, survey & conversational forms with built-in AI or drag & drop builder.**
+AI form builder for WordPress. Build contact forms, payment forms, quiz, survey & conversational forms with built-in AI or drag & drop builder.
 
 Everest Forms combines a drag-and-drop form builder, AI-powered form creator, payment processing, quiz builder, and survey tool, along with 40+ form fields and unlimited submissions, all in a single plugin.
 

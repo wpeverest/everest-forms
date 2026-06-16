@@ -858,8 +858,14 @@ const TemplateList: React.FC<TemplateListProps> = ({
 									fontSize="14px"
 									fontWeight="500"
 									disabled={!AI_ENABLED}
-									title={AI_ENABLED ? undefined : __('Not available on local sites', 'everest-forms')}
-									cursor={!AI_ENABLED || aiCreatingSlug ? 'not-allowed' : 'pointer'}
+									title={
+										AI_ENABLED
+											? undefined
+											: __('Not available on local sites', 'everest-forms')
+									}
+									cursor={
+										!AI_ENABLED || aiCreatingSlug ? 'not-allowed' : 'pointer'
+									}
 									opacity={!AI_ENABLED ? 0.6 : aiCreatingSlug ? 0.7 : 1}
 									onClick={() => {
 										if (AI_ENABLED && !aiCreatingSlug && previewTemplate)
