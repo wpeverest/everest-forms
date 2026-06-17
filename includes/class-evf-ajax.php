@@ -141,7 +141,7 @@ class EVF_AJAX {
 			'form_preview_save'               => false,
 			'delete_form_tags'                => false,
 			'update_tags_in_bulk'             => false,
-			'save_clean_talk_settings'        => true,
+			'save_clean_talk_settings'        => false,
 			'get_form_update_nonce'           => true,
 		);
 
@@ -180,7 +180,8 @@ class EVF_AJAX {
 
 		if ( isset( $_POST['fields'] ) ) {
 			$fields_data = array();
-			for ( $i = 0; $i < $_POST['fields']; $i++ ) {
+			$field_count = min( 50, max( 1, absint( $_POST['fields'] ) ) );
+			for ( $i = 0; $i < $field_count; $i++ ) {
 				$field_key      = evf()->form->field_unique_key( $form_id );
 				$field_id_array = explode( '-', $field_key );
 				$new_field_id   = ( $field_id_array[ count( $field_id_array ) - 1 ] + 1 );
@@ -679,7 +680,7 @@ class EVF_AJAX {
 	 * Ajax handler for form submission.
 	 */
 	public static function ajax_form_submission() {
-		// check_ajax_referer( 'everest_forms_ajax_form_submission', 'security' );
+		check_ajax_referer( 'everest_forms_ajax_form_submission', 'security' );
 
 		if ( ! empty( $_POST['everest_forms']['id'] ) ) {
 			$process = evf()->task->ajax_form_submission( evf_sanitize_entry( wp_unslash( $_POST['everest_forms'] ) ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
@@ -696,6 +697,14 @@ class EVF_AJAX {
 	 */
 	public static function template_activate_addon() {
 		check_ajax_referer( 'everest_forms_template_licence_check', 'security' );
+		if ( ! current_user_can( 'activate_plugins' ) ) {
+			wp_send_json_error(
+				array(
+					'errorCode'    => 'insufficient_permission',
+					'errorMessage' => esc_html__( 'You do not have permission to activate plugins.', 'everest-forms' ),
+				)
+			);
+		}
 
 		if ( empty( $_POST['addon'] ) ) {
 			wp_send_json_error(
@@ -727,6 +736,14 @@ class EVF_AJAX {
 	 */
 	public static function template_licence_check() {
 		check_ajax_referer( 'everest_forms_template_licence_check', 'security' );
+		if ( ! current_user_can( 'manage_everest_forms' ) ) {
+			wp_send_json_error(
+				array(
+					'errorCode'    => 'insufficient_permission',
+					'errorMessage' => esc_html__( 'You do not have permission to perform this action.', 'everest-forms' ),
+				)
+			);
+		}
 
 		if ( empty( $_POST['plan'] ) ) {
 			wp_send_json_error(
@@ -739,11 +756,13 @@ class EVF_AJAX {
 		}
 
 		$addons        = array();
+		$slug          = isset( $_POST['slug'] ) ? sanitize_key( wp_unslash( $_POST['slug'] ) ) : '';
+		$plan          = isset( $_POST['plan'] ) ? sanitize_text_field( wp_unslash( $_POST['plan'] ) ) : '';
 		$template_data = EVF_Admin_Form_Templates::get_template_data();
 		$template_data = is_array( $template_data ) ? $template_data : array();
 		if ( ! empty( $template_data ) ) {
 			foreach ( $template_data as $template ) {
-				if ( isset( $_POST['slug'] ) && $template->slug === $_POST['slug'] && in_array( trim( $_POST['plan'] ), $template->plan, true ) ) {
+				if ( $template->slug === $slug && in_array( trim( $plan ), $template->plan, true ) ) {
 					$addons = $template->addons;
 				}
 			}
@@ -1018,12 +1037,15 @@ class EVF_AJAX {
 			);
 		}
 
-		do_action( 'everest_forms_integration_account_disconnect_' . ( isset( $_POST['source'] ) ? sanitize_text_field( wp_unslash( $_POST['source'] ) ) : '' ), $_POST );
+		$source = isset( $_POST['source'] ) ? sanitize_key( wp_unslash( $_POST['source'] ) ) : '';
+		$key    = isset( $_POST['key'] ) ? sanitize_key( wp_unslash( $_POST['key'] ) ) : '';
+
+		do_action( 'everest_forms_integration_account_disconnect_' . $source, $_POST );
 
 		$connected_accounts = get_option( 'everest_forms_integrations', false );
 
-		if ( ! empty( $connected_accounts[ $_POST['source'] ][ $_POST['key'] ] ) ) {
-			unset( $connected_accounts[ $_POST['source'] ][ $_POST['key'] ] );
+		if ( ! empty( $connected_accounts[ $source ][ $key ] ) ) {
+			unset( $connected_accounts[ $source ][ $key ] );
 			update_option( 'everest_forms_integrations', $connected_accounts );
 			wp_send_json_success( array( 'remove' => true ) );
 		} else {
@@ -1177,6 +1199,14 @@ class EVF_AJAX {
 	public static function import_form_action() {
 		try {
 			check_ajax_referer( 'process-import-ajax-nonce', 'security' );
+			if ( ! current_user_can( 'everest_forms_create_forms' ) ) {
+				wp_send_json_error(
+					array(
+						'message' => esc_html__( 'You do not have permission to import forms.', 'everest-forms' ),
+					),
+					403
+				);
+			}
 			EVF_Admin_Import_Export::import_forms();
 		} catch ( Exception $e ) {
 			wp_send_json_error(
@@ -1404,6 +1434,14 @@ class EVF_AJAX {
 	public static function active_addons() {
 		try {
 			check_ajax_referer( 'evf_active_nonce', 'security' );
+			if ( ! current_user_can( 'activate_plugins' ) ) {
+				wp_send_json_error(
+					array(
+						'message' => __( 'You do not have permission to activate plugins.', 'everest-forms' ),
+					),
+					403
+				);
+			}
 			$plugin   = isset( $_POST['plugin_file'] ) ? sanitize_text_field( wp_unslash( $_POST['plugin_file'] ) ) : '';
 			$activate = activate_plugin( $plugin );
 			if ( is_wp_error( $activate ) ) {
@@ -1435,14 +1473,24 @@ class EVF_AJAX {
 	 * @since 2.0.8
 	 */
 	public static function get_local_font_url() {
-		$font_url = isset( $_POST['font_url'] ) ? sanitize_text_field( wp_unslash( $_POST['font_url'] ) ) : ''; //phpcs:ignore WordPress.Security.NonceVerification
-
-		$allowed_urls = array(
-			'https://fonts.googleapis.com',
-		);
-
-		if ( ! in_array( $font_url, $allowed_urls ) ) {
-			return;
+		check_ajax_referer( 'evf_active_nonce', 'security' );
+		if ( ! current_user_can( 'manage_everest_forms' ) ) {
+			wp_send_json_error(
+				array(
+					'message' => __( 'You do not have permission to fetch local font URL.', 'everest-forms' ),
+				),
+				403
+			);
+		}
+		$font_url = isset( $_POST['font_url'] ) ? esc_url_raw( wp_unslash( $_POST['font_url'] ) ) : '';
+		$host     = wp_parse_url( $font_url, PHP_URL_HOST );
+		if ( 'fonts.googleapis.com' !== $host ) {
+			wp_send_json_error(
+				array(
+					'message' => __( 'Invalid font URL.', 'everest-forms' ),
+				),
+				400
+			);
 		}
 
 		if ( str_contains( $font_url, 'https://fonts.googleapis.com' ) ) {

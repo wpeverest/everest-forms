@@ -28,6 +28,45 @@ class EVF_Modules {
 	protected $rest_base = 'modules';
 
 	/**
+	 * Shared REST args for single-module POST routes.
+	 *
+	 * @return array
+	 */
+	private function get_single_module_route_args() {
+		return array(
+			'slug' => array(
+				'required'          => true,
+				'type'              => 'string',
+				'sanitize_callback' => 'sanitize_text_field',
+			),
+			'name' => array(
+				'required'          => false,
+				'type'              => 'string',
+				'sanitize_callback' => 'sanitize_text_field',
+			),
+			'type' => array(
+				'required'          => false,
+				'type'              => 'string',
+				'sanitize_callback' => 'sanitize_text_field',
+			),
+		);
+	}
+
+	/**
+	 * Shared REST args for bulk-module POST routes.
+	 *
+	 * @return array
+	 */
+	private function get_bulk_module_route_args() {
+		return array(
+			'moduleData' => array(
+				'required' => true,
+				'type'     => 'object',
+			),
+		);
+	}
+
+	/**
 	 * Register routes.
 	 *
 	 * @since 3.0.0
@@ -41,7 +80,7 @@ class EVF_Modules {
 			array(
 				'methods'             => 'GET',
 				'callback'            => array( __CLASS__, 'get_modules' ),
-				'permission_callback' => array( __CLASS__, 'check_admin_plugin_activation_permissions' ),
+				'permission_callback' => array( __CLASS__, 'check_admin_plugin_read_permissions' ),
 			)
 		);
 		register_rest_route(
@@ -51,6 +90,7 @@ class EVF_Modules {
 				'methods'             => 'POST',
 				'callback'            => array( __CLASS__, 'activate_module' ),
 				'permission_callback' => array( __CLASS__, 'check_admin_plugin_activation_permissions' ),
+				'args'                => $this->get_single_module_route_args(),
 			)
 		);
 		register_rest_route(
@@ -60,6 +100,7 @@ class EVF_Modules {
 				'methods'             => 'POST',
 				'callback'            => array( __CLASS__, 'deactivate_module' ),
 				'permission_callback' => array( __CLASS__, 'check_admin_plugin_activation_permissions' ),
+				'args'                => $this->get_single_module_route_args(),
 			)
 		);
 
@@ -70,6 +111,7 @@ class EVF_Modules {
 				'methods'             => 'POST',
 				'callback'            => array( __CLASS__, 'bulk_activate_modules' ),
 				'permission_callback' => array( __CLASS__, 'check_admin_plugin_activation_permissions' ),
+				'args'                => $this->get_bulk_module_route_args(),
 			)
 		);
 		register_rest_route(
@@ -79,6 +121,7 @@ class EVF_Modules {
 				'methods'             => 'POST',
 				'callback'            => array( __CLASS__, 'bulk_deactivate_modules' ),
 				'permission_callback' => array( __CLASS__, 'check_admin_plugin_activation_permissions' ),
+				'args'                => $this->get_bulk_module_route_args(),
 			)
 		);
 		register_rest_route(
@@ -87,7 +130,14 @@ class EVF_Modules {
 			array(
 				'methods'             => 'POST',
 				'callback'            => array( __CLASS__, 'activate_license' ),
-				'permission_callback' => array( __CLASS__, 'check_admin_plugin_activation_permissions' ),
+				'permission_callback' => array( __CLASS__, 'check_admin_plugin_installation_permissions' ),
+				'args'                => array(
+					'licenseActivationKey' => array(
+						'required'          => true,
+						'type'              => 'string',
+						'sanitize_callback' => 'sanitize_text_field',
+					),
+				),
 			)
 		);
 	}
@@ -727,7 +777,17 @@ class EVF_Modules {
 	 * @return WP_Error|bool
 	 */
 	public static function check_admin_plugin_activation_permissions( $request ) {
-		return current_user_can( 'activate_plugin' ) || current_user_can( 'manage_everest_forms' );
+		return current_user_can( 'activate_plugins' );
+	}
+
+	/**
+	 * Check if a given request has access to read modules.
+	 *
+	 * @param WP_REST_Request $request Full data about the request.
+	 * @return WP_Error|bool
+	 */
+	public static function check_admin_plugin_read_permissions( $request ) {
+		return current_user_can( 'manage_everest_forms' );
 	}
 
 	/**
@@ -737,7 +797,7 @@ class EVF_Modules {
 	 * @return WP_Error|bool
 	 */
 	public static function check_admin_plugin_installation_permissions( $request ) {
-		return current_user_can( 'install_plugins' ) && current_user_can( 'activate_plugin' );
+		return current_user_can( 'install_plugins' ) && current_user_can( 'activate_plugins' );
 	}
 
 	/**

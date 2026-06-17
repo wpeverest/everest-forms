@@ -233,7 +233,7 @@ class EVF_Admin_Entries {
 		if ( isset( $_GET['trash'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 			$entry_id = absint( $_GET['trash'] ); // phpcs:ignore WordPress.Security.NonceVerification
 
-			if ( $entry_id ) {
+			if ( $entry_id && current_user_can( 'everest_forms_delete_entry', $entry_id ) ) {
 				self::update_status( $entry_id, 'trash' );
 			}
 		}
@@ -262,7 +262,7 @@ class EVF_Admin_Entries {
 		if ( isset( $_GET['untrash'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 			$entry_id = absint( $_GET['untrash'] ); // phpcs:ignore WordPress.Security.NonceVerification
 
-			if ( $entry_id ) {
+			if ( $entry_id && current_user_can( 'everest_forms_edit_entry', $entry_id ) ) {
 				self::update_status( $entry_id, 'publish' );
 			}
 		}
@@ -292,7 +292,7 @@ class EVF_Admin_Entries {
 		if ( isset( $_GET['delete'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 			$entry_id = absint( $_GET['delete'] ); // phpcs:ignore WordPress.Security.NonceVerification
 
-			if ( $entry_id ) {
+			if ( $entry_id && current_user_can( 'everest_forms_delete_entry', $entry_id ) ) {
 				self::remove_entry( $entry_id, $form_id );
 			}
 		}
@@ -376,6 +376,10 @@ class EVF_Admin_Entries {
 	public static function remove_entry( $entry_id, $form_id = 0 ) {
 		global $wpdb;
 
+		if ( ! current_user_can( 'everest_forms_delete_entry', $entry_id ) ) {
+			return false;
+		}
+
 		do_action( 'everest_forms_before_delete_entries', $entry_id );
 
 		$delete = $wpdb->delete( $wpdb->prefix . 'evf_entries', array( 'entry_id' => $entry_id ), array( '%d' ) );
@@ -397,6 +401,10 @@ class EVF_Admin_Entries {
 	 */
 	public static function update_status( $entry_id, $status = 'publish' ) {
 		global $wpdb;
+
+		if ( ! self::user_can_update_entry_status( $entry_id, $status ) ) {
+			return false;
+		}
 
 		$update         = false;
 		$is_bulk_action = isset( $_GET['bulk_action'] ) && 'Apply' == $_GET['bulk_action'] ? true : false; // phpcs:ignore WordPress.Security.NonceVerification
@@ -586,6 +594,29 @@ class EVF_Admin_Entries {
 		}
 
 		return $update;
+	}
+
+	/**
+	 * Check whether the current user may change an entry to the given status.
+	 *
+	 * @param int    $entry_id Entry ID.
+	 * @param string $status   Target status.
+	 * @return bool
+	 */
+	private static function user_can_update_entry_status( $entry_id, $status ) {
+		if ( in_array( $status, array( 'trash' ), true ) ) {
+			return current_user_can( 'everest_forms_delete_entry', $entry_id );
+		}
+
+		if ( in_array( $status, array( 'spam', 'unspam', 'approved', 'denied', 'publish' ), true ) ) {
+			return current_user_can( 'everest_forms_edit_entry', $entry_id );
+		}
+
+		if ( in_array( $status, array( 'star', 'unstar', 'read', 'unread' ), true ) ) {
+			return current_user_can( 'everest_forms_view_entry', $entry_id );
+		}
+
+		return current_user_can( 'everest_forms_edit_entry', $entry_id );
 	}
 
 	/**

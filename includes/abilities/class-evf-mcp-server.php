@@ -40,6 +40,9 @@ class EVF_MCP_Server {
 		if ( ! is_user_logged_in() ) {
 			return new WP_Error( 'evf_mcp_unauthorized', 'Authentication required.', array( 'status' => 401 ) );
 		}
+		if ( ! current_user_can( 'manage_everest_forms' ) ) {
+			return new WP_Error( 'evf_mcp_forbidden', 'You do not have permission to access this endpoint.', array( 'status' => 403 ) );
+		}
 		return true;
 	}
 

@@ -52,6 +52,18 @@ class Everest_Forms_Template_Section_Data {
 				'methods'             => 'POST',
 				'callback'            => array( $this, 'create_templates' ),
 				'permission_callback' => array( $this, 'check_admin_permissions' ),
+				'args'                => array(
+					'title' => array(
+						'required'          => true,
+						'type'              => 'string',
+						'sanitize_callback' => 'sanitize_text_field',
+					),
+					'slug'  => array(
+						'required'          => true,
+						'type'              => 'string',
+						'sanitize_callback' => 'sanitize_text_field',
+					),
+				),
 			)
 		);
 
@@ -67,6 +79,17 @@ class Everest_Forms_Template_Section_Data {
 				'methods'             => 'POST',
 				'callback'            => array( $this, 'create_from_ai' ),
 				'permission_callback' => array( $this, 'check_admin_permissions' ),
+				'args'                => array(
+					'title'  => array(
+						'required'          => true,
+						'type'              => 'string',
+						'sanitize_callback' => 'sanitize_text_field',
+					),
+					'fields' => array(
+						'required' => false,
+						'type'     => 'array',
+					),
+				),
 			)
 		);
 		// Render a pixel-perfect builder-canvas preview of an AI form schema.
@@ -79,6 +102,22 @@ class Everest_Forms_Template_Section_Data {
 				'methods'             => 'POST',
 				'callback'            => array( $this, 'get_ai_preview' ),
 				'permission_callback' => array( $this, 'check_admin_permissions' ),
+				'args'                => array(
+					'form_id' => array(
+						'required'          => false,
+						'type'              => 'integer',
+						'sanitize_callback' => 'absint',
+					),
+					'title'   => array(
+						'required'          => false,
+						'type'              => 'string',
+						'sanitize_callback' => 'sanitize_text_field',
+					),
+					'fields'  => array(
+						'required' => false,
+						'type'     => 'array',
+					),
+				),
 			)
 		);
 		// END TODO: REMOVE
@@ -90,6 +129,19 @@ class Everest_Forms_Template_Section_Data {
 				'methods'             => 'POST',
 				'callback'            => array( $this, 'handle_favorite_action' ),
 				'permission_callback' => array( $this, 'check_admin_permissions' ),
+				'args'                => array(
+					'action' => array(
+						'required'          => true,
+						'type'              => 'string',
+						'enum'              => array( 'add_favorite', 'remove_favorite' ),
+						'sanitize_callback' => 'sanitize_text_field',
+					),
+					'slug'   => array(
+						'required'          => true,
+						'type'              => 'string',
+						'sanitize_callback' => 'sanitize_text_field',
+					),
+				),
 			)
 		);
 

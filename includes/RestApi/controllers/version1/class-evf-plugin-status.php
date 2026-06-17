@@ -53,6 +53,12 @@ class Everest_Forms_Plugin_Status {
 				'methods'             => 'POST',
 				'callback'            => array( $this, 'plugin_activate' ),
 				'permission_callback' => array( $this, 'check_admin_permissions' ),
+				'args'                => array(
+					'moduleData' => array(
+						'required' => true,
+						'type'     => 'array',
+					),
+				),
 			)
 		);
 		register_rest_route(
@@ -62,6 +68,12 @@ class Everest_Forms_Plugin_Status {
 				'methods'             => 'POST',
 				'callback'            => array( $this, 'plugin_upgrade' ),
 				'permission_callback' => array( $this, 'check_admin_permissions' ),
+				'args'                => array(
+					'requiredPlugins' => array(
+						'required' => true,
+						'type'     => 'array',
+					),
+				),
 			)
 		);
 	}

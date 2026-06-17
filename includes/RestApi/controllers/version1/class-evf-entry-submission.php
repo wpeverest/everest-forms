@@ -45,6 +45,17 @@ class EVF_Entry_Submission {
 				'methods'             => 'POST',
 				'callback'            => array( $this, 'save_entry' ),
 				'permission_callback' => array( $this, 'check_permissions' ),
+				'args'                => array(
+					'id'          => array(
+						'required'          => true,
+						'type'              => 'integer',
+						'sanitize_callback' => 'absint',
+					),
+					'form_fields' => array(
+						'required' => true,
+						'type'     => 'object',
+					),
+				),
 			)
 		);
 	}
