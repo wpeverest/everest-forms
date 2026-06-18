@@ -143,7 +143,7 @@ const CreateFormCTA: React.FC<CreateFormCTAProps> = ({
 							<Icon as={FiArrowRight} boxSize="4" />
 						</>
 					) : (
-						<Text margin="0">{__('Not available on local sites', 'everest-forms')}</Text>
+						<Text margin="0">{__('AI service is currently unavailable for local and staging site.', 'everest-forms')}</Text>
 					)}
 				</HStack>
 			</Box>
