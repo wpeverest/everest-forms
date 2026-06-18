@@ -33,6 +33,9 @@ class EVF_AI_API {
 			return new WP_Error( 'not_registered', __( 'AI features are not yet active on this site.', 'everest-forms' ) );
 		}
 
+		$logger = evf_get_logger();
+		$logger->info( sprintf( 'AI Form Generation started | prompt: %s', $prompt ), array( 'source' => 'evf-ai' ) );
+
 		// Send license key if EVF Pro is active — gateway verifies inline (WPForms pattern).
 		// If no license key, gateway treats site as free tier.
 		$license_key = self::get_license_key();
@@ -49,12 +52,19 @@ class EVF_AI_API {
 		);
 
 		if ( is_wp_error( $response ) ) {
+			$logger->error( sprintf( 'AI Form Generation failed | %s: %s', $response->get_error_code(), $response->get_error_message() ), array( 'source' => 'evf-ai' ) );
 			return $response;
 		}
 
 		if ( empty( $response['success'] ) || empty( $response['form'] ) ) {
+			$logger->error( 'AI Form Generation bad_response | missing success or form key', array( 'source' => 'evf-ai' ) );
 			return new WP_Error( 'bad_response', __( 'Unexpected response from AI service.', 'everest-forms' ) );
 		}
+
+		$logger->info(
+			sprintf( 'AI Form Generation succeeded | form_type: %s, fields: %d', $response['form']['form_type'] ?? 'standard', count( $response['form']['fields'] ?? array() ) ),
+			array( 'source' => 'evf-ai' )
+		);
 
 		return $response['form'];
 	}
@@ -76,6 +86,12 @@ class EVF_AI_API {
 			return new WP_Error( 'not_registered', __( 'AI features are not yet active on this site.', 'everest-forms' ) );
 		}
 
+		$logger = evf_get_logger();
+		$logger->info(
+			sprintf( 'AI Form Update started | form_id: %d, prompt: %s, refine_prompt: %s', $form_id, $prompt, $refine_prompt ),
+			array( 'source' => 'evf-ai' )
+		);
+
 		$body = array(
 			'prompt'        => $prompt,
 			'refine_prompt' => $refine_prompt,
@@ -90,6 +106,7 @@ class EVF_AI_API {
 		if ( is_wp_error( $response ) && 'api_error' === $response->get_error_code()
 			&& false !== strpos( $response->get_error_message(), 'Invalid token' ) ) {
 
+			$logger->warning( 'AI Form Update stale token — re-registering and retrying', array( 'source' => 'evf-ai' ) );
 			EVF_AI_Registration::clear_credentials();
 			EVF_AI_Registration::register();
 			$token    = EVF_AI_Registration::get_site_token();
@@ -97,12 +114,19 @@ class EVF_AI_API {
 		}
 
 		if ( is_wp_error( $response ) ) {
+			$logger->error( sprintf( 'AI Form Update failed | %s: %s', $response->get_error_code(), $response->get_error_message() ), array( 'source' => 'evf-ai' ) );
 			return $response;
 		}
 
 		if ( empty( $response['success'] ) || empty( $response['form'] ) ) {
+			$logger->error( 'AI Form Update bad_response | missing success or form key', array( 'source' => 'evf-ai' ) );
 			return new WP_Error( 'bad_response', __( 'Unexpected response from AI service.', 'everest-forms' ) );
 		}
+
+		$logger->info(
+			sprintf( 'AI Form Update succeeded | form_id: %d, form_type: %s, fields: %d', $form_id, $response['form']['form_type'] ?? 'standard', count( $response['form']['fields'] ?? array() ) ),
+			array( 'source' => 'evf-ai' )
+		);
 
 		return $response['form'];
 	}
@@ -262,9 +286,24 @@ class EVF_AI_API {
 			$args['body'] = wp_json_encode( $body );
 		}
 
+		// Log outgoing request (license_key redacted).
+		$log_body = $body;
+		if ( isset( $log_body['license_key'] ) ) {
+			$log_body['license_key'] = $log_body['license_key'] ? '[redacted]' : '';
+		}
+		$logger = evf_get_logger();
+		$logger->debug(
+			sprintf( 'AI Request: %s %s | body: %s', strtoupper( $method ), $path, wp_json_encode( $log_body ) ),
+			array( 'source' => 'evf-ai' )
+		);
+
 		$wp_response = wp_remote_request( $url, $args );
 
 		if ( is_wp_error( $wp_response ) ) {
+			$logger->error(
+				sprintf( 'AI Request failed: %s', $wp_response->get_error_message() ),
+				array( 'source' => 'evf-ai' )
+			);
 			return new WP_Error(
 				'request_failed',
 				sprintf( __( 'Could not reach AI service: %s', 'everest-forms' ), $wp_response->get_error_message() )
@@ -273,6 +312,12 @@ class EVF_AI_API {
 
 		$status = wp_remote_retrieve_response_code( $wp_response );
 		$body   = json_decode( wp_remote_retrieve_body( $wp_response ), true );
+
+		// Log the raw response.
+		$logger->debug(
+			sprintf( 'AI Response: HTTP %d | body: %s', $status, wp_json_encode( $body ) ),
+			array( 'source' => 'evf-ai' )
+		);
 
 		if ( 429 === $status ) {
 			$msg  = is_array( $body ) && isset( $body['detail']['message'] )
