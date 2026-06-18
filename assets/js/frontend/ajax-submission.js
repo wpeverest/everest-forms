@@ -282,9 +282,11 @@ jQuery( function( $ ) {
 							redirectUrl: redirect_url
 						} );
 						if ( undefined === selectedGateway && ! hasPaymentGatewayField ) {
-							if ( 'none' !== formTuple.find( ".everest-forms-gateway[data-gateway='square']" ).closest( '.evf-field' ).css( 'display' ) ) {
+							var $squareClosest = formTuple.find( ".everest-forms-gateway[data-gateway='square']" ).closest( '.evf-field' );
+							var $stripeClosest = formTuple.find( ".everest-forms-gateway[data-gateway='stripe']" ).closest( '.evf-field' );
+							if ( $squareClosest.length && 'none' !== $squareClosest.css( 'display' ) ) {
 								selectedGateway = 'square';
-							} else if ( 'none' !== formTuple.find( ".everest-forms-gateway[data-gateway='stripe']" ).closest( '.evf-field' ).css( 'display' ) ) {
+							} else if ( $stripeClosest.length && 'none' !== $stripeClosest.css( 'display' ) ) {
 								selectedGateway = 'stripe';
 							}
 						}

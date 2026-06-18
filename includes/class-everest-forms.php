@@ -23,7 +23,7 @@ final class EverestForms {
 	 *
 	 * @var string
 	 */
-	public $version = '3.5.0';
+	public $version = '3.5.1';
 
 	/**
 	 * The single instance of the class.
@@ -187,7 +187,6 @@ final class EverestForms {
 		add_action( 'switch_blog', array( $this, 'wpdb_table_fix' ), 0 );
 		add_filter( 'everest_forms_entry_bulk_actions', array( $this, 'everest_forms_entry_bulk_actions' ) );
 		add_action( 'init', array( $this, 'evf_register_inactive_post_status' ) );
-		add_action( 'current_screen', array( $this, 'maybe_load_integrations' ) );
 	}
 
 	/**
@@ -434,26 +433,7 @@ final class EverestForms {
 		do_action( 'everest_forms_init' );
 	}
 
-	public function maybe_load_integrations( $screen ) {
 
-		if ( ! is_admin() ) {
-			return;
-		}
-
-		if ( ! $screen ) {
-			return;
-		}
-
-		if ( ! in_array( $screen->id, evf_get_screen_ids(), true ) ) {
-			return;
-		}
-
-		if ( $this->integrations ) {
-			return;
-		}
-
-		$this->integrations = new EVF_Integrations();
-	}
 
 	/**
 	 * Setup objects.
