@@ -80,7 +80,7 @@ class EVF_Modules {
 			array(
 				'methods'             => 'GET',
 				'callback'            => array( __CLASS__, 'get_modules' ),
-				'permission_callback' => array( __CLASS__, 'check_admin_plugin_read_permissions' ),
+				'permission_callback' => array( __CLASS__, 'check_admin_plugin_activation_permissions' ),
 			)
 		);
 		register_rest_route(
@@ -777,17 +777,7 @@ class EVF_Modules {
 	 * @return WP_Error|bool
 	 */
 	public static function check_admin_plugin_activation_permissions( $request ) {
-		return current_user_can( 'activate_plugins' );
-	}
-
-	/**
-	 * Check if a given request has access to read modules.
-	 *
-	 * @param WP_REST_Request $request Full data about the request.
-	 * @return WP_Error|bool
-	 */
-	public static function check_admin_plugin_read_permissions( $request ) {
-		return current_user_can( 'manage_everest_forms' );
+		return current_user_can( 'activate_plugin' ) || current_user_can( 'manage_everest_forms' );
 	}
 
 	/**
@@ -797,7 +787,7 @@ class EVF_Modules {
 	 * @return WP_Error|bool
 	 */
 	public static function check_admin_plugin_installation_permissions( $request ) {
-		return current_user_can( 'install_plugins' ) && current_user_can( 'activate_plugins' );
+		return current_user_can( 'install_plugins' ) && current_user_can( 'activate_plugin' );
 	}
 
 	/**

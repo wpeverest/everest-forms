@@ -697,14 +697,6 @@ class EVF_AJAX {
 	 */
 	public static function template_activate_addon() {
 		check_ajax_referer( 'everest_forms_template_licence_check', 'security' );
-		if ( ! current_user_can( 'activate_plugins' ) ) {
-			wp_send_json_error(
-				array(
-					'errorCode'    => 'insufficient_permission',
-					'errorMessage' => esc_html__( 'You do not have permission to activate plugins.', 'everest-forms' ),
-				)
-			);
-		}
 
 		if ( empty( $_POST['addon'] ) ) {
 			wp_send_json_error(
@@ -1434,14 +1426,6 @@ class EVF_AJAX {
 	public static function active_addons() {
 		try {
 			check_ajax_referer( 'evf_active_nonce', 'security' );
-			if ( ! current_user_can( 'activate_plugins' ) ) {
-				wp_send_json_error(
-					array(
-						'message' => __( 'You do not have permission to activate plugins.', 'everest-forms' ),
-					),
-					403
-				);
-			}
 			$plugin   = isset( $_POST['plugin_file'] ) ? sanitize_text_field( wp_unslash( $_POST['plugin_file'] ) ) : '';
 			$activate = activate_plugin( $plugin );
 			if ( is_wp_error( $activate ) ) {
