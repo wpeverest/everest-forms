@@ -28,7 +28,7 @@
     "test-unit-php": "wp-env run phpunit 'phpunit --configuration=/var/www/html/wp-content/plugins/everest-forms/phpunit.xml.dist --verbose'"
   },
   "devDependencies": {
-    "@babel/core": "7.25.2",
+    "@babel/core": "7.29.6",
     "@babel/eslint-parser": "7.25.1",
     "@babel/preset-typescript": "7.23.3",
     "@types/wordpress__block-editor": "^11.5.11",
