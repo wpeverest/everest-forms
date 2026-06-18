@@ -293,7 +293,7 @@ class EVF_AI_API {
 		}
 		$logger = evf_get_logger();
 		$logger->debug(
-			sprintf( 'AI Request: %s %s | body: %s', strtoupper( $method ), $path, wp_json_encode( $log_body ) ),
+			sprintf( "AI Request: %s %s\n%s", strtoupper( $method ), $path, wp_json_encode( $log_body, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES ) ),
 			array( 'source' => 'evf-ai' )
 		);
 
@@ -315,7 +315,7 @@ class EVF_AI_API {
 
 		// Log the raw response.
 		$logger->debug(
-			sprintf( 'AI Response: HTTP %d | body: %s', $status, wp_json_encode( $body ) ),
+			sprintf( "AI Response: HTTP %d\n%s", $status, wp_json_encode( $body, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES ) ),
 			array( 'source' => 'evf-ai' )
 		);
 
