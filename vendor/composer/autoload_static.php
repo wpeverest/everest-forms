@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit9a2cf263d30e5ab5059048903ceb21ec
+class ComposerStaticInitd6859387beba6ba2eec4017b0936a44b
 {
     public static $files = array (
         '7f7d6b9566ba49ef6196f84d55ab1c22' => __DIR__ . '/..' . '/themegrill/themegrill-sdk/load.php',
@@ -57,9 +57,9 @@ class ComposerStaticInit9a2cf263d30e5ab5059048903ceb21ec
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit9a2cf263d30e5ab5059048903ceb21ec::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit9a2cf263d30e5ab5059048903ceb21ec::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit9a2cf263d30e5ab5059048903ceb21ec::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitd6859387beba6ba2eec4017b0936a44b::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitd6859387beba6ba2eec4017b0936a44b::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInitd6859387beba6ba2eec4017b0936a44b::$classMap;
 
         }, null, ClassLoader::class);
     }

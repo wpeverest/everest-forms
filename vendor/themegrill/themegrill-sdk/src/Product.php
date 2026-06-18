@@ -113,6 +113,13 @@ class Product {
 	 */
 	private $version;
 	/**
+	 * TG download ID used for licensing and updates.
+	 * Set via file header: TG Item ID: 123
+	 *
+	 * @var int $item_id The TG item ID.
+	 */
+	private $item_id = 0;
+	/**
 	 * Holds a map of loaded products objects.
 	 *
 	 * @var array Array of loaded products.
@@ -222,10 +229,11 @@ class Product {
 	 */
 	public function setup_from_fileheaders() {
 		$file_headers = array(
-			'Requires License'    => 'Requires License',
-			'WordPress Available' => 'WordPress Available',
-			'Pro Slug'            => 'Pro Slug',
-			'Version'             => 'Version',
+			'RequiresLicense'    => 'Requires License',
+			'WordPressAvailable' => 'WordPress Available',
+			'ProSlug'            => 'Pro Slug',
+			'Version'            => 'Version',
+			'TGItemID'           => 'TG Item ID',
 		);
 		if ( 'plugin' === $this->type ) {
 			$file_headers['Name']       = 'Plugin Name';
@@ -244,10 +252,11 @@ class Product {
 		$this->author_url = $file_headers['AuthorURI'];
 		$this->store_url  = $file_headers['AuthorURI'];
 
-		$this->requires_license    = ( 'yes' === $file_headers['Requires License'] ) ? true : false;
-		$this->wordpress_available = ( 'yes' === $file_headers['WordPress Available'] ) ? true : false;
-		$this->pro_slug            = ! empty( $file_headers['Pro Slug'] ) ? $file_headers['Pro Slug'] : '';
+		$this->requires_license    = ( 'yes' === $file_headers['RequiresLicense'] ) ? true : false;
+		$this->wordpress_available = ( 'yes' === $file_headers['WordPressAvailable'] ) ? true : false;
+		$this->pro_slug            = ! empty( $file_headers['ProSlug'] ) ? $file_headers['Pro Slug'] : '';
 		$this->version             = $file_headers['Version'];
+		$this->item_id             = ! empty( $file_headers['TGItemID'] ) ? (int) $file_headers['TGItemID'] : 0;
 	}
 
 	/**
@@ -325,13 +334,22 @@ class Product {
 	}
 
 	/**
+	 * Returns the TG item ID for licensing and update checks.
+	 *
+	 * @return int The TG item ID, or 0 if not set.
+	 */
+	public function get_item_id() {
+		return $this->item_id;
+	}
+
+	/**
 	 * Returns current product license, if available.
 	 *
 	 * @return string Return license key, if available.
 	 */
 	public function get_license() {
 
-		if ( ! $this->requires_license() && ! $this->is_wordpress_available() ) {
+		if ( ! $this->requires_license() ) {
 			return 'free';
 		}
 		$license_data = get_option( $this->get_key() . '_license_data', '' );

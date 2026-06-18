@@ -345,7 +345,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Changelog ==
 
-= 3.5.1       - 15-06-2026
+= 3.5.1       - 18-06-2026
 * Fix 		  - Early load integration called.
 * Fix 		  - Form submission stuck on processing for forms created using ai.
 * Added 	  - Loggers in AI Form creation flow.
