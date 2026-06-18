@@ -347,6 +347,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 = 3.5.1       - 15-06-2026
 * Fix 		  - Form submission stuck on processing for forms created using ai.
+* Added 	  - Loggers in AI Form creation flow.
 
 = 3.5.0       - 15-06-2026
 * Feature 	  - Create form with AI.
