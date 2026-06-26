@@ -195,6 +195,8 @@ if ( false !== $entry_index ) {
 													$answer_class = 'wrong_answer';
 												}
 											}
+											// Guard against non-scalar values (e.g. coupon data left as an array when the Coupons addon is deactivated).
+											$value = is_scalar( $value ) ? (string) $value : wp_json_encode( $value );
 											echo '<span class="list evf-answer-badge ' . esc_attr( $answer_class ) . '">' . esc_html( wp_strip_all_tags( $value ) ) . '</span>';
 										}
 									} else {
@@ -207,8 +209,13 @@ if ( false !== $entry_index ) {
 									} else {
 										$answer_class = 'wrong_answer';
 									}
+									$field_value = is_scalar( $field_value ) ? (string) $field_value : wp_json_encode( $field_value );
 									echo '<span class="list evf-answer-badge ' . esc_attr( $answer_class ) . '">' . esc_html( wp_strip_all_tags( $field_value ) ) . '</span>';
 								} else {
+									// Coupon and other addon fields can leave an array value when their addon is deactivated; normalize it so the output helpers below never receive an array.
+									if ( is_array( $field_value ) ) {
+										$field_value = wp_json_encode( $field_value );
+									}
 									$allow_html_types = apply_filters(
 										'everest_forms_entry_view_field_types_allowing_html',
 										array( 'wysiwyg', 'repeater-fields' ),
