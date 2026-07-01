@@ -1,4 +1,4 @@
-﻿/* global evf_data, jconfirm, PerfectScrollbar, evfSetClipboard, evfClearClipboard */
+/* global evf_data, jconfirm, PerfectScrollbar, evfSetClipboard, evfClearClipboard */
 (function ($, evf_data) {
 	var $builder;
 
@@ -1113,10 +1113,17 @@
 		bindBulkOptionActions: function () {
 			// Toggle `Bulk Add` option.
 			$(document.body).on('click', '.evf-toggle-bulk-options', function (e) {
-				$(this)
+				e.preventDefault();
+				var $panel = $(this)
 					.closest('.everest-forms-field-option')
-					.find('.everest-forms-field-option-row-add_bulk_options')
-					.slideToggle();
+					.find('.everest-forms-field-option-row-add_bulk_options');
+				if ($panel.hasClass('everest-forms-hidden')) {
+					$panel.stop(true, true).removeClass('everest-forms-hidden').hide().slideDown();
+				} else {
+					$panel.stop(true, true).slideUp(function () {
+						$(this).addClass('everest-forms-hidden').css('display', '');
+					});
+				}
 			});
 			// Toggle presets list.
 			$(document.body).on('click', '.evf-toggle-presets-list', function (e) {
