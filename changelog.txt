@@ -1,5 +1,10 @@
 == Changelog ==
 
+= 3.5.2       - 02-07-2026
+* Fix 		  - Improved security of the addon activation process.
+* Fix 		  - Bulk Add option not opening for Dropdown, Checkbox, and Multiple Choice fields.
+* Fix 	      - Corrected file upload validation pattern.
+
 = 3.5.1       - 15-06-2026
 * Fix 		  - Early load integration called.
 * Fix 		  - Form submission stuck on processing for forms created using ai.
