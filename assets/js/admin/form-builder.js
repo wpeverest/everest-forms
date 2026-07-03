@@ -1,4 +1,4 @@
-﻿/* global evf_data, jconfirm, PerfectScrollbar, evfSetClipboard, evfClearClipboard */
+/* global evf_data, jconfirm, PerfectScrollbar, evfSetClipboard, evfClearClipboard */
 (function ($, evf_data) {
 	var $builder;
 
@@ -1113,10 +1113,17 @@
 		bindBulkOptionActions: function () {
 			// Toggle `Bulk Add` option.
 			$(document.body).on('click', '.evf-toggle-bulk-options', function (e) {
-				$(this)
+				e.preventDefault();
+				var $panel = $(this)
 					.closest('.everest-forms-field-option')
-					.find('.everest-forms-field-option-row-add_bulk_options')
-					.slideToggle();
+					.find('.everest-forms-field-option-row-add_bulk_options');
+				if ($panel.hasClass('everest-forms-hidden')) {
+					$panel.stop(true, true).removeClass('everest-forms-hidden').hide().slideDown();
+				} else {
+					$panel.stop(true, true).slideUp(function () {
+						$(this).addClass('everest-forms-hidden').css('display', '');
+					});
+				}
 			});
 			// Toggle presets list.
 			$(document.body).on('click', '.evf-toggle-presets-list', function (e) {
@@ -1689,6 +1696,13 @@
 		 */
 		init_payment_subscription_plan_field: function () {
 			EVFPanelBuilder.init_subscription_expiry_date_pickers();
+
+			$('.everest-forms-field-payment-subscription-plan').each(function () {
+				var fieldId = $(this).data('field-id');
+				if (fieldId) {
+					EVFPanelBuilder.subscriptionPlanChoiceUpdate(fieldId);
+				}
+			});
 
 			// Tab switching — delegated so it works for dynamically added choices.
 			$(document.body).on(
@@ -3329,7 +3343,7 @@
 					? '<span class="evf-plan-meta">' + metaParts.join(' &middot; ') + '</span>'
 					: '';
 
-				var liHtml = '<span class="evf-plan-wrap">' + mainHtml + metaHtml + '</span>';
+				var liHtml = '<label class="everest-forms-field-label-inline"><span class="evf-plan-wrap">' + mainHtml + metaHtml + '</span></label>';
 
 				var itemClass = isDefault ? 'everest-forms-selected' : '';
 				html += '<li class="' + itemClass + '"><input type="radio" disabled>' + liHtml + '</li>';

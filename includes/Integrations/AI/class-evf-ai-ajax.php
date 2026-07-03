@@ -108,7 +108,7 @@ class EVF_AI_Ajax {
 		if ( ! EVF_AI_Registration::is_registered() ) {
 			wp_send_json_error(
 				array(
-					'message' => __( 'AI features are not available on local or staging sites.', 'everest-forms' ),
+					'message' => __( 'This site could not be registered with the AI service. Please try again.', 'everest-forms' ),
 					'code'    => 'not_registered',
 				)
 			);
@@ -297,7 +297,7 @@ class EVF_AI_Ajax {
 		if ( ! EVF_AI_Registration::is_registered() ) {
 			wp_send_json_error(
 				array(
-					'message' => __( 'AI features are not available on local or staging sites.', 'everest-forms' ),
+					'message' => __( 'This site could not be registered with the AI service. Please try again.', 'everest-forms' ),
 					'code'    => 'not_registered',
 				)
 			);

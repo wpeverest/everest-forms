@@ -32,7 +32,7 @@ final class Loader {
 	 *
 	 * @var string $version The class version.
 	 */
-	private static $version = '1.0.1';
+	private static $version = '1.0.4';
 	/**
 	 * Holds registered products.
 	 *
@@ -51,6 +51,8 @@ final class Loader {
 		'logger',
 		'notification',
 		'announcements',
+		'licenser',
+		'updater',
 	];
 	/**
 	 * Holds the labels for the modules.
@@ -158,7 +160,7 @@ final class Loader {
 		$cache_token = get_transient( 'themegrill_sdk_cache_token' );
 		if ( false === $cache_token ) {
 			$cache_token = wp_generate_password( 6, false );
-			set_transient( $cache_token, WEEK_IN_SECONDS );
+			set_transient( 'themegrill_sdk_cache_token', $cache_token, WEEK_IN_SECONDS );
 		}
 
 		return $cache_token;
