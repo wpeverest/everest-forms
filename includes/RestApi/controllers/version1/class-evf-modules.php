@@ -87,7 +87,14 @@ class EVF_Modules {
 			array(
 				'methods'             => 'POST',
 				'callback'            => array( __CLASS__, 'activate_license' ),
-				'permission_callback' => array( __CLASS__, 'check_admin_plugin_activation_permissions' ),
+				'permission_callback' => array( __CLASS__, 'check_admin_plugin_installation_permissions' ),
+				'args'                => array(
+					'licenseActivationKey' => array(
+						'required'          => true,
+						'type'              => 'string',
+						'sanitize_callback' => 'sanitize_text_field',
+					),
+				),
 			)
 		);
 	}

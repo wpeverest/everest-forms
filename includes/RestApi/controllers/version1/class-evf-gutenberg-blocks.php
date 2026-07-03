@@ -79,6 +79,6 @@ class EVF_Gutenberg_Blocks {
 	 * @return WP_Error|bool
 	 */
 	public static function check_admin_permissions( $request ) {
-		return current_user_can( 'manage_options' );
+		return current_user_can( 'manage_everest_forms' );
 	}
 }

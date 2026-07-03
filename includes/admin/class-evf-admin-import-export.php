@@ -83,6 +83,15 @@ class EVF_Admin_Import_Export {
 	 * Import Forms from backend.
 	 */
 	public static function import_forms() {
+		if ( ! current_user_can( 'everest_forms_create_forms' ) ) {
+			wp_send_json_error(
+				array(
+					'message' => esc_html__( 'You do not have permission to import forms.', 'everest-forms' ),
+				),
+				403
+			);
+		}
+
 		// Check for $_FILES set or not.
 		if ( isset( $_FILES['jsonfile']['name'], $_FILES['jsonfile']['tmp_name'] ) ) {
 			$filename  = sanitize_file_name( wp_unslash( $_FILES['jsonfile']['name'] ) );
