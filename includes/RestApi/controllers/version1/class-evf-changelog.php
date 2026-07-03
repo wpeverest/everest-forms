@@ -148,6 +148,6 @@ class EVF_Changelog {
 	 * @return WP_Error|bool
 	 */
 	public static function check_admin_permissions( $request ) {
-		return current_user_can( 'manage_everest_forms' );
+		return current_user_can( 'manage_options' );
 	}
 }

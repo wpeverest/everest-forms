@@ -28,20 +28,6 @@ class EVF_Roles_And_Permission {
 	protected $rest_base = 'roels_and_permission';
 
 	/**
-	 * Shared REST args for POST routes that accept a request payload.
-	 *
-	 * @return array
-	 */
-	private static function get_request_payload_args() {
-		return array(
-			'request' => array(
-				'required' => true,
-				'type'     => 'object',
-			),
-		);
-	}
-
-	/**
 	 * Register routes.
 	 *
 	 * @since 3.0.8
@@ -56,7 +42,6 @@ class EVF_Roles_And_Permission {
 				'methods'             => 'POST',
 				'callback'            => array( __CLASS__, 'assign_permission_based_on_role' ),
 				'permission_callback' => array( __CLASS__, 'check_admin_permissions' ),
-				'args'                => self::get_request_payload_args(),
 			)
 		);
 		register_rest_route(
@@ -66,7 +51,6 @@ class EVF_Roles_And_Permission {
 				'methods'             => 'POST',
 				'callback'            => array( __CLASS__, 'evf_add_user_manager' ),
 				'permission_callback' => array( __CLASS__, 'check_admin_permissions' ),
-				'args'                => self::get_request_payload_args(),
 			)
 		);
 		register_rest_route(
@@ -85,7 +69,6 @@ class EVF_Roles_And_Permission {
 				'methods'             => 'POST',
 				'callback'            => array( __CLASS__, 'get_managers' ),
 				'permission_callback' => array( __CLASS__, 'check_admin_permissions' ),
-				'args'                => self::get_request_payload_args(),
 			)
 		);
 		register_rest_route(
@@ -95,7 +78,6 @@ class EVF_Roles_And_Permission {
 				'methods'             => 'POST',
 				'callback'            => array( __CLASS__, 'remove_managers' ),
 				'permission_callback' => array( __CLASS__, 'check_admin_permissions' ),
-				'args'                => self::get_request_payload_args(),
 			)
 		);
 		register_rest_route(
@@ -105,7 +87,6 @@ class EVF_Roles_And_Permission {
 				'methods'             => 'POST',
 				'callback'            => array( __CLASS__, 'bulk_remove_managers' ),
 				'permission_callback' => array( __CLASS__, 'check_admin_permissions' ),
-				'args'                => self::get_request_payload_args(),
 			)
 		);
 		register_rest_route(

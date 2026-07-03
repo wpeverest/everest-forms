@@ -85,10 +85,6 @@ class Everest_Forms_Template_Section_Data {
 						'type'              => 'string',
 						'sanitize_callback' => 'sanitize_text_field',
 					),
-					'fields' => array(
-						'required' => false,
-						'type'     => 'array',
-					),
 				),
 			)
 		);
@@ -112,10 +108,6 @@ class Everest_Forms_Template_Section_Data {
 						'required'          => false,
 						'type'              => 'string',
 						'sanitize_callback' => 'sanitize_text_field',
-					),
-					'fields'  => array(
-						'required' => false,
-						'type'     => 'array',
 					),
 				),
 			)

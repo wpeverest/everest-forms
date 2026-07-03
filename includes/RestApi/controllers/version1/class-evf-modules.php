@@ -28,45 +28,6 @@ class EVF_Modules {
 	protected $rest_base = 'modules';
 
 	/**
-	 * Shared REST args for single-module POST routes.
-	 *
-	 * @return array
-	 */
-	private function get_single_module_route_args() {
-		return array(
-			'slug' => array(
-				'required'          => true,
-				'type'              => 'string',
-				'sanitize_callback' => 'sanitize_text_field',
-			),
-			'name' => array(
-				'required'          => false,
-				'type'              => 'string',
-				'sanitize_callback' => 'sanitize_text_field',
-			),
-			'type' => array(
-				'required'          => false,
-				'type'              => 'string',
-				'sanitize_callback' => 'sanitize_text_field',
-			),
-		);
-	}
-
-	/**
-	 * Shared REST args for bulk-module POST routes.
-	 *
-	 * @return array
-	 */
-	private function get_bulk_module_route_args() {
-		return array(
-			'moduleData' => array(
-				'required' => true,
-				'type'     => 'object',
-			),
-		);
-	}
-
-	/**
 	 * Register routes.
 	 *
 	 * @since 3.0.0
@@ -90,7 +51,6 @@ class EVF_Modules {
 				'methods'             => 'POST',
 				'callback'            => array( __CLASS__, 'activate_module' ),
 				'permission_callback' => array( __CLASS__, 'check_admin_plugin_activation_permissions' ),
-				'args'                => $this->get_single_module_route_args(),
 			)
 		);
 		register_rest_route(
@@ -100,7 +60,6 @@ class EVF_Modules {
 				'methods'             => 'POST',
 				'callback'            => array( __CLASS__, 'deactivate_module' ),
 				'permission_callback' => array( __CLASS__, 'check_admin_plugin_activation_permissions' ),
-				'args'                => $this->get_single_module_route_args(),
 			)
 		);
 
@@ -111,7 +70,6 @@ class EVF_Modules {
 				'methods'             => 'POST',
 				'callback'            => array( __CLASS__, 'bulk_activate_modules' ),
 				'permission_callback' => array( __CLASS__, 'check_admin_plugin_activation_permissions' ),
-				'args'                => $this->get_bulk_module_route_args(),
 			)
 		);
 		register_rest_route(
@@ -121,7 +79,6 @@ class EVF_Modules {
 				'methods'             => 'POST',
 				'callback'            => array( __CLASS__, 'bulk_deactivate_modules' ),
 				'permission_callback' => array( __CLASS__, 'check_admin_plugin_activation_permissions' ),
-				'args'                => $this->get_bulk_module_route_args(),
 			)
 		);
 		register_rest_route(
