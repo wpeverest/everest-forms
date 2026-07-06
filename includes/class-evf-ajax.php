@@ -575,6 +575,38 @@ class EVF_AJAX {
 			}
 		}
 
+		// A subscription plan choice needs a name to create its gateway subscription plan/product.
+		if ( ! empty( $data['form_fields'] ) ) {
+			$empty_subscription_plan_labels = array();
+
+			foreach ( $data['form_fields'] as $field ) {
+				if ( empty( $field['type'] ) || 'payment-subscription-plan' !== $field['type'] || empty( $field['choices'] ) ) {
+					continue;
+				}
+
+				foreach ( $field['choices'] as $choice ) {
+					if ( ! isset( $choice['label'] ) || '' === trim( (string) $choice['label'] ) ) {
+						$empty_subscription_plan_labels[] = ! empty( $field['label'] ) ? $field['label'] : sprintf( /* translators: %s: field id */ esc_html__( 'Field #%s', 'everest-forms' ), isset( $field['id'] ) ? $field['id'] : '' );
+						break;
+					}
+				}
+			}
+
+			if ( ! empty( $empty_subscription_plan_labels ) ) {
+				$logger->error(
+					__( 'Subscription plan choice missing name.', 'everest-forms' ),
+					array( 'source' => 'form-save' )
+				);
+				wp_send_json_error(
+					array(
+						'errorTitle'   => esc_html__( 'Subscription Plan Name Required', 'everest-forms' ),
+						/* translators: %s: fields containing a subscription plan choice with an empty name */
+						'errorMessage' => sprintf( esc_html__( 'Please add a name for every subscription plan choice in: %s.', 'everest-forms' ), '<strong>' . implode( ', ', array_unique( $empty_subscription_plan_labels ) ) . '</strong>' ),
+					)
+				);
+			}
+		}
+
 		/**
 		 * Creating the form tags taxonomy.
 		 *

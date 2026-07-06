@@ -268,6 +268,8 @@ class EVF_Admin_Assets {
 					'i18n_upload_image_button'            => esc_html__( 'Use Image', 'everest-forms' ),
 					'i18n_upload_image_remove'            => esc_html__( 'Remove Image', 'everest-forms' ),
 					'i18n_field_title_empty'              => esc_html__( 'Empty Form Name', 'everest-forms' ),
+					'i18n_subscription_plan_label_empty_title'   => esc_html__( 'Subscription Plan Name Required', 'everest-forms' ),
+					'i18n_subscription_plan_label_empty_message' => esc_html__( 'Please add a name for every subscription plan choice before saving the form.', 'everest-forms' ),
 					'i18n_shortcut_key_title'             => esc_html__( 'keyboard Shortcut Keys', 'everest-forms' ),
 					'i18n_shortcut_keys'                  => array(
 						'Ctrl+S' => esc_html__( 'Save Builder', 'everest-forms' ),

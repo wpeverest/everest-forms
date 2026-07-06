@@ -4772,94 +4772,125 @@
 					return;
 				}
 
-				// Trigger a handler to let addon manipulate the form data if needed.
-				if (
-					$form.triggerHandler('everest_forms_process_ajax_data', [
-						$this,
-						form_data,
-					])
-				) {
-					form_data = $form.triggerHandler('everest_forms_process_ajax_data', [
-						$this,
-						form_data,
-					]);
+				// A subscription plan choice needs a name to create its gateway subscription plan/product.
+				var hasEmptySubscriptionPlanLabel = false;
+				$(
+					'.everest-forms-field-option-payment-subscription-plan .evf-choices-list > li input.label',
+				).each(function () {
+					if ('' === $(this).val().trim()) {
+						hasEmptySubscriptionPlanLabel = true;
+					}
+				});
+
+				if (hasEmptySubscriptionPlanLabel) {
+					$.alert({
+						title: evf_data.i18n_subscription_plan_label_empty_title,
+						content: evf_data.i18n_subscription_plan_label_empty_message,
+						icon: 'dashicons dashicons-warning',
+						type: 'red',
+						buttons: {
+							ok: {
+								text: evf_data.i18n_ok,
+								btnClass: 'btn-confirm',
+								keys: ['enter'],
+							},
+						},
+					});
+					return;
 				}
 
-				$('.everest-forms-panel-content-wrap').block({
-					message: null,
-					overlayCSS: {
-						background: '#fff',
-						opacity: 0.6,
-					},
-				});
+				var proceedWithSave = function () {
+					// Trigger a handler to let addon manipulate the form data if needed.
+					if (
+						$form.triggerHandler('everest_forms_process_ajax_data', [
+							$this,
+							form_data,
+						])
+					) {
+						form_data = $form.triggerHandler(
+							'everest_forms_process_ajax_data',
+							[$this, form_data],
+						);
+					}
 
-				/* DB unwanted data erase start */
-				var rfields_ids = [];
-				$('.everest-forms-field[data-field-id]').each(function () {
-					rfields_ids.push($(this).attr('data-field-id'));
-				});
+					$('.everest-forms-panel-content-wrap').block({
+						message: null,
+						overlayCSS: {
+							background: '#fff',
+							opacity: 0.6,
+						},
+					});
 
-				var form_data_length = form_data.length;
-				while (form_data_length--) {
-					if (form_data[form_data_length].name.startsWith('form_fields')) {
-						var idflag = false;
-						rfields_ids.forEach(function (element) {
-							if (
-								form_data[form_data_length].name.startsWith(
-									'form_fields[' + element + ']',
-								)
-							) {
-								idflag = true;
+					/* DB unwanted data erase start */
+					var rfields_ids = [];
+					$('.everest-forms-field[data-field-id]').each(function () {
+						rfields_ids.push($(this).attr('data-field-id'));
+					});
+
+					var form_data_length = form_data.length;
+					while (form_data_length--) {
+						if (form_data[form_data_length].name.startsWith('form_fields')) {
+							var idflag = false;
+							rfields_ids.forEach(function (element) {
+								if (
+									form_data[form_data_length].name.startsWith(
+										'form_fields[' + element + ']',
+									)
+								) {
+									idflag = true;
+								}
+							});
+							if (form_data_length > -1 && idflag === false) {
+								form_data.splice(form_data_length, 1);
 							}
-						});
-						if (form_data_length > -1 && idflag === false) {
-							form_data.splice(form_data_length, 1);
 						}
 					}
-				}
-				/* DB fix end */
+					/* DB fix end */
 
-				var new_form_data = form_data.concat(structure);
-				var data = {
-					action: 'everest_forms_save_form',
-					security: evf_data.evf_save_form,
-					form_data: JSON.stringify(new_form_data),
-				};
-				$.ajax({
-					url: evf_data.ajax_url,
-					data: data,
-					type: 'POST',
-					beforeSend: function () {
-						$this.addClass('processing');
-						$this.find('.loading-dot').remove();
-						$this.append('<span class="loading-dot"></span>');
-					},
-					success: function (response) {
-						$this.removeClass('processing');
-						$this.find('.loading-dot').remove();
+					var new_form_data = form_data.concat(structure);
+					var data = {
+						action: 'everest_forms_save_form',
+						security: evf_data.evf_save_form,
+						form_data: JSON.stringify(new_form_data),
+					};
+					$.ajax({
+						url: evf_data.ajax_url,
+						data: data,
+						type: 'POST',
+						beforeSend: function () {
+							$this.addClass('processing');
+							$this.find('.loading-dot').remove();
+							$this.append('<span class="loading-dot"></span>');
+						},
+						success: function (response) {
+							$this.removeClass('processing');
+							$this.find('.loading-dot').remove();
 
-						//Response data of ajax.
-						$(document).trigger('everest_forms_save_data', response.data);
+							//Response data of ajax.
+							$(document).trigger('everest_forms_save_data', response.data);
 
-						if (!response.success) {
-							$.alert({
-								title: response.data.errorTitle,
-								content: response.data.errorMessage,
-								icon: 'dashicons dashicons-warning',
-								type: 'red',
-								buttons: {
-									ok: {
-										text: evf_data.i18n_ok,
-										btnClass: 'btn-confirm',
-										keys: ['enter'],
+							if (!response.success) {
+								$.alert({
+									title: response.data.errorTitle,
+									content: response.data.errorMessage,
+									icon: 'dashicons dashicons-warning',
+									type: 'red',
+									buttons: {
+										ok: {
+											text: evf_data.i18n_ok,
+											btnClass: 'btn-confirm',
+											keys: ['enter'],
+										},
 									},
-								},
-							});
-						}
+								});
+							}
 
-						$('.everest-forms-panel-content-wrap').unblock();
-					},
-				});
+							$('.everest-forms-panel-content-wrap').unblock();
+						},
+					});
+				};
+
+				proceedWithSave();
 			});
 		},
 		bindEmbedOption: function () {
