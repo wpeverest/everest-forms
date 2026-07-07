@@ -18,7 +18,7 @@ namespace EverestForms\Addons\StyleCustomizer\V2;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * v2 feature gate.
+ * The v2 feature gate.
  */
 final class Engine {
 
@@ -29,7 +29,7 @@ final class Engine {
 	 * @return bool
 	 */
 	public static function enabled() {
-		$enabled = defined( 'EVF_STYLE_V2' ) && EVF_STYLE_V2;
+		$enabled = defined( 'EVF_STYLE_V2' ) && \EVF_STYLE_V2;
 
 		/**
 		 * Filter whether the Style Customizer v2 engine is active.
@@ -63,9 +63,11 @@ final class Engine {
 		// Engine-aware frontend rendering (v2-compiled vs legacy per form).
 		FrontendEnqueue::register();
 
+		// REST read/save for the builder panel.
+		RestController::register();
+
 		/**
-		 * Fires once the v2 engine boots. Later phases hook the builder tab and REST routes
-		 * onto this.
+		 * Fires once the v2 engine boots. Later phases hook the builder tab onto this.
 		 */
 		do_action( 'evf_style_v2_booted' );
 	}
