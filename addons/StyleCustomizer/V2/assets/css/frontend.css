@@ -1,0 +1,298 @@
+/**
+ * Style Customizer v2 — static frontend rule template.
+ *
+ * The shared half of the "one stylesheet per form" model: these rules READ the
+ * `var(--evf-*)` custom properties; the Compiler emits the per-form VALUES as an inline
+ * block on `#evf-{id}` (plus tablet/mobile media queries for spacing). Custom properties
+ * inherit from the wrapper, so one shared stylesheet themes every v2 form correctly.
+ *
+ * Scope: everything is under `.evf-style-v2` — the marker class FrontendEnqueue adds to a
+ * v2 form's wrapper — so v1 forms (legacy compiled CSS) are never touched.
+ *
+ * Selectors mirror the real EVF frontend markup (see the legacy `views/scss.php`); only
+ * TOKEN-DRIVEN properties live here. Structural CSS (layout, marks, flex) stays in the base
+ * frontend stylesheet. The 120 schema tokens map 1:1 to the declarations below.
+ *
+ * NOTE: not yet visually verified against real forms — the golden VR harness (≥15 forms,
+ * ≤0.5% drift) is the gate that signs this off before the flag flips on.
+ *
+ * @package EverestForms\Addons\StyleCustomizer\V2
+ */
+
+/* ===== FORM — container + font ===== */
+.everest-forms .evf-style-v2.evf-container {
+	width: var( --evf-wrap-width );
+	margin: var( --evf-wrap-margin );
+	padding: var( --evf-wrap-pad );
+	font-family: var( --evf-font );
+	background-color: var( --evf-wrap-bg );
+	background-image: var( --evf-wrap-image, none );
+	background-size: var( --evf-wrap-bg-size, cover );
+	background-position: var( --evf-wrap-bg-position, center );
+	background-repeat: var( --evf-wrap-bg-repeat, no-repeat );
+	background-attachment: var( --evf-wrap-bg-attachment, scroll );
+	border-style: var( --evf-wrap-border-style, solid );
+	border-width: var( --evf-wrap-bw );
+	border-color: var( --evf-wrap-border-c );
+	border-radius: var( --evf-wrap-radius );
+}
+
+/* ===== TEXT — label ===== */
+.evf-style-v2 label.evf-field-label {
+	color: var( --evf-label-color );
+	font-size: var( --evf-label-size );
+	line-height: var( --evf-label-lh );
+	text-align: var( --evf-label-align );
+	margin: var( --evf-label-margin );
+	padding: var( --evf-label-pad );
+	font-weight: var( --evf-label-weight );
+	font-style: var( --evf-label-fs );
+	text-decoration: var( --evf-label-td );
+	text-transform: var( --evf-label-tt );
+}
+
+/* Sublabel */
+.evf-style-v2 label.everest-forms-field-sublabel {
+	color: var( --evf-sub-color );
+	font-size: var( --evf-sub-size );
+	line-height: var( --evf-sub-lh );
+	text-align: var( --evf-sub-align );
+	margin: var( --evf-sub-margin );
+	padding: var( --evf-sub-pad );
+	font-weight: var( --evf-sub-weight );
+	font-style: var( --evf-sub-fs );
+	text-decoration: var( --evf-sub-td );
+	text-transform: var( --evf-sub-tt );
+}
+
+/* Description */
+.evf-style-v2 .evf-field-description {
+	color: var( --evf-desc-color );
+	font-size: var( --evf-desc-size );
+	line-height: var( --evf-desc-lh );
+	text-align: var( --evf-desc-align );
+	margin: var( --evf-desc-margin );
+	padding: var( --evf-desc-pad );
+	font-weight: var( --evf-desc-weight );
+	font-style: var( --evf-desc-fs );
+	text-decoration: var( --evf-desc-td );
+	text-transform: var( --evf-desc-tt );
+}
+
+/* Section title */
+.evf-style-v2 .evf-field-title h3 {
+	color: var( --evf-title-color );
+	font-size: var( --evf-title-size );
+	line-height: var( --evf-title-lh );
+	text-align: var( --evf-title-align );
+	margin: var( --evf-title-margin );
+	padding: var( --evf-title-pad );
+	font-weight: var( --evf-title-weight );
+	font-style: var( --evf-title-fs );
+	text-decoration: var( --evf-title-td );
+	text-transform: var( --evf-title-tt );
+}
+
+/* ===== INPUTS — text boxes, dropdowns, textareas ===== */
+.evf-style-v2 input[type='text'],
+.evf-style-v2 input[type='email'],
+.evf-style-v2 input[type='number'],
+.evf-style-v2 input[type='password'],
+.evf-style-v2 input[type='datetime'],
+.evf-style-v2 input[type='datetime-local'],
+.evf-style-v2 input[type='date'],
+.evf-style-v2 input[type='time'],
+.evf-style-v2 input[type='week'],
+.evf-style-v2 input[type='url'],
+.evf-style-v2 input[type='tel'],
+.evf-style-v2 input[type='file'],
+.evf-style-v2 textarea,
+.evf-style-v2 select,
+.evf-style-v2 .StripeElement {
+	color: var( --evf-input-color );
+	font-size: var( --evf-input-size );
+	text-align: var( --evf-input-align );
+	background-color: var( --evf-input-bg );
+	border-style: var( --evf-input-border-style, solid );
+	border-width: var( --evf-input-bw );
+	border-color: var( --evf-input-border-c );
+	border-radius: var( --evf-input-radius );
+	margin: var( --evf-field-margin );
+	padding: var( --evf-input-pad );
+	font-weight: var( --evf-input-weight );
+	font-style: var( --evf-input-fs );
+	text-transform: var( --evf-input-tt );
+}
+
+.evf-style-v2 input::placeholder,
+.evf-style-v2 textarea::placeholder {
+	color: var( --evf-input-ph );
+}
+
+.evf-style-v2 input:focus,
+.evf-style-v2 textarea:focus,
+.evf-style-v2 select:focus,
+.evf-style-v2 .StripeElement--focus {
+	border-color: var( --evf-input-focus-border );
+}
+
+/* Payment/price readouts follow the input text style */
+.evf-style-v2 .evf-payment-total,
+.evf-style-v2 .evf-single-item-price {
+	color: var( --evf-input-color );
+	font-size: var( --evf-input-size );
+	text-align: var( --evf-input-align );
+}
+
+/* ===== INPUTS — upload area ===== */
+.evf-style-v2 .everest-forms-uploader {
+	background-color: var( --evf-file-bg );
+	border-style: var( --evf-file-border-style, dashed );
+	border-width: var( --evf-file-bw );
+	border-color: var( --evf-file-border );
+	border-radius: var( --evf-file-radius );
+	margin: var( --evf-file-margin );
+	padding: var( --evf-file-pad );
+}
+
+.evf-style-v2 .everest-forms-uploader .everest-forms-upload-title,
+.evf-style-v2 .everest-forms-uploader .everest-forms-upload-hint,
+.evf-style-v2 .everest-forms-uploader .dz-details,
+.evf-style-v2 .everest-forms-uploader .dz-error-message {
+	font-size: var( --evf-file-size );
+}
+
+.evf-style-v2 .everest-forms-uploader .everest-forms-upload-title,
+.evf-style-v2 .everest-forms-uploader .everest-forms-upload-hint,
+.evf-style-v2 .everest-forms-uploader .dz-details span {
+	color: var( --evf-file-color );
+}
+
+.evf-style-v2 .everest-forms-uploader .dz-message > svg {
+	background-color: var( --evf-file-iconbg );
+	fill: var( --evf-file-icon );
+}
+
+/* ===== CHOICES — radio, checkbox, and everything that follows them ===== */
+.evf-style-v2 .evf-field-radio ul li,
+.evf-style-v2 .evf-field-checkbox ul li,
+.evf-style-v2 .evf-field-payment-multiple ul li,
+.evf-style-v2 .evf-field-payment-checkbox ul li,
+.evf-style-v2 .evf-field-privacy-policy ul li {
+	text-align: var( --evf-choice-align );
+	margin: var( --evf-choice-margin );
+}
+
+.evf-style-v2 .evf-field-radio input[type='radio'],
+.evf-style-v2 .evf-field-radio input[type='checkbox'],
+.evf-style-v2 .evf-field-checkbox input[type='radio'],
+.evf-style-v2 .evf-field-checkbox input[type='checkbox'],
+.evf-style-v2 .evf-field-payment-multiple input[type='radio'],
+.evf-style-v2 .evf-field-payment-checkbox input[type='checkbox'] {
+	width: var( --evf-choice-size );
+	height: var( --evf-choice-size );
+	border-color: var( --evf-choice-border );
+}
+
+.evf-style-v2 .evf-field-radio input:checked,
+.evf-style-v2 .evf-field-checkbox input:checked,
+.evf-style-v2 .evf-field-payment-multiple input:checked,
+.evf-style-v2 .evf-field-payment-checkbox input:checked {
+	border-color: var( --evf-choice-checked );
+	background-color: var( --evf-choice-checked );
+}
+
+.evf-style-v2 .evf-field-radio input + label,
+.evf-style-v2 .evf-field-checkbox input + label,
+.evf-style-v2 .evf-field-payment-multiple input + label,
+.evf-style-v2 .evf-field-payment-checkbox input + label {
+	font-size: var( --evf-choice-fsize );
+	color: var( --evf-choice-color );
+	font-weight: var( --evf-choice-weight );
+	font-style: var( --evf-choice-fs );
+	text-decoration: var( --evf-choice-td );
+	text-transform: var( --evf-choice-tt );
+}
+
+/* ===== BUTTON — submit / multi-part nav / upload button ===== */
+.evf-style-v2 .evf-submit-container input[type='submit'],
+.evf-style-v2 .evf-submit-container button[type='submit'],
+.evf-style-v2 .evf-submit-container .everest-forms-part-button,
+.evf-style-v2 .everest-forms-multi-part-actions input[type='submit'],
+.evf-style-v2 .everest-forms-multi-part-actions button[type='submit'],
+.evf-style-v2 .everest-forms-multi-part-actions .everest-forms-part-button {
+	color: var( --evf-btn-color );
+	font-size: var( --evf-btn-size );
+	line-height: var( --evf-btn-lh );
+	background-color: var( --evf-btn-bg );
+	border-style: var( --evf-btn-border-style, solid );
+	border-width: var( --evf-btn-bw );
+	border-color: var( --evf-btn-border-c );
+	border-radius: var( --evf-btn-radius );
+	margin: var( --evf-btn-margin );
+	padding: var( --evf-btn-pad );
+	font-weight: var( --evf-btn-weight );
+	font-style: var( --evf-btn-fs );
+	text-transform: var( --evf-btn-tt );
+}
+
+.evf-style-v2 .evf-submit-container input[type='submit']:hover,
+.evf-style-v2 .evf-submit-container input[type='submit']:active,
+.evf-style-v2 .evf-submit-container button[type='submit']:hover,
+.evf-style-v2 .evf-submit-container button[type='submit']:active,
+.evf-style-v2 .evf-submit-container .everest-forms-part-button:hover,
+.evf-style-v2 .evf-submit-container .everest-forms-part-button:active,
+.evf-style-v2 .everest-forms-multi-part-actions input[type='submit']:hover,
+.evf-style-v2 .everest-forms-multi-part-actions button[type='submit']:hover,
+.evf-style-v2 .everest-forms-multi-part-actions .everest-forms-part-button:hover {
+	color: var( --evf-btn-color-hover );
+	background-color: var( --evf-btn-bg-hover );
+	border-color: var( --evf-btn-border-c-hover );
+}
+
+.evf-style-v2 .evf-submit-container:not( .everest-forms-multi-part-actions ) {
+	text-align: var( --evf-btn-align );
+}
+
+/* ===== MESSAGES — success / error / validation ===== */
+.evf-style-v2 .everest-forms-notice--success {
+	background-color: var( --evf-msg-success-bg );
+	color: var( --evf-msg-success-color );
+	font-size: var( --evf-msg-success-size );
+	text-align: var( --evf-msg-success-align );
+	border-style: var( --evf-msg-success-border-style, solid );
+	border-width: var( --evf-msg-success-bw );
+	border-color: var( --evf-msg-success-border-c );
+	border-radius: var( --evf-msg-success-radius );
+	font-weight: var( --evf-msg-success-weight );
+	font-style: var( --evf-msg-success-fs );
+	text-transform: var( --evf-msg-success-tt );
+}
+
+.evf-style-v2 .everest-forms-notice--error {
+	background-color: var( --evf-msg-error-bg );
+	color: var( --evf-msg-error-color );
+	font-size: var( --evf-msg-error-size );
+	text-align: var( --evf-msg-error-align );
+	border-style: var( --evf-msg-error-border-style, solid );
+	border-width: var( --evf-msg-error-bw );
+	border-color: var( --evf-msg-error-border-c );
+	border-radius: var( --evf-msg-error-radius );
+	font-weight: var( --evf-msg-error-weight );
+	font-style: var( --evf-msg-error-fs );
+	text-transform: var( --evf-msg-error-tt );
+}
+
+.evf-style-v2 .evf-error {
+	background-color: var( --evf-msg-validation-bg );
+	color: var( --evf-msg-validation-color );
+	font-size: var( --evf-msg-validation-size );
+	text-align: var( --evf-msg-validation-align );
+	border-style: var( --evf-msg-validation-border-style, solid );
+	border-width: var( --evf-msg-validation-bw );
+	border-color: var( --evf-msg-validation-border-c );
+	border-radius: var( --evf-msg-validation-radius );
+	font-weight: var( --evf-msg-validation-weight );
+	font-style: var( --evf-msg-validation-fs );
+	text-transform: var( --evf-msg-validation-tt );
+}

@@ -52,16 +52,20 @@ final class Engine {
 	}
 
 	/**
-	 * Boot the v2 engine (Phase 1+ mounts the panel + frontend enqueue here). No-op unless
-	 * enabled; safe to call more than once.
+	 * Boot the v2 engine. No-op unless enabled; safe to call more than once. Phase 1+ mounts
+	 * the builder tab + REST routes on the `evf_style_v2_booted` action below.
 	 */
 	public static function boot() {
 		if ( ! self::enabled() ) {
 			return;
 		}
+
+		// Engine-aware frontend rendering (v2-compiled vs legacy per form).
+		FrontendEnqueue::register();
+
 		/**
-		 * Fires once the v2 engine boots. Later phases hook the builder tab, REST routes and
-		 * the engine-aware frontend enqueue onto this.
+		 * Fires once the v2 engine boots. Later phases hook the builder tab and REST routes
+		 * onto this.
 		 */
 		do_action( 'evf_style_v2_booted' );
 	}
