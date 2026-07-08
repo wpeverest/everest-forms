@@ -1,0 +1,144 @@
+/**
+ * Style Customizer v2 — shared types.
+ *
+ * These mirror the PHP contract exactly (see addons/StyleCustomizer/V2/Schema.php &
+ * Sanitizer.php). The schema is fetched from the REST endpoint at runtime — the panel never
+ * hardcodes the token list — so these types describe the SHAPE, not the data.
+ */
+
+export type Device = 'desktop' | 'tablet' | 'mobile';
+
+export type ControlType =
+	| 'slider'
+	| 'color'
+	| 'box4'
+	| 'select'
+	| 'align'
+	| 'fontstyle'
+	| 'media'
+	| 'toggle';
+
+/** A 4-side box value — the legacy associative shape the compiler reads (never indexed). */
+export interface BoxValue {
+	top: number;
+	right: number;
+	bottom: number;
+	left: number;
+	unit?: string;
+}
+
+/** Font-style flags — stored with the old customizer's keys for lossless migration. */
+export interface FontStyleValue {
+	bold: boolean;
+	italic: boolean;
+	underline: boolean;
+	uppercase: boolean;
+}
+
+/** A single sanitizable value for a token. */
+export type ScalarValue = number | string | boolean | BoxValue | FontStyleValue;
+
+/** A token's per-device bag; only `desktop` is guaranteed. */
+export type DeviceBag = Partial<Record<Device, ScalarValue>> & { desktop: ScalarValue };
+
+export interface SelectOption {
+	value: string;
+	label: string;
+}
+
+/** One schema token, as delivered by the REST GET (already normalized in PHP). */
+export interface Token {
+	key: string;
+	section: string;
+	group: string;
+	label: string;
+	type: ControlType;
+	var: string | null;
+	default: ScalarValue;
+	state: string | null;
+	responsive: boolean;
+	advanced: boolean;
+	hidden: boolean;
+	tier: 'free' | 'pro';
+	keywords: string[];
+	// Optional, type-specific extras.
+	min?: number;
+	max?: number;
+	step?: number;
+	unit?: string;
+	options?: SelectOption[];
+	units?: string[];
+	corners?: boolean;
+	deps?: string[];
+	vars?: Record<string, string>;
+	neutral_weight?: string;
+	show_when_image?: boolean;
+	special?: string;
+}
+
+export interface SectionState {
+	id: string;
+	label: string;
+}
+
+export interface Section {
+	key: string;
+	title: string;
+	hint: string;
+	variants?: string[];
+	states?: string[];
+}
+
+export interface Palette {
+	id: string;
+	name: string;
+	is_pro: boolean;
+	colors: Record<string, string>;
+}
+
+/** A style template (built-in v1 set migrated server-side, or a user-saved one). */
+export interface Template {
+	id: string;
+	name: string;
+	image: string;
+	palette: string;
+	tokens: Record<string, DeviceBag>;
+	/** True for user-created templates (deletable). */
+	custom?: boolean;
+}
+
+/** The stored style record (matches Sanitizer::sanitize_record()). */
+export interface StyleRecord {
+	schema_version: number;
+	tokens: Record<string, DeviceBag>;
+	palette?: string;
+	template?: string;
+	custom_css?: string;
+	_updated_at?: number;
+}
+
+/** The REST GET payload. */
+export interface StylePayload {
+	form_id: number;
+	schema_version: number;
+	schema: Token[];
+	sections: Record<string, Omit<Section, 'key'>>;
+	palettes: Palette[];
+	palette_map: Record<string, string[]>;
+	templates: Template[];
+	user_templates: Template[];
+	breakpoints: Record<string, number>;
+	pro_active: boolean;
+	record: StyleRecord;
+}
+
+/** Bootstrap data localized by BuilderPanel.php. */
+export interface BootstrapSettings {
+	restBase: string;
+	formId: number;
+	formTitle: string;
+	previewUrl: string;
+	frontendCssUrl: string;
+	wrapperId: string;
+	markerClass: string;
+}

@@ -1,0 +1,1699 @@
+/**
+ * Style Customizer v2 — builder panel chrome.
+ *
+ * Scoped under `#everest-forms-panel-style-v2` — the builder panel wrapper that contains BOTH
+ * our controls (mounted in the builder's native 400px sidebar) and our live preview (portaled
+ * into the builder's content area). Colours, fonts and spacing follow the builder so the panel
+ * reads as a native part of it. The form-styling tokens (`--evf-*`) are NOT here — they live in
+ * the preview iframe via the shared `frontend.css` rule template.
+ */
+
+#everest-forms-panel-style-v2 {
+	/* Palette aligned to the Everest Forms builder. */
+	--ui-ink: #23282d;
+	--ui-ink-2: #383838;
+	--ui-ink-3: #6d6d6d;
+	--ui-icon: #8a90a2;
+	--ui-line: #e1e1e1;
+	--ui-line-2: #edeff7;
+	--ui-input-border: #cdd0d8;
+	--ui-bg: #f0f0f1;
+	--ui-purple: #7545bb;
+	--ui-purple-600: #5317aa;
+	--ui-purple-50: #f6f3fa;
+	--ui-purple-100: #e9e2f3;
+	--ui-red: #dc2626;
+	--ui-green: #15803d;
+	--ui-amber: #b45309;
+	--ui-shadow: 0 1px 2px rgba(20, 23, 40, .04), 0 12px 28px -8px rgba(20, 23, 40, .08);
+	--ui-shadow-sm: 0 1px 2px rgba(20, 23, 40, .08);
+	--ui-focus: 0 0 0 1px #fff, 0 0 0 3px var(--ui-purple);
+
+	/* The builder content area holds the preview flush; the sidebar keeps its native chrome. */
+	.everest-forms-panel-content {
+		padding: 0;
+		background: var(--ui-bg);
+		overflow: hidden;
+	}
+
+	*,
+	*::before,
+	*::after {
+		box-sizing: border-box;
+	}
+
+	button:focus-visible,
+	input:focus-visible,
+	select:focus-visible,
+	textarea:focus-visible,
+	[tabindex]:focus-visible {
+		outline: none;
+		box-shadow: var(--ui-focus);
+		border-radius: 5px;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	#everest-forms-panel-style-v2 *,
+	#everest-forms-panel-style-v2 *::before,
+	#everest-forms-panel-style-v2 *::after {
+		transition: none !important;
+		animation: none !important;
+	}
+}
+
+/* ---------- controls (inside the builder's 400px sidebar) ---------- */
+#everest-forms-panel-style-v2 #evf-scv2-controls {
+	height: 100%;
+}
+
+#everest-forms-panel-style-v2 .scv2-panel {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	min-height: 0;
+	min-width: 0;
+	background: #fff;
+	color: var(--ui-ink-2);
+	font-size: 13px;
+	line-height: 1.5;
+}
+
+#everest-forms-panel-style-v2 .scv2-panel button {
+	font-family: inherit;
+}
+
+#everest-forms-panel-style-v2 .evfscv2-boot {
+	padding: 30px;
+	color: var(--ui-ink-3);
+	font-size: 13px;
+}
+
+/* Sub-tabs match the builder's Fields panel tab bar (Add Fields / Field Options):
+   full-width filled segments — active = white + purple, inactive = grey + dark. */
+#everest-forms-panel-style-v2 .subtabs {
+	display: flex;
+	padding: 0;
+	gap: 0;
+	border-bottom: 1px solid var(--ui-line);
+	flex: none;
+}
+
+#everest-forms-panel-style-v2 .subtab {
+	flex: 1;
+	text-align: center;
+	padding: 12px 4px 14px;
+	border: 0;
+	background: #f6f7f9;
+	font-weight: 500;
+	color: var(--ui-ink);
+	cursor: pointer;
+	font-size: 14px;
+	transition: color .12s, background .12s;
+
+	&:hover:not([aria-selected="true"]) {
+		color: var(--ui-purple);
+	}
+
+	&[aria-selected="true"] {
+		color: var(--ui-purple);
+		background: #fff;
+	}
+}
+
+/* drill-down back header */
+#everest-forms-panel-style-v2 .navback {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 10px 16px;
+	border-bottom: 1px solid var(--ui-line-2);
+	flex: none;
+}
+
+#everest-forms-panel-style-v2 .navback .bk {
+	display: flex;
+	align-items: center;
+	gap: 9px;
+	border: 0;
+	background: none;
+	cursor: pointer;
+	color: var(--ui-ink);
+	font-weight: 600;
+	font-size: 13.5px;
+	padding: 3px 2px;
+	flex: 1;
+	min-width: 0;
+
+	> svg {
+		width: 17px;
+		height: 17px;
+		color: var(--ui-purple);
+		flex: none;
+	}
+
+	.ic {
+		width: 27px;
+		height: 27px;
+		border-radius: 6px;
+		background: var(--ui-purple-50);
+		display: grid;
+		place-items: center;
+		flex: none;
+	}
+
+	.ic svg {
+		width: 15px;
+		height: 15px;
+		color: var(--ui-purple);
+	}
+}
+
+/* responsive context strip */
+#everest-forms-panel-style-v2 .ctxbar {
+	margin: 12px 16px 0;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	background: var(--ui-purple-50);
+	border: 1px solid var(--ui-purple-100);
+	border-radius: 6px;
+	padding: 7px 10px;
+	font-size: 11.5px;
+	color: var(--ui-ink-2);
+
+	b {
+		color: var(--ui-purple);
+	}
+
+	button.back {
+		margin-left: auto;
+		border: 1px solid var(--ui-input-border);
+		background: #fff;
+		border-radius: 4px;
+		padding: 4px 9px;
+		font-size: 11px;
+		font-weight: 600;
+		color: var(--ui-ink-2);
+		cursor: pointer;
+		white-space: nowrap;
+	}
+}
+
+#everest-forms-panel-style-v2 .panel-scroll {
+	overflow-y: auto;
+	padding: 16px;
+	flex: 1;
+	min-height: 0;
+	background: #fff;
+}
+
+/* design list */
+#everest-forms-panel-style-v2 .block-title {
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: .04em;
+	text-transform: uppercase;
+	color: var(--ui-ink-3);
+	margin: 18px 2px 8px;
+
+	&:first-child {
+		margin-top: 2px;
+	}
+}
+
+#everest-forms-panel-style-v2 .hintline {
+	display: flex;
+	align-items: flex-start;
+	gap: 7px;
+	font-size: 11.5px;
+	color: var(--ui-ink-3);
+	line-height: 1.5;
+	margin: 0 2px 10px;
+
+	svg {
+		width: 14px;
+		height: 14px;
+		flex: none;
+		margin-top: 1px;
+		color: var(--ui-purple);
+	}
+}
+
+#everest-forms-panel-style-v2 .pal-select {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	width: 100%;
+	border: 1px solid var(--ui-input-border);
+	border-radius: 4px;
+	background: #fff;
+	padding: 8px 12px;
+	cursor: pointer;
+	text-align: left;
+	transition: border-color .12s, box-shadow .12s;
+
+	&:hover {
+		border-color: #b9bdc9;
+	}
+
+	&[aria-expanded="true"] {
+		border-color: var(--ui-purple);
+		box-shadow: 0 0 0 2px var(--ui-purple-50);
+	}
+
+	.sw {
+		display: flex;
+		gap: 4px;
+		flex: none;
+	}
+
+	.sw i {
+		width: 16px;
+		height: 16px;
+		border-radius: 50%;
+		flex: none;
+		box-shadow: inset 0 0 0 1px rgba(20, 23, 40, .08);
+	}
+
+	.nm {
+		flex: 1;
+		font-size: 12.5px;
+		font-weight: 600;
+		color: var(--ui-ink);
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	.nm::before {
+		content: "PALETTE";
+		display: block;
+		font-size: 9.5px;
+		font-weight: 600;
+		color: var(--ui-ink-3);
+		letter-spacing: .08em;
+		margin-bottom: 1px;
+	}
+
+	.chev {
+		width: 22px;
+		height: 22px;
+		border-radius: 4px;
+		background: #f6f7fa;
+		color: var(--ui-ink-3);
+		display: grid;
+		place-items: center;
+		transition: all .15s;
+		flex: none;
+		font-size: 13px;
+	}
+
+	&[aria-expanded="true"] .chev {
+		background: var(--ui-purple-50);
+		color: var(--ui-purple);
+		transform: rotate(180deg);
+	}
+}
+
+#everest-forms-panel-style-v2 .ellist {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+#everest-forms-panel-style-v2 .elrow {
+	display: flex;
+	align-items: center;
+	gap: 11px;
+	width: 100%;
+	border: 1px solid var(--ui-line);
+	border-radius: 4px;
+	background: #fff;
+	padding: 11px 12px;
+	cursor: pointer;
+	text-align: left;
+	transition: border-color .12s, background .12s;
+
+	&:hover {
+		border-color: var(--ui-purple);
+		background: var(--ui-purple-50);
+	}
+
+	.ic {
+		width: 28px;
+		height: 28px;
+		border-radius: 6px;
+		background: var(--ui-purple-50);
+		color: var(--ui-purple);
+		display: grid;
+		place-items: center;
+		flex: none;
+	}
+
+	.ic svg {
+		width: 16px;
+		height: 16px;
+	}
+
+	.tx {
+		flex: 1;
+		min-width: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 1px;
+	}
+
+	.tx b {
+		font-size: 12.5px;
+		font-weight: 600;
+		color: var(--ui-ink);
+	}
+
+	.tx small {
+		color: var(--ui-ink-3);
+		font-size: 11px;
+	}
+
+	.dot {
+		width: 7px;
+		height: 7px;
+		border-radius: 50%;
+		background: var(--ui-purple);
+		opacity: 0;
+		flex: none;
+	}
+
+	&.dirty .dot {
+		opacity: 1;
+	}
+
+	.chev {
+		color: var(--ui-icon);
+		font-size: 16px;
+		flex: none;
+	}
+}
+
+/* state / variant tabs */
+#everest-forms-panel-style-v2 .state-seg {
+	display: flex;
+	gap: 4px;
+	margin: 4px 0 14px;
+	background: #f2f3f7;
+	padding: 3px;
+	border-radius: 6px;
+
+	button {
+		flex: 1;
+		border: 0;
+		background: none;
+		padding: 6px 2px;
+		border-radius: 4px;
+		font-size: 11px;
+		font-weight: 600;
+		color: var(--ui-ink-2);
+		cursor: pointer;
+
+		&[aria-selected="true"] {
+			background: #fff;
+			color: var(--ui-purple);
+			box-shadow: var(--ui-shadow-sm);
+		}
+	}
+}
+
+#everest-forms-panel-style-v2 .shared-divider {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin: 14px 0 8px;
+	color: var(--ui-ink-3);
+	font-size: 10.5px;
+	font-weight: 700;
+	letter-spacing: .05em;
+	text-transform: uppercase;
+
+	&::before,
+	&::after {
+		content: "";
+		flex: 1;
+		height: 1px;
+		background: var(--ui-line-2);
+	}
+}
+
+#everest-forms-panel-style-v2 .ctrl.shared-dim {
+	opacity: .55;
+	pointer-events: none;
+}
+
+#everest-forms-panel-style-v2 .sec-hint {
+	font-size: 11px;
+	color: var(--ui-ink-3);
+	margin: 4px 2px 12px;
+	line-height: 1.55;
+}
+
+/* grouped cards */
+#everest-forms-panel-style-v2 .grp {
+	margin-bottom: 10px;
+
+	&:first-child {
+		margin-top: 0;
+	}
+}
+
+#everest-forms-panel-style-v2 #elBody .grp {
+	background: #fff;
+	border: 1px solid var(--ui-line);
+	border-radius: 4px;
+	padding: 13px 14px;
+}
+
+#everest-forms-panel-style-v2 #elBody [data-shared] .grp {
+	background: #fbfbfd;
+}
+
+#everest-forms-panel-style-v2 .grp-h {
+	font-size: 10.5px;
+	font-weight: 600;
+	color: var(--ui-ink-3);
+	letter-spacing: .06em;
+	text-transform: uppercase;
+	margin: 1px 0 12px;
+}
+
+#everest-forms-panel-style-v2 #elBody .grp .ctrl:last-child {
+	margin-bottom: 0;
+}
+
+/* controls */
+#everest-forms-panel-style-v2 .ctrl {
+	margin-bottom: 14px;
+	border-radius: 6px;
+	position: relative;
+}
+
+#everest-forms-panel-style-v2 .ctrl.flash {
+	animation: scv2flash 1.4s cubic-bezier(.22, .61, .36, 1);
+}
+
+@keyframes scv2flash {
+	0% {
+		background: var(--ui-purple-50);
+	}
+	100% {
+		background: transparent;
+	}
+}
+
+/* Flash the slate when opened by clicking an element in the live preview. */
+#everest-forms-panel-style-v2 #elBody.flash {
+	animation: scv2slateflash 1.3s ease;
+}
+
+@keyframes scv2slateflash {
+	0% {
+		box-shadow: 0 0 0 3px var(--ui-purple-100);
+		border-radius: 8px;
+	}
+	100% {
+		box-shadow: 0 0 0 3px transparent;
+		border-radius: 8px;
+	}
+}
+
+#everest-forms-panel-style-v2 .ctrl-lab {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 6px;
+	gap: 8px;
+}
+
+#everest-forms-panel-style-v2 .lab-left {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	min-width: 0;
+}
+
+#everest-forms-panel-style-v2 .ctrl-lab label {
+	font-size: 12px;
+	font-weight: 500;
+	color: var(--ui-ink-2);
+}
+
+#everest-forms-panel-style-v2 .ctrl-lab .lab-right {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+}
+
+#everest-forms-panel-style-v2 .ctrl.inherited .ctrl-lab label {
+	color: var(--ui-ink-3);
+}
+
+#everest-forms-panel-style-v2 .ctrl.inherited .ctrl-lab label::after {
+	content: " · inherited";
+	font-style: italic;
+	font-weight: 400;
+}
+
+#everest-forms-panel-style-v2 .px-hint {
+	font-size: 10px;
+	color: var(--ui-ink-3);
+	border: 1px solid var(--ui-line);
+	border-radius: 4px;
+	padding: 1px 5px;
+	background: #f6f7fa;
+}
+
+#everest-forms-panel-style-v2 .prop-reset {
+	width: 22px;
+	height: 22px;
+	border: 0;
+	background: none;
+	border-radius: 4px;
+	color: var(--ui-icon);
+	cursor: pointer;
+	display: none;
+	place-items: center;
+	font-size: 12px;
+	flex: none;
+
+	&:hover {
+		background: var(--ui-line-2);
+		color: var(--ui-ink-2);
+	}
+}
+
+#everest-forms-panel-style-v2 .ctrl.changed .prop-reset {
+	display: grid;
+}
+
+#everest-forms-panel-style-v2 .dev-badge {
+	width: 24px;
+	height: 22px;
+	border: 1px solid var(--ui-line);
+	border-radius: 4px;
+	background: #fff;
+	display: grid;
+	place-items: center;
+	cursor: pointer;
+	color: var(--ui-icon);
+	position: relative;
+	padding: 0;
+	flex: none;
+
+	svg {
+		width: 13px;
+		height: 13px;
+		pointer-events: none;
+	}
+
+	&:hover {
+		border-color: #b9bdc9;
+	}
+
+	&.override {
+		border-color: var(--ui-purple);
+		color: var(--ui-purple);
+		background: var(--ui-purple-50);
+	}
+
+	&.override::after {
+		content: "";
+		position: absolute;
+		top: -4px;
+		right: -4px;
+		width: 8px;
+		height: 8px;
+		border-radius: 50%;
+		background: var(--ui-purple);
+		border: 1.5px solid #fff;
+	}
+}
+
+#everest-forms-panel-style-v2 .slider {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+
+	input[type="range"] {
+		flex: 1;
+		accent-color: var(--ui-purple);
+		height: 4px;
+		min-width: 0;
+	}
+}
+
+#everest-forms-panel-style-v2 .num {
+	width: 62px;
+	display: flex;
+	border: 1px solid var(--ui-input-border);
+	border-radius: 4px;
+	overflow: hidden;
+	flex: none;
+	transition: border-color .12s, box-shadow .12s;
+
+	&:focus-within {
+		border-color: var(--ui-purple);
+		box-shadow: 0 0 0 2px var(--ui-purple-50);
+	}
+
+	input {
+		width: 100%;
+		border: 0;
+		padding: 6px 4px;
+		font-size: 12px;
+		text-align: center;
+		color: var(--ui-ink);
+		font-variant-numeric: tabular-nums;
+		background: none;
+
+		&:focus {
+			outline: none;
+		}
+	}
+
+	span {
+		background: #f6f7fa;
+		border-left: 1px solid var(--ui-line);
+		padding: 6px 5px;
+		color: var(--ui-ink-3);
+		font-size: 10px;
+		display: grid;
+		place-items: center;
+	}
+}
+
+#everest-forms-panel-style-v2 .color {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	border: 1px solid var(--ui-input-border);
+	border-radius: 4px;
+	padding: 5px 8px;
+
+	input[type="color"] {
+		width: 28px;
+		height: 28px;
+		border: 0;
+		background: none;
+		padding: 0;
+		cursor: pointer;
+		border-radius: 4px;
+		flex: none;
+	}
+
+	.hex {
+		flex: 1;
+		border: 0;
+		font-size: 12px;
+		font-family: ui-monospace, monospace;
+		color: var(--ui-ink);
+		min-width: 0;
+		background: none;
+
+		&:focus {
+			outline: none;
+		}
+	}
+
+	.err {
+		font-size: 10.5px;
+		color: var(--ui-red);
+		white-space: nowrap;
+	}
+
+	&.invalid {
+		border-color: var(--ui-red);
+	}
+}
+
+#everest-forms-panel-style-v2 select.inp {
+	width: 100%;
+	padding: 9px 10px;
+	border: 1px solid var(--ui-input-border);
+	border-radius: 4px;
+	background: #fff;
+	font-size: 12.5px;
+	color: var(--ui-ink);
+	transition: border-color .12s, box-shadow .12s;
+
+	&:focus {
+		border-color: var(--ui-purple);
+		box-shadow: 0 0 0 2px var(--ui-purple-50);
+		outline: none;
+	}
+
+	&:disabled {
+		background: #f6f7fa;
+		color: var(--ui-ink-3);
+	}
+}
+
+#everest-forms-panel-style-v2 .dep-hint {
+	font-size: 11px;
+	color: var(--ui-ink-3);
+	margin-top: 5px;
+	line-height: 1.45;
+}
+
+#everest-forms-panel-style-v2 .box4 {
+	display: flex;
+	gap: 5px;
+	align-items: flex-end;
+
+	.cell {
+		flex: 1;
+		text-align: center;
+		min-width: 0;
+	}
+
+	.cell .num {
+		width: 100%;
+	}
+
+	.cell small {
+		display: block;
+		color: var(--ui-ink-3);
+		font-size: 10px;
+		margin-top: 3px;
+	}
+
+	.link {
+		width: 30px;
+		height: 30px;
+		border: 1px solid var(--ui-input-border);
+		border-radius: 4px;
+		background: #fff;
+		cursor: pointer;
+		display: grid;
+		place-items: center;
+		color: var(--ui-icon);
+		flex: none;
+
+		&[aria-pressed="true"] {
+			border-color: var(--ui-purple);
+			color: var(--ui-purple);
+			background: var(--ui-purple-50);
+		}
+
+		svg {
+			width: 14px;
+			height: 14px;
+		}
+	}
+
+	.unit-tgl {
+		height: 30px;
+		min-width: 34px;
+		border: 1px solid var(--ui-input-border);
+		border-radius: 4px;
+		background: #f6f7fa;
+		cursor: pointer;
+		color: var(--ui-ink-2);
+		font-size: 11px;
+		font-weight: 600;
+		flex: none;
+		padding: 0 8px;
+
+		&:hover {
+			border-color: var(--ui-purple);
+			color: var(--ui-purple);
+		}
+	}
+}
+
+#everest-forms-panel-style-v2 .iconset,
+#everest-forms-panel-style-v2 .fstyleset {
+	display: flex;
+	gap: 4px;
+
+	button {
+		flex: 1;
+		height: 32px;
+		border: 1px solid var(--ui-input-border);
+		background: #fff;
+		border-radius: 4px;
+		cursor: pointer;
+		color: var(--ui-ink-2);
+		font-size: 12px;
+		font-weight: 700;
+		display: grid;
+		place-items: center;
+
+		&[aria-pressed="true"] {
+			border-color: var(--ui-purple);
+			background: var(--ui-purple-50);
+			color: var(--ui-purple);
+		}
+
+		svg {
+			width: 15px;
+			height: 15px;
+		}
+	}
+}
+
+#everest-forms-panel-style-v2 .switch {
+	width: 40px;
+	height: 22px;
+	border-radius: 99px;
+	background: #d4d7e0;
+	position: relative;
+	cursor: pointer;
+	flex: none;
+	transition: .2s;
+	border: 0;
+	padding: 0;
+
+	&::after {
+		content: "";
+		position: absolute;
+		top: 2px;
+		left: 2px;
+		width: 18px;
+		height: 18px;
+		border-radius: 50%;
+		background: #fff;
+		transition: .2s;
+		box-shadow: 0 1px 3px rgba(0, 0, 0, .2);
+	}
+
+	&[aria-checked="true"] {
+		background: var(--ui-purple);
+	}
+
+	&[aria-checked="true"]::after {
+		left: 20px;
+	}
+}
+
+#everest-forms-panel-style-v2 .mediactrl {
+	display: flex;
+	gap: 6px;
+	align-items: center;
+}
+
+#everest-forms-panel-style-v2 .mediabtn {
+	flex: 1;
+	border: 1px dashed var(--ui-input-border);
+	background: #fbfbfd;
+	border-radius: 4px;
+	padding: 9px;
+	font-size: 12px;
+	font-weight: 600;
+	color: var(--ui-purple);
+	cursor: pointer;
+}
+
+#everest-forms-panel-style-v2 .mediaclear {
+	border: 1px solid var(--ui-input-border);
+	background: #fff;
+	border-radius: 4px;
+	padding: 9px 11px;
+	font-size: 12px;
+	color: var(--ui-ink-2);
+	cursor: pointer;
+}
+
+/* custom CSS pane */
+#everest-forms-panel-style-v2 .pane-note {
+	font-size: 11.5px;
+	color: var(--ui-ink-3);
+	line-height: 1.55;
+	background: #fbfbfd;
+	border: 1px solid var(--ui-line-2);
+	border-radius: 4px;
+	padding: 9px 11px;
+	margin: 2px 0 14px;
+
+	b {
+		color: var(--ui-ink-2);
+		font-weight: 600;
+	}
+}
+
+#everest-forms-panel-style-v2 .chips {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 5px;
+	margin-bottom: 8px;
+
+	button {
+		border: 1px solid var(--ui-line);
+		background: #fff;
+		border-radius: 4px;
+		padding: 4px 8px;
+		font-size: 11.5px;
+		font-family: ui-monospace, monospace;
+		color: var(--ui-ink-2);
+		cursor: pointer;
+
+		&:hover {
+			background: #f6f7fa;
+			border-color: var(--ui-purple);
+			color: var(--ui-purple);
+		}
+	}
+}
+
+#everest-forms-panel-style-v2 textarea.csscode {
+	width: 100%;
+	padding: 11px;
+	border: 1px solid var(--ui-input-border);
+	border-radius: 4px;
+	font-family: ui-monospace, monospace;
+	font-size: 12px;
+	min-height: 180px;
+	resize: vertical;
+	line-height: 1.6;
+	color: var(--ui-ink);
+	background: #fbfbfd;
+	tab-size: 2;
+
+	&:focus {
+		border-color: var(--ui-purple);
+		box-shadow: 0 0 0 2px var(--ui-purple-50);
+		outline: none;
+	}
+}
+
+#everest-forms-panel-style-v2 .css-status {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin-top: 8px;
+	font-size: 11px;
+	color: var(--ui-ink-3);
+}
+
+/* templates pane */
+#everest-forms-panel-style-v2 .tpls {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 10px;
+}
+
+#everest-forms-panel-style-v2 .tpl {
+	position: relative;
+	border: 1.5px solid var(--ui-line);
+	border-radius: 4px;
+	overflow: hidden;
+	cursor: pointer;
+	background: #fff;
+	text-align: left;
+	padding: 0;
+
+	&[aria-pressed="true"] {
+		border-color: var(--ui-purple);
+		box-shadow: 0 0 0 2px var(--ui-purple-50);
+	}
+
+	.thumb {
+		height: 74px;
+		padding: 12px;
+		display: flex;
+		flex-direction: column;
+		gap: 6px;
+		justify-content: center;
+	}
+
+	.thumb .l {
+		height: 6px;
+		width: 46%;
+		border-radius: 3px;
+	}
+
+	.thumb .f {
+		height: 13px;
+		border: 1px solid;
+		border-radius: 4px;
+	}
+
+	.thumb .b {
+		height: 12px;
+		width: 42%;
+		border-radius: 4px;
+	}
+
+	.cap {
+		padding: 8px 10px;
+		font-size: 11.5px;
+		font-weight: 600;
+		color: var(--ui-ink-2);
+		border-top: 1px solid var(--ui-line-2);
+		display: flex;
+		align-items: center;
+		gap: 6px;
+	}
+}
+
+#everest-forms-panel-style-v2 .tpl .thumb.thumb-has-img {
+	padding: 6px;
+	height: 118px;
+	overflow: hidden;
+	background: #fff;
+	display: block;
+
+	img {
+		width: 100%;
+		height: 100%;
+		object-fit: contain;
+		object-position: center;
+		display: block;
+	}
+}
+
+/* Create Style Template card */
+#everest-forms-panel-style-v2 .tpl-create {
+	background: #fff;
+	border: 1px solid var(--ui-line);
+	border-radius: 8px;
+	padding: 14px;
+	margin-bottom: 16px;
+}
+
+#everest-forms-panel-style-v2 .tpl-create-title {
+	font-size: 13px;
+	font-weight: 600;
+	color: var(--ui-ink);
+	margin-bottom: 3px;
+}
+
+#everest-forms-panel-style-v2 .tpl-create-sub {
+	font-size: 11.5px;
+	color: var(--ui-ink-3);
+	font-style: italic;
+	margin: 0 0 10px;
+	line-height: 1.5;
+}
+
+#everest-forms-panel-style-v2 .tpl-create-input {
+	width: 100%;
+	padding: 9px 11px;
+	border: 1px solid var(--ui-input-border);
+	border-radius: 6px;
+	font-size: 13px;
+	color: var(--ui-ink);
+	background: #fff;
+
+	&:focus {
+		border-color: var(--ui-purple);
+		box-shadow: 0 0 0 2px var(--ui-purple-50);
+		outline: none;
+	}
+}
+
+#everest-forms-panel-style-v2 .tpl-create-row {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	gap: 10px;
+	margin-top: 11px;
+}
+
+#everest-forms-panel-style-v2 .tpl-create-err {
+	color: var(--ui-red);
+	font-size: 11px;
+	margin-right: auto;
+	line-height: 1.4;
+}
+
+#everest-forms-panel-style-v2 .tpl-create-btn {
+	background: var(--ui-purple);
+	color: #fff;
+	border: 0;
+	border-radius: 6px;
+	padding: 9px 22px;
+	font-weight: 600;
+	font-size: 13px;
+	cursor: pointer;
+	transition: background .12s;
+
+	&:hover:not(:disabled) {
+		background: var(--ui-purple-600);
+	}
+
+	&:disabled {
+		opacity: .5;
+		cursor: default;
+	}
+}
+
+/* Delete affordance on user templates */
+#everest-forms-panel-style-v2 .tpl .tpl-del {
+	position: absolute;
+	top: 6px;
+	right: 6px;
+	z-index: 3;
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	background: rgba(20, 23, 40, .55);
+	color: #fff;
+	display: grid;
+	place-items: center;
+	font-size: 11px;
+	line-height: 1;
+	cursor: pointer;
+	opacity: 0;
+	transition: opacity .12s, background .12s;
+
+	&:hover {
+		background: var(--ui-red);
+	}
+}
+
+#everest-forms-panel-style-v2 .tpl:hover .tpl-del,
+#everest-forms-panel-style-v2 .tpl .tpl-del:focus {
+	opacity: 1;
+}
+
+#everest-forms-panel-style-v2 .tpl-hint {
+	margin-top: 10px;
+	font-size: 11.5px;
+	color: var(--ui-ink-3);
+	line-height: 1.5;
+}
+
+/* pro lock */
+#everest-forms-panel-style-v2 .pro-lock {
+	display: flex;
+	align-items: flex-start;
+	gap: 8px;
+	background: #fbf6ff;
+	border: 1px solid var(--ui-purple-100);
+	border-radius: 4px;
+	padding: 10px 12px;
+	font-size: 11.5px;
+	color: var(--ui-purple-600);
+	line-height: 1.5;
+	margin-bottom: 12px;
+
+	a {
+		color: var(--ui-purple);
+		font-weight: 700;
+		text-decoration: underline;
+	}
+}
+
+/* ---------- preview (portaled into the builder content area) ---------- */
+#everest-forms-panel-style-v2 #evf-scv2-preview {
+	height: 100%;
+	width: 100%;
+}
+
+#everest-forms-panel-style-v2 .preview {
+	display: flex;
+	flex-direction: column;
+	min-width: 0;
+	min-height: 0;
+	height: 100%;
+	width: 100%;
+	position: relative;
+	background: var(--ui-bg);
+}
+
+#everest-forms-panel-style-v2 .pv-bar {
+	min-height: 50px;
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	padding: 8px 20px;
+	border-bottom: 1px solid var(--ui-line);
+	background: #fff;
+	flex: none;
+	flex-wrap: wrap;
+}
+
+#everest-forms-panel-style-v2 .pv-bar .ttl {
+	font-weight: 600;
+	font-size: 13px;
+	color: var(--ui-ink);
+	display: flex;
+	align-items: center;
+	gap: 7px;
+	min-width: 0;
+}
+
+#everest-forms-panel-style-v2 .pv-bar .ttl small {
+	font-weight: 400;
+	color: var(--ui-ink-3);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+#everest-forms-panel-style-v2 .pv-bar .info {
+	border: 0;
+	background: none;
+	color: var(--ui-icon);
+	cursor: pointer;
+	display: grid;
+	place-items: center;
+	width: 22px;
+	height: 22px;
+	border-radius: 50%;
+
+	&:hover {
+		background: var(--ui-line-2);
+	}
+}
+
+#everest-forms-panel-style-v2 .pv-savestate {
+	font-size: 11.5px;
+	color: var(--ui-ink-3);
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+
+	&.is-dirty {
+		color: var(--ui-amber);
+	}
+}
+
+#everest-forms-panel-style-v2 .devnow {
+	font-size: 11px;
+	font-weight: 600;
+	color: var(--ui-purple);
+	background: var(--ui-purple-50);
+	padding: 4px 10px;
+	border-radius: 99px;
+	white-space: nowrap;
+	margin-left: auto;
+}
+
+#everest-forms-panel-style-v2 .devs {
+	display: inline-flex;
+	background: #f2f3f7;
+	border-radius: 6px;
+	padding: 3px;
+	border: 1px solid var(--ui-line);
+
+	button {
+		border: 0;
+		background: transparent;
+		width: 34px;
+		height: 28px;
+		border-radius: 4px;
+		cursor: pointer;
+		color: var(--ui-ink-3);
+		display: grid;
+		place-items: center;
+		transition: all .15s;
+
+		&[aria-pressed="true"] {
+			background: #fff;
+			color: var(--ui-purple);
+			box-shadow: var(--ui-shadow-sm);
+		}
+
+		svg {
+			width: 16px;
+			height: 16px;
+		}
+	}
+}
+
+#everest-forms-panel-style-v2 .spin {
+	width: 12px;
+	height: 12px;
+	border: 2px solid rgba(117, 69, 187, .3);
+	border-top-color: var(--ui-purple);
+	border-radius: 50%;
+	animation: scv2spin .7s linear infinite;
+	flex: none;
+	display: inline-block;
+}
+
+@keyframes scv2spin {
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+#everest-forms-panel-style-v2 .save-dot {
+	width: 7px;
+	height: 7px;
+	border-radius: 50%;
+	background: var(--ui-amber);
+	flex: none;
+	display: inline-block;
+}
+
+#everest-forms-panel-style-v2 .pv-canvas {
+	flex: 1;
+	overflow: auto;
+	display: flex;
+	justify-content: center;
+	align-items: stretch;
+	padding: 14px;
+	min-height: 0;
+	background: var(--ui-bg);
+}
+
+#everest-forms-panel-style-v2 .pv-frame {
+	width: 100%;
+	max-width: 100%;
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	min-height: 0;
+}
+
+#everest-forms-panel-style-v2 .pv-ruler {
+	text-align: center;
+	font-size: 10.5px;
+	color: var(--ui-ink-3);
+	font-weight: 600;
+	margin-bottom: 8px;
+	flex: none;
+}
+
+#everest-forms-panel-style-v2 .pv-iframe {
+	width: 100%;
+	flex: 1;
+	min-height: 480px;
+	border: 0;
+	background: #fff;
+	border-radius: 8px;
+	box-shadow: 0 1px 3px rgba(20, 23, 40, .08), 0 8px 24px -12px rgba(20, 23, 40, .14);
+	display: block;
+	/* Hidden until the bridge has hidden the preview chrome + applied styles, so the raw
+	   ?evf_preview page (dark toolbar/theme) never flashes behind the skeleton. */
+	opacity: 0;
+	transition: opacity .3s ease;
+}
+
+#everest-forms-panel-style-v2 .pv-iframe.is-ready {
+	opacity: 1;
+}
+
+/* skeleton / error overlays */
+#everest-forms-panel-style-v2 .pv-skel {
+	position: absolute;
+	inset: 0;
+	background: var(--ui-bg);
+	z-index: 20;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 18px;
+	transition: opacity .3s;
+}
+
+#everest-forms-panel-style-v2 .skel-card {
+	width: min(560px, 80%);
+	background: #fff;
+	border-radius: 8px;
+	padding: 30px;
+	box-shadow: var(--ui-shadow);
+}
+
+#everest-forms-panel-style-v2 .skel-bar {
+	height: 12px;
+	border-radius: 6px;
+	background: linear-gradient(90deg, #eceef3 25%, #f6f7fa 50%, #eceef3 75%);
+	background-size: 200% 100%;
+	animation: scv2shimmer 1.4s infinite;
+	margin-bottom: 14px;
+}
+
+@keyframes scv2shimmer {
+	to {
+		background-position: -200% 0;
+	}
+}
+
+#everest-forms-panel-style-v2 .skel-note {
+	font-size: 12px;
+	color: var(--ui-ink-3);
+}
+
+#everest-forms-panel-style-v2 .pv-error {
+	position: absolute;
+	inset: 0;
+	z-index: 25;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 24px;
+	background: var(--ui-bg);
+}
+
+#everest-forms-panel-style-v2 .pv-error .card {
+	background: #fff;
+	border: 1px solid var(--ui-line);
+	border-radius: 8px;
+	box-shadow: var(--ui-shadow);
+	padding: 26px 30px;
+	max-width: 420px;
+	text-align: center;
+
+	h4 {
+		margin: 0 0 6px;
+		font-size: 15px;
+		color: var(--ui-ink);
+	}
+
+	p {
+		margin: 0 0 16px;
+		font-size: 12.5px;
+		color: var(--ui-ink-3);
+		line-height: 1.55;
+	}
+
+	a {
+		color: var(--ui-purple);
+		font-weight: 600;
+		text-decoration: none;
+	}
+}
+
+#everest-forms-panel-style-v2 .pv-error-actions {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 14px;
+
+	.btn-primary {
+		border: 0;
+		background: var(--ui-purple);
+		color: #fff;
+		font-weight: 600;
+		font-size: 12.5px;
+		border-radius: 6px;
+		padding: 8px 16px;
+		cursor: pointer;
+
+		&:hover {
+			background: var(--ui-purple-600);
+		}
+	}
+}
+
+#everest-forms-panel-style-v2 .skel-note {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+}
+
+#everest-forms-panel-style-v2 .css-example-btn {
+	margin-left: auto;
+	border: 0;
+	background: none;
+	color: var(--ui-purple);
+	font-weight: 600;
+	cursor: pointer;
+	font-size: 11px;
+}
+
+#everest-forms-panel-style-v2 .tpl .cap .on-dot {
+	width: 7px;
+	height: 7px;
+	border-radius: 50%;
+	background: var(--ui-purple);
+	margin-left: auto;
+	flex: none;
+}
+
+/* toast */
+#everest-forms-panel-style-v2 .toast {
+	position: absolute;
+	bottom: 22px;
+	left: 50%;
+	transform: translate(-50%, 0);
+	background: #1f2433;
+	color: #fff;
+	border-radius: 8px;
+	padding: 10px 12px 10px 16px;
+	font-size: 12.5px;
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	box-shadow: 0 10px 30px rgba(20, 23, 40, .3);
+	z-index: 50;
+	max-width: 80%;
+
+	button {
+		border: 0;
+		background: rgba(255, 255, 255, .14);
+		color: #fff;
+		border-radius: 4px;
+		padding: 6px 12px;
+		font-size: 12px;
+		font-weight: 600;
+		cursor: pointer;
+		white-space: nowrap;
+	}
+}
+
+/* floating popover */
+#everest-forms-panel-style-v2 .scv2-pop {
+	position: fixed;
+	z-index: 100000;
+	background: #fff;
+	border: 1px solid var(--ui-line);
+	border-radius: 6px;
+	box-shadow: 0 1px 2px rgba(20, 23, 40, .05), 0 20px 44px -14px rgba(20, 23, 40, .18);
+	padding: 6px;
+	min-width: 200px;
+	max-width: 300px;
+}
+
+#everest-forms-panel-style-v2 .scv2-pop .pop-title {
+	font-size: 10.5px;
+	font-weight: 600;
+	color: var(--ui-ink-3);
+	letter-spacing: .05em;
+	text-transform: uppercase;
+	padding: 8px 10px 6px;
+	line-height: 1.45;
+
+	b {
+		color: var(--ui-ink);
+		font-weight: 600;
+		text-transform: none;
+		letter-spacing: 0;
+	}
+}
+
+#everest-forms-panel-style-v2 .scv2-pop .pop-item {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	width: 100%;
+	border: 0;
+	background: none;
+	text-align: left;
+	padding: 8px 10px;
+	border-radius: 4px;
+	font-size: 12.5px;
+	color: var(--ui-ink);
+	cursor: pointer;
+
+	&:hover:not(:disabled) {
+		background: #f6f7fa;
+	}
+
+	&.danger {
+		color: var(--ui-red);
+	}
+
+	&.danger:hover {
+		background: #fef2f2;
+	}
+}
+
+#everest-forms-panel-style-v2 .scv2-pop .pop-body {
+	padding: 8px 10px;
+	font-size: 12px;
+	color: var(--ui-ink-2);
+	line-height: 1.55;
+}
+
+#everest-forms-panel-style-v2 .scv2-pop .pop-sep {
+	height: 1px;
+	background: var(--ui-line-2);
+	margin: 5px 4px;
+}
+
+/* palette popover grid */
+#everest-forms-panel-style-v2 .pal-pop-grid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 6px;
+	padding: 4px;
+	max-height: 340px;
+	overflow-y: auto;
+}
+
+#everest-forms-panel-style-v2 .pal-card {
+	border: 1px solid var(--ui-line-2);
+	border-radius: 4px;
+	overflow: hidden;
+	cursor: pointer;
+	background: #fff;
+	padding: 8px;
+	text-align: left;
+	transition: border-color .12s, background .12s;
+
+	&:hover {
+		border-color: #b9bdc9;
+		background: #fafbfd;
+	}
+
+	&[aria-pressed="true"] {
+		border-color: var(--ui-purple);
+		background: var(--ui-purple-50);
+		box-shadow: 0 0 0 1px var(--ui-purple-50);
+	}
+
+	.sw {
+		display: flex;
+		gap: 5px;
+		justify-content: flex-start;
+	}
+
+	.sw i {
+		width: 18px;
+		height: 18px;
+		border-radius: 50%;
+		flex: none;
+		box-shadow: inset 0 0 0 1px rgba(20, 23, 40, .08);
+	}
+
+	.cap {
+		display: flex;
+		align-items: center;
+		gap: 5px;
+		font-size: 11.5px;
+		font-weight: 500;
+		color: var(--ui-ink-2);
+		margin-top: 8px;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	&[aria-pressed="true"] .cap {
+		color: var(--ui-purple);
+	}
+
+	.pro {
+		font-size: 9px;
+		font-weight: 700;
+		letter-spacing: .04em;
+		color: #fff;
+		background: linear-gradient(135deg, #f59e0b, #d97706);
+		border-radius: 3px;
+		padding: 1px 5px;
+		margin-left: auto;
+	}
+}

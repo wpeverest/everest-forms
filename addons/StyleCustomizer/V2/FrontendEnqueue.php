@@ -31,10 +31,20 @@ final class FrontendEnqueue {
 	const HANDLE = 'evf-style-v2';
 
 	/**
+	 * Marker class added to a v2 form's wrapper. Shared with the builder panel so its live
+	 * preview bridge can scope the same rule template inside the `?evf_preview` iframe.
+	 */
+	const MARKER_CLASS = 'evf-style-v2';
+
+	/**
 	 * Wire the frontend hooks. Called from {@see Engine::boot()} (only when enabled).
+	 *
+	 * The enqueue runs at priority 20 — AFTER the legacy Style Customizer's
+	 * `enqueue_shortcode_scripts` (priority 10) — so it can dequeue the legacy per-form
+	 * stylesheet for v2 forms and guarantee the plan's "exactly one stylesheet per form" rule.
 	 */
 	public static function register() {
-		add_action( 'everest_forms_shortcode_scripts', array( __CLASS__, 'enqueue' ) );
+		add_action( 'everest_forms_shortcode_scripts', array( __CLASS__, 'enqueue' ), 20 );
 		add_filter( 'everest_forms_frontend_container_class', array( __CLASS__, 'container_class' ), 10, 2 );
 	}
 
@@ -55,6 +65,12 @@ final class FrontendEnqueue {
 			return; // Legacy form — the v1 enqueue handles it.
 		}
 
+		// Exactly one stylesheet per form (plan §3): a v2 form must NOT also load the legacy
+		// per-form compiled sheet. That legacy sheet is scoped with the `#evf-{id}` ID, so it
+		// out-specifies v2's class-scoped rules and silently overrides token values. The legacy
+		// enqueue ran at priority 10; we run at 20, so dequeuing here reliably wins.
+		self::suppress_legacy_styles( $form_id );
+
 		// Shared rule template: registered once, reused by every v2 form on the page.
 		if ( ! wp_style_is( self::HANDLE, 'registered' ) ) {
 			wp_register_style( self::HANDLE, plugins_url( 'assets/css/frontend.css', __FILE__ ), array(), (string) Schema::version() );
@@ -65,6 +81,15 @@ final class FrontendEnqueue {
 		$css = Compiler::compile( $record, $form_id );
 		if ( '' !== $css ) {
 			wp_add_inline_style( self::HANDLE, $css );
+		}
+
+		// User custom CSS — sanitized on save, scoped to the wrapper here so it can't leak
+		// site-wide. Emitted after the variable block so it can override token output.
+		if ( ! empty( $record['custom_css'] ) ) {
+			$custom = Compiler::scope_custom_css( $record['custom_css'], $form_id );
+			if ( '' !== $custom ) {
+				wp_add_inline_style( self::HANDLE, $custom );
+			}
 		}
 	}
 
@@ -82,6 +107,22 @@ final class FrontendEnqueue {
 			$classes[] = 'evf-style-v2';
 		}
 		return $classes;
+	}
+
+	/**
+	 * Prevent the legacy Style Customizer's per-form stylesheet (and any font it queued) from
+	 * loading for a v2 form, so the v2 engine is the single source of truth. Dequeues +
+	 * deregisters the `everest-forms-style-{id}` handle registered by
+	 * {@see \Everest_Forms_Style_Customizer::enqueue_shortcode_scripts()}.
+	 *
+	 * @param int $form_id Form id.
+	 */
+	protected static function suppress_legacy_styles( $form_id ) {
+		$handle = 'everest-forms-style-' . $form_id;
+		if ( wp_style_is( $handle, 'enqueued' ) || wp_style_is( $handle, 'registered' ) ) {
+			wp_dequeue_style( $handle );
+			wp_deregister_style( $handle );
+		}
 	}
 
 	/**

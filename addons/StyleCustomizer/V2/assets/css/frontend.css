@@ -3,18 +3,16 @@
  *
  * The shared half of the "one stylesheet per form" model: these rules READ the
  * `var(--evf-*)` custom properties; the Compiler emits the per-form VALUES as an inline
- * block on `#evf-{id}` (plus tablet/mobile media queries for spacing). Custom properties
- * inherit from the wrapper, so one shared stylesheet themes every v2 form correctly.
+ * block on `#evf-{id}` (plus tablet/mobile media queries for spacing).
  *
- * Scope: everything is under `.evf-style-v2` — the marker class FrontendEnqueue adds to a
- * v2 form's wrapper — so v1 forms (legacy compiled CSS) are never touched.
+ * SPECIFICITY: every selector is scoped `.everest-forms .evf-style-v2 …` — matching the
+ * legacy compiler (`views/scss.php` scopes under `.everest-forms #evf-{id}`) so these
+ * token-driven rules reliably beat Everest Forms' generic base frontend CSS (`.everest-forms
+ * …`). A user's Custom CSS (injected later, or with its own specificity) can still override.
  *
- * Selectors mirror the real EVF frontend markup (see the legacy `views/scss.php`); only
- * TOKEN-DRIVEN properties live here. Structural CSS (layout, marks, flex) stays in the base
- * frontend stylesheet. The 120 schema tokens map 1:1 to the declarations below.
- *
- * NOTE: not yet visually verified against real forms — the golden VR harness (≥15 forms,
- * ≤0.5% drift) is the gate that signs this off before the flag flips on.
+ * Selectors mirror the legacy `views/scss.php` exactly, so a v2 form styles the same real
+ * markup the v1 engine did. Only TOKEN-DRIVEN properties live here; structural CSS stays in
+ * the base frontend stylesheet.
  *
  * @package EverestForms\Addons\StyleCustomizer\V2
  */
@@ -38,7 +36,7 @@
 }
 
 /* ===== TEXT — label ===== */
-.evf-style-v2 label.evf-field-label {
+.everest-forms .evf-style-v2 label.evf-field-label {
 	color: var( --evf-label-color );
 	font-size: var( --evf-label-size );
 	line-height: var( --evf-label-lh );
@@ -52,7 +50,7 @@
 }
 
 /* Sublabel */
-.evf-style-v2 label.everest-forms-field-sublabel {
+.everest-forms .evf-style-v2 label.everest-forms-field-sublabel {
 	color: var( --evf-sub-color );
 	font-size: var( --evf-sub-size );
 	line-height: var( --evf-sub-lh );
@@ -66,7 +64,7 @@
 }
 
 /* Description */
-.evf-style-v2 .evf-field-description {
+.everest-forms .evf-style-v2 .evf-field-description {
 	color: var( --evf-desc-color );
 	font-size: var( --evf-desc-size );
 	line-height: var( --evf-desc-lh );
@@ -80,7 +78,7 @@
 }
 
 /* Section title */
-.evf-style-v2 .evf-field-title h3 {
+.everest-forms .evf-style-v2 .evf-field-title h3 {
 	color: var( --evf-title-color );
 	font-size: var( --evf-title-size );
 	line-height: var( --evf-title-lh );
@@ -94,21 +92,22 @@
 }
 
 /* ===== INPUTS — text boxes, dropdowns, textareas ===== */
-.evf-style-v2 input[type='text'],
-.evf-style-v2 input[type='email'],
-.evf-style-v2 input[type='number'],
-.evf-style-v2 input[type='password'],
-.evf-style-v2 input[type='datetime'],
-.evf-style-v2 input[type='datetime-local'],
-.evf-style-v2 input[type='date'],
-.evf-style-v2 input[type='time'],
-.evf-style-v2 input[type='week'],
-.evf-style-v2 input[type='url'],
-.evf-style-v2 input[type='tel'],
-.evf-style-v2 input[type='file'],
-.evf-style-v2 textarea,
-.evf-style-v2 select,
-.evf-style-v2 .StripeElement {
+.everest-forms .evf-style-v2 input[type='text'],
+.everest-forms .evf-style-v2 input[type='email'],
+.everest-forms .evf-style-v2 input[type='number'],
+.everest-forms .evf-style-v2 input[type='password'],
+.everest-forms .evf-style-v2 input[type='datetime'],
+.everest-forms .evf-style-v2 input[type='datetime-local'],
+.everest-forms .evf-style-v2 input[type='date'],
+.everest-forms .evf-style-v2 input[type='time'],
+.everest-forms .evf-style-v2 input[type='week'],
+.everest-forms .evf-style-v2 input[type='url'],
+.everest-forms .evf-style-v2 input[type='tel'],
+.everest-forms .evf-style-v2 input[type='file'],
+.everest-forms .evf-style-v2 textarea,
+.everest-forms .evf-style-v2 select,
+.everest-forms .evf-style-v2 canvas.evf-signature-canvas,
+.everest-forms .evf-style-v2 .StripeElement {
 	color: var( --evf-input-color );
 	font-size: var( --evf-input-size );
 	text-align: var( --evf-input-align );
@@ -124,28 +123,28 @@
 	text-transform: var( --evf-input-tt );
 }
 
-.evf-style-v2 input::placeholder,
-.evf-style-v2 textarea::placeholder {
+.everest-forms .evf-style-v2 input::placeholder,
+.everest-forms .evf-style-v2 textarea::placeholder {
 	color: var( --evf-input-ph );
 }
 
-.evf-style-v2 input:focus,
-.evf-style-v2 textarea:focus,
-.evf-style-v2 select:focus,
-.evf-style-v2 .StripeElement--focus {
+.everest-forms .evf-style-v2 input:focus,
+.everest-forms .evf-style-v2 textarea:focus,
+.everest-forms .evf-style-v2 select:focus,
+.everest-forms .evf-style-v2 .StripeElement--focus {
 	border-color: var( --evf-input-focus-border );
 }
 
 /* Payment/price readouts follow the input text style */
-.evf-style-v2 .evf-payment-total,
-.evf-style-v2 .evf-single-item-price {
+.everest-forms .evf-style-v2 .evf-payment-total,
+.everest-forms .evf-style-v2 .evf-single-item-price {
 	color: var( --evf-input-color );
 	font-size: var( --evf-input-size );
 	text-align: var( --evf-input-align );
 }
 
 /* ===== INPUTS — upload area ===== */
-.evf-style-v2 .everest-forms-uploader {
+.everest-forms .evf-style-v2 .everest-forms-uploader {
 	background-color: var( --evf-file-bg );
 	border-style: var( --evf-file-border-style, dashed );
 	border-width: var( --evf-file-bw );
@@ -155,57 +154,57 @@
 	padding: var( --evf-file-pad );
 }
 
-.evf-style-v2 .everest-forms-uploader .everest-forms-upload-title,
-.evf-style-v2 .everest-forms-uploader .everest-forms-upload-hint,
-.evf-style-v2 .everest-forms-uploader .dz-details,
-.evf-style-v2 .everest-forms-uploader .dz-error-message {
+.everest-forms .evf-style-v2 .everest-forms-uploader .everest-forms-upload-title,
+.everest-forms .evf-style-v2 .everest-forms-uploader .everest-forms-upload-hint,
+.everest-forms .evf-style-v2 .everest-forms-uploader .dz-details,
+.everest-forms .evf-style-v2 .everest-forms-uploader .dz-error-message {
 	font-size: var( --evf-file-size );
 }
 
-.evf-style-v2 .everest-forms-uploader .everest-forms-upload-title,
-.evf-style-v2 .everest-forms-uploader .everest-forms-upload-hint,
-.evf-style-v2 .everest-forms-uploader .dz-details span {
+.everest-forms .evf-style-v2 .everest-forms-uploader .everest-forms-upload-title,
+.everest-forms .evf-style-v2 .everest-forms-uploader .everest-forms-upload-hint,
+.everest-forms .evf-style-v2 .everest-forms-uploader .dz-details span {
 	color: var( --evf-file-color );
 }
 
-.evf-style-v2 .everest-forms-uploader .dz-message > svg {
+.everest-forms .evf-style-v2 .everest-forms-uploader .dz-message > svg {
 	background-color: var( --evf-file-iconbg );
 	fill: var( --evf-file-icon );
 }
 
 /* ===== CHOICES — radio, checkbox, and everything that follows them ===== */
-.evf-style-v2 .evf-field-radio ul li,
-.evf-style-v2 .evf-field-checkbox ul li,
-.evf-style-v2 .evf-field-payment-multiple ul li,
-.evf-style-v2 .evf-field-payment-checkbox ul li,
-.evf-style-v2 .evf-field-privacy-policy ul li {
+.everest-forms .evf-style-v2 .evf-field-radio ul li,
+.everest-forms .evf-style-v2 .evf-field-checkbox ul li,
+.everest-forms .evf-style-v2 .evf-field-payment-multiple ul li,
+.everest-forms .evf-style-v2 .evf-field-payment-checkbox ul li,
+.everest-forms .evf-style-v2 .evf-field-privacy-policy ul li {
 	text-align: var( --evf-choice-align );
 	margin: var( --evf-choice-margin );
 }
 
-.evf-style-v2 .evf-field-radio input[type='radio'],
-.evf-style-v2 .evf-field-radio input[type='checkbox'],
-.evf-style-v2 .evf-field-checkbox input[type='radio'],
-.evf-style-v2 .evf-field-checkbox input[type='checkbox'],
-.evf-style-v2 .evf-field-payment-multiple input[type='radio'],
-.evf-style-v2 .evf-field-payment-checkbox input[type='checkbox'] {
+.everest-forms .evf-style-v2 .evf-field-radio ul li input[type='radio'],
+.everest-forms .evf-style-v2 .evf-field-radio ul li input[type='checkbox'],
+.everest-forms .evf-style-v2 .evf-field-checkbox ul li input[type='radio'],
+.everest-forms .evf-style-v2 .evf-field-checkbox ul li input[type='checkbox'],
+.everest-forms .evf-style-v2 .evf-field-payment-multiple ul li input[type='radio'],
+.everest-forms .evf-style-v2 .evf-field-payment-checkbox ul li input[type='checkbox'] {
 	width: var( --evf-choice-size );
 	height: var( --evf-choice-size );
 	border-color: var( --evf-choice-border );
 }
 
-.evf-style-v2 .evf-field-radio input:checked,
-.evf-style-v2 .evf-field-checkbox input:checked,
-.evf-style-v2 .evf-field-payment-multiple input:checked,
-.evf-style-v2 .evf-field-payment-checkbox input:checked {
+.everest-forms .evf-style-v2 .evf-field-radio ul li input:checked,
+.everest-forms .evf-style-v2 .evf-field-checkbox ul li input:checked,
+.everest-forms .evf-style-v2 .evf-field-payment-multiple ul li input:checked,
+.everest-forms .evf-style-v2 .evf-field-payment-checkbox ul li input:checked {
 	border-color: var( --evf-choice-checked );
 	background-color: var( --evf-choice-checked );
 }
 
-.evf-style-v2 .evf-field-radio input + label,
-.evf-style-v2 .evf-field-checkbox input + label,
-.evf-style-v2 .evf-field-payment-multiple input + label,
-.evf-style-v2 .evf-field-payment-checkbox input + label {
+.everest-forms .evf-style-v2 .evf-field-radio ul li input + label,
+.everest-forms .evf-style-v2 .evf-field-checkbox ul li input + label,
+.everest-forms .evf-style-v2 .evf-field-payment-multiple ul li input + label,
+.everest-forms .evf-style-v2 .evf-field-payment-checkbox ul li input + label {
 	font-size: var( --evf-choice-fsize );
 	color: var( --evf-choice-color );
 	font-weight: var( --evf-choice-weight );
@@ -215,12 +214,12 @@
 }
 
 /* ===== BUTTON — submit / multi-part nav / upload button ===== */
-.evf-style-v2 .evf-submit-container input[type='submit'],
-.evf-style-v2 .evf-submit-container button[type='submit'],
-.evf-style-v2 .evf-submit-container .everest-forms-part-button,
-.evf-style-v2 .everest-forms-multi-part-actions input[type='submit'],
-.evf-style-v2 .everest-forms-multi-part-actions button[type='submit'],
-.evf-style-v2 .everest-forms-multi-part-actions .everest-forms-part-button {
+.everest-forms .evf-style-v2 .evf-submit-container input[type='submit'],
+.everest-forms .evf-style-v2 .evf-submit-container button[type='submit'],
+.everest-forms .evf-style-v2 .evf-submit-container .everest-forms-part-button,
+.everest-forms .evf-style-v2 .everest-forms-multi-part-actions input[type='submit'],
+.everest-forms .evf-style-v2 .everest-forms-multi-part-actions button[type='submit'],
+.everest-forms .evf-style-v2 .everest-forms-multi-part-actions .everest-forms-part-button {
 	color: var( --evf-btn-color );
 	font-size: var( --evf-btn-size );
 	line-height: var( --evf-btn-lh );
@@ -236,26 +235,27 @@
 	text-transform: var( --evf-btn-tt );
 }
 
-.evf-style-v2 .evf-submit-container input[type='submit']:hover,
-.evf-style-v2 .evf-submit-container input[type='submit']:active,
-.evf-style-v2 .evf-submit-container button[type='submit']:hover,
-.evf-style-v2 .evf-submit-container button[type='submit']:active,
-.evf-style-v2 .evf-submit-container .everest-forms-part-button:hover,
-.evf-style-v2 .evf-submit-container .everest-forms-part-button:active,
-.evf-style-v2 .everest-forms-multi-part-actions input[type='submit']:hover,
-.evf-style-v2 .everest-forms-multi-part-actions button[type='submit']:hover,
-.evf-style-v2 .everest-forms-multi-part-actions .everest-forms-part-button:hover {
+.everest-forms .evf-style-v2 .evf-submit-container input[type='submit']:hover,
+.everest-forms .evf-style-v2 .evf-submit-container input[type='submit']:active,
+.everest-forms .evf-style-v2 .evf-submit-container button[type='submit']:hover,
+.everest-forms .evf-style-v2 .evf-submit-container button[type='submit']:active,
+.everest-forms .evf-style-v2 .evf-submit-container .everest-forms-part-button:hover,
+.everest-forms .evf-style-v2 .evf-submit-container .everest-forms-part-button:active,
+.everest-forms .evf-style-v2 .everest-forms-multi-part-actions input[type='submit']:hover,
+.everest-forms .evf-style-v2 .everest-forms-multi-part-actions button[type='submit']:hover,
+.everest-forms .evf-style-v2 .everest-forms-multi-part-actions .everest-forms-part-button:hover {
 	color: var( --evf-btn-color-hover );
 	background-color: var( --evf-btn-bg-hover );
 	border-color: var( --evf-btn-border-c-hover );
 }
 
-.evf-style-v2 .evf-submit-container:not( .everest-forms-multi-part-actions ) {
+.everest-forms .evf-style-v2 .evf-submit-container:not( .everest-forms-multi-part-actions ) {
 	text-align: var( --evf-btn-align );
 }
 
 /* ===== MESSAGES — success / error / validation ===== */
-.evf-style-v2 .everest-forms-notice--success {
+.everest-forms .evf-style-v2 .everest-forms-notice--success,
+.everest-forms.everest-forms-notice--success.evf-style-v2 {
 	background-color: var( --evf-msg-success-bg );
 	color: var( --evf-msg-success-color );
 	font-size: var( --evf-msg-success-size );
@@ -269,7 +269,7 @@
 	text-transform: var( --evf-msg-success-tt );
 }
 
-.evf-style-v2 .everest-forms-notice--error {
+.everest-forms .evf-style-v2 .everest-forms-notice--error {
 	background-color: var( --evf-msg-error-bg );
 	color: var( --evf-msg-error-color );
 	font-size: var( --evf-msg-error-size );
@@ -283,7 +283,7 @@
 	text-transform: var( --evf-msg-error-tt );
 }
 
-.evf-style-v2 .evf-error {
+.everest-forms .evf-style-v2 .evf-error {
 	background-color: var( --evf-msg-validation-bg );
 	color: var( --evf-msg-validation-color );
 	font-size: var( --evf-msg-validation-size );

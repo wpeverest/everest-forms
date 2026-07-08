@@ -84,6 +84,71 @@ final class RestController {
 				),
 			)
 		);
+
+		// Create a user template from the current styles.
+		register_rest_route(
+			$this->namespace,
+			'/style-templates',
+			array(
+				array(
+					'methods'             => 'POST',
+					'callback'            => array( $this, 'create_template' ),
+					'permission_callback' => array( $this, 'permissions_check' ),
+				),
+			)
+		);
+
+		// Delete a user template.
+		register_rest_route(
+			$this->namespace,
+			'/style-templates/(?P<tid>[A-Za-z0-9\-]+)',
+			array(
+				array(
+					'methods'             => 'DELETE',
+					'callback'            => array( $this, 'delete_template' ),
+					'permission_callback' => array( $this, 'permissions_check' ),
+				),
+			)
+		);
+	}
+
+	/**
+	 * POST /style-templates — save the current styles as a reusable user template.
+	 *
+	 * @param \WP_REST_Request $request Request.
+	 * @return \WP_REST_Response|\WP_Error
+	 */
+	public function create_template( $request ) {
+		$name     = $request->get_param( 'name' );
+		$incoming = $request->get_param( 'record' );
+		if ( ! is_array( $incoming ) ) {
+			return new \WP_Error(
+				'evf_style_bad_request',
+				__( 'Missing or invalid "record".', 'everest-forms' ),
+				array( 'status' => 400 )
+			);
+		}
+		// Sanitize the incoming styles before persisting them as a template.
+		$clean    = Sanitizer::sanitize_record( $incoming );
+		$template = Templates::save_user_template( $name, $clean );
+
+		return rest_ensure_response(
+			array(
+				'saved'    => true,
+				'template' => $template,
+			)
+		);
+	}
+
+	/**
+	 * DELETE /style-templates/{tid} — remove a user template.
+	 *
+	 * @param \WP_REST_Request $request Request.
+	 * @return \WP_REST_Response
+	 */
+	public function delete_template( $request ) {
+		$deleted = Templates::delete_user_template( (string) $request['tid'] );
+		return rest_ensure_response( array( 'deleted' => (bool) $deleted ) );
 	}
 
 	/**
@@ -96,6 +161,40 @@ final class RestController {
 	}
 
 	/**
+	 * Detect which named palette a legacy record's `color_palette` selection matches, so the
+	 * panel can show it as the active palette. Returns an empty string if it matches none
+	 * (a custom palette) — the six colours still migrate onto their tokens regardless.
+	 *
+	 * @param array $legacy Legacy record.
+	 * @return string Palette id, or ''.
+	 */
+	protected static function detect_palette( $legacy ) {
+		if ( empty( $legacy['color_palette'] ) || ! is_array( $legacy['color_palette'] ) ) {
+			return '';
+		}
+		$colors = reset( $legacy['color_palette'] );
+		if ( ! is_array( $colors ) ) {
+			return '';
+		}
+		$norm = static function ( $v ) {
+			return strtolower( trim( (string) $v ) );
+		};
+		foreach ( Schema::palettes() as $palette ) {
+			$match = true;
+			foreach ( $palette['colors'] as $slot => $value ) {
+				if ( ! isset( $colors[ $slot ] ) || $norm( $colors[ $slot ] ) !== $norm( $value ) ) {
+					$match = false;
+					break;
+				}
+			}
+			if ( $match ) {
+				return $palette['id'];
+			}
+		}
+		return '';
+	}
+
+	/**
 	 * GET — the saved record (or an empty default) plus the schema the panel renders from,
 	 * so the client never hardcodes the token contract.
 	 *
@@ -105,12 +204,24 @@ final class RestController {
 	public function get_item( $request ) {
 		$form_id = absint( $request['id'] );
 		$all     = get_option( 'everest_forms_styles', array() );
-		$record  = ( isset( $all[ $form_id ] ) && Engine::is_v2_record( $all[ $form_id ] ) )
-			? $all[ $form_id ]
-			: array(
+		$stored  = isset( $all[ $form_id ] ) && is_array( $all[ $form_id ] ) ? $all[ $form_id ] : array();
+
+		if ( Engine::is_v2_record( $stored ) ) {
+			// Already a v2 record — serve it as-is.
+			$record = $stored;
+		} elseif ( ! empty( $stored ) ) {
+			// A legacy (v1) record: migrate on read so an existing styled form opens with its
+			// real styles intact (backward compatibility). The migration is lossless (renames
+			// settings, never reshapes values); it is only persisted when the user saves.
+			$record            = Migrator::migrate_record( $stored );
+			$record['palette'] = self::detect_palette( $stored );
+		} else {
+			// Never styled — an empty v2 default record.
+			$record = array(
 				'schema_version' => Schema::version(),
 				'tokens'         => array(),
 			);
+		}
 
 		return rest_ensure_response(
 			array(
@@ -119,6 +230,19 @@ final class RestController {
 				'schema'         => Schema::tokens(),
 				'sections'       => Schema::sections(),
 				'palettes'       => Schema::palettes(),
+				'palette_map'    => Schema::palette_map(),
+				'templates'      => Templates::all(),
+				'user_templates' => Templates::user_templates(),
+				'breakpoints'    => Compiler::breakpoints(),
+				/**
+				 * Whether the Pro tier is active. Defaults to whether Everest Forms Pro is loaded
+				 * (its `EFP_PLUGIN_FILE` constant), so pro-tier tokens unlock automatically when Pro
+				 * is active; in free they render locked with the upgrade prompt. Filterable for
+				 * licence-aware gating.
+				 *
+				 * @param bool $pro_active Default: Pro plugin active.
+				 */
+				'pro_active'     => (bool) apply_filters( 'evf_style_v2_pro_active', defined( 'EFP_PLUGIN_FILE' ) ),
 				'record'         => $record,
 			)
 		);
@@ -165,6 +289,17 @@ final class RestController {
 				__( 'These styles were changed somewhere else. Reload before saving.', 'everest-forms' ),
 				array( 'status' => 409 )
 			);
+		}
+
+		// Back up a legacy record ONCE before v2 first overwrites it, so a rollback is always
+		// possible (plan §5). Only the very first v2 save (when the stored record is still
+		// legacy) triggers the backup; subsequent v2 saves leave the backup untouched.
+		if ( isset( $all[ $form_id ] ) && ! Engine::is_v2_record( $all[ $form_id ] ) ) {
+			$backups = get_option( 'everest_forms_styles_legacy_backup', array() );
+			if ( ! isset( $backups[ $form_id ] ) ) {
+				$backups[ $form_id ] = $all[ $form_id ];
+				update_option( 'everest_forms_styles_legacy_backup', $backups, false );
+			}
 		}
 
 		$clean           = Sanitizer::sanitize_record( $incoming );

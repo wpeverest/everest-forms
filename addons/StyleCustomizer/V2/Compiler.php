@@ -72,6 +72,80 @@ final class Compiler {
 	}
 
 	/**
+	 * Scope a user's custom CSS to the form wrapper so it can never leak site-wide (plan §9.4).
+	 * Every top-level rule's selector list is prefixed with the wrapper selector; `@media` /
+	 * `@supports` / `@container` blocks are recursed into; other at-rules (`@keyframes`,
+	 * `@font-face`) pass through untouched. Input is already tag/@import/expression-stripped by
+	 * {@see Sanitizer::sanitize_css()}.
+	 *
+	 * @param string     $css     Sanitized custom CSS.
+	 * @param int|string $form_id Form id.
+	 * @return string Scoped CSS (empty if nothing to emit).
+	 */
+	public static function scope_custom_css( $css, $form_id ) {
+		$css = trim( (string) $css );
+		if ( '' === $css ) {
+			return '';
+		}
+		return self::scope_block( $css, self::wrapper_selector( $form_id ) );
+	}
+
+	/**
+	 * Recursively prefix every rule selector in a CSS block with a scope selector.
+	 *
+	 * @param string $css   CSS block body.
+	 * @param string $scope Scope selector (e.g. `#evf-12`).
+	 * @return string
+	 */
+	protected static function scope_block( $css, $scope ) {
+		$out = '';
+		$len = strlen( $css );
+		$i   = 0;
+
+		while ( $i < $len ) {
+			$brace = strpos( $css, '{', $i );
+			if ( false === $brace ) {
+				break; // Trailing junk with no block — drop it.
+			}
+			$prelude = trim( substr( $css, $i, $brace - $i ) );
+
+			// Find the matching close brace (track nesting).
+			$depth = 1;
+			$j     = $brace + 1;
+			while ( $j < $len && $depth > 0 ) {
+				if ( '{' === $css[ $j ] ) {
+					++$depth;
+				} elseif ( '}' === $css[ $j ] ) {
+					--$depth;
+				}
+				++$j;
+			}
+			$body = substr( $css, $brace + 1, $j - $brace - 2 );
+
+			if ( '' !== $prelude && '@' === $prelude[0] ) {
+				$lower = strtolower( $prelude );
+				if ( 0 === strpos( $lower, '@media' ) || 0 === strpos( $lower, '@supports' ) || 0 === strpos( $lower, '@container' ) ) {
+					$out .= $prelude . '{' . self::scope_block( $body, $scope ) . '}';
+				} else {
+					// @keyframes / @font-face / @page — not selector-based, keep as-is.
+					$out .= $prelude . '{' . $body . '}';
+				}
+			} elseif ( '' !== $prelude ) {
+				$selectors = array_filter( array_map( 'trim', explode( ',', $prelude ) ) );
+				$scoped    = array();
+				foreach ( $selectors as $selector ) {
+					$scoped[] = $scope . ' ' . $selector;
+				}
+				$out .= implode( ',', $scoped ) . '{' . $body . '}';
+			}
+
+			$i = $j;
+		}
+
+		return $out;
+	}
+
+	/**
 	 * The wrapper selector for a form. Matches the existing engine's `#evf-{id}` (inside
 	 * `.everest-forms`); custom properties inherit from it to every field.
 	 *

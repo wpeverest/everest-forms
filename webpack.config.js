@@ -23,6 +23,10 @@ const webpackConfig = {
 			'./src/dashboard/header-standalone.js',
 		),
 		builderAI: resolve(process.cwd(), './src/builder-ai/index.tsx'),
+		styleCustomizerV2: resolve(
+			process.cwd(),
+			'./src/style-customizer-v2/index.tsx',
+		),
 	},
 	output: {
 		path: resolve(process.cwd(), 'dist'),

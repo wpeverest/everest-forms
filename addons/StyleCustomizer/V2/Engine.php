@@ -66,8 +66,11 @@ final class Engine {
 		// REST read/save for the builder panel.
 		RestController::register();
 
+		// Builder "Style" tab + React panel.
+		BuilderPanel::register();
+
 		/**
-		 * Fires once the v2 engine boots. Later phases hook the builder tab onto this.
+		 * Fires once the v2 engine boots.
 		 */
 		do_action( 'evf_style_v2_booted' );
 	}
