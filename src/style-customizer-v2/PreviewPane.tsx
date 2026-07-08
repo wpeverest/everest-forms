@@ -16,6 +16,28 @@ const __ = ( window as any ).wp?.i18n?.__ || ( ( s: string ) => s );
 
 type PreviewStatus = 'loading' | 'ready' | 'error';
 
+/**
+ * Polished preview loader (skeleton form + spinner). Shared with the panel bootstrap so the
+ * preview area shows the SAME loader from the instant the tab opens through until the iframe
+ * is ready — no blank flash, no premature "unavailable".
+ */
+export function PreviewSkeleton() {
+	return (
+		<div className="pv-skel" aria-hidden="true">
+			<div className="skel-card">
+				<div className="skel-bar" style={ { width: '38%' } } />
+				<div className="skel-bar" style={ { width: '100%', height: 38 } } />
+				<div className="skel-bar" style={ { width: '62%' } } />
+				<div className="skel-bar" style={ { width: '100%', height: 38 } } />
+				<div className="skel-bar" style={ { width: '30%', height: 34, marginBottom: 0 } } />
+			</div>
+			<span className="skel-note">
+				<span className="spin" /> { __( 'Loading your live preview…', 'everest-forms' ) }
+			</span>
+		</div>
+	);
+}
+
 const DEVICE_ORDER: Device[] = [ 'desktop', 'tablet', 'mobile' ];
 
 /**
@@ -65,6 +87,21 @@ export function PreviewPane( {
 	const onSelectRef = React.useRef( onSelect );
 	onSelectRef.current = onSelect;
 
+	// Force the iframe protocol to match the parent page's. If the builder is served over https
+	// but the preview URL is http (e.g. is_ssl() misreported behind a proxy), Chrome blocks the
+	// mixed-content iframe and it renders blank — the reported "not visible in Chrome" bug. Same
+	// host + scheme keeps it same-origin so the live-edit bridge can still script it.
+	const previewSrc = React.useMemo( () => {
+		try {
+			const url = new URL( store.settings.previewUrl, window.location.href );
+			url.protocol = window.location.protocol;
+			return url.href;
+		} catch ( e ) {
+			return store.settings.previewUrl;
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [] );
+
 	// Create the bridge once the iframe is mounted; subscribe the store to live edits.
 	React.useEffect( () => {
 		const iframe = iframeRef.current;
@@ -85,6 +122,14 @@ export function PreviewPane( {
 		setActiveBridge( bridge );
 		bridge.attach();
 
+		// Chrome-safety: on some Chrome setups the iframe `load` event / bridge poll can fail to
+		// flip the status (leaving the frame gated at opacity:0 forever, i.e. an invisible preview
+		// — the exact symptom seen in Chrome but not Chromium/Brave). Force the reveal after a
+		// short deadline so the preview is ALWAYS shown, with or without the live-edit bridge.
+		const revealTimer = window.setTimeout( () => {
+			setStatus( ( prev ) => ( prev === 'loading' ? 'ready' : prev ) );
+		}, 2500 );
+
 		const unsubscribe = s.subscribe( () => {
 			const affected = s.affected;
 			if ( affected === null ) {
@@ -97,6 +142,7 @@ export function PreviewPane( {
 		} );
 
 		return () => {
+			window.clearTimeout( revealTimer );
 			unsubscribe();
 			bridge.detach();
 			setActiveBridge( null );
@@ -149,6 +195,21 @@ export function PreviewPane( {
 					</button>
 				</span>
 
+				<span className={ 'pv-savestate' + ( dirty || saving ? ' is-dirty' : '' ) } aria-live="polite">
+					{ saving ? (
+						<>
+							<span className="spin" aria-hidden="true" /> { __( 'Saving…', 'everest-forms' ) }
+						</>
+					) : dirty ? (
+						<>
+							<span className="save-dot" aria-hidden="true" /> { __( 'Unsaved — hit Save above', 'everest-forms' ) }
+						</>
+					) : (
+						__( 'All changes saved', 'everest-forms' )
+					) }
+				</span>
+
+				{ /* Device switcher — pinned to the far right of the toolbar. */ }
 				<div className="devs" role="group" aria-label={ __( 'Preview device', 'everest-forms' ) }>
 					{ DEVICE_ORDER.map( ( d ) => (
 						<button
@@ -169,20 +230,6 @@ export function PreviewPane( {
 						</button>
 					) ) }
 				</div>
-
-				<span className={ 'pv-savestate' + ( dirty || saving ? ' is-dirty' : '' ) } aria-live="polite">
-					{ saving ? (
-						<>
-							<span className="spin" aria-hidden="true" /> { __( 'Saving…', 'everest-forms' ) }
-						</>
-					) : dirty ? (
-						<>
-							<span className="save-dot" aria-hidden="true" /> { __( 'Unsaved — hit Save above', 'everest-forms' ) }
-						</>
-					) : (
-						__( 'All changes saved', 'everest-forms' )
-					) }
-				</span>
 			</div>
 
 			<div className="pv-canvas">
@@ -193,7 +240,7 @@ export function PreviewPane( {
 						ref={ iframeRef }
 						className={ 'pv-iframe' + ( status === 'ready' ? ' is-ready' : '' ) }
 						title={ __( 'Form preview', 'everest-forms' ) }
-						src={ store.settings.previewUrl }
+						src={ previewSrc }
 						onLoad={ () => {
 							// Strict cross-browser visibility: reveal the iframe on its native load
 							// event no matter what the bridge does. The bridge's own load handler
@@ -204,20 +251,7 @@ export function PreviewPane( {
 					/>
 				</div>
 
-				{ status === 'loading' && (
-					<div className="pv-skel" aria-hidden="true">
-						<div className="skel-card">
-							<div className="skel-bar" style={ { width: '38%' } } />
-							<div className="skel-bar" style={ { width: '100%', height: 38 } } />
-							<div className="skel-bar" style={ { width: '62%' } } />
-							<div className="skel-bar" style={ { width: '100%', height: 38 } } />
-							<div className="skel-bar" style={ { width: '30%', height: 34, marginBottom: 0 } } />
-						</div>
-						<span className="skel-note">
-							<span className="spin" /> { __( 'Loading your live preview…', 'everest-forms' ) }
-						</span>
-					</div>
-				) }
+				{ status === 'loading' && <PreviewSkeleton /> }
 
 				{ status === 'error' && (
 					<div className="pv-error">
@@ -233,7 +267,7 @@ export function PreviewPane( {
 								<button type="button" className="btn-primary" onClick={ retry }>
 									{ __( 'Try again', 'everest-forms' ) }
 								</button>
-								<a href={ store.settings.previewUrl } target="_blank" rel="noreferrer">
+								<a href={ previewSrc } target="_blank" rel="noreferrer">
 									{ __( 'Open in a new tab ↗', 'everest-forms' ) }
 								</a>
 							</div>

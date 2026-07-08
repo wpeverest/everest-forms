@@ -22,9 +22,9 @@ defined( 'ABSPATH' ) || exit;
 final class BuilderPanel {
 
 	/**
-	 * Builder tab slug.
+	 * Builder tab slug (drives the `&tab=style` URL and the `everest-forms-panel-style` wrapper).
 	 */
-	const TAB = 'style-v2';
+	const TAB = 'style';
 
 	/**
 	 * Builder screen id.
@@ -42,7 +42,7 @@ final class BuilderPanel {
 		add_action( 'everest_forms_builder_content_' . self::TAB, array( __CLASS__, 'render_content' ) );
 		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'enqueue' ) );
 		// The builder renders each tab icon from an icon font keyed by slug; there is no glyph
-		// for our `style-v2` slug, so paint one with a masked SVG (design's pencil icon).
+		// for our `style` slug, so paint one with a masked SVG (design's pencil icon).
 		add_action( 'admin_head', array( __CLASS__, 'tab_icon_styles' ) );
 	}
 
@@ -97,8 +97,8 @@ final class BuilderPanel {
 
 	/**
 	 * Paint the "Style" builder tab's icon. The core builder markup is
-	 * `<a class="evf-panel-style-v2-button nav-tab"><span class="evf-nav-icon style-v2"></span>…`
-	 * where the icon comes from an icon font by slug — but there is no `style-v2` glyph. We
+	 * `<a class="evf-panel-style-button nav-tab"><span class="evf-nav-icon style"></span>…`
+	 * where the icon comes from an icon font by slug — but there is no `style` glyph. We
 	 * override the `::before` with a masked SVG so the icon inherits the tab's text colour
 	 * (grey → purple when active), matching the other tabs. Builder screen only.
 	 */
@@ -113,10 +113,21 @@ final class BuilderPanel {
 		$mask = 'url("' . $svg . '") no-repeat center / contain';
 
 		echo '<style id="evf-scv2-tab-icon">'
-			. '.everest-forms nav.evf-nav-tab-wrapper a.evf-panel-style-v2-button .evf-nav-icon.style-v2::before{'
+			. '.everest-forms nav.evf-nav-tab-wrapper a.evf-panel-style-button .evf-nav-icon.style::before{'
 			. 'content:"";display:inline-block;width:16px;height:16px;background-color:currentColor;'
 			. '-webkit-mask:' . $mask . ';mask:' . $mask . ';}'
 			. '</style>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static developer-controlled CSS constant.
+	}
+
+	/**
+	 * Mtime of a bundled V2 asset (cache-bust component), or '0' if unreadable.
+	 *
+	 * @param string $relative Path relative to the V2 directory.
+	 * @return string
+	 */
+	protected static function asset_mtime( $relative ) {
+		$path = plugin_dir_path( __FILE__ ) . ltrim( $relative, '/' );
+		return file_exists( $path ) ? (string) filemtime( $path ) : '0';
 	}
 
 	/**
@@ -174,8 +185,9 @@ final class BuilderPanel {
 					),
 					is_ssl() ? 'https' : 'http'
 				),
-				// The shared rule template the bridge injects into the preview iframe.
-				'frontendCssUrl' => evf()->plugin_url() . '/addons/StyleCustomizer/V2/assets/css/frontend.css',
+				// The shared rule template the bridge injects into the preview iframe (version-
+				// stamped so an edited template is never served from a stale browser cache).
+				'frontendCssUrl' => add_query_arg( 'ver', (string) Schema::version() . '.' . self::asset_mtime( 'assets/css/frontend.css' ), evf()->plugin_url() . '/addons/StyleCustomizer/V2/assets/css/frontend.css' ),
 				// The wrapper the compiler scopes variables to (see Compiler::wrapper_selector()).
 				'wrapperId'      => 'evf-' . $form_id,
 				'markerClass'    => FrontendEnqueue::MARKER_CLASS,

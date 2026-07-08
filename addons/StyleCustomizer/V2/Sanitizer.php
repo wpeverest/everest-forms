@@ -104,6 +104,14 @@ final class Sanitizer {
 	 * @return mixed Clean value (token default on anything invalid).
 	 */
 	public static function sanitize_scalar( $token, $value ) {
+		// The font-family select is data-driven (the full Google Fonts list is supplied at
+		// runtime, not baked into the schema options), so validate it as a font-family string
+		// rather than against the tiny fallback option list — otherwise every real choice would
+		// be rejected. Migrated v1 records store the bare family name too, so this keeps them.
+		if ( ! empty( $token['source'] ) && 'google_fonts' === $token['source'] ) {
+			return self::sanitize_font_family( $value );
+		}
+
 		switch ( $token['type'] ) {
 			case 'slider':
 				return self::sanitize_number( $token, $value );
@@ -218,6 +226,22 @@ final class Sanitizer {
 			$allowed[] = (string) $opt['value'];
 		}
 		return in_array( $value, $allowed, true ) ? $value : $token['default'];
+	}
+
+	/**
+	 * Sanitize a font-family value: the empty string (theme font) or a plain family name such
+	 * as `Open Sans` / `Roboto`. Strips characters that could break out of the compiled
+	 * `font-family:` declaration (the compiler additionally css_safe()-guards the value).
+	 *
+	 * @param mixed $value Raw value.
+	 * @return string
+	 */
+	protected static function sanitize_font_family( $value ) {
+		$value = sanitize_text_field( (string) $value );
+		// Only letters, numbers, spaces, hyphens, commas, apostrophes and quotes are valid in a
+		// font-family list; anything else (braces, semicolons, angle brackets…) is dropped.
+		$value = preg_replace( '/[^A-Za-z0-9 ,\-\'"]/', '', $value );
+		return trim( $value );
 	}
 
 	/**

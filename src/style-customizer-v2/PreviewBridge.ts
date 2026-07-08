@@ -26,6 +26,15 @@ const TEMPLATE_STYLE_ID = 'evf-scv2-rule-template';
 const CHROME_STYLE_ID = 'evf-scv2-chrome';
 const SELECT_STYLE_ID = 'evf-scv2-select';
 const DEVICE_STYLE_ID = 'evf-scv2-device';
+const FONT_LINK_ID = 'evf-scv2-font';
+
+/**
+ * The legacy `?evf_preview` theme-toggle class. `evf-form-preview.css` (already loaded on that
+ * route) styles the form with Everest Forms' default look via
+ * `.everest-forms:not(.evf-frontend-form-preview) …`, so ADDING this class = theme styling,
+ * REMOVING it = EVF default styling — exactly the v1 preview behaviour.
+ */
+const PREVIEW_THEME_CLASS = 'evf-frontend-form-preview';
 
 const HOVER_CLASS = 'evf-scv2-hover';
 const SELECTED_CLASS = 'evf-scv2-selected';
@@ -287,6 +296,8 @@ export class PreviewBridge {
 		}
 		const themeFont = this.store.themeFont();
 		this.store.schema.forEach( ( token ) => this.applyToken( token, themeFont ) );
+		this.ensureFont();
+		this.applyThemeStyle();
 	}
 
 	/** Apply only the given token keys (a targeted live edit). */
@@ -301,6 +312,62 @@ export class PreviewBridge {
 				this.applyToken( token, themeFont );
 			}
 		} );
+		// The font family/theme-font toggle needs the Google-font stylesheet (re)loaded.
+		if ( keys.indexOf( 'fonts.family' ) !== -1 || keys.indexOf( 'fonts.theme' ) !== -1 ) {
+			this.ensureFont();
+		}
+	}
+
+	/**
+	 * Load (or remove) the selected Google font inside the preview so the chosen family actually
+	 * renders — mirrors the front-end `evfsc_enqueue_fonts()`. No custom font while "use theme
+	 * fonts" is on or no family is set.
+	 */
+	private ensureFont() {
+		const wrapper = this.wrapper;
+		if ( ! wrapper ) {
+			return;
+		}
+		const doc = wrapper.ownerDocument;
+		const token = this.store.byKey[ 'fonts.family' ];
+		const family = token
+			? String( resolveValue( this.store.tokens[ 'fonts.family' ], token, 'desktop' ) || '' ).trim()
+			: '';
+		let link = doc.getElementById( FONT_LINK_ID ) as HTMLLinkElement | null;
+
+		if ( this.store.themeFont() || ! family ) {
+			if ( link ) {
+				link.remove();
+			}
+			return;
+		}
+		const href = 'https://fonts.googleapis.com/css?family=' + encodeURIComponent( family );
+		if ( ! link ) {
+			link = doc.createElement( 'link' );
+			link.id = FONT_LINK_ID;
+			link.rel = 'stylesheet';
+			doc.head.appendChild( link );
+		}
+		if ( link.href !== href ) {
+			link.href = href;
+		}
+	}
+
+	/**
+	 * Reflect "Apply Theme Style" live in the preview, mirroring the legacy `?evf_preview` toggle
+	 * exactly: the class goes on the OUTER `.everest-forms` ancestor (not the `#evf-{id}`
+	 * container), and `evf-form-preview.css` — already loaded on this route — provides the default
+	 * (non-theme) look via `.everest-forms:not(.evf-frontend-form-preview)`. So ON (theme) adds the
+	 * class (the active theme styles the form) and OFF removes it (EVF default rules apply). The v2
+	 * token rules are ID-scoped, so they still win over whichever baseline is active.
+	 */
+	private applyThemeStyle() {
+		const wrapper = this.wrapper;
+		if ( ! wrapper ) {
+			return;
+		}
+		const outer = ( wrapper.closest( '.everest-forms' ) as HTMLElement | null ) || wrapper.parentElement || wrapper;
+		outer.classList.toggle( PREVIEW_THEME_CLASS, this.store.applyThemeStyle );
 	}
 
 	private applyToken( token: Token, themeFont: boolean ) {
@@ -453,9 +520,11 @@ export class PreviewBridge {
 		if ( doc.getElementById( SELECT_STYLE_ID ) ) {
 			return;
 		}
+		// Subtle, non-alarming selection affordance: a thin dashed hover hint and a soft, low-
+		// opacity selected ring (not a bold solid outline).
 		const css = `
-			.${ HOVER_CLASS } { outline: 1.5px solid rgba(117,69,187,.45) !important; outline-offset: 2px !important; border-radius: 3px; }
-			.${ SELECTED_CLASS } { outline: 2px solid rgba(117,69,187,.85) !important; outline-offset: 2px !important; border-radius: 3px; }
+			.${ HOVER_CLASS } { outline: 1px dashed rgba(117,69,187,.35) !important; outline-offset: 2px !important; border-radius: 3px; }
+			.${ SELECTED_CLASS } { outline: 1.5px solid rgba(117,69,187,.5) !important; outline-offset: 2px !important; border-radius: 3px; }
 			#${ this.store.settings.wrapperId } * { cursor: default; }`;
 		const style = doc.createElement( 'style' );
 		style.id = SELECT_STYLE_ID;

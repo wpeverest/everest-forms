@@ -195,6 +195,19 @@ final class RestController {
 	}
 
 	/**
+	 * Read the per-form "Apply Theme Style" flag. Reuses the exact meta the v1 preview toggle
+	 * and the front-end shortcode wrapper use (`everest_forms_enable_theme_style`), so v1 and v2
+	 * stay in sync and no migration is needed. Only the explicit `'default'` value disables theme
+	 * styling; anything else (incl. an unset meta) means "apply the theme style" — matching v1.
+	 *
+	 * @param int $form_id Form id.
+	 * @return bool
+	 */
+	protected static function get_apply_theme_style( $form_id ) {
+		return 'default' !== get_post_meta( $form_id, 'everest_forms_enable_theme_style', true );
+	}
+
+	/**
 	 * GET — the saved record (or an empty default) plus the schema the panel renders from,
 	 * so the client never hardcodes the token contract.
 	 *
@@ -234,6 +247,12 @@ final class RestController {
 				'templates'      => Templates::all(),
 				'user_templates' => Templates::user_templates(),
 				'breakpoints'    => Compiler::breakpoints(),
+				// The Font Family dropdown list — the SAME cached Google Fonts list the legacy
+				// customizer uses (order/labels identical), fetched once via the shared helper.
+				'google_fonts'   => function_exists( 'evfsc_get_google_font_families' ) ? evfsc_get_google_font_families() : array(),
+				// "Apply Theme Style" (a per-form post meta reused from v1): true = use the active
+				// theme's styling; false ('default') = load Everest Forms' bundled default styling.
+				'apply_theme_style' => self::get_apply_theme_style( $form_id ),
 				/**
 				 * Whether the Pro tier is active. Defaults to whether Everest Forms Pro is loaded
 				 * (its `EFP_PLUGIN_FILE` constant), so pro-tier tokens unlock automatically when Pro
@@ -306,11 +325,24 @@ final class RestController {
 		$all[ $form_id ] = $clean;
 		update_option( 'everest_forms_styles', $all, false ); // autoload=no.
 
+		// "Apply Theme Style" — persisted to the same per-form meta the v1 preview toggle and the
+		// front-end shortcode wrapper read, so the setting is honoured everywhere with no extra
+		// wiring. Only written when the client sends it, so a missing flag never clobbers it.
+		$apply_theme = $request->get_param( 'apply_theme_style' );
+		if ( null !== $apply_theme ) {
+			update_post_meta(
+				$form_id,
+				'everest_forms_enable_theme_style',
+				rest_sanitize_boolean( $apply_theme ) ? 'theme' : 'default'
+			);
+		}
+
 		return rest_ensure_response(
 			array(
-				'saved'       => true,
-				'record'      => $clean,
-				'_updated_at' => $clean['_updated_at'],
+				'saved'             => true,
+				'record'            => $clean,
+				'_updated_at'       => $clean['_updated_at'],
+				'apply_theme_style' => self::get_apply_theme_style( $form_id ),
 			)
 		);
 	}

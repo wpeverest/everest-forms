@@ -1,14 +1,14 @@
 /**
  * Style Customizer v2 — builder panel chrome.
  *
- * Scoped under `#everest-forms-panel-style-v2` — the builder panel wrapper that contains BOTH
+ * Scoped under `#everest-forms-panel-style` — the builder panel wrapper that contains BOTH
  * our controls (mounted in the builder's native 400px sidebar) and our live preview (portaled
  * into the builder's content area). Colours, fonts and spacing follow the builder so the panel
  * reads as a native part of it. The form-styling tokens (`--evf-*`) are NOT here — they live in
  * the preview iframe via the shared `frontend.css` rule template.
  */
 
-#everest-forms-panel-style-v2 {
+#everest-forms-panel-style {
 	/* Palette aligned to the Everest Forms builder. */
 	--ui-ink: #23282d;
 	--ui-ink-2: #383838;
@@ -54,20 +54,20 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-	#everest-forms-panel-style-v2 *,
-	#everest-forms-panel-style-v2 *::before,
-	#everest-forms-panel-style-v2 *::after {
+	#everest-forms-panel-style *,
+	#everest-forms-panel-style *::before,
+	#everest-forms-panel-style *::after {
 		transition: none !important;
 		animation: none !important;
 	}
 }
 
 /* ---------- controls (inside the builder's 400px sidebar) ---------- */
-#everest-forms-panel-style-v2 #evf-scv2-controls {
+#everest-forms-panel-style #evf-scv2-controls {
 	height: 100%;
 }
 
-#everest-forms-panel-style-v2 .scv2-panel {
+#everest-forms-panel-style .scv2-panel {
 	height: 100%;
 	display: flex;
 	flex-direction: column;
@@ -79,50 +79,56 @@
 	line-height: 1.5;
 }
 
-#everest-forms-panel-style-v2 .scv2-panel button {
+#everest-forms-panel-style .scv2-panel button {
 	font-family: inherit;
 }
 
-#everest-forms-panel-style-v2 .evfscv2-boot {
+#everest-forms-panel-style .evfscv2-boot {
 	padding: 30px;
 	color: var(--ui-ink-3);
 	font-size: 13px;
 }
 
-/* Sub-tabs match the builder's Fields panel tab bar (Add Fields / Field Options):
-   full-width filled segments — active = white + purple, inactive = grey + dark. */
-#everest-forms-panel-style-v2 .subtabs {
+/* Sub-tabs mirror the builder's Fields panel tab bar (Add Fields / Field Options) exactly:
+   grey filled segments with a 3px top-border indicator — active = white + purple top border,
+   inactive = grey + dark text, hover = purple text. Kept 1:1 with `.everest-forms-fields-tab`
+   in admin.scss so the two tab bars are visually identical across the plugin. */
+#everest-forms-panel-style .subtabs {
 	display: flex;
+	flex-wrap: wrap;
 	padding: 0;
 	gap: 0;
-	border-bottom: 1px solid var(--ui-line);
 	flex: none;
 }
 
-#everest-forms-panel-style-v2 .subtab {
+#everest-forms-panel-style .subtab {
 	flex: 1;
+	display: block;
 	text-align: center;
-	padding: 12px 4px 14px;
-	border: 0;
-	background: #f6f7f9;
-	font-weight: 500;
-	color: var(--ui-ink);
-	cursor: pointer;
+	padding: 12px 4px 16px;
 	font-size: 14px;
-	transition: color .12s, background .12s;
+	line-height: 150%;
+	font-weight: 500;
+	color: var(--ui-ink-2);
+	background: #f6f7f9;
+	border: 0;
+	border-top: 3px solid transparent;
+	cursor: pointer;
+	transition: all .3s ease-in-out;
 
-	&:hover:not([aria-selected="true"]) {
+	&:hover {
 		color: var(--ui-purple);
 	}
 
 	&[aria-selected="true"] {
-		color: var(--ui-purple);
 		background: #fff;
+		color: var(--ui-purple);
+		border-top-color: var(--ui-purple);
 	}
 }
 
 /* drill-down back header */
-#everest-forms-panel-style-v2 .navback {
+#everest-forms-panel-style .navback {
 	display: flex;
 	align-items: center;
 	gap: 8px;
@@ -131,7 +137,7 @@
 	flex: none;
 }
 
-#everest-forms-panel-style-v2 .navback .bk {
+#everest-forms-panel-style .navback .bk {
 	display: flex;
 	align-items: center;
 	gap: 9px;
@@ -170,7 +176,7 @@
 }
 
 /* responsive context strip */
-#everest-forms-panel-style-v2 .ctxbar {
+#everest-forms-panel-style .ctxbar {
 	margin: 12px 16px 0;
 	display: flex;
 	align-items: center;
@@ -200,7 +206,7 @@
 	}
 }
 
-#everest-forms-panel-style-v2 .panel-scroll {
+#everest-forms-panel-style .panel-scroll {
 	overflow-y: auto;
 	padding: 16px;
 	flex: 1;
@@ -209,7 +215,7 @@
 }
 
 /* design list */
-#everest-forms-panel-style-v2 .block-title {
+#everest-forms-panel-style .block-title {
 	font-size: 11px;
 	font-weight: 600;
 	letter-spacing: .04em;
@@ -222,7 +228,7 @@
 	}
 }
 
-#everest-forms-panel-style-v2 .hintline {
+#everest-forms-panel-style .hintline {
 	display: flex;
 	align-items: flex-start;
 	gap: 7px;
@@ -240,7 +246,150 @@
 	}
 }
 
-#everest-forms-panel-style-v2 .pal-select {
+/* Secondary form-wide setting, pinned to the bottom of the Design list: muted so it never
+   competes with the palette + elements above it. */
+#everest-forms-panel-style .theme-style-row {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	width: 100%;
+	margin-top: 18px;
+	padding: 12px 2px 2px;
+	border-top: 1px solid var(--ui-line-2);
+
+	.tsr-text {
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+		min-width: 0;
+		flex: 1;
+
+		b {
+			font-size: 12px;
+			font-weight: 600;
+			color: var(--ui-ink-2);
+		}
+
+		small {
+			font-size: 11px;
+			line-height: 1.45;
+			color: var(--ui-ink-3);
+		}
+	}
+}
+
+/* Searchable font-family picker (combobox) — trigger + search popover + scrollable list. */
+#everest-forms-panel-style .fontsel {
+	position: relative;
+	width: 100%;
+}
+
+#everest-forms-panel-style .fontsel-trigger {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 8px;
+	width: 100%;
+	border: 1px solid var(--ui-input-border);
+	border-radius: 4px;
+	background: #fff;
+	padding: 7px 10px;
+	cursor: pointer;
+	text-align: left;
+	font-size: 13px;
+	color: var(--ui-ink-2);
+	transition: border-color .12s, box-shadow .12s;
+
+	&:hover:not(:disabled) {
+		border-color: #b9bdc9;
+	}
+
+	&[aria-expanded="true"] {
+		border-color: var(--ui-purple);
+		box-shadow: 0 0 0 2px var(--ui-purple-50);
+	}
+
+	&:disabled {
+		opacity: .55;
+		cursor: not-allowed;
+	}
+
+	.fontsel-val {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	.fontsel-chev {
+		color: var(--ui-ink-3);
+		flex: none;
+		font-size: 10px;
+	}
+}
+
+#everest-forms-panel-style .fontsel-pop {
+	position: absolute;
+	z-index: 30;
+	top: calc(100% + 4px);
+	left: 0;
+	right: 0;
+	background: #fff;
+	border: 1px solid var(--ui-input-border);
+	border-radius: 6px;
+	box-shadow: var(--ui-shadow);
+	overflow: hidden;
+}
+
+#everest-forms-panel-style .fontsel-search {
+	width: 100%;
+	border: 0;
+	border-bottom: 1px solid var(--ui-line-2);
+	padding: 9px 11px;
+	font-size: 13px;
+	outline: none;
+	box-shadow: none;
+
+	&:focus {
+		border-bottom-color: var(--ui-purple);
+	}
+}
+
+#everest-forms-panel-style .fontsel-list {
+	max-height: 240px;
+	overflow-y: auto;
+	padding: 4px;
+}
+
+#everest-forms-panel-style .fontsel-opt {
+	display: block;
+	width: 100%;
+	text-align: left;
+	border: 0;
+	background: none;
+	padding: 7px 9px;
+	font-size: 13px;
+	color: var(--ui-ink-2);
+	border-radius: 4px;
+	cursor: pointer;
+
+	&.active {
+		background: var(--ui-purple-50);
+	}
+
+	&.sel {
+		color: var(--ui-purple);
+		font-weight: 600;
+	}
+}
+
+#everest-forms-panel-style .fontsel-empty {
+	padding: 14px 10px;
+	font-size: 12px;
+	color: var(--ui-ink-3);
+	text-align: center;
+}
+
+#everest-forms-panel-style .pal-select {
 	display: flex;
 	align-items: center;
 	gap: 10px;
@@ -316,13 +465,13 @@
 	}
 }
 
-#everest-forms-panel-style-v2 .ellist {
+#everest-forms-panel-style .ellist {
 	display: flex;
 	flex-direction: column;
 	gap: 8px;
 }
 
-#everest-forms-panel-style-v2 .elrow {
+#everest-forms-panel-style .elrow {
 	display: flex;
 	align-items: center;
 	gap: 11px;
@@ -396,7 +545,7 @@
 }
 
 /* state / variant tabs */
-#everest-forms-panel-style-v2 .state-seg {
+#everest-forms-panel-style .state-seg {
 	display: flex;
 	gap: 4px;
 	margin: 4px 0 14px;
@@ -423,32 +572,13 @@
 	}
 }
 
-#everest-forms-panel-style-v2 .shared-divider {
-	display: flex;
-	align-items: center;
-	gap: 8px;
-	margin: 14px 0 8px;
-	color: var(--ui-ink-3);
-	font-size: 10.5px;
-	font-weight: 700;
-	letter-spacing: .05em;
-	text-transform: uppercase;
-
-	&::before,
-	&::after {
-		content: "";
-		flex: 1;
-		height: 1px;
-		background: var(--ui-line-2);
-	}
-}
-
-#everest-forms-panel-style-v2 .ctrl.shared-dim {
+/* Dep-dimmed / pro-locked controls (e.g. border width when the border style is None). */
+#everest-forms-panel-style .ctrl.shared-dim {
 	opacity: .55;
 	pointer-events: none;
 }
 
-#everest-forms-panel-style-v2 .sec-hint {
+#everest-forms-panel-style .sec-hint {
 	font-size: 11px;
 	color: var(--ui-ink-3);
 	margin: 4px 2px 12px;
@@ -456,7 +586,7 @@
 }
 
 /* grouped cards */
-#everest-forms-panel-style-v2 .grp {
+#everest-forms-panel-style .grp {
 	margin-bottom: 10px;
 
 	&:first-child {
@@ -464,18 +594,14 @@
 	}
 }
 
-#everest-forms-panel-style-v2 #elBody .grp {
+#everest-forms-panel-style #elBody .grp {
 	background: #fff;
 	border: 1px solid var(--ui-line);
 	border-radius: 4px;
 	padding: 13px 14px;
 }
 
-#everest-forms-panel-style-v2 #elBody [data-shared] .grp {
-	background: #fbfbfd;
-}
-
-#everest-forms-panel-style-v2 .grp-h {
+#everest-forms-panel-style .grp-h {
 	font-size: 10.5px;
 	font-weight: 600;
 	color: var(--ui-ink-3);
@@ -484,18 +610,18 @@
 	margin: 1px 0 12px;
 }
 
-#everest-forms-panel-style-v2 #elBody .grp .ctrl:last-child {
+#everest-forms-panel-style #elBody .grp .ctrl:last-child {
 	margin-bottom: 0;
 }
 
 /* controls */
-#everest-forms-panel-style-v2 .ctrl {
+#everest-forms-panel-style .ctrl {
 	margin-bottom: 14px;
 	border-radius: 6px;
 	position: relative;
 }
 
-#everest-forms-panel-style-v2 .ctrl.flash {
+#everest-forms-panel-style .ctrl.flash {
 	animation: scv2flash 1.4s cubic-bezier(.22, .61, .36, 1);
 }
 
@@ -508,23 +634,22 @@
 	}
 }
 
-/* Flash the slate when opened by clicking an element in the live preview. */
-#everest-forms-panel-style-v2 #elBody.flash {
-	animation: scv2slateflash 1.3s ease;
+/* Opening a slate by clicking an element in the live preview: a soft, quick background wash
+   (no hard purple ring) so the transition reads as subtle, not alarming. */
+#everest-forms-panel-style #elBody.flash {
+	animation: scv2slateflash .6s ease-out;
 }
 
 @keyframes scv2slateflash {
 	0% {
-		box-shadow: 0 0 0 3px var(--ui-purple-100);
-		border-radius: 8px;
+		background: var(--ui-purple-50);
 	}
 	100% {
-		box-shadow: 0 0 0 3px transparent;
-		border-radius: 8px;
+		background: transparent;
 	}
 }
 
-#everest-forms-panel-style-v2 .ctrl-lab {
+#everest-forms-panel-style .ctrl-lab {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -532,36 +657,36 @@
 	gap: 8px;
 }
 
-#everest-forms-panel-style-v2 .lab-left {
+#everest-forms-panel-style .lab-left {
 	display: flex;
 	align-items: center;
 	gap: 6px;
 	min-width: 0;
 }
 
-#everest-forms-panel-style-v2 .ctrl-lab label {
+#everest-forms-panel-style .ctrl-lab label {
 	font-size: 12px;
 	font-weight: 500;
 	color: var(--ui-ink-2);
 }
 
-#everest-forms-panel-style-v2 .ctrl-lab .lab-right {
+#everest-forms-panel-style .ctrl-lab .lab-right {
 	display: flex;
 	align-items: center;
 	gap: 4px;
 }
 
-#everest-forms-panel-style-v2 .ctrl.inherited .ctrl-lab label {
+#everest-forms-panel-style .ctrl.inherited .ctrl-lab label {
 	color: var(--ui-ink-3);
 }
 
-#everest-forms-panel-style-v2 .ctrl.inherited .ctrl-lab label::after {
+#everest-forms-panel-style .ctrl.inherited .ctrl-lab label::after {
 	content: " · inherited";
 	font-style: italic;
 	font-weight: 400;
 }
 
-#everest-forms-panel-style-v2 .px-hint {
+#everest-forms-panel-style .px-hint {
 	font-size: 10px;
 	color: var(--ui-ink-3);
 	border: 1px solid var(--ui-line);
@@ -570,7 +695,7 @@
 	background: #f6f7fa;
 }
 
-#everest-forms-panel-style-v2 .prop-reset {
+#everest-forms-panel-style .prop-reset {
 	width: 22px;
 	height: 22px;
 	border: 0;
@@ -589,11 +714,11 @@
 	}
 }
 
-#everest-forms-panel-style-v2 .ctrl.changed .prop-reset {
+#everest-forms-panel-style .ctrl.changed .prop-reset {
 	display: grid;
 }
 
-#everest-forms-panel-style-v2 .dev-badge {
+#everest-forms-panel-style .dev-badge {
 	width: 24px;
 	height: 22px;
 	border: 1px solid var(--ui-line);
@@ -636,7 +761,7 @@
 	}
 }
 
-#everest-forms-panel-style-v2 .slider {
+#everest-forms-panel-style .slider {
 	display: flex;
 	align-items: center;
 	gap: 10px;
@@ -649,7 +774,7 @@
 	}
 }
 
-#everest-forms-panel-style-v2 .num {
+#everest-forms-panel-style .num {
 	width: 62px;
 	display: flex;
 	border: 1px solid var(--ui-input-border);
@@ -689,7 +814,7 @@
 	}
 }
 
-#everest-forms-panel-style-v2 .color {
+#everest-forms-panel-style .color {
 	display: flex;
 	align-items: center;
 	gap: 8px;
@@ -733,7 +858,7 @@
 	}
 }
 
-#everest-forms-panel-style-v2 select.inp {
+#everest-forms-panel-style select.inp {
 	width: 100%;
 	padding: 9px 10px;
 	border: 1px solid var(--ui-input-border);
@@ -755,14 +880,14 @@
 	}
 }
 
-#everest-forms-panel-style-v2 .dep-hint {
+#everest-forms-panel-style .dep-hint {
 	font-size: 11px;
 	color: var(--ui-ink-3);
 	margin-top: 5px;
 	line-height: 1.45;
 }
 
-#everest-forms-panel-style-v2 .box4 {
+#everest-forms-panel-style .box4 {
 	display: flex;
 	gap: 5px;
 	align-items: flex-end;
@@ -828,8 +953,8 @@
 	}
 }
 
-#everest-forms-panel-style-v2 .iconset,
-#everest-forms-panel-style-v2 .fstyleset {
+#everest-forms-panel-style .iconset,
+#everest-forms-panel-style .fstyleset {
 	display: flex;
 	gap: 4px;
 
@@ -859,7 +984,7 @@
 	}
 }
 
-#everest-forms-panel-style-v2 .switch {
+#everest-forms-panel-style .switch {
 	width: 40px;
 	height: 22px;
 	border-radius: 99px;
@@ -893,13 +1018,13 @@
 	}
 }
 
-#everest-forms-panel-style-v2 .mediactrl {
+#everest-forms-panel-style .mediactrl {
 	display: flex;
 	gap: 6px;
 	align-items: center;
 }
 
-#everest-forms-panel-style-v2 .mediabtn {
+#everest-forms-panel-style .mediabtn {
 	flex: 1;
 	border: 1px dashed var(--ui-input-border);
 	background: #fbfbfd;
@@ -911,7 +1036,7 @@
 	cursor: pointer;
 }
 
-#everest-forms-panel-style-v2 .mediaclear {
+#everest-forms-panel-style .mediaclear {
 	border: 1px solid var(--ui-input-border);
 	background: #fff;
 	border-radius: 4px;
@@ -922,7 +1047,7 @@
 }
 
 /* custom CSS pane */
-#everest-forms-panel-style-v2 .pane-note {
+#everest-forms-panel-style .pane-note {
 	font-size: 11.5px;
 	color: var(--ui-ink-3);
 	line-height: 1.55;
@@ -938,7 +1063,7 @@
 	}
 }
 
-#everest-forms-panel-style-v2 .chips {
+#everest-forms-panel-style .chips {
 	display: flex;
 	flex-wrap: wrap;
 	gap: 5px;
@@ -962,7 +1087,7 @@
 	}
 }
 
-#everest-forms-panel-style-v2 textarea.csscode {
+#everest-forms-panel-style textarea.csscode {
 	width: 100%;
 	padding: 11px;
 	border: 1px solid var(--ui-input-border);
@@ -983,7 +1108,7 @@
 	}
 }
 
-#everest-forms-panel-style-v2 .css-status {
+#everest-forms-panel-style .css-status {
 	display: flex;
 	align-items: center;
 	gap: 8px;
@@ -993,13 +1118,13 @@
 }
 
 /* templates pane */
-#everest-forms-panel-style-v2 .tpls {
+#everest-forms-panel-style .tpls {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
 	gap: 10px;
 }
 
-#everest-forms-panel-style-v2 .tpl {
+#everest-forms-panel-style .tpl {
 	position: relative;
 	border: 1.5px solid var(--ui-line);
 	border-radius: 4px;
@@ -1053,7 +1178,7 @@
 	}
 }
 
-#everest-forms-panel-style-v2 .tpl .thumb.thumb-has-img {
+#everest-forms-panel-style .tpl .thumb.thumb-has-img {
 	padding: 6px;
 	height: 118px;
 	overflow: hidden;
@@ -1070,7 +1195,7 @@
 }
 
 /* Create Style Template card */
-#everest-forms-panel-style-v2 .tpl-create {
+#everest-forms-panel-style .tpl-create {
 	background: #fff;
 	border: 1px solid var(--ui-line);
 	border-radius: 8px;
@@ -1078,14 +1203,14 @@
 	margin-bottom: 16px;
 }
 
-#everest-forms-panel-style-v2 .tpl-create-title {
+#everest-forms-panel-style .tpl-create-title {
 	font-size: 13px;
 	font-weight: 600;
 	color: var(--ui-ink);
 	margin-bottom: 3px;
 }
 
-#everest-forms-panel-style-v2 .tpl-create-sub {
+#everest-forms-panel-style .tpl-create-sub {
 	font-size: 11.5px;
 	color: var(--ui-ink-3);
 	font-style: italic;
@@ -1093,7 +1218,7 @@
 	line-height: 1.5;
 }
 
-#everest-forms-panel-style-v2 .tpl-create-input {
+#everest-forms-panel-style .tpl-create-input {
 	width: 100%;
 	padding: 9px 11px;
 	border: 1px solid var(--ui-input-border);
@@ -1109,7 +1234,7 @@
 	}
 }
 
-#everest-forms-panel-style-v2 .tpl-create-row {
+#everest-forms-panel-style .tpl-create-row {
 	display: flex;
 	align-items: center;
 	justify-content: flex-end;
@@ -1117,14 +1242,14 @@
 	margin-top: 11px;
 }
 
-#everest-forms-panel-style-v2 .tpl-create-err {
+#everest-forms-panel-style .tpl-create-err {
 	color: var(--ui-red);
 	font-size: 11px;
 	margin-right: auto;
 	line-height: 1.4;
 }
 
-#everest-forms-panel-style-v2 .tpl-create-btn {
+#everest-forms-panel-style .tpl-create-btn {
 	background: var(--ui-purple);
 	color: #fff;
 	border: 0;
@@ -1146,7 +1271,7 @@
 }
 
 /* Delete affordance on user templates */
-#everest-forms-panel-style-v2 .tpl .tpl-del {
+#everest-forms-panel-style .tpl .tpl-del {
 	position: absolute;
 	top: 6px;
 	right: 6px;
@@ -1169,12 +1294,12 @@
 	}
 }
 
-#everest-forms-panel-style-v2 .tpl:hover .tpl-del,
-#everest-forms-panel-style-v2 .tpl .tpl-del:focus {
+#everest-forms-panel-style .tpl:hover .tpl-del,
+#everest-forms-panel-style .tpl .tpl-del:focus {
 	opacity: 1;
 }
 
-#everest-forms-panel-style-v2 .tpl-hint {
+#everest-forms-panel-style .tpl-hint {
 	margin-top: 10px;
 	font-size: 11.5px;
 	color: var(--ui-ink-3);
@@ -1182,7 +1307,7 @@
 }
 
 /* pro lock */
-#everest-forms-panel-style-v2 .pro-lock {
+#everest-forms-panel-style .pro-lock {
 	display: flex;
 	align-items: flex-start;
 	gap: 8px;
@@ -1203,12 +1328,12 @@
 }
 
 /* ---------- preview (portaled into the builder content area) ---------- */
-#everest-forms-panel-style-v2 #evf-scv2-preview {
+#everest-forms-panel-style #evf-scv2-preview {
 	height: 100%;
 	width: 100%;
 }
 
-#everest-forms-panel-style-v2 .preview {
+#everest-forms-panel-style .preview {
 	display: flex;
 	flex-direction: column;
 	min-width: 0;
@@ -1219,7 +1344,7 @@
 	background: var(--ui-bg);
 }
 
-#everest-forms-panel-style-v2 .pv-bar {
+#everest-forms-panel-style .pv-bar {
 	min-height: 50px;
 	display: flex;
 	align-items: center;
@@ -1231,7 +1356,7 @@
 	flex-wrap: wrap;
 }
 
-#everest-forms-panel-style-v2 .pv-bar .ttl {
+#everest-forms-panel-style .pv-bar .ttl {
 	font-weight: 600;
 	font-size: 13px;
 	color: var(--ui-ink);
@@ -1239,9 +1364,11 @@
 	align-items: center;
 	gap: 7px;
 	min-width: 0;
+	/* Grow so the save-state + device switcher are pushed to the right of the toolbar. */
+	flex: 1 1 auto;
 }
 
-#everest-forms-panel-style-v2 .pv-bar .ttl small {
+#everest-forms-panel-style .pv-bar .ttl small {
 	font-weight: 400;
 	color: var(--ui-ink-3);
 	white-space: nowrap;
@@ -1249,7 +1376,7 @@
 	text-overflow: ellipsis;
 }
 
-#everest-forms-panel-style-v2 .pv-bar .info {
+#everest-forms-panel-style .pv-bar .info {
 	border: 0;
 	background: none;
 	color: var(--ui-icon);
@@ -1265,7 +1392,7 @@
 	}
 }
 
-#everest-forms-panel-style-v2 .pv-savestate {
+#everest-forms-panel-style .pv-savestate {
 	font-size: 11.5px;
 	color: var(--ui-ink-3);
 	display: inline-flex;
@@ -1277,7 +1404,7 @@
 	}
 }
 
-#everest-forms-panel-style-v2 .devnow {
+#everest-forms-panel-style .devnow {
 	font-size: 11px;
 	font-weight: 600;
 	color: var(--ui-purple);
@@ -1288,12 +1415,15 @@
 	margin-left: auto;
 }
 
-#everest-forms-panel-style-v2 .devs {
+#everest-forms-panel-style .devs {
 	display: inline-flex;
 	background: #f2f3f7;
 	border-radius: 6px;
 	padding: 3px;
 	border: 1px solid var(--ui-line);
+	/* Pin to the far right of the toolbar (title grows to fill the space before it). */
+	margin-left: auto;
+	flex: none;
 
 	button {
 		border: 0;
@@ -1320,7 +1450,7 @@
 	}
 }
 
-#everest-forms-panel-style-v2 .spin {
+#everest-forms-panel-style .spin {
 	width: 12px;
 	height: 12px;
 	border: 2px solid rgba(117, 69, 187, .3);
@@ -1337,7 +1467,7 @@
 	}
 }
 
-#everest-forms-panel-style-v2 .save-dot {
+#everest-forms-panel-style .save-dot {
 	width: 7px;
 	height: 7px;
 	border-radius: 50%;
@@ -1346,7 +1476,7 @@
 	display: inline-block;
 }
 
-#everest-forms-panel-style-v2 .pv-canvas {
+#everest-forms-panel-style .pv-canvas {
 	flex: 1;
 	overflow: auto;
 	display: flex;
@@ -1357,7 +1487,7 @@
 	background: var(--ui-bg);
 }
 
-#everest-forms-panel-style-v2 .pv-frame {
+#everest-forms-panel-style .pv-frame {
 	width: 100%;
 	max-width: 100%;
 	position: relative;
@@ -1366,7 +1496,7 @@
 	min-height: 0;
 }
 
-#everest-forms-panel-style-v2 .pv-ruler {
+#everest-forms-panel-style .pv-ruler {
 	text-align: center;
 	font-size: 10.5px;
 	color: var(--ui-ink-3);
@@ -1375,7 +1505,7 @@
 	flex: none;
 }
 
-#everest-forms-panel-style-v2 .pv-iframe {
+#everest-forms-panel-style .pv-iframe {
 	width: 100%;
 	flex: 1;
 	min-height: 480px;
@@ -1390,12 +1520,12 @@
 	transition: opacity .3s ease;
 }
 
-#everest-forms-panel-style-v2 .pv-iframe.is-ready {
+#everest-forms-panel-style .pv-iframe.is-ready {
 	opacity: 1;
 }
 
 /* skeleton / error overlays */
-#everest-forms-panel-style-v2 .pv-skel {
+#everest-forms-panel-style .pv-skel {
 	position: absolute;
 	inset: 0;
 	background: var(--ui-bg);
@@ -1408,7 +1538,7 @@
 	transition: opacity .3s;
 }
 
-#everest-forms-panel-style-v2 .skel-card {
+#everest-forms-panel-style .skel-card {
 	width: min(560px, 80%);
 	background: #fff;
 	border-radius: 8px;
@@ -1416,7 +1546,7 @@
 	box-shadow: var(--ui-shadow);
 }
 
-#everest-forms-panel-style-v2 .skel-bar {
+#everest-forms-panel-style .skel-bar {
 	height: 12px;
 	border-radius: 6px;
 	background: linear-gradient(90deg, #eceef3 25%, #f6f7fa 50%, #eceef3 75%);
@@ -1431,12 +1561,30 @@
 	}
 }
 
-#everest-forms-panel-style-v2 .skel-note {
+/* Sidebar controls skeleton — shown instantly while the schema loads (matches the panel:
+   a tab bar row + shimmering control rows) so the sidebar never waits on the network. */
+#everest-forms-panel-style .scv2-skel-tabs {
+	display: flex;
+	gap: 0;
+}
+
+#everest-forms-panel-style .scv2-skel-tabs span {
+	flex: 1;
+	height: 45px;
+	background: #f6f7f9;
+	border-top: 3px solid transparent;
+}
+
+#everest-forms-panel-style .scv2-skel-body {
+	padding: 18px 14px;
+}
+
+#everest-forms-panel-style .skel-note {
 	font-size: 12px;
 	color: var(--ui-ink-3);
 }
 
-#everest-forms-panel-style-v2 .pv-error {
+#everest-forms-panel-style .pv-error {
 	position: absolute;
 	inset: 0;
 	z-index: 25;
@@ -1447,7 +1595,7 @@
 	background: var(--ui-bg);
 }
 
-#everest-forms-panel-style-v2 .pv-error .card {
+#everest-forms-panel-style .pv-error .card {
 	background: #fff;
 	border: 1px solid var(--ui-line);
 	border-radius: 8px;
@@ -1476,7 +1624,7 @@
 	}
 }
 
-#everest-forms-panel-style-v2 .pv-error-actions {
+#everest-forms-panel-style .pv-error-actions {
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -1498,13 +1646,13 @@
 	}
 }
 
-#everest-forms-panel-style-v2 .skel-note {
+#everest-forms-panel-style .skel-note {
 	display: inline-flex;
 	align-items: center;
 	gap: 8px;
 }
 
-#everest-forms-panel-style-v2 .css-example-btn {
+#everest-forms-panel-style .css-example-btn {
 	margin-left: auto;
 	border: 0;
 	background: none;
@@ -1514,7 +1662,7 @@
 	font-size: 11px;
 }
 
-#everest-forms-panel-style-v2 .tpl .cap .on-dot {
+#everest-forms-panel-style .tpl .cap .on-dot {
 	width: 7px;
 	height: 7px;
 	border-radius: 50%;
@@ -1524,7 +1672,7 @@
 }
 
 /* toast */
-#everest-forms-panel-style-v2 .toast {
+#everest-forms-panel-style .toast {
 	position: absolute;
 	bottom: 22px;
 	left: 50%;
@@ -1555,7 +1703,7 @@
 }
 
 /* floating popover */
-#everest-forms-panel-style-v2 .scv2-pop {
+#everest-forms-panel-style .scv2-pop {
 	position: fixed;
 	z-index: 100000;
 	background: #fff;
@@ -1567,7 +1715,7 @@
 	max-width: 300px;
 }
 
-#everest-forms-panel-style-v2 .scv2-pop .pop-title {
+#everest-forms-panel-style .scv2-pop .pop-title {
 	font-size: 10.5px;
 	font-weight: 600;
 	color: var(--ui-ink-3);
@@ -1584,7 +1732,7 @@
 	}
 }
 
-#everest-forms-panel-style-v2 .scv2-pop .pop-item {
+#everest-forms-panel-style .scv2-pop .pop-item {
 	display: flex;
 	align-items: center;
 	gap: 8px;
@@ -1611,21 +1759,21 @@
 	}
 }
 
-#everest-forms-panel-style-v2 .scv2-pop .pop-body {
+#everest-forms-panel-style .scv2-pop .pop-body {
 	padding: 8px 10px;
 	font-size: 12px;
 	color: var(--ui-ink-2);
 	line-height: 1.55;
 }
 
-#everest-forms-panel-style-v2 .scv2-pop .pop-sep {
+#everest-forms-panel-style .scv2-pop .pop-sep {
 	height: 1px;
 	background: var(--ui-line-2);
 	margin: 5px 4px;
 }
 
 /* palette popover grid */
-#everest-forms-panel-style-v2 .pal-pop-grid {
+#everest-forms-panel-style .pal-pop-grid {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
 	gap: 6px;
@@ -1634,7 +1782,7 @@
 	overflow-y: auto;
 }
 
-#everest-forms-panel-style-v2 .pal-card {
+#everest-forms-panel-style .pal-card {
 	border: 1px solid var(--ui-line-2);
 	border-radius: 4px;
 	overflow: hidden;

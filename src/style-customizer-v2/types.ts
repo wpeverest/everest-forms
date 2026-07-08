@@ -74,6 +74,8 @@ export interface Token {
 	neutral_weight?: string;
 	show_when_image?: boolean;
 	special?: string;
+	/** Runtime option source; `google_fonts` = fill the dropdown from payload.google_fonts. */
+	source?: string;
 }
 
 export interface SectionState {
@@ -129,6 +131,10 @@ export interface StylePayload {
 	user_templates: Template[];
 	breakpoints: Record<string, number>;
 	pro_active: boolean;
+	/** Full Google Fonts family list for the Font Family dropdown (matches the v1 customizer). */
+	google_fonts: string[];
+	/** "Apply Theme Style" — true = theme styling, false = Everest Forms' default styling. */
+	apply_theme_style: boolean;
 	record: StyleRecord;
 }
 

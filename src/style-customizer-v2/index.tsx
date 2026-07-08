@@ -7,8 +7,10 @@
  */
 import React from 'react';
 import { createRoot } from 'react-dom/client';
+import { createPortal } from 'react-dom';
 import './style.scss';
 import { App } from './App';
+import { PreviewSkeleton } from './PreviewPane';
 import { initStore } from './store';
 import { BootstrapSettings, StylePayload } from './types';
 
@@ -47,11 +49,10 @@ function Bootstrap() {
 	}, [] );
 
 	if ( state === 'loading' ) {
-		return (
-			<div className="evfscv2-boot" style={ { padding: 40, color: '#6b7280', fontSize: 13 } }>
-				{ __( 'Loading style customizer…', 'everest-forms' ) }
-			</div>
-		);
+		// Render the panel shell (controls skeleton) instantly, and paint the preview area with
+		// its own loader — so the sidebar never waits on the network and the preview never flashes
+		// blank or a premature "unavailable" state while the schema loads.
+		return <BootLoading />;
 	}
 	if ( state === 'error' ) {
 		return (
@@ -61,6 +62,44 @@ function Bootstrap() {
 		);
 	}
 	return <App />;
+}
+
+/** Sidebar controls skeleton (subtabs + a few shimmering rows), shown while the schema loads. */
+function SidebarSkeleton() {
+	return (
+		<div className="scv2-skel-side" aria-hidden="true">
+			<div className="scv2-skel-tabs">
+				<span />
+				<span />
+				<span />
+			</div>
+			<div className="scv2-skel-body">
+				<div className="skel-bar" style={ { width: '40%' } } />
+				<div className="skel-bar" style={ { width: '100%', height: 46 } } />
+				<div className="skel-bar" style={ { width: '52%', marginTop: 18 } } />
+				<div className="skel-bar" style={ { width: '100%', height: 56 } } />
+				<div className="skel-bar" style={ { width: '100%', height: 56 } } />
+				<div className="skel-bar" style={ { width: '100%', height: 56 } } />
+			</div>
+		</div>
+	);
+}
+
+/** Loading state: sidebar skeleton in the controls mount + the preview loader in the content mount. */
+function BootLoading() {
+	const host = document.getElementById( 'evf-scv2-preview' );
+	return (
+		<>
+			<SidebarSkeleton />
+			{ host &&
+				createPortal(
+					<section className="preview" aria-label={ __( 'Live preview', 'everest-forms' ) }>
+						<PreviewSkeleton />
+					</section>,
+					host
+				) }
+		</>
+	);
 }
 
 const mount = () => {

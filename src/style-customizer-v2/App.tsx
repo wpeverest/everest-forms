@@ -106,7 +106,12 @@ export function App() {
 			const res = await apiFetch( {
 				path: `${ store.settings.restBase }/${ store.settings.formId }`,
 				method: 'POST',
-				data: { record: store.toRecord(), base_updated_at: store.baseUpdatedAt },
+				data: {
+					record: store.toRecord(),
+					base_updated_at: store.baseUpdatedAt,
+					// "Apply Theme Style" persists to a separate per-form meta (not the record).
+					apply_theme_style: store.applyThemeStyle,
+				},
 			} );
 			store.markSaved( res.record );
 		} catch ( e: any ) {

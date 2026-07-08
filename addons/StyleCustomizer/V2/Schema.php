@@ -596,19 +596,18 @@ final class Schema {
 	}
 
 	/**
-	 * Starter font list. The full Google Fonts list is injected at runtime by the panel;
-	 * an empty value means "use the theme font".
+	 * Font-family options. Only the "Theme default" (empty value = use the theme font) is baked
+	 * into the schema; the full Google Fonts list is supplied to the panel at runtime via the
+	 * REST payload (`google_fonts`, from {@see evfsc_get_google_font_families()}) so it matches
+	 * the legacy customizer exactly and is fetched once. The token is marked `source =>
+	 * google_fonts`, which is how the panel (and the sanitizer) recognise it.
 	 *
 	 * @return array
 	 */
 	protected static function font_options() {
 		return self::opts(
 			array(
-				''                                                              => __( 'Theme default', 'everest-forms' ),
-				"-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif" => __( 'System', 'everest-forms' ),
-				"Georgia,'Times New Roman',serif"                               => __( 'Georgia (serif)', 'everest-forms' ),
-				"Poppins,'Segoe UI',sans-serif"                                 => __( 'Poppins', 'everest-forms' ),
-				"'Roboto Mono',ui-monospace,monospace"                          => __( 'Roboto Mono', 'everest-forms' ),
+				'' => __( 'Theme default', 'everest-forms' ),
 			)
 		);
 	}

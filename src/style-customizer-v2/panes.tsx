@@ -92,6 +92,28 @@ export function DesignList( {
 					</button>
 				) ) }
 			</div>
+
+			{ /* Form-wide baseline: a secondary, rarely-changed setting → kept at the bottom so the
+			     palette + elements (the primary actions) lead the panel. */ }
+			<div className="theme-style-row">
+				<span className="tsr-text">
+					<b>{ __( 'Apply Theme Style', 'everest-forms' ) }</b>
+					<small>
+						{ __(
+							'Let your active theme style this form. Turn off to use Everest Forms’ default form style.',
+							'everest-forms'
+						) }
+					</small>
+				</span>
+				<button
+					type="button"
+					className="switch"
+					role="switch"
+					aria-checked={ store.applyThemeStyle }
+					aria-label={ __( 'Apply Theme Style', 'everest-forms' ) }
+					onClick={ () => store.setApplyThemeStyle( ! store.applyThemeStyle ) }
+				/>
+			</div>
 		</div>
 	);
 }
@@ -160,8 +182,13 @@ export function ElementSlate( {
 		( t ) => t.section === section.key && ! t.hidden && ( ! t.show_when_image || bgImageSet )
 	);
 
-	const enabled = tabs ? visible.filter( ( t ) => ( t.state || first ) === act ) : visible;
-	const shared = tabs && act !== first ? visible.filter( ( t ) => ! t.state ) : [];
+	// On a state/variant tab, show ONLY the controls that belong to that state. Shared
+	// (stateless) controls live on the first tab (Normal / Label) so a state tab such as
+	// Focus or Hover stays context-clean — no greyed-out "shared" controls that read as
+	// disabled and don't apply to the state.
+	const enabled = tabs
+		? visible.filter( ( t ) => ( t.state ? t.state === act : act === first ) )
+		: visible;
 
 	// Dependency dimming: a border-style set to "none" disables its width/colour deps.
 	const dimmedByDep = new Set< string >();
@@ -229,28 +256,6 @@ export function ElementSlate( {
 			) }
 
 			{ renderGroups( enabled ) }
-
-			{ shared.length > 0 && (
-				<>
-					<div className="shared-divider">{ __( 'Shared with all states', 'everest-forms' ) }</div>
-					<div data-shared>
-						{ groupTokens( shared ).map( ( g, i ) => (
-							<div className="grp" key={ i }>
-								{ g.heading && <div className="grp-h">{ g.heading }</div> }
-								{ g.tokens.map( ( t ) => (
-									<ControlRenderer
-										key={ t.key }
-										token={ t }
-										store={ store }
-										onBadgeClick={ onBadgeClick }
-										dimmed={ true }
-									/>
-								) ) }
-							</div>
-						) ) }
-					</div>
-				</>
-			) }
 		</div>
 	);
 }

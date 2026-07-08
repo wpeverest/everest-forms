@@ -28,6 +28,7 @@ interface Snapshot {
 	palette: string;
 	customCss: string;
 	template: string;
+	applyThemeStyle: boolean;
 }
 
 interface HistoryEntry {
@@ -50,6 +51,7 @@ class StyleStore {
 	breakpoints: Record< string, number >;
 	schemaVersion: number;
 	proActive: boolean;
+	googleFonts: string[];
 
 	// Editable state.
 	tokens: Record< string, DeviceBag > = {};
@@ -57,6 +59,7 @@ class StyleStore {
 	palette = '';
 	customCss = '';
 	template = '';
+	applyThemeStyle = true;
 	baseUpdatedAt = 0;
 
 	// Bookkeeping.
@@ -81,8 +84,11 @@ class StyleStore {
 		this.breakpoints = payload.breakpoints;
 		this.schemaVersion = payload.schema_version;
 		this.proActive = !! payload.pro_active;
+		this.googleFonts = payload.google_fonts || [];
 
 		this.hydrate( payload.record );
+		// "Apply Theme Style" is a per-form meta (not part of the style record); default on.
+		this.applyThemeStyle = payload.apply_theme_style !== false;
 		this.saved = this.snapshot();
 	}
 
@@ -109,6 +115,7 @@ class StyleStore {
 			palette: this.palette,
 			customCss: this.customCss,
 			template: this.template,
+			applyThemeStyle: this.applyThemeStyle,
 		};
 	}
 
@@ -238,6 +245,7 @@ class StyleStore {
 		this.palette = snap.palette;
 		this.customCss = snap.customCss;
 		this.template = snap.template;
+		this.applyThemeStyle = snap.applyThemeStyle;
 		this.notify( null );
 	}
 
@@ -325,6 +333,20 @@ class StyleStore {
 	setCustomCss( css: string ) {
 		this.customCss = css;
 		this.notify( [] ); // No token vars change; the App handles the <style> injection.
+	}
+
+	/**
+	 * Toggle "Apply Theme Style" (a per-form setting, persisted to the same meta the v1 preview
+	 * toggle uses). `notify(null)` re-syncs the preview so the bridge can add/remove the default
+	 * stylesheet + marker class live.
+	 */
+	setApplyThemeStyle( on: boolean ) {
+		if ( this.applyThemeStyle === on ) {
+			return;
+		}
+		this.discrete( on ? 'Apply theme style' : 'Use default form style' );
+		this.applyThemeStyle = on;
+		this.notify( null );
 	}
 
 	/** The set of tokens any palette drives (so a manual edit can unlink the active palette). */

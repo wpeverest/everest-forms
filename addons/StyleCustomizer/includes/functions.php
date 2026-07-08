@@ -18,6 +18,60 @@ function evfsc_enqueue_fonts( $font_family = '' ) {
 	}
 }
 
+/**
+ * The Google Fonts list used by the Style Customizer, cached for a week.
+ *
+ * Single source of truth for BOTH the legacy WP-Customizer select2 control
+ * ({@see EVF_Customize_Select2_Control::get_google_fonts()}) and the v2 React panel — so the
+ * font family dropdown is identical (order, labels) in either engine and the list is fetched
+ * once, not duplicated.
+ *
+ * @since x.x.x
+ * @return array List of font objects (each exposes a `family` property), or an empty array.
+ */
+function evfsc_get_google_fonts() {
+	$google_fonts = get_transient( 'evf_google_fonts' );
+
+	if ( false === $google_fonts ) {
+		$raw_google_fonts = wp_safe_remote_get( 'https://raw.githubusercontent.com/wpeverest/google-fonts/master/google-fonts.json' );
+
+		if ( ! is_wp_error( $raw_google_fonts ) ) {
+			$google_fonts = json_decode( wp_remote_retrieve_body( $raw_google_fonts ) );
+
+			if ( isset( $google_fonts->items ) ) {
+				$google_fonts = $google_fonts->items;
+				set_transient( 'evf_google_fonts', $google_fonts, WEEK_IN_SECONDS );
+			}
+		}
+	}
+
+	/** This filter is documented in addons/StyleCustomizer/includes/customize/class-evf-customize-select2-control.php */
+	$google_fonts = apply_filters( 'everest_forms_extensions_sections', $google_fonts );
+
+	return is_array( $google_fonts ) ? $google_fonts : array();
+}
+
+/**
+ * The Google Fonts as a flat list of family-name strings (order preserved).
+ *
+ * Used by the v2 REST payload to populate the Font Family dropdown; matches the legacy
+ * customizer's list exactly since it derives from {@see evfsc_get_google_fonts()}.
+ *
+ * @since x.x.x
+ * @return string[] Font family names.
+ */
+function evfsc_get_google_font_families() {
+	$families = array();
+	foreach ( evfsc_get_google_fonts() as $font ) {
+		if ( is_object( $font ) && isset( $font->family ) ) {
+			$families[] = (string) $font->family;
+		} elseif ( is_array( $font ) && isset( $font['family'] ) ) {
+			$families[] = (string) $font['family'];
+		}
+	}
+	return $families;
+}
+
 function evfsc_migration() {
 
 	if ( get_option( 'evfsc_migration_done' ) ) {

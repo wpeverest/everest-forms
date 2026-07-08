@@ -363,19 +363,13 @@ function Box4Control( props: ControlProps ) {
 function SelectControl( props: ControlProps & { depHint?: string } ) {
 	const { token, store, depHint } = props;
 	const value = String( store.resolve( token.key ) );
-	const themeFont = store.themeFont();
-	const disabled = token.key === 'fonts.family' && themeFont;
-	const hint =
-		token.key === 'fonts.family' && themeFont
-			? __( 'Using your theme’s font. Turn off “Use theme fonts” to choose one.', 'everest-forms' )
-			: depHint || '';
+	const hint = depHint || '';
 
 	return (
 		<ControlShell { ...props }>
 			<select
 				className="inp"
 				value={ value }
-				disabled={ disabled }
 				aria-label={ token.label }
 				onChange={ ( e ) => store.setTokenValue( token.key, e.target.value, false ) }
 			>
@@ -385,6 +379,164 @@ function SelectControl( props: ControlProps & { depHint?: string } ) {
 					</option>
 				) ) }
 			</select>
+			{ hint && <div className="dep-hint">{ hint }</div> }
+		</ControlShell>
+	);
+}
+
+/**
+ * Searchable font-family picker (a combobox, not a native <select>) — the Google Fonts list is
+ * ~1000 entries, so a filterable dropdown is the only usable UI. Matches the dashboard/Analytics
+ * dropdown feel: a trigger button that opens a search box + scrollable, keyboard-navigable list.
+ * Draws from `store.googleFonts` (the same list the v1 customizer used).
+ */
+function FontSelectControl( props: ControlProps & { depHint?: string } ) {
+	const { token, store, depHint } = props;
+	const value = String( store.resolve( token.key ) );
+	const themeFont = store.themeFont();
+	const disabled = themeFont;
+
+	const THEME_DEFAULT = __( 'Theme default', 'everest-forms' );
+	const [ open, setOpen ] = React.useState( false );
+	const [ query, setQuery ] = React.useState( '' );
+	const [ active, setActive ] = React.useState( 0 );
+	const rootRef = React.useRef< HTMLDivElement >( null );
+	const listRef = React.useRef< HTMLDivElement >( null );
+	const searchRef = React.useRef< HTMLInputElement >( null );
+
+	const allOptions = React.useMemo( () => {
+		const base = [ { value: '', label: THEME_DEFAULT } ];
+		( store.googleFonts || [] ).forEach( ( f ) => base.push( { value: f, label: f } ) );
+		return base;
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [ store.googleFonts ] );
+
+	const filtered = React.useMemo( () => {
+		const q = query.trim().toLowerCase();
+		return q ? allOptions.filter( ( o ) => o.label.toLowerCase().indexOf( q ) !== -1 ) : allOptions;
+	}, [ query, allOptions ] );
+
+	// Close when clicking outside the control.
+	React.useEffect( () => {
+		if ( ! open ) {
+			return;
+		}
+		const onDown = ( e: MouseEvent ) => {
+			if ( rootRef.current && ! rootRef.current.contains( e.target as Node ) ) {
+				setOpen( false );
+			}
+		};
+		document.addEventListener( 'mousedown', onDown );
+		return () => document.removeEventListener( 'mousedown', onDown );
+	}, [ open ] );
+
+	// On open: reset the query, highlight the current value, focus the search box.
+	React.useEffect( () => {
+		if ( ! open ) {
+			return;
+		}
+		setQuery( '' );
+		const idx = allOptions.findIndex( ( o ) => o.value === value );
+		setActive( idx >= 0 ? idx : 0 );
+		const t = window.setTimeout( () => searchRef.current && searchRef.current.focus(), 0 );
+		return () => window.clearTimeout( t );
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [ open ] );
+
+	// Keep the highlighted option scrolled into view during keyboard navigation.
+	React.useEffect( () => {
+		if ( ! open || ! listRef.current ) {
+			return;
+		}
+		const el = listRef.current.children[ active ] as HTMLElement | undefined;
+		if ( el && el.scrollIntoView ) {
+			el.scrollIntoView( { block: 'nearest' } );
+		}
+	}, [ active, open ] );
+
+	const choose = ( v: string ) => {
+		store.setTokenValue( token.key, v, false );
+		setOpen( false );
+	};
+
+	const onKeyDown = ( e: React.KeyboardEvent ) => {
+		if ( e.key === 'ArrowDown' ) {
+			e.preventDefault();
+			setActive( ( a ) => Math.min( filtered.length - 1, a + 1 ) );
+		} else if ( e.key === 'ArrowUp' ) {
+			e.preventDefault();
+			setActive( ( a ) => Math.max( 0, a - 1 ) );
+		} else if ( e.key === 'Enter' ) {
+			e.preventDefault();
+			if ( filtered[ active ] ) {
+				choose( filtered[ active ].value );
+			}
+		} else if ( e.key === 'Escape' ) {
+			e.preventDefault();
+			setOpen( false );
+		}
+	};
+
+	const hint = themeFont
+		? __( 'Using your theme’s font. Turn off “Use theme fonts” to choose one.', 'everest-forms' )
+		: depHint || '';
+
+	return (
+		<ControlShell { ...props }>
+			<div className="fontsel" ref={ rootRef }>
+				<button
+					type="button"
+					className="fontsel-trigger"
+					disabled={ disabled }
+					aria-haspopup="listbox"
+					aria-expanded={ open }
+					aria-label={ token.label }
+					onClick={ () => ! disabled && setOpen( ( o ) => ! o ) }
+				>
+					<span className="fontsel-val">{ value || THEME_DEFAULT }</span>
+					<span className="fontsel-chev" aria-hidden="true">▾</span>
+				</button>
+				{ open && (
+					<div className="fontsel-pop">
+						<input
+							ref={ searchRef }
+							type="text"
+							className="fontsel-search"
+							placeholder={ __( 'Search fonts…', 'everest-forms' ) }
+							value={ query }
+							aria-label={ __( 'Search fonts', 'everest-forms' ) }
+							onChange={ ( e ) => {
+								setQuery( e.target.value );
+								setActive( 0 );
+							} }
+							onKeyDown={ onKeyDown }
+						/>
+						<div className="fontsel-list" ref={ listRef } role="listbox" aria-label={ token.label }>
+							{ filtered.length === 0 ? (
+								<div className="fontsel-empty">{ __( 'No fonts found', 'everest-forms' ) }</div>
+							) : (
+								filtered.map( ( o, i ) => (
+									<button
+										key={ o.value || '__default' }
+										type="button"
+										role="option"
+										aria-selected={ o.value === value }
+										className={
+											'fontsel-opt' +
+											( i === active ? ' active' : '' ) +
+											( o.value === value ? ' sel' : '' )
+										}
+										onMouseEnter={ () => setActive( i ) }
+										onClick={ () => choose( o.value ) }
+									>
+										{ o.label }
+									</button>
+								) )
+							) }
+						</div>
+					</div>
+				) }
+			</div>
 			{ hint && <div className="dep-hint">{ hint }</div> }
 		</ControlShell>
 	);
@@ -513,7 +665,11 @@ export function ControlRenderer( props: ControlProps & { depHint?: string } ) {
 		case 'box4':
 			return <Box4Control { ...props } />;
 		case 'select':
-			return <SelectControl { ...props } />;
+			return props.token.source === 'google_fonts' ? (
+				<FontSelectControl { ...props } />
+			) : (
+				<SelectControl { ...props } />
+			);
 		case 'align':
 			return <AlignControl { ...props } />;
 		case 'fontstyle':
