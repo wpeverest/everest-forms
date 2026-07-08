@@ -132,14 +132,34 @@ final class RestController {
 	 * @return \WP_REST_Response|\WP_Error
 	 */
 	public function save_item( $request ) {
-		$form_id  = absint( $request['id'] );
-		$body     = (array) $request->get_json_params();
-		$incoming = isset( $body['record'] ) && is_array( $body['record'] ) ? $body['record'] : array();
+		$form_id = absint( $request['id'] );
 
-		$all = get_option( 'everest_forms_styles', array() );
+		// The id must be a real form — never litter the option with junk ids.
+		$post = get_post( $form_id );
+		if ( ! $post || 'everest_form' !== $post->post_type ) {
+			return new \WP_Error(
+				'evf_style_no_form',
+				__( 'Form not found.', 'everest-forms' ),
+				array( 'status' => 404 )
+			);
+		}
 
-		if ( isset( $all[ $form_id ]['_updated_at'], $body['base_updated_at'] )
-			&& (int) $all[ $form_id ]['_updated_at'] !== (int) $body['base_updated_at'] ) {
+		// Require an explicit record object. A missing/invalid body must never silently
+		// wipe a form's styles, so reject rather than save an empty record.
+		$incoming = $request->get_param( 'record' );
+		if ( ! is_array( $incoming ) ) {
+			return new \WP_Error(
+				'evf_style_bad_request',
+				__( 'Missing or invalid "record".', 'everest-forms' ),
+				array( 'status' => 400 )
+			);
+		}
+
+		$all          = get_option( 'everest_forms_styles', array() );
+		$base_updated = $request->get_param( 'base_updated_at' );
+
+		if ( isset( $all[ $form_id ]['_updated_at'] ) && null !== $base_updated
+			&& (int) $all[ $form_id ]['_updated_at'] !== (int) $base_updated ) {
 			return new \WP_Error(
 				'evf_style_conflict',
 				__( 'These styles were changed somewhere else. Reload before saving.', 'everest-forms' ),
@@ -147,8 +167,8 @@ final class RestController {
 			);
 		}
 
-		$clean             = Sanitizer::sanitize_record( $incoming );
-		$all[ $form_id ]   = $clean;
+		$clean           = Sanitizer::sanitize_record( $incoming );
+		$all[ $form_id ] = $clean;
 		update_option( 'everest_forms_styles', $all, false ); // autoload=no.
 
 		return rest_ensure_response(
