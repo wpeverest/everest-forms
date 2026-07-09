@@ -174,7 +174,7 @@ ok( '' === $attack['palette'], 'pro palette id rejected on save' );
 // the pro token's DEFAULT (so the form isn't broken by unset vars), never the crafted value.
 $attack_css = Compiler::compile( array( 'tokens' => array( 'input.size' => array( 'desktop' => 20 ), 'wrap.bg' => array( 'desktop' => '#123456' ) ) ), 7 );
 ok( strpos( $attack_css, '--evf-input-size:20px' ) === false, 'free: crafted pro value NOT compiled' );
-ok( strpos( $attack_css, '--evf-input-size:15px' ) !== false, 'free: pro token renders at default (form not broken)' );
+ok( strpos( $attack_css, '--evf-input-size:14px' ) !== false, 'free: pro token renders at default (form not broken)' );
 ok( strpos( $attack_css, '--evf-wrap-bg:#123456' ) !== false, 'free palette token still compiled without Pro' );
 // Restore Pro-active for the remaining control-logic suites (Compiler/Migrator).
 $GLOBALS['evf_test_pro_active'] = true;

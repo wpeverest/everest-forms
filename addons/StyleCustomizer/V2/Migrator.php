@@ -62,8 +62,14 @@ final class Migrator {
 			$tokens[ $rule['token'] ] = self::apply_transform( $rule['transform'], $value );
 		}
 
-		// Colour palette: seed the six palette-driven token colours from the saved palette.
-		$tokens = array_merge( $tokens, self::migrate_palette( $legacy ) );
+		// Colour palette: seed the palette-derived token colours from the saved palette (v2
+		// deliberately derives input.focusBorder/choice.checked/file.icon/btn.bgHover from
+		// button_background — plan §12 — a one-click "recolour everything coherently" UX
+		// enhancement over legacy, where those were independent, separately-set properties).
+		// Palette values go FIRST here so they're only a FALLBACK: an explicit legacy value for
+		// one of these properties (already in $tokens from the loop above) must win, or a
+		// customized focus-border/hover colour would be silently discarded on migration.
+		$tokens = array_merge( self::migrate_palette( $legacy ), $tokens );
 
 		$record = array(
 			'schema_version' => Schema::version(),

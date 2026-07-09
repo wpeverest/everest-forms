@@ -326,8 +326,10 @@ final class Schema {
 			// default '#969696': the legacy config's field_styles_border_color setting default
 			// (confirmed via getComputedStyle on a real unstyled form) — legacy-parity baseline.
 			array( 'key' => 'input.borderC', 'section' => 'fields', 'group' => 'Surface', 'label' => __( 'Border color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-input-border-c', 'default' => '#969696' ),
-			self::radius( 'input.radius', '--evf-input-radius', 8, 'fields', null, 'Surface', false ),
-			array( 'key' => 'input.size', 'section' => 'fields', 'group' => 'Typography', 'label' => __( 'Font size', 'everest-forms' ), 'type' => 'slider', 'var' => '--evf-input-size', 'default' => 15, 'min' => 11, 'max' => 22, 'step' => 1, 'unit' => 'px', 'advanced' => true, 'keywords' => array( 'text' ) ),
+			// default 3: legacy config's field_styles border_radius default (everest_forms_general_field_styles).
+			self::radius( 'input.radius', '--evf-input-radius', 3, 'fields', null, 'Surface', false ),
+			// default 14: legacy config's field_styles_font_size default.
+			array( 'key' => 'input.size', 'section' => 'fields', 'group' => 'Typography', 'label' => __( 'Font size', 'everest-forms' ), 'type' => 'slider', 'var' => '--evf-input-size', 'default' => 14, 'min' => 11, 'max' => 22, 'step' => 1, 'unit' => 'px', 'advanced' => true, 'keywords' => array( 'text' ) ),
 			// default '#575757': the legacy config's field_styles_font_color setting default —
 			// confirmed via getComputedStyle on a real unstyled form. Legacy-parity baseline.
 			array( 'key' => 'input.color', 'section' => 'fields', 'group' => 'Typography', 'label' => __( 'Text color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-input-color', 'default' => '#575757', 'advanced' => true ),
@@ -336,7 +338,8 @@ final class Schema {
 			self::talign( 'input.align', '--evf-input-align', 'fields', null ),
 			array( 'key' => 'input.borderStyle', 'section' => 'fields', 'group' => 'Border', 'label' => __( 'Border type', 'everest-forms' ), 'type' => 'select', 'var' => '--evf-input-border-style', 'default' => 'solid', 'options' => $border, 'deps' => array( 'input.bw', 'input.borderC' ), 'advanced' => true ),
 			self::bwidth( 'input.bw', '--evf-input-bw', 1, 'fields', null, 'Border', true ),
-			array( 'key' => 'input.pad', 'section' => 'fields', 'group' => 'Spacing', 'label' => __( 'Field padding', 'everest-forms' ), 'type' => 'box4', 'var' => '--evf-input-pad', 'default' => array( 12, 12, 12, 12 ), 'responsive' => true, 'advanced' => true, 'keywords' => array( 'inner' ) ),
+			// default 6/12/6/12: legacy config's field_styles_padding default.
+			array( 'key' => 'input.pad', 'section' => 'fields', 'group' => 'Spacing', 'label' => __( 'Field padding', 'everest-forms' ), 'type' => 'box4', 'var' => '--evf-input-pad', 'default' => array( 6, 12, 6, 12 ), 'responsive' => true, 'advanced' => true, 'keywords' => array( 'inner' ) ),
 			// default bottom=10: matches the legacy config's field_styles_margin default
 			// (evf-style-customizer-form-wrapper-configs.php) — legacy-parity baseline.
 			array( 'key' => 'field.margin', 'section' => 'fields', 'group' => 'Spacing', 'label' => __( 'Field margin', 'everest-forms' ), 'type' => 'box4', 'var' => '--evf-field-margin', 'default' => array( 0, 0, 10, 0 ), 'responsive' => true, 'advanced' => true, 'keywords' => array( 'gap', 'between' ) ),
@@ -351,7 +354,10 @@ final class Schema {
 			self::radius( 'file.radius', '--evf-file-radius', 0, 'fields', null, 'Upload area', true ),
 			array( 'key' => 'file.margin', 'section' => 'fields', 'group' => 'Upload area', 'label' => __( 'Margin', 'everest-forms' ), 'type' => 'box4', 'var' => '--evf-file-margin', 'default' => array( 0, 0, 0, 0 ), 'responsive' => true, 'advanced' => true, 'keywords' => array( 'upload', 'file', 'spacing' ) ),
 			array( 'key' => 'file.pad', 'section' => 'fields', 'group' => 'Upload area', 'label' => __( 'Padding', 'everest-forms' ), 'type' => 'box4', 'var' => '--evf-file-pad', 'default' => array( 14, 14, 14, 14 ), 'responsive' => true, 'advanced' => true, 'keywords' => array( 'upload', 'file', 'spacing', 'inner' ) ),
-			array( 'key' => 'input.focusBorder', 'section' => 'fields', 'group' => '', 'label' => __( 'Focus border color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-input-focus-border', 'default' => '#3b82f6', 'state' => 'focus', 'keywords' => array( 'outline', 'ring', 'active' ) ),
+			// default '#7ca8eb': the legacy config's field_styles_border_focus_color setting
+			// default, confirmed via getComputedStyle on a real unstyled/unpaletted form —
+			// applies only when no palette is set (a palette still derives this per §12).
+			array( 'key' => 'input.focusBorder', 'section' => 'fields', 'group' => '', 'label' => __( 'Focus border color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-input-focus-border', 'default' => '#7ca8eb', 'state' => 'focus', 'keywords' => array( 'outline', 'ring', 'active' ) ),
 		);
 
 		$choice = array(
@@ -369,8 +375,10 @@ final class Schema {
 		$button = array(
 			array( 'key' => 'btn.bg', 'section' => 'button', 'group' => '', 'label' => __( 'Button color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-btn-bg', 'default' => '#3b82f6', 'hidden' => true, 'keywords' => array( 'submit', 'background' ) ),
 			array( 'key' => 'btn.color', 'section' => 'button', 'group' => '', 'label' => __( 'Text color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-btn-color', 'default' => '#ffffff', 'hidden' => true, 'keywords' => array( 'submit' ) ),
-			self::radius( 'btn.radius', '--evf-btn-radius', 8, 'button', null, '', false ),
-			array( 'key' => 'btn.size', 'section' => 'button', 'group' => '', 'label' => __( 'Font size', 'everest-forms' ), 'type' => 'slider', 'var' => '--evf-btn-size', 'default' => 15, 'min' => 11, 'max' => 24, 'step' => 1, 'unit' => 'px', 'advanced' => true, 'keywords' => array( 'submit' ) ),
+			// default 3: legacy config's button border_radius default (everest_forms_general_buttons).
+			self::radius( 'btn.radius', '--evf-btn-radius', 3, 'button', null, '', false ),
+			// default 14: legacy config's button_font_size default.
+			array( 'key' => 'btn.size', 'section' => 'button', 'group' => '', 'label' => __( 'Font size', 'everest-forms' ), 'type' => 'slider', 'var' => '--evf-btn-size', 'default' => 14, 'min' => 11, 'max' => 24, 'step' => 1, 'unit' => 'px', 'advanced' => true, 'keywords' => array( 'submit' ) ),
 			// nw=400: legacy emits no font-weight override at all when button_font_style is
 			// unset (the common case), so the button falls through to the browser/theme base
 			// weight — empirically confirmed 400 via getComputedStyle. Legacy-parity baseline.
@@ -378,16 +386,22 @@ final class Schema {
 			self::talign( 'btn.align', '--evf-btn-align', 'button', null, 'center' ),
 			self::line( 'btn.line', '--evf-btn-lh', 1.5, 'button', null ),
 			self::box( 'btn.margin', __( 'Margin', 'everest-forms' ), '--evf-btn-margin', array( 0, 0, 0, 0 ), 'button', null ),
-			array( 'key' => 'btn.pad', 'section' => 'button', 'group' => '', 'label' => __( 'Padding', 'everest-forms' ), 'type' => 'box4', 'var' => '--evf-btn-pad', 'default' => array( 13, 30, 13, 30 ), 'responsive' => true, 'advanced' => true, 'keywords' => array( 'size' ) ),
+			// default 10/15/10/15: legacy config's button_padding default.
+			array( 'key' => 'btn.pad', 'section' => 'button', 'group' => '', 'label' => __( 'Padding', 'everest-forms' ), 'type' => 'box4', 'var' => '--evf-btn-pad', 'default' => array( 10, 15, 10, 15 ), 'responsive' => true, 'advanced' => true, 'keywords' => array( 'size' ) ),
 			array( 'key' => 'btn.borderStyle', 'section' => 'button', 'group' => '', 'label' => __( 'Border type', 'everest-forms' ), 'type' => 'select', 'var' => '--evf-btn-border-style', 'default' => 'solid', 'options' => $border, 'deps' => array( 'btn.bw', 'btn.borderC' ), 'advanced' => true, 'keywords' => array( 'outline' ) ),
-			self::bwidth( 'btn.bw', '--evf-btn-bw', 0, 'button', null, '', true ),
+			// default 1: legacy config's button border_width default (everest_forms_general_buttons).
+			self::bwidth( 'btn.bw', '--evf-btn-bw', 1, 'button', null, '', true ),
 			// default '#cccccc': matches both the core (non-customizer) button stylesheet and
 			// the legacy compiled CSS's own button_border_color fallback, confirmed via
 			// getComputedStyle on a real unstyled form. Legacy-parity baseline.
 			array( 'key' => 'btn.borderC', 'section' => 'button', 'group' => '', 'label' => __( 'Border color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-btn-border-c', 'default' => '#cccccc', 'advanced' => true ),
-			array( 'key' => 'btn.bgHover', 'section' => 'button', 'group' => '', 'label' => __( 'Button color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-btn-bg-hover', 'default' => '#2563eb', 'state' => 'hover', 'keywords' => array( 'mouse over' ) ),
-			array( 'key' => 'btn.colorHover', 'section' => 'button', 'group' => '', 'label' => __( 'Text color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-btn-color-hover', 'default' => '#ffffff', 'state' => 'hover', 'keywords' => array( 'mouse over', 'hover font' ) ),
-			array( 'key' => 'btn.borderCHover', 'section' => 'button', 'group' => '', 'label' => __( 'Border color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-btn-border-c-hover', 'default' => '#2563eb', 'state' => 'hover', 'keywords' => array( 'mouse over', 'hover border' ) ),
+			// defaults '#eeeeee'/'#23282d': the legacy config's button_hover_background_color /
+			// button_hover_font_color setting defaults, confirmed via getComputedStyle on a real
+			// unstyled/no-palette form — a palette still derives btn.bgHover per §12.
+			array( 'key' => 'btn.bgHover', 'section' => 'button', 'group' => '', 'label' => __( 'Button color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-btn-bg-hover', 'default' => '#eeeeee', 'state' => 'hover', 'keywords' => array( 'mouse over' ) ),
+			array( 'key' => 'btn.colorHover', 'section' => 'button', 'group' => '', 'label' => __( 'Text color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-btn-color-hover', 'default' => '#23282d', 'state' => 'hover', 'keywords' => array( 'mouse over', 'hover font' ) ),
+			// default '#cccccc': legacy config's button_border_hover_color default.
+			array( 'key' => 'btn.borderCHover', 'section' => 'button', 'group' => '', 'label' => __( 'Border color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-btn-border-c-hover', 'default' => '#cccccc', 'state' => 'hover', 'keywords' => array( 'mouse over', 'hover border' ) ),
 		);
 
 		// NOTE: the Messages section tokens (tier=pro) are NOT defined here. They live in the Pro
@@ -422,7 +436,9 @@ final class Schema {
 			// `.everest-forms label.evf-field-label{font-weight:600}`, confirmed via
 			// getComputedStyle on a real production form. This is legacy-PARITY (matching what
 			// v1 truly renders, bug included), not agreement with the SCSS author's intent.
-			'label'    => array( 'sub' => 'label', 'size' => 14, 'min' => 10, 'max' => 24, 'color' => '#1f2433', 'nw' => '600', 'margin' => array( 0, 0, 7, 0 ), 'line' => 1.5, 'pad' => array( 0, 0, 0, 0 ), 'color_hidden' => true ),
+			// margin bottom=10, line=1.7: legacy config's field_labels_margin / field_labels_line_height
+			// defaults, confirmed via getComputedStyle on a real unstyled form.
+			'label'    => array( 'sub' => 'label', 'size' => 14, 'min' => 10, 'max' => 24, 'color' => '#1f2433', 'nw' => '600', 'margin' => array( 0, 0, 10, 0 ), 'line' => 1.7, 'pad' => array( 0, 0, 0, 0 ), 'color_hidden' => true ),
 			'sublabel' => array( 'sub' => 'sub', 'size' => 12, 'min' => 9, 'max' => 20, 'color' => '#6b7280', 'nw' => '400', 'margin' => array( 0, 0, 6, 0 ), 'line' => 1.5, 'pad' => array( 0, 0, 0, 0 ), 'color_hidden' => true ),
 			'desc'     => array( 'sub' => 'desc', 'size' => 12, 'min' => 9, 'max' => 20, 'color' => '#6b7280', 'nw' => '400', 'margin' => array( 6, 0, 0, 0 ), 'line' => 1.5, 'pad' => array( 0, 0, 0, 0 ), 'color_hidden' => false ),
 			'title'    => array( 'sub' => 'title', 'size' => 17, 'min' => 12, 'max' => 34, 'color' => '#1f2433', 'nw' => '700', 'margin' => array( 18, 0, 16, 0 ), 'line' => 1.35, 'pad' => array( 0, 0, 8, 0 ), 'color_hidden' => false ),
