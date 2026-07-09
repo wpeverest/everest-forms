@@ -39,17 +39,20 @@ final class Compiler {
 		$theme_font = ! empty( $tokens['fonts.theme']['desktop'] );
 		$pro_active = Engine::pro_active();
 
-		// Base (desktop) declarations for every token that maps to a variable. Pro-tier tokens
-		// only emit when the Pro tier is active — so a form previously styled with Pro renders
-		// its pro styling neutrally (defaults) if Pro is later deactivated, without destroying the
-		// stored values. (Pro tokens are also physically absent from a free schema.)
+		// Base (desktop) declarations for every token that maps to a variable.
+		//
+		// On a site WITHOUT Pro, a pro-tier token renders at its DEFAULT — never the stored value.
+		// This is essential for correctness: the rule template reads `var(--evf-*)` with no CSS
+		// fallback, so a pro var that is simply omitted would make its declaration invalid and the
+		// form would render broken (no padding/borders/sizing). Emitting the default keeps the
+		// baseline design intact while pro CUSTOMISATIONS still don't apply (the value is forced to
+		// default here and stripped at save by the sanitizer). It also means a form previously
+		// styled with Pro degrades cleanly to the default look if Pro is later deactivated.
 		$base = array();
 		foreach ( Schema::tokens() as $token ) {
-			if ( ! $pro_active && isset( $token['tier'] ) && 'pro' === $token['tier'] ) {
-				continue;
-			}
-			$value = self::resolve( $tokens, $token, 'desktop' );
-			$base  = array_merge( $base, self::declarations( $token, $value, $theme_font ) );
+			$locked = ! $pro_active && isset( $token['tier'] ) && 'pro' === $token['tier'];
+			$value  = $locked ? $token['default'] : self::resolve( $tokens, $token, 'desktop' );
+			$base   = array_merge( $base, self::declarations( $token, $value, $theme_font ) );
 		}
 
 		$css = '';

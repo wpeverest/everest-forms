@@ -253,46 +253,52 @@
 	text-align: var( --evf-btn-align );
 }
 
-/* ===== MESSAGES — success / error / validation ===== */
+/*
+ * ===== MESSAGES — success / error / validation =====
+ * The message tokens are Pro-only (defined in the Pro plugin), so on a free site their
+ * `--evf-msg-*` variables are never emitted. Each declaration therefore carries a FALLBACK equal
+ * to the token's default, so the submission banners always render correctly (free) and are
+ * overridden by the emitted variables when Pro is active.
+ */
 .everest-forms .evf-style-v2 .everest-forms-notice--success,
 .everest-forms.everest-forms-notice--success.evf-style-v2 {
-	background-color: var( --evf-msg-success-bg );
-	color: var( --evf-msg-success-color );
-	font-size: var( --evf-msg-success-size );
-	text-align: var( --evf-msg-success-align );
+	background-color: var( --evf-msg-success-bg, #dcfce7 );
+	color: var( --evf-msg-success-color, #166534 );
+	font-size: var( --evf-msg-success-size, 13px );
+	text-align: var( --evf-msg-success-align, left );
 	border-style: var( --evf-msg-success-border-style, solid );
-	border-width: var( --evf-msg-success-bw );
-	border-color: var( --evf-msg-success-border-c );
-	border-radius: var( --evf-msg-success-radius );
-	font-weight: var( --evf-msg-success-weight );
-	font-style: var( --evf-msg-success-fs );
-	text-transform: var( --evf-msg-success-tt );
+	border-width: var( --evf-msg-success-bw, 0 );
+	border-color: var( --evf-msg-success-border-c, #bbf7d0 );
+	border-radius: var( --evf-msg-success-radius, 8px );
+	font-weight: var( --evf-msg-success-weight, 500 );
+	font-style: var( --evf-msg-success-fs, normal );
+	text-transform: var( --evf-msg-success-tt, none );
 }
 
 .everest-forms .evf-style-v2 .everest-forms-notice--error {
-	background-color: var( --evf-msg-error-bg );
-	color: var( --evf-msg-error-color );
-	font-size: var( --evf-msg-error-size );
-	text-align: var( --evf-msg-error-align );
+	background-color: var( --evf-msg-error-bg, #fee2e2 );
+	color: var( --evf-msg-error-color, #991b1b );
+	font-size: var( --evf-msg-error-size, 13px );
+	text-align: var( --evf-msg-error-align, left );
 	border-style: var( --evf-msg-error-border-style, solid );
-	border-width: var( --evf-msg-error-bw );
-	border-color: var( --evf-msg-error-border-c );
-	border-radius: var( --evf-msg-error-radius );
-	font-weight: var( --evf-msg-error-weight );
-	font-style: var( --evf-msg-error-fs );
-	text-transform: var( --evf-msg-error-tt );
+	border-width: var( --evf-msg-error-bw, 0 );
+	border-color: var( --evf-msg-error-border-c, #fecaca );
+	border-radius: var( --evf-msg-error-radius, 8px );
+	font-weight: var( --evf-msg-error-weight, 500 );
+	font-style: var( --evf-msg-error-fs, normal );
+	text-transform: var( --evf-msg-error-tt, none );
 }
 
 .everest-forms .evf-style-v2 .evf-error {
-	background-color: var( --evf-msg-validation-bg );
-	color: var( --evf-msg-validation-color );
-	font-size: var( --evf-msg-validation-size );
-	text-align: var( --evf-msg-validation-align );
+	background-color: var( --evf-msg-validation-bg, #fef9c3 );
+	color: var( --evf-msg-validation-color, #854d0e );
+	font-size: var( --evf-msg-validation-size, 13px );
+	text-align: var( --evf-msg-validation-align, left );
 	border-style: var( --evf-msg-validation-border-style, solid );
-	border-width: var( --evf-msg-validation-bw );
-	border-color: var( --evf-msg-validation-border-c );
-	border-radius: var( --evf-msg-validation-radius );
-	font-weight: var( --evf-msg-validation-weight );
-	font-style: var( --evf-msg-validation-fs );
-	text-transform: var( --evf-msg-validation-tt );
+	border-width: var( --evf-msg-validation-bw, 0 );
+	border-color: var( --evf-msg-validation-border-c, #fde68a );
+	border-radius: var( --evf-msg-validation-radius, 8px );
+	font-weight: var( --evf-msg-validation-weight, 500 );
+	font-style: var( --evf-msg-validation-fs, normal );
+	text-transform: var( --evf-msg-validation-tt, none );
 }
