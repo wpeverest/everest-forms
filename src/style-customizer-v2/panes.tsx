@@ -76,7 +76,9 @@ export function DesignList( {
 							<path d="M18 6 6 18M6 6l12 12" />
 						</svg>
 					) : (
-						'▾'
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2.2 }>
+							<path d="m6 9 6 6 6-6" />
+						</svg>
 					) }
 				</span>
 			</button>
@@ -242,7 +244,9 @@ export function ElementSlate( {
 
 			{ hasLocked && (
 				<div className="pro-lock">
-					<span>🔒</span>
+					<span className="pro-lock-ic" aria-hidden="true">
+						<Icon inner='<rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>' />
+					</span>
 					<span>
 						{ __( 'Message styling is a Pro feature.', 'everest-forms' ) }{ ' ' }
 						<a href={ UPGRADE_URL } target="_blank" rel="noreferrer">

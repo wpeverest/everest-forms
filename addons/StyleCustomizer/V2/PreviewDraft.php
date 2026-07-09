@@ -94,11 +94,16 @@ final class PreviewDraft {
 	 */
 	public static function print_embed_css() {
 		echo '<style id="evf-style-preview-embed">'
-			. 'html{margin-top:0 !important;}'
+			// A stable scrollbar gutter reserves the scrollbar's width in the layout up front
+			// (supported in all evergreen browsers), so it never appears "over" content or leaves
+			// a border short of the true edge once the page grows past viewport height.
+			. 'html{margin-top:0 !important;scrollbar-gutter:stable;}'
+			. '*,*::before,*::after{box-sizing:border-box;}'
 			. 'body.evf-multi-device-form-preview{margin:0 !important;padding:0 !important;background:#fff !important;}'
 			. '#wpadminbar,#nav-menu-header,.evf-form-side-panel,.evf-form-preview-sidepanel-toggler,.evf-form-preview-devices,.evf-form-preview-dropdown-container,.major-publishing-actions{display:none !important;}'
 			. '.evf-form-preview-main-content,.evf-form-preview-overlay{display:block !important;position:static !important;inset:auto !important;margin:0 !important;padding:16px !important;width:100% !important;max-width:100% !important;min-height:0 !important;height:auto !important;box-shadow:none !important;background:transparent !important;}'
 			. '.evf-form-preview-form{width:100% !important;max-width:100% !important;margin:0 !important;padding:0 !important;}'
+			. '.evf-preview-content{width:100% !important;max-width:100% !important;}'
 			. '</style>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static developer-controlled CSS.
 	}
 

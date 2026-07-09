@@ -316,13 +316,18 @@
 	text-align: left;
 	font-size: 12.5px;
 	color: var(--ui-ink);
+	outline: none;
 	transition: border-color .12s, box-shadow .12s;
 
 	&:hover:not(:disabled) {
 		border-color: #b9bdc9;
 	}
 
+	/* Own the focus ring entirely (open state OR plain keyboard focus) so WP admin's default
+	   button focus outline/shadow never shows alongside it. */
+	&:focus,
 	&[aria-expanded="true"] {
+		outline: none;
 		border-color: var(--ui-purple);
 		box-shadow: 0 0 0 2px var(--ui-purple-50);
 	}
@@ -364,17 +369,43 @@
 	overflow: hidden;
 }
 
+#everest-forms-panel-style .dsel-search-wrap {
+	position: relative;
+	border-bottom: 1px solid var(--ui-line-2);
+	transition: border-color .12s;
+
+	&:focus-within {
+		border-bottom-color: var(--ui-purple);
+	}
+}
+
+#everest-forms-panel-style .dsel-search-ic {
+	position: absolute;
+	left: 11px;
+	top: 50%;
+	transform: translateY(-50%);
+	width: 14px;
+	height: 14px;
+	color: var(--ui-ink-3);
+	pointer-events: none;
+}
+
 #everest-forms-panel-style .dsel-search {
 	width: 100%;
+	display: block;
 	border: 0;
-	border-bottom: 1px solid var(--ui-line-2);
-	padding: 9px 11px;
+	padding: 9px 11px 9px 32px;
 	font-size: 12.5px;
+	color: var(--ui-ink);
+	background: none;
+	/* WP admin applies its own default text-input focus outline/box-shadow globally — neutralise
+	   it explicitly (both states) so this field shows exactly ONE border: the wrap's bottom edge. */
 	outline: none;
 	box-shadow: none;
 
 	&:focus {
-		border-bottom-color: var(--ui-purple);
+		outline: none;
+		box-shadow: none;
 	}
 }
 
@@ -603,21 +634,22 @@
 #everest-forms-panel-style .state-seg {
 	display: flex;
 	gap: 4px;
-	margin: 4px 0 14px;
+	margin: 4px 0 16px;
 	background: #f2f3f7;
 	padding: 3px;
-	border-radius: 6px;
+	border-radius: 8px;
 
 	button {
 		flex: 1;
 		border: 0;
 		background: none;
 		padding: 6px 2px;
-		border-radius: 4px;
+		border-radius: 6px;
 		font-size: 11px;
 		font-weight: 600;
 		color: var(--ui-ink-2);
 		cursor: pointer;
+		transition: background .12s, color .12s, box-shadow .12s;
 
 		&[aria-selected="true"] {
 			background: #fff;
@@ -634,26 +666,32 @@
 }
 
 #everest-forms-panel-style .sec-hint {
-	font-size: 11px;
+	font-size: 11.5px;
 	color: var(--ui-ink-3);
-	margin: 4px 2px 12px;
-	line-height: 1.55;
+	margin: 2px 2px 16px;
+	line-height: 1.6;
 }
 
-/* grouped cards */
+/* grouped cards — a quiet, flat surface (thin border + a whisper of shadow, not a heavy card)
+   that reads as one consistent system across every section (Form, Text, Inputs, Choices, …). */
 #everest-forms-panel-style .grp {
-	margin-bottom: 10px;
+	margin-bottom: 14px;
 
 	&:first-child {
 		margin-top: 0;
+	}
+
+	&:last-child {
+		margin-bottom: 0;
 	}
 }
 
 #everest-forms-panel-style #elBody .grp {
 	background: #fff;
 	border: 1px solid var(--ui-line);
-	border-radius: 4px;
-	padding: 13px 14px;
+	border-radius: 8px;
+	padding: 16px;
+	box-shadow: 0 1px 2px rgba(20, 23, 40, .03);
 }
 
 #everest-forms-panel-style .grp-h {
@@ -662,7 +700,7 @@
 	color: var(--ui-ink-3);
 	letter-spacing: .06em;
 	text-transform: uppercase;
-	margin: 1px 0 12px;
+	margin: 1px 0 14px;
 }
 
 #everest-forms-panel-style #elBody .grp .ctrl:last-child {
@@ -671,7 +709,7 @@
 
 /* controls */
 #everest-forms-panel-style .ctrl {
-	margin-bottom: 14px;
+	margin-bottom: 16px;
 	border-radius: 6px;
 	position: relative;
 }
@@ -745,7 +783,7 @@
 	font-size: 10px;
 	color: var(--ui-ink-3);
 	border: 1px solid var(--ui-line);
-	border-radius: 4px;
+	border-radius: 5px;
 	padding: 1px 5px;
 	background: #f6f7fa;
 }
@@ -755,13 +793,18 @@
 	height: 22px;
 	border: 0;
 	background: none;
-	border-radius: 4px;
+	border-radius: 6px;
 	color: var(--ui-icon);
 	cursor: pointer;
 	display: none;
 	place-items: center;
-	font-size: 12px;
 	flex: none;
+	transition: background .12s, color .12s;
+
+	svg {
+		width: 13px;
+		height: 13px;
+	}
 
 	&:hover {
 		background: var(--ui-line-2);
@@ -777,7 +820,7 @@
 	width: 24px;
 	height: 22px;
 	border: 1px solid var(--ui-line);
-	border-radius: 4px;
+	border-radius: 6px;
 	background: #fff;
 	display: grid;
 	place-items: center;
@@ -786,6 +829,7 @@
 	position: relative;
 	padding: 0;
 	flex: none;
+	transition: border-color .12s;
 
 	svg {
 		width: 13px;
@@ -821,15 +865,60 @@
 	align-items: center;
 	gap: 12px;
 
+	.slider-track {
+		position: relative;
+		flex: 1;
+		min-width: 0;
+	}
+
+	/* Value bubble that follows the thumb — shown on hover, drag, and keyboard focus, so the
+	   exact number is never a guess while adjusting. */
+	.slider-tip {
+		position: absolute;
+		bottom: calc(100% + 8px);
+		background: #1f2433;
+		color: #fff;
+		font-size: 11px;
+		font-weight: 600;
+		line-height: 1;
+		padding: 4px 7px;
+		border-radius: 4px;
+		white-space: nowrap;
+		pointer-events: none;
+		opacity: 0;
+		transform: translateX(-50%) translateY(2px);
+		transition: opacity .12s ease, transform .12s ease;
+		font-variant-numeric: tabular-nums;
+		z-index: 2;
+
+		&::after {
+			content: "";
+			position: absolute;
+			top: 100%;
+			left: 50%;
+			transform: translateX(-50%);
+			border: 4px solid transparent;
+			border-top-color: #1f2433;
+		}
+	}
+
 	input[type="range"] {
 		-webkit-appearance: none;
 		appearance: none;
-		flex: 1;
+		width: 100%;
+		display: block;
 		min-width: 0;
 		height: 15px;
 		background: transparent;
 		cursor: pointer;
 		margin: 0;
+
+		&:hover ~ .slider-tip,
+		&:active ~ .slider-tip,
+		&:focus-visible ~ .slider-tip {
+			opacity: 1;
+			transform: translateX(-50%) translateY(0);
+		}
 
 		/* Flat, quiet track — the purple lives on the thumb only, so the resting state stays calm. */
 		&::-webkit-slider-runnable-track {
@@ -908,9 +997,14 @@
 		color: var(--ui-ink);
 		font-variant-numeric: tabular-nums;
 		background: none;
+		outline: none;
+		box-shadow: none;
 
+		/* WP admin's global input focus style adds its own outline/shadow — the wrap already
+		   shows a purple ring (:focus-within above), so the inner input must show none of its own. */
 		&:focus {
 			outline: none;
+			box-shadow: none;
 		}
 	}
 
@@ -960,9 +1054,12 @@
 		color: var(--ui-ink);
 		min-width: 0;
 		background: none;
+		outline: none;
+		box-shadow: none;
 
 		&:focus {
 			outline: none;
+			box-shadow: none;
 		}
 	}
 
@@ -1128,22 +1225,42 @@
 	flex: 1;
 	border: 1px dashed var(--ui-input-border);
 	background: #fbfbfd;
-	border-radius: 4px;
+	border-radius: 6px;
 	padding: 9px;
 	font-size: 12px;
 	font-weight: 600;
 	color: var(--ui-purple);
 	cursor: pointer;
+	transition: border-color .12s, background .12s;
+
+	&:hover {
+		border-color: var(--ui-purple);
+		background: var(--ui-purple-50);
+	}
 }
 
 #everest-forms-panel-style .mediaclear {
+	width: 34px;
+	height: 34px;
+	display: grid;
+	place-items: center;
 	border: 1px solid var(--ui-input-border);
 	background: #fff;
-	border-radius: 4px;
-	padding: 9px 11px;
-	font-size: 12px;
+	border-radius: 6px;
 	color: var(--ui-ink-2);
 	cursor: pointer;
+	flex: none;
+	transition: border-color .12s, color .12s;
+
+	svg {
+		width: 14px;
+		height: 14px;
+	}
+
+	&:hover {
+		border-color: var(--ui-red);
+		color: var(--ui-red);
+	}
 }
 
 /* custom CSS pane */
@@ -1409,21 +1526,37 @@
 /* pro lock */
 #everest-forms-panel-style .pro-lock {
 	display: flex;
-	align-items: flex-start;
-	gap: 8px;
+	align-items: center;
+	gap: 10px;
 	background: #fbf6ff;
 	border: 1px solid var(--ui-purple-100);
-	border-radius: 4px;
+	border-radius: 8px;
 	padding: 10px 12px;
 	font-size: 11.5px;
 	color: var(--ui-purple-600);
 	line-height: 1.5;
-	margin-bottom: 12px;
+	margin-bottom: 14px;
 
 	a {
 		color: var(--ui-purple);
 		font-weight: 700;
 		text-decoration: underline;
+	}
+}
+
+#everest-forms-panel-style .pro-lock-ic {
+	display: grid;
+	place-items: center;
+	width: 26px;
+	height: 26px;
+	border-radius: 7px;
+	background: #fff;
+	color: var(--ui-purple);
+	flex: none;
+
+	svg {
+		width: 14px;
+		height: 14px;
 	}
 }
 

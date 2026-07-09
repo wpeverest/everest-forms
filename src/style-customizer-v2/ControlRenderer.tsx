@@ -164,7 +164,10 @@ function ControlShell( {
 						aria-label={ __( 'Reset', 'everest-forms' ) + ' ' + token.label }
 						onClick={ () => store.resetToken( token.key ) }
 					>
-						↺
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2 } aria-hidden="true">
+							<path d="M3 12a9 9 0 1 0 3-6.7" />
+							<path d="M3 4v5h5" />
+						</svg>
 					</button>
 					{ right }
 				</span>
@@ -194,18 +197,33 @@ function SliderControl( props: ControlProps ) {
 		store.setTokenValue( token.key, roundToStep( clampNumber( raw, min, max ), token ), gesture );
 	};
 
+	// Position the value bubble exactly where the native thumb sits: the thumb travels between
+	// half its own width from each track edge, not edge-to-edge, so the tooltip must account for
+	// that inset (matches the 15px thumb width set in CSS) to stay centred over it at any value.
+	const THUMB = 15;
+	const pct = max > min ? clampNumber( ( ( value - min ) / ( max - min ) ) * 100, 0, 100 ) : 0;
+
 	return (
 		<ControlShell { ...props }>
 			<div className="slider">
-				<input
-					type="range"
-					min={ min }
-					max={ max }
-					step={ token.step || 1 }
-					value={ value }
-					aria-label={ token.label }
-					onChange={ ( e ) => commit( Number( e.target.value ), true ) }
-				/>
+				<div className="slider-track">
+					<input
+						type="range"
+						min={ min }
+						max={ max }
+						step={ token.step || 1 }
+						value={ value }
+						aria-label={ token.label }
+						onChange={ ( e ) => commit( Number( e.target.value ), true ) }
+					/>
+					<span
+						className="slider-tip"
+						aria-hidden="true"
+						style={ { left: `calc((100% - ${ THUMB }px) * ${ pct / 100 } + ${ THUMB / 2 }px)` } }
+					>
+						{ value }{ unit }
+					</span>
+				</div>
 				<div className="num">
 					<input
 						ref={ numRef }
@@ -571,19 +589,25 @@ function FontSelectControl( props: ControlProps & { depHint?: string } ) {
 				</button>
 				{ open && (
 					<div className="dsel-pop">
-						<input
-							ref={ searchRef }
-							type="text"
-							className="dsel-search"
-							placeholder={ __( 'Search fonts…', 'everest-forms' ) }
-							value={ query }
-							aria-label={ __( 'Search fonts', 'everest-forms' ) }
-							onChange={ ( e ) => {
-								setQuery( e.target.value );
-								setActive( 0 );
-							} }
-							onKeyDown={ onKeyDown }
-						/>
+						<div className="dsel-search-wrap">
+							<svg className="dsel-search-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2 } aria-hidden="true">
+								<circle cx="11" cy="11" r="7" />
+								<path d="m21 21-4.35-4.35" />
+							</svg>
+							<input
+								ref={ searchRef }
+								type="text"
+								className="dsel-search"
+								placeholder={ __( 'Search fonts…', 'everest-forms' ) }
+								value={ query }
+								aria-label={ __( 'Search fonts', 'everest-forms' ) }
+								onChange={ ( e ) => {
+									setQuery( e.target.value );
+									setActive( 0 );
+								} }
+								onKeyDown={ onKeyDown }
+							/>
+						</div>
 						<div className="dsel-list" ref={ listRef } role="listbox" aria-label={ token.label }>
 							{ filtered.length === 0 ? (
 								<div className="dsel-empty">{ __( 'No fonts found', 'everest-forms' ) }</div>
@@ -700,7 +724,9 @@ function MediaControl( props: ControlProps ) {
 						aria-label={ __( 'Remove image', 'everest-forms' ) }
 						onClick={ () => store.setTokenValue( token.key, '', false ) }
 					>
-						✕
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2 } aria-hidden="true">
+							<path d="M18 6 6 18M6 6l12 12" />
+						</svg>
 					</button>
 				) }
 			</div>

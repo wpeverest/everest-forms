@@ -233,7 +233,14 @@ export class PreviewBridge {
 			return;
 		}
 		const css = `
-			html { margin-top: 0 !important; }
+			html {
+				margin-top: 0 !important;
+				/* Reserve the scrollbar's width in the layout up front, so a border on a
+				   full-width child never falls short of (or is pushed past) the true edge once
+				   content grows taller than the iframe's viewport. */
+				scrollbar-gutter: stable;
+			}
+			*, *::before, *::after { box-sizing: border-box; }
 			body { margin-top: 0 !important; padding-top: 0 !important; }
 			#wpadminbar,
 			#nav-menu-header,
@@ -264,6 +271,10 @@ export class PreviewBridge {
 				max-width: 100% !important;
 				margin: 0 !important;
 				padding: 0 !important;
+			}
+			.evf-preview-content {
+				width: 100% !important;
+				max-width: 100% !important;
 			}`;
 		const style = doc.createElement( 'style' );
 		style.id = CHROME_STYLE_ID;
