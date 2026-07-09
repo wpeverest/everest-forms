@@ -39,17 +39,39 @@ $MIGRATOR_DIR = getenv( 'VR_MIGRATOR_DIR' ) ?: dirname( __DIR__, 2 );
 
 define( 'ABSPATH', __DIR__ );
 function __( $s, $d = null ) { return $s; }
-function apply_filters( $t, $v ) { return 'evf_style_v2_pro_active' === $t ? true : $v; }
 function sanitize_key( $k ) { return preg_replace( '/[^a-z0-9_\-]/', '', strtolower( (string) $k ) ); }
 function sanitize_text_field( $s ) { return trim( strip_tags( (string) $s ) ); }
 function esc_url_raw( $u ) { return (string) $u; }
 function wp_strip_all_tags( $s ) { return strip_tags( (string) $s ); }
+
+// Minimal real filter registry (not just a passthrough stub) so Pro's Schema::register() can
+// actually layer in the Messages tokens via evf_style_schema/evf_style_palettes — without this,
+// Schema::tokens() never includes msg.* at all and message-weight/color fixes go untested.
+$GLOBALS['__filters'] = array();
+function add_filter( $tag, $cb, $priority = 10 ) { $GLOBALS['__filters'][ $tag ][] = $cb; }
+function apply_filters( $tag, $value ) {
+	if ( 'evf_style_v2_pro_active' === $tag ) {
+		return true;
+	}
+	foreach ( $GLOBALS['__filters'][ $tag ] ?? array() as $cb ) {
+		$value = $cb( $value );
+	}
+	return $value;
+}
 
 require "$MIGRATOR_DIR/Schema.php";
 require "$MIGRATOR_DIR/Sanitizer.php";
 require "$MIGRATOR_DIR/Compiler.php";
 require "$MIGRATOR_DIR/Migrator.php";
 require "$MIGRATOR_DIR/Engine.php";
+
+// Layer in Pro's Messages tokens (msg.*) the same way a real Pro-active site does, so this tool
+// can actually check message-weight/colour — otherwise Schema::tokens() never includes them.
+$pro_schema = getenv( 'VR_PRO_SCHEMA' ) ?: dirname( $MIGRATOR_DIR, 4 ) . '/everest-forms-pro/src/StyleCustomizer/Schema.php';
+if ( is_readable( $pro_schema ) ) {
+	require $pro_schema;
+	\EverestForms\Pro\StyleCustomizer\Schema::register();
+}
 
 use EverestForms\Addons\StyleCustomizer\V2\Schema;
 use EverestForms\Addons\StyleCustomizer\V2\Migrator;
