@@ -333,7 +333,9 @@ final class Schema {
 			array( 'key' => 'input.borderStyle', 'section' => 'fields', 'group' => 'Border', 'label' => __( 'Border type', 'everest-forms' ), 'type' => 'select', 'var' => '--evf-input-border-style', 'default' => 'solid', 'options' => $border, 'deps' => array( 'input.bw', 'input.borderC' ), 'advanced' => true ),
 			self::bwidth( 'input.bw', '--evf-input-bw', 1, 'fields', null, 'Border', true ),
 			array( 'key' => 'input.pad', 'section' => 'fields', 'group' => 'Spacing', 'label' => __( 'Field padding', 'everest-forms' ), 'type' => 'box4', 'var' => '--evf-input-pad', 'default' => array( 12, 12, 12, 12 ), 'responsive' => true, 'advanced' => true, 'keywords' => array( 'inner' ) ),
-			array( 'key' => 'field.margin', 'section' => 'fields', 'group' => 'Spacing', 'label' => __( 'Field margin', 'everest-forms' ), 'type' => 'box4', 'var' => '--evf-field-margin', 'default' => array( 0, 0, 20, 0 ), 'responsive' => true, 'advanced' => true, 'keywords' => array( 'gap', 'between' ) ),
+			// default bottom=10: matches the legacy config's field_styles_margin default
+			// (evf-style-customizer-form-wrapper-configs.php) — legacy-parity baseline.
+			array( 'key' => 'field.margin', 'section' => 'fields', 'group' => 'Spacing', 'label' => __( 'Field margin', 'everest-forms' ), 'type' => 'box4', 'var' => '--evf-field-margin', 'default' => array( 0, 0, 10, 0 ), 'responsive' => true, 'advanced' => true, 'keywords' => array( 'gap', 'between' ) ),
 			array( 'key' => 'file.size', 'section' => 'fields', 'group' => 'Upload area', 'label' => __( 'Font size', 'everest-forms' ), 'type' => 'slider', 'var' => '--evf-file-size', 'default' => 14, 'min' => 10, 'max' => 22, 'step' => 1, 'unit' => 'px', 'advanced' => true, 'keywords' => array( 'upload', 'file' ) ),
 			array( 'key' => 'file.color', 'section' => 'fields', 'group' => 'Upload area', 'label' => __( 'Font color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-file-color', 'default' => '#5a6072', 'advanced' => true, 'keywords' => array( 'upload', 'file', 'text' ) ),
 			array( 'key' => 'file.bg', 'section' => 'fields', 'group' => 'Upload area', 'label' => __( 'Background', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-file-bg', 'default' => '#f7f8fb', 'advanced' => true, 'keywords' => array( 'upload', 'dropzone', 'file' ) ),
@@ -365,7 +367,10 @@ final class Schema {
 			array( 'key' => 'btn.color', 'section' => 'button', 'group' => '', 'label' => __( 'Text color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-btn-color', 'default' => '#ffffff', 'hidden' => true, 'keywords' => array( 'submit' ) ),
 			self::radius( 'btn.radius', '--evf-btn-radius', 8, 'button', null, '', false ),
 			array( 'key' => 'btn.size', 'section' => 'button', 'group' => '', 'label' => __( 'Font size', 'everest-forms' ), 'type' => 'slider', 'var' => '--evf-btn-size', 'default' => 15, 'min' => 11, 'max' => 24, 'step' => 1, 'unit' => 'px', 'advanced' => true, 'keywords' => array( 'submit' ) ),
-			self::fstyle( 'btn.fstyle', 'btn', 'button', null, '600' ),
+			// nw=400: legacy emits no font-weight override at all when button_font_style is
+			// unset (the common case), so the button falls through to the browser/theme base
+			// weight — empirically confirmed 400 via getComputedStyle. Legacy-parity baseline.
+			self::fstyle( 'btn.fstyle', 'btn', 'button', null, '400' ),
 			self::talign( 'btn.align', '--evf-btn-align', 'button', null, 'center' ),
 			self::line( 'btn.line', '--evf-btn-lh', 1.5, 'button', null ),
 			self::box( 'btn.margin', __( 'Margin', 'everest-forms' ), '--evf-btn-margin', array( 0, 0, 0, 0 ), 'button', null ),
