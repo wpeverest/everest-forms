@@ -6985,6 +6985,19 @@ p.search-box {
 		margin: 1em 0;
 	}
 
+	.evf-fm-select-popular-form {
+		display: flex;
+		align-items: center;
+
+		select {
+			margin: 0;
+		}
+
+		.evf-loading {
+			margin: 0 0 0 10px;
+		}
+	}
+
 	.description {
 		margin-bottom: 16px;
 
@@ -12774,14 +12787,30 @@ body {
 							padding: 0 24px !important;
 						}
 
+						.evf-fm-select-popular-form {
+							display: flex;
+							align-items: center;
+							margin-top: 8px;
+							margin-bottom: 24px;
+
+							.evf-loading {
+								margin: 0 0 0 10px;
+							}
+						}
+
 						.select2 {
 							&-container {
+								display: flex;
+								align-items: center;
 								min-height: 38px;
-								margin-top: 8px;
-								margin-bottom: 24px;
 								padding-right: 0 !important;
 								padding-left: 0 !important;
 								margin-left: 24px;
+
+								> .selection {
+									flex: 1;
+									min-width: 0;
+								}
 							}
 
 							&-selection {
