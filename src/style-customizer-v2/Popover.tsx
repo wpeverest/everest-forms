@@ -8,16 +8,25 @@
  */
 import React from 'react';
 
+const __ = ( window as any ).wp?.i18n?.__ || ( ( s: string ) => s );
+
 export interface PopoverState {
 	anchor: HTMLElement;
 	render: () => React.ReactNode;
 	matchWidth?: boolean;
 	/** Optional identity so the opener can toggle a specific popover (e.g. the palette grid). */
 	kind?: string;
+	/** Header title. When set (or `closable`), the popover shows a titled header with a × button. */
+	title?: string;
+	/** Show a close (×) button in the header. Implied when `title` is set. */
+	closable?: boolean;
 }
 
 export function Popover( { state, onClose }: { state: PopoverState; onClose: () => void } ) {
 	const ref = React.useRef< HTMLDivElement >( null );
+	const closeRef = React.useRef< HTMLButtonElement >( null );
+	const showHeader = !! ( state.title || state.closable );
+	const showClose = !! state.closable;
 	const [ pos, setPos ] = React.useState< { left: number; top: number; width?: number } >( {
 		left: -9999,
 		top: -9999,
@@ -61,11 +70,21 @@ export function Popover( { state, onClose }: { state: PopoverState; onClose: () 
 		};
 	}, [ state, onClose ] );
 
+	// Move focus to the close button when a dismissible popover (dialog) opens, so keyboard users
+	// land inside it and can Tab through / Esc out. Skipped for plain tooltips (no close button).
+	React.useEffect( () => {
+		if ( showClose && closeRef.current ) {
+			closeRef.current.focus();
+		}
+	}, [ showClose ] );
+
 	return (
 		<div
 			ref={ ref }
 			className="scv2-pop"
 			role="dialog"
+			aria-modal="false"
+			aria-label={ state.title || undefined }
 			style={ {
 				left: pos.left,
 				top: pos.top,
@@ -74,6 +93,24 @@ export function Popover( { state, onClose }: { state: PopoverState; onClose: () 
 				maxWidth: pos.width || undefined,
 			} }
 		>
+			{ showHeader && (
+				<div className="pop-head">
+					{ state.title && <span className="pop-head-title">{ state.title }</span> }
+					{ showClose && (
+						<button
+							ref={ closeRef }
+							type="button"
+							className="pop-close"
+							aria-label={ __( 'Close', 'everest-forms' ) }
+							onClick={ onClose }
+						>
+							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2 } aria-hidden="true">
+								<path d="M18 6 6 18M6 6l12 12" />
+							</svg>
+						</button>
+					) }
+				</div>
+			) }
 			{ state.render() }
 		</div>
 	);

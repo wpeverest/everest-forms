@@ -238,9 +238,9 @@ export function App() {
 			anchor,
 			matchWidth: true,
 			kind: 'palette',
+			title: __( 'Choose a colour palette', 'everest-forms' ),
 			render: () => (
 				<div>
-					<div className="pop-title">{ __( 'Choose a colour palette', 'everest-forms' ) }</div>
 					<div className="pal-pop-grid" role="listbox" aria-label={ __( 'Colour palettes', 'everest-forms' ) }>
 						{ store.palettes.map( ( p ) => {
 							const locked = p.is_pro && ! store.proActive;

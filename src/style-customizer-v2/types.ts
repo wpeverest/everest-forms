@@ -147,4 +147,13 @@ export interface BootstrapSettings {
 	frontendCssUrl: string;
 	wrapperId: string;
 	markerClass: string;
+	/** Per-page-load token scoping the live-preview draft to this builder session. */
+	previewSession: string;
+	/**
+	 * The full REST GET payload, computed server-side and localized inline (see
+	 * RestController::build_payload()) so the panel can initialize without a network round-trip.
+	 * Absent only if something upstream failed to compute it — index.tsx falls back to an
+	 * apiFetch GET in that case.
+	 */
+	payload?: StylePayload;
 }

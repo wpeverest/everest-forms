@@ -9,6 +9,7 @@
 import React from 'react';
 import { DEVICE_ICONS, DEVICE_LABELS } from './constants';
 import { PreviewBridge, SelectionInfo, setActiveBridge } from './PreviewBridge';
+import { BuilderSync, getActiveSync, setActiveSync } from './BuilderSync';
 import { getStore, useStore } from './store';
 import { Device } from './types';
 
@@ -51,13 +52,6 @@ function deviceContentWidth( device: Device, breakpoints: Record< string, number
 	}
 	const bp = breakpoints[ device ];
 	return device === 'mobile' ? Math.min( 400, bp || 480 ) : Math.min( 768, bp || 768 );
-}
-
-function deviceRuler( device: Device, breakpoints: Record< string, number > ): string {
-	if ( device === 'desktop' ) {
-		return __( 'Desktop · full width', 'everest-forms' );
-	}
-	return `${ DEVICE_LABELS[ device ] } · ${ __( 'applies ≤', 'everest-forms' ) } ${ breakpoints[ device ] }px`;
 }
 
 export function PreviewPane( {
@@ -111,8 +105,12 @@ export function PreviewPane( {
 		setStatus( 'loading' );
 		const s = getStore();
 		const bridge = new PreviewBridge( iframe, s, {
-			// The bridge fully wired up (chrome hidden, rules injected) — reveal immediately.
-			onReady: () => setStatus( 'ready' ),
+			// The bridge fully wired up (chrome hidden, rules injected) — reveal immediately, and
+			// let the builder-sync flush any structure change that was queued while (re)loading.
+			onReady: () => {
+				setStatus( 'ready' );
+				getActiveSync()?.onBridgeReady();
+			},
 			// Bridging failed (couldn't script the frame) — do NOT hide the iframe; the native
 			// load event still reveals it, so the form stays visible even without live editing.
 			onError: () => setStatus( ( prev ) => ( prev === 'ready' ? prev : 'error' ) ),
@@ -151,6 +149,19 @@ export function PreviewPane( {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [ reloadKey ] );
 
+	// Fields ↔ Style live sync: keeps the preview rendering the builder's CURRENT structure
+	// (unsaved edits included). Mounted once — it reads the active bridge on demand, so it
+	// survives bridge remounts (retry/device switch) without being torn down.
+	React.useEffect( () => {
+		const sync = new BuilderSync( getStore() );
+		setActiveSync( sync );
+		sync.start();
+		return () => {
+			sync.stop();
+			setActiveSync( null );
+		};
+	}, [] );
+
 	// Reflect the active force-state (focus/hover/message) onto the preview.
 	React.useEffect( () => {
 		if ( status === 'ready' && bridgeRef.current ) {
@@ -176,7 +187,6 @@ export function PreviewPane( {
 			<div className="pv-bar">
 				<span className="ttl">
 					{ __( 'Live preview', 'everest-forms' ) }
-					<small>— { __( 'exactly as visitors will see it', 'everest-forms' ) }</small>
 					<button
 						type="button"
 						className="info"
@@ -234,7 +244,6 @@ export function PreviewPane( {
 
 			<div className="pv-canvas">
 				<div className="pv-frame">
-					<div className="pv-ruler">{ deviceRuler( store.device, store.breakpoints ) }</div>
 					<iframe
 						key={ reloadKey }
 						ref={ iframeRef }

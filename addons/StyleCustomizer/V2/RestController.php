@@ -85,6 +85,27 @@ final class RestController {
 			)
 		);
 
+		// Store the builder's CURRENT (possibly unsaved) structure so the live preview can render
+		// it — the Fields ↔ Style synchronisation pipeline (see PreviewDraft).
+		register_rest_route(
+			$this->namespace,
+			'/' . $this->rest_base . '/(?P<id>\d+)/preview-draft',
+			array(
+				'args' => array(
+					'id' => array(
+						'validate_callback' => static function ( $param ) {
+							return is_numeric( $param );
+						},
+					),
+				),
+				array(
+					'methods'             => 'POST',
+					'callback'            => array( $this, 'save_preview_draft' ),
+					'permission_callback' => array( $this, 'permissions_check' ),
+				),
+			)
+		);
+
 		// Create a user template from the current styles.
 		register_rest_route(
 			$this->namespace,
@@ -152,6 +173,31 @@ final class RestController {
 	}
 
 	/**
+	 * POST /styles/{id}/preview-draft — cache the builder's current serialized structure so the
+	 * live preview iframe can render unsaved Fields-tab edits (labels, add/delete/reorder, …).
+	 * Nothing is written to the form; the draft is a short-lived per-user transient (see
+	 * {@see PreviewDraft}).
+	 *
+	 * @param \WP_REST_Request $request Request.
+	 * @return \WP_REST_Response
+	 */
+	public function save_preview_draft( $request ) {
+		$form_id   = absint( $request['id'] );
+		$form_data = $request->get_param( 'form_data' );
+		$session   = (string) $request->get_param( 'session' );
+
+		// `form_data` is the raw serialized builder array as a JSON string (the same payload the
+		// save AJAX sends). Absence/emptiness clears any stale draft rather than erroring.
+		if ( ! is_string( $form_data ) || '' === $form_data ) {
+			PreviewDraft::clear( $form_id, $session );
+			return rest_ensure_response( array( 'stored' => false ) );
+		}
+
+		$stored = PreviewDraft::store( $form_id, $form_data, $session );
+		return rest_ensure_response( array( 'stored' => (bool) $stored ) );
+	}
+
+	/**
 	 * Only users who can manage forms may read/write styles.
 	 *
 	 * @return bool
@@ -208,14 +254,20 @@ final class RestController {
 	}
 
 	/**
-	 * GET — the saved record (or an empty default) plus the schema the panel renders from,
-	 * so the client never hardcodes the token contract.
+	 * Build the full styles payload for a form — the saved record (or an empty default) plus
+	 * the schema the panel renders from, so the client never hardcodes the token contract.
 	 *
-	 * @param \WP_REST_Request $request Request.
-	 * @return \WP_REST_Response
+	 * Pure/static so it can be called from two places that need the IDENTICAL shape: this
+	 * controller's `get_item()` (the REST route, kept for API completeness / defensive re-fetch)
+	 * and {@see BuilderPanel::enqueue()}, which localizes it directly into the builder page so
+	 * the panel can initialize synchronously — no network round-trip, no loading state, because
+	 * every one of these values is already knowable in PHP at the moment the page renders.
+	 *
+	 * @param int $form_id Form id.
+	 * @return array
 	 */
-	public function get_item( $request ) {
-		$form_id = absint( $request['id'] );
+	public static function build_payload( $form_id ) {
+		$form_id = absint( $form_id );
 		$all     = get_option( 'everest_forms_styles', array() );
 		$stored  = isset( $all[ $form_id ] ) && is_array( $all[ $form_id ] ) ? $all[ $form_id ] : array();
 
@@ -236,35 +288,44 @@ final class RestController {
 			);
 		}
 
-		return rest_ensure_response(
-			array(
-				'form_id'        => $form_id,
-				'schema_version' => Schema::version(),
-				'schema'         => Schema::tokens(),
-				'sections'       => Schema::sections(),
-				'palettes'       => Schema::palettes(),
-				'palette_map'    => Schema::palette_map(),
-				'templates'      => Templates::all(),
-				'user_templates' => Templates::user_templates(),
-				'breakpoints'    => Compiler::breakpoints(),
-				// The Font Family dropdown list — the SAME cached Google Fonts list the legacy
-				// customizer uses (order/labels identical), fetched once via the shared helper.
-				'google_fonts'   => function_exists( 'evfsc_get_google_font_families' ) ? evfsc_get_google_font_families() : array(),
-				// "Apply Theme Style" (a per-form post meta reused from v1): true = use the active
-				// theme's styling; false ('default') = load Everest Forms' bundled default styling.
-				'apply_theme_style' => self::get_apply_theme_style( $form_id ),
-				/**
-				 * Whether the Pro tier is active. Defaults to whether Everest Forms Pro is loaded
-				 * (its `EFP_PLUGIN_FILE` constant), so pro-tier tokens unlock automatically when Pro
-				 * is active; in free they render locked with the upgrade prompt. Filterable for
-				 * licence-aware gating.
-				 *
-				 * @param bool $pro_active Default: Pro plugin active.
-				 */
-				'pro_active'     => (bool) apply_filters( 'evf_style_v2_pro_active', defined( 'EFP_PLUGIN_FILE' ) ),
-				'record'         => $record,
-			)
+		return array(
+			'form_id'        => $form_id,
+			'schema_version' => Schema::version(),
+			'schema'         => Schema::tokens(),
+			'sections'       => Schema::sections(),
+			'palettes'       => Schema::palettes(),
+			'palette_map'    => Schema::palette_map(),
+			'templates'      => Templates::all(),
+			'user_templates' => Templates::user_templates(),
+			'breakpoints'    => Compiler::breakpoints(),
+			// The Font Family dropdown list — the SAME cached Google Fonts list the legacy
+			// customizer uses (order/labels identical), fetched once via the shared helper.
+			'google_fonts'   => function_exists( 'evfsc_get_google_font_families' ) ? evfsc_get_google_font_families() : array(),
+			// "Apply Theme Style" (a per-form post meta reused from v1): true = use the active
+			// theme's styling; false ('default') = load Everest Forms' bundled default styling.
+			'apply_theme_style' => self::get_apply_theme_style( $form_id ),
+			/**
+			 * Whether the Pro tier is active. Defaults to whether Everest Forms Pro is loaded
+			 * (its `EFP_PLUGIN_FILE` constant), so pro-tier tokens unlock automatically when Pro
+			 * is active; in free they render locked with the upgrade prompt. Filterable for
+			 * licence-aware gating.
+			 *
+			 * @param bool $pro_active Default: Pro plugin active.
+			 */
+			'pro_active'     => (bool) apply_filters( 'evf_style_v2_pro_active', defined( 'EFP_PLUGIN_FILE' ) ),
+			'record'         => $record,
 		);
+	}
+
+	/**
+	 * GET — thin wrapper around {@see self::build_payload()}. Kept for API completeness and as
+	 * the panel's defensive fallback (see index.tsx) if the localized payload is ever missing.
+	 *
+	 * @param \WP_REST_Request $request Request.
+	 * @return \WP_REST_Response
+	 */
+	public function get_item( $request ) {
+		return rest_ensure_response( self::build_payload( absint( $request['id'] ) ) );
 	}
 
 	/**

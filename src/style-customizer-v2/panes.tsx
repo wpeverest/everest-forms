@@ -52,10 +52,14 @@ export function DesignList( {
 			<div className="block-title">{ __( 'Color palette', 'everest-forms' ) }</div>
 			<button
 				type="button"
-				className="pal-select"
+				className={ 'pal-select' + ( paletteOpen ? ' is-open' : '' ) }
 				aria-haspopup="dialog"
 				aria-expanded={ paletteOpen }
-				aria-label={ __( 'Choose colour palette', 'everest-forms' ) }
+				aria-label={
+					paletteOpen
+						? __( 'Close colour palette', 'everest-forms' )
+						: __( 'Choose colour palette', 'everest-forms' )
+				}
 				onClick={ ( e ) => onOpenPalette( e.currentTarget ) }
 			>
 				<span className="sw" aria-hidden="true">
@@ -64,7 +68,17 @@ export function DesignList( {
 					) ) }
 				</span>
 				<span className="nm">{ activePalette ? activePalette.name : __( 'Custom', 'everest-forms' ) }</span>
-				<span className="chev" aria-hidden="true">▾</span>
+				{ /* When the popover is open, the opening chevron becomes a close (×) affordance —
+				     clicking the same trigger toggles the popover shut. */ }
+				<span className={ 'chev' + ( paletteOpen ? ' as-close' : '' ) } aria-hidden="true">
+					{ paletteOpen ? (
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2.2 }>
+							<path d="M18 6 6 18M6 6l12 12" />
+						</svg>
+					) : (
+						'▾'
+					) }
+				</span>
 			</button>
 
 			<div className="block-title">{ __( 'Elements', 'everest-forms' ) }</div>

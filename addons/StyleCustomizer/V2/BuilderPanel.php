@@ -164,6 +164,11 @@ final class BuilderPanel {
 			wp_set_script_translations( 'evf-style-v2-panel', 'everest-forms' );
 		}
 
+		// A per-page-load token that scopes the live-preview draft to THIS builder session, so a
+		// stale draft from an earlier load (the 30-min transient) is never swapped into a freshly
+		// reloaded builder's preview (which would show edits the builder no longer has).
+		$preview_session = wp_generate_password( 12, false );
+
 		wp_localize_script(
 			'evf-style-v2-panel',
 			'evfStyleV2',
@@ -178,8 +183,14 @@ final class BuilderPanel {
 				'previewUrl'     => set_url_scheme(
 					add_query_arg(
 						array(
-							'form_id'     => $form_id,
-							'evf_preview' => 'true',
+							'form_id'                  => $form_id,
+							'evf_preview'              => 'true',
+							// Scopes the live builder-structure draft swap to THIS iframe only
+							// (PreviewDraft), so the real front end and the normal preview button
+							// keep rendering the saved form.
+							PreviewDraft::PREVIEW_FLAG => '1',
+							// Session token — the draft only applies to the builder load that made it.
+							PreviewDraft::SESSION_ARG  => $preview_session,
 						),
 						home_url( '/' )
 					),
@@ -191,6 +202,16 @@ final class BuilderPanel {
 				// The wrapper the compiler scopes variables to (see Compiler::wrapper_selector()).
 				'wrapperId'      => 'evf-' . $form_id,
 				'markerClass'    => FrontendEnqueue::MARKER_CLASS,
+				// Sent back with each preview-draft save so the stored draft matches this session.
+				'previewSession' => $preview_session,
+				// The FULL initial REST GET payload (schema, sections, palettes, templates, fonts,
+				// the saved record — see RestController::build_payload()), computed right here in
+				// PHP and delivered inline with the page. The panel initializes from this directly
+				// (index.tsx) instead of firing a follow-up REST fetch on mount — there is nothing
+				// in this payload that isn't already knowable at render time, so there is no reason
+				// to make the user wait on a network round-trip (and see a loading skeleton) for it.
+				// The REST route itself stays as a defensive fallback / for external tooling.
+				'payload'        => RestController::build_payload( $form_id ),
 			)
 		);
 	}

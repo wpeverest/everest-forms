@@ -66,6 +66,10 @@ final class Engine {
 		// REST read/save for the builder panel.
 		RestController::register();
 
+		// Live Fields → Style sync: render the builder's current (unsaved) structure in the
+		// style-preview iframe. Registers a front-end filter, so it must boot on the front end too.
+		PreviewDraft::register();
+
 		// Builder "Style" tab + React panel.
 		BuilderPanel::register();
 

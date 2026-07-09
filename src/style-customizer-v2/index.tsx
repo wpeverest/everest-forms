@@ -1,9 +1,16 @@
 /**
  * Style Customizer v2 — builder panel entry.
  *
- * Mounts into the "Style" builder tab, fetches the schema + saved record from the v2 REST
- * endpoint, initialises the store, and renders the two-pane panel (controls + live preview).
- * The token contract is never hardcoded — it comes from the server on load.
+ * Mounts into the "Style" builder tab and renders the two-pane panel (controls + live preview).
+ * The token contract is never hardcoded — it comes from the server.
+ *
+ * Every value the panel needs on first paint (schema, sections, palettes, templates, fonts, the
+ * saved record) is fully knowable in PHP at the moment the builder page renders, so
+ * `BuilderPanel::enqueue()` localizes the SAME shape the REST GET would return directly into the
+ * page (`evfStyleV2.payload`) — see RestController::build_payload(). The store initializes from
+ * it synchronously below, with no network round-trip and therefore no loading state in the
+ * common path. The REST `apiFetch` GET stays as a defensive fallback for the rare case the
+ * localized payload is missing or malformed.
  */
 import React from 'react';
 import { createRoot } from 'react-dom/client';
@@ -17,7 +24,9 @@ import { BootstrapSettings, StylePayload } from './types';
 const apiFetch = ( window as any ).wp?.apiFetch;
 const __ = ( window as any ).wp?.i18n?.__ || ( ( s: string ) => s );
 
-const settings: BootstrapSettings = ( window as any ).evfStyleV2 || {
+const rawSettings: BootstrapSettings | undefined = ( window as any ).evfStyleV2;
+
+const settings: BootstrapSettings = rawSettings || {
 	restBase: '',
 	formId: 0,
 	formTitle: '',
@@ -25,13 +34,32 @@ const settings: BootstrapSettings = ( window as any ).evfStyleV2 || {
 	frontendCssUrl: '',
 	wrapperId: '',
 	markerClass: 'evf-style-v2',
+	previewSession: '',
 };
 
+// Synchronous init from the localized payload, at module load — before Bootstrap even mounts.
+// Wrapped defensively: if the payload were ever missing a field, fall through to the network
+// fetch below rather than crash the panel.
+let readyFromPayload = false;
+if ( rawSettings && rawSettings.payload && settings.formId ) {
+	try {
+		initStore( rawSettings.payload, settings );
+		readyFromPayload = true;
+	} catch ( e ) {
+		readyFromPayload = false;
+	}
+}
+
 function Bootstrap() {
-	const [ state, setState ] = React.useState< 'loading' | 'ready' | 'error' >( 'loading' );
+	const [ state, setState ] = React.useState< 'loading' | 'ready' | 'error' >(
+		readyFromPayload ? 'ready' : 'loading'
+	);
 	const [ message, setMessage ] = React.useState( '' );
 
 	React.useEffect( () => {
+		if ( readyFromPayload ) {
+			return; // Already initialized synchronously above — no fetch needed.
+		}
 		if ( ! apiFetch || ! settings.formId ) {
 			setMessage( __( 'The style customizer could not start.', 'everest-forms' ) );
 			setState( 'error' );

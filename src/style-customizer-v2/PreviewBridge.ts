@@ -114,12 +114,39 @@ export class PreviewBridge {
 	}
 
 	private handleLoad = () => {
-		// A fresh navigation inside the frame (rare) — re-arm and re-detect.
+		// A fresh navigation inside the frame (reload on a builder-structure change, or rare theme
+		// redirects) — re-arm and re-detect, then re-bootstrap (vars, custom CSS, selection).
 		this.ready = false;
 		this.wrapper = null;
 		this.deadline = Date.now() + READY_DEADLINE;
 		this.poll();
 	};
+
+	/**
+	 * Reload the preview page inside the iframe. Used when the builder's form STRUCTURE changes
+	 * (fields added/removed/reordered, labels/placeholders edited) so the server re-renders the
+	 * current form; the live style variables are re-applied automatically once the fresh page
+	 * loads (via {@see handleLoad}). Falls back to re-assigning `src` if the frame can't be
+	 * scripted for any reason.
+	 */
+	reload() {
+		if ( this.destroyed ) {
+			return;
+		}
+		this.ready = false;
+		this.wrapper = null;
+		try {
+			const win = this.iframe.contentWindow;
+			if ( win ) {
+				win.location.reload();
+				return;
+			}
+		} catch ( e ) {
+			// Fall through to the src reset below.
+		}
+		// eslint-disable-next-line no-self-assign
+		this.iframe.src = this.iframe.src;
+	}
 
 	/** Poll for the wrapper until found or the deadline passes. */
 	private poll = () => {

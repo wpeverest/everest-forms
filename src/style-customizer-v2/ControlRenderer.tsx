@@ -61,6 +61,50 @@ function Svg( { inner, className }: { inner: string; className?: string } ) {
 	);
 }
 
+/** Shared chevron-down glyph for every custom dropdown trigger (selects). */
+function ChevronDownIcon() {
+	return (
+		<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2 } aria-hidden="true">
+			<path d="m6 9 6 6 6-6" />
+		</svg>
+	);
+}
+
+/** Shared selected-item checkmark for every custom dropdown list. */
+function CheckIcon() {
+	return (
+		<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2.5 } aria-hidden="true">
+			<path d="M20 6 9 17l-5-5" />
+		</svg>
+	);
+}
+
+/** Close a dropdown on outside click / Escape — shared by every custom select below. */
+function useDismiss( open: boolean, rootRef: React.RefObject< HTMLElement >, onDismiss: () => void ) {
+	React.useEffect( () => {
+		if ( ! open ) {
+			return;
+		}
+		const onDown = ( e: MouseEvent ) => {
+			if ( rootRef.current && ! rootRef.current.contains( e.target as Node ) ) {
+				onDismiss();
+			}
+		};
+		const onKey = ( e: KeyboardEvent ) => {
+			if ( e.key === 'Escape' ) {
+				onDismiss();
+			}
+		};
+		document.addEventListener( 'mousedown', onDown );
+		document.addEventListener( 'keydown', onKey );
+		return () => {
+			document.removeEventListener( 'mousedown', onDown );
+			document.removeEventListener( 'keydown', onKey );
+		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [ open ] );
+}
+
 /* --------------------------------------------------------------------- *
  * Shared label row + shell
  * --------------------------------------------------------------------- */
@@ -360,26 +404,65 @@ function Box4Control( props: ControlProps ) {
 	);
 }
 
+/**
+ * Custom dropdown select — a clean floating card (border, radius, soft shadow) with a leading
+ * checkmark on the selected option, matching the dashboard/Analytics dropdown language. Replaces
+ * the native `<select>`, whose popup is unstyleable OS chrome and read as visually inconsistent
+ * with every other (fully custom-styled) control in the panel. Short option lists, so no search —
+ * see FontSelectControl below for the searchable variant sharing the same visual chrome.
+ */
 function SelectControl( props: ControlProps & { depHint?: string } ) {
 	const { token, store, depHint } = props;
 	const value = String( store.resolve( token.key ) );
-	const hint = depHint || '';
+	const options = token.options || [];
+	const current = options.find( ( o ) => o.value === value );
+	const [ open, setOpen ] = React.useState( false );
+	const rootRef = React.useRef< HTMLDivElement >( null );
+
+	useDismiss( open, rootRef, () => setOpen( false ) );
+
+	const choose = ( v: string ) => {
+		store.setTokenValue( token.key, v, false );
+		setOpen( false );
+	};
 
 	return (
 		<ControlShell { ...props }>
-			<select
-				className="inp"
-				value={ value }
-				aria-label={ token.label }
-				onChange={ ( e ) => store.setTokenValue( token.key, e.target.value, false ) }
-			>
-				{ ( token.options || [] ).map( ( o ) => (
-					<option key={ o.value } value={ o.value }>
-						{ o.label }
-					</option>
-				) ) }
-			</select>
-			{ hint && <div className="dep-hint">{ hint }</div> }
+			<div className="dsel" ref={ rootRef }>
+				<button
+					type="button"
+					className="dsel-trigger"
+					aria-haspopup="listbox"
+					aria-expanded={ open }
+					aria-label={ token.label }
+					onClick={ () => setOpen( ( o ) => ! o ) }
+				>
+					<span className="dsel-val">{ current ? current.label : value }</span>
+					<span className="dsel-chev">
+						<ChevronDownIcon />
+					</span>
+				</button>
+				{ open && (
+					<div className="dsel-pop">
+						<div className="dsel-list" role="listbox" aria-label={ token.label }>
+							{ options.map( ( o ) => (
+								<button
+									key={ o.value }
+									type="button"
+									role="option"
+									aria-selected={ o.value === value }
+									className={ 'dsel-opt' + ( o.value === value ? ' sel' : '' ) }
+									onClick={ () => choose( o.value ) }
+								>
+									<span className="dsel-check">{ o.value === value && <CheckIcon /> }</span>
+									{ o.label }
+								</button>
+							) ) }
+						</div>
+					</div>
+				) }
+			</div>
+			{ depHint && <div className="dep-hint">{ depHint }</div> }
 		</ControlShell>
 	);
 }
@@ -416,19 +499,7 @@ function FontSelectControl( props: ControlProps & { depHint?: string } ) {
 		return q ? allOptions.filter( ( o ) => o.label.toLowerCase().indexOf( q ) !== -1 ) : allOptions;
 	}, [ query, allOptions ] );
 
-	// Close when clicking outside the control.
-	React.useEffect( () => {
-		if ( ! open ) {
-			return;
-		}
-		const onDown = ( e: MouseEvent ) => {
-			if ( rootRef.current && ! rootRef.current.contains( e.target as Node ) ) {
-				setOpen( false );
-			}
-		};
-		document.addEventListener( 'mousedown', onDown );
-		return () => document.removeEventListener( 'mousedown', onDown );
-	}, [ open ] );
+	useDismiss( open, rootRef, () => setOpen( false ) );
 
 	// On open: reset the query, highlight the current value, focus the search box.
 	React.useEffect( () => {
@@ -483,25 +554,27 @@ function FontSelectControl( props: ControlProps & { depHint?: string } ) {
 
 	return (
 		<ControlShell { ...props }>
-			<div className="fontsel" ref={ rootRef }>
+			<div className="dsel" ref={ rootRef }>
 				<button
 					type="button"
-					className="fontsel-trigger"
+					className="dsel-trigger"
 					disabled={ disabled }
 					aria-haspopup="listbox"
 					aria-expanded={ open }
 					aria-label={ token.label }
 					onClick={ () => ! disabled && setOpen( ( o ) => ! o ) }
 				>
-					<span className="fontsel-val">{ value || THEME_DEFAULT }</span>
-					<span className="fontsel-chev" aria-hidden="true">▾</span>
+					<span className="dsel-val">{ value || THEME_DEFAULT }</span>
+					<span className="dsel-chev">
+						<ChevronDownIcon />
+					</span>
 				</button>
 				{ open && (
-					<div className="fontsel-pop">
+					<div className="dsel-pop">
 						<input
 							ref={ searchRef }
 							type="text"
-							className="fontsel-search"
+							className="dsel-search"
 							placeholder={ __( 'Search fonts…', 'everest-forms' ) }
 							value={ query }
 							aria-label={ __( 'Search fonts', 'everest-forms' ) }
@@ -511,9 +584,9 @@ function FontSelectControl( props: ControlProps & { depHint?: string } ) {
 							} }
 							onKeyDown={ onKeyDown }
 						/>
-						<div className="fontsel-list" ref={ listRef } role="listbox" aria-label={ token.label }>
+						<div className="dsel-list" ref={ listRef } role="listbox" aria-label={ token.label }>
 							{ filtered.length === 0 ? (
-								<div className="fontsel-empty">{ __( 'No fonts found', 'everest-forms' ) }</div>
+								<div className="dsel-empty">{ __( 'No fonts found', 'everest-forms' ) }</div>
 							) : (
 								filtered.map( ( o, i ) => (
 									<button
@@ -522,13 +595,14 @@ function FontSelectControl( props: ControlProps & { depHint?: string } ) {
 										role="option"
 										aria-selected={ o.value === value }
 										className={
-											'fontsel-opt' +
+											'dsel-opt' +
 											( i === active ? ' active' : '' ) +
 											( o.value === value ? ' sel' : '' )
 										}
 										onMouseEnter={ () => setActive( i ) }
 										onClick={ () => choose( o.value ) }
 									>
+										<span className="dsel-check">{ o.value === value && <CheckIcon /> }</span>
 										{ o.label }
 									</button>
 								) )
