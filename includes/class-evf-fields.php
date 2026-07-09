@@ -174,4 +174,40 @@ class EVF_Fields {
 
 		return $_available_fields;
 	}
+
+	/**
+	 * Get metadata for all registered "Pro" (lockable) field types.
+	 *
+	 * Used by the upsell UI (builder locked-field overlay, AI preview) and as
+	 * the canonical list of Pro fields the AI form generator may surface.
+	 *
+	 * @since 3.2.0
+	 *
+	 * @return array Map of field type => metadata ( name, icon, group, addon, plan, links ).
+	 */
+	public function get_pro_fields_meta() {
+		$meta = array();
+
+		if ( count( $this->form_fields ) > 0 ) {
+			foreach ( array_values( $this->form_fields ) as $form_field ) {
+				foreach ( $form_field as $field ) {
+					if ( empty( $field->is_pro ) ) {
+						continue;
+					}
+
+					$meta[ $field->type ] = array(
+						'type'  => $field->type,
+						'name'  => isset( $field->name ) ? $field->name : $field->type,
+						'icon'  => isset( $field->icon ) ? $field->icon : '',
+						'group' => isset( $field->group ) ? $field->group : '',
+						'addon' => isset( $field->addon ) ? $field->addon : '',
+						'plan'  => isset( $field->plan ) ? $field->plan : '',
+						'links' => isset( $field->links ) ? $field->links : array(),
+					);
+				}
+			}
+		}
+
+		return apply_filters( 'everest_forms_pro_fields_meta', $meta );
+	}
 }

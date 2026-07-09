@@ -1721,6 +1721,14 @@ td.column-payment_status > span.payment_status {
 		border: 1px solid #28a745;
 		background: #fbfffc;
 	}
+
+	&.cancelled,
+	&.canceled,
+	&.cancled {
+		color: #7e7d77;
+		border: 1px solid #7e7d77;
+		background: #fbfbfa;
+	}
 }
 
 .payment_status img {

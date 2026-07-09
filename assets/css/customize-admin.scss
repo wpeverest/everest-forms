@@ -16,7 +16,7 @@
 	.everest-forms-designer-icon {
 		position: fixed;
 		right: 22px;
-		bottom: 65px;
+		bottom: 22px;
 		width: 55px;
 		height: 55px;
 		padding: 8px;
@@ -33,7 +33,7 @@
 
 	&.multi-part-activated {
 		.everest-forms-designer-icon {
-			bottom: 105px;
+			bottom: 62px;
 		}
 	}
 }
@@ -47,7 +47,7 @@
 	#everest-forms-builder {
 		&.multi-part-activated {
 			.everest-forms-designer-icon {
-				bottom: 75px;
+				bottom: 32px;
 			}
 		}
 	}

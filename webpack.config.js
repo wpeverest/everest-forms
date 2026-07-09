@@ -22,6 +22,7 @@ const webpackConfig = {
 			process.cwd(),
 			'./src/dashboard/header-standalone.js',
 		),
+		builderAI: resolve(process.cwd(), './src/builder-ai/index.tsx'),
 	},
 	output: {
 		path: resolve(process.cwd(), 'dist'),

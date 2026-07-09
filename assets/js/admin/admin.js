@@ -27,7 +27,7 @@
 				'</div>',
 		);
 
-		$toast.find('.evf-toast-content').html(message);
+		$toast.find('.evf-toast-content').text(message);
 		$container.append($toast);
 
 		setTimeout(function () {
@@ -101,12 +101,16 @@
 				urlParams.delete('evf_toast');
 				urlParams.delete('evf_toast_type');
 
-				window.history.replaceState(
-					{},
-					document.title,
-					window.location.pathname +
-						(urlParams.toString() ? '?' + urlParams.toString() : ''),
-				);
+				try {
+					window.history.replaceState(
+						{},
+						document.title,
+						window.location.pathname +
+							(urlParams.toString() ? '?' + urlParams.toString() : ''),
+					);
+				} catch (historyError) {
+					// Ignore SecurityError when admin URL host differs from the browser (e.g. ngrok).
+				}
 			} catch (e) {}
 		}
 
@@ -1132,6 +1136,33 @@
 		} else {
 			fallbackCopy( text );
 		}
+	} );
+
+	// Row-actions hover: JS-managed class prevents tr:hover boundary flicker on Trash link.
+	$( document ).ready( function() {
+		$( '.evf-base-list-table tbody, .everest-forms-table tbody' ).find( 'tr' ).each( function() {
+			var $tr         = $( this );
+			var $rowActions = $tr.find( '.row-actions' );
+			var hideTimer;
+
+			if ( ! $rowActions.length ) {
+				return;
+			}
+
+			function showRow() {
+				clearTimeout( hideTimer );
+				$tr.addClass( 'evf-row-hover' );
+			}
+
+			function hideRow() {
+				hideTimer = setTimeout( function() {
+					$tr.removeClass( 'evf-row-hover' );
+				}, 100 );
+			}
+
+			$tr.on( 'mouseenter.evfRow', showRow ).on( 'mouseleave.evfRow', hideRow );
+			$rowActions.on( 'mouseenter.evfRow', showRow ).on( 'mouseleave.evfRow', hideRow );
+		} );
 	} );
 
 })( jQuery, everest_forms_admin );

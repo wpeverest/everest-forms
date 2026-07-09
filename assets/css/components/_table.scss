@@ -1,4 +1,4 @@
-$evf-primary: #7545bb;
+﻿$evf-primary: #7545bb;
 $evf-primary-hover: #8c5aca;
 $evf-primary-light: #faf8fc;
 $evf-text-primary: #222;
@@ -564,6 +564,16 @@ $status-trash-text: #991b1b;
 	margin-top: 32px;
 	margin-bottom: 0;
 	margin-top: 30px;
+
+	a {
+		color: inherit;
+		outline: none;
+
+		&:focus {
+			outline: none;
+			box-shadow: none;
+		}
+	}
 	// min-width: 900px;
 
 	thead th.column-more,
@@ -770,13 +780,20 @@ $status-trash-text: #991b1b;
 				}
 			}
 
-			&:hover {
+			&:hover,
+			&.evf-row-hover {
 				// background: $evf-bg-hover;
 				// box-shadow: $evf-shadow-hover;
 
 				.row-actions {
+					position: static !important;
+					left: auto !important;
 					visibility: visible !important;
 					opacity: 1 !important;
+					pointer-events: auto !important;
+					transition:
+						opacity 0.15s ease,
+						visibility 0.15s ease;
 				}
 
 				.column-primary,
@@ -947,26 +964,30 @@ $status-trash-text: #991b1b;
 
 					a {
 						font-weight: 500;
+						color: inherit;
+						outline: none;
 
 						&:hover {
 							color: darken($evf-primary, 10%);
 							text-decoration: underline;
+						}
+
+						&:focus {
+							outline: none;
+							box-shadow: none;
 						}
 					}
 
 					.row-actions {
 						visibility: hidden;
 						opacity: 0;
+						pointer-events: none;
 						margin-top: 4px;
 						display: flex;
 						flex-wrap: wrap;
 						gap: 4px;
 						font-size: 12px;
 						font-weight: 400;
-						transition:
-							opacity 0.2s ease,
-							visibility 0.2s ease;
-						white-space: nowrap;
 						// overflow: hidden;
 
 						span {
@@ -988,16 +1009,23 @@ $status-trash-text: #991b1b;
 								transition: $evf-transition;
 								white-space: nowrap;
 
-								&:hover {
+								&:hover,
+								&:focus {
 									color: #000;
 									text-decoration: underline;
+									outline: none;
+									box-shadow: none;
 								}
 
 								&.submitdelete {
-									// color: #dc2626;
+									color: #dc2626;
 
-									&:hover {
+									&:hover,
+									&:focus {
 										color: #b91c1c;
+										outline: none;
+										box-shadow: none;
+										border: none;
 									}
 								}
 							}
@@ -1008,6 +1036,21 @@ $status-trash-text: #991b1b;
 								font-weight: 400;
 							}
 						}
+					}
+				}
+
+				&.column-primary:hover,
+				&.column-title:hover,
+				&.entry:hover {
+					.row-actions {
+						position: static !important;
+						left: auto !important;
+						visibility: visible !important;
+						opacity: 1 !important;
+						pointer-events: auto !important;
+						transition:
+							opacity 0.15s ease,
+							visibility 0.15s ease;
 					}
 				}
 
@@ -1092,6 +1135,16 @@ $status-trash-text: #991b1b;
 				&.column-entries {
 					font-weight: 400;
 					color: $evf-text-primary;
+
+					a {
+						color: inherit;
+					}
+				}
+
+				&.column-author {
+					a {
+						color: inherit;
+					}
 				}
 
 				.evf-no-coupons {
@@ -1174,6 +1227,10 @@ body.everest-forms_page_evf-email-templates {
 
 				&.column-author {
 					width: 32% !important;
+
+					a {
+						color: inherit;
+					}
 				}
 
 				&.column-date {
@@ -1534,7 +1591,6 @@ body {
 .everest-forms-table-wrapper {
 	position: relative;
 	overflow: visible;
-	padding-bottom: 50px;
 }
 
 // Edit Tags //

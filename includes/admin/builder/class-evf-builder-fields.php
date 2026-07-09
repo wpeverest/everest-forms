@@ -143,6 +143,9 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 
 		$form_fields = evf()->form_fields->form_fields();
 
+		$hide_legacy_payment_fields = ! defined( 'EFP_PLUGIN_FILE' );
+		$new_form_hidden_types      = array( 'credit-card', 'authorize-net', 'square-payment' );
+
 		if ( ! empty( $form_fields ) ) {
 			foreach ( $form_fields as $group => $form_field ) {
 				?>
@@ -151,6 +154,9 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 					<div class="evf-registered-buttons">
 						<?php
 						foreach ( $form_field as $field ) :
+							if ( $hide_legacy_payment_fields && in_array( $field->type, $new_form_hidden_types, true ) ) {
+								continue;
+							}
 							$field_plan  = isset( $field->plan ) ? $field->plan : '';
 							$addon_slug  = isset( $field->addon ) ? $field->addon : '';
 							$field_links = isset( $field->links ) ? json_encode( $field->links ) : '';
@@ -208,8 +214,14 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 
 		if ( ! empty( $fields ) ) {
 			foreach ( $fields as $field ) {
-				if ( in_array( $field['type'], evf()->form_fields->get_pro_form_field_types(), true ) ) {
-					continue;
+				$is_locked = evf_is_field_locked( $field['type'] );
+
+				// Also treat fields whose required addon is inactive as locked — even
+				// when EVF Pro is active (which removes is_pro, bypassing the normal
+				// lock check). Without this, e.g. credit-card with Stripe absent
+				// renders a completely empty options panel with no CTA.
+				if ( ! $is_locked ) {
+					$is_locked = ! empty( evf_field_inactive_addon( $field['type'] ) );
 				}
 
 				$field_option_class = apply_filters(
@@ -221,11 +233,22 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 					$field
 				);
 
+				// Locked Pro fields keep their settings rendered (inputs are NOT
+				// disabled so values persist on save) but are visually locked.
+				if ( $is_locked ) {
+					$field_option_class[] = 'everest-forms-field-option-locked';
+				}
+
 				?>
 				<div class="<?php echo esc_attr( implode( ' ', $field_option_class ) ); ?>" id="everest-forms-field-option-<?php echo esc_attr( $field['id'] ); ?>" data-field-id="<?php echo esc_attr( $field['id'] ); ?>" >
 					<input type="hidden" name="form_fields[<?php echo esc_attr( $field['id'] ); ?>][id]" value="<?php echo esc_attr( $field['id'] ); ?>" class="everest-forms-field-option-hidden-id" />
 					<input type="hidden" name="form_fields[<?php echo esc_attr( $field['id'] ); ?>][type]" value="<?php echo esc_attr( $field['type'] ); ?>" class="everest-forms-field-option-hidden-type" />
-					<?php do_action( 'everest_forms_builder_fields_options_' . $field['type'], $field ); ?>
+					<?php
+					if ( $is_locked ) {
+						$this->locked_field_option_overlay( $field['type'] );
+					}
+					do_action( 'everest_forms_builder_fields_options_' . $field['type'], $field );
+					?>
 				</div>
 				<?php
 			}
@@ -241,7 +264,7 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 		$form_data = $this->form_data;
 		$form_id   = absint( $form_data['id'] );
 		$fields    = isset( $form_data['form_fields'] ) ? $form_data['form_fields'] : array();
-		$structure = isset( $form_data['structure'] ) ? $form_data['structure'] : array( 'row_1' => array() );
+		$structure = ! empty( $form_data['structure'] ) ? $form_data['structure'] : array( 'row_1' => array() );
 		$row_ids   = array_map(
 			function ( $row_id ) {
 				return str_replace( 'row_', '', $row_id );
@@ -388,7 +411,9 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 					);
 				}
 				foreach ( $grid_fields as $field_id ) {
-					if ( isset( $fields[ $field_id ] ) && ! in_array( $fields[ $field_id ]['type'], evf()->form_fields->get_pro_form_field_types(), true ) ) {
+					if ( isset( $fields[ $field_id ] ) ) {
+						// Locked Pro fields are rendered too (see field_preview()) so the
+						// builder can show them as an upsell instead of dropping them.
 						$this->field_preview( $fields[ $field_id ] );
 					}
 				}
@@ -419,10 +444,11 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 			echo '<div class="evf-repeater-row-wrapper">'; // Repeater Row Wrapper starts.
 		}
 
-		echo '<div class="evf-add-row" data-total-rows="' . count( $structure ) . '" data-next-row-id="' . (int) max( $row_ids ) . '"><span class="everest-forms-btn everest-forms-btn-primary dashicons dashicons-plus-alt">' . esc_html__( 'Add Row', 'everest-forms' ) . '</span></div>';
+		$next_row_id = $row_ids ? max( $row_ids ) : 1;
+		echo '<div class="evf-add-row" data-total-rows="' . count( $structure ) . '" data-next-row-id="' . (int) $next_row_id . '"><span class="everest-forms-btn everest-forms-btn-primary dashicons dashicons-plus-alt">' . esc_html__( 'Add Row', 'everest-forms' ) . '</span></div>';
 
 		if ( defined( 'EVF_REPEATER_FIELDS_VERSION' ) ) {
-			echo '<div class="evf-add-row repeater-row" data-total-rows="' . count( $structure ) . '" data-next-row-id="' . (int) max( $row_ids ) . '"><span class="everest-forms-btn everest-forms-btn-primary dashicons dashicons-plus-alt">' . esc_html__( 'Add Repeater Row', 'everest-forms' ) . '</span></div>';
+			echo '<div class="evf-add-row repeater-row" data-total-rows="' . count( $structure ) . '" data-next-row-id="' . (int) $next_row_id . '"><span class="everest-forms-btn everest-forms-btn-primary dashicons dashicons-plus-alt">' . esc_html__( 'Add Repeater Row', 'everest-forms' ) . '</span></div>';
 			echo '</div>'; // Repeater Row Wrapper ends.
 		}
 		echo '</div >';
@@ -431,9 +457,12 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 	/**
 	 * Single Field preview.
 	 *
-	 * @param array $field Field data and settings.
+	 * @param array $field        Field data and settings.
+	 * @param bool  $show_actions Whether to render the edit action chrome
+	 *                            (duplicate/delete/settings). Disabled for the
+	 *                            read-only AI preview so it shows only field content.
 	 */
-	public function field_preview( $field ) {
+	public function field_preview( $field, $show_actions = true ) {
 		$css  = ! empty( $field['size'] ) ? 'size-' . esc_attr( $field['size'] ) : '';
 		$css .= ! empty( $field['label_hide'] ) && '1' === $field['label_hide'] ? ' label_hide' : '';
 		$css .= ! empty( $field['sublabel_hide'] ) && '1' === $field['sublabel_hide'] ? ' sublabel_hide' : '';
@@ -441,22 +470,363 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 		$css .= ! empty( $field['input_columns'] ) && '2' === $field['input_columns'] ? ' everest-forms-list-2-columns' : '';
 		$css .= ! empty( $field['input_columns'] ) && '3' === $field['input_columns'] ? ' everest-forms-list-3-columns' : '';
 		$css .= ! empty( $field['input_columns'] ) && 'inline' === $field['input_columns'] ? ' everest-forms-list-inline' : '';
+		$is_locked = evf_is_field_locked( $field['type'] );
+
+		// Catch fields whose required addon is inactive even when not plan-locked
+		// (e.g. EVF Pro registers credit-card without is_pro, removing it from the
+		// normal lock check, but the Stripe addon may still be absent).
+		if ( ! $is_locked ) {
+			$is_locked = ! empty( evf_field_inactive_addon( $field['type'] ) );
+		}
+
+		if ( $is_locked ) {
+			$css      .= ' everest-forms-field-locked';
+			$lock_data = $this->get_locked_field_trigger( $field['type'] );
+			if ( 'evf-upgrade-addon' === $lock_data['trigger'] ) {
+				$css .= ' everest-forms-field-locked-addon';
+			}
+		}
 		$css  = apply_filters( 'everest_forms_field_preview_class', $css, $field );
 		printf( '<div class="everest-forms-field everest-forms-field-%1$s %2$s" id="everest-forms-field-%3$s" data-field-id="%3$s" data-field-type="%4$s">', esc_attr( $field['type'] ), esc_attr( $css ), esc_attr( $field['id'] ), esc_attr( $field['type'] ) );
-		printf( '<div class="evf-field-action">' );
-		if ( 'repeater-fields' !== $field['type'] ) {
-			printf( '<a href="#" class="everest-forms-field-duplicate" title="%s"><span class="dashicons dashicons-media-default"></span></a>', esc_html__( 'Duplicate Field', 'everest-forms' ) );
-			printf( '<a href="#" class="everest-forms-field-delete" title="%s"><span class="dashicons dashicons-trash"></span></a>', esc_html__( 'Delete Field', 'everest-forms' ) );
-			printf( '<a href="#" class="everest-forms-field-setting" title="%s"><span class="dashicons dashicons-admin-generic"></span></a>', esc_html__( 'Settings', 'everest-forms' ) );
-		} else {
-			printf( '<a href="#" class="evf-duplicate-row" title="%s"><span class="dashicons dashicons-media-default"></span></a>', esc_html__( 'Duplicate Repeater', 'everest-forms' ) );
-			printf( '<a href="#" class="evf-delete-row" title="%s"><span class="dashicons dashicons-trash"></span></a>', esc_html__( 'Delete Repeater', 'everest-forms' ) );
+		if ( $show_actions ) {
+			printf( '<div class="evf-field-action">' );
+			if ( 'repeater-fields' !== $field['type'] ) {
+				printf( '<a href="#" class="everest-forms-field-duplicate" title="%s"><span class="dashicons dashicons-media-default"></span></a>', esc_html__( 'Duplicate Field', 'everest-forms' ) );
+				printf( '<a href="#" class="everest-forms-field-delete" title="%s"><span class="dashicons dashicons-trash"></span></a>', esc_html__( 'Delete Field', 'everest-forms' ) );
+				printf( '<a href="#" class="everest-forms-field-setting" title="%s"><span class="dashicons dashicons-admin-generic"></span></a>', esc_html__( 'Settings', 'everest-forms' ) );
+			} else {
+				printf( '<a href="#" class="evf-duplicate-row" title="%s"><span class="dashicons dashicons-media-default"></span></a>', esc_html__( 'Duplicate Repeater', 'everest-forms' ) );
+				printf( '<a href="#" class="evf-delete-row" title="%s"><span class="dashicons dashicons-trash"></span></a>', esc_html__( 'Delete Repeater', 'everest-forms' ) );
+			}
+			printf( '</div>' );
 		}
-		printf( '</div>' );
 
-		do_action( 'everest_forms_builder_fields_preview_' . $field['type'], $field );
+		// Locked (Pro/addon) fields placed in the form. The orange "Pro" icon is
+		// added inline next to the field label via CSS (.everest-forms-field-locked
+		// .label-title::after) — matching the fields sidebar — so no absolute badge
+		// element is emitted here.
+		if ( $is_locked ) {
+			// Render the field's real preview (the free plugin now bundles the
+			// builder-scope rendering for Pro fields). If a field still ships no
+			// preview, fall back to a representative card instead of a blank block.
+			ob_start();
+			do_action( 'everest_forms_builder_fields_preview_' . $field['type'], $field );
+			$preview = trim( ob_get_clean() );
+
+			if ( '' === $preview ) {
+				$this->locked_field_preview_body( $field );
+			} else {
+				echo $preview; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Field preview is escaped by the field class.
+			}
+		} else {
+			do_action( 'everest_forms_builder_fields_preview_' . $field['type'], $field );
+		}
 
 		echo '</div>';
+	}
+
+	/**
+	 * Synthesize a representative preview body for a locked (Pro/addon) field.
+	 *
+	 * The free plugin ships Pro fields as stubs without a field_preview(), so on
+	 * the builder canvas / AI preview we render a consistent upsell card showing
+	 * the label and the field type name rather than an empty block.
+	 *
+	 * @param array $field Field data and settings.
+	 */
+	public function locked_field_preview_body( $field ) {
+		$meta      = evf()->form_fields->get_pro_fields_meta();
+		$type_name = isset( $meta[ $field['type'] ]['name'] ) ? $meta[ $field['type'] ]['name'] : $field['type'];
+		$label     = ! empty( $field['label'] ) ? $field['label'] : $type_name;
+		$required  = ! empty( $field['required'] ) && '1' === $field['required'];
+
+		// When the user is already licensed but the field's required add-on is
+		// inactive, prompt to activate the add-on instead of upselling Pro.
+		$trigger = $this->get_locked_field_trigger( $field['type'] );
+		if ( ! empty( $trigger['licensed'] ) && ! empty( $trigger['addon'] ) ) {
+			/* translators: %s: add-on name (e.g. Stripe). */
+			$message = sprintf( esc_html__( 'Activate the %s add-on to use this field', 'everest-forms' ), esc_html( $this->humanize_addon( $trigger['addon'] ) ) );
+		} else {
+			/* translators: %s: field type name (e.g. Signature). */
+			$message = sprintf( esc_html__( '%s is a premium field', 'everest-forms' ), esc_html( $type_name ) );
+		}
+		?>
+		<label class="evf-locked-field-label">
+			<?php echo esc_html( $label ); ?>
+			<?php if ( $required ) : ?>
+				<span class="evf-locked-field-required">*</span>
+			<?php endif; ?>
+		</label>
+		<div class="evf-locked-field-placeholder">
+			<span class="dashicons dashicons-lock"></span>
+			<span><?php echo esc_html( $message ); ?></span>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Render a read-only, edit-chrome-free preview of a form's fields.
+	 *
+	 * Reuses the exact per-field markup of field_preview() (so the preview is
+	 * pixel-identical to the builder canvas) but omits the row toolbars, grid
+	 * selectors, add-row buttons and per-field action icons that only make sense
+	 * inside the live builder. Used by the "Create with AI" preview endpoint.
+	 *
+	 * @param array $form_data Form data ( form_fields, structure ).
+	 * @return string Preview HTML.
+	 */
+	public function render_ai_preview( $form_data ) {
+		$fields    = isset( $form_data['form_fields'] ) ? $form_data['form_fields'] : array();
+		$structure = isset( $form_data['structure'] ) && ! empty( $form_data['structure'] ) ? $form_data['structure'] : array();
+
+		// Fall back to one-field-per-row if no structure is provided.
+		if ( empty( $structure ) ) {
+			$row = 1;
+			foreach ( array_keys( $fields ) as $fid ) {
+				$structure[ 'row_' . $row ] = array( 'grid_1' => array( $fid ) );
+				$row++;
+			}
+		}
+
+		// Multi-part: build a row_key → 1-based part number map so React can
+		// show/hide rows per active tab (data-part-id attribute on each row div).
+		$is_multipart = isset( $form_data['settings']['enable_multi_part'] )
+			&& evf_string_to_bool( $form_data['settings']['enable_multi_part'] );
+		$row_to_part  = array();
+		if ( $is_multipart && ! empty( $form_data['multi_part'] ) ) {
+			foreach ( array_values( $form_data['multi_part'] ) as $part_idx => $part ) {
+				foreach ( ( $part['rows'] ?? array() ) as $row_key ) {
+					$row_to_part[ $row_key ] = $part_idx + 1; // 1-based
+				}
+			}
+		}
+
+		ob_start();
+		// Reproduce the builder's exact ancestor chain so the canvas field CSS
+		// (scoped to `#everest-forms-builder .evf-tab-content
+		// .everest-forms-panel-content-wrap .everest-forms-panel-content …`) applies
+		// identically in the AI preview. The preview stylesheet neutralises these
+		// containers' own layout (absolute positioning / sidebar width) so they
+		// don't disturb the preview pane. See .evf-ai-preview-canvas in
+		// assets/css/evf-locked-fields.css.
+		// Inline styles guarantee the builder container's own layout (absolute
+		// positioning / 100vh height) is neutralised regardless of stylesheet load
+		// order or caching, so the preview expands to its full content height.
+		echo '<div id="everest-forms-builder" style="position:static !important;inset:auto !important;min-height:0 !important;height:auto !important;width:100% !important;"><div class="evf-tab-content"><div class="everest-forms-panel-content-wrap"><div class="everest-forms-panel-content">';
+		echo '<div class="evf-admin-field-container"><div class="evf-admin-field-wrapper">';
+
+		$row_index    = 0;
+		$current_part = 0; // tracks last assigned part, defaults rows to part 1 when no map entry
+		foreach ( $structure as $row_key => $row_data ) {
+			$grids       = is_array( $row_data ) ? $row_data : array();
+			$active_grid = max( 1, count( $grids ) );
+
+			// Determine which part this row belongs to (default 1 for non-multipart forms).
+			if ( $is_multipart && ! empty( $row_to_part ) ) {
+				$part_id      = $row_to_part[ $row_key ] ?? $current_part ?: 1;
+				$current_part = $part_id;
+			} else {
+				$part_id = 1;
+			}
+
+			// --evf-row-index drives a staggered "field appears" animation in the
+			// preview (see .evf-ai-preview-canvas in evf-locked-fields.css), so the
+			// form reveals field-by-field on generate / regenerate.
+			// data-part-id lets React show/hide rows when tabs are clicked.
+			printf(
+				'<div class="evf-admin-row" data-part-id="%d" style="--evf-row-index:%d;">',
+				absint( $part_id ),
+				absint( $row_index )
+			);
+			echo '<div class="evf-grid-lists">';
+			$row_index++;
+
+			$grid_index = 1;
+			foreach ( $grids as $grid ) {
+				printf( '<div class="evf-admin-grid evf-grid-%1$d" data-grid-id="%2$d">', absint( $active_grid ), absint( $grid_index ) );
+				foreach ( (array) $grid as $field_id ) {
+					if ( isset( $fields[ $field_id ] ) ) {
+						$this->field_preview( $fields[ $field_id ], false );
+					}
+				}
+				echo '</div>';
+				$grid_index++;
+			}
+
+			echo '</div>'; // .evf-grid-lists
+			echo '<div class="clear evf-clear"></div>';
+			echo '</div>'; // .evf-admin-row
+		}
+
+		echo '</div></div>'; // .evf-admin-field-wrapper .evf-admin-field-container
+		echo '</div></div></div></div>'; // .everest-forms-panel-content .everest-forms-panel-content-wrap .evf-tab-content #everest-forms-builder
+
+		return ob_get_clean();
+	}
+
+	/**
+	 * Build the upgrade-trigger data attributes shared by the locked-field
+	 * badge (canvas) and the locked-options overlay (settings panel).
+	 *
+	 * Reuses the existing upgrade.js handlers: when no license is present the
+	 * generic "upgrade-modal" flow runs; when licensed but the required addon
+	 * is inactive the "evf-upgrade-addon" install/activate flow runs.
+	 *
+	 * @param string $type Field type slug.
+	 * @return array {
+	 *     @type string $trigger Trigger CSS class (upgrade-modal|evf-upgrade-addon).
+	 *     @type string $name    Human-readable field name.
+	 *     @type string $attr    Pre-escaped HTML data attributes.
+	 * }
+	 */
+	/**
+	 * Find and return the registered field object for a given type slug, or null.
+	 *
+	 * @param string $type Field type slug.
+	 * @return object|null
+	 */
+	protected function get_field_object( $type ) {
+		foreach ( evf()->form_fields->form_fields() as $group ) {
+			foreach ( $group as $field_obj ) {
+				if ( $field_obj->type === $type ) {
+					return $field_obj;
+				}
+			}
+		}
+		return null;
+	}
+
+	protected function get_locked_field_trigger( $type ) {
+		$meta  = evf()->form_fields->get_pro_fields_meta();
+		$info  = isset( $meta[ $type ] ) ? $meta[ $type ] : array();
+		$addon = isset( $info['addon'] ) ? $info['addon'] : '';
+		$plan  = isset( $info['plan'] ) ? $info['plan'] : '';
+		$links = isset( $info['links'] ) ? $info['links'] : array();
+		$name  = isset( $info['name'] ) ? $info['name'] : $type;
+
+		// get_pro_fields_meta() only covers fields with is_pro = true. When EVF Pro
+		// registers the full field class (removing is_pro), the entry is absent.
+		// Fall back to the live field object so addon/name/plan are still resolved.
+		if ( empty( $addon ) ) {
+			$obj   = $this->get_field_object( $type );
+			$addon = $obj && isset( $obj->addon ) ? $obj->addon : '';
+			if ( ( empty( $name ) || $name === $type ) && $obj && isset( $obj->name ) ) {
+				$name = $obj->name;
+			}
+			if ( empty( $plan ) && $obj && isset( $obj->plan ) ) {
+				$plan = $obj->plan;
+			}
+		}
+
+		// Last resort: check the addon-requirements filter. Covers fields whose
+		// class never registers when the addon is absent (e.g. credit-card bails
+		// in __construct() when Stripe is inactive), so get_field_object() returns
+		// null. Pro/addons hook everest_forms_field_addon_requirements to declare
+		// these dependencies from always-loaded code.
+		if ( empty( $addon ) ) {
+			$requirements = apply_filters( 'everest_forms_field_addon_requirements', array() );
+			$addon        = isset( $requirements[ $type ] ) ? $requirements[ $type ] : '';
+		}
+
+		$licensed = false !== evf_get_license_plan();
+		// Route to the addon install/activate flow whenever the user is licensed
+		// (running EVF Pro) and the field declares a required addon — even when the
+		// field is still flagged is_pro (e.g. the free plugin bundles a Pro field as
+		// an is_pro stub with an addon slug, like repeater-fields). Showing the
+		// "Upgrade to Pro" modal in that case is misleading because Pro is already
+		// active; the user only needs to activate the field's addon. When the field
+		// has no addon (purely plan-locked) or the user is unlicensed, fall back to
+		// the upgrade-modal. The addon AJAX handler still verifies the license plan
+		// covers the addon and shows an upgrade-plan modal when it does not.
+		$trigger = ( $licensed && ! empty( $addon ) ) ? 'evf-upgrade-addon' : 'upgrade-modal';
+
+		$attr = sprintf(
+			' data-field-type="%1$s" data-field-name="%2$s" data-field-plan="%3$s" data-addon-slug="%4$s" data-field-class="%5$s" data-links="%6$s"',
+			esc_attr( $type ),
+			esc_attr( $name ),
+			esc_attr( $plan ),
+			esc_attr( $addon ),
+			esc_attr( $trigger ),
+			esc_attr( wp_json_encode( $links ) )
+		);
+
+		return array(
+			'trigger'  => $trigger,
+			'name'     => $name,
+			'attr'     => $attr,
+			'addon'    => $addon,
+			'licensed' => $licensed,
+		);
+	}
+
+	/**
+	 * Humanize an addon slug into a display name (e.g.
+	 * "everest-forms-survey-polls-quiz" => "Survey Polls Quiz").
+	 *
+	 * @param string $slug Addon slug.
+	 * @return string
+	 */
+	protected function humanize_addon( $slug ) {
+		$slug = preg_replace( '/^everest-forms-/', '', (string) $slug );
+		return ucwords( str_replace( '-', ' ', $slug ) );
+	}
+
+	/**
+	 * Output the PRO ribbon for a locked field on the builder canvas.
+	 *
+	 * @param string $type Field type slug.
+	 */
+	public function locked_field_badge( $type ) {
+		$data = $this->get_locked_field_trigger( $type );
+
+		printf(
+			'<span class="everest-forms-field-pro-badge everest-forms-locked-field-cta %1$s"%2$s title="%3$s">%4$s</span>',
+			esc_attr( $data['trigger'] ),
+			$data['attr'], // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Pre-escaped in get_locked_field_trigger().
+			esc_attr__( 'This is a premium field. Upgrade to use it on your form.', 'everest-forms' ),
+			esc_html__( 'PRO', 'everest-forms' )
+		);
+	}
+
+	/**
+	 * Output the locked notice banner above a Pro field's settings panel.
+	 *
+	 * The field's real option rows are still rendered below this banner so all
+	 * settings are READABLE; CSS (.everest-forms-field-option-locked) disables
+	 * pointer events on them so they are not editable, while their inputs remain
+	 * enabled (not the HTML `disabled` attribute) so the field data round-trips
+	 * on save and the field works the moment the user upgrades.
+	 *
+	 * @param string $type Field type slug.
+	 */
+	public function locked_field_option_overlay( $type ) {
+		$data         = $this->get_locked_field_trigger( $type );
+		$needs_addon  = ( 'evf-upgrade-addon' === $data['trigger'] ); // Licensed, but the required addon is inactive.
+		$field_strong = '<strong>' . esc_html( $data['name'] ) . '</strong>';
+
+		if ( $needs_addon && ! empty( $data['addon'] ) ) {
+			$addon_strong = '<strong>' . esc_html( $this->humanize_addon( $data['addon'] ) ) . '</strong>';
+			/* translators: 1: field name, 2: addon name. */
+			$message   = sprintf( esc_html__( '%1$s needs the %2$s add-on. Activate it to use this field.', 'everest-forms' ), $field_strong, $addon_strong );
+			$cta_label = esc_html__( 'Activate add-on', 'everest-forms' );
+			$tag_label = esc_html__( 'ADD-ON', 'everest-forms' );
+			$tag_icon  = 'dashicons-admin-plugins';
+		} else {
+			/* translators: %s: field name. */
+			$message   = sprintf( esc_html__( '%s is a premium field — settings are read-only until you upgrade.', 'everest-forms' ), $field_strong );
+			$cta_label = esc_html__( 'Unlock', 'everest-forms' );
+			$tag_label = esc_html__( 'PRO', 'everest-forms' );
+			$tag_icon  = 'dashicons-lock';
+		}
+		?>
+		<div class="everest-forms-field-option-locked-banner everest-forms-locked-field-cta <?php echo esc_attr( $data['trigger'] ); ?>"<?php echo $data['attr']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Pre-escaped in get_locked_field_trigger(). ?>>
+			<span class="evf-locked-banner-tag"><span class="dashicons <?php echo esc_attr( $tag_icon ); ?>"></span><?php echo esc_html( $tag_label ); ?></span>
+			<span class="evf-locked-banner-text">
+				<?php echo wp_kses( $message, array( 'strong' => array() ) ); ?>
+			</span>
+			<button type="button" class="everest-forms-btn everest-forms-btn-primary evf-locked-banner-cta"><?php echo esc_html( $cta_label ); ?></button>
+		</div>
+		<?php
 	}
 }
 
