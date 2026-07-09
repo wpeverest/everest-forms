@@ -47,7 +47,19 @@ final class Migrator {
 			if ( ! isset( $legacy[ $group ][ $prop ] ) ) {
 				continue;
 			}
-			$tokens[ $rule['token'] ] = self::apply_transform( $rule['transform'], $legacy[ $group ][ $prop ] );
+			$value = $legacy[ $group ][ $prop ];
+			// Legacy represents "never customized" two ways: the key is absent (handled above),
+			// OR the key is present with an empty string (e.g. an unset colour/border-type —
+			// confirmed on a real production record, `button.border_type => ''`). Migrating the
+			// empty string verbatim breaks rendering: Compiler treats '' as a real value and
+			// emits no declaration for it (Sanitizer/Compiler skip empty strings), and with no
+			// CSS fallback the property is left unset/inherited instead of falling through to
+			// the v2 schema default. Skip it here so the token stays unset and the compiler uses
+			// its own default, exactly as if the legacy key had never been set at all.
+			if ( '' === $value ) {
+				continue;
+			}
+			$tokens[ $rule['token'] ] = self::apply_transform( $rule['transform'], $value );
 		}
 
 		// Colour palette: seed the six palette-driven token colours from the saved palette.

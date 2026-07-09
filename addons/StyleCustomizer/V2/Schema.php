@@ -323,10 +323,14 @@ final class Schema {
 
 		$fields = array(
 			array( 'key' => 'input.bg', 'section' => 'fields', 'group' => 'Surface', 'label' => __( 'Background', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-input-bg', 'default' => '#ffffff', 'hidden' => true, 'keywords' => array( 'fill' ) ),
-			array( 'key' => 'input.borderC', 'section' => 'fields', 'group' => 'Surface', 'label' => __( 'Border color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-input-border-c', 'default' => '#d8dae2' ),
+			// default '#969696': the legacy config's field_styles_border_color setting default
+			// (confirmed via getComputedStyle on a real unstyled form) — legacy-parity baseline.
+			array( 'key' => 'input.borderC', 'section' => 'fields', 'group' => 'Surface', 'label' => __( 'Border color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-input-border-c', 'default' => '#969696' ),
 			self::radius( 'input.radius', '--evf-input-radius', 8, 'fields', null, 'Surface', false ),
 			array( 'key' => 'input.size', 'section' => 'fields', 'group' => 'Typography', 'label' => __( 'Font size', 'everest-forms' ), 'type' => 'slider', 'var' => '--evf-input-size', 'default' => 15, 'min' => 11, 'max' => 22, 'step' => 1, 'unit' => 'px', 'advanced' => true, 'keywords' => array( 'text' ) ),
-			array( 'key' => 'input.color', 'section' => 'fields', 'group' => 'Typography', 'label' => __( 'Text color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-input-color', 'default' => '#1f2433', 'advanced' => true ),
+			// default '#575757': the legacy config's field_styles_font_color setting default —
+			// confirmed via getComputedStyle on a real unstyled form. Legacy-parity baseline.
+			array( 'key' => 'input.color', 'section' => 'fields', 'group' => 'Typography', 'label' => __( 'Text color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-input-color', 'default' => '#575757', 'advanced' => true ),
 			array( 'key' => 'input.ph', 'section' => 'fields', 'group' => 'Typography', 'label' => __( 'Placeholder color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-input-ph', 'default' => '#9aa0b0', 'advanced' => true, 'keywords' => array( 'hint' ) ),
 			self::fstyle( 'input.fstyle', 'input', 'fields', null, '400' ),
 			self::talign( 'input.align', '--evf-input-align', 'fields', null ),
@@ -377,7 +381,10 @@ final class Schema {
 			array( 'key' => 'btn.pad', 'section' => 'button', 'group' => '', 'label' => __( 'Padding', 'everest-forms' ), 'type' => 'box4', 'var' => '--evf-btn-pad', 'default' => array( 13, 30, 13, 30 ), 'responsive' => true, 'advanced' => true, 'keywords' => array( 'size' ) ),
 			array( 'key' => 'btn.borderStyle', 'section' => 'button', 'group' => '', 'label' => __( 'Border type', 'everest-forms' ), 'type' => 'select', 'var' => '--evf-btn-border-style', 'default' => 'solid', 'options' => $border, 'deps' => array( 'btn.bw', 'btn.borderC' ), 'advanced' => true, 'keywords' => array( 'outline' ) ),
 			self::bwidth( 'btn.bw', '--evf-btn-bw', 0, 'button', null, '', true ),
-			array( 'key' => 'btn.borderC', 'section' => 'button', 'group' => '', 'label' => __( 'Border color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-btn-border-c', 'default' => '#3b82f6', 'advanced' => true ),
+			// default '#cccccc': matches both the core (non-customizer) button stylesheet and
+			// the legacy compiled CSS's own button_border_color fallback, confirmed via
+			// getComputedStyle on a real unstyled form. Legacy-parity baseline.
+			array( 'key' => 'btn.borderC', 'section' => 'button', 'group' => '', 'label' => __( 'Border color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-btn-border-c', 'default' => '#cccccc', 'advanced' => true ),
 			array( 'key' => 'btn.bgHover', 'section' => 'button', 'group' => '', 'label' => __( 'Button color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-btn-bg-hover', 'default' => '#2563eb', 'state' => 'hover', 'keywords' => array( 'mouse over' ) ),
 			array( 'key' => 'btn.colorHover', 'section' => 'button', 'group' => '', 'label' => __( 'Text color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-btn-color-hover', 'default' => '#ffffff', 'state' => 'hover', 'keywords' => array( 'mouse over', 'hover font' ) ),
 			array( 'key' => 'btn.borderCHover', 'section' => 'button', 'group' => '', 'label' => __( 'Border color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-btn-border-c-hover', 'default' => '#2563eb', 'state' => 'hover', 'keywords' => array( 'mouse over', 'hover border' ) ),
@@ -405,10 +412,17 @@ final class Schema {
 	protected static function text_role_tokens() {
 		$roles = array(
 			// state key => [ var-prefix, size, min, max, color, neutral-weight, margin, line, pad, color-hidden ].
-			// nw=400: matches the legacy compiler, which explicitly forces `font-weight: normal`
-			// on `.evf-label` when bold is off (scss.php) — this is not a design knob, it's the
-			// legacy-parity baseline (Phase 0 pixel-identical exit criterion).
-			'label'    => array( 'sub' => 'label', 'size' => 14, 'min' => 10, 'max' => 24, 'color' => '#1f2433', 'nw' => '400', 'margin' => array( 0, 0, 7, 0 ), 'line' => 1.5, 'pad' => array( 0, 0, 0, 0 ), 'color_hidden' => true ),
+			// nw=600: the legacy SCSS *intends* `font-weight: normal` when bold is off
+			// (scss.php's `.evf-label` block), but that block is nested inside
+			// `label.evf-field-label { .evf-label { ... } }` WITHOUT `&`, so it compiles to the
+			// descendant selector `label.evf-field-label .evf-label` — which matches no real
+			// element (the label itself carries the `evf-field-label` class, not a child with
+			// class `evf-label`). That override is dead code: it never overrides anything, so
+			// every legacy form's labels actually render at the core stylesheet's unconditional
+			// `.everest-forms label.evf-field-label{font-weight:600}`, confirmed via
+			// getComputedStyle on a real production form. This is legacy-PARITY (matching what
+			// v1 truly renders, bug included), not agreement with the SCSS author's intent.
+			'label'    => array( 'sub' => 'label', 'size' => 14, 'min' => 10, 'max' => 24, 'color' => '#1f2433', 'nw' => '600', 'margin' => array( 0, 0, 7, 0 ), 'line' => 1.5, 'pad' => array( 0, 0, 0, 0 ), 'color_hidden' => true ),
 			'sublabel' => array( 'sub' => 'sub', 'size' => 12, 'min' => 9, 'max' => 20, 'color' => '#6b7280', 'nw' => '400', 'margin' => array( 0, 0, 6, 0 ), 'line' => 1.5, 'pad' => array( 0, 0, 0, 0 ), 'color_hidden' => true ),
 			'desc'     => array( 'sub' => 'desc', 'size' => 12, 'min' => 9, 'max' => 20, 'color' => '#6b7280', 'nw' => '400', 'margin' => array( 6, 0, 0, 0 ), 'line' => 1.5, 'pad' => array( 0, 0, 0, 0 ), 'color_hidden' => false ),
 			'title'    => array( 'sub' => 'title', 'size' => 17, 'min' => 12, 'max' => 34, 'color' => '#1f2433', 'nw' => '700', 'margin' => array( 18, 0, 16, 0 ), 'line' => 1.35, 'pad' => array( 0, 0, 8, 0 ), 'color_hidden' => false ),

@@ -318,11 +318,16 @@ final class Compiler {
 	 */
 	protected static function resolve( $tokens, $token, $device ) {
 		$key = $token['key'];
-		if ( isset( $tokens[ $key ][ $device ] ) ) {
+		// A stored empty string means "no value" (the same convention the legacy engine used —
+		// see Migrator::migrate_record()), not "explicitly set to blank": treat it exactly like
+		// the key being absent so it falls through to the default below, rather than emitting no
+		// declaration at all (there is no CSS fallback for most vars, so an unset property would
+		// otherwise just inherit from an ancestor instead of showing the intended default look).
+		if ( isset( $tokens[ $key ][ $device ] ) && '' !== $tokens[ $key ][ $device ] ) {
 			return $tokens[ $key ][ $device ];
 		}
 		if ( 'desktop' === $device ) {
-			return isset( $tokens[ $key ]['desktop'] ) ? $tokens[ $key ]['desktop'] : $token['default'];
+			return ( isset( $tokens[ $key ]['desktop'] ) && '' !== $tokens[ $key ]['desktop'] ) ? $tokens[ $key ]['desktop'] : $token['default'];
 		}
 		return null;
 	}

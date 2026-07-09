@@ -22,6 +22,13 @@
  *     "breakpoints": { "desktop": 1280, "tablet": 768, "mobile": 480 },
  *     "forms": [ { "id": 7, "url": "/?evf_preview=1&form_id=7" }, ... ]
  *   }
+ *
+ * `id` is the `#evf-{id}` wrapper to find on the page. If baseline and current must screenshot
+ * DIFFERENT form ids for the same logical case (e.g. a legacy source form vs. a duplicate
+ * migrated to v2 — the actual Phase 0 methodology, since a freshly-duplicated id has no
+ * legacy-engine compiled CSS file on disk to compare against), add an optional `file` — the
+ * output is named `form-{file ?? id}-{device}.png`, so baseline/current can share a filename
+ * for compare.mjs while pointing at different real ids.
  */
 
 import { chromium } from 'playwright';
@@ -60,10 +67,16 @@ for ( const form of config.forms ) {
 		const page = await context.newPage();
 		await page.setViewportSize( { width: Number( width ), height: 900 } );
 		await page.goto( url, { waitUntil: 'networkidle' } );
+		// Wait for web fonts to finish loading/rasterizing before measuring anything — otherwise
+		// a screenshot taken before font swap completes (common on a cold cache) reports a
+		// different layout height than one taken after, which looks like a CSS regression but
+		// is really just capture-time jitter between two runs.
+		await page.evaluate( () => document.fonts.ready );
 		// Freeze animations/carets so diffs stay deterministic.
 		await page.addStyleTag( { content: '*,*::before,*::after{transition:none!important;animation:none!important;caret-color:transparent!important}' } );
 		const target = ( await page.$( `#evf-${ form.id }` ) ) || page;
-		await target.screenshot( { path: path.join( outDir, `form-${ form.id }-${ device }.png` ) } );
+		const fileId = form.file ?? form.id;
+		await target.screenshot( { path: path.join( outDir, `form-${ fileId }-${ device }.png` ) } );
 		await page.close();
 		shots++;
 	}
