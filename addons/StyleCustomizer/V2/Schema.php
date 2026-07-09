@@ -80,7 +80,7 @@ final class Schema {
 	 * @return array
 	 */
 	public static function sections() {
-		return array(
+		$sections = array(
 			'form'     => array(
 				'title' => __( 'Form', 'everest-forms' ),
 				'hint'  => __( 'The canvas everything sits on — plus the form-wide font.', 'everest-forms' ),
@@ -110,6 +110,24 @@ final class Schema {
 				'states' => array( 'success', 'error', 'validation' ),
 			),
 		);
+
+		// Product decision (free tiering): the FREE plugin exposes only palette-based recolouring
+		// (2 palettes) and Custom CSS. Every per-element design SECTION is a Pro feature, so each
+		// renders as a locked "Upgrade to Pro" teaser on a free site (the panel shows the teaser
+		// from `tier`, not the controls) and is fully functional once Pro is active. The palette
+		// picker and Custom CSS tab (both outside these sections) remain free.
+		foreach ( $sections as &$section ) {
+			$section['tier'] = 'pro';
+		}
+		unset( $section );
+
+		/**
+		 * Filter the style-customizer section metadata (order, titles, variant/state tabs, tier).
+		 * Pro/add-ons can add sections or adjust an existing section's tier here.
+		 *
+		 * @param array $sections Section definitions keyed by section id.
+		 */
+		return apply_filters( 'evf_style_sections', $sections );
 	}
 
 	/**
@@ -129,9 +147,59 @@ final class Schema {
 			 * @param int   $version Schema version.
 			 */
 			$tokens       = apply_filters( 'evf_style_schema', self::raw_tokens(), self::VERSION );
-			self::$tokens = array_map( array( __CLASS__, 'normalize' ), $tokens );
+			$tokens       = array_map( array( __CLASS__, 'normalize' ), $tokens );
+			self::$tokens = self::apply_tier_policy( $tokens );
 		}
 		return self::$tokens;
+	}
+
+	/**
+	 * Stamp each token's tier per the free/pro product policy: the FREE plugin only ships
+	 * palette-based recolouring, so ONLY the palette-driven tokens (see {@see free_token_keys()})
+	 * are tier=free; every other token — all the per-element controls (sizes, borders, spacing,
+	 * fonts, alignment, messages, …) — is tier=pro. The sanitizer and compiler then refuse to
+	 * persist/emit any pro token unless Pro is active ({@see Engine::pro_active()}), so a free
+	 * site can only ever apply the two palettes (which write the free palette tokens) + Custom CSS.
+	 *
+	 * This is applied AFTER the `evf_style_schema` filter, so it also governs tokens contributed
+	 * by Pro/add-ons (they are pro unless their key opts into the free set via the filter below).
+	 *
+	 * @param array $tokens Normalized tokens.
+	 * @return array
+	 */
+	protected static function apply_tier_policy( $tokens ) {
+		$free = self::free_token_keys();
+		foreach ( $tokens as &$token ) {
+			$token['tier'] = isset( $free[ $token['key'] ] ) ? 'free' : 'pro';
+		}
+		unset( $token );
+		return $tokens;
+	}
+
+	/**
+	 * The set of token keys that remain FREE — the palette-driven colours the two free palettes
+	 * write (so palette recolouring works without Pro), plus the derived button-hover shade.
+	 * Everything else is Pro. Keyed map (key => true) for O(1) lookup; filterable so the free
+	 * surface can be adjusted without editing the tier stamping.
+	 *
+	 * @return array
+	 */
+	protected static function free_token_keys() {
+		$keys = array();
+		foreach ( self::palette_map() as $token_keys ) {
+			foreach ( (array) $token_keys as $key ) {
+				$keys[ $key ] = true;
+			}
+		}
+		// The palettes also derive the button hover background from button_background.
+		$keys['btn.bgHover'] = true;
+
+		/**
+		 * Filter the token keys that stay in the FREE tier (all others are Pro).
+		 *
+		 * @param array $keys Map of free token key => true.
+		 */
+		return apply_filters( 'evf_style_free_token_keys', $keys );
 	}
 
 	/**
@@ -180,28 +248,22 @@ final class Schema {
 	}
 
 	/**
-	 * The 11 named colour palettes (2 free + 9 Pro), each defining the old customizer's
-	 * 6 colours. Pro palettes are gated exactly as in the legacy config (`is_pro`).
+	 * The FREE named colour palettes (Classic + Monochrome), each defining the old customizer's
+	 * 6 colours. The 9 Pro palettes live in the Pro plugin and are layered in via the
+	 * `evf_style_palettes` filter only when Pro is active — so a free-only site cannot select
+	 * (or persist, see {@see Sanitizer::sanitize_palette_id()}) a Pro palette.
 	 *
 	 * @return array
 	 */
 	public static function palettes() {
 		$palettes = array(
-			array( 'id' => 'classic',  'name' => __( 'Classic', 'everest-forms' ),           'is_pro' => false, 'colors' => array( 'form_background' => '#ffffff', 'field_background' => '#f6f6f6', 'field_label' => '#081d2b', 'field_sublabel' => '#0f3a57', 'button_text' => '#ffffff', 'button_background' => '#3951a5' ) ),
-			array( 'id' => 'mono',      'name' => __( 'Monochrome', 'everest-forms' ),        'is_pro' => false, 'colors' => array( 'form_background' => '#ffffff', 'field_background' => '#f7f7f7', 'field_label' => '#262626', 'field_sublabel' => '#666666', 'button_text' => '#ffffff', 'button_background' => '#1a1a1a' ) ),
-			array( 'id' => 'autumn',    'name' => __( 'Autumn Blaze', 'everest-forms' ),      'is_pro' => true,  'colors' => array( 'form_background' => '#fffafa', 'field_background' => '#fff5f5', 'field_label' => '#330300', 'field_sublabel' => '#4d0500', 'button_text' => '#ffffff', 'button_background' => '#ff5d52' ) ),
-			array( 'id' => 'sunset',    'name' => __( 'Sunset Glow', 'everest-forms' ),       'is_pro' => true,  'colors' => array( 'form_background' => '#fffdfa', 'field_background' => '#fff9f0', 'field_label' => '#664000', 'field_sublabel' => '#805100', 'button_text' => '#ffffff', 'button_background' => '#ffa305' ) ),
-			array( 'id' => 'majestic',  'name' => __( 'Majestic', 'everest-forms' ),          'is_pro' => true,  'colors' => array( 'form_background' => '#fcfbfe', 'field_background' => '#f7f4fb', 'field_label' => '#3a225d', 'field_sublabel' => '#5d3795', 'button_text' => '#ffffff', 'button_background' => '#7545bb' ) ),
-			array( 'id' => 'greenery',  'name' => __( 'Fresh Greenery', 'everest-forms' ),    'is_pro' => true,  'colors' => array( 'form_background' => '#f9fdf6', 'field_background' => '#e9f6ea', 'field_label' => '#334745', 'field_sublabel' => '#557773', 'button_text' => '#ffffff', 'button_background' => '#405956' ) ),
-			array( 'id' => 'cloudy',    'name' => __( 'Cloudy Sky', 'everest-forms' ),        'is_pro' => true,  'colors' => array( 'form_background' => '#f2f3f8', 'field_background' => '#e4e7f1', 'field_label' => '#252b41', 'field_sublabel' => '#2e3651', 'button_text' => '#ffffff', 'button_background' => '#445079' ) ),
-			array( 'id' => 'earthy',    'name' => __( 'Earthy Warm', 'everest-forms' ),       'is_pro' => true,  'colors' => array( 'form_background' => '#f7f6f0', 'field_background' => '#f1efe4', 'field_label' => '#474648', 'field_sublabel' => '#616062', 'button_text' => '#ffffff', 'button_background' => '#463700' ) ),
-			array( 'id' => 'blossom',   'name' => __( 'Blushing Blossom', 'everest-forms' ),  'is_pro' => true,  'colors' => array( 'form_background' => '#fdf7fa', 'field_background' => '#fbeff5', 'field_label' => '#532f42', 'field_sublabel' => '#824a68', 'button_text' => '#ffffff', 'button_background' => '#46102c' ) ),
-			array( 'id' => 'thunder',   'name' => __( 'Thunder', 'everest-forms' ),           'is_pro' => true,  'colors' => array( 'form_background' => '#ededed', 'field_background' => '#f7f7f7', 'field_label' => '#333333', 'field_sublabel' => '#595959', 'button_text' => '#ffffff', 'button_background' => '#1a1a1a' ) ),
-			array( 'id' => 'midnight',  'name' => __( 'Midnight Charm', 'everest-forms' ),    'is_pro' => true,  'colors' => array( 'form_background' => '#363636', 'field_background' => '#3d3d3d', 'field_label' => '#ffffff', 'field_sublabel' => '#f2f2f2', 'button_text' => '#1a1a1a', 'button_background' => '#ffffff' ) ),
+			array( 'id' => 'classic', 'name' => __( 'Classic', 'everest-forms' ),    'is_pro' => false, 'colors' => array( 'form_background' => '#ffffff', 'field_background' => '#f6f6f6', 'field_label' => '#081d2b', 'field_sublabel' => '#0f3a57', 'button_text' => '#ffffff', 'button_background' => '#3951a5' ) ),
+			array( 'id' => 'mono',    'name' => __( 'Monochrome', 'everest-forms' ), 'is_pro' => false, 'colors' => array( 'form_background' => '#ffffff', 'field_background' => '#f7f7f7', 'field_label' => '#262626', 'field_sublabel' => '#666666', 'button_text' => '#ffffff', 'button_background' => '#1a1a1a' ) ),
 		);
 
 		/**
-		 * Filter the available colour palettes.
+		 * Filter the available colour palettes. Pro adds its 9 palettes (each `is_pro => true`)
+		 * here; the panel shows them as locked upgrade teasers on free.
 		 *
 		 * @param array $palettes Palette definitions.
 		 */
@@ -316,13 +378,16 @@ final class Schema {
 			array( 'key' => 'btn.borderCHover', 'section' => 'button', 'group' => '', 'label' => __( 'Border color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-btn-border-c-hover', 'default' => '#2563eb', 'state' => 'hover', 'keywords' => array( 'mouse over', 'hover border' ) ),
 		);
 
+		// NOTE: the Messages section tokens (tier=pro) are NOT defined here. They live in the Pro
+		// plugin and are injected via the `evf_style_schema` filter only when Pro is active, so a
+		// free-only site's schema physically has no pro tokens for the sanitizer/compiler to
+		// process — the free/pro split is secure by construction, not by a bypassable flag.
 		return array_merge(
 			$form,
 			self::text_role_tokens(),
 			$fields,
 			$choice,
-			$button,
-			self::message_tokens()
+			$button
 		);
 	}
 
@@ -355,44 +420,14 @@ final class Schema {
 		return $out;
 	}
 
-	/**
-	 * Success / Error / Validation message styling — a full independent set each,
-	 * matching the old `$section_types`. No margin/padding => nothing responsive here.
-	 *
-	 * @return array
-	 */
-	protected static function message_tokens() {
-		$types = array(
-			'success'    => array( 'bg' => '#dcfce7', 'color' => '#166534', 'border' => '#bbf7d0' ),
-			'error'      => array( 'bg' => '#fee2e2', 'color' => '#991b1b', 'border' => '#fecaca' ),
-			'validation' => array( 'bg' => '#fef9c3', 'color' => '#854d0e', 'border' => '#fde68a' ),
-		);
-		$border = self::border_options();
-
-		$out = array();
-		foreach ( $types as $t => $c ) {
-			$out[] = array( 'key' => "msg.{$t}.bg", 'section' => 'messages', 'state' => $t, 'group' => '', 'label' => __( 'Background', 'everest-forms' ), 'type' => 'color', 'var' => "--evf-msg-{$t}-bg", 'default' => $c['bg'], 'keywords' => array( 'message', $t, 'notice' ) );
-			$out[] = array( 'key' => "msg.{$t}.color", 'section' => 'messages', 'state' => $t, 'group' => '', 'label' => __( 'Text color', 'everest-forms' ), 'type' => 'color', 'var' => "--evf-msg-{$t}-color", 'default' => $c['color'], 'keywords' => array( 'message', $t ) );
-			$out[] = array( 'key' => "msg.{$t}.size", 'section' => 'messages', 'state' => $t, 'group' => '', 'label' => __( 'Font size', 'everest-forms' ), 'type' => 'slider', 'var' => "--evf-msg-{$t}-size", 'default' => 13, 'min' => 10, 'max' => 22, 'step' => 1, 'unit' => 'px', 'advanced' => true, 'keywords' => array( 'message', $t, 'text' ) );
-			$out[] = self::fstyle( "msg.{$t}.fstyle", "msg-{$t}", 'messages', $t, '500' );
-			$out[] = self::talign( "msg.{$t}.align", "--evf-msg-{$t}-align", 'messages', $t );
-			$out[] = array( 'key' => "msg.{$t}.borderStyle", 'section' => 'messages', 'state' => $t, 'group' => '', 'label' => __( 'Border type', 'everest-forms' ), 'type' => 'select', 'var' => "--evf-msg-{$t}-border-style", 'default' => 'solid', 'options' => $border, 'deps' => array( "msg.{$t}.bw", "msg.{$t}.borderC" ), 'advanced' => true, 'keywords' => array( 'message', $t, 'outline' ) );
-			$out[] = self::bwidth( "msg.{$t}.bw", "--evf-msg-{$t}-bw", 0, 'messages', $t, '', true );
-			$out[] = array( 'key' => "msg.{$t}.borderC", 'section' => 'messages', 'state' => $t, 'group' => '', 'label' => __( 'Border color', 'everest-forms' ), 'type' => 'color', 'var' => "--evf-msg-{$t}-border-c", 'default' => $c['border'], 'advanced' => true, 'keywords' => array( 'message', $t ) );
-			$out[] = self::radius( "msg.{$t}.radius", "--evf-msg-{$t}-radius", 8, 'messages', $t, '', true );
-		}
-		// Message styling was Pro-only in v1 (the submission-message panel sat behind
-		// EFP_PLUGIN_FILE), so the whole Messages section is tier=pro. Free forms leave these
-		// at defaults; the panel shows them locked with the "Upgrade to Pro" prompt.
-		foreach ( $out as &$token ) {
-			$token['tier'] = 'pro';
-		}
-		unset( $token );
-		return $out;
-	}
-
 	/* --------------------------------------------------------------------- *
 	 * Token builders (mixins) — repeated clusters generated, not hand-copied.
+	 *
+	 * The builders below (fstyle/talign/bwidth/radius/border_options) are PUBLIC: they are the
+	 * shared token-shape factory the Pro plugin (and any add-on) uses to contribute tier=pro
+	 * tokens through the `evf_style_schema` filter, so an injected token is guaranteed the same
+	 * shape as a core one. The filtered result is `normalize()`d by {@see tokens()}, so callers
+	 * return raw token arrays (box4 defaults as [t,r,b,l], `tier` defaulting to 'free').
 	 * --------------------------------------------------------------------- */
 
 	/**
@@ -407,7 +442,7 @@ final class Schema {
 	 * @param string $nw      Neutral (non-bold) font-weight.
 	 * @return array
 	 */
-	protected static function fstyle( $key, $base, $section, $state, $nw ) {
+	public static function fstyle( $key, $base, $section, $state, $nw ) {
 		return array(
 			'key'            => $key,
 			'section'        => $section,
@@ -473,7 +508,7 @@ final class Schema {
 	 * @param string $default Default alignment.
 	 * @return array
 	 */
-	protected static function talign( $key, $var, $section, $state, $default = 'left' ) {
+	public static function talign( $key, $var, $section, $state, $default = 'left' ) {
 		return array(
 			'key'      => $key,
 			'section'  => $section,
@@ -527,7 +562,7 @@ final class Schema {
 	 * @param bool   $advanced Whether behind the "advanced" reveal.
 	 * @return array
 	 */
-	protected static function bwidth( $key, $var, $d, $section, $state, $group, $advanced = true ) {
+	public static function bwidth( $key, $var, $d, $section, $state, $group, $advanced = true ) {
 		return array(
 			'key'      => $key,
 			'section'  => $section,
@@ -556,7 +591,7 @@ final class Schema {
 	 * @param bool   $advanced Whether behind the "advanced" reveal.
 	 * @return array
 	 */
-	protected static function radius( $key, $var, $d, $section, $state, $group, $advanced ) {
+	public static function radius( $key, $var, $d, $section, $state, $group, $advanced ) {
 		return array(
 			'key'      => $key,
 			'section'  => $section,
@@ -584,7 +619,7 @@ final class Schema {
 	 *
 	 * @return array
 	 */
-	protected static function border_options() {
+	public static function border_options() {
 		return self::opts(
 			array(
 				'solid'  => __( 'Solid', 'everest-forms' ),

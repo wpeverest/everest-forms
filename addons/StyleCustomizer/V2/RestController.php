@@ -140,6 +140,16 @@ final class RestController {
 	 * @return \WP_REST_Response|\WP_Error
 	 */
 	public function create_template( $request ) {
+		// Saving your own template is a Pro feature — reject on a site without Pro, authoritatively
+		// (the panel also locks the UI, but the server is the boundary).
+		if ( ! Engine::pro_active() ) {
+			return new \WP_Error(
+				'evf_style_pro_only',
+				__( 'Saving custom style templates is a Pro feature.', 'everest-forms' ),
+				array( 'status' => 403 )
+			);
+		}
+
 		$name     = $request->get_param( 'name' );
 		$incoming = $request->get_param( 'record' );
 		if ( ! is_array( $incoming ) ) {
@@ -304,15 +314,10 @@ final class RestController {
 			// "Apply Theme Style" (a per-form post meta reused from v1): true = use the active
 			// theme's styling; false ('default') = load Everest Forms' bundled default styling.
 			'apply_theme_style' => self::get_apply_theme_style( $form_id ),
-			/**
-			 * Whether the Pro tier is active. Defaults to whether Everest Forms Pro is loaded
-			 * (its `EFP_PLUGIN_FILE` constant), so pro-tier tokens unlock automatically when Pro
-			 * is active; in free they render locked with the upgrade prompt. Filterable for
-			 * licence-aware gating.
-			 *
-			 * @param bool $pro_active Default: Pro plugin active.
-			 */
-			'pro_active'     => (bool) apply_filters( 'evf_style_v2_pro_active', defined( 'EFP_PLUGIN_FILE' ) ),
+			// Whether the Pro tier is active — the SAME authoritative gate the sanitizer and
+			// compiler enforce (see Engine::pro_active()). Drives the panel's locked-teaser UI;
+			// display-only, never the security boundary (that is enforced server-side on save).
+			'pro_active'     => Engine::pro_active(),
 			'record'         => $record,
 		);
 	}

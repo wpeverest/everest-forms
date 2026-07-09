@@ -33,6 +33,13 @@ final class Templates {
 	const USER_OPTION = 'everest_forms_style_v2_user_templates';
 
 	/**
+	 * The built-in templates that are FREE (usable without Pro). Matched by template name. Every
+	 * other built-in template — and saving your own — is Pro. The panel locks the rest with an
+	 * upgrade prompt; {@see is_free_template_id()} is the server-side authority.
+	 */
+	const FREE_TEMPLATES = array( 'Default Template', 'Classic Template', 'In-Line Flair', 'Classic Flow' );
+
+	/**
 	 * Memoized template list.
 	 *
 	 * @var array|null
@@ -62,6 +69,9 @@ final class Templates {
 				'name'    => (string) $tpl['name'],
 				'image'   => self::image_url( $tpl ),
 				'palette' => '',
+				// Free tier exposes only a handful of built-in templates; the rest are Pro
+				// (locked in the panel). Saving your own template is also Pro.
+				'is_pro'  => ! in_array( (string) $tpl['name'], self::FREE_TEMPLATES, true ),
 				'tokens'  => isset( $record['tokens'] ) ? $record['tokens'] : array(),
 			);
 		}
@@ -73,6 +83,27 @@ final class Templates {
 		 */
 		self::$cache = apply_filters( 'evf_style_v2_templates', $out );
 		return self::$cache;
+	}
+
+	/**
+	 * Whether a template id refers to a FREE built-in template (usable without Pro). The
+	 * server-side authority behind the panel's template locking + the sanitizer's template-id
+	 * gate. A user (custom) template is Pro (saving your own is a Pro feature).
+	 *
+	 * @param string $id Template id.
+	 * @return bool
+	 */
+	public static function is_free_template_id( $id ) {
+		$id = (string) $id;
+		if ( '' === $id ) {
+			return true; // "no template" is always allowed.
+		}
+		foreach ( self::all() as $tpl ) {
+			if ( $tpl['id'] === $id ) {
+				return empty( $tpl['is_pro'] );
+			}
+		}
+		return false; // Unknown / user template → treat as Pro.
 	}
 
 	/**

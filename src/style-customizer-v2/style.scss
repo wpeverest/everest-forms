@@ -1411,6 +1411,48 @@
 	}
 }
 
+/* Locked (Pro) template card: dimmed thumbnail + PRO badge; click opens the upgrade page. */
+#everest-forms-panel-style .tpl.tpl-locked {
+	.thumb {
+		opacity: .5;
+		filter: saturate( .7 );
+	}
+
+	.tpl-pro {
+		position: absolute;
+		top: 6px;
+		right: 6px;
+		z-index: 1;
+		font-size: 9px;
+		font-weight: 700;
+		letter-spacing: .06em;
+		color: #fff;
+		background: var(--ui-purple);
+		border-radius: 4px;
+		padding: 2px 6px;
+		box-shadow: 0 1px 2px rgba(20, 23, 40, .2);
+	}
+}
+
+/* Locked "Create Style Template" box (save-your-own is Pro). */
+#everest-forms-panel-style .tpl-create-locked {
+	display: block;
+	text-decoration: none;
+	opacity: 1;
+	transition: border-color .12s, background .12s;
+
+	.tpl-create-title {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+	}
+
+	&:hover {
+		border-color: var(--ui-purple);
+		background: var(--ui-purple-50);
+	}
+}
+
 /* Create Style Template card */
 #everest-forms-panel-style .tpl-create {
 	background: #fff;
@@ -1557,6 +1599,119 @@
 	svg {
 		width: 14px;
 		height: 14px;
+	}
+}
+
+/* Full-slate Pro teaser (a whole Pro section opened on free — e.g. Messages). */
+#everest-forms-panel-style .pro-teaser {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+	gap: 10px;
+	padding: 28px 20px;
+	background: linear-gradient(180deg, #fbf6ff 0%, #fff 100%);
+	border: 1px solid var(--ui-purple-100);
+	border-radius: 10px;
+
+	.pro-teaser-ic {
+		display: grid;
+		place-items: center;
+		width: 44px;
+		height: 44px;
+		border-radius: 12px;
+		background: #fff;
+		border: 1px solid var(--ui-purple-100);
+		color: var(--ui-purple);
+
+		svg {
+			width: 22px;
+			height: 22px;
+		}
+	}
+
+	.pro-teaser-title {
+		margin: 4px 0 0;
+		font-size: 14px;
+		font-weight: 600;
+		color: var(--ui-ink);
+	}
+
+	.pro-teaser-text {
+		margin: 0;
+		font-size: 12px;
+		line-height: 1.6;
+		color: var(--ui-ink-2);
+		max-width: 280px;
+	}
+
+	.pro-teaser-btn {
+		margin-top: 6px;
+		display: inline-flex;
+		align-items: center;
+		background: var(--ui-purple);
+		color: #fff;
+		font-size: 12.5px;
+		font-weight: 600;
+		text-decoration: none;
+		padding: 8px 16px;
+		border-radius: 6px;
+		transition: background .12s;
+
+		&:hover {
+			background: var(--ui-purple-600);
+		}
+	}
+}
+
+/* "PRO" badge on a locked element-list row (e.g. the Messages row on free). */
+#everest-forms-panel-style .elrow.locked .ic {
+	color: var(--ui-purple);
+}
+
+#everest-forms-panel-style .pro-badge {
+	font-size: 9px;
+	font-weight: 700;
+	letter-spacing: .06em;
+	color: var(--ui-purple);
+	background: var(--ui-purple-50);
+	border: 1px solid var(--ui-purple-100);
+	border-radius: 4px;
+	padding: 2px 5px;
+	flex: none;
+}
+
+/* Palette popover upgrade nudge (free ships 2 palettes; 9 more are Pro). */
+#everest-forms-panel-style .pal-upsell {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin-top: 6px;
+	padding: 9px 10px;
+	border-radius: 6px;
+	background: #fbf6ff;
+	border: 1px dashed var(--ui-purple-100);
+	color: var(--ui-purple-600);
+	font-size: 11.5px;
+	font-weight: 600;
+	text-decoration: none;
+	transition: background .12s, border-color .12s;
+
+	&:hover {
+		background: var(--ui-purple-50);
+		border-color: var(--ui-purple);
+	}
+
+	.pal-upsell-ic {
+		display: grid;
+		place-items: center;
+		color: var(--ui-purple);
+		flex: none;
+
+		svg {
+			width: 14px;
+			height: 14px;
+		}
 	}
 }
 

@@ -41,12 +41,21 @@ final class Sanitizer {
 		$record = is_array( $record ) ? $record : array();
 		$clean  = array( 'schema_version' => Schema::version() );
 
+		$pro_active = Engine::pro_active();
+
 		$in_tokens  = isset( $record['tokens'] ) && is_array( $record['tokens'] ) ? $record['tokens'] : array();
 		$out_tokens = array();
 		foreach ( Schema::tokens() as $token ) {
 			$key = $token['key'];
 			if ( ! array_key_exists( $key, $in_tokens ) ) {
 				continue; // Absent → the compiler falls back to the schema default.
+			}
+			// Authoritative pro-tier gate: a pro-tier value can never be persisted on a site
+			// without Pro. Pro tokens are already physically absent from a free schema (they are
+			// defined in the Pro plugin), so this is the belt-and-suspenders backstop for the case
+			// where a pro token is present in the schema but the Pro tier is not active.
+			if ( ! $pro_active && isset( $token['tier'] ) && 'pro' === $token['tier'] ) {
+				continue;
 			}
 			$out_tokens[ $key ] = self::sanitize_token( $token, $in_tokens[ $key ] );
 		}
@@ -56,7 +65,12 @@ final class Sanitizer {
 			$clean['palette'] = self::sanitize_palette_id( $record['palette'] );
 		}
 		if ( isset( $record['template'] ) ) {
-			$clean['template'] = sanitize_key( $record['template'] );
+			$template = sanitize_key( $record['template'] );
+			// A Pro template (or a user/custom template) can't be selected without Pro.
+			if ( ! $pro_active && ! Templates::is_free_template_id( $template ) ) {
+				$template = '';
+			}
+			$clean['template'] = $template;
 		}
 		if ( isset( $record['custom_css'] ) ) {
 			$clean['custom_css'] = self::sanitize_css( $record['custom_css'] );
@@ -264,15 +278,21 @@ final class Sanitizer {
 	 * --------------------------------------------------------------------- */
 
 	/**
-	 * A palette id must match one of the registered palettes, else empty (custom/none).
+	 * A palette id must match one of the registered palettes, else empty (custom/none). A Pro
+	 * (`is_pro`) palette is rejected unless the Pro tier is active — so a free site can never
+	 * persist a Pro palette selection even if one is somehow present in the palette list.
 	 *
 	 * @param mixed $value Raw value.
 	 * @return string
 	 */
 	protected static function sanitize_palette_id( $value ) {
-		$value = sanitize_key( $value );
+		$value      = sanitize_key( $value );
+		$pro_active = Engine::pro_active();
 		foreach ( Schema::palettes() as $palette ) {
 			if ( $palette['id'] === $value ) {
+				if ( ! empty( $palette['is_pro'] ) && ! $pro_active ) {
+					return '';
+				}
 				return $value;
 			}
 		}

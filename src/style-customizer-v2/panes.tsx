@@ -89,24 +89,33 @@ export function DesignList( {
 				{ __( 'Tip: pick an element to style it, or click it in the live preview.', 'everest-forms' ) }
 			</p>
 			<div className="ellist">
-				{ sections.map( ( s ) => (
-					<button
-						key={ s.key }
-						type="button"
-						className={ 'elrow' + ( store.changedInSection( s.key ) ? ' dirty' : '' ) }
-						onClick={ () => onOpen( s.key ) }
-					>
-						<span className="ic">
-							<Icon inner={ SECTION_ICONS[ s.key ] || '' } />
-						</span>
-						<span className="tx">
-							<b>{ s.title }</b>
-							<small>{ SECTION_SUBTITLES[ s.key ] || s.hint }</small>
-						</span>
-						<span className="dot" aria-hidden="true" />
-						<span className="chev" aria-hidden="true">›</span>
-					</button>
-				) ) }
+				{ sections.map( ( s ) => {
+					const locked = s.tier === 'pro' && ! store.proActive;
+					return (
+						<button
+							key={ s.key }
+							type="button"
+							className={ 'elrow' + ( store.changedInSection( s.key ) ? ' dirty' : '' ) + ( locked ? ' locked' : '' ) }
+							onClick={ () => onOpen( s.key ) }
+						>
+							<span className="ic">
+								<Icon inner={ SECTION_ICONS[ s.key ] || '' } />
+							</span>
+							<span className="tx">
+								<b>{ s.title }</b>
+								<small>{ SECTION_SUBTITLES[ s.key ] || s.hint }</small>
+							</span>
+							{ locked ? (
+								<span className="pro-badge" aria-label={ __( 'Pro feature', 'everest-forms' ) }>
+									{ __( 'PRO', 'everest-forms' ) }
+								</span>
+							) : (
+								<span className="dot" aria-hidden="true" />
+							) }
+							<span className="chev" aria-hidden="true">›</span>
+						</button>
+					);
+				} ) }
 			</div>
 
 			{ /* Form-wide baseline: a secondary, rarely-changed setting → kept at the bottom so the
@@ -219,6 +228,11 @@ export function ElementSlate( {
 	const locked = ( t: Token ) => t.tier === 'pro' && ! store.proActive;
 	const hasLocked = visible.some( locked );
 
+	// A whole Pro section (e.g. Messages) on a free site: its controls live in the Pro plugin and
+	// are absent here, so render a locked upgrade teaser instead of an empty slate. The server
+	// authoritatively rejects any pro value regardless of the UI (Sanitizer/Compiler).
+	const sectionLocked = section.tier === 'pro' && ! store.proActive;
+
 	const renderControl = ( t: Token ) => (
 		<ControlRenderer
 			key={ t.key }
@@ -238,6 +252,15 @@ export function ElementSlate( {
 			</div>
 		) );
 
+	if ( sectionLocked ) {
+		return (
+			<div id="elBody" ref={ bodyRef }>
+				{ section.hint && <p className="sec-hint">{ section.hint }</p> }
+				<ProSectionTeaser section={ section } />
+			</div>
+		);
+	}
+
 	return (
 		<div id="elBody" ref={ bodyRef }>
 			{ section.hint && <p className="sec-hint">{ section.hint }</p> }
@@ -248,7 +271,7 @@ export function ElementSlate( {
 						<Icon inner='<rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>' />
 					</span>
 					<span>
-						{ __( 'Message styling is a Pro feature.', 'everest-forms' ) }{ ' ' }
+						{ __( 'This is a Pro feature.', 'everest-forms' ) }{ ' ' }
 						<a href={ UPGRADE_URL } target="_blank" rel="noreferrer">
 							{ __( 'Upgrade to Pro', 'everest-forms' ) }
 						</a>{ ' ' }
@@ -275,6 +298,37 @@ export function ElementSlate( {
 
 			{ renderGroups( enabled ) }
 		</div>
+	);
+}
+
+/**
+ * Locked upgrade teaser — shown wherever a Pro feature is surfaced on a free site (a whole
+ * design section, or the Templates tab). Explains the feature and links to upgrade; the actual
+ * controls/data are not shipped in free and the server rejects any pro value regardless.
+ */
+export function ProTeaser( { title, text }: { title: string; text: string } ) {
+	return (
+		<div className="pro-teaser">
+			<span className="pro-teaser-ic" aria-hidden="true">
+				<Icon inner='<rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>' />
+			</span>
+			<h4 className="pro-teaser-title">{ title }</h4>
+			<p className="pro-teaser-text">{ text }</p>
+			<a className="pro-teaser-btn" href={ UPGRADE_URL } target="_blank" rel="noreferrer">
+				{ __( 'Upgrade to Pro', 'everest-forms' ) }
+			</a>
+		</div>
+	);
+}
+
+/** Section-level teaser (a whole Pro design section opened on free). */
+function ProSectionTeaser( { section }: { section: Section } ) {
+	return (
+		<ProTeaser
+			// translators: %s: section name, e.g. "Messages".
+			title={ ( __( '%s styling is a Pro feature', 'everest-forms' ) as string ).replace( '%s', section.title ) }
+			text={ section.hint }
+		/>
 	);
 }
 
@@ -398,35 +452,50 @@ export function TemplatesPane( {
 		}
 	};
 
+	// Saving your own template is a Pro feature (the server also enforces it on the endpoint).
+	const canCreate = store.proActive;
+
 	return (
 		<div>
-			<div className="tpl-create">
-				<div className="tpl-create-title">{ __( 'Create Style Template', 'everest-forms' ) }</div>
-				<p className="tpl-create-sub">{ __( 'Create a new style template from current styles.', 'everest-forms' ) }</p>
-				<input
-					type="text"
-					className="tpl-create-input"
-					value={ name }
-					placeholder={ __( 'Template Name', 'everest-forms' ) }
-					onChange={ ( e ) => setName( e.target.value ) }
-					onKeyDown={ ( e ) => {
-						if ( e.key === 'Enter' ) {
-							createTemplate();
-						}
-					} }
-				/>
-				<div className="tpl-create-row">
-					{ error && <span className="tpl-create-err">{ error }</span> }
-					<button
-						type="button"
-						className="tpl-create-btn"
-						disabled={ ! name.trim() || busy }
-						onClick={ createTemplate }
-					>
-						{ busy ? __( 'Saving…', 'everest-forms' ) : __( 'Create', 'everest-forms' ) }
-					</button>
+			{ canCreate ? (
+				<div className="tpl-create">
+					<div className="tpl-create-title">{ __( 'Create Style Template', 'everest-forms' ) }</div>
+					<p className="tpl-create-sub">{ __( 'Create a new style template from current styles.', 'everest-forms' ) }</p>
+					<input
+						type="text"
+						className="tpl-create-input"
+						value={ name }
+						placeholder={ __( 'Template Name', 'everest-forms' ) }
+						onChange={ ( e ) => setName( e.target.value ) }
+						onKeyDown={ ( e ) => {
+							if ( e.key === 'Enter' ) {
+								createTemplate();
+							}
+						} }
+					/>
+					<div className="tpl-create-row">
+						{ error && <span className="tpl-create-err">{ error }</span> }
+						<button
+							type="button"
+							className="tpl-create-btn"
+							disabled={ ! name.trim() || busy }
+							onClick={ createTemplate }
+						>
+							{ busy ? __( 'Saving…', 'everest-forms' ) : __( 'Create', 'everest-forms' ) }
+						</button>
+					</div>
 				</div>
-			</div>
+			) : (
+				<a className="tpl-create tpl-create-locked" href={ UPGRADE_URL } target="_blank" rel="noreferrer">
+					<span className="tpl-create-title">
+						<span className="pro-badge">{ __( 'PRO', 'everest-forms' ) }</span>
+						{ __( 'Create Style Template', 'everest-forms' ) }
+					</span>
+					<p className="tpl-create-sub">
+						{ __( 'Save your current styles as a reusable template with Pro.', 'everest-forms' ) }
+					</p>
+				</a>
+			) }
 
 			<div className="block-title">{ __( 'Templates', 'everest-forms' ) }</div>
 			<p className="pane-note">
@@ -434,18 +503,31 @@ export function TemplatesPane( {
 				— { __( 'click to apply (you can always undo).', 'everest-forms' ) }
 			</p>
 			<div className="tpls">
-				{ templates.map( ( tpl ) => (
+				{ templates.map( ( tpl ) => {
+					const locked = !! tpl.is_pro && ! store.proActive;
+					return (
 					<button
 						key={ tpl.id }
 						type="button"
-						className={ 'tpl' + ( tpl.custom ? ' tpl-user' : '' ) }
+						className={ 'tpl' + ( tpl.custom ? ' tpl-user' : '' ) + ( locked ? ' tpl-locked' : '' ) }
 						aria-pressed={ store.template === tpl.id }
 						onMouseEnter={ () => onPreview( flat[ tpl.id ] ) }
 						onMouseLeave={ onClearPreview }
 						onFocus={ () => onPreview( flat[ tpl.id ] ) }
 						onBlur={ onClearPreview }
-						onClick={ () => store.applyTemplate( tpl.id, tpl.tokens, tpl.palette ) }
+						onClick={ () => {
+							if ( locked ) {
+								window.open( UPGRADE_URL, '_blank' );
+								return;
+							}
+							store.applyTemplate( tpl.id, tpl.tokens, tpl.palette );
+						} }
 					>
+						{ locked && (
+							<span className="tpl-pro" aria-label={ __( 'Pro template', 'everest-forms' ) }>
+								{ __( 'PRO', 'everest-forms' ) }
+							</span>
+						) }
 						{ tpl.custom && (
 							<span
 								className="tpl-del"
@@ -474,7 +556,8 @@ export function TemplatesPane( {
 							{ store.template === tpl.id && <span className="on-dot" aria-hidden="true" /> }
 						</span>
 					</button>
-				) ) }
+				);
+				} ) }
 			</div>
 			<p className="tpl-hint">
 				{ __( 'Templates set every element at once. Fine-tune afterwards from the Design tab.', 'everest-forms' ) }

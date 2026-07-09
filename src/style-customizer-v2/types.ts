@@ -89,6 +89,8 @@ export interface Section {
 	hint: string;
 	variants?: string[];
 	states?: string[];
+	/** 'pro' sections render as a locked upgrade teaser in free (see Schema::sections()). */
+	tier?: 'free' | 'pro';
 }
 
 export interface Palette {
@@ -107,6 +109,8 @@ export interface Template {
 	tokens: Record<string, DeviceBag>;
 	/** True for user-created templates (deletable). */
 	custom?: boolean;
+	/** True for Pro-only built-in templates (locked in free). */
+	is_pro?: boolean;
 }
 
 /** The stored style record (matches Sanitizer::sanitize_record()). */

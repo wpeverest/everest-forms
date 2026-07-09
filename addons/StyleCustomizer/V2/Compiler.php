@@ -37,10 +37,17 @@ final class Compiler {
 		$selector = self::wrapper_selector( $form_id );
 		$tokens     = ( isset( $record['tokens'] ) && is_array( $record['tokens'] ) ) ? $record['tokens'] : array();
 		$theme_font = ! empty( $tokens['fonts.theme']['desktop'] );
+		$pro_active = Engine::pro_active();
 
-		// Base (desktop) declarations for every token that maps to a variable.
+		// Base (desktop) declarations for every token that maps to a variable. Pro-tier tokens
+		// only emit when the Pro tier is active — so a form previously styled with Pro renders
+		// its pro styling neutrally (defaults) if Pro is later deactivated, without destroying the
+		// stored values. (Pro tokens are also physically absent from a free schema.)
 		$base = array();
 		foreach ( Schema::tokens() as $token ) {
+			if ( ! $pro_active && isset( $token['tier'] ) && 'pro' === $token['tier'] ) {
+				continue;
+			}
 			$value = self::resolve( $tokens, $token, 'desktop' );
 			$base  = array_merge( $base, self::declarations( $token, $value, $theme_font ) );
 		}
@@ -55,6 +62,9 @@ final class Compiler {
 			$decls = array();
 			foreach ( Schema::tokens() as $token ) {
 				if ( empty( $token['responsive'] ) ) {
+					continue;
+				}
+				if ( ! $pro_active && isset( $token['tier'] ) && 'pro' === $token['tier'] ) {
 					continue;
 				}
 				if ( ! isset( $tokens[ $token['key'] ][ $device ] ) ) {

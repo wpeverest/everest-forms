@@ -52,6 +52,29 @@ final class Engine {
 	}
 
 	/**
+	 * Is the Pro tier active? THE single, server-side authoritative gate for every pro-tier
+	 * feature (pro tokens/palettes/sections). It is what makes the free/pro split
+	 * non-bypassable: the sanitizer, compiler and frontend enqueue all consult it, so a crafted
+	 * REST request can never persist or render pro styling on a site without Pro.
+	 *
+	 * Defaults to whether Everest Forms Pro is loaded (its `EFP_PLUGIN_FILE` constant) — the same
+	 * signal v1 used to gate the submission-message panel. Pro can tighten this to a licence check
+	 * via the `evf_style_v2_pro_active` filter. Note that the primary security guarantee is
+	 * structural (pro tokens/palettes are *defined only in the Pro plugin*, so they are physically
+	 * absent from a free-only site's schema); this gate is the authoritative backstop.
+	 *
+	 * @return bool
+	 */
+	public static function pro_active() {
+		/**
+		 * Filter whether the Style Customizer v2 Pro tier is active.
+		 *
+		 * @param bool $active Default: the Everest Forms Pro plugin is loaded.
+		 */
+		return (bool) apply_filters( 'evf_style_v2_pro_active', defined( 'EFP_PLUGIN_FILE' ) );
+	}
+
+	/**
 	 * Boot the v2 engine. No-op unless enabled; safe to call more than once. Phase 1+ mounts
 	 * the builder tab + REST routes on the `evf_style_v2_booted` action below.
 	 */
