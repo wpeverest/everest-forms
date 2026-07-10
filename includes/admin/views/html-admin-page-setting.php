@@ -202,7 +202,7 @@ if ( ! class_exists( 'WP_Debug_Data' ) ) {
 					}
 				}
 			} else {
-				esc_html_e( 'No plugin lists available.', 'everest-forms' );
+				esc_html_e( 'No Addons lists available.', 'everest-forms' );
 			}
 			?>
 			</td>
