@@ -584,6 +584,17 @@ class EVF_Fm_Fluentforms extends EVF_Admin_Form_Migrator {
 			$form['settings'] = array_merge( $form['settings'], $quiz_settings );
 		}
 
+		// FF supports a per-form currency override; EVF's currency is a single global
+		// site setting, so a form-specific currency can't be carried over — flag it
+		// rather than silently changing the site-wide currency during an import.
+		$payment_settings = $this->get_form_meta( $ff_form_id, '_payment_settings' );
+		$ff_currency      = isset( $payment_settings['currency'] ) ? $payment_settings['currency'] : '';
+		$evf_currency     = get_option( 'everest_forms_currency', 'USD' );
+		if ( $ff_currency && $ff_currency !== $evf_currency ) {
+			/* translators: 1: Fluent Forms currency code, 2: Everest Forms' current global currency code. */
+			$upgrade_omit[] = sprintf( esc_html__( 'Form currency (%1$s; Everest Forms uses a single site-wide currency, currently %2$s)', 'everest-forms' ), $ff_currency, $evf_currency );
+		}
+
 		return $form;
 	}
 
@@ -833,6 +844,7 @@ class EVF_Fm_Fluentforms extends EVF_Admin_Form_Migrator {
 			$quiz_settings = $this->get_ff_quiz_settings( $ff_form_id );
 
 			$this->process_fields( $form, $ff_fields, $unsupported, $upgrade_plan, $upgrade_omit, $quiz_settings );
+			$this->resolve_payment_field_references( $form, $upgrade_omit );
 
 			$form = apply_filters( 'evf_fm_' . $this->slug . '_form_after_fields_mapping', $form, $ff_form_id, $ff_form );
 			$form = apply_filters( 'evf_fm_' . $this->slug . '_form_after_settings_mapping', $this->get_form_settings( $form, $ff_form_id, $upgrade_omit ), $ff_form_id, $ff_form );
@@ -1484,17 +1496,241 @@ class EVF_Fm_Fluentforms extends EVF_Admin_Form_Migrator {
 				);
 				break;
 
+			// ── Payment: Custom amount (user-defined) ───────────────────────
+			case 'custom_payment_component':
+				$form['structure'][ 'row_' . $form['form_field_id'] ]['grid_1'][] = $field_id;
+				$form['form_fields'][ $field_id ] = array(
+					'id'                             => $field_id,
+					'type'                           => 'payment-single',
+					'label'                          => $label,
+					'meta-key'                       => 'payment-single-' . $ff_name,
+					'description'                    => $description,
+					'item_price'                     => '',
+					'item_type'                      => 'user',
+					'item_format'                    => '',
+					'required'                       => $required,
+					'required_field_message_setting' => 'global',
+					'required-field-message'         => '',
+					'placeholder'                    => $placeholder,
+					'label_hide'                     => $label_hide,
+					'css'                            => $css_class,
+					'ff_name'                        => $ff_name,
+				);
+				break;
+
+			// ── Payment: Single / Multi Item ────────────────────────────────
+			case 'multi_payment_component':
+				$payment_type = isset( $attributes['type'] ) ? $attributes['type'] : 'single';
+
+				// FF's priced dropdown has no EVF equivalent (no priced-select field type).
+				if ( 'select' === $payment_type ) {
+					/* translators: %s: field label. */
+					$upgrade_omit[] = sprintf( esc_html__( '%s (priced dropdown items have no Everest Forms equivalent)', 'everest-forms' ), $label ?: $element );
+					break;
+				}
+
+				if ( 'single' === $payment_type ) {
+					$form['structure'][ 'row_' . $form['form_field_id'] ]['grid_1'][] = $field_id;
+					$form['form_fields'][ $field_id ] = array(
+						'id'                             => $field_id,
+						'type'                           => 'payment-single',
+						'label'                          => $label,
+						'meta-key'                       => 'payment-single-' . $ff_name,
+						'description'                    => $description,
+						'item_price'                     => isset( $attributes['value'] ) ? $attributes['value'] : '',
+						'item_type'                      => 'single',
+						'item_format'                    => '',
+						'required'                       => $required,
+						'required_field_message_setting' => 'global',
+						'required-field-message'         => '',
+						'placeholder'                    => $placeholder,
+						'label_hide'                     => $label_hide,
+						'css'                            => $css_class,
+						'ff_name'                        => $ff_name,
+					);
+					break;
+				}
+
+				$pricing_options = isset( $settings['pricing_options'] ) ? $settings['pricing_options'] : array();
+				$evf_choices     = array();
+				foreach ( $pricing_options as $option ) {
+					$evf_choices[] = array(
+						'label' => isset( $option['label'] ) ? $option['label'] : '',
+						'value' => isset( $option['value'] ) ? $option['value'] : '',
+						'image' => isset( $option['image'] ) ? $option['image'] : '',
+					);
+				}
+
+				$is_checkbox = 'checkbox' === $payment_type;
+
+				$form['structure'][ 'row_' . $form['form_field_id'] ]['grid_1'][] = $field_id;
+				$form['form_fields'][ $field_id ] = array(
+					'id'                             => $field_id,
+					'type'                           => $is_checkbox ? 'payment-checkbox' : 'payment-multiple',
+					'label'                          => $label,
+					'meta-key'                       => ( $is_checkbox ? 'payment-checkbox-' : 'payment-multiple-' ) . $ff_name,
+					'choices'                        => $evf_choices,
+					'description'                    => $description,
+					'label_hide'                     => $label_hide,
+					'required'                       => $required,
+					'required_field_message_setting' => 'global',
+					'required-field-message'         => '',
+					'input_columns'                  => '',
+					'css'                            => $css_class,
+					'ff_name'                        => $ff_name,
+				);
+				break;
+
+			// ── Payment: Quantity ────────────────────────────────────────────
+			case 'item_quantity_component':
+				$target_product = isset( $settings['target_product'] ) ? $settings['target_product'] : '';
+
+				$form['structure'][ 'row_' . $form['form_field_id'] ]['grid_1'][] = $field_id;
+				$form['form_fields'][ $field_id ] = array(
+					'id'                             => $field_id,
+					'type'                           => 'payment-quantity',
+					'label'                          => $label,
+					'meta-key'                       => 'payment-quantity-' . $ff_name,
+					'description'                    => $description,
+					// Resolved to the target field's EVF id by resolve_payment_field_references().
+					'map_field'                      => $target_product ? '__ff_target__' . $target_product : '',
+					'required'                       => $required,
+					'required_field_message_setting' => 'global',
+					'required-field-message'         => '',
+					'placeholder'                    => $placeholder,
+					'label_hide'                     => $label_hide,
+					'css'                            => $css_class,
+					'ff_name'                        => $ff_name,
+				);
+				break;
+
+			// ── Payment: Gateway selector ────────────────────────────────────
+			case 'payment_method':
+				$ff_methods = isset( $settings['payment_methods'] ) ? $settings['payment_methods'] : array();
+
+				$form['structure'][ 'row_' . $form['form_field_id'] ]['grid_1'][] = $field_id;
+				$form['form_fields'][ $field_id ] = array(
+					'id'               => $field_id,
+					'type'             => 'payment-gateway-selector',
+					'label'            => $label,
+					'meta-key'         => 'payment-gateway-selector-' . $ff_name,
+					'description'      => $description,
+					'allowed_gateways' => $this->map_payment_gateways( $ff_methods, $upgrade_omit ),
+					'label_hide'       => $label_hide,
+					'css'              => $css_class,
+					'ff_name'          => $ff_name,
+				);
+				break;
+
+			// ── Payment: Coupon ──────────────────────────────────────────────
+			case 'payment_coupon':
+				$form['structure'][ 'row_' . $form['form_field_id'] ]['grid_1'][] = $field_id;
+				$form['form_fields'][ $field_id ] = array(
+					'id'                             => $field_id,
+					'type'                           => 'payment-coupon',
+					'label'                          => $label,
+					'meta-key'                       => 'payment-coupon-' . $ff_name,
+					'description'                    => $description,
+					// FF coupons discount the whole cart rather than one field, so target the order Total.
+					'map_field'                      => '',
+					'button_text'                    => isset( $settings['suffix_label'] ) ? $settings['suffix_label'] : '',
+					'invalid_message'                => '',
+					'discount_message'               => '',
+					'required'                       => $required,
+					'required_field_message_setting' => 'global',
+					'required-field-message'         => '',
+					'placeholder'                    => $placeholder,
+					'label_hide'                     => $label_hide,
+					'css'                            => $css_class,
+					'ff_name'                        => $ff_name,
+				);
+
+				if ( ! is_plugin_active( 'everest-forms-coupons/everest-forms-coupons.php' ) ) {
+					/* translators: %s: field label. */
+					$upgrade_omit[] = sprintf( esc_html__( '%s (requires the Everest Forms Coupons add-on to validate codes)', 'everest-forms' ), $label ?: $element );
+				}
+				break;
+
 			// ── Unsupported fields ─────────────────────────────────────────
 			case 'net_promoter_score':
 			case 'tabular_grid':
 			case 'chained_select':
 			case 'repeater_field':
 			case 'quiz_score':
+			case 'payment_summary_component':
+			case 'subscription_payment_component':
 				$unsupported[] = $label ?: $element;
 				break;
 
 			default:
 				break;
+		}
+	}
+
+	/**
+	 * Translate FF's enabled payment methods to EVF's gateway-selector allowlist.
+	 *
+	 * EVF's payment-gateway-selector field only knows about its own gateway
+	 * add-ons (stripe, paypal, square, mollie, razorpay, authorize_net); any FF
+	 * method outside that set (e.g. paystack, mollie's FF equivalent naming,
+	 * offline) has no home here and is flagged instead of silently dropped.
+	 *
+	 * @param array $ff_methods   FF field's settings.payment_methods array.
+	 * @param array $upgrade_omit No-equivalent field labels (passed by reference).
+	 * @return array List of EVF gateway slugs to allow.
+	 */
+	private function map_payment_gateways( $ff_methods, &$upgrade_omit ) {
+		$evf_gateways = array( 'stripe', 'paypal', 'square', 'mollie', 'razorpay', 'authorize_net' );
+		$allowed      = array();
+
+		foreach ( $ff_methods as $slug => $method ) {
+			if ( empty( $method['enabled'] ) || 'yes' !== $method['enabled'] ) {
+				continue;
+			}
+
+			if ( in_array( $slug, $evf_gateways, true ) ) {
+				$allowed[] = $slug;
+			} else {
+				/* translators: %s: payment method slug. */
+				$upgrade_omit[] = sprintf( esc_html__( '"%s" payment method (no Everest Forms gateway equivalent)', 'everest-forms' ), $slug );
+			}
+		}
+
+		return $allowed;
+	}
+
+	/**
+	 * Resolve the placeholder 'map_field' references left by map_field() for
+	 * payment fields that target another field by FF name (e.g. Item Quantity's
+	 * target_product), now that every field's EVF id is known.
+	 *
+	 * @param array $form         EVF form array (passed by reference).
+	 * @param array $upgrade_omit No-equivalent field labels (passed by reference).
+	 */
+	private function resolve_payment_field_references( &$form, &$upgrade_omit ) {
+		$prefix = '__ff_target__';
+
+		foreach ( $form['form_fields'] as $field_id => &$field ) {
+			if ( empty( $field['map_field'] ) || 0 !== strpos( $field['map_field'], $prefix ) ) {
+				continue;
+			}
+
+			$target_name = substr( $field['map_field'], strlen( $prefix ) );
+			$resolved    = '';
+
+			foreach ( $form['form_fields'] as $candidate_id => $candidate ) {
+				if ( isset( $candidate['ff_name'] ) && $candidate['ff_name'] === $target_name ) {
+					$resolved = $candidate_id;
+					break;
+				}
+			}
+
+			$field['map_field'] = $resolved;
+
+			if ( ! $resolved ) {
+				/* translators: %s: field label. */
+				$upgrade_omit[] = sprintf( esc_html__( '%s (could not resolve its linked product field)', 'everest-forms' ), $field['label'] ?: $field['type'] );
+			}
 		}
 	}
 
