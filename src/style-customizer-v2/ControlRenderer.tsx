@@ -144,7 +144,7 @@ function ControlShell( {
 							ref={ badgeRef }
 							type="button"
 							className={ 'dev-badge' + ( override ? ' override' : '' ) }
-							aria-label={ __( 'Responsive options', 'everest-forms' ) }
+							aria-label={ token.label + ' — ' + __( 'responsive options', 'everest-forms' ) }
 							onClick={ () => badgeRef.current && onBadgeClick( token, badgeRef.current ) }
 						>
 							<Svg inner={ DEVICE_ICONS[ store.device ] } />
@@ -214,6 +214,7 @@ function SliderControl( props: ControlProps ) {
 						step={ token.step || 1 }
 						value={ value }
 						aria-label={ token.label }
+						aria-valuetext={ `${ value }${ unit }` }
 						onChange={ ( e ) => commit( Number( e.target.value ), true ) }
 					/>
 					<span
@@ -319,6 +320,13 @@ const SIDE_ABBR = [ 'T', 'R', 'B', 'L' ];
 const CORNER_ABBR = [ 'TL', 'TR', 'BR', 'BL' ];
 const BOX_KEYS: Array< keyof BoxValue > = [ 'top', 'right', 'bottom', 'left' ];
 
+/** Are all four sides currently equal? Used to seed "link sides" from the real stored value
+ *  instead of always defaulting to true — otherwise the first edit on an already-asymmetric
+ *  box (e.g. a migrated `6/12/6/12` padding) silently flattens all four sides to match. */
+function allSidesEqual( v: BoxValue ): boolean {
+	return v.top === v.right && v.right === v.bottom && v.bottom === v.left;
+}
+
 function Box4Control( props: ControlProps ) {
 	const { token, store } = props;
 	const value = clone( store.resolve( token.key ) ) as BoxValue;
@@ -328,7 +336,7 @@ function Box4Control( props: ControlProps ) {
 		React.useRef< HTMLInputElement >( null ),
 		React.useRef< HTMLInputElement >( null ),
 	];
-	const [ linked, setLinked ] = React.useState( true );
+	const [ linked, setLinked ] = React.useState( () => allSidesEqual( value ) );
 
 	const min = token.key.indexOf( 'margin' ) !== -1 ? -1000 : 0;
 	const max = token.max ?? 1000;
@@ -381,7 +389,7 @@ function Box4Control( props: ControlProps ) {
 								ref={ cellRefs[ i ] }
 								inputMode="numeric"
 								defaultValue={ String( value[ BOX_KEYS[ i ] ] ?? 0 ) }
-								aria-label={ labels[ i ] }
+								aria-label={ token.label + ' ' + labels[ i ] }
 								onInput={ ( e ) => commit( i, parseInt( ( e.target as HTMLInputElement ).value, 10 ) ) }
 								onBlur={ ( e ) => {
 									( e.target as HTMLInputElement ).value = String(
@@ -406,14 +414,22 @@ function Box4Control( props: ControlProps ) {
 					type="button"
 					className="link"
 					aria-pressed={ linked }
-					aria-label={ __( 'Link sides', 'everest-forms' ) }
+					aria-label={ token.label + ' — ' + __( 'link sides', 'everest-forms' ) }
 					title={ __( 'Link sides', 'everest-forms' ) }
 					onClick={ () => setLinked( ! linked ) }
 				>
 					<Svg inner='<path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/>' />
 				</button>
 				{ unit && (
-					<button type="button" className="unit-tgl" aria-label={ __( 'Unit', 'everest-forms' ) } onClick={ toggleUnit }>
+					<button
+						type="button"
+						className="unit-tgl"
+						aria-label={
+							token.label + ' — ' + __( 'unit', 'everest-forms' ) + ': ' + unit + '. ' +
+							__( 'Click to change.', 'everest-forms' )
+						}
+						onClick={ toggleUnit }
+					>
 						{ unit }
 					</button>
 				) }

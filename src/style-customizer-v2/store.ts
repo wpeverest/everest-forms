@@ -65,6 +65,10 @@ class StyleStore {
 	applyThemeStyle = true;
 	baseUpdatedAt = 0;
 
+	/** Optional UI hook: fired when a manual edit silently detaches the active palette link (see
+	 *  `setTokenValue`) — App.tsx wires this to a toast so the detach is never silent. */
+	onPaletteUnlinked: ( ( paletteName: string ) => void ) | null = null;
+
 	// Bookkeeping.
 	affected: string[] | null = null;
 	private saved: Snapshot;
@@ -226,6 +230,10 @@ class StyleStore {
 		return this.undoStack.length > 0;
 	}
 
+	canRedo(): boolean {
+		return this.redoStack.length > 0;
+	}
+
 	undo() {
 		if ( ! this.undoStack.length ) {
 			return;
@@ -271,9 +279,14 @@ class StyleStore {
 		}
 		this.tokens[ key ][ this.targetDevice( token ) ] = value;
 
-		// A manual edit to a palette-driven token breaks the "active palette" link.
+		// A manual edit to a palette-driven token breaks the "active palette" link — tell the UI
+		// so this is never a silent detach (see `onPaletteUnlinked`'s docblock).
 		if ( this.palette && this.paletteDrivenKeys().has( key ) ) {
+			const detached = this.palettes.find( ( p ) => p.id === this.palette );
 			this.palette = '';
+			if ( detached && this.onPaletteUnlinked ) {
+				this.onPaletteUnlinked( detached.name );
+			}
 		}
 
 		// Toggling the theme font re-derives the family variable too.

@@ -13,21 +13,48 @@
 	--ui-ink: #23282d;
 	--ui-ink-2: #383838;
 	--ui-ink-3: #6d6d6d;
-	--ui-icon: #8a90a2;
+	--ui-icon: #6d6d6d;
 	--ui-line: #e1e1e1;
 	--ui-line-2: #edeff7;
 	--ui-input-border: #cdd0d8;
 	--ui-bg: #f0f0f1;
+	--ui-bg-subtle: #f6f7f9;
+	--ui-bg-hover: #fafbfd;
 	--ui-purple: #7545bb;
 	--ui-purple-600: #5317aa;
 	--ui-purple-50: #f6f3fa;
 	--ui-purple-100: #e9e2f3;
 	--ui-red: #dc2626;
+	--ui-red-50: #fef2f2;
 	--ui-green: #15803d;
+	--ui-green-50: #f0fdf4;
 	--ui-amber: #b45309;
+	--ui-amber-50: #fffbeb;
+	--ui-amber-100: #fde68a;
+	--ui-amber-700: #92400e;
+
+	/* One elevation system, three tiers — every floating/raised surface picks one of these
+	   instead of hand-typing its own shadow. */
+	--ui-shadow-sm: 0 1px 2px rgba(20, 23, 40, .06);
 	--ui-shadow: 0 1px 2px rgba(20, 23, 40, .04), 0 12px 28px -8px rgba(20, 23, 40, .08);
-	--ui-shadow-sm: 0 1px 2px rgba(20, 23, 40, .08);
+	--ui-shadow-lg: 0 2px 4px rgba(20, 23, 40, .06), 0 20px 44px -14px rgba(20, 23, 40, .22);
 	--ui-focus: 0 0 0 1px #fff, 0 0 0 3px var(--ui-purple);
+	--ui-focus-soft: 0 0 0 2px var(--ui-purple-50);
+
+	/* Border-radius scale — sm for chips/badges, md for inputs/controls, lg for cards. The
+	   outer `.preview` frame's 13px is a deliberate exception (matches the builder's own
+	   `.everest-forms-preview-wrap` chrome exactly) and stays a literal value, not a token. */
+	--ui-radius-sm: 4px;
+	--ui-radius-md: 6px;
+	--ui-radius-lg: 9px;
+
+	/* Type scale (~1.15–1.2×) — every panel font-size should be one of these, not a one-off. */
+	--ui-fs-2xs: 10px;
+	--ui-fs-xs: 11px;
+	--ui-fs-sm: 12.5px;
+	--ui-fs-base: 14px;
+	--ui-fs-md: 16px;
+	--ui-fs-lg: 19px;
 
 	/* The builder content area holds the preview flush; the sidebar keeps its native chrome. */
 	.everest-forms-panel-content {
@@ -50,6 +77,15 @@
 		outline: none;
 		box-shadow: var(--ui-focus);
 		border-radius: 5px;
+	}
+
+	/* Rows/cards that draw their own border+radius but don't otherwise define a focus-visible
+	   rule (unlike `.tpl`, `.dsel-trigger`, etc., which already own theirs) — keep their own
+	   radius instead of falling through to the generic 5px-radius rule above. */
+	.elrow:focus-visible,
+	.pal-card:focus-visible {
+		outline: none;
+		box-shadow: var(--ui-focus-soft);
 	}
 }
 
@@ -95,10 +131,57 @@
    in admin.scss so the two tab bars are visually identical across the plugin. */
 #everest-forms-panel-style .subtabs {
 	display: flex;
-	flex-wrap: wrap;
+	align-items: stretch;
 	padding: 0;
 	gap: 0;
 	flex: none;
+	background: var(--ui-bg-subtle);
+}
+
+#everest-forms-panel-style .subtabs-main {
+	display: flex;
+	flex: 1;
+	min-width: 0;
+}
+
+/* Undo/redo: a small, always-visible icon pair (in addition to the Ctrl+Z/Y shortcut) — global
+   across Design/Templates/Custom CSS, so it lives beside the tabs rather than inside any one of
+   them. Pinned to the same row so it never competes with the panel's vertical space. */
+#everest-forms-panel-style .subtabs-actions {
+	display: flex;
+	align-items: center;
+	gap: 2px;
+	flex: none;
+	padding: 0 6px;
+}
+
+#everest-forms-panel-style .uxbtn {
+	width: 28px;
+	height: 28px;
+	display: grid;
+	place-items: center;
+	border: 0;
+	background: none;
+	border-radius: var(--ui-radius-sm);
+	color: var(--ui-ink-3);
+	cursor: pointer;
+	flex: none;
+	transition: background .12s, color .12s;
+
+	svg {
+		width: 15px;
+		height: 15px;
+	}
+
+	&:hover:not(:disabled) {
+		background: var(--ui-bg-hover);
+		color: var(--ui-ink);
+	}
+
+	&:disabled {
+		opacity: .35;
+		cursor: default;
+	}
 }
 
 #everest-forms-panel-style .subtab {
@@ -106,11 +189,11 @@
 	display: block;
 	text-align: center;
 	padding: 12px 4px 16px;
-	font-size: 14px;
+	font-size: var(--ui-fs-base);
 	line-height: 150%;
 	font-weight: 500;
 	color: var(--ui-ink-2);
-	background: #f6f7f9;
+	background: var(--ui-bg-subtle);
 	border: 0;
 	border-top: 3px solid transparent;
 	cursor: pointer;
@@ -173,7 +256,7 @@
 	.ic {
 		width: 27px;
 		height: 27px;
-		border-radius: 6px;
+		border-radius: var(--ui-radius-md);
 		background: var(--ui-purple-50);
 		display: grid;
 		place-items: center;
@@ -195,7 +278,7 @@
 	gap: 8px;
 	background: var(--ui-purple-50);
 	border: 1px solid var(--ui-purple-100);
-	border-radius: 6px;
+	border-radius: var(--ui-radius-md);
 	padding: 7px 10px;
 	font-size: 11.5px;
 	color: var(--ui-ink-2);
@@ -208,7 +291,7 @@
 		margin-left: auto;
 		border: 1px solid var(--ui-input-border);
 		background: #fff;
-		border-radius: 4px;
+		border-radius: var(--ui-radius-sm);
 		padding: 4px 9px;
 		font-size: 11px;
 		font-weight: 600;
@@ -226,9 +309,27 @@
 	background: #fff;
 }
 
+/* Directional motion for the panel's single most-used navigation gesture — list ↔ slate
+   drill-down, and switching sub-tabs — instead of an instant jump-cut. Transform/opacity only
+   (60fps-safe); disabled globally under prefers-reduced-motion (see the top of this file). */
+#everest-forms-panel-style .slate-anim {
+	animation: scv2slatein .16s ease-out;
+}
+
+@keyframes scv2slatein {
+	from {
+		opacity: 0;
+		transform: translateX(10px);
+	}
+	to {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+
 /* design list */
 #everest-forms-panel-style .block-title {
-	font-size: 11px;
+	font-size: var(--ui-fs-xs);
 	font-weight: 600;
 	letter-spacing: .04em;
 	text-transform: uppercase;
@@ -240,11 +341,29 @@
 	}
 }
 
+/* One real heading size for slate/section titles — nothing else in the panel exceeds it, so
+   the panel has an actual size hierarchy instead of everything sitting at 11-14px. */
+#everest-forms-panel-style .slate-title {
+	font-size: var(--ui-fs-lg);
+	font-weight: 600;
+	color: var(--ui-ink);
+	margin: 0;
+	line-height: 1.3;
+}
+
+#everest-forms-panel-style .slate-title-row {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 8px;
+	margin: 2px 2px 4px;
+}
+
 #everest-forms-panel-style .hintline {
 	display: flex;
 	align-items: flex-start;
 	gap: 7px;
-	font-size: 11.5px;
+	font-size: var(--ui-fs-xs);
 	color: var(--ui-ink-3);
 	line-height: 1.5;
 	margin: 0 2px 10px;
@@ -260,6 +379,24 @@
 
 /* Secondary form-wide setting, pinned to the bottom of the Design list: muted so it never
    competes with the palette + elements above it. */
+#everest-forms-panel-style .reset-all-link {
+	display: block;
+	margin: 14px auto 2px;
+	border: 0;
+	background: none;
+	color: var(--ui-ink-3);
+	font-size: var(--ui-fs-xs);
+	text-decoration: underline;
+	text-decoration-color: transparent;
+	cursor: pointer;
+	transition: color .12s, text-decoration-color .12s;
+
+	&:hover {
+		color: var(--ui-red);
+		text-decoration-color: currentColor;
+	}
+}
+
 #everest-forms-panel-style .theme-style-row {
 	display: flex;
 	align-items: center;
@@ -309,7 +446,7 @@
 	gap: 8px;
 	width: 100%;
 	border: 1px solid var(--ui-input-border);
-	border-radius: 6px;
+	border-radius: var(--ui-radius-md);
 	background: #fff;
 	padding: 8px 10px;
 	cursor: pointer;
@@ -329,7 +466,7 @@
 	&[aria-expanded="true"] {
 		outline: none;
 		border-color: var(--ui-purple);
-		box-shadow: 0 0 0 2px var(--ui-purple-50);
+		box-shadow: var(--ui-focus-soft);
 	}
 
 	&:disabled {
@@ -364,9 +501,11 @@
 	right: 0;
 	background: #fff;
 	border: 1px solid var(--ui-line);
-	border-radius: 6px;
+	border-radius: var(--ui-radius-md);
 	box-shadow: var(--ui-shadow);
 	overflow: hidden;
+	transform-origin: top center;
+	animation: scv2popin .12s ease-out;
 }
 
 #everest-forms-panel-style .dsel-search-wrap {
@@ -426,7 +565,7 @@
 	padding: 7px 9px;
 	font-size: 12.5px;
 	color: var(--ui-ink-2);
-	border-radius: 4px;
+	border-radius: var(--ui-radius-sm);
 	cursor: pointer;
 
 	&:hover,
@@ -467,7 +606,7 @@
 	gap: 10px;
 	width: 100%;
 	border: 1px solid var(--ui-input-border);
-	border-radius: 4px;
+	border-radius: var(--ui-radius-sm);
 	background: #fff;
 	padding: 8px 12px;
 	cursor: pointer;
@@ -480,7 +619,7 @@
 
 	&[aria-expanded="true"] {
 		border-color: var(--ui-purple);
-		box-shadow: 0 0 0 2px var(--ui-purple-50);
+		box-shadow: var(--ui-focus-soft);
 	}
 
 	.sw {
@@ -518,14 +657,14 @@
 	}
 
 	.chev {
-		width: 22px;
-		height: 22px;
-		border-radius: 4px;
-		background: #f6f7fa;
+		width: 24px;
+		height: 24px;
+		border-radius: var(--ui-radius-sm);
+		background: var(--ui-bg-subtle);
 		color: var(--ui-ink-3);
 		display: grid;
 		place-items: center;
-		transition: background .15s, color .15s;
+		transition: background .15s, color .15s, transform .15s;
 		flex: none;
 		font-size: 13px;
 
@@ -563,7 +702,7 @@
 	gap: 11px;
 	width: 100%;
 	border: 1px solid var(--ui-line);
-	border-radius: 4px;
+	border-radius: var(--ui-radius-sm);
 	background: #fff;
 	padding: 11px 12px;
 	cursor: pointer;
@@ -578,7 +717,7 @@
 	.ic {
 		width: 28px;
 		height: 28px;
-		border-radius: 6px;
+		border-radius: var(--ui-radius-md);
 		background: var(--ui-purple-50);
 		color: var(--ui-purple);
 		display: grid;
@@ -625,8 +764,14 @@
 
 	.chev {
 		color: var(--ui-icon);
-		font-size: 16px;
 		flex: none;
+		display: grid;
+		place-items: center;
+
+		svg {
+			width: 16px;
+			height: 16px;
+		}
 	}
 }
 
@@ -635,7 +780,7 @@
 	display: flex;
 	gap: 4px;
 	margin: 4px 0 16px;
-	background: #f2f3f7;
+	background: var(--ui-bg-subtle);
 	padding: 3px;
 	border-radius: 8px;
 
@@ -644,7 +789,7 @@
 		border: 0;
 		background: none;
 		padding: 6px 2px;
-		border-radius: 6px;
+		border-radius: var(--ui-radius-md);
 		font-size: 11px;
 		font-weight: 600;
 		color: var(--ui-ink-2);
@@ -672,6 +817,72 @@
 	line-height: 1.6;
 }
 
+/* In-slate filter — only shown on the two large sections (Text, Messages: ~27-28 controls
+   across 3-4 tabs) where a flat scroll is genuinely long. A much smaller re-add than the global
+   command-palette search that was deliberately cut (see plan §17.1/§18.5). */
+#everest-forms-panel-style .slate-filter {
+	position: relative;
+	margin-bottom: 14px;
+
+	svg {
+		position: absolute;
+		left: 10px;
+		top: 50%;
+		transform: translateY(-50%);
+		width: 14px;
+		height: 14px;
+		color: var(--ui-ink-3);
+		pointer-events: none;
+	}
+
+	input {
+		width: 100%;
+		border: 1px solid var(--ui-input-border);
+		border-radius: var(--ui-radius-md);
+		padding: 8px 10px 8px 32px;
+		font-size: var(--ui-fs-sm);
+		color: var(--ui-ink);
+		background: #fff;
+		outline: none;
+		transition: border-color .12s, box-shadow .12s;
+
+		&:focus {
+			border-color: var(--ui-purple);
+			box-shadow: var(--ui-focus-soft);
+		}
+	}
+}
+
+#everest-forms-panel-style .slate-empty {
+	padding: 20px 10px;
+	text-align: center;
+	color: var(--ui-ink-3);
+	font-size: var(--ui-fs-sm);
+}
+
+/* Empty state (e.g. zero saved templates yet) — a quiet dashed placeholder rather than the
+   section silently not rendering, so the feature reads as legitimately empty, not missing. */
+#everest-forms-panel-style .empty-state {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+	gap: 6px;
+	padding: 22px 16px;
+	border: 1px dashed var(--ui-line);
+	border-radius: var(--ui-radius-lg);
+	color: var(--ui-ink-3);
+	font-size: var(--ui-fs-sm);
+	margin-bottom: 16px;
+
+	svg {
+		width: 20px;
+		height: 20px;
+		color: var(--ui-icon);
+		margin-bottom: 2px;
+	}
+}
+
 /* grouped cards — a quiet, flat surface (thin border + a whisper of shadow, not a heavy card)
    that reads as one consistent system across every section (Form, Text, Inputs, Choices, …). */
 #everest-forms-panel-style .grp {
@@ -689,9 +900,9 @@
 #everest-forms-panel-style #elBody .grp {
 	background: #fff;
 	border: 1px solid var(--ui-line);
-	border-radius: 8px;
+	border-radius: var(--ui-radius-lg);
 	padding: 16px;
-	box-shadow: 0 1px 2px rgba(20, 23, 40, .03);
+	box-shadow: var(--ui-shadow-sm);
 }
 
 #everest-forms-panel-style .grp-h {
@@ -710,21 +921,8 @@
 /* controls */
 #everest-forms-panel-style .ctrl {
 	margin-bottom: 16px;
-	border-radius: 6px;
+	border-radius: var(--ui-radius-md);
 	position: relative;
-}
-
-#everest-forms-panel-style .ctrl.flash {
-	animation: scv2flash 1.4s cubic-bezier(.22, .61, .36, 1);
-}
-
-@keyframes scv2flash {
-	0% {
-		background: var(--ui-purple-50);
-	}
-	100% {
-		background: transparent;
-	}
 }
 
 /* Opening a slate by clicking an element in the live preview: a soft, quick background wash
@@ -783,17 +981,17 @@
 	font-size: 10px;
 	color: var(--ui-ink-3);
 	border: 1px solid var(--ui-line);
-	border-radius: 5px;
+	border-radius: var(--ui-radius-sm);
 	padding: 1px 5px;
-	background: #f6f7fa;
+	background: var(--ui-bg-subtle);
 }
 
 #everest-forms-panel-style .prop-reset {
-	width: 22px;
-	height: 22px;
+	width: 24px;
+	height: 24px;
 	border: 0;
 	background: none;
-	border-radius: 6px;
+	border-radius: var(--ui-radius-md);
 	color: var(--ui-icon);
 	cursor: pointer;
 	display: none;
@@ -817,10 +1015,10 @@
 }
 
 #everest-forms-panel-style .dev-badge {
-	width: 24px;
-	height: 22px;
+	width: 26px;
+	height: 24px;
 	border: 1px solid var(--ui-line);
-	border-radius: 6px;
+	border-radius: var(--ui-radius-md);
 	background: #fff;
 	display: grid;
 	place-items: center;
@@ -882,7 +1080,7 @@
 		font-weight: 600;
 		line-height: 1;
 		padding: 4px 7px;
-		border-radius: 4px;
+		border-radius: var(--ui-radius-sm);
 		white-space: nowrap;
 		pointer-events: none;
 		opacity: 0;
@@ -978,14 +1176,14 @@
 	width: 62px;
 	display: flex;
 	border: 1px solid var(--ui-input-border);
-	border-radius: 6px;
+	border-radius: var(--ui-radius-md);
 	overflow: hidden;
 	flex: none;
 	transition: border-color .12s, box-shadow .12s;
 
 	&:focus-within {
 		border-color: var(--ui-purple);
-		box-shadow: 0 0 0 2px var(--ui-purple-50);
+		box-shadow: var(--ui-focus-soft);
 	}
 
 	input {
@@ -1009,7 +1207,7 @@
 	}
 
 	span {
-		background: #f6f7fa;
+		background: var(--ui-bg-subtle);
 		border-left: 1px solid var(--ui-line);
 		padding: 6px 5px;
 		color: var(--ui-ink-3);
@@ -1024,7 +1222,7 @@
 	align-items: center;
 	gap: 8px;
 	border: 1px solid var(--ui-input-border);
-	border-radius: 6px;
+	border-radius: var(--ui-radius-md);
 	padding: 5px 8px;
 	transition: border-color .12s, box-shadow .12s;
 
@@ -1032,7 +1230,7 @@
 	   focused — otherwise typing a hex value has no visible focus feedback at all. */
 	&:focus-within {
 		border-color: var(--ui-purple);
-		box-shadow: 0 0 0 2px var(--ui-purple-50);
+		box-shadow: var(--ui-focus-soft);
 	}
 
 	input[type="color"] {
@@ -1042,7 +1240,7 @@
 		background: none;
 		padding: 0;
 		cursor: pointer;
-		border-radius: 4px;
+		border-radius: var(--ui-radius-sm);
 		flex: none;
 	}
 
@@ -1107,7 +1305,7 @@
 		width: 30px;
 		height: 30px;
 		border: 1px solid var(--ui-input-border);
-		border-radius: 6px;
+		border-radius: var(--ui-radius-md);
 		background: #fff;
 		cursor: pointer;
 		display: grid;
@@ -1132,8 +1330,8 @@
 		height: 30px;
 		min-width: 34px;
 		border: 1px solid var(--ui-input-border);
-		border-radius: 6px;
-		background: #f6f7fa;
+		border-radius: var(--ui-radius-md);
+		background: var(--ui-bg-subtle);
 		cursor: pointer;
 		color: var(--ui-ink-2);
 		font-size: 11px;
@@ -1159,7 +1357,7 @@
 		height: 32px;
 		border: 1px solid var(--ui-input-border);
 		background: #fff;
-		border-radius: 6px;
+		border-radius: var(--ui-radius-md);
 		cursor: pointer;
 		color: var(--ui-ink-2);
 		font-size: 12px;
@@ -1203,7 +1401,7 @@
 		border-radius: 50%;
 		background: #fff;
 		transition: .2s;
-		box-shadow: 0 1px 3px rgba(0, 0, 0, .2);
+		box-shadow: 0 1px 3px rgba(20, 23, 40, .2);
 	}
 
 	&[aria-checked="true"] {
@@ -1224,8 +1422,8 @@
 #everest-forms-panel-style .mediabtn {
 	flex: 1;
 	border: 1px dashed var(--ui-input-border);
-	background: #fbfbfd;
-	border-radius: 6px;
+	background: var(--ui-bg-subtle);
+	border-radius: var(--ui-radius-md);
 	padding: 9px;
 	font-size: 12px;
 	font-weight: 600;
@@ -1246,7 +1444,7 @@
 	place-items: center;
 	border: 1px solid var(--ui-input-border);
 	background: #fff;
-	border-radius: 6px;
+	border-radius: var(--ui-radius-md);
 	color: var(--ui-ink-2);
 	cursor: pointer;
 	flex: none;
@@ -1268,9 +1466,9 @@
 	font-size: 11.5px;
 	color: var(--ui-ink-3);
 	line-height: 1.55;
-	background: #fbfbfd;
+	background: var(--ui-bg-subtle);
 	border: 1px solid var(--ui-line-2);
-	border-radius: 4px;
+	border-radius: var(--ui-radius-sm);
 	padding: 9px 11px;
 	margin: 2px 0 14px;
 
@@ -1289,7 +1487,7 @@
 	button {
 		border: 1px solid var(--ui-line);
 		background: #fff;
-		border-radius: 4px;
+		border-radius: var(--ui-radius-sm);
 		padding: 4px 8px;
 		font-size: 11.5px;
 		font-family: ui-monospace, monospace;
@@ -1297,7 +1495,7 @@
 		cursor: pointer;
 
 		&:hover {
-			background: #f6f7fa;
+			background: var(--ui-bg-hover);
 			border-color: var(--ui-purple);
 			color: var(--ui-purple);
 		}
@@ -1308,19 +1506,19 @@
 	width: 100%;
 	padding: 11px;
 	border: 1px solid var(--ui-input-border);
-	border-radius: 4px;
+	border-radius: var(--ui-radius-sm);
 	font-family: ui-monospace, monospace;
 	font-size: 12px;
 	min-height: 180px;
 	resize: vertical;
 	line-height: 1.6;
 	color: var(--ui-ink);
-	background: #fbfbfd;
+	background: var(--ui-bg-subtle);
 	tab-size: 2;
 
 	&:focus {
 		border-color: var(--ui-purple);
-		box-shadow: 0 0 0 2px var(--ui-purple-50);
+		box-shadow: var(--ui-focus-soft);
 		outline: none;
 	}
 }
@@ -1348,7 +1546,7 @@
 #everest-forms-panel-style .tpl {
 	position: relative;
 	border: 1px solid var(--ui-line);
-	border-radius: 10px;
+	border-radius: var(--ui-radius-lg);
 	overflow: hidden;
 	cursor: pointer;
 	background: #fff;
@@ -1356,21 +1554,22 @@
 	padding: 0;
 	transition: border-color .12s, background .12s;
 
+	/* Matches `.elrow`'s hover exactly (purple-tinted, not neutral-grey) — see the docblock
+	   above: this card and `.pal-card` are meant to share one "selectable card" language. */
 	&:hover {
-		border-color: #b9bdc9;
-		background: #fafbfd;
+		border-color: var(--ui-purple);
+		background: var(--ui-purple-50);
 	}
 
 	&:focus-visible {
 		outline: none;
 		border-color: var(--ui-purple);
-		box-shadow: 0 0 0 2px var(--ui-purple-50);
+		box-shadow: var(--ui-focus-soft);
 	}
 
 	&[aria-pressed="true"] {
 		border-color: var(--ui-purple);
 		background: var(--ui-purple-50);
-		box-shadow: 0 0 0 1px var(--ui-purple-50);
 
 		.cap {
 			color: var(--ui-purple);
@@ -1396,13 +1595,13 @@
 	.thumb .f {
 		height: 13px;
 		border: 1px solid;
-		border-radius: 4px;
+		border-radius: var(--ui-radius-sm);
 	}
 
 	.thumb .b {
 		height: 12px;
 		width: 42%;
-		border-radius: 4px;
+		border-radius: var(--ui-radius-sm);
 	}
 
 	.cap {
@@ -1475,7 +1674,7 @@
 		letter-spacing: .06em;
 		color: #fff;
 		background: var(--ui-purple);
-		border-radius: 4px;
+		border-radius: var(--ui-radius-sm);
 		padding: 2px 6px;
 		box-shadow: 0 1px 2px rgba(20, 23, 40, .2);
 	}
@@ -1534,13 +1733,59 @@
 	gap: 12px;
 	background: #fff;
 	border: 1px solid var(--ui-line);
-	border-radius: 10px;
+	border-radius: var(--ui-radius-lg);
 	padding: 14px;
 	margin-bottom: 18px;
 	transition: border-color .15s ease, background .15s ease;
 
 	&:focus-within {
 		border-color: var(--ui-purple);
+	}
+}
+
+/* Collapsed trigger — the create-template form starts hidden; this compact, clickable card
+   opens it. Same shell as the open form (`.tpl-create`) so the swap doesn't jump in size. */
+#everest-forms-panel-style .tpl-create-trigger {
+	width: 100%;
+	text-align: left;
+	border: 1px dashed var(--ui-line);
+	cursor: pointer;
+
+	.tpl-create-sub {
+		margin-bottom: 0;
+	}
+
+	&:hover {
+		border-color: var(--ui-purple);
+		border-style: solid;
+		background: var(--ui-purple-50);
+
+		.tpl-create-ic {
+			background: var(--ui-purple);
+			color: #fff;
+		}
+	}
+
+	&:focus-visible {
+		outline: none;
+		border-color: var(--ui-purple);
+		border-style: solid;
+		box-shadow: var(--ui-focus-soft);
+	}
+}
+
+#everest-forms-panel-style .tpl-create-cancel {
+	border: 0;
+	background: none;
+	color: var(--ui-ink-3);
+	font-weight: 600;
+	font-size: 13px;
+	padding: 9px 10px;
+	cursor: pointer;
+	transition: color .12s;
+
+	&:hover {
+		color: var(--ui-ink);
 	}
 }
 
@@ -1587,14 +1832,14 @@
 	width: 100%;
 	padding: 9px 11px;
 	border: 1px solid var(--ui-input-border);
-	border-radius: 6px;
+	border-radius: var(--ui-radius-md);
 	font-size: 13px;
 	color: var(--ui-ink);
 	background: #fff;
 
 	&:focus {
 		border-color: var(--ui-purple);
-		box-shadow: 0 0 0 2px var(--ui-purple-50);
+		box-shadow: var(--ui-focus-soft);
 		outline: none;
 	}
 }
@@ -1618,7 +1863,7 @@
 	background: var(--ui-purple);
 	color: #fff;
 	border: 0;
-	border-radius: 6px;
+	border-radius: var(--ui-radius-md);
 	padding: 9px 22px;
 	font-weight: 600;
 	font-size: 13px;
@@ -1641,18 +1886,21 @@
 	top: 6px;
 	right: 6px;
 	z-index: 3;
-	width: 20px;
-	height: 20px;
+	width: 22px;
+	height: 22px;
 	border-radius: 50%;
 	background: rgba(20, 23, 40, .55);
 	color: #fff;
 	display: grid;
 	place-items: center;
-	font-size: 11px;
-	line-height: 1;
 	cursor: pointer;
 	opacity: 0;
 	transition: opacity .12s, background .12s;
+
+	svg {
+		width: 11px;
+		height: 11px;
+	}
 
 	&:hover {
 		background: var(--ui-red);
@@ -1678,7 +1926,7 @@
 	gap: 10px;
 	background: #fbf6ff;
 	border: 1px solid var(--ui-purple-100);
-	border-radius: 8px;
+	border-radius: var(--ui-radius-lg);
 	padding: 10px 12px;
 	font-size: 11.5px;
 	color: var(--ui-purple-600);
@@ -1718,7 +1966,7 @@
 	padding: 28px 20px;
 	background: linear-gradient(180deg, #fbf6ff 0%, #fff 100%);
 	border: 1px solid var(--ui-purple-100);
-	border-radius: 10px;
+	border-radius: var(--ui-radius-lg);
 
 	.pro-teaser-ic {
 		display: grid;
@@ -1761,7 +2009,7 @@
 		font-weight: 600;
 		text-decoration: none;
 		padding: 8px 16px;
-		border-radius: 6px;
+		border-radius: var(--ui-radius-md);
 		transition: background .12s;
 
 		&:hover {
@@ -1782,7 +2030,7 @@
 	color: var(--ui-purple);
 	background: var(--ui-purple-50);
 	border: 1px solid var(--ui-purple-100);
-	border-radius: 4px;
+	border-radius: var(--ui-radius-sm);
 	padding: 2px 5px;
 	flex: none;
 }
@@ -1794,7 +2042,7 @@
 	gap: 8px;
 	margin-top: 6px;
 	padding: 9px 10px;
-	border-radius: 6px;
+	border-radius: var(--ui-radius-md);
 	background: #fbf6ff;
 	border: 1px dashed var(--ui-purple-100);
 	color: var(--ui-purple-600);
@@ -1857,7 +2105,7 @@
 	margin-bottom: 12px;
 	background: var(--ui-purple-50);
 	border: 1px solid var(--ui-purple-100);
-	border-radius: 10px;
+	border-radius: var(--ui-radius-lg);
 	color: var(--ui-ink-2);
 	font-size: 12px;
 	line-height: 1.55;
@@ -1896,14 +2144,17 @@
 		background: none;
 		color: var(--ui-icon);
 		cursor: pointer;
-		width: 20px;
-		height: 20px;
+		width: 24px;
+		height: 24px;
 		border-radius: 50%;
 		display: grid;
 		place-items: center;
-		font-size: 10px;
-		line-height: 1;
 		margin-top: 1px;
+
+		svg {
+			width: 13px;
+			height: 13px;
+		}
 
 		&:hover {
 			background: rgba(117, 69, 187, .15);
@@ -1943,9 +2194,15 @@
 	cursor: pointer;
 	display: grid;
 	place-items: center;
-	width: 22px;
-	height: 22px;
+	width: 24px;
+	height: 24px;
 	border-radius: 50%;
+	flex: none;
+
+	svg {
+		width: 15px;
+		height: 15px;
+	}
 
 	&:hover {
 		background: var(--ui-line-2);
@@ -1977,8 +2234,8 @@
 
 #everest-forms-panel-style .devs {
 	display: inline-flex;
-	background: #f2f3f7;
-	border-radius: 6px;
+	background: var(--ui-bg-subtle);
+	border-radius: var(--ui-radius-md);
 	padding: 3px;
 	border: 1px solid var(--ui-line);
 	/* Pin to the far right of the toolbar (title grows to fill the space before it). */
@@ -1990,7 +2247,7 @@
 		background: transparent;
 		width: 34px;
 		height: 28px;
-		border-radius: 4px;
+		border-radius: var(--ui-radius-sm);
 		cursor: pointer;
 		color: var(--ui-ink-3);
 		display: grid;
@@ -2044,26 +2301,26 @@
 	flex-wrap: wrap;
 	gap: 6px 12px;
 	padding: 8px 20px;
-	background: #fffbeb;
-	border-bottom: 1px solid #fde68a;
-	color: #92400e;
+	background: var(--ui-amber-50);
+	border-bottom: 1px solid var(--ui-amber-100);
+	color: var(--ui-amber-700);
 	font-size: 11.5px;
 	line-height: 1.5;
 	flex: none;
 
 	button {
-		border: 1px solid #fde68a;
+		border: 1px solid var(--ui-amber-100);
 		background: #fff;
-		color: #92400e;
+		color: var(--ui-amber-700);
 		font-weight: 600;
 		font-size: 11px;
-		border-radius: 5px;
+		border-radius: var(--ui-radius-sm);
 		padding: 3px 10px;
 		cursor: pointer;
 		margin-left: auto;
 
 		&:hover {
-			background: #fef3c7;
+			background: var(--ui-amber-100);
 		}
 	}
 }
@@ -2096,7 +2353,7 @@
 	   border, so it doesn't stack a second frame on top of the form's own border/radius. */
 	border: 0;
 	background: #fff;
-	border-radius: 8px;
+	border-radius: var(--ui-radius-lg);
 	display: block;
 	/* Hidden until the bridge has hidden the preview chrome + applied styles, so the raw
 	   ?evf_preview page (dark toolbar/theme) never flashes behind the skeleton. */
@@ -2125,14 +2382,14 @@
 #everest-forms-panel-style .skel-card {
 	width: min(560px, 80%);
 	background: #fff;
-	border-radius: 8px;
+	border-radius: var(--ui-radius-lg);
 	padding: 30px;
 	box-shadow: var(--ui-shadow);
 }
 
 #everest-forms-panel-style .skel-bar {
 	height: 12px;
-	border-radius: 6px;
+	border-radius: var(--ui-radius-md);
 	background: linear-gradient(90deg, #eceef3 25%, #f6f7fa 50%, #eceef3 75%);
 	background-size: 200% 100%;
 	animation: scv2shimmer 1.4s infinite;
@@ -2182,7 +2439,7 @@
 #everest-forms-panel-style .pv-error .card {
 	background: #fff;
 	border: 1px solid var(--ui-line);
-	border-radius: 8px;
+	border-radius: var(--ui-radius-lg);
 	box-shadow: var(--ui-shadow);
 	padding: 26px 30px;
 	max-width: 420px;
@@ -2220,7 +2477,7 @@
 		color: #fff;
 		font-weight: 600;
 		font-size: 12.5px;
-		border-radius: 6px;
+		border-radius: var(--ui-radius-md);
 		padding: 8px 16px;
 		cursor: pointer;
 
@@ -2246,7 +2503,8 @@
 	font-size: 11px;
 }
 
-/* toast */
+/* toast — a neutral dark base, with a coloured left accent + icon distinguishing error from
+   success/info so a save-error never reads identically to an "Applied palette — Undo" toast. */
 #everest-forms-panel-style .toast {
 	position: absolute;
 	bottom: 22px;
@@ -2254,26 +2512,69 @@
 	transform: translate(-50%, 0);
 	background: #1f2433;
 	color: #fff;
-	border-radius: 8px;
-	padding: 10px 12px 10px 16px;
-	font-size: 12.5px;
+	border-radius: var(--ui-radius-lg);
+	border-left: 3px solid rgba(255, 255, 255, .25);
+	padding: 10px 12px 10px 14px;
+	font-size: var(--ui-fs-sm);
 	display: flex;
 	align-items: center;
 	gap: 12px;
-	box-shadow: 0 10px 30px rgba(20, 23, 40, .3);
+	box-shadow: var(--ui-shadow-lg);
 	z-index: 50;
 	max-width: 80%;
+	animation: scv2toastin .18s ease-out;
+
+	.toast-ic {
+		flex: none;
+		display: grid;
+		place-items: center;
+		width: 18px;
+		height: 18px;
+
+		svg {
+			width: 16px;
+			height: 16px;
+		}
+	}
+
+	&.is-success {
+		border-left-color: var(--ui-green);
+
+		.toast-ic {
+			color: #4ade80;
+		}
+	}
+
+	&.is-error {
+		border-left-color: var(--ui-red);
+
+		.toast-ic {
+			color: #f87171;
+		}
+	}
 
 	button {
 		border: 0;
 		background: rgba(255, 255, 255, .14);
 		color: #fff;
-		border-radius: 4px;
+		border-radius: var(--ui-radius-sm);
 		padding: 6px 12px;
 		font-size: 12px;
 		font-weight: 600;
 		cursor: pointer;
 		white-space: nowrap;
+		flex: none;
+	}
+}
+
+@keyframes scv2toastin {
+	from {
+		opacity: 0;
+		transform: translate(-50%, 6px);
+	}
+	to {
+		opacity: 1;
+		transform: translate(-50%, 0);
 	}
 }
 
@@ -2283,11 +2584,24 @@
 	z-index: 100000;
 	background: #fff;
 	border: 1px solid var(--ui-line);
-	border-radius: 6px;
-	box-shadow: 0 1px 2px rgba(20, 23, 40, .05), 0 20px 44px -14px rgba(20, 23, 40, .18);
+	border-radius: var(--ui-radius-md);
+	box-shadow: var(--ui-shadow-lg);
 	padding: 6px;
 	min-width: 200px;
 	max-width: 300px;
+	transform-origin: top center;
+	animation: scv2popin .12s ease-out;
+}
+
+@keyframes scv2popin {
+	from {
+		opacity: 0;
+		transform: scale( .98 ) translateY(-2px);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1) translateY(0);
+	}
 }
 
 #everest-forms-panel-style .scv2-pop .pop-head {
@@ -2333,7 +2647,7 @@
 	}
 
 	&:hover {
-		background: #f0f0f4;
+		background: var(--ui-bg-hover);
 		color: var(--ui-ink);
 	}
 
@@ -2369,13 +2683,13 @@
 	background: none;
 	text-align: left;
 	padding: 8px 10px;
-	border-radius: 4px;
+	border-radius: var(--ui-radius-sm);
 	font-size: 12.5px;
 	color: var(--ui-ink);
 	cursor: pointer;
 
 	&:hover:not(:disabled) {
-		background: #f6f7fa;
+		background: var(--ui-bg-hover);
 	}
 
 	&.danger {
@@ -2383,7 +2697,7 @@
 	}
 
 	&.danger:hover {
-		background: #fef2f2;
+		background: var(--ui-red-50);
 	}
 }
 
@@ -2412,7 +2726,7 @@
 
 #everest-forms-panel-style .pal-card {
 	border: 1px solid var(--ui-line-2);
-	border-radius: 4px;
+	border-radius: var(--ui-radius-sm);
 	overflow: hidden;
 	cursor: pointer;
 	background: #fff;
@@ -2420,15 +2734,17 @@
 	text-align: left;
 	transition: border-color .12s, background .12s;
 
+	/* Matches `.elrow`/`.tpl`'s hover exactly — one "selectable card" language across the panel. */
 	&:hover {
-		border-color: #b9bdc9;
-		background: #fafbfd;
-	}
-
-	&[aria-pressed="true"] {
 		border-color: var(--ui-purple);
 		background: var(--ui-purple-50);
-		box-shadow: 0 0 0 1px var(--ui-purple-50);
+	}
+
+	/* `role="option"` takes its selected state from `aria-selected`, not `aria-pressed` (which
+	   isn't a valid state for that role) — the selector matches the ARIA fix in App.tsx. */
+	&[aria-selected="true"] {
+		border-color: var(--ui-purple);
+		background: var(--ui-purple-50);
 	}
 
 	.sw {
@@ -2458,7 +2774,7 @@
 		text-overflow: ellipsis;
 	}
 
-	&[aria-pressed="true"] .cap {
+	&[aria-selected="true"] .cap {
 		color: var(--ui-purple);
 	}
 

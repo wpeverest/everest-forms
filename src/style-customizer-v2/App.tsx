@@ -20,11 +20,13 @@ const __ = ( window as any ).wp?.i18n?.__ || ( ( s: string ) => s );
 const apiFetch = ( window as any ).wp?.apiFetch;
 
 type SubPane = 'design' | 'templates' | 'css';
+const SUBPANES: SubPane[] = [ 'design', 'templates', 'css' ];
 
 interface Toast {
 	msg: string;
 	actLabel?: string;
 	onAct?: () => void;
+	kind?: 'success' | 'info';
 }
 
 export function App() {
@@ -36,6 +38,7 @@ export function App() {
 	const [ toast, setToast ] = React.useState< Toast | null >( null );
 	const [ saving, setSaving ] = React.useState( false );
 	const [ saveError, setSaveError ] = React.useState( '' );
+	const [ saveErrorConflict, setSaveErrorConflict ] = React.useState( false );
 	const [ selectPulse, setSelectPulse ] = React.useState( 0 );
 	const toastTimer = React.useRef< ReturnType< typeof setTimeout > | null >( null );
 
@@ -52,8 +55,40 @@ export function App() {
 		if ( toastTimer.current ) {
 			clearTimeout( toastTimer.current );
 		}
+		// Toasts with an action button are NOT auto-dismissed on a bare timer while the pointer/
+		// focus is on them (see pauseToast/resumeToast below) — this only starts the clock, which
+		// those restart from wherever the user left off. WCAG 2.2.1 (Timing Adjustable): a toast
+		// hosting real functionality (Undo) must not vanish on a fixed timer a user can't extend.
 		toastTimer.current = setTimeout( () => setToast( null ), 4200 );
 	}, [] );
+
+	const pauseToast = React.useCallback( () => {
+		if ( toastTimer.current ) {
+			clearTimeout( toastTimer.current );
+			toastTimer.current = null;
+		}
+	}, [] );
+
+	const resumeToast = React.useCallback( () => {
+		if ( toastTimer.current ) {
+			clearTimeout( toastTimer.current );
+		}
+		toastTimer.current = setTimeout( () => setToast( null ), 4200 );
+	}, [] );
+
+	// Tell the user when an edit silently detaches the active palette (store.ts setTokenValue) —
+	// previously this happened with zero notice, and the "Color palette" row would then show
+	// stale/placeholder swatches with no explanation.
+	React.useEffect( () => {
+		store.onPaletteUnlinked = ( name: string ) => {
+			showToast( {
+				msg: `${ __( 'This customization is no longer linked to the', 'everest-forms' ) } “${ name }” ${ __( 'palette.', 'everest-forms' ) }`,
+			} );
+		};
+		return () => {
+			store.onPaletteUnlinked = null;
+		};
+	}, [ store, showToast ] );
 
 	/* ---- navigation ---- */
 	const openSection = ( key: string ) => {
@@ -63,6 +98,18 @@ export function App() {
 	const backToList = () => {
 		setCurSection( null );
 		getActiveBridge()?.clearSelection();
+	};
+
+	// Switching to Templates/Custom CSS and leaving a Design slate open behind it is legitimate
+	// (e.g. checking a template for reference mid-edit) — but landing back on "Design" later and
+	// silently reopening that slate instead of the section list reads as a stuck/broken tab, not
+	// intentional persistence. Reset only when leaving Design, so returning to it always starts
+	// at the list; deep-linking in via a row click or a preview click still works as before.
+	const changeSubPane = ( id: SubPane ) => {
+		setSubPane( id );
+		if ( id !== 'design' ) {
+			setCurSection( null );
+		}
 	};
 
 	const inSlate = subPane === 'design' && !! curSection;
@@ -102,6 +149,7 @@ export function App() {
 		}
 		setSaving( true );
 		setSaveError( '' );
+		setSaveErrorConflict( false );
 		try {
 			const res = await apiFetch( {
 				path: `${ store.settings.restBase }/${ store.settings.formId }`,
@@ -116,6 +164,7 @@ export function App() {
 			store.markSaved( res.record );
 		} catch ( e: any ) {
 			const status = e && e.data && e.data.status;
+			setSaveErrorConflict( status === 409 );
 			setSaveError(
 				status === 409
 					? __( 'These styles changed elsewhere — reload the builder before saving.', 'everest-forms' )
@@ -239,6 +288,7 @@ export function App() {
 			matchWidth: true,
 			kind: 'palette',
 			title: __( 'Choose a colour palette', 'everest-forms' ),
+			closable: true,
 			render: () => (
 				<div>
 					<div className="pal-pop-grid" role="listbox" aria-label={ __( 'Colour palettes', 'everest-forms' ) }>
@@ -251,7 +301,6 @@ export function App() {
 									className="pal-card"
 									role="option"
 									aria-selected={ p.id === store.palette }
-									aria-pressed={ p.id === store.palette }
 									title={ p.name }
 									onMouseEnter={ () => getActiveBridge()?.previewPalette( p.colors ) }
 									onMouseLeave={ () => getActiveBridge()?.revert() }
@@ -266,6 +315,7 @@ export function App() {
 										store.applyPalette( p.id );
 										closePopover();
 										showToast( {
+											kind: 'success',
 											msg: `${ __( 'Applied palette', 'everest-forms' ) } “${ p.name }”`,
 											actLabel: __( 'Undo', 'everest-forms' ),
 											onAct: () => store.undo(),
@@ -313,23 +363,70 @@ export function App() {
 
 	return (
 		<div className="scv2-panel">
-			<div className="subtabs" role="tablist" aria-label={ __( 'Style panel sections', 'everest-forms' ) }>
-				{ ( [ 'design', 'templates', 'css' ] as SubPane[] ).map( ( id ) => (
+			<div className="subtabs">
+				<div
+					className="subtabs-main"
+					role="tablist"
+					aria-label={ __( 'Style panel sections', 'everest-forms' ) }
+					onKeyDown={ ( e ) => {
+						if ( e.key !== 'ArrowLeft' && e.key !== 'ArrowRight' ) {
+							return;
+						}
+						e.preventDefault();
+						const idx = SUBPANES.indexOf( subPane );
+						const next = SUBPANES[ ( idx + ( e.key === 'ArrowRight' ? 1 : SUBPANES.length - 1 ) ) % SUBPANES.length ];
+						changeSubPane( next );
+						document.getElementById( `scv2-tab-${ next }` )?.focus();
+					} }
+				>
+					{ SUBPANES.map( ( id ) => (
+						<button
+							key={ id }
+							id={ `scv2-tab-${ id }` }
+							type="button"
+							role="tab"
+							className="subtab"
+							aria-selected={ subPane === id }
+							aria-controls="scv2-tabpanel"
+							tabIndex={ subPane === id ? 0 : -1 }
+							onClick={ () => changeSubPane( id ) }
+						>
+							{ id === 'design'
+								? __( 'Design', 'everest-forms' )
+								: id === 'templates'
+								? __( 'Templates', 'everest-forms' )
+								: __( 'Custom CSS', 'everest-forms' ) }
+						</button>
+					) ) }
+				</div>
+				<div className="subtabs-actions">
 					<button
-						key={ id }
 						type="button"
-						role="tab"
-						className="subtab"
-						aria-selected={ subPane === id }
-						onClick={ () => setSubPane( id ) }
+						className="uxbtn"
+						disabled={ ! store.canUndo() }
+						aria-label={ __( 'Undo', 'everest-forms' ) }
+						title={ __( 'Undo', 'everest-forms' ) + ' (Ctrl+Z)' }
+						onClick={ () => store.undo() }
 					>
-						{ id === 'design'
-							? __( 'Design', 'everest-forms' )
-							: id === 'templates'
-							? __( 'Templates', 'everest-forms' )
-							: __( 'Custom CSS', 'everest-forms' ) }
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2 } aria-hidden="true">
+							<path d="M3 10h10a5 5 0 0 1 0 10H7" />
+							<path d="M7 6 3 10l4 4" />
+						</svg>
 					</button>
-				) ) }
+					<button
+						type="button"
+						className="uxbtn"
+						disabled={ ! store.canRedo() }
+						aria-label={ __( 'Redo', 'everest-forms' ) }
+						title={ __( 'Redo', 'everest-forms' ) + ' (Ctrl+Shift+Z)' }
+						onClick={ () => store.redo() }
+					>
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2 } aria-hidden="true">
+							<path d="M21 10H11a5 5 0 0 0 0 10h6" />
+							<path d="m17 6 4 4-4 4" />
+						</svg>
+					</button>
+				</div>
 			</div>
 
 			{ inSlate && section && (
@@ -367,7 +464,12 @@ export function App() {
 				</div>
 			) }
 
-			<div className="panel-scroll">
+			<div
+				className="panel-scroll"
+				id="scv2-tabpanel"
+				role="tabpanel"
+				aria-labelledby={ `scv2-tab-${ subPane }` }
+			>
 				{ subPane === 'design' &&
 					( inSlate && section ? (
 						<ElementSlate
@@ -384,6 +486,14 @@ export function App() {
 							onOpen={ openSection }
 							onOpenPalette={ openPalette }
 							paletteOpen={ paletteOpen }
+							onResetAll={ () => {
+								store.resetAll();
+								showToast( {
+									msg: __( 'All styles reset to default.', 'everest-forms' ),
+									actLabel: __( 'Undo', 'everest-forms' ),
+									onAct: () => store.undo(),
+								} );
+							} }
 						/>
 					) ) }
 
@@ -391,6 +501,14 @@ export function App() {
 					<TemplatesPane
 						onPreview={ ( ov ) => getActiveBridge()?.previewValues( ov ) }
 						onClearPreview={ () => getActiveBridge()?.revert() }
+						onApplied={ ( name ) =>
+							showToast( {
+								kind: 'success',
+								msg: `${ __( 'Applied template', 'everest-forms' ) } “${ name }”`,
+								actLabel: __( 'Undo', 'everest-forms' ),
+								onAct: () => store.undo(),
+							} )
+						}
 					/>
 				) }
 
@@ -406,9 +524,12 @@ export function App() {
 						saving={ saving }
 						dirty={ dirty }
 						saveError={ saveError }
+						saveErrorConflict={ saveErrorConflict }
 						onInfo={ openInfo }
 						onSelect={ onSelectElement }
 						toast={ toast }
+						onToastPause={ pauseToast }
+						onToastResume={ resumeToast }
 					/>,
 					previewHost
 				) }

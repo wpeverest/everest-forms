@@ -67,7 +67,9 @@ function MigrationNotice() {
 					}
 				} }
 			>
-				✕
+				<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2 } aria-hidden="true">
+					<path d="M18 6 6 18M6 6l12 12" />
+				</svg>
 			</button>
 		</div>
 	);
@@ -115,17 +117,23 @@ export function PreviewPane( {
 	saving,
 	dirty,
 	saveError,
+	saveErrorConflict,
 	onInfo,
 	onSelect,
 	toast,
+	onToastPause,
+	onToastResume,
 }: {
 	forceClass: string | null;
 	saving: boolean;
 	dirty: boolean;
 	saveError: string;
+	saveErrorConflict: boolean;
 	onInfo: ( anchor: HTMLElement, text: string ) => void;
 	onSelect: ( info: SelectionInfo ) => void;
-	toast: { msg: string; actLabel?: string; onAct?: () => void } | null;
+	toast: { msg: string; actLabel?: string; onAct?: () => void; kind?: 'success' | 'info' } | null;
+	onToastPause: () => void;
+	onToastResume: () => void;
 } ) {
 	const store = useStore();
 	const iframeRef = React.useRef< HTMLIFrameElement >( null );
@@ -296,7 +304,10 @@ export function PreviewPane( {
 							)
 						}
 					>
-						ⓘ
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2 } aria-hidden="true">
+							<circle cx="12" cy="12" r="9" />
+							<path d="M12 16v-5M12 8h.01" />
+						</svg>
 					</button>
 				</span>
 
@@ -395,13 +406,39 @@ export function PreviewPane( {
 			</div>
 
 			{ saveError && (
-				<div className="toast show" role="status">
+				<div className="toast is-error" role="alert">
+					<span className="toast-ic" aria-hidden="true">
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2 }>
+							<circle cx="12" cy="12" r="9" />
+							<path d="M12 8v5M12 16h.01" />
+						</svg>
+					</span>
 					<span>{ saveError }</span>
+					{ saveErrorConflict && (
+						<button type="button" onClick={ () => window.location.reload() }>
+							{ __( 'Reload', 'everest-forms' ) }
+						</button>
+					) }
 				</div>
 			) }
 
 			{ toast && (
-				<div className="toast show" role="status">
+				<div
+					className={ 'toast' + ( toast.kind ? ` is-${ toast.kind }` : '' ) }
+					role="status"
+					onMouseEnter={ onToastPause }
+					onMouseLeave={ onToastResume }
+					onFocus={ onToastPause }
+					onBlur={ onToastResume }
+				>
+					{ toast.kind === 'success' && (
+						<span className="toast-ic" aria-hidden="true">
+							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2 }>
+								<circle cx="12" cy="12" r="9" />
+								<path d="m8.5 12.5 2.5 2.5 4.5-5" />
+							</svg>
+						</span>
+					) }
 					<span>{ toast.msg }</span>
 					{ toast.actLabel && toast.onAct && (
 						<button type="button" onClick={ toast.onAct }>

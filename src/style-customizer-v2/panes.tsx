@@ -35,20 +35,27 @@ export function DesignList( {
 	onOpen,
 	onOpenPalette,
 	paletteOpen,
+	onResetAll,
 }: {
 	sections: Section[];
 	onOpen: ( key: string ) => void;
 	onOpenPalette: ( anchor: HTMLElement ) => void;
 	paletteOpen: boolean;
+	onResetAll: () => void;
 } ) {
 	const store = useStore();
 	const activePalette = store.palettes.find( ( p ) => p.id === store.palette );
+	// No active palette (custom, or detached by a manual edit — see store.ts setTokenValue): show
+	// the REAL current colour for each palette slot (its first driven token), not a static
+	// placeholder — otherwise this row can visibly lie about the form's actual current colours.
 	const swatches = activePalette
 		? paletteSwatchColors( activePalette.colors, store.paletteMap )
-		: [ '#e9eaf0', '#d7d9e3', '#c3c6d4', '#b3b7c7', '#a3a8bd', '#cfd2de' ];
+		: Object.values( store.paletteMap ).map( ( keys ) =>
+			keys && keys[ 0 ] ? String( store.resolve( keys[ 0 ] ) ) : '#e5e7eb'
+		  );
 
 	return (
-		<div>
+		<div className="slate-anim">
 			<div className="block-title">{ __( 'Color palette', 'everest-forms' ) }</div>
 			<button
 				type="button"
@@ -112,7 +119,11 @@ export function DesignList( {
 							) : (
 								<span className="dot" aria-hidden="true" />
 							) }
-							<span className="chev" aria-hidden="true">›</span>
+							<span className="chev" aria-hidden="true">
+								<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2.2 }>
+									<path d="m9 6 6 6-6 6" />
+								</svg>
+							</span>
 						</button>
 					);
 				} ) }
@@ -127,7 +138,8 @@ export function DesignList( {
 						{ __(
 							'Let your active theme style this form. Turn off to use Everest Forms’ default form style.',
 							'everest-forms'
-						) }
+						) }{ ' ' }
+						{ __( 'Your colours, spacing and fonts above always apply on top of either.', 'everest-forms' ) }
 					</small>
 				</span>
 				<button
@@ -139,6 +151,10 @@ export function DesignList( {
 					onClick={ () => store.setApplyThemeStyle( ! store.applyThemeStyle ) }
 				/>
 			</div>
+
+			<button type="button" className="reset-all-link" onClick={ onResetAll }>
+				{ __( 'Reset all styles', 'everest-forms' ) }
+			</button>
 		</div>
 	);
 }
@@ -183,6 +199,13 @@ export function ElementSlate( {
 	const tabs = section.states || section.variants || null;
 	const first = tabs ? tabs[ 0 ] : null;
 	const act = activeState || first;
+	const [ filter, setFilter ] = React.useState( '' );
+
+	// Reset the in-slate filter whenever a different section opens (a fresh `key` remounts this
+	// component, but this also covers any future path that reuses the instance).
+	React.useEffect( () => {
+		setFilter( '' );
+	}, [ section.key ] );
 
 	// When opened via a preview click (pulse changes), scroll the panel up and briefly flash.
 	React.useEffect( () => {
@@ -211,9 +234,22 @@ export function ElementSlate( {
 	// (stateless) controls live on the first tab (Normal / Label) so a state tab such as
 	// Focus or Hover stays context-clean — no greyed-out "shared" controls that read as
 	// disabled and don't apply to the state.
-	const enabled = tabs
+	const enabledByState = tabs
 		? visible.filter( ( t ) => ( t.state ? t.state === act : act === first ) )
 		: visible;
+
+	// A lightweight in-slate filter — only shown on the two large sections (Text/Messages:
+	// ~27-28 controls across 3-4 tabs) where scrolling a flat list is genuinely long. A much
+	// smaller re-add than the global command-palette search that was deliberately cut.
+	const SHOW_FILTER_ABOVE = 12;
+	const showFilter = enabledByState.length > SHOW_FILTER_ABOVE;
+	const q = filter.trim().toLowerCase();
+	const enabled = q ? enabledByState.filter( ( t ) => t.label.toLowerCase().indexOf( q ) !== -1 ) : enabledByState;
+
+	// The 6 palette-slot colours (form/field bg, label/sublabel, button text/bg) render as
+	// hidden tokens with no direct picker (deliberate v1-parity choice) — tell the user where to
+	// find them instead of the slate silently having no colour control at all.
+	const hasHiddenPaletteColor = store.schema.some( ( t ) => t.section === section.key && t.hidden );
 
 	// Dependency dimming: a border-style set to "none" disables its width/colour deps.
 	const dimmedByDep = new Set< string >();
@@ -254,7 +290,8 @@ export function ElementSlate( {
 
 	if ( sectionLocked ) {
 		return (
-			<div id="elBody" ref={ bodyRef }>
+			<div id="elBody" className="slate-anim" ref={ bodyRef }>
+				<h2 className="slate-title">{ section.title }</h2>
 				{ section.hint && <p className="sec-hint">{ section.hint }</p> }
 				<ProSectionTeaser section={ section } />
 			</div>
@@ -262,8 +299,23 @@ export function ElementSlate( {
 	}
 
 	return (
-		<div id="elBody" ref={ bodyRef }>
+		<div id="elBody" className="slate-anim" ref={ bodyRef }>
+			<div className="slate-title-row">
+				<h2 className="slate-title">{ section.title }</h2>
+				<button type="button" className="uxbtn" title={ __( 'Reset this section', 'everest-forms' ) } aria-label={ __( 'Reset this section', 'everest-forms' ) + ' — ' + section.title } onClick={ () => store.resetSection( section.key ) }>
+					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2 } aria-hidden="true">
+						<path d="M3 12a9 9 0 1 0 3-6.7" />
+						<path d="M3 4v5h5" />
+					</svg>
+				</button>
+			</div>
 			{ section.hint && <p className="sec-hint">{ section.hint }</p> }
+			{ hasHiddenPaletteColor && (
+				<p className="hintline">
+					<Icon inner='<circle cx="12" cy="12" r="9"/><path d="M12 16v-5M12 8h.01"/>' />
+					{ __( 'Background & text colours here come from your colour palette.', 'everest-forms' ) }
+				</p>
+			) }
 
 			{ hasLocked && (
 				<div className="pro-lock">
@@ -281,13 +333,30 @@ export function ElementSlate( {
 			) }
 
 			{ tabs && (
-				<div className="state-seg" role="tablist" aria-label={ section.title + ' ' + __( 'variants', 'everest-forms' ) }>
+				<div
+					className="state-seg"
+					role="tablist"
+					aria-label={ section.title + ' ' + __( 'variants', 'everest-forms' ) }
+					onKeyDown={ ( e ) => {
+						if ( e.key !== 'ArrowLeft' && e.key !== 'ArrowRight' ) {
+							return;
+						}
+						e.preventDefault();
+						const idx = tabs.indexOf( act as string );
+						const next = tabs[ ( idx + ( e.key === 'ArrowRight' ? 1 : tabs.length - 1 ) ) % tabs.length ];
+						onChangeState( next );
+						document.getElementById( `scv2-state-${ section.key }-${ next }` )?.focus();
+					} }
+				>
 					{ tabs.map( ( id ) => (
 						<button
 							key={ id }
+							id={ `scv2-state-${ section.key }-${ id }` }
 							type="button"
 							role="tab"
 							aria-selected={ id === act }
+							aria-controls={ `scv2-state-panel-${ section.key }` }
+							tabIndex={ id === act ? 0 : -1 }
 							onClick={ () => onChangeState( id ) }
 						>
 							{ STATE_LABELS[ id ] || id }
@@ -296,7 +365,27 @@ export function ElementSlate( {
 				</div>
 			) }
 
-			{ renderGroups( enabled ) }
+			{ showFilter && (
+				<div className="slate-filter">
+					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2 } aria-hidden="true">
+						<circle cx="11" cy="11" r="7" />
+						<path d="m21 21-4.35-4.35" />
+					</svg>
+					<input
+						type="text"
+						value={ filter }
+						placeholder={ __( 'Filter controls…', 'everest-forms' ) }
+						aria-label={ __( 'Filter', 'everest-forms' ) + ' ' + section.title + ' ' + __( 'controls', 'everest-forms' ) }
+						onChange={ ( e ) => setFilter( e.target.value ) }
+					/>
+				</div>
+			) }
+
+			<div id={ `scv2-state-panel-${ section.key }` } role={ tabs ? 'tabpanel' : undefined } aria-labelledby={ tabs ? `scv2-state-${ section.key }-${ act }` : undefined }>
+				{ enabled.length ? renderGroups( enabled ) : (
+					<p className="slate-empty">{ __( 'No controls match your filter.', 'everest-forms' ) }</p>
+				) }
+			</div>
 		</div>
 	);
 }
@@ -456,7 +545,9 @@ function TemplateCard( {
 						}
 					} }
 				>
-					✕
+					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2.2 } aria-hidden="true">
+						<path d="M18 6 6 18M6 6l12 12" />
+					</svg>
 				</span>
 			) }
 			{ locked && (
@@ -476,14 +567,20 @@ function TemplateCard( {
 export function TemplatesPane( {
 	onPreview,
 	onClearPreview,
+	onApplied,
 }: {
 	onPreview: ( overrides: Record< string, any > ) => void;
 	onClearPreview: () => void;
+	onApplied: ( name: string ) => void;
 } ) {
 	const store = useStore();
 	const [ name, setName ] = React.useState( '' );
 	const [ busy, setBusy ] = React.useState( false );
 	const [ error, setError ] = React.useState( '' );
+	// The create-template form starts collapsed — a trigger row opens it — so the tab's default
+	// view is the template grids, not an always-open input+button most visits never touch.
+	const [ showCreateForm, setShowCreateForm ] = React.useState( false );
+	const createInputRef = React.useRef< HTMLInputElement >( null );
 
 	const templates = store.allTemplates();
 	// Memoize the flattened override maps so hover doesn't re-flatten on every mouse event.
@@ -511,6 +608,7 @@ export function TemplatesPane( {
 				store.addUserTemplate( res.template );
 			}
 			setName( '' );
+			setShowCreateForm( false );
 		} catch ( e: any ) {
 			setError( ( e && e.message ) || __( 'Could not save the template.', 'everest-forms' ) );
 		} finally {
@@ -539,6 +637,7 @@ export function TemplatesPane( {
 			return;
 		}
 		store.applyTemplate( tpl.id, tpl.tokens, tpl.palette );
+		onApplied( tpl.name );
 	};
 
 	const renderGrid = ( list: Template[], withDelete: boolean ) => (
@@ -562,40 +661,73 @@ export function TemplatesPane( {
 	);
 
 	return (
-		<div>
+		<div className="slate-anim">
 			{ canCreate ? (
-				<div className="tpl-create">
-					<span className="tpl-create-ic" aria-hidden="true">
-						<Icon inner='<path d="M12 5v14M5 12h14"/>' />
-					</span>
-					<div className="tpl-create-fields">
-						<div className="tpl-create-title">{ __( 'Create Style Template', 'everest-forms' ) }</div>
-						<p className="tpl-create-sub">{ __( 'Save the current styles as a reusable template.', 'everest-forms' ) }</p>
-						<input
-							type="text"
-							className="tpl-create-input"
-							value={ name }
-							placeholder={ __( 'Template name', 'everest-forms' ) }
-							onChange={ ( e ) => setName( e.target.value ) }
-							onKeyDown={ ( e ) => {
-								if ( e.key === 'Enter' ) {
-									createTemplate();
-								}
-							} }
-						/>
-						<div className="tpl-create-row">
-							{ error && <span className="tpl-create-err">{ error }</span> }
-							<button
-								type="button"
-								className="tpl-create-btn"
-								disabled={ ! name.trim() || busy }
-								onClick={ createTemplate }
-							>
-								{ busy ? __( 'Saving…', 'everest-forms' ) : __( 'Create', 'everest-forms' ) }
-							</button>
+				showCreateForm ? (
+					<div className="tpl-create">
+						<span className="tpl-create-ic" aria-hidden="true">
+							<Icon inner='<path d="M12 5v14M5 12h14"/>' />
+						</span>
+						<div className="tpl-create-fields">
+							<div className="tpl-create-title">{ __( 'Create Style Template', 'everest-forms' ) }</div>
+							<p className="tpl-create-sub">{ __( 'Save the current styles as a reusable template.', 'everest-forms' ) }</p>
+							<input
+								ref={ createInputRef }
+								type="text"
+								className="tpl-create-input"
+								value={ name }
+								placeholder={ __( 'Template name', 'everest-forms' ) }
+								onChange={ ( e ) => setName( e.target.value ) }
+								onKeyDown={ ( e ) => {
+									if ( e.key === 'Enter' ) {
+										createTemplate();
+									} else if ( e.key === 'Escape' ) {
+										setShowCreateForm( false );
+										setError( '' );
+									}
+								} }
+							/>
+							<div className="tpl-create-row">
+								{ error && <span className="tpl-create-err">{ error }</span> }
+								<button
+									type="button"
+									className="tpl-create-cancel"
+									onClick={ () => {
+										setShowCreateForm( false );
+										setError( '' );
+									} }
+								>
+									{ __( 'Cancel', 'everest-forms' ) }
+								</button>
+								<button
+									type="button"
+									className="tpl-create-btn"
+									disabled={ ! name.trim() || busy }
+									onClick={ createTemplate }
+								>
+									{ busy ? __( 'Saving…', 'everest-forms' ) : __( 'Create', 'everest-forms' ) }
+								</button>
+							</div>
 						</div>
 					</div>
-				</div>
+				) : (
+					<button
+						type="button"
+						className="tpl-create tpl-create-trigger"
+						onClick={ () => {
+							setShowCreateForm( true );
+							window.setTimeout( () => createInputRef.current?.focus(), 0 );
+						} }
+					>
+						<span className="tpl-create-ic" aria-hidden="true">
+							<Icon inner='<path d="M12 5v14M5 12h14"/>' />
+						</span>
+						<div className="tpl-create-fields">
+							<div className="tpl-create-title">{ __( 'Create Style Template', 'everest-forms' ) }</div>
+							<p className="tpl-create-sub">{ __( 'Save the current styles as a reusable template.', 'everest-forms' ) }</p>
+						</div>
+					</button>
+				)
 			) : (
 				<a className="tpl-create tpl-create-locked" href={ UPGRADE_URL } target="_blank" rel="noreferrer">
 					<span className="tpl-create-ic" aria-hidden="true">
@@ -618,11 +750,21 @@ export function TemplatesPane( {
 				— { __( 'click to apply (you can always undo).', 'everest-forms' ) }
 			</p>
 
-			{ !! store.userTemplates.length && (
+			{ !! store.userTemplates.length ? (
 				<>
 					<div className="block-title">{ __( 'Your templates', 'everest-forms' ) }</div>
 					{ renderGrid( store.userTemplates, true ) }
 				</>
+			) : (
+				canCreate && (
+					<>
+						<div className="block-title">{ __( 'Your templates', 'everest-forms' ) }</div>
+						<div className="empty-state">
+							<Icon inner='<rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 15h6M9 11h6"/>' />
+							{ __( 'No saved templates yet — create one above.', 'everest-forms' ) }
+						</div>
+					</>
+				)
 			) }
 
 			<div className="block-title">{ __( 'Built-in templates', 'everest-forms' ) }</div>
@@ -671,7 +813,7 @@ export function CustomCssPane() {
 	const len = ( store.customCss || '' ).length;
 
 	return (
-		<div>
+		<div className="slate-anim">
 			<p className="pane-note">
 				{ __( 'Applied live as you type, and', 'everest-forms' ) } <b>{ __( 'auto-scoped to this form', 'everest-forms' ) }</b>{ ' ' }
 				{ __( 'on save so nothing leaks to the rest of your site. Click a selector to insert it:', 'everest-forms' ) }

@@ -715,9 +715,13 @@ export class PreviewBridge {
 		// real front end.
 		const css = `
 			#${ this.store.settings.wrapperId }, #${ this.store.settings.wrapperId } * { pointer-events: auto !important; }
+			#${ this.store.settings.wrapperId } * { transition: outline-color .12s ease, outline-offset .12s ease; }
 			.${ HOVER_CLASS } { outline: 1px dashed rgba(117,69,187,.35) !important; outline-offset: 2px !important; border-radius: 3px; }
 			.${ SELECTED_CLASS } { outline: 1.5px solid rgba(117,69,187,.5) !important; outline-offset: 2px !important; border-radius: 3px; }
-			#${ this.store.settings.wrapperId } * { cursor: default; }`;
+			#${ this.store.settings.wrapperId } * { cursor: default; }
+			@media (prefers-reduced-motion: reduce) {
+				#${ this.store.settings.wrapperId } * { transition: none !important; }
+			}`;
 		const style = doc.createElement( 'style' );
 		style.id = SELECT_STYLE_ID;
 		style.textContent = css;

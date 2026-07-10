@@ -70,13 +70,20 @@ export function Popover( { state, onClose }: { state: PopoverState; onClose: () 
 		};
 	}, [ state, onClose ] );
 
-	// Move focus to the close button when a dismissible popover (dialog) opens, so keyboard users
-	// land inside it and can Tab through / Esc out. Skipped for plain tooltips (no close button).
+	// Move focus INTO the popover on every open — to the close button when there is one, else to
+	// the panel itself (tabIndex=-1 below) — so a keyboard user never has to Tab through the rest
+	// of the page to reach content that just opened elsewhere in the DOM. Previously this only
+	// fired when `closable` was true, which nothing ever set — so keyboard focus stayed on the
+	// trigger button while e.g. the palette grid or a responsive-override popover opened next to
+	// it, with no efficient way in.
 	React.useEffect( () => {
 		if ( showClose && closeRef.current ) {
 			closeRef.current.focus();
+		} else if ( ref.current ) {
+			ref.current.focus();
 		}
-	}, [ showClose ] );
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [ state ] );
 
 	return (
 		<div
@@ -85,6 +92,7 @@ export function Popover( { state, onClose }: { state: PopoverState; onClose: () 
 			role="dialog"
 			aria-modal="false"
 			aria-label={ state.title || undefined }
+			tabIndex={ -1 }
 			style={ {
 				left: pos.left,
 				top: pos.top,
