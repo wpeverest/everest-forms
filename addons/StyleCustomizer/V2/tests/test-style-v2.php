@@ -100,6 +100,29 @@ ok( Schema::get( 'fonts.family' )['tier'] === 'pro', 'font family is Pro' );
 $free_count = count( array_filter( Schema::tokens(), static function ( $t ) { return 'free' === $t['tier']; } ) );
 ok( 12 === $free_count, 'exactly 12 free (palette-driven) tokens' );
 
+// Legacy-parity DEFAULTS: an UNcustomized token must default to the legacy config's declared
+// default, so a form that never touched it migrates pixel-identically (regression guard for the
+// default-alignment pass surfaced by the 10-form migration audit — all confirmed against
+// evf-style-customizer-form-wrapper-configs.php's declared 'default's).
+$def = static function ( $key ) { return Schema::get( $key )['default']; };
+ok( $def( 'input.ph' ) === '#c6ccd7', 'input.ph default matches legacy (#c6ccd7)' );
+ok( $def( 'choice.size' ) === 16, 'choice.size default matches legacy (16)' );
+ok( $def( 'choice.fsize' ) === 14, 'choice.fsize default matches legacy (14)' );
+ok( $def( 'choice.color' ) === '#575757', 'choice.color default matches legacy (#575757)' );
+ok( $def( 'desc.size' ) === 14, 'desc.size default matches legacy (14)' );
+ok( abs( (float) $def( 'desc.line' ) - 1.7 ) < 0.001, 'desc.line default matches legacy (1.7)' );
+ok( $def( 'desc.color' ) === '#575757', 'desc.color default matches legacy (#575757)' );
+ok( $def( 'desc.margin' ) === array( 'top' => 0, 'right' => 0, 'bottom' => 10, 'left' => 0 ), 'desc.margin default matches legacy (bottom 10)' );
+ok( $def( 'sub.margin' ) === array( 'top' => 0, 'right' => 0, 'bottom' => 10, 'left' => 0 ), 'sub.margin default matches legacy (bottom 10)' );
+ok( $def( 'title.color' ) === '#575757', 'title.color default matches legacy (#575757)' );
+ok( $def( 'title.pad' ) === array( 'top' => 0, 'right' => 0, 'bottom' => 0, 'left' => 0 ), 'title.pad default matches legacy (0)' );
+ok( $def( 'title.size' ) === 16, 'title.size default matches legacy (16)' );
+ok( abs( (float) $def( 'title.line' ) - 1.5 ) < 0.001, 'title.line default matches legacy (1.5)' );
+ok( $def( 'title.margin' ) === array( 'top' => 25, 'right' => 0, 'bottom' => 25, 'left' => 0 ), 'title.margin default matches legacy (25/25)' );
+// Match what the legacy COMPILER renders (`margin:0px 0px 5px` on `.evf-field-radio ul li`), not
+// the config's declared right=20 which the compiler never emits — the render is the source of truth.
+ok( $def( 'choice.margin' ) === array( 'top' => 0, 'right' => 0, 'bottom' => 5, 'left' => 0 ), 'choice.margin default matches legacy RENDER (bottom 5 only)' );
+
 /* --------------------------------------------------------------- Sanitizer */
 // The control-logic assertions below exercise Pro-tier tokens (sliders, box4, fontstyle, …), so
 // run them with Pro ACTIVE — otherwise the tier gate would (correctly) strip them.
