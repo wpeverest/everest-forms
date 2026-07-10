@@ -29,9 +29,29 @@ function evf_get_screen_ids()
 		$evf_screen_id . '_page_smart-smtp',
 		$evf_screen_id . '_page_evf-smart-smtp',
 		$evf_screen_id . '_page_evf-analytics',
+		$evf_screen_id . '_page_evf-payment-log',
 	);
 
 	return apply_filters('everest_forms_screen_ids', $screen_ids);
+}
+
+/**
+ * SmartSMTP admin URL: primary connection with Google Workspace setup highlighted.
+ *
+ * @since 3.3.0
+ *
+ * @return string
+ */
+function evf_get_smart_smtp_google_workspace_setup_url() {
+	$url = add_query_arg(
+		array(
+			'page'      => 'smart-smtp',
+			'evf_setup' => 'google_workspace',
+		),
+		admin_url( 'admin.php' )
+	);
+
+	return apply_filters( 'everest_forms_smart_smtp_google_workspace_setup_url', $url . '#/primary-connection' );
 }
 
 /**
@@ -590,6 +610,9 @@ function everest_forms_panel_field($option, $panel, $field, $form_data, $label, 
 			sanitize_html_class($field),
 			$label
 		);
+		if (! empty($args['before_tooltip'])) {
+			$field_label .= $args['before_tooltip'];
+		}
 		if (! empty($args['tooltip'])) {
 			$field_label .= sprintf(' <i class="dashicons dashicons-editor-help everest-forms-help-tooltip" title="%s"></i>', esc_attr($args['tooltip']));
 		}

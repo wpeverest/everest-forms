@@ -191,9 +191,9 @@ class EVF_Modules {
 		$slug = is_array( $request['slug'] ) ? current( $request['slug'] ) : $request['slug'];
 		$type = isset( $request['type'] ) ? $request['type'] : '';
 
-		$slug        = sanitize_key( wp_unslash( $request['name'] ) );
-		$name        = sanitize_text_field( $request['name'] );
-		$plugin_slug = wp_unslash( $request['slug'] ) . '/' . wp_unslash( $request['slug'] ) . '.php'; // phpcs:ignore
+		$slug        = sanitize_text_field( wp_unslash( $slug ) );
+		$name        = sanitize_text_field( wp_unslash( $request['name'] ) );
+		$plugin_slug = $slug . '/' . $slug . '.php';
 		$plugin      = plugin_basename( sanitize_text_field( $plugin_slug ) );
 
 		$status = array();
@@ -218,6 +218,7 @@ class EVF_Modules {
 			return new \WP_REST_Response(
 				array(
 					'success' => true,
+					'slug'    => $slug,
 					'message' => __( 'Module activated successfully', 'everest-forms' ),
 				),
 				200
@@ -298,6 +299,15 @@ class EVF_Modules {
 		require_once ABSPATH . '/wp-admin/includes/file.php';
 		include_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
 		include_once ABSPATH . 'wp-admin/includes/plugin-install.php';
+
+		// Restrict activation to genuine Everest Forms addons so this endpoint
+		// cannot be used to activate arbitrary installed plugins.
+		if ( ! in_array( $slug, self::get_allowed_addon_slugs(), true ) ) {
+			$status['success']      = false;
+			$status['errorCode']    = 'invalid_addon_slug';
+			$status['errorMessage'] = esc_html__( 'The requested module is not a valid Everest Forms addon.', 'everest-forms' );
+			return $status;
+		}
 
 		$is_required_plugin_active = self::check_required_plugin_is_active( $slug );
 
@@ -435,6 +445,8 @@ class EVF_Modules {
 
 		$status = array();
 
+		$org_slug = sanitize_text_field( wp_unslash( $slug ) );
+
 		if ( 'addon' === $type ) {
 			$slug   = $slug . '/' . $slug . '.php';
 			$status = self::deactivate_addon( $slug );
@@ -454,6 +466,7 @@ class EVF_Modules {
 			return new \WP_REST_Response(
 				array(
 					'success' => true,
+					'slug'    => $org_slug,
 					'message' => esc_html__( 'Module deactivated successfully', 'everest-forms' ),
 				),
 				200
@@ -716,6 +729,42 @@ class EVF_Modules {
 		$extension_data = evf_get_json_file_contents( 'assets/extensions-json/sections/all_extensions.json' );
 		return apply_filters( 'everest_forms_extensions_section_data', $extension_data );
 	}
+
+	/**
+	 * Get the list of slugs that this controller is allowed to activate.
+	 *
+	 * Restricts plugin activation through the modules REST routes to genuine
+	 * Everest Forms addons, so the endpoint cannot be used as a generic
+	 * activator for arbitrary installed plugins.
+	 *
+	 * @since 3.5.2
+	 *
+	 * @return array Allowed addon slugs.
+	 */
+	public static function get_allowed_addon_slugs() {
+		$extension_data = self::get_extensions_data();
+		$allowed_slugs  = array();
+
+		if ( isset( $extension_data->products ) && is_array( $extension_data->products ) ) {
+			foreach ( $extension_data->products as $product ) {
+				if ( isset( $product->slug ) ) {
+					$allowed_slugs[] = $product->slug;
+				}
+			}
+		}
+
+		// The AI Contact Form addon is requested under this slug.
+		$allowed_slugs[] = 'aicontactform';
+
+		/**
+		 * Filter the addon slugs that the modules REST routes may activate.
+		 *
+		 * @since 3.5.2
+		 *
+		 * @param array $allowed_slugs Allowed addon slugs.
+		 */
+		return apply_filters( 'everest_forms_allowed_addon_slugs', array_values( array_unique( $allowed_slugs ) ) );
+	}
 	/**
 	 * Check if a given request has access to update a setting
 	 *
@@ -723,7 +772,7 @@ class EVF_Modules {
 	 * @return WP_Error|bool
 	 */
 	public static function check_admin_plugin_activation_permissions( $request ) {
-		return current_user_can( 'activate_plugin' ) || current_user_can( 'manage_everest_forms' );
+		return current_user_can( 'activate_plugins' );
 	}
 
 	/**

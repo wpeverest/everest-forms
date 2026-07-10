@@ -1,133 +1,161 @@
 import { __ } from '@wordpress/i18n';
-import React, { useState, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import {
   ChakraProvider,
   Box,
-  HStack,
-  Text,
-  Tabs,
-  TabList,
-  Tab,
-  Button,
-  Icon,
-  Divider,
-  VStack,
+  Flex,
   Heading,
   Link,
 } from "@chakra-ui/react";
 import Main from "./components/Main";
+import CreateWithAI from "./components/CreateWithAI";
 
-const BackIcon = (props) => (
-  <Icon viewBox="0 0 22 22" {...props}>
-    <path d="M10.352 3.935a.917.917 0 0 1 1.296 1.297l-5.769 5.767 5.769 5.77a.916.916 0 1 1-1.296 1.296l-6.417-6.417a.917.917 0 0 1 0-1.296z"/><path d="M17.416 10.083a.917.917 0 0 1 0 1.834H4.583a.917.917 0 0 1 0-1.834z"/>
-  </Icon>
-);
+// The AI view's PageShell is a fixed full-viewport overlay at z-index 100000.
+// Chakra's toast manager renders into a portal on document.body at
+// `zIndex: var(--toast-z-index, 5500)` — well below the overlay — so toasts
+// fired from that screen were painted underneath and never seen. Chakra does
+// NOT bind --toast-z-index to the theme, so the only fix is to set the CSS
+// variable on an ancestor of the portal (the <html> element).
+const TOAST_Z_INDEX = 200001;
 
-const TabFilters = ({ onTabChange }) => {
-  const filters = useMemo(() => [__("All", "everest-forms"), __("Free", "everest-forms"), __("Premium", "everest-forms")], []);
+const WP_ELEMENTS = [
+  '#wpadminbar',
+  '#adminmenuwrap',
+  '#adminmenuback',
+  '#wpfooter',
+  '#evf-react-header-root',
+];
 
-  return (
-    <Tabs variant="unstyled" ml="auto" onChange={onTabChange}>
-      <TabList background="#f3f4f6" gap="2px" borderRadius="5px" padding="4px">
-        {filters.map((label) => (
-          <Tab
-            key={label}
-            _selected={{
-              color: "purple.500",
-              background: "white",
-              boxShadow: "0 4px 24px 0 rgba(10,10,10,.06)",
-            }}
-            fontSize="14px"
-            lineHeight="25px"
-            color="#646970"
-            borderBottom="2px solid transparent"
-            fontWeight="medium"
-            whiteSpace="nowrap"
-            height="32px"
-            borderRadius="4px"
-            padding="6px 16px"
-          >
-            {label}
-          </Tab>
-        ))}
-      </TabList>
-    </Tabs>
-  );
+const enterFullscreen = () => {
+  WP_ELEMENTS.forEach(sel => {
+    const el = document.querySelector<HTMLElement>(sel);
+    if (el) el.style.display = 'none';
+  });
+
+  const wpContent = document.querySelector<HTMLElement>('#wpcontent');
+  if (wpContent) {
+    wpContent.dataset.origMargin = wpContent.style.marginLeft;
+    wpContent.style.marginLeft = '0';
+    wpContent.style.paddingTop = '0';
+  }
+  document.body.dataset.origPaddingTop = document.body.style.paddingTop;
+  document.body.style.paddingTop = '0';
+  document.body.style.marginTop = '0';
+
+  document.documentElement.dataset.origPaddingTop = document.documentElement.style.paddingTop;
+  document.documentElement.style.paddingTop = '0';
+};
+
+const exitFullscreen = () => {
+  WP_ELEMENTS.forEach(sel => {
+    const el = document.querySelector<HTMLElement>(sel);
+    if (el) el.style.display = '';
+  });
+  const wpContent = document.querySelector<HTMLElement>('#wpcontent');
+  if (wpContent) {
+    wpContent.style.marginLeft = wpContent.dataset.origMargin ?? '';
+    wpContent.style.paddingTop = '';
+  }
+  document.body.style.paddingTop = document.body.dataset.origPaddingTop ?? '';
+  document.body.style.marginTop = '';
+  document.documentElement.style.paddingTop = document.documentElement.dataset.origPaddingTop ?? '';
 };
 
 const App = () => {
-  const [selectedTab, setSelectedTab] = useState<string>(__("All", "everest-forms"));
+  const [currentView, setCurrentView] = useState<'templates' | 'ai'>(() => {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('view') === 'ai' ? 'ai' : 'templates';
+  });
+  // When entering the AI view from a template's "Edit with AI", the draft form to
+  // preload (0 = fresh "Create with AI").
+  const [aiFormId, setAiFormId] = useState(0);
+  const [aiTitle, setAiTitle] = useState('');
 
-  // Handle tab changes
-  const handleTabChange = (index: number) => {
-    const filters = [__("All", "everest-forms"), __("Free", "everest-forms"), __("Premium", "everest-forms")];
-    setSelectedTab(filters[index]);
+  // Lift Chakra's toast layer above the AI overlay (PageShell, z-index 100000).
+  // The toast portal mounts on document.body, so the --toast-z-index variable
+  // must live on an ancestor of it — set it on <html> for the App's lifetime.
+  useEffect(() => {
+    const root = document.documentElement;
+    const prev = root.style.getPropertyValue('--toast-z-index');
+    root.style.setProperty('--toast-z-index', String(TOAST_Z_INDEX));
+    return () => {
+      if (prev) root.style.setProperty('--toast-z-index', prev);
+      else root.style.removeProperty('--toast-z-index');
+    };
+  }, []);
+
+  useEffect(() => {
+    if (currentView === 'ai') {
+      enterFullscreen();
+    } else {
+      exitFullscreen();
+    }
+
+    return () => { if (currentView === 'ai') exitFullscreen(); };
+  }, [currentView]);
+
+  useEffect(() => {
+    const onPopState = () => {
+      const params = new URLSearchParams(window.location.search);
+      setCurrentView(params.get('view') === 'ai' ? 'ai' : 'templates');
+    };
+    window.addEventListener('popstate', onPopState);
+    return () => window.removeEventListener('popstate', onPopState);
+  }, []);
+
+  const navigateToAI = (formId: number = 0, title: string = '') => {
+    // Coerce: only a real positive form id loads a prefilled form; anything else
+    // (e.g. a stray click event passed by a button) opens the blank prompt screen.
+    const id = typeof formId === 'number' && Number.isFinite(formId) && formId > 0 ? formId : 0;
+    const t  = typeof title === 'string' ? title : '';
+    setAiFormId(id);
+    setAiTitle(t);
+    const url = new URL(window.location.href);
+    url.searchParams.set('view', 'ai');
+    history.pushState({ view: 'ai' }, '', url.toString());
+    setCurrentView('ai');
   };
 
-  // Handle refresh button click
-  const handleRefreshTemplates = () => {
+  const navigateBack = () => {
+    setAiFormId(0);
+    setAiTitle('');
     const url = new URL(window.location.href);
-    url.searchParams.set('refresh', Date.now().toString());
-    window.location.href = url.toString();
+    url.searchParams.delete('view');
+    history.pushState({ view: 'templates' }, '', url.toString());
+    setCurrentView('templates');
   };
 
   return (
     <ChakraProvider>
-      <Box bg="#f5f5f5">
-        {/* Header Section */}
-        <HStack
-          spacing={4}
-          align="center"
-          justify="space-between"
-          borderBottom="1px solid #e1e1e1"
-          p="14px 24px"
+      {currentView === 'ai' ? (
+        <Box bg="#f3f3f5" minHeight="100vh">
+          <CreateWithAI onBack={navigateBack} initialFormId={aiFormId} initialTitle={aiTitle} />
+        </Box>
+      ) : (
+        <Box
           bg="white"
-          width="100%"
+          margin="20px"
+          border="1px solid #e2e8f0"
+          borderRadius="16px"
+          overflow="hidden"
         >
-          <HStack spacing={4}>
-            <Link
-              href="admin.php?page=evf-builder"
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-              width="34px"
-              height="34px"
-              borderRadius="4px"
-              border="1px solid transparent"
-              color="#383838"
-              _hover={{ bg: "#faf8fc", borderColor: "#eee8f7" }}
-            >
-              <BackIcon boxSize="5" />
-            </Link>
-            <Text fontSize="18px" fontWeight="semibold" lineHeight="26px" color="#383838" margin={'0'}>
+          {/* Page title */}
+          <Flex
+            align="center"
+            px="8"
+            py="5"
+            borderBottom="1px solid #e2e8f0"
+          >
+            <Heading as="h2" fontSize="18px" fontWeight="600" color="#0e0e0e" m="0" letterSpacing="-0.01em">
               {__("Add New Form", "everest-forms")}
-            </Text>
-            <Button
-              colorScheme="purple"
-              variant="outline"
-              onClick={handleRefreshTemplates}
-              fontSize="14px"
-              fontWeight="medium"
-              height="34px"
-              borderRadius="4px"
-              padding="0 16px"
-            >
-              {__("Refresh Templates", "everest-forms")}
-            </Button>
-          </HStack>
+            </Heading>
+          </Flex>
 
-          <HStack spacing={3}>
-            <TabFilters onTabChange={handleTabChange} />
-          </HStack>
-        </HStack>
-
-        {/* Main Content Area with Margin */}
-        <Box p="24px">
-          <Box bg="white" border="1px solid #e1e1e1" borderRadius="13px" overflow="hidden">
-            <Main filter={selectedTab} />
+          <Box>
+            <Main onCreateWithAI={navigateToAI} />
           </Box>
         </Box>
-      </Box>
+      )}
     </ChakraProvider>
   );
 };

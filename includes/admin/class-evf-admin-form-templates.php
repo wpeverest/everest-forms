@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class EVF_Admin_Form_Templates {
 
 	/**
-	 * Get default template.
+	 * Get default template.q
 	 *
 	 * @return array
 	 */
@@ -35,6 +35,7 @@ class EVF_Admin_Form_Templates {
 	 * @return array
 	 */
 	public static function get_template_data() {
+		$template_data = get_transient( 'evf_template_section_list' );
 		$template_data = get_transient( 'evf_template_section_list' );
 
 		$template_url = 'https://assets.wpeverest.com/everestforms/forms/';
@@ -84,17 +85,31 @@ class EVF_Admin_Form_Templates {
 	 * @since 1.0.0
 	 */
 	public static function load_template_view() {
-		echo "<div id='evf-templates'></div>";
-		wp_register_script( 'evf-templates', plugins_url( 'dist/templates.min.js', EVF_PLUGIN_FILE ), array( 'wp-element', 'react', 'react-dom', 'wp-api-fetch', 'wp-i18n', 'wp-blocks' ), EVF_VERSION, true );
+		$use_react_header = apply_filters( 'everest_forms_use_react_header', true, 'forms' );
+		if ( $use_react_header ) {
+			include __DIR__ . '/views/html-admin-header-skeleton.php';
+		}
+
+		$templates_js_path = evf()->plugin_path() . '/dist/templates.min.js';
+		$templates_js_ver  = file_exists( $templates_js_path ) ? filemtime( $templates_js_path ) : EVF_VERSION;
+		wp_register_script( 'evf-templates', plugins_url( 'dist/templates.min.js', EVF_PLUGIN_FILE ), array( 'wp-element', 'react', 'react-dom', 'wp-api-fetch', 'wp-i18n', 'wp-blocks' ), $templates_js_ver, true );
 		wp_localize_script(
 			'evf-templates',
 			'evf_templates_script',
 			array(
-				'security' => wp_create_nonce( 'wp_rest' ),
-				'restURL'  => rest_url(),
+				'security'     => wp_create_nonce( 'wp_rest' ),
+				'restURL'      => rest_url(),
+				// ThemeGrill AI Cloud (Python gateway) — used by the Create with AI flow.
+				'ajaxUrl'      => admin_url( 'admin-ajax.php' ),
+				'aiNonce'      => wp_create_nonce( 'evf_ai_nonce' ),
+				'aiRegistered' => class_exists( 'EVF_AI_Registration' ) ? EVF_AI_Registration::is_registered() : false,
+				'aiTier'       => class_exists( 'EVF_AI_Registration' ) ? EVF_AI_Registration::get_tier() : 'free',
+				// Create with AI is disabled on local / development sites (gateway cannot verify ownership).
+				'aiEnabled'    => class_exists( 'EVF_AI_Registration' ) && ! EVF_AI_Registration::is_local_site(),
 			)
 		);
 		wp_enqueue_script( 'evf-templates' );
+		echo '<div id="evf-templates"></div>';
 	}
 
 }

@@ -1,20 +1,20 @@
-=== Everest Forms – Contact Form, Payment Form, Quiz, Survey & Custom Form Builder ===
+=== Everest Forms – Contact Form, Payment Form, Quiz, Survey & Custom Form Builder with AI ===
 Contributors:everestforms,WPEverest
 Tags: contact form, custom form, form builder, forms, survey
 Requires at least: 5.5
 Tested up to: 7.0
 Requires PHP: 7.2
-Stable tag: 3.4.8
+Stable tag: 3.5.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-The best WordPress form builder. Create contact forms, payment forms, conversational forms, custom forms, surveys, & quizzes using drag and drop.
+AI form builder for WordPress. Build contact forms, payment forms, quiz, survey & conversational forms with built-in AI or drag & drop builder.
 
 == Description ==
 
-**The Best Free WordPress Contact Form Builder**
+AI form builder for WordPress. Build contact forms, payment forms, quiz, survey & conversational forms with built-in AI or drag & drop builder.
 
-Build any form you need with a single plugin. Everest Forms combines a drag-and-drop form builder, payment processor, quiz maker, and survey tool with 40+ form fields and unlimited submissions.
+Everest Forms combines a drag-and-drop form builder, AI-powered form creator, payment processing, quiz builder, and survey tool, along with 40+ form fields and unlimited submissions, all in a single plugin.
 
 Over 100,000+ WordPress websites trust it for everything from simple contact forms to complex applications.
 
@@ -24,7 +24,7 @@ Everest Forms includes pro-level features like Form Entries, File Uploads, Admin
 
 [youtube https://youtu.be/AvK0KU2ycqc ]
 
-From contact forms to complex applications with Conditional Logic, Payment Processing, and Webhooks, Everest Forms grows alongside your business needs.
+From contact forms to complex applications with Conditional Logic, Payment Processing, and Webhooks, Everest Forms grows alongside your business needs. Now with AI Form Builder, you can describe any form in plain words and have it built for you in seconds — fields, logic, and layout included.
 
 [Explore All Features](https://everestforms.net/features/?utm_source=wporg&utm_medium=all-feature-link&utm_campaign=evf-readme) | [Upgrade to Everest Forms Pro](https://everestforms.net/pricing/?utm_source=wporg&utm_medium=docs-top-link&utm_campaign=evf-readme)
 
@@ -41,11 +41,16 @@ From contact forms to complex applications with Conditional Logic, Payment Proce
 * **Application & Submission Forms** Job application forms, volunteer application forms, membership application forms, proposal submission forms.
 * **Interactive & Engagement Forms** Quiz forms, poll forms, calculator forms, conversational forms, multi-step forms, personality test forms.
 
+Not sure where to start? Use the AI Form Builder — just describe what you need and get a ready-to-use form instantly.
+
 [View Form Templates](https://everestforms.net/form-templates/?utm_source=wporg&utm_medium=all-feature-link&utm_campaign=evf-readme)
 
 ### Why Everest Forms is the Best Choice for WordPress Forms
 
 Building WordPress forms should be simple, powerful, and affordable; Everest Forms delivers on all three.
+
+##AI Form Builder
+Describe your form in plain words — Everest Forms AI will handle the fields, logic, and layout in seconds. Whether it's a freelance contract with a digital signature, a health check-in with range sliders, or a multi-step application — just type it and it's built. Choose from inspiration prompts or write your own, then refine the result with a follow-up prompt before publishing.
 
 ## More Features in Free Version
 
@@ -57,7 +62,7 @@ Create payment forms with Stripe and PayPal, generate PDF submissions for invoic
 
 ## Designed for Speed and Simplicity
 
-Our intuitive drag-and-drop builder lets you create professional forms in under 5 minutes. Choose from 40+ pre-built templates or start from scratch.
+Our intuitive drag-and-drop builder lets you create professional forms in under 5 minutes. Or skip the builder entirely — use the AI Form Builder to describe your form and have it ready in seconds. Choose from 40+ pre-built templates or start from scratch.
 
 ## Enterprise Features at Startup Prices
 
@@ -90,6 +95,7 @@ Get advanced capabilities like multi-step forms, conversational forms, AI-powere
 
 * Unlimited Forms
 * Powerful Form Builder
+* AI Form Builder
 * 35+ Form Fields
 * Style Customizer
 * Entry Management
@@ -338,6 +344,34 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/f788d7f0-ea8a-4fd5-bcae-81a5d09a476c)
 
 == Changelog ==
+
+= 3.5.2       - 02-07-2026
+* Fix 		  - Improved security of the addon activation process.
+* Fix 		  - Bulk Add option not opening for Dropdown, Checkbox, and Multiple Choice fields.
+* Fix 	      - Corrected file upload validation pattern.
+
+= 3.5.1       - 15-06-2026
+* Fix 		  - Early load integration called.
+* Fix 		  - Form submission stuck on processing for forms created using ai.
+* Added 	  - Loggers in AI Form creation flow.
+
+= 3.5.0       - 15-06-2026
+* Feature 	  - Create form with AI.
+* Feature	  - Shield silentCAPTCHA integration.
+* Feature	  - Exposed full CRUD abilities for Forms, Entries, Discovery Addons and Analytics via the WP Abilities API.
+* Enhance	  - Contact Form 7 migration.
+* Fix         - Updated tooltips.
+* Fix 		  - Brevo connection issue.
+* Fix 		  - Form fields icon mis match.
+* Fix 		  - Design issue on integration tab.
+* Fix         - Security issue on evf entries table.
+* Fix 		  - Design issue for radio buttons in Survey polls Quiz settings.
+* Fix         - Coupons and frontend listing addon menus do not update dynamically.
+* Added       - Payments overview page inside the payments menu.
+* Added 	  - Upsell on the payments inside the global settings.
+* Added       - Missing the export and print in the free version of analytics page.
+* Added 	  - Showcase conditional logic as a pro feature in field settings panel.
+* Added 	  - Upsell prompt when free users click locked fields in the add fields modal.
 
 = 3.4.8       - 27-05-2026
 * Fix 		  - Missing capability check on test email.

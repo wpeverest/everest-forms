@@ -23,7 +23,7 @@ final class EverestForms {
 	 *
 	 * @var string
 	 */
-	public $version = '3.4.8';
+	public $version = '3.5.2';
 
 	/**
 	 * The single instance of the class.
@@ -302,6 +302,7 @@ final class EverestForms {
 		 * Core classes.
 		 */
 		include_once EVF_ABSPATH . 'includes/evf-core-functions.php';
+		include_once EVF_ABSPATH . 'includes/traits/trait-evf-subscription-schedule-choices.php';
 		include_once EVF_ABSPATH . 'includes/class-evf-post-types.php';
 		include_once EVF_ABSPATH . 'includes/class-evf-install.php';
 		include_once EVF_ABSPATH . 'includes/class-evf-ajax.php';
@@ -325,6 +326,17 @@ final class EverestForms {
 		include_once EVF_ABSPATH . 'includes/RestApi/class-evf-rest-api.php';
 
 		/**
+		 * Abilities API + MCP integration.
+		 */
+		include_once EVF_ABSPATH . 'includes/abilities/class-evf-abilities-registry.php';
+		include_once EVF_ABSPATH . 'includes/abilities/class-evf-field-schemas.php';
+		include_once EVF_ABSPATH . 'includes/abilities/class-evf-form-builder.php';
+		include_once EVF_ABSPATH . 'includes/abilities/class-evf-abilities-handlers.php';
+		include_once EVF_ABSPATH . 'includes/abilities/class-evf-mcp-server.php';
+		include_once EVF_ABSPATH . 'includes/abilities/class-evf-abilities.php';
+		EVF_Abilities::init();
+
+		/**
 		 * Preview Confirmation Class
 		 */
 		include_once EVF_ABSPATH . 'includes/admin/class-evf-admin-preview-confirmation.php';
@@ -345,6 +357,11 @@ final class EverestForms {
 		if ( $this->is_request( 'frontend' ) ) {
 			$this->frontend_includes();
 		}
+
+		/**
+		 * ThemeGrill AI Cloud integration.
+		 */
+		include_once EVF_ABSPATH . 'includes/Integrations/AI/class-evf-ai-loader.php';
 
 		/**
 		 *Usage Tracking.
@@ -415,6 +432,8 @@ final class EverestForms {
 		// Init action.
 		do_action( 'everest_forms_init' );
 	}
+
+
 
 	/**
 	 * Setup objects.

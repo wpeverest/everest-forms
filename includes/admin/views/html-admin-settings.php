@@ -26,7 +26,7 @@ $use_react_header = apply_filters( 'everest_forms_use_react_header', true, $curr
 		<form method="<?php echo esc_attr( apply_filters( 'everest_forms_settings_form_method_tab_' . $current_tab, 'post' ) ); ?>" id="mainform" action="" enctype="multipart/form-data">
 	<?php endif; ?>
 
-		<h1 class="screen-reader-text"><?php echo esc_html( $current_tab_label ); ?></h1>
+		<h1 class="screen-reader-text"><?php echo esc_html( wp_strip_all_tags( $current_tab_label ) ); ?></h1>
 
 		<?php if ( $use_react_header ) : ?>
 			<?php include __DIR__ . '/html-admin-header-skeleton.php'; ?>
@@ -46,7 +46,7 @@ $use_react_header = apply_filters( 'everest_forms_use_react_header', true, $curr
 											<?php echo evf_file_get_contents( '/assets/images/settings-icons/' . $slug  . '.svg' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 										</span>
 										<span class="evf-nav__link-label">
-											<p><?php echo esc_html( $label ); ?></p>
+											<p><?php echo wp_kses_post( $label ); ?></p>
 											<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
 												<path stroke="#383838" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 18 6-6-6-6"/>
 											</svg>

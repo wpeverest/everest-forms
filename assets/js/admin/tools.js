@@ -138,6 +138,27 @@ jQuery(function ($) {
 			},
 		});
 	});
+	function evfRenderPaginationWindow( $pagination, currentPage ) {
+		var totalPages = parseInt( $pagination.data("fm-ceil") );
+		if ( totalPages <= 7 ) { return; }
+		var delta = 2;
+		var show = {};
+		show[1] = true; show[totalPages] = true;
+		for ( var i = Math.max( 2, currentPage - delta ); i <= Math.min( totalPages - 1, currentPage + delta ); i++ ) {
+			show[i] = true;
+		}
+		$pagination.find(".evf-fm-page").hide();
+		$pagination.find(".evf-fm-ellipsis").remove();
+		var prev = null;
+		Object.keys(show).map(Number).sort(function (a, b) { return a - b; }).forEach(function (page) {
+			var $btn = $pagination.find('[data-page="' + page + '"]');
+			if ( prev !== null && page - prev > 1 ) {
+				$btn.before('<span class="evf-fm-ellipsis">&#8230;</span>');
+			}
+			$btn.show(); prev = page;
+		});
+	}
+
 	$(document).ready(function () {
 		$(document).on("click", "#evf-fm-select-all", function () {
 			var checkList = $(document).find(".evf-fm-select-single:visible");
@@ -163,15 +184,16 @@ jQuery(function ($) {
 				return;
 			}
 
+			var $pagination = $(this).closest(".evf-fm-pagination");
+			var currentPage = $(this).data("page");
+
 			$(".evf-fm-page").removeClass("evf-fm-btn-active");
 			$(this).addClass("evf-fm-btn-active");
 
-			var formTable = $(document).find(".evf-fm-forms-table");
+			evfRenderPaginationWindow( $pagination, currentPage );
 
-			var formPerPage = $(this)
-				.closest(".evf-fm-pagination")
-				.data("form-per-page");
-			var currentPage = $(this).data("page");
+			var formTable = $(document).find(".evf-fm-forms-table");
+			var formPerPage = $pagination.data("form-per-page");
 
 			var start = (currentPage - 1) * formPerPage + 1;
 			var end = start + formPerPage - 1;
@@ -236,12 +258,13 @@ jQuery(function ($) {
 				beforeSend: function () {
 					var spinner =
 						'<i class="evf-loading evf-loading-active"></i>';
-					$this.closest("td").append(spinner);
+					$this.prop( "disabled", true ).after( spinner );
 					$(".everest-froms-import_notice").remove();
 				},
 				success: function (res) {
 					$(".everest-froms-import_notice").remove();
 					$(".evf-loading").remove();
+					$this.prop( "disabled", false );
 					var message_string = "";
 					if (true === res.success) {
 						var formDatas = res.data.form_data;

@@ -30,6 +30,9 @@ $files_to_load           = [
 	$themegrill_library_path . '/src/Modules/Notification.php',
 	$themegrill_library_path . '/src/Modules/Logger.php',
 	$themegrill_library_path . '/src/Modules/Announcements.php',
+
+	$themegrill_library_path . '/src/Modules/Licenser.php',
+	$themegrill_library_path . '/src/Modules/Updater.php',
 ];
 
 $files_to_load = array_merge( $files_to_load, apply_filters( 'themegrill_sdk_required_files', [] ) );

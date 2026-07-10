@@ -314,6 +314,14 @@ class EVF_AJAX {
 				$data = array_replace_recursive( $data, $new_post_data );
 			}
 		}
+
+		$data = apply_filters( 'everest_forms_builder_save_form_data', $data );
+
+		if ( is_array( $data ) ) {
+			// First builder save: form is no longer "fresh"; add-ons can show full/legacy UI if needed.
+			$data['is_new_form'] = false;
+		}
+
 		// Check for empty meta key.
 		$logger->info(
 			__( 'Check for empty meta key.', 'everest-forms' ),
@@ -422,11 +430,11 @@ class EVF_AJAX {
 					);
 				}
 
-				if ( empty( $field['meta-key'] ) && ! in_array( $field['type'], array( 'html', 'title', 'captcha', 'divider', 'reset', 'recaptcha', 'hcaptcha', 'turnstile', 'payment_summary' ), true ) ) {
-					$empty_meta_data[] = $field['label'];
+				if ( empty( $field['meta-key'] ) && ! in_array( $field['type'], array( 'html', 'title', 'captcha', 'divider', 'reset', 'recaptcha', 'hcaptcha', 'turnstile', 'payment_summary', 'payment-gateway-selector', 'payment-coupon' ), true ) ) {
+					$empty_meta_data[] = ! empty( $field['label'] ) ? $field['label'] : sprintf( /* translators: %s: field id */ esc_html__( 'Field #%s', 'everest-forms' ), isset( $field['id'] ) ? $field['id'] : '' );
 				}
 
-				if ( empty( $field['label'] ) && ! in_array( $field['type'], array( 'html', 'title', 'captcha', 'divider', 'reset', 'recaptcha', 'hcaptcha', 'turnstile', 'payment_summary' ), true ) ) {
+				if ( empty( $field['label'] ) && ! in_array( $field['type'], array( 'html', 'title', 'captcha', 'divider', 'reset', 'recaptcha', 'hcaptcha', 'turnstile', 'payment_summary', 'payment-gateway-selector', 'payment-coupon' ), true ) ) {
 					$empty_field_label[] = $field['id'];
 				}
 
@@ -547,8 +555,12 @@ class EVF_AJAX {
 			$has_square_credit_card = false;
 
 			foreach ( $form_fields as $field ) {
+				if ( empty( $field['type'] ) ) {
+					continue;
+				}
 				if ( 'square-payment' === $field['type'] ) {
 					$has_square_credit_card = true;
+					break;
 				}
 			}
 
@@ -916,6 +928,13 @@ class EVF_AJAX {
 					'error' => esc_html__( 'Missing data', 'everest-forms' ),
 				)
 			);
+		}
+
+		// EVF_Integrations is normally loaded on current_screen (admin page loads only).
+		// During AJAX requests that hook never fires, so integration action hooks are never
+		// registered. Instantiate it here so provider connect handlers are available.
+		if ( ! EVF()->integrations ) {
+			EVF()->integrations = new EVF_Integrations();
 		}
 
 		do_action( 'everest_forms_integration_account_connect_' . ( isset( $_POST['source'] ) ? sanitize_text_field( wp_unslash( $_POST['source'] ) ) : '' ), $_POST );
@@ -2041,7 +2060,7 @@ class EVF_AJAX {
 
 			$installed_plugins = get_plugins();
 
-			if ( in_array( 'smart-smtp/smart-smtp.php', $installed_plugins ) ) {
+			if ( array_key_exists( 'smart-smtp/smart-smtp.php', $installed_plugins ) ) {
 				$activate_result = activate_plugin( 'smart-smtp/smart-smtp.php' );
 				if ( is_wp_error( $activate_result ) ) {
 					$error_message = $activate_result->get_error_message();
@@ -2086,7 +2105,7 @@ class EVF_AJAX {
 			wp_send_json_success(
 				array(
 					'message'         => 'SmartSMTP plugin installed and activated successfully!',
-					'redirection_url' => admin_url( 'admin.php?page=smart-smtp' ),
+					'redirection_url' => evf_get_smart_smtp_google_workspace_setup_url(),
 				)
 			);
 		} catch ( Exception $e ) {

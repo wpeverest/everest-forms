@@ -1,20 +1,17 @@
 import React, { useEffect, useState } from "react";
 import apiFetch from "@wordpress/api-fetch";
 import {
-  Button,
-  useToast,
-  Spinner,
   Box,
-  Text,
-  Table,
-  Tbody,
-  Tr,
-  Td,
+  Button,
+  Flex,
+  HStack,
   Icon,
-  Divider,
+  Spinner,
+  Text,
   VStack,
+  useToast,
 } from "@chakra-ui/react";
-import { CheckCircleIcon, WarningIcon } from "@chakra-ui/icons";
+import { FiCheck, FiDownload, FiZap } from "react-icons/fi";
 import { templatesScriptData } from "../utils/global";
 import { __, sprintf } from '@wordpress/i18n';
 
@@ -31,6 +28,53 @@ interface PluginStatusResponse {
 
 const { restURL, security } = templatesScriptData;
 
+const StatusBadge: React.FC<{ status: string | undefined }> = ({ status }) => {
+  if (!status) {
+    return <Spinner size="xs" color="#7545BB" thickness="2px" />;
+  }
+  if (status === 'active') {
+    return (
+      <HStack spacing="5px">
+        <Box w="6px" h="6px" borderRadius="full" bg="#22c55e" />
+        <Text fontSize="12px" fontWeight="500" color="#16a34a" margin="0">
+          {__('Active', 'everest-forms')}
+        </Text>
+      </HStack>
+    );
+  }
+  if (status === 'inactive') {
+    return (
+      <HStack spacing="5px">
+        <Box w="6px" h="6px" borderRadius="full" bg="#f59e0b" />
+        <Text fontSize="12px" fontWeight="500" color="#d97706" margin="0">
+          {__('Inactive', 'everest-forms')}
+        </Text>
+      </HStack>
+    );
+  }
+  if (status === 'not-installed') {
+    return (
+      <HStack spacing="5px">
+        <Box w="6px" h="6px" borderRadius="full" bg="#94a3b8" />
+        <Text fontSize="12px" fontWeight="500" color="#64748b" margin="0">
+          {__('Not installed', 'everest-forms')}
+        </Text>
+      </HStack>
+    );
+  }
+  if (status === 'error') {
+    return (
+      <HStack spacing="5px">
+        <Box w="6px" h="6px" borderRadius="full" bg="#ef4444" />
+        <Text fontSize="12px" fontWeight="500" color="#dc2626" margin="0">
+          {__('Error', 'everest-forms')}
+        </Text>
+      </HStack>
+    );
+  }
+  return null;
+};
+
 const PluginStatus: React.FC<PluginStatusProps> = ({
   requiredPlugins,
   onActivateAndContinue,
@@ -38,8 +82,7 @@ const PluginStatus: React.FC<PluginStatusProps> = ({
   const [pluginStatuses, setPluginStatuses] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
   const [installInProgress, setInstallInProgress] = useState(false);
-  const [installComplete, setInstallComplete] = useState(false);
-  const [buttonLabel, setButtonLabel] = useState("");
+  const [buttonState, setButtonState] = useState<'idle' | 'install' | 'activate' | 'continue'>('idle');
   const toast = useToast();
 
   useEffect(() => {
@@ -48,200 +91,152 @@ const PluginStatus: React.FC<PluginStatusProps> = ({
         const response = await apiFetch<PluginStatusResponse>({
           path: `${restURL}everest-forms/v1/plugin/status`,
           method: "GET",
-          headers: {
-            "X-WP-Nonce": security,
-          },
+          headers: { "X-WP-Nonce": security },
         });
-
         if (response.success) {
           setPluginStatuses(response.plugin_status);
-          updateButtonLabel(response.plugin_status);
-        } else {
-		  toast({
-			title:__("Error", "everest-forms"),
-			description: __("Invalid response format.","everest-forms"),
-			status: "error",
-			position: "bottom-right",
-			duration: 5000,
-			isClosable: true,
-			variant: "subtle",
-		  });
+          deriveButtonState(response.plugin_status);
         }
-      } catch (error) {
+      } catch {
         toast({
           title: __("Error", "everest-forms"),
-          description: __("Unable to check plugin status.","everest-forms"),
-          status: "error",
-          position: "bottom-right",
-          duration: 5000,
-          isClosable: true,
-          variant: "subtle",
+          description: __("Unable to check plugin status.", "everest-forms"),
+          status: "error", position: "bottom-right", duration: 5000, isClosable: true, variant: "subtle",
         });
       }
     };
-
     fetchPluginStatus();
-  }, [toast]);
+  }, []);
 
-  const updateButtonLabel = (statuses: Record<string, string>) => {
-    const allActive = requiredPlugins.every(
-      (plugin) => statuses[plugin.key] === "active"
-    );
-    const anyNotInstalled = requiredPlugins.some(
-      (plugin) => statuses[plugin.key] === "not-installed"
-    );
-    const anyInactive = requiredPlugins.some(
-      (plugin) => statuses[plugin.key] === "inactive"
-    );
+  const deriveButtonState = (statuses: Record<string, string>) => {
+    const allActive   = requiredPlugins.every(p => statuses[p.key] === 'active');
+    const anyNotInst  = requiredPlugins.some(p => statuses[p.key] === 'not-installed');
+    const anyInactive = requiredPlugins.some(p => statuses[p.key] === 'inactive');
 
-    if (allActive) {
-      setButtonLabel(__("Continue","everest-forms"));
-      setInstallComplete(true);
-    } else if (anyNotInstalled) {
-      setButtonLabel(__("Install & Activate","everest-forms"));
-      setInstallComplete(false);
-    } else if (anyInactive) {
-      setButtonLabel(__("Activate and Continue","everest-forms"));
-      setInstallComplete(false);
-    } else {
-		setButtonLabel(__("Continue","everest-forms"));
-      setInstallComplete(false);
-    }
+    if (allActive)        setButtonState('continue');
+    else if (anyNotInst)  setButtonState('install');
+    else if (anyInactive) setButtonState('activate');
+    else                  setButtonState('continue');
   };
+
   const handleButtonClick = async () => {
-	if (installComplete) {
-	  setInstallInProgress(true);
-	  onActivateAndContinue();
-	} else {
-	  const anyNotInstalled = requiredPlugins.some(
-		(plugin) => pluginStatuses[plugin.key] === "not-installed"
-	  );
-	  const anyInactive = requiredPlugins.some(
-		(plugin) => pluginStatuses[plugin.key] === "inactive"
-	  );
+    if (buttonState === 'continue') {
+      onActivateAndContinue();
+      return;
+    }
 
-	  if (anyInactive || anyNotInstalled) {
-		setLoading(true);
-		setInstallInProgress(true);
+    setLoading(true);
+    setInstallInProgress(true);
 
-		let finalMessage = "";
-		for (const plugin of requiredPlugins) {
-		  try {
-			const response = (await apiFetch({
-			  path: `${restURL}everest-forms/v1/plugin/activate`,
-			  method: "POST",
-			  body: JSON.stringify({
-				moduleData: [
-				  {
-					name: plugin.value,
-					slug: plugin.key,
-					type: pluginStatuses[plugin.key] === "not-installed" ? "addon" : "addon",
-				  },
-				],
-			  }),
-			  headers: {
-				"Content-Type": "application/json",
-				"X-WP-Nonce": security,
-			  },
-			})) as PluginStatusResponse;
+    let finalMessage = "";
+    for (const plugin of requiredPlugins) {
+      if (pluginStatuses[plugin.key] === 'active') continue;
+      try {
+        const response = (await apiFetch({
+          path: `${restURL}everest-forms/v1/plugin/activate`,
+          method: "POST",
+          body: JSON.stringify({
+            moduleData: [{ name: plugin.value, slug: plugin.key, type: "addon" }],
+          }),
+          headers: { "Content-Type": "application/json", "X-WP-Nonce": security },
+        })) as PluginStatusResponse;
 
-			if (response.success) {
-			  setPluginStatuses((prevStatuses) => ({
-				...prevStatuses,
-				[plugin.key]: "active",
-			  }));
+        if (response.success) {
+          setPluginStatuses(prev => ({ ...prev, [plugin.key]: 'active' }));
+          finalMessage = response.message || __("Plugin activated successfully.", "everest-forms");
+        } else {
+          setPluginStatuses(prev => ({ ...prev, [plugin.key]: 'error' }));
+          finalMessage = response.message || sprintf(__("Failed to activate: %s.", "everest-forms"), plugin.value);
+        }
+      } catch {
+        setPluginStatuses(prev => ({ ...prev, [plugin.key]: 'error' }));
+        finalMessage = sprintf(__("Unable to activate %s.", "everest-forms"), plugin.value);
+      }
+    }
 
-			  finalMessage = response.message || __("Plugin activated successfully.", "everest-forms");
+    setLoading(false);
+    setInstallInProgress(false);
+    setButtonState('continue');
 
-			} else {
-			  setPluginStatuses((prevStatuses) => ({
-				...prevStatuses,
-				[plugin.key]: "error",
-			  }));
-
-			  finalMessage = response.message || sprintf(
-				__("Failed to activate plugin: %s.", "everest-forms"),
-				plugin.value
-			  );
-			}
-		  } catch (error) {
-			setPluginStatuses((prevStatuses) => ({
-			  ...prevStatuses,
-			  [plugin.key]: "error",
-			}));
-
-			// Store the error message for catch block
-			finalMessage = sprintf(
-			  __("Unable to activate %s.", "everest-forms"),
-			  plugin.value
-			);
-		  }
-		}
-
-		setLoading(false);
-		setInstallInProgress(false);
-		setInstallComplete(true);
-		setButtonLabel("Continue");
-
-		toast({
-		  title: __("Success", "everest-forms"),
-		  description: finalMessage,
-		  status: "success",
-		  position: "bottom-right",
-		  duration: 5000,
-		  isClosable: true,
-		  variant: "subtle",
-		});
-	  } else {
-		onActivateAndContinue();
-	  }
-	}
+    toast({
+      title: __("Success", "everest-forms"),
+      description: finalMessage,
+      status: "success", position: "bottom-right", duration: 5000, isClosable: true, variant: "subtle",
+    });
   };
 
+  const buttonConfig = {
+    install:  { label: __('Install & Activate', 'everest-forms'), icon: FiDownload },
+    activate: { label: __('Activate',           'everest-forms'), icon: FiZap      },
+    continue: { label: __('Continue',            'everest-forms'), icon: FiCheck    },
+    idle:     { label: __('Continue',            'everest-forms'), icon: FiCheck    },
+  }[buttonState];
+
+  if (requiredPlugins.length === 0) return null;
 
   return (
-    <VStack spacing={4} align="stretch">
-      {requiredPlugins?.length > 0 && (
-        <>
-          <Divider color={"gray.200"} mb={0} />
-          <Text my={0} fontSize={16} color={"gray.700"}>
-            This form template requires the following addons:
+    <VStack align="stretch" spacing="0">
+      {/* Addon rows */}
+      <VStack align="stretch" spacing="2px" mb="20px">
+        {requiredPlugins.map((plugin, i) => (
+          <Flex
+            key={plugin.key}
+            align="center"
+            justify="space-between"
+            px="14px"
+            py="12px"
+            bg={i % 2 === 0 ? '#fafafa' : 'white'}
+            border="1px solid #f1f5f9"
+            borderRadius={
+              i === 0
+                ? '10px 10px 0 0'
+                : i === requiredPlugins.length - 1
+                ? '0 0 10px 10px'
+                : '0'
+            }
+            borderTop={i > 0 ? 'none' : undefined}
+          >
+            <Text fontSize="14px" fontWeight="500" color="#374151" margin="0">
+              {plugin.value}
+            </Text>
+            <StatusBadge status={pluginStatuses[plugin.key]} />
+          </Flex>
+        ))}
+      </VStack>
+
+      {/* Action button */}
+      {buttonState !== 'idle' && (
+        <Box
+          as="button"
+          display="inline-flex"
+          alignItems="center"
+          justifyContent="center"
+          gap="8px"
+          alignSelf="flex-end"
+          h="40px"
+          px="20px"
+          borderRadius="8px"
+          bg={buttonState === 'continue' ? '#22c55e' : '#7545BB'}
+          color="white"
+          fontSize="14px"
+          fontWeight="500"
+          border="none"
+          cursor={loading || installInProgress ? 'not-allowed' : 'pointer'}
+          opacity={loading || installInProgress ? 0.75 : 1}
+          onClick={!loading && !installInProgress ? handleButtonClick : undefined}
+          transition="background 0.2s, opacity 0.2s"
+          _hover={{ bg: buttonState === 'continue' ? '#16a34a' : '#6a3daa' }}
+        >
+          {loading ? (
+            <Spinner size="xs" color="white" thickness="2px" />
+          ) : (
+            <Icon as={buttonConfig.icon} boxSize="4" />
+          )}
+          <Text margin="0" color="white">
+            {loading ? __('Processing…', 'everest-forms') : buttonConfig.label}
           </Text>
-          <Box borderWidth="1px" borderRadius="md" overflow="hidden" w="100%">
-            <Table variant="simple">
-              <Tbody>
-                {requiredPlugins.map((plugin) => (
-                  <Tr key={plugin.key}>
-                    <Td>{plugin.value}</Td>
-                    <Td textAlign="right">
-                      {pluginStatuses[plugin.key] === "active" ? (
-                        <Icon as={CheckCircleIcon} color="green" />
-                      ) : pluginStatuses[plugin.key] === "inactive" ||
-                        pluginStatuses[plugin.key] === "not-installed" ? (
-                        <Icon as={WarningIcon} color="yellow" />
-                      ) : (
-                        <Spinner size="sm" />
-                      )}
-                    </Td>
-                  </Tr>
-                ))}
-              </Tbody>
-            </Table>
-          </Box>
-        </>
+        </Box>
       )}
-      {buttonLabel && (
-		<Button
-			marginLeft={"auto"}
-			onClick={handleButtonClick}
-			colorScheme="purple"
-			size="md"
-			isLoading={loading}
-			isDisabled={installInProgress}
-		>
-			{buttonLabel}
-		</Button>
-		)}
     </VStack>
   );
 };

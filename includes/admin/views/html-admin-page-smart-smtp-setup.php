@@ -10,7 +10,7 @@ defined( 'ABSPATH' ) || exit;
 $everest_forms_image_path = evf()->plugin_url() . '/assets/images/everest-forms-logo.png';
 $smart_smtp_image_path    = evf()->plugin_url() . '/assets/images/smart-smtp-logo.png';
 $checked_image_path       = evf()->plugin_url() . '/assets/images/evf-checked.png';
-$redirect_url             = admin_url( 'admin.php?page=smart-smtp' );
+$redirect_url             = evf_get_smart_smtp_google_workspace_setup_url();
 $support_url              = 'https://wordpress.org/support/plugin/smart-smtp/?utm_source=everest_forms_dashboard';
 $documentation_url        = 'https://docs.themegrill.com/docs/smartsmtp/?utm_source=everest_forms_dashboard';
 

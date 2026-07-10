@@ -103,6 +103,8 @@ class EVF_Admin_Dashboard {
 					'liveDemoURL'          => esc_url_raw( 'https://everestforms.demoswp.net/' ),
 					'assetsURL'            => esc_url( EVF()->plugin_url() . '/assets/' ),
 					'evfRestApiNonce'      => wp_create_nonce( 'wp_rest' ),
+					'ajaxURL'              => esc_url( admin_url( 'admin-ajax.php' ) ),
+					'smartSmtpNonce'       => wp_create_nonce( 'everest-forms-smart-smtp-installation-nonce' ),
 					'newFormURL'           => esc_url( admin_url( '/admin.php?page=evf-builder&create-form=1' ) ),
 					'allFormsURL'          => esc_url( admin_url( '/admin.php?page=evf-builder' ) ),
 					'restURL'              => rest_url(),

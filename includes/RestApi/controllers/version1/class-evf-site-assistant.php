@@ -47,7 +47,7 @@ class EVF_Site_Assistant {
 				array(
 					'methods'             => \WP_REST_Server::READABLE,
 					'callback'            => array( $this, 'get_status' ),
-					'permission_callback' => '__return_true',
+					'permission_callback' => array( $this, 'check_admin_permissions' ),
 				),
 			)
 		);
@@ -59,7 +59,7 @@ class EVF_Site_Assistant {
 				array(
 					'methods'             => \WP_REST_Server::CREATABLE,
 					'callback'            => array( $this, 'skip_setup' ),
-					'permission_callback' => '__return_true',
+					'permission_callback' => array( $this, 'check_admin_permissions' ),
 					'args'                => array(
 						'step' => array(
 							'required'          => false,
@@ -80,7 +80,7 @@ class EVF_Site_Assistant {
 				array(
 					'methods'             => \WP_REST_Server::CREATABLE,
 					'callback'            => array( $this, 'send_test_email' ),
-					'permission_callback' => '__return_true',
+					'permission_callback' => array( $this, 'check_admin_permissions' ),
 					'args'                => array(
 						'email' => array(
 							'required'          => true,
@@ -93,16 +93,6 @@ class EVF_Site_Assistant {
 				),
 			)
 		);
-	}
-
-	/**
-	 * Ensure admin permissions.
-	 *
-	 * @param WP_REST_Request $request Full request object.
-	 * @return bool|WP_Error True if permitted, WP_Error otherwise.
-	 */
-	public function ensure_admin_permissions( $request ) {
-		return $this->check_admin_permissions( $request );
 	}
 
 	/**
@@ -169,6 +159,40 @@ class EVF_Site_Assistant {
 		return ! empty( $site_key ) && ! empty( $secret_key );
 	}
 
+	/**
+	 * Check if Smart SMTP plugin is installed (not necessarily active).
+	 *
+	 * @return bool
+	 */
+	protected function is_smart_smtp_installed() {
+		if ( ! function_exists( 'get_plugins' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/plugin.php';
+		}
+		return isset( get_plugins()['smart-smtp/smart-smtp.php'] );
+	}
+
+	/**
+	 * Check if Smart SMTP plugin is active.
+	 *
+	 * @return bool
+	 */
+	protected function is_smart_smtp_active() {
+		if ( ! function_exists( 'is_plugin_active' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/plugin.php';
+		}
+		return is_plugin_active( 'smart-smtp/smart-smtp.php' );
+	}
+
+	/**
+	 * Check if SMTP transport was used for the last outbound mail from this flow.
+	 *
+	 * `process_test_email()` records the PHPMailer transport in `everest_forms_runtime_smtp_active`.
+	 *
+	 * @return bool
+	 */
+	protected function is_smtp_active() {
+		return (bool) get_option( 'everest_forms_runtime_smtp_active', false );
+	}
 
 	/**
 	 * Check if any forms exist.
@@ -187,11 +211,6 @@ class EVF_Site_Assistant {
 	 * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
 	 */
 	public function get_status( $request ) {
-		$perm = $this->ensure_admin_permissions( $request );
-		if ( is_wp_error( $perm ) ) {
-			return $perm;
-		}
-
 		$skipped_steps           = array();
 		$spam_protection_skipped = $this->is_spam_protection_completed();
 		$create_form_skipped     = (bool) get_option( self::CREATE_FORM_SKIPPED, false );
@@ -213,6 +232,10 @@ class EVF_Site_Assistant {
 			'spam_protection_configured' => $this->is_spam_protection_configured(),
 			'all_steps_completed'        => $this->are_all_steps_completed(),
 			'has_forms'                  => $this->has_forms(),
+			'last_form_email_status'     => get_option( 'everest_forms_last_form_email_status', '' ),
+			'is_smtp_active'             => $this->is_smtp_active(),
+			'is_smart_smtp_installed'    => $this->is_smart_smtp_installed(),
+			'is_smart_smtp_active'       => $this->is_smart_smtp_active(),
 		);
 
 		return rest_ensure_response(
@@ -230,11 +253,6 @@ class EVF_Site_Assistant {
 	 * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
 	 */
 	public function skip_setup( $request ) {
-		$perm = $this->ensure_admin_permissions( $request );
-		if ( is_wp_error( $perm ) ) {
-			return $perm;
-		}
-
 		$step = $request->get_param( 'step' );
 		$step = is_string( $step ) ? sanitize_text_field( $step ) : 'all';
 
@@ -299,6 +317,10 @@ class EVF_Site_Assistant {
 					'spam_protection_configured' => $this->is_spam_protection_configured(),
 					'all_steps_completed'        => $this->are_all_steps_completed(),
 					'has_forms'                  => $this->has_forms(),
+					'last_form_email_status'     => get_option( 'everest_forms_last_form_email_status', '' ),
+					'is_smtp_active'             => $this->is_smtp_active(),
+					'is_smart_smtp_installed'    => $this->is_smart_smtp_installed(),
+					'is_smart_smtp_active'       => $this->is_smart_smtp_active(),
 				),
 			)
 		);
@@ -312,11 +334,6 @@ class EVF_Site_Assistant {
 	 * @return WP_REST_Response|WP_Error Response object on success, or WP_Error object on failure.
 	 */
 	public function send_test_email( $request ) {
-		$perm = $this->ensure_admin_permissions( $request );
-		if ( is_wp_error( $perm ) ) {
-			return $perm;
-		}
-
 		$email = $request->get_param( 'email' );
 
 		if ( ! is_email( $email ) ) {
@@ -329,40 +346,57 @@ class EVF_Site_Assistant {
 
 		$email_sent = $this->process_test_email( $email );
 
+		$skipped_steps           = array();
+		$spam_protection_skipped = $this->is_spam_protection_completed();
+		$create_form_skipped     = (bool) get_option( self::CREATE_FORM_SKIPPED, false );
+
+		if ( $spam_protection_skipped ) {
+			$skipped_steps[] = 'spam_protection';
+		}
+
+		if ( $create_form_skipped ) {
+			$skipped_steps[] = 'create_form';
+		}
+
 		if ( $email_sent ) {
 			update_option( self::TEST_EMAIL_SENT, true );
 			do_action( 'everest_forms_test_email_sent', $email );
 
-			$skipped_steps           = array();
-			$spam_protection_skipped = $this->is_spam_protection_completed();
-			$create_form_skipped     = (bool) get_option( self::CREATE_FORM_SKIPPED, false );
-
-			if ( $spam_protection_skipped ) {
-				$skipped_steps[] = 'spam_protection';
-			}
-
-			if ( $create_form_skipped ) {
-				$skipped_steps[] = 'create_form';
-			}
-
 			return rest_ensure_response(
 				array(
 					'success' => true,
-					'message' => __( 'Test email sent successfully. Didn’t receive it? Please check your Spam or Junk folder.', 'everest-forms' ),
+					'message' => __( 'Test email sent successfully. Didn\'t receive it? Please check your Spam or Junk folder.', 'everest-forms' ),
 					'data'    => array(
-						'test_email_sent'            => true,
-						'skipped_steps'              => $skipped_steps,
+						'email_sent'              => true,
+						'test_email_sent'         => true,
+						'skipped_steps'           => $skipped_steps,
 						'spam_protection_configured' => $this->is_spam_protection_configured(),
-						'all_steps_completed'        => $this->are_all_steps_completed(),
-						'has_forms'                  => $this->has_forms(),
+						'all_steps_completed'     => $this->are_all_steps_completed(),
+						'has_forms'               => $this->has_forms(),
+						'last_form_email_status'  => get_option( 'everest_forms_last_form_email_status', '' ),
+						'is_smtp_active'          => $this->is_smtp_active(),
+						'is_smart_smtp_installed' => $this->is_smart_smtp_installed(),
+						'is_smart_smtp_active'    => $this->is_smart_smtp_active(),
 					),
 				)
 			);
 		} else {
-			return new \WP_Error(
-				'email_send_failed',
-				__( 'Failed to send test email. Please check your email configuration.', 'everest-forms' ),
-				array( 'status' => 500 )
+			return rest_ensure_response(
+				array(
+					'success' => true,
+					'data'    => array(
+						'email_sent'              => false,
+						'test_email_sent'         => false,
+						'skipped_steps'           => $skipped_steps,
+						'spam_protection_configured' => $this->is_spam_protection_configured(),
+						'all_steps_completed'     => $this->are_all_steps_completed(),
+						'has_forms'               => $this->has_forms(),
+						'last_form_email_status'  => get_option( 'everest_forms_last_form_email_status', '' ),
+						'is_smtp_active'          => $this->is_smtp_active(),
+						'is_smart_smtp_installed' => $this->is_smart_smtp_installed(),
+						'is_smart_smtp_active'    => $this->is_smart_smtp_active(),
+					),
+				)
 			);
 		}
 	}
@@ -388,7 +422,18 @@ class EVF_Site_Assistant {
 			__( 'Everest Forms Team', 'everest-forms' )
 		);
 
-		return wp_mail( $to, $subject, $message, $header );
+		$mailer_transport = '';
+		$capture_mailer   = static function ( $phpmailer ) use ( &$mailer_transport ) {
+			$mailer_transport = strtolower( (string) $phpmailer->Mailer );
+		};
+
+		add_action( 'phpmailer_init', $capture_mailer, 999 );
+		$sent = wp_mail( $to, $subject, $message, $header );
+		remove_action( 'phpmailer_init', $capture_mailer, 999 );
+
+		update_option( 'everest_forms_runtime_smtp_active', 'smtp' === $mailer_transport );
+
+		return $sent;
 	}
 
 	/**
@@ -412,16 +457,12 @@ class EVF_Site_Assistant {
 	 * @return bool|WP_Error True if permitted, WP_Error otherwise.
 	 */
 	public function check_admin_permissions( $request ) {
-		$referer = $request->get_header( 'referer' );
-
-		if ( $referer && strpos( $referer, 'page=evf-dashboard' ) !== false ) {
-			if ( ! current_user_can( 'manage_options' ) && ! current_user_can( 'manage_everest_forms' ) ) {
-				return new \WP_Error(
-					'rest_forbidden',
-					__( 'Sorry, you are not allowed to access this resource.', 'everest-forms' ),
-					array( 'status' => 403 )
-				);
-			}
+		if ( ! current_user_can( 'manage_options' ) && ! current_user_can( 'manage_everest_forms' ) ) {
+			return new \WP_Error(
+				'rest_forbidden',
+				__( 'Sorry, you are not allowed to access this resource.', 'everest-forms' ),
+				array( 'status' => 403 )
+			);
 		}
 
 		return true;
