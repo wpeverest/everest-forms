@@ -845,6 +845,7 @@ class EVF_Fm_Fluentforms extends EVF_Admin_Form_Migrator {
 
 			$this->process_fields( $form, $ff_fields, $unsupported, $upgrade_plan, $upgrade_omit, $quiz_settings );
 			$this->resolve_payment_field_references( $form, $upgrade_omit );
+			$this->resolve_conditional_logic( $form, $upgrade_omit );
 
 			$form = apply_filters( 'evf_fm_' . $this->slug . '_form_after_fields_mapping', $form, $ff_form_id, $ff_form );
 			$form = apply_filters( 'evf_fm_' . $this->slug . '_form_after_settings_mapping', $this->get_form_settings( $form, $ff_form_id, $upgrade_omit ), $ff_form_id, $ff_form );
@@ -917,6 +918,7 @@ class EVF_Fm_Fluentforms extends EVF_Admin_Form_Migrator {
 		$css_class   = isset( $settings['container_class'] ) ? $settings['container_class'] : '';
 		$default_val = isset( $attributes['value'] ) && ! is_array( $attributes['value'] ) ? $attributes['value'] : '';
 		$label_hide  = ( isset( $settings['label_placement'] ) && 'hidden' === $settings['label_placement'] ) ? '1' : '0';
+		$raw_cl      = isset( $settings['conditional_logics'] ) ? $settings['conditional_logics'] : array();
 
 		// Allocate a new field ID slot.
 		if ( ! empty( $form['form_field_id'] ) ) {
@@ -1665,6 +1667,15 @@ class EVF_Fm_Fluentforms extends EVF_Admin_Form_Migrator {
 			default:
 				break;
 		}
+
+		// Stash the raw conditional-logic config on the mapped field (if one was
+		// created) for resolve_conditional_logic() to translate once every field's
+		// EVF id and ff_name are known. Only the last sub-field of a multi-part
+		// field (e.g. input_name) gets it, since FF stores conditional_logics once
+		// per raw field regardless of how many EVF fields it expands into.
+		if ( isset( $form['form_fields'][ $field_id ] ) && ! empty( $raw_cl['status'] ) ) {
+			$form['form_fields'][ $field_id ]['_ff_conditional_logics'] = $raw_cl;
+		}
 	}
 
 	/**
@@ -1730,6 +1741,108 @@ class EVF_Fm_Fluentforms extends EVF_Admin_Form_Migrator {
 			if ( ! $resolved ) {
 				/* translators: %s: field label. */
 				$upgrade_omit[] = sprintf( esc_html__( '%s (could not resolve its linked product field)', 'everest-forms' ), $field['label'] ?: $field['type'] );
+			}
+		}
+	}
+
+	/**
+	 * Resolve the raw conditional_logics config stashed by map_field() into EVF's
+	 * conditional_logic_status/conditional_option/conditionals keys.
+	 *
+	 * FF's field-level conditional logic always means "show this field when the
+	 * condition matches" — there's no separate show/hide toggle — so the EVF
+	 * option is always 'show'. FF's 'group' type (OR of AND-groups) maps exactly
+	 * onto EVF's own conditionals shape; 'any'/'all' become one group per
+	 * condition (OR) or one group of all conditions (AND) respectively.
+	 *
+	 * @param array $form         EVF form array (passed by reference).
+	 * @param array $upgrade_omit No-equivalent field labels (passed by reference).
+	 */
+	private function resolve_conditional_logic( &$form, &$upgrade_omit ) {
+		$operator_map = array(
+			'='  => 'is',
+			'!=' => 'is_not',
+			'>'  => 'greater_than',
+			'<'  => 'less_than',
+			'>=' => 'greater_than',
+			'<=' => 'less_than',
+		);
+
+		$name_map = array();
+		foreach ( $form['form_fields'] as $evf_field_id => $evf_field ) {
+			if ( isset( $evf_field['ff_name'] ) ) {
+				$name_map[ $evf_field['ff_name'] ] = $evf_field_id;
+			}
+		}
+
+		$dropped_rules = false;
+		$build_group   = function ( $rules ) use ( $operator_map, $name_map, &$dropped_rules ) {
+			$group = array();
+			foreach ( $rules as $rule ) {
+				if ( empty( $rule['field'] ) || empty( $rule['operator'] ) ) {
+					continue;
+				}
+				if ( ! isset( $operator_map[ $rule['operator'] ] ) || ! isset( $name_map[ $rule['field'] ] ) ) {
+					$dropped_rules = true;
+					continue;
+				}
+				$group[] = array(
+					'field'    => $name_map[ $rule['field'] ],
+					'operator' => $operator_map[ $rule['operator'] ],
+					'value'    => isset( $rule['value'] ) ? $rule['value'] : '',
+				);
+			}
+			return $group;
+		};
+
+		foreach ( $form['form_fields'] as $field_id => &$field ) {
+			if ( empty( $field['_ff_conditional_logics'] ) ) {
+				continue;
+			}
+
+			$cl = $field['_ff_conditional_logics'];
+			unset( $field['_ff_conditional_logics'] );
+
+			$type          = isset( $cl['type'] ) ? $cl['type'] : 'any';
+			$groups        = array();
+			$dropped_rules = false;
+
+			if ( 'group' === $type ) {
+				$condition_groups = isset( $cl['condition_groups'] ) ? $cl['condition_groups'] : array();
+				foreach ( $condition_groups as $condition_group ) {
+					$rules = isset( $condition_group['rules'] ) ? $condition_group['rules'] : array();
+					$group = $build_group( $rules );
+					if ( ! empty( $group ) ) {
+						$groups[] = $group;
+					}
+				}
+			} elseif ( 'all' === $type ) {
+				$group = $build_group( isset( $cl['conditions'] ) ? $cl['conditions'] : array() );
+				if ( ! empty( $group ) ) {
+					$groups[] = $group;
+				}
+			} else { // 'any'.
+				foreach ( ( isset( $cl['conditions'] ) ? $cl['conditions'] : array() ) as $condition ) {
+					$group = $build_group( array( $condition ) );
+					if ( ! empty( $group ) ) {
+						$groups[] = $group;
+					}
+				}
+			}
+
+			if ( empty( $groups ) ) {
+				/* translators: %s: field label. */
+				$upgrade_omit[] = sprintf( esc_html__( '%s (conditional logic could not be migrated)', 'everest-forms' ), $field['label'] ?: $field['type'] );
+				continue;
+			}
+
+			$field['conditional_logic_status'] = '1';
+			$field['conditional_option']       = 'show';
+			$field['conditionals']             = $groups;
+
+			if ( $dropped_rules ) {
+				/* translators: %s: field label. */
+				$upgrade_omit[] = sprintf( esc_html__( '%s (some conditional logic rules use an unsupported operator or reference an unresolved field)', 'everest-forms' ), $field['label'] ?: $field['type'] );
 			}
 		}
 	}
