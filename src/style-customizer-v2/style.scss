@@ -2236,7 +2236,7 @@
 
 #everest-forms-panel-style .pv-bar .ttl {
 	font-weight: 600;
-	font-size: 13px;
+	font-size: var(--ui-fs-base);
 	color: var(--ui-ink);
 	display: flex;
 	align-items: center;
@@ -2278,17 +2278,13 @@
 	&.is-dirty {
 		color: var(--ui-amber);
 	}
-}
 
-#everest-forms-panel-style .devnow {
-	font-size: 11px;
-	font-weight: 600;
-	color: var(--ui-purple);
-	background: var(--ui-purple-50);
-	padding: 4px 10px;
-	border-radius: 99px;
-	white-space: nowrap;
-	margin-left: auto;
+	.save-check {
+		width: 13px;
+		height: 13px;
+		flex: none;
+		color: var(--ui-green);
+	}
 }
 
 #everest-forms-panel-style .devs {
@@ -2304,14 +2300,19 @@
 	button {
 		border: 0;
 		background: transparent;
-		width: 34px;
-		height: 28px;
+		width: 36px;
+		height: var(--ui-ctrl-h);
 		border-radius: var(--ui-radius-sm);
 		cursor: pointer;
 		color: var(--ui-ink-3);
 		display: grid;
 		place-items: center;
-		transition: all .15s;
+		transition: background .15s, color .15s, box-shadow .15s;
+
+		&:hover:not([aria-pressed="true"]) {
+			color: var(--ui-ink);
+			background: rgba(255, 255, 255, .6);
+		}
 
 		&[aria-pressed="true"] {
 			background: #fff;

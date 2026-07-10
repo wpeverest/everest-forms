@@ -326,7 +326,12 @@ export function PreviewPane( {
 							<span className="save-dot" aria-hidden="true" /> { __( 'Unsaved — hit Save above', 'everest-forms' ) }
 						</>
 					) : (
-						__( 'All changes saved', 'everest-forms' )
+						<>
+							<svg className="save-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2.5 } aria-hidden="true">
+								<path d="m5 13 4 4 10-10" />
+							</svg>
+							{ __( 'All changes saved', 'everest-forms' ) }
+						</>
 					) }
 				</span>
 
