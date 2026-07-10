@@ -314,7 +314,11 @@ final class Migrator {
 	 * --------------------------------------------------------------------- */
 
 	/**
-	 * Seed the six palette-driven token colours from a saved `color_palette` selection.
+	 * Seed the six palette-driven token colours from a saved `color_palette` selection, plus the
+	 * derived `btn.bgHover` (button_background darkened 14% toward black) — mirrors
+	 * `applyPalette()` in store.ts exactly, so a migrated form's button hover colour matches what
+	 * re-applying the same palette through the panel would produce, instead of silently falling
+	 * back to the schema default (`#eeeeee`).
 	 *
 	 * @param array $legacy Legacy record.
 	 * @return array token => device bag.
@@ -335,6 +339,36 @@ final class Migrator {
 			foreach ( $keys as $token_key ) {
 				$out[ $token_key ] = array( 'desktop' => $colors[ $slot ] );
 			}
+		}
+		if ( ! empty( $colors['button_background'] ) ) {
+			$out['btn.bgHover'] = array( 'desktop' => self::mix_hex( $colors['button_background'], '#000000', 0.14 ) );
+		}
+		return $out;
+	}
+
+	/**
+	 * Linear-interpolate two hex colours — PHP port of `mixHex()` in constants.ts, kept
+	 * byte-for-byte equivalent (same channel rounding) so a migrated `btn.bgHover` is identical
+	 * to what the panel would compute if the same palette were re-applied there.
+	 *
+	 * @param string $a First hex colour (`#rgb` or `#rrggbb`).
+	 * @param string $b Second hex colour.
+	 * @param float  $t Mix factor, 0 = `$a`, 1 = `$b`.
+	 * @return string `#rrggbb`.
+	 */
+	protected static function mix_hex( $a, $b, $t ) {
+		$parse = static function ( $hex ) {
+			$s = ltrim( (string) $hex, '#' );
+			if ( 3 === strlen( $s ) ) {
+				$s = $s[0] . $s[0] . $s[1] . $s[1] . $s[2] . $s[2];
+			}
+			return array( hexdec( substr( $s, 0, 2 ) ), hexdec( substr( $s, 2, 2 ) ), hexdec( substr( $s, 4, 2 ) ) );
+		};
+		$from = $parse( $a );
+		$to   = $parse( $b );
+		$out  = '#';
+		foreach ( $from as $i => $x ) {
+			$out .= str_pad( dechex( (int) round( $x + ( $to[ $i ] - $x ) * $t ) ), 2, '0', STR_PAD_LEFT );
 		}
 		return $out;
 	}

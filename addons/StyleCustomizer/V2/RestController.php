@@ -131,6 +131,7 @@ final class RestController {
 				),
 			)
 		);
+
 	}
 
 	/**
@@ -319,6 +320,12 @@ final class RestController {
 			// display-only, never the security boundary (that is enforced server-side on save).
 			'pro_active'     => Engine::pro_active(),
 			'record'         => $record,
+			// Drives the panel's migration banner (see panes.tsx MigrationBanner): true while the
+			// stored record is still the raw legacy shape — migration is one-way and compulsory,
+			// so this is purely informational (dismissible), not an offer to opt back out.
+			'migration'      => array(
+				'just_migrated' => ! empty( $stored ) && ! Engine::is_v2_record( $stored ),
+			),
 		);
 	}
 
@@ -376,17 +383,6 @@ final class RestController {
 			);
 		}
 
-		// Back up a legacy record ONCE before v2 first overwrites it, so a rollback is always
-		// possible (plan §5). Only the very first v2 save (when the stored record is still
-		// legacy) triggers the backup; subsequent v2 saves leave the backup untouched.
-		if ( isset( $all[ $form_id ] ) && ! Engine::is_v2_record( $all[ $form_id ] ) ) {
-			$backups = get_option( 'everest_forms_styles_legacy_backup', array() );
-			if ( ! isset( $backups[ $form_id ] ) ) {
-				$backups[ $form_id ] = $all[ $form_id ];
-				update_option( 'everest_forms_styles_legacy_backup', $backups, false );
-			}
-		}
-
 		$clean           = Sanitizer::sanitize_record( $incoming );
 		$all[ $form_id ] = $clean;
 		update_option( 'everest_forms_styles', $all, false ); // autoload=no.
@@ -412,4 +408,5 @@ final class RestController {
 			)
 		);
 	}
+
 }

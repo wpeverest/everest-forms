@@ -199,7 +199,18 @@ $m->query(
 ) or die( $m->error );
 $dup_id = $m->insert_id;
 $row    = $m->query( "SELECT post_content FROM wp_posts WHERE ID=$dup_id" )->fetch_assoc();
-$content = preg_replace( '/"id":"' . $form_id . '"/', '"id":"' . $dup_id . '"', $row['post_content'], 1 );
+// EVF stores the form's own `id` as EITHER a bare JSON integer (`"id":123`) or a quoted string
+// (`"id":"123"`) depending on how the form was last saved — both are seen in the wild (confirmed
+// on real data here). The old quoted-string-only pattern silently missed the bare-integer forms,
+// leaving the duplicate's internal id pointed at $form_id. That's fatal here specifically:
+// FrontendEnqueue::container_class() reads $form_data['id'] (not the shortcode attribute) to
+// decide whether to add the `evf-style-v2` marker class, so the duplicate's wrapper never got
+// it — the v2 CSS variables were correctly declared, but the rule template that reads them
+// (`.evf-style-v2#evf-{id} …`) never matched, making every migrated token render as its unstyled
+// default. Looked exactly like a mass migration failure; it was this tool's duplicate never
+// actually being recognized as v2 at all. Matching both quote styles (and always emitting the
+// quoted form) covers either source shape; absint() on read doesn't care which one it gets.
+$content = preg_replace( '/"id":"?' . $form_id . '"?(?!\d)/', '"id":"' . $dup_id . '"', $row['post_content'], 1 );
 $m->query( "UPDATE wp_posts SET post_content='" . $m->real_escape_string( $content ) . "', guid='?post_type=everest_form&p=$dup_id' WHERE ID=$dup_id" );
 $m->query( "INSERT INTO wp_postmeta (post_id,meta_key,meta_value) SELECT $dup_id,meta_key,meta_value FROM wp_postmeta WHERE post_id=$form_id" );
 

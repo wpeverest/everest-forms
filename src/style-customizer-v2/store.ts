@@ -17,6 +17,7 @@ import {
 	BootstrapSettings,
 	Device,
 	DeviceBag,
+	MigrationInfo,
 	ScalarValue,
 	StylePayload,
 	StyleRecord,
@@ -52,6 +53,8 @@ class StyleStore {
 	schemaVersion: number;
 	proActive: boolean;
 	googleFonts: string[];
+	/** Drives the migration banner (see panes.tsx MigrationBanner) — never mutated post-init. */
+	migration: MigrationInfo;
 
 	// Editable state.
 	tokens: Record< string, DeviceBag > = {};
@@ -85,6 +88,7 @@ class StyleStore {
 		this.schemaVersion = payload.schema_version;
 		this.proActive = !! payload.pro_active;
 		this.googleFonts = payload.google_fonts || [];
+		this.migration = payload.migration || { just_migrated: false };
 
 		this.hydrate( payload.record );
 		// "Apply Theme Style" is a per-form meta (not part of the style record); default on.

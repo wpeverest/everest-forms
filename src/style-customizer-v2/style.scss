@@ -1338,31 +1338,53 @@
 #everest-forms-panel-style .tpls {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
-	gap: 10px;
+	gap: 12px;
+	margin-bottom: 4px;
 }
 
+/* Hover/selected treatment intentionally mirrors .pal-card exactly (subtle border + background
+   shift, no lift/scale) — the two live side by side (Design tab vs. Templates tab) and should
+   feel like the same control language. */
 #everest-forms-panel-style .tpl {
 	position: relative;
-	border: 1.5px solid var(--ui-line);
-	border-radius: 4px;
+	border: 1px solid var(--ui-line);
+	border-radius: 10px;
 	overflow: hidden;
 	cursor: pointer;
 	background: #fff;
 	text-align: left;
 	padding: 0;
+	transition: border-color .12s, background .12s;
 
-	&[aria-pressed="true"] {
+	&:hover {
+		border-color: #b9bdc9;
+		background: #fafbfd;
+	}
+
+	&:focus-visible {
+		outline: none;
 		border-color: var(--ui-purple);
 		box-shadow: 0 0 0 2px var(--ui-purple-50);
 	}
 
+	&[aria-pressed="true"] {
+		border-color: var(--ui-purple);
+		background: var(--ui-purple-50);
+		box-shadow: 0 0 0 1px var(--ui-purple-50);
+
+		.cap {
+			color: var(--ui-purple);
+		}
+	}
+
 	.thumb {
-		height: 74px;
-		padding: 12px;
+		height: 82px;
+		padding: 14px;
 		display: flex;
 		flex-direction: column;
-		gap: 6px;
+		gap: 7px;
 		justify-content: center;
+		transition: filter .15s ease, opacity .15s ease;
 	}
 
 	.thumb .l {
@@ -1384,7 +1406,7 @@
 	}
 
 	.cap {
-		padding: 8px 10px;
+		padding: 9px 11px;
 		font-size: 11.5px;
 		font-weight: 600;
 		color: var(--ui-ink-2);
@@ -1392,12 +1414,16 @@
 		display: flex;
 		align-items: center;
 		gap: 6px;
+		transition: background .15s ease, color .15s ease;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
 }
 
 #everest-forms-panel-style .tpl .thumb.thumb-has-img {
 	padding: 6px;
-	height: 118px;
+	height: 122px;
 	overflow: hidden;
 	background: #fff;
 	display: block;
@@ -1411,18 +1437,39 @@
 	}
 }
 
-/* Locked (Pro) template card: dimmed thumbnail + PRO badge; click opens the upgrade page. */
+/* "Currently applied" checkmark — top-left, distinct from the top-right PRO/delete corner. */
+#everest-forms-panel-style .tpl-check {
+	position: absolute;
+	top: 7px;
+	left: 7px;
+	z-index: 2;
+	width: 19px;
+	height: 19px;
+	border-radius: 50%;
+	background: var(--ui-purple);
+	color: #fff;
+	display: grid;
+	place-items: center;
+	box-shadow: 0 1px 3px rgba(20, 23, 40, .25);
+
+	svg {
+		width: 11px;
+		height: 11px;
+	}
+}
+
+/* Locked (Pro) template card: dimmed thumbnail + PRO badge + a lock veil that fades in on hover. */
 #everest-forms-panel-style .tpl.tpl-locked {
 	.thumb {
-		opacity: .5;
-		filter: saturate( .7 );
+		opacity: .55;
+		filter: saturate( .6 );
 	}
 
 	.tpl-pro {
 		position: absolute;
 		top: 6px;
 		right: 6px;
-		z-index: 1;
+		z-index: 2;
 		font-size: 9px;
 		font-weight: 700;
 		letter-spacing: .06em;
@@ -1432,37 +1479,97 @@
 		padding: 2px 6px;
 		box-shadow: 0 1px 2px rgba(20, 23, 40, .2);
 	}
+
+	&:hover .thumb {
+		filter: saturate( .5 ) blur( .5px );
+	}
+}
+
+#everest-forms-panel-style .tpl-lock-veil {
+	position: absolute;
+	inset: 0;
+	bottom: 37px;
+	z-index: 1;
+	display: grid;
+	place-items: center;
+	background: rgba(20, 23, 40, 0);
+	color: #fff;
+	opacity: 0;
+	transition: opacity .15s ease, background .15s ease;
+	pointer-events: none;
+
+	svg {
+		width: 18px;
+		height: 18px;
+		filter: drop-shadow(0 1px 2px rgba(0, 0, 0, .35));
+	}
+}
+
+#everest-forms-panel-style .tpl.tpl-locked:hover .tpl-lock-veil {
+	opacity: 1;
+	background: rgba(20, 23, 40, .28);
 }
 
 /* Locked "Create Style Template" box (save-your-own is Pro). */
 #everest-forms-panel-style .tpl-create-locked {
-	display: block;
 	text-decoration: none;
 	opacity: 1;
-	transition: border-color .12s, background .12s;
-
-	.tpl-create-title {
-		display: flex;
-		align-items: center;
-		gap: 8px;
-	}
+	cursor: pointer;
 
 	&:hover {
 		border-color: var(--ui-purple);
 		background: var(--ui-purple-50);
+
+		.tpl-create-ic {
+			background: var(--ui-purple);
+			color: #fff;
+		}
 	}
 }
 
 /* Create Style Template card */
 #everest-forms-panel-style .tpl-create {
+	display: flex;
+	align-items: flex-start;
+	gap: 12px;
 	background: #fff;
 	border: 1px solid var(--ui-line);
-	border-radius: 8px;
+	border-radius: 10px;
 	padding: 14px;
-	margin-bottom: 16px;
+	margin-bottom: 18px;
+	transition: border-color .15s ease, background .15s ease;
+
+	&:focus-within {
+		border-color: var(--ui-purple);
+	}
+}
+
+#everest-forms-panel-style .tpl-create-ic {
+	flex: none;
+	display: grid;
+	place-items: center;
+	width: 32px;
+	height: 32px;
+	border-radius: 9px;
+	background: var(--ui-purple-50);
+	color: var(--ui-purple);
+	transition: background .15s ease, color .15s ease;
+
+	svg {
+		width: 16px;
+		height: 16px;
+	}
+}
+
+#everest-forms-panel-style .tpl-create-fields {
+	flex: 1;
+	min-width: 0;
 }
 
 #everest-forms-panel-style .tpl-create-title {
+	display: flex;
+	align-items: center;
+	gap: 8px;
 	font-size: 13px;
 	font-weight: 600;
 	color: var(--ui-ink);
@@ -1472,7 +1579,6 @@
 #everest-forms-panel-style .tpl-create-sub {
 	font-size: 11.5px;
 	color: var(--ui-ink-3);
-	font-style: italic;
 	margin: 0 0 10px;
 	line-height: 1.5;
 }
@@ -1717,6 +1823,8 @@
 
 /* ---------- preview (portaled into the builder content area) ---------- */
 #everest-forms-panel-style #evf-scv2-preview {
+	display: flex;
+	flex-direction: column;
 	height: 100%;
 	width: 100%;
 }
@@ -1726,7 +1834,7 @@
 	flex-direction: column;
 	min-width: 0;
 	min-height: 0;
-	height: 100%;
+	flex: 1;
 	width: 100%;
 	position: relative;
 	background: var(--ui-bg);
@@ -1737,6 +1845,71 @@
 	border: 1px solid #e1e1e1;
 	border-radius: 13px;
 	overflow: hidden;
+}
+
+/* Legacy → v2 migration notice — a standalone strip ABOVE the preview card (not glued to it,
+   not in the sidebar): its own rounded box with real breathing room before the preview begins. */
+#everest-forms-panel-style .pv-migration {
+	display: flex;
+	align-items: flex-start;
+	gap: 10px;
+	padding: 10px 14px;
+	margin-bottom: 12px;
+	background: var(--ui-purple-50);
+	border: 1px solid var(--ui-purple-100);
+	border-radius: 10px;
+	color: var(--ui-ink-2);
+	font-size: 12px;
+	line-height: 1.55;
+	flex: none;
+
+	.pv-migration-ic {
+		flex: none;
+		display: grid;
+		place-items: center;
+		width: 22px;
+		height: 22px;
+		border-radius: 50%;
+		background: #fff;
+		color: var(--ui-purple);
+		margin-top: 1px;
+
+		svg {
+			width: 13px;
+			height: 13px;
+		}
+	}
+
+	.pv-migration-text {
+		flex: 1;
+		min-width: 0;
+
+		b {
+			color: var(--ui-purple-600);
+			font-weight: 600;
+		}
+	}
+
+	button {
+		flex: none;
+		border: 0;
+		background: none;
+		color: var(--ui-icon);
+		cursor: pointer;
+		width: 20px;
+		height: 20px;
+		border-radius: 50%;
+		display: grid;
+		place-items: center;
+		font-size: 10px;
+		line-height: 1;
+		margin-top: 1px;
+
+		&:hover {
+			background: rgba(117, 69, 187, .15);
+			color: var(--ui-purple);
+		}
+	}
 }
 
 #everest-forms-panel-style .pv-bar {
@@ -1861,6 +2034,38 @@
 	background: var(--ui-amber);
 	flex: none;
 	display: inline-block;
+}
+
+/* Honest, non-blocking notice when the live-edit bridge (click-to-edit / hover highlight) never
+   wires up — the form itself still renders fine via the plain iframe, so this never covers it. */
+#everest-forms-panel-style .pv-noninteractive {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 6px 12px;
+	padding: 8px 20px;
+	background: #fffbeb;
+	border-bottom: 1px solid #fde68a;
+	color: #92400e;
+	font-size: 11.5px;
+	line-height: 1.5;
+	flex: none;
+
+	button {
+		border: 1px solid #fde68a;
+		background: #fff;
+		color: #92400e;
+		font-weight: 600;
+		font-size: 11px;
+		border-radius: 5px;
+		padding: 3px 10px;
+		cursor: pointer;
+		margin-left: auto;
+
+		&:hover {
+			background: #fef3c7;
+		}
+	}
 }
 
 #everest-forms-panel-style .pv-canvas {
@@ -2039,15 +2244,6 @@
 	font-weight: 600;
 	cursor: pointer;
 	font-size: 11px;
-}
-
-#everest-forms-panel-style .tpl .cap .on-dot {
-	width: 7px;
-	height: 7px;
-	border-radius: 50%;
-	background: var(--ui-purple);
-	margin-left: auto;
-	flex: none;
 }
 
 /* toast */

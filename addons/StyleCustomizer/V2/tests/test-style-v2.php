@@ -228,6 +228,11 @@ ok( $v2['tokens']['label.fstyle']['desktop']['bold'] === true, 'label font-style
 ok( $v2['tokens']['wrap.bg']['desktop'] === '#111111', 'palette form_background → wrap.bg' );
 ok( $v2['tokens']['btn.bg']['desktop'] === '#ff0000', 'palette button_background → btn.bg' );
 ok( $v2['tokens']['choice.checked']['desktop'] === '#ff0000', 'palette button_background spreads → choice.checked' );
+// btn.bgHover isn't in Schema::palette_map() (it needs a darken transform, not a direct copy) —
+// migrate_palette() derives it separately. Regression test for a real bug: the derivation was
+// documented in this file's own docblock but never implemented, so every migrated form with a
+// palette silently got the schema DEFAULT hover colour instead of one matching its button.
+ok( $v2['tokens']['btn.bgHover']['desktop'] === '#db0000', 'palette button_background → derived btn.bgHover (14% toward black)' );
 ok( $v2['tokens']['msg.success.bg']['desktop'] === '#00ff00', 'success message background migrated' );
 
 // End-to-end (Pro ACTIVE): a migrated record survives sanitize + compile with full fidelity —

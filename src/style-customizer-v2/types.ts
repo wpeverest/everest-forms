@@ -140,6 +140,13 @@ export interface StylePayload {
 	/** "Apply Theme Style" — true = theme styling, false = Everest Forms' default styling. */
 	apply_theme_style: boolean;
 	record: StyleRecord;
+	/** Drives the migration banner (see panes.tsx MigrationBanner). */
+	migration: MigrationInfo;
+}
+
+export interface MigrationInfo {
+	/** The served record was auto-migrated from a legacy shape (see panes.tsx MigrationBanner). */
+	just_migrated: boolean;
 }
 
 /** Bootstrap data localized by BuilderPanel.php. */

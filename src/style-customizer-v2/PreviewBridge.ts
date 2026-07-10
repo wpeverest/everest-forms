@@ -21,6 +21,8 @@ import { ALL_FORCE_CLASSES, PREVIEW_TARGETS } from './constants';
 import { StyleStore } from './store';
 import { Token } from './types';
 
+const __ = ( window as any ).wp?.i18n?.__ || ( ( s: string ) => s );
+
 const CUSTOM_STYLE_ID = 'evf-scv2-custom-css';
 const TEMPLATE_STYLE_ID = 'evf-scv2-rule-template';
 const CHROME_STYLE_ID = 'evf-scv2-chrome';
@@ -86,6 +88,10 @@ export class PreviewBridge {
 	private hoverEl: HTMLElement | null = null;
 	private previewedKeys: Set< string > = new Set();
 	private deviceWidth: number | null = null;
+	private dummyMessageEl: HTMLElement | null = null;
+	private mutationObserver: MutationObserver | null = null;
+	private observedDoc: Document | null = null;
+	private mutationScheduled = false;
 
 	constructor( iframe: HTMLIFrameElement, store: StyleStore, handlers: BridgeHandlers ) {
 		this.iframe = iframe;
@@ -109,18 +115,87 @@ export class PreviewBridge {
 			clearTimeout( this.pollTimer );
 			this.pollTimer = null;
 		}
+		this.stopWatching();
 		this.iframe.removeEventListener( 'load', this.handleLoad );
 		this.teardownSelection();
 	}
 
 	private handleLoad = () => {
 		// A fresh navigation inside the frame (reload on a builder-structure change, or rare theme
-		// redirects) — re-arm and re-detect, then re-bootstrap (vars, custom CSS, selection).
+		// redirects) — re-arm and re-detect, then re-bootstrap (vars, custom CSS, selection). The
+		// old document's observer (if any) is now moot — a new one is attached for the new doc.
 		this.ready = false;
 		this.wrapper = null;
+		this.stopWatching();
 		this.deadline = Date.now() + READY_DEADLINE;
 		this.poll();
 	};
+
+	/**
+	 * Resolve the form wrapper: the exact `#evf-{id}` id the compiler scopes variables to, or —
+	 * if that id is missing for any reason (markup variance, a slow/late write) — the base
+	 * plugin's `.evf-container` wrapper div (see class-evf-shortcode-form.php), which every
+	 * rendered form has exactly one of. Falling back keeps the live-edit bridge working instead
+	 * of declaring it unavailable purely because of an id mismatch.
+	 */
+	private findWrapper( doc: Document ): HTMLElement | null {
+		const byId = doc.getElementById( this.store.settings.wrapperId );
+		if ( byId ) {
+			return byId;
+		}
+		const fallback = doc.querySelector( '.evf-container' ) as HTMLElement | null;
+		if ( fallback ) {
+			fallback.id = this.store.settings.wrapperId;
+			return fallback;
+		}
+		return null;
+	}
+
+	/**
+	 * Watch the iframe document for the wrapper being inserted, as a supplement to (and faster
+	 * than) the fixed-interval poll below. Crucially, this observer is left running even past the
+	 * poll's own deadline (until `bootstrap()` or `detach()` stops it) — so a wrapper that shows up
+	 * late (a slow theme script, an unusually heavy page) still self-heals into a working live-edit
+	 * bridge instead of a permanent failure, which previously required a manual retry.
+	 */
+	private watchForWrapper( doc: Document ) {
+		if ( this.observedDoc === doc && this.mutationObserver ) {
+			return;
+		}
+		this.stopWatching();
+		if ( ! doc.documentElement || typeof MutationObserver === 'undefined' ) {
+			return;
+		}
+		this.observedDoc = doc;
+		this.mutationObserver = new MutationObserver( () => this.onMutation( doc ) );
+		this.mutationObserver.observe( doc.documentElement, { childList: true, subtree: true } );
+	}
+
+	/** Coalesce bursts of mutations (a full page render fires many) into one check per frame. */
+	private onMutation( doc: Document ) {
+		if ( this.destroyed || this.ready || this.mutationScheduled ) {
+			return;
+		}
+		this.mutationScheduled = true;
+		requestAnimationFrame( () => {
+			this.mutationScheduled = false;
+			if ( this.destroyed || this.ready ) {
+				return;
+			}
+			const wrapper = this.findWrapper( doc );
+			if ( wrapper ) {
+				this.bootstrap( doc, wrapper );
+			}
+		} );
+	}
+
+	private stopWatching() {
+		if ( this.mutationObserver ) {
+			this.mutationObserver.disconnect();
+			this.mutationObserver = null;
+		}
+		this.observedDoc = null;
+	}
 
 	/**
 	 * Reload the preview page inside the iframe. Used when the builder's form STRUCTURE changes
@@ -165,8 +240,11 @@ export class PreviewBridge {
 			// Hide the preview chrome as early as possible so the frame never flashes the full
 			// front-end page or a dark overlay while we wait for the wrapper.
 			this.hideChrome( doc );
+			// Instant-detection supplement to this timer (see watchForWrapper docblock) — also the
+			// self-healing path once the deadline below is reached.
+			this.watchForWrapper( doc );
 
-			const wrapper = doc.getElementById( this.store.settings.wrapperId );
+			const wrapper = this.findWrapper( doc );
 			if ( wrapper ) {
 				this.bootstrap( doc, wrapper );
 				return;
@@ -177,6 +255,9 @@ export class PreviewBridge {
 			if ( ! this.ready ) {
 				this.onError();
 			}
+			// Stop the fixed-interval timer, but leave the MutationObserver attached (if the doc
+			// was ever reached) — a late-appearing wrapper still bootstraps successfully instead
+			// of the live-edit bridge staying permanently unavailable.
 			return;
 		}
 		this.pollTimer = setTimeout( this.poll, POLL_INTERVAL );
@@ -184,6 +265,14 @@ export class PreviewBridge {
 
 	/** Wrapper found — tag it, inject rules, paint variables, wire selection. */
 	private bootstrap( doc: Document, wrapper: HTMLElement ) {
+		if ( this.pollTimer ) {
+			clearTimeout( this.pollTimer );
+			this.pollTimer = null;
+		}
+		this.stopWatching();
+		// A fresh document (reload) makes any previously-injected dummy message element a dead
+		// reference — it lives in the OLD document and is already gone.
+		this.dummyMessageEl = null;
 		this.wrapper = wrapper;
 		wrapper.classList.add( this.store.settings.markerClass );
 		this.disableLegacySheet( doc );
@@ -264,6 +353,14 @@ export class PreviewBridge {
 				box-shadow: none !important;
 				background: transparent !important;
 			}
+			/* Below 992px (evf-form-preview.scss) .evf-form-preview-overlay grows a ::after dark
+			   scrim (originally the "side panel is open, dim the content behind it" backdrop) —
+			   and the template always renders BOTH classes combined on the same element, so this
+			   is not conditional at all. The BUILDER'S iframe is very often narrower than 992px on
+			   its own, so this triggered on nearly every device/window size — overriding the
+			   parent's background above does nothing to it since it is a separate
+			   absolutely-positioned pseudo-element box. */
+			.evf-form-preview-overlay::after { display: none !important; }
 			.evf-preview-content,
 			.everest-forms.evf-frontend-form-preview { padding: 0 !important; }
 			.evf-form-preview-form {
@@ -473,6 +570,59 @@ export class PreviewBridge {
 		if ( cls ) {
 			this.wrapper.classList.add( cls );
 		}
+		this.setDummyMessage( cls );
+	}
+
+	/**
+	 * Messages (success/error/field-validation) only ever exist in the DOM after a real form
+	 * submission — there is no other way to preview their styling. While a Messages state tab is
+	 * active, inject a real, throwaway instance of the exact markup EVF's own templates render
+	 * (templates/notices/success.php, error.php; the per-field validation `<label>` from
+	 * class-evf-form-fields.php) so its computed style is actually visible and editable live.
+	 * Swapped out the instant the state tab changes; never touches real submission data.
+	 */
+	private setDummyMessage( cls: string | null ) {
+		if ( this.dummyMessageEl ) {
+			this.dummyMessageEl.remove();
+			this.dummyMessageEl = null;
+		}
+		const wrapper = this.wrapper;
+		if ( ! wrapper || ! cls ) {
+			return;
+		}
+		const doc = wrapper.ownerDocument;
+		let el: HTMLElement | null = null;
+
+		if ( 'force-msg-success' === cls ) {
+			el = doc.createElement( 'div' );
+			el.className = 'everest-forms-notice everest-forms-notice--success';
+			el.setAttribute( 'role', 'alert' );
+			el.textContent = __( 'Thanks! Your submission has been received.', 'everest-forms' );
+		} else if ( 'force-msg-error' === cls ) {
+			el = doc.createElement( 'div' );
+			el.className = 'everest-forms-notice everest-forms-notice--error';
+			el.setAttribute( 'role', 'alert' );
+			el.textContent = __( 'There was a problem with your submission. Please review the fields below.', 'everest-forms' );
+		} else if ( 'force-msg-validation' === cls ) {
+			el = doc.createElement( 'label' );
+			el.className = 'everest-forms-error evf-error';
+			el.textContent = __( 'This field is required.', 'everest-forms' );
+		}
+		if ( ! el ) {
+			return;
+		}
+		el.setAttribute( 'data-evf-scv2-dummy', '1' );
+
+		if ( 'force-msg-validation' === cls ) {
+			// A field-level error reads as real only sitting inside an actual field, right after
+			// its input — not floating at the top of the form.
+			const field = wrapper.querySelector( '.evf-field, .evf-frontend-row' );
+			( field || wrapper ).appendChild( el );
+		} else {
+			// Success/error banners render above the fields, exactly as a real submission would.
+			wrapper.insertBefore( el, wrapper.firstChild );
+		}
+		this.dummyMessageEl = el;
 	}
 
 	/** Live-apply the current custom CSS into the iframe (save-time scoping happens server-side). */
@@ -559,8 +709,12 @@ export class PreviewBridge {
 			return;
 		}
 		// Subtle, non-alarming selection affordance: a thin dashed hover hint and a soft, low-
-		// opacity selected ring (not a bold solid outline).
+		// opacity selected ring (not a bold solid outline). The `pointer-events` assertion guards
+		// against any theme/plugin reset rule disabling hit-testing inside the preview — harmless
+		// here since this stylesheet only ever loads on the style-panel preview route, never the
+		// real front end.
 		const css = `
+			#${ this.store.settings.wrapperId }, #${ this.store.settings.wrapperId } * { pointer-events: auto !important; }
 			.${ HOVER_CLASS } { outline: 1px dashed rgba(117,69,187,.35) !important; outline-offset: 2px !important; border-radius: 3px; }
 			.${ SELECTED_CLASS } { outline: 1.5px solid rgba(117,69,187,.5) !important; outline-offset: 2px !important; border-radius: 3px; }
 			#${ this.store.settings.wrapperId } * { cursor: default; }`;

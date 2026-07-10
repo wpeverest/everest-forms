@@ -17,6 +17,62 @@ const __ = ( window as any ).wp?.i18n?.__ || ( ( s: string ) => s );
 
 type PreviewStatus = 'loading' | 'ready' | 'error';
 
+const MIGRATION_DISMISS_PREFIX = 'evf_scv2_migration_dismissed_';
+
+/**
+ * Notice that this form's legacy styles were auto-migrated. Sits ABOVE the preview card (not
+ * inside it, and not in the sidebar) — a distinct strip with its own breathing room, since it's
+ * about what you're looking at below. Migration is one-way and compulsory, so this is purely
+ * informational: dismiss once per form, never nags again.
+ */
+function MigrationNotice() {
+	const store = useStore();
+	const dismissKey = MIGRATION_DISMISS_PREFIX + store.settings.formId;
+	const [ dismissed, setDismissed ] = React.useState( () => {
+		try {
+			return window.localStorage.getItem( dismissKey ) === '1';
+		} catch ( e ) {
+			return false;
+		}
+	} );
+
+	if ( ! store.migration?.just_migrated || dismissed ) {
+		return null;
+	}
+
+	return (
+		<div className="pv-migration" role="status">
+			<span className="pv-migration-ic" aria-hidden="true">
+				<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2 }>
+					<circle cx="12" cy="12" r="9" />
+					<path d="M12 8h.01M11 12h1v4h1" />
+				</svg>
+			</span>
+			<span className="pv-migration-text">
+				<b>{ __( 'Styles upgraded from the legacy editor.', 'everest-forms' ) }</b>{ ' ' }
+				{ __(
+					'This form was styled with the old editor, so its look was carried over automatically — nothing should appear different. Review the preview below, then hit Save to keep it.',
+					'everest-forms'
+				) }
+			</span>
+			<button
+				type="button"
+				aria-label={ __( 'Dismiss', 'everest-forms' ) }
+				onClick={ () => {
+					setDismissed( true );
+					try {
+						window.localStorage.setItem( dismissKey, '1' );
+					} catch ( e ) {
+						// Best-effort only — worst case it reappears next visit.
+					}
+				} }
+			>
+				✕
+			</button>
+		</div>
+	);
+}
+
 /**
  * Polished preview loader (skeleton form + spinner). Shared with the panel bootstrap so the
  * preview area shows the SAME loader from the instant the tab opens through until the iframe
@@ -76,19 +132,35 @@ export function PreviewPane( {
 	const bridgeRef = React.useRef< PreviewBridge | null >( null );
 	const [ status, setStatus ] = React.useState< PreviewStatus >( 'loading' );
 	const [ reloadKey, setReloadKey ] = React.useState( 0 );
+	// Tracks whether the live-edit bridge is ACTUALLY wired (click-to-edit, hover highlight) —
+	// deliberately separate from `status`, which only governs revealing the iframe visually and
+	// is force-flipped to 'ready' by the timer below even when the bridge itself never finishes.
+	// Without this split, a bridge that silently fails to attach looks identical to a working one:
+	// the form renders fine (plain iframe content), but nothing is clickable — see PreviewBridge's
+	// `watchForWrapper` docblock for why this can happen intermittently in some environments.
+	const [ interactive, setInteractive ] = React.useState( false );
+	const [ interactiveStalled, setInteractiveStalled ] = React.useState( false );
 
 	// Always call the latest onSelect without re-creating the bridge.
 	const onSelectRef = React.useRef( onSelect );
 	onSelectRef.current = onSelect;
 
-	// Force the iframe protocol to match the parent page's. If the builder is served over https
-	// but the preview URL is http (e.g. is_ssl() misreported behind a proxy), Chrome blocks the
-	// mixed-content iframe and it renders blank — the reported "not visible in Chrome" bug. Same
-	// host + scheme keeps it same-origin so the live-edit bridge can still script it.
+	// Force the iframe to the CURRENT window's exact origin (protocol + host + port), keeping
+	// only the path/query the server computed. Two same-origin requirements, both needed:
+	//  - Scheme: if the builder is https but the preview URL is http (e.g. is_ssl() misreported
+	//    behind a proxy), Chrome blocks the mixed-content iframe and it renders blank.
+	//  - Host/port: `previewUrl` is built from `home_url()` server-side, which can differ from
+	//    whatever host/alias/port the admin page itself was actually loaded through (multiple
+	//    hostname aliases, a reverse proxy, a non-default port in local dev). If it differs, the
+	//    iframe is genuinely cross-origin and `contentDocument` access throws in EVERY browser —
+	//    it just looks "browser-specific" because which host you happen to browse admin through
+	//    is a matter of habit/bookmarks per browser, not an engine difference. Rewriting to the
+	//    current origin removes that whole class of failure outright.
 	const previewSrc = React.useMemo( () => {
 		try {
 			const url = new URL( store.settings.previewUrl, window.location.href );
 			url.protocol = window.location.protocol;
+			url.host = window.location.host;
 			return url.href;
 		} catch ( e ) {
 			return store.settings.previewUrl;
@@ -103,12 +175,19 @@ export function PreviewPane( {
 			return;
 		}
 		setStatus( 'loading' );
+		setInteractive( false );
+		setInteractiveStalled( false );
 		const s = getStore();
 		const bridge = new PreviewBridge( iframe, s, {
-			// The bridge fully wired up (chrome hidden, rules injected) — reveal immediately, and
-			// let the builder-sync flush any structure change that was queued while (re)loading.
+			// The bridge fully wired up (chrome hidden, rules injected, click-to-edit listening) —
+			// reveal immediately, and let the builder-sync flush any structure change that was
+			// queued while (re)loading. This can also fire LATE (past the stall timer below) if
+			// PreviewBridge's background MutationObserver self-heals a slow wrapper detection —
+			// clearing the stalled hint the moment it does.
 			onReady: () => {
 				setStatus( 'ready' );
+				setInteractive( true );
+				setInteractiveStalled( false );
 				getActiveSync()?.onBridgeReady();
 			},
 			// Bridging failed (couldn't script the frame) — do NOT hide the iframe; the native
@@ -128,6 +207,19 @@ export function PreviewPane( {
 			setStatus( ( prev ) => ( prev === 'loading' ? 'ready' : prev ) );
 		}, 2500 );
 
+		// If the bridge still isn't interactive well past its own detection deadline, say so
+		// instead of leaving a preview that LOOKS fine but silently ignores clicks — the exact
+		// failure mode this hardening targets. `onReady` (above) clears this the moment the bridge
+		// (or its background self-heal) actually attaches, even if that happens after this fires.
+		const interactiveStallTimer = window.setTimeout( () => {
+			setInteractive( ( cur ) => {
+				if ( ! cur ) {
+					setInteractiveStalled( true );
+				}
+				return cur;
+			} );
+		}, 16000 );
+
 		const unsubscribe = s.subscribe( () => {
 			const affected = s.affected;
 			if ( affected === null ) {
@@ -141,6 +233,7 @@ export function PreviewPane( {
 
 		return () => {
 			window.clearTimeout( revealTimer );
+			window.clearTimeout( interactiveStallTimer );
 			unsubscribe();
 			bridge.detach();
 			setActiveBridge( null );
@@ -183,7 +276,9 @@ export function PreviewPane( {
 	};
 
 	return (
-		<section className="preview" aria-label={ __( 'Live preview', 'everest-forms' ) }>
+		<>
+			<MigrationNotice />
+			<section className="preview" aria-label={ __( 'Live preview', 'everest-forms' ) }>
 			<div className="pv-bar">
 				<span className="ttl">
 					{ __( 'Live preview', 'everest-forms' ) }
@@ -241,6 +336,20 @@ export function PreviewPane( {
 					) ) }
 				</div>
 			</div>
+
+			{ status === 'ready' && interactiveStalled && ! interactive && (
+				<div className="pv-noninteractive" role="status">
+					<span>
+						{ __(
+							'Click-to-edit isn’t responding in this preview — the form itself still renders correctly.',
+							'everest-forms'
+						) }
+					</span>
+					<button type="button" onClick={ retry }>
+						{ __( 'Retry', 'everest-forms' ) }
+					</button>
+				</div>
+			) }
 
 			<div className="pv-canvas">
 				<div className="pv-frame">
@@ -301,6 +410,7 @@ export function PreviewPane( {
 					) }
 				</div>
 			) }
-		</section>
+			</section>
+		</>
 	);
 }

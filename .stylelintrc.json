@@ -7,6 +7,7 @@
     "declaration-block-no-duplicate-properties": null,
     "declaration-colon-newline-after": null,
     "declaration-property-unit-whitelist": null,
+    "function-calc-no-invalid": null,
     "font-weight-notation": null,
     "font-family-no-missing-generic-family-keyword": null,
     "max-line-length": null,
