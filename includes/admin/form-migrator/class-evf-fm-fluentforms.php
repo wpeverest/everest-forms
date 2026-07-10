@@ -152,6 +152,211 @@ class EVF_Fm_Fluentforms extends EVF_Admin_Form_Migrator {
 	}
 
 	/**
+	 * Get the Quiz add-on settings for a form (stored as a single '_quiz_settings' meta row).
+	 *
+	 * @param int $form_id Fluent Forms form ID.
+	 * @return array
+	 */
+	private function get_ff_quiz_settings( $form_id ) {
+		$quiz_settings = $this->get_form_meta( $form_id, '_quiz_settings' );
+
+		return is_array( $quiz_settings ) ? $quiz_settings : array();
+	}
+
+	/**
+	 * Sum the point values of every quiz-enabled field, used to convert FF's
+	 * absolute-point grade bands into EVF's percentage-based score feedback bands.
+	 *
+	 * @param array $quiz_settings Result of get_ff_quiz_settings().
+	 * @return float
+	 */
+	private function get_ff_quiz_total_points( $quiz_settings ) {
+		$total  = 0;
+		$fields = isset( $quiz_settings['saved_quiz_fields'] ) ? $quiz_settings['saved_quiz_fields'] : array();
+
+		foreach ( $fields as $quiz_field ) {
+			if ( ! empty( $quiz_field['enabled'] ) ) {
+				$total += isset( $quiz_field['points'] ) ? (float) $quiz_field['points'] : 0;
+			}
+		}
+
+		return $total;
+	}
+
+	/**
+	 * Map FF's form-level quiz settings (_quiz_settings) to EVF's quiz settings keys.
+	 *
+	 * FF's grade bands are absolute point ranges with a short label; EVF's score
+	 * feedback bands are percentage ranges with a free-text message, so grades are
+	 * converted to a percentage of the total quiz points and the grade label is
+	 * used as the feedback text.
+	 *
+	 * @param int   $ff_form_id   Fluent Forms form ID.
+	 * @param array $upgrade_omit No-equivalent field labels (passed by reference).
+	 * @return array Keys to merge into the EVF form's settings bucket.
+	 */
+	private function get_quiz_form_settings( $ff_form_id, &$upgrade_omit ) {
+		$quiz_settings = $this->get_ff_quiz_settings( $ff_form_id );
+
+		if ( empty( $quiz_settings['enabled'] ) ) {
+			return array();
+		}
+
+		$settings = array(
+			'enable_quiz'         => '1',
+			'suffle_questions'    => ! empty( $quiz_settings['randomize_question'] ) ? '1' : '0',
+			'quiz_reporting'      => ! empty( $quiz_settings['append_result'] ) ? '1' : '0',
+			'quiz_reporting_type' => 'last',
+		);
+
+		$grades       = isset( $quiz_settings['grades'] ) ? $quiz_settings['grades'] : array();
+		$total_points = $this->get_ff_quiz_total_points( $quiz_settings );
+
+		if ( ! empty( $grades ) && $total_points > 0 ) {
+			// FF lists grades highest-first (A, B, C...); EVFSPQ's own save routine
+			// assumes ascending bands and treats a legitimate 'from' of 0 on any band
+			// after the first as empty, silently overwriting it to stay contiguous
+			// with the previous band. Sort ascending so band 1 is the lowest range.
+			usort(
+				$grades,
+				function ( $a, $b ) {
+					$a_min = isset( $a['min'] ) ? (float) $a['min'] : 0;
+					$b_min = isset( $b['min'] ) ? (float) $b['min'] : 0;
+					return $a_min <=> $b_min;
+				}
+			);
+
+			// Try a literal percentage-of-total-points conversion first — correct
+			// for a quiz whose grade bands are actually calibrated against its
+			// total (e.g. points summing to ~100 for a 0-100 grade scale).
+			$bands        = array();
+			$out_of_range = false;
+
+			foreach ( $grades as $grade ) {
+				$min  = isset( $grade['min'] ) ? (float) $grade['min'] : 0;
+				$max  = isset( $grade['max'] ) ? (float) $grade['max'] : 0;
+				$from = round( ( $min / $total_points ) * 100 );
+				$to   = round( ( $max / $total_points ) * 100 );
+
+				if ( $from < 0 || $from > 100 || $to < 0 || $to > 100 ) {
+					$out_of_range = true;
+				}
+
+				$bands[] = array(
+					'from'     => $from,
+					'to'       => $to,
+					'feedback' => isset( $grade['label'] ) ? $grade['label'] : '',
+				);
+			}
+
+			// FF's grade bands are absolute points and aren't required to be
+			// calibrated against the quiz's actual total (e.g. default 70-100
+			// bands left untouched on a form worth only a couple of points), which
+			// makes a literal conversion meaningless (and clamping would collapse
+			// every band to the same 100-100 range). Fall back to rescaling the
+			// bands relative to each other — preserving their order and relative
+			// spacing — so distinct bands still come through for manual touch-up.
+			if ( $out_of_range ) {
+				$global_min = min( wp_list_pluck( $grades, 'min' ) );
+				$global_max = max( wp_list_pluck( $grades, 'max' ) );
+				$span       = $global_max - $global_min;
+
+				$bands = array();
+				foreach ( $grades as $grade ) {
+					$min = isset( $grade['min'] ) ? (float) $grade['min'] : 0;
+					$max = isset( $grade['max'] ) ? (float) $grade['max'] : 0;
+
+					$bands[] = array(
+						'from'     => $span > 0 ? round( ( ( $min - $global_min ) / $span ) * 100 ) : 0,
+						'to'       => $span > 0 ? round( ( ( $max - $global_min ) / $span ) * 100 ) : 100,
+						'feedback' => isset( $grade['label'] ) ? $grade['label'] : '',
+					);
+				}
+
+				$upgrade_omit[] = esc_html__( 'Quiz grade bands (grade ranges don\'t match this quiz\'s total points, so percentages were rescaled relative to each other instead of literally; review the "Overall Feedback" ranges)', 'everest-forms' );
+			}
+
+			$score_feedback = array();
+			foreach ( $bands as $index => $band ) {
+				$score_feedback[ $index + 1 ] = array(
+					'from'     => (string) $band['from'],
+					'to'       => (string) $band['to'],
+					'feedback' => $band['feedback'],
+				);
+			}
+
+			$settings['over_all_feedback'] = '1';
+			$settings['score_feedback']    = $score_feedback;
+		}
+
+		return $settings;
+	}
+
+	/**
+	 * Resolve the quiz keys (if any) to merge onto a mapped select/radio/checkbox field.
+	 *
+	 * FF has no equivalent of EVF's flat-only scoring for per-choice point weighting
+	 * (has_advance_scoring) or its "does not include" condition (both flip the pass/fail
+	 * logic in a way EVF's simple correct-answer-set model can't represent), so those
+	 * are flagged as upgrade_omit instead of producing a misleading partial migration.
+	 *
+	 * @param string $ff_name      FF field name (key into saved_quiz_fields).
+	 * @param string $label        Field label, used for the upgrade_omit note.
+	 * @param array  $evf_choices  Already-mapped EVF choices array for this field.
+	 * @param array  $quiz_settings Result of get_ff_quiz_settings() for this form.
+	 * @param array  $upgrade_omit No-equivalent field labels (passed by reference).
+	 * @return array Keys to merge into the EVF field array (empty if not a quiz field).
+	 */
+	private function get_quiz_field_props( $ff_name, $label, $evf_choices, $quiz_settings, &$upgrade_omit ) {
+		$quiz_field = isset( $quiz_settings['saved_quiz_fields'][ $ff_name ] ) ? $quiz_settings['saved_quiz_fields'][ $ff_name ] : array();
+
+		if ( empty( $quiz_field['enabled'] ) ) {
+			return array();
+		}
+
+		if ( ! empty( $quiz_field['has_advance_scoring'] ) && 'yes' === $quiz_field['has_advance_scoring'] ) {
+			/* translators: %s: field label. */
+			$upgrade_omit[] = sprintf( esc_html__( '%s (per-choice quiz point weighting is not supported)', 'everest-forms' ), $label );
+			return array();
+		}
+
+		$condition = isset( $quiz_field['condition'] ) ? $quiz_field['condition'] : 'equal';
+		if ( 'not_includes' === $condition ) {
+			/* translators: %s: field label. */
+			$upgrade_omit[] = sprintf( esc_html__( '%s (quiz "does not include" condition is not supported)', 'everest-forms' ), $label );
+			return array();
+		}
+
+		return $this->map_quiz_field( $quiz_field, $evf_choices );
+	}
+
+	/**
+	 * Map a Fluent Forms quiz field entry (from saved_quiz_fields) to EVF's
+	 * per-field quiz keys.
+	 *
+	 * @param array $quiz_field  FF saved_quiz_fields[$ff_name] entry.
+	 * @param array $evf_choices Already-mapped EVF choices array for this field.
+	 * @return array Keys to merge into the EVF field array.
+	 */
+	private function map_quiz_field( $quiz_field, $evf_choices ) {
+		$raw_correct    = isset( $quiz_field['correct_answer'] ) ? (array) $quiz_field['correct_answer'] : array();
+		$correct_answer = array();
+
+		foreach ( $evf_choices as $index => $choice ) {
+			if ( in_array( $choice['value'], $raw_correct, true ) ) {
+				$correct_answer[ $index ] = '1';
+			}
+		}
+
+		return array(
+			'quiz_status'    => '1',
+			'score'          => isset( $quiz_field['points'] ) ? (string) $quiz_field['points'] : '1',
+			'correct_answer' => $correct_answer,
+			'show_score'     => '0',
+		);
+	}
+
+	/**
 	 * Convert Fluent Forms smart tags to EVF smart tags.
 	 *
 	 * @param string $string The string containing smart tags.
@@ -284,11 +489,12 @@ class EVF_Fm_Fluentforms extends EVF_Admin_Form_Migrator {
 	/**
 	 * Map form-level settings (confirmation, title, etc.).
 	 *
-	 * @param array $form       Partially built EVF form array.
-	 * @param int   $ff_form_id Fluent Forms form ID.
+	 * @param array $form         Partially built EVF form array.
+	 * @param int   $ff_form_id   Fluent Forms form ID.
+	 * @param array $upgrade_omit No-equivalent field labels (passed by reference).
 	 * @return array
 	 */
-	private function get_form_settings( $form, $ff_form_id ) {
+	private function get_form_settings( $form, $ff_form_id, &$upgrade_omit ) {
 		$form_settings = $this->get_form_meta( $ff_form_id, 'formSettings' );
 		$confirmation  = isset( $form_settings['confirmation'] ) ? $form_settings['confirmation'] : array();
 
@@ -371,6 +577,11 @@ class EVF_Fm_Fluentforms extends EVF_Admin_Form_Migrator {
 
 		if ( ! empty( $submission_redirection ) ) {
 			$form['settings']['submission_redirection'] = $submission_redirection;
+		}
+
+		$quiz_settings = $this->get_quiz_form_settings( $ff_form_id, $upgrade_omit );
+		if ( ! empty( $quiz_settings ) ) {
+			$form['settings'] = array_merge( $form['settings'], $quiz_settings );
 		}
 
 		return $form;
@@ -619,10 +830,12 @@ class EVF_Fm_Fluentforms extends EVF_Admin_Form_Migrator {
 				);
 			}
 
-			$this->process_fields( $form, $ff_fields, $unsupported, $upgrade_plan, $upgrade_omit );
+			$quiz_settings = $this->get_ff_quiz_settings( $ff_form_id );
+
+			$this->process_fields( $form, $ff_fields, $unsupported, $upgrade_plan, $upgrade_omit, $quiz_settings );
 
 			$form = apply_filters( 'evf_fm_' . $this->slug . '_form_after_fields_mapping', $form, $ff_form_id, $ff_form );
-			$form = apply_filters( 'evf_fm_' . $this->slug . '_form_after_settings_mapping', $this->get_form_settings( $form, $ff_form_id ), $ff_form_id, $ff_form );
+			$form = apply_filters( 'evf_fm_' . $this->slug . '_form_after_settings_mapping', $this->get_form_settings( $form, $ff_form_id, $upgrade_omit ), $ff_form_id, $ff_form );
 
 			$response = $this->import_form( $form, $unsupported, $upgrade_plan, $upgrade_omit );
 
@@ -640,8 +853,9 @@ class EVF_Fm_Fluentforms extends EVF_Admin_Form_Migrator {
 	 * @param array $unsupported   Unsupported field labels (passed by reference).
 	 * @param array $upgrade_plan  Pro-only field labels (passed by reference).
 	 * @param array $upgrade_omit  No-equivalent field labels (passed by reference).
+	 * @param array $quiz_settings Result of get_ff_quiz_settings() for this form.
 	 */
-	private function process_fields( &$form, $ff_fields, &$unsupported, &$upgrade_plan, &$upgrade_omit ) {
+	private function process_fields( &$form, $ff_fields, &$unsupported, &$upgrade_plan, &$upgrade_omit, $quiz_settings = array() ) {
 		foreach ( $ff_fields as $ff_field ) {
 			$element = isset( $ff_field['element'] ) ? $ff_field['element'] : '';
 
@@ -650,7 +864,7 @@ class EVF_Fm_Fluentforms extends EVF_Admin_Form_Migrator {
 				$columns = isset( $ff_field['columns'] ) ? $ff_field['columns'] : array();
 				foreach ( $columns as $column ) {
 					if ( ! empty( $column['fields'] ) ) {
-						$this->process_fields( $form, $column['fields'], $unsupported, $upgrade_plan, $upgrade_omit );
+						$this->process_fields( $form, $column['fields'], $unsupported, $upgrade_plan, $upgrade_omit, $quiz_settings );
 					}
 				}
 				continue;
@@ -665,7 +879,7 @@ class EVF_Fm_Fluentforms extends EVF_Admin_Form_Migrator {
 				continue;
 			}
 
-			$this->map_field( $form, $ff_field, $unsupported, $upgrade_plan, $upgrade_omit );
+			$this->map_field( $form, $ff_field, $unsupported, $upgrade_plan, $upgrade_omit, $quiz_settings );
 		}
 	}
 
@@ -677,8 +891,9 @@ class EVF_Fm_Fluentforms extends EVF_Admin_Form_Migrator {
 	 * @param array $unsupported  Unsupported field labels (passed by reference).
 	 * @param array $upgrade_plan Pro-only field labels (passed by reference).
 	 * @param array $upgrade_omit No-equivalent field labels (passed by reference).
+	 * @param array $quiz_settings Result of get_ff_quiz_settings() for this form.
 	 */
-	private function map_field( &$form, $ff_field, &$unsupported, &$upgrade_plan, &$upgrade_omit ) {
+	private function map_field( &$form, $ff_field, &$unsupported, &$upgrade_plan, &$upgrade_omit, $quiz_settings = array() ) {
 		$element     = isset( $ff_field['element'] ) ? $ff_field['element'] : '';
 		$attributes  = isset( $ff_field['attributes'] ) ? $ff_field['attributes'] : array();
 		$settings    = isset( $ff_field['settings'] ) ? $ff_field['settings'] : array();
@@ -920,21 +1135,24 @@ class EVF_Fm_Fluentforms extends EVF_Admin_Form_Migrator {
 					);
 				}
 				$form['structure'][ 'row_' . $form['form_field_id'] ]['grid_1'][] = $field_id;
-				$form['form_fields'][ $field_id ] = array(
-					'id'                             => $field_id,
-					'type'                           => 'select',
-					'label'                          => $label,
-					'meta-key'                       => 'dropdown_-' . $ff_name,
-					'choices'                        => $evf_choices,
-					'description'                    => $description,
-					'label_hide'                     => $label_hide,
-					'required'                       => $required,
-					'required_field_message_setting' => 'global',
-					'required-field-message'         => '',
-					'css'                            => $css_class,
-					'placeholder'                    => isset( $settings['placeholder'] ) ? $settings['placeholder'] : '',
-					'multiple_choices'               => $is_multiple ? '1' : '0',
-					'ff_name'                        => $ff_name,
+				$form['form_fields'][ $field_id ] = array_merge(
+					array(
+						'id'                             => $field_id,
+						'type'                           => 'select',
+						'label'                          => $label,
+						'meta-key'                       => 'dropdown_-' . $ff_name,
+						'choices'                        => $evf_choices,
+						'description'                    => $description,
+						'label_hide'                     => $label_hide,
+						'required'                       => $required,
+						'required_field_message_setting' => 'global',
+						'required-field-message'         => '',
+						'css'                            => $css_class,
+						'placeholder'                    => isset( $settings['placeholder'] ) ? $settings['placeholder'] : '',
+						'multiple_choices'               => $is_multiple ? '1' : '0',
+						'ff_name'                        => $ff_name,
+					),
+					$this->get_quiz_field_props( $ff_name, $label, $evf_choices, $quiz_settings, $upgrade_omit )
 				);
 				break;
 
@@ -950,20 +1168,23 @@ class EVF_Fm_Fluentforms extends EVF_Admin_Form_Migrator {
 					);
 				}
 				$form['structure'][ 'row_' . $form['form_field_id'] ]['grid_1'][] = $field_id;
-				$form['form_fields'][ $field_id ] = array(
-					'id'                             => $field_id,
-					'type'                           => 'radio',
-					'label'                          => $label,
-					'meta-key'                       => 'radio-' . $ff_name,
-					'choices'                        => $evf_choices,
-					'description'                    => $description,
-					'label_hide'                     => $label_hide,
-					'required'                       => $required,
-					'required_field_message_setting' => 'global',
-					'required-field-message'         => '',
-					'input_columns'                  => '',
-					'css'                            => $css_class,
-					'ff_name'                        => $ff_name,
+				$form['form_fields'][ $field_id ] = array_merge(
+					array(
+						'id'                             => $field_id,
+						'type'                           => 'radio',
+						'label'                          => $label,
+						'meta-key'                       => 'radio-' . $ff_name,
+						'choices'                        => $evf_choices,
+						'description'                    => $description,
+						'label_hide'                     => $label_hide,
+						'required'                       => $required,
+						'required_field_message_setting' => 'global',
+						'required-field-message'         => '',
+						'input_columns'                  => '',
+						'css'                            => $css_class,
+						'ff_name'                        => $ff_name,
+					),
+					$this->get_quiz_field_props( $ff_name, $label, $evf_choices, $quiz_settings, $upgrade_omit )
 				);
 				break;
 
@@ -979,21 +1200,24 @@ class EVF_Fm_Fluentforms extends EVF_Admin_Form_Migrator {
 					);
 				}
 				$form['structure'][ 'row_' . $form['form_field_id'] ]['grid_1'][] = $field_id;
-				$form['form_fields'][ $field_id ] = array(
-					'id'                             => $field_id,
-					'type'                           => 'checkbox',
-					'label'                          => $label,
-					'meta-key'                       => 'checkbox-' . $ff_name,
-					'choices'                        => $evf_choices,
-					'description'                    => $description,
-					'label_hide'                     => $label_hide,
-					'required'                       => $required,
-					'required_field_message_setting' => 'global',
-					'required-field-message'         => '',
-					'input_columns'                  => '',
-					'choice_limit'                   => '',
-					'css'                            => $css_class,
-					'ff_name'                        => $ff_name,
+				$form['form_fields'][ $field_id ] = array_merge(
+					array(
+						'id'                             => $field_id,
+						'type'                           => 'checkbox',
+						'label'                          => $label,
+						'meta-key'                       => 'checkbox-' . $ff_name,
+						'choices'                        => $evf_choices,
+						'description'                    => $description,
+						'label_hide'                     => $label_hide,
+						'required'                       => $required,
+						'required_field_message_setting' => 'global',
+						'required-field-message'         => '',
+						'input_columns'                  => '',
+						'choice_limit'                   => '',
+						'css'                            => $css_class,
+						'ff_name'                        => $ff_name,
+					),
+					$this->get_quiz_field_props( $ff_name, $label, $evf_choices, $quiz_settings, $upgrade_omit )
 				);
 				break;
 

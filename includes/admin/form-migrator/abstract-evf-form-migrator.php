@@ -173,6 +173,14 @@ abstract class EVF_Admin_Form_Migrator {
 		}
 
 		$form_id = array_search( $form['settings']['imported_from']['form_id'], $imported_form_list );
+		// The tracked form may have since been deleted (manually, or by a re-import);
+		// treat a dangling reference the same as "never imported" instead of failing,
+		// and drop it so it doesn't keep shadowing the freshly created replacement.
+		if ( $form_id && ! get_post( $form_id ) ) {
+			unset( $imported_form_list[ $form_id ] );
+			update_option( 'evf_fm_' . $this->slug . '_imported_form_list', $imported_form_list, false );
+			$form_id = false;
+		}
 		if ( ! $form_id ) {
 			$form_id = evf()->form->create( $form['settings']['form_title'] );
 
