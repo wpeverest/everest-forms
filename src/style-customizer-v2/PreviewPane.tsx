@@ -120,6 +120,7 @@ export function PreviewPane( {
 	saveErrorConflict,
 	onInfo,
 	onSelect,
+	onIframeClick,
 	toast,
 	onToastPause,
 	onToastResume,
@@ -131,6 +132,7 @@ export function PreviewPane( {
 	saveErrorConflict: boolean;
 	onInfo: ( anchor: HTMLElement, text: string ) => void;
 	onSelect: ( info: SelectionInfo ) => void;
+	onIframeClick: () => void;
 	toast: { msg: string; actLabel?: string; onAct?: () => void; kind?: 'success' | 'info' } | null;
 	onToastPause: () => void;
 	onToastResume: () => void;
@@ -149,9 +151,11 @@ export function PreviewPane( {
 	const [ interactive, setInteractive ] = React.useState( false );
 	const [ interactiveStalled, setInteractiveStalled ] = React.useState( false );
 
-	// Always call the latest onSelect without re-creating the bridge.
+	// Always call the latest onSelect/onIframeClick without re-creating the bridge.
 	const onSelectRef = React.useRef( onSelect );
 	onSelectRef.current = onSelect;
+	const onIframeClickRef = React.useRef( onIframeClick );
+	onIframeClickRef.current = onIframeClick;
 
 	// Force the iframe to the CURRENT window's exact origin (protocol + host + port), keeping
 	// only the path/query the server computed. Two same-origin requirements, both needed:
@@ -202,6 +206,7 @@ export function PreviewPane( {
 			// load event still reveals it, so the form stays visible even without live editing.
 			onError: () => setStatus( ( prev ) => ( prev === 'ready' ? prev : 'error' ) ),
 			onSelect: ( info ) => onSelectRef.current( info ),
+			onIframeClick: () => onIframeClickRef.current(),
 		} );
 		bridgeRef.current = bridge;
 		setActiveBridge( bridge );

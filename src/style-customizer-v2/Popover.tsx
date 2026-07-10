@@ -123,3 +123,71 @@ export function Popover( { state, onClose }: { state: PopoverState; onClose: () 
 		</div>
 	);
 }
+
+/* --------------------------------------------------------------------- *
+ * Confirm modal — a real centered/backdropped dialog, distinct from the
+ * anchored Popover above. Used for destructive actions (e.g. "Reset all
+ * styles") that deserve an explicit are-you-sure step even though most of
+ * them are also undoable.
+ * --------------------------------------------------------------------- */
+
+export interface ConfirmState {
+	title: string;
+	message: string;
+	confirmLabel?: string;
+	/** Styles the confirm button as a destructive action. */
+	danger?: boolean;
+	onConfirm: () => void;
+}
+
+export function ConfirmModal( { state, onClose }: { state: ConfirmState; onClose: () => void } ) {
+	const confirmRef = React.useRef< HTMLButtonElement >( null );
+
+	React.useEffect( () => {
+		confirmRef.current?.focus();
+	}, [] );
+
+	React.useEffect( () => {
+		const onKey = ( e: KeyboardEvent ) => {
+			if ( e.key === 'Escape' ) {
+				onClose();
+			}
+		};
+		document.addEventListener( 'keydown', onKey );
+		return () => document.removeEventListener( 'keydown', onKey );
+	}, [ onClose ] );
+
+	return (
+		<div
+			className="scv2-modal-backdrop"
+			onMouseDown={ ( e ) => {
+				if ( e.target === e.currentTarget ) {
+					onClose();
+				}
+			} }
+		>
+			<div className="scv2-modal" role="alertdialog" aria-modal="true" aria-labelledby="scv2-modal-title">
+				<h3 id="scv2-modal-title" className="scv2-modal-title">
+					{ state.title }
+				</h3>
+				<p className="scv2-modal-msg">{ state.message }</p>
+				<div className="scv2-modal-actions">
+					<button type="button" className="scv2-modal-cancel" onClick={ onClose }>
+						{ __( 'Cancel', 'everest-forms' ) }
+					</button>
+					<button
+						ref={ confirmRef }
+						type="button"
+						className={ 'scv2-modal-confirm' + ( state.danger ? ' danger' : '' ) }
+						onClick={ () => {
+							state.onConfirm();
+							onClose();
+						} }
+					>
+						{ state.confirmLabel || __( 'Confirm', 'everest-forms' ) }
+					</button>
+				</div>
+			</div>
+		</div>
+	);
+}

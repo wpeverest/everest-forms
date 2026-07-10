@@ -9,7 +9,7 @@
 import React from 'react';
 import { createPortal } from 'react-dom';
 import { CustomCssPane, DesignList, ElementSlate, TemplatesPane } from './panes';
-import { Popover, PopoverState } from './Popover';
+import { ConfirmModal, ConfirmState, Popover, PopoverState } from './Popover';
 import { PreviewPane } from './PreviewPane';
 import { getActiveBridge, SelectionInfo } from './PreviewBridge';
 import { DEVICE_LABELS, SECTION_ICONS, STATE_FORCE } from './constants';
@@ -35,6 +35,7 @@ export function App() {
 	const [ curSection, setCurSection ] = React.useState< string | null >( null );
 	const [ activeState, setActiveState ] = React.useState< Record< string, string > >( {} );
 	const [ popover, setPopover ] = React.useState< PopoverState | null >( null );
+	const [ confirm, setConfirm ] = React.useState< ConfirmState | null >( null );
 	const [ toast, setToast ] = React.useState< Toast | null >( null );
 	const [ saving, setSaving ] = React.useState( false );
 	const [ saveError, setSaveError ] = React.useState( '' );
@@ -486,14 +487,25 @@ export function App() {
 							onOpen={ openSection }
 							onOpenPalette={ openPalette }
 							paletteOpen={ paletteOpen }
-							onResetAll={ () => {
-								store.resetAll();
-								showToast( {
-									msg: __( 'All styles reset to default.', 'everest-forms' ),
-									actLabel: __( 'Undo', 'everest-forms' ),
-									onAct: () => store.undo(),
-								} );
-							} }
+							onResetAll={ () =>
+								setConfirm( {
+									title: __( 'Reset all styles?', 'everest-forms' ),
+									message: __(
+										'Every element goes back to its default — palette, fonts, spacing, everything. You can still undo it right after.',
+										'everest-forms'
+									),
+									confirmLabel: __( 'Reset all', 'everest-forms' ),
+									danger: true,
+									onConfirm: () => {
+										store.resetAll();
+										showToast( {
+											msg: __( 'All styles reset to default.', 'everest-forms' ),
+											actLabel: __( 'Undo', 'everest-forms' ),
+											onAct: () => store.undo(),
+										} );
+									},
+								} )
+							}
 						/>
 					) ) }
 
@@ -516,6 +528,7 @@ export function App() {
 			</div>
 
 			{ popover && <Popover state={ popover } onClose={ closePopover } /> }
+			{ confirm && <ConfirmModal state={ confirm } onClose={ () => setConfirm( null ) } /> }
 
 			{ previewHost &&
 				createPortal(
@@ -527,6 +540,7 @@ export function App() {
 						saveErrorConflict={ saveErrorConflict }
 						onInfo={ openInfo }
 						onSelect={ onSelectElement }
+						onIframeClick={ closePopover }
 						toast={ toast }
 						onToastPause={ pauseToast }
 						onToastResume={ resumeToast }

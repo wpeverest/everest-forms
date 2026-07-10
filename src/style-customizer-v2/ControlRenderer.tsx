@@ -215,6 +215,10 @@ function SliderControl( props: ControlProps ) {
 						value={ value }
 						aria-label={ token.label }
 						aria-valuetext={ `${ value }${ unit }` }
+						// Drives the coloured fill on the track (see .slider in style.scss) — the
+						// bar visually shows how far the value sits between min and max, not just
+						// a flat grey track with a floating thumb.
+						style={ { '--fill': `${ pct }%` } as React.CSSProperties }
 						onChange={ ( e ) => commit( Number( e.target.value ), true ) }
 					/>
 					<span
@@ -382,34 +386,46 @@ function Box4Control( props: ControlProps ) {
 	return (
 		<ControlShell { ...props } right={ ! token.units ? <span className="px-hint">px</span> : undefined }>
 			<div className="box4">
-				{ BOX_KEYS.map( ( _k, i ) => (
-					<div className="cell" key={ i }>
-						<div className="num">
-							<input
-								ref={ cellRefs[ i ] }
-								inputMode="numeric"
-								defaultValue={ String( value[ BOX_KEYS[ i ] ] ?? 0 ) }
-								aria-label={ token.label + ' ' + labels[ i ] }
-								onInput={ ( e ) => commit( i, parseInt( ( e.target as HTMLInputElement ).value, 10 ) ) }
-								onBlur={ ( e ) => {
-									( e.target as HTMLInputElement ).value = String(
-										( clone( store.resolve( token.key ) ) as BoxValue )[ BOX_KEYS[ i ] ] ?? 0
-									);
-								} }
-								onKeyDown={ ( e ) => {
-									if ( e.key !== 'ArrowUp' && e.key !== 'ArrowDown' ) {
-										return;
-									}
-									e.preventDefault();
-									const cur = ( clone( store.resolve( token.key ) ) as BoxValue )[ BOX_KEYS[ i ] ] ?? 0;
-									const step = e.shiftKey ? 10 : 1;
-									commit( i, Number( cur ) + ( e.key === 'ArrowUp' ? step : -step ) );
-								} }
-							/>
-						</div>
-						<small>{ abbr[ i ] }</small>
+				{ /* Inputs and their T/R/B/L labels are two separate rows inside one flex column, so
+				     the link/unit buttons (which have no label under them) align with the TOP of the
+				     input row regardless of the label row's height below — not the old single-row
+				     layout, which visibly sank the buttons below the inputs. */ }
+				<div className="box4-cells">
+					<div className="box4-inputs">
+						{ BOX_KEYS.map( ( _k, i ) => (
+							<div className="cell" key={ i }>
+								<div className="num">
+									<input
+										ref={ cellRefs[ i ] }
+										inputMode="numeric"
+										defaultValue={ String( value[ BOX_KEYS[ i ] ] ?? 0 ) }
+										aria-label={ token.label + ' ' + labels[ i ] }
+										onInput={ ( e ) => commit( i, parseInt( ( e.target as HTMLInputElement ).value, 10 ) ) }
+										onBlur={ ( e ) => {
+											( e.target as HTMLInputElement ).value = String(
+												( clone( store.resolve( token.key ) ) as BoxValue )[ BOX_KEYS[ i ] ] ?? 0
+											);
+										} }
+										onKeyDown={ ( e ) => {
+											if ( e.key !== 'ArrowUp' && e.key !== 'ArrowDown' ) {
+												return;
+											}
+											e.preventDefault();
+											const cur = ( clone( store.resolve( token.key ) ) as BoxValue )[ BOX_KEYS[ i ] ] ?? 0;
+											const step = e.shiftKey ? 10 : 1;
+											commit( i, Number( cur ) + ( e.key === 'ArrowUp' ? step : -step ) );
+										} }
+									/>
+								</div>
+							</div>
+						) ) }
 					</div>
-				) ) }
+					<div className="box4-abbr" aria-hidden="true">
+						{ BOX_KEYS.map( ( _k, i ) => (
+							<small key={ i }>{ abbr[ i ] }</small>
+						) ) }
+					</div>
+				</div>
 				<button
 					type="button"
 					className="link"

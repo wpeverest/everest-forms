@@ -56,6 +56,10 @@ interface BridgeHandlers {
 	onReady: () => void;
 	onError: () => void;
 	onSelect?: ( info: SelectionInfo ) => void;
+	/** Any click inside the iframe's OWN document (which the parent document's own outside-click
+	 *  listeners never see, since an iframe has its own separate document) — used to close any
+	 *  open panel popover, which otherwise stayed open forever once you clicked into the preview. */
+	onIframeClick?: () => void;
 }
 
 /** Module-level cache of the fetched rule-template CSS text, keyed by URL. */
@@ -82,6 +86,7 @@ export class PreviewBridge {
 	private onReady: () => void;
 	private onError: () => void;
 	private onSelect?: ( info: SelectionInfo ) => void;
+	private onIframeClick?: () => void;
 	private deadline = 0;
 	private pollTimer: ReturnType< typeof setTimeout > | null = null;
 	private selectedEl: HTMLElement | null = null;
@@ -99,6 +104,7 @@ export class PreviewBridge {
 		this.onReady = handlers.onReady;
 		this.onError = handlers.onError;
 		this.onSelect = handlers.onSelect;
+		this.onIframeClick = handlers.onIframeClick;
 	}
 
 	/** Wire onto the iframe's load event and begin polling for the wrapper. */
@@ -776,6 +782,11 @@ export class PreviewBridge {
 	}
 
 	private onDocClick = ( e: MouseEvent ) => {
+		// Fires for EVERY click in the iframe, regardless of whether it resolves to a style
+		// target below — a popover open in the parent panel has no other way to learn about this.
+		if ( this.onIframeClick ) {
+			this.onIframeClick();
+		}
 		const target = e.target as Element | null;
 		if ( ! target || ! this.wrapper ) {
 			return;

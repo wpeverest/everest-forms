@@ -56,6 +56,11 @@
 	--ui-fs-md: 16px;
 	--ui-fs-lg: 19px;
 
+	/* One shared height for every small inline control (number field, icon-button, dropdown
+	   trigger, colour swatch, media button) so a row built from several different control types
+	   sits on one visual baseline instead of each picking its own height. */
+	--ui-ctrl-h: 32px;
+
 	/* The builder content area holds the preview flush; the sidebar keeps its native chrome. */
 	.everest-forms-panel-content {
 		padding: 0;
@@ -445,10 +450,11 @@
 	justify-content: space-between;
 	gap: 8px;
 	width: 100%;
+	height: var(--ui-ctrl-h);
 	border: 1px solid var(--ui-input-border);
 	border-radius: var(--ui-radius-md);
 	background: #fff;
-	padding: 8px 10px;
+	padding: 0 10px;
 	cursor: pointer;
 	text-align: left;
 	font-size: 12.5px;
@@ -1118,17 +1124,34 @@
 			transform: translateX(-50%) translateY(0);
 		}
 
-		/* Flat, quiet track — the purple lives on the thumb only, so the resting state stays calm. */
+		/* Filled track — `--fill` (set inline from the resolved value, see ControlRenderer.tsx) —
+		   so the bar itself shows the value as a proportion, not just a flat grey rail with a
+		   floating thumb. Hover deepens both the fill and the rail slightly, so the whole bar (not
+		   just the thumb) gives tactile feedback, matching the request to "hover the bar". */
 		&::-webkit-slider-runnable-track {
+			height: 4px;
+			border-radius: 99px;
+			background: linear-gradient(to right, var(--ui-purple) var(--fill, 0%), var(--ui-line-2) var(--fill, 0%));
+			transition: filter .12s ease;
+		}
+
+		/* Firefox exposes the filled portion as its own pseudo-element — no gradient trick needed. */
+		&::-moz-range-track {
 			height: 4px;
 			border-radius: 99px;
 			background: var(--ui-line-2);
 		}
 
-		&::-moz-range-track {
+		&::-moz-range-progress {
 			height: 4px;
 			border-radius: 99px;
-			background: var(--ui-line-2);
+			background: var(--ui-purple);
+			transition: filter .12s ease;
+		}
+
+		&:hover::-webkit-slider-runnable-track,
+		&:hover::-moz-range-progress {
+			filter: brightness(.88);
 		}
 
 		/* A clean white disc with a purple ring — modern, legible at a glance, no native chrome. */
@@ -1170,10 +1193,19 @@
 			box-shadow: 0 0 0 4px var(--ui-purple-50);
 		}
 	}
+
+	/* Safety net: reveal the value bubble on hovering anywhere in the slider row (track or the
+	   adjacent number field), not only while the browser considers the range input itself
+	   hovered. */
+	&:hover .slider-tip {
+		opacity: 1;
+		transform: translateX(-50%) translateY(0);
+	}
 }
 
 #everest-forms-panel-style .num {
 	width: 62px;
+	height: var(--ui-ctrl-h);
 	display: flex;
 	border: 1px solid var(--ui-input-border);
 	border-radius: var(--ui-radius-md);
@@ -1189,7 +1221,7 @@
 	input {
 		width: 100%;
 		border: 0;
-		padding: 6px 4px;
+		padding: 0 4px;
 		font-size: 12px;
 		text-align: center;
 		color: var(--ui-ink);
@@ -1209,7 +1241,7 @@
 	span {
 		background: var(--ui-bg-subtle);
 		border-left: 1px solid var(--ui-line);
-		padding: 6px 5px;
+		padding: 0 5px;
 		color: var(--ui-ink-3);
 		font-size: 10px;
 		display: grid;
@@ -1221,9 +1253,10 @@
 	display: flex;
 	align-items: center;
 	gap: 8px;
+	height: var(--ui-ctrl-h);
 	border: 1px solid var(--ui-input-border);
 	border-radius: var(--ui-radius-md);
-	padding: 5px 8px;
+	padding: 0 8px;
 	transition: border-color .12s, box-shadow .12s;
 
 	/* The hex text field has no border of its own, so give the WHOLE box a focus ring when it's
@@ -1234,8 +1267,8 @@
 	}
 
 	input[type="color"] {
-		width: 28px;
-		height: 28px;
+		width: 22px;
+		height: 22px;
 		border: 0;
 		background: none;
 		padding: 0;
@@ -1279,14 +1312,30 @@
 	line-height: 1.45;
 }
 
+/* Two independent rows share one flex column (`.box4-cells`) — inputs, then their T/R/B/L
+   labels — so the link/unit buttons beside it (which have nothing under them) align with the
+   TOP of the input row via `align-items: flex-start` on `.box4`, not with the bottom of a row
+   whose height varies with whether a label happens to sit under it. */
 #everest-forms-panel-style .box4 {
 	display: flex;
 	gap: 5px;
-	align-items: flex-end;
+	align-items: flex-start;
+
+	.box4-cells {
+		flex: 1;
+		min-width: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 3px;
+	}
+
+	.box4-inputs {
+		display: flex;
+		gap: 5px;
+	}
 
 	.cell {
 		flex: 1;
-		text-align: center;
 		min-width: 0;
 	}
 
@@ -1294,16 +1343,22 @@
 		width: 100%;
 	}
 
-	.cell small {
+	.box4-abbr {
+		display: flex;
+		gap: 5px;
+	}
+
+	.box4-abbr small {
+		flex: 1;
 		display: block;
+		text-align: center;
 		color: var(--ui-ink-3);
 		font-size: 10px;
-		margin-top: 3px;
 	}
 
 	.link {
-		width: 30px;
-		height: 30px;
+		width: var(--ui-ctrl-h);
+		height: var(--ui-ctrl-h);
 		border: 1px solid var(--ui-input-border);
 		border-radius: var(--ui-radius-md);
 		background: #fff;
@@ -1327,7 +1382,7 @@
 	}
 
 	.unit-tgl {
-		height: 30px;
+		height: var(--ui-ctrl-h);
 		min-width: 34px;
 		border: 1px solid var(--ui-input-border);
 		border-radius: var(--ui-radius-md);
@@ -1354,7 +1409,7 @@
 
 	button {
 		flex: 1;
-		height: 32px;
+		height: var(--ui-ctrl-h);
 		border: 1px solid var(--ui-input-border);
 		background: #fff;
 		border-radius: var(--ui-radius-md);
@@ -1421,10 +1476,14 @@
 
 #everest-forms-panel-style .mediabtn {
 	flex: 1;
+	height: var(--ui-ctrl-h);
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	border: 1px dashed var(--ui-input-border);
 	background: var(--ui-bg-subtle);
 	border-radius: var(--ui-radius-md);
-	padding: 9px;
+	padding: 0 9px;
 	font-size: 12px;
 	font-weight: 600;
 	color: var(--ui-purple);
@@ -1438,8 +1497,8 @@
 }
 
 #everest-forms-panel-style .mediaclear {
-	width: 34px;
-	height: 34px;
+	width: var(--ui-ctrl-h);
+	height: var(--ui-ctrl-h);
 	display: grid;
 	place-items: center;
 	border: 1px solid var(--ui-input-border);
@@ -2575,6 +2634,100 @@
 	to {
 		opacity: 1;
 		transform: translate(-50%, 0);
+	}
+}
+
+/* confirm modal — a real centered/backdropped dialog, distinct from the anchored .scv2-pop
+   above. Used for destructive actions ("Reset all styles") that deserve an explicit
+   are-you-sure step even though most of them are also undoable. */
+#everest-forms-panel-style .scv2-modal-backdrop {
+	position: fixed;
+	inset: 0;
+	z-index: 100010;
+	background: rgba(20, 23, 40, .45);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 20px;
+	animation: scv2fadein .12s ease-out;
+}
+
+@keyframes scv2fadein {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+#everest-forms-panel-style .scv2-modal {
+	width: min(360px, 100%);
+	background: #fff;
+	border-radius: var(--ui-radius-lg);
+	box-shadow: var(--ui-shadow-lg);
+	padding: 20px;
+	animation: scv2popin .15s ease-out;
+}
+
+#everest-forms-panel-style .scv2-modal-title {
+	margin: 0 0 8px;
+	font-size: var(--ui-fs-base);
+	font-weight: 600;
+	color: var(--ui-ink);
+}
+
+#everest-forms-panel-style .scv2-modal-msg {
+	margin: 0;
+	font-size: var(--ui-fs-sm);
+	color: var(--ui-ink-2);
+	line-height: 1.55;
+}
+
+#everest-forms-panel-style .scv2-modal-actions {
+	display: flex;
+	justify-content: flex-end;
+	gap: 8px;
+	margin-top: 18px;
+}
+
+#everest-forms-panel-style .scv2-modal-cancel {
+	border: 1px solid var(--ui-input-border);
+	background: #fff;
+	color: var(--ui-ink-2);
+	font-weight: 600;
+	font-size: 12.5px;
+	border-radius: var(--ui-radius-md);
+	padding: 8px 16px;
+	cursor: pointer;
+	transition: border-color .12s, background .12s;
+
+	&:hover {
+		background: var(--ui-bg-hover);
+	}
+}
+
+#everest-forms-panel-style .scv2-modal-confirm {
+	border: 0;
+	background: var(--ui-purple);
+	color: #fff;
+	font-weight: 600;
+	font-size: 12.5px;
+	border-radius: var(--ui-radius-md);
+	padding: 8px 16px;
+	cursor: pointer;
+	transition: background .12s;
+
+	&:hover {
+		background: var(--ui-purple-600);
+	}
+
+	&.danger {
+		background: var(--ui-red);
+
+		&:hover {
+			background: #b91c1c;
+		}
 	}
 }
 
