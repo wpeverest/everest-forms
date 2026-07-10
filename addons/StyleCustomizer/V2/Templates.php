@@ -108,27 +108,71 @@ final class Templates {
 
 	/**
 	 * User-created templates ("save current styles as a template"), newest first. Each is a
-	 * v2 record captured from a form's current styles.
+	 * v2 record captured from a form's current styles — plus, appended, any genuinely custom
+	 * template a user saved through the OLD (v1) customizer's own "Create Style Template", so
+	 * that data isn't silently orphaned when a site moves to v2 (see {@see legacy_custom_templates()}).
 	 *
 	 * @return array [ { id, name, custom:true, image:'', palette, tokens } ]
 	 */
 	public static function user_templates() {
 		$stored = get_option( self::USER_OPTION, array() );
-		if ( ! is_array( $stored ) ) {
+		$out    = array();
+		if ( is_array( $stored ) ) {
+			foreach ( $stored as $tpl ) {
+				if ( empty( $tpl['id'] ) || ! isset( $tpl['tokens'] ) || ! is_array( $tpl['tokens'] ) ) {
+					continue;
+				}
+				$out[] = array(
+					'id'      => (string) $tpl['id'],
+					'name'    => isset( $tpl['name'] ) ? (string) $tpl['name'] : __( 'Untitled', 'everest-forms' ),
+					'custom'  => true,
+					'image'   => '',
+					'palette' => isset( $tpl['palette'] ) ? (string) $tpl['palette'] : '',
+					'tokens'  => $tpl['tokens'],
+				);
+			}
+		}
+		return array_merge( $out, self::legacy_custom_templates() );
+	}
+
+	/**
+	 * Legacy (v1) custom templates, migrated to v2 token shape on read. `evf_style_templates`
+	 * holds BOTH the 11 built-in templates (the old customizer keeps its own editable copies of
+	 * default-templates.json there) AND any genuinely custom one a user saved via "Create Style
+	 * Template" in the old UI — there is no separate option for just the custom ones. Built-ins
+	 * are identified by NAME matching {@see all()} (already sourced from the same JSON) and
+	 * skipped here to avoid listing them twice; everything else is a real custom template that
+	 * would otherwise vanish from the panel with no warning once a site moves to v2.
+	 *
+	 * @return array [ { id, name, custom:true, image:'', palette:'', tokens } ]
+	 */
+	protected static function legacy_custom_templates() {
+		// The legacy customizer always stores this option as a JSON STRING (wp_json_encode()),
+		// never a native PHP array — so unlike a normal WP option, get_option() does not
+		// auto-decode it; every legacy read site (class-evf-style-customizer-ajax.php,
+		// class-evf-style-customizer-api.php) explicitly json_decode()s it too.
+		$raw = get_option( 'evf_style_templates', '' );
+		$stored = is_string( $raw ) ? json_decode( $raw, true ) : $raw;
+		if ( empty( $stored ) || ! is_array( $stored ) ) {
 			return array();
 		}
-		$out = array();
-		foreach ( $stored as $tpl ) {
-			if ( empty( $tpl['id'] ) || ! isset( $tpl['tokens'] ) || ! is_array( $tpl['tokens'] ) ) {
+		$builtin_names = wp_list_pluck( self::all(), 'name' );
+		$out           = array();
+		foreach ( $stored as $slug => $tpl ) {
+			if ( empty( $tpl['name'] ) || empty( $tpl['data'] ) || ! is_array( $tpl['data'] ) ) {
 				continue;
 			}
-			$out[] = array(
-				'id'      => (string) $tpl['id'],
-				'name'    => isset( $tpl['name'] ) ? (string) $tpl['name'] : __( 'Untitled', 'everest-forms' ),
+			if ( in_array( (string) $tpl['name'], $builtin_names, true ) ) {
+				continue;
+			}
+			$record = Migrator::migrate_record( $tpl['data'] );
+			$out[]  = array(
+				'id'      => 'legacy-' . sanitize_key( $slug ),
+				'name'    => (string) $tpl['name'],
 				'custom'  => true,
 				'image'   => '',
-				'palette' => isset( $tpl['palette'] ) ? (string) $tpl['palette'] : '',
-				'tokens'  => $tpl['tokens'],
+				'palette' => '',
+				'tokens'  => isset( $record['tokens'] ) ? $record['tokens'] : array(),
 			);
 		}
 		return $out;
@@ -172,13 +216,18 @@ final class Templates {
 	}
 
 	/**
-	 * Delete a user template by id.
+	 * Delete a user template by id. A `legacy-…` id (see {@see legacy_custom_templates()}) is
+	 * computed live from `evf_style_templates` on every read, not stored in {@see USER_OPTION} —
+	 * without this, deleting one would silently no-op and it would reappear on next load.
 	 *
 	 * @param string $id Template id.
 	 * @return bool Whether anything was removed.
 	 */
 	public static function delete_user_template( $id ) {
-		$id     = (string) $id;
+		$id = (string) $id;
+		if ( 0 === strpos( $id, 'legacy-' ) ) {
+			return self::delete_legacy_custom_template( substr( $id, 7 ) );
+		}
 		$stored = get_option( self::USER_OPTION, array() );
 		if ( ! is_array( $stored ) ) {
 			return false;
@@ -195,6 +244,25 @@ final class Templates {
 			return false;
 		}
 		update_option( self::USER_OPTION, $next, false );
+		return true;
+	}
+
+	/**
+	 * Remove one entry from the legacy `evf_style_templates` option — the delete path for a
+	 * `legacy-…` id from {@see legacy_custom_templates()}.
+	 *
+	 * @param string $slug The original `evf_style_templates` array key (id minus the `legacy-` prefix).
+	 * @return bool Whether anything was removed.
+	 */
+	protected static function delete_legacy_custom_template( $slug ) {
+		$raw    = get_option( 'evf_style_templates', '' );
+		$stored = is_string( $raw ) ? json_decode( $raw, true ) : $raw;
+		if ( ! is_array( $stored ) || ! isset( $stored[ $slug ] ) ) {
+			return false;
+		}
+		unset( $stored[ $slug ] );
+		// Re-encode as a JSON string — the shape every legacy read site expects.
+		update_option( 'evf_style_templates', wp_json_encode( $stored ) );
 		return true;
 	}
 
