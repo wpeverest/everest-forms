@@ -266,6 +266,43 @@ ok( strpos( $compiled_free, '--evf-label-size:20px' ) === false, 'free: migrated
 ok( strpos( $compiled_free, '--evf-label-size:14px' ) !== false, 'free: label size renders at default (form not broken)' );
 $GLOBALS['evf_test_pro_active'] = true;
 
+/* ------------------------------------ v0 (old standalone-plugin) shape migration */
+// A record still in the OLD standalone "Style Customizer" plugin shape (top-level `wrapper`,
+// `field_label`, `checkbox_radio_styles`, flat `field_styles.*` typography) must migrate
+// faithfully — real sites got this v0→v1 conversion from the one-shot evfsc_migration(), but a
+// record that predates/skipped it would otherwise migrate to all-defaults, silently losing every
+// custom colour/size (this was the one documented, unfixed migration gap — see plan §17.6 #1).
+group( 'v0 (standalone-plugin) shape migration' );
+$v0 = array(
+	'wrapper'               => array( 'font_family' => 'Montserrat', 'background_color' => '#1d2d4f', 'padding' => array( 'desktop' => array( 'top' => 30, 'right' => 30, 'bottom' => 30, 'left' => 30 ) ) ),
+	'field_label'           => array( 'font_color' => '#fcdab7', 'font_size' => '18' ),
+	'field_sublabel'        => array( 'font_color' => '#aabbcc' ),
+	'field_styles'          => array( 'font_size' => '16', 'font_color' => '#fcdab7', 'background_color' => '#1d2d4f', 'border_color' => '#fcdab7', 'border_radius' => array( 'top' => 4, 'right' => 4, 'bottom' => 4, 'left' => 4, 'unit' => 'px' ) ),
+	'checkbox_radio_styles' => array( 'size' => '20', 'checked_color' => '#00ff00' ),
+	'button'                => array( 'font_color' => '#ffffff', 'background_color' => '#0073aa', 'alignment' => 'center', 'border_radius' => array( 'top' => 3, 'right' => 3, 'bottom' => 3, 'left' => 3, 'unit' => 'px' ) ),
+	'success_message'       => array( 'background_color' => '#4fc66b' ),
+);
+$mv0 = Migrator::migrate_record( $v0 );
+ok( $mv0['schema_version'] === 1, 'v0: migrated record stamped v1' );
+ok( $mv0['tokens']['fonts.family']['desktop'] === 'Montserrat', 'v0: wrapper.font_family → fonts.family' );
+ok( $mv0['tokens']['wrap.pad']['desktop'] === array( 'top' => 30, 'right' => 30, 'bottom' => 30, 'left' => 30 ), 'v0: wrapper.padding → wrap.pad' );
+ok( $mv0['tokens']['wrap.bg']['desktop'] === '#1d2d4f', 'v0: wrapper.background_color → palette form_background → wrap.bg' );
+ok( $mv0['tokens']['input.bg']['desktop'] === '#1d2d4f', 'v0: field_styles.background_color → palette field_background → input.bg' );
+ok( $mv0['tokens']['label.color']['desktop'] === '#fcdab7', 'v0: field_label.font_color → palette field_label → label.color' );
+ok( $mv0['tokens']['label.size']['desktop'] === '18', 'v0: field_label.font_size → label.size' );
+ok( $mv0['tokens']['input.color']['desktop'] === '#fcdab7', 'v0: field_styles.font_color (trailing-space bug CORRECTED) → input.color' );
+ok( $mv0['tokens']['input.radius']['desktop']['top'] === 4, 'v0: field_styles.border_radius → input.radius' );
+ok( $mv0['tokens']['choice.size']['desktop'] === '20', 'v0: checkbox_radio_styles.size → choice.size' );
+ok( $mv0['tokens']['choice.checked']['desktop'] === '#00ff00', 'v0: checkbox_radio_styles.checked_color → choice.checked' );
+ok( $mv0['tokens']['btn.bg']['desktop'] === '#0073aa', 'v0: button.background_color → palette button_background → btn.bg' );
+ok( $mv0['tokens']['btn.align']['desktop'] === 'center', 'v0: button.alignment (button_button_alignment typo CORRECTED) → btn.align' );
+ok( $mv0['tokens']['btn.radius']['desktop']['top'] === 3, 'v0: button.border_radius → btn.radius' );
+ok( $mv0['tokens']['msg.success.bg']['desktop'] === '#4fc66b', 'v0: success_message.background_color → msg.success.bg' );
+// A v2 record handed back to the migrator must NOT be re-migrated into a defaults-only record.
+$already = array( 'schema_version' => 1, 'tokens' => array( 'wrap.width' => array( 'desktop' => 77 ) ), 'palette' => 'ocean' );
+$passthru = Migrator::migrate_record( $already );
+ok( $passthru['tokens']['wrap.width']['desktop'] === 77, 'v2 passthrough: existing tokens preserved, not wiped to defaults' );
+
 /* ------------------------------------------------------------------ Engine */
 group( 'Engine' );
 ok( Engine::enabled() === false, 'disabled by default (no EVF_STYLE_V2)' );

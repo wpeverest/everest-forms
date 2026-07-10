@@ -39,6 +39,19 @@ final class Migrator {
 	 */
 	public static function migrate_record( $legacy ) {
 		$legacy = is_array( $legacy ) ? $legacy : array();
+
+		// Already a v2 record (has a token map) — return it unchanged. Running the v1→v2 mapping
+		// over it would find no v1 group keys and emit a defaults-only record, silently wiping the
+		// form's styling. This makes migrate_record() idempotent and safe to call defensively.
+		if ( isset( $legacy['tokens'] ) ) {
+			return $legacy;
+		}
+
+		// Otherwise normalize to the canonical v1 shape the mapping table reads (converts the old
+		// v0 standalone-plugin shape; leaves canonical v1 untouched), so migration is faithful
+		// regardless of how old the source data is.
+		$legacy = self::normalize_legacy_shape( $legacy );
+
 		$tokens = array();
 
 		foreach ( self::map() as $rule ) {
@@ -83,6 +96,141 @@ final class Migrator {
 		 * @param array $legacy Source legacy record.
 		 */
 		return apply_filters( 'evf_style_v2_migrated_record', $record, $legacy );
+	}
+
+	/* --------------------------------------------------------------------- *
+	 * Shape normalization (v0 / v1 / v2)
+	 * --------------------------------------------------------------------- */
+
+	/**
+	 * Normalize a legacy record to the canonical v1 shape that {@see self::map()} reads (the v2
+	 * short-circuit is handled earlier, in {@see self::migrate_record()}):
+	 *
+	 *  - **v0** (the OLD standalone "Style Customizer" plugin shape: top-level `wrapper`,
+	 *    `field_label`, `field_sublabel`, `checkbox_radio_styles`, flat `field_styles.*` typography,
+	 *    …): converted to canonical v1 via {@see self::v0_to_v1()}. Real sites got this conversion
+	 *    from the one-shot `evfsc_migration()`; a record that predates/skipped it would otherwise
+	 *    migrate to all-defaults (every custom colour/size silently lost).
+	 *  - **v1** (canonical bundled-addon shape): returned unchanged.
+	 *
+	 * @param array $legacy Source record (v0 or v1 shape).
+	 * @return array Canonical v1 record.
+	 */
+	protected static function normalize_legacy_shape( $legacy ) {
+		if ( self::is_v0_shape( $legacy ) ) {
+			return self::v0_to_v1( $legacy );
+		}
+		return $legacy; // Canonical v1.
+	}
+
+	/**
+	 * Detect the v0 (old standalone-plugin) shape by keys that ONLY exist there — never in the
+	 * canonical v1 shape (which nests typography under `typography.*` and uses `font` /
+	 * `form_container`, not a top-level `wrapper`).
+	 *
+	 * @param array $legacy Record.
+	 * @return bool
+	 */
+	protected static function is_v0_shape( $legacy ) {
+		foreach ( array( 'wrapper', 'field_label', 'field_sublabel', 'checkbox_radio_styles', 'file_upload', 'section_title' ) as $marker ) {
+			if ( isset( $legacy[ $marker ] ) ) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Convert one v0 (standalone-plugin) record to the canonical v1 shape — a pure port of the
+	 * per-form body of `evfsc_migration()` (addons/StyleCustomizer/includes/functions.php), so a
+	 * v0 record migrates identically whether or not that one-shot DB migration ever ran.
+	 *
+	 * Two documented bugs in `evfsc_migration()` are deliberately CORRECTED here so v0 data
+	 * reaches v2 faithfully (the project rule is "v2 does what the setting says", not "replicate
+	 * legacy bugs" — plan §11):
+	 *   1. Trailing-space source keys (`'font_color '`) silently dropped the field/description/
+	 *      section-title/file-upload/checkbox font colours; corrected to `'font_color'`.
+	 *   2. The button-alignment typo target (`button_button_alignment`) never matched the v1 key
+	 *      the compiler/migrator read (`button_alignment`); corrected.
+	 *
+	 * @param array $s v0 record (`$settings` in evfsc_migration).
+	 * @return array Canonical v1 record.
+	 */
+	protected static function v0_to_v1( $s ) {
+		$new = array();
+
+		if ( isset( $s['template'] ) ) {
+			$new['template'] = $s['template'];
+		}
+
+		// Font.
+		if ( isset( $s['wrapper']['font_family'] ) ) {
+			$new['font']['font_family'] = $s['wrapper']['font_family'];
+		}
+
+		// Form container.
+		$wrapper_keys = array( 'width', 'border_type', 'border_width', 'border_radius', 'border_color', 'background_image', 'background_preset', 'opacity', 'background_position', 'background_size', 'margin', 'padding' );
+		foreach ( $wrapper_keys as $k ) {
+			if ( isset( $s['wrapper'][ $k ] ) ) {
+				$new['form_container'][ $k ] = $s['wrapper'][ $k ];
+			}
+		}
+
+		// Group-level borders (field / file-upload / button).
+		foreach ( array( 'field_styles' => 'field_styles', 'file_upload' => 'file_upload_styles', 'button' => 'button' ) as $src => $dst ) {
+			foreach ( array( 'width', 'border_type', 'border_width', 'border_radius' ) as $k ) {
+				if ( isset( $s[ $src ][ $k ] ) ) {
+					$new[ $dst ][ $k ] = $s[ $src ][ $k ];
+				}
+			}
+		}
+
+		// Typography — (v0 group, [ v0 prop => v1 typography prop ]).
+		$typography = array(
+			'field_label'          => array( 'font_size' => 'field_labels_font_size', 'font_style' => 'field_labels_font_style', 'text_alignment' => 'field_labels_text_alignment', 'line_height' => 'field_labels_line_height', 'margin' => 'field_labels_margin', 'padding' => 'field_labels_padding' ),
+			'field_sublabel'       => array( 'font_size' => 'field_sublabels_font_size', 'font_style' => 'field_sublabels_font_style', 'text_alignment' => 'field_sublabels_text_alignment', 'line_height' => 'field_sublabels_line_height', 'margin' => 'field_sublabels_margin', 'padding' => 'field_sublabels_padding' ),
+			'field_styles'         => array( 'font_size' => 'field_styles_font_size', 'font_color' => 'field_styles_font_color', 'placeholder_font_color' => 'field_styles_placeholder_font_color', 'font_style' => 'field_styles_font_style', 'alignment' => 'field_styles_alignment', 'border_color' => 'field_styles_border_color', 'border_focus_color' => 'field_styles_border_focus_color', 'margin' => 'field_styles_margin', 'padding' => 'field_styles_padding' ),
+			'field_description'    => array( 'font_size' => 'field_description_font_size', 'font_color' => 'field_description_font_color', 'font_style' => 'field_description_font_style', 'text_alignment' => 'field_description_text_alignment', 'line_height' => 'field_description_line_height', 'margin' => 'field_description_margin', 'padding' => 'field_description_padding' ),
+			'section_title'        => array( 'font_size' => 'section_title_font_size', 'font_color' => 'section_title_font_color', 'font_style' => 'section_title_font_style', 'text_alignment' => 'section_title_text_alignment', 'line_height' => 'section_title_line_height', 'margin' => 'section_title_margin', 'padding' => 'section_title_padding' ),
+			'file_upload_styles'   => array( 'font_size' => 'file_upload_font_size', 'font_color' => 'file_upload_font_color', 'background_color' => 'file_upload_background_color', 'icon_background_color' => 'file_upload_icon_background_color', 'icon_color' => 'file_upload_icon_color', 'border_color' => 'file_upload_border_color', 'margin' => 'file_upload_margin', 'padding' => 'file_upload_padding' ),
+			'checkbox_radio_styles' => array( 'font_size' => 'checkbox_radio_font_size', 'font_color' => 'checkbox_radio_font_color', 'font_style' => 'checkbox_radio_font_style', 'alignment' => 'checkbox_radio_alignment', 'style_variation' => 'checkbox_radio_style_variation', 'size' => 'checkbox_radio_size', 'color' => 'checkbox_radio_color', 'checked_color' => 'checkbox_radio_checked_color', 'margin' => 'checkbox_radio_margin' ),
+			'button'               => array( 'font_size' => 'button_font_size', 'font_style' => 'button_font_style', 'hover_font_color' => 'button_hover_font_color', 'hover_background_color' => 'button_hover_background_color', 'border_color' => 'button_border_color', 'alignment' => 'button_alignment', 'border_hover_color' => 'button_border_hover_color', 'line_height' => 'button_line_height', 'margin' => 'button_margin', 'padding' => 'button_padding' ),
+		);
+		foreach ( $typography as $group => $props ) {
+			foreach ( $props as $src => $dst ) {
+				if ( isset( $s[ $group ][ $src ] ) ) {
+					$new['typography'][ $dst ] = $s[ $group ][ $src ];
+				}
+			}
+		}
+
+		// Submission messages — v0 key structure is IDENTICAL to v1, so copy straight across.
+		foreach ( array( 'success_message', 'validation_message', 'error_message' ) as $group ) {
+			foreach ( array( 'show_submission_message', 'font_size', 'text_alignment', 'font_color', 'background_color', 'border_type', 'border_width', 'border_color', 'border_radius' ) as $k ) {
+				if ( isset( $s[ $group ][ $k ] ) ) {
+					$new[ $group ][ $k ] = $s[ $group ][ $k ];
+				}
+			}
+		}
+
+		// Palette colours — v0 stored each colour flat on its element; v1 packs the six into a
+		// single `color_palette.color_12` slot (the shape {@see self::migrate_palette()} reads).
+		$color_mappings = array(
+			'wrapper'        => array( 'background_color' => 'form_background' ),
+			'field_styles'   => array( 'background_color' => 'field_background' ),
+			'field_label'    => array( 'font_color' => 'field_label' ),
+			'field_sublabel' => array( 'font_color' => 'field_sublabel' ),
+			'button'         => array( 'font_color' => 'button_text', 'background_color' => 'button_background' ),
+		);
+		foreach ( $color_mappings as $group => $fields ) {
+			foreach ( $fields as $src => $slot ) {
+				if ( isset( $s[ $group ][ $src ] ) ) {
+					$new['color_palette']['color_12'][ $slot ] = $s[ $group ][ $src ];
+				}
+			}
+		}
+
+		return $new;
 	}
 
 	/* --------------------------------------------------------------------- *
