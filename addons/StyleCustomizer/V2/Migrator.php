@@ -89,6 +89,14 @@ final class Migrator {
 			'tokens'         => $tokens,
 		);
 
+		// Carry the v1 "selected template" (a WP-Customizer control, `template` — see
+		// class-evf-style-customizer-api.php) across so the v2 Templates pane still shows it as
+		// applied post-migration, instead of landing on "no template selected" despite the form's
+		// styling having come from one.
+		if ( ! empty( $legacy['template'] ) ) {
+			$record['template'] = Templates::resolve_legacy_slug( $legacy['template'] );
+		}
+
 		/**
 		 * Filter a freshly-migrated v2 record (e.g. to add standalone-engine keys).
 		 *

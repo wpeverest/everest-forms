@@ -107,6 +107,33 @@ final class Templates {
 	}
 
 	/**
+	 * Resolve a LEGACY template slug (the `everest_forms_styles[form_id]['template']` value —
+	 * an `evf_style_templates` / `default-templates.json` array key, e.g. `default`,
+	 * `layout-two`, or a custom "Create Style Template" slug) to its v2 template id, so
+	 * {@see Migrator::migrate_record()} can carry the v1 "selected template" across migration
+	 * instead of silently dropping it. A built-in slug resolves through the same
+	 * name → {@see sanitize_key()} id {@see all()} uses; anything else is assumed to be a
+	 * legacy custom template and resolves via {@see legacy_custom_templates()}'s `legacy-{slug}`
+	 * id scheme — matched by slug even if that custom template was since renamed or deleted
+	 * (worst case: an id that matches no current entry, no worse than today's silent drop).
+	 *
+	 * @param string $slug Legacy template slug.
+	 * @return string v2 template id, or '' if the slug is empty/unset.
+	 */
+	public static function resolve_legacy_slug( $slug ) {
+		$slug = (string) $slug;
+		if ( '' === $slug ) {
+			return '';
+		}
+		foreach ( self::load() as $key => $tpl ) {
+			if ( (string) $key === $slug ) {
+				return ! empty( $tpl['name'] ) ? sanitize_key( (string) $tpl['name'] ) : '';
+			}
+		}
+		return 'legacy-' . sanitize_key( $slug );
+	}
+
+	/**
 	 * User-created templates ("save current styles as a template"), newest first. Each is a
 	 * v2 record captured from a form's current styles — plus, appended, any genuinely custom
 	 * template a user saved through the OLD (v1) customizer's own "Create Style Template", so

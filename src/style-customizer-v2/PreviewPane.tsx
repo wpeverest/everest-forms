@@ -78,9 +78,10 @@ function MigrationNotice() {
 /**
  * Polished preview loader (skeleton form + spinner). Shared with the panel bootstrap so the
  * preview area shows the SAME loader from the instant the tab opens through until the iframe
- * is ready — no blank flash, no premature "unavailable".
+ * is ready — no blank flash, no premature "unavailable", and (via `note`) no jarring hand-off
+ * to a differently-designed loader for the migration step that can precede it (see index.tsx).
  */
-export function PreviewSkeleton() {
+export function PreviewSkeleton( { note }: { note?: string } ) {
 	return (
 		<div className="pv-skel" aria-hidden="true">
 			<div className="skel-card">
@@ -91,7 +92,7 @@ export function PreviewSkeleton() {
 				<div className="skel-bar" style={ { width: '30%', height: 34, marginBottom: 0 } } />
 			</div>
 			<span className="skel-note">
-				<span className="spin" /> { __( 'Loading your live preview…', 'everest-forms' ) }
+				<span className="spin" /> { note || __( 'Loading your live preview…', 'everest-forms' ) }
 			</span>
 		</div>
 	);
