@@ -12,7 +12,7 @@
  * variables that moved.
  */
 import { useSyncExternalStore } from 'react';
-import { clone, mixHex } from './constants';
+import { clone, deepEqual, mixHex } from './constants';
 import {
 	BootstrapSettings,
 	Device,
@@ -423,6 +423,77 @@ class StyleStore {
 	/** All templates for display — user-created first (deletable), then the built-ins. */
 	allTemplates(): StylePayload[ 'templates' ] {
 		return this.userTemplates.concat( this.templates );
+	}
+
+	/**
+	 * Whether the CURRENT token state is exactly what applying `templateTokens` would produce —
+	 * i.e. every schema token equals the template's value (or the schema default where the
+	 * template doesn't set it), the same result {@see applyTemplate} yields. This is the truthful
+	 * basis for the "applied" badge: a template is shown as applied only when the form actually
+	 * LOOKS like it, never merely because a (possibly-stale) `template` slug still names it.
+	 */
+	private tokensMatchTemplate( templateTokens: Record< string, DeviceBag > ): boolean {
+		const tpl = templateTokens || {};
+		return this.schema.every( ( t ) => {
+			const expected = tpl[ t.key ] !== undefined ? tpl[ t.key ] : { desktop: t.default };
+			return deepEqual( this.tokens[ t.key ], expected );
+		} );
+	}
+
+	/** Whether two template token maps produce the identical applied result (both sparse; missing
+	 *  keys fall back to the schema default). Used to infer a custom template's built-in parent. */
+	private templateTokensEqual( a: Record< string, DeviceBag >, b: Record< string, DeviceBag > ): boolean {
+		const am = a || {};
+		const bm = b || {};
+		return this.schema.every( ( t ) => {
+			const av = am[ t.key ] !== undefined ? am[ t.key ] : { desktop: t.default };
+			const bv = bm[ t.key ] !== undefined ? bm[ t.key ] : { desktop: t.default };
+			return deepEqual( av, bv );
+		} );
+	}
+
+	/**
+	 * The id of the template the form's CURRENT styles exactly match, or '' if none. Prefers the
+	 * stored `template` slug when it still matches (stable in the common case), else the first
+	 * template whose values match. Drives the ✓ "Applied" badge — so after migration a form that
+	 * carried a template's values lights up that template, and a form whose styles were tweaked
+	 * away from any template shows no false ✓ (see {@see originTemplateId} for the "Modified" hint).
+	 */
+	appliedTemplateId(): string {
+		const all = this.allTemplates();
+		const stored = all.find( ( t ) => t.id === this.template );
+		if ( stored && this.tokensMatchTemplate( stored.tokens ) ) {
+			return stored.id;
+		}
+		const match = all.find( ( t ) => this.tokensMatchTemplate( t.tokens ) );
+		return match ? match.id : '';
+	}
+
+	/**
+	 * The template the form was applied FROM but has since diverged from (the stored `template`
+	 * slug, when it names a real template that the current styles no longer exactly match). Lets
+	 * the panel show an honest "Based on X · Modified" hint instead of a false ✓. Returns '' when
+	 * the styles DO match (that's an ✓, handled by {@see appliedTemplateId}) or the slug is unset.
+	 */
+	originTemplateId(): string {
+		if ( ! this.template || this.appliedTemplateId() === this.template ) {
+			return '';
+		}
+		return this.allTemplates().some( ( t ) => t.id === this.template ) ? this.template : '';
+	}
+
+	/**
+	 * For a user/custom template, the id of the built-in template it EXACTLY derives from (its
+	 * "inherent parent"), or '' if none matches. v1 discarded the parent when a custom template
+	 * was created, so it can only be inferred by value; we only claim a parent on an exact match,
+	 * never a fuzzy guess — so the label, when shown, is always correct.
+	 */
+	templateParentId( tpl: StylePayload[ 'templates' ][ number ] ): string {
+		if ( ! tpl || ! tpl.custom ) {
+			return '';
+		}
+		const parent = this.templates.find( ( b ) => this.templateTokensEqual( tpl.tokens, b.tokens ) );
+		return parent ? parent.id : '';
 	}
 
 	/** Add a newly-saved user template to the front of the list (no history entry). */

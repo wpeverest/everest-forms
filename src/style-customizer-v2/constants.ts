@@ -9,6 +9,34 @@ import { Device } from './types';
 export const clone = < T >( v: T ): T =>
 	typeof structuredClone === 'function' ? structuredClone( v ) : JSON.parse( JSON.stringify( v ) );
 
+/**
+ * Structural value-equality for token values / device bags — order-independent for object keys
+ * (so it doesn't depend on insertion order the way a JSON.stringify compare would). Used to test
+ * whether a form's current styles EXACTLY equal a given template's (see store.appliedTemplateId).
+ */
+export function deepEqual( a: unknown, b: unknown ): boolean {
+	if ( a === b ) {
+		return true;
+	}
+	if ( a === null || b === null || typeof a !== 'object' || typeof b !== 'object' ) {
+		return false;
+	}
+	const aArr = Array.isArray( a );
+	if ( aArr !== Array.isArray( b ) ) {
+		return false;
+	}
+	const ak = Object.keys( a as Record< string, unknown > );
+	const bk = Object.keys( b as Record< string, unknown > );
+	if ( ak.length !== bk.length ) {
+		return false;
+	}
+	return ak.every(
+		( k ) =>
+			Object.prototype.hasOwnProperty.call( b, k ) &&
+			deepEqual( ( a as Record< string, unknown > )[ k ], ( b as Record< string, unknown > )[ k ] )
+	);
+}
+
 /** Section icon inner-SVG (rendered inside a 24×24 stroke viewBox). */
 export const SECTION_ICONS: Record<string, string> = {
 	form: '<rect x="3" y="3" width="18" height="18" rx="3"/>',

@@ -490,6 +490,8 @@ function templateThumb( tpl: Template ) {
 function TemplateCard( {
 	tpl,
 	applied,
+	modified,
+	basedOn,
 	locked,
 	onPreview,
 	onClearPreview,
@@ -498,6 +500,11 @@ function TemplateCard( {
 }: {
 	tpl: Template;
 	applied: boolean;
+	/** The form was applied FROM this template but has since been edited — show an honest hint
+	 *  instead of a ✓ (its styles no longer exactly match this template). */
+	modified?: boolean;
+	/** Name of the built-in template this (custom) template exactly derives from, if any. */
+	basedOn?: string;
 	locked: boolean;
 	onPreview: () => void;
 	onClearPreview: () => void;
@@ -507,7 +514,13 @@ function TemplateCard( {
 	return (
 		<button
 			type="button"
-			className={ 'tpl' + ( tpl.custom ? ' tpl-user' : '' ) + ( locked ? ' tpl-locked' : '' ) + ( applied ? ' tpl-applied' : '' ) }
+			className={
+				'tpl' +
+				( tpl.custom ? ' tpl-user' : '' ) +
+				( locked ? ' tpl-locked' : '' ) +
+				( applied ? ' tpl-applied' : '' ) +
+				( modified ? ' tpl-modified' : '' )
+			}
 			aria-pressed={ applied }
 			onMouseEnter={ onPreview }
 			onMouseLeave={ onClearPreview }
@@ -520,6 +533,11 @@ function TemplateCard( {
 					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 3 }>
 						<path d="m5 13 4 4 10-10" />
 					</svg>
+				</span>
+			) }
+			{ ! applied && modified && (
+				<span className="tpl-mod" title={ __( 'Started from this template, then edited', 'everest-forms' ) }>
+					{ __( 'Modified', 'everest-forms' ) }
 				</span>
 			) }
 			{ locked && (
@@ -561,6 +579,12 @@ function TemplateCard( {
 			) }
 			<TemplateThumb tpl={ tpl } />
 			<span className="cap">{ tpl.name }</span>
+			{ basedOn && (
+				<span className="tpl-parent">
+					{ /* translators: %s: the built-in template this custom one derives from. */ }
+					{ ( __( 'Based on %s', 'everest-forms' ) as string ).replace( '%s', basedOn ) }
+				</span>
+			) }
 		</button>
 	);
 }
@@ -589,6 +613,29 @@ export function TemplatesPane( {
 		() => Object.fromEntries( templates.map( ( tpl ) => [ tpl.id, flattenDesktop( tpl.tokens ) ] ) ),
 		[ templates ]
 	);
+
+	// Value-driven template state (recomputed whenever the store version bumps): the ✓ "Applied"
+	// badge reflects whether the form's ACTUAL styles match a template — never a stale slug — so it
+	// can't disagree with the live preview. `originId` is the template the form was applied FROM but
+	// has since been edited (an honest "Modified" hint). `parentNames` maps each CUSTOM template to
+	// the built-in it exactly derives from (its inferred "parent"). See the store methods.
+	const ver = store.getVersion();
+	const appliedId = React.useMemo( () => store.appliedTemplateId(), [ store, ver ] );
+	const originId = React.useMemo( () => store.originTemplateId(), [ store, ver ] );
+	const parentNames = React.useMemo( () => {
+		const map: Record< string, string > = {};
+		templates.forEach( ( tpl ) => {
+			const pid = store.templateParentId( tpl );
+			if ( pid ) {
+				const parent = store.templates.find( ( b ) => b.id === pid );
+				if ( parent ) {
+					map[ tpl.id ] = parent.name;
+				}
+			}
+		} );
+		return map;
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [ templates, store, ver ] );
 
 	const templatesBase = store.settings.restBase.replace( /\/styles$/, '/style-templates' );
 
@@ -649,7 +696,9 @@ export function TemplatesPane( {
 					<TemplateCard
 						key={ tpl.id }
 						tpl={ tpl }
-						applied={ store.template === tpl.id }
+						applied={ appliedId === tpl.id }
+						modified={ originId === tpl.id }
+						basedOn={ parentNames[ tpl.id ] }
 						locked={ locked }
 						onPreview={ () => onPreview( flat[ tpl.id ] ) }
 						onClearPreview={ onClearPreview }
