@@ -4,6 +4,27 @@
 
 	var EVFPanelBuilder = {
 		/**
+		 * Field types that don't accept a submitted value (design/layout fields
+		 * or fields with no single value) and so can't be a conditional logic
+		 * target field.
+		 */
+		nonInputFieldTypes: [
+			'html',
+			'title',
+			'address',
+			'image-upload',
+			'file-upload',
+			'date-time',
+			'hidden',
+			'scale-rating',
+			'likert',
+			'yes-no',
+			'divider',
+			'signature',
+			'progress',
+		],
+
+		/**
 		 * Start the panel builder.
 		 */
 		init: function () {
@@ -6783,21 +6804,11 @@
 									.find('.label-title span')
 									.first()
 									.text();
-							field_to_be_restricted = [];
-							field_to_be_restricted = [
-								'html',
-								'title',
-								'address',
-								'image-upload',
-								'file-upload',
-								'date-time',
-								'hidden',
-								'scale-rating',
-								'likert',
-								'yes-no',
-							];
 							if (
-								$.inArray(form_field_type, field_to_be_restricted) === -1 &&
+								$.inArray(
+									form_field_type,
+									EVFPanelBuilder.nonInputFieldTypes,
+								) === -1 &&
 								dragged_field_id !== form_field_id
 							) {
 								if (
@@ -6836,16 +6847,7 @@
 						field_label +
 						'</option>';
 					if (
-						'html' !== field_type &&
-						'title' !== field_type &&
-						'address' !== field_type &&
-						'image-upload' !== field_type &&
-						'file-upload' !== field_type &&
-						'hidden' !== field_type &&
-						'likert' !== field_type &&
-						'scale-rating' !== field_type &&
-						'yes-no' !== field_type &&
-						'divider' !== field_type
+						$.inArray(field_type, EVFPanelBuilder.nonInputFieldTypes) === -1
 					) {
 						fields.eq(index).insertAt(el_to_append, 1, selected_id);
 					}
@@ -6900,16 +6902,7 @@
 						field_id +
 						'"]',
 					).length &&
-					'html' !== field_type &&
-					'title' !== field_type &&
-					'address' !== field_type &&
-					'image-upload' !== field_type &&
-					'file-upload' !== field_type &&
-					'date-time' !== field_type &&
-					'hidden' !== field_type &&
-					'likert' !== field_type &&
-					'scale-rating' !== field_type &&
-					'divider' !== field_type
+					$.inArray(field_type, EVFPanelBuilder.nonInputFieldTypes) === -1
 				) {
 					new_row_option
 						.find('.evf-field-conditional-field-select')
@@ -7038,22 +7031,9 @@
 							var field_type = $(this).data('field-type'),
 								field_id = $(this).data('field-id'),
 								field_label = $(this).find('.label-title span').first().text();
-							field_to_be_restricted = [];
-							field_to_be_restricted = [
-								'html',
-								'title',
-								'address',
-								'image-upload',
-								'file-upload',
-								'signature',
-								'divider',
-								'date-time',
-								'hidden',
-								'scale-rating',
-								'likert',
-								'yes-no',
+							var field_to_be_restricted = EVFPanelBuilder.nonInputFieldTypes.concat(
 								dragged_el.attr('data-field-type'),
-							];
+							);
 
 							if ($.inArray(field_type, field_to_be_restricted) === -1) {
 								fields
@@ -7084,16 +7064,7 @@
 						field_label +
 						'</option>';
 					if (
-						'html' !== field_type &&
-						'title' !== field_type &&
-						'address' !== field_type &&
-						'image-upload' !== field_type &&
-						'file-upload' !== field_type &&
-						'date-time' !== field_type &&
-						'hidden' !== field_type &&
-						'likert' !== field_type &&
-						'scale-rating' !== field_type &&
-						'yes-no' !== field_type
+						$.inArray(field_type, EVFPanelBuilder.nonInputFieldTypes) === -1
 					) {
 						fields.eq(index).insertAt(el_to_append, dragged_index);
 					}
