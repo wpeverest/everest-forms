@@ -37,23 +37,43 @@ const settings: BootstrapSettings = rawSettings || {
 	previewSession: '',
 };
 
+const MIGRATION_SEEN_PREFIX = 'evf_scv2_migration_seen_';
+
+/** Whether this browser has already sat through the migrating transition for this form once. */
+function hasSeenMigration( formId: number ): boolean {
+	try {
+		return window.localStorage.getItem( MIGRATION_SEEN_PREFIX + formId ) === '1';
+	} catch ( e ) {
+		return false;
+	}
+}
+
+function markMigrationSeen( formId: number ) {
+	try {
+		window.localStorage.setItem( MIGRATION_SEEN_PREFIX + formId, '1' );
+	} catch ( e ) {
+		// Best-effort only — worst case the transition shows again next visit.
+	}
+}
+
 // Synchronous init from the localized payload, at module load — before Bootstrap even mounts.
 // Wrapped defensively: if the payload were ever missing a field, fall through to the network
 // fetch below rather than crash the panel.
 //
-// EXCEPT when this specific read just migrated the form (`migration.just_migrated`): the
-// localized payload is computed once, synchronously, at the moment the builder page rendered
-// (see BuilderPanel::enqueue()) — reliable for an already-v2 form, but for a freshly-migrated one
-// we deliberately do NOT trust it as the final word. Instead we hold off mounting the panel,
-// show an explicit "Migrating your styles…" transition (see MigratingCard below), and re-fetch
-// via REST — a fresh, authoritative read a moment later — before ever initializing the store.
-// This is what guarantees the panel always opens already showing the migrated result with no
-// manual refresh required, and turns what would otherwise be a silent, easy-to-miss swap into a
-// deliberate, visible step.
+// EXCEPT the very FIRST time this specific form is seen freshly migrated
+// (`migration.just_migrated`, see hasSeenMigration()): migration is migrate-ON-READ, not
+// persisted until Save, so `just_migrated` recomputes to true on every single page load/refresh
+// until then — trusting the localized payload immediately is exactly as correct on refresh #5 as
+// on refresh #1 (both come from the identical, synchronous, at-render-time computation, see
+// RestController::build_payload()). So only the FIRST time do we hold off mounting the panel to
+// show an explicit "Migrating your styles…" transition and re-fetch via REST for one deliberate,
+// visible confirmation; every refresh after that (until the user Saves) is the ordinary
+// synchronous, instant path — no sidebar skeleton, no re-fetch, same as any already-v2 form.
 let readyFromPayload = false;
 let migrationPending = false;
 if ( rawSettings && rawSettings.payload && settings.formId ) {
-	if ( rawSettings.payload.migration && rawSettings.payload.migration.just_migrated ) {
+	const justMigrated = !! ( rawSettings.payload.migration && rawSettings.payload.migration.just_migrated );
+	if ( justMigrated && ! hasSeenMigration( settings.formId ) ) {
 		migrationPending = true;
 	} else {
 		try {
@@ -91,6 +111,7 @@ function Bootstrap() {
 		};
 
 		if ( migrationPending ) {
+			markMigrationSeen( settings.formId ); // Never show this transition again for this form.
 			const startedAt = Date.now();
 			const fresh = apiFetch && settings.formId
 				? apiFetch( { path: `${ settings.restBase }/${ settings.formId }` } )
