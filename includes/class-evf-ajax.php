@@ -2355,6 +2355,22 @@ class EVF_AJAX {
 			wp_send_json_error( array( 'message' => __( 'Gateway settings could not be found.', 'everest-forms' ) ) );
 		}
 
+		/**
+		 * Filter: verify a gateway's submitted API keys before they are saved.
+		 *
+		 * Gateways (Stripe, Square, Mollie, ...) can hook
+		 * `everest_forms_verify_payment_gateway_keys_{$accordion_id}` to check the
+		 * submitted keys against their own API. Return a WP_Error to block the save.
+		 *
+		 * @param true|WP_Error $verified Whether the keys are valid. Default true (no verification).
+		 * @param array         $posted   Raw $_POST data for this accordion's fields.
+		 */
+		$verified = apply_filters( "everest_forms_verify_payment_gateway_keys_{$accordion_id}", true, $_POST ); // phpcs:ignore WordPress.Security.NonceVerification
+
+		if ( is_wp_error( $verified ) ) {
+			wp_send_json_error( array( 'message' => $verified->get_error_message() ) );
+		}
+
 		EVF_Admin_Settings::save_fields( $item['fields'], $_POST ); // phpcs:ignore WordPress.Security.NonceVerification
 
 		wp_send_json_success(
