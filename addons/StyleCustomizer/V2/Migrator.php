@@ -285,7 +285,18 @@ final class Migrator {
 		);
 		foreach ( $roles as $legacy_prefix => $vp ) {
 			$rows[] = self::row( 'typography', "{$legacy_prefix}_font_size", "{$vp}.size", 'pass' );
-			$rows[] = self::row( 'typography', "{$legacy_prefix}_font_color", "{$vp}.color", 'pass' );
+			// LABEL and SUBLABEL colour are PALETTE-driven in v1: scss.php reads them from the
+			// color_palette `field_label` / `field_sublabel` slots (views/scss.php:154,160), and
+			// NEVER from `typography.field_labels_font_color` / `field_sublabels_font_color` — those
+			// keys exist in saved/template data but are dead (v1 doesn't render them). Mapping them
+			// here injected a colour v1 never showed (e.g. a template's stray #ffffff label), and it
+			// overrode the correct palette-derived value from migrate_palette(). So skip the colour
+			// row for label/sub; migrate_palette() (palette slots) + the schema default cover them.
+			// desc/title colour IS typography-driven in v1 (field_description_font_color /
+			// section_title_font_color, scss.php:190,196), so those keep the mapping.
+			if ( 'label' !== $vp && 'sub' !== $vp ) {
+				$rows[] = self::row( 'typography', "{$legacy_prefix}_font_color", "{$vp}.color", 'pass' );
+			}
 			$rows[] = self::row( 'typography', "{$legacy_prefix}_font_style", "{$vp}.fstyle", 'fontstyle' );
 			$rows[] = self::row( 'typography', "{$legacy_prefix}_text_alignment", "{$vp}.align", 'pass' );
 			$rows[] = self::row( 'typography', "{$legacy_prefix}_line_height", "{$vp}.line", 'pass' );

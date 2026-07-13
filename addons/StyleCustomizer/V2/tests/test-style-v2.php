@@ -258,6 +258,28 @@ ok( $v2['tokens']['choice.checked']['desktop'] === '#ff0000', 'palette button_ba
 ok( $v2['tokens']['btn.bgHover']['desktop'] === '#db0000', 'palette button_background → derived btn.bgHover (14% toward black)' );
 ok( $v2['tokens']['msg.success.bg']['desktop'] === '#00ff00', 'success message background migrated' );
 
+// --- Regression: label/sublabel COLOUR is palette-driven, NEVER typography (scss.php:154,160). ---
+// v1 renders label/sublabel colour only from the color_palette field_label/field_sublabel slots;
+// typography.field_labels_font_color / field_sublabels_font_color are dead keys it never reads, yet
+// the bundled templates carry them. Migrating them onto label.color/sub.color injected a colour v1
+// never showed (surfaced by the 10-template migration audit). The palette value must win; desc/title
+// colour, which IS typography-driven in v1 (scss.php:190,196), must still migrate from typography.
+$dead = array(
+	'typography'    => array( 'field_labels_font_color' => '#ffffff', 'field_sublabels_font_color' => '#ffffff', 'field_description_font_color' => '#123456', 'section_title_font_color' => '#654321' ),
+	'color_palette' => array( 'color_2' => array( 'field_label' => '#eeeeee', 'field_sublabel' => '#cccccc' ) ),
+);
+$dv2 = Migrator::migrate_record( $dead );
+ok( $dv2['tokens']['label.color']['desktop'] === '#eeeeee', 'label.color from PALETTE slot, not dead typography.field_labels_font_color' );
+ok( $dv2['tokens']['sub.color']['desktop'] === '#cccccc', 'sub.color from PALETTE slot, not dead typography.field_sublabels_font_color' );
+ok( $dv2['tokens']['desc.color']['desktop'] === '#123456', 'desc.color IS typography-driven in v1 (kept)' );
+ok( $dv2['tokens']['title.color']['desktop'] === '#654321', 'title.color IS typography-driven in v1 (kept)' );
+
+// No-palette form: the palette-driven colour tokens fall to their schema default, which MUST equal
+// v1's default-palette fallback (scss.php:104-107) so a no-palette form migrates faithfully.
+ok( Schema::get( 'label.color' )['default'] === '#333333', 'label.color default = v1 no-palette field_label (#333333)' );
+ok( Schema::get( 'sub.color' )['default'] === '#666666', 'sub.color default = v1 no-palette field_sublabel (#666666)' );
+ok( Schema::get( 'btn.bg' )['default'] === '#0073aa', 'btn.bg default = v1 no-palette button_background (#0073aa)' );
+
 // End-to-end (Pro ACTIVE): a migrated record survives sanitize + compile with full fidelity —
 // palette colour AND the now-pro granular values (label size, message colour) all persist.
 $clean_pro = Sanitizer::sanitize_record( $v2 );

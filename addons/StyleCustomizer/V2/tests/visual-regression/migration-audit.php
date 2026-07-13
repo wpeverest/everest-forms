@@ -64,6 +64,11 @@ require "$MIGRATOR_DIR/Sanitizer.php";
 require "$MIGRATOR_DIR/Compiler.php";
 require "$MIGRATOR_DIR/Migrator.php";
 require "$MIGRATOR_DIR/Engine.php";
+// Migrator::migrate_record() resolves the legacy template slug via Templates::resolve_legacy_slug()
+// (carried over so the migrated form shows its template as applied). In the real plugin both are
+// PSR-4 autoloaded; this standalone harness must require it explicitly or migrate_record() fatals.
+// Only its slug resolver runs here (load() + sanitize_key), so no extra WP stubs are needed.
+require "$MIGRATOR_DIR/Templates.php";
 
 // Layer in Pro's Messages tokens (msg.*) the same way a real Pro-active site does, so this tool
 // can actually check message-weight/colour — otherwise Schema::tokens() never includes them.

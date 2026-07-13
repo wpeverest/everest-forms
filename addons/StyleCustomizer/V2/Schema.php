@@ -373,7 +373,11 @@ final class Schema {
 		);
 
 		$button = array(
-			array( 'key' => 'btn.bg', 'section' => 'button', 'group' => '', 'label' => __( 'Button color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-btn-bg', 'default' => '#3b82f6', 'hidden' => true, 'keywords' => array( 'submit', 'background' ) ),
+			// btn.bg is palette-driven (hidden picker); the default only shows on a NO-palette form,
+			// where it must match v1's default-palette fallback button_background #0073aa
+			// (scss.php:107), not a v2-invented blue — otherwise every no-palette form's button
+			// recolours on migration.
+			array( 'key' => 'btn.bg', 'section' => 'button', 'group' => '', 'label' => __( 'Button color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-btn-bg', 'default' => '#0073aa', 'hidden' => true, 'keywords' => array( 'submit', 'background' ) ),
 			array( 'key' => 'btn.color', 'section' => 'button', 'group' => '', 'label' => __( 'Text color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-btn-color', 'default' => '#ffffff', 'hidden' => true, 'keywords' => array( 'submit' ) ),
 			// default 3: legacy config's button border_radius default (everest_forms_general_buttons).
 			self::radius( 'btn.radius', '--evf-btn-radius', 3, 'button', null, '', false ),
@@ -444,8 +448,13 @@ final class Schema {
 			// couple of px / a slightly different grey. desc/title colours are palette-driven (§12
 			// spreads field_sublabel→desc.color, field_label→title.color), so the default only shows
 			// on a form with no palette — where it must still match legacy's #575757.
-			'label'    => array( 'sub' => 'label', 'size' => 14, 'min' => 10, 'max' => 24, 'color' => '#1f2433', 'nw' => '600', 'margin' => array( 0, 0, 10, 0 ), 'line' => 1.7, 'pad' => array( 0, 0, 0, 0 ), 'color_hidden' => true ),
-			'sublabel' => array( 'sub' => 'sub', 'size' => 12, 'min' => 9, 'max' => 20, 'color' => '#6b7280', 'nw' => '400', 'margin' => array( 0, 0, 10, 0 ), 'line' => 1.5, 'pad' => array( 0, 0, 0, 0 ), 'color_hidden' => true ),
+			// label/sublabel colour is palette-driven (hidden picker); the default only shows on a
+			// NO-palette form, where it must match v1's default-palette fallback — scss.php:104-105
+			// uses field_label #333333 / field_sublabel #666666 when no palette is set. (Earlier
+			// #1f2433/#6b7280 were measured on a form that HAD a palette, so the true no-palette
+			// default was never exercised until the 10-template migration audit surfaced it.)
+			'label'    => array( 'sub' => 'label', 'size' => 14, 'min' => 10, 'max' => 24, 'color' => '#333333', 'nw' => '600', 'margin' => array( 0, 0, 10, 0 ), 'line' => 1.7, 'pad' => array( 0, 0, 0, 0 ), 'color_hidden' => true ),
+			'sublabel' => array( 'sub' => 'sub', 'size' => 12, 'min' => 9, 'max' => 20, 'color' => '#666666', 'nw' => '400', 'margin' => array( 0, 0, 10, 0 ), 'line' => 1.5, 'pad' => array( 0, 0, 0, 0 ), 'color_hidden' => true ),
 			'desc'     => array( 'sub' => 'desc', 'size' => 14, 'min' => 9, 'max' => 20, 'color' => '#575757', 'nw' => '400', 'margin' => array( 0, 0, 10, 0 ), 'line' => 1.7, 'pad' => array( 0, 0, 0, 0 ), 'color_hidden' => false ),
 			'title'    => array( 'sub' => 'title', 'size' => 16, 'min' => 12, 'max' => 34, 'color' => '#575757', 'nw' => '700', 'margin' => array( 25, 0, 25, 0 ), 'line' => 1.5, 'pad' => array( 0, 0, 0, 0 ), 'color_hidden' => false ),
 		);
