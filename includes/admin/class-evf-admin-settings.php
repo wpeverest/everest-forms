@@ -229,7 +229,12 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 				'everest_forms_settings',
 				'everest_forms_settings_params',
 				array(
-					'i18n_nav_warning' => __( 'The changes you made will be lost if you navigate away from this page.', 'everest-forms' ),
+					'i18n_nav_warning'   => __( 'The changes you made will be lost if you navigate away from this page.', 'everest-forms' ),
+					'ajax_url'           => admin_url( 'admin-ajax.php' ),
+					'i18n_saving'        => __( 'Saving...', 'everest-forms' ),
+					'i18n_save'          => __( 'Save', 'everest-forms' ),
+					'i18n_saved'         => __( 'Settings saved successfully.', 'everest-forms' ),
+					'i18n_save_error'    => __( 'Something went wrong. Please try again.', 'everest-forms' ),
 				)
 			);
 
@@ -1029,52 +1034,15 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 	<div class="everest-forms-accordion-wrapper">
 						<?php foreach ( $value['items'] as $index => $item ) : ?>
 							<?php
-							$is_connected = false;
-							if ( isset( $item['is_enabled'] ) ) {
-								$is_connected = $item['is_enabled'];
-							} elseif ( isset( $item['connection_check'] ) ) {
-								$connection_check = $item['connection_check'];
-
-								// Handle grouped checks (test OR live credentials).
-								if ( isset( $connection_check['groups'] ) && is_array( $connection_check['groups'] ) ) {
-									$mode         = isset( $connection_check['mode'] ) ? $connection_check['mode'] : 'any_group';
-									$is_connected = false;
-
-									foreach ( $connection_check['groups'] as $group_name => $group_fields ) {
-										$group_complete = true;
-										foreach ( $group_fields as $field_id ) {
-											$field_value = get_option( $field_id, '' );
-											if ( empty( $field_value ) ) {
-												$group_complete = false;
-												break;
-											}
-										}
-
-										if ( $group_complete ) {
-											$is_connected = true;
-											if ( 'any_group' === $mode ) {
-												break;
-											}
-										}
-									}
-								} elseif ( is_array( $connection_check ) ) {
-									$is_connected = true;
-									foreach ( $connection_check as $field_id ) {
-										$field_value = get_option( $field_id, '' );
-										if ( empty( $field_value ) ) {
-											$is_connected = false;
-											break;
-										}
-									}
-								}
-							}
+							$is_connected = self::is_accordion_item_connected( $item );
+							$accordion_id = isset( $item['id'] ) ? sanitize_key( $item['id'] ) : sanitize_title( $item['title'] );
 
 							$item_classes = array( 'everest-forms-accordion-item' );
 							if ( $is_connected ) {
 								$item_classes[] = 'is-connected';
 							}
 							?>
-			<div class="<?php echo esc_attr( implode( ' ', $item_classes ) ); ?>" data-accordion-index="<?php echo esc_attr( $index ); ?>">
+			<div class="<?php echo esc_attr( implode( ' ', $item_classes ) ); ?>" data-accordion-index="<?php echo esc_attr( $index ); ?>" data-accordion-id="<?php echo esc_attr( $accordion_id ); ?>">
 
 				<div class="everest-forms-accordion-header">
 					<div class="everest-forms-accordion-status">
@@ -1104,6 +1072,13 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 								self::output_fields( $item['fields'] );
 							}
 							?>
+						<button
+							type="button"
+							class="everest-forms-btn everest-forms-btn-primary everest-forms-accordion-save"
+							data-accordion-id="<?php echo esc_attr( $accordion_id ); ?>"
+						>
+							<?php esc_html_e( 'Save', 'everest-forms' ); ?>
+						</button>
 					</div>
 				</div>
 			</div>
@@ -1117,6 +1092,85 @@ if ( ! class_exists( 'EVF_Admin_Settings', false ) ) :
 						break;
 				}
 			}
+		}
+
+		/**
+		 * Whether an accordion item (e.g. a payment gateway) counts as "connected"/active.
+		 *
+		 * Supports a plain list of required option ids, or a grouped `connection_check`
+		 * with a `mode_option` (e.g. a "Enable Test Mode" toggle) so that only the
+		 * credentials for the currently active mode (test/live) are required.
+		 *
+		 * @param array $item Accordion item config (title, connection_check, fields, ...).
+		 * @return bool
+		 */
+		public static function is_accordion_item_connected( $item ) {
+			if ( isset( $item['is_enabled'] ) ) {
+				return (bool) $item['is_enabled'];
+			}
+
+			if ( ! isset( $item['connection_check'] ) ) {
+				return false;
+			}
+
+			$connection_check = $item['connection_check'];
+
+			// Handle grouped checks (test OR live credentials).
+			if ( isset( $connection_check['groups'] ) && is_array( $connection_check['groups'] ) ) {
+				$mode_option = isset( $connection_check['mode_option'] ) ? $connection_check['mode_option'] : '';
+
+				if ( '' !== $mode_option ) {
+					// Mode-aware: only the currently active mode (test/live) needs to be fully configured.
+					$active_mode  = 'yes' === get_option( $mode_option ) ? 'test' : 'live';
+					$group_fields = isset( $connection_check['groups'][ $active_mode ] ) ? $connection_check['groups'][ $active_mode ] : array();
+
+					if ( empty( $group_fields ) ) {
+						return false;
+					}
+
+					foreach ( $group_fields as $field_id ) {
+						if ( empty( get_option( $field_id, '' ) ) ) {
+							return false;
+						}
+					}
+
+					return true;
+				}
+
+				$mode         = isset( $connection_check['mode'] ) ? $connection_check['mode'] : 'any_group';
+				$is_connected = false;
+
+				foreach ( $connection_check['groups'] as $group_fields ) {
+					$group_complete = true;
+					foreach ( $group_fields as $field_id ) {
+						if ( empty( get_option( $field_id, '' ) ) ) {
+							$group_complete = false;
+							break;
+						}
+					}
+
+					if ( $group_complete ) {
+						$is_connected = true;
+						if ( 'any_group' === $mode ) {
+							break;
+						}
+					}
+				}
+
+				return $is_connected;
+			}
+
+			if ( is_array( $connection_check ) ) {
+				foreach ( $connection_check as $field_id ) {
+					if ( empty( get_option( $field_id, '' ) ) ) {
+						return false;
+					}
+				}
+
+				return true;
+			}
+
+			return false;
 		}
 
 		/**

@@ -317,6 +317,91 @@
 		},
 	);
 
+	// Save an individual payment gateway accordion via AJAX.
+	$(document.body).on('click', '.everest-forms-accordion-save', function (e) {
+		e.preventDefault();
+
+		var $button = $(this);
+		var $item = $button.closest('.everest-forms-accordion-item');
+		var accordionId = $button.data('accordion-id');
+		var $nonce = $item
+			.closest('form')
+			.find('input[name="_wpnonce"]')
+			.first();
+
+		if (!accordionId || !$nonce.length || $button.hasClass('is-saving')) {
+			return;
+		}
+
+		var fieldsData = $item
+			.find('.everest-forms-accordion-content-inner')
+			.find('input, select, textarea')
+			.serialize();
+
+		var data =
+			fieldsData +
+			'&action=everest_forms_save_payment_gateway_settings' +
+			'&security=' +
+			encodeURIComponent($nonce.val()) +
+			'&accordion_id=' +
+			encodeURIComponent(accordionId);
+
+		var originalLabel = $button.text();
+
+		$.ajax({
+			url: params.ajax_url,
+			data: data,
+			type: 'post',
+			beforeSend: function () {
+				$button
+					.addClass('is-saving')
+					.prop('disabled', true)
+					.text(params.i18n_saving || originalLabel);
+			},
+			complete: function () {
+				$button
+					.removeClass('is-saving')
+					.prop('disabled', false)
+					.text(params.i18n_save || originalLabel);
+			},
+			success: function (response) {
+				if (response && response.success) {
+					$item.toggleClass(
+						'is-connected',
+						!!(response.data && response.data.is_connected),
+					);
+					$item
+						.find('.everest-forms-accordion-status .toggle-switch-outer')
+						.toggleClass(
+							'connected',
+							!!(response.data && response.data.is_connected),
+						)
+						.toggleClass(
+							'disconnected',
+							!(response.data && response.data.is_connected),
+						);
+
+					window.evfShowToast(
+						(response.data && response.data.message) ||
+							params.i18n_saved,
+						'success',
+						5000,
+					);
+				} else {
+					window.evfShowToast(
+						(response.data && response.data.message) ||
+							params.i18n_save_error,
+						'error',
+						5000,
+					);
+				}
+			},
+			error: function () {
+				window.evfShowToast(params.i18n_save_error, 'error', 5000);
+			},
+		});
+	});
+
 	// Initialize accordion items and CAPTCHA toggles on document ready
 	$(document).ready(function () {
 		// Initialize accordion items

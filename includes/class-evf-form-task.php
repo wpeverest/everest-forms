@@ -67,6 +67,17 @@ class EVF_Form_Task {
 	public $evf_notice_print = false;
 
 	/**
+	 * Whether the current do_task() call came from the genuine AJAX submission
+	 * endpoint (EVF_AJAX::ajax_form_submission), as opposed to a standard POST.
+	 * The caller always needs a structured response array back, regardless of
+	 * the form's own "ajax_form_submission" setting (which only controls
+	 * whether payment gateways force AJAX-style behavior).
+	 *
+	 * @var bool
+	 */
+	protected $is_ajax_request = false;
+
+	/**
 	 * Primary class constructor.
 	 *
 	 * @since 1.0.0
@@ -202,13 +213,21 @@ class EVF_Form_Task {
 			// Formatted form data for hooks.
 			$this->form_data = apply_filters( 'everest_forms_process_before_form_data', evf_decode( $form->post_content ), $entry );
 
-			// Remove locked (Pro/addon) fields from processing. They are shown in the
-			// builder for upsell but never rendered on the published form, so they must
-			// not be validated, formatted, or stored as entries (a required locked field
-			// would otherwise block every submission).
+			// Remove locked (Pro/addon) fields, and fields that opt out of rendering via
+			// `everest_forms_should_display_field_{type}` (e.g. a payment field hidden
+			// because no gateway is currently connected), from processing. These fields
+			// are never rendered on the published form, so they must not be validated,
+			// formatted, or stored as entries (a required-but-hidden field would
+			// otherwise block every submission).
 			if ( ! empty( $this->form_data['form_fields'] ) ) {
 				foreach ( $this->form_data['form_fields'] as $field_key => $field ) {
-					if ( isset( $field['type'] ) && evf_is_field_locked( $field['type'] ) ) {
+					if ( ! isset( $field['type'] ) ) {
+						continue;
+					}
+
+					$should_display = apply_filters( "everest_forms_should_display_field_{$field['type']}", true, $field, $this->form_data );
+
+					if ( evf_is_field_locked( $field['type'] ) || true !== $should_display ) {
 						unset( $this->form_data['form_fields'][ $field_key ] );
 					}
 				}
@@ -234,6 +253,13 @@ class EVF_Form_Task {
 		$square_via_selector  = function_exists( 'evf_is_gateway_in_selector_allowlist' ) && evf_is_gateway_in_selector_allowlist( array( 'form_data' => $this->form_data, 'gateway' => 'square' ) );
 		$paypal_via_selector  = function_exists( 'evf_is_gateway_in_selector_allowlist' ) && evf_is_gateway_in_selector_allowlist( array( 'form_data' => $this->form_data, 'gateway' => 'paypal' ) );
 		if ( ( isset( $this->form_data['payments']['stripe']['enable_stripe'] ) && '1' === $this->form_data['payments']['stripe']['enable_stripe'] ) || $stripe_via_selector || ( isset( $this->form_data['payments']['square']['enable_square'] ) && '1' === $this->form_data['payments']['square']['enable_square'] ) || $square_via_selector || $paypal_via_selector ) {
+			$ajax_form_submission = '1';
+		}
+
+		// A genuine AJAX submission always needs a structured JSON response back,
+		// regardless of the form's own "ajax_form_submission" setting (that flag
+		// only exists to force AJAX-style behavior for payment gateways).
+		if ( $this->is_ajax_request ) {
 			$ajax_form_submission = '1';
 		}
 			if ( '1' === $ajax_form_submission ) {
@@ -1067,7 +1093,8 @@ class EVF_Form_Task {
 	 */
 	public function ajax_form_submission( $posted_data ) {
 		add_filter( 'wp_redirect', array( $this, 'ajax_process_redirect' ), 999 );
-		$process = $this->do_task( $posted_data );
+		$this->is_ajax_request = true;
+		$process               = $this->do_task( $posted_data );
 		return $process;
 	}
 

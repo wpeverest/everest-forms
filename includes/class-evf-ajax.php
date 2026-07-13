@@ -143,6 +143,7 @@ class EVF_AJAX {
 			'update_tags_in_bulk'             => false,
 			'save_clean_talk_settings'        => true,
 			'get_form_update_nonce'           => true,
+			'save_payment_gateway_settings'   => false,
 		);
 
 		foreach ( $ajax_events as $ajax_event => $nopriv ) {
@@ -2315,6 +2316,78 @@ class EVF_AJAX {
 		}
 
 		wp_send_json_success( wp_create_nonce( 'everest-forms_process_submit' ) );
+	}
+
+	/**
+	 * AJAX handler to save a single payment gateway's accordion settings on the Payments settings tab.
+	 *
+	 * @since 3.3.0
+	 */
+	public static function save_payment_gateway_settings() {
+		check_ajax_referer( 'everest-forms-settings', 'security' );
+
+		if ( ! current_user_can( 'manage_everest_forms' ) ) {
+			wp_send_json_error( array( 'message' => __( 'You do not have permission to do that.', 'everest-forms' ) ) );
+		}
+
+		$accordion_id = isset( $_POST['accordion_id'] ) ? sanitize_key( wp_unslash( $_POST['accordion_id'] ) ) : '';
+
+		if ( '' === $accordion_id ) {
+			wp_send_json_error( array( 'message' => __( 'Missing gateway identifier.', 'everest-forms' ) ) );
+		}
+
+		$item = null;
+
+		foreach ( EVF_Admin_Settings::get_settings_pages() as $page ) {
+			if ( empty( $page->id ) || 'payment' !== $page->id ) {
+				continue;
+			}
+
+			$fields = method_exists( $page, 'get_payment_method_settings' ) ? $page->get_payment_method_settings() : $page->get_settings();
+			$item   = self::find_payment_accordion_item( $fields, $accordion_id );
+
+			if ( null !== $item ) {
+				break;
+			}
+		}
+
+		if ( null === $item || empty( $item['fields'] ) ) {
+			wp_send_json_error( array( 'message' => __( 'Gateway settings could not be found.', 'everest-forms' ) ) );
+		}
+
+		EVF_Admin_Settings::save_fields( $item['fields'], $_POST ); // phpcs:ignore WordPress.Security.NonceVerification
+
+		wp_send_json_success(
+			array(
+				'message'      => __( 'Settings saved successfully.', 'everest-forms' ),
+				'is_connected' => EVF_Admin_Settings::is_accordion_item_connected( $item ),
+			)
+		);
+	}
+
+	/**
+	 * Find an accordion item by its identifier within a settings fields array.
+	 *
+	 * @param array  $settings     Settings array (as returned by a settings page's get_settings()).
+	 * @param string $accordion_id Sanitized accordion identifier to match.
+	 * @return array|null
+	 */
+	private static function find_payment_accordion_item( $settings, $accordion_id ) {
+		foreach ( (array) $settings as $option ) {
+			if ( empty( $option['type'] ) || 'accordion' !== $option['type'] || empty( $option['items'] ) ) {
+				continue;
+			}
+
+			foreach ( $option['items'] as $item ) {
+				$item_id = isset( $item['id'] ) ? sanitize_key( $item['id'] ) : sanitize_title( $item['title'] );
+
+				if ( $item_id === $accordion_id ) {
+					return $item;
+				}
+			}
+		}
+
+		return null;
 	}
 }
 
