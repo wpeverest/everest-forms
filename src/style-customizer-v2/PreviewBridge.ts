@@ -188,9 +188,16 @@ export class PreviewBridge {
 			if ( this.destroyed || this.ready ) {
 				return;
 			}
-			const wrapper = this.findWrapper( doc );
-			if ( wrapper ) {
-				this.bootstrap( doc, wrapper );
+			try {
+				const wrapper = this.findWrapper( doc );
+				if ( wrapper ) {
+					this.bootstrap( doc, wrapper );
+				}
+			} catch ( e ) {
+				// A same-origin document is fair game for OTHER extensions' content scripts too
+				// (ad blockers, password managers, …), which can monkey-patch/break DOM APIs we
+				// depend on here. Swallow it — the fixed-interval poll (below) gets another shot
+				// on its own next tick rather than this observer permanently wedging detection.
 			}
 		} );
 	}
@@ -243,17 +250,24 @@ export class PreviewBridge {
 		}
 
 		if ( doc ) {
-			// Hide the preview chrome as early as possible so the frame never flashes the full
-			// front-end page or a dark overlay while we wait for the wrapper.
-			this.hideChrome( doc );
-			// Instant-detection supplement to this timer (see watchForWrapper docblock) — also the
-			// self-healing path once the deadline below is reached.
-			this.watchForWrapper( doc );
+			try {
+				// Hide the preview chrome as early as possible so the frame never flashes the full
+				// front-end page or a dark overlay while we wait for the wrapper.
+				this.hideChrome( doc );
+				// Instant-detection supplement to this timer (see watchForWrapper docblock) — also
+				// the self-healing path once the deadline below is reached.
+				this.watchForWrapper( doc );
 
-			const wrapper = this.findWrapper( doc );
-			if ( wrapper ) {
-				this.bootstrap( doc, wrapper );
-				return;
+				const wrapper = this.findWrapper( doc );
+				if ( wrapper ) {
+					this.bootstrap( doc, wrapper );
+					return;
+				}
+			} catch ( e ) {
+				// A browser extension's content script running in this SAME-ORIGIN document (ad
+				// blockers, password managers, corporate security tools, …) can throw from a
+				// monkey-patched DOM API on any given tick. One bad tick must not permanently kill
+				// wrapper detection — swallow it and let the next poll (below) try again.
 			}
 		}
 
@@ -286,11 +300,21 @@ export class PreviewBridge {
 			if ( this.destroyed ) {
 				return;
 			}
-			this.applyAll();
-			this.applyCustomCss();
-			this.applyDeviceWidth();
-			this.injectSelectionStyles( doc );
-			this.setupSelection( doc );
+			// A same-origin document is fair game for OTHER extensions' content scripts too (ad
+			// blockers, password managers, corporate security tools, …), which routinely inject
+			// into every frame and can throw from a monkey-patched DOM API partway through this
+			// sequence. Never let that leave the bridge permanently stuck "not responding" —
+			// whichever step failed, still flip ready/onReady so click-to-edit (and whatever DID
+			// apply) survive rather than nothing at all.
+			try {
+				this.applyAll();
+				this.applyCustomCss();
+				this.applyDeviceWidth();
+				this.injectSelectionStyles( doc );
+				this.setupSelection( doc );
+			} catch ( e ) {
+				// swallow — see comment above.
+			}
 			this.ready = true;
 			this.onReady();
 		} );
@@ -416,13 +440,20 @@ export class PreviewBridge {
 					done();
 					return;
 				}
-				const link = doc.createElement( 'link' );
-				link.id = TEMPLATE_STYLE_ID;
-				link.rel = 'stylesheet';
-				link.href = this.store.settings.frontendCssUrl;
-				link.onload = () => done();
-				link.onerror = () => done();
-				doc.head.appendChild( link );
+				// Last-resort fallback — if even THIS throws (a DOM API corrupted badly enough
+				// that neither the fetch+inline-style path nor a plain <link> can be created),
+				// still call `done()` so bootstrap() unblocks instead of stalling forever.
+				try {
+					const link = doc.createElement( 'link' );
+					link.id = TEMPLATE_STYLE_ID;
+					link.rel = 'stylesheet';
+					link.href = this.store.settings.frontendCssUrl;
+					link.onload = () => done();
+					link.onerror = () => done();
+					doc.head.appendChild( link );
+				} catch ( e ) {
+					done();
+				}
 			} );
 	}
 

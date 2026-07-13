@@ -240,9 +240,10 @@ export function ElementSlate( {
 
 	// A lightweight in-slate filter — only shown on the two large sections (Text/Messages:
 	// ~27-28 controls across 3-4 tabs) where scrolling a flat list is genuinely long. A much
-	// smaller re-add than the global command-palette search that was deliberately cut.
+	// smaller re-add than the global command-palette search that was deliberately cut. Inputs
+	// (`fields`) is excluded by design — its Normal/Focus tabs stay short enough to scan directly.
 	const SHOW_FILTER_ABOVE = 12;
-	const showFilter = enabledByState.length > SHOW_FILTER_ABOVE;
+	const showFilter = section.key !== 'fields' && enabledByState.length > SHOW_FILTER_ABOVE;
 	const q = filter.trim().toLowerCase();
 	const enabled = q ? enabledByState.filter( ( t ) => t.label.toLowerCase().indexOf( q ) !== -1 ) : enabledByState;
 
