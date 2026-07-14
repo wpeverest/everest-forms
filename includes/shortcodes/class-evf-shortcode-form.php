@@ -1022,7 +1022,11 @@ class EVF_Shortcode_Form {
 			return;
 		}
 
-		if ( 'publish' !== $form->post_status && 'inactive' !== $form->post_status ) {
+		// A draft form may render only for a preview by a user who can manage it — e.g. the
+		// Create-with-AI screen's iframe preview of a not-yet-published AI draft (see
+		// EVF_AI_Form_Builder::create_form()). Everyone else's draft-status gate is unchanged.
+		$is_previewable_draft = 'draft' === $form->post_status && current_user_can( 'manage_everest_forms' );
+		if ( 'publish' !== $form->post_status && 'inactive' !== $form->post_status && ! $is_previewable_draft ) {
 			return;
 		}
 

@@ -17,9 +17,8 @@
 	keyframes,
 	useToast,
 } from '@chakra-ui/react';
-import apiFetch from '@wordpress/api-fetch';
 import { __, sprintf } from '@wordpress/i18n';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BsStars } from 'react-icons/bs';
 import {
 	FiArrowLeft,
@@ -235,7 +234,23 @@ interface ChatMessage {
 	noticeUrl?: string;
 }
 
-const { restURL, security, ajaxUrl, aiNonce } = templatesScriptData;
+const { homeUrl, ajaxUrl, aiNonce } = templatesScriptData;
+
+/** Normalize a same-site URL to the CURRENT window's exact origin (protocol + host + port),
+ *  keeping only the path/query — mirrors src/style-customizer-v2/PreviewPane.tsx's
+ *  `previewSrc`. Without this, a proxy/alias/scheme mismatch between the admin page's
+ *  actual origin and what home_url() computes server-side can make the iframe genuinely
+ *  cross-origin (or trigger a mixed-content block), rendering it blank. */
+const sameOriginUrl = (raw: string): string => {
+	try {
+		const url = new URL(raw, window.location.href);
+		url.protocol = window.location.protocol;
+		url.host = window.location.host;
+		return url.href;
+	} catch (e) {
+		return raw;
+	}
+};
 
 const callAi = async (
 	action: string,
@@ -273,36 +288,30 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({
 	const [hint, setHint] = useState({ show: false, x: 0, y: 0 });
 	const [isRegenerating, setIsRegenerating] = useState(false);
 	const [isCreatingForm, setIsCreatingForm] = useState(false);
-	const [previewHTML, setPreviewHTML] = useState('');
+	// Real front-end preview (iframe of ?form_id=&evf_preview=true) — bumping the key forces a
+	// fresh remount/reload after every successful generate/refine, since the src string itself
+	// doesn't change. See render of the "generated" screen below for the iframe + overlay.
+	const [previewReloadKey, setPreviewReloadKey] = useState(0);
 	const [isPreviewLoading, setIsPreviewLoading] = useState(false);
+	// Auto-sized to the iframe's actual content height (see onLoad below) so the WHOLE
+	// form is visible and the surrounding page scrolls normally — no inner iframe
+	// scrollbar, which is easy to miss/awkward to use nested inside the admin page.
+	const [previewHeight, setPreviewHeight] = useState(300);
+	const previewResizeObserverRef = React.useRef<ResizeObserver | null>(null);
 	const [formId, setFormId] = useState(0);
 	const [formTitle, setFormTitle] = useState(initialTitle || '');
 	const [editUrl, setEditUrl] = useState('');
-	const [multiPartSteps, setMultiPartSteps] = useState<string[]>([]);
-	const [activePartTab, setActivePartTab] = useState(0);
 	const [refinePrompt, setRefinePrompt] = useState('');
-	const [previewVersion, setPreviewVersion] = useState(0);
 	const [messages, setMessages] = useState<ChatMessage[]>([]);
 	const previewHintTimer = React.useRef<ReturnType<typeof setTimeout> | null>(
 		null,
 	);
 	const aiResponseRef = React.useRef<any>(null);
 	const promptInputRef = React.useRef<HTMLTextAreaElement | null>(null);
-	const canvasRef = useRef<HTMLDivElement | null>(null);
-	const previewHTMLRef = React.useRef('');
-	const previewFetchStartedRef = React.useRef(false);
 
 	useEffect(() => {
-		if (!canvasRef.current || multiPartSteps.length === 0) return;
-		const rows = canvasRef.current.querySelectorAll<HTMLElement>(
-			'.evf-admin-row[data-part-id]',
-		);
-		const target = activePartTab + 1;
-		rows.forEach((row) => {
-			const pid = parseInt(row.dataset.partId || '1', 10);
-			row.style.display = pid === target ? '' : 'none';
-		});
-	}, [activePartTab, previewHTML, multiPartSteps]);
+		return () => previewResizeObserverRef.current?.disconnect();
+	}, []);
 
 	useEffect(() => {
 		if (genState !== 'idle') return;
@@ -405,10 +414,6 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({
 			});
 			if (res?.success) {
 				if (res.data?.form_title) setFormTitle(res.data.form_title);
-				if (res.data?.multi_part_steps) {
-					setMultiPartSteps(res.data.multi_part_steps);
-					setActivePartTab(0);
-				}
 				const notice = res.data?.notice || '';
 				const noticeUrl = res.data?.notice_url || '';
 				const doneText = refine
@@ -435,12 +440,8 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({
 				} else {
 					resolveLoading(doneText, false, false, '');
 				}
-				if (res.data?.preview_html) {
-					previewHTMLRef.current = res.data.preview_html;
-					setPreviewHTML(res.data.preview_html);
-				} else {
-					setPreviewVersion((v) => v + 1);
-				}
+				setIsPreviewLoading(true);
+				setPreviewReloadKey((k) => k + 1);
 			} else {
 				if (res?.data?.code === 'daily_limit_reached') {
 					setIsRateLimited(true);
@@ -478,9 +479,6 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({
 		if (genState !== 'generating') return;
 		setGenStep(-1);
 		aiResponseRef.current = null;
-		previewHTMLRef.current = '';
-		previewFetchStartedRef.current = false;
-		setPreviewHTML('');
 
 		let cancelled = false;
 		let intervalId: ReturnType<typeof setInterval> | null = null;
@@ -523,19 +521,11 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({
 		callAi('evf_ai_generate_form', { prompt })
 			.then((res: any) => {
 				if (res?.success && res.data?.form_id) {
-					const html = res.data.preview_html || '';
-					if (html) {
-						previewHTMLRef.current = html;
-						previewFetchStartedRef.current = true;
-						setPreviewHTML(html);
-						setIsPreviewLoading(false);
-					}
 					aiResponseRef.current = {
 						ok: true,
 						formId: res.data.form_id,
 						formTitle: res.data.form_title || '',
 						editUrl: res.data.edit_url || '',
-						multiPartSteps: res.data.multi_part_steps || [],
 						notice: res.data.notice || '',
 						noticeUrl: res.data.notice_url || '',
 					};
@@ -573,8 +563,8 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({
 						setFormId(result.formId);
 						setFormTitle(result.formTitle || '');
 						setEditUrl(result.editUrl);
-						setMultiPartSteps(result.multiPartSteps || []);
-						setActivePartTab(0);
+						setIsPreviewLoading(true);
+						setPreviewReloadKey((k) => k + 1);
 						setMessages([
 							{ role: 'user', text: prompt },
 							{
@@ -602,35 +592,20 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({
 		};
 	}, [genState]);
 
-	useEffect(() => {
-		if (genState !== 'generated' || !formId) return;
-		if (
-			previewVersion === 0 &&
-			(previewHTMLRef.current || previewFetchStartedRef.current)
-		)
-			return;
-		let cancelled = false;
-		setIsPreviewLoading(true);
-		apiFetch({
-			path: `${restURL}everest-forms/v1/templates/ai-preview`,
-			method: 'POST',
-			data: { form_id: formId },
-			headers: { 'X-WP-Nonce': security },
-		})
-			.then((res: any) => {
-				if (!cancelled && res?.success && res?.data?.html) {
-					previewHTMLRef.current = res.data.html;
-					setPreviewHTML(res.data.html);
-				}
-			})
-			.catch(() => {})
-			.finally(() => {
-				if (!cancelled) setIsPreviewLoading(false);
-			});
-		return () => {
-			cancelled = true;
-		};
-	}, [genState, formId, previewVersion]);
+	// Real front-end preview URL — assembled once formId is known; normalized to the
+	// current origin (see sameOriginUrl) and cache-busted by remounting on previewReloadKey
+	// change (the <iframe key={previewReloadKey}> below), not by varying this string.
+	const previewSrc = React.useMemo(() => {
+		if (!formId) return '';
+		const url = new URL(homeUrl, window.location.href);
+		url.searchParams.set('form_id', String(formId));
+		url.searchParams.set('evf_preview', 'true');
+		// Embed mode — just the form, no toolbar/device-switcher/side panel (this screen
+		// already renders its own chrome around the iframe). See evf-form-preview-embed.php.
+		url.searchParams.set('evf_preview_mode', 'embed');
+		return sameOriginUrl(url.href);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [formId]);
 
 	const handleGenerate = () => {
 		if (!hasPrompt) return;
@@ -1321,21 +1296,11 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({
 						opacity={isRegenerating ? 0.5 : 1}
 						transition="opacity 0.3s"
 					>
-						<Box
-							flex={1}
-							overflowY="auto"
-							p="24px"
-							pb={multiPartSteps.length > 0 ? '0' : '24px'}
-						>
+						<Box flex={1} overflowY="auto" p="24px">
 							<Box
 								bg="white"
 								border="1px solid #e2e8f0"
-								borderRadius={
-									multiPartSteps.length > 0 ? '16px 16px 0 0' : '16px'
-								}
-								borderBottom={
-									multiPartSteps.length > 0 ? 'none' : '1px solid #e2e8f0'
-								}
+								borderRadius="16px"
 								overflow="hidden"
 								mb="0"
 								position="relative"
@@ -1398,41 +1363,20 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({
 									)}
 								</Flex>
 
-								<style
-									dangerouslySetInnerHTML={{
-										__html: `
-								.evf-ai-preview-canvas .everest-forms-panel-content {
-									height: auto !important;
-									overflow: visible !important;
-								}
-							`,
-									}}
-								/>
-								{multiPartSteps.length > 0 && (
-									<style
-										dangerouslySetInnerHTML={{
-											__html: `
-									.evf-ai-preview-canvas .evf-admin-row[data-part-id] { display: none !important; }
-									.evf-ai-preview-canvas .evf-admin-row[data-part-id="${activePartTab + 1}"] { display: flex !important; margin-bottom: 15px !important; }
-								`,
-										}}
-									/>
-								)}
 								<Box
-									p="0"
+									position="relative"
 									pointerEvents={
 										isRegenerating || isCreatingForm ? 'none' : 'auto'
 									}
 								>
-									{previewHTML ? (
-										<div
-											ref={canvasRef}
-											className="evf-ai-preview-canvas"
-											onClick={(e) => handleFieldClick(e)}
-											dangerouslySetInnerHTML={{ __html: previewHTML }}
-										/>
-									) : (
-										<Box p="24px">
+									{isPreviewLoading && (
+										<Box
+											position="absolute"
+											inset="0"
+											bg="white"
+											zIndex={1}
+											p="24px"
+										>
 											<VStack spacing="20px" align="stretch">
 												{Array.from({ length: 5 }).map((_, idx) => (
 													<SkeletonField key={idx} delay={`${idx * 0.1}s`} />
@@ -1440,91 +1384,56 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({
 											</VStack>
 										</Box>
 									)}
+									{previewSrc && (
+										<iframe
+											key={previewReloadKey}
+											src={previewSrc}
+											title={__('Form preview', 'everest-forms')}
+											onLoad={(e) => {
+												setIsPreviewLoading(false);
+												previewResizeObserverRef.current?.disconnect();
+												try {
+													const doc = (e.target as HTMLIFrameElement)
+														.contentDocument;
+													if (!doc) return;
+													const measure = () =>
+														setPreviewHeight(
+															Math.max(
+																300,
+																doc.documentElement.scrollHeight,
+															),
+														);
+													measure();
+													// Catch late layout shifts (web fonts, images,
+													// conditional-logic field toggles) — same-origin,
+													// so this is safe DOM access, not a postMessage bridge.
+													const ro = new ResizeObserver(measure);
+													ro.observe(doc.documentElement);
+													previewResizeObserverRef.current = ro;
+												} catch (err) {
+													// Cross-origin or blocked — keep the default height.
+												}
+											}}
+											style={{
+												display: 'block',
+												width: '100%',
+												height: `${previewHeight}px`,
+												border: 'none',
+											}}
+										/>
+									)}
+									{/* Real front-end render — deliberately "look, don't touch": this
+									    overlay blocks interaction with the iframe's actual form inputs
+									    and shows the same "just a preview" tooltip clicking always did. */}
+									<Box
+										position="absolute"
+										inset="0"
+										onClick={handleFieldClick}
+										cursor="default"
+									/>
 								</Box>
 							</Box>
 						</Box>
-
-						{multiPartSteps.length > 0 && (
-							<Box
-								bg="#fafafa"
-								borderTop="1px solid #d5d9e2"
-								borderLeft="1px solid #d5d9e2"
-								borderRight="1px solid #d5d9e2"
-								borderBottom="1px solid #d5d9e2"
-								borderRadius="0 0 16px 16px"
-								display="flex"
-								alignItems="stretch"
-								h="42px"
-								mx="24px"
-								mb="24px"
-								overflow="hidden"
-								flexShrink={0}
-								pointerEvents={
-									isRegenerating || isCreatingForm ? 'none' : 'auto'
-								}
-							>
-								<Box
-									as="ul"
-									display="flex"
-									listStyleType="none"
-									m="0"
-									p="0"
-									flex="1"
-									h="41px"
-									alignSelf="flex-start"
-									overflow="hidden"
-									borderBottom="1px solid #cccccc"
-								>
-									{multiPartSteps.map((step, idx) => (
-										<Box
-											as="li"
-											key={idx}
-											display="block"
-											flexShrink={0}
-											h="40px"
-											bg={activePartTab === idx ? '#eeeeee' : '#f7f7f7'}
-											borderRadius={
-												idx === 0
-													? '0'
-													: idx === multiPartSteps.length - 1
-														? '0 0 16px 0'
-														: '0'
-											}
-											cursor="pointer"
-											onClick={() => setActivePartTab(idx)}
-										>
-											<Box
-												as="a"
-												href="#"
-												onClick={(e: React.MouseEvent) => e.preventDefault()}
-												display="inline-flex"
-												alignItems="center"
-												h="40px"
-												px="10px"
-												fontSize="13px"
-												fontWeight="600"
-												lineHeight="1"
-												color={activePartTab === idx ? '#7e3bd0' : '#555555'}
-												textDecoration="none"
-												_hover={{
-													color: activePartTab === idx ? '#7e3bd0' : '#333333',
-													textDecoration: 'none',
-												}}
-											>
-												<Text
-													margin="0"
-													fontSize="13px"
-													fontWeight="600"
-													color="inherit"
-												>
-													{step}
-												</Text>
-											</Box>
-										</Box>
-									))}
-								</Box>
-							</Box>
-						)}
 					</Box>
 				</Flex>
 			</PageShell>

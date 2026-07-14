@@ -59,6 +59,8 @@ final class Sanitizer {
 			}
 			$out_tokens[ $key ] = self::sanitize_token( $token, $in_tokens[ $key ] );
 		}
+		self::ensure_text_contrast( $out_tokens );
+
 		$clean['tokens'] = $out_tokens;
 
 		if ( isset( $record['palette'] ) ) {
@@ -79,6 +81,80 @@ final class Sanitizer {
 		$clean['_updated_at'] = time();
 
 		return $clean;
+	}
+
+	/**
+	 * Drop a text-colour override that would be unreadable against the form's own
+	 * background — belt-and-suspenders against a caller (chiefly the AI style launcher,
+	 * see RestController::ai_style()) sending a token combination that is internally
+	 * inconsistent, e.g. an explicit `label.color` override to white with no matching dark
+	 * `wrap.bg`. label.color/sub.color/desc.color/title.color are ALL hidden, palette-driven-
+	 * by-convention tokens (Schema::text_role_tokens()) with dark schema defaults (#333333-
+	 * #666666) that are already coherent with the white wrap.bg default — so dropping the
+	 * override here is a safe fallback, not a loss of an otherwise-reachable look.
+	 *
+	 * Threshold is deliberately low (2:1, well under WCAG AA's 4.5:1) — this exists to catch
+	 * "vanishes entirely" pairings like white-on-white, not to enforce accessible contrast in
+	 * general; a human deliberately choosing a low-but-visible combination in the Design tab
+	 * should never have their explicit choice silently reverted.
+	 *
+	 * @param array $out_tokens Sanitized token map, keyed by token key, modified in place.
+	 */
+	private static function ensure_text_contrast( array &$out_tokens ) {
+		$bg = isset( $out_tokens['wrap.bg']['desktop'] ) ? $out_tokens['wrap.bg']['desktop'] : '#ffffff';
+
+		foreach ( array( 'label.color', 'sub.color', 'desc.color', 'title.color' ) as $key ) {
+			if ( ! isset( $out_tokens[ $key ]['desktop'] ) ) {
+				continue;
+			}
+			$fg = $out_tokens[ $key ]['desktop'];
+			if ( ! is_string( $fg ) || ! is_string( $bg ) ) {
+				continue;
+			}
+			if ( self::contrast_ratio( $fg, $bg ) < 2.0 ) {
+				unset( $out_tokens[ $key ] ); // Falls back to the token's own (coherent) schema default.
+			}
+		}
+	}
+
+	/**
+	 * WCAG relative-luminance contrast ratio between two hex colours (1 = identical, 21 = max).
+	 *
+	 * @param string $hex1 First colour, e.g. "#ffffff".
+	 * @param string $hex2 Second colour.
+	 * @return float
+	 */
+	private static function contrast_ratio( $hex1, $hex2 ) {
+		$l1 = self::relative_luminance( $hex1 );
+		$l2 = self::relative_luminance( $hex2 );
+		if ( null === $l1 || null === $l2 ) {
+			return 21.0; // Unparseable colour (e.g. a CSS var/keyword) — don't second-guess it.
+		}
+		$lighter = max( $l1, $l2 );
+		$darker  = min( $l1, $l2 );
+		return ( $lighter + 0.05 ) / ( $darker + 0.05 );
+	}
+
+	/**
+	 * WCAG relative luminance of a hex colour, or null if it isn't a parseable #rrggbb/#rgb value.
+	 *
+	 * @param string $hex Colour, e.g. "#1a1a2e".
+	 * @return float|null
+	 */
+	private static function relative_luminance( $hex ) {
+		$hex = ltrim( trim( (string) $hex ), '#' );
+		if ( 3 === strlen( $hex ) ) {
+			$hex = $hex[0] . $hex[0] . $hex[1] . $hex[1] . $hex[2] . $hex[2];
+		}
+		if ( 6 !== strlen( $hex ) || ! ctype_xdigit( $hex ) ) {
+			return null;
+		}
+		$channels = array();
+		foreach ( array( 0, 2, 4 ) as $i ) {
+			$c = hexdec( substr( $hex, $i, 2 ) ) / 255;
+			$channels[] = $c <= 0.03928 ? $c / 12.92 : pow( ( $c + 0.055 ) / 1.055, 2.4 );
+		}
+		return 0.2126 * $channels[0] + 0.7152 * $channels[1] + 0.0722 * $channels[2];
 	}
 
 	/**

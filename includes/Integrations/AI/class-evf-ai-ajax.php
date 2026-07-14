@@ -252,7 +252,6 @@ class EVF_AI_Ajax {
 				'fields'           => EVF_AI_Form_Builder::get_field_summary( $form_id ),
 				'required_addons'  => $ai_response['required_addons'] ?? array(),
 				'multi_part_steps' => self::get_multi_part_steps( $form_id ),
-				'preview_html'     => self::render_preview_html( $form_id ),
 				'needs_reload'     => $needs_reload,
 				'notice'           => $notice,
 				'notice_url'       => '' !== $notice ? self::get_notice_upgrade_url() : '',
@@ -343,7 +342,6 @@ class EVF_AI_Ajax {
 				'fields'           => EVF_AI_Form_Builder::get_field_summary( $form_id ),
 				'required_addons'  => $ai_response['required_addons'] ?? array(),
 				'multi_part_steps' => self::get_multi_part_steps( $form_id ),
-				'preview_html'     => self::render_preview_html( $form_id ),
 				'notice'           => $gen_notice,
 				'notice_url'       => '' !== $gen_notice ? self::get_notice_upgrade_url() : '',
 			)
@@ -395,39 +393,6 @@ class EVF_AI_Ajax {
 		}
 
 		wp_send_json_success( $usage );
-	}
-
-	/**
-	 * Render the builder-canvas preview HTML for a form and return it as a string.
-	 * Included inline in generate/update responses so React needs no second round trip.
-	 *
-	 * @param int $form_id
-	 * @return string  HTML string, or empty string on failure.
-	 */
-	private static function render_preview_html( int $form_id ): string {
-		$post = get_post( $form_id );
-		if ( ! $post || 'everest_form' !== $post->post_type ) {
-			return '';
-		}
-
-		$form_content = evf_decode( $post->post_content );
-		if ( empty( $form_content ) || ! is_array( $form_content ) ) {
-			return '';
-		}
-
-		if ( ! class_exists( 'EVF_Builder_Fields', false ) ) {
-			include_once dirname( EVF_PLUGIN_FILE ) . '/includes/admin/builder/class-evf-builder-page.php';
-			include_once dirname( EVF_PLUGIN_FILE ) . '/includes/admin/builder/class-evf-builder-fields.php';
-		}
-
-		if ( ! class_exists( 'EVF_Builder_Fields', false ) ) {
-			return '';
-		}
-
-		$builder            = new EVF_Builder_Fields();
-		$builder->form_data = $form_content;
-
-		return $builder->render_ai_preview( $form_content );
 	}
 
 	/**

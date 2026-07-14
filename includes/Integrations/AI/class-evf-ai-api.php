@@ -285,7 +285,7 @@ class EVF_AI_API {
 		$email_conns = $data['settings']['email'] ?? [];
 		$conn1       = $email_conns['connection_1'] ?? [];
 
-		return [
+		$context = [
 			'form_title'              => $post->post_title,
 			'form_type'               => $form_type,
 			'multipart_steps'         => $multipart_steps,
@@ -305,6 +305,20 @@ class EVF_AI_API {
 				'reply_to'  => $email_conns['connection_2']['evf_reply_to'] ?? 'auto',
 			] : [],
 		];
+
+		// Current Style Customizer v2 record, if any — lets a plain-form refine that implies
+		// a look/colour change (e.g. "make it feel more playful") adjust the existing style
+		// instead of the gateway guessing blind. Same gate maybe_apply_ai_style() uses to
+		// write this option, kept in sync deliberately.
+		if ( class_exists( '\EverestForms\Addons\StyleCustomizer\V2\Engine' )
+			&& \EverestForms\Addons\StyleCustomizer\V2\Engine::enabled() ) {
+			$styles = get_option( 'everest_forms_styles', array() );
+			if ( ! empty( $styles[ $form_id ] ) ) {
+				$context['style'] = $styles[ $form_id ];
+			}
+		}
+
+		return $context;
 	}
 
 	/**

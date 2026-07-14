@@ -136,6 +136,10 @@ class EVF_AI_Form_Builder {
 			'post_content' => evf_encode( $form_data ),
 		] );
 
+		// The gateway may include a `style` block on a refine too (see everest_forms.py's
+		// build_update_prompt() style-context addition) — no-ops silently when absent.
+		self::maybe_apply_ai_style( $form_id, $ai_response );
+
 		return $form_id;
 	}
 
