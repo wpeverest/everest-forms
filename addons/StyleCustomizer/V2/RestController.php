@@ -486,6 +486,8 @@ final class RestController {
 			);
 		}
 
+		self::maybe_backup_legacy_record( $form_id, $all );
+
 		$clean           = Sanitizer::sanitize_record( $incoming );
 		$all[ $form_id ] = $clean;
 		update_option( 'everest_forms_styles', $all, false ); // autoload=no.
@@ -510,6 +512,28 @@ final class RestController {
 				'apply_theme_style' => self::get_apply_theme_style( $form_id ),
 			)
 		);
+	}
+
+	/**
+	 * Snapshot a form's pre-v2 record the FIRST time it is about to be overwritten by a v2
+	 * save, so a migration bug can be diagnosed or the original restored later. No-ops when
+	 * the stored record is already v2-shaped (nothing pre-v2 to lose) or a backup already
+	 * exists for this form (never overwritten again — this is the form's original data, not
+	 * a rolling snapshot).
+	 *
+	 * @param int   $form_id Form id.
+	 * @param array $all     The full `everest_forms_styles` option (pre-overwrite).
+	 */
+	protected static function maybe_backup_legacy_record( $form_id, $all ) {
+		if ( empty( $all[ $form_id ] ) || Engine::is_v2_record( $all[ $form_id ] ) ) {
+			return;
+		}
+		$backups = get_option( 'everest_forms_styles_legacy_backup', array() );
+		if ( isset( $backups[ $form_id ] ) ) {
+			return;
+		}
+		$backups[ $form_id ] = $all[ $form_id ];
+		update_option( 'everest_forms_styles_legacy_backup', $backups, false ); // autoload=no.
 	}
 
 }
