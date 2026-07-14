@@ -204,6 +204,11 @@ final class BuilderPanel {
 				'markerClass'    => FrontendEnqueue::MARKER_CLASS,
 				// Sent back with each preview-draft save so the stored draft matches this session.
 				'previewSession' => $preview_session,
+				// AI styling launcher — same "is the AI integration present + usable on this site"
+				// check the Create-with-AI feature already uses (class-evf-admin-form-templates.php),
+				// so the two AI surfaces agree about availability. Registration itself is silent/
+				// automatic (see EVF_AI_Registration::register()), driven by the panel's own request.
+				'aiEnabled'      => class_exists( 'EVF_AI_Registration' ) && ! \EVF_AI_Registration::is_local_site(),
 				// The FULL initial REST GET payload (schema, sections, palettes, templates, fonts,
 				// the saved record — see RestController::build_payload()), computed right here in
 				// PHP and delivered inline with the page. The panel initializes from this directly

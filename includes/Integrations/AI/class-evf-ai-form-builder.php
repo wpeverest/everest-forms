@@ -57,7 +57,52 @@ class EVF_AI_Form_Builder {
 			'post_content' => evf_encode( $form_data ),
 		] );
 
+		// The gateway may include a `style` block alongside the form when the prompt carried
+		// visual intent ("sleek dark contact form") — see everest_forms_style.py's STYLE_BLOCK.
+		// The new draft is born pre-styled: it opens in the v2 Style tab already showing the
+		// look, with nothing further for the user to do.
+		self::maybe_apply_ai_style( $post_id, $ai_response );
+
 		return $post_id;
+	}
+
+	/**
+	 * Persist an AI-generated `style` block (from create_form()'s response) as this new form's
+	 * v2 style record. A pure best-effort enhancement: silently does nothing when Style
+	 * Customizer v2 isn't enabled, the response has no style intent, or the intent sanitizes to
+	 * nothing — a form is never left half-created over a styling failure.
+	 *
+	 * Reuses the SAME authoritative gate {@see RestController::save_item()} does
+	 * (Sanitizer::sanitize_record()), so an AI style can no more produce an unsafe or
+	 * tier-violating record here than it can through the customizer's own AI launcher.
+	 *
+	 * @param int   $post_id     The newly created (draft) form.
+	 * @param array $ai_response Full decoded gateway response (may contain a `style` key).
+	 */
+	private static function maybe_apply_ai_style( int $post_id, array $ai_response ) {
+		if ( empty( $ai_response['style'] ) || ! is_array( $ai_response['style'] ) ) {
+			return;
+		}
+		if ( ! class_exists( '\EverestForms\Addons\StyleCustomizer\V2\Engine' )
+			|| ! \EverestForms\Addons\StyleCustomizer\V2\Engine::enabled() ) {
+			return;
+		}
+
+		$style = $ai_response['style'];
+		$clean = \EverestForms\Addons\StyleCustomizer\V2\Sanitizer::sanitize_record(
+			array(
+				'tokens'  => isset( $style['tokens'] ) && is_array( $style['tokens'] ) ? $style['tokens'] : array(),
+				'palette' => isset( $style['palette'] ) ? $style['palette'] : '',
+			)
+		);
+
+		if ( empty( $clean['tokens'] ) && empty( $clean['palette'] ) ) {
+			return; // Nothing survived sanitization — leave the form unstyled (its default look).
+		}
+
+		$all             = get_option( 'everest_forms_styles', array() );
+		$all[ $post_id ] = $clean;
+		update_option( 'everest_forms_styles', $all, false ); // autoload=no, matches RestController::save_item().
 	}
 
 	/**

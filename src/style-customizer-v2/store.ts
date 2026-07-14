@@ -420,6 +420,61 @@ class StyleStore {
 		this.notify( null );
 	}
 
+	/**
+	 * Apply an AI-generated style intent: an OVERLAY on the CURRENT state — unlike
+	 * {@see applyTemplate}, this never resets to defaults first. A restyle prompt ("make the
+	 * buttons bigger and rounder") should change only what it implies and leave everything
+	 * else exactly as the user left it; the AI itself is instructed to return a sparse token
+	 * set for the same reason (see the gateway's everest_forms_style.py). `tokens` are already
+	 * Sanitizer-cleaned device bags (server-side — see RestController::ai_style()), so no
+	 * further validation happens here.
+	 *
+	 * If `paletteId` is set, the palette's colours are spread first (identical to
+	 * {@see applyPalette}) and then `tokens` is overlaid on top — so an explicit AI colour
+	 * override always wins over its own palette pick, matching the gateway's own stated
+	 * priority rule.
+	 */
+	applyAiRecord( tokens: Record< string, DeviceBag >, paletteId?: string ) {
+		this.discrete( 'Style with AI' );
+		const affected: string[] = [];
+
+		if ( paletteId ) {
+			const palette = this.palettes.find( ( p ) => p.id === paletteId );
+			if ( palette ) {
+				Object.entries( this.paletteMap ).forEach( ( [ slot, keys ] ) => {
+					const color = palette.colors[ slot ];
+					if ( color === undefined ) {
+						return;
+					}
+					keys.forEach( ( key ) => {
+						if ( ! this.byKey[ key ] ) {
+							return;
+						}
+						this.tokens[ key ] = { desktop: color };
+						affected.push( key );
+					} );
+				} );
+				if ( this.byKey[ 'btn.bgHover' ] && palette.colors.button_background ) {
+					this.tokens[ 'btn.bgHover' ] = { desktop: mixHex( palette.colors.button_background, '#000000', 0.14 ) };
+					affected.push( 'btn.bgHover' );
+				}
+				this.palette = paletteId;
+			}
+		}
+
+		Object.entries( tokens || {} ).forEach( ( [ key, bag ] ) => {
+			if ( this.byKey[ key ] && bag && typeof bag === 'object' ) {
+				this.tokens[ key ] = clone( bag );
+				affected.push( key );
+			}
+		} );
+
+		// Deliberately leave `this.template` untouched — the Templates pane's "applied"/"Modified"
+		// badges are value-driven (see appliedTemplateId/originTemplateId above), so they
+		// self-correct automatically once the token values no longer match any template.
+		this.notify( affected.length ? affected : null );
+	}
+
 	/** All templates for display — user-created first (deletable), then the built-ins. */
 	allTemplates(): StylePayload[ 'templates' ] {
 		return this.userTemplates.concat( this.templates );

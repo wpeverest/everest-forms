@@ -160,6 +160,9 @@ export interface BootstrapSettings {
 	markerClass: string;
 	/** Per-page-load token scoping the live-preview draft to this builder session. */
 	previewSession: string;
+	/** Whether the ThemeGrill AI Cloud integration is present and usable on this site (mirrors
+	 *  the same check the Create-with-AI feature uses) — drives the AI launcher's visibility. */
+	aiEnabled: boolean;
 	/**
 	 * The full REST GET payload, computed server-side and localized inline (see
 	 * RestController::build_payload()) so the panel can initialize without a network round-trip.

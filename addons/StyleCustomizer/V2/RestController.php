@@ -106,6 +106,26 @@ final class RestController {
 			)
 		);
 
+		// AI styling — turn a plain-text prompt into style tokens (see ai_style()).
+		register_rest_route(
+			$this->namespace,
+			'/' . $this->rest_base . '/(?P<id>\d+)/ai',
+			array(
+				'args' => array(
+					'id' => array(
+						'validate_callback' => static function ( $param ) {
+							return is_numeric( $param );
+						},
+					),
+				),
+				array(
+					'methods'             => 'POST',
+					'callback'            => array( $this, 'ai_style' ),
+					'permission_callback' => array( $this, 'permissions_check' ),
+				),
+			)
+		);
+
 		// Create a user template from the current styles.
 		register_rest_route(
 			$this->namespace,
@@ -181,6 +201,89 @@ final class RestController {
 	public function delete_template( $request ) {
 		$deleted = Templates::delete_user_template( (string) $request['tid'] );
 		return rest_ensure_response( array( 'deleted' => (bool) $deleted ) );
+	}
+
+	/**
+	 * POST /styles/{id}/ai — turn a plain-text prompt into style tokens via the ThemeGrill AI
+	 * Cloud gateway (see EVF_AI_API::style_form()). Returns the AI's intent SANITIZED into a
+	 * partial v2 record — the panel applies it to the live store for an instant preview and the
+	 * user Saves through the existing flow; nothing is persisted here.
+	 *
+	 * Because {@see Sanitizer::sanitize_record()} is the single authoritative gate (same one
+	 * every manual edit and template apply goes through), a malformed or pro-locked AI response
+	 * can only ever under-deliver — it can never produce an unsafe or tier-violating record.
+	 *
+	 * @param \WP_REST_Request $request Request.
+	 * @return \WP_REST_Response|\WP_Error
+	 */
+	public function ai_style( $request ) {
+		if ( ! class_exists( 'EVF_AI_API' ) || ! class_exists( 'EVF_AI_Registration' ) ) {
+			return new \WP_Error(
+				'evf_ai_unavailable',
+				__( 'AI features are unavailable on this site.', 'everest-forms' ),
+				array( 'status' => 501 )
+			);
+		}
+
+		if ( \EVF_AI_Registration::is_local_site() ) {
+			return new \WP_Error(
+				'evf_ai_not_registered',
+				__( 'AI features are not available on local or staging sites.', 'everest-forms' ),
+				array( 'status' => 400 )
+			);
+		}
+
+		$prompt        = sanitize_textarea_field( (string) $request->get_param( 'prompt' ) );
+		$refine_prompt = sanitize_textarea_field( (string) $request->get_param( 'refine_prompt' ) );
+		$current       = $request->get_param( 'current_record' );
+		$current       = is_array( $current ) ? $current : array();
+
+		if ( '' === $prompt ) {
+			return new \WP_Error(
+				'evf_style_bad_request',
+				__( 'Please describe the look you want.', 'everest-forms' ),
+				array( 'status' => 400 )
+			);
+		}
+
+		// Auto-register on first use — identical pattern to EVF_AI_Ajax::generate_form().
+		if ( ! \EVF_AI_Registration::is_registered() ) {
+			\EVF_AI_Registration::register();
+		}
+		if ( ! \EVF_AI_Registration::is_registered() ) {
+			return new \WP_Error(
+				'evf_ai_not_registered',
+				__( 'This site could not be registered with the AI service. Please try again.', 'everest-forms' ),
+				array( 'status' => 502 )
+			);
+		}
+
+		$ai_style = \EVF_AI_API::style_form( $prompt, $current, $refine_prompt );
+
+		if ( is_wp_error( $ai_style ) ) {
+			$status = 'rate_limit' === $ai_style->get_error_code() || 'daily_limit_reached' === $ai_style->get_error_code() ? 429 : 502;
+			return new \WP_Error( $ai_style->get_error_code(), $ai_style->get_error_message(), array( 'status' => $status ) );
+		}
+
+		// The AI's `{ tokens, palette }` shape is already exactly what Sanitizer::sanitize_record()
+		// expects as input — tokens as bare values (wrapped into a desktop-only bag) or device
+		// bags, palette as a string id. This is the SAME authoritative gate every manual edit and
+		// template apply goes through: unknown keys are dropped, values are type/range-clamped,
+		// and a pro-tier token or palette is stripped outright on a site without Pro.
+		$clean = Sanitizer::sanitize_record(
+			array(
+				'tokens'  => isset( $ai_style['tokens'] ) && is_array( $ai_style['tokens'] ) ? $ai_style['tokens'] : array(),
+				'palette' => isset( $ai_style['palette'] ) ? $ai_style['palette'] : '',
+			)
+		);
+
+		return rest_ensure_response(
+			array(
+				'tokens'  => $clean['tokens'],
+				'palette' => isset( $clean['palette'] ) ? $clean['palette'] : '',
+				'summary' => isset( $ai_style['summary'] ) ? sanitize_text_field( (string) $ai_style['summary'] ) : '',
+			)
+		);
 	}
 
 	/**

@@ -2983,3 +2983,7 @@
 		margin-left: auto;
 	}
 }
+
+/* AI styling launcher (AiAssistant.tsx) styles itself inline (matching
+   src/builder-ai/BuilderAIChat.tsx's own approach) since it's portaled to <body>,
+   outside `#everest-forms-panel-style` — see the component for details. */

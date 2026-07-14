@@ -35,6 +35,7 @@ const settings: BootstrapSettings = rawSettings || {
 	wrapperId: '',
 	markerClass: 'evf-style-v2',
 	previewSession: '',
+	aiEnabled: false,
 };
 
 const MIGRATION_SEEN_PREFIX = 'evf_scv2_migration_seen_';

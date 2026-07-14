@@ -8,6 +8,7 @@
  */
 import React from 'react';
 import { createPortal } from 'react-dom';
+import { AiAssistant } from './AiAssistant';
 import { CustomCssPane, DesignList, ElementSlate, TemplatesPane } from './panes';
 import { ConfirmModal, ConfirmState, Popover, PopoverState } from './Popover';
 import { PreviewPane } from './PreviewPane';
@@ -547,6 +548,11 @@ export function App() {
 					/>,
 					previewHost
 				) }
+
+			{ /* Portaled to <body> — matches builder-ai/BuilderAIChat.tsx's own root, so this
+			     fixed-position launcher is never mis-anchored by a transformed ancestor
+			     somewhere in the builder's sidebar/panel chain. */ }
+			{ createPortal( <AiAssistant />, document.body ) }
 		</div>
 	);
 }
