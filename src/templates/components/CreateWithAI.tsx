@@ -116,6 +116,15 @@ const GEN_STEPS = [
 
 const MAX_CHARS = 500;
 
+// Matches Style Customizer v2's own `.pv-iframe { min-height: 480px }` (style.scss) — the two
+// AI-preview surfaces should feel like the same feature, not a taller one and a cramped one.
+const MIN_PREVIEW_HEIGHT = 480;
+
+// Style Customizer v2's PreviewPane forces its preview visible after a short deadline no matter
+// what ("Force the reveal after a short deadline so the preview is ALWAYS shown" — PreviewPane.tsx)
+// so a slow/blocked load never leaves the user staring at a skeleton forever. Mirrored here.
+const PREVIEW_REVEAL_DEADLINE = 2500;
+
 const UPGRADE_URL =
 	'https://everestforms.net/upgrade/?utm_source=evf-free&utm_medium=ai-form-builder&utm_campaign=ai-rate-limit&utm_content=Upgrade+to+Pro';
 
@@ -296,7 +305,7 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({
 	// Auto-sized to the iframe's actual content height (see onLoad below) so the WHOLE
 	// form is visible and the surrounding page scrolls normally — no inner iframe
 	// scrollbar, which is easy to miss/awkward to use nested inside the admin page.
-	const [previewHeight, setPreviewHeight] = useState(300);
+	const [previewHeight, setPreviewHeight] = useState(MIN_PREVIEW_HEIGHT);
 	const previewResizeObserverRef = React.useRef<ResizeObserver | null>(null);
 	const [formId, setFormId] = useState(0);
 	const [formTitle, setFormTitle] = useState(initialTitle || '');
@@ -312,6 +321,18 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({
 	useEffect(() => {
 		return () => previewResizeObserverRef.current?.disconnect();
 	}, []);
+
+	// Never leave the user staring at the skeleton forever if the iframe's `load` event is slow
+	// or never fires (a security/caching plugin blocking the preview route, a very slow theme) —
+	// mirrors PreviewPane.tsx's identical "force the reveal after a short deadline" safety net.
+	useEffect(() => {
+		if (!isPreviewLoading) return;
+		const t = setTimeout(
+			() => setIsPreviewLoading(false),
+			PREVIEW_REVEAL_DEADLINE,
+		);
+		return () => clearTimeout(t);
+	}, [isPreviewLoading, previewReloadKey]);
 
 	useEffect(() => {
 		if (genState !== 'idle') return;
@@ -1365,6 +1386,7 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({
 
 								<Box
 									position="relative"
+									minH={`${MIN_PREVIEW_HEIGHT}px`}
 									pointerEvents={
 										isRegenerating || isCreatingForm ? 'none' : 'auto'
 									}
@@ -1399,7 +1421,7 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({
 													const measure = () =>
 														setPreviewHeight(
 															Math.max(
-																300,
+																MIN_PREVIEW_HEIGHT,
 																doc.documentElement.scrollHeight,
 															),
 														);
