@@ -380,43 +380,26 @@ class EVF_Template_Loader {
 				esc_html__( 'Repeater Fields', 'everest-forms' ),
 			);
 		}
-		$preview_form_id = absint( $_GET['form_id'] );
-
-		// The Style Customizer v2 panel has its own "Apply Theme Style" toggle (bundled into
-		// its own Save), so this legacy toggle+Save pair is hidden once a form is on the v2
-		// engine — two independent controls writing the same setting could otherwise go stale
-		// relative to each other (e.g. saving here would silently overwrite a v2 tab's cached
-		// value on its next save).
-		$is_v2_styled = false;
-		if ( class_exists( '\EverestForms\Addons\StyleCustomizer\V2\Engine' )
-			&& \EverestForms\Addons\StyleCustomizer\V2\Engine::enabled() ) {
-			$styles       = get_option( 'everest_forms_styles', array() );
-			$is_v2_styled = ! empty( $styles[ $preview_form_id ] )
-				&& \EverestForms\Addons\StyleCustomizer\V2\Engine::is_v2_record( $styles[ $preview_form_id ] );
+		$is_theme_style = get_post_meta( $_GET['form_id'], 'everest_forms_enable_theme_style', true );
+		if ( 'default' === $is_theme_style ) {
+			$checked    = '';
+			$data_theme = 'default';
+		} else {
+			$checked    = 'checked';
+			$data_theme = 'theme';
 		}
-
-		$html = '';
-		if ( ! $is_v2_styled ) {
-			$is_theme_style = get_post_meta( $preview_form_id, 'everest_forms_enable_theme_style', true );
-			if ( 'default' === $is_theme_style ) {
-				$checked    = '';
-				$data_theme = 'default';
-			} else {
-				$checked    = 'checked';
-				$data_theme = 'theme';
-			}
-			$html .= '<div class="evf-from-preview-theme-toggle">';
-			$html .= '<label class="evf-form-preview-toggle-title">' . esc_html__( 'Apply Theme Style', 'everest-forms' ) . '</label>';
-			$html .= '<span class="evf-form-preview-toggle-theme-preview">';
-			$html .= '<input type="checkbox" class="evf-form-preview-theme-toggle-checkbox input-checkbox " id="evf_toggle_form_preview_theme" ' . $checked . '>';
-			$html .= '<span class="slider round"></span>';
-			$html .= '</span>';
-			$html .= '</div>';
-			$html .= '<div class="evf-form-preview-save hidden" id="evf-form-save" data-theme="' . $data_theme . '" data-id="' . $preview_form_id . '">';
-			$html .= '<img src="' . esc_url( evf()->plugin_url() . '/assets/images/save-frame.svg' ) . '" alt="Save">';
-			$html .= '<div class="evf-form-preview-save-title">' . esc_html__( 'Save', 'everest-forms' ) . '</div>';
-			$html .= '</div>';
-		}
+		$html  = '';
+		$html .= '<div class="evf-from-preview-theme-toggle">';
+		$html .= '<label class="evf-form-preview-toggle-title">' . esc_html__( 'Apply Theme Style', 'everest-forms' ) . '</label>';
+		$html .= '<span class="evf-form-preview-toggle-theme-preview">';
+		$html .= '<input type="checkbox" class="evf-form-preview-theme-toggle-checkbox input-checkbox " id="evf_toggle_form_preview_theme" ' . $checked . '>';
+		$html .= '<span class="slider round"></span>';
+		$html .= '</span>';
+		$html .= '</div>';
+		$html .= '<div class="evf-form-preview-save hidden" id="evf-form-save" data-theme="' . $data_theme . '" data-id="' . absint( $_GET['form_id'] ) . '">';
+		$html .= '<img src="' . esc_url( evf()->plugin_url() . '/assets/images/save-frame.svg' ) . '" alt="Save">';
+		$html .= '<div class="evf-form-preview-save-title">' . esc_html__( 'Save', 'everest-forms' ) . '</div>';
+		$html .= '</div>';
 		$html .= '<div class="evf-form-preview-pro-features">';
 		$html .= '<p class="evf-form-preview-pro-features-title">' . esc_html__( $heading, 'everest-forms' ) . '</p>';
 		foreach ( $pro_features as $list ) {

@@ -63,6 +63,12 @@ class StyleStore {
 	customCss = '';
 	template = '';
 	applyThemeStyle = true;
+	/** True once {@see setApplyThemeStyle} has been called this session — gates whether `save()`
+	 *  includes `apply_theme_style` in its POST body at all (see App.tsx's `save`). Without this,
+	 *  every save would resend the value cached at page-load, silently reverting a change made
+	 *  through the legacy `?evf_preview` toggle (a separate, still-live control — see
+	 *  class-evf-template-loader.php's `side_panel_content()`) in another tab in the meantime. */
+	applyThemeStyleTouched = false;
 	baseUpdatedAt = 0;
 
 	/** Optional UI hook: fired when a manual edit silently detaches the active palette link (see
@@ -358,6 +364,7 @@ class StyleStore {
 	 * stylesheet + marker class live.
 	 */
 	setApplyThemeStyle( on: boolean ) {
+		this.applyThemeStyleTouched = true;
 		if ( this.applyThemeStyle === on ) {
 			return;
 		}

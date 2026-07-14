@@ -153,15 +153,23 @@ export function App() {
 		setSaveError( '' );
 		setSaveErrorConflict( false );
 		try {
+			const data: Record< string, unknown > = {
+				record: store.toRecord(),
+				base_updated_at: store.baseUpdatedAt,
+			};
+			// "Apply Theme Style" persists to a separate per-form meta (not the record). Only sent
+			// when the user actually touched the toggle this session — the legacy `?evf_preview`
+			// page has its OWN toggle+Save for this same meta (still live in another tab), so
+			// always resending the value cached at page-load would silently revert a change made
+			// there. Omitting the key is a true no-op server-side (see RestController::save_item()'s
+			// `null !== $apply_theme` guard).
+			if ( store.applyThemeStyleTouched ) {
+				data.apply_theme_style = store.applyThemeStyle;
+			}
 			const res = await apiFetch( {
 				path: `${ store.settings.restBase }/${ store.settings.formId }`,
 				method: 'POST',
-				data: {
-					record: store.toRecord(),
-					base_updated_at: store.baseUpdatedAt,
-					// "Apply Theme Style" persists to a separate per-form meta (not the record).
-					apply_theme_style: store.applyThemeStyle,
-				},
+				data,
 			} );
 			store.markSaved( res.record );
 		} catch ( e: any ) {
