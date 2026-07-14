@@ -20,10 +20,38 @@
  */
 import React, { useEffect, useRef, useState } from 'react';
 import { LuSend, LuSparkles, LuX } from 'react-icons/lu';
+import { UPGRADE_URL } from './panes';
 import { useStore } from './store';
+import { Template } from './types';
 
 const __ = ( window as any ).wp?.i18n?.__ || ( ( s: string ) => s );
 const apiFetch = ( window as any ).wp?.apiFetch;
+
+/**
+ * If the prompt names a REAL template (built-in or the user's own saved ones) closely enough,
+ * prefer applying that exact preset over asking the AI to improvise one — the AI's system prompt
+ * (gateway/products/everest_forms_style.py) only knows individual tokens and palette ids, NOT
+ * template names, so "Add underline aura template" would otherwise be rejected as off-topic (the
+ * model has no idea what "underline aura" refers to). A plain substring match on the full,
+ * normalized template name is deliberately simple: it only fires on a confident, specific
+ * reference (e.g. "underline aura"), not on a stray word a generic name might share with an
+ * unrelated prompt (e.g. "classic" alone won't match "Classic Template"). Longest name wins if
+ * more than one matches, so a more specific name is preferred over a shorter overlapping one.
+ */
+function findTemplateMatch( prompt: string, templates: Template[] ): Template | null {
+	const normalize = ( s: string ) => s.toLowerCase().replace( /[^a-z0-9\s]/g, ' ' ).replace( /\s+/g, ' ' ).trim();
+	const p = normalize( prompt );
+	let best: Template | null = null;
+	let bestLen = 0;
+	templates.forEach( ( tpl ) => {
+		const name = normalize( tpl.name );
+		if ( name.length >= 4 && p.includes( name ) && name.length > bestLen ) {
+			best = tpl;
+			bestLen = name.length;
+		}
+	} );
+	return best;
+}
 
 const STYLE_SUGGESTIONS = [
 	__( 'Modern & minimal', 'everest-forms' ),
@@ -136,10 +164,48 @@ export function AiAssistant() {
 	const send = async ( text: string ) => {
 		if ( ! text.trim() || loading ) return;
 		const userText = text.trim();
-		const isRefine = messages.length > 1;
+		// NOT `messages.length > 1` — a template-name match (below) adds messages without ever
+		// setting `originalPrompt`, so a freeform prompt after a template turn would otherwise be
+		// misdetected as a "refine" of an empty original request and rejected server-side. Whether
+		// this is a refine is really about the AI's OWN conversation arc, so key it off that state.
+		const isRefine = '' !== originalPrompt;
 		setInput( '' );
 
 		setMessages( ( prev ) => [ ...prev, { role: 'user', text: userText } ] );
+
+		// A confident match on a REAL template's name — apply it directly (no AI round-trip, exact
+		// fidelity) instead of asking the model to improvise a look it has no data for.
+		const matchedTpl = findTemplateMatch( userText, store.allTemplates() );
+		if ( matchedTpl ) {
+			const locked = !! matchedTpl.is_pro && ! store.proActive;
+			if ( locked ) {
+				window.open( UPGRADE_URL, '_blank' );
+				setMessages( ( prev ) => [
+					...prev,
+					{
+						role: 'assistant',
+						text: `"${ matchedTpl.name }" is a Pro template — upgrade to use it.`,
+						notice: true,
+					},
+				] );
+				return;
+			}
+			store.applyTemplate( matchedTpl.id, matchedTpl.tokens, matchedTpl.palette );
+			setMessages( ( prev ) => {
+				const cleared = prev.map( ( m ) => ( m.canUndo ? { ...m, canUndo: false } : m ) );
+				return [
+					...cleared,
+					{
+						role: 'assistant',
+						text: `Applied the "${ matchedTpl.name }" template.`,
+						canUndo: true,
+						undoVersion: store.getVersion(),
+					},
+				];
+			} );
+			return;
+		}
+
 		setLoading( true );
 		setMessages( ( prev ) => [ ...prev, { role: 'assistant', text: '', loading: true } ] );
 

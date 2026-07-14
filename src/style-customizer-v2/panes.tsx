@@ -13,7 +13,7 @@ import { BoxValue, DeviceBag, Section, Template, Token } from './types';
 
 const __ = ( window as any ).wp?.i18n?.__ || ( ( s: string ) => s );
 const apiFetch = ( window as any ).wp?.apiFetch;
-const UPGRADE_URL = 'https://everestforms.net/pricing/?utm_source=style-customizer&utm_medium=panel';
+export const UPGRADE_URL = 'https://everestforms.net/pricing/?utm_source=style-customizer&utm_medium=panel';
 
 function Icon( { inner }: { inner: string } ) {
 	return (
