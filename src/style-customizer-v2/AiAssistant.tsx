@@ -51,6 +51,11 @@ interface Message {
 	loading?: boolean;
 	notice?: boolean;
 	canUndo?: boolean;
+	/** Store version right after this turn's `applyAiRecord()`. The "Undo ↺" link only renders
+	 *  while `store.getVersion()` still matches — any later mutation (a manual edit, another AI
+	 *  turn, undo/redo elsewhere) means the top of the shared undo stack is no longer THIS turn's
+	 *  change, so clicking undo would silently revert something else instead. See `send()`/render. */
+	undoVersion?: number;
 }
 
 async function requestAiStyle(
@@ -148,20 +153,27 @@ export function AiAssistant() {
 
 		if ( ! isRefine ) setOriginalPrompt( userText );
 
+		// Apply BEFORE stamping the message so `store.getVersion()` reflects the version this
+		// turn's change actually landed at — that's the version the "Undo ↺" link stays valid for.
+		if ( result.ok ) {
+			store.applyAiRecord( result.data.tokens, result.data.palette || undefined );
+		}
+
 		setMessages( ( prev ) => {
 			// Only the newest applied turn may offer Undo.
 			const cleared = prev.map( ( m ) => ( m.canUndo ? { ...m, canUndo: false } : m ) );
 			const next = [ ...cleared ];
 			next[ next.length - 1 ] = result.ok
-				? { role: 'assistant', text: result.data.summary || __( 'Applied your style.', 'everest-forms' ), canUndo: true }
+				? {
+						role: 'assistant',
+						text: result.data.summary || __( 'Applied your style.', 'everest-forms' ),
+						canUndo: true,
+						undoVersion: store.getVersion(),
+				  }
 				: { role: 'assistant', text: result.message, notice: true };
 			return next;
 		} );
 		setLoading( false );
-
-		if ( result.ok ) {
-			store.applyAiRecord( result.data.tokens, result.data.palette || undefined );
-		}
 	};
 
 	const handleUndo = () => {
@@ -414,7 +426,7 @@ export function AiAssistant() {
 									) : (
 										<>
 											{ msg.text }
-											{ msg.canUndo && (
+											{ msg.canUndo && msg.undoVersion === store.getVersion() && (
 												<div style={ { marginTop: 6 } }>
 													<a
 														href="#"
