@@ -9,7 +9,7 @@
 import React from 'react';
 import { createPortal } from 'react-dom';
 import { AiAssistant } from './AiAssistant';
-import { CustomCssPane, DesignList, ElementSlate, TemplatesPane, UPGRADE_URL } from './panes';
+import { CustomCssPane, DesignList, ElementSlate, ProCrown, TemplatesPane, UPGRADE_URL } from './panes';
 import { ConfirmModal, ConfirmState, Popover, PopoverState } from './Popover';
 import { PreviewPane } from './PreviewPane';
 import { getActiveBridge, SelectionInfo } from './PreviewBridge';
@@ -336,7 +336,11 @@ export function App() {
 									</span>
 									<span className="cap">
 										{ p.name }
-										{ locked && <span className="pro">PRO</span> }
+										{ locked && (
+											<span className="pro" aria-label={ __( 'Pro', 'everest-forms' ) }>
+												<ProCrown />
+											</span>
+										) }
 									</span>
 								</button>
 							);

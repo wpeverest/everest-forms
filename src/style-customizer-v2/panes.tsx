@@ -10,6 +10,10 @@ import { ControlRenderer } from './ControlRenderer';
 import { SECTION_ICONS, SECTION_SUBTITLES, STATE_LABELS } from './constants';
 import { useStore } from './store';
 import { BoxValue, DeviceBag, Section, Template, Token } from './types';
+// The exact same "PRO" crown badge the builder's Fields sidebar uses (not a redrawn approximation)
+// — file-loader (webpack.config.js) emits it and returns its built URL, same pattern already used
+// by src/dashboard/screens/Analytics/Analytics.js for analytics-preview.png.
+import proIconUrl from '../../assets/images/icons/everest-form-pro-icon.png';
 
 const __ = ( window as any ).wp?.i18n?.__ || ( ( s: string ) => s );
 const apiFetch = ( window as any ).wp?.apiFetch;
@@ -19,6 +23,14 @@ function Icon( { inner }: { inner: string } ) {
 	return (
 		<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2 } dangerouslySetInnerHTML={ { __html: inner } } />
 	);
+}
+
+/**
+ * "PRO" marker — the builder's own locked-field crown badge (the Fields sidebar's corner icon),
+ * not text, so a locked item reads as the exact same marker everywhere in Everest Forms.
+ */
+export function ProCrown() {
+	return <img className="pro-crown" src={ proIconUrl } alt="" aria-hidden="true" />;
 }
 
 /** The six palette-slot colours in a fixed order, for swatch rendering. */
@@ -114,7 +126,7 @@ export function DesignList( {
 							</span>
 							{ locked ? (
 								<span className="pro-badge" aria-label={ __( 'Pro feature', 'everest-forms' ) }>
-									{ __( 'PRO', 'everest-forms' ) }
+									<ProCrown />
 								</span>
 							) : (
 								<span className="dot" aria-hidden="true" />
@@ -542,7 +554,7 @@ function TemplateCard( {
 			) }
 			{ locked && (
 				<span className="tpl-pro" aria-label={ __( 'Pro template', 'everest-forms' ) }>
-					{ __( 'PRO', 'everest-forms' ) }
+					<ProCrown />
 				</span>
 			) }
 			{ onDelete && (
@@ -786,7 +798,9 @@ export function TemplatesPane( {
 					<div className="tpl-create-fields">
 						<span className="tpl-create-title">
 							{ __( 'Create Style Template', 'everest-forms' ) }
-							<span className="pro-badge">{ __( 'PRO', 'everest-forms' ) }</span>
+							<span className="pro-badge" aria-label={ __( 'Pro', 'everest-forms' ) }>
+								<ProCrown />
+							</span>
 						</span>
 						<p className="tpl-create-sub">
 							{ __( 'Save your current styles as a reusable template with Pro.', 'everest-forms' ) }

@@ -34,11 +34,11 @@
 	--ui-amber-700: #92400e;
 
 	/* Pro-showcase colours — deliberately NOT --ui-purple (this panel's own interactive accent).
-	   These match the plugin's one established "this is Pro" design language (the orange tag +
+	   These match the plugin's one established "this is Pro" design language (the crown badge +
 	   purple CTA + neutral card in assets/css/evf-locked-fields.scss, used by the builder's
 	   locked fields and Create-with-AI upsell) so "PRO" reads identically everywhere in Everest
-	   Forms, not as a bespoke Style Customizer scheme. */
-	--ui-pro-tag: #ff8c39;
+	   Forms, not as a bespoke Style Customizer scheme. The badge itself is the real crown asset
+	   (see ProCrown in panes.tsx), not a CSS-drawn colour — only the CTA/card tokens are used here. */
 	--ui-pro-cta: #7e3bd0;
 	--ui-pro-cta-hover: #6c2fbb;
 	--ui-pro-card-bg: #faf9fb;
@@ -1785,14 +1785,13 @@
 		top: 6px;
 		right: 6px;
 		z-index: 2;
-		font-size: 9px;
-		font-weight: 700;
-		letter-spacing: .06em;
-		color: #fff;
-		background: var(--ui-pro-tag);
-		border-radius: var(--ui-radius-sm);
-		padding: 2px 6px;
-		box-shadow: 0 1px 2px rgba(20, 23, 40, .2);
+		filter: drop-shadow(0 1px 2px rgba(20, 23, 40, .2));
+
+		.pro-crown {
+			display: block;
+			width: 20px;
+			height: 20px;
+		}
 	}
 
 	&:hover .thumb {
@@ -2140,18 +2139,18 @@
 	color: var(--ui-pro-cta);
 }
 
-/* Solid-orange "PRO" tag — matches .evf-locked-banner-tag exactly (same fill, weight, letter-
-   spacing) so it reads as the SAME marker as the rest of the builder's locked-field UI, not a
-   Style-Customizer-specific purple invention. */
+/* The builder's own locked-field crown badge (the Fields sidebar's everest-form-pro-icon.png
+   corner marker) — the icon carries its own orange fill + rounding, so this is just a size box,
+   not a redrawn background. Reads as the SAME "PRO" marker everywhere in Everest Forms. */
 #everest-forms-panel-style .pro-badge {
-	font-size: 9px;
-	font-weight: 700;
-	letter-spacing: .06em;
-	color: #fff;
-	background: var(--ui-pro-tag);
-	border-radius: var(--ui-radius-sm);
-	padding: 2px 5px;
+	display: inline-flex;
 	flex: none;
+
+	.pro-crown {
+		display: block;
+		width: 16px;
+		height: 16px;
+	}
 }
 
 /* ---------- preview (portaled into the builder content area) ---------- */
@@ -2963,17 +2962,17 @@
 		color: var(--ui-purple);
 	}
 
-	/* Same solid-orange "PRO" tag as .pro-badge elsewhere in the panel — was previously its own
-	   amber gradient, a third, uncoordinated "Pro" treatment. One marker, one colour. */
+	/* Same crown badge as .pro-badge elsewhere in the panel — was previously its own amber
+	   gradient text pill, a third, uncoordinated "Pro" treatment. One marker, one icon. */
 	.pro {
-		font-size: 9px;
-		font-weight: 700;
-		letter-spacing: .04em;
-		color: #fff;
-		background: var(--ui-pro-tag);
-		border-radius: 3px;
-		padding: 1px 5px;
+		display: inline-flex;
 		margin-left: auto;
+
+		.pro-crown {
+			display: block;
+			width: 14px;
+			height: 14px;
+		}
 	}
 }
 
