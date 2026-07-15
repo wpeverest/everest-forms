@@ -75,12 +75,15 @@ function group( $name ) {
 
 /* ------------------------------------------------------------------ Schema */
 // This suite runs WITHOUT the Pro plugin (EFP_PLUGIN_FILE undefined), so it exercises the FREE
-// tier: the 27 Messages tokens and the 9 Pro palettes are NOT present (they are injected by the
-// Pro plugin via evf_style_schema / evf_style_palettes only when Pro is active).
+// tier: the 27 Messages tokens are NOT present (they are injected by the Pro plugin via
+// evf_style_schema only when Pro is active). Unlike Messages, all 11 palettes (2 free + 9 Pro)
+// ship in free's own Schema so the panel can preview every one — see Schema::palettes().
 group( 'Schema' );
 ok( count( Schema::tokens() ) === 93, 'has 93 free tokens (Messages moved to Pro)' );
 ok( Schema::version() === 1, 'version is 1' );
-ok( count( Schema::palettes() ) === 2, 'has 2 free palettes (9 Pro palettes moved to Pro)' );
+ok( count( Schema::palettes() ) === 11, 'has all 11 palettes (2 free + 9 Pro preview metadata)' );
+$pro_palette_count = count( array_filter( Schema::palettes(), static function ( $p ) { return ! empty( $p['is_pro'] ); } ) );
+ok( 9 === $pro_palette_count, 'exactly 9 palettes are Pro-tier' );
 $vars = array_values( Schema::css_var_map() );
 ok( count( $vars ) === count( array_unique( $vars ) ), 'no duplicate CSS vars' );
 ok( Schema::get( 'wrap.pad' )['responsive'] === true, 'wrap.pad is responsive' );

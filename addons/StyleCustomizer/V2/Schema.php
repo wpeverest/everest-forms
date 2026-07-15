@@ -248,22 +248,34 @@ final class Schema {
 	}
 
 	/**
-	 * The FREE named colour palettes (Classic + Monochrome), each defining the old customizer's
-	 * 6 colours. The 9 Pro palettes live in the Pro plugin and are layered in via the
-	 * `evf_style_palettes` filter only when Pro is active — so a free-only site cannot select
-	 * (or persist, see {@see Sanitizer::sanitize_palette_id()}) a Pro palette.
+	 * All 11 named colour palettes (2 free + 9 Pro), each defining the old customizer's 6
+	 * colours. Unlike the Pro-tier design sections (which are absent from a free schema
+	 * entirely), the 9 Pro palettes' PREVIEW metadata (name + colours) ships here in free too —
+	 * mirroring how {@see Templates::all()} ships every built-in template with an `is_pro` flag
+	 * — so the panel can render a real swatch + name for all 11 and show the Pro ones as locked
+	 * upgrade teasers instead of not showing them at all. Applying one is still gated:
+	 * {@see Sanitizer::sanitize_palette_id()} rejects a Pro palette id unless Pro is active,
+	 * regardless of what this list contains.
 	 *
 	 * @return array
 	 */
 	public static function palettes() {
 		$palettes = array(
-			array( 'id' => 'classic', 'name' => __( 'Classic', 'everest-forms' ),    'is_pro' => false, 'colors' => array( 'form_background' => '#ffffff', 'field_background' => '#f6f6f6', 'field_label' => '#081d2b', 'field_sublabel' => '#0f3a57', 'button_text' => '#ffffff', 'button_background' => '#3951a5' ) ),
-			array( 'id' => 'mono',    'name' => __( 'Monochrome', 'everest-forms' ), 'is_pro' => false, 'colors' => array( 'form_background' => '#ffffff', 'field_background' => '#f7f7f7', 'field_label' => '#262626', 'field_sublabel' => '#666666', 'button_text' => '#ffffff', 'button_background' => '#1a1a1a' ) ),
+			array( 'id' => 'classic',  'name' => __( 'Classic', 'everest-forms' ),          'is_pro' => false, 'colors' => array( 'form_background' => '#ffffff', 'field_background' => '#f6f6f6', 'field_label' => '#081d2b', 'field_sublabel' => '#0f3a57', 'button_text' => '#ffffff', 'button_background' => '#3951a5' ) ),
+			array( 'id' => 'mono',     'name' => __( 'Monochrome', 'everest-forms' ),       'is_pro' => false, 'colors' => array( 'form_background' => '#ffffff', 'field_background' => '#f7f7f7', 'field_label' => '#262626', 'field_sublabel' => '#666666', 'button_text' => '#ffffff', 'button_background' => '#1a1a1a' ) ),
+			array( 'id' => 'autumn',   'name' => __( 'Autumn Blaze', 'everest-forms' ),     'is_pro' => true,  'colors' => array( 'form_background' => '#fffafa', 'field_background' => '#fff5f5', 'field_label' => '#330300', 'field_sublabel' => '#4d0500', 'button_text' => '#ffffff', 'button_background' => '#ff5d52' ) ),
+			array( 'id' => 'sunset',   'name' => __( 'Sunset Glow', 'everest-forms' ),      'is_pro' => true,  'colors' => array( 'form_background' => '#fffdfa', 'field_background' => '#fff9f0', 'field_label' => '#664000', 'field_sublabel' => '#805100', 'button_text' => '#ffffff', 'button_background' => '#ffa305' ) ),
+			array( 'id' => 'majestic', 'name' => __( 'Majestic', 'everest-forms' ),         'is_pro' => true,  'colors' => array( 'form_background' => '#fcfbfe', 'field_background' => '#f7f4fb', 'field_label' => '#3a225d', 'field_sublabel' => '#5d3795', 'button_text' => '#ffffff', 'button_background' => '#7545bb' ) ),
+			array( 'id' => 'greenery', 'name' => __( 'Fresh Greenery', 'everest-forms' ),   'is_pro' => true,  'colors' => array( 'form_background' => '#f9fdf6', 'field_background' => '#e9f6ea', 'field_label' => '#334745', 'field_sublabel' => '#557773', 'button_text' => '#ffffff', 'button_background' => '#405956' ) ),
+			array( 'id' => 'cloudy',   'name' => __( 'Cloudy Sky', 'everest-forms' ),       'is_pro' => true,  'colors' => array( 'form_background' => '#f2f3f8', 'field_background' => '#e4e7f1', 'field_label' => '#252b41', 'field_sublabel' => '#2e3651', 'button_text' => '#ffffff', 'button_background' => '#445079' ) ),
+			array( 'id' => 'earthy',   'name' => __( 'Earthy Warm', 'everest-forms' ),      'is_pro' => true,  'colors' => array( 'form_background' => '#f7f6f0', 'field_background' => '#f1efe4', 'field_label' => '#474648', 'field_sublabel' => '#616062', 'button_text' => '#ffffff', 'button_background' => '#463700' ) ),
+			array( 'id' => 'blossom',  'name' => __( 'Blushing Blossom', 'everest-forms' ), 'is_pro' => true,  'colors' => array( 'form_background' => '#fdf7fa', 'field_background' => '#fbeff5', 'field_label' => '#532f42', 'field_sublabel' => '#824a68', 'button_text' => '#ffffff', 'button_background' => '#46102c' ) ),
+			array( 'id' => 'thunder',  'name' => __( 'Thunder', 'everest-forms' ),          'is_pro' => true,  'colors' => array( 'form_background' => '#ededed', 'field_background' => '#f7f7f7', 'field_label' => '#333333', 'field_sublabel' => '#595959', 'button_text' => '#ffffff', 'button_background' => '#1a1a1a' ) ),
+			array( 'id' => 'midnight', 'name' => __( 'Midnight Charm', 'everest-forms' ),   'is_pro' => true,  'colors' => array( 'form_background' => '#363636', 'field_background' => '#3d3d3d', 'field_label' => '#ffffff', 'field_sublabel' => '#f2f2f2', 'button_text' => '#1a1a1a', 'button_background' => '#ffffff' ) ),
 		);
 
 		/**
-		 * Filter the available colour palettes. Pro adds its 9 palettes (each `is_pro => true`)
-		 * here; the panel shows them as locked upgrade teasers on free.
+		 * Filter the available colour palettes.
 		 *
 		 * @param array $palettes Palette definitions.
 		 */

@@ -33,6 +33,17 @@
 	--ui-amber-100: #fde68a;
 	--ui-amber-700: #92400e;
 
+	/* Pro-showcase colours — deliberately NOT --ui-purple (this panel's own interactive accent).
+	   These match the plugin's one established "this is Pro" design language (the orange tag +
+	   purple CTA + neutral card in assets/css/evf-locked-fields.scss, used by the builder's
+	   locked fields and Create-with-AI upsell) so "PRO" reads identically everywhere in Everest
+	   Forms, not as a bespoke Style Customizer scheme. */
+	--ui-pro-tag: #ff8c39;
+	--ui-pro-cta: #7e3bd0;
+	--ui-pro-cta-hover: #6c2fbb;
+	--ui-pro-card-bg: #faf9fb;
+	--ui-pro-card-border: #e8e6ee;
+
 	/* One elevation system, three tiers — every floating/raised surface picks one of these
 	   instead of hand-typing its own shadow. */
 	--ui-shadow-sm: 0 1px 2px rgba(20, 23, 40, .06);
@@ -1778,7 +1789,7 @@
 		font-weight: 700;
 		letter-spacing: .06em;
 		color: #fff;
-		background: var(--ui-purple);
+		background: var(--ui-pro-tag);
 		border-radius: var(--ui-radius-sm);
 		padding: 2px 6px;
 		box-shadow: 0 1px 2px rgba(20, 23, 40, .2);
@@ -1821,11 +1832,11 @@
 	cursor: pointer;
 
 	&:hover {
-		border-color: var(--ui-purple);
-		background: var(--ui-purple-50);
+		border-color: var(--ui-pro-cta);
+		background: var(--ui-pro-card-bg);
 
 		.tpl-create-ic {
-			background: var(--ui-purple);
+			background: var(--ui-pro-cta);
 			color: #fff;
 		}
 	}
@@ -2024,22 +2035,23 @@
 	line-height: 1.5;
 }
 
-/* pro lock */
+/* pro lock — matches the builder's own locked-field banner (evf-locked-fields.scss): a neutral
+   card, not a purple-tinted one; the purple is reserved for the CTA link/button. */
 #everest-forms-panel-style .pro-lock {
 	display: flex;
 	align-items: center;
 	gap: 10px;
-	background: #fbf6ff;
-	border: 1px solid var(--ui-purple-100);
+	background: var(--ui-pro-card-bg);
+	border: 1px solid var(--ui-pro-card-border);
 	border-radius: var(--ui-radius-lg);
 	padding: 10px 12px;
 	font-size: 11.5px;
-	color: var(--ui-purple-600);
+	color: var(--ui-ink-2);
 	line-height: 1.5;
 	margin-bottom: 14px;
 
 	a {
-		color: var(--ui-purple);
+		color: var(--ui-pro-cta);
 		font-weight: 700;
 		text-decoration: underline;
 	}
@@ -2052,7 +2064,7 @@
 	height: 26px;
 	border-radius: 7px;
 	background: #fff;
-	color: var(--ui-purple);
+	color: var(--ui-pro-cta);
 	flex: none;
 
 	svg {
@@ -2069,8 +2081,8 @@
 	text-align: center;
 	gap: 10px;
 	padding: 28px 20px;
-	background: linear-gradient(180deg, #fbf6ff 0%, #fff 100%);
-	border: 1px solid var(--ui-purple-100);
+	background: linear-gradient(180deg, var(--ui-pro-card-bg) 0%, #fff 100%);
+	border: 1px solid var(--ui-pro-card-border);
 	border-radius: var(--ui-radius-lg);
 
 	.pro-teaser-ic {
@@ -2080,8 +2092,8 @@
 		height: 44px;
 		border-radius: 12px;
 		background: #fff;
-		border: 1px solid var(--ui-purple-100);
-		color: var(--ui-purple);
+		border: 1px solid var(--ui-pro-card-border);
+		color: var(--ui-pro-cta);
 
 		svg {
 			width: 22px;
@@ -2108,7 +2120,7 @@
 		margin-top: 6px;
 		display: inline-flex;
 		align-items: center;
-		background: var(--ui-purple);
+		background: var(--ui-pro-cta);
 		color: #fff;
 		font-size: 12.5px;
 		font-weight: 600;
@@ -2118,60 +2130,28 @@
 		transition: background .12s;
 
 		&:hover {
-			background: var(--ui-purple-600);
+			background: var(--ui-pro-cta-hover);
 		}
 	}
 }
 
 /* "PRO" badge on a locked element-list row (e.g. the Messages row on free). */
 #everest-forms-panel-style .elrow.locked .ic {
-	color: var(--ui-purple);
+	color: var(--ui-pro-cta);
 }
 
+/* Solid-orange "PRO" tag — matches .evf-locked-banner-tag exactly (same fill, weight, letter-
+   spacing) so it reads as the SAME marker as the rest of the builder's locked-field UI, not a
+   Style-Customizer-specific purple invention. */
 #everest-forms-panel-style .pro-badge {
 	font-size: 9px;
 	font-weight: 700;
 	letter-spacing: .06em;
-	color: var(--ui-purple);
-	background: var(--ui-purple-50);
-	border: 1px solid var(--ui-purple-100);
+	color: #fff;
+	background: var(--ui-pro-tag);
 	border-radius: var(--ui-radius-sm);
 	padding: 2px 5px;
 	flex: none;
-}
-
-/* Palette popover upgrade nudge (free ships 2 palettes; 9 more are Pro). */
-#everest-forms-panel-style .pal-upsell {
-	display: flex;
-	align-items: center;
-	gap: 8px;
-	margin-top: 6px;
-	padding: 9px 10px;
-	border-radius: var(--ui-radius-md);
-	background: #fbf6ff;
-	border: 1px dashed var(--ui-purple-100);
-	color: var(--ui-purple-600);
-	font-size: 11.5px;
-	font-weight: 600;
-	text-decoration: none;
-	transition: background .12s, border-color .12s;
-
-	&:hover {
-		background: var(--ui-purple-50);
-		border-color: var(--ui-purple);
-	}
-
-	.pal-upsell-ic {
-		display: grid;
-		place-items: center;
-		color: var(--ui-purple);
-		flex: none;
-
-		svg {
-			width: 14px;
-			height: 14px;
-		}
-	}
 }
 
 /* ---------- preview (portaled into the builder content area) ---------- */
@@ -2983,12 +2963,14 @@
 		color: var(--ui-purple);
 	}
 
+	/* Same solid-orange "PRO" tag as .pro-badge elsewhere in the panel — was previously its own
+	   amber gradient, a third, uncoordinated "Pro" treatment. One marker, one colour. */
 	.pro {
 		font-size: 9px;
 		font-weight: 700;
 		letter-spacing: .04em;
 		color: #fff;
-		background: linear-gradient(135deg, #f59e0b, #d97706);
+		background: var(--ui-pro-tag);
 		border-radius: 3px;
 		padding: 1px 5px;
 		margin-left: auto;

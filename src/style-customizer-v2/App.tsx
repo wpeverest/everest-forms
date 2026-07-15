@@ -9,7 +9,7 @@
 import React from 'react';
 import { createPortal } from 'react-dom';
 import { AiAssistant } from './AiAssistant';
-import { CustomCssPane, DesignList, ElementSlate, TemplatesPane } from './panes';
+import { CustomCssPane, DesignList, ElementSlate, TemplatesPane, UPGRADE_URL } from './panes';
 import { ConfirmModal, ConfirmState, Popover, PopoverState } from './Popover';
 import { PreviewPane } from './PreviewPane';
 import { getActiveBridge, SelectionInfo } from './PreviewBridge';
@@ -316,10 +316,7 @@ export function App() {
 									onMouseLeave={ () => getActiveBridge()?.revert() }
 									onClick={ () => {
 										if ( locked ) {
-											window.open(
-												'https://everestforms.net/pricing/?utm_source=style-customizer',
-												'_blank'
-											);
+											window.open( UPGRADE_URL, '_blank' );
 											return;
 										}
 										store.applyPalette( p.id );
@@ -345,24 +342,6 @@ export function App() {
 							);
 						} ) }
 					</div>
-					{ /* Free sites ship only the 2 free palettes; the 9 Pro palettes live in the Pro
-					     plugin. Nudge to upgrade rather than showing nothing. */ }
-					{ ! store.proActive && (
-						<a
-							className="pal-upsell"
-							href="https://everestforms.net/pricing/?utm_source=style-customizer&utm_medium=palette"
-							target="_blank"
-							rel="noreferrer"
-						>
-							<span className="pal-upsell-ic" aria-hidden="true">
-								<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2 }>
-									<rect x="4" y="11" width="16" height="9" rx="2" />
-									<path d="M8 11V7a4 4 0 0 1 8 0v4" />
-								</svg>
-							</span>
-							{ __( 'Unlock 9 more palettes with Pro', 'everest-forms' ) }
-						</a>
-					) }
 				</div>
 			),
 		} );
