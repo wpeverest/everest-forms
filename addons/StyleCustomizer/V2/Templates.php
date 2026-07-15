@@ -153,7 +153,7 @@ final class Templates {
 					'id'      => (string) $tpl['id'],
 					'name'    => isset( $tpl['name'] ) ? (string) $tpl['name'] : __( 'Untitled', 'everest-forms' ),
 					'custom'  => true,
-					'image'   => self::custom_thumb_url(),
+					'image'   => '',
 					'palette' => isset( $tpl['palette'] ) ? (string) $tpl['palette'] : '',
 					'tokens'  => $tpl['tokens'],
 				);
@@ -197,7 +197,7 @@ final class Templates {
 				'id'      => 'legacy-' . sanitize_key( $slug ),
 				'name'    => (string) $tpl['name'],
 				'custom'  => true,
-				'image'   => self::custom_thumb_url(),
+				'image'   => '',
 				'palette' => '',
 				'tokens'  => isset( $record['tokens'] ) ? $record['tokens'] : array(),
 			);
@@ -236,24 +236,10 @@ final class Templates {
 			'id'      => $entry['id'],
 			'name'    => $entry['name'],
 			'custom'  => true,
-			'image'   => self::custom_thumb_url(),
+			'image'   => '',
 			'palette' => $entry['palette'],
 			'tokens'  => $entry['tokens'],
 		);
-	}
-
-	/**
-	 * Thumbnail for a user/custom template. Mirrors legacy v1 exactly: `save_template()` in
-	 * class-evf-style-customizer-ajax.php hardcoded the Default Template's screenshot
-	 * (`assets/images/templates/default.png`) for EVERY custom template (v1 had no per-template
-	 * screenshot generation). We reuse the same local-first resolver as the built-ins so the URL
-	 * points at the bundled asset when present. The panel's TemplateThumb still falls back to a
-	 * live token-driven mini-preview if the image ever fails to load.
-	 *
-	 * @return string
-	 */
-	protected static function custom_thumb_url() {
-		return self::image_url( array( 'image' => 'default.png' ) );
 	}
 
 	/**
