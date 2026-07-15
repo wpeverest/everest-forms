@@ -245,9 +245,6 @@ class EVF_AI_Form_Builder {
 		$field_list        = [];
 		$field_index       = 0;
 		$file_upload_count = 0;
-		// Same base signal Style Customizer v2 uses (Engine::pro_active()) — EVF_PRO_VERSION and
-		// EVF_Pro are not real; this used to always evaluate false, so the free-tier file-upload
-		// cap below was being applied even on Pro-active sites.
 		$is_pro_active     = defined( 'EFP_PLUGIN_FILE' );
 		$logger            = evf_get_logger();
 		foreach ( ( $ai['fields'] ?? [] ) as $ai_field ) {
@@ -271,10 +268,6 @@ class EVF_AI_Form_Builder {
 				$field_index++;
 				continue;
 			}
-			// Pro-only field type on a site without Pro: the field is still added (matches
-			// $pro_fields' builder-visible-but-locked intent), but it cannot render on the
-			// frontend without Pro — log it so a "field I asked for isn't showing" report has a
-			// server-side trail instead of failing completely silently.
 			if ( ! $is_pro_active && in_array( $evf_field['type'], self::$pro_fields, true ) ) {
 				$logger->warning(
 					sprintf( 'AI Form Builder: added Pro-only field "%s" (%s) — it will not render on the frontend until Pro is active.', $evf_field['label'], $evf_field['type'] ),

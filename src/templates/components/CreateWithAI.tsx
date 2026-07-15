@@ -320,18 +320,12 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({
 	const [editUrl, setEditUrl] = useState('');
 	const [refinePrompt, setRefinePrompt] = useState('');
 	const [messages, setMessages] = useState<ChatMessage[]>([]);
-	// "New Prompt" while a generated-but-never-activated draft exists would otherwise abandon
-	// it silently (see EVF_AI_Form_Builder::create_form — every Generate is a real draft post).
-	// This confirms first and offers an actual discard, not just a warning.
 	const {
 		isOpen: isDiscardOpen,
 		onOpen: openDiscardModal,
 		onClose: closeDiscardModal,
 	} = useDisclosure();
 	const [isDiscarding, setIsDiscarding] = useState(false);
-	// True only for a form created by THIS generate flow — never for one loaded via
-	// initialFormId (an existing/duplicated form the user picked, not a throwaway draft).
-	// Only a fresh draft is ever offered for discard.
 	const [isFreshDraft, setIsFreshDraft] = useState(false);
 	const previewHintTimer = React.useRef<ReturnType<typeof setTimeout> | null>(
 		null,
@@ -424,8 +418,6 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({
 		setRefinePrompt('');
 	};
 
-	// "New Prompt" back button — confirm first when it would silently abandon a fresh,
-	// never-activated draft; otherwise there's nothing to lose, so just go.
 	const handleBackToNewPrompt = () => {
 		if (isFreshDraft && formId) {
 			openDiscardModal();
@@ -445,8 +437,6 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({
 		try {
 			await callAi('evf_ai_discard_form', { form_id: formId });
 		} catch (e) {
-			// Best-effort — the draft is abandoned either way once we navigate on, so don't
-			// block the user over a failed trash call.
 		} finally {
 			setIsDiscarding(false);
 			closeDiscardModal();
@@ -934,12 +924,6 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({
 					onClose={isDiscarding ? () => {} : closeDiscardModal}
 					size="sm"
 				>
-					{/* PageShell is a position:fixed zIndex 100000 overlay. ModalContent renders inside
-					    Chakra's own fixed, z-index:1400 .chakra-modal__content-container — a zIndex prop
-					    on ModalContent itself only wins WITHIN that container, not against PageShell, so
-					    the container itself needs overriding via containerProps (confirmed via computed
-					    styles: <Modal zIndex> does NOT reach it). Matches the zIndex={200000} already
-					    used on this screen's Popovers for the same PageShell-overlay reason. */}
 					<ModalOverlay bg="rgba(0,0,0,0.4)" backdropFilter="blur(2px)" zIndex={200000} />
 					<ModalContent
 						borderRadius="12px"

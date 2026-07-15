@@ -378,11 +378,7 @@ class EVF_AI_Ajax {
 	}
 
 	/**
-	 * Trash an abandoned AI draft — called when the user chooses "Discard" instead of
-	 * "Use This Form" (e.g. leaving for a new prompt). Trashes rather than force-deletes
-	 * (reversible, matches how "Move to Trash" works everywhere else in the Forms list).
-	 * Only ever touches a form that is STILL a draft, so this can never remove a form the
-	 * user has actually published.
+	 * Trash an abandoned AI draft — called when the user chooses "Discard".
 	 */
 	public function discard_form() {
 		check_ajax_referer( 'evf_ai_nonce', 'nonce' );
@@ -401,7 +397,6 @@ class EVF_AI_Ajax {
 			wp_send_json_error( array( 'message' => __( 'Form not found.', 'everest-forms' ) ) );
 		}
 		if ( 'draft' !== $post->post_status ) {
-			// Already published (or otherwise not a draft) — never trash it from here.
 			wp_send_json_error( array( 'message' => __( 'This form is no longer a draft.', 'everest-forms' ) ) );
 		}
 
