@@ -12,6 +12,7 @@ class EVF_AI_Ajax {
 		add_action( 'wp_ajax_evf_ai_update_form', array( $this, 'update_form' ) );
 		add_action( 'wp_ajax_evf_ai_get_usage', array( $this, 'get_usage' ) );
 		add_action( 'wp_ajax_evf_ai_activate_form', array( $this, 'activate_form' ) );
+		add_action( 'wp_ajax_evf_ai_discard_form', array( $this, 'discard_form' ) );
 		add_action( 'wp_ajax_evf_ai_render_fields', array( $this, 'render_fields' ) );
 	}
 
@@ -374,6 +375,41 @@ class EVF_AI_Ajax {
 				'edit_url' => admin_url( 'admin.php?page=evf-builder&tab=fields&form_id=' . $form_id ),
 			)
 		);
+	}
+
+	/**
+	 * Trash an abandoned AI draft — called when the user chooses "Discard" instead of
+	 * "Use This Form" (e.g. leaving for a new prompt). Trashes rather than force-deletes
+	 * (reversible, matches how "Move to Trash" works everywhere else in the Forms list).
+	 * Only ever touches a form that is STILL a draft, so this can never remove a form the
+	 * user has actually published.
+	 */
+	public function discard_form() {
+		check_ajax_referer( 'evf_ai_nonce', 'nonce' );
+
+		if ( ! current_user_can( 'manage_everest_forms' ) ) {
+			wp_send_json_error( array(), 403 );
+		}
+
+		$form_id = absint( $_POST['form_id'] ?? 0 );
+		if ( ! $form_id ) {
+			wp_send_json_error( array( 'message' => __( 'Invalid form ID.', 'everest-forms' ) ) );
+		}
+
+		$post = get_post( $form_id );
+		if ( ! $post || 'everest_form' !== $post->post_type ) {
+			wp_send_json_error( array( 'message' => __( 'Form not found.', 'everest-forms' ) ) );
+		}
+		if ( 'draft' !== $post->post_status ) {
+			// Already published (or otherwise not a draft) — never trash it from here.
+			wp_send_json_error( array( 'message' => __( 'This form is no longer a draft.', 'everest-forms' ) ) );
+		}
+
+		if ( ! wp_trash_post( $form_id ) ) {
+			wp_send_json_error( array( 'message' => __( 'Could not discard the draft.', 'everest-forms' ) ) );
+		}
+
+		wp_send_json_success();
 	}
 
 	/**

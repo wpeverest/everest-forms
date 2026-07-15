@@ -4,6 +4,13 @@
 	HStack,
 	Heading,
 	Icon,
+	Modal,
+	ModalBody,
+	ModalCloseButton,
+	ModalContent,
+	ModalFooter,
+	ModalHeader,
+	ModalOverlay,
 	Popover,
 	PopoverArrow,
 	PopoverBody,
@@ -15,6 +22,7 @@
 	Textarea,
 	VStack,
 	keyframes,
+	useDisclosure,
 	useToast,
 } from '@chakra-ui/react';
 import { __, sprintf } from '@wordpress/i18n';
@@ -312,6 +320,19 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({
 	const [editUrl, setEditUrl] = useState('');
 	const [refinePrompt, setRefinePrompt] = useState('');
 	const [messages, setMessages] = useState<ChatMessage[]>([]);
+	// "New Prompt" while a generated-but-never-activated draft exists would otherwise abandon
+	// it silently (see EVF_AI_Form_Builder::create_form — every Generate is a real draft post).
+	// This confirms first and offers an actual discard, not just a warning.
+	const {
+		isOpen: isDiscardOpen,
+		onOpen: openDiscardModal,
+		onClose: closeDiscardModal,
+	} = useDisclosure();
+	const [isDiscarding, setIsDiscarding] = useState(false);
+	// True only for a form created by THIS generate flow — never for one loaded via
+	// initialFormId (an existing/duplicated form the user picked, not a throwaway draft).
+	// Only a fresh draft is ever offered for discard.
+	const [isFreshDraft, setIsFreshDraft] = useState(false);
 	const previewHintTimer = React.useRef<ReturnType<typeof setTimeout> | null>(
 		null,
 	);
@@ -389,6 +410,47 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({
 				isClosable: true,
 				variant: 'subtle',
 			});
+		}
+	};
+
+	const resetToNewPrompt = () => {
+		setGenState('idle');
+		setFormId(0);
+		setIsFreshDraft(false);
+		setFormTitle('');
+		setEditUrl('');
+		setMessages([]);
+		setPrompt('');
+		setRefinePrompt('');
+	};
+
+	// "New Prompt" back button — confirm first when it would silently abandon a fresh,
+	// never-activated draft; otherwise there's nothing to lose, so just go.
+	const handleBackToNewPrompt = () => {
+		if (isFreshDraft && formId) {
+			openDiscardModal();
+		} else {
+			resetToNewPrompt();
+		}
+	};
+
+	const handleKeepAsDraft = () => {
+		closeDiscardModal();
+		resetToNewPrompt();
+	};
+
+	const handleDiscardConfirm = async () => {
+		if (!formId || isDiscarding) return;
+		setIsDiscarding(true);
+		try {
+			await callAi('evf_ai_discard_form', { form_id: formId });
+		} catch (e) {
+			// Best-effort — the draft is abandoned either way once we navigate on, so don't
+			// block the user over a failed trash call.
+		} finally {
+			setIsDiscarding(false);
+			closeDiscardModal();
+			resetToNewPrompt();
 		}
 	};
 
@@ -582,6 +644,7 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({
 					}
 					if (result.ok) {
 						setFormId(result.formId);
+						setIsFreshDraft(true);
 						setFormTitle(result.formTitle || '');
 						setEditUrl(result.editUrl);
 						setIsPreviewLoading(true);
@@ -834,7 +897,7 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({
 		});
 		return (
 			<PageShell
-				onBack={() => setGenState('idle')}
+				onBack={handleBackToNewPrompt}
 				backLabel={__('New Prompt', 'everest-forms')}
 				headerRight={
 					<Box
@@ -865,6 +928,85 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({
 					</Box>
 				}
 			>
+				<Modal
+					isCentered
+					isOpen={isDiscardOpen}
+					onClose={isDiscarding ? () => {} : closeDiscardModal}
+					size="sm"
+				>
+					{/* PageShell is a position:fixed zIndex 100000 overlay. ModalContent renders inside
+					    Chakra's own fixed, z-index:1400 .chakra-modal__content-container — a zIndex prop
+					    on ModalContent itself only wins WITHIN that container, not against PageShell, so
+					    the container itself needs overriding via containerProps (confirmed via computed
+					    styles: <Modal zIndex> does NOT reach it). Matches the zIndex={200000} already
+					    used on this screen's Popovers for the same PageShell-overlay reason. */}
+					<ModalOverlay bg="rgba(0,0,0,0.4)" backdropFilter="blur(2px)" zIndex={200000} />
+					<ModalContent
+						borderRadius="12px"
+						mx="16px"
+						containerProps={{ zIndex: 200000 }}
+					>
+						<ModalHeader fontSize="16px" fontWeight="600" pb="4px">
+							{__('Discard this draft?', 'everest-forms')}
+						</ModalHeader>
+						{!isDiscarding && <ModalCloseButton />}
+						<ModalBody pb="20px">
+							<Text fontSize="14px" color="#555" lineHeight="1.6" margin="0">
+								{__(
+									"This form hasn't been used yet — it's saved as a draft. You can keep it and find it later in All Forms, or discard it now.",
+									'everest-forms',
+								)}
+							</Text>
+						</ModalBody>
+						<ModalFooter gap="8px" pt="0">
+							<Box
+								as="button"
+								onClick={isDiscarding ? undefined : handleKeepAsDraft}
+								px="14px"
+								h="36px"
+								borderRadius="8px"
+								border="1px solid #e2e8f0"
+								bg="white"
+								fontSize="13px"
+								fontWeight="600"
+								color="#383838"
+								cursor={isDiscarding ? 'not-allowed' : 'pointer'}
+								opacity={isDiscarding ? 0.6 : 1}
+								_hover={isDiscarding ? {} : { bg: '#f8fafc' }}
+								transition="background 0.2s"
+							>
+								{__('Keep as draft', 'everest-forms')}
+							</Box>
+							<Box
+								as="button"
+								onClick={handleDiscardConfirm}
+								display="inline-flex"
+								alignItems="center"
+								gap="6px"
+								px="14px"
+								h="36px"
+								borderRadius="8px"
+								border="none"
+								bg="#e53e3e"
+								color="white"
+								fontSize="13px"
+								fontWeight="600"
+								cursor={isDiscarding ? 'not-allowed' : 'pointer'}
+								opacity={isDiscarding ? 0.75 : 1}
+								_hover={isDiscarding ? {} : { bg: '#c53030' }}
+								transition="background 0.2s, opacity 0.2s"
+							>
+								{isDiscarding && (
+									<Spinner size="xs" color="white" thickness="2px" speed="0.65s" />
+								)}
+								{isDiscarding
+									? __('Discarding…', 'everest-forms')
+									: __('Discard', 'everest-forms')}
+							</Box>
+						</ModalFooter>
+					</ModalContent>
+				</Modal>
+
 				{hint.show && (
 					<Box
 						position="fixed"

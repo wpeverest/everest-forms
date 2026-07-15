@@ -245,12 +245,20 @@ class EVF_AI_Form_Builder {
 		$field_list        = [];
 		$field_index       = 0;
 		$file_upload_count = 0;
-		$is_pro_active     = defined( 'EVF_PRO_VERSION' ) || class_exists( 'EVF_Pro' );
+		// Same base signal Style Customizer v2 uses (Engine::pro_active()) — EVF_PRO_VERSION and
+		// EVF_Pro are not real; this used to always evaluate false, so the free-tier file-upload
+		// cap below was being applied even on Pro-active sites.
+		$is_pro_active     = defined( 'EFP_PLUGIN_FILE' );
+		$logger            = evf_get_logger();
 		foreach ( ( $ai['fields'] ?? [] ) as $ai_field ) {
 			// Free tier: only one file-upload field is allowed per form.
 			if ( ! $is_pro_active && 'file-upload' === ( $ai_field['type'] ?? '' ) ) {
 				if ( $file_upload_count >= 1 ) {
 					self::$file_upload_limited = true;
+					$logger->warning(
+						sprintf( 'AI Form Builder: dropped extra file-upload field "%s" — free tier allows only one.', $ai_field['label'] ?? '' ),
+						array( 'source' => 'evf-ai' )
+					);
 					$field_index++;
 					continue;
 				}
@@ -262,6 +270,16 @@ class EVF_AI_Form_Builder {
 			if ( ! $evf_field ) {
 				$field_index++;
 				continue;
+			}
+			// Pro-only field type on a site without Pro: the field is still added (matches
+			// $pro_fields' builder-visible-but-locked intent), but it cannot render on the
+			// frontend without Pro — log it so a "field I asked for isn't showing" report has a
+			// server-side trail instead of failing completely silently.
+			if ( ! $is_pro_active && in_array( $evf_field['type'], self::$pro_fields, true ) ) {
+				$logger->warning(
+					sprintf( 'AI Form Builder: added Pro-only field "%s" (%s) — it will not render on the frontend until Pro is active.', $evf_field['label'], $evf_field['type'] ),
+					array( 'source' => 'evf-ai' )
+				);
 			}
 			$built_fields[ $field_id ] = $evf_field;
 			if ( 'email' === $evf_field['type'] && null === $email_field_id ) {
@@ -383,6 +401,10 @@ class EVF_AI_Form_Builder {
 		$label = sanitize_text_field( $ai_field['label'] ?? ucfirst( $type ) );
 
 		if ( ! $type ) {
+			evf_get_logger()->warning(
+				sprintf( 'AI Form Builder: dropped a field with no type — label was "%s".', $ai_field['label'] ?? '' ),
+				array( 'source' => 'evf-ai' )
+			);
 			return null;
 		}
 
