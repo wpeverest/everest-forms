@@ -457,7 +457,33 @@ class EVF_Form_Handler {
 			$form_styles = get_option( 'everest_forms_styles', array() );
 			if ( isset( $form_styles[ $id ] ) ) {
 				$form_styles[ $new_form_id ] = $form_styles[ $id ];
+
+				// A legacy (pre-v2) style record depends on a static per-form compiled CSS
+				// file (uploads/everest_forms_styles/everest-forms-{id}.css) that only the old
+				// Customizer's own save path ever writes. Duplicating never generates that file
+				// for the new id, so the legacy engine's file_exists() check silently fails and
+				// the duplicate renders completely unstyled on the front end despite carrying
+				// real style data in this option. Migrating it to a v2 record right away avoids
+				// the gap entirely: v2 compiles inline, per request, with no static-file
+				// dependency, so the duplicate looks right immediately, before anyone opens the
+				// Style tab. Already-v2 records pass through unchanged (migrate_record() is
+				// idempotent); Sanitizer is the same authoritative gate every other write path
+				// to this option goes through.
+				if ( class_exists( '\EverestForms\Addons\StyleCustomizer\V2\Engine' )
+					&& \EverestForms\Addons\StyleCustomizer\V2\Engine::enabled()
+					&& ! \EverestForms\Addons\StyleCustomizer\V2\Engine::is_v2_record( $form_styles[ $new_form_id ] ) ) {
+					$migrated = \EverestForms\Addons\StyleCustomizer\V2\Migrator::migrate_record( $form_styles[ $new_form_id ] );
+					$form_styles[ $new_form_id ] = \EverestForms\Addons\StyleCustomizer\V2\Sanitizer::sanitize_record( $migrated );
+				}
+
 				update_option( 'everest_forms_styles', $form_styles );
+			}
+
+			// duplicate() never copies post meta, so the "Apply Theme Style" toggle would
+			// otherwise silently reset to its default instead of mirroring the source form.
+			$theme_style_meta = get_post_meta( $id, 'everest_forms_enable_theme_style', true );
+			if ( '' !== $theme_style_meta ) {
+				update_post_meta( $new_form_id, 'everest_forms_enable_theme_style', $theme_style_meta );
 			}
 
 			return $new_form_id;
