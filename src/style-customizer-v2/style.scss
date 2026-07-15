@@ -55,6 +55,7 @@
 	--ui-fs-base: 14px;
 	--ui-fs-md: 16px;
 	--ui-fs-lg: 19px;
+	--ui-fs-xl: 22px;
 
 	/* One shared height for every small inline control (number field, icon-button, dropdown
 	   trigger, colour swatch, media button) so a row built from several different control types
@@ -246,9 +247,11 @@
 		background: var(--ui-purple-50);
 	}
 
+	/* Same recipe every other button in the panel gets (--ui-focus) — kept this button's own
+	   radius rather than the generic rule's 5px, exactly like .elrow/.pal-card do below. */
 	&:focus-visible {
-		outline: 2px solid var(--ui-purple);
-		outline-offset: 1px;
+		outline: none;
+		box-shadow: var(--ui-focus);
 	}
 
 	> svg {
@@ -346,10 +349,13 @@
 	}
 }
 
-/* One real heading size for slate/section titles — nothing else in the panel exceeds it, so
-   the panel has an actual size hierarchy instead of everything sitting at 11-14px. */
+/* The panel's one real heading size for slate/section titles, matching the builder's own
+   Settings/Integrations section title (.evf-content-section-title: 22px/600/1.3) exactly —
+   nothing else in the panel exceeds it, so the panel has an actual size hierarchy instead of
+   everything sitting at 11-14px, AND it reads as the same heading language as the rest of
+   the builder rather than a smaller, panel-only scale. */
 #everest-forms-panel-style .slate-title {
-	font-size: var(--ui-fs-lg);
+	font-size: var(--ui-fs-xl);
 	font-weight: 600;
 	color: var(--ui-ink);
 	margin: 0;
@@ -2263,20 +2269,24 @@
 }
 
 #everest-forms-panel-style .pv-bar {
-	min-height: 50px;
+	min-height: 64px;
 	display: flex;
 	align-items: center;
 	gap: 12px;
-	padding: 8px 20px;
+	padding: 16px 20px;
 	border-bottom: 1px solid var(--ui-line);
 	background: #fff;
 	flex: none;
 	flex-wrap: wrap;
 }
 
+/* Matches the builder's own Settings/Integrations section title exactly
+   (.evf-content-section-title: 22px/600/1.3) so "Live preview" reads with the
+   same weight as a real section heading, not a small toolbar label. */
 #everest-forms-panel-style .pv-bar .ttl {
 	font-weight: 600;
-	font-size: var(--ui-fs-base);
+	font-size: var(--ui-fs-xl);
+	line-height: 1.3;
 	color: var(--ui-ink);
 	display: flex;
 	align-items: center;
@@ -2845,9 +2855,10 @@
 		color: var(--ui-ink);
 	}
 
+	/* Same recipe every other button in the panel gets (--ui-focus), not a one-off outline. */
 	&:focus-visible {
-		outline: 2px solid var(--ui-purple);
-		outline-offset: 1px;
+		outline: none;
+		box-shadow: var(--ui-focus);
 	}
 }
 

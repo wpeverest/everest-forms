@@ -864,6 +864,7 @@ export function CustomCssPane() {
 
 	return (
 		<div className="slate-anim">
+			<div className="block-title">{ __( 'Custom CSS', 'everest-forms' ) }</div>
 			<p className="pane-note">
 				{ __( 'Applied live as you type, and', 'everest-forms' ) } <b>{ __( 'auto-scoped to this form', 'everest-forms' ) }</b>{ ' ' }
 				{ __( 'on save so nothing leaks to the rest of your site. Click a selector to insert it:', 'everest-forms' ) }
