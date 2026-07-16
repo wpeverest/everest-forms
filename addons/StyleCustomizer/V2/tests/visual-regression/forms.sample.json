@@ -1,9 +1,0 @@
-{
-  "baseUrl": "https://evf.local",
-  "cookie": "wordpress_logged_in_REPLACE=REPLACE",
-  "breakpoints": { "desktop": 1280, "tablet": 768, "mobile": 480 },
-  "forms": [
-    { "id": 7, "url": "/?evf_preview=1&form_id=7" },
-    { "id": 12, "url": "/?evf_preview=1&form_id=12" }
-  ]
-}
