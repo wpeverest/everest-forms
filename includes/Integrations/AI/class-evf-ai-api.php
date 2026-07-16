@@ -44,9 +44,10 @@ class EVF_AI_API {
 			'POST',
 			'/ai/v1/generate',
 			array(
-				'prompt'           => $prompt,
-				'license_key'      => $license_key,
-				'available_fields' => implode( ',', evf()->form_fields->get_form_field_types() ),
+				'prompt'                => $prompt,
+				'license_key'           => $license_key,
+				'available_fields'      => implode( ',', evf()->form_fields->get_form_field_types() ),
+				'client_supports_style' => self::client_supports_style(),
 			),
 			$token
 		);
@@ -67,6 +68,16 @@ class EVF_AI_API {
 		);
 
 		return $response['form'];
+	}
+
+	/**
+	 * Whether this site can use the gateway's create-time style capability.
+	 *
+	 * @return bool
+	 */
+	private static function client_supports_style(): bool {
+		return class_exists( '\EverestForms\Addons\StyleCustomizer\V2\Engine' )
+			&& \EverestForms\Addons\StyleCustomizer\V2\Engine::enabled();
 	}
 
 	/**
@@ -169,11 +180,12 @@ class EVF_AI_API {
 		);
 
 		$body = array(
-			'prompt'        => $prompt,
-			'refine_prompt' => $refine_prompt,
-			'form_id'       => $form_id,
-			'license_key'   => self::get_license_key(),
-			'current_form'  => self::get_current_form_context( $form_id ),
+			'prompt'                => $prompt,
+			'refine_prompt'         => $refine_prompt,
+			'form_id'               => $form_id,
+			'license_key'           => self::get_license_key(),
+			'current_form'          => self::get_current_form_context( $form_id ),
+			'client_supports_style' => self::client_supports_style(),
 		);
 
 		$response = self::request( 'POST', '/ai/v1/update', $body, $token );
