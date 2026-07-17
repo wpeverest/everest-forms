@@ -388,7 +388,11 @@ ok( $passthru['tokens']['wrap.width']['desktop'] === 77, 'v2 passthrough: existi
 
 /* ------------------------------------------------------------------ Engine */
 group( 'Engine' );
-ok( Engine::enabled() === false, 'disabled by default (no EVF_STYLE_V2)' );
+ok( Engine::enabled() === true, 'enabled by default (no constant/flag needed)' );
+add_filter( 'evf_style_v2_enabled', static function () { return false; } );
+ok( Engine::enabled() === false, 'evf_style_v2_enabled filter can force it off' );
+$GLOBALS['evf_test_filters']['evf_style_v2_enabled'] = array();
+ok( Engine::enabled() === true, 'back on once the off-switch filter is removed' );
 ok( Engine::is_v2_record( array( 'schema_version' => 1 ) ) === true, 'record with schema_version is v2' );
 ok( Engine::is_v2_record( array( 'font' => array() ) ) === false, 'legacy record is not v2' );
 

@@ -2,12 +2,8 @@
 /**
  * Style Customizer v2 — Engine gate.
  *
- * The single place that answers "is v2 active?" and "is this form a v2 form?". Everything
- * v2 ships dark behind these gates until Phase 5 (STYLE-CUSTOMIZER-V2-PLAN.md §8).
- *
- * Phase 0 note: {@see self::boot()} is intentionally NOT called from the live addon yet —
- * there is nothing user-facing to mount. Phase 1 wires it into the builder + frontend
- * enqueue. The gate helpers below are already safe to use anywhere.
+ * The single place that answers "is v2 active?" and "is this form a v2 form?". v2 is ON by
+ * default; {@see self::enabled()} only exposes an off-switch.
  *
  * @package EverestForms\Addons\StyleCustomizer\V2
  * @since   x.x.x
@@ -23,18 +19,19 @@ defined( 'ABSPATH' ) || exit;
 final class Engine {
 
 	/**
-	 * Is the v2 engine enabled? Off unless the `EVF_STYLE_V2` constant is truthy, and always
-	 * overridable via the `evf_style_v2_enabled` filter (staged rollout, plan §8).
+	 * Is the v2 engine enabled? ON by default — no constant or flag is needed to get the Style
+	 * tab. The `EVF_STYLE_V2` constant (only when explicitly defined) and the
+	 * `evf_style_v2_enabled` filter remain purely as an off-switch.
 	 *
 	 * @return bool
 	 */
 	public static function enabled() {
-		$enabled = defined( 'EVF_STYLE_V2' ) && \EVF_STYLE_V2;
+		$enabled = defined( 'EVF_STYLE_V2' ) ? (bool) \EVF_STYLE_V2 : true;
 
 		/**
 		 * Filter whether the Style Customizer v2 engine is active.
 		 *
-		 * @param bool $enabled Default from the EVF_STYLE_V2 constant.
+		 * @param bool $enabled Whether v2 is active (default true).
 		 */
 		return (bool) apply_filters( 'evf_style_v2_enabled', $enabled );
 	}

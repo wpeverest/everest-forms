@@ -44,8 +44,7 @@ class StyleCustomizer {
 			\EverestForms_Style_Customizer::get_instance();
 		}
 
-		// Style Customizer v2 engine — dark behind EVF_STYLE_V2 (Engine::boot() no-ops unless
-		// the flag is on), so this is inert for everyone until v2 is switched on.
+		// Style Customizer v2 engine (on by default; see V2\Engine::enabled()).
 		V2\Engine::boot();
 	}
 }
