@@ -970,6 +970,11 @@ class EVF_Shortcode_Form {
 			wp_enqueue_script( 'mailcheck' );
 		}
 
+		// Load the international telephone input styles only when the form has a phone field.
+		if ( isset( $atts['id'] ) && evf_is_field_exists( $atts['id'], 'phone' ) ) {
+			wp_enqueue_style( 'jquery-intl-tel-input' );
+		}
+
 		// Add custom CSS/JS
 		if ( isset( $atts['id'] ) ) {
 			self::add_custom_css_js( $atts['id'] );

@@ -42,6 +42,7 @@ class EVF_Frontend_Scripts {
 		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'load_scripts' ) );
 		add_action( 'wp_print_scripts', array( __CLASS__, 'localize_printed_scripts' ), 5 );
 		add_action( 'wp_print_footer_scripts', array( __CLASS__, 'localize_printed_scripts' ), 5 );
+		add_action( 'everest_forms_shortcode_scripts', array( __CLASS__, 'enqueue_frontend_styles' ) );
 	}
 
 	/**
@@ -59,13 +60,6 @@ class EVF_Frontend_Scripts {
 					'version' => EVF_VERSION,
 					'media'   => 'all',
 					'has_rtl' => true,
-				),
-				'jquery-intl-tel-input' => array(
-					'src'     => self::get_asset_url( 'assets/css/intlTelInput/intlTelInput.css' ),
-					'deps'    => array(),
-					'version' => EVF_VERSION,
-					'media'   => 'all',
-					'has_rtl' => false,
 				),
 			)
 		);
@@ -265,7 +259,38 @@ class EVF_Frontend_Scripts {
 		// Enqueue dashicons.
 		wp_enqueue_style( 'dashicons' );
 
-		// CSS Styles.
+		if ( self::current_page_has_form() ) {
+			self::enqueue_frontend_styles();
+		}
+	}
+
+	/**
+	 * Whether the current request is known to render an Everest Forms form.
+	 *
+	 * Scans the main post content for the `[everest_form]` shortcode or the form-selector block.
+	 * The `everest_forms_has_form_on_page` filter can override the result.
+	 *
+	 * @return bool
+	 */
+	public static function current_page_has_form() {
+		$has_form = false;
+		$post     = get_post();
+
+		if ( $post instanceof WP_Post ) {
+			$shortcode = apply_filters( 'everest_form_shortcode_tag', 'everest_form' );
+			$has_form  = has_shortcode( (string) $post->post_content, $shortcode )
+				|| has_block( 'everest-forms/form-selector', $post );
+		}
+
+		return (bool) apply_filters( 'everest_forms_has_form_on_page', $has_form, $post );
+	}
+
+	/**
+	 * Enqueue the general frontend form stylesheet(s).
+	 *
+	 * @return void
+	 */
+	public static function enqueue_frontend_styles() {
 		$enqueue_styles = self::get_styles();
 		if ( $enqueue_styles ) {
 			foreach ( $enqueue_styles as $handle => $args ) {
