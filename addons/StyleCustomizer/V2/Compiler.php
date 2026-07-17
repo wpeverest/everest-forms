@@ -203,7 +203,7 @@ final class Compiler {
 
 	/**
 	 * The CSS declarations (`--var: value`) a token contributes for one value. A font-style
-	 * token expands to four; a var-less token (opacity, choice variation…) contributes none.
+	 * token expands to four; a var-less token (bg preset, choice variation…) contributes none.
 	 *
 	 * @param array $token      Token definition.
 	 * @param mixed $value      Resolved value.
@@ -226,7 +226,7 @@ final class Compiler {
 		}
 
 		if ( empty( $token['var'] ) ) {
-			return array(); // Meta/data-attribute tokens (opacity, bg preset, choice variation…).
+			return array(); // Meta/data-attribute tokens (bg preset, choice variation…).
 		}
 
 		// "Use theme fonts" overrides the family with `inherit`.

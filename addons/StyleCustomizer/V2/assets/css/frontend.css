@@ -19,20 +19,33 @@
 
 /* ===== FORM — container + font ===== */
 .everest-forms .evf-style-v2.evf-container {
+	position: relative;
+	isolation: isolate;
 	width: var( --evf-wrap-width );
 	margin: var( --evf-wrap-margin );
 	padding: var( --evf-wrap-pad );
 	font-family: var( --evf-font );
 	background-color: var( --evf-wrap-bg );
+	border-style: var( --evf-wrap-border-style, solid );
+	border-width: var( --evf-wrap-bw );
+	border-color: var( --evf-wrap-border-c );
+	border-radius: var( --evf-wrap-radius );
+}
+
+/* ===== FORM — background image layer (own layer so opacity fades the image, not the content) ===== */
+.everest-forms .evf-style-v2.evf-container::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	z-index: -1;
+	pointer-events: none;
+	border-radius: inherit;
 	background-image: var( --evf-wrap-image, none );
 	background-size: var( --evf-wrap-bg-size, cover );
 	background-position: var( --evf-wrap-bg-position, center );
 	background-repeat: var( --evf-wrap-bg-repeat, no-repeat );
 	background-attachment: var( --evf-wrap-bg-attachment, scroll );
-	border-style: var( --evf-wrap-border-style, solid );
-	border-width: var( --evf-wrap-bw );
-	border-color: var( --evf-wrap-border-c );
-	border-radius: var( --evf-wrap-radius );
+	opacity: var( --evf-wrap-bg-opacity, 1 );
 }
 
 /* ===== TEXT — label ===== */

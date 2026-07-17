@@ -249,6 +249,15 @@ ok( strpos( $css, '--evf-wrap-margin:0px 0px 30px 0px' ) !== false, 'emits box4 
 ok( strpos( $css, '@media (max-width:768px)' ) !== false, 'emits tablet media query for responsive override' );
 ok( strpos( $css, '--evf-label-weight:700' ) !== false, 'fontstyle bold → weight 700 var' );
 
+// EVF-2659: the background-image opacity setting was var-less, so it compiled to nothing and did
+// nothing. It must reach the CSS as a var (frontend.css applies it to the image layer only).
+ok( ! empty( Schema::get( 'wrap.bgOpacity' )['var'] ), 'EVF-2659: wrap.bgOpacity has a CSS var' );
+$bgop = Compiler::compile(
+	array( 'tokens' => array( 'wrap.bgImage' => array( 'desktop' => 'https://example.test/bg.png' ), 'wrap.bgOpacity' => array( 'desktop' => 0.4 ) ) ),
+	7
+);
+ok( strpos( $bgop, '--evf-wrap-bg-opacity:0.4' ) !== false, 'EVF-2659: background image opacity compiles to a var' );
+
 // Defense-in-depth: even an UNSANITIZED breakout value can't escape the declaration.
 $evil = Compiler::compile( array( 'tokens' => array( 'wrap.borderC' => array( 'desktop' => 'red;}body{display:none}' ) ) ), 7 );
 ok( strpos( $evil, '}body' ) === false && strpos( $evil, '{display' ) === false, 'compiler css_safe blocks CSS breakout' );
