@@ -152,6 +152,37 @@ final class RestController {
 			)
 		);
 
+		// Create a reusable custom colour palette (Pro).
+		register_rest_route(
+			$this->namespace,
+			'/style-palettes',
+			array(
+				array(
+					'methods'             => 'POST',
+					'callback'            => array( $this, 'create_palette' ),
+					'permission_callback' => array( $this, 'permissions_check' ),
+				),
+			)
+		);
+
+		// Update or delete a reusable custom colour palette (Pro).
+		register_rest_route(
+			$this->namespace,
+			'/style-palettes/(?P<pid>[A-Za-z0-9\-]+)',
+			array(
+				array(
+					'methods'             => 'POST',
+					'callback'            => array( $this, 'update_palette' ),
+					'permission_callback' => array( $this, 'permissions_check' ),
+				),
+				array(
+					'methods'             => 'DELETE',
+					'callback'            => array( $this, 'delete_palette' ),
+					'permission_callback' => array( $this, 'permissions_check' ),
+				),
+			)
+		);
+
 	}
 
 	/**
@@ -201,6 +232,101 @@ final class RestController {
 	public function delete_template( $request ) {
 		$deleted = Templates::delete_user_template( (string) $request['tid'] );
 		return rest_ensure_response( array( 'deleted' => (bool) $deleted ) );
+	}
+
+	/**
+	 * POST /style-palettes — save a reusable custom colour palette (Pro).
+	 *
+	 * @param \WP_REST_Request $request Request.
+	 * @return \WP_REST_Response|\WP_Error
+	 */
+	public function create_palette( $request ) {
+		if ( ! Engine::pro_active() ) {
+			return self::pro_only_palette_error();
+		}
+		$colors = $request->get_param( 'colors' );
+		if ( ! is_array( $colors ) ) {
+			return new \WP_Error(
+				'evf_style_bad_request',
+				__( 'Missing or invalid "colors".', 'everest-forms' ),
+				array( 'status' => 400 )
+			);
+		}
+		$palette = Palettes::create( $request->get_param( 'name' ), $colors );
+		return rest_ensure_response(
+			array(
+				'saved'    => true,
+				'palette'  => $palette,
+				'palettes' => Palettes::all_custom(),
+			)
+		);
+	}
+
+	/**
+	 * POST /style-palettes/{pid} — update a reusable custom colour palette in place (Pro).
+	 *
+	 * @param \WP_REST_Request $request Request.
+	 * @return \WP_REST_Response|\WP_Error
+	 */
+	public function update_palette( $request ) {
+		if ( ! Engine::pro_active() ) {
+			return self::pro_only_palette_error();
+		}
+		$colors = $request->get_param( 'colors' );
+		if ( ! is_array( $colors ) ) {
+			return new \WP_Error(
+				'evf_style_bad_request',
+				__( 'Missing or invalid "colors".', 'everest-forms' ),
+				array( 'status' => 400 )
+			);
+		}
+		$palette = Palettes::update( (string) $request['pid'], $request->get_param( 'name' ), $colors );
+		if ( false === $palette ) {
+			return new \WP_Error(
+				'evf_style_not_found',
+				__( 'That custom palette no longer exists.', 'everest-forms' ),
+				array( 'status' => 404 )
+			);
+		}
+		return rest_ensure_response(
+			array(
+				'saved'    => true,
+				'palette'  => $palette,
+				'palettes' => Palettes::all_custom(),
+			)
+		);
+	}
+
+	/**
+	 * DELETE /style-palettes/{pid} — remove a reusable custom colour palette (Pro).
+	 *
+	 * @param \WP_REST_Request $request Request.
+	 * @return \WP_REST_Response|\WP_Error
+	 */
+	public function delete_palette( $request ) {
+		if ( ! Engine::pro_active() ) {
+			return self::pro_only_palette_error();
+		}
+		$deleted = Palettes::delete( (string) $request['pid'] );
+		return rest_ensure_response(
+			array(
+				'deleted'  => (bool) $deleted,
+				'palettes' => Palettes::all_custom(),
+			)
+		);
+	}
+
+	/**
+	 * The shared 403 for a custom-palette write attempted without Pro.
+	 *
+	 * @return \WP_Error
+	 */
+	protected static function pro_only_palette_error() {
+		return new \WP_Error(
+			'evf_style_pro_only',
+			__( 'Custom colour palettes are a Pro feature.', 'everest-forms' ),
+			array( 'status' => 403 )
+		);
 	}
 
 	/**
@@ -339,7 +465,17 @@ final class RestController {
 		$norm = static function ( $v ) {
 			return strtolower( trim( (string) $v ) );
 		};
+
+		$builtins = array();
+		$customs  = array();
 		foreach ( Schema::palettes() as $palette ) {
+			if ( empty( $palette['is_custom'] ) ) {
+				$builtins[] = $palette;
+			} else {
+				$customs[] = $palette;
+			}
+		}
+		foreach ( array_merge( $builtins, $customs ) as $palette ) {
 			$match = true;
 			foreach ( $palette['colors'] as $slot => $value ) {
 				if ( ! isset( $colors[ $slot ] ) || $norm( $colors[ $slot ] ) !== $norm( $value ) ) {

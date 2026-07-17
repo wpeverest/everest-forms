@@ -2976,6 +2976,344 @@
 	}
 }
 
+/* custom colour palettes (PaletteManager) */
+#everest-forms-panel-style .pal-group-label {
+	font-size: var(--ui-fs-xs);
+	font-weight: 600;
+	letter-spacing: .04em;
+	text-transform: uppercase;
+	color: var(--ui-ink-3);
+	margin: 12px 2px 8px;
+
+	&:first-child {
+		margin-top: 2px;
+	}
+}
+
+#everest-forms-panel-style .pal-card--wrap {
+	position: relative;
+	padding: 0;
+
+	.pal-card-apply {
+		display: block;
+		width: 100%;
+		border: 0;
+		background: none;
+		padding: 8px;
+		text-align: left;
+		cursor: pointer;
+		border-radius: inherit;
+
+		&:focus-visible {
+			outline: none;
+			box-shadow: var(--ui-focus-soft);
+		}
+	}
+
+	/* tools overlay bottom-right, revealed on hover */
+	.pal-card-tools {
+		position: absolute;
+		bottom: 5px;
+		right: 5px;
+		display: flex;
+		gap: 3px;
+		opacity: 0;
+		transition: opacity .12s;
+	}
+
+	&:hover .pal-card-tools,
+	&:focus-within .pal-card-tools {
+		opacity: 1;
+	}
+
+	.pal-tool {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 22px;
+		height: 22px;
+		padding: 0;
+		border: 1px solid var(--ui-line);
+		border-radius: var(--ui-radius-sm);
+		background: #fff;
+		box-shadow: 0 1px 3px rgba(20, 23, 40, .16);
+		color: var(--ui-ink-3);
+		cursor: pointer;
+		transition: color .12s, border-color .12s, background .12s;
+
+		svg {
+			width: 12px;
+			height: 12px;
+		}
+
+		&:hover {
+			color: var(--ui-purple);
+			border-color: var(--ui-purple);
+			background: #fff;
+		}
+
+		&.pal-tool--danger:hover {
+			color: var(--ui-red);
+			border-color: var(--ui-red);
+		}
+
+		&.is-locked {
+			color: var(--ui-purple);
+			border-color: var(--ui-purple-100);
+			background: var(--ui-purple-50);
+		}
+
+		.pro-crown {
+			display: block;
+			width: 13px;
+			height: 13px;
+		}
+
+		&:focus-visible {
+			outline: none;
+			box-shadow: var(--ui-focus-soft);
+		}
+	}
+
+	/* inline delete confirm */
+	.pal-card-confirm {
+		position: absolute;
+		inset: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 6px;
+		padding: 6px;
+		background: rgba(255, 255, 255, .96);
+		border-radius: inherit;
+		font-size: 11px;
+		font-weight: 600;
+		color: var(--ui-ink-2);
+
+		button {
+			border: 0;
+			border-radius: var(--ui-radius-sm);
+			padding: 3px 8px;
+			font-size: 11px;
+			font-weight: 600;
+			cursor: pointer;
+		}
+
+		.pal-confirm-yes {
+			background: var(--ui-red);
+			color: #fff;
+		}
+
+		.pal-confirm-no {
+			background: var(--ui-bg);
+			color: var(--ui-ink-2);
+		}
+	}
+}
+
+#everest-forms-panel-style .pal-card--wrap.is-selected {
+	border-color: var(--ui-purple);
+	background: var(--ui-purple-50);
+
+	.cap {
+		color: var(--ui-purple);
+	}
+}
+
+#everest-forms-panel-style .pal-manager-hint {
+	margin: 12px 2px 2px;
+	padding-top: 10px;
+	border-top: 1px solid var(--ui-line-2);
+	font-size: 11px;
+	line-height: 1.45;
+	color: var(--ui-ink-3);
+}
+
+/* ---- editor view ---- */
+#everest-forms-panel-style .pal-editor-back {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	width: 100%;
+	padding: 7px 8px;
+	margin-bottom: 12px;
+	border: 0;
+	border-radius: var(--ui-radius-md);
+	background: var(--ui-bg-subtle);
+	cursor: pointer;
+	text-align: left;
+	transition: background .12s;
+
+	.pal-editor-back-arrow {
+		width: 16px;
+		height: 16px;
+		flex: none;
+		color: var(--ui-ink-3);
+		transition: transform .12s, color .12s;
+	}
+
+	.pal-editor-title {
+		font-size: 12.5px;
+		font-weight: 600;
+		color: var(--ui-ink);
+		min-width: 0;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	&:hover:not(:disabled) {
+		background: var(--ui-purple-50);
+
+		.pal-editor-back-arrow {
+			color: var(--ui-purple);
+			transform: translateX(-2px);
+		}
+
+		.pal-editor-title {
+			color: var(--ui-purple);
+		}
+	}
+
+	&:focus-visible {
+		outline: none;
+		box-shadow: var(--ui-focus);
+	}
+
+	&:disabled {
+		cursor: default;
+		opacity: .7;
+	}
+}
+
+#everest-forms-panel-style .pal-name-field {
+	display: block;
+	margin: 0 4px 14px;
+
+	.pal-field-label {
+		display: block;
+		float: none;
+		width: auto;
+		margin: 0 0 6px;
+		padding: 0;
+		font-size: var(--ui-fs-xs);
+		font-weight: 600;
+		line-height: 1.4;
+		color: var(--ui-ink-3);
+	}
+
+	input[type="text"] {
+		display: block;
+		float: none;
+		width: 100%;
+		height: var(--ui-ctrl-h);
+		margin: 0;
+		border: 1px solid var(--ui-input-border);
+		border-radius: var(--ui-radius-md);
+		padding: 0 10px;
+		font-size: 12.5px;
+		color: var(--ui-ink);
+		background: #fff;
+		outline: none;
+		box-shadow: none;
+		transition: border-color .12s, box-shadow .12s;
+
+		&:focus {
+			border-color: var(--ui-purple);
+			box-shadow: var(--ui-focus-soft);
+		}
+	}
+}
+
+#everest-forms-panel-style .pal-edit-rows {
+	margin: 0 4px;
+	border: 1px solid var(--ui-line-2);
+	border-radius: var(--ui-radius-md);
+	overflow: hidden;
+}
+
+#everest-forms-panel-style .pal-edit-row {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 10px;
+	padding: 8px 10px;
+
+	& + & {
+		border-top: 1px solid var(--ui-line-2);
+	}
+
+	.pal-edit-label {
+		font-size: 12px;
+		color: var(--ui-ink-2);
+		min-width: 0;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	.color {
+		flex: none;
+		width: 124px;
+	}
+}
+
+#everest-forms-panel-style .pal-error {
+	margin: 10px 4px 0;
+	font-size: 11.5px;
+	color: var(--ui-red);
+	line-height: 1.4;
+}
+
+#everest-forms-panel-style .pal-editor-actions {
+	display: flex;
+	gap: 8px;
+	margin: 16px 4px 2px;
+	padding-top: 12px;
+	border-top: 1px solid var(--ui-line-2);
+
+	button {
+		flex: 1;
+		height: 32px;
+		border-radius: var(--ui-radius-md);
+		font-size: 12.5px;
+		font-weight: 600;
+		cursor: pointer;
+		transition: background .12s, border-color .12s, color .12s, opacity .12s;
+
+		&:disabled {
+			opacity: .6;
+			cursor: default;
+		}
+
+		&:focus-visible {
+			outline: none;
+			box-shadow: var(--ui-focus);
+		}
+	}
+
+	.pal-btn-ghost {
+		border: 1px solid var(--ui-input-border);
+		background: #fff;
+		color: var(--ui-ink-2);
+
+		&:hover:not(:disabled) {
+			border-color: var(--ui-ink-3);
+		}
+	}
+
+	.pal-btn-primary {
+		border: 1px solid var(--ui-purple);
+		background: var(--ui-purple);
+		color: #fff;
+
+		&:hover:not(:disabled) {
+			background: var(--ui-purple-600);
+			border-color: var(--ui-purple-600);
+		}
+	}
+}
+
 /* AI styling launcher (AiAssistant.tsx) styles itself inline (matching
    src/builder-ai/BuilderAIChat.tsx's own approach) since it's portaled to <body>,
    outside `#everest-forms-panel-style` — see the component for details. */

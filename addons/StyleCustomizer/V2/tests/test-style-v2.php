@@ -21,17 +21,50 @@ if ( ! defined( 'ABSPATH' ) ) {
 if ( ! function_exists( '__' ) ) {
 	function __( $s, $d = null ) { return $s; }
 }
+$GLOBALS['evf_test_filters'] = array();
+if ( ! function_exists( 'add_filter' ) ) {
+	// Minimal real registry so the Palettes group can exercise the `evf_style_palettes` injection
+	// end-to-end (Palettes::register() → inject → Schema::palettes() → Sanitizer id gate).
+	function add_filter( $tag, $cb, $priority = 10, $args = 1 ) {
+		$GLOBALS['evf_test_filters'][ $tag ][] = $cb;
+		return true;
+	}
+}
 if ( ! function_exists( 'apply_filters' ) ) {
-	// Minimal stub: returns the default, except the `evf_style_v2_pro_active` gate, which the test
-	// toggles via $GLOBALS['evf_test_pro_active'] to exercise both the Pro-active and free paths.
-	function apply_filters( $t, $v ) {
-		if ( 'evf_style_v2_pro_active' === $t ) {
+	// Runs any registered callbacks (else returns the default), EXCEPT the `evf_style_v2_pro_active`
+	// gate, which the test toggles via $GLOBALS['evf_test_pro_active'] to exercise both tiers.
+	function apply_filters( $tag, $value ) {
+		if ( 'evf_style_v2_pro_active' === $tag ) {
 			return ! empty( $GLOBALS['evf_test_pro_active'] );
 		}
-		return $v;
+		$extra = array_slice( func_get_args(), 2 );
+		if ( ! empty( $GLOBALS['evf_test_filters'][ $tag ] ) ) {
+			foreach ( $GLOBALS['evf_test_filters'][ $tag ] as $cb ) {
+				$value = call_user_func_array( $cb, array_merge( array( $value ), $extra ) );
+			}
+		}
+		return $value;
 	}
 }
 $GLOBALS['evf_test_pro_active'] = false;
+$GLOBALS['evf_test_options']    = array();
+if ( ! function_exists( 'get_option' ) ) {
+	function get_option( $k, $default = false ) {
+		return array_key_exists( $k, $GLOBALS['evf_test_options'] ) ? $GLOBALS['evf_test_options'][ $k ] : $default;
+	}
+}
+if ( ! function_exists( 'update_option' ) ) {
+	function update_option( $k, $v, $autoload = null ) { $GLOBALS['evf_test_options'][ $k ] = $v; return true; }
+}
+if ( ! function_exists( 'delete_option' ) ) {
+	function delete_option( $k ) { unset( $GLOBALS['evf_test_options'][ $k ] ); return true; }
+}
+if ( ! function_exists( 'wp_json_encode' ) ) {
+	function wp_json_encode( $d ) { return json_encode( $d ); }
+}
+if ( ! function_exists( 'mb_substr' ) ) {
+	function mb_substr( $s, $start, $len = null ) { return null === $len ? substr( (string) $s, $start ) : substr( (string) $s, $start, $len ); }
+}
 if ( ! function_exists( 'sanitize_key' ) ) {
 	function sanitize_key( $k ) { return preg_replace( '/[^a-z0-9_\-]/', '', strtolower( (string) $k ) ); }
 }
@@ -50,12 +83,14 @@ require dirname( __DIR__ ) . '/Sanitizer.php';
 require dirname( __DIR__ ) . '/Compiler.php';
 require dirname( __DIR__ ) . '/Migrator.php';
 require dirname( __DIR__ ) . '/Engine.php';
+require dirname( __DIR__ ) . '/Palettes.php';
 
 use EverestForms\Addons\StyleCustomizer\V2\Schema;
 use EverestForms\Addons\StyleCustomizer\V2\Sanitizer;
 use EverestForms\Addons\StyleCustomizer\V2\Compiler;
 use EverestForms\Addons\StyleCustomizer\V2\Migrator;
 use EverestForms\Addons\StyleCustomizer\V2\Engine;
+use EverestForms\Addons\StyleCustomizer\V2\Palettes;
 
 $pass = 0;
 $fail = 0;
@@ -356,6 +391,81 @@ group( 'Engine' );
 ok( Engine::enabled() === false, 'disabled by default (no EVF_STYLE_V2)' );
 ok( Engine::is_v2_record( array( 'schema_version' => 1 ) ) === true, 'record with schema_version is v2' );
 ok( Engine::is_v2_record( array( 'font' => array() ) ) === false, 'legacy record is not v2' );
+
+/* ---------------------------------------------------------------- Palettes */
+// Reusable custom colour palettes (EVF-2657): storage/CRUD, v1 carry-over, colour sanitization,
+// the evf_style_palettes injection, and the Pro gate on selecting a custom palette.
+group( 'Palettes (custom)' );
+$brand = array(
+	'form_background'   => '#FAFAFA',
+	'field_background'  => '#EEEEEE',
+	'field_label'       => '#111111',
+	'field_sublabel'    => '#333333',
+	'button_text'       => '#FFFFFF',
+	'button_background' => '#1155CC',
+);
+
+// sanitize_colors: exactly six slots, lowercased, unknown dropped, invalid/missing → slot default.
+$san = Palettes::sanitize_colors( array( 'form_background' => '#FFF', 'evil' => '<script>', 'button_background' => 'notacolor' ) );
+ok( count( $san ) === 6, 'sanitize_colors returns exactly six slots' );
+ok( ! isset( $san['evil'] ), 'sanitize_colors drops unknown slots' );
+ok( $san['form_background'] === '#fff', 'sanitize_colors lowercases a valid hex' );
+ok( $san['button_background'] === '#3951a5', 'sanitize_colors falls back to the slot default for an invalid colour' );
+ok( $san['field_label'] === '#333333', 'sanitize_colors fills a missing slot with its default' );
+
+// create + all_custom
+$GLOBALS['evf_test_options'] = array();
+$created = Palettes::create( 'My Brand', $brand );
+ok( strpos( $created['id'], 'pal-' ) === 0, 'create returns a pal- id' );
+ok( true === $created['is_custom'] && true === $created['is_pro'], 'created palette is flagged custom + pro' );
+ok( $created['colors']['form_background'] === '#fafafa', 'created colours are sanitized (lowercased)' );
+$allc = Palettes::all_custom();
+ok( count( $allc ) === 1, 'all_custom lists the created palette' );
+ok( $allc[0]['id'] === $created['id'], 'all_custom is newest-first' );
+
+// update
+$upd = Palettes::update( $created['id'], 'Renamed', array_merge( $brand, array( 'button_background' => '#000000' ) ) );
+ok( false !== $upd && 'Renamed' === $upd['name'], 'update renames a palette' );
+ok( $upd['colors']['button_background'] === '#000000', 'update changes a palette colour' );
+ok( Palettes::update( 'pal-doesnotexist', 'x', $brand ) === false, 'update on an unknown id returns false' );
+
+// delete
+ok( Palettes::delete( $created['id'] ) === true, 'delete removes the palette' );
+ok( count( Palettes::all_custom() ) === 0, 'all_custom is empty after delete' );
+ok( Palettes::delete( $created['id'] ) === false, 'delete on an unknown id returns false' );
+
+// v1 carry-over: an existing v1 custom palette surfaces live, editable + deletable in place.
+$GLOBALS['evf_test_options']['everest_forms_custom_color_palettes'] = array(
+	array( 'label' => 'Old Brand', 'colors' => $brand, 'is_pro' => true, 'is_custom' => true ),
+);
+$legacy = Palettes::all_custom();
+ok( count( $legacy ) === 1, 'v1 custom palette surfaces in all_custom' );
+ok( $legacy[0]['id'] === 'legacy-palette-0', 'v1 palette gets a legacy-palette-0 id' );
+ok( $legacy[0]['name'] === 'Old Brand', 'v1 label carried across as the name' );
+ok( true === $legacy[0]['is_custom'], 'v1 palette flagged custom' );
+ok( $legacy[0]['colors']['button_background'] === '#1155cc', 'v1 colours sanitized on read' );
+$lupd = Palettes::update( 'legacy-palette-0', 'Old Renamed', $brand );
+ok( false !== $lupd && $GLOBALS['evf_test_options']['everest_forms_custom_color_palettes'][0]['label'] === 'Old Renamed', 'update on a legacy id edits the v1 option in place' );
+ok( Palettes::delete( 'legacy-palette-0' ) === true, 'delete on a legacy id removes it from the v1 option' );
+ok( empty( $GLOBALS['evf_test_options']['everest_forms_custom_color_palettes'] ), 'v1 option is emptied after a legacy delete' );
+
+// inject: the evf_style_palettes target prepends custom palettes to the built-in list.
+$GLOBALS['evf_test_options'] = array();
+$c2       = Palettes::create( 'Injected', $brand );
+$injected = Palettes::inject( array( array( 'id' => 'classic', 'name' => 'Classic', 'is_pro' => false, 'colors' => array() ) ) );
+ok( count( $injected ) === 2, 'inject prepends custom palettes to the built-ins' );
+ok( $injected[0]['id'] === $c2['id'], 'inject places custom palettes first' );
+
+// End-to-end tier gate: with the filter registered, a custom palette id only persists under Pro
+// (Sanitizer::sanitize_palette_id, reached via the public sanitize_record).
+Palettes::register();
+$c3                             = Palettes::create( 'Gated', $brand );
+$GLOBALS['evf_test_pro_active'] = true;
+$rec_pro                        = Sanitizer::sanitize_record( array( 'tokens' => array(), 'palette' => $c3['id'] ) );
+ok( $rec_pro['palette'] === $c3['id'], 'custom palette id persists when Pro is active' );
+$GLOBALS['evf_test_pro_active'] = false;
+$rec_free                       = Sanitizer::sanitize_record( array( 'tokens' => array(), 'palette' => $c3['id'] ) );
+ok( $rec_free['palette'] === '', 'custom palette id is stripped without Pro' );
 
 /* ------------------------------------------------------------------ Result */
 echo "\n----------------------------------------\n";

@@ -97,6 +97,7 @@ export interface Palette {
 	id: string;
 	name: string;
 	is_pro: boolean;
+	is_custom?: boolean;
 	colors: Record<string, string>;
 }
 

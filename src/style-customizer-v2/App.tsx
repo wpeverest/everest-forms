@@ -30,6 +30,395 @@ interface Toast {
 	kind?: 'success' | 'info';
 }
 
+const HEX6 = /^#[0-9a-f]{6}$/i;
+
+function paletteSlotLabel( slot: string ): string {
+	switch ( slot ) {
+		case 'form_background':
+			return __( 'Form background', 'everest-forms' );
+		case 'field_background':
+			return __( 'Field background', 'everest-forms' );
+		case 'field_label':
+			return __( 'Label', 'everest-forms' );
+		case 'field_sublabel':
+			return __( 'Sublabel', 'everest-forms' );
+		case 'button_text':
+			return __( 'Button text', 'everest-forms' );
+		case 'button_background':
+			return __( 'Button background', 'everest-forms' );
+		default:
+			return slot;
+	}
+}
+
+function PaletteColorRow( {
+	label,
+	value,
+	onChange,
+}: {
+	label: string;
+	value: string;
+	onChange: ( color: string ) => void;
+} ) {
+	const [ hex, setHex ] = React.useState( value.toUpperCase() );
+	React.useEffect( () => setHex( value.toUpperCase() ), [ value ] );
+
+	const commit = ( raw: string ) => {
+		let t = raw.trim();
+		if ( t && t[ 0 ] !== '#' ) {
+			t = '#' + t;
+		}
+		if ( /^#[0-9a-f]{3}$/i.test( t ) ) {
+			t = '#' + t.slice( 1 ).split( '' ).map( ( c ) => c + c ).join( '' );
+		}
+		if ( HEX6.test( t ) ) {
+			onChange( t.toLowerCase() );
+		}
+	};
+
+	return (
+		<div className="pal-edit-row">
+			<span className="pal-edit-label">{ label }</span>
+			<div className="color">
+				<input
+					type="color"
+					value={ HEX6.test( value ) ? value : '#000000' }
+					aria-label={ label }
+					onChange={ ( e ) => onChange( e.target.value ) }
+				/>
+				<input
+					className="hex"
+					spellCheck={ false }
+					value={ hex }
+					aria-label={ label + ' ' + __( 'hex value', 'everest-forms' ) }
+					onChange={ ( e ) => {
+						setHex( e.target.value );
+						commit( e.target.value );
+					} }
+					onBlur={ () => setHex( value.toUpperCase() ) }
+				/>
+			</div>
+		</div>
+	);
+}
+
+type PalEditState = {
+	id: string | null;
+	name: string;
+	colors: Record< string, string >;
+	from?: string;
+};
+
+/** The colour-palette popover: browse grid (Your palettes + presets) that swaps to an in-place editor. */
+function PaletteManager( {
+	onClose,
+	onToast,
+}: {
+	onClose: () => void;
+	onToast: ( t: Toast ) => void;
+} ) {
+	const store = useStore();
+	const [ edit, setEdit ] = React.useState< PalEditState | null >( null );
+	const [ confirmId, setConfirmId ] = React.useState< string | null >( null );
+	const [ busy, setBusy ] = React.useState( false );
+	const [ error, setError ] = React.useState( '' );
+
+	const pro = store.proActive;
+	const slots = Object.keys( store.paletteMap );
+	const custom = store.customPalettes();
+	const builtin = store.builtinPalettes();
+	const palettesBase = store.settings.restBase.replace( /\/styles$/, '/style-palettes' );
+	const bridge = () => getActiveBridge();
+
+	React.useEffect( () => () => bridge()?.revert(), [] );
+
+	const swatch = ( colors: Record< string, string > ) => (
+		<span className="sw" aria-hidden="true">
+			{ slots.map( ( slot ) => (
+				<i key={ slot } style={ { background: colors[ slot ] } } />
+			) ) }
+		</span>
+	);
+
+	const applyPreset = ( p: ReturnType< typeof store.customPalettes >[ number ] ) => {
+		if ( p.is_pro && ! pro ) {
+			window.open( UPGRADE_URL, '_blank' );
+			return;
+		}
+		store.applyPalette( p.id );
+		onClose();
+		onToast( {
+			kind: 'success',
+			msg: `${ __( 'Applied palette', 'everest-forms' ) } “${ p.name }”`,
+			actLabel: __( 'Undo', 'everest-forms' ),
+			onAct: () => store.undo(),
+		} );
+	};
+
+	const openEdit = ( p: ReturnType< typeof store.customPalettes >[ number ] ) => {
+		if ( ! pro ) {
+			window.open( UPGRADE_URL, '_blank' );
+			return;
+		}
+		setError( '' );
+		setConfirmId( null );
+		const colors = { ...store.currentPaletteColors(), ...p.colors };
+		setEdit( {
+			id: p.is_custom ? p.id : null,
+			name: p.name,
+			colors,
+			from: p.is_custom ? undefined : p.name,
+		} );
+		bridge()?.previewPalette( colors );
+	};
+
+	const setColor = ( slot: string, color: string ) => {
+		setEdit( ( prev ) => {
+			if ( ! prev ) {
+				return prev;
+			}
+			const colors = { ...prev.colors, [ slot ]: color };
+			bridge()?.previewPalette( colors );
+			return { ...prev, colors };
+		} );
+	};
+
+	const cancelEdit = () => {
+		bridge()?.revert();
+		setEdit( null );
+		setError( '' );
+	};
+
+	const saveEdit = async () => {
+		if ( ! edit || busy ) {
+			return;
+		}
+		if ( ! pro ) {
+			window.open( UPGRADE_URL, '_blank' );
+			return;
+		}
+		if ( ! apiFetch ) {
+			return;
+		}
+		setBusy( true );
+		setError( '' );
+		const isEdit = !! edit.id;
+		const shouldApply = ! isEdit || edit.id === store.palette;
+		try {
+			const res = await apiFetch( {
+				path: isEdit ? `${ palettesBase }/${ edit.id }` : palettesBase,
+				method: 'POST',
+				data: { name: edit.name, colors: edit.colors },
+			} );
+			if ( res && res.palettes ) {
+				store.setCustomPalettes( res.palettes );
+			}
+			bridge()?.revert();
+			const id = ( res && res.palette && res.palette.id ) || edit.id;
+			const name = ( res && res.palette && res.palette.name ) || edit.name;
+			if ( shouldApply && id ) {
+				store.applyPalette( id );
+			}
+			setEdit( null );
+			onClose();
+			onToast( {
+				kind: 'success',
+				msg: isEdit
+					? `${ __( 'Updated palette', 'everest-forms' ) } “${ name }”`
+					: `${ __( 'Created palette', 'everest-forms' ) } “${ name }”`,
+				actLabel: shouldApply ? __( 'Undo', 'everest-forms' ) : undefined,
+				onAct: shouldApply ? () => store.undo() : undefined,
+			} );
+		} catch ( e: any ) {
+			setError( ( e && e.message ) || __( 'Could not save the palette.', 'everest-forms' ) );
+		} finally {
+			setBusy( false );
+		}
+	};
+
+	const deletePalette = async ( id: string ) => {
+		setConfirmId( null );
+		if ( ! apiFetch ) {
+			return;
+		}
+		setBusy( true );
+		try {
+			const res = await apiFetch( { path: `${ palettesBase }/${ id }`, method: 'DELETE' } );
+			store.setCustomPalettes( ( res && res.palettes ) || custom.filter( ( p ) => p.id !== id ) );
+			onToast( { msg: __( 'Custom palette deleted.', 'everest-forms' ) } );
+		} catch ( e ) {
+			setError( __( 'Could not delete the palette.', 'everest-forms' ) );
+		} finally {
+			setBusy( false );
+		}
+	};
+
+	const renderCard = ( p: ReturnType< typeof store.customPalettes >[ number ] ) => {
+		const selected = p.id === store.palette;
+		const applyLocked = p.is_pro && ! pro;
+		const canDelete = p.is_custom && pro;
+		return (
+			<div
+				key={ p.id }
+				className={
+					'pal-card pal-card--wrap' +
+					( selected ? ' is-selected' : '' ) +
+					( confirmId === p.id ? ' is-confirming' : '' )
+				}
+			>
+				<button
+					type="button"
+					className="pal-card-apply"
+					role="option"
+					aria-selected={ selected }
+					title={ p.name }
+					onMouseEnter={ () => bridge()?.previewPalette( p.colors ) }
+					onMouseLeave={ () => bridge()?.revert() }
+					onClick={ () => applyPreset( p ) }
+				>
+					{ swatch( p.colors ) }
+					<span className="cap">
+						{ p.name }
+						{ applyLocked && (
+							<span className="pro" aria-label={ __( 'Pro', 'everest-forms' ) }>
+								<ProCrown />
+							</span>
+						) }
+					</span>
+				</button>
+				<span className="pal-card-tools">
+					<button
+						type="button"
+						className={ 'pal-tool' + ( pro ? '' : ' is-locked' ) }
+						aria-label={ ( pro ? __( 'Edit', 'everest-forms' ) : __( 'Edit (Pro)', 'everest-forms' ) ) + ' ' + p.name }
+						title={ pro ? __( 'Edit palette', 'everest-forms' ) : __( 'Editing palettes is a Pro feature', 'everest-forms' ) }
+						onClick={ () => openEdit( p ) }
+					>
+						{ pro ? (
+							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2 } aria-hidden="true">
+								<path d="M12 20h9" />
+								<path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" />
+							</svg>
+						) : (
+							<ProCrown />
+						) }
+					</button>
+					{ canDelete && (
+						<button
+							type="button"
+							className="pal-tool pal-tool--danger"
+							aria-label={ `${ __( 'Delete', 'everest-forms' ) } ${ p.name }` }
+							title={ __( 'Delete palette', 'everest-forms' ) }
+							onClick={ () => setConfirmId( p.id ) }
+						>
+							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2 } aria-hidden="true">
+								<path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m2 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
+							</svg>
+						</button>
+					) }
+				</span>
+				{ confirmId === p.id && (
+					<div className="pal-card-confirm" role="alertdialog" aria-label={ __( 'Delete palette?', 'everest-forms' ) }>
+						<span>{ __( 'Delete?', 'everest-forms' ) }</span>
+						<button type="button" className="pal-confirm-yes" onClick={ () => deletePalette( p.id ) } disabled={ busy }>
+							{ __( 'Delete', 'everest-forms' ) }
+						</button>
+						<button type="button" className="pal-confirm-no" onClick={ () => setConfirmId( null ) }>
+							{ __( 'Cancel', 'everest-forms' ) }
+						</button>
+					</div>
+				) }
+			</div>
+		);
+	};
+
+	/* -------------------------------------------------- editor view */
+	if ( edit ) {
+		return (
+			<div className="pal-editor">
+				<button
+					type="button"
+					className="pal-editor-back"
+					onClick={ cancelEdit }
+					disabled={ busy }
+					aria-label={ __( 'Back to palettes', 'everest-forms' ) }
+				>
+					<svg className="pal-editor-back-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2.2 } aria-hidden="true">
+						<path d="m15 18-6-6 6-6" />
+					</svg>
+					<span className="pal-editor-title">
+						{ edit.id
+							? __( 'Edit palette', 'everest-forms' )
+							: edit.from
+								? `${ __( 'New palette from', 'everest-forms' ) } ${ edit.from }`
+								: __( 'Create custom palette', 'everest-forms' ) }
+					</span>
+				</button>
+
+				<div className="pal-name-field">
+					<label className="pal-field-label" htmlFor="evf-scv2-pal-name">
+						{ __( 'Palette name', 'everest-forms' ) }
+					</label>
+					<input
+						id="evf-scv2-pal-name"
+						type="text"
+						value={ edit.name }
+						maxLength={ 60 }
+						placeholder={ __( 'e.g. My brand', 'everest-forms' ) }
+						onChange={ ( e ) => setEdit( ( prev ) => ( prev ? { ...prev, name: e.target.value } : prev ) ) }
+					/>
+				</div>
+
+				<div className="pal-edit-rows">
+					{ slots.map( ( slot ) => (
+						<PaletteColorRow
+							key={ slot }
+							label={ paletteSlotLabel( slot ) }
+							value={ edit.colors[ slot ] || '#ffffff' }
+							onChange={ ( color ) => setColor( slot, color ) }
+						/>
+					) ) }
+				</div>
+
+				{ error && <p className="pal-error" role="alert">{ error }</p> }
+
+				<div className="pal-editor-actions">
+					<button type="button" className="pal-btn-ghost" onClick={ cancelEdit } disabled={ busy }>
+						{ __( 'Cancel', 'everest-forms' ) }
+					</button>
+					<button type="button" className="pal-btn-primary" onClick={ saveEdit } disabled={ busy }>
+						{ busy ? __( 'Saving…', 'everest-forms' ) : __( 'Save palette', 'everest-forms' ) }
+					</button>
+				</div>
+			</div>
+		);
+	}
+
+	/* -------------------------------------------------- browse grid */
+	return (
+		<div className="pal-manager">
+			{ !! custom.length && (
+				<>
+					<div className="pal-group-label">{ __( 'Your palettes', 'everest-forms' ) }</div>
+					<div className="pal-pop-grid" role="listbox" aria-label={ __( 'Your custom palettes', 'everest-forms' ) }>
+						{ custom.map( renderCard ) }
+					</div>
+				</>
+			) }
+
+			<div className="pal-group-label">{ __( 'Presets', 'everest-forms' ) }</div>
+			<div className="pal-pop-grid" role="listbox" aria-label={ __( 'Preset palettes', 'everest-forms' ) }>
+				{ builtin.map( renderCard ) }
+			</div>
+			{ pro && (
+				<p className="pal-manager-hint">
+					{ __( 'Tip: click the pencil on any palette to edit its colours and save your own.', 'everest-forms' ) }
+				</p>
+			) }
+		</div>
+	);
+}
+
 export function App() {
 	const store = useStore();
 	const [ subPane, setSubPane ] = React.useState< SubPane >( 'design' );
@@ -297,57 +686,7 @@ export function App() {
 			anchor,
 			matchWidth: true,
 			kind: 'palette',
-			title: __( 'Choose a colour palette', 'everest-forms' ),
-			closable: true,
-			render: () => (
-				<div>
-					<div className="pal-pop-grid" role="listbox" aria-label={ __( 'Colour palettes', 'everest-forms' ) }>
-						{ store.palettes.map( ( p ) => {
-							const locked = p.is_pro && ! store.proActive;
-							return (
-								<button
-									key={ p.id }
-									type="button"
-									className="pal-card"
-									role="option"
-									aria-selected={ p.id === store.palette }
-									title={ p.name }
-									onMouseEnter={ () => getActiveBridge()?.previewPalette( p.colors ) }
-									onMouseLeave={ () => getActiveBridge()?.revert() }
-									onClick={ () => {
-										if ( locked ) {
-											window.open( UPGRADE_URL, '_blank' );
-											return;
-										}
-										store.applyPalette( p.id );
-										closePopover();
-										showToast( {
-											kind: 'success',
-											msg: `${ __( 'Applied palette', 'everest-forms' ) } “${ p.name }”`,
-											actLabel: __( 'Undo', 'everest-forms' ),
-											onAct: () => store.undo(),
-										} );
-									} }
-								>
-									<span className="sw" aria-hidden="true">
-										{ Object.keys( store.paletteMap ).map( ( slot ) => (
-											<i key={ slot } style={ { background: p.colors[ slot ] } } />
-										) ) }
-									</span>
-									<span className="cap">
-										{ p.name }
-										{ locked && (
-											<span className="pro" aria-label={ __( 'Pro', 'everest-forms' ) }>
-												<ProCrown />
-											</span>
-										) }
-									</span>
-								</button>
-							);
-						} ) }
-					</div>
-				</div>
-			),
+			render: () => <PaletteManager onClose={ closePopover } onToast={ showToast } />,
 		} );
 	};
 

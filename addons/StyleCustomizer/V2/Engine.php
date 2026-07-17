@@ -86,6 +86,9 @@ final class Engine {
 		// Engine-aware frontend rendering (v2-compiled vs legacy per form).
 		FrontendEnqueue::register();
 
+		// Reusable custom colour palettes (registers the schema filter; must run before REST).
+		Palettes::register();
+
 		// REST read/save for the builder panel.
 		RestController::register();
 

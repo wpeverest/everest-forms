@@ -381,6 +381,35 @@ class StyleStore {
 		return set;
 	}
 
+	/** User-authored (custom) palettes — rendered first, with edit/delete affordances. */
+	customPalettes(): StylePayload[ 'palettes' ] {
+		return this.palettes.filter( ( p ) => p.is_custom );
+	}
+
+	/** Built-in palettes (the 2 free + 9 Pro presets). */
+	builtinPalettes(): StylePayload[ 'palettes' ] {
+		return this.palettes.filter( ( p ) => ! p.is_custom );
+	}
+
+	/** Replace the custom palettes with a fresh server list; detaches the active link if its id is gone. */
+	setCustomPalettes( customs: StylePayload[ 'palettes' ] ) {
+		const list = ( customs || [] ).map( ( p ) => ( { ...p, is_custom: true } ) );
+		this.palettes = [ ...list, ...this.builtinPalettes() ];
+		if ( this.palette && ! this.palettes.some( ( p ) => p.id === this.palette ) ) {
+			this.palette = '';
+		}
+		this.notify( [] );
+	}
+
+	/** The six palette-slot colours the form currently shows, resolved from live token values. */
+	currentPaletteColors(): Record< string, string > {
+		const out: Record< string, string > = {};
+		Object.entries( this.paletteMap ).forEach( ( [ slot, keys ] ) => {
+			out[ slot ] = keys && keys[ 0 ] ? String( this.resolve( keys[ 0 ] ) ) : '#ffffff';
+		} );
+		return out;
+	}
+
 	applyPalette( paletteId: string ) {
 		const palette = this.palettes.find( ( p ) => p.id === paletteId );
 		if ( ! palette ) {

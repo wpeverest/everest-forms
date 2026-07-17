@@ -253,6 +253,17 @@ final class Sanitizer {
 	}
 
 	/**
+	 * Public façade over {@see self::sanitize_color()} for other engine classes (e.g. {@see Palettes}).
+	 *
+	 * @param mixed  $value   Raw value.
+	 * @param string $default Fallback.
+	 * @return string
+	 */
+	public static function color( $value, $default = '#000000' ) {
+		return self::sanitize_color( $value, $default );
+	}
+
+	/**
 	 * Validate a colour: #rgb / #rrggbb (+ 8-digit alpha) or rgb()/rgba(). Falls back to
 	 * the default — alpha is preserved so legacy `rgba()` borders survive (plan §12).
 	 *
