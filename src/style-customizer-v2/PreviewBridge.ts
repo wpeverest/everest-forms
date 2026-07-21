@@ -814,6 +814,10 @@ export class PreviewBridge {
 		if ( ! wrapper ) {
 			return null;
 		}
+		const navBtn = el.closest( '.everest-forms-part-button' );
+		if ( navBtn && wrapper.contains( navBtn ) ) {
+			return null;
+		}
 		for ( const target of PREVIEW_TARGETS ) {
 			const match = el.closest( target.match ) as HTMLElement | null;
 			if ( match && wrapper.contains( match ) ) {
