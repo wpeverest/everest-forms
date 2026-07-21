@@ -277,6 +277,11 @@ function SliderControl( props: ControlProps ) {
 							const base = token.step || 1;
 							const step = e.shiftKey ? base * 10 : base;
 							commit( Number( store.resolve( token.key ) ) + ( e.key === 'ArrowUp' ? step : -step ), true );
+							// commit() only paints the input while it's NOT focused (so typing never
+							// fights the caret) — an arrow-key nudge has no caret to protect, so write
+							// the committed value straight back in, matching what the slider already
+							// shows (EVF-2661).
+							( e.currentTarget as HTMLInputElement ).value = String( store.resolve( token.key ) );
 						} }
 					/>
 					{ /* Tokens with no real unit (opacity 0–1, line-height's unitless multiplier) set
@@ -440,6 +445,9 @@ function Box4Control( props: ControlProps ) {
 											const cur = ( clone( store.resolve( token.key ) ) as BoxValue )[ BOX_KEYS[ i ] ] ?? 0;
 											const step = e.shiftKey ? 10 : 1;
 											commit( i, Number( cur ) + ( e.key === 'ArrowUp' ? step : -step ) );
+											( e.currentTarget as HTMLInputElement ).value = String(
+												( clone( store.resolve( token.key ) ) as BoxValue )[ BOX_KEYS[ i ] ] ?? 0
+											);
 										} }
 									/>
 								</div>
