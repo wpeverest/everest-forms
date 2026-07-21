@@ -325,8 +325,8 @@ final class Schema {
 			array( 'key' => 'wrap.bgAttachment', 'section' => 'form', 'group' => 'Background', 'label' => __( 'Scroll with page', 'everest-forms' ), 'type' => 'select', 'var' => '--evf-wrap-bg-attachment', 'default' => 'scroll', 'options' => self::opts( array( 'scroll' => __( 'Scroll', 'everest-forms' ), 'fixed' => __( 'Fixed', 'everest-forms' ) ) ), 'advanced' => true, 'show_when_image' => true, 'keywords' => array( 'parallax', 'image' ) ),
 			array( 'key' => 'wrap.bgOpacity', 'section' => 'form', 'group' => 'Background', 'label' => __( 'Image opacity', 'everest-forms' ), 'type' => 'slider', 'var' => '--evf-wrap-bg-opacity', 'default' => 1, 'min' => 0, 'max' => 1, 'step' => 0.1, 'unit' => '', 'advanced' => true, 'show_when_image' => true, 'keywords' => array( 'image', 'transparency' ) ),
 			array( 'key' => 'wrap.width', 'section' => 'form', 'group' => 'Layout', 'label' => __( 'Width', 'everest-forms' ), 'type' => 'slider', 'var' => '--evf-wrap-width', 'default' => 100, 'min' => 40, 'max' => 100, 'step' => 1, 'unit' => '%', 'advanced' => true, 'keywords' => array( 'size', 'narrow' ) ),
-			self::box( 'wrap.margin', __( 'Form margin', 'everest-forms' ), '--evf-wrap-margin', array( 0, 0, 0, 0 ), 'form', null ),
-			self::box( 'wrap.pad', __( 'Form padding', 'everest-forms' ), '--evf-wrap-pad', array( 32, 32, 32, 32 ), 'form', null ),
+			self::box( 'wrap.margin', __( 'Form margin', 'everest-forms' ), '--evf-wrap-margin', array( 0, 0, 0, 0 ), 'form', null, -100, 100 ),
+			self::box( 'wrap.pad', __( 'Form padding', 'everest-forms' ), '--evf-wrap-pad', array( 32, 32, 32, 32 ), 'form', null, 0, 100 ),
 			array( 'key' => 'wrap.borderStyle', 'section' => 'form', 'group' => 'Border', 'label' => __( 'Border type', 'everest-forms' ), 'type' => 'select', 'var' => '--evf-wrap-border-style', 'default' => 'solid', 'options' => $border, 'deps' => array( 'wrap.bw', 'wrap.borderC' ), 'advanced' => true, 'keywords' => array( 'outline' ) ),
 			self::bwidth( 'wrap.bw', '--evf-wrap-bw', 1, 'form', null, 'Border', true ),
 			array( 'key' => 'wrap.borderC', 'section' => 'form', 'group' => 'Border', 'label' => __( 'Border color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-wrap-border-c', 'default' => '#ececf1', 'advanced' => true ),
@@ -597,10 +597,12 @@ final class Schema {
 	 * @param array  $default [top,right,bottom,left].
 	 * @param string $section Section key.
 	 * @param string $state   Variant/state (nullable).
+	 * @param int    $min     Optional per-side lower bound (null = type default).
+	 * @param int    $max     Optional per-side upper bound (null = type default).
 	 * @return array
 	 */
-	protected static function box( $key, $label, $var, $default, $section, $state ) {
-		return array(
+	protected static function box( $key, $label, $var, $default, $section, $state, $min = null, $max = null ) {
+		$out = array(
 			'key'        => $key,
 			'section'    => $section,
 			'state'      => $state,
@@ -613,6 +615,13 @@ final class Schema {
 			'advanced'   => true,
 			'keywords'   => array( 'spacing' ),
 		);
+		if ( null !== $min ) {
+			$out['min'] = $min;
+		}
+		if ( null !== $max ) {
+			$out['max'] = $max;
+		}
+		return $out;
 	}
 
 	/**

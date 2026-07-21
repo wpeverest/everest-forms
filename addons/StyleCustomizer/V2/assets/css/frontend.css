@@ -21,7 +21,8 @@
 .everest-forms .evf-style-v2.evf-container {
 	position: relative;
 	isolation: isolate;
-	width: var( --evf-wrap-width );
+	box-sizing: border-box;
+	max-width: var( --evf-wrap-width );
 	margin: var( --evf-wrap-margin );
 	padding: var( --evf-wrap-pad );
 	font-family: var( --evf-font );

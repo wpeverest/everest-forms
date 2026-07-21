@@ -209,13 +209,6 @@ export function ElementSlate( {
 	const tabs = section.states || section.variants || null;
 	const first = tabs ? tabs[ 0 ] : null;
 	const act = activeState || first;
-	const [ filter, setFilter ] = React.useState( '' );
-
-	// Reset the in-slate filter whenever a different section opens (a fresh `key` remounts this
-	// component, but this also covers any future path that reuses the instance).
-	React.useEffect( () => {
-		setFilter( '' );
-	}, [ section.key ] );
 
 	// When opened via a preview click (pulse changes), scroll the panel up and briefly flash.
 	React.useEffect( () => {
@@ -247,15 +240,6 @@ export function ElementSlate( {
 	const enabledByState = tabs
 		? visible.filter( ( t ) => ( t.state ? t.state === act : act === first ) )
 		: visible;
-
-	// A lightweight in-slate filter — only shown on the two large sections (Text/Messages:
-	// ~27-28 controls across 3-4 tabs) where scrolling a flat list is genuinely long. A much
-	// smaller re-add than the global command-palette search that was deliberately cut. Inputs
-	// (`fields`) is excluded by design — its Normal/Focus tabs stay short enough to scan directly.
-	const SHOW_FILTER_ABOVE = 12;
-	const showFilter = section.key !== 'fields' && enabledByState.length > SHOW_FILTER_ABOVE;
-	const q = filter.trim().toLowerCase();
-	const enabled = q ? enabledByState.filter( ( t ) => t.label.toLowerCase().indexOf( q ) !== -1 ) : enabledByState;
 
 	// The 6 palette-slot colours (form/field bg, label/sublabel, button text/bg) render as
 	// hidden tokens with no direct picker (deliberate v1-parity choice) — tell the user where to
@@ -375,26 +359,8 @@ export function ElementSlate( {
 				</div>
 			) }
 
-			{ showFilter && (
-				<div className="slate-filter">
-					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2 } aria-hidden="true">
-						<circle cx="11" cy="11" r="7" />
-						<path d="m21 21-4.35-4.35" />
-					</svg>
-					<input
-						type="text"
-						value={ filter }
-						placeholder={ __( 'Filter controls…', 'everest-forms' ) }
-						aria-label={ __( 'Filter', 'everest-forms' ) + ' ' + section.title + ' ' + __( 'controls', 'everest-forms' ) }
-						onChange={ ( e ) => setFilter( e.target.value ) }
-					/>
-				</div>
-			) }
-
 			<div id={ `scv2-state-panel-${ section.key }` } role={ tabs ? 'tabpanel' : undefined } aria-labelledby={ tabs ? `scv2-state-${ section.key }-${ act }` : undefined }>
-				{ enabled.length ? renderGroups( enabled ) : (
-					<p className="slate-empty">{ __( 'No controls match your filter.', 'everest-forms' ) }</p>
-				) }
+				{ renderGroups( enabledByState ) }
 			</div>
 		</div>
 	);

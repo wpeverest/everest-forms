@@ -295,7 +295,7 @@ final class Sanitizer {
 			return $token['default'];
 		}
 		$allow_neg = false !== strpos( $token['key'], 'margin' );
-		$floor     = $allow_neg ? -1000 : 0;
+		$floor     = isset( $token['min'] ) ? (int) $token['min'] : ( $allow_neg ? -1000 : 0 );
 		$max       = isset( $token['max'] ) ? $token['max'] : 1000;
 
 		$out = array();

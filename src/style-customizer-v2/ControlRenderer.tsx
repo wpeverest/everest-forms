@@ -365,7 +365,7 @@ function Box4Control( props: ControlProps ) {
 	];
 	const [ linked, setLinked ] = React.useState( () => allSidesEqual( value ) );
 
-	const min = token.key.indexOf( 'margin' ) !== -1 ? -1000 : 0;
+	const min = token.min ?? ( token.key.indexOf( 'margin' ) !== -1 ? -1000 : 0 );
 	const max = token.max ?? 1000;
 	const abbr = token.corners ? CORNER_ABBR : SIDE_ABBR;
 	const labels = token.corners ? CORNER_LABELS : SIDE_LABELS;

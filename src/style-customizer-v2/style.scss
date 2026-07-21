@@ -840,49 +840,6 @@
 	line-height: 1.6;
 }
 
-/* In-slate filter — only shown on the two large sections (Text, Messages: ~27-28 controls
-   across 3-4 tabs) where a flat scroll is genuinely long. A much smaller re-add than the global
-   command-palette search that was deliberately cut (see plan §17.1/§18.5). */
-#everest-forms-panel-style .slate-filter {
-	position: relative;
-	margin-bottom: 14px;
-
-	svg {
-		position: absolute;
-		left: 10px;
-		top: 50%;
-		transform: translateY(-50%);
-		width: 14px;
-		height: 14px;
-		color: var(--ui-ink-3);
-		pointer-events: none;
-	}
-
-	input {
-		width: 100%;
-		border: 1px solid var(--ui-input-border);
-		border-radius: var(--ui-radius-md);
-		padding: 8px 10px 8px 32px;
-		font-size: var(--ui-fs-sm);
-		color: var(--ui-ink);
-		background: #fff;
-		outline: none;
-		transition: border-color .12s, box-shadow .12s;
-
-		&:focus {
-			border-color: var(--ui-purple);
-			box-shadow: var(--ui-focus-soft);
-		}
-	}
-}
-
-#everest-forms-panel-style .slate-empty {
-	padding: 20px 10px;
-	text-align: center;
-	color: var(--ui-ink-3);
-	font-size: var(--ui-fs-sm);
-}
-
 /* Empty state (e.g. zero saved templates yet) — a quiet dashed placeholder rather than the
    section silently not rendering, so the feature reads as legitimately empty, not missing. */
 #everest-forms-panel-style .empty-state {
