@@ -175,7 +175,12 @@ final class FrontendEnqueue {
 
 	/**
 	 * Add the `evf-style-v2` marker class to a v2 form's wrapper so the rule template scopes
-	 * to it (and never to legacy forms).
+	 * to it (and never to legacy forms). Also adds `evf-choice-{variation}` when the Choices
+	 * "Style variation" is `outline`/`filled` (EVF-2675) — legacy only ever gave radio/checkbox
+	 * a custom appearance (and so only ever showed the selected-colour/unselected-border
+	 * settings) for those two variations; `default` renders the plain native control, exactly
+	 * as legacy did, so no class is added and the rule template's variation-scoped selectors
+	 * simply don't match.
 	 *
 	 * @param array $classes   Container classes.
 	 * @param array $form_data Form data (`id`).
@@ -183,8 +188,14 @@ final class FrontendEnqueue {
 	 */
 	public static function container_class( $classes, $form_data ) {
 		$form_id = isset( $form_data['id'] ) ? absint( $form_data['id'] ) : 0;
-		if ( $form_id && Engine::is_v2_record( self::record( $form_id ) ) ) {
-			$classes[] = 'evf-style-v2';
+		$record  = $form_id ? self::record( $form_id ) : array();
+		if ( ! Engine::is_v2_record( $record ) ) {
+			return $classes;
+		}
+		$classes[]  = 'evf-style-v2';
+		$variation  = isset( $record['tokens']['choice.variation']['desktop'] ) ? (string) $record['tokens']['choice.variation']['desktop'] : '';
+		if ( in_array( $variation, array( 'outline', 'filled' ), true ) ) {
+			$classes[] = 'evf-choice-' . $variation;
 		}
 		return $classes;
 	}

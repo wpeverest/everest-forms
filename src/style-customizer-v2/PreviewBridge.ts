@@ -41,6 +41,9 @@ const PREVIEW_THEME_CLASS = 'evf-frontend-form-preview';
 const HOVER_CLASS = 'evf-scv2-hover';
 const SELECTED_CLASS = 'evf-scv2-selected';
 
+/** Mirrors FrontendEnqueue::container_class()'s `evf-choice-{variation}` classes (EVF-2675). */
+const CHOICE_VARIATION_CLASSES = [ 'evf-choice-outline', 'evf-choice-filled' ];
+
 /** How long to keep polling for the form wrapper before giving up (ms). */
 const READY_DEADLINE = 15000;
 /** Poll interval while waiting for the wrapper (ms). */
@@ -553,6 +556,17 @@ export class PreviewBridge {
 		// Clear this token's variables first so an emptied value doesn't leave a stale one.
 		this.varsFor( token ).forEach( ( v ) => wrapper.style.removeProperty( v ) );
 		decls.forEach( ( [ name, val ] ) => wrapper.style.setProperty( name, val ) );
+
+		// choice.variation has no CSS var (a "meta" token, per Compiler::declarations()) — it
+		// drives a wrapper class instead, matching FrontendEnqueue::container_class() on the real
+		// frontend: legacy only gave radio/checkbox a custom appearance (and so only ever showed
+		// the selected-colour/unselected-border settings) for outline/filled, never default.
+		if ( token.key === 'choice.variation' ) {
+			CHOICE_VARIATION_CLASSES.forEach( ( c ) => wrapper.classList.remove( c ) );
+			if ( value === 'outline' || value === 'filled' ) {
+				wrapper.classList.add( `evf-choice-${ value }` );
+			}
+		}
 	}
 
 	/** Every CSS var a token can set (font-style expands to four). */

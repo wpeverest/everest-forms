@@ -2729,6 +2729,12 @@
 	padding: 6px;
 	min-width: 200px;
 	max-width: 300px;
+	/* Single scroll for the whole popover (was: each palette grid scrolling independently with its
+	   own 340px cap, so "Your palettes" and "Presets" showed two different scrollbars stacked on
+	   top of each other). .pop-head's `position:sticky` above relies on THIS being the scrolling
+	   ancestor. */
+	max-height: 460px;
+	overflow-y: auto;
 	transform-origin: top center;
 	animation: scv2popin .12s ease-out;
 }
@@ -2912,14 +2918,12 @@
 	}
 }
 
-/* palette popover grid */
+/* palette popover grid — scrolls as part of the single .scv2-pop scroll (EVF-2675), not on its own. */
 #everest-forms-panel-style .pal-pop-grid {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
 	gap: 6px;
 	padding: 4px;
-	max-height: 340px;
-	overflow-y: auto;
 }
 
 #everest-forms-panel-style .pal-card {
