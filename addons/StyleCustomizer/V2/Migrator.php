@@ -116,6 +116,18 @@ final class Migrator {
 			}
 		}
 
+		// v1's "Image Position" is a WP_Customize_Background_Position_Control 3x3 grid (background_
+		// position_x: left/center/right, background_position_y: top/center/bottom, e.g. "center top"),
+		// but v2's wrap.bgPosition is a single 5-value enum {center,top,bottom,left,right} — already
+		// only the axis-aligned "cross" subset of that grid, never true diagonals. The old row-based
+		// mapping read ONLY background_position_x, so a legacy record customized on the Y axis alone
+		// (x left at its 'center' default, y='top') silently migrated to 'center' instead of 'top'
+		// (EVF-2670). Combine both axes into whichever one isn't 'center'.
+		$bg_position = self::migrate_background_position( isset( $legacy['form_container'] ) ? $legacy['form_container'] : array() );
+		if ( null !== $bg_position ) {
+			$tokens['wrap.bgPosition'] = self::apply_transform( 'pass', $bg_position );
+		}
+
 		$record = array(
 			'schema_version' => Schema::version(),
 			'tokens'         => $tokens,
@@ -303,7 +315,7 @@ final class Migrator {
 		$rows[] = self::row( 'form_container', 'background_size', 'wrap.bgSize', 'pass' );
 		$rows[] = self::row( 'form_container', 'background_repeat', 'wrap.bgRepeat', 'pass' );
 		$rows[] = self::row( 'form_container', 'background_attachment', 'wrap.bgAttachment', 'pass' );
-		$rows[] = self::row( 'form_container', 'background_position_x', 'wrap.bgPosition', 'pass' ); // y is dropped (single-axis enum, plan §12 lossy edge).
+		// background_position_x/y are combined separately — see migrate_background_position() (EVF-2670).
 		$rows[] = self::row( 'form_container', 'opacity', 'wrap.bgOpacity', 'pass' ); // v2 keeps the 0–1 scale (identity).
 		$rows[] = self::row( 'form_container', 'margin', 'wrap.margin', 'dim_resp' );
 		$rows[] = self::row( 'form_container', 'padding', 'wrap.pad', 'dim_resp' );
@@ -506,6 +518,36 @@ final class Migrator {
 			'underline' => ! empty( $value['underline'] ),
 			'uppercase' => ! empty( $value['uppercase'] ),
 		);
+	}
+
+	/* --------------------------------------------------------------------- *
+	 * Background position
+	 * --------------------------------------------------------------------- */
+
+	/**
+	 * Combine v1's two-axis background_position_x/y into v2's single 5-value wrap.bgPosition
+	 * (center/top/bottom/left/right — EVF-2670). Prefers whichever axis is NOT 'center', since
+	 * that's the one the form actually customized; the vertical axis wins if BOTH are non-center
+	 * (a true diagonal corner, which v2's model can't represent either way — v2 never supported
+	 * diagonals even for a token set directly in the panel, so this is a best-effort pick, not a
+	 * new regression).
+	 *
+	 * @param array $container Legacy `form_container` group.
+	 * @return string|null The migrated position, or null if neither axis was set.
+	 */
+	protected static function migrate_background_position( $container ) {
+		$x = isset( $container['background_position_x'] ) ? (string) $container['background_position_x'] : '';
+		$y = isset( $container['background_position_y'] ) ? (string) $container['background_position_y'] : '';
+		if ( '' === $x && '' === $y ) {
+			return null;
+		}
+		if ( '' !== $y && 'center' !== $y ) {
+			return $y;
+		}
+		if ( '' !== $x && 'center' !== $x ) {
+			return $x;
+		}
+		return 'center';
 	}
 
 	/* --------------------------------------------------------------------- *

@@ -362,6 +362,29 @@ ok( $fi2['tokens']['file.icon']['desktop'] === '#00ff00', 'explicit file_upload_
 ok( $fi2['tokens']['choice.checked']['desktop'] === '#ff00ff', 'explicit checkbox_radio_checked_color wins over palette (EVF-2669)' );
 ok( $fi2['tokens']['input.focusBorder']['desktop'] === '#0000ff', 'explicit field_styles_border_focus_color wins over palette (EVF-2669)' );
 
+// EVF-2670: v1's Image Position is a two-axis background_position_x/y grid; v2's wrap.bgPosition is
+// a single 5-value enum. The old mapping read x ONLY, so a form customized on the y axis alone (the
+// common case: x left at its 'center' default, y set to 'top'/'bottom') silently migrated to
+// 'center' instead of the real position. Migrator::migrate_background_position() combines both axes.
+$bp = function ( $x, $y ) {
+	$legacy = array( 'form_container' => array( 'background_image' => 'https://example.com/bg.jpg' ) );
+	if ( null !== $x ) {
+		$legacy['form_container']['background_position_x'] = $x;
+	}
+	if ( null !== $y ) {
+		$legacy['form_container']['background_position_y'] = $y;
+	}
+	$r = Migrator::migrate_record( $legacy );
+	return isset( $r['tokens']['wrap.bgPosition'] ) ? $r['tokens']['wrap.bgPosition']['desktop'] : null;
+};
+ok( $bp( 'center', 'top' ) === 'top', 'x=center,y=top → top, NOT dropped to center (EVF-2670)' );
+ok( $bp( 'center', 'bottom' ) === 'bottom', 'x=center,y=bottom → bottom (EVF-2670)' );
+ok( $bp( 'left', 'center' ) === 'left', 'x=left,y=center → left (EVF-2670)' );
+ok( $bp( 'right', 'center' ) === 'right', 'x=right,y=center → right (EVF-2670)' );
+ok( $bp( 'center', 'center' ) === 'center', 'x=center,y=center → center (EVF-2670)' );
+ok( $bp( 'left', null ) === 'left', 'x only, no y key at all → x still honoured (EVF-2670)' );
+ok( $bp( null, null ) === null, 'neither axis set → token left unset, schema default applies (EVF-2670)' );
+
 // File-upload schema defaults must equal v1's declared config defaults (evf-style-customizer-form-
 // wrapper-configs.php) — audited alongside the icon-colour fix since every one of these keys is
 // ALSO absent on every real legacy record on this site (none of the 52 forms audited ever set them),
