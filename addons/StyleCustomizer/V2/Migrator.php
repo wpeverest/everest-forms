@@ -84,6 +84,19 @@ final class Migrator {
 		// customized focus-border/hover colour would be silently discarded on migration.
 		$tokens = array_merge( self::migrate_palette( $legacy ), $tokens );
 
+		// Bundled templates ship no color_palette; these typography keys carry their palette-driven
+		// fills (EVF-2668). Fall back only when no palette set the token. Deliberately NOT extended to
+		// form bg / label colours — some templates hold stray values there ("red" bg, #ffffff labels).
+		foreach ( array(
+			'input.bg'  => 'field_styles_background_color',
+			'btn.bg'    => 'button_background_color',
+			'btn.color' => 'button_font_color',
+		) as $token => $legacy_key ) {
+			if ( ! isset( $tokens[ $token ] ) && ! empty( $legacy['typography'][ $legacy_key ] ) ) {
+				$tokens[ $token ] = self::apply_transform( 'pass', $legacy['typography'][ $legacy_key ] );
+			}
+		}
+
 		$record = array(
 			'schema_version' => Schema::version(),
 			'tokens'         => $tokens,

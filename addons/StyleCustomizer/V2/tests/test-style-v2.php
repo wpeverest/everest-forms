@@ -321,6 +321,18 @@ ok( $dv2['tokens']['sub.color']['desktop'] === '#cccccc', 'sub.color from PALETT
 ok( $dv2['tokens']['desc.color']['desktop'] === '#123456', 'desc.color IS typography-driven in v1 (kept)' );
 ok( $dv2['tokens']['title.color']['desktop'] === '#654321', 'title.color IS typography-driven in v1 (kept)' );
 
+// EVF-2668: bundled templates carry their palette-driven fills in typography.* (keys v1 rendered
+// only via the palette) with no color_palette of their own; migrate field bg + button bg/text to
+// input.bg / btn.bg / btn.color when no palette provides them, but never over a real palette value.
+$fbg1 = Migrator::migrate_record( array( 'typography' => array( 'field_styles_background_color' => '#edeef5', 'button_background_color' => '#26262e', 'button_font_color' => '#ffffff' ) ) );
+ok( $fbg1['tokens']['input.bg']['desktop'] === '#edeef5', 'field_styles_background_color → input.bg when no palette (EVF-2668)' );
+ok( $fbg1['tokens']['btn.bg']['desktop'] === '#26262e', 'button_background_color → btn.bg when no palette (EVF-2668)' );
+ok( $fbg1['tokens']['btn.color']['desktop'] === '#ffffff', 'button_font_color → btn.color when no palette (EVF-2668)' );
+$fbg2 = Migrator::migrate_record( array( 'typography' => array( 'field_styles_background_color' => '#ffffff', 'button_background_color' => '#26262e', 'button_font_color' => '#eeeeee' ), 'color_palette' => array( 'color_2' => array( 'field_background' => '#222222', 'button_background' => '#333333', 'button_text' => '#444444' ) ) ) );
+ok( $fbg2['tokens']['input.bg']['desktop'] === '#222222', 'palette field_background wins over typography field bg (EVF-2668)' );
+ok( $fbg2['tokens']['btn.bg']['desktop'] === '#333333', 'palette button_background wins over typography button bg (EVF-2668)' );
+ok( $fbg2['tokens']['btn.color']['desktop'] === '#444444', 'palette button_text wins over typography button font color (EVF-2668)' );
+
 // No-palette form: the palette-driven colour tokens fall to their schema default, which MUST equal
 // v1's default-palette fallback (scss.php:104-107) so a no-palette form migrates faithfully.
 ok( Schema::get( 'label.color' )['default'] === '#333333', 'label.color default = v1 no-palette field_label (#333333)' );
