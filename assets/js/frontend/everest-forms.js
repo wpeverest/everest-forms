@@ -1084,12 +1084,12 @@ jQuery( function ( $ ) {
 						</div>
 						<img src="${ everest_forms_params.evf_checked_image_url }" alt="Checked Logo" class="everest-forms-popup-success-logo">
 						<p class="everest-forms-popup-success-text">${ everest_forms_params.i18n_evf_success_text }</p>
-						<p>${ $('<div>').text($message).html() }</p>
+						<p class="everest-forms-notice everest-forms-notice--success">${ $('<div>').text($message).html() }</p>
 					</div>
 				</div>
 			`;
 
-			$('body').append(popupHTML);
+			$('.everest-form').closest('.evf-container').append(popupHTML);
 
 			$('.everest-forms-popup-close').on('click', function() {
 				$('.everest-forms-popup-overlay').fadeOut(200, function() {

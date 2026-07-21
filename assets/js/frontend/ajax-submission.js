@@ -392,7 +392,7 @@ jQuery( function( $ ) {
 								return;
 							}
 
-							var formContainer = formTuple.closest( '.everest-forms' );
+							var formContainer = formTuple.closest( '.evf-container' );
 
 							formTuple.trigger( 'reset' );
 							formContainer.find( '.everest-forms-notice' ).remove();
@@ -433,12 +433,12 @@ jQuery( function( $ ) {
 											</div>
 											<img src="${ everest_forms_ajax_submission_params.evf_checked_image_url }" alt="Checked Logo" class="everest-forms-popup-success-logo">
 											<p class="everest-forms-popup-success-text">${ everest_forms_ajax_submission_params.i18n_evf_success_text }</p>
-											<p>${ xhr.data.message }</p>
+											<p class="everest-forms-notice everest-forms-notice--success">${ xhr.data.message }</p>
 										</div>
 									</div>
 								`;
 
-								$('body').append(popupHTML);
+								formContainer.append(popupHTML);
 
 								$('.everest-forms-popup-close').on('click', function() {
 									$('.everest-forms-popup-overlay').fadeOut(200, function() {
