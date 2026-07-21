@@ -197,13 +197,11 @@ export function ElementSlate( {
 	section,
 	activeState,
 	onChangeState,
-	onBadgeClick,
 	pulse,
 }: {
 	section: Section;
 	activeState: string | null;
 	onChangeState: ( id: string ) => void;
-	onBadgeClick: ( token: Token, anchor: HTMLElement ) => void;
 	pulse: number;
 } ) {
 	const store = useStore();
@@ -287,7 +285,6 @@ export function ElementSlate( {
 			key={ t.key }
 			token={ t }
 			store={ store }
-			onBadgeClick={ onBadgeClick }
 			dimmed={ dimmedByDep.has( t.key ) || locked( t ) }
 			depHint={ depHints[ t.key ] }
 		/>

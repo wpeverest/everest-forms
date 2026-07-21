@@ -12,9 +12,11 @@ import React from 'react';
 import {
 	ALIGN_ICONS,
 	DEVICE_ICONS,
+	DEVICE_LABELS,
 	FONTSTYLE_BUTTONS,
 	clone,
 } from './constants';
+import { HoverTip } from './HoverTip';
 import { StyleStore } from './store';
 import { BoxValue, FontStyleValue, Token } from './types';
 
@@ -23,7 +25,6 @@ const __ = ( window as any ).wp?.i18n?.__ || ( ( s: string ) => s );
 interface ControlProps {
 	token: Token;
 	store: StyleStore;
-	onBadgeClick: ( token: Token, anchor: HTMLElement ) => void;
 	dimmed?: boolean;
 }
 
@@ -109,16 +110,40 @@ function useDismiss( open: boolean, rootRef: React.RefObject< HTMLElement >, onD
  * Shared label row + shell
  * --------------------------------------------------------------------- */
 
+/** Body of the device-badge hover tooltip: explains the per-device state of a responsive token. */
+function ResponsiveTip( { token, store, override }: { token: Token; store: StyleStore; override: boolean } ) {
+	return (
+		<>
+			<div className="hovertip-title">
+				<b>{ token.label }</b> — { __( 'responsive control', 'everest-forms' ) }
+			</div>
+			<div className="hovertip-body">
+				{ store.device === 'desktop' ? (
+					__(
+						'You’re editing the Desktop base value. Switch to tablet or mobile to set a per-device override.',
+						'everest-forms'
+					)
+				) : (
+					<>
+						{ __( 'Editing', 'everest-forms' ) } <b>{ DEVICE_LABELS[ store.device ] }</b> —{ ' ' }
+						{ override
+							? __( 'this device has its own value. Use the reset button to remove it.', 'everest-forms' )
+							: __( 'currently inheriting the Desktop value.', 'everest-forms' ) }
+					</>
+				) }
+			</div>
+		</>
+	);
+}
+
 function ControlShell( {
 	token,
 	store,
-	onBadgeClick,
 	right,
 	inlineRight,
 	children,
 	dimmed,
 }: ControlProps & { right?: React.ReactNode; inlineRight?: React.ReactNode; children: React.ReactNode } ) {
-	const badgeRef = React.useRef< HTMLButtonElement >( null );
 	const changed = store.isChanged( token.key );
 	const inherited = token.responsive && store.device !== 'desktop' && ! store.isOverride( token.key );
 	const override = store.isOverride( token.key );
@@ -140,15 +165,13 @@ function ControlShell( {
 				<span className="lab-left">
 					<label>{ token.label }</label>
 					{ token.responsive && (
-						<button
-							ref={ badgeRef }
-							type="button"
+						<HoverTip
 							className={ 'dev-badge' + ( override ? ' override' : '' ) }
-							aria-label={ token.label + ' — ' + __( 'responsive options', 'everest-forms' ) }
-							onClick={ () => badgeRef.current && onBadgeClick( token, badgeRef.current ) }
+							label={ token.label + ' — ' + __( 'responsive options', 'everest-forms' ) }
+							tip={ <ResponsiveTip token={ token } store={ store } override={ override } /> }
 						>
 							<Svg inner={ DEVICE_ICONS[ store.device ] } />
-						</button>
+						</HoverTip>
 					) }
 					{ inlineRight }
 				</span>

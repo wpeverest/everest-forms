@@ -2898,6 +2898,63 @@
 	margin: 5px 4px;
 }
 
+/* hover/focus tooltip (EVF-2660) */
+#everest-forms-panel-style .scv2-hovertip {
+	position: fixed;
+	z-index: 100001;
+	pointer-events: none;
+	max-width: 260px;
+	padding: 9px 12px;
+	background: #fff;
+	border: 1px solid var(--ui-line);
+	border-radius: var(--ui-radius-md);
+	box-shadow: var(--ui-shadow-lg);
+	font-size: 12px;
+	line-height: 1.5;
+	color: var(--ui-ink-2);
+	animation: scv2tipin .1s ease-out;
+}
+
+@keyframes scv2tipin {
+	from {
+		opacity: 0;
+		transform: translateY(-2px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+#everest-forms-panel-style .scv2-hovertip.is-top {
+	transform-origin: bottom center;
+}
+
+#everest-forms-panel-style .scv2-hovertip .hovertip-title {
+	font-size: 10.5px;
+	font-weight: 600;
+	color: var(--ui-ink-3);
+	letter-spacing: .05em;
+	text-transform: uppercase;
+	margin-bottom: 4px;
+
+	b {
+		color: var(--ui-ink);
+		font-weight: 600;
+		text-transform: none;
+		letter-spacing: 0;
+	}
+}
+
+#everest-forms-panel-style .scv2-hovertip .hovertip-body {
+	color: var(--ui-ink-2);
+
+	b {
+		color: var(--ui-ink);
+		font-weight: 600;
+	}
+}
+
 /* palette popover grid */
 #everest-forms-panel-style .pal-pop-grid {
 	display: grid;

@@ -15,7 +15,7 @@ import { PreviewPane } from './PreviewPane';
 import { getActiveBridge, SelectionInfo } from './PreviewBridge';
 import { DEVICE_LABELS, SECTION_ICONS, STATE_FORCE } from './constants';
 import { useStore } from './store';
-import { Section, Token } from './types';
+import { Section } from './types';
 
 const __ = ( window as any ).wp?.i18n?.__ || ( ( s: string ) => s );
 const apiFetch = ( window as any ).wp?.apiFetch;
@@ -622,58 +622,6 @@ export function App() {
 	}, [ store ] );
 
 	/* ---- popovers ---- */
-	const openInfo = ( anchor: HTMLElement, text: string ) => {
-		setPopover( { anchor, render: () => <div className="pop-body">{ text }</div> } );
-	};
-
-	const openBadge = ( token: Token, anchor: HTMLElement ) => {
-		const device = store.device;
-		const override = store.isOverride( token.key );
-		setPopover( {
-			anchor,
-			render: () => (
-				<div>
-					<div className="pop-title">
-						<b>{ token.label }</b> — { __( 'responsive control', 'everest-forms' ) }
-					</div>
-					{ device === 'desktop' ? (
-						<div className="pop-body">
-							{ __(
-								'You’re editing the Desktop base value. Switch to tablet or mobile to set a per-device override.',
-								'everest-forms'
-							) }
-						</div>
-					) : (
-						<>
-							<div className="pop-body">
-								{ __( 'Editing', 'everest-forms' ) } <b>{ DEVICE_LABELS[ device ] }</b> —{ ' ' }
-								{ override
-									? __( 'this device has its own value.', 'everest-forms' )
-									: __( 'currently inheriting the Desktop value.', 'everest-forms' ) }
-							</div>
-							{ override && (
-								<>
-									<div className="pop-sep" />
-									<button
-										type="button"
-										className="pop-item danger"
-										onClick={ () => {
-											store.removeOverride( token.key, device );
-											closePopover();
-										} }
-									>
-										{ __( 'Remove', 'everest-forms' ) } { DEVICE_LABELS[ device ].toLowerCase() }{ ' ' }
-										{ __( 'override', 'everest-forms' ) }
-									</button>
-								</>
-							) }
-						</>
-					) }
-				</div>
-			),
-		} );
-	};
-
 	const paletteOpen = popover?.kind === 'palette';
 
 	const openPalette = ( anchor: HTMLElement ) => {
@@ -809,7 +757,6 @@ export function App() {
 							section={ section }
 							activeState={ currentStateFor( section ) }
 							onChangeState={ ( id ) => setActiveState( ( m ) => ( { ...m, [ section.key ]: id } ) ) }
-							onBadgeClick={ openBadge }
 							pulse={ selectPulse }
 						/>
 					) : (
@@ -869,7 +816,6 @@ export function App() {
 						dirty={ dirty }
 						saveError={ saveError }
 						saveErrorConflict={ saveErrorConflict }
-						onInfo={ openInfo }
 						onSelect={ onSelectElement }
 						onIframeClick={ closePopover }
 						toast={ toast }
