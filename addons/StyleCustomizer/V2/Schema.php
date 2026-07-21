@@ -688,18 +688,26 @@ final class Schema {
 	 * --------------------------------------------------------------------- */
 
 	/**
-	 * Shared border-type options (v2 offers the four common styles; the migrator preserves
-	 * any legacy value verbatim in the compiled CSS — see plan §12 lossy edges).
+	 * Shared border-type options — the full set the legacy customizer offered, so v2 keeps feature
+	 * parity and every legacy border value survives migration through the sanitizer (EVF-2665).
 	 *
 	 * @return array
 	 */
 	public static function border_options() {
 		return self::opts(
 			array(
-				'solid'  => __( 'Solid', 'everest-forms' ),
-				'dashed' => __( 'Dashed', 'everest-forms' ),
-				'dotted' => __( 'Dotted', 'everest-forms' ),
-				'none'   => __( 'None', 'everest-forms' ),
+				'none'    => __( 'None', 'everest-forms' ),
+				'hidden'  => __( 'Hidden', 'everest-forms' ),
+				'dotted'  => __( 'Dotted', 'everest-forms' ),
+				'dashed'  => __( 'Dashed', 'everest-forms' ),
+				'solid'   => __( 'Solid', 'everest-forms' ),
+				'double'  => __( 'Double', 'everest-forms' ),
+				'groove'  => __( 'Groove', 'everest-forms' ),
+				'ridge'   => __( 'Ridge', 'everest-forms' ),
+				'inset'   => __( 'Inset', 'everest-forms' ),
+				'outset'  => __( 'Outset', 'everest-forms' ),
+				'initial' => __( 'Initial', 'everest-forms' ),
+				'inherit' => __( 'Inherit', 'everest-forms' ),
 			)
 		);
 	}
