@@ -102,6 +102,7 @@ export class PreviewBridge {
 	private hoverEl: HTMLElement | null = null;
 	private previewedKeys: Set< string > = new Set();
 	private deviceWidth: number | null = null;
+	private currentForceClass: string | null = null;
 	private dummyMessageEl: HTMLElement | null = null;
 	private mutationObserver: MutationObserver | null = null;
 	private observedDoc: Document | null = null;
@@ -319,6 +320,7 @@ export class PreviewBridge {
 				this.applyAll();
 				this.applyCustomCss();
 				this.applyDeviceWidth();
+				this.applyForceClass();
 				this.injectSelectionStyles( doc );
 				this.setupSelection( doc );
 			} catch ( e ) {
@@ -620,14 +622,22 @@ export class PreviewBridge {
 
 	/** Toggle a single force-state class (focus/hover/message) for state previews. */
 	setForceClass( cls: string | null ) {
+		this.currentForceClass = cls;
+		this.applyForceClass();
+	}
+
+	/** Re-apply the currently active force-state class — called from setForceClass AND from every
+	 *  bootstrap(), so a reload (e.g. BuilderSync's post-save refresh) doesn't silently drop an
+	 *  active Messages/focus/hover preview the way applyAll/applyDeviceWidth already don't. */
+	private applyForceClass() {
 		if ( ! this.wrapper ) {
 			return;
 		}
 		ALL_FORCE_CLASSES.forEach( ( c ) => this.wrapper!.classList.remove( c ) );
-		if ( cls ) {
-			this.wrapper.classList.add( cls );
+		if ( this.currentForceClass ) {
+			this.wrapper.classList.add( this.currentForceClass );
 		}
-		this.setDummyMessage( cls );
+		this.setDummyMessage( this.currentForceClass );
 	}
 
 	/**
