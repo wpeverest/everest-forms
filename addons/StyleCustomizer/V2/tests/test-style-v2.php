@@ -297,7 +297,10 @@ ok( $v2['tokens']['label.size']['desktop'] === '20', 'field label size migrated'
 ok( $v2['tokens']['label.fstyle']['desktop']['bold'] === true, 'label font-style migrated' );
 ok( $v2['tokens']['wrap.bg']['desktop'] === '#111111', 'palette form_background → wrap.bg' );
 ok( $v2['tokens']['btn.bg']['desktop'] === '#ff0000', 'palette button_background → btn.bg' );
-ok( $v2['tokens']['choice.checked']['desktop'] === '#ff0000', 'palette button_background spreads → choice.checked' );
+// choice.checked is NOT palette-driven during migration (EVF-2669) — v1 rendered it from its own
+// independent checkbox_radio_checked_color setting, never the palette; this legacy record never set
+// it, so it must land on the (legacy-parity) schema default, not the palette's button_background.
+ok( $v2['tokens']['choice.checked']['desktop'] === '#575757', 'no explicit checked-colour → schema default, NOT palette button_background (EVF-2669)' );
 // btn.bgHover isn't in Schema::palette_map() (it needs a darken transform, not a direct copy) —
 // migrate_palette() derives it separately. Regression test for a real bug: the derivation was
 // documented in this file's own docblock but never implemented, so every migrated form with a
@@ -332,6 +335,44 @@ $fbg2 = Migrator::migrate_record( array( 'typography' => array( 'field_styles_ba
 ok( $fbg2['tokens']['input.bg']['desktop'] === '#222222', 'palette field_background wins over typography field bg (EVF-2668)' );
 ok( $fbg2['tokens']['btn.bg']['desktop'] === '#333333', 'palette button_background wins over typography button bg (EVF-2668)' );
 ok( $fbg2['tokens']['btn.color']['desktop'] === '#444444', 'palette button_text wins over typography button font color (EVF-2668)' );
+
+// EVF-2669: file.icon, choice.checked and input.focusBorder each rendered from their OWN independent
+// v1 setting unconditionally (scss.php:172,187,460) — never from the palette, unlike button_background
+// itself. Schema::palette_map() spreads button_background onto all three as a "recolour everything"
+// convenience for the LIVE v2 panel, but that must NOT leak into migrating an old legacy record: a
+// legacy record with a palette but no explicit value for one of these must land on the (now
+// legacy-parity) schema default, not an invented colour v1 never showed on that element.
+$fi1 = Migrator::migrate_record( array( 'color_palette' => array( 'color_3' => array( 'button_background' => '#111111' ) ) ) );
+ok( $fi1['tokens']['file.icon']['desktop'] === '#494d50', 'no explicit icon colour → schema default, NOT palette button_background (EVF-2669)' );
+ok( $fi1['tokens']['choice.checked']['desktop'] === '#575757', 'no explicit checked colour → schema default, NOT palette button_background (EVF-2669)' );
+ok( $fi1['tokens']['input.focusBorder']['desktop'] === '#7ca8eb', 'no explicit focus-border colour → schema default, NOT palette button_background (EVF-2669)' );
+ok( $fi1['tokens']['btn.bg']['desktop'] === '#111111', 'btn.bg itself STAYS palette-derived (v1 always read button bg from the palette)' );
+// Explicit legacy values still win over both the palette AND the new default-reassert.
+$fi2 = Migrator::migrate_record(
+	array(
+		'typography'    => array(
+			'file_upload_icon_color'          => '#00ff00',
+			'checkbox_radio_checked_color'    => '#ff00ff',
+			'field_styles_border_focus_color' => '#0000ff',
+		),
+		'color_palette' => array( 'color_3' => array( 'button_background' => '#111111' ) ),
+	)
+);
+ok( $fi2['tokens']['file.icon']['desktop'] === '#00ff00', 'explicit file_upload_icon_color wins over palette (EVF-2669)' );
+ok( $fi2['tokens']['choice.checked']['desktop'] === '#ff00ff', 'explicit checkbox_radio_checked_color wins over palette (EVF-2669)' );
+ok( $fi2['tokens']['input.focusBorder']['desktop'] === '#0000ff', 'explicit field_styles_border_focus_color wins over palette (EVF-2669)' );
+
+// File-upload schema defaults must equal v1's declared config defaults (evf-style-customizer-form-
+// wrapper-configs.php) — audited alongside the icon-colour fix since every one of these keys is
+// ALSO absent on every real legacy record on this site (none of the 52 forms audited ever set them),
+// so any mismatch here silently drifts on migration exactly like file.icon did.
+ok( Schema::get( 'file.color' )['default'] === '#494d50', 'file.color default = legacy file_upload_font_color (EVF-2669)' );
+ok( Schema::get( 'file.bg' )['default'] === 'rgba(255,255,255,0.99)', 'file.bg default = legacy file_upload_background_color (EVF-2669)' );
+ok( Schema::get( 'file.iconBg' )['default'] === 'rgba(255,255,255,0.99)', 'file.iconBg default = legacy file_upload_icon_background_color (EVF-2669)' );
+ok( Schema::get( 'file.border' )['default'] === '#8e98a2', 'file.border default = legacy file_upload_border_color (EVF-2669)' );
+// box4 defaults are normalized to the associative {top,right,bottom,left} shape (Schema::normalize()).
+ok( Schema::get( 'file.margin' )['default'] === array( 'top' => 0, 'right' => 0, 'bottom' => 10, 'left' => 0 ), 'file.margin default = legacy file_upload_margin (EVF-2669)' );
+ok( Schema::get( 'file.pad' )['default'] === array( 'top' => 6, 'right' => 12, 'bottom' => 6, 'left' => 12 ), 'file.pad default = legacy file_upload_padding (EVF-2669)' );
 
 // No-palette form: the palette-driven colour tokens fall to their schema default, which MUST equal
 // v1's default-palette fallback (scss.php:104-107) so a no-palette form migrates faithfully.

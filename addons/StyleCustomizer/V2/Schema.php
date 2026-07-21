@@ -355,17 +355,26 @@ final class Schema {
 			// default bottom=10: matches the legacy config's field_styles_margin default
 			// (evf-style-customizer-form-wrapper-configs.php) — legacy-parity baseline.
 			array( 'key' => 'field.margin', 'section' => 'fields', 'group' => 'Spacing', 'label' => __( 'Field margin', 'everest-forms' ), 'type' => 'box4', 'var' => '--evf-field-margin', 'default' => array( 0, 0, 10, 0 ), 'responsive' => true, 'advanced' => true, 'keywords' => array( 'gap', 'between' ) ),
+			// default 14: legacy config's file_upload_font_size default.
 			array( 'key' => 'file.size', 'section' => 'fields', 'group' => 'Upload area', 'label' => __( 'Font size', 'everest-forms' ), 'type' => 'slider', 'var' => '--evf-file-size', 'default' => 14, 'min' => 10, 'max' => 22, 'step' => 1, 'unit' => 'px', 'advanced' => true, 'keywords' => array( 'upload', 'file' ) ),
-			array( 'key' => 'file.color', 'section' => 'fields', 'group' => 'Upload area', 'label' => __( 'Font color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-file-color', 'default' => '#5a6072', 'advanced' => true, 'keywords' => array( 'upload', 'file', 'text' ) ),
-			array( 'key' => 'file.bg', 'section' => 'fields', 'group' => 'Upload area', 'label' => __( 'Background', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-file-bg', 'default' => '#f7f8fb', 'advanced' => true, 'keywords' => array( 'upload', 'dropzone', 'file' ) ),
-			array( 'key' => 'file.iconBg', 'section' => 'fields', 'group' => 'Upload area', 'label' => __( 'Icon background', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-file-iconbg', 'default' => '#ede5ff', 'advanced' => true, 'keywords' => array( 'upload', 'file' ) ),
-			array( 'key' => 'file.icon', 'section' => 'fields', 'group' => 'Upload area', 'label' => __( 'Icon color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-file-icon', 'default' => '#3b82f6', 'advanced' => true, 'keywords' => array( 'upload', 'file' ) ),
+			// default '#494d50': legacy config's file_upload_font_color default (EVF-2669 audit).
+			array( 'key' => 'file.color', 'section' => 'fields', 'group' => 'Upload area', 'label' => __( 'Font color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-file-color', 'default' => '#494d50', 'advanced' => true, 'keywords' => array( 'upload', 'file', 'text' ) ),
+			// default 'rgba(255,255,255,0.99)': legacy config's file_upload_background_color default (EVF-2669).
+			array( 'key' => 'file.bg', 'section' => 'fields', 'group' => 'Upload area', 'label' => __( 'Background', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-file-bg', 'default' => 'rgba(255,255,255,0.99)', 'advanced' => true, 'keywords' => array( 'upload', 'dropzone', 'file' ) ),
+			// default 'rgba(255,255,255,0.99)': legacy config's file_upload_icon_background_color default (EVF-2669).
+			array( 'key' => 'file.iconBg', 'section' => 'fields', 'group' => 'Upload area', 'label' => __( 'Icon background', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-file-iconbg', 'default' => 'rgba(255,255,255,0.99)', 'advanced' => true, 'keywords' => array( 'upload', 'file' ) ),
+			// default '#494d50': legacy config's file_upload_icon_color default — was wrongly '#3b82f6'
+			// (EVF-2669: the migrated cloud-icon colour didn't match what v1 actually rendered).
+			array( 'key' => 'file.icon', 'section' => 'fields', 'group' => 'Upload area', 'label' => __( 'Icon color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-file-icon', 'default' => '#494d50', 'advanced' => true, 'keywords' => array( 'upload', 'file' ) ),
 			array( 'key' => 'file.borderStyle', 'section' => 'fields', 'group' => 'Upload area', 'label' => __( 'Border type', 'everest-forms' ), 'type' => 'select', 'var' => '--evf-file-border-style', 'default' => 'dashed', 'options' => $border, 'advanced' => true, 'keywords' => array( 'upload', 'file' ) ),
 			self::bwidth( 'file.bw', '--evf-file-bw', 1, 'fields', null, 'Upload area', true ),
-			array( 'key' => 'file.border', 'section' => 'fields', 'group' => 'Upload area', 'label' => __( 'Border color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-file-border', 'default' => '#d8dae2', 'advanced' => true, 'keywords' => array( 'upload', 'file' ) ),
+			// default '#8e98a2': legacy config's file_upload_border_color default (EVF-2669 audit).
+			array( 'key' => 'file.border', 'section' => 'fields', 'group' => 'Upload area', 'label' => __( 'Border color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-file-border', 'default' => '#8e98a2', 'advanced' => true, 'keywords' => array( 'upload', 'file' ) ),
 			self::radius( 'file.radius', '--evf-file-radius', 0, 'fields', null, 'Upload area', true ),
-			array( 'key' => 'file.margin', 'section' => 'fields', 'group' => 'Upload area', 'label' => __( 'Margin', 'everest-forms' ), 'type' => 'box4', 'var' => '--evf-file-margin', 'default' => array( 0, 0, 0, 0 ), 'responsive' => true, 'advanced' => true, 'keywords' => array( 'upload', 'file', 'spacing' ) ),
-			array( 'key' => 'file.pad', 'section' => 'fields', 'group' => 'Upload area', 'label' => __( 'Padding', 'everest-forms' ), 'type' => 'box4', 'var' => '--evf-file-pad', 'default' => array( 14, 14, 14, 14 ), 'responsive' => true, 'advanced' => true, 'keywords' => array( 'upload', 'file', 'spacing', 'inner' ) ),
+			// default bottom=10: legacy config's file_upload_margin default (EVF-2669 audit).
+			array( 'key' => 'file.margin', 'section' => 'fields', 'group' => 'Upload area', 'label' => __( 'Margin', 'everest-forms' ), 'type' => 'box4', 'var' => '--evf-file-margin', 'default' => array( 0, 0, 10, 0 ), 'responsive' => true, 'advanced' => true, 'keywords' => array( 'upload', 'file', 'spacing' ) ),
+			// default 6/12/6/12: legacy config's file_upload_padding default (EVF-2669 audit).
+			array( 'key' => 'file.pad', 'section' => 'fields', 'group' => 'Upload area', 'label' => __( 'Padding', 'everest-forms' ), 'type' => 'box4', 'var' => '--evf-file-pad', 'default' => array( 6, 12, 6, 12 ), 'responsive' => true, 'advanced' => true, 'keywords' => array( 'upload', 'file', 'spacing', 'inner' ) ),
 			// default '#7ca8eb': the legacy config's field_styles_border_focus_color setting
 			// default, confirmed via getComputedStyle on a real unstyled/unpaletted form —
 			// applies only when no palette is set (a palette still derives this per §12).
@@ -373,7 +382,9 @@ final class Schema {
 		);
 
 		$choice = array(
-			array( 'key' => 'choice.checked', 'section' => 'choice', 'group' => '', 'label' => __( 'Selected color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-choice-checked', 'default' => '#3b82f6', 'keywords' => array( 'checked', 'radio', 'checkbox', 'rating', 'scale', 'likert', 'payment', 'yes no', 'image choice', 'star' ) ),
+			// default '#575757': legacy config's checkbox_radio_checked_color default — was wrongly
+			// '#3b82f6' (found auditing EVF-2669's mechanism: same palette-override bug as file.icon).
+			array( 'key' => 'choice.checked', 'section' => 'choice', 'group' => '', 'label' => __( 'Selected color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-choice-checked', 'default' => '#575757', 'keywords' => array( 'checked', 'radio', 'checkbox', 'rating', 'scale', 'likert', 'payment', 'yes no', 'image choice', 'star' ) ),
 			array( 'key' => 'choice.size', 'section' => 'choice', 'group' => '', 'label' => __( 'Mark size', 'everest-forms' ), 'type' => 'slider', 'var' => '--evf-choice-size', 'default' => 16, 'min' => 12, 'max' => 28, 'step' => 1, 'unit' => 'px', 'keywords' => array( 'radio', 'checkbox' ) ),
 			array( 'key' => 'choice.border', 'section' => 'choice', 'group' => '', 'label' => __( 'Unselected border', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-choice-border', 'default' => '#d8dae2', 'keywords' => array( 'radio', 'checkbox', 'unchecked' ) ),
 			array( 'key' => 'choice.variation', 'section' => 'choice', 'group' => '', 'label' => __( 'Style variation', 'everest-forms' ), 'type' => 'select', 'default' => 'default', 'options' => self::opts( array( 'default' => __( 'Default', 'everest-forms' ), 'filled' => __( 'Filled', 'everest-forms' ), 'outline' => __( 'Outline', 'everest-forms' ) ) ), 'advanced' => true, 'special' => 'cvar', 'keywords' => array( 'modern', 'inline' ) ),

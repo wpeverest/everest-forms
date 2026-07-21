@@ -97,6 +97,25 @@ final class Migrator {
 			}
 		}
 
+		// v1 NEVER coupled these three to the palette — each rendered its OWN independent setting
+		// unconditionally (scss.php:172,187,460; no palette check anywhere), unlike button_background
+		// itself which v1 always read from the palette. So when the legacy record never explicitly
+		// set one, the palette merge above just invented a colour v1 never showed on that element
+		// (EVF-2669: the file-upload cloud icon changing colour after migration is exactly this).
+		// Re-assert each at its legacy-parity schema default unless explicitly customized in legacy.
+		foreach ( array(
+			'input.focusBorder' => 'field_styles_border_focus_color',
+			'choice.checked'    => 'checkbox_radio_checked_color',
+			'file.icon'         => 'file_upload_icon_color',
+		) as $token => $legacy_key ) {
+			if ( empty( $legacy['typography'][ $legacy_key ] ) ) {
+				$default = Schema::get( $token );
+				if ( $default ) {
+					$tokens[ $token ] = self::apply_transform( 'pass', $default['default'] );
+				}
+			}
+		}
+
 		$record = array(
 			'schema_version' => Schema::version(),
 			'tokens'         => $tokens,
