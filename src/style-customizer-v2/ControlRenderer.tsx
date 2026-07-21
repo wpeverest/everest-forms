@@ -279,7 +279,10 @@ function SliderControl( props: ControlProps ) {
 							commit( Number( store.resolve( token.key ) ) + ( e.key === 'ArrowUp' ? step : -step ), true );
 						} }
 					/>
-					<span>{ unit }</span>
+					{ /* Tokens with no real unit (opacity 0–1, line-height's unitless multiplier) set
+					     `unit: ''` — omitting this when empty, rather than always rendering the box,
+					     avoids a visibly empty, bordered slot next to the number (EVF-2672). */ }
+					{ unit && <span>{ unit }</span> }
 				</div>
 			</div>
 		</ControlShell>
