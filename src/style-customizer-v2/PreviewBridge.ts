@@ -55,6 +55,12 @@ export interface SelectionInfo {
 	label: string;
 }
 
+interface JQueryValidateLike {
+	fn: {
+		valid?: ( () => boolean ) & { evfScv2Patched?: boolean };
+	};
+}
+
 interface BridgeHandlers {
 	onReady: () => void;
 	onError: () => void;
@@ -785,6 +791,24 @@ export class PreviewBridge {
 		doc.addEventListener( 'mouseout', this.onDocOut, true );
 		// Block real form submission / link navigation inside the style preview.
 		doc.addEventListener( 'submit', this.blockEvent, true );
+		this.neutralizeMultiPartValidation( doc );
+	}
+
+	/**
+	 * The Multi-Part Forms addon's "Next" handler silently no-ops if any visible required field
+	 * in the current part fails jQuery-validate's `.valid()` — correct on the real front-end,
+	 * but it would force typing dummy data into every required field just to preview a later
+	 * part's styling. Real submission is already sandboxed (see blockEvent above), so
+	 * always-valid is safe here too.
+	 */
+	private neutralizeMultiPartValidation( doc: Document ) {
+		const $ = ( doc.defaultView as ( Window & { jQuery?: JQueryValidateLike } ) | null )?.jQuery;
+		if ( ! $ || typeof $.fn.valid !== 'function' || $.fn.valid.evfScv2Patched ) {
+			return;
+		}
+		const alwaysValid = () => true;
+		alwaysValid.evfScv2Patched = true;
+		$.fn.valid = alwaysValid;
 	}
 
 	private teardownSelection() {
