@@ -258,6 +258,18 @@ $bgop = Compiler::compile(
 );
 ok( strpos( $bgop, '--evf-wrap-bg-opacity:0.4' ) !== false, 'EVF-2659: background image opacity compiles to a var' );
 
+// EVF-2671: the label's font-style vars (weight/style/decoration/transform) must be scoped to the
+// nested `.evf-label` span, never the outer `<label>` — the required-field `<abbr>` and any
+// tooltip icon render as SIBLINGS of `.evf-label` inside that same `<label>`
+// (class-evf-shortcode-form.php), so an underline/bold/etc. set on the whole label paints across
+// them too. Guards the static rule template (Compiler only emits the vars; frontend.css/
+// PreviewBridge apply them — see the EVF-2659 note above), since this class of regression isn't
+// otherwise caught by any Compiler-level test.
+$frontend_css = file_get_contents( dirname( __DIR__ ) . '/assets/css/frontend.css' );
+ok( false !== strpos( $frontend_css, 'label.evf-field-label .evf-label {' ), 'label font-style rule targets the nested .evf-label span (EVF-2671)' );
+preg_match( '/label\.evf-field-label\s*\{([^}]*)\}/', $frontend_css, $outer_label_rule );
+ok( isset( $outer_label_rule[1] ) && false === strpos( $outer_label_rule[1], 'text-decoration' ), 'text-decoration is NOT on the outer <label> rule (EVF-2671)' );
+
 // Defense-in-depth: even an UNSANITIZED breakout value can't escape the declaration.
 $evil = Compiler::compile( array( 'tokens' => array( 'wrap.borderC' => array( 'desktop' => 'red;}body{display:none}' ) ) ), 7 );
 ok( strpos( $evil, '}body' ) === false && strpos( $evil, '{display' ) === false, 'compiler css_safe blocks CSS breakout' );

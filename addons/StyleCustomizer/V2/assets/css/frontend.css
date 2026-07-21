@@ -50,6 +50,13 @@
 }
 
 /* ===== TEXT — label ===== */
+/* The required-field <abbr> and any tooltip icon render as SIBLINGS of .evf-label inside the
+   same <label> (class-evf-shortcode-form.php: `<label>…<span class="evf-label">Text</span>
+   <abbr class="required">*</abbr>…</label>`). Font-style props (weight/style/decoration/
+   transform) must stay scoped to the .evf-label span — same split legacy scss.php uses — or an
+   underline/bold/etc. set on the whole <label> paints across the required mark and tooltip too
+   (EVF-2671). Colour/size/spacing are fine on the outer <label> since nothing else there needs
+   to look different from the label text. */
 .everest-forms .evf-style-v2 label.evf-field-label {
 	color: var( --evf-label-color );
 	font-size: var( --evf-label-size );
@@ -57,6 +64,8 @@
 	text-align: var( --evf-label-align );
 	margin: var( --evf-label-margin );
 	padding: var( --evf-label-pad );
+}
+.everest-forms .evf-style-v2 label.evf-field-label .evf-label {
 	font-weight: var( --evf-label-weight );
 	font-style: var( --evf-label-fs );
 	text-decoration: var( --evf-label-td );
