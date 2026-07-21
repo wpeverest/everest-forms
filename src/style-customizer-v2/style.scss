@@ -2959,6 +2959,10 @@
 		box-shadow: inset 0 0 0 1px rgba(20, 23, 40, .08);
 	}
 
+	/* A long custom palette name wraps instead of truncating (EVF-2674) — the card has no fixed
+	   height, so a second line just grows the card; align-items stays center rather than switching
+	   to flex-start since most names are one line and this keeps the (rare) pro-crown badge
+	   vertically centred against them either way. */
 	.cap {
 		display: flex;
 		align-items: center;
@@ -2967,9 +2971,7 @@
 		font-weight: 500;
 		color: var(--ui-ink-2);
 		margin-top: 8px;
-		white-space: nowrap;
-		overflow: hidden;
-		text-overflow: ellipsis;
+		overflow-wrap: anywhere;
 	}
 
 	&[aria-selected="true"] .cap {

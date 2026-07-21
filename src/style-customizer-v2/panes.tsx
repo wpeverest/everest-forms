@@ -79,6 +79,9 @@ export function DesignList( {
 						? __( 'Close colour palette', 'everest-forms' )
 						: __( 'Choose colour palette', 'everest-forms' )
 				}
+				// Full name on hover — the visible label still truncates at this width (EVF-2674),
+				// same reasoning as the popover card's own `title={p.name}` below.
+				title={ activePalette ? activePalette.name : undefined }
 				onClick={ ( e ) => onOpenPalette( e.currentTarget ) }
 			>
 				<span className="sw" aria-hidden="true">
