@@ -27,7 +27,7 @@ export function Popover( { state, onClose }: { state: PopoverState; onClose: () 
 	const closeRef = React.useRef< HTMLButtonElement >( null );
 	const showHeader = !! ( state.title || state.closable );
 	const showClose = !! state.closable;
-	const [ pos, setPos ] = React.useState< { left: number; top: number; width?: number } >( {
+	const [ pos, setPos ] = React.useState< { left: number; top: number; width?: number; maxHeight?: number } >( {
 		left: -9999,
 		top: -9999,
 	} );
@@ -40,14 +40,40 @@ export function Popover( { state, onClose }: { state: PopoverState; onClose: () 
 		}
 		const r = state.anchor.getBoundingClientRect();
 		const w = el.offsetWidth;
-		const h = el.offsetHeight;
 		let left = state.matchWidth ? r.left : Math.min( Math.max( 8, r.left ), window.innerWidth - w - 8 );
 		left = Math.min( Math.max( 8, left ), window.innerWidth - w - 8 );
-		let top = r.bottom + 6;
-		if ( top + h > window.innerHeight - 8 ) {
-			top = r.top - h - 6;
+
+		// `scrollHeight` is the TRUE content height regardless of the CSS `max-height`/`overflow`
+		// clamp (unlike `offsetHeight`, which is already clipped to it) — needed to know how much
+		// room the content actually wants before deciding which side it fits on. The 460px cap is
+		// still the aesthetic ceiling on a big screen with room to spare either way.
+		const naturalH = el.scrollHeight;
+		const desiredH = Math.min( naturalH, 460 );
+		const GAP = 6;
+		const MARGIN = 8;
+		const MIN_H = 150;
+		const spaceBelow = window.innerHeight - r.bottom - GAP - MARGIN;
+		const spaceAbove = r.top - GAP - MARGIN;
+
+		let top: number;
+		let maxHeight: number;
+		if ( desiredH <= spaceBelow ) {
+			// Fits below in full — the common case; the anchor stays visible above the popover.
+			top = r.bottom + GAP;
+			maxHeight = desiredH;
+		} else if ( desiredH <= spaceAbove ) {
+			maxHeight = desiredH;
+			top = r.top - maxHeight - GAP;
+		} else {
+			// Fits neither side in full (EVF-2674: a tall popover on a small laptop screen) — use
+			// whichever side actually has MORE room instead of always flipping to "above" and
+			// clamping to top:8, which used to let the popover land on top of (hiding) its own
+			// anchor/trigger whenever "above" didn't fit either — exactly the "cropped" look
+			// reported when neither side has the full 460px available.
+			maxHeight = Math.max( Math.max( spaceBelow, spaceAbove ), MIN_H );
+			top = spaceBelow >= spaceAbove ? r.bottom + GAP : r.top - maxHeight - GAP;
 		}
-		setPos( { left, top: Math.max( 8, top ), width: state.matchWidth ? r.width : undefined } );
+		setPos( { left, top: Math.max( MARGIN, top ), width: state.matchWidth ? r.width : undefined, maxHeight } );
 	}, [ state ] );
 
 	React.useEffect( () => {
@@ -99,6 +125,7 @@ export function Popover( { state, onClose }: { state: PopoverState; onClose: () 
 				width: pos.width,
 				minWidth: pos.width,
 				maxWidth: pos.width || undefined,
+				maxHeight: pos.maxHeight,
 			} }
 		>
 			{ showHeader && (
