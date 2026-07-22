@@ -84,6 +84,53 @@ final class Sanitizer {
 	}
 
 	/**
+	 * Re-attach pro-tier tokens the OLD record already implied, if Pro is currently inactive.
+	 *
+	 * {@see self::sanitize_record()} is right to refuse WRITING a new pro-tier value without
+	 * Pro — Schema::tokens() doesn't even enumerate pro-tier tokens without Pro active, the
+	 * structural free/pro boundary — but a single sanitize pass has no memory of history. A
+	 * routine save made while Pro is merely undetected (e.g. right after a manual ZIP update,
+	 * before Pro's own files/activation catch up) would otherwise silently and permanently erase
+	 * pro-tier customisation the form already had, since nothing else ever re-derives it. This is
+	 * exactly what happened to Messages-section tokens (popup/success-message styling, tier=pro)
+	 * on the very first save after migrating a legacy record (EVF-2685).
+	 *
+	 * The old record is often STILL legacy shape at that point — migration is lossless but only
+	 * persisted on save (see RestController::build_payload()) — so a still-legacy old record is
+	 * re-derived through the same lossless {@see Migrator::migrate_record()} rather than only
+	 * reading an already-v2 record. Carrying a value over unchanged (never re-validating it)
+	 * introduces no new write path for an attacker: a v2 value can only have reached the old
+	 * record via this same sanitizer at a time Pro WAS active, and a legacy value is a pure
+	 * rename/passthrough of data that already existed before any of this ran.
+	 *
+	 * @param array $clean      Freshly sanitized record (from self::sanitize_record()).
+	 * @param array $old_record The record as it was stored before this save (legacy or v2 shape).
+	 * @return array $clean, with any pro-tier tokens the new save doesn't mention restored.
+	 */
+	public static function preserve_stale_pro_tokens( array $clean, array $old_record ) {
+		if ( Engine::pro_active() ) {
+			return $clean;
+		}
+
+		if ( Engine::is_v2_record( $old_record ) ) {
+			$old_tokens = isset( $old_record['tokens'] ) && is_array( $old_record['tokens'] ) ? $old_record['tokens'] : array();
+		} elseif ( ! empty( $old_record ) ) {
+			$migrated   = Migrator::migrate_record( $old_record );
+			$old_tokens = isset( $migrated['tokens'] ) && is_array( $migrated['tokens'] ) ? $migrated['tokens'] : array();
+		} else {
+			$old_tokens = array();
+		}
+
+		foreach ( $old_tokens as $old_key => $old_value ) {
+			if ( ! isset( $clean['tokens'][ $old_key ] ) ) {
+				$clean['tokens'][ $old_key ] = $old_value;
+			}
+		}
+
+		return $clean;
+	}
+
+	/**
 	 * Drop a text-colour override that would be unreadable against the form's own
 	 * background — belt-and-suspenders against a caller (chiefly the AI style launcher,
 	 * see RestController::ai_style()) sending a token combination that is internally

@@ -472,6 +472,57 @@ ok( strpos( $compiled_free, '--evf-label-size:20px' ) === false, 'free: migrated
 ok( strpos( $compiled_free, '--evf-label-size:14px' ) !== false, 'free: label size renders at default (form not broken)' );
 $GLOBALS['evf_test_pro_active'] = true;
 
+/* ------------------------------------- Preserve stale pro tokens (EVF-2685) */
+// A routine save made while Pro is merely undetected (e.g. right after a manual ZIP update)
+// must not permanently erase pro-tier customisation the form already had — Sanitizer::
+// sanitize_record() alone has no memory of history (confirmed by the group above dropping
+// msg.success.bg every time), so RestController's save path also calls preserve_stale_pro_tokens()
+// with the record as it was stored BEFORE this save.
+group( 'Preserve stale pro tokens (EVF-2685)' );
+$GLOBALS['evf_test_pro_active'] = true;
+ok(
+	Sanitizer::preserve_stale_pro_tokens( array( 'tokens' => array() ), array( 'schema_version' => 1, 'tokens' => array( 'msg.success.bg' => array( 'desktop' => '#00ff00' ) ) ) )
+		=== array( 'tokens' => array() ),
+	'Pro active: no-op (nothing stale to preserve)'
+);
+
+$GLOBALS['evf_test_pro_active'] = false;
+
+// Old record already v2 shape (a prior save was made while Pro WAS active) — restore straight
+// from its tokens.
+$restored_v2 = Sanitizer::preserve_stale_pro_tokens(
+	array( 'tokens' => array( 'wrap.bg' => array( 'desktop' => '#123456' ) ) ),
+	array( 'schema_version' => 1, 'tokens' => array( 'msg.success.bg' => array( 'desktop' => '#00ff00' ) ) )
+);
+ok( $restored_v2['tokens']['msg.success.bg']['desktop'] === '#00ff00', 'v2 old record: stale pro token restored' );
+ok( $restored_v2['tokens']['wrap.bg']['desktop'] === '#123456', 'v2 old record: the new save\'s own tokens are untouched' );
+
+// Old record still LEGACY shape (the very first save right after migrating) — re-derive via the
+// same lossless Migrator rather than only reading an already-v2 record.
+$restored_legacy = Sanitizer::preserve_stale_pro_tokens(
+	array( 'tokens' => array() ),
+	array(
+		'success_message' => array( 'background_color' => '#4fc66b' ),
+		'typography'       => array(),
+	)
+);
+ok( $restored_legacy['tokens']['msg.success.bg']['desktop'] === '#4fc66b', 'legacy old record: stale pro token migrated + restored' );
+
+// The new save's OWN value for a key always wins — never clobbered by the stale old value.
+$no_clobber = Sanitizer::preserve_stale_pro_tokens(
+	array( 'tokens' => array( 'msg.success.bg' => array( 'desktop' => '#ffffff' ) ) ),
+	array( 'schema_version' => 1, 'tokens' => array( 'msg.success.bg' => array( 'desktop' => '#00ff00' ) ) )
+);
+ok( $no_clobber['tokens']['msg.success.bg']['desktop'] === '#ffffff', 'the new save\'s own value is never overwritten by the stale one' );
+
+// Nothing to preserve (never styled before, or nothing pro-tier in the old record) is a no-op.
+ok(
+	Sanitizer::preserve_stale_pro_tokens( array( 'tokens' => array( 'wrap.bg' => array( 'desktop' => '#fff' ) ) ), array() )
+		=== array( 'tokens' => array( 'wrap.bg' => array( 'desktop' => '#fff' ) ) ),
+	'empty old record: no-op'
+);
+$GLOBALS['evf_test_pro_active'] = true;
+
 /* ------------------------------------ v0 (old standalone-plugin) shape migration */
 // A record still in the OLD standalone "Style Customizer" plugin shape (top-level `wrapper`,
 // `field_label`, `checkbox_radio_styles`, flat `field_styles.*` typography) must migrate

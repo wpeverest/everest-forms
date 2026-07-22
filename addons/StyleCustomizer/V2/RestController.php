@@ -625,6 +625,8 @@ final class RestController {
 		self::maybe_backup_legacy_record( $form_id, $all );
 
 		$clean           = Sanitizer::sanitize_record( $incoming );
+		$old_record      = isset( $all[ $form_id ] ) && is_array( $all[ $form_id ] ) ? $all[ $form_id ] : array();
+		$clean           = Sanitizer::preserve_stale_pro_tokens( $clean, $old_record );
 		$all[ $form_id ] = $clean;
 		update_option( 'everest_forms_styles', $all, false ); // autoload=no.
 
