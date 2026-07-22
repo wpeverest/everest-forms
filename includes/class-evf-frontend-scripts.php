@@ -50,13 +50,16 @@ class EVF_Frontend_Scripts {
 	 * @return array
 	 */
 	public static function get_styles() {
+		$general_css_path = plugin_dir_path( EVF_PLUGIN_FILE ) . 'assets/css/everest-forms.css';
+		$general_version  = is_readable( $general_css_path ) ? (string) filemtime( $general_css_path ) : EVF_VERSION;
+
 		return apply_filters(
 			'everest_forms_enqueue_styles',
 			array(
 				'everest-forms-general' => array(
 					'src'     => self::get_asset_url( 'assets/css/everest-forms.css' ),
 					'deps'    => '',
-					'version' => EVF_VERSION,
+					'version' => $general_version,
 					'media'   => 'all',
 					'has_rtl' => true,
 				),
