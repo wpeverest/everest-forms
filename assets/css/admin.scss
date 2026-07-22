@@ -6996,6 +6996,10 @@ p.search-box {
 		.evf-loading {
 			margin: 0 0 0 10px;
 		}
+
+		.select2-container .dropdown-wrapper[aria-hidden='true'] {
+			display: none;
+		}
 	}
 
 	.description {
