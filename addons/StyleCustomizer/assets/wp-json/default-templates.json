@@ -758,6 +758,14 @@
      },
      "field_styles_placeholder_font_color": "#26262e",
      "field_styles_alignment": "left",
+     "field_styles_margin": {
+      "desktop": {
+           "top": 0,
+           "right": 0,
+           "bottom": "29",
+           "left": 0
+        }
+     },
        "checkbox_radio_font_size": "16",
        "checkbox_radio_font_color": "#576380",
        "section_title_font_size": "20",
