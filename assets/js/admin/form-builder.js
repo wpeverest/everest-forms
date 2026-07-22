@@ -1127,9 +1127,11 @@
 			});
 			// Toggle presets list.
 			$(document.body).on('click', '.evf-toggle-presets-list', function (e) {
+				e.preventDefault();
 				$(this)
 					.closest('.everest-forms-field-option')
 					.find('.everest-forms-field-option-row .evf-options-presets')
+					.removeAttr('hidden')
 					.slideToggle();
 			});
 			// Add custom list of options.
