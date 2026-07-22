@@ -346,6 +346,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 == Changelog ==
 
 = 3.5.3       - xx-xx-2026
+* Fix 		  - System info.
 * Fix 		  - Loader alignment in form migrator.
 * Fix 		  - Add preset not working for multi choice field.
 
