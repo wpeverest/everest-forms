@@ -97,6 +97,14 @@ final class Migrator {
 			}
 		}
 
+		// A form/template with a background image needs its own label colour regardless of
+		// palette (a dark default label is unreadable over most photo backgrounds), and every
+		// bundled template pairs background_image with a matching field_labels_font_color 1:1
+		// (checked all 11 templates), so this can't reintroduce the invisible-label risk noted above.
+		if ( ! isset( $tokens['label.color'] ) && ! empty( $legacy['form_container']['background_image'] ) && ! empty( $legacy['typography']['field_labels_font_color'] ) ) {
+			$tokens['label.color'] = self::apply_transform( 'pass', $legacy['typography']['field_labels_font_color'] );
+		}
+
 		// v1 NEVER coupled these three to the palette — each rendered its OWN independent setting
 		// unconditionally (scss.php:172,187,460; no palette check anywhere), unlike button_background
 		// itself which v1 always read from the palette. So when the legacy record never explicitly

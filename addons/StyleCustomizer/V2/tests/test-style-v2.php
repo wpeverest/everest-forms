@@ -207,6 +207,32 @@ $evil_font = Sanitizer::sanitize_record(
 );
 ok( strpos( $evil_font['tokens']['fonts.family']['desktop'], '{' ) === false && strpos( $evil_font['tokens']['fonts.family']['desktop'], ';' ) === false, 'font family strips CSS breakout chars' );
 
+/* ------------------------------------------------------ Text-contrast guard (EVF-2668 follow-up) */
+// White label text on a white wrap.bg would vanish entirely — the guard should drop it and fall
+// back to the token's own (dark, coherent) schema default.
+$vanishing = Sanitizer::sanitize_record(
+	array(
+		'tokens' => array(
+			'wrap.bg'     => array( 'desktop' => '#ffffff' ),
+			'label.color' => array( 'desktop' => '#ffffff' ),
+		),
+	)
+);
+ok( ! isset( $vanishing['tokens']['label.color'] ), 'white-on-white label.color dropped (falls back to schema default at compile time)' );
+
+// Same white label colour, but wrap.bgImage is set: the photo covers wrap.bg visually, so the
+// guard can't judge contrast from wrap.bg alone and must leave the override alone.
+$over_image = Sanitizer::sanitize_record(
+	array(
+		'tokens' => array(
+			'wrap.bg'      => array( 'desktop' => '#ffffff' ),
+			'wrap.bgImage' => array( 'desktop' => 'https://example.test/bg.png' ),
+			'label.color'  => array( 'desktop' => '#ffffff' ),
+		),
+	)
+);
+ok( $over_image['tokens']['label.color']['desktop'] === '#ffffff', 'white label.color kept when wrap.bgImage is set' );
+
 /* ------------------------------------------------------ Pro tier enforcement */
 // Switch to the FREE path (Pro inactive): a crafted request that includes pro-tier values must
 // not be able to persist them — the free/pro boundary must be non-bypassable. This covers both

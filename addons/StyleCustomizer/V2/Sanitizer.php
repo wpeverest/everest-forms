@@ -101,6 +101,14 @@ final class Sanitizer {
 	 * @param array $out_tokens Sanitized token map, keyed by token key, modified in place.
 	 */
 	private static function ensure_text_contrast( array &$out_tokens ) {
+		// A background image covers wrap.bg visually, so its contrast is irrelevant here — and we
+		// have no cheap way to read the image's own brightness. Skip the check rather than judge
+		// a colour against a background it isn't actually rendered against (EVF-2668 follow-up:
+		// this is exactly what silently dropped the bundled image templates' white label colour).
+		if ( ! empty( $out_tokens['wrap.bgImage']['desktop'] ) ) {
+			return;
+		}
+
 		$bg = isset( $out_tokens['wrap.bg']['desktop'] ) ? $out_tokens['wrap.bg']['desktop'] : '#ffffff';
 
 		foreach ( array( 'label.color', 'sub.color', 'desc.color', 'title.color' ) as $key ) {
