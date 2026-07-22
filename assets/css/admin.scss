@@ -7089,6 +7089,7 @@ p.search-box {
 						td {
 							.evf-fm-import-actions {
 								display: flex;
+								align-items: center;
 							}
 
 							width: 600px;
@@ -7162,9 +7163,13 @@ p.search-box {
 				.evf-fm-import-selected-wrapper {
 					display: flex;
 					flex-direction: row;
-					justify-content: space-between;
+					align-items: center;
 					margin-left: 15px;
 					margin-right: 100px;
+
+					.evf-fm-pagination {
+						margin-left: auto;
+					}
 				}
 
 				.evf-fm-import-selected-btn {
