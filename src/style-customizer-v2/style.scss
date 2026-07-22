@@ -2966,7 +2966,12 @@
 	/* A long custom palette name wraps instead of truncating (EVF-2674) — the card has no fixed
 	   height, so a second line just grows the card; align-items stays center rather than switching
 	   to flex-start since most names are one line and this keeps the (rare) pro-crown badge
-	   vertically centred against them either way. */
+	   vertically centred against them either way. `padding-right` reserves the width the
+	   hover-revealed edit/delete tools (.pal-card-tools, 47px wide, bottom-right) occupy — EVERY
+	   wrapped line respects that narrower box, so a long name's tail can never end up UNDER the
+	   tools' opaque background, whichever line it lands on. Deliberately on `.cap` alone (not a
+	   bottom-padding tax on the whole card): a short one-line name pays no height cost at all,
+	   only long names that actually wrap trade a bit of width for the guarantee. */
 	.cap {
 		display: flex;
 		align-items: center;
@@ -2975,6 +2980,7 @@
 		font-weight: 500;
 		color: var(--ui-ink-2);
 		margin-top: 8px;
+		padding-right: 52px;
 		overflow-wrap: anywhere;
 	}
 
@@ -3030,7 +3036,8 @@
 		}
 	}
 
-	/* tools overlay bottom-right, revealed on hover */
+	/* tools overlay bottom-right, revealed on hover — .cap's own padding-right (above) reserves
+	   this strip so it never sits on top of (and hides) wrapped name text. */
 	.pal-card-tools {
 		position: absolute;
 		bottom: 5px;
