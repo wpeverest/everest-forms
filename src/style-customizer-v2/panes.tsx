@@ -409,10 +409,22 @@ function desktopOf( bag: DeviceBag | undefined ): any {
 	return bag && bag.desktop !== undefined ? bag.desktop : undefined;
 }
 
-/** Flatten a template's per-device token bags into a { key: desktopValue } map. */
-function flattenDesktop( tokens: Record< string, DeviceBag > ): Record< string, any > {
+/**
+ * Flatten a template's per-device token bags into a { key: desktopValue } map covering EVERY
+ * schema key — not just the ones the template itself sets. `previewValues()` (hover) only ever
+ * writes the keys present in the map it's given, so a sparse map (just the template's own
+ * tokens) leaves any token the template DOESN'T set showing whatever the previously-hovered/
+ * committed template left behind — e.g. hovering a no-background-image template right after one
+ * WITH an image kept showing the old image, since `wrap.bgImage` was simply absent from the new
+ * template's own tokens. `store.applyTemplate()` (click) doesn't have this bug because it resets
+ * every schema key to its default before overlaying the template's tokens; mirror that here so
+ * hovering previews exactly what clicking would produce.
+ */
+function flattenForPreview( tokens: Record< string, DeviceBag >, schema: Token[] ): Record< string, any > {
 	const out: Record< string, any > = {};
-	Object.keys( tokens || {} ).forEach( ( k ) => ( out[ k ] = desktopOf( tokens[ k ] ) ) );
+	schema.forEach( ( t ) => {
+		out[ t.key ] = tokens && tokens[ t.key ] !== undefined ? desktopOf( tokens[ t.key ] ) : t.default;
+	} );
 	return out;
 }
 
@@ -588,8 +600,9 @@ export function TemplatesPane( {
 	const templates = store.allTemplates();
 	// Memoize the flattened override maps so hover doesn't re-flatten on every mouse event.
 	const flat = React.useMemo(
-		() => Object.fromEntries( templates.map( ( tpl ) => [ tpl.id, flattenDesktop( tpl.tokens ) ] ) ),
-		[ templates ]
+		() => Object.fromEntries( templates.map( ( tpl ) => [ tpl.id, flattenForPreview( tpl.tokens, store.schema ) ] ) ),
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+		[ templates, store ]
 	);
 
 	// Value-driven template state (recomputed whenever the store version bumps): the ✓ "Applied"
