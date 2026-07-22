@@ -374,6 +374,11 @@
 	text-align: var( --evf-btn-align );
 }
 
+.everest-forms .evf-style-v2 .everest-forms-multi-part-actions .everest-forms-part-button.everest-forms-part-prev,
+.everest-forms .evf-style-v2 .everest-forms-multi-part-actions .everest-forms-part-button.everest-forms-part-next {
+	margin-right: 10px;
+}
+
 /*
  * ===== MESSAGES — success / error / validation =====
  * The message tokens are Pro-only (defined in the Pro plugin), so on a free site their
