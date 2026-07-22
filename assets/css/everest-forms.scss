@@ -2070,7 +2070,7 @@ body .everest-forms-popup-overlay {
 		padding: 20px 30px;
 		border-radius: 8px;
 		width: 386px;
-		height: 278px;
+		min-height: 278px;
 		text-align: center;
 		position: relative;
 		box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
@@ -2089,6 +2089,15 @@ body .everest-forms-popup-overlay {
 			font-size: 15px;
 			font-weight: 400;
 			margin: 0;
+		}
+
+		.everest-forms-notice {
+			margin: 0;
+			padding: 0.6em 1em;
+
+			&::before {
+				display: none;
+			}
 		}
 	}
 
