@@ -397,9 +397,15 @@ jQuery( function( $ ) {
 							formTuple.trigger( 'reset' );
 							formContainer.find( '.everest-forms-notice' ).remove();
 
-							// If the form state is hidden, scope the hide to this submitted form only.
-							if ( 'hide' === form_state_type && 'hide' !== message_location ) {
-								formTuple.find( '.evf-frontend-row, .evf-submit-container' ).hide();
+							// If the form state is hidden, scope the hide to this submitted form only. The
+							// container's own background image (a v1 direct background-image, or v2's
+							// ::before layer) isn't a child of the form and can't be hidden by hiding rows,
+							// so it needs its own class-driven CSS rule (everest-forms.scss).
+							if ( 'hide' === form_state_type ) {
+								formContainer.addClass( 'everest-forms-form-hidden' );
+								if ( 'hide' !== message_location ) {
+									formTuple.find( '.evf-frontend-row, .evf-submit-container, .everest-forms-multi-part-indicator' ).hide();
+								}
 							}
 
 							if ( 'hide' === message_location ) {

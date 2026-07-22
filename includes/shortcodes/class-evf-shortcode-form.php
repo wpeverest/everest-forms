@@ -1157,6 +1157,10 @@ class EVF_Shortcode_Form {
 		$success = apply_filters( 'everest_forms_success', false, $form_id );
 		if ( $success && ! empty( $form_data ) && 'hide' === $message_display_location ) {
 			$hide_classes = apply_filters( 'everest_forms_frontend_container_class', array(), $form_data );
+			// The container's own background image (v1 direct background-image, or Style
+			// Customizer v2's ::before layer) isn't part of the replaced content below, so it
+			// needs its own class-driven CSS rule to disappear too (EVF-2684).
+			$hide_classes[] = 'everest-forms-form-hidden';
 			if ( ! empty( $settings['form_class'] ) ) {
 				$hide_classes = array_merge( $hide_classes, explode( ' ', $settings['form_class'] ) );
 			}

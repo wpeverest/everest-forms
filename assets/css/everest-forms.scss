@@ -76,6 +76,18 @@ i.icon-wpb-vc_everest_forms {
 
 	.evf-container {
 		margin-bottom: 30px;
+
+		// "Hide Form" confirmation (EVF-2684): the container's own background image — a direct
+		// background-image here in v1, or Style Customizer v2's ::before layer (frontend.css) —
+		// isn't a child of the <form>, so hiding form rows/buttons never touches it. This class
+		// is added to .evf-container itself (ajax-submission.js) so both engines clear cleanly.
+		&.everest-forms-form-hidden {
+			background-image: none !important;
+
+			&::before {
+				display: none !important;
+			}
+		}
 	}
 
 	.everest-forms-progress-bar {
