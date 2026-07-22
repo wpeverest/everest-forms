@@ -347,6 +347,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 = 3.5.3       - xx-xx-2026
 * Fix 		  - Loader alignment in form migrator.
+* Fix 		  - Add preset not working for multi choice field.
 
 = 3.5.2       - 02-07-2026
 * Fix 		  - Improved security of the addon activation process.
