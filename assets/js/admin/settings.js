@@ -401,6 +401,26 @@
 		);
 	});
 
+	// The "CAPTCHA Language" select is duplicated in every CAPTCHA provider
+	// accordion (v2, v3, hCaptcha, Turnstile) so it's visible wherever the
+	// user is working, but they all represent one shared setting. Keep them
+	// in sync so whichever one is edited applies everywhere.
+	$(document).on(
+		'change',
+		'.evf-recaptcha-language-select',
+		function () {
+			var newValue = $(this).val();
+
+			$('.evf-recaptcha-language-select')
+				.not(this)
+				.each(function () {
+					if ($(this).val() !== newValue) {
+						$(this).val(newValue).trigger('change');
+					}
+				});
+		},
+	);
+
 	disableFormChangeModal();
 
 	/**
