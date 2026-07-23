@@ -1,6 +1,8 @@
 == Changelog ==
 
 = 3.5.3       - xx-xx-2026
+* Feature     - Customize style with AI.
+* Enhance 	  - Revamped Style Customizer.
 * Fix 		  - System info.
 * Fix 		  - Capability check.
 * Fix 		  - Loader alignment in form migrator.
