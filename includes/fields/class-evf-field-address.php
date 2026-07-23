@@ -920,14 +920,12 @@ class EVF_Field_Address extends EVF_Form_Fields {
 		if ( empty( $postal['hidden'] ) && isset( $field['enable_country_flag'] ) ) {
 			$country['class'][] = esc_attr( 'evf-country-flag-selector' );
 		}
-		if ( ! array_key_exists( 'repeater-fields', $field ) ) {
-			printf(
-				'<input id="%s" type="hidden" class="input-text evf-conditional-logic-holder" conditional_rules="%s" conditional_id="%s" />',
-				esc_attr( $field['id'] ),
-				esc_attr( $conditional_rules ),
-				esc_attr( $conditional_id )
-			);
-		}
+		printf(
+			'<input id="%s" type="hidden" class="input-text evf-conditional-logic-holder" conditional_rules="%s" conditional_id="%s" />',
+			esc_attr( $field['id'] ),
+			esc_attr( $conditional_rules ),
+			esc_attr( $conditional_id )
+		);
 
 		do_action( 'everest_forms_map_field_display', $field, $field_atts, $form_data );
 		if ( 'yes' === $current_location ) {
