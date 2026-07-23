@@ -322,6 +322,9 @@ const TemplateList: React.FC<TemplateListProps> = ({
 						'@media (min-width: 1280px)': {
 							gridTemplateColumns: 'repeat(3, 1fr)',
 						},
+						'@media (min-width: 1600px)': {
+							gridTemplateColumns: 'repeat(4, 1fr)',
+						},
 						'@media (max-width: 640px)': {
 							gridTemplateColumns: '1fr',
 						},

@@ -1062,9 +1062,14 @@ jQuery( function ( $ ) {
 		popUpMessage: function() {
 			var $isPopup = $('.everest-form').is('[data-message_location]');
 			var $isFormStateHidden = $('.everest-form').data('form_state_type');
+			var $formContainer = $('.everest-form').closest('.evf-container');
 
+			// The container's own background image (v1 direct background-image, or Style
+			// Customizer v2's ::before layer) isn't a child of the form and can't be hidden by
+			// hiding rows/buttons, so it needs its own class-driven CSS rule (EVF-2684).
 			if('hide' === $isFormStateHidden) {
-				$('.evf-frontend-row, .evf-submit-container ').hide();
+				$formContainer.addClass('everest-forms-form-hidden');
+				$('.evf-frontend-row, .evf-submit-container, .everest-forms-multi-part-indicator').hide();
 			}
 			if ( ! $isPopup ) {
 				return;
@@ -1084,12 +1089,12 @@ jQuery( function ( $ ) {
 						</div>
 						<img src="${ everest_forms_params.evf_checked_image_url }" alt="Checked Logo" class="everest-forms-popup-success-logo">
 						<p class="everest-forms-popup-success-text">${ everest_forms_params.i18n_evf_success_text }</p>
-						<p>${ $('<div>').text($message).html() }</p>
+						<p class="everest-forms-notice everest-forms-notice--success">${ $('<div>').text($message).html() }</p>
 					</div>
 				</div>
 			`;
 
-			$('body').append(popupHTML);
+			$formContainer.append(popupHTML);
 
 			$('.everest-forms-popup-close').on('click', function() {
 				$('.everest-forms-popup-overlay').fadeOut(200, function() {

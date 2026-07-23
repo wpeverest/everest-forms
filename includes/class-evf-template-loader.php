@@ -183,6 +183,24 @@ class EVF_Template_Loader {
 			return $evf_form_preview_template;
 		}
 
+		ob_start();
+		if ( is_user_logged_in() && isset( $_GET['form_id'] ) ) {
+			self::generate_form_preview();
+		}
+		$form_content = ob_get_clean();
+
+		// Embed mode — the form ONLY, no toolbar/device-switcher/shortcode-box/side panel.
+		// Used by the "Create with AI" screen's own preview iframe (see
+		// src/templates/components/CreateWithAI.tsx), which already renders its own chrome
+		// around the iframe; the full chrome below is for the builder toolbar's "Preview"
+		// link, which deliberately opens this same route in a new tab as a standalone page.
+		if ( ! empty( $_GET['evf_preview_mode'] ) && 'embed' === $_GET['evf_preview_mode'] ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			// This route is loaded inside an iframe with no room to spare — the WP admin
+			// toolbar has no purpose there and only pushes the form down/off.
+			add_filter( 'show_admin_bar', '__return_false' );
+			return evf_get_template( 'form-preview/evf-form-preview-embed.php', array( 'form_content' => $form_content ) );
+		}
+
 		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 		wp_register_style( 'evf-form-preview-style', evf()->plugin_url() . '/assets/css/evf-form-preview.css', array(), EVF_VERSION );
 		wp_enqueue_style( 'evf-form-preview-style' );
@@ -201,12 +219,6 @@ class EVF_Template_Loader {
 			)
 		);
 
-		ob_start();
-		if ( is_user_logged_in() && isset( $_GET['form_id'] ) ) {
-			self::generate_form_preview();
-		}
-
-		$form_content = ob_get_clean();
 		ob_start();
 		self::side_panel_content();
 
@@ -309,11 +321,15 @@ class EVF_Template_Loader {
 		if ( isset( $_GET['form_id'] ) ) {
 			$form_id = absint( $_GET['form_id'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
-			$html  = '';
+			$html = '';
 			$html .= '<div class="evf-preview-content">';
-			$html .= '<span class="evf-form-preview-title">';
-			$html .= esc_html( get_the_title( $form_id ) );
-			$html .= '</span>';
+			// Embed mode's caller (the "Create with AI" screen) already shows the form
+			// title in its OWN header above the iframe — this span would just duplicate it.
+			if ( empty( $_GET['evf_preview_mode'] ) || 'embed' !== $_GET['evf_preview_mode'] ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+				$html .= '<span class="evf-form-preview-title">';
+				$html .= esc_html( get_the_title( $form_id ) );
+				$html .= '</span>';
+			}
 
 			$shortcode = sprintf( '[everest_form id="%d"]', $form_id );
 

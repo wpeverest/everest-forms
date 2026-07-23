@@ -109,9 +109,17 @@ class EVF_Customize_Select2_Control extends WP_Customize_Control {
 	/**
 	 * Returns Google Fonts.
 	 *
-	 * @return object Google fonts object.
+	 * Delegates to the shared {@see evfsc_get_google_fonts()} so the legacy customizer and the
+	 * v2 React panel draw from one cached list (no duplicated fetch).
+	 *
+	 * @return array Google fonts list (each item exposes a `family`).
 	 */
 	public function get_google_fonts() {
+		if ( function_exists( 'evfsc_get_google_fonts' ) ) {
+			return evfsc_get_google_fonts();
+		}
+
+		// Fallback (shared helper unavailable): original inline fetch.
 		$google_fonts = get_transient( 'evf_google_fonts' );
 
 		if ( false === $google_fonts ) {
@@ -127,6 +135,11 @@ class EVF_Customize_Select2_Control extends WP_Customize_Control {
 			}
 		}
 
+		/**
+		 * Filters the Style Customizer Google Fonts list.
+		 *
+		 * @param array $google_fonts Google fonts list.
+		 */
 		return apply_filters( 'everest_forms_extensions_sections', $google_fonts );
 	}
 }
