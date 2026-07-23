@@ -56,46 +56,41 @@ class EVF_AI_Registration {
 	 * @return bool
 	 */
 	public static function is_local_site(): bool {
+		$host = wp_parse_url( site_url(), PHP_URL_HOST );
+		$host = $host ? strtolower( $host ) : '';
+
 		// An explicit local-gateway override (see the themegrill-ai-cloud README's "Setup —
 		// WordPress Plugin" instructions: `define('TG_AI_GATEWAY_URL', 'http://localhost:8000')`)
 		// means the developer has deliberately pointed this install at a gateway running on
-		// their own machine to test AI features end-to-end. The heuristics below exist to keep
-		// PRODUCTION sites from burning free-tier quota on throwaway local installs pointed at
-		// the real gateway — that protection is moot once a LOOPBACK gateway is configured, and
-		// without this the documented local-dev setup could never actually work on ANY local WP
+		// their own machine to test AI features end-to-end, so the heuristics below don't apply
+		// — without this the documented local-dev setup could never work on ANY local WP
 		// environment (Local by Flywheel, Valet, MAMP, …), since `WP_ENVIRONMENT_TYPE=local` and
 		// `.local`/`.test` domains are exactly what those tools use by default.
 		if ( defined( 'TG_AI_GATEWAY_URL' ) && self::is_loopback_url( TG_AI_GATEWAY_URL ) ) {
-			return false;
-		}
+			$is_local = false;
+		} else {
+			$is_local = ( function_exists( 'wp_get_environment_type' ) && 'local' === wp_get_environment_type() )
+				|| in_array( $host, array( 'localhost', '127.0.0.1', '::1' ), true );
 
-		if ( function_exists( 'wp_get_environment_type' ) && 'local' === wp_get_environment_type() ) {
-			return true;
-		}
-
-		$host = wp_parse_url( site_url(), PHP_URL_HOST );
-		if ( empty( $host ) ) {
-			return false;
-		}
-		$host = strtolower( $host );
-
-		if ( in_array( $host, array( 'localhost', '127.0.0.1', '::1' ), true ) ) {
-			return true;
-		}
-
-		foreach ( array( '.local', '.test', '.localhost' ) as $suffix ) {
-			if ( substr( $host, -strlen( $suffix ) ) === $suffix ) {
-				return true;
+			if ( ! $is_local ) {
+				foreach ( array( '.local', '.test', '.localhost' ) as $suffix ) {
+					if ( '' !== $host && substr( $host, -strlen( $suffix ) ) === $suffix ) {
+						$is_local = true;
+						break;
+					}
+				}
 			}
 		}
 
 		/**
-		 * Filter whether the current site is treated as local for AI features.
+		 * Filter whether the current site is treated as local for AI features — the final say
+		 * over the heuristics above, e.g. to test the live gateway from a .local domain (set
+		 * this to __return_false), or to block a host the heuristics miss.
 		 *
-		 * @param bool   $is_local Whether the site is considered local.
+		 * @param bool   $is_local Whether the built-in heuristics consider this site local.
 		 * @param string $host     The detected site host.
 		 */
-		return (bool) apply_filters( 'everest_forms_ai_is_local_site', false, $host );
+		return (bool) apply_filters( 'everest_forms_ai_is_local_site', $is_local, $host );
 	}
 
 	/**
