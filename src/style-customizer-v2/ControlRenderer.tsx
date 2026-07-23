@@ -164,7 +164,7 @@ function ControlShell( {
 			<div className="ctrl-lab">
 				<span className="lab-left">
 					<label>{ token.label }</label>
-					{ token.responsive && (
+					{ token.responsive && store.device !== 'desktop' && (
 						<HoverTip
 							className={ 'dev-badge' + ( override ? ' override' : '' ) }
 							label={ token.label + ' — ' + __( 'responsive options', 'everest-forms' ) }

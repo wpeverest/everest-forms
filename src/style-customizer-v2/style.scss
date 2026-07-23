@@ -2992,6 +2992,7 @@
 	   gradient text pill, a third, uncoordinated "Pro" treatment. One marker, one icon. */
 	.pro {
 		display: inline-flex;
+		flex-shrink: 0;
 		margin-left: auto;
 
 		.pro-crown {

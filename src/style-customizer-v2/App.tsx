@@ -287,22 +287,20 @@ function PaletteManager( {
 					</span>
 				</button>
 				<span className="pal-card-tools">
-					<button
-						type="button"
-						className={ 'pal-tool' + ( pro ? '' : ' is-locked' ) }
-						aria-label={ ( pro ? __( 'Edit', 'everest-forms' ) : __( 'Edit (Pro)', 'everest-forms' ) ) + ' ' + p.name }
-						title={ pro ? __( 'Edit palette', 'everest-forms' ) : __( 'Editing palettes is a Pro feature', 'everest-forms' ) }
-						onClick={ () => openEdit( p ) }
-					>
-						{ pro ? (
+					{ pro && (
+						<button
+							type="button"
+							className="pal-tool"
+							aria-label={ __( 'Edit', 'everest-forms' ) + ' ' + p.name }
+							title={ __( 'Edit palette', 'everest-forms' ) }
+							onClick={ () => openEdit( p ) }
+						>
 							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2 } aria-hidden="true">
 								<path d="M12 20h9" />
 								<path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" />
 							</svg>
-						) : (
-							<ProCrown />
-						) }
-					</button>
+						</button>
+					) }
 					{ canDelete && (
 						<button
 							type="button"
