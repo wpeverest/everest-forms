@@ -347,6 +347,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 = 3.5.3       - xx-xx-2026
 * Fix 		  - System info.
+* Fix 		  - Capability check.
 * Fix 		  - Loader alignment in form migrator.
 * Fix 		  - Currency symbol issue on subscription field.
 * Fix 		  - Add preset not working for multi choice field.

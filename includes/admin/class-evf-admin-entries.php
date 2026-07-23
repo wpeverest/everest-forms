@@ -234,6 +234,9 @@ class EVF_Admin_Entries {
 			$entry_id = absint( $_GET['trash'] ); // phpcs:ignore WordPress.Security.NonceVerification
 
 			if ( $entry_id ) {
+				if ( ! current_user_can( 'everest_forms_delete_entry', $entry_id ) ) {
+					wp_die( esc_html__( 'You do not have permission to trash this entry.', 'everest-forms' ), 403 );
+				}
 				self::update_status( $entry_id, 'trash' );
 			}
 		}
@@ -263,6 +266,9 @@ class EVF_Admin_Entries {
 			$entry_id = absint( $_GET['untrash'] ); // phpcs:ignore WordPress.Security.NonceVerification
 
 			if ( $entry_id ) {
+				if ( ! current_user_can( 'everest_forms_edit_entry', $entry_id ) ) {
+					wp_die( esc_html__( 'You do not have permission to restore this entry.', 'everest-forms' ), 403 );
+				}
 				self::update_status( $entry_id, 'publish' );
 			}
 		}
@@ -293,6 +299,9 @@ class EVF_Admin_Entries {
 			$entry_id = absint( $_GET['delete'] ); // phpcs:ignore WordPress.Security.NonceVerification
 
 			if ( $entry_id ) {
+				if ( ! current_user_can( 'everest_forms_delete_entry', $entry_id ) ) {
+					wp_die( esc_html__( 'You do not have permission to delete this entry.', 'everest-forms' ), 403 );
+				}
 				self::remove_entry( $entry_id, $form_id );
 			}
 		}
