@@ -1,0 +1,626 @@
+<?php
+/**
+ * Style Customizer v2 — REST controller.
+ *
+ * Read/save a form's v2 style record. Registers into the existing `everest-forms/v1`
+ * namespace. Every route is gated by an admin capability; untrusted input is run through
+ * {@see Sanitizer} before it ever touches the option.
+ *
+ * @package EverestForms\Addons\StyleCustomizer\V2
+ * @since   x.x.x
+ */
+
+namespace EverestForms\Addons\StyleCustomizer\V2;
+
+defined( 'ABSPATH' ) || exit;
+
+/**
+ * `everest-forms/v1/styles/{id}` controller.
+ */
+final class RestController {
+
+	/**
+	 * Route namespace.
+	 *
+	 * @var string
+	 */
+	protected $namespace = 'everest-forms/v1';
+
+	/**
+	 * Route base.
+	 *
+	 * @var string
+	 */
+	protected $rest_base = 'styles';
+
+	/**
+	 * Hook the controller into EVF's REST registry. Called from {@see Engine::boot()}.
+	 */
+	public static function register() {
+		add_filter( 'everest_forms_rest_api_get_rest_namespaces', array( __CLASS__, 'add_namespace' ) );
+	}
+
+	/**
+	 * Append this controller to the v1 namespace so `EVF_REST_API` instantiates + registers it.
+	 *
+	 * @param array $namespaces namespace => class-names.
+	 * @return array
+	 */
+	public static function add_namespace( $namespaces ) {
+		$namespaces['everest-forms/v1'][] = __CLASS__;
+		return $namespaces;
+	}
+
+	/**
+	 * Register the routes (called by `EVF_REST_API::register_rest_routes()`).
+	 */
+	public function register_routes() {
+		register_rest_route(
+			$this->namespace,
+			'/' . $this->rest_base . '/(?P<id>\d+)',
+			array(
+				'args' => array(
+					'id' => array(
+						'description'       => __( 'Form ID.', 'everest-forms' ),
+						'validate_callback' => static function ( $param ) {
+							return is_numeric( $param );
+						},
+					),
+				),
+				array(
+					'methods'             => 'GET',
+					'callback'            => array( $this, 'get_item' ),
+					'permission_callback' => array( $this, 'permissions_check' ),
+				),
+				array(
+					'methods'             => 'POST',
+					'callback'            => array( $this, 'save_item' ),
+					'permission_callback' => array( $this, 'permissions_check' ),
+				),
+			)
+		);
+
+		// Store the builder's current (unsaved) structure for the live preview (see PreviewDraft).
+		register_rest_route(
+			$this->namespace,
+			'/' . $this->rest_base . '/(?P<id>\d+)/preview-draft',
+			array(
+				'args' => array(
+					'id' => array(
+						'validate_callback' => static function ( $param ) {
+							return is_numeric( $param );
+						},
+					),
+				),
+				array(
+					'methods'             => 'POST',
+					'callback'            => array( $this, 'save_preview_draft' ),
+					'permission_callback' => array( $this, 'permissions_check' ),
+				),
+			)
+		);
+
+		// AI styling — turn a plain-text prompt into style tokens (see ai_style()).
+		register_rest_route(
+			$this->namespace,
+			'/' . $this->rest_base . '/(?P<id>\d+)/ai',
+			array(
+				'args' => array(
+					'id' => array(
+						'validate_callback' => static function ( $param ) {
+							return is_numeric( $param );
+						},
+					),
+				),
+				array(
+					'methods'             => 'POST',
+					'callback'            => array( $this, 'ai_style' ),
+					'permission_callback' => array( $this, 'permissions_check' ),
+				),
+			)
+		);
+
+		// Create a user template from the current styles.
+		register_rest_route(
+			$this->namespace,
+			'/style-templates',
+			array(
+				array(
+					'methods'             => 'POST',
+					'callback'            => array( $this, 'create_template' ),
+					'permission_callback' => array( $this, 'permissions_check' ),
+				),
+			)
+		);
+
+		// Delete a user template.
+		register_rest_route(
+			$this->namespace,
+			'/style-templates/(?P<tid>[A-Za-z0-9\-]+)',
+			array(
+				array(
+					'methods'             => 'DELETE',
+					'callback'            => array( $this, 'delete_template' ),
+					'permission_callback' => array( $this, 'permissions_check' ),
+				),
+			)
+		);
+
+		// Create a reusable custom colour palette (Pro).
+		register_rest_route(
+			$this->namespace,
+			'/style-palettes',
+			array(
+				array(
+					'methods'             => 'POST',
+					'callback'            => array( $this, 'create_palette' ),
+					'permission_callback' => array( $this, 'permissions_check' ),
+				),
+			)
+		);
+
+		// Update or delete a reusable custom colour palette (Pro).
+		register_rest_route(
+			$this->namespace,
+			'/style-palettes/(?P<pid>[A-Za-z0-9\-]+)',
+			array(
+				array(
+					'methods'             => 'POST',
+					'callback'            => array( $this, 'update_palette' ),
+					'permission_callback' => array( $this, 'permissions_check' ),
+				),
+				array(
+					'methods'             => 'DELETE',
+					'callback'            => array( $this, 'delete_palette' ),
+					'permission_callback' => array( $this, 'permissions_check' ),
+				),
+			)
+		);
+
+	}
+
+	/**
+	 * POST /style-templates — save the current styles as a reusable user template.
+	 *
+	 * @param \WP_REST_Request $request Request.
+	 * @return \WP_REST_Response|\WP_Error
+	 */
+	public function create_template( $request ) {
+		if ( ! Engine::pro_active() ) {
+			return new \WP_Error(
+				'evf_style_pro_only',
+				__( 'Saving custom style templates is a Pro feature.', 'everest-forms' ),
+				array( 'status' => 403 )
+			);
+		}
+
+		$name     = $request->get_param( 'name' );
+		$incoming = $request->get_param( 'record' );
+		if ( ! is_array( $incoming ) ) {
+			return new \WP_Error(
+				'evf_style_bad_request',
+				__( 'Missing or invalid "record".', 'everest-forms' ),
+				array( 'status' => 400 )
+			);
+		}
+		$clean    = Sanitizer::sanitize_record( $incoming );
+		$template = Templates::save_user_template( $name, $clean );
+
+		return rest_ensure_response(
+			array(
+				'saved'    => true,
+				'template' => $template,
+			)
+		);
+	}
+
+	/**
+	 * DELETE /style-templates/{tid} — remove a user template.
+	 *
+	 * @param \WP_REST_Request $request Request.
+	 * @return \WP_REST_Response
+	 */
+	public function delete_template( $request ) {
+		$deleted = Templates::delete_user_template( (string) $request['tid'] );
+		return rest_ensure_response( array( 'deleted' => (bool) $deleted ) );
+	}
+
+	/**
+	 * POST /style-palettes — save a reusable custom colour palette (Pro).
+	 *
+	 * @param \WP_REST_Request $request Request.
+	 * @return \WP_REST_Response|\WP_Error
+	 */
+	public function create_palette( $request ) {
+		if ( ! Engine::pro_active() ) {
+			return self::pro_only_palette_error();
+		}
+		$colors = $request->get_param( 'colors' );
+		if ( ! is_array( $colors ) ) {
+			return new \WP_Error(
+				'evf_style_bad_request',
+				__( 'Missing or invalid "colors".', 'everest-forms' ),
+				array( 'status' => 400 )
+			);
+		}
+		$palette = Palettes::create( $request->get_param( 'name' ), $colors );
+		return rest_ensure_response(
+			array(
+				'saved'    => true,
+				'palette'  => $palette,
+				'palettes' => Palettes::all_custom(),
+			)
+		);
+	}
+
+	/**
+	 * POST /style-palettes/{pid} — update a reusable custom colour palette in place (Pro).
+	 *
+	 * @param \WP_REST_Request $request Request.
+	 * @return \WP_REST_Response|\WP_Error
+	 */
+	public function update_palette( $request ) {
+		if ( ! Engine::pro_active() ) {
+			return self::pro_only_palette_error();
+		}
+		$colors = $request->get_param( 'colors' );
+		if ( ! is_array( $colors ) ) {
+			return new \WP_Error(
+				'evf_style_bad_request',
+				__( 'Missing or invalid "colors".', 'everest-forms' ),
+				array( 'status' => 400 )
+			);
+		}
+		$palette = Palettes::update( (string) $request['pid'], $request->get_param( 'name' ), $colors );
+		if ( false === $palette ) {
+			return new \WP_Error(
+				'evf_style_not_found',
+				__( 'That custom palette no longer exists.', 'everest-forms' ),
+				array( 'status' => 404 )
+			);
+		}
+		return rest_ensure_response(
+			array(
+				'saved'    => true,
+				'palette'  => $palette,
+				'palettes' => Palettes::all_custom(),
+			)
+		);
+	}
+
+	/**
+	 * DELETE /style-palettes/{pid} — remove a reusable custom colour palette (Pro).
+	 *
+	 * @param \WP_REST_Request $request Request.
+	 * @return \WP_REST_Response|\WP_Error
+	 */
+	public function delete_palette( $request ) {
+		if ( ! Engine::pro_active() ) {
+			return self::pro_only_palette_error();
+		}
+		$deleted = Palettes::delete( (string) $request['pid'] );
+		return rest_ensure_response(
+			array(
+				'deleted'  => (bool) $deleted,
+				'palettes' => Palettes::all_custom(),
+			)
+		);
+	}
+
+	/**
+	 * The shared 403 for a custom-palette write attempted without Pro.
+	 *
+	 * @return \WP_Error
+	 */
+	protected static function pro_only_palette_error() {
+		return new \WP_Error(
+			'evf_style_pro_only',
+			__( 'Custom colour palettes are a Pro feature.', 'everest-forms' ),
+			array( 'status' => 403 )
+		);
+	}
+
+	/**
+	 * POST /styles/{id}/ai — turn a plain-text prompt into style tokens via the AI gateway.
+	 * Returns the AI's intent sanitized into a partial v2 record; nothing is persisted here.
+	 *
+	 * @param \WP_REST_Request $request Request.
+	 * @return \WP_REST_Response|\WP_Error
+	 */
+	public function ai_style( $request ) {
+		if ( ! class_exists( 'EVF_AI_API' ) || ! class_exists( 'EVF_AI_Registration' ) ) {
+			return new \WP_Error(
+				'evf_ai_unavailable',
+				__( 'AI features are unavailable on this site.', 'everest-forms' ),
+				array( 'status' => 501 )
+			);
+		}
+
+		if ( \EVF_AI_Registration::is_local_site() ) {
+			return new \WP_Error(
+				'evf_ai_not_registered',
+				__( 'AI features are not available on local or staging sites.', 'everest-forms' ),
+				array( 'status' => 400 )
+			);
+		}
+
+		$prompt        = sanitize_textarea_field( (string) $request->get_param( 'prompt' ) );
+		$refine_prompt = sanitize_textarea_field( (string) $request->get_param( 'refine_prompt' ) );
+		$current       = $request->get_param( 'current_record' );
+		$current       = is_array( $current ) ? $current : array();
+
+		if ( '' === $prompt ) {
+			return new \WP_Error(
+				'evf_style_bad_request',
+				__( 'Please describe the look you want.', 'everest-forms' ),
+				array( 'status' => 400 )
+			);
+		}
+
+		if ( ! \EVF_AI_Registration::is_registered() ) {
+			\EVF_AI_Registration::register();
+		}
+		if ( ! \EVF_AI_Registration::is_registered() ) {
+			return new \WP_Error(
+				'evf_ai_not_registered',
+				__( 'This site could not be registered with the AI service. Please try again.', 'everest-forms' ),
+				array( 'status' => 502 )
+			);
+		}
+
+		$ai_style = \EVF_AI_API::style_form( $prompt, $current, $refine_prompt );
+
+		if ( is_wp_error( $ai_style ) ) {
+			$status = 'rate_limit' === $ai_style->get_error_code() || 'daily_limit_reached' === $ai_style->get_error_code() ? 429 : 502;
+			return new \WP_Error( $ai_style->get_error_code(), $ai_style->get_error_message(), array( 'status' => $status ) );
+		}
+
+		$clean = Sanitizer::sanitize_record(
+			array(
+				'tokens'  => isset( $ai_style['tokens'] ) && is_array( $ai_style['tokens'] ) ? $ai_style['tokens'] : array(),
+				'palette' => isset( $ai_style['palette'] ) ? $ai_style['palette'] : '',
+			),
+			true
+		);
+
+		return rest_ensure_response(
+			array(
+				'tokens'  => $clean['tokens'],
+				'palette' => isset( $clean['palette'] ) ? $clean['palette'] : '',
+				'summary' => isset( $ai_style['summary'] ) ? sanitize_text_field( (string) $ai_style['summary'] ) : '',
+			)
+		);
+	}
+
+	/**
+	 * POST /styles/{id}/preview-draft — cache the builder's current serialized structure so the
+	 * live preview iframe can render unsaved Fields-tab edits. Nothing is written to the form
+	 * (see {@see PreviewDraft}).
+	 *
+	 * @param \WP_REST_Request $request Request.
+	 * @return \WP_REST_Response
+	 */
+	public function save_preview_draft( $request ) {
+		$form_id   = absint( $request['id'] );
+		$form_data = $request->get_param( 'form_data' );
+		$session   = (string) $request->get_param( 'session' );
+
+		if ( ! is_string( $form_data ) || '' === $form_data ) {
+			PreviewDraft::clear( $form_id, $session );
+			return rest_ensure_response( array( 'stored' => false ) );
+		}
+
+		$stored = PreviewDraft::store( $form_id, $form_data, $session );
+		return rest_ensure_response( array( 'stored' => (bool) $stored ) );
+	}
+
+	/**
+	 * Only users who can manage forms may read/write styles.
+	 *
+	 * @return bool
+	 */
+	public function permissions_check() {
+		return current_user_can( 'manage_everest_forms' );
+	}
+
+	/**
+	 * Detect which named palette a legacy record's `color_palette` selection matches. Returns
+	 * an empty string if it matches none (a custom palette).
+	 *
+	 * @param array $legacy Legacy record.
+	 * @return string Palette id, or ''.
+	 */
+	protected static function detect_palette( $legacy ) {
+		if ( empty( $legacy['color_palette'] ) || ! is_array( $legacy['color_palette'] ) ) {
+			return '';
+		}
+		$colors = reset( $legacy['color_palette'] );
+		if ( ! is_array( $colors ) ) {
+			return '';
+		}
+		$norm = static function ( $v ) {
+			return strtolower( trim( (string) $v ) );
+		};
+
+		$builtins = array();
+		$customs  = array();
+		foreach ( Schema::palettes() as $palette ) {
+			if ( empty( $palette['is_custom'] ) ) {
+				$builtins[] = $palette;
+			} else {
+				$customs[] = $palette;
+			}
+		}
+		foreach ( array_merge( $builtins, $customs ) as $palette ) {
+			$match = true;
+			foreach ( $palette['colors'] as $slot => $value ) {
+				if ( ! isset( $colors[ $slot ] ) || $norm( $colors[ $slot ] ) !== $norm( $value ) ) {
+					$match = false;
+					break;
+				}
+			}
+			if ( $match ) {
+				return $palette['id'];
+			}
+		}
+		return '';
+	}
+
+	/**
+	 * Read the per-form "Apply Theme Style" flag. Reuses the same meta the v1 preview toggle
+	 * and the front-end shortcode wrapper use.
+	 *
+	 * @param int $form_id Form id.
+	 * @return bool
+	 */
+	protected static function get_apply_theme_style( $form_id ) {
+		return 'default' !== get_post_meta( $form_id, 'everest_forms_enable_theme_style', true );
+	}
+
+	/**
+	 * Build the full styles payload for a form — the saved record plus the schema the panel
+	 * renders from. Static so it can be shared between `get_item()` and
+	 * {@see BuilderPanel::enqueue()}, which localizes it directly into the builder page.
+	 *
+	 * @param int $form_id Form id.
+	 * @return array
+	 */
+	public static function build_payload( $form_id ) {
+		$form_id = absint( $form_id );
+		$all     = get_option( 'everest_forms_styles', array() );
+		$stored  = isset( $all[ $form_id ] ) && is_array( $all[ $form_id ] ) ? $all[ $form_id ] : array();
+
+		if ( Engine::is_v2_record( $stored ) ) {
+			$record = $stored;
+		} elseif ( ! empty( $stored ) ) {
+			// A legacy (v1) record: migrate on read; only persisted when the user saves.
+			$record            = Migrator::migrate_record( $stored );
+			$record['palette'] = self::detect_palette( $stored );
+		} else {
+			$record = array(
+				'schema_version' => Schema::version(),
+				'tokens'         => array(),
+			);
+		}
+
+		return array(
+			'form_id'        => $form_id,
+			'schema_version' => Schema::version(),
+			'schema'         => Schema::tokens(),
+			'sections'       => Schema::sections(),
+			'palettes'       => Schema::palettes(),
+			'palette_map'    => Schema::palette_map(),
+			'templates'      => Templates::all(),
+			'user_templates' => Templates::user_templates(),
+			'breakpoints'    => Compiler::breakpoints(),
+			'google_fonts'   => function_exists( 'evfsc_get_google_font_families' ) ? evfsc_get_google_font_families() : array(),
+			'apply_theme_style' => self::get_apply_theme_style( $form_id ),
+			// Display-only; the security boundary is enforced server-side on save.
+			'pro_active'     => Engine::pro_active(),
+			'record'         => $record,
+			// Drives the panel's migration banner; informational only, not reversible.
+			'migration'      => array(
+				'just_migrated' => ! empty( $stored ) && ! Engine::is_v2_record( $stored ),
+			),
+		);
+	}
+
+	/**
+	 * GET — thin wrapper around {@see self::build_payload()}.
+	 *
+	 * @param \WP_REST_Request $request Request.
+	 * @return \WP_REST_Response
+	 */
+	public function get_item( $request ) {
+		return rest_ensure_response( self::build_payload( absint( $request['id'] ) ) );
+	}
+
+	/**
+	 * POST — sanitize and persist the record. Optimistic-concurrency: if the caller sends a
+	 * stale `base_updated_at`, reject with 409 so it can reload rather than clobber.
+	 *
+	 * @param \WP_REST_Request $request Request.
+	 * @return \WP_REST_Response|\WP_Error
+	 */
+	public function save_item( $request ) {
+		$form_id = absint( $request['id'] );
+
+		$post = get_post( $form_id );
+		if ( ! $post || 'everest_form' !== $post->post_type ) {
+			return new \WP_Error(
+				'evf_style_no_form',
+				__( 'Form not found.', 'everest-forms' ),
+				array( 'status' => 404 )
+			);
+		}
+
+		$incoming = $request->get_param( 'record' );
+		if ( ! is_array( $incoming ) ) {
+			return new \WP_Error(
+				'evf_style_bad_request',
+				__( 'Missing or invalid "record".', 'everest-forms' ),
+				array( 'status' => 400 )
+			);
+		}
+
+		$all          = get_option( 'everest_forms_styles', array() );
+		$base_updated = $request->get_param( 'base_updated_at' );
+
+		if ( isset( $all[ $form_id ]['_updated_at'] ) && null !== $base_updated
+			&& (int) $all[ $form_id ]['_updated_at'] !== (int) $base_updated ) {
+			return new \WP_Error(
+				'evf_style_conflict',
+				__( 'These styles were changed somewhere else. Reload before saving.', 'everest-forms' ),
+				array( 'status' => 409 )
+			);
+		}
+
+		self::maybe_backup_legacy_record( $form_id, $all );
+
+		$clean      = Sanitizer::sanitize_record( $incoming );
+		$old_record = isset( $all[ $form_id ] ) && is_array( $all[ $form_id ] ) ? $all[ $form_id ] : array();
+		$clean      = Sanitizer::preserve_stale_pro_tokens( $clean, $old_record );
+
+		// Re-read right before writing to avoid clobbering a concurrent save to a different form.
+		$all             = get_option( 'everest_forms_styles', array() );
+		$all[ $form_id ] = $clean;
+		update_option( 'everest_forms_styles', $all, false ); // autoload=no.
+
+		$apply_theme = $request->get_param( 'apply_theme_style' );
+		if ( null !== $apply_theme ) {
+			update_post_meta(
+				$form_id,
+				'everest_forms_enable_theme_style',
+				rest_sanitize_boolean( $apply_theme ) ? 'theme' : 'default'
+			);
+		}
+
+		return rest_ensure_response(
+			array(
+				'saved'             => true,
+				'record'            => $clean,
+				'_updated_at'       => $clean['_updated_at'],
+				'apply_theme_style' => self::get_apply_theme_style( $form_id ),
+			)
+		);
+	}
+
+	/**
+	 * Snapshot a form's pre-v2 record the first time it's about to be overwritten by a v2 save.
+	 *
+	 * @param int   $form_id Form id.
+	 * @param array $all     The full `everest_forms_styles` option (pre-overwrite).
+	 */
+	protected static function maybe_backup_legacy_record( $form_id, $all ) {
+		if ( empty( $all[ $form_id ] ) || Engine::is_v2_record( $all[ $form_id ] ) ) {
+			return;
+		}
+		$backups = get_option( 'everest_forms_styles_legacy_backup', array() );
+		if ( isset( $backups[ $form_id ] ) ) {
+			return;
+		}
+		$backups[ $form_id ] = $all[ $form_id ];
+		update_option( 'everest_forms_styles_legacy_backup', $backups, false ); // autoload=no.
+	}
+
+}

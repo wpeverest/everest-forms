@@ -1,6 +1,5 @@
 <?php
 defined( 'ABSPATH' ) || exit;
-wp_head();
 ?>
 <!DOCTYPE html>
 			<html <?php language_attributes(); ?>>
@@ -8,6 +7,7 @@ wp_head();
 					<meta name="viewport" content="width=device-width"/>
 					<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 					<?php
+						wp_head();
 						wp_print_head_scripts();
 						$form_id = isset( $_GET['form_id'] ) ? absint( $_GET['form_id'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 					?>

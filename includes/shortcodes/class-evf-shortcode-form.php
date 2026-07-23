@@ -1022,7 +1022,11 @@ class EVF_Shortcode_Form {
 			return;
 		}
 
-		if ( 'publish' !== $form->post_status && 'inactive' !== $form->post_status ) {
+		// A draft form may render only for a preview by a user who can manage it — e.g. the
+		// Create-with-AI screen's iframe preview of a not-yet-published AI draft (see
+		// EVF_AI_Form_Builder::create_form()). Everyone else's draft-status gate is unchanged.
+		$is_previewable_draft = 'draft' === $form->post_status && current_user_can( 'manage_everest_forms' );
+		if ( 'publish' !== $form->post_status && 'inactive' !== $form->post_status && ! $is_previewable_draft ) {
 			return;
 		}
 
@@ -1152,7 +1156,22 @@ class EVF_Shortcode_Form {
 
 		$success = apply_filters( 'everest_forms_success', false, $form_id );
 		if ( $success && ! empty( $form_data ) && 'hide' === $message_display_location ) {
+			$hide_classes = apply_filters( 'everest_forms_frontend_container_class', array(), $form_data );
+			// The container's own background image (v1 direct background-image, or Style
+			// Customizer v2's ::before layer) isn't part of the replaced content below, so it
+			// needs its own class-driven CSS rule to disappear too (EVF-2684).
+			$hide_classes[] = 'everest-forms-form-hidden';
+			if ( ! empty( $settings['form_class'] ) ) {
+				$hide_classes = array_merge( $hide_classes, explode( ' ', $settings['form_class'] ) );
+			}
+			if ( ! empty( $settings['layout_class'] ) ) {
+				$hide_classes = array_merge( $hide_classes, explode( ' ', $settings['layout_class'] ) );
+			}
+			$hide_classes = evf_sanitize_classes( $hide_classes, true );
+
+			printf( '<div class="evf-container %s" id="evf-%d">', esc_attr( $hide_classes ), absint( $form_id ) );
 			do_action( 'everest_forms_frontend_output_success', $form_data );
+			echo '</div><!-- .evf-container -->';
 			return;
 		}
 

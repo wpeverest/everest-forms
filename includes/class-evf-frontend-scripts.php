@@ -50,13 +50,16 @@ class EVF_Frontend_Scripts {
 	 * @return array
 	 */
 	public static function get_styles() {
+		$general_css_path = plugin_dir_path( EVF_PLUGIN_FILE ) . 'assets/css/everest-forms.css';
+		$general_version  = is_readable( $general_css_path ) ? (string) filemtime( $general_css_path ) : EVF_VERSION;
+
 		return apply_filters(
 			'everest_forms_enqueue_styles',
 			array(
 				'everest-forms-general' => array(
 					'src'     => self::get_asset_url( 'assets/css/everest-forms.css' ),
 					'deps'    => '',
-					'version' => EVF_VERSION,
+					'version' => $general_version,
 					'media'   => 'all',
 					'has_rtl' => true,
 				),
@@ -160,8 +163,12 @@ class EVF_Frontend_Scripts {
 			return;
 		}
 
-		$suffix           = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-		$register_scripts = array(
+		$suffix               = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+		$ajax_submission_path = plugin_dir_path( EVF_PLUGIN_FILE ) . 'assets/js/frontend/ajax-submission' . $suffix . '.js';
+		$ajax_submission_ver  = is_readable( $ajax_submission_path ) ? (string) filemtime( $ajax_submission_path ) : EVF_VERSION;
+		$everest_forms_path   = plugin_dir_path( EVF_PLUGIN_FILE ) . 'assets/js/frontend/everest-forms' . $suffix . '.js';
+		$everest_forms_ver    = is_readable( $everest_forms_path ) ? (string) filemtime( $everest_forms_path ) : EVF_VERSION;
+		$register_scripts     = array(
 			'inputmask'                              => array(
 				'src'     => self::get_asset_url( 'assets/js/inputmask/jquery.inputmask.bundle' . $suffix . '.js' ),
 				'deps'    => array( 'jquery' ),
@@ -195,7 +202,7 @@ class EVF_Frontend_Scripts {
 			'everest-forms'                          => array(
 				'src'     => self::get_asset_url( 'assets/js/frontend/everest-forms' . $suffix . '.js' ),
 				'deps'    => array( 'jquery', 'inputmask', 'jquery-validate', 'jquery-intl-tel-input', 'selectWoo' ),
-				'version' => EVF_VERSION,
+				'version' => $everest_forms_ver,
 			),
 			'everest-forms-text-limit'               => array(
 				'src'     => self::get_asset_url( 'assets/js/frontend/text-limit' . $suffix . '.js' ),
@@ -205,7 +212,7 @@ class EVF_Frontend_Scripts {
 			'everest-forms-ajax-submission'          => array(
 				'src'     => self::get_asset_url( 'assets/js/frontend/ajax-submission' . $suffix . '.js' ),
 				'deps'    => array( 'jquery', 'inputmask', 'jquery-validate' ),
-				'version' => EVF_VERSION,
+				'version' => $ajax_submission_ver,
 			),
 			'everest-forms-survey-polls-quiz-script' => array(
 				'src'     => self::get_asset_url( 'assets/js/frontend/everest-forms-survey-polls-quiz' . $suffix . '.js' ),

@@ -440,14 +440,16 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 
 		echo '</div>';
 		echo '<div class="clear evf-clear"></div>';
-		if ( defined( 'EVF_REPEATER_FIELDS_VERSION' ) ) {
+		// Repeater controls require the Pro plugin (EFP_VERSION); without it the addon
+		// does not register the repeater field, so the button must not be shown.
+		if ( defined( 'EVF_REPEATER_FIELDS_VERSION' ) && defined( 'EFP_VERSION' ) ) {
 			echo '<div class="evf-repeater-row-wrapper">'; // Repeater Row Wrapper starts.
 		}
 
 		$next_row_id = $row_ids ? max( $row_ids ) : 1;
 		echo '<div class="evf-add-row" data-total-rows="' . count( $structure ) . '" data-next-row-id="' . (int) $next_row_id . '"><span class="everest-forms-btn everest-forms-btn-primary dashicons dashicons-plus-alt">' . esc_html__( 'Add Row', 'everest-forms' ) . '</span></div>';
 
-		if ( defined( 'EVF_REPEATER_FIELDS_VERSION' ) ) {
+		if ( defined( 'EVF_REPEATER_FIELDS_VERSION' ) && defined( 'EFP_VERSION' ) ) {
 			echo '<div class="evf-add-row repeater-row" data-total-rows="' . count( $structure ) . '" data-next-row-id="' . (int) $next_row_id . '"><span class="everest-forms-btn everest-forms-btn-primary dashicons dashicons-plus-alt">' . esc_html__( 'Add Repeater Row', 'everest-forms' ) . '</span></div>';
 			echo '</div>'; // Repeater Row Wrapper ends.
 		}
@@ -562,106 +564,6 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 			<span><?php echo esc_html( $message ); ?></span>
 		</div>
 		<?php
-	}
-
-	/**
-	 * Render a read-only, edit-chrome-free preview of a form's fields.
-	 *
-	 * Reuses the exact per-field markup of field_preview() (so the preview is
-	 * pixel-identical to the builder canvas) but omits the row toolbars, grid
-	 * selectors, add-row buttons and per-field action icons that only make sense
-	 * inside the live builder. Used by the "Create with AI" preview endpoint.
-	 *
-	 * @param array $form_data Form data ( form_fields, structure ).
-	 * @return string Preview HTML.
-	 */
-	public function render_ai_preview( $form_data ) {
-		$fields    = isset( $form_data['form_fields'] ) ? $form_data['form_fields'] : array();
-		$structure = isset( $form_data['structure'] ) && ! empty( $form_data['structure'] ) ? $form_data['structure'] : array();
-
-		// Fall back to one-field-per-row if no structure is provided.
-		if ( empty( $structure ) ) {
-			$row = 1;
-			foreach ( array_keys( $fields ) as $fid ) {
-				$structure[ 'row_' . $row ] = array( 'grid_1' => array( $fid ) );
-				$row++;
-			}
-		}
-
-		// Multi-part: build a row_key → 1-based part number map so React can
-		// show/hide rows per active tab (data-part-id attribute on each row div).
-		$is_multipart = isset( $form_data['settings']['enable_multi_part'] )
-			&& evf_string_to_bool( $form_data['settings']['enable_multi_part'] );
-		$row_to_part  = array();
-		if ( $is_multipart && ! empty( $form_data['multi_part'] ) ) {
-			foreach ( array_values( $form_data['multi_part'] ) as $part_idx => $part ) {
-				foreach ( ( $part['rows'] ?? array() ) as $row_key ) {
-					$row_to_part[ $row_key ] = $part_idx + 1; // 1-based
-				}
-			}
-		}
-
-		ob_start();
-		// Reproduce the builder's exact ancestor chain so the canvas field CSS
-		// (scoped to `#everest-forms-builder .evf-tab-content
-		// .everest-forms-panel-content-wrap .everest-forms-panel-content …`) applies
-		// identically in the AI preview. The preview stylesheet neutralises these
-		// containers' own layout (absolute positioning / sidebar width) so they
-		// don't disturb the preview pane. See .evf-ai-preview-canvas in
-		// assets/css/evf-locked-fields.css.
-		// Inline styles guarantee the builder container's own layout (absolute
-		// positioning / 100vh height) is neutralised regardless of stylesheet load
-		// order or caching, so the preview expands to its full content height.
-		echo '<div id="everest-forms-builder" style="position:static !important;inset:auto !important;min-height:0 !important;height:auto !important;width:100% !important;"><div class="evf-tab-content"><div class="everest-forms-panel-content-wrap"><div class="everest-forms-panel-content">';
-		echo '<div class="evf-admin-field-container"><div class="evf-admin-field-wrapper">';
-
-		$row_index    = 0;
-		$current_part = 0; // tracks last assigned part, defaults rows to part 1 when no map entry
-		foreach ( $structure as $row_key => $row_data ) {
-			$grids       = is_array( $row_data ) ? $row_data : array();
-			$active_grid = max( 1, count( $grids ) );
-
-			// Determine which part this row belongs to (default 1 for non-multipart forms).
-			if ( $is_multipart && ! empty( $row_to_part ) ) {
-				$part_id      = $row_to_part[ $row_key ] ?? $current_part ?: 1;
-				$current_part = $part_id;
-			} else {
-				$part_id = 1;
-			}
-
-			// --evf-row-index drives a staggered "field appears" animation in the
-			// preview (see .evf-ai-preview-canvas in evf-locked-fields.css), so the
-			// form reveals field-by-field on generate / regenerate.
-			// data-part-id lets React show/hide rows when tabs are clicked.
-			printf(
-				'<div class="evf-admin-row" data-part-id="%d" style="--evf-row-index:%d;">',
-				absint( $part_id ),
-				absint( $row_index )
-			);
-			echo '<div class="evf-grid-lists">';
-			$row_index++;
-
-			$grid_index = 1;
-			foreach ( $grids as $grid ) {
-				printf( '<div class="evf-admin-grid evf-grid-%1$d" data-grid-id="%2$d">', absint( $active_grid ), absint( $grid_index ) );
-				foreach ( (array) $grid as $field_id ) {
-					if ( isset( $fields[ $field_id ] ) ) {
-						$this->field_preview( $fields[ $field_id ], false );
-					}
-				}
-				echo '</div>';
-				$grid_index++;
-			}
-
-			echo '</div>'; // .evf-grid-lists
-			echo '<div class="clear evf-clear"></div>';
-			echo '</div>'; // .evf-admin-row
-		}
-
-		echo '</div></div>'; // .evf-admin-field-wrapper .evf-admin-field-container
-		echo '</div></div></div></div>'; // .everest-forms-panel-content .everest-forms-panel-content-wrap .evf-tab-content #everest-forms-builder
-
-		return ob_get_clean();
 	}
 
 	/**

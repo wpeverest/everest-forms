@@ -345,6 +345,12 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Changelog ==
 
+= 3.5.3       - xx-xx-2026
+* Fix 		  - System info.
+* Fix 		  - Loader alignment in form migrator.
+* Fix 		  - Currency symbol issue on subscription field.
+* Fix 		  - Add preset not working for multi choice field.
+
 = 3.5.2       - 02-07-2026
 * Fix 		  - Improved security of the addon activation process.
 * Fix 		  - Bulk Add option not opening for Dropdown, Checkbox, and Multiple Choice fields.

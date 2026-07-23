@@ -109,7 +109,8 @@ if ( ! class_exists( 'WP_Debug_Data' ) ) {
 			</td>
 		</tr>
 		<?php
-	} elseif ( is_plugin_active( 'everest-forms/everest-forms.php' ) ) {
+	}
+	if ( is_plugin_active( 'everest-forms/everest-forms.php' ) ) {
 		?>
 		<tr>
 			<th colspan="2">
@@ -186,20 +187,22 @@ if ( ! class_exists( 'WP_Debug_Data' ) ) {
 		</tr>
 
 		<tr>
-			<th><?php esc_html_e( 'Plugins', 'everest-forms' ); ?></th>
+			<th><?php esc_html_e( 'Addons', 'everest-forms' ); ?></th>
 			<td>
 			<?php
 				$evf_stats_obj = new \EVF_Stats();
 				$plugin_lists  = $evf_stats_obj->get_plugin_lists();
 
-			if ( ! empty( $plugin_lists ) ) {
-				foreach ( $plugin_lists as $plugin_slug => $plugin_data ) {
+			$active_addons = ! empty( $plugin_lists['active_addons'] ) ? $plugin_lists['active_addons'] : array();
+
+			if ( ! empty( $active_addons ) ) {
+				foreach ( $active_addons as $plugin_slug => $plugin_data ) {
 					if ( isset( $plugin_data['product_name'] ) && isset( $plugin_data['product_version'] ) ) {
 						echo esc_html( $plugin_data['product_name'] . ' (' . $plugin_data['product_version'] . ')' ) . '<br>';
 					}
 				}
 			} else {
-				esc_html_e( 'No plugin lists available.', 'everest-forms' );
+				esc_html_e( 'No Addons lists available.', 'everest-forms' );
 			}
 			?>
 			</td>

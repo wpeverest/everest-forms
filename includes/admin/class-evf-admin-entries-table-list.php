@@ -240,10 +240,21 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 		// Skip system fields
 		$skip_fields = array( 'entry_id', 'form_id', 'user_id', 'user_device', 'user_ip_address', 'viewed', 'starred', 'status' );
 
+		// Upload fields store only the hashed file URL in entry meta, so map each
+		// upload field's meta key to its original file name(s) from the full
+		// entry fields. This keeps the preview readable (e.g. "photo.png") instead
+		// of the full URL / hashed file name. See EVF-2095.
+		$upload_names = $this->get_upload_field_names( $entry );
+
 		// Find first non-empty field value
 		foreach ( $entry->meta as $key => $value ) {
 			if ( in_array( $key, $skip_fields, true ) || strpos( $key, '_' ) === 0 ) {
 				continue;
+			}
+
+			// Prefer the original file name(s) for upload fields.
+			if ( isset( $upload_names[ $key ] ) && '' !== $upload_names[ $key ] ) {
+				return $upload_names[ $key ];
 			}
 
 			// Process the value
@@ -255,6 +266,54 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 		}
 
 		return '<span class="na">&mdash;</span>';
+	}
+
+	/**
+	 * Build a map of upload field meta keys to their original file name(s).
+	 *
+	 * Entry meta only stores the public file URL (with a hashed file name), so
+	 * the original names are read from the full entry fields payload. See EVF-2095.
+	 *
+	 * @param object $entry Entry object.
+	 * @return array Map of meta key => escaped, comma-separated original file names.
+	 */
+	private function get_upload_field_names( $entry ) {
+		$names = array();
+
+		$fields = isset( $entry->fields ) ? evf_decode( $entry->fields ) : array();
+
+		if ( empty( $fields ) || ! is_array( $fields ) ) {
+			return $names;
+		}
+
+		foreach ( $fields as $field ) {
+			if ( empty( $field['meta_key'] ) || empty( $field['type'] ) ) {
+				continue;
+			}
+
+			if ( ! in_array( $field['type'], array( 'image-upload', 'file-upload' ), true ) ) {
+				continue;
+			}
+
+			if ( empty( $field['value_raw'] ) || ! is_array( $field['value_raw'] ) ) {
+				continue;
+			}
+
+			$file_names = array();
+			foreach ( $field['value_raw'] as $file ) {
+				if ( ! empty( $file['file_original'] ) ) {
+					$file_names[] = $file['file_original'];
+				} elseif ( ! empty( $file['name'] ) ) {
+					$file_names[] = $file['name'];
+				}
+			}
+
+			if ( ! empty( $file_names ) ) {
+				$names[ $field['meta_key'] ] = esc_html( implode( ', ', $file_names ) );
+			}
+		}
+
+		return $names;
 	}
 
 	/**

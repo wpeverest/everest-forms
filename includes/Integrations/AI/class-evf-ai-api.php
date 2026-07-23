@@ -44,9 +44,10 @@ class EVF_AI_API {
 			'POST',
 			'/ai/v1/generate',
 			array(
-				'prompt'           => $prompt,
-				'license_key'      => $license_key,
-				'available_fields' => implode( ',', evf()->form_fields->get_form_field_types() ),
+				'prompt'                => $prompt,
+				'license_key'           => $license_key,
+				'available_fields'      => implode( ',', evf()->form_fields->get_form_field_types() ),
+				'client_supports_style' => self::client_supports_style(),
 			),
 			$token
 		);
@@ -67,6 +68,92 @@ class EVF_AI_API {
 		);
 
 		return $response['form'];
+	}
+
+	/**
+	 * Whether this site can use the gateway's create-time style capability.
+	 *
+	 * @return bool
+	 */
+	private static function client_supports_style(): bool {
+		return class_exists( '\EverestForms\Addons\StyleCustomizer\V2\Engine' )
+			&& \EverestForms\Addons\StyleCustomizer\V2\Engine::enabled();
+	}
+
+	/**
+	 * Generate or refine a Style Customizer v2 look from a plain-text prompt.
+	 *
+	 * Shares the site token / license / daily quota with form generation — only the
+	 * gateway's `task=style` routing differs (a separate system prompt + validator,
+	 * see themegrill-ai-cloud gateway/products/everest_forms_style.py). Returns the
+	 * raw style intent `{ tokens, palette, summary }`; the CALLER is responsible for
+	 * running it through `Sanitizer::sanitize_record()` before it ever touches a
+	 * stored record — this class only talks to the gateway.
+	 *
+	 * @param string $prompt        The style request ("sleek dark, rounded inputs").
+	 * @param array  $current_record Current v2 record (tokens/palette) — sent as context
+	 *                               for a refine ("make the buttons bigger"); empty for
+	 *                               a fresh request.
+	 * @param string $refine_prompt Follow-up instruction; empty = fresh/regenerate.
+	 * @return array|WP_Error  { tokens, palette, summary } on success.
+	 */
+	public static function style_form( string $prompt, array $current_record = array(), string $refine_prompt = '' ) {
+		$token = EVF_AI_Registration::get_site_token();
+		if ( ! $token ) {
+			return new WP_Error( 'not_registered', __( 'AI features are not yet active on this site.', 'everest-forms' ) );
+		}
+
+		$logger    = evf_get_logger();
+		$is_refine = '' !== $refine_prompt || ! empty( $current_record );
+		$logger->info(
+			sprintf( 'AI Style %s started | prompt: %s', $is_refine ? 'refine' : 'generate', $is_refine ? $refine_prompt : $prompt ),
+			array( 'source' => 'evf-ai' )
+		);
+
+		// Refine/regenerate an existing draft (task=style, same shape as update_form()) vs a
+		// fresh request (task=style, same shape as generate_form()) — resolved once so the
+		// retry-after-re-register below just replays the identical call.
+		$path = $is_refine ? '/ai/v1/update' : '/ai/v1/generate';
+		$body = $is_refine
+			? array(
+				'prompt'        => $prompt,
+				'refine_prompt' => $refine_prompt,
+				'license_key'   => self::get_license_key(),
+				'current_form'  => $current_record, // field name is generic on the gateway side.
+				'task'          => 'style',
+			)
+			: array(
+				'prompt'      => $prompt,
+				'license_key' => self::get_license_key(),
+				'task'        => 'style',
+			);
+
+		$response = self::request( 'POST', $path, $body, $token );
+
+		// Auto-heal stale token — same pattern as generate_form/update_form.
+		if ( is_wp_error( $response ) && 'api_error' === $response->get_error_code()
+			&& false !== strpos( $response->get_error_message(), 'Invalid token' ) ) {
+
+			$logger->warning( 'AI Style stale token — re-registering and retrying', array( 'source' => 'evf-ai' ) );
+			EVF_AI_Registration::clear_credentials();
+			EVF_AI_Registration::register();
+			$token    = EVF_AI_Registration::get_site_token();
+			$response = self::request( 'POST', $path, $body, $token );
+		}
+
+		if ( is_wp_error( $response ) ) {
+			$logger->error( sprintf( 'AI Style failed | %s: %s', $response->get_error_code(), $response->get_error_message() ), array( 'source' => 'evf-ai' ) );
+			return $response;
+		}
+
+		if ( empty( $response['success'] ) || empty( $response['style'] ) ) {
+			$logger->error( 'AI Style bad_response | missing success or style key', array( 'source' => 'evf-ai' ) );
+			return new WP_Error( 'bad_response', __( 'Unexpected response from AI service.', 'everest-forms' ) );
+		}
+
+		$logger->info( 'AI Style succeeded', array( 'source' => 'evf-ai' ) );
+
+		return $response['style'];
 	}
 
 	/**
@@ -93,11 +180,12 @@ class EVF_AI_API {
 		);
 
 		$body = array(
-			'prompt'        => $prompt,
-			'refine_prompt' => $refine_prompt,
-			'form_id'       => $form_id,
-			'license_key'   => self::get_license_key(),
-			'current_form'  => self::get_current_form_context( $form_id ),
+			'prompt'                => $prompt,
+			'refine_prompt'         => $refine_prompt,
+			'form_id'               => $form_id,
+			'license_key'           => self::get_license_key(),
+			'current_form'          => self::get_current_form_context( $form_id ),
+			'client_supports_style' => self::client_supports_style(),
 		);
 
 		$response = self::request( 'POST', '/ai/v1/update', $body, $token );
@@ -209,7 +297,7 @@ class EVF_AI_API {
 		$email_conns = $data['settings']['email'] ?? [];
 		$conn1       = $email_conns['connection_1'] ?? [];
 
-		return [
+		$context = [
 			'form_title'              => $post->post_title,
 			'form_type'               => $form_type,
 			'multipart_steps'         => $multipart_steps,
@@ -229,6 +317,20 @@ class EVF_AI_API {
 				'reply_to'  => $email_conns['connection_2']['evf_reply_to'] ?? 'auto',
 			] : [],
 		];
+
+		// Current Style Customizer v2 record, if any — lets a plain-form refine that implies
+		// a look/colour change (e.g. "make it feel more playful") adjust the existing style
+		// instead of the gateway guessing blind. Same gate maybe_apply_ai_style() uses to
+		// write this option, kept in sync deliberately.
+		if ( class_exists( '\EverestForms\Addons\StyleCustomizer\V2\Engine' )
+			&& \EverestForms\Addons\StyleCustomizer\V2\Engine::enabled() ) {
+			$styles = get_option( 'everest_forms_styles', array() );
+			if ( ! empty( $styles[ $form_id ] ) ) {
+				$context['style'] = $styles[ $form_id ];
+			}
+		}
+
+		return $context;
 	}
 
 	/**
