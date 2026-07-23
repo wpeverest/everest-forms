@@ -5352,8 +5352,31 @@ p.search-box {
 				}
 
 				&#everest-forms-panel-field-settings-query_string-wrap {
+					flex-wrap: wrap;
+
+					> label {
+						flex: 0 0 300px;
+					}
+
+					> input[type='text'] {
+						flex: 1 1 0;
+						width: auto;
+						min-width: 0;
+					}
+
 					.evf-toggle-smart-tag-display {
-						top: 32px;
+						// Align the smart-tag icon inside the single-line input
+						// (the 2-column layout puts the input at the row top).
+						top: 5px;
+					}
+
+					// EVF-2643: keep the example/help text on its own line,
+					// aligned beneath the input instead of beside it.
+					.desc {
+						flex: 0 0 100%;
+						box-sizing: border-box;
+						padding-left: 312px; // 300px label column + 12px flex gap
+						margin: 6px 0 0;
 					}
 				}
 
@@ -6985,6 +7008,23 @@ p.search-box {
 		margin: 1em 0;
 	}
 
+	.evf-fm-select-popular-form {
+		display: flex;
+		align-items: center;
+
+		select {
+			margin: 0;
+		}
+
+		.evf-loading {
+			margin: 0 0 0 10px;
+		}
+
+		.select2-container .dropdown-wrapper[aria-hidden='true'] {
+			display: none;
+		}
+	}
+
 	.description {
 		margin-bottom: 16px;
 
@@ -7072,6 +7112,7 @@ p.search-box {
 						td {
 							.evf-fm-import-actions {
 								display: flex;
+								align-items: center;
 							}
 
 							width: 600px;
@@ -7145,9 +7186,13 @@ p.search-box {
 				.evf-fm-import-selected-wrapper {
 					display: flex;
 					flex-direction: row;
-					justify-content: space-between;
+					align-items: center;
 					margin-left: 15px;
 					margin-right: 100px;
+
+					.evf-fm-pagination {
+						margin-left: auto;
+					}
 				}
 
 				.evf-fm-import-selected-btn {
@@ -12774,14 +12819,30 @@ body {
 							padding: 0 24px !important;
 						}
 
+						.evf-fm-select-popular-form {
+							display: flex;
+							align-items: center;
+							margin-top: 8px;
+							margin-bottom: 24px;
+
+							.evf-loading {
+								margin: 0 0 0 10px;
+							}
+						}
+
 						.select2 {
 							&-container {
+								display: flex;
+								align-items: center;
 								min-height: 38px;
-								margin-top: 8px;
-								margin-bottom: 24px;
 								padding-right: 0 !important;
 								padding-left: 0 !important;
 								margin-left: 24px;
+
+								> .selection {
+									flex: 1;
+									min-width: 0;
+								}
 							}
 
 							&-selection {

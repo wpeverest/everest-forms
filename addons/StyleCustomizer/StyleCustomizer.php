@@ -43,5 +43,8 @@ class StyleCustomizer {
 		if ( class_exists( 'EverestForms_Style_Customizer' ) ) {
 			\EverestForms_Style_Customizer::get_instance();
 		}
+
+		// Style Customizer v2 engine (on by default; see V2\Engine::enabled()).
+		V2\Engine::boot();
 	}
 }
