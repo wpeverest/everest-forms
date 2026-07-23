@@ -5352,8 +5352,31 @@ p.search-box {
 				}
 
 				&#everest-forms-panel-field-settings-query_string-wrap {
+					flex-wrap: wrap;
+
+					> label {
+						flex: 0 0 300px;
+					}
+
+					> input[type='text'] {
+						flex: 1 1 0;
+						width: auto;
+						min-width: 0;
+					}
+
 					.evf-toggle-smart-tag-display {
-						top: 32px;
+						// Align the smart-tag icon inside the single-line input
+						// (the 2-column layout puts the input at the row top).
+						top: 5px;
+					}
+
+					// EVF-2643: keep the example/help text on its own line,
+					// aligned beneath the input instead of beside it.
+					.desc {
+						flex: 0 0 100%;
+						box-sizing: border-box;
+						padding-left: 312px; // 300px label column + 12px flex gap
+						margin: 6px 0 0;
 					}
 				}
 
