@@ -351,6 +351,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 * Fix 		  - Loader alignment in form migrator.
 * Fix 		  - Currency symbol issue on subscription field.
 * Fix 		  - Add preset not working for multi choice field.
+* Dev 		  - Conditional logic not working for address field.
 * Fix 		  - Missing capability check arbitary plugin activation.
 
 = 3.5.2       - 02-07-2026
