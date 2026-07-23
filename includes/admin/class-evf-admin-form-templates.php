@@ -99,6 +99,9 @@ class EVF_Admin_Form_Templates {
 			array(
 				'security'     => wp_create_nonce( 'wp_rest' ),
 				'restURL'      => rest_url(),
+				// Base URL for the AI preview iframe — form_id isn't known until generation,
+				// so the full ?form_id=&evf_preview=true URL is assembled client-side.
+				'homeUrl'      => home_url( '/' ),
 				// ThemeGrill AI Cloud (Python gateway) — used by the Create with AI flow.
 				'ajaxUrl'      => admin_url( 'admin-ajax.php' ),
 				'aiNonce'      => wp_create_nonce( 'evf_ai_nonce' ),

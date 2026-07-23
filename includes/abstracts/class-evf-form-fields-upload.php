@@ -303,7 +303,6 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 
 			$content  = file_get_contents( $path );
 			$patterns = array(
-				'/\/JS\b/',
 				'/\/JavaScript\b/',
 				'/eval\(/i',
 				'/app\.alert/i',

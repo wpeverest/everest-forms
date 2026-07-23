@@ -40,6 +40,10 @@ class EVF_Admin_Assets {
 	 * @param object $field_obj Field class instance.
 	 */
 	public function output_conditional_logic_upsell( $field, $field_obj ) {
+		if ( ( isset( $field_obj->type ) && 'hidden' === $field_obj->type ) || ( isset( $field['type'] ) && 'hidden' === $field['type'] ) ) {
+			return;
+		}
+
 		$field_id    = esc_attr( $field['id'] );
 		$upgrade_url = 'https://everestforms.net/pricing/?utm_source=WordPress&utm_medium=evf-field-options&utm_campaign=conditional-logic-upsell&utm_content=Upgrade+to+Pro';
 		?>
@@ -290,6 +294,8 @@ class EVF_Admin_Assets {
 					'form_one_time_draggable_fields'      => evf_get_one_time_draggable_fields(),
 					'i18n_privacy_policy_consent_message' => esc_html__( 'I allow this website to collect and store the submitted data.', 'everest-forms' ),
 					'is_pro'                              => ( ! defined( 'EFP_PLUGIN_FILE' ) ) ? false : true,
+					'currency_symbol'                     => function_exists( 'evf_get_currencies' ) ? ( evf_get_currencies()[ strtoupper( get_option( 'everest_forms_currency', 'USD' ) ) ]['symbol'] ?? '&#36;' ) : '&#36;',
+					'currency_symbol_pos'                 => function_exists( 'evf_get_currencies' ) ? ( evf_get_currencies()[ strtoupper( get_option( 'everest_forms_currency', 'USD' ) ) ]['symbol_pos'] ?? 'left' ) : 'left',
 					'select_form_tags_placeholder'        => __( 'Please choose a tags from the list, or type in a new tag if you\'d like to add one.', 'everest-forms' ),
 					'i18n_expiry_trial_min_date'          => esc_html__( 'Expiry must be on or after the trial ends (%s).', 'everest-forms' ),
 					'i18n_expiry_trial_blocked_day'       => esc_html__( 'This date is within the trial period and cannot be used as the expiry date.', 'everest-forms' ),

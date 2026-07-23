@@ -41,6 +41,12 @@
 	<rule ref="WordPress.Files.FileName.InvalidClassFileName">
 		<exclude-pattern>includes/**/abstract-*.php</exclude-pattern>
 		<exclude-pattern>includes/class-everest-forms.php</exclude-pattern>
+		<!-- Style Customizer v2 classes are PSR-4 (EverestForms\Addons\ → addons/), so they must
+		     keep the PascalCase class-name filename the autoloader resolves. -->
+		<exclude-pattern>addons/StyleCustomizer/V2/</exclude-pattern>
+	</rule>
+	<rule ref="WordPress.Files.FileName.NotHyphenatedLowercase">
+		<exclude-pattern>addons/StyleCustomizer/V2/</exclude-pattern>
 	</rule>
 
 	<!-- Custom rule properties -->

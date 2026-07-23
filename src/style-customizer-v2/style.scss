@@ -1,0 +1,3247 @@
+/**
+ * Style Customizer v2 — builder panel chrome, scoped under `#everest-forms-panel-style`
+ * (controls + the portaled live preview). Form-styling tokens (`--evf-*`) live in the
+ * preview iframe instead, via the shared `frontend.css` rule template.
+ */
+
+#everest-forms-panel-style {
+	/* Palette aligned to the Everest Forms builder. */
+	--ui-ink: #23282d;
+	--ui-ink-2: #383838;
+	--ui-ink-3: #6d6d6d;
+	--ui-icon: #6d6d6d;
+	--ui-line: #e1e1e1;
+	--ui-line-2: #edeff7;
+	--ui-input-border: #cdd0d8;
+	--ui-bg: #f0f0f1;
+	--ui-bg-subtle: #f6f7f9;
+	--ui-bg-hover: #fafbfd;
+	--ui-purple: #7545bb;
+	--ui-purple-600: #5317aa;
+	--ui-purple-50: #f6f3fa;
+	--ui-purple-100: #e9e2f3;
+	--ui-red: #dc2626;
+	--ui-red-50: #fef2f2;
+	--ui-green: #15803d;
+	--ui-green-50: #f0fdf4;
+	--ui-amber: #b45309;
+	--ui-amber-50: #fffbeb;
+	--ui-amber-100: #fde68a;
+	--ui-amber-700: #92400e;
+
+	/* Pro-showcase colours — matches the plugin's established "this is Pro" language (evf-locked-fields.scss). */
+	--ui-pro-cta: #7e3bd0;
+	--ui-pro-cta-hover: #6c2fbb;
+	--ui-pro-card-bg: #faf9fb;
+	--ui-pro-card-border: #e8e6ee;
+
+	/* One elevation system, three tiers. */
+	--ui-shadow-sm: 0 1px 2px rgba(20, 23, 40, .06);
+	--ui-shadow: 0 1px 2px rgba(20, 23, 40, .04), 0 12px 28px -8px rgba(20, 23, 40, .08);
+	--ui-shadow-lg: 0 2px 4px rgba(20, 23, 40, .06), 0 20px 44px -14px rgba(20, 23, 40, .22);
+	--ui-focus: 0 0 0 1px #fff, 0 0 0 3px var(--ui-purple);
+	--ui-focus-soft: 0 0 0 2px var(--ui-purple-50);
+
+	/* Border-radius scale — sm for chips/badges, md for inputs/controls, lg for cards. */
+	--ui-radius-sm: 4px;
+	--ui-radius-md: 6px;
+	--ui-radius-lg: 9px;
+
+	/* Type scale (~1.15–1.2×) — every panel font-size should be one of these, not a one-off. */
+	--ui-fs-2xs: 10px;
+	--ui-fs-xs: 11px;
+	--ui-fs-sm: 12.5px;
+	--ui-fs-base: 14px;
+	--ui-fs-md: 16px;
+	--ui-fs-lg: 19px;
+	--ui-fs-xl: 22px;
+
+	/* One shared height for every small inline control, so mixed rows sit on one visual baseline. */
+	--ui-ctrl-h: 32px;
+
+	/* The builder content area holds the preview flush; the sidebar keeps its native chrome. */
+	.everest-forms-panel-content {
+		padding: 0;
+		background: var(--ui-bg);
+		overflow: hidden;
+	}
+
+	*,
+	*::before,
+	*::after {
+		box-sizing: border-box;
+	}
+
+	button:focus-visible,
+	input:focus-visible,
+	select:focus-visible,
+	textarea:focus-visible,
+	[tabindex]:focus-visible {
+		outline: none;
+		box-shadow: var(--ui-focus);
+		border-radius: 5px;
+	}
+
+	/* Rows/cards with their own border+radius keep it instead of the generic 5px-radius rule above. */
+	.elrow:focus-visible,
+	.pal-card:focus-visible {
+		outline: none;
+		box-shadow: var(--ui-focus-soft);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	#everest-forms-panel-style *,
+	#everest-forms-panel-style *::before,
+	#everest-forms-panel-style *::after {
+		transition: none !important;
+		animation: none !important;
+	}
+}
+
+/* ---------- controls (inside the builder's 400px sidebar) ---------- */
+#everest-forms-panel-style #evf-scv2-controls {
+	height: 100%;
+}
+
+#everest-forms-panel-style .scv2-panel {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	min-height: 0;
+	min-width: 0;
+	background: #fff;
+	color: var(--ui-ink-2);
+	font-size: 13px;
+	line-height: 1.5;
+}
+
+#everest-forms-panel-style .scv2-panel button {
+	font-family: inherit;
+}
+
+#everest-forms-panel-style .evfscv2-boot {
+	padding: 30px;
+	color: var(--ui-ink-3);
+	font-size: 13px;
+}
+
+/* Sub-tabs mirror the builder's Fields panel tab bar (`.everest-forms-fields-tab` in admin.scss). */
+#everest-forms-panel-style .subtabs {
+	display: flex;
+	align-items: stretch;
+	padding: 0;
+	gap: 0;
+	flex: none;
+	background: var(--ui-bg-subtle);
+}
+
+#everest-forms-panel-style .subtabs-main {
+	display: flex;
+	flex: 1;
+	min-width: 0;
+}
+
+/* Undo/redo: a small, always-visible icon pair beside the tabs (global across all sub-panes). */
+#everest-forms-panel-style .subtabs-actions {
+	display: flex;
+	align-items: center;
+	gap: 2px;
+	flex: none;
+	padding: 0 6px;
+}
+
+#everest-forms-panel-style .uxbtn {
+	width: 28px;
+	height: 28px;
+	display: grid;
+	place-items: center;
+	border: 0;
+	background: none;
+	border-radius: var(--ui-radius-sm);
+	color: var(--ui-ink-3);
+	cursor: pointer;
+	flex: none;
+	transition: background .12s, color .12s;
+
+	svg {
+		width: 15px;
+		height: 15px;
+	}
+
+	&:hover:not(:disabled) {
+		background: var(--ui-bg-hover);
+		color: var(--ui-ink);
+	}
+
+	&:disabled {
+		opacity: .35;
+		cursor: default;
+	}
+}
+
+#everest-forms-panel-style .subtab {
+	flex: 1;
+	display: block;
+	text-align: center;
+	padding: 12px 4px 16px;
+	font-size: var(--ui-fs-base);
+	line-height: 150%;
+	font-weight: 500;
+	color: var(--ui-ink-2);
+	background: var(--ui-bg-subtle);
+	border: 0;
+	border-top: 3px solid transparent;
+	cursor: pointer;
+	transition: all .3s ease-in-out;
+
+	&:hover {
+		color: var(--ui-purple);
+	}
+
+	&[aria-selected="true"] {
+		background: #fff;
+		color: var(--ui-purple);
+		border-top-color: var(--ui-purple);
+	}
+}
+
+/* drill-down back header */
+#everest-forms-panel-style .navback {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 6px 10px;
+	border-bottom: 1px solid var(--ui-line-2);
+	flex: none;
+}
+
+#everest-forms-panel-style .navback .bk {
+	display: flex;
+	align-items: center;
+	gap: 9px;
+	border: 0;
+	background: none;
+	cursor: pointer;
+	color: var(--ui-ink);
+	font-weight: 600;
+	font-size: 13.5px;
+	padding: 7px 8px;
+	border-radius: 8px;
+	flex: 1;
+	min-width: 0;
+	transition: background .15s ease;
+
+	&:hover {
+		background: var(--ui-purple-50);
+	}
+
+	&:focus-visible {
+		outline: none;
+		box-shadow: var(--ui-focus);
+	}
+
+	> svg {
+		width: 17px;
+		height: 17px;
+		color: var(--ui-purple);
+		flex: none;
+	}
+
+	.ic {
+		width: 27px;
+		height: 27px;
+		border-radius: var(--ui-radius-md);
+		background: var(--ui-purple-50);
+		display: grid;
+		place-items: center;
+		flex: none;
+	}
+
+	.ic svg {
+		width: 15px;
+		height: 15px;
+		color: var(--ui-purple);
+	}
+}
+
+/* responsive context strip */
+#everest-forms-panel-style .ctxbar {
+	margin: 12px 16px 0;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	background: var(--ui-purple-50);
+	border: 1px solid var(--ui-purple-100);
+	border-radius: var(--ui-radius-md);
+	padding: 7px 10px;
+	font-size: 11.5px;
+	color: var(--ui-ink-2);
+
+	b {
+		color: var(--ui-purple);
+	}
+
+	button.back {
+		margin-left: auto;
+		border: 1px solid var(--ui-input-border);
+		background: #fff;
+		border-radius: var(--ui-radius-sm);
+		padding: 4px 9px;
+		font-size: 11px;
+		font-weight: 600;
+		color: var(--ui-ink-2);
+		cursor: pointer;
+		white-space: nowrap;
+	}
+}
+
+#everest-forms-panel-style .panel-scroll {
+	overflow-y: auto;
+	padding: 16px;
+	flex: 1;
+	min-height: 0;
+	background: #fff;
+}
+
+/* Directional motion for list ↔ slate drill-down and sub-tab switching; transform/opacity only. */
+#everest-forms-panel-style .slate-anim {
+	animation: scv2slatein .16s ease-out;
+}
+
+@keyframes scv2slatein {
+	from {
+		opacity: 0;
+		transform: translateX(10px);
+	}
+	to {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+
+/* design list */
+#everest-forms-panel-style .block-title {
+	font-size: var(--ui-fs-xs);
+	font-weight: 600;
+	letter-spacing: .04em;
+	text-transform: uppercase;
+	color: var(--ui-ink-3);
+	margin: 18px 2px 8px;
+
+	&:first-child {
+		margin-top: 2px;
+	}
+}
+
+/* The panel's one real heading size, matching the builder's own section title (.evf-content-section-title). */
+#everest-forms-panel-style .slate-title {
+	font-size: var(--ui-fs-xl);
+	font-weight: 600;
+	color: var(--ui-ink);
+	margin: 0;
+	line-height: 1.3;
+}
+
+#everest-forms-panel-style .slate-title-row {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 8px;
+	margin: 2px 2px 4px;
+}
+
+#everest-forms-panel-style .hintline {
+	display: flex;
+	align-items: flex-start;
+	gap: 7px;
+	font-size: var(--ui-fs-xs);
+	color: var(--ui-ink-3);
+	line-height: 1.5;
+	margin: 0 2px 10px;
+
+	svg {
+		width: 14px;
+		height: 14px;
+		flex: none;
+		margin-top: 1px;
+		color: var(--ui-purple);
+	}
+}
+
+/* Secondary form-wide setting, pinned to the bottom of the Design list. */
+#everest-forms-panel-style .reset-all-link {
+	display: block;
+	margin: 14px auto 2px;
+	border: 0;
+	background: none;
+	color: var(--ui-ink-3);
+	font-size: var(--ui-fs-xs);
+	text-decoration: underline;
+	text-decoration-color: transparent;
+	cursor: pointer;
+	transition: color .12s, text-decoration-color .12s;
+
+	&:hover {
+		color: var(--ui-red);
+		text-decoration-color: currentColor;
+	}
+}
+
+#everest-forms-panel-style .theme-style-row {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	width: 100%;
+	margin-top: 18px;
+	padding: 12px 2px 2px;
+	border-top: 1px solid var(--ui-line-2);
+
+	.tsr-text {
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+		min-width: 0;
+		flex: 1;
+
+		b {
+			font-size: 12px;
+			font-weight: 600;
+			color: var(--ui-ink-2);
+		}
+
+		small {
+			font-size: 11px;
+			line-height: 1.45;
+			color: var(--ui-ink-3);
+		}
+	}
+}
+
+/* Custom dropdown language shared by every select in the panel (plain select + font combobox). */
+#everest-forms-panel-style .dsel {
+	position: relative;
+	width: 100%;
+}
+
+#everest-forms-panel-style .dsel-trigger {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 8px;
+	width: 100%;
+	height: var(--ui-ctrl-h);
+	border: 1px solid var(--ui-input-border);
+	border-radius: var(--ui-radius-md);
+	background: #fff;
+	padding: 0 10px;
+	cursor: pointer;
+	text-align: left;
+	font-size: 12.5px;
+	color: var(--ui-ink);
+	outline: none;
+	transition: border-color .12s, box-shadow .12s;
+
+	&:hover:not(:disabled) {
+		border-color: #b9bdc9;
+	}
+
+	&:focus,
+	&[aria-expanded="true"] {
+		outline: none;
+		border-color: var(--ui-purple);
+		box-shadow: var(--ui-focus-soft);
+	}
+
+	&:disabled {
+		opacity: .55;
+		cursor: not-allowed;
+	}
+
+	.dsel-val {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	.dsel-chev {
+		display: grid;
+		place-items: center;
+		color: var(--ui-ink-3);
+		flex: none;
+
+		svg {
+			width: 15px;
+			height: 15px;
+		}
+	}
+}
+
+#everest-forms-panel-style .dsel-pop {
+	position: absolute;
+	z-index: 30;
+	top: calc(100% + 4px);
+	left: 0;
+	right: 0;
+	background: #fff;
+	border: 1px solid var(--ui-line);
+	border-radius: var(--ui-radius-md);
+	box-shadow: var(--ui-shadow);
+	overflow: hidden;
+	transform-origin: top center;
+	animation: scv2popin .12s ease-out;
+}
+
+#everest-forms-panel-style .dsel-search-wrap {
+	position: relative;
+	border-bottom: 1px solid var(--ui-line-2);
+	transition: border-color .12s;
+
+	&:focus-within {
+		border-bottom-color: var(--ui-purple);
+	}
+}
+
+#everest-forms-panel-style .dsel-search-ic {
+	position: absolute;
+	left: 11px;
+	top: 50%;
+	transform: translateY(-50%);
+	width: 14px;
+	height: 14px;
+	color: var(--ui-ink-3);
+	pointer-events: none;
+}
+
+#everest-forms-panel-style .dsel-search {
+	width: 100%;
+	display: block;
+	border: 0;
+	padding: 9px 11px 9px 32px;
+	font-size: 12.5px;
+	color: var(--ui-ink);
+	background: none;
+	outline: none;
+	box-shadow: none;
+
+	&:focus {
+		outline: none;
+		box-shadow: none;
+	}
+}
+
+#everest-forms-panel-style .dsel-list {
+	max-height: 240px;
+	overflow-y: auto;
+	padding: 4px;
+}
+
+#everest-forms-panel-style .dsel-opt {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	width: 100%;
+	text-align: left;
+	border: 0;
+	background: none;
+	padding: 7px 9px;
+	font-size: 12.5px;
+	color: var(--ui-ink-2);
+	border-radius: var(--ui-radius-sm);
+	cursor: pointer;
+
+	&:hover,
+	&.active {
+		background: var(--ui-purple-50);
+	}
+
+	&.sel {
+		color: var(--ui-purple);
+		font-weight: 600;
+	}
+
+	.dsel-check {
+		display: grid;
+		place-items: center;
+		width: 15px;
+		height: 15px;
+		flex: none;
+		color: var(--ui-purple);
+
+		svg {
+			width: 13px;
+			height: 13px;
+		}
+	}
+}
+
+#everest-forms-panel-style .dsel-empty {
+	padding: 14px 10px;
+	font-size: 12px;
+	color: var(--ui-ink-3);
+	text-align: center;
+}
+
+#everest-forms-panel-style .pal-select {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	width: 100%;
+	border: 1px solid var(--ui-input-border);
+	border-radius: var(--ui-radius-sm);
+	background: #fff;
+	padding: 8px 12px;
+	cursor: pointer;
+	text-align: left;
+	transition: border-color .12s, box-shadow .12s;
+
+	&:hover {
+		border-color: #b9bdc9;
+	}
+
+	&[aria-expanded="true"] {
+		border-color: var(--ui-purple);
+		box-shadow: var(--ui-focus-soft);
+	}
+
+	.sw {
+		display: flex;
+		gap: 4px;
+		flex: none;
+	}
+
+	.sw i {
+		width: 16px;
+		height: 16px;
+		border-radius: 50%;
+		flex: none;
+		box-shadow: inset 0 0 0 1px rgba(20, 23, 40, .08);
+	}
+
+	.nm {
+		flex: 1;
+		font-size: 12.5px;
+		font-weight: 600;
+		color: var(--ui-ink);
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	.nm::before {
+		content: "PALETTE";
+		display: block;
+		font-size: 9.5px;
+		font-weight: 600;
+		color: var(--ui-ink-3);
+		letter-spacing: .08em;
+		margin-bottom: 1px;
+	}
+
+	.chev {
+		width: 24px;
+		height: 24px;
+		border-radius: var(--ui-radius-sm);
+		background: var(--ui-bg-subtle);
+		color: var(--ui-ink-3);
+		display: grid;
+		place-items: center;
+		transition: background .15s, color .15s, transform .15s;
+		flex: none;
+		font-size: 13px;
+
+		svg {
+			width: 13px;
+			height: 13px;
+		}
+	}
+
+	&[aria-expanded="true"] .chev {
+		background: var(--ui-purple-50);
+		color: var(--ui-purple);
+	}
+
+	&[aria-expanded="true"] .chev:not(.as-close) {
+		transform: rotate(180deg);
+	}
+
+	.chev.as-close:hover {
+		background: var(--ui-purple);
+		color: #fff;
+	}
+}
+
+#everest-forms-panel-style .ellist {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+#everest-forms-panel-style .elrow {
+	display: flex;
+	align-items: center;
+	gap: 11px;
+	width: 100%;
+	border: 1px solid var(--ui-line);
+	border-radius: var(--ui-radius-sm);
+	background: #fff;
+	padding: 11px 12px;
+	cursor: pointer;
+	text-align: left;
+	transition: border-color .12s, background .12s;
+
+	&:hover {
+		border-color: var(--ui-purple);
+		background: var(--ui-purple-50);
+	}
+
+	.ic {
+		width: 28px;
+		height: 28px;
+		border-radius: var(--ui-radius-md);
+		background: var(--ui-purple-50);
+		color: var(--ui-purple);
+		display: grid;
+		place-items: center;
+		flex: none;
+	}
+
+	.ic svg {
+		width: 16px;
+		height: 16px;
+	}
+
+	.tx {
+		flex: 1;
+		min-width: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 1px;
+	}
+
+	.tx b {
+		font-size: 12.5px;
+		font-weight: 600;
+		color: var(--ui-ink);
+	}
+
+	.tx small {
+		color: var(--ui-ink-3);
+		font-size: 11px;
+	}
+
+	.dot {
+		width: 7px;
+		height: 7px;
+		border-radius: 50%;
+		background: var(--ui-purple);
+		opacity: 0;
+		flex: none;
+	}
+
+	&.dirty .dot {
+		opacity: 1;
+	}
+
+	.chev {
+		color: var(--ui-icon);
+		flex: none;
+		display: grid;
+		place-items: center;
+
+		svg {
+			width: 16px;
+			height: 16px;
+		}
+	}
+}
+
+/* state / variant tabs */
+#everest-forms-panel-style .state-seg {
+	display: flex;
+	gap: 4px;
+	margin: 4px 0 16px;
+	background: var(--ui-bg-subtle);
+	padding: 3px;
+	border-radius: 8px;
+
+	button {
+		flex: 1;
+		border: 0;
+		background: none;
+		padding: 6px 2px;
+		border-radius: var(--ui-radius-md);
+		font-size: 11px;
+		font-weight: 600;
+		color: var(--ui-ink-2);
+		cursor: pointer;
+		transition: background .12s, color .12s, box-shadow .12s;
+
+		&[aria-selected="true"] {
+			background: #fff;
+			color: var(--ui-purple);
+			box-shadow: var(--ui-shadow-sm);
+		}
+	}
+}
+
+/* Dep-dimmed / pro-locked controls (e.g. border width when the border style is None). */
+#everest-forms-panel-style .ctrl.shared-dim {
+	opacity: .55;
+	pointer-events: none;
+}
+
+#everest-forms-panel-style .sec-hint {
+	font-size: 11.5px;
+	color: var(--ui-ink-3);
+	margin: 2px 2px 16px;
+	line-height: 1.6;
+}
+
+/* Empty state (e.g. zero saved templates yet) — a quiet dashed placeholder. */
+#everest-forms-panel-style .empty-state {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+	gap: 6px;
+	padding: 22px 16px;
+	border: 1px dashed var(--ui-line);
+	border-radius: var(--ui-radius-lg);
+	color: var(--ui-ink-3);
+	font-size: var(--ui-fs-sm);
+	margin-bottom: 16px;
+
+	svg {
+		width: 20px;
+		height: 20px;
+		color: var(--ui-icon);
+		margin-bottom: 2px;
+	}
+}
+
+/* grouped cards — a quiet, flat surface used consistently across every section. */
+#everest-forms-panel-style .grp {
+	margin-bottom: 14px;
+
+	&:first-child {
+		margin-top: 0;
+	}
+
+	&:last-child {
+		margin-bottom: 0;
+	}
+}
+
+#everest-forms-panel-style #elBody .grp {
+	background: #fff;
+	border: 1px solid var(--ui-line);
+	border-radius: var(--ui-radius-lg);
+	padding: 16px;
+	box-shadow: var(--ui-shadow-sm);
+}
+
+#everest-forms-panel-style .grp-h {
+	font-size: 10.5px;
+	font-weight: 600;
+	color: var(--ui-ink-3);
+	letter-spacing: .06em;
+	text-transform: uppercase;
+	margin: 1px 0 14px;
+}
+
+#everest-forms-panel-style #elBody .grp .ctrl:last-child {
+	margin-bottom: 0;
+}
+
+/* controls */
+#everest-forms-panel-style .ctrl {
+	margin-bottom: 16px;
+	border-radius: var(--ui-radius-md);
+	position: relative;
+}
+
+/* Opening a slate by clicking an element in the live preview: a soft, quick background wash. */
+#everest-forms-panel-style #elBody.flash {
+	animation: scv2slateflash .6s ease-out;
+}
+
+@keyframes scv2slateflash {
+	0% {
+		background: var(--ui-purple-50);
+	}
+	100% {
+		background: transparent;
+	}
+}
+
+#everest-forms-panel-style .ctrl-lab {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 6px;
+	gap: 8px;
+}
+
+#everest-forms-panel-style .lab-left {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	min-width: 0;
+}
+
+#everest-forms-panel-style .ctrl-lab label {
+	font-size: 12px;
+	font-weight: 500;
+	color: var(--ui-ink-2);
+}
+
+#everest-forms-panel-style .ctrl-lab .lab-right {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+}
+
+#everest-forms-panel-style .ctrl.inherited .ctrl-lab label {
+	color: var(--ui-ink-3);
+}
+
+#everest-forms-panel-style .ctrl.inherited .ctrl-lab label::after {
+	content: " · inherited";
+	font-style: italic;
+	font-weight: 400;
+}
+
+#everest-forms-panel-style .px-hint {
+	font-size: 10px;
+	color: var(--ui-ink-3);
+	border: 1px solid var(--ui-line);
+	border-radius: var(--ui-radius-sm);
+	padding: 1px 5px;
+	background: var(--ui-bg-subtle);
+}
+
+#everest-forms-panel-style .prop-reset {
+	width: 24px;
+	height: 24px;
+	border: 0;
+	background: none;
+	border-radius: var(--ui-radius-md);
+	color: var(--ui-icon);
+	cursor: pointer;
+	display: none;
+	place-items: center;
+	flex: none;
+	transition: background .12s, color .12s;
+
+	svg {
+		width: 13px;
+		height: 13px;
+	}
+
+	&:hover {
+		background: var(--ui-line-2);
+		color: var(--ui-ink-2);
+	}
+}
+
+#everest-forms-panel-style .ctrl.changed .prop-reset {
+	display: grid;
+}
+
+#everest-forms-panel-style .dev-badge {
+	width: 26px;
+	height: 24px;
+	border: 1px solid var(--ui-line);
+	border-radius: var(--ui-radius-md);
+	background: #fff;
+	display: grid;
+	place-items: center;
+	cursor: pointer;
+	color: var(--ui-icon);
+	position: relative;
+	padding: 0;
+	flex: none;
+	transition: border-color .12s;
+
+	svg {
+		width: 13px;
+		height: 13px;
+		pointer-events: none;
+	}
+
+	&:hover {
+		border-color: #b9bdc9;
+	}
+
+	&.override {
+		border-color: var(--ui-purple);
+		color: var(--ui-purple);
+		background: var(--ui-purple-50);
+	}
+
+	&.override::after {
+		content: "";
+		position: absolute;
+		top: -4px;
+		right: -4px;
+		width: 8px;
+		height: 8px;
+		border-radius: 50%;
+		background: var(--ui-purple);
+		border: 1.5px solid #fff;
+	}
+}
+
+#everest-forms-panel-style .slider {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+
+	.slider-track {
+		position: relative;
+		flex: 1;
+		min-width: 0;
+	}
+
+	/* Value bubble that follows the thumb — shown on hover, drag, and keyboard focus. */
+	.slider-tip {
+		position: absolute;
+		bottom: calc(100% + 8px);
+		background: #1f2433;
+		color: #fff;
+		font-size: 11px;
+		font-weight: 600;
+		line-height: 1;
+		padding: 4px 7px;
+		border-radius: var(--ui-radius-sm);
+		white-space: nowrap;
+		pointer-events: none;
+		opacity: 0;
+		transform: translateX(-50%) translateY(2px);
+		transition: opacity .12s ease, transform .12s ease;
+		font-variant-numeric: tabular-nums;
+		z-index: 2;
+
+		&::after {
+			content: "";
+			position: absolute;
+			top: 100%;
+			left: 50%;
+			transform: translateX(-50%);
+			border: 4px solid transparent;
+			border-top-color: #1f2433;
+		}
+	}
+
+	input[type="range"] {
+		-webkit-appearance: none;
+		appearance: none;
+		width: 100%;
+		display: block;
+		min-width: 0;
+		height: 15px;
+		background: transparent;
+		cursor: pointer;
+		margin: 0;
+
+		&:hover ~ .slider-tip,
+		&:active ~ .slider-tip,
+		&:focus-visible ~ .slider-tip {
+			opacity: 1;
+			transform: translateX(-50%) translateY(0);
+		}
+
+		/* Filled track — `--fill` is set inline from the resolved value (see ControlRenderer.tsx). */
+		&::-webkit-slider-runnable-track {
+			height: 4px;
+			border-radius: 99px;
+			background: linear-gradient(to right, var(--ui-purple) var(--fill, 0%), var(--ui-line-2) var(--fill, 0%));
+			transition: filter .12s ease;
+		}
+
+		/* Firefox exposes the filled portion as its own pseudo-element — no gradient trick needed. */
+		&::-moz-range-track {
+			height: 4px;
+			border-radius: 99px;
+			background: var(--ui-line-2);
+		}
+
+		&::-moz-range-progress {
+			height: 4px;
+			border-radius: 99px;
+			background: var(--ui-purple);
+			transition: filter .12s ease;
+		}
+
+		&:hover::-webkit-slider-runnable-track,
+		&:hover::-moz-range-progress {
+			filter: brightness(.88);
+		}
+
+		/* A clean white disc with a purple ring — modern, legible at a glance, no native chrome. */
+		&::-webkit-slider-thumb {
+			-webkit-appearance: none;
+			width: 15px;
+			height: 15px;
+			border-radius: 50%;
+			background: #fff;
+			border: 2px solid var(--ui-purple);
+			margin-top: -6px;
+			box-shadow: 0 1px 2px rgba(20, 23, 40, .12);
+			transition: box-shadow .12s ease, transform .12s ease;
+		}
+
+		&::-moz-range-thumb {
+			width: 13px;
+			height: 13px;
+			border-radius: 50%;
+			background: #fff;
+			border: 2px solid var(--ui-purple);
+			box-shadow: 0 1px 2px rgba(20, 23, 40, .12);
+		}
+
+		&:hover::-webkit-slider-thumb,
+		&:hover::-moz-range-thumb {
+			transform: scale(1.1);
+		}
+
+		&:focus-visible {
+			outline: none;
+		}
+
+		&:focus-visible::-webkit-slider-thumb {
+			box-shadow: 0 0 0 4px var(--ui-purple-50);
+		}
+
+		&:focus-visible::-moz-range-thumb {
+			box-shadow: 0 0 0 4px var(--ui-purple-50);
+		}
+	}
+
+	/* Safety net: reveal the value bubble on hovering anywhere in the slider row. */
+	&:hover .slider-tip {
+		opacity: 1;
+		transform: translateX(-50%) translateY(0);
+	}
+}
+
+#everest-forms-panel-style .num {
+	width: 62px;
+	height: var(--ui-ctrl-h);
+	display: flex;
+	border: 1px solid var(--ui-input-border);
+	border-radius: var(--ui-radius-md);
+	overflow: hidden;
+	flex: none;
+	transition: border-color .12s, box-shadow .12s;
+
+	&:focus-within {
+		border-color: var(--ui-purple);
+		box-shadow: var(--ui-focus-soft);
+	}
+
+	input {
+		width: 100%;
+		border: 0;
+		padding: 0 4px;
+		font-size: 12px;
+		text-align: center;
+		color: var(--ui-ink);
+		font-variant-numeric: tabular-nums;
+		background: none;
+		outline: none;
+		box-shadow: none;
+
+		&:focus {
+			outline: none;
+			box-shadow: none;
+		}
+	}
+
+	span {
+		background: var(--ui-bg-subtle);
+		border-left: 1px solid var(--ui-line);
+		padding: 0 5px;
+		color: var(--ui-ink-3);
+		font-size: 10px;
+		display: grid;
+		place-items: center;
+	}
+}
+
+#everest-forms-panel-style .color {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	height: var(--ui-ctrl-h);
+	border: 1px solid var(--ui-input-border);
+	border-radius: var(--ui-radius-md);
+	padding: 0 8px;
+	transition: border-color .12s, box-shadow .12s;
+
+	/* The hex text field has no border of its own, so the whole box shows the focus ring. */
+	&:focus-within {
+		border-color: var(--ui-purple);
+		box-shadow: var(--ui-focus-soft);
+	}
+
+	input[type="color"] {
+		width: 22px;
+		height: 22px;
+		border: 0;
+		background: none;
+		padding: 0;
+		cursor: pointer;
+		border-radius: var(--ui-radius-sm);
+		flex: none;
+	}
+
+	.hex {
+		flex: 1;
+		border: 0;
+		font-size: 12px;
+		font-family: ui-monospace, monospace;
+		color: var(--ui-ink);
+		min-width: 0;
+		background: none;
+		outline: none;
+		box-shadow: none;
+
+		&:focus {
+			outline: none;
+			box-shadow: none;
+		}
+	}
+
+	.err {
+		font-size: 10.5px;
+		color: var(--ui-red);
+		white-space: nowrap;
+	}
+
+	&.invalid {
+		border-color: var(--ui-red);
+	}
+}
+
+#everest-forms-panel-style .dep-hint {
+	font-size: 11px;
+	color: var(--ui-ink-3);
+	margin-top: 5px;
+	line-height: 1.45;
+}
+
+/* Inputs and their T/R/B/L labels share one flex column so the link/unit buttons align with the top. */
+#everest-forms-panel-style .box4 {
+	display: flex;
+	gap: 5px;
+	align-items: flex-start;
+
+	.box4-cells {
+		flex: 1;
+		min-width: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 3px;
+	}
+
+	.box4-inputs {
+		display: flex;
+		gap: 5px;
+	}
+
+	.cell {
+		flex: 1;
+		min-width: 0;
+	}
+
+	.cell .num {
+		width: 100%;
+	}
+
+	.box4-abbr {
+		display: flex;
+		gap: 5px;
+	}
+
+	.box4-abbr small {
+		flex: 1;
+		display: block;
+		text-align: center;
+		color: var(--ui-ink-3);
+		font-size: 10px;
+	}
+
+	.link {
+		width: var(--ui-ctrl-h);
+		height: var(--ui-ctrl-h);
+		border: 1px solid var(--ui-input-border);
+		border-radius: var(--ui-radius-md);
+		background: #fff;
+		cursor: pointer;
+		display: grid;
+		place-items: center;
+		color: var(--ui-icon);
+		flex: none;
+		transition: border-color .12s, background .12s, color .12s;
+
+		&[aria-pressed="true"] {
+			border-color: var(--ui-purple);
+			color: var(--ui-purple);
+			background: var(--ui-purple-50);
+		}
+
+		svg {
+			width: 14px;
+			height: 14px;
+		}
+	}
+
+	.unit-tgl {
+		height: var(--ui-ctrl-h);
+		min-width: 34px;
+		border: 1px solid var(--ui-input-border);
+		border-radius: var(--ui-radius-md);
+		background: var(--ui-bg-subtle);
+		cursor: pointer;
+		color: var(--ui-ink-2);
+		font-size: 11px;
+		font-weight: 600;
+		flex: none;
+		padding: 0 8px;
+		transition: border-color .12s, color .12s;
+
+		&:hover {
+			border-color: var(--ui-purple);
+			color: var(--ui-purple);
+		}
+	}
+}
+
+#everest-forms-panel-style .iconset,
+#everest-forms-panel-style .fstyleset {
+	display: flex;
+	gap: 4px;
+
+	button {
+		flex: 1;
+		height: var(--ui-ctrl-h);
+		border: 1px solid var(--ui-input-border);
+		background: #fff;
+		border-radius: var(--ui-radius-md);
+		cursor: pointer;
+		color: var(--ui-ink-2);
+		font-size: 12px;
+		font-weight: 700;
+		display: grid;
+		place-items: center;
+		transition: border-color .12s, background .12s, color .12s;
+
+		&[aria-pressed="true"] {
+			border-color: var(--ui-purple);
+			background: var(--ui-purple-50);
+			color: var(--ui-purple);
+		}
+
+		svg {
+			width: 15px;
+			height: 15px;
+		}
+	}
+}
+
+#everest-forms-panel-style .switch {
+	width: 40px;
+	height: 22px;
+	border-radius: 99px;
+	background: #d4d7e0;
+	position: relative;
+	cursor: pointer;
+	flex: none;
+	transition: .2s;
+	border: 0;
+	padding: 0;
+
+	&::after {
+		content: "";
+		position: absolute;
+		top: 2px;
+		left: 2px;
+		width: 18px;
+		height: 18px;
+		border-radius: 50%;
+		background: #fff;
+		transition: .2s;
+		box-shadow: 0 1px 3px rgba(20, 23, 40, .2);
+	}
+
+	&[aria-checked="true"] {
+		background: var(--ui-purple);
+	}
+
+	&[aria-checked="true"]::after {
+		left: 20px;
+	}
+}
+
+#everest-forms-panel-style .mediactrl {
+	display: flex;
+	gap: 6px;
+	align-items: center;
+}
+
+#everest-forms-panel-style .mediabtn {
+	flex: 1;
+	height: var(--ui-ctrl-h);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border: 1px dashed var(--ui-input-border);
+	background: var(--ui-bg-subtle);
+	border-radius: var(--ui-radius-md);
+	padding: 0 9px;
+	font-size: 12px;
+	font-weight: 600;
+	color: var(--ui-purple);
+	cursor: pointer;
+	transition: border-color .12s, background .12s;
+
+	&:hover {
+		border-color: var(--ui-purple);
+		background: var(--ui-purple-50);
+	}
+}
+
+#everest-forms-panel-style .mediaclear {
+	width: var(--ui-ctrl-h);
+	height: var(--ui-ctrl-h);
+	display: grid;
+	place-items: center;
+	border: 1px solid var(--ui-input-border);
+	background: #fff;
+	border-radius: var(--ui-radius-md);
+	color: var(--ui-ink-2);
+	cursor: pointer;
+	flex: none;
+	transition: border-color .12s, color .12s;
+
+	svg {
+		width: 14px;
+		height: 14px;
+	}
+
+	&:hover {
+		border-color: var(--ui-red);
+		color: var(--ui-red);
+	}
+}
+
+/* custom CSS pane */
+#everest-forms-panel-style .pane-note {
+	font-size: 11.5px;
+	color: var(--ui-ink-3);
+	line-height: 1.55;
+	background: var(--ui-bg-subtle);
+	border: 1px solid var(--ui-line-2);
+	border-radius: var(--ui-radius-sm);
+	padding: 9px 11px;
+	margin: 2px 0 14px;
+
+	b {
+		color: var(--ui-ink-2);
+		font-weight: 600;
+	}
+}
+
+#everest-forms-panel-style .chips {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 5px;
+	margin-bottom: 8px;
+
+	button {
+		border: 1px solid var(--ui-line);
+		background: #fff;
+		border-radius: var(--ui-radius-sm);
+		padding: 4px 8px;
+		font-size: 11.5px;
+		font-family: ui-monospace, monospace;
+		color: var(--ui-ink-2);
+		cursor: pointer;
+
+		&:hover {
+			background: var(--ui-bg-hover);
+			border-color: var(--ui-purple);
+			color: var(--ui-purple);
+		}
+	}
+}
+
+#everest-forms-panel-style textarea.csscode {
+	width: 100%;
+	padding: 11px;
+	border: 1px solid var(--ui-input-border);
+	border-radius: var(--ui-radius-sm);
+	font-family: ui-monospace, monospace;
+	font-size: 12px;
+	min-height: 180px;
+	resize: vertical;
+	line-height: 1.6;
+	color: var(--ui-ink);
+	background: var(--ui-bg-subtle);
+	tab-size: 2;
+
+	&:focus {
+		border-color: var(--ui-purple);
+		box-shadow: var(--ui-focus-soft);
+		outline: none;
+	}
+}
+
+#everest-forms-panel-style .css-status {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin-top: 8px;
+	font-size: 11px;
+	color: var(--ui-ink-3);
+}
+
+/* templates pane */
+#everest-forms-panel-style .tpls {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 12px;
+	margin-bottom: 4px;
+}
+
+/* Hover/selected treatment mirrors .pal-card so the two feel like the same control language. */
+#everest-forms-panel-style .tpl {
+	position: relative;
+	border: 1px solid var(--ui-line);
+	border-radius: var(--ui-radius-lg);
+	overflow: hidden;
+	cursor: pointer;
+	background: #fff;
+	text-align: left;
+	padding: 0;
+	transition: border-color .12s, background .12s;
+
+	&:hover {
+		border-color: var(--ui-purple);
+		background: var(--ui-purple-50);
+	}
+
+	&:focus-visible {
+		outline: none;
+		border-color: var(--ui-purple);
+		box-shadow: var(--ui-focus-soft);
+	}
+
+	&[aria-pressed="true"] {
+		border-color: var(--ui-purple);
+		background: var(--ui-purple-50);
+
+		.cap {
+			color: var(--ui-purple);
+		}
+	}
+
+	.thumb {
+		height: 82px;
+		padding: 14px;
+		display: flex;
+		flex-direction: column;
+		gap: 7px;
+		justify-content: center;
+		transition: filter .15s ease, opacity .15s ease;
+	}
+
+	.thumb .l {
+		height: 6px;
+		width: 46%;
+		border-radius: 3px;
+	}
+
+	.thumb .f {
+		height: 13px;
+		border: 1px solid;
+		border-radius: var(--ui-radius-sm);
+	}
+
+	.thumb .b {
+		height: 12px;
+		width: 42%;
+		border-radius: var(--ui-radius-sm);
+	}
+
+	.cap {
+		padding: 9px 11px;
+		font-size: 11.5px;
+		font-weight: 600;
+		color: var(--ui-ink-2);
+		border-top: 1px solid var(--ui-line-2);
+		display: flex;
+		align-items: center;
+		gap: 6px;
+		transition: background .15s ease, color .15s ease;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+}
+
+#everest-forms-panel-style .tpl .thumb.thumb-has-img {
+	padding: 6px;
+	height: 122px;
+	overflow: hidden;
+	background: #fff;
+	display: block;
+
+	img {
+		width: 100%;
+		height: 100%;
+		object-fit: contain;
+		object-position: center;
+		display: block;
+	}
+}
+
+/* "Currently applied" checkmark — top-left, distinct from the top-right PRO/delete corner. */
+#everest-forms-panel-style .tpl-check {
+	position: absolute;
+	top: 7px;
+	left: 7px;
+	z-index: 2;
+	width: 19px;
+	height: 19px;
+	border-radius: 50%;
+	background: var(--ui-purple);
+	color: #fff;
+	display: grid;
+	place-items: center;
+	box-shadow: 0 1px 3px rgba(20, 23, 40, .25);
+
+	svg {
+		width: 11px;
+		height: 11px;
+	}
+}
+
+/* "Modified" hint — applied from this template, but since edited; a quiet amber pill, not a false ✓. */
+#everest-forms-panel-style .tpl-mod {
+	position: absolute;
+	top: 7px;
+	left: 7px;
+	z-index: 2;
+	font-size: 9px;
+	font-weight: 700;
+	letter-spacing: .04em;
+	text-transform: uppercase;
+	color: var(--ui-amber-700);
+	background: var(--ui-amber-50);
+	border: 1px solid var(--ui-amber-100);
+	border-radius: var(--ui-radius-sm);
+	padding: 2px 6px;
+	box-shadow: var(--ui-shadow-sm);
+}
+
+#everest-forms-panel-style .tpl.tpl-modified {
+	border-color: var(--ui-amber-100);
+}
+
+/* "Based on {built-in}" — a custom template's inferred parent, tucked under the template name. */
+#everest-forms-panel-style .tpl-parent {
+	display: block;
+	padding: 0 11px 9px;
+	margin-top: -5px;
+	font-size: 10px;
+	font-weight: 500;
+	line-height: 1.3;
+	color: var(--ui-ink-3);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+/* Locked (Pro) template card: dimmed thumbnail + PRO badge + a lock veil that fades in on hover. */
+#everest-forms-panel-style .tpl.tpl-locked {
+	.thumb {
+		opacity: .55;
+		filter: saturate( .6 );
+	}
+
+	.tpl-pro {
+		position: absolute;
+		top: 6px;
+		right: 6px;
+		z-index: 2;
+		filter: drop-shadow(0 1px 2px rgba(20, 23, 40, .2));
+
+		.pro-crown {
+			display: block;
+			width: 20px;
+			height: 20px;
+		}
+	}
+
+	&:hover .thumb {
+		filter: saturate( .5 ) blur( .5px );
+	}
+}
+
+#everest-forms-panel-style .tpl-lock-veil {
+	position: absolute;
+	inset: 0;
+	bottom: 37px;
+	z-index: 1;
+	display: grid;
+	place-items: center;
+	background: rgba(20, 23, 40, 0);
+	color: #fff;
+	opacity: 0;
+	transition: opacity .15s ease, background .15s ease;
+	pointer-events: none;
+
+	svg {
+		width: 18px;
+		height: 18px;
+		filter: drop-shadow(0 1px 2px rgba(0, 0, 0, .35));
+	}
+}
+
+#everest-forms-panel-style .tpl.tpl-locked:hover .tpl-lock-veil {
+	opacity: 1;
+	background: rgba(20, 23, 40, .28);
+}
+
+/* Locked "Create Style Template" box (save-your-own is Pro). */
+#everest-forms-panel-style .tpl-create-locked {
+	text-decoration: none;
+	opacity: 1;
+	cursor: pointer;
+
+	&:hover {
+		border-color: var(--ui-pro-cta);
+		background: var(--ui-pro-card-bg);
+
+		.tpl-create-ic {
+			background: var(--ui-pro-cta);
+			color: #fff;
+		}
+	}
+}
+
+/* Create Style Template card */
+#everest-forms-panel-style .tpl-create {
+	display: flex;
+	align-items: flex-start;
+	gap: 12px;
+	background: #fff;
+	border: 1px solid var(--ui-line);
+	border-radius: var(--ui-radius-lg);
+	padding: 14px;
+	margin-bottom: 18px;
+	transition: border-color .15s ease, background .15s ease;
+
+	&:focus-within {
+		border-color: var(--ui-purple);
+	}
+}
+
+/* Collapsed trigger — same shell as the open form (`.tpl-create`) so the swap doesn't jump in size. */
+#everest-forms-panel-style .tpl-create-trigger {
+	width: 100%;
+	text-align: left;
+	border: 1px dashed var(--ui-line);
+	cursor: pointer;
+
+	.tpl-create-sub {
+		margin-bottom: 0;
+	}
+
+	&:hover {
+		border-color: var(--ui-purple);
+		border-style: solid;
+		background: var(--ui-purple-50);
+
+		.tpl-create-ic {
+			background: var(--ui-purple);
+			color: #fff;
+		}
+	}
+
+	&:focus-visible {
+		outline: none;
+		border-color: var(--ui-purple);
+		border-style: solid;
+		box-shadow: var(--ui-focus-soft);
+	}
+}
+
+#everest-forms-panel-style .tpl-create-cancel {
+	border: 0;
+	background: none;
+	color: var(--ui-ink-3);
+	font-weight: 600;
+	font-size: 13px;
+	padding: 9px 10px;
+	cursor: pointer;
+	transition: color .12s;
+
+	&:hover {
+		color: var(--ui-ink);
+	}
+}
+
+#everest-forms-panel-style .tpl-create-ic {
+	flex: none;
+	display: grid;
+	place-items: center;
+	width: 32px;
+	height: 32px;
+	border-radius: 9px;
+	background: var(--ui-purple-50);
+	color: var(--ui-purple);
+	transition: background .15s ease, color .15s ease;
+
+	svg {
+		width: 16px;
+		height: 16px;
+	}
+}
+
+#everest-forms-panel-style .tpl-create-fields {
+	flex: 1;
+	min-width: 0;
+}
+
+#everest-forms-panel-style .tpl-create-title {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	font-size: 13px;
+	font-weight: 600;
+	color: var(--ui-ink);
+	margin-bottom: 3px;
+}
+
+#everest-forms-panel-style .tpl-create-sub {
+	font-size: 11.5px;
+	color: var(--ui-ink-3);
+	margin: 0 0 10px;
+	line-height: 1.5;
+}
+
+#everest-forms-panel-style .tpl-create-input {
+	width: 100%;
+	padding: 9px 11px;
+	border: 1px solid var(--ui-input-border);
+	border-radius: var(--ui-radius-md);
+	font-size: 13px;
+	color: var(--ui-ink);
+	background: #fff;
+
+	&:focus {
+		border-color: var(--ui-purple);
+		box-shadow: var(--ui-focus-soft);
+		outline: none;
+	}
+}
+
+#everest-forms-panel-style .tpl-create-row {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	gap: 10px;
+	margin-top: 11px;
+}
+
+#everest-forms-panel-style .tpl-create-err {
+	color: var(--ui-red);
+	font-size: 11px;
+	margin-right: auto;
+	line-height: 1.4;
+}
+
+#everest-forms-panel-style .tpl-create-btn {
+	background: var(--ui-purple);
+	color: #fff;
+	border: 0;
+	border-radius: var(--ui-radius-md);
+	padding: 9px 22px;
+	font-weight: 600;
+	font-size: 13px;
+	cursor: pointer;
+	transition: background .12s;
+
+	&:hover:not(:disabled) {
+		background: var(--ui-purple-600);
+	}
+
+	&:disabled {
+		opacity: .5;
+		cursor: default;
+	}
+}
+
+/* Delete affordance on user templates */
+#everest-forms-panel-style .tpl .tpl-del {
+	position: absolute;
+	top: 6px;
+	right: 6px;
+	z-index: 3;
+	width: 22px;
+	height: 22px;
+	border-radius: 50%;
+	background: rgba(20, 23, 40, .55);
+	color: #fff;
+	display: grid;
+	place-items: center;
+	cursor: pointer;
+	opacity: 0;
+	transition: opacity .12s, background .12s;
+
+	svg {
+		width: 11px;
+		height: 11px;
+	}
+
+	&:hover {
+		background: var(--ui-red);
+	}
+}
+
+#everest-forms-panel-style .tpl:hover .tpl-del,
+#everest-forms-panel-style .tpl .tpl-del:focus {
+	opacity: 1;
+}
+
+#everest-forms-panel-style .tpl-hint {
+	margin-top: 10px;
+	font-size: 11.5px;
+	color: var(--ui-ink-3);
+	line-height: 1.5;
+}
+
+/* pro lock — matches the builder's own locked-field banner (evf-locked-fields.scss). */
+#everest-forms-panel-style .pro-lock {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	background: var(--ui-pro-card-bg);
+	border: 1px solid var(--ui-pro-card-border);
+	border-radius: var(--ui-radius-lg);
+	padding: 10px 12px;
+	font-size: 11.5px;
+	color: var(--ui-ink-2);
+	line-height: 1.5;
+	margin-bottom: 14px;
+
+	a {
+		color: var(--ui-pro-cta);
+		font-weight: 700;
+		text-decoration: underline;
+	}
+}
+
+#everest-forms-panel-style .pro-lock-ic {
+	display: grid;
+	place-items: center;
+	width: 26px;
+	height: 26px;
+	border-radius: 7px;
+	background: #fff;
+	color: var(--ui-pro-cta);
+	flex: none;
+
+	svg {
+		width: 14px;
+		height: 14px;
+	}
+}
+
+/* Full-slate Pro teaser (a whole Pro section opened on free — e.g. Messages). */
+#everest-forms-panel-style .pro-teaser {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+	gap: 10px;
+	padding: 28px 20px;
+	background: linear-gradient(180deg, var(--ui-pro-card-bg) 0%, #fff 100%);
+	border: 1px solid var(--ui-pro-card-border);
+	border-radius: var(--ui-radius-lg);
+
+	.pro-teaser-ic {
+		display: grid;
+		place-items: center;
+		width: 44px;
+		height: 44px;
+		border-radius: 12px;
+		background: #fff;
+		border: 1px solid var(--ui-pro-card-border);
+		color: var(--ui-pro-cta);
+
+		svg {
+			width: 22px;
+			height: 22px;
+		}
+	}
+
+	.pro-teaser-title {
+		margin: 4px 0 0;
+		font-size: 14px;
+		font-weight: 600;
+		color: var(--ui-ink);
+	}
+
+	.pro-teaser-text {
+		margin: 0;
+		font-size: 12px;
+		line-height: 1.6;
+		color: var(--ui-ink-2);
+		max-width: 280px;
+	}
+
+	.pro-teaser-btn {
+		margin-top: 6px;
+		display: inline-flex;
+		align-items: center;
+		background: var(--ui-pro-cta);
+		color: #fff;
+		font-size: 12.5px;
+		font-weight: 600;
+		text-decoration: none;
+		padding: 8px 16px;
+		border-radius: var(--ui-radius-md);
+		transition: background .12s;
+
+		&:hover {
+			background: var(--ui-pro-cta-hover);
+		}
+	}
+}
+
+/* "PRO" badge on a locked element-list row (e.g. the Messages row on free). */
+#everest-forms-panel-style .elrow.locked .ic {
+	color: var(--ui-pro-cta);
+}
+
+/* The builder's own locked-field crown badge — just a size box, not a redrawn background. */
+#everest-forms-panel-style .pro-badge {
+	display: inline-flex;
+	flex: none;
+
+	.pro-crown {
+		display: block;
+		width: 16px;
+		height: 16px;
+	}
+}
+
+/* ---------- preview (portaled into the builder content area) ---------- */
+#everest-forms-panel-style #evf-scv2-preview {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	width: 100%;
+}
+
+#everest-forms-panel-style .preview {
+	display: flex;
+	flex-direction: column;
+	min-width: 0;
+	min-height: 0;
+	flex: 1;
+	width: 100%;
+	position: relative;
+	background: var(--ui-bg);
+	/* Matches the Fields/Settings/Integrations content containers — the whole panel is one card. */
+	border: 1px solid #e1e1e1;
+	border-radius: 13px;
+	overflow: hidden;
+}
+
+/* Legacy → v2 migration notice — a standalone strip above the preview card. */
+#everest-forms-panel-style .pv-migration {
+	display: flex;
+	align-items: flex-start;
+	gap: 10px;
+	padding: 10px 14px;
+	margin-bottom: 12px;
+	background: var(--ui-purple-50);
+	border: 1px solid var(--ui-purple-100);
+	border-radius: var(--ui-radius-lg);
+	color: var(--ui-ink-2);
+	font-size: 12px;
+	line-height: 1.55;
+	flex: none;
+
+	.pv-migration-ic {
+		flex: none;
+		display: grid;
+		place-items: center;
+		width: 22px;
+		height: 22px;
+		border-radius: 50%;
+		background: #fff;
+		color: var(--ui-purple);
+		margin-top: 1px;
+
+		svg {
+			width: 13px;
+			height: 13px;
+		}
+	}
+
+	.pv-migration-text {
+		flex: 1;
+		min-width: 0;
+
+		b {
+			color: var(--ui-purple-600);
+			font-weight: 600;
+		}
+	}
+
+	button {
+		flex: none;
+		border: 0;
+		background: none;
+		color: var(--ui-icon);
+		cursor: pointer;
+		width: 24px;
+		height: 24px;
+		border-radius: 50%;
+		display: grid;
+		place-items: center;
+		margin-top: 1px;
+
+		svg {
+			width: 13px;
+			height: 13px;
+		}
+
+		&:hover {
+			background: rgba(117, 69, 187, .15);
+			color: var(--ui-purple);
+		}
+	}
+}
+
+#everest-forms-panel-style .pv-bar {
+	min-height: 64px;
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	padding: 16px 20px;
+	border-bottom: 1px solid var(--ui-line);
+	background: #fff;
+	flex: none;
+	flex-wrap: wrap;
+}
+
+/* Matches the builder's own Settings/Integrations section title (.evf-content-section-title). */
+#everest-forms-panel-style .pv-bar .ttl {
+	font-weight: 600;
+	font-size: var(--ui-fs-xl);
+	line-height: 1.3;
+	color: var(--ui-ink);
+	display: flex;
+	align-items: center;
+	gap: 7px;
+	min-width: 0;
+	flex: 1 1 auto;
+}
+
+#everest-forms-panel-style .pv-bar .info {
+	border: 0;
+	background: none;
+	color: var(--ui-icon);
+	cursor: pointer;
+	display: grid;
+	place-items: center;
+	width: 24px;
+	height: 24px;
+	border-radius: 50%;
+	flex: none;
+
+	svg {
+		width: 15px;
+		height: 15px;
+	}
+
+	&:hover {
+		background: var(--ui-line-2);
+	}
+}
+
+#everest-forms-panel-style .pv-savestate {
+	font-size: 11.5px;
+	color: var(--ui-ink-3);
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+
+	&.is-dirty {
+		color: var(--ui-amber);
+	}
+
+	.save-check {
+		width: 13px;
+		height: 13px;
+		flex: none;
+		color: var(--ui-green);
+	}
+}
+
+#everest-forms-panel-style .devs {
+	display: inline-flex;
+	background: var(--ui-bg-subtle);
+	border-radius: var(--ui-radius-md);
+	padding: 3px;
+	border: 1px solid var(--ui-line);
+	margin-left: auto;
+	flex: none;
+
+	button {
+		border: 0;
+		background: transparent;
+		width: 36px;
+		height: var(--ui-ctrl-h);
+		border-radius: var(--ui-radius-sm);
+		cursor: pointer;
+		color: var(--ui-ink-3);
+		display: grid;
+		place-items: center;
+		transition: background .15s, color .15s, box-shadow .15s;
+
+		&:hover:not([aria-pressed="true"]) {
+			color: var(--ui-ink);
+			background: rgba(255, 255, 255, .6);
+		}
+
+		&[aria-pressed="true"] {
+			background: #fff;
+			color: var(--ui-purple);
+			box-shadow: var(--ui-shadow-sm);
+		}
+
+		svg {
+			width: 16px;
+			height: 16px;
+		}
+	}
+}
+
+#everest-forms-panel-style .spin {
+	width: 12px;
+	height: 12px;
+	border: 2px solid rgba(117, 69, 187, .3);
+	border-top-color: var(--ui-purple);
+	border-radius: 50%;
+	animation: scv2spin .7s linear infinite;
+	flex: none;
+	display: inline-block;
+}
+
+@keyframes scv2spin {
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+#everest-forms-panel-style .save-dot {
+	width: 7px;
+	height: 7px;
+	border-radius: 50%;
+	background: var(--ui-amber);
+	flex: none;
+	display: inline-block;
+}
+
+/* Non-blocking notice when the live-edit bridge (click-to-edit / hover) never wires up. */
+#everest-forms-panel-style .pv-noninteractive {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 6px 12px;
+	padding: 8px 20px;
+	background: var(--ui-amber-50);
+	border-bottom: 1px solid var(--ui-amber-100);
+	color: var(--ui-amber-700);
+	font-size: 11.5px;
+	line-height: 1.5;
+	flex: none;
+
+	button {
+		border: 1px solid var(--ui-amber-100);
+		background: #fff;
+		color: var(--ui-amber-700);
+		font-weight: 600;
+		font-size: 11px;
+		border-radius: var(--ui-radius-sm);
+		padding: 3px 10px;
+		cursor: pointer;
+		margin-left: auto;
+
+		&:hover {
+			background: var(--ui-amber-100);
+		}
+	}
+}
+
+#everest-forms-panel-style .pv-canvas {
+	flex: 1;
+	overflow: auto;
+	display: flex;
+	justify-content: center;
+	align-items: stretch;
+	padding: 14px;
+	min-height: 0;
+	background: var(--ui-bg);
+}
+
+#everest-forms-panel-style .pv-frame {
+	width: 100%;
+	max-width: 100%;
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	min-height: 0;
+}
+
+#everest-forms-panel-style .pv-iframe {
+	width: 100%;
+	flex: 1;
+	min-height: 480px;
+	border: 0;
+	background: #fff;
+	border-radius: var(--ui-radius-lg);
+	display: block;
+	/* Hidden until the bridge hides the preview chrome, so the raw page never flashes. */
+	opacity: 0;
+	transition: opacity .3s ease;
+}
+
+#everest-forms-panel-style .pv-iframe.is-ready {
+	opacity: 1;
+}
+
+/* skeleton / error overlays */
+#everest-forms-panel-style .pv-skel {
+	position: absolute;
+	inset: 0;
+	background: var(--ui-bg);
+	z-index: 20;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 18px;
+	transition: opacity .3s;
+}
+
+#everest-forms-panel-style .skel-card {
+	width: min(560px, 80%);
+	background: #fff;
+	border-radius: var(--ui-radius-lg);
+	padding: 30px;
+	box-shadow: var(--ui-shadow);
+}
+
+#everest-forms-panel-style .skel-bar {
+	height: 12px;
+	border-radius: var(--ui-radius-md);
+	background: linear-gradient(90deg, #eceef3 25%, #f6f7fa 50%, #eceef3 75%);
+	background-size: 200% 100%;
+	animation: scv2shimmer 1.4s infinite;
+	margin-bottom: 14px;
+}
+
+@keyframes scv2shimmer {
+	to {
+		background-position: -200% 0;
+	}
+}
+
+/* Sidebar controls skeleton — shown instantly while the schema loads. */
+#everest-forms-panel-style .scv2-skel-tabs {
+	display: flex;
+	gap: 0;
+}
+
+#everest-forms-panel-style .scv2-skel-tabs span {
+	flex: 1;
+	height: 45px;
+	background: #f6f7f9;
+	border-top: 3px solid transparent;
+}
+
+#everest-forms-panel-style .scv2-skel-body {
+	padding: 18px 14px;
+}
+
+#everest-forms-panel-style .skel-note {
+	font-size: 12px;
+	color: var(--ui-ink-3);
+}
+
+#everest-forms-panel-style .pv-error {
+	position: absolute;
+	inset: 0;
+	z-index: 25;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 24px;
+	background: var(--ui-bg);
+}
+
+#everest-forms-panel-style .pv-error .card {
+	background: #fff;
+	border: 1px solid var(--ui-line);
+	border-radius: var(--ui-radius-lg);
+	box-shadow: var(--ui-shadow);
+	padding: 26px 30px;
+	max-width: 420px;
+	text-align: center;
+
+	h4 {
+		margin: 0 0 6px;
+		font-size: 15px;
+		color: var(--ui-ink);
+	}
+
+	p {
+		margin: 0 0 16px;
+		font-size: 12.5px;
+		color: var(--ui-ink-3);
+		line-height: 1.55;
+	}
+
+	a {
+		color: var(--ui-purple);
+		font-weight: 600;
+		text-decoration: none;
+	}
+}
+
+#everest-forms-panel-style .pv-error-actions {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 14px;
+
+	.btn-primary {
+		border: 0;
+		background: var(--ui-purple);
+		color: #fff;
+		font-weight: 600;
+		font-size: 12.5px;
+		border-radius: var(--ui-radius-md);
+		padding: 8px 16px;
+		cursor: pointer;
+
+		&:hover {
+			background: var(--ui-purple-600);
+		}
+	}
+}
+
+#everest-forms-panel-style .skel-note {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+}
+
+#everest-forms-panel-style .css-example-btn {
+	margin-left: auto;
+	border: 0;
+	background: none;
+	color: var(--ui-purple);
+	font-weight: 600;
+	cursor: pointer;
+	font-size: 11px;
+}
+
+/* toast — a neutral dark base with a coloured left accent + icon distinguishing error/success/info. */
+#everest-forms-panel-style .toast {
+	position: absolute;
+	bottom: 22px;
+	left: 50%;
+	transform: translate(-50%, 0);
+	background: #1f2433;
+	color: #fff;
+	border-radius: var(--ui-radius-lg);
+	border-left: 3px solid rgba(255, 255, 255, .25);
+	padding: 10px 12px 10px 14px;
+	font-size: var(--ui-fs-sm);
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	box-shadow: var(--ui-shadow-lg);
+	z-index: 50;
+	max-width: 80%;
+	animation: scv2toastin .18s ease-out;
+
+	.toast-ic {
+		flex: none;
+		display: grid;
+		place-items: center;
+		width: 18px;
+		height: 18px;
+
+		svg {
+			width: 16px;
+			height: 16px;
+		}
+	}
+
+	&.is-success {
+		border-left-color: var(--ui-green);
+
+		.toast-ic {
+			color: #4ade80;
+		}
+	}
+
+	&.is-error {
+		border-left-color: var(--ui-red);
+
+		.toast-ic {
+			color: #f87171;
+		}
+	}
+
+	button {
+		border: 0;
+		background: rgba(255, 255, 255, .14);
+		color: #fff;
+		border-radius: var(--ui-radius-sm);
+		padding: 6px 12px;
+		font-size: 12px;
+		font-weight: 600;
+		cursor: pointer;
+		white-space: nowrap;
+		flex: none;
+	}
+}
+
+@keyframes scv2toastin {
+	from {
+		opacity: 0;
+		transform: translate(-50%, 6px);
+	}
+	to {
+		opacity: 1;
+		transform: translate(-50%, 0);
+	}
+}
+
+/* confirm modal — a real centered/backdropped dialog, distinct from the anchored .scv2-pop. */
+#everest-forms-panel-style .scv2-modal-backdrop {
+	position: fixed;
+	inset: 0;
+	z-index: 100010;
+	background: rgba(20, 23, 40, .45);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 20px;
+	animation: scv2fadein .12s ease-out;
+}
+
+@keyframes scv2fadein {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+#everest-forms-panel-style .scv2-modal {
+	width: min(360px, 100%);
+	background: #fff;
+	border-radius: var(--ui-radius-lg);
+	box-shadow: var(--ui-shadow-lg);
+	padding: 20px;
+	animation: scv2popin .15s ease-out;
+}
+
+#everest-forms-panel-style .scv2-modal-title {
+	margin: 0 0 8px;
+	font-size: var(--ui-fs-base);
+	font-weight: 600;
+	color: var(--ui-ink);
+}
+
+#everest-forms-panel-style .scv2-modal-msg {
+	margin: 0;
+	font-size: var(--ui-fs-sm);
+	color: var(--ui-ink-2);
+	line-height: 1.55;
+}
+
+#everest-forms-panel-style .scv2-modal-actions {
+	display: flex;
+	justify-content: flex-end;
+	gap: 8px;
+	margin-top: 18px;
+}
+
+#everest-forms-panel-style .scv2-modal-cancel {
+	border: 1px solid var(--ui-input-border);
+	background: #fff;
+	color: var(--ui-ink-2);
+	font-weight: 600;
+	font-size: 12.5px;
+	border-radius: var(--ui-radius-md);
+	padding: 8px 16px;
+	cursor: pointer;
+	transition: border-color .12s, background .12s;
+
+	&:hover {
+		background: var(--ui-bg-hover);
+	}
+}
+
+#everest-forms-panel-style .scv2-modal-confirm {
+	border: 0;
+	background: var(--ui-purple);
+	color: #fff;
+	font-weight: 600;
+	font-size: 12.5px;
+	border-radius: var(--ui-radius-md);
+	padding: 8px 16px;
+	cursor: pointer;
+	transition: background .12s;
+
+	&:hover {
+		background: var(--ui-purple-600);
+	}
+
+	&.danger {
+		background: var(--ui-red);
+
+		&:hover {
+			background: #b91c1c;
+		}
+	}
+}
+
+/* floating popover */
+#everest-forms-panel-style .scv2-pop {
+	position: fixed;
+	z-index: 100000;
+	background: #fff;
+	border: 1px solid var(--ui-line);
+	border-radius: var(--ui-radius-md);
+	box-shadow: var(--ui-shadow-lg);
+	padding: 6px;
+	min-width: 200px;
+	max-width: 300px;
+	/* Single scroll for the whole popover; .pop-head's `position:sticky` relies on this. */
+	max-height: 460px;
+	overflow-y: auto;
+	transform-origin: top center;
+	animation: scv2popin .12s ease-out;
+}
+
+@keyframes scv2popin {
+	from {
+		opacity: 0;
+		transform: scale( .98 ) translateY(-2px);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1) translateY(0);
+	}
+}
+
+#everest-forms-panel-style .scv2-pop .pop-head {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 8px;
+	padding: 8px 6px 8px 10px;
+	border-bottom: 1px solid var(--ui-line-2);
+	margin-bottom: 4px;
+	position: sticky;
+	top: 0;
+	background: #fff;
+	z-index: 1;
+}
+
+#everest-forms-panel-style .scv2-pop .pop-head-title {
+	font-size: 11px;
+	font-weight: 600;
+	color: var(--ui-ink);
+	letter-spacing: .02em;
+	line-height: 1.4;
+}
+
+#everest-forms-panel-style .scv2-pop .pop-close {
+	flex: none;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 24px;
+	height: 24px;
+	padding: 0;
+	border: 0;
+	border-radius: 5px;
+	background: transparent;
+	color: var(--ui-ink-3);
+	cursor: pointer;
+	transition: background .12s, color .12s;
+
+	svg {
+		width: 15px;
+		height: 15px;
+	}
+
+	&:hover {
+		background: var(--ui-bg-hover);
+		color: var(--ui-ink);
+	}
+
+	/* Same recipe every other button in the panel gets (--ui-focus), not a one-off outline. */
+	&:focus-visible {
+		outline: none;
+		box-shadow: var(--ui-focus);
+	}
+}
+
+#everest-forms-panel-style .scv2-pop .pop-title {
+	font-size: 10.5px;
+	font-weight: 600;
+	color: var(--ui-ink-3);
+	letter-spacing: .05em;
+	text-transform: uppercase;
+	padding: 8px 10px 6px;
+	line-height: 1.45;
+
+	b {
+		color: var(--ui-ink);
+		font-weight: 600;
+		text-transform: none;
+		letter-spacing: 0;
+	}
+}
+
+#everest-forms-panel-style .scv2-pop .pop-item {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	width: 100%;
+	border: 0;
+	background: none;
+	text-align: left;
+	padding: 8px 10px;
+	border-radius: var(--ui-radius-sm);
+	font-size: 12.5px;
+	color: var(--ui-ink);
+	cursor: pointer;
+
+	&:hover:not(:disabled) {
+		background: var(--ui-bg-hover);
+	}
+
+	&.danger {
+		color: var(--ui-red);
+	}
+
+	&.danger:hover {
+		background: var(--ui-red-50);
+	}
+}
+
+#everest-forms-panel-style .scv2-pop .pop-body {
+	padding: 8px 10px;
+	font-size: 12px;
+	color: var(--ui-ink-2);
+	line-height: 1.55;
+}
+
+#everest-forms-panel-style .scv2-pop .pop-sep {
+	height: 1px;
+	background: var(--ui-line-2);
+	margin: 5px 4px;
+}
+
+/* hover/focus tooltip */
+#everest-forms-panel-style .scv2-hovertip {
+	position: fixed;
+	z-index: 100001;
+	pointer-events: none;
+	max-width: 260px;
+	padding: 9px 12px;
+	background: #fff;
+	border: 1px solid var(--ui-line);
+	border-radius: var(--ui-radius-md);
+	box-shadow: var(--ui-shadow-lg);
+	font-size: 12px;
+	line-height: 1.5;
+	color: var(--ui-ink-2);
+	animation: scv2tipin .1s ease-out;
+}
+
+@keyframes scv2tipin {
+	from {
+		opacity: 0;
+		transform: translateY(-2px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+#everest-forms-panel-style .scv2-hovertip.is-top {
+	transform-origin: bottom center;
+}
+
+#everest-forms-panel-style .scv2-hovertip .hovertip-title {
+	font-size: 10.5px;
+	font-weight: 600;
+	color: var(--ui-ink-3);
+	letter-spacing: .05em;
+	text-transform: uppercase;
+	margin-bottom: 4px;
+
+	b {
+		color: var(--ui-ink);
+		font-weight: 600;
+		text-transform: none;
+		letter-spacing: 0;
+	}
+}
+
+#everest-forms-panel-style .scv2-hovertip .hovertip-body {
+	color: var(--ui-ink-2);
+
+	b {
+		color: var(--ui-ink);
+		font-weight: 600;
+	}
+}
+
+/* palette popover grid — scrolls as part of the single .scv2-pop scroll, not on its own. */
+#everest-forms-panel-style .pal-pop-grid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 6px;
+	padding: 4px;
+}
+
+#everest-forms-panel-style .pal-card {
+	border: 1px solid var(--ui-line-2);
+	border-radius: var(--ui-radius-sm);
+	overflow: hidden;
+	cursor: pointer;
+	background: #fff;
+	padding: 8px;
+	text-align: left;
+	transition: border-color .12s, background .12s;
+
+	/* Matches `.elrow`/`.tpl`'s hover — one "selectable card" language across the panel. */
+	&:hover {
+		border-color: var(--ui-purple);
+		background: var(--ui-purple-50);
+	}
+
+	/* `role="option"` takes its selected state from `aria-selected`, not `aria-pressed`. */
+	&[aria-selected="true"] {
+		border-color: var(--ui-purple);
+		background: var(--ui-purple-50);
+	}
+
+	.sw {
+		display: flex;
+		gap: 5px;
+		justify-content: flex-start;
+	}
+
+	.sw i {
+		width: 18px;
+		height: 18px;
+		border-radius: 50%;
+		flex: none;
+		box-shadow: inset 0 0 0 1px rgba(20, 23, 40, .08);
+	}
+
+	/* A long custom palette name wraps instead of truncating; `padding-right` keeps every
+	   wrapped line clear of the hover-revealed edit/delete tools (bottom-right). */
+	.cap {
+		display: flex;
+		align-items: center;
+		gap: 5px;
+		font-size: 11.5px;
+		font-weight: 500;
+		color: var(--ui-ink-2);
+		margin-top: 8px;
+		padding-right: 52px;
+		overflow-wrap: anywhere;
+	}
+
+	&[aria-selected="true"] .cap {
+		color: var(--ui-purple);
+	}
+
+	/* Same crown badge as .pro-badge elsewhere in the panel. */
+	.pro {
+		display: inline-flex;
+		flex-shrink: 0;
+		margin-left: auto;
+
+		.pro-crown {
+			display: block;
+			width: 14px;
+			height: 14px;
+		}
+	}
+}
+
+/* custom colour palettes (PaletteManager) */
+#everest-forms-panel-style .pal-group-label {
+	font-size: var(--ui-fs-xs);
+	font-weight: 600;
+	letter-spacing: .04em;
+	text-transform: uppercase;
+	color: var(--ui-ink-3);
+	margin: 12px 2px 8px;
+
+	&:first-child {
+		margin-top: 2px;
+	}
+}
+
+#everest-forms-panel-style .pal-card--wrap {
+	position: relative;
+	padding: 0;
+
+	.pal-card-apply {
+		display: block;
+		width: 100%;
+		border: 0;
+		background: none;
+		padding: 8px;
+		text-align: left;
+		cursor: pointer;
+		border-radius: inherit;
+
+		&:focus-visible {
+			outline: none;
+			box-shadow: var(--ui-focus-soft);
+		}
+	}
+
+	/* tools overlay bottom-right, revealed on hover. */
+	.pal-card-tools {
+		position: absolute;
+		bottom: 5px;
+		right: 5px;
+		display: flex;
+		gap: 3px;
+		opacity: 0;
+		transition: opacity .12s;
+	}
+
+	&:hover .pal-card-tools,
+	&:focus-within .pal-card-tools {
+		opacity: 1;
+	}
+
+	.pal-tool {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 22px;
+		height: 22px;
+		padding: 0;
+		border: 1px solid var(--ui-line);
+		border-radius: var(--ui-radius-sm);
+		background: #fff;
+		box-shadow: 0 1px 3px rgba(20, 23, 40, .16);
+		color: var(--ui-ink-3);
+		cursor: pointer;
+		transition: color .12s, border-color .12s, background .12s;
+
+		svg {
+			width: 12px;
+			height: 12px;
+		}
+
+		&:hover {
+			color: var(--ui-purple);
+			border-color: var(--ui-purple);
+			background: #fff;
+		}
+
+		&.pal-tool--danger:hover {
+			color: var(--ui-red);
+			border-color: var(--ui-red);
+		}
+
+		&.is-locked {
+			color: var(--ui-purple);
+			border-color: var(--ui-purple-100);
+			background: var(--ui-purple-50);
+		}
+
+		.pro-crown {
+			display: block;
+			width: 13px;
+			height: 13px;
+		}
+
+		&:focus-visible {
+			outline: none;
+			box-shadow: var(--ui-focus-soft);
+		}
+	}
+
+	/* inline delete confirm */
+	.pal-card-confirm {
+		position: absolute;
+		inset: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 6px;
+		padding: 6px;
+		background: rgba(255, 255, 255, .96);
+		border-radius: inherit;
+		font-size: 11px;
+		font-weight: 600;
+		color: var(--ui-ink-2);
+
+		button {
+			border: 0;
+			border-radius: var(--ui-radius-sm);
+			padding: 3px 8px;
+			font-size: 11px;
+			font-weight: 600;
+			cursor: pointer;
+		}
+
+		.pal-confirm-yes {
+			background: var(--ui-red);
+			color: #fff;
+		}
+
+		.pal-confirm-no {
+			background: var(--ui-bg);
+			color: var(--ui-ink-2);
+		}
+	}
+}
+
+#everest-forms-panel-style .pal-card--wrap.is-selected {
+	border-color: var(--ui-purple);
+	background: var(--ui-purple-50);
+
+	.cap {
+		color: var(--ui-purple);
+	}
+}
+
+#everest-forms-panel-style .pal-manager-hint {
+	margin: 12px 2px 2px;
+	padding-top: 10px;
+	border-top: 1px solid var(--ui-line-2);
+	font-size: 11px;
+	line-height: 1.45;
+	color: var(--ui-ink-3);
+}
+
+/* ---- editor view ---- */
+#everest-forms-panel-style .pal-editor-back {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	width: 100%;
+	padding: 7px 8px;
+	margin-bottom: 12px;
+	border: 0;
+	border-radius: var(--ui-radius-md);
+	background: var(--ui-bg-subtle);
+	cursor: pointer;
+	text-align: left;
+	transition: background .12s;
+
+	.pal-editor-back-arrow {
+		width: 16px;
+		height: 16px;
+		flex: none;
+		color: var(--ui-ink-3);
+		transition: transform .12s, color .12s;
+	}
+
+	.pal-editor-title {
+		font-size: 12.5px;
+		font-weight: 600;
+		color: var(--ui-ink);
+		min-width: 0;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	&:hover:not(:disabled) {
+		background: var(--ui-purple-50);
+
+		.pal-editor-back-arrow {
+			color: var(--ui-purple);
+			transform: translateX(-2px);
+		}
+
+		.pal-editor-title {
+			color: var(--ui-purple);
+		}
+	}
+
+	&:focus-visible {
+		outline: none;
+		box-shadow: var(--ui-focus);
+	}
+
+	&:disabled {
+		cursor: default;
+		opacity: .7;
+	}
+}
+
+#everest-forms-panel-style .pal-name-field {
+	display: block;
+	margin: 0 4px 14px;
+
+	.pal-field-label {
+		display: block;
+		float: none;
+		width: auto;
+		margin: 0 0 6px;
+		padding: 0;
+		font-size: var(--ui-fs-xs);
+		font-weight: 600;
+		line-height: 1.4;
+		color: var(--ui-ink-3);
+	}
+
+	input[type="text"] {
+		display: block;
+		float: none;
+		width: 100%;
+		height: var(--ui-ctrl-h);
+		margin: 0;
+		border: 1px solid var(--ui-input-border);
+		border-radius: var(--ui-radius-md);
+		padding: 0 10px;
+		font-size: 12.5px;
+		color: var(--ui-ink);
+		background: #fff;
+		outline: none;
+		box-shadow: none;
+		transition: border-color .12s, box-shadow .12s;
+
+		&:focus {
+			border-color: var(--ui-purple);
+			box-shadow: var(--ui-focus-soft);
+		}
+	}
+}
+
+#everest-forms-panel-style .pal-edit-rows {
+	margin: 0 4px;
+	border: 1px solid var(--ui-line-2);
+	border-radius: var(--ui-radius-md);
+	overflow: hidden;
+}
+
+#everest-forms-panel-style .pal-edit-row {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 10px;
+	padding: 8px 10px;
+
+	& + & {
+		border-top: 1px solid var(--ui-line-2);
+	}
+
+	.pal-edit-label {
+		font-size: 12px;
+		color: var(--ui-ink-2);
+		min-width: 0;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	.color {
+		flex: none;
+		width: 124px;
+	}
+}
+
+#everest-forms-panel-style .pal-error {
+	margin: 10px 4px 0;
+	font-size: 11.5px;
+	color: var(--ui-red);
+	line-height: 1.4;
+}
+
+#everest-forms-panel-style .pal-editor-actions {
+	display: flex;
+	gap: 8px;
+	margin: 16px 4px 2px;
+	padding-top: 12px;
+	border-top: 1px solid var(--ui-line-2);
+
+	button {
+		flex: 1;
+		height: 32px;
+		border-radius: var(--ui-radius-md);
+		font-size: 12.5px;
+		font-weight: 600;
+		cursor: pointer;
+		transition: background .12s, border-color .12s, color .12s, opacity .12s;
+
+		&:disabled {
+			opacity: .6;
+			cursor: default;
+		}
+
+		&:focus-visible {
+			outline: none;
+			box-shadow: var(--ui-focus);
+		}
+	}
+
+	.pal-btn-ghost {
+		border: 1px solid var(--ui-input-border);
+		background: #fff;
+		color: var(--ui-ink-2);
+
+		&:hover:not(:disabled) {
+			border-color: var(--ui-ink-3);
+		}
+	}
+
+	.pal-btn-primary {
+		border: 1px solid var(--ui-purple);
+		background: var(--ui-purple);
+		color: #fff;
+
+		&:hover:not(:disabled) {
+			background: var(--ui-purple-600);
+			border-color: var(--ui-purple-600);
+		}
+	}
+}
+
+/* AI styling launcher (AiAssistant.tsx) styles itself inline since it's portaled to <body>. */

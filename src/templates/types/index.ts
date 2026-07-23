@@ -1,6 +1,8 @@
 export type TemplatesScriptData = {
 	security: string;
 	restURL: string;
+	/** Site home URL — base for the AI preview iframe (?form_id=&evf_preview=true). */
+	homeUrl: string;
 	/** admin-ajax.php URL for the ThemeGrill AI Cloud (Python) actions. */
 	ajaxUrl: string;
 	/** Nonce for the evf_ai_* AJAX actions. */

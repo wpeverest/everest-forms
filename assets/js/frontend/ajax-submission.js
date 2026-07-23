@@ -282,9 +282,11 @@ jQuery( function( $ ) {
 							redirectUrl: redirect_url
 						} );
 						if ( undefined === selectedGateway && ! hasPaymentGatewayField ) {
-							if ( 'none' !== formTuple.find( ".everest-forms-gateway[data-gateway='square']" ).closest( '.evf-field' ).css( 'display' ) ) {
+							var $squareClosest = formTuple.find( ".everest-forms-gateway[data-gateway='square']" ).closest( '.evf-field' );
+							var $stripeClosest = formTuple.find( ".everest-forms-gateway[data-gateway='stripe']" ).closest( '.evf-field' );
+							if ( $squareClosest.length && 'none' !== $squareClosest.css( 'display' ) ) {
 								selectedGateway = 'square';
-							} else if ( 'none' !== formTuple.find( ".everest-forms-gateway[data-gateway='stripe']" ).closest( '.evf-field' ).css( 'display' ) ) {
+							} else if ( $stripeClosest.length && 'none' !== $stripeClosest.css( 'display' ) ) {
 								selectedGateway = 'stripe';
 							}
 						}
@@ -390,14 +392,20 @@ jQuery( function( $ ) {
 								return;
 							}
 
-							var formContainer = formTuple.closest( '.everest-forms' );
+							var formContainer = formTuple.closest( '.evf-container' );
 
 							formTuple.trigger( 'reset' );
 							formContainer.find( '.everest-forms-notice' ).remove();
 
-							// If the form state is hidden, scope the hide to this submitted form only.
-							if ( 'hide' === form_state_type && 'hide' !== message_location ) {
-								formTuple.find( '.evf-frontend-row, .evf-submit-container' ).hide();
+							// If the form state is hidden, scope the hide to this submitted form only. The
+							// container's own background image (a v1 direct background-image, or v2's
+							// ::before layer) isn't a child of the form and can't be hidden by hiding rows,
+							// so it needs its own class-driven CSS rule (everest-forms.scss).
+							if ( 'hide' === form_state_type ) {
+								formContainer.addClass( 'everest-forms-form-hidden' );
+								if ( 'hide' !== message_location ) {
+									formTuple.find( '.evf-frontend-row, .evf-submit-container, .everest-forms-multi-part-indicator' ).hide();
+								}
 							}
 
 							if ( 'hide' === message_location ) {
@@ -431,12 +439,12 @@ jQuery( function( $ ) {
 											</div>
 											<img src="${ everest_forms_ajax_submission_params.evf_checked_image_url }" alt="Checked Logo" class="everest-forms-popup-success-logo">
 											<p class="everest-forms-popup-success-text">${ everest_forms_ajax_submission_params.i18n_evf_success_text }</p>
-											<p>${ xhr.data.message }</p>
+											<p class="everest-forms-notice everest-forms-notice--success">${ xhr.data.message }</p>
 										</div>
 									</div>
 								`;
 
-								$('body').append(popupHTML);
+								formContainer.append(popupHTML);
 
 								$('.everest-forms-popup-close').on('click', function() {
 									$('.everest-forms-popup-overlay').fadeOut(200, function() {

@@ -231,17 +231,17 @@
         },
         {
             "name": "themegrill/themegrill-sdk",
-            "version": "1.0.1",
-            "version_normalized": "1.0.1.0",
+            "version": "1.0.4",
+            "version_normalized": "1.0.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/themegrill/themegrill-sdk.git",
-                "reference": "bdcd3b56256ce3126054d0dabb22fe8563b0becc"
+                "reference": "2787bc7bcd0c5d6bf470c986682fd74b390d34c3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/themegrill/themegrill-sdk/zipball/bdcd3b56256ce3126054d0dabb22fe8563b0becc",
-                "reference": "bdcd3b56256ce3126054d0dabb22fe8563b0becc",
+                "url": "https://api.github.com/repos/themegrill/themegrill-sdk/zipball/2787bc7bcd0c5d6bf470c986682fd74b390d34c3",
+                "reference": "2787bc7bcd0c5d6bf470c986682fd74b390d34c3",
                 "shasum": ""
             },
             "require": {
@@ -250,7 +250,7 @@
             "require-dev": {
                 "yoast/phpunit-polyfills": "^4.0"
             },
-            "time": "2025-11-12T11:45:29+00:00",
+            "time": "2026-06-12T10:51:17+00:00",
             "type": "library",
             "installation-source": "dist",
             "notification-url": "https://packagist.org/downloads/",
@@ -264,10 +264,10 @@
                     "homepage": "https://themegrill.com"
                 }
             ],
-            "description": "ThemeGrill SDK",
+            "description": "A lightweight SDK that provides common functionality and shared features for ThemeGrill themes and plugins.",
             "support": {
                 "issues": "https://github.com/themegrill/themegrill-sdk/issues",
-                "source": "https://github.com/themegrill/themegrill-sdk/tree/v1.0.1"
+                "source": "https://github.com/themegrill/themegrill-sdk/tree/v1.0.4"
             },
             "install-path": "../themegrill/themegrill-sdk"
         }

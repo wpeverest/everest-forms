@@ -12,6 +12,7 @@ class EVF_AI_Ajax {
 		add_action( 'wp_ajax_evf_ai_update_form', array( $this, 'update_form' ) );
 		add_action( 'wp_ajax_evf_ai_get_usage', array( $this, 'get_usage' ) );
 		add_action( 'wp_ajax_evf_ai_activate_form', array( $this, 'activate_form' ) );
+		add_action( 'wp_ajax_evf_ai_discard_form', array( $this, 'discard_form' ) );
 		add_action( 'wp_ajax_evf_ai_render_fields', array( $this, 'render_fields' ) );
 	}
 
@@ -108,7 +109,7 @@ class EVF_AI_Ajax {
 		if ( ! EVF_AI_Registration::is_registered() ) {
 			wp_send_json_error(
 				array(
-					'message' => __( 'AI features are not available on local or staging sites.', 'everest-forms' ),
+					'message' => __( 'This site could not be registered with the AI service. Please try again.', 'everest-forms' ),
 					'code'    => 'not_registered',
 				)
 			);
@@ -252,7 +253,6 @@ class EVF_AI_Ajax {
 				'fields'           => EVF_AI_Form_Builder::get_field_summary( $form_id ),
 				'required_addons'  => $ai_response['required_addons'] ?? array(),
 				'multi_part_steps' => self::get_multi_part_steps( $form_id ),
-				'preview_html'     => self::render_preview_html( $form_id ),
 				'needs_reload'     => $needs_reload,
 				'notice'           => $notice,
 				'notice_url'       => '' !== $notice ? self::get_notice_upgrade_url() : '',
@@ -297,7 +297,7 @@ class EVF_AI_Ajax {
 		if ( ! EVF_AI_Registration::is_registered() ) {
 			wp_send_json_error(
 				array(
-					'message' => __( 'AI features are not available on local or staging sites.', 'everest-forms' ),
+					'message' => __( 'This site could not be registered with the AI service. Please try again.', 'everest-forms' ),
 					'code'    => 'not_registered',
 				)
 			);
@@ -343,7 +343,6 @@ class EVF_AI_Ajax {
 				'fields'           => EVF_AI_Form_Builder::get_field_summary( $form_id ),
 				'required_addons'  => $ai_response['required_addons'] ?? array(),
 				'multi_part_steps' => self::get_multi_part_steps( $form_id ),
-				'preview_html'     => self::render_preview_html( $form_id ),
 				'notice'           => $gen_notice,
 				'notice_url'       => '' !== $gen_notice ? self::get_notice_upgrade_url() : '',
 			)
@@ -379,6 +378,36 @@ class EVF_AI_Ajax {
 	}
 
 	/**
+	 * Trash an abandoned AI draft — called when the user chooses "Discard".
+	 */
+	public function discard_form() {
+		check_ajax_referer( 'evf_ai_nonce', 'nonce' );
+
+		if ( ! current_user_can( 'manage_everest_forms' ) ) {
+			wp_send_json_error( array(), 403 );
+		}
+
+		$form_id = absint( $_POST['form_id'] ?? 0 );
+		if ( ! $form_id ) {
+			wp_send_json_error( array( 'message' => __( 'Invalid form ID.', 'everest-forms' ) ) );
+		}
+
+		$post = get_post( $form_id );
+		if ( ! $post || 'everest_form' !== $post->post_type ) {
+			wp_send_json_error( array( 'message' => __( 'Form not found.', 'everest-forms' ) ) );
+		}
+		if ( 'draft' !== $post->post_status ) {
+			wp_send_json_error( array( 'message' => __( 'This form is no longer a draft.', 'everest-forms' ) ) );
+		}
+
+		if ( ! wp_trash_post( $form_id ) ) {
+			wp_send_json_error( array( 'message' => __( 'Could not discard the draft.', 'everest-forms' ) ) );
+		}
+
+		wp_send_json_success();
+	}
+
+	/**
 	 * Return usage stats for display in the builder UI (requests used today, limit, etc.).
 	 */
 	public function get_usage() {
@@ -395,39 +424,6 @@ class EVF_AI_Ajax {
 		}
 
 		wp_send_json_success( $usage );
-	}
-
-	/**
-	 * Render the builder-canvas preview HTML for a form and return it as a string.
-	 * Included inline in generate/update responses so React needs no second round trip.
-	 *
-	 * @param int $form_id
-	 * @return string  HTML string, or empty string on failure.
-	 */
-	private static function render_preview_html( int $form_id ): string {
-		$post = get_post( $form_id );
-		if ( ! $post || 'everest_form' !== $post->post_type ) {
-			return '';
-		}
-
-		$form_content = evf_decode( $post->post_content );
-		if ( empty( $form_content ) || ! is_array( $form_content ) ) {
-			return '';
-		}
-
-		if ( ! class_exists( 'EVF_Builder_Fields', false ) ) {
-			include_once dirname( EVF_PLUGIN_FILE ) . '/includes/admin/builder/class-evf-builder-page.php';
-			include_once dirname( EVF_PLUGIN_FILE ) . '/includes/admin/builder/class-evf-builder-fields.php';
-		}
-
-		if ( ! class_exists( 'EVF_Builder_Fields', false ) ) {
-			return '';
-		}
-
-		$builder            = new EVF_Builder_Fields();
-		$builder->form_data = $form_content;
-
-		return $builder->render_ai_preview( $form_content );
 	}
 
 	/**
