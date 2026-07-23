@@ -294,9 +294,6 @@ class EVF_Admin_Assets {
 					'form_one_time_draggable_fields'      => evf_get_one_time_draggable_fields(),
 					'i18n_privacy_policy_consent_message' => esc_html__( 'I allow this website to collect and store the submitted data.', 'everest-forms' ),
 					'is_pro'                              => ( ! defined( 'EFP_PLUGIN_FILE' ) ) ? false : true,
-					// Pro overrides these via the `everest_forms_builder_strings` filter with the
-					// site's actual currency; this is only the free-plugin fallback so the locked
-					// Subscription Plan field preview shows "$" instead of "undefined".
 					'currency_symbol'                     => function_exists( 'evf_get_currencies' ) ? ( evf_get_currencies()[ strtoupper( get_option( 'everest_forms_currency', 'USD' ) ) ]['symbol'] ?? '&#36;' ) : '&#36;',
 					'currency_symbol_pos'                 => function_exists( 'evf_get_currencies' ) ? ( evf_get_currencies()[ strtoupper( get_option( 'everest_forms_currency', 'USD' ) ) ]['symbol_pos'] ?? 'left' ) : 'left',
 					'select_form_tags_placeholder'        => __( 'Please choose a tags from the list, or type in a new tag if you\'d like to add one.', 'everest-forms' ),
