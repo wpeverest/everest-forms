@@ -1,10 +1,6 @@
 /**
- * Style Customizer v2 — panel app.
- *
- * Mounts inside the builder's native sidebar and renders the controls (sub-tabs →
- * Design drill-down / Templates / Custom CSS). The live preview is portaled into the builder's
- * content area so the panel matches the builder's layout exactly. Styles are saved through the
- * builder's own Save button — there is no separate save control.
+ * Style Customizer v2 — panel app. Renders the sub-tabs (Design / Templates / Custom CSS)
+ * and portals the live preview into the builder's content area.
  */
 import React from 'react';
 import { createPortal } from 'react-dom';
@@ -444,10 +440,6 @@ export function App() {
 		if ( toastTimer.current ) {
 			clearTimeout( toastTimer.current );
 		}
-		// Toasts with an action button are NOT auto-dismissed on a bare timer while the pointer/
-		// focus is on them (see pauseToast/resumeToast below) — this only starts the clock, which
-		// those restart from wherever the user left off. WCAG 2.2.1 (Timing Adjustable): a toast
-		// hosting real functionality (Undo) must not vanish on a fixed timer a user can't extend.
 		toastTimer.current = setTimeout( () => setToast( null ), 4200 );
 	}, [] );
 
@@ -465,9 +457,6 @@ export function App() {
 		toastTimer.current = setTimeout( () => setToast( null ), 4200 );
 	}, [] );
 
-	// Tell the user when an edit silently detaches the active palette (store.ts setTokenValue) —
-	// previously this happened with zero notice, and the "Color palette" row would then show
-	// stale/placeholder swatches with no explanation.
 	React.useEffect( () => {
 		store.onPaletteUnlinked = ( name: string ) => {
 			showToast( {
@@ -489,11 +478,6 @@ export function App() {
 		getActiveBridge()?.clearSelection();
 	};
 
-	// Switching to Templates/Custom CSS and leaving a Design slate open behind it is legitimate
-	// (e.g. checking a template for reference mid-edit) — but landing back on "Design" later and
-	// silently reopening that slate instead of the section list reads as a stuck/broken tab, not
-	// intentional persistence. Reset only when leaving Design, so returning to it always starts
-	// at the list; deep-linking in via a row click or a preview click still works as before.
 	const changeSubPane = ( id: SubPane ) => {
 		setSubPane( id );
 		if ( id !== 'design' ) {
@@ -528,7 +512,7 @@ export function App() {
 		if ( info.variant ) {
 			setActiveState( ( m ) => ( { ...m, [ info.section ]: info.variant as string } ) );
 		}
-		setSelectPulse( ( n ) => n + 1 ); // re-flash the slate even if the section was already open.
+		setSelectPulse( ( n ) => n + 1 );
 	}, [] );
 
 	/* ---- save (invoked by the builder's Save button) ---- */
@@ -544,12 +528,7 @@ export function App() {
 				record: store.toRecord(),
 				base_updated_at: store.baseUpdatedAt,
 			};
-			// "Apply Theme Style" persists to a separate per-form meta (not the record). Only sent
-			// when the user actually touched the toggle this session — the legacy `?evf_preview`
-			// page has its OWN toggle+Save for this same meta (still live in another tab), so
-			// always resending the value cached at page-load would silently revert a change made
-			// there. Omitting the key is a true no-op server-side (see RestController::save_item()'s
-			// `null !== $apply_theme` guard).
+			// Only sent when touched this session, to avoid clobbering the legacy preview page's own toggle for the same meta.
 			if ( store.applyThemeStyleTouched ) {
 				data.apply_theme_style = store.applyThemeStyle;
 			}
@@ -575,7 +554,6 @@ export function App() {
 	const saveRef = React.useRef( save );
 	saveRef.current = save;
 
-	// Piggyback on the builder's own Save button (always-on, delegated click).
 	React.useEffect( () => {
 		const onClick = ( e: MouseEvent ) => {
 			const target = e.target as HTMLElement;
@@ -587,7 +565,6 @@ export function App() {
 		return () => document.removeEventListener( 'click', onClick, true );
 	}, [] );
 
-	// Warn before leaving with unsaved style changes (the builder has its own guard too).
 	React.useEffect( () => {
 		const handler = ( e: BeforeUnloadEvent ) => {
 			if ( store.isDirty() ) {
@@ -599,7 +576,6 @@ export function App() {
 		return () => window.removeEventListener( 'beforeunload', handler );
 	}, [ store ] );
 
-	// Keyboard undo/redo.
 	React.useEffect( () => {
 		const onKey = ( e: KeyboardEvent ) => {
 			const target = e.target as HTMLElement;
@@ -623,7 +599,6 @@ export function App() {
 	const paletteOpen = popover?.kind === 'palette';
 
 	const openPalette = ( anchor: HTMLElement ) => {
-		// Reliable toggle: a second click on the same control closes the popover.
 		if ( popover?.kind === 'palette' ) {
 			setPopover( null );
 			return;
@@ -823,9 +798,7 @@ export function App() {
 					previewHost
 				) }
 
-			{ /* Portaled to <body> — matches builder-ai/BuilderAIChat.tsx's own root, so this
-			     fixed-position launcher is never mis-anchored by a transformed ancestor
-			     somewhere in the builder's sidebar/panel chain. */ }
+			{ /* Portaled to <body> so position:fixed isn't trapped by a transformed ancestor. */ }
 			{ createPortal( <AiAssistant />, document.body ) }
 		</div>
 	);

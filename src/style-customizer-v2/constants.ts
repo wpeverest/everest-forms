@@ -71,10 +71,7 @@ export const STATE_LABELS: Record<string, string> = {
 	validation: 'Validation',
 };
 
-/**
- * Preview force-classes: switching to a non-"normal" state can simulate it on the preview
- * wrapper (Phase 3 hook — the bridge toggles these on the iframe wrapper).
- */
+/** Preview force-classes the bridge toggles on the iframe wrapper for non-"normal" states. */
 export const STATE_FORCE: Record<string, string> = {
 	focus: 'force-focus',
 	hover: 'force-hover',
@@ -124,14 +121,8 @@ export const FONTSTYLE_BUTTONS: Array<[ keyof import('./types').FontStyleValue, 
 	[ 'uppercase', 'TT', 'Uppercase' ],
 ];
 
-/**
- * Click-to-edit resolver for the REAL EVF front-end preview (not a mock).
- *
- * Ordered most-specific → least-specific. The bridge walks up from a clicked element and
- * returns the first target whose selector an ancestor matches, so clicking any element in the
- * live form opens the matching section (+ variant/state). Selectors mirror the real markup the
- * shared `frontend.css` rule template targets, so selection and styling stay in lockstep.
- */
+/** Click-to-edit resolver, ordered most-specific → least-specific; the bridge walks up from a
+ *  clicked element to the first matching target. */
 export interface PreviewTarget {
 	match: string;
 	section: string;
@@ -164,8 +155,7 @@ export const PREVIEW_TARGETS: PreviewTarget[] = [
 	{ match: 'label.evf-field-label', section: 'text', variant: 'label', label: 'Label' },
 	{ match: '.everest-forms-uploader', section: 'fields', label: 'Upload area' },
 	{
-		// Choice-type fields: radio, checkbox, image-choice, likert, scale/star ratings,
-		// payment method pickers, yes/no, privacy policy.
+		// Choice-type fields: radio, checkbox, image-choice, likert, ratings, payment pickers, yes/no, privacy policy.
 		match:
 			'.evf-field-radio, .evf-field-checkbox, .evf-field-payment-multiple, .evf-field-payment-checkbox, .evf-field-privacy-policy, .evf-field-image-choice, .evf-field-likert, .evf-field-rating, .evf-field-scale-rating, .evf-field-payment-single, .evf-field-yes-no',
 		section: 'choice',

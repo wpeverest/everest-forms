@@ -2,25 +2,10 @@
 /**
  * Style Customizer v2 — engine-aware frontend enqueue.
  *
- * Decides, per form, whether the front end renders through the v2 engine or the legacy
- * one — the "exactly one stylesheet per form" rule (plan §3). For a v2 form it:
- *   1. adds the `evf-style-v2` marker class to the form wrapper (so the rule template
- *      applies only to v2 forms — v1 forms keep their legacy compiled CSS),
- *   2. inlines the rule template ID-scoped to `#evf-{id}` (the selectors that READ the vars),
- *   3. inlines the per-form CSS-variable block from {@see Compiler} onto `#evf-{id}`, and
- *   4. loads the selected Google font (parity with v1's `evfsc_enqueue_fonts()`).
- *
- * Why inline + ID-scoped (not a shared class-only stylesheet): Everest Forms' base frontend
- * CSS nests some selectors up to six classes deep (e.g. the section-title `h3` at `(0,6,1)`
- * and the field description at `(0,4,0)`). A shared `.everest-forms .evf-style-v2 …` rule is
- * only three classes and loses that cascade, so those token values silently never apply. The
- * legacy engine avoided this by scoping its per-form sheet under the `#evf-{id}` ID; we do the
- * same by compounding the marker with the form id (`.evf-style-v2#evf-{id}`) — an ID always
- * out-specifies any number of base classes. `assets/css/frontend.css` stays the single source
- * of the rule text (also fetched by the live-preview bridge); we only rescope it per form.
- *
- * A form is "v2" purely by `Engine::is_v2_record()` (presence of `schema_version`), so a
- * legacy form is left entirely to the v1 path. Registered only when `Engine::enabled()`.
+ * Decides, per form, whether the front end renders through the v2 engine or the legacy one
+ * (exactly one stylesheet per form). A v2 form gets the `evf-style-v2` marker class, the rule
+ * template ID-scoped to `#evf-{id}` (out-specifying Everest Forms' deeply-nested base CSS),
+ * the per-form CSS-variable block from {@see Compiler}, and its selected Google font.
  *
  * @package EverestForms\Addons\StyleCustomizer\V2
  * @since   x.x.x
@@ -54,11 +39,8 @@ final class FrontendEnqueue {
 	protected static $template = null;
 
 	/**
-	 * Wire the frontend hooks. Called from {@see Engine::boot()} (only when enabled).
-	 *
-	 * The enqueue runs at priority 20 — AFTER the legacy Style Customizer's
-	 * `enqueue_shortcode_scripts` (priority 10) — so it can dequeue the legacy per-form
-	 * stylesheet for v2 forms and guarantee the plan's "exactly one stylesheet per form" rule.
+	 * Wire the frontend hooks. Called from {@see Engine::boot()} (only when enabled). Runs at
+	 * priority 20, after the legacy Style Customizer's enqueue (10), so it can dequeue it.
 	 */
 	public static function register() {
 		add_action( 'everest_forms_shortcode_scripts', array( __CLASS__, 'enqueue' ), 20 );
@@ -82,14 +64,9 @@ final class FrontendEnqueue {
 			return; // Legacy form — the v1 enqueue handles it.
 		}
 
-		// Exactly one stylesheet per form (plan §3): a v2 form must NOT also load the legacy
-		// per-form compiled sheet. That legacy sheet is scoped with the `#evf-{id}` ID, so it
-		// out-specifies v2's class-scoped rules and silently overrides token values. The legacy
-		// enqueue ran at priority 10; we run at 20, so dequeuing here reliably wins.
+		// A v2 form must not also load the legacy per-form compiled sheet.
 		self::suppress_legacy_styles( $form_id );
 
-		// Inline-only handle (no src): everything is printed inline and ID-scoped so it reliably
-		// beats Everest Forms' deeply-nested base CSS — see the class docblock.
 		if ( ! wp_style_is( self::HANDLE, 'registered' ) ) {
 			wp_register_style( self::HANDLE, false, array(), (string) Schema::version() );
 		}
@@ -98,11 +75,10 @@ final class FrontendEnqueue {
 		// 1) The rule template (selectors reading the vars), ID-scoped to this form.
 		$css = self::scoped_rule_template( $form_id );
 
-		// 2) Per-form variable block (scoped to #evf-{id}; the compiler css_safe()-guards values).
+		// 2) Per-form variable block.
 		$css .= Compiler::compile( $record, $form_id );
 
-		// 3) User custom CSS — sanitized on save, scoped to the wrapper here so it can't leak
-		// site-wide. Emitted last so it can override token output.
+		// 3) User custom CSS, scoped to the wrapper, emitted last so it can override token output.
 		if ( ! empty( $record['custom_css'] ) ) {
 			$css .= Compiler::scope_custom_css( $record['custom_css'], $form_id );
 		}
@@ -111,15 +87,12 @@ final class FrontendEnqueue {
 			wp_add_inline_style( self::HANDLE, $css );
 		}
 
-		// Load the selected Google font, exactly as the v1 engine did (reused helper).
 		self::maybe_enqueue_font( $record );
 	}
 
 	/**
-	 * The shared rule template, ID-scoped to a form. Every `.evf-style-v2` in the template is
-	 * compounded with the form's id (`.evf-style-v2#evf-{id}`) so the token-driven rules
-	 * out-specify base CSS — the identical transform the live-preview bridge applies inside the
-	 * iframe, keeping frontend and preview in lockstep.
+	 * The shared rule template, ID-scoped to a form (`.evf-style-v2#evf-{id}`) — mirrors the
+	 * live-preview bridge's transform so frontend and preview stay in lockstep.
 	 *
 	 * @param int $form_id Form id.
 	 * @return string Rescoped CSS (empty if the template file is unreadable).
@@ -130,8 +103,7 @@ final class FrontendEnqueue {
 			return '';
 		}
 		$scope = self::MARKER_CLASS . '#evf-' . (int) $form_id;
-		// Replace the marker class only where it is NOT followed by a name char (so a compound
-		// like `.evf-style-v2.evf-container` still matches) — mirrors PreviewBridge's regex.
+		// Only replace the marker class when not followed by a name char (mirrors PreviewBridge's regex).
 		return (string) preg_replace(
 			'/\.' . preg_quote( self::MARKER_CLASS, '/' ) . '(?![\w-])/',
 			'.' . $scope,
@@ -140,8 +112,7 @@ final class FrontendEnqueue {
 	}
 
 	/**
-	 * Read (and memoize) the shared rule-template file — the single source of the selectors
-	 * that read the CSS variables (also fetched by the preview bridge).
+	 * Read (and memoize) the shared rule-template file.
 	 *
 	 * @return string
 	 */
@@ -154,9 +125,7 @@ final class FrontendEnqueue {
 	}
 
 	/**
-	 * Enqueue the form's selected Google font. Parity with the v1 engine: only when the form is
-	 * NOT using the theme font and a family is set. Reuses the addon's shared `evfsc_enqueue_fonts()`
-	 * so there is exactly one font-loading code path.
+	 * Enqueue the form's selected Google font, unless it's using the theme font.
 	 *
 	 * @param array $record V2 style record.
 	 */
@@ -174,13 +143,8 @@ final class FrontendEnqueue {
 	}
 
 	/**
-	 * Add the `evf-style-v2` marker class to a v2 form's wrapper so the rule template scopes
-	 * to it (and never to legacy forms). Also adds `evf-choice-{variation}` when the Choices
-	 * "Style variation" is `outline`/`filled` (EVF-2675) — legacy only ever gave radio/checkbox
-	 * a custom appearance (and so only ever showed the selected-colour/unselected-border
-	 * settings) for those two variations; `default` renders the plain native control, exactly
-	 * as legacy did, so no class is added and the rule template's variation-scoped selectors
-	 * simply don't match.
+	 * Add the `evf-style-v2` marker class to a v2 form's wrapper. Also adds
+	 * `evf-choice-{variation}` when the Choices "Style variation" is `outline`/`filled`.
 	 *
 	 * @param array $classes   Container classes.
 	 * @param array $form_data Form data (`id`).
@@ -201,10 +165,7 @@ final class FrontendEnqueue {
 	}
 
 	/**
-	 * Prevent the legacy Style Customizer's per-form stylesheet (and any font it queued) from
-	 * loading for a v2 form, so the v2 engine is the single source of truth. Dequeues +
-	 * deregisters the `everest-forms-style-{id}` handle registered by
-	 * {@see \Everest_Forms_Style_Customizer::enqueue_shortcode_scripts()}.
+	 * Dequeue + deregister the legacy per-form stylesheet handle for a v2 form.
 	 *
 	 * @param int $form_id Form id.
 	 */

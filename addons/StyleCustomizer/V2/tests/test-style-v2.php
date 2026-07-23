@@ -208,9 +208,9 @@ $evil_font = Sanitizer::sanitize_record(
 ok( strpos( $evil_font['tokens']['fonts.family']['desktop'], '{' ) === false && strpos( $evil_font['tokens']['fonts.family']['desktop'], ';' ) === false, 'font family strips CSS breakout chars' );
 
 /* ------------------------------------------------------ Text-contrast guard (EVF-2668 follow-up) */
-// White label text on a white wrap.bg would vanish entirely — the guard should drop it and fall
-// back to the token's own (dark, coherent) schema default.
-$vanishing = Sanitizer::sanitize_record(
+// A normal save (no $check_contrast opt-in) must never revert a deliberately-chosen colour, even
+// a low-contrast one — the guard only ever runs for the AI style launcher.
+$deliberate = Sanitizer::sanitize_record(
 	array(
 		'tokens' => array(
 			'wrap.bg'     => array( 'desktop' => '#ffffff' ),
@@ -218,7 +218,20 @@ $vanishing = Sanitizer::sanitize_record(
 		),
 	)
 );
-ok( ! isset( $vanishing['tokens']['label.color'] ), 'white-on-white label.color dropped (falls back to schema default at compile time)' );
+ok( $deliberate['tokens']['label.color']['desktop'] === '#ffffff', 'a normal save keeps white-on-white label.color (contrast guard is opt-in only)' );
+
+// White label text on a white wrap.bg would vanish entirely — with the guard opted in (the AI
+// launcher's path), it should drop it and fall back to the token's own (dark, coherent) default.
+$vanishing = Sanitizer::sanitize_record(
+	array(
+		'tokens' => array(
+			'wrap.bg'     => array( 'desktop' => '#ffffff' ),
+			'label.color' => array( 'desktop' => '#ffffff' ),
+		),
+	),
+	true
+);
+ok( ! isset( $vanishing['tokens']['label.color'] ), 'white-on-white label.color dropped when the AI contrast guard is opted in' );
 
 // Same white label colour, but wrap.bgImage is set: the photo covers wrap.bg visually, so the
 // guard can't judge contrast from wrap.bg alone and must leave the override alone.
@@ -229,7 +242,8 @@ $over_image = Sanitizer::sanitize_record(
 			'wrap.bgImage' => array( 'desktop' => 'https://example.test/bg.png' ),
 			'label.color'  => array( 'desktop' => '#ffffff' ),
 		),
-	)
+	),
+	true
 );
 ok( $over_image['tokens']['label.color']['desktop'] === '#ffffff', 'white label.color kept when wrap.bgImage is set' );
 
@@ -305,6 +319,21 @@ $themed = Compiler::compile(
 	7
 );
 ok( strpos( $themed, '--evf-font:inherit' ) !== false, '"use theme fonts" → --evf-font:inherit' );
+
+// A `}` inside a quoted string (e.g. a `content` value) must not close the rule block early.
+$scoped_css = Compiler::scope_custom_css( '.a::before{content:"}";color:red}', 7 );
+ok( strpos( $scoped_css, '#evf-7 .a::before{content:"}";color:red}' ) !== false, 'scope_custom_css keeps a rule intact when its body contains a quoted }' );
+
+// Reviewer-reported (PR #1612 review): a `}` inside a string didn't just corrupt its own rule, it
+// de-scoped every rule AFTER it too — a form's Custom CSS leaking site-wide, not a contained bug.
+$leak_css = Compiler::scope_custom_css( ".a::before{content:\"}\"}\n.b{color:red}", 6 );
+ok( strpos( $leak_css, '#evf-6 .a::before{content:"}"}' ) !== false, 'first rule with a quoted } is scoped and uncorrupted' );
+ok( strpos( $leak_css, '#evf-6 .b{color:red}' ) !== false, 'the rule AFTER it is still scoped, not leaked site-wide' );
+
+// A `/* ... */` comment inside a rule body must be skipped the same way as a quoted string.
+$comment_css = Compiler::scope_custom_css( ".c{color:red;/* a } fake brace */margin:0}\n.d{color:green}", 6 );
+ok( strpos( $comment_css, '#evf-6 .c{color:red;/* a } fake brace */margin:0}' ) !== false, 'a } inside a comment does not close the rule early' );
+ok( strpos( $comment_css, '#evf-6 .d{color:green}' ) !== false, 'the rule after a comment-embedded } is still scoped' );
 
 /* ---------------------------------------------------------------- Migrator */
 group( 'Migrator' );

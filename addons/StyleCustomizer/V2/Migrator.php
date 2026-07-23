@@ -2,21 +2,8 @@
 /**
  * Style Customizer v2 — Legacy → v2 migration.
  *
- * Converts a legacy `everest_forms_styles[form_id]` record (WP-Customizer engine) into a
- * v2 record ({@see Schema} token map). Storage is the same option on both sides, and v2
- * deliberately keeps the legacy VALUE shapes (associative {top,right,bottom,left}
- * dimensions, 0–1 opacity, bold/italic/underline/uppercase font-style) — so the migration
- * only renames *which setting* (group/prop → dotted token key) and copies the value; it
- * never reshapes the value. This keeps it near-lossless and low-risk.
- *
- * The mapping table below targets the CANONICAL bundled addon
- * (`addons/StyleCustomizer/includes/configs/*`). The standalone plugin uses the same prop
- * shapes under per-element group keys — those aliases plug into {@see self::map()} the same
- * way (see STYLE-CUSTOMIZER-V2-PLAN.md §12).
- *
- * Every transform here is pure (no WP calls) so it is unit-testable in isolation; the
- * migrator orchestration is what talks to the option store (handled by the caller with
- * backup + temp-compile-verify + atomic commit, plan §5 Phase 5).
+ * Converts a legacy `everest_forms_styles[form_id]` record into a v2 record ({@see Schema}
+ * token map), keeping legacy value shapes intact and only renaming group/prop to token keys.
  *
  * @package EverestForms\Addons\StyleCustomizer\V2
  * @since   x.x.x
@@ -40,16 +27,11 @@ final class Migrator {
 	public static function migrate_record( $legacy ) {
 		$legacy = is_array( $legacy ) ? $legacy : array();
 
-		// Already a v2 record (has a token map) — return it unchanged. Running the v1→v2 mapping
-		// over it would find no v1 group keys and emit a defaults-only record, silently wiping the
-		// form's styling. This makes migrate_record() idempotent and safe to call defensively.
+		// Already a v2 record — return unchanged (keeps this method idempotent).
 		if ( isset( $legacy['tokens'] ) ) {
 			return $legacy;
 		}
 
-		// Otherwise normalize to the canonical v1 shape the mapping table reads (converts the old
-		// v0 standalone-plugin shape; leaves canonical v1 untouched), so migration is faithful
-		// regardless of how old the source data is.
 		$legacy = self::normalize_legacy_shape( $legacy );
 
 		$tokens = array();
@@ -61,32 +43,18 @@ final class Migrator {
 				continue;
 			}
 			$value = $legacy[ $group ][ $prop ];
-			// Legacy represents "never customized" two ways: the key is absent (handled above),
-			// OR the key is present with an empty string (e.g. an unset colour/border-type —
-			// confirmed on a real production record, `button.border_type => ''`). Migrating the
-			// empty string verbatim breaks rendering: Compiler treats '' as a real value and
-			// emits no declaration for it (Sanitizer/Compiler skip empty strings), and with no
-			// CSS fallback the property is left unset/inherited instead of falling through to
-			// the v2 schema default. Skip it here so the token stays unset and the compiler uses
-			// its own default, exactly as if the legacy key had never been set at all.
+			// An empty string means "never customized" — skip so the token stays unset.
 			if ( '' === $value ) {
 				continue;
 			}
 			$tokens[ $rule['token'] ] = self::apply_transform( $rule['transform'], $value );
 		}
 
-		// Colour palette: seed the palette-derived token colours from the saved palette (v2
-		// deliberately derives input.focusBorder/choice.checked/file.icon/btn.bgHover from
-		// button_background — plan §12 — a one-click "recolour everything coherently" UX
-		// enhancement over legacy, where those were independent, separately-set properties).
-		// Palette values go FIRST here so they're only a FALLBACK: an explicit legacy value for
-		// one of these properties (already in $tokens from the loop above) must win, or a
-		// customized focus-border/hover colour would be silently discarded on migration.
+		// Palette-derived tokens go first so an explicit legacy value can override them.
 		$tokens = array_merge( self::migrate_palette( $legacy ), $tokens );
 
-		// Bundled templates ship no color_palette; these typography keys carry their palette-driven
-		// fills (EVF-2668). Fall back only when no palette set the token. Deliberately NOT extended to
-		// form bg / label colours — some templates hold stray values there ("red" bg, #ffffff labels).
+		// Fallback for templates that carry palette colours in typography keys instead of
+		// color_palette; not extended to wrap.bg/label — some templates hold stray values there.
 		foreach ( array(
 			'input.bg'  => 'field_styles_background_color',
 			'btn.bg'    => 'button_background_color',
@@ -97,20 +65,12 @@ final class Migrator {
 			}
 		}
 
-		// A form/template with a background image needs its own label colour regardless of
-		// palette (a dark default label is unreadable over most photo backgrounds), and every
-		// bundled template pairs background_image with a matching field_labels_font_color 1:1
-		// (checked all 11 templates), so this can't reintroduce the invisible-label risk noted above.
+		// A background image needs its own label colour regardless of palette.
 		if ( ! isset( $tokens['label.color'] ) && ! empty( $legacy['form_container']['background_image'] ) && ! empty( $legacy['typography']['field_labels_font_color'] ) ) {
 			$tokens['label.color'] = self::apply_transform( 'pass', $legacy['typography']['field_labels_font_color'] );
 		}
 
-		// v1 NEVER coupled these three to the palette — each rendered its OWN independent setting
-		// unconditionally (scss.php:172,187,460; no palette check anywhere), unlike button_background
-		// itself which v1 always read from the palette. So when the legacy record never explicitly
-		// set one, the palette merge above just invented a colour v1 never showed on that element
-		// (EVF-2669: the file-upload cloud icon changing colour after migration is exactly this).
-		// Re-assert each at its legacy-parity schema default unless explicitly customized in legacy.
+		// v1 never coupled these to the palette; re-assert each at its schema default unless customized.
 		foreach ( array(
 			'input.focusBorder' => 'field_styles_border_focus_color',
 			'choice.checked'    => 'checkbox_radio_checked_color',
@@ -124,13 +84,7 @@ final class Migrator {
 			}
 		}
 
-		// v1's "Image Position" is a WP_Customize_Background_Position_Control 3x3 grid (background_
-		// position_x: left/center/right, background_position_y: top/center/bottom, e.g. "center top"),
-		// but v2's wrap.bgPosition is a single 5-value enum {center,top,bottom,left,right} — already
-		// only the axis-aligned "cross" subset of that grid, never true diagonals. The old row-based
-		// mapping read ONLY background_position_x, so a legacy record customized on the Y axis alone
-		// (x left at its 'center' default, y='top') silently migrated to 'center' instead of 'top'
-		// (EVF-2670). Combine both axes into whichever one isn't 'center'.
+		// Combine both position axes into whichever one isn't 'center'.
 		$bg_position = self::migrate_background_position( isset( $legacy['form_container'] ) ? $legacy['form_container'] : array() );
 		if ( null !== $bg_position ) {
 			$tokens['wrap.bgPosition'] = self::apply_transform( 'pass', $bg_position );
@@ -141,10 +95,7 @@ final class Migrator {
 			'tokens'         => $tokens,
 		);
 
-		// Carry the v1 "selected template" (a WP-Customizer control, `template` — see
-		// class-evf-style-customizer-api.php) across so the v2 Templates pane still shows it as
-		// applied post-migration, instead of landing on "no template selected" despite the form's
-		// styling having come from one.
+		// Carry the v1 selected template across so the Templates pane shows it as applied.
 		if ( ! empty( $legacy['template'] ) ) {
 			$record['template'] = Templates::resolve_legacy_slug( $legacy['template'] );
 		}
@@ -163,15 +114,7 @@ final class Migrator {
 	 * --------------------------------------------------------------------- */
 
 	/**
-	 * Normalize a legacy record to the canonical v1 shape that {@see self::map()} reads (the v2
-	 * short-circuit is handled earlier, in {@see self::migrate_record()}):
-	 *
-	 *  - **v0** (the OLD standalone "Style Customizer" plugin shape: top-level `wrapper`,
-	 *    `field_label`, `field_sublabel`, `checkbox_radio_styles`, flat `field_styles.*` typography,
-	 *    …): converted to canonical v1 via {@see self::v0_to_v1()}. Real sites got this conversion
-	 *    from the one-shot `evfsc_migration()`; a record that predates/skipped it would otherwise
-	 *    migrate to all-defaults (every custom colour/size silently lost).
-	 *  - **v1** (canonical bundled-addon shape): returned unchanged.
+	 * Normalize a legacy record to the canonical v1 shape that {@see self::map()} reads.
 	 *
 	 * @param array $legacy Source record (v0 or v1 shape).
 	 * @return array Canonical v1 record.
@@ -184,9 +127,7 @@ final class Migrator {
 	}
 
 	/**
-	 * Detect the v0 (old standalone-plugin) shape by keys that ONLY exist there — never in the
-	 * canonical v1 shape (which nests typography under `typography.*` and uses `font` /
-	 * `form_container`, not a top-level `wrapper`).
+	 * Detect the v0 (old standalone-plugin) shape by keys that only exist there.
 	 *
 	 * @param array $legacy Record.
 	 * @return bool
@@ -201,17 +142,7 @@ final class Migrator {
 	}
 
 	/**
-	 * Convert one v0 (standalone-plugin) record to the canonical v1 shape — a pure port of the
-	 * per-form body of `evfsc_migration()` (addons/StyleCustomizer/includes/functions.php), so a
-	 * v0 record migrates identically whether or not that one-shot DB migration ever ran.
-	 *
-	 * Two documented bugs in `evfsc_migration()` are deliberately CORRECTED here so v0 data
-	 * reaches v2 faithfully (the project rule is "v2 does what the setting says", not "replicate
-	 * legacy bugs" — plan §11):
-	 *   1. Trailing-space source keys (`'font_color '`) silently dropped the field/description/
-	 *      section-title/file-upload/checkbox font colours; corrected to `'font_color'`.
-	 *   2. The button-alignment typo target (`button_button_alignment`) never matched the v1 key
-	 *      the compiler/migrator read (`button_alignment`); corrected.
+	 * Convert one v0 (standalone-plugin) record to the canonical v1 shape.
 	 *
 	 * @param array $s v0 record (`$settings` in evfsc_migration).
 	 * @return array Canonical v1 record.
@@ -273,8 +204,7 @@ final class Migrator {
 			}
 		}
 
-		// Palette colours — v0 stored each colour flat on its element; v1 packs the six into a
-		// single `color_palette.color_12` slot (the shape {@see self::migrate_palette()} reads).
+		// Palette colours — v0 stored each flat; v1 packs the six into `color_palette.color_12`.
 		$color_mappings = array(
 			'wrapper'        => array( 'background_color' => 'form_background' ),
 			'field_styles'   => array( 'background_color' => 'field_background' ),
@@ -323,7 +253,7 @@ final class Migrator {
 		$rows[] = self::row( 'form_container', 'background_size', 'wrap.bgSize', 'pass' );
 		$rows[] = self::row( 'form_container', 'background_repeat', 'wrap.bgRepeat', 'pass' );
 		$rows[] = self::row( 'form_container', 'background_attachment', 'wrap.bgAttachment', 'pass' );
-		// background_position_x/y are combined separately — see migrate_background_position() (EVF-2670).
+		// background_position_x/y are combined separately — see migrate_background_position().
 		$rows[] = self::row( 'form_container', 'opacity', 'wrap.bgOpacity', 'pass' ); // v2 keeps the 0–1 scale (identity).
 		$rows[] = self::row( 'form_container', 'margin', 'wrap.margin', 'dim_resp' );
 		$rows[] = self::row( 'form_container', 'padding', 'wrap.pad', 'dim_resp' );
@@ -337,15 +267,8 @@ final class Migrator {
 		);
 		foreach ( $roles as $legacy_prefix => $vp ) {
 			$rows[] = self::row( 'typography', "{$legacy_prefix}_font_size", "{$vp}.size", 'pass' );
-			// LABEL and SUBLABEL colour are PALETTE-driven in v1: scss.php reads them from the
-			// color_palette `field_label` / `field_sublabel` slots (views/scss.php:154,160), and
-			// NEVER from `typography.field_labels_font_color` / `field_sublabels_font_color` — those
-			// keys exist in saved/template data but are dead (v1 doesn't render them). Mapping them
-			// here injected a colour v1 never showed (e.g. a template's stray #ffffff label), and it
-			// overrode the correct palette-derived value from migrate_palette(). So skip the colour
-			// row for label/sub; migrate_palette() (palette slots) + the schema default cover them.
-			// desc/title colour IS typography-driven in v1 (field_description_font_color /
-			// section_title_font_color, scss.php:190,196), so those keep the mapping.
+			// label/sub colour is palette-driven in v1, not typography-driven — skip; desc/title
+			// colour is typography-driven so keep the mapping.
 			if ( 'label' !== $vp && 'sub' !== $vp ) {
 				$rows[] = self::row( 'typography', "{$legacy_prefix}_font_color", "{$vp}.color", 'pass' );
 			}
@@ -462,9 +385,7 @@ final class Migrator {
 	}
 
 	/**
-	 * Validate a legacy dimension, keeping its associative shape {top,right,bottom,left}
-	 * (+ optional `unit`) — v2 stores the SAME shape, so this is a coerce-to-int, not a
-	 * reshape (identity migration).
+	 * Validate a legacy dimension, keeping its associative shape {top,right,bottom,left}.
 	 *
 	 * @param mixed $dim Legacy dimension.
 	 * @return array
@@ -486,8 +407,7 @@ final class Migrator {
 	}
 
 	/**
-	 * Responsive dimension {desktop:{…}, tablet?:{…}, mobile?:{…}} → per-device bag with the
-	 * same associative inner shape. Preserves every device that was set (lossless, plan §12).
+	 * Responsive dimension {desktop:{…}, tablet?:{…}, mobile?:{…}} → per-device bag.
 	 *
 	 * @param mixed $dim Legacy responsive dimension.
 	 * @return array
@@ -533,12 +453,8 @@ final class Migrator {
 	 * --------------------------------------------------------------------- */
 
 	/**
-	 * Combine v1's two-axis background_position_x/y into v2's single 5-value wrap.bgPosition
-	 * (center/top/bottom/left/right — EVF-2670). Prefers whichever axis is NOT 'center', since
-	 * that's the one the form actually customized; the vertical axis wins if BOTH are non-center
-	 * (a true diagonal corner, which v2's model can't represent either way — v2 never supported
-	 * diagonals even for a token set directly in the panel, so this is a best-effort pick, not a
-	 * new regression).
+	 * Combine v1's two-axis background_position_x/y into v2's single 5-value wrap.bgPosition.
+	 * Prefers whichever axis isn't 'center'; the vertical axis wins if both are non-center.
 	 *
 	 * @param array $container Legacy `form_container` group.
 	 * @return string|null The migrated position, or null if neither axis was set.
@@ -564,10 +480,7 @@ final class Migrator {
 
 	/**
 	 * Seed the six palette-driven token colours from a saved `color_palette` selection, plus the
-	 * derived `btn.bgHover` (button_background darkened 14% toward black) — mirrors
-	 * `applyPalette()` in store.ts exactly, so a migrated form's button hover colour matches what
-	 * re-applying the same palette through the panel would produce, instead of silently falling
-	 * back to the schema default (`#eeeeee`).
+	 * derived `btn.bgHover` (button_background darkened 14% toward black).
 	 *
 	 * @param array $legacy Legacy record.
 	 * @return array token => device bag.
@@ -596,9 +509,7 @@ final class Migrator {
 	}
 
 	/**
-	 * Linear-interpolate two hex colours — PHP port of `mixHex()` in constants.ts, kept
-	 * byte-for-byte equivalent (same channel rounding) so a migrated `btn.bgHover` is identical
-	 * to what the panel would compute if the same palette were re-applied there.
+	 * Linear-interpolate two hex colours — PHP port of `mixHex()` in constants.ts.
 	 *
 	 * @param string $a First hex colour (`#rgb` or `#rrggbb`).
 	 * @param string $b Second hex colour.

@@ -1,20 +1,7 @@
 /**
- * Style Customizer v2 — live preview bridge.
- *
- * Owns the `?evf_preview` iframe. On load it reaches into the same-origin document, tags the
- * form wrapper with the v2 marker class, injects the shared rule template (ID-scoped so it
- * reliably beats the preview chrome + any legacy CSS), and writes the current token values as
- * CSS custom properties onto the wrapper. Thereafter every store change re-applies only the
- * variables that moved — no reload, no recompile.
- *
- * Robustness (plan risk §9.3 + cross-browser): the wrapper may not be present the instant the
- * `load` event fires (theme scripts, redirects, Chrome timing), so we poll for it up to a
- * deadline before surfacing the "open in new tab" fallback — and we hide the preview chrome
- * immediately, so the frame never flashes the full front-end page / a dark overlay.
- *
- * Element selection: a delegated click/hover handler inside the iframe maps any clicked form
- * element to its style section (+ variant) and reports it back, so the panel opens the right
- * controls — a modern visual-editor interaction. Same-origin, so no postMessage is needed.
+ * Style Customizer v2 — live preview bridge. Owns the `?evf_preview` iframe: tags the form
+ * wrapper, injects the rule template, writes token values as CSS variables, and maps clicks
+ * inside the iframe back to their style section for click-to-edit.
  */
 import { resolveValue, tokenDeclarations } from './cssVars';
 import { ALL_FORCE_CLASSES, PREVIEW_TARGETS } from './constants';
@@ -30,18 +17,13 @@ const SELECT_STYLE_ID = 'evf-scv2-select';
 const DEVICE_STYLE_ID = 'evf-scv2-device';
 const FONT_LINK_ID = 'evf-scv2-font';
 
-/**
- * The legacy `?evf_preview` theme-toggle class. `evf-form-preview.css` (already loaded on that
- * route) styles the form with Everest Forms' default look via
- * `.everest-forms:not(.evf-frontend-form-preview) …`, so ADDING this class = theme styling,
- * REMOVING it = EVF default styling — exactly the v1 preview behaviour.
- */
+/** Legacy `?evf_preview` theme-toggle class: adding it applies theme styling, removing it applies EVF's default. */
 const PREVIEW_THEME_CLASS = 'evf-frontend-form-preview';
 
 const HOVER_CLASS = 'evf-scv2-hover';
 const SELECTED_CLASS = 'evf-scv2-selected';
 
-/** Mirrors FrontendEnqueue::container_class()'s `evf-choice-{variation}` classes (EVF-2675). */
+/** Mirrors FrontendEnqueue::container_class()'s `evf-choice-{variation}` classes. */
 const CHOICE_VARIATION_CLASSES = [ 'evf-choice-outline', 'evf-choice-filled' ];
 
 /** How long to keep polling for the form wrapper before giving up (ms). */
@@ -65,9 +47,7 @@ interface BridgeHandlers {
 	onReady: () => void;
 	onError: () => void;
 	onSelect?: ( info: SelectionInfo ) => void;
-	/** Any click inside the iframe's OWN document (which the parent document's own outside-click
-	 *  listeners never see, since an iframe has its own separate document) — used to close any
-	 *  open panel popover, which otherwise stayed open forever once you clicked into the preview. */
+	/** Any click inside the iframe's own document — used to close an open panel popover. */
 	onIframeClick?: () => void;
 }
 
@@ -137,9 +117,7 @@ export class PreviewBridge {
 	}
 
 	private handleLoad = () => {
-		// A fresh navigation inside the frame (reload on a builder-structure change, or rare theme
-		// redirects) — re-arm and re-detect, then re-bootstrap (vars, custom CSS, selection). The
-		// old document's observer (if any) is now moot — a new one is attached for the new doc.
+		// A fresh navigation inside the frame — re-arm and re-detect the wrapper.
 		this.ready = false;
 		this.wrapper = null;
 		this.stopWatching();
@@ -147,13 +125,7 @@ export class PreviewBridge {
 		this.poll();
 	};
 
-	/**
-	 * Resolve the form wrapper: the exact `#evf-{id}` id the compiler scopes variables to, or —
-	 * if that id is missing for any reason (markup variance, a slow/late write) — the base
-	 * plugin's `.evf-container` wrapper div (see class-evf-shortcode-form.php), which every
-	 * rendered form has exactly one of. Falling back keeps the live-edit bridge working instead
-	 * of declaring it unavailable purely because of an id mismatch.
-	 */
+	/** Resolves the form wrapper by id, falling back to the base plugin's `.evf-container` div. */
 	private findWrapper( doc: Document ): HTMLElement | null {
 		const byId = doc.getElementById( this.store.settings.wrapperId );
 		if ( byId ) {
@@ -167,13 +139,7 @@ export class PreviewBridge {
 		return null;
 	}
 
-	/**
-	 * Watch the iframe document for the wrapper being inserted, as a supplement to (and faster
-	 * than) the fixed-interval poll below. Crucially, this observer is left running even past the
-	 * poll's own deadline (until `bootstrap()` or `detach()` stops it) — so a wrapper that shows up
-	 * late (a slow theme script, an unusually heavy page) still self-heals into a working live-edit
-	 * bridge instead of a permanent failure, which previously required a manual retry.
-	 */
+	/** Watches the iframe document for the wrapper being inserted, faster than the fixed-interval poll. */
 	private watchForWrapper( doc: Document ) {
 		if ( this.observedDoc === doc && this.mutationObserver ) {
 			return;
@@ -204,10 +170,7 @@ export class PreviewBridge {
 					this.bootstrap( doc, wrapper );
 				}
 			} catch ( e ) {
-				// A same-origin document is fair game for OTHER extensions' content scripts too
-				// (ad blockers, password managers, …), which can monkey-patch/break DOM APIs we
-				// depend on here. Swallow it — the fixed-interval poll (below) gets another shot
-				// on its own next tick rather than this observer permanently wedging detection.
+				// Swallow — a monkey-patched DOM API (browser extensions) shouldn't wedge detection.
 			}
 		} );
 	}
@@ -220,13 +183,7 @@ export class PreviewBridge {
 		this.observedDoc = null;
 	}
 
-	/**
-	 * Reload the preview page inside the iframe. Used when the builder's form STRUCTURE changes
-	 * (fields added/removed/reordered, labels/placeholders edited) so the server re-renders the
-	 * current form; the live style variables are re-applied automatically once the fresh page
-	 * loads (via {@see handleLoad}). Falls back to re-assigning `src` if the frame can't be
-	 * scripted for any reason.
-	 */
+	/** Reload the preview page inside the iframe (used when the builder's form structure changes). */
 	reload() {
 		if ( this.destroyed ) {
 			return;
@@ -240,7 +197,7 @@ export class PreviewBridge {
 				return;
 			}
 		} catch ( e ) {
-			// Fall through to the src reset below.
+			// fall through to the src reset below.
 		}
 		// eslint-disable-next-line no-self-assign
 		this.iframe.src = this.iframe.src;
@@ -261,11 +218,7 @@ export class PreviewBridge {
 
 		if ( doc ) {
 			try {
-				// Hide the preview chrome as early as possible so the frame never flashes the full
-				// front-end page or a dark overlay while we wait for the wrapper.
 				this.hideChrome( doc );
-				// Instant-detection supplement to this timer (see watchForWrapper docblock) — also
-				// the self-healing path once the deadline below is reached.
 				this.watchForWrapper( doc );
 
 				const wrapper = this.findWrapper( doc );
@@ -274,10 +227,7 @@ export class PreviewBridge {
 					return;
 				}
 			} catch ( e ) {
-				// A browser extension's content script running in this SAME-ORIGIN document (ad
-				// blockers, password managers, corporate security tools, …) can throw from a
-				// monkey-patched DOM API on any given tick. One bad tick must not permanently kill
-				// wrapper detection — swallow it and let the next poll (below) try again.
+				// Swallow — a monkey-patched DOM API (browser extensions) shouldn't kill wrapper detection.
 			}
 		}
 
@@ -285,9 +235,7 @@ export class PreviewBridge {
 			if ( ! this.ready ) {
 				this.onError();
 			}
-			// Stop the fixed-interval timer, but leave the MutationObserver attached (if the doc
-			// was ever reached) — a late-appearing wrapper still bootstraps successfully instead
-			// of the live-edit bridge staying permanently unavailable.
+			// Stop polling but leave the MutationObserver attached — a late wrapper still self-heals.
 			return;
 		}
 		this.pollTimer = setTimeout( this.poll, POLL_INTERVAL );
@@ -300,8 +248,7 @@ export class PreviewBridge {
 			this.pollTimer = null;
 		}
 		this.stopWatching();
-		// A fresh document (reload) makes any previously-injected dummy message element a dead
-		// reference — it lives in the OLD document and is already gone.
+		// A previous dummy message element lived in the old (reloaded) document; it's already gone.
 		this.dummyMessageEl = null;
 		this.wrapper = wrapper;
 		wrapper.classList.add( this.store.settings.markerClass );
@@ -310,12 +257,7 @@ export class PreviewBridge {
 			if ( this.destroyed ) {
 				return;
 			}
-			// A same-origin document is fair game for OTHER extensions' content scripts too (ad
-			// blockers, password managers, corporate security tools, …), which routinely inject
-			// into every frame and can throw from a monkey-patched DOM API partway through this
-			// sequence. Never let that leave the bridge permanently stuck "not responding" —
-			// whichever step failed, still flip ready/onReady so click-to-edit (and whatever DID
-			// apply) survive rather than nothing at all.
+			// Extensions can throw mid-sequence; never leave the bridge stuck "not responding".
 			try {
 				this.applyAll();
 				this.applyCustomCss();
@@ -331,13 +273,7 @@ export class PreviewBridge {
 		} );
 	}
 
-	/**
-	 * Neutralise the legacy per-form compiled stylesheet inside the preview. For a MIGRATED
-	 * (v2) form the server already dequeues it (FrontendEnqueue), but a not-yet-saved legacy
-	 * form being edited still ships its `everest-forms-{id}.css` (ID-scoped, so a specificity
-	 * peer of our injected rules). Disabling it guarantees the v2 tokens win regardless of
-	 * source order — the panel is the single source of truth while editing.
-	 */
+	/** Neutralise the legacy per-form compiled stylesheet so v2 tokens always win. */
 	private disableLegacySheet( doc: Document ) {
 		const id = this.store.settings.formId;
 		if ( ! id ) {
@@ -353,11 +289,7 @@ export class PreviewBridge {
 		} );
 	}
 
-	/**
-	 * The `?evf_preview` route renders the whole page: the WP admin bar, the EVF preview
-	 * toolbar, a side panel, an overlay. We only want the form, so inject CSS that hides that
-	 * chrome and lets the form fill the frame. Preview-only, idempotent.
-	 */
+	/** Hides the `?evf_preview` route's page chrome so only the form fills the frame. */
 	private hideChrome( doc: Document ) {
 		if ( ! doc.head || doc.getElementById( CHROME_STYLE_ID ) ) {
 			return;
@@ -420,12 +352,7 @@ export class PreviewBridge {
 		doc.head.appendChild( style );
 	}
 
-	/**
-	 * Inject the shared rule template (the selectors that READ the vars) ID-scoped to the
-	 * wrapper. Scoping every `.evf-style-v2` selector with the form's `#id` raises specificity
-	 * above the preview-chrome stylesheet and any stale legacy CSS, so v2 tokens always win.
-	 * Fetched once and cached; falls back to a class-scoped `<link>` if the fetch fails.
-	 */
+	/** Injects the shared rule template, ID-scoped to the wrapper so v2 tokens always win. */
 	private injectRuleTemplate( doc: Document, done: () => void ) {
 		if ( doc.getElementById( TEMPLATE_STYLE_ID ) ) {
 			done();
@@ -451,9 +378,7 @@ export class PreviewBridge {
 					done();
 					return;
 				}
-				// Last-resort fallback — if even THIS throws (a DOM API corrupted badly enough
-				// that neither the fetch+inline-style path nor a plain <link> can be created),
-				// still call `done()` so bootstrap() unblocks instead of stalling forever.
+				// Last-resort fallback — ensure done() still fires so bootstrap() doesn't stall.
 				try {
 					const link = doc.createElement( 'link' );
 					link.id = TEMPLATE_STYLE_ID;
@@ -501,11 +426,7 @@ export class PreviewBridge {
 		}
 	}
 
-	/**
-	 * Load (or remove) the selected Google font inside the preview so the chosen family actually
-	 * renders — mirrors the front-end `evfsc_enqueue_fonts()`. No custom font while "use theme
-	 * fonts" is on or no family is set.
-	 */
+	/** Loads (or removes) the selected Google font inside the preview. */
 	private ensureFont() {
 		const wrapper = this.wrapper;
 		if ( ! wrapper ) {
@@ -536,14 +457,7 @@ export class PreviewBridge {
 		}
 	}
 
-	/**
-	 * Reflect "Apply Theme Style" live in the preview, mirroring the legacy `?evf_preview` toggle
-	 * exactly: the class goes on the OUTER `.everest-forms` ancestor (not the `#evf-{id}`
-	 * container), and `evf-form-preview.css` — already loaded on this route — provides the default
-	 * (non-theme) look via `.everest-forms:not(.evf-frontend-form-preview)`. So ON (theme) adds the
-	 * class (the active theme styles the form) and OFF removes it (EVF default rules apply). The v2
-	 * token rules are ID-scoped, so they still win over whichever baseline is active.
-	 */
+	/** Reflects "Apply Theme Style" live, mirroring the legacy `?evf_preview` toggle. */
 	private applyThemeStyle() {
 		const wrapper = this.wrapper;
 		if ( ! wrapper ) {
@@ -565,10 +479,7 @@ export class PreviewBridge {
 		this.varsFor( token ).forEach( ( v ) => wrapper.style.removeProperty( v ) );
 		decls.forEach( ( [ name, val ] ) => wrapper.style.setProperty( name, val ) );
 
-		// choice.variation has no CSS var (a "meta" token, per Compiler::declarations()) — it
-		// drives a wrapper class instead, matching FrontendEnqueue::container_class() on the real
-		// frontend: legacy only gave radio/checkbox a custom appearance (and so only ever showed
-		// the selected-colour/unselected-border settings) for outline/filled, never default.
+		// choice.variation is a "meta" token (no CSS var) — it drives a wrapper class instead.
 		if ( token.key === 'choice.variation' ) {
 			CHOICE_VARIATION_CLASSES.forEach( ( c ) => wrapper.classList.remove( c ) );
 			if ( value === 'outline' || value === 'filled' ) {
@@ -586,11 +497,7 @@ export class PreviewBridge {
 	}
 
 	/**
-	 * Constrain the FORM content width inside the iframe to simulate a device, WITHOUT resizing
-	 * the outer preview pane (per the device-switch UX): the pane/toolbar stay full-width; only
-	 * the rendered form narrows + centers. `null` (desktop) removes the constraint. Responsive
-	 * spacing still previews because the bridge re-writes the per-device vars on device change.
-	 *
+	 * Constrain the form's content width inside the iframe to simulate a device.
 	 * @param width Device content width in px, or null for full width.
 	 */
 	setDeviceWidth( width: number | null ) {
@@ -615,8 +522,6 @@ export class PreviewBridge {
 			style.id = DEVICE_STYLE_ID;
 			doc.head.appendChild( style );
 		}
-		// The preview route always wraps the form in `.evf-form-preview-form`; constraining it
-		// (with the container as a fallback) narrows + centers the rendered form.
 		style.textContent = `.evf-form-preview-form,.evf-preview-content{max-width:${ this.deviceWidth }px!important;margin-left:auto!important;margin-right:auto!important;transition:max-width .25s ease;}`;
 	}
 
@@ -626,9 +531,7 @@ export class PreviewBridge {
 		this.applyForceClass();
 	}
 
-	/** Re-apply the currently active force-state class — called from setForceClass AND from every
-	 *  bootstrap(), so a reload (e.g. BuilderSync's post-save refresh) doesn't silently drop an
-	 *  active Messages/focus/hover preview the way applyAll/applyDeviceWidth already don't. */
+	/** Re-applies the currently active force-state class (also called on every bootstrap after a reload). */
 	private applyForceClass() {
 		if ( ! this.wrapper ) {
 			return;
@@ -640,14 +543,7 @@ export class PreviewBridge {
 		this.setDummyMessage( this.currentForceClass );
 	}
 
-	/**
-	 * Messages (success/error/field-validation) only ever exist in the DOM after a real form
-	 * submission — there is no other way to preview their styling. While a Messages state tab is
-	 * active, inject a real, throwaway instance of the exact markup EVF's own templates render
-	 * (templates/notices/success.php, error.php; the per-field validation `<label>` from
-	 * class-evf-form-fields.php) so its computed style is actually visible and editable live.
-	 * Swapped out the instant the state tab changes; never touches real submission data.
-	 */
+	/** Injects a throwaway instance of EVF's real notice/error markup so its styling can be previewed live. */
 	private setDummyMessage( cls: string | null ) {
 		if ( this.dummyMessageEl ) {
 			this.dummyMessageEl.remove();
@@ -681,12 +577,9 @@ export class PreviewBridge {
 		el.setAttribute( 'data-evf-scv2-dummy', '1' );
 
 		if ( 'force-msg-validation' === cls ) {
-			// A field-level error reads as real only sitting inside an actual field, right after
-			// its input — not floating at the top of the form.
 			const field = wrapper.querySelector( '.evf-field, .evf-frontend-row' );
 			( field || wrapper ).appendChild( el );
 		} else {
-			// Success/error banners render above the fields, exactly as a real submission would.
 			wrapper.insertBefore( el, wrapper.firstChild );
 		}
 		this.dummyMessageEl = el;
@@ -714,11 +607,7 @@ export class PreviewBridge {
 		style.textContent = css;
 	}
 
-	/**
-	 * Temporarily paint a set of token values (by key) onto the preview WITHOUT touching the
-	 * store — used for template hover previews. `revert()` restores committed state, touching
-	 * only the keys that were previewed (fast).
-	 */
+	/** Temporarily paints token values onto the preview without touching the store (template hover previews). */
 	previewValues( overrides: Record< string, unknown > ) {
 		if ( ! this.wrapper ) {
 			return;
@@ -775,11 +664,7 @@ export class PreviewBridge {
 		if ( doc.getElementById( SELECT_STYLE_ID ) ) {
 			return;
 		}
-		// Subtle, non-alarming selection affordance: a thin dashed hover hint and a soft, low-
-		// opacity selected ring (not a bold solid outline). The `pointer-events` assertion guards
-		// against any theme/plugin reset rule disabling hit-testing inside the preview — harmless
-		// here since this stylesheet only ever loads on the style-panel preview route, never the
-		// real front end.
+		// pointer-events guards against a theme/plugin reset rule disabling hit-testing in the preview.
 		const css = `
 			#${ this.store.settings.wrapperId }, #${ this.store.settings.wrapperId } * { pointer-events: auto !important; }
 			#${ this.store.settings.wrapperId } * { transition: outline-color .12s ease, outline-offset .12s ease; }
@@ -804,13 +689,7 @@ export class PreviewBridge {
 		this.neutralizeMultiPartValidation( doc );
 	}
 
-	/**
-	 * The Multi-Part Forms addon's "Next" handler silently no-ops if any visible required field
-	 * in the current part fails jQuery-validate's `.valid()` — correct on the real front-end,
-	 * but it would force typing dummy data into every required field just to preview a later
-	 * part's styling. Real submission is already sandboxed (see blockEvent above), so
-	 * always-valid is safe here too.
-	 */
+	/** Patches jQuery-validate's `.valid()` to always pass, so Multi-Part's "Next" works without filling required fields. */
 	private neutralizeMultiPartValidation( doc: Document ) {
 		const $ = ( doc.defaultView as ( Window & { jQuery?: JQueryValidateLike } ) | null )?.jQuery;
 		if ( ! $ || typeof $.fn.valid !== 'function' || $.fn.valid.evfScv2Patched ) {
@@ -865,8 +744,7 @@ export class PreviewBridge {
 	}
 
 	private onDocClick = ( e: MouseEvent ) => {
-		// Fires for EVERY click in the iframe, regardless of whether it resolves to a style
-		// target below — a popover open in the parent panel has no other way to learn about this.
+		// Fires for every click, even ones that don't resolve to a style target.
 		if ( this.onIframeClick ) {
 			this.onIframeClick();
 		}

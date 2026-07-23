@@ -1,12 +1,6 @@
 /**
- * Style Customizer v2 — ControlRenderer + control types.
- *
- * One component per schema control type (slider, color, box4, select, align, fontstyle,
- * media, toggle). Every control reads/writes through the store (the single guarded write
- * path) and renders the shared label row (label · responsive badge · reset).
- *
- * Text inputs are uncontrolled + synced imperatively so React re-renders never fight the
- * caret while typing — mirroring the prototype's paint() model.
+ * Style Customizer v2 — one component per schema control type (slider, color, box4, select,
+ * align, fontstyle, media, toggle), each reading/writing through the store.
  */
 import React from 'react';
 import {
@@ -220,9 +214,7 @@ function SliderControl( props: ControlProps ) {
 		store.setTokenValue( token.key, roundToStep( clampNumber( raw, min, max ), token ), gesture );
 	};
 
-	// Position the value bubble exactly where the native thumb sits: the thumb travels between
-	// half its own width from each track edge, not edge-to-edge, so the tooltip must account for
-	// that inset (matches the 15px thumb width set in CSS) to stay centred over it at any value.
+	// The native thumb travels inset by half its own width from each track edge (matches CSS).
 	const THUMB = 15;
 	const pct = max > min ? clampNumber( ( ( value - min ) / ( max - min ) ) * 100, 0, 100 ) : 0;
 
@@ -238,9 +230,6 @@ function SliderControl( props: ControlProps ) {
 						value={ value }
 						aria-label={ token.label }
 						aria-valuetext={ `${ value }${ unit }` }
-						// Drives the coloured fill on the track (see .slider in style.scss) — the
-						// bar visually shows how far the value sits between min and max, not just
-						// a flat grey track with a floating thumb.
 						style={ { '--fill': `${ pct }%` } as React.CSSProperties }
 						onChange={ ( e ) => commit( Number( e.target.value ), true ) }
 					/>
@@ -277,16 +266,9 @@ function SliderControl( props: ControlProps ) {
 							const base = token.step || 1;
 							const step = e.shiftKey ? base * 10 : base;
 							commit( Number( store.resolve( token.key ) ) + ( e.key === 'ArrowUp' ? step : -step ), true );
-							// commit() only paints the input while it's NOT focused (so typing never
-							// fights the caret) — an arrow-key nudge has no caret to protect, so write
-							// the committed value straight back in, matching what the slider already
-							// shows (EVF-2661).
 							( e.currentTarget as HTMLInputElement ).value = String( store.resolve( token.key ) );
 						} }
 					/>
-					{ /* Tokens with no real unit (opacity 0–1, line-height's unitless multiplier) set
-					     `unit: ''` — omitting this when empty, rather than always rendering the box,
-					     avoids a visibly empty, bordered slot next to the number (EVF-2672). */ }
 					{ unit && <span>{ unit }</span> }
 				</div>
 			</div>
@@ -355,9 +337,7 @@ const SIDE_ABBR = [ 'T', 'R', 'B', 'L' ];
 const CORNER_ABBR = [ 'TL', 'TR', 'BR', 'BL' ];
 const BOX_KEYS: Array< keyof BoxValue > = [ 'top', 'right', 'bottom', 'left' ];
 
-/** Are all four sides currently equal? Used to seed "link sides" from the real stored value
- *  instead of always defaulting to true — otherwise the first edit on an already-asymmetric
- *  box (e.g. a migrated `6/12/6/12` padding) silently flattens all four sides to match. */
+/** Are all four box sides currently equal? Seeds the initial "link sides" state. */
 function allSidesEqual( v: BoxValue ): boolean {
 	return v.top === v.right && v.right === v.bottom && v.bottom === v.left;
 }
@@ -379,7 +359,6 @@ function Box4Control( props: ControlProps ) {
 	const labels = token.corners ? CORNER_LABELS : SIDE_LABELS;
 	const unit = token.units && token.units.length ? value.unit || token.units[ 0 ] : null;
 
-	// Sync cells imperatively so typing isn't interrupted.
 	React.useEffect( () => {
 		cellRefs.forEach( ( ref, i ) => {
 			const el = ref.current;
@@ -417,10 +396,6 @@ function Box4Control( props: ControlProps ) {
 	return (
 		<ControlShell { ...props } right={ ! token.units ? <span className="px-hint">px</span> : undefined }>
 			<div className="box4">
-				{ /* Inputs and their T/R/B/L labels are two separate rows inside one flex column, so
-				     the link/unit buttons (which have no label under them) align with the TOP of the
-				     input row regardless of the label row's height below — not the old single-row
-				     layout, which visibly sank the buttons below the inputs. */ }
 				<div className="box4-cells">
 					<div className="box4-inputs">
 						{ BOX_KEYS.map( ( _k, i ) => (
@@ -488,13 +463,7 @@ function Box4Control( props: ControlProps ) {
 	);
 }
 
-/**
- * Custom dropdown select — a clean floating card (border, radius, soft shadow) with a leading
- * checkmark on the selected option, matching the dashboard/Analytics dropdown language. Replaces
- * the native `<select>`, whose popup is unstyleable OS chrome and read as visually inconsistent
- * with every other (fully custom-styled) control in the panel. Short option lists, so no search —
- * see FontSelectControl below for the searchable variant sharing the same visual chrome.
- */
+/** Custom dropdown select — a styled replacement for the native `<select>`. */
 function SelectControl( props: ControlProps & { depHint?: string } ) {
 	const { token, store, depHint } = props;
 	const value = String( store.resolve( token.key ) );
@@ -551,12 +520,7 @@ function SelectControl( props: ControlProps & { depHint?: string } ) {
 	);
 }
 
-/**
- * Searchable font-family picker (a combobox, not a native <select>) — the Google Fonts list is
- * ~1000 entries, so a filterable dropdown is the only usable UI. Matches the dashboard/Analytics
- * dropdown feel: a trigger button that opens a search box + scrollable, keyboard-navigable list.
- * Draws from `store.googleFonts` (the same list the v1 customizer used).
- */
+/** Searchable font-family picker (combobox) for the ~1000-entry Google Fonts list. */
 function FontSelectControl( props: ControlProps & { depHint?: string } ) {
 	const { token, store, depHint } = props;
 	const value = String( store.resolve( token.key ) );
@@ -585,7 +549,6 @@ function FontSelectControl( props: ControlProps & { depHint?: string } ) {
 
 	useDismiss( open, rootRef, () => setOpen( false ) );
 
-	// On open: reset the query, highlight the current value, focus the search box.
 	React.useEffect( () => {
 		if ( ! open ) {
 			return;
@@ -598,7 +561,6 @@ function FontSelectControl( props: ControlProps & { depHint?: string } ) {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [ open ] );
 
-	// Keep the highlighted option scrolled into view during keyboard navigation.
 	React.useEffect( () => {
 		if ( ! open || ! listRef.current ) {
 			return;

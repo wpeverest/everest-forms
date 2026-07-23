@@ -1,11 +1,7 @@
 /**
- * Style Customizer v2 — builder panel chrome.
- *
- * Scoped under `#everest-forms-panel-style` — the builder panel wrapper that contains BOTH
- * our controls (mounted in the builder's native 400px sidebar) and our live preview (portaled
- * into the builder's content area). Colours, fonts and spacing follow the builder so the panel
- * reads as a native part of it. The form-styling tokens (`--evf-*`) are NOT here — they live in
- * the preview iframe via the shared `frontend.css` rule template.
+ * Style Customizer v2 — builder panel chrome, scoped under `#everest-forms-panel-style`
+ * (controls + the portaled live preview). Form-styling tokens (`--evf-*`) live in the
+ * preview iframe instead, via the shared `frontend.css` rule template.
  */
 
 #everest-forms-panel-style {
@@ -33,28 +29,20 @@
 	--ui-amber-100: #fde68a;
 	--ui-amber-700: #92400e;
 
-	/* Pro-showcase colours — deliberately NOT --ui-purple (this panel's own interactive accent).
-	   These match the plugin's one established "this is Pro" design language (the crown badge +
-	   purple CTA + neutral card in assets/css/evf-locked-fields.scss, used by the builder's
-	   locked fields and Create-with-AI upsell) so "PRO" reads identically everywhere in Everest
-	   Forms, not as a bespoke Style Customizer scheme. The badge itself is the real crown asset
-	   (see ProCrown in panes.tsx), not a CSS-drawn colour — only the CTA/card tokens are used here. */
+	/* Pro-showcase colours — matches the plugin's established "this is Pro" language (evf-locked-fields.scss). */
 	--ui-pro-cta: #7e3bd0;
 	--ui-pro-cta-hover: #6c2fbb;
 	--ui-pro-card-bg: #faf9fb;
 	--ui-pro-card-border: #e8e6ee;
 
-	/* One elevation system, three tiers — every floating/raised surface picks one of these
-	   instead of hand-typing its own shadow. */
+	/* One elevation system, three tiers. */
 	--ui-shadow-sm: 0 1px 2px rgba(20, 23, 40, .06);
 	--ui-shadow: 0 1px 2px rgba(20, 23, 40, .04), 0 12px 28px -8px rgba(20, 23, 40, .08);
 	--ui-shadow-lg: 0 2px 4px rgba(20, 23, 40, .06), 0 20px 44px -14px rgba(20, 23, 40, .22);
 	--ui-focus: 0 0 0 1px #fff, 0 0 0 3px var(--ui-purple);
 	--ui-focus-soft: 0 0 0 2px var(--ui-purple-50);
 
-	/* Border-radius scale — sm for chips/badges, md for inputs/controls, lg for cards. The
-	   outer `.preview` frame's 13px is a deliberate exception (matches the builder's own
-	   `.everest-forms-preview-wrap` chrome exactly) and stays a literal value, not a token. */
+	/* Border-radius scale — sm for chips/badges, md for inputs/controls, lg for cards. */
 	--ui-radius-sm: 4px;
 	--ui-radius-md: 6px;
 	--ui-radius-lg: 9px;
@@ -68,9 +56,7 @@
 	--ui-fs-lg: 19px;
 	--ui-fs-xl: 22px;
 
-	/* One shared height for every small inline control (number field, icon-button, dropdown
-	   trigger, colour swatch, media button) so a row built from several different control types
-	   sits on one visual baseline instead of each picking its own height. */
+	/* One shared height for every small inline control, so mixed rows sit on one visual baseline. */
 	--ui-ctrl-h: 32px;
 
 	/* The builder content area holds the preview flush; the sidebar keeps its native chrome. */
@@ -96,9 +82,7 @@
 		border-radius: 5px;
 	}
 
-	/* Rows/cards that draw their own border+radius but don't otherwise define a focus-visible
-	   rule (unlike `.tpl`, `.dsel-trigger`, etc., which already own theirs) — keep their own
-	   radius instead of falling through to the generic 5px-radius rule above. */
+	/* Rows/cards with their own border+radius keep it instead of the generic 5px-radius rule above. */
 	.elrow:focus-visible,
 	.pal-card:focus-visible {
 		outline: none;
@@ -142,10 +126,7 @@
 	font-size: 13px;
 }
 
-/* Sub-tabs mirror the builder's Fields panel tab bar (Add Fields / Field Options) exactly:
-   grey filled segments with a 3px top-border indicator — active = white + purple top border,
-   inactive = grey + dark text, hover = purple text. Kept 1:1 with `.everest-forms-fields-tab`
-   in admin.scss so the two tab bars are visually identical across the plugin. */
+/* Sub-tabs mirror the builder's Fields panel tab bar (`.everest-forms-fields-tab` in admin.scss). */
 #everest-forms-panel-style .subtabs {
 	display: flex;
 	align-items: stretch;
@@ -161,9 +142,7 @@
 	min-width: 0;
 }
 
-/* Undo/redo: a small, always-visible icon pair (in addition to the Ctrl+Z/Y shortcut) — global
-   across Design/Templates/Custom CSS, so it lives beside the tabs rather than inside any one of
-   them. Pinned to the same row so it never competes with the panel's vertical space. */
+/* Undo/redo: a small, always-visible icon pair beside the tabs (global across all sub-panes). */
 #everest-forms-panel-style .subtabs-actions {
 	display: flex;
 	align-items: center;
@@ -251,15 +230,12 @@
 	border-radius: 8px;
 	flex: 1;
 	min-width: 0;
-	/* Minimal, quiet hover — a faint light-primary tint, nothing else moves or changes colour. */
 	transition: background .15s ease;
 
 	&:hover {
 		background: var(--ui-purple-50);
 	}
 
-	/* Same recipe every other button in the panel gets (--ui-focus) — kept this button's own
-	   radius rather than the generic rule's 5px, exactly like .elrow/.pal-card do below. */
 	&:focus-visible {
 		outline: none;
 		box-shadow: var(--ui-focus);
@@ -328,9 +304,7 @@
 	background: #fff;
 }
 
-/* Directional motion for the panel's single most-used navigation gesture — list ↔ slate
-   drill-down, and switching sub-tabs — instead of an instant jump-cut. Transform/opacity only
-   (60fps-safe); disabled globally under prefers-reduced-motion (see the top of this file). */
+/* Directional motion for list ↔ slate drill-down and sub-tab switching; transform/opacity only. */
 #everest-forms-panel-style .slate-anim {
 	animation: scv2slatein .16s ease-out;
 }
@@ -360,11 +334,7 @@
 	}
 }
 
-/* The panel's one real heading size for slate/section titles, matching the builder's own
-   Settings/Integrations section title (.evf-content-section-title: 22px/600/1.3) exactly —
-   nothing else in the panel exceeds it, so the panel has an actual size hierarchy instead of
-   everything sitting at 11-14px, AND it reads as the same heading language as the rest of
-   the builder rather than a smaller, panel-only scale. */
+/* The panel's one real heading size, matching the builder's own section title (.evf-content-section-title). */
 #everest-forms-panel-style .slate-title {
 	font-size: var(--ui-fs-xl);
 	font-weight: 600;
@@ -399,8 +369,7 @@
 	}
 }
 
-/* Secondary form-wide setting, pinned to the bottom of the Design list: muted so it never
-   competes with the palette + elements above it. */
+/* Secondary form-wide setting, pinned to the bottom of the Design list. */
 #everest-forms-panel-style .reset-all-link {
 	display: block;
 	margin: 14px auto 2px;
@@ -449,13 +418,7 @@
 	}
 }
 
-/* Searchable font-family picker (combobox) — trigger + search popover + scrollable list. */
-/*
- * Custom dropdown language shared by every select in the panel (the plain SelectControl and the
- * searchable font combobox) — a clean floating card with a leading checkmark on the selected
- * item, modelled on the dashboard/Analytics dropdown. Replaces native <select> chrome, which
- * can't be styled and read as inconsistent against every other custom-styled control here.
- */
+/* Custom dropdown language shared by every select in the panel (plain select + font combobox). */
 #everest-forms-panel-style .dsel {
 	position: relative;
 	width: 100%;
@@ -483,8 +446,6 @@
 		border-color: #b9bdc9;
 	}
 
-	/* Own the focus ring entirely (open state OR plain keyboard focus) so WP admin's default
-	   button focus outline/shadow never shows alongside it. */
 	&:focus,
 	&[aria-expanded="true"] {
 		outline: none;
@@ -560,8 +521,6 @@
 	font-size: 12.5px;
 	color: var(--ui-ink);
 	background: none;
-	/* WP admin applies its own default text-input focus outline/box-shadow globally — neutralise
-	   it explicitly (both states) so this field shows exactly ONE border: the wrap's bottom edge. */
 	outline: none;
 	box-shadow: none;
 
@@ -697,7 +656,6 @@
 		}
 	}
 
-	// Open: the chevron becomes a close (×) — highlighted, no rotation (it is already an ×).
 	&[aria-expanded="true"] .chev {
 		background: var(--ui-purple-50);
 		color: var(--ui-purple);
@@ -840,8 +798,7 @@
 	line-height: 1.6;
 }
 
-/* Empty state (e.g. zero saved templates yet) — a quiet dashed placeholder rather than the
-   section silently not rendering, so the feature reads as legitimately empty, not missing. */
+/* Empty state (e.g. zero saved templates yet) — a quiet dashed placeholder. */
 #everest-forms-panel-style .empty-state {
 	display: flex;
 	flex-direction: column;
@@ -863,8 +820,7 @@
 	}
 }
 
-/* grouped cards — a quiet, flat surface (thin border + a whisper of shadow, not a heavy card)
-   that reads as one consistent system across every section (Form, Text, Inputs, Choices, …). */
+/* grouped cards — a quiet, flat surface used consistently across every section. */
 #everest-forms-panel-style .grp {
 	margin-bottom: 14px;
 
@@ -905,8 +861,7 @@
 	position: relative;
 }
 
-/* Opening a slate by clicking an element in the live preview: a soft, quick background wash
-   (no hard purple ring) so the transition reads as subtle, not alarming. */
+/* Opening a slate by clicking an element in the live preview: a soft, quick background wash. */
 #everest-forms-panel-style #elBody.flash {
 	animation: scv2slateflash .6s ease-out;
 }
@@ -1049,8 +1004,7 @@
 		min-width: 0;
 	}
 
-	/* Value bubble that follows the thumb — shown on hover, drag, and keyboard focus, so the
-	   exact number is never a guess while adjusting. */
+	/* Value bubble that follows the thumb — shown on hover, drag, and keyboard focus. */
 	.slider-tip {
 		position: absolute;
 		bottom: calc(100% + 8px);
@@ -1098,10 +1052,7 @@
 			transform: translateX(-50%) translateY(0);
 		}
 
-		/* Filled track — `--fill` (set inline from the resolved value, see ControlRenderer.tsx) —
-		   so the bar itself shows the value as a proportion, not just a flat grey rail with a
-		   floating thumb. Hover deepens both the fill and the rail slightly, so the whole bar (not
-		   just the thumb) gives tactile feedback, matching the request to "hover the bar". */
+		/* Filled track — `--fill` is set inline from the resolved value (see ControlRenderer.tsx). */
 		&::-webkit-slider-runnable-track {
 			height: 4px;
 			border-radius: 99px;
@@ -1168,9 +1119,7 @@
 		}
 	}
 
-	/* Safety net: reveal the value bubble on hovering anywhere in the slider row (track or the
-	   adjacent number field), not only while the browser considers the range input itself
-	   hovered. */
+	/* Safety net: reveal the value bubble on hovering anywhere in the slider row. */
 	&:hover .slider-tip {
 		opacity: 1;
 		transform: translateX(-50%) translateY(0);
@@ -1204,8 +1153,6 @@
 		outline: none;
 		box-shadow: none;
 
-		/* WP admin's global input focus style adds its own outline/shadow — the wrap already
-		   shows a purple ring (:focus-within above), so the inner input must show none of its own. */
 		&:focus {
 			outline: none;
 			box-shadow: none;
@@ -1233,8 +1180,7 @@
 	padding: 0 8px;
 	transition: border-color .12s, box-shadow .12s;
 
-	/* The hex text field has no border of its own, so give the WHOLE box a focus ring when it's
-	   focused — otherwise typing a hex value has no visible focus feedback at all. */
+	/* The hex text field has no border of its own, so the whole box shows the focus ring. */
 	&:focus-within {
 		border-color: var(--ui-purple);
 		box-shadow: var(--ui-focus-soft);
@@ -1286,10 +1232,7 @@
 	line-height: 1.45;
 }
 
-/* Two independent rows share one flex column (`.box4-cells`) — inputs, then their T/R/B/L
-   labels — so the link/unit buttons beside it (which have nothing under them) align with the
-   TOP of the input row via `align-items: flex-start` on `.box4`, not with the bottom of a row
-   whose height varies with whether a label happens to sit under it. */
+/* Inputs and their T/R/B/L labels share one flex column so the link/unit buttons align with the top. */
 #everest-forms-panel-style .box4 {
 	display: flex;
 	gap: 5px;
@@ -1573,9 +1516,7 @@
 	margin-bottom: 4px;
 }
 
-/* Hover/selected treatment intentionally mirrors .pal-card exactly (subtle border + background
-   shift, no lift/scale) — the two live side by side (Design tab vs. Templates tab) and should
-   feel like the same control language. */
+/* Hover/selected treatment mirrors .pal-card so the two feel like the same control language. */
 #everest-forms-panel-style .tpl {
 	position: relative;
 	border: 1px solid var(--ui-line);
@@ -1587,8 +1528,6 @@
 	padding: 0;
 	transition: border-color .12s, background .12s;
 
-	/* Matches `.elrow`'s hover exactly (purple-tinted, not neutral-grey) — see the docblock
-	   above: this card and `.pal-card` are meant to share one "selectable card" language. */
 	&:hover {
 		border-color: var(--ui-purple);
 		background: var(--ui-purple-50);
@@ -1690,10 +1629,7 @@
 	}
 }
 
-/* "Modified" hint — the form was applied FROM this template but has since been edited, so it's
-   NOT an exact match (no ✓). A quiet amber pill in the same top-left slot the ✓ would occupy,
-   plus a faint amber border, so it reads as "related, but you've changed it" — never a false
-   "applied". */
+/* "Modified" hint — applied from this template, but since edited; a quiet amber pill, not a false ✓. */
 #everest-forms-panel-style .tpl-mod {
 	position: absolute;
 	top: 7px;
@@ -1715,8 +1651,7 @@
 	border-color: var(--ui-amber-100);
 }
 
-/* "Based on {built-in}" — a custom template's inferred parent (shown only on an exact value
-   match, so it's always correct). A muted sub-line tucked under the template name. */
+/* "Based on {built-in}" — a custom template's inferred parent, tucked under the template name. */
 #everest-forms-panel-style .tpl-parent {
 	display: block;
 	padding: 0 11px 9px;
@@ -1815,8 +1750,7 @@
 	}
 }
 
-/* Collapsed trigger — the create-template form starts hidden; this compact, clickable card
-   opens it. Same shell as the open form (`.tpl-create`) so the swap doesn't jump in size. */
+/* Collapsed trigger — same shell as the open form (`.tpl-create`) so the swap doesn't jump in size. */
 #everest-forms-panel-style .tpl-create-trigger {
 	width: 100%;
 	text-align: left;
@@ -1991,8 +1925,7 @@
 	line-height: 1.5;
 }
 
-/* pro lock — matches the builder's own locked-field banner (evf-locked-fields.scss): a neutral
-   card, not a purple-tinted one; the purple is reserved for the CTA link/button. */
+/* pro lock — matches the builder's own locked-field banner (evf-locked-fields.scss). */
 #everest-forms-panel-style .pro-lock {
 	display: flex;
 	align-items: center;
@@ -2096,9 +2029,7 @@
 	color: var(--ui-pro-cta);
 }
 
-/* The builder's own locked-field crown badge (the Fields sidebar's everest-form-pro-icon.png
-   corner marker) — the icon carries its own orange fill + rounding, so this is just a size box,
-   not a redrawn background. Reads as the SAME "PRO" marker everywhere in Everest Forms. */
+/* The builder's own locked-field crown badge — just a size box, not a redrawn background. */
 #everest-forms-panel-style .pro-badge {
 	display: inline-flex;
 	flex: none;
@@ -2127,17 +2058,13 @@
 	width: 100%;
 	position: relative;
 	background: var(--ui-bg);
-	/* Matches the Fields/Settings/Integrations content containers exactly
-	   (.everest-forms-preview-wrap / .evf-content-section.active): the WHOLE panel (toolbar +
-	   canvas) is ONE 13px-radius, 1px #e1e1e1 card — not the iframe alone, which would stack a
-	   second border on top of the form's own border and look like a nested double frame. */
+	/* Matches the Fields/Settings/Integrations content containers — the whole panel is one card. */
 	border: 1px solid #e1e1e1;
 	border-radius: 13px;
 	overflow: hidden;
 }
 
-/* Legacy → v2 migration notice — a standalone strip ABOVE the preview card (not glued to it,
-   not in the sidebar): its own rounded box with real breathing room before the preview begins. */
+/* Legacy → v2 migration notice — a standalone strip above the preview card. */
 #everest-forms-panel-style .pv-migration {
 	display: flex;
 	align-items: flex-start;
@@ -2216,9 +2143,7 @@
 	flex-wrap: wrap;
 }
 
-/* Matches the builder's own Settings/Integrations section title exactly
-   (.evf-content-section-title: 22px/600/1.3) so "Live preview" reads with the
-   same weight as a real section heading, not a small toolbar label. */
+/* Matches the builder's own Settings/Integrations section title (.evf-content-section-title). */
 #everest-forms-panel-style .pv-bar .ttl {
 	font-weight: 600;
 	font-size: var(--ui-fs-xl);
@@ -2228,7 +2153,6 @@
 	align-items: center;
 	gap: 7px;
 	min-width: 0;
-	/* Grow so the save-state + device switcher are pushed to the right of the toolbar. */
 	flex: 1 1 auto;
 }
 
@@ -2279,7 +2203,6 @@
 	border-radius: var(--ui-radius-md);
 	padding: 3px;
 	border: 1px solid var(--ui-line);
-	/* Pin to the far right of the toolbar (title grows to fill the space before it). */
 	margin-left: auto;
 	flex: none;
 
@@ -2339,8 +2262,7 @@
 	display: inline-block;
 }
 
-/* Honest, non-blocking notice when the live-edit bridge (click-to-edit / hover highlight) never
-   wires up — the form itself still renders fine via the plain iframe, so this never covers it. */
+/* Non-blocking notice when the live-edit bridge (click-to-edit / hover) never wires up. */
 #everest-forms-panel-style .pv-noninteractive {
 	display: flex;
 	align-items: center;
@@ -2395,14 +2317,11 @@
 	width: 100%;
 	flex: 1;
 	min-height: 480px;
-	/* No border/radius of its own — the outer .preview card (see above) is the only chrome
-	   border, so it doesn't stack a second frame on top of the form's own border/radius. */
 	border: 0;
 	background: #fff;
 	border-radius: var(--ui-radius-lg);
 	display: block;
-	/* Hidden until the bridge has hidden the preview chrome + applied styles, so the raw
-	   ?evf_preview page (dark toolbar/theme) never flashes behind the skeleton. */
+	/* Hidden until the bridge hides the preview chrome, so the raw page never flashes. */
 	opacity: 0;
 	transition: opacity .3s ease;
 }
@@ -2448,8 +2367,7 @@
 	}
 }
 
-/* Sidebar controls skeleton — shown instantly while the schema loads (matches the panel:
-   a tab bar row + shimmering control rows) so the sidebar never waits on the network. */
+/* Sidebar controls skeleton — shown instantly while the schema loads. */
 #everest-forms-panel-style .scv2-skel-tabs {
 	display: flex;
 	gap: 0;
@@ -2549,8 +2467,7 @@
 	font-size: 11px;
 }
 
-/* toast — a neutral dark base, with a coloured left accent + icon distinguishing error from
-   success/info so a save-error never reads identically to an "Applied palette — Undo" toast. */
+/* toast — a neutral dark base with a coloured left accent + icon distinguishing error/success/info. */
 #everest-forms-panel-style .toast {
 	position: absolute;
 	bottom: 22px;
@@ -2624,9 +2541,7 @@
 	}
 }
 
-/* confirm modal — a real centered/backdropped dialog, distinct from the anchored .scv2-pop
-   above. Used for destructive actions ("Reset all styles") that deserve an explicit
-   are-you-sure step even though most of them are also undoable. */
+/* confirm modal — a real centered/backdropped dialog, distinct from the anchored .scv2-pop. */
 #everest-forms-panel-style .scv2-modal-backdrop {
 	position: fixed;
 	inset: 0;
@@ -2729,10 +2644,7 @@
 	padding: 6px;
 	min-width: 200px;
 	max-width: 300px;
-	/* Single scroll for the whole popover (was: each palette grid scrolling independently with its
-	   own 340px cap, so "Your palettes" and "Presets" showed two different scrollbars stacked on
-	   top of each other). .pop-head's `position:sticky` above relies on THIS being the scrolling
-	   ancestor. */
+	/* Single scroll for the whole popover; .pop-head's `position:sticky` relies on this. */
 	max-height: 460px;
 	overflow-y: auto;
 	transform-origin: top center;
@@ -2861,7 +2773,7 @@
 	margin: 5px 4px;
 }
 
-/* hover/focus tooltip (EVF-2660) */
+/* hover/focus tooltip */
 #everest-forms-panel-style .scv2-hovertip {
 	position: fixed;
 	z-index: 100001;
@@ -2918,7 +2830,7 @@
 	}
 }
 
-/* palette popover grid — scrolls as part of the single .scv2-pop scroll (EVF-2675), not on its own. */
+/* palette popover grid — scrolls as part of the single .scv2-pop scroll, not on its own. */
 #everest-forms-panel-style .pal-pop-grid {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
@@ -2936,14 +2848,13 @@
 	text-align: left;
 	transition: border-color .12s, background .12s;
 
-	/* Matches `.elrow`/`.tpl`'s hover exactly — one "selectable card" language across the panel. */
+	/* Matches `.elrow`/`.tpl`'s hover — one "selectable card" language across the panel. */
 	&:hover {
 		border-color: var(--ui-purple);
 		background: var(--ui-purple-50);
 	}
 
-	/* `role="option"` takes its selected state from `aria-selected`, not `aria-pressed` (which
-	   isn't a valid state for that role) — the selector matches the ARIA fix in App.tsx. */
+	/* `role="option"` takes its selected state from `aria-selected`, not `aria-pressed`. */
 	&[aria-selected="true"] {
 		border-color: var(--ui-purple);
 		background: var(--ui-purple-50);
@@ -2963,15 +2874,8 @@
 		box-shadow: inset 0 0 0 1px rgba(20, 23, 40, .08);
 	}
 
-	/* A long custom palette name wraps instead of truncating (EVF-2674) — the card has no fixed
-	   height, so a second line just grows the card; align-items stays center rather than switching
-	   to flex-start since most names are one line and this keeps the (rare) pro-crown badge
-	   vertically centred against them either way. `padding-right` reserves the width the
-	   hover-revealed edit/delete tools (.pal-card-tools, 47px wide, bottom-right) occupy — EVERY
-	   wrapped line respects that narrower box, so a long name's tail can never end up UNDER the
-	   tools' opaque background, whichever line it lands on. Deliberately on `.cap` alone (not a
-	   bottom-padding tax on the whole card): a short one-line name pays no height cost at all,
-	   only long names that actually wrap trade a bit of width for the guarantee. */
+	/* A long custom palette name wraps instead of truncating; `padding-right` keeps every
+	   wrapped line clear of the hover-revealed edit/delete tools (bottom-right). */
 	.cap {
 		display: flex;
 		align-items: center;
@@ -2988,8 +2892,7 @@
 		color: var(--ui-purple);
 	}
 
-	/* Same crown badge as .pro-badge elsewhere in the panel — was previously its own amber
-	   gradient text pill, a third, uncoordinated "Pro" treatment. One marker, one icon. */
+	/* Same crown badge as .pro-badge elsewhere in the panel. */
 	.pro {
 		display: inline-flex;
 		flex-shrink: 0;
@@ -3037,8 +2940,7 @@
 		}
 	}
 
-	/* tools overlay bottom-right, revealed on hover — .cap's own padding-right (above) reserves
-	   this strip so it never sits on top of (and hides) wrapped name text. */
+	/* tools overlay bottom-right, revealed on hover. */
 	.pal-card-tools {
 		position: absolute;
 		bottom: 5px;
@@ -3342,6 +3244,4 @@
 	}
 }
 
-/* AI styling launcher (AiAssistant.tsx) styles itself inline (matching
-   src/builder-ai/BuilderAIChat.tsx's own approach) since it's portaled to <body>,
-   outside `#everest-forms-panel-style` — see the component for details. */
+/* AI styling launcher (AiAssistant.tsx) styles itself inline since it's portaled to <body>. */

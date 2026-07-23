@@ -1,10 +1,6 @@
 /**
- * Style Customizer v2 — live preview pane.
- *
- * Owns the `?evf_preview` iframe and its bridge. Subscribes to the store so every edit paints
- * live onto the iframe wrapper. Hosts the device switcher, the save lifecycle state, a polished
- * skeleton loader that fades out when the frame is ready, and a graceful (retryable) error card
- * if the preview genuinely can't be bridged.
+ * Style Customizer v2 — live preview pane. Owns the `?evf_preview` iframe and its bridge,
+ * plus the device switcher, save-lifecycle state, skeleton loader, and error card.
  */
 import React from 'react';
 import { DEVICE_ICONS, DEVICE_LABELS } from './constants';
@@ -20,12 +16,7 @@ type PreviewStatus = 'loading' | 'ready' | 'error';
 
 const MIGRATION_DISMISS_PREFIX = 'evf_scv2_migration_dismissed_';
 
-/**
- * Notice that this form's legacy styles were auto-migrated. Sits ABOVE the preview card (not
- * inside it, and not in the sidebar) — a distinct strip with its own breathing room, since it's
- * about what you're looking at below. Migration is one-way and compulsory, so this is purely
- * informational: dismiss once per form, never nags again.
- */
+/** Notice that this form's legacy styles were auto-migrated. Dismisses once per form. */
 function MigrationNotice() {
 	const store = useStore();
 	const dismissKey = MIGRATION_DISMISS_PREFIX + store.settings.formId;
@@ -76,12 +67,7 @@ function MigrationNotice() {
 	);
 }
 
-/**
- * Polished preview loader (skeleton form + spinner). Shared with the panel bootstrap so the
- * preview area shows the SAME loader from the instant the tab opens through until the iframe
- * is ready — no blank flash, no premature "unavailable", and (via `note`) no jarring hand-off
- * to a differently-designed loader for the migration step that can precede it (see index.tsx).
- */
+/** Preview loader (skeleton form + spinner), shared with the panel bootstrap in index.tsx. */
 export function PreviewSkeleton( { note }: { note?: string } ) {
 	return (
 		<div className="pv-skel" aria-hidden="true">
@@ -101,11 +87,7 @@ export function PreviewSkeleton( { note }: { note?: string } ) {
 
 const DEVICE_ORDER: Device[] = [ 'desktop', 'tablet', 'mobile' ];
 
-/**
- * Content width per device: desktop = full width (null), tablet/mobile = a fixed px that sits
- * just below the compiled breakpoint. Only the FORM content inside the iframe is constrained —
- * the outer preview pane always stays full-width.
- */
+/** Content width per device: desktop = full width (null), tablet/mobile = a fixed px below the breakpoint. */
 function deviceContentWidth( device: Device, breakpoints: Record< string, number > ): number | null {
 	if ( device === 'desktop' ) {
 		return null;
@@ -142,12 +124,8 @@ export function PreviewPane( {
 	const bridgeRef = React.useRef< PreviewBridge | null >( null );
 	const [ status, setStatus ] = React.useState< PreviewStatus >( 'loading' );
 	const [ reloadKey, setReloadKey ] = React.useState( 0 );
-	// Tracks whether the live-edit bridge is ACTUALLY wired (click-to-edit, hover highlight) —
-	// deliberately separate from `status`, which only governs revealing the iframe visually and
-	// is force-flipped to 'ready' by the timer below even when the bridge itself never finishes.
-	// Without this split, a bridge that silently fails to attach looks identical to a working one:
-	// the form renders fine (plain iframe content), but nothing is clickable — see PreviewBridge's
-	// `watchForWrapper` docblock for why this can happen intermittently in some environments.
+	// Whether the live-edit bridge is actually wired (click-to-edit, hover) — separate from
+	// `status`, which can be force-flipped to 'ready' even when the bridge never finishes.
 	const [ interactive, setInteractive ] = React.useState( false );
 	const [ interactiveStalled, setInteractiveStalled ] = React.useState( false );
 
@@ -157,17 +135,8 @@ export function PreviewPane( {
 	const onIframeClickRef = React.useRef( onIframeClick );
 	onIframeClickRef.current = onIframeClick;
 
-	// Force the iframe to the CURRENT window's exact origin (protocol + host + port), keeping
-	// only the path/query the server computed. Two same-origin requirements, both needed:
-	//  - Scheme: if the builder is https but the preview URL is http (e.g. is_ssl() misreported
-	//    behind a proxy), Chrome blocks the mixed-content iframe and it renders blank.
-	//  - Host/port: `previewUrl` is built from `home_url()` server-side, which can differ from
-	//    whatever host/alias/port the admin page itself was actually loaded through (multiple
-	//    hostname aliases, a reverse proxy, a non-default port in local dev). If it differs, the
-	//    iframe is genuinely cross-origin and `contentDocument` access throws in EVERY browser —
-	//    it just looks "browser-specific" because which host you happen to browse admin through
-	//    is a matter of habit/bookmarks per browser, not an engine difference. Rewriting to the
-	//    current origin removes that whole class of failure outright.
+	// Force the iframe to the current window's exact origin, so a host/scheme mismatch with the
+	// server-computed preview URL never makes the iframe cross-origin (contentDocument would throw).
 	const previewSrc = React.useMemo( () => {
 		try {
 			const url = new URL( store.settings.previewUrl, window.location.href );
@@ -191,19 +160,12 @@ export function PreviewPane( {
 		setInteractiveStalled( false );
 		const s = getStore();
 		const bridge = new PreviewBridge( iframe, s, {
-			// The bridge fully wired up (chrome hidden, rules injected, click-to-edit listening) —
-			// reveal immediately, and let the builder-sync flush any structure change that was
-			// queued while (re)loading. This can also fire LATE (past the stall timer below) if
-			// PreviewBridge's background MutationObserver self-heals a slow wrapper detection —
-			// clearing the stalled hint the moment it does.
 			onReady: () => {
 				setStatus( 'ready' );
 				setInteractive( true );
 				setInteractiveStalled( false );
 				getActiveSync()?.onBridgeReady();
 			},
-			// Bridging failed (couldn't script the frame) — do NOT hide the iframe; the native
-			// load event still reveals it, so the form stays visible even without live editing.
 			onError: () => setStatus( ( prev ) => ( prev === 'ready' ? prev : 'error' ) ),
 			onSelect: ( info ) => onSelectRef.current( info ),
 			onIframeClick: () => onIframeClickRef.current(),
@@ -212,18 +174,12 @@ export function PreviewPane( {
 		setActiveBridge( bridge );
 		bridge.attach();
 
-		// Chrome-safety: on some Chrome setups the iframe `load` event / bridge poll can fail to
-		// flip the status (leaving the frame gated at opacity:0 forever, i.e. an invisible preview
-		// — the exact symptom seen in Chrome but not Chromium/Brave). Force the reveal after a
-		// short deadline so the preview is ALWAYS shown, with or without the live-edit bridge.
+		// Some Chrome setups fail to flip status via the load event/poll — force a reveal so the
+		// preview is always shown, with or without the live-edit bridge.
 		const revealTimer = window.setTimeout( () => {
 			setStatus( ( prev ) => ( prev === 'loading' ? 'ready' : prev ) );
 		}, 2500 );
 
-		// If the bridge still isn't interactive well past its own detection deadline, say so
-		// instead of leaving a preview that LOOKS fine but silently ignores clicks — the exact
-		// failure mode this hardening targets. `onReady` (above) clears this the moment the bridge
-		// (or its background self-heal) actually attaches, even if that happens after this fires.
 		const interactiveStallTimer = window.setTimeout( () => {
 			setInteractive( ( cur ) => {
 				if ( ! cur ) {
@@ -380,10 +336,7 @@ export function PreviewPane( {
 						title={ __( 'Form preview', 'everest-forms' ) }
 						src={ previewSrc }
 						onLoad={ () => {
-							// Strict cross-browser visibility: reveal the iframe on its native load
-							// event no matter what the bridge does. The bridge's own load handler
-							// hides the preview chrome first; the short beat lets that apply so the
-							// raw page never flashes.
+							// Small delay lets the bridge hide the preview chrome first, so it never flashes.
 							window.setTimeout( () => setStatus( 'ready' ), 180 );
 						} }
 					/>

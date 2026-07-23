@@ -1,18 +1,13 @@
 /**
- * Style Customizer v2 — panel panes.
- *
- * DesignList (element rows + palette select), ElementSlate (the schema-driven drill-down body
- * with variant/state tabs + grouped cards), TemplatesPane and CustomCssPane. All read/write
- * the store; the ElementSlate is the heart of Phase 2 (every control rendered from schema).
+ * Style Customizer v2 — panel panes: DesignList, ElementSlate (schema-driven drill-down),
+ * TemplatesPane and CustomCssPane. All read/write the store.
  */
 import React from 'react';
 import { ControlRenderer } from './ControlRenderer';
 import { SECTION_ICONS, SECTION_SUBTITLES, STATE_LABELS } from './constants';
 import { useStore } from './store';
 import { BoxValue, DeviceBag, Section, Template, Token } from './types';
-// The exact same "PRO" crown badge the builder's Fields sidebar uses (not a redrawn approximation)
-// — file-loader (webpack.config.js) emits it and returns its built URL, same pattern already used
-// by src/dashboard/screens/Analytics/Analytics.js for analytics-preview.png.
+// The same "PRO" crown badge the builder's Fields sidebar uses.
 import proIconUrl from '../../assets/images/icons/everest-form-pro-icon.png';
 
 const __ = ( window as any ).wp?.i18n?.__ || ( ( s: string ) => s );
@@ -25,10 +20,7 @@ function Icon( { inner }: { inner: string } ) {
 	);
 }
 
-/**
- * "PRO" marker — the builder's own locked-field crown badge (the Fields sidebar's corner icon),
- * not text, so a locked item reads as the exact same marker everywhere in Everest Forms.
- */
+/** "PRO" marker — the builder's own locked-field crown badge. */
 export function ProCrown() {
 	return <img className="pro-crown" src={ proIconUrl } alt="" aria-hidden="true" />;
 }
@@ -57,9 +49,7 @@ export function DesignList( {
 } ) {
 	const store = useStore();
 	const activePalette = store.palettes.find( ( p ) => p.id === store.palette );
-	// No active palette (custom, or detached by a manual edit — see store.ts setTokenValue): show
-	// the REAL current colour for each palette slot (its first driven token), not a static
-	// placeholder — otherwise this row can visibly lie about the form's actual current colours.
+	// No active palette — show each slot's real current colour instead of a static placeholder.
 	const swatches = activePalette
 		? paletteSwatchColors( activePalette.colors, store.paletteMap )
 		: Object.values( store.paletteMap ).map( ( keys ) =>
@@ -79,8 +69,6 @@ export function DesignList( {
 						? __( 'Close colour palette', 'everest-forms' )
 						: __( 'Choose colour palette', 'everest-forms' )
 				}
-				// Full name on hover — the visible label still truncates at this width (EVF-2674),
-				// same reasoning as the popover card's own `title={p.name}` below.
 				title={ activePalette ? activePalette.name : undefined }
 				onClick={ ( e ) => onOpenPalette( e.currentTarget ) }
 			>
@@ -90,8 +78,6 @@ export function DesignList( {
 					) ) }
 				</span>
 				<span className="nm">{ activePalette ? activePalette.name : __( 'Custom', 'everest-forms' ) }</span>
-				{ /* When the popover is open, the opening chevron becomes a close (×) affordance —
-				     clicking the same trigger toggles the popover shut. */ }
 				<span className={ 'chev' + ( paletteOpen ? ' as-close' : '' ) } aria-hidden="true">
 					{ paletteOpen ? (
 						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2.2 }>
@@ -144,8 +130,6 @@ export function DesignList( {
 				} ) }
 			</div>
 
-			{ /* Form-wide baseline: a secondary, rarely-changed setting → kept at the bottom so the
-			     palette + elements (the primary actions) lead the panel. */ }
 			<div className="theme-style-row">
 				<span className="tsr-text">
 					<b>{ __( 'Apply Theme Style', 'everest-forms' ) }</b>
@@ -236,17 +220,13 @@ export function ElementSlate( {
 		( t ) => t.section === section.key && ! t.hidden && ( ! t.show_when_image || bgImageSet )
 	);
 
-	// On a state/variant tab, show ONLY the controls that belong to that state. Shared
-	// (stateless) controls live on the first tab (Normal / Label) so a state tab such as
-	// Focus or Hover stays context-clean — no greyed-out "shared" controls that read as
-	// disabled and don't apply to the state.
+	// On a state/variant tab, show only the controls that belong to that state; shared controls
+	// live on the first tab.
 	const enabledByState = tabs
 		? visible.filter( ( t ) => ( t.state ? t.state === act : act === first ) )
 		: visible;
 
-	// The 6 palette-slot colours (form/field bg, label/sublabel, button text/bg) render as
-	// hidden tokens with no direct picker (deliberate v1-parity choice) — tell the user where to
-	// find them instead of the slate silently having no colour control at all.
+	// The palette-slot colours render as hidden tokens with no direct picker — point the user to them.
 	const hasHiddenPaletteColor = store.schema.some( ( t ) => t.section === section.key && t.hidden );
 
 	// Dependency dimming: a border-style set to "none" disables its width/colour deps.
@@ -262,9 +242,7 @@ export function ElementSlate( {
 	const locked = ( t: Token ) => t.tier === 'pro' && ! store.proActive;
 	const hasLocked = visible.some( locked );
 
-	// A whole Pro section (e.g. Messages) on a free site: its controls live in the Pro plugin and
-	// are absent here, so render a locked upgrade teaser instead of an empty slate. The server
-	// authoritatively rejects any pro value regardless of the UI (Sanitizer/Compiler).
+	// A whole Pro section on a free site: render a locked upgrade teaser instead of an empty slate.
 	const sectionLocked = section.tier === 'pro' && ! store.proActive;
 
 	const renderControl = ( t: Token ) => (
@@ -369,11 +347,7 @@ export function ElementSlate( {
 	);
 }
 
-/**
- * Locked upgrade teaser — shown wherever a Pro feature is surfaced on a free site (a whole
- * design section, or the Templates tab). Explains the feature and links to upgrade; the actual
- * controls/data are not shipped in free and the server rejects any pro value regardless.
- */
+/** Locked upgrade teaser — shown wherever a Pro feature is surfaced on a free site. */
 export function ProTeaser( { title, text }: { title: string; text: string } ) {
 	return (
 		<div className="pro-teaser">
@@ -410,15 +384,9 @@ function desktopOf( bag: DeviceBag | undefined ): any {
 }
 
 /**
- * Flatten a template's per-device token bags into a { key: desktopValue } map covering EVERY
- * schema key — not just the ones the template itself sets. `previewValues()` (hover) only ever
- * writes the keys present in the map it's given, so a sparse map (just the template's own
- * tokens) leaves any token the template DOESN'T set showing whatever the previously-hovered/
- * committed template left behind — e.g. hovering a no-background-image template right after one
- * WITH an image kept showing the old image, since `wrap.bgImage` was simply absent from the new
- * template's own tokens. `store.applyTemplate()` (click) doesn't have this bug because it resets
- * every schema key to its default before overlaying the template's tokens; mirror that here so
- * hovering previews exactly what clicking would produce.
+ * Flatten a template's per-device token bags into a { key: desktopValue } map covering every
+ * schema key (not just the ones the template sets), mirroring what `store.applyTemplate()` does
+ * on click so hovering previews exactly what clicking would produce.
  */
 function flattenForPreview( tokens: Record< string, DeviceBag >, schema: Token[] ): Record< string, any > {
 	const out: Record< string, any > = {};
@@ -433,10 +401,7 @@ function radiusOf( bag: DeviceBag | undefined, fallback: number ): number {
 	return v && typeof v === 'object' ? Number( v.top ) || 0 : fallback;
 }
 
-/**
- * Template thumbnail: shows the real screenshot image when it loads, and falls back to a live
- * token-driven mini-form if the image is missing/blocked — so a thumbnail always renders.
- */
+/** Template thumbnail: real screenshot when it loads, else a live token-driven mini-form. */
 function TemplateThumb( { tpl }: { tpl: Template } ) {
 	const [ imgOk, setImgOk ] = React.useState( !! tpl.image );
 	const th = templateThumb( tpl );
@@ -592,8 +557,6 @@ export function TemplatesPane( {
 	const [ name, setName ] = React.useState( '' );
 	const [ busy, setBusy ] = React.useState( false );
 	const [ error, setError ] = React.useState( '' );
-	// The create-template form starts collapsed — a trigger row opens it — so the tab's default
-	// view is the template grids, not an always-open input+button most visits never touch.
 	const [ showCreateForm, setShowCreateForm ] = React.useState( false );
 	const createInputRef = React.useRef< HTMLInputElement >( null );
 
@@ -605,11 +568,7 @@ export function TemplatesPane( {
 		[ templates, store ]
 	);
 
-	// Value-driven template state (recomputed whenever the store version bumps): the ✓ "Applied"
-	// badge reflects whether the form's ACTUAL styles match a template — never a stale slug — so it
-	// can't disagree with the live preview. `originId` is the template the form was applied FROM but
-	// has since been edited (an honest "Modified" hint). `parentNames` maps each CUSTOM template to
-	// the built-in it exactly derives from (its inferred "parent"). See the store methods.
+	// Value-driven template state, recomputed whenever the store version bumps.
 	const ver = store.getVersion();
 	const appliedId = React.useMemo( () => store.appliedTemplateId(), [ store, ver ] );
 	const originId = React.useMemo( () => store.originTemplateId(), [ store, ver ] );

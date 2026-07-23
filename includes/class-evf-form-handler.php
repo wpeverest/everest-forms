@@ -458,17 +458,9 @@ class EVF_Form_Handler {
 			if ( isset( $form_styles[ $id ] ) ) {
 				$form_styles[ $new_form_id ] = $form_styles[ $id ];
 
-				// A legacy (pre-v2) style record depends on a static per-form compiled CSS
-				// file (uploads/everest_forms_styles/everest-forms-{id}.css) that only the old
-				// Customizer's own save path ever writes. Duplicating never generates that file
-				// for the new id, so the legacy engine's file_exists() check silently fails and
-				// the duplicate renders completely unstyled on the front end despite carrying
-				// real style data in this option. Migrating it to a v2 record right away avoids
-				// the gap entirely: v2 compiles inline, per request, with no static-file
-				// dependency, so the duplicate looks right immediately, before anyone opens the
-				// Style tab. Already-v2 records pass through unchanged (migrate_record() is
-				// idempotent); Sanitizer is the same authoritative gate every other write path
-				// to this option goes through.
+				// A legacy style record needs a static per-form CSS file that duplicating never
+				// generates, so it would render unstyled. Migrate to v2 instead, which compiles
+				// inline (migrate_record() is idempotent, so an already-v2 record is untouched).
 				if ( class_exists( '\EverestForms\Addons\StyleCustomizer\V2\Engine' )
 					&& \EverestForms\Addons\StyleCustomizer\V2\Engine::enabled()
 					&& ! \EverestForms\Addons\StyleCustomizer\V2\Engine::is_v2_record( $form_styles[ $new_form_id ] ) ) {

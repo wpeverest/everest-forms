@@ -2,18 +2,10 @@
 /**
  * Style Customizer v2 — live builder-structure preview draft.
  *
- * The style preview is the real front-end form rendered through `?evf_preview`, which normally
- * reads the SAVED form from the database. That means Fields-tab edits (labels, placeholders,
- * descriptions, adding/deleting/duplicating/reordering fields) don't show in the Style panel
- * until the form is saved — the reported synchronisation gap.
- *
- * This class closes it without saving: the panel POSTs the builder's CURRENT serialized form
- * data to {@see self::store()} (the exact `[{name,value},…]` array the save AJAX sends), we parse
- * it into the same nested structure a save would produce and cache it as a short-lived per-user
- * transient. On the next preview render, {@see self::filter_form_data()} swaps that draft in via
- * the core `everest_forms_frontend_form_data` filter — but ONLY for this user's dedicated
- * style-preview request (`evf_style_preview=1`), so the real front end and the normal preview
- * button are never affected.
+ * Lets the Style panel's preview iframe show unsaved Fields-tab edits: the panel POSTs the
+ * builder's current serialized form data to {@see self::store()}, which caches it as a
+ * short-lived per-user transient; {@see self::filter_form_data()} swaps it in for the
+ * style-preview request only, leaving the real front end and normal preview untouched.
  *
  * @package EverestForms\Addons\StyleCustomizer\V2
  * @since   x.x.x
@@ -53,10 +45,7 @@ final class PreviewDraft {
 	public static function register() {
 		add_filter( 'everest_forms_frontend_form_data', array( __CLASS__, 'filter_form_data' ), 5 );
 
-		// Strictly render ONLY the form in the style-preview iframe — server-side, so it can never
-		// depend on JS timing or a cached bundle (Chrome otherwise shows the full preview page:
-		// admin bar, preview toolbar, side panel). Set up on `wp`, before the preview template
-		// (and its `wp_head()`) runs.
+		// Server-side chrome hide for the style-preview iframe, set up before the template runs.
 		add_action( 'wp', array( __CLASS__, 'maybe_setup_embed' ) );
 	}
 
@@ -94,21 +83,12 @@ final class PreviewDraft {
 	 */
 	public static function print_embed_css() {
 		echo '<style id="evf-style-preview-embed">'
-			// A stable scrollbar gutter reserves the scrollbar's width in the layout up front
-			// (supported in all evergreen browsers), so it never appears "over" content or leaves
-			// a border short of the true edge once the page grows past viewport height.
 			. 'html{margin-top:0 !important;scrollbar-gutter:stable;}'
 			. '*,*::before,*::after{box-sizing:border-box;}'
 			. 'body.evf-multi-device-form-preview{margin:0 !important;padding:0 !important;background:#fff !important;}'
 			. '#wpadminbar,#nav-menu-header,.evf-form-side-panel,.evf-form-preview-sidepanel-toggler,.evf-form-preview-devices,.evf-form-preview-dropdown-container,.major-publishing-actions{display:none !important;}'
 			. '.evf-form-preview-main-content,.evf-form-preview-overlay{display:block !important;position:static !important;inset:auto !important;margin:0 !important;padding:16px !important;width:100% !important;max-width:100% !important;min-height:0 !important;height:auto !important;box-shadow:none !important;background:transparent !important;}'
-			// evf-form-preview.scss adds a dark `::after` scrim on `.evf-form-preview-overlay` below
-			// a 992px CONTAINER width (a media query, not a JS/browser difference) — and the template
-			// always renders that class unconditionally alongside `.evf-form-preview-main-content`
-			// (evf-form-preview-template.php), so it is not a toggled state at all. The embedded
-			// builder iframe is very often narrower than 992px on its own, so this rendered as a
-			// dark backdrop over the form in EVERY browser at that width; overriding the parent's
-			// `background` above does nothing to it since it is a separate pseudo-element box.
+			// Hides evf-form-preview.scss's dark ::after scrim below a 992px container width.
 			. '.evf-form-preview-overlay::after{display:none !important;}'
 			. '.evf-form-preview-form{width:100% !important;max-width:100% !important;margin:0 !important;padding:0 !important;}'
 			. '.evf-preview-content{width:100% !important;max-width:100% !important;}'
@@ -152,8 +132,7 @@ final class PreviewDraft {
 
 		$data = self::parse( $decoded );
 
-		// A draft with no fields is not renderable (and would just blank the preview) — clear any
-		// stale draft instead so the preview falls back to the saved form.
+		// A draft with no fields isn't renderable — clear any stale draft instead.
 		if ( empty( $data['form_fields'] ) ) {
 			self::clear( $form_id, $session );
 			return false;
@@ -177,11 +156,8 @@ final class PreviewDraft {
 	}
 
 	/**
-	 * Parse the serialized builder array into the nested form structure.
-	 *
-	 * Deliberately mirrors {@see \EVF_AJAX::save_form()} so the draft is byte-for-byte what a save
-	 * would produce (same `evf_sanitize_builder()` pass, same name → array-path expansion), and
-	 * therefore renders identically to a saved form.
+	 * Parse the serialized builder array into the nested form structure. Mirrors
+	 * {@see \EVF_AJAX::save_form()} so the draft renders identically to a saved form.
 	 *
 	 * @param array $form_post Array of `{name,value}` objects (already JSON-decoded).
 	 * @return array Nested form data (`form_fields`, `structure`, `settings`, …).
@@ -230,10 +206,6 @@ final class PreviewDraft {
 	/**
 	 * Swap the draft structure into the front-end form data — style-preview iframe only.
 	 *
-	 * Gated tightly so it can never leak into a real front-end render or the normal preview:
-	 * must be a front-end (`!is_admin()`) `?evf_preview` request carrying our `evf_style_preview`
-	 * flag, from a logged-in form manager, for the form being previewed, with a live draft cached.
-	 *
 	 * @param array $form_data Decoded saved form data.
 	 * @return array
 	 */
@@ -254,7 +226,6 @@ final class PreviewDraft {
 			return $form_data;
 		}
 
-		// If the render is for a different form than the one requested, leave it alone.
 		$data_form_id = isset( $form_data['id'] ) ? absint( $form_data['id'] ) : 0;
 		if ( $data_form_id && $data_form_id !== $req_form_id ) {
 			return $form_data;
@@ -265,8 +236,6 @@ final class PreviewDraft {
 			return $form_data;
 		}
 
-		// Overlay the draft (replaces form_fields/structure/settings/… wholesale so deleted fields
-		// disappear) while preserving any top-level keys the builder didn't serialize (id, etc.).
 		return array_replace( $form_data, $draft );
 	}
 }

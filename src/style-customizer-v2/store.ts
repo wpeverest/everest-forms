@@ -1,15 +1,8 @@
 /**
- * Style Customizer v2 — state store.
- *
- * A tiny external store (no dependency) shared by React (via useSyncExternalStore) and the
- * imperative preview bridge. It holds the editable record (per-device token bags, palette,
- * custom CSS, template) plus the static schema config, and is the single write path — every
- * mutation goes through a method so guards live in one place and the preview + dirty state
- * stay in sync.
- *
- * `affected` tells the preview bridge which token keys changed since the last notify (or
- * `null` = re-apply everything, e.g. device switch / undo), so live edits touch only the
- * variables that moved.
+ * Style Customizer v2 — state store. A tiny external store shared by React (via
+ * useSyncExternalStore) and the preview bridge; every mutation goes through a guarded method
+ * so the preview + dirty state stay in sync. `affected` tells the bridge which keys changed
+ * (`null` = re-apply everything).
  */
 import { useSyncExternalStore } from 'react';
 import { clone, deepEqual, mixHex } from './constants';
@@ -53,7 +46,7 @@ class StyleStore {
 	schemaVersion: number;
 	proActive: boolean;
 	googleFonts: string[];
-	/** Drives the migration banner (see panes.tsx MigrationBanner) — never mutated post-init. */
+	/** Drives the migration notice; never mutated post-init. */
 	migration: MigrationInfo;
 
 	// Editable state.
@@ -64,15 +57,11 @@ class StyleStore {
 	template = '';
 	applyThemeStyle = true;
 	/** True once {@see setApplyThemeStyle} has been called this session — gates whether `save()`
-	 *  includes `apply_theme_style` in its POST body at all (see App.tsx's `save`). Without this,
-	 *  every save would resend the value cached at page-load, silently reverting a change made
-	 *  through the legacy `?evf_preview` toggle (a separate, still-live control — see
-	 *  class-evf-template-loader.php's `side_panel_content()`) in another tab in the meantime. */
+	 *  includes `apply_theme_style` in its POST body at all (see App.tsx's `save`). */
 	applyThemeStyleTouched = false;
 	baseUpdatedAt = 0;
 
-	/** Optional UI hook: fired when a manual edit silently detaches the active palette link (see
-	 *  `setTokenValue`) — App.tsx wires this to a toast so the detach is never silent. */
+	/** Optional UI hook: fired when a manual edit detaches the active palette link. */
 	onPaletteUnlinked: ( ( paletteName: string ) => void ) | null = null;
 
 	// Bookkeeping.
@@ -161,10 +150,16 @@ class StyleStore {
 	resolve( key: string ): ScalarValue {
 		const token = this.byKey[ key ];
 		const bag = this.tokens[ key ];
-		if ( token.responsive && this.device !== 'desktop' && bag && bag[ this.device ] !== undefined ) {
+		if (
+			token.responsive &&
+			this.device !== 'desktop' &&
+			bag &&
+			bag[ this.device ] !== undefined &&
+			bag[ this.device ] !== ''
+		) {
 			return bag[ this.device ] as ScalarValue;
 		}
-		return bag && bag.desktop !== undefined ? bag.desktop : token.default;
+		return bag && bag.desktop !== undefined && bag.desktop !== '' ? bag.desktop : token.default;
 	}
 
 	isOverride( key: string ): boolean {
@@ -285,8 +280,7 @@ class StyleStore {
 		}
 		this.tokens[ key ][ this.targetDevice( token ) ] = value;
 
-		// A manual edit to a palette-driven token breaks the "active palette" link — tell the UI
-		// so this is never a silent detach (see `onPaletteUnlinked`'s docblock).
+		// A manual edit to a palette-driven token breaks the "active palette" link.
 		if ( this.palette && this.paletteDrivenKeys().has( key ) ) {
 			const detached = this.palettes.find( ( p ) => p.id === this.palette );
 			this.palette = '';
@@ -358,11 +352,7 @@ class StyleStore {
 		this.notify( [] ); // No token vars change; the App handles the <style> injection.
 	}
 
-	/**
-	 * Toggle "Apply Theme Style" (a per-form setting, persisted to the same meta the v1 preview
-	 * toggle uses). `notify(null)` re-syncs the preview so the bridge can add/remove the default
-	 * stylesheet + marker class live.
-	 */
+	/** Toggle "Apply Theme Style" (a per-form setting, persisted to the same meta the v1 preview toggle uses). */
 	setApplyThemeStyle( on: boolean ) {
 		this.applyThemeStyleTouched = true;
 		if ( this.applyThemeStyle === on ) {
@@ -439,10 +429,7 @@ class StyleStore {
 		this.notify( affected );
 	}
 
-	/**
-	 * Apply a template: reset every token to its default, then overlay the template's token
-	 * bags (already migrated to v2 shape server-side). Absent tokens keep their default.
-	 */
+	/** Apply a template: reset every token to its default, then overlay the template's token bags. */
 	applyTemplate( templateId: string, tokens: Record< string, DeviceBag >, paletteId?: string ) {
 		this.discrete( 'Apply template' );
 		this.schema.forEach( ( t ) => ( this.tokens[ t.key ] = { desktop: clone( t.default ) } ) );
@@ -457,18 +444,9 @@ class StyleStore {
 	}
 
 	/**
-	 * Apply an AI-generated style intent: an OVERLAY on the CURRENT state — unlike
-	 * {@see applyTemplate}, this never resets to defaults first. A restyle prompt ("make the
-	 * buttons bigger and rounder") should change only what it implies and leave everything
-	 * else exactly as the user left it; the AI itself is instructed to return a sparse token
-	 * set for the same reason (see the gateway's everest_forms_style.py). `tokens` are already
-	 * Sanitizer-cleaned device bags (server-side — see RestController::ai_style()), so no
-	 * further validation happens here.
-	 *
-	 * If `paletteId` is set, the palette's colours are spread first (identical to
-	 * {@see applyPalette}) and then `tokens` is overlaid on top — so an explicit AI colour
-	 * override always wins over its own palette pick, matching the gateway's own stated
-	 * priority rule.
+	 * Apply an AI-generated style intent: an overlay on the current state (unlike
+	 * {@see applyTemplate}, never resets to defaults first). If `paletteId` is set, its colours
+	 * are applied first and `tokens` overlaid on top.
 	 */
 	applyAiRecord( tokens: Record< string, DeviceBag >, paletteId?: string ) {
 		this.discrete( 'Style with AI' );
@@ -505,9 +483,7 @@ class StyleStore {
 			}
 		} );
 
-		// Deliberately leave `this.template` untouched — the Templates pane's "applied"/"Modified"
-		// badges are value-driven (see appliedTemplateId/originTemplateId above), so they
-		// self-correct automatically once the token values no longer match any template.
+		// `this.template` is deliberately left untouched — the applied/modified badges are value-driven.
 		this.notify( affected.length ? affected : null );
 	}
 
@@ -516,13 +492,7 @@ class StyleStore {
 		return this.userTemplates.concat( this.templates );
 	}
 
-	/**
-	 * Whether the CURRENT token state is exactly what applying `templateTokens` would produce —
-	 * i.e. every schema token equals the template's value (or the schema default where the
-	 * template doesn't set it), the same result {@see applyTemplate} yields. This is the truthful
-	 * basis for the "applied" badge: a template is shown as applied only when the form actually
-	 * LOOKS like it, never merely because a (possibly-stale) `template` slug still names it.
-	 */
+	/** Whether the current token state is exactly what applying `templateTokens` would produce. */
 	private tokensMatchTemplate( templateTokens: Record< string, DeviceBag > ): boolean {
 		const tpl = templateTokens || {};
 		return this.schema.every( ( t ) => {
@@ -531,8 +501,7 @@ class StyleStore {
 		} );
 	}
 
-	/** Whether two template token maps produce the identical applied result (both sparse; missing
-	 *  keys fall back to the schema default). Used to infer a custom template's built-in parent. */
+	/** Whether two template token maps produce the identical applied result. */
 	private templateTokensEqual( a: Record< string, DeviceBag >, b: Record< string, DeviceBag > ): boolean {
 		const am = a || {};
 		const bm = b || {};
@@ -543,13 +512,7 @@ class StyleStore {
 		} );
 	}
 
-	/**
-	 * The id of the template the form's CURRENT styles exactly match, or '' if none. Prefers the
-	 * stored `template` slug when it still matches (stable in the common case), else the first
-	 * template whose values match. Drives the ✓ "Applied" badge — so after migration a form that
-	 * carried a template's values lights up that template, and a form whose styles were tweaked
-	 * away from any template shows no false ✓ (see {@see originTemplateId} for the "Modified" hint).
-	 */
+	/** The id of the template the form's current styles exactly match, or '' if none. Drives the ✓ "Applied" badge. */
 	appliedTemplateId(): string {
 		const all = this.allTemplates();
 		const stored = all.find( ( t ) => t.id === this.template );
@@ -560,12 +523,7 @@ class StyleStore {
 		return match ? match.id : '';
 	}
 
-	/**
-	 * The template the form was applied FROM but has since diverged from (the stored `template`
-	 * slug, when it names a real template that the current styles no longer exactly match). Lets
-	 * the panel show an honest "Based on X · Modified" hint instead of a false ✓. Returns '' when
-	 * the styles DO match (that's an ✓, handled by {@see appliedTemplateId}) or the slug is unset.
-	 */
+	/** The template the form was applied from but has since diverged from; drives the "Modified" hint. */
 	originTemplateId(): string {
 		if ( ! this.template || this.appliedTemplateId() === this.template ) {
 			return '';
@@ -573,12 +531,7 @@ class StyleStore {
 		return this.allTemplates().some( ( t ) => t.id === this.template ) ? this.template : '';
 	}
 
-	/**
-	 * For a user/custom template, the id of the built-in template it EXACTLY derives from (its
-	 * "inherent parent"), or '' if none matches. v1 discarded the parent when a custom template
-	 * was created, so it can only be inferred by value; we only claim a parent on an exact match,
-	 * never a fuzzy guess — so the label, when shown, is always correct.
-	 */
+	/** For a custom template, the id of the built-in template it exactly derives from, or '' if none. */
 	templateParentId( tpl: StylePayload[ 'templates' ][ number ] ): string {
 		if ( ! tpl || ! tpl.custom ) {
 			return '';
@@ -615,9 +568,7 @@ class StyleStore {
 
 	/** Mark the current state as saved (after a successful POST). */
 	markSaved( record: StyleRecord ) {
-		if ( record && typeof record._updated_at === 'number' ) {
-			this.baseUpdatedAt = record._updated_at;
-		}
+		this.hydrate( record );
 		this.saved = this.snapshot();
 		this.notify( [] );
 	}

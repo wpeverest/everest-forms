@@ -1,24 +1,8 @@
 <?php
 /**
- * Style Customizer v2 — token Schema (single source of truth).
- *
- * This registry is the ONE contract that drives every part of the v2 style engine:
- *   1. React controls   — the panel renders itself from these tokens.
- *   2. CSS compiler      — each token maps to one `var(--evf-*)` custom property.
- *   3. Sanitizer         — `type` (+ `options`) define how a stored value is cleaned.
- *   4. Legacy migration  — the Migrator maps old customizer keys onto these token keys
- *                          (the human-readable mapping lives in STYLE-CUSTOMIZER-V2-PLAN.md §12).
- *
- * Design invariants (see STYLE-CUSTOMIZER-V2-PLAN.md §2 / §11):
- *   - Strict subset of the bundled customizer — 0 net-new user-facing settings.
- *   - The 6 palette colours (form bg, field bg, label, sublabel, button text, button bg)
- *     are palette-driven only: their tokens exist but are `hidden` (no direct picker).
- *   - Responsive (Desktop/Tablet/Mobile) applies to MARGIN & PADDING ONLY — exactly the
- *     ~17 dimension controls the old customizer marked `responsive`. Everything else is
- *     single-value.
- *
- * Nothing here calls `__()` at file scope — the schema is built on demand (after `init`)
- * so it never triggers the WP 6.7 "translation loaded too early" notice.
+ * Style Customizer v2 — token Schema (single source of truth for tokens, controls, CSS vars,
+ * the sanitizer, and legacy migration). Strict subset of the bundled v1 customizer: 0 net-new
+ * settings; responsive Desktop/Tablet/Mobile applies to margin/padding only.
  *
  * @package EverestForms\Addons\StyleCustomizer\V2
  * @since   x.x.x
@@ -111,11 +95,7 @@ final class Schema {
 			),
 		);
 
-		// Product decision (free tiering): the FREE plugin exposes only palette-based recolouring
-		// (2 palettes) and Custom CSS. Every per-element design SECTION is a Pro feature, so each
-		// renders as a locked "Upgrade to Pro" teaser on a free site (the panel shows the teaser
-		// from `tier`, not the controls) and is fully functional once Pro is active. The palette
-		// picker and Custom CSS tab (both outside these sections) remain free.
+		// Product policy: every design section is Pro; only the palette picker + Custom CSS are free.
 		foreach ( $sections as &$section ) {
 			$section['tier'] = 'pro';
 		}
@@ -131,10 +111,8 @@ final class Schema {
 	}
 
 	/**
-	 * The full, normalized, filterable token list.
-	 *
-	 * Free/Pro tiers and any add-on sections are layered in via the `evf_style_schema`
-	 * filter — the panel, compiler and sanitizer all read the result of this method.
+	 * The full, normalized, filterable token list. Free/Pro tiers and any add-on sections are
+	 * layered in via the `evf_style_schema` filter.
 	 *
 	 * @return array List of token definition arrays.
 	 */
@@ -154,15 +132,9 @@ final class Schema {
 	}
 
 	/**
-	 * Stamp each token's tier per the free/pro product policy: the FREE plugin only ships
-	 * palette-based recolouring, so ONLY the palette-driven tokens (see {@see free_token_keys()})
-	 * are tier=free; every other token — all the per-element controls (sizes, borders, spacing,
-	 * fonts, alignment, messages, …) — is tier=pro. The sanitizer and compiler then refuse to
-	 * persist/emit any pro token unless Pro is active ({@see Engine::pro_active()}), so a free
-	 * site can only ever apply the two palettes (which write the free palette tokens) + Custom CSS.
-	 *
-	 * This is applied AFTER the `evf_style_schema` filter, so it also governs tokens contributed
-	 * by Pro/add-ons (they are pro unless their key opts into the free set via the filter below).
+	 * Stamp each token's tier: only the palette-driven tokens ({@see free_token_keys()}) are
+	 * tier=free, everything else (including Pro/add-on contributions) is tier=pro. The sanitizer
+	 * and compiler refuse to persist/emit a pro token unless {@see Engine::pro_active()}.
 	 *
 	 * @param array $tokens Normalized tokens.
 	 * @return array
@@ -177,12 +149,9 @@ final class Schema {
 	}
 
 	/**
-	 * The set of token keys that remain FREE — the palette-driven colours the two free palettes
-	 * write (so palette recolouring works without Pro), plus the derived button-hover shade.
-	 * Everything else is Pro. Keyed map (key => true) for O(1) lookup; filterable so the free
-	 * surface can be adjusted without editing the tier stamping.
+	 * Token keys that stay FREE — the palette-driven colours plus the derived button-hover shade.
 	 *
-	 * @return array
+	 * @return array Map of free token key => true.
 	 */
 	protected static function free_token_keys() {
 		$keys = array();
@@ -191,7 +160,6 @@ final class Schema {
 				$keys[ $key ] = true;
 			}
 		}
-		// The palettes also derive the button hover background from button_background.
 		$keys['btn.bgHover'] = true;
 
 		/**
@@ -248,14 +216,10 @@ final class Schema {
 	}
 
 	/**
-	 * All 11 named colour palettes (2 free + 9 Pro), each defining the old customizer's 6
-	 * colours. Unlike the Pro-tier design sections (which are absent from a free schema
-	 * entirely), the 9 Pro palettes' PREVIEW metadata (name + colours) ships here in free too —
-	 * mirroring how {@see Templates::all()} ships every built-in template with an `is_pro` flag
-	 * — so the panel can render a real swatch + name for all 11 and show the Pro ones as locked
-	 * upgrade teasers instead of not showing them at all. Applying one is still gated:
-	 * {@see Sanitizer::sanitize_palette_id()} rejects a Pro palette id unless Pro is active,
-	 * regardless of what this list contains.
+	 * All 11 named colour palettes (2 free + 9 Pro), each with the old customizer's 6 colours.
+	 * The 9 Pro palettes' preview metadata ships here too (unlike other pro tokens) so the panel
+	 * can render a real swatch + name for all 11 and lock the Pro ones instead of hiding them;
+	 * applying one is still gated by {@see Sanitizer::sanitize_palette_id()}.
 	 *
 	 * @return array
 	 */
@@ -283,9 +247,7 @@ final class Schema {
 	}
 
 	/**
-	 * Palette slot => token key(s) it drives. Mirrors the old 6-colour model; the extra
-	 * spread on `button_background` (focus/checked/file icon) matches the prototype's
-	 * one-click recolour behaviour. `button_background` also derives `btn.bgHover`.
+	 * Palette slot => token key(s) it drives. `button_background` also derives `btn.bgHover`.
 	 *
 	 * @return array
 	 */
@@ -313,7 +275,6 @@ final class Schema {
 		$border = self::border_options();
 
 		$form = array(
-			// Form / field / button BASE colours are palette-driven only (hidden picker).
 			array( 'key' => 'wrap.bg', 'section' => 'form', 'group' => 'Surface', 'label' => __( 'Background color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-wrap-bg', 'default' => '#ffffff', 'hidden' => true, 'keywords' => array( 'fill' ) ),
 			array( 'key' => 'fonts.theme', 'section' => 'form', 'group' => 'Typography', 'label' => __( 'Use theme fonts', 'everest-forms' ), 'type' => 'toggle', 'default' => false, 'keywords' => array( 'inherit', 'typeface', 'theme font' ) ),
 			array( 'key' => 'fonts.family', 'section' => 'form', 'group' => 'Typography', 'label' => __( 'Font family', 'everest-forms' ), 'type' => 'select', 'var' => '--evf-font', 'default' => '', 'source' => 'google_fonts', 'options' => self::font_options(), 'keywords' => array( 'typeface', 'typography', 'google font' ) ),
@@ -335,55 +296,33 @@ final class Schema {
 
 		$fields = array(
 			array( 'key' => 'input.bg', 'section' => 'fields', 'group' => 'Surface', 'label' => __( 'Background', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-input-bg', 'default' => '#ffffff', 'hidden' => true, 'keywords' => array( 'fill' ) ),
-			// default '#969696': the legacy config's field_styles_border_color setting default
-			// (confirmed via getComputedStyle on a real unstyled form) — legacy-parity baseline.
 			array( 'key' => 'input.borderC', 'section' => 'fields', 'group' => 'Surface', 'label' => __( 'Border color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-input-border-c', 'default' => '#969696' ),
-			// default 3: legacy config's field_styles border_radius default (everest_forms_general_field_styles).
 			self::radius( 'input.radius', '--evf-input-radius', 3, 'fields', null, 'Surface', false ),
-			// default 14: legacy config's field_styles_font_size default.
 			array( 'key' => 'input.size', 'section' => 'fields', 'group' => 'Typography', 'label' => __( 'Font size', 'everest-forms' ), 'type' => 'slider', 'var' => '--evf-input-size', 'default' => 14, 'min' => 11, 'max' => 22, 'step' => 1, 'unit' => 'px', 'advanced' => true, 'keywords' => array( 'text' ) ),
-			// default '#575757': the legacy config's field_styles_font_color setting default —
-			// confirmed via getComputedStyle on a real unstyled form. Legacy-parity baseline.
 			array( 'key' => 'input.color', 'section' => 'fields', 'group' => 'Typography', 'label' => __( 'Text color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-input-color', 'default' => '#575757', 'advanced' => true ),
 			array( 'key' => 'input.ph', 'section' => 'fields', 'group' => 'Typography', 'label' => __( 'Placeholder color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-input-ph', 'default' => '#c6ccd7', 'advanced' => true, 'keywords' => array( 'hint' ) ),
 			self::fstyle( 'input.fstyle', 'input', 'fields', null, '400' ),
 			self::talign( 'input.align', '--evf-input-align', 'fields', null ),
 			array( 'key' => 'input.borderStyle', 'section' => 'fields', 'group' => 'Border', 'label' => __( 'Border type', 'everest-forms' ), 'type' => 'select', 'var' => '--evf-input-border-style', 'default' => 'solid', 'options' => $border, 'deps' => array( 'input.bw', 'input.borderC' ), 'advanced' => true ),
 			self::bwidth( 'input.bw', '--evf-input-bw', 1, 'fields', null, 'Border', true ),
-			// default 6/12/6/12: legacy config's field_styles_padding default.
 			array( 'key' => 'input.pad', 'section' => 'fields', 'group' => 'Spacing', 'label' => __( 'Field padding', 'everest-forms' ), 'type' => 'box4', 'var' => '--evf-input-pad', 'default' => array( 6, 12, 6, 12 ), 'responsive' => true, 'advanced' => true, 'keywords' => array( 'inner' ) ),
-			// default bottom=10: matches the legacy config's field_styles_margin default
-			// (evf-style-customizer-form-wrapper-configs.php) — legacy-parity baseline.
 			array( 'key' => 'field.margin', 'section' => 'fields', 'group' => 'Spacing', 'label' => __( 'Field margin', 'everest-forms' ), 'type' => 'box4', 'var' => '--evf-field-margin', 'default' => array( 0, 0, 10, 0 ), 'responsive' => true, 'advanced' => true, 'keywords' => array( 'gap', 'between' ) ),
-			// default 14: legacy config's file_upload_font_size default.
 			array( 'key' => 'file.size', 'section' => 'fields', 'group' => 'Upload area', 'label' => __( 'Font size', 'everest-forms' ), 'type' => 'slider', 'var' => '--evf-file-size', 'default' => 14, 'min' => 10, 'max' => 22, 'step' => 1, 'unit' => 'px', 'advanced' => true, 'keywords' => array( 'upload', 'file' ) ),
-			// default '#494d50': legacy config's file_upload_font_color default (EVF-2669 audit).
 			array( 'key' => 'file.color', 'section' => 'fields', 'group' => 'Upload area', 'label' => __( 'Font color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-file-color', 'default' => '#494d50', 'advanced' => true, 'keywords' => array( 'upload', 'file', 'text' ) ),
-			// default 'rgba(255,255,255,0.99)': legacy config's file_upload_background_color default (EVF-2669).
 			array( 'key' => 'file.bg', 'section' => 'fields', 'group' => 'Upload area', 'label' => __( 'Background', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-file-bg', 'default' => 'rgba(255,255,255,0.99)', 'advanced' => true, 'keywords' => array( 'upload', 'dropzone', 'file' ) ),
-			// default 'rgba(255,255,255,0.99)': legacy config's file_upload_icon_background_color default (EVF-2669).
 			array( 'key' => 'file.iconBg', 'section' => 'fields', 'group' => 'Upload area', 'label' => __( 'Icon background', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-file-iconbg', 'default' => 'rgba(255,255,255,0.99)', 'advanced' => true, 'keywords' => array( 'upload', 'file' ) ),
-			// default '#494d50': legacy config's file_upload_icon_color default — was wrongly '#3b82f6'
-			// (EVF-2669: the migrated cloud-icon colour didn't match what v1 actually rendered).
 			array( 'key' => 'file.icon', 'section' => 'fields', 'group' => 'Upload area', 'label' => __( 'Icon color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-file-icon', 'default' => '#494d50', 'advanced' => true, 'keywords' => array( 'upload', 'file' ) ),
 			array( 'key' => 'file.borderStyle', 'section' => 'fields', 'group' => 'Upload area', 'label' => __( 'Border type', 'everest-forms' ), 'type' => 'select', 'var' => '--evf-file-border-style', 'default' => 'dashed', 'options' => $border, 'advanced' => true, 'keywords' => array( 'upload', 'file' ) ),
 			self::bwidth( 'file.bw', '--evf-file-bw', 1, 'fields', null, 'Upload area', true ),
-			// default '#8e98a2': legacy config's file_upload_border_color default (EVF-2669 audit).
 			array( 'key' => 'file.border', 'section' => 'fields', 'group' => 'Upload area', 'label' => __( 'Border color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-file-border', 'default' => '#8e98a2', 'advanced' => true, 'keywords' => array( 'upload', 'file' ) ),
 			self::radius( 'file.radius', '--evf-file-radius', 0, 'fields', null, 'Upload area', true ),
-			// default bottom=10: legacy config's file_upload_margin default (EVF-2669 audit).
 			array( 'key' => 'file.margin', 'section' => 'fields', 'group' => 'Upload area', 'label' => __( 'Margin', 'everest-forms' ), 'type' => 'box4', 'var' => '--evf-file-margin', 'default' => array( 0, 0, 10, 0 ), 'responsive' => true, 'advanced' => true, 'keywords' => array( 'upload', 'file', 'spacing' ) ),
-			// default 6/12/6/12: legacy config's file_upload_padding default (EVF-2669 audit).
 			array( 'key' => 'file.pad', 'section' => 'fields', 'group' => 'Upload area', 'label' => __( 'Padding', 'everest-forms' ), 'type' => 'box4', 'var' => '--evf-file-pad', 'default' => array( 6, 12, 6, 12 ), 'responsive' => true, 'advanced' => true, 'keywords' => array( 'upload', 'file', 'spacing', 'inner' ) ),
-			// default '#7ca8eb': the legacy config's field_styles_border_focus_color setting
-			// default, confirmed via getComputedStyle on a real unstyled/unpaletted form —
-			// applies only when no palette is set (a palette still derives this per §12).
+			// Applies only when no palette is set — a palette still derives this per palette_map().
 			array( 'key' => 'input.focusBorder', 'section' => 'fields', 'group' => '', 'label' => __( 'Focus border color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-input-focus-border', 'default' => '#7ca8eb', 'state' => 'focus', 'keywords' => array( 'outline', 'ring', 'active' ) ),
 		);
 
 		$choice = array(
-			// default '#575757': legacy config's checkbox_radio_checked_color default — was wrongly
-			// '#3b82f6' (found auditing EVF-2669's mechanism: same palette-override bug as file.icon).
 			array( 'key' => 'choice.checked', 'section' => 'choice', 'group' => '', 'label' => __( 'Selected color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-choice-checked', 'default' => '#575757', 'keywords' => array( 'checked', 'radio', 'checkbox', 'rating', 'scale', 'likert', 'payment', 'yes no', 'image choice', 'star' ) ),
 			array( 'key' => 'choice.size', 'section' => 'choice', 'group' => '', 'label' => __( 'Mark size', 'everest-forms' ), 'type' => 'slider', 'var' => '--evf-choice-size', 'default' => 16, 'min' => 12, 'max' => 28, 'step' => 1, 'unit' => 'px', 'keywords' => array( 'radio', 'checkbox' ) ),
 			array( 'key' => 'choice.border', 'section' => 'choice', 'group' => '', 'label' => __( 'Unselected border', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-choice-border', 'default' => '#d8dae2', 'keywords' => array( 'radio', 'checkbox', 'unchecked' ) ),
@@ -396,45 +335,27 @@ final class Schema {
 		);
 
 		$button = array(
-			// btn.bg is palette-driven (hidden picker); the default only shows on a NO-palette form,
-			// where it must match v1's default-palette fallback button_background #0073aa
-			// (scss.php:107), not a v2-invented blue — otherwise every no-palette form's button
-			// recolours on migration.
+			// Palette-driven (hidden picker); the default only shows on a no-palette form.
 			array( 'key' => 'btn.bg', 'section' => 'button', 'group' => '', 'label' => __( 'Button color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-btn-bg', 'default' => '#0073aa', 'hidden' => true, 'keywords' => array( 'submit', 'background' ) ),
 			array( 'key' => 'btn.color', 'section' => 'button', 'group' => '', 'label' => __( 'Text color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-btn-color', 'default' => '#ffffff', 'hidden' => true, 'keywords' => array( 'submit' ) ),
-			// default 3: legacy config's button border_radius default (everest_forms_general_buttons).
 			self::radius( 'btn.radius', '--evf-btn-radius', 3, 'button', null, '', false ),
-			// default 14: legacy config's button_font_size default.
 			array( 'key' => 'btn.size', 'section' => 'button', 'group' => '', 'label' => __( 'Font size', 'everest-forms' ), 'type' => 'slider', 'var' => '--evf-btn-size', 'default' => 14, 'min' => 11, 'max' => 24, 'step' => 1, 'unit' => 'px', 'advanced' => true, 'keywords' => array( 'submit' ) ),
-			// nw=400: legacy emits no font-weight override at all when button_font_style is
-			// unset (the common case), so the button falls through to the browser/theme base
-			// weight — empirically confirmed 400 via getComputedStyle. Legacy-parity baseline.
 			self::fstyle( 'btn.fstyle', 'btn', 'button', null, '400' ),
 			self::talign( 'btn.align', '--evf-btn-align', 'button', null, 'center' ),
 			self::line( 'btn.line', '--evf-btn-lh', 1.5, 'button', null ),
 			self::box( 'btn.margin', __( 'Margin', 'everest-forms' ), '--evf-btn-margin', array( 0, 0, 0, 0 ), 'button', null ),
-			// default 10/15/10/15: legacy config's button_padding default.
 			array( 'key' => 'btn.pad', 'section' => 'button', 'group' => '', 'label' => __( 'Padding', 'everest-forms' ), 'type' => 'box4', 'var' => '--evf-btn-pad', 'default' => array( 10, 15, 10, 15 ), 'responsive' => true, 'advanced' => true, 'keywords' => array( 'size' ) ),
 			array( 'key' => 'btn.borderStyle', 'section' => 'button', 'group' => '', 'label' => __( 'Border type', 'everest-forms' ), 'type' => 'select', 'var' => '--evf-btn-border-style', 'default' => 'solid', 'options' => $border, 'deps' => array( 'btn.bw', 'btn.borderC' ), 'advanced' => true, 'keywords' => array( 'outline' ) ),
-			// default 1: legacy config's button border_width default (everest_forms_general_buttons).
 			self::bwidth( 'btn.bw', '--evf-btn-bw', 1, 'button', null, '', true ),
-			// default '#cccccc': matches both the core (non-customizer) button stylesheet and
-			// the legacy compiled CSS's own button_border_color fallback, confirmed via
-			// getComputedStyle on a real unstyled form. Legacy-parity baseline.
 			array( 'key' => 'btn.borderC', 'section' => 'button', 'group' => '', 'label' => __( 'Border color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-btn-border-c', 'default' => '#cccccc', 'advanced' => true ),
-			// defaults '#eeeeee'/'#23282d': the legacy config's button_hover_background_color /
-			// button_hover_font_color setting defaults, confirmed via getComputedStyle on a real
-			// unstyled/no-palette form — a palette still derives btn.bgHover per §12.
+			// Palette-driven; the default only shows on a no-palette form.
 			array( 'key' => 'btn.bgHover', 'section' => 'button', 'group' => '', 'label' => __( 'Button color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-btn-bg-hover', 'default' => '#eeeeee', 'state' => 'hover', 'keywords' => array( 'mouse over' ) ),
 			array( 'key' => 'btn.colorHover', 'section' => 'button', 'group' => '', 'label' => __( 'Text color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-btn-color-hover', 'default' => '#23282d', 'state' => 'hover', 'keywords' => array( 'mouse over', 'hover font' ) ),
-			// default '#cccccc': legacy config's button_border_hover_color default.
 			array( 'key' => 'btn.borderCHover', 'section' => 'button', 'group' => '', 'label' => __( 'Border color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-btn-border-c-hover', 'default' => '#cccccc', 'state' => 'hover', 'keywords' => array( 'mouse over', 'hover border' ) ),
 		);
 
-		// NOTE: the Messages section tokens (tier=pro) are NOT defined here. They live in the Pro
-		// plugin and are injected via the `evf_style_schema` filter only when Pro is active, so a
-		// free-only site's schema physically has no pro tokens for the sanitizer/compiler to
-		// process — the free/pro split is secure by construction, not by a bypassable flag.
+		// Messages (tier=pro) live in the Pro plugin, injected via `evf_style_schema` only when
+		// Pro is active — a free schema physically has no pro tokens to sanitize or compile.
 		return array_merge(
 			$form,
 			self::text_role_tokens(),
@@ -453,29 +374,6 @@ final class Schema {
 	protected static function text_role_tokens() {
 		$roles = array(
 			// state key => [ var-prefix, size, min, max, color, neutral-weight, margin, line, pad, color-hidden ].
-			// nw=600: the legacy SCSS *intends* `font-weight: normal` when bold is off
-			// (scss.php's `.evf-label` block), but that block is nested inside
-			// `label.evf-field-label { .evf-label { ... } }` WITHOUT `&`, so it compiles to the
-			// descendant selector `label.evf-field-label .evf-label` — which matches no real
-			// element (the label itself carries the `evf-field-label` class, not a child with
-			// class `evf-label`). That override is dead code: it never overrides anything, so
-			// every legacy form's labels actually render at the core stylesheet's unconditional
-			// `.everest-forms label.evf-field-label{font-weight:600}`, confirmed via
-			// getComputedStyle on a real production form. This is legacy-PARITY (matching what
-			// v1 truly renders, bug included), not agreement with the SCSS author's intent.
-			// margin bottom=10, line=1.7: legacy config's field_labels_margin / field_labels_line_height
-			// defaults, confirmed via getComputedStyle on a real unstyled form.
-			// sublabel/desc/title defaults confirmed against the legacy config's declared defaults
-			// (evf-style-customizer-form-wrapper-configs.php) + getComputedStyle on real unstyled
-			// forms, so an UNcustomized text role migrates pixel-identically instead of shifting a
-			// couple of px / a slightly different grey. desc/title colours are palette-driven (§12
-			// spreads field_sublabel→desc.color, field_label→title.color), so the default only shows
-			// on a form with no palette — where it must still match legacy's #575757.
-			// label/sublabel colour is palette-driven (hidden picker); the default only shows on a
-			// NO-palette form, where it must match v1's default-palette fallback — scss.php:104-105
-			// uses field_label #333333 / field_sublabel #666666 when no palette is set. (Earlier
-			// #1f2433/#6b7280 were measured on a form that HAD a palette, so the true no-palette
-			// default was never exercised until the 10-template migration audit surfaced it.)
 			'label'    => array( 'sub' => 'label', 'size' => 14, 'min' => 10, 'max' => 24, 'color' => '#333333', 'nw' => '600', 'margin' => array( 0, 0, 10, 0 ), 'line' => 1.7, 'pad' => array( 0, 0, 0, 0 ), 'color_hidden' => true ),
 			'sublabel' => array( 'sub' => 'sub', 'size' => 12, 'min' => 9, 'max' => 20, 'color' => '#666666', 'nw' => '400', 'margin' => array( 0, 0, 10, 0 ), 'line' => 1.5, 'pad' => array( 0, 0, 0, 0 ), 'color_hidden' => true ),
 			'desc'     => array( 'sub' => 'desc', 'size' => 14, 'min' => 9, 'max' => 20, 'color' => '#575757', 'nw' => '400', 'margin' => array( 0, 0, 10, 0 ), 'line' => 1.7, 'pad' => array( 0, 0, 0, 0 ), 'color_hidden' => false ),
@@ -497,19 +395,12 @@ final class Schema {
 	}
 
 	/* --------------------------------------------------------------------- *
-	 * Token builders (mixins) — repeated clusters generated, not hand-copied.
-	 *
-	 * The builders below (fstyle/talign/bwidth/radius/border_options) are PUBLIC: they are the
-	 * shared token-shape factory the Pro plugin (and any add-on) uses to contribute tier=pro
-	 * tokens through the `evf_style_schema` filter, so an injected token is guaranteed the same
-	 * shape as a core one. The filtered result is `normalize()`d by {@see tokens()}, so callers
-	 * return raw token arrays (box4 defaults as [t,r,b,l], `tier` defaulting to 'free').
+	 * Token builders (mixins) — shared shape factory, also used by Pro/add-ons
+	 * contributing tier=pro tokens through the `evf_style_schema` filter.
 	 * --------------------------------------------------------------------- */
 
 	/**
-	 * Font-style control (Bold / Italic / Underline / Uppercase). Stored with the OLD
-	 * customizer's keys (`bold/italic/underline/uppercase`) so migration is a straight copy;
-	 * `vars` maps each flag to its CSS property and `neutral_weight` is the un-bold weight.
+	 * Font-style control (Bold / Italic / Underline / Uppercase).
 	 *
 	 * @param string $key     Token key.
 	 * @param string $base    CSS var base (e.g. `label`, `input`, `msg-success`).
@@ -574,8 +465,7 @@ final class Schema {
 	}
 
 	/**
-	 * Alignment control (left/center/right). Single value — the old customizer's
-	 * text alignment was NOT responsive.
+	 * Alignment control (left/center/right). Single value — never responsive.
 	 *
 	 * @param string $key     Token key.
 	 * @param string $var     CSS var.
@@ -664,8 +554,7 @@ final class Schema {
 	}
 
 	/**
-	 * Border-radius box (4-corner + px/% unit, single value). Matches the old
-	 * `EVF_Customize_Dimension_Control` with `unit_choices`.
+	 * Border-radius box (4-corner + px/% unit, single value).
 	 *
 	 * @param string $key      Token key.
 	 * @param string $var      CSS var.
@@ -699,8 +588,7 @@ final class Schema {
 	 * --------------------------------------------------------------------- */
 
 	/**
-	 * Shared border-type options — the full set the legacy customizer offered, so v2 keeps feature
-	 * parity and every legacy border value survives migration through the sanitizer (EVF-2665).
+	 * Shared border-type options — the full set the legacy customizer offered.
 	 *
 	 * @return array
 	 */
@@ -724,11 +612,8 @@ final class Schema {
 	}
 
 	/**
-	 * Font-family options. Only the "Theme default" (empty value = use the theme font) is baked
-	 * into the schema; the full Google Fonts list is supplied to the panel at runtime via the
-	 * REST payload (`google_fonts`, from {@see evfsc_get_google_font_families()}) so it matches
-	 * the legacy customizer exactly and is fetched once. The token is marked `source =>
-	 * google_fonts`, which is how the panel (and the sanitizer) recognise it.
+	 * Font-family options. Only "Theme default" is baked in; the full Google Fonts list is
+	 * supplied to the panel at runtime via the REST payload's `google_fonts`.
 	 *
 	 * @return array
 	 */
@@ -783,9 +668,8 @@ final class Schema {
 			$token
 		);
 
-		// Box defaults are authored compactly as [t,r,b,l]; store/emit them as the SAME
-		// associative shape the legacy engine uses ({top,right,bottom,left}[,unit]) so
-		// migration is an identity copy, not a reshape.
+		// Box defaults are authored compactly as [t,r,b,l]; store/emit them as the associative
+		// {top,right,bottom,left} shape the legacy engine uses, so migration is an identity copy.
 		if ( 'box4' === $token['type'] && is_array( $token['default'] ) && isset( $token['default'][0] ) ) {
 			$token['default'] = self::to_dim( $token['default'], ! empty( $token['units'] ) ? $token['units'][0] : null );
 		}

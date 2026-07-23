@@ -19,9 +19,8 @@ defined( 'ABSPATH' ) || exit;
 final class Engine {
 
 	/**
-	 * Is the v2 engine enabled? ON by default — no constant or flag is needed to get the Style
-	 * tab. The `EVF_STYLE_V2` constant (only when explicitly defined) and the
-	 * `evf_style_v2_enabled` filter remain purely as an off-switch.
+	 * Is the v2 engine enabled? ON by default; `EVF_STYLE_V2` and the `evf_style_v2_enabled`
+	 * filter are the off-switch.
 	 *
 	 * @return bool
 	 */
@@ -37,9 +36,7 @@ final class Engine {
 	}
 
 	/**
-	 * Is a stored record a v2 record? Derived purely from the presence of `schema_version`
-	 * — no separate option/meta (plan §3). This is what decides v2-compiled vs
-	 * legacy-compiled per form, so exactly one stylesheet is ever enqueued.
+	 * Is a stored record a v2 record? Derived from the presence of `schema_version`.
 	 *
 	 * @param mixed $record Stored `everest_forms_styles[form_id]` record.
 	 * @return bool
@@ -49,16 +46,8 @@ final class Engine {
 	}
 
 	/**
-	 * Is the Pro tier active? THE single, server-side authoritative gate for every pro-tier
-	 * feature (pro tokens/palettes/sections). It is what makes the free/pro split
-	 * non-bypassable: the sanitizer, compiler and frontend enqueue all consult it, so a crafted
-	 * REST request can never persist or render pro styling on a site without Pro.
-	 *
-	 * Defaults to whether Everest Forms Pro is loaded (its `EFP_PLUGIN_FILE` constant) — the same
-	 * signal v1 used to gate the submission-message panel. Pro can tighten this to a licence check
-	 * via the `evf_style_v2_pro_active` filter. Note that the primary security guarantee is
-	 * structural (pro tokens/palettes are *defined only in the Pro plugin*, so they are physically
-	 * absent from a free-only site's schema); this gate is the authoritative backstop.
+	 * Is the Pro tier active? The single, server-side authoritative gate for every pro-tier
+	 * feature; defaults to whether Everest Forms Pro is loaded, filterable to a licence check.
 	 *
 	 * @return bool
 	 */
@@ -72,8 +61,7 @@ final class Engine {
 	}
 
 	/**
-	 * Boot the v2 engine. No-op unless enabled; safe to call more than once. Phase 1+ mounts
-	 * the builder tab + REST routes on the `evf_style_v2_booted` action below.
+	 * Boot the v2 engine. No-op unless enabled; safe to call more than once.
 	 */
 	public static function boot() {
 		if ( ! self::enabled() ) {
@@ -89,8 +77,7 @@ final class Engine {
 		// REST read/save for the builder panel.
 		RestController::register();
 
-		// Live Fields → Style sync: render the builder's current (unsaved) structure in the
-		// style-preview iframe. Registers a front-end filter, so it must boot on the front end too.
+		// Live Fields → Style sync for the style-preview iframe.
 		PreviewDraft::register();
 
 		// Builder "Style" tab + React panel.

@@ -3,15 +3,8 @@
  * Style Customizer v2 — Compiler.
  *
  * Turns a (sanitized) v2 record into the per-form CSS custom-property block, scoped to the
- * form wrapper. This is the v2 half of the "exactly one stylesheet per form" rule: the
- * shared rule template (the selectors that *read* `var(--evf-*)`) is authored once as a
- * static asset; this class only emits the per-form variable values.
- *
- * Live editing in the panel writes the same custom properties straight onto the iframe
- * wrapper (no recompile); save runs this compiler and persists the result.
- *
- * Responsive tokens (margin/padding only) emit tablet/mobile overrides inside media
- * queries; the CSS cascade handles inheritance, so a device only appears when overridden.
+ * form wrapper. Responsive tokens (margin/padding) additionally emit tablet/mobile overrides
+ * inside media queries.
  *
  * @package EverestForms\Addons\StyleCustomizer\V2
  * @since   x.x.x
@@ -39,15 +32,8 @@ final class Compiler {
 		$theme_font = ! empty( $tokens['fonts.theme']['desktop'] );
 		$pro_active = Engine::pro_active();
 
-		// Base (desktop) declarations for every token that maps to a variable.
-		//
-		// On a site WITHOUT Pro, a pro-tier token renders at its DEFAULT — never the stored value.
-		// This is essential for correctness: the rule template reads `var(--evf-*)` with no CSS
-		// fallback, so a pro var that is simply omitted would make its declaration invalid and the
-		// form would render broken (no padding/borders/sizing). Emitting the default keeps the
-		// baseline design intact while pro CUSTOMISATIONS still don't apply (the value is forced to
-		// default here and stripped at save by the sanitizer). It also means a form previously
-		// styled with Pro degrades cleanly to the default look if Pro is later deactivated.
+		// Base (desktop) declarations. Without Pro, a pro-tier token renders at its default —
+		// never the stored value — since the rule template has no CSS fallback for the var.
 		$base = array();
 		foreach ( Schema::tokens() as $token ) {
 			$locked = ! $pro_active && isset( $token['tier'] ) && 'pro' === $token['tier'];
@@ -60,7 +46,6 @@ final class Compiler {
 			$css .= $selector . '{' . self::join( $base ) . '}';
 		}
 
-		// Responsive (spacing) overrides per breakpoint.
 		foreach ( self::breakpoints() as $device => $max_width ) {
 			$decls = array();
 			foreach ( Schema::tokens() as $token ) {
@@ -85,11 +70,8 @@ final class Compiler {
 	}
 
 	/**
-	 * Scope a user's custom CSS to the form wrapper so it can never leak site-wide (plan §9.4).
-	 * Every top-level rule's selector list is prefixed with the wrapper selector; `@media` /
-	 * `@supports` / `@container` blocks are recursed into; other at-rules (`@keyframes`,
-	 * `@font-face`) pass through untouched. Input is already tag/@import/expression-stripped by
-	 * {@see Sanitizer::sanitize_css()}.
+	 * Scope a user's custom CSS to the form wrapper so it can never leak site-wide. `@media` /
+	 * `@supports` / `@container` blocks are recursed into; other at-rules pass through untouched.
 	 *
 	 * @param string     $css     Sanitized custom CSS.
 	 * @param int|string $form_id Form id.
@@ -122,13 +104,33 @@ final class Compiler {
 			}
 			$prelude = trim( substr( $css, $i, $brace - $i ) );
 
-			// Find the matching close brace (track nesting).
+			// Find the matching close brace (track nesting, skipping braces inside string
+			// literals/comments so e.g. `content:"}";` can't close the block early).
 			$depth = 1;
 			$j     = $brace + 1;
+			$quote = '';
 			while ( $j < $len && $depth > 0 ) {
-				if ( '{' === $css[ $j ] ) {
+				$ch = $css[ $j ];
+
+				if ( '' !== $quote ) {
+					if ( $ch === $quote && '\\' !== $css[ $j - 1 ] ) {
+						$quote = '';
+					}
+					++$j;
+					continue;
+				}
+
+				if ( '/' === $ch && $j + 1 < $len && '*' === $css[ $j + 1 ] ) {
+					$close = strpos( $css, '*/', $j + 2 );
+					$j     = ( false === $close ) ? $len : $close + 2;
+					continue;
+				}
+
+				if ( '"' === $ch || "'" === $ch ) {
+					$quote = $ch;
+				} elseif ( '{' === $ch ) {
 					++$depth;
-				} elseif ( '}' === $css[ $j ] ) {
+				} elseif ( '}' === $ch ) {
 					--$depth;
 				}
 				++$j;
@@ -272,8 +274,6 @@ final class Compiler {
 
 	/**
 	 * Defense-in-depth: strip anything that could break out of a CSS declaration/rule.
-	 * Values are already schema-sanitized (colours validated, selects whitelisted), so this
-	 * is belt-and-suspenders — a stray value can never inject a new selector or comment.
 	 *
 	 * @param string $value Value.
 	 * @return string
@@ -318,11 +318,7 @@ final class Compiler {
 	 */
 	protected static function resolve( $tokens, $token, $device ) {
 		$key = $token['key'];
-		// A stored empty string means "no value" (the same convention the legacy engine used —
-		// see Migrator::migrate_record()), not "explicitly set to blank": treat it exactly like
-		// the key being absent so it falls through to the default below, rather than emitting no
-		// declaration at all (there is no CSS fallback for most vars, so an unset property would
-		// otherwise just inherit from an ancestor instead of showing the intended default look).
+		// An empty string means "no value" — treat it like the key being absent.
 		if ( isset( $tokens[ $key ][ $device ] ) && '' !== $tokens[ $key ][ $device ] ) {
 			return $tokens[ $key ][ $device ];
 		}

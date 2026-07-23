@@ -1,23 +1,6 @@
 /**
- * Style Customizer v2 — Fields ↔ Style live synchronisation.
- *
- * The style preview is the real front-end form rendered through `?evf_preview`, which reads the
- * SAVED form. So builder edits (labels, placeholders, descriptions, adding/deleting/duplicating/
- * reordering fields) wouldn't appear in the Style panel until the form is saved — the reported
- * sync gap.
- *
- * This controller closes it: whenever the builder's structure changes (the Style tab is opened,
- * a field is edited/added/removed, or the form is saved) it serialises the builder's CURRENT form
- * exactly as the save AJAX does, POSTs it to the `preview-draft` endpoint (cached as a per-user
- * transient by PreviewDraft.php) and reloads the preview iframe so the server re-renders the live
- * structure. The live CSS-variable edits are re-applied automatically once the frame reloads.
- *
- * It is event-driven and cheap:
- *  - it only reloads while the Style tab is actually showing (no work while editing elsewhere);
- *  - a structural signature skips redundant reloads (unchanged structure → no reload);
- *  - bursts of edits are debounced into a single refresh.
- *
- * Same-origin builder DOM, so it reads the live jQuery form directly — no postMessage needed.
+ * Style Customizer v2 — Fields ↔ Style live synchronisation. Serialises the builder's current
+ * structure to the `preview-draft` endpoint and reloads the preview iframe when it changes.
  */
 import { getActiveBridge } from './PreviewBridge';
 import { StyleStore } from './store';
@@ -69,21 +52,14 @@ export class BuilderSync {
 		this.started = true;
 
 		this.stylePanel = document.getElementById( STYLE_PANEL_ID );
-		// Baseline: the builder's structure at load == what the freshly-loaded iframe renders
-		// (the saved form). Storing it now means the first Style-tab open with no edits is a no-op.
 		this.lastSignature = this.serialize().signature;
 		this.active = this.isStyleTabActive();
 
-		// The single most important trigger: the Style tab becoming visible. A MutationObserver on
-		// the panel's class catches EVERY activation path (tab click, URL, programmatic switch).
 		if ( this.stylePanel ) {
 			this.panelObserver = new MutationObserver( () => this.onPanelToggle() );
 			this.panelObserver.observe( this.stylePanel, { attributes: true, attributeFilter: [ 'class' ] } );
 		}
 
-		// Belt-and-suspenders live sync: if the builder DOM/inputs change while the Style tab is
-		// showing, refresh too (debounced). Field edits normally happen on the Fields tab, but this
-		// keeps the preview honest for any flow that mutates the builder with Style open.
 		document.addEventListener( 'input', this.onBuilderInput, true );
 		document.addEventListener( 'change', this.onBuilderInput, true );
 
@@ -93,8 +69,6 @@ export class BuilderSync {
 			this.fieldObserver.observe( wrapper, { childList: true, subtree: true } );
 		}
 
-		// After a real save the DB is authoritative — refresh to the saved truth (clears any draft
-		// drift). jQuery event fired by the builder on save success.
 		const jq = ( window as any ).jQuery;
 		if ( jq ) {
 			jq( document ).on( 'everest_forms_save_data.evfscv2', this.onSave );
@@ -146,7 +120,6 @@ export class BuilderSync {
 		}
 		this.active = nowActive;
 		if ( nowActive ) {
-			// Reflect whatever changed while we were away on another tab.
 			this.syncPreview( false );
 		}
 	}
@@ -159,9 +132,8 @@ export class BuilderSync {
 		if ( ! target || ! target.closest ) {
 			return;
 		}
-		// The Style panel lives INSIDE the builder form, so its own React controls (colour hex,
-		// sliders, …) fire input/change too. Ignore those — they change styles (CSS variables),
-		// never field structure, so they must not schedule a structure re-sync.
+		// The Style panel's own controls live inside the builder form and fire input/change too;
+		// ignore those, they change styles, not field structure.
 		if ( target.closest( '#' + STYLE_PANEL_ID ) ) {
 			return;
 		}
@@ -178,12 +150,10 @@ export class BuilderSync {
 	}
 
 	private onSave = () => {
-		// The builder just persisted; the preview must reflect the saved form. Only refresh if the
-		// Style tab is showing — otherwise the next activation picks it up via the signature check.
 		if ( this.active ) {
 			this.syncPreview( true );
 		} else {
-			this.lastSignature = null; // Force a refresh on the next Style-tab open.
+			this.lastSignature = null; // force a refresh on the next Style-tab open.
 		}
 	};
 
@@ -208,24 +178,22 @@ export class BuilderSync {
 	 */
 	private async syncPreview( force: boolean ) {
 		if ( this.syncing ) {
-			// A cycle is already in flight; let it finish, then re-evaluate.
 			this.pendingSync = true;
 			return;
 		}
 
 		const bridge = getActiveBridge();
 		if ( ! bridge || ! bridge.isReady() ) {
-			// The frame hasn't finished its first load — run once it has (onBridgeReady).
 			this.pendingSync = true;
 			return;
 		}
 
 		const { json, signature } = this.serialize();
 		if ( ! json ) {
-			return; // Nothing to render (no builder form / no fields).
+			return;
 		}
 		if ( ! force && signature === this.lastSignature ) {
-			return; // Structure unchanged since the preview last rendered.
+			return;
 		}
 
 		if ( ! apiFetch ) {
@@ -240,11 +208,8 @@ export class BuilderSync {
 				data: { form_data: json, session: this.store.settings.previewSession },
 			} );
 			this.lastSignature = signature;
-			// Server has cached the draft; reload so it re-renders the current structure.
 			getActiveBridge()?.reload();
 		} catch ( err ) {
-			// Draft POST failed — leave the current preview as-is rather than reloading to a stale
-			// state. The next trigger will retry.
 			// eslint-disable-next-line no-console
 			if ( ( window as any ).console ) {
 				// eslint-disable-next-line no-console
@@ -254,7 +219,6 @@ export class BuilderSync {
 			this.syncing = false;
 			if ( this.pendingSync ) {
 				this.pendingSync = false;
-				// A change landed mid-flight — re-run to catch it.
 				this.scheduleSync();
 			}
 		}
@@ -264,12 +228,7 @@ export class BuilderSync {
 	 * Serialisation (mirrors the builder's own save payload)
 	 * --------------------------------------------------------------------- */
 
-	/**
-	 * Serialise the builder form exactly as {@see EVFPanelBuilder.formSave}/`getStructure` do:
-	 * the form inputs (`form_fields[…]`, `settings[…]`, …) plus the layout structure. The result
-	 * feeds PreviewDraft::parse() server-side, which mirrors EVF_AJAX::save_form(), so the draft
-	 * renders identically to a saved form.
-	 */
+	/** Serialises the builder form the same way the real save AJAX does. */
 	private serialize(): { json: string; signature: string } {
 		const jq = ( window as any ).jQuery;
 		if ( ! jq ) {
@@ -319,10 +278,7 @@ export class BuilderSync {
 		return structure;
 	}
 
-	/**
-	 * A signature of only the render-relevant inputs (field data + layout), so changes to
-	 * unrelated builder settings (email, integrations, …) never trigger a wasteful preview reload.
-	 */
+	/** Signature of only the render-relevant inputs (fields + layout). */
 	private signatureFrom( all: SerializedItem[] ): string {
 		const relevant = all.filter(
 			( i ) => i.name.indexOf( 'form_fields[' ) === 0 || i.name.indexOf( 'structure[' ) === 0

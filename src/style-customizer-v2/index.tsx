@@ -1,16 +1,7 @@
 /**
- * Style Customizer v2 — builder panel entry.
- *
- * Mounts into the "Style" builder tab and renders the two-pane panel (controls + live preview).
- * The token contract is never hardcoded — it comes from the server.
- *
- * Every value the panel needs on first paint (schema, sections, palettes, templates, fonts, the
- * saved record) is fully knowable in PHP at the moment the builder page renders, so
- * `BuilderPanel::enqueue()` localizes the SAME shape the REST GET would return directly into the
- * page (`evfStyleV2.payload`) — see RestController::build_payload(). The store initializes from
- * it synchronously below, with no network round-trip and therefore no loading state in the
- * common path. The REST `apiFetch` GET stays as a defensive fallback for the rare case the
- * localized payload is missing or malformed.
+ * Style Customizer v2 — builder panel entry. Mounts into the "Style" builder tab and renders
+ * the two-pane panel (controls + live preview), initializing the store from the localized
+ * payload (`evfStyleV2.payload`) with a REST `apiFetch` fallback.
  */
 import React from 'react';
 import { createRoot } from 'react-dom/client';
@@ -58,18 +49,8 @@ function markMigrationSeen( formId: number ) {
 }
 
 // Synchronous init from the localized payload, at module load — before Bootstrap even mounts.
-// Wrapped defensively: if the payload were ever missing a field, fall through to the network
-// fetch below rather than crash the panel.
-//
-// EXCEPT the very FIRST time this specific form is seen freshly migrated
-// (`migration.just_migrated`, see hasSeenMigration()): migration is migrate-ON-READ, not
-// persisted until Save, so `just_migrated` recomputes to true on every single page load/refresh
-// until then — trusting the localized payload immediately is exactly as correct on refresh #5 as
-// on refresh #1 (both come from the identical, synchronous, at-render-time computation, see
-// RestController::build_payload()). So only the FIRST time do we hold off mounting the panel to
-// show an explicit "Migrating your styles…" transition and re-fetch via REST for one deliberate,
-// visible confirmation; every refresh after that (until the user Saves) is the ordinary
-// synchronous, instant path — no sidebar skeleton, no re-fetch, same as any already-v2 form.
+// Except the very first time this form is seen freshly migrated, which shows a one-time
+// "Migrating your styles…" transition and re-fetches via REST instead.
 let readyFromPayload = false;
 let migrationPending = false;
 if ( rawSettings && rawSettings.payload && settings.formId ) {
@@ -118,8 +99,7 @@ function Bootstrap() {
 				? apiFetch( { path: `${ settings.restBase }/${ settings.formId }` } )
 				: Promise.reject( new Error( 'apiFetch unavailable' ) );
 
-			// Best-effort re-validation: on failure, fall back to the already-embedded payload
-			// rather than blocking the panel entirely — no worse than the pre-existing behaviour.
+			// On failure, fall back to the already-embedded payload rather than blocking the panel.
 			fresh
 				.catch( () => ( rawSettings as { payload: StylePayload } ).payload )
 				.then( ( payload: StylePayload ) => {
@@ -147,9 +127,6 @@ function Bootstrap() {
 	}, [] );
 
 	if ( state === 'loading' ) {
-		// Render the panel shell (controls skeleton) instantly, and paint the preview area with
-		// its own loader — so the sidebar never waits on the network and the preview never flashes
-		// blank or a premature "unavailable" state while the schema loads.
 		return <BootLoading />;
 	}
 	if ( state === 'migrating' ) {
@@ -186,13 +163,7 @@ function SidebarSkeleton() {
 	);
 }
 
-/**
- * Loading state: sidebar skeleton in the controls mount + the preview loader in the content
- * mount. The SAME preview skeleton renders for both the plain "schema is loading" case and the
- * "this form's legacy styles just migrated, re-confirming" case (`migrating`) — only the caption
- * changes — so a freshly-migrated form never hands off from one loader design to a visually
- * different one the instant the panel finishes mounting.
- */
+/** Loading state: sidebar skeleton in the controls mount + the preview loader in the content mount. */
 function BootLoading( { migrating = false }: { migrating?: boolean } ) {
 	const host = document.getElementById( 'evf-scv2-preview' );
 	return (
@@ -213,8 +184,7 @@ function BootLoading( { migrating = false }: { migrating?: boolean } ) {
 }
 
 const mount = () => {
-	// The controls root lives in the builder's native sidebar; <App/> portals the preview into
-	// the content area (#evf-scv2-preview).
+	// The controls root lives in the builder's native sidebar; <App/> portals the preview into #evf-scv2-preview.
 	const container = document.getElementById( 'evf-scv2-controls' );
 	if ( ! container ) {
 		return;

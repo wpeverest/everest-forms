@@ -1,9 +1,6 @@
 /**
- * Style Customizer v2 — shared types.
- *
- * These mirror the PHP contract exactly (see addons/StyleCustomizer/V2/Schema.php &
- * Sanitizer.php). The schema is fetched from the REST endpoint at runtime — the panel never
- * hardcodes the token list — so these types describe the SHAPE, not the data.
+ * Style Customizer v2 — shared types. Mirror the PHP contract (Schema.php & Sanitizer.php);
+ * the schema itself is fetched from the REST endpoint at runtime.
  */
 
 export type Device = 'desktop' | 'tablet' | 'mobile';
@@ -141,12 +138,12 @@ export interface StylePayload {
 	/** "Apply Theme Style" — true = theme styling, false = Everest Forms' default styling. */
 	apply_theme_style: boolean;
 	record: StyleRecord;
-	/** Drives the migration banner (see panes.tsx MigrationBanner). */
+	/** Drives the migration notice. */
 	migration: MigrationInfo;
 }
 
 export interface MigrationInfo {
-	/** The served record was auto-migrated from a legacy shape (see panes.tsx MigrationBanner). */
+	/** The served record was auto-migrated from a legacy shape. */
 	just_migrated: boolean;
 }
 
@@ -161,14 +158,8 @@ export interface BootstrapSettings {
 	markerClass: string;
 	/** Per-page-load token scoping the live-preview draft to this builder session. */
 	previewSession: string;
-	/** Whether the ThemeGrill AI Cloud integration is present and usable on this site (mirrors
-	 *  the same check the Create-with-AI feature uses) — drives the AI launcher's visibility. */
+	/** Whether the ThemeGrill AI Cloud integration is usable on this site; drives the AI launcher. */
 	aiEnabled: boolean;
-	/**
-	 * The full REST GET payload, computed server-side and localized inline (see
-	 * RestController::build_payload()) so the panel can initialize without a network round-trip.
-	 * Absent only if something upstream failed to compute it — index.tsx falls back to an
-	 * apiFetch GET in that case.
-	 */
+	/** The full REST GET payload, localized inline so the panel can init without a network round-trip. */
 	payload?: StylePayload;
 }

@@ -1,25 +1,17 @@
 /**
- * Style Customizer v2 — token → CSS custom properties.
- *
- * This is the client mirror of Compiler.php. It turns a token + its resolved value into the
- * exact `--evf-*: value` declarations the compiler would emit, so the live preview (which
- * writes these onto the iframe wrapper inline) is pixel-identical to what a save produces.
- *
- * Keep this in lockstep with Compiler::declarations()/format().
+ * Style Customizer v2 — token → CSS custom properties. Client mirror of Compiler.php; keep
+ * this in lockstep with Compiler::declarations()/format().
  */
 import { BoxValue, DeviceBag, Device, FontStyleValue, ScalarValue, Token } from './types';
 
 const SIDES: Array<keyof BoxValue> = [ 'top', 'right', 'bottom', 'left' ];
 
-/**
- * Resolve a device bag to a concrete value for a device: the device's own value, else the
- * desktop base, else the schema default. Mirrors Compiler::resolve().
- */
+/** Resolves a device bag to a concrete value for a device. Mirrors Compiler::resolve(). */
 export function resolveValue( bag: DeviceBag | undefined, token: Token, device: Device ): ScalarValue {
-	if ( bag && bag[ device ] !== undefined ) {
+	if ( bag && bag[ device ] !== undefined && bag[ device ] !== '' ) {
 		return bag[ device ] as ScalarValue;
 	}
-	if ( bag && bag.desktop !== undefined ) {
+	if ( bag && bag.desktop !== undefined && bag.desktop !== '' ) {
 		return bag.desktop;
 	}
 	return token.default;
@@ -39,7 +31,7 @@ function cssSafe( value: string ): string {
 export function formatValue( token: Token, value: ScalarValue ): string {
 	switch ( token.type ) {
 		case 'slider': {
-			if ( typeof value !== 'number' && Number.isNaN( Number( value ) ) ) {
+			if ( value === '' || value === null || value === undefined || Number.isNaN( Number( value ) ) ) {
 				return '';
 			}
 			const unit = token.unit !== undefined ? token.unit : 'px';
@@ -74,11 +66,7 @@ function formatBox( token: Token, value: BoxValue ): string {
 	return out.join( ' ' );
 }
 
-/**
- * The `[cssVar, value]` declarations a token contributes for one resolved value.
- * A font-style token expands to four; a var-less token contributes none.
- * Mirrors Compiler::declarations().
- */
+/** The `[cssVar, value]` declarations a token contributes for one resolved value. Mirrors Compiler::declarations(). */
 export function tokenDeclarations(
 	token: Token,
 	value: ScalarValue,

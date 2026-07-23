@@ -2,12 +2,9 @@
 /**
  * Style Customizer v2 — built-in style templates.
  *
- * The v1 style customizer shipped 11 templates in `addons/StyleCustomizer/assets/wp-json/
- * default-templates.json` (each a full v1 style record). To keep v2's templates EXACTLY the
- * v1 set — and guarantee migration-compatibility — we don't hand-author them: we run each v1
- * template `data` through {@see Migrator::migrate_record()}, the same converter used for
- * per-form migration. So a template applied in v2 produces the identical token values a
- * migrated v1 form would.
+ * The v1 template set (`assets/wp-json/default-templates.json`) is converted to v2 records
+ * via {@see Migrator::migrate_record()} rather than hand-authored, so a template applied in
+ * v2 produces the same token values a migrated v1 form would.
  *
  * @package EverestForms\Addons\StyleCustomizer\V2
  * @since   x.x.x
@@ -33,9 +30,7 @@ final class Templates {
 	const USER_OPTION = 'everest_forms_style_v2_user_templates';
 
 	/**
-	 * The built-in templates that are FREE (usable without Pro). Matched by template name. Every
-	 * other built-in template — and saving your own — is Pro. The panel locks the rest with an
-	 * upgrade prompt; {@see is_free_template_id()} is the server-side authority.
+	 * The built-in templates that are FREE (usable without Pro). Matched by template name.
 	 */
 	const FREE_TEMPLATES = array( 'Default Template', 'Classic Template', 'In-Line Flair', 'Classic Flow' );
 
@@ -69,8 +64,6 @@ final class Templates {
 				'name'    => (string) $tpl['name'],
 				'image'   => self::image_url( $tpl ),
 				'palette' => '',
-				// Free tier exposes only a handful of built-in templates; the rest are Pro
-				// (locked in the panel). Saving your own template is also Pro.
 				'is_pro'  => ! in_array( (string) $tpl['name'], self::FREE_TEMPLATES, true ),
 				'tokens'  => isset( $record['tokens'] ) ? $record['tokens'] : array(),
 			);
@@ -86,9 +79,7 @@ final class Templates {
 	}
 
 	/**
-	 * Whether a template id refers to a FREE built-in template (usable without Pro). The
-	 * server-side authority behind the panel's template locking + the sanitizer's template-id
-	 * gate. A user (custom) template is Pro (saving your own is a Pro feature).
+	 * Whether a template id refers to a FREE built-in template (usable without Pro).
 	 *
 	 * @param string $id Template id.
 	 * @return bool
@@ -107,15 +98,8 @@ final class Templates {
 	}
 
 	/**
-	 * Resolve a LEGACY template slug (the `everest_forms_styles[form_id]['template']` value —
-	 * an `evf_style_templates` / `default-templates.json` array key, e.g. `default`,
-	 * `layout-two`, or a custom "Create Style Template" slug) to its v2 template id, so
-	 * {@see Migrator::migrate_record()} can carry the v1 "selected template" across migration
-	 * instead of silently dropping it. A built-in slug resolves through the same
-	 * name → {@see sanitize_key()} id {@see all()} uses; anything else is assumed to be a
-	 * legacy custom template and resolves via {@see legacy_custom_templates()}'s `legacy-{slug}`
-	 * id scheme — matched by slug even if that custom template was since renamed or deleted
-	 * (worst case: an id that matches no current entry, no worse than today's silent drop).
+	 * Resolve a legacy template slug to its v2 template id, so {@see Migrator::migrate_record()}
+	 * can carry the v1 "selected template" across migration.
 	 *
 	 * @param string $slug Legacy template slug.
 	 * @return string v2 template id, or '' if the slug is empty/unset.
@@ -134,10 +118,8 @@ final class Templates {
 	}
 
 	/**
-	 * User-created templates ("save current styles as a template"), newest first. Each is a
-	 * v2 record captured from a form's current styles — plus, appended, any genuinely custom
-	 * template a user saved through the OLD (v1) customizer's own "Create Style Template", so
-	 * that data isn't silently orphaned when a site moves to v2 (see {@see legacy_custom_templates()}).
+	 * User-created templates ("save current styles as a template"), newest first, plus any
+	 * legacy custom template carried over (see {@see legacy_custom_templates()}).
 	 *
 	 * @return array [ { id, name, custom:true, image:'', palette, tokens } ]
 	 */
@@ -164,20 +146,13 @@ final class Templates {
 
 	/**
 	 * Legacy (v1) custom templates, migrated to v2 token shape on read. `evf_style_templates`
-	 * holds BOTH the 11 built-in templates (the old customizer keeps its own editable copies of
-	 * default-templates.json there) AND any genuinely custom one a user saved via "Create Style
-	 * Template" in the old UI — there is no separate option for just the custom ones. Built-ins
-	 * are identified by NAME matching {@see all()} (already sourced from the same JSON) and
-	 * skipped here to avoid listing them twice; everything else is a real custom template that
-	 * would otherwise vanish from the panel with no warning once a site moves to v2.
+	 * holds both the built-in templates and any custom one saved via the old "Create Style
+	 * Template" UI; built-ins are skipped here (matched by name against {@see all()}).
 	 *
 	 * @return array [ { id, name, custom:true, image:'', palette:'', tokens } ]
 	 */
 	protected static function legacy_custom_templates() {
-		// The legacy customizer always stores this option as a JSON STRING (wp_json_encode()),
-		// never a native PHP array — so unlike a normal WP option, get_option() does not
-		// auto-decode it; every legacy read site (class-evf-style-customizer-ajax.php,
-		// class-evf-style-customizer-api.php) explicitly json_decode()s it too.
+		// Stored as a JSON string, not a native array — get_option() won't auto-decode it.
 		$raw = get_option( 'evf_style_templates', '' );
 		$stored = is_string( $raw ) ? json_decode( $raw, true ) : $raw;
 		if ( empty( $stored ) || ! is_array( $stored ) ) {
@@ -243,9 +218,7 @@ final class Templates {
 	}
 
 	/**
-	 * Delete a user template by id. A `legacy-…` id (see {@see legacy_custom_templates()}) is
-	 * computed live from `evf_style_templates` on every read, not stored in {@see USER_OPTION} —
-	 * without this, deleting one would silently no-op and it would reappear on next load.
+	 * Delete a user template by id. A `legacy-…` id routes to {@see delete_legacy_custom_template()}.
 	 *
 	 * @param string $id Template id.
 	 * @return bool Whether anything was removed.
@@ -275,8 +248,7 @@ final class Templates {
 	}
 
 	/**
-	 * Remove one entry from the legacy `evf_style_templates` option — the delete path for a
-	 * `legacy-…` id from {@see legacy_custom_templates()}.
+	 * Remove one entry from the legacy `evf_style_templates` option.
 	 *
 	 * @param string $slug The original `evf_style_templates` array key (id minus the `legacy-` prefix).
 	 * @return bool Whether anything was removed.
@@ -288,16 +260,13 @@ final class Templates {
 			return false;
 		}
 		unset( $stored[ $slug ] );
-		// Re-encode as a JSON string — the shape every legacy read site expects.
 		update_option( 'evf_style_templates', wp_json_encode( $stored ) );
 		return true;
 	}
 
 	/**
-	 * Resolve a template's thumbnail to a LOCAL plugin URL when the image ships with the addon
-	 * (so thumbnails render offline / when the remote GitHub host is blocked); otherwise fall
-	 * back to the JSON's remote URL. Tries the JSON image basename first, then a slugified name
-	 * (covers basename typos like `ln-line-flair.png` vs the local `in-line-flair.png`).
+	 * Resolve a template's thumbnail to a local plugin URL when it ships with the addon;
+	 * otherwise falls back to the JSON's remote URL.
 	 *
 	 * @param array $tpl Raw template ( name + image ).
 	 * @return string

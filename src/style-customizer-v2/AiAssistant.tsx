@@ -1,22 +1,6 @@
 /**
- * Style Customizer v2 — AI styling launcher.
- *
- * A floating "Style with AI" trigger (bottom-right) that turns a plain-text prompt into style
- * tokens via `POST {restBase}/{formId}/ai` (see RestController::ai_style()).
- *
- * UI is a deliberate 1:1 visual match of the builder's own AI assistant — see
- * src/builder-ai/BuilderAIChat.tsx (same gradient trigger, header, chat-bubble transcript,
- * suggestion chips, input bar) — down to the tab-visibility mechanism: BuilderAIChat only
- * renders on the Fields tab (`#everest-forms-panel-fields.active`); this only renders on the
- * Style tab (`#everest-forms-panel-style.active`), tracked the same way (MutationObserver on
- * the panel's `class` attribute) so the two floating launchers can never occupy the same
- * bottom-right corner at once.
- *
- * Deliberately self-contained: reads/writes the store directly via `useStore()`, so mounting
- * it is a single `<AiAssistant />` with no props threaded through App.tsx. The applied result
- * is an OVERLAY on the current state (see `store.applyAiRecord`), so it composes with manual
- * edits and undo exactly like a template/palette apply does — the live preview updates
- * instantly and the user Saves through the existing builder Save button.
+ * Style Customizer v2 — floating "Style with AI" launcher that turns a prompt into style
+ * tokens via `POST {restBase}/{formId}/ai`.
  */
 import React, { useEffect, useRef, useState } from 'react';
 import { LuSend, LuSparkles, LuX } from 'react-icons/lu';
@@ -27,17 +11,7 @@ import { Template } from './types';
 const __ = ( window as any ).wp?.i18n?.__ || ( ( s: string ) => s );
 const apiFetch = ( window as any ).wp?.apiFetch;
 
-/**
- * If the prompt names a REAL template (built-in or the user's own saved ones) closely enough,
- * prefer applying that exact preset over asking the AI to improvise one — the AI's system prompt
- * (gateway/products/everest_forms_style.py) only knows individual tokens and palette ids, NOT
- * template names, so "Add underline aura template" would otherwise be rejected as off-topic (the
- * model has no idea what "underline aura" refers to). A plain substring match on the full,
- * normalized template name is deliberately simple: it only fires on a confident, specific
- * reference (e.g. "underline aura"), not on a stray word a generic name might share with an
- * unrelated prompt (e.g. "classic" alone won't match "Classic Template"). Longest name wins if
- * more than one matches, so a more specific name is preferred over a shorter overlapping one.
- */
+/** Matches a prompt against known template names; longest match wins. */
 function findTemplateMatch( prompt: string, templates: Template[] ): Template | null {
 	const normalize = ( s: string ) => s.toLowerCase().replace( /[^a-z0-9\s]/g, ' ' ).replace( /\s+/g, ' ' ).trim();
 	const p = normalize( prompt );
@@ -79,10 +53,7 @@ interface Message {
 	loading?: boolean;
 	notice?: boolean;
 	canUndo?: boolean;
-	/** Store version right after this turn's `applyAiRecord()`. The "Undo ↺" link only renders
-	 *  while `store.getVersion()` still matches — any later mutation (a manual edit, another AI
-	 *  turn, undo/redo elsewhere) means the top of the shared undo stack is no longer THIS turn's
-	 *  change, so clicking undo would silently revert something else instead. See `send()`/render. */
+	/** Store version this turn's undo is valid for. */
 	undoVersion?: number;
 }
 
@@ -127,10 +98,6 @@ export function AiAssistant() {
 	const [ buttonHovered, setButtonHovered ] = useState( false );
 	const [ tooltipHovered, setTooltipHovered ] = useState( false );
 	const showTooltip = ! open && ( buttonHovered || tooltipHovered );
-	// Show the assistant only on the Style tab — mirror BuilderAIChat.tsx, which lives inside
-	// the Fields panel and hides while any other tab (Style, Settings, …) is active. Every
-	// builder tab panel stays mounted in the DOM with `.active` toggled, so without this a
-	// portaled `position: fixed` launcher would keep showing on every tab.
 	const [ onStyleTab, setOnStyleTab ] = useState( true );
 	const messagesEndRef = useRef< HTMLDivElement >( null );
 	const inputRef = useRef< HTMLTextAreaElement >( null );
@@ -164,17 +131,11 @@ export function AiAssistant() {
 	const send = async ( text: string ) => {
 		if ( ! text.trim() || loading ) return;
 		const userText = text.trim();
-		// NOT `messages.length > 1` — a template-name match (below) adds messages without ever
-		// setting `originalPrompt`, so a freeform prompt after a template turn would otherwise be
-		// misdetected as a "refine" of an empty original request and rejected server-side. Whether
-		// this is a refine is really about the AI's OWN conversation arc, so key it off that state.
 		const isRefine = '' !== originalPrompt;
 		setInput( '' );
 
 		setMessages( ( prev ) => [ ...prev, { role: 'user', text: userText } ] );
 
-		// A confident match on a REAL template's name — apply it directly (no AI round-trip, exact
-		// fidelity) instead of asking the model to improvise a look it has no data for.
 		const matchedTpl = findTemplateMatch( userText, store.allTemplates() );
 		if ( matchedTpl ) {
 			const locked = !! matchedTpl.is_pro && ! store.proActive;
@@ -219,14 +180,11 @@ export function AiAssistant() {
 
 		if ( ! isRefine ) setOriginalPrompt( userText );
 
-		// Apply BEFORE stamping the message so `store.getVersion()` reflects the version this
-		// turn's change actually landed at — that's the version the "Undo ↺" link stays valid for.
 		if ( result.ok ) {
 			store.applyAiRecord( result.data.tokens, result.data.palette || undefined );
 		}
 
 		setMessages( ( prev ) => {
-			// Only the newest applied turn may offer Undo.
 			const cleared = prev.map( ( m ) => ( m.canUndo ? { ...m, canUndo: false } : m ) );
 			const next = [ ...cleared ];
 			next[ next.length - 1 ] = result.ok
@@ -269,7 +227,6 @@ export function AiAssistant() {
 
 	return (
 		<>
-			{ /* Floating trigger — sparkles when closed, X when open. */ }
 			<button
 				type="button"
 				aria-label={ __( 'Style with AI', 'everest-forms' ) }
@@ -385,7 +342,6 @@ export function AiAssistant() {
 						zIndex: 9999,
 					} }
 				>
-					{ /* Header */ }
 					<div
 						style={ {
 							display: 'flex',
@@ -421,7 +377,6 @@ export function AiAssistant() {
 						</div>
 					</div>
 
-					{ /* Messages */ }
 					<div
 						className="scv2-ai-messages"
 						style={ {
@@ -566,7 +521,6 @@ export function AiAssistant() {
 						</div>
 					) }
 
-					{ /* Input bar */ }
 					<div
 						style={ {
 							padding: '10px 14px 14px',

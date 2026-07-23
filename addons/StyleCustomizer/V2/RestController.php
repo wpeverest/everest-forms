@@ -3,13 +3,8 @@
  * Style Customizer v2 — REST controller.
  *
  * Read/save a form's v2 style record. Registers into the existing `everest-forms/v1`
- * namespace via the `everest_forms_rest_api_get_rest_namespaces` filter (non-invasive —
- * no change to core `EVF_REST_API`). Only wired when `Engine::enabled()`.
- *
- * Security: every route is gated by an admin capability (`permission_callback`); WordPress
- * additionally enforces the REST cookie-nonce for logged-in requests, so this is CSRF-safe
- * without a hand-rolled nonce check. Untrusted input is run through {@see Sanitizer} before
- * it ever touches the option.
+ * namespace. Every route is gated by an admin capability; untrusted input is run through
+ * {@see Sanitizer} before it ever touches the option.
  *
  * @package EverestForms\Addons\StyleCustomizer\V2
  * @since   x.x.x
@@ -85,8 +80,7 @@ final class RestController {
 			)
 		);
 
-		// Store the builder's CURRENT (possibly unsaved) structure so the live preview can render
-		// it — the Fields ↔ Style synchronisation pipeline (see PreviewDraft).
+		// Store the builder's current (unsaved) structure for the live preview (see PreviewDraft).
 		register_rest_route(
 			$this->namespace,
 			'/' . $this->rest_base . '/(?P<id>\d+)/preview-draft',
@@ -192,8 +186,6 @@ final class RestController {
 	 * @return \WP_REST_Response|\WP_Error
 	 */
 	public function create_template( $request ) {
-		// Saving your own template is a Pro feature — reject on a site without Pro, authoritatively
-		// (the panel also locks the UI, but the server is the boundary).
 		if ( ! Engine::pro_active() ) {
 			return new \WP_Error(
 				'evf_style_pro_only',
@@ -211,7 +203,6 @@ final class RestController {
 				array( 'status' => 400 )
 			);
 		}
-		// Sanitize the incoming styles before persisting them as a template.
 		$clean    = Sanitizer::sanitize_record( $incoming );
 		$template = Templates::save_user_template( $name, $clean );
 
@@ -330,14 +321,8 @@ final class RestController {
 	}
 
 	/**
-	 * POST /styles/{id}/ai — turn a plain-text prompt into style tokens via the ThemeGrill AI
-	 * Cloud gateway (see EVF_AI_API::style_form()). Returns the AI's intent SANITIZED into a
-	 * partial v2 record — the panel applies it to the live store for an instant preview and the
-	 * user Saves through the existing flow; nothing is persisted here.
-	 *
-	 * Because {@see Sanitizer::sanitize_record()} is the single authoritative gate (same one
-	 * every manual edit and template apply goes through), a malformed or pro-locked AI response
-	 * can only ever under-deliver — it can never produce an unsafe or tier-violating record.
+	 * POST /styles/{id}/ai — turn a plain-text prompt into style tokens via the AI gateway.
+	 * Returns the AI's intent sanitized into a partial v2 record; nothing is persisted here.
 	 *
 	 * @param \WP_REST_Request $request Request.
 	 * @return \WP_REST_Response|\WP_Error
@@ -372,7 +357,6 @@ final class RestController {
 			);
 		}
 
-		// Auto-register on first use — identical pattern to EVF_AI_Ajax::generate_form().
 		if ( ! \EVF_AI_Registration::is_registered() ) {
 			\EVF_AI_Registration::register();
 		}
@@ -391,16 +375,12 @@ final class RestController {
 			return new \WP_Error( $ai_style->get_error_code(), $ai_style->get_error_message(), array( 'status' => $status ) );
 		}
 
-		// The AI's `{ tokens, palette }` shape is already exactly what Sanitizer::sanitize_record()
-		// expects as input — tokens as bare values (wrapped into a desktop-only bag) or device
-		// bags, palette as a string id. This is the SAME authoritative gate every manual edit and
-		// template apply goes through: unknown keys are dropped, values are type/range-clamped,
-		// and a pro-tier token or palette is stripped outright on a site without Pro.
 		$clean = Sanitizer::sanitize_record(
 			array(
 				'tokens'  => isset( $ai_style['tokens'] ) && is_array( $ai_style['tokens'] ) ? $ai_style['tokens'] : array(),
 				'palette' => isset( $ai_style['palette'] ) ? $ai_style['palette'] : '',
-			)
+			),
+			true
 		);
 
 		return rest_ensure_response(
@@ -414,9 +394,8 @@ final class RestController {
 
 	/**
 	 * POST /styles/{id}/preview-draft — cache the builder's current serialized structure so the
-	 * live preview iframe can render unsaved Fields-tab edits (labels, add/delete/reorder, …).
-	 * Nothing is written to the form; the draft is a short-lived per-user transient (see
-	 * {@see PreviewDraft}).
+	 * live preview iframe can render unsaved Fields-tab edits. Nothing is written to the form
+	 * (see {@see PreviewDraft}).
 	 *
 	 * @param \WP_REST_Request $request Request.
 	 * @return \WP_REST_Response
@@ -426,8 +405,6 @@ final class RestController {
 		$form_data = $request->get_param( 'form_data' );
 		$session   = (string) $request->get_param( 'session' );
 
-		// `form_data` is the raw serialized builder array as a JSON string (the same payload the
-		// save AJAX sends). Absence/emptiness clears any stale draft rather than erroring.
 		if ( ! is_string( $form_data ) || '' === $form_data ) {
 			PreviewDraft::clear( $form_id, $session );
 			return rest_ensure_response( array( 'stored' => false ) );
@@ -447,9 +424,8 @@ final class RestController {
 	}
 
 	/**
-	 * Detect which named palette a legacy record's `color_palette` selection matches, so the
-	 * panel can show it as the active palette. Returns an empty string if it matches none
-	 * (a custom palette) — the six colours still migrate onto their tokens regardless.
+	 * Detect which named palette a legacy record's `color_palette` selection matches. Returns
+	 * an empty string if it matches none (a custom palette).
 	 *
 	 * @param array $legacy Legacy record.
 	 * @return string Palette id, or ''.
@@ -491,10 +467,8 @@ final class RestController {
 	}
 
 	/**
-	 * Read the per-form "Apply Theme Style" flag. Reuses the exact meta the v1 preview toggle
-	 * and the front-end shortcode wrapper use (`everest_forms_enable_theme_style`), so v1 and v2
-	 * stay in sync and no migration is needed. Only the explicit `'default'` value disables theme
-	 * styling; anything else (incl. an unset meta) means "apply the theme style" — matching v1.
+	 * Read the per-form "Apply Theme Style" flag. Reuses the same meta the v1 preview toggle
+	 * and the front-end shortcode wrapper use.
 	 *
 	 * @param int $form_id Form id.
 	 * @return bool
@@ -504,14 +478,9 @@ final class RestController {
 	}
 
 	/**
-	 * Build the full styles payload for a form — the saved record (or an empty default) plus
-	 * the schema the panel renders from, so the client never hardcodes the token contract.
-	 *
-	 * Pure/static so it can be called from two places that need the IDENTICAL shape: this
-	 * controller's `get_item()` (the REST route, kept for API completeness / defensive re-fetch)
-	 * and {@see BuilderPanel::enqueue()}, which localizes it directly into the builder page so
-	 * the panel can initialize synchronously — no network round-trip, no loading state, because
-	 * every one of these values is already knowable in PHP at the moment the page renders.
+	 * Build the full styles payload for a form — the saved record plus the schema the panel
+	 * renders from. Static so it can be shared between `get_item()` and
+	 * {@see BuilderPanel::enqueue()}, which localizes it directly into the builder page.
 	 *
 	 * @param int $form_id Form id.
 	 * @return array
@@ -522,16 +491,12 @@ final class RestController {
 		$stored  = isset( $all[ $form_id ] ) && is_array( $all[ $form_id ] ) ? $all[ $form_id ] : array();
 
 		if ( Engine::is_v2_record( $stored ) ) {
-			// Already a v2 record — serve it as-is.
 			$record = $stored;
 		} elseif ( ! empty( $stored ) ) {
-			// A legacy (v1) record: migrate on read so an existing styled form opens with its
-			// real styles intact (backward compatibility). The migration is lossless (renames
-			// settings, never reshapes values); it is only persisted when the user saves.
+			// A legacy (v1) record: migrate on read; only persisted when the user saves.
 			$record            = Migrator::migrate_record( $stored );
 			$record['palette'] = self::detect_palette( $stored );
 		} else {
-			// Never styled — an empty v2 default record.
 			$record = array(
 				'schema_version' => Schema::version(),
 				'tokens'         => array(),
@@ -548,20 +513,12 @@ final class RestController {
 			'templates'      => Templates::all(),
 			'user_templates' => Templates::user_templates(),
 			'breakpoints'    => Compiler::breakpoints(),
-			// The Font Family dropdown list — the SAME cached Google Fonts list the legacy
-			// customizer uses (order/labels identical), fetched once via the shared helper.
 			'google_fonts'   => function_exists( 'evfsc_get_google_font_families' ) ? evfsc_get_google_font_families() : array(),
-			// "Apply Theme Style" (a per-form post meta reused from v1): true = use the active
-			// theme's styling; false ('default') = load Everest Forms' bundled default styling.
 			'apply_theme_style' => self::get_apply_theme_style( $form_id ),
-			// Whether the Pro tier is active — the SAME authoritative gate the sanitizer and
-			// compiler enforce (see Engine::pro_active()). Drives the panel's locked-teaser UI;
-			// display-only, never the security boundary (that is enforced server-side on save).
+			// Display-only; the security boundary is enforced server-side on save.
 			'pro_active'     => Engine::pro_active(),
 			'record'         => $record,
-			// Drives the panel's migration banner (see panes.tsx MigrationBanner): true while the
-			// stored record is still the raw legacy shape — migration is one-way and compulsory,
-			// so this is purely informational (dismissible), not an offer to opt back out.
+			// Drives the panel's migration banner; informational only, not reversible.
 			'migration'      => array(
 				'just_migrated' => ! empty( $stored ) && ! Engine::is_v2_record( $stored ),
 			),
@@ -569,8 +526,7 @@ final class RestController {
 	}
 
 	/**
-	 * GET — thin wrapper around {@see self::build_payload()}. Kept for API completeness and as
-	 * the panel's defensive fallback (see index.tsx) if the localized payload is ever missing.
+	 * GET — thin wrapper around {@see self::build_payload()}.
 	 *
 	 * @param \WP_REST_Request $request Request.
 	 * @return \WP_REST_Response
@@ -589,7 +545,6 @@ final class RestController {
 	public function save_item( $request ) {
 		$form_id = absint( $request['id'] );
 
-		// The id must be a real form — never litter the option with junk ids.
 		$post = get_post( $form_id );
 		if ( ! $post || 'everest_form' !== $post->post_type ) {
 			return new \WP_Error(
@@ -599,8 +554,6 @@ final class RestController {
 			);
 		}
 
-		// Require an explicit record object. A missing/invalid body must never silently
-		// wipe a form's styles, so reject rather than save an empty record.
 		$incoming = $request->get_param( 'record' );
 		if ( ! is_array( $incoming ) ) {
 			return new \WP_Error(
@@ -624,15 +577,15 @@ final class RestController {
 
 		self::maybe_backup_legacy_record( $form_id, $all );
 
-		$clean           = Sanitizer::sanitize_record( $incoming );
-		$old_record      = isset( $all[ $form_id ] ) && is_array( $all[ $form_id ] ) ? $all[ $form_id ] : array();
-		$clean           = Sanitizer::preserve_stale_pro_tokens( $clean, $old_record );
+		$clean      = Sanitizer::sanitize_record( $incoming );
+		$old_record = isset( $all[ $form_id ] ) && is_array( $all[ $form_id ] ) ? $all[ $form_id ] : array();
+		$clean      = Sanitizer::preserve_stale_pro_tokens( $clean, $old_record );
+
+		// Re-read right before writing to avoid clobbering a concurrent save to a different form.
+		$all             = get_option( 'everest_forms_styles', array() );
 		$all[ $form_id ] = $clean;
 		update_option( 'everest_forms_styles', $all, false ); // autoload=no.
 
-		// "Apply Theme Style" — persisted to the same per-form meta the v1 preview toggle and the
-		// front-end shortcode wrapper read, so the setting is honoured everywhere with no extra
-		// wiring. Only written when the client sends it, so a missing flag never clobbers it.
 		$apply_theme = $request->get_param( 'apply_theme_style' );
 		if ( null !== $apply_theme ) {
 			update_post_meta(
@@ -653,11 +606,7 @@ final class RestController {
 	}
 
 	/**
-	 * Snapshot a form's pre-v2 record the FIRST time it is about to be overwritten by a v2
-	 * save, so a migration bug can be diagnosed or the original restored later. No-ops when
-	 * the stored record is already v2-shaped (nothing pre-v2 to lose) or a backup already
-	 * exists for this form (never overwritten again — this is the form's original data, not
-	 * a rolling snapshot).
+	 * Snapshot a form's pre-v2 record the first time it's about to be overwritten by a v2 save.
 	 *
 	 * @param int   $form_id Form id.
 	 * @param array $all     The full `everest_forms_styles` option (pre-overwrite).

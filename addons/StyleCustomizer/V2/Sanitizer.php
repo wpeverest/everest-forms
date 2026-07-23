@@ -6,7 +6,7 @@
  * compiler) unless it is valid for its token's type. Driven entirely by {@see Schema}
  * so it can never drift from the control set.
  *
- * Record shape (see STYLE-CUSTOMIZER-V2-PLAN.md §3):
+ * Record shape:
  *   array(
  *     'schema_version' => 1,
  *     'tokens'         => array( '<key>' => array( 'desktop' => v, 'tablet' => v, 'mobile' => v ) ),
@@ -34,10 +34,13 @@ final class Sanitizer {
 	/**
 	 * Sanitize a full v2 record.
 	 *
-	 * @param array $record Raw (untrusted) record.
+	 * @param array $record         Raw (untrusted) record.
+	 * @param bool  $check_contrast Also run {@see ensure_text_contrast()}. Only the AI style
+	 *                              launcher opts in; a normal save must never silently revert a
+	 *                              colour a person deliberately chose.
 	 * @return array Clean record, always stamped with the current schema version.
 	 */
-	public static function sanitize_record( $record ) {
+	public static function sanitize_record( $record, $check_contrast = false ) {
 		$record = is_array( $record ) ? $record : array();
 		$clean  = array( 'schema_version' => Schema::version() );
 
@@ -50,16 +53,15 @@ final class Sanitizer {
 			if ( ! array_key_exists( $key, $in_tokens ) ) {
 				continue; // Absent → the compiler falls back to the schema default.
 			}
-			// Authoritative pro-tier gate: a pro-tier value can never be persisted on a site
-			// without Pro. Pro tokens are already physically absent from a free schema (they are
-			// defined in the Pro plugin), so this is the belt-and-suspenders backstop for the case
-			// where a pro token is present in the schema but the Pro tier is not active.
+			// A pro-tier value can never be persisted on a site without Pro.
 			if ( ! $pro_active && isset( $token['tier'] ) && 'pro' === $token['tier'] ) {
 				continue;
 			}
 			$out_tokens[ $key ] = self::sanitize_token( $token, $in_tokens[ $key ] );
 		}
-		self::ensure_text_contrast( $out_tokens );
+		if ( $check_contrast ) {
+			self::ensure_text_contrast( $out_tokens );
+		}
 
 		$clean['tokens'] = $out_tokens;
 
@@ -84,24 +86,10 @@ final class Sanitizer {
 	}
 
 	/**
-	 * Re-attach pro-tier tokens the OLD record already implied, if Pro is currently inactive.
-	 *
-	 * {@see self::sanitize_record()} is right to refuse WRITING a new pro-tier value without
-	 * Pro — Schema::tokens() doesn't even enumerate pro-tier tokens without Pro active, the
-	 * structural free/pro boundary — but a single sanitize pass has no memory of history. A
-	 * routine save made while Pro is merely undetected (e.g. right after a manual ZIP update,
-	 * before Pro's own files/activation catch up) would otherwise silently and permanently erase
-	 * pro-tier customisation the form already had, since nothing else ever re-derives it. This is
-	 * exactly what happened to Messages-section tokens (popup/success-message styling, tier=pro)
-	 * on the very first save after migrating a legacy record (EVF-2685).
-	 *
-	 * The old record is often STILL legacy shape at that point — migration is lossless but only
-	 * persisted on save (see RestController::build_payload()) — so a still-legacy old record is
-	 * re-derived through the same lossless {@see Migrator::migrate_record()} rather than only
-	 * reading an already-v2 record. Carrying a value over unchanged (never re-validating it)
-	 * introduces no new write path for an attacker: a v2 value can only have reached the old
-	 * record via this same sanitizer at a time Pro WAS active, and a legacy value is a pure
-	 * rename/passthrough of data that already existed before any of this ran.
+	 * Re-attach pro-tier tokens the OLD record already implied, if Pro is currently inactive —
+	 * so a save made while Pro is merely undetected doesn't silently erase pro-tier
+	 * customisation the form already had. The old record may still be legacy shape, so it is
+	 * re-derived through {@see Migrator::migrate_record()} when needed.
 	 *
 	 * @param array $clean      Freshly sanitized record (from self::sanitize_record()).
 	 * @param array $old_record The record as it was stored before this save (legacy or v2 shape).
@@ -131,27 +119,16 @@ final class Sanitizer {
 	}
 
 	/**
-	 * Drop a text-colour override that would be unreadable against the form's own
-	 * background — belt-and-suspenders against a caller (chiefly the AI style launcher,
-	 * see RestController::ai_style()) sending a token combination that is internally
-	 * inconsistent, e.g. an explicit `label.color` override to white with no matching dark
-	 * `wrap.bg`. label.color/sub.color/desc.color/title.color are ALL hidden, palette-driven-
-	 * by-convention tokens (Schema::text_role_tokens()) with dark schema defaults (#333333-
-	 * #666666) that are already coherent with the white wrap.bg default — so dropping the
-	 * override here is a safe fallback, not a loss of an otherwise-reachable look.
-	 *
-	 * Threshold is deliberately low (2:1, well under WCAG AA's 4.5:1) — this exists to catch
-	 * "vanishes entirely" pairings like white-on-white, not to enforce accessible contrast in
-	 * general; a human deliberately choosing a low-but-visible combination in the Design tab
-	 * should never have their explicit choice silently reverted.
+	 * Drop an AI-generated text-colour override that would be unreadable against the form's own
+	 * background (e.g. white label.color with no matching dark wrap.bg). Threshold is low (2:1)
+	 * to catch only "vanishes entirely" pairings — a human's deliberate low-but-visible choice
+	 * must never be reverted, so only {@see RestController::ai_style()} opts into this.
 	 *
 	 * @param array $out_tokens Sanitized token map, keyed by token key, modified in place.
 	 */
 	private static function ensure_text_contrast( array &$out_tokens ) {
-		// A background image covers wrap.bg visually, so its contrast is irrelevant here — and we
-		// have no cheap way to read the image's own brightness. Skip the check rather than judge
-		// a colour against a background it isn't actually rendered against (EVF-2668 follow-up:
-		// this is exactly what silently dropped the bundled image templates' white label colour).
+		// A background image covers wrap.bg visually, so skip the check rather than judge a
+		// colour against a background it isn't actually rendered against.
 		if ( ! empty( $out_tokens['wrap.bgImage']['desktop'] ) ) {
 			return;
 		}
@@ -249,10 +226,8 @@ final class Sanitizer {
 	 * @return mixed Clean value (token default on anything invalid).
 	 */
 	public static function sanitize_scalar( $token, $value ) {
-		// The font-family select is data-driven (the full Google Fonts list is supplied at
-		// runtime, not baked into the schema options), so validate it as a font-family string
-		// rather than against the tiny fallback option list — otherwise every real choice would
-		// be rejected. Migrated v1 records store the bare family name too, so this keeps them.
+		// The font-family select is data-driven (Google Fonts, not baked into schema options),
+		// so validate as a font-family string rather than against the fallback option list.
 		if ( ! empty( $token['source'] ) && 'google_fonts' === $token['source'] ) {
 			return self::sanitize_font_family( $value );
 		}
@@ -320,7 +295,7 @@ final class Sanitizer {
 
 	/**
 	 * Validate a colour: #rgb / #rrggbb (+ 8-digit alpha) or rgb()/rgba(). Falls back to
-	 * the default — alpha is preserved so legacy `rgba()` borders survive (plan §12).
+	 * the default; alpha is preserved so legacy `rgba()` borders survive.
 	 *
 	 * @param mixed  $value   Raw value.
 	 * @param string $default Fallback.
@@ -385,17 +360,13 @@ final class Sanitizer {
 	}
 
 	/**
-	 * Sanitize a font-family value: the empty string (theme font) or a plain family name such
-	 * as `Open Sans` / `Roboto`. Strips characters that could break out of the compiled
-	 * `font-family:` declaration (the compiler additionally css_safe()-guards the value).
+	 * Sanitize a font-family value: the empty string (theme font) or a plain family name.
 	 *
 	 * @param mixed $value Raw value.
 	 * @return string
 	 */
 	protected static function sanitize_font_family( $value ) {
 		$value = sanitize_text_field( (string) $value );
-		// Only letters, numbers, spaces, hyphens, commas, apostrophes and quotes are valid in a
-		// font-family list; anything else (braces, semicolons, angle brackets…) is dropped.
 		$value = preg_replace( '/[^A-Za-z0-9 ,\-\'"]/', '', $value );
 		return trim( $value );
 	}
@@ -421,8 +392,7 @@ final class Sanitizer {
 
 	/**
 	 * A palette id must match one of the registered palettes, else empty (custom/none). A Pro
-	 * (`is_pro`) palette is rejected unless the Pro tier is active — so a free site can never
-	 * persist a Pro palette selection even if one is somehow present in the palette list.
+	 * palette is rejected unless the Pro tier is active.
 	 *
 	 * @param mixed $value Raw value.
 	 * @return string
@@ -442,15 +412,13 @@ final class Sanitizer {
 	}
 
 	/**
-	 * Strip anything dangerous from user CSS. The compiler additionally scopes it to the
-	 * form wrapper on save so it cannot leak site-wide (plan §9.4).
+	 * Strip anything dangerous from user CSS ({@see Compiler::scope_custom_css()} scopes it).
 	 *
 	 * @param mixed $css Raw CSS.
 	 * @return string
 	 */
 	protected static function sanitize_css( $css ) {
 		$css = (string) $css;
-		// Drop tags, @import and any url(javascript:) / expression() vectors.
 		$css = wp_strip_all_tags( $css );
 		$css = preg_replace( '/@import\b[^;]+;?/i', '', $css );
 		$css = preg_replace( '/expression\s*\(/i', '', $css );

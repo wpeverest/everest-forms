@@ -1,10 +1,6 @@
 /**
- * Style Customizer v2 — floating popover.
- *
- * A single popover rendered inside the app tree (position:fixed, scoped under `.evfscv2`).
- * Used for the responsive dev-badge, the palette grid, section reset confirms and info tips.
- * Positioned relative to an anchor rect, clamped to the viewport, and closed on outside
- * click / Escape / scroll.
+ * Style Customizer v2 — floating popover (position:fixed), positioned relative to an anchor
+ * rect and closed on outside click / Escape / scroll.
  */
 import React from 'react';
 
@@ -32,7 +28,6 @@ export function Popover( { state, onClose }: { state: PopoverState; onClose: () 
 		top: -9999,
 	} );
 
-	// Position after mount/content change, once the popover has measurable size.
 	React.useLayoutEffect( () => {
 		const el = ref.current;
 		if ( ! el ) {
@@ -43,10 +38,7 @@ export function Popover( { state, onClose }: { state: PopoverState; onClose: () 
 		let left = state.matchWidth ? r.left : Math.min( Math.max( 8, r.left ), window.innerWidth - w - 8 );
 		left = Math.min( Math.max( 8, left ), window.innerWidth - w - 8 );
 
-		// `scrollHeight` is the TRUE content height regardless of the CSS `max-height`/`overflow`
-		// clamp (unlike `offsetHeight`, which is already clipped to it) — needed to know how much
-		// room the content actually wants before deciding which side it fits on. The 460px cap is
-		// still the aesthetic ceiling on a big screen with room to spare either way.
+		// scrollHeight (not offsetHeight) gives the true content height despite the CSS max-height clamp.
 		const naturalH = el.scrollHeight;
 		const desiredH = Math.min( naturalH, 460 );
 		const GAP = 6;
@@ -58,18 +50,13 @@ export function Popover( { state, onClose }: { state: PopoverState; onClose: () 
 		let top: number;
 		let maxHeight: number;
 		if ( desiredH <= spaceBelow ) {
-			// Fits below in full — the common case; the anchor stays visible above the popover.
 			top = r.bottom + GAP;
 			maxHeight = desiredH;
 		} else if ( desiredH <= spaceAbove ) {
 			maxHeight = desiredH;
 			top = r.top - maxHeight - GAP;
 		} else {
-			// Fits neither side in full (EVF-2674: a tall popover on a small laptop screen) — use
-			// whichever side actually has MORE room instead of always flipping to "above" and
-			// clamping to top:8, which used to let the popover land on top of (hiding) its own
-			// anchor/trigger whenever "above" didn't fit either — exactly the "cropped" look
-			// reported when neither side has the full 460px available.
+			// Neither side fits in full — use whichever has more room.
 			maxHeight = Math.max( Math.max( spaceBelow, spaceAbove ), MIN_H );
 			top = spaceBelow >= spaceAbove ? r.bottom + GAP : r.top - maxHeight - GAP;
 		}
@@ -96,12 +83,7 @@ export function Popover( { state, onClose }: { state: PopoverState; onClose: () 
 		};
 	}, [ state, onClose ] );
 
-	// Move focus INTO the popover on every open — to the close button when there is one, else to
-	// the panel itself (tabIndex=-1 below) — so a keyboard user never has to Tab through the rest
-	// of the page to reach content that just opened elsewhere in the DOM. Previously this only
-	// fired when `closable` was true, which nothing ever set — so keyboard focus stayed on the
-	// trigger button while e.g. the palette grid or a responsive-override popover opened next to
-	// it, with no efficient way in.
+	// Move focus into the popover on open so keyboard users don't have to tab across the page.
 	React.useEffect( () => {
 		if ( showClose && closeRef.current ) {
 			closeRef.current.focus();
@@ -152,10 +134,7 @@ export function Popover( { state, onClose }: { state: PopoverState; onClose: () 
 }
 
 /* --------------------------------------------------------------------- *
- * Confirm modal — a real centered/backdropped dialog, distinct from the
- * anchored Popover above. Used for destructive actions (e.g. "Reset all
- * styles") that deserve an explicit are-you-sure step even though most of
- * them are also undoable.
+ * Confirm modal — centered/backdropped dialog for destructive actions.
  * --------------------------------------------------------------------- */
 
 export interface ConfirmState {

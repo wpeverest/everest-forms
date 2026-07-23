@@ -34,15 +34,13 @@ function evfsc_get_google_fonts() {
 
 	if ( false === $google_fonts ) {
 		$raw_google_fonts = wp_safe_remote_get( 'https://raw.githubusercontent.com/wpeverest/google-fonts/master/google-fonts.json' );
+		$decoded          = is_wp_error( $raw_google_fonts ) ? null : json_decode( wp_remote_retrieve_body( $raw_google_fonts ) );
+		$google_fonts     = isset( $decoded->items ) ? $decoded->items : array();
 
-		if ( ! is_wp_error( $raw_google_fonts ) ) {
-			$google_fonts = json_decode( wp_remote_retrieve_body( $raw_google_fonts ) );
-
-			if ( isset( $google_fonts->items ) ) {
-				$google_fonts = $google_fonts->items;
-				set_transient( 'evf_google_fonts', $google_fonts, WEEK_IN_SECONDS );
-			}
-		}
+		// Cache a failed/empty fetch too, just for an hour instead of a week, so a blocked or
+		// offline host retries periodically rather than repeating this blocking request on
+		// every single builder page load.
+		set_transient( 'evf_google_fonts', $google_fonts, empty( $google_fonts ) ? HOUR_IN_SECONDS : WEEK_IN_SECONDS );
 	}
 
 	/** This filter is documented in addons/StyleCustomizer/includes/customize/class-evf-customize-select2-control.php */

@@ -2,11 +2,8 @@
 /**
  * Style Customizer v2 — builder "Style" tab.
  *
- * Registers a "Style" tab in the form builder and mounts the React island into it, plus
- * enqueues the panel bundle on the builder screen. Wired only when `Engine::enabled()`.
- *
- * The mount div's id (`evf-style-customizer-v2`) and the localized `evfStyleV2` object are
- * the contract with `src/style-customizer-v2/index.tsx`.
+ * Registers a "Style" tab in the form builder, mounts the React panel into it, and enqueues
+ * the panel bundle. Wired only when `Engine::enabled()`.
  *
  * @package EverestForms\Addons\StyleCustomizer\V2
  * @since   x.x.x
@@ -36,21 +33,14 @@ final class BuilderPanel {
 	 */
 	public static function register() {
 		add_filter( 'everest_forms_builder_tabs_array', array( __CLASS__, 'add_tab' ), 30 );
-		// The tab uses the builder's native sidebar layout: controls in the 400px sidebar, the
-		// live preview in the content area — so the panel matches the builder pixel for pixel.
 		add_action( 'everest_forms_builder_sidebar_' . self::TAB, array( __CLASS__, 'render_sidebar' ) );
 		add_action( 'everest_forms_builder_content_' . self::TAB, array( __CLASS__, 'render_content' ) );
 		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'enqueue' ) );
-		// The builder renders each tab icon from an icon font keyed by slug; there is no glyph
-		// for our `style` slug, so paint one with a masked SVG (design's pencil icon).
 		add_action( 'admin_head', array( __CLASS__, 'tab_icon_styles' ) );
 	}
 
 	/**
 	 * Add the "Style" tab to the builder nav, positioned right after "Fields".
-	 *
-	 * Builder pages register at priority 20; this filter runs at 30, so `$tabs` already holds
-	 * them in order. We splice ourselves in after `fields` rather than appending to the end.
 	 *
 	 * @param array $tabs Tabs (slug => [label, sidebar]).
 	 * @return array
@@ -78,16 +68,14 @@ final class BuilderPanel {
 	}
 
 	/**
-	 * Render the controls mount point inside the builder's native sidebar. The React app mounts
-	 * here and portals its live preview into the content mount below.
+	 * Render the controls mount point inside the builder's native sidebar.
 	 */
 	public static function render_sidebar() {
 		echo '<div id="evf-scv2-controls" class="evf-scv2-controls"></div>';
 	}
 
 	/**
-	 * Render the live-preview mount point inside the tab's content panel. The React app targets
-	 * this via a portal (see src/style-customizer-v2/App.tsx).
+	 * Render the live-preview mount point inside the tab's content panel.
 	 */
 	public static function render_content() {
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
@@ -96,19 +84,14 @@ final class BuilderPanel {
 	}
 
 	/**
-	 * Paint the "Style" builder tab's icon. The core builder markup is
-	 * `<a class="evf-panel-style-button nav-tab"><span class="evf-nav-icon style"></span>…`
-	 * where the icon comes from an icon font by slug — but there is no `style` glyph. We
-	 * override the `::before` with a masked SVG so the icon inherits the tab's text colour
-	 * (grey → purple when active), matching the other tabs. Builder screen only.
+	 * Paint the "Style" builder tab's icon with a masked SVG (no icon-font glyph exists for it).
 	 */
 	public static function tab_icon_styles() {
 		$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
 		if ( ! $screen || self::SCREEN !== $screen->id ) {
 			return;
 		}
-		// url-encoded stroke SVG (design pencil). A hardcoded, fully URL-encoded constant with no
-		// external input; not run through esc_url() because that strips the `data:` scheme.
+		// Hardcoded, fully URL-encoded SVG constant with no external input.
 		$svg = "data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='%23000'%20stroke-width='2'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpath%20d='M3%2021l3-1%2011-11a2.8%202.8%200%200%200-4-4L2%2016l-1%205'/%3E%3Cpath%20d='m15%205%204%204'/%3E%3C/svg%3E";
 		$mask = 'url("' . $svg . '") no-repeat center / contain';
 
@@ -144,11 +127,9 @@ final class BuilderPanel {
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		$form_id = absint( wp_unslash( $_GET['form_id'] ) );
 
-		// The panel offers a native media picker for the background image control.
 		wp_enqueue_media();
 
-		// Version by the built file's mtime so a rebuilt bundle is never served stale (even
-		// within the same plugin version); falls back to the plugin version.
+		// Cache-bust by the built file's mtime; fall back to the plugin version.
 		$bundle_path = evf()->plugin_path() . '/dist/styleCustomizerV2.min.js';
 		$bundle_ver  = file_exists( $bundle_path ) ? (string) filemtime( $bundle_path ) : ( defined( 'EVF_VERSION' ) ? EVF_VERSION : false );
 
@@ -164,9 +145,7 @@ final class BuilderPanel {
 			wp_set_script_translations( 'evf-style-v2-panel', 'everest-forms' );
 		}
 
-		// A per-page-load token that scopes the live-preview draft to THIS builder session, so a
-		// stale draft from an earlier load (the 30-min transient) is never swapped into a freshly
-		// reloaded builder's preview (which would show edits the builder no longer has).
+		// Per-page-load token scoping the live-preview draft to this builder session.
 		$preview_session = wp_generate_password( 12, false );
 
 		wp_localize_script(
@@ -176,46 +155,27 @@ final class BuilderPanel {
 				'restBase'       => '/everest-forms/v1/styles',
 				'formId'         => $form_id,
 				'formTitle'      => get_the_title( $form_id ),
-				// Same-origin front-end preview route; the bridge live-edits its CSS variables.
-				// Force the scheme to match the current admin request so an https builder never
-				// embeds an http iframe (mixed-content → Chrome blocks it), and same-origin
-				// framing (X-Frame-Options: SAMEORIGIN) keeps working.
+				// Scheme forced to match the admin request to avoid a mixed-content iframe block.
 				'previewUrl'     => set_url_scheme(
 					add_query_arg(
 						array(
 							'form_id'                  => $form_id,
 							'evf_preview'              => 'true',
-							// Scopes the live builder-structure draft swap to THIS iframe only
-							// (PreviewDraft), so the real front end and the normal preview button
-							// keep rendering the saved form.
 							PreviewDraft::PREVIEW_FLAG => '1',
-							// Session token — the draft only applies to the builder load that made it.
 							PreviewDraft::SESSION_ARG  => $preview_session,
 						),
 						home_url( '/' )
 					),
 					is_ssl() ? 'https' : 'http'
 				),
-				// The shared rule template the bridge injects into the preview iframe (version-
-				// stamped so an edited template is never served from a stale browser cache).
+				// Rule template URL, version-stamped to avoid a stale browser cache.
 				'frontendCssUrl' => add_query_arg( 'ver', (string) Schema::version() . '.' . self::asset_mtime( 'assets/css/frontend.css' ), evf()->plugin_url() . '/addons/StyleCustomizer/V2/assets/css/frontend.css' ),
-				// The wrapper the compiler scopes variables to (see Compiler::wrapper_selector()).
 				'wrapperId'      => 'evf-' . $form_id,
 				'markerClass'    => FrontendEnqueue::MARKER_CLASS,
-				// Sent back with each preview-draft save so the stored draft matches this session.
 				'previewSession' => $preview_session,
-				// AI styling launcher — same "is the AI integration present + usable on this site"
-				// check the Create-with-AI feature already uses (class-evf-admin-form-templates.php),
-				// so the two AI surfaces agree about availability. Registration itself is silent/
-				// automatic (see EVF_AI_Registration::register()), driven by the panel's own request.
+				// Same AI-availability check the Create-with-AI feature uses.
 				'aiEnabled'      => class_exists( 'EVF_AI_Registration' ) && ! \EVF_AI_Registration::is_local_site(),
-				// The FULL initial REST GET payload (schema, sections, palettes, templates, fonts,
-				// the saved record — see RestController::build_payload()), computed right here in
-				// PHP and delivered inline with the page. The panel initializes from this directly
-				// (index.tsx) instead of firing a follow-up REST fetch on mount — there is nothing
-				// in this payload that isn't already knowable at render time, so there is no reason
-				// to make the user wait on a network round-trip (and see a loading skeleton) for it.
-				// The REST route itself stays as a defensive fallback / for external tooling.
+				// Full initial REST payload, computed here so the panel initializes without a follow-up fetch.
 				'payload'        => RestController::build_payload( $form_id ),
 			)
 		);
