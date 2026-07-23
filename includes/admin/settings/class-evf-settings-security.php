@@ -176,10 +176,7 @@ class EVF_Settings_Security extends EVF_Settings_Page {
 	}
 
 	/**
-	 * The "CAPTCHA Language" select is duplicated into every provider accordion
-	 * (v2, v3, hCaptcha, Turnstile) purely so it's visible wherever the user
-	 * is working, but they all back the same option. Read whichever posted
-	 * copy is present and persist it once.
+	 * Persists the shared language option from whichever accordion's field was posted.
 	 */
 	public function handle_recaptcha_language_save() {
 		if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'everest-forms-settings' ) ) {
