@@ -56,6 +56,19 @@ class EVF_AI_Registration {
 	 * @return bool
 	 */
 	public static function is_local_site(): bool {
+		// An explicit local-gateway override (see the themegrill-ai-cloud README's "Setup —
+		// WordPress Plugin" instructions: `define('TG_AI_GATEWAY_URL', 'http://localhost:8000')`)
+		// means the developer has deliberately pointed this install at a gateway running on
+		// their own machine to test AI features end-to-end. The heuristics below exist to keep
+		// PRODUCTION sites from burning free-tier quota on throwaway local installs pointed at
+		// the real gateway — that protection is moot once a LOOPBACK gateway is configured, and
+		// without this the documented local-dev setup could never actually work on ANY local WP
+		// environment (Local by Flywheel, Valet, MAMP, …), since `WP_ENVIRONMENT_TYPE=local` and
+		// `.local`/`.test` domains are exactly what those tools use by default.
+		if ( defined( 'TG_AI_GATEWAY_URL' ) && self::is_loopback_url( TG_AI_GATEWAY_URL ) ) {
+			return false;
+		}
+
 		if ( function_exists( 'wp_get_environment_type' ) && 'local' === wp_get_environment_type() ) {
 			return true;
 		}
@@ -83,6 +96,18 @@ class EVF_AI_Registration {
 		 * @param string $host     The detected site host.
 		 */
 		return (bool) apply_filters( 'everest_forms_ai_is_local_site', false, $host );
+	}
+
+	/**
+	 * Whether a URL's host is a loopback address (localhost / 127.0.0.1 / ::1) — i.e. a gateway
+	 * that can only possibly be running on this same machine, never a real production endpoint.
+	 *
+	 * @param string $url URL to inspect.
+	 * @return bool
+	 */
+	private static function is_loopback_url( string $url ): bool {
+		$host = wp_parse_url( $url, PHP_URL_HOST );
+		return in_array( strtolower( (string) $host ), array( 'localhost', '127.0.0.1', '::1' ), true );
 	}
 
 	/**

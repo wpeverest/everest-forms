@@ -69,18 +69,6 @@ class Everest_Forms_Template_Section_Data {
 				'permission_callback' => array( $this, 'check_admin_permissions' ),
 			)
 		);
-		// Render a pixel-perfect builder-canvas preview of an AI form schema.
-		// Uses the SAME schema builder + field renderer as create-from-ai, so the
-		// preview is identical to what the builder shows after import.
-		register_rest_route(
-			$this->namespace,
-			'/' . $this->rest_base . '/ai-preview',
-			array(
-				'methods'             => 'POST',
-				'callback'            => array( $this, 'get_ai_preview' ),
-				'permission_callback' => array( $this, 'check_admin_permissions' ),
-			)
-		);
 		// END TODO: REMOVE
 
 		register_rest_route(
@@ -344,7 +332,6 @@ class Everest_Forms_Template_Section_Data {
 		}
 
 		// Build the form content (fields, structure, settings) from the AI schema.
-		// This is the SINGLE source of truth shared with the ai-preview endpoint.
 		$form_content = $this->build_form_content( $title, is_array( $fields ) ? $fields : array() );
 
 		// Insert the post.
@@ -395,9 +382,6 @@ class Everest_Forms_Template_Section_Data {
 
 	/**
 	 * Build an EVF form_content array from an AI field schema.
-	 *
-	 * Shared by create_from_ai() (import) and get_ai_preview() (preview) so the
-	 * preview the user approves is byte-for-byte the form that gets created.
 	 *
 	 * Any registered field type is supported (free or Pro/locked); Pro fields
 	 * are included so they render as a locked upsell in both the preview and the
@@ -543,68 +527,6 @@ class Everest_Forms_Template_Section_Data {
 		return null;
 	}
 
-	/**
-	 * Render a pixel-perfect builder-canvas preview of an AI form schema.
-	 *
-	 * Builds the form content with build_form_content() and renders it through
-	 * the builder's own EVF_Builder_Fields::output_fields_preview(), guaranteeing
-	 * the preview is identical to the post-import builder canvas (locked Pro
-	 * fields included).
-	 *
-	 * @param WP_REST_Request $request Full data about the request.
-	 * @return WP_REST_Response|WP_Error
-	 */
-	public function get_ai_preview( WP_REST_Request $request ) {
-		$form_id = absint( $request->get_param( 'form_id' ) );
-
-		if ( $form_id ) {
-			// Preview an existing (AI-generated draft) form by its stored content,
-			// so the preview is byte-identical to the form that gets activated.
-			$post = get_post( $form_id );
-			if ( ! $post || 'everest_form' !== $post->post_type ) {
-				return new WP_Error( 'invalid_form', __( 'Form not found.', 'everest-forms' ), array( 'status' => 404 ) );
-			}
-			$form_content = evf_decode( $post->post_content );
-			if ( empty( $form_content ) || ! is_array( $form_content ) ) {
-				return new WP_Error( 'invalid_form', __( 'Form content is empty.', 'everest-forms' ), array( 'status' => 422 ) );
-			}
-		} else {
-			$title  = sanitize_text_field( wp_unslash( (string) $request->get_param( 'title' ) ) );
-			$fields = $request->get_param( 'fields' );
-
-			if ( empty( $title ) ) {
-				$title = __( 'AI Generated Form', 'everest-forms' );
-			}
-
-			$form_content = $this->build_form_content( $title, is_array( $fields ) ? $fields : array() );
-		}
-
-		// Load the builder field renderer (mirrors EVF_Admin_Builder bootstrap).
-		if ( ! class_exists( 'EVF_Builder_Fields', false ) ) {
-			include_once dirname( EVF_PLUGIN_FILE ) . '/includes/admin/builder/class-evf-builder-page.php';
-			include_once dirname( EVF_PLUGIN_FILE ) . '/includes/admin/builder/class-evf-builder-fields.php';
-		}
-
-		if ( ! class_exists( 'EVF_Builder_Fields', false ) ) {
-			return new WP_Error( 'preview_unavailable', __( 'Form preview is unavailable.', 'everest-forms' ), array( 'status' => 500 ) );
-		}
-
-		$builder            = new EVF_Builder_Fields();
-		$builder->form_data = $form_content;
-
-		// Read-only, edit-chrome-free render (same per-field markup as the builder).
-		$html = $builder->render_ai_preview( $form_content );
-
-		return new WP_REST_Response(
-			array(
-				'success' => true,
-				'data'    => array(
-					'html' => $html,
-				),
-			),
-			200
-		);
-	}
 	// END TODO: REMOVE (create_from_ai method)
 
 	/**

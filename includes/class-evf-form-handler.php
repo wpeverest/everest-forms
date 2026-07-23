@@ -457,7 +457,25 @@ class EVF_Form_Handler {
 			$form_styles = get_option( 'everest_forms_styles', array() );
 			if ( isset( $form_styles[ $id ] ) ) {
 				$form_styles[ $new_form_id ] = $form_styles[ $id ];
+
+				// A legacy style record needs a static per-form CSS file that duplicating never
+				// generates, so it would render unstyled. Migrate to v2 instead, which compiles
+				// inline (migrate_record() is idempotent, so an already-v2 record is untouched).
+				if ( class_exists( '\EverestForms\Addons\StyleCustomizer\V2\Engine' )
+					&& \EverestForms\Addons\StyleCustomizer\V2\Engine::enabled()
+					&& ! \EverestForms\Addons\StyleCustomizer\V2\Engine::is_v2_record( $form_styles[ $new_form_id ] ) ) {
+					$migrated = \EverestForms\Addons\StyleCustomizer\V2\Migrator::migrate_record( $form_styles[ $new_form_id ] );
+					$form_styles[ $new_form_id ] = \EverestForms\Addons\StyleCustomizer\V2\Sanitizer::sanitize_record( $migrated );
+				}
+
 				update_option( 'everest_forms_styles', $form_styles );
+			}
+
+			// duplicate() never copies post meta, so the "Apply Theme Style" toggle would
+			// otherwise silently reset to its default instead of mirroring the source form.
+			$theme_style_meta = get_post_meta( $id, 'everest_forms_enable_theme_style', true );
+			if ( '' !== $theme_style_meta ) {
+				update_post_meta( $new_form_id, 'everest_forms_enable_theme_style', $theme_style_meta );
 			}
 
 			return $new_form_id;

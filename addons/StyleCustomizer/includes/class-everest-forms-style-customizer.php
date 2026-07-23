@@ -35,7 +35,10 @@ if ( ! class_exists( 'EverestForms_Style_Customizer' ) ) {
 			// Hooks.
 			add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 			add_action( 'everest_forms_shortcode_scripts', array( $this, 'enqueue_shortcode_scripts' ) );
-			add_action( 'everest_forms_builder_content_fields', array( $this, 'output_form_designer' ) );
+			// The v1 Form Designer launcher is superseded by the v2 Style tab; show it only if v2 is off.
+			if ( ! \EverestForms\Addons\StyleCustomizer\V2\Engine::enabled() ) {
+				add_action( 'everest_forms_builder_content_fields', array( $this, 'output_form_designer' ) );
+			}
 			if ( defined( 'EFP_PLUGIN_FILE' ) ) {
 				add_action( 'everest_form_elemntor_style', array( $this, 'evf_elementor' ), 10, 1 );
 			}
