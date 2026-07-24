@@ -475,51 +475,49 @@ export function AiAssistant() {
 						<div ref={ messagesEndRef } />
 					</div>
 
-					{ ! hasStarted && (
-						<div
-							className="scv2-ai-suggestions"
-							style={ {
-								padding: '0 14px 10px',
-								display: 'flex',
-								gap: 6,
-								overflowX: 'auto',
-								flexShrink: 0,
-								scrollbarWidth: 'thin',
-								scrollbarColor: '#d4c5f0 transparent',
-							} }
-						>
-							{ STYLE_SUGGESTIONS.map( ( s ) => (
-								<button
-									type="button"
-									key={ s }
-									onClick={ () => send( s ) }
-									style={ {
-										flexShrink: 0,
-										padding: '5px 10px',
-										borderRadius: 20,
-										border: '1px solid #e2e8f0',
-										background: '#faf9ff',
-										color: '#7545BB',
-										fontSize: 11.5,
-										fontWeight: 500,
-										cursor: 'pointer',
-										whiteSpace: 'nowrap',
-										transition: 'background .15s,border-color .15s',
-									} }
-									onMouseEnter={ ( e ) => {
-										( e.currentTarget as HTMLButtonElement ).style.background = '#f0ebfa';
-										( e.currentTarget as HTMLButtonElement ).style.borderColor = '#b89ee0';
-									} }
-									onMouseLeave={ ( e ) => {
-										( e.currentTarget as HTMLButtonElement ).style.background = '#faf9ff';
-										( e.currentTarget as HTMLButtonElement ).style.borderColor = '#e2e8f0';
-									} }
-								>
-									{ s }
-								</button>
-							) ) }
-						</div>
-					) }
+					<div
+						className="scv2-ai-suggestions"
+						style={ {
+							padding: '0 14px 10px',
+							display: 'flex',
+							gap: 6,
+							overflowX: 'auto',
+							flexShrink: 0,
+							scrollbarWidth: 'thin',
+							scrollbarColor: '#d4c5f0 transparent',
+						} }
+					>
+						{ STYLE_SUGGESTIONS.map( ( s ) => (
+							<button
+								type="button"
+								key={ s }
+								onClick={ () => send( s ) }
+								style={ {
+									flexShrink: 0,
+									padding: '5px 10px',
+									borderRadius: 20,
+									border: '1px solid #e2e8f0',
+									background: '#faf9ff',
+									color: '#7545BB',
+									fontSize: 11.5,
+									fontWeight: 500,
+									cursor: 'pointer',
+									whiteSpace: 'nowrap',
+									transition: 'background .15s,border-color .15s',
+								} }
+								onMouseEnter={ ( e ) => {
+									( e.currentTarget as HTMLButtonElement ).style.background = '#f0ebfa';
+									( e.currentTarget as HTMLButtonElement ).style.borderColor = '#b89ee0';
+								} }
+								onMouseLeave={ ( e ) => {
+									( e.currentTarget as HTMLButtonElement ).style.background = '#faf9ff';
+									( e.currentTarget as HTMLButtonElement ).style.borderColor = '#e2e8f0';
+								} }
+							>
+								{ s }
+							</button>
+						) ) }
+					</div>
 
 					<div
 						style={ {
