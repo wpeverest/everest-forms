@@ -401,6 +401,23 @@
 		);
 	});
 
+	// Keep the duplicated "CAPTCHA Language" selects (one per accordion) in sync.
+	$(document).on(
+		'change',
+		'.evf-recaptcha-language-select',
+		function () {
+			var newValue = $(this).val();
+
+			$('.evf-recaptcha-language-select')
+				.not(this)
+				.each(function () {
+					if ($(this).val() !== newValue) {
+						$(this).val(newValue).trigger('change');
+					}
+				});
+		},
+	);
+
 	disableFormChangeModal();
 
 	/**

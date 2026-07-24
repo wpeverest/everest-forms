@@ -23,6 +23,8 @@ class EVF_Settings_Security extends EVF_Settings_Page {
 		add_action( 'everest_forms_update_options_' . $this->id, array( $this, 'handle_captcha_enable_toggle' ), 5 );
 
 		$this->maybe_migrate_legacy_settings();
+
+		add_action( 'everest_forms_update_options_' . $this->id, array( $this, 'handle_recaptcha_language_save' ), 5 );
 	}
 
 	private function maybe_migrate_legacy_settings() {
@@ -173,6 +175,37 @@ class EVF_Settings_Security extends EVF_Settings_Page {
 		}
 	}
 
+	/**
+	 * Persists the shared language option from whichever accordion's field was posted.
+	 */
+	public function handle_recaptcha_language_save() {
+		if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), 'everest-forms-settings' ) ) {
+			return;
+		}
+
+		$language_fields = array(
+			'everest_forms_recaptcha_v2_language',
+			'everest_forms_recaptcha_v3_language',
+			'everest_forms_recaptcha_hcaptcha_language',
+			'everest_forms_recaptcha_turnstile_language',
+		);
+
+		foreach ( $language_fields as $field ) {
+			if ( ! isset( $_POST[ $field ] ) ) {
+				continue;
+			}
+
+			$value        = sanitize_text_field( wp_unslash( $_POST[ $field ] ) );
+			$lang_options = $this->get_language_options();
+
+			if ( array_key_exists( $value, $lang_options ) ) {
+				update_option( 'everest_forms_recaptcha_recaptcha_language', $value );
+			}
+
+			return;
+		}
+	}
+
 	private function add_toast_redirect( $message, $type = 'error' ) {
 		$redirect_url = add_query_arg(
 			array(
@@ -310,7 +343,8 @@ class EVF_Settings_Security extends EVF_Settings_Page {
 		$hcaptcha_enabled  = get_option( 'everest_forms_recaptcha_hcaptcha_enable', 'no' );
 		$turnstile_enabled = get_option( 'everest_forms_recaptcha_turnstile_enable', 'no' );
 
-		$lang_options = $this->get_language_options();
+		$lang_options    = $this->get_language_options();
+		$shared_language = get_option( 'everest_forms_recaptcha_recaptcha_language', 'en-GB' );
 
 		$accordion_items = array(
 			array(
@@ -369,14 +403,16 @@ class EVF_Settings_Security extends EVF_Settings_Page {
 						'desc_tip'   => true,
 					),
 					array(
-						'title'    => esc_html__( 'CAPTCHA Language', 'everest-forms' ),
-						'type'     => 'select',
-						'desc'     => esc_html__( 'Choose a preferred language for displaying reCAPTCHA v2.', 'everest-forms' ),
-						'id'       => 'everest_forms_recaptcha_recaptcha_language',
-						'options'  => $lang_options,
-						'class'    => 'evf-enhanced-select',
-						'default'  => 'en-GB',
-						'desc_tip' => true,
+						'title'     => esc_html__( 'CAPTCHA Language', 'everest-forms' ),
+						'type'      => 'select',
+						'desc'      => esc_html__( 'Choose a preferred language for displaying reCAPTCHA v2.', 'everest-forms' ),
+						'id'        => 'everest_forms_recaptcha_v2_language',
+						'value'     => $shared_language,
+						'is_option' => false,
+						'options'   => $lang_options,
+						'class'     => 'evf-enhanced-select evf-recaptcha-language-select',
+						'default'   => 'en-GB',
+						'desc_tip'  => true,
 					),
 				),
 			),
@@ -423,14 +459,16 @@ class EVF_Settings_Security extends EVF_Settings_Page {
 						'desc_tip'          => true,
 					),
 					array(
-						'title'    => esc_html__( 'CAPTCHA Language', 'everest-forms' ),
-						'type'     => 'select',
-						'desc'     => esc_html__( 'Choose a preferred language for displaying reCAPTCHA v3.', 'everest-forms' ),
-						'id'       => 'everest_forms_recaptcha_recaptcha_language',
-						'options'  => $lang_options,
-						'class'    => 'evf-enhanced-select',
-						'default'  => 'en-GB',
-						'desc_tip' => true,
+						'title'     => esc_html__( 'CAPTCHA Language', 'everest-forms' ),
+						'type'      => 'select',
+						'desc'      => esc_html__( 'Choose a preferred language for displaying reCAPTCHA v3.', 'everest-forms' ),
+						'id'        => 'everest_forms_recaptcha_v3_language',
+						'value'     => $shared_language,
+						'is_option' => false,
+						'options'   => $lang_options,
+						'class'     => 'evf-enhanced-select evf-recaptcha-language-select',
+						'default'   => 'en-GB',
+						'desc_tip'  => true,
 					),
 				),
 			),
@@ -464,14 +502,16 @@ class EVF_Settings_Security extends EVF_Settings_Page {
 						'desc_tip' => true,
 					),
 					array(
-						'title'    => esc_html__( 'CAPTCHA Language', 'everest-forms' ),
-						'type'     => 'select',
-						'desc'     => esc_html__( 'Choose a preferred language for displaying hCaptcha.', 'everest-forms' ),
-						'id'       => 'everest_forms_recaptcha_recaptcha_language',
-						'options'  => $lang_options,
-						'class'    => 'evf-enhanced-select',
-						'default'  => 'en-GB',
-						'desc_tip' => true,
+						'title'     => esc_html__( 'CAPTCHA Language', 'everest-forms' ),
+						'type'      => 'select',
+						'desc'      => esc_html__( 'Choose a preferred language for displaying hCaptcha.', 'everest-forms' ),
+						'id'        => 'everest_forms_recaptcha_hcaptcha_language',
+						'value'     => $shared_language,
+						'is_option' => false,
+						'options'   => $lang_options,
+						'class'     => 'evf-enhanced-select evf-recaptcha-language-select',
+						'default'   => 'en-GB',
+						'desc_tip'  => true,
 					),
 				),
 			),
@@ -519,14 +559,16 @@ class EVF_Settings_Security extends EVF_Settings_Page {
 						'desc_tip' => true,
 					),
 					array(
-						'title'    => esc_html__( 'CAPTCHA Language', 'everest-forms' ),
-						'type'     => 'select',
-						'desc'     => esc_html__( 'Choose a preferred language for displaying Cloudflare Turnstile.', 'everest-forms' ),
-						'id'       => 'everest_forms_recaptcha_recaptcha_language',
-						'options'  => $lang_options,
-						'class'    => 'evf-enhanced-select',
-						'default'  => 'en-GB',
-						'desc_tip' => true,
+						'title'     => esc_html__( 'CAPTCHA Language', 'everest-forms' ),
+						'type'      => 'select',
+						'desc'      => esc_html__( 'Choose a preferred language for displaying Cloudflare Turnstile.', 'everest-forms' ),
+						'id'        => 'everest_forms_recaptcha_turnstile_language',
+						'value'     => $shared_language,
+						'is_option' => false,
+						'options'   => $lang_options,
+						'class'     => 'evf-enhanced-select evf-recaptcha-language-select',
+						'default'   => 'en-GB',
+						'desc_tip'  => true,
 					),
 				),
 			),
