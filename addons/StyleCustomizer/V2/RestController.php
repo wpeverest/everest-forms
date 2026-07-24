@@ -371,8 +371,15 @@ final class RestController {
 		$ai_style = \EVF_AI_API::style_form( $prompt, $current, $refine_prompt );
 
 		if ( is_wp_error( $ai_style ) ) {
-			$status = 'rate_limit' === $ai_style->get_error_code() || 'daily_limit_reached' === $ai_style->get_error_code() ? 429 : 502;
-			return new \WP_Error( $ai_style->get_error_code(), $ai_style->get_error_message(), array( 'status' => $status ) );
+			$code = $ai_style->get_error_code();
+			if ( in_array( $code, array( 'rate_limit', 'daily_limit_reached' ), true ) ) {
+				$status = 429;
+			} elseif ( 'off_topic_prompt' === $code ) {
+				$status = 400; // The prompt itself was rejected — not a gateway failure.
+			} else {
+				$status = 502;
+			}
+			return new \WP_Error( $code, $ai_style->get_error_message(), array( 'status' => $status ) );
 		}
 
 		$clean = Sanitizer::sanitize_record(
