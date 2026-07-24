@@ -1,6 +1,7 @@
 /* global evf_data, jconfirm, PerfectScrollbar, evfSetClipboard, evfClearClipboard */
 (function ($, evf_data) {
 	var $builder;
+	var evfStyleTabBaseline = null;
 
 	var EVFPanelBuilder = {
 		/**
@@ -704,6 +705,9 @@
 
 			// Bind edit form actions.
 			EVFPanelBuilder.bindEditActions();
+
+			// Snapshot the just-loaded (saved) form state, to detect unsaved changes later.
+			EVFPanelBuilder.captureStyleTabBaseline();
 
 			// jquery-confirm defaults.
 			jconfirm.defaults = {
@@ -4857,6 +4861,10 @@
 									},
 								},
 							});
+						} else {
+							EVFPanelBuilder.captureStyleTabBaseline();
+							$(document).trigger('everest_forms_form_saved');
+							EVFPanelBuilder.toggleUnsavedStyleNotice();
 						}
 
 						$('.everest-forms-panel-content-wrap').unblock();
@@ -5162,11 +5170,29 @@
 			});
 			EVFPanelBuilder.choicesInit();
 		},
+		captureStyleTabBaseline: function () {
+			var $form = $('form#everest-forms-builder-form');
+			if ($form.length) {
+				evfStyleTabBaseline = $form.serialize();
+			}
+		},
+		hasUnsavedFieldChanges: function () {
+			var $form = $('form#everest-forms-builder-form');
+			if (null === evfStyleTabBaseline || !$form.length) {
+				return false;
+			}
+			return $form.serialize() !== evfStyleTabBaseline;
+		},
 		bindDefaultTabs: function () {
 			$(document).on('click', '.evf-nav-tab-wrapper a', function (e) {
 				e.preventDefault();
 				EVFPanelBuilder.switchTab($(this).data('panel'));
 			});
+		},
+		toggleUnsavedStyleNotice: function () {
+			if ('function' === typeof window.evfScv2SetFormDirty) {
+				window.evfScv2SetFormDirty(EVFPanelBuilder.hasUnsavedFieldChanges());
+			}
 		},
 		switchTab: function (panel) {
 			var $panel = $('#everest-forms-panel-' + panel),
@@ -5220,6 +5246,7 @@
 				EVFPanelBuilder.updateQueryString('tab', panel),
 			);
 			EVFPanelBuilder.switchPanel(panel);
+			EVFPanelBuilder.toggleUnsavedStyleNotice();
 		},
 		updateQueryString: function (key, value, url) {
 			if (!url) url = window.location.href;

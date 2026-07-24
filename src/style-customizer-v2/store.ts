@@ -60,6 +60,8 @@ class StyleStore {
 	 *  includes `apply_theme_style` in its POST body at all (see App.tsx's `save`). */
 	applyThemeStyleTouched = false;
 	baseUpdatedAt = 0;
+	/** Set from outside React by the (legacy jQuery) Fields tab — drives the unsaved-fields notice. */
+	hasUnsavedFieldChanges = false;
 
 	/** Optional UI hook: fired when a manual edit detaches the active palette link. */
 	onPaletteUnlinked: ( ( paletteName: string ) => void ) | null = null;
@@ -353,6 +355,14 @@ class StyleStore {
 	}
 
 	/** Toggle "Apply Theme Style" (a per-form setting, persisted to the same meta the v1 preview toggle uses). */
+	setUnsavedFieldChanges( dirty: boolean ) {
+		if ( this.hasUnsavedFieldChanges === dirty ) {
+			return;
+		}
+		this.hasUnsavedFieldChanges = dirty;
+		this.notify( [] );
+	}
+
 	setApplyThemeStyle( on: boolean ) {
 		this.applyThemeStyleTouched = true;
 		if ( this.applyThemeStyle === on ) {

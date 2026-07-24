@@ -67,6 +67,49 @@ function MigrationNotice() {
 	);
 }
 
+/** Notice that the Fields tab has changes not yet saved — shows/hides live as that changes. */
+function UnsavedFieldsNotice() {
+	const store = useStore();
+	const [ dismissed, setDismissed ] = React.useState( false );
+
+	React.useEffect( () => {
+		if ( store.hasUnsavedFieldChanges ) {
+			setDismissed( false );
+		}
+	}, [ store.hasUnsavedFieldChanges ] );
+
+	if ( ! store.hasUnsavedFieldChanges || dismissed ) {
+		return null;
+	}
+
+	return (
+		<div className="pv-migration pv-unsaved-fields" role="status">
+			<span className="pv-migration-ic" aria-hidden="true">
+				<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2 }>
+					<circle cx="12" cy="12" r="9" />
+					<path d="M12 8h.01M11 12h1v4h1" />
+				</svg>
+			</span>
+			<span className="pv-migration-text">
+				<b>{ __( 'Unsaved form changes.', 'everest-forms' ) }</b>{ ' ' }
+				{ __(
+					'Showing your latest field changes here — save the form to keep them.',
+					'everest-forms'
+				) }
+			</span>
+			<button
+				type="button"
+				aria-label={ __( 'Dismiss', 'everest-forms' ) }
+				onClick={ () => setDismissed( true ) }
+			>
+				<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2 } aria-hidden="true">
+					<path d="M18 6 6 18M6 6l12 12" />
+				</svg>
+			</button>
+		</div>
+	);
+}
+
 /** Preview loader (skeleton form + spinner), shared with the panel bootstrap in index.tsx. */
 export function PreviewSkeleton( { note }: { note?: string } ) {
 	return (
@@ -247,6 +290,7 @@ export function PreviewPane( {
 	return (
 		<>
 			<MigrationNotice />
+			<UnsavedFieldsNotice />
 			<section className="preview" aria-label={ __( 'Live preview', 'everest-forms' ) }>
 			<div className="pv-bar">
 				<span className="ttl">
