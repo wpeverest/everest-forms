@@ -382,20 +382,73 @@ final class RestController {
 			return new \WP_Error( $code, $ai_style->get_error_message(), array( 'status' => $status ) );
 		}
 
+		$requested_tokens  = isset( $ai_style['tokens'] ) && is_array( $ai_style['tokens'] ) ? $ai_style['tokens'] : array();
+		$requested_palette = isset( $ai_style['palette'] ) ? (string) $ai_style['palette'] : '';
+
 		$clean = Sanitizer::sanitize_record(
 			array(
-				'tokens'  => isset( $ai_style['tokens'] ) && is_array( $ai_style['tokens'] ) ? $ai_style['tokens'] : array(),
-				'palette' => isset( $ai_style['palette'] ) ? $ai_style['palette'] : '',
+				'tokens'  => $requested_tokens,
+				'palette' => $requested_palette,
 			),
 			true
 		);
+
+		$summary = isset( $ai_style['summary'] ) ? sanitize_text_field( (string) $ai_style['summary'] ) : '';
+		$notice  = self::pro_locked_notice( $requested_tokens, $clean['tokens'], $requested_palette, isset( $clean['palette'] ) ? $clean['palette'] : '' );
+		if ( $notice ) {
+			$summary = trim( $summary . ' ' . $notice );
+		}
 
 		return rest_ensure_response(
 			array(
 				'tokens'  => $clean['tokens'],
 				'palette' => isset( $clean['palette'] ) ? $clean['palette'] : '',
-				'summary' => isset( $ai_style['summary'] ) ? sanitize_text_field( (string) $ai_style['summary'] ) : '',
+				'summary' => $summary,
 			)
+		);
+	}
+
+	/**
+	 * Build an honest addendum for when the AI's raw response asked for tokens/palette that
+	 * {@see Sanitizer::sanitize_record()} then had to drop for being Pro-only on a free site —
+	 * without this, the AI's own summary claims a change that never actually applied.
+	 *
+	 * @param array  $requested_tokens  Raw tokens the AI asked to set.
+	 * @param array  $clean_tokens      Tokens that survived sanitization.
+	 * @param string $requested_palette Raw palette id the AI asked for.
+	 * @param string $clean_palette     Palette id that survived sanitization.
+	 * @return string Empty string when nothing was Pro-blocked.
+	 */
+	protected static function pro_locked_notice( array $requested_tokens, array $clean_tokens, $requested_palette, $clean_palette ) {
+		if ( Engine::pro_active() ) {
+			return '';
+		}
+
+		$labels = array();
+		foreach ( array_keys( array_diff_key( $requested_tokens, $clean_tokens ) ) as $key ) {
+			$token = Schema::get( $key );
+			if ( $token && 'pro' === $token['tier'] ) {
+				$labels[] = $token['label'];
+			}
+		}
+
+		if ( $requested_palette && $requested_palette !== $clean_palette ) {
+			foreach ( Schema::palettes() as $palette ) {
+				if ( $palette['id'] === $requested_palette && ! empty( $palette['is_pro'] ) ) {
+					$labels[] = $palette['name'];
+					break;
+				}
+			}
+		}
+
+		if ( ! $labels ) {
+			return '';
+		}
+
+		return sprintf(
+			/* translators: %s: comma-separated list of Pro-only style features the AI could not apply. */
+			__( 'Pro required for: %s — not applied.', 'everest-forms' ),
+			wp_sprintf( '%l', array_unique( $labels ) )
 		);
 	}
 
