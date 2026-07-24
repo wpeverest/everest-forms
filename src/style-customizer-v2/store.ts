@@ -62,6 +62,10 @@ class StyleStore {
 	baseUpdatedAt = 0;
 	/** Set from outside React by the (legacy jQuery) Fields tab — drives the unsaved-fields notice. */
 	hasUnsavedFieldChanges = false;
+	/** Bumped on every click inside the preview iframe — lets the AI assistant panel close itself
+	 *  before a native <select> there opens its dropdown (which always paints above fixed UI,
+	 *  overlapping the panel — see EVF-2698). */
+	previewInteractionCount = 0;
 
 	/** Optional UI hook: fired when a manual edit detaches the active palette link. */
 	onPaletteUnlinked: ( ( paletteName: string ) => void ) | null = null;
@@ -360,6 +364,11 @@ class StyleStore {
 			return;
 		}
 		this.hasUnsavedFieldChanges = dirty;
+		this.notify( [] );
+	}
+
+	notePreviewInteraction() {
+		this.previewInteractionCount++;
 		this.notify( [] );
 	}
 

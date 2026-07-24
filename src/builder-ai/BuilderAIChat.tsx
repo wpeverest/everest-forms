@@ -279,7 +279,9 @@ const BuilderAIChat: React.FC = () => {
 					alignItems: 'center',
 					justifyContent: 'center',
 					boxShadow: '0 4px 16px rgba(117,69,187,.45)',
-					zIndex: 10000,
+					// Above .select2-dropdown (999999) — see .evf-subscription-expiry-calendar
+					// for the same precedent — so field-setting dropdowns never cover the button.
+					zIndex: 1000001,
 					transition: 'transform .2s,box-shadow .2s,background .2s',
 				}}
 				onMouseEnter={e => {
@@ -310,7 +312,7 @@ const BuilderAIChat: React.FC = () => {
 						right: BTN_RIGHT + Math.round(BTN_SIZE / 2),
 						transform: 'translateX(50%)',
 						pointerEvents: rateLimited ? 'auto' : 'none',
-						zIndex: 10001,
+						zIndex: 1000002,
 					}}
 				>
 					{/* Box — matches tooltipster-box */}
@@ -387,7 +389,7 @@ const BuilderAIChat: React.FC = () => {
 						display: 'flex',
 						flexDirection: 'column',
 						overflow: 'hidden',
-						zIndex: 9999,
+						zIndex: 1000000,
 					}}
 				>
 					{/* Header */}

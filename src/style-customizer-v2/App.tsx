@@ -434,6 +434,12 @@ export function App() {
 
 	const dirty = store.isDirty();
 	const closePopover = React.useCallback( () => setPopover( null ), [] );
+	// Also close any open popover AND let the AI assistant panel dismiss itself — a click here may
+	// be about to open a native <select>, which always paints above fixed UI (see EVF-2698).
+	const onPreviewClick = React.useCallback( () => {
+		setPopover( null );
+		store.notePreviewInteraction();
+	}, [ store ] );
 
 	const showToast = React.useCallback( ( t: Toast ) => {
 		setToast( t );
@@ -790,7 +796,7 @@ export function App() {
 						saveError={ saveError }
 						saveErrorConflict={ saveErrorConflict }
 						onSelect={ onSelectElement }
-						onIframeClick={ closePopover }
+						onIframeClick={ onPreviewClick }
 						toast={ toast }
 						onToastPause={ pauseToast }
 						onToastResume={ resumeToast }

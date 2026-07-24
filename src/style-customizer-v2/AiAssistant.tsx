@@ -116,6 +116,12 @@ export function AiAssistant() {
 		if ( ! onStyleTab ) setOpen( false );
 	}, [ onStyleTab ] );
 
+	// A click inside the preview iframe may be about to open a native <select> there — those
+	// always paint above fixed page UI, so close the panel first rather than let it get covered.
+	useEffect( () => {
+		setOpen( false );
+	}, [ store.previewInteractionCount ] );
+
 	useEffect( () => {
 		if ( open ) messagesEndRef.current?.scrollIntoView( { behavior: 'smooth' } );
 	}, [ messages, open ] );
@@ -258,7 +264,9 @@ export function AiAssistant() {
 					alignItems: 'center',
 					justifyContent: 'center',
 					boxShadow: '0 4px 16px rgba(117,69,187,.45)',
-					zIndex: 10000,
+					// Above .select2-dropdown (999999) — see .evf-subscription-expiry-calendar
+					// for the same precedent — so field-setting dropdowns never cover the button.
+					zIndex: 1000001,
 					transition: 'transform .2s,box-shadow .2s,background .2s',
 				} }
 			>
@@ -275,7 +283,7 @@ export function AiAssistant() {
 						right: BTN_RIGHT + Math.round( BTN_SIZE / 2 ),
 						transform: 'translateX(50%)',
 						pointerEvents: 'none',
-						zIndex: 10001,
+						zIndex: 1000002,
 					} }
 				>
 					<div
@@ -339,7 +347,7 @@ export function AiAssistant() {
 						display: 'flex',
 						flexDirection: 'column',
 						overflow: 'hidden',
-						zIndex: 9999,
+						zIndex: 1000000,
 					} }
 				>
 					<div
