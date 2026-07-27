@@ -262,6 +262,69 @@ final class Schema {
 		);
 	}
 
+	/**
+	 * The free-tier token VALUES a registered palette id implies (the six palette-driven slots,
+	 * plus the derived hover shade) — the single source of truth {@see Sanitizer::sanitize_record()}
+	 * uses to DERIVE (never trust raw from the client) a non-Pro site's palette-driven tokens.
+	 *
+	 * Without this, a non-Pro site's "free" token keys only exist so the 2-swatch palette picker
+	 * has something to write to — the sanitizer only ever validated their VALUE TYPE (a well-formed
+	 * colour), not that the colour actually came from picking one of the 2 free palettes. A crafted
+	 * request (an AI response, a hand-built REST call) could set any hex it liked on these exact
+	 * keys and reconstruct a full Pro-palette look with no Pro required (see EVF-2708).
+	 *
+	 * @param string $palette_id Palette id (see {@see self::palettes()}).
+	 * @return array Token key => hex value (bare, not a device bag); empty if the id is unknown.
+	 */
+	public static function palette_token_values( $palette_id ) {
+		foreach ( self::palettes() as $palette ) {
+			if ( $palette['id'] !== $palette_id ) {
+				continue;
+			}
+			$colors = isset( $palette['colors'] ) && is_array( $palette['colors'] ) ? $palette['colors'] : array();
+			$out    = array();
+			foreach ( self::palette_map() as $slot => $keys ) {
+				if ( ! isset( $colors[ $slot ] ) ) {
+					continue;
+				}
+				foreach ( (array) $keys as $key ) {
+					$out[ $key ] = $colors[ $slot ];
+				}
+			}
+			if ( ! empty( $colors['button_background'] ) ) {
+				$out['btn.bgHover'] = self::mix_hex( $colors['button_background'], '#000000', 0.14 );
+			}
+			return $out;
+		}
+		return array();
+	}
+
+	/**
+	 * Linear-interpolate two hex colours — PHP port of `mixHex()` in constants.ts (kept local
+	 * rather than reusing {@see Migrator}'s copy, so this class has no cross-class coupling).
+	 *
+	 * @param string $a First hex colour (`#rgb` or `#rrggbb`).
+	 * @param string $b Second hex colour.
+	 * @param float  $t Mix factor, 0 = $a, 1 = $b.
+	 * @return string `#rrggbb`.
+	 */
+	protected static function mix_hex( $a, $b, $t ) {
+		$parse = static function ( $hex ) {
+			$s = ltrim( (string) $hex, '#' );
+			if ( 3 === strlen( $s ) ) {
+				$s = $s[0] . $s[0] . $s[1] . $s[1] . $s[2] . $s[2];
+			}
+			return array( hexdec( substr( $s, 0, 2 ) ), hexdec( substr( $s, 2, 2 ) ), hexdec( substr( $s, 4, 2 ) ) );
+		};
+		$from = $parse( $a );
+		$to   = $parse( $b );
+		$out  = '#';
+		foreach ( array( 0, 1, 2 ) as $i ) {
+			$out .= str_pad( dechex( (int) round( $from[ $i ] + ( $to[ $i ] - $from[ $i ] ) * $t ) ), 2, '0', STR_PAD_LEFT );
+		}
+		return $out;
+	}
+
 	/* --------------------------------------------------------------------- *
 	 * Token assembly
 	 * --------------------------------------------------------------------- */

@@ -45,6 +45,9 @@ interface AiStyleResult {
 	tokens: Record< string, any >;
 	palette: string;
 	summary: string;
+	/** True when the request was ENTIRELY Pro-blocked — nothing was applied this turn. */
+	notice: boolean;
+	noticeUrl: string;
 }
 
 interface Message {
@@ -52,6 +55,7 @@ interface Message {
 	text: string;
 	loading?: boolean;
 	notice?: boolean;
+	noticeUrl?: string;
 	canUndo?: boolean;
 	/** Store version this turn's undo is valid for. */
 	undoVersion?: number;
@@ -82,8 +86,17 @@ async function requestAiStyle(
 				history: refinePrompt ? history : undefined,
 				last_changed_keys: refinePrompt ? lastChangedKeys : undefined,
 			},
-		} ) ) as AiStyleResult;
-		return { ok: true, data: { tokens: data.tokens || {}, palette: data.palette || '', summary: data.summary || '' } };
+		} ) ) as any;
+		return {
+			ok: true,
+			data: {
+				tokens: data.tokens || {},
+				palette: data.palette || '',
+				summary: data.summary || '',
+				notice: !! data.notice,
+				noticeUrl: data.notice_url || '',
+			},
+		};
 	} catch ( e: any ) {
 		const status = e && e.data && e.data.status;
 		const message =
@@ -212,12 +225,20 @@ export function AiAssistant() {
 			const cleared = prev.map( ( m ) => ( m.canUndo ? { ...m, canUndo: false } : m ) );
 			const next = [ ...cleared ];
 			next[ next.length - 1 ] = result.ok
-				? {
-						role: 'assistant',
-						text: result.data.summary || __( 'Applied your style.', 'everest-forms' ),
-						canUndo: true,
-						undoVersion: store.getVersion(),
-				  }
+				? result.data.notice
+					? // Entirely Pro-blocked — nothing applied, so no Undo affordance to offer.
+					  {
+							role: 'assistant',
+							text: result.data.summary || __( "That's a Pro feature.", 'everest-forms' ),
+							notice: true,
+							noticeUrl: result.data.noticeUrl,
+					  }
+					: {
+							role: 'assistant',
+							text: result.data.summary || __( 'Applied your style.', 'everest-forms' ),
+							canUndo: true,
+							undoVersion: store.getVersion(),
+					  }
 				: { role: 'assistant', text: result.message, notice: true };
 			return next;
 		} );
@@ -490,6 +511,23 @@ export function AiAssistant() {
 														} }
 													>
 														{ __( 'Undo ↺', 'everest-forms' ) }
+													</a>
+												</div>
+											) }
+											{ msg.notice && msg.noticeUrl && (
+												<div style={ { marginTop: 6 } }>
+													<a
+														href={ msg.noticeUrl }
+														target="_blank"
+														rel="noopener noreferrer"
+														style={ {
+															color: '#c0392b',
+															fontWeight: 600,
+															fontSize: 12,
+															textDecoration: 'underline',
+														} }
+													>
+														{ __( 'Upgrade to Pro ↗', 'everest-forms' ) }
 													</a>
 												</div>
 											) }

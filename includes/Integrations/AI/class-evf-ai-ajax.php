@@ -477,9 +477,12 @@ class EVF_AI_Ajax {
 	 * (free site or Pro installed but not activated). Returns empty string when the
 	 * user has a valid license — they just need to install the addon, not upgrade.
 	 *
+	 * Public: also called by {@see \EverestForms\Addons\StyleCustomizer\V2\RestController::ai_style()}
+	 * for the Style Customizer's own AI chat, so both AI surfaces link the same upgrade CTA.
+	 *
 	 * @return string
 	 */
-	private static function get_notice_upgrade_url(): string {
+	public static function get_notice_upgrade_url(): string {
 		if ( self::has_active_license() ) {
 			return ''; // Already Pro — installing the addon is all that's needed.
 		}

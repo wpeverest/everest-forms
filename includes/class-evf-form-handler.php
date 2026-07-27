@@ -464,8 +464,14 @@ class EVF_Form_Handler {
 				if ( class_exists( '\EverestForms\Addons\StyleCustomizer\V2\Engine' )
 					&& \EverestForms\Addons\StyleCustomizer\V2\Engine::enabled()
 					&& ! \EverestForms\Addons\StyleCustomizer\V2\Engine::is_v2_record( $form_styles[ $new_form_id ] ) ) {
-					$migrated = \EverestForms\Addons\StyleCustomizer\V2\Migrator::migrate_record( $form_styles[ $new_form_id ] );
-					$form_styles[ $new_form_id ] = \EverestForms\Addons\StyleCustomizer\V2\Sanitizer::sanitize_record( $migrated );
+					$legacy_style                 = $form_styles[ $new_form_id ];
+					$migrated                     = \EverestForms\Addons\StyleCustomizer\V2\Migrator::migrate_record( $legacy_style );
+					$clean_style                  = \EverestForms\Addons\StyleCustomizer\V2\Sanitizer::sanitize_record( $migrated );
+					// sanitize_record() only ever DERIVES a free-tier (palette-driven) token from a
+					// registered free palette id (see EVF-2708); a source form whose legacy custom
+					// colour palette matches none of them would otherwise lose that colour on
+					// duplicate — restore it from the same legacy blob, exactly like a real save does.
+					$form_styles[ $new_form_id ] = \EverestForms\Addons\StyleCustomizer\V2\Sanitizer::preserve_stale_pro_tokens( $clean_style, $legacy_style );
 				}
 
 				update_option( 'everest_forms_styles', $form_styles );

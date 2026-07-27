@@ -412,21 +412,38 @@ final class RestController {
 			),
 			true
 		);
+		$clean_palette = isset( $clean['palette'] ) ? $clean['palette'] : '';
 
-		$summary  = isset( $ai_style['summary'] ) ? sanitize_text_field( (string) $ai_style['summary'] ) : '';
-		$notices  = array();
-		$notices[] = self::pro_locked_notice( $requested_tokens, $clean['tokens'], $requested_palette, isset( $clean['palette'] ) ? $clean['palette'] : '' );
-		$notices[] = self::unsupported_capability_notice( $clean['tokens'], trim( $prompt . ' ' . $refine_prompt ), $field_labels );
-		$notice    = trim( implode( ' ', array_filter( $notices ) ) );
-		if ( $notice ) {
-			$summary = trim( $summary . ' ' . $notice );
+		$pro_notice = self::pro_locked_notice( $requested_tokens, $clean['tokens'], $requested_palette, $clean_palette );
+		$cap_notice = self::unsupported_capability_notice( $clean['tokens'], trim( $prompt . ' ' . $refine_prompt ), $field_labels );
+
+		// Did ANYTHING the AI asked for this turn actually survive sanitization? If not, the
+		// gateway's own summary ("I've applied…") is flatly wrong and must not be shown at all —
+		// appending an honest correction after a false "applied" claim just reads as
+		// self-contradictory ("Applied a 20px font size. Pro required for: Font size — not
+		// applied."). Replace the summary outright instead of appending to it.
+		$nothing_applied = empty( $clean['tokens'] ) && '' === $clean_palette;
+		$blocked         = $pro_notice && $nothing_applied;
+
+		$summary = isset( $ai_style['summary'] ) ? sanitize_text_field( (string) $ai_style['summary'] ) : '';
+		if ( $blocked ) {
+			$summary = $pro_notice;
+		} elseif ( $pro_notice ) {
+			$summary = trim( $summary . ' ' . $pro_notice );
+		}
+		if ( $cap_notice ) {
+			$summary = trim( $summary . ' ' . $cap_notice );
 		}
 
 		return rest_ensure_response(
 			array(
-				'tokens'  => $clean['tokens'],
-				'palette' => isset( $clean['palette'] ) ? $clean['palette'] : '',
-				'summary' => $summary,
+				'tokens'     => $clean['tokens'],
+				'palette'    => $clean_palette,
+				'summary'    => $summary,
+				// Only when the WHOLE request was Pro-blocked — a partial success still gets the
+				// normal "applied" treatment with an inline caveat, not the full warning treatment.
+				'notice'     => $blocked,
+				'notice_url' => $blocked ? \EVF_AI_Ajax::get_notice_upgrade_url() : '',
 			)
 		);
 	}
@@ -565,8 +582,10 @@ final class RestController {
 
 	/**
 	 * Build an honest addendum for when the AI's raw response asked for tokens/palette that
-	 * {@see Sanitizer::sanitize_record()} then had to drop for being Pro-only on a free site —
-	 * without this, the AI's own summary claims a change that never actually applied.
+	 * {@see Sanitizer::sanitize_record()} then had to drop or replace on a free site — either
+	 * because a token/palette is Pro-only, or because a "free" (palette-driven) token was given
+	 * a raw custom colour instead of coming from one of the 2 free palettes (see EVF-2708).
+	 * Without this, the AI's own summary claims a change that never actually applied.
 	 *
 	 * Public: also called by {@see EVF_AI_Form_Builder::maybe_apply_ai_style()} for the
 	 * create-time/refine "style" block embedded in a form-generation response, so a free
@@ -584,32 +603,59 @@ final class RestController {
 			return '';
 		}
 
-		$labels = array();
-		foreach ( array_keys( array_diff_key( $requested_tokens, $clean_tokens ) ) as $key ) {
+		$labels               = array();
+		$custom_color_blocked = false;
+
+		foreach ( $requested_tokens as $key => $requested_value ) {
 			$token = Schema::get( $key );
-			if ( $token && 'pro' === $token['tier'] ) {
-				$labels[] = $token['label'];
+			if ( ! $token ) {
+				continue;
+			}
+			if ( 'pro' === $token['tier'] ) {
+				if ( ! array_key_exists( $key, $clean_tokens ) ) {
+					$labels[] = $token['label'];
+				}
+				continue;
+			}
+			if ( 'free' === $token['tier'] ) {
+				// Free tier: on a non-Pro site this key's clean value is always DERIVED from the
+				// chosen palette (see Sanitizer::sanitize_record()), never trusted raw — so if it's
+				// missing, or doesn't match what was asked for, a custom colour got replaced with
+				// the palette's own colour instead (see EVF-2708).
+				$requested = is_array( $requested_value ) ? ( $requested_value['desktop'] ?? null ) : $requested_value;
+				$clean_bag = $clean_tokens[ $key ] ?? null;
+				$clean_val = is_array( $clean_bag ) ? ( $clean_bag['desktop'] ?? null ) : $clean_bag;
+				if ( ! is_string( $requested ) || ! is_string( $clean_val ) || strtolower( $requested ) !== strtolower( $clean_val ) ) {
+					$custom_color_blocked = true;
+				}
 			}
 		}
 
+		$pro_palette_blocked = false;
 		if ( $requested_palette && $requested_palette !== $clean_palette ) {
 			foreach ( Schema::palettes() as $palette ) {
 				if ( $palette['id'] === $requested_palette && ! empty( $palette['is_pro'] ) ) {
-					$labels[] = $palette['name'];
+					$labels[]             = $palette['name'];
+					$pro_palette_blocked  = true;
 					break;
 				}
 			}
 		}
 
-		if ( ! $labels ) {
-			return '';
+		$messages = array();
+		if ( $labels ) {
+			$messages[] = sprintf(
+				/* translators: %s: comma-separated list of Pro-only style features the AI could not apply. */
+				__( 'Pro required for: %s — not applied.', 'everest-forms' ),
+				wp_sprintf( '%l', array_unique( $labels ) )
+			);
+		}
+		// Only add this when the palette itself wasn't already the (more specific) reason above.
+		if ( $custom_color_blocked && ! $pro_palette_blocked ) {
+			$messages[] = __( 'Custom colors are a Pro feature — Free is limited to the 2 built-in palettes.', 'everest-forms' );
 		}
 
-		return sprintf(
-			/* translators: %s: comma-separated list of Pro-only style features the AI could not apply. */
-			__( 'Pro required for: %s — not applied.', 'everest-forms' ),
-			wp_sprintf( '%l', array_unique( $labels ) )
-		);
+		return implode( ' ', $messages );
 	}
 
 	/**

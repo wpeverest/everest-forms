@@ -46,10 +46,31 @@ final class Sanitizer {
 
 		$pro_active = Engine::pro_active();
 
+		// Palette first: on a non-Pro site the palette-driven ("free") tokens below are DERIVED
+		// from this id, never trusted raw from the client — see the loop below for why.
+		$palette_id = isset( $record['palette'] ) ? self::sanitize_palette_id( $record['palette'] ) : '';
+		if ( isset( $record['palette'] ) ) {
+			$clean['palette'] = $palette_id;
+		}
+		$free_derived = ( ! $pro_active && '' !== $palette_id ) ? Schema::palette_token_values( $palette_id ) : array();
+
 		$in_tokens  = isset( $record['tokens'] ) && is_array( $record['tokens'] ) ? $record['tokens'] : array();
 		$out_tokens = array();
 		foreach ( Schema::tokens() as $token ) {
 			$key = $token['key'];
+
+			if ( ! $pro_active && isset( $token['tier'] ) && 'free' === $token['tier'] ) {
+				// Free tier: the ONLY sanctioned customisation is picking one of the 2 free
+				// palettes — never trust a raw client-submitted value for these keys, or a
+				// crafted request (an AI response, a hand-built REST call) could paint an
+				// arbitrary custom colour scheme through keys that exist only to let the
+				// palette picker render at all (see EVF-2708).
+				if ( isset( $free_derived[ $key ] ) ) {
+					$out_tokens[ $key ] = self::sanitize_token( $token, $free_derived[ $key ] );
+				}
+				continue;
+			}
+
 			if ( ! array_key_exists( $key, $in_tokens ) ) {
 				continue; // Absent → the compiler falls back to the schema default.
 			}
@@ -65,9 +86,6 @@ final class Sanitizer {
 
 		$clean['tokens'] = $out_tokens;
 
-		if ( isset( $record['palette'] ) ) {
-			$clean['palette'] = self::sanitize_palette_id( $record['palette'] );
-		}
 		if ( isset( $record['template'] ) ) {
 			$template = sanitize_key( $record['template'] );
 			// A Pro template (or a user/custom template) can't be selected without Pro.
@@ -86,14 +104,23 @@ final class Sanitizer {
 	}
 
 	/**
-	 * Re-attach pro-tier tokens the OLD record already implied, if Pro is currently inactive —
-	 * so a save made while Pro is merely undetected doesn't silently erase pro-tier
-	 * customisation the form already had. The old record may still be legacy shape, so it is
-	 * re-derived through {@see Migrator::migrate_record()} when needed.
+	 * Re-attach any token the OLD record already implied but this save's clean output doesn't,
+	 * if Pro is currently inactive — so a save made while Pro is merely undetected doesn't
+	 * silently erase pro-tier customisation the form already had. The old record may still be
+	 * legacy shape, so it is re-derived through {@see Migrator::migrate_record()} when needed.
+	 *
+	 * This restores stale FREE-tier (palette-driven) tokens too, not just pro-tier ones: since
+	 * {@see self::sanitize_record()} now only ever DERIVES those from a registered free palette id
+	 * (never trusting a raw client value — see EVF-2708), a legacy form migrating to v2 with a
+	 * bespoke v1 custom colour set that matches no registered palette would otherwise have that
+	 * migrated colour dropped on its very first v2 save. Restoring it here (from the same
+	 * migrated-legacy `$old_record`) keeps that one-time migration lossless without reopening the
+	 * free/pro bypass, since this only ever re-attaches a value the form ALREADY had — it can
+	 * never introduce one a fresh crafted request invented this turn.
 	 *
 	 * @param array $clean      Freshly sanitized record (from self::sanitize_record()).
 	 * @param array $old_record The record as it was stored before this save (legacy or v2 shape).
-	 * @return array $clean, with any pro-tier tokens the new save doesn't mention restored.
+	 * @return array $clean, with any stale token the new save doesn't mention restored.
 	 */
 	public static function preserve_stale_pro_tokens( array $clean, array $old_record ) {
 		if ( Engine::pro_active() ) {
