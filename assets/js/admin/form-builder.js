@@ -5198,6 +5198,21 @@
 			var $panel = $('#everest-forms-panel-' + panel),
 				$panelBtn = $('.evf-panel-' + panel + '-button');
 
+			// Guard against silently losing unsaved Style Customizer changes when switching
+			// away via this in-app tab click — the existing `beforeunload` handler only
+			// catches a real page close/reload, not this SPA-style panel switch.
+			var currentPanel = $('.evf-nav-tab-wrapper').find('a.nav-tab-active').data('panel');
+			if (
+				'style' === currentPanel &&
+				panel !== currentPanel &&
+				'function' === typeof window.evfScv2IsDirty &&
+				window.evfScv2IsDirty()
+			) {
+				if (!window.confirm(evf_data.i18n_unsaved_style_changes)) {
+					return;
+				}
+			}
+
 			$('.evf-nav-tab-wrapper').find('a').removeClass('nav-tab-active');
 			$panelBtn.addClass('nav-tab-active');
 			$panel

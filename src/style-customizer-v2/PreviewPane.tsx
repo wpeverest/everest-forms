@@ -91,9 +91,9 @@ function UnsavedFieldsNotice() {
 				</svg>
 			</span>
 			<span className="pv-migration-text">
-				<b>{ __( 'Unsaved form changes.', 'everest-forms' ) }</b>{ ' ' }
+				<b>{ __( 'Previewing unsaved field changes.', 'everest-forms' ) }</b>{ ' ' }
 				{ __(
-					'Showing your latest field changes here — save the form to keep them.',
+					"This preview includes edits from the Fields tab that haven't been saved yet.",
 					'everest-forms'
 				) }
 			</span>

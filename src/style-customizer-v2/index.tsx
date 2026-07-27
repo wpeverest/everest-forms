@@ -38,6 +38,17 @@ const settings: BootstrapSettings = rawSettings || {
 	}
 };
 
+// Reverse bridge: lets the (legacy jQuery) tab-switcher ask "would leaving the Style tab
+// right now lose anything?" before it switches away — the existing `beforeunload` guard
+// only protects a real page close/reload, not this in-app SPA tab switch.
+( window as any ).evfScv2IsDirty = (): boolean => {
+	try {
+		return getStore().isDirty();
+	} catch ( e ) {
+		return false; // Store not initialized yet — nothing to lose.
+	}
+};
+
 const MIGRATION_SEEN_PREFIX = 'evf_scv2_migration_seen_';
 
 /** Whether this browser has already sat through the migrating transition for this form once. */

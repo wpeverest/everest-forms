@@ -253,6 +253,7 @@ class EVF_Admin_Assets {
 					'i18n_copy'                           => esc_html__( '(copy)', 'everest-forms' ),
 					'i18n_close'                          => esc_html__( 'Close', 'everest-forms' ),
 					'i18n_cancel'                         => esc_html__( 'Cancel', 'everest-forms' ),
+					'i18n_unsaved_style_changes'          => esc_html__( 'You have unsaved style changes. Leave without saving?', 'everest-forms' ),
 					'i18n_row_locked'                     => esc_html__( 'Row Locked', 'everest-forms' ),
 					'i18n_single_row_locked_msg'          => esc_html__( 'Single row cannot be deleted.', 'everest-forms' ),
 					'i18n_field_locked'                   => esc_html__( 'Field Locked', 'everest-forms' ),

@@ -155,9 +155,9 @@ export const PREVIEW_TARGETS: PreviewTarget[] = [
 	{ match: 'label.evf-field-label', section: 'text', variant: 'label', label: 'Label' },
 	{ match: '.everest-forms-uploader', section: 'fields', label: 'Upload area' },
 	{
-		// Choice-type fields: radio, checkbox, image-choice, likert, ratings, payment pickers, yes/no, privacy policy.
+		// Choice-type fields: radio, checkbox, image-choice, likert, ratings, payment pickers, yes/no, privacy policy, subscription plan.
 		match:
-			'.evf-field-radio, .evf-field-checkbox, .evf-field-payment-multiple, .evf-field-payment-checkbox, .evf-field-privacy-policy, .evf-field-image-choice, .evf-field-likert, .evf-field-rating, .evf-field-scale-rating, .evf-field-payment-single, .evf-field-yes-no',
+			'.evf-field-radio, .evf-field-checkbox, .evf-field-payment-multiple, .evf-field-payment-checkbox, .evf-field-privacy-policy, .evf-field-image-choice, .evf-field-likert, .evf-field-rating, .evf-field-scale-rating, .evf-field-payment-single, .evf-field-yes-no, .evf-field-payment-subscription-plan',
 		section: 'choice',
 		label: 'Choice field',
 	},
