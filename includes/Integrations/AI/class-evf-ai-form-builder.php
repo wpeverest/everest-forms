@@ -87,6 +87,16 @@ class EVF_AI_Form_Builder {
 	 * could render nothing like what the AI's own summary described. Sets
 	 * self::$style_pro_locked_notice so EVF_AI_Ajax::get_pro_feature_notice() can surface it.
 	 *
+	 * Overlays onto the form's EXISTING style record exactly like the Style Customizer's own
+	 * AI chat client does ({@see StyleStore.applyAiRecord()} in store.ts) rather than replacing
+	 * it wholesale: the AI's output contract is strictly `{tokens, palette}`, so on a refine
+	 * (update_form()) a straight option overwrite would silently wipe a previously-picked
+	 * template or custom CSS, and treating an empty/omitted palette as "clear the palette"
+	 * would incorrectly detach an existing one even on a turn where the AI never touched it.
+	 * `$check_contrast = true` also matches ai_style()'s own sanitize_record() call, so an
+	 * AI-created form gets the same automatic light-on-light / dark-on-dark correction the
+	 * standalone chat already has.
+	 *
 	 * @param int   $post_id     The newly created (draft) form.
 	 * @param array $ai_response Full decoded gateway response (may contain a `style` key).
 	 */
@@ -109,7 +119,8 @@ class EVF_AI_Form_Builder {
 			array(
 				'tokens'  => $requested_tokens,
 				'palette' => $requested_palette,
-			)
+			),
+			true
 		);
 
 		self::$style_pro_locked_notice = \EverestForms\Addons\StyleCustomizer\V2\RestController::pro_locked_notice(
@@ -120,11 +131,34 @@ class EVF_AI_Form_Builder {
 		);
 
 		if ( empty( $clean['tokens'] ) && empty( $clean['palette'] ) ) {
-			return; // Nothing survived sanitization — leave the form unstyled (its default look).
+			return; // Nothing survived sanitization — leave the existing/default style untouched.
 		}
 
-		$all             = get_option( 'everest_forms_styles', array() );
-		$all[ $post_id ] = $clean;
+		$all      = get_option( 'everest_forms_styles', array() );
+		$existing = isset( $all[ $post_id ] ) && is_array( $all[ $post_id ] ) ? $all[ $post_id ] : array();
+
+		// Per-key overlay, not a wholesale replace — a key the AI didn't return this turn
+		// keeps its existing value (matches applyAiRecord()'s `this.tokens[key] = clone(bag)`).
+		$merged_tokens = isset( $existing['tokens'] ) && is_array( $existing['tokens'] ) ? $existing['tokens'] : array();
+		foreach ( $clean['tokens'] as $key => $value ) {
+			$merged_tokens[ $key ] = $value;
+		}
+		$existing['tokens'] = $merged_tokens;
+
+		// Empty palette from the AI = "didn't touch it this turn", not "clear it" — matches
+		// applyAiRecord()'s `if ( paletteId ) { … this.palette = paletteId; }`.
+		if ( '' !== $clean['palette'] ) {
+			$existing['palette'] = $clean['palette'];
+		} elseif ( ! isset( $existing['palette'] ) ) {
+			$existing['palette'] = '';
+		}
+
+		// template/custom_css (and anything else already in $existing) are left as-is — the
+		// AI's output contract never includes them, so there is nothing to overlay for those keys.
+		$existing['schema_version'] = $clean['schema_version'];
+		$existing['_updated_at']    = $clean['_updated_at'];
+
+		$all[ $post_id ] = $existing;
 		update_option( 'everest_forms_styles', $all, false ); // autoload=no, matches RestController::save_item().
 	}
 
