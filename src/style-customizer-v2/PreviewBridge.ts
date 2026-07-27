@@ -26,6 +26,9 @@ const SELECTED_CLASS = 'evf-scv2-selected';
 /** Mirrors FrontendEnqueue::container_class()'s `evf-choice-{variation}` classes. */
 const CHOICE_VARIATION_CLASSES = [ 'evf-choice-outline', 'evf-choice-filled' ];
 
+/** Mirrors FrontendEnqueue::container_class()'s `evf-choice-align-{center|right}` classes. */
+const CHOICE_ALIGN_CLASSES = [ 'evf-choice-align-center', 'evf-choice-align-right' ];
+
 /** How long to keep polling for the form wrapper before giving up (ms). */
 const READY_DEADLINE = 15000;
 /** Poll interval while waiting for the wrapper (ms). */
@@ -484,6 +487,17 @@ export class PreviewBridge {
 			CHOICE_VARIATION_CLASSES.forEach( ( c ) => wrapper.classList.remove( c ) );
 			if ( value === 'outline' || value === 'filled' ) {
 				wrapper.classList.add( `evf-choice-${ value }` );
+			}
+		}
+
+		// choice.align DOES have a CSS var (used by every other choice type's inherited
+		// text-align), but the Subscription Plan card's name/price row can't be reached by
+		// text-align at all (it's a fixed `space-between` flex row) — mirror the same class
+		// bridge as choice.variation, purely as a supplementary hook for that one field.
+		if ( token.key === 'choice.align' ) {
+			CHOICE_ALIGN_CLASSES.forEach( ( c ) => wrapper.classList.remove( c ) );
+			if ( value === 'center' || value === 'right' ) {
+				wrapper.classList.add( `evf-choice-align-${ value }` );
 			}
 		}
 	}

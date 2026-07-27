@@ -144,7 +144,8 @@ final class FrontendEnqueue {
 
 	/**
 	 * Add the `evf-style-v2` marker class to a v2 form's wrapper. Also adds
-	 * `evf-choice-{variation}` when the Choices "Style variation" is `outline`/`filled`.
+	 * `evf-choice-{variation}` when the Choices "Style variation" is `outline`/`filled`, and
+	 * `evf-choice-align-{center|right}` when the Choices "Alignment" isn't the default `left`.
 	 *
 	 * @param array $classes   Container classes.
 	 * @param array $form_data Form data (`id`).
@@ -160,6 +161,15 @@ final class FrontendEnqueue {
 		$variation  = isset( $record['tokens']['choice.variation']['desktop'] ) ? (string) $record['tokens']['choice.variation']['desktop'] : '';
 		if ( in_array( $variation, array( 'outline', 'filled' ), true ) ) {
 			$classes[] = 'evf-choice-' . $variation;
+		}
+		// The Subscription Plan card's name/price row is a fixed `space-between` flex row (see
+		// evf-payment-subscription-plan-frontend.scss) that plain `text-align` can never reach —
+		// bridge the align token to a class too, the same way choice.variation already does, so
+		// only that field's row responds to it (every other choice type already works via
+		// `--evf-choice-align`'s inherited `text-align`).
+		$align = isset( $record['tokens']['choice.align']['desktop'] ) ? (string) $record['tokens']['choice.align']['desktop'] : '';
+		if ( in_array( $align, array( 'center', 'right' ), true ) ) {
+			$classes[] = 'evf-choice-align-' . $align;
 		}
 		return $classes;
 	}

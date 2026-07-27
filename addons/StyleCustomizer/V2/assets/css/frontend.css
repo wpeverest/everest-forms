@@ -362,6 +362,18 @@
 	font-size: var( --evf-choice-fsize );
 }
 
+/* The name/price row (.evf-plan-main) is a flex row hardcoded to `justify-content: space-between`
+   in the same addon stylesheet — `--evf-choice-align`'s inherited `text-align` can never reach it
+   (text-align doesn't reposition flex items). `left` (the default) keeps today's name-left/
+   price-right look untouched; `center`/`right` bring the pair together as a unit instead — see
+   FrontendEnqueue::container_class()/PreviewBridge's `evf-choice-align-{center|right}` classes. */
+.everest-forms .evf-style-v2.evf-choice-align-center .evf-field-payment-subscription-plan .evf-plan-main {
+	justify-content: center;
+}
+.everest-forms .evf-style-v2.evf-choice-align-right .evf-field-payment-subscription-plan .evf-plan-main {
+	justify-content: flex-end;
+}
+
 /* ===== BUTTON — submit / multi-part nav / upload button ===== */
 .everest-forms .evf-style-v2 .evf-submit-container input[type='submit'],
 .everest-forms .evf-style-v2 .evf-submit-container button[type='submit'],
