@@ -530,6 +530,13 @@ class EVF_AI_Ajax {
 			}
 		}
 
+		// Lowest priority: a purely cosmetic Pro-only style choice (colour, font, shape) got
+		// dropped from the AI's embedded style suggestion — see EVF_AI_Form_Builder::maybe_apply_ai_style().
+		// Checked last since a structural feature notice above is more important to surface first.
+		if ( '' !== EVF_AI_Form_Builder::$style_pro_locked_notice ) {
+			return EVF_AI_Form_Builder::$style_pro_locked_notice;
+		}
+
 		return '';
 	}
 

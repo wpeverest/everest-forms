@@ -25,6 +25,11 @@ class EVF_AI_Form_Builder {
 	/** Set to true when a file-upload field was dropped because the free-tier limit (1) was reached. */
 	public static $file_upload_limited = false;
 
+	/** Set to a human-readable notice when the AI's embedded `style` block (see
+	 *  maybe_apply_ai_style()) included Pro-only tokens/palette that got stripped because
+	 *  Pro isn't active on this site — empty string when nothing was stripped. */
+	public static $style_pro_locked_notice = '';
+
 	/**
 	 * Create a new EVF form from the AI gateway response.
 	 * Saved as DRAFT — user must click "Use This Form" to publish.
@@ -76,10 +81,18 @@ class EVF_AI_Form_Builder {
 	 * (Sanitizer::sanitize_record()), so an AI style can no more produce an unsafe or
 	 * tier-violating record here than it can through the customizer's own AI launcher.
 	 *
+	 * Also mirrors that launcher's honest-notice behaviour ({@see RestController::pro_locked_notice()}):
+	 * unlike the standalone Style AI chat, this path used to strip Pro-only tokens with no
+	 * explanation at all, so a free-tier form born from "create a sleek dark contact form"
+	 * could render nothing like what the AI's own summary described. Sets
+	 * self::$style_pro_locked_notice so EVF_AI_Ajax::get_pro_feature_notice() can surface it.
+	 *
 	 * @param int   $post_id     The newly created (draft) form.
 	 * @param array $ai_response Full decoded gateway response (may contain a `style` key).
 	 */
 	private static function maybe_apply_ai_style( int $post_id, array $ai_response ) {
+		self::$style_pro_locked_notice = '';
+
 		if ( empty( $ai_response['style'] ) || ! is_array( $ai_response['style'] ) ) {
 			return;
 		}
@@ -88,12 +101,22 @@ class EVF_AI_Form_Builder {
 			return;
 		}
 
-		$style = $ai_response['style'];
+		$style             = $ai_response['style'];
+		$requested_tokens  = isset( $style['tokens'] ) && is_array( $style['tokens'] ) ? $style['tokens'] : array();
+		$requested_palette = isset( $style['palette'] ) ? (string) $style['palette'] : '';
+
 		$clean = \EverestForms\Addons\StyleCustomizer\V2\Sanitizer::sanitize_record(
 			array(
-				'tokens'  => isset( $style['tokens'] ) && is_array( $style['tokens'] ) ? $style['tokens'] : array(),
-				'palette' => isset( $style['palette'] ) ? $style['palette'] : '',
+				'tokens'  => $requested_tokens,
+				'palette' => $requested_palette,
 			)
+		);
+
+		self::$style_pro_locked_notice = \EverestForms\Addons\StyleCustomizer\V2\RestController::pro_locked_notice(
+			$requested_tokens,
+			$clean['tokens'],
+			$requested_palette,
+			isset( $clean['palette'] ) ? $clean['palette'] : ''
 		);
 
 		if ( empty( $clean['tokens'] ) && empty( $clean['palette'] ) ) {

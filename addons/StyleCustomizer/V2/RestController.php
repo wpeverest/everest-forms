@@ -568,13 +568,18 @@ final class RestController {
 	 * {@see Sanitizer::sanitize_record()} then had to drop for being Pro-only on a free site —
 	 * without this, the AI's own summary claims a change that never actually applied.
 	 *
+	 * Public: also called by {@see EVF_AI_Form_Builder::maybe_apply_ai_style()} for the
+	 * create-time/refine "style" block embedded in a form-generation response, so a free
+	 * site gets the same honest notice there as it does from the Style Customizer's own
+	 * AI launcher — not just here.
+	 *
 	 * @param array  $requested_tokens  Raw tokens the AI asked to set.
 	 * @param array  $clean_tokens      Tokens that survived sanitization.
 	 * @param string $requested_palette Raw palette id the AI asked for.
 	 * @param string $clean_palette     Palette id that survived sanitization.
 	 * @return string Empty string when nothing was Pro-blocked.
 	 */
-	protected static function pro_locked_notice( array $requested_tokens, array $clean_tokens, $requested_palette, $clean_palette ) {
+	public static function pro_locked_notice( array $requested_tokens, array $clean_tokens, $requested_palette, $clean_palette ) {
 		if ( Engine::pro_active() ) {
 			return '';
 		}
