@@ -62,7 +62,9 @@ async function requestAiStyle(
 	formId: number,
 	prompt: string,
 	refinePrompt: string,
-	currentRecord: { tokens: Record< string, unknown >; palette: string }
+	currentRecord: { tokens: Record< string, unknown >; palette: string },
+	history: Array< { role: 'user' | 'assistant'; text: string } >,
+	lastChangedKeys: string[]
 ): Promise< { ok: true; data: AiStyleResult } | { ok: false; message: string } > {
 	if ( ! apiFetch ) {
 		return { ok: false, message: __( 'AI styling is unavailable on this screen.', 'everest-forms' ) };
@@ -75,6 +77,10 @@ async function requestAiStyle(
 				prompt,
 				refine_prompt: refinePrompt,
 				current_record: refinePrompt ? currentRecord : undefined,
+				// Conversation memory for a refine call — see class-evf-ai-api.php::style_form()
+				// for why a bare "current_record" token dump isn't enough context on its own.
+				history: refinePrompt ? history : undefined,
+				last_changed_keys: refinePrompt ? lastChangedKeys : undefined,
 			},
 		} ) ) as AiStyleResult;
 		return { ok: true, data: { tokens: data.tokens || {}, palette: data.palette || '', summary: data.summary || '' } };
@@ -95,6 +101,9 @@ export function AiAssistant() {
 	const [ input, setInput ] = useState( '' );
 	const [ loading, setLoading ] = useState( false );
 	const [ originalPrompt, setOriginalPrompt ] = useState( '' );
+	// Schema key(s) the AI's own last turn changed — sent back on the next refine so a follow-up
+	// like "increase it to 200px" stays anchored to that same property (see class-evf-ai-api.php).
+	const [ lastChangedKeys, setLastChangedKeys ] = useState< string[] >( [] );
 	const [ buttonHovered, setButtonHovered ] = useState( false );
 	const [ tooltipHovered, setTooltipHovered ] = useState( false );
 	const showTooltip = ! open && ( buttonHovered || tooltipHovered );
@@ -176,18 +185,27 @@ export function AiAssistant() {
 		setLoading( true );
 		setMessages( ( prev ) => [ ...prev, { role: 'assistant', text: '', loading: true } ] );
 
+		// Snapshot of the dialogue BEFORE this turn's user message — real conversation history,
+		// not just the very first prompt ever typed (see class-evf-ai-api.php::style_form()).
+		const history = messages
+			.filter( ( m ) => ! m.loading )
+			.map( ( m ) => ( { role: m.role, text: m.text } ) );
+
 		const result = await requestAiStyle(
 			store.settings.restBase,
 			store.settings.formId,
 			isRefine ? originalPrompt : userText,
 			isRefine ? userText : '',
-			{ tokens: store.tokens, palette: store.palette }
+			{ tokens: store.tokens, palette: store.palette },
+			history,
+			lastChangedKeys
 		);
 
 		if ( ! isRefine ) setOriginalPrompt( userText );
 
 		if ( result.ok ) {
 			store.applyAiRecord( result.data.tokens, result.data.palette || undefined );
+			setLastChangedKeys( Object.keys( result.data.tokens || {} ) );
 		}
 
 		setMessages( ( prev ) => {

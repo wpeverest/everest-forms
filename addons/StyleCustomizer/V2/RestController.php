@@ -349,6 +349,13 @@ final class RestController {
 		$current       = $request->get_param( 'current_record' );
 		$current       = is_array( $current ) ? $current : array();
 
+		// Conversation memory: without these, a refine call only sees the ORIGINAL prompt plus
+		// the current token dump, with no signal of which key(s) the gateway itself touched last
+		// turn — that ambiguity is what causes a "increase it to 200px" follow-up to land on the
+		// wrong (often form-wide) property instead of continuing the specific edit it just made.
+		$history            = self::sanitize_history( $request->get_param( 'history' ) );
+		$last_changed_keys  = self::sanitize_token_keys( $request->get_param( 'last_changed_keys' ) );
+
 		if ( '' === $prompt ) {
 			return new \WP_Error(
 				'evf_style_bad_request',
@@ -368,7 +375,20 @@ final class RestController {
 			);
 		}
 
-		$ai_style = \EVF_AI_API::style_form( $prompt, $current, $refine_prompt );
+		$form_id      = absint( $request['id'] );
+		$field_labels = self::get_field_labels( $form_id );
+
+		$ai_style = \EVF_AI_API::style_form(
+			$prompt,
+			$current,
+			$refine_prompt,
+			$history,
+			$last_changed_keys,
+			array(
+				'field_labels'    => $field_labels,
+				'available_fonts' => function_exists( 'evfsc_get_google_font_families' ) ? evfsc_get_google_font_families() : array(),
+			)
+		);
 
 		if ( is_wp_error( $ai_style ) ) {
 			$code = $ai_style->get_error_code();
@@ -393,8 +413,11 @@ final class RestController {
 			true
 		);
 
-		$summary = isset( $ai_style['summary'] ) ? sanitize_text_field( (string) $ai_style['summary'] ) : '';
-		$notice  = self::pro_locked_notice( $requested_tokens, $clean['tokens'], $requested_palette, isset( $clean['palette'] ) ? $clean['palette'] : '' );
+		$summary  = isset( $ai_style['summary'] ) ? sanitize_text_field( (string) $ai_style['summary'] ) : '';
+		$notices  = array();
+		$notices[] = self::pro_locked_notice( $requested_tokens, $clean['tokens'], $requested_palette, isset( $clean['palette'] ) ? $clean['palette'] : '' );
+		$notices[] = self::unsupported_capability_notice( $clean['tokens'], trim( $prompt . ' ' . $refine_prompt ), $field_labels );
+		$notice    = trim( implode( ' ', array_filter( $notices ) ) );
 		if ( $notice ) {
 			$summary = trim( $summary . ' ' . $notice );
 		}
@@ -405,6 +428,138 @@ final class RestController {
 				'palette' => isset( $clean['palette'] ) ? $clean['palette'] : '',
 				'summary' => $summary,
 			)
+		);
+	}
+
+	/**
+	 * Sanitize the client's conversation history for the AI gateway — a plain, capped list of
+	 * {role, text} turns so a refine call carries the actual dialogue, not just the very first
+	 * prompt ever typed in this chat session.
+	 *
+	 * @param mixed $raw Raw `history` param.
+	 * @return array List of { role: 'user'|'assistant', text: string }, oldest first, capped at 20.
+	 */
+	protected static function sanitize_history( $raw ) {
+		if ( ! is_array( $raw ) ) {
+			return array();
+		}
+		$out = array();
+		foreach ( array_slice( $raw, -20 ) as $turn ) {
+			if ( ! is_array( $turn ) || empty( $turn['text'] ) ) {
+				continue;
+			}
+			$out[] = array(
+				'role' => 'user' === ( $turn['role'] ?? '' ) ? 'user' : 'assistant',
+				'text' => sanitize_textarea_field( (string) $turn['text'] ),
+			);
+		}
+		return $out;
+	}
+
+	/**
+	 * Sanitize a list of token keys the client claims the AI's PREVIOUS turn changed — filtered
+	 * against the real schema so only genuine token keys ever reach the gateway or any local logic.
+	 *
+	 * @param mixed $raw Raw `last_changed_keys` param.
+	 * @return array List of valid schema keys.
+	 */
+	protected static function sanitize_token_keys( $raw ) {
+		if ( ! is_array( $raw ) ) {
+			return array();
+		}
+		$out = array();
+		foreach ( $raw as $key ) {
+			if ( is_string( $key ) && Schema::get( $key ) ) {
+				$out[] = $key;
+			}
+		}
+		return $out;
+	}
+
+	/**
+	 * Current form's field labels (skipping structural fields with no user-facing label) —
+	 * used to spot when a prompt names one specific field for a change the engine can only
+	 * apply form-wide (see {@see unsupported_capability_notice()}).
+	 *
+	 * @param int $form_id Form post ID.
+	 * @return array List of field labels.
+	 */
+	protected static function get_field_labels( $form_id ) {
+		$post = get_post( $form_id );
+		if ( ! $post || 'everest_form' !== $post->post_type ) {
+			return array();
+		}
+		$data   = evf_decode( $post->post_content );
+		$labels = array();
+		foreach ( ( $data['form_fields'] ?? array() ) as $field ) {
+			if ( ! empty( $field['label'] ) ) {
+				$labels[] = (string) $field['label'];
+			}
+		}
+		return $labels;
+	}
+
+	/**
+	 * Build an honest addendum for AI-requested changes that survived sanitization but can't
+	 * actually be fulfilled the way the AI's summary implies:
+	 *  - a background image: the AI has no access to this site's media library, so any URL it
+	 *    invents is fake — never let it apply silently (EVF-2706-style "attempted the impossible").
+	 *  - a font family that isn't a real, currently-available Google Font — the schema's static
+	 *    options only contain the "Theme default" placeholder (real families are data-driven), so
+	 *    an invented name would otherwise sail through sanitization and silently no-op in the browser.
+	 *  - field spacing/padding named one specific field in the prompt — the engine only has a
+	 *    form-wide spacing token, so the change (still applied, it's the best available) needs an
+	 *    honest caveat instead of quietly affecting every field.
+	 *
+	 * @param array  $clean_tokens Sanitized tokens for this turn — mutated by reference to strip
+	 *                             anything this guard rejects outright (image, bad font).
+	 * @param string $prompt_text  The user's combined prompt + refine text, for the field-name check.
+	 * @param array  $field_labels Current form's field labels, for the field-name check.
+	 * @return string Empty string when nothing was flagged.
+	 */
+	protected static function unsupported_capability_notice( array &$clean_tokens, $prompt_text, array $field_labels ) {
+		$labels = array();
+
+		if ( ! empty( $clean_tokens['wrap.bgImage']['desktop'] ) ) {
+			unset( $clean_tokens['wrap.bgImage'] );
+			$labels[] = __( 'a background image (choose one from the Style panel\'s Background section instead)', 'everest-forms' );
+		}
+
+		if ( ! empty( $clean_tokens['fonts.family']['desktop'] ) ) {
+			$family    = (string) $clean_tokens['fonts.family']['desktop'];
+			$available = function_exists( 'evfsc_get_google_font_families' ) ? evfsc_get_google_font_families() : array();
+			if ( ! in_array( $family, $available, true ) ) {
+				unset( $clean_tokens['fonts.family'] );
+				$labels[] = sprintf(
+					/* translators: %s: font family name the AI could not find. */
+					__( '"%s" (not a recognised font — pick one from the Style panel instead)', 'everest-forms' ),
+					$family
+				);
+			}
+		}
+
+		$field_wide_only = array_intersect( array_keys( $clean_tokens ), array( 'field.margin', 'input.pad' ) );
+		if ( $field_wide_only && $prompt_text ) {
+			foreach ( $field_labels as $label ) {
+				if ( $label && false !== stripos( $prompt_text, $label ) ) {
+					$labels[] = sprintf(
+						/* translators: %s: the specific field the user named. */
+						__( 'spacing for just "%s" (field spacing currently applies to every field at once)', 'everest-forms' ),
+						$label
+					);
+					break;
+				}
+			}
+		}
+
+		if ( ! $labels ) {
+			return '';
+		}
+
+		return sprintf(
+			/* translators: %s: comma-separated list of requested changes the AI could not apply as asked. */
+			__( "Couldn't apply %s.", 'everest-forms' ),
+			wp_sprintf( '%l', $labels )
 		);
 	}
 

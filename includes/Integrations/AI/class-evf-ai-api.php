@@ -90,14 +90,21 @@ class EVF_AI_API {
 	 * running it through `Sanitizer::sanitize_record()` before it ever touches a
 	 * stored record — this class only talks to the gateway.
 	 *
-	 * @param string $prompt        The style request ("sleek dark, rounded inputs").
-	 * @param array  $current_record Current v2 record (tokens/palette) — sent as context
-	 *                               for a refine ("make the buttons bigger"); empty for
-	 *                               a fresh request.
-	 * @param string $refine_prompt Follow-up instruction; empty = fresh/regenerate.
+	 * @param string $prompt            The style request ("sleek dark, rounded inputs").
+	 * @param array  $current_record    Current v2 record (tokens/palette) — sent as context
+	 *                                  for a refine ("make the buttons bigger"); empty for
+	 *                                  a fresh request.
+	 * @param string $refine_prompt     Follow-up instruction; empty = fresh/regenerate.
+	 * @param array  $history           Conversation turns so far, oldest first: [{role, text}].
+	 *                                  Lets a refine call see the actual dialogue instead of just
+	 *                                  the original prompt + a token dump.
+	 * @param array  $last_changed_keys Schema key(s) the AI's own previous turn changed — an
+	 *                                  explicit anchor so "increase it to 200px" continues that
+	 *                                  same property instead of the gateway re-guessing from state.
+	 * @param array  $context           Extra site context: { field_labels, available_fonts }.
 	 * @return array|WP_Error  { tokens, palette, summary } on success.
 	 */
-	public static function style_form( string $prompt, array $current_record = array(), string $refine_prompt = '' ) {
+	public static function style_form( string $prompt, array $current_record = array(), string $refine_prompt = '', array $history = array(), array $last_changed_keys = array(), array $context = array() ) {
 		$token = EVF_AI_Registration::get_site_token();
 		if ( ! $token ) {
 			return new WP_Error( 'not_registered', __( 'AI features are not yet active on this site.', 'everest-forms' ) );
@@ -116,16 +123,28 @@ class EVF_AI_API {
 		$path = $is_refine ? '/ai/v1/update' : '/ai/v1/generate';
 		$body = $is_refine
 			? array(
-				'prompt'        => $prompt,
-				'refine_prompt' => $refine_prompt,
-				'license_key'   => self::get_license_key(),
-				'current_form'  => $current_record, // field name is generic on the gateway side.
-				'task'          => 'style',
+				'prompt'             => $prompt,
+				'refine_prompt'      => $refine_prompt,
+				'license_key'        => self::get_license_key(),
+				'current_form'       => $current_record, // field name is generic on the gateway side.
+				'task'               => 'style',
+				// Forward-compatible additions (see themegrill-ai-cloud gateway/products/
+				// everest_forms_style.py for the matching support) — history + last_changed_keys
+				// anchor a refine to what the previous turn actually did instead of the gateway
+				// re-guessing from a bare token dump; field_labels/available_fonts tell it what's
+				// genuinely settable (a specific field name, a real Google Font) versus not
+				// (e.g. a background image, which this site's media library it has no access to).
+				'history'            => $history,
+				'last_changed_keys'  => $last_changed_keys,
+				'field_labels'       => $context['field_labels'] ?? array(),
+				'available_fonts'    => $context['available_fonts'] ?? array(),
 			)
 			: array(
-				'prompt'      => $prompt,
-				'license_key' => self::get_license_key(),
-				'task'        => 'style',
+				'prompt'          => $prompt,
+				'license_key'     => self::get_license_key(),
+				'task'            => 'style',
+				'field_labels'    => $context['field_labels'] ?? array(),
+				'available_fonts' => $context['available_fonts'] ?? array(),
 			);
 
 		$response = self::request( 'POST', $path, $body, $token );
