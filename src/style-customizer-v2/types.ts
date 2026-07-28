@@ -160,6 +160,12 @@ export interface BootstrapSettings {
 	previewSession: string;
 	/** Whether the ThemeGrill AI Cloud integration is usable on this site; drives the AI launcher. */
 	aiEnabled: boolean;
+	/** admin-ajax.php URL, used for the discovery-hint dismissal call. */
+	ajaxUrl: string;
+	/** Nonce for the shared `evf_ai_dismiss_hint` AJAX action (see EVF_AI_Ajax::dismiss_hint()). */
+	aiNonce: string;
+	/** Whether this user has already dismissed (or engaged with) the "Style with AI" discovery hint. */
+	aiHintDismissed: boolean;
 	/** The full REST GET payload, localized inline so the panel can init without a network round-trip. */
 	payload?: StylePayload;
 }

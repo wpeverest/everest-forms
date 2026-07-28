@@ -28,6 +28,11 @@ const EDIT_SUGGESTIONS = [
 const GREETING =
 	"Hi! I'm your AI form assistant. Tell me how to improve this form — or pick a suggestion below.";
 
+// Discovery hint for anyone who hasn't opened the AI Form Assistant before — shown once,
+// dismissed forever (per-user, via EVF_AI_Ajax::dismiss_hint()) either by closing it or
+// by actually opening the panel.
+const AI_HINT_NAME = 'form';
+
 // Builder context (form id + nonce) localized by class-evf-admin-assets.php.
 interface BuilderAIConfig {
 	ajaxUrl?: string;
@@ -35,6 +40,7 @@ interface BuilderAIConfig {
 	formId?: number;
 	formTitle?: string;
 	aiDisabled?: boolean;
+	hintDismissed?: boolean;
 }
 const cfg: BuilderAIConfig = ( window as any ).evfBuilderAI || {};
 
@@ -100,6 +106,35 @@ const BuilderAIChat: React.FC = () => {
 	const [rateLimited, setRateLimited] = useState(false);
 	const [upgradeUrl, setUpgradeUrl]   = useState('');
 	const showTooltip = !open && (buttonHovered || tooltipHovered);
+	const [hintDismissed, setHintDismissed] = useState(!!cfg.hintDismissed);
+	const dismissHint = () => {
+		if (hintDismissed) return;
+		setHintDismissed(true);
+		if (!cfg.ajaxUrl) return;
+		const body = new URLSearchParams();
+		body.append('action', 'evf_ai_dismiss_hint');
+		body.append('hint', AI_HINT_NAME);
+		body.append('nonce', cfg.nonce || '');
+		fetch(cfg.ajaxUrl, {
+			method: 'POST',
+			credentials: 'same-origin',
+			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+			body: body.toString(),
+		}).catch(() => {
+			// Best-effort only — worst case the hint reappears next visit.
+		});
+	};
+	const showHint = !open && !hintDismissed && !AI_DISABLED;
+	// The builder shell shows its own loading overlay (`.everest-forms-overlay`, faded out on
+	// window `load` — see form-builder.js) while fields/canvas are still booting. Stay hidden
+	// until then so this floating button doesn't sit on top of that loading screen.
+	const [builderLoaded, setBuilderLoaded] = useState(() => document.readyState === 'complete');
+	useEffect(() => {
+		if (builderLoaded) return;
+		const onLoad = () => setBuilderLoaded(true);
+		window.addEventListener('load', onLoad);
+		return () => window.removeEventListener('load', onLoad);
+	}, [builderLoaded]);
 	// Read the customizer button's actual CSS bottom so we stack correctly even
 	// in multi-part mode (where the customizer moves up to 62px). Falls back to
 	// null when the addon is not active — AI button then sits at bottom: 22px.
@@ -252,7 +287,7 @@ const BuilderAIChat: React.FC = () => {
 	// ── Render ──────────────────────────────────────────────────────────────
 
 	// Hidden outside the Builder (Fields) tab.
-	if (!onBuilderTab) return null;
+	if (!onBuilderTab || !builderLoaded) return null;
 
 	return (
 		<>
@@ -260,7 +295,7 @@ const BuilderAIChat: React.FC = () => {
 			     Shows sparkles when closed, X when open.
 			     zIndex sits above the chat panel so it's always clickable. ── */}
 			<button
-				onClick={() => { if (!AI_DISABLED) setOpen(o => !o); }}
+				onClick={() => { if (!AI_DISABLED) { setOpen(o => !o); dismissHint(); } }}
 				style={{
 					position: 'fixed',
 					bottom: BTN_BOTTOM,
@@ -299,8 +334,105 @@ const BuilderAIChat: React.FC = () => {
 				{open ? <LuX size={22} color="white" /> : <LuSparkles size={24} color="white" />}
 			</button>
 
+			{/* ── Discovery hint — shown once until dismissed or the panel is opened ── */}
+			{showHint && (
+				<div
+					style={{
+						position: 'fixed',
+						bottom: BTN_BOTTOM + BTN_SIZE + 10,
+						right: BTN_RIGHT,
+						width: 272,
+						zIndex: 1000002,
+					}}
+				>
+					<div
+						style={{
+							position: 'relative',
+							background: '#fff',
+							border: '1px solid #e9e2f3',
+							borderRadius: 14,
+							padding: '14px 16px',
+							boxShadow: '0 10px 30px rgba(88,45,163,.22), 0 2px 8px rgba(20,23,40,.08)',
+						}}
+					>
+						<button
+							type="button"
+							aria-label="Dismiss"
+							onClick={dismissHint}
+							style={{
+								position: 'absolute',
+								top: 8,
+								right: 8,
+								border: 0,
+								background: 'none',
+								color: '#9a95a8',
+								cursor: 'pointer',
+								width: 22,
+								height: 22,
+								borderRadius: '50%',
+								display: 'grid',
+								placeItems: 'center',
+							}}
+							onMouseEnter={e => {
+								e.currentTarget.style.background = 'rgba(117,69,187,.12)';
+								e.currentTarget.style.color = '#7545BB';
+							}}
+							onMouseLeave={e => {
+								e.currentTarget.style.background = 'none';
+								e.currentTarget.style.color = '#9a95a8';
+							}}
+						>
+							<LuX size={13} />
+						</button>
+						<div
+							style={{
+								display: 'flex',
+								alignItems: 'center',
+								gap: 5,
+								fontSize: 11,
+								fontWeight: 700,
+								letterSpacing: '.03em',
+								textTransform: 'uppercase',
+								color: '#7545BB',
+								marginBottom: 6,
+							}}
+						>
+							<LuSparkles size={12} />
+							New
+						</div>
+						<div style={{ fontSize: 13, lineHeight: 1.5, color: '#383838', paddingRight: 14 }}>
+							Tell me what to add or change, and I’ll update your form for you.
+						</div>
+						<div
+							style={{
+								position: 'absolute',
+								bottom: -8,
+								right: 24,
+								width: 0,
+								height: 0,
+								borderLeft: '8px solid transparent',
+								borderRight: '8px solid transparent',
+								borderTop: '8px solid #e9e2f3',
+							}}
+						/>
+						<div
+							style={{
+								position: 'absolute',
+								bottom: -6,
+								right: 25,
+								width: 0,
+								height: 0,
+								borderLeft: '7px solid transparent',
+								borderRight: '7px solid transparent',
+								borderTop: '7px solid #fff',
+							}}
+						/>
+					</div>
+				</div>
+			)}
+
 			{/* ── Tooltip — matches tooltipster style exactly, appears above the button ── */}
-			{showTooltip && (
+			{showTooltip && !showHint && (
 				<div
 					onMouseEnter={() => setTooltipHovered(true)}
 					onMouseLeave={() => setTooltipHovered(false)}

@@ -27,6 +27,9 @@ const settings: BootstrapSettings = rawSettings || {
 	markerClass: 'evf-style-v2',
 	previewSession: '',
 	aiEnabled: false,
+	ajaxUrl: '',
+	aiNonce: '',
+	aiHintDismissed: true,
 };
 
 // Bridge so the (legacy jQuery) Fields tab can flag unsaved changes without importing the bundle.

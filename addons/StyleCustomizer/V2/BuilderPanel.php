@@ -152,11 +152,11 @@ final class BuilderPanel {
 			'evf-style-v2-panel',
 			'evfStyleV2',
 			array(
-				'restBase'       => '/everest-forms/v1/styles',
-				'formId'         => $form_id,
-				'formTitle'      => get_the_title( $form_id ),
+				'restBase'         => '/everest-forms/v1/styles',
+				'formId'           => $form_id,
+				'formTitle'        => get_the_title( $form_id ),
 				// Scheme forced to match the admin request to avoid a mixed-content iframe block.
-				'previewUrl'     => set_url_scheme(
+				'previewUrl'       => set_url_scheme(
 					add_query_arg(
 						array(
 							'form_id'                  => $form_id,
@@ -169,14 +169,19 @@ final class BuilderPanel {
 					is_ssl() ? 'https' : 'http'
 				),
 				// Rule template URL, version-stamped to avoid a stale browser cache.
-				'frontendCssUrl' => add_query_arg( 'ver', (string) Schema::version() . '.' . self::asset_mtime( 'assets/css/frontend.css' ), evf()->plugin_url() . '/addons/StyleCustomizer/V2/assets/css/frontend.css' ),
-				'wrapperId'      => 'evf-' . $form_id,
-				'markerClass'    => FrontendEnqueue::MARKER_CLASS,
-				'previewSession' => $preview_session,
+				'frontendCssUrl'   => add_query_arg( 'ver', (string) Schema::version() . '.' . self::asset_mtime( 'assets/css/frontend.css' ), evf()->plugin_url() . '/addons/StyleCustomizer/V2/assets/css/frontend.css' ),
+				'wrapperId'        => 'evf-' . $form_id,
+				'markerClass'      => FrontendEnqueue::MARKER_CLASS,
+				'previewSession'   => $preview_session,
 				// Same AI-availability check the Create-with-AI feature uses.
-				'aiEnabled'      => class_exists( 'EVF_AI_Registration' ) && ! \EVF_AI_Registration::is_local_site(),
+				'aiEnabled'        => class_exists( 'EVF_AI_Registration' ) && ! \EVF_AI_Registration::is_local_site(),
+				// Discovery-hint dismissal — per-user (not per-browser), shared AJAX action/nonce
+				// with the Fields-tab AI assistant (see EVF_AI_Ajax::dismiss_hint()).
+				'ajaxUrl'          => admin_url( 'admin-ajax.php' ),
+				'aiNonce'          => wp_create_nonce( 'evf_ai_nonce' ),
+				'aiHintDismissed'  => (bool) get_user_meta( get_current_user_id(), 'evf_ai_style_hint_dismissed', true ),
 				// Full initial REST payload, computed here so the panel initializes without a follow-up fetch.
-				'payload'        => RestController::build_payload( $form_id ),
+				'payload'          => RestController::build_payload( $form_id ),
 			)
 		);
 	}

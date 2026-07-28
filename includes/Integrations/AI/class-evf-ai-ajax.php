@@ -14,6 +14,28 @@ class EVF_AI_Ajax {
 		add_action( 'wp_ajax_evf_ai_activate_form', array( $this, 'activate_form' ) );
 		add_action( 'wp_ajax_evf_ai_discard_form', array( $this, 'discard_form' ) );
 		add_action( 'wp_ajax_evf_ai_render_fields', array( $this, 'render_fields' ) );
+		add_action( 'wp_ajax_evf_ai_dismiss_hint', array( $this, 'dismiss_hint' ) );
+	}
+
+	/**
+	 * Persist that the current user has dismissed (or engaged with) an AI discovery
+	 * hint, so it never shows again for them — stored per-user, not per-browser, so
+	 * it stays dismissed across devices.
+	 */
+	public function dismiss_hint() {
+		check_ajax_referer( 'evf_ai_nonce', 'nonce' );
+
+		if ( ! current_user_can( 'manage_everest_forms' ) ) {
+			wp_send_json_error( array( 'message' => __( 'You do not have permission to use this feature.', 'everest-forms' ) ), 403 );
+		}
+
+		$hint = isset( $_POST['hint'] ) ? sanitize_key( wp_unslash( $_POST['hint'] ) ) : '';
+		if ( ! in_array( $hint, array( 'form', 'style' ), true ) ) {
+			wp_send_json_error( array( 'message' => __( 'Unknown hint.', 'everest-forms' ) ) );
+		}
+
+		update_user_meta( get_current_user_id(), 'evf_ai_' . $hint . '_hint_dismissed', 1 );
+		wp_send_json_success();
 	}
 
 	/**

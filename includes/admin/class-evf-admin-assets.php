@@ -506,13 +506,15 @@ class EVF_Admin_Assets {
 				'evf-builder-ai',
 				'evfBuilderAI',
 				array(
-					'ajaxUrl'    => admin_url( 'admin-ajax.php' ),
-					'nonce'      => wp_create_nonce( 'evf_ai_nonce' ),
-					'formId'     => $evf_ai_form_id,
-					'formTitle'  => get_the_title( $evf_ai_form_id ),
+					'ajaxUrl'       => admin_url( 'admin-ajax.php' ),
+					'nonce'         => wp_create_nonce( 'evf_ai_nonce' ),
+					'formId'        => $evf_ai_form_id,
+					'formTitle'     => get_the_title( $evf_ai_form_id ),
 					// On local / development sites the AI gateway is unavailable: the
 					// assistant is shown but disabled rather than hidden.
-					'aiDisabled' => class_exists( 'EVF_AI_Registration' ) && EVF_AI_Registration::is_local_site(),
+					'aiDisabled'    => class_exists( 'EVF_AI_Registration' ) && EVF_AI_Registration::is_local_site(),
+					// Per-user (not per-browser) — stays dismissed across devices once acted on.
+					'hintDismissed' => (bool) get_user_meta( get_current_user_id(), 'evf_ai_form_hint_dismissed', true ),
 				)
 			);
 		}

@@ -41,6 +41,11 @@ const GREETING = __(
 	'everest-forms'
 );
 
+// Discovery hint for anyone who hasn't opened Style with AI before — shown once,
+// dismissed forever (per-user, via EVF_AI_Ajax::dismiss_hint()) either by closing it
+// or by actually opening the panel.
+const AI_HINT_NAME = 'style';
+
 interface AiStyleResult {
 	tokens: Record< string, any >;
 	palette: string;
@@ -117,10 +122,33 @@ export function AiAssistant() {
 	// Schema key(s) the AI's own last turn changed — sent back on the next refine so a follow-up
 	// like "increase it to 200px" stays anchored to that same property (see class-evf-ai-api.php).
 	const [ lastChangedKeys, setLastChangedKeys ] = useState< string[] >( [] );
+	const [ onStyleTab, setOnStyleTab ] = useState( true );
 	const [ buttonHovered, setButtonHovered ] = useState( false );
 	const [ tooltipHovered, setTooltipHovered ] = useState( false );
 	const showTooltip = ! open && ( buttonHovered || tooltipHovered );
-	const [ onStyleTab, setOnStyleTab ] = useState( true );
+	// The builder shell shows its own loading overlay (`.everest-forms-overlay`, faded out on
+	// window `load` — see form-builder.js) while fields/canvas are still booting. Stay hidden
+	// until then so this floating button doesn't sit on top of that loading screen.
+	const [ builderLoaded, setBuilderLoaded ] = useState( () => 'complete' === document.readyState );
+	const [ hintDismissed, setHintDismissed ] = useState( !! store.settings.aiHintDismissed );
+	const dismissHint = () => {
+		if ( hintDismissed ) return;
+		setHintDismissed( true );
+		if ( ! store.settings.ajaxUrl ) return;
+		const body = new URLSearchParams();
+		body.append( 'action', 'evf_ai_dismiss_hint' );
+		body.append( 'hint', AI_HINT_NAME );
+		body.append( 'nonce', store.settings.aiNonce );
+		fetch( store.settings.ajaxUrl, {
+			method: 'POST',
+			credentials: 'same-origin',
+			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+			body: body.toString(),
+		} ).catch( () => {
+			// Best-effort only — worst case the hint reappears next visit.
+		} );
+	};
+	const showHint = ! open && ! hintDismissed;
 	const messagesEndRef = useRef< HTMLDivElement >( null );
 	const inputRef = useRef< HTMLTextAreaElement >( null );
 
@@ -133,6 +161,13 @@ export function AiAssistant() {
 		observer.observe( panel, { attributes: true, attributeFilter: [ 'class' ] } );
 		return () => observer.disconnect();
 	}, [] );
+
+	useEffect( () => {
+		if ( builderLoaded ) return;
+		const onLoad = () => setBuilderLoaded( true );
+		window.addEventListener( 'load', onLoad );
+		return () => window.removeEventListener( 'load', onLoad );
+	}, [ builderLoaded ] );
 
 	useEffect( () => {
 		if ( ! onStyleTab ) setOpen( false );
@@ -152,7 +187,7 @@ export function AiAssistant() {
 		if ( open ) setTimeout( () => inputRef.current?.focus(), 120 );
 	}, [ open ] );
 
-	if ( ! store.settings.aiEnabled || ! onStyleTab ) {
+	if ( ! store.settings.aiEnabled || ! onStyleTab || ! builderLoaded ) {
 		return null;
 	}
 
@@ -276,7 +311,10 @@ export function AiAssistant() {
 				type="button"
 				aria-label={ __( 'Style with AI', 'everest-forms' ) }
 				aria-expanded={ open }
-				onClick={ () => setOpen( ( o ) => ! o ) }
+				onClick={ () => {
+					setOpen( ( o ) => ! o );
+					dismissHint();
+				} }
 				onMouseEnter={ ( e ) => {
 					setButtonHovered( true );
 					( e.currentTarget as HTMLButtonElement ).style.transform = 'scale(1.08)';
@@ -312,7 +350,7 @@ export function AiAssistant() {
 				{ open ? <LuX size={ 22 } color="white" /> : <LuSparkles size={ 24 } color="white" /> }
 			</button>
 
-			{ showTooltip && (
+			{ showTooltip && ! showHint && (
 				<div
 					onMouseEnter={ () => setTooltipHovered( true ) }
 					onMouseLeave={ () => setTooltipHovered( false ) }
@@ -365,6 +403,105 @@ export function AiAssistant() {
 							borderTop: '7px solid #fff',
 						} }
 					/>
+				</div>
+			) }
+
+			{ showHint && (
+				<div
+					style={ {
+						position: 'fixed',
+						bottom: BTN_BOTTOM + BTN_SIZE + 10,
+						right: BTN_RIGHT,
+						width: 272,
+						zIndex: 1000002,
+					} }
+				>
+					<div
+						style={ {
+							position: 'relative',
+							background: '#fff',
+							border: '1px solid #e9e2f3',
+							borderRadius: 14,
+							padding: '14px 16px',
+							boxShadow: '0 10px 30px rgba(88,45,163,.22), 0 2px 8px rgba(20,23,40,.08)',
+						} }
+					>
+						<button
+							type="button"
+							aria-label={ __( 'Dismiss', 'everest-forms' ) }
+							onClick={ dismissHint }
+							style={ {
+								position: 'absolute',
+								top: 8,
+								right: 8,
+								border: 0,
+								background: 'none',
+								color: '#9a95a8',
+								cursor: 'pointer',
+								width: 22,
+								height: 22,
+								borderRadius: '50%',
+								display: 'grid',
+								placeItems: 'center',
+							} }
+							onMouseEnter={ ( e ) => {
+								e.currentTarget.style.background = 'rgba(117,69,187,.12)';
+								e.currentTarget.style.color = '#7545BB';
+							} }
+							onMouseLeave={ ( e ) => {
+								e.currentTarget.style.background = 'none';
+								e.currentTarget.style.color = '#9a95a8';
+							} }
+						>
+							<LuX size={ 13 } />
+						</button>
+						<div
+							style={ {
+								display: 'flex',
+								alignItems: 'center',
+								gap: 5,
+								fontSize: 11,
+								fontWeight: 700,
+								letterSpacing: '.03em',
+								textTransform: 'uppercase',
+								color: '#7545BB',
+								marginBottom: 6,
+							} }
+						>
+							<LuSparkles size={ 12 } />
+							{ __( 'New', 'everest-forms' ) }
+						</div>
+						<div style={ { fontSize: 13, lineHeight: 1.5, color: '#383838', paddingRight: 14 } }>
+							{ __(
+								'Describe the look you want, and I’ll style your form for you.',
+								'everest-forms'
+							) }
+						</div>
+						<div
+							style={ {
+								position: 'absolute',
+								bottom: -8,
+								right: 24,
+								width: 0,
+								height: 0,
+								borderLeft: '8px solid transparent',
+								borderRight: '8px solid transparent',
+								borderTop: '8px solid #e9e2f3',
+							} }
+						/>
+						<div
+							style={ {
+								position: 'absolute',
+								bottom: -6,
+								right: 25,
+								width: 0,
+								height: 0,
+								borderLeft: '7px solid transparent',
+								borderRight: '7px solid transparent',
+								borderTop: '7px solid #fff',
+							} }
+						/>
+					</div>
 				</div>
 			) }
 
