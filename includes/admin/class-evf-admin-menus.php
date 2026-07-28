@@ -273,8 +273,8 @@ class EVF_Admin_Menus {
 		}
 		add_submenu_page(
 			'everest-forms',
-			esc_html__( 'Payment', 'everest-forms' ),
-			esc_html__( 'Payment', 'everest-forms' ),
+			esc_html__( 'Payments', 'everest-forms' ),
+			esc_html__( 'Payments', 'everest-forms' ),
 			'manage_everest_forms',
 			'evf-payment-log',
 			array( $this, 'payments_page' )
