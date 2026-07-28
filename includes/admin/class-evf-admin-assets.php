@@ -514,7 +514,12 @@ class EVF_Admin_Assets {
 					// assistant is shown but disabled rather than hidden.
 					'aiDisabled'    => class_exists( 'EVF_AI_Registration' ) && EVF_AI_Registration::is_local_site(),
 					// Per-user (not per-browser) — stays dismissed across devices once acted on.
-					'hintDismissed' => (bool) get_user_meta( get_current_user_id(), 'evf_ai_form_hint_dismissed', true ),
+					// Also treated as dismissed if the site already registered with the AI
+					// gateway before this hint existed — the AI Form Assistant itself shipped
+					// back in 3.5.0, so a site that's already using it isn't "new" to it, even
+					// for a user who's never personally clicked dismiss.
+					'hintDismissed' => (bool) get_user_meta( get_current_user_id(), 'evf_ai_form_hint_dismissed', true )
+						|| ( class_exists( 'EVF_AI_Registration' ) && EVF_AI_Registration::is_registered() ),
 				)
 			);
 		}
