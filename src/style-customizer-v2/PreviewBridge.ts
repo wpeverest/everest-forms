@@ -591,8 +591,19 @@ export class PreviewBridge {
 		el.setAttribute( 'data-evf-scv2-dummy', '1' );
 
 		if ( 'force-msg-validation' === cls ) {
-			const field = wrapper.querySelector( '.evf-field, .evf-frontend-row' );
-			( field || wrapper ).appendChild( el );
+			// Mirrors the real inline-validation placement (assets/js/frontend/ajax-submission.js):
+			// the error label lands right after the field's input (or its .input-wrapper), inside
+			// the FIRST field itself. `.evf-frontend-row` is an ANCESTOR of `.evf-field` (a row can
+			// hold several fields side by side via a grid), so a combined `.evf-field, .evf-frontend-row`
+			// selector matched the row first in document order — landing the message after the whole
+			// row, or the whole form when a row wrapper wasn't found at all.
+			const field = wrapper.querySelector( '.evf-field' );
+			const control = field ? field.querySelector( '.input-wrapper, input, select, textarea' ) : null;
+			if ( control ) {
+				control.insertAdjacentElement( 'afterend', el );
+			} else {
+				( field || wrapper ).appendChild( el );
+			}
 		} else {
 			wrapper.insertBefore( el, wrapper.firstChild );
 		}

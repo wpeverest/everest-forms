@@ -144,10 +144,16 @@ export const PREVIEW_TARGETS: PreviewTarget[] = [
 		label: 'Success message',
 	},
 	{
-		match: '.everest-forms-notice--error, .evf-error',
+		match: '.everest-forms-notice--error',
 		section: 'messages',
 		variant: 'error',
-		label: 'Message',
+		label: 'Error message',
+	},
+	{
+		match: '.evf-error',
+		section: 'messages',
+		variant: 'validation',
+		label: 'Validation message',
 	},
 	{ match: '.evf-field-title, .evf-field-title h3', section: 'text', variant: 'title', label: 'Section title' },
 	{ match: '.evf-field-description', section: 'text', variant: 'desc', label: 'Description' },
