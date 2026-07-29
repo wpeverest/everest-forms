@@ -133,11 +133,16 @@ final class RestController {
 			)
 		);
 
-		// Delete a user template.
+		// Update or delete a user template.
 		register_rest_route(
 			$this->namespace,
 			'/style-templates/(?P<tid>[A-Za-z0-9\-]+)',
 			array(
+				array(
+					'methods'             => 'POST',
+					'callback'            => array( $this, 'update_template' ),
+					'permission_callback' => array( $this, 'permissions_check' ),
+				),
 				array(
 					'methods'             => 'DELETE',
 					'callback'            => array( $this, 'delete_template' ),
@@ -208,8 +213,52 @@ final class RestController {
 
 		return rest_ensure_response(
 			array(
-				'saved'    => true,
-				'template' => $template,
+				'saved'     => true,
+				'template'  => $template,
+				'templates' => Templates::user_templates(),
+			)
+		);
+	}
+
+	/**
+	 * POST /style-templates/{tid} — update a user template in place (Pro). A legacy id 404s;
+	 * legacy templates are fork-only (create a new template via {@see create_template()} instead).
+	 *
+	 * @param \WP_REST_Request $request Request.
+	 * @return \WP_REST_Response|\WP_Error
+	 */
+	public function update_template( $request ) {
+		if ( ! Engine::pro_active() ) {
+			return new \WP_Error(
+				'evf_style_pro_only',
+				__( 'Saving custom style templates is a Pro feature.', 'everest-forms' ),
+				array( 'status' => 403 )
+			);
+		}
+
+		$incoming = $request->get_param( 'record' );
+		if ( ! is_array( $incoming ) ) {
+			return new \WP_Error(
+				'evf_style_bad_request',
+				__( 'Missing or invalid "record".', 'everest-forms' ),
+				array( 'status' => 400 )
+			);
+		}
+		$clean    = Sanitizer::sanitize_record( $incoming );
+		$template = Templates::update_user_template( (string) $request['tid'], $request->get_param( 'name' ), $clean );
+		if ( false === $template ) {
+			return new \WP_Error(
+				'evf_style_not_found',
+				__( 'That template no longer exists, or can’t be edited in place.', 'everest-forms' ),
+				array( 'status' => 404 )
+			);
+		}
+
+		return rest_ensure_response(
+			array(
+				'saved'     => true,
+				'template'  => $template,
+				'templates' => Templates::user_templates(),
 			)
 		);
 	}
@@ -315,7 +364,7 @@ final class RestController {
 	protected static function pro_only_palette_error() {
 		return new \WP_Error(
 			'evf_style_pro_only',
-			__( 'Custom colour palettes are a Pro feature.', 'everest-forms' ),
+			__( 'Custom color palettes are a Pro feature.', 'everest-forms' ),
 			array( 'status' => 403 )
 		);
 	}
@@ -836,7 +885,7 @@ final class RestController {
 			&& (int) $all[ $form_id ]['_updated_at'] !== (int) $base_updated ) {
 			return new \WP_Error(
 				'evf_style_conflict',
-				__( 'These styles were changed somewhere else. Reload before saving.', 'everest-forms' ),
+				__( 'These styles changed elsewhere — reload before saving.', 'everest-forms' ),
 				array( 'status' => 409 )
 			);
 		}

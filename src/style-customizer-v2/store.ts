@@ -30,6 +30,17 @@ interface HistoryEntry {
 	snap: Snapshot;
 }
 
+/** Active "edit a saved template" session — see {@see StyleStore.beginTemplateEdit}. */
+interface EditingTemplate {
+	/** The card that was clicked — stays stable across renames, unlike `id`. */
+	sourceId: string;
+	/** The real template id when editing a user template in place; null when forking (built-in/legacy source). */
+	id: string | null;
+	name: string;
+	/** Set only when forking — the source template's display name, for "New template from X" copy. */
+	from?: string;
+}
+
 const MAX_HISTORY = 60;
 
 class StyleStore {
@@ -70,6 +81,9 @@ class StyleStore {
 	/** Optional UI hook: fired when a manual edit detaches the active palette link. */
 	onPaletteUnlinked: ( ( paletteName: string ) => void ) | null = null;
 
+	/** Non-null while a saved template is being edited (or forked) — see {@see beginTemplateEdit}. */
+	editingTemplate: EditingTemplate | null = null;
+
 	// Bookkeeping.
 	affected: string[] | null = null;
 	private saved: Snapshot;
@@ -79,6 +93,15 @@ class StyleStore {
 	private redoStack: HistoryEntry[] = [];
 	private gestureOpen = false;
 	private gestureTimer: ReturnType< typeof setTimeout > | null = null;
+	/** Snapshot taken the instant a template session began, so Cancel/Save-exit can fully unwind it. */
+	private editSnapshot: Snapshot | null = null;
+	/** `undoStack` length once the session's own bootstrap mutation (if any) has been pushed —
+	 *  the mid-session Undo/redo threshold; never crossed back over while a session is active. */
+	private editUndoFloor = 0;
+	/** `undoStack` length right before the session began at all (i.e. before any bootstrap push) —
+	 *  what `exitTemplateEdit()` truncates back to, so no trace of the session (bootstrap included)
+	 *  is left in the undo history once it ends. */
+	private editPreSessionUndoLength = 0;
 
 	constructor( payload: StylePayload, settings: BootstrapSettings ) {
 		this.settings = settings;
@@ -233,8 +256,13 @@ class StyleStore {
 		this.push( label );
 	}
 
+	/** The undo floor while a template edit is active — Undo can never cross back over it. */
+	private undoFloor(): number {
+		return this.editingTemplate ? this.editUndoFloor : 0;
+	}
+
 	canUndo(): boolean {
-		return this.undoStack.length > 0;
+		return this.undoStack.length > this.undoFloor();
 	}
 
 	canRedo(): boolean {
@@ -242,7 +270,7 @@ class StyleStore {
 	}
 
 	undo() {
-		if ( ! this.undoStack.length ) {
+		if ( this.undoStack.length <= this.undoFloor() ) {
 			return;
 		}
 		const top = this.undoStack.pop() as HistoryEntry;
@@ -463,6 +491,76 @@ class StyleStore {
 	}
 
 	/**
+	 * Begin editing a saved template. Snapshots the current working state (so Cancel — or a
+	 * successful Save — can fully unwind back to it), applies the template's tokens for real
+	 * (exactly like {@see applyTemplate}, so the whole Design tab works normally), and records
+	 * the undo floor so history can't cross back over the edit boundary.
+	 *
+	 * `editableInPlace` is false for built-in and legacy templates — the edit session still
+	 * behaves identically, but `editingTemplate.id` stays null so Save creates a new template
+	 * (a "fork") instead of overwriting the source.
+	 */
+	beginTemplateEdit( tpl: StylePayload[ 'templates' ][ number ], editableInPlace: boolean ) {
+		this.editSnapshot = this.snapshot();
+		this.editPreSessionUndoLength = this.undoStack.length;
+		this.applyTemplate( tpl.id, tpl.tokens, tpl.palette );
+		// Set AFTER applyTemplate() — its own history push is the edit session's bootstrap, not a
+		// user edit within it, so Undo must start disabled, not able to undo the apply itself.
+		this.editUndoFloor = this.undoStack.length;
+		this.editingTemplate = {
+			sourceId: tpl.id,
+			id: editableInPlace ? tpl.id : null,
+			name: tpl.name,
+			from: editableInPlace ? undefined : tpl.name,
+		};
+		this.notify( [] );
+	}
+
+	/**
+	 * Begin the "Create Style Template" session — save whatever is already on the form right now
+	 * as a brand-new template. Unlike {@see beginTemplateEdit}, there is no source and nothing is
+	 * mutated (no reset-then-overlay, no history push); this only opens the same session/banner/
+	 * lock the other two entry points use, around the current working state as-is.
+	 */
+	beginNewTemplate() {
+		this.editSnapshot = this.snapshot();
+		this.editPreSessionUndoLength = this.undoStack.length;
+		this.editUndoFloor = this.undoStack.length;
+		this.editingTemplate = { sourceId: '', id: null, name: '' };
+		this.notify( [] );
+	}
+
+	/** Rename the in-progress template edit's draft name (the banner's name field). */
+	renameEditingTemplate( name: string ) {
+		if ( ! this.editingTemplate ) {
+			return;
+		}
+		this.editingTemplate = { ...this.editingTemplate, name };
+		this.notify( [] );
+	}
+
+	/**
+	 * Exit an active template session, restoring the working state to exactly what it was right
+	 * before the session began. Used for BOTH Cancel and a successful Save — a template session
+	 * must never leave the current form dirty (or its undo history altered) as a side effect,
+	 * regardless of how it ends.
+	 */
+	exitTemplateEdit() {
+		if ( ! this.editSnapshot ) {
+			return;
+		}
+		const snap = this.editSnapshot;
+		this.undoStack.length = Math.min( this.undoStack.length, this.editPreSessionUndoLength );
+		this.redoStack = [];
+		this.editingTemplate = null;
+		this.editSnapshot = null;
+		this.editUndoFloor = 0;
+		this.editPreSessionUndoLength = 0;
+		// Last — its own notify() is the single re-render, reflecting all of the above too.
+		this.applySnapshot( snap );
+	}
+
+	/**
 	 * Apply an AI-generated style intent: an overlay on the current state (unlike
 	 * {@see applyTemplate}, never resets to defaults first). If `paletteId` is set, its colours
 	 * are applied first and `tokens` overlaid on top.
@@ -559,18 +657,18 @@ class StyleStore {
 		return parent ? parent.id : '';
 	}
 
-	/** Add a newly-saved user template to the front of the list (no history entry). */
-	addUserTemplate( template: StylePayload[ 'templates' ][ number ] ) {
-		this.userTemplates = [ template, ...this.userTemplates ];
-		this.notify( [] );
-	}
-
 	/** Remove a user template from the list. */
 	removeUserTemplate( id: string ) {
 		this.userTemplates = this.userTemplates.filter( ( t ) => t.id !== id );
 		if ( this.template === id ) {
 			this.template = '';
 		}
+		this.notify( [] );
+	}
+
+	/** Replace the user templates with a fresh server list (e.g. after an update). Mirrors {@see setCustomPalettes}. */
+	setUserTemplates( templates: StylePayload[ 'templates' ] ) {
+		this.userTemplates = templates || [];
 		this.notify( [] );
 	}
 

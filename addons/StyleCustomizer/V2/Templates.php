@@ -193,11 +193,12 @@ final class Templates {
 		$tokens = isset( $record['tokens'] ) && is_array( $record['tokens'] ) ? $record['tokens'] : array();
 
 		$entry = array(
-			'id'         => 'user-' . substr( md5( $name . microtime() ), 0, 10 ),
-			'name'       => $name,
-			'palette'    => isset( $record['palette'] ) ? (string) $record['palette'] : '',
-			'tokens'     => $tokens,
-			'created_at' => time(),
+			'id'             => 'user-' . substr( md5( $name . microtime() ), 0, 10 ),
+			'name'           => $name,
+			'palette'        => isset( $record['palette'] ) ? (string) $record['palette'] : '',
+			'tokens'         => $tokens,
+			'schema_version' => isset( $record['schema_version'] ) ? (int) $record['schema_version'] : Schema::version(),
+			'created_at'     => time(),
 		);
 
 		$stored = get_option( self::USER_OPTION, array() );
@@ -214,6 +215,60 @@ final class Templates {
 			'image'   => '',
 			'palette' => $entry['palette'],
 			'tokens'  => $entry['tokens'],
+		);
+	}
+
+	/**
+	 * Update an existing user template in place. A `legacy-…` id is rejected — legacy templates
+	 * are fork-only (see {@see \EverestForms\Addons\StyleCustomizer\V2\RestController::update_template()})
+	 * and this method must never touch the v1 `evf_style_templates` option.
+	 *
+	 * @param string $id     Template id.
+	 * @param string $name   New name.
+	 * @param array  $record Sanitized v2 record (tokens + palette + schema_version).
+	 * @return array|false Updated public template shape, or false if not found / a legacy id.
+	 */
+	public static function update_user_template( $id, $name, $record ) {
+		$id = (string) $id;
+		if ( 0 === strpos( $id, 'legacy-' ) ) {
+			return false;
+		}
+
+		$name           = sanitize_text_field( (string) $name );
+		$name           = '' !== $name ? $name : __( 'My template', 'everest-forms' );
+		$tokens         = isset( $record['tokens'] ) && is_array( $record['tokens'] ) ? $record['tokens'] : array();
+		$palette        = isset( $record['palette'] ) ? (string) $record['palette'] : '';
+		$schema_version = isset( $record['schema_version'] ) ? (int) $record['schema_version'] : Schema::version();
+
+		$stored = get_option( self::USER_OPTION, array() );
+		if ( ! is_array( $stored ) ) {
+			return false;
+		}
+		$found = false;
+		foreach ( $stored as &$entry ) {
+			if ( isset( $entry['id'] ) && (string) $entry['id'] === $id ) {
+				$entry['name']           = $name;
+				$entry['palette']        = $palette;
+				$entry['tokens']         = $tokens;
+				$entry['schema_version'] = $schema_version;
+				// 'created_at' is intentionally left untouched.
+				$found = true;
+				break;
+			}
+		}
+		unset( $entry );
+		if ( ! $found ) {
+			return false;
+		}
+		update_option( self::USER_OPTION, $stored, false );
+
+		return array(
+			'id'      => $id,
+			'name'    => $name,
+			'custom'  => true,
+			'image'   => '',
+			'palette' => $palette,
+			'tokens'  => $tokens,
 		);
 	}
 

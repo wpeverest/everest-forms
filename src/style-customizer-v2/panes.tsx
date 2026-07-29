@@ -66,8 +66,8 @@ export function DesignList( {
 				aria-expanded={ paletteOpen }
 				aria-label={
 					paletteOpen
-						? __( 'Close colour palette', 'everest-forms' )
-						: __( 'Choose colour palette', 'everest-forms' )
+						? __( 'Close color palette', 'everest-forms' )
+						: __( 'Choose color palette', 'everest-forms' )
 				}
 				title={ activePalette ? activePalette.name : undefined }
 				onClick={ ( e ) => onOpenPalette( e.currentTarget ) }
@@ -135,10 +135,9 @@ export function DesignList( {
 					<b>{ __( 'Apply Theme Style', 'everest-forms' ) }</b>
 					<small>
 						{ __(
-							'Let your active theme style this form. Turn off to use Everest Forms’ default form style.',
+							'Matches your active theme’s look. Turn off for Everest Forms’ default — your settings above still apply.',
 							'everest-forms'
-						) }{ ' ' }
-						{ __( 'Your colours, spacing and fonts above always apply on top of either.', 'everest-forms' ) }
+						) }
 					</small>
 				</span>
 				<button
@@ -235,7 +234,7 @@ export function ElementSlate( {
 	visible.forEach( ( t ) => {
 		if ( t.deps && String( store.resolve( t.key ) ) === 'none' ) {
 			t.deps.forEach( ( k ) => dimmedByDep.add( k ) );
-			depHints[ t.key ] = __( 'Width & colour have no effect while border style is None.', 'everest-forms' );
+			depHints[ t.key ] = __( 'Width & color have no effect while the border style is None.', 'everest-forms' );
 		}
 	} );
 
@@ -288,7 +287,7 @@ export function ElementSlate( {
 			{ hasHiddenPaletteColor && (
 				<p className="hintline">
 					<Icon inner='<circle cx="12" cy="12" r="9"/><path d="M12 16v-5M12 8h.01"/>' />
-					{ __( 'Background & text colours here come from your colour palette.', 'everest-forms' ) }
+					{ __( 'Background & text colors here come from your color palette.', 'everest-forms' ) }
 				</p>
 			) }
 
@@ -416,12 +415,16 @@ function TemplateThumb( { tpl }: { tpl: Template } ) {
 		<span className="thumb" style={ th.thumb }>
 			<span className="l" style={ th.line } />
 			<span className="f" style={ th.field } />
+			<span className="l l2" style={ th.line } />
+			<span className="f f2" style={ th.field } />
 			<span className="b" style={ th.button } />
 		</span>
 	);
 }
 
-/** Build a small live thumbnail from a template's migrated tokens. */
+/** Build a small live thumbnail from a template's migrated tokens — a mini "Name / Message /
+ *  Submit" mock-up in the template's own colours, so a custom template reads as recognizably
+ *  itself in the grid, the same way a built-in's screenshot does. */
 function templateThumb( tpl: Template ) {
 	const t = tpl.tokens;
 	const bg = desktopOf( t[ 'wrap.bg' ] ) || '#ffffff';
@@ -448,10 +451,15 @@ function TemplateCard( {
 	modified,
 	basedOn,
 	locked,
+	disabled,
 	onPreview,
 	onClearPreview,
 	onApply,
-	onDelete,
+	onEdit,
+	confirmingDelete,
+	onRequestDelete,
+	onConfirmDelete,
+	onCancelDelete,
 }: {
 	tpl: Template;
 	applied: boolean;
@@ -461,86 +469,122 @@ function TemplateCard( {
 	/** Name of the built-in template this (custom) template exactly derives from, if any. */
 	basedOn?: string;
 	locked: boolean;
+	/** True while a DIFFERENT template is being edited — every action on this card is inert. */
+	disabled?: boolean;
 	onPreview: () => void;
 	onClearPreview: () => void;
 	onApply: () => void;
-	onDelete?: () => void;
+	/** Pro-gated; shown on every card (built-in, legacy, and user). Edits in place for a real
+	 *  user template, forks a new one otherwise — the caller decides which. */
+	onEdit?: () => void;
+	confirmingDelete?: boolean;
+	onRequestDelete?: () => void;
+	onConfirmDelete?: () => void;
+	onCancelDelete?: () => void;
 } ) {
 	return (
-		<button
-			type="button"
-			className={
-				'tpl' +
-				( tpl.custom ? ' tpl-user' : '' ) +
-				( locked ? ' tpl-locked' : '' ) +
-				( applied ? ' tpl-applied' : '' ) +
-				( modified ? ' tpl-modified' : '' )
-			}
-			aria-pressed={ applied }
-			onMouseEnter={ onPreview }
-			onMouseLeave={ onClearPreview }
-			onFocus={ onPreview }
-			onBlur={ onClearPreview }
-			onClick={ onApply }
-		>
-			{ applied && (
-				<span className="tpl-check" aria-label={ __( 'Currently applied', 'everest-forms' ) }>
-					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 3 }>
-						<path d="m5 13 4 4 10-10" />
-					</svg>
-				</span>
-			) }
-			{ ! applied && modified && (
-				<span className="tpl-mod" title={ __( 'Started from this template, then edited', 'everest-forms' ) }>
-					{ __( 'Modified', 'everest-forms' ) }
-				</span>
-			) }
-			{ locked && (
-				<span className="tpl-pro" aria-label={ __( 'Pro template', 'everest-forms' ) }>
-					<ProCrown />
-				</span>
-			) }
-			{ onDelete && (
-				<span
-					className="tpl-del"
-					role="button"
-					tabIndex={ 0 }
-					aria-label={ __( 'Delete template', 'everest-forms' ) }
-					title={ __( 'Delete template', 'everest-forms' ) }
-					onClick={ ( e ) => {
-						e.stopPropagation();
-						onDelete();
-					} }
-					onKeyDown={ ( e ) => {
-						if ( e.key === 'Enter' || e.key === ' ' ) {
+		<div className={ 'tpl-wrap' + ( confirmingDelete ? ' is-confirming' : '' ) }>
+			<button
+				type="button"
+				className={
+					'tpl' +
+					( tpl.custom ? ' tpl-user' : '' ) +
+					( locked ? ' tpl-locked' : '' ) +
+					( applied ? ' tpl-applied' : '' ) +
+					( modified ? ' tpl-modified' : '' ) +
+					( disabled ? ' tpl-disabled' : '' )
+				}
+				aria-pressed={ applied }
+				aria-disabled={ disabled }
+				onMouseEnter={ onPreview }
+				onMouseLeave={ onClearPreview }
+				onFocus={ onPreview }
+				onBlur={ onClearPreview }
+				onClick={ disabled ? undefined : onApply }
+			>
+				{ applied && (
+					<span className="tpl-check" aria-label={ __( 'Currently applied', 'everest-forms' ) }>
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 3 }>
+							<path d="m5 13 4 4 10-10" />
+						</svg>
+					</span>
+				) }
+				{ ! applied && modified && (
+					<span className="tpl-mod" title={ __( 'Started from this template, then edited', 'everest-forms' ) }>
+						{ __( 'Modified', 'everest-forms' ) }
+					</span>
+				) }
+				{ locked && (
+					<span className="tpl-pro" aria-label={ __( 'Pro template', 'everest-forms' ) }>
+						<ProCrown />
+					</span>
+				) }
+				{ locked && (
+					<span className="tpl-lock-veil" aria-hidden="true">
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2 }>
+							<rect x="4" y="11" width="16" height="9" rx="2" />
+							<path d="M8 11V7a4 4 0 0 1 8 0v4" />
+						</svg>
+					</span>
+				) }
+				<TemplateThumb tpl={ tpl } />
+				<span className="cap">{ tpl.name }</span>
+				{ basedOn && (
+					<span className="tpl-parent">
+						{ /* translators: %s: the built-in template this custom one derives from. */ }
+						{ ( __( 'Based on %s', 'everest-forms' ) as string ).replace( '%s', basedOn ) }
+					</span>
+				) }
+			</button>
+			<span className="tpl-card-tools">
+				{ onEdit && (
+					<button
+						type="button"
+						className="tpl-tool"
+						disabled={ disabled }
+						aria-label={ `${ __( 'Edit', 'everest-forms' ) } ${ tpl.name }` }
+						title={ __( 'Edit template', 'everest-forms' ) }
+						onClick={ ( e ) => {
 							e.stopPropagation();
-							e.preventDefault();
-							onDelete();
-						}
-					} }
-				>
-					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2.2 } aria-hidden="true">
-						<path d="M18 6 6 18M6 6l12 12" />
-					</svg>
-				</span>
+							onEdit();
+						} }
+					>
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2 } aria-hidden="true">
+							<path d="M12 20h9" />
+							<path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" />
+						</svg>
+					</button>
+				) }
+				{ onRequestDelete && (
+					<button
+						type="button"
+						className="tpl-tool tpl-tool--danger"
+						disabled={ disabled }
+						aria-label={ `${ __( 'Delete', 'everest-forms' ) } ${ tpl.name }` }
+						title={ __( 'Delete template', 'everest-forms' ) }
+						onClick={ ( e ) => {
+							e.stopPropagation();
+							onRequestDelete();
+						} }
+					>
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2.2 } aria-hidden="true">
+							<path d="M18 6 6 18M6 6l12 12" />
+						</svg>
+					</button>
+				) }
+			</span>
+			{ confirmingDelete && (
+				<div className="tpl-card-confirm" role="alertdialog" aria-label={ __( 'Delete template?', 'everest-forms' ) }>
+					<span>{ __( 'Delete?', 'everest-forms' ) }</span>
+					<button type="button" className="tpl-confirm-yes" onClick={ onConfirmDelete }>
+						{ __( 'Delete', 'everest-forms' ) }
+					</button>
+					<button type="button" className="tpl-confirm-no" onClick={ onCancelDelete }>
+						{ __( 'Cancel', 'everest-forms' ) }
+					</button>
+				</div>
 			) }
-			{ locked && (
-				<span className="tpl-lock-veil" aria-hidden="true">
-					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2 }>
-						<rect x="4" y="11" width="16" height="9" rx="2" />
-						<path d="M8 11V7a4 4 0 0 1 8 0v4" />
-					</svg>
-				</span>
-			) }
-			<TemplateThumb tpl={ tpl } />
-			<span className="cap">{ tpl.name }</span>
-			{ basedOn && (
-				<span className="tpl-parent">
-					{ /* translators: %s: the built-in template this custom one derives from. */ }
-					{ ( __( 'Based on %s', 'everest-forms' ) as string ).replace( '%s', basedOn ) }
-				</span>
-			) }
-		</button>
+		</div>
 	);
 }
 
@@ -548,17 +592,20 @@ export function TemplatesPane( {
 	onPreview,
 	onClearPreview,
 	onApplied,
+	onEdit,
+	onCreateNew,
 }: {
 	onPreview: ( overrides: Record< string, any > ) => void;
 	onClearPreview: () => void;
 	onApplied: ( name: string ) => void;
+	/** Begin editing (or forking) a template — App owns the actual edit session/banner. */
+	onEdit: ( tpl: Template ) => void;
+	/** Begin "Create Style Template" — the same session/banner, with no source. */
+	onCreateNew: () => void;
 } ) {
 	const store = useStore();
-	const [ name, setName ] = React.useState( '' );
-	const [ busy, setBusy ] = React.useState( false );
-	const [ error, setError ] = React.useState( '' );
-	const [ showCreateForm, setShowCreateForm ] = React.useState( false );
-	const createInputRef = React.useRef< HTMLInputElement >( null );
+	const [ confirmDeleteId, setConfirmDeleteId ] = React.useState< string | null >( null );
+	const editing = store.editingTemplate;
 
 	const templates = store.allTemplates();
 	// Memoize the flattened override maps so hover doesn't re-flatten on every mouse event.
@@ -589,32 +636,8 @@ export function TemplatesPane( {
 
 	const templatesBase = store.settings.restBase.replace( /\/styles$/, '/style-templates' );
 
-	const createTemplate = async () => {
-		const trimmed = name.trim();
-		if ( ! apiFetch || ! trimmed || busy ) {
-			return;
-		}
-		setBusy( true );
-		setError( '' );
-		try {
-			const res = await apiFetch( {
-				path: templatesBase,
-				method: 'POST',
-				data: { name: trimmed, record: store.toRecord() },
-			} );
-			if ( res && res.template ) {
-				store.addUserTemplate( res.template );
-			}
-			setName( '' );
-			setShowCreateForm( false );
-		} catch ( e: any ) {
-			setError( ( e && e.message ) || __( 'Could not save the template.', 'everest-forms' ) );
-		} finally {
-			setBusy( false );
-		}
-	};
-
 	const deleteTemplate = async ( id: string ) => {
+		setConfirmDeleteId( null );
 		if ( ! apiFetch ) {
 			return;
 		}
@@ -642,6 +665,9 @@ export function TemplatesPane( {
 		<div className="tpls">
 			{ list.map( ( tpl ) => {
 				const locked = !! tpl.is_pro && ! store.proActive;
+				// While a template is being edited, every OTHER card is locked — Apply/Edit/Delete
+				// would otherwise silently discard the in-progress draft's content.
+				const disabled = !! editing && editing.sourceId !== tpl.id;
 				return (
 					<TemplateCard
 						key={ tpl.id }
@@ -650,10 +676,15 @@ export function TemplatesPane( {
 						modified={ originId === tpl.id }
 						basedOn={ parentNames[ tpl.id ] }
 						locked={ locked }
+						disabled={ disabled }
 						onPreview={ () => onPreview( flat[ tpl.id ] ) }
 						onClearPreview={ onClearPreview }
 						onApply={ () => applyTpl( tpl, locked ) }
-						onDelete={ withDelete ? () => deleteTemplate( tpl.id ) : undefined }
+						onEdit={ store.proActive ? () => onEdit( tpl ) : undefined }
+						confirmingDelete={ confirmDeleteId === tpl.id }
+						onRequestDelete={ withDelete ? () => setConfirmDeleteId( tpl.id ) : undefined }
+						onConfirmDelete={ withDelete ? () => deleteTemplate( tpl.id ) : undefined }
+						onCancelDelete={ withDelete ? () => setConfirmDeleteId( null ) : undefined }
 					/>
 				);
 			} ) }
@@ -663,71 +694,24 @@ export function TemplatesPane( {
 	return (
 		<div className="slate-anim">
 			{ canCreate ? (
-				showCreateForm ? (
-					<div className="tpl-create">
-						<span className="tpl-create-ic" aria-hidden="true">
-							<Icon inner='<path d="M12 5v14M5 12h14"/>' />
-						</span>
-						<div className="tpl-create-fields">
-							<div className="tpl-create-title">{ __( 'Create Style Template', 'everest-forms' ) }</div>
-							<p className="tpl-create-sub">{ __( 'Save the current styles as a reusable template.', 'everest-forms' ) }</p>
-							<input
-								ref={ createInputRef }
-								type="text"
-								className="tpl-create-input"
-								value={ name }
-								placeholder={ __( 'Template name', 'everest-forms' ) }
-								onChange={ ( e ) => setName( e.target.value ) }
-								onKeyDown={ ( e ) => {
-									if ( e.key === 'Enter' ) {
-										createTemplate();
-									} else if ( e.key === 'Escape' ) {
-										setShowCreateForm( false );
-										setError( '' );
-									}
-								} }
-							/>
-							<div className="tpl-create-row">
-								{ error && <span className="tpl-create-err">{ error }</span> }
-								<button
-									type="button"
-									className="tpl-create-cancel"
-									onClick={ () => {
-										setShowCreateForm( false );
-										setError( '' );
-									} }
-								>
-									{ __( 'Cancel', 'everest-forms' ) }
-								</button>
-								<button
-									type="button"
-									className="tpl-create-btn"
-									disabled={ ! name.trim() || busy }
-									onClick={ createTemplate }
-								>
-									{ busy ? __( 'Saving…', 'everest-forms' ) : __( 'Create', 'everest-forms' ) }
-								</button>
-							</div>
-						</div>
+				<button
+					type="button"
+					className={ 'tpl-create tpl-create-trigger' + ( editing ? ' tpl-disabled' : '' ) }
+					aria-disabled={ !! editing }
+					onClick={ () => {
+						if ( ! editing ) {
+							onCreateNew();
+						}
+					} }
+				>
+					<span className="tpl-create-ic" aria-hidden="true">
+						<Icon inner='<path d="M12 5v14M5 12h14"/>' />
+					</span>
+					<div className="tpl-create-fields">
+						<div className="tpl-create-title">{ __( 'Create Style Template', 'everest-forms' ) }</div>
+						<p className="tpl-create-sub">{ __( 'Save the current styles as a reusable template.', 'everest-forms' ) }</p>
 					</div>
-				) : (
-					<button
-						type="button"
-						className="tpl-create tpl-create-trigger"
-						onClick={ () => {
-							setShowCreateForm( true );
-							window.setTimeout( () => createInputRef.current?.focus(), 0 );
-						} }
-					>
-						<span className="tpl-create-ic" aria-hidden="true">
-							<Icon inner='<path d="M12 5v14M5 12h14"/>' />
-						</span>
-						<div className="tpl-create-fields">
-							<div className="tpl-create-title">{ __( 'Create Style Template', 'everest-forms' ) }</div>
-							<p className="tpl-create-sub">{ __( 'Save the current styles as a reusable template.', 'everest-forms' ) }</p>
-						</div>
-					</button>
-				)
+				</button>
 			) : (
 				<a className="tpl-create tpl-create-locked" href={ UPGRADE_URL } target="_blank" rel="noreferrer">
 					<span className="tpl-create-ic" aria-hidden="true">
@@ -818,8 +802,8 @@ export function CustomCssPane() {
 		<div className="slate-anim">
 			<div className="block-title">{ __( 'Custom CSS', 'everest-forms' ) }</div>
 			<p className="pane-note">
-				{ __( 'Applied live as you type, and', 'everest-forms' ) } <b>{ __( 'auto-scoped to this form', 'everest-forms' ) }</b>{ ' ' }
-				{ __( 'on save so nothing leaks to the rest of your site. Click a selector to insert it:', 'everest-forms' ) }
+				{ __( 'Applied live as you type —', 'everest-forms' ) } <b>{ __( 'scoped to this form', 'everest-forms' ) }</b>{ ' ' }
+				{ __( 'on save, so nothing leaks elsewhere. Click a selector to insert it:', 'everest-forms' ) }
 			</p>
 			<div className="chips">
 				{ CSS_CHIPS.map( ( c ) => (

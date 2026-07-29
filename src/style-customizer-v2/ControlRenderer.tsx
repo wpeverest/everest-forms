@@ -9,6 +9,7 @@ import {
 	DEVICE_LABELS,
 	FONTSTYLE_BUTTONS,
 	clone,
+	toDisplayHex,
 } from './constants';
 import { HoverTip } from './HoverTip';
 import { StyleStore } from './store';
@@ -279,9 +280,13 @@ function SliderControl( props: ControlProps ) {
 function ColorControl( props: ControlProps ) {
 	const { token, store } = props;
 	const value = String( store.resolve( token.key ) );
+	// Tokens are usually plain hex, but a few (e.g. file.bg's rgba() default) aren't — see
+	// toDisplayHex() for why. displayHex is what the swatch/hex box show; `value` itself is left
+	// untouched so onBlur can restore the real stored value if the user backs out.
+	const displayHex = toDisplayHex( value );
 	const hexRef = React.useRef< HTMLInputElement >( null );
 	const [ invalid, setInvalid ] = React.useState( false );
-	useSyncedInput( hexRef, value.toUpperCase() );
+	useSyncedInput( hexRef, ( displayHex || value ).toUpperCase() );
 
 	const onHex = ( e: React.FormEvent< HTMLInputElement > ) => {
 		let t = ( e.target as HTMLInputElement ).value.trim();
@@ -304,7 +309,7 @@ function ColorControl( props: ControlProps ) {
 			<div className={ 'color' + ( invalid ? ' invalid' : '' ) }>
 				<input
 					type="color"
-					value={ /^#[0-9a-f]{6}$/i.test( value ) ? value : '#000000' }
+					value={ displayHex || '#000000' }
 					aria-label={ token.label }
 					onChange={ ( e ) => {
 						setInvalid( false );
@@ -315,13 +320,14 @@ function ColorControl( props: ControlProps ) {
 					ref={ hexRef }
 					className="hex"
 					spellCheck={ false }
-					defaultValue={ value.toUpperCase() }
+					defaultValue={ ( displayHex || value ).toUpperCase() }
 					aria-label={ token.label + ' hex value' }
 					onInput={ onHex }
 					onBlur={ () => {
 						setInvalid( false );
 						if ( hexRef.current ) {
-							hexRef.current.value = String( store.resolve( token.key ) ).toUpperCase();
+							const current = String( store.resolve( token.key ) );
+							hexRef.current.value = ( toDisplayHex( current ) || current ).toUpperCase();
 						}
 					} }
 				/>

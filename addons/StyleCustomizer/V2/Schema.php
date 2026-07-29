@@ -81,11 +81,11 @@ final class Schema {
 			),
 			'choice'   => array(
 				'title' => __( 'Choices', 'everest-forms' ),
-				'hint'  => __( 'One style set for every pick-a-choice field: radios, checkboxes, Yes/No, image choices, scale & star ratings, Likert rows and payment methods.', 'everest-forms' ),
+				'hint'  => __( 'One style set for every choice field: radios, checkboxes, Yes/No, image choices, ratings, Likert rows, and payment pickers.', 'everest-forms' ),
 			),
 			'button'   => array(
 				'title'  => __( 'Button', 'everest-forms' ),
-				'hint'   => __( 'Submit — multi-part navigation and upload buttons follow it.', 'everest-forms' ),
+				'hint'   => __( 'Styles Submit — Multi-Part and file-upload buttons follow automatically.', 'everest-forms' ),
 				'states' => array( 'normal', 'hover' ),
 			),
 			'messages' => array(

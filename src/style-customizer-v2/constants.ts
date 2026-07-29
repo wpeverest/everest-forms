@@ -6,6 +6,8 @@
  */
 import { Device } from './types';
 
+const __ = ( window as any ).wp?.i18n?.__ || ( ( s: string ) => s );
+
 export const clone = < T >( v: T ): T =>
 	typeof structuredClone === 'function' ? structuredClone( v ) : JSON.parse( JSON.stringify( v ) );
 
@@ -49,12 +51,12 @@ export const SECTION_ICONS: Record<string, string> = {
 
 /** One-line sub-label shown under each element row. */
 export const SECTION_SUBTITLES: Record<string, string> = {
-	form: 'Background, corners, font, width',
-	text: 'Labels, sublabels, descriptions, section titles',
-	fields: 'Text boxes, dropdowns, upload area',
-	choice: 'Radio, checkbox, ratings, choices',
-	button: 'Submit & navigation buttons',
-	messages: 'Success & error banners',
+	form: __( 'Background, corners, font, width', 'everest-forms' ),
+	text: __( 'Labels, sublabels, descriptions, section titles', 'everest-forms' ),
+	fields: __( 'Text boxes, dropdowns, upload area', 'everest-forms' ),
+	choice: __( 'Radio, checkbox, ratings & more', 'everest-forms' ),
+	button: __( 'Submit & navigation buttons', 'everest-forms' ),
+	messages: __( 'Success, error & validation banners', 'everest-forms' ),
 };
 
 /** Human labels for the variant/state ids the schema ships. */
@@ -176,6 +178,37 @@ export const PREVIEW_TARGETS: PreviewTarget[] = [
 	{ match: '.evf-field, .evf-frontend-row', section: 'fields', label: 'Field' },
 	{ match: '.evf-container', section: 'form', label: 'Form container' },
 ];
+
+/**
+ * Best-effort #rrggbb for any CSS colour a "color" token might hold. Token values are usually
+ * plain hex, but {@see Sanitizer::sanitize_color()} also accepts (and a couple of schema defaults,
+ * e.g. `file.bg`, actually use) `rgba()` — kept for legacy v1 alpha borders/backgrounds. Neither the
+ * native `<input type="color">` swatch nor a hex textbox understands rgba, so callers use this to
+ * get something displayable instead of silently rendering black; alpha is dropped since there's no
+ * alpha control here. Returns null only for a genuinely unparseable value (a CSS keyword/var).
+ */
+export function toDisplayHex( value: string ): string | null {
+	const v = String( value ).trim();
+	if ( /^#[0-9a-f]{3}$/i.test( v ) ) {
+		return ( '#' + v.slice( 1 ).split( '' ).map( ( c ) => c + c ).join( '' ) ).toLowerCase();
+	}
+	if ( /^#[0-9a-f]{6}$/i.test( v ) ) {
+		return v.toLowerCase();
+	}
+	if ( /^#[0-9a-f]{8}$/i.test( v ) ) {
+		return v.slice( 0, 7 ).toLowerCase();
+	}
+	const m = v.match( /^rgba?\(\s*([\d.]+%?)\s*[,\s]+\s*([\d.]+%?)\s*[,\s]+\s*([\d.]+%?)/i );
+	if ( m ) {
+		const hex = m.slice( 1, 4 ).map( ( raw ) => {
+			const num = parseFloat( raw );
+			const c = Math.max( 0, Math.min( 255, Math.round( raw.endsWith( '%' ) ? num * 2.55 : num ) ) );
+			return c.toString( 16 ).padStart( 2, '0' );
+		} );
+		return '#' + hex.join( '' );
+	}
+	return null;
+}
 
 /** Mix two hex colours by ratio t (0..1). Used to derive the button hover from a palette. */
 export function mixHex( a: string, b: string, t: number ): string {

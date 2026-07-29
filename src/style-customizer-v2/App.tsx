@@ -9,9 +9,9 @@ import { CustomCssPane, DesignList, ElementSlate, ProCrown, TemplatesPane, UPGRA
 import { ConfirmModal, ConfirmState, Popover, PopoverState } from './Popover';
 import { PreviewPane } from './PreviewPane';
 import { getActiveBridge, SelectionInfo } from './PreviewBridge';
-import { DEVICE_LABELS, SECTION_ICONS, STATE_FORCE } from './constants';
+import { DEVICE_LABELS, SECTION_ICONS, STATE_FORCE, toDisplayHex } from './constants';
 import { useStore } from './store';
-import { Section } from './types';
+import { Section, StylePayload } from './types';
 
 const __ = ( window as any ).wp?.i18n?.__ || ( ( s: string ) => s );
 const apiFetch = ( window as any ).wp?.apiFetch;
@@ -56,8 +56,11 @@ function PaletteColorRow( {
 	value: string;
 	onChange: ( color: string ) => void;
 } ) {
-	const [ hex, setHex ] = React.useState( value.toUpperCase() );
-	React.useEffect( () => setHex( value.toUpperCase() ), [ value ] );
+	// value is usually plain hex, but a token like file.bg can be rgba() (legacy alpha, kept by
+	// the sanitizer) — see toDisplayHex() for why. displayHex is what the swatch/hex box show.
+	const displayHex = toDisplayHex( value );
+	const [ hex, setHex ] = React.useState( ( displayHex || value ).toUpperCase() );
+	React.useEffect( () => setHex( ( displayHex || value ).toUpperCase() ), [ value ] );
 
 	const commit = ( raw: string ) => {
 		let t = raw.trim();
@@ -78,7 +81,7 @@ function PaletteColorRow( {
 			<div className="color">
 				<input
 					type="color"
-					value={ HEX6.test( value ) ? value : '#000000' }
+					value={ displayHex || '#000000' }
 					aria-label={ label }
 					onChange={ ( e ) => onChange( e.target.value ) }
 				/>
@@ -91,7 +94,7 @@ function PaletteColorRow( {
 						setHex( e.target.value );
 						commit( e.target.value );
 					} }
-					onBlur={ () => setHex( value.toUpperCase() ) }
+					onBlur={ () => setHex( ( displayHex || value ).toUpperCase() ) }
 				/>
 			</div>
 		</div>
@@ -118,6 +121,7 @@ function PaletteManager( {
 	const [ confirmId, setConfirmId ] = React.useState< string | null >( null );
 	const [ busy, setBusy ] = React.useState( false );
 	const [ error, setError ] = React.useState( '' );
+	const paletteNameRef = React.useRef< HTMLInputElement >( null );
 
 	const pro = store.proActive;
 	const slots = Object.keys( store.paletteMap );
@@ -127,6 +131,16 @@ function PaletteManager( {
 	const bridge = () => getActiveBridge();
 
 	React.useEffect( () => () => bridge()?.revert(), [] );
+
+	// "Create Custom Palette" has no colours to review first (they're already what's on the
+	// form) — jump straight to naming it. Fork/edit auto-focus nothing; adjusting colours comes
+	// first there. Keyed on entering edit mode at all, not on every keystroke.
+	React.useEffect( () => {
+		if ( edit && ! edit.id && ! edit.from ) {
+			paletteNameRef.current?.focus();
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [ !! edit ] );
 
 	const swatch = ( colors: Record< string, string > ) => (
 		<span className="sw" aria-hidden="true">
@@ -149,6 +163,22 @@ function PaletteManager( {
 			actLabel: __( 'Undo', 'everest-forms' ),
 			onAct: () => store.undo(),
 		} );
+	};
+
+	/** "Create Custom Palette" — the same editor, opened with no source: whatever six colours
+	 *  the form is showing right now (an applied preset, or ad-hoc edits) become the starting
+	 *  point for a brand-new, reusable palette. Mirrors "Create Style Template" on the Templates
+	 *  tab, which has the same no-source entry point for the same reason. */
+	const beginCreatePalette = () => {
+		if ( ! pro ) {
+			window.open( UPGRADE_URL, '_blank' );
+			return;
+		}
+		setError( '' );
+		setConfirmId( null );
+		const colors = store.currentPaletteColors();
+		setEdit( { id: null, name: '', colors, from: undefined } );
+		bridge()?.previewPalette( colors );
 	};
 
 	const openEdit = ( p: ReturnType< typeof store.customPalettes >[ number ] ) => {
@@ -349,17 +379,42 @@ function PaletteManager( {
 					</span>
 				</button>
 
+				{ ( edit.id || edit.from ) && (
+					<p className="pal-editor-sub">
+						{ edit.id
+							? __( 'Save updates this palette wherever else it’s used.', 'everest-forms' )
+							: __( 'Save creates a new palette from these colors — the original preset is untouched.', 'everest-forms' ) }
+					</p>
+				) }
+
 				<div className="pal-name-field">
 					<label className="pal-field-label" htmlFor="evf-scv2-pal-name">
 						{ __( 'Palette name', 'everest-forms' ) }
 					</label>
 					<input
+						ref={ paletteNameRef }
 						id="evf-scv2-pal-name"
 						type="text"
 						value={ edit.name }
 						maxLength={ 60 }
 						placeholder={ __( 'e.g. My brand', 'everest-forms' ) }
 						onChange={ ( e ) => setEdit( ( prev ) => ( prev ? { ...prev, name: e.target.value } : prev ) ) }
+						onFocus={ ( e ) => e.target.select() }
+						onKeyDown={ ( e ) => {
+							// The editor lives inside a Popover, which already closes itself on a
+							// bubbled Escape (see Popover.tsx) — stop it here so Escape/Enter only
+							// ever do the one, local, obvious thing (return to the grid / save).
+							e.stopPropagation();
+							if ( e.key === 'Enter' ) {
+								e.preventDefault();
+								if ( ! busy ) {
+									saveEdit();
+								}
+							} else if ( e.key === 'Escape' ) {
+								e.preventDefault();
+								cancelEdit();
+							}
+						} }
 					/>
 				</div>
 
@@ -391,6 +446,40 @@ function PaletteManager( {
 	/* -------------------------------------------------- browse grid */
 	return (
 		<div className="pal-manager">
+			{ pro ? (
+				<button type="button" className="tpl-create tpl-create-trigger" onClick={ beginCreatePalette }>
+					<span className="tpl-create-ic" aria-hidden="true">
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2 } aria-hidden="true">
+							<path d="M12 5v14M5 12h14" />
+						</svg>
+					</span>
+					<div className="tpl-create-fields">
+						<div className="tpl-create-title">{ __( 'Create Custom Palette', 'everest-forms' ) }</div>
+						<p className="tpl-create-sub">{ __( 'Save the current colors as a reusable palette.', 'everest-forms' ) }</p>
+					</div>
+				</button>
+			) : (
+				<a className="tpl-create tpl-create-locked" href={ UPGRADE_URL } target="_blank" rel="noreferrer">
+					<span className="tpl-create-ic" aria-hidden="true">
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2 } aria-hidden="true">
+							<rect x="4" y="11" width="16" height="9" rx="2" />
+							<path d="M8 11V7a4 4 0 0 1 8 0v4" />
+						</svg>
+					</span>
+					<div className="tpl-create-fields">
+						<span className="tpl-create-title">
+							{ __( 'Create Custom Palette', 'everest-forms' ) }
+							<span className="pro-badge" aria-label={ __( 'Pro', 'everest-forms' ) }>
+								<ProCrown />
+							</span>
+						</span>
+						<p className="tpl-create-sub">
+							{ __( 'Save your current colors as a reusable palette with Pro.', 'everest-forms' ) }
+						</p>
+					</div>
+				</a>
+			) }
+
 			{ !! custom.length && (
 				<>
 					<div className="pal-group-label">{ __( 'Your palettes', 'everest-forms' ) }</div>
@@ -406,7 +495,7 @@ function PaletteManager( {
 			</div>
 			{ pro && (
 				<p className="pal-manager-hint">
-					{ __( 'Tip: click the pencil on any palette to edit its colours and save your own.', 'everest-forms' ) }
+					{ __( 'Tip: click the pencil on any palette to edit its colors and save your own.', 'everest-forms' ) }
 				</p>
 			) }
 		</div>
@@ -425,6 +514,8 @@ export function App() {
 	const [ saveError, setSaveError ] = React.useState( '' );
 	const [ saveErrorConflict, setSaveErrorConflict ] = React.useState( false );
 	const [ selectPulse, setSelectPulse ] = React.useState( 0 );
+	const [ templateSaving, setTemplateSaving ] = React.useState( false );
+	const [ templateSaveError, setTemplateSaveError ] = React.useState( '' );
 	const toastTimer = React.useRef< ReturnType< typeof setTimeout > | null >( null );
 
 	const sections: Section[] = React.useMemo(
@@ -466,7 +557,7 @@ export function App() {
 	React.useEffect( () => {
 		store.onPaletteUnlinked = ( name: string ) => {
 			showToast( {
-				msg: `${ __( 'This customization is no longer linked to the', 'everest-forms' ) } “${ name }” ${ __( 'palette.', 'everest-forms' ) }`,
+				msg: `${ __( 'Unlinked from the', 'everest-forms' ) } “${ name }” ${ __( 'palette after your edit.', 'everest-forms' ) }`,
 			} );
 		};
 		return () => {
@@ -523,7 +614,7 @@ export function App() {
 
 	/* ---- save (invoked by the builder's Save button) ---- */
 	const save = React.useCallback( async () => {
-		if ( ! apiFetch || ! store.isDirty() ) {
+		if ( ! apiFetch || ! store.isDirty() || store.editingTemplate ) {
 			return;
 		}
 		setSaving( true );
@@ -549,7 +640,7 @@ export function App() {
 			setSaveErrorConflict( status === 409 );
 			setSaveError(
 				status === 409
-					? __( 'These styles changed elsewhere — reload the builder before saving.', 'everest-forms' )
+					? __( 'These styles changed elsewhere — reload before saving.', 'everest-forms' )
 					: ( e && e.message ) || __( 'Failed to save styles.', 'everest-forms' )
 			);
 		} finally {
@@ -570,6 +661,99 @@ export function App() {
 		document.addEventListener( 'click', onClick, true );
 		return () => document.removeEventListener( 'click', onClick, true );
 	}, [] );
+
+	/* ---- editing a saved template ---- */
+	const templatesBase = store.settings.restBase.replace( /\/styles$/, '/style-templates' );
+
+	const beginEditTemplate = React.useCallback(
+		( tpl: StylePayload[ 'templates' ][ number ] ) => {
+			const editableInPlace = !! tpl.custom && ! tpl.id.startsWith( 'legacy-' );
+			const start = () => {
+				setTemplateSaveError( '' );
+				store.beginTemplateEdit( tpl, editableInPlace );
+				setSubPane( 'design' );
+				setCurSection( null );
+			};
+			if ( store.isDirty() ) {
+				setConfirm( {
+					title: __( 'Edit this template?', 'everest-forms' ),
+					message: __(
+						'Your unsaved changes are kept — they’ll return when you finish or cancel.',
+						'everest-forms'
+					),
+					confirmLabel: __( 'Continue', 'everest-forms' ),
+					onConfirm: start,
+				} );
+			} else {
+				start();
+			}
+		},
+		[ store ]
+	);
+
+	const beginCreateTemplate = React.useCallback( () => {
+		setTemplateSaveError( '' );
+		store.beginNewTemplate();
+	}, [ store ] );
+
+	const cancelTemplateEdit = React.useCallback( () => {
+		store.exitTemplateEdit();
+		setTemplateSaveError( '' );
+	}, [ store ] );
+
+	const saveTemplateEdit = React.useCallback( async () => {
+		if ( ! apiFetch || ! store.editingTemplate || templateSaving ) {
+			return;
+		}
+		const editing = store.editingTemplate;
+		const isEdit = !! editing.id;
+		setTemplateSaving( true );
+		setTemplateSaveError( '' );
+		try {
+			const res = await apiFetch( {
+				path: isEdit ? `${ templatesBase }/${ editing.id }` : templatesBase,
+				method: 'POST',
+				data: { name: editing.name, record: store.toRecord() },
+			} );
+			if ( res && res.templates ) {
+				store.setUserTemplates( res.templates );
+			}
+			store.exitTemplateEdit();
+			showToast( {
+				kind: 'success',
+				msg: isEdit
+					? `${ __( 'Updated template', 'everest-forms' ) } “${ editing.name }”`
+					: `${ __( 'Created template', 'everest-forms' ) } “${ editing.name }”`,
+			} );
+		} catch ( e: any ) {
+			setTemplateSaveError( ( e && e.message ) || __( 'Could not save the template.', 'everest-forms' ) );
+		} finally {
+			setTemplateSaving( false );
+		}
+	}, [ store, templatesBase, templateSaving, showToast ] );
+
+	// Editing/forking a template always happens on the Design tab (it needs the whole control
+	// surface) — jump there the moment such a session begins. "Create Style Template" (empty
+	// `sourceId`, no source) stays put on the Templates tab instead — there's nothing to tweak,
+	// just a name to enter. Keyed on `sourceId`, not the object itself, since `renameEditingTemplate`
+	// produces a new object every keystroke.
+	React.useEffect( () => {
+		if ( store.editingTemplate && store.editingTemplate.sourceId && subPane !== 'design' ) {
+			setSubPane( 'design' );
+			setCurSection( null );
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [ store.editingTemplate?.sourceId ] );
+
+	// The reverse case: "Create Style Template" has no Design-tab detour, so auto-focus its name
+	// field immediately instead.
+	const templateNameRef = React.useRef< HTMLInputElement >( null );
+	React.useEffect( () => {
+		if ( store.editingTemplate && ! store.editingTemplate.sourceId ) {
+			templateNameRef.current?.focus();
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [ store.editingTemplate?.sourceId ] );
 
 	React.useEffect( () => {
 		const handler = ( e: BeforeUnloadEvent ) => {
@@ -688,6 +872,79 @@ export function App() {
 				</div>
 			</div>
 
+			{ store.editingTemplate && (
+				<div className="tpl-editbar" role="status">
+					<div className="tpl-editbar-title">
+						{ store.editingTemplate.id
+							? `${ __( 'Editing', 'everest-forms' ) } “${ store.editingTemplate.name }”`
+							: store.editingTemplate.from
+							? `${ __( 'New template from', 'everest-forms' ) } ${ store.editingTemplate.from }`
+							: __( 'New Style Template', 'everest-forms' ) }
+					</div>
+					<p className="tpl-editbar-sub">
+						{ store.editingTemplate.id
+							? __(
+									'Save updates this template with the current styles shown in the preview — it won’t save the form itself.',
+									'everest-forms'
+							  )
+							: store.editingTemplate.from
+							? __(
+									'Save creates a new template from the current styles shown in the preview — the original template and this form are both left as they are.',
+									'everest-forms'
+							  )
+							: __(
+									'Save captures the form’s current styles — including anything not yet saved to the form — as a new template. It won’t save the form itself.',
+									'everest-forms'
+							  ) }
+					</p>
+					<div className="pal-name-field">
+						<label className="pal-field-label" htmlFor="evf-scv2-tpl-name">
+							{ __( 'Template name', 'everest-forms' ) }
+						</label>
+						<input
+							ref={ templateNameRef }
+							id="evf-scv2-tpl-name"
+							type="text"
+							value={ store.editingTemplate.name }
+							maxLength={ 60 }
+							placeholder={ __( 'e.g. My house style', 'everest-forms' ) }
+							onChange={ ( e ) => store.renameEditingTemplate( e.target.value ) }
+							onFocus={ ( e ) => e.target.select() }
+							onKeyDown={ ( e ) => {
+								e.stopPropagation();
+								if ( e.key === 'Enter' ) {
+									e.preventDefault();
+									if ( ! templateSaving && store.editingTemplate?.name.trim() ) {
+										saveTemplateEdit();
+									}
+								} else if ( e.key === 'Escape' ) {
+									e.preventDefault();
+									cancelTemplateEdit();
+								}
+							} }
+						/>
+					</div>
+					{ templateSaveError && (
+						<p className="pal-error" role="alert">
+							{ templateSaveError }
+						</p>
+					) }
+					<div className="pal-editor-actions">
+						<button type="button" className="pal-btn-ghost" onClick={ cancelTemplateEdit } disabled={ templateSaving }>
+							{ __( 'Cancel', 'everest-forms' ) }
+						</button>
+						<button
+							type="button"
+							className="pal-btn-primary"
+							onClick={ saveTemplateEdit }
+							disabled={ templateSaving || ! store.editingTemplate.name.trim() }
+						>
+							{ templateSaving ? __( 'Saving…', 'everest-forms' ) : __( 'Save template', 'everest-forms' ) }
+						</button>
+					</div>
+				</div>
+			) }
+
 			{ inSlate && section && (
 				<div className="navback">
 					<button type="button" className="bk" onClick={ backToList }>
@@ -748,7 +1005,7 @@ export function App() {
 								setConfirm( {
 									title: __( 'Reset all styles?', 'everest-forms' ),
 									message: __(
-										'Every element goes back to its default — palette, fonts, spacing, everything. You can still undo it right after.',
+										'Resets every element to default — palette, fonts, spacing, and more. You can undo right after.',
 										'everest-forms'
 									),
 									confirmLabel: __( 'Reset all', 'everest-forms' ),
@@ -770,6 +1027,8 @@ export function App() {
 					<TemplatesPane
 						onPreview={ ( ov ) => getActiveBridge()?.previewValues( ov ) }
 						onClearPreview={ () => getActiveBridge()?.revert() }
+						onEdit={ beginEditTemplate }
+						onCreateNew={ beginCreateTemplate }
 						onApplied={ ( name ) =>
 							showToast( {
 								kind: 'success',

@@ -43,7 +43,7 @@ function MigrationNotice() {
 			<span className="pv-migration-text">
 				<b>{ __( 'Styles upgraded from the legacy editor.', 'everest-forms' ) }</b>{ ' ' }
 				{ __(
-					'This form was styled with the old editor, so its look was carried over automatically — nothing should appear different. Review the preview below, then hit Save to keep it.',
+					'Nothing should look different — review the preview below, then hit Save to keep it.',
 					'everest-forms'
 				) }
 			</span>
@@ -92,10 +92,7 @@ function UnsavedFieldsNotice() {
 			</span>
 			<span className="pv-migration-text">
 				<b>{ __( 'Previewing unsaved field changes.', 'everest-forms' ) }</b>{ ' ' }
-				{ __(
-					"This preview includes edits from the Fields tab that haven't been saved yet.",
-					'everest-forms'
-				) }
+				{ __( 'From the Fields tab.', 'everest-forms' ) }
 			</span>
 			<button
 				type="button"
@@ -394,13 +391,13 @@ export function PreviewPane( {
 							<h4>{ __( 'Preview is taking a moment', 'everest-forms' ) }</h4>
 							<p>
 								{ __(
-									'We couldn’t load the live preview here — a security or caching plugin may be blocking the preview route. Your edits are still saved.',
+									'We couldn’t load the live preview — a security or caching plugin may be blocking it. Your edits are still saved.',
 									'everest-forms'
 								) }
 							</p>
 							<div className="pv-error-actions">
 								<button type="button" className="btn-primary" onClick={ retry }>
-									{ __( 'Try again', 'everest-forms' ) }
+									{ __( 'Retry', 'everest-forms' ) }
 								</button>
 								<a href={ previewSrc } target="_blank" rel="noreferrer">
 									{ __( 'Open in a new tab ↗', 'everest-forms' ) }
