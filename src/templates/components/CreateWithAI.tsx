@@ -20,12 +20,13 @@
 	Spinner,
 	Text,
 	Textarea,
+	Tooltip,
 	VStack,
 	keyframes,
 	useDisclosure,
 	useToast,
 } from '@chakra-ui/react';
-import { __, sprintf } from '@wordpress/i18n';
+import { __, _n, sprintf } from '@wordpress/i18n';
 import React, { useEffect, useState } from 'react';
 import { BsStars } from 'react-icons/bs';
 import {
@@ -167,6 +168,137 @@ const LimitReachedBody: React.FC<{ tier: string }> = ({ tier }) => (
 		)}
 	</>
 );
+
+/** Daily-request usage snapshot the gateway now returns on every AI response. */
+interface UsageInfo {
+	remaining: number;
+	limit: number;
+	used: number;
+}
+
+// At/below this many remaining requests the note switches to a gentle amber warning.
+const USAGE_LOW_THRESHOLD = 3;
+
+/** Read the { remaining, limit, used } usage object off a raw AI response, or null. */
+const readUsage = (raw: any): UsageInfo | null => {
+	const u = raw && raw.usage;
+	if (u && typeof u.remaining === 'number') {
+		return { remaining: u.remaining, limit: u.limit, used: u.used };
+	}
+	return null;
+};
+
+// Full tooltip label, e.g. "18 of 20 AI requests left today · resets daily".
+const usageTooltip = (usage: UsageInfo): string => {
+	if (typeof usage.limit === 'number' && usage.limit > 0) {
+		return sprintf(
+			/* translators: 1: remaining requests, 2: daily limit. */
+			__('%1$d of %2$d AI requests left today · resets daily', 'everest-forms'),
+			usage.remaining,
+			usage.limit,
+		);
+	}
+	return sprintf(
+		_n(
+			'%d request left today',
+			'%d requests left today',
+			usage.remaining,
+			'everest-forms',
+		),
+		usage.remaining,
+	);
+};
+
+/**
+ * The daily-request "credits" pill — a sparkle, an `18/20` count, and a slim meter that
+ * drains as requests are used. Muted purple normally, amber when low, red when exhausted.
+ * Shows a shimmer skeleton while the first count is still loading so it reserves its space.
+ */
+const CreditsPill: React.FC<{ usage: UsageInfo | null; loading?: boolean }> = ({
+	usage,
+	loading,
+}) => {
+	if (loading && !usage) {
+		return (
+			<Box
+				h="26px"
+				w="76px"
+				borderRadius="full"
+				sx={{
+					background:
+						'linear-gradient(90deg, #eeeeef 25%, #e4e4e8 50%, #eeeeef 75%)',
+					backgroundSize: '400px 100%',
+					animation: `${shimmer} 1.6s ease-in-out infinite`,
+				}}
+			/>
+		);
+	}
+	if (!usage) return null;
+
+	const hasLimit = typeof usage.limit === 'number' && usage.limit > 0;
+	const { remaining } = usage;
+	const exhausted = remaining <= 0;
+	const low = remaining <= USAGE_LOW_THRESHOLD;
+	const frac = hasLimit ? Math.max(0, Math.min(1, remaining / usage.limit)) : 1;
+
+	const c = exhausted
+		? { bg: '#fef2f2', border: '#fecaca', num: '#dc2626', den: '#f5a3a3', track: '#fcdcdc', fill: '#dc2626', icon: '#dc2626' }
+		: low
+			? { bg: '#fff7ed', border: '#fed7aa', num: '#b45309', den: '#d9a066', track: '#fde4c4', fill: '#f59e0b', icon: '#d97706' }
+			: { bg: '#f7f4fc', border: '#e9e2f3', num: '#7545BB', den: '#b3a3d6', track: '#e9e2f3', fill: '#7545BB', icon: '#7545BB' };
+
+	return (
+		<Tooltip
+			label={usageTooltip(usage)}
+			placement="top"
+			hasArrow
+			bg="#1a1a1a"
+			color="white"
+			fontSize="12px"
+			borderRadius="6px"
+			px="10px"
+			py="6px"
+			openDelay={200}
+		>
+			<HStack
+				spacing="7px"
+				h="26px"
+				pl="9px"
+				pr="11px"
+				borderRadius="full"
+				bg={c.bg}
+				border="1px solid"
+				borderColor={c.border}
+				cursor="default"
+				userSelect="none"
+				transition="background 0.25s, border-color 0.25s"
+			>
+				<Icon as={BsStars} boxSize="11px" color={c.icon} />
+				<HStack spacing="1px" align="baseline">
+					<Text fontSize="12.5px" fontWeight="700" color={c.num} lineHeight="1" m="0">
+						{remaining}
+					</Text>
+					{hasLimit && (
+						<Text fontSize="12.5px" fontWeight="500" color={c.den} lineHeight="1" m="0">
+							/{usage.limit}
+						</Text>
+					)}
+				</HStack>
+				{hasLimit && (
+					<Box w="26px" h="4px" borderRadius="full" bg={c.track} overflow="hidden">
+						<Box
+							h="100%"
+							borderRadius="full"
+							bg={c.fill}
+							w={`${Math.round(frac * 100)}%`}
+							transition="width 0.45s ease"
+						/>
+					</Box>
+				)}
+			</HStack>
+		</Tooltip>
+	);
+};
 
 const SkeletonField: React.FC<{ delay?: string }> = ({ delay = '0s' }) => (
 	<Box sx={{ animation: `${fadeUp} 0.4s ease ${delay} both` }}>
@@ -333,6 +465,11 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({
 	// Which tier hit the daily cap — a Pro user has their own (much higher) limit and
 	// shouldn't be told to "upgrade to Pro" when they're already on it.
 	const [limitTier, setLimitTier] = useState('free');
+	// Daily-request usage snapshot — drives the "credits" pill. Seeded on mount from
+	// evf_ai_get_usage so it's visible before the first generate, then refreshed from every
+	// generate/update response.
+	const [usage, setUsage] = useState<UsageInfo | null>(null);
+	const [usageLoading, setUsageLoading] = useState(true);
 	const [genState, setGenState] = useState<'idle' | 'generating' | 'generated'>(
 		'idle',
 	);
@@ -370,6 +507,25 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({
 
 	useEffect(() => {
 		return () => previewResizeObserverRef.current?.disconnect();
+	}, []);
+
+	// Seed the credits pill on mount so it's visible before the first generate. Best-effort —
+	// on an unregistered/local site this just fails quietly and the pill stays hidden.
+	useEffect(() => {
+		let cancelled = false;
+		callAi('evf_ai_get_usage')
+			.then((res) => {
+				if (cancelled) return;
+				const u = readUsage(res?.data);
+				if (u) setUsage(u);
+			})
+			.catch(() => {})
+			.finally(() => {
+				if (!cancelled) setUsageLoading(false);
+			});
+		return () => {
+			cancelled = true;
+		};
 	}, []);
 
 	// Never leave the user staring at the skeleton forever if the iframe's `load` event is slow
@@ -520,6 +676,8 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({
 				prompt,
 				refine_prompt: refine,
 			});
+			const usageSnapshot = readUsage(res?.data);
+			if (usageSnapshot) setUsage(usageSnapshot);
 			if (res?.success) {
 				if (res.data?.form_title) setFormTitle(res.data.form_title);
 				const notice = res.data?.notice || '';
@@ -634,6 +792,10 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({
 
 		callAi('evf_ai_generate_form', { prompt })
 			.then((res: any) => {
+				if (!cancelled) {
+					const usageSnapshot = readUsage(res?.data);
+					if (usageSnapshot) setUsage(usageSnapshot);
+				}
 				if (res?.success && res.data?.form_id) {
 					aiResponseRef.current = {
 						ok: true,
@@ -1429,6 +1591,11 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({
 									)}
 								</Flex>
 							</Box>
+							{(usage || usageLoading) && (
+								<Flex justify="flex-end" mt="10px" pr="2px">
+									<CreditsPill usage={usage} loading={usageLoading} />
+								</Flex>
+							)}
 						</Box>
 					</Flex>
 
@@ -1656,7 +1823,8 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({
 
 						<Box mx="20px" borderTop="1px solid #f1f5f9" />
 
-						<Flex align="center" justify="flex-end" px="16px" py="12px">
+						<Flex align="center" justify="space-between" px="16px" py="12px" gap="12px">
+							<CreditsPill usage={usage} loading={usageLoading} />
 							{isRateLimited ? (
 								<Popover trigger="hover" placement="top" isLazy>
 									<PopoverTrigger>

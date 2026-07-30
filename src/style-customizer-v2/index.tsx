@@ -27,6 +27,7 @@ const settings: BootstrapSettings = rawSettings || {
 	markerClass: 'evf-style-v2',
 	previewSession: '',
 	aiEnabled: false,
+	aiDisabled: false,
 	ajaxUrl: '',
 	aiNonce: '',
 	aiHintDismissed: true,

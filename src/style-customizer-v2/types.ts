@@ -158,8 +158,10 @@ export interface BootstrapSettings {
 	markerClass: string;
 	/** Per-page-load token scoping the live-preview draft to this builder session. */
 	previewSession: string;
-	/** Whether the ThemeGrill AI Cloud integration is usable on this site; drives the AI launcher. */
+	/** Whether the ThemeGrill AI Cloud integration is present on this site; drives the AI launcher. */
 	aiEnabled: boolean;
+	/** True on local/staging where the gateway is unreachable — the launcher shows but is greyed out. */
+	aiDisabled?: boolean;
 	/** admin-ajax.php URL, used for the discovery-hint dismissal call. */
 	ajaxUrl: string;
 	/** Nonce for the shared `evf_ai_dismiss_hint` AJAX action (see EVF_AI_Ajax::dismiss_hint()). */

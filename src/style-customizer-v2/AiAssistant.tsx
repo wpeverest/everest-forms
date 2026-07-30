@@ -9,7 +9,124 @@ import { useStore } from './store';
 import { Template } from './types';
 
 const __ = ( window as any ).wp?.i18n?.__ || ( ( s: string ) => s );
+const _n =
+	( window as any ).wp?.i18n?._n ||
+	( ( single: string, plural: string, n: number ) => ( 1 === n ? single : plural ) );
+const sprintf =
+	( window as any ).wp?.i18n?.sprintf ||
+	( ( fmt: string, n: number ) => fmt.replace( '%d', String( n ) ) );
 const apiFetch = ( window as any ).wp?.apiFetch;
+
+/** Daily-request usage snapshot the gateway now returns on every AI response. */
+interface UsageInfo {
+	remaining: number;
+	limit: number;
+	used: number;
+}
+
+// At/below this many remaining requests the count switches to a gentle amber warning.
+const USAGE_LOW_THRESHOLD = 3;
+
+/** "7 requests left today" — properly pluralized. */
+const usageLabel = ( remaining: number ): string =>
+	sprintf(
+		_n( '%d request left today', '%d requests left today', remaining, 'everest-forms' ),
+		remaining
+	);
+
+/** Read the { remaining, limit, used } usage object off a raw AI response/error, or null. */
+const readUsage = ( raw: any ): UsageInfo | null => {
+	const u = raw && raw.usage;
+	if ( u && 'number' === typeof u.remaining ) {
+		return { remaining: u.remaining, limit: u.limit, used: u.used };
+	}
+	return null;
+};
+
+/** Full tooltip text for the credits pill. */
+const usageTooltip = ( usage: UsageInfo ): string =>
+	'number' === typeof usage.limit && usage.limit > 0
+		? sprintf(
+				/* translators: 1: remaining requests, 2: daily limit. */
+				__( '%1$d of %2$d AI requests left today · resets daily', 'everest-forms' ),
+				usage.remaining,
+				usage.limit
+		  )
+		: usageLabel( usage.remaining );
+
+/**
+ * The daily-request "credits" pill for the panel header — a sparkle, an `18/20` count, and a
+ * slim meter that drains as requests are used. Translucent white on the purple header; turns
+ * amber when the count runs low or is exhausted.
+ */
+const UsagePill: React.FC< { usage: UsageInfo | null; loading?: boolean } > = ( { usage, loading } ) => {
+	if ( ! usage ) {
+		if ( ! loading ) return null;
+		// Skeleton — holds the pill's place while the first count loads.
+		return (
+			<div
+				style={ {
+					flexShrink: 0,
+					width: 62,
+					height: 22,
+					borderRadius: 20,
+					background: 'rgba(255,255,255,.16)',
+					animation: 'scv2-ai-pulse 1.3s ease-in-out infinite',
+				} }
+			/>
+		);
+	}
+	const hasLimit = 'number' === typeof usage.limit && usage.limit > 0;
+	const { remaining } = usage;
+	const amber = remaining <= USAGE_LOW_THRESHOLD;
+	const frac = hasLimit ? Math.max( 0, Math.min( 1, remaining / usage.limit ) ) : 1;
+	const numColor = amber ? '#7a4b00' : '#fff';
+	const denColor = amber ? 'rgba(122,75,0,.7)' : 'rgba(255,255,255,.7)';
+	return (
+		<div
+			title={ usageTooltip( usage ) }
+			style={ {
+				flexShrink: 0,
+				display: 'inline-flex',
+				alignItems: 'center',
+				gap: 6,
+				height: 22,
+				padding: '0 10px',
+				borderRadius: 20,
+				lineHeight: 1,
+				background: amber ? '#fbbf24' : 'rgba(255,255,255,.16)',
+			} }
+		>
+			<LuSparkles size={ 11 } color={ numColor } />
+			<span style={ { display: 'inline-flex', alignItems: 'baseline', gap: 1, fontSize: 11.5, fontWeight: 700, color: numColor } }>
+				{ remaining }
+				{ hasLimit && <span style={ { fontWeight: 500, color: denColor } }>/{ usage.limit }</span> }
+			</span>
+			{ hasLimit && (
+				<span
+					style={ {
+						width: 22,
+						height: 4,
+						borderRadius: 20,
+						overflow: 'hidden',
+						display: 'inline-block',
+						background: amber ? 'rgba(122,75,0,.25)' : 'rgba(255,255,255,.28)',
+					} }
+				>
+					<span
+						style={ {
+							display: 'block',
+							height: '100%',
+							width: `${ Math.round( frac * 100 ) }%`,
+							borderRadius: 20,
+							background: amber ? '#7a4b00' : '#fff',
+						} }
+					/>
+				</span>
+			) }
+		</div>
+	);
+};
 
 /** Matches a prompt against known template names; longest match wins. */
 function findTemplateMatch( prompt: string, templates: Template[] ): Template | null {
@@ -75,11 +192,11 @@ async function requestAiStyle(
 	history: Array< { role: 'user' | 'assistant'; text: string } >,
 	lastChangedKeys: string[]
 ): Promise<
-	| { ok: true; data: AiStyleResult }
-	| { ok: false; message: string; noticeUrl?: string }
+	| { ok: true; data: AiStyleResult; usage: UsageInfo | null }
+	| { ok: false; message: string; noticeUrl?: string; usage: UsageInfo | null }
 > {
 	if ( ! apiFetch ) {
-		return { ok: false, message: __( 'AI styling is unavailable on this screen.', 'everest-forms' ) };
+		return { ok: false, message: __( 'AI styling is unavailable on this screen.', 'everest-forms' ), usage: null };
 	}
 	try {
 		const data = ( await apiFetch( {
@@ -104,10 +221,12 @@ async function requestAiStyle(
 				notice: !! data.notice,
 				noticeUrl: data.notice_url || '',
 			},
+			usage: readUsage( data ),
 		};
 	} catch ( e: any ) {
 		const code = e && e.code;
 		const tier = e && e.data && e.data.tier;
+		const usage = readUsage( e && e.data );
 		// "daily_limit_reached" is today's hard cap (Free AND Pro both have one, Pro's is far
 		// higher) — worth its own message and, for Free only, an upgrade link. A plain
 		// "rate_limit" (the transient per-minute/per-hour throttle) still gets the gateway's
@@ -118,20 +237,29 @@ async function requestAiStyle(
 				ok: false,
 				message: ( e && e.message ) || __( 'Request limit reached. Please try again later.', 'everest-forms' ),
 				noticeUrl: 'pro' === tier ? undefined : UPGRADE_URL,
+				usage,
 			};
 		}
 		const message =
 			( e && e.message ) || __( 'Could not reach the AI service. Please try again.', 'everest-forms' );
-		return { ok: false, message };
+		return { ok: false, message, usage };
 	}
 }
 
 export function AiAssistant() {
 	const store = useStore();
+	// On local / staging sites the AI gateway is unreachable — the launcher is shown but
+	// disabled (greyed trigger, opens nothing, explains why on hover), mirroring the Fields-tab
+	// AI Form Assistant instead of vanishing.
+	const AI_DISABLED = !! store.settings.aiDisabled;
 	const [ open, setOpen ] = useState( false );
 	const [ messages, setMessages ] = useState< Message[] >( [ { role: 'assistant', text: GREETING } ] );
 	const [ input, setInput ] = useState( '' );
 	const [ loading, setLoading ] = useState( false );
+	// Daily-request usage snapshot — drives the header credits pill. Seeded on mount so it's
+	// visible the moment the panel opens, then refreshed from every response.
+	const [ usage, setUsage ] = useState< UsageInfo | null >( null );
+	const [ usageLoading, setUsageLoading ] = useState( true );
 	const [ originalPrompt, setOriginalPrompt ] = useState( '' );
 	// Schema key(s) the AI's own last turn changed — sent back on the next refine so a follow-up
 	// like "increase it to 200px" stays anchored to that same property (see class-evf-ai-api.php).
@@ -162,7 +290,7 @@ export function AiAssistant() {
 			// Best-effort only — worst case the hint reappears next visit.
 		} );
 	};
-	const showHint = ! open && ! hintDismissed;
+	const showHint = ! open && ! hintDismissed && ! AI_DISABLED;
 	const messagesEndRef = useRef< HTMLDivElement >( null );
 	const inputRef = useRef< HTMLTextAreaElement >( null );
 
@@ -200,6 +328,39 @@ export function AiAssistant() {
 	useEffect( () => {
 		if ( open ) setTimeout( () => inputRef.current?.focus(), 120 );
 	}, [ open ] );
+
+	// Seed the header credits pill on mount so the count is ready as soon as the panel opens.
+	// Best-effort — on a disabled (local) or unregistered site we skip the call and show no pill.
+	useEffect( () => {
+		if ( AI_DISABLED || ! store.settings.ajaxUrl ) {
+			setUsageLoading( false );
+			return;
+		}
+		let cancelled = false;
+		const body = new URLSearchParams();
+		body.append( 'action', 'evf_ai_get_usage' );
+		body.append( 'nonce', store.settings.aiNonce );
+		fetch( store.settings.ajaxUrl, {
+			method: 'POST',
+			credentials: 'same-origin',
+			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+			body: body.toString(),
+		} )
+			.then( ( r ) => r.json() )
+			.then( ( j ) => {
+				if ( cancelled ) return;
+				const u = readUsage( j?.data );
+				if ( u ) setUsage( u );
+			} )
+			.catch( () => {} )
+			.finally( () => {
+				if ( ! cancelled ) setUsageLoading( false );
+			} );
+		return () => {
+			cancelled = true;
+		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [] );
 
 	if ( ! store.settings.aiEnabled || ! onStyleTab || ! builderLoaded ) {
 		return null;
@@ -265,6 +426,8 @@ export function AiAssistant() {
 
 		if ( ! isRefine ) setOriginalPrompt( userText );
 
+		if ( result.usage ) setUsage( result.usage );
+
 		if ( result.ok ) {
 			store.applyAiRecord( result.data.tokens, result.data.palette || undefined );
 			setLastChangedKeys( Object.keys( result.data.tokens || {} ) );
@@ -296,6 +459,10 @@ export function AiAssistant() {
 			return next;
 		} );
 		setLoading( false );
+
+		// Re-open the panel if the user collapsed it while the request was processing, so the
+		// applied-style summary (and any Undo / Upgrade action) is visible now that it's done.
+		if ( result.ok ) setOpen( true );
 	};
 
 	const handleUndo = () => {
@@ -330,11 +497,13 @@ export function AiAssistant() {
 				aria-label={ __( 'Style with AI', 'everest-forms' ) }
 				aria-expanded={ open }
 				onClick={ () => {
+					if ( AI_DISABLED ) return;
 					setOpen( ( o ) => ! o );
 					dismissHint();
 				} }
 				onMouseEnter={ ( e ) => {
 					setButtonHovered( true );
+					if ( AI_DISABLED ) return;
 					( e.currentTarget as HTMLButtonElement ).style.transform = 'scale(1.08)';
 					( e.currentTarget as HTMLButtonElement ).style.boxShadow = '0 6px 22px rgba(117,69,187,.55)';
 				} }
@@ -350,11 +519,13 @@ export function AiAssistant() {
 					width: BTN_SIZE,
 					height: BTN_SIZE,
 					borderRadius: '50%',
-					background: open
+					background: AI_DISABLED
+						? 'linear-gradient(135deg,#b4a8cc 0%,#c8bce0 100%)'
+						: open
 						? 'linear-gradient(135deg,#5c329c 0%,#7545BB 100%)'
 						: 'linear-gradient(135deg,#7545BB 0%,#9660db 100%)',
 					border: 'none',
-					cursor: 'pointer',
+					cursor: AI_DISABLED ? 'not-allowed' : 'pointer',
 					display: 'flex',
 					alignItems: 'center',
 					justifyContent: 'center',
@@ -367,6 +538,28 @@ export function AiAssistant() {
 			>
 				{ open ? <LuX size={ 22 } color="white" /> : <LuSparkles size={ 24 } color="white" /> }
 			</button>
+
+			{ /* Processing ring — spins around the closed trigger while a request is in flight, so
+			     the user knows the AI is still working even with the panel collapsed. */ }
+			{ loading && ! open && ! AI_DISABLED && (
+				<div
+					aria-hidden="true"
+					style={ {
+						position: 'fixed',
+						bottom: BTN_BOTTOM - 4,
+						right: BTN_RIGHT - 4,
+						width: BTN_SIZE + 8,
+						height: BTN_SIZE + 8,
+						borderRadius: '50%',
+						border: '2.5px solid rgba(117,69,187,.25)',
+						borderTopColor: '#7545BB',
+						animation: 'scv2-ai-spin .8s linear infinite',
+						// Below the button (1000001) so the button sits on top and the ring reads as an arc around it.
+						zIndex: 1000000,
+						pointerEvents: 'none',
+					} }
+				/>
+			) }
 
 			{ showTooltip && ! showHint && (
 				<div
@@ -393,7 +586,9 @@ export function AiAssistant() {
 							position: 'relative',
 						} }
 					>
-						{ __( 'Style with AI', 'everest-forms' ) }
+						{ AI_DISABLED
+							? __( 'Not available on local sites', 'everest-forms' )
+							: __( 'Style with AI', 'everest-forms' ) }
 					</div>
 					<div
 						style={ {
@@ -577,6 +772,9 @@ export function AiAssistant() {
 								{ __( 'Powered by AI', 'everest-forms' ) }
 							</div>
 						</div>
+						{ ! AI_DISABLED && ( usage || usageLoading ) && (
+							<UsagePill usage={ usage } loading={ usageLoading } />
+						) }
 					</div>
 
 					<div
@@ -649,41 +847,41 @@ export function AiAssistant() {
 									) : (
 										<>
 											{ msg.text }
-											{ msg.canUndo && msg.undoVersion === store.getVersion() && (
-												<div style={ { marginTop: 6 } }>
-													<a
-														href="#"
-														onClick={ ( e ) => {
-															e.preventDefault();
-															handleUndo();
-														} }
-														style={ {
-															color: '#7545BB',
-															fontWeight: 600,
-															fontSize: 12,
-															textDecoration: 'underline',
-															cursor: 'pointer',
-														} }
-													>
-														{ __( 'Undo ↺', 'everest-forms' ) }
-													</a>
-												</div>
-											) }
-											{ msg.noticeUrl && (
-												<div style={ { marginTop: 6 } }>
-													<a
-														href={ msg.noticeUrl }
-														target="_blank"
-														rel="noopener noreferrer"
-														style={ {
-															color: '#7545BB',
-															fontWeight: 600,
-															fontSize: 12,
-															textDecoration: 'underline',
-														} }
-													>
-														{ __( 'Upgrade to Pro ↗', 'everest-forms' ) }
-													</a>
+											{ ( ( msg.canUndo && msg.undoVersion === store.getVersion() ) || msg.noticeUrl ) && (
+												<div style={ { display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 14, marginTop: 6 } }>
+													{ msg.canUndo && msg.undoVersion === store.getVersion() && (
+														<a
+															href="#"
+															onClick={ ( e ) => {
+																e.preventDefault();
+																handleUndo();
+															} }
+															style={ {
+																color: '#7545BB',
+																fontWeight: 600,
+																fontSize: 12,
+																textDecoration: 'underline',
+																cursor: 'pointer',
+															} }
+														>
+															{ __( 'Undo ↺', 'everest-forms' ) }
+														</a>
+													) }
+													{ msg.noticeUrl && (
+														<a
+															href={ msg.noticeUrl }
+															target="_blank"
+															rel="noopener noreferrer"
+															style={ {
+																color: '#7545BB',
+																fontWeight: 600,
+																fontSize: 12,
+																textDecoration: 'underline',
+															} }
+														>
+															{ __( 'Upgrade to Pro ↗', 'everest-forms' ) }
+														</a>
+													) }
 												</div>
 											) }
 										</>
@@ -815,6 +1013,13 @@ export function AiAssistant() {
 				@keyframes scv2-ai-dot {
 					0%,80%,100%{transform:scale(.4);opacity:.4}
 					40%{transform:scale(1);opacity:1}
+				}
+				@keyframes scv2-ai-spin {
+					to { transform: rotate(360deg); }
+				}
+				@keyframes scv2-ai-pulse {
+					0%,100% { opacity: .5; }
+					50% { opacity: 1; }
 				}
 				.scv2-ai-messages::-webkit-scrollbar,
 				.scv2-ai-suggestions::-webkit-scrollbar {

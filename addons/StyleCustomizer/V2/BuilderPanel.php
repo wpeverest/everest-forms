@@ -173,8 +173,12 @@ final class BuilderPanel {
 				'wrapperId'        => 'evf-' . $form_id,
 				'markerClass'      => FrontendEnqueue::MARKER_CLASS,
 				'previewSession'   => $preview_session,
-				// Same AI-availability check the Create-with-AI feature uses.
-				'aiEnabled'        => class_exists( 'EVF_AI_Registration' ) && ! \EVF_AI_Registration::is_local_site(),
+				// AI launcher visibility: present whenever the integration class exists — so on a
+				// local/staging site it still renders, greyed-out and non-functional, exactly like
+				// the Fields-tab AI Form Assistant (rather than vanishing). `aiDisabled` carries the
+				// local-site check the button uses to grey itself out and explain why on hover.
+				'aiEnabled'        => class_exists( 'EVF_AI_Registration' ),
+				'aiDisabled'       => class_exists( 'EVF_AI_Registration' ) && \EVF_AI_Registration::is_local_site(),
 				// Discovery-hint dismissal — per-user (not per-browser), shared AJAX action/nonce
 				// with the Fields-tab AI assistant (see EVF_AI_Ajax::dismiss_hint()).
 				'ajaxUrl'          => admin_url( 'admin-ajax.php' ),

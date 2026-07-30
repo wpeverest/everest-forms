@@ -21,6 +21,17 @@ class EVF_AI_API {
 	const TIMEOUT        = 90;
 
 	/**
+	 * Daily-usage snapshot { remaining, limit, used } captured from the most recent gateway
+	 * response, or null when the gateway didn't include one. The gateway now returns a `usage`
+	 * object alongside every successful generate/style/update (and inside a daily_limit_reached
+	 * 429's detail) — see themegrill-ai-cloud gateway/main.py::_usage_info(). Callers read it via
+	 * get_last_usage() to surface "X requests left today" without a separate /ai/v1/usage request.
+	 *
+	 * @var array|null
+	 */
+	private static $last_usage = null;
+
+	/**
 	 * Generate a form from a plain-text prompt.
 	 * Sends the EVF Pro license key inline — gateway verifies + caches (1 week).
 	 *
@@ -387,6 +398,32 @@ class EVF_AI_API {
 		return self::request( 'GET', '/ai/v1/usage', array(), $token );
 	}
 
+	/**
+	 * Daily-usage snapshot { remaining, limit, used } from the last gateway call this request,
+	 * or null when none was returned. Set inside request() from the gateway's `usage` object.
+	 *
+	 * @return array|null
+	 */
+	public static function get_last_usage() {
+		return self::$last_usage;
+	}
+
+	/**
+	 * Map the gateway's usage object ({ daily_count, daily_limit, daily_remaining }) to the
+	 * compact { remaining, limit, used } shape the front-end reads. Public so the get_usage
+	 * AJAX handler can normalize the /ai/v1/usage endpoint response the same way.
+	 *
+	 * @param array $usage Raw gateway usage object.
+	 * @return array
+	 */
+	public static function normalize_usage( array $usage ): array {
+		return array(
+			'remaining' => isset( $usage['daily_remaining'] ) ? max( 0, (int) $usage['daily_remaining'] ) : null,
+			'limit'     => isset( $usage['daily_limit'] ) ? (int) $usage['daily_limit'] : null,
+			'used'      => isset( $usage['daily_count'] ) ? (int) $usage['daily_count'] : null,
+		);
+	}
+
 	// ── Core HTTP request ─────────────────────────────────────────────────────
 
 	private static function request( string $method, string $path, array $body = array(), string $token = '' ) {
@@ -439,6 +476,17 @@ class EVF_AI_API {
 			sprintf( "AI Response: HTTP %d\n%s", $status, wp_json_encode( $body, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES ) ),
 			array( 'source' => 'evf-ai' )
 		);
+
+		// Capture the daily-usage snapshot the gateway now returns — top-level `usage` on a
+		// successful generate/style/update, or nested under `detail.usage` on a 429. Callers
+		// echo it to the UI via get_last_usage() so the panels can show "X requests left today".
+		if ( is_array( $body ) ) {
+			if ( isset( $body['usage'] ) && is_array( $body['usage'] ) ) {
+				self::$last_usage = self::normalize_usage( $body['usage'] );
+			} elseif ( isset( $body['detail']['usage'] ) && is_array( $body['detail']['usage'] ) ) {
+				self::$last_usage = self::normalize_usage( $body['detail']['usage'] );
+			}
+		}
 
 		if ( 429 === $status ) {
 			$detail = is_array( $body ) && isset( $body['detail'] ) && is_array( $body['detail'] ) ? $body['detail'] : array();

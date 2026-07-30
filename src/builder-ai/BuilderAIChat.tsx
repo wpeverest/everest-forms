@@ -51,6 +51,109 @@ const cfg: BuilderAIConfig = ( window as any ).evfBuilderAI || {};
 // shown but disabled (greyed trigger, opens nothing, explains why on hover).
 const AI_DISABLED = !! cfg.aiDisabled;
 
+// Daily-request usage snapshot the gateway now returns on every AI response.
+interface UsageInfo {
+	remaining: number;
+	limit: number;
+	used: number;
+}
+
+// At/below this many remaining requests the count switches to a gentle amber warning.
+const USAGE_LOW_THRESHOLD = 3;
+
+// "7 requests left today" — pluralized.
+const usageLabel = ( n: number ): string =>
+	`${ n } request${ 1 === n ? '' : 's' } left today`;
+
+// Read the { remaining, limit, used } usage object off a raw AI response, or null.
+const readUsage = ( raw: any ): UsageInfo | null => {
+	const u = raw && raw.usage;
+	if ( u && 'number' === typeof u.remaining ) {
+		return { remaining: u.remaining, limit: u.limit, used: u.used };
+	}
+	return null;
+};
+
+// Full tooltip text for the credits pill.
+const usageTooltip = ( usage: UsageInfo ): string =>
+	'number' === typeof usage.limit && usage.limit > 0
+		? `${ usage.remaining } of ${ usage.limit } AI requests left today · resets daily`
+		: usageLabel( usage.remaining );
+
+/**
+ * The daily-request "credits" pill for the panel header — a sparkle, an `18/20` count, and a
+ * slim meter that drains as requests are used. Translucent white on the purple header; turns
+ * amber when the count runs low or is exhausted.
+ */
+const UsagePill: React.FC<{ usage: UsageInfo | null; loading?: boolean }> = ( { usage, loading } ) => {
+	if ( ! usage ) {
+		if ( ! loading ) return null;
+		// Skeleton — holds the pill's place while the first count loads.
+		return (
+			<div
+				style={ {
+					flexShrink: 0,
+					width: 62,
+					height: 22,
+					borderRadius: 20,
+					background: 'rgba(255,255,255,.16)',
+					animation: 'evf-ai-pulse 1.3s ease-in-out infinite',
+				} }
+			/>
+		);
+	}
+	const hasLimit = 'number' === typeof usage.limit && usage.limit > 0;
+	const { remaining } = usage;
+	const amber = remaining <= USAGE_LOW_THRESHOLD;
+	const frac = hasLimit ? Math.max( 0, Math.min( 1, remaining / usage.limit ) ) : 1;
+	const numColor = amber ? '#7a4b00' : '#fff';
+	const denColor = amber ? 'rgba(122,75,0,.7)' : 'rgba(255,255,255,.7)';
+	return (
+		<div
+			title={ usageTooltip( usage ) }
+			style={ {
+				flexShrink: 0,
+				display: 'inline-flex',
+				alignItems: 'center',
+				gap: 6,
+				height: 22,
+				padding: '0 10px',
+				borderRadius: 20,
+				lineHeight: 1,
+				background: amber ? '#fbbf24' : 'rgba(255,255,255,.16)',
+			} }
+		>
+			<LuSparkles size={ 11 } color={ numColor } />
+			<span style={ { display: 'inline-flex', alignItems: 'baseline', gap: 1, fontSize: 11.5, fontWeight: 700, color: numColor } }>
+				{ remaining }
+				{ hasLimit && <span style={ { fontWeight: 500, color: denColor } }>/{ usage.limit }</span> }
+			</span>
+			{ hasLimit && (
+				<span
+					style={ {
+						width: 22,
+						height: 4,
+						borderRadius: 20,
+						overflow: 'hidden',
+						display: 'inline-block',
+						background: amber ? 'rgba(122,75,0,.25)' : 'rgba(255,255,255,.28)',
+					} }
+				>
+					<span
+						style={ {
+							display: 'block',
+							height: '100%',
+							width: `${ Math.round( frac * 100 ) }%`,
+							borderRadius: 20,
+							background: amber ? '#7a4b00' : '#fff',
+						} }
+					/>
+				</span>
+			) }
+		</div>
+	);
+};
+
 // Edit the current builder form via the ThemeGrill AI Cloud (Python) gateway.
 const editFormViaAi = async (
 	instruction: string,
@@ -62,6 +165,7 @@ const editFormViaAi = async (
 	needsReload?: boolean;
 	limitReached?: boolean;
 	limitTier?: string;
+	usage?: UsageInfo | null;
 }> => {
 	if ( ! cfg.ajaxUrl || ! cfg.nonce || ! cfg.formId ) {
 		return { ok: false, message: 'AI assistant is unavailable on this screen.' };
@@ -89,16 +193,24 @@ const editFormViaAi = async (
 				isNotice:    !! json?.data?.notice,
 				noticeUrl:   json?.data?.notice_url || '',
 				needsReload: !! json?.data?.needs_reload,
+				usage:       readUsage( json?.data ),
 			};
 		}
 		// "daily_limit_reached" is today's hard cap (Free AND Pro both have one, Pro's is far
 		// higher) — worth a persistent "you're blocked until tomorrow" state. A plain
 		// "rate_limit" (transient IP throttle) isn't — that's just a normal error to retry.
+		const isLimit = json?.data?.code === 'daily_limit_reached';
+		const tier    = json?.data?.tier || 'free';
 		return {
 			ok:           false,
 			message:      json?.data?.message || 'Sorry, I could not update the form. Please try again.',
-			limitReached: json?.data?.code === 'daily_limit_reached',
-			limitTier:    json?.data?.tier || 'free',
+			limitReached: isLimit,
+			limitTier:    tier,
+			// Match Style with AI: the daily-limit message carries the "Upgrade to Pro" link
+			// inline in the chat bubble (Free tier only — a Pro user who hit their own, higher
+			// cap gets no upsell). Previously the link only appeared in the button tooltip.
+			noticeUrl:    isLimit && 'pro' !== tier ? UPGRADE_URL : '',
+			usage:        readUsage( json?.data ),
 		};
 	} catch {
 		return { ok: false, message: 'Could not reach the AI service. Please try again.' };
@@ -114,6 +226,10 @@ const BuilderAIChat: React.FC = () => {
 		{ role: 'assistant', text: GREETING },
 	]);
 	const [loading, setLoading]         = useState(false);
+	// Daily-request usage snapshot — drives the header credits pill. Seeded on mount so it's
+	// visible the moment the panel opens, then refreshed from every response.
+	const [usage, setUsage]             = useState<UsageInfo | null>(null);
+	const [usageLoading, setUsageLoading] = useState(true);
 	const [buttonHovered, setButtonHovered]   = useState(false);
 	const [tooltipHovered, setTooltipHovered] = useState(false);
 	const [rateLimited, setRateLimited] = useState(false);
@@ -206,6 +322,39 @@ const BuilderAIChat: React.FC = () => {
 		if (open) setTimeout(() => inputRef.current?.focus(), 120);
 	}, [open]);
 
+	// Seed the header credits pill on mount so the count is ready as soon as the panel opens.
+	// Best-effort — on a disabled (local) or unregistered site we skip the call and show no pill.
+	useEffect(() => {
+		if (AI_DISABLED || !cfg.ajaxUrl || !cfg.nonce) {
+			setUsageLoading(false);
+			return;
+		}
+		let cancelled = false;
+		const body = new URLSearchParams();
+		body.append('action', 'evf_ai_get_usage');
+		body.append('nonce', cfg.nonce);
+		fetch(cfg.ajaxUrl, {
+			method: 'POST',
+			credentials: 'same-origin',
+			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+			body: body.toString(),
+		})
+			.then((r) => r.json())
+			.then((j) => {
+				if (cancelled) return;
+				const u = readUsage(j?.data);
+				if (u) setUsage(u);
+			})
+			.catch(() => {})
+			.finally(() => {
+				if (!cancelled) setUsageLoading(false);
+			});
+		return () => {
+			cancelled = true;
+		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
 	const sendMessage = async (text: string) => {
 		if (!text.trim() || loading) return;
 		const userText = text.trim();
@@ -216,6 +365,9 @@ const BuilderAIChat: React.FC = () => {
 		setMessages(prev => [...prev, { role: 'assistant', text: '', loading: true }]);
 
 		const result = await editFormViaAi(userText);
+
+		// Keep the header's "N requests left today" chip in sync.
+		if (result.usage) setUsage(result.usage);
 
 		// Track rate limit so the trigger button tooltip updates.
 		if (!result.ok && result.limitReached) {
@@ -271,6 +423,9 @@ const BuilderAIChat: React.FC = () => {
 		setLoading(false);
 
 		if (result.ok) {
+			// Re-open the panel if the user collapsed it while the request was processing, so the
+			// success confirmation (and any Pro/reload notice) is visible now that it's done.
+			setOpen(true);
 			const w = window as any;
 			if (result.needsReload) {
 				// Settings changed — don't auto-reload; the bubble shows a manual
@@ -348,6 +503,28 @@ const BuilderAIChat: React.FC = () => {
 			>
 				{open ? <LuX size={22} color="white" /> : <LuSparkles size={24} color="white" />}
 			</button>
+
+			{/* ── Processing ring — spins around the closed trigger while a request is in
+			     flight, so the user knows the AI is still working with the panel collapsed. ── */}
+			{loading && !open && !AI_DISABLED && (
+				<div
+					aria-hidden="true"
+					style={{
+						position: 'fixed',
+						bottom: BTN_BOTTOM - 4,
+						right: BTN_RIGHT - 4,
+						width: BTN_SIZE + 8,
+						height: BTN_SIZE + 8,
+						borderRadius: '50%',
+						border: '2.5px solid rgba(117,69,187,.25)',
+						borderTopColor: '#7545BB',
+						animation: 'evf-ai-spin .8s linear infinite',
+						// Below the button (1000001) so it reads as an arc around the button edge.
+						zIndex: 1000000,
+						pointerEvents: 'none',
+					}}
+				/>
+			)}
 
 			{/* ── Discovery hint — shown once until dismissed or the panel is opened ── */}
 			{showHint && (
@@ -579,6 +756,9 @@ const BuilderAIChat: React.FC = () => {
 								Powered by AI
 							</div>
 						</div>
+						{!AI_DISABLED && (usage || usageLoading) && (
+							<UsagePill usage={usage} loading={usageLoading} />
+						)}
 					</div>
 
 					{/* Messages */}
@@ -659,27 +839,27 @@ const BuilderAIChat: React.FC = () => {
 									) : (
 										<>
 											{msg.text}
-											{msg.reload && (
-												<div style={{ marginTop: 6 }}>
-													<a
-														href="#"
-														onClick={e => { e.preventDefault(); window.location.reload(); }}
-														style={{ color: '#7545BB', fontWeight: 600, fontSize: 12, textDecoration: 'underline', cursor: 'pointer' }}
-													>
-														Refresh the page ↻
-													</a>
-												</div>
-											)}
-											{msg.notice && msg.noticeUrl && (
-												<div style={{ marginTop: 6 }}>
-													<a
-														href={msg.noticeUrl}
-														target="_blank"
-														rel="noopener noreferrer"
-														style={{ color: '#c0392b', fontWeight: 600, fontSize: 12, textDecoration: 'underline' }}
-													>
-														Upgrade to Pro ↗
-													</a>
+											{(msg.reload || (msg.notice && msg.noticeUrl)) && (
+												<div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 14, marginTop: 6 }}>
+													{msg.reload && (
+														<a
+															href="#"
+															onClick={e => { e.preventDefault(); window.location.reload(); }}
+															style={{ color: '#7545BB', fontWeight: 600, fontSize: 12, textDecoration: 'underline', cursor: 'pointer' }}
+														>
+															Refresh the page ↻
+														</a>
+													)}
+													{msg.notice && msg.noticeUrl && (
+														<a
+															href={msg.noticeUrl}
+															target="_blank"
+															rel="noopener noreferrer"
+															style={{ color: '#7545BB', fontWeight: 600, fontSize: 12, textDecoration: 'underline' }}
+														>
+															Upgrade to Pro ↗
+														</a>
+													)}
 												</div>
 											)}
 										</>
@@ -810,6 +990,13 @@ const BuilderAIChat: React.FC = () => {
 				@keyframes evf-ai-dot {
 					0%,80%,100%{transform:scale(.4);opacity:.4}
 					40%{transform:scale(1);opacity:1}
+				}
+				@keyframes evf-ai-spin {
+					to { transform: rotate(360deg); }
+				}
+				@keyframes evf-ai-pulse {
+					0%,100% { opacity: .5; }
+					50% { opacity: 1; }
 				}
 				.evf-ai-messages::-webkit-scrollbar,
 				.evf-ai-suggestions::-webkit-scrollbar {

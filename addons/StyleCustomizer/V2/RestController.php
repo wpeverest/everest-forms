@@ -452,7 +452,13 @@ final class RestController {
 			// "tier" (only present on a "daily_limit_reached" 429) lets the panel show an
 			// upgrade CTA for a Free user but not for a Pro user who hit their own, higher cap.
 			$tier = is_array( $upstream_data ) && isset( $upstream_data['tier'] ) ? $upstream_data['tier'] : '';
-			return new \WP_Error( $code, $ai_style->get_error_message(), array( 'status' => $status, 'tier' => $tier ) );
+			// Usage snapshot (remaining is 0 on a daily_limit_reached) so the panel's
+			// "X requests left today" indicator stays in sync even on the blocked turn.
+			return new \WP_Error(
+				$code,
+				$ai_style->get_error_message(),
+				array( 'status' => $status, 'tier' => $tier, 'usage' => \EVF_AI_API::get_last_usage() )
+			);
 		}
 
 		$requested_tokens  = isset( $ai_style['tokens'] ) && is_array( $ai_style['tokens'] ) ? $ai_style['tokens'] : array();
@@ -500,6 +506,9 @@ final class RestController {
 				// ANY Pro-only token/palette the AI couldn't apply should offer a way to upgrade,
 				// even when other tokens from the same turn did apply.
 				'notice_url' => $pro_notice ? \EVF_AI_Ajax::get_notice_upgrade_url() : '',
+				// Daily-usage snapshot { remaining, limit, used } so the panel can show
+				// "X requests left today" — see EVF_AI_API::get_last_usage().
+				'usage'      => \EVF_AI_API::get_last_usage(),
 			)
 		);
 	}

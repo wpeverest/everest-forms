@@ -148,6 +148,9 @@ class EVF_AI_Ajax {
 					// Only set on a "daily_limit_reached" 429 — lets the JS show an upgrade CTA
 					// for a Free user but not for a Pro user who hit their own, higher cap.
 					'tier'    => is_array( $data ) && isset( $data['tier'] ) ? $data['tier'] : '',
+					// Usage snapshot (remaining is 0 on a daily_limit_reached) so the panel's
+					// "X requests left today" indicator stays in sync even on the blocked turn.
+					'usage'   => EVF_AI_API::get_last_usage(),
 				)
 			);
 		}
@@ -284,6 +287,7 @@ class EVF_AI_Ajax {
 				'notice_url'       => ( '' !== $notice && $notice !== EVF_AI_Form_Builder::$style_capability_notice )
 					? self::get_notice_upgrade_url()
 					: '',
+				'usage'            => EVF_AI_API::get_last_usage(),
 			)
 		);
 	}
@@ -354,6 +358,9 @@ class EVF_AI_Ajax {
 					// Only set on a "daily_limit_reached" 429 — lets the JS show an upgrade CTA
 					// for a Free user but not for a Pro user who hit their own, higher cap.
 					'tier'    => is_array( $data ) && isset( $data['tier'] ) ? $data['tier'] : '',
+					// Usage snapshot (remaining is 0 on a daily_limit_reached) so the screen's
+					// "X requests left today" indicator stays in sync even on the blocked turn.
+					'usage'   => EVF_AI_API::get_last_usage(),
 				)
 			);
 		}
@@ -379,6 +386,7 @@ class EVF_AI_Ajax {
 				'notice_url'       => ( '' !== $gen_notice && $gen_notice !== EVF_AI_Form_Builder::$style_capability_notice )
 					? self::get_notice_upgrade_url()
 					: '',
+				'usage'            => EVF_AI_API::get_last_usage(),
 			)
 		);
 	}
@@ -457,7 +465,13 @@ class EVF_AI_Ajax {
 			wp_send_json_error( array( 'message' => $usage->get_error_message() ) );
 		}
 
-		wp_send_json_success( $usage );
+		// Return under a `usage` key in the same normalized { remaining, limit, used } shape the
+		// generate/style/update responses use, so the front-end's readUsage() reads it uniformly.
+		wp_send_json_success(
+			array(
+				'usage' => is_array( $usage ) ? EVF_AI_API::normalize_usage( $usage ) : null,
+			)
+		);
 	}
 
 	/**
