@@ -33,6 +33,9 @@ const GREETING =
 // by actually opening the panel.
 const AI_HINT_NAME = 'form';
 
+const UPGRADE_URL =
+	'https://everestforms.net/upgrade/?utm_source=evf-free&utm_medium=ai-chat&utm_campaign=daily-limit&utm_content=Upgrade+to+Pro';
+
 // Builder context (form id + nonce) localized by class-evf-admin-assets.php.
 interface BuilderAIConfig {
 	ajaxUrl?: string;
@@ -51,7 +54,15 @@ const AI_DISABLED = !! cfg.aiDisabled;
 // Edit the current builder form via the ThemeGrill AI Cloud (Python) gateway.
 const editFormViaAi = async (
 	instruction: string,
-): Promise<{ ok: boolean; message: string; isNotice?: boolean; noticeUrl?: string; needsReload?: boolean }> => {
+): Promise<{
+	ok: boolean;
+	message: string;
+	isNotice?: boolean;
+	noticeUrl?: string;
+	needsReload?: boolean;
+	limitReached?: boolean;
+	limitTier?: string;
+}> => {
 	if ( ! cfg.ajaxUrl || ! cfg.nonce || ! cfg.formId ) {
 		return { ok: false, message: 'AI assistant is unavailable on this screen.' };
 	}
@@ -80,12 +91,14 @@ const editFormViaAi = async (
 				needsReload: !! json?.data?.needs_reload,
 			};
 		}
+		// "daily_limit_reached" is today's hard cap (Free AND Pro both have one, Pro's is far
+		// higher) — worth a persistent "you're blocked until tomorrow" state. A plain
+		// "rate_limit" (transient IP throttle) isn't — that's just a normal error to retry.
 		return {
-			ok:        false,
-			message:   json?.data?.message || 'Sorry, I could not update the form. Please try again.',
-			noticeUrl: json?.data?.code === 'rate_limited'
-				? 'https://everestforms.net/upgrade/?utm_source=evf-free&utm_medium=ai-chat&utm_campaign=daily-limit&utm_content=Upgrade+to+Pro'
-				: '',
+			ok:           false,
+			message:      json?.data?.message || 'Sorry, I could not update the form. Please try again.',
+			limitReached: json?.data?.code === 'daily_limit_reached',
+			limitTier:    json?.data?.tier || 'free',
 		};
 	} catch {
 		return { ok: false, message: 'Could not reach the AI service. Please try again.' };
@@ -104,7 +117,9 @@ const BuilderAIChat: React.FC = () => {
 	const [buttonHovered, setButtonHovered]   = useState(false);
 	const [tooltipHovered, setTooltipHovered] = useState(false);
 	const [rateLimited, setRateLimited] = useState(false);
-	const [upgradeUrl, setUpgradeUrl]   = useState('');
+	// Which tier hit the daily cap — Pro has its own (much higher) limit too, and shouldn't
+	// be told to "upgrade to Pro" when it's already on it.
+	const [limitTier, setLimitTier]     = useState('free');
 	const showTooltip = !open && (buttonHovered || tooltipHovered);
 	const [hintDismissed, setHintDismissed] = useState(!!cfg.hintDismissed);
 	const dismissHint = () => {
@@ -203,9 +218,9 @@ const BuilderAIChat: React.FC = () => {
 		const result = await editFormViaAi(userText);
 
 		// Track rate limit so the trigger button tooltip updates.
-		if (!result.ok && result.noticeUrl) {
+		if (!result.ok && result.limitReached) {
 			setRateLimited(true);
-			setUpgradeUrl(result.noticeUrl);
+			setLimitTier(result.limitTier || 'free');
 		}
 
 		// Show the notice at most once per chat session.
@@ -460,17 +475,23 @@ const BuilderAIChat: React.FC = () => {
 					}}>
 						{rateLimited ? (
 							<>
-								<div style={{ marginBottom: 8 }}>You've reached your daily free limit.</div>
-								<a
-									href={upgradeUrl}
-									target="_blank"
-									rel="noopener noreferrer"
-									style={{ color: '#7545BB', fontWeight: 600, fontSize: 12, textDecoration: 'none' }}
-									onMouseEnter={e => (e.currentTarget.style.textDecoration = 'underline')}
-									onMouseLeave={e => (e.currentTarget.style.textDecoration = 'none')}
-								>
-									Upgrade to Pro →
-								</a>
+								<div style={{ marginBottom: 8 }}>
+									{limitTier === 'pro'
+										? "You've reached today's request limit. It resets tomorrow."
+										: "You've reached your daily free limit."}
+								</div>
+								{limitTier !== 'pro' && (
+									<a
+										href={UPGRADE_URL}
+										target="_blank"
+										rel="noopener noreferrer"
+										style={{ color: '#7545BB', fontWeight: 600, fontSize: 12, textDecoration: 'none' }}
+										onMouseEnter={e => (e.currentTarget.style.textDecoration = 'underline')}
+										onMouseLeave={e => (e.currentTarget.style.textDecoration = 'none')}
+									>
+										Upgrade to Pro →
+									</a>
+								)}
 							</>
 						) : AI_DISABLED ? (
 							'Not available on local sites'

@@ -140,10 +140,14 @@ class EVF_AI_Ajax {
 		$ai_response = EVF_AI_API::update_form( $prompt, $form_id, $refine_prompt );
 
 		if ( is_wp_error( $ai_response ) ) {
+			$data = $ai_response->get_error_data();
 			wp_send_json_error(
 				array(
 					'message' => $ai_response->get_error_message(),
 					'code'    => $ai_response->get_error_code(),
+					// Only set on a "daily_limit_reached" 429 — lets the JS show an upgrade CTA
+					// for a Free user but not for a Pro user who hit their own, higher cap.
+					'tier'    => is_array( $data ) && isset( $data['tier'] ) ? $data['tier'] : '',
 				)
 			);
 		}
@@ -340,10 +344,14 @@ class EVF_AI_Ajax {
 
 		if ( is_wp_error( $ai_response ) ) {
 			$code = $ai_response->get_error_code();
+			$data = $ai_response->get_error_data();
 			wp_send_json_error(
 				array(
 					'message' => $ai_response->get_error_message(),
 					'code'    => $code,
+					// Only set on a "daily_limit_reached" 429 — lets the JS show an upgrade CTA
+					// for a Free user but not for a Pro user who hit their own, higher cap.
+					'tier'    => is_array( $data ) && isset( $data['tier'] ) ? $data['tier'] : '',
 				)
 			);
 		}

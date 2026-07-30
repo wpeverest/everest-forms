@@ -441,13 +441,13 @@ class EVF_AI_API {
 		);
 
 		if ( 429 === $status ) {
-			$msg  = is_array( $body ) && isset( $body['detail']['message'] )
-				? $body['detail']['message']
-				: __( 'Request limit reached. Please try again later.', 'everest-forms' );
-			$code = is_array( $body ) && isset( $body['detail']['error'] )
-				? $body['detail']['error']
-				: 'rate_limited';
-			return new WP_Error( $code, $msg );
+			$detail = is_array( $body ) && isset( $body['detail'] ) && is_array( $body['detail'] ) ? $body['detail'] : array();
+			$msg    = isset( $detail['message'] ) ? $detail['message'] : __( 'Request limit reached. Please try again later.', 'everest-forms' );
+			$code   = isset( $detail['error'] ) ? $detail['error'] : 'rate_limited';
+			// "tier" (only present on a "daily_limit_reached" 429) lets the caller tell a Free
+			// user (show an upgrade CTA) apart from a Pro user who hit their own, much higher
+			// cap (don't show one — they're already Pro).
+			return new WP_Error( $code, $msg, array( 'tier' => isset( $detail['tier'] ) ? $detail['tier'] : '' ) );
 		}
 
 		if ( $status < 200 || $status >= 300 ) {

@@ -448,7 +448,11 @@ final class RestController {
 			} else {
 				$status = 502;
 			}
-			return new \WP_Error( $code, $ai_style->get_error_message(), array( 'status' => $status ) );
+			$upstream_data = $ai_style->get_error_data();
+			// "tier" (only present on a "daily_limit_reached" 429) lets the panel show an
+			// upgrade CTA for a Free user but not for a Pro user who hit their own, higher cap.
+			$tier = is_array( $upstream_data ) && isset( $upstream_data['tier'] ) ? $upstream_data['tier'] : '';
+			return new \WP_Error( $code, $ai_style->get_error_message(), array( 'status' => $status, 'tier' => $tier ) );
 		}
 
 		$requested_tokens  = isset( $ai_style['tokens'] ) && is_array( $ai_style['tokens'] ) ? $ai_style['tokens'] : array();

@@ -136,6 +136,38 @@ const PREVIEW_REVEAL_DEADLINE = 2500;
 const UPGRADE_URL =
 	'https://everestforms.net/upgrade/?utm_source=evf-free&utm_medium=ai-form-builder&utm_campaign=ai-rate-limit&utm_content=Upgrade+to+Pro';
 
+/**
+ * The "you've hit the daily cap" popover body — shared by the three limit-reached buttons
+ * below. Pro has its own (much higher) daily limit too, so a Pro user who hits it sees a
+ * plain "try again tomorrow" message instead of a nonsensical "upgrade to Pro" CTA.
+ */
+const LimitReachedBody: React.FC<{ tier: string }> = ({ tier }) => (
+	<>
+		<Text fontSize="12px" color="#555" mb={2} lineHeight="1.5">
+			{tier === 'pro'
+				? __(
+						"You've reached today's request limit. It resets tomorrow.",
+						'everest-forms',
+				  )
+				: __("You've reached your daily free limit.", 'everest-forms')}
+		</Text>
+		{tier !== 'pro' && (
+			<Box
+				as="a"
+				href={UPGRADE_URL}
+				target="_blank"
+				rel="noopener noreferrer"
+				color="#7545BB"
+				fontSize="12px"
+				fontWeight="600"
+				_hover={{ textDecoration: 'underline' }}
+			>
+				{__('Upgrade to Pro →', 'everest-forms')}
+			</Box>
+		)}
+	</>
+);
+
 const SkeletonField: React.FC<{ delay?: string }> = ({ delay = '0s' }) => (
 	<Box sx={{ animation: `${fadeUp} 0.4s ease ${delay} both` }}>
 		<Box
@@ -298,6 +330,9 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({
 	const toast = useToast();
 	const [prompt, setPrompt] = useState('');
 	const [isRateLimited, setIsRateLimited] = useState(false);
+	// Which tier hit the daily cap — a Pro user has their own (much higher) limit and
+	// shouldn't be told to "upgrade to Pro" when they're already on it.
+	const [limitTier, setLimitTier] = useState('free');
 	const [genState, setGenState] = useState<'idle' | 'generating' | 'generated'>(
 		'idle',
 	);
@@ -518,6 +553,7 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({
 			} else {
 				if (res?.data?.code === 'daily_limit_reached') {
 					setIsRateLimited(true);
+					setLimitTier(res?.data?.tier || 'free');
 				}
 				throw new Error(
 					res?.data?.message ||
@@ -556,10 +592,13 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({
 		let cancelled = false;
 		let intervalId: ReturnType<typeof setInterval> | null = null;
 
-		const showError = (message: string, isRateLimit = false) => {
+		const showError = (message: string, isRateLimit = false, tier = 'free') => {
 			if (cancelled) return;
 			if (intervalId) clearInterval(intervalId);
-			if (isRateLimit) setIsRateLimited(true);
+			if (isRateLimit) {
+				setIsRateLimited(true);
+				setLimitTier(tier);
+			}
 			setGenState('idle');
 			toast({
 				title: isRateLimit
@@ -568,17 +607,19 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({
 				description: isRateLimit ? (
 					<Box>
 						<Text mb={1}>{message}</Text>
-						<Box
-							as="a"
-							href={UPGRADE_URL}
-							target="_blank"
-							rel="noopener noreferrer"
-							fontWeight="600"
-							textDecoration="underline"
-							_hover={{ opacity: 0.8 }}
-						>
-							{__('Upgrade to Pro →', 'everest-forms')}
-						</Box>
+						{tier !== 'pro' && (
+							<Box
+								as="a"
+								href={UPGRADE_URL}
+								target="_blank"
+								rel="noopener noreferrer"
+								fontWeight="600"
+								textDecoration="underline"
+								_hover={{ opacity: 0.8 }}
+							>
+								{__('Upgrade to Pro →', 'everest-forms')}
+							</Box>
+						)}
 					</Box>
 				) : (
 					message
@@ -607,6 +648,7 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({
 						res?.data?.message ||
 							__('Something went wrong. Please try again.', 'everest-forms'),
 						res?.data?.code === 'daily_limit_reached',
+						res?.data?.tier || 'free',
 					);
 				}
 			})
@@ -1230,29 +1272,7 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({
 																>
 																	<PopoverArrow />
 																	<PopoverBody p={3}>
-																		<Text
-																			fontSize="12px"
-																			color="#555"
-																			mb={2}
-																			lineHeight="1.5"
-																		>
-																			{__(
-																				"You've reached your daily free limit.",
-																				'everest-forms',
-																			)}
-																		</Text>
-																		<Box
-																			as="a"
-																			href={UPGRADE_URL}
-																			target="_blank"
-																			rel="noopener noreferrer"
-																			color="#7545BB"
-																			fontSize="12px"
-																			fontWeight="600"
-																			_hover={{ textDecoration: 'underline' }}
-																		>
-																			{__('Upgrade to Pro →', 'everest-forms')}
-																		</Box>
+																		<LimitReachedBody tier={limitTier} />
 																	</PopoverBody>
 																</PopoverContent>
 															</Popover>
@@ -1362,29 +1382,7 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({
 											>
 												<PopoverArrow />
 												<PopoverBody p={3}>
-													<Text
-														fontSize="12px"
-														color="#555"
-														mb={2}
-														lineHeight="1.5"
-													>
-														{__(
-															"You've reached your daily free limit.",
-															'everest-forms',
-														)}
-													</Text>
-													<Box
-														as="a"
-														href={UPGRADE_URL}
-														target="_blank"
-														rel="noopener noreferrer"
-														color="#7545BB"
-														fontSize="12px"
-														fontWeight="600"
-														_hover={{ textDecoration: 'underline' }}
-													>
-														{__('Upgrade to Pro →', 'everest-forms')}
-													</Box>
+													<LimitReachedBody tier={limitTier} />
 												</PopoverBody>
 											</PopoverContent>
 										</Popover>
@@ -1703,29 +1701,7 @@ const CreateWithAI: React.FC<CreateWithAIProps> = ({
 									>
 										<PopoverArrow />
 										<PopoverBody p={3}>
-											<Text
-												fontSize="12px"
-												color="#555"
-												mb={2}
-												lineHeight="1.5"
-											>
-												{__(
-													"You've reached your daily free limit.",
-													'everest-forms',
-												)}
-											</Text>
-											<Box
-												as="a"
-												href={UPGRADE_URL}
-												target="_blank"
-												rel="noopener noreferrer"
-												color="#7545BB"
-												fontSize="12px"
-												fontWeight="600"
-												_hover={{ textDecoration: 'underline' }}
-											>
-												{__('Upgrade to Pro →', 'everest-forms')}
-											</Box>
+											<LimitReachedBody tier={limitTier} />
 										</PopoverBody>
 									</PopoverContent>
 								</Popover>

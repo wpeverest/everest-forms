@@ -74,7 +74,10 @@ async function requestAiStyle(
 	currentRecord: { tokens: Record< string, unknown >; palette: string },
 	history: Array< { role: 'user' | 'assistant'; text: string } >,
 	lastChangedKeys: string[]
-): Promise< { ok: true; data: AiStyleResult } | { ok: false; message: string } > {
+): Promise<
+	| { ok: true; data: AiStyleResult }
+	| { ok: false; message: string; noticeUrl?: string }
+> {
 	if ( ! apiFetch ) {
 		return { ok: false, message: __( 'AI styling is unavailable on this screen.', 'everest-forms' ) };
 	}
@@ -103,11 +106,22 @@ async function requestAiStyle(
 			},
 		};
 	} catch ( e: any ) {
-		const status = e && e.data && e.data.status;
+		const code = e && e.code;
+		const tier = e && e.data && e.data.tier;
+		// "daily_limit_reached" is today's hard cap (Free AND Pro both have one, Pro's is far
+		// higher) — worth its own message and, for Free only, an upgrade link. A plain
+		// "rate_limit" (the transient per-minute/per-hour throttle) still gets the gateway's
+		// own specific message ("Too many requests…" / "Request limit reached — wait a
+		// moment…") rather than a made-up generic string — same as every other error case.
+		if ( 'daily_limit_reached' === code ) {
+			return {
+				ok: false,
+				message: ( e && e.message ) || __( 'Request limit reached. Please try again later.', 'everest-forms' ),
+				noticeUrl: 'pro' === tier ? undefined : UPGRADE_URL,
+			};
+		}
 		const message =
-			429 === status
-				? __( 'Request limit reached. Please try again later.', 'everest-forms' )
-				: ( e && e.message ) || __( 'Could not reach the AI service. Please try again.', 'everest-forms' );
+			( e && e.message ) || __( 'Could not reach the AI service. Please try again.', 'everest-forms' );
 		return { ok: false, message };
 	}
 }
@@ -274,7 +288,7 @@ export function AiAssistant() {
 							canUndo: true,
 							undoVersion: store.getVersion(),
 					  }
-				: { role: 'assistant', text: result.message, notice: true };
+				: { role: 'assistant', text: result.message, notice: true, noticeUrl: result.noticeUrl };
 			return next;
 		} );
 		setLoading( false );
