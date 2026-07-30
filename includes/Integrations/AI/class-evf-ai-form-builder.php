@@ -30,6 +30,11 @@ class EVF_AI_Form_Builder {
 	 *  Pro isn't active on this site — empty string when nothing was stripped. */
 	public static $style_pro_locked_notice = '';
 
+	/** Set to a human-readable notice when the AI's embedded `style` block asked for
+	 *  something no site can ever fulfil (a background image, an invented font) — see
+	 *  {@see RestController::unsupported_capability_notice()}. Empty string when nothing was flagged. */
+	public static $style_capability_notice = '';
+
 	/**
 	 * Create a new EVF form from the AI gateway response.
 	 * Saved as DRAFT — user must click "Use This Form" to publish.
@@ -101,7 +106,8 @@ class EVF_AI_Form_Builder {
 	 * @param array $ai_response Full decoded gateway response (may contain a `style` key).
 	 */
 	private static function maybe_apply_ai_style( int $post_id, array $ai_response ) {
-		self::$style_pro_locked_notice = '';
+		self::$style_pro_locked_notice  = '';
+		self::$style_capability_notice  = '';
 
 		if ( empty( $ai_response['style'] ) || ! is_array( $ai_response['style'] ) ) {
 			return;
@@ -128,6 +134,12 @@ class EVF_AI_Form_Builder {
 			$clean['tokens'],
 			$requested_palette,
 			isset( $clean['palette'] ) ? $clean['palette'] : ''
+		);
+
+		self::$style_capability_notice = \EverestForms\Addons\StyleCustomizer\V2\RestController::unsupported_capability_notice(
+			$clean['tokens'],
+			'',
+			array()
 		);
 
 		if ( empty( $clean['tokens'] ) && empty( $clean['palette'] ) ) {

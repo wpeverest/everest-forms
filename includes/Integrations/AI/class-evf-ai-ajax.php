@@ -281,7 +281,9 @@ class EVF_AI_Ajax {
 				'multi_part_steps' => self::get_multi_part_steps( $form_id ),
 				'needs_reload'     => $needs_reload,
 				'notice'           => $notice,
-				'notice_url'       => '' !== $notice ? self::get_notice_upgrade_url() : '',
+				'notice_url'       => ( '' !== $notice && $notice !== EVF_AI_Form_Builder::$style_capability_notice )
+					? self::get_notice_upgrade_url()
+					: '',
 			)
 		);
 	}
@@ -374,7 +376,9 @@ class EVF_AI_Ajax {
 				'required_addons'  => $ai_response['required_addons'] ?? array(),
 				'multi_part_steps' => self::get_multi_part_steps( $form_id ),
 				'notice'           => $gen_notice,
-				'notice_url'       => '' !== $gen_notice ? self::get_notice_upgrade_url() : '',
+				'notice_url'       => ( '' !== $gen_notice && $gen_notice !== EVF_AI_Form_Builder::$style_capability_notice )
+					? self::get_notice_upgrade_url()
+					: '',
 			)
 		);
 	}
@@ -564,10 +568,20 @@ class EVF_AI_Ajax {
 		}
 
 		// Lowest priority: a purely cosmetic Pro-only style choice (colour, font, shape) got
-		// dropped from the AI's embedded style suggestion — see EVF_AI_Form_Builder::maybe_apply_ai_style().
+		// dropped, and/or the AI asked for something no site can ever actually do (a
+		// background image, an invented font) — see EVF_AI_Form_Builder::maybe_apply_ai_style().
 		// Checked last since a structural feature notice above is more important to surface first.
-		if ( '' !== EVF_AI_Form_Builder::$style_pro_locked_notice ) {
-			return EVF_AI_Form_Builder::$style_pro_locked_notice;
+		$style_notice = implode(
+			' ',
+			array_filter(
+				array(
+					EVF_AI_Form_Builder::$style_pro_locked_notice,
+					EVF_AI_Form_Builder::$style_capability_notice,
+				)
+			)
+		);
+		if ( '' !== $style_notice ) {
+			return $style_notice;
 		}
 
 		return '';

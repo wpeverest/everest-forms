@@ -587,10 +587,15 @@ final class RestController {
 	 * @param array  $clean_tokens Sanitized tokens for this turn — mutated by reference to strip
 	 *                             anything this guard rejects outright (image, bad font).
 	 * @param string $prompt_text  The user's combined prompt + refine text, for the field-name check.
-	 * @param array  $field_labels Current form's field labels, for the field-name check.
+	 *                             Pass '' when unavailable.
+	 * @param array  $field_labels Current form's field labels, for the field-name check. Pass an
+	 *                             empty array when unavailable.
 	 * @return string Empty string when nothing was flagged.
+	 *
+	 * Public: also called by {@see EVF_AI_Form_Builder::maybe_apply_ai_style()} so the AI form
+	 * builder surfaces the same honest notice as the Style Customizer's own AI launcher.
 	 */
-	protected static function unsupported_capability_notice( array &$clean_tokens, $prompt_text, array $field_labels ) {
+	public static function unsupported_capability_notice( array &$clean_tokens, $prompt_text, array $field_labels ) {
 		$labels = array();
 
 		if ( ! empty( $clean_tokens['wrap.bgImage']['desktop'] ) ) {
