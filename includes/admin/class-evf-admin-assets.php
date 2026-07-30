@@ -493,11 +493,16 @@ class EVF_Admin_Assets {
 
 		// AI chat assistant — only on the form editor (form_id present), not on the template selection screen.
 		if ( in_array( $screen_id, array( 'everest-forms_page_evf-builder' ), true ) && isset( $_GET['form_id'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+			// Version by the bundle's mtime (not the static EVF_VERSION) so a rebuilt bundle busts
+			// the browser cache — matching how the Style Customizer v2 and templates bundles are
+			// versioned. Without this, a rebuild keeps the same ?ver= and the stale bundle sticks.
+			$evf_builder_ai_path = evf()->plugin_path() . '/dist/builderAI.min.js';
+			$evf_builder_ai_ver  = file_exists( $evf_builder_ai_path ) ? (string) filemtime( $evf_builder_ai_path ) : EVF_VERSION;
 			wp_enqueue_script(
 				'evf-builder-ai',
 				evf()->plugin_url() . '/dist/builderAI.min.js',
 				array( 'wp-element', 'react', 'react-dom' ),
-				EVF_VERSION,
+				$evf_builder_ai_ver,
 				true
 			);
 
