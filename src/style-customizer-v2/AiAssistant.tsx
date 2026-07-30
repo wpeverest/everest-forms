@@ -287,6 +287,10 @@ export function AiAssistant() {
 							text: result.data.summary || __( 'Applied your style.', 'everest-forms' ),
 							canUndo: true,
 							undoVersion: store.getVersion(),
+							// Set whenever ANY requested token/palette was Pro-blocked this turn, even
+							// though the rest of the turn applied fine (see RestController::ai_style()) —
+							// the styling below (non-"notice") stays the normal bubble either way.
+							noticeUrl: result.data.noticeUrl || undefined,
 					  }
 				: { role: 'assistant', text: result.message, notice: true, noticeUrl: result.noticeUrl };
 			return next;
@@ -665,14 +669,14 @@ export function AiAssistant() {
 													</a>
 												</div>
 											) }
-											{ msg.notice && msg.noticeUrl && (
+											{ msg.noticeUrl && (
 												<div style={ { marginTop: 6 } }>
 													<a
 														href={ msg.noticeUrl }
 														target="_blank"
 														rel="noopener noreferrer"
 														style={ {
-															color: '#c0392b',
+															color: '#7545BB',
 															fontWeight: 600,
 															fontSize: 12,
 															textDecoration: 'underline',

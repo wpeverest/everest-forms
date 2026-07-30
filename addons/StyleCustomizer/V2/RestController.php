@@ -496,7 +496,10 @@ final class RestController {
 				// Only when the WHOLE request was Pro-blocked — a partial success still gets the
 				// normal "applied" treatment with an inline caveat, not the full warning treatment.
 				'notice'     => $blocked,
-				'notice_url' => $blocked ? \EVF_AI_Ajax::get_notice_upgrade_url() : '',
+				// Unlike "notice" above, the upgrade link isn't limited to a fully-blocked turn —
+				// ANY Pro-only token/palette the AI couldn't apply should offer a way to upgrade,
+				// even when other tokens from the same turn did apply.
+				'notice_url' => $pro_notice ? \EVF_AI_Ajax::get_notice_upgrade_url() : '',
 			)
 		);
 	}
