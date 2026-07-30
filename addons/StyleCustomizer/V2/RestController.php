@@ -709,24 +709,35 @@ final class RestController {
 
 	/**
 	 * POST /styles/{id}/preview-draft — cache the builder's current serialized structure so the
-	 * live preview iframe can render unsaved Fields-tab edits. Nothing is written to the form
-	 * (see {@see PreviewDraft}).
+	 * live preview iframe can render unsaved Fields/Settings-tab edits. Nothing is written to the
+	 * form (see {@see PreviewDraft}). Also returns the section/token visibility recomputed
+	 * against that same unsaved state (e.g. a field-type-gated group, or a Pro addon's
+	 * `evf_style_v2_sections` condition like Multi-Part's "Enable Multi-Part form" toggle) so the
+	 * panel can show/hide sections live, without requiring a save first.
 	 *
 	 * @param \WP_REST_Request $request Request.
 	 * @return \WP_REST_Response
 	 */
 	public function save_preview_draft( $request ) {
-		$form_id   = absint( $request['id'] );
-		$form_data = $request->get_param( 'form_data' );
-		$session   = (string) $request->get_param( 'session' );
+		$form_id      = absint( $request['id'] );
+		$form_data    = $request->get_param( 'form_data' );
+		$session      = (string) $request->get_param( 'session' );
+		$style_tokens = $request->get_param( 'style_tokens' );
 
 		if ( ! is_string( $form_data ) || '' === $form_data ) {
 			PreviewDraft::clear( $form_id, $session );
 			return rest_ensure_response( array( 'stored' => false ) );
 		}
 
-		$stored = PreviewDraft::store( $form_id, $form_data, $session );
-		return rest_ensure_response( array( 'stored' => (bool) $stored ) );
+		$stored   = PreviewDraft::store( $form_id, $form_data, $session, is_array( $style_tokens ) ? $style_tokens : null );
+		$response = array( 'stored' => (bool) $stored );
+
+		if ( is_array( PreviewDraft::current( $form_id ) ) ) {
+			$response['sections'] = apply_filters( 'evf_style_v2_sections', Schema::sections(), $form_id );
+			$response['schema']   = self::visible_tokens( Schema::tokens(), $form_id );
+		}
+
+		return rest_ensure_response( $response );
 	}
 
 	/**
@@ -818,11 +829,33 @@ final class RestController {
 			);
 		}
 
+		/**
+		 * Filter the record right before it's sent to the panel — regardless of which of the 3
+		 * branches above produced it. Lets an addon whose own settings live OUTSIDE
+		 * `everest_forms_styles` (e.g. Multi-Part's per-form pagination settings, stored in the
+		 * form's own post_content) backfill its tokens the first time this form's record is read,
+		 * without depending on {@see Migrator::migrate_record()}'s one-time, legacy-only hook.
+		 *
+		 * @param array $record  The record about to be returned to the panel.
+		 * @param int   $form_id Form id.
+		 */
+		$record = apply_filters( 'evf_style_v2_record', $record, $form_id );
+
 		return array(
 			'form_id'        => $form_id,
 			'schema_version' => Schema::version(),
-			'schema'         => Schema::tokens(),
-			'sections'       => Schema::sections(),
+			'schema'         => self::visible_tokens( Schema::tokens(), $form_id ),
+			/**
+			 * Filter the sections shown in the panel for THIS form — e.g. Multi-Part hides its
+			 * "Pagination" section unless the form actually has multi-step enabled, the same way
+			 * {@see self::visible_tokens()} hides the "Upload area" group without a File/Image
+			 * Upload field. Display-only: {@see Schema::tokens()} itself (what Sanitizer/Compiler
+			 * use) is untouched, so hiding a section never drops already-saved customization.
+			 *
+			 * @param array $sections Section definitions keyed by section id.
+			 * @param int   $form_id  Form id.
+			 */
+			'sections'       => apply_filters( 'evf_style_v2_sections', Schema::sections(), $form_id ),
 			'palettes'       => Schema::palettes(),
 			'palette_map'    => Schema::palette_map(),
 			'templates'      => Templates::all(),
@@ -838,6 +871,81 @@ final class RestController {
 				'just_migrated' => ! empty( $stored ) && ! Engine::is_v2_record( $stored ),
 			),
 		);
+	}
+
+	/**
+	 * Drop token GROUPS that only make sense for a field type this form doesn't have — currently
+	 * just "Upload area" (the file.* tokens) without a File/Image Upload field. Panel-display
+	 * concern only: the full {@see Schema::tokens()} list (what Sanitizer/Compiler actually use)
+	 * is untouched, so a form that later loses its upload field doesn't lose saved customization.
+	 *
+	 * @param array $tokens  Full token list.
+	 * @param int   $form_id Form id.
+	 * @return array
+	 */
+	protected static function visible_tokens( $tokens, $form_id ) {
+		$types = self::form_field_types( $form_id );
+		if ( isset( $types['file-upload'] ) || isset( $types['image-upload'] ) ) {
+			return $tokens;
+		}
+		return array_values(
+			array_filter(
+				$tokens,
+				static function ( $token ) {
+					return 'Upload area' !== $token['group'];
+				}
+			)
+		);
+	}
+
+	/**
+	 * The set of field TYPES present on a form (e.g. `'file-upload' => true`), for gating
+	 * field-type-dependent style groups/sections. Memoized per request — {@see build_payload()}
+	 * and any addon hooking `evf_style_v2_sections` may both want this for the same form.
+	 *
+	 * @param int $form_id Form id.
+	 * @return array
+	 */
+	protected static function form_field_types( $form_id ) {
+		$form_id = absint( $form_id );
+
+		// A draft just POSTed in this same request (see save_preview_draft()) reflects unsaved
+		// Fields-tab edits — prefer it over the last-saved row so a field added/removed since the
+		// last save is immediately reflected, not just after the form is saved.
+		$draft = PreviewDraft::current( $form_id );
+		if ( is_array( $draft ) ) {
+			return self::extract_field_types( isset( $draft['form_fields'] ) ? $draft['form_fields'] : array() );
+		}
+
+		static $cache = array();
+		if ( isset( $cache[ $form_id ] ) ) {
+			return $cache[ $form_id ];
+		}
+		$types = array();
+		if ( $form_id ) {
+			$form = evf()->form->get( $form_id, array( 'content_only' => true, 'cap' => array() ) );
+			if ( isset( $form['form_fields'] ) && is_array( $form['form_fields'] ) ) {
+				$types = self::extract_field_types( $form['form_fields'] );
+			}
+		}
+		$cache[ $form_id ] = $types;
+		return $types;
+	}
+
+	/**
+	 * @param array $form_fields Form fields, keyed by field id.
+	 * @return array Field types present, as `[ type => true ]`.
+	 */
+	protected static function extract_field_types( $form_fields ) {
+		$types = array();
+		if ( is_array( $form_fields ) ) {
+			foreach ( $form_fields as $field ) {
+				if ( isset( $field['type'] ) ) {
+					$types[ $field['type'] ] = true;
+				}
+			}
+		}
+		return $types;
 	}
 
 	/**

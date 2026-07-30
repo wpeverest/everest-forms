@@ -1,6 +1,7 @@
 /**
- * Style Customizer v2 — Fields ↔ Style live synchronisation. Serialises the builder's current
- * structure to the `preview-draft` endpoint and reloads the preview iframe when it changes.
+ * Style Customizer v2 — Fields/Settings ↔ Style live synchronisation. Serialises the builder's
+ * current form (fields, layout, settings) to the `preview-draft` endpoint, applies any section/
+ * schema visibility the response recomputed, and reloads the preview iframe when it changes.
  */
 import { getActiveBridge } from './PreviewBridge';
 import { StyleStore } from './store';
@@ -33,6 +34,8 @@ export class BuilderSync {
 	private changeTimer: ReturnType< typeof setTimeout > | null = null;
 	/** Guards against overlapping draft POST + reload cycles. */
 	private syncing = false;
+	/** Structural style-token overrides (see syncStyleToken()) waiting to go out on the next POST. */
+	private pendingStyleTokens: Record< string, unknown > = {};
 
 	private fieldObserver: MutationObserver | null = null;
 	private panelObserver: MutationObserver | null = null;
@@ -157,6 +160,18 @@ export class BuilderSync {
 		}
 	};
 
+	/**
+	 * Push a "structural" style-token value (one with no CSS-variable fast path — e.g.
+	 * Pagination's indicator TYPE, whose themes render genuinely different markup, not just a
+	 * class/variable — see PreviewBridge.ts's applyKeys()) to the server and reload the preview
+	 * once it's re-rendered with it. Queued on the instance so it survives a busy/not-ready sync
+	 * being retried, and rides along with whatever POST goes out next.
+	 */
+	syncStyleToken( key: string, value: unknown ) {
+		this.pendingStyleTokens[ key ] = value;
+		this.syncPreview( false );
+	}
+
 	private scheduleSync() {
 		if ( this.changeTimer ) {
 			clearTimeout( this.changeTimer );
@@ -192,7 +207,9 @@ export class BuilderSync {
 		if ( ! json ) {
 			return;
 		}
-		if ( ! force && signature === this.lastSignature ) {
+		const styleTokens = this.pendingStyleTokens;
+		const hasStyleTokens = Object.keys( styleTokens ).length > 0;
+		if ( ! force && ! hasStyleTokens && signature === this.lastSignature ) {
 			return;
 		}
 
@@ -202,12 +219,23 @@ export class BuilderSync {
 
 		this.syncing = true;
 		try {
-			await apiFetch( {
+			const data: Record< string, unknown > = { form_data: json, session: this.store.settings.previewSession };
+			if ( hasStyleTokens ) {
+				data.style_tokens = styleTokens;
+			}
+			const res = await apiFetch( {
 				path: `${ this.store.settings.restBase }/${ this.store.settings.formId }/preview-draft`,
 				method: 'POST',
-				data: { form_data: json, session: this.store.settings.previewSession },
+				data,
 			} );
 			this.lastSignature = signature;
+			this.pendingStyleTokens = {};
+			// The server recomputes section/token visibility against this same draft (e.g. a
+			// conditional section a Pro addon just became eligible/ineligible for) — apply it
+			// before the reload so the panel's sidebar is in sync with what the new iframe renders.
+			if ( res && res.sections && Array.isArray( res.schema ) ) {
+				this.store.setVisibility( res.sections, res.schema );
+			}
 			getActiveBridge()?.reload();
 		} catch ( err ) {
 			// eslint-disable-next-line no-console
@@ -278,10 +306,18 @@ export class BuilderSync {
 		return structure;
 	}
 
-	/** Signature of only the render-relevant inputs (fields + layout). */
+	/**
+	 * Signature of only the render-relevant inputs: fields, layout, AND settings — settings are
+	 * included because a Pro addon's conditional section/group (e.g. Multi-Part's "Enable
+	 * Multi-Part form" toggle gating the Pagination section) can depend on one, not just on
+	 * fields/structure.
+	 */
 	private signatureFrom( all: SerializedItem[] ): string {
 		const relevant = all.filter(
-			( i ) => i.name.indexOf( 'form_fields[' ) === 0 || i.name.indexOf( 'structure[' ) === 0
+			( i ) =>
+				i.name.indexOf( 'form_fields[' ) === 0 ||
+				i.name.indexOf( 'structure[' ) === 0 ||
+				i.name.indexOf( 'settings[' ) === 0
 		);
 		return JSON.stringify( relevant );
 	}

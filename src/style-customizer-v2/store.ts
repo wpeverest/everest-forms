@@ -269,6 +269,17 @@ class StyleStore {
 		return this.redoStack.length > 0;
 	}
 
+	/** What Undo would revert, or '' if there's nothing to undo — lets the UI say what a click
+	 *  will do before it happens (tooltip, confirmation toast). */
+	undoLabel(): string {
+		return this.canUndo() ? this.undoStack[ this.undoStack.length - 1 ].label : '';
+	}
+
+	/** What Redo would reapply, or '' if there's nothing to redo. */
+	redoLabel(): string {
+		return this.canRedo() ? this.redoStack[ this.redoStack.length - 1 ].label : '';
+	}
+
 	undo() {
 		if ( this.undoStack.length <= this.undoFloor() ) {
 			return;
@@ -670,6 +681,21 @@ class StyleStore {
 	setUserTemplates( templates: StylePayload[ 'templates' ] ) {
 		this.userTemplates = templates || [];
 		this.notify( [] );
+	}
+
+	/**
+	 * Update section/schema visibility — e.g. BuilderSync re-synced after a Settings/Fields-tab
+	 * edit that makes a conditional section or token group newly (in)eligible for this form
+	 * (Multi-Part's "Enable Multi-Part form" toggle, a File Upload field being added/removed).
+	 * Token *values* are untouched; this only changes what the panel currently shows/applies —
+	 * `notify( null )` re-applies every (now current) token, the same as an undo/reset.
+	 */
+	setVisibility( sections: StylePayload[ 'sections' ], schema: Token[] ) {
+		this.sections = sections;
+		this.schema = schema;
+		this.byKey = {};
+		this.schema.forEach( ( t ) => ( this.byKey[ t.key ] = t ) );
+		this.notify( null );
 	}
 
 	/** Build the record to POST. Absent-device keys are already pruned by never being set. */

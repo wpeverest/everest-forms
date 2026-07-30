@@ -766,6 +766,34 @@ export function App() {
 		return () => window.removeEventListener( 'beforeunload', handler );
 	}, [ store ] );
 
+	/* ---- undo/redo: confirm what just happened, with a one-click reverse (mirrors the
+	 *  "Applied palette X [Undo]" pattern already used for apply-palette/reset-all/apply-template) ---- */
+	const handleUndo = React.useCallback( () => {
+		if ( ! store.canUndo() ) {
+			return;
+		}
+		const label = store.undoLabel();
+		store.undo();
+		showToast( {
+			msg: `${ __( 'Undid:', 'everest-forms' ) } ${ label }`,
+			actLabel: __( 'Redo', 'everest-forms' ),
+			onAct: () => store.redo(),
+		} );
+	}, [ store, showToast ] );
+
+	const handleRedo = React.useCallback( () => {
+		if ( ! store.canRedo() ) {
+			return;
+		}
+		const label = store.redoLabel();
+		store.redo();
+		showToast( {
+			msg: `${ __( 'Redid:', 'everest-forms' ) } ${ label }`,
+			actLabel: __( 'Undo', 'everest-forms' ),
+			onAct: () => store.undo(),
+		} );
+	}, [ store, showToast ] );
+
 	React.useEffect( () => {
 		const onKey = ( e: KeyboardEvent ) => {
 			const target = e.target as HTMLElement;
@@ -775,15 +803,22 @@ export function App() {
 			if ( ( e.ctrlKey || e.metaKey ) && e.key.toLowerCase() === 'z' ) {
 				e.preventDefault();
 				if ( e.shiftKey ) {
-					store.redo();
+					handleRedo();
 				} else {
-					store.undo();
+					handleUndo();
 				}
+				return;
+			}
+			// Ctrl+Y: the conventional Windows/Linux redo shortcut, alongside Ctrl+Shift+Z. Not
+			// Cmd+Y (macOS binds that to the browser's own History, which this shouldn't swallow).
+			if ( e.ctrlKey && ! e.metaKey && e.key.toLowerCase() === 'y' ) {
+				e.preventDefault();
+				handleRedo();
 			}
 		};
 		window.addEventListener( 'keydown', onKey );
 		return () => window.removeEventListener( 'keydown', onKey );
-	}, [ store ] );
+	}, [ handleUndo, handleRedo ] );
 
 	/* ---- popovers ---- */
 	const paletteOpen = popover?.kind === 'palette';
@@ -847,11 +882,19 @@ export function App() {
 						type="button"
 						className="uxbtn"
 						disabled={ ! store.canUndo() }
-						aria-label={ __( 'Undo', 'everest-forms' ) }
-						title={ __( 'Undo', 'everest-forms' ) + ' (Ctrl+Z)' }
-						onClick={ () => store.undo() }
+						aria-label={
+							store.canUndo()
+								? `${ __( 'Undo', 'everest-forms' ) }: ${ store.undoLabel() }`
+								: __( 'Undo', 'everest-forms' )
+						}
+						title={
+							( store.canUndo()
+								? `${ __( 'Undo', 'everest-forms' ) }: ${ store.undoLabel() }`
+								: __( 'Undo', 'everest-forms' ) ) + ' (Ctrl+Z)'
+						}
+						onClick={ handleUndo }
 					>
-						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2 } aria-hidden="true">
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2.2 } aria-hidden="true">
 							<path d="M3 10h10a5 5 0 0 1 0 10H7" />
 							<path d="M7 6 3 10l4 4" />
 						</svg>
@@ -860,11 +903,19 @@ export function App() {
 						type="button"
 						className="uxbtn"
 						disabled={ ! store.canRedo() }
-						aria-label={ __( 'Redo', 'everest-forms' ) }
-						title={ __( 'Redo', 'everest-forms' ) + ' (Ctrl+Shift+Z)' }
-						onClick={ () => store.redo() }
+						aria-label={
+							store.canRedo()
+								? `${ __( 'Redo', 'everest-forms' ) }: ${ store.redoLabel() }`
+								: __( 'Redo', 'everest-forms' )
+						}
+						title={
+							( store.canRedo()
+								? `${ __( 'Redo', 'everest-forms' ) }: ${ store.redoLabel() }`
+								: __( 'Redo', 'everest-forms' ) ) + ' (Ctrl+Shift+Z / Ctrl+Y)'
+						}
+						onClick={ handleRedo }
 					>
-						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2 } aria-hidden="true">
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2.2 } aria-hidden="true">
 							<path d="M21 10H11a5 5 0 0 0 0 10h6" />
 							<path d="m17 6 4 4-4 4" />
 						</svg>

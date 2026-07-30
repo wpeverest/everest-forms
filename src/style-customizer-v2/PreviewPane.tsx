@@ -67,7 +67,7 @@ function MigrationNotice() {
 	);
 }
 
-/** Notice that the Fields tab has changes not yet saved — shows/hides live as that changes. */
+/** Notice that the Fields or Settings tab has changes not yet saved — shows/hides live as that changes. */
 function UnsavedFieldsNotice() {
 	const store = useStore();
 	const [ dismissed, setDismissed ] = React.useState( false );
@@ -91,8 +91,8 @@ function UnsavedFieldsNotice() {
 				</svg>
 			</span>
 			<span className="pv-migration-text">
-				<b>{ __( 'Previewing unsaved field changes.', 'everest-forms' ) }</b>{ ' ' }
-				{ __( 'From the Fields tab.', 'everest-forms' ) }
+				<b>{ __( 'Previewing unsaved changes.', 'everest-forms' ) }</b>{ ' ' }
+				{ __( 'From the Fields or Settings tab.', 'everest-forms' ) }
 			</span>
 			<button
 				type="button"

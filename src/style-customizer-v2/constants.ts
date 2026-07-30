@@ -43,10 +43,11 @@ export function deepEqual( a: unknown, b: unknown ): boolean {
 export const SECTION_ICONS: Record<string, string> = {
 	form: '<rect x="3" y="3" width="18" height="18" rx="3"/>',
 	text: '<path d="M4 7V5h16v2M9 5v14M9 19h6"/>',
-	fields: '<rect x="3" y="8" width="18" height="8" rx="2"/>',
+	fields: '<rect x="3" y="5" width="18" height="6" rx="2"/><rect x="3" y="14" width="12" height="6" rx="2"/>',
 	choice: '<circle cx="7" cy="12" r="3"/><rect x="14" y="9" width="6" height="6" rx="1.5"/>',
 	button: '<rect x="3" y="8" width="18" height="9" rx="4"/>',
 	messages: '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
+	pagination: '<circle cx="5" cy="12" r="2.5"/><circle cx="12" cy="12" r="2.5"/><circle cx="19" cy="12" r="2.5"/><path d="M7.5 12h2M14.5 12h2"/>',
 };
 
 /** One-line sub-label shown under each element row. */
@@ -57,6 +58,7 @@ export const SECTION_SUBTITLES: Record<string, string> = {
 	choice: __( 'Radio, checkbox, ratings & more', 'everest-forms' ),
 	button: __( 'Submit & navigation buttons', 'everest-forms' ),
 	messages: __( 'Success, error & validation banners', 'everest-forms' ),
+	pagination: __( 'Progress indicator & part navigation', 'everest-forms' ),
 };
 
 /** Human labels for the variant/state ids the schema ships. */
@@ -138,6 +140,11 @@ export const PREVIEW_TARGETS: PreviewTarget[] = [
 			'.evf-submit-container button, .evf-submit-container input[type="submit"], .everest-forms-multi-part-actions button, .everest-forms-multi-part-actions input[type="submit"], .everest-forms-part-button, .everest-forms-submit-button',
 		section: 'button',
 		label: 'Button',
+	},
+	{
+		match: '.everest-forms-multi-part-indicator',
+		section: 'pagination',
+		label: 'Pagination',
 	},
 	{
 		match: '.everest-forms-notice--success',

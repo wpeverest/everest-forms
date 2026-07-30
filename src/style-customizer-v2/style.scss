@@ -146,9 +146,9 @@
 #everest-forms-panel-style .subtabs-actions {
 	display: flex;
 	align-items: center;
-	gap: 2px;
+	gap: 5px;
 	flex: none;
-	padding: 0 6px;
+	padding: 0 8px;
 }
 
 #everest-forms-panel-style .uxbtn {
@@ -177,6 +177,43 @@
 	&:disabled {
 		opacity: .35;
 		cursor: default;
+	}
+}
+
+/* Undo/redo specifically get a bolder, always-visible treatment (bordered chips at rest, not
+   just on hover) — they're a primary, frequently-reached-for action, not a minor utility icon
+   like the section-reset button (which shares .uxbtn's base but stays at the smaller/quieter
+   size). */
+#everest-forms-panel-style .subtabs-actions .uxbtn {
+	width: 32px;
+	height: 32px;
+	border: 1px solid var(--ui-line);
+	background: #fff;
+	box-shadow: var(--ui-shadow-sm);
+	border-radius: var(--ui-radius-md);
+	color: var(--ui-ink-2);
+	transition: background .12s, color .12s, border-color .12s, box-shadow .12s;
+
+	svg {
+		width: 17px;
+		height: 17px;
+	}
+
+	&:hover:not(:disabled) {
+		background: var(--ui-purple-50);
+		border-color: var(--ui-purple);
+		color: var(--ui-purple-600);
+	}
+
+	&:active:not(:disabled) {
+		background: var(--ui-purple-100);
+	}
+
+	&:disabled {
+		border-color: transparent;
+		background: none;
+		box-shadow: none;
+		color: var(--ui-ink-3);
 	}
 }
 
@@ -293,6 +330,17 @@
 		color: var(--ui-ink-2);
 		cursor: pointer;
 		white-space: nowrap;
+		transition: color .12s, border-color .12s;
+
+		&:hover {
+			color: var(--ui-purple);
+			border-color: var(--ui-purple);
+		}
+
+		&:focus-visible {
+			outline: none;
+			box-shadow: var(--ui-focus);
+		}
 	}
 }
 

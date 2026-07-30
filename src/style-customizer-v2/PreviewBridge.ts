@@ -3,6 +3,7 @@
  * wrapper, injects the rule template, writes token values as CSS variables, and maps clicks
  * inside the iframe back to their style section for click-to-edit.
  */
+import { getActiveSync } from './BuilderSync';
 import { resolveValue, tokenDeclarations } from './cssVars';
 import { ALL_FORCE_CLASSES, PREVIEW_TARGETS } from './constants';
 import { StyleStore } from './store';
@@ -28,6 +29,14 @@ const CHOICE_VARIATION_CLASSES = [ 'evf-choice-outline', 'evf-choice-filled' ];
 
 /** Mirrors FrontendEnqueue::container_class()'s `evf-choice-align-{center|right}` classes. */
 const CHOICE_ALIGN_CLASSES = [ 'evf-choice-align-center', 'evf-choice-align-right' ];
+
+/** Mirrors EverestForms_MultiPart::field_submit_visibility_class()'s `everest-forms-nav-align--{value}` class. */
+const PAGINATION_NAV_ALIGN_CLASSES = [
+	'everest-forms-nav-align--left',
+	'everest-forms-nav-align--right',
+	'everest-forms-nav-align--center',
+	'everest-forms-nav-align--split',
+];
 
 /** How long to keep polling for the form wrapper before giving up (ms). */
 const READY_DEADLINE = 15000;
@@ -427,6 +436,19 @@ export class PreviewBridge {
 		if ( keys.indexOf( 'fonts.family' ) !== -1 || keys.indexOf( 'fonts.theme' ) !== -1 ) {
 			this.ensureFont();
 		}
+		// pagination.indicatorType changes which child DOM the indicator renders (a progress bar
+		// vs. an <ol>/<ul> of steps — see EverestForms_MultiPart::output_part_indicator()) —
+		// genuinely different markup per value, not something a CSS variable or class toggle can
+		// reconstruct client-side. Ask the server to re-render it instead, same as a Fields-tab
+		// edit does. Scoped to this targeted-edit path only (never applyAll()'s bulk re-apply,
+		// which also runs on device switch/undo/bootstrap) so this can't loop or fire needlessly.
+		if ( keys.indexOf( 'pagination.indicatorType' ) !== -1 ) {
+			const token = this.store.byKey[ 'pagination.indicatorType' ];
+			if ( token ) {
+				const value = resolveValue( this.store.tokens[ token.key ], token, this.store.device );
+				getActiveSync()?.syncStyleToken( token.key, value );
+			}
+		}
 	}
 
 	/** Loads (or removes) the selected Google font inside the preview. */
@@ -498,6 +520,20 @@ export class PreviewBridge {
 			CHOICE_ALIGN_CLASSES.forEach( ( c ) => wrapper.classList.remove( c ) );
 			if ( value === 'center' || value === 'right' ) {
 				wrapper.classList.add( `evf-choice-align-${ value }` );
+			}
+		}
+
+		// pagination.navAlign is a Multi-Part "meta" token (no CSS var) — it's pure positioning on
+		// markup that already exists regardless of value, so (unlike indicatorType, whose themes
+		// render genuinely different child DOM) a class toggle is enough for live preview. Applied
+		// to the nav container itself, matching EverestForms_MultiPart::field_submit_visibility_class().
+		if ( token.key === 'pagination.navAlign' ) {
+			const nav = wrapper.querySelector( '.everest-forms-multi-part-actions' );
+			if ( nav ) {
+				PAGINATION_NAV_ALIGN_CLASSES.forEach( ( c ) => nav.classList.remove( c ) );
+				if ( typeof value === 'string' && value ) {
+					nav.classList.add( `everest-forms-nav-align--${ value }` );
+				}
 			}
 		}
 	}
