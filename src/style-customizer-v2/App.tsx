@@ -934,19 +934,10 @@ export function App() {
 					</div>
 					<p className="tpl-editbar-sub">
 						{ store.editingTemplate.id
-							? __(
-									'Save updates this template with the current styles shown in the preview — it won’t save the form itself.',
-									'everest-forms'
-							  )
+							? __( 'Save updates this template with the current styles. Your form itself stays untouched.', 'everest-forms' )
 							: store.editingTemplate.from
-							? __(
-									'Save creates a new template from the current styles shown in the preview — the original template and this form are both left as they are.',
-									'everest-forms'
-							  )
-							: __(
-									'Save captures the form’s current styles — including anything not yet saved to the form — as a new template. It won’t save the form itself.',
-									'everest-forms'
-							  ) }
+							? __( 'Save creates a new template from the current styles. The original template and this form both stay untouched.', 'everest-forms' )
+							: __( 'Save captures the current look as a template — including unsaved changes. Your form itself stays untouched.', 'everest-forms' ) }
 					</p>
 					<div className="pal-name-field">
 						<label className="pal-field-label" htmlFor="evf-scv2-tpl-name">

@@ -456,6 +456,7 @@ function TemplateCard( {
 	onClearPreview,
 	onApply,
 	onEdit,
+	onExport,
 	confirmingDelete,
 	onRequestDelete,
 	onConfirmDelete,
@@ -477,6 +478,10 @@ function TemplateCard( {
 	/** Pro-gated; shown on every card (built-in, legacy, and user). Edits in place for a real
 	 *  user template, forks a new one otherwise — the caller decides which. */
 	onEdit?: () => void;
+	/** Downloads this template's palette + tokens as a .json file — e.g. so a template built on
+	 *  one site can be handed off and added as a bundled default elsewhere, with no server/DB
+	 *  access needed. User templates only (see its call site). */
+	onExport?: () => void;
 	confirmingDelete?: boolean;
 	onRequestDelete?: () => void;
 	onConfirmDelete?: () => void;
@@ -552,6 +557,25 @@ function TemplateCard( {
 						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2 } aria-hidden="true">
 							<path d="M12 20h9" />
 							<path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" />
+						</svg>
+					</button>
+				) }
+				{ onExport && (
+					<button
+						type="button"
+						className="tpl-tool"
+						disabled={ disabled }
+						aria-label={ `${ __( 'Export', 'everest-forms' ) } ${ tpl.name }` }
+						title={ __( 'Export as .json', 'everest-forms' ) }
+						onClick={ ( e ) => {
+							e.stopPropagation();
+							onExport();
+						} }
+					>
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2 } aria-hidden="true">
+							<path d="M12 3v12" />
+							<path d="m7 10 5 5 5-5" />
+							<path d="M5 21h14" />
 						</svg>
 					</button>
 				) }
@@ -636,6 +660,28 @@ export function TemplatesPane( {
 
 	const templatesBase = store.settings.restBase.replace( /\/styles$/, '/style-templates' );
 
+	// Downloads a "Your templates" entry as a .json file — palette + tokens, already in the
+	// exact shape a bundled default template needs (see Templates::V2_JSON_PATH), so handing
+	// this file to a developer is a straight paste-in, no manual v1 conversion or DB/CLI access
+	// required on either side.
+	const exportTemplate = ( tpl: Template ) => {
+		const payload = {
+			name: tpl.name,
+			palette: tpl.palette || '',
+			tokens: tpl.tokens,
+		};
+		const blob = new Blob( [ JSON.stringify( payload, null, 2 ) ], { type: 'application/json' } );
+		const url  = URL.createObjectURL( blob );
+		const slug = tpl.name.toLowerCase().replace( /[^a-z0-9]+/g, '-' ).replace( /^-+|-+$/g, '' ) || 'template';
+		const link = document.createElement( 'a' );
+		link.href     = url;
+		link.download = `${ slug }.json`;
+		document.body.appendChild( link );
+		link.click();
+		document.body.removeChild( link );
+		URL.revokeObjectURL( url );
+	};
+
 	const deleteTemplate = async ( id: string ) => {
 		setConfirmDeleteId( null );
 		if ( ! apiFetch ) {
@@ -681,6 +727,7 @@ export function TemplatesPane( {
 						onClearPreview={ onClearPreview }
 						onApply={ () => applyTpl( tpl, locked ) }
 						onEdit={ store.proActive ? () => onEdit( tpl ) : undefined }
+						onExport={ withDelete ? () => exportTemplate( tpl ) : undefined }
 						confirmingDelete={ confirmDeleteId === tpl.id }
 						onRequestDelete={ withDelete ? () => setConfirmDeleteId( tpl.id ) : undefined }
 						onConfirmDelete={ withDelete ? () => deleteTemplate( tpl.id ) : undefined }
@@ -693,16 +740,11 @@ export function TemplatesPane( {
 
 	return (
 		<div className="slate-anim">
-			{ canCreate ? (
+			{ ! editing && ( canCreate ? (
 				<button
 					type="button"
-					className={ 'tpl-create tpl-create-trigger' + ( editing ? ' tpl-disabled' : '' ) }
-					aria-disabled={ !! editing }
-					onClick={ () => {
-						if ( ! editing ) {
-							onCreateNew();
-						}
-					} }
+					className="tpl-create tpl-create-trigger"
+					onClick={ onCreateNew }
 				>
 					<span className="tpl-create-ic" aria-hidden="true">
 						<Icon inner='<path d="M12 5v14M5 12h14"/>' />
@@ -729,7 +771,7 @@ export function TemplatesPane( {
 						</p>
 					</div>
 				</a>
-			) }
+			) ) }
 
 			<p className="pane-note">
 				<b>{ __( 'Hover a card to preview it live', 'everest-forms' ) }</b>{ ' ' }
