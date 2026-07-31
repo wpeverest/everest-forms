@@ -429,7 +429,7 @@ class EVF_AI_API {
 
 	// ── Core HTTP request ─────────────────────────────────────────────────────
 
-	private static function request( string $method, string $path, array $body = array(), string $token = '', string $license_key = '' ) {
+	private static function request( string $method, string $path, array $body = array(), string $token = '', ?string $license_key = null ) {
 		$url     = rtrim( self::gateway_url(), '/' ) . $path;
 		$headers = array( 'Content-Type' => 'application/json' );
 
@@ -439,7 +439,10 @@ class EVF_AI_API {
 		// Header, not a query param or body field: a GET query string is far more likely than a
 		// POST body to end up in access logs / proxy logs / request-tracing tools, and this is a
 		// real credential (an EVF Pro license key) — same treatment as $token above.
-		if ( $license_key ) {
+		// Must distinguish "not passed" (null, callers that don't take a license key at all) from
+		// "passed but empty" (get_usage() always passes get_license_key(), which is '' once Pro is
+		// removed) — the gateway needs the empty header to know it should re-check and downgrade.
+		if ( null !== $license_key ) {
 			$headers['X-License-Key'] = $license_key;
 		}
 
@@ -533,12 +536,26 @@ class EVF_AI_API {
 	/**
 	 * Get EVF Pro license key if the license is active — empty string otherwise.
 	 * Gateway treats an empty key as free tier.
+	 *
+	 * Deliberately does NOT use evf_get_license_plan(): during AJAX/REST/Cron (which is
+	 * every caller here — get_usage()/generate/update all run inside AJAX handlers) that
+	 * function skips its own is_plugin_active() check and returns a cached
+	 * 'evf_saved_license_plan' option instead, which stays truthy forever once set — even
+	 * after Pro is deactivated or deleted. Checking is_plugin_active() directly here (same
+	 * approach as EVF_AI_Ajax::has_active_license()) is what actually detects that.
 	 */
 	private static function get_license_key(): string {
-		if ( ! function_exists( 'evf_get_license_plan' ) || ! evf_get_license_plan() ) {
+		$license_key = get_option( 'everest-forms-pro_license_key', '' );
+		if ( ! $license_key ) {
 			return '';
 		}
-		return (string) get_option( 'everest-forms-pro_license_key', '' );
+		if ( ! function_exists( 'is_plugin_active' ) ) {
+			include_once ABSPATH . 'wp-admin/includes/plugin.php';
+		}
+		if ( ! is_plugin_active( 'everest-forms-pro/everest-forms-pro.php' ) ) {
+			return '';
+		}
+		return (string) $license_key;
 	}
 
 	private static function get_domain(): string {
