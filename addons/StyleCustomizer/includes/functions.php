@@ -67,7 +67,74 @@ function evfsc_get_google_font_families() {
 			$families[] = (string) $font['family'];
 		}
 	}
-	return $families;
+
+	// evfsc_get_google_fonts() derives its list from a live fetch to a GitHub-hosted JSON file
+	// (see there); if that request fails or is blocked (offline/local dev, a restrictive host,
+	// GitHub itself being unreachable) this ends up empty and the Font Family dropdown would
+	// otherwise have nothing to offer but "Theme default". Fall back to a curated, static list
+	// of well-known families so the picker is never left with only one option.
+	return empty( $families ) ? evfsc_google_font_families_fallback() : $families;
+}
+
+/**
+ * Static fallback used only when the live Google Fonts fetch ({@see evfsc_get_google_fonts()})
+ * comes back empty — a curated list of widely-used families, not the full catalog.
+ *
+ * @return string[] Font family names.
+ */
+function evfsc_google_font_families_fallback() {
+	return array(
+		'Roboto',
+		'Open Sans',
+		'Lato',
+		'Montserrat',
+		'Poppins',
+		'Inter',
+		'Nunito',
+		'Nunito Sans',
+		'Source Sans Pro',
+		'Noto Sans',
+		'Raleway',
+		'Rubik',
+		'Work Sans',
+		'Mulish',
+		'Karla',
+		'Manrope',
+		'Quicksand',
+		'Ubuntu',
+		'PT Sans',
+		'Fira Sans',
+		'Barlow',
+		'Inconsolata',
+		'DM Sans',
+		'Josefin Sans',
+		'Cabin',
+		'Oxygen',
+		'Heebo',
+		'Hind',
+		'Titillium Web',
+		'Merriweather',
+		'Playfair Display',
+		'Lora',
+		'PT Serif',
+		'Libre Baskerville',
+		'Crimson Text',
+		'Bitter',
+		'EB Garamond',
+		'Roboto Slab',
+		'Roboto Condensed',
+		'Roboto Mono',
+		'Oswald',
+		'Anton',
+		'Bebas Neue',
+		'Dancing Script',
+		'Pacifico',
+		'Caveat',
+		'Comfortaa',
+		'Abril Fatface',
+		'Archivo',
+		'Space Grotesk',
+	);
 }
 
 function evfsc_migration() {

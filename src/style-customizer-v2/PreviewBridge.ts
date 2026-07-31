@@ -38,6 +38,9 @@ const PAGINATION_NAV_ALIGN_CLASSES = [
 	'everest-forms-nav-align--split',
 ];
 
+/** Mirrors FrontendEnqueue::container_class()'s `evf-btn-width-fill` class. */
+const BTN_WIDTH_FILL_CLASS = 'evf-btn-width-fill';
+
 /** How long to keep polling for the form wrapper before giving up (ms). */
 const READY_DEADLINE = 15000;
 /** Poll interval while waiting for the wrapper (ms). */
@@ -534,6 +537,14 @@ export class PreviewBridge {
 				if ( typeof value === 'string' && value ) {
 					nav.classList.add( `everest-forms-nav-align--${ value }` );
 				}
+			}
+		}
+
+		// btn.widthMode is another "meta" token (no CSS var) — same class-bridge pattern.
+		if ( token.key === 'btn.widthMode' ) {
+			wrapper.classList.remove( BTN_WIDTH_FILL_CLASS );
+			if ( value === 'fill' ) {
+				wrapper.classList.add( BTN_WIDTH_FILL_CLASS );
 			}
 		}
 	}

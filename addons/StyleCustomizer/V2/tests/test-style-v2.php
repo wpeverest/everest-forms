@@ -130,7 +130,7 @@ function group( $name ) {
 // evf_style_schema only when Pro is active). Unlike Messages, all 11 palettes (2 free + 9 Pro)
 // ship in free's own Schema so the panel can preview every one — see Schema::palettes().
 group( 'Schema' );
-ok( count( Schema::tokens() ) === 100, 'has 100 free tokens (Messages moved to Pro; +7 letter-spacing tokens)' );
+ok( count( Schema::tokens() ) === 101, 'has 101 free tokens (Messages moved to Pro; +7 letter-spacing, +1 btn.widthMode)' );
 ok( Schema::version() === 1, 'version is 1' );
 ok( count( Schema::palettes() ) === 11, 'has all 11 palettes (2 free + 9 Pro preview metadata)' );
 $pro_palette_count = count( array_filter( Schema::palettes(), static function ( $p ) { return ! empty( $p['is_pro'] ); } ) );

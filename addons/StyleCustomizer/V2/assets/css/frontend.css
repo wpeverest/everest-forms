@@ -436,6 +436,16 @@
 	text-align: var( --evf-btn-align );
 }
 
+.everest-forms .evf-style-v2.evf-btn-width-fill .evf-submit-container input[type='submit'],
+.everest-forms .evf-style-v2.evf-btn-width-fill .evf-submit-container button[type='submit'],
+.everest-forms .evf-style-v2.evf-btn-width-fill .evf-submit-container .everest-forms-part-button,
+.everest-forms .evf-style-v2.evf-btn-width-fill .everest-forms-multi-part-actions input[type='submit'],
+.everest-forms .evf-style-v2.evf-btn-width-fill .everest-forms-multi-part-actions button[type='submit'],
+.everest-forms .evf-style-v2.evf-btn-width-fill .everest-forms-multi-part-actions .everest-forms-part-button {
+	display: block;
+	width: 100%;
+}
+
 .everest-forms .evf-style-v2 .everest-forms-multi-part-actions .everest-forms-part-button.everest-forms-part-prev,
 .everest-forms .evf-style-v2 .everest-forms-multi-part-actions .everest-forms-part-button.everest-forms-part-next {
 	margin-right: 10px;

@@ -409,6 +409,11 @@ final class Schema {
 			array( 'key' => 'btn.bg', 'section' => 'button', 'group' => '', 'label' => __( 'Button color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-btn-bg', 'default' => '#0073aa', 'keywords' => array( 'submit', 'background', 'color' ) ),
 			array( 'key' => 'btn.color', 'section' => 'button', 'group' => '', 'label' => __( 'Text color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-btn-color', 'default' => '#ffffff', 'keywords' => array( 'submit', 'color' ) ),
 			self::radius( 'btn.radius', '--evf-btn-radius', 3, 'button', null, '', false ),
+			// No 'var': like choice.variation, this drives a wrapper class (`evf-btn-width-fill`)
+			// instead of a CSS variable — see FrontendEnqueue::container_class() (real frontend)
+			// and PreviewBridge.ts (live preview). New property, no v1 equivalent, so old records
+			// simply get the default ('fit') — today's exact behavior — no migration needed.
+			array( 'key' => 'btn.widthMode', 'section' => 'button', 'group' => '', 'label' => __( 'Button width', 'everest-forms' ), 'type' => 'select', 'default' => 'fit', 'options' => self::opts( array( 'fit' => __( 'Fit content', 'everest-forms' ), 'fill' => __( 'Fill width', 'everest-forms' ) ) ), 'keywords' => array( 'full width', 'block', 'stretch', 'size' ) ),
 			array( 'key' => 'btn.size', 'section' => 'button', 'group' => '', 'label' => __( 'Font size', 'everest-forms' ), 'type' => 'slider', 'var' => '--evf-btn-size', 'default' => 14, 'min' => 11, 'max' => 24, 'step' => 1, 'unit' => 'px', 'advanced' => true, 'keywords' => array( 'submit' ) ),
 			self::fstyle( 'btn.fstyle', 'btn', 'button', null, '400' ),
 			self::letter_spacing( 'btn.ls', '--evf-btn-ls', 'button', null ),

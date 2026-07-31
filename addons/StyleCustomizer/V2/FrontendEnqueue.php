@@ -171,6 +171,12 @@ final class FrontendEnqueue {
 		if ( in_array( $align, array( 'center', 'right' ), true ) ) {
 			$classes[] = 'evf-choice-align-' . $align;
 		}
+		// btn.widthMode is another "meta" token (no CSS var) — 'fill' adds a class, same pattern
+		// as choice.variation/choice.align above; 'fit' (the default) needs no class at all.
+		$width_mode = isset( $record['tokens']['btn.widthMode']['desktop'] ) ? (string) $record['tokens']['btn.widthMode']['desktop'] : '';
+		if ( 'fill' === $width_mode ) {
+			$classes[] = 'evf-btn-width-fill';
+		}
 		return $classes;
 	}
 
