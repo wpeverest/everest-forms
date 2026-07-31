@@ -69,16 +69,19 @@ function evfsc_get_google_font_families() {
 	}
 
 	// evfsc_get_google_fonts() derives its list from a live fetch to a GitHub-hosted JSON file
-	// (see there); if that request fails or is blocked (offline/local dev, a restrictive host,
-	// GitHub itself being unreachable) this ends up empty and the Font Family dropdown would
-	// otherwise have nothing to offer but "Theme default". Fall back to a curated, static list
-	// of well-known families so the picker is never left with only one option.
-	return empty( $families ) ? evfsc_google_font_families_fallback() : $families;
+	// (see there) — a third-party-maintained snapshot that can be stale (missing newer families
+	// like Inter/Manrope entirely) or, if the fetch fails/is blocked outright (offline local dev,
+	// a restrictive host), empty. Either way, always MERGE in a curated list of well-known
+	// families rather than only falling back to it when the live list is empty — a populated but
+	// incomplete snapshot needs the same guarantee. array_unique keeps the curated entry (first)
+	// on an exact-name collision; that's fine, the value is identical either way.
+	return array_values( array_unique( array_merge( evfsc_google_font_families_fallback(), $families ) ) );
 }
 
 /**
- * Static fallback used only when the live Google Fonts fetch ({@see evfsc_get_google_fonts()})
- * comes back empty — a curated list of widely-used families, not the full catalog.
+ * Curated list of widely-used families, always merged into evfsc_get_google_font_families()'s
+ * result (not the full catalog) — guarantees these are always offered regardless of whether the
+ * live fetch succeeds, is stale, or fails outright.
  *
  * @return string[] Font family names.
  */
