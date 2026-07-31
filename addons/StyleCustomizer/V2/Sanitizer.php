@@ -274,7 +274,7 @@ final class Sanitizer {
 				return self::sanitize_choice( $token, $value );
 
 			case 'fontstyle':
-				return self::sanitize_fontstyle( $value );
+				return self::sanitize_fontstyle( $token, $value );
 
 			case 'toggle':
 				return (bool) $value;
@@ -399,17 +399,27 @@ final class Sanitizer {
 	}
 
 	/**
-	 * Normalize a font-style flag set to four booleans (old customizer keys).
+	 * Normalize a font-style flag set to four booleans (old customizer keys), plus an optional
+	 * explicit `weight` — validated against the token's own `weight_options`; anything else
+	 * (unknown value, or simply absent, true for every pre-existing stored value) becomes ''
+	 * ("Auto"), which keeps deriving font-weight from `bold` exactly as before this was added.
 	 *
+	 * @param array $token Token definition (for weight_options).
 	 * @param mixed $value Raw value.
 	 * @return array
 	 */
-	protected static function sanitize_fontstyle( $value ) {
+	protected static function sanitize_fontstyle( $token, $value ) {
 		$value = is_array( $value ) ? $value : array();
 		$out   = array();
 		foreach ( array( 'bold', 'italic', 'underline', 'uppercase' ) as $flag ) {
 			$out[ $flag ] = ! empty( $value[ $flag ] );
 		}
+		$allowed_weights = array();
+		foreach ( ( isset( $token['weight_options'] ) ? $token['weight_options'] : array() ) as $opt ) {
+			$allowed_weights[] = (string) $opt['value'];
+		}
+		$weight        = isset( $value['weight'] ) ? (string) $value['weight'] : '';
+		$out['weight'] = in_array( $weight, $allowed_weights, true ) ? $weight : '';
 		return $out;
 	}
 

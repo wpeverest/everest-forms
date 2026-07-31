@@ -360,13 +360,16 @@ final class Schema {
 		);
 
 		$fields = array(
-			array( 'key' => 'input.bg', 'section' => 'fields', 'group' => 'Surface', 'label' => __( 'Background', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-input-bg', 'default' => '#ffffff', 'hidden' => true, 'keywords' => array( 'fill' ) ),
+			// Palette-driven by default (field_background slot); editing it directly here unlinks
+			// this form from the palette for just this token — see store.ts's paletteMap unlink.
+			array( 'key' => 'input.bg', 'section' => 'fields', 'group' => 'Surface', 'label' => __( 'Background', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-input-bg', 'default' => '#ffffff', 'keywords' => array( 'fill', 'color' ) ),
 			array( 'key' => 'input.borderC', 'section' => 'fields', 'group' => 'Surface', 'label' => __( 'Border color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-input-border-c', 'default' => '#969696' ),
 			self::radius( 'input.radius', '--evf-input-radius', 3, 'fields', null, 'Surface', false ),
 			array( 'key' => 'input.size', 'section' => 'fields', 'group' => 'Typography', 'label' => __( 'Font size', 'everest-forms' ), 'type' => 'slider', 'var' => '--evf-input-size', 'default' => 14, 'min' => 11, 'max' => 22, 'step' => 1, 'unit' => 'px', 'advanced' => true, 'keywords' => array( 'text' ) ),
 			array( 'key' => 'input.color', 'section' => 'fields', 'group' => 'Typography', 'label' => __( 'Text color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-input-color', 'default' => '#575757', 'advanced' => true ),
 			array( 'key' => 'input.ph', 'section' => 'fields', 'group' => 'Typography', 'label' => __( 'Placeholder color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-input-ph', 'default' => '#c6ccd7', 'advanced' => true, 'keywords' => array( 'hint' ) ),
 			self::fstyle( 'input.fstyle', 'input', 'fields', null, '400' ),
+			self::letter_spacing( 'input.ls', '--evf-input-ls', 'fields', null ),
 			self::talign( 'input.align', '--evf-input-align', 'fields', null ),
 			array( 'key' => 'input.borderStyle', 'section' => 'fields', 'group' => 'Border', 'label' => __( 'Border type', 'everest-forms' ), 'type' => 'select', 'var' => '--evf-input-border-style', 'default' => 'solid', 'options' => $border, 'deps' => array( 'input.bw', 'input.borderC' ), 'advanced' => true ),
 			self::bwidth( 'input.bw', '--evf-input-bw', 1, 'fields', null, 'Border', true ),
@@ -395,17 +398,20 @@ final class Schema {
 			array( 'key' => 'choice.fsize', 'section' => 'choice', 'group' => '', 'label' => __( 'Option font size', 'everest-forms' ), 'type' => 'slider', 'var' => '--evf-choice-fsize', 'default' => 14, 'min' => 11, 'max' => 22, 'step' => 1, 'unit' => 'px', 'advanced' => true, 'keywords' => array( 'text' ) ),
 			array( 'key' => 'choice.color', 'section' => 'choice', 'group' => '', 'label' => __( 'Option text color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-choice-color', 'default' => '#575757', 'advanced' => true, 'keywords' => array( 'text' ) ),
 			self::fstyle( 'choice.fstyle', 'choice', 'choice', null, '400' ),
+			self::letter_spacing( 'choice.ls', '--evf-choice-ls', 'choice', null ),
 			self::talign( 'choice.align', '--evf-choice-align', 'choice', null ),
 			self::box( 'choice.margin', __( 'Margin', 'everest-forms' ), '--evf-choice-margin', array( 0, 0, 5, 0 ), 'choice', null ),
 		);
 
 		$button = array(
-			// Palette-driven (hidden picker); the default only shows on a no-palette form.
-			array( 'key' => 'btn.bg', 'section' => 'button', 'group' => '', 'label' => __( 'Button color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-btn-bg', 'default' => '#0073aa', 'hidden' => true, 'keywords' => array( 'submit', 'background' ) ),
-			array( 'key' => 'btn.color', 'section' => 'button', 'group' => '', 'label' => __( 'Text color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-btn-color', 'default' => '#ffffff', 'hidden' => true, 'keywords' => array( 'submit' ) ),
+			// Palette-driven by default (button_background/button_text slots); editing either
+			// directly here unlinks this form from the palette for just that one token.
+			array( 'key' => 'btn.bg', 'section' => 'button', 'group' => '', 'label' => __( 'Button color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-btn-bg', 'default' => '#0073aa', 'keywords' => array( 'submit', 'background', 'color' ) ),
+			array( 'key' => 'btn.color', 'section' => 'button', 'group' => '', 'label' => __( 'Text color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-btn-color', 'default' => '#ffffff', 'keywords' => array( 'submit', 'color' ) ),
 			self::radius( 'btn.radius', '--evf-btn-radius', 3, 'button', null, '', false ),
 			array( 'key' => 'btn.size', 'section' => 'button', 'group' => '', 'label' => __( 'Font size', 'everest-forms' ), 'type' => 'slider', 'var' => '--evf-btn-size', 'default' => 14, 'min' => 11, 'max' => 24, 'step' => 1, 'unit' => 'px', 'advanced' => true, 'keywords' => array( 'submit' ) ),
 			self::fstyle( 'btn.fstyle', 'btn', 'button', null, '400' ),
+			self::letter_spacing( 'btn.ls', '--evf-btn-ls', 'button', null ),
 			self::talign( 'btn.align', '--evf-btn-align', 'button', null, 'center' ),
 			self::line( 'btn.line', '--evf-btn-lh', 1.5, 'button', null ),
 			self::box( 'btn.margin', __( 'Margin', 'everest-forms' ), '--evf-btn-margin', array( 0, 0, 0, 0 ), 'button', null ),
@@ -439,8 +445,11 @@ final class Schema {
 	protected static function text_role_tokens() {
 		$roles = array(
 			// state key => [ var-prefix, size, min, max, color, neutral-weight, margin, line, pad, color-hidden ].
-			'label'    => array( 'sub' => 'label', 'size' => 14, 'min' => 10, 'max' => 24, 'color' => '#333333', 'nw' => '600', 'margin' => array( 0, 0, 10, 0 ), 'line' => 1.7, 'pad' => array( 0, 0, 0, 0 ), 'color_hidden' => true ),
-			'sublabel' => array( 'sub' => 'sub', 'size' => 12, 'min' => 9, 'max' => 20, 'color' => '#666666', 'nw' => '400', 'margin' => array( 0, 0, 10, 0 ), 'line' => 1.5, 'pad' => array( 0, 0, 0, 0 ), 'color_hidden' => true ),
+			// label/sublabel color: palette-driven by default (field_label/field_sublabel slots);
+			// editing directly here unlinks this form from the palette for just that one token —
+			// same as title/desc below, which have always worked this way.
+			'label'    => array( 'sub' => 'label', 'size' => 14, 'min' => 10, 'max' => 24, 'color' => '#333333', 'nw' => '600', 'margin' => array( 0, 0, 10, 0 ), 'line' => 1.7, 'pad' => array( 0, 0, 0, 0 ), 'color_hidden' => false ),
+			'sublabel' => array( 'sub' => 'sub', 'size' => 12, 'min' => 9, 'max' => 20, 'color' => '#666666', 'nw' => '400', 'margin' => array( 0, 0, 10, 0 ), 'line' => 1.5, 'pad' => array( 0, 0, 0, 0 ), 'color_hidden' => false ),
 			'desc'     => array( 'sub' => 'desc', 'size' => 14, 'min' => 9, 'max' => 20, 'color' => '#575757', 'nw' => '400', 'margin' => array( 0, 0, 10, 0 ), 'line' => 1.7, 'pad' => array( 0, 0, 0, 0 ), 'color_hidden' => false ),
 			'title'    => array( 'sub' => 'title', 'size' => 16, 'min' => 12, 'max' => 34, 'color' => '#575757', 'nw' => '700', 'margin' => array( 25, 0, 25, 0 ), 'line' => 1.5, 'pad' => array( 0, 0, 0, 0 ), 'color_hidden' => false ),
 		);
@@ -451,6 +460,7 @@ final class Schema {
 			$out[] = array( 'key' => "{$vp}.size", 'section' => 'text', 'state' => $state, 'group' => '', 'label' => __( 'Font size', 'everest-forms' ), 'type' => 'slider', 'var' => "--evf-{$vp}-size", 'default' => $r['size'], 'min' => $r['min'], 'max' => $r['max'], 'step' => 1, 'unit' => 'px', 'keywords' => array( 'text', $state ) );
 			$out[] = array( 'key' => "{$vp}.color", 'section' => 'text', 'state' => $state, 'group' => '', 'label' => __( 'Color', 'everest-forms' ), 'type' => 'color', 'var' => "--evf-{$vp}-color", 'default' => $r['color'], 'hidden' => $r['color_hidden'], 'keywords' => array( 'text', $state ) );
 			$out[] = self::fstyle( "{$vp}.fstyle", $vp, 'text', $state, $r['nw'] );
+			$out[] = self::letter_spacing( "{$vp}.ls", "--evf-{$vp}-ls", 'text', $state );
 			$out[] = self::talign( "{$vp}.align", "--evf-{$vp}-align", 'text', $state );
 			$out[] = self::line( "{$vp}.line", "--evf-{$vp}-lh", $r['line'], 'text', $state );
 			$out[] = self::box( "{$vp}.margin", __( 'Margin', 'everest-forms' ), "--evf-{$vp}-margin", $r['margin'], 'text', $state );
@@ -465,7 +475,13 @@ final class Schema {
 	 * --------------------------------------------------------------------- */
 
 	/**
-	 * Font-style control (Bold / Italic / Underline / Uppercase).
+	 * Font-style control (Bold / Italic / Underline / Uppercase, plus an optional Font weight).
+	 *
+	 * `weight` (an explicit numeric weight, e.g. '600') is an ADDITIVE sub-property alongside the
+	 * original four flags — old stored values simply don't have this key, `!empty($v['weight'])`
+	 * is false for them, and font-weight keeps deriving from `bold`/`neutral_weight` exactly as
+	 * before (see Compiler::declarations() and cssVars.ts's tokenDeclarations()). No migration
+	 * step needed: a missing key is indistinguishable from '' (the "Auto" default here), by design.
 	 *
 	 * @param string $key     Token key.
 	 * @param string $base    CSS var base (e.g. `label`, `input`, `msg-success`).
@@ -489,14 +505,37 @@ final class Schema {
 				'transform'  => "--evf-{$base}-tt",
 			),
 			'neutral_weight' => $nw,
+			'weight_options' => self::weight_options(),
 			'default'        => array(
 				'bold'      => false,
 				'italic'    => false,
 				'underline' => false,
 				'uppercase' => false,
+				'weight'    => '',
 			),
 			'advanced'       => true,
-			'keywords'       => array( 'bold', 'italic', 'underline', 'uppercase', 'font style' ),
+			'keywords'       => array( 'bold', 'italic', 'underline', 'uppercase', 'font style', 'font weight', 'weight' ),
+		);
+	}
+
+	/**
+	 * Selectable font-weight values for the `fstyle` control's Font weight dropdown.
+	 * '' ("Auto") keeps the original Bold-toggle-only behavior.
+	 *
+	 * @return array value => label.
+	 */
+	protected static function weight_options() {
+		// Built directly (not via self::opts(), which takes an associative array — PHP would
+		// coerce these numeric-string keys to ints) so every value is guaranteed a string.
+		return array(
+			array( 'value' => '',    'label' => __( 'Auto', 'everest-forms' ) ),
+			array( 'value' => '300', 'label' => __( 'Light', 'everest-forms' ) ),
+			array( 'value' => '400', 'label' => __( 'Regular', 'everest-forms' ) ),
+			array( 'value' => '500', 'label' => __( 'Medium', 'everest-forms' ) ),
+			array( 'value' => '600', 'label' => __( 'Semibold', 'everest-forms' ) ),
+			array( 'value' => '700', 'label' => __( 'Bold', 'everest-forms' ) ),
+			array( 'value' => '800', 'label' => __( 'Extra Bold', 'everest-forms' ) ),
+			array( 'value' => '900', 'label' => __( 'Black', 'everest-forms' ) ),
 		);
 	}
 
@@ -526,6 +565,38 @@ final class Schema {
 			'unit'     => '',
 			'advanced' => true,
 			'keywords' => array( 'leading', 'line height' ),
+		);
+	}
+
+	/**
+	 * Letter-spacing slider (-2px to 10px, single value). New, additive sibling of `line()` —
+	 * every caller of `self::fstyle()` gets one alongside it, so it's added wherever font-weight
+	 * was. No v1 equivalent ever existed, so a missing value here just means "not customized yet"
+	 * — the schema default (0, i.e. `normal`) — same as any other brand-new token; no migration
+	 * step needed.
+	 *
+	 * @param string $key     Token key.
+	 * @param string $var     CSS var.
+	 * @param string $section Section key.
+	 * @param string $state   Variant/state (nullable).
+	 * @return array
+	 */
+	protected static function letter_spacing( $key, $var, $section, $state ) {
+		return array(
+			'key'      => $key,
+			'section'  => $section,
+			'state'    => $state,
+			'group'    => '',
+			'label'    => __( 'Letter spacing', 'everest-forms' ),
+			'type'     => 'slider',
+			'var'      => $var,
+			'default'  => 0,
+			'min'      => -2,
+			'max'      => 10,
+			'step'     => 0.1,
+			'unit'     => 'px',
+			'advanced' => true,
+			'keywords' => array( 'tracking', 'letter spacing', 'kerning' ),
 		);
 	}
 

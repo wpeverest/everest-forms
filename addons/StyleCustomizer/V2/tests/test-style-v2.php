@@ -130,7 +130,7 @@ function group( $name ) {
 // evf_style_schema only when Pro is active). Unlike Messages, all 11 palettes (2 free + 9 Pro)
 // ship in free's own Schema so the panel can preview every one — see Schema::palettes().
 group( 'Schema' );
-ok( count( Schema::tokens() ) === 93, 'has 93 free tokens (Messages moved to Pro)' );
+ok( count( Schema::tokens() ) === 100, 'has 100 free tokens (Messages moved to Pro; +7 letter-spacing tokens)' );
 ok( Schema::version() === 1, 'version is 1' );
 ok( count( Schema::palettes() ) === 11, 'has all 11 palettes (2 free + 9 Pro preview metadata)' );
 $pro_palette_count = count( array_filter( Schema::palettes(), static function ( $p ) { return ! empty( $p['is_pro'] ); } ) );
@@ -139,7 +139,7 @@ $vars = array_values( Schema::css_var_map() );
 ok( count( $vars ) === count( array_unique( $vars ) ), 'no duplicate CSS vars' );
 ok( Schema::get( 'wrap.pad' )['responsive'] === true, 'wrap.pad is responsive' );
 ok( Schema::get( 'wrap.width' )['responsive'] === false, 'wrap.width is NOT responsive' );
-ok( Schema::get( 'btn.bg' )['hidden'] === true, 'btn.bg is hidden (palette-driven)' );
+ok( empty( Schema::get( 'btn.bg' )['hidden'] ), 'btn.bg is directly editable (palette-driven default, no longer hidden)' );
 ok( null === Schema::get( 'msg.success.bg' ), 'Messages tokens absent from free schema (Pro-only)' );
 // Free tiering: ALL design sections are Pro (locked teasers); only the palette-driven colour
 // tokens are tier=free (so the 2 free palettes recolour), everything else is Pro.
@@ -200,7 +200,7 @@ ok( ! isset( $clean['tokens']['input.size']['tablet'] ), 'tablet dropped on non-
 ok( $clean['tokens']['wrap.borderC']['desktop'] === '#ececf1', 'invalid colour → default' );
 ok( isset( $clean['tokens']['wrap.margin']['tablet'] ), 'tablet kept on responsive token' );
 ok( $clean['tokens']['input.align']['desktop'] === 'left', 'invalid choice → default' );
-ok( $clean['tokens']['label.fstyle']['desktop'] === array( 'bold' => true, 'italic' => false, 'underline' => false, 'uppercase' => false ), 'fontstyle normalized to booleans' );
+ok( $clean['tokens']['label.fstyle']['desktop'] === array( 'bold' => true, 'italic' => false, 'underline' => false, 'uppercase' => false, 'weight' => '' ), 'fontstyle normalized to booleans + weight' );
 ok( strpos( $clean['custom_css'], '@import' ) === false, 'custom CSS strips @import' );
 ok( strpos( $clean['custom_css'], 'javascript:' ) === false, 'custom CSS strips javascript: url' );
 

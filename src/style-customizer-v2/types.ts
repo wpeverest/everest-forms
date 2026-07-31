@@ -30,6 +30,8 @@ export interface FontStyleValue {
 	italic: boolean;
 	underline: boolean;
 	uppercase: boolean;
+	/** Explicit weight (e.g. '600'); '' ("Auto", also every pre-existing value) derives from `bold`. */
+	weight?: string;
 }
 
 /** A single sanitizable value for a token. */
@@ -69,6 +71,7 @@ export interface Token {
 	deps?: string[];
 	vars?: Record<string, string>;
 	neutral_weight?: string;
+	weight_options?: SelectOption[];
 	show_when_image?: boolean;
 	special?: string;
 	/** Runtime option source; `google_fonts` = fill the dropdown from payload.google_fonts. */

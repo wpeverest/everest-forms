@@ -70,6 +70,7 @@
 	font-style: var( --evf-label-fs );
 	text-decoration: var( --evf-label-td );
 	text-transform: var( --evf-label-tt );
+	letter-spacing: var( --evf-label-ls );
 }
 
 /* Sublabel */
@@ -84,6 +85,7 @@
 	font-style: var( --evf-sub-fs );
 	text-decoration: var( --evf-sub-td );
 	text-transform: var( --evf-sub-tt );
+	letter-spacing: var( --evf-sub-ls );
 }
 
 /* Description */
@@ -98,6 +100,7 @@
 	font-style: var( --evf-desc-fs );
 	text-decoration: var( --evf-desc-td );
 	text-transform: var( --evf-desc-tt );
+	letter-spacing: var( --evf-desc-ls );
 }
 
 /* Section title */
@@ -112,6 +115,7 @@
 	font-style: var( --evf-title-fs );
 	text-decoration: var( --evf-title-td );
 	text-transform: var( --evf-title-tt );
+	letter-spacing: var( --evf-title-ls );
 }
 
 /* ===== INPUTS — text boxes, dropdowns, textareas ===== */
@@ -144,6 +148,7 @@
 	font-weight: var( --evf-input-weight );
 	font-style: var( --evf-input-fs );
 	text-transform: var( --evf-input-tt );
+	letter-spacing: var( --evf-input-ls );
 }
 
 .everest-forms .evf-style-v2 input::placeholder,
@@ -367,6 +372,7 @@
 	font-style: var( --evf-choice-fs );
 	text-decoration: var( --evf-choice-td );
 	text-transform: var( --evf-choice-tt );
+	letter-spacing: var( --evf-choice-ls );
 }
 
 /* The Subscription Plan addon's own stylesheet (evf-payment-subscription-plan-frontend.scss)
@@ -409,6 +415,7 @@
 	font-weight: var( --evf-btn-weight );
 	font-style: var( --evf-btn-fs );
 	text-transform: var( --evf-btn-tt );
+	letter-spacing: var( --evf-btn-ls );
 }
 
 .everest-forms .evf-style-v2 .evf-submit-container input[type='submit']:hover,

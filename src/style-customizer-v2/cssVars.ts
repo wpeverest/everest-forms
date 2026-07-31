@@ -78,8 +78,11 @@ export function tokenDeclarations(
 
 	if ( token.type === 'fontstyle' && token.vars ) {
 		const v = ( value || {} ) as Partial<FontStyleValue>;
+		// An explicit weight (Font weight dropdown) wins; absent/empty (every pre-existing value)
+		// falls back to the original bold-derived value — mirrors Compiler::declarations().
+		const weight = v.weight ? v.weight : ( v.bold ? '700' : String( token.neutral_weight || '400' ) );
 		return [
-			[ token.vars.weight, v.bold ? '700' : String( token.neutral_weight || '400' ) ],
+			[ token.vars.weight, weight ],
 			[ token.vars.style, v.italic ? 'italic' : 'normal' ],
 			[ token.vars.decoration, v.underline ? 'underline' : 'none' ],
 			[ token.vars.transform, v.uppercase ? 'uppercase' : 'none' ],

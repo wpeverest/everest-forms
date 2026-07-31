@@ -699,24 +699,43 @@ function AlignControl( props: ControlProps ) {
 function FontStyleControl( props: ControlProps ) {
 	const { token, store } = props;
 	const value = ( store.resolve( token.key ) || {} ) as FontStyleValue;
+	const weightOptions = token.weight_options || [];
 	return (
 		<ControlShell { ...props }>
-			<div className="fstyleset" role="group" aria-label={ token.label }>
-				{ FONTSTYLE_BUTTONS.map( ( [ flag, glyph, title ] ) => (
-					<button
-						key={ flag }
-						type="button"
-						aria-pressed={ !! value[ flag ] }
-						title={ title }
-						aria-label={ title }
-						dangerouslySetInnerHTML={ { __html: glyph } }
-						onClick={ () => {
+			<div className="fstylewrap">
+				{ weightOptions.length > 0 && (
+					<select
+						className="fweight-select"
+						aria-label={ __( 'Font weight', 'everest-forms' ) }
+						value={ value.weight || '' }
+						onChange={ ( e ) => {
 							const next = clone( store.resolve( token.key ) ) as FontStyleValue;
-							next[ flag ] = ! next[ flag ];
+							next.weight = e.target.value;
 							store.setTokenValue( token.key, next, false );
 						} }
-					/>
-				) ) }
+					>
+						{ weightOptions.map( ( o ) => (
+							<option key={ o.value } value={ o.value }>{ o.label }</option>
+						) ) }
+					</select>
+				) }
+				<div className="fstyleset" role="group" aria-label={ token.label }>
+					{ FONTSTYLE_BUTTONS.map( ( [ flag, glyph, title ] ) => (
+						<button
+							key={ flag }
+							type="button"
+							aria-pressed={ !! value[ flag ] }
+							title={ title }
+							aria-label={ title }
+							dangerouslySetInnerHTML={ { __html: glyph } }
+							onClick={ () => {
+								const next = clone( store.resolve( token.key ) ) as FontStyleValue;
+								next[ flag ] = ! next[ flag ];
+								store.setTokenValue( token.key, next, false );
+							} }
+						/>
+					) ) }
+				</div>
 			</div>
 		</ControlShell>
 	);

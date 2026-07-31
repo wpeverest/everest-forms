@@ -219,8 +219,11 @@ final class Compiler {
 
 		if ( 'fontstyle' === $token['type'] ) {
 			$v = is_array( $value ) ? $value : array();
+			// An explicit weight (new Font weight dropdown) wins; absent/empty (every old record)
+			// falls back to the original bold-derived value — no migration needed either way.
+			$weight = ! empty( $v['weight'] ) ? $v['weight'] : ( ! empty( $v['bold'] ) ? '700' : $token['neutral_weight'] );
 			return array(
-				$token['vars']['weight'] . ':' . ( ! empty( $v['bold'] ) ? '700' : $token['neutral_weight'] ),
+				$token['vars']['weight'] . ':' . $weight,
 				$token['vars']['style'] . ':' . ( ! empty( $v['italic'] ) ? 'italic' : 'normal' ),
 				$token['vars']['decoration'] . ':' . ( ! empty( $v['underline'] ) ? 'underline' : 'none' ),
 				$token['vars']['transform'] . ':' . ( ! empty( $v['uppercase'] ) ? 'uppercase' : 'none' ),

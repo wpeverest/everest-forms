@@ -1404,6 +1404,24 @@
 	}
 }
 
+#everest-forms-panel-style .fstylewrap {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+
+#everest-forms-panel-style .fweight-select {
+	width: 100%;
+	height: var(--ui-ctrl-h);
+	border: 1px solid var(--ui-input-border);
+	border-radius: var(--ui-radius-md);
+	background: #fff;
+	color: var(--ui-ink-2);
+	font-size: 12px;
+	padding: 0 8px;
+	cursor: pointer;
+}
+
 #everest-forms-panel-style .iconset,
 #everest-forms-panel-style .fstyleset {
 	display: flex;
