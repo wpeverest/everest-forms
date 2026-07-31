@@ -395,7 +395,10 @@ class EVF_AI_API {
 		if ( ! $token ) {
 			return new WP_Error( 'not_registered', '' );
 		}
-		return self::request( 'GET', '/ai/v1/usage', array(), $token );
+		// Without this, the gateway had no way to tell Pro was removed/deactivated since it
+		// last saw a generate/update call — it just kept reporting whatever tier it last wrote
+		// to its own database, so a usage check could show a stale 300/day Pro limit indefinitely.
+		return self::request( 'GET', '/ai/v1/usage', array(), $token, self::get_license_key() );
 	}
 
 	/**
@@ -426,12 +429,18 @@ class EVF_AI_API {
 
 	// ── Core HTTP request ─────────────────────────────────────────────────────
 
-	private static function request( string $method, string $path, array $body = array(), string $token = '' ) {
+	private static function request( string $method, string $path, array $body = array(), string $token = '', string $license_key = '' ) {
 		$url     = rtrim( self::gateway_url(), '/' ) . $path;
 		$headers = array( 'Content-Type' => 'application/json' );
 
 		if ( $token ) {
 			$headers['X-TG-Token'] = $token;
+		}
+		// Header, not a query param or body field: a GET query string is far more likely than a
+		// POST body to end up in access logs / proxy logs / request-tracing tools, and this is a
+		// real credential (an EVF Pro license key) — same treatment as $token above.
+		if ( $license_key ) {
+			$headers['X-License-Key'] = $license_key;
 		}
 
 		$args = array(
