@@ -864,6 +864,9 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 				case 'star':
 				case 'unstar':
 					foreach ( $entry_ids as $entry_id ) {
+						if ( ! current_user_can( 'everest_forms_edit_entry', $entry_id ) ) {
+							continue;
+						}
 						if ( EVF_Admin_Entries::update_status( $entry_id, $doaction ) ) {
 							++$count;
 						}
@@ -880,6 +883,9 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 				case 'read':
 				case 'unread':
 					foreach ( $entry_ids as $entry_id ) {
+						if ( ! current_user_can( 'everest_forms_edit_entry', $entry_id ) ) {
+							continue;
+						}
 						if ( EVF_Admin_Entries::update_status( $entry_id, $doaction ) ) {
 							++$count;
 						}
@@ -895,6 +901,9 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 					break;
 				case 'approved':
 					foreach ( $entry_ids as $entry_id ) {
+						if ( ! current_user_can( 'everest_forms_edit_entry', $entry_id ) ) {
+							continue;
+						}
 						if ( EVF_Admin_Entries::update_status( $entry_id, $doaction ) ) {
 							$admin_email = esc_attr( get_bloginfo( 'admin_email' ) );
 							$header      = "Reply-To: {$admin_email} \r\n";
@@ -959,6 +968,9 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 					break;
 				case 'denied':
 					foreach ( $entry_ids as $entry_id ) {
+						if ( ! current_user_can( 'everest_forms_edit_entry', $entry_id ) ) {
+							continue;
+						}
 						if ( EVF_Admin_Entries::update_status( $entry_id, $doaction ) ) {
 							$admin_email = esc_attr( get_bloginfo( 'admin_email' ) );
 							$header      = "Reply-To: {$admin_email} \r\n";
@@ -1023,6 +1035,9 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 					break;
 				case 'trash':
 					foreach ( $entry_ids as $entry_id ) {
+						if ( ! current_user_can( 'everest_forms_delete_entry', $entry_id ) ) {
+							continue;
+						}
 						if ( EVF_Admin_Entries::update_status( $entry_id, 'trash' ) ) {
 							++$count;
 						}
@@ -1038,6 +1053,9 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 					break;
 				case 'untrash':
 					foreach ( $entry_ids as $entry_id ) {
+						if ( ! current_user_can( 'everest_forms_edit_entry', $entry_id ) ) {
+							continue;
+						}
 						if ( EVF_Admin_Entries::update_status( $entry_id, 'publish' ) ) {
 							++$count;
 						}
@@ -1053,6 +1071,9 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 					break;
 				case 'delete':
 					foreach ( $entry_ids as $entry_id ) {
+						if ( ! current_user_can( 'everest_forms_delete_entry', $entry_id ) ) {
+							continue;
+						}
 						if ( EVF_Admin_Entries::remove_entry( $entry_id, $form_id ) ) {
 							++$count;
 						}
@@ -1068,6 +1089,9 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 					break;
 				case 'spam':
 					foreach ( $entry_ids as $entry_id ) {
+						if ( ! current_user_can( 'everest_forms_edit_entry', $entry_id ) ) {
+							continue;
+						}
 						if ( EVF_Admin_Entries::update_status( $entry_id, 'spam' ) ) {
 							++$count;
 						}
@@ -1083,6 +1107,9 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 					break;
 				case 'unspam':
 					foreach ( $entry_ids as $entry_id ) {
+						if ( ! current_user_can( 'everest_forms_edit_entry', $entry_id ) ) {
+							continue;
+						}
 						if ( EVF_Admin_Entries::update_status( $entry_id, $doaction ) ) {
 							++$count;
 						}

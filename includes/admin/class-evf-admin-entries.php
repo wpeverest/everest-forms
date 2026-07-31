@@ -331,6 +331,10 @@ class EVF_Admin_Entries {
 		if ( isset( $_GET['form_id'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 			$form_id = absint( $_GET['form_id'] ); // phpcs:ignore WordPress.Security.NonceVerification
 
+			if ( $form_id && ! current_user_can( 'everest_forms_delete_form_entries', $form_id ) ) {
+				wp_die( esc_html__( 'You do not have permission to empty trash for this form.', 'everest-forms' ), 403 );
+			}
+
 			if ( $form_id ) {
 				$count     = 0;
 				$results   = $wpdb->get_results( $wpdb->prepare( "SELECT entry_id FROM {$wpdb->prefix}evf_entries WHERE `status` = 'trash' AND form_id = %d", $form_id ) ); // WPCS: cache ok, DB call ok.
