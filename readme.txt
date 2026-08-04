@@ -346,7 +346,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 == Changelog ==
 
 = 3.5.3       - 04-08-2026
-* Fix 		  - Addons list not showing correctly in System Info.
+* Enhance 	  - Show active addons list in System Info.
 * Fix 		  - Capability checks.
 * Fix 		  - Loader alignment in form migrator.
 * Fix 		  - Currency symbol issue on subscription field.
