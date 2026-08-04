@@ -348,15 +348,20 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 = 3.6.0       - xx-xx-2026
 * Feature     - Customize style with AI.
 * Enhance 	  - Revamped Style Customizer.
-* Fix 		  - System info.
-* Fix 		  - Capability check.
+
+= 3.5.3       - 04-08-2026
+* Enhance 	  - Show active addons list in System Info.
+* Fix 		  - Capability checks.
 * Fix 		  - Loader alignment in form migrator.
 * Fix 		  - Currency symbol issue on subscription field.
 * Fix 		  - Add preset not working for multi choice field.
-* Fix 		  - Missing capability check arbitary plugin activation.
-* Fix 		  - Google recaptcha/hcaptcha/Turnstile captcha language setting resets to English(UK).
-* Fix 		  - Field settings tab sluggish.
 * Dev 		  - Conditional logic not working for address field.
+* Fix 		  - Query String example text misaligned beside the input field in Settings > Confirmation.
+* Fix 		  - Original file name not shown for upload fields in All Forms entries view.
+* Fix 		  - Hide repeater "Add Repeater Row" builder control when Pro is inactive.
+* Fix 		  - Google reCAPTCHA/hCaptcha/Turnstile language setting resets to English (UK) after saving.
+* Fix 		  - Field settings tabs sluggish and required double-click to switch.
+* Fix 		  - Renamed Payment admin menu to Payments.
 
 = 3.5.2       - 02-07-2026
 * Fix 		  - Improved security of the addon activation process.
