@@ -352,7 +352,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 * Fix 		  - Currency symbol issue on subscription field.
 * Fix 		  - Add preset not working for multi choice field.
 * Dev 		  - Conditional logic not working for address field.
-* Fix 		  - Missing capability check arbitary plugin activation.
+* Fix 		  - Additional capability check.
 * Fix 		  - Query String example text misaligned beside the input field in Settings > Confirmation.
 * Fix 		  - Original file name not shown for upload fields in All Forms entries view.
 * Fix 		  - Hide repeater "Add Repeater Row" builder control when Pro is inactive.
