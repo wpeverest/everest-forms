@@ -697,6 +697,15 @@ class EVF_AJAX {
 	public static function template_activate_addon() {
 		check_ajax_referer( 'everest_forms_template_licence_check', 'security' );
 
+		if ( ! current_user_can( 'activate_plugins' ) ) {
+			wp_send_json_error(
+				array(
+					'errorCode'    => 'invalid_permission',
+					'errorMessage' => esc_html__( 'You do not have permission to activate plugins.', 'everest-forms' ),
+				)
+			);
+		}
+
 		if ( empty( $_POST['addon'] ) ) {
 			wp_send_json_error(
 				array(
@@ -706,7 +715,20 @@ class EVF_AJAX {
 			);
 		}
 
-		$activate = activate_plugin( sanitize_text_field( wp_unslash( $_POST['addon'] ) ) . '/' . sanitize_text_field( wp_unslash( $_POST['addon'] ) ) . '.php' );
+		$addon = sanitize_text_field( wp_unslash( $_POST['addon'] ) );
+
+		// Restrict activation to genuine Everest Forms addons so this endpoint
+		// cannot be used to activate arbitrary installed plugins.
+		if ( ! in_array( $addon, EVF_Modules::get_allowed_addon_slugs(), true ) ) {
+			wp_send_json_error(
+				array(
+					'errorCode'    => 'invalid_addon_slug',
+					'errorMessage' => esc_html__( 'The requested module is not a valid Everest Forms addon.', 'everest-forms' ),
+				)
+			);
+		}
+
+		$activate = activate_plugin( $addon . '/' . $addon . '.php' );
 
 		if ( is_wp_error( $activate ) ) {
 			wp_send_json_error(
@@ -1404,7 +1426,28 @@ class EVF_AJAX {
 	public static function active_addons() {
 		try {
 			check_ajax_referer( 'evf_active_nonce', 'security' );
-			$plugin   = isset( $_POST['plugin_file'] ) ? sanitize_text_field( wp_unslash( $_POST['plugin_file'] ) ) : '';
+
+			if ( ! current_user_can( 'activate_plugins' ) ) {
+				wp_send_json_error(
+					array(
+						'message' => esc_html__( 'You do not have permission to activate plugins.', 'everest-forms' ),
+					)
+				);
+			}
+
+			$plugin = isset( $_POST['plugin_file'] ) ? sanitize_text_field( wp_unslash( $_POST['plugin_file'] ) ) : '';
+			$slug   = dirname( $plugin );
+
+			// Restrict activation to genuine Everest Forms addons so this endpoint
+			// cannot be used to activate arbitrary installed plugins.
+			if ( '' === $plugin || ! in_array( $slug, EVF_Modules::get_allowed_addon_slugs(), true ) ) {
+				wp_send_json_error(
+					array(
+						'message' => esc_html__( 'The requested module is not a valid Everest Forms addon.', 'everest-forms' ),
+					)
+				);
+			}
+
 			$activate = activate_plugin( $plugin );
 			if ( is_wp_error( $activate ) ) {
 				$activation_error = $activate->get_error_message();

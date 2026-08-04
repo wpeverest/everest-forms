@@ -4,7 +4,7 @@ Tags: contact form, custom form, form builder, forms, survey
 Requires at least: 5.5
 Tested up to: 7.0
 Requires PHP: 7.2
-Stable tag: 3.5.2
+Stable tag: 3.5.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -344,6 +344,20 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/f788d7f0-ea8a-4fd5-bcae-81a5d09a476c)
 
 == Changelog ==
+
+= 3.5.3       - 04-08-2026
+* Enhance 	  - Show active addons list in System Info.
+* Fix 		  - Capability checks.
+* Fix 		  - Loader alignment in form migrator.
+* Fix 		  - Currency symbol issue on subscription field.
+* Fix 		  - Add preset not working for multi choice field.
+* Dev 		  - Conditional logic not working for address field.
+* Fix 		  - Query String example text misaligned beside the input field in Settings > Confirmation.
+* Fix 		  - Original file name not shown for upload fields in All Forms entries view.
+* Fix 		  - Hide repeater "Add Repeater Row" builder control when Pro is inactive.
+* Fix 		  - Google reCAPTCHA/hCaptcha/Turnstile language setting resets to English (UK) after saving.
+* Fix 		  - Field settings tabs sluggish and required double-click to switch.
+* Fix 		  - Renamed Payment admin menu to Payments.
 
 = 3.5.2       - 02-07-2026
 * Fix 		  - Improved security of the addon activation process.

@@ -440,14 +440,16 @@ class EVF_Builder_Fields extends EVF_Builder_Page {
 
 		echo '</div>';
 		echo '<div class="clear evf-clear"></div>';
-		if ( defined( 'EVF_REPEATER_FIELDS_VERSION' ) ) {
+		// Repeater controls require the Pro plugin (EFP_VERSION); without it the addon
+		// does not register the repeater field, so the button must not be shown.
+		if ( defined( 'EVF_REPEATER_FIELDS_VERSION' ) && defined( 'EFP_VERSION' ) ) {
 			echo '<div class="evf-repeater-row-wrapper">'; // Repeater Row Wrapper starts.
 		}
 
 		$next_row_id = $row_ids ? max( $row_ids ) : 1;
 		echo '<div class="evf-add-row" data-total-rows="' . count( $structure ) . '" data-next-row-id="' . (int) $next_row_id . '"><span class="everest-forms-btn everest-forms-btn-primary dashicons dashicons-plus-alt">' . esc_html__( 'Add Row', 'everest-forms' ) . '</span></div>';
 
-		if ( defined( 'EVF_REPEATER_FIELDS_VERSION' ) ) {
+		if ( defined( 'EVF_REPEATER_FIELDS_VERSION' ) && defined( 'EFP_VERSION' ) ) {
 			echo '<div class="evf-add-row repeater-row" data-total-rows="' . count( $structure ) . '" data-next-row-id="' . (int) $next_row_id . '"><span class="everest-forms-btn everest-forms-btn-primary dashicons dashicons-plus-alt">' . esc_html__( 'Add Repeater Row', 'everest-forms' ) . '</span></div>';
 			echo '</div>'; // Repeater Row Wrapper ends.
 		}

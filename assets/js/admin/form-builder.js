@@ -1127,9 +1127,11 @@
 			});
 			// Toggle presets list.
 			$(document.body).on('click', '.evf-toggle-presets-list', function (e) {
+				e.preventDefault();
 				$(this)
 					.closest('.everest-forms-field-option')
 					.find('.everest-forms-field-option-row .evf-options-presets')
+					.removeAttr('hidden')
 					.slideToggle();
 			});
 			// Add custom list of options.
@@ -8203,13 +8205,10 @@ jQuery(function ($) {
 			});
 
 			var $currentGroup = $(this).parent('.everest-forms-field-option-group');
-			// Properly sync the closed/open state: if closed, make open; if open, make closed
 			if ($currentGroup.hasClass('closed')) {
 				$currentGroup.removeClass('closed').addClass('open');
-				$currentGroup.find('.everest-forms-field-option-group-inner').show();
 			} else {
 				$currentGroup.removeClass('open').addClass('closed');
-				$currentGroup.find('.everest-forms-field-option-group-inner').hide();
 			}
 			$('.everest-forms-field-option-group.closed').not($currentGroup).each(function () {
 				$(this).find('.everest-forms-field-option-group-inner').hide();
