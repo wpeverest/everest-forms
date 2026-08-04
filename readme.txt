@@ -345,7 +345,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Changelog ==
 
-= 3.5.4       - xx-xx-2026
+= 3.6.0       - xx-xx-2026
 * Feature     - Customize style with AI.
 * Enhance 	  - Revamped Style Customizer.
 
