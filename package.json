@@ -50,7 +50,7 @@
     "style-loader": "4.0.0",
     "mini-css-extract-plugin": "^2.6.0",
     "css-loader": "7.1.2",
-    "eslint": "8.44.0",
+    "eslint": "8.57.1",
     "grunt": "1.5.3",
     "grunt-contrib-compress": "2.0.0",
     "grunt-contrib-concat": "2.1.0",
