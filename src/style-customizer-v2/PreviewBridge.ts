@@ -38,6 +38,13 @@ const PAGINATION_NAV_ALIGN_CLASSES = [
 	'everest-forms-nav-align--split',
 ];
 
+// Neither of these can be live-patched client-side: indicatorType renders genuinely different
+// child DOM per value (progress bar vs. an <ol>/<ul> of steps), and indicatorColor's actual
+// effect is server-rendered inline CSS built from the saved setting (see
+// EverestForms_MultiPart::output_part_indicator()/overlay_v2_pagination_tokens()), not the CSS
+// variable this control writes. Both need the same server-reload path a Fields-tab edit uses.
+const PAGINATION_STRUCTURAL_KEYS = [ 'pagination.indicatorType', 'pagination.indicatorColor' ];
+
 /** Mirrors FrontendEnqueue::container_class()'s `evf-btn-width-fill` class. */
 const BTN_WIDTH_FILL_CLASS = 'evf-btn-width-fill';
 
@@ -439,19 +446,20 @@ export class PreviewBridge {
 		if ( keys.indexOf( 'fonts.family' ) !== -1 || keys.indexOf( 'fonts.theme' ) !== -1 ) {
 			this.ensureFont();
 		}
-		// pagination.indicatorType changes which child DOM the indicator renders (a progress bar
-		// vs. an <ol>/<ul> of steps — see EverestForms_MultiPart::output_part_indicator()) —
-		// genuinely different markup per value, not something a CSS variable or class toggle can
-		// reconstruct client-side. Ask the server to re-render it instead, same as a Fields-tab
-		// edit does. Scoped to this targeted-edit path only (never applyAll()'s bulk re-apply,
-		// which also runs on device switch/undo/bootstrap) so this can't loop or fire needlessly.
-		if ( keys.indexOf( 'pagination.indicatorType' ) !== -1 ) {
-			const token = this.store.byKey[ 'pagination.indicatorType' ];
+		// Ask the server to re-render the pagination indicator, same as a Fields-tab edit does —
+		// see PAGINATION_STRUCTURAL_KEYS. Scoped to this targeted-edit path only (never
+		// applyAll()'s bulk re-apply, which also runs on device switch/undo/bootstrap) so this
+		// can't loop or fire needlessly.
+		PAGINATION_STRUCTURAL_KEYS.forEach( ( key ) => {
+			if ( keys.indexOf( key ) === -1 ) {
+				return;
+			}
+			const token = this.store.byKey[ key ];
 			if ( token ) {
 				const value = resolveValue( this.store.tokens[ token.key ], token, this.store.device );
 				getActiveSync()?.syncStyleToken( token.key, value );
 			}
-		}
+		} );
 	}
 
 	/** Loads (or removes) the selected Google font inside the preview. */

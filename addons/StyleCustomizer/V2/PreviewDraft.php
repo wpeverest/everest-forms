@@ -157,6 +157,16 @@ final class PreviewDraft {
 
 		$data = self::parse( $decoded );
 
+		// Each push only carries the style tokens edited SINCE the last one (the client clears its
+		// pending set after every successful POST) — merge onto whatever's already staged instead
+		// of replacing it wholesale, or editing e.g. indicatorColor after indicatorType would drop
+		// the still-unsaved indicatorType override (a structure-only push, with no style_tokens at
+		// all, must also carry the existing overrides forward for the same reason).
+		$existing_draft  = get_transient( self::key( $form_id, $user_id, $session ) );
+		$existing_tokens = ( is_array( $existing_draft ) && isset( $existing_draft['style_tokens'] ) && is_array( $existing_draft['style_tokens'] ) )
+			? $existing_draft['style_tokens']
+			: array();
+
 		if ( is_array( $style_tokens ) ) {
 			$clean = array();
 			foreach ( $style_tokens as $key => $value ) {
@@ -164,7 +174,11 @@ final class PreviewDraft {
 					$clean[ $key ] = sanitize_text_field( (string) $value );
 				}
 			}
-			$data['style_tokens'] = $clean;
+			$existing_tokens = array_merge( $existing_tokens, $clean );
+		}
+
+		if ( ! empty( $existing_tokens ) ) {
+			$data['style_tokens'] = $existing_tokens;
 		}
 
 		self::$current[ $form_id ] = $data;
