@@ -156,6 +156,23 @@ final class PreviewDraft {
 	}
 
 	/**
+	 * Pagination.* token overrides from an in-progress, unsaved Style-panel edit.
+	 *
+	 * This class only ever drafts the builder's FIELD STRUCTURE (see {@see store()}/{@see parse()}
+	 * — a nested `form_fields`/`structure`/`settings` shape, never a `tokens` map), because a style
+	 * token edit is applied straight to the live preview client-side and only reaches the server on
+	 * Save (see RestController::save_item()). There is no unsaved-style-token draft to read here yet,
+	 * so this always returns empty; {@see \EverestForms_MultiPart::overlay_v2_pagination_tokens()}
+	 * falls back to the last SAVED tokens, which is correct today.
+	 *
+	 * @param int $form_id Form id.
+	 * @return array Token key => value overrides (currently always empty).
+	 */
+	public static function preview_style_tokens( $form_id ) {
+		return array();
+	}
+
+	/**
 	 * Parse the serialized builder array into the nested form structure. Mirrors
 	 * {@see \EVF_AJAX::save_form()} so the draft renders identically to a saved form.
 	 *
