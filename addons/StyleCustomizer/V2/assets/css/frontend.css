@@ -132,6 +132,7 @@
 .everest-forms .evf-style-v2 canvas.evf-signature-canvas,
 .everest-forms .evf-style-v2 .StripeElement {
 	color: var( --evf-input-color );
+	font-family: var( --evf-font );
 	font-size: var( --evf-input-size );
 	text-align: var( --evf-input-align );
 	background-color: var( --evf-input-bg );
@@ -342,6 +343,7 @@
 .everest-forms .evf-style-v2 .everest-forms-multi-part-actions button[type='submit'],
 .everest-forms .evf-style-v2 .everest-forms-multi-part-actions .everest-forms-part-button {
 	color: var( --evf-btn-color );
+	font-family: var( --evf-font );
 	font-size: var( --evf-btn-size );
 	line-height: var( --evf-btn-lh );
 	background-color: var( --evf-btn-bg );

@@ -507,7 +507,7 @@ final class RestController {
 			'form_id'        => $form_id,
 			'schema_version' => Schema::version(),
 			'schema'         => Schema::tokens(),
-			'sections'       => Schema::sections(),
+			'sections'       => apply_filters( 'evf_style_v2_sections', Schema::sections(), $form_id ),
 			'palettes'       => Schema::palettes(),
 			'palette_map'    => Schema::palette_map(),
 			'templates'      => Templates::all(),
