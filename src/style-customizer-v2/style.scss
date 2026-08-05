@@ -1171,6 +1171,7 @@
 }
 
 #everest-forms-panel-style .color {
+	position: relative;
 	display: flex;
 	align-items: center;
 	gap: 8px;
@@ -1186,15 +1187,18 @@
 		box-shadow: var(--ui-focus-soft);
 	}
 
-	input[type="color"] {
+	.swatch {
 		width: 22px;
 		height: 22px;
-		border: 0;
-		background: none;
-		padding: 0;
-		cursor: pointer;
-		border-radius: var(--ui-radius-sm);
 		flex: none;
+		padding: 0;
+		border: 1px solid rgba(0, 0, 0, .1);
+		border-radius: var(--ui-radius-sm);
+		cursor: pointer;
+		background-image:
+			linear-gradient(var(--swatch), var(--swatch)),
+			repeating-conic-gradient(#ccc 0 25%, #fff 0 50%);
+		background-size: 100% 100%, 8px 8px;
 	}
 
 	.hex {
@@ -1222,6 +1226,70 @@
 
 	&.invalid {
 		border-color: var(--ui-red);
+	}
+}
+
+#everest-forms-panel-style .color-pop {
+	position: absolute;
+	z-index: 30;
+	top: calc(100% + 6px);
+	left: 0;
+	width: 264px;
+	background: #fff;
+	border: 1px solid var(--ui-line);
+	border-radius: var(--ui-radius-lg);
+	box-shadow: var(--ui-shadow-lg);
+	padding: 16px;
+
+	.react-colorful {
+		width: 100%;
+		height: 220px;
+		gap: 12px;
+	}
+
+	.react-colorful__saturation {
+		border-radius: var(--ui-radius-md);
+		box-shadow: inset 0 0 0 1px rgba(20, 23, 40, .06);
+		margin-bottom: 12px;
+	}
+
+	.react-colorful__hue,
+	.react-colorful__alpha {
+		height: 14px;
+		border-radius: 99px;
+		box-shadow: inset 0 0 0 1px rgba(20, 23, 40, .08);
+	}
+
+	.react-colorful__hue {
+		margin-bottom: 12px;
+	}
+
+	.react-colorful__hue-pointer,
+	.react-colorful__alpha-pointer,
+	.react-colorful__saturation-pointer {
+		width: 18px;
+		height: 18px;
+		box-shadow: 0 0 0 2px #fff, 0 2px 6px rgba(20, 23, 40, .3);
+	}
+}
+
+#everest-forms-panel-style .color-pop-alpha {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 8px;
+	margin-top: 16px;
+	padding-top: 14px;
+	border-top: 1px solid var(--ui-line-2);
+
+	.opacity-pop-label {
+		font-size: 12px;
+		font-weight: 500;
+		color: var(--ui-ink-2);
+	}
+
+	.num {
+		width: 58px;
 	}
 }
 
