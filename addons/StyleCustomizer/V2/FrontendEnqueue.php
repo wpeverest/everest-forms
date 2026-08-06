@@ -87,7 +87,7 @@ final class FrontendEnqueue {
 			wp_add_inline_style( self::HANDLE, $css );
 		}
 
-		self::maybe_enqueue_font( $record );
+		self::maybe_enqueue_font( $record, $form_id );
 	}
 
 	/**
@@ -127,12 +127,15 @@ final class FrontendEnqueue {
 	/**
 	 * Enqueue the form's selected Google font, unless it's using the theme font.
 	 *
-	 * @param array $record V2 style record.
+	 * @param array      $record  V2 style record.
+	 * @param int|string $form_id Form id.
 	 */
-	protected static function maybe_enqueue_font( $record ) {
-		$tokens     = isset( $record['tokens'] ) && is_array( $record['tokens'] ) ? $record['tokens'] : array();
-		$theme_font = ! empty( $tokens['fonts.theme']['desktop'] );
-		$family     = isset( $tokens['fonts.family']['desktop'] ) ? trim( (string) $tokens['fonts.family']['desktop'] ) : '';
+	protected static function maybe_enqueue_font( $record, $form_id ) {
+		$tokens = isset( $record['tokens'] ) && is_array( $record['tokens'] ) ? $record['tokens'] : array();
+		// The global "Apply Theme Style" toggle forces theme fonts too — see Compiler::compile().
+		$apply_theme_style = 'default' !== get_post_meta( $form_id, 'everest_forms_enable_theme_style', true );
+		$theme_font        = $apply_theme_style || ! empty( $tokens['fonts.theme']['desktop'] );
+		$family            = isset( $tokens['fonts.family']['desktop'] ) ? trim( (string) $tokens['fonts.family']['desktop'] ) : '';
 
 		if ( $theme_font || '' === $family ) {
 			return;

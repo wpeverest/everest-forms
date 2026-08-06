@@ -212,6 +212,12 @@ class StyleStore {
 	}
 
 	themeFont(): boolean {
+		// The global "Apply Theme Style" toggle forces fonts to inherit from the active theme —
+		// mirrors v1's `show_theme_font` (the only thing that toggle ever actually did) — regardless
+		// of the per-form Font section's own setting.
+		if ( this.applyThemeStyle ) {
+			return true;
+		}
 		const bag = this.tokens[ 'fonts.theme' ];
 		return !! ( bag && bag.desktop === true );
 	}

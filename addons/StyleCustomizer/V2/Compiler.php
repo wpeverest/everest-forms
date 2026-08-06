@@ -28,8 +28,12 @@ final class Compiler {
 	 */
 	public static function compile( $record, $form_id ) {
 		$selector = self::wrapper_selector( $form_id );
-		$tokens     = ( isset( $record['tokens'] ) && is_array( $record['tokens'] ) ) ? $record['tokens'] : array();
-		$theme_font = ! empty( $tokens['fonts.theme']['desktop'] );
+		$tokens = ( isset( $record['tokens'] ) && is_array( $record['tokens'] ) ) ? $record['tokens'] : array();
+		// The global "Apply Theme Style" toggle forces theme fonts too — mirrors v1's
+		// `show_theme_font` (the only thing that toggle ever did) — regardless of the per-form
+		// Font section's own setting.
+		$apply_theme_style = 'default' !== get_post_meta( $form_id, 'everest_forms_enable_theme_style', true );
+		$theme_font        = $apply_theme_style || ! empty( $tokens['fonts.theme']['desktop'] );
 		$pro_active = Engine::pro_active();
 
 		// Base (desktop) declarations. Without Pro, a pro-tier token renders at its default —
