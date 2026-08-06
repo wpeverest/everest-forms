@@ -361,8 +361,13 @@ export class PreviewBridge {
 			   parent's background above does nothing to it since it is a separate
 			   absolutely-positioned pseudo-element box. */
 			.evf-form-preview-overlay::after { display: none !important; }
-			.evf-preview-content,
-			.everest-forms.evf-frontend-form-preview { padding: 0 !important; }
+			/* .evf-preview-content only — NOT .everest-forms.evf-frontend-form-preview, which used to
+			   be grouped in here too. That rule zeroed the form's own 24px preview-card padding
+			   specifically when "Apply Theme Style" was on, making the toggle look like it changes
+			   the form's spacing. It doesn't: the real (non-preview) frontend has no such rule tied
+			   to that toggle at all (see everest-forms-default-frontend.css) — this 24px is purely
+			   this admin preview card's own decoration, unrelated to theme-style. */
+			.evf-preview-content { padding: 0 !important; }
 			.evf-form-preview-form {
 				width: 100% !important;
 				max-width: 100% !important;
