@@ -796,7 +796,8 @@ export function TemplatesPane( {
 			) }
 
 			<div className="block-title">{ __( 'Built-in templates', 'everest-forms' ) }</div>
-			{ renderGrid( store.templates, false ) }
+			{ /* Legacy set stays in store.templates (see Templates::load_legacy()) for badge matching above; just not offered here. */ }
+			{ renderGrid( store.templates.filter( ( tpl ) => ! tpl.legacy ), false ) }
 
 			<p className="tpl-hint">
 				{ __( 'Templates set every element at once. Fine-tune afterwards from the Design tab.', 'everest-forms' ) }

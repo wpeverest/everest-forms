@@ -112,6 +112,8 @@ export interface Template {
 	custom?: boolean;
 	/** True for Pro-only built-in templates (locked in free). */
 	is_pro?: boolean;
+	/** True for the old, superseded default set — kept for existing forms, hidden from the picker grid. */
+	legacy?: boolean;
 }
 
 /** The stored style record (matches Sanitizer::sanitize_record()). */

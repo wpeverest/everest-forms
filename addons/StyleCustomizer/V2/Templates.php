@@ -2,9 +2,14 @@
 /**
  * Style Customizer v2 — built-in style templates.
  *
- * The v1 template set (`assets/wp-json/default-templates.json`) is converted to v2 records
- * via {@see Migrator::migrate_record()} rather than hand-authored, so a template applied in
- * v2 produces the same token values a migrated v1 form would.
+ * Two bundled sets: the CURRENT default gallery (`assets/wp-json/default-templates-v2.json`,
+ * hand-authored directly in v2 token shape — no migration needed) is what {@see all()} shows in
+ * the picker. The original v1 template set (`assets/wp-json/default-templates.json`, converted
+ * via {@see Migrator::migrate_record()}) is kept loaded but flagged `legacy => true` and filtered
+ * out of the browsable grid (see the JS Templates pane) — existing forms that already have one of
+ * those applied keep matching it correctly (the "applied"/"Modified" badge logic and
+ * {@see resolve_legacy_slug()} both read the full, unfiltered list), they're just no longer
+ * offered to new selections.
  *
  * @package EverestForms\Addons\StyleCustomizer\V2
  * @since   x.x.x
@@ -15,14 +20,19 @@ namespace EverestForms\Addons\StyleCustomizer\V2;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Template provider — the v1 template set converted to v2 records.
+ * Template provider — the current default gallery, plus the legacy v1 set for continuity.
  */
 final class Templates {
 
 	/**
-	 * Relative path (from the everest-forms plugin root) to the bundled v1 template set.
+	 * Relative path (from the everest-forms plugin root) to the legacy v1 template set.
 	 */
 	const JSON_PATH = 'addons/StyleCustomizer/assets/wp-json/default-templates.json';
+
+	/**
+	 * Relative path to the current default gallery — already in v2 token shape.
+	 */
+	const V2_JSON_PATH = 'addons/StyleCustomizer/assets/wp-json/default-templates-v2.json';
 
 	/**
 	 * Option holding user-created v2 style templates.
@@ -31,8 +41,10 @@ final class Templates {
 
 	/**
 	 * The built-in templates that are FREE (usable without Pro). Matched by template name.
+	 * The first four are the legacy v1 set (kept for existing forms); "Default" and "Ledger"
+	 * are the current gallery's free entries.
 	 */
-	const FREE_TEMPLATES = array( 'Default Template', 'Classic Template', 'In-Line Flair', 'Classic Flow' );
+	const FREE_TEMPLATES = array( 'Default Template', 'Classic Template', 'In-Line Flair', 'Classic Flow', 'Default', 'Ledger' );
 
 	/**
 	 * Memoized template list.
@@ -42,7 +54,8 @@ final class Templates {
 	protected static $cache = null;
 
 	/**
-	 * All templates as v2 records: [ { id, name, image, palette, tokens } ].
+	 * All templates as v2 records: [ { id, name, image, palette, tokens, is_pro, legacy } ].
+	 * Current gallery first, then the legacy v1 set (flagged, hidden from the picker's grid).
 	 *
 	 * @return array
 	 */
@@ -51,10 +64,50 @@ final class Templates {
 			return self::$cache;
 		}
 
-		$raw = self::load();
-		$out = array();
+		$out = array_merge( self::load_current(), self::load_legacy() );
 
-		foreach ( $raw as $tpl ) {
+		/**
+		 * Filter the v2 style templates.
+		 *
+		 * @param array $out Templates.
+		 */
+		self::$cache = apply_filters( 'evf_style_v2_templates', $out );
+		return self::$cache;
+	}
+
+	/**
+	 * The current default gallery — already authored in v2 token shape, no migration needed.
+	 *
+	 * @return array
+	 */
+	protected static function load_current() {
+		$out = array();
+		foreach ( self::load_json( self::V2_JSON_PATH ) as $tpl ) {
+			if ( empty( $tpl['name'] ) || empty( $tpl['tokens'] ) || ! is_array( $tpl['tokens'] ) ) {
+				continue;
+			}
+			$out[] = array(
+				'id'      => isset( $tpl['id'] ) ? (string) $tpl['id'] : sanitize_key( $tpl['name'] ),
+				'name'    => (string) $tpl['name'],
+				'image'   => self::image_url_explicit( $tpl ),
+				'palette' => isset( $tpl['palette'] ) ? (string) $tpl['palette'] : '',
+				'is_pro'  => ! in_array( (string) $tpl['name'], self::FREE_TEMPLATES, true ),
+				'legacy'  => false,
+				'tokens'  => $tpl['tokens'],
+			);
+		}
+		return $out;
+	}
+
+	/**
+	 * The legacy v1 template set, migrated to v2 token shape. Kept loaded (never shown in the
+	 * picker grid) so a form that already has one applied still matches it correctly.
+	 *
+	 * @return array
+	 */
+	protected static function load_legacy() {
+		$out = array();
+		foreach ( self::load() as $tpl ) {
 			if ( empty( $tpl['name'] ) || empty( $tpl['data'] ) || ! is_array( $tpl['data'] ) ) {
 				continue;
 			}
@@ -65,17 +118,11 @@ final class Templates {
 				'image'   => self::image_url( $tpl ),
 				'palette' => '',
 				'is_pro'  => ! in_array( (string) $tpl['name'], self::FREE_TEMPLATES, true ),
+				'legacy'  => true,
 				'tokens'  => isset( $record['tokens'] ) ? $record['tokens'] : array(),
 			);
 		}
-
-		/**
-		 * Filter the v2 style templates.
-		 *
-		 * @param array $out Templates.
-		 */
-		self::$cache = apply_filters( 'evf_style_v2_templates', $out );
-		return self::$cache;
+		return $out;
 	}
 
 	/**
@@ -348,20 +395,53 @@ final class Templates {
 	}
 
 	/**
+	 * Same local/remote resolution as {@see image_url()}, but WITHOUT the guess-by-name fallback —
+	 * for the current gallery only, so a new entry never accidentally adopts an unrelated bundled
+	 * asset just because `sanitize_title( name ) . '.png'` happens to already exist on disk (that
+	 * guess exists for the legacy v1 set's inconsistently-named remote images, not this one). No
+	 * `image` field set → '' → the JS picker's live token-driven thumbnail renders instead.
+	 *
+	 * @param array $tpl Raw template ( name + image ).
+	 * @return string
+	 */
+	protected static function image_url_explicit( $tpl ) {
+		if ( empty( $tpl['image'] ) ) {
+			return '';
+		}
+		$dir  = dirname( __DIR__ ) . '/assets/images/templates/';
+		$base = evf()->plugin_url() . '/addons/StyleCustomizer/assets/images/templates/';
+		$file = basename( wp_parse_url( (string) $tpl['image'], PHP_URL_PATH ) );
+		if ( $file && is_readable( $dir . $file ) ) {
+			return $base . $file;
+		}
+		return esc_url_raw( (string) $tpl['image'] );
+	}
+
+	/**
 	 * Load + decode the bundled template JSON (trusted asset). Returns an array of templates.
 	 *
 	 * @return array
 	 */
 	protected static function load() {
+		return self::load_json( self::JSON_PATH );
+	}
+
+	/**
+	 * Load + decode a bundled template JSON (trusted asset) at the given plugin-relative path.
+	 *
+	 * @param string $rel_path Plugin-relative path (e.g. {@see JSON_PATH}).
+	 * @return array
+	 */
+	protected static function load_json( $rel_path ) {
 		$json = '';
 
 		if ( function_exists( 'evf_file_get_contents' ) ) {
-			$json = evf_file_get_contents( self::JSON_PATH );
+			$json = evf_file_get_contents( $rel_path );
 		}
 
 		if ( '' === $json || false === $json ) {
 			// __DIR__ is …/addons/StyleCustomizer/V2; the JSON sits in the sibling assets dir.
-			$path = dirname( __DIR__ ) . '/assets/wp-json/default-templates.json';
+			$path = dirname( __DIR__ ) . '/assets/wp-json/' . basename( $rel_path );
 			if ( is_readable( $path ) ) {
 				$json = (string) file_get_contents( $path ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 			}
