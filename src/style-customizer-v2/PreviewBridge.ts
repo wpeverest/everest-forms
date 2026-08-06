@@ -479,20 +479,30 @@ export class PreviewBridge {
 		} );
 	}
 
-	/** Loads (or removes) the selected Google font inside the preview. */
-	private ensureFont() {
+	/**
+	 * Loads (or removes) the selected Google font inside the preview. A template hover passes its
+	 * own not-yet-committed family/theme-font instead of reading the store — otherwise the CSS var
+	 * flips to the template's font correctly (see previewValues()) but the webfont file is never
+	 * fetched, so the browser silently falls back to a system font and the hover looks like it did
+	 * nothing.
+	 */
+	private ensureFont( overrideFamily?: string, overrideThemeFont?: boolean ) {
 		const wrapper = this.wrapper;
 		if ( ! wrapper ) {
 			return;
 		}
 		const doc = wrapper.ownerDocument;
 		const token = this.store.byKey[ 'fonts.family' ];
-		const family = token
-			? String( resolveValue( this.store.tokens[ 'fonts.family' ], token, 'desktop' ) || '' ).trim()
-			: '';
+		const family =
+			overrideFamily !== undefined
+				? overrideFamily.trim()
+				: token
+					? String( resolveValue( this.store.tokens[ 'fonts.family' ], token, 'desktop' ) || '' ).trim()
+					: '';
+		const themeFont = overrideThemeFont !== undefined ? overrideThemeFont : this.store.themeFont();
 		let link = doc.getElementById( FONT_LINK_ID ) as HTMLLinkElement | null;
 
-		if ( this.store.themeFont() || ! family ) {
+		if ( themeFont || ! family ) {
 			if ( link ) {
 				link.remove();
 			}
@@ -709,7 +719,11 @@ export class PreviewBridge {
 		if ( ! this.wrapper ) {
 			return;
 		}
-		const themeFont = this.store.themeFont();
+		// Use THIS preview's own fonts.theme (a template hover always carries one — see
+		// flattenForPreview() in panes.tsx) rather than the store's current, not-yet-applied value —
+		// otherwise a template that turns theme-font off still previews with it forced on, because
+		// clicking would change fonts.theme but hovering never touches the store at all.
+		const themeFont = this.store.themeFont( overrides[ 'fonts.theme' ] as boolean | undefined );
 		Object.entries( overrides ).forEach( ( [ key, value ] ) => {
 			const token = this.store.byKey[ key ];
 			if ( ! token ) {
@@ -721,6 +735,12 @@ export class PreviewBridge {
 				this.wrapper!.style.setProperty( name, val )
 			);
 		} );
+		// The var above is enough for every other property, but a font also needs its webfont
+		// FILE loaded — without this the var flips correctly but the browser has nothing to render
+		// it with and silently falls back to a system font, looking like the hover did nothing.
+		if ( 'fonts.family' in overrides || 'fonts.theme' in overrides ) {
+			this.ensureFont( overrides[ 'fonts.family' ] as string | undefined, themeFont );
+		}
 	}
 
 	/** Preview a palette's colours live (hover) without committing to the store. */

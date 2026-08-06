@@ -211,12 +211,21 @@ class StyleStore {
 		return JSON.stringify( bag ? bag.desktop : undefined ) !== JSON.stringify( token.default );
 	}
 
-	themeFont(): boolean {
+	/**
+	 * @param overrideFontsTheme When previewing a value that hasn't been committed to the store
+	 * yet (a template hover), pass the value THAT preview would set `fonts.theme` to — otherwise
+	 * this reads the current per-field toggle, which is stale for anything not yet applied. The
+	 * global toggle still wins outright either way.
+	 */
+	themeFont( overrideFontsTheme?: boolean ): boolean {
 		// The global "Apply Theme Style" toggle forces fonts to inherit from the active theme —
 		// mirrors v1's `show_theme_font` (the only thing that toggle ever actually did) — regardless
 		// of the per-form Font section's own setting.
 		if ( this.applyThemeStyle ) {
 			return true;
+		}
+		if ( overrideFontsTheme !== undefined ) {
+			return overrideFontsTheme;
 		}
 		const bag = this.tokens[ 'fonts.theme' ];
 		return !! ( bag && bag.desktop === true );
