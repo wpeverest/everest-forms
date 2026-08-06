@@ -496,12 +496,27 @@ class StyleStore {
 	/** Apply a template: reset every token to its default, then overlay the template's token bags. */
 	applyTemplate( templateId: string, tokens: Record< string, DeviceBag >, paletteId?: string ) {
 		this.discrete( 'Apply template' );
+		// While "Apply Theme Style" is on, the user has explicitly chosen the theme's font over
+		// any per-form setting — a template shouldn't silently flip that off behind their back, so
+		// leave fonts.theme/fonts.family exactly as they are (skip both the reset-to-default below
+		// and the template's own overlay values for these two keys).
+		const keepFontKeys = this.applyThemeStyle ? [ 'fonts.theme', 'fonts.family' ] : [];
+		const keptFonts: Record< string, DeviceBag > = {};
+		keepFontKeys.forEach( ( key ) => {
+			if ( this.tokens[ key ] ) {
+				keptFonts[ key ] = clone( this.tokens[ key ] );
+			}
+		} );
 		this.schema.forEach( ( t ) => ( this.tokens[ t.key ] = { desktop: clone( t.default ) } ) );
 		Object.entries( tokens || {} ).forEach( ( [ key, bag ] ) => {
+			if ( keepFontKeys.indexOf( key ) !== -1 ) {
+				return;
+			}
 			if ( this.byKey[ key ] && bag && typeof bag === 'object' ) {
 				this.tokens[ key ] = clone( bag );
 			}
 		} );
+		Object.entries( keptFonts ).forEach( ( [ key, bag ] ) => ( this.tokens[ key ] = bag ) );
 		this.template = templateId;
 		this.palette = paletteId || '';
 		this.notify( null );
