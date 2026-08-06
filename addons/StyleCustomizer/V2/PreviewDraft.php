@@ -170,8 +170,12 @@ final class PreviewDraft {
 		if ( is_array( $style_tokens ) ) {
 			$clean = array();
 			foreach ( $style_tokens as $key => $value ) {
-				if ( is_string( $key ) && is_scalar( $value ) ) {
-					$clean[ $key ] = sanitize_text_field( (string) $value );
+				if ( ! is_string( $key ) ) {
+					continue;
+				}
+				$sanitized = self::sanitize_style_token_value( $value );
+				if ( null !== $sanitized ) {
+					$clean[ $key ] = $sanitized;
 				}
 			}
 			$existing_tokens = array_merge( $existing_tokens, $clean );
@@ -191,6 +195,39 @@ final class PreviewDraft {
 
 		set_transient( self::key( $form_id, $user_id, $session ), $data, self::TTL );
 		return true;
+	}
+
+	/**
+	 * Sanitize one staged style-token value — either a scalar (color/select value) or a box4
+	 * shape `{top,right,bottom,left[,unit]}` (e.g. `pagination.margin`, sent as the resolved
+	 * device value straight from the JS store — see PreviewBridge.ts's PAGINATION_STRUCTURAL_KEYS).
+	 * Returns null for anything else (rejected, same as the old is_scalar()-only check did).
+	 *
+	 * @param mixed $value Raw staged value.
+	 * @return string|array|null
+	 */
+	protected static function sanitize_style_token_value( $value ) {
+		if ( is_scalar( $value ) ) {
+			return sanitize_text_field( (string) $value );
+		}
+		if ( is_array( $value ) ) {
+			$sides = array( 'top', 'right', 'bottom', 'left' );
+			if ( array_diff( $sides, array_keys( $value ) ) ) {
+				return null;
+			}
+			$box = array();
+			foreach ( $sides as $side ) {
+				if ( ! is_numeric( $value[ $side ] ) ) {
+					return null;
+				}
+				$box[ $side ] = (float) $value[ $side ];
+			}
+			if ( isset( $value['unit'] ) && is_string( $value['unit'] ) ) {
+				$box['unit'] = sanitize_text_field( $value['unit'] );
+			}
+			return $box;
+		}
+		return null;
 	}
 
 	/**

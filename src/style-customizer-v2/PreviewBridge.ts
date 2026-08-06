@@ -38,12 +38,13 @@ const PAGINATION_NAV_ALIGN_CLASSES = [
 	'everest-forms-nav-align--split',
 ];
 
-// Neither of these can be live-patched client-side: indicatorType renders genuinely different
-// child DOM per value (progress bar vs. an <ol>/<ul> of steps), and indicatorColor's actual
-// effect is server-rendered inline CSS built from the saved setting (see
-// EverestForms_MultiPart::output_part_indicator()/overlay_v2_pagination_tokens()), not the CSS
-// variable this control writes. Both need the same server-reload path a Fields-tab edit uses.
-const PAGINATION_STRUCTURAL_KEYS = [ 'pagination.indicatorType', 'pagination.indicatorColor' ];
+// indicatorType can't be live-patched client-side — its themes render genuinely different child
+// DOM per value (progress bar vs. an <ol>/<ul> of steps, see
+// EverestForms_MultiPart::output_part_indicator()), so it needs the same server-reload path a
+// Fields-tab edit uses. Every other pagination.* token (color/margin) has a real CSS var the
+// static everest-forms-multi-part.css now reads directly, so those preview instantly like any
+// other color/box4 token — no special-casing needed.
+const PAGINATION_STRUCTURAL_KEYS = [ 'pagination.indicatorType' ];
 
 /** Mirrors FrontendEnqueue::container_class()'s `evf-btn-width-fill` class. */
 const BTN_WIDTH_FILL_CLASS = 'evf-btn-width-fill';
