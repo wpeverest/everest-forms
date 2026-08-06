@@ -135,7 +135,7 @@ export function DesignList( {
 					<b>{ __( 'Apply Theme Style', 'everest-forms' ) }</b>
 					<small>
 						{ __(
-							'Matches your active theme’s look. Turn off for Everest Forms’ default — your settings above still apply.',
+							'Matches your active theme’s look, including fonts. Turn off for Everest Forms’ default and your own font choice — your other settings above still apply.',
 							'everest-forms'
 						) }
 					</small>

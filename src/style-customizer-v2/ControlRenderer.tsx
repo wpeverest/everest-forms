@@ -680,9 +680,11 @@ function FontSelectControl( props: ControlProps & { depHint?: string } ) {
 		}
 	};
 
-	const hint = themeFont
-		? __( 'Using your theme’s font. Turn off “Use theme fonts” to choose one.', 'everest-forms' )
-		: depHint || '';
+	const hint = ! themeFont
+		? depHint || ''
+		: store.applyThemeStyle
+			? __( 'Using your theme’s font — controlled by “Apply Theme Style” above.', 'everest-forms' )
+			: __( 'Using your theme’s font. Turn off “Use theme fonts” to choose one.', 'everest-forms' );
 
 	return (
 		<ControlShell { ...props }>
@@ -869,7 +871,13 @@ function MediaControl( props: ControlProps ) {
 
 function ToggleControl( props: ControlProps ) {
 	const { token, store } = props;
-	const value = store.resolve( token.key ) === true;
+	// The global "Apply Theme Style" toggle forces fonts.theme on (see store.themeFont()) — disable
+	// this switch rather than leave it clickable-but-inert, and say why.
+	const forcedByGlobal = token.key === 'fonts.theme' && store.applyThemeStyle;
+	const value = forcedByGlobal || store.resolve( token.key ) === true;
+	const hint = forcedByGlobal
+		? __( 'Forced on by the global “Apply Theme Style” setting above.', 'everest-forms' )
+		: '';
 	return (
 		<ControlShell
 			{ ...props }
@@ -878,13 +886,14 @@ function ToggleControl( props: ControlProps ) {
 					type="button"
 					className="switch"
 					role="switch"
+					disabled={ forcedByGlobal }
 					aria-checked={ value }
 					aria-label={ token.label }
 					onClick={ () => store.setTokenValue( token.key, ! value, false ) }
 				/>
 			}
 		>
-			{ null }
+			{ hint && <div className="dep-hint">{ hint }</div> }
 		</ControlShell>
 	);
 }
