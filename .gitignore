@@ -19,6 +19,9 @@ none
 # Sass
 .sass-cache/
 
+# Playwright MCP
+.playwright-mcp/
+
 # OS X metadata
 .DS_Store
 
