@@ -1918,20 +1918,14 @@ class EVF_Form_Task {
 							}
 						}
 
-						$subject = apply_filters( 'everest_forms_entry_submission_approval_subject', esc_html__( 'Form Entry Approved', 'everest-forms' ) );
-						// translators: %s is the name of the user
-						$message = sprintf( __( 'Hey, %s', 'everest-forms' ), $name ) . '<br/>';
-						// translators: %s is the entry_date.
-						$message .= '<br/>' . sprintf( __( 'We’re pleased to inform you that your form entry submitted on %s has been successfully approved.', 'everest-forms' ), $entry_date ) . '<br/>';
-						$message .= '<br/>' . __( 'Thank you for giving us your precious time.', 'everest-forms' ) . '<br/>';
-						// translators: %s is the site_name.
-						$message .= '<br/>' . sprintf( __( 'From %s', 'everest-forms' ), $site_name );
-						// translators: %s is the message.
-						$message = apply_filters( 'everest_forms_entry_approval_message', $message, $name, $entry_date, $site_name );
+						$subject = apply_filters( 'everest_forms_entry_submission_approval_subject', EVF_Admin_Entries::get_entry_status_email_subject( 'approval' ) );
+						$message = apply_filters( 'everest_forms_entry_approval_message', EVF_Admin_Entries::get_entry_status_email_message( 'approval', $name, $entry_date, $site_name ), $name, $entry_date, $site_name );
 					}
 
-					$email_obj = new EVF_Emails();
-					$test      = $email_obj->send( $email, $subject, $message );
+					if ( EVF_Admin_Entries::is_entry_status_email_enabled( 'approval' ) ) {
+						$email_obj = new EVF_Emails();
+						$email_obj->send( $email, $subject, $message );
+					}
 					wp_redirect( $evf_entry_redirect_url );
 				}
 			}
@@ -1999,20 +1993,15 @@ class EVF_Form_Task {
 							}
 						}
 
-						$subject = apply_filters( 'everest_forms_entry_submission_approval_subject', esc_html__( 'Entry Submission Denied', 'everest-forms' ) );
-						// translators: %s is the name of the user
-						$message = sprintf( __( 'Hey, %s', 'everest-forms' ), $name ) . '<br/>';
-						// translators: %s is the entry_date.
-						$message .= '<br/>' . sprintf( __( 'We’re sorry to inform you that your form entry submitted on %s has been denied.', 'everest-forms' ), $entry_date ) . '<br/>';
-						$message .= '<br/>' . __( 'Thank you for giving us your precious time.', 'everest-forms' ) . '<br/>';
-						// translators: %s is the site_name.
-						$message .= '<br/>' . sprintf( __( 'From %s', 'everest-forms' ), $site_name );
-						// translators: %s is the message.
-						$message = apply_filters( 'everest_forms_entry_denial_message', $message, $name, $entry_date, $site_name );
+						$subject = apply_filters( 'everest_forms_entry_submission_denial_subject', EVF_Admin_Entries::get_entry_status_email_subject( 'denial' ) );
+						$message = apply_filters( 'everest_forms_entry_denial_message', EVF_Admin_Entries::get_entry_status_email_message( 'denial', $name, $entry_date, $site_name ), $name, $entry_date, $site_name );
 
 					}
-					$email_obj = new EVF_Emails();
-					$email_obj->send( $email, $subject, $message );
+
+					if ( EVF_Admin_Entries::is_entry_status_email_enabled( 'denial' ) ) {
+						$email_obj = new EVF_Emails();
+						$email_obj->send( $email, $subject, $message );
+					}
 					wp_redirect( $evf_entry_redirect_url );
 				}
 			}
