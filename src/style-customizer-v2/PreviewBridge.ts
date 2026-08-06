@@ -109,6 +109,10 @@ export class PreviewBridge {
 	private mutationObserver: MutationObserver | null = null;
 	private observedDoc: Document | null = null;
 	private mutationScheduled = false;
+	/** Last value actually sent to the server per PAGINATION_STRUCTURAL_KEYS key — lets applyKeys()
+	 *  skip the resync when the value didn't really change (e.g. a template hover/revert cycle,
+	 *  which always re-applies the whole schema including these keys, but never touches the store). */
+	private lastSyncedStructural: Record< string, unknown > = {};
 
 	constructor( iframe: HTMLIFrameElement, store: StyleStore, handlers: BridgeHandlers ) {
 		this.iframe = iframe;
@@ -457,6 +461,13 @@ export class PreviewBridge {
 			const token = this.store.byKey[ key ];
 			if ( token ) {
 				const value = resolveValue( this.store.tokens[ token.key ], token, this.store.device );
+				// applyKeys() also runs on a template hover/revert cycle (previewedKeys always covers
+				// the whole schema), which never touches the store — skip the round-trip when the
+				// server already has this exact value, so hovering a template can't spam reloads.
+				if ( this.lastSyncedStructural[ key ] === value ) {
+					return;
+				}
+				this.lastSyncedStructural[ key ] = value;
 				getActiveSync()?.syncStyleToken( token.key, value );
 			}
 		} );
