@@ -3,8 +3,8 @@
  * TemplatesPane and CustomCssPane. All read/write the store.
  */
 import React from 'react';
-import { ControlRenderer } from './ControlRenderer';
-import { SECTION_ICONS, SECTION_SUBTITLES, STATE_LABELS, toDisplayHex } from './constants';
+import { ColorPickerField, ControlRenderer } from './ControlRenderer';
+import { SECTION_ICONS, SECTION_SUBTITLES, STATE_LABELS } from './constants';
 import { useStore } from './store';
 import { BoxValue, DeviceBag, Section, Template, Token } from './types';
 // The same "PRO" crown badge the builder's Fields sidebar uses.
@@ -13,8 +13,6 @@ import proIconUrl from '../../assets/images/icons/everest-form-pro-icon.png';
 const __ = ( window as any ).wp?.i18n?.__ || ( ( s: string ) => s );
 const apiFetch = ( window as any ).wp?.apiFetch;
 export const UPGRADE_URL = 'https://everestforms.net/pricing/?utm_source=style-customizer&utm_medium=panel';
-
-const HEX6 = /^#[0-9a-f]{6}$/i;
 
 function Icon( { inner }: { inner: string } ) {
 	return (
@@ -47,8 +45,8 @@ export function paletteSlotLabel( slot: string ): string {
 	}
 }
 
-/** One "Your Palette" edit row — a colour swatch + hex box, same pattern used everywhere else
- *  a raw colour is edited directly. */
+/** One "Your Palette" edit row — the same swatch + hex + alpha-picker popover every element
+ *  color control uses, so editing a slot feels identical to editing any other color. */
 export function PaletteColorRow( {
 	label,
 	value,
@@ -58,47 +56,10 @@ export function PaletteColorRow( {
 	value: string;
 	onChange: ( color: string ) => void;
 } ) {
-	// value is usually plain hex, but a token like file.bg can be rgba() (legacy alpha, kept by
-	// the sanitizer) — see toDisplayHex() for why. displayHex is what the swatch/hex box show.
-	const displayHex = toDisplayHex( value );
-	const [ hex, setHex ] = React.useState( ( displayHex || value ).toUpperCase() );
-	React.useEffect( () => setHex( ( displayHex || value ).toUpperCase() ), [ value ] );
-
-	const commit = ( raw: string ) => {
-		let t = raw.trim();
-		if ( t && t[ 0 ] !== '#' ) {
-			t = '#' + t;
-		}
-		if ( /^#[0-9a-f]{3}$/i.test( t ) ) {
-			t = '#' + t.slice( 1 ).split( '' ).map( ( c ) => c + c ).join( '' );
-		}
-		if ( HEX6.test( t ) ) {
-			onChange( t.toLowerCase() );
-		}
-	};
-
 	return (
 		<div className="pal-edit-row">
 			<span className="pal-edit-label">{ label }</span>
-			<div className="color">
-				<input
-					type="color"
-					value={ displayHex || '#000000' }
-					aria-label={ label }
-					onChange={ ( e ) => onChange( e.target.value ) }
-				/>
-				<input
-					className="hex"
-					spellCheck={ false }
-					value={ hex }
-					aria-label={ label + ' ' + __( 'hex value', 'everest-forms' ) }
-					onChange={ ( e ) => {
-						setHex( e.target.value );
-						commit( e.target.value );
-					} }
-					onBlur={ () => setHex( ( displayHex || value ).toUpperCase() ) }
-				/>
-			</div>
+			<ColorPickerField label={ label } value={ value } onChange={ onChange } />
 		</div>
 	);
 }
@@ -396,7 +357,7 @@ export function DesignList( {
 
 			<div className="block-title">{ __( 'Pre-defined', 'everest-forms' ) }</div>
 			<div className="predefined-row">
-				<div className="predef-card">
+				<button type="button" className="predef-card" onClick={ onNavigateTemplates }>
 					<span className="predef-thumb">
 						<TemplateThumb
 							tpl={ { id: '__current__', name: templateLabel, image: '', palette: store.palette, tokens: store.tokens } }
@@ -411,15 +372,15 @@ export function DesignList( {
 							) }
 						</span>
 					</span>
-					<button type="button" className="predef-browse" onClick={ onNavigateTemplates }>
+					<span className="predef-browse">
 						{ __( 'Browse', 'everest-forms' ) }
 						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2.2 } aria-hidden="true">
 							<path d="m9 6 6 6-6 6" />
 						</svg>
-					</button>
-				</div>
+					</span>
+				</button>
 
-				<div className="predef-card">
+				<button type="button" className="predef-card" onClick={ onNavigateColors }>
 					<span className="sw predef-swatch" aria-hidden="true">
 						{ Object.keys( store.paletteMap ).map( ( slot ) => (
 							<i key={ slot } style={ { background: paletteColors[ slot ] } } />
@@ -429,13 +390,13 @@ export function DesignList( {
 						<span className="predef-kicker">{ __( 'Your Palette', 'everest-forms' ) }</span>
 						<span className="predef-name">{ paletteLabel }</span>
 					</span>
-					<button type="button" className="predef-browse" onClick={ onNavigateColors }>
+					<span className="predef-browse">
 						{ __( 'Browse', 'everest-forms' ) }
 						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2.2 } aria-hidden="true">
 							<path d="m9 6 6 6-6 6" />
 						</svg>
-					</button>
-				</div>
+					</span>
+				</button>
 			</div>
 
 			<div className="theme-style-row">

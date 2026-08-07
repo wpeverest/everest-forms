@@ -244,14 +244,22 @@ export function App() {
 	/* ---- render ---- */
 	const previewHost = document.getElementById( 'evf-scv2-preview' );
 
-	const browseTitle =
-		view === 'templates'
-			? __( 'Templates', 'everest-forms' )
-			: view === 'colors'
-			? __( 'Colors', 'everest-forms' )
-			: view === 'css'
-			? __( 'Custom CSS', 'everest-forms' )
-			: '';
+	// Same "← [icon] Title" back header shape as the element drill-down (below), so every
+	// drill-down in the panel reads as one consistent pattern.
+	const browseMeta: Record< string, { title: string; icon: string } > = {
+		templates: {
+			title: __( 'Templates', 'everest-forms' ),
+			icon: '<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/>',
+		},
+		colors: {
+			title: __( 'Colors', 'everest-forms' ),
+			icon: '<circle cx="8" cy="9" r="3"/><circle cx="16" cy="9" r="3"/><circle cx="12" cy="17" r="3"/>',
+		},
+		css: {
+			title: __( 'Custom CSS', 'everest-forms' ),
+			icon: '<polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>',
+		},
+	};
 
 	return (
 		<div className="scv2-panel">
@@ -276,14 +284,22 @@ export function App() {
 			) }
 
 			{ ( view === 'templates' || view === 'colors' || view === 'css' ) && (
-				<div className="navback navback-browse">
+				<div className="navback">
 					<button type="button" className="bk" onClick={ () => setView( 'list' ) }>
 						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2.2 }>
 							<path d="m15 18-6-6 6-6" />
 						</svg>
-						<span>{ __( 'Back', 'everest-forms' ) }</span>
+						<span className="ic">
+							<svg
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								strokeWidth={ 2 }
+								dangerouslySetInnerHTML={ { __html: browseMeta[ view ].icon } }
+							/>
+						</span>
+						<span>{ browseMeta[ view ].title }</span>
 					</button>
-					<span className="navback-title">{ browseTitle }</span>
 				</div>
 			) }
 

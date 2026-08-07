@@ -318,9 +318,22 @@ function SliderControl( props: ControlProps ) {
 	);
 }
 
-function ColorControl( props: ControlProps ) {
-	const { token, store } = props;
-	const value = String( store.resolve( token.key ) );
+/**
+ * Swatch + hex box that opens a popover with a full saturation/hue/alpha picker and an
+ * "Opacity %" field — the one color-editing surface every part of the panel should share
+ * (element controls, "Your Palette" slots, anywhere else a raw color needs editing).
+ * Store/token-agnostic on purpose: the caller decides what `value` means and what `onChange`
+ * does with the recomposed color string.
+ */
+export function ColorPickerField( {
+	label,
+	value,
+	onChange,
+}: {
+	label: string;
+	value: string;
+	onChange: ( color: string ) => void;
+} ) {
 	const parsed = parseColor( value );
 	const hexRef = React.useRef< HTMLInputElement >( null );
 	const alphaNumRef = React.useRef< HTMLInputElement >( null );
@@ -331,11 +344,11 @@ function ColorControl( props: ControlProps ) {
 	useSyncedInput( alphaNumRef, String( parsed.alpha ) );
 	useDismiss( pickerOpen, rootRef, () => setPickerOpen( false ) );
 
-	const commitHex = ( hex: string ) => store.setTokenValue( token.key, composeColor( hex, parsed.alpha ), true );
-	const commitAlpha = ( alpha: number ) => store.setTokenValue( token.key, composeColor( parsed.hex, clampNumber( alpha, 0, 100 ) ), true );
+	const commitHex = ( hex: string ) => onChange( composeColor( hex, parsed.alpha ) );
+	const commitAlpha = ( alpha: number ) => onChange( composeColor( parsed.hex, clampNumber( alpha, 0, 100 ) ) );
 	const commitHex8 = ( hex8: string ) => {
 		const p = parseColor( hex8 );
-		store.setTokenValue( token.key, composeColor( p.hex, p.alpha ), true );
+		onChange( composeColor( p.hex, p.alpha ) );
 	};
 
 	const onHex = ( e: React.FormEvent< HTMLInputElement > ) => {
@@ -355,64 +368,76 @@ function ColorControl( props: ControlProps ) {
 	};
 
 	return (
-		<ControlShell { ...props }>
-			<div className={ 'color' + ( invalid ? ' invalid' : '' ) } ref={ rootRef }>
-				<button
-					type="button"
-					className="swatch"
-					style={ { '--swatch': composeColor( parsed.hex, parsed.alpha ) } as React.CSSProperties }
-					aria-haspopup="true"
-					aria-expanded={ pickerOpen }
-					aria-label={ token.label }
-					onClick={ () => setPickerOpen( ( o ) => ! o ) }
-				/>
-				<input
-					ref={ hexRef }
-					className="hex"
-					spellCheck={ false }
-					defaultValue={ parsed.hex.toUpperCase() }
-					aria-label={ token.label + ' hex value' }
-					onInput={ onHex }
-					onBlur={ () => {
-						setInvalid( false );
-						if ( hexRef.current ) {
-							hexRef.current.value = parseColor( String( store.resolve( token.key ) ) ).hex.toUpperCase();
-						}
-					} }
-				/>
-				{ invalid && <span className="err">{ __( 'Invalid color', 'everest-forms' ) }</span> }
-				{ pickerOpen && (
-					<div className="color-pop">
-						<HexAlphaColorPicker
-							color={ toHex8( parsed.hex, parsed.alpha ) }
-							onChange={ commitHex8 }
-						/>
-						<div className="color-pop-alpha">
-							<span className="opacity-pop-label">{ __( 'Opacity', 'everest-forms' ) }</span>
-							<div className="num">
-								<input
-									ref={ alphaNumRef }
-									inputMode="numeric"
-									defaultValue={ String( parsed.alpha ) }
-									aria-label={ token.label + ' ' + __( 'opacity value', 'everest-forms' ) }
-									onInput={ ( e ) => {
-										const n = Number( ( e.target as HTMLInputElement ).value );
-										if ( ! Number.isNaN( n ) ) {
-											commitAlpha( n );
-										}
-									} }
-									onBlur={ () => {
-										if ( alphaNumRef.current ) {
-											alphaNumRef.current.value = String( parseColor( String( store.resolve( token.key ) ) ).alpha );
-										}
-									} }
-								/>
-								<span>%</span>
-							</div>
+		<div className={ 'color' + ( invalid ? ' invalid' : '' ) } ref={ rootRef }>
+			<button
+				type="button"
+				className="swatch"
+				style={ { '--swatch': composeColor( parsed.hex, parsed.alpha ) } as React.CSSProperties }
+				aria-haspopup="true"
+				aria-expanded={ pickerOpen }
+				aria-label={ label }
+				onClick={ () => setPickerOpen( ( o ) => ! o ) }
+			/>
+			<input
+				ref={ hexRef }
+				className="hex"
+				spellCheck={ false }
+				defaultValue={ parsed.hex.toUpperCase() }
+				aria-label={ label + ' hex value' }
+				onInput={ onHex }
+				onBlur={ () => {
+					setInvalid( false );
+					if ( hexRef.current ) {
+						hexRef.current.value = parseColor( value ).hex.toUpperCase();
+					}
+				} }
+			/>
+			{ invalid && <span className="err">{ __( 'Invalid color', 'everest-forms' ) }</span> }
+			{ pickerOpen && (
+				<div className="color-pop">
+					<HexAlphaColorPicker
+						color={ toHex8( parsed.hex, parsed.alpha ) }
+						onChange={ commitHex8 }
+					/>
+					<div className="color-pop-alpha">
+						<span className="opacity-pop-label">{ __( 'Opacity', 'everest-forms' ) }</span>
+						<div className="num">
+							<input
+								ref={ alphaNumRef }
+								inputMode="numeric"
+								defaultValue={ String( parsed.alpha ) }
+								aria-label={ label + ' ' + __( 'opacity value', 'everest-forms' ) }
+								onInput={ ( e ) => {
+									const n = Number( ( e.target as HTMLInputElement ).value );
+									if ( ! Number.isNaN( n ) ) {
+										commitAlpha( n );
+									}
+								} }
+								onBlur={ () => {
+									if ( alphaNumRef.current ) {
+										alphaNumRef.current.value = String( parseColor( value ).alpha );
+									}
+								} }
+							/>
+							<span>%</span>
 						</div>
 					</div>
-				) }
-			</div>
+				</div>
+			) }
+		</div>
+	);
+}
+
+function ColorControl( props: ControlProps ) {
+	const { token, store } = props;
+	const value = String( store.resolve( token.key ) );
+	return (
+		<ControlShell { ...props }>
+			<ColorPickerField
+				label={ token.label }
+				value={ value }
+				onChange={ ( color ) => store.setTokenValue( token.key, color, true ) }
+			/>
 		</ControlShell>
 	);
 }

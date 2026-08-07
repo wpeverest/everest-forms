@@ -419,11 +419,15 @@
 	}
 }
 
-/* Undo/redo, moved out of the old sub-tab bar into the list itself (design has no tab bar). */
+/* Undo/redo, moved out of the old sub-tab bar into the list itself (design has no tab bar) —
+   right-aligned, with a rule separating it from "Pre-defined" below. */
 #everest-forms-panel-style .uxrow {
 	display: flex;
+	justify-content: flex-end;
 	gap: 4px;
-	margin: 2px 0 6px;
+	margin: 0 0 12px;
+	padding-bottom: 10px;
+	border-bottom: 1px solid var(--ui-line-2);
 }
 
 /* "Pre-defined" summary cards (Your Template / Your Palette) — each a compact row with a
@@ -435,14 +439,30 @@
 	margin-bottom: 4px;
 }
 
+/* Same "selectable row" language as .elrow (border+bg on hover) — these are full-width buttons,
+   not static cards, so the whole row (not just "Browse") opens its drill-down. */
 #everest-forms-panel-style .predef-card {
 	display: flex;
 	align-items: center;
 	gap: 10px;
+	width: 100%;
 	border: 1px solid var(--ui-line-2);
 	border-radius: var(--ui-radius-md);
 	padding: 8px 10px;
 	background: #fff;
+	cursor: pointer;
+	text-align: left;
+	transition: border-color .12s, background .12s;
+
+	&:hover {
+		border-color: var(--ui-purple);
+		background: var(--ui-purple-50);
+	}
+
+	&:focus-visible {
+		outline: none;
+		box-shadow: var(--ui-focus-soft);
+	}
 }
 
 #everest-forms-panel-style .predef-thumb {
@@ -550,33 +570,20 @@
 	padding: 2px 7px;
 }
 
+/* Decorative now — the whole .predef-card is the click target (see above), this is just the
+   "Browse >" affordance text at the end of the row. */
 #everest-forms-panel-style .predef-browse {
 	flex: none;
 	display: flex;
 	align-items: center;
 	gap: 2px;
-	border: 0;
-	background: none;
 	color: var(--ui-purple);
 	font-size: 12px;
 	font-weight: 600;
-	cursor: pointer;
-	padding: 6px 4px;
-	border-radius: var(--ui-radius-sm);
-	transition: background .12s;
 
 	svg {
 		width: 14px;
 		height: 14px;
-	}
-
-	&:hover {
-		background: var(--ui-purple-50);
-	}
-
-	&:focus-visible {
-		outline: none;
-		box-shadow: var(--ui-focus);
 	}
 }
 
@@ -597,24 +604,6 @@
 	}
 }
 
-/* Browse-screen back header (Templates/Colors/Custom CSS) — same shell as .navback, plus a
-   right-aligned uppercase title matching the design's "TEMPLATES"/"COLORS" caption. */
-#everest-forms-panel-style .navback-browse {
-	justify-content: space-between;
-
-	.bk {
-		flex: none;
-	}
-}
-
-#everest-forms-panel-style .navback-title {
-	font-size: 10.5px;
-	font-weight: 700;
-	letter-spacing: .04em;
-	text-transform: uppercase;
-	color: var(--ui-ink-3);
-	padding-right: 8px;
-}
 
 /* Non-interactive "Your Template" card in the Templates browse screen — same shell as .tpl,
    just not clickable. */
@@ -3555,11 +3544,22 @@
 	}
 }
 
+/* No overflow:hidden — the color popover is absolutely positioned off one of these rows and
+   would get clipped by it. Rounded corners come from the end rows directly instead. */
 #everest-forms-panel-style .pal-edit-rows {
 	margin: 0 4px;
 	border: 1px solid var(--ui-line-2);
 	border-radius: var(--ui-radius-md);
-	overflow: hidden;
+
+	> .pal-edit-row:first-child {
+		border-top-left-radius: var(--ui-radius-md);
+		border-top-right-radius: var(--ui-radius-md);
+	}
+
+	> .pal-edit-row:last-child {
+		border-bottom-left-radius: var(--ui-radius-md);
+		border-bottom-right-radius: var(--ui-radius-md);
+	}
 }
 
 #everest-forms-panel-style .pal-edit-row {
