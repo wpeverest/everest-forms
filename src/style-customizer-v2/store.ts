@@ -474,6 +474,46 @@ class StyleStore {
 		this.notify( affected );
 	}
 
+	/**
+	 * Edit ONE palette slot's colour directly — the "Your Palette" section's per-swatch write
+	 * path. Mirrors {@see applyPalette}'s own token-writing logic (same paletteMap keys, same
+	 * btn.bgHover derivation for button_background) but scoped to a single slot. Unlike
+	 * applyPalette(), this never sets `this.palette` — it's a manual edit like any other, so it
+	 * unlinks an active palette match instead (same as setTokenValue()'s paletteDrivenKeys() check).
+	 */
+	setPaletteSlotColor( slot: string, color: string, slotLabel: string, gesture = true ) {
+		const keys = this.paletteMap[ slot ];
+		if ( ! keys || ! keys.length ) {
+			return;
+		}
+		const label = `Change ${ slotLabel } color`;
+		if ( gesture ) {
+			this.beginGesture( label );
+		} else {
+			this.discrete( label );
+		}
+		const affected: string[] = [];
+		keys.forEach( ( key ) => {
+			if ( ! this.byKey[ key ] ) {
+				return;
+			}
+			this.tokens[ key ] = { desktop: color };
+			affected.push( key );
+		} );
+		if ( slot === 'button_background' && this.byKey[ 'btn.bgHover' ] ) {
+			this.tokens[ 'btn.bgHover' ] = { desktop: mixHex( color, '#000000', 0.14 ) };
+			affected.push( 'btn.bgHover' );
+		}
+		if ( this.palette ) {
+			const detached = this.palettes.find( ( p ) => p.id === this.palette );
+			this.palette = '';
+			if ( detached && this.onPaletteUnlinked ) {
+				this.onPaletteUnlinked( detached.name );
+			}
+		}
+		this.notify( affected );
+	}
+
 	/** Apply a template: reset every token to its default, then overlay the template's token bags. */
 	applyTemplate( templateId: string, tokens: Record< string, DeviceBag >, paletteId?: string ) {
 		this.discrete( 'Apply template' );

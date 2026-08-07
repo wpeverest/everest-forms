@@ -184,7 +184,7 @@
    just on hover) — they're a primary, frequently-reached-for action, not a minor utility icon
    like the section-reset button (which shares .uxbtn's base but stays at the smaller/quieter
    size). */
-#everest-forms-panel-style .subtabs-actions .uxbtn {
+#everest-forms-panel-style .uxrow .uxbtn {
 	width: 32px;
 	height: 32px;
 	border: 1px solid var(--ui-line);
@@ -417,6 +417,209 @@
 	&:first-child {
 		margin-top: 2px;
 	}
+}
+
+/* Undo/redo, moved out of the old sub-tab bar into the list itself (design has no tab bar). */
+#everest-forms-panel-style .uxrow {
+	display: flex;
+	gap: 4px;
+	margin: 2px 0 6px;
+}
+
+/* "Pre-defined" summary cards (Your Template / Your Palette) — each a compact row with a
+   Browse action into its own drill-down pane. */
+#everest-forms-panel-style .predefined-row {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	margin-bottom: 4px;
+}
+
+#everest-forms-panel-style .predef-card {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	border: 1px solid var(--ui-line-2);
+	border-radius: var(--ui-radius-md);
+	padding: 8px 10px;
+	background: #fff;
+}
+
+#everest-forms-panel-style .predef-thumb {
+	width: 40px;
+	height: 40px;
+	flex: none;
+	border-radius: var(--ui-radius-sm);
+	overflow: hidden;
+	border: 1px solid var(--ui-line-2);
+
+	.thumb {
+		height: 100%;
+		padding: 5px;
+		display: flex;
+		flex-direction: column;
+		gap: 3px;
+		justify-content: center;
+	}
+
+	.thumb .l {
+		height: 3px;
+		width: 46%;
+		border-radius: 2px;
+		flex: none;
+	}
+
+	.thumb .l2 {
+		width: 30%;
+	}
+
+	.thumb .f {
+		height: 6px;
+		border: 1px solid;
+		border-radius: 2px;
+		flex: none;
+	}
+
+	.thumb .b {
+		height: 5px;
+		width: 42%;
+		border-radius: 2px;
+		flex: none;
+		margin-top: 1px;
+	}
+
+	.thumb.thumb-has-img {
+		height: 100%;
+		padding: 2px;
+	}
+}
+
+#everest-forms-panel-style .predef-swatch {
+	width: 40px;
+	height: 40px;
+	flex: none;
+	border-radius: var(--ui-radius-sm);
+	border: 1px solid var(--ui-line-2);
+	overflow: hidden;
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	grid-template-rows: repeat(2, 1fr);
+
+	i {
+		display: block;
+	}
+}
+
+#everest-forms-panel-style .predef-body {
+	flex: 1;
+	min-width: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+}
+
+#everest-forms-panel-style .predef-kicker {
+	font-size: 10.5px;
+	font-weight: 700;
+	letter-spacing: .04em;
+	text-transform: uppercase;
+	color: var(--ui-purple);
+}
+
+#everest-forms-panel-style .predef-name {
+	font-size: 12.5px;
+	font-weight: 600;
+	color: var(--ui-ink);
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+#everest-forms-panel-style .predef-badge {
+	flex: none;
+	font-size: 10px;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: .02em;
+	color: #92620a;
+	background: #fef3c7;
+	border-radius: 999px;
+	padding: 2px 7px;
+}
+
+#everest-forms-panel-style .predef-browse {
+	flex: none;
+	display: flex;
+	align-items: center;
+	gap: 2px;
+	border: 0;
+	background: none;
+	color: var(--ui-purple);
+	font-size: 12px;
+	font-weight: 600;
+	cursor: pointer;
+	padding: 6px 4px;
+	border-radius: var(--ui-radius-sm);
+	transition: background .12s;
+
+	svg {
+		width: 14px;
+		height: 14px;
+	}
+
+	&:hover {
+		background: var(--ui-purple-50);
+	}
+
+	&:focus-visible {
+		outline: none;
+		box-shadow: var(--ui-focus);
+	}
+}
+
+/* "ELEMENTS" heading + inline Reset action; reused as-is for "ADVANCED". */
+#everest-forms-panel-style .block-title-row {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 8px;
+
+	.block-title {
+		margin: 18px 0 8px;
+	}
+
+	.reset-all-link {
+		margin: 0;
+		font-size: 11px;
+	}
+}
+
+/* Browse-screen back header (Templates/Colors/Custom CSS) — same shell as .navback, plus a
+   right-aligned uppercase title matching the design's "TEMPLATES"/"COLORS" caption. */
+#everest-forms-panel-style .navback-browse {
+	justify-content: space-between;
+
+	.bk {
+		flex: none;
+	}
+}
+
+#everest-forms-panel-style .navback-title {
+	font-size: 10.5px;
+	font-weight: 700;
+	letter-spacing: .04em;
+	text-transform: uppercase;
+	color: var(--ui-ink-3);
+	padding-right: 8px;
+}
+
+/* Non-interactive "Your Template" card in the Templates browse screen — same shell as .tpl,
+   just not clickable. */
+#everest-forms-panel-style .tpl-static {
+	cursor: default;
 }
 
 /* The panel's one real heading size, matching the builder's own section title (.evf-content-section-title). */
