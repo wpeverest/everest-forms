@@ -5,6 +5,7 @@
 import React from 'react';
 import { ColorPickerField, ControlRenderer } from './ControlRenderer';
 import { SECTION_ICONS, SECTION_SUBTITLES, STATE_LABELS } from './constants';
+import { HoverTip } from './HoverTip';
 import { useStore } from './store';
 import { BoxValue, DeviceBag, Section, Template, Token } from './types';
 // The same "PRO" crown badge the builder's Fields sidebar uses.
@@ -209,49 +210,51 @@ export function ColorsPane( {
 				{ __( 'For advanced customization, go to Elements or click the live preview.', 'everest-forms' ) }
 			</p>
 
-			<div className="block-title">{ __( 'Your Palette', 'everest-forms' ) }</div>
-			<div className="pal-card pal-card--wrap is-selected">
-				<div className="pal-card-apply">
-					{ swatch( currentColors ) }
-					<span className="cap">{ matchedPalette ? matchedPalette.name : __( 'Custom', 'everest-forms' ) }</span>
+			<div className="current-block">
+				<div className="block-title block-title--primary">{ __( 'Your Palette', 'everest-forms' ) }</div>
+				<div className="pal-card pal-card--wrap pal-card--summary is-selected">
+					<div className="pal-card-apply">
+						{ swatch( currentColors ) }
+						<span className="cap">{ matchedPalette ? matchedPalette.name : __( 'Custom', 'everest-forms' ) }</span>
+					</div>
+					{ pro ? (
+						<button
+							type="button"
+							className="pal-tool"
+							aria-label={ editing ? __( 'Close palette editor', 'everest-forms' ) : __( 'Edit palette', 'everest-forms' ) }
+							title={ editing ? __( 'Close palette editor', 'everest-forms' ) : __( 'Edit palette', 'everest-forms' ) }
+							onClick={ () => setEditing( ( v ) => ! v ) }
+						>
+							{ editing ? (
+								<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2 } aria-hidden="true">
+									<path d="m18 15-6-6-6 6" />
+								</svg>
+							) : (
+								<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2 } aria-hidden="true">
+									<path d="M12 20h9" />
+									<path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" />
+								</svg>
+							) }
+						</button>
+					) : (
+						<span className="pro-badge" aria-label={ __( 'Pro', 'everest-forms' ) }>
+							<ProCrown />
+						</span>
+					) }
 				</div>
-				{ pro ? (
-					<button
-						type="button"
-						className="pal-tool"
-						aria-label={ editing ? __( 'Close palette editor', 'everest-forms' ) : __( 'Edit palette', 'everest-forms' ) }
-						title={ editing ? __( 'Close palette editor', 'everest-forms' ) : __( 'Edit palette', 'everest-forms' ) }
-						onClick={ () => setEditing( ( v ) => ! v ) }
-					>
-						{ editing ? (
-							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2 } aria-hidden="true">
-								<path d="m18 15-6-6-6 6" />
-							</svg>
-						) : (
-							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2 } aria-hidden="true">
-								<path d="M12 20h9" />
-								<path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" />
-							</svg>
-						) }
-					</button>
-				) : (
-					<span className="pro-badge" aria-label={ __( 'Pro', 'everest-forms' ) }>
-						<ProCrown />
-					</span>
+				{ pro && editing && (
+					<div className="pal-edit-rows">
+						{ slots.map( ( slot ) => (
+							<PaletteColorRow
+								key={ slot }
+								label={ paletteSlotLabel( slot ) }
+								value={ currentColors[ slot ] || '#ffffff' }
+								onChange={ ( color ) => store.setPaletteSlotColor( slot, color, paletteSlotLabel( slot ) ) }
+							/>
+						) ) }
+					</div>
 				) }
 			</div>
-			{ pro && editing && (
-				<div className="pal-edit-rows">
-					{ slots.map( ( slot ) => (
-						<PaletteColorRow
-							key={ slot }
-							label={ paletteSlotLabel( slot ) }
-							value={ currentColors[ slot ] || '#ffffff' }
-							onChange={ ( color ) => store.setPaletteSlotColor( slot, color, paletteSlotLabel( slot ) ) }
-						/>
-					) ) }
-				</div>
-			) }
 
 			{ !! custom.length && (
 				<>
@@ -319,43 +322,45 @@ export function DesignList( {
 	return (
 		<div className="slate-anim">
 			<div className="uxrow">
-				<button
-					type="button"
-					className="uxbtn"
-					disabled={ ! canUndo }
-					aria-label={ canUndo ? `${ __( 'Undo', 'everest-forms' ) }: ${ undoLabel }` : __( 'Undo', 'everest-forms' ) }
-					title={
-						( canUndo
-							? `${ __( 'Undo', 'everest-forms' ) }: ${ undoLabel }`
-							: __( 'Undo', 'everest-forms' ) ) + ' (Ctrl+Z)'
-					}
-					onClick={ onUndo }
-				>
-					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2.2 } aria-hidden="true">
-						<path d="M3 10h10a5 5 0 0 1 0 10H7" />
-						<path d="M7 6 3 10l4 4" />
-					</svg>
-				</button>
-				<button
-					type="button"
-					className="uxbtn"
-					disabled={ ! canRedo }
-					aria-label={ canRedo ? `${ __( 'Redo', 'everest-forms' ) }: ${ redoLabel }` : __( 'Redo', 'everest-forms' ) }
-					title={
-						( canRedo
-							? `${ __( 'Redo', 'everest-forms' ) }: ${ redoLabel }`
-							: __( 'Redo', 'everest-forms' ) ) + ' (Ctrl+Shift+Z / Ctrl+Y)'
-					}
-					onClick={ onRedo }
-				>
-					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2.2 } aria-hidden="true">
-						<path d="M21 10H11a5 5 0 0 0 0 10h6" />
-						<path d="m17 6 4 4-4 4" />
-					</svg>
-				</button>
+				<div className="block-title block-title--primary">{ __( 'Pre-defined', 'everest-forms' ) }</div>
+				<div className="uxrow-actions">
+					<button
+						type="button"
+						className="uxbtn"
+						disabled={ ! canUndo }
+						aria-label={ canUndo ? `${ __( 'Undo', 'everest-forms' ) }: ${ undoLabel }` : __( 'Undo', 'everest-forms' ) }
+						title={
+							( canUndo
+								? `${ __( 'Undo', 'everest-forms' ) }: ${ undoLabel }`
+								: __( 'Undo', 'everest-forms' ) ) + ' (Ctrl+Z)'
+						}
+						onClick={ onUndo }
+					>
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2.2 } aria-hidden="true">
+							<path d="M3 10h10a5 5 0 0 1 0 10H7" />
+							<path d="M7 6 3 10l4 4" />
+						</svg>
+					</button>
+					<button
+						type="button"
+						className="uxbtn"
+						disabled={ ! canRedo }
+						aria-label={ canRedo ? `${ __( 'Redo', 'everest-forms' ) }: ${ redoLabel }` : __( 'Redo', 'everest-forms' ) }
+						title={
+							( canRedo
+								? `${ __( 'Redo', 'everest-forms' ) }: ${ redoLabel }`
+								: __( 'Redo', 'everest-forms' ) ) + ' (Ctrl+Shift+Z / Ctrl+Y)'
+						}
+						onClick={ onRedo }
+					>
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2.2 } aria-hidden="true">
+							<path d="M21 10H11a5 5 0 0 0 0 10h6" />
+							<path d="m17 6 4 4-4 4" />
+						</svg>
+					</button>
+				</div>
 			</div>
 
-			<div className="block-title">{ __( 'Pre-defined', 'everest-forms' ) }</div>
 			<div className="predefined-row">
 				<button type="button" className="predef-card" onClick={ onNavigateTemplates }>
 					<span className="predef-thumb">
@@ -401,13 +406,27 @@ export function DesignList( {
 
 			<div className="theme-style-row">
 				<span className="tsr-text">
-					<b>{ __( 'Apply Theme Style', 'everest-forms' ) }</b>
-					<small>
-						{ __(
-							'Matches your active theme’s look, including fonts. Turn off for Everest Forms’ default and your own font choice — your other settings above still apply.',
-							'everest-forms'
-						) }
-					</small>
+					<b>
+						{ __( 'Apply Theme Style', 'everest-forms' ) }
+						<HoverTip
+							className="info"
+							label={ __( 'About Apply Theme Style', 'everest-forms' ) }
+							tip={ __(
+								'Matches your active theme’s look, including fonts. Turn off for Everest Forms’ default and your own font choice — your other settings above still apply.',
+								'everest-forms'
+							) }
+						>
+							<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+								<path
+									fillRule="evenodd"
+									clipRule="evenodd"
+									d="M21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21C16.9706 21 21 16.9706 21 12ZM23 12C23 18.0751 18.0751 23 12 23C5.92487 23 1 18.0751 1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12Z"
+								/>
+								<path d="M11 16V12C11 11.4477 11.4477 11 12 11C12.5523 11 13 11.4477 13 12V16C13 16.5523 12.5523 17 12 17C11.4477 17 11 16.5523 11 16Z" />
+								<path d="M12.0098 7C12.5621 7 13.0098 7.44772 13.0098 8C13.0098 8.55228 12.5621 9 12.0098 9H12C11.4477 9 11 8.55228 11 8C11 7.44772 11 7 12 7H12.0098Z" />
+							</svg>
+						</HoverTip>
+					</b>
 				</span>
 				<button
 					type="button"
@@ -1041,18 +1060,20 @@ export function TemplatesPane( {
 				{ __( 'For advanced customization, go to Elements or click the live preview.', 'everest-forms' ) }
 			</p>
 
-			<div className="block-title">{ __( 'Your Template', 'everest-forms' ) }</div>
-			<div className="tpls">
-				<div className="tpl-wrap tpl-current">
-					<span className="tpl tpl-static" aria-label={ __( 'Your current form style', 'everest-forms' ) }>
-						<TemplateThumb
-							tpl={ { id: '__current__', name: yourTemplateName, image: '', palette: store.palette, tokens: store.tokens } }
-						/>
-						<span className="cap">
-							{ yourTemplateName }
-							{ yourTemplateModified && <span className="tpl-mod">{ __( 'Modified', 'everest-forms' ) }</span> }
+			<div className="current-block">
+				<div className="block-title block-title--primary">{ __( 'Your Template', 'everest-forms' ) }</div>
+				<div className="tpls">
+					<div className="tpl-wrap tpl-current">
+						<span className="tpl tpl-static" aria-label={ __( 'Your current form style', 'everest-forms' ) }>
+							<TemplateThumb
+								tpl={ { id: '__current__', name: yourTemplateName, image: '', palette: store.palette, tokens: store.tokens } }
+							/>
+							<span className="cap">
+								{ yourTemplateName }
+								{ yourTemplateModified && <span className="tpl-mod">{ __( 'Modified', 'everest-forms' ) }</span> }
+							</span>
 						</span>
-					</span>
+					</div>
 				</div>
 			</div>
 

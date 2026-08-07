@@ -144,6 +144,8 @@ export function PreviewPane( {
 	saveErrorConflict,
 	onSelect,
 	onIframeClick,
+	onUndo,
+	onRedo,
 	toast,
 	onToastPause,
 	onToastResume,
@@ -155,6 +157,8 @@ export function PreviewPane( {
 	saveErrorConflict: boolean;
 	onSelect: ( info: SelectionInfo ) => void;
 	onIframeClick: () => void;
+	onUndo: () => void;
+	onRedo: () => void;
 	toast: { msg: string; actLabel?: string; onAct?: () => void; kind?: 'success' | 'info' } | null;
 	onToastPause: () => void;
 	onToastResume: () => void;
@@ -174,6 +178,10 @@ export function PreviewPane( {
 	onSelectRef.current = onSelect;
 	const onIframeClickRef = React.useRef( onIframeClick );
 	onIframeClickRef.current = onIframeClick;
+	const onUndoRef = React.useRef( onUndo );
+	onUndoRef.current = onUndo;
+	const onRedoRef = React.useRef( onRedo );
+	onRedoRef.current = onRedo;
 
 	// Force the iframe to the current window's exact origin, so a host/scheme mismatch with the
 	// server-computed preview URL never makes the iframe cross-origin (contentDocument would throw).
@@ -209,6 +217,8 @@ export function PreviewPane( {
 			onError: () => setStatus( ( prev ) => ( prev === 'ready' ? prev : 'error' ) ),
 			onSelect: ( info ) => onSelectRef.current( info ),
 			onIframeClick: () => onIframeClickRef.current(),
+			onUndo: () => onUndoRef.current(),
+			onRedo: () => onRedoRef.current(),
 		} );
 		bridgeRef.current = bridge;
 		setActiveBridge( bridge );

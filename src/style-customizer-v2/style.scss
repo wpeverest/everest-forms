@@ -419,15 +419,54 @@
 	}
 }
 
-/* Undo/redo, moved out of the old sub-tab bar into the list itself (design has no tab bar) —
-   right-aligned, with a rule separating it from "Pre-defined" below. */
+/* Primary headings ("Pre-defined", and "Your Template"/"Your Palette" inside their own
+   browse screens) read as real section titles, not the quiet uppercase utility labels
+   ("Elements", "Presets", …) — bigger, bolder, sentence case. */
+#everest-forms-panel-style .block-title--primary {
+	font-size: var(--ui-fs-md);
+	font-weight: 700;
+	letter-spacing: normal;
+	text-transform: none;
+	color: var(--ui-ink);
+}
+
+/* "Your Template" / "Your Palette" browse screens: the live current-state card sits inside
+   its own tinted, rounded panel — visually distinct from the plain "Presets" grid below it. */
+#everest-forms-panel-style .current-block {
+	background: var(--ui-purple-50);
+	border: 1px solid var(--ui-purple-100);
+	border-radius: var(--ui-radius-lg);
+	padding: 14px;
+	margin-bottom: 20px;
+
+	.block-title--primary {
+		margin: 0 0 10px;
+	}
+
+	.tpls,
+	.pal-card--wrap {
+		margin-bottom: 0;
+	}
+}
+
+/* "Pre-defined" heading and undo/redo (moved out of the old sub-tab bar, since the design has
+   no tab bar) share one row — the heading on the left, the actions right-aligned. */
 #everest-forms-panel-style .uxrow {
 	display: flex;
-	justify-content: flex-end;
+	align-items: center;
+	justify-content: space-between;
+	gap: 8px;
+	margin: 2px 0 8px;
+
+	.block-title {
+		margin: 0;
+	}
+}
+
+#everest-forms-panel-style .uxrow-actions {
+	display: flex;
 	gap: 4px;
-	margin: 0 0 12px;
-	padding-bottom: 10px;
-	border-bottom: 1px solid var(--ui-line-2);
+	flex: none;
 }
 
 /* "Pre-defined" summary cards (Your Template / Your Palette) — each a compact row with a
@@ -435,8 +474,8 @@
 #everest-forms-panel-style .predefined-row {
 	display: flex;
 	flex-direction: column;
-	gap: 8px;
-	margin-bottom: 4px;
+	gap: 14px;
+	margin-bottom: 8px;
 }
 
 /* Same "selectable row" language as .elrow (border+bg on hover) — these are full-width buttons,
@@ -676,21 +715,36 @@
 
 	.tsr-text {
 		display: flex;
-		flex-direction: column;
-		gap: 2px;
 		min-width: 0;
 		flex: 1;
 
 		b {
-			font-size: 12px;
+			display: flex;
+			align-items: center;
+			gap: 4px;
+			font-size: 12.5px;
 			font-weight: 600;
 			color: var(--ui-ink-2);
-		}
 
-		small {
-			font-size: 11px;
-			line-height: 1.45;
-			color: var(--ui-ink-3);
+			/* Same "(i)" glyph as the Live Preview header, sized down for this inline context. */
+			.info {
+				border: 0;
+				background: none;
+				color: var(--ui-icon);
+				cursor: pointer;
+				display: grid;
+				place-items: center;
+				width: 16px;
+				height: 16px;
+				padding: 0;
+				border-radius: 50%;
+				flex: none;
+
+				svg {
+					width: 13px;
+					height: 13px;
+				}
+			}
 		}
 	}
 }
@@ -1506,21 +1560,22 @@
 	}
 }
 
+/* position:fixed + a React-computed left/top (see ColorPickerField) — portaled to the panel
+   root (same target HoverTip uses), so it can never be clipped by a scrolling ancestor (the
+   panel sidebar, a palette's row list, etc). */
 #everest-forms-panel-style .color-pop {
-	position: absolute;
-	z-index: 30;
-	top: calc(100% + 6px);
-	left: 0;
+	position: fixed;
+	z-index: 999999;
 	width: 264px;
 	background: #fff;
 	border: 1px solid var(--ui-line);
 	border-radius: var(--ui-radius-lg);
 	box-shadow: var(--ui-shadow-lg);
-	padding: 16px;
+	padding: 14px;
 
 	.react-colorful {
 		width: 100%;
-		height: 220px;
+		height: 180px;
 		gap: 12px;
 	}
 
@@ -1550,23 +1605,127 @@
 	}
 }
 
-#everest-forms-panel-style .color-pop-alpha {
+/* Header row: which colour this popover is editing + an optional "pick from screen" tool
+   (Chromium's EyeDropper API — feature-detected, so the button simply doesn't render elsewhere). */
+#everest-forms-panel-style .color-pop-head {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 	gap: 8px;
-	margin-top: 16px;
-	padding-top: 14px;
-	border-top: 1px solid var(--ui-line-2);
+	margin-bottom: 10px;
 
-	.opacity-pop-label {
-		font-size: 12px;
-		font-weight: 500;
-		color: var(--ui-ink-2);
+	span {
+		font-size: 11px;
+		font-weight: 600;
+		letter-spacing: .03em;
+		text-transform: uppercase;
+		color: var(--ui-ink-3);
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+}
+
+#everest-forms-panel-style .eyedrop-btn {
+	width: 26px;
+	height: 26px;
+	border: 1px solid var(--ui-input-border);
+	background: #fff;
+	border-radius: var(--ui-radius-sm);
+	color: var(--ui-ink-2);
+	cursor: pointer;
+	display: grid;
+	place-items: center;
+	flex: none;
+	transition: border-color .12s, color .12s, background .12s;
+
+	svg {
+		width: 14px;
+		height: 14px;
 	}
 
-	.num {
-		width: 58px;
+	&:hover {
+		border-color: var(--ui-purple);
+		color: var(--ui-purple);
+		background: var(--ui-purple-50);
+	}
+}
+
+/* Hex + Opacity, editable right inside the popover so a colour can be fully dialed in without
+   reaching back to the trigger row underneath it. */
+#everest-forms-panel-style .color-pop-fields {
+	display: flex;
+	gap: 8px;
+	margin-top: 14px;
+	padding-top: 14px;
+	border-top: 1px solid var(--ui-line-2);
+}
+
+#everest-forms-panel-style .cpf-hex,
+#everest-forms-panel-style .cpf-alpha {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+#everest-forms-panel-style .cpf-hex {
+	flex: 1;
+	min-width: 0;
+}
+
+#everest-forms-panel-style .cpf-label {
+	font-size: 10px;
+	font-weight: 600;
+	letter-spacing: .03em;
+	text-transform: uppercase;
+	color: var(--ui-ink-3);
+}
+
+#everest-forms-panel-style .cpf-hex .num,
+#everest-forms-panel-style .cpf-alpha .num {
+	width: 100%;
+	height: 30px;
+}
+
+#everest-forms-panel-style .cpf-hex .num input {
+	font-family: ui-monospace, monospace;
+	text-align: left;
+	padding-left: 8px;
+}
+
+#everest-forms-panel-style .cpf-alpha {
+	flex: none;
+	width: 62px;
+}
+
+/* Quick-pick swatches — a curated, always-available set (neutrals, the panel's own accent, a
+   few common brand/UI colours) for one-click picks without touching the wheel at all. */
+#everest-forms-panel-style .color-pop-swatches {
+	display: grid;
+	grid-template-columns: repeat(8, 1fr);
+	gap: 6px;
+	margin-top: 12px;
+	padding-top: 12px;
+	border-top: 1px solid var(--ui-line-2);
+}
+
+#everest-forms-panel-style .cps-swatch {
+	width: 100%;
+	aspect-ratio: 1;
+	border: 1px solid rgba(20, 23, 40, .1);
+	border-radius: var(--ui-radius-sm);
+	cursor: pointer;
+	padding: 0;
+	transition: transform .1s ease, box-shadow .1s ease;
+
+	&:hover {
+		transform: scale(1.12);
+		box-shadow: 0 1px 4px rgba(20, 23, 40, .25);
+	}
+
+	&:focus-visible {
+		outline: none;
+		box-shadow: var(--ui-focus);
 	}
 }
 
@@ -3429,6 +3588,32 @@
 
 	.cap {
 		color: var(--ui-purple);
+	}
+}
+
+/* "Your Palette" summary card (ColorsPane) — swatches + name + edit pencil all on one row.
+   Overrides .pal-card--wrap's block layout (built for the small preset-grid cards, where the
+   edit/delete tools float as an absolute overlay) since the pencil here is a real, always-visible
+   sibling that must sit inline, never wrap onto its own line. */
+#everest-forms-panel-style .pal-card--summary {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 10px;
+
+	.pal-card-apply {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		width: auto;
+		flex: 1;
+		min-width: 0;
+		padding: 0;
+	}
+
+	.pal-tool,
+	.pro-badge {
+		flex: none;
 	}
 }
 

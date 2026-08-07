@@ -3,6 +3,7 @@
  * align, fontstyle, media, toggle), each reading/writing through the store.
  */
 import React from 'react';
+import { createPortal } from 'react-dom';
 import { HexAlphaColorPicker } from 'react-colorful';
 import {
 	ALIGN_ICONS,
@@ -16,6 +17,12 @@ import { StyleStore } from './store';
 import { BoxValue, FontStyleValue, Token } from './types';
 
 const __ = ( window as any ).wp?.i18n?.__ || ( ( s: string ) => s );
+
+/** Same portal target HoverTip uses — inside the panel root (so scoped `#everest-forms-panel-style`
+ *  CSS still applies) but outside any scrollable ancestor that would otherwise clip a popover. */
+function popoverHost(): HTMLElement {
+	return document.getElementById( 'everest-forms-panel-style' ) || document.body;
+}
 
 interface ControlProps {
 	token: Token;
@@ -85,6 +92,13 @@ function toHex8( hex: string, alpha: number ): string {
 	return hex + alphaHex;
 }
 
+/** Curated quick-pick row inside every color popover — neutrals, the panel's own accent, and a
+ *  handful of common brand/UI colours, so a common choice never requires touching the wheel. */
+const PRESET_SWATCHES = [
+	'#ffffff', '#f8fafc', '#e5e7eb', '#9ca3af', '#4b5563', '#1f2433', '#111111', '#000000',
+	'#7545bb', '#3b82f6', '#0ea5e9', '#16a34a', '#f59e0b', '#f97316', '#dc2626', '#ec4899',
+];
+
 function Svg( { inner, className }: { inner: string; className?: string } ) {
 	return (
 		<svg
@@ -116,16 +130,28 @@ function CheckIcon() {
 	);
 }
 
-/** Close a dropdown on outside click / Escape — shared by every custom select below. */
-function useDismiss( open: boolean, rootRef: React.RefObject< HTMLElement >, onDismiss: () => void ) {
+/** Close a dropdown on outside click / Escape — shared by every custom select below.
+ *  `extraRef` covers content that lives outside `rootRef` in the DOM (e.g. a portaled popover),
+ *  so a click inside IT doesn't count as "outside" either. */
+function useDismiss(
+	open: boolean,
+	rootRef: React.RefObject< HTMLElement >,
+	onDismiss: () => void,
+	extraRef?: React.RefObject< HTMLElement >
+) {
 	React.useEffect( () => {
 		if ( ! open ) {
 			return;
 		}
 		const onDown = ( e: MouseEvent ) => {
-			if ( rootRef.current && ! rootRef.current.contains( e.target as Node ) ) {
-				onDismiss();
+			const target = e.target as Node;
+			if ( rootRef.current && rootRef.current.contains( target ) ) {
+				return;
 			}
+			if ( extraRef?.current && extraRef.current.contains( target ) ) {
+				return;
+			}
+			onDismiss();
 		};
 		const onKey = ( e: KeyboardEvent ) => {
 			if ( e.key === 'Escape' ) {
@@ -336,13 +362,59 @@ export function ColorPickerField( {
 } ) {
 	const parsed = parseColor( value );
 	const hexRef = React.useRef< HTMLInputElement >( null );
-	const alphaNumRef = React.useRef< HTMLInputElement >( null );
+	const popHexRef = React.useRef< HTMLInputElement >( null );
+	const popAlphaNumRef = React.useRef< HTMLInputElement >( null );
 	const rootRef = React.useRef< HTMLDivElement >( null );
+	const swatchRef = React.useRef< HTMLButtonElement >( null );
+	const popRef = React.useRef< HTMLDivElement >( null );
 	const [ invalid, setInvalid ] = React.useState( false );
 	const [ pickerOpen, setPickerOpen ] = React.useState( false );
+	const [ pos, setPos ] = React.useState< { left: number; top: number } | null >( null );
+	const hasEyeDropper = typeof ( window as any ).EyeDropper !== 'undefined';
 	useSyncedInput( hexRef, parsed.hex.toUpperCase() );
-	useSyncedInput( alphaNumRef, String( parsed.alpha ) );
-	useDismiss( pickerOpen, rootRef, () => setPickerOpen( false ) );
+	useSyncedInput( popHexRef, parsed.hex.toUpperCase() );
+	useSyncedInput( popAlphaNumRef, String( parsed.alpha ) );
+	useDismiss( pickerOpen, rootRef, () => setPickerOpen( false ), popRef );
+
+	// Portaled + position:fixed (see below) so the popover can never be clipped by a scrolling
+	// ancestor (the panel sidebar, a palette's own scrollable row list, etc.) — same escape-hatch
+	// HoverTip already uses for its own tooltip.
+	const updatePos = React.useCallback( () => {
+		const trigger = swatchRef.current;
+		if ( ! trigger ) {
+			return;
+		}
+		const r = trigger.getBoundingClientRect();
+		const width = popRef.current?.offsetWidth || 264;
+		const height = popRef.current?.offsetHeight || 0;
+		let left = r.left;
+		left = Math.min( Math.max( 8, left ), window.innerWidth - width - 8 );
+		let top = r.bottom + 6;
+		if ( height && top + height > window.innerHeight - 8 ) {
+			top = r.top - height - 6;
+		}
+		setPos( { left, top: Math.max( 8, top ) } );
+	}, [] );
+
+	React.useLayoutEffect( () => {
+		if ( pickerOpen ) {
+			updatePos();
+		} else {
+			setPos( null );
+		}
+	}, [ pickerOpen, updatePos ] );
+
+	React.useEffect( () => {
+		if ( ! pickerOpen ) {
+			return;
+		}
+		window.addEventListener( 'scroll', updatePos, true );
+		window.addEventListener( 'resize', updatePos );
+		return () => {
+			window.removeEventListener( 'scroll', updatePos, true );
+			window.removeEventListener( 'resize', updatePos );
+		};
+	}, [ pickerOpen, updatePos ] );
 
 	const commitHex = ( hex: string ) => onChange( composeColor( hex, parsed.alpha ) );
 	const commitAlpha = ( alpha: number ) => onChange( composeColor( parsed.hex, clampNumber( alpha, 0, 100 ) ) );
@@ -367,9 +439,25 @@ export function ColorPickerField( {
 		}
 	};
 
+	/* Chromium's EyeDropper API — sample any pixel on screen (including outside the browser
+	 * window) straight into this field. Feature-detected: the tool button simply doesn't render
+	 * in browsers without it (Firefox, Safari at time of writing). */
+	const pickFromScreen = async () => {
+		try {
+			const ED = ( window as any ).EyeDropper;
+			const result = await new ED().open();
+			if ( result?.sRGBHex ) {
+				commitHex( result.sRGBHex.toLowerCase() );
+			}
+		} catch {
+			// User cancelled (Escape) — nothing to do.
+		}
+	};
+
 	return (
 		<div className={ 'color' + ( invalid ? ' invalid' : '' ) } ref={ rootRef }>
 			<button
+				ref={ swatchRef }
 				type="button"
 				className="swatch"
 				style={ { '--swatch': composeColor( parsed.hex, parsed.alpha ) } as React.CSSProperties }
@@ -393,37 +481,94 @@ export function ColorPickerField( {
 				} }
 			/>
 			{ invalid && <span className="err">{ __( 'Invalid color', 'everest-forms' ) }</span> }
-			{ pickerOpen && (
-				<div className="color-pop">
-					<HexAlphaColorPicker
-						color={ toHex8( parsed.hex, parsed.alpha ) }
-						onChange={ commitHex8 }
-					/>
-					<div className="color-pop-alpha">
-						<span className="opacity-pop-label">{ __( 'Opacity', 'everest-forms' ) }</span>
-						<div className="num">
-							<input
-								ref={ alphaNumRef }
-								inputMode="numeric"
-								defaultValue={ String( parsed.alpha ) }
-								aria-label={ label + ' ' + __( 'opacity value', 'everest-forms' ) }
-								onInput={ ( e ) => {
-									const n = Number( ( e.target as HTMLInputElement ).value );
-									if ( ! Number.isNaN( n ) ) {
-										commitAlpha( n );
-									}
-								} }
-								onBlur={ () => {
-									if ( alphaNumRef.current ) {
-										alphaNumRef.current.value = String( parseColor( value ).alpha );
-									}
-								} }
-							/>
-							<span>%</span>
+			{ pickerOpen &&
+				createPortal(
+					<div
+						ref={ popRef }
+						className="color-pop"
+						style={ { left: ( pos || { left: -9999, top: -9999 } ).left, top: ( pos || { left: -9999, top: -9999 } ).top } }
+					>
+						<div className="color-pop-head">
+							<span>{ label }</span>
+							{ hasEyeDropper && (
+								<button
+									type="button"
+									className="eyedrop-btn"
+									aria-label={ __( 'Pick color from screen', 'everest-forms' ) }
+									title={ __( 'Pick color from screen', 'everest-forms' ) }
+									onClick={ pickFromScreen }
+								>
+									<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2 } aria-hidden="true">
+										<path d="m2 22 1-4 9.5-9.5" />
+										<path d="M14.5 6.5 18 3a2.12 2.12 0 0 1 3 3l-3.5 3.5" />
+										<path d="m11.5 8.5 4 4" />
+										<path d="M3 21h4l9.5-9.5-4-4L3 17z" />
+									</svg>
+								</button>
+							) }
 						</div>
-					</div>
-				</div>
-			) }
+						<HexAlphaColorPicker
+							color={ toHex8( parsed.hex, parsed.alpha ) }
+							onChange={ commitHex8 }
+						/>
+						<div className="color-pop-fields">
+							<div className="cpf-hex">
+								<span className="cpf-label">{ __( 'Hex', 'everest-forms' ) }</span>
+								<div className="num">
+									<input
+										ref={ popHexRef }
+										spellCheck={ false }
+										defaultValue={ parsed.hex.toUpperCase() }
+										aria-label={ label + ' ' + __( 'hex value', 'everest-forms' ) }
+										onInput={ onHex }
+										onBlur={ () => {
+											if ( popHexRef.current ) {
+												popHexRef.current.value = parseColor( value ).hex.toUpperCase();
+											}
+										} }
+									/>
+								</div>
+							</div>
+							<div className="cpf-alpha">
+								<span className="cpf-label">{ __( 'Opacity', 'everest-forms' ) }</span>
+								<div className="num">
+									<input
+										ref={ popAlphaNumRef }
+										inputMode="numeric"
+										defaultValue={ String( parsed.alpha ) }
+										aria-label={ label + ' ' + __( 'opacity value', 'everest-forms' ) }
+										onInput={ ( e ) => {
+											const n = Number( ( e.target as HTMLInputElement ).value );
+											if ( ! Number.isNaN( n ) ) {
+												commitAlpha( n );
+											}
+										} }
+										onBlur={ () => {
+											if ( popAlphaNumRef.current ) {
+												popAlphaNumRef.current.value = String( parseColor( value ).alpha );
+											}
+										} }
+									/>
+									<span>%</span>
+								</div>
+							</div>
+						</div>
+						<div className="color-pop-swatches" role="group" aria-label={ __( 'Preset colors', 'everest-forms' ) }>
+							{ PRESET_SWATCHES.map( ( c ) => (
+								<button
+									key={ c }
+									type="button"
+									className="cps-swatch"
+									style={ { background: c } }
+									aria-label={ c }
+									title={ c }
+									onClick={ () => commitHex( c ) }
+								/>
+							) ) }
+						</div>
+					</div>,
+					popoverHost()
+				) }
 		</div>
 	);
 }

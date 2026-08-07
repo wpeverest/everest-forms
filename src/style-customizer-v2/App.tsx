@@ -396,6 +396,8 @@ export function App() {
 						saveErrorConflict={ saveErrorConflict }
 						onSelect={ onSelectElement }
 						onIframeClick={ onPreviewClick }
+						onUndo={ handleUndo }
+						onRedo={ handleRedo }
 						toast={ toast }
 						onToastPause={ pauseToast }
 						onToastResume={ resumeToast }
