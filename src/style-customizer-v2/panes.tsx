@@ -455,7 +455,6 @@ function TemplateCard( {
 	onPreview,
 	onClearPreview,
 	onApply,
-	onEdit,
 	onExport,
 	confirmingDelete,
 	onRequestDelete,
@@ -475,9 +474,6 @@ function TemplateCard( {
 	onPreview: () => void;
 	onClearPreview: () => void;
 	onApply: () => void;
-	/** Pro-gated; shown on every card (built-in, legacy, and user). Edits in place for a real
-	 *  user template, forks a new one otherwise — the caller decides which. */
-	onEdit?: () => void;
 	/** Downloads this template's palette + tokens as a .json file — e.g. so a template built on
 	 *  one site can be handed off and added as a bundled default elsewhere, with no server/DB
 	 *  access needed. User templates only (see its call site). */
@@ -542,24 +538,6 @@ function TemplateCard( {
 				) }
 			</button>
 			<span className="tpl-card-tools">
-				{ onEdit && (
-					<button
-						type="button"
-						className="tpl-tool"
-						disabled={ disabled }
-						aria-label={ `${ __( 'Edit', 'everest-forms' ) } ${ tpl.name }` }
-						title={ __( 'Edit template', 'everest-forms' ) }
-						onClick={ ( e ) => {
-							e.stopPropagation();
-							onEdit();
-						} }
-					>
-						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2 } aria-hidden="true">
-							<path d="M12 20h9" />
-							<path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" />
-						</svg>
-					</button>
-				) }
 				{ onExport && (
 					<button
 						type="button"
@@ -616,20 +594,13 @@ export function TemplatesPane( {
 	onPreview,
 	onClearPreview,
 	onApplied,
-	onEdit,
-	onCreateNew,
 }: {
 	onPreview: ( overrides: Record< string, any > ) => void;
 	onClearPreview: () => void;
 	onApplied: ( name: string ) => void;
-	/** Begin editing (or forking) a template — App owns the actual edit session/banner. */
-	onEdit: ( tpl: Template ) => void;
-	/** Begin "Create Style Template" — the same session/banner, with no source. */
-	onCreateNew: () => void;
 } ) {
 	const store = useStore();
 	const [ confirmDeleteId, setConfirmDeleteId ] = React.useState< string | null >( null );
-	const editing = store.editingTemplate;
 
 	const templates = store.allTemplates();
 	// Memoize the flattened override maps so hover doesn't re-flatten on every mouse event.
@@ -695,9 +666,6 @@ export function TemplatesPane( {
 		}
 	};
 
-	// Saving your own template is a Pro feature (the server also enforces it on the endpoint).
-	const canCreate = store.proActive;
-
 	const applyTpl = ( tpl: Template, locked: boolean ) => {
 		if ( locked ) {
 			window.open( UPGRADE_URL, '_blank' );
@@ -711,9 +679,6 @@ export function TemplatesPane( {
 		<div className="tpls">
 			{ list.map( ( tpl ) => {
 				const locked = !! tpl.is_pro && ! store.proActive;
-				// While a template is being edited, every OTHER card is locked — Apply/Edit/Delete
-				// would otherwise silently discard the in-progress draft's content.
-				const disabled = !! editing && editing.sourceId !== tpl.id;
 				return (
 					<TemplateCard
 						key={ tpl.id }
@@ -722,11 +687,9 @@ export function TemplatesPane( {
 						modified={ originId === tpl.id }
 						basedOn={ parentNames[ tpl.id ] }
 						locked={ locked }
-						disabled={ disabled }
 						onPreview={ () => onPreview( flat[ tpl.id ] ) }
 						onClearPreview={ onClearPreview }
 						onApply={ () => applyTpl( tpl, locked ) }
-						onEdit={ store.proActive ? () => onEdit( tpl ) : undefined }
 						onExport={ withDelete ? () => exportTemplate( tpl ) : undefined }
 						confirmingDelete={ confirmDeleteId === tpl.id }
 						onRequestDelete={ withDelete ? () => setConfirmDeleteId( tpl.id ) : undefined }
@@ -740,59 +703,16 @@ export function TemplatesPane( {
 
 	return (
 		<div className="slate-anim">
-			{ ! editing && ( canCreate ? (
-				<button
-					type="button"
-					className="tpl-create tpl-create-trigger"
-					onClick={ onCreateNew }
-				>
-					<span className="tpl-create-ic" aria-hidden="true">
-						<Icon inner='<path d="M12 5v14M5 12h14"/>' />
-					</span>
-					<div className="tpl-create-fields">
-						<div className="tpl-create-title">{ __( 'Create Style Template', 'everest-forms' ) }</div>
-						<p className="tpl-create-sub">{ __( 'Save the current styles as a reusable template.', 'everest-forms' ) }</p>
-					</div>
-				</button>
-			) : (
-				<a className="tpl-create tpl-create-locked" href={ UPGRADE_URL } target="_blank" rel="noreferrer">
-					<span className="tpl-create-ic" aria-hidden="true">
-						<Icon inner='<rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>' />
-					</span>
-					<div className="tpl-create-fields">
-						<span className="tpl-create-title">
-							{ __( 'Create Style Template', 'everest-forms' ) }
-							<span className="pro-badge" aria-label={ __( 'Pro', 'everest-forms' ) }>
-								<ProCrown />
-							</span>
-						</span>
-						<p className="tpl-create-sub">
-							{ __( 'Save your current styles as a reusable template with Pro.', 'everest-forms' ) }
-						</p>
-					</div>
-				</a>
-			) ) }
-
 			<p className="pane-note">
 				<b>{ __( 'Hover a card to preview it live', 'everest-forms' ) }</b>{ ' ' }
 				— { __( 'click to apply (you can always undo).', 'everest-forms' ) }
 			</p>
 
-			{ !! store.userTemplates.length ? (
+			{ !! store.userTemplates.length && (
 				<>
 					<div className="block-title">{ __( 'Your templates', 'everest-forms' ) }</div>
 					{ renderGrid( store.userTemplates, true ) }
 				</>
-			) : (
-				canCreate && (
-					<>
-						<div className="block-title">{ __( 'Your templates', 'everest-forms' ) }</div>
-						<div className="empty-state">
-							<Icon inner='<rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 15h6M9 11h6"/>' />
-							{ __( 'No saved templates yet — create one above.', 'everest-forms' ) }
-						</div>
-					</>
-				)
 			) }
 
 			<div className="block-title">{ __( 'Built-in templates', 'everest-forms' ) }</div>

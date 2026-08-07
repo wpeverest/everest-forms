@@ -120,29 +120,11 @@ final class RestController {
 			)
 		);
 
-		// Create a user template from the current styles.
-		register_rest_route(
-			$this->namespace,
-			'/style-templates',
-			array(
-				array(
-					'methods'             => 'POST',
-					'callback'            => array( $this, 'create_template' ),
-					'permission_callback' => array( $this, 'permissions_check' ),
-				),
-			)
-		);
-
-		// Update or delete a user template.
+		// Delete a user template (create/update retired — see EVF style-customizer-v2 UX rework).
 		register_rest_route(
 			$this->namespace,
 			'/style-templates/(?P<tid>[A-Za-z0-9\-]+)',
 			array(
-				array(
-					'methods'             => 'POST',
-					'callback'            => array( $this, 'update_template' ),
-					'permission_callback' => array( $this, 'permissions_check' ),
-				),
 				array(
 					'methods'             => 'DELETE',
 					'callback'            => array( $this, 'delete_template' ),
@@ -151,29 +133,12 @@ final class RestController {
 			)
 		);
 
-		// Create a reusable custom colour palette (Pro).
-		register_rest_route(
-			$this->namespace,
-			'/style-palettes',
-			array(
-				array(
-					'methods'             => 'POST',
-					'callback'            => array( $this, 'create_palette' ),
-					'permission_callback' => array( $this, 'permissions_check' ),
-				),
-			)
-		);
-
-		// Update or delete a reusable custom colour palette (Pro).
+		// Delete a reusable custom colour palette (Pro) (create/update retired — see EVF
+		// style-customizer-v2 UX rework).
 		register_rest_route(
 			$this->namespace,
 			'/style-palettes/(?P<pid>[A-Za-z0-9\-]+)',
 			array(
-				array(
-					'methods'             => 'POST',
-					'callback'            => array( $this, 'update_palette' ),
-					'permission_callback' => array( $this, 'permissions_check' ),
-				),
 				array(
 					'methods'             => 'DELETE',
 					'callback'            => array( $this, 'delete_palette' ),
@@ -185,85 +150,6 @@ final class RestController {
 	}
 
 	/**
-	 * POST /style-templates — save the current styles as a reusable user template.
-	 *
-	 * @param \WP_REST_Request $request Request.
-	 * @return \WP_REST_Response|\WP_Error
-	 */
-	public function create_template( $request ) {
-		if ( ! Engine::pro_active() ) {
-			return new \WP_Error(
-				'evf_style_pro_only',
-				__( 'Saving custom style templates is a Pro feature.', 'everest-forms' ),
-				array( 'status' => 403 )
-			);
-		}
-
-		$name     = $request->get_param( 'name' );
-		$incoming = $request->get_param( 'record' );
-		if ( ! is_array( $incoming ) ) {
-			return new \WP_Error(
-				'evf_style_bad_request',
-				__( 'Missing or invalid "record".', 'everest-forms' ),
-				array( 'status' => 400 )
-			);
-		}
-		$clean    = Sanitizer::sanitize_record( $incoming );
-		$template = Templates::save_user_template( $name, $clean );
-
-		return rest_ensure_response(
-			array(
-				'saved'     => true,
-				'template'  => $template,
-				'templates' => Templates::user_templates(),
-			)
-		);
-	}
-
-	/**
-	 * POST /style-templates/{tid} — update a user template in place (Pro). A legacy id 404s;
-	 * legacy templates are fork-only (create a new template via {@see create_template()} instead).
-	 *
-	 * @param \WP_REST_Request $request Request.
-	 * @return \WP_REST_Response|\WP_Error
-	 */
-	public function update_template( $request ) {
-		if ( ! Engine::pro_active() ) {
-			return new \WP_Error(
-				'evf_style_pro_only',
-				__( 'Saving custom style templates is a Pro feature.', 'everest-forms' ),
-				array( 'status' => 403 )
-			);
-		}
-
-		$incoming = $request->get_param( 'record' );
-		if ( ! is_array( $incoming ) ) {
-			return new \WP_Error(
-				'evf_style_bad_request',
-				__( 'Missing or invalid "record".', 'everest-forms' ),
-				array( 'status' => 400 )
-			);
-		}
-		$clean    = Sanitizer::sanitize_record( $incoming );
-		$template = Templates::update_user_template( (string) $request['tid'], $request->get_param( 'name' ), $clean );
-		if ( false === $template ) {
-			return new \WP_Error(
-				'evf_style_not_found',
-				__( 'That template no longer exists, or can’t be edited in place.', 'everest-forms' ),
-				array( 'status' => 404 )
-			);
-		}
-
-		return rest_ensure_response(
-			array(
-				'saved'     => true,
-				'template'  => $template,
-				'templates' => Templates::user_templates(),
-			)
-		);
-	}
-
-	/**
 	 * DELETE /style-templates/{tid} — remove a user template.
 	 *
 	 * @param \WP_REST_Request $request Request.
@@ -272,69 +158,6 @@ final class RestController {
 	public function delete_template( $request ) {
 		$deleted = Templates::delete_user_template( (string) $request['tid'] );
 		return rest_ensure_response( array( 'deleted' => (bool) $deleted ) );
-	}
-
-	/**
-	 * POST /style-palettes — save a reusable custom colour palette (Pro).
-	 *
-	 * @param \WP_REST_Request $request Request.
-	 * @return \WP_REST_Response|\WP_Error
-	 */
-	public function create_palette( $request ) {
-		if ( ! Engine::pro_active() ) {
-			return self::pro_only_palette_error();
-		}
-		$colors = $request->get_param( 'colors' );
-		if ( ! is_array( $colors ) ) {
-			return new \WP_Error(
-				'evf_style_bad_request',
-				__( 'Missing or invalid "colors".', 'everest-forms' ),
-				array( 'status' => 400 )
-			);
-		}
-		$palette = Palettes::create( $request->get_param( 'name' ), $colors );
-		return rest_ensure_response(
-			array(
-				'saved'    => true,
-				'palette'  => $palette,
-				'palettes' => Palettes::all_custom(),
-			)
-		);
-	}
-
-	/**
-	 * POST /style-palettes/{pid} — update a reusable custom colour palette in place (Pro).
-	 *
-	 * @param \WP_REST_Request $request Request.
-	 * @return \WP_REST_Response|\WP_Error
-	 */
-	public function update_palette( $request ) {
-		if ( ! Engine::pro_active() ) {
-			return self::pro_only_palette_error();
-		}
-		$colors = $request->get_param( 'colors' );
-		if ( ! is_array( $colors ) ) {
-			return new \WP_Error(
-				'evf_style_bad_request',
-				__( 'Missing or invalid "colors".', 'everest-forms' ),
-				array( 'status' => 400 )
-			);
-		}
-		$palette = Palettes::update( (string) $request['pid'], $request->get_param( 'name' ), $colors );
-		if ( false === $palette ) {
-			return new \WP_Error(
-				'evf_style_not_found',
-				__( 'That custom palette no longer exists.', 'everest-forms' ),
-				array( 'status' => 404 )
-			);
-		}
-		return rest_ensure_response(
-			array(
-				'saved'    => true,
-				'palette'  => $palette,
-				'palettes' => Palettes::all_custom(),
-			)
-		);
 	}
 
 	/**
