@@ -3376,7 +3376,6 @@
 	overflow: hidden;
 	cursor: pointer;
 	background: #fff;
-	padding: 12px;
 	text-align: left;
 	transition: border-color .12s;
 
@@ -3387,15 +3386,18 @@
 		border-color: var(--ui-purple);
 	}
 
+	/* Smaller than the single-column "Your Palette" card's 24px dots (see .pal-editor-head) —
+	   a 2-up grid in a 400px sidebar doesn't have room for the design's full-size swatches;
+	   6 × 24px + gaps overflows the ~150px a grid column actually has to work with. */
 	.sw {
 		display: flex;
-		gap: 6px;
+		gap: 4px;
 		justify-content: flex-start;
 	}
 
 	.sw i {
-		width: 24px;
-		height: 24px;
+		width: 20px;
+		height: 20px;
 		border-radius: 50%;
 		flex: none;
 		box-shadow: inset 0 0 0 1px rgba(20, 23, 40, .1);
@@ -3504,7 +3506,7 @@
 		width: 100%;
 		border: 0;
 		background: none;
-		padding: 8px;
+		padding: 12px;
 		text-align: left;
 		cursor: pointer;
 		border-radius: inherit;
