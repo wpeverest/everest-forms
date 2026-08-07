@@ -565,6 +565,10 @@
 #everest-forms-panel-style .predef-badge--base {
 	color: var(--ui-ink-3);
 	background: var(--ui-bg-subtle);
+	text-transform: none;
+	letter-spacing: normal;
+	font-weight: 600;
+	padding: 1px 6px;
 }
 
 /* Decorative now — the whole .predef-card is the click target (see above), this is just the
@@ -3368,27 +3372,19 @@
 
 #everest-forms-panel-style .pal-card {
 	border: 1px solid var(--ui-line-2);
-	border-radius: var(--ui-radius-lg);
+	border-radius: var(--ui-radius-md);
 	overflow: hidden;
 	cursor: pointer;
 	background: #fff;
-	padding: 14px;
+	padding: 12px;
 	text-align: left;
-	transition: border-color .12s, background .12s, box-shadow .12s;
+	transition: border-color .12s;
 
-	/* Matches `.elrow`/`.tpl`'s hover — one "selectable card" language across the panel. */
+	/* Hover is a border-colour change only — no background wash, no persistent "selected" ring.
+	   The applied preset is called out by the "Base" pill next to its name, not by outlining
+	   the card, so the grid stays calm until you actually point at something. */
 	&:hover {
 		border-color: var(--ui-purple);
-		background: var(--ui-purple-50);
-	}
-
-	/* `role="option"` takes its selected state from `aria-selected`, not `aria-pressed` — a
-	   purple ring, same as every other "currently applied" card in the panel, but the card
-	   stays white (no background wash) so it doesn't fight the swatches for attention. */
-	&[aria-selected="true"] {
-		border-color: var(--ui-purple);
-		background: #fff;
-		box-shadow: 0 0 0 1px var(--ui-purple);
 	}
 
 	.sw {
@@ -3398,11 +3394,11 @@
 	}
 
 	.sw i {
-		width: 22px;
-		height: 22px;
+		width: 24px;
+		height: 24px;
 		border-radius: 50%;
 		flex: none;
-		box-shadow: inset 0 0 0 1px rgba(20, 23, 40, .08);
+		box-shadow: inset 0 0 0 1px rgba(20, 23, 40, .1);
 	}
 
 	/* A long custom palette name wraps instead of truncating; `padding-right` keeps every
@@ -3410,17 +3406,13 @@
 	.cap {
 		display: flex;
 		align-items: center;
-		gap: 5px;
-		font-size: 13px;
-		font-weight: 700;
+		gap: 6px;
+		font-size: 12px;
+		font-weight: 500;
 		color: var(--ui-ink);
-		margin-top: 10px;
+		margin-top: 6px;
 		padding-right: 52px;
 		overflow-wrap: anywhere;
-	}
-
-	&[aria-selected="true"] .cap {
-		color: var(--ui-purple);
 	}
 
 	/* Same crown badge as .pro-badge elsewhere in the panel. */
@@ -3575,15 +3567,6 @@
 	}
 }
 
-#everest-forms-panel-style .pal-card--wrap.is-selected {
-	border-color: var(--ui-purple);
-	box-shadow: 0 0 0 1px var(--ui-purple);
-
-	.cap {
-		color: var(--ui-purple);
-	}
-}
-
 /* "Your Palette" editor card — the live 6 slots, always shown with the same purple ring a
    selected preset gets elsewhere (it IS the permanently-current one). Swatches + open/close
    toggle stay visible whether collapsed or expanded; the edit rows and Save/Cancel only render
@@ -3591,48 +3574,78 @@
 #everest-forms-panel-style .pal-editor-card {
 	background: #fff;
 	border: 1px solid var(--ui-purple);
-	border-radius: var(--ui-radius-lg);
-	box-shadow: 0 0 0 1px var(--ui-purple);
-	padding: 14px;
+	border-radius: var(--ui-radius-md);
+	padding: 12px;
 }
 
 #everest-forms-panel-style .pal-editor-head {
 	display: flex;
 	align-items: center;
-	justify-content: space-between;
-	gap: 10px;
+	gap: 8px;
 
 	.sw {
 		display: flex;
+		flex: 1;
 		gap: 6px;
 	}
 
 	.sw i {
-		width: 22px;
-		height: 22px;
+		width: 24px;
+		height: 24px;
 		border-radius: 50%;
 		flex: none;
-		box-shadow: inset 0 0 0 1px rgba(20, 23, 40, .08);
+		box-shadow: inset 0 0 0 1px rgba(20, 23, 40, .1);
 	}
 
-	.pal-tool,
 	.pro-badge {
 		flex: none;
+	}
+}
+
+/* The editor's own open/close toggle — bigger than the tiny .pal-tool delete buttons, with a
+   quiet grey border (the purple ring is on the card itself, not this button). */
+#everest-forms-panel-style .pal-editor-toggle {
+	width: 36px;
+	height: 32px;
+	flex: none;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	border: 1px solid var(--ui-line);
+	border-radius: var(--ui-radius-md);
+	background: #fff;
+	color: var(--ui-purple);
+	cursor: pointer;
+	transition: background .12s;
+
+	svg {
+		width: 14px;
+		height: 14px;
+	}
+
+	&:hover {
+		background: var(--ui-bg-hover);
+	}
+
+	&:focus-visible {
+		outline: none;
+		box-shadow: var(--ui-focus-soft);
 	}
 }
 
 #everest-forms-panel-style .pal-edit-actions {
 	display: flex;
 	gap: 8px;
-	margin-top: 14px;
+	padding-top: 4px;
 }
 
 #everest-forms-panel-style .pal-edit-save,
 #everest-forms-panel-style .pal-edit-cancel {
-	border-radius: var(--ui-radius-sm);
-	padding: 6px 14px;
+	height: 32px;
+	padding: 0 12px;
+	border-radius: var(--ui-radius-md);
 	font-size: 12px;
-	font-weight: 600;
+	font-weight: 500;
 	cursor: pointer;
 	transition: background .12s, color .12s, border-color .12s;
 }
@@ -3648,28 +3661,28 @@
 }
 
 #everest-forms-panel-style .pal-edit-cancel {
-	border: 1px solid var(--ui-input-border);
+	border: 1px solid var(--ui-line);
 	background: #fff;
 	color: var(--ui-ink-2);
 
 	&:hover {
-		border-color: var(--ui-purple);
-		color: var(--ui-purple);
+		background: var(--ui-bg-hover);
 	}
 }
 
 /* Name + status pill for "Your Palette", read below the card — same pattern the "Your
-   Template" preview card uses for its own caption. */
+   Template" preview card uses for its own caption. Fixed ink colour, not accent-tinted — the
+   design keeps every palette/preset name the same colour, whatever its own swatches are. */
 #everest-forms-panel-style .pal-current-caption {
 	display: flex;
 	align-items: center;
-	gap: 8px;
-	margin: 10px 2px 0;
+	gap: 6px;
+	margin: 6px 2px 0;
 }
 
 #everest-forms-panel-style .pal-current-name {
-	font-size: 13px;
-	font-weight: 700;
+	font-size: 12px;
+	font-weight: 500;
 	color: var(--ui-ink);
 }
 
@@ -3788,10 +3801,10 @@
 /* A plain, airy list — no boxed/bordered container — so editing a slot feels like part of the
    same light card language as the rest of "Your Palette", not a dense element-control list. */
 #everest-forms-panel-style .pal-edit-rows {
-	margin-top: 16px;
+	margin-top: 12px;
 	display: flex;
 	flex-direction: column;
-	gap: 12px;
+	gap: 10px;
 }
 
 #everest-forms-panel-style .pal-edit-row {
@@ -3801,8 +3814,7 @@
 	gap: 10px;
 
 	.pal-edit-label {
-		font-size: 13px;
-		font-weight: 500;
+		font-size: 12px;
 		color: var(--ui-ink-2);
 		min-width: 0;
 		overflow: hidden;
@@ -3812,7 +3824,12 @@
 
 	.color {
 		flex: none;
-		width: 124px;
+		width: 92px;
+	}
+
+	.color .swatch {
+		width: 20px;
+		height: 20px;
 	}
 }
 

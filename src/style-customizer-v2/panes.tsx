@@ -176,7 +176,6 @@ export function ColorsPane( {
 				key={ p.id }
 				className={
 					'pal-card pal-card--wrap' +
-					( selected ? ' is-selected' : '' ) +
 					( confirmId === p.id ? ' is-confirming' : '' )
 				}
 			>
@@ -191,8 +190,11 @@ export function ColorsPane( {
 					onClick={ () => applyPreset( p ) }
 				>
 					{ swatch( p.colors ) }
-					<span className="cap" style={ { color: p.colors.button_background || undefined } }>
+					<span className="cap">
 						{ p.name }
+						{ selected && (
+							<span className="predef-badge predef-badge--base">{ __( 'Base', 'everest-forms' ) }</span>
+						) }
 						{ applyLocked && (
 							<span className="pro" aria-label={ __( 'Pro', 'everest-forms' ) }>
 								<ProCrown />
@@ -245,7 +247,7 @@ export function ColorsPane( {
 						{ pro ? (
 							<button
 								type="button"
-								className="pal-tool"
+								className="pal-editor-toggle"
 								aria-label={ editing ? __( 'Close palette editor', 'everest-forms' ) : __( 'Edit palette', 'everest-forms' ) }
 								title={ editing ? __( 'Close palette editor', 'everest-forms' ) : __( 'Edit palette', 'everest-forms' ) }
 								onClick={ () => ( editing ? closeEditorKeep() : openEditor() ) }
@@ -256,7 +258,8 @@ export function ColorsPane( {
 									</svg>
 								) : (
 									<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2 } aria-hidden="true">
-										<path d="m6 9 6 6 6-6" />
+										<path d="M12 20h9" />
+										<path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" />
 									</svg>
 								) }
 							</button>
@@ -292,10 +295,7 @@ export function ColorsPane( {
 				</div>
 
 				<div className="pal-current-caption">
-					<span
-						className="pal-current-name"
-						style={ { color: currentColors.button_background || undefined } }
-					>
+					<span className="pal-current-name">
 						{ matchedPalette ? matchedPalette.name : __( 'Custom', 'everest-forms' ) }
 					</span>
 					{ matchedPalette && (
