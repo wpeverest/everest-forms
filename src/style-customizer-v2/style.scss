@@ -630,11 +630,9 @@
 #everest-forms-panel-style .tpl.tpl-static {
 	cursor: default;
 	border-color: var(--ui-purple);
-	box-shadow: 0 0 0 1px var(--ui-purple);
 
 	&:hover {
 		border-color: var(--ui-purple);
-		background: #fff;
 	}
 }
 
@@ -2020,32 +2018,25 @@
 	width: 100%;
 	position: relative;
 	border: 1px solid var(--ui-line);
-	border-radius: var(--ui-radius-lg);
+	border-radius: var(--ui-radius-md);
 	overflow: hidden;
 	cursor: pointer;
 	background: #fff;
 	text-align: left;
 	padding: 0;
-	transition: border-color .12s, background .12s;
+	transition: border-color .12s;
 
+	/* Hover is a border-colour change only — same "no persistent ring" language as the colour
+	   Presets grid; the applied template is called out by the "Base"/"Modified" pill next to
+	   its name, not by outlining the card. */
 	&:hover {
 		border-color: var(--ui-purple);
-		background: var(--ui-purple-50);
 	}
 
 	&:focus-visible {
 		outline: none;
 		border-color: var(--ui-purple);
 		box-shadow: var(--ui-focus-soft);
-	}
-
-	&[aria-pressed="true"] {
-		border-color: var(--ui-purple);
-		background: var(--ui-purple-50);
-
-		.cap {
-			color: var(--ui-purple);
-		}
 	}
 
 	.thumb {
@@ -2085,15 +2076,14 @@
 	}
 
 	.cap {
-		padding: 9px 11px;
-		font-size: 11.5px;
-		font-weight: 600;
-		color: var(--ui-ink-2);
-		border-top: 1px solid var(--ui-line-2);
+		margin-top: 6px;
+		padding: 0 10px 10px;
+		font-size: 12px;
+		font-weight: 500;
+		color: var(--ui-ink);
 		display: flex;
 		align-items: center;
 		gap: 6px;
-		transition: background .15s ease, color .15s ease;
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
@@ -2116,69 +2106,31 @@
 	}
 }
 
-/* "Currently applied" checkmark — top-left, distinct from the top-right PRO/delete corner. */
-#everest-forms-panel-style .tpl-check {
-	position: absolute;
-	top: 7px;
-	left: 7px;
-	z-index: 2;
-	width: 19px;
-	height: 19px;
-	border-radius: 50%;
-	background: var(--ui-purple);
-	color: #fff;
-	display: grid;
-	place-items: center;
-	box-shadow: 0 1px 3px rgba(20, 23, 40, .25);
-
-	svg {
-		width: 11px;
-		height: 11px;
-	}
-}
-
-/* "Modified" hint — applied from this template, but since edited; a quiet amber pill, not a false ✓. */
+/* "Modified"/"Base" — a plain inline pill next to the name (no checkmark, no overlay on the
+   thumbnail): matches the design's own pattern of "Ocean Base" / "Noir Lime Modified" sitting
+   right next to a preset's name, in both the grid and the "Your Template"/"Your Palette"
+   preview cards. */
 #everest-forms-panel-style .tpl-mod {
-	position: absolute;
-	top: 7px;
-	left: 7px;
-	z-index: 2;
-	font-size: 9px;
-	font-weight: 700;
-	letter-spacing: .04em;
-	text-transform: uppercase;
+	flex: none;
+	font-size: 10px;
+	font-weight: 600;
 	color: var(--ui-amber-700);
 	background: var(--ui-amber-50);
-	border: 1px solid var(--ui-amber-100);
-	border-radius: var(--ui-radius-sm);
-	padding: 2px 6px;
-	box-shadow: var(--ui-shadow-sm);
+	border-radius: 999px;
+	padding: 1px 6px;
 }
 
 /* Neutral counterpart to "Modified": the current style exactly matches this template, unedited. */
 #everest-forms-panel-style .tpl-mod--base {
 	color: var(--ui-ink-3);
 	background: var(--ui-bg-subtle);
-	border-color: var(--ui-line);
-}
-
-/* Inside the non-interactive "Your Template" preview card, both pills sit inline next to the
-   name (like every other inline badge in the panel) instead of overlaying the thumbnail — that
-   overlay position only makes sense on the small grid cards below. */
-#everest-forms-panel-style .tpl-current .cap .tpl-mod {
-	position: static;
-	box-shadow: none;
-}
-
-#everest-forms-panel-style .tpl.tpl-modified {
-	border-color: var(--ui-amber-100);
 }
 
 /* "Based on {built-in}" — a custom template's inferred parent, tucked under the template name. */
 #everest-forms-panel-style .tpl-parent {
 	display: block;
-	padding: 0 11px 9px;
-	margin-top: -5px;
+	padding: 0 10px 9px;
+	margin-top: -3px;
 	font-size: 10px;
 	font-weight: 500;
 	line-height: 1.3;

@@ -906,18 +906,6 @@ function TemplateCard( {
 				onBlur={ onClearPreview }
 				onClick={ disabled ? undefined : onApply }
 			>
-				{ applied && (
-					<span className="tpl-check" aria-label={ __( 'Currently applied', 'everest-forms' ) }>
-						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 3 }>
-							<path d="m5 13 4 4 10-10" />
-						</svg>
-					</span>
-				) }
-				{ ! applied && modified && (
-					<span className="tpl-mod" title={ __( 'Started from this template, then edited', 'everest-forms' ) }>
-						{ __( 'Modified', 'everest-forms' ) }
-					</span>
-				) }
 				{ locked && (
 					<span className="tpl-pro" aria-label={ __( 'Pro template', 'everest-forms' ) }>
 						<ProCrown />
@@ -932,7 +920,15 @@ function TemplateCard( {
 					</span>
 				) }
 				<TemplateThumb tpl={ tpl } />
-				<span className="cap">{ tpl.name }</span>
+				<span className="cap">
+					{ tpl.name }
+					{ applied && <span className="tpl-mod tpl-mod--base">{ __( 'Base', 'everest-forms' ) }</span> }
+					{ ! applied && modified && (
+						<span className="tpl-mod" title={ __( 'Started from this template, then edited', 'everest-forms' ) }>
+							{ __( 'Modified', 'everest-forms' ) }
+						</span>
+					) }
+				</span>
 				{ basedOn && (
 					<span className="tpl-parent">
 						{ /* translators: %s: the built-in template this custom one derives from. */ }
