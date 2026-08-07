@@ -165,7 +165,7 @@ export function ColorsPane( {
 					onClick={ () => applyPreset( p ) }
 				>
 					{ swatch( p.colors ) }
-					<span className="cap">
+					<span className="cap" style={ { color: p.colors.button_background || undefined } }>
 						{ p.name }
 						{ applyLocked && (
 							<span className="pro" aria-label={ __( 'Pro', 'everest-forms' ) }>
@@ -211,7 +211,12 @@ export function ColorsPane( {
 			</p>
 
 			<div className="current-block">
-				<div className="block-title block-title--primary">{ __( 'Your Palette', 'everest-forms' ) }</div>
+				<div className="block-title-row">
+					<div className="block-title">{ __( 'Your Palette', 'everest-forms' ) }</div>
+					<span className="block-title-meta">
+						{ matchedPalette ? matchedPalette.name : __( 'Custom', 'everest-forms' ) }
+					</span>
+				</div>
 				<div className="pal-card pal-card--wrap pal-card--summary is-selected">
 					<div className="pal-card-apply">
 						{ swatch( currentColors ) }
@@ -318,48 +323,47 @@ export function DesignList( {
 	const matchedPalette = store.palette ? store.palettes.find( ( p ) => p.id === store.palette ) : null;
 	const paletteLabel = matchedPalette ? matchedPalette.name : __( 'Custom', 'everest-forms' );
 	const paletteColors = store.currentPaletteColors();
+	const templateIsBase = !! appliedId && ! templateModified;
 
 	return (
 		<div className="slate-anim">
 			<div className="uxrow">
-				<div className="block-title block-title--primary">{ __( 'Pre-defined', 'everest-forms' ) }</div>
-				<div className="uxrow-actions">
-					<button
-						type="button"
-						className="uxbtn"
-						disabled={ ! canUndo }
-						aria-label={ canUndo ? `${ __( 'Undo', 'everest-forms' ) }: ${ undoLabel }` : __( 'Undo', 'everest-forms' ) }
-						title={
-							( canUndo
-								? `${ __( 'Undo', 'everest-forms' ) }: ${ undoLabel }`
-								: __( 'Undo', 'everest-forms' ) ) + ' (Ctrl+Z)'
-						}
-						onClick={ onUndo }
-					>
-						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2.2 } aria-hidden="true">
-							<path d="M3 10h10a5 5 0 0 1 0 10H7" />
-							<path d="M7 6 3 10l4 4" />
-						</svg>
-					</button>
-					<button
-						type="button"
-						className="uxbtn"
-						disabled={ ! canRedo }
-						aria-label={ canRedo ? `${ __( 'Redo', 'everest-forms' ) }: ${ redoLabel }` : __( 'Redo', 'everest-forms' ) }
-						title={
-							( canRedo
-								? `${ __( 'Redo', 'everest-forms' ) }: ${ redoLabel }`
-								: __( 'Redo', 'everest-forms' ) ) + ' (Ctrl+Shift+Z / Ctrl+Y)'
-						}
-						onClick={ onRedo }
-					>
-						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2.2 } aria-hidden="true">
-							<path d="M21 10H11a5 5 0 0 0 0 10h6" />
-							<path d="m17 6 4 4-4 4" />
-						</svg>
-					</button>
-				</div>
+				<button
+					type="button"
+					className="uxbtn"
+					disabled={ ! canUndo }
+					aria-label={ canUndo ? `${ __( 'Undo', 'everest-forms' ) }: ${ undoLabel }` : __( 'Undo', 'everest-forms' ) }
+					title={
+						( canUndo
+							? `${ __( 'Undo', 'everest-forms' ) }: ${ undoLabel }`
+							: __( 'Undo', 'everest-forms' ) ) + ' (Ctrl+Z)'
+					}
+					onClick={ onUndo }
+				>
+					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2.2 } aria-hidden="true">
+						<path d="M3 10h10a5 5 0 0 1 0 10H7" />
+						<path d="M7 6 3 10l4 4" />
+					</svg>
+				</button>
+				<button
+					type="button"
+					className="uxbtn"
+					disabled={ ! canRedo }
+					aria-label={ canRedo ? `${ __( 'Redo', 'everest-forms' ) }: ${ redoLabel }` : __( 'Redo', 'everest-forms' ) }
+					title={
+						( canRedo
+							? `${ __( 'Redo', 'everest-forms' ) }: ${ redoLabel }`
+							: __( 'Redo', 'everest-forms' ) ) + ' (Ctrl+Shift+Z / Ctrl+Y)'
+					}
+					onClick={ onRedo }
+				>
+					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2.2 } aria-hidden="true">
+						<path d="M21 10H11a5 5 0 0 0 0 10h6" />
+						<path d="m17 6 4 4-4 4" />
+					</svg>
+				</button>
 			</div>
+			<div className="block-title">{ __( 'Pre-defined', 'everest-forms' ) }</div>
 
 			<div className="predefined-row">
 				<button type="button" className="predef-card" onClick={ onNavigateTemplates }>
@@ -374,6 +378,9 @@ export function DesignList( {
 							{ templateLabel }
 							{ templateModified && (
 								<span className="predef-badge">{ __( 'Modified', 'everest-forms' ) }</span>
+							) }
+							{ templateIsBase && (
+								<span className="predef-badge predef-badge--base">{ __( 'Base', 'everest-forms' ) }</span>
 							) }
 						</span>
 					</span>
@@ -441,12 +448,19 @@ export function DesignList( {
 			<div className="block-title-row">
 				<div className="block-title">{ __( 'Elements', 'everest-forms' ) }</div>
 				<button type="button" className="reset-all-link" onClick={ onResetAll }>
+					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2 } aria-hidden="true">
+						<path d="M3 12a9 9 0 1 0 3-6.7" />
+						<path d="M3 4v5h5" />
+					</svg>
 					{ __( 'Reset', 'everest-forms' ) }
 				</button>
 			</div>
 			<p className="hintline">
 				<Icon inner='<path d="M3 3l7 17 2-7 7-2z"/>' />
-				{ __( 'Tip: pick an element to style it, or click it in the live preview.', 'everest-forms' ) }
+				<span>
+					{ __( 'Tip: pick an element to style it, or', 'everest-forms' ) }{ ' ' }
+					<b>{ __( 'click it in the live preview.', 'everest-forms' ) }</b>
+				</span>
 			</p>
 			<div className="ellist">
 				{ sections.map( ( s ) => {
@@ -981,6 +995,7 @@ export function TemplatesPane( {
 	const matchedTpl = matchedTplId ? templates.find( ( t ) => t.id === matchedTplId ) : null;
 	const yourTemplateName = matchedTpl ? matchedTpl.name : __( 'Custom', 'everest-forms' );
 	const yourTemplateModified = ! appliedId && !! originId;
+	const yourTemplateIsBase = !! appliedId && ! yourTemplateModified;
 
 	const templatesBase = store.settings.restBase.replace( /\/styles$/, '/style-templates' );
 
@@ -1061,7 +1076,10 @@ export function TemplatesPane( {
 			</p>
 
 			<div className="current-block">
-				<div className="block-title block-title--primary">{ __( 'Your Template', 'everest-forms' ) }</div>
+				<div className="block-title-row">
+					<div className="block-title">{ __( 'Your Template', 'everest-forms' ) }</div>
+					<span className="block-title-meta">{ yourTemplateName }</span>
+				</div>
 				<div className="tpls">
 					<div className="tpl-wrap tpl-current">
 						<span className="tpl tpl-static" aria-label={ __( 'Your current form style', 'everest-forms' ) }>
@@ -1071,6 +1089,7 @@ export function TemplatesPane( {
 							<span className="cap">
 								{ yourTemplateName }
 								{ yourTemplateModified && <span className="tpl-mod">{ __( 'Modified', 'everest-forms' ) }</span> }
+							{ yourTemplateIsBase && <span className="tpl-mod tpl-mod--base">{ __( 'Base', 'everest-forms' ) }</span> }
 							</span>
 						</span>
 					</div>

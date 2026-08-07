@@ -180,40 +180,16 @@
 	}
 }
 
-/* Undo/redo specifically get a bolder, always-visible treatment (bordered chips at rest, not
-   just on hover) — they're a primary, frequently-reached-for action, not a minor utility icon
-   like the section-reset button (which shares .uxbtn's base but stays at the smaller/quieter
-   size). */
-#everest-forms-panel-style .uxrow .uxbtn {
-	width: 32px;
-	height: 32px;
-	border: 1px solid var(--ui-line);
-	background: #fff;
-	box-shadow: var(--ui-shadow-sm);
-	border-radius: var(--ui-radius-md);
-	color: var(--ui-ink-2);
-	transition: background .12s, color .12s, border-color .12s, box-shadow .12s;
+/* Undo/redo sit in their own quiet, right-aligned row above "Pre-defined" — plain ghost icon
+   buttons (same .uxbtn base as the section-reset icon), not a bordered chip. */
+#everest-forms-panel-style .uxrow {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	gap: 4px;
 
-	svg {
-		width: 17px;
-		height: 17px;
-	}
-
-	&:hover:not(:disabled) {
-		background: var(--ui-purple-50);
-		border-color: var(--ui-purple);
-		color: var(--ui-purple-600);
-	}
-
-	&:active:not(:disabled) {
-		background: var(--ui-purple-100);
-	}
-
-	&:disabled {
-		border-color: transparent;
-		background: none;
-		box-shadow: none;
-		color: var(--ui-ink-3);
+	+ .block-title {
+		margin-top: 4px;
 	}
 }
 
@@ -243,12 +219,14 @@
 	}
 }
 
-/* drill-down back header */
+/* drill-down back header — plain "‹ Back" on the left, the section name as a small-caps
+   breadcrumb on the right (same treatment .block-title uses elsewhere in the panel). */
 #everest-forms-panel-style .navback {
 	display: flex;
 	align-items: center;
+	justify-content: space-between;
 	gap: 8px;
-	padding: 6px 10px;
+	padding: 15px 16px;
 	border-bottom: 1px solid var(--ui-line-2);
 	flex: none;
 }
@@ -256,50 +234,42 @@
 #everest-forms-panel-style .navback .bk {
 	display: flex;
 	align-items: center;
-	gap: 9px;
+	gap: 6px;
 	border: 0;
 	background: none;
 	cursor: pointer;
 	color: var(--ui-ink);
 	font-weight: 600;
-	font-size: 13.5px;
-	padding: 7px 8px;
-	border-radius: 8px;
-	flex: 1;
+	font-size: 13px;
+	padding: 0;
+	flex: none;
 	min-width: 0;
-	transition: background .15s ease;
+	transition: color .12s;
 
 	&:hover {
-		background: var(--ui-purple-50);
+		color: var(--ui-purple);
 	}
 
 	&:focus-visible {
 		outline: none;
 		box-shadow: var(--ui-focus);
+		border-radius: 4px;
 	}
 
-	> svg {
-		width: 17px;
-		height: 17px;
-		color: var(--ui-purple);
+	svg {
+		width: 16px;
+		height: 16px;
 		flex: none;
 	}
+}
 
-	.ic {
-		width: 27px;
-		height: 27px;
-		border-radius: var(--ui-radius-md);
-		background: var(--ui-purple-50);
-		display: grid;
-		place-items: center;
-		flex: none;
-	}
-
-	.ic svg {
-		width: 15px;
-		height: 15px;
-		color: var(--ui-purple);
-	}
+#everest-forms-panel-style .navback-label {
+	font-size: var(--ui-fs-xs);
+	font-weight: 600;
+	letter-spacing: .04em;
+	text-transform: uppercase;
+	color: var(--ui-ink-3);
+	flex: none;
 }
 
 /* responsive context strip */
@@ -405,7 +375,9 @@
 	}
 }
 
-/* design list */
+/* design list — one consistent look for every section heading ("Pre-defined", "Elements",
+   "Advanced", "Presets", "Your Template"/"Your Palette" inside their own browse screens, …),
+   so drilling from one into another never feels like a typographic step down or up. */
 #everest-forms-panel-style .block-title {
 	font-size: var(--ui-fs-xs);
 	font-weight: 600;
@@ -419,28 +391,26 @@
 	}
 }
 
-/* Primary headings ("Pre-defined", and "Your Template"/"Your Palette" inside their own
-   browse screens) read as real section titles, not the quiet uppercase utility labels
-   ("Elements", "Presets", …) — bigger, bolder, sentence case. */
-#everest-forms-panel-style .block-title--primary {
-	font-size: var(--ui-fs-md);
+/* The applied palette/template's name, read at a glance next to its section heading. */
+#everest-forms-panel-style .block-title-meta {
+	font-size: var(--ui-fs-xs);
 	font-weight: 700;
-	letter-spacing: normal;
+	color: var(--ui-purple);
 	text-transform: none;
-	color: var(--ui-ink);
+	letter-spacing: normal;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
-/* "Your Template" / "Your Palette" browse screens: the live current-state card sits inside
-   its own tinted, rounded panel — visually distinct from the plain "Presets" grid below it. */
+/* "Your Template" / "Your Palette" browse screens: just spacing — the live current-state card
+   inside (.pal-card--summary / .tpl-static) carries its own purple-bordered "currently active"
+   look, matching the selected-preset treatment used everywhere else in the panel. */
 #everest-forms-panel-style .current-block {
-	background: var(--ui-purple-50);
-	border: 1px solid var(--ui-purple-100);
-	border-radius: var(--ui-radius-lg);
-	padding: 14px;
 	margin-bottom: 20px;
 
-	.block-title--primary {
-		margin: 0 0 10px;
+	.block-title-row .block-title {
+		margin: 0;
 	}
 
 	.tpls,
@@ -449,32 +419,12 @@
 	}
 }
 
-/* "Pre-defined" heading and undo/redo (moved out of the old sub-tab bar, since the design has
-   no tab bar) share one row — the heading on the left, the actions right-aligned. */
-#everest-forms-panel-style .uxrow {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	gap: 8px;
-	margin: 2px 0 8px;
-
-	.block-title {
-		margin: 0;
-	}
-}
-
-#everest-forms-panel-style .uxrow-actions {
-	display: flex;
-	gap: 4px;
-	flex: none;
-}
-
 /* "Pre-defined" summary cards (Your Template / Your Palette) — each a compact row with a
    Browse action into its own drill-down pane. */
 #everest-forms-panel-style .predefined-row {
 	display: flex;
 	flex-direction: column;
-	gap: 14px;
+	gap: 12px;
 	margin-bottom: 8px;
 }
 
@@ -483,11 +433,11 @@
 #everest-forms-panel-style .predef-card {
 	display: flex;
 	align-items: center;
-	gap: 10px;
+	gap: 14px;
 	width: 100%;
 	border: 1px solid var(--ui-line-2);
-	border-radius: var(--ui-radius-md);
-	padding: 8px 10px;
+	border-radius: var(--ui-radius-lg);
+	padding: 12px;
 	background: #fff;
 	cursor: pointer;
 	text-align: left;
@@ -553,19 +503,20 @@
 	}
 }
 
+/* A row of small colour dots (not a boxed grid) — same "just the swatches" language the
+   Presets grid below uses for each preset's own 6 colours. */
 #everest-forms-panel-style .predef-swatch {
-	width: 40px;
-	height: 40px;
 	flex: none;
-	border-radius: var(--ui-radius-sm);
-	border: 1px solid var(--ui-line-2);
-	overflow: hidden;
-	display: grid;
-	grid-template-columns: repeat(3, 1fr);
-	grid-template-rows: repeat(2, 1fr);
+	display: flex;
+	gap: 4px;
 
 	i {
 		display: block;
+		width: 16px;
+		height: 16px;
+		border-radius: 50%;
+		flex: none;
+		box-shadow: inset 0 0 0 1px rgba(20, 23, 40, .08);
 	}
 }
 
@@ -609,6 +560,13 @@
 	padding: 2px 7px;
 }
 
+/* Neutral counterpart to the amber "Modified" pill: the current style exactly matches this
+   preset, unedited. */
+#everest-forms-panel-style .predef-badge--base {
+	color: var(--ui-ink-3);
+	background: var(--ui-bg-subtle);
+}
+
 /* Decorative now — the whole .predef-card is the click target (see above), this is just the
    "Browse >" affordance text at the end of the row. */
 #everest-forms-panel-style .predef-browse {
@@ -626,7 +584,8 @@
 	}
 }
 
-/* "ELEMENTS" heading + inline Reset action; reused as-is for "ADVANCED". */
+/* A block-title paired with a right-aligned value: "ELEMENTS" + inline Reset action (also reused
+   as-is for "ADVANCED"), or "Your Template"/"Your Palette" + the name of whichever is applied. */
 #everest-forms-panel-style .block-title-row {
 	display: flex;
 	align-items: center;
@@ -638,16 +597,41 @@
 	}
 
 	.reset-all-link {
+		display: flex;
+		align-items: center;
+		gap: 4px;
 		margin: 0;
+		border: 0;
+		background: none;
+		color: var(--ui-ink-3);
 		font-size: 11px;
+		cursor: pointer;
+		transition: color .12s;
+
+		svg {
+			width: 13px;
+			height: 13px;
+		}
+
+		&:hover {
+			color: var(--ui-red);
+		}
 	}
 }
 
 
 /* Non-interactive "Your Template" card in the Templates browse screen — same shell as .tpl,
-   just not clickable. */
-#everest-forms-panel-style .tpl-static {
+   just not clickable, always shown with the same purple ring a selected preset gets elsewhere
+   in the panel (it IS the currently active one, permanently). */
+#everest-forms-panel-style .tpl.tpl-static {
 	cursor: default;
+	border-color: var(--ui-purple);
+	box-shadow: 0 0 0 1px var(--ui-purple);
+
+	&:hover {
+		border-color: var(--ui-purple);
+		background: #fff;
+	}
 }
 
 /* The panel's one real heading size, matching the builder's own section title (.evf-content-section-title). */
@@ -683,35 +667,23 @@
 		margin-top: 1px;
 		color: var(--ui-purple);
 	}
-}
 
-/* Secondary form-wide setting, pinned to the bottom of the Design list. */
-#everest-forms-panel-style .reset-all-link {
-	display: block;
-	margin: 14px auto 2px;
-	border: 0;
-	background: none;
-	color: var(--ui-ink-3);
-	font-size: var(--ui-fs-xs);
-	text-decoration: underline;
-	text-decoration-color: transparent;
-	cursor: pointer;
-	transition: color .12s, text-decoration-color .12s;
-
-	&:hover {
-		color: var(--ui-red);
-		text-decoration-color: currentColor;
+	b {
+		color: var(--ui-purple);
+		font-weight: 600;
 	}
 }
 
+/* Secondary form-wide setting, pinned to the bottom of the Design list. */
 #everest-forms-panel-style .theme-style-row {
 	display: flex;
 	align-items: center;
 	gap: 12px;
 	width: 100%;
 	margin-top: 18px;
-	padding: 12px 2px 2px;
+	padding: 14px 2px;
 	border-top: 1px solid var(--ui-line-2);
+	border-bottom: 1px solid var(--ui-line-2);
 
 	.tsr-text {
 		display: flex;
@@ -1014,7 +986,7 @@
 	gap: 11px;
 	width: 100%;
 	border: 1px solid var(--ui-line);
-	border-radius: var(--ui-radius-sm);
+	border-radius: var(--ui-radius-lg);
 	background: #fff;
 	padding: 11px 12px;
 	cursor: pointer;
@@ -2177,6 +2149,21 @@
 	border-radius: var(--ui-radius-sm);
 	padding: 2px 6px;
 	box-shadow: var(--ui-shadow-sm);
+}
+
+/* Neutral counterpart to "Modified": the current style exactly matches this template, unedited. */
+#everest-forms-panel-style .tpl-mod--base {
+	color: var(--ui-ink-3);
+	background: var(--ui-bg-subtle);
+	border-color: var(--ui-line);
+}
+
+/* Inside the non-interactive "Your Template" preview card, both pills sit inline next to the
+   name (like every other inline badge in the panel) instead of overlaying the thumbnail — that
+   overlay position only makes sense on the small grid cards below. */
+#everest-forms-panel-style .tpl-current .cap .tpl-mod {
+	position: static;
+	box-shadow: none;
 }
 
 #everest-forms-panel-style .tpl.tpl-modified {
@@ -3375,19 +3362,19 @@
 #everest-forms-panel-style .pal-pop-grid {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
-	gap: 6px;
+	gap: 16px;
 	padding: 4px;
 }
 
 #everest-forms-panel-style .pal-card {
 	border: 1px solid var(--ui-line-2);
-	border-radius: var(--ui-radius-sm);
+	border-radius: var(--ui-radius-lg);
 	overflow: hidden;
 	cursor: pointer;
 	background: #fff;
-	padding: 8px;
+	padding: 14px;
 	text-align: left;
-	transition: border-color .12s, background .12s;
+	transition: border-color .12s, background .12s, box-shadow .12s;
 
 	/* Matches `.elrow`/`.tpl`'s hover — one "selectable card" language across the panel. */
 	&:hover {
@@ -3395,21 +3382,24 @@
 		background: var(--ui-purple-50);
 	}
 
-	/* `role="option"` takes its selected state from `aria-selected`, not `aria-pressed`. */
+	/* `role="option"` takes its selected state from `aria-selected`, not `aria-pressed` — a
+	   purple ring, same as every other "currently applied" card in the panel, but the card
+	   stays white (no background wash) so it doesn't fight the swatches for attention. */
 	&[aria-selected="true"] {
 		border-color: var(--ui-purple);
-		background: var(--ui-purple-50);
+		background: #fff;
+		box-shadow: 0 0 0 1px var(--ui-purple);
 	}
 
 	.sw {
 		display: flex;
-		gap: 5px;
+		gap: 6px;
 		justify-content: flex-start;
 	}
 
 	.sw i {
-		width: 18px;
-		height: 18px;
+		width: 22px;
+		height: 22px;
 		border-radius: 50%;
 		flex: none;
 		box-shadow: inset 0 0 0 1px rgba(20, 23, 40, .08);
@@ -3421,10 +3411,10 @@
 		display: flex;
 		align-items: center;
 		gap: 5px;
-		font-size: 11.5px;
-		font-weight: 500;
-		color: var(--ui-ink-2);
-		margin-top: 8px;
+		font-size: 13px;
+		font-weight: 700;
+		color: var(--ui-ink);
+		margin-top: 10px;
 		padding-right: 52px;
 		overflow-wrap: anywhere;
 	}
@@ -3584,7 +3574,7 @@
 
 #everest-forms-panel-style .pal-card--wrap.is-selected {
 	border-color: var(--ui-purple);
-	background: var(--ui-purple-50);
+	box-shadow: 0 0 0 1px var(--ui-purple);
 
 	.cap {
 		color: var(--ui-purple);
@@ -3594,12 +3584,13 @@
 /* "Your Palette" summary card (ColorsPane) — swatches + name + edit pencil all on one row.
    Overrides .pal-card--wrap's block layout (built for the small preset-grid cards, where the
    edit/delete tools float as an absolute overlay) since the pencil here is a real, always-visible
-   sibling that must sit inline, never wrap onto its own line. */
+   sibling that must sit inline, never wrap onto its own line. Always shown with the purple ring
+   (it carries `is-selected` unconditionally) — it's the permanently-current one. */
 #everest-forms-panel-style .pal-card--summary {
 	display: flex;
 	align-items: center;
-	gap: 8px;
-	padding: 10px;
+	gap: 10px;
+	padding: 14px;
 
 	.pal-card-apply {
 		display: flex;
