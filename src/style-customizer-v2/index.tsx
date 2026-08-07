@@ -9,7 +9,7 @@ import { createPortal } from 'react-dom';
 import './style.scss';
 import { App } from './App';
 import { PreviewSkeleton } from './PreviewPane';
-import { initStore } from './store';
+import { initStore, getStore } from './store';
 import { BootstrapSettings, StylePayload } from './types';
 
 const apiFetch = ( window as any ).wp?.apiFetch;
@@ -27,6 +27,30 @@ const settings: BootstrapSettings = rawSettings || {
 	markerClass: 'evf-style-v2',
 	previewSession: '',
 	aiEnabled: false,
+	aiDisabled: false,
+	ajaxUrl: '',
+	aiNonce: '',
+	aiHintDismissed: true,
+};
+
+// Bridge so the (legacy jQuery) Fields tab can flag unsaved changes without importing the bundle.
+( window as any ).evfScv2SetFormDirty = ( dirty: boolean ) => {
+	try {
+		getStore().setUnsavedFieldChanges( !! dirty );
+	} catch ( e ) {
+		// Store not initialized yet — the builder will call again on the next interaction.
+	}
+};
+
+// Reverse bridge: lets the (legacy jQuery) tab-switcher ask "would leaving the Style tab
+// right now lose anything?" before it switches away — the existing `beforeunload` guard
+// only protects a real page close/reload, not this in-app SPA tab switch.
+( window as any ).evfScv2IsDirty = (): boolean => {
+	try {
+		return getStore().isDirty();
+	} catch ( e ) {
+		return false; // Store not initialized yet — nothing to lose.
+	}
 };
 
 const MIGRATION_SEEN_PREFIX = 'evf_scv2_migration_seen_';

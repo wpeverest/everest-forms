@@ -14,6 +14,28 @@ class EVF_AI_Ajax {
 		add_action( 'wp_ajax_evf_ai_activate_form', array( $this, 'activate_form' ) );
 		add_action( 'wp_ajax_evf_ai_discard_form', array( $this, 'discard_form' ) );
 		add_action( 'wp_ajax_evf_ai_render_fields', array( $this, 'render_fields' ) );
+		add_action( 'wp_ajax_evf_ai_dismiss_hint', array( $this, 'dismiss_hint' ) );
+	}
+
+	/**
+	 * Persist that the current user has dismissed (or engaged with) an AI discovery
+	 * hint, so it never shows again for them — stored per-user, not per-browser, so
+	 * it stays dismissed across devices.
+	 */
+	public function dismiss_hint() {
+		check_ajax_referer( 'evf_ai_nonce', 'nonce' );
+
+		if ( ! current_user_can( 'manage_everest_forms' ) ) {
+			wp_send_json_error( array( 'message' => __( 'You do not have permission to use this feature.', 'everest-forms' ) ), 403 );
+		}
+
+		$hint = isset( $_POST['hint'] ) ? sanitize_key( wp_unslash( $_POST['hint'] ) ) : '';
+		if ( ! in_array( $hint, array( 'form', 'style' ), true ) ) {
+			wp_send_json_error( array( 'message' => __( 'Unknown hint.', 'everest-forms' ) ) );
+		}
+
+		update_user_meta( get_current_user_id(), 'evf_ai_' . $hint . '_hint_dismissed', 1 );
+		wp_send_json_success();
 	}
 
 	/**
@@ -118,10 +140,17 @@ class EVF_AI_Ajax {
 		$ai_response = EVF_AI_API::update_form( $prompt, $form_id, $refine_prompt );
 
 		if ( is_wp_error( $ai_response ) ) {
+			$data = $ai_response->get_error_data();
 			wp_send_json_error(
 				array(
 					'message' => $ai_response->get_error_message(),
 					'code'    => $ai_response->get_error_code(),
+					// Only set on a "daily_limit_reached" 429 — lets the JS show an upgrade CTA
+					// for a Free user but not for a Pro user who hit their own, higher cap.
+					'tier'    => is_array( $data ) && isset( $data['tier'] ) ? $data['tier'] : '',
+					// Usage snapshot (remaining is 0 on a daily_limit_reached) so the panel's
+					// "X requests left today" indicator stays in sync even on the blocked turn.
+					'usage'   => EVF_AI_API::get_last_usage(),
 				)
 			);
 		}
@@ -255,7 +284,10 @@ class EVF_AI_Ajax {
 				'multi_part_steps' => self::get_multi_part_steps( $form_id ),
 				'needs_reload'     => $needs_reload,
 				'notice'           => $notice,
-				'notice_url'       => '' !== $notice ? self::get_notice_upgrade_url() : '',
+				'notice_url'       => ( '' !== $notice && $notice !== EVF_AI_Form_Builder::$style_capability_notice )
+					? self::get_notice_upgrade_url()
+					: '',
+				'usage'            => EVF_AI_API::get_last_usage(),
 			)
 		);
 	}
@@ -318,10 +350,17 @@ class EVF_AI_Ajax {
 
 		if ( is_wp_error( $ai_response ) ) {
 			$code = $ai_response->get_error_code();
+			$data = $ai_response->get_error_data();
 			wp_send_json_error(
 				array(
 					'message' => $ai_response->get_error_message(),
 					'code'    => $code,
+					// Only set on a "daily_limit_reached" 429 — lets the JS show an upgrade CTA
+					// for a Free user but not for a Pro user who hit their own, higher cap.
+					'tier'    => is_array( $data ) && isset( $data['tier'] ) ? $data['tier'] : '',
+					// Usage snapshot (remaining is 0 on a daily_limit_reached) so the screen's
+					// "X requests left today" indicator stays in sync even on the blocked turn.
+					'usage'   => EVF_AI_API::get_last_usage(),
 				)
 			);
 		}
@@ -344,7 +383,10 @@ class EVF_AI_Ajax {
 				'required_addons'  => $ai_response['required_addons'] ?? array(),
 				'multi_part_steps' => self::get_multi_part_steps( $form_id ),
 				'notice'           => $gen_notice,
-				'notice_url'       => '' !== $gen_notice ? self::get_notice_upgrade_url() : '',
+				'notice_url'       => ( '' !== $gen_notice && $gen_notice !== EVF_AI_Form_Builder::$style_capability_notice )
+					? self::get_notice_upgrade_url()
+					: '',
+				'usage'            => EVF_AI_API::get_last_usage(),
 			)
 		);
 	}
@@ -423,7 +465,13 @@ class EVF_AI_Ajax {
 			wp_send_json_error( array( 'message' => $usage->get_error_message() ) );
 		}
 
-		wp_send_json_success( $usage );
+		// Return under a `usage` key in the same normalized { remaining, limit, used } shape the
+		// generate/style/update responses use, so the front-end's readUsage() reads it uniformly.
+		wp_send_json_success(
+			array(
+				'usage' => is_array( $usage ) ? EVF_AI_API::normalize_usage( $usage ) : null,
+			)
+		);
 	}
 
 	/**
@@ -477,9 +525,12 @@ class EVF_AI_Ajax {
 	 * (free site or Pro installed but not activated). Returns empty string when the
 	 * user has a valid license — they just need to install the addon, not upgrade.
 	 *
+	 * Public: also called by {@see \EverestForms\Addons\StyleCustomizer\V2\RestController::ai_style()}
+	 * for the Style Customizer's own AI chat, so both AI surfaces link the same upgrade CTA.
+	 *
 	 * @return string
 	 */
-	private static function get_notice_upgrade_url(): string {
+	public static function get_notice_upgrade_url(): string {
 		if ( self::has_active_license() ) {
 			return ''; // Already Pro — installing the addon is all that's needed.
 		}
@@ -528,6 +579,23 @@ class EVF_AI_Ajax {
 			if ( ! is_plugin_active( 'everest-forms-conversational-forms/everest-forms-conversational-forms.php' ) ) {
 				return __( 'Your form is set up as Conversational, but the Conversational Forms addon is not active. Please install and activate it from Everest Forms > Addons.', 'everest-forms' );
 			}
+		}
+
+		// Lowest priority: a purely cosmetic Pro-only style choice (colour, font, shape) got
+		// dropped, and/or the AI asked for something no site can ever actually do (a
+		// background image, an invented font) — see EVF_AI_Form_Builder::maybe_apply_ai_style().
+		// Checked last since a structural feature notice above is more important to surface first.
+		$style_notice = implode(
+			' ',
+			array_filter(
+				array(
+					EVF_AI_Form_Builder::$style_pro_locked_notice,
+					EVF_AI_Form_Builder::$style_capability_notice,
+				)
+			)
+		);
+		if ( '' !== $style_notice ) {
+			return $style_notice;
 		}
 
 		return '';

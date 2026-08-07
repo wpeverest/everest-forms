@@ -43,7 +43,7 @@ function MigrationNotice() {
 			<span className="pv-migration-text">
 				<b>{ __( 'Styles upgraded from the legacy editor.', 'everest-forms' ) }</b>{ ' ' }
 				{ __(
-					'This form was styled with the old editor, so its look was carried over automatically — nothing should appear different. Review the preview below, then hit Save to keep it.',
+					'Nothing should look different — review the preview below, then hit Save to keep it.',
 					'everest-forms'
 				) }
 			</span>
@@ -58,6 +58,46 @@ function MigrationNotice() {
 						// Best-effort only — worst case it reappears next visit.
 					}
 				} }
+			>
+				<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2 } aria-hidden="true">
+					<path d="M18 6 6 18M6 6l12 12" />
+				</svg>
+			</button>
+		</div>
+	);
+}
+
+/** Notice that the Fields or Settings tab has changes not yet saved — shows/hides live as that changes. */
+function UnsavedFieldsNotice() {
+	const store = useStore();
+	const [ dismissed, setDismissed ] = React.useState( false );
+
+	React.useEffect( () => {
+		if ( store.hasUnsavedFieldChanges ) {
+			setDismissed( false );
+		}
+	}, [ store.hasUnsavedFieldChanges ] );
+
+	if ( ! store.hasUnsavedFieldChanges || dismissed ) {
+		return null;
+	}
+
+	return (
+		<div className="pv-migration pv-unsaved-fields" role="status">
+			<span className="pv-migration-ic" aria-hidden="true">
+				<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2 }>
+					<circle cx="12" cy="12" r="9" />
+					<path d="M12 8h.01M11 12h1v4h1" />
+				</svg>
+			</span>
+			<span className="pv-migration-text">
+				<b>{ __( 'Previewing unsaved changes.', 'everest-forms' ) }</b>{ ' ' }
+				{ __( 'From the Fields or Settings tab.', 'everest-forms' ) }
+			</span>
+			<button
+				type="button"
+				aria-label={ __( 'Dismiss', 'everest-forms' ) }
+				onClick={ () => setDismissed( true ) }
 			>
 				<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2 } aria-hidden="true">
 					<path d="M18 6 6 18M6 6l12 12" />
@@ -247,6 +287,7 @@ export function PreviewPane( {
 	return (
 		<>
 			<MigrationNotice />
+			<UnsavedFieldsNotice />
 			<section className="preview" aria-label={ __( 'Live preview', 'everest-forms' ) }>
 			<div className="pv-bar">
 				<span className="ttl">
@@ -350,13 +391,13 @@ export function PreviewPane( {
 							<h4>{ __( 'Preview is taking a moment', 'everest-forms' ) }</h4>
 							<p>
 								{ __(
-									'We couldn’t load the live preview here — a security or caching plugin may be blocking the preview route. Your edits are still saved.',
+									'We couldn’t load the live preview — a security or caching plugin may be blocking it. Your edits are still saved.',
 									'everest-forms'
 								) }
 							</p>
 							<div className="pv-error-actions">
 								<button type="button" className="btn-primary" onClick={ retry }>
-									{ __( 'Try again', 'everest-forms' ) }
+									{ __( 'Retry', 'everest-forms' ) }
 								</button>
 								<a href={ previewSrc } target="_blank" rel="noreferrer">
 									{ __( 'Open in a new tab ↗', 'everest-forms' ) }

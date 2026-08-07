@@ -253,6 +253,7 @@ class EVF_Admin_Assets {
 					'i18n_copy'                           => esc_html__( '(copy)', 'everest-forms' ),
 					'i18n_close'                          => esc_html__( 'Close', 'everest-forms' ),
 					'i18n_cancel'                         => esc_html__( 'Cancel', 'everest-forms' ),
+					'i18n_unsaved_style_changes'          => esc_html__( 'You have unsaved style changes. Leave without saving?', 'everest-forms' ),
 					'i18n_row_locked'                     => esc_html__( 'Row Locked', 'everest-forms' ),
 					'i18n_single_row_locked_msg'          => esc_html__( 'Single row cannot be deleted.', 'everest-forms' ),
 					'i18n_field_locked'                   => esc_html__( 'Field Locked', 'everest-forms' ),
@@ -492,11 +493,16 @@ class EVF_Admin_Assets {
 
 		// AI chat assistant — only on the form editor (form_id present), not on the template selection screen.
 		if ( in_array( $screen_id, array( 'everest-forms_page_evf-builder' ), true ) && isset( $_GET['form_id'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+			// Version by the bundle's mtime (not the static EVF_VERSION) so a rebuilt bundle busts
+			// the browser cache — matching how the Style Customizer v2 and templates bundles are
+			// versioned. Without this, a rebuild keeps the same ?ver= and the stale bundle sticks.
+			$evf_builder_ai_path = evf()->plugin_path() . '/dist/builderAI.min.js';
+			$evf_builder_ai_ver  = file_exists( $evf_builder_ai_path ) ? (string) filemtime( $evf_builder_ai_path ) : EVF_VERSION;
 			wp_enqueue_script(
 				'evf-builder-ai',
 				evf()->plugin_url() . '/dist/builderAI.min.js',
 				array( 'wp-element', 'react', 'react-dom' ),
-				EVF_VERSION,
+				$evf_builder_ai_ver,
 				true
 			);
 
@@ -505,13 +511,20 @@ class EVF_Admin_Assets {
 				'evf-builder-ai',
 				'evfBuilderAI',
 				array(
-					'ajaxUrl'    => admin_url( 'admin-ajax.php' ),
-					'nonce'      => wp_create_nonce( 'evf_ai_nonce' ),
-					'formId'     => $evf_ai_form_id,
-					'formTitle'  => get_the_title( $evf_ai_form_id ),
+					'ajaxUrl'       => admin_url( 'admin-ajax.php' ),
+					'nonce'         => wp_create_nonce( 'evf_ai_nonce' ),
+					'formId'        => $evf_ai_form_id,
+					'formTitle'     => get_the_title( $evf_ai_form_id ),
 					// On local / development sites the AI gateway is unavailable: the
 					// assistant is shown but disabled rather than hidden.
-					'aiDisabled' => class_exists( 'EVF_AI_Registration' ) && EVF_AI_Registration::is_local_site(),
+					'aiDisabled'    => class_exists( 'EVF_AI_Registration' ) && EVF_AI_Registration::is_local_site(),
+					// Per-user (not per-browser) — stays dismissed across devices once acted on.
+					// Also treated as dismissed if the site already registered with the AI
+					// gateway before this hint existed — the AI Form Assistant itself shipped
+					// back in 3.5.0, so a site that's already using it isn't "new" to it, even
+					// for a user who's never personally clicked dismiss.
+					'hintDismissed' => (bool) get_user_meta( get_current_user_id(), 'evf_ai_form_hint_dismissed', true )
+						|| ( class_exists( 'EVF_AI_Registration' ) && EVF_AI_Registration::is_registered() ),
 				)
 			);
 		}

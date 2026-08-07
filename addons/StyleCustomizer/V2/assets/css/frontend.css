@@ -70,6 +70,7 @@
 	font-style: var( --evf-label-fs );
 	text-decoration: var( --evf-label-td );
 	text-transform: var( --evf-label-tt );
+	letter-spacing: var( --evf-label-ls );
 }
 
 /* Sublabel */
@@ -84,6 +85,7 @@
 	font-style: var( --evf-sub-fs );
 	text-decoration: var( --evf-sub-td );
 	text-transform: var( --evf-sub-tt );
+	letter-spacing: var( --evf-sub-ls );
 }
 
 /* Description */
@@ -98,6 +100,7 @@
 	font-style: var( --evf-desc-fs );
 	text-decoration: var( --evf-desc-td );
 	text-transform: var( --evf-desc-tt );
+	letter-spacing: var( --evf-desc-ls );
 }
 
 /* Section title */
@@ -112,6 +115,7 @@
 	font-style: var( --evf-title-fs );
 	text-decoration: var( --evf-title-td );
 	text-transform: var( --evf-title-tt );
+	letter-spacing: var( --evf-title-ls );
 }
 
 /* ===== INPUTS — text boxes, dropdowns, textareas ===== */
@@ -144,6 +148,7 @@
 	font-weight: var( --evf-input-weight );
 	font-style: var( --evf-input-fs );
 	text-transform: var( --evf-input-tt );
+	letter-spacing: var( --evf-input-ls );
 }
 
 .everest-forms .evf-style-v2 input::placeholder,
@@ -195,12 +200,18 @@
 	fill: var( --evf-file-icon );
 }
 
+/* ===== INPUTS — character limit hint ===== */
+.everest-forms .evf-style-v2 .everest-forms-field-limit-text {
+	color: var( --evf-limit-color );
+}
+
 /* ===== CHOICES — radio, checkbox, and everything that follows them ===== */
 .everest-forms .evf-style-v2 .evf-field-radio ul li,
 .everest-forms .evf-style-v2 .evf-field-checkbox ul li,
 .everest-forms .evf-style-v2 .evf-field-payment-multiple ul li,
 .everest-forms .evf-style-v2 .evf-field-payment-checkbox ul li,
-.everest-forms .evf-style-v2 .evf-field-privacy-policy ul li {
+.everest-forms .evf-style-v2 .evf-field-privacy-policy,
+.everest-forms .evf-style-v2 .evf-field-payment-subscription-plan ul li {
 	text-align: var( --evf-choice-align );
 	margin: var( --evf-choice-margin );
 }
@@ -210,7 +221,9 @@
 .everest-forms .evf-style-v2 .evf-field-checkbox ul li input[type='radio'],
 .everest-forms .evf-style-v2 .evf-field-checkbox ul li input[type='checkbox'],
 .everest-forms .evf-style-v2 .evf-field-payment-multiple ul li input[type='radio'],
-.everest-forms .evf-style-v2 .evf-field-payment-checkbox ul li input[type='checkbox'] {
+.everest-forms .evf-style-v2 .evf-field-payment-checkbox ul li input[type='checkbox'],
+.everest-forms .evf-style-v2 .evf-field-privacy-policy input[type='checkbox'],
+.everest-forms .evf-style-v2 .evf-field-payment-subscription-plan ul li input[type='radio'] {
 	width: var( --evf-choice-size );
 	height: var( --evf-choice-size );
 }
@@ -230,10 +243,14 @@
 .everest-forms .evf-style-v2.evf-choice-outline .evf-field-checkbox ul li input[type='checkbox'],
 .everest-forms .evf-style-v2.evf-choice-outline .evf-field-payment-multiple ul li input[type='radio'],
 .everest-forms .evf-style-v2.evf-choice-outline .evf-field-payment-checkbox ul li input[type='checkbox'],
+.everest-forms .evf-style-v2.evf-choice-outline .evf-field-privacy-policy input[type='checkbox'],
+.everest-forms .evf-style-v2.evf-choice-outline .evf-field-payment-subscription-plan ul li input[type='radio'],
 .everest-forms .evf-style-v2.evf-choice-filled .evf-field-radio ul li input[type='radio'],
 .everest-forms .evf-style-v2.evf-choice-filled .evf-field-checkbox ul li input[type='checkbox'],
 .everest-forms .evf-style-v2.evf-choice-filled .evf-field-payment-multiple ul li input[type='radio'],
-.everest-forms .evf-style-v2.evf-choice-filled .evf-field-payment-checkbox ul li input[type='checkbox'] {
+.everest-forms .evf-style-v2.evf-choice-filled .evf-field-payment-checkbox ul li input[type='checkbox'],
+.everest-forms .evf-style-v2.evf-choice-filled .evf-field-privacy-policy input[type='checkbox'],
+.everest-forms .evf-style-v2.evf-choice-filled .evf-field-payment-subscription-plan ul li input[type='radio'] {
 	-webkit-appearance: none;
 	appearance: none;
 	display: inline-flex;
@@ -243,36 +260,46 @@
 
 .everest-forms .evf-style-v2.evf-choice-outline .evf-field-radio ul li input[type='radio'],
 .everest-forms .evf-style-v2.evf-choice-outline .evf-field-payment-multiple ul li input[type='radio'],
+.everest-forms .evf-style-v2.evf-choice-outline .evf-field-payment-subscription-plan ul li input[type='radio'],
 .everest-forms .evf-style-v2.evf-choice-filled .evf-field-radio ul li input[type='radio'],
-.everest-forms .evf-style-v2.evf-choice-filled .evf-field-payment-multiple ul li input[type='radio'] {
+.everest-forms .evf-style-v2.evf-choice-filled .evf-field-payment-multiple ul li input[type='radio'],
+.everest-forms .evf-style-v2.evf-choice-filled .evf-field-payment-subscription-plan ul li input[type='radio'] {
 	border-radius: 50%;
 }
 
 .everest-forms .evf-style-v2.evf-choice-outline .evf-field-radio ul li input[type='radio'],
 .everest-forms .evf-style-v2.evf-choice-outline .evf-field-checkbox ul li input[type='checkbox'],
 .everest-forms .evf-style-v2.evf-choice-outline .evf-field-payment-multiple ul li input[type='radio'],
-.everest-forms .evf-style-v2.evf-choice-outline .evf-field-payment-checkbox ul li input[type='checkbox'] {
+.everest-forms .evf-style-v2.evf-choice-outline .evf-field-payment-checkbox ul li input[type='checkbox'],
+.everest-forms .evf-style-v2.evf-choice-outline .evf-field-privacy-policy input[type='checkbox'],
+.everest-forms .evf-style-v2.evf-choice-outline .evf-field-payment-subscription-plan ul li input[type='radio'] {
 	border: 1px solid var( --evf-choice-border );
 }
 
 .everest-forms .evf-style-v2.evf-choice-filled .evf-field-radio ul li input[type='radio'],
 .everest-forms .evf-style-v2.evf-choice-filled .evf-field-checkbox ul li input[type='checkbox'],
 .everest-forms .evf-style-v2.evf-choice-filled .evf-field-payment-multiple ul li input[type='radio'],
-.everest-forms .evf-style-v2.evf-choice-filled .evf-field-payment-checkbox ul li input[type='checkbox'] {
+.everest-forms .evf-style-v2.evf-choice-filled .evf-field-payment-checkbox ul li input[type='checkbox'],
+.everest-forms .evf-style-v2.evf-choice-filled .evf-field-privacy-policy input[type='checkbox'],
+.everest-forms .evf-style-v2.evf-choice-filled .evf-field-payment-subscription-plan ul li input[type='radio'] {
 	background-color: var( --evf-choice-border );
 }
 
 .everest-forms .evf-style-v2.evf-choice-outline .evf-field-radio ul li input[type='radio']:checked,
 .everest-forms .evf-style-v2.evf-choice-outline .evf-field-checkbox ul li input[type='checkbox']:checked,
 .everest-forms .evf-style-v2.evf-choice-outline .evf-field-payment-multiple ul li input[type='radio']:checked,
-.everest-forms .evf-style-v2.evf-choice-outline .evf-field-payment-checkbox ul li input[type='checkbox']:checked {
+.everest-forms .evf-style-v2.evf-choice-outline .evf-field-payment-checkbox ul li input[type='checkbox']:checked,
+.everest-forms .evf-style-v2.evf-choice-outline .evf-field-privacy-policy input[type='checkbox']:checked,
+.everest-forms .evf-style-v2.evf-choice-outline .evf-field-payment-subscription-plan ul li input[type='radio']:checked {
 	border-color: var( --evf-choice-checked );
 }
 
 .everest-forms .evf-style-v2.evf-choice-filled .evf-field-radio ul li input[type='radio']:checked,
 .everest-forms .evf-style-v2.evf-choice-filled .evf-field-checkbox ul li input[type='checkbox']:checked,
 .everest-forms .evf-style-v2.evf-choice-filled .evf-field-payment-multiple ul li input[type='radio']:checked,
-.everest-forms .evf-style-v2.evf-choice-filled .evf-field-payment-checkbox ul li input[type='checkbox']:checked {
+.everest-forms .evf-style-v2.evf-choice-filled .evf-field-payment-checkbox ul li input[type='checkbox']:checked,
+.everest-forms .evf-style-v2.evf-choice-filled .evf-field-privacy-policy input[type='checkbox']:checked,
+.everest-forms .evf-style-v2.evf-choice-filled .evf-field-payment-subscription-plan ul li input[type='radio']:checked {
 	background-color: var( --evf-choice-checked );
 }
 
@@ -280,24 +307,30 @@
 .everest-forms .evf-style-v2.evf-choice-outline .evf-field-checkbox ul li input[type='checkbox']:checked::before,
 .everest-forms .evf-style-v2.evf-choice-outline .evf-field-payment-multiple ul li input[type='radio']:checked::before,
 .everest-forms .evf-style-v2.evf-choice-outline .evf-field-payment-checkbox ul li input[type='checkbox']:checked::before,
+.everest-forms .evf-style-v2.evf-choice-outline .evf-field-privacy-policy input[type='checkbox']:checked::before,
+.everest-forms .evf-style-v2.evf-choice-outline .evf-field-payment-subscription-plan ul li input[type='radio']:checked::before,
 .everest-forms .evf-style-v2.evf-choice-filled .evf-field-radio ul li input[type='radio']:checked::before,
 .everest-forms .evf-style-v2.evf-choice-filled .evf-field-checkbox ul li input[type='checkbox']:checked::before,
 .everest-forms .evf-style-v2.evf-choice-filled .evf-field-payment-multiple ul li input[type='radio']:checked::before,
-.everest-forms .evf-style-v2.evf-choice-filled .evf-field-payment-checkbox ul li input[type='checkbox']:checked::before {
+.everest-forms .evf-style-v2.evf-choice-filled .evf-field-payment-checkbox ul li input[type='checkbox']:checked::before,
+.everest-forms .evf-style-v2.evf-choice-filled .evf-field-privacy-policy input[type='checkbox']:checked::before,
+.everest-forms .evf-style-v2.evf-choice-filled .evf-field-payment-subscription-plan ul li input[type='radio']:checked::before {
 	content: '';
 	height: 50%;
 }
 
 /* radio dot */
 .everest-forms .evf-style-v2.evf-choice-outline .evf-field-radio ul li input[type='radio']:checked::before,
-.everest-forms .evf-style-v2.evf-choice-outline .evf-field-payment-multiple ul li input[type='radio']:checked::before {
+.everest-forms .evf-style-v2.evf-choice-outline .evf-field-payment-multiple ul li input[type='radio']:checked::before,
+.everest-forms .evf-style-v2.evf-choice-outline .evf-field-payment-subscription-plan ul li input[type='radio']:checked::before {
 	width: 50%;
 	border-radius: 50%;
 	background: var( --evf-choice-checked );
 }
 
 .everest-forms .evf-style-v2.evf-choice-filled .evf-field-radio ul li input[type='radio']:checked::before,
-.everest-forms .evf-style-v2.evf-choice-filled .evf-field-payment-multiple ul li input[type='radio']:checked::before {
+.everest-forms .evf-style-v2.evf-choice-filled .evf-field-payment-multiple ul li input[type='radio']:checked::before,
+.everest-forms .evf-style-v2.evf-choice-filled .evf-field-payment-subscription-plan ul li input[type='radio']:checked::before {
 	width: 50%;
 	border-radius: 50%;
 	background: #fff;
@@ -305,7 +338,8 @@
 
 /* checkbox tick */
 .everest-forms .evf-style-v2.evf-choice-outline .evf-field-checkbox ul li input[type='checkbox']:checked::before,
-.everest-forms .evf-style-v2.evf-choice-outline .evf-field-payment-checkbox ul li input[type='checkbox']:checked::before {
+.everest-forms .evf-style-v2.evf-choice-outline .evf-field-payment-checkbox ul li input[type='checkbox']:checked::before,
+.everest-forms .evf-style-v2.evf-choice-outline .evf-field-privacy-policy input[type='checkbox']:checked::before {
 	width: 25%;
 	border: solid var( --evf-choice-checked );
 	border-width: 0 2px 2px 0;
@@ -314,7 +348,8 @@
 }
 
 .everest-forms .evf-style-v2.evf-choice-filled .evf-field-checkbox ul li input[type='checkbox']:checked::before,
-.everest-forms .evf-style-v2.evf-choice-filled .evf-field-payment-checkbox ul li input[type='checkbox']:checked::before {
+.everest-forms .evf-style-v2.evf-choice-filled .evf-field-payment-checkbox ul li input[type='checkbox']:checked::before,
+.everest-forms .evf-style-v2.evf-choice-filled .evf-field-privacy-policy input[type='checkbox']:checked::before {
 	width: 25%;
 	border: solid #fff;
 	border-width: 0 2px 2px 0;
@@ -322,16 +357,42 @@
 	margin-top: -12%;
 }
 
+/* GDPR/Privacy-Policy checkbox — v1 (scss.php) styled this identically to any other checkbox;
+   v2 originally only wired up alignment/margin (above), silently dropping size, the outline/
+   filled appearance, checked-state, and this label typography. Restored 1:1 to v1 parity. */
 .everest-forms .evf-style-v2 .evf-field-radio ul li input + label,
 .everest-forms .evf-style-v2 .evf-field-checkbox ul li input + label,
 .everest-forms .evf-style-v2 .evf-field-payment-multiple ul li input + label,
-.everest-forms .evf-style-v2 .evf-field-payment-checkbox ul li input + label {
+.everest-forms .evf-style-v2 .evf-field-payment-checkbox ul li input + label,
+.everest-forms .evf-style-v2 .evf-field-privacy-policy input + label,
+.everest-forms .evf-style-v2 .evf-field-payment-subscription-plan ul li input + label {
 	font-size: var( --evf-choice-fsize );
 	color: var( --evf-choice-color );
 	font-weight: var( --evf-choice-weight );
 	font-style: var( --evf-choice-fs );
 	text-decoration: var( --evf-choice-td );
 	text-transform: var( --evf-choice-tt );
+	letter-spacing: var( --evf-choice-ls );
+}
+
+/* The Subscription Plan addon's own stylesheet (evf-payment-subscription-plan-frontend.scss)
+   hardcodes font-size on these two inner classes, which otherwise silently overrides the
+   choice.fsize token the label above already inherits — override it back explicitly here. */
+.everest-forms .evf-style-v2 .evf-field-payment-subscription-plan .evf-plan-name,
+.everest-forms .evf-style-v2 .evf-field-payment-subscription-plan .evf-plan-price {
+	font-size: var( --evf-choice-fsize );
+}
+
+/* The name/price row (.evf-plan-main) is a flex row hardcoded to `justify-content: space-between`
+   in the same addon stylesheet — `--evf-choice-align`'s inherited `text-align` can never reach it
+   (text-align doesn't reposition flex items). `left` (the default) keeps today's name-left/
+   price-right look untouched; `center`/`right` bring the pair together as a unit instead — see
+   FrontendEnqueue::container_class()/PreviewBridge's `evf-choice-align-{center|right}` classes. */
+.everest-forms .evf-style-v2.evf-choice-align-center .evf-field-payment-subscription-plan .evf-plan-main {
+	justify-content: center;
+}
+.everest-forms .evf-style-v2.evf-choice-align-right .evf-field-payment-subscription-plan .evf-plan-main {
+	justify-content: flex-end;
 }
 
 /* ===== BUTTON — submit / multi-part nav / upload button ===== */
@@ -354,6 +415,7 @@
 	font-weight: var( --evf-btn-weight );
 	font-style: var( --evf-btn-fs );
 	text-transform: var( --evf-btn-tt );
+	letter-spacing: var( --evf-btn-ls );
 }
 
 .everest-forms .evf-style-v2 .evf-submit-container input[type='submit']:hover,
@@ -372,6 +434,16 @@
 
 .everest-forms .evf-style-v2 .evf-submit-container:not( .everest-forms-multi-part-actions ) {
 	text-align: var( --evf-btn-align );
+}
+
+.everest-forms .evf-style-v2.evf-btn-width-fill .evf-submit-container input[type='submit'],
+.everest-forms .evf-style-v2.evf-btn-width-fill .evf-submit-container button[type='submit'],
+.everest-forms .evf-style-v2.evf-btn-width-fill .evf-submit-container .everest-forms-part-button,
+.everest-forms .evf-style-v2.evf-btn-width-fill .everest-forms-multi-part-actions input[type='submit'],
+.everest-forms .evf-style-v2.evf-btn-width-fill .everest-forms-multi-part-actions button[type='submit'],
+.everest-forms .evf-style-v2.evf-btn-width-fill .everest-forms-multi-part-actions .everest-forms-part-button {
+	display: block;
+	width: 100%;
 }
 
 .everest-forms .evf-style-v2 .everest-forms-multi-part-actions .everest-forms-part-button.everest-forms-part-prev,

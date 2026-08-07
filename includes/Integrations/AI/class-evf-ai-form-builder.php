@@ -25,6 +25,16 @@ class EVF_AI_Form_Builder {
 	/** Set to true when a file-upload field was dropped because the free-tier limit (1) was reached. */
 	public static $file_upload_limited = false;
 
+	/** Set to a human-readable notice when the AI's embedded `style` block (see
+	 *  maybe_apply_ai_style()) included Pro-only tokens/palette that got stripped because
+	 *  Pro isn't active on this site — empty string when nothing was stripped. */
+	public static $style_pro_locked_notice = '';
+
+	/** Set to a human-readable notice when the AI's embedded `style` block asked for
+	 *  something no site can ever fulfil (a background image, an invented font) — see
+	 *  {@see RestController::unsupported_capability_notice()}. Empty string when nothing was flagged. */
+	public static $style_capability_notice = '';
+
 	/**
 	 * Create a new EVF form from the AI gateway response.
 	 * Saved as DRAFT — user must click "Use This Form" to publish.
@@ -76,10 +86,29 @@ class EVF_AI_Form_Builder {
 	 * (Sanitizer::sanitize_record()), so an AI style can no more produce an unsafe or
 	 * tier-violating record here than it can through the customizer's own AI launcher.
 	 *
+	 * Also mirrors that launcher's honest-notice behaviour ({@see RestController::pro_locked_notice()}):
+	 * unlike the standalone Style AI chat, this path used to strip Pro-only tokens with no
+	 * explanation at all, so a free-tier form born from "create a sleek dark contact form"
+	 * could render nothing like what the AI's own summary described. Sets
+	 * self::$style_pro_locked_notice so EVF_AI_Ajax::get_pro_feature_notice() can surface it.
+	 *
+	 * Overlays onto the form's EXISTING style record exactly like the Style Customizer's own
+	 * AI chat client does ({@see StyleStore.applyAiRecord()} in store.ts) rather than replacing
+	 * it wholesale: the AI's output contract is strictly `{tokens, palette}`, so on a refine
+	 * (update_form()) a straight option overwrite would silently wipe a previously-picked
+	 * template or custom CSS, and treating an empty/omitted palette as "clear the palette"
+	 * would incorrectly detach an existing one even on a turn where the AI never touched it.
+	 * `$check_contrast = true` also matches ai_style()'s own sanitize_record() call, so an
+	 * AI-created form gets the same automatic light-on-light / dark-on-dark correction the
+	 * standalone chat already has.
+	 *
 	 * @param int   $post_id     The newly created (draft) form.
 	 * @param array $ai_response Full decoded gateway response (may contain a `style` key).
 	 */
 	private static function maybe_apply_ai_style( int $post_id, array $ai_response ) {
+		self::$style_pro_locked_notice  = '';
+		self::$style_capability_notice  = '';
+
 		if ( empty( $ai_response['style'] ) || ! is_array( $ai_response['style'] ) ) {
 			return;
 		}
@@ -88,20 +117,60 @@ class EVF_AI_Form_Builder {
 			return;
 		}
 
-		$style = $ai_response['style'];
+		$style             = $ai_response['style'];
+		$requested_tokens  = isset( $style['tokens'] ) && is_array( $style['tokens'] ) ? $style['tokens'] : array();
+		$requested_palette = isset( $style['palette'] ) ? (string) $style['palette'] : '';
+
 		$clean = \EverestForms\Addons\StyleCustomizer\V2\Sanitizer::sanitize_record(
 			array(
-				'tokens'  => isset( $style['tokens'] ) && is_array( $style['tokens'] ) ? $style['tokens'] : array(),
-				'palette' => isset( $style['palette'] ) ? $style['palette'] : '',
-			)
+				'tokens'  => $requested_tokens,
+				'palette' => $requested_palette,
+			),
+			true
+		);
+
+		self::$style_pro_locked_notice = \EverestForms\Addons\StyleCustomizer\V2\RestController::pro_locked_notice(
+			$requested_tokens,
+			$clean['tokens'],
+			$requested_palette,
+			isset( $clean['palette'] ) ? $clean['palette'] : ''
+		);
+
+		self::$style_capability_notice = \EverestForms\Addons\StyleCustomizer\V2\RestController::unsupported_capability_notice(
+			$clean['tokens'],
+			'',
+			array()
 		);
 
 		if ( empty( $clean['tokens'] ) && empty( $clean['palette'] ) ) {
-			return; // Nothing survived sanitization — leave the form unstyled (its default look).
+			return; // Nothing survived sanitization — leave the existing/default style untouched.
 		}
 
-		$all             = get_option( 'everest_forms_styles', array() );
-		$all[ $post_id ] = $clean;
+		$all      = get_option( 'everest_forms_styles', array() );
+		$existing = isset( $all[ $post_id ] ) && is_array( $all[ $post_id ] ) ? $all[ $post_id ] : array();
+
+		// Per-key overlay, not a wholesale replace — a key the AI didn't return this turn
+		// keeps its existing value (matches applyAiRecord()'s `this.tokens[key] = clone(bag)`).
+		$merged_tokens = isset( $existing['tokens'] ) && is_array( $existing['tokens'] ) ? $existing['tokens'] : array();
+		foreach ( $clean['tokens'] as $key => $value ) {
+			$merged_tokens[ $key ] = $value;
+		}
+		$existing['tokens'] = $merged_tokens;
+
+		// Empty palette from the AI = "didn't touch it this turn", not "clear it" — matches
+		// applyAiRecord()'s `if ( paletteId ) { … this.palette = paletteId; }`.
+		if ( '' !== $clean['palette'] ) {
+			$existing['palette'] = $clean['palette'];
+		} elseif ( ! isset( $existing['palette'] ) ) {
+			$existing['palette'] = '';
+		}
+
+		// template/custom_css (and anything else already in $existing) are left as-is — the
+		// AI's output contract never includes them, so there is nothing to overlay for those keys.
+		$existing['schema_version'] = $clean['schema_version'];
+		$existing['_updated_at']    = $clean['_updated_at'];
+
+		$all[ $post_id ] = $existing;
 		update_option( 'everest_forms_styles', $all, false ); // autoload=no, matches RestController::save_item().
 	}
 

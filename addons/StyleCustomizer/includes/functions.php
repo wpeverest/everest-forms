@@ -67,7 +67,77 @@ function evfsc_get_google_font_families() {
 			$families[] = (string) $font['family'];
 		}
 	}
-	return $families;
+
+	// evfsc_get_google_fonts() derives its list from a live fetch to a GitHub-hosted JSON file
+	// (see there) — a third-party-maintained snapshot that can be stale (missing newer families
+	// like Inter/Manrope entirely) or, if the fetch fails/is blocked outright (offline local dev,
+	// a restrictive host), empty. Either way, always MERGE in a curated list of well-known
+	// families rather than only falling back to it when the live list is empty — a populated but
+	// incomplete snapshot needs the same guarantee. array_unique keeps the curated entry (first)
+	// on an exact-name collision; that's fine, the value is identical either way.
+	return array_values( array_unique( array_merge( evfsc_google_font_families_fallback(), $families ) ) );
+}
+
+/**
+ * Curated list of widely-used families, always merged into evfsc_get_google_font_families()'s
+ * result (not the full catalog) — guarantees these are always offered regardless of whether the
+ * live fetch succeeds, is stale, or fails outright.
+ *
+ * @return string[] Font family names.
+ */
+function evfsc_google_font_families_fallback() {
+	return array(
+		'Roboto',
+		'Open Sans',
+		'Lato',
+		'Montserrat',
+		'Poppins',
+		'Inter',
+		'Nunito',
+		'Nunito Sans',
+		'Source Sans Pro',
+		'Noto Sans',
+		'Raleway',
+		'Rubik',
+		'Work Sans',
+		'Mulish',
+		'Karla',
+		'Manrope',
+		'Quicksand',
+		'Ubuntu',
+		'PT Sans',
+		'Fira Sans',
+		'Barlow',
+		'Inconsolata',
+		'DM Sans',
+		'Josefin Sans',
+		'Cabin',
+		'Oxygen',
+		'Heebo',
+		'Hind',
+		'Titillium Web',
+		'Merriweather',
+		'Playfair Display',
+		'Lora',
+		'PT Serif',
+		'Libre Baskerville',
+		'Crimson Text',
+		'Bitter',
+		'EB Garamond',
+		'Roboto Slab',
+		'Roboto Condensed',
+		'Roboto Mono',
+		'Oswald',
+		'Anton',
+		'Bebas Neue',
+		'Dancing Script',
+		'Pacifico',
+		'Caveat',
+		'Comfortaa',
+		'Abril Fatface',
+		'Archivo',
+		'Space Grotesk',
+	);
 }
 
 function evfsc_migration() {

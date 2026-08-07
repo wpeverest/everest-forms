@@ -3,6 +3,7 @@
  * align, fontstyle, media, toggle), each reading/writing through the store.
  */
 import React from 'react';
+import { HexAlphaColorPicker } from 'react-colorful';
 import {
 	ALIGN_ICONS,
 	DEVICE_ICONS,
@@ -42,6 +43,47 @@ function useSyncedInput< T extends HTMLInputElement >(
 const clampNumber = ( n: number, min: number, max: number ) => Math.min( max, Math.max( min, n ) );
 const isFloatStep = ( token: Token ) => !! ( token.step && token.step < 1 );
 const roundToStep = ( n: number, token: Token ) => ( isFloatStep( token ) ? Math.round( n * 10 ) / 10 : Math.round( n ) );
+
+/** Parse any Sanitizer-accepted colour (#rgb, #rrggbb, #rrggbbaa, rgb()/rgba()) into a 6-digit hex + 0-100 alpha. */
+function parseColor( value: string ): { hex: string; alpha: number } {
+	const v = value.trim();
+	const rgbaMatch = v.match( /^rgba?\(\s*([\d.]+)[,\s]+([\d.]+)[,\s]+([\d.]+)(?:[,\s/]+([\d.]+%?))?\s*\)$/i );
+	if ( rgbaMatch ) {
+		const toHex = ( n: string ) => clampNumber( Math.round( Number( n ) ), 0, 255 ).toString( 16 ).padStart( 2, '0' );
+		const hex = '#' + toHex( rgbaMatch[ 1 ] ) + toHex( rgbaMatch[ 2 ] ) + toHex( rgbaMatch[ 3 ] );
+		const rawAlpha = rgbaMatch[ 4 ];
+		const alpha = rawAlpha === undefined
+			? 100
+			: clampNumber( Math.round( rawAlpha.endsWith( '%' ) ? parseFloat( rawAlpha ) : parseFloat( rawAlpha ) * 100 ), 0, 100 );
+		return { hex, alpha };
+	}
+	if ( /^#[0-9a-f]{3}$/i.test( v ) ) {
+		return { hex: '#' + v.slice( 1 ).split( '' ).map( ( c ) => c + c ).join( '' ), alpha: 100 };
+	}
+	if ( /^#[0-9a-f]{6}$/i.test( v ) ) {
+		return { hex: v.toLowerCase(), alpha: 100 };
+	}
+	if ( /^#[0-9a-f]{8}$/i.test( v ) ) {
+		const alpha = clampNumber( Math.round( ( parseInt( v.slice( 7, 9 ), 16 ) / 255 ) * 100 ), 0, 100 );
+		return { hex: v.slice( 0, 7 ).toLowerCase(), alpha };
+	}
+	return { hex: '#000000', alpha: 100 };
+}
+
+/** Recompose a 6-digit hex + 0-100 alpha back into the stored value (plain hex when fully opaque). */
+function composeColor( hex: string, alpha: number ): string {
+	if ( alpha >= 100 ) {
+		return hex;
+	}
+	const alphaHex = clampNumber( Math.round( ( alpha / 100 ) * 255 ), 0, 255 ).toString( 16 ).padStart( 2, '0' );
+	return hex + alphaHex;
+}
+
+/** Always-8-digit form, for react-colorful's `HexAlphaColorPicker` (its value/onChange contract is always `#rrggbbaa`). */
+function toHex8( hex: string, alpha: number ): string {
+	const alphaHex = clampNumber( Math.round( ( alpha / 100 ) * 255 ), 0, 255 ).toString( 16 ).padStart( 2, '0' );
+	return hex + alphaHex;
+}
 
 function Svg( { inner, className }: { inner: string; className?: string } ) {
 	return (
@@ -279,9 +321,22 @@ function SliderControl( props: ControlProps ) {
 function ColorControl( props: ControlProps ) {
 	const { token, store } = props;
 	const value = String( store.resolve( token.key ) );
+	const parsed = parseColor( value );
 	const hexRef = React.useRef< HTMLInputElement >( null );
+	const alphaNumRef = React.useRef< HTMLInputElement >( null );
+	const rootRef = React.useRef< HTMLDivElement >( null );
 	const [ invalid, setInvalid ] = React.useState( false );
-	useSyncedInput( hexRef, value.toUpperCase() );
+	const [ pickerOpen, setPickerOpen ] = React.useState( false );
+	useSyncedInput( hexRef, parsed.hex.toUpperCase() );
+	useSyncedInput( alphaNumRef, String( parsed.alpha ) );
+	useDismiss( pickerOpen, rootRef, () => setPickerOpen( false ) );
+
+	const commitHex = ( hex: string ) => store.setTokenValue( token.key, composeColor( hex, parsed.alpha ), true );
+	const commitAlpha = ( alpha: number ) => store.setTokenValue( token.key, composeColor( parsed.hex, clampNumber( alpha, 0, 100 ) ), true );
+	const commitHex8 = ( hex8: string ) => {
+		const p = parseColor( hex8 );
+		store.setTokenValue( token.key, composeColor( p.hex, p.alpha ), true );
+	};
 
 	const onHex = ( e: React.FormEvent< HTMLInputElement > ) => {
 		let t = ( e.target as HTMLInputElement ).value.trim();
@@ -293,7 +348,7 @@ function ColorControl( props: ControlProps ) {
 		}
 		if ( /^#[0-9a-f]{6}$/i.test( t ) ) {
 			setInvalid( false );
-			store.setTokenValue( token.key, t.toLowerCase(), true );
+			commitHex( t.toLowerCase() );
 		} else {
 			setInvalid( true );
 		}
@@ -301,31 +356,62 @@ function ColorControl( props: ControlProps ) {
 
 	return (
 		<ControlShell { ...props }>
-			<div className={ 'color' + ( invalid ? ' invalid' : '' ) }>
-				<input
-					type="color"
-					value={ /^#[0-9a-f]{6}$/i.test( value ) ? value : '#000000' }
+			<div className={ 'color' + ( invalid ? ' invalid' : '' ) } ref={ rootRef }>
+				<button
+					type="button"
+					className="swatch"
+					style={ { '--swatch': composeColor( parsed.hex, parsed.alpha ) } as React.CSSProperties }
+					aria-haspopup="true"
+					aria-expanded={ pickerOpen }
 					aria-label={ token.label }
-					onChange={ ( e ) => {
-						setInvalid( false );
-						store.setTokenValue( token.key, e.target.value, true );
-					} }
+					onClick={ () => setPickerOpen( ( o ) => ! o ) }
 				/>
 				<input
 					ref={ hexRef }
 					className="hex"
 					spellCheck={ false }
-					defaultValue={ value.toUpperCase() }
+					defaultValue={ parsed.hex.toUpperCase() }
 					aria-label={ token.label + ' hex value' }
 					onInput={ onHex }
 					onBlur={ () => {
 						setInvalid( false );
 						if ( hexRef.current ) {
-							hexRef.current.value = String( store.resolve( token.key ) ).toUpperCase();
+							hexRef.current.value = parseColor( String( store.resolve( token.key ) ) ).hex.toUpperCase();
 						}
 					} }
 				/>
 				{ invalid && <span className="err">{ __( 'Invalid color', 'everest-forms' ) }</span> }
+				{ pickerOpen && (
+					<div className="color-pop">
+						<HexAlphaColorPicker
+							color={ toHex8( parsed.hex, parsed.alpha ) }
+							onChange={ commitHex8 }
+						/>
+						<div className="color-pop-alpha">
+							<span className="opacity-pop-label">{ __( 'Opacity', 'everest-forms' ) }</span>
+							<div className="num">
+								<input
+									ref={ alphaNumRef }
+									inputMode="numeric"
+									defaultValue={ String( parsed.alpha ) }
+									aria-label={ token.label + ' ' + __( 'opacity value', 'everest-forms' ) }
+									onInput={ ( e ) => {
+										const n = Number( ( e.target as HTMLInputElement ).value );
+										if ( ! Number.isNaN( n ) ) {
+											commitAlpha( n );
+										}
+									} }
+									onBlur={ () => {
+										if ( alphaNumRef.current ) {
+											alphaNumRef.current.value = String( parseColor( String( store.resolve( token.key ) ) ).alpha );
+										}
+									} }
+								/>
+								<span>%</span>
+							</div>
+						</div>
+					</div>
+				) }
 			</div>
 		</ControlShell>
 	);
@@ -594,9 +680,11 @@ function FontSelectControl( props: ControlProps & { depHint?: string } ) {
 		}
 	};
 
-	const hint = themeFont
-		? __( 'Using your theme’s font. Turn off “Use theme fonts” to choose one.', 'everest-forms' )
-		: depHint || '';
+	const hint = ! themeFont
+		? depHint || ''
+		: store.applyThemeStyle
+			? __( 'Using your theme’s font — controlled by “Apply Theme Style” above.', 'everest-forms' )
+			: __( 'Using your theme’s font. Turn off “Use theme fonts” to choose one.', 'everest-forms' );
 
 	return (
 		<ControlShell { ...props }>
@@ -693,24 +781,43 @@ function AlignControl( props: ControlProps ) {
 function FontStyleControl( props: ControlProps ) {
 	const { token, store } = props;
 	const value = ( store.resolve( token.key ) || {} ) as FontStyleValue;
+	const weightOptions = token.weight_options || [];
 	return (
 		<ControlShell { ...props }>
-			<div className="fstyleset" role="group" aria-label={ token.label }>
-				{ FONTSTYLE_BUTTONS.map( ( [ flag, glyph, title ] ) => (
-					<button
-						key={ flag }
-						type="button"
-						aria-pressed={ !! value[ flag ] }
-						title={ title }
-						aria-label={ title }
-						dangerouslySetInnerHTML={ { __html: glyph } }
-						onClick={ () => {
+			<div className="fstylewrap">
+				{ weightOptions.length > 0 && (
+					<select
+						className="fweight-select"
+						aria-label={ __( 'Font weight', 'everest-forms' ) }
+						value={ value.weight || '' }
+						onChange={ ( e ) => {
 							const next = clone( store.resolve( token.key ) ) as FontStyleValue;
-							next[ flag ] = ! next[ flag ];
+							next.weight = e.target.value;
 							store.setTokenValue( token.key, next, false );
 						} }
-					/>
-				) ) }
+					>
+						{ weightOptions.map( ( o ) => (
+							<option key={ o.value } value={ o.value }>{ o.label }</option>
+						) ) }
+					</select>
+				) }
+				<div className="fstyleset" role="group" aria-label={ token.label }>
+					{ FONTSTYLE_BUTTONS.map( ( [ flag, glyph, title ] ) => (
+						<button
+							key={ flag }
+							type="button"
+							aria-pressed={ !! value[ flag ] }
+							title={ title }
+							aria-label={ title }
+							dangerouslySetInnerHTML={ { __html: glyph } }
+							onClick={ () => {
+								const next = clone( store.resolve( token.key ) ) as FontStyleValue;
+								next[ flag ] = ! next[ flag ];
+								store.setTokenValue( token.key, next, false );
+							} }
+						/>
+					) ) }
+				</div>
 			</div>
 		</ControlShell>
 	);
@@ -764,7 +871,13 @@ function MediaControl( props: ControlProps ) {
 
 function ToggleControl( props: ControlProps ) {
 	const { token, store } = props;
-	const value = store.resolve( token.key ) === true;
+	// The global "Apply Theme Style" toggle forces fonts.theme on (see store.themeFont()) — disable
+	// this switch rather than leave it clickable-but-inert, and say why.
+	const forcedByGlobal = token.key === 'fonts.theme' && store.applyThemeStyle;
+	const value = forcedByGlobal || store.resolve( token.key ) === true;
+	const hint = forcedByGlobal
+		? __( 'Forced on by the global “Apply Theme Style” setting above.', 'everest-forms' )
+		: '';
 	return (
 		<ControlShell
 			{ ...props }
@@ -773,13 +886,14 @@ function ToggleControl( props: ControlProps ) {
 					type="button"
 					className="switch"
 					role="switch"
+					disabled={ forcedByGlobal }
 					aria-checked={ value }
 					aria-label={ token.label }
 					onClick={ () => store.setTokenValue( token.key, ! value, false ) }
 				/>
 			}
 		>
-			{ null }
+			{ hint && <div className="dep-hint">{ hint }</div> }
 		</ControlShell>
 	);
 }

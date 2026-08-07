@@ -38,6 +38,27 @@ final class PreviewDraft {
 	const SESSION_ARG = 'evf_style_session';
 
 	/**
+	 * The most recently parsed draft per form, valid only for the current request. Lets code
+	 * that runs inside the SAME `save_preview_draft` request (e.g. {@see RestController::form_field_types()},
+	 * the Multi-Part addon's section-visibility filter) react to the just-POSTed draft's
+	 * fields/settings instead of the last-saved DB row, without a second lookup mechanism.
+	 *
+	 * @var array
+	 */
+	protected static $current = array();
+
+	/**
+	 * The current request's just-parsed draft for a form, if any.
+	 *
+	 * @param int $form_id Form id.
+	 * @return array|null
+	 */
+	public static function current( $form_id ) {
+		$form_id = absint( $form_id );
+		return isset( self::$current[ $form_id ] ) ? self::$current[ $form_id ] : null;
+	}
+
+	/**
 	 * Wire the front-end filter. Called from {@see Engine::boot()} (runs on the front end too,
 	 * where the preview iframe is rendered). Priority 5 so the swap happens before add-ons that
 	 * read the form data on the default priority.
@@ -51,11 +72,12 @@ final class PreviewDraft {
 
 	/**
 	 * Is the current request the style customizer's own preview iframe? Tight gate: a front-end
-	 * `?evf_preview` request carrying our flag, from a logged-in form manager.
+	 * `?evf_preview` request carrying our flag, from a logged-in form manager. Public so addons
+	 * can reuse the same gate (e.g. {@see self::preview_style_tokens()}'s callers).
 	 *
 	 * @return bool
 	 */
-	protected static function is_style_preview_request() {
+	public static function is_style_preview_request() {
 		if ( is_admin() ) {
 			return false;
 		}
@@ -115,9 +137,12 @@ final class PreviewDraft {
 	 * @param string $form_data_json JSON of the builder's serialized `[{name,value},…]` array
 	 *                               (form inputs + layout structure), exactly as the save AJAX sends.
 	 * @param string $session        Per-page-load session token (from BuilderPanel).
+	 * @param array  $style_tokens   Optional. Unsaved Style Customizer v2 token values with no
+	 *                               CSS-variable fast path (e.g. `pagination.indicatorType`),
+	 *                               keyed by token key — see {@see self::preview_style_tokens()}.
 	 * @return bool True if a renderable draft was stored.
 	 */
-	public static function store( $form_id, $form_data_json, $session ) {
+	public static function store( $form_id, $form_data_json, $session, $style_tokens = null ) {
 		$form_id = absint( $form_id );
 		$user_id = get_current_user_id();
 		$session = sanitize_text_field( (string) $session );
@@ -132,6 +157,36 @@ final class PreviewDraft {
 
 		$data = self::parse( $decoded );
 
+		// Each push only carries the style tokens edited SINCE the last one (the client clears its
+		// pending set after every successful POST) — merge onto whatever's already staged instead
+		// of replacing it wholesale, or editing e.g. indicatorColor after indicatorType would drop
+		// the still-unsaved indicatorType override (a structure-only push, with no style_tokens at
+		// all, must also carry the existing overrides forward for the same reason).
+		$existing_draft  = get_transient( self::key( $form_id, $user_id, $session ) );
+		$existing_tokens = ( is_array( $existing_draft ) && isset( $existing_draft['style_tokens'] ) && is_array( $existing_draft['style_tokens'] ) )
+			? $existing_draft['style_tokens']
+			: array();
+
+		if ( is_array( $style_tokens ) ) {
+			$clean = array();
+			foreach ( $style_tokens as $key => $value ) {
+				if ( ! is_string( $key ) ) {
+					continue;
+				}
+				$sanitized = self::sanitize_style_token_value( $value );
+				if ( null !== $sanitized ) {
+					$clean[ $key ] = $sanitized;
+				}
+			}
+			$existing_tokens = array_merge( $existing_tokens, $clean );
+		}
+
+		if ( ! empty( $existing_tokens ) ) {
+			$data['style_tokens'] = $existing_tokens;
+		}
+
+		self::$current[ $form_id ] = $data;
+
 		// A draft with no fields isn't renderable — clear any stale draft instead.
 		if ( empty( $data['form_fields'] ) ) {
 			self::clear( $form_id, $session );
@@ -140,6 +195,39 @@ final class PreviewDraft {
 
 		set_transient( self::key( $form_id, $user_id, $session ), $data, self::TTL );
 		return true;
+	}
+
+	/**
+	 * Sanitize one staged style-token value — either a scalar (color/select value) or a box4
+	 * shape `{top,right,bottom,left[,unit]}` (e.g. `pagination.margin`, sent as the resolved
+	 * device value straight from the JS store — see PreviewBridge.ts's PAGINATION_STRUCTURAL_KEYS).
+	 * Returns null for anything else (rejected, same as the old is_scalar()-only check did).
+	 *
+	 * @param mixed $value Raw staged value.
+	 * @return string|array|null
+	 */
+	protected static function sanitize_style_token_value( $value ) {
+		if ( is_scalar( $value ) ) {
+			return sanitize_text_field( (string) $value );
+		}
+		if ( is_array( $value ) ) {
+			$sides = array( 'top', 'right', 'bottom', 'left' );
+			if ( array_diff( $sides, array_keys( $value ) ) ) {
+				return null;
+			}
+			$box = array();
+			foreach ( $sides as $side ) {
+				if ( ! is_numeric( $value[ $side ] ) ) {
+					return null;
+				}
+				$box[ $side ] = (float) $value[ $side ];
+			}
+			if ( isset( $value['unit'] ) && is_string( $value['unit'] ) ) {
+				$box['unit'] = sanitize_text_field( $value['unit'] );
+			}
+			return $box;
+		}
+		return null;
 	}
 
 	/**
@@ -237,5 +325,34 @@ final class PreviewDraft {
 		}
 
 		return array_replace( $form_data, $draft );
+	}
+
+	/**
+	 * The unsaved style-token overrides for the CURRENT style-preview iframe request, if any —
+	 * same gating as {@see self::filter_form_data()}, but exposed for addons to consult while
+	 * rendering (e.g. Multi-Part's `apply_v2_pagination_tokens()`) for tokens that change the
+	 * front-end DOM structure and so can't be live-patched by the panel's CSS-variable fast path
+	 * (see PreviewBridge.ts's `applyToken()`/`applyKeys()`).
+	 *
+	 * @param int $form_id Form id being rendered.
+	 * @return array Token key => value, or empty if there's no matching draft.
+	 */
+	public static function preview_style_tokens( $form_id ) {
+		if ( ! self::is_style_preview_request() ) {
+			return array();
+		}
+		// phpcs:disable WordPress.Security.NonceVerification.Recommended -- read-only gating, matches is_style_preview_request()/filter_form_data().
+		$req_form_id = isset( $_GET['form_id'] ) ? absint( wp_unslash( $_GET['form_id'] ) ) : 0;
+		$session     = isset( $_GET[ self::SESSION_ARG ] ) ? sanitize_text_field( wp_unslash( $_GET[ self::SESSION_ARG ] ) ) : '';
+		// phpcs:enable WordPress.Security.NonceVerification.Recommended
+
+		if ( ! $req_form_id || absint( $form_id ) !== $req_form_id || '' === $session ) {
+			return array();
+		}
+
+		$draft = get_transient( self::key( $req_form_id, get_current_user_id(), $session ) );
+		return is_array( $draft ) && isset( $draft['style_tokens'] ) && is_array( $draft['style_tokens'] )
+			? $draft['style_tokens']
+			: array();
 	}
 }

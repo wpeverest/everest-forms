@@ -77,6 +77,20 @@ if ( ! function_exists( 'esc_url_raw' ) ) {
 if ( ! function_exists( 'wp_strip_all_tags' ) ) {
 	function wp_strip_all_tags( $s ) { return strip_tags( (string) $s ); }
 }
+if ( ! function_exists( 'wp_list_pluck' ) ) {
+	function wp_list_pluck( $list, $field ) { return array_map( static function ( $el ) use ( $field ) { return is_array( $el ) && isset( $el[ $field ] ) ? $el[ $field ] : null; }, $list ); }
+}
+if ( ! function_exists( 'wp_parse_url' ) ) {
+	function wp_parse_url( $url, $component = -1 ) { return parse_url( $url, $component ); } // phpcs:ignore WordPress.WP.AlternativeFunctions.parse_url_parse_url
+}
+if ( ! function_exists( 'sanitize_title' ) ) {
+	function sanitize_title( $s ) { return preg_replace( '/[^a-z0-9\-]/', '', strtolower( str_replace( ' ', '-', (string) $s ) ) ); }
+}
+if ( ! function_exists( 'evf' ) ) {
+	// Only Templates::image_url() needs this (for a plugin_url() prefix on built-in template
+	// thumbnails) — the test never exercises that path's *output*, just needs it not to fatal.
+	function evf() { return new class() { public function plugin_url() { return ''; } }; }
+}
 
 require dirname( __DIR__ ) . '/Schema.php';
 require dirname( __DIR__ ) . '/Sanitizer.php';
@@ -84,6 +98,7 @@ require dirname( __DIR__ ) . '/Compiler.php';
 require dirname( __DIR__ ) . '/Migrator.php';
 require dirname( __DIR__ ) . '/Engine.php';
 require dirname( __DIR__ ) . '/Palettes.php';
+require dirname( __DIR__ ) . '/Templates.php';
 
 use EverestForms\Addons\StyleCustomizer\V2\Schema;
 use EverestForms\Addons\StyleCustomizer\V2\Sanitizer;
@@ -91,6 +106,7 @@ use EverestForms\Addons\StyleCustomizer\V2\Compiler;
 use EverestForms\Addons\StyleCustomizer\V2\Migrator;
 use EverestForms\Addons\StyleCustomizer\V2\Engine;
 use EverestForms\Addons\StyleCustomizer\V2\Palettes;
+use EverestForms\Addons\StyleCustomizer\V2\Templates;
 
 $pass = 0;
 $fail = 0;
@@ -114,7 +130,7 @@ function group( $name ) {
 // evf_style_schema only when Pro is active). Unlike Messages, all 11 palettes (2 free + 9 Pro)
 // ship in free's own Schema so the panel can preview every one — see Schema::palettes().
 group( 'Schema' );
-ok( count( Schema::tokens() ) === 93, 'has 93 free tokens (Messages moved to Pro)' );
+ok( count( Schema::tokens() ) === 101, 'has 101 free tokens (Messages moved to Pro; +7 letter-spacing, +1 btn.widthMode)' );
 ok( Schema::version() === 1, 'version is 1' );
 ok( count( Schema::palettes() ) === 11, 'has all 11 palettes (2 free + 9 Pro preview metadata)' );
 $pro_palette_count = count( array_filter( Schema::palettes(), static function ( $p ) { return ! empty( $p['is_pro'] ); } ) );
@@ -123,7 +139,7 @@ $vars = array_values( Schema::css_var_map() );
 ok( count( $vars ) === count( array_unique( $vars ) ), 'no duplicate CSS vars' );
 ok( Schema::get( 'wrap.pad' )['responsive'] === true, 'wrap.pad is responsive' );
 ok( Schema::get( 'wrap.width' )['responsive'] === false, 'wrap.width is NOT responsive' );
-ok( Schema::get( 'btn.bg' )['hidden'] === true, 'btn.bg is hidden (palette-driven)' );
+ok( empty( Schema::get( 'btn.bg' )['hidden'] ), 'btn.bg is directly editable (palette-driven default, no longer hidden)' );
 ok( null === Schema::get( 'msg.success.bg' ), 'Messages tokens absent from free schema (Pro-only)' );
 // Free tiering: ALL design sections are Pro (locked teasers); only the palette-driven colour
 // tokens are tier=free (so the 2 free palettes recolour), everything else is Pro.
@@ -184,7 +200,7 @@ ok( ! isset( $clean['tokens']['input.size']['tablet'] ), 'tablet dropped on non-
 ok( $clean['tokens']['wrap.borderC']['desktop'] === '#ececf1', 'invalid colour → default' );
 ok( isset( $clean['tokens']['wrap.margin']['tablet'] ), 'tablet kept on responsive token' );
 ok( $clean['tokens']['input.align']['desktop'] === 'left', 'invalid choice → default' );
-ok( $clean['tokens']['label.fstyle']['desktop'] === array( 'bold' => true, 'italic' => false, 'underline' => false, 'uppercase' => false ), 'fontstyle normalized to booleans' );
+ok( $clean['tokens']['label.fstyle']['desktop'] === array( 'bold' => true, 'italic' => false, 'underline' => false, 'uppercase' => false, 'weight' => '' ), 'fontstyle normalized to booleans + weight' );
 ok( strpos( $clean['custom_css'], '@import' ) === false, 'custom CSS strips @import' );
 ok( strpos( $clean['custom_css'], 'javascript:' ) === false, 'custom CSS strips javascript: url' );
 
@@ -249,16 +265,19 @@ ok( $over_image['tokens']['label.color']['desktop'] === '#ffffff', 'white label.
 
 /* ------------------------------------------------------ Pro tier enforcement */
 // Switch to the FREE path (Pro inactive): a crafted request that includes pro-tier values must
-// not be able to persist them — the free/pro boundary must be non-bypassable. This covers both
-// a granular pro token that IS in the free schema (input.size) and a Pro-only token that is
-// physically absent (msg.*), plus a Pro palette id.
+// not be able to persist them — the free/pro boundary must be non-bypassable. This covers a
+// granular pro token that IS in the free schema (input.size), a Pro-only token that is
+// physically absent (msg.*), a Pro palette id, AND (EVF-2708) a free-tier token's raw value:
+// wrap.bg/btn.bg/label.color etc. are only ever DERIVED from a registered free palette id, never
+// trusted raw — otherwise a crafted request (no valid free palette, just a hand-picked colour)
+// could paint an arbitrary custom scheme through keys that exist only to let the picker render.
 $GLOBALS['evf_test_pro_active'] = false;
 group( 'Pro tier enforcement (Pro inactive)' );
 ok( Engine::pro_active() === false, 'pro_active is false without Pro' );
 $attack = Sanitizer::sanitize_record(
 	array(
 		'tokens'  => array(
-			'wrap.bg'        => array( 'desktop' => '#123456' ), // free palette token → kept
+			'wrap.bg'        => array( 'desktop' => '#123456' ), // free-tier, but no valid palette below → dropped
 			'input.size'     => array( 'desktop' => 20 ),        // granular pro token → dropped
 			'input.pad'      => array( 'desktop' => array( 'top' => 5, 'right' => 5, 'bottom' => 5, 'left' => 5 ) ), // pro → dropped
 			'msg.success.bg' => array( 'desktop' => '#00ff00' ), // Pro-only token → dropped
@@ -266,17 +285,28 @@ $attack = Sanitizer::sanitize_record(
 		'palette' => 'midnight', // a Pro palette id → must be rejected
 	)
 );
-ok( isset( $attack['tokens']['wrap.bg'] ), 'free palette token persists' );
+ok( ! isset( $attack['tokens']['wrap.bg'] ), 'free-tier token\'s raw crafted value NOT trusted without a valid free palette (EVF-2708)' );
 ok( ! isset( $attack['tokens']['input.size'] ), 'granular pro token stripped on save' );
 ok( ! isset( $attack['tokens']['input.pad'] ), 'granular pro box token stripped on save' );
 ok( ! isset( $attack['tokens']['msg.success.bg'] ), 'Pro-only Messages token stripped on save' );
 ok( '' === $attack['palette'], 'pro palette id rejected on save' );
+
+// The legitimate counterpart: WITH a valid free palette id, the free-tier token IS populated —
+// but from the palette's own colour, never the crafted raw value riding alongside it.
+$legit = Sanitizer::sanitize_record(
+	array(
+		'tokens'  => array( 'wrap.bg' => array( 'desktop' => '#123456' ) ), // ignored — not derived from this
+		'palette' => 'classic',
+	)
+);
+ok( '#ffffff' === $legit['tokens']['wrap.bg']['desktop'], 'with a valid free palette, wrap.bg comes from the palette, not the crafted raw value' );
+
 // A pro CUSTOMISATION can never reach the compiled CSS while Pro is inactive: the compiler emits
 // the pro token's DEFAULT (so the form isn't broken by unset vars), never the crafted value.
 $attack_css = Compiler::compile( array( 'tokens' => array( 'input.size' => array( 'desktop' => 20 ), 'wrap.bg' => array( 'desktop' => '#123456' ) ) ), 7 );
 ok( strpos( $attack_css, '--evf-input-size:20px' ) === false, 'free: crafted pro value NOT compiled' );
 ok( strpos( $attack_css, '--evf-input-size:14px' ) !== false, 'free: pro token renders at default (form not broken)' );
-ok( strpos( $attack_css, '--evf-wrap-bg:#123456' ) !== false, 'free palette token still compiled without Pro' );
+ok( strpos( $attack_css, '--evf-wrap-bg:#123456' ) !== false, 'Compiler trusts its input and renders whatever tokens it is given — the gate is at sanitize/save time, not render time' );
 // Restore Pro-active for the remaining control-logic suites (Compiler/Migrator).
 $GLOBALS['evf_test_pro_active'] = true;
 
@@ -482,23 +512,36 @@ ok( isset( $clean_pro['tokens']['label.size'] ), 'Pro active: migrated granular 
 ok( ! isset( $clean_pro['tokens']['msg.success.bg'] ), 'Messages require the Pro module (absent here)' );
 
 /* ------------------------------------------ Migration compatibility (free) */
-// The tier split must be migration-SAFE on a free site: an existing v1-styled form migrates
-// without corruption, its palette colours (free tokens) are preserved, and its now-Pro styling
-// (granular controls, message colours) is dropped rather than rendered — a clean downgrade, not
-// a break. (The legacy record is also backed up once on first v2 save; see RestController.)
+// The tier split must be migration-SAFE on a free site. sanitize_record() ALONE only derives a
+// free-tier (palette-driven) token from a REGISTERED free palette id — never a raw value, see
+// EVF-2708 — so on its own it drops a v1 form's base colours whenever the migrated palette
+// matches neither of the 2 free presets. That's a real case: v1 had no tiers at all, so a site
+// that's always been free could easily have picked what's now a Pro-only preset, or gone fully
+// custom. This is exactly why save_item() never calls sanitize_record() alone — it always chains
+// preserve_stale_pro_tokens() with the pre-save record (see that method's own doc comment): it
+// re-attaches ANY token, free- or pro-tier, the old record already had, so a one-time migration
+// is lossless. A stale PRO-tier value riding along this way is harmless — Compiler::compile()
+// independently re-checks tier at render time, so it sits inert in storage but never actually
+// renders without Pro (the compiled-CSS assertions below are the guarantee that actually
+// matters, not what's merely sitting in the stored record).
 $GLOBALS['evf_test_pro_active'] = false;
 group( 'Migration compatibility (Pro inactive)' );
 $clean_free = Sanitizer::sanitize_record( $v2 );
+$clean_free = Sanitizer::preserve_stale_pro_tokens( $clean_free, $legacy );
 ok( $clean_free['tokens']['wrap.bg']['desktop'] === '#111111', 'free: migrated palette form bg preserved' );
 ok( $clean_free['tokens']['btn.bg']['desktop'] === '#ff0000', 'free: migrated palette button bg preserved' );
 ok( $clean_free['tokens']['label.color']['desktop'] === '#eeeeee', 'free: migrated palette label colour preserved' );
-ok( ! isset( $clean_free['tokens']['label.size'] ), 'free: migrated granular label size dropped (Pro)' );
-ok( ! isset( $clean_free['tokens']['label.fstyle'] ), 'free: migrated label font-style dropped (Pro)' );
-ok( ! isset( $clean_free['tokens']['msg.success.bg'] ), 'free: migrated message colour dropped (Pro)' );
+ok( isset( $clean_free['tokens']['label.size'] ), 'free: stale pro-tier value rides along in storage (harmless — gated again at render, see below)' );
 $compiled_free = Compiler::compile( $clean_free, 7 );
 ok( strpos( $compiled_free, '--evf-wrap-bg:#111111' ) !== false, 'free: migrated palette colour still renders' );
-ok( strpos( $compiled_free, '--evf-label-size:20px' ) === false, 'free: migrated granular Pro value (20px) does NOT render' );
+ok( strpos( $compiled_free, '--evf-label-size:20px' ) === false, 'free: migrated granular Pro value (20px) does NOT render, even though it sits in storage' );
 ok( strpos( $compiled_free, '--evf-label-size:14px' ) !== false, 'free: label size renders at default (form not broken)' );
+
+// Regression guard: without the chained preserve_stale_pro_tokens() call, sanitize_record() ALONE
+// is lossy for free-tier colours too — confirms WHY save_item() must never drop that call, not
+// just that the full pipeline happens to pass today.
+$clean_free_alone = Sanitizer::sanitize_record( $v2 );
+ok( ! isset( $clean_free_alone['tokens']['wrap.bg'] ), 'sanitize_record() ALONE drops an unmatched free palette colour (regression guard)' );
 $GLOBALS['evf_test_pro_active'] = true;
 
 /* ------------------------------------- Preserve stale pro tokens (EVF-2685) */
@@ -673,6 +716,74 @@ ok( $rec_pro['palette'] === $c3['id'], 'custom palette id persists when Pro is a
 $GLOBALS['evf_test_pro_active'] = false;
 $rec_free                       = Sanitizer::sanitize_record( array( 'tokens' => array(), 'palette' => $c3['id'] ) );
 ok( $rec_free['palette'] === '', 'custom palette id is stripped without Pro' );
+
+/* --------------------------------------------------------------- Templates */
+// User-created style templates (create/update/delete) + legacy (v1 `evf_style_templates`)
+// carry-over. The critical guarantee here is migration-safety: a legacy template is FORK-ONLY —
+// update_user_template() must never touch the v1 option (unlike Palettes, whose flat 6-colour
+// shape round-trips trivially; a template's v1 shape does not — see the method's doc comment).
+group( 'Templates (custom)' );
+$GLOBALS['evf_test_options'] = array();
+$tpl_record                  = array(
+	'tokens'         => array( 'wrap.bg' => array( 'desktop' => '#123456' ) ),
+	'palette'        => 'classic',
+	'schema_version' => 1,
+);
+$saved = Templates::save_user_template( 'My Template', $tpl_record );
+ok( strpos( $saved['id'], 'user-' ) === 0, 'save_user_template returns a user- id' );
+ok( true === $saved['custom'] && '' === $saved['image'], 'saved template flagged custom, no image' );
+ok( $saved['tokens']['wrap.bg']['desktop'] === '#123456', 'saved template keeps its tokens' );
+$stored_entry = $GLOBALS['evf_test_options'][ Templates::USER_OPTION ][0];
+ok( 1 === $stored_entry['schema_version'], 'schema_version stamped on create' );
+ok( is_int( $stored_entry['created_at'] ) && $stored_entry['created_at'] > 0, 'created_at stamped on create' );
+$created_at = $stored_entry['created_at'];
+
+// update in place
+$upd_record = array( 'tokens' => array( 'wrap.bg' => array( 'desktop' => '#654321' ) ), 'palette' => '', 'schema_version' => 1 );
+$updated    = Templates::update_user_template( $saved['id'], 'Renamed Template', $upd_record );
+ok( false !== $updated && 'Renamed Template' === $updated['name'], 'update_user_template renames in place' );
+ok( $updated['tokens']['wrap.bg']['desktop'] === '#654321', 'update_user_template changes tokens' );
+ok( $GLOBALS['evf_test_options'][ Templates::USER_OPTION ][0]['created_at'] === $created_at, 'update_user_template leaves created_at untouched' );
+ok( Templates::update_user_template( 'user-doesnotexist', 'x', $upd_record ) === false, 'update on an unknown id returns false' );
+
+// Legacy templates are fork-only: update_user_template() must reject ANY legacy- id outright,
+// without even looking at the v1 option — the one thing that must never regress.
+ok( Templates::update_user_template( 'legacy-anything', 'x', $upd_record ) === false, 'update_user_template rejects a legacy- id outright' );
+
+// v1 carry-over: a real custom template saved via the old (pre-v2) "Create Style Template" UI,
+// stored as a JSON *string* keyed by slug in evf_style_templates (built-ins share this option
+// but are skipped by name-match against Templates::all()).
+$legacy_slug                                         = 'my-old-template';
+$GLOBALS['evf_test_options']['evf_style_templates'] = wp_json_encode(
+	array(
+		$legacy_slug => array(
+			'name' => 'My Old Template',
+			'data' => array( 'wrapper' => array( 'background_color' => '#ababab' ) ),
+		),
+	)
+);
+$user_templates = Templates::user_templates();
+$legacy_tpl      = null;
+foreach ( $user_templates as $t ) {
+	if ( 'My Old Template' === $t['name'] ) {
+		$legacy_tpl = $t;
+	}
+}
+ok( null !== $legacy_tpl, 'v1 custom template surfaces in user_templates' );
+ok( null !== $legacy_tpl && 0 === strpos( $legacy_tpl['id'], 'legacy-' ), 'v1 template gets a legacy- id' );
+ok( null !== $legacy_tpl && true === $legacy_tpl['custom'], 'v1 template flagged custom' );
+
+// The real safety test: attempting to edit that REAL legacy id in place must fail AND must not
+// touch evf_style_templates at all.
+$before_raw = $GLOBALS['evf_test_options']['evf_style_templates'];
+ok( false === Templates::update_user_template( $legacy_tpl['id'], 'Hacked', $upd_record ), 'update_user_template rejects the real legacy id too' );
+ok( $GLOBALS['evf_test_options']['evf_style_templates'] === $before_raw, 'evf_style_templates option untouched after a rejected legacy update' );
+
+// delete on a legacy id still routes to the v1 option (pre-existing behaviour, unaffected by the
+// new update path) — confirms update and delete genuinely take different, deliberate paths.
+ok( true === Templates::delete_user_template( $legacy_tpl['id'] ), 'delete_user_template still removes a legacy id from the v1 option' );
+$after_raw = json_decode( $GLOBALS['evf_test_options']['evf_style_templates'], true );
+ok( ! isset( $after_raw[ $legacy_slug ] ), 'legacy template actually removed from evf_style_templates after delete' );
 
 /* ------------------------------------------------------------------ Result */
 echo "\n----------------------------------------\n";

@@ -2079,10 +2079,12 @@ body .everest-forms-popup-overlay {
 
 	.everest-forms-popup {
 		background: #fff;
-		padding: 20px 30px;
+		padding: 20px 30px 60px;
 		border-radius: 8px;
 		width: 386px;
-		height: 278px;
+		min-height: 278px;
+		max-height: 90vh;
+		overflow-y: auto;
 		text-align: center;
 		position: relative;
 		box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);

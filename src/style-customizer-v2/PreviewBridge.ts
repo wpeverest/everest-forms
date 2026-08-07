@@ -3,6 +3,7 @@
  * wrapper, injects the rule template, writes token values as CSS variables, and maps clicks
  * inside the iframe back to their style section for click-to-edit.
  */
+import { getActiveSync } from './BuilderSync';
 import { resolveValue, tokenDeclarations } from './cssVars';
 import { ALL_FORCE_CLASSES, PREVIEW_TARGETS } from './constants';
 import { StyleStore } from './store';
@@ -25,6 +26,28 @@ const SELECTED_CLASS = 'evf-scv2-selected';
 
 /** Mirrors FrontendEnqueue::container_class()'s `evf-choice-{variation}` classes. */
 const CHOICE_VARIATION_CLASSES = [ 'evf-choice-outline', 'evf-choice-filled' ];
+
+/** Mirrors FrontendEnqueue::container_class()'s `evf-choice-align-{center|right}` classes. */
+const CHOICE_ALIGN_CLASSES = [ 'evf-choice-align-center', 'evf-choice-align-right' ];
+
+/** Mirrors EverestForms_MultiPart::field_submit_visibility_class()'s `everest-forms-nav-align--{value}` class. */
+const PAGINATION_NAV_ALIGN_CLASSES = [
+	'everest-forms-nav-align--left',
+	'everest-forms-nav-align--right',
+	'everest-forms-nav-align--center',
+	'everest-forms-nav-align--split',
+];
+
+// indicatorType can't be live-patched client-side — its themes render genuinely different child
+// DOM per value (progress bar vs. an <ol>/<ul> of steps, see
+// EverestForms_MultiPart::output_part_indicator()), so it needs the same server-reload path a
+// Fields-tab edit uses. Every other pagination.* token (color/margin) has a real CSS var the
+// static everest-forms-multi-part.css now reads directly, so those preview instantly like any
+// other color/box4 token — no special-casing needed.
+const PAGINATION_STRUCTURAL_KEYS = [ 'pagination.indicatorType' ];
+
+/** Mirrors FrontendEnqueue::container_class()'s `evf-btn-width-fill` class. */
+const BTN_WIDTH_FILL_CLASS = 'evf-btn-width-fill';
 
 /** How long to keep polling for the form wrapper before giving up (ms). */
 const READY_DEADLINE = 15000;
@@ -87,6 +110,10 @@ export class PreviewBridge {
 	private mutationObserver: MutationObserver | null = null;
 	private observedDoc: Document | null = null;
 	private mutationScheduled = false;
+	/** Last value actually sent to the server per PAGINATION_STRUCTURAL_KEYS key — lets applyKeys()
+	 *  skip the resync when the value didn't really change (e.g. a template hover/revert cycle,
+	 *  which always re-applies the whole schema including these keys, but never touches the store). */
+	private lastSyncedStructural: Record< string, unknown > = {};
 
 	constructor( iframe: HTMLIFrameElement, store: StyleStore, handlers: BridgeHandlers ) {
 		this.iframe = iframe;
@@ -334,8 +361,13 @@ export class PreviewBridge {
 			   parent's background above does nothing to it since it is a separate
 			   absolutely-positioned pseudo-element box. */
 			.evf-form-preview-overlay::after { display: none !important; }
-			.evf-preview-content,
-			.everest-forms.evf-frontend-form-preview { padding: 0 !important; }
+			/* .evf-preview-content only — NOT .everest-forms.evf-frontend-form-preview, which used to
+			   be grouped in here too. That rule zeroed the form's own 24px preview-card padding
+			   specifically when "Apply Theme Style" was on, making the toggle look like it changes
+			   the form's spacing. It doesn't: the real (non-preview) frontend has no such rule tied
+			   to that toggle at all (see everest-forms-default-frontend.css) — this 24px is purely
+			   this admin preview card's own decoration, unrelated to theme-style. */
+			.evf-preview-content { padding: 0 !important; }
 			.evf-form-preview-form {
 				width: 100% !important;
 				max-width: 100% !important;
@@ -424,22 +456,53 @@ export class PreviewBridge {
 		if ( keys.indexOf( 'fonts.family' ) !== -1 || keys.indexOf( 'fonts.theme' ) !== -1 ) {
 			this.ensureFont();
 		}
+		// Ask the server to re-render the pagination indicator, same as a Fields-tab edit does —
+		// see PAGINATION_STRUCTURAL_KEYS. Scoped to this targeted-edit path only (never
+		// applyAll()'s bulk re-apply, which also runs on device switch/undo/bootstrap) so this
+		// can't loop or fire needlessly.
+		PAGINATION_STRUCTURAL_KEYS.forEach( ( key ) => {
+			if ( keys.indexOf( key ) === -1 ) {
+				return;
+			}
+			const token = this.store.byKey[ key ];
+			if ( token ) {
+				const value = resolveValue( this.store.tokens[ token.key ], token, this.store.device );
+				// applyKeys() also runs on a template hover/revert cycle (previewedKeys always covers
+				// the whole schema), which never touches the store — skip the round-trip when the
+				// server already has this exact value, so hovering a template can't spam reloads.
+				if ( this.lastSyncedStructural[ key ] === value ) {
+					return;
+				}
+				this.lastSyncedStructural[ key ] = value;
+				getActiveSync()?.syncStyleToken( token.key, value );
+			}
+		} );
 	}
 
-	/** Loads (or removes) the selected Google font inside the preview. */
-	private ensureFont() {
+	/**
+	 * Loads (or removes) the selected Google font inside the preview. A template hover passes its
+	 * own not-yet-committed family/theme-font instead of reading the store — otherwise the CSS var
+	 * flips to the template's font correctly (see previewValues()) but the webfont file is never
+	 * fetched, so the browser silently falls back to a system font and the hover looks like it did
+	 * nothing.
+	 */
+	private ensureFont( overrideFamily?: string, overrideThemeFont?: boolean ) {
 		const wrapper = this.wrapper;
 		if ( ! wrapper ) {
 			return;
 		}
 		const doc = wrapper.ownerDocument;
 		const token = this.store.byKey[ 'fonts.family' ];
-		const family = token
-			? String( resolveValue( this.store.tokens[ 'fonts.family' ], token, 'desktop' ) || '' ).trim()
-			: '';
+		const family =
+			overrideFamily !== undefined
+				? overrideFamily.trim()
+				: token
+					? String( resolveValue( this.store.tokens[ 'fonts.family' ], token, 'desktop' ) || '' ).trim()
+					: '';
+		const themeFont = overrideThemeFont !== undefined ? overrideThemeFont : this.store.themeFont();
 		let link = doc.getElementById( FONT_LINK_ID ) as HTMLLinkElement | null;
 
-		if ( this.store.themeFont() || ! family ) {
+		if ( themeFont || ! family ) {
 			if ( link ) {
 				link.remove();
 			}
@@ -484,6 +547,39 @@ export class PreviewBridge {
 			CHOICE_VARIATION_CLASSES.forEach( ( c ) => wrapper.classList.remove( c ) );
 			if ( value === 'outline' || value === 'filled' ) {
 				wrapper.classList.add( `evf-choice-${ value }` );
+			}
+		}
+
+		// choice.align DOES have a CSS var (used by every other choice type's inherited
+		// text-align), but the Subscription Plan card's name/price row can't be reached by
+		// text-align at all (it's a fixed `space-between` flex row) — mirror the same class
+		// bridge as choice.variation, purely as a supplementary hook for that one field.
+		if ( token.key === 'choice.align' ) {
+			CHOICE_ALIGN_CLASSES.forEach( ( c ) => wrapper.classList.remove( c ) );
+			if ( value === 'center' || value === 'right' ) {
+				wrapper.classList.add( `evf-choice-align-${ value }` );
+			}
+		}
+
+		// pagination.navAlign is a Multi-Part "meta" token (no CSS var) — it's pure positioning on
+		// markup that already exists regardless of value, so (unlike indicatorType, whose themes
+		// render genuinely different child DOM) a class toggle is enough for live preview. Applied
+		// to the nav container itself, matching EverestForms_MultiPart::field_submit_visibility_class().
+		if ( token.key === 'pagination.navAlign' ) {
+			const nav = wrapper.querySelector( '.everest-forms-multi-part-actions' );
+			if ( nav ) {
+				PAGINATION_NAV_ALIGN_CLASSES.forEach( ( c ) => nav.classList.remove( c ) );
+				if ( typeof value === 'string' && value ) {
+					nav.classList.add( `everest-forms-nav-align--${ value }` );
+				}
+			}
+		}
+
+		// btn.widthMode is another "meta" token (no CSS var) — same class-bridge pattern.
+		if ( token.key === 'btn.widthMode' ) {
+			wrapper.classList.remove( BTN_WIDTH_FILL_CLASS );
+			if ( value === 'fill' ) {
+				wrapper.classList.add( BTN_WIDTH_FILL_CLASS );
 			}
 		}
 	}
@@ -577,8 +673,19 @@ export class PreviewBridge {
 		el.setAttribute( 'data-evf-scv2-dummy', '1' );
 
 		if ( 'force-msg-validation' === cls ) {
-			const field = wrapper.querySelector( '.evf-field, .evf-frontend-row' );
-			( field || wrapper ).appendChild( el );
+			// Mirrors the real inline-validation placement (assets/js/frontend/ajax-submission.js):
+			// the error label lands right after the field's input (or its .input-wrapper), inside
+			// the FIRST field itself. `.evf-frontend-row` is an ANCESTOR of `.evf-field` (a row can
+			// hold several fields side by side via a grid), so a combined `.evf-field, .evf-frontend-row`
+			// selector matched the row first in document order — landing the message after the whole
+			// row, or the whole form when a row wrapper wasn't found at all.
+			const field = wrapper.querySelector( '.evf-field' );
+			const control = field ? field.querySelector( '.input-wrapper, input, select, textarea' ) : null;
+			if ( control ) {
+				control.insertAdjacentElement( 'afterend', el );
+			} else {
+				( field || wrapper ).appendChild( el );
+			}
 		} else {
 			wrapper.insertBefore( el, wrapper.firstChild );
 		}
@@ -612,7 +719,11 @@ export class PreviewBridge {
 		if ( ! this.wrapper ) {
 			return;
 		}
-		const themeFont = this.store.themeFont();
+		// Use THIS preview's own fonts.theme (a template hover always carries one — see
+		// flattenForPreview() in panes.tsx) rather than the store's current, not-yet-applied value —
+		// otherwise a template that turns theme-font off still previews with it forced on, because
+		// clicking would change fonts.theme but hovering never touches the store at all.
+		const themeFont = this.store.themeFont( overrides[ 'fonts.theme' ] as boolean | undefined );
 		Object.entries( overrides ).forEach( ( [ key, value ] ) => {
 			const token = this.store.byKey[ key ];
 			if ( ! token ) {
@@ -624,6 +735,12 @@ export class PreviewBridge {
 				this.wrapper!.style.setProperty( name, val )
 			);
 		} );
+		// The var above is enough for every other property, but a font also needs its webfont
+		// FILE loaded — without this the var flips correctly but the browser has nothing to render
+		// it with and silently falls back to a system font, looking like the hover did nothing.
+		if ( 'fonts.family' in overrides || 'fonts.theme' in overrides ) {
+			this.ensureFont( overrides[ 'fonts.family' ] as string | undefined, themeFont );
+		}
 	}
 
 	/** Preview a palette's colours live (hover) without committing to the store. */

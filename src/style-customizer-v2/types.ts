@@ -30,6 +30,8 @@ export interface FontStyleValue {
 	italic: boolean;
 	underline: boolean;
 	uppercase: boolean;
+	/** Explicit weight (e.g. '600'); '' ("Auto", also every pre-existing value) derives from `bold`. */
+	weight?: string;
 }
 
 /** A single sanitizable value for a token. */
@@ -69,6 +71,7 @@ export interface Token {
 	deps?: string[];
 	vars?: Record<string, string>;
 	neutral_weight?: string;
+	weight_options?: SelectOption[];
 	show_when_image?: boolean;
 	special?: string;
 	/** Runtime option source; `google_fonts` = fill the dropdown from payload.google_fonts. */
@@ -109,6 +112,8 @@ export interface Template {
 	custom?: boolean;
 	/** True for Pro-only built-in templates (locked in free). */
 	is_pro?: boolean;
+	/** True for the old, superseded default set — kept for existing forms, hidden from the picker grid. */
+	legacy?: boolean;
 }
 
 /** The stored style record (matches Sanitizer::sanitize_record()). */
@@ -158,8 +163,16 @@ export interface BootstrapSettings {
 	markerClass: string;
 	/** Per-page-load token scoping the live-preview draft to this builder session. */
 	previewSession: string;
-	/** Whether the ThemeGrill AI Cloud integration is usable on this site; drives the AI launcher. */
+	/** Whether the ThemeGrill AI Cloud integration is present on this site; drives the AI launcher. */
 	aiEnabled: boolean;
+	/** True on local/staging where the gateway is unreachable — the launcher shows but is greyed out. */
+	aiDisabled?: boolean;
+	/** admin-ajax.php URL, used for the discovery-hint dismissal call. */
+	ajaxUrl: string;
+	/** Nonce for the shared `evf_ai_dismiss_hint` AJAX action (see EVF_AI_Ajax::dismiss_hint()). */
+	aiNonce: string;
+	/** Whether this user has already dismissed (or engaged with) the "Style with AI" discovery hint. */
+	aiHintDismissed: boolean;
 	/** The full REST GET payload, localized inline so the panel can init without a network round-trip. */
 	payload?: StylePayload;
 }

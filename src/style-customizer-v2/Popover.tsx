@@ -33,34 +33,53 @@ export function Popover( { state, onClose }: { state: PopoverState; onClose: () 
 		if ( ! el ) {
 			return;
 		}
-		const r = state.anchor.getBoundingClientRect();
-		const w = el.offsetWidth;
-		let left = state.matchWidth ? r.left : Math.min( Math.max( 8, r.left ), window.innerWidth - w - 8 );
-		left = Math.min( Math.max( 8, left ), window.innerWidth - w - 8 );
 
-		// scrollHeight (not offsetHeight) gives the true content height despite the CSS max-height clamp.
-		const naturalH = el.scrollHeight;
-		const desiredH = Math.min( naturalH, 460 );
-		const GAP = 6;
-		const MARGIN = 8;
-		const MIN_H = 150;
-		const spaceBelow = window.innerHeight - r.bottom - GAP - MARGIN;
-		const spaceAbove = r.top - GAP - MARGIN;
+		const reposition = () => {
+			const r = state.anchor.getBoundingClientRect();
+			const w = el.offsetWidth;
+			let left = state.matchWidth ? r.left : Math.min( Math.max( 8, r.left ), window.innerWidth - w - 8 );
+			left = Math.min( Math.max( 8, left ), window.innerWidth - w - 8 );
 
-		let top: number;
-		let maxHeight: number;
-		if ( desiredH <= spaceBelow ) {
-			top = r.bottom + GAP;
-			maxHeight = desiredH;
-		} else if ( desiredH <= spaceAbove ) {
-			maxHeight = desiredH;
-			top = r.top - maxHeight - GAP;
-		} else {
-			// Neither side fits in full — use whichever has more room.
-			maxHeight = Math.max( Math.max( spaceBelow, spaceAbove ), MIN_H );
-			top = spaceBelow >= spaceAbove ? r.bottom + GAP : r.top - maxHeight - GAP;
-		}
-		setPos( { left, top: Math.max( MARGIN, top ), width: state.matchWidth ? r.width : undefined, maxHeight } );
+			// scrollHeight (not offsetHeight) gives the true content height despite the CSS max-height clamp.
+			const naturalH = el.scrollHeight;
+			const desiredH = Math.min( naturalH, 460 );
+			const GAP = 6;
+			const MARGIN = 8;
+			const MIN_H = 150;
+			// The WP admin toolbar is `position:fixed` above everything in wp-admin — a popover that
+			// grows tall enough (e.g. the "Create Custom Palette" editor) must not be pushed up under
+			// it, or its top controls end up visually obstructed and unclickable (the toolbar intercepts
+			// the click even though the popover paints on top of it).
+			const adminBar = document.getElementById( 'wpadminbar' );
+			const topBoundary = adminBar ? Math.max( MARGIN, adminBar.getBoundingClientRect().bottom + GAP ) : MARGIN;
+			const spaceBelow = window.innerHeight - r.bottom - GAP - MARGIN;
+			const spaceAbove = r.top - GAP - topBoundary;
+
+			let top: number;
+			let maxHeight: number;
+			if ( desiredH <= spaceBelow ) {
+				top = r.bottom + GAP;
+				maxHeight = desiredH;
+			} else if ( desiredH <= spaceAbove ) {
+				maxHeight = desiredH;
+				top = r.top - maxHeight - GAP;
+			} else {
+				// Neither side fits in full — use whichever has more room.
+				maxHeight = Math.max( Math.max( spaceBelow, spaceAbove ), MIN_H );
+				top = spaceBelow >= spaceAbove ? r.bottom + GAP : r.top - maxHeight - GAP;
+			}
+			setPos( { left, top: Math.max( topBoundary, top ), width: state.matchWidth ? r.width : undefined, maxHeight } );
+		};
+
+		reposition();
+
+		// Content height can change after the initial layout (e.g. the palette popover growing
+		// when it switches from the browse grid to the "Create Custom Palette" editor) — `state`
+		// itself doesn't change in that case, so re-run the fit calc whenever the popover's own
+		// size changes rather than only when it (re)opens.
+		const ro = new ResizeObserver( reposition );
+		ro.observe( el );
+		return () => ro.disconnect();
 	}, [ state ] );
 
 	React.useEffect( () => {

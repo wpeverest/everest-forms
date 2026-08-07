@@ -28,8 +28,12 @@ final class Compiler {
 	 */
 	public static function compile( $record, $form_id ) {
 		$selector = self::wrapper_selector( $form_id );
-		$tokens     = ( isset( $record['tokens'] ) && is_array( $record['tokens'] ) ) ? $record['tokens'] : array();
-		$theme_font = ! empty( $tokens['fonts.theme']['desktop'] );
+		$tokens = ( isset( $record['tokens'] ) && is_array( $record['tokens'] ) ) ? $record['tokens'] : array();
+		// The global "Apply Theme Style" toggle forces theme fonts too — mirrors v1's
+		// `show_theme_font` (the only thing that toggle ever did) — regardless of the per-form
+		// Font section's own setting.
+		$apply_theme_style = 'default' !== get_post_meta( $form_id, 'everest_forms_enable_theme_style', true );
+		$theme_font        = $apply_theme_style || ! empty( $tokens['fonts.theme']['desktop'] );
 		$pro_active = Engine::pro_active();
 
 		// Base (desktop) declarations. Without Pro, a pro-tier token renders at its default —
@@ -219,8 +223,11 @@ final class Compiler {
 
 		if ( 'fontstyle' === $token['type'] ) {
 			$v = is_array( $value ) ? $value : array();
+			// An explicit weight (new Font weight dropdown) wins; absent/empty (every old record)
+			// falls back to the original bold-derived value — no migration needed either way.
+			$weight = ! empty( $v['weight'] ) ? $v['weight'] : ( ! empty( $v['bold'] ) ? '700' : $token['neutral_weight'] );
 			return array(
-				$token['vars']['weight'] . ':' . ( ! empty( $v['bold'] ) ? '700' : $token['neutral_weight'] ),
+				$token['vars']['weight'] . ':' . $weight,
 				$token['vars']['style'] . ':' . ( ! empty( $v['italic'] ) ? 'italic' : 'normal' ),
 				$token['vars']['decoration'] . ':' . ( ! empty( $v['underline'] ) ? 'underline' : 'none' ),
 				$token['vars']['transform'] . ':' . ( ! empty( $v['uppercase'] ) ? 'uppercase' : 'none' ),

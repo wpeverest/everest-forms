@@ -6,6 +6,8 @@
  */
 import { Device } from './types';
 
+const __ = ( window as any ).wp?.i18n?.__ || ( ( s: string ) => s );
+
 export const clone = < T >( v: T ): T =>
 	typeof structuredClone === 'function' ? structuredClone( v ) : JSON.parse( JSON.stringify( v ) );
 
@@ -41,20 +43,22 @@ export function deepEqual( a: unknown, b: unknown ): boolean {
 export const SECTION_ICONS: Record<string, string> = {
 	form: '<rect x="3" y="3" width="18" height="18" rx="3"/>',
 	text: '<path d="M4 7V5h16v2M9 5v14M9 19h6"/>',
-	fields: '<rect x="3" y="8" width="18" height="8" rx="2"/>',
+	fields: '<rect x="3" y="5" width="18" height="6" rx="2"/><rect x="3" y="14" width="12" height="6" rx="2"/>',
 	choice: '<circle cx="7" cy="12" r="3"/><rect x="14" y="9" width="6" height="6" rx="1.5"/>',
 	button: '<rect x="3" y="8" width="18" height="9" rx="4"/>',
 	messages: '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
+	pagination: '<circle cx="5" cy="12" r="2.5"/><circle cx="12" cy="12" r="2.5"/><circle cx="19" cy="12" r="2.5"/><path d="M7.5 12h2M14.5 12h2"/>',
 };
 
 /** One-line sub-label shown under each element row. */
 export const SECTION_SUBTITLES: Record<string, string> = {
-	form: 'Background, corners, font, width',
-	text: 'Labels, sublabels, descriptions, section titles',
-	fields: 'Text boxes, dropdowns, upload area',
-	choice: 'Radio, checkbox, ratings, choices',
-	button: 'Submit & navigation buttons',
-	messages: 'Success & error banners',
+	form: __( 'Background, corners, font, width', 'everest-forms' ),
+	text: __( 'Labels, sublabels, descriptions, section titles', 'everest-forms' ),
+	fields: __( 'Text boxes, dropdowns, upload area', 'everest-forms' ),
+	choice: __( 'Radio, checkbox, ratings & more', 'everest-forms' ),
+	button: __( 'Submit & navigation buttons', 'everest-forms' ),
+	messages: __( 'Success, error & validation banners', 'everest-forms' ),
+	pagination: __( 'Progress indicator & part navigation', 'everest-forms' ),
 };
 
 /** Human labels for the variant/state ids the schema ships. */
@@ -138,16 +142,27 @@ export const PREVIEW_TARGETS: PreviewTarget[] = [
 		label: 'Button',
 	},
 	{
+		match: '.everest-forms-multi-part-indicator',
+		section: 'pagination',
+		label: 'Pagination',
+	},
+	{
 		match: '.everest-forms-notice--success',
 		section: 'messages',
 		variant: 'success',
 		label: 'Success message',
 	},
 	{
-		match: '.everest-forms-notice--error, .evf-error',
+		match: '.everest-forms-notice--error',
 		section: 'messages',
 		variant: 'error',
-		label: 'Message',
+		label: 'Error message',
+	},
+	{
+		match: '.evf-error',
+		section: 'messages',
+		variant: 'validation',
+		label: 'Validation message',
 	},
 	{ match: '.evf-field-title, .evf-field-title h3', section: 'text', variant: 'title', label: 'Section title' },
 	{ match: '.evf-field-description', section: 'text', variant: 'desc', label: 'Description' },
@@ -155,9 +170,9 @@ export const PREVIEW_TARGETS: PreviewTarget[] = [
 	{ match: 'label.evf-field-label', section: 'text', variant: 'label', label: 'Label' },
 	{ match: '.everest-forms-uploader', section: 'fields', label: 'Upload area' },
 	{
-		// Choice-type fields: radio, checkbox, image-choice, likert, ratings, payment pickers, yes/no, privacy policy.
+		// Choice-type fields: radio, checkbox, image-choice, likert, ratings, payment pickers, yes/no, privacy policy, subscription plan.
 		match:
-			'.evf-field-radio, .evf-field-checkbox, .evf-field-payment-multiple, .evf-field-payment-checkbox, .evf-field-privacy-policy, .evf-field-image-choice, .evf-field-likert, .evf-field-rating, .evf-field-scale-rating, .evf-field-payment-single, .evf-field-yes-no',
+			'.evf-field-radio, .evf-field-checkbox, .evf-field-payment-multiple, .evf-field-payment-checkbox, .evf-field-privacy-policy, .evf-field-image-choice, .evf-field-likert, .evf-field-rating, .evf-field-scale-rating, .evf-field-payment-single, .evf-field-yes-no, .evf-field-payment-subscription-plan',
 		section: 'choice',
 		label: 'Choice field',
 	},
@@ -170,6 +185,37 @@ export const PREVIEW_TARGETS: PreviewTarget[] = [
 	{ match: '.evf-field, .evf-frontend-row', section: 'fields', label: 'Field' },
 	{ match: '.evf-container', section: 'form', label: 'Form container' },
 ];
+
+/**
+ * Best-effort #rrggbb for any CSS colour a "color" token might hold. Token values are usually
+ * plain hex, but {@see Sanitizer::sanitize_color()} also accepts (and a couple of schema defaults,
+ * e.g. `file.bg`, actually use) `rgba()` — kept for legacy v1 alpha borders/backgrounds. Neither the
+ * native `<input type="color">` swatch nor a hex textbox understands rgba, so callers use this to
+ * get something displayable instead of silently rendering black; alpha is dropped since there's no
+ * alpha control here. Returns null only for a genuinely unparseable value (a CSS keyword/var).
+ */
+export function toDisplayHex( value: string ): string | null {
+	const v = String( value ).trim();
+	if ( /^#[0-9a-f]{3}$/i.test( v ) ) {
+		return ( '#' + v.slice( 1 ).split( '' ).map( ( c ) => c + c ).join( '' ) ).toLowerCase();
+	}
+	if ( /^#[0-9a-f]{6}$/i.test( v ) ) {
+		return v.toLowerCase();
+	}
+	if ( /^#[0-9a-f]{8}$/i.test( v ) ) {
+		return v.slice( 0, 7 ).toLowerCase();
+	}
+	const m = v.match( /^rgba?\(\s*([\d.]+%?)\s*[,\s]+\s*([\d.]+%?)\s*[,\s]+\s*([\d.]+%?)/i );
+	if ( m ) {
+		const hex = m.slice( 1, 4 ).map( ( raw ) => {
+			const num = parseFloat( raw );
+			const c = Math.max( 0, Math.min( 255, Math.round( raw.endsWith( '%' ) ? num * 2.55 : num ) ) );
+			return c.toString( 16 ).padStart( 2, '0' );
+		} );
+		return '#' + hex.join( '' );
+	}
+	return null;
+}
 
 /** Mix two hex colours by ratio t (0..1). Used to derive the button hover from a palette. */
 export function mixHex( a: string, b: string, t: number ): string {

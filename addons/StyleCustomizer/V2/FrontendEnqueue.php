@@ -87,7 +87,7 @@ final class FrontendEnqueue {
 			wp_add_inline_style( self::HANDLE, $css );
 		}
 
-		self::maybe_enqueue_font( $record );
+		self::maybe_enqueue_font( $record, $form_id );
 	}
 
 	/**
@@ -127,12 +127,15 @@ final class FrontendEnqueue {
 	/**
 	 * Enqueue the form's selected Google font, unless it's using the theme font.
 	 *
-	 * @param array $record V2 style record.
+	 * @param array      $record  V2 style record.
+	 * @param int|string $form_id Form id.
 	 */
-	protected static function maybe_enqueue_font( $record ) {
-		$tokens     = isset( $record['tokens'] ) && is_array( $record['tokens'] ) ? $record['tokens'] : array();
-		$theme_font = ! empty( $tokens['fonts.theme']['desktop'] );
-		$family     = isset( $tokens['fonts.family']['desktop'] ) ? trim( (string) $tokens['fonts.family']['desktop'] ) : '';
+	protected static function maybe_enqueue_font( $record, $form_id ) {
+		$tokens = isset( $record['tokens'] ) && is_array( $record['tokens'] ) ? $record['tokens'] : array();
+		// The global "Apply Theme Style" toggle forces theme fonts too — see Compiler::compile().
+		$apply_theme_style = 'default' !== get_post_meta( $form_id, 'everest_forms_enable_theme_style', true );
+		$theme_font        = $apply_theme_style || ! empty( $tokens['fonts.theme']['desktop'] );
+		$family            = isset( $tokens['fonts.family']['desktop'] ) ? trim( (string) $tokens['fonts.family']['desktop'] ) : '';
 
 		if ( $theme_font || '' === $family ) {
 			return;
@@ -144,7 +147,8 @@ final class FrontendEnqueue {
 
 	/**
 	 * Add the `evf-style-v2` marker class to a v2 form's wrapper. Also adds
-	 * `evf-choice-{variation}` when the Choices "Style variation" is `outline`/`filled`.
+	 * `evf-choice-{variation}` when the Choices "Style variation" is `outline`/`filled`, and
+	 * `evf-choice-align-{center|right}` when the Choices "Alignment" isn't the default `left`.
 	 *
 	 * @param array $classes   Container classes.
 	 * @param array $form_data Form data (`id`).
@@ -160,6 +164,21 @@ final class FrontendEnqueue {
 		$variation  = isset( $record['tokens']['choice.variation']['desktop'] ) ? (string) $record['tokens']['choice.variation']['desktop'] : '';
 		if ( in_array( $variation, array( 'outline', 'filled' ), true ) ) {
 			$classes[] = 'evf-choice-' . $variation;
+		}
+		// The Subscription Plan card's name/price row is a fixed `space-between` flex row (see
+		// evf-payment-subscription-plan-frontend.scss) that plain `text-align` can never reach —
+		// bridge the align token to a class too, the same way choice.variation already does, so
+		// only that field's row responds to it (every other choice type already works via
+		// `--evf-choice-align`'s inherited `text-align`).
+		$align = isset( $record['tokens']['choice.align']['desktop'] ) ? (string) $record['tokens']['choice.align']['desktop'] : '';
+		if ( in_array( $align, array( 'center', 'right' ), true ) ) {
+			$classes[] = 'evf-choice-align-' . $align;
+		}
+		// btn.widthMode is another "meta" token (no CSS var) — 'fill' adds a class, same pattern
+		// as choice.variation/choice.align above; 'fit' (the default) needs no class at all.
+		$width_mode = isset( $record['tokens']['btn.widthMode']['desktop'] ) ? (string) $record['tokens']['btn.widthMode']['desktop'] : '';
+		if ( 'fill' === $width_mode ) {
+			$classes[] = 'evf-btn-width-fill';
 		}
 		return $classes;
 	}

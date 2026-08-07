@@ -30,6 +30,17 @@ interface HistoryEntry {
 	snap: Snapshot;
 }
 
+/** Active "edit a saved template" session — see {@see StyleStore.beginTemplateEdit}. */
+interface EditingTemplate {
+	/** The card that was clicked — stays stable across renames, unlike `id`. */
+	sourceId: string;
+	/** The real template id when editing a user template in place; null when forking (built-in/legacy source). */
+	id: string | null;
+	name: string;
+	/** Set only when forking — the source template's display name, for "New template from X" copy. */
+	from?: string;
+}
+
 const MAX_HISTORY = 60;
 
 class StyleStore {
@@ -60,9 +71,18 @@ class StyleStore {
 	 *  includes `apply_theme_style` in its POST body at all (see App.tsx's `save`). */
 	applyThemeStyleTouched = false;
 	baseUpdatedAt = 0;
+	/** Set from outside React by the (legacy jQuery) Fields tab — drives the unsaved-fields notice. */
+	hasUnsavedFieldChanges = false;
+	/** Bumped on every click inside the preview iframe — lets the AI assistant panel close itself
+	 *  before a native <select> there opens its dropdown (which always paints above fixed UI,
+	 *  overlapping the panel — see EVF-2698). */
+	previewInteractionCount = 0;
 
 	/** Optional UI hook: fired when a manual edit detaches the active palette link. */
 	onPaletteUnlinked: ( ( paletteName: string ) => void ) | null = null;
+
+	/** Non-null while a saved template is being edited (or forked) — see {@see beginTemplateEdit}. */
+	editingTemplate: EditingTemplate | null = null;
 
 	// Bookkeeping.
 	affected: string[] | null = null;
@@ -73,6 +93,15 @@ class StyleStore {
 	private redoStack: HistoryEntry[] = [];
 	private gestureOpen = false;
 	private gestureTimer: ReturnType< typeof setTimeout > | null = null;
+	/** Snapshot taken the instant a template session began, so Cancel/Save-exit can fully unwind it. */
+	private editSnapshot: Snapshot | null = null;
+	/** `undoStack` length once the session's own bootstrap mutation (if any) has been pushed —
+	 *  the mid-session Undo/redo threshold; never crossed back over while a session is active. */
+	private editUndoFloor = 0;
+	/** `undoStack` length right before the session began at all (i.e. before any bootstrap push) —
+	 *  what `exitTemplateEdit()` truncates back to, so no trace of the session (bootstrap included)
+	 *  is left in the undo history once it ends. */
+	private editPreSessionUndoLength = 0;
 
 	constructor( payload: StylePayload, settings: BootstrapSettings ) {
 		this.settings = settings;
@@ -182,7 +211,22 @@ class StyleStore {
 		return JSON.stringify( bag ? bag.desktop : undefined ) !== JSON.stringify( token.default );
 	}
 
-	themeFont(): boolean {
+	/**
+	 * @param overrideFontsTheme When previewing a value that hasn't been committed to the store
+	 * yet (a template hover), pass the value THAT preview would set `fonts.theme` to — otherwise
+	 * this reads the current per-field toggle, which is stale for anything not yet applied. The
+	 * global toggle still wins outright either way.
+	 */
+	themeFont( overrideFontsTheme?: boolean ): boolean {
+		// The global "Apply Theme Style" toggle forces fonts to inherit from the active theme —
+		// mirrors v1's `show_theme_font` (the only thing that toggle ever actually did) — regardless
+		// of the per-form Font section's own setting.
+		if ( this.applyThemeStyle ) {
+			return true;
+		}
+		if ( overrideFontsTheme !== undefined ) {
+			return overrideFontsTheme;
+		}
 		const bag = this.tokens[ 'fonts.theme' ];
 		return !! ( bag && bag.desktop === true );
 	}
@@ -227,16 +271,32 @@ class StyleStore {
 		this.push( label );
 	}
 
+	/** The undo floor while a template edit is active — Undo can never cross back over it. */
+	private undoFloor(): number {
+		return this.editingTemplate ? this.editUndoFloor : 0;
+	}
+
 	canUndo(): boolean {
-		return this.undoStack.length > 0;
+		return this.undoStack.length > this.undoFloor();
 	}
 
 	canRedo(): boolean {
 		return this.redoStack.length > 0;
 	}
 
+	/** What Undo would revert, or '' if there's nothing to undo — lets the UI say what a click
+	 *  will do before it happens (tooltip, confirmation toast). */
+	undoLabel(): string {
+		return this.canUndo() ? this.undoStack[ this.undoStack.length - 1 ].label : '';
+	}
+
+	/** What Redo would reapply, or '' if there's nothing to redo. */
+	redoLabel(): string {
+		return this.canRedo() ? this.redoStack[ this.redoStack.length - 1 ].label : '';
+	}
+
 	undo() {
-		if ( ! this.undoStack.length ) {
+		if ( this.undoStack.length <= this.undoFloor() ) {
 			return;
 		}
 		const top = this.undoStack.pop() as HistoryEntry;
@@ -353,6 +413,19 @@ class StyleStore {
 	}
 
 	/** Toggle "Apply Theme Style" (a per-form setting, persisted to the same meta the v1 preview toggle uses). */
+	setUnsavedFieldChanges( dirty: boolean ) {
+		if ( this.hasUnsavedFieldChanges === dirty ) {
+			return;
+		}
+		this.hasUnsavedFieldChanges = dirty;
+		this.notify( [] );
+	}
+
+	notePreviewInteraction() {
+		this.previewInteractionCount++;
+		this.notify( [] );
+	}
+
 	setApplyThemeStyle( on: boolean ) {
 		this.applyThemeStyleTouched = true;
 		if ( this.applyThemeStyle === on ) {
@@ -432,15 +505,100 @@ class StyleStore {
 	/** Apply a template: reset every token to its default, then overlay the template's token bags. */
 	applyTemplate( templateId: string, tokens: Record< string, DeviceBag >, paletteId?: string ) {
 		this.discrete( 'Apply template' );
+		// While "Apply Theme Style" is on, the user has explicitly chosen the theme's font over
+		// any per-form setting — a template shouldn't silently flip that off behind their back, so
+		// leave fonts.theme/fonts.family exactly as they are (skip both the reset-to-default below
+		// and the template's own overlay values for these two keys).
+		const keepFontKeys = this.applyThemeStyle ? [ 'fonts.theme', 'fonts.family' ] : [];
+		const keptFonts: Record< string, DeviceBag > = {};
+		keepFontKeys.forEach( ( key ) => {
+			if ( this.tokens[ key ] ) {
+				keptFonts[ key ] = clone( this.tokens[ key ] );
+			}
+		} );
 		this.schema.forEach( ( t ) => ( this.tokens[ t.key ] = { desktop: clone( t.default ) } ) );
 		Object.entries( tokens || {} ).forEach( ( [ key, bag ] ) => {
+			if ( keepFontKeys.indexOf( key ) !== -1 ) {
+				return;
+			}
 			if ( this.byKey[ key ] && bag && typeof bag === 'object' ) {
 				this.tokens[ key ] = clone( bag );
 			}
 		} );
+		Object.entries( keptFonts ).forEach( ( [ key, bag ] ) => ( this.tokens[ key ] = bag ) );
 		this.template = templateId;
 		this.palette = paletteId || '';
 		this.notify( null );
+	}
+
+	/**
+	 * Begin editing a saved template. Snapshots the current working state (so Cancel — or a
+	 * successful Save — can fully unwind back to it), applies the template's tokens for real
+	 * (exactly like {@see applyTemplate}, so the whole Design tab works normally), and records
+	 * the undo floor so history can't cross back over the edit boundary.
+	 *
+	 * `editableInPlace` is false for built-in and legacy templates — the edit session still
+	 * behaves identically, but `editingTemplate.id` stays null so Save creates a new template
+	 * (a "fork") instead of overwriting the source.
+	 */
+	beginTemplateEdit( tpl: StylePayload[ 'templates' ][ number ], editableInPlace: boolean ) {
+		this.editSnapshot = this.snapshot();
+		this.editPreSessionUndoLength = this.undoStack.length;
+		this.applyTemplate( tpl.id, tpl.tokens, tpl.palette );
+		// Set AFTER applyTemplate() — its own history push is the edit session's bootstrap, not a
+		// user edit within it, so Undo must start disabled, not able to undo the apply itself.
+		this.editUndoFloor = this.undoStack.length;
+		this.editingTemplate = {
+			sourceId: tpl.id,
+			id: editableInPlace ? tpl.id : null,
+			name: tpl.name,
+			from: editableInPlace ? undefined : tpl.name,
+		};
+		this.notify( [] );
+	}
+
+	/**
+	 * Begin the "Create Style Template" session — save whatever is already on the form right now
+	 * as a brand-new template. Unlike {@see beginTemplateEdit}, there is no source and nothing is
+	 * mutated (no reset-then-overlay, no history push); this only opens the same session/banner/
+	 * lock the other two entry points use, around the current working state as-is.
+	 */
+	beginNewTemplate() {
+		this.editSnapshot = this.snapshot();
+		this.editPreSessionUndoLength = this.undoStack.length;
+		this.editUndoFloor = this.undoStack.length;
+		this.editingTemplate = { sourceId: '', id: null, name: '' };
+		this.notify( [] );
+	}
+
+	/** Rename the in-progress template edit's draft name (the banner's name field). */
+	renameEditingTemplate( name: string ) {
+		if ( ! this.editingTemplate ) {
+			return;
+		}
+		this.editingTemplate = { ...this.editingTemplate, name };
+		this.notify( [] );
+	}
+
+	/**
+	 * Exit an active template session, restoring the working state to exactly what it was right
+	 * before the session began. Used for BOTH Cancel and a successful Save — a template session
+	 * must never leave the current form dirty (or its undo history altered) as a side effect,
+	 * regardless of how it ends.
+	 */
+	exitTemplateEdit() {
+		if ( ! this.editSnapshot ) {
+			return;
+		}
+		const snap = this.editSnapshot;
+		this.undoStack.length = Math.min( this.undoStack.length, this.editPreSessionUndoLength );
+		this.redoStack = [];
+		this.editingTemplate = null;
+		this.editSnapshot = null;
+		this.editUndoFloor = 0;
+		this.editPreSessionUndoLength = 0;
+		// Last — its own notify() is the single re-render, reflecting all of the above too.
+		this.applySnapshot( snap );
 	}
 
 	/**
@@ -540,12 +698,6 @@ class StyleStore {
 		return parent ? parent.id : '';
 	}
 
-	/** Add a newly-saved user template to the front of the list (no history entry). */
-	addUserTemplate( template: StylePayload[ 'templates' ][ number ] ) {
-		this.userTemplates = [ template, ...this.userTemplates ];
-		this.notify( [] );
-	}
-
 	/** Remove a user template from the list. */
 	removeUserTemplate( id: string ) {
 		this.userTemplates = this.userTemplates.filter( ( t ) => t.id !== id );
@@ -553,6 +705,27 @@ class StyleStore {
 			this.template = '';
 		}
 		this.notify( [] );
+	}
+
+	/** Replace the user templates with a fresh server list (e.g. after an update). Mirrors {@see setCustomPalettes}. */
+	setUserTemplates( templates: StylePayload[ 'templates' ] ) {
+		this.userTemplates = templates || [];
+		this.notify( [] );
+	}
+
+	/**
+	 * Update section/schema visibility — e.g. BuilderSync re-synced after a Settings/Fields-tab
+	 * edit that makes a conditional section or token group newly (in)eligible for this form
+	 * (Multi-Part's "Enable Multi-Part form" toggle, a File Upload field being added/removed).
+	 * Token *values* are untouched; this only changes what the panel currently shows/applies —
+	 * `notify( null )` re-applies every (now current) token, the same as an undo/reset.
+	 */
+	setVisibility( sections: StylePayload[ 'sections' ], schema: Token[] ) {
+		this.sections = sections;
+		this.schema = schema;
+		this.byKey = {};
+		this.schema.forEach( ( t ) => ( this.byKey[ t.key ] = t ) );
+		this.notify( null );
 	}
 
 	/** Build the record to POST. Absent-device keys are already pruned by never being set. */

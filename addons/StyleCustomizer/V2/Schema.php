@@ -81,11 +81,11 @@ final class Schema {
 			),
 			'choice'   => array(
 				'title' => __( 'Choices', 'everest-forms' ),
-				'hint'  => __( 'One style set for every pick-a-choice field: radios, checkboxes, Yes/No, image choices, scale & star ratings, Likert rows and payment methods.', 'everest-forms' ),
+				'hint'  => __( 'One style set for every choice field: radios, checkboxes, Yes/No, image choices, ratings, Likert rows, and payment pickers.', 'everest-forms' ),
 			),
 			'button'   => array(
 				'title'  => __( 'Button', 'everest-forms' ),
-				'hint'   => __( 'Submit — multi-part navigation and upload buttons follow it.', 'everest-forms' ),
+				'hint'   => __( 'Styles Submit — Multi-Part and file-upload buttons follow automatically.', 'everest-forms' ),
 				'states' => array( 'normal', 'hover' ),
 			),
 			'messages' => array(
@@ -262,6 +262,69 @@ final class Schema {
 		);
 	}
 
+	/**
+	 * The free-tier token VALUES a registered palette id implies (the six palette-driven slots,
+	 * plus the derived hover shade) — the single source of truth {@see Sanitizer::sanitize_record()}
+	 * uses to DERIVE (never trust raw from the client) a non-Pro site's palette-driven tokens.
+	 *
+	 * Without this, a non-Pro site's "free" token keys only exist so the 2-swatch palette picker
+	 * has something to write to — the sanitizer only ever validated their VALUE TYPE (a well-formed
+	 * colour), not that the colour actually came from picking one of the 2 free palettes. A crafted
+	 * request (an AI response, a hand-built REST call) could set any hex it liked on these exact
+	 * keys and reconstruct a full Pro-palette look with no Pro required (see EVF-2708).
+	 *
+	 * @param string $palette_id Palette id (see {@see self::palettes()}).
+	 * @return array Token key => hex value (bare, not a device bag); empty if the id is unknown.
+	 */
+	public static function palette_token_values( $palette_id ) {
+		foreach ( self::palettes() as $palette ) {
+			if ( $palette['id'] !== $palette_id ) {
+				continue;
+			}
+			$colors = isset( $palette['colors'] ) && is_array( $palette['colors'] ) ? $palette['colors'] : array();
+			$out    = array();
+			foreach ( self::palette_map() as $slot => $keys ) {
+				if ( ! isset( $colors[ $slot ] ) ) {
+					continue;
+				}
+				foreach ( (array) $keys as $key ) {
+					$out[ $key ] = $colors[ $slot ];
+				}
+			}
+			if ( ! empty( $colors['button_background'] ) ) {
+				$out['btn.bgHover'] = self::mix_hex( $colors['button_background'], '#000000', 0.14 );
+			}
+			return $out;
+		}
+		return array();
+	}
+
+	/**
+	 * Linear-interpolate two hex colours — PHP port of `mixHex()` in constants.ts (kept local
+	 * rather than reusing {@see Migrator}'s copy, so this class has no cross-class coupling).
+	 *
+	 * @param string $a First hex colour (`#rgb` or `#rrggbb`).
+	 * @param string $b Second hex colour.
+	 * @param float  $t Mix factor, 0 = $a, 1 = $b.
+	 * @return string `#rrggbb`.
+	 */
+	protected static function mix_hex( $a, $b, $t ) {
+		$parse = static function ( $hex ) {
+			$s = ltrim( (string) $hex, '#' );
+			if ( 3 === strlen( $s ) ) {
+				$s = $s[0] . $s[0] . $s[1] . $s[1] . $s[2] . $s[2];
+			}
+			return array( hexdec( substr( $s, 0, 2 ) ), hexdec( substr( $s, 2, 2 ) ), hexdec( substr( $s, 4, 2 ) ) );
+		};
+		$from = $parse( $a );
+		$to   = $parse( $b );
+		$out  = '#';
+		foreach ( array( 0, 1, 2 ) as $i ) {
+			$out .= str_pad( dechex( (int) round( $from[ $i ] + ( $to[ $i ] - $from[ $i ] ) * $t ) ), 2, '0', STR_PAD_LEFT );
+		}
+		return $out;
+	}
+
 	/* --------------------------------------------------------------------- *
 	 * Token assembly
 	 * --------------------------------------------------------------------- */
@@ -275,9 +338,11 @@ final class Schema {
 		$border = self::border_options();
 
 		$form = array(
-			array( 'key' => 'wrap.bg', 'section' => 'form', 'group' => 'Surface', 'label' => __( 'Background color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-wrap-bg', 'default' => '#ffffff', 'hidden' => true, 'keywords' => array( 'fill' ) ),
 			array( 'key' => 'fonts.theme', 'section' => 'form', 'group' => 'Typography', 'label' => __( 'Use theme fonts', 'everest-forms' ), 'type' => 'toggle', 'default' => false, 'keywords' => array( 'inherit', 'typeface', 'theme font' ) ),
 			array( 'key' => 'fonts.family', 'section' => 'form', 'group' => 'Typography', 'label' => __( 'Font family', 'everest-forms' ), 'type' => 'select', 'var' => '--evf-font', 'default' => '', 'source' => 'google_fonts', 'options' => self::font_options(), 'keywords' => array( 'typeface', 'typography', 'google font' ) ),
+			// Palette-driven by default (form_background slot); editing it directly here unlinks
+			// this form from the palette for just this token — see store.ts's paletteMap unlink.
+			array( 'key' => 'wrap.bg', 'section' => 'form', 'group' => 'Background', 'label' => __( 'Background color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-wrap-bg', 'default' => '#ffffff', 'keywords' => array( 'fill', 'color' ) ),
 			array( 'key' => 'wrap.bgImage', 'section' => 'form', 'group' => 'Background', 'label' => __( 'Background image', 'everest-forms' ), 'type' => 'media', 'var' => '--evf-wrap-image', 'default' => '', 'advanced' => true, 'keywords' => array( 'image', 'photo', 'picture' ) ),
 			array( 'key' => 'wrap.bgPreset', 'section' => 'form', 'group' => 'Background', 'label' => __( 'Background preset', 'everest-forms' ), 'type' => 'select', 'default' => 'custom', 'options' => self::opts( array( 'custom' => __( 'Custom', 'everest-forms' ), 'fill' => __( 'Fill', 'everest-forms' ), 'fit' => __( 'Fit', 'everest-forms' ), 'repeat' => __( 'Repeat', 'everest-forms' ), 'center' => __( 'Center', 'everest-forms' ) ) ), 'advanced' => true, 'show_when_image' => true, 'keywords' => array( 'image', 'background' ) ),
 			array( 'key' => 'wrap.bgSize', 'section' => 'form', 'group' => 'Background', 'label' => __( 'Image size', 'everest-forms' ), 'type' => 'select', 'var' => '--evf-wrap-bg-size', 'default' => 'cover', 'options' => self::opts( array( 'cover' => __( 'Cover', 'everest-forms' ), 'contain' => __( 'Contain', 'everest-forms' ), 'auto' => __( 'Auto', 'everest-forms' ) ) ), 'advanced' => true, 'show_when_image' => true, 'keywords' => array( 'image', 'background' ) ),
@@ -295,13 +360,16 @@ final class Schema {
 		);
 
 		$fields = array(
-			array( 'key' => 'input.bg', 'section' => 'fields', 'group' => 'Surface', 'label' => __( 'Background', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-input-bg', 'default' => '#ffffff', 'hidden' => true, 'keywords' => array( 'fill' ) ),
+			// Palette-driven by default (field_background slot); editing it directly here unlinks
+			// this form from the palette for just this token — see store.ts's paletteMap unlink.
+			array( 'key' => 'input.bg', 'section' => 'fields', 'group' => 'Surface', 'label' => __( 'Background', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-input-bg', 'default' => '#ffffff', 'keywords' => array( 'fill', 'color' ) ),
 			array( 'key' => 'input.borderC', 'section' => 'fields', 'group' => 'Surface', 'label' => __( 'Border color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-input-border-c', 'default' => '#969696' ),
 			self::radius( 'input.radius', '--evf-input-radius', 3, 'fields', null, 'Surface', false ),
 			array( 'key' => 'input.size', 'section' => 'fields', 'group' => 'Typography', 'label' => __( 'Font size', 'everest-forms' ), 'type' => 'slider', 'var' => '--evf-input-size', 'default' => 14, 'min' => 11, 'max' => 22, 'step' => 1, 'unit' => 'px', 'advanced' => true, 'keywords' => array( 'text' ) ),
 			array( 'key' => 'input.color', 'section' => 'fields', 'group' => 'Typography', 'label' => __( 'Text color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-input-color', 'default' => '#575757', 'advanced' => true ),
 			array( 'key' => 'input.ph', 'section' => 'fields', 'group' => 'Typography', 'label' => __( 'Placeholder color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-input-ph', 'default' => '#c6ccd7', 'advanced' => true, 'keywords' => array( 'hint' ) ),
 			self::fstyle( 'input.fstyle', 'input', 'fields', null, '400' ),
+			self::letter_spacing( 'input.ls', '--evf-input-ls', 'fields', null ),
 			self::talign( 'input.align', '--evf-input-align', 'fields', null ),
 			array( 'key' => 'input.borderStyle', 'section' => 'fields', 'group' => 'Border', 'label' => __( 'Border type', 'everest-forms' ), 'type' => 'select', 'var' => '--evf-input-border-style', 'default' => 'solid', 'options' => $border, 'deps' => array( 'input.bw', 'input.borderC' ), 'advanced' => true ),
 			self::bwidth( 'input.bw', '--evf-input-bw', 1, 'fields', null, 'Border', true ),
@@ -330,17 +398,25 @@ final class Schema {
 			array( 'key' => 'choice.fsize', 'section' => 'choice', 'group' => '', 'label' => __( 'Option font size', 'everest-forms' ), 'type' => 'slider', 'var' => '--evf-choice-fsize', 'default' => 14, 'min' => 11, 'max' => 22, 'step' => 1, 'unit' => 'px', 'advanced' => true, 'keywords' => array( 'text' ) ),
 			array( 'key' => 'choice.color', 'section' => 'choice', 'group' => '', 'label' => __( 'Option text color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-choice-color', 'default' => '#575757', 'advanced' => true, 'keywords' => array( 'text' ) ),
 			self::fstyle( 'choice.fstyle', 'choice', 'choice', null, '400' ),
+			self::letter_spacing( 'choice.ls', '--evf-choice-ls', 'choice', null ),
 			self::talign( 'choice.align', '--evf-choice-align', 'choice', null ),
 			self::box( 'choice.margin', __( 'Margin', 'everest-forms' ), '--evf-choice-margin', array( 0, 0, 5, 0 ), 'choice', null ),
 		);
 
 		$button = array(
-			// Palette-driven (hidden picker); the default only shows on a no-palette form.
-			array( 'key' => 'btn.bg', 'section' => 'button', 'group' => '', 'label' => __( 'Button color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-btn-bg', 'default' => '#0073aa', 'hidden' => true, 'keywords' => array( 'submit', 'background' ) ),
-			array( 'key' => 'btn.color', 'section' => 'button', 'group' => '', 'label' => __( 'Text color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-btn-color', 'default' => '#ffffff', 'hidden' => true, 'keywords' => array( 'submit' ) ),
+			// Palette-driven by default (button_background/button_text slots); editing either
+			// directly here unlinks this form from the palette for just that one token.
+			array( 'key' => 'btn.bg', 'section' => 'button', 'group' => '', 'label' => __( 'Button color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-btn-bg', 'default' => '#0073aa', 'keywords' => array( 'submit', 'background', 'color' ) ),
+			array( 'key' => 'btn.color', 'section' => 'button', 'group' => '', 'label' => __( 'Text color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-btn-color', 'default' => '#ffffff', 'keywords' => array( 'submit', 'color' ) ),
 			self::radius( 'btn.radius', '--evf-btn-radius', 3, 'button', null, '', false ),
+			// No 'var': like choice.variation, this drives a wrapper class (`evf-btn-width-fill`)
+			// instead of a CSS variable — see FrontendEnqueue::container_class() (real frontend)
+			// and PreviewBridge.ts (live preview). New property, no v1 equivalent, so old records
+			// simply get the default ('fit') — today's exact behavior — no migration needed.
+			array( 'key' => 'btn.widthMode', 'section' => 'button', 'group' => '', 'label' => __( 'Button width', 'everest-forms' ), 'type' => 'select', 'default' => 'fit', 'options' => self::opts( array( 'fit' => __( 'Fit content', 'everest-forms' ), 'fill' => __( 'Fill width', 'everest-forms' ) ) ), 'keywords' => array( 'full width', 'block', 'stretch', 'size' ) ),
 			array( 'key' => 'btn.size', 'section' => 'button', 'group' => '', 'label' => __( 'Font size', 'everest-forms' ), 'type' => 'slider', 'var' => '--evf-btn-size', 'default' => 14, 'min' => 11, 'max' => 24, 'step' => 1, 'unit' => 'px', 'advanced' => true, 'keywords' => array( 'submit' ) ),
 			self::fstyle( 'btn.fstyle', 'btn', 'button', null, '400' ),
+			self::letter_spacing( 'btn.ls', '--evf-btn-ls', 'button', null ),
 			self::talign( 'btn.align', '--evf-btn-align', 'button', null, 'center' ),
 			self::line( 'btn.line', '--evf-btn-lh', 1.5, 'button', null ),
 			self::box( 'btn.margin', __( 'Margin', 'everest-forms' ), '--evf-btn-margin', array( 0, 0, 0, 0 ), 'button', null ),
@@ -374,8 +450,11 @@ final class Schema {
 	protected static function text_role_tokens() {
 		$roles = array(
 			// state key => [ var-prefix, size, min, max, color, neutral-weight, margin, line, pad, color-hidden ].
-			'label'    => array( 'sub' => 'label', 'size' => 14, 'min' => 10, 'max' => 24, 'color' => '#333333', 'nw' => '600', 'margin' => array( 0, 0, 10, 0 ), 'line' => 1.7, 'pad' => array( 0, 0, 0, 0 ), 'color_hidden' => true ),
-			'sublabel' => array( 'sub' => 'sub', 'size' => 12, 'min' => 9, 'max' => 20, 'color' => '#666666', 'nw' => '400', 'margin' => array( 0, 0, 10, 0 ), 'line' => 1.5, 'pad' => array( 0, 0, 0, 0 ), 'color_hidden' => true ),
+			// label/sublabel color: palette-driven by default (field_label/field_sublabel slots);
+			// editing directly here unlinks this form from the palette for just that one token —
+			// same as title/desc below, which have always worked this way.
+			'label'    => array( 'sub' => 'label', 'size' => 14, 'min' => 10, 'max' => 24, 'color' => '#333333', 'nw' => '600', 'margin' => array( 0, 0, 10, 0 ), 'line' => 1.7, 'pad' => array( 0, 0, 0, 0 ), 'color_hidden' => false ),
+			'sublabel' => array( 'sub' => 'sub', 'size' => 12, 'min' => 9, 'max' => 20, 'color' => '#666666', 'nw' => '400', 'margin' => array( 0, 0, 10, 0 ), 'line' => 1.5, 'pad' => array( 0, 0, 0, 0 ), 'color_hidden' => false ),
 			'desc'     => array( 'sub' => 'desc', 'size' => 14, 'min' => 9, 'max' => 20, 'color' => '#575757', 'nw' => '400', 'margin' => array( 0, 0, 10, 0 ), 'line' => 1.7, 'pad' => array( 0, 0, 0, 0 ), 'color_hidden' => false ),
 			'title'    => array( 'sub' => 'title', 'size' => 16, 'min' => 12, 'max' => 34, 'color' => '#575757', 'nw' => '700', 'margin' => array( 25, 0, 25, 0 ), 'line' => 1.5, 'pad' => array( 0, 0, 0, 0 ), 'color_hidden' => false ),
 		);
@@ -386,6 +465,7 @@ final class Schema {
 			$out[] = array( 'key' => "{$vp}.size", 'section' => 'text', 'state' => $state, 'group' => '', 'label' => __( 'Font size', 'everest-forms' ), 'type' => 'slider', 'var' => "--evf-{$vp}-size", 'default' => $r['size'], 'min' => $r['min'], 'max' => $r['max'], 'step' => 1, 'unit' => 'px', 'keywords' => array( 'text', $state ) );
 			$out[] = array( 'key' => "{$vp}.color", 'section' => 'text', 'state' => $state, 'group' => '', 'label' => __( 'Color', 'everest-forms' ), 'type' => 'color', 'var' => "--evf-{$vp}-color", 'default' => $r['color'], 'hidden' => $r['color_hidden'], 'keywords' => array( 'text', $state ) );
 			$out[] = self::fstyle( "{$vp}.fstyle", $vp, 'text', $state, $r['nw'] );
+			$out[] = self::letter_spacing( "{$vp}.ls", "--evf-{$vp}-ls", 'text', $state );
 			$out[] = self::talign( "{$vp}.align", "--evf-{$vp}-align", 'text', $state );
 			$out[] = self::line( "{$vp}.line", "--evf-{$vp}-lh", $r['line'], 'text', $state );
 			$out[] = self::box( "{$vp}.margin", __( 'Margin', 'everest-forms' ), "--evf-{$vp}-margin", $r['margin'], 'text', $state );
@@ -400,7 +480,13 @@ final class Schema {
 	 * --------------------------------------------------------------------- */
 
 	/**
-	 * Font-style control (Bold / Italic / Underline / Uppercase).
+	 * Font-style control (Bold / Italic / Underline / Uppercase, plus an optional Font weight).
+	 *
+	 * `weight` (an explicit numeric weight, e.g. '600') is an ADDITIVE sub-property alongside the
+	 * original four flags — old stored values simply don't have this key, `!empty($v['weight'])`
+	 * is false for them, and font-weight keeps deriving from `bold`/`neutral_weight` exactly as
+	 * before (see Compiler::declarations() and cssVars.ts's tokenDeclarations()). No migration
+	 * step needed: a missing key is indistinguishable from '' (the "Auto" default here), by design.
 	 *
 	 * @param string $key     Token key.
 	 * @param string $base    CSS var base (e.g. `label`, `input`, `msg-success`).
@@ -424,14 +510,37 @@ final class Schema {
 				'transform'  => "--evf-{$base}-tt",
 			),
 			'neutral_weight' => $nw,
+			'weight_options' => self::weight_options(),
 			'default'        => array(
 				'bold'      => false,
 				'italic'    => false,
 				'underline' => false,
 				'uppercase' => false,
+				'weight'    => '',
 			),
 			'advanced'       => true,
-			'keywords'       => array( 'bold', 'italic', 'underline', 'uppercase', 'font style' ),
+			'keywords'       => array( 'bold', 'italic', 'underline', 'uppercase', 'font style', 'font weight', 'weight' ),
+		);
+	}
+
+	/**
+	 * Selectable font-weight values for the `fstyle` control's Font weight dropdown.
+	 * '' ("Auto") keeps the original Bold-toggle-only behavior.
+	 *
+	 * @return array value => label.
+	 */
+	protected static function weight_options() {
+		// Built directly (not via self::opts(), which takes an associative array — PHP would
+		// coerce these numeric-string keys to ints) so every value is guaranteed a string.
+		return array(
+			array( 'value' => '',    'label' => __( 'Auto', 'everest-forms' ) ),
+			array( 'value' => '300', 'label' => __( 'Light', 'everest-forms' ) ),
+			array( 'value' => '400', 'label' => __( 'Regular', 'everest-forms' ) ),
+			array( 'value' => '500', 'label' => __( 'Medium', 'everest-forms' ) ),
+			array( 'value' => '600', 'label' => __( 'Semibold', 'everest-forms' ) ),
+			array( 'value' => '700', 'label' => __( 'Bold', 'everest-forms' ) ),
+			array( 'value' => '800', 'label' => __( 'Extra Bold', 'everest-forms' ) ),
+			array( 'value' => '900', 'label' => __( 'Black', 'everest-forms' ) ),
 		);
 	}
 
@@ -461,6 +570,38 @@ final class Schema {
 			'unit'     => '',
 			'advanced' => true,
 			'keywords' => array( 'leading', 'line height' ),
+		);
+	}
+
+	/**
+	 * Letter-spacing slider (-2px to 10px, single value). New, additive sibling of `line()` —
+	 * every caller of `self::fstyle()` gets one alongside it, so it's added wherever font-weight
+	 * was. No v1 equivalent ever existed, so a missing value here just means "not customized yet"
+	 * — the schema default (0, i.e. `normal`) — same as any other brand-new token; no migration
+	 * step needed.
+	 *
+	 * @param string $key     Token key.
+	 * @param string $var     CSS var.
+	 * @param string $section Section key.
+	 * @param string $state   Variant/state (nullable).
+	 * @return array
+	 */
+	protected static function letter_spacing( $key, $var, $section, $state ) {
+		return array(
+			'key'      => $key,
+			'section'  => $section,
+			'state'    => $state,
+			'group'    => '',
+			'label'    => __( 'Letter spacing', 'everest-forms' ),
+			'type'     => 'slider',
+			'var'      => $var,
+			'default'  => 0,
+			'min'      => -2,
+			'max'      => 10,
+			'step'     => 0.1,
+			'unit'     => 'px',
+			'advanced' => true,
+			'keywords' => array( 'tracking', 'letter spacing', 'kerning' ),
 		);
 	}
 

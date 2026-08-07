@@ -14800,3 +14800,30 @@ button#show-settings-link {
         text-decoration: underline !important;
     }
 }
+
+// EVF-2695: choice-field options (radio/checkbox/subscription-plan/likert/scale-rating/etc.) in
+// the Fields-tab canvas share generic admin-only templates (`ul.primary-input li`, or a `<table>`
+// for Likert/Scale Rating) with no v2-frontend classes at all, so they never see StyleCustomizer
+// v2's own CSS — instead they fall back to wp-admin's own `input[type=checkbox|radio]` styling
+// (wp-admin/css/forms.css), which draws a custom bordered box via `appearance: none`. The real
+// frontend/Style-tab preview never has this problem because the v2 "Default" variation
+// deliberately renders the plain native control (see StyleCustomizer/V2/assets/css/frontend.css)
+// — reset appearance back to native here too so the canvas matches instead of showing that old
+// bordered-box look. Yes/No and (star) Rating render via SVG icons, not radio/checkbox inputs,
+// so they were never affected and need no rule here.
+.evf-admin-field-wrapper,
+.evf-admin-field-container {
+	ul.primary-input li,
+	table.everest-forms-likert-table td,
+	table.everest-forms-scale-rating-table td {
+		input[type='radio'],
+		input[type='checkbox'] {
+			appearance: auto;
+			-webkit-appearance: auto;
+			border: 0;
+			border-radius: 0;
+			background: none;
+			box-shadow: none;
+		}
+	}
+}
