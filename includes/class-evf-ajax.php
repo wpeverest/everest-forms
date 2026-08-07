@@ -1040,6 +1040,10 @@ class EVF_AJAX {
 			);
 		}
 
+		if ( ! EVF()->integrations ) {
+			EVF()->integrations = new EVF_Integrations();
+		}
+
 		do_action( 'everest_forms_integration_account_disconnect_' . ( isset( $_POST['source'] ) ? sanitize_text_field( wp_unslash( $_POST['source'] ) ) : '' ), $_POST );
 
 		$connected_accounts = get_option( 'everest_forms_integrations', false );
