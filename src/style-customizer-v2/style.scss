@@ -3451,6 +3451,58 @@
 	}
 }
 
+/* Small bordered icon button — the palette editor's open/close toggle, and (nested inside
+   .pal-card--wrap below) each preset card's delete tool. Standalone so both contexts get it. */
+#everest-forms-panel-style .pal-tool {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 22px;
+	height: 22px;
+	padding: 0;
+	border: 1px solid var(--ui-line);
+	border-radius: var(--ui-radius-sm);
+	background: #fff;
+	box-shadow: 0 1px 3px rgba(20, 23, 40, .16);
+	color: var(--ui-ink-3);
+	cursor: pointer;
+	flex: none;
+	transition: color .12s, border-color .12s, background .12s;
+
+	svg {
+		width: 12px;
+		height: 12px;
+	}
+
+	&:hover {
+		color: var(--ui-purple);
+		border-color: var(--ui-purple);
+		background: #fff;
+	}
+
+	&.pal-tool--danger:hover {
+		color: var(--ui-red);
+		border-color: var(--ui-red);
+	}
+
+	&.is-locked {
+		color: var(--ui-purple);
+		border-color: var(--ui-purple-100);
+		background: var(--ui-purple-50);
+	}
+
+	.pro-crown {
+		display: block;
+		width: 13px;
+		height: 13px;
+	}
+
+	&:focus-visible {
+		outline: none;
+		box-shadow: var(--ui-focus-soft);
+	}
+}
+
 #everest-forms-panel-style .pal-card--wrap {
 	position: relative;
 	padding: 0;
@@ -3485,55 +3537,6 @@
 	&:hover .pal-card-tools,
 	&:focus-within .pal-card-tools {
 		opacity: 1;
-	}
-
-	.pal-tool {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		width: 22px;
-		height: 22px;
-		padding: 0;
-		border: 1px solid var(--ui-line);
-		border-radius: var(--ui-radius-sm);
-		background: #fff;
-		box-shadow: 0 1px 3px rgba(20, 23, 40, .16);
-		color: var(--ui-ink-3);
-		cursor: pointer;
-		transition: color .12s, border-color .12s, background .12s;
-
-		svg {
-			width: 12px;
-			height: 12px;
-		}
-
-		&:hover {
-			color: var(--ui-purple);
-			border-color: var(--ui-purple);
-			background: #fff;
-		}
-
-		&.pal-tool--danger:hover {
-			color: var(--ui-red);
-			border-color: var(--ui-red);
-		}
-
-		&.is-locked {
-			color: var(--ui-purple);
-			border-color: var(--ui-purple-100);
-			background: var(--ui-purple-50);
-		}
-
-		.pro-crown {
-			display: block;
-			width: 13px;
-			height: 13px;
-		}
-
-		&:focus-visible {
-			outline: none;
-			box-shadow: var(--ui-focus-soft);
-		}
 	}
 
 	/* inline delete confirm */
@@ -3581,31 +3584,93 @@
 	}
 }
 
-/* "Your Palette" summary card (ColorsPane) — swatches + name + edit pencil all on one row.
-   Overrides .pal-card--wrap's block layout (built for the small preset-grid cards, where the
-   edit/delete tools float as an absolute overlay) since the pencil here is a real, always-visible
-   sibling that must sit inline, never wrap onto its own line. Always shown with the purple ring
-   (it carries `is-selected` unconditionally) — it's the permanently-current one. */
-#everest-forms-panel-style .pal-card--summary {
+/* "Your Palette" editor card — the live 6 slots, always shown with the same purple ring a
+   selected preset gets elsewhere (it IS the permanently-current one). Swatches + open/close
+   toggle stay visible whether collapsed or expanded; the edit rows and Save/Cancel only render
+   while `editing`. */
+#everest-forms-panel-style .pal-editor-card {
+	background: #fff;
+	border: 1px solid var(--ui-purple);
+	border-radius: var(--ui-radius-lg);
+	box-shadow: 0 0 0 1px var(--ui-purple);
+	padding: 14px;
+}
+
+#everest-forms-panel-style .pal-editor-head {
 	display: flex;
 	align-items: center;
+	justify-content: space-between;
 	gap: 10px;
-	padding: 14px;
 
-	.pal-card-apply {
+	.sw {
 		display: flex;
-		align-items: center;
-		gap: 10px;
-		width: auto;
-		flex: 1;
-		min-width: 0;
-		padding: 0;
+		gap: 6px;
+	}
+
+	.sw i {
+		width: 22px;
+		height: 22px;
+		border-radius: 50%;
+		flex: none;
+		box-shadow: inset 0 0 0 1px rgba(20, 23, 40, .08);
 	}
 
 	.pal-tool,
 	.pro-badge {
 		flex: none;
 	}
+}
+
+#everest-forms-panel-style .pal-edit-actions {
+	display: flex;
+	gap: 8px;
+	margin-top: 14px;
+}
+
+#everest-forms-panel-style .pal-edit-save,
+#everest-forms-panel-style .pal-edit-cancel {
+	border-radius: var(--ui-radius-sm);
+	padding: 6px 14px;
+	font-size: 12px;
+	font-weight: 600;
+	cursor: pointer;
+	transition: background .12s, color .12s, border-color .12s;
+}
+
+#everest-forms-panel-style .pal-edit-save {
+	border: 0;
+	background: var(--ui-purple);
+	color: #fff;
+
+	&:hover {
+		background: var(--ui-purple-600);
+	}
+}
+
+#everest-forms-panel-style .pal-edit-cancel {
+	border: 1px solid var(--ui-input-border);
+	background: #fff;
+	color: var(--ui-ink-2);
+
+	&:hover {
+		border-color: var(--ui-purple);
+		color: var(--ui-purple);
+	}
+}
+
+/* Name + status pill for "Your Palette", read below the card — same pattern the "Your
+   Template" preview card uses for its own caption. */
+#everest-forms-panel-style .pal-current-caption {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin: 10px 2px 0;
+}
+
+#everest-forms-panel-style .pal-current-name {
+	font-size: 13px;
+	font-weight: 700;
+	color: var(--ui-ink);
 }
 
 #everest-forms-panel-style .pal-manager-hint {
@@ -3720,22 +3785,13 @@
 	}
 }
 
-/* No overflow:hidden — the color popover is absolutely positioned off one of these rows and
-   would get clipped by it. Rounded corners come from the end rows directly instead. */
+/* A plain, airy list — no boxed/bordered container — so editing a slot feels like part of the
+   same light card language as the rest of "Your Palette", not a dense element-control list. */
 #everest-forms-panel-style .pal-edit-rows {
-	margin: 0 4px;
-	border: 1px solid var(--ui-line-2);
-	border-radius: var(--ui-radius-md);
-
-	> .pal-edit-row:first-child {
-		border-top-left-radius: var(--ui-radius-md);
-		border-top-right-radius: var(--ui-radius-md);
-	}
-
-	> .pal-edit-row:last-child {
-		border-bottom-left-radius: var(--ui-radius-md);
-		border-bottom-right-radius: var(--ui-radius-md);
-	}
+	margin-top: 16px;
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
 }
 
 #everest-forms-panel-style .pal-edit-row {
@@ -3743,14 +3799,10 @@
 	align-items: center;
 	justify-content: space-between;
 	gap: 10px;
-	padding: 8px 10px;
-
-	& + & {
-		border-top: 1px solid var(--ui-line-2);
-	}
 
 	.pal-edit-label {
-		font-size: 12px;
+		font-size: 13px;
+		font-weight: 500;
 		color: var(--ui-ink-2);
 		min-width: 0;
 		overflow: hidden;

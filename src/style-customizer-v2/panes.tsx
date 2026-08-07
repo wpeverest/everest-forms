@@ -88,6 +88,7 @@ export function ColorsPane( {
 } ) {
 	const store = useStore();
 	const [ editing, setEditing ] = React.useState( false );
+	const [ editSnapshot, setEditSnapshot ] = React.useState< { palette: string; colors: Record< string, string > } | null >( null );
 	const [ confirmId, setConfirmId ] = React.useState< string | null >( null );
 	const [ busy, setBusy ] = React.useState( false );
 
@@ -101,6 +102,31 @@ export function ColorsPane( {
 	// the same mechanism that already keeps every other control in sync.
 	const currentColors = store.currentPaletteColors();
 	const matchedPalette = store.palette ? store.palettes.find( ( p ) => p.id === store.palette ) : null;
+
+	// Opening the editor snapshots the current state so "Cancel" can restore it exactly — every
+	// other control in the panel is "live, undo to fix", but a dedicated Cancel button here (per
+	// the design) needs a real, precise revert rather than N separate undo steps.
+	const openEditor = () => {
+		setEditSnapshot( { palette: store.palette, colors: { ...currentColors } } );
+		setEditing( true );
+	};
+	const closeEditorKeep = () => {
+		setEditing( false );
+		setEditSnapshot( null );
+	};
+	const cancelEditor = () => {
+		if ( editSnapshot ) {
+			if ( editSnapshot.palette ) {
+				store.applyPalette( editSnapshot.palette );
+			} else {
+				slots.forEach( ( slot ) => {
+					store.setPaletteSlotColor( slot, editSnapshot.colors[ slot ] || '#ffffff', paletteSlotLabel( slot ), false );
+				} );
+			}
+		}
+		setEditing( false );
+		setEditSnapshot( null );
+	};
 
 	const swatch = ( colors: Record< string, string > ) => (
 		<span className="sw" aria-hidden="true">
@@ -211,54 +237,71 @@ export function ColorsPane( {
 			</p>
 
 			<div className="current-block">
-				<div className="block-title-row">
-					<div className="block-title">{ __( 'Your Palette', 'everest-forms' ) }</div>
-					<span className="block-title-meta">
-						{ matchedPalette ? matchedPalette.name : __( 'Custom', 'everest-forms' ) }
-					</span>
-				</div>
-				<div className="pal-card pal-card--wrap pal-card--summary is-selected">
-					<div className="pal-card-apply">
+				<div className="block-title">{ __( 'Your Palette', 'everest-forms' ) }</div>
+
+				<div className={ 'pal-editor-card' + ( editing ? ' is-editing' : '' ) }>
+					<div className="pal-editor-head">
 						{ swatch( currentColors ) }
-						<span className="cap">{ matchedPalette ? matchedPalette.name : __( 'Custom', 'everest-forms' ) }</span>
+						{ pro ? (
+							<button
+								type="button"
+								className="pal-tool"
+								aria-label={ editing ? __( 'Close palette editor', 'everest-forms' ) : __( 'Edit palette', 'everest-forms' ) }
+								title={ editing ? __( 'Close palette editor', 'everest-forms' ) : __( 'Edit palette', 'everest-forms' ) }
+								onClick={ () => ( editing ? closeEditorKeep() : openEditor() ) }
+							>
+								{ editing ? (
+									<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2 } aria-hidden="true">
+										<path d="m18 15-6-6-6 6" />
+									</svg>
+								) : (
+									<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2 } aria-hidden="true">
+										<path d="m6 9 6 6 6-6" />
+									</svg>
+								) }
+							</button>
+						) : (
+							<span className="pro-badge" aria-label={ __( 'Pro', 'everest-forms' ) }>
+								<ProCrown />
+							</span>
+						) }
 					</div>
-					{ pro ? (
-						<button
-							type="button"
-							className="pal-tool"
-							aria-label={ editing ? __( 'Close palette editor', 'everest-forms' ) : __( 'Edit palette', 'everest-forms' ) }
-							title={ editing ? __( 'Close palette editor', 'everest-forms' ) : __( 'Edit palette', 'everest-forms' ) }
-							onClick={ () => setEditing( ( v ) => ! v ) }
-						>
-							{ editing ? (
-								<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2 } aria-hidden="true">
-									<path d="m18 15-6-6-6 6" />
-								</svg>
-							) : (
-								<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2 } aria-hidden="true">
-									<path d="M12 20h9" />
-									<path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" />
-								</svg>
-							) }
-						</button>
-					) : (
-						<span className="pro-badge" aria-label={ __( 'Pro', 'everest-forms' ) }>
-							<ProCrown />
-						</span>
+
+					{ pro && editing && (
+						<>
+							<div className="pal-edit-rows">
+								{ slots.map( ( slot ) => (
+									<PaletteColorRow
+										key={ slot }
+										label={ paletteSlotLabel( slot ) }
+										value={ currentColors[ slot ] || '#ffffff' }
+										onChange={ ( color ) => store.setPaletteSlotColor( slot, color, paletteSlotLabel( slot ) ) }
+									/>
+								) ) }
+							</div>
+							<div className="pal-edit-actions">
+								<button type="button" className="pal-edit-save" onClick={ closeEditorKeep }>
+									{ __( 'Save', 'everest-forms' ) }
+								</button>
+								<button type="button" className="pal-edit-cancel" onClick={ cancelEditor }>
+									{ __( 'Cancel', 'everest-forms' ) }
+								</button>
+							</div>
+						</>
 					) }
 				</div>
-				{ pro && editing && (
-					<div className="pal-edit-rows">
-						{ slots.map( ( slot ) => (
-							<PaletteColorRow
-								key={ slot }
-								label={ paletteSlotLabel( slot ) }
-								value={ currentColors[ slot ] || '#ffffff' }
-								onChange={ ( color ) => store.setPaletteSlotColor( slot, color, paletteSlotLabel( slot ) ) }
-							/>
-						) ) }
-					</div>
-				) }
+
+				<div className="pal-current-caption">
+					<span
+						className="pal-current-name"
+						style={ { color: currentColors.button_background || undefined } }
+					>
+						{ matchedPalette ? matchedPalette.name : __( 'Custom', 'everest-forms' ) }
+					</span>
+					{ matchedPalette && (
+						<span className="predef-badge predef-badge--base">{ __( 'Base', 'everest-forms' ) }</span>
+					) }
+				</div>
 			</div>
 
 			{ !! custom.length && (
