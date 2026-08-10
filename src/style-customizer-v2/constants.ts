@@ -144,7 +144,7 @@ export const PREVIEW_TARGETS: PreviewTarget[] = [
 	{
 		match: '.everest-forms-multi-part-indicator',
 		section: 'pagination',
-		label: 'Pagination',
+		label: 'Multi step',
 	},
 	{
 		match: '.everest-forms-notice--success',
