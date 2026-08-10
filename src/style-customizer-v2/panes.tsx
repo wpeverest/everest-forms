@@ -379,6 +379,7 @@ export function DesignList( {
 	return (
 		<div className="slate-anim">
 			<div className="uxrow">
+				<div className="uxrow-history">
 				<button
 					type="button"
 					className="uxbtn"
@@ -411,6 +412,20 @@ export function DesignList( {
 					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2.2 } aria-hidden="true">
 						<path d="M21 10H11a5 5 0 0 0 0 10h6" />
 						<path d="m17 6 4 4-4 4" />
+					</svg>
+				</button>
+				</div>
+				<span className="uxrow-divider" aria-hidden="true" />
+				<button
+					type="button"
+					className="uxbtn"
+					title={ __( 'Reset all styles', 'everest-forms' ) }
+					aria-label={ __( 'Reset all styles', 'everest-forms' ) }
+					onClick={ onResetAll }
+				>
+					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2 } aria-hidden="true">
+						<path d="M3 12a9 9 0 1 0 3-6.7" />
+						<path d="M3 4v5h5" />
 					</svg>
 				</button>
 			</div>
@@ -489,16 +504,7 @@ export function DesignList( {
 				/>
 			</div>
 
-			<div className="block-title-row">
-				<div className="block-title">{ __( 'Elements', 'everest-forms' ) }</div>
-				<button type="button" className="reset-all-link" onClick={ onResetAll }>
-					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2 } aria-hidden="true">
-						<path d="M3 12a9 9 0 1 0 3-6.7" />
-						<path d="M3 4v5h5" />
-					</svg>
-					{ __( 'Reset', 'everest-forms' ) }
-				</button>
-			</div>
+			<div className="block-title">{ __( 'Elements', 'everest-forms' ) }</div>
 			<p className="hintline">
 				<Icon inner='<path d="M3 3l7 17 2-7 7-2z"/>' />
 				<span>

@@ -180,8 +180,11 @@
 	}
 }
 
-/* Undo/redo sit in their own quiet, right-aligned row above "Pre-defined" — plain ghost icon
-   buttons (same .uxbtn base as the section-reset icon), not a bordered chip. */
+/* Undo/redo/Reset share one quiet, right-aligned row above "Pre-defined" — all three are the
+   same plain ghost .uxbtn (icon only, no label), so Reset reads as one more history-style
+   control rather than a visually mismatched text link. A thin divider marks it as the odd one
+   out (it clears palette/template/custom CSS too — not just Elements, which is why it no longer
+   sits next to that heading), without giving it a different button shape. */
 #everest-forms-panel-style .uxrow {
 	display: flex;
 	align-items: center;
@@ -191,6 +194,20 @@
 	+ .block-title {
 		margin-top: 4px;
 	}
+}
+
+#everest-forms-panel-style .uxrow-history {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+}
+
+#everest-forms-panel-style .uxrow-divider {
+	width: 1px;
+	height: 16px;
+	background: var(--ui-line);
+	margin: 0 2px;
+	flex: none;
 }
 
 #everest-forms-panel-style .subtab {
@@ -578,42 +595,6 @@
 	letter-spacing: normal;
 	font-weight: 600;
 	padding: 1px 6px;
-}
-
-
-/* A block-title paired with a right-aligned value: "ELEMENTS" + inline Reset action (also reused
-   as-is for "ADVANCED"), or "Your Template"/"Your Palette" + the name of whichever is applied. */
-#everest-forms-panel-style .block-title-row {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	gap: 8px;
-
-	.block-title {
-		margin: 18px 0 8px;
-	}
-
-	.reset-all-link {
-		display: flex;
-		align-items: center;
-		gap: 4px;
-		margin: 0;
-		border: 0;
-		background: none;
-		color: var(--ui-ink-3);
-		font-size: 11px;
-		cursor: pointer;
-		transition: color .12s;
-
-		svg {
-			width: 13px;
-			height: 13px;
-		}
-
-		&:hover {
-			color: var(--ui-red);
-		}
-	}
 }
 
 
