@@ -21,6 +21,17 @@ function Icon( { inner }: { inner: string } ) {
 	);
 }
 
+/** The small "(i)" glyph the design's advisory banners lead with. */
+function InfoNoteIcon() {
+	return (
+		<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2 } aria-hidden="true">
+			<circle cx="12" cy="12" r="10" />
+			<path d="M12 16v-4" />
+			<path d="M12 8h.01" />
+		</svg>
+	);
+}
+
 /** "PRO" marker — the builder's own locked-field crown badge. */
 export function ProCrown() {
 	return <img className="pro-crown" src={ proIconUrl } alt="" aria-hidden="true" />;
@@ -191,7 +202,7 @@ export function ColorsPane( {
 				>
 					{ swatch( p.colors ) }
 					<span className="cap">
-						{ p.name }
+						<span className="cap-name">{ p.name }</span>
 						{ selected && (
 							<span className="predef-badge predef-badge--base">{ __( 'Base', 'everest-forms' ) }</span>
 						) }
@@ -235,7 +246,8 @@ export function ColorsPane( {
 	return (
 		<div className="slate-anim">
 			<p className="pane-note">
-				{ __( 'For advanced customization, go to Elements or click the live preview.', 'everest-forms' ) }
+				<InfoNoteIcon />
+				<span>{ __( 'For advanced customization, go to Elements or click the live preview.', 'everest-forms' ) }</span>
 			</p>
 
 			<div className="current-block">
@@ -921,7 +933,7 @@ function TemplateCard( {
 				) }
 				<TemplateThumb tpl={ tpl } />
 				<span className="cap">
-					{ tpl.name }
+					<span className="cap-name">{ tpl.name }</span>
 					{ applied && <span className="tpl-mod tpl-mod--base">{ __( 'Base', 'everest-forms' ) }</span> }
 					{ ! applied && modified && (
 						<span className="tpl-mod" title={ __( 'Started from this template, then edited', 'everest-forms' ) }>
@@ -1111,14 +1123,12 @@ export function TemplatesPane( {
 	return (
 		<div className="slate-anim">
 			<p className="pane-note">
-				{ __( 'For advanced customization, go to Elements or click the live preview.', 'everest-forms' ) }
+				<InfoNoteIcon />
+				<span>{ __( 'For advanced customization, go to Elements or click the live preview.', 'everest-forms' ) }</span>
 			</p>
 
 			<div className="current-block">
-				<div className="block-title-row">
-					<div className="block-title">{ __( 'Your Template', 'everest-forms' ) }</div>
-					<span className="block-title-meta">{ yourTemplateName }</span>
-				</div>
+				<div className="block-title">{ __( 'Your Template', 'everest-forms' ) }</div>
 				<div className="tpls">
 					<div className="tpl-wrap tpl-current">
 						<span className="tpl tpl-static" aria-label={ __( 'Your current form style', 'everest-forms' ) }>
@@ -1126,9 +1136,9 @@ export function TemplatesPane( {
 								tpl={ { id: '__current__', name: yourTemplateName, image: '', palette: store.palette, tokens: store.tokens } }
 							/>
 							<span className="cap">
-								{ yourTemplateName }
+								<span className="cap-name">{ yourTemplateName }</span>
 								{ yourTemplateModified && <span className="tpl-mod">{ __( 'Modified', 'everest-forms' ) }</span> }
-							{ yourTemplateIsBase && <span className="tpl-mod tpl-mod--base">{ __( 'Base', 'everest-forms' ) }</span> }
+								{ yourTemplateIsBase && <span className="tpl-mod tpl-mod--base">{ __( 'Base', 'everest-forms' ) }</span> }
 							</span>
 						</span>
 					</div>

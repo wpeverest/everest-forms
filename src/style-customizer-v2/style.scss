@@ -392,26 +392,11 @@
 }
 
 /* The applied palette/template's name, read at a glance next to its section heading. */
-#everest-forms-panel-style .block-title-meta {
-	font-size: var(--ui-fs-xs);
-	font-weight: 700;
-	color: var(--ui-purple);
-	text-transform: none;
-	letter-spacing: normal;
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
-}
-
 /* "Your Template" / "Your Palette" browse screens: just spacing — the live current-state card
    inside (.pal-card--summary / .tpl-static) carries its own purple-bordered "currently active"
    look, matching the selected-preset treatment used everywhere else in the panel. */
 #everest-forms-panel-style .current-block {
 	margin-bottom: 20px;
-
-	.block-title-row .block-title {
-		margin: 0;
-	}
 
 	.tpls,
 	.pal-card--wrap {
@@ -1935,18 +1920,29 @@
 
 /* custom CSS pane */
 #everest-forms-panel-style .pane-note {
+	display: flex;
+	align-items: flex-start;
+	gap: 8px;
 	font-size: 11.5px;
 	color: var(--ui-ink-3);
 	line-height: 1.55;
 	background: var(--ui-bg-subtle);
 	border: 1px solid var(--ui-line-2);
-	border-radius: var(--ui-radius-sm);
-	padding: 9px 11px;
+	border-radius: var(--ui-radius-md);
+	padding: 10px 12px;
 	margin: 2px 0 14px;
 
 	b {
 		color: var(--ui-ink-2);
 		font-weight: 600;
+	}
+
+	svg {
+		width: 14px;
+		height: 14px;
+		flex: none;
+		margin-top: 1px;
+		color: var(--ui-ink-3);
 	}
 }
 
@@ -2084,6 +2080,11 @@
 		display: flex;
 		align-items: center;
 		gap: 6px;
+	}
+
+	.cap-name {
+		min-width: 0;
+		flex: 1;
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
@@ -3355,8 +3356,10 @@
 		box-shadow: inset 0 0 0 1px rgba(20, 23, 40, .1);
 	}
 
-	/* A long custom palette name wraps instead of truncating; `padding-right` keeps every
-	   wrapped line clear of the hover-revealed edit/delete tools (bottom-right). */
+	/* Always one line, truncated with an ellipsis rather than wrapping — a wrapped second line
+	   broke the grid's even row heights for every two-word name (built-in presets are full of
+	   them: "Blushing Blossom", "Midnight Charm", "Fresh Greenery", …). `padding-right` keeps
+	   the (short) truncated text clear of the hover-revealed delete tool, bottom-right. */
 	.cap {
 		display: flex;
 		align-items: center;
@@ -3365,8 +3368,15 @@
 		font-weight: 500;
 		color: var(--ui-ink);
 		margin-top: 6px;
-		padding-right: 52px;
-		overflow-wrap: anywhere;
+		padding-right: 28px;
+	}
+
+	.cap-name {
+		min-width: 0;
+		flex: 1;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
 
 	/* Same crown badge as .pro-badge elsewhere in the panel. */
@@ -3778,7 +3788,7 @@
 
 	.color {
 		flex: none;
-		width: 92px;
+		width: 108px;
 	}
 
 	.color .swatch {
