@@ -569,6 +569,17 @@
 	padding: 1px 6px;
 }
 
+/* Tags a preset carried over from the retired "create your own" feature — sorts first in the
+   grid, distinguished from the amber "Modified"/neutral "Base" pills by the accent hue. */
+#everest-forms-panel-style .predef-badge--custom {
+	color: var(--ui-purple);
+	background: var(--ui-purple-50);
+	text-transform: none;
+	letter-spacing: normal;
+	font-weight: 600;
+	padding: 1px 6px;
+}
+
 
 /* A block-title paired with a right-aligned value: "ELEMENTS" + inline Reset action (also reused
    as-is for "ADVANCED"), or "Your Template"/"Your Palette" + the name of whichever is applied. */
@@ -2135,6 +2146,12 @@
 #everest-forms-panel-style .tpl-mod--base {
 	color: var(--ui-ink-3);
 	background: var(--ui-bg-subtle);
+}
+
+/* Tags a template carried over from the retired "create your own" feature. */
+#everest-forms-panel-style .tpl-mod--custom {
+	color: var(--ui-purple);
+	background: var(--ui-purple-50);
 }
 
 /* "Based on {built-in}" — a custom template's inferred parent, tucked under the template name. */

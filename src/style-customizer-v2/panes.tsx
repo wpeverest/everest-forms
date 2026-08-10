@@ -205,6 +205,9 @@ export function ColorsPane( {
 					</span>
 					<span className="cap">
 						<span className="cap-name">{ p.name }</span>
+						{ p.is_custom && (
+							<span className="predef-badge predef-badge--custom">{ __( 'Custom', 'everest-forms' ) }</span>
+						) }
 						{ selected && (
 							<span className="predef-badge predef-badge--base">{ __( 'Base', 'everest-forms' ) }</span>
 						) }
@@ -318,18 +321,9 @@ export function ColorsPane( {
 				</div>
 			</div>
 
-			{ !! custom.length && (
-				<>
-					<div className="block-title">{ __( 'Your palettes', 'everest-forms' ) }</div>
-					<div className="pal-pop-grid" role="listbox" aria-label={ __( 'Your custom palettes', 'everest-forms' ) }>
-						{ custom.map( renderCard ) }
-					</div>
-				</>
-			) }
-
 			<div className="block-title">{ __( 'Presets', 'everest-forms' ) }</div>
 			<div className="pal-pop-grid" role="listbox" aria-label={ __( 'Preset palettes', 'everest-forms' ) }>
-				{ builtin.map( renderCard ) }
+				{ [ ...custom, ...builtin ].map( renderCard ) }
 			</div>
 		</div>
 	);
@@ -931,6 +925,7 @@ function TemplateCard( {
 				</span>
 				<span className="cap">
 					<span className="cap-name">{ tpl.name }</span>
+					{ tpl.custom && <span className="tpl-mod tpl-mod--custom">{ __( 'Custom', 'everest-forms' ) }</span> }
 					{ applied && <span className="tpl-mod tpl-mod--base">{ __( 'Base', 'everest-forms' ) }</span> }
 					{ ! applied && modified && (
 						<span className="tpl-mod" title={ __( 'Started from this template, then edited', 'everest-forms' ) }>
@@ -1091,10 +1086,11 @@ export function TemplatesPane( {
 		onApplied( tpl.name );
 	};
 
-	const renderGrid = ( list: Template[], withDelete: boolean ) => (
+	const renderGrid = ( list: Template[] ) => (
 		<div className="tpls">
 			{ list.map( ( tpl ) => {
 				const locked = !! tpl.is_pro && ! store.proActive;
+				const withDelete = !! tpl.custom;
 				return (
 					<TemplateCard
 						key={ tpl.id }
@@ -1149,16 +1145,9 @@ export function TemplatesPane( {
 				— { __( 'click to apply (you can always undo).', 'everest-forms' ) }
 			</p>
 
-			{ !! store.userTemplates.length && (
-				<>
-					<div className="block-title">{ __( 'Your templates', 'everest-forms' ) }</div>
-					{ renderGrid( store.userTemplates, true ) }
-				</>
-			) }
-
 			<div className="block-title">{ __( 'Presets', 'everest-forms' ) }</div>
 			{ /* Legacy set stays in store.templates (see Templates::load_legacy()) for badge matching above; just not offered here. */ }
-			{ renderGrid( store.templates.filter( ( tpl ) => ! tpl.legacy ), false ) }
+			{ renderGrid( [ ...store.userTemplates, ...store.templates.filter( ( tpl ) => ! tpl.legacy ) ] ) }
 
 			<p className="tpl-hint">
 				{ __( 'Templates set every element at once. Fine-tune afterwards from the Design tab.', 'everest-forms' ) }
