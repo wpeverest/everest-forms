@@ -446,6 +446,10 @@ export class PreviewBridge {
 		this.store.schema.forEach( ( token ) => this.applyToken( token, themeFont ) );
 		this.ensureFont();
 		this.applyThemeStyle();
+		// Custom CSS lives outside the schema token loop above — without this, Reset/Undo/Redo
+		// (all of which notify(null) via resetAll()/applySnapshot()) leave a stale <style> tag in
+		// the iframe even after store.customCss has already changed.
+		this.applyCustomCss();
 	}
 
 	/** Apply only the given token keys (a targeted live edit). */
