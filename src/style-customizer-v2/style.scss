@@ -1601,24 +1601,60 @@
 	}
 }
 
-/* Hex + Opacity, editable right inside the popover so a colour can be fully dialed in without
-   reaching back to the trigger row underneath it. */
+/* HEX / RGB / HSL — a quiet segmented switch just above the fields row it governs. */
+#everest-forms-panel-style .cpf-format {
+	display: flex;
+	gap: 2px;
+	margin-top: 12px;
+	padding: 2px;
+	background: var(--ui-bg-subtle);
+	border-radius: var(--ui-radius-md);
+}
+
+#everest-forms-panel-style .cpf-format-btn {
+	flex: 1;
+	border: 0;
+	background: none;
+	padding: 4px 0;
+	font-size: 10px;
+	font-weight: 600;
+	letter-spacing: .03em;
+	color: var(--ui-ink-3);
+	border-radius: calc(var(--ui-radius-md) - 2px);
+	cursor: pointer;
+	transition: background .12s, color .12s;
+
+	&:hover {
+		color: var(--ui-ink-2);
+	}
+
+	&.is-active {
+		background: #fff;
+		color: var(--ui-ink);
+		box-shadow: var(--ui-shadow-xs, 0 1px 2px rgba(0, 0, 0, .06));
+	}
+}
+
+/* Hex/RGB/HSL + Opacity, editable right inside the popover so a colour can be fully dialed in
+   without reaching back to the trigger row underneath it. */
 #everest-forms-panel-style .color-pop-fields {
 	display: flex;
 	gap: 8px;
-	margin-top: 14px;
+	margin-top: 8px;
 	padding-top: 14px;
 	border-top: 1px solid var(--ui-line-2);
 }
 
 #everest-forms-panel-style .cpf-hex,
+#everest-forms-panel-style .cpf-num,
 #everest-forms-panel-style .cpf-alpha {
 	display: flex;
 	flex-direction: column;
 	gap: 4px;
 }
 
-#everest-forms-panel-style .cpf-hex {
+#everest-forms-panel-style .cpf-hex,
+#everest-forms-panel-style .cpf-num {
 	flex: 1;
 	min-width: 0;
 }
@@ -1632,6 +1668,7 @@
 }
 
 #everest-forms-panel-style .cpf-hex .num,
+#everest-forms-panel-style .cpf-num .num,
 #everest-forms-panel-style .cpf-alpha .num {
 	width: 100%;
 	height: 30px;

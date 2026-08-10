@@ -92,6 +92,120 @@ function toHex8( hex: string, alpha: number ): string {
 	return hex + alphaHex;
 }
 
+/** 6-digit hex -> 0-255 RGB triple. */
+function hexToRgb( hex: string ): { r: number; g: number; b: number } {
+	const n = parseInt( hex.slice( 1 ), 16 ) || 0;
+	return { r: ( n >> 16 ) & 255, g: ( n >> 8 ) & 255, b: n & 255 };
+}
+
+/** 0-255 RGB triple -> 6-digit hex. */
+function rgbToHex( r: number, g: number, b: number ): string {
+	const c = ( n: number ) => clampNumber( Math.round( n ), 0, 255 ).toString( 16 ).padStart( 2, '0' );
+	return '#' + c( r ) + c( g ) + c( b );
+}
+
+/** 0-255 RGB triple -> {h: 0-360, s/l: 0-100}. */
+function rgbToHsl( r: number, g: number, b: number ): { h: number; s: number; l: number } {
+	r /= 255; g /= 255; b /= 255;
+	const max = Math.max( r, g, b );
+	const min = Math.min( r, g, b );
+	const l = ( max + min ) / 2;
+	const d = max - min;
+	let h = 0;
+	let s = 0;
+	if ( d !== 0 ) {
+		s = d / ( 1 - Math.abs( 2 * l - 1 ) );
+		switch ( max ) {
+			case r:
+				h = 60 * ( ( ( g - b ) / d ) % 6 );
+				break;
+			case g:
+				h = 60 * ( ( b - r ) / d + 2 );
+				break;
+			default:
+				h = 60 * ( ( r - g ) / d + 4 );
+		}
+	}
+	if ( h < 0 ) {
+		h += 360;
+	}
+	return { h: Math.round( h ), s: Math.round( s * 100 ), l: Math.round( l * 100 ) };
+}
+
+/** {h: 0-360, s/l: 0-100} -> 0-255 RGB triple. */
+function hslToRgb( h: number, s: number, l: number ): { r: number; g: number; b: number } {
+	h = ( ( h % 360 ) + 360 ) % 360;
+	const sf = clampNumber( s, 0, 100 ) / 100;
+	const lf = clampNumber( l, 0, 100 ) / 100;
+	const c = ( 1 - Math.abs( 2 * lf - 1 ) ) * sf;
+	const x = c * ( 1 - Math.abs( ( ( h / 60 ) % 2 ) - 1 ) );
+	const m = lf - c / 2;
+	let r = 0;
+	let g = 0;
+	let b = 0;
+	if ( h < 60 ) {
+		r = c; g = x; b = 0;
+	} else if ( h < 120 ) {
+		r = x; g = c; b = 0;
+	} else if ( h < 180 ) {
+		r = 0; g = c; b = x;
+	} else if ( h < 240 ) {
+		r = 0; g = x; b = c;
+	} else if ( h < 300 ) {
+		r = x; g = 0; b = c;
+	} else {
+		r = c; g = 0; b = x;
+	}
+	return { r: ( r + m ) * 255, g: ( g + m ) * 255, b: ( b + m ) * 255 };
+}
+
+/** One compact "label + number input(+suffix)" field — shared by the RGB/HSL rows below. */
+function NumField( {
+	label,
+	ariaLabel,
+	value,
+	min,
+	max,
+	suffix,
+	inputRef,
+	onCommit,
+}: {
+	label: string;
+	ariaLabel: string;
+	value: number;
+	min: number;
+	max: number;
+	suffix?: string;
+	inputRef: React.RefObject< HTMLInputElement >;
+	onCommit: ( n: number ) => void;
+} ) {
+	return (
+		<div className="cpf-num">
+			<span className="cpf-label">{ label }</span>
+			<div className="num">
+				<input
+					ref={ inputRef }
+					inputMode="numeric"
+					defaultValue={ String( value ) }
+					aria-label={ ariaLabel }
+					onInput={ ( e ) => {
+						const n = Number( ( e.target as HTMLInputElement ).value );
+						if ( ! Number.isNaN( n ) ) {
+							onCommit( clampNumber( n, min, max ) );
+						}
+					} }
+					onBlur={ () => {
+						if ( inputRef.current ) {
+							inputRef.current.value = String( value );
+						}
+					} }
+				/>
+				{ suffix && <span>{ suffix }</span> }
+			</div>
+		</div>
+	);
+}
+
 /** Curated quick-pick row inside every color popover — neutrals, the panel's own accent, and a
  *  handful of common brand/UI colours, so a common choice never requires touching the wheel. */
 const PRESET_SWATCHES = [
@@ -370,11 +484,27 @@ export function ColorPickerField( {
 	const [ invalid, setInvalid ] = React.useState( false );
 	const [ pickerOpen, setPickerOpen ] = React.useState( false );
 	const [ pos, setPos ] = React.useState< { left: number; top: number } | null >( null );
+	const [ format, setFormat ] = React.useState< 'hex' | 'rgb' | 'hsl' >( 'hex' );
 	const hasEyeDropper = typeof ( window as any ).EyeDropper !== 'undefined';
 	useSyncedInput( hexRef, parsed.hex.toUpperCase() );
 	useSyncedInput( popHexRef, parsed.hex.toUpperCase() );
 	useSyncedInput( popAlphaNumRef, String( parsed.alpha ) );
 	useDismiss( pickerOpen, rootRef, () => setPickerOpen( false ), popRef );
+
+	const rgb = hexToRgb( parsed.hex );
+	const hsl = rgbToHsl( rgb.r, rgb.g, rgb.b );
+	const rRef = React.useRef< HTMLInputElement >( null );
+	const gRef = React.useRef< HTMLInputElement >( null );
+	const bRef = React.useRef< HTMLInputElement >( null );
+	const hRef = React.useRef< HTMLInputElement >( null );
+	const sRef = React.useRef< HTMLInputElement >( null );
+	const lRef = React.useRef< HTMLInputElement >( null );
+	useSyncedInput( rRef, String( rgb.r ) );
+	useSyncedInput( gRef, String( rgb.g ) );
+	useSyncedInput( bRef, String( rgb.b ) );
+	useSyncedInput( hRef, String( hsl.h ) );
+	useSyncedInput( sRef, String( hsl.s ) );
+	useSyncedInput( lRef, String( hsl.l ) );
 
 	// Portaled + position:fixed (see below) so the popover can never be clipped by a scrolling
 	// ancestor (the panel sidebar, a palette's own scrollable row list, etc.) — same escape-hatch
@@ -421,6 +551,11 @@ export function ColorPickerField( {
 	const commitHex8 = ( hex8: string ) => {
 		const p = parseColor( hex8 );
 		onChange( composeColor( p.hex, p.alpha ) );
+	};
+	const commitRgb = ( r: number, g: number, b: number ) => commitHex( rgbToHex( r, g, b ) );
+	const commitHsl = ( h: number, s: number, l: number ) => {
+		const c = hslToRgb( h, s, l );
+		commitHex( rgbToHex( c.r, c.g, c.b ) );
 	};
 
 	const onHex = ( e: React.FormEvent< HTMLInputElement > ) => {
@@ -511,24 +646,104 @@ export function ColorPickerField( {
 							color={ toHex8( parsed.hex, parsed.alpha ) }
 							onChange={ commitHex8 }
 						/>
+						<div className="cpf-format" role="tablist" aria-label={ __( 'Color format', 'everest-forms' ) }>
+							{ ( [ 'hex', 'rgb', 'hsl' ] as const ).map( ( f ) => (
+								<button
+									key={ f }
+									type="button"
+									role="tab"
+									aria-selected={ format === f }
+									className={ 'cpf-format-btn' + ( format === f ? ' is-active' : '' ) }
+									onClick={ () => setFormat( f ) }
+								>
+									{ f.toUpperCase() }
+								</button>
+							) ) }
+						</div>
 						<div className="color-pop-fields">
-							<div className="cpf-hex">
-								<span className="cpf-label">{ __( 'Hex', 'everest-forms' ) }</span>
-								<div className="num">
-									<input
-										ref={ popHexRef }
-										spellCheck={ false }
-										defaultValue={ parsed.hex.toUpperCase() }
-										aria-label={ label + ' ' + __( 'hex value', 'everest-forms' ) }
-										onInput={ onHex }
-										onBlur={ () => {
-											if ( popHexRef.current ) {
-												popHexRef.current.value = parseColor( value ).hex.toUpperCase();
-											}
-										} }
-									/>
+							{ format === 'hex' && (
+								<div className="cpf-hex">
+									<span className="cpf-label">{ __( 'Hex', 'everest-forms' ) }</span>
+									<div className="num">
+										<input
+											ref={ popHexRef }
+											spellCheck={ false }
+											defaultValue={ parsed.hex.toUpperCase() }
+											aria-label={ label + ' ' + __( 'hex value', 'everest-forms' ) }
+											onInput={ onHex }
+											onBlur={ () => {
+												if ( popHexRef.current ) {
+													popHexRef.current.value = parseColor( value ).hex.toUpperCase();
+												}
+											} }
+										/>
+									</div>
 								</div>
-							</div>
+							) }
+							{ format === 'rgb' && (
+								<>
+									<NumField
+										label="R"
+										ariaLabel={ label + ' ' + __( 'red value', 'everest-forms' ) }
+										value={ rgb.r }
+										min={ 0 }
+										max={ 255 }
+										inputRef={ rRef }
+										onCommit={ ( n ) => commitRgb( n, rgb.g, rgb.b ) }
+									/>
+									<NumField
+										label="G"
+										ariaLabel={ label + ' ' + __( 'green value', 'everest-forms' ) }
+										value={ rgb.g }
+										min={ 0 }
+										max={ 255 }
+										inputRef={ gRef }
+										onCommit={ ( n ) => commitRgb( rgb.r, n, rgb.b ) }
+									/>
+									<NumField
+										label="B"
+										ariaLabel={ label + ' ' + __( 'blue value', 'everest-forms' ) }
+										value={ rgb.b }
+										min={ 0 }
+										max={ 255 }
+										inputRef={ bRef }
+										onCommit={ ( n ) => commitRgb( rgb.r, rgb.g, n ) }
+									/>
+								</>
+							) }
+							{ format === 'hsl' && (
+								<>
+									<NumField
+										label="H"
+										ariaLabel={ label + ' ' + __( 'hue value', 'everest-forms' ) }
+										value={ hsl.h }
+										min={ 0 }
+										max={ 360 }
+										inputRef={ hRef }
+										onCommit={ ( n ) => commitHsl( n, hsl.s, hsl.l ) }
+									/>
+									<NumField
+										label="S"
+										ariaLabel={ label + ' ' + __( 'saturation value', 'everest-forms' ) }
+										value={ hsl.s }
+										min={ 0 }
+										max={ 100 }
+										suffix="%"
+										inputRef={ sRef }
+										onCommit={ ( n ) => commitHsl( hsl.h, n, hsl.l ) }
+									/>
+									<NumField
+										label="L"
+										ariaLabel={ label + ' ' + __( 'lightness value', 'everest-forms' ) }
+										value={ hsl.l }
+										min={ 0 }
+										max={ 100 }
+										suffix="%"
+										inputRef={ lRef }
+										onCommit={ ( n ) => commitHsl( hsl.h, hsl.s, n ) }
+									/>
+								</>
+							) }
 							<div className="cpf-alpha">
 								<span className="cpf-label">{ __( 'Opacity', 'everest-forms' ) }</span>
 								<div className="num">
