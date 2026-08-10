@@ -1037,13 +1037,28 @@ export function ColorPickerField( {
 		const r = trigger.getBoundingClientRect();
 		const width = popRef.current?.offsetWidth || 264;
 		const height = popRef.current?.offsetHeight || 0;
+		const margin = 8;
+		// WordPress's own fixed admin bar (32px on desktop, 46px under ~600px wide) sits above
+		// everything at the very top of the page — clamping to 8px from the viewport edge (as
+		// this used to) can still land the popover right underneath it, close enough that only
+		// a sliver of the popover's own heading peeks out below the bar on a short screen where
+		// the flip-above branch kicks in. Keep clear of it outright instead of guessing its exact
+		// height: WP renders it with `#wpadminbar`.
+		const adminBar = document.getElementById( 'wpadminbar' );
+		const topBound = margin + ( adminBar ? adminBar.getBoundingClientRect().bottom : 0 );
 		let left = r.left;
-		left = Math.min( Math.max( 8, left ), window.innerWidth - width - 8 );
-		let top = r.bottom + 6;
-		if ( height && top + height > window.innerHeight - 8 ) {
-			top = r.top - height - 6;
-		}
-		setPos( { left, top: Math.max( 8, top ) } );
+		left = Math.min( Math.max( margin, left ), window.innerWidth - width - margin );
+		// Pick whichever side actually has more room, rather than "below unless it doesn't fit,
+		// then blindly above" — the old rule could flip to a side with EVEN LESS room on a short
+		// screen. Then hard-clamp both edges so a popover taller than either side still lands
+		// fully on-screen (its own max-height + overflow-y:auto, see style.scss, takes it from
+		// there if it's taller than the whole viewport).
+		const roomBelow = window.innerHeight - r.bottom - margin;
+		const roomAbove = r.top - topBound;
+		const top = ! height || height <= roomBelow || roomBelow >= roomAbove
+			? r.bottom + 6
+			: r.top - height - 6;
+		setPos( { left, top: clampNumber( top, topBound, Math.max( topBound, window.innerHeight - height - margin ) ) } );
 	}, [] );
 
 	React.useLayoutEffect( () => {

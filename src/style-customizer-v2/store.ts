@@ -448,6 +448,16 @@ class StyleStore {
 		return out;
 	}
 
+	/** Whether every token a palette SLOT writes to (see {@see palette_map} on the PHP side —
+	 *  some slots bundle more than one token, e.g. `field_label` also drives `title.color`)
+	 *  itself allows a gradient value. A slot is only gradient-safe if ALL of its tokens are —
+	 *  `button_background`, for one, also feeds `input.focusBorder`/`choice.checked`/`file.icon`
+	 *  (border/dual-context/SVG-fill tokens a gradient can't reach), so it stays solid-only. */
+	slotGradientable( slot: string ): boolean {
+		const keys = this.paletteMap[ slot ] || [];
+		return keys.length > 0 && keys.every( ( k ) => !! this.byKey[ k ]?.gradientable );
+	}
+
 	/** Whether a palette's 6 named colours exactly match the form's current live colours. */
 	private paletteColorsMatch( colors: Record< string, string > ): boolean {
 		const current = this.currentPaletteColors();

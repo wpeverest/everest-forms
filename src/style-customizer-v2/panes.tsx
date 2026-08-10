@@ -63,15 +63,17 @@ export function PaletteColorRow( {
 	label,
 	value,
 	onChange,
+	gradientable,
 }: {
 	label: string;
 	value: string;
 	onChange: ( color: string ) => void;
+	gradientable?: boolean;
 } ) {
 	return (
 		<div className="pal-edit-row">
 			<span className="pal-edit-label">{ label }</span>
-			<ColorPickerField label={ label } value={ value } onChange={ onChange } />
+			<ColorPickerField label={ label } value={ value } onChange={ onChange } gradientable={ gradientable } />
 		</div>
 	);
 }
@@ -308,6 +310,7 @@ export function ColorsPane( {
 										label={ paletteSlotLabel( slot ) }
 										value={ currentColors[ slot ] || '#ffffff' }
 										onChange={ ( color ) => store.setPaletteSlotColor( slot, color, paletteSlotLabel( slot ) ) }
+										gradientable={ store.slotGradientable( slot ) }
 									/>
 								) ) }
 							</div>
