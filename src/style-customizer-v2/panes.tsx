@@ -217,13 +217,8 @@ export function ColorsPane( {
 						{ p.is_custom && (
 							<span className="predef-badge predef-badge--custom">{ __( 'Custom', 'everest-forms' ) }</span>
 						) }
-						{ applied && (
+						{ ( applied || modified ) && (
 							<span className="predef-badge predef-badge--base">{ __( 'Base', 'everest-forms' ) }</span>
-						) }
-						{ ! applied && modified && (
-							<span className="predef-badge" title={ __( 'Started from this palette, then edited', 'everest-forms' ) }>
-								{ __( 'Modified', 'everest-forms' ) }
-							</span>
 						) }
 						{ applyLocked && (
 							<span className="pro" aria-label={ __( 'Pro', 'everest-forms' ) }>
@@ -960,12 +955,7 @@ function TemplateCard( {
 				<span className="cap">
 					<span className="cap-name">{ tpl.name }</span>
 					{ tpl.custom && <span className="tpl-mod tpl-mod--custom">{ __( 'Custom', 'everest-forms' ) }</span> }
-					{ applied && <span className="tpl-mod tpl-mod--base">{ __( 'Base', 'everest-forms' ) }</span> }
-					{ ! applied && modified && (
-						<span className="tpl-mod" title={ __( 'Started from this template, then edited', 'everest-forms' ) }>
-							{ __( 'Modified', 'everest-forms' ) }
-						</span>
-					) }
+					{ ( applied || modified ) && <span className="tpl-mod tpl-mod--base">{ __( 'Base', 'everest-forms' ) }</span> }
 				</span>
 				{ basedOn && (
 					<span className="tpl-parent">
