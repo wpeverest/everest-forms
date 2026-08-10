@@ -478,7 +478,7 @@ export function DesignList( {
 							className="info"
 							label={ __( 'About Apply Theme Style', 'everest-forms' ) }
 							tip={ __(
-								'Matches your active theme’s look, including fonts. Turn off for Everest Forms’ default and your own font choice — your other settings above still apply.',
+								'Matches only your active theme’s font. Colors, borders, and spacing always stay as you set them below, either way. Turn off to use your own Font family choice instead.',
 								'everest-forms'
 							) }
 						>
