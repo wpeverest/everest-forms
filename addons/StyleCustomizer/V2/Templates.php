@@ -41,10 +41,10 @@ final class Templates {
 
 	/**
 	 * The built-in templates that are FREE (usable without Pro). Matched by template name.
-	 * The first four are the legacy v1 set (kept for existing forms); "Default" and "Ledger"
+	 * The first four are the legacy v1 set (kept for existing forms); "Clearline" and "Ledger"
 	 * are the current gallery's free entries.
 	 */
-	const FREE_TEMPLATES = array( 'Default Template', 'Classic Template', 'In-Line Flair', 'Classic Flow', 'Default', 'Ledger' );
+	const FREE_TEMPLATES = array( 'Default Template', 'Classic Template', 'In-Line Flair', 'Classic Flow', 'Clearline', 'Ledger' );
 
 	/**
 	 * Memoized template list.
