@@ -307,15 +307,18 @@ class StyleStore {
 		} else {
 			this.discrete( `Change ${ token.label }` );
 		}
+		const wasExact = !! this.palette && this.paletteDrivenKeys().has( key ) && this.appliedPaletteId() === this.palette;
 		if ( ! this.tokens[ key ] ) {
 			this.tokens[ key ] = { desktop: clone( token.default ) };
 		}
 		this.tokens[ key ][ this.targetDevice( token ) ] = value;
 
-		// A manual edit to a palette-driven token breaks the "active palette" link.
-		if ( this.palette && this.paletteDrivenKeys().has( key ) ) {
+		// A manual edit to a palette-driven token can break the exact match — keep `this.palette`
+		// as the origin reference (mirrors template's sticky `this.template`, drives the
+		// "Modified" hint) instead of clearing it, but still toast once, on the actual transition
+		// away from an exact match.
+		if ( wasExact && this.appliedPaletteId() !== this.palette ) {
 			const detached = this.palettes.find( ( p ) => p.id === this.palette );
-			this.palette = '';
 			if ( detached && this.onPaletteUnlinked ) {
 				this.onPaletteUnlinked( detached.name );
 			}
@@ -445,6 +448,38 @@ class StyleStore {
 		return out;
 	}
 
+	/** Whether a palette's 6 named colours exactly match the form's current live colours. */
+	private paletteColorsMatch( colors: Record< string, string > ): boolean {
+		const current = this.currentPaletteColors();
+		return Object.keys( this.paletteMap ).every(
+			( slot ) => String( colors[ slot ] || '' ).toLowerCase() === String( current[ slot ] || '' ).toLowerCase()
+		);
+	}
+
+	/** The id of the palette the form's current colours exactly match, or '' if none. Mirrors {@see appliedTemplateId}. */
+	appliedPaletteId(): string {
+		const stored = this.palettes.find( ( p ) => p.id === this.palette );
+		if ( stored && this.paletteColorsMatch( stored.colors ) ) {
+			return stored.id;
+		}
+		const match = this.palettes.find( ( p ) => this.paletteColorsMatch( p.colors ) );
+		return match ? match.id : '';
+	}
+
+	/** The palette the form was applied from but has since diverged from; drives the "Modified" hint. Mirrors {@see originTemplateId}. */
+	originPaletteId(): string {
+		if ( ! this.palette || this.appliedPaletteId() === this.palette ) {
+			return '';
+		}
+		return this.palettes.some( ( p ) => p.id === this.palette ) ? this.palette : '';
+	}
+
+	/** Whether every palette-driven colour token is still exactly at its schema default — the
+	 *  true "blank slate", independent of any named palette ever having been applied. */
+	paletteAtDefault(): boolean {
+		return Array.from( this.paletteDrivenKeys() ).every( ( key ) => ! this.byKey[ key ] || ! this.isChanged( key ) );
+	}
+
 	applyPalette( paletteId: string ) {
 		const palette = this.palettes.find( ( p ) => p.id === paletteId );
 		if ( ! palette ) {
@@ -478,8 +513,9 @@ class StyleStore {
 	 * Edit ONE palette slot's colour directly — the "Your Palette" section's per-swatch write
 	 * path. Mirrors {@see applyPalette}'s own token-writing logic (same paletteMap keys, same
 	 * btn.bgHover derivation for button_background) but scoped to a single slot. Unlike
-	 * applyPalette(), this never sets `this.palette` — it's a manual edit like any other, so it
-	 * unlinks an active palette match instead (same as setTokenValue()'s paletteDrivenKeys() check).
+	 * applyPalette(), this never sets `this.palette` to a NEW id — it's a manual edit like any
+	 * other, so `this.palette` stays as the origin reference (mirrors template's sticky
+	 * `this.template`) rather than being cleared; {@see originPaletteId} drives the "Modified" hint.
 	 */
 	setPaletteSlotColor( slot: string, color: string, slotLabel: string, gesture = true ) {
 		const keys = this.paletteMap[ slot ];
@@ -492,6 +528,7 @@ class StyleStore {
 		} else {
 			this.discrete( label );
 		}
+		const wasExact = !! this.palette && this.appliedPaletteId() === this.palette;
 		const affected: string[] = [];
 		keys.forEach( ( key ) => {
 			if ( ! this.byKey[ key ] ) {
@@ -504,9 +541,8 @@ class StyleStore {
 			this.tokens[ 'btn.bgHover' ] = { desktop: mixHex( color, '#000000', 0.14 ) };
 			affected.push( 'btn.bgHover' );
 		}
-		if ( this.palette ) {
+		if ( wasExact && this.appliedPaletteId() !== this.palette ) {
 			const detached = this.palettes.find( ( p ) => p.id === this.palette );
-			this.palette = '';
 			if ( detached && this.onPaletteUnlinked ) {
 				this.onPaletteUnlinked( detached.name );
 			}
@@ -629,6 +665,12 @@ class StyleStore {
 			return '';
 		}
 		return this.allTemplates().some( ( t ) => t.id === this.template ) ? this.template : '';
+	}
+
+	/** Whether every token is still exactly at its schema default — the true "blank slate",
+	 *  independent of any named template ever having been applied. */
+	isAtSchemaDefault(): boolean {
+		return this.tokensMatchTemplate( {} );
 	}
 
 	/** For a custom template, the id of the built-in template it exactly derives from, or '' if none. */

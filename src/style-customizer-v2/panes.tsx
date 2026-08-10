@@ -112,7 +112,13 @@ export function ColorsPane( {
 	// Re-reads on every store version bump (useStore()), so this always reflects live edits —
 	// the same mechanism that already keeps every other control in sync.
 	const currentColors = store.currentPaletteColors();
-	const matchedPalette = store.palette ? store.palettes.find( ( p ) => p.id === store.palette ) : null;
+	const appliedPaletteId = store.appliedPaletteId();
+	const originPaletteId = store.originPaletteId();
+	const matchedPaletteId = appliedPaletteId || originPaletteId;
+	const matchedPalette = matchedPaletteId ? store.palettes.find( ( p ) => p.id === matchedPaletteId ) : null;
+	// Also flag "Modified" when the colours never matched a named palette AT ALL but have drifted
+	// from the raw schema defaults (e.g. hand-picked colours, or a Template's own colour set).
+	const paletteModified = ! appliedPaletteId && ( !! originPaletteId || ! store.paletteAtDefault() );
 
 	// Opening the editor snapshots the current state so "Cancel" can restore it exactly — every
 	// other control in the panel is "live, undo to fix", but a dedicated Cancel button here (per
@@ -179,7 +185,8 @@ export function ColorsPane( {
 	};
 
 	const renderCard = ( p: ReturnType< typeof store.customPalettes >[ number ] ) => {
-		const selected = p.id === store.palette;
+		const applied = p.id === appliedPaletteId;
+		const modified = p.id === originPaletteId;
 		const applyLocked = p.is_pro && ! pro;
 		const canDelete = p.is_custom && pro;
 		return (
@@ -194,7 +201,7 @@ export function ColorsPane( {
 					type="button"
 					className="pal-card-apply"
 					role="option"
-					aria-selected={ selected }
+					aria-selected={ applied }
 					title={ p.name }
 					onMouseEnter={ () => onPreviewPalette( p.colors ) }
 					onMouseLeave={ onClearPreview }
@@ -208,8 +215,13 @@ export function ColorsPane( {
 						{ p.is_custom && (
 							<span className="predef-badge predef-badge--custom">{ __( 'Custom', 'everest-forms' ) }</span>
 						) }
-						{ selected && (
+						{ applied && (
 							<span className="predef-badge predef-badge--base">{ __( 'Base', 'everest-forms' ) }</span>
+						) }
+						{ ! applied && modified && (
+							<span className="predef-badge" title={ __( 'Started from this palette, then edited', 'everest-forms' ) }>
+								{ __( 'Modified', 'everest-forms' ) }
+							</span>
 						) }
 						{ applyLocked && (
 							<span className="pro" aria-label={ __( 'Pro', 'everest-forms' ) }>
@@ -313,9 +325,12 @@ export function ColorsPane( {
 
 				<div className="pal-current-caption">
 					<span className="pal-current-name">
-						{ matchedPalette ? matchedPalette.name : __( 'Custom', 'everest-forms' ) }
+						{ matchedPalette ? matchedPalette.name : __( 'Default', 'everest-forms' ) }
 					</span>
-					{ matchedPalette && (
+					{ paletteModified && (
+						<span className="predef-badge">{ __( 'Modified', 'everest-forms' ) }</span>
+					) }
+					{ !! appliedPaletteId && (
 						<span className="predef-badge predef-badge--base">{ __( 'Base', 'everest-forms' ) }</span>
 					) }
 				</div>
@@ -368,13 +383,20 @@ export function DesignList( {
 	const originId = store.originTemplateId();
 	const matchedTplId = appliedId || originId;
 	const matchedTpl = matchedTplId ? store.allTemplates().find( ( t ) => t.id === matchedTplId ) : null;
-	const templateLabel = matchedTpl ? matchedTpl.name : __( 'Custom', 'everest-forms' );
-	const templateModified = ! appliedId && !! originId;
-
-	const matchedPalette = store.palette ? store.palettes.find( ( p ) => p.id === store.palette ) : null;
-	const paletteLabel = matchedPalette ? matchedPalette.name : __( 'Custom', 'everest-forms' );
-	const paletteColors = store.currentPaletteColors();
+	const templateLabel = matchedTpl ? matchedTpl.name : __( 'Default', 'everest-forms' );
+	// Also flag "Modified" when nothing ever matched a named template but styles have drifted
+	// from the raw schema defaults.
+	const templateModified = ! appliedId && ( !! originId || ! store.isAtSchemaDefault() );
 	const templateIsBase = !! appliedId && ! templateModified;
+
+	const appliedPaletteId = store.appliedPaletteId();
+	const originPaletteId = store.originPaletteId();
+	const matchedPaletteId = appliedPaletteId || originPaletteId;
+	const matchedPalette = matchedPaletteId ? store.palettes.find( ( p ) => p.id === matchedPaletteId ) : null;
+	const paletteLabel = matchedPalette ? matchedPalette.name : __( 'Default', 'everest-forms' );
+	const paletteModified = ! appliedPaletteId && ( !! originPaletteId || ! store.paletteAtDefault() );
+	const paletteIsBase = !! appliedPaletteId && ! paletteModified;
+	const paletteColors = store.currentPaletteColors();
 
 	return (
 		<div className="slate-anim">
@@ -457,7 +479,10 @@ export function DesignList( {
 						<span className="predef-kicker">{ __( 'Colors', 'everest-forms' ) }</span>
 						<span className="predef-name">
 							{ paletteLabel }
-							{ !! matchedPalette && (
+							{ paletteModified && (
+								<span className="predef-badge">{ __( 'Modified', 'everest-forms' ) }</span>
+							) }
+							{ paletteIsBase && (
 								<span className="predef-badge predef-badge--base">{ __( 'Base', 'everest-forms' ) }</span>
 							) }
 						</span>
@@ -1042,8 +1067,8 @@ export function TemplatesPane( {
 	// the existing TemplateThumb live-mockup renderer via a synthetic, always-current object.
 	const matchedTplId = appliedId || originId;
 	const matchedTpl = matchedTplId ? templates.find( ( t ) => t.id === matchedTplId ) : null;
-	const yourTemplateName = matchedTpl ? matchedTpl.name : __( 'Custom', 'everest-forms' );
-	const yourTemplateModified = ! appliedId && !! originId;
+	const yourTemplateName = matchedTpl ? matchedTpl.name : __( 'Default', 'everest-forms' );
+	const yourTemplateModified = ! appliedId && ( !! originId || ! store.isAtSchemaDefault() );
 	const yourTemplateIsBase = !! appliedId && ! yourTemplateModified;
 
 	const templatesBase = store.settings.restBase.replace( /\/styles$/, '/style-templates' );
@@ -1153,7 +1178,14 @@ export function TemplatesPane( {
 
 			<div className="block-title">{ __( 'Presets', 'everest-forms' ) }</div>
 			{ /* Legacy set stays in store.templates (see Templates::load_legacy()) for badge matching above; just not offered here. */ }
-			{ renderGrid( [ ...store.userTemplates, ...store.templates.filter( ( tpl ) => ! tpl.legacy ) ] ) }
+			{ renderGrid(
+				[ ...store.userTemplates, ...store.templates.filter( ( tpl ) => ! tpl.legacy ) ].sort( ( a, b ) => {
+					if ( !! a.custom !== !! b.custom ) {
+						return a.custom ? -1 : 1;
+					}
+					return ( a.is_pro ? 1 : 0 ) - ( b.is_pro ? 1 : 0 );
+				} )
+			) }
 
 			<p className="tpl-hint">
 				{ __( 'Templates set every element at once. Fine-tune afterwards from the Design tab.', 'everest-forms' ) }
