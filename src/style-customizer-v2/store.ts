@@ -685,6 +685,11 @@ class StyleStore {
 	markSaved( record: StyleRecord ) {
 		this.hydrate( record );
 		this.saved = this.snapshot();
+		// The record is now genuinely persisted as v2 — the migration banner (and App's forced
+		// first-save allowance) have both done their job, so this one-time flag retires.
+		if ( this.migration.just_migrated ) {
+			this.migration = { ...this.migration, just_migrated: false };
+		}
 		this.notify( [] );
 	}
 }

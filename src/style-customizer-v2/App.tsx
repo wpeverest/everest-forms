@@ -128,7 +128,10 @@ export function App() {
 
 	/* ---- save (invoked by the builder's Save button) ---- */
 	const save = React.useCallback( async () => {
-		if ( ! apiFetch || ! store.isDirty() ) {
+		// A just-migrated record is, by definition, not "dirty" (nothing has been edited yet) —
+		// but it still needs one real save to actually persist as v2, or the migration banner's
+		// own "hit Save to keep it" is a lie: the record stays legacy-shaped forever.
+		if ( ! apiFetch || ( ! store.isDirty() && ! store.migration.just_migrated ) ) {
 			return;
 		}
 		setSaving( true );
