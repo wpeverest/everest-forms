@@ -424,13 +424,8 @@ export function DesignList( {
 
 			<div className="predefined-row">
 				<button type="button" className="predef-card" onClick={ onNavigateTemplates }>
-					<span className="predef-thumb">
-						<TemplateThumb
-							tpl={ { id: '__current__', name: templateLabel, image: '', palette: store.palette, tokens: store.tokens } }
-						/>
-					</span>
 					<span className="predef-body">
-						<span className="predef-kicker">{ __( 'Your Template', 'everest-forms' ) }</span>
+						<span className="predef-kicker">{ __( 'Template', 'everest-forms' ) }</span>
 						<span className="predef-name">
 							{ templateLabel }
 							{ templateModified && (
@@ -441,29 +436,27 @@ export function DesignList( {
 							) }
 						</span>
 					</span>
-					<span className="predef-browse">
-						{ __( 'Browse', 'everest-forms' ) }
-						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2.2 } aria-hidden="true">
-							<path d="m9 6 6 6-6 6" />
-						</svg>
+					<span className="predef-thumb">
+						<TemplateThumb
+							tpl={ { id: '__current__', name: templateLabel, image: '', palette: store.palette, tokens: store.tokens } }
+						/>
 					</span>
 				</button>
 
 				<button type="button" className="predef-card" onClick={ onNavigateColors }>
+					<span className="predef-body">
+						<span className="predef-kicker">{ __( 'Colors', 'everest-forms' ) }</span>
+						<span className="predef-name">
+							{ paletteLabel }
+							{ !! matchedPalette && (
+								<span className="predef-badge predef-badge--base">{ __( 'Base', 'everest-forms' ) }</span>
+							) }
+						</span>
+					</span>
 					<span className="sw predef-swatch" aria-hidden="true">
 						{ Object.keys( store.paletteMap ).map( ( slot ) => (
 							<i key={ slot } style={ { background: paletteColors[ slot ] } } />
 						) ) }
-					</span>
-					<span className="predef-body">
-						<span className="predef-kicker">{ __( 'Your Palette', 'everest-forms' ) }</span>
-						<span className="predef-name">{ paletteLabel }</span>
-					</span>
-					<span className="predef-browse">
-						{ __( 'Browse', 'everest-forms' ) }
-						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2.2 } aria-hidden="true">
-							<path d="m9 6 6 6-6 6" />
-						</svg>
 					</span>
 				</button>
 			</div>
