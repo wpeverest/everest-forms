@@ -118,6 +118,44 @@
 	letter-spacing: var( --evf-title-ls );
 }
 
+/* Gradient text (label/sublabel/description/title) — `background-clip: text` paints the
+   element's own `background` (solid or gradient, either works identically) through its glyphs
+   instead of through the box. Gated on @supports so a browser without it silently keeps the
+   plain `color:` declaration above instead of going invisible. Known trade-off: if a
+   text-decoration (underline etc.) is ALSO set on one of these tokens, its line uses `color`
+   too, so it visually disappears once `color` is forced transparent here — narrow enough
+   (underline + gradient text at once) that it isn't worth a dedicated decoration-colour token. */
+@supports (background-clip: text) or (-webkit-background-clip: text) {
+	.everest-forms .evf-style-v2 label.evf-field-label {
+		background: var( --evf-label-color );
+		-webkit-background-clip: text;
+		background-clip: text;
+		-webkit-text-fill-color: transparent;
+		color: transparent;
+	}
+	.everest-forms .evf-style-v2 label.everest-forms-field-sublabel {
+		background: var( --evf-sub-color );
+		-webkit-background-clip: text;
+		background-clip: text;
+		-webkit-text-fill-color: transparent;
+		color: transparent;
+	}
+	.everest-forms .evf-style-v2 .evf-field-description {
+		background: var( --evf-desc-color );
+		-webkit-background-clip: text;
+		background-clip: text;
+		-webkit-text-fill-color: transparent;
+		color: transparent;
+	}
+	.everest-forms .evf-style-v2 .evf-field-title h3 {
+		background: var( --evf-title-color );
+		-webkit-background-clip: text;
+		background-clip: text;
+		-webkit-text-fill-color: transparent;
+		color: transparent;
+	}
+}
+
 /* ===== INPUTS — text boxes, dropdowns, textareas ===== */
 .everest-forms .evf-style-v2 input[type='text'],
 .everest-forms .evf-style-v2 input[type='email'],
@@ -193,6 +231,17 @@
 .everest-forms .evf-style-v2 .everest-forms-uploader .everest-forms-upload-hint,
 .everest-forms .evf-style-v2 .everest-forms-uploader .dz-details span {
 	color: var( --evf-file-color );
+}
+@supports (background-clip: text) or (-webkit-background-clip: text) {
+	.everest-forms .evf-style-v2 .everest-forms-uploader .everest-forms-upload-title,
+	.everest-forms .evf-style-v2 .everest-forms-uploader .everest-forms-upload-hint,
+	.everest-forms .evf-style-v2 .everest-forms-uploader .dz-details span {
+		background: var( --evf-file-color );
+		-webkit-background-clip: text;
+		background-clip: text;
+		-webkit-text-fill-color: transparent;
+		color: transparent;
+	}
 }
 
 .everest-forms .evf-style-v2 .everest-forms-uploader .dz-message > svg {
@@ -373,6 +422,20 @@
 	text-decoration: var( --evf-choice-td );
 	text-transform: var( --evf-choice-tt );
 	letter-spacing: var( --evf-choice-ls );
+}
+@supports (background-clip: text) or (-webkit-background-clip: text) {
+	.everest-forms .evf-style-v2 .evf-field-radio ul li input + label,
+	.everest-forms .evf-style-v2 .evf-field-checkbox ul li input + label,
+	.everest-forms .evf-style-v2 .evf-field-payment-multiple ul li input + label,
+	.everest-forms .evf-style-v2 .evf-field-payment-checkbox ul li input + label,
+	.everest-forms .evf-style-v2 .evf-field-privacy-policy input + label,
+	.everest-forms .evf-style-v2 .evf-field-payment-subscription-plan ul li input + label {
+		background: var( --evf-choice-color );
+		-webkit-background-clip: text;
+		background-clip: text;
+		-webkit-text-fill-color: transparent;
+		color: transparent;
+	}
 }
 
 /* The Subscription Plan addon's own stylesheet (evf-payment-subscription-plan-frontend.scss)
