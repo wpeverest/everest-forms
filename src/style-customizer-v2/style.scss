@@ -2011,7 +2011,9 @@
 /* templates pane */
 #everest-forms-panel-style .tpls {
 	display: grid;
-	grid-template-columns: 1fr 1fr;
+	/* minmax(0, 1fr): see .pal-pop-grid's identical comment — a "Custom" + "Base" caption must
+	   not blow out its track. */
+	grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
 	gap: 18px;
 	margin-bottom: 8px;
 }
@@ -3344,7 +3346,10 @@
 /* palette popover grid — scrolls as part of the single .scv2-pop scroll, not on its own. */
 #everest-forms-panel-style .pal-pop-grid {
 	display: grid;
-	grid-template-columns: 1fr 1fr;
+	/* minmax(0, 1fr), not 1fr: a card whose caption grows two badges wide (e.g. "Custom" + "Base"
+	   on a currently-applied custom palette) must not blow out its track past the sidebar's
+	   width — plain 1fr still honours each item's auto min-width (its unclamped content size). */
+	grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
 	gap: 18px;
 	padding: 4px;
 	margin-bottom: 8px;
