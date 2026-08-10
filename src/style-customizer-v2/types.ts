@@ -76,6 +76,9 @@ export interface Token {
 	special?: string;
 	/** Runtime option source; `google_fonts` = fill the dropdown from payload.google_fonts. */
 	source?: string;
+	/** Whether this `color` token's CSS rule uses the `background` shorthand (not `background-color`
+	 *  or `color`/`border-color`), so a `linear-gradient()`/`radial-gradient()` value renders correctly. */
+	gradientable?: boolean;
 }
 
 export interface SectionState {

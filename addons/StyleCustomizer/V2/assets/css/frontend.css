@@ -26,7 +26,7 @@
 	margin: var( --evf-wrap-margin );
 	padding: var( --evf-wrap-pad );
 	font-family: var( --evf-font );
-	background-color: var( --evf-wrap-bg );
+	background: var( --evf-wrap-bg );
 	border-style: var( --evf-wrap-border-style, solid );
 	border-width: var( --evf-wrap-bw );
 	border-color: var( --evf-wrap-border-c );
@@ -138,7 +138,7 @@
 	color: var( --evf-input-color );
 	font-size: var( --evf-input-size );
 	text-align: var( --evf-input-align );
-	background-color: var( --evf-input-bg );
+	background: var( --evf-input-bg );
 	border-style: var( --evf-input-border-style, solid );
 	border-width: var( --evf-input-bw );
 	border-color: var( --evf-input-border-c );
@@ -173,7 +173,7 @@
 
 /* ===== INPUTS — upload area ===== */
 .everest-forms .evf-style-v2 .everest-forms-uploader {
-	background-color: var( --evf-file-bg );
+	background: var( --evf-file-bg );
 	border-style: var( --evf-file-border-style, dashed );
 	border-width: var( --evf-file-bw );
 	border-color: var( --evf-file-border );
@@ -196,7 +196,7 @@
 }
 
 .everest-forms .evf-style-v2 .everest-forms-uploader .dz-message > svg {
-	background-color: var( --evf-file-iconbg );
+	background: var( --evf-file-iconbg );
 	fill: var( --evf-file-icon );
 }
 
@@ -405,7 +405,7 @@
 	color: var( --evf-btn-color );
 	font-size: var( --evf-btn-size );
 	line-height: var( --evf-btn-lh );
-	background-color: var( --evf-btn-bg );
+	background: var( --evf-btn-bg );
 	border-style: var( --evf-btn-border-style, solid );
 	border-width: var( --evf-btn-bw );
 	border-color: var( --evf-btn-border-c );
@@ -428,7 +428,7 @@
 .everest-forms .evf-style-v2 .everest-forms-multi-part-actions button[type='submit']:hover,
 .everest-forms .evf-style-v2 .everest-forms-multi-part-actions .everest-forms-part-button:hover {
 	color: var( --evf-btn-color-hover );
-	background-color: var( --evf-btn-bg-hover );
+	background: var( --evf-btn-bg-hover );
 	border-color: var( --evf-btn-border-c-hover );
 }
 

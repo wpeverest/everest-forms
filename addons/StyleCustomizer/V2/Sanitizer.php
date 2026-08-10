@@ -264,7 +264,7 @@ final class Sanitizer {
 				return self::sanitize_number( $token, $value );
 
 			case 'color':
-				return self::sanitize_color( $value, $token['default'] );
+				return self::sanitize_color( $value, $token['default'], ! empty( $token['gradientable'] ) );
 
 			case 'box4':
 				return self::sanitize_box4( $token, $value );
@@ -322,13 +322,17 @@ final class Sanitizer {
 
 	/**
 	 * Validate a colour: #rgb / #rrggbb (+ 8-digit alpha) or rgb()/rgba(). Falls back to
-	 * the default; alpha is preserved so legacy `rgba()` borders survive.
+	 * the default; alpha is preserved so legacy `rgba()` borders survive. When `$gradientable`
+	 * is true (only set on background tokens whose CSS rule uses the `background` shorthand,
+	 * not `background-color` — see frontend.css), a `linear-gradient()`/`radial-gradient()`
+	 * value built from solid colour stops is accepted too.
 	 *
-	 * @param mixed  $value   Raw value.
-	 * @param string $default Fallback.
+	 * @param mixed  $value        Raw value.
+	 * @param string $default      Fallback.
+	 * @param bool   $gradientable Whether a gradient value is acceptable for this token.
 	 * @return string
 	 */
-	protected static function sanitize_color( $value, $default ) {
+	protected static function sanitize_color( $value, $default, $gradientable = false ) {
 		$value = is_string( $value ) ? trim( $value ) : '';
 		if ( preg_match( '/^#([0-9a-f]{3}|[0-9a-f]{4}|[0-9a-f]{6}|[0-9a-f]{8})$/i', $value ) ) {
 			return strtolower( $value );
@@ -336,7 +340,80 @@ final class Sanitizer {
 		if ( preg_match( '/^rgba?\(\s*[\d.,%\s\/]+\)$/i', $value ) ) {
 			return $value;
 		}
+		if ( $gradientable && self::is_valid_gradient( $value ) ) {
+			return $value;
+		}
 		return $default;
+	}
+
+	/**
+	 * Whether `$value` is a `linear-gradient()`/`radial-gradient()` built entirely from solid
+	 * colour stops (each stop optionally followed by a `<percentage>` position) — e.g.
+	 * `linear-gradient(135deg, #3366cc, #7a5cff)`. Deliberately strict: this string is emitted
+	 * verbatim into an inline `<style>` block ({@see Compiler::css_safe}), so anything short of
+	 * "every part matches a known-safe shape" is rejected rather than guessed at.
+	 *
+	 * @param string $value Raw value.
+	 * @return bool
+	 */
+	protected static function is_valid_gradient( $value ) {
+		if ( ! preg_match( '/^(linear|radial)-gradient\((.*)\)$/is', $value, $m ) ) {
+			return false;
+		}
+		$type  = strtolower( $m[1] );
+		$parts = self::split_top_level_commas( $m[2] );
+		if ( count( $parts ) < 3 ) { // header + at least 2 colour stops.
+			return false;
+		}
+		$header = trim( $parts[0] );
+		$is_header = ( 'linear' === $type && (
+			preg_match( '/^-?\d+(\.\d+)?deg$/i', $header ) ||
+			preg_match( '/^to\s+(top|bottom|left|right)(\s+(top|bottom|left|right))?$/i', $header )
+		) ) || ( 'radial' === $type && preg_match( '/^(circle|ellipse)(\s+at\s+.+)?$/i', $header ) );
+		$stops = $is_header ? array_slice( $parts, 1 ) : $parts;
+		if ( count( $stops ) < 2 ) {
+			return false;
+		}
+		foreach ( $stops as $stop ) {
+			$stop = trim( $stop );
+			if ( ! preg_match(
+				'/^(#([0-9a-f]{3}|[0-9a-f]{4}|[0-9a-f]{6}|[0-9a-f]{8})|rgba?\([\d.,%\s\/]+\))(\s+-?\d+(\.\d+)?%)?$/i',
+				$stop
+			) ) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * Split on top-level commas only — skips commas nested inside an `rgba()`/`hsla()` stop
+	 * (e.g. `rgba(0,0,0,.5)` inside a gradient's stop list must not be split apart).
+	 *
+	 * @param string $str String to split.
+	 * @return string[]
+	 */
+	protected static function split_top_level_commas( $str ) {
+		$parts = array();
+		$depth = 0;
+		$cur   = '';
+		$len   = strlen( $str );
+		for ( $i = 0; $i < $len; $i++ ) {
+			$ch = $str[ $i ];
+			if ( '(' === $ch ) {
+				$depth++;
+			} elseif ( ')' === $ch ) {
+				$depth--;
+			}
+			if ( ',' === $ch && 0 === $depth ) {
+				$parts[] = $cur;
+				$cur     = '';
+				continue;
+			}
+			$cur .= $ch;
+		}
+		$parts[] = $cur;
+		return $parts;
 	}
 
 	/**

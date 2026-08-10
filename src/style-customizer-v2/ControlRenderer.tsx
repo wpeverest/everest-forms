@@ -159,6 +159,33 @@ function hslToRgb( h: number, s: number, l: number ): { r: number; g: number; b:
 	return { r: ( r + m ) * 255, g: ( g + m ) * 255, b: ( b + m ) * 255 };
 }
 
+/** Lighten (positive) or darken (negative) a hex colour toward white/black by `amt` (0-1). */
+function shade( hex: string, amt: number ): string {
+	const { r, g, b } = hexToRgb( hex );
+	const t = amt >= 0 ? 255 : 0;
+	const k = Math.min( 1, Math.abs( amt ) );
+	return rgbToHex( r + ( t - r ) * k, g + ( t - g ) * k, b + ( t - b ) * k );
+}
+
+/** Whether a token value is one of our gradients (only ever `linear-gradient(<deg>deg, <a>, <b>)` — see {@see composeGradient}). */
+function isGradientValue( value: string ): boolean {
+	return /^(linear|radial)-gradient\(/i.test( String( value || '' ).trim() );
+}
+
+/** Parse our own 2-stop shape; anything else recognisable as a gradient (e.g. hand-authored)
+ *  falls back to a sane default rather than failing to open the editor at all. */
+function parseGradient( value: string ): { angle: number; from: string; to: string } {
+	const m = String( value ).trim().match( /^linear-gradient\(\s*(-?\d+(?:\.\d+)?)deg\s*,\s*([^,]+?)\s*,\s*([^,]+?)\s*\)$/i );
+	if ( m ) {
+		return { angle: Number( m[ 1 ] ), from: parseColor( m[ 2 ] ).hex, to: parseColor( m[ 3 ] ).hex };
+	}
+	return { angle: 135, from: '#3366cc', to: '#7a5cff' };
+}
+
+function composeGradient( angle: number, from: string, to: string ): string {
+	return `linear-gradient(${ Math.round( angle ) }deg, ${ from }, ${ to })`;
+}
+
 /** One compact "label + number input(+suffix)" field — shared by the RGB/HSL rows below. */
 function NumField( {
 	label,
@@ -201,6 +228,49 @@ function NumField( {
 					} }
 				/>
 				{ suffix && <span>{ suffix }</span> }
+			</div>
+		</div>
+	);
+}
+
+/** One gradient stop — a native colour input (no popover-in-popover nesting) + its hex text twin. */
+function GradientStopField( { label, hex, onChange }: { label: string; hex: string; onChange: ( hex: string ) => void } ) {
+	const textRef = React.useRef< HTMLInputElement >( null );
+	useSyncedInput( textRef, hex.toUpperCase() );
+	return (
+		<div className="grad-stop">
+			<span className="cpf-label">{ label }</span>
+			<input
+				type="color"
+				className="grad-stop-native"
+				value={ hex }
+				aria-label={ label }
+				onChange={ ( e ) => onChange( e.target.value ) }
+			/>
+			<div className="num">
+				<input
+					ref={ textRef }
+					spellCheck={ false }
+					defaultValue={ hex.toUpperCase() }
+					aria-label={ label + ' ' + __( 'hex value', 'everest-forms' ) }
+					onInput={ ( e ) => {
+						let t = ( e.target as HTMLInputElement ).value.trim();
+						if ( t && t[ 0 ] !== '#' ) {
+							t = '#' + t;
+						}
+						if ( /^#[0-9a-f]{3}$/i.test( t ) ) {
+							t = '#' + t.slice( 1 ).split( '' ).map( ( c ) => c + c ).join( '' );
+						}
+						if ( /^#[0-9a-f]{6}$/i.test( t ) ) {
+							onChange( t.toLowerCase() );
+						}
+					} }
+					onBlur={ () => {
+						if ( textRef.current ) {
+							textRef.current.value = hex.toUpperCase();
+						}
+					} }
+				/>
 			</div>
 		</div>
 	);
@@ -469,12 +539,16 @@ export function ColorPickerField( {
 	label,
 	value,
 	onChange,
+	gradientable,
 }: {
 	label: string;
 	value: string;
 	onChange: ( color: string ) => void;
+	/** Whether this token's CSS rule uses the `background` shorthand — see {@see Token.gradientable}. */
+	gradientable?: boolean;
 } ) {
-	const parsed = parseColor( value );
+	const isGrad = gradientable && isGradientValue( value );
+	const parsed = parseColor( isGrad ? '' : value );
 	const hexRef = React.useRef< HTMLInputElement >( null );
 	const popHexRef = React.useRef< HTMLInputElement >( null );
 	const popAlphaNumRef = React.useRef< HTMLInputElement >( null );
@@ -505,6 +579,13 @@ export function ColorPickerField( {
 	useSyncedInput( hRef, String( hsl.h ) );
 	useSyncedInput( sRef, String( hsl.s ) );
 	useSyncedInput( lRef, String( hsl.l ) );
+
+	// Gradient mode (only reachable when `gradientable`). Deriving a sane default FROM the
+	// current solid colour (rather than an arbitrary stock gradient) means switching modes
+	// never jars — the preview always starts from what was already on screen.
+	const grad = isGrad ? parseGradient( value ) : { angle: 135, from: parsed.hex, to: shade( parsed.hex, -0.35 ) };
+	const angleRef = React.useRef< HTMLInputElement >( null );
+	useSyncedInput( angleRef, String( grad.angle ) );
 
 	// Portaled + position:fixed (see below) so the popover can never be clipped by a scrolling
 	// ancestor (the panel sidebar, a palette's own scrollable row list, etc.) — same escape-hatch
@@ -557,6 +638,9 @@ export function ColorPickerField( {
 		const c = hslToRgb( h, s, l );
 		commitHex( rgbToHex( c.r, c.g, c.b ) );
 	};
+	const commitGradient = ( angle: number, from: string, to: string ) => onChange( composeGradient( angle, from, to ) );
+	const switchToGradient = () => commitGradient( grad.angle, grad.from, grad.to );
+	const switchToSolid = () => commitHex( grad.from );
 
 	const onHex = ( e: React.FormEvent< HTMLInputElement > ) => {
 		let t = ( e.target as HTMLInputElement ).value.trim();
@@ -595,26 +679,34 @@ export function ColorPickerField( {
 				ref={ swatchRef }
 				type="button"
 				className="swatch"
-				style={ { '--swatch': composeColor( parsed.hex, parsed.alpha ) } as React.CSSProperties }
+				style={
+					isGrad
+						? ( { backgroundImage: value, backgroundSize: '100% 100%' } as React.CSSProperties )
+						: ( { '--swatch': composeColor( parsed.hex, parsed.alpha ) } as React.CSSProperties )
+				}
 				aria-haspopup="true"
 				aria-expanded={ pickerOpen }
 				aria-label={ label }
 				onClick={ () => setPickerOpen( ( o ) => ! o ) }
 			/>
-			<input
-				ref={ hexRef }
-				className="hex"
-				spellCheck={ false }
-				defaultValue={ parsed.hex.toUpperCase() }
-				aria-label={ label + ' hex value' }
-				onInput={ onHex }
-				onBlur={ () => {
-					setInvalid( false );
-					if ( hexRef.current ) {
-						hexRef.current.value = parseColor( value ).hex.toUpperCase();
-					}
-				} }
-			/>
+			{ isGrad ? (
+				<span className="hex hex-grad-label">{ __( 'Gradient', 'everest-forms' ) }</span>
+			) : (
+				<input
+					ref={ hexRef }
+					className="hex"
+					spellCheck={ false }
+					defaultValue={ parsed.hex.toUpperCase() }
+					aria-label={ label + ' hex value' }
+					onInput={ onHex }
+					onBlur={ () => {
+						setInvalid( false );
+						if ( hexRef.current ) {
+							hexRef.current.value = parseColor( value ).hex.toUpperCase();
+						}
+					} }
+				/>
+			) }
 			{ invalid && <span className="err">{ __( 'Invalid color', 'everest-forms' ) }</span> }
 			{ pickerOpen &&
 				createPortal(
@@ -642,6 +734,56 @@ export function ColorPickerField( {
 								</button>
 							) }
 						</div>
+						{ gradientable && (
+							<div className="cpf-format" role="tablist" aria-label={ __( 'Fill type', 'everest-forms' ) }>
+								<button
+									type="button"
+									role="tab"
+									aria-selected={ ! isGrad }
+									className={ 'cpf-format-btn' + ( ! isGrad ? ' is-active' : '' ) }
+									onClick={ switchToSolid }
+								>
+									{ __( 'Solid', 'everest-forms' ) }
+								</button>
+								<button
+									type="button"
+									role="tab"
+									aria-selected={ isGrad }
+									className={ 'cpf-format-btn' + ( isGrad ? ' is-active' : '' ) }
+									onClick={ switchToGradient }
+								>
+									{ __( 'Gradient', 'everest-forms' ) }
+								</button>
+							</div>
+						) }
+						{ isGrad ? (
+							<div className="grad-editor">
+								<div className="grad-preview" style={ { backgroundImage: value } } aria-hidden="true" />
+								<div className="grad-stops">
+									<GradientStopField
+										label={ __( 'From', 'everest-forms' ) }
+										hex={ grad.from }
+										onChange={ ( h ) => commitGradient( grad.angle, h, grad.to ) }
+									/>
+									<GradientStopField
+										label={ __( 'To', 'everest-forms' ) }
+										hex={ grad.to }
+										onChange={ ( h ) => commitGradient( grad.angle, grad.from, h ) }
+									/>
+								</div>
+								<NumField
+									label={ __( 'Angle', 'everest-forms' ) }
+									ariaLabel={ label + ' ' + __( 'gradient angle', 'everest-forms' ) }
+									value={ grad.angle }
+									min={ 0 }
+									max={ 359 }
+									suffix="°"
+									inputRef={ angleRef }
+									onCommit={ ( n ) => commitGradient( n, grad.from, grad.to ) }
+								/>
+							</div>
+						) : (
+							<>
 						<HexAlphaColorPicker
 							color={ toHex8( parsed.hex, parsed.alpha ) }
 							onChange={ commitHex8 }
@@ -781,6 +923,8 @@ export function ColorPickerField( {
 								/>
 							) ) }
 						</div>
+							</>
+						) }
 					</div>,
 					popoverHost()
 				) }
@@ -797,6 +941,7 @@ function ColorControl( props: ControlProps ) {
 				label={ token.label }
 				value={ value }
 				onChange={ ( color ) => store.setTokenValue( token.key, color, true ) }
+				gradientable={ !! token.gradientable }
 			/>
 		</ControlShell>
 	);

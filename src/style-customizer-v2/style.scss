@@ -1499,6 +1499,12 @@
 		}
 	}
 
+	.hex-grad-label {
+		font-family: inherit;
+		font-style: italic;
+		color: var(--ui-ink-3);
+	}
+
 	.err {
 		font-size: 10.5px;
 		color: var(--ui-red);
@@ -1601,7 +1607,8 @@
 	}
 }
 
-/* HEX / RGB / HSL — a quiet segmented switch just above the fields row it governs. */
+/* A quiet segmented switch just above the fields row it governs — reused for both HEX/RGB/HSL
+   and, on gradient-capable tokens, Solid/Gradient. */
 #everest-forms-panel-style .cpf-format {
 	display: flex;
 	gap: 2px;
@@ -1633,6 +1640,43 @@
 		color: var(--ui-ink);
 		box-shadow: var(--ui-shadow-xs, 0 1px 2px rgba(0, 0, 0, .06));
 	}
+}
+
+/* Gradient mode — two stops (native colour input + hex twin, no popover-in-popover) and an angle,
+   with a live preview strip standing in for the wheel a solid colour would otherwise show. */
+#everest-forms-panel-style .grad-editor {
+	margin-top: 12px;
+}
+
+#everest-forms-panel-style .grad-preview {
+	height: 40px;
+	border-radius: var(--ui-radius-md);
+	border: 1px solid var(--ui-line-2);
+	margin-bottom: 10px;
+}
+
+#everest-forms-panel-style .grad-stops {
+	display: flex;
+	gap: 8px;
+	margin-bottom: 10px;
+}
+
+#everest-forms-panel-style .grad-stop {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	min-width: 0;
+}
+
+#everest-forms-panel-style .grad-stop-native {
+	width: 100%;
+	height: 26px;
+	border: 1px solid var(--ui-input-border);
+	border-radius: var(--ui-radius-sm);
+	padding: 2px;
+	background: none;
+	cursor: pointer;
 }
 
 /* Hex/RGB/HSL + Opacity, editable right inside the popover so a colour can be fully dialed in
