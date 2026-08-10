@@ -200,7 +200,9 @@ export function ColorsPane( {
 					onMouseLeave={ onClearPreview }
 					onClick={ () => applyPreset( p ) }
 				>
-					{ swatch( p.colors ) }
+					<span className="pal-card-thumb">
+						{ swatch( p.colors ) }
+					</span>
 					<span className="cap">
 						<span className="cap-name">{ p.name }</span>
 						{ selected && (
@@ -918,20 +920,22 @@ function TemplateCard( {
 				onBlur={ onClearPreview }
 				onClick={ disabled ? undefined : onApply }
 			>
-				{ locked && (
-					<span className="tpl-pro" aria-label={ __( 'Pro template', 'everest-forms' ) }>
-						<ProCrown />
-					</span>
-				) }
-				{ locked && (
-					<span className="tpl-lock-veil" aria-hidden="true">
-						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2 }>
-							<rect x="4" y="11" width="16" height="9" rx="2" />
-							<path d="M8 11V7a4 4 0 0 1 8 0v4" />
-						</svg>
-					</span>
-				) }
-				<TemplateThumb tpl={ tpl } />
+				<span className="tpl-thumb-box">
+					{ locked && (
+						<span className="tpl-pro" aria-label={ __( 'Pro template', 'everest-forms' ) }>
+							<ProCrown />
+						</span>
+					) }
+					{ locked && (
+						<span className="tpl-lock-veil" aria-hidden="true">
+							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2 }>
+								<rect x="4" y="11" width="16" height="9" rx="2" />
+								<path d="M8 11V7a4 4 0 0 1 8 0v4" />
+							</svg>
+						</span>
+					) }
+					<TemplateThumb tpl={ tpl } />
+				</span>
 				<span className="cap">
 					<span className="cap-name">{ tpl.name }</span>
 					{ applied && <span className="tpl-mod tpl-mod--base">{ __( 'Base', 'everest-forms' ) }</span> }
@@ -1132,9 +1136,11 @@ export function TemplatesPane( {
 				<div className="tpls">
 					<div className="tpl-wrap tpl-current">
 						<span className="tpl tpl-static" aria-label={ __( 'Your current form style', 'everest-forms' ) }>
-							<TemplateThumb
-								tpl={ { id: '__current__', name: yourTemplateName, image: '', palette: store.palette, tokens: store.tokens } }
-							/>
+							<span className="tpl-thumb-box">
+								<TemplateThumb
+									tpl={ { id: '__current__', name: yourTemplateName, image: '', palette: store.palette, tokens: store.tokens } }
+								/>
+							</span>
 							<span className="cap">
 								<span className="cap-name">{ yourTemplateName }</span>
 								{ yourTemplateModified && <span className="tpl-mod">{ __( 'Modified', 'everest-forms' ) }</span> }

@@ -219,14 +219,14 @@
 	}
 }
 
-/* drill-down back header — plain "‹ Back" on the left, the section name as a small-caps
-   breadcrumb on the right (same treatment .block-title uses elsewhere in the panel). */
+/* drill-down back header — chevron + a colored icon box matching the section + its title, all
+   in one row; the same shape for every drill-down (Elements sections and Templates/Colors/CSS
+   alike) so none of them read as a different pattern. */
 #everest-forms-panel-style .navback {
 	display: flex;
 	align-items: center;
-	justify-content: space-between;
 	gap: 8px;
-	padding: 15px 16px;
+	padding: 6px 10px;
 	border-bottom: 1px solid var(--ui-line-2);
 	flex: none;
 }
@@ -234,42 +234,50 @@
 #everest-forms-panel-style .navback .bk {
 	display: flex;
 	align-items: center;
-	gap: 6px;
+	gap: 9px;
 	border: 0;
 	background: none;
 	cursor: pointer;
 	color: var(--ui-ink);
 	font-weight: 600;
-	font-size: 13px;
-	padding: 0;
-	flex: none;
+	font-size: 13.5px;
+	padding: 7px 8px;
+	border-radius: 8px;
+	flex: 1;
 	min-width: 0;
-	transition: color .12s;
+	transition: background .15s ease;
 
 	&:hover {
-		color: var(--ui-purple);
+		background: var(--ui-purple-50);
 	}
 
 	&:focus-visible {
 		outline: none;
 		box-shadow: var(--ui-focus);
-		border-radius: 4px;
 	}
 
-	svg {
-		width: 16px;
-		height: 16px;
+	> svg {
+		width: 17px;
+		height: 17px;
+		color: var(--ui-purple);
 		flex: none;
 	}
-}
 
-#everest-forms-panel-style .navback-label {
-	font-size: var(--ui-fs-xs);
-	font-weight: 600;
-	letter-spacing: .04em;
-	text-transform: uppercase;
-	color: var(--ui-ink-3);
-	flex: none;
+	.ic {
+		width: 27px;
+		height: 27px;
+		border-radius: var(--ui-radius-md);
+		background: var(--ui-purple-50);
+		display: grid;
+		place-items: center;
+		flex: none;
+	}
+
+	.ic svg {
+		width: 15px;
+		height: 15px;
+		color: var(--ui-purple);
+	}
 }
 
 /* responsive context strip */
@@ -391,12 +399,17 @@
 	}
 }
 
-/* The applied palette/template's name, read at a glance next to its section heading. */
 /* "Your Template" / "Your Palette" browse screens: just spacing — the live current-state card
    inside (.pal-card--summary / .tpl-static) carries its own purple-bordered "currently active"
-   look, matching the selected-preset treatment used everywhere else in the panel. */
+   look, matching the selected-preset treatment used everywhere else in the panel. Extra room
+   below (24px, matching .block-title's own 18px-top rhythm plus a bit more since a bordered
+   card needs more visual separation than plain text does) before "Presets" starts. */
 #everest-forms-panel-style .current-block {
-	margin-bottom: 20px;
+	margin-bottom: 24px;
+
+	.block-title {
+		margin-bottom: 12px;
+	}
 
 	.tpls,
 	.pal-card--wrap {
@@ -614,9 +627,9 @@
    in the panel (it IS the currently active one, permanently). */
 #everest-forms-panel-style .tpl.tpl-static {
 	cursor: default;
-	border-color: var(--ui-purple);
 
-	&:hover {
+	.tpl-thumb-box,
+	&:hover .tpl-thumb-box {
 		border-color: var(--ui-purple);
 	}
 }
@@ -2004,35 +2017,48 @@
 #everest-forms-panel-style .tpls {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
-	gap: 12px;
-	margin-bottom: 4px;
+	gap: 18px;
+	margin-bottom: 8px;
 }
 
-/* Hover/selected treatment mirrors .pal-card so the two feel like the same control language. */
+/* Hover/selected treatment mirrors .pal-card so the two feel like the same control language.
+   The border lives on .tpl-thumb-box (the thumbnail only) — the design's own card borders just
+   the preview, with the name sitting below it, un-bordered. */
 #everest-forms-panel-style .tpl {
 	display: block;
 	width: 100%;
 	position: relative;
-	border: 1px solid var(--ui-line);
-	border-radius: var(--ui-radius-md);
-	overflow: hidden;
 	cursor: pointer;
-	background: #fff;
 	text-align: left;
 	padding: 0;
-	transition: border-color .12s;
 
-	/* Hover is a border-colour change only — same "no persistent ring" language as the colour
-	   Presets grid; the applied template is called out by the "Base"/"Modified" pill next to
-	   its name, not by outlining the card. */
-	&:hover {
+	.tpl-thumb-box {
+		position: relative;
+		display: block;
+		border: 1px solid var(--ui-line);
+		border-radius: var(--ui-radius-md);
+		overflow: hidden;
+		background: #fff;
+		transition: border-color .12s;
+	}
+
+	&:hover .tpl-thumb-box {
+		border-color: var(--ui-purple);
+	}
+
+	/* The applied template gets its own border, not just the "Base"/"Modified" pill next to its
+	   name — the thumbnail itself should be the thing that visually stands out. */
+	&[aria-pressed="true"] .tpl-thumb-box {
 		border-color: var(--ui-purple);
 	}
 
 	&:focus-visible {
 		outline: none;
-		border-color: var(--ui-purple);
-		box-shadow: var(--ui-focus-soft);
+
+		.tpl-thumb-box {
+			border-color: var(--ui-purple);
+			box-shadow: var(--ui-focus-soft);
+		}
 	}
 
 	.thumb {
@@ -2072,7 +2098,7 @@
 	}
 
 	.cap {
-		margin-top: 6px;
+		margin-top: 10px;
 		padding: 0 10px 10px;
 		font-size: 12px;
 		font-weight: 500;
@@ -2170,7 +2196,6 @@
 #everest-forms-panel-style .tpl-lock-veil {
 	position: absolute;
 	inset: 0;
-	bottom: 37px;
 	z-index: 1;
 	display: grid;
 	place-items: center;
@@ -3319,23 +3344,32 @@
 #everest-forms-panel-style .pal-pop-grid {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
-	gap: 16px;
+	gap: 18px;
 	padding: 4px;
+	margin-bottom: 8px;
 }
 
 #everest-forms-panel-style .pal-card {
-	border: 1px solid var(--ui-line-2);
-	border-radius: var(--ui-radius-md);
-	overflow: hidden;
-	cursor: pointer;
-	background: #fff;
 	text-align: left;
-	transition: border-color .12s;
 
-	/* Hover is a border-colour change only — no background wash, no persistent "selected" ring.
-	   The applied preset is called out by the "Base" pill next to its name, not by outlining
-	   the card, so the grid stays calm until you actually point at something. */
-	&:hover {
+	/* The border lives on .pal-card-thumb (just the swatches), not here — the design's own
+	   card puts a border around the colour dots only; the name sits below it, un-bordered. */
+	.pal-card-thumb {
+		display: flex;
+		border: 1px solid var(--ui-line-2);
+		border-radius: var(--ui-radius-md);
+		background: #fff;
+		padding: 12px;
+		transition: border-color .12s;
+	}
+
+	.pal-card-apply:hover .pal-card-thumb {
+		border-color: var(--ui-purple);
+	}
+
+	/* The applied preset gets its own border, not just the "Base" pill next to its name — the
+	   swatch box itself should be the thing that visually stands out. */
+	.pal-card-apply[aria-selected="true"] .pal-card-thumb {
 		border-color: var(--ui-purple);
 	}
 
@@ -3468,14 +3502,16 @@
 		width: 100%;
 		border: 0;
 		background: none;
-		padding: 12px;
+		padding: 0;
 		text-align: left;
 		cursor: pointer;
-		border-radius: inherit;
 
 		&:focus-visible {
 			outline: none;
-			box-shadow: var(--ui-focus-soft);
+
+			.pal-card-thumb {
+				box-shadow: var(--ui-focus-soft);
+			}
 		}
 	}
 
@@ -3505,7 +3541,7 @@
 		gap: 6px;
 		padding: 6px;
 		background: rgba(255, 255, 255, .96);
-		border-radius: inherit;
+		border-radius: var(--ui-radius-md);
 		font-size: 11px;
 		font-weight: 600;
 		color: var(--ui-ink-2);
@@ -3641,7 +3677,7 @@
 	display: flex;
 	align-items: center;
 	gap: 6px;
-	margin: 6px 2px 0;
+	margin: 10px 2px 0;
 }
 
 #everest-forms-panel-style .pal-current-name {
