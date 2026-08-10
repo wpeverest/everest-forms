@@ -167,23 +167,113 @@ function shade( hex: string, amt: number ): string {
 	return rgbToHex( r + ( t - r ) * k, g + ( t - g ) * k, b + ( t - b ) * k );
 }
 
-/** Whether a token value is one of our gradients (only ever `linear-gradient(<deg>deg, <a>, <b>)` — see {@see composeGradient}). */
+/** A single colour stop on the gradient bar — `color` is any Sanitizer-legal solid value
+ *  (hex, 8-digit hex, or rgba()), `pos` is its 0-100 position along the bar. */
+interface GradStop {
+	color: string;
+	pos: number;
+}
+
+/** Whether a token value is one of our gradients — see {@see composeGradient}. */
 function isGradientValue( value: string ): boolean {
 	return /^(linear|radial)-gradient\(/i.test( String( value || '' ).trim() );
 }
 
-/** Parse our own 2-stop shape; anything else recognisable as a gradient (e.g. hand-authored)
- *  falls back to a sane default rather than failing to open the editor at all. */
-function parseGradient( value: string ): { angle: number; from: string; to: string } {
-	const m = String( value ).trim().match( /^linear-gradient\(\s*(-?\d+(?:\.\d+)?)deg\s*,\s*([^,]+?)\s*,\s*([^,]+?)\s*\)$/i );
-	if ( m ) {
-		return { angle: Number( m[ 1 ] ), from: parseColor( m[ 2 ] ).hex, to: parseColor( m[ 3 ] ).hex };
+/** Split on top-level commas only — skips commas nested inside an `rgba()` stop. Mirrors
+ *  {@see Sanitizer::split_top_level_commas} on the PHP side. */
+function splitTopLevelCommas( str: string ): string[] {
+	const parts: string[] = [];
+	let depth = 0;
+	let cur = '';
+	for ( let i = 0; i < str.length; i++ ) {
+		const ch = str[ i ];
+		if ( ch === '(' ) {
+			depth++;
+		} else if ( ch === ')' ) {
+			depth--;
+		}
+		if ( ch === ',' && depth === 0 ) {
+			parts.push( cur );
+			cur = '';
+			continue;
+		}
+		cur += ch;
 	}
-	return { angle: 135, from: '#3366cc', to: '#7a5cff' };
+	parts.push( cur );
+	return parts;
 }
 
-function composeGradient( angle: number, from: string, to: string ): string {
-	return `linear-gradient(${ Math.round( angle ) }deg, ${ from }, ${ to })`;
+/** A fresh, sane 2-stop gradient — used both as the very first gradient a field ever gets and
+ *  as a fallback if a hand-authored value doesn't parse. */
+function defaultGradient(): { angle: number; stops: GradStop[] } {
+	return { angle: 135, stops: [ { color: '#3366cc', pos: 0 }, { color: shade( '#3366cc', -0.35 ), pos: 100 } ] };
+}
+
+/** Parse any of our (or hand-authored) `linear-gradient()` values into an editable angle + stop list. */
+function parseGradient( value: string ): { angle: number; stops: GradStop[] } {
+	const m = String( value ).trim().match( /^linear-gradient\(\s*(-?\d+(?:\.\d+)?)deg\s*,\s*(.+)\)$/i );
+	if ( ! m ) {
+		return defaultGradient();
+	}
+	const angle = Number( m[ 1 ] );
+	const parts = splitTopLevelCommas( m[ 2 ] );
+	const stops: GradStop[] = [];
+	parts.forEach( ( part, i ) => {
+		const mm = part.trim().match( /^(#[0-9a-f]{3,8}|rgba?\([^()]*\))\s*(-?\d+(?:\.\d+)?%)?$/i );
+		if ( ! mm ) {
+			return;
+		}
+		const p = parseColor( mm[ 1 ] );
+		const pos = mm[ 2 ] !== undefined
+			? clampNumber( parseFloat( mm[ 2 ] ), 0, 100 )
+			: ( parts.length > 1 ? Math.round( ( i / ( parts.length - 1 ) ) * 100 ) : 0 );
+		stops.push( { color: composeColor( p.hex, p.alpha ), pos } );
+	} );
+	return stops.length >= 2 ? { angle, stops } : defaultGradient();
+}
+
+/** Stops are always serialized in ascending position order — CSS itself would force this
+ *  anyway (a gradient's stops must monotonically increase), so keeping the string that way
+ *  avoids the browser silently re-clamping something our own editor didn't expect. */
+function composeGradient( angle: number, stops: GradStop[] ): string {
+	const sorted = [ ...stops ].sort( ( a, b ) => a.pos - b.pos );
+	return `linear-gradient(${ Math.round( angle ) }deg, ${ sorted.map( ( s ) => `${ s.color } ${ Math.round( s.pos ) }%` ).join( ', ' ) })`;
+}
+
+/** The 8 compass directions a CSS gradient angle commonly points — 0deg is "up", clockwise from there. */
+const ANGLE_COMPASS: Array< { deg: number; area: string } | null > = [
+	{ deg: 315, area: 'nw' }, { deg: 0, area: 'n' }, { deg: 45, area: 'ne' },
+	{ deg: 270, area: 'w' }, null, { deg: 90, area: 'e' },
+	{ deg: 225, area: 'sw' }, { deg: 180, area: 's' }, { deg: 135, area: 'se' },
+];
+
+/** One-click preset directions, laid out like a compass — faster and far more intuitive than
+ *  typing a degree value for the common cases, with the numeric field alongside for the rest. */
+function AngleCompass( { angle, onChange }: { angle: number; onChange: ( deg: number ) => void } ) {
+	const rounded = Math.round( angle );
+	return (
+		<div className="grad-compass" role="group" aria-label={ __( 'Gradient direction', 'everest-forms' ) }>
+			{ ANGLE_COMPASS.map( ( cell, i ) =>
+				cell ? (
+					<button
+						key={ i }
+						type="button"
+						className={ 'grad-compass-btn' + ( rounded === cell.deg ? ' is-active' : '' ) }
+						style={ { '--deg': cell.deg + 'deg' } as React.CSSProperties }
+						title={ `${ cell.deg }°` }
+						aria-label={ `${ cell.deg }°` }
+						onClick={ () => onChange( cell.deg ) }
+					>
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2.5 } aria-hidden="true">
+							<path d="M12 19V5M12 5l-5 5M12 5l5 5" />
+						</svg>
+					</button>
+				) : (
+					<span key={ i } className="grad-compass-center" aria-hidden="true" />
+				)
+			) }
+		</div>
+	);
 }
 
 /** One compact "label + number input(+suffix)" field — shared by the RGB/HSL rows below. */
@@ -233,55 +323,425 @@ function NumField( {
 	);
 }
 
-/** One gradient stop — a native colour input (no popover-in-popover nesting) + its hex text twin. */
-function GradientStopField( { label, hex, onChange }: { label: string; hex: string; onChange: ( hex: string ) => void } ) {
-	const textRef = React.useRef< HTMLInputElement >( null );
-	useSyncedInput( textRef, hex.toUpperCase() );
-	return (
-		<div className="grad-stop">
-			<span className="cpf-label">{ label }</span>
-			<input
-				type="color"
-				className="grad-stop-native"
-				value={ hex }
-				aria-label={ label }
-				onChange={ ( e ) => onChange( e.target.value ) }
-			/>
-			<div className="num">
-				<input
-					ref={ textRef }
-					spellCheck={ false }
-					defaultValue={ hex.toUpperCase() }
-					aria-label={ label + ' ' + __( 'hex value', 'everest-forms' ) }
-					onInput={ ( e ) => {
-						let t = ( e.target as HTMLInputElement ).value.trim();
-						if ( t && t[ 0 ] !== '#' ) {
-							t = '#' + t;
-						}
-						if ( /^#[0-9a-f]{3}$/i.test( t ) ) {
-							t = '#' + t.slice( 1 ).split( '' ).map( ( c ) => c + c ).join( '' );
-						}
-						if ( /^#[0-9a-f]{6}$/i.test( t ) ) {
-							onChange( t.toLowerCase() );
-						}
-					} }
-					onBlur={ () => {
-						if ( textRef.current ) {
-							textRef.current.value = hex.toUpperCase();
-						}
-					} }
-				/>
-			</div>
-		</div>
-	);
-}
-
 /** Curated quick-pick row inside every color popover — neutrals, the panel's own accent, and a
  *  handful of common brand/UI colours, so a common choice never requires touching the wheel. */
 const PRESET_SWATCHES = [
 	'#ffffff', '#f8fafc', '#e5e7eb', '#9ca3af', '#4b5563', '#1f2433', '#111111', '#000000',
 	'#7545bb', '#3b82f6', '#0ea5e9', '#16a34a', '#f59e0b', '#f97316', '#dc2626', '#ec4899',
 ];
+
+/**
+ * The full solid-colour editing surface — wheel, HEX/RGB/HSL switch, opacity, eyedropper and
+ * quick-pick presets. Used both as a plain colour popover's body AND, unchanged, as a gradient
+ * stop's own editor — the exact reason a gradient stop no longer feels like a different, lesser
+ * control than every other colour field in the panel.
+ */
+function SolidColorFields( { label, value, onChange }: { label: string; value: string; onChange: ( color: string ) => void } ) {
+	const parsed = parseColor( value );
+	const popHexRef = React.useRef< HTMLInputElement >( null );
+	const popAlphaNumRef = React.useRef< HTMLInputElement >( null );
+	const [ format, setFormat ] = React.useState< 'hex' | 'rgb' | 'hsl' >( 'hex' );
+	const hasEyeDropper = typeof ( window as any ).EyeDropper !== 'undefined';
+	useSyncedInput( popHexRef, parsed.hex.toUpperCase() );
+	useSyncedInput( popAlphaNumRef, String( parsed.alpha ) );
+
+	const rgb = hexToRgb( parsed.hex );
+	const hsl = rgbToHsl( rgb.r, rgb.g, rgb.b );
+	const rRef = React.useRef< HTMLInputElement >( null );
+	const gRef = React.useRef< HTMLInputElement >( null );
+	const bRef = React.useRef< HTMLInputElement >( null );
+	const hRef = React.useRef< HTMLInputElement >( null );
+	const sRef = React.useRef< HTMLInputElement >( null );
+	const lRef = React.useRef< HTMLInputElement >( null );
+	useSyncedInput( rRef, String( rgb.r ) );
+	useSyncedInput( gRef, String( rgb.g ) );
+	useSyncedInput( bRef, String( rgb.b ) );
+	useSyncedInput( hRef, String( hsl.h ) );
+	useSyncedInput( sRef, String( hsl.s ) );
+	useSyncedInput( lRef, String( hsl.l ) );
+
+	const commitHex = ( hex: string ) => onChange( composeColor( hex, parsed.alpha ) );
+	const commitAlpha = ( alpha: number ) => onChange( composeColor( parsed.hex, clampNumber( alpha, 0, 100 ) ) );
+	const commitHex8 = ( hex8: string ) => {
+		const p = parseColor( hex8 );
+		onChange( composeColor( p.hex, p.alpha ) );
+	};
+	const commitRgb = ( r: number, g: number, b: number ) => commitHex( rgbToHex( r, g, b ) );
+	const commitHsl = ( h: number, s: number, l: number ) => {
+		const c = hslToRgb( h, s, l );
+		commitHex( rgbToHex( c.r, c.g, c.b ) );
+	};
+
+	const onHex = ( e: React.FormEvent< HTMLInputElement > ) => {
+		let t = ( e.target as HTMLInputElement ).value.trim();
+		if ( t && t[ 0 ] !== '#' ) {
+			t = '#' + t;
+		}
+		if ( /^#[0-9a-f]{3}$/i.test( t ) ) {
+			t = '#' + t.slice( 1 ).split( '' ).map( ( c ) => c + c ).join( '' );
+		}
+		if ( /^#[0-9a-f]{6}$/i.test( t ) ) {
+			commitHex( t.toLowerCase() );
+		}
+	};
+
+	/* Chromium's EyeDropper API — sample any pixel on screen straight into this field.
+	 * Feature-detected: the tool button simply doesn't render in browsers without it. */
+	const pickFromScreen = async () => {
+		try {
+			const ED = ( window as any ).EyeDropper;
+			const result = await new ED().open();
+			if ( result?.sRGBHex ) {
+				commitHex( result.sRGBHex.toLowerCase() );
+			}
+		} catch {
+			// User cancelled (Escape) — nothing to do.
+		}
+	};
+
+	return (
+		<>
+			<HexAlphaColorPicker color={ toHex8( parsed.hex, parsed.alpha ) } onChange={ commitHex8 } />
+			<div className="cpf-toolbar">
+				<div className="cpf-format" role="tablist" aria-label={ __( 'Color format', 'everest-forms' ) }>
+					{ ( [ 'hex', 'rgb', 'hsl' ] as const ).map( ( f ) => (
+						<button
+							key={ f }
+							type="button"
+							role="tab"
+							aria-selected={ format === f }
+							className={ 'cpf-format-btn' + ( format === f ? ' is-active' : '' ) }
+							onClick={ () => setFormat( f ) }
+						>
+							{ f.toUpperCase() }
+						</button>
+					) ) }
+				</div>
+				{ hasEyeDropper && (
+					<button
+						type="button"
+						className="eyedrop-btn"
+						aria-label={ __( 'Pick color from screen', 'everest-forms' ) }
+						title={ __( 'Pick color from screen', 'everest-forms' ) }
+						onClick={ pickFromScreen }
+					>
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2 } aria-hidden="true">
+							<path d="m2 22 1-4 9.5-9.5" />
+							<path d="M14.5 6.5 18 3a2.12 2.12 0 0 1 3 3l-3.5 3.5" />
+							<path d="m11.5 8.5 4 4" />
+							<path d="M3 21h4l9.5-9.5-4-4L3 17z" />
+						</svg>
+					</button>
+				) }
+			</div>
+			<div className="color-pop-fields">
+				{ format === 'hex' && (
+					<div className="cpf-hex">
+						<span className="cpf-label">{ __( 'Hex', 'everest-forms' ) }</span>
+						<div className="num">
+							<input
+								ref={ popHexRef }
+								spellCheck={ false }
+								defaultValue={ parsed.hex.toUpperCase() }
+								aria-label={ label + ' ' + __( 'hex value', 'everest-forms' ) }
+								onInput={ onHex }
+								onBlur={ () => {
+									if ( popHexRef.current ) {
+										popHexRef.current.value = parseColor( value ).hex.toUpperCase();
+									}
+								} }
+							/>
+						</div>
+					</div>
+				) }
+				{ format === 'rgb' && (
+					<>
+						<NumField
+							label="R"
+							ariaLabel={ label + ' ' + __( 'red value', 'everest-forms' ) }
+							value={ rgb.r }
+							min={ 0 }
+							max={ 255 }
+							inputRef={ rRef }
+							onCommit={ ( n ) => commitRgb( n, rgb.g, rgb.b ) }
+						/>
+						<NumField
+							label="G"
+							ariaLabel={ label + ' ' + __( 'green value', 'everest-forms' ) }
+							value={ rgb.g }
+							min={ 0 }
+							max={ 255 }
+							inputRef={ gRef }
+							onCommit={ ( n ) => commitRgb( rgb.r, n, rgb.b ) }
+						/>
+						<NumField
+							label="B"
+							ariaLabel={ label + ' ' + __( 'blue value', 'everest-forms' ) }
+							value={ rgb.b }
+							min={ 0 }
+							max={ 255 }
+							inputRef={ bRef }
+							onCommit={ ( n ) => commitRgb( rgb.r, rgb.g, n ) }
+						/>
+					</>
+				) }
+				{ format === 'hsl' && (
+					<>
+						<NumField
+							label="H"
+							ariaLabel={ label + ' ' + __( 'hue value', 'everest-forms' ) }
+							value={ hsl.h }
+							min={ 0 }
+							max={ 360 }
+							inputRef={ hRef }
+							onCommit={ ( n ) => commitHsl( n, hsl.s, hsl.l ) }
+						/>
+						<NumField
+							label="S"
+							ariaLabel={ label + ' ' + __( 'saturation value', 'everest-forms' ) }
+							value={ hsl.s }
+							min={ 0 }
+							max={ 100 }
+							suffix="%"
+							inputRef={ sRef }
+							onCommit={ ( n ) => commitHsl( hsl.h, n, hsl.l ) }
+						/>
+						<NumField
+							label="L"
+							ariaLabel={ label + ' ' + __( 'lightness value', 'everest-forms' ) }
+							value={ hsl.l }
+							min={ 0 }
+							max={ 100 }
+							suffix="%"
+							inputRef={ lRef }
+							onCommit={ ( n ) => commitHsl( hsl.h, hsl.s, n ) }
+						/>
+					</>
+				) }
+				<div className="cpf-alpha">
+					<span className="cpf-label">{ __( 'Opacity', 'everest-forms' ) }</span>
+					<div className="num">
+						<input
+							ref={ popAlphaNumRef }
+							inputMode="numeric"
+							defaultValue={ String( parsed.alpha ) }
+							aria-label={ label + ' ' + __( 'opacity value', 'everest-forms' ) }
+							onInput={ ( e ) => {
+								const n = Number( ( e.target as HTMLInputElement ).value );
+								if ( ! Number.isNaN( n ) ) {
+									commitAlpha( n );
+								}
+							} }
+							onBlur={ () => {
+								if ( popAlphaNumRef.current ) {
+									popAlphaNumRef.current.value = String( parseColor( value ).alpha );
+								}
+							} }
+						/>
+						<span>%</span>
+					</div>
+				</div>
+			</div>
+			<div className="color-pop-swatches" role="group" aria-label={ __( 'Preset colors', 'everest-forms' ) }>
+				{ PRESET_SWATCHES.map( ( c ) => (
+					<button
+						key={ c }
+						type="button"
+						className="cps-swatch"
+						style={ { background: c } }
+						aria-label={ c }
+						title={ c }
+						onClick={ () => commitHex( c ) }
+					/>
+				) ) }
+			</div>
+		</>
+	);
+}
+
+/**
+ * The gradient editing surface — a draggable-stop bar (click empty space to add a stop, drag a
+ * marker to reposition it, arrow keys to nudge), the selected stop's full {@see SolidColorFields}
+ * editor, and a compass + numeric angle control.
+ */
+function GradientEditor( { label, value, onChange }: { label: string; value: string; onChange: ( v: string ) => void } ) {
+	const grad = parseGradient( value );
+	const [ selected, setSelected ] = React.useState( 0 );
+	const sel = Math.min( selected, grad.stops.length - 1 );
+	const barRef = React.useRef< HTMLDivElement >( null );
+	const angleRef = React.useRef< HTMLInputElement >( null );
+	useSyncedInput( angleRef, String( Math.round( grad.angle ) ) );
+
+	// `commit` always re-sorts by position (composeGradient) before serializing, so a stop's
+	// array index can shift on the very next render — e.g. adding a stop in the middle, or
+	// dragging one past a neighbour. `gradRef`/`selRef` track the latest committed state and
+	// selection synchronously (a plain closure would go stale mid-drag, before React re-renders),
+	// so every add/move recomputes where the stop being edited LANDS after that re-sort and keeps
+	// `selected` — and therefore the caption and the colour editor below — pointing at the same
+	// stop the user is actually holding, not whichever one happens to land at the old index.
+	const gradRef = React.useRef( grad );
+	gradRef.current = grad;
+	const selRef = React.useRef( sel );
+	selRef.current = sel;
+
+	const commit = ( angle: number, stops: GradStop[] ) => onChange( composeGradient( angle, stops ) );
+
+	/** Where a stop at `pos` will rank once the full set is re-sorted ascending (ties settle
+	 *  after any existing equal-position stop, matching a stable ascending sort). */
+	const rankOf = ( others: GradStop[], pos: number ) => others.filter( ( s ) => s.pos <= pos ).length;
+
+	const setStopColor = ( i: number, color: string ) => {
+		const current = gradRef.current;
+		commit( current.angle, current.stops.map( ( s, idx ) => ( idx === i ? { ...s, color } : s ) ) );
+	};
+	const setStopPos = ( i: number, pos: number ) => {
+		const current = gradRef.current;
+		const clamped = clampNumber( pos, 0, 100 );
+		const stops = current.stops.map( ( s, idx ) => ( idx === i ? { ...s, pos: clamped } : s ) );
+		const rank = rankOf( stops.filter( ( _, idx ) => idx !== i ), clamped );
+		selRef.current = rank;
+		setSelected( rank );
+		commit( current.angle, stops );
+	};
+	const addStop = ( pos: number ) => {
+		const current = gradRef.current;
+		const sorted = [ ...current.stops ].sort( ( a, b ) => a.pos - b.pos );
+		let color = sorted[ 0 ].color;
+		for ( let i = 0; i < sorted.length - 1; i++ ) {
+			if ( pos >= sorted[ i ].pos ) {
+				color = sorted[ i ].color;
+			}
+		}
+		const rank = rankOf( sorted, pos );
+		selRef.current = rank;
+		setSelected( rank );
+		commit( current.angle, [ ...current.stops, { color, pos } ] );
+	};
+	const removeStop = ( i: number ) => {
+		const current = gradRef.current;
+		if ( current.stops.length <= 2 ) {
+			return;
+		}
+		selRef.current = 0;
+		setSelected( 0 );
+		commit( current.angle, current.stops.filter( ( _, idx ) => idx !== i ) );
+	};
+
+	const posFromClientX = ( clientX: number ) => {
+		const el = barRef.current;
+		if ( ! el ) {
+			return 0;
+		}
+		const r = el.getBoundingClientRect();
+		return clampNumber( ( ( clientX - r.left ) / r.width ) * 100, 0, 100 );
+	};
+
+	// A drag that ends over the bar itself (not back on the marker) fires the bar's own click
+	// right after — per the DOM spec, when mousedown/mouseup targets differ, click bubbles to
+	// their common ancestor, which here is the bar — so a completed drag would otherwise always
+	// add a spurious extra stop right where the marker was just dropped.
+	const justDraggedRef = React.useRef( false );
+
+	const startDrag = ( i: number ) => ( e: React.MouseEvent ) => {
+		e.preventDefault();
+		e.stopPropagation();
+		selRef.current = i;
+		setSelected( i );
+		let moved = false;
+		const move = ( ev: MouseEvent ) => {
+			moved = true;
+			setStopPos( selRef.current, posFromClientX( ev.clientX ) );
+		};
+		const up = () => {
+			window.removeEventListener( 'mousemove', move );
+			window.removeEventListener( 'mouseup', up );
+			justDraggedRef.current = moved;
+		};
+		window.addEventListener( 'mousemove', move );
+		window.addEventListener( 'mouseup', up );
+	};
+
+	const onBarClick = ( e: React.MouseEvent ) => {
+		if ( justDraggedRef.current ) {
+			justDraggedRef.current = false;
+			return;
+		}
+		addStop( posFromClientX( e.clientX ) );
+	};
+
+	const barCss = composeGradient( 90, grad.stops );
+
+	return (
+		<div className="grad-editor">
+			<div
+				ref={ barRef }
+				className="grad-bar"
+				style={ { backgroundImage: barCss } }
+				title={ __( 'Click to add a stop', 'everest-forms' ) }
+				onClick={ onBarClick }
+				role="group"
+				aria-label={ __( 'Gradient stops — click to add, drag to reposition', 'everest-forms' ) }
+			>
+				{ grad.stops.map( ( s, i ) => (
+					<button
+						key={ i }
+						type="button"
+						className={ 'grad-marker' + ( sel === i ? ' is-selected' : '' ) }
+						style={ { left: s.pos + '%', '--marker-color': s.color } as React.CSSProperties }
+						onMouseDown={ startDrag( i ) }
+						onClick={ ( e ) => e.stopPropagation() }
+						onKeyDown={ ( e ) => {
+							if ( e.key === 'ArrowLeft' || e.key === 'ArrowRight' ) {
+								e.preventDefault();
+								const delta = ( e.key === 'ArrowLeft' ? -1 : 1 ) * ( e.shiftKey ? 5 : 1 );
+								setSelected( i );
+								setStopPos( i, s.pos + delta );
+							}
+						} }
+						aria-label={ `${ __( 'Stop', 'everest-forms' ) } ${ i + 1 }, ${ Math.round( s.pos ) }%` }
+					/>
+				) ) }
+			</div>
+			<p className="grad-hint">{ __( 'Click the bar to add a stop, drag a marker to move it.', 'everest-forms' ) }</p>
+			<div className="grad-stop-row">
+				<span className="grad-stop-caption">
+					{ __( 'Stop', 'everest-forms' ) } { sel + 1 } · { Math.round( grad.stops[ sel ].pos ) }%
+				</span>
+				{ grad.stops.length > 2 && (
+					<button
+						type="button"
+						className="grad-stop-remove"
+						aria-label={ __( 'Remove this stop', 'everest-forms' ) }
+						title={ __( 'Remove this stop', 'everest-forms' ) }
+						onClick={ () => removeStop( sel ) }
+					>
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2 } aria-hidden="true">
+							<path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m2 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
+						</svg>
+					</button>
+				) }
+			</div>
+			<SolidColorFields
+				label={ `${ label } — ${ __( 'stop', 'everest-forms' ) } ${ sel + 1 }` }
+				value={ grad.stops[ sel ].color }
+				onChange={ ( c ) => setStopColor( sel, c ) }
+			/>
+			<div className="grad-angle-row">
+				<AngleCompass angle={ grad.angle } onChange={ ( deg ) => commit( deg, grad.stops ) } />
+				<NumField
+					label={ __( 'Angle', 'everest-forms' ) }
+					ariaLabel={ label + ' ' + __( 'gradient angle', 'everest-forms' ) }
+					value={ Math.round( grad.angle ) }
+					min={ 0 }
+					max={ 359 }
+					suffix="°"
+					inputRef={ angleRef }
+					onCommit={ ( n ) => commit( n, grad.stops ) }
+				/>
+			</div>
+		</div>
+	);
+}
 
 function Svg( { inner, className }: { inner: string; className?: string } ) {
 	return (
@@ -550,42 +1010,21 @@ export function ColorPickerField( {
 	const isGrad = gradientable && isGradientValue( value );
 	const parsed = parseColor( isGrad ? '' : value );
 	const hexRef = React.useRef< HTMLInputElement >( null );
-	const popHexRef = React.useRef< HTMLInputElement >( null );
-	const popAlphaNumRef = React.useRef< HTMLInputElement >( null );
 	const rootRef = React.useRef< HTMLDivElement >( null );
 	const swatchRef = React.useRef< HTMLButtonElement >( null );
 	const popRef = React.useRef< HTMLDivElement >( null );
 	const [ invalid, setInvalid ] = React.useState( false );
 	const [ pickerOpen, setPickerOpen ] = React.useState( false );
 	const [ pos, setPos ] = React.useState< { left: number; top: number } | null >( null );
-	const [ format, setFormat ] = React.useState< 'hex' | 'rgb' | 'hsl' >( 'hex' );
-	const hasEyeDropper = typeof ( window as any ).EyeDropper !== 'undefined';
 	useSyncedInput( hexRef, parsed.hex.toUpperCase() );
-	useSyncedInput( popHexRef, parsed.hex.toUpperCase() );
-	useSyncedInput( popAlphaNumRef, String( parsed.alpha ) );
 	useDismiss( pickerOpen, rootRef, () => setPickerOpen( false ), popRef );
-
-	const rgb = hexToRgb( parsed.hex );
-	const hsl = rgbToHsl( rgb.r, rgb.g, rgb.b );
-	const rRef = React.useRef< HTMLInputElement >( null );
-	const gRef = React.useRef< HTMLInputElement >( null );
-	const bRef = React.useRef< HTMLInputElement >( null );
-	const hRef = React.useRef< HTMLInputElement >( null );
-	const sRef = React.useRef< HTMLInputElement >( null );
-	const lRef = React.useRef< HTMLInputElement >( null );
-	useSyncedInput( rRef, String( rgb.r ) );
-	useSyncedInput( gRef, String( rgb.g ) );
-	useSyncedInput( bRef, String( rgb.b ) );
-	useSyncedInput( hRef, String( hsl.h ) );
-	useSyncedInput( sRef, String( hsl.s ) );
-	useSyncedInput( lRef, String( hsl.l ) );
 
 	// Gradient mode (only reachable when `gradientable`). Deriving a sane default FROM the
 	// current solid colour (rather than an arbitrary stock gradient) means switching modes
 	// never jars — the preview always starts from what was already on screen.
-	const grad = isGrad ? parseGradient( value ) : { angle: 135, from: parsed.hex, to: shade( parsed.hex, -0.35 ) };
-	const angleRef = React.useRef< HTMLInputElement >( null );
-	useSyncedInput( angleRef, String( grad.angle ) );
+	const grad = isGrad
+		? parseGradient( value )
+		: { angle: 135, stops: [ { color: composeColor( parsed.hex, parsed.alpha ), pos: 0 }, { color: shade( parsed.hex, -0.35 ), pos: 100 } ] };
 
 	// Portaled + position:fixed (see below) so the popover can never be clipped by a scrolling
 	// ancestor (the panel sidebar, a palette's own scrollable row list, etc.) — same escape-hatch
@@ -628,19 +1067,11 @@ export function ColorPickerField( {
 	}, [ pickerOpen, updatePos ] );
 
 	const commitHex = ( hex: string ) => onChange( composeColor( hex, parsed.alpha ) );
-	const commitAlpha = ( alpha: number ) => onChange( composeColor( parsed.hex, clampNumber( alpha, 0, 100 ) ) );
-	const commitHex8 = ( hex8: string ) => {
-		const p = parseColor( hex8 );
+	const switchToGradient = () => onChange( composeGradient( grad.angle, grad.stops ) );
+	const switchToSolid = () => {
+		const p = parseColor( grad.stops[ 0 ].color );
 		onChange( composeColor( p.hex, p.alpha ) );
 	};
-	const commitRgb = ( r: number, g: number, b: number ) => commitHex( rgbToHex( r, g, b ) );
-	const commitHsl = ( h: number, s: number, l: number ) => {
-		const c = hslToRgb( h, s, l );
-		commitHex( rgbToHex( c.r, c.g, c.b ) );
-	};
-	const commitGradient = ( angle: number, from: string, to: string ) => onChange( composeGradient( angle, from, to ) );
-	const switchToGradient = () => commitGradient( grad.angle, grad.from, grad.to );
-	const switchToSolid = () => commitHex( grad.from );
 
 	const onHex = ( e: React.FormEvent< HTMLInputElement > ) => {
 		let t = ( e.target as HTMLInputElement ).value.trim();
@@ -655,21 +1086,6 @@ export function ColorPickerField( {
 			commitHex( t.toLowerCase() );
 		} else {
 			setInvalid( true );
-		}
-	};
-
-	/* Chromium's EyeDropper API — sample any pixel on screen (including outside the browser
-	 * window) straight into this field. Feature-detected: the tool button simply doesn't render
-	 * in browsers without it (Firefox, Safari at time of writing). */
-	const pickFromScreen = async () => {
-		try {
-			const ED = ( window as any ).EyeDropper;
-			const result = await new ED().open();
-			if ( result?.sRGBHex ) {
-				commitHex( result.sRGBHex.toLowerCase() );
-			}
-		} catch {
-			// User cancelled (Escape) — nothing to do.
 		}
 	};
 
@@ -717,25 +1133,9 @@ export function ColorPickerField( {
 					>
 						<div className="color-pop-head">
 							<span>{ label }</span>
-							{ hasEyeDropper && (
-								<button
-									type="button"
-									className="eyedrop-btn"
-									aria-label={ __( 'Pick color from screen', 'everest-forms' ) }
-									title={ __( 'Pick color from screen', 'everest-forms' ) }
-									onClick={ pickFromScreen }
-								>
-									<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2 } aria-hidden="true">
-										<path d="m2 22 1-4 9.5-9.5" />
-										<path d="M14.5 6.5 18 3a2.12 2.12 0 0 1 3 3l-3.5 3.5" />
-										<path d="m11.5 8.5 4 4" />
-										<path d="M3 21h4l9.5-9.5-4-4L3 17z" />
-									</svg>
-								</button>
-							) }
 						</div>
 						{ gradientable && (
-							<div className="cpf-format" role="tablist" aria-label={ __( 'Fill type', 'everest-forms' ) }>
+							<div className="cpf-format cpf-format--mode" role="tablist" aria-label={ __( 'Fill type', 'everest-forms' ) }>
 								<button
 									type="button"
 									role="tab"
@@ -757,173 +1157,9 @@ export function ColorPickerField( {
 							</div>
 						) }
 						{ isGrad ? (
-							<div className="grad-editor">
-								<div className="grad-preview" style={ { backgroundImage: value } } aria-hidden="true" />
-								<div className="grad-stops">
-									<GradientStopField
-										label={ __( 'From', 'everest-forms' ) }
-										hex={ grad.from }
-										onChange={ ( h ) => commitGradient( grad.angle, h, grad.to ) }
-									/>
-									<GradientStopField
-										label={ __( 'To', 'everest-forms' ) }
-										hex={ grad.to }
-										onChange={ ( h ) => commitGradient( grad.angle, grad.from, h ) }
-									/>
-								</div>
-								<NumField
-									label={ __( 'Angle', 'everest-forms' ) }
-									ariaLabel={ label + ' ' + __( 'gradient angle', 'everest-forms' ) }
-									value={ grad.angle }
-									min={ 0 }
-									max={ 359 }
-									suffix="°"
-									inputRef={ angleRef }
-									onCommit={ ( n ) => commitGradient( n, grad.from, grad.to ) }
-								/>
-							</div>
+							<GradientEditor label={ label } value={ value } onChange={ onChange } />
 						) : (
-							<>
-						<HexAlphaColorPicker
-							color={ toHex8( parsed.hex, parsed.alpha ) }
-							onChange={ commitHex8 }
-						/>
-						<div className="cpf-format" role="tablist" aria-label={ __( 'Color format', 'everest-forms' ) }>
-							{ ( [ 'hex', 'rgb', 'hsl' ] as const ).map( ( f ) => (
-								<button
-									key={ f }
-									type="button"
-									role="tab"
-									aria-selected={ format === f }
-									className={ 'cpf-format-btn' + ( format === f ? ' is-active' : '' ) }
-									onClick={ () => setFormat( f ) }
-								>
-									{ f.toUpperCase() }
-								</button>
-							) ) }
-						</div>
-						<div className="color-pop-fields">
-							{ format === 'hex' && (
-								<div className="cpf-hex">
-									<span className="cpf-label">{ __( 'Hex', 'everest-forms' ) }</span>
-									<div className="num">
-										<input
-											ref={ popHexRef }
-											spellCheck={ false }
-											defaultValue={ parsed.hex.toUpperCase() }
-											aria-label={ label + ' ' + __( 'hex value', 'everest-forms' ) }
-											onInput={ onHex }
-											onBlur={ () => {
-												if ( popHexRef.current ) {
-													popHexRef.current.value = parseColor( value ).hex.toUpperCase();
-												}
-											} }
-										/>
-									</div>
-								</div>
-							) }
-							{ format === 'rgb' && (
-								<>
-									<NumField
-										label="R"
-										ariaLabel={ label + ' ' + __( 'red value', 'everest-forms' ) }
-										value={ rgb.r }
-										min={ 0 }
-										max={ 255 }
-										inputRef={ rRef }
-										onCommit={ ( n ) => commitRgb( n, rgb.g, rgb.b ) }
-									/>
-									<NumField
-										label="G"
-										ariaLabel={ label + ' ' + __( 'green value', 'everest-forms' ) }
-										value={ rgb.g }
-										min={ 0 }
-										max={ 255 }
-										inputRef={ gRef }
-										onCommit={ ( n ) => commitRgb( rgb.r, n, rgb.b ) }
-									/>
-									<NumField
-										label="B"
-										ariaLabel={ label + ' ' + __( 'blue value', 'everest-forms' ) }
-										value={ rgb.b }
-										min={ 0 }
-										max={ 255 }
-										inputRef={ bRef }
-										onCommit={ ( n ) => commitRgb( rgb.r, rgb.g, n ) }
-									/>
-								</>
-							) }
-							{ format === 'hsl' && (
-								<>
-									<NumField
-										label="H"
-										ariaLabel={ label + ' ' + __( 'hue value', 'everest-forms' ) }
-										value={ hsl.h }
-										min={ 0 }
-										max={ 360 }
-										inputRef={ hRef }
-										onCommit={ ( n ) => commitHsl( n, hsl.s, hsl.l ) }
-									/>
-									<NumField
-										label="S"
-										ariaLabel={ label + ' ' + __( 'saturation value', 'everest-forms' ) }
-										value={ hsl.s }
-										min={ 0 }
-										max={ 100 }
-										suffix="%"
-										inputRef={ sRef }
-										onCommit={ ( n ) => commitHsl( hsl.h, n, hsl.l ) }
-									/>
-									<NumField
-										label="L"
-										ariaLabel={ label + ' ' + __( 'lightness value', 'everest-forms' ) }
-										value={ hsl.l }
-										min={ 0 }
-										max={ 100 }
-										suffix="%"
-										inputRef={ lRef }
-										onCommit={ ( n ) => commitHsl( hsl.h, hsl.s, n ) }
-									/>
-								</>
-							) }
-							<div className="cpf-alpha">
-								<span className="cpf-label">{ __( 'Opacity', 'everest-forms' ) }</span>
-								<div className="num">
-									<input
-										ref={ popAlphaNumRef }
-										inputMode="numeric"
-										defaultValue={ String( parsed.alpha ) }
-										aria-label={ label + ' ' + __( 'opacity value', 'everest-forms' ) }
-										onInput={ ( e ) => {
-											const n = Number( ( e.target as HTMLInputElement ).value );
-											if ( ! Number.isNaN( n ) ) {
-												commitAlpha( n );
-											}
-										} }
-										onBlur={ () => {
-											if ( popAlphaNumRef.current ) {
-												popAlphaNumRef.current.value = String( parseColor( value ).alpha );
-											}
-										} }
-									/>
-									<span>%</span>
-								</div>
-							</div>
-						</div>
-						<div className="color-pop-swatches" role="group" aria-label={ __( 'Preset colors', 'everest-forms' ) }>
-							{ PRESET_SWATCHES.map( ( c ) => (
-								<button
-									key={ c }
-									type="button"
-									className="cps-swatch"
-									style={ { background: c } }
-									aria-label={ c }
-									title={ c }
-									onClick={ () => commitHex( c ) }
-								/>
-							) ) }
-						</div>
-							</>
+							<SolidColorFields label={ label } value={ value } onChange={ onChange } />
 						) }
 					</div>,
 					popoverHost()

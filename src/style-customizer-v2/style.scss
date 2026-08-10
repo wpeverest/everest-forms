@@ -1518,11 +1518,15 @@
 
 /* position:fixed + a React-computed left/top (see ColorPickerField) — portaled to the panel
    root (same target HoverTip uses), so it can never be clipped by a scrolling ancestor (the
-   panel sidebar, a palette's row list, etc). */
+   panel sidebar, a palette's row list, etc). Gradient mode's content (bar + full colour editor +
+   angle row) runs taller than solid's — max-height + its own scroll means that never pushes the
+   popover off the top of a short viewport instead of the content just getting cut off. */
 #everest-forms-panel-style .color-pop {
 	position: fixed;
 	z-index: 999999;
 	width: 264px;
+	max-height: calc(100vh - 16px);
+	overflow-y: auto;
 	background: #fff;
 	border: 1px solid var(--ui-line);
 	border-radius: var(--ui-radius-lg);
@@ -1607,15 +1611,19 @@
 	}
 }
 
-/* A quiet segmented switch just above the fields row it governs — reused for both HEX/RGB/HSL
-   and, on gradient-capable tokens, Solid/Gradient. */
+/* A quiet segmented switch — reused for both HEX/RGB/HSL (inside .cpf-toolbar, under the wheel)
+   and, on gradient-capable tokens, Solid/Gradient (directly under the popover head, where the
+   --mode modifier adds the one gap `.cpf-toolbar` otherwise supplies for the other usage). */
 #everest-forms-panel-style .cpf-format {
 	display: flex;
 	gap: 2px;
-	margin-top: 12px;
 	padding: 2px;
 	background: var(--ui-bg-subtle);
 	border-radius: var(--ui-radius-md);
+}
+
+#everest-forms-panel-style .cpf-format--mode {
+	margin-bottom: 12px;
 }
 
 #everest-forms-panel-style .cpf-format-btn {
@@ -1642,41 +1650,163 @@
 	}
 }
 
-/* Gradient mode — two stops (native colour input + hex twin, no popover-in-popover) and an angle,
-   with a live preview strip standing in for the wheel a solid colour would otherwise show. */
-#everest-forms-panel-style .grad-editor {
+/* The row a colour field's wheel/format-switch/eyedropper share — used by both the plain solid
+   popover and, unchanged, each gradient stop's own editor. */
+#everest-forms-panel-style .cpf-toolbar {
+	display: flex;
+	align-items: center;
+	gap: 8px;
 	margin-top: 12px;
+
+	.cpf-format {
+		flex: 1;
+	}
 }
 
-#everest-forms-panel-style .grad-preview {
-	height: 40px;
+/* Gradient mode — a draggable-stop bar standing in for the wheel a solid colour would otherwise
+   show, the selected stop's full colour editor underneath, and a compass + numeric angle. No
+   margin-top of its own: `.cpf-format--mode` above already supplies that gap, matching solid
+   mode's spacing exactly (the wheel there sits flush under the switch too). */
+#everest-forms-panel-style .grad-bar {
+	position: relative;
+	height: 32px;
 	border-radius: var(--ui-radius-md);
 	border: 1px solid var(--ui-line-2);
-	margin-bottom: 10px;
+	cursor: copy;
 }
 
-#everest-forms-panel-style .grad-stops {
+#everest-forms-panel-style .grad-marker {
+	position: absolute;
+	top: 50%;
+	width: 16px;
+	height: 16px;
+	padding: 0;
+	border: 2px solid #fff;
+	border-radius: 50%;
+	background: var(--marker-color);
+	box-shadow: 0 0 0 1px rgba(0, 0, 0, .25), 0 1px 3px rgba(0, 0, 0, .3);
+	cursor: grab;
+	transform: translate(-50%, -50%);
+	transition: transform .1s;
+
+	&:hover {
+		transform: translate(-50%, -50%) scale(1.15);
+	}
+
+	&.is-selected {
+		box-shadow: 0 0 0 2px var(--ui-purple), 0 1px 3px rgba(0, 0, 0, .3);
+		z-index: 1;
+	}
+
+	&:active {
+		cursor: grabbing;
+	}
+}
+
+#everest-forms-panel-style .grad-hint {
+	margin: 6px 0 0;
+	font-size: 10.5px;
+	color: var(--ui-ink-3);
+}
+
+#everest-forms-panel-style .grad-stop-row {
 	display: flex;
+	align-items: center;
+	justify-content: space-between;
 	gap: 8px;
-	margin-bottom: 10px;
+	margin: 12px 0;
 }
 
-#everest-forms-panel-style .grad-stop {
-	flex: 1;
-	display: flex;
-	flex-direction: column;
-	gap: 4px;
-	min-width: 0;
+#everest-forms-panel-style .grad-stop-caption {
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: .03em;
+	text-transform: uppercase;
+	color: var(--ui-ink-3);
+	font-variant-numeric: tabular-nums;
 }
 
-#everest-forms-panel-style .grad-stop-native {
-	width: 100%;
-	height: 26px;
+#everest-forms-panel-style .grad-stop-remove {
+	width: 22px;
+	height: 22px;
 	border: 1px solid var(--ui-input-border);
 	border-radius: var(--ui-radius-sm);
-	padding: 2px;
-	background: none;
+	background: #fff;
+	color: var(--ui-ink-2);
 	cursor: pointer;
+	display: grid;
+	place-items: center;
+	transition: border-color .12s, color .12s, background .12s;
+
+	svg {
+		width: 12px;
+		height: 12px;
+	}
+
+	&:hover {
+		border-color: var(--ui-red);
+		color: var(--ui-red);
+	}
+}
+
+#everest-forms-panel-style .grad-angle-row {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	margin-top: 14px;
+	padding-top: 14px;
+	border-top: 1px solid var(--ui-line-2);
+
+	.cpf-num {
+		flex: 1;
+	}
+}
+
+/* A 3x3 compass — 8 one-click preset directions around an empty centre, each arrow icon rotated
+   to point the way that angle's gradient actually runs. */
+#everest-forms-panel-style .grad-compass {
+	display: grid;
+	grid-template-columns: repeat(3, 26px);
+	grid-template-rows: repeat(3, 26px);
+	gap: 3px;
+	flex: none;
+}
+
+#everest-forms-panel-style .grad-compass-btn {
+	width: 26px;
+	height: 26px;
+	padding: 0;
+	border: 1px solid var(--ui-input-border);
+	border-radius: var(--ui-radius-sm);
+	background: var(--ui-bg-subtle);
+	color: var(--ui-ink-2);
+	cursor: pointer;
+	display: grid;
+	place-items: center;
+	transition: border-color .12s, color .12s, background .12s;
+
+	svg {
+		width: 15px;
+		height: 15px;
+		transform: rotate(var(--deg));
+	}
+
+	&:hover {
+		border-color: var(--ui-purple);
+		color: var(--ui-purple);
+		background: var(--ui-purple-50);
+	}
+
+	&.is-active {
+		border-color: var(--ui-purple);
+		background: var(--ui-purple);
+		color: #fff;
+	}
+}
+
+#everest-forms-panel-style .grad-compass-center {
+	width: 26px;
+	height: 26px;
 }
 
 /* Hex/RGB/HSL + Opacity, editable right inside the popover so a colour can be fully dialed in
