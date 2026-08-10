@@ -338,7 +338,7 @@ final class Schema {
 		$border = self::border_options();
 
 		$form = array(
-			array( 'key' => 'fonts.theme', 'section' => 'form', 'group' => 'Typography', 'label' => __( 'Use theme fonts', 'everest-forms' ), 'type' => 'toggle', 'default' => false, 'keywords' => array( 'inherit', 'typeface', 'theme font' ) ),
+			array( 'key' => 'fonts.theme', 'section' => 'form', 'group' => 'Typography', 'label' => __( 'Use theme fonts', 'everest-forms' ), 'type' => 'toggle', 'default' => false, 'hidden' => true, 'keywords' => array( 'inherit', 'typeface', 'theme font' ) ),
 			array( 'key' => 'fonts.family', 'section' => 'form', 'group' => 'Typography', 'label' => __( 'Font family', 'everest-forms' ), 'type' => 'select', 'var' => '--evf-font', 'default' => '', 'source' => 'google_fonts', 'options' => self::font_options(), 'keywords' => array( 'typeface', 'typography', 'google font' ) ),
 			// Palette-driven by default (form_background slot); editing it directly here unlinks
 			// this form from the palette for just this token — see store.ts's paletteMap unlink.
