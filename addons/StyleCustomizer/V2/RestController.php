@@ -660,32 +660,13 @@ final class RestController {
 		$all     = get_option( 'everest_forms_styles', array() );
 		$stored  = isset( $all[ $form_id ] ) && is_array( $all[ $form_id ] ) ? $all[ $form_id ] : array();
 
-		if ( Engine::is_v2_record( $stored ) ) {
-			$record = $stored;
-		} elseif ( ! empty( $stored ) ) {
-			// A legacy (v1) record: migrate on read; only persisted when the user saves.
-			$record            = Migrator::migrate_record( $stored );
+		// {@see Migrator::effective_record()} migrates a still-legacy record on the fly (and
+		// seeds custom_css from the legacy global Additional CSS box, EVF-2732/EVF-2737) without
+		// requiring a save first — shared with FrontendEnqueue so the panel and the actual
+		// frontend output always agree on what a form's style record currently is.
+		$record = Migrator::effective_record( $stored );
+		if ( ! Engine::is_v2_record( $stored ) && ! empty( $stored ) ) {
 			$record['palette'] = self::detect_palette( $stored );
-
-			// v1 never had a per-form Custom CSS field of its own — the only "Custom CSS" a user
-			// could edit while styling THIS form lived in WP core's site-wide Additional CSS
-			// section, surfaced by the legacy per-form Customizer screen (see
-			// class-evf-style-customizer-api.php, EVF-2737). Seed it here so a form whose
-			// rendering already depended on that shared CSS doesn't visually change — or look
-			// like its CSS was erased (EVF-2732) — the moment it's first migrated; from here on
-			// each form owns an independent, editable copy, and that legacy screen no longer
-			// exposes the global section for anyone to leak further.
-			if ( empty( $record['custom_css'] ) && function_exists( 'wp_get_custom_css' ) ) {
-				$global_css = wp_get_custom_css();
-				if ( '' !== trim( (string) $global_css ) ) {
-					$record['custom_css'] = $global_css;
-				}
-			}
-		} else {
-			$record = array(
-				'schema_version' => Schema::version(),
-				'tokens'         => array(),
-			);
 		}
 
 		/**
