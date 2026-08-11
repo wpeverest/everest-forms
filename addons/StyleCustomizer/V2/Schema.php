@@ -420,7 +420,11 @@ final class Schema {
 			array( 'key' => 'btn.size', 'section' => 'button', 'group' => '', 'label' => __( 'Font size', 'everest-forms' ), 'type' => 'slider', 'var' => '--evf-btn-size', 'default' => 14, 'min' => 11, 'max' => 24, 'step' => 1, 'unit' => 'px', 'advanced' => true, 'keywords' => array( 'submit' ) ),
 			self::fstyle( 'btn.fstyle', 'btn', 'button', null, '400' ),
 			self::letter_spacing( 'btn.ls', '--evf-btn-ls', 'button', null ),
-			self::talign( 'btn.align', '--evf-btn-align', 'button', null, 'center' ),
+			// 'left', not 'center': matches both v1's own implicit default and the built-in
+			// "Default" template's explicit value — a legacy form that never touched button
+			// alignment has no token for it at all (see Migrator), so this default IS its
+			// rendered alignment; 'center' silently flipped it on migration (EVF-2732).
+			self::talign( 'btn.align', '--evf-btn-align', 'button', null, 'left' ),
 			self::line( 'btn.line', '--evf-btn-lh', 1.5, 'button', null ),
 			self::box( 'btn.margin', __( 'Margin', 'everest-forms' ), '--evf-btn-margin', array( 0, 0, 0, 0 ), 'button', null ),
 			array( 'key' => 'btn.pad', 'section' => 'button', 'group' => '', 'label' => __( 'Padding', 'everest-forms' ), 'type' => 'box4', 'var' => '--evf-btn-pad', 'default' => array( 10, 15, 10, 15 ), 'responsive' => true, 'advanced' => true, 'keywords' => array( 'size' ) ),

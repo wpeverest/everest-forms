@@ -666,6 +666,21 @@ final class RestController {
 			// A legacy (v1) record: migrate on read; only persisted when the user saves.
 			$record            = Migrator::migrate_record( $stored );
 			$record['palette'] = self::detect_palette( $stored );
+
+			// v1 never had a per-form Custom CSS field of its own — the only "Custom CSS" a user
+			// could edit while styling THIS form lived in WP core's site-wide Additional CSS
+			// section, surfaced by the legacy per-form Customizer screen (see
+			// class-evf-style-customizer-api.php, EVF-2737). Seed it here so a form whose
+			// rendering already depended on that shared CSS doesn't visually change — or look
+			// like its CSS was erased (EVF-2732) — the moment it's first migrated; from here on
+			// each form owns an independent, editable copy, and that legacy screen no longer
+			// exposes the global section for anyone to leak further.
+			if ( empty( $record['custom_css'] ) && function_exists( 'wp_get_custom_css' ) ) {
+				$global_css = wp_get_custom_css();
+				if ( '' !== trim( (string) $global_css ) ) {
+					$record['custom_css'] = $global_css;
+				}
+			}
 		} else {
 			$record = array(
 				'schema_version' => Schema::version(),
