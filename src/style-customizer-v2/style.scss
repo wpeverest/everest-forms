@@ -282,10 +282,6 @@
 		flex: none;
 	}
 
-	&.bk-icon-only {
-		flex: none;
-	}
-
 	.ic {
 		width: 27px;
 		height: 27px;
@@ -632,31 +628,6 @@
 	justify-content: space-between;
 	gap: 8px;
 	margin: 2px 2px 4px;
-}
-
-#everest-forms-panel-style .slate-title-main {
-	display: flex;
-	align-items: center;
-	gap: 10px;
-	min-width: 0;
-}
-
-/* Same icon language as the Elements list row (.elrow .ic) it drills down from — carried into
-   the detail view instead of the breadcrumb, so the section only identifies itself once. */
-#everest-forms-panel-style .slate-title-ic {
-	width: 27px;
-	height: 27px;
-	border-radius: var(--ui-radius-md);
-	background: var(--ui-purple-50);
-	display: grid;
-	place-items: center;
-	flex: none;
-
-	svg {
-		width: 15px;
-		height: 15px;
-		color: var(--ui-purple);
-	}
 }
 
 #everest-forms-panel-style .hintline {
@@ -1141,7 +1112,7 @@
 #everest-forms-panel-style #elBody .grp {
 	background: #fff;
 	border: 1px solid var(--ui-line);
-	border-radius: var(--ui-radius-lg);
+	border-radius: var(--ui-radius-md);
 	padding: 16px;
 	box-shadow: var(--ui-shadow-sm);
 }
@@ -2087,8 +2058,11 @@
 		box-shadow: 0 1px 3px rgba(20, 23, 40, .2);
 	}
 
+	/* Matches the builder's own toggle field's checked colour (.everest-forms-toggle-form
+	   input:checked + .slider in admin.scss) — lighter than --ui-green, which is tuned for
+	   icon/text contrast rather than a toggle track. */
 	&[aria-checked="true"] {
-		background: var(--ui-green);
+		background: #4cc741;
 	}
 
 	&[aria-checked="true"]::after {
@@ -2321,17 +2295,10 @@
 		font-size: 12px;
 		font-weight: 500;
 		color: var(--ui-ink);
-		display: flex;
-		align-items: center;
-		gap: 6px;
 	}
 
 	.cap-name {
-		min-width: 0;
-		flex: 1;
-		white-space: nowrap;
-		overflow: hidden;
-		text-overflow: ellipsis;
+		margin-right: 6px;
 	}
 }
 
@@ -3611,14 +3578,10 @@
 		box-shadow: inset 0 0 0 1px rgba(20, 23, 40, .1);
 	}
 
-	/* Always one line, truncated with an ellipsis rather than wrapping — a wrapped second line
-	   broke the grid's even row heights for every two-word name (built-in presets are full of
-	   them: "Blushing Blossom", "Midnight Charm", "Fresh Greenery", …). `padding-right` keeps
-	   the (short) truncated text clear of the hover-revealed delete tool, bottom-right. */
+	/* The badge sits right after the name in normal text flow, so it rides along with the name
+	   onto a second line rather than staying pinned to a fixed row. `padding-right` keeps
+	   the text clear of the hover-revealed delete tool, bottom-right. */
 	.cap {
-		display: flex;
-		align-items: center;
-		gap: 6px;
 		font-size: 12px;
 		font-weight: 500;
 		color: var(--ui-ink);
@@ -3627,11 +3590,7 @@
 	}
 
 	.cap-name {
-		min-width: 0;
-		flex: 1;
-		white-space: nowrap;
-		overflow: hidden;
-		text-overflow: ellipsis;
+		margin-right: 6px;
 	}
 
 	/* Same crown badge as .pro-badge elsewhere in the panel. */

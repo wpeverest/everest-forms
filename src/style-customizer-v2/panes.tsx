@@ -701,14 +701,7 @@ export function ElementSlate( {
 	if ( sectionLocked ) {
 		return (
 			<div id="elBody" className="slate-anim" ref={ bodyRef }>
-				<div className="slate-title-row">
-					<div className="slate-title-main">
-						<span className="slate-title-ic">
-							<Icon inner={ SECTION_ICONS[ section.key ] || '' } />
-						</span>
-						<h2 className="slate-title">{ section.title }</h2>
-					</div>
-				</div>
+				<h2 className="slate-title">{ section.title }</h2>
 				<ProSectionTeaser section={ section } />
 			</div>
 		);
@@ -717,12 +710,7 @@ export function ElementSlate( {
 	return (
 		<div id="elBody" className="slate-anim" ref={ bodyRef }>
 			<div className="slate-title-row">
-				<div className="slate-title-main">
-					<span className="slate-title-ic">
-						<Icon inner={ SECTION_ICONS[ section.key ] || '' } />
-					</span>
-					<h2 className="slate-title">{ section.title }</h2>
-				</div>
+				<h2 className="slate-title">{ section.title }</h2>
 				<button type="button" className="uxbtn" title={ __( 'Reset this section', 'everest-forms' ) } aria-label={ __( 'Reset this section', 'everest-forms' ) + ' — ' + section.title } onClick={ () => store.resetSection( section.key ) }>
 					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2 } aria-hidden="true">
 						<path d="M3 12a9 9 0 1 0 3-6.7" />
