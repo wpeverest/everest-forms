@@ -150,7 +150,14 @@ final class PreviewDraft {
 			return false;
 		}
 
-		$decoded = json_decode( wp_unslash( (string) $form_data_json ) );
+		// No wp_unslash() here: this string arrives via the REST route's JSON body (see
+		// RestController::save_preview_draft()), which WP never runs through wp_magic_quotes() the
+		// way $_POST is — unslashing it strips the backslashes that are JSON's OWN string escaping
+		// (e.g. a field value containing a literal `"`, like the reply-to merge tag default
+		// `{field_id="email"}`, is encoded as `\"` — stripping that corrupts the JSON and makes
+		// json_decode() fail), silently breaking the draft for any form where any field's value
+		// anywhere contains a double-quote character.
+		$decoded = json_decode( (string) $form_data_json );
 		if ( ! is_array( $decoded ) ) {
 			return false;
 		}
@@ -245,7 +252,12 @@ final class PreviewDraft {
 
 	/**
 	 * Parse the serialized builder array into the nested form structure. Mirrors
-	 * {@see \EVF_AJAX::save_form()} so the draft renders identically to a saved form.
+	 * {@see \EVF_AJAX::save_form()}'s array-rebuilding so the draft renders identically to a saved
+	 * form — but, unlike that method, does NOT `wp_slash()` the leaf values: `save_form()` needs
+	 * that because it hands the result to `wp_update_post()`, which unslashes on the way into the
+	 * DB; this draft is read straight back out of a transient with no such unslash step, so adding
+	 * slashes here would leave a stray backslash in front of every quote/apostrophe a field's value
+	 * happens to contain.
 	 *
 	 * @param array $form_post Array of `{name,value}` objects (already JSON-decoded).
 	 * @return array Nested form data (`form_fields`, `structure`, `settings`, …).
@@ -275,9 +287,9 @@ final class PreviewDraft {
 			for ( $i = count( $array_bits ) - 1; $i >= 0; $i-- ) {
 				if ( count( $array_bits ) - 1 === $i ) {
 					if ( '' === $array_bits[ $i ] ) {
-						$new_post_data[ $post_index ] = wp_slash( $post_input_data->value );
+						$new_post_data[ $post_index ] = $post_input_data->value;
 					} else {
-						$new_post_data[ $array_bits[ $i ] ] = wp_slash( $post_input_data->value );
+						$new_post_data[ $array_bits[ $i ] ] = $post_input_data->value;
 					}
 				} else {
 					$new_post_data = array(
