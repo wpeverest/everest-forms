@@ -346,6 +346,14 @@ ok( false !== strpos( $frontend_css, 'label.evf-field-label .evf-label {' ), 'la
 preg_match( '/label\.evf-field-label\s*\{([^}]*)\}/', $frontend_css, $outer_label_rule );
 ok( isset( $outer_label_rule[1] ) && false === strpos( $outer_label_rule[1], 'text-decoration' ), 'text-decoration is NOT on the outer <label> rule (EVF-2671)' );
 
+// EVF-2733: the Messages fstyle rules had font-weight/style/text-transform but never applied
+// their own text-decoration var, so an underline set on a success/error/validation message
+// compiled fine (Compiler emits --evf-msg-*-td) but never actually rendered — in the live
+// preview OR on the frontend, since both read this same static file.
+foreach ( array( 'success', 'error', 'validation' ) as $msg_type ) {
+	ok( false !== strpos( $frontend_css, "--evf-msg-{$msg_type}-td" ), "messages: {$msg_type} rule applies its text-decoration var (EVF-2733)" );
+}
+
 // Defense-in-depth: even an UNSANITIZED breakout value can't escape the declaration.
 $evil = Compiler::compile( array( 'tokens' => array( 'wrap.borderC' => array( 'desktop' => 'red;}body{display:none}' ) ) ), 7 );
 ok( strpos( $evil, '}body' ) === false && strpos( $evil, '{display' ) === false, 'compiler css_safe blocks CSS breakout' );

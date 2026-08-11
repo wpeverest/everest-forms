@@ -533,6 +533,7 @@
 	border-radius: var( --evf-msg-success-radius, 5px );
 	font-weight: var( --evf-msg-success-weight, 400 );
 	font-style: var( --evf-msg-success-fs, normal );
+	text-decoration: var( --evf-msg-success-td, none );
 	text-transform: var( --evf-msg-success-tt, none );
 }
 
@@ -547,6 +548,7 @@
 	border-radius: var( --evf-msg-error-radius, 5px );
 	font-weight: var( --evf-msg-error-weight, 400 );
 	font-style: var( --evf-msg-error-fs, normal );
+	text-decoration: var( --evf-msg-error-td, none );
 	text-transform: var( --evf-msg-error-tt, none );
 }
 
@@ -561,5 +563,6 @@
 	border-radius: var( --evf-msg-validation-radius, 5px );
 	font-weight: var( --evf-msg-validation-weight, 400 );
 	font-style: var( --evf-msg-validation-fs, normal );
+	text-decoration: var( --evf-msg-validation-td, none );
 	text-transform: var( --evf-msg-validation-tt, none );
 }
