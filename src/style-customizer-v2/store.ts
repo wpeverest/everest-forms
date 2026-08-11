@@ -374,6 +374,37 @@ class StyleStore {
 		this.notify( null );
 	}
 
+	/** Reset just the 6 palette-slot colours (and their derived tokens) back to schema defaults. */
+	resetPalette() {
+		this.discrete( 'Reset colors' );
+		const keys: string[] = [];
+		this.paletteDrivenKeys().forEach( ( key ) => {
+			const token = this.byKey[ key ];
+			if ( ! token ) {
+				return;
+			}
+			this.tokens[ key ] = { desktop: clone( token.default ) };
+			keys.push( key );
+		} );
+		this.palette = '';
+		this.notify( keys );
+	}
+
+	/** Reset every element back to default, same as a fresh template — mirrors {@see applyTemplate}'s
+	 *  own font preservation so turning this on doesn't silently undo an explicit theme-font choice. */
+	resetTemplate() {
+		this.discrete( 'Reset template' );
+		const keepFontKeys = this.applyThemeStyle ? [ 'fonts.theme', 'fonts.family' ] : [];
+		this.schema.forEach( ( t ) => {
+			if ( keepFontKeys.indexOf( t.key ) === -1 ) {
+				this.tokens[ t.key ] = { desktop: clone( t.default ) };
+			}
+		} );
+		this.template = '';
+		this.palette = '';
+		this.notify( null );
+	}
+
 	setDevice( device: Device ) {
 		if ( this.device === device ) {
 			return;

@@ -567,13 +567,11 @@
 
 /* Neutral counterpart to the amber "Modified" pill: the current style exactly matches this
    preset, unedited. */
+/* Same pill shape as the amber "Modified" badge above — only the shade changes. */
 #everest-forms-panel-style .predef-badge--base {
 	color: var(--ui-ink-3);
 	background: var(--ui-bg-subtle);
-	text-transform: none;
-	letter-spacing: normal;
-	font-weight: 600;
-	padding: 1px 6px;
+	border-color: var(--ui-line);
 }
 
 /* Tags a preset carried over from the retired "create your own" feature — sorts first in the
@@ -581,10 +579,7 @@
 #everest-forms-panel-style .predef-badge--custom {
 	color: var(--ui-purple);
 	background: var(--ui-purple-50);
-	text-transform: none;
-	letter-spacing: normal;
-	font-weight: 600;
-	padding: 1px 6px;
+	border-color: var(--ui-purple-100);
 }
 
 
