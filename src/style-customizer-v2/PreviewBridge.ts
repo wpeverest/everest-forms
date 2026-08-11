@@ -520,7 +520,10 @@ export class PreviewBridge {
 			}
 			return;
 		}
-		const href = 'https://fonts.googleapis.com/css?family=' + encodeURIComponent( family );
+		// Explicit weights, matching Schema::weight_options() (EVF-2721) — otherwise Google Fonts
+		// only serves the family's single default face and every other Font Style weight falls
+		// back to inconsistent browser synthesis.
+		const href = 'https://fonts.googleapis.com/css?family=' + encodeURIComponent( family ) + ':300,400,700';
 		if ( ! link ) {
 			link = doc.createElement( 'link' );
 			link.id = FONT_LINK_ID;

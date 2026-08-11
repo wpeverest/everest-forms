@@ -537,17 +537,22 @@ final class Schema {
 	 * @return array value => label.
 	 */
 	protected static function weight_options() {
+		// EVF-2721: this used to offer all 9 standard CSS weight steps (100-900), but a form's
+		// font — a specific Google Font, or "Theme default" falling back to the visitor's system
+		// font stack — only actually HAS a handful of real weight faces. A numeric weight with no
+		// matching face just gets browser-synthesized (inconsistently, sometimes identically to a
+		// neighboring value), so half the dropdown silently did nothing. Trimmed to the 3 steps
+		// virtually every font (Google or system) truly ships, and {@see evfsc_enqueue_fonts}/
+		// PreviewBridge now request exactly these weights so a chosen Google Font's real files
+		// load instead of relying on synthesis.
+		//
 		// Built directly (not via self::opts(), which takes an associative array — PHP would
 		// coerce these numeric-string keys to ints) so every value is guaranteed a string.
 		return array(
 			array( 'value' => '',    'label' => __( 'Auto', 'everest-forms' ) ),
 			array( 'value' => '300', 'label' => __( 'Light', 'everest-forms' ) ),
 			array( 'value' => '400', 'label' => __( 'Regular', 'everest-forms' ) ),
-			array( 'value' => '500', 'label' => __( 'Medium', 'everest-forms' ) ),
-			array( 'value' => '600', 'label' => __( 'Semibold', 'everest-forms' ) ),
 			array( 'value' => '700', 'label' => __( 'Bold', 'everest-forms' ) ),
-			array( 'value' => '800', 'label' => __( 'Extra Bold', 'everest-forms' ) ),
-			array( 'value' => '900', 'label' => __( 'Black', 'everest-forms' ) ),
 		);
 	}
 
