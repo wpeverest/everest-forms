@@ -418,6 +418,13 @@ class StyleStore {
 		this.notify( [] ); // No token vars change; the App handles the <style> injection.
 	}
 
+	/** Clears the Custom CSS pane's own textarea — mirrors {@see resetPalette}/{@see resetTemplate}. */
+	resetCustomCss() {
+		this.discrete( 'Reset Custom CSS' );
+		this.customCss = '';
+		this.notify( [] );
+	}
+
 	/** Toggle "Apply Theme Style" (a per-form setting, persisted to the same meta the v1 preview toggle uses). */
 	setUnsavedFieldChanges( dirty: boolean ) {
 		if ( this.hasUnsavedFieldChanges === dirty ) {

@@ -1098,8 +1098,10 @@ export function TemplatesPane( {
 
 			<div className="block-title">{ __( 'Presets', 'everest-forms' ) }</div>
 			<p className="pane-note">
-				<b>{ __( 'Hover a card to preview it live', 'everest-forms' ) }</b>{ ' ' }
-				— { __( 'click to apply (you can always undo).', 'everest-forms' ) }
+				<span>
+					<b>{ __( 'Hover a card to preview it live', 'everest-forms' ) }</b>{ ' ' }
+					— { __( 'click to apply (you can always undo).', 'everest-forms' ) }
+				</span>
 			</p>
 			{ /* Legacy set stays in store.templates (see Templates::load_legacy()) for badge matching above; just not offered here. */ }
 			{ renderGrid(
@@ -1143,7 +1145,6 @@ export function CustomCssPane() {
 		const start = el.selectionStart;
 		const value = el.value.slice( 0, start ) + snippet + el.value.slice( el.selectionEnd );
 		store.setCustomCss( value );
-		el.value = value;
 		el.focus();
 	};
 
@@ -1153,8 +1154,10 @@ export function CustomCssPane() {
 		<div className="slate-anim">
 			<div className="block-title">{ __( 'Custom CSS', 'everest-forms' ) }</div>
 			<p className="pane-note">
-				{ __( 'Applied live as you type —', 'everest-forms' ) } <b>{ __( 'scoped to this form', 'everest-forms' ) }</b>{ ' ' }
-				{ __( 'on save, so nothing leaks elsewhere. Click a selector to insert it:', 'everest-forms' ) }
+				<span>
+					{ __( 'Applied live as you type —', 'everest-forms' ) } <b>{ __( 'scoped to this form', 'everest-forms' ) }</b>{ ' ' }
+					{ __( 'on save, so nothing leaks elsewhere. Click a selector to insert it:', 'everest-forms' ) }
+				</span>
 			</p>
 			<div className="chips">
 				{ CSS_CHIPS.map( ( c ) => (
@@ -1167,7 +1170,7 @@ export function CustomCssPane() {
 				ref={ ref }
 				className="csscode"
 				spellCheck={ false }
-				defaultValue={ store.customCss || '' }
+				value={ store.customCss || '' }
 				aria-label={ __( 'Custom CSS', 'everest-forms' ) }
 				placeholder={ '.evf-submit-container button {\n\tletter-spacing: .04em;\n}' }
 				onInput={ ( e ) => store.setCustomCss( ( e.target as HTMLTextAreaElement ).value ) }
