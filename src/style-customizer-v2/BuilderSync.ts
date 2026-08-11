@@ -267,7 +267,19 @@ export class BuilderSync {
 			return { json: '', signature: '' };
 		}
 
-		const formData: SerializedItem[] = form.serializeArray();
+		let formData: SerializedItem[] = form.serializeArray();
+
+		// Let addons rewrite/append to the payload the same way the real save AJAX does (see
+		// form-builder.js's own save handler) — Multi-Part, for one, computes its row→part
+		// mapping (`multi_part[part_N][rows][…]`) ENTIRELY inside this handler; it's never a
+		// static <input>. Skipping it left the draft with a part's `id` but no `rows`, which
+		// made the frontend renderer never close the first part's wrapper — every field from
+		// every part rendered flattened onto "Step 1" in the live preview until an actual save
+		// (which does fire this event) replaced the draft with a correctly-shaped saved record.
+		if ( form.triggerHandler( 'everest_forms_process_ajax_data', [ form, formData ] ) ) {
+			formData = form.triggerHandler( 'everest_forms_process_ajax_data', [ form, formData ] );
+		}
+
 		const structure = this.getStructure( jq );
 		const all = formData.concat( structure );
 
