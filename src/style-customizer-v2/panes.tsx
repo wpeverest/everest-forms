@@ -701,8 +701,14 @@ export function ElementSlate( {
 	if ( sectionLocked ) {
 		return (
 			<div id="elBody" className="slate-anim" ref={ bodyRef }>
-				<h2 className="slate-title">{ section.title }</h2>
-				{ section.hint && <p className="sec-hint">{ section.hint }</p> }
+				<div className="slate-title-row">
+					<div className="slate-title-main">
+						<span className="slate-title-ic">
+							<Icon inner={ SECTION_ICONS[ section.key ] || '' } />
+						</span>
+						<h2 className="slate-title">{ section.title }</h2>
+					</div>
+				</div>
 				<ProSectionTeaser section={ section } />
 			</div>
 		);
@@ -711,7 +717,12 @@ export function ElementSlate( {
 	return (
 		<div id="elBody" className="slate-anim" ref={ bodyRef }>
 			<div className="slate-title-row">
-				<h2 className="slate-title">{ section.title }</h2>
+				<div className="slate-title-main">
+					<span className="slate-title-ic">
+						<Icon inner={ SECTION_ICONS[ section.key ] || '' } />
+					</span>
+					<h2 className="slate-title">{ section.title }</h2>
+				</div>
 				<button type="button" className="uxbtn" title={ __( 'Reset this section', 'everest-forms' ) } aria-label={ __( 'Reset this section', 'everest-forms' ) + ' — ' + section.title } onClick={ () => store.resetSection( section.key ) }>
 					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2 } aria-hidden="true">
 						<path d="M3 12a9 9 0 1 0 3-6.7" />
@@ -719,7 +730,6 @@ export function ElementSlate( {
 					</svg>
 				</button>
 			</div>
-			{ section.hint && <p className="sec-hint">{ section.hint }</p> }
 
 			{ hasLocked && (
 				<div className="pro-lock">
@@ -1170,10 +1180,6 @@ export function TemplatesPane( {
 					return ( a.is_pro ? 1 : 0 ) - ( b.is_pro ? 1 : 0 );
 				} )
 			) }
-
-			<p className="tpl-hint">
-				{ __( 'Templates set every element at once. Fine-tune afterwards from the Design tab.', 'everest-forms' ) }
-			</p>
 		</div>
 	);
 }

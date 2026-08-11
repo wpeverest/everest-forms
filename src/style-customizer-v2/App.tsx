@@ -9,7 +9,7 @@ import { ColorsPane, CustomCssPane, DesignList, ElementSlate, TemplatesPane } fr
 import { ConfirmModal, ConfirmState } from './Popover';
 import { PreviewPane } from './PreviewPane';
 import { getActiveBridge, SelectionInfo } from './PreviewBridge';
-import { DEVICE_LABELS, SECTION_ICONS, STATE_FORCE } from './constants';
+import { DEVICE_LABELS, STATE_FORCE } from './constants';
 import { useStore } from './store';
 import { Section } from './types';
 
@@ -268,20 +268,15 @@ export function App() {
 		<div className="scv2-panel">
 			{ inSlate && section && (
 				<div className="navback">
-					<button type="button" className="bk" onClick={ backToList }>
+					<button
+						type="button"
+						className="bk bk-icon-only"
+						aria-label={ __( 'Back to Elements', 'everest-forms' ) }
+						onClick={ backToList }
+					>
 						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2.2 }>
 							<path d="m15 18-6-6 6-6" />
 						</svg>
-						<span className="ic">
-							<svg
-								viewBox="0 0 24 24"
-								fill="none"
-								stroke="currentColor"
-								strokeWidth={ 2 }
-								dangerouslySetInnerHTML={ { __html: SECTION_ICONS[ section.key ] || '' } }
-							/>
-						</span>
-						<span>{ section.title }</span>
 					</button>
 				</div>
 			) }

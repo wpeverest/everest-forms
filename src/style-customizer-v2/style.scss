@@ -282,6 +282,10 @@
 		flex: none;
 	}
 
+	&.bk-icon-only {
+		flex: none;
+	}
+
 	.ic {
 		width: 27px;
 		height: 27px;
@@ -615,7 +619,7 @@
 
 /* The panel's one real heading size, matching the builder's own section title (.evf-content-section-title). */
 #everest-forms-panel-style .slate-title {
-	font-size: var(--ui-fs-xl);
+	font-size: 16px;
 	font-weight: 600;
 	color: var(--ui-ink);
 	margin: 0;
@@ -628,6 +632,31 @@
 	justify-content: space-between;
 	gap: 8px;
 	margin: 2px 2px 4px;
+}
+
+#everest-forms-panel-style .slate-title-main {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	min-width: 0;
+}
+
+/* Same icon language as the Elements list row (.elrow .ic) it drills down from — carried into
+   the detail view instead of the breadcrumb, so the section only identifies itself once. */
+#everest-forms-panel-style .slate-title-ic {
+	width: 27px;
+	height: 27px;
+	border-radius: var(--ui-radius-md);
+	background: var(--ui-purple-50);
+	display: grid;
+	place-items: center;
+	flex: none;
+
+	svg {
+		width: 15px;
+		height: 15px;
+		color: var(--ui-purple);
+	}
 }
 
 #everest-forms-panel-style .hintline {
@@ -1073,12 +1102,6 @@
 	pointer-events: none;
 }
 
-#everest-forms-panel-style .sec-hint {
-	font-size: 11.5px;
-	color: var(--ui-ink-3);
-	margin: 2px 2px 16px;
-	line-height: 1.6;
-}
 
 /* Empty state (e.g. zero saved templates yet) — a quiet dashed placeholder. */
 #everest-forms-panel-style .empty-state {
@@ -2629,12 +2652,6 @@
 	pointer-events: none;
 }
 
-#everest-forms-panel-style .tpl-hint {
-	margin-top: 10px;
-	font-size: 11.5px;
-	color: var(--ui-ink-3);
-	line-height: 1.5;
-}
 
 /* pro lock — matches the builder's own locked-field banner (evf-locked-fields.scss). */
 #everest-forms-panel-style .pro-lock {
