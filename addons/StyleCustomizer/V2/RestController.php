@@ -200,6 +200,18 @@ final class RestController {
 	 * @return \WP_REST_Response|\WP_Error
 	 */
 	public function ai_style( $request ) {
+		// Temporarily disabled for this release — matches the "Style with AI" button being
+		// hidden client-side (App.tsx's STYLE_AI_ENABLED) and the AI Form Builder chat's own
+		// styling side effect being disabled (EVF_AI_API::client_supports_style()). Re-enable by
+		// deleting this block.
+		if ( true ) {
+			return new \WP_Error(
+				'evf_ai_style_unavailable',
+				__( 'AI styling is not available in this release.', 'everest-forms' ),
+				array( 'status' => 501 )
+			);
+		}
+
 		if ( ! class_exists( 'EVF_AI_API' ) || ! class_exists( 'EVF_AI_Registration' ) ) {
 			return new \WP_Error(
 				'evf_ai_unavailable',

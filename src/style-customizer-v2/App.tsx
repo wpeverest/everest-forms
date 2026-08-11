@@ -16,6 +16,11 @@ import { Section } from './types';
 const __ = ( window as any ).wp?.i18n?.__ || ( ( s: string ) => s );
 const apiFetch = ( window as any ).wp?.apiFetch;
 
+// Temporarily disabled for this release — the AI form-building chat's own styling side effect
+// is disabled the same way, server-side, via EVF_AI_API::client_supports_style(). Re-enable by
+// flipping this back to true.
+const STYLE_AI_ENABLED = false;
+
 /** Single-list navigation: 'list' is the home screen (PRE-DEFINED + Elements + Advanced);
  *  the rest are drill-downs reached from it, each with its own "← Back" header. */
 type View = 'list' | 'element' | 'templates' | 'colors' | 'css';
@@ -421,7 +426,7 @@ export function App() {
 				) }
 
 			{ /* Portaled to <body> so position:fixed isn't trapped by a transformed ancestor. */ }
-			{ createPortal( <AiAssistant />, document.body ) }
+			{ STYLE_AI_ENABLED && createPortal( <AiAssistant />, document.body ) }
 		</div>
 	);
 }
