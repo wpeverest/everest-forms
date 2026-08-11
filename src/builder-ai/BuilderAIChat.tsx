@@ -301,10 +301,15 @@ const BuilderAIChat: React.FC = () => {
 			}
 		};
 		read();
-		// Re-read when builder classes change (multi-part toggle adds/removes class).
+		// Re-read when builder classes change (multi-part toggle adds/removes class); polling
+		// alongside as a safety net for the same class of DOM-rewrite edge case noted below.
 		const observer = new MutationObserver(read);
 		if (builder) observer.observe(builder, { attributes: true, attributeFilter: ['class'] });
-		return () => observer.disconnect();
+		const interval = window.setInterval(read, 500);
+		return () => {
+			observer.disconnect();
+			window.clearInterval(interval);
+		};
 	}, []);
 
 	// Track the active builder tab. Switching tabs toggles the `active` class on the Fields
@@ -313,7 +318,10 @@ const BuilderAIChat: React.FC = () => {
 	// enabled from Settings) can replace that DOM node entirely, which would otherwise leave a
 	// MutationObserver watching a detached element and freeze `onBuilderTab` forever (EVF-2736:
 	// the assistant never comes back after Settings → enable Multi-Part → Fields). Observing the
-	// stable builder root with `subtree: true` catches that swap either direction.
+	// stable builder root with `subtree: true` catches that swap either direction — but a
+	// half-second poll runs alongside it as a safety net, since some jQuery-driven DOM rewrites
+	// (full innerHTML replacement outside a single attribute mutation, timing around the rebuild)
+	// have still been reported to slip past the observer in the wild; polling can't miss.
 	useEffect(() => {
 		const root = document.getElementById('everest-forms-builder') || document.body;
 		const read = () => {
@@ -323,7 +331,11 @@ const BuilderAIChat: React.FC = () => {
 		read();
 		const observer = new MutationObserver(read);
 		observer.observe(root, { attributes: true, attributeFilter: ['class'], subtree: true, childList: true });
-		return () => observer.disconnect();
+		const interval = window.setInterval(read, 500);
+		return () => {
+			observer.disconnect();
+			window.clearInterval(interval);
+		};
 	}, []);
 
 	// Close the chat panel when navigating away from the Builder tab.
