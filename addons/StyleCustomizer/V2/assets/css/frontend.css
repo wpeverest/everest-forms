@@ -185,6 +185,7 @@
 	padding: var( --evf-input-pad );
 	font-weight: var( --evf-input-weight );
 	font-style: var( --evf-input-fs );
+	text-decoration: var( --evf-input-td, none );
 	text-transform: var( --evf-input-tt );
 	letter-spacing: var( --evf-input-ls );
 }
@@ -477,6 +478,7 @@
 	padding: var( --evf-btn-pad );
 	font-weight: var( --evf-btn-weight );
 	font-style: var( --evf-btn-fs );
+	text-decoration: var( --evf-btn-td, none );
 	text-transform: var( --evf-btn-tt );
 	letter-spacing: var( --evf-btn-ls );
 }

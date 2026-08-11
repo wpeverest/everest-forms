@@ -346,12 +346,16 @@ ok( false !== strpos( $frontend_css, 'label.evf-field-label .evf-label {' ), 'la
 preg_match( '/label\.evf-field-label\s*\{([^}]*)\}/', $frontend_css, $outer_label_rule );
 ok( isset( $outer_label_rule[1] ) && false === strpos( $outer_label_rule[1], 'text-decoration' ), 'text-decoration is NOT on the outer <label> rule (EVF-2671)' );
 
-// EVF-2733: the Messages fstyle rules had font-weight/style/text-transform but never applied
-// their own text-decoration var, so an underline set on a success/error/validation message
-// compiled fine (Compiler emits --evf-msg-*-td) but never actually rendered — in the live
-// preview OR on the frontend, since both read this same static file.
-foreach ( array( 'success', 'error', 'validation' ) as $msg_type ) {
-	ok( false !== strpos( $frontend_css, "--evf-msg-{$msg_type}-td" ), "messages: {$msg_type} rule applies its text-decoration var (EVF-2733)" );
+// EVF-2733/EVF-2721: several fstyle rules had font-weight/style/text-transform but never
+// applied their own text-decoration var, so an underline set on that element compiled fine
+// (Compiler always emits all four --evf-{base}-* vars for a fontstyle token) but never actually
+// rendered — in the live preview OR on the frontend, since both read this same static file.
+// General guard, not a fixed per-base list: every "--evf-{base}-weight" var this file applies
+// must have a matching "--evf-{base}-td" applied somewhere too.
+preg_match_all( '/--evf-([a-z-]+)-weight\b/', $frontend_css, $weight_bases );
+ok( ! empty( $weight_bases[1] ), 'sanity: found at least one font-weight var to check' );
+foreach ( array_unique( $weight_bases[1] ) as $base ) {
+	ok( false !== strpos( $frontend_css, "--evf-{$base}-td" ), "{$base}: rule applies its text-decoration var (EVF-2733/EVF-2721)" );
 }
 
 // Defense-in-depth: even an UNSANITIZED breakout value can't escape the declaration.
