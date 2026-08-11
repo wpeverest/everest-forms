@@ -638,10 +638,18 @@ class StyleStore {
 		return this.userTemplates.concat( this.templates );
 	}
 
-	/** Whether the current token state is exactly what applying `templateTokens` would produce. */
+	/** Whether the current token state is exactly what applying `templateTokens` would produce.
+	 *  While "Apply Theme Style" is on, {@see applyTemplate} deliberately leaves fonts.theme/
+	 *  fonts.family exactly as they were rather than overlaying the template's own values for
+	 *  those two keys — skip them here too, or a template applied fresh would never register as
+	 *  an exact match (always reading "Modified" instead of "Base") purely because of that. */
 	private tokensMatchTemplate( templateTokens: Record< string, DeviceBag > ): boolean {
 		const tpl = templateTokens || {};
+		const skip = this.applyThemeStyle ? [ 'fonts.theme', 'fonts.family' ] : [];
 		return this.schema.every( ( t ) => {
+			if ( skip.indexOf( t.key ) !== -1 ) {
+				return true;
+			}
 			const expected = tpl[ t.key ] !== undefined ? tpl[ t.key ] : { desktop: t.default };
 			return deepEqual( this.tokens[ t.key ], expected );
 		} );
