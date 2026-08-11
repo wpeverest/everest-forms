@@ -270,6 +270,12 @@ const BuilderAIChat: React.FC = () => {
 	// in multi-part mode (where the customizer moves up to 62px). Falls back to
 	// null when the addon is not active — AI button then sits at bottom: 22px.
 	const [customizerBottom, setCustomizerBottom] = useState<number | null>(null);
+	// Multi-Part's own "Add New Part" tab bar pins itself to the same bottom-right corner this
+	// button defaults to when the Style Customizer addon isn't installed/active (so there's no
+	// `.everest-forms-designer-icon` to measure from) — without this, the two overlap (EVF-2736).
+	// Measured the same way as customizerBottom (from the real element's edge, not a guessed
+	// constant) since the bar's own height varies with its content/viewport.
+	const [multiPartBarBottom, setMultiPartBarBottom] = useState<number | null>(null);
 	// Show the assistant only on the Builder (Fields) tab — mirror the Style
 	// Customizer button, which lives inside the Fields panel and is hidden when
 	// other tabs (Settings, Integrations, …) are active.
@@ -278,6 +284,7 @@ const BuilderAIChat: React.FC = () => {
 	const inputRef       = useRef<HTMLTextAreaElement>(null);
 
 	useEffect(() => {
+		const builder = document.getElementById('everest-forms-builder');
 		const read = () => {
 			const el = document.querySelector<HTMLElement>('.everest-forms-designer-icon');
 			if (el) {
@@ -286,11 +293,16 @@ const BuilderAIChat: React.FC = () => {
 			} else {
 				setCustomizerBottom(null);
 			}
+			const bar = document.querySelector<HTMLElement>('.everest-forms-multi-part-tabs');
+			if (bar && builder?.classList.contains('multi-part-activated')) {
+				setMultiPartBarBottom(Math.round(window.innerHeight - bar.getBoundingClientRect().top));
+			} else {
+				setMultiPartBarBottom(null);
+			}
 		};
 		read();
 		// Re-read when builder classes change (multi-part toggle adds/removes class).
 		const observer = new MutationObserver(read);
-		const builder = document.getElementById('everest-forms-builder');
 		if (builder) observer.observe(builder, { attributes: true, attributeFilter: ['class'] });
 		return () => observer.disconnect();
 	}, []);
@@ -446,11 +458,13 @@ const BuilderAIChat: React.FC = () => {
 	};
 
 	// Bottom offset of the trigger button.
-	// When the customizer is active we sit 8px above its top edge;
-	// otherwise we share the same bottom baseline (22px).
+	// When the customizer is active we sit 8px above its top edge; otherwise, if Multi-Part's
+	// "Add New Part" bar occupies the usual 22px corner instead, we sit 8px above ITS top edge;
+	// otherwise we share the same plain bottom baseline (22px).
 	const BTN_SIZE     = 55;
 	const BTN_RIGHT    = 22;
-	const BTN_BOTTOM   = customizerBottom !== null ? customizerBottom + BTN_SIZE + 8 : 22;
+	const BASE_BOTTOM  = multiPartBarBottom !== null ? multiPartBarBottom + 8 : 22;
+	const BTN_BOTTOM   = customizerBottom !== null ? customizerBottom + BTN_SIZE + 8 : BASE_BOTTOM;
 	// Modal sits 8px above the top edge of the trigger button.
 	const MODAL_BOTTOM = BTN_BOTTOM + BTN_SIZE + 8;
 
