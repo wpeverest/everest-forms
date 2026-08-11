@@ -595,7 +595,6 @@
 	}
 }
 
-/* The panel's one real heading size, matching the builder's own section title (.evf-content-section-title). */
 #everest-forms-panel-style .hintline {
 	display: flex;
 	align-items: flex-start;
@@ -603,7 +602,7 @@
 	font-size: var(--ui-fs-xs);
 	color: var(--ui-ink-3);
 	line-height: 1.5;
-	margin: 0 2px 10px;
+	margin: 12px 2px 10px;
 
 	svg {
 		width: 14px;
@@ -617,14 +616,6 @@
 		color: var(--ui-purple);
 		font-weight: 600;
 	}
-}
-
-/* Extra breathing room above the Elements list intro tip, between it and the "Elements" heading —
-   padding-top, not margin-top: the preceding .block-title's own bottom margin would otherwise
-   collapse with a top margin here and silently cap the gap at whichever value is larger. */
-#everest-forms-panel-style .hintline--tip {
-	margin: 0 2px 10px;
-	padding-top: 12px;
 }
 
 /* Secondary form-wide setting, pinned to the bottom of the Design list. */

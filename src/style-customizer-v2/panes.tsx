@@ -528,7 +528,7 @@ export function DesignList( {
 			</div>
 
 			<div className="block-title">{ __( 'Elements', 'everest-forms' ) }</div>
-			<p className="hintline hintline--tip">
+			<p className="hintline">
 				<Icon inner='<path d="M3 3l7 17 2-7 7-2z"/>' />
 				<span>
 					{ __( 'Tip: pick an element to style it, or', 'everest-forms' ) }{ ' ' }
