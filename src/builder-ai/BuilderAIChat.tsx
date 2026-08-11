@@ -307,15 +307,22 @@ const BuilderAIChat: React.FC = () => {
 		return () => observer.disconnect();
 	}, []);
 
-	// Track the active builder tab. Switching tabs toggles the `active` class on
-	// the Fields panel; we only render the assistant while that panel is active.
+	// Track the active builder tab. Switching tabs toggles the `active` class on the Fields
+	// panel; we only render the assistant while that panel is active. Re-query the panel INSIDE
+	// read() rather than capturing it once — Multi-Part's own tab-rebuild JS (triggered when it's
+	// enabled from Settings) can replace that DOM node entirely, which would otherwise leave a
+	// MutationObserver watching a detached element and freeze `onBuilderTab` forever (EVF-2736:
+	// the assistant never comes back after Settings → enable Multi-Part → Fields). Observing the
+	// stable builder root with `subtree: true` catches that swap either direction.
 	useEffect(() => {
-		const panel = document.getElementById('everest-forms-panel-fields');
-		const read = () => setOnBuilderTab(panel ? panel.classList.contains('active') : true);
+		const root = document.getElementById('everest-forms-builder') || document.body;
+		const read = () => {
+			const panel = document.getElementById('everest-forms-panel-fields');
+			setOnBuilderTab(panel ? panel.classList.contains('active') : true);
+		};
 		read();
-		if (!panel) return;
 		const observer = new MutationObserver(read);
-		observer.observe(panel, { attributes: true, attributeFilter: ['class'] });
+		observer.observe(root, { attributes: true, attributeFilter: ['class'], subtree: true, childList: true });
 		return () => observer.disconnect();
 	}, []);
 
