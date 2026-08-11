@@ -528,7 +528,7 @@ export function DesignList( {
 			</div>
 
 			<div className="block-title">{ __( 'Elements', 'everest-forms' ) }</div>
-			<p className="hintline">
+			<p className="hintline hintline--tip">
 				<Icon inner='<path d="M3 3l7 17 2-7 7-2z"/>' />
 				<span>
 					{ __( 'Tip: pick an element to style it, or', 'everest-forms' ) }{ ' ' }
@@ -701,7 +701,6 @@ export function ElementSlate( {
 	if ( sectionLocked ) {
 		return (
 			<div id="elBody" className="slate-anim" ref={ bodyRef }>
-				<h2 className="slate-title">{ section.title }</h2>
 				<ProSectionTeaser section={ section } />
 			</div>
 		);
@@ -709,16 +708,6 @@ export function ElementSlate( {
 
 	return (
 		<div id="elBody" className="slate-anim" ref={ bodyRef }>
-			<div className="slate-title-row">
-				<h2 className="slate-title">{ section.title }</h2>
-				<button type="button" className="uxbtn" title={ __( 'Reset this section', 'everest-forms' ) } aria-label={ __( 'Reset this section', 'everest-forms' ) + ' — ' + section.title } onClick={ () => store.resetSection( section.key ) }>
-					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={ 2 } aria-hidden="true">
-						<path d="M3 12a9 9 0 1 0 3-6.7" />
-						<path d="M3 4v5h5" />
-					</svg>
-				</button>
-			</div>
-
 			{ hasLocked && (
 				<div className="pro-lock">
 					<span className="pro-lock-ic" aria-hidden="true">
@@ -949,8 +938,8 @@ function TemplateCard( {
 				</span>
 				<span className="cap">
 					<span className="cap-name">{ tpl.name }</span>
-					{ tpl.custom && <span className="tpl-mod tpl-mod--custom">{ __( 'Custom', 'everest-forms' ) }</span> }
-					{ ( applied || modified ) && <span className="tpl-mod tpl-mod--base">{ __( 'Base', 'everest-forms' ) }</span> }
+					{ tpl.custom && <span className="predef-badge predef-badge--custom">{ __( 'Custom', 'everest-forms' ) }</span> }
+					{ ( applied || modified ) && <span className="predef-badge predef-badge--base">{ __( 'Base', 'everest-forms' ) }</span> }
 				</span>
 				{ basedOn && (
 					<span className="tpl-parent">
@@ -1146,8 +1135,8 @@ export function TemplatesPane( {
 							</span>
 							<span className="cap">
 								<span className="cap-name">{ yourTemplateName }</span>
-								{ yourTemplateModified && <span className="tpl-mod">{ __( 'Modified', 'everest-forms' ) }</span> }
-								{ yourTemplateIsBase && <span className="tpl-mod tpl-mod--base">{ __( 'Base', 'everest-forms' ) }</span> }
+								{ yourTemplateModified && <span className="predef-badge">{ __( 'Modified', 'everest-forms' ) }</span> }
+								{ yourTemplateIsBase && <span className="predef-badge predef-badge--base">{ __( 'Base', 'everest-forms' ) }</span> }
 							</span>
 						</span>
 					</div>
