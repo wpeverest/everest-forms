@@ -115,14 +115,14 @@ final class Migrator {
 	 * (never persisting it) so every reader (the panel, the frontend enqueue) sees the same
 	 * thing without one of them waiting on a save the user may never make.
 	 *
-	 * {@see RestController::build_payload()} used to do this inline for the panel only;
-	 * {@see FrontendEnqueue::enqueue()} instead bailed out to the legacy (v1) renderer for any
-	 * form that hadn't been saved under v2 yet — meaning a fresh upgrade's custom CSS/button
-	 * alignment fixes (EVF-2732) were only ever visible in the panel, never on the actual
-	 * frontend, until the user happened to open Style and click Save (EVF-2732 comment 46480).
+	 * Note: Custom CSS is NOT part of this record — it's WP core's own site-wide Additional CSS
+	 * (`wp_get_custom_css()`/`wp_update_custom_css_post()`), matching v1's actual behavior
+	 * exactly (verified directly against v1, EVF-2732/EVF-2737 follow-up): one shared value
+	 * every form uses, not a per-form field to migrate. {@see RestController::build_payload()}
+	 * and {@see RestController::save_item()} read/write it directly.
 	 *
 	 * @param array $stored Raw `everest_forms_styles[form_id]` value.
-	 * @return array v2-shaped record ( schema_version + tokens, + custom_css/template/palette ).
+	 * @return array v2-shaped record ( schema_version + tokens, + template/palette ).
 	 */
 	public static function effective_record( $stored ) {
 		$stored = is_array( $stored ) ? $stored : array();
@@ -138,24 +138,7 @@ final class Migrator {
 			);
 		}
 
-		$record = self::migrate_record( $stored );
-
-		// v1 never had a per-form Custom CSS field of its own — the only "Custom CSS" a user
-		// could edit while styling THIS form lived in WP core's site-wide Additional CSS
-		// section, surfaced by the legacy per-form Customizer screen (see
-		// class-evf-style-customizer-api.php, EVF-2737). Seed it here so a form whose rendering
-		// already depended on that shared CSS doesn't visually change — or look like its CSS was
-		// erased (EVF-2732) — the moment it's first migrated; from here on each form owns an
-		// independent, editable copy, and that legacy screen no longer exposes the global
-		// section for anyone to leak further.
-		if ( empty( $record['custom_css'] ) && function_exists( 'wp_get_custom_css' ) ) {
-			$global_css = wp_get_custom_css();
-			if ( '' !== trim( (string) $global_css ) ) {
-				$record['custom_css'] = $global_css;
-			}
-		}
-
-		return $record;
+		return self::migrate_record( $stored );
 	}
 
 	/* --------------------------------------------------------------------- *

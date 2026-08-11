@@ -660,14 +660,19 @@ final class RestController {
 		$all     = get_option( 'everest_forms_styles', array() );
 		$stored  = isset( $all[ $form_id ] ) && is_array( $all[ $form_id ] ) ? $all[ $form_id ] : array();
 
-		// {@see Migrator::effective_record()} migrates a still-legacy record on the fly (and
-		// seeds custom_css from the legacy global Additional CSS box, EVF-2732/EVF-2737) without
+		// {@see Migrator::effective_record()} migrates a still-legacy record on the fly, without
 		// requiring a save first — shared with FrontendEnqueue so the panel and the actual
 		// frontend output always agree on what a form's style record currently is.
 		$record = Migrator::effective_record( $stored );
 		if ( ! Engine::is_v2_record( $stored ) && ! empty( $stored ) ) {
 			$record['palette'] = self::detect_palette( $stored );
 		}
+
+		// Custom CSS is global — WP core's own site-wide Additional CSS, matching v1's actual
+		// behavior exactly (verified directly against v1, EVF-2732/EVF-2737 follow-up): every
+		// form reads/writes the SAME value, not a per-form field. Set last so it always wins
+		// over anything a stale per-form record might still carry from before this change.
+		$record['custom_css'] = function_exists( 'wp_get_custom_css' ) ? wp_get_custom_css() : '';
 
 		/**
 		 * Filter the record right before it's sent to the panel — regardless of which of the 3
@@ -844,10 +849,24 @@ final class RestController {
 		$old_record = isset( $all[ $form_id ] ) && is_array( $all[ $form_id ] ) ? $all[ $form_id ] : array();
 		$clean      = Sanitizer::preserve_stale_pro_tokens( $clean, $old_record );
 
+		// Custom CSS is global — WP core's own site-wide Additional CSS, matching v1's actual
+		// behavior exactly (verified directly against v1, EVF-2732/EVF-2737 follow-up). Route it
+		// there instead of into this form's own record, so saving it from ANY form's panel
+		// updates every form at once, and never persist it per-form — one source of truth.
+		if ( array_key_exists( 'custom_css', $clean ) ) {
+			if ( function_exists( 'wp_update_custom_css_post' ) ) {
+				wp_update_custom_css_post( $clean['custom_css'] );
+			}
+			unset( $clean['custom_css'] );
+		}
+
 		// Re-read right before writing to avoid clobbering a concurrent save to a different form.
 		$all             = get_option( 'everest_forms_styles', array() );
 		$all[ $form_id ] = $clean;
 		update_option( 'everest_forms_styles', $all, false ); // autoload=no.
+
+		// Reflect the (now global) value back in the response so the client's store stays in sync.
+		$clean['custom_css'] = function_exists( 'wp_get_custom_css' ) ? wp_get_custom_css() : '';
 
 		$apply_theme = $request->get_param( 'apply_theme_style' );
 		if ( null !== $apply_theme ) {

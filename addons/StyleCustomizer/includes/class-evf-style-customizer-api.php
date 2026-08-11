@@ -113,11 +113,11 @@ class EVF_Style_Customizer_API {
 	 * @param WP_Customize_Section $section WP_Customize_Section instance.
 	 */
 	public function section_filter( $active, $section ) {
-		// 'custom_css' is deliberately excluded: it's WP core's own site-wide Additional CSS
-		// section, not a per-form control. Leaving it active here let a user editing THIS form's
-		// style unknowingly write to a global option that then rendered on every other form too
-		// (EVF-2737). Style Customizer V2 has its own per-form Custom CSS pane instead.
-		if ( in_array( $section->id, array( 'everest_forms_templates' ), true ) || in_array( $section->id, array_keys( apply_filters( 'everest_forms_style_customizer_sections', array() ) ), true ) ) {
+		// 'custom_css' is WP core's own site-wide Additional CSS section — kept active
+		// deliberately: this IS a global, not per-form, value (verified directly against v1's
+		// actual behavior), and Style Customizer V2's own Custom CSS pane reads/writes this same
+		// global option too, so both editors stay in sync.
+		if ( in_array( $section->id, array( 'everest_forms_templates', 'custom_css' ), true ) || in_array( $section->id, array_keys( apply_filters( 'everest_forms_style_customizer_sections', array() ) ), true ) ) {
 			return $active;
 		}
 
@@ -131,7 +131,7 @@ class EVF_Style_Customizer_API {
 	 * @param WP_Customize_Panel $panel WP_Customize_Section instance.
 	 */
 	public function panel_filter( $active, $panel ) {
-		if ( in_array( $panel->id, array( 'everest_forms_templates' ), true ) || in_array( $panel->id, array_keys( apply_filters( 'everest_forms_style_customizer_panels', array() ) ), true ) ) {
+		if ( in_array( $panel->id, array( 'everest_forms_templates', 'custom_css' ), true ) || in_array( $panel->id, array_keys( apply_filters( 'everest_forms_style_customizer_panels', array() ) ), true ) ) {
 			return $active;
 		}
 

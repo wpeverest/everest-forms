@@ -1155,8 +1155,8 @@ export function CustomCssPane() {
 			<div className="block-title">{ __( 'Custom CSS', 'everest-forms' ) }</div>
 			<p className="pane-note">
 				<span>
-					{ __( 'Applied live as you type —', 'everest-forms' ) } <b>{ __( 'scoped to this form', 'everest-forms' ) }</b>{ ' ' }
-					{ __( 'on save, so nothing leaks elsewhere. Click a selector to insert it:', 'everest-forms' ) }
+					{ __( 'Applied live as you type —', 'everest-forms' ) } <b>{ __( 'applies to every form on this site', 'everest-forms' ) }</b>{ ' ' }
+					{ __( 'on save (same as the Customizer’s Additional CSS). Click a selector to insert it:', 'everest-forms' ) }
 				</span>
 			</p>
 			<div className="chips">

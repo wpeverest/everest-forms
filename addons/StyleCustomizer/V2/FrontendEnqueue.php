@@ -78,10 +78,11 @@ final class FrontendEnqueue {
 		// 2) Per-form variable block.
 		$css .= Compiler::compile( $record, $form_id );
 
-		// 3) User custom CSS, scoped to the wrapper, emitted last so it can override token output.
-		if ( ! empty( $record['custom_css'] ) ) {
-			$css .= Compiler::scope_custom_css( $record['custom_css'], $form_id );
-		}
+		// Custom CSS is NOT emitted here — it's WP core's own site-wide Additional CSS
+		// (matches v1's actual behavior exactly, verified directly against v1), which WP core
+		// already prints globally on every page via its own wp_custom_css_cb() hook. Scoping it
+		// to this one form here would be wrong twice over: it'd only reach v2 forms, and it'd
+		// stop applying to every OTHER form the way it's supposed to.
 
 		if ( '' !== $css ) {
 			wp_add_inline_style( self::HANDLE, $css );
