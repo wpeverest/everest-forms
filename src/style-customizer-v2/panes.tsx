@@ -658,9 +658,6 @@ export function ElementSlate( {
 		? visible.filter( ( t ) => ( t.state ? t.state === act : act === first ) )
 		: visible;
 
-	// The palette-slot colours render as hidden tokens with no direct picker — point the user to them.
-	const hasHiddenPaletteColor = store.schema.some( ( t ) => t.section === section.key && t.hidden );
-
 	// Dependency dimming: a border-style set to "none" disables its width/colour deps.
 	const dimmedByDep = new Set< string >();
 	const depHints: Record< string, string > = {};
@@ -691,6 +688,12 @@ export function ElementSlate( {
 		groupTokens( tokens ).map( ( g, i ) => (
 			<div className="grp" key={ i }>
 				{ g.heading && <div className="grp-h">{ g.heading }</div> }
+				{ section.key === 'form' && g.heading === 'Background' && (
+					<p className="hintline">
+						<Icon inner='<circle cx="12" cy="12" r="9"/><path d="M12 16v-5M12 8h.01"/>' />
+						{ __( 'Background color comes from your color palette.', 'everest-forms' ) }
+					</p>
+				) }
 				{ g.tokens.map( renderControl ) }
 			</div>
 		) );
@@ -717,12 +720,6 @@ export function ElementSlate( {
 				</button>
 			</div>
 			{ section.hint && <p className="sec-hint">{ section.hint }</p> }
-			{ hasHiddenPaletteColor && (
-				<p className="hintline">
-					<Icon inner='<circle cx="12" cy="12" r="9"/><path d="M12 16v-5M12 8h.01"/>' />
-					{ __( 'Background & text colors here come from your color palette.', 'everest-forms' ) }
-				</p>
-			) }
 
 			{ hasLocked && (
 				<div className="pro-lock">
@@ -1139,11 +1136,6 @@ export function TemplatesPane( {
 
 	return (
 		<div className="slate-anim">
-			<p className="pane-note">
-				<InfoNoteIcon />
-				<span>{ __( 'For advanced customization, go to Elements or click the live preview.', 'everest-forms' ) }</span>
-			</p>
-
 			<div className="current-block">
 				<div className="block-title">{ __( 'Your Template', 'everest-forms' ) }</div>
 				<div className="tpls">
@@ -1164,12 +1156,11 @@ export function TemplatesPane( {
 				</div>
 			</div>
 
+			<div className="block-title">{ __( 'Presets', 'everest-forms' ) }</div>
 			<p className="pane-note">
 				<b>{ __( 'Hover a card to preview it live', 'everest-forms' ) }</b>{ ' ' }
 				— { __( 'click to apply (you can always undo).', 'everest-forms' ) }
 			</p>
-
-			<div className="block-title">{ __( 'Presets', 'everest-forms' ) }</div>
 			{ /* Legacy set stays in store.templates (see Templates::load_legacy()) for badge matching above; just not offered here. */ }
 			{ renderGrid(
 				[ ...store.userTemplates, ...store.templates.filter( ( tpl ) => ! tpl.legacy ) ].sort( ( a, b ) => {

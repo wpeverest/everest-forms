@@ -1532,7 +1532,7 @@ function FontSelectControl( props: ControlProps & { depHint?: string } ) {
 					</div>
 				) }
 			</div>
-			{ hint && <div className="dep-hint">{ hint }</div> }
+			{ hint && <div className={ 'dep-hint' + ( themeFont ? ' dep-hint--font' : '' ) }>{ hint }</div> }
 		</ControlShell>
 	);
 }

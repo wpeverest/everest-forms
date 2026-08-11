@@ -380,7 +380,7 @@
 
 #everest-forms-panel-style .panel-scroll {
 	overflow-y: auto;
-	padding: 16px;
+	padding: 8px 16px 16px;
 	flex: 1;
 	min-height: 0;
 	background: #fff;
@@ -547,7 +547,7 @@
 
 #everest-forms-panel-style .predef-kicker {
 	font-size: 10.5px;
-	font-weight: 700;
+	font-weight: 500;
 	letter-spacing: .04em;
 	text-transform: uppercase;
 	color: var(--ui-ink-3);
@@ -567,14 +567,15 @@
 
 #everest-forms-panel-style .predef-badge {
 	flex: none;
-	font-size: 10px;
+	font-size: 8px;
 	font-weight: 700;
 	text-transform: uppercase;
 	letter-spacing: .02em;
 	color: #92620a;
 	background: #fef3c7;
 	border-radius: 999px;
-	padding: 2px 7px;
+	padding: 3px 6px;
+	border: 1px solid #f7d491;
 }
 
 /* Neutral counterpart to the amber "Modified" pill: the current style exactly matches this
@@ -1897,6 +1898,10 @@
 	line-height: 1.45;
 }
 
+#everest-forms-panel-style .dep-hint--font {
+	margin-top: 10px;
+}
+
 /* Inputs and their T/R/B/L labels share one flex column so the link/unit buttons align with the top. */
 #everest-forms-panel-style .box4 {
 	display: flex;
@@ -2060,7 +2065,7 @@
 	}
 
 	&[aria-checked="true"] {
-		background: var(--ui-purple);
+		background: var(--ui-green);
 	}
 
 	&[aria-checked="true"]::after {
@@ -2290,7 +2295,6 @@
 
 	.cap {
 		margin-top: 10px;
-		padding: 0 10px 10px;
 		font-size: 12px;
 		font-weight: 500;
 		color: var(--ui-ink);
