@@ -619,9 +619,12 @@
 	}
 }
 
-/* Extra breathing room above the Elements list intro tip, between it and the "Elements" heading. */
+/* Extra breathing room above the Elements list intro tip, between it and the "Elements" heading —
+   padding-top, not margin-top: the preceding .block-title's own bottom margin would otherwise
+   collapse with a top margin here and silently cap the gap at whichever value is larger. */
 #everest-forms-panel-style .hintline--tip {
-	margin: 12px 2px 10px;
+	margin: 0 2px 10px;
+	padding-top: 12px;
 }
 
 /* Secondary form-wide setting, pinned to the bottom of the Design list. */
