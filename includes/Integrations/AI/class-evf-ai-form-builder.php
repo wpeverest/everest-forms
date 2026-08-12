@@ -109,6 +109,14 @@ class EVF_AI_Form_Builder {
 		self::$style_pro_locked_notice  = '';
 		self::$style_capability_notice  = '';
 
+		// Temporarily disabled for this release, unconditionally and locally — not just via the
+		// client_supports_style() flag sent upstream (see EVF_AI_API::client_supports_style()),
+		// which only asks the gateway not to send style data and can't guarantee it won't anyway.
+		// Matches RestController::ai_style()'s own hard block. Re-enable by deleting this block.
+		if ( true ) {
+			return;
+		}
+
 		if ( empty( $ai_response['style'] ) || ! is_array( $ai_response['style'] ) ) {
 			return;
 		}
