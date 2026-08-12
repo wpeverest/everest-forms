@@ -195,6 +195,10 @@ if ( false !== $entry_index ) {
 													$answer_class = 'wrong_answer';
 												}
 											}
+											// Coupon data (and other addon field values) can remain an array when the owning addon is deactivated; encode arrays so the string helpers below never receive one. Scalars are left untouched.
+											if ( is_array( $value ) ) {
+												$value = wp_json_encode( $value );
+											}
 											echo '<span class="list evf-answer-badge ' . esc_attr( $answer_class ) . '">' . esc_html( wp_strip_all_tags( $value ) ) . '</span>';
 										}
 									} else {
@@ -207,8 +211,15 @@ if ( false !== $entry_index ) {
 									} else {
 										$answer_class = 'wrong_answer';
 									}
+									if ( is_array( $field_value ) ) {
+										$field_value = wp_json_encode( $field_value );
+									}
 									echo '<span class="list evf-answer-badge ' . esc_attr( $answer_class ) . '">' . esc_html( wp_strip_all_tags( $field_value ) ) . '</span>';
 								} else {
+									// Coupon and other addon fields can leave an array value when their addon is deactivated; normalize it so the output helpers below never receive an array.
+									if ( is_array( $field_value ) ) {
+										$field_value = wp_json_encode( $field_value );
+									}
 									$allow_html_types = apply_filters(
 										'everest_forms_entry_view_field_types_allowing_html',
 										array( 'wysiwyg', 'repeater-fields' ),
