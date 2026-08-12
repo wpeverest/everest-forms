@@ -26,7 +26,7 @@
 	margin: var( --evf-wrap-margin );
 	padding: var( --evf-wrap-pad );
 	font-family: var( --evf-font );
-	background-color: var( --evf-wrap-bg );
+	background: var( --evf-wrap-bg );
 	border-style: var( --evf-wrap-border-style, solid );
 	border-width: var( --evf-wrap-bw );
 	border-color: var( --evf-wrap-border-c );
@@ -118,6 +118,44 @@
 	letter-spacing: var( --evf-title-ls );
 }
 
+/* Gradient text (label/sublabel/description/title) — `background-clip: text` paints the
+   element's own `background` (solid or gradient, either works identically) through its glyphs
+   instead of through the box. Gated on @supports so a browser without it silently keeps the
+   plain `color:` declaration above instead of going invisible. Known trade-off: if a
+   text-decoration (underline etc.) is ALSO set on one of these tokens, its line uses `color`
+   too, so it visually disappears once `color` is forced transparent here — narrow enough
+   (underline + gradient text at once) that it isn't worth a dedicated decoration-colour token. */
+@supports (background-clip: text) or (-webkit-background-clip: text) {
+	.everest-forms .evf-style-v2 label.evf-field-label {
+		background: var( --evf-label-color );
+		-webkit-background-clip: text;
+		background-clip: text;
+		-webkit-text-fill-color: transparent;
+		color: transparent;
+	}
+	.everest-forms .evf-style-v2 label.everest-forms-field-sublabel {
+		background: var( --evf-sub-color );
+		-webkit-background-clip: text;
+		background-clip: text;
+		-webkit-text-fill-color: transparent;
+		color: transparent;
+	}
+	.everest-forms .evf-style-v2 .evf-field-description {
+		background: var( --evf-desc-color );
+		-webkit-background-clip: text;
+		background-clip: text;
+		-webkit-text-fill-color: transparent;
+		color: transparent;
+	}
+	.everest-forms .evf-style-v2 .evf-field-title h3 {
+		background: var( --evf-title-color );
+		-webkit-background-clip: text;
+		background-clip: text;
+		-webkit-text-fill-color: transparent;
+		color: transparent;
+	}
+}
+
 /* ===== INPUTS — text boxes, dropdowns, textareas ===== */
 .everest-forms .evf-style-v2 input[type='text'],
 .everest-forms .evf-style-v2 input[type='email'],
@@ -138,7 +176,7 @@
 	color: var( --evf-input-color );
 	font-size: var( --evf-input-size );
 	text-align: var( --evf-input-align );
-	background-color: var( --evf-input-bg );
+	background: var( --evf-input-bg );
 	border-style: var( --evf-input-border-style, solid );
 	border-width: var( --evf-input-bw );
 	border-color: var( --evf-input-border-c );
@@ -147,6 +185,7 @@
 	padding: var( --evf-input-pad );
 	font-weight: var( --evf-input-weight );
 	font-style: var( --evf-input-fs );
+	text-decoration: var( --evf-input-td, none );
 	text-transform: var( --evf-input-tt );
 	letter-spacing: var( --evf-input-ls );
 }
@@ -173,7 +212,7 @@
 
 /* ===== INPUTS — upload area ===== */
 .everest-forms .evf-style-v2 .everest-forms-uploader {
-	background-color: var( --evf-file-bg );
+	background: var( --evf-file-bg );
 	border-style: var( --evf-file-border-style, dashed );
 	border-width: var( --evf-file-bw );
 	border-color: var( --evf-file-border );
@@ -194,9 +233,20 @@
 .everest-forms .evf-style-v2 .everest-forms-uploader .dz-details span {
 	color: var( --evf-file-color );
 }
+@supports (background-clip: text) or (-webkit-background-clip: text) {
+	.everest-forms .evf-style-v2 .everest-forms-uploader .everest-forms-upload-title,
+	.everest-forms .evf-style-v2 .everest-forms-uploader .everest-forms-upload-hint,
+	.everest-forms .evf-style-v2 .everest-forms-uploader .dz-details span {
+		background: var( --evf-file-color );
+		-webkit-background-clip: text;
+		background-clip: text;
+		-webkit-text-fill-color: transparent;
+		color: transparent;
+	}
+}
 
 .everest-forms .evf-style-v2 .everest-forms-uploader .dz-message > svg {
-	background-color: var( --evf-file-iconbg );
+	background: var( --evf-file-iconbg );
 	fill: var( --evf-file-icon );
 }
 
@@ -374,6 +424,20 @@
 	text-transform: var( --evf-choice-tt );
 	letter-spacing: var( --evf-choice-ls );
 }
+@supports (background-clip: text) or (-webkit-background-clip: text) {
+	.everest-forms .evf-style-v2 .evf-field-radio ul li input + label,
+	.everest-forms .evf-style-v2 .evf-field-checkbox ul li input + label,
+	.everest-forms .evf-style-v2 .evf-field-payment-multiple ul li input + label,
+	.everest-forms .evf-style-v2 .evf-field-payment-checkbox ul li input + label,
+	.everest-forms .evf-style-v2 .evf-field-privacy-policy input + label,
+	.everest-forms .evf-style-v2 .evf-field-payment-subscription-plan ul li input + label {
+		background: var( --evf-choice-color );
+		-webkit-background-clip: text;
+		background-clip: text;
+		-webkit-text-fill-color: transparent;
+		color: transparent;
+	}
+}
 
 /* The Subscription Plan addon's own stylesheet (evf-payment-subscription-plan-frontend.scss)
    hardcodes font-size on these two inner classes, which otherwise silently overrides the
@@ -405,7 +469,7 @@
 	color: var( --evf-btn-color );
 	font-size: var( --evf-btn-size );
 	line-height: var( --evf-btn-lh );
-	background-color: var( --evf-btn-bg );
+	background: var( --evf-btn-bg );
 	border-style: var( --evf-btn-border-style, solid );
 	border-width: var( --evf-btn-bw );
 	border-color: var( --evf-btn-border-c );
@@ -414,6 +478,7 @@
 	padding: var( --evf-btn-pad );
 	font-weight: var( --evf-btn-weight );
 	font-style: var( --evf-btn-fs );
+	text-decoration: var( --evf-btn-td, none );
 	text-transform: var( --evf-btn-tt );
 	letter-spacing: var( --evf-btn-ls );
 }
@@ -428,7 +493,7 @@
 .everest-forms .evf-style-v2 .everest-forms-multi-part-actions button[type='submit']:hover,
 .everest-forms .evf-style-v2 .everest-forms-multi-part-actions .everest-forms-part-button:hover {
 	color: var( --evf-btn-color-hover );
-	background-color: var( --evf-btn-bg-hover );
+	background: var( --evf-btn-bg-hover );
 	border-color: var( --evf-btn-border-c-hover );
 }
 
@@ -470,6 +535,7 @@
 	border-radius: var( --evf-msg-success-radius, 5px );
 	font-weight: var( --evf-msg-success-weight, 400 );
 	font-style: var( --evf-msg-success-fs, normal );
+	text-decoration: var( --evf-msg-success-td, none );
 	text-transform: var( --evf-msg-success-tt, none );
 }
 
@@ -484,6 +550,7 @@
 	border-radius: var( --evf-msg-error-radius, 5px );
 	font-weight: var( --evf-msg-error-weight, 400 );
 	font-style: var( --evf-msg-error-fs, normal );
+	text-decoration: var( --evf-msg-error-td, none );
 	text-transform: var( --evf-msg-error-tt, none );
 }
 
@@ -498,5 +565,6 @@
 	border-radius: var( --evf-msg-validation-radius, 5px );
 	font-weight: var( --evf-msg-validation-weight, 400 );
 	font-style: var( --evf-msg-validation-fs, normal );
+	text-decoration: var( --evf-msg-validation-td, none );
 	text-transform: var( --evf-msg-validation-tt, none );
 }

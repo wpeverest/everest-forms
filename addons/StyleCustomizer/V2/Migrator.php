@@ -109,6 +109,38 @@ final class Migrator {
 		return apply_filters( 'evf_style_v2_migrated_record', $record, $legacy );
 	}
 
+	/**
+	 * The record a form should be treated as having RIGHT NOW, whether or not it's already been
+	 * explicitly opened-and-saved under v2 — migrates a still-legacy stored record on the fly
+	 * (never persisting it) so every reader (the panel, the frontend enqueue) sees the same
+	 * thing without one of them waiting on a save the user may never make.
+	 *
+	 * Note: Custom CSS is NOT part of this record — it's WP core's own site-wide Additional CSS
+	 * (`wp_get_custom_css()`/`wp_update_custom_css_post()`), matching v1's actual behavior
+	 * exactly (verified directly against v1, EVF-2732/EVF-2737 follow-up): one shared value
+	 * every form uses, not a per-form field to migrate. {@see RestController::build_payload()}
+	 * and {@see RestController::save_item()} read/write it directly.
+	 *
+	 * @param array $stored Raw `everest_forms_styles[form_id]` value.
+	 * @return array v2-shaped record ( schema_version + tokens, + template/palette ).
+	 */
+	public static function effective_record( $stored ) {
+		$stored = is_array( $stored ) ? $stored : array();
+
+		if ( Engine::is_v2_record( $stored ) ) {
+			return $stored;
+		}
+
+		if ( empty( $stored ) ) {
+			return array(
+				'schema_version' => Schema::version(),
+				'tokens'         => array(),
+			);
+		}
+
+		return self::migrate_record( $stored );
+	}
+
 	/* --------------------------------------------------------------------- *
 	 * Shape normalization (v0 / v1 / v2)
 	 * --------------------------------------------------------------------- */

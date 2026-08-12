@@ -87,8 +87,12 @@ class EVF_AI_API {
 	 * @return bool
 	 */
 	private static function client_supports_style(): bool {
-		return class_exists( '\EverestForms\Addons\StyleCustomizer\V2\Engine' )
-			&& \EverestForms\Addons\StyleCustomizer\V2\Engine::enabled();
+		// Temporarily disabled for this release — the AI Form Builder chat (generate/update)
+		// should only build/edit fields for now, not also silently restyle the form. Re-enable
+		// by restoring the Engine::enabled() check below in a future release. This does NOT
+		// affect the Style Customizer's own separate "Style with AI" feature
+		// ({@see EVF_AI_API::style_form()}), which never reads this flag.
+		return false;
 	}
 
 	/**

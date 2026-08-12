@@ -72,6 +72,10 @@ interface BridgeHandlers {
 	onSelect?: ( info: SelectionInfo ) => void;
 	/** Any click inside the iframe's own document — used to close an open panel popover. */
 	onIframeClick?: () => void;
+	/** Ctrl/Cmd+Z and Ctrl+Shift+Z / Ctrl+Y pressed inside the iframe's own document — keyboard
+	 *  undo/redo would otherwise only work while focus is in the panel, never the preview. */
+	onUndo?: () => void;
+	onRedo?: () => void;
 }
 
 /** Module-level cache of the fetched rule-template CSS text, keyed by URL. */
@@ -99,6 +103,8 @@ export class PreviewBridge {
 	private onError: () => void;
 	private onSelect?: ( info: SelectionInfo ) => void;
 	private onIframeClick?: () => void;
+	private onUndo?: () => void;
+	private onRedo?: () => void;
 	private deadline = 0;
 	private pollTimer: ReturnType< typeof setTimeout > | null = null;
 	private selectedEl: HTMLElement | null = null;
@@ -122,6 +128,8 @@ export class PreviewBridge {
 		this.onError = handlers.onError;
 		this.onSelect = handlers.onSelect;
 		this.onIframeClick = handlers.onIframeClick;
+		this.onUndo = handlers.onUndo;
+		this.onRedo = handlers.onRedo;
 	}
 
 	/** Wire onto the iframe's load event and begin polling for the wrapper. */
@@ -438,6 +446,10 @@ export class PreviewBridge {
 		this.store.schema.forEach( ( token ) => this.applyToken( token, themeFont ) );
 		this.ensureFont();
 		this.applyThemeStyle();
+		// Custom CSS lives outside the schema token loop above — without this, Reset/Undo/Redo
+		// (all of which notify(null) via resetAll()/applySnapshot()) leave a stale <style> tag in
+		// the iframe even after store.customCss has already changed.
+		this.applyCustomCss();
 	}
 
 	/** Apply only the given token keys (a targeted live edit). */
@@ -508,7 +520,10 @@ export class PreviewBridge {
 			}
 			return;
 		}
-		const href = 'https://fonts.googleapis.com/css?family=' + encodeURIComponent( family );
+		// Explicit weights, matching Schema::weight_options() (EVF-2721) — otherwise Google Fonts
+		// only serves the family's single default face and every other Font Style weight falls
+		// back to inconsistent browser synthesis.
+		const href = 'https://fonts.googleapis.com/css?family=' + encodeURIComponent( family ) + ':300,400,700';
 		if ( ! link ) {
 			link = doc.createElement( 'link' );
 			link.id = FONT_LINK_ID;
@@ -803,8 +818,31 @@ export class PreviewBridge {
 		doc.addEventListener( 'mouseout', this.onDocOut, true );
 		// Block real form submission / link navigation inside the style preview.
 		doc.addEventListener( 'submit', this.blockEvent, true );
+		doc.addEventListener( 'keydown', this.onDocKeyDown, true );
 		this.neutralizeMultiPartValidation( doc );
 	}
+
+	/** Ctrl/Cmd+Z and Ctrl+Shift+Z / Ctrl+Y — mirrors the panel's own shortcut so undo/redo works
+	 *  no matter which side (panel or preview) currently has focus. */
+	private onDocKeyDown = ( e: KeyboardEvent ) => {
+		const target = e.target as HTMLElement;
+		if ( target && /^(INPUT|TEXTAREA|SELECT)$/.test( target.tagName ) ) {
+			return;
+		}
+		if ( ( e.ctrlKey || e.metaKey ) && e.key.toLowerCase() === 'z' ) {
+			e.preventDefault();
+			if ( e.shiftKey ) {
+				this.onRedo?.();
+			} else {
+				this.onUndo?.();
+			}
+			return;
+		}
+		if ( e.ctrlKey && ! e.metaKey && e.key.toLowerCase() === 'y' ) {
+			e.preventDefault();
+			this.onRedo?.();
+		}
+	};
 
 	/** Patches jQuery-validate's `.valid()` to always pass, so Multi-Part's "Next" works without filling required fields. */
 	private neutralizeMultiPartValidation( doc: Document ) {
@@ -831,6 +869,7 @@ export class PreviewBridge {
 		doc.removeEventListener( 'mouseover', this.onDocOver, true );
 		doc.removeEventListener( 'mouseout', this.onDocOut, true );
 		doc.removeEventListener( 'submit', this.blockEvent, true );
+		doc.removeEventListener( 'keydown', this.onDocKeyDown, true );
 	}
 
 	private blockEvent = ( e: Event ) => {

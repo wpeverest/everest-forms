@@ -338,11 +338,11 @@ final class Schema {
 		$border = self::border_options();
 
 		$form = array(
-			array( 'key' => 'fonts.theme', 'section' => 'form', 'group' => 'Typography', 'label' => __( 'Use theme fonts', 'everest-forms' ), 'type' => 'toggle', 'default' => false, 'keywords' => array( 'inherit', 'typeface', 'theme font' ) ),
+			array( 'key' => 'fonts.theme', 'section' => 'form', 'group' => 'Typography', 'label' => __( 'Use theme fonts', 'everest-forms' ), 'type' => 'toggle', 'default' => false, 'hidden' => true, 'keywords' => array( 'inherit', 'typeface', 'theme font' ) ),
 			array( 'key' => 'fonts.family', 'section' => 'form', 'group' => 'Typography', 'label' => __( 'Font family', 'everest-forms' ), 'type' => 'select', 'var' => '--evf-font', 'default' => '', 'source' => 'google_fonts', 'options' => self::font_options(), 'keywords' => array( 'typeface', 'typography', 'google font' ) ),
 			// Palette-driven by default (form_background slot); editing it directly here unlinks
 			// this form from the palette for just this token — see store.ts's paletteMap unlink.
-			array( 'key' => 'wrap.bg', 'section' => 'form', 'group' => 'Background', 'label' => __( 'Background color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-wrap-bg', 'default' => '#ffffff', 'keywords' => array( 'fill', 'color' ) ),
+			array( 'key' => 'wrap.bg', 'section' => 'form', 'group' => 'Background', 'label' => __( 'Background color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-wrap-bg', 'default' => '#ffffff', 'gradientable' => true, 'keywords' => array( 'fill', 'color', 'gradient' ) ),
 			array( 'key' => 'wrap.bgImage', 'section' => 'form', 'group' => 'Background', 'label' => __( 'Background image', 'everest-forms' ), 'type' => 'media', 'var' => '--evf-wrap-image', 'default' => '', 'advanced' => true, 'keywords' => array( 'image', 'photo', 'picture' ) ),
 			array( 'key' => 'wrap.bgPreset', 'section' => 'form', 'group' => 'Background', 'label' => __( 'Background preset', 'everest-forms' ), 'type' => 'select', 'default' => 'custom', 'options' => self::opts( array( 'custom' => __( 'Custom', 'everest-forms' ), 'fill' => __( 'Fill', 'everest-forms' ), 'fit' => __( 'Fit', 'everest-forms' ), 'repeat' => __( 'Repeat', 'everest-forms' ), 'center' => __( 'Center', 'everest-forms' ) ) ), 'advanced' => true, 'show_when_image' => true, 'keywords' => array( 'image', 'background' ) ),
 			array( 'key' => 'wrap.bgSize', 'section' => 'form', 'group' => 'Background', 'label' => __( 'Image size', 'everest-forms' ), 'type' => 'select', 'var' => '--evf-wrap-bg-size', 'default' => 'cover', 'options' => self::opts( array( 'cover' => __( 'Cover', 'everest-forms' ), 'contain' => __( 'Contain', 'everest-forms' ), 'auto' => __( 'Auto', 'everest-forms' ) ) ), 'advanced' => true, 'show_when_image' => true, 'keywords' => array( 'image', 'background' ) ),
@@ -362,10 +362,12 @@ final class Schema {
 		$fields = array(
 			// Palette-driven by default (field_background slot); editing it directly here unlinks
 			// this form from the palette for just this token — see store.ts's paletteMap unlink.
-			array( 'key' => 'input.bg', 'section' => 'fields', 'group' => 'Surface', 'label' => __( 'Background', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-input-bg', 'default' => '#ffffff', 'keywords' => array( 'fill', 'color' ) ),
+			array( 'key' => 'input.bg', 'section' => 'fields', 'group' => 'Surface', 'label' => __( 'Background', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-input-bg', 'default' => '#ffffff', 'gradientable' => true, 'keywords' => array( 'fill', 'color', 'gradient' ) ),
 			array( 'key' => 'input.borderC', 'section' => 'fields', 'group' => 'Surface', 'label' => __( 'Border color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-input-border-c', 'default' => '#969696' ),
 			self::radius( 'input.radius', '--evf-input-radius', 3, 'fields', null, 'Surface', false ),
 			array( 'key' => 'input.size', 'section' => 'fields', 'group' => 'Typography', 'label' => __( 'Font size', 'everest-forms' ), 'type' => 'slider', 'var' => '--evf-input-size', 'default' => 14, 'min' => 11, 'max' => 22, 'step' => 1, 'unit' => 'px', 'advanced' => true, 'keywords' => array( 'text' ) ),
+			// Not gradientable: this rule's element already spends its one `background` on
+			// input.bg — background-clip:text for the text colour would collide with it.
 			array( 'key' => 'input.color', 'section' => 'fields', 'group' => 'Typography', 'label' => __( 'Text color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-input-color', 'default' => '#575757', 'advanced' => true ),
 			array( 'key' => 'input.ph', 'section' => 'fields', 'group' => 'Typography', 'label' => __( 'Placeholder color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-input-ph', 'default' => '#c6ccd7', 'advanced' => true, 'keywords' => array( 'hint' ) ),
 			self::fstyle( 'input.fstyle', 'input', 'fields', null, '400' ),
@@ -376,9 +378,9 @@ final class Schema {
 			array( 'key' => 'input.pad', 'section' => 'fields', 'group' => 'Spacing', 'label' => __( 'Field padding', 'everest-forms' ), 'type' => 'box4', 'var' => '--evf-input-pad', 'default' => array( 6, 12, 6, 12 ), 'responsive' => true, 'advanced' => true, 'keywords' => array( 'inner' ) ),
 			array( 'key' => 'field.margin', 'section' => 'fields', 'group' => 'Spacing', 'label' => __( 'Field margin', 'everest-forms' ), 'type' => 'box4', 'var' => '--evf-field-margin', 'default' => array( 0, 0, 10, 0 ), 'responsive' => true, 'advanced' => true, 'keywords' => array( 'gap', 'between' ) ),
 			array( 'key' => 'file.size', 'section' => 'fields', 'group' => 'Upload area', 'label' => __( 'Font size', 'everest-forms' ), 'type' => 'slider', 'var' => '--evf-file-size', 'default' => 14, 'min' => 10, 'max' => 22, 'step' => 1, 'unit' => 'px', 'advanced' => true, 'keywords' => array( 'upload', 'file' ) ),
-			array( 'key' => 'file.color', 'section' => 'fields', 'group' => 'Upload area', 'label' => __( 'Font color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-file-color', 'default' => '#494d50', 'advanced' => true, 'keywords' => array( 'upload', 'file', 'text' ) ),
-			array( 'key' => 'file.bg', 'section' => 'fields', 'group' => 'Upload area', 'label' => __( 'Background', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-file-bg', 'default' => 'rgba(255,255,255,0.99)', 'advanced' => true, 'keywords' => array( 'upload', 'dropzone', 'file' ) ),
-			array( 'key' => 'file.iconBg', 'section' => 'fields', 'group' => 'Upload area', 'label' => __( 'Icon background', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-file-iconbg', 'default' => 'rgba(255,255,255,0.99)', 'advanced' => true, 'keywords' => array( 'upload', 'file' ) ),
+			array( 'key' => 'file.color', 'section' => 'fields', 'group' => 'Upload area', 'label' => __( 'Font color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-file-color', 'default' => '#494d50', 'advanced' => true, 'gradientable' => true, 'keywords' => array( 'upload', 'file', 'text', 'gradient' ) ),
+			array( 'key' => 'file.bg', 'section' => 'fields', 'group' => 'Upload area', 'label' => __( 'Background', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-file-bg', 'default' => 'rgba(255,255,255,0.99)', 'advanced' => true, 'gradientable' => true, 'keywords' => array( 'upload', 'dropzone', 'file', 'gradient' ) ),
+			array( 'key' => 'file.iconBg', 'section' => 'fields', 'group' => 'Upload area', 'label' => __( 'Icon background', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-file-iconbg', 'default' => 'rgba(255,255,255,0.99)', 'advanced' => true, 'gradientable' => true, 'keywords' => array( 'upload', 'file', 'gradient' ) ),
 			array( 'key' => 'file.icon', 'section' => 'fields', 'group' => 'Upload area', 'label' => __( 'Icon color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-file-icon', 'default' => '#494d50', 'advanced' => true, 'keywords' => array( 'upload', 'file' ) ),
 			array( 'key' => 'file.borderStyle', 'section' => 'fields', 'group' => 'Upload area', 'label' => __( 'Border type', 'everest-forms' ), 'type' => 'select', 'var' => '--evf-file-border-style', 'default' => 'dashed', 'options' => $border, 'advanced' => true, 'keywords' => array( 'upload', 'file' ) ),
 			self::bwidth( 'file.bw', '--evf-file-bw', 1, 'fields', null, 'Upload area', true ),
@@ -396,7 +398,7 @@ final class Schema {
 			array( 'key' => 'choice.border', 'section' => 'choice', 'group' => '', 'label' => __( 'Unselected border', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-choice-border', 'default' => '#d8dae2', 'keywords' => array( 'radio', 'checkbox', 'unchecked' ) ),
 			array( 'key' => 'choice.variation', 'section' => 'choice', 'group' => '', 'label' => __( 'Style variation', 'everest-forms' ), 'type' => 'select', 'default' => 'default', 'options' => self::opts( array( 'default' => __( 'Default', 'everest-forms' ), 'filled' => __( 'Filled', 'everest-forms' ), 'outline' => __( 'Outline', 'everest-forms' ) ) ), 'advanced' => true, 'special' => 'cvar', 'keywords' => array( 'modern', 'inline' ) ),
 			array( 'key' => 'choice.fsize', 'section' => 'choice', 'group' => '', 'label' => __( 'Option font size', 'everest-forms' ), 'type' => 'slider', 'var' => '--evf-choice-fsize', 'default' => 14, 'min' => 11, 'max' => 22, 'step' => 1, 'unit' => 'px', 'advanced' => true, 'keywords' => array( 'text' ) ),
-			array( 'key' => 'choice.color', 'section' => 'choice', 'group' => '', 'label' => __( 'Option text color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-choice-color', 'default' => '#575757', 'advanced' => true, 'keywords' => array( 'text' ) ),
+			array( 'key' => 'choice.color', 'section' => 'choice', 'group' => '', 'label' => __( 'Option text color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-choice-color', 'default' => '#575757', 'advanced' => true, 'gradientable' => true, 'keywords' => array( 'text', 'gradient' ) ),
 			self::fstyle( 'choice.fstyle', 'choice', 'choice', null, '400' ),
 			self::letter_spacing( 'choice.ls', '--evf-choice-ls', 'choice', null ),
 			self::talign( 'choice.align', '--evf-choice-align', 'choice', null ),
@@ -406,7 +408,8 @@ final class Schema {
 		$button = array(
 			// Palette-driven by default (button_background/button_text slots); editing either
 			// directly here unlinks this form from the palette for just that one token.
-			array( 'key' => 'btn.bg', 'section' => 'button', 'group' => '', 'label' => __( 'Button color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-btn-bg', 'default' => '#0073aa', 'keywords' => array( 'submit', 'background', 'color' ) ),
+			array( 'key' => 'btn.bg', 'section' => 'button', 'group' => '', 'label' => __( 'Button color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-btn-bg', 'default' => '#0073aa', 'gradientable' => true, 'keywords' => array( 'submit', 'background', 'color', 'gradient' ) ),
+			// Not gradientable: shares its rule's `background` with btn.bg (see input.color).
 			array( 'key' => 'btn.color', 'section' => 'button', 'group' => '', 'label' => __( 'Text color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-btn-color', 'default' => '#ffffff', 'keywords' => array( 'submit', 'color' ) ),
 			self::radius( 'btn.radius', '--evf-btn-radius', 3, 'button', null, '', false ),
 			// No 'var': like choice.variation, this drives a wrapper class (`evf-btn-width-fill`)
@@ -417,7 +420,11 @@ final class Schema {
 			array( 'key' => 'btn.size', 'section' => 'button', 'group' => '', 'label' => __( 'Font size', 'everest-forms' ), 'type' => 'slider', 'var' => '--evf-btn-size', 'default' => 14, 'min' => 11, 'max' => 24, 'step' => 1, 'unit' => 'px', 'advanced' => true, 'keywords' => array( 'submit' ) ),
 			self::fstyle( 'btn.fstyle', 'btn', 'button', null, '400' ),
 			self::letter_spacing( 'btn.ls', '--evf-btn-ls', 'button', null ),
-			self::talign( 'btn.align', '--evf-btn-align', 'button', null, 'center' ),
+			// 'left', not 'center': matches both v1's own implicit default and the built-in
+			// "Default" template's explicit value — a legacy form that never touched button
+			// alignment has no token for it at all (see Migrator), so this default IS its
+			// rendered alignment; 'center' silently flipped it on migration (EVF-2732).
+			self::talign( 'btn.align', '--evf-btn-align', 'button', null, 'left' ),
 			self::line( 'btn.line', '--evf-btn-lh', 1.5, 'button', null ),
 			self::box( 'btn.margin', __( 'Margin', 'everest-forms' ), '--evf-btn-margin', array( 0, 0, 0, 0 ), 'button', null ),
 			array( 'key' => 'btn.pad', 'section' => 'button', 'group' => '', 'label' => __( 'Padding', 'everest-forms' ), 'type' => 'box4', 'var' => '--evf-btn-pad', 'default' => array( 10, 15, 10, 15 ), 'responsive' => true, 'advanced' => true, 'keywords' => array( 'size' ) ),
@@ -425,7 +432,7 @@ final class Schema {
 			self::bwidth( 'btn.bw', '--evf-btn-bw', 1, 'button', null, '', true ),
 			array( 'key' => 'btn.borderC', 'section' => 'button', 'group' => '', 'label' => __( 'Border color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-btn-border-c', 'default' => '#cccccc', 'advanced' => true ),
 			// Palette-driven; the default only shows on a no-palette form.
-			array( 'key' => 'btn.bgHover', 'section' => 'button', 'group' => '', 'label' => __( 'Button color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-btn-bg-hover', 'default' => '#eeeeee', 'state' => 'hover', 'keywords' => array( 'mouse over' ) ),
+			array( 'key' => 'btn.bgHover', 'section' => 'button', 'group' => '', 'label' => __( 'Button color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-btn-bg-hover', 'default' => '#eeeeee', 'state' => 'hover', 'gradientable' => true, 'keywords' => array( 'mouse over', 'gradient' ) ),
 			array( 'key' => 'btn.colorHover', 'section' => 'button', 'group' => '', 'label' => __( 'Text color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-btn-color-hover', 'default' => '#23282d', 'state' => 'hover', 'keywords' => array( 'mouse over', 'hover font' ) ),
 			array( 'key' => 'btn.borderCHover', 'section' => 'button', 'group' => '', 'label' => __( 'Border color', 'everest-forms' ), 'type' => 'color', 'var' => '--evf-btn-border-c-hover', 'default' => '#cccccc', 'state' => 'hover', 'keywords' => array( 'mouse over', 'hover border' ) ),
 		);
@@ -463,7 +470,7 @@ final class Schema {
 		foreach ( $roles as $state => $r ) {
 			$vp    = $r['sub'];
 			$out[] = array( 'key' => "{$vp}.size", 'section' => 'text', 'state' => $state, 'group' => '', 'label' => __( 'Font size', 'everest-forms' ), 'type' => 'slider', 'var' => "--evf-{$vp}-size", 'default' => $r['size'], 'min' => $r['min'], 'max' => $r['max'], 'step' => 1, 'unit' => 'px', 'keywords' => array( 'text', $state ) );
-			$out[] = array( 'key' => "{$vp}.color", 'section' => 'text', 'state' => $state, 'group' => '', 'label' => __( 'Color', 'everest-forms' ), 'type' => 'color', 'var' => "--evf-{$vp}-color", 'default' => $r['color'], 'hidden' => $r['color_hidden'], 'keywords' => array( 'text', $state ) );
+			$out[] = array( 'key' => "{$vp}.color", 'section' => 'text', 'state' => $state, 'group' => '', 'label' => __( 'Color', 'everest-forms' ), 'type' => 'color', 'var' => "--evf-{$vp}-color", 'default' => $r['color'], 'hidden' => $r['color_hidden'], 'gradientable' => true, 'keywords' => array( 'text', $state, 'gradient' ) );
 			$out[] = self::fstyle( "{$vp}.fstyle", $vp, 'text', $state, $r['nw'] );
 			$out[] = self::letter_spacing( "{$vp}.ls", "--evf-{$vp}-ls", 'text', $state );
 			$out[] = self::talign( "{$vp}.align", "--evf-{$vp}-align", 'text', $state );
@@ -530,17 +537,22 @@ final class Schema {
 	 * @return array value => label.
 	 */
 	protected static function weight_options() {
+		// EVF-2721: this used to offer all 9 standard CSS weight steps (100-900), but a form's
+		// font — a specific Google Font, or "Theme default" falling back to the visitor's system
+		// font stack — only actually HAS a handful of real weight faces. A numeric weight with no
+		// matching face just gets browser-synthesized (inconsistently, sometimes identically to a
+		// neighboring value), so half the dropdown silently did nothing. Trimmed to the 3 steps
+		// virtually every font (Google or system) truly ships, and {@see evfsc_enqueue_fonts}/
+		// PreviewBridge now request exactly these weights so a chosen Google Font's real files
+		// load instead of relying on synthesis.
+		//
 		// Built directly (not via self::opts(), which takes an associative array — PHP would
 		// coerce these numeric-string keys to ints) so every value is guaranteed a string.
 		return array(
 			array( 'value' => '',    'label' => __( 'Auto', 'everest-forms' ) ),
 			array( 'value' => '300', 'label' => __( 'Light', 'everest-forms' ) ),
 			array( 'value' => '400', 'label' => __( 'Regular', 'everest-forms' ) ),
-			array( 'value' => '500', 'label' => __( 'Medium', 'everest-forms' ) ),
-			array( 'value' => '600', 'label' => __( 'Semibold', 'everest-forms' ) ),
 			array( 'value' => '700', 'label' => __( 'Bold', 'everest-forms' ) ),
-			array( 'value' => '800', 'label' => __( 'Extra Bold', 'everest-forms' ) ),
-			array( 'value' => '900', 'label' => __( 'Black', 'everest-forms' ) ),
 		);
 	}
 

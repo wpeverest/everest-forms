@@ -26,11 +26,6 @@ final class Palettes {
 	const LEGACY_OPTION = 'everest_forms_custom_color_palettes';
 
 	/**
-	 * Id prefix for a v2 user palette.
-	 */
-	const USER_PREFIX = 'pal-';
-
-	/**
 	 * Id prefix for a v1 carry-over palette (suffixed with its index).
 	 */
 	const LEGACY_PREFIX = 'legacy-palette-';
@@ -132,82 +127,6 @@ final class Palettes {
 	}
 
 	/**
-	 * Create a new custom palette from user input.
-	 *
-	 * @param string $name   Palette name.
-	 * @param array  $colors Raw slot => colour map.
-	 * @return array The stored palette definition.
-	 */
-	public static function create( $name, $colors ) {
-		$entry = array(
-			'id'         => self::USER_PREFIX . substr( md5( wp_json_encode( $colors ) . microtime() ), 0, 10 ),
-			'name'       => self::sanitize_name( $name ),
-			'colors'     => self::sanitize_colors( $colors ),
-			'created_at' => time(),
-		);
-
-		$stored = get_option( self::USER_OPTION, array() );
-		if ( ! is_array( $stored ) ) {
-			$stored = array();
-		}
-		array_unshift( $stored, $entry );
-		update_option( self::USER_OPTION, $stored, false );
-
-		return array(
-			'id'        => $entry['id'],
-			'name'      => $entry['name'],
-			'is_pro'    => true,
-			'is_custom' => true,
-			'colors'    => $entry['colors'],
-		);
-	}
-
-	/**
-	 * Update an existing custom palette in place. A `legacy-palette-{i}` id edits the v1 option.
-	 *
-	 * @param string $id     Palette id.
-	 * @param string $name   New name.
-	 * @param array  $colors New raw slot => colour map.
-	 * @return array|false The updated palette definition, or false if not found.
-	 */
-	public static function update( $id, $name, $colors ) {
-		$id     = (string) $id;
-		$name   = self::sanitize_name( $name );
-		$colors = self::sanitize_colors( $colors );
-
-		if ( 0 === strpos( $id, self::LEGACY_PREFIX ) ) {
-			return self::update_legacy( (int) substr( $id, strlen( self::LEGACY_PREFIX ) ), $name, $colors );
-		}
-
-		$stored = get_option( self::USER_OPTION, array() );
-		if ( ! is_array( $stored ) ) {
-			return false;
-		}
-		$found = false;
-		foreach ( $stored as &$entry ) {
-			if ( isset( $entry['id'] ) && (string) $entry['id'] === $id ) {
-				$entry['name']   = $name;
-				$entry['colors'] = $colors;
-				$found           = true;
-				break;
-			}
-		}
-		unset( $entry );
-		if ( ! $found ) {
-			return false;
-		}
-		update_option( self::USER_OPTION, $stored, false );
-
-		return array(
-			'id'        => $id,
-			'name'      => $name,
-			'is_pro'    => true,
-			'is_custom' => true,
-			'colors'    => $colors,
-		);
-	}
-
-	/**
 	 * Delete a custom palette. A `legacy-palette-{i}` id removes the entry from the v1 option.
 	 *
 	 * @param string $id Palette id.
@@ -240,34 +159,6 @@ final class Palettes {
 	}
 
 	/**
-	 * Update one v1-option entry in place, preserving v1's entry shape.
-	 *
-	 * @param int    $index  Index in {@see self::LEGACY_OPTION}.
-	 * @param string $name   Sanitized name.
-	 * @param array  $colors Sanitized colours.
-	 * @return array|false
-	 */
-	protected static function update_legacy( $index, $name, $colors ) {
-		$stored = get_option( self::LEGACY_OPTION, array() );
-		if ( ! is_array( $stored ) || ! isset( $stored[ $index ] ) || ! is_array( $stored[ $index ] ) ) {
-			return false;
-		}
-		$stored[ $index ]['label']     = $name;
-		$stored[ $index ]['colors']    = $colors;
-		$stored[ $index ]['is_pro']    = true;
-		$stored[ $index ]['is_custom'] = true;
-		update_option( self::LEGACY_OPTION, $stored );
-
-		return array(
-			'id'        => self::LEGACY_PREFIX . (int) $index,
-			'name'      => $name,
-			'is_pro'    => true,
-			'is_custom' => true,
-			'colors'    => $colors,
-		);
-	}
-
-	/**
 	 * Remove one entry from the v1 option, re-indexing the survivors.
 	 *
 	 * @param int $index Index in {@see self::LEGACY_OPTION}.
@@ -281,18 +172,6 @@ final class Palettes {
 		unset( $stored[ $index ] );
 		update_option( self::LEGACY_OPTION, array_values( $stored ) );
 		return true;
-	}
-
-	/**
-	 * Sanitize a palette name to a plain, length-capped string, with a fallback.
-	 *
-	 * @param mixed $name Raw name.
-	 * @return string
-	 */
-	protected static function sanitize_name( $name ) {
-		$name = sanitize_text_field( (string) $name );
-		$name = trim( mb_substr( $name, 0, 60, 'UTF-8' ) );
-		return '' !== $name ? $name : __( 'My palette', 'everest-forms' );
 	}
 
 	/**

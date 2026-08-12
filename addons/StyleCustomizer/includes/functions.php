@@ -10,7 +10,11 @@
 function evfsc_enqueue_fonts( $font_family = '' ) {
 
 	if ( ! empty( $font_family ) ) {
-		$font_url = 'https://fonts.googleapis.com/css?family=' . evf_clean( $font_family );
+		// Without an explicit weight list, Google Fonts only serves the family's single default
+		// face — every other Font Style weight the customizer offers then has no real face to
+		// use and falls back to inconsistent browser synthesis (EVF-2721). 300/400/700 match the
+		// weight options Schema::weight_options() actually offers.
+		$font_url = 'https://fonts.googleapis.com/css?family=' . evf_clean( $font_family ) . ':300,400,700';
 
 		$font_url = evf_maybe_get_local_font_url( $font_url );
 

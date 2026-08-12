@@ -91,6 +91,12 @@ if ( ! function_exists( 'evf' ) ) {
 	// thumbnails) — the test never exercises that path's *output*, just needs it not to fatal.
 	function evf() { return new class() { public function plugin_url() { return ''; } }; }
 }
+if ( ! function_exists( 'get_post_meta' ) ) {
+	// Only Compiler::compile() needs this (the global "Apply Theme Style" toggle) — no test form
+	// ever has the meta set, so this mirrors WP's own unset-meta return ('' for $single, matching
+	// the real default of "Apply Theme Style" being on for every existing form).
+	function get_post_meta( $post_id, $key = '', $single = false ) { return $single ? '' : array(); }
+}
 
 require dirname( __DIR__ ) . '/Schema.php';
 require dirname( __DIR__ ) . '/Sanitizer.php';
@@ -339,6 +345,18 @@ $frontend_css = file_get_contents( dirname( __DIR__ ) . '/assets/css/frontend.cs
 ok( false !== strpos( $frontend_css, 'label.evf-field-label .evf-label {' ), 'label font-style rule targets the nested .evf-label span (EVF-2671)' );
 preg_match( '/label\.evf-field-label\s*\{([^}]*)\}/', $frontend_css, $outer_label_rule );
 ok( isset( $outer_label_rule[1] ) && false === strpos( $outer_label_rule[1], 'text-decoration' ), 'text-decoration is NOT on the outer <label> rule (EVF-2671)' );
+
+// EVF-2733/EVF-2721: several fstyle rules had font-weight/style/text-transform but never
+// applied their own text-decoration var, so an underline set on that element compiled fine
+// (Compiler always emits all four --evf-{base}-* vars for a fontstyle token) but never actually
+// rendered — in the live preview OR on the frontend, since both read this same static file.
+// General guard, not a fixed per-base list: every "--evf-{base}-weight" var this file applies
+// must have a matching "--evf-{base}-td" applied somewhere too.
+preg_match_all( '/--evf-([a-z-]+)-weight\b/', $frontend_css, $weight_bases );
+ok( ! empty( $weight_bases[1] ), 'sanity: found at least one font-weight var to check' );
+foreach ( array_unique( $weight_bases[1] ) as $base ) {
+	ok( false !== strpos( $frontend_css, "--evf-{$base}-td" ), "{$base}: rule applies its text-decoration var (EVF-2733/EVF-2721)" );
+}
 
 // Defense-in-depth: even an UNSANITIZED breakout value can't escape the declaration.
 $evil = Compiler::compile( array( 'tokens' => array( 'wrap.borderC' => array( 'desktop' => 'red;}body{display:none}' ) ) ), 7 );
@@ -663,28 +681,30 @@ ok( $san['form_background'] === '#fff', 'sanitize_colors lowercases a valid hex'
 ok( $san['button_background'] === '#3951a5', 'sanitize_colors falls back to the slot default for an invalid colour' );
 ok( $san['field_label'] === '#333333', 'sanitize_colors fills a missing slot with its default' );
 
-// create + all_custom
+// all_custom: create/update are retired (see the style-customizer-v2 UX rework — custom
+// palettes are now read/apply/delete only), so a palette is seeded here exactly in the shape
+// create() used to store it, rather than exercised through a method that no longer exists.
 $GLOBALS['evf_test_options'] = array();
-$created = Palettes::create( 'My Brand', $brand );
-ok( strpos( $created['id'], 'pal-' ) === 0, 'create returns a pal- id' );
-ok( true === $created['is_custom'] && true === $created['is_pro'], 'created palette is flagged custom + pro' );
-ok( $created['colors']['form_background'] === '#fafafa', 'created colours are sanitized (lowercased)' );
+$seeded                       = array(
+	'id'         => 'pal-seed0001',
+	'name'       => 'My Brand',
+	'colors'     => Palettes::sanitize_colors( $brand ),
+	'created_at' => time(),
+);
+$GLOBALS['evf_test_options'][ Palettes::USER_OPTION ] = array( $seeded );
 $allc = Palettes::all_custom();
-ok( count( $allc ) === 1, 'all_custom lists the created palette' );
-ok( $allc[0]['id'] === $created['id'], 'all_custom is newest-first' );
-
-// update
-$upd = Palettes::update( $created['id'], 'Renamed', array_merge( $brand, array( 'button_background' => '#000000' ) ) );
-ok( false !== $upd && 'Renamed' === $upd['name'], 'update renames a palette' );
-ok( $upd['colors']['button_background'] === '#000000', 'update changes a palette colour' );
-ok( Palettes::update( 'pal-doesnotexist', 'x', $brand ) === false, 'update on an unknown id returns false' );
+ok( count( $allc ) === 1, 'all_custom lists the seeded palette' );
+ok( $allc[0]['id'] === 'pal-seed0001', 'all_custom preserves the stored id' );
+ok( true === $allc[0]['is_custom'] && true === $allc[0]['is_pro'], 'a stored palette normalizes to custom + pro' );
+ok( $allc[0]['colors']['form_background'] === '#fafafa', 'all_custom sanitizes stored colours (lowercased)' );
 
 // delete
-ok( Palettes::delete( $created['id'] ) === true, 'delete removes the palette' );
+ok( Palettes::delete( 'pal-seed0001' ) === true, 'delete removes the palette' );
 ok( count( Palettes::all_custom() ) === 0, 'all_custom is empty after delete' );
-ok( Palettes::delete( $created['id'] ) === false, 'delete on an unknown id returns false' );
+ok( Palettes::delete( 'pal-seed0001' ) === false, 'delete on an unknown id returns false' );
 
-// v1 carry-over: an existing v1 custom palette surfaces live, editable + deletable in place.
+// v1 carry-over: an existing v1 custom palette surfaces live, deletable in place (edit-in-place
+// is retired too — see the style-customizer-v2 UX rework).
 $GLOBALS['evf_test_options']['everest_forms_custom_color_palettes'] = array(
 	array( 'label' => 'Old Brand', 'colors' => $brand, 'is_pro' => true, 'is_custom' => true ),
 );
@@ -694,27 +714,25 @@ ok( $legacy[0]['id'] === 'legacy-palette-0', 'v1 palette gets a legacy-palette-0
 ok( $legacy[0]['name'] === 'Old Brand', 'v1 label carried across as the name' );
 ok( true === $legacy[0]['is_custom'], 'v1 palette flagged custom' );
 ok( $legacy[0]['colors']['button_background'] === '#1155cc', 'v1 colours sanitized on read' );
-$lupd = Palettes::update( 'legacy-palette-0', 'Old Renamed', $brand );
-ok( false !== $lupd && $GLOBALS['evf_test_options']['everest_forms_custom_color_palettes'][0]['label'] === 'Old Renamed', 'update on a legacy id edits the v1 option in place' );
 ok( Palettes::delete( 'legacy-palette-0' ) === true, 'delete on a legacy id removes it from the v1 option' );
 ok( empty( $GLOBALS['evf_test_options']['everest_forms_custom_color_palettes'] ), 'v1 option is emptied after a legacy delete' );
 
 // inject: the evf_style_palettes target prepends custom palettes to the built-in list.
-$GLOBALS['evf_test_options'] = array();
-$c2       = Palettes::create( 'Injected', $brand );
+$GLOBALS['evf_test_options']                          = array();
+$seeded2                                               = array( 'id' => 'pal-seed0002', 'name' => 'Injected', 'colors' => Palettes::sanitize_colors( $brand ) );
+$GLOBALS['evf_test_options'][ Palettes::USER_OPTION ] = array( $seeded2 );
 $injected = Palettes::inject( array( array( 'id' => 'classic', 'name' => 'Classic', 'is_pro' => false, 'colors' => array() ) ) );
 ok( count( $injected ) === 2, 'inject prepends custom palettes to the built-ins' );
-ok( $injected[0]['id'] === $c2['id'], 'inject places custom palettes first' );
+ok( $injected[0]['id'] === 'pal-seed0002', 'inject places custom palettes first' );
 
 // End-to-end tier gate: with the filter registered, a custom palette id only persists under Pro
 // (Sanitizer::sanitize_palette_id, reached via the public sanitize_record).
 Palettes::register();
-$c3                             = Palettes::create( 'Gated', $brand );
 $GLOBALS['evf_test_pro_active'] = true;
-$rec_pro                        = Sanitizer::sanitize_record( array( 'tokens' => array(), 'palette' => $c3['id'] ) );
-ok( $rec_pro['palette'] === $c3['id'], 'custom palette id persists when Pro is active' );
+$rec_pro                        = Sanitizer::sanitize_record( array( 'tokens' => array(), 'palette' => 'pal-seed0002' ) );
+ok( $rec_pro['palette'] === 'pal-seed0002', 'custom palette id persists when Pro is active' );
 $GLOBALS['evf_test_pro_active'] = false;
-$rec_free                       = Sanitizer::sanitize_record( array( 'tokens' => array(), 'palette' => $c3['id'] ) );
+$rec_free                       = Sanitizer::sanitize_record( array( 'tokens' => array(), 'palette' => 'pal-seed0002' ) );
 ok( $rec_free['palette'] === '', 'custom palette id is stripped without Pro' );
 
 /* --------------------------------------------------------------- Templates */
@@ -723,32 +741,25 @@ ok( $rec_free['palette'] === '', 'custom palette id is stripped without Pro' );
 // update_user_template() must never touch the v1 option (unlike Palettes, whose flat 6-colour
 // shape round-trips trivially; a template's v1 shape does not — see the method's doc comment).
 group( 'Templates (custom)' );
+// user_templates: create/update are retired (see the style-customizer-v2 UX rework — custom
+// templates are now read/apply/delete only), so a template is seeded here exactly in the shape
+// save_user_template() used to store it, rather than exercised through a method that no longer
+// exists.
 $GLOBALS['evf_test_options'] = array();
-$tpl_record                  = array(
-	'tokens'         => array( 'wrap.bg' => array( 'desktop' => '#123456' ) ),
+$seeded_tpl                   = array(
+	'id'             => 'user-seed0001',
+	'name'           => 'My Template',
 	'palette'        => 'classic',
+	'tokens'         => array( 'wrap.bg' => array( 'desktop' => '#123456' ) ),
 	'schema_version' => 1,
+	'created_at'     => time(),
 );
-$saved = Templates::save_user_template( 'My Template', $tpl_record );
-ok( strpos( $saved['id'], 'user-' ) === 0, 'save_user_template returns a user- id' );
-ok( true === $saved['custom'] && '' === $saved['image'], 'saved template flagged custom, no image' );
-ok( $saved['tokens']['wrap.bg']['desktop'] === '#123456', 'saved template keeps its tokens' );
-$stored_entry = $GLOBALS['evf_test_options'][ Templates::USER_OPTION ][0];
-ok( 1 === $stored_entry['schema_version'], 'schema_version stamped on create' );
-ok( is_int( $stored_entry['created_at'] ) && $stored_entry['created_at'] > 0, 'created_at stamped on create' );
-$created_at = $stored_entry['created_at'];
-
-// update in place
-$upd_record = array( 'tokens' => array( 'wrap.bg' => array( 'desktop' => '#654321' ) ), 'palette' => '', 'schema_version' => 1 );
-$updated    = Templates::update_user_template( $saved['id'], 'Renamed Template', $upd_record );
-ok( false !== $updated && 'Renamed Template' === $updated['name'], 'update_user_template renames in place' );
-ok( $updated['tokens']['wrap.bg']['desktop'] === '#654321', 'update_user_template changes tokens' );
-ok( $GLOBALS['evf_test_options'][ Templates::USER_OPTION ][0]['created_at'] === $created_at, 'update_user_template leaves created_at untouched' );
-ok( Templates::update_user_template( 'user-doesnotexist', 'x', $upd_record ) === false, 'update on an unknown id returns false' );
-
-// Legacy templates are fork-only: update_user_template() must reject ANY legacy- id outright,
-// without even looking at the v1 option — the one thing that must never regress.
-ok( Templates::update_user_template( 'legacy-anything', 'x', $upd_record ) === false, 'update_user_template rejects a legacy- id outright' );
+$GLOBALS['evf_test_options'][ Templates::USER_OPTION ] = array( $seeded_tpl );
+$user_templates_seeded = Templates::user_templates();
+ok( count( $user_templates_seeded ) === 1, 'user_templates lists the seeded template' );
+ok( $user_templates_seeded[0]['id'] === 'user-seed0001', 'user_templates preserves the stored id' );
+ok( true === $user_templates_seeded[0]['custom'] && '' === $user_templates_seeded[0]['image'], 'a stored template normalizes to custom, no image' );
+ok( $user_templates_seeded[0]['tokens']['wrap.bg']['desktop'] === '#123456', 'user_templates keeps its tokens' );
 
 // v1 carry-over: a real custom template saved via the old (pre-v2) "Create Style Template" UI,
 // stored as a JSON *string* keyed by slug in evf_style_templates (built-ins share this option
@@ -773,14 +784,7 @@ ok( null !== $legacy_tpl, 'v1 custom template surfaces in user_templates' );
 ok( null !== $legacy_tpl && 0 === strpos( $legacy_tpl['id'], 'legacy-' ), 'v1 template gets a legacy- id' );
 ok( null !== $legacy_tpl && true === $legacy_tpl['custom'], 'v1 template flagged custom' );
 
-// The real safety test: attempting to edit that REAL legacy id in place must fail AND must not
-// touch evf_style_templates at all.
-$before_raw = $GLOBALS['evf_test_options']['evf_style_templates'];
-ok( false === Templates::update_user_template( $legacy_tpl['id'], 'Hacked', $upd_record ), 'update_user_template rejects the real legacy id too' );
-ok( $GLOBALS['evf_test_options']['evf_style_templates'] === $before_raw, 'evf_style_templates option untouched after a rejected legacy update' );
-
-// delete on a legacy id still routes to the v1 option (pre-existing behaviour, unaffected by the
-// new update path) — confirms update and delete genuinely take different, deliberate paths.
+// delete on a legacy id routes to the v1 option.
 ok( true === Templates::delete_user_template( $legacy_tpl['id'] ), 'delete_user_template still removes a legacy id from the v1 option' );
 $after_raw = json_decode( $GLOBALS['evf_test_options']['evf_style_templates'], true );
 ok( ! isset( $after_raw[ $legacy_slug ] ), 'legacy template actually removed from evf_style_templates after delete' );

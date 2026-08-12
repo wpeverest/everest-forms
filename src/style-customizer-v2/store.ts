@@ -30,17 +30,6 @@ interface HistoryEntry {
 	snap: Snapshot;
 }
 
-/** Active "edit a saved template" session — see {@see StyleStore.beginTemplateEdit}. */
-interface EditingTemplate {
-	/** The card that was clicked — stays stable across renames, unlike `id`. */
-	sourceId: string;
-	/** The real template id when editing a user template in place; null when forking (built-in/legacy source). */
-	id: string | null;
-	name: string;
-	/** Set only when forking — the source template's display name, for "New template from X" copy. */
-	from?: string;
-}
-
 const MAX_HISTORY = 60;
 
 class StyleStore {
@@ -81,9 +70,6 @@ class StyleStore {
 	/** Optional UI hook: fired when a manual edit detaches the active palette link. */
 	onPaletteUnlinked: ( ( paletteName: string ) => void ) | null = null;
 
-	/** Non-null while a saved template is being edited (or forked) — see {@see beginTemplateEdit}. */
-	editingTemplate: EditingTemplate | null = null;
-
 	// Bookkeeping.
 	affected: string[] | null = null;
 	private saved: Snapshot;
@@ -93,15 +79,6 @@ class StyleStore {
 	private redoStack: HistoryEntry[] = [];
 	private gestureOpen = false;
 	private gestureTimer: ReturnType< typeof setTimeout > | null = null;
-	/** Snapshot taken the instant a template session began, so Cancel/Save-exit can fully unwind it. */
-	private editSnapshot: Snapshot | null = null;
-	/** `undoStack` length once the session's own bootstrap mutation (if any) has been pushed —
-	 *  the mid-session Undo/redo threshold; never crossed back over while a session is active. */
-	private editUndoFloor = 0;
-	/** `undoStack` length right before the session began at all (i.e. before any bootstrap push) —
-	 *  what `exitTemplateEdit()` truncates back to, so no trace of the session (bootstrap included)
-	 *  is left in the undo history once it ends. */
-	private editPreSessionUndoLength = 0;
 
 	constructor( payload: StylePayload, settings: BootstrapSettings ) {
 		this.settings = settings;
@@ -271,13 +248,8 @@ class StyleStore {
 		this.push( label );
 	}
 
-	/** The undo floor while a template edit is active — Undo can never cross back over it. */
-	private undoFloor(): number {
-		return this.editingTemplate ? this.editUndoFloor : 0;
-	}
-
 	canUndo(): boolean {
-		return this.undoStack.length > this.undoFloor();
+		return this.undoStack.length > 0;
 	}
 
 	canRedo(): boolean {
@@ -296,7 +268,7 @@ class StyleStore {
 	}
 
 	undo() {
-		if ( this.undoStack.length <= this.undoFloor() ) {
+		if ( ! this.undoStack.length ) {
 			return;
 		}
 		const top = this.undoStack.pop() as HistoryEntry;
@@ -335,15 +307,18 @@ class StyleStore {
 		} else {
 			this.discrete( `Change ${ token.label }` );
 		}
+		const wasExact = !! this.palette && this.paletteDrivenKeys().has( key ) && this.appliedPaletteId() === this.palette;
 		if ( ! this.tokens[ key ] ) {
 			this.tokens[ key ] = { desktop: clone( token.default ) };
 		}
 		this.tokens[ key ][ this.targetDevice( token ) ] = value;
 
-		// A manual edit to a palette-driven token breaks the "active palette" link.
-		if ( this.palette && this.paletteDrivenKeys().has( key ) ) {
+		// A manual edit to a palette-driven token can break the exact match — keep `this.palette`
+		// as the origin reference (mirrors template's sticky `this.template`, drives the
+		// "Modified" hint) instead of clearing it, but still toast once, on the actual transition
+		// away from an exact match.
+		if ( wasExact && this.appliedPaletteId() !== this.palette ) {
 			const detached = this.palettes.find( ( p ) => p.id === this.palette );
-			this.palette = '';
 			if ( detached && this.onPaletteUnlinked ) {
 				this.onPaletteUnlinked( detached.name );
 			}
@@ -399,6 +374,37 @@ class StyleStore {
 		this.notify( null );
 	}
 
+	/** Reset just the 6 palette-slot colours (and their derived tokens) back to schema defaults. */
+	resetPalette() {
+		this.discrete( 'Reset colors' );
+		const keys: string[] = [];
+		this.paletteDrivenKeys().forEach( ( key ) => {
+			const token = this.byKey[ key ];
+			if ( ! token ) {
+				return;
+			}
+			this.tokens[ key ] = { desktop: clone( token.default ) };
+			keys.push( key );
+		} );
+		this.palette = '';
+		this.notify( keys );
+	}
+
+	/** Reset every element back to default, same as a fresh template — mirrors {@see applyTemplate}'s
+	 *  own font preservation so turning this on doesn't silently undo an explicit theme-font choice. */
+	resetTemplate() {
+		this.discrete( 'Reset template' );
+		const keepFontKeys = this.applyThemeStyle ? [ 'fonts.theme', 'fonts.family' ] : [];
+		this.schema.forEach( ( t ) => {
+			if ( keepFontKeys.indexOf( t.key ) === -1 ) {
+				this.tokens[ t.key ] = { desktop: clone( t.default ) };
+			}
+		} );
+		this.template = '';
+		this.palette = '';
+		this.notify( null );
+	}
+
 	setDevice( device: Device ) {
 		if ( this.device === device ) {
 			return;
@@ -410,6 +416,13 @@ class StyleStore {
 	setCustomCss( css: string ) {
 		this.customCss = css;
 		this.notify( [] ); // No token vars change; the App handles the <style> injection.
+	}
+
+	/** Clears the Custom CSS pane's own textarea — mirrors {@see resetPalette}/{@see resetTemplate}. */
+	resetCustomCss() {
+		this.discrete( 'Reset Custom CSS' );
+		this.customCss = '';
+		this.notify( [] );
 	}
 
 	/** Toggle "Apply Theme Style" (a per-form setting, persisted to the same meta the v1 preview toggle uses). */
@@ -473,6 +486,48 @@ class StyleStore {
 		return out;
 	}
 
+	/** Whether every token a palette SLOT writes to (see {@see palette_map} on the PHP side —
+	 *  some slots bundle more than one token, e.g. `field_label` also drives `title.color`)
+	 *  itself allows a gradient value. A slot is only gradient-safe if ALL of its tokens are —
+	 *  `button_background`, for one, also feeds `input.focusBorder`/`choice.checked`/`file.icon`
+	 *  (border/dual-context/SVG-fill tokens a gradient can't reach), so it stays solid-only. */
+	slotGradientable( slot: string ): boolean {
+		const keys = this.paletteMap[ slot ] || [];
+		return keys.length > 0 && keys.every( ( k ) => !! this.byKey[ k ]?.gradientable );
+	}
+
+	/** Whether a palette's 6 named colours exactly match the form's current live colours. */
+	private paletteColorsMatch( colors: Record< string, string > ): boolean {
+		const current = this.currentPaletteColors();
+		return Object.keys( this.paletteMap ).every(
+			( slot ) => String( colors[ slot ] || '' ).toLowerCase() === String( current[ slot ] || '' ).toLowerCase()
+		);
+	}
+
+	/** The id of the palette the form's current colours exactly match, or '' if none. Mirrors {@see appliedTemplateId}. */
+	appliedPaletteId(): string {
+		const stored = this.palettes.find( ( p ) => p.id === this.palette );
+		if ( stored && this.paletteColorsMatch( stored.colors ) ) {
+			return stored.id;
+		}
+		const match = this.palettes.find( ( p ) => this.paletteColorsMatch( p.colors ) );
+		return match ? match.id : '';
+	}
+
+	/** The palette the form was applied from but has since diverged from; drives the "Modified" hint. Mirrors {@see originTemplateId}. */
+	originPaletteId(): string {
+		if ( ! this.palette || this.appliedPaletteId() === this.palette ) {
+			return '';
+		}
+		return this.palettes.some( ( p ) => p.id === this.palette ) ? this.palette : '';
+	}
+
+	/** Whether every palette-driven colour token is still exactly at its schema default — the
+	 *  true "blank slate", independent of any named palette ever having been applied. */
+	paletteAtDefault(): boolean {
+		return Array.from( this.paletteDrivenKeys() ).every( ( key ) => ! this.byKey[ key ] || ! this.isChanged( key ) );
+	}
+
 	applyPalette( paletteId: string ) {
 		const palette = this.palettes.find( ( p ) => p.id === paletteId );
 		if ( ! palette ) {
@@ -499,6 +554,47 @@ class StyleStore {
 			affected.push( 'btn.bgHover' );
 		}
 		this.palette = paletteId;
+		this.notify( affected );
+	}
+
+	/**
+	 * Edit ONE palette slot's colour directly — the "Your Palette" section's per-swatch write
+	 * path. Mirrors {@see applyPalette}'s own token-writing logic (same paletteMap keys, same
+	 * btn.bgHover derivation for button_background) but scoped to a single slot. Unlike
+	 * applyPalette(), this never sets `this.palette` to a NEW id — it's a manual edit like any
+	 * other, so `this.palette` stays as the origin reference (mirrors template's sticky
+	 * `this.template`) rather than being cleared; {@see originPaletteId} drives the "Modified" hint.
+	 */
+	setPaletteSlotColor( slot: string, color: string, slotLabel: string, gesture = true ) {
+		const keys = this.paletteMap[ slot ];
+		if ( ! keys || ! keys.length ) {
+			return;
+		}
+		const label = `Change ${ slotLabel } color`;
+		if ( gesture ) {
+			this.beginGesture( label );
+		} else {
+			this.discrete( label );
+		}
+		const wasExact = !! this.palette && this.appliedPaletteId() === this.palette;
+		const affected: string[] = [];
+		keys.forEach( ( key ) => {
+			if ( ! this.byKey[ key ] ) {
+				return;
+			}
+			this.tokens[ key ] = { desktop: color };
+			affected.push( key );
+		} );
+		if ( slot === 'button_background' && this.byKey[ 'btn.bgHover' ] ) {
+			this.tokens[ 'btn.bgHover' ] = { desktop: mixHex( color, '#000000', 0.14 ) };
+			affected.push( 'btn.bgHover' );
+		}
+		if ( wasExact && this.appliedPaletteId() !== this.palette ) {
+			const detached = this.palettes.find( ( p ) => p.id === this.palette );
+			if ( detached && this.onPaletteUnlinked ) {
+				this.onPaletteUnlinked( detached.name );
+			}
+		}
 		this.notify( affected );
 	}
 
@@ -529,76 +625,6 @@ class StyleStore {
 		this.template = templateId;
 		this.palette = paletteId || '';
 		this.notify( null );
-	}
-
-	/**
-	 * Begin editing a saved template. Snapshots the current working state (so Cancel — or a
-	 * successful Save — can fully unwind back to it), applies the template's tokens for real
-	 * (exactly like {@see applyTemplate}, so the whole Design tab works normally), and records
-	 * the undo floor so history can't cross back over the edit boundary.
-	 *
-	 * `editableInPlace` is false for built-in and legacy templates — the edit session still
-	 * behaves identically, but `editingTemplate.id` stays null so Save creates a new template
-	 * (a "fork") instead of overwriting the source.
-	 */
-	beginTemplateEdit( tpl: StylePayload[ 'templates' ][ number ], editableInPlace: boolean ) {
-		this.editSnapshot = this.snapshot();
-		this.editPreSessionUndoLength = this.undoStack.length;
-		this.applyTemplate( tpl.id, tpl.tokens, tpl.palette );
-		// Set AFTER applyTemplate() — its own history push is the edit session's bootstrap, not a
-		// user edit within it, so Undo must start disabled, not able to undo the apply itself.
-		this.editUndoFloor = this.undoStack.length;
-		this.editingTemplate = {
-			sourceId: tpl.id,
-			id: editableInPlace ? tpl.id : null,
-			name: tpl.name,
-			from: editableInPlace ? undefined : tpl.name,
-		};
-		this.notify( [] );
-	}
-
-	/**
-	 * Begin the "Create Style Template" session — save whatever is already on the form right now
-	 * as a brand-new template. Unlike {@see beginTemplateEdit}, there is no source and nothing is
-	 * mutated (no reset-then-overlay, no history push); this only opens the same session/banner/
-	 * lock the other two entry points use, around the current working state as-is.
-	 */
-	beginNewTemplate() {
-		this.editSnapshot = this.snapshot();
-		this.editPreSessionUndoLength = this.undoStack.length;
-		this.editUndoFloor = this.undoStack.length;
-		this.editingTemplate = { sourceId: '', id: null, name: '' };
-		this.notify( [] );
-	}
-
-	/** Rename the in-progress template edit's draft name (the banner's name field). */
-	renameEditingTemplate( name: string ) {
-		if ( ! this.editingTemplate ) {
-			return;
-		}
-		this.editingTemplate = { ...this.editingTemplate, name };
-		this.notify( [] );
-	}
-
-	/**
-	 * Exit an active template session, restoring the working state to exactly what it was right
-	 * before the session began. Used for BOTH Cancel and a successful Save — a template session
-	 * must never leave the current form dirty (or its undo history altered) as a side effect,
-	 * regardless of how it ends.
-	 */
-	exitTemplateEdit() {
-		if ( ! this.editSnapshot ) {
-			return;
-		}
-		const snap = this.editSnapshot;
-		this.undoStack.length = Math.min( this.undoStack.length, this.editPreSessionUndoLength );
-		this.redoStack = [];
-		this.editingTemplate = null;
-		this.editSnapshot = null;
-		this.editUndoFloor = 0;
-		this.editPreSessionUndoLength = 0;
-		// Last — its own notify() is the single re-render, reflecting all of the above too.
-		this.applySnapshot( snap );
 	}
 
 	/**
@@ -650,10 +676,18 @@ class StyleStore {
 		return this.userTemplates.concat( this.templates );
 	}
 
-	/** Whether the current token state is exactly what applying `templateTokens` would produce. */
+	/** Whether the current token state is exactly what applying `templateTokens` would produce.
+	 *  While "Apply Theme Style" is on, {@see applyTemplate} deliberately leaves fonts.theme/
+	 *  fonts.family exactly as they were rather than overlaying the template's own values for
+	 *  those two keys — skip them here too, or a template applied fresh would never register as
+	 *  an exact match (always reading "Modified" instead of "Base") purely because of that. */
 	private tokensMatchTemplate( templateTokens: Record< string, DeviceBag > ): boolean {
 		const tpl = templateTokens || {};
+		const skip = this.applyThemeStyle ? [ 'fonts.theme', 'fonts.family' ] : [];
 		return this.schema.every( ( t ) => {
+			if ( skip.indexOf( t.key ) !== -1 ) {
+				return true;
+			}
 			const expected = tpl[ t.key ] !== undefined ? tpl[ t.key ] : { desktop: t.default };
 			return deepEqual( this.tokens[ t.key ], expected );
 		} );
@@ -687,6 +721,12 @@ class StyleStore {
 			return '';
 		}
 		return this.allTemplates().some( ( t ) => t.id === this.template ) ? this.template : '';
+	}
+
+	/** Whether every token is still exactly at its schema default — the true "blank slate",
+	 *  independent of any named template ever having been applied. */
+	isAtSchemaDefault(): boolean {
+		return this.tokensMatchTemplate( {} );
 	}
 
 	/** For a custom template, the id of the built-in template it exactly derives from, or '' if none. */
@@ -743,6 +783,11 @@ class StyleStore {
 	markSaved( record: StyleRecord ) {
 		this.hydrate( record );
 		this.saved = this.snapshot();
+		// The record is now genuinely persisted as v2 — the migration banner (and App's forced
+		// first-save allowance) have both done their job, so this one-time flag retires.
+		if ( this.migration.just_migrated ) {
+			this.migration = { ...this.migration, just_migrated: false };
+		}
 		this.notify( [] );
 	}
 }

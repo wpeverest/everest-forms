@@ -59,8 +59,8 @@ final class FrontendEnqueue {
 			return;
 		}
 
-		$record = self::record( $form_id );
-		if ( ! Engine::is_v2_record( $record ) ) {
+		$record = self::v2_record( $form_id );
+		if ( null === $record ) {
 			return; // Legacy form — the v1 enqueue handles it.
 		}
 
@@ -78,10 +78,11 @@ final class FrontendEnqueue {
 		// 2) Per-form variable block.
 		$css .= Compiler::compile( $record, $form_id );
 
-		// 3) User custom CSS, scoped to the wrapper, emitted last so it can override token output.
-		if ( ! empty( $record['custom_css'] ) ) {
-			$css .= Compiler::scope_custom_css( $record['custom_css'], $form_id );
-		}
+		// Custom CSS is NOT emitted here — it's WP core's own site-wide Additional CSS
+		// (matches v1's actual behavior exactly, verified directly against v1), which WP core
+		// already prints globally on every page via its own wp_custom_css_cb() hook. Scoping it
+		// to this one form here would be wrong twice over: it'd only reach v2 forms, and it'd
+		// stop applying to every OTHER form the way it's supposed to.
 
 		if ( '' !== $css ) {
 			wp_add_inline_style( self::HANDLE, $css );
@@ -156,8 +157,8 @@ final class FrontendEnqueue {
 	 */
 	public static function container_class( $classes, $form_data ) {
 		$form_id = isset( $form_data['id'] ) ? absint( $form_data['id'] ) : 0;
-		$record  = $form_id ? self::record( $form_id ) : array();
-		if ( ! Engine::is_v2_record( $record ) ) {
+		$record  = $form_id ? self::v2_record( $form_id ) : null;
+		if ( null === $record ) {
 			return $classes;
 		}
 		$classes[]  = 'evf-style-v2';
@@ -205,5 +206,27 @@ final class FrontendEnqueue {
 	protected static function record( $form_id ) {
 		$all = get_option( 'everest_forms_styles', array() );
 		return isset( $all[ $form_id ] ) && is_array( $all[ $form_id ] ) ? $all[ $form_id ] : array();
+	}
+
+	/**
+	 * The stored record, only if it's actually v2-shaped, with the SAME `evf_style_v2_record`
+	 * filter {@see RestController::build_payload()} applies for the panel. Without this, an
+	 * addon's backfill (e.g. Multi-Part's `EVFMP_Style_Customizer::backfill_record()`, which
+	 * derives `pagination.*` tokens from the classic `settings.multi_part` values for a form that
+	 * became v2-shaped — via ANY style save — without ever having its own Pagination section
+	 * explicitly saved) only ever ran for the builder panel's display, never for what actually
+	 * rendered on the frontend: `Compiler::compile()` would resolve those missing tokens to their
+	 * schema DEFAULTS instead, silently dropping the form's real pagination colors/type on the
+	 * live site while the panel kept showing them correctly.
+	 *
+	 * @param int $form_id Form id.
+	 * @return array|null The record, or null if this form isn't v2-shaped (caller defers to v1).
+	 */
+	protected static function v2_record( $form_id ) {
+		$record = self::record( $form_id );
+		if ( ! Engine::is_v2_record( $record ) ) {
+			return null;
+		}
+		return apply_filters( 'evf_style_v2_record', $record, $form_id );
 	}
 }

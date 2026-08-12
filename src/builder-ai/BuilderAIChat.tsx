@@ -270,6 +270,12 @@ const BuilderAIChat: React.FC = () => {
 	// in multi-part mode (where the customizer moves up to 62px). Falls back to
 	// null when the addon is not active — AI button then sits at bottom: 22px.
 	const [customizerBottom, setCustomizerBottom] = useState<number | null>(null);
+	// Multi-Part's own "Add New Part" tab bar pins itself to the same bottom-right corner this
+	// button defaults to when the Style Customizer addon isn't installed/active (so there's no
+	// `.everest-forms-designer-icon` to measure from) — without this, the two overlap (EVF-2736).
+	// Measured the same way as customizerBottom (from the real element's edge, not a guessed
+	// constant) since the bar's own height varies with its content/viewport.
+	const [multiPartBarBottom, setMultiPartBarBottom] = useState<number | null>(null);
 	// Show the assistant only on the Builder (Fields) tab — mirror the Style
 	// Customizer button, which lives inside the Fields panel and is hidden when
 	// other tabs (Settings, Integrations, …) are active.
@@ -278,6 +284,7 @@ const BuilderAIChat: React.FC = () => {
 	const inputRef       = useRef<HTMLTextAreaElement>(null);
 
 	useEffect(() => {
+		const builder = document.getElementById('everest-forms-builder');
 		const read = () => {
 			const el = document.querySelector<HTMLElement>('.everest-forms-designer-icon');
 			if (el) {
@@ -286,25 +293,49 @@ const BuilderAIChat: React.FC = () => {
 			} else {
 				setCustomizerBottom(null);
 			}
+			const bar = document.querySelector<HTMLElement>('.everest-forms-multi-part-tabs');
+			if (bar && builder?.classList.contains('multi-part-activated')) {
+				setMultiPartBarBottom(Math.round(window.innerHeight - bar.getBoundingClientRect().top));
+			} else {
+				setMultiPartBarBottom(null);
+			}
 		};
 		read();
-		// Re-read when builder classes change (multi-part toggle adds/removes class).
+		// Re-read when builder classes change (multi-part toggle adds/removes class); polling
+		// alongside as a safety net for the same class of DOM-rewrite edge case noted below.
 		const observer = new MutationObserver(read);
-		const builder = document.getElementById('everest-forms-builder');
 		if (builder) observer.observe(builder, { attributes: true, attributeFilter: ['class'] });
-		return () => observer.disconnect();
+		const interval = window.setInterval(read, 500);
+		return () => {
+			observer.disconnect();
+			window.clearInterval(interval);
+		};
 	}, []);
 
-	// Track the active builder tab. Switching tabs toggles the `active` class on
-	// the Fields panel; we only render the assistant while that panel is active.
+	// Track the active builder tab. Switching tabs toggles the `active` class on the Fields
+	// panel; we only render the assistant while that panel is active. Re-query the panel INSIDE
+	// read() rather than capturing it once — Multi-Part's own tab-rebuild JS (triggered when it's
+	// enabled from Settings) can replace that DOM node entirely, which would otherwise leave a
+	// MutationObserver watching a detached element and freeze `onBuilderTab` forever (EVF-2736:
+	// the assistant never comes back after Settings → enable Multi-Part → Fields). Observing the
+	// stable builder root with `subtree: true` catches that swap either direction — but a
+	// half-second poll runs alongside it as a safety net, since some jQuery-driven DOM rewrites
+	// (full innerHTML replacement outside a single attribute mutation, timing around the rebuild)
+	// have still been reported to slip past the observer in the wild; polling can't miss.
 	useEffect(() => {
-		const panel = document.getElementById('everest-forms-panel-fields');
-		const read = () => setOnBuilderTab(panel ? panel.classList.contains('active') : true);
+		const root = document.getElementById('everest-forms-builder') || document.body;
+		const read = () => {
+			const panel = document.getElementById('everest-forms-panel-fields');
+			setOnBuilderTab(panel ? panel.classList.contains('active') : true);
+		};
 		read();
-		if (!panel) return;
 		const observer = new MutationObserver(read);
-		observer.observe(panel, { attributes: true, attributeFilter: ['class'] });
-		return () => observer.disconnect();
+		observer.observe(root, { attributes: true, attributeFilter: ['class'], subtree: true, childList: true });
+		const interval = window.setInterval(read, 500);
+		return () => {
+			observer.disconnect();
+			window.clearInterval(interval);
+		};
 	}, []);
 
 	// Close the chat panel when navigating away from the Builder tab.
@@ -446,11 +477,13 @@ const BuilderAIChat: React.FC = () => {
 	};
 
 	// Bottom offset of the trigger button.
-	// When the customizer is active we sit 8px above its top edge;
-	// otherwise we share the same bottom baseline (22px).
+	// When the customizer is active we sit 8px above its top edge; otherwise, if Multi-Part's
+	// "Add New Part" bar occupies the usual 22px corner instead, we sit 8px above ITS top edge;
+	// otherwise we share the same plain bottom baseline (22px).
 	const BTN_SIZE     = 55;
 	const BTN_RIGHT    = 22;
-	const BTN_BOTTOM   = customizerBottom !== null ? customizerBottom + BTN_SIZE + 8 : 22;
+	const BASE_BOTTOM  = multiPartBarBottom !== null ? multiPartBarBottom + 8 : 22;
+	const BTN_BOTTOM   = customizerBottom !== null ? customizerBottom + BTN_SIZE + 8 : BASE_BOTTOM;
 	// Modal sits 8px above the top edge of the trigger button.
 	const MODAL_BOTTOM = BTN_BOTTOM + BTN_SIZE + 8;
 

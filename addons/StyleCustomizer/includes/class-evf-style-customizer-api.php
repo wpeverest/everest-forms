@@ -113,6 +113,10 @@ class EVF_Style_Customizer_API {
 	 * @param WP_Customize_Section $section WP_Customize_Section instance.
 	 */
 	public function section_filter( $active, $section ) {
+		// 'custom_css' is WP core's own site-wide Additional CSS section — kept active
+		// deliberately: this IS a global, not per-form, value (verified directly against v1's
+		// actual behavior), and Style Customizer V2's own Custom CSS pane reads/writes this same
+		// global option too, so both editors stay in sync.
 		if ( in_array( $section->id, array( 'everest_forms_templates', 'custom_css' ), true ) || in_array( $section->id, array_keys( apply_filters( 'everest_forms_style_customizer_sections', array() ) ), true ) ) {
 			return $active;
 		}

@@ -1,7 +1,7 @@
 [
 	{
 		"id": "default",
-		"name": "Default",
+		"name": "Clearline",
 		"image": "",
 		"palette": "",
 		"tokens": {
@@ -3265,7 +3265,7 @@
 				"desktop": "#dbdbdb"
 			},
 			"btn.colorHover": {
-				"desktop": "#ffffff"
+				"desktop": "#351410"
 			},
 			"btn.borderCHover": {
 				"desktop": "#5c4033"
