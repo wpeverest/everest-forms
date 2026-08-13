@@ -225,7 +225,7 @@ class EVF_Smart_Tags {
 				$mixed_field_id = explode( '_', $field_id );
 				$uploads        = wp_upload_dir();
 
-				if ( 'fullname' !== $field_id && 'email' !== $field_id && 'subject' !== $field_id && 'message' !== $field_id ) {
+				if ( count( $mixed_field_id ) > 1 && 'fullname' !== $field_id && 'email' !== $field_id && 'subject' !== $field_id && 'message' !== $field_id ) {
 					$value = isset( $fields[ $mixed_field_id[1] ]['value'] ) && ! empty( $fields[ $mixed_field_id[1] ]['value'] ) ? evf_sanitize_textarea_field( $fields[ $mixed_field_id[1] ]['value'] ) : '';
 				} else {
 					$value = isset( $fields[ $field_id ]['value'] ) && ! empty( $fields[ $field_id ]['value'] ) ? evf_sanitize_textarea_field( $fields[ $field_id ]['value'] ) : '';
