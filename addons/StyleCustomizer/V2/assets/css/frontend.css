@@ -171,8 +171,7 @@
 .everest-forms .evf-style-v2 input[type='file'],
 .everest-forms .evf-style-v2 textarea,
 .everest-forms .evf-style-v2 select,
-.everest-forms .evf-style-v2 canvas.evf-signature-canvas,
-.everest-forms .evf-style-v2 .StripeElement {
+.everest-forms .evf-style-v2 canvas.evf-signature-canvas {
 	color: var( --evf-input-color );
 	font-size: var( --evf-input-size );
 	text-align: var( --evf-input-align );
@@ -197,8 +196,7 @@
 
 .everest-forms .evf-style-v2 input:focus,
 .everest-forms .evf-style-v2 textarea:focus,
-.everest-forms .evf-style-v2 select:focus,
-.everest-forms .evf-style-v2 .StripeElement--focus {
+.everest-forms .evf-style-v2 select:focus {
 	border-color: var( --evf-input-focus-border );
 }
 

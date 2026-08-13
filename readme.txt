@@ -345,9 +345,9 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Changelog ==
 
-= 3.6.0       - xx-xx-2026
+= 3.6.0       - 13-08-2026
 * Enhance 	  - Revamped Style Customizer.
-* Fix 		  - "array given" warning in single entry view when a field value (e.g. coupon data) is left as an array by a deactivated addon.
+* Fix 		  - PHP warning in single entry view for coupon field values when the Coupons addon is deactivated.
 * Fix 		  - Integration "Remove Authentication" silently failing with "Connection missing" for Google Drive, Dropbox, Google Calendar, OneDrive, and Amazon S3.
 
 = 3.5.3       - 04-08-2026

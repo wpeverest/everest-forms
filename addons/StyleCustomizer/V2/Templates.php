@@ -165,6 +165,34 @@ final class Templates {
 	}
 
 	/**
+	 * Raw v1 template `data` for a legacy slug — the same "unsaved setting falls back to the
+	 * active template's control default" values v1's WP_Customize_Setting resolution feeds
+	 * {@see EVF_Style_Customizer_API::compile_scss()}, so a template's own colours/background
+	 * can be live on a form's frontend without ever being persisted to its own
+	 * `everest_forms_styles` record. {@see Migrator::migrate_record()} merges this in before
+	 * mapping so the panel sees the same resolved values the frontend already renders.
+	 *
+	 * Checks the live `evf_style_templates` option first (built-ins plus any admin-saved custom
+	 * template), falling back to the bundled JSON if that option was never seeded.
+	 *
+	 * @param string $slug Legacy template slug.
+	 * @return array Template `data`, or an empty array if the slug is empty/unknown.
+	 */
+	public static function legacy_template_data( $slug ) {
+		$slug = (string) $slug;
+		if ( '' === $slug ) {
+			return array();
+		}
+		$raw    = get_option( 'evf_style_templates', '' );
+		$stored = is_string( $raw ) ? json_decode( $raw, true ) : $raw;
+		if ( is_array( $stored ) && isset( $stored[ $slug ]['data'] ) && is_array( $stored[ $slug ]['data'] ) ) {
+			return $stored[ $slug ]['data'];
+		}
+		$bundled = self::load();
+		return isset( $bundled[ $slug ]['data'] ) && is_array( $bundled[ $slug ]['data'] ) ? $bundled[ $slug ]['data'] : array();
+	}
+
+	/**
 	 * User-created templates ("save current styles as a template"), newest first, plus any
 	 * legacy custom template carried over (see {@see legacy_custom_templates()}).
 	 *
