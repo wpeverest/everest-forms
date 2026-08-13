@@ -477,6 +477,41 @@ ok( $fi2['tokens']['file.icon']['desktop'] === '#00ff00', 'explicit file_upload_
 ok( $fi2['tokens']['choice.checked']['desktop'] === '#ff00ff', 'explicit checkbox_radio_checked_color wins over palette (EVF-2669)' );
 ok( $fi2['tokens']['input.focusBorder']['desktop'] === '#0000ff', 'explicit field_styles_border_focus_color wins over palette (EVF-2669)' );
 
+// EVF-2746: v1's WP_Customize_Setting resolves any prop the user never explicitly saved to the
+// active template's own control default — so a bundled template's background image/button colours
+// render live on the v1 frontend without ever being persisted on the form's own record. A legacy
+// record that only selects a template (no explicit overrides) must still migrate those values,
+// mirroring the real "layout-five" bundled template (background image, background_preset=default,
+// no color_palette — button colour only lives in its typography.* keys).
+$tpl_only = Migrator::migrate_record( array( 'template' => 'layout-five' ) );
+ok( false !== strpos( $tpl_only['tokens']['wrap.bgImage']['desktop'], 'underline-aura-bg.png' ), 'template-only record → wrap.bgImage from the template default (EVF-2746)' );
+ok( $tpl_only['tokens']['wrap.bgPreset']['desktop'] === 'default', 'template-only record → wrap.bgPreset from the template default (EVF-2746)' );
+ok( $tpl_only['tokens']['btn.bg']['desktop'] === '#26262e', 'template-only record → btn.bg from the template default (EVF-2746)' );
+ok( $tpl_only['tokens']['btn.color']['desktop'] === '#ffffff', 'template-only record → btn.color from the template default (EVF-2746)' );
+
+// An explicit legacy value — whether a direct prop or a real palette — still wins over the
+// template's own default, exactly like every other fallback in this file.
+$tpl_override = Migrator::migrate_record(
+	array(
+		'template'       => 'layout-five',
+		'form_container' => array( 'background_image' => 'https://example.com/custom-bg.png' ),
+		'color_palette'  => array( 'color_1' => array( 'button_background' => '#123456', 'button_text' => '#abcdef' ) ),
+	)
+);
+ok( $tpl_override['tokens']['wrap.bgImage']['desktop'] === 'https://example.com/custom-bg.png', 'explicit background_image wins over the template default (EVF-2746)' );
+ok( $tpl_override['tokens']['btn.bg']['desktop'] === '#123456', 'explicit palette button_background wins over the template default (EVF-2746)' );
+ok( $tpl_override['tokens']['btn.color']['desktop'] === '#abcdef', 'explicit palette button_text wins over the template default (EVF-2746)' );
+
+// No template selected at all → nothing to fall back to, unaffected (regression safety).
+$no_tpl = Migrator::migrate_record( array( 'form_container' => array( 'width' => '80' ) ) );
+ok( ! isset( $no_tpl['tokens']['wrap.bgImage'] ), 'no template selected → wrap.bgImage stays unset (EVF-2746)' );
+ok( ! isset( $no_tpl['tokens']['btn.bg'] ), 'no template selected → btn.bg stays unset (EVF-2746)' );
+
+// Unknown/garbage template slug → no matching data, no fatal, everything else still migrates.
+$bad_tpl = Migrator::migrate_record( array( 'template' => 'not-a-real-slug', 'form_container' => array( 'width' => '80' ) ) );
+ok( $bad_tpl['tokens']['wrap.width']['desktop'] === '80', 'unknown template slug does not block the rest of the record from migrating (EVF-2746)' );
+ok( ! isset( $bad_tpl['tokens']['wrap.bgImage'] ), 'unknown template slug → no invented background image (EVF-2746)' );
+
 // EVF-2670: v1's Image Position is a two-axis background_position_x/y grid; v2's wrap.bgPosition is
 // a single 5-value enum. The old mapping read x ONLY, so a form customized on the y axis alone (the
 // common case: x left at its 'center' default, y set to 'top'/'bottom') silently migrated to

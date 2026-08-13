@@ -34,6 +34,18 @@ final class Migrator {
 
 		$legacy = self::normalize_legacy_shape( $legacy );
 
+		// A prop the user never explicitly saved still renders correctly on the v1 frontend —
+		// WP_Customize_Setting resolves it to the active template's own control default. Replicate
+		// that fallback here (template values as the base, explicit legacy values still win) or a
+		// template's baked-in background/colours are invisible to the migrator even though they're
+		// live on the frontend.
+		if ( ! empty( $legacy['template'] ) ) {
+			$template_defaults = Templates::legacy_template_data( $legacy['template'] );
+			if ( ! empty( $template_defaults ) ) {
+				$legacy = array_replace_recursive( $template_defaults, $legacy );
+			}
+		}
+
 		$tokens = array();
 
 		foreach ( self::map() as $rule ) {
