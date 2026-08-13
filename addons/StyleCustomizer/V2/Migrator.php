@@ -65,28 +65,27 @@ final class Migrator {
 		// Palette-derived tokens go first so an explicit legacy value can override them.
 		$tokens = array_merge( self::migrate_palette( $legacy ), $tokens );
 
-		// Fallback for templates that carry palette colours in typography keys instead of
-		// color_palette; not extended to wrap.bg/label — some templates hold stray values there.
-		foreach ( array(
-			'input.bg'  => 'field_styles_background_color',
-			'btn.bg'    => 'button_background_color',
-			'btn.color' => 'button_font_color',
-		) as $token => $legacy_key ) {
-			if ( ! isset( $tokens[ $token ] ) && ! empty( $legacy['typography'][ $legacy_key ] ) ) {
-				$tokens[ $token ] = self::apply_transform( 'pass', $legacy['typography'][ $legacy_key ] );
-			}
-		}
-
-		// A background image needs its own label colour regardless of palette.
-		if ( ! isset( $tokens['label.color'] ) && ! empty( $legacy['form_container']['background_image'] ) && ! empty( $legacy['typography']['field_labels_font_color'] ) ) {
-			$tokens['label.color'] = self::apply_transform( 'pass', $legacy['typography']['field_labels_font_color'] );
-		}
+		// NOTE: `typography.button_background_color`, `button_font_color`,
+		// `field_styles_background_color` and `field_labels_font_color` are NOT real v1 settings —
+		// no WP_Customize control is ever registered for them (confirmed live: applying a bundled
+		// template sets `form_container.background_image`/`background_preset` and
+		// `typography.button_hover_background_color` as real settings, but
+		// `wp.customize('everest_forms_styles[id][typography][button_background_color]')` etc.
+		// return no setting object at all). The bundled templates JSON carries stray values under
+		// these keys, but v1 can never actually apply them — a template like "layout-five" with no
+		// palette renders its button as WordPress's plain default (`#0073aa`/`#ffffff`), not the
+		// template's own colours, and label text stays `#333333` regardless of the background image.
+		// A previous fix (EVF-2668) migrated these dead keys into real v2 tokens, which was itself
+		// the bug: it showed the v2 panel a colour v1's frontend never rendered. Removed — the
+		// schema defaults above already equal v1's true no-palette output exactly (verified live).
 
 		// v1 never coupled these to the palette; re-assert each at its schema default unless customized.
 		foreach ( array(
 			'input.focusBorder' => 'field_styles_border_focus_color',
 			'choice.checked'    => 'checkbox_radio_checked_color',
 			'file.icon'         => 'file_upload_icon_color',
+			'title.color'       => 'section_title_font_color',
+			'desc.color'        => 'field_description_font_color',
 		) as $token => $legacy_key ) {
 			if ( empty( $legacy['typography'][ $legacy_key ] ) ) {
 				$default = Schema::get( $token );

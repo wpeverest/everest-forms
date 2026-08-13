@@ -439,17 +439,29 @@ ok( $dv2['tokens']['sub.color']['desktop'] === '#cccccc', 'sub.color from PALETT
 ok( $dv2['tokens']['desc.color']['desktop'] === '#123456', 'desc.color IS typography-driven in v1 (kept)' );
 ok( $dv2['tokens']['title.color']['desktop'] === '#654321', 'title.color IS typography-driven in v1 (kept)' );
 
-// EVF-2668: bundled templates carry their palette-driven fills in typography.* (keys v1 rendered
-// only via the palette) with no color_palette of their own; migrate field bg + button bg/text to
-// input.bg / btn.bg / btn.color when no palette provides them, but never over a real palette value.
-$fbg1 = Migrator::migrate_record( array( 'typography' => array( 'field_styles_background_color' => '#edeef5', 'button_background_color' => '#26262e', 'button_font_color' => '#ffffff' ) ) );
-ok( $fbg1['tokens']['input.bg']['desktop'] === '#edeef5', 'field_styles_background_color → input.bg when no palette (EVF-2668)' );
-ok( $fbg1['tokens']['btn.bg']['desktop'] === '#26262e', 'button_background_color → btn.bg when no palette (EVF-2668)' );
-ok( $fbg1['tokens']['btn.color']['desktop'] === '#ffffff', 'button_font_color → btn.color when no palette (EVF-2668)' );
+// --- Regression: field-bg/button colour are palette-driven, NEVER typography (scss.php:209,373-375,665). ---
+// An EARLIER fix (EVF-2668) migrated typography.field_styles_background_color/button_background_color/
+// button_font_color onto input.bg/btn.bg/btn.color whenever no palette provided a value — on the same
+// false premise as the label/sublabel bug above: no WP_Customize control is ever registered for these
+// three keys either (confirmed live against a real WP_Customize session: applying a bundled template
+// sets form_container.background_image and typography.button_hover_background_color as real settings,
+// but wp.customize('...[typography][button_background_color]') returns no setting object at all). A
+// template like "layout-five" applied with no palette renders its button as WordPress's plain default
+// (#0073aa/#ffffff), matching the btn.bg/btn.color schema defaults exactly — NOT the template's own
+// #26262e/#ffffff typography values. EVF-2668's fix was itself the bug: it showed the v2 panel a
+// button/field colour v1's frontend never rendered. The dead keys must now be ignored, same as
+// field_labels_font_color/field_sublabels_font_color above.
+// Unset (not an explicit re-assert) is correct here — same as btn.bg/btn.color already do for any
+// other unmigrated form, the schema default is filled in downstream at store-hydration time, not by
+// the migrator itself.
+$fbg1 = Migrator::migrate_record( array( 'typography' => array( 'field_styles_background_color' => '#edeef5', 'button_background_color' => '#26262e', 'button_font_color' => '#123456' ) ) );
+ok( ! isset( $fbg1['tokens']['input.bg'] ), 'dead field_styles_background_color ignored → input.bg left unset, not the typography value' );
+ok( ! isset( $fbg1['tokens']['btn.bg'] ), 'dead button_background_color ignored → btn.bg left unset (schema default applies downstream, matching real v1 no-palette rendering)' );
+ok( ! isset( $fbg1['tokens']['btn.color'] ), 'dead button_font_color ignored → btn.color left unset' );
 $fbg2 = Migrator::migrate_record( array( 'typography' => array( 'field_styles_background_color' => '#ffffff', 'button_background_color' => '#26262e', 'button_font_color' => '#eeeeee' ), 'color_palette' => array( 'color_2' => array( 'field_background' => '#222222', 'button_background' => '#333333', 'button_text' => '#444444' ) ) ) );
-ok( $fbg2['tokens']['input.bg']['desktop'] === '#222222', 'palette field_background wins over typography field bg (EVF-2668)' );
-ok( $fbg2['tokens']['btn.bg']['desktop'] === '#333333', 'palette button_background wins over typography button bg (EVF-2668)' );
-ok( $fbg2['tokens']['btn.color']['desktop'] === '#444444', 'palette button_text wins over typography button font color (EVF-2668)' );
+ok( $fbg2['tokens']['input.bg']['desktop'] === '#222222', 'palette field_background still wins when present (independent of the dead typography key)' );
+ok( $fbg2['tokens']['btn.bg']['desktop'] === '#333333', 'palette button_background still wins when present' );
+ok( $fbg2['tokens']['btn.color']['desktop'] === '#444444', 'palette button_text still wins when present' );
 
 // EVF-2669: file.icon, choice.checked and input.focusBorder each rendered from their OWN independent
 // v1 setting unconditionally (scss.php:172,187,460) — never from the palette, unlike button_background
@@ -477,17 +489,46 @@ ok( $fi2['tokens']['file.icon']['desktop'] === '#00ff00', 'explicit file_upload_
 ok( $fi2['tokens']['choice.checked']['desktop'] === '#ff00ff', 'explicit checkbox_radio_checked_color wins over palette (EVF-2669)' );
 ok( $fi2['tokens']['input.focusBorder']['desktop'] === '#0000ff', 'explicit field_styles_border_focus_color wins over palette (EVF-2669)' );
 
+// Same EVF-2669 pattern, found by a full v1-vs-v2 property audit: section-title and field-description
+// colour are ALSO their own independent v1 settings (scss.php:196,190) — never palette-coupled — but
+// were missing from the re-assert block above, so a palette-only legacy record leaked the palette's
+// field_label/field_sublabel colour onto them instead of their real schema default.
+$fi3 = Migrator::migrate_record(
+	array(
+		'color_palette' => array(
+			'color_4' => array( 'field_label' => '#eeeeee', 'field_sublabel' => '#cccccc' ),
+		),
+	)
+);
+ok( $fi3['tokens']['title.color']['desktop'] === '#575757', 'no explicit title colour → schema default, NOT palette field_label' );
+ok( $fi3['tokens']['desc.color']['desktop'] === '#575757', 'no explicit description colour → schema default, NOT palette field_sublabel' );
+ok( $fi3['tokens']['label.color']['desktop'] === '#eeeeee', 'label.color itself STAYS palette-derived (v1 always read it from the palette)' );
+ok( $fi3['tokens']['sub.color']['desktop'] === '#cccccc', 'sub.color itself STAYS palette-derived (v1 always read it from the palette)' );
+$fi4 = Migrator::migrate_record(
+	array(
+		'typography'    => array(
+			'section_title_font_color'   => '#00ff00',
+			'field_description_font_color' => '#ff00ff',
+		),
+		'color_palette' => array( 'color_4' => array( 'field_label' => '#eeeeee', 'field_sublabel' => '#cccccc' ) ),
+	)
+);
+ok( $fi4['tokens']['title.color']['desktop'] === '#00ff00', 'explicit section_title_font_color wins over palette' );
+ok( $fi4['tokens']['desc.color']['desktop'] === '#ff00ff', 'explicit field_description_font_color wins over palette' );
+
 // EVF-2746: v1's WP_Customize_Setting resolves any prop the user never explicitly saved to the
-// active template's own control default — so a bundled template's background image/button colours
-// render live on the v1 frontend without ever being persisted on the form's own record. A legacy
-// record that only selects a template (no explicit overrides) must still migrate those values,
-// mirroring the real "layout-five" bundled template (background image, background_preset=default,
-// no color_palette — button colour only lives in its typography.* keys).
+// active template's own control default — so a bundled template's background image renders live on
+// the v1 frontend without ever being persisted on the form's own record (confirmed live: applying a
+// template sets the real form_container.background_image/background_preset settings). A legacy
+// record that only selects a template (no explicit overrides) must still migrate those. Button
+// colour is NOT part of this mechanism — no control exists for it outside the palette (see the
+// dead-key regression block above) — so it correctly stays at its schema default here, matching what
+// v1 itself renders for a templated form with no palette.
 $tpl_only = Migrator::migrate_record( array( 'template' => 'layout-five' ) );
 ok( false !== strpos( $tpl_only['tokens']['wrap.bgImage']['desktop'], 'underline-aura-bg.png' ), 'template-only record → wrap.bgImage from the template default (EVF-2746)' );
 ok( $tpl_only['tokens']['wrap.bgPreset']['desktop'] === 'default', 'template-only record → wrap.bgPreset from the template default (EVF-2746)' );
-ok( $tpl_only['tokens']['btn.bg']['desktop'] === '#26262e', 'template-only record → btn.bg from the template default (EVF-2746)' );
-ok( $tpl_only['tokens']['btn.color']['desktop'] === '#ffffff', 'template-only record → btn.color from the template default (EVF-2746)' );
+ok( ! isset( $tpl_only['tokens']['btn.bg'] ), 'template-only record, no palette → btn.bg left unset (schema default applies downstream, matching real v1 rendering)' );
+ok( ! isset( $tpl_only['tokens']['btn.color'] ), 'template-only record, no palette → btn.color left unset, matching real v1 rendering' );
 
 // An explicit legacy value — whether a direct prop or a real palette — still wins over the
 // template's own default, exactly like every other fallback in this file.
