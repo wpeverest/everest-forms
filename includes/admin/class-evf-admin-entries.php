@@ -460,14 +460,17 @@ class EVF_Admin_Entries {
 	/**
 	 * Set entry status.
 	 *
-	 * @param int    $entry_id Entry ID.
-	 * @param string $status   Entry status.
+	 * @param int    $entry_id       Entry ID.
+	 * @param string $status         Entry status.
+	 * @param bool   $is_bulk_action Whether this status change came from a bulk action. Determined by the
+	 *                               caller (which knows its own context) rather than sniffed from request
+	 *                               data, since an unauthenticated/un-nonce-verified query var is not a
+	 *                               reliable signal.
 	 */
-	public static function update_status( $entry_id, $status = 'publish' ) {
+	public static function update_status( $entry_id, $status = 'publish', $is_bulk_action = false ) {
 		global $wpdb;
 
-		$update         = false;
-		$is_bulk_action = isset( $_GET['bulk_action'] ) && 'Apply' == $_GET['bulk_action'] ? true : false; // phpcs:ignore WordPress.Security.NonceVerification
+		$update = false;
 		if ( in_array( $status, array( 'star', 'unstar' ), true ) ) {
 			$update = $wpdb->update(
 				$wpdb->prefix . 'evf_entries',
@@ -511,6 +514,10 @@ class EVF_Admin_Entries {
 			$name       = '';
 
 			foreach ( $entry_meta as $key => $value ) {
+				if ( preg_match( '/^name/', $key ) ) {
+					$name = $value;
+				}
+
 				if ( preg_match( '/^first_name_/', $key ) ) {
 					$first_name = $value;
 				}
@@ -522,20 +529,20 @@ class EVF_Admin_Entries {
 				if ( preg_match( '/^email/', $key ) ) {
 					$email = $value;
 				}
-
-				if ( '' === $name ) {
-					if ( ! empty( $first_name ) && ! empty( $last_name ) ) {
-						$name = $first_name . ' ' . $last_name;
-					} elseif ( ! empty( $first_name ) ) {
-						$name = $first_name;
-					} else {
-						$name = $last_name;
-					}
-				}
-
-				$subject = apply_filters( 'everest_forms_entry_submission_approval_subject', self::get_entry_status_email_subject( 'approval' ) );
-				$message = apply_filters( 'everest_forms_entry_approval_message', self::get_entry_status_email_message( 'approval', $name, $entry_date, $site_name ), $name, $entry_date, $site_name );
 			}
+
+			if ( '' === $name ) {
+				if ( ! empty( $first_name ) && ! empty( $last_name ) ) {
+					$name = $first_name . ' ' . $last_name;
+				} elseif ( ! empty( $first_name ) ) {
+					$name = $first_name;
+				} else {
+					$name = $last_name;
+				}
+			}
+
+			$subject = apply_filters( 'everest_forms_entry_submission_approval_subject', self::get_entry_status_email_subject( 'approval' ) );
+			$message = apply_filters( 'everest_forms_entry_approval_message', self::get_entry_status_email_message( 'approval', $name, $entry_date, $site_name ), $name, $entry_date, $site_name );
 
 			if ( ! $is_bulk_action && self::is_entry_status_email_enabled( 'approval' ) ) {
 				$email_obj = new EVF_Emails();
@@ -559,34 +566,40 @@ class EVF_Admin_Entries {
 			$last_name  = '';
 			$email      = '';
 			$site_name  = get_option( 'blogname', '' );
+			$subject    = '';
+			$message    = '';
 			$name       = '';
 
 			foreach ( $entry_meta as $key => $value ) {
-				if ( preg_match( '/^first_name/', $key ) ) {
+				if ( preg_match( '/^name/', $key ) ) {
+					$name = $value;
+				}
+
+				if ( preg_match( '/^first_name_/', $key ) ) {
 					$first_name = $value;
 				}
 
-				if ( preg_match( '/^last_name/', $key ) ) {
+				if ( preg_match( '/^last_name_/', $key ) ) {
 					$last_name = $value;
 				}
 
 				if ( preg_match( '/^email/', $key ) ) {
 					$email = $value;
 				}
-
-				if ( '' === $name ) {
-					if ( ! empty( $first_name ) && ! empty( $last_name ) ) {
-						$name = $first_name . ' ' . $last_name;
-					} elseif ( ! empty( $first_name ) ) {
-						$name = $first_name;
-					} else {
-						$name = $last_name;
-					}
-				}
-
-				$subject = apply_filters( 'everest_forms_entry_submission_denial_subject', self::get_entry_status_email_subject( 'denial' ) );
-				$message = apply_filters( 'everest_forms_entry_denial_message', self::get_entry_status_email_message( 'denial', $name, $entry_date, $site_name ), $name, $entry_date, $site_name );
 			}
+
+			if ( '' === $name ) {
+				if ( ! empty( $first_name ) && ! empty( $last_name ) ) {
+					$name = $first_name . ' ' . $last_name;
+				} elseif ( ! empty( $first_name ) ) {
+					$name = $first_name;
+				} else {
+					$name = $last_name;
+				}
+			}
+
+			$subject = apply_filters( 'everest_forms_entry_submission_denial_subject', self::get_entry_status_email_subject( 'denial' ) );
+			$message = apply_filters( 'everest_forms_entry_denial_message', self::get_entry_status_email_message( 'denial', $name, $entry_date, $site_name ), $name, $entry_date, $site_name );
 
 			if ( ! $is_bulk_action && self::is_entry_status_email_enabled( 'denial' ) ) {
 				$email_obj = new EVF_Emails();

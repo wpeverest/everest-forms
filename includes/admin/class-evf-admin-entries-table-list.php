@@ -895,7 +895,7 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 					break;
 				case 'approved':
 					foreach ( $entry_ids as $entry_id ) {
-						if ( EVF_Admin_Entries::update_status( $entry_id, $doaction ) ) {
+						if ( EVF_Admin_Entries::update_status( $entry_id, $doaction, true ) ) {
 							$admin_email = esc_attr( get_bloginfo( 'admin_email' ) );
 							$header      = "Reply-To: {$admin_email} \r\n";
 							$header     .= 'Content-Type: text/html; charset=UTF-8';
@@ -959,7 +959,7 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 					break;
 				case 'denied':
 					foreach ( $entry_ids as $entry_id ) {
-						if ( EVF_Admin_Entries::update_status( $entry_id, $doaction ) ) {
+						if ( EVF_Admin_Entries::update_status( $entry_id, $doaction, true ) ) {
 							$admin_email = esc_attr( get_bloginfo( 'admin_email' ) );
 							$header      = "Reply-To: {$admin_email} \r\n";
 							$header     .= 'Content-Type: text/html; charset=UTF-8';
