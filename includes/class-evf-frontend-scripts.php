@@ -300,6 +300,29 @@ class EVF_Frontend_Scripts {
 
 				self::enqueue_style( $handle, $args['src'], $args['deps'], $args['version'], $args['media'], $args['has_rtl'] );
 			}
+
+			self::maybe_print_late_styles( array_keys( $enqueue_styles ) );
+		}
+	}
+
+	/**
+	 * Ensure the given style handle(s) actually get printed even when they're enqueued after
+	 * wp_head's style flush has already run -- e.g. a page builder, widget, or archive listing
+	 * renders the form outside what current_page_has_form() can detect in advance.
+	 *
+	 * wp_enqueue_style() alone is only picked up automatically by that flush. Anything enqueued
+	 * afterward is, depending on theme type and WordPress version, either silently dropped,
+	 * hoisted into <head> (WP 6.9+, classic themes only), or printed as a footer flash of
+	 * unstyled content. Printing immediately here removes that dependency entirely and keeps
+	 * any such flash as short as possible, since the stylesheet request starts right where the
+	 * form itself renders instead of waiting for the end of the page.
+	 *
+	 * @param string|string[] $handles Style handle(s) to ensure get printed.
+	 * @return void
+	 */
+	public static function maybe_print_late_styles( $handles ) {
+		if ( did_action( 'wp_print_styles' ) ) {
+			wp_print_styles( (array) $handles );
 		}
 	}
 

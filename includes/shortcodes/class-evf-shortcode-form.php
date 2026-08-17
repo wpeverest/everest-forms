@@ -973,6 +973,7 @@ class EVF_Shortcode_Form {
 		// Load the international telephone input styles only when the form has a phone field.
 		if ( isset( $atts['id'] ) && evf_is_field_exists( $atts['id'], 'phone' ) ) {
 			wp_enqueue_style( 'jquery-intl-tel-input' );
+			EVF_Frontend_Scripts::maybe_print_late_styles( 'jquery-intl-tel-input' );
 		}
 
 		// Add custom CSS/JS
