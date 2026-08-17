@@ -67,7 +67,7 @@
     "prettier": "3.4.0",
     "prettier-plugin-organize-imports": "4.1.0",
     "sass": "1.78.0",
-    "sass-loader": "16.0.6",
+    "sass-loader": "16.0.8",
     "style-loader": "4.0.0",
     "stylelint": "14.11.0",
     "stylelint-config-wordpress": "17.0.0",
