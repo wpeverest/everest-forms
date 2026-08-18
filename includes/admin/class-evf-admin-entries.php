@@ -514,7 +514,7 @@ class EVF_Admin_Entries {
 			$name       = '';
 
 			foreach ( $entry_meta as $key => $value ) {
-				if ( preg_match( '/^name/', $key ) ) {
+				if ( preg_match( '/^name_/', $key ) ) {
 					$name = $value;
 				}
 
@@ -571,7 +571,7 @@ class EVF_Admin_Entries {
 			$name       = '';
 
 			foreach ( $entry_meta as $key => $value ) {
-				if ( preg_match( '/^name/', $key ) ) {
+				if ( preg_match( '/^name_/', $key ) ) {
 					$name = $value;
 				}
 

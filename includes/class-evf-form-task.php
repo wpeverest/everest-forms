@@ -1907,7 +1907,7 @@ class EVF_Form_Task {
 		$message                     = '';
 
 		foreach ( $entry_meta as $key => $value ) {
-			if ( preg_match( '/^name/', $key ) ) {
+			if ( preg_match( '/^name_/', $key ) ) {
 				$name = $value;
 			}
 
@@ -1981,6 +1981,14 @@ class EVF_Form_Task {
 		$evf_denial_key           = 'denial_token_' . $evf_admin_entry_id;
 		$evf_admin_expected_token = isset( $evf_admin_entry_saved_token[ $evf_denial_key ] ) ? $evf_admin_entry_saved_token[ $evf_denial_key ] : '';
 
+		// Fall back to the pre-existing shared approval token for deny links sent before entries got a separate denial token.
+		if ( '' === $evf_admin_expected_token ) {
+			$legacy_key               = 'approval_token_' . $evf_admin_entry_id;
+			$evf_admin_expected_token = isset( $evf_admin_entry_saved_token[ $legacy_key ] )
+				? $evf_admin_entry_saved_token[ $legacy_key ]
+				: '';
+		}
+
 		// Bind the token to the specific entry it was issued for instead of accepting any valid token in the option.
 		if ( '' === $evf_admin_expected_token || ! hash_equals( $evf_admin_expected_token, $evf_admin_denial_entry_token_raw ) ) {
 			wp_die( esc_html__( 'This denial link is invalid or has already been used.', 'everest-forms' ), '', array( 'response' => 403, 'back_link' => true ) );
@@ -1998,7 +2006,7 @@ class EVF_Form_Task {
 		$message                  = '';
 
 		foreach ( $entry_meta as $key => $value ) {
-			if ( preg_match( '/^name/', $key ) ) {
+			if ( preg_match( '/^name_/', $key ) ) {
 				$name = $value;
 			}
 
@@ -2057,19 +2065,19 @@ class EVF_Form_Task {
 		$evf_denial_key                 = 'denial_token_' . $entry_id;
 
 		// Checks if admin approval entry is enabled.
-		if ( ! isset( $evf_admin_entry_enable ) ) {
+		if ( 'yes' !== $evf_admin_entry_enable ) {
 			return;
-		} else {
-			// Separate tokens for approve and deny so one link can't be used to perform the other action.
-			$evf_new_token = array_merge(
-				$evf_admin_entry_approval_token,
-				array(
-					$evf_approval_key => evf_get_random_string( 20 ),
-					$evf_denial_key   => evf_get_random_string( 20 ),
-				)
-			);
-			update_option( 'everest_forms_admin_entry_approval_token', $evf_new_token );
 		}
+
+		// Separate tokens for approve and deny so one link can't be used to perform the other action.
+		$evf_new_token = array_merge(
+			$evf_admin_entry_approval_token,
+			array(
+				$evf_approval_key => evf_get_random_string( 20 ),
+				$evf_denial_key   => evf_get_random_string( 20 ),
+			)
+		);
+		update_option( 'everest_forms_admin_entry_approval_token', $evf_new_token );
 	}
 
 	/**
