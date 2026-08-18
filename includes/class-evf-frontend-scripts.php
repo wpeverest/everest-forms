@@ -256,10 +256,10 @@ class EVF_Frontend_Scripts {
 		self::register_scripts();
 		self::register_styles();
 
-		// Enqueue dashicons.
-		wp_enqueue_style( 'dashicons' );
-
 		if ( self::current_page_has_form() ) {
+			// Dashicons is only used for the form-selector block's notice icon.
+			wp_enqueue_style( 'dashicons' );
+
 			self::enqueue_frontend_styles();
 		}
 	}
