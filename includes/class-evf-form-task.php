@@ -1391,6 +1391,9 @@ class EVF_Form_Task {
 
 		$notifications = isset( $form_data['settings']['email'] ) ? $form_data['settings']['email'] : array();
 
+		// Connections whose attachments still need cleaning up once every notification is sent.
+		$cleanup_connections = array();
+
 		foreach ( $notifications as $connection_id => $notification ) :
 
 			// Don't proceed if email notification is not enabled.
@@ -1455,10 +1458,20 @@ class EVF_Form_Task {
 				$emails->send( trim( $address ), $email['subject'], $email['message'], '', $connection_id );
 			}
 
-			if ( isset( $attachment ) ) {
-				do_action( 'everest_forms_remove_attachments_after_send_email', $attachment, $fields, $form_data, 'entry-email', $connection_id, $entry_id );
-			}
+			$cleanup_connections[] = $connection_id;
 			endforeach;
+
+		/*
+		 * Clean up the attachment files only after every notification has been sent.
+		 * Cleaning up inside the loop deletes the uploaded files (when entry storage is
+		 * disabled) and the generated CSV while later notifications are still pending,
+		 * so those notifications go out without their attachments.
+		 */
+		if ( isset( $attachment ) ) {
+			foreach ( $cleanup_connections as $cleanup_connection_id ) {
+				do_action( 'everest_forms_remove_attachments_after_send_email', $attachment, $fields, $form_data, 'entry-email', $cleanup_connection_id, $entry_id );
+			}
+		}
 	}
 
 	/**
