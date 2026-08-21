@@ -267,7 +267,9 @@ class EVF_Frontend_Scripts {
 	/**
 	 * Whether the current request is known to render an Everest Forms form.
 	 *
-	 * Scans the main post content for the `[everest_form]` shortcode or the form-selector block.
+	 * Scans the main post content for the `[everest_form]` shortcode, the form-selector block,
+	 * or any other registered shortcode sharing the `everest_form` tag prefix (addons such as
+	 * user registration/login use their own shortcode tags, e.g. `[everest_forms_user_login]`).
 	 * The `everest_forms_has_form_on_page` filter can override the result.
 	 *
 	 * @return bool
@@ -277,12 +279,34 @@ class EVF_Frontend_Scripts {
 		$post     = get_post();
 
 		if ( $post instanceof WP_Post ) {
+			$content   = (string) $post->post_content;
 			$shortcode = apply_filters( 'everest_form_shortcode_tag', 'everest_form' );
-			$has_form  = has_shortcode( (string) $post->post_content, $shortcode )
-				|| has_block( 'everest-forms/form-selector', $post );
+			$has_form  = has_shortcode( $content, $shortcode )
+				|| has_block( 'everest-forms/form-selector', $post )
+				|| self::content_has_everest_forms_shortcode( $content );
 		}
 
 		return (bool) apply_filters( 'everest_forms_has_form_on_page', $has_form, $post );
+	}
+
+	/**
+	 * Whether content contains any registered shortcode sharing the `everest_form` tag prefix.
+	 *
+	 * @param string $content Post content.
+	 * @return bool
+	 */
+	private static function content_has_everest_forms_shortcode( $content ) {
+		if ( false === strpos( $content, '[' ) || ! preg_match_all( '/' . get_shortcode_regex() . '/', $content, $matches, PREG_SET_ORDER ) ) {
+			return false;
+		}
+
+		foreach ( $matches as $shortcode ) {
+			if ( 0 === strpos( $shortcode[2], 'everest_form' ) ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**
