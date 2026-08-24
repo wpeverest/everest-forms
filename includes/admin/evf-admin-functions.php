@@ -558,11 +558,18 @@ function everest_forms_panel_field($option, $panel, $field, $form_data, $label, 
 			break;
 		case 'image':
 			if ('' !== $value) {
-				$headers      = get_headers($value, 1);
-				$content_type = is_array($headers['Content-Type']) ? implode(' ', $headers['Content-Type']) : $headers['Content-Type'];
+				$headers = get_headers($value, 1);
 
-				if (strpos($content_type, 'image/') === false) {
-					$value = '';
+				// Only clear the value when the URL responds and clearly isn't an image.
+				// A failed/blocked request (e.g. outbound requests disabled or a firewall
+				// intercepting the site calling back into itself) must not wipe out an
+				// otherwise valid, previously saved image.
+				if (is_array($headers)) {
+					$content_type = is_array($headers['Content-Type']) ? implode(' ', $headers['Content-Type']) : $headers['Content-Type'];
+
+					if (strpos($content_type, 'image/') === false) {
+						$value = '';
+					}
 				}
 			}
 
