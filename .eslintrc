@@ -1,9 +1,16 @@
 {
-	"parser": "babel-eslint",
-	"extends": "eslint",
+	"root": true,
+	"parser": "@babel/eslint-parser",
+	"extends": "eslint:recommended",
 	"env": {
 		"browser": true,
-		"node": true
+		"node": true,
+		"jquery": true
+	},
+	"globals": {
+		"wp": "readonly",
+		"ajaxurl": "readonly",
+		"grecaptcha": "readonly"
 	},
 	"settings": {
 		"react": {
@@ -20,6 +27,10 @@
 		"max-nested-callbacks": [
 			2,
 			4
+		],
+		"no-mixed-spaces-and-tabs": [
+			2,
+			"smart-tabs"
 		]
 	}
 }
