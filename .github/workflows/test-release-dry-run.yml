@@ -49,6 +49,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Isolate whether this is a bash quirk or an action-input-passing quirk
+        env:
+          INPUT_DRY_RUN: 'true'
+        run: |
+          echo "raw value=[$INPUT_DRY_RUN]"
+          if $INPUT_DRY_RUN; then echo "TOOK TRUE BRANCH"; else echo "TOOK FALSE BRANCH"; fi
+
       - run: mkdir -p build/dummy && touch build/dummy/dummy.txt
 
       - run: sudo apt-get update && sudo apt-get install -y subversion
