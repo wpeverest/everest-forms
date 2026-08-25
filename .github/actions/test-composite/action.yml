@@ -1,6 +1,8 @@
 name: 'test composite'
 description: 'minimal replica of the 10up action pattern for isolation testing'
 inputs:
+  generate-zip:
+    default: false
   dry-run:
     default: false
 runs:
@@ -8,6 +10,7 @@ runs:
   steps:
     - id: deploy
       env:
+        INPUT_GENERATE_ZIP: ${{ inputs.generate-zip }}
         INPUT_DRY_RUN: ${{ inputs.dry-run }}
       run: ${{ github.action_path }}/script.sh
       shell: bash

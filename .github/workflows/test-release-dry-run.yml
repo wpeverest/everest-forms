@@ -80,6 +80,9 @@ jobs:
         uses: ./.github/actions/test-composite
         with:
           dry-run: 'true'
+        env:
+          BUILD_DIR: build/dummy
+          VERSION: 0.0.0-dryrun-test
 
   svn-dry-run:
     name: WordPress.org dry run (no commit)
