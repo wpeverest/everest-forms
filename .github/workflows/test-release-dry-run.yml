@@ -43,6 +43,23 @@ jobs:
           name: everest-forms-plugin-TEST
           path: build/everest-forms
 
+  svn-dry-run-debug:
+    name: DEBUG - dry-run flag in isolation (dummy content, no build wait)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - run: mkdir -p build/dummy && touch build/dummy/dummy.txt
+
+      - run: sudo apt-get update && sudo apt-get install -y subversion
+
+      - uses: 10up/action-wordpress-plugin-deploy@54bd289b8525fd23a5c365ec369185f2966529c2
+        with:
+          dry-run: 'true'
+        env:
+          BUILD_DIR: build/dummy
+          VERSION: 0.0.0-dryrun-test
+
   svn-dry-run:
     name: WordPress.org dry run (no commit)
     needs: build
@@ -60,7 +77,7 @@ jobs:
 
       - uses: 10up/action-wordpress-plugin-deploy@54bd289b8525fd23a5c365ec369185f2966529c2
         with:
-          dry-run: true
+          dry-run: 'true'
         env:
           BUILD_DIR: build/everest-forms
           VERSION: 0.0.0-dryrun-test
