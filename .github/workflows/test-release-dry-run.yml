@@ -2,6 +2,9 @@ name: TEST - release dry run (throwaway, not part of the real pipeline)
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - test/release-dry-run
 
 jobs:
   build:
