@@ -5,10 +5,22 @@ const { resolve } = require('path');
 const path = require('path');
 const CopyPlugin = require('copy-webpack-plugin');
 const WebpackBar = require('webpackbar');
-const NODE_ENV = 'production';
+const NODE_ENV = process.env.NODE_ENV || 'production';
 
 const webpackConfig = {
 	mode: NODE_ENV,
+	devServer: {
+		hot: true,
+		liveReload: true,
+		devMiddleware: {
+			writeToDisk: true,
+		},
+		allowedHosts: 'all',
+		headers: {
+			'Access-Control-Allow-Origin': '*',
+		},
+		port: 8887,
+	},
 	entry: {
 		dashboard: resolve(process.cwd(), './src/dashboard/index.js'),
 		blocks: resolve(process.cwd(), './src/blocks/index.js'),
