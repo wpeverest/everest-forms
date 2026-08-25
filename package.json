@@ -12,9 +12,8 @@
   "scripts": {
     "dev": "cross-env BABEL_ENV=default webpack --watch",
     "prepare": "husky install",
-    "build": "cross-env ./bin/build-zip.sh",
     "build:core": "grunt && npm run makepot && cross-env BABEL_ENV=default NODE_ENV=production webpack",
-    "build:zip": "npm run build && composer install && npm run build:core",
+    "release": "npm install && composer install --no-dev && cross-env BABEL_ENV=default NODE_ENV=production webpack && grunt release",
     "watch": "cross-env BABEL_ENV=default webpack --watch",
     "lint:js": "eslint assets/js --ext=js",
     "makepot": "composer run-script makepot",
