@@ -1,0 +1,63 @@
+name: TEST - release dry run (throwaway, not part of the real pipeline)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build plugin
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: composer
+
+      - name: Install WP-CLI
+        run: |
+          curl -sL -o /usr/local/bin/wp https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+          chmod +x /usr/local/bin/wp
+
+      - run: npm ci
+      - run: composer install --no-dev --optimize-autoloader
+
+      - run: npm run build:core
+
+      - name: Assemble the plugin directory (respects .distignore)
+        run: |
+          mkdir -p build/everest-forms
+          rsync -a --exclude-from=.distignore ./ build/everest-forms/
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: everest-forms-plugin-TEST
+          path: build/everest-forms
+
+  svn-dry-run:
+    name: WordPress.org dry run (no commit)
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        # keeps .wordpress-org/ available at the checkout root for ASSETS_DIR default
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: everest-forms-plugin-TEST
+          path: build/everest-forms
+
+      - run: sudo apt-get update && sudo apt-get install -y subversion
+
+      - uses: 10up/action-wordpress-plugin-deploy@54bd289b8525fd23a5c365ec369185f2966529c2
+        with:
+          dry-run: true
+        env:
+          BUILD_DIR: build/everest-forms
+          VERSION: 0.0.0-dryrun-test
