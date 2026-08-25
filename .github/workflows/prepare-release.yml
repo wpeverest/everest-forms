@@ -1,0 +1,64 @@
+name: Prepare Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'New version (e.g. 3.6.1)'
+        required: true
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  bump:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Bump version numbers + insert changelog stub
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const version = '${{ inputs.version }}';
+            const date = new Date().toLocaleDateString('en-GB').split('/').join('-'); // DD-MM-YYYY
+
+            let main = fs.readFileSync('everest-forms.php', 'utf8');
+            main = main.replace(/^( \* Version:).*/m, `$1 ${version}`);
+            fs.writeFileSync('everest-forms.php', main);
+
+            let cls = fs.readFileSync('includes/class-everest-forms.php', 'utf8');
+            cls = cls.replace(/public \$version = '.*?';/, `public $version = '${version}';`);
+            fs.writeFileSync('includes/class-everest-forms.php', cls);
+
+            let pkg = fs.readFileSync('package.json', 'utf8');
+            pkg = pkg.replace(/"version": ".*?"/, `"version": "${version}"`);
+            fs.writeFileSync('package.json', pkg);
+
+            const stub = `= ${version}       - ${date}\r\n* Fix \t\t  - TODO: describe this change.\r\n\r\n`;
+            for (const file of ['readme.txt', 'CHANGELOG.txt']) {
+              let content = fs.readFileSync(file, 'utf8');
+              content = content.replace(/== Changelog ==\r?\n\r?\n/, match => `${match}${stub}`);
+              fs.writeFileSync(file, content);
+            }
+
+            let readme = fs.readFileSync('readme.txt', 'utf8');
+            readme = readme.replace(/^Stable tag:.*/m, `Stable tag: ${version}`);
+            fs.writeFileSync('readme.txt', readme);
+
+      - name: Commit and open PR
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ inputs.version }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b "release/${VERSION}"
+          git add everest-forms.php includes/class-everest-forms.php readme.txt package.json CHANGELOG.txt
+          git commit -m "chore: bump version to ${VERSION}"
+          git push origin "release/${VERSION}"
+          gh pr create --base pre-develop --head "release/${VERSION}" \
+            --title "Release ${VERSION}" \
+            --body "Automated version bump. Fill in the changelog stub in readme.txt/CHANGELOG.txt before merging and tagging."
