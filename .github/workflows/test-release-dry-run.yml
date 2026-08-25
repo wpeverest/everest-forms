@@ -67,6 +67,12 @@ jobs:
           BUILD_DIR: build/dummy
           VERSION: 0.0.0-dryrun-test
 
+      - name: Inspect what's actually on disk vs what was reviewed
+        if: always()
+        run: |
+          find /home/runner/work/_actions/10up -name deploy.sh -exec sha256sum {} \;
+          find /home/runner/work/_actions/10up -name deploy.sh -exec grep -n "INPUT_DRY_RUN\|if \$INPUT_DRY_RUN" {} \;
+
   svn-dry-run:
     name: WordPress.org dry run (no commit)
     needs: build
