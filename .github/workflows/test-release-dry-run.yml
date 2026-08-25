@@ -76,6 +76,7 @@ jobs:
           sed -n '47,51p' "$DEPLOY_SH" | cat -A
 
       - name: Minimal local composite-action replica of the same pattern
+        if: always()
         uses: ./.github/actions/test-composite
         with:
           dry-run: 'true'
