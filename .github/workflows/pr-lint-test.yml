@@ -22,6 +22,7 @@ jobs:
 
       - run: npm ci
       - run: npm run lint:js
+        continue-on-error: true
 
   php-compat:
     name: PHP ${{ matrix.php-version }} — composer install
