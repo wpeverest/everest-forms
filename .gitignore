@@ -29,11 +29,16 @@ none
 Thumbs.db
 
 # Composer
+/vendor/
 
-
-# Build
+# Build (generated in CI at release time, see .github/workflows/release.yml)
 /build/
+/dist/
 everest-forms.zip
+/languages/everest-forms.pot
+assets/js/admin/*.min.js
+assets/js/frontend/*.min.js
+*.css.map
 
 # Unit tests
 /tests/.env
