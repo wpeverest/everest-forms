@@ -94,6 +94,17 @@
       "git add"
     ]
   },
+  "overrides": {
+    "@ajna/pagination": {
+      "framer-motion": "$framer-motion",
+      "react-scripts": {
+        "typescript": "5.9.3"
+      }
+    },
+    "stylelint-config-wordpress": {
+      "stylelint": "$stylelint"
+    }
+  },
   "dependencies": {
     "@ajna/pagination": "1.4.19",
     "@chakra-ui/icons": "^2.0.17",
