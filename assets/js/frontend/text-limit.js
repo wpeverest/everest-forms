@@ -68,7 +68,7 @@ jQuery(function() {
      */
     TextLimitHandler.prototype.renderHint = function(hintText, count, limit) {
         return hintText.replace('{count}', count).replace('{limit}', limit);
-    }
+    };
 
     /**
      * Create HTMLElement hint element with text.
@@ -89,7 +89,7 @@ jQuery(function() {
         hint.textContent = text;
 
         return hint;
-    }
+    };
 
     /**
      * Keyup/Keydown event higher order function for characters limit.
@@ -109,7 +109,7 @@ jQuery(function() {
                 limit
             );
         };
-    }
+    };
 
     /**
      * Keyup/Keydown event higher order function for words limit.
@@ -135,7 +135,7 @@ jQuery(function() {
                 limit
             );
         };
-    }
+    };
 
     /**
      * Get passed text from clipboard.
@@ -152,7 +152,7 @@ jQuery(function() {
         } else if (event.clipboardData && event.clipboardData.getData) {
             return event.clipboardData.getData('text/plain');
         }
-    }
+    };
 
     /**
      * Paste event higher order function for words limit.
@@ -170,7 +170,7 @@ jQuery(function() {
             pastedText.splice(limit, pastedText.length);
             event.target.value = pastedText.join(' ');
         };
-    }
+    };
 
     /**
      * Init TextLimitHandler.

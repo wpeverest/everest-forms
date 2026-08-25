@@ -5,12 +5,19 @@
 	"env": {
 		"browser": true,
 		"node": true,
-		"jquery": true
+		"jquery": true,
+		"es6": true
 	},
 	"globals": {
 		"wp": "readonly",
 		"ajaxurl": "readonly",
-		"grecaptcha": "readonly"
+		"grecaptcha": "readonly",
+		"everest_forms_form_preview": "readonly",
+		"everest_forms_pro": "readonly",
+		"everest_forms_survey_polls_quiz_script_params": "readonly",
+		"Mailcheck": "readonly",
+		"flatpickr": "readonly",
+		"tinyMCE": "readonly"
 	},
 	"settings": {
 		"react": {

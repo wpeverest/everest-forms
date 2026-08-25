@@ -1,6 +1,5 @@
-'use strict';
-
 ( function($) {
+	'use strict';
 
 	/**
 	 * Toggle loading message above submit button.
@@ -349,11 +348,9 @@
 	 *
 	 * @since 1.3.0.1
 	 *
-	 * @param {object} dz Dropzone object.
-	 *
 	 * @returns {Function} Handler function.
 	 */
-	function error( dz ) {
+	function error() {
 		return function( file, errorMessage ) {
 			if ( file.isErrorNotUploadedDisplayed ) {
 				return;
@@ -379,15 +376,6 @@
 		var maxFiles = parseInt( $el.dataset.maxFileNumber, 10 );
 		var currentFileCount = parseInt($el.dataset.currentFileCount, 10) || 0;
 
-		let existingFiles = [];
-		try {
-			if ($el.dataset.existingFiles) {
-				existingFiles = JSON.parse($el.dataset.existingFiles);
-			}
-		} catch (e) {
-			console.error('Error parsing existing files:', e);
-		}
-
 		var acceptedFiles = $el.dataset.extensions.split( ',' ).map( function( el ) {
 			return '.' + el;
 		} ).join( ',' );
@@ -401,7 +389,7 @@
 			dictMaxFilesExceeded: window.everest_forms_upload_parms.errors.file_limit.replace( '{fileLimit}', maxFiles ),
 			dictInvalidFileType: window.everest_forms_upload_parms.errors.file_extension,
 			dictFileTooBig: window.everest_forms_upload_parms.errors.file_size,
-			timeout: everest_forms_upload_parms.max_timeout,
+			timeout: window.everest_forms_upload_parms.max_timeout,
 		} );
 
 		dz.dataTransfer = {
@@ -445,10 +433,10 @@
 			popupContent.querySelectorAll('.everest-forms-uploader').forEach(el => dropZoneInit(el));
 		});
 
-		$(document).on('click','.evf-remove-file', function(e) {
+		$(document).on('click','.evf-remove-file', function() {
 
-			var max_files = $(this).closest(".everest-forms-uploader")[0].dropzone.options.maxFiles;
-			$(this).closest(".everest-forms-uploader")[0].dropzone.options.maxFiles =
+			var max_files = $(this).closest('.everest-forms-uploader')[0].dropzone.options.maxFiles;
+			$(this).closest('.everest-forms-uploader')[0].dropzone.options.maxFiles =
 			++max_files;
 			$(this).closest('.everest-forms-uploader').find('.dz-message').show();
 
@@ -466,14 +454,14 @@
 					} else {
 						deleteInputValue.push(fileData);
 					}
-				} catch (e) {
+				} catch {
 					deleteInputValue = [deleteInputValue, fileData];
 				}
 			}
 
 			deleteInput.val(JSON.stringify(deleteInputValue));
 
-			$(this).closest(".dz-preview").remove();
+			$(this).closest('.dz-preview').remove();
 		});
 	}
 
