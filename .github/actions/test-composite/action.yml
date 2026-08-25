@@ -1,0 +1,13 @@
+name: 'test composite'
+description: 'minimal replica of the 10up action pattern for isolation testing'
+inputs:
+  dry-run:
+    default: false
+runs:
+  using: 'composite'
+  steps:
+    - id: deploy
+      env:
+        INPUT_DRY_RUN: ${{ inputs.dry-run }}
+      run: ${{ github.action_path }}/script.sh
+      shell: bash
