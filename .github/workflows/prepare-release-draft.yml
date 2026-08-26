@@ -61,7 +61,7 @@ jobs:
         run: |
           if gh release view "$VERSION" --json isDraft --jq '.isDraft' 2>/dev/null | grep -q true; then
             echo "Updating existing draft: $VERSION"
-            gh release edit "$VERSION" --notes-file draft-release-body.md
+            gh release edit "$VERSION" --target "${{ github.sha }}" --notes-file draft-release-body.md
           else
             echo "Creating new draft: $VERSION"
             gh release create "$VERSION" --target "${{ github.sha }}" --draft --title "Everest Forms $VERSION" --notes-file draft-release-body.md
