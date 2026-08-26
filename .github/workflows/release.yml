@@ -58,7 +58,7 @@ jobs:
 
       - env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release upload "${{ github.event.release.tag_name }}" everest-forms.zip
+        run: gh release upload "${{ github.event.release.tag_name }}" everest-forms.zip --repo "${{ github.repository }}"
 
   deploy-svn:
     name: Deploy to WordPress.org
