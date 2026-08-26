@@ -4,9 +4,12 @@ on:
   push:
     branches: [develop]
 
+concurrency: prepare-release-draft
+
 jobs:
   draft:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     permissions:
       contents: write
     steps:
