@@ -60,7 +60,7 @@ function bumpReadmeStableTag(filePath, newVersion) {
 function insertChangelogPlaceholder(filePath, newVersion) {
 	if (!fs.existsSync(filePath)) return;
 	let content = fs.readFileSync(filePath, 'utf8');
-	const placeholder = `= ${newVersion} - xx-xx-2026 =\n* \n\n`;
+	const placeholder = `= ${newVersion}${' '.repeat(7)}- xx-xx-2026 =\n* \n\n`;
 	content = content.replace(/(==\s*Changelog\s*==\s*\n+)/, `$1${placeholder}`);
 	fs.writeFileSync(filePath, content);
 }
