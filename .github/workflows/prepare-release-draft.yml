@@ -49,7 +49,7 @@ jobs:
               return;
             }
 
-            fs.writeFileSync('draft-release-body.md', `= ${version} - ${today} =\n${bullets}`);
+            fs.writeFileSync('draft-release-body.md', `\`\`\`\n= ${version} - ${today} =\n${bullets}\n\`\`\``);
             core.setOutput('version', version);
             core.setOutput('shouldRelease', 'true');
 
