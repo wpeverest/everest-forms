@@ -33,7 +33,7 @@ jobs:
 
             const today = new Date().toISOString().slice(0, 10).split('-').reverse().join('-');
             const content = fs.readFileSync('readme.txt', 'utf8');
-            const match = content.match(/=\s*([\d.]+)\s*-\s*xx-xx-\d{4}\s*=\n([\s\S]*?)(?=\n=\s*[\d.]+\s*-|\n==|\n*$)/);
+            const match = content.match(/=\s*([\d.]+)\s*-\s*xx-xx-\d{4}\s*=?\n([\s\S]*?)(?=\n=\s*[\d.]+\s*-|\n==|\n*$)/);
 
             if (!match) {
               core.setOutput('shouldRelease', 'false');
