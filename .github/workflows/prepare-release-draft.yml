@@ -64,5 +64,5 @@ jobs:
             gh release edit "$VERSION" --target "${{ github.sha }}" --notes-file draft-release-body.md
           else
             echo "Creating new draft: $VERSION"
-            gh release create "$VERSION" --target "${{ github.sha }}" --draft --title "Everest Forms $VERSION" --notes-file draft-release-body.md
+            gh release create "$VERSION" --target "${{ github.sha }}" --draft --title "Release of $VERSION" --notes-file draft-release-body.md
           fi
