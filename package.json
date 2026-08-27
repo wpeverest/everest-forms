@@ -15,6 +15,7 @@
     "bump": "node bin/bump-version.js",
     "prepare": "husky install",
     "build:core": "grunt && npm run makepot && cross-env BABEL_ENV=default NODE_ENV=production webpack",
+    "build": "npm install && composer install --no-dev && cross-env BABEL_ENV=default NODE_ENV=production webpack && grunt build",
     "release": "npm install && composer install --no-dev && cross-env BABEL_ENV=default NODE_ENV=production webpack && grunt release",
     "watch": "cross-env BABEL_ENV=default webpack --watch",
     "lint:js": "eslint assets/js --ext=js",

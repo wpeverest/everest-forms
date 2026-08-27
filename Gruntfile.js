@@ -54,6 +54,7 @@ module.exports = function (grunt) {
 		jshint: {
 			options: {
 				jshintrc: '.jshintrc',
+				force: true,
 			},
 			all: [
 				'Gruntfile.js',
@@ -292,6 +293,15 @@ module.exports = function (grunt) {
 		'cssmin',
 		'concat',
 		'uglify',
+	]);
+	grunt.registerTask('build', [
+		'sass',
+		'rtlcss',
+		'cssmin',
+		'concat',
+		'jshint',
+		'uglify',
+		'makepot',
 	]);
 	grunt.registerTask('release', [
 		'sass',
