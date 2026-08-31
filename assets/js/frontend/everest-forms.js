@@ -936,11 +936,18 @@ jQuery( function ( $ ) {
 					field_new_name = field_name + '[phone_field]';
 
 				$el.attr( 'name', field_new_name );
-				$el.blur( function() {
-					if ( $el.intlTelInput( 'isValidNumber' ) ) {
-						$el.siblings( 'input[type="hidden"]' ).val( $el.intlTelInput( 'getNumber' ) );
-					}
-				} );
+
+				// Keep the hidden input, which carries the country code into the
+				// submitted data, in sync on every change. intl-tel-input only
+				// refreshes it on a real form submit, so anything that serializes
+				// the form instead would otherwise save the number without its
+				// country code.
+				var syncHiddenNumber = function() {
+					$el.siblings( 'input[type="hidden"]' ).val( $el.intlTelInput( 'getNumber' ) );
+				};
+
+				syncHiddenNumber();
+				$el.on( 'blur change countrychange', syncHiddenNumber );
 			} );
 		},
 		/**

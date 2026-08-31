@@ -845,6 +845,9 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 			if ( 'date-time' === $field['datetime_format'] || 'date' === $field['datetime_format'] ) {
 				$data_date_format = $primary['attr']['data-date-format'];
 
+				// Preselect the field's own value (e.g. when editing an entry), not today.
+				$primary['selected_date'] = $this->get_dropdown_selected_date( $primary, $field );
+
 				if ( 'F j, Y' === $data_date_format || 'm/d/Y' === $data_date_format || 'F j, Y H:i' === $data_date_format || 'F j, Y h:i K' === $data_date_format || 'm/d/Y H:i' === $data_date_format || 'm/d/Y h:i K' === $data_date_format ) {
 					$this->get_month_html( $primary );
 					$this->get_day_html( $primary );
@@ -934,16 +937,64 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 	}
 
 	/**
+	 * Resolve which date the dropdowns should preselect.
+	 *
+	 * The dropdowns are also used to render an existing value (editing an entry,
+	 * a validation redisplay, Save & Continue), so they must reflect the field's
+	 * own value and only fall back to today when there isn't one.
+	 *
+	 * @since 3.5.4
+	 *
+	 * @param array $primary Primary input properties.
+	 * @param array $field   Field data and settings.
+	 * @return array Year, month and day as integers.
+	 */
+	private function get_dropdown_selected_date( $primary, $field ) {
+		$value = isset( $primary['attr']['value'] ) ? trim( $primary['attr']['value'] ) : '';
+
+		if ( '' !== $value ) {
+			$format = ! empty( $field['date_format'] ) ? $field['date_format'] : 'Y-m-d';
+
+			if ( isset( $field['datetime_format'] ) && 'date-time' === $field['datetime_format'] ) {
+				$format .= ' ' . ( ! empty( $field['time_format'] ) ? $field['time_format'] : 'g:i A' );
+			}
+
+			$date = DateTime::createFromFormat( $format, $value );
+
+			// A date-only format still parses out of a stored date-time value.
+			if ( ! $date && ! empty( $field['date_format'] ) ) {
+				$date = DateTime::createFromFormat( $field['date_format'], $value );
+			}
+
+			if ( $date instanceof DateTime ) {
+				return array(
+					'year'  => (int) $date->format( 'Y' ),
+					'month' => (int) $date->format( 'n' ),
+					'day'   => (int) $date->format( 'j' ),
+				);
+			}
+		}
+
+		return array(
+			'year'  => (int) gmdate( 'Y' ),
+			'month' => (int) gmdate( 'm' ),
+			'day'   => (int) gmdate( 'd' ),
+		);
+	}
+
+	/**
 	 * Print HTML for year.
 	 *
 	 * @param array $primary Primary.
 	 * @return void
 	 */
 	private function get_year_html( $primary ) {
+		$selected_year = $primary['selected_date']['year'];
+
 		// For Years.
 		printf(
 			'<select value="%s" %s >',
-			esc_attr( gmdate( 'Y' ) ),
+			esc_attr( $selected_year ),
 			evf_html_attributes( 'year-select-' . esc_attr( $primary['id'] ) )
 		);
 		// Build the select options.
@@ -954,7 +1005,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 			printf(
 				'<option value="%s" %s>%s</option>',
 				esc_attr( $i ),
-				(int) gmdate( 'Y' ) === $i ? 'selected' : '',
+				$selected_year === $i ? 'selected' : '',
 				esc_html( $i )
 			);
 		}
@@ -968,10 +1019,12 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 	 * @return void
 	 */
 	private function get_month_html( $primary ) {
+		$selected_month = $primary['selected_date']['month'];
+
 		// For Months.
 		printf(
 			'<select value="%s" %s >',
-			esc_attr( gmdate( 'm' ) ),
+			esc_attr( sprintf( '%02d', $selected_month ) ),
 			evf_html_attributes( 'month-select-' . esc_attr( $primary['id'] ) )
 		);
 		// Build the select options.
@@ -980,7 +1033,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 			printf(
 				'<option value="%s" %s>%s</option>',
 				esc_attr( $i ),
-				(int) gmdate( 'm' ) === $i ? 'selected' : '',
+				$selected_month === $i ? 'selected' : '',
 				esc_html( $month )
 			);
 		}
@@ -994,10 +1047,12 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 	 * @return void
 	 */
 	private function get_day_html( $primary ) {
+		$selected_day = $primary['selected_date']['day'];
+
 		// For Days.
 		printf(
 			'<select value="%s" %s >',
-			esc_attr( gmdate( 'd' ) ),
+			esc_attr( sprintf( '%02d', $selected_day ) ),
 			evf_html_attributes( 'day-select-' . esc_attr( $primary['id'] ) )
 		);
 		// Build the select options.
@@ -1006,7 +1061,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 			printf(
 				'<option value="%s" %s>%s</option>',
 				esc_attr( $i ),
-				(int) gmdate( 'd' ) === $i ? 'selected' : '',
+				$selected_day === $i ? 'selected' : '',
 				esc_html( $day )
 			);
 		}
