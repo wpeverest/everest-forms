@@ -7,4 +7,5 @@ on:
 jobs:
   review:
     uses: wpeverest/.github/.github/workflows/copilot-review-on-comment.yml@master
-    secrets: inherit
+    secrets:
+      BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
