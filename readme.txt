@@ -4,7 +4,7 @@ Tags: contact form, custom form, form builder, forms, survey
 Requires at least: 5.5
 Tested up to: 7.0
 Requires PHP: 7.2
-Stable tag: 3.6.0
+Stable tag: 3.6.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -344,6 +344,14 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/f788d7f0-ea8a-4fd5-bcae-81a5d09a476c)
 
 == Changelog ==
+
+= 3.6.1       - 02-09-2026
+* Fix 		  - Date/Time dropdown fields showed today's date instead of the saved value, and Smart Phone fields lost their country code, when editing an existing entry.
+* Fix 		  - Query parameters in external redirect URLs were HTML-encoded, causing incorrect values.
+* Fix 		  - Improved security of file upload field data handling.
+* Fix 		  - Cloud storage integrations (Google Drive, Google Sheets, Google Calendar, OneDrive) did not return the OAuth access code after connecting.
+* Fix 		  - File attachment missing from later email notifications when multiple notifications are enabled on a form.
+* Fix 		  - Manage Columns reorder of S.N. and Entry ID not respected in the Entries table.
 
 = 3.6.0       - 13-08-2026
 * Enhance 	  - Revamped Style Customizer.
