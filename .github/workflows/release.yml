@@ -1,0 +1,83 @@
+name: Release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build:
+    name: Build plugin
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: composer
+
+      - name: Install WP-CLI
+        run: |
+          curl -sL -o /usr/local/bin/wp https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+          chmod +x /usr/local/bin/wp
+
+      - run: npm ci
+      - run: composer install --no-dev --optimize-autoloader
+
+      # grunt (Sass/RTL/minify) + makepot (languages/everest-forms.pot) + webpack production build (dist/)
+      - run: npm run build:core
+
+      - name: Assemble the plugin directory (respects .distignore)
+        run: |
+          mkdir -p build/everest-forms
+          rsync -a --exclude-from=.distignore ./ build/everest-forms/
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: everest-forms-plugin
+          path: build/everest-forms
+
+  attach-github-release:
+    name: Attach zip to GitHub Release
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: everest-forms-plugin
+          path: everest-forms
+
+      - run: zip -r everest-forms.zip everest-forms
+
+      - env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release upload "${{ github.event.release.tag_name }}" everest-forms.zip --repo "${{ github.repository }}"
+
+  deploy-svn:
+    name: Deploy to WordPress.org
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # keeps .wordpress-org/ (banner-772x250.png, icon-128x128.png) available at the
+      # checkout root for the action's ASSETS_DIR default.
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: everest-forms-plugin
+          path: build/everest-forms
+
+      - run: sudo apt-get update && sudo apt-get install -y subversion
+
+      - uses: 10up/action-wordpress-plugin-deploy@stable
+        env:
+          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+          BUILD_DIR: build/everest-forms

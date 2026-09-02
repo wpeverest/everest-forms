@@ -1,9 +1,23 @@
 {
-	"parser": "babel-eslint",
-	"extends": "eslint",
+	"root": true,
+	"parser": "@babel/eslint-parser",
+	"extends": "eslint:recommended",
 	"env": {
 		"browser": true,
-		"node": true
+		"node": true,
+		"jquery": true,
+		"es6": true
+	},
+	"globals": {
+		"wp": "readonly",
+		"ajaxurl": "readonly",
+		"grecaptcha": "readonly",
+		"everest_forms_form_preview": "readonly",
+		"everest_forms_pro": "readonly",
+		"everest_forms_survey_polls_quiz_script_params": "readonly",
+		"Mailcheck": "readonly",
+		"flatpickr": "readonly",
+		"tinyMCE": "readonly"
 	},
 	"settings": {
 		"react": {
@@ -20,6 +34,10 @@
 		"max-nested-callbacks": [
 			2,
 			4
+		],
+		"no-mixed-spaces-and-tabs": [
+			2,
+			"smart-tabs"
 		]
 	}
 }

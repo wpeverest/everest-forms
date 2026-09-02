@@ -3,11 +3,11 @@
 	"curly": true,
 	"eqeqeq": true,
 	"eqnull": true,
-	"es3": true,
+	"esversion": 10,
 	"expr": true,
 	"immed": true,
+	"laxbreak": true,
 	"noarg": true,
-	"onevar": true,
 	"quotmark": "single",
 	"trailing": true,
 	"undef": true,
@@ -20,6 +20,14 @@
 		"Backbone": false,
 		"jQuery": false,
 		"JSON": false,
-		"wp": false
+		"wp": false,
+		"console": false,
+		"everest_forms_form_preview": false,
+		"everest_forms_pro": false,
+		"everest_forms_survey_polls_quiz_script_params": false,
+		"Mailcheck": false,
+		"flatpickr": false,
+		"grecaptcha": false,
+		"tinyMCE": false
 	}
 }

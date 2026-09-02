@@ -132,10 +132,7 @@ jQuery( function ( $ ) {
 
 					var minDateRange = '';
 					if( inputData.minDateRange ) {
-						minDateRange = 'today';
-						if( 'today' === inputData.minDateRange ) {
-							minDateRange = minDateRange
-						} else if ( /^\s*[-+]?\d+\s*d/i.test( inputData.minDateRange ) ) {
+						if ( /^\s*[-+]?\d+\s*d/i.test( inputData.minDateRange ) ) {
 							minDateRange = inputData.minDateRange.match( /^\s*[-+]?\d+\s*d/i )[0].replace( 'd', '' );
 							minDateRange = new Date().fp_incr( minDateRange );
 						} else {
@@ -145,12 +142,11 @@ jQuery( function ( $ ) {
 
 					var maxDateRange = '';
 					if( inputData.maxDateRange ) {
-						maxDateRange = 'today';
-						if( 'today' === inputData.maxDateRange ) {
-							maxDateRange = maxDateRange
-						} else if ( /^\s*[-+]?\d+\s*d/i.test( inputData.maxDateRange ) ) {
+						if ( /^\s*[-+]?\d+\s*d/i.test( inputData.maxDateRange ) ) {
 							maxDateRange = inputData.maxDateRange.match( /^\s*[-+]?\d+\s*d/i )[0].replace( 'd', '' );
 							maxDateRange = new Date().fp_incr( maxDateRange );
+						} else if ( 'today' === inputData.maxDateRange ) {
+							maxDateRange = 'today';
 						} else {
 							maxDateRange = '';
 						}
@@ -274,39 +270,39 @@ jQuery( function ( $ ) {
 			$( 'body' ).on( 'change', '.date-time-container [id*=hour-select]', function() {
 				var $this = $( this ).siblings( 'input.date-dropdown-field' );
 				everest_forms.change_minutes( $this );
-			})
+			});
 
 			$( 'body' ).on( 'change', '.date-time-container [id*=-select]', function() {
 				var $this = $( this ).siblings( 'input.date-dropdown-field' );
 				$this.val( everest_forms.format_dropdown_date( $this ) );
-			})
+			});
 		},
 		change_minutes: function( $this ) {
 			//Changes minutes as per hours selected, Time limit option.
 			var id = $this.attr( 'id' );
-			if( typeof( $this.siblings( '#minute-select-' + id ).attr( 'id' ) ) != 'undefined' ) {
+			if( typeof( $this.siblings( '#minute-select-' + id ).attr( 'id' ) ) !== 'undefined' ) {
 				var max_hour = $this.attr( 'data-max-hour' );
 				var min_hour = $this.attr( 'data-min-hour' );
 				var max_minute = $this.attr( 'data-max-minute' );
 				var min_minute = $this.attr( 'data-min-minute' );
-				if( typeof( min_hour ) == 'undefined' || min_hour == '' ) {
+				if( typeof( min_hour ) === 'undefined' || min_hour === '' ) {
 					min_hour = 0;
 				}
-				if( typeof (max_hour ) == 'undefined' || max_hour == '' ) {
+				if( typeof (max_hour ) === 'undefined' || max_hour === '' ) {
 					min_hour = 23;
 				}
-				if( typeof( min_minute ) == 'undefined' || min_minute == '' ) {
+				if( typeof( min_minute ) === 'undefined' || min_minute === '' ) {
 					min_minute = 0;
 				}
-				if( typeof( max_minute ) == 'undefined' || max_minute == '' ) {
+				if( typeof( max_minute ) === 'undefined' || max_minute === '' ) {
 					max_minute = 59;
 				}
 				var options = '';
 				for( var i = 0; i<= 59; i++ ) {
-					if( $this.siblings( '#hour-select-' + id ).val() == min_hour && i < min_minute ) {
+					if( $this.siblings( '#hour-select-' + id ).val() === min_hour && i < min_minute ) {
 						continue;
 					}
-					if( $this.siblings( '#hour-select-' + id ).val() == max_hour && i > max_minute ) {
+					if( $this.siblings( '#hour-select-' + id ).val() === max_hour && i > max_minute ) {
 						break;
 					}
 					options += '<option value = "' + i + '"> ' + ( ( i< 10 ) ? '0' + i : i ) + '</option>';
@@ -325,11 +321,11 @@ jQuery( function ( $ ) {
 				selected_day: $this.siblings( '#day-select-' + id ).val(),
 				selected_hour: $this.siblings( '#hour-select-' + id ).val(),
 				selected_minute: $this.siblings( '#minute-select-' + id ).val()
-			}
+			};
 			var setting = {
 				date_format: $this.attr( 'data-date-format' ),
 				date_time: $this.attr( 'data-date-time' )
-			}
+			};
 			var list_months = [
 				'January',
 				'Febuary',
@@ -345,7 +341,7 @@ jQuery( function ( $ ) {
 				'December'
 			];
 			var formatted_date = '';
-			if( setting.date_time == 'date' || setting.date_time == 'date-time' ) {
+			if( setting.date_time === 'date' || setting.date_time === 'date-time' ) {
 				selectd_date.selected_day = (selectd_date.selected_day < 10 ) ? '0' + selectd_date.selected_day : selectd_date.selected_day;
 				if ( setting.date_format.match( /F j, Y/ ) ) {
 					formatted_date = list_months[ parseInt( selectd_date.selected_month ) - 1 ] + ' ' + selectd_date.selected_day + ', ' + selectd_date.selected_year;
@@ -360,23 +356,23 @@ jQuery( function ( $ ) {
 					}
 				}
 			}
-			if( setting.date_time == 'time' || setting.date_time == 'date-time' ) {
+			if( setting.date_time === 'time' || setting.date_time === 'date-time' ) {
 				selectd_date.selected_minute = ( selectd_date.selected_minute < 10) ? '0' + selectd_date.selected_minute : selectd_date.selected_minute;
 				if( setting.date_format.match( /H:i/ ) ) {
 					selectd_date.selected_hour  = ( selectd_date.selected_hour  < 10 ) ? '0' + selectd_date.selected_hour : selectd_date.selected_hour;
-					formatted_date += ' ' + selectd_date.selected_hour + ":" + selectd_date.selected_minute;
+					formatted_date += ' ' + selectd_date.selected_hour + ':' + selectd_date.selected_minute;
 				} else {
 					var period = 'PM';
 					if( selectd_date.selected_hour < 12 ) {
-						period = 'AM'
-						if( selectd_date.selected_hour == 0 ){
+						period = 'AM';
+						if( selectd_date.selected_hour === 0 ){
 							selectd_date.selected_hour = 12;
 						}
 					} else if ( selectd_date.selected_hour > 12 ) {
 						selectd_date.selected_hour = selectd_date.selected_hour - 12;
 					}
 
-					formatted_date += ' ' + selectd_date.selected_hour + ":" + selectd_date.selected_minute + ' ' + period;
+					formatted_date += ' ' + selectd_date.selected_hour + ':' + selectd_date.selected_minute + ' ' + period;
 				}
 			}
 			return formatted_date.trim();
@@ -408,7 +404,7 @@ jQuery( function ( $ ) {
 			// Validate email addresses.
 			$.validator.methods.email = function( value, element ) {
 				/* https://stackoverflow.com/questions/2855865/jquery-validate-e-mail-address-regex */
-				var pattern = new RegExp(/^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/i);
+				var pattern = new RegExp(/^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/i); // eslint-disable-line no-control-regex, no-useless-escape, max-len
 				return this.optional( element ) || pattern.test( value );
 			};
 
@@ -460,6 +456,7 @@ jQuery( function ( $ ) {
 					var field_id      = $( this ).data( 'field-id' );
 					var error_message = $( this ).data( 'required-field-message' );
 					var key           = 'everest_forms[form_fields][' + field_id + ']'; // Name of the input field is used as a key.
+					var sub_field_error_messages, i;
 
 					if ( $( this ).is( '.evf-field-payment-single' ) ) {
 						if ( ! $( this ).find('.evf-payment-price').is( '.evf-payment-user-input' ) ) {
@@ -492,18 +489,18 @@ jQuery( function ( $ ) {
 						};
 						error_message = null;
 					} else if ( $( this ).is( '.evf-field-address' ) ) {
-						var sub_field_error_messages = {
+						sub_field_error_messages = {
 							'address1': $( this ).data( 'required-field-message-address1' ),
 							'city'    : $( this ).data( 'required-field-message-city' ),
 							'state'   : $( this ).data( 'required-field-message-state' ),
 							'postal'  : $( this ).data( 'required-field-message-postal' ),
 							'country' : $( this ).data( 'required-field-message-country' ),
-						}
+						};
 
 						var sub_field_types = Object.keys( sub_field_error_messages );
-						for ( var i = 0; i < sub_field_types.length; i++ ) {
-							var sub_field_type = sub_field_types[i],
-								error_message = sub_field_error_messages[ sub_field_types[i] ];
+						for ( i = 0; i < sub_field_types.length; i++ ) {
+							var sub_field_type = sub_field_types[i];
+							error_message = sub_field_error_messages[ sub_field_types[i] ];
 
 							key                   = 'everest_forms[form_fields][' + field_id + '][' + sub_field_type + ']';
 							error_messages[ key ] = {
@@ -513,14 +510,14 @@ jQuery( function ( $ ) {
 						error_message = null;
 					} else if ( $( this ).is( '.evf-field-likert' ) ) {
 						var row_keys = $( this ).data( 'row-keys' );
-						var sub_field_error_messages = {};
+						sub_field_error_messages = {};
 
 						if ( row_keys && Array.isArray( row_keys ) ) {
-							for ( var i = 0; i < row_keys.length; i++ ) {
+							for ( i = 0; i < row_keys.length; i++ ) {
 								var row_key = row_keys[i];
 								sub_field_error_messages[ row_key ] = $( this ).data( 'required-field-message-' + row_key );
 							}
-							for ( var i = 0; i < row_keys.length; i++ ) {
+							for ( i = 0; i < row_keys.length; i++ ) {
 								error_message         = sub_field_error_messages[ row_keys[i] ];
 								key                   = 'everest_forms[form_fields][' + field_id + '][' + row_keys[i] + ']';
 								error_messages[ key ] = {
@@ -620,8 +617,8 @@ jQuery( function ( $ ) {
 							$submit     = $form.find( '.evf-submit' ),
 							processText = $submit.data( 'process-text' );
 							var	recaptchaID = $submit.get( 0 ).recaptchaID;
-							var  razorpayForms = $form.find( "[data-gateway='razorpay']" );
-							var stripeForms = $form.find( "[data-gateway*='stripe']" );
+							var  razorpayForms = $form.find( '[data-gateway="razorpay"]' );
+							var stripeForms = $form.find( '[data-gateway*="stripe"]' );
 
 						// Process form.
 						if ( processText ) {
@@ -683,7 +680,7 @@ jQuery( function ( $ ) {
 						if ( 'checkbox' === type ) {
 							$el.closest( '.evf-field-checkbox' ).find( 'label.evf-error' ).remove();
 							validate = true;
-						} else if ( ! 'select-multiple' === type ) {
+						} else if ( 'select-multiple' !== type ) {
 							$( element ).valid();
 						}
 
@@ -733,7 +730,7 @@ jQuery( function ( $ ) {
 					if ( validate_email ) {
 						if ( $this.val() ) {
 							/* https://stackoverflow.com/questions/2855865/jquery-validate-e-mail-address-regex */
-							var pattern = new RegExp(/^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/i); // eslint-disable-line max-len
+							var pattern = new RegExp(/^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/i); // eslint-disable-line no-control-regex, no-useless-escape, max-len
 
 							if ( ! pattern.test( $this.val()  ) ) {
 								$parent.removeClass( 'everest-forms-validated' ).addClass( 'everest-forms-invalid everest-forms-invalid-email' );
@@ -810,9 +807,9 @@ jQuery( function ( $ ) {
 					var $this = $(this);
 
 					$this.on('click', function () {
-						if($(this).prop("checked") == true){
+						if($(this).prop('checked') === true){
 							$this.parent().parent().find('li').find('input:checkbox').not($this).prop('checked', true);
-						}else if($(this).prop("checked") == false){
+						}else if($(this).prop('checked') === false){
 							$this.parent().parent().find('li').find('input:checkbox').not($this).prop('checked', false);
 						}
 					});
@@ -894,9 +891,10 @@ jQuery( function ( $ ) {
 			}
 
 			// Try an alternative solution if storing user details is disabled.
+			var countryCode;
 			if ( 'yes' === everest_forms_params.disable_user_details ) {
-				var lang = this.getFirstBrowserLanguage(),
-					countryCode = lang.indexOf( '-' ) > -1 ? lang.split( '-' ).pop() : '';
+				var lang = this.getFirstBrowserLanguage();
+				countryCode = lang.indexOf( '-' ) > -1 ? lang.split( '-' ).pop() : '';
 			}
 
 			// Make sure the library recognizes browser country code to avoid console error.

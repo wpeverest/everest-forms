@@ -171,7 +171,7 @@ This will:
 
 To create a complete plugin ZIP file for distribution:
 ```bash
-npm run build:zip
+npm run release
 ```
 
 This creates a ZIP file ready to install on WordPress.
@@ -247,7 +247,7 @@ npm run lint:js
 | `npm run dev` | Watch and compile assets for development |
 | `npm run watch` | Same as dev |
 | `npm run build:core` | Build production assets |
-| `npm run build:zip` | Create distribution ZIP |
+| `npm run release` | Build everything and create distribution ZIPs |
 | `npm run lint:js` | Lint JavaScript files |
 | `npm run makepot` | Generate translation files |
 | `npm run test-unit-php` | Run PHP unit tests |
@@ -302,9 +302,6 @@ npm run lint:js
 
 ### Database issues during testing
 - Reset the test database: `composer run-script test:reset`
-
-### Build script permission denied (EACCES)
-- Make the script executable: `chmod +x bin/build-zip.sh`
 
 ### Grunt task "default" not found
 - This has been fixed in the codebase

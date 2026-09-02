@@ -1,0 +1,68 @@
+name: Prepare Release Draft
+
+on:
+  push:
+    branches: [develop]
+
+concurrency: prepare-release-draft
+
+jobs:
+  draft:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check for the release marker + collect the pending changelog entry
+        id: collect
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const MARKER = 'release: create tag';
+            const commits = context.payload.commits || [];
+            const triggered = commits.some((c) => c.message.split('\n')[0].trim().startsWith(MARKER));
+
+            if (!triggered) {
+              console.log(`No commit's subject line starts with "${MARKER}" — skipping.`);
+              core.setOutput('shouldRelease', 'false');
+              return;
+            }
+
+            const today = new Date().toISOString().slice(0, 10).split('-').reverse().join('-');
+            const content = fs.readFileSync('readme.txt', 'utf8');
+            const match = content.match(/=\s*([\d.]+)\s*-\s*xx-xx-\d{4}\s*=?\n([\s\S]*?)(?=\n=\s*[\d.]+\s*-|\n==|\n*$)/);
+
+            if (!match) {
+              core.setOutput('shouldRelease', 'false');
+              core.setFailed('Marker commit found, but no pending changelog entry exists (looking for "xx-xx-" in readme.txt).');
+              return;
+            }
+
+            const version = match[1];
+            const bullets = match[2].trim();
+            if (!/^\*\s*\S/m.test(bullets)) {
+              core.setOutput('shouldRelease', 'false');
+              core.setFailed('Marker commit found, but the pending changelog entry has no filled-in bullet text yet.');
+              return;
+            }
+
+            fs.writeFileSync('draft-release-body.md', `\`\`\`\n= ${version} - ${today} =\n${bullets}\n\`\`\``);
+            core.setOutput('version', version);
+            core.setOutput('shouldRelease', 'true');
+
+      - name: Create or update the draft release
+        if: steps.collect.outputs.shouldRelease == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ steps.collect.outputs.version }}
+        run: |
+          if gh release view "$VERSION" --json isDraft --jq '.isDraft' 2>/dev/null | grep -q true; then
+            echo "Updating existing draft: $VERSION"
+            gh release edit "$VERSION" --target "${{ github.sha }}" --notes-file draft-release-body.md
+          else
+            echo "Creating new draft: $VERSION"
+            gh release create "$VERSION" --target "${{ github.sha }}" --draft --title "Release of $VERSION" --notes-file draft-release-body.md
+          fi

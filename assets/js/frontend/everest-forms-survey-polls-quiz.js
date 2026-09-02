@@ -33,7 +33,7 @@ jQuery( function ( $ ) {
 				EverestFormsSurveyFrontEnd.disableallSelect(e, this);
 			});
 
-			$( document ).on( 'change', '.everest-forms-field-yes-no input[type="radio"]', function( e ){
+			$( document ).on( 'change', '.everest-forms-field-yes-no input[type="radio"]', function(){
 				EverestFormsSurveyFrontEnd.checkYesNofieldActiveInactive();
 			} );
 		},
@@ -42,7 +42,7 @@ jQuery( function ( $ ) {
 			var $this = $( el ),
 			field_id  = $this.closest('.evf-immidiate-feedback').attr('data-field-id'),
 			user_answer = $this.val(),
-			form_id = $this.closest('form').attr('data-formid');
+			form_id = $this.closest('form').attr('data-formid'),
 			container = $this.closest('.evf-immidiate-feedback');
 			if( container.attr( 'data-click-count' ) === undefined ) {
 				container.attr('data-click-count', 1);
@@ -62,7 +62,7 @@ jQuery( function ( $ ) {
 				user_answer : user_answer,
 				form_id : form_id,
 				security: everest_forms_survey_polls_quiz_script_params.ajax_nonce
-			}
+			};
 
 			$.ajax({
 				url: everest_forms_survey_polls_quiz_script_params.ajax_url,
@@ -70,7 +70,7 @@ jQuery( function ( $ ) {
 				type: 'POST',
 
 				success: function( response ) {
-					if ( container.attr('data-click-count') == response.data.answer_count ) {
+					if ( parseInt( container.attr('data-click-count'), 10 ) === response.data.answer_count ) {
 						var clone = container.find('input:checked').clone();
 						clone.attr('type','hidden');
 						clone.prop( 'disabled', false );
@@ -92,7 +92,7 @@ jQuery( function ( $ ) {
 			var $this = $( el ),
 			field_id  = $this.closest('.evf-immidiate-feedback').attr('data-field-id'),
 			user_answer = $this.val(),
-			form_id = $this.closest('form').attr('data-formid');
+			form_id = $this.closest('form').attr('data-formid'),
 			container = $this.closest('.evf-immidiate-feedback');
 
 			container.find('select').prop('disabled', true );
@@ -104,7 +104,7 @@ jQuery( function ( $ ) {
 							user_answer : user_answer,
 							form_id : form_id,
 							security: everest_forms_survey_polls_quiz_script_params.ajax_nonce
-						}
+						};
 
 						$.ajax({
 							url: everest_forms_survey_polls_quiz_script_params.ajax_url,
@@ -128,7 +128,7 @@ jQuery( function ( $ ) {
 		},
 		checkYesNofieldActiveInactive: function() {
 			$( '.everest-forms-field-yes-no-container .everest-forms-field-yes-no' ).each(function () {
-				$this = $( this );
+				var $this = $( this );
 
 				if( $this.find( 'input[type="radio"]' ).is( ':checked' ) ) {
 					$this.addClass( 'active' );
@@ -137,6 +137,6 @@ jQuery( function ( $ ) {
 				}
 			});
 		}
-	}
+	};
 	EverestFormsSurveyFrontEnd.init(jQuery);
 });
