@@ -842,11 +842,12 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 				esc_attr( $primary['required'] )
 			);
 
+			// Preselect the field's own value (e.g. when editing an entry), not
+			// today. Both the date and the time selects read this.
+			$primary['selected_date'] = $this->get_dropdown_selected_date( $primary, $field );
+
 			if ( 'date-time' === $field['datetime_format'] || 'date' === $field['datetime_format'] ) {
 				$data_date_format = $primary['attr']['data-date-format'];
-
-				// Preselect the field's own value (e.g. when editing an entry), not today.
-				$primary['selected_date'] = $this->get_dropdown_selected_date( $primary, $field );
 
 				if ( 'F j, Y' === $data_date_format || 'm/d/Y' === $data_date_format || 'F j, Y H:i' === $data_date_format || 'F j, Y h:i K' === $data_date_format || 'm/d/Y H:i' === $data_date_format || 'm/d/Y h:i K' === $data_date_format ) {
 					$this->get_month_html( $primary );
@@ -869,13 +870,20 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 
 			if ( 'time' === $field['datetime_format'] || 'date-time' === $field['datetime_format'] ) {
 
-				$min_hour = isset( $field['min_time_hour'], $field['enable_min_max_time'] ) ? $field['min_time_hour'] : 0;
-				$max_hour = isset( $field['min_time_hour'], $field['enable_min_max_time'] ) ? $field['max_time_hour'] : 23;
+				$min_hour = (int) ( isset( $field['min_time_hour'], $field['enable_min_max_time'] ) ? $field['min_time_hour'] : 0 );
+				$max_hour = (int) ( isset( $field['min_time_hour'], $field['enable_min_max_time'] ) ? $field['max_time_hour'] : 23 );
+
+				// The field's own time when there is one, today's hour otherwise.
+				$selected_hour = null === $primary['selected_date']['hour'] ? (int) gmdate( 'H' ) : $primary['selected_date']['hour'];
+
+				if ( $selected_hour < $min_hour || $selected_hour > $max_hour ) {
+					$selected_hour = $min_hour;
+				}
 
 				// For Hours.
 				printf(
 					'<select value = "%s" %s>',
-					esc_attr( ( gmdate( 'H' ) >= $min_hour && ( gmdate( 'H' ) <= $max_hour ) ) ? gmdate( 'H' ) : $min_hour ),
+					esc_attr( $selected_hour ),
 					evf_html_attributes( 'hour-select-' . esc_attr( $primary['id'] ) )
 				);
 
@@ -883,7 +891,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 					printf(
 						'<option value="%s" %s>%s</option>',
 						esc_attr( $i ),
-						(int) gmdate( 'H' ) === $i ? 'selected' : '',
+						$selected_hour === $i ? 'selected' : '',
 						esc_html( $this->get_minute_hours( $field, 'hours' )[ $i ] )
 					);
 				}
@@ -892,9 +900,11 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 
 				$time_interval = isset( $field['time_interval'] ) ? $field['time_interval'] : 1;
 
-				// For Minutes.
+				// For Minutes. The options are built by the frontend script, so
+				// hand it the minute to restore once it has.
 				printf(
-					'<select %s>',
+					'<select data-selected-minute="%s" %s>',
+					esc_attr( null === $primary['selected_date']['minute'] ? '' : $primary['selected_date']['minute'] ),
 					evf_html_attributes( 'minute-select-' . esc_attr( $primary['id'] ) )
 				);
 				echo '</select>';
@@ -937,7 +947,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 	}
 
 	/**
-	 * Resolve which date the dropdowns should preselect.
+	 * Resolve which date and time the dropdowns should preselect.
 	 *
 	 * The dropdowns are also used to render an existing value (editing an entry,
 	 * a validation redisplay, Save & Continue), so they must reflect the field's
@@ -947,39 +957,68 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 	 *
 	 * @param array $primary Primary input properties.
 	 * @param array $field   Field data and settings.
-	 * @return array Year, month and day as integers.
+	 * @return array Year, month and day as integers, plus hour and minute as
+	 *               integers when the value carried a time and null when it did not.
 	 */
 	private function get_dropdown_selected_date( $primary, $field ) {
+		$fallback = array(
+			'year'   => (int) gmdate( 'Y' ),
+			'month'  => (int) gmdate( 'm' ),
+			'day'    => (int) gmdate( 'd' ),
+			'hour'   => null,
+			'minute' => null,
+		);
+
 		$value = isset( $primary['attr']['value'] ) ? trim( $primary['attr']['value'] ) : '';
 
-		if ( '' !== $value ) {
-			$format = ! empty( $field['date_format'] ) ? $field['date_format'] : 'Y-m-d';
-
-			if ( isset( $field['datetime_format'] ) && 'date-time' === $field['datetime_format'] ) {
-				$format .= ' ' . ( ! empty( $field['time_format'] ) ? $field['time_format'] : 'g:i A' );
-			}
-
-			$date = DateTime::createFromFormat( $format, $value );
-
-			// A date-only format still parses out of a stored date-time value.
-			if ( ! $date && ! empty( $field['date_format'] ) ) {
-				$date = DateTime::createFromFormat( $field['date_format'], $value );
-			}
-
-			if ( $date instanceof DateTime ) {
-				return array(
-					'year'  => (int) $date->format( 'Y' ),
-					'month' => (int) $date->format( 'n' ),
-					'day'   => (int) $date->format( 'j' ),
-				);
-			}
+		if ( '' === $value ) {
+			return $fallback;
 		}
 
-		return array(
-			'year'  => (int) gmdate( 'Y' ),
-			'month' => (int) gmdate( 'm' ),
-			'day'   => (int) gmdate( 'd' ),
-		);
+		$datetime_format = ! empty( $field['datetime_format'] ) ? $field['datetime_format'] : 'date';
+		$date_format     = ! empty( $field['date_format'] ) ? $field['date_format'] : 'Y-m-d';
+		$time_format     = ! empty( $field['time_format'] ) ? $field['time_format'] : 'g:i A';
+
+		// Widest format first: a stored date-time still yields its date half
+		// when the field has since been switched to date only. The flag says
+		// whether a match carries a usable time.
+		if ( 'time' === $datetime_format ) {
+			$formats = array( $time_format => true );
+		} elseif ( 'date-time' === $datetime_format ) {
+			$formats = array(
+				$date_format . ' ' . $time_format => true,
+				$date_format                      => false,
+			);
+		} else {
+			$formats = array( $date_format => false );
+		}
+
+		foreach ( $formats as $format => $has_time ) {
+			$date = DateTime::createFromFormat( $format, $value );
+
+			if ( ! $date instanceof DateTime ) {
+				continue;
+			}
+
+			// createFromFormat() rolls an impossible date over rather than
+			// failing (Feb 31 becomes Mar 2), so only accept a parse that
+			// renders back to what was stored.
+			$rendered = $date->format( $format );
+
+			if ( 0 !== strncmp( $rendered, $value, strlen( $rendered ) ) ) {
+				continue;
+			}
+
+			return array(
+				'year'   => (int) $date->format( 'Y' ),
+				'month'  => (int) $date->format( 'n' ),
+				'day'    => (int) $date->format( 'j' ),
+				'hour'   => $has_time ? (int) $date->format( 'G' ) : null,
+				'minute' => $has_time ? (int) $date->format( 'i' ) : null,
+			);
+		}
+
+		return $fallback;
 	}
 
 	/**
@@ -1056,7 +1095,7 @@ class EVF_Field_Date_Time extends EVF_Form_Fields {
 			evf_html_attributes( 'day-select-' . esc_attr( $primary['id'] ) )
 		);
 		// Build the select options.
-		for ( $i = 1; $i <= 32; $i++ ) {
+		for ( $i = 1; $i <= 31; $i++ ) {
 			$day = $i < 10 ? '0' . $i : $i;
 			printf(
 				'<option value="%s" %s>%s</option>',

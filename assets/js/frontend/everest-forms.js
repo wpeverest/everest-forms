@@ -312,8 +312,22 @@ jQuery( function ( $ ) {
 					options += '<option value = "' + i + '"> ' + ( ( i< 10 ) ? '0' + i : i ) + '</option>';
 				}
 
-				$this.siblings( '#minute-select-'+id ).html( options );
-				$this.siblings( '#minute-select-'+id ).attr('value', $this.siblings( '#minute-select-'+id ).find('option:first').val());
+				// Rebuilding the options wipes the selection, so keep whatever is
+				// selected now, or the minute the server rendered for a saved value.
+				var $minute = $this.siblings( '#minute-select-' + id );
+				var keep    = $minute.val();
+
+				if ( keep === null || keep === '' || typeof keep === 'undefined' ) {
+					keep = $minute.attr( 'data-selected-minute' );
+				}
+
+				$minute.html( options );
+
+				if ( keep !== '' && typeof keep !== 'undefined' && $minute.find( 'option[value="' + keep + '"]' ).length ) {
+					$minute.val( keep );
+				} else {
+					$minute.val( $minute.find( 'option:first' ).val() );
+				}
 			}
 			$this.val( everest_forms.format_dropdown_date( $this ) );
 		},
@@ -946,7 +960,6 @@ jQuery( function ( $ ) {
 					$el.siblings( 'input[type="hidden"]' ).val( $el.intlTelInput( 'getNumber' ) );
 				};
 
-				syncHiddenNumber();
 				$el.on( 'blur change countrychange', syncHiddenNumber );
 			} );
 		},
