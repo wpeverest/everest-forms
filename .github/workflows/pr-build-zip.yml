@@ -14,8 +14,8 @@ jobs:
       php-version: '7.4'
       package-manager: npm
       composer-install: true
-      build-command: npm run build
-      zip-glob: 'release/*.zip'
+      build-command: npm run build && mkdir -p everest-forms && rsync -rc --exclude-from=.distignore ./ ./everest-forms --delete --delete-excluded && zip -r everest-forms.zip everest-forms
+      zip-glob: 'everest-forms.zip'
       artifacts-bucket: themegrill-pr-artifacts
       public-base-url: https://themegrill-pr-artifacts.s3.amazonaws.com
       s3-region: us-east-1
