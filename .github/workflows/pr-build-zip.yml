@@ -11,7 +11,11 @@ jobs:
     uses: wpeverest/.github/.github/workflows/pr-build-zip.yml@master
     with:
       node-version: '20.x'
-      php-version: '7.4'
+      # composer.json declares ">=5.6.20" (an ancient, unmaintained floor --
+      # same pattern as user-registration-pro), but the actual composer.lock
+      # needs 8.2+ (phpspec/prophecy, webmozart/assert both require it).
+      # Confirmed for real: composer install fails outright on 7.4.
+      php-version: '8.2'
       package-manager: npm
       composer-install: true
       build-command: npm run build && mkdir -p everest-forms && rsync -rc --exclude-from=.distignore ./ ./everest-forms --delete --delete-excluded && zip -r everest-forms.zip everest-forms
