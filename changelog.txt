@@ -6,6 +6,7 @@
 * Fix 		  - Improved security of file upload field data handling.
 * Fix 		  - Cloud storage integrations (Google Drive, Google Sheets, Google Calendar, OneDrive) did not return the OAuth access code after connecting.
 * Fix 		  - File attachment missing from later email notifications when multiple notifications are enabled on a form.
+* Fix 		  - Country field smart tag rendered blank instead of the selected country.
 * Fix 		  - Manage Columns reorder of S.N. and Entry ID not respected in the Entries table.
 
 = 3.6.0       - 13-08-2026

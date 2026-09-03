@@ -352,6 +352,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 * Fix 		  - Cloud storage integrations (Google Drive, Google Sheets, Google Calendar, OneDrive) did not return the OAuth access code after connecting.
 * Fix 		  - File attachment missing from later email notifications when multiple notifications are enabled on a form.
 * Fix 		  - Manage Columns reorder of S.N. and Entry ID not respected in the Entries table.
+* Fix 		  - Country field smart tag rendered blank instead of the selected country.
 
 = 3.6.0       - 13-08-2026
 * Enhance 	  - Revamped Style Customizer.
