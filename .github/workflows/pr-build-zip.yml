@@ -11,24 +11,19 @@ jobs:
     uses: wpeverest/.github/.github/workflows/pr-build-zip.yml@master
     with:
       node-version: '20.x'
-      # composer.json declares ">=5.6.20" (an ancient, unmaintained floor --
-      # same pattern as user-registration-pro), but the actual composer.lock
-      # needs 8.2+ (phpspec/prophecy, webmozart/assert both require it).
-      # Confirmed for real: composer install fails outright on 7.4.
       php-version: '8.2'
       package-manager: npm
-      # @ajna/pagination@1.4.19 peer-requires react-scripts@5.0.1, which
-      # peer-requires an old TypeScript (^3.2.1 || ^4), but this project's
-      # own devDependency pins typescript@5.9.3 -- a genuine conflict in
-      # this repo's own dependency tree (confirmed via npm's ERESOLVE
-      # error), not something wrong with our build config. --legacy-peer-deps
-      # skips npm's strict peer-dependency check as a pragmatic workaround
-      # for a testable build; it does not fix the underlying conflict, so a
-      # real fix (dropping/replacing @ajna/pagination, or reconciling the
-      # TypeScript version) still belongs to this repo's own team.
-      install-command: npm ci --legacy-peer-deps
-      composer-install: true
-      build-command: npm run build && mkdir -p everest-forms && rsync -rc --exclude-from=.distignore ./ ./everest-forms --delete --delete-excluded && zip -r everest-forms.zip everest-forms
+      # `npm run build` runs this repo's own bin/build-zip.sh, which is a
+      # fully self-contained release script: it does its own
+      # `npm install --legacy-peer-deps`, its own `composer install` (with a
+      # PHP-version fix pending in a separate PR to that script), its own JS
+      # build, and its own rsync+zip -- producing everest-forms.zip at the
+      # repo root already. This workflow's own install/composer steps would
+      # just be redundant, wasted work duplicating what the script already
+      # does, so they're skipped/no-op'd here rather than fighting it.
+      install-command: echo "Skipping -- bin/build-zip.sh installs its own JS deps"
+      composer-install: false
+      build-command: npm run build
       zip-glob: 'everest-forms.zip'
       artifacts-bucket: themegrill-pr-artifacts
       public-base-url: https://themegrill-pr-artifacts.s3.amazonaws.com
