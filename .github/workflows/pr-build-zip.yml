@@ -17,6 +17,16 @@ jobs:
       # Confirmed for real: composer install fails outright on 7.4.
       php-version: '8.2'
       package-manager: npm
+      # @ajna/pagination@1.4.19 peer-requires react-scripts@5.0.1, which
+      # peer-requires an old TypeScript (^3.2.1 || ^4), but this project's
+      # own devDependency pins typescript@5.9.3 -- a genuine conflict in
+      # this repo's own dependency tree (confirmed via npm's ERESOLVE
+      # error), not something wrong with our build config. --legacy-peer-deps
+      # skips npm's strict peer-dependency check as a pragmatic workaround
+      # for a testable build; it does not fix the underlying conflict, so a
+      # real fix (dropping/replacing @ajna/pagination, or reconciling the
+      # TypeScript version) still belongs to this repo's own team.
+      install-command: npm ci --legacy-peer-deps
       composer-install: true
       build-command: npm run build && mkdir -p everest-forms && rsync -rc --exclude-from=.distignore ./ ./everest-forms --delete --delete-excluded && zip -r everest-forms.zip everest-forms
       zip-glob: 'everest-forms.zip'
