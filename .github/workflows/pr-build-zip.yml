@@ -21,7 +21,15 @@ jobs:
       # repo root already. This workflow's own install/composer steps would
       # just be redundant, wasted work duplicating what the script already
       # does, so they're skipped/no-op'd here rather than fighting it.
-      install-command: echo "Skipping -- bin/build-zip.sh installs its own JS deps"
+      # Can't skip this like composer-install: `npm run build` is literally
+      # `cross-env ./bin/build-zip.sh`, and cross-env has to already be
+      # resolvable from node_modules/.bin before that command can even
+      # start -- build-zip.sh's own internal npm install happens too late
+      # to help with that (confirmed for real: skipping this outright hit
+      # "cross-env: not found"). --legacy-peer-deps for the same reason as
+      # documented on the build-zip.sh fix -- @ajna/pagination's peer
+      # dependency conflict blocks a plain `npm ci` here too.
+      install-command: npm ci --legacy-peer-deps
       composer-install: false
       build-command: npm run build
       zip-glob: 'everest-forms.zip'
