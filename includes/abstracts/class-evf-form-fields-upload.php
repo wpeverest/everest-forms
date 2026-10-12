@@ -1660,6 +1660,8 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 
 		if ( isset( $form_data['settings']['disabled_entries'] ) && '1' === $form_data['settings']['disabled_entries'] ) {
 			if ( ! empty( $entry ) && is_array( $entry ) ) {
+				$allowed_base = $this->get_form_uploads_base( $form_data );
+
 				foreach ( $entry as $meta_key => $meta_value ) {
 					if ( empty( $meta_value ) ) {
 						continue;
@@ -1675,7 +1677,8 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 							$file_url      = isset( $file_data['value'] ) && is_string( $file_data['value'] ) ? $file_data['value'] : '';
 							$resolved_path = $this->resolve_uploads_file_from_url( $file_url );
 
-							if ( false !== $resolved_path ) {
+							// Only delete files that live in this form's own hash-protected uploads folder, so a crafted old_files URL cannot remove another form's or user's file.
+							if ( false !== $resolved_path && '' !== $allowed_base && 0 === strpos( $resolved_path, $allowed_base ) ) {
 								wp_delete_file( $resolved_path );
 							}
 						}
@@ -1820,6 +1823,30 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 		}
 
 		return $resolved_path;
+	}
+
+	/**
+	 * Resolve the real filesystem base of a form's own uploads directory.
+	 *
+	 * The folder name embeds a wp_hash() of the form id and creation date, so it
+	 * is not forgeable from a request. Used to confine deletion to files that
+	 * belong to the submitted form rather than the whole uploads directory.
+	 *
+	 * @since 3.6.3
+	 *
+	 * @param array $form_data Form data.
+	 * @return string Trailing-slashed real path, or '' when it cannot be derived.
+	 */
+	protected function get_form_uploads_base( $form_data ) {
+		if ( empty( $form_data['id'] ) || ! isset( $form_data['created'] ) ) {
+			return '';
+		}
+
+		$uploads = wp_get_upload_dir();
+		$folder  = absint( $form_data['id'] ) . '-' . wp_hash( $form_data['id'] . $form_data['created'] );
+		$base    = realpath( $uploads['basedir'] . '/everest_forms_uploads/' . $folder );
+
+		return $base ? wp_normalize_path( trailingslashit( $base ) ) : '';
 	}
 
 	/**
