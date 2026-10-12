@@ -1672,13 +1672,11 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 					if ( isset( $meta_value['type'] ) && ( 'file-upload' === $meta_value['type'] && ! empty( $meta_value['value_raw'] ) || 'image-upload' === $meta_value['type'] && isset( $meta_value['value_raw'] ) ) ) {
 
 						foreach ( $meta_value['value_raw'] as $file_data ) {
-							if ( isset( $file_data['value'] ) ) {
-								$file_url = $file_data['value'];
+							$file_url      = isset( $file_data['value'] ) && is_string( $file_data['value'] ) ? $file_data['value'] : '';
+							$resolved_path = $this->resolve_uploads_file_from_url( $file_url );
 
-								$uploaded_file = ABSPATH . preg_replace( '/.*wp-content/', 'wp-content', wp_parse_url( $file_url, PHP_URL_PATH ) );
-								if ( file_exists( $uploaded_file ) ) {
-									unlink( $uploaded_file );
-								}
+							if ( false !== $resolved_path ) {
+								wp_delete_file( $resolved_path );
 							}
 						}
 					}
