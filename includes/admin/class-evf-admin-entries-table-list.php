@@ -457,7 +457,8 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 
 			// Strip tags unconditionally -- the branches below never escape their output themselves,
 			// so a value must never reach them still carrying markup, whether or not it contains 'http'.
-			$value = nl2br( wp_strip_all_tags( trim( $value ) ) );
+			// nl2br() is left to each branch below so a value isn't line-break-converted twice.
+			$value = wp_strip_all_tags( trim( $value ) );
 
 			$value = apply_filters( 'everest_forms_html_field_value', $value, $entry->meta[ $meta_key ], $entry, 'entry-table', $meta_key );
 
