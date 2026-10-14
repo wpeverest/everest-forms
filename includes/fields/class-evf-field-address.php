@@ -1011,8 +1011,19 @@ class EVF_Field_Address extends EVF_Form_Fields {
 					'<span class="%s">',
 					esc_attr( $state['id'] )
 				);
-				$country_options = ! empty( $country['attr']['value'] ) ? $country['attr']['value'] : 'AF';
-				$state_options   = isset( $state['options'][ $country_options ] ) ? $state['options'][ $country_options ] : '';
+				$country_options = ! empty( $country['attr']['value'] ) ? $country['attr']['value'] : '';
+
+				// With no default or placeholder the country dropdown shows its first allowed country, so list that country's states.
+				if ( '' === $country_options && empty( $country['hidden'] ) && empty( $country['attr']['placeholder'] ) && ! empty( $country['options'] ) ) {
+					foreach ( array_keys( $country['options'] ) as $country_key ) {
+						if ( empty( $selected_country ) || ! is_array( $selected_country ) || in_array( $country_key, $selected_country, true ) ) {
+							$country_options = $country_key;
+							break;
+						}
+					}
+				}
+
+				$state_options = isset( $state['options'][ $country_options ] ) ? $state['options'][ $country_options ] : '';
 
 				if ( isset( $state_options ) && ! empty( $state_options ) ) {
 					printf(

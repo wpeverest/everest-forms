@@ -7,6 +7,7 @@
 * Fix 		  - Improved security of file deletion when processing uploaded file submissions.
 * Fix 		  - Webhook URLs lost percent-encoded characters when the form was saved.
 * Fix 		  - Nonce error message printed outside the error page when refreshing form templates.
+* Fix 		  - Address field State list did not match the country shown when no default country was set.
 
 = 3.6.2       - 21-09-2026
 * Fix 		  - Improved security of smart tag processing for submitted form field values.
