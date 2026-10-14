@@ -31,6 +31,13 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 	protected $protected_files = array( 'index.html', 'index.php', '.htaccess', '.htpasswd' );
 
 	/**
+	 * Real paths of files moved into the form uploads folder during this request.
+	 *
+	 * @var array
+	 */
+	protected $request_files = array();
+
+	/**
 	 * Hook in tabs.
 	 */
 	public function init_hooks() {
@@ -1376,6 +1383,12 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 					$this->create_dir( dirname( $file['path'] ) );
 					@rename( $file['tmp_path'], $file['path'] ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 					$this->set_file_fs_permissions( $file['path'] );
+
+					$real_path = realpath( $file['path'] );
+
+					if ( false !== $real_path ) {
+						$this->request_files[] = wp_normalize_path( $real_path );
+					}
 				}
 
 				$data[] = $this->generate_file_data( $file );
@@ -1659,32 +1672,12 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 	public function remove_csv_file_after_email_send( $attachment, $entry, $form_data, $context, $connection_id, $entry_id ) {
 
 		if ( isset( $form_data['settings']['disabled_entries'] ) && '1' === $form_data['settings']['disabled_entries'] ) {
-			if ( ! empty( $entry ) && is_array( $entry ) ) {
-				$allowed_base = $this->get_form_uploads_base( $form_data );
-
-				foreach ( $entry as $meta_key => $meta_value ) {
-					if ( empty( $meta_value ) ) {
-						continue;
-					}
-
-					if ( preg_match( '/signature_/', $meta_key ) && file_exists( $meta_value ) ) {
-						unlink( $meta_value );
-					}
-
-					if ( isset( $meta_value['type'] ) && ( 'file-upload' === $meta_value['type'] && ! empty( $meta_value['value_raw'] ) || 'image-upload' === $meta_value['type'] && isset( $meta_value['value_raw'] ) ) ) {
-
-						foreach ( $meta_value['value_raw'] as $file_data ) {
-							$file_url      = isset( $file_data['value'] ) && is_string( $file_data['value'] ) ? $file_data['value'] : '';
-							$resolved_path = $this->resolve_uploads_file_from_url( $file_url );
-
-							// Only delete files that live in this form's own hash-protected uploads folder, so a crafted old_files URL cannot remove another form's or user's file.
-							if ( false !== $resolved_path && '' !== $allowed_base && 0 === strpos( $resolved_path, $allowed_base ) ) {
-								wp_delete_file( $resolved_path );
-							}
-						}
-					}
-				}
+			// File URLs in the entry can come from the request (old_files), so only delete what this request uploaded.
+			foreach ( $this->request_files as $file_path ) {
+				wp_delete_file( $file_path );
 			}
+
+			$this->request_files = array();
 		}
 
 		if ( ! $entry_id ) {
@@ -1757,7 +1750,7 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 				}
 
 				if ( preg_match( '/signature_/', $meta_key ) ) {
-					if ( file_exists( $meta_value ) ) {
+					if ( is_string( $meta_value ) && file_exists( $meta_value ) ) {
 						$entry_files[] = $meta_value;
 					}
 				} elseif ( isset( $meta_value['type'] ) && ( 'file-upload' === $meta_value['type'] && ! empty( $meta_value['value_raw'] ) || 'image-upload' === $meta_value['type'] && isset( $meta_value['value_raw'] ) ) ) {
@@ -1823,30 +1816,6 @@ abstract class EVF_Form_Fields_Upload extends EVF_Form_Fields {
 		}
 
 		return $resolved_path;
-	}
-
-	/**
-	 * Resolve the real filesystem base of a form's own uploads directory.
-	 *
-	 * The folder name embeds a wp_hash() of the form id and creation date, so it
-	 * is not forgeable from a request. Used to confine deletion to files that
-	 * belong to the submitted form rather than the whole uploads directory.
-	 *
-	 * @since 3.6.3
-	 *
-	 * @param array $form_data Form data.
-	 * @return string Trailing-slashed real path, or '' when it cannot be derived.
-	 */
-	protected function get_form_uploads_base( $form_data ) {
-		if ( empty( $form_data['id'] ) || ! isset( $form_data['created'] ) ) {
-			return '';
-		}
-
-		$uploads = wp_get_upload_dir();
-		$folder  = absint( $form_data['id'] ) . '-' . wp_hash( $form_data['id'] . $form_data['created'] );
-		$base    = realpath( $uploads['basedir'] . '/everest_forms_uploads/' . $folder );
-
-		return $base ? wp_normalize_path( trailingslashit( $base ) ) : '';
 	}
 
 	/**
