@@ -736,6 +736,11 @@ class EVF_Form_Task {
 					continue;
 				}
 
+				// Values resolved in the browser (page URL, referrer) are kept as plain text; only an unresolved one falls back to the default.
+				if ( ! isset( $value['value'] ) || ! is_string( $value['value'] ) || false === strpos( $value['value'], '{' ) ) {
+					continue;
+				}
+
 				$default_value = isset( $this->form_data['form_fields'][ $key ]['default_value'] ) ? $this->form_data['form_fields'][ $key ]['default_value'] : '';
 
 				if ( is_string( $default_value ) && '' !== $default_value && strpos( $default_value, '{' ) !== false ) {
@@ -1591,7 +1596,7 @@ class EVF_Form_Task {
 				if ( isset( $field['meta_key'], $field['value'] ) && '' !== $field['value'] ) {
 					// Resolved strictly from the field's own admin-configured default_value
 					// (never the submitted value) -- see the matching fix in do_task().
-					if ( 'hidden' === $field['type'] ) {
+					if ( 'hidden' === $field['type'] && is_string( $field['value'] ) && false !== strpos( $field['value'], '{' ) ) {
 						$field_id      = isset( $field['id'] ) ? $field['id'] : $field_key;
 						$default_value = isset( $form_data['form_fields'][ $field_id ]['default_value'] ) ? $form_data['form_fields'][ $field_id ]['default_value'] : '';
 
