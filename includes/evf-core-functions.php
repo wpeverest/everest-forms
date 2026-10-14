@@ -4856,8 +4856,9 @@ function evf_sanitize_entry($entry = array())
 				case 'textarea':
 				case 'html':
 				case 'privacy-policy':
-				case 'wysiwug':
-					$entry['form_fields'][$key] = wp_kses_post($entry['form_fields'][$key]);
+				case 'wysiwyg':
+					// A request can submit this field as an array (e.g. form_fields[<id>][]); wp_kses_post() expects a string and fatals on anything else.
+					$entry['form_fields'][$key] = wp_kses_post( is_scalar( $entry['form_fields'][$key] ) ? $entry['form_fields'][$key] : '' );
 					break;
 				case 'repeater-fields':
 					$entry['form_fields'][$key] = $entry['form_fields'][$key];

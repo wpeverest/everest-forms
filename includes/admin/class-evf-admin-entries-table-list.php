@@ -434,6 +434,15 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 
 			$value = (string) $value;
 
+			// WYSIWYG content is expected to carry real markup (bold, links, images, etc.), so it
+			// is sanitized with wp_kses_post() instead of being run through the plain-text
+			// truncation/strip-tags path below, which assumes the value has no markup worth keeping.
+			if ( 'wysiwyg' === $field_type ) {
+				$value = apply_filters( 'everest_forms_html_field_value', $value, $entry->meta[ $meta_key ], $entry, 'entry-table', $meta_key );
+
+				return wp_kses_post( $value );
+			}
+
 			if ( false === strpos( $value, 'http' ) ) {
 				$lines = explode( "\n", $value );
 				$value = array_slice( $lines, 0, 4 );
@@ -444,12 +453,16 @@ class EVF_Admin_Entries_Table_List extends EVF_Base_List_Table {
 				} elseif ( strlen( $value ) > 75 ) {
 					$value = substr( $value, 0, 75 ) . '&hellip;';
 				}
-
-				$value = nl2br( wp_strip_all_tags( trim( $value ) ) );
 			}
+
+			// Strip tags unconditionally -- the branches below never escape their output themselves,
+			// so a value must never reach them still carrying markup, whether or not it contains 'http'.
+			// nl2br() is left to each branch below so a value isn't line-break-converted twice.
+			$value = wp_strip_all_tags( trim( $value ) );
+
 			$value = apply_filters( 'everest_forms_html_field_value', $value, $entry->meta[ $meta_key ], $entry, 'entry-table', $meta_key );
 
-			if ( in_array( $field_type, array( 'file-upload', 'image-upload', 'signature', 'wysiwyg', 'color', 'rating', 'country', 'likert', 'checkbox', 'radio', 'repeater-fields', 'payment-checkbox' ), true ) ) {
+			if ( in_array( $field_type, array( 'file-upload', 'image-upload', 'signature', 'color', 'rating', 'country', 'likert', 'checkbox', 'radio', 'repeater-fields', 'payment-checkbox' ), true ) ) {
 				return nl2br( make_clickable( $value ) );
 			}elseif( 'address' === $field_type ){
 				$allowed_tags = array(
