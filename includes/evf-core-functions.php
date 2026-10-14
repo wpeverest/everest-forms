@@ -1295,6 +1295,7 @@ function evf_get_browser()
 	$bname    = 'Unknown';
 	$platform = 'Unknown';
 	$version  = '';
+	$ub       = 'other';
 
 	// First get the platform.
 	if (preg_match('/linux/i', $u_agent)) {
@@ -1341,13 +1342,15 @@ function evf_get_browser()
 	// See how many we have.
 	$i = count($matches['browser']);
 
-	if (1 !== $i) {
+	if (0 === $i) {
+		$version = '';
+	} elseif (1 !== $i) {
 		// we will have two since we are not using 'other' argument yet.
 		// see if version is before or after the name.
 		if (strripos($u_agent, 'Version') < strripos($u_agent, $ub)) {
 			$version = $matches['version'][0];
 		} else {
-			$version = $matches['version'][1];
+			$version = isset($matches['version'][1]) ? $matches['version'][1] : $matches['version'][0];
 		}
 	} else {
 		$version = $matches['version'][0];
@@ -4853,8 +4856,9 @@ function evf_sanitize_entry($entry = array())
 				case 'textarea':
 				case 'html':
 				case 'privacy-policy':
-				case 'wysiwug':
-					$entry['form_fields'][$key] = wp_kses_post($entry['form_fields'][$key]);
+				case 'wysiwyg':
+					// A request can submit this field as an array (e.g. form_fields[<id>][]); wp_kses_post() expects a string and fatals on anything else.
+					$entry['form_fields'][$key] = wp_kses_post( is_scalar( $entry['form_fields'][$key] ) ? $entry['form_fields'][$key] : '' );
 					break;
 				case 'repeater-fields':
 					$entry['form_fields'][$key] = $entry['form_fields'][$key];
