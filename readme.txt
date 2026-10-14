@@ -4,7 +4,7 @@ Tags: contact form, custom form, form builder, forms, survey
 Requires at least: 5.5
 Tested up to: 7.0
 Requires PHP: 7.2
-Stable tag: 3.6.2
+Stable tag: 3.6.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -344,6 +344,14 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/f788d7f0-ea8a-4fd5-bcae-81a5d09a476c)
 
 == Changelog ==
+
+= 3.6.3       - 15-10-2026
+* Fix 		  - Improved security of smart tag resolution for hidden field values.
+* Fix 		  - Improved security of file type restrictions in upload field requests.
+* Fix 		  - Improved security of WYSIWYG field values shown in the Entries list.
+* Fix 		  - Improved security of file deletion when processing uploaded file submissions.
+* Fix 		  - Webhook URLs lost percent-encoded characters when the form was saved.
+* Fix 		  - Nonce error message printed outside the error page when refreshing form templates.
 
 = 3.6.2       - 21-09-2026
 * Fix 		  - Improved security of smart tag processing for submitted form field values.
