@@ -2,9 +2,9 @@
 Contributors:everestforms,WPEverest
 Tags: contact form, custom form, form builder, forms, survey
 Requires at least: 5.5
-Tested up to: 7.0
+Tested up to: 7.1.3
 Requires PHP: 7.2
-Stable tag: 3.5.0
+Stable tag: 3.6.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -344,6 +344,63 @@ Yes you can! Join in on our [GitHub repository](https://github.com/wpeverest/eve
 You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/f788d7f0-ea8a-4fd5-bcae-81a5d09a476c)
 
 == Changelog ==
+
+= 3.6.3       - 15-10-2026
+* Fix 		  - Improved security of smart tag resolution for hidden field values.
+* Fix 		  - Improved security of file type restrictions in upload field requests.
+* Fix 		  - Improved security of WYSIWYG field values shown in the Entries list.
+* Fix 		  - Improved security of file deletion when processing uploaded file submissions.
+* Fix 		  - Webhook URLs lost percent-encoded characters when the form was saved.
+* Fix 		  - Nonce error message printed outside the error page when refreshing form templates.
+* Fix 		  - Address field State list did not match the country shown when no default country was set.
+* Fix 		  - Editing an entry erased or stripped the formatting of its WYSIWYG answer.
+* Fix 		  - Fatal error on the form or Edit Entry screen when a WYSIWYG value contained a percent sign.
+
+= 3.6.2       - 21-09-2026
+* Fix 		  - Improved security of smart tag processing for submitted form field values.
+* Fix 		  - Improved security of permission checks for MCP-based form and entry access.
+* Fix 		  - Improved security of admin notification message rendering.
+
+= 3.6.1       - 07-09-2026
+* Fix 		  - Date/Time dropdown fields showed today's date instead of the saved value, and Smart Phone fields lost their country code, when editing an existing entry.
+* Fix 		  - Query parameters in external redirect URLs were HTML-encoded, causing incorrect values.
+* Fix 		  - Improved security of file upload field data handling.
+* Fix 		  - Cloud storage integrations (Google Drive, Google Sheets, Google Calendar, OneDrive) did not return the OAuth access code after connecting.
+* Fix 		  - File attachment missing from later email notifications when multiple notifications are enabled on a form.
+* Fix 		  - Manage Columns reorder of S.N. and Entry ID not respected in the Entries table.
+* Fix 		  - Country field smart tag rendered blank instead of the selected country.
+* Fix 		  - Saved image field values (e.g. PDF header/footer logo) could be cleared right after saving if the site's own self-request to verify the image failed.
+* Fix 		  - Style Customizer borders, colors and corner rounding not rendering in the builder's Style panel.
+* Fix 		  - Stray "96" appearing in notification emails sent without a chosen Email Template.
+
+= 3.6.0       - 13-08-2026
+* Enhance 	  - Revamped Style Customizer.
+* Fix 		  - PHP warning in single entry view for coupon field values when the Coupons addon is deactivated.
+* Fix 		  - Integration "Remove Authentication" silently failing with "Connection missing" for Google Drive, Dropbox, Google Calendar, OneDrive, and Amazon S3.
+
+= 3.5.3       - 04-08-2026
+* Enhance 	  - Show active addons list in System Info.
+* Fix 		  - Capability checks.
+* Fix 		  - Loader alignment in form migrator.
+* Fix 		  - Currency symbol issue on subscription field.
+* Fix 		  - Add preset not working for multi choice field.
+* Dev 		  - Conditional logic not working for address field.
+* Fix 		  - Query String example text misaligned beside the input field in Settings > Confirmation.
+* Fix 		  - Original file name not shown for upload fields in All Forms entries view.
+* Fix 		  - Hide repeater "Add Repeater Row" builder control when Pro is inactive.
+* Fix 		  - Google reCAPTCHA/hCaptcha/Turnstile language setting resets to English (UK) after saving.
+* Fix 		  - Field settings tabs sluggish and required double-click to switch.
+* Fix 		  - Renamed Payment admin menu to Payments.
+
+= 3.5.2       - 02-07-2026
+* Fix 		  - Improved security of the addon activation process.
+* Fix 		  - Bulk Add option not opening for Dropdown, Checkbox, and Multiple Choice fields.
+* Fix 	      - Corrected file upload validation pattern.
+
+= 3.5.1       - 15-06-2026
+* Fix 		  - Early load integration called.
+* Fix 		  - Form submission stuck on processing for forms created using ai.
+* Added 	  - Loggers in AI Form creation flow.
 
 = 3.5.0       - 15-06-2026
 * Feature 	  - Create form with AI.
