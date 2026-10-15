@@ -202,7 +202,7 @@ class EVF_Field_Wysiwyg extends EVF_Form_Fields {
 		ob_start();
 		wp_editor( $value, $primary['id'], $settings );
 		$output = ob_get_clean();
-		printf( $output ); //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo $output; //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		printf( '</div>' );
 	}
 

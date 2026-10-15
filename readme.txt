@@ -354,6 +354,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 * Fix 		  - Nonce error message printed outside the error page when refreshing form templates.
 * Fix 		  - Address field State list did not match the country shown when no default country was set.
 * Fix 		  - Editing an entry erased or stripped the formatting of its WYSIWYG answer.
+* Fix 		  - Fatal error on the form or Edit Entry screen when a WYSIWYG value contained a percent sign.
 
 = 3.6.2       - 21-09-2026
 * Fix 		  - Improved security of smart tag processing for submitted form field values.
