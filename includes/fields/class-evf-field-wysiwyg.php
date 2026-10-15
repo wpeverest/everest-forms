@@ -142,16 +142,48 @@ class EVF_Field_Wysiwyg extends EVF_Form_Fields {
 		 * @param array $form_data All Form Data.
 		 */
 	public function field_display( $field, $field_atts, $form_data ) {
-		// Define data.
-		$value             = '';
-		$primary           = $field['properties']['inputs']['primary'];
-		$conditional_id    = isset( $field['properties']['inputs']['primary']['attr']['conditional_id'] ) ? $field['properties']['inputs']['primary']['attr']['conditional_id'] : '';
-		$conditional_rules = isset( $field['properties']['inputs']['primary']['attr']['conditional_rules'] ) ? $field['properties']['inputs']['primary']['attr']['conditional_rules'] : '';
+		$value = '';
 
-		if ( isset( $primary['attr']['value'] ) ) {
-			$value = evf_sanitize_textarea_field( $primary['attr']['value'] );
-			unset( $primary['attr']['value'] );
+		if ( isset( $field['properties']['inputs']['primary']['attr']['value'] ) ) {
+			$value = evf_sanitize_textarea_field( $field['properties']['inputs']['primary']['attr']['value'] );
 		}
+
+		$this->display_editor( $field, $form_data, $value );
+	}
+
+	/**
+	 * Edit form field display on the entry back-end.
+	 *
+	 * @since 3.6.3
+	 *
+	 * @param array $entry_field Entry field data.
+	 * @param array $field       Field data.
+	 * @param array $form_data   Form data and settings.
+	 */
+	public function edit_form_field_display( $entry_field, $field, $form_data ) {
+		// value_raw keeps the saved markup (an image-only answer has an empty plain value), so the editor must load it.
+		if ( ! empty( $entry_field['value_raw'] ) && is_string( $entry_field['value_raw'] ) ) {
+			$value = $entry_field['value_raw'];
+		} else {
+			$value = isset( $entry_field['value'] ) && is_string( $entry_field['value'] ) ? $entry_field['value'] : '';
+		}
+
+		$this->display_editor( $field, $form_data, wp_kses_post( $value ) );
+	}
+
+	/**
+	 * Output the rich text editor.
+	 *
+	 * @since 3.6.3
+	 *
+	 * @param array  $field     Field data.
+	 * @param array  $form_data Form data.
+	 * @param string $value     Sanitized editor content.
+	 */
+	private function display_editor( $field, $form_data, $value ) {
+		$primary           = $field['properties']['inputs']['primary'];
+		$conditional_id    = isset( $primary['attr']['conditional_id'] ) ? $primary['attr']['conditional_id'] : '';
+		$conditional_rules = isset( $primary['attr']['conditional_rules'] ) ? $primary['attr']['conditional_rules'] : '';
 
 		printf(
 			'<div id="everest_form_wysiwyg_%s"   class="input-text" data-form-id="%s" data-field-id="%s" conditional_rules="%s" conditional_id="%s">',

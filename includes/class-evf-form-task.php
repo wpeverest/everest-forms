@@ -736,16 +736,13 @@ class EVF_Form_Task {
 					continue;
 				}
 
-				// Values resolved in the browser (page URL, referrer) are kept as plain text; only an unresolved one falls back to the default.
-				if ( ! isset( $value['value'] ) || ! is_string( $value['value'] ) || false === strpos( $value['value'], '{' ) ) {
+				if ( ! isset( $value['value'] ) || ! is_string( $value['value'] ) ) {
 					continue;
 				}
 
 				$default_value = isset( $this->form_data['form_fields'][ $key ]['default_value'] ) ? $this->form_data['form_fields'][ $key ]['default_value'] : '';
 
-				if ( is_string( $default_value ) && '' !== $default_value && strpos( $default_value, '{' ) !== false ) {
-					$this->form_fields[ $key ]['value'] = apply_filters( 'everest_forms_process_smart_tags', $default_value, $this->form_data, $this->form_fields );
-				}
+				$this->form_fields[ $key ]['value'] = $this->resolve_hidden_field_default_tags( $value['value'], $default_value, $this->form_data, $this->form_fields );
 			}
 
 			// One last error check - don't proceed if there are any errors.
@@ -1596,13 +1593,10 @@ class EVF_Form_Task {
 				if ( isset( $field['meta_key'], $field['value'] ) && '' !== $field['value'] ) {
 					// Resolved strictly from the field's own admin-configured default_value
 					// (never the submitted value) -- see the matching fix in do_task().
-					if ( 'hidden' === $field['type'] && is_string( $field['value'] ) && false !== strpos( $field['value'], '{' ) ) {
-						$field_id      = isset( $field['id'] ) ? $field['id'] : $field_key;
-						$default_value = isset( $form_data['form_fields'][ $field_id ]['default_value'] ) ? $form_data['form_fields'][ $field_id ]['default_value'] : '';
-
-						if ( is_string( $default_value ) && '' !== $default_value && strpos( $default_value, '{' ) !== false ) {
-							$field['value'] = apply_filters( 'everest_forms_process_smart_tags', $default_value, $form_data, $fields, $entry_id );
-						}
+					if ( 'hidden' === $field['type'] && is_string( $field['value'] ) ) {
+						$field_id       = isset( $field['id'] ) ? $field['id'] : $field_key;
+						$default_value  = isset( $form_data['form_fields'][ $field_id ]['default_value'] ) ? $form_data['form_fields'][ $field_id ]['default_value'] : '';
+						$field['value'] = $this->resolve_hidden_field_default_tags( $field['value'], $default_value, $form_data, $fields, $entry_id );
 					}
 					$entry_metadata = array(
 						'entry_id'   => $entry_id,
@@ -2326,6 +2320,35 @@ class EVF_Form_Task {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Resolve the hidden field default's own smart tags that are still unresolved in the submitted value.
+	 *
+	 * @since 3.6.3
+	 *
+	 * @param string     $value         Submitted value.
+	 * @param string     $default_value Admin-configured default value.
+	 * @param array      $form_data     Form data.
+	 * @param array      $fields        Form fields.
+	 * @param int|string $entry_id      Entry ID.
+	 * @return string
+	 */
+	private function resolve_hidden_field_default_tags( $value, $default_value, $form_data, $fields, $entry_id = '' ) {
+		if ( ! is_string( $default_value ) || ! preg_match_all( '/\{[^{}]+\}/', $default_value, $tags ) ) {
+			return $value;
+		}
+
+		$replacements = array();
+
+		foreach ( array_unique( $tags[0] ) as $tag ) {
+			if ( false !== strpos( $value, $tag ) ) {
+				$replacements[ $tag ] = (string) apply_filters( 'everest_forms_process_smart_tags', $tag, $form_data, $fields, $entry_id );
+			}
+		}
+
+		// strtr() replaces in one pass, so text inserted by a resolved tag is never parsed again.
+		return $replacements ? strtr( $value, $replacements ) : $value;
 	}
 
 	/**
